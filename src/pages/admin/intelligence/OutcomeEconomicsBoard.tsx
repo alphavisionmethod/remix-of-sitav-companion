@@ -10,28 +10,7 @@ import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_OUTCOMES = [
-  { type: "incident_prevented", count: 8, costCents: 2400, valueCents: 48000, roi: 20.0, accepted: 8, rejected: 0, domain: "engineering" },
-  { type: "self_heal_success", count: 22, costCents: 1100, valueCents: 22000, roi: 20.0, accepted: 21, rejected: 1, domain: "engineering" },
-  { type: "retention_saved", count: 2, costCents: 1600, valueCents: 24000, roi: 15.0, accepted: 2, rejected: 0, domain: "revenue-business" },
-  { type: "lead_recovered", count: 6, costCents: 1800, valueCents: 18000, roi: 10.0, accepted: 5, rejected: 1, domain: "revenue-business" },
-  { type: "automation_completed", count: 18, costCents: 900, valueCents: 9000, roi: 10.0, accepted: 17, rejected: 1, domain: "admin-ops" },
-  { type: "strategic_accepted", count: 3, costCents: 4800, valueCents: 36000, roi: 7.5, accepted: 3, rejected: 0, domain: "admin-ops" },
-  { type: "issue_resolved", count: 14, costCents: 4200, valueCents: 28000, roi: 6.7, accepted: 12, rejected: 2, domain: "engineering" },
-  { type: "release_approved", count: 4, costCents: 3200, valueCents: 16000, roi: 5.0, accepted: 4, rejected: 0, domain: "engineering" },
-  { type: "design_improvement_accepted", count: 5, costCents: 2500, valueCents: 8000, roi: 3.2, accepted: 4, rejected: 1, domain: "digital-presence" },
-  { type: "cost_saved", count: 7, costCents: 3500, valueCents: 12000, roi: 3.4, accepted: 6, rejected: 1, domain: "admin-ops" },
-];
-
-const DEMO_REASONING_PATHS = [
-  { path: "fingerprint → self-heal", cost: 1100, value: 22000, acceptance: 0.95, recommendation: "expand" as const },
-  { path: "root-cause → fix-plan", cost: 2400, value: 48000, acceptance: 0.92, recommendation: "expand" as const },
-  { path: "lead-scoring → follow-up", cost: 1800, value: 18000, acceptance: 0.83, recommendation: "maintain" as const },
-  { path: "strategy → synthesis", cost: 4800, value: 36000, acceptance: 1.0, recommendation: "maintain" as const },
-  { path: "diagnostic → redesign", cost: 2500, value: 8000, acceptance: 0.80, recommendation: "optimize" as const },
-  { path: "deep-analysis → report", cost: 6000, value: 10000, acceptance: 0.60, recommendation: "downgrade" as const },
-];
+import { DEMO_INTEL_OUTCOMES as DEMO_OUTCOMES, DEMO_REASONING_PATHS } from "@/lib/demo-data/admin-intelligence";
 
 const recColors: Record<string, string> = {
   expand: "text-emerald-400 bg-emerald-500/10",

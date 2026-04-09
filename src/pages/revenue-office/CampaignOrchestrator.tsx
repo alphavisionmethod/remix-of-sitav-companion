@@ -9,23 +9,9 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { useCampaigns } from "@/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/sita/EmptyState";
+import { DEMO_REV_CAMPAIGNS as DEMO_CAMPAIGNS, DEMO_REV_SEGMENTS as DEMO_SEGMENTS } from "@/lib/demo-data/revenue-office";
 
 
-
-const DEMO_CAMPAIGNS = [
-  { name: "Welcome Sequence", type: "email", status: "active", subscribers: 234, openRate: 68.4, clickRate: 24.2, conversions: 18, revenue: "$5,400", steps: 5, completionRate: 72 },
-  { name: "Re-Engagement Series", type: "email", status: "active", subscribers: 89, openRate: 42.1, clickRate: 12.8, conversions: 6, revenue: "$2,400", steps: 4, completionRate: 45 },
-  { name: "Upsell After Purchase", type: "automation", status: "active", subscribers: 47, openRate: 55.3, clickRate: 18.6, conversions: 8, revenue: "$6,800", steps: 3, completionRate: 82 },
-  { name: "Holiday Campaign 2026", type: "email", status: "draft", subscribers: 0, openRate: 0, clickRate: 0, conversions: 0, revenue: "$0", steps: 6, completionRate: 0 },
-];
-
-const DEMO_SEGMENTS = [
-  { name: "All Contacts", count: 454, growth: "+12" },
-  { name: "Active Customers", count: 67, growth: "+3" },
-  { name: "Warm Leads", count: 89, growth: "+8" },
-  { name: "At-Risk", count: 14, growth: "-2" },
-  { name: "VIP / Advocates", count: 12, growth: "+1" },
-];
 
 export default function CampaignOrchestrator() {
   const { isDemoMode } = useDataMode();

@@ -8,38 +8,7 @@ import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useBrandAssets } from "@/hooks/use-digital-presence";
-
-const DEMO_BRAND_COLORS = [
-  { name: "Primary", value: "#3B82F6", hsl: "217 91% 60%" },
-  { name: "Secondary", value: "#8B5CF6", hsl: "263 70% 66%" },
-  { name: "Accent", value: "#F59E0B", hsl: "38 92% 50%" },
-  { name: "Background", value: "#0F172A", hsl: "222 47% 11%" },
-  { name: "Surface", value: "#1E293B", hsl: "217 33% 17%" },
-  { name: "Foreground", value: "#F8FAFC", hsl: "210 40% 98%" },
-];
-
-const DEMO_TYPOGRAPHY = [
-  { role: "Headings", family: "Inter", weight: "700", size: "24–48px" },
-  { role: "Body", family: "Inter", weight: "400", size: "14–16px" },
-  { role: "Captions", family: "Inter", weight: "500", size: "11–12px" },
-  { role: "Code", family: "JetBrains Mono", weight: "400", size: "13px" },
-];
-
-const DEMO_BRAND_ASSETS = [
-  { name: "Primary Logo", format: "SVG", status: "ready" },
-  { name: "Logo Mark", format: "PNG", status: "ready" },
-  { name: "Favicon", format: "ICO", status: "ready" },
-  { name: "Social Card", format: "PNG 1200×630", status: "draft" },
-  { name: "Email Header", format: "PNG", status: "missing" },
-];
-
-const DEMO_REUSABLE_BLOCKS = [
-  { name: "Hero Section", uses: 3, category: "Header" },
-  { name: "Testimonials Grid", uses: 2, category: "Social Proof" },
-  { name: "CTA Banner", uses: 5, category: "Conversion" },
-  { name: "Pricing Table", uses: 1, category: "Conversion" },
-  { name: "Footer", uses: 4, category: "Navigation" },
-];
+import { DEMO_BRAND_ASSETS, DEMO_BRAND_COLORS, DEMO_REUSABLE_BLOCKS, DEMO_TYPOGRAPHY } from "@/lib/demo-data/digital-presence";
 
 export default function BrandStudio() {
   const { isDemoMode } = useDataMode();

@@ -27,7 +27,7 @@ import { DEMO_APPROVAL_ITEMS, type DemoApprovalItem as ApprovalItem } from "@/li
 
 
 
-const MOCK_APPROVALS = DEMO_APPROVAL_ITEMS;
+
 
 // ── Risk Styling ─────────────────────────────────────────────
 
@@ -318,7 +318,7 @@ const ApprovalChamber = () => {
     currentStep: "approval" as ChainStepId,
     impactSummary: [a.action_summary || "Pending review"],
     confidence: 0.8,
-  })) : MOCK_APPROVALS;
+  })) : DEMO_APPROVAL_ITEMS;
 
   const handleAction = async (id: string, action: string) => {
     if (dbApprovals.length > 0 && !isDemoMode) {

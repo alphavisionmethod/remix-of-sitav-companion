@@ -5,6 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
+import { DEMO_RECEIPTS } from "@/lib/demo-data/investment";
 
 
 
@@ -18,15 +19,6 @@ interface Receipt {
   status: "completed" | "approved" | "rejected" | "pending";
   metadata: Record<string, string>;
 }
-
-const DEMO_RECEIPTS: Receipt[] = [
-  { id: "r1", type: "trade", title: "Buy 50 NVDA @ $130 Limit", description: "Limit order filled via Interactive Brokers. Added on dip before GTC conference catalyst.", timestamp: "2026-04-05T14:30:00Z", actor: "User", status: "completed", metadata: { "Order ID": "ORD-2X9K4F", "Platform": "Interactive Brokers", "Estimated Cost": "$6,500", "Fees": "$1.50", "Thesis": "NVDA AI Infrastructure Supercycle" } },
-  { id: "r2", type: "approval", title: "Large Position Approved — BTC Add", description: "Position size exceeds 10% approval threshold. Approved after risk review.", timestamp: "2026-04-04T10:15:00Z", actor: "User + Risk Advisor", status: "approved", metadata: { "Position Size": "1.5 BTC", "% of Portfolio": "28.4%", "Threshold": "10%", "Risk Score Change": "58 → 62" } },
-  { id: "r3", type: "thesis", title: "Thesis Created — BTC Post-Halving Cycle", description: "New investment thesis documented with rationale, assumptions, and risk factors.", timestamp: "2026-03-28T09:00:00Z", actor: "User", status: "completed", metadata: { "Conviction": "Medium", "Time Horizon": "6-12 months", "Entry": "$62,000", "Target": "$125,000" } },
-  { id: "r4", type: "risk-change", title: "Risk Policy Updated — Max Speculative Sleeve", description: "Maximum speculative allocation increased from 15% to 20%.", timestamp: "2026-03-15T16:45:00Z", actor: "User", status: "completed", metadata: { "Previous": "15%", "New": "20%", "Advisor Warning": "Sentinel flagged elevated risk" } },
-  { id: "r5", type: "advisor-snapshot", title: "Advisor Council Snapshot — Weekly", description: "Weekly advisor alignment record. 6/8 advisors aligned bullish. Sentinel cautious on tech concentration.", timestamp: "2026-04-01T08:00:00Z", actor: "System", status: "completed", metadata: { "Aligned": "6/8 bullish", "Dissent": "Sentinel (risk), Mirror (behavioral)", "Key Topic": "Tech concentration at 42%" } },
-  { id: "r6", type: "rebalance", title: "Rebalance Suggestion Declined", description: "System suggested trimming NVDA by 5% to reduce concentration. User declined with rationale.", timestamp: "2026-03-20T11:30:00Z", actor: "User", status: "rejected", metadata: { "Suggested": "Trim NVDA 5%", "Reason for Decline": "Holding through GTC catalyst", "Risk Delta": "+2 points" } },
-];
 
 const TYPE_ICONS: Record<string, typeof Target> = { trade: Target, approval: Shield, thesis: Brain, "risk-change": Shield, rebalance: RefreshCw, "advisor-snapshot": Brain };
 const TYPE_COLORS: Record<string, string> = { trade: "bg-primary/10 text-primary", approval: "bg-[hsl(var(--trust-safe))]/10 text-[hsl(var(--trust-safe))]", thesis: "bg-accent/10 text-accent", "risk-change": "bg-[hsl(var(--trust-warn))]/10 text-[hsl(var(--trust-warn))]", rebalance: "bg-secondary text-muted-foreground", "advisor-snapshot": "bg-primary/10 text-primary" };

@@ -10,17 +10,7 @@ import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_DIGESTS = [
-  { id: "d-1", type: "daily_summary", domain: "engineering", fresh: true, hitRate: 0.82, genCost: 15, avoidedSpend: 120, age: "2hr", expiresIn: "22hr", cacheStatus: "cached" },
-  { id: "d-2", type: "boardroom_packet", domain: "admin-ops", fresh: true, hitRate: 0.75, genCost: 25, avoidedSpend: 200, age: "4hr", expiresIn: "20hr", cacheStatus: "cached" },
-  { id: "d-3", type: "risk_packet", domain: "compliance-trust", fresh: true, hitRate: 0.68, genCost: 18, avoidedSpend: 90, age: "1hr", expiresIn: "23hr", cacheStatus: "cached" },
-  { id: "d-4", type: "release_packet", domain: "engineering", fresh: true, hitRate: 0.90, genCost: 20, avoidedSpend: 180, age: "30min", expiresIn: "23.5hr", cacheStatus: "cached" },
-  { id: "d-5", type: "opportunity_packet", domain: "revenue-business", fresh: true, hitRate: 0.72, genCost: 12, avoidedSpend: 85, age: "3hr", expiresIn: "21hr", cacheStatus: "cached" },
-  { id: "d-6", type: "mission_digest", domain: "engineering", fresh: false, hitRate: 0.45, genCost: 22, avoidedSpend: 60, age: "28hr", expiresIn: "expired", cacheStatus: "stale" },
-  { id: "d-7", type: "daily_summary", domain: "investment-finance", fresh: true, hitRate: 0.78, genCost: 16, avoidedSpend: 130, age: "5hr", expiresIn: "19hr", cacheStatus: "cached" },
-  { id: "d-8", type: "daily_summary", domain: "digital-presence", fresh: false, hitRate: 0.35, genCost: 14, avoidedSpend: 30, age: "26hr", expiresIn: "expired", cacheStatus: "stale" },
-];
+import { DEMO_DIGESTS } from "@/lib/demo-data/admin-intelligence";
 
 const SmartDigestCenter = () => {
   const { isAdmin, loading } = useRequireAdmin();

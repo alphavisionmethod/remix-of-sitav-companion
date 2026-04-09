@@ -102,6 +102,7 @@ export default function FormationShell() {
 
   return (
     <div className="min-h-screen bg-background">
+      <h1 className="sr-only">Business Formation</h1>
       <DemoModeBadge />
       {/* Chapter transition overlay */}
       <AnimatePresence>

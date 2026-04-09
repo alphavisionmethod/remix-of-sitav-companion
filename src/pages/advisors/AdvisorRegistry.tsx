@@ -27,6 +27,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
+import { DEMO_AUTONOMY_LEVELS } from "@/lib/demo-data/core-pages";
 
 // ── Maturity color mapping ──────────────────────────────────
 const MATURITY_COLORS: Record<string, string> = {
@@ -46,8 +47,6 @@ const COUNCIL_ICONS: Record<string, typeof Brain> = {
   "technical": Zap,
   "governance": Shield,
 };
-
-const DEMO_AUTONOMY_LEVELS = ["L0-observe", "L1-diagnose", "L2-recommend", "L3-draft", "L4-simulate", "L5-approval-ready", "L6-constrained-action"];
 
 function autonomyPct(level: string): number {
   const idx = DEMO_AUTONOMY_LEVELS.indexOf(level);

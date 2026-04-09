@@ -6,17 +6,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { INVESTMENT_ADVISORS, SAMPLE_ORDERS, SAMPLE_SCENARIOS } from "@/hooks/useInvestmentOfficeData";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useInvestmentDecisions } from "@/hooks/use-investment-office";
-
-const DEMO_READINESS_DIMENSIONS = [
-  { label: "Research Completeness", score: 85, status: "ready" },
-  { label: "Thesis Clarity", score: 90, status: "ready" },
-  { label: "Risk Clarity", score: 72, status: "review" },
-  { label: "Catalyst Understanding", score: 80, status: "ready" },
-  { label: "Portfolio Fit", score: 55, status: "simulate" },
-  { label: "Emotional Discipline", score: 88, status: "ready" },
-  { label: "Execution Readiness", score: 92, status: "ready" },
-  { label: "Policy Fit", score: 60, status: "review" },
-];
+import { DEMO_READINESS_DIMENSIONS } from "@/lib/demo-data/investment";
 
 export default function DecisionTheater() {
   const { isDemoMode } = useDataMode();

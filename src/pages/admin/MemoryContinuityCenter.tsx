@@ -10,11 +10,9 @@ import { useQuery } from "@tanstack/react-query";
 import { fetchScopedMemory, getScopedMemoryStats, forgetScopedMemory, type PersistedScopedMemory } from "@/lib/persistence";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_ADMIN_SCOPES_MEMORY_CONTINUITY_CENTER as DEMO_SCOPES, DEMO_PRIVACY_TIERS } from "@/lib/demo-data/admin-platform";
 
 const fade = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } };
-
-const DEMO_SCOPES = ["private", "workspace", "household", "domain", "operator", "agent", "system", "session", "decision"] as const;
-const DEMO_PRIVACY_TIERS = ["public", "internal", "confidential", "restricted"] as const;
 
 function PrivacyBadge({ tier }: { tier: string }) {
   const c: Record<string, string> = { restricted: "bg-red-500/20 text-red-400", confidential: "bg-amber-500/20 text-amber-400", internal: "bg-blue-500/20 text-blue-400", public: "bg-emerald-500/20 text-emerald-400" };

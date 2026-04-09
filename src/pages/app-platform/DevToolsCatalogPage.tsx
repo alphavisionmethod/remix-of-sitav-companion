@@ -11,16 +11,7 @@ import { AppCard, BundleCard, AppIcon } from "@/components/sita/app-platform/App
 import type { AppDefinition } from "@/lib/app-platform/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_DEV_CATEGORIES = [
-  { id: "all", label: "All", icon: Code },
-  { id: "editors", label: "Editors", icon: Code },
-  { id: "git", label: "Git & SCM", icon: GitBranch },
-  { id: "api", label: "API Tools", icon: Globe },
-  { id: "containers", label: "Containers", icon: Database },
-  { id: "terminal", label: "Terminal", icon: Terminal },
-  { id: "utilities", label: "Utilities", icon: Wrench },
-];
+import { DEMO_DEV_CATEGORIES } from "@/lib/demo-data/core-pages";
 
 const DevToolsCatalogPage = () => {
   const { isDemoMode } = useDataMode();

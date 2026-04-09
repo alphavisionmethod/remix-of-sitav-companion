@@ -12,59 +12,9 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { useDeals, usePipelineStages } from "@/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/sita/EmptyState";
+import { DEMO_REV_LEAKS_PIPELINE_STUDIO as DEMO_LEAKS, DEMO_STAGES, DEMO_VELOCITY } from "@/lib/demo-data/revenue-office";
 
 type Deal = { id: string; name: string; value: number; probability: number; age: number; owner: string; contact: string; nextAction?: string; nextActionDate?: string; source: string; tags: string[] };
-
-const DEMO_STAGES: { name: string; color: string; deals: Deal[] }[] = [
-  {
-    name: "Prospecting", color: "border-l-blue-400",
-    deals: [
-      { id: "d1", name: "Apex Digital — Website Redesign", value: 15000, probability: 20, age: 3, owner: "You", contact: "Sarah Mitchell", nextAction: "Discovery call", nextActionDate: "Tomorrow", source: "Referral", tags: ["design", "high-value"] },
-      { id: "d2", name: "Nova Labs — Consulting Package", value: 8500, probability: 15, age: 7, owner: "You", contact: "James Chen", nextAction: "Send proposal", nextActionDate: "Apr 8", source: "Website", tags: ["consulting"] },
-      { id: "d3", name: "Clarity Inc — Strategy Sprint", value: 6000, probability: 10, age: 2, owner: "You", contact: "Anna Lee", source: "Cold outreach", tags: ["strategy"] },
-    ],
-  },
-  {
-    name: "Qualification", color: "border-l-amber-400",
-    deals: [
-      { id: "d4", name: "Summit Group — Annual Retainer", value: 36000, probability: 40, age: 12, owner: "You", contact: "Michael Park", nextAction: "Budget discussion", nextActionDate: "Apr 9", source: "Conference", tags: ["retainer", "enterprise"] },
-      { id: "d5", name: "Bright Path — Coaching Program", value: 4800, probability: 35, age: 5, owner: "You", contact: "Emily Rodriguez", source: "Funnel", tags: ["coaching"] },
-    ],
-  },
-  {
-    name: "Proposal", color: "border-l-purple-400",
-    deals: [
-      { id: "d6", name: "Craft Studios — Brand Package", value: 22000, probability: 65, age: 18, owner: "You", contact: "Lisa Wang", nextAction: "Follow up on proposal", nextActionDate: "Today", source: "Referral", tags: ["branding", "high-value"] },
-      { id: "d7", name: "Pinnacle Health — Digital Strategy", value: 14000, probability: 55, age: 10, owner: "You", contact: "David Chen", source: "Website", tags: ["strategy", "healthcare"] },
-    ],
-  },
-  {
-    name: "Negotiation", color: "border-l-emerald-400",
-    deals: [
-      { id: "d8", name: "Atlas Corp — Platform License", value: 48000, probability: 80, age: 25, owner: "You", contact: "Robert Kim", nextAction: "Contract review", nextActionDate: "Apr 7", source: "Inbound", tags: ["enterprise", "recurring"] },
-      { id: "d9", name: "Green Valley — Implementation", value: 18500, probability: 75, age: 14, owner: "You", contact: "Kate Adams", source: "Upsell", tags: ["implementation"] },
-    ],
-  },
-  {
-    name: "Closed Won", color: "border-l-green-400",
-    deals: [
-      { id: "d10", name: "Mitchell Co — Q2 Services", value: 12400, probability: 100, age: 0, owner: "You", contact: "Tom Mitchell", source: "Repeat", tags: ["services"] },
-    ],
-  },
-];
-
-const DEMO_LEAKS = [
-  { deal: "Craft Studios — Brand Package", issue: "Proposal sent 18 days ago, no follow-up scheduled", severity: "high", lostRevenue: 22000 },
-  { deal: "Atlas Corp — Platform License", issue: "In negotiation 25 days — above avg 15 days", severity: "medium", lostRevenue: 0 },
-  { deal: "Nova Labs — Consulting Package", issue: "No next action defined", severity: "medium", lostRevenue: 8500 },
-];
-
-const DEMO_VELOCITY = [
-  { stage: "Prospecting → Qualification", avgDays: 8, target: 7, deals: 12 },
-  { stage: "Qualification → Proposal", avgDays: 10, target: 10, deals: 8 },
-  { stage: "Proposal → Negotiation", avgDays: 14, target: 12, deals: 5 },
-  { stage: "Negotiation → Closed", avgDays: 18, target: 15, deals: 4 },
-];
 
 export default function PipelineStudio() {
   const [tab, setTab] = useState("kanban");

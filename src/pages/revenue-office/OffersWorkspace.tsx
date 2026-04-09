@@ -5,20 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_PRODUCTS = [
-  { name: "Growth Strategy Blueprint", type: "digital", price: "$297", sales: 142, revenue: "$42,174", status: "active", category: "Course" },
-  { name: "1:1 Coaching — Monthly", type: "service", price: "$500/mo", sales: 18, revenue: "$9,000", status: "active", category: "Membership" },
-  { name: "VIP Day Experience", type: "service", price: "$2,000", sales: 8, revenue: "$16,000", status: "active", category: "Service" },
-  { name: "Starter Kit Bundle", type: "bundle", price: "$97", sales: 234, revenue: "$22,698", status: "active", category: "Bundle" },
-  { name: "Community Membership", type: "membership", price: "$47/mo", sales: 67, revenue: "$3,149", status: "active", category: "Membership" },
-  { name: "Advanced Workshop Series", type: "course", price: "$497", sales: 0, revenue: "$0", status: "draft", category: "Course" },
-];
-
-const DEMO_BUNDLES = [
-  { name: "Launch Package", includes: ["Growth Strategy Blueprint", "Starter Kit Bundle", "1 Coaching Session"], price: "$697", savings: "Save $197" },
-  { name: "VIP All-Access", includes: ["All Courses", "Community Membership", "Monthly Coaching"], price: "$997/mo", savings: "Save $347/mo" },
-];
+import { DEMO_REV_BUNDLES as DEMO_BUNDLES, DEMO_REV_PRODUCTS as DEMO_PRODUCTS } from "@/lib/demo-data/revenue-office";
 
 export default function OffersWorkspace() {
   const { isDemoMode } = useDataMode();

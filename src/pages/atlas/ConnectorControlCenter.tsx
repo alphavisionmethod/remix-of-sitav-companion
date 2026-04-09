@@ -16,28 +16,12 @@ import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_auditTimeline, DEMO_connectors } from "@/lib/demo-data/atlas";
 
 const now = new Date();
 const h = (hours: number) => new Date(now.getTime() - hours * 3600000).toISOString();
 
-const DEMO_connectors = [
-  { id: "google-ads", name: "Google Ads", status: "active", health: 98, lastSync: h(0.5), syncStatus: "success", lifecycleState: "active", capabilities: ["read-campaigns", "read-metrics", "write-campaigns"], approvalRequired: true, auditEntries: 45, failureCount: 0, enterprise: true },
-  { id: "meta-ads", name: "Meta Ads", status: "error", health: 0, lastSync: h(48), syncStatus: "auth-expired", lifecycleState: "error", capabilities: ["read-campaigns", "read-metrics"], approvalRequired: true, auditEntries: 23, failureCount: 3, enterprise: true },
-  { id: "quickbooks", name: "QuickBooks", status: "active", health: 95, lastSync: h(1), syncStatus: "success", lifecycleState: "active", capabilities: ["read-invoices", "read-payments", "write-invoices"], approvalRequired: true, auditEntries: 67, failureCount: 1, enterprise: true },
-  { id: "slack", name: "Slack", status: "active", health: 100, lastSync: h(0.1), syncStatus: "success", lifecycleState: "active", capabilities: ["send-message", "read-channels"], approvalRequired: false, auditEntries: 120, failureCount: 0, enterprise: false },
-  { id: "stripe", name: "Stripe", status: "paused", health: 85, lastSync: h(24), syncStatus: "paused", lifecycleState: "paused", capabilities: ["read-payments", "read-subscriptions", "write-refunds"], approvalRequired: true, auditEntries: 34, failureCount: 0, enterprise: true },
-];
-
 const lifecycleStates = ["registered", "configured", "active", "paused", "error", "disabled", "decommissioned"];
-
-const DEMO_auditTimeline = [
-  { connector: "google-ads", action: "sync-completed", time: h(0.5), actor: "system", receiptId: "rcpt-ga-1" },
-  { connector: "meta-ads", action: "auth-token-expired", time: h(24), actor: "system", receiptId: "rcpt-ma-1" },
-  { connector: "meta-ads", action: "reconnection-attempted", time: h(12), actor: "user", receiptId: "rcpt-ma-2" },
-  { connector: "quickbooks", action: "sync-completed", time: h(1), actor: "system", receiptId: "rcpt-qb-1" },
-  { connector: "slack", action: "message-sent", time: h(0.1), actor: "agent:notifier", receiptId: "rcpt-sl-1" },
-  { connector: "stripe", action: "paused-by-user", time: h(24), actor: "user", receiptId: "rcpt-st-1" },
-];
 
 export default function ConnectorControlCenter() {
   const { isDemoMode } = useDataMode();

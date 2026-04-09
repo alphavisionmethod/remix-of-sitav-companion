@@ -4,30 +4,7 @@ import { useState } from "react";
 import { Network, ArrowRight, AlertTriangle, Bug, Server, Layout, Database, Shield, Zap } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_GRAPH_NODES = [
-  { id: "symptom-1", type: "symptom" as const, label: "500 errors on /api/projections/rebuild", severity: "critical" },
-  { id: "symptom-2", type: "symptom" as const, label: "Stale projection data on admin dashboard", severity: "high" },
-  { id: "symptom-3", type: "symptom" as const, label: "Timeout on boardroom synthesis", severity: "medium" },
-  { id: "service-1", type: "service" as const, label: "Projection Service", health: 62 },
-  { id: "service-2", type: "service" as const, label: "Cache Layer (Redis)", health: 78 },
-  { id: "service-3", type: "service" as const, label: "Edge Function: rebuild-projections", health: 45 },
-  { id: "release-1", type: "release" as const, label: "v2.14.3 — Cache strategy update", deployedAt: "Apr 4" },
-  { id: "config-1", type: "config" as const, label: "PROJECTION_REBUILD_CONCURRENCY=5", changedAt: "Apr 3" },
-  { id: "root-1", type: "root_cause" as const, label: "Race condition: concurrent rebuilds corrupt cache entries", confidence: 87 },
-];
-
-const DEMO_GRAPH_EDGES = [
-  { from: "symptom-1", to: "service-3", label: "triggers" },
-  { from: "symptom-2", to: "service-2", label: "served by" },
-  { from: "symptom-3", to: "service-1", label: "depends on" },
-  { from: "service-3", to: "service-2", label: "writes to" },
-  { from: "service-1", to: "service-2", label: "reads from" },
-  { from: "release-1", to: "service-3", label: "changed" },
-  { from: "config-1", to: "service-3", label: "configured" },
-  { from: "service-3", to: "root-1", label: "likely cause" },
-  { from: "service-2", to: "root-1", label: "likely cause" },
-];
+import { DEMO_GRAPH_EDGES, DEMO_GRAPH_NODES } from "@/lib/demo-data/admin-platform";
 
 const typeStyles: Record<string, { icon: typeof Bug; color: string; bg: string }> = {
   symptom: { icon: AlertTriangle, color: "text-destructive", bg: "bg-destructive/10 border-destructive/20" },

@@ -7,6 +7,7 @@ import { lazy, Suspense } from "react";
 import { FileText, Table2, Presentation, Sparkles, Clock, Star, Plus } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_RECENT_DOCS } from "@/lib/demo-data/core-pages";
 
 const DocsWorkspace = lazy(() => import("./workspace/DocsWorkspace"));
 const SheetsWorkspace = lazy(() => import("./workspace/SheetsWorkspace"));
@@ -20,15 +21,6 @@ const subpageFromPath = (path: string): SubPage => {
   if (path.includes("/slides")) return "slides";
   return "overview";
 };
-
-const DEMO_RECENT_DOCS = [
-  { id: "d1", title: "Q2 Revenue Forecast", type: "doc", updated: "2h ago", icon: FileText },
-  { id: "d2", title: "Client Pipeline Tracker", type: "sheet", updated: "4h ago", icon: Table2 },
-  { id: "d3", title: "Board Deck — April", type: "slides", updated: "1d ago", icon: Presentation },
-  { id: "d4", title: "Hiring Plan 2024", type: "doc", updated: "2d ago", icon: FileText },
-  { id: "d5", title: "Monthly Budget", type: "sheet", updated: "3d ago", icon: Table2 },
-  { id: "d6", title: "Investor Update", type: "slides", updated: "5d ago", icon: Presentation },
-];
 
 const OverviewPage = () => {
   const { isDemoMode } = useDataMode();

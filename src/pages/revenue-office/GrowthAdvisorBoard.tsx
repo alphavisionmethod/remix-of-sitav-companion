@@ -5,69 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_ADVISORS = [
-  {
-    name: "Growth Advisor",
-    icon: TrendingUp,
-    domain: "Acquisition & Expansion",
-    stance: "Top-of-funnel is healthy. Recommend scaling paid acquisition while CAC is low. Focus on webinar funnel — highest ROI channel right now.",
-    watching: ["Lead volume trends", "Channel ROI", "Market positioning", "Competitor moves"],
-    confidence: 0.82,
-    recommendation: "Scale acquisition spend 15%",
-    type: "opportunity" as const,
-  },
-  {
-    name: "Sales Advisor",
-    icon: Target,
-    domain: "Pipeline & Conversion",
-    stance: "Pipeline velocity is slowing in Enterprise segment. Average deal cycle extended by 8 days. Consider re-qualifying stale opportunities.",
-    watching: ["Close rates by segment", "Deal velocity", "Proposal-to-close ratio", "Follow-up discipline"],
-    confidence: 0.76,
-    recommendation: "Re-qualify 12 stale pipeline deals",
-    type: "warning" as const,
-  },
-  {
-    name: "Marketing Advisor",
-    icon: Zap,
-    domain: "Campaigns & Content",
-    stance: "Email engagement is strong — open rates above industry average. Content strategy needs more bottom-of-funnel assets. Landing page conversion has room for optimization.",
-    watching: ["Email metrics", "Content performance", "Landing page conversion", "Brand awareness"],
-    confidence: 0.79,
-    recommendation: "Create 3 case study assets",
-    type: "opportunity" as const,
-  },
-  {
-    name: "Retention Advisor",
-    icon: Shield,
-    domain: "Churn & Loyalty",
-    stance: "Overall retention is strong at 91%. Two high-value clients showing disengagement signals. Proactive outreach recommended within 48 hours.",
-    watching: ["Engagement scores", "Usage patterns", "Support satisfaction", "Renewal pipeline"],
-    confidence: 0.74,
-    recommendation: "Immediate outreach to 2 at-risk clients",
-    type: "alert" as const,
-  },
-  {
-    name: "Pricing Advisor",
-    icon: DollarSign,
-    domain: "Monetization & Packaging",
-    stance: "Current pricing sits below market median for comparable value. 8-12% increase feasible without significant churn risk. Bundle strategy underutilized.",
-    watching: ["Price sensitivity", "Competitive pricing", "Bundle performance", "Discount patterns"],
-    confidence: 0.68,
-    recommendation: "Test 10% price increase on new customers",
-    type: "opportunity" as const,
-  },
-  {
-    name: "Relationship Advisor",
-    icon: Users,
-    domain: "Customer Success & Advocacy",
-    stance: "Referral program underperforming — only 12 advocates active. VIP clients highly satisfied but not being leveraged for testimonials or introductions.",
-    watching: ["NPS trends", "Referral pipeline", "Testimonial velocity", "Community engagement"],
-    confidence: 0.71,
-    recommendation: "Launch structured referral ask to top 20 clients",
-    type: "opportunity" as const,
-  },
-];
+import { DEMO_ADVISORS } from "@/lib/demo-data/revenue-office";
 
 export default function GrowthAdvisorBoard() {
   const { isDemoMode } = useDataMode();

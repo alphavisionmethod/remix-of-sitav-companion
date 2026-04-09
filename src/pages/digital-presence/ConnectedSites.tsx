@@ -6,31 +6,7 @@ import { Button } from "@/components/ui/button";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useSites } from "@/hooks/use-digital-presence";
-
-const DEMO_PLATFORMS = [
-  { name: "Shopify", icon: "🛒", connected: true, url: "mystore.myshopify.com", health: 94, lastSync: "2 min ago", products: 48, issues: 1 },
-  { name: "WordPress", icon: "📝", connected: true, url: "blog.mybusiness.com", health: 78, lastSync: "1 hr ago", products: 0, issues: 3 },
-  { name: "Webflow", icon: "🎨", connected: false, url: null, health: 0, lastSync: null, products: 0, issues: 0 },
-  { name: "Wix", icon: "🌐", connected: false, url: null, health: 0, lastSync: null, products: 0, issues: 0 },
-  { name: "Squarespace", icon: "◼️", connected: false, url: null, health: 0, lastSync: null, products: 0, issues: 0 },
-  { name: "Custom Site", icon: "🔧", connected: true, url: "mybusiness.com", health: 85, lastSync: "30 min ago", products: 0, issues: 2 },
-];
-
-const DEMO_AUDIT_FINDINGS = [
-  { site: "WordPress", finding: "3 plugins need security updates", severity: "high", category: "Security" },
-  { site: "WordPress", finding: "SSL certificate expiring in 14 days", severity: "medium", category: "Technical" },
-  { site: "WordPress", finding: "7 images not optimized for web", severity: "low", category: "Performance" },
-  { site: "Shopify", finding: "Product 'Summer Tee' missing description", severity: "low", category: "Content" },
-  { site: "Custom Site", finding: "Contact page returns 404 on mobile", severity: "high", category: "UX" },
-  { site: "Custom Site", finding: "Meta description missing on 4 pages", severity: "medium", category: "SEO" },
-];
-
-const DEMO_AI_RECOMMENDATIONS = [
-  { action: "Update WordPress plugins", risk: "low", impact: "Fixes 3 known vulnerabilities", autoFixable: true },
-  { action: "Add product descriptions to 5 Shopify items", risk: "low", impact: "Improves SEO and conversion", autoFixable: false },
-  { action: "Fix mobile 404 on contact page", risk: "low", impact: "Restores lead capture path", autoFixable: true },
-  { action: "Compress 7 images on WordPress", risk: "none", impact: "30% faster page load", autoFixable: true },
-];
+import { DEMO_AI_RECOMMENDATIONS, DEMO_AUDIT_FINDINGS, DEMO_DPO_PLATFORMS as DEMO_PLATFORMS } from "@/lib/demo-data/digital-presence";
 
 export default function ConnectedSites() {
   const { isDemoMode } = useDataMode();

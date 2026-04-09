@@ -7,6 +7,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Layers, CheckCircle, AlertTriangle, Eye, Download, RefreshCw, FileText, GitBranch, Shield, Undo2 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_PROOF_ENTRIES } from "@/lib/demo-data/admin-platform";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -21,24 +22,6 @@ interface ProofEntry {
   approvalContext: boolean;
   exportable: boolean;
 }
-
-const DEMO_PROOF_ENTRIES: ProofEntry[] = [
-  {
-    id: "pf-1", action: "Policy: Enable auto-approval for low-risk connectors", actor: "admin@sita.os", timestamp: "2026-04-05T10:20:00Z",
-    proofChain: [{ step: "Trigger", status: "verified" }, { step: "Policy Eval", status: "verified" }, { step: "Approval", status: "verified" }, { step: "Execution", status: "verified" }, { step: "Receipt", status: "verified" }],
-    rollbackEvidence: true, approvalContext: true, exportable: true,
-  },
-  {
-    id: "pf-2", action: "Migration: Schema v42 applied to production", actor: "deploy-pipeline", timestamp: "2026-04-05T08:00:00Z",
-    proofChain: [{ step: "Trigger", status: "verified" }, { step: "Policy Eval", status: "verified" }, { step: "Approval", status: "verified" }, { step: "Execution", status: "verified" }, { step: "Receipt", status: "pending" }],
-    rollbackEvidence: true, approvalContext: true, exportable: true,
-  },
-  {
-    id: "pf-3", action: "User role change: user-18 → admin", actor: "admin@sita.os", timestamp: "2026-04-05T09:45:00Z",
-    proofChain: [{ step: "Trigger", status: "verified" }, { step: "Policy Eval", status: "verified" }, { step: "Approval", status: "missing" }, { step: "Execution", status: "verified" }, { step: "Receipt", status: "verified" }],
-    rollbackEvidence: true, approvalContext: false, exportable: true,
-  },
-];
 
 const stepColor = { verified: "bg-emerald-500/10 text-emerald-500 border-emerald-500/20", pending: "bg-amber-500/10 text-amber-500 border-amber-500/20", missing: "bg-red-500/10 text-red-500 border-red-500/20" };
 

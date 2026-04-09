@@ -4,19 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Activity, TrendingUp, TrendingDown, Users, Star, Zap, Calendar, Package, AlertTriangle, CheckCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_memoryEvents = [
-  { time: "2 hours ago", title: "Campaign 'Spring Growth' conversion rate dropped 3%", type: "campaign", severity: "medium", icon: TrendingDown, color: "text-amber-400" },
-  { time: "5 hours ago", title: "New review: 5★ from Apex Coaching Co.", type: "reputation", severity: "low", icon: Star, color: "text-emerald-400" },
-  { time: "8 hours ago", title: "Lead stage drift: 8 leads stuck in 'Proposal Sent' >14 days", type: "crm", severity: "high", icon: AlertTriangle, color: "text-red-400" },
-  { time: "12 hours ago", title: "Booking utilization increased to 78% (was 65%)", type: "booking", severity: "low", icon: Calendar, color: "text-blue-400" },
-  { time: "1 day ago", title: "Retention Advisor stance changed: churn risk elevated for Starter tier", type: "advisor", severity: "medium", icon: Users, color: "text-purple-400" },
-  { time: "1 day ago", title: "Funnel 'Free Consultation' checkout abandonment up 12%", type: "funnel", severity: "high", icon: TrendingDown, color: "text-red-400" },
-  { time: "2 days ago", title: "'Business Growth Masterclass' enrollment +15 this week", type: "membership", severity: "low", icon: TrendingUp, color: "text-emerald-400" },
-  { time: "2 days ago", title: "Offer 'Pro Coaching Package' conversion steady at 24%", type: "offer", severity: "low", icon: Package, color: "text-blue-400" },
-  { time: "3 days ago", title: "Email deliverability improved: bounce rate 0.8% (was 2.1%)", type: "campaign", severity: "low", icon: CheckCircle, color: "text-emerald-400" },
-  { time: "3 days ago", title: "3 no-shows yesterday — above 7-day average", type: "booking", severity: "medium", icon: AlertTriangle, color: "text-amber-400" },
-];
+import { DEMO_memoryEvents } from "@/lib/demo-data/revenue-office";
 
 const typeLabels: Record<string, string> = { campaign: "Campaign", reputation: "Reputation", crm: "CRM", booking: "Booking", advisor: "Advisor", funnel: "Funnel", membership: "Membership", offer: "Offer" };
 

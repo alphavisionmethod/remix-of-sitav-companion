@@ -12,15 +12,9 @@ import { useFeatureSpecs, useCreateSpec } from "@/hooks/use-fip-data";
 import { COMPLIANCE_SECTIONS } from "@/lib/fip/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_SPEC_SECTIONS } from "@/lib/demo-data/admin-platform";
 
 
-
-const DEMO_SPEC_SECTIONS = [
-  'outcome_statement', 'capability_map', 'owner_map', 'surface_map',
-  'contract_schema_map', 'workflow_model', 'policy_trust_model', 'execution_model',
-  'memory_graph_effects', 'observability_support', 'testing_model',
-  'rollout_recovery', 'generated_truth_updates',
-];
 
 const FIPSpecStudio = () => {
   const { isDemoMode } = useDataMode();

@@ -5,26 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_ERRORS = [
-  { type: "Broken Link", icon: Link2, page: "/blog/old-post", detail: "Links to /resources/guide → 404", severity: "high", autoFixable: true },
-  { type: "Missing Image", icon: Image, page: "/products/item-5", detail: "Product image returns 404", severity: "high", autoFixable: false },
-  { type: "Stale Content", icon: Clock, page: "/blog/2023-trends", detail: "Published 14 months ago, never updated", severity: "medium", autoFixable: false },
-  { type: "Expired Promo", icon: Clock, page: "/summer-sale", detail: "Sale ended 2 weeks ago, page still live", severity: "high", autoFixable: true },
-  { type: "Weak CTA", icon: MousePointer, page: "/services", detail: "CTA below fold, 1.2% CTR — 65% below average", severity: "medium", autoFixable: false },
-  { type: "Trust Gap", icon: Shield, page: "/checkout", detail: "No security badges visible near payment form", severity: "high", autoFixable: true },
-  { type: "Mobile Issue", icon: Smartphone, page: "/contact", detail: "Form breaks on screens < 375px", severity: "high", autoFixable: false },
-  { type: "Cart Leakage", icon: ShoppingCart, page: "/cart", detail: "32% drop at shipping reveal — surprise costs", severity: "critical", autoFixable: false },
-  { type: "Missing Meta", icon: FileText, page: "/about", detail: "No meta description — hurts SEO", severity: "low", autoFixable: true },
-];
-
-const DEMO_OPPORTUNITIES = [
-  { title: "Add testimonials to services page", impact: "high", effort: "low", category: "Trust" },
-  { title: "Feature best-seller on homepage", impact: "high", effort: "low", category: "Merchandising" },
-  { title: "Create FAQ page from support queries", impact: "medium", effort: "medium", category: "Content" },
-  { title: "Add exit-intent popup on cart page", impact: "high", effort: "medium", category: "CRO" },
-  { title: "Refresh 12 stale blog posts", impact: "medium", effort: "high", category: "Content" },
-];
+import { DEMO_ERRORS, DEMO_OPPORTUNITIES } from "@/lib/demo-data/digital-presence";
 
 export default function ErrorRadar() {
   const { isDemoMode } = useDataMode();

@@ -5,41 +5,7 @@ import { useState } from "react";
 import { FileCheck, AlertTriangle, Shield, Eye, CheckCircle2, XCircle, Code, Palette, Wrench, RotateCcw } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_APPROVALS = [
-  {
-    id: 1, title: "Improve loading speed — admin shell code splitting", proposedBy: "Performance Optimizer", type: "code" as const,
-    reason: "Admin shell loads 30+ pages synchronously, causing >3s initial load. Proposal converts to lazy imports with Suspense boundaries.",
-    blastRadius: "medium", affectedAreas: ["Admin Shell", "Route Config", "8 admin pages"], confidence: 78,
-    evidence: ["Lighthouse audit: 3.2s LCP", "Bundle analysis: 1.8MB admin chunk", "3 user-reported slow loads"],
-    rollbackReady: true, testsNeeded: "Route tests need update for lazy boundaries",
-    uncertainty: "Unknown interaction with existing ErrorBoundary wrappers"
-  },
-  {
-    id: 2, title: "Redesign Mission Control header layout", proposedBy: "Design Engineer", type: "design" as const,
-    reason: "Current header is flat and lacks visual hierarchy. Proposal adds gradient accent, icon badge, and action slot aligned with AdminPageHeader pattern.",
-    blastRadius: "low", affectedAreas: ["Mission Control page"], confidence: 79,
-    evidence: ["Design audit: inconsistent with other admin headers", "User feedback: 'hard to scan'"],
-    rollbackReady: true, testsNeeded: "Visual regression snapshot",
-    uncertainty: "Subjective design preference — may need user feedback"
-  },
-  {
-    id: 3, title: "Add smoke gate for auth flow before production deploy", proposedBy: "Release Manager", type: "ops" as const,
-    reason: "No automated auth flow check exists in promotion pipeline. Two recent deploys broke login for 5-15 minutes before detection.",
-    blastRadius: "low", affectedAreas: ["CI/CD pipeline", "Deploy workflow"], confidence: 88,
-    evidence: ["Incident #147: broken login 15m", "Incident #152: broken OAuth 5m", "No auth smoke test in pipeline"],
-    rollbackReady: true, testsNeeded: "Smoke test implementation",
-    uncertainty: "Auth flow depends on Supabase availability during test"
-  },
-  {
-    id: 4, title: "Fix projection cache race condition", proposedBy: "Backend Engineer", type: "code" as const,
-    reason: "Concurrent projection rebuilds cause cache corruption. Proposal adds Redis-based mutex lock with 30s TTL.",
-    blastRadius: "high", affectedAreas: ["Projection Service", "Cache Layer", "3 edge functions"], confidence: 87,
-    evidence: ["14 error cluster in last 48h", "Race condition reproduced in staging", "Stack trace: concurrent write conflict"],
-    rollbackReady: false, testsNeeded: "Integration tests for concurrent rebuilds",
-    uncertainty: "Mutex lock may increase rebuild latency by 200-500ms under load"
-  },
-];
+import { DEMO_APPROVALS } from "@/lib/demo-data/admin-platform";
 
 const typeIcons: Record<string, typeof Code> = { code: Code, design: Palette, ops: Wrench };
 

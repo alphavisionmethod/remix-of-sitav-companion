@@ -6,27 +6,7 @@ import { Button } from "@/components/ui/button";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useSites } from "@/hooks/use-digital-presence";
-
-const DEMO_ACTIVE_PROMOTIONS = [
-  { name: "Summer Sale — 20% Off", type: "Site Banner", placement: "Homepage Hero", status: "active", expires: "3 days", impressions: 4201, clicks: 342, ctr: "8.1%" },
-  { name: "Free Shipping Over $50", type: "Cart Banner", placement: "Cart Page", status: "active", expires: "7 days", impressions: 1200, clicks: 89, ctr: "7.4%" },
-  { name: "New Collection Launch", type: "Campaign Page", placement: "Landing Page", status: "scheduled", expires: "—", impressions: 0, clicks: 0, ctr: "—" },
-  { name: "Holiday Bundle Deal", type: "Product Badge", placement: "Collection Page", status: "draft", expires: "—", impressions: 0, clicks: 0, ctr: "—" },
-];
-
-const DEMO_PROMO_CALENDAR = [
-  { date: "Apr 8", event: "Summer Sale Starts", type: "promotion" },
-  { date: "Apr 11", event: "Summer Sale Ends — auto-cleanup", type: "cleanup" },
-  { date: "Apr 15", event: "New Collection Launch", type: "launch" },
-  { date: "Apr 20", event: "Easter Promo — auto-activate", type: "promotion" },
-  { date: "May 1", event: "Spring Clearance", type: "promotion" },
-];
-
-const DEMO_EMAIL_SMS_SYNC = [
-  { campaign: "Summer Sale Announcement", channel: "Email", status: "sent", opens: "34%", clicks: "12%" },
-  { campaign: "Free Shipping Reminder", channel: "SMS", status: "scheduled", opens: "—", clicks: "—" },
-  { campaign: "New Collection Preview", channel: "Email", status: "draft", opens: "—", clicks: "—" },
-];
+import { DEMO_ACTIVE_PROMOTIONS, DEMO_EMAIL_SMS_SYNC, DEMO_PROMO_CALENDAR } from "@/lib/demo-data/digital-presence";
 
 export default function PromotionsOffice() {
   const { isDemoMode } = useDataMode();

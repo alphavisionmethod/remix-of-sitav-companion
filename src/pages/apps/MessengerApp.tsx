@@ -6,6 +6,7 @@ import { MessageSquare, Send, Search, Plus, Paperclip, Smile, Phone, Video, More
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_CHATS, DEMO_MESSAGES } from "@/lib/demo-data/apps";
 
 interface Chat {
   id: string;
@@ -25,23 +26,6 @@ interface Message {
   time: string;
   read: boolean;
 }
-
-const DEMO_CHATS: Chat[] = [
-  { id: "1", name: "Money Advisor", avatar: "💰", lastMessage: "Your portfolio is up 2.3% this week. I've prepared a summary.", time: "2m ago", unread: 1, online: true, isAdvisor: true },
-  { id: "2", name: "Business Advisor", avatar: "📊", lastMessage: "The Apex Corp deal has moved to negotiation stage.", time: "15m ago", unread: 0, online: true, isAdvisor: true },
-  { id: "3", name: "Concierge", avatar: "🎯", lastMessage: "Your dentist appointment is confirmed for Thursday 3pm.", time: "1h ago", unread: 0, online: true, isAdvisor: true },
-  { id: "4", name: "Sarah Chen", avatar: "SC", lastMessage: "Thanks for the report! Looks great.", time: "3h ago", unread: 0, online: false, isAdvisor: false },
-  { id: "5", name: "System Alerts", avatar: "🔔", lastMessage: "Edge function deployed: chat-advisor v3.2", time: "5h ago", unread: 2, online: true, isAdvisor: false },
-];
-
-const DEMO_MESSAGES: Message[] = [
-  { id: "1", sender: "other", text: "Good morning! I've analyzed your portfolio performance this week.", time: "9:30 AM", read: true },
-  { id: "2", sender: "other", text: "Your portfolio is up 2.3%. The tech sector allocation contributed 1.8% of the gains. I've also noticed your emergency fund could use a top-up.", time: "9:30 AM", read: true },
-  { id: "3", sender: "me", text: "Great, what do you recommend for the emergency fund?", time: "9:45 AM", read: true },
-  { id: "4", sender: "other", text: "I recommend moving $2,000 from your checking account. This would bring your emergency fund to the recommended 6-month coverage. Want me to prepare the transfer?", time: "9:46 AM", read: true },
-  { id: "5", sender: "me", text: "Yes, prepare the transfer but don't execute — I'll approve it first.", time: "10:00 AM", read: true },
-  { id: "6", sender: "other", text: "Your portfolio is up 2.3% this week. I've prepared a summary.", time: "10:02 AM", read: false },
-];
 
 export default function MessengerApp() {
   const { isDemoMode } = useDataMode();

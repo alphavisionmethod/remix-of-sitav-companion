@@ -24,70 +24,9 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { DEMO_ADVISOR_SCORECARDS, DEMO_ESCALATION_LOG, DEMO_HANDOFF_LOG } from "@/lib/demo-data/core-pages";
 
 // ── Demo Data ────────────────────────────────────────────────
-
-const DEMO_ADVISOR_SCORECARDS = [
-  {
-    id: "business-lead", name: "Business Advisor", council: "business",
-    icon: "💼", grade: "A" as const, confidence: 87,
-    metrics: { totalRecs: 48, accepted: 42, corrected: 2, calibrationError: 8.2, outcomeQuality: 84 },
-    trend: "up" as const, promotionEligible: true, demotionRisk: false,
-    kpis: [
-      { label: "Pipeline Accuracy", value: 91, target: 85 },
-      { label: "Revenue Forecast", value: 87, target: 80 },
-      { label: "Client Health", value: 83, target: 75 },
-    ],
-  },
-  {
-    id: "money-lead", name: "Money Advisor", council: "finance",
-    icon: "💰", grade: "A" as const, confidence: 92,
-    metrics: { totalRecs: 36, accepted: 33, corrected: 1, calibrationError: 5.4, outcomeQuality: 91 },
-    trend: "up" as const, promotionEligible: true, demotionRisk: false,
-    kpis: [
-      { label: "Cashflow Prediction", value: 94, target: 85 },
-      { label: "Waste Detection", value: 88, target: 80 },
-      { label: "Reserve Quality", value: 90, target: 82 },
-    ],
-  },
-  {
-    id: "concierge-lead", name: "Concierge Advisor", council: "concierge",
-    icon: "🎧", grade: "B" as const, confidence: 84,
-    metrics: { totalRecs: 29, accepted: 22, corrected: 3, calibrationError: 14.1, outcomeQuality: 76 },
-    trend: "stable" as const, promotionEligible: false, demotionRisk: false,
-    kpis: [
-      { label: "Task Completion", value: 78, target: 80 },
-      { label: "Booking Satisfaction", value: 82, target: 75 },
-      { label: "Conflict Prevention", value: 71, target: 70 },
-    ],
-  },
-  {
-    id: "strategy-advisor", name: "Strategy Advisor", council: "meta",
-    icon: "🧠", grade: "B" as const, confidence: 79,
-    metrics: { totalRecs: 12, accepted: 9, corrected: 1, calibrationError: 18.3, outcomeQuality: 72 },
-    trend: "up" as const, promotionEligible: false, demotionRisk: false,
-    kpis: [
-      { label: "Cross-Domain Insight", value: 81, target: 75 },
-      { label: "Risk Prediction", value: 76, target: 70 },
-      { label: "Strategic Acceptance", value: 75, target: 70 },
-    ],
-  },
-];
-
-const DEMO_ESCALATION_LOG = [
-  { id: "esc-1", trigger: "confidence-below-threshold", severity: "standard", source: "Concierge Advisor", target: "Chief of Staff", status: "resolved", council: "concierge", resolution: "Additional calendar data gathered", timestamp: "2h ago" },
-  { id: "esc-2", trigger: "consensus-failure", severity: "urgent", source: "Business Council", target: "Strategy Advisor", status: "acknowledged", council: "business", resolution: "Waiting on owner input", timestamp: "4h ago" },
-  { id: "esc-3", trigger: "policy-violation", severity: "critical", source: "Money Advisor", target: "Trust Policy Advisor", status: "resolved", council: "finance", resolution: "Payment blocked per daily limit policy", timestamp: "1d ago" },
-  { id: "esc-4", trigger: "autonomy-ceiling-reached", severity: "standard", source: "Business Advisor", target: "Owner", status: "resolved", council: "business", resolution: "Owner approved communication send", timestamp: "1d ago" },
-  { id: "esc-5", trigger: "blocking-disagreement", severity: "urgent", source: "Finance Council", target: "Owner", status: "pending", council: "finance", resolution: "", timestamp: "30m ago" },
-];
-
-const DEMO_HANDOFF_LOG = [
-  { id: "h-1", from: "Business Advisor", to: "Money Advisor", reason: "cross-domain-required", status: "completed", context: "Revenue impact on cashflow", urgency: "standard", timestamp: "3h ago" },
-  { id: "h-2", from: "Money Advisor", to: "Strategy Advisor", reason: "specialist-needed", status: "accepted", context: "Investment thesis review", urgency: "low", timestamp: "5h ago" },
-  { id: "h-3", from: "Concierge Advisor", to: "Business Advisor", reason: "cross-domain-required", status: "completed", context: "Client meeting prep needs pipeline data", urgency: "high", timestamp: "1d ago" },
-  { id: "h-4", from: "Strategy Advisor", to: "Money Advisor", reason: "confidence-below-threshold", status: "rejected", context: "Tax optimization requires specialist review", urgency: "standard", timestamp: "2d ago" },
-];
 
 const MODEL_BUDGET = {
   totalCents: 10000,

@@ -15,66 +15,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import type { IntelligenceAssetType, EfficiencyScore, OutcomeType, DomainId } from "@/lib/intelligence-architecture";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_ADMIN_ASSETS as DEMO_ASSETS, DEMO_ADMIN_OUTCOMES_INTELLIGENCE_EFFICIENCY_BOARD as DEMO_OUTCOMES, DEMO_ADMIN_PACKETS as DEMO_PACKETS, DEMO_CROSS_TENANT_PATTERNS, DEMO_DIFFERENTIALS, DEMO_EFFICIENCY } from "@/lib/demo-data/admin-platform";
 
 // ── Mock Data ───────────────────────────────────────────────
-
-const DEMO_ASSETS: Array<{ id: string; type: IntelligenceAssetType; domain: string; title: string; usageCount: number; qualityScore: number; acceptanceRate: number; status: string; freshness: string; savings: number }> = [
-  { id: "ia-1", type: "root-cause-analysis", domain: "engineering", title: "Memory leak in portfolio renderer", usageCount: 12, qualityScore: 92, acceptanceRate: 0.95, status: "active", freshness: "2hr", savings: 540 },
-  { id: "ia-2", type: "investment-thesis", domain: "investment-finance", title: "Tech sector rotation thesis Q2", usageCount: 8, qualityScore: 88, acceptanceRate: 0.88, status: "active", freshness: "6hr", savings: 960 },
-  { id: "ia-3", type: "automation-playbook", domain: "revenue-business", title: "Lead follow-up sequence playbook", usageCount: 24, qualityScore: 85, acceptanceRate: 0.92, status: "active", freshness: "1d", savings: 1080 },
-  { id: "ia-4", type: "website-diagnostic", domain: "digital-presence", title: "Homepage conversion bottleneck", usageCount: 6, qualityScore: 78, acceptanceRate: 0.83, status: "active", freshness: "4hr", savings: 420 },
-  { id: "ia-5", type: "issue-fingerprint", domain: "engineering", title: "API timeout pattern — payment service", usageCount: 18, qualityScore: 94, acceptanceRate: 0.97, status: "active", freshness: "30min", savings: 810 },
-  { id: "ia-6", type: "strategic-summary", domain: "admin-ops", title: "Q2 operational priorities synthesis", usageCount: 5, qualityScore: 82, acceptanceRate: 0.80, status: "stale", freshness: "3d", savings: 450 },
-  { id: "ia-7", type: "decision-frame", domain: "compliance-trust", title: "Data residency decision framework", usageCount: 3, qualityScore: 90, acceptanceRate: 1.0, status: "active", freshness: "12hr", savings: 360 },
-  { id: "ia-8", type: "pattern", domain: "engineering", title: "Common N+1 query regression pattern", usageCount: 31, qualityScore: 96, acceptanceRate: 0.98, status: "active", freshness: "1hr", savings: 1400 },
-];
-
-const DEMO_DIFFERENTIALS = [
-  { id: "da-1", domain: "investment-finance", materiality: 22, action: "reuse-as-is" as const, costFull: 120, costPartial: 35, costReuse: 5, deltas: 2, confidence: 92, desc: "Portfolio state — minor price fluctuation" },
-  { id: "da-2", domain: "engineering", materiality: 68, action: "partial-update" as const, costFull: 120, costPartial: 35, costReuse: 5, deltas: 5, confidence: 65, desc: "Build pipeline — new dependency added" },
-  { id: "da-3", domain: "revenue-business", materiality: 12, action: "reuse-as-is" as const, costFull: 80, costPartial: 25, costReuse: 3, deltas: 1, confidence: 96, desc: "CRM state — one lead status change" },
-  { id: "da-4", domain: "digital-presence", materiality: 85, action: "full-reanalysis" as const, costFull: 150, costPartial: 45, costReuse: 5, deltas: 8, confidence: 38, desc: "Website structure — major layout change detected" },
-  { id: "da-5", domain: "compliance-trust", materiality: 5, action: "reuse-as-is" as const, costFull: 100, costPartial: 30, costReuse: 4, deltas: 0, confidence: 98, desc: "Trust policy — no changes" },
-];
-
-const DEMO_EFFICIENCY: Array<{ id: string; name: string; type: EfficiencyScore["entityType"]; composite: number; quality: number; costEff: number; acceptance: number; override: number; reuse: number; trend: string }> = [
-  { id: "e-1", name: "Finance Advisor", type: "agent", composite: 82, quality: 88, costEff: 76, acceptance: 0.92, override: 0.08, reuse: 0.45, trend: "improving" },
-  { id: "e-2", name: "Self-Healing Agent", type: "agent", composite: 78, quality: 90, costEff: 82, acceptance: 0.95, override: 0.05, reuse: 0.62, trend: "stable" },
-  { id: "e-3", name: "Strategy Synthesizer", type: "agent", composite: 71, quality: 85, costEff: 52, acceptance: 0.78, override: 0.22, reuse: 0.28, trend: "degrading" },
-  { id: "e-4", name: "Growth Agent", type: "agent", composite: 74, quality: 80, costEff: 68, acceptance: 0.85, override: 0.15, reuse: 0.35, trend: "stable" },
-  { id: "e-5", name: "Monitor Agent", type: "agent", composite: 91, quality: 92, costEff: 95, acceptance: 0.98, override: 0.02, reuse: 0.72, trend: "improving" },
-];
-
-const DEMO_OUTCOMES: Array<{ type: OutcomeType; count: number; costCents: number; valueCents: number; roi: number }> = [
-  { type: "incident-prevented", count: 8, costCents: 2400, valueCents: 48000, roi: 20.0 },
-  { type: "bug-resolved", count: 14, costCents: 4200, valueCents: 28000, roi: 6.7 },
-  { type: "lead-recovered", count: 6, costCents: 1800, valueCents: 18000, roi: 10.0 },
-  { type: "self-heal-success", count: 22, costCents: 1100, valueCents: 22000, roi: 20.0 },
-  { type: "release-approved", count: 4, costCents: 3200, valueCents: 16000, roi: 5.0 },
-  { type: "strategic-recommendation-accepted", count: 3, costCents: 4800, valueCents: 36000, roi: 7.5 },
-  { type: "automation-completed", count: 18, costCents: 900, valueCents: 9000, roi: 10.0 },
-  { type: "customer-retained", count: 2, costCents: 1600, valueCents: 24000, roi: 15.0 },
-];
-
-const DEMO_PACKETS: Array<{ domain: DomainId; tokenCount: number; compressionRatio: number; fresh: boolean; changes: number; risks: number; confidence: number; compiledAgo: string }> = [
-  { domain: "admin-ops", tokenCount: 1200, compressionRatio: 0.12, fresh: true, changes: 3, risks: 1, confidence: 82, compiledAgo: "15min" },
-  { domain: "engineering", tokenCount: 1800, compressionRatio: 0.15, fresh: true, changes: 5, risks: 2, confidence: 76, compiledAgo: "8min" },
-  { domain: "revenue-business", tokenCount: 1400, compressionRatio: 0.11, fresh: true, changes: 2, risks: 0, confidence: 89, compiledAgo: "22min" },
-  { domain: "digital-presence", tokenCount: 2100, compressionRatio: 0.18, fresh: false, changes: 8, risks: 3, confidence: 58, compiledAgo: "2hr" },
-  { domain: "investment-finance", tokenCount: 1600, compressionRatio: 0.14, fresh: true, changes: 4, risks: 1, confidence: 84, compiledAgo: "12min" },
-  { domain: "concierge-household", tokenCount: 900, compressionRatio: 0.08, fresh: true, changes: 1, risks: 0, confidence: 94, compiledAgo: "45min" },
-  { domain: "connectors-integrations", tokenCount: 1100, compressionRatio: 0.10, fresh: true, changes: 2, risks: 1, confidence: 80, compiledAgo: "30min" },
-  { domain: "launch-deployment", tokenCount: 1500, compressionRatio: 0.13, fresh: true, changes: 3, risks: 2, confidence: 72, compiledAgo: "18min" },
-  { domain: "compliance-trust", tokenCount: 1300, compressionRatio: 0.12, fresh: true, changes: 0, risks: 0, confidence: 96, compiledAgo: "1hr" },
-];
-
-const DEMO_CROSS_TENANT_PATTERNS = [
-  { type: "issue-signature", desc: "API timeout cascade after deploy", freq: 42, conf: 94, tenants: 18 },
-  { type: "crm-leakage", desc: "Leads going cold after 48hr without follow-up", freq: 67, conf: 88, tenants: 31 },
-  { type: "deployment-failure", desc: "Migration timeout on large tables", freq: 23, conf: 91, tenants: 12 },
-  { type: "self-heal-outcome", desc: "Cache flush resolves 80% of 5xx spikes", freq: 89, conf: 96, tenants: 45 },
-  { type: "low-value-loop", desc: "Repeated SEO audit with no content changes", freq: 34, conf: 82, tenants: 22 },
-];
 
 // ── Helpers ─────────────────────────────────────────────────
 

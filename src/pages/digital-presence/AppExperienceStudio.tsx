@@ -7,41 +7,7 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_EXPERIENCE_TYPES = [
-  { type: "App Landing Page", desc: "Mobile-first marketing page for your app", icon: Smartphone, color: "text-blue-400" },
-  { type: "Progressive Web App", desc: "Installable web app with offline support", icon: Globe, color: "text-green-400" },
-  { type: "Client Portal", desc: "Secure dashboard for your customers", icon: Users, color: "text-purple-400" },
-  { type: "Member Dashboard", desc: "Membership area with gated content", icon: Shield, color: "text-amber-400" },
-  { type: "Deep-Link Flow", desc: "Multi-step flow accessible via shareable URL", icon: Link2, color: "text-cyan-400" },
-  { type: "Mobile-First Variant", desc: "Alternative mobile experience for existing pages", icon: Layout, color: "text-rose-400" },
-];
-
-const DEMO_EXISTING_EXPERIENCES = [
-  { name: "Client Dashboard", type: "Client Portal", status: "live", users: 142, lastUpdate: "2 days ago", mobile: 88 },
-  { name: "Booking Mini-App", type: "Progressive Web App", status: "live", users: 89, lastUpdate: "1 week ago", mobile: 95 },
-  { name: "Course Portal", type: "Member Dashboard", status: "draft", users: 0, lastUpdate: "3 hours ago", mobile: 72 },
-];
-
-const DEMO_PWA_SETTINGS = [
-  { setting: "App Name", value: "MyBusiness", editable: true },
-  { setting: "Short Name", value: "MyBiz", editable: true },
-  { setting: "Theme Color", value: "#3B82F6", editable: true },
-  { setting: "Background Color", value: "#0F172A", editable: true },
-  { setting: "Display Mode", value: "standalone", editable: true },
-  { setting: "Start URL", value: "/app", editable: true },
-  { setting: "Offline Support", value: "Enabled", editable: true },
-  { setting: "Install Prompt", value: "After 2nd visit", editable: true },
-];
-
-const DEMO_PORTAL_FEATURES = [
-  { feature: "Authentication", status: "active", desc: "Email + Google SSO" },
-  { feature: "Dashboard Overview", status: "active", desc: "KPIs, activity, upcoming" },
-  { feature: "Document Access", status: "active", desc: "Shared files & invoices" },
-  { feature: "Booking Widget", status: "active", desc: "Schedule appointments" },
-  { feature: "Messaging", status: "planned", desc: "Secure client messaging" },
-  { feature: "Payment History", status: "planned", desc: "View invoices & receipts" },
-];
+import { DEMO_EXISTING_EXPERIENCES, DEMO_EXPERIENCE_TYPES, DEMO_PORTAL_FEATURES, DEMO_PWA_SETTINGS } from "@/lib/demo-data/digital-presence";
 
 export default function AppExperienceStudio() {
   const { isDemoMode } = useDataMode();

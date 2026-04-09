@@ -10,17 +10,7 @@ import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_PATTERNS = [
-  { id: "p-1", type: "issue_fingerprint", domain: "engineering", label: "API timeout cascade after deploy", confidence: 94, falsePositive: 2, sourceCount: 42, privacy: "anonymizable", reusable: true, description: "Cascading timeout pattern detected post-deployment in microservice mesh" },
-  { id: "p-2", type: "workflow_pattern", domain: "revenue-business", label: "Lead cold after 48hr no follow-up", confidence: 88, falsePositive: 5, sourceCount: 67, privacy: "anonymizable", reusable: true, description: "Leads consistently going cold without 48hr follow-up touch" },
-  { id: "p-3", type: "deployment_pattern", domain: "engineering", label: "Migration timeout on large tables", confidence: 91, falsePositive: 3, sourceCount: 23, privacy: "anonymizable", reusable: true, description: "DB migrations exceeding timeout threshold on tables > 1M rows" },
-  { id: "p-4", type: "self_heal_pattern", domain: "engineering", label: "Cache flush resolves 80% of 5xx", confidence: 96, falsePositive: 1, sourceCount: 89, privacy: "public_safe", reusable: true, description: "Cache flush is highly effective first-response for 5xx spike events" },
-  { id: "p-5", type: "conversion_pattern", domain: "digital-presence", label: "Mobile CTA below fold = 40% drop", confidence: 82, falsePositive: 8, sourceCount: 34, privacy: "anonymizable", reusable: true, description: "Primary CTA placement below fold on mobile causes significant conversion drop" },
-  { id: "p-6", type: "design_pattern", domain: "digital-presence", label: "Dark mode contrast failures", confidence: 78, falsePositive: 12, sourceCount: 18, privacy: "public_safe", reusable: true, description: "Common contrast ratio failures in dark mode implementations" },
-  { id: "p-7", type: "config_drift", domain: "engineering", label: "Env var drift across staging/prod", confidence: 85, falsePositive: 6, sourceCount: 31, privacy: "tenant_private", reusable: false, description: "Environment variable configuration drift between staging and production" },
-  { id: "p-8", type: "incident_cluster", domain: "engineering", label: "Friday deploy → weekend incidents", confidence: 72, falsePositive: 15, sourceCount: 12, privacy: "anonymizable", reusable: true, description: "Correlation between Friday deployments and weekend incident spikes" },
-];
+import { DEMO_INTEL_PATTERNS_PATTERN_LEARNING_CENTER as DEMO_PATTERNS } from "@/lib/demo-data/admin-intelligence";
 
 const privacyBadges: Record<string, { icon: typeof Globe; color: string }> = {
   public_safe: { icon: Globe, color: "text-emerald-400" },

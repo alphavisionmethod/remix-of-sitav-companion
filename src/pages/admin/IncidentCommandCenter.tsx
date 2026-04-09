@@ -31,7 +31,7 @@ const STATUS_CONFIG: Record<IncidentStatus, { color: string; icon: typeof AlertT
   closed: { color: "text-muted-foreground", icon: XCircle },
 };
 
-const MOCK_INCIDENTS = DEMO_INCIDENTS;
+
 
 function timeAgo(d: string) {
   const diff = Math.floor((Date.now() - new Date(d).getTime()) / 60000);
@@ -57,7 +57,7 @@ export default function IncidentCommandCenter() {
     },
   });
 
-  const incidents = MOCK_INCIDENTS;
+  const incidents = DEMO_INCIDENTS;
   const active = incidents.filter(i => !["resolved", "closed"].includes(i.status));
   const resolved = incidents.filter(i => ["resolved", "closed"].includes(i.status));
   const criticalCount = active.filter(i => i.severity === "critical").length;

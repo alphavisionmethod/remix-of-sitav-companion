@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useGroceryLists } from "@/hooks/use-concierge-data";
+import { DEMO_CONC_categories as DEMO_categories, DEMO_recurringSupplies, DEMO_stores } from "@/lib/demo-data/concierge";
 
 interface GroceryItem {
   id: string; name: string; category: string; quantity: string; estimated: string;
@@ -30,18 +31,6 @@ const initialItems: GroceryItem[] = [
   { id: "13", name: "Cheddar cheese", category: "Dairy", quantity: "1 block", estimated: "$4.99", checked: false, store: "Trader Joe's" },
   { id: "14", name: "Cereal — kids mix", category: "Pantry", quantity: "2 boxes", estimated: "$7.98", checked: false, recurring: true, store: "Target" },
 ];
-
-const DEMO_recurringSupplies = [
-  { item: "Laundry detergent", lastPurchased: "3 weeks ago", cycle: "Monthly", status: "out" as const },
-  { item: "Olive oil", lastPurchased: "5 weeks ago", cycle: "6 weeks", status: "low" as const },
-  { item: "Paper towels", lastPurchased: "2 weeks ago", cycle: "3 weeks", status: "low" as const },
-  { item: "Dish soap", lastPurchased: "1 week ago", cycle: "Monthly", status: "ok" as const },
-  { item: "Trash bags", lastPurchased: "3 weeks ago", cycle: "Monthly", status: "ok" as const },
-  { item: "Kids' vitamins", lastPurchased: "2 weeks ago", cycle: "Monthly", status: "ok" as const },
-];
-
-const DEMO_categories = [...new Set(initialItems.map(i => i.category))];
-const DEMO_stores = [...new Set(initialItems.map(i => i.store).filter(Boolean))];
 
 type GroceryView = "shopping" | "recurring" | "by-store" | "urgency" | "event-prep";
 

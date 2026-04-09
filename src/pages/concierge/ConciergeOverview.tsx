@@ -12,6 +12,7 @@ import {
   GraduationCap, Stethoscope, Gift, FileText, Shield, Sparkles, Car, Home, Bell, BarChart3, Headphones
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { DEMO_changedSinceYesterday, DEMO_fallbackPriorities } from "@/lib/demo-data/concierge";
 
 
 
@@ -107,10 +108,6 @@ const categoryIcon: Record<string, typeof Home> = {
   Vehicle: Car, General: Home,
 };
 
-const DEMO_fallbackPriorities = [
-  { title: "No tasks yet — add your first household task", due: "Today", category: "General", who: "You", icon: CheckSquare, urgency: "low" as const },
-];
-
 const pendingApproval = {
   title: "Book pet sitter for spring break trip — $280",
   reason: "Trip starts in 18 days. Preferred sitter (Sarah M.) has limited availability.",
@@ -118,13 +115,6 @@ const pendingApproval = {
   impact: "Secures reliable care during 7-day trip",
   policyRule: "Spending over $200 requires approval",
 };
-
-const DEMO_changedSinceYesterday = [
-  "HVAC maintenance confirmed for Apr 8",
-  "New grocery alerts: laundry detergent (out), olive oil (low)",
-  "Bus pass renewal moved to overdue status",
-  "Mom's birthday gift ordered — arrives Apr 11",
-];
 
 type ViewVariant = "admin" | "partner" | "professional" | "founder";
 

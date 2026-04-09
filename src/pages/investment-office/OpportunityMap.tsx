@@ -6,17 +6,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { INSTRUMENTS } from "@/hooks/useInvestmentOfficeData";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
-
-const DEMO_THEMES = [
-  { id: "ai", label: "AI Infrastructure", icon: "🤖", strength: 92, crowding: 75, uncertainty: 30, instruments: ["NVDA", "MSFT", "AAPL"], advisorView: "Strong secular theme. Crowding risk rising but fundamentals support continuation.", color: "hsl(var(--primary))" },
-  { id: "digital-gold", label: "Digital Store of Value", icon: "₿", strength: 78, crowding: 55, uncertainty: 45, instruments: ["BTC"], advisorView: "Post-halving dynamics supportive. Institutional adoption creating structural demand floor.", color: "hsl(38 85% 58%)" },
-  { id: "defi", label: "DeFi & Smart Contracts", icon: "⟠", strength: 65, crowding: 40, uncertainty: 55, instruments: ["ETH", "SOL"], advisorView: "Growing ecosystem but regulatory uncertainty creates two-sided risk.", color: "hsl(280 60% 55%)" },
-  { id: "safe-haven", label: "Safe Haven / Hedging", icon: "🥇", strength: 72, crowding: 30, uncertainty: 25, instruments: ["XAUUSD"], advisorView: "Central bank buying provides structural floor. Low crowding makes this attractive.", color: "hsl(152 55% 48%)" },
-  { id: "energy", label: "Energy & Commodities", icon: "🛢️", strength: 45, crowding: 25, uncertainty: 60, instruments: ["CL"], advisorView: "OPEC discipline uncertain. Energy transition creates long-term headwinds.", color: "hsl(25 75% 55%)" },
-  { id: "ev-transition", label: "EV & Autonomy", icon: "⚡", strength: 55, crowding: 60, uncertainty: 65, instruments: ["TSLA"], advisorView: "Robotaxi catalyst could re-rate but execution risk is very high.", color: "hsl(0 65% 55%)" },
-  { id: "event-markets", label: "Event & Probability", icon: "🔮", strength: 50, crowding: 15, uncertainty: 70, instruments: ["FED-CUT-JUN", "PRES-2028"], advisorView: "Emerging asset class. Small sizing essential. Catalyst-dependent.", color: "hsl(200 65% 55%)" },
-  { id: "broad-market", label: "Broad US Market", icon: "📊", strength: 68, crowding: 45, uncertainty: 35, instruments: ["SPY"], advisorView: "Market breadth improving. Valuation elevated but supported by earnings growth.", color: "hsl(var(--primary))" },
-];
+import { DEMO_THEMES } from "@/lib/demo-data/investment";
 
 export default function OpportunityMap() {
   const { isDemoMode } = useDataMode();

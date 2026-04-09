@@ -8,27 +8,7 @@ import { useFeatureIntakes, useCapabilities, useFeatureSpecs, useComplianceRecor
 import { READINESS_STAGES } from "@/lib/fip/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_BUILDER_STEPS = [
-  { step: 1, label: 'Intake', icon: FileText, description: 'Answer protocol intake questions' },
-  { step: 2, label: 'Owner', icon: Shield, description: 'Confirm owner boundary' },
-  { step: 3, label: 'Capabilities', icon: Layers, description: 'Register capability IDs' },
-  { step: 4, label: 'Spec', icon: Code2, description: 'Generate compliant spec' },
-  { step: 5, label: 'Contracts', icon: FileText, description: 'Define contracts/schemas' },
-  { step: 6, label: 'Workflow', icon: Zap, description: 'Model workflow/policy/execution' },
-  { step: 7, label: 'Testing', icon: CheckCircle2, description: 'Define testing matrix' },
-  { step: 8, label: 'Rollout', icon: Rocket, description: 'Plan rollout & kill-switch' },
-  { step: 9, label: 'Truth', icon: Database, description: 'Update generated artifacts' },
-  { step: 10, label: 'Validate', icon: CheckCircle2, description: 'Compliance validation' },
-];
-
-const DEMO_DOMAIN_PACKS = [
-  { id: 'business-os', name: 'Business OS', features: ['CRM', 'Invoicing', 'Revenue', 'Communications'], color: 'bg-blue-500/10 text-blue-500' },
-  { id: 'finance-os', name: 'Finance OS', features: ['Budgets', 'Bills', 'Capital', 'Subscriptions'], color: 'bg-green-500/10 text-green-500' },
-  { id: 'concierge-os', name: 'Concierge OS', features: ['Household', 'Calendar', 'Travel', 'Bookings'], color: 'bg-purple-500/10 text-purple-500' },
-  { id: 'platform', name: 'Platform', features: ['Auth', 'Files', 'Admin', 'Delivery'], color: 'bg-orange-500/10 text-orange-500' },
-  { id: 'investment', name: 'Investment Office', features: ['Portfolio', 'Strategy', 'Execution', 'Risk'], color: 'bg-indigo-500/10 text-indigo-500' },
-];
+import { DEMO_ADMIN_BUILDER_STEPS as DEMO_BUILDER_STEPS, DEMO_DOMAIN_PACKS } from "@/lib/demo-data/admin-platform";
 
 const FIPBuilderConsole = () => {
   const { isDemoMode } = useDataMode();

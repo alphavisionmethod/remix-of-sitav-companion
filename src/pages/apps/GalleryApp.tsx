@@ -7,6 +7,7 @@ import { Image, Upload, Search, Grid3X3, LayoutList, Calendar, Tag, FolderOpen, 
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_PHOTOS, DEMO_albums, DEMO_placeholderColors } from "@/lib/demo-data/apps";
 
 interface Photo {
   id: string;
@@ -17,33 +18,6 @@ interface Photo {
   tags: string[];
   favorite: boolean;
 }
-
-const DEMO_placeholderColors = [
-  "from-blue-500/30 to-purple-500/30",
-  "from-emerald-500/30 to-teal-500/30",
-  "from-amber-500/30 to-orange-500/30",
-  "from-pink-500/30 to-red-500/30",
-  "from-indigo-500/30 to-blue-500/30",
-  "from-cyan-500/30 to-emerald-500/30",
-  "from-violet-500/30 to-purple-500/30",
-  "from-rose-500/30 to-pink-500/30",
-  "from-lime-500/30 to-green-500/30",
-  "from-sky-500/30 to-indigo-500/30",
-  "from-fuchsia-500/30 to-pink-500/30",
-  "from-teal-500/30 to-cyan-500/30",
-];
-
-const DEMO_PHOTOS: Photo[] = Array.from({ length: 12 }, (_, i) => ({
-  id: String(i + 1),
-  url: "",
-  title: ["Team Offsite", "Product Launch", "Dashboard V3", "Architecture Diagram", "Sunset Walk", "Office Setup", "Whiteboard Session", "Coffee Break", "Code Review", "Sprint Demo", "Celebration", "Morning Run"][i],
-  date: ["Today", "Today", "Yesterday", "Yesterday", "3 days ago", "Last week", "Last week", "Last week", "2 weeks ago", "2 weeks ago", "3 weeks ago", "Last month"][i],
-  album: ["Work", "Work", "Work", "Work", "Personal", "Work", "Work", "Personal", "Work", "Work", "Personal", "Personal"][i],
-  tags: [["team", "event"], ["product"], ["design", "ui"], ["architecture"], ["nature"], ["setup"], ["brainstorm"], ["social"], ["dev"], ["demo"], ["team", "event"], ["fitness"]][i],
-  favorite: [true, false, true, false, false, false, true, false, false, true, false, false][i],
-}));
-
-const DEMO_albums = ["All", "Work", "Personal", "Screenshots", "Documents"];
 
 export default function GalleryApp() {
   const { isDemoMode } = useDataMode();

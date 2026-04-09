@@ -22,52 +22,9 @@ import { CG10PricingSimulatorTab } from "@/components/admin/compute-governance/C
 import { classColors, tierColors, budgetStatusColors, fmt } from "@/components/admin/compute-governance/shared";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_AGENT_SPEND, DEMO_ANOMALIES, DEMO_BUDGETS, DEMO_DEEP_JOBS, DEMO_ROUTING_EVENTS, DEMO_TENANT_SPEND } from "@/lib/demo-data/admin-platform";
 
 // ── Mock Data ───────────────────────────────────────────────
-
-const DEMO_TENANT_SPEND = [
-  { tenantId: "t-1", name: "Acme Corp", plan: "Business" as PlanTier, spend: 12400, budget: 15000, margin: 68, cacheHit: 0.72, anomalies: 0, deepUsed: 180, deepCap: 300 },
-  { tenantId: "t-2", name: "Household Smith", plan: "Professional" as PlanTier, spend: 2100, budget: 3000, margin: 74, cacheHit: 0.65, anomalies: 1, deepUsed: 40, deepCap: 120 },
-  { tenantId: "t-3", name: "Solo User", plan: "Starter" as PlanTier, spend: 380, budget: 500, margin: 52, cacheHit: 0.45, anomalies: 0, deepUsed: 8, deepCap: 30 },
-];
-
-const DEMO_AGENT_SPEND = [
-  { agentId: "finance-advisor", name: "Finance Advisor", tokens: 284000, cost: 420, calls: 1240, tier: "standard" as ComputeModelTier },
-  { agentId: "monitor-agent", name: "Proactive Monitor", tokens: 890000, cost: 180, calls: 12400, tier: "utility" as ComputeModelTier },
-  { agentId: "strategy-agent", name: "Strategy Synthesizer", tokens: 64000, cost: 960, calls: 32, tier: "premium" as ComputeModelTier },
-  { agentId: "self-heal", name: "Self-Healing Agent", tokens: 120000, cost: 95, calls: 340, tier: "utility" as ComputeModelTier },
-];
-
-const DEMO_ANOMALIES = [
-  { id: "a1", type: "retry-storm", severity: "warning" as const, tenant: "Household Smith", desc: "12 retries on portfolio analysis in 5min", suggested: "pause-autonomy", time: "2min ago", confidence: 92, affectedAgents: ["Finance Advisor"], estimatedWaste: 340 },
-  { id: "a2", type: "low-cache-efficiency", severity: "info" as const, tenant: "Solo User", desc: "Cache hit rate only 12% — optimization available", suggested: "digest-mode", time: "15min ago", confidence: 78, affectedAgents: ["Monitor"], estimatedWaste: 120 },
-  { id: "a3", type: "burn-spike", severity: "critical" as const, tenant: "Acme Corp", desc: "Spend increased 340% vs daily average — runaway automation loop suspected", suggested: "pause-agent", time: "6min ago", confidence: 96, affectedAgents: ["Growth Agent"], estimatedWaste: 890 },
-  { id: "a4", type: "duplicate-action", severity: "info" as const, tenant: "Acme Corp", desc: "Same SEO audit requested 4 times — dedup suggested", suggested: "dedup-merge", time: "42min ago", confidence: 85, affectedAgents: ["Content Advisor"], estimatedWaste: 200 },
-];
-
-const DEMO_BUDGETS: BudgetEnvelope[] = [
-  { ...createEnvelope("tenant", "t-1", "t-1", "Acme Corp — Monthly", 15000, 300), spentCents: 12400, remainingCents: 2600, deepReasoningMinutesUsed: 180, proactiveInferenceSpentCents: 3200, retrySpentCents: 420, retriesUsed: 6, status: "approaching" },
-  { ...createEnvelope("workspace", "ws-1", "t-1", "Finance Workspace", 5000, 120), spentCents: 3800, remainingCents: 1200, deepReasoningMinutesUsed: 90, status: "warning" },
-  { ...createEnvelope("agent", "a-1", "t-2", "Strategy Synthesizer", 2000, 60), spentCents: 960, remainingCents: 1040, deepReasoningMinutesUsed: 28, status: "healthy" },
-  { ...createEnvelope("mission", "m-1", "t-1", "Q2 Tax Optimization", 800, 30), spentCents: 620, remainingCents: 180, deepReasoningMinutesUsed: 22, status: "warning" },
-  { ...createEnvelope("domain", "d-1", "t-1", "Finance Domain", 8000, 200), spentCents: 5600, remainingCents: 2400, deepReasoningMinutesUsed: 120, status: "approaching" },
-  { ...createEnvelope("environment", "e-1", "t-1", "Production Env", 12000, 250), spentCents: 8900, remainingCents: 3100, deepReasoningMinutesUsed: 160, status: "healthy" },
-];
-
-const DEMO_ROUTING_EVENTS = [
-  { id: "r1", taskClass: "B" as CostClass, intent: "Portfolio rebalance advice", selectedModel: "gemini-2.5-flash", selectedTier: "standard" as ComputeModelTier, confidence: 0.89, cost: 3.2, downgraded: false, cached: false, time: "1min ago" },
-  { id: "r2", taskClass: "A" as CostClass, intent: "Inbox triage", selectedModel: "gemini-3-flash", selectedTier: "utility" as ComputeModelTier, confidence: 0.95, cost: 0.4, downgraded: false, cached: true, time: "2min ago" },
-  { id: "r3", taskClass: "C" as CostClass, intent: "Strategic tax optimization", selectedModel: "gemini-2.5-pro", selectedTier: "premium" as ComputeModelTier, confidence: 0.72, cost: 12.8, downgraded: false, cached: false, time: "5min ago" },
-  { id: "r4", taskClass: "C" as CostClass, intent: "Architecture deep analysis", selectedModel: "gemini-2.5-flash", selectedTier: "standard" as ComputeModelTier, confidence: 0.65, cost: 4.1, downgraded: true, cached: false, time: "8min ago", downgradeReason: "Budget pressure — soft limit 90%" },
-  { id: "r5", taskClass: "D" as CostClass, intent: "Cross-domain simulation", selectedModel: "gpt-5", selectedTier: "exceptional" as ComputeModelTier, confidence: 0.91, cost: 48.0, downgraded: false, cached: false, time: "12min ago" },
-];
-
-const DEMO_DEEP_JOBS = [
-  { id: "dj1", type: "explicit-deep", title: "Q2 Tax Strategy Deep Analysis", status: "running", costClass: "C" as CostClass, estimatedCost: 1200, elapsedMin: 8, approval: "auto-approved", tenant: "Acme Corp", quality: null },
-  { id: "dj2", type: "strategic-review", title: "Churn Prediction Multi-Advisor Synthesis", status: "queued", costClass: "D" as CostClass, estimatedCost: 3400, elapsedMin: 0, approval: "awaiting", tenant: "Acme Corp", quality: null },
-  { id: "dj3", type: "premium-debate", title: "Market Entry Debate", status: "completed", costClass: "C" as CostClass, estimatedCost: 1800, elapsedMin: 22, approval: "approved", tenant: "Household Smith", quality: 87 },
-  { id: "dj4", type: "async-compute", title: "Full Portfolio Risk Simulation", status: "running", costClass: "D" as CostClass, estimatedCost: 4200, elapsedMin: 35, approval: "auto-approved", tenant: "Acme Corp", quality: null },
-];
 
 // ── Helper ──────────────────────────────────────────────────
 

@@ -16,79 +16,11 @@ import { AutonomyLadder } from "@/components/sita/primitives/AutonomyLadder";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_ACTIVE_SPILLOVERS, DEMO_CORE_DOMAINS as DEMO_DOMAINS, DEMO_TOP_INTERVENTIONS } from "@/lib/demo-data/core-pages";
 
 // ── Spillover data ───────────────────────────────────────────
 
-const DEMO_ACTIVE_SPILLOVERS = [
-  {
-    from: "concierge" as const,
-    to: "business" as const,
-    impact: "high" as const,
-    title: "Thursday overload hurting callbacks",
-    description: "3 scheduling conflicts on Thursday are blocking your best callback window. 2 high-value leads have gone 5+ days without follow-up.",
-    intervention: "Reschedule dentist to Monday — opens Thursday 10am-12pm for callbacks",
-  },
-  {
-    from: "money" as const,
-    to: "business" as const,
-    impact: "medium" as const,
-    title: "Overdue invoice creating collection anxiety",
-    description: "Bloom Studio's overdue INV-002 is occupying mental bandwidth that could go toward pipeline development.",
-    intervention: "Send auto-reminder now — 78% collection probability within 48h",
-  },
-  {
-    from: "business" as const,
-    to: "household" as const,
-    impact: "medium" as const,
-    title: "Late-evening work from lead backlog",
-    description: "Stale lead queue is causing after-hours catch-up work 3 days this week, reducing family time.",
-    intervention: "Delegate morning lead triage to SITA — ready for approve-execute",
-  },
-  {
-    from: "household" as const,
-    to: "money" as const,
-    impact: "low" as const,
-    title: "Grocery spend creeping up",
-    description: "No weekly list optimization for 3 weeks. Impulse additions up 22% vs structured weeks.",
-    intervention: "Re-enable weekly grocery compilation automation",
-  },
-  {
-    from: "money" as const,
-    to: "concierge" as const,
-    impact: "low" as const,
-    title: "Budget anxiety delaying travel booking",
-    description: "Beach weekend hotel search paused because cash flow confidence dropped after overdue invoice.",
-    intervention: "Resolve INV-002 collection to unlock travel planning confidence",
-  },
-];
-
-const DEMO_TOP_INTERVENTIONS = [
-  {
-    title: "Unblock Thursday — one reschedule fixes 3 domains",
-    description: "Moving Maya's dentist from Thursday 10am to Monday 2pm clears the schedule conflict, opens a callback window for 2 cooling leads, and reduces household stress.",
-    impact: "3 domains unblocked, 2h recovered, $24K pipeline re-engaged",
-    affectedDomains: ["business", "concierge", "household"],
-    urgency: "today" as const,
-    effort: "quick" as const,
-  },
-  {
-    title: "Collect overdue invoice — cascading cash confidence fix",
-    description: "Resolving INV-002 ($1,200) improves cash flow metrics, unblocks travel planning, and reduces the mental weight on pipeline work.",
-    impact: "$1,200 recovered + 2 spillovers resolved",
-    affectedDomains: ["money", "business", "concierge"],
-    urgency: "now" as const,
-    effort: "quick" as const,
-  },
-];
-
 // ── Spillover graph (simplified visual) ──────────────────────
-
-const DEMO_DOMAINS = [
-  { id: "business", label: "Business", color: "hsl(var(--primary))", x: 50, y: 15 },
-  { id: "money", label: "Money", color: "hsl(var(--sita-gold))", x: 85, y: 55 },
-  { id: "concierge", label: "Concierge", color: "hsl(var(--trust-safe))", x: 15, y: 55 },
-  { id: "household", label: "Household", color: "hsl(var(--state-proposed))", x: 50, y: 85 },
-];
 
 const SpilloverGraph = () => (
   <div className="relative aspect-square max-w-[280px] mx-auto">

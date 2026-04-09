@@ -5,33 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_STALE_PAGES = [
-  { page: "/blog/2023-trends", lastUpdated: "14 months ago", views: 120, category: "Blog", staleness: 95 },
-  { page: "/blog/old-guide", lastUpdated: "11 months ago", views: 45, category: "Blog", staleness: 85 },
-  { page: "/services/legacy", lastUpdated: "9 months ago", views: 230, category: "Service", staleness: 75 },
-  { page: "/faq", lastUpdated: "7 months ago", views: 560, category: "Support", staleness: 60 },
-  { page: "/team", lastUpdated: "5 months ago", views: 180, category: "About", staleness: 45 },
-];
-
-const DEMO_EXPIRED_OFFERS = [
-  { offer: "Summer Sale 2024", page: "/summer-sale", expiredDays: 14, stillLive: true },
-  { offer: "Holiday Bundle", page: "/holiday-bundle", expiredDays: 45, stillLive: true },
-  { offer: "Early Bird Pricing", page: "/pricing", expiredDays: 0, stillLive: false },
-];
-
-const DEMO_STALE_INFO = [
-  { type: "Business Hours", page: "/contact", issue: "Shows Mon-Fri 9-5, but you're now open Saturdays", icon: Clock },
-  { type: "Phone Number", page: "/contact", issue: "Old number still displayed — new number not updated", icon: Phone },
-  { type: "Location", page: "/about", issue: "Address shows old office location", icon: MapPin },
-  { type: "Product Description", page: "/products/item-3", issue: "Describes old version — updated product not reflected", icon: Tag },
-];
-
-const DEMO_INCONSISTENCIES = [
-  { pages: ["/homepage", "/about"], issue: "Different taglines used — 'We help you grow' vs 'Growth made simple'" },
-  { pages: ["/pricing", "/services"], issue: "Pricing on services page doesn't match pricing page" },
-  { pages: ["/footer", "/contact"], issue: "Email address differs between footer and contact page" },
-];
+import { DEMO_EXPIRED_OFFERS, DEMO_INCONSISTENCIES, DEMO_STALE_INFO, DEMO_STALE_PAGES } from "@/lib/demo-data/digital-presence";
 
 export default function ContentFreshness() {
   const { isDemoMode } = useDataMode();

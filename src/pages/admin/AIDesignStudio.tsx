@@ -5,14 +5,7 @@ import { useState } from "react";
 import { Palette, Eye, CheckCircle2, ArrowRight, Sparkles, Sun, Moon, Accessibility, Layout, Type, Move } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_IMPROVEMENTS = [
-  { id: 1, title: "Admin header — improve information hierarchy", area: "Admin Shell", type: "layout" as const, before: "Flat header with icon + title, no visual depth", after: "Gradient header with accent icon badge, subtitle, and action slot", rationale: "Improves scannability and creates premium feel consistent with boardroom surfaces", confidence: 84, impact: "medium", consistency: 92, status: "ready" as const },
-  { id: 2, title: "Sidebar icons — add consistent sizing and alignment", area: "Navigation", type: "consistency" as const, before: "Mixed icon sizes (h-4, h-5) and inconsistent padding", after: "Standardized h-4 w-4 with 12px padding and active indicator", rationale: "Creates visual rhythm and reduces cognitive load during navigation", confidence: 91, impact: "low", consistency: 96, status: "ready" as const },
-  { id: 3, title: "Dark mode — fix low-contrast table headers", area: "Data Tables", type: "accessibility" as const, before: "bg-muted/30 with text-muted-foreground — contrast ratio 3.2:1", after: "bg-muted/50 with text-foreground — contrast ratio 5.1:1", rationale: "WCAG AA requires 4.5:1 for normal text. Current headers fail", confidence: 95, impact: "high", consistency: 88, status: "applied" as const },
-  { id: 4, title: "Mission Control cards — reduce visual noise", area: "Mission Control", type: "layout" as const, before: "Dense cards with 8 inline metrics and small badges", after: "Progressive disclosure: 3 key metrics visible, expandable details", rationale: "Operator surfaces should show decision-relevant data first", confidence: 77, impact: "medium", consistency: 85, status: "proposal" as const },
-  { id: 5, title: "Revenue Office — modernize stat cards", area: "Revenue Office", type: "visual" as const, before: "Plain border cards with centered text", after: "Subtle gradient cards with icon accent and trend indicators", rationale: "Aligns with premium design language used in Investment Office", confidence: 82, impact: "medium", consistency: 90, status: "ready" as const },
-];
+import { DEMO_IMPROVEMENTS } from "@/lib/demo-data/admin-platform";
 
 const typeIcons: Record<string, typeof Layout> = {
   layout: Layout,

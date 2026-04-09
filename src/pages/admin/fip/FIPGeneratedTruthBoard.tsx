@@ -5,17 +5,9 @@ import { Badge } from "@/components/ui/badge";
 import { useGeneratedTruthImpacts } from "@/hooks/use-fip-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_GENERATED_ARTIFACTS } from "@/lib/demo-data/admin-platform";
 
 
-
-const DEMO_GENERATED_ARTIFACTS = [
-  'generated/feature-integration-index.json', 'generated/service-manifest.json',
-  'generated/route-manifest.json', 'generated/subject-manifest.json',
-  'generated/startup-order.json', 'generated/capability-index.json',
-  'generated/advisor-registry.json', 'generated/connector-catalog.json',
-  'generated/boardroom-template-index.json', 'generated/formula-registry.json',
-  'generated/outcome-index.json', 'generated/prompt-index.json',
-];
 
 const FIPGeneratedTruthBoard = () => {
   const { isDemoMode } = useDataMode();

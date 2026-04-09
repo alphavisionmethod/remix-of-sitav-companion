@@ -4,43 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { ShieldAlert, AlertTriangle, Target, Users, Zap, MessageCircle, Clock } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_riskAreas = [
-  {
-    area: "Funnel Conversion",
-    risks: [
-      { risk: "Landing page load time >3s on mobile (currently 4.2s)", severity: "high", likelihood: 78 },
-      { risk: "Checkout form asks for too many fields (8 vs best practice 4)", severity: "medium", likelihood: 65 },
-      { risk: "No social proof on main funnel page", severity: "medium", likelihood: 72 },
-    ],
-    icon: Target, color: "text-blue-400"
-  },
-  {
-    area: "Follow-up & Nurture",
-    risks: [
-      { risk: "45% of leads receive no follow-up within 24hrs", severity: "high", likelihood: 88 },
-      { risk: "Email nurture sequence has no personalization beyond first name", severity: "medium", likelihood: 60 },
-      { risk: "No SMS follow-up configured for high-intent leads", severity: "medium", likelihood: 55 },
-    ],
-    icon: MessageCircle, color: "text-emerald-400"
-  },
-  {
-    area: "Booking & Delivery",
-    risks: [
-      { risk: "No-show rate at 18% — no automated reminder 1hr before", severity: "high", likelihood: 82 },
-      { risk: "Post-call follow-up delayed >48hrs for 30% of calls", severity: "medium", likelihood: 70 },
-    ],
-    icon: Clock, color: "text-amber-400"
-  },
-  {
-    area: "Retention & Churn",
-    risks: [
-      { risk: "No reactivation sequence for clients inactive >60 days", severity: "high", likelihood: 90 },
-      { risk: "Membership renewal reminder sent too late (day-of vs 7 days before)", severity: "medium", likelihood: 75 },
-    ],
-    icon: Users, color: "text-purple-400"
-  },
-];
+import { DEMO_riskAreas } from "@/lib/demo-data/revenue-office";
 
 export default function WhatBreaksGrowth() {
   const { isDemoMode } = useDataMode();

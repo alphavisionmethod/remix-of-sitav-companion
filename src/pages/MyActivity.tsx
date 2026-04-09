@@ -7,6 +7,7 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_DAY_LABELS, DEMO_FEATURES } from "@/lib/demo-data/core-pages";
 
 
 
@@ -14,8 +15,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 const DAYS = 7;
 const WEEKS = 20;
-const DEMO_DAY_LABELS = ["", "Mon", "", "Wed", "", "Fri", ""];
-
 function generateDemoData(): Record<string, number> {
   const data: Record<string, number> = {};
   const today = new Date();
@@ -82,14 +81,6 @@ const HeatmapGrid = ({ data }: { data: Record<string, number> }) => {
 };
 
 // ── Feature Usage Stats ─────────────────────────────────────
-
-const DEMO_FEATURES = [
-  { key: "brain", label: "Brain / AI", icon: Brain, color: "text-primary" },
-  { key: "business", label: "Business", icon: Briefcase, color: "text-primary" },
-  { key: "money", label: "Finance", icon: DollarSign, color: "text-[hsl(var(--trust-safe))]" },
-  { key: "concierge", label: "Concierge", icon: Headphones, color: "text-[hsl(var(--sita-gold))]" },
-  { key: "boardroom", label: "Boardroom", icon: BarChart3, color: "text-muted-foreground" },
-];
 
 const MyActivity = () => {
   const { isDemoMode } = useDataMode();

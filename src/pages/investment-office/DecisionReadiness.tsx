@@ -4,54 +4,7 @@ import { ShieldCheck, AlertTriangle, Check, X, Clock, Search, Brain } from "luci
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useInvestmentDecisions } from "@/hooks/use-investment-office";
-
-const DEMO_PENDING_DECISIONS = [
-  {
-    id: "d1", symbol: "NVDA", name: "Add to NVIDIA Position", icon: "💚", type: "Buy $8,000",
-    dimensions: [
-      { label: "Research Completeness", score: 90, status: "pass" },
-      { label: "Thesis Clarity", score: 85, status: "pass" },
-      { label: "Risk Clarity", score: 60, status: "review" },
-      { label: "Catalyst Understanding", score: 80, status: "pass" },
-      { label: "Portfolio Fit", score: 45, status: "fail" },
-      { label: "Emotional Discipline", score: 75, status: "pass" },
-      { label: "Execution Readiness", score: 88, status: "pass" },
-      { label: "Policy Fit", score: 40, status: "fail" },
-    ],
-    overallScore: 68, verdict: "needs-review" as const,
-    advisorNote: "Strong thesis but concentration risk too high. Reduce size to $5K or trim existing tech exposure first.",
-  },
-  {
-    id: "d2", symbol: "SOL", name: "New Solana Position", icon: "◎", type: "Buy $3,000",
-    dimensions: [
-      { label: "Research Completeness", score: 55, status: "review" },
-      { label: "Thesis Clarity", score: 50, status: "review" },
-      { label: "Risk Clarity", score: 40, status: "fail" },
-      { label: "Catalyst Understanding", score: 45, status: "fail" },
-      { label: "Portfolio Fit", score: 60, status: "review" },
-      { label: "Emotional Discipline", score: 70, status: "pass" },
-      { label: "Execution Readiness", score: 80, status: "pass" },
-      { label: "Policy Fit", score: 65, status: "pass" },
-    ],
-    overallScore: 52, verdict: "simulate-first" as const,
-    advisorNote: "Thesis not fully formed. Run a simulation first and document your invalidation triggers before proceeding.",
-  },
-  {
-    id: "d3", symbol: "XAUUSD", name: "Increase Gold Allocation", icon: "🥇", type: "Buy $10,000",
-    dimensions: [
-      { label: "Research Completeness", score: 85, status: "pass" },
-      { label: "Thesis Clarity", score: 90, status: "pass" },
-      { label: "Risk Clarity", score: 92, status: "pass" },
-      { label: "Catalyst Understanding", score: 75, status: "pass" },
-      { label: "Portfolio Fit", score: 95, status: "pass" },
-      { label: "Emotional Discipline", score: 88, status: "pass" },
-      { label: "Execution Readiness", score: 90, status: "pass" },
-      { label: "Policy Fit", score: 80, status: "pass" },
-    ],
-    overallScore: 87, verdict: "ready" as const,
-    advisorNote: "Well-researched, excellent portfolio hedge. Proceed when ready.",
-  },
-];
+import { DEMO_PENDING_DECISIONS } from "@/lib/demo-data/investment";
 
 const VERDICT_CONFIG = {
   ready: { label: "Ready", color: "text-[hsl(var(--trust-safe))]", bg: "bg-[hsl(var(--trust-safe))]/10", icon: <Check className="h-5 w-5" /> },

@@ -14,55 +14,11 @@ import { useDataMode } from "@/contexts/DataModeContext";
 interface ShadowPattern {
   pattern: string;
   severity: "high" | "medium" | "low";
+import { DEMO_SHADOW_PATTERNS } from "@/lib/demo-data/admin-platform";
   domain: string;
   description: string;
   recommendation: string;
 }
-
-const DEMO_SHADOW_PATTERNS: ShadowPattern[] = [
-  {
-    pattern: "Multiple summary/card rendering",
-    severity: "medium",
-    domain: "dashboard",
-    description: "Dashboard, pulse, and index pages each render summary cards with overlapping data sources",
-    recommendation: "Consolidate into a single SummaryCardService with configurable views",
-  },
-  {
-    pattern: "Advisor vs Assistant duplication",
-    severity: "medium",
-    domain: "assistant",
-    description: "Multiple advisor/assistant chat patterns exist across different pages",
-    recommendation: "Unify under ai-gateway-service as the single canonical entry",
-  },
-  {
-    pattern: "Admin truth board proliferation",
-    severity: "high",
-    domain: "admin-truth",
-    description: "272 admin pages with many sharing similar data fetch patterns and card layouts",
-    recommendation: "Create shared admin data hooks and composable board primitives",
-  },
-  {
-    pattern: "Connector config vs provider family overlap",
-    severity: "medium",
-    domain: "connectors",
-    description: "Google provider family model and connector-oauth have overlapping scopes",
-    recommendation: "Align provider family as the identity layer, connector as the data layer",
-  },
-  {
-    pattern: "Direct Supabase calls from pages",
-    severity: "low",
-    domain: "multiple",
-    description: "Some pages directly call supabase instead of going through service layer",
-    recommendation: "Migrate direct calls to domain services for traceability",
-  },
-  {
-    pattern: "Recommendation score aggregation",
-    severity: "low",
-    domain: "recommendation-execution",
-    description: "Score aggregation logic exists in both REX01 page and recommendation-loop-service",
-    recommendation: "Centralize in recommendation-loop-service",
-  },
-];
 
 const migrationColors: Record<string, string> = {
   "not-started": "bg-muted text-muted-foreground",

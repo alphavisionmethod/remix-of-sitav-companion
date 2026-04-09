@@ -4,6 +4,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { PLATFORM_CONNECTIONS } from "@/hooks/useInvestmentOfficeData";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
+import { DEMO_AVAILABLE_PLATFORMS } from "@/lib/demo-data/investment";
 
 const STATUS_CONFIG = {
   connected: { icon: CheckCircle2, color: "text-[hsl(var(--trust-safe))]", bg: "bg-[hsl(var(--trust-safe))]/10" },
@@ -11,16 +12,6 @@ const STATUS_CONFIG = {
   syncing: { icon: RefreshCw, color: "text-primary", bg: "bg-primary/10" },
   error: { icon: AlertTriangle, color: "text-destructive", bg: "bg-destructive/10" },
 };
-
-const DEMO_AVAILABLE_PLATFORMS = [
-  { name: "Robinhood", type: "brokerage", icon: "🪶" },
-  { name: "Binance", type: "exchange", icon: "🟡" },
-  { name: "Kraken", type: "exchange", icon: "🐙" },
-  { name: "Kalshi", type: "event-market", icon: "📊" },
-  { name: "Manifold", type: "event-market", icon: "🎲" },
-  { name: "Fidelity", type: "brokerage", icon: "🏦" },
-  { name: "Ledger Live", type: "wallet", icon: "🔑" },
-];
 
 export default function PlatformConnections() {
   const { isDemoMode } = useDataMode();

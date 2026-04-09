@@ -9,19 +9,7 @@ import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_PATTERNS = [
-  { id: "ct-1", label: "API timeout cascade after deploy", type: "issue_fingerprint", domain: "engineering", confidence: 94, tenants: 18, anonymization: "k_anonymity", approved: true, restrictions: ["confidence_gated"], privacyGates: ["no_pii", "min_source_count", "min_confidence"] },
-  { id: "ct-2", label: "Lead cold after 48hr no follow-up", type: "workflow_pattern", domain: "revenue-business", confidence: 88, tenants: 31, anonymization: "aggregation", approved: true, restrictions: ["confidence_gated"], privacyGates: ["no_pii", "min_source_count"] },
-  { id: "ct-3", label: "Migration timeout on large tables", type: "deployment_pattern", domain: "engineering", confidence: 91, tenants: 12, anonymization: "k_anonymity", approved: true, restrictions: ["enterprise_opt_out"], privacyGates: ["no_pii", "min_source_count", "min_confidence", "low_false_positive"] },
-  { id: "ct-4", label: "Cache flush resolves 80% of 5xx", type: "self_heal_pattern", domain: "engineering", confidence: 96, tenants: 45, anonymization: "aggregation", approved: true, restrictions: [], privacyGates: ["no_pii", "min_source_count", "min_confidence", "low_false_positive"] },
-  { id: "ct-5", label: "Mobile CTA below fold drop", type: "conversion_pattern", domain: "digital-presence", confidence: 74, tenants: 8, anonymization: "k_anonymity", approved: false, restrictions: ["confidence_gated", "low_source_count"], privacyGates: ["no_pii"] },
-  { id: "ct-6", label: "Dark mode contrast failures", type: "design_pattern", domain: "digital-presence", confidence: 78, tenants: 5, anonymization: "aggregation", approved: false, restrictions: ["low_source_count"], privacyGates: ["no_pii"] },
-  { id: "ct-7", label: "Env var drift staging/prod", type: "config_drift", domain: "engineering", confidence: 85, tenants: 0, anonymization: "redaction", approved: false, restrictions: ["tenant_private", "enterprise_opt_out"], privacyGates: [] },
-];
-
-const DEMO_RESTRICTED_DOMAINS = ["investment-finance", "concierge-household"];
-const DEMO_ENTERPRISE_EXCLUSIONS = ["Acme Corp (custom policy)", "FinanceHQ (regulatory)"];
+import { DEMO_ENTERPRISE_EXCLUSIONS, DEMO_INTEL_PATTERNS as DEMO_PATTERNS, DEMO_RESTRICTED_DOMAINS } from "@/lib/demo-data/admin-intelligence";
 
 const CrossTenantGovernance = () => {
   const { isAdmin, loading } = useRequireAdmin();

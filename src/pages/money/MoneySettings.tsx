@@ -8,22 +8,13 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { useMoneyPolicies, useToggleMoneyPolicy } from "@/hooks/use-domain-data";
 import { useMemo } from "react";
 import { toast } from "sonner";
+import { DEMO_CORE_CONNECTORS as DEMO_CONNECTORS } from "@/lib/demo-data/core-pages";
 
 
 
 const iconMap: Record<string, typeof Shield> = {
   Shield, Bell, DollarSign, PiggyBank, CreditCard, Zap, AlertTriangle, Settings,
 };
-
-const DEMO_CONNECTORS = [
-  { name: "Chase Business", type: "Banking", status: "connected" as const, lastSync: "2 hours ago" },
-  { name: "Wells Fargo", type: "Banking", status: "connected" as const, lastSync: "2 hours ago" },
-  { name: "Ally Savings", type: "Banking", status: "connected" as const, lastSync: "3 hours ago" },
-  { name: "QuickBooks", type: "Accounting", status: "connected" as const, lastSync: "1 hour ago" },
-  { name: "Stripe", type: "Payments", status: "connected" as const, lastSync: "Real-time" },
-  { name: "Google Drive", type: "Documents", status: "not-connected" as const, lastSync: "" },
-  { name: "Payroll Provider", type: "Payroll", status: "not-connected" as const, lastSync: "" },
-];
 
 const MoneySettings = () => {
   const { data: policies = [], isLoading } = useMoneyPolicies();

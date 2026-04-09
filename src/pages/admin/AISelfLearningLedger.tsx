@@ -6,33 +6,7 @@ import { useState } from "react";
 import { BookOpen, TrendingUp, CheckCircle2, AlertTriangle, RotateCcw, Brain, Target, Users, ArrowRight } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_LEARNED_PATTERNS = [
-  { pattern: "Route mapping errors recur after lazy-import refactors", frequency: "4x / 30d", confidence: 88, domain: "Frontend", action: "Added pre-commit route validation", status: "active" as const, impact: "Prevented 3 broken routes" },
-  { pattern: "Feature flag rollbacks cluster within 2 hours of activation", frequency: "5x / 30d", confidence: 82, domain: "Deployment", action: "Canary rollout required for medium+ flags", status: "active" as const, impact: "Reduced flag rollbacks 60%" },
-  { pattern: "CDN cache staleness correlates with brand kit mutations", frequency: "Weekly", confidence: 91, domain: "Infrastructure", action: "Auto-invalidate on brand kit save", status: "active" as const, impact: "Zero stale brand reports since" },
-  { pattern: "Operator overrides low-risk approval threshold repeatedly", frequency: "8x / 30d", confidence: 76, domain: "Governance", action: "Lowered threshold for auto-heals", status: "proposed" as const, impact: "Estimated: -40% approval friction" },
-  { pattern: "Projection rebuild failures spike after concurrent config changes", frequency: "3x / 14d", confidence: 84, domain: "Backend", action: "Mutex lock + sequential rebuild queue", status: "active" as const, impact: "Eliminated rebuild corruption" },
-  { pattern: "Approval flow tests become flaky after UI dependency updates", frequency: "3x / 14d", confidence: 79, domain: "QA", action: "Replace timing-dependent assertions with waitFor", status: "proposed" as const, impact: "Estimated: -80% flaky tests" },
-];
-
-const DEMO_BEHAVIOR_CHANGES = [
-  { change: "Error Fixer now checks for existing lazy imports before proposing route fixes", learnedFrom: "False positive: suggested import that already existed", date: "Apr 3", improvement: "+4% accuracy" },
-  { change: "Reliability Engineer auto-reverts feature flags within 90 min if error rate > 2x baseline", learnedFrom: "revenue-sidebar-v2 flag caused 3 render errors for 45 min", date: "Apr 4", improvement: "45 min → 12 min MTTR" },
-  { change: "Design Engineer includes design token audit in all proposals", learnedFrom: "2 proposals used hardcoded colors instead of semantic tokens", date: "Mar 28", improvement: "+15% consistency score" },
-  { change: "QA Engineer prioritizes integration tests over unit tests for approval flows", learnedFrom: "Unit tests passed but integration flow broke in staging", date: "Mar 25", improvement: "Caught 2 integration bugs" },
-  { change: "Release Manager requires 4-hour soak time before staging→prod promotion", learnedFrom: "v2.14.0 promoted after 30 min, required rollback", date: "Mar 28", improvement: "Zero premature promotions since" },
-];
-
-const DEMO_ROUTING_WEIGHTS = [
-  { agent: "Error Fixer", weight: 1.12, trend: "up" as const, reason: "91% accuracy, 3% improvement this month" },
-  { agent: "QA Engineer", weight: 1.05, trend: "stable" as const, reason: "88% accuracy, consistent performance" },
-  { agent: "Design Engineer", weight: 0.92, trend: "up" as const, reason: "79% accuracy, improving from 71%" },
-  { agent: "Reliability Engineer", weight: 1.15, trend: "stable" as const, reason: "93% accuracy, top performer" },
-  { agent: "Performance Optimizer", weight: 0.85, trend: "down" as const, reason: "74% accuracy, 3 false positives this month" },
-  { agent: "Security Reviewer", weight: 1.18, trend: "stable" as const, reason: "96% accuracy, zero missed issues" },
-  { agent: "Learning Analyst", weight: 0.78, trend: "up" as const, reason: "71% accuracy but improving pattern detection" },
-];
+import { DEMO_BEHAVIOR_CHANGES, DEMO_LEARNED_PATTERNS, DEMO_ROUTING_WEIGHTS } from "@/lib/demo-data/admin-platform";
 
 const AISelfLearningLedger = () => {
   const { isDemoMode } = useDataMode();

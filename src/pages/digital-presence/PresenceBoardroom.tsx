@@ -5,40 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_METRICS = [
-  { label: "Total Traffic", value: "12,847", change: "+14.2%", up: true, icon: Eye },
-  { label: "Conversion Rate", value: "3.2%", change: "+0.4%", up: true, icon: TrendingUp },
-  { label: "Cart Abandonment", value: "68%", change: "-2.1%", up: true, icon: ShoppingCart },
-  { label: "Site Health", value: "87/100", change: "+3", up: true, icon: Globe },
-];
-
-const DEMO_TOP_PAGES = [
-  { page: "/", name: "Homepage", views: 4201, conversion: "4.1%", health: 92 },
-  { page: "/services", name: "Services", views: 2103, conversion: "2.8%", health: 85 },
-  { page: "/book", name: "Booking", views: 1847, conversion: "12.4%", health: 90 },
-  { page: "/pricing", name: "Pricing", views: 1204, conversion: "5.2%", health: 78 },
-  { page: "/about", name: "About", views: 892, conversion: "0.8%", health: 95 },
-];
-
-const DEMO_WEAK_PAGES = [
-  { page: "/blog/old-post", issue: "Stale content — last updated 9 months ago", severity: "high" },
-  { page: "/products/item-12", issue: "Low conversion, weak CTA", severity: "medium" },
-  { page: "/contact", issue: "Form has 7 fields — consider reducing", severity: "low" },
-];
-
-const DEMO_LIVE_PROMOTIONS = [
-  { name: "Summer Sale Banner", status: "active", expires: "3 days", placement: "Homepage hero" },
-  { name: "Free Shipping", status: "active", expires: "7 days", placement: "Cart page" },
-  { name: "Holiday Bundle", status: "scheduled", expires: "—", placement: "Collection page" },
-];
-
-const DEMO_ADVISOR_SIGNALS = [
-  { advisor: "CRO Advisor", signal: "Pricing page has high bounce — add social proof below fold", type: "opportunity" },
-  { advisor: "Content Strategist", signal: "12 blog posts haven't been updated in 6+ months", type: "warning" },
-  { advisor: "SEO Advisor", signal: "3 pages missing meta descriptions", type: "fix" },
-  { advisor: "Design Director", signal: "Mobile CTA on services page barely visible", type: "alert" },
-];
+import { DEMO_DPO_ADVISOR_SIGNALS as DEMO_ADVISOR_SIGNALS, DEMO_DPO_METRICS as DEMO_METRICS, DEMO_LIVE_PROMOTIONS, DEMO_TOP_PAGES, DEMO_WEAK_PAGES } from "@/lib/demo-data/digital-presence";
 
 export default function PresenceBoardroom() {
   const { isDemoMode } = useDataMode();

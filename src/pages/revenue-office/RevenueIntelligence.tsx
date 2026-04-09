@@ -4,27 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_COHORT_DATA = [
-  { cohort: "Jan 2026", acquired: 24, retained30: 20, retained60: 17, retained90: 14, ltv: "$1,820" },
-  { cohort: "Feb 2026", acquired: 31, retained30: 27, retained60: 22, retained90: 19, ltv: "$2,140" },
-  { cohort: "Mar 2026", acquired: 28, retained30: 25, retained60: 21, retained90: null, ltv: "$1,680" },
-];
-
-const DEMO_REVENUE_STREAMS = [
-  { source: "Courses & Digital", revenue: "$42,174", pct: 45, trend: "+12%" },
-  { source: "Services & Coaching", revenue: "$25,000", pct: 27, trend: "+8%" },
-  { source: "Memberships", revenue: "$12,149", pct: 13, trend: "+22%" },
-  { source: "Consulting Retainers", revenue: "$9,000", pct: 10, trend: "+5%" },
-  { source: "Affiliate / Partner", revenue: "$4,700", pct: 5, trend: "+3%" },
-];
-
-const DEMO_LEAKAGE = [
-  { type: "Stale Leads", value: "$34,200", action: "Re-engage sequence needed" },
-  { type: "Abandoned Carts", value: "$6,400", action: "Recovery email not sent" },
-  { type: "Expired Quotes", value: "$12,000", action: "Follow-up overdue" },
-  { type: "Churn Risk", value: "$18,500", action: "2 high-value clients disengaging" },
-];
+import { DEMO_COHORT_DATA, DEMO_LEAKAGE, DEMO_REVENUE_STREAMS } from "@/lib/demo-data/revenue-office";
 
 export default function RevenueIntelligence() {
   const { isDemoMode } = useDataMode();

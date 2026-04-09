@@ -6,6 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { RefreshCw, CheckCircle2, XCircle, AlertTriangle, Loader2, Activity, Zap, Shield, DollarSign, Clock, Server } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_AI_FEATURES } from "@/lib/demo-data/admin-platform";
 
 const statusColors = {
   healthy: "bg-green-500/20 text-green-400 border-green-500/30",
@@ -39,14 +40,6 @@ function CheckRow({ label, ok, detail }: { label: string; ok: boolean | null; de
     </div>
   );
 }
-
-const DEMO_AI_FEATURES = [
-  { name: "Chat Advisor", fn: "chat-advisor", surface: "AdvisorChat", description: "Streaming advisor conversations across money/business/concierge/family/growth" },
-  { name: "Brain Core", fn: "brain-core", surface: "BrainCore hook", description: "Structured advisory with rules engine + LLM escalation" },
-  { name: "Personal Brain", fn: "personal-brain", surface: "Personal Brain page", description: "Think/Learn/Build/Create modes with streaming" },
-  { name: "Agent Executor", fn: "agent-executor", surface: "Agent diagnostics", description: "Pod-based agent diagnostics (no AI calls)" },
-  { name: "Admin Intelligence", fn: "admin-intelligence", surface: "Admin analytics", description: "Anomaly detection, forecasting, optimization (no AI calls)" },
-];
 
 export default function AIRuntimeStatus() {
   const { isDemoMode } = useDataMode();

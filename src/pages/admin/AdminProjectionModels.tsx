@@ -7,6 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import { BarChart3, CheckCircle, AlertTriangle, Clock, RefreshCw, Database, Layers, ArrowRight, XCircle, Zap } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_MODELS } from "@/lib/demo-data/admin-platform";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -32,15 +33,6 @@ interface ReadModel {
   eventToProjectionDelay: number;
   rebuildSuccess: boolean;
 }
-
-const DEMO_MODELS: ReadModel[] = [
-  { id: "rm-1", name: "Dashboard Metrics", source: "events → aggregator", freshness: "fresh", lagMs: 450, lastRebuilt: "2026-04-05T10:20:00Z", affectedSurfaces: ["AdminDashboard", "MissionControl"], eventToProjectionDelay: 450, rebuildSuccess: true },
-  { id: "rm-2", name: "Incident Summary", source: "incidents → materializer", freshness: "fresh", lagMs: 200, lastRebuilt: "2026-04-05T10:22:00Z", affectedSurfaces: ["IncidentCommand"], eventToProjectionDelay: 200, rebuildSuccess: true },
-  { id: "rm-3", name: "Connector Health", source: "connector_sync → projector", freshness: "stale", lagMs: 18500, lastRebuilt: "2026-04-05T09:55:00Z", affectedSurfaces: ["ConnectorGovernance", "MissionControl"], eventToProjectionDelay: 18500, rebuildSuccess: true },
-  { id: "rm-4", name: "Proof Coverage Matrix", source: "audit_logs → proof_builder", freshness: "fresh", lagMs: 800, lastRebuilt: "2026-04-05T10:19:00Z", affectedSurfaces: ["ProofMatrix"], eventToProjectionDelay: 800, rebuildSuccess: true },
-  { id: "rm-5", name: "Fleet Predictions", source: "device_statuses → ml_pipeline", freshness: "degraded", lagMs: 65000, lastRebuilt: "2026-04-05T08:30:00Z", affectedSurfaces: ["FleetHealth", "IntelligenceDashboard"], eventToProjectionDelay: 65000, rebuildSuccess: false },
-  { id: "rm-6", name: "Revenue Analytics", source: "invoices → revenue_projector", freshness: "fresh", lagMs: 1200, lastRebuilt: "2026-04-05T10:18:00Z", affectedSurfaces: ["RevenueOffice"], eventToProjectionDelay: 1200, rebuildSuccess: true },
-];
 
 const ProjectionControlCenter = () => {
   const { isDemoMode } = useDataMode();

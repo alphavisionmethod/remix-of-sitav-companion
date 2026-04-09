@@ -11,59 +11,9 @@ import {
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_ACTIONS, DEMO_CORE_TIMELINE as DEMO_TIMELINE, DEMO_CUSTOMERS_DATA, DEMO_DOCUMENTS } from "@/lib/demo-data/core-pages";
 
 // Mock customer data keyed by ID
-const DEMO_CUSTOMERS_DATA: Record<string, {
-  name: string; initials: string; email: string; phone: string; company?: string; location: string; website?: string;
-  since: string; trust: "verified" | "review" | "degraded"; health: number; healthLabel: string; healthTrend: "up" | "down" | "flat";
-  totalRevenue: string; invoicesPaid: number; invoicesTotal: number; outstanding: string; avgPayDays: number;
-}> = {
-  "marcus-johnson": {
-    name: "Marcus Johnson", initials: "MJ", email: "marcus@johnson.co", phone: "(555) 234-5678", company: "Johnson Consulting",
-    location: "Austin, TX", website: "johnson.co", since: "Jan 2023", trust: "verified", health: 92, healthLabel: "Excellent", healthTrend: "up",
-    totalRevenue: "$12,400", invoicesPaid: 8, invoicesTotal: 9, outstanding: "$1,800", avgPayDays: 4,
-  },
-  "apex-corp": {
-    name: "Apex Corp", initials: "AC", email: "billing@apexcorp.com", phone: "(555) 987-6543", company: "Apex Corporation",
-    location: "San Francisco, CA", website: "apexcorp.com", since: "Mar 2023", trust: "verified", health: 88, healthLabel: "Strong", healthTrend: "flat",
-    totalRevenue: "$28,600", invoicesPaid: 12, invoicesTotal: 12, outstanding: "$0", avgPayDays: 7,
-  },
-  "david-kim": {
-    name: "David Kim", initials: "DK", email: "david@kimdesign.io", phone: "(555) 111-2233", company: "Kim Design Studio",
-    location: "Seattle, WA", website: "kimdesign.io", since: "Aug 2023", trust: "degraded", health: 45, healthLabel: "At Risk", healthTrend: "down",
-    totalRevenue: "$4,200", invoicesPaid: 2, invoicesTotal: 4, outstanding: "$3,600", avgPayDays: 22,
-  },
-  "sarah-chen": {
-    name: "Sarah Chen", initials: "SC", email: "sarah@chenventures.com", phone: "(555) 444-7788", location: "Portland, OR",
-    since: "Mar 2024", trust: "review", health: 60, healthLabel: "New", healthTrend: "flat",
-    totalRevenue: "$0", invoicesPaid: 0, invoicesTotal: 0, outstanding: "$0", avgPayDays: 0,
-  },
-};
-
-const DEMO_TIMELINE = [
-  { icon: CheckCircle, color: "text-trust-verified", title: "Invoice #1038 paid — $4,200", subtitle: "Payment received via Stripe", time: "2 hours ago" },
-  { icon: FileText, color: "text-primary", title: "Quote #1037 sent — $3,200", subtitle: "Website maintenance package", time: "5 days ago" },
-  { icon: Phone, color: "text-accent", title: "Follow-up call completed", subtitle: "Discussed Q2 projects — 18 min", time: "1 week ago" },
-  { icon: Mail, color: "text-sita-purple-light", title: "Proposal email opened", subtitle: "Opened 3 times, spent 4 min reading", time: "1 week ago" },
-  { icon: Calendar, color: "text-trust-review", title: "Onsite meeting — project kickoff", subtitle: "At client office, 2 attendees", time: "3 weeks ago" },
-  { icon: DollarSign, color: "text-trust-verified", title: "Invoice #1032 paid — $2,800", subtitle: "On time — 3 days early", time: "1 month ago" },
-  { icon: Briefcase, color: "text-primary", title: "Customer onboarded", subtitle: "Referred by Lisa Thompson", time: "Jan 2023" },
-];
-
-const DEMO_ACTIONS = [
-  { title: "Send follow-up on Quote #1037", priority: "high", state: "queued" as const, reason: "Quote viewed 3x but no response in 5 days" },
-  { title: "Schedule Q2 planning call", priority: "medium", state: "proposed" as const, reason: "Annual review cycle — relationship maintenance" },
-  { title: "Collect on Invoice #1035", priority: "high", state: "escalated" as const, reason: "7 days overdue, 2 reminders sent" },
-];
-
-const DEMO_DOCUMENTS = [
-  { name: "Invoice_1038.pdf", type: "Invoice", date: "Mar 28", trust: "verified" as const },
-  { name: "Quote_1037_Maintenance.pdf", type: "Quote", date: "Mar 23", trust: "verified" as const },
-  { name: "Service_Agreement_v2.pdf", type: "Contract", date: "Jan 15", trust: "verified" as const },
-  { name: "Meeting_Notes_Q1.docx", type: "Notes", date: "Mar 15", trust: "review" as const },
-  { name: "Invoice_1032.pdf", type: "Invoice", date: "Feb 28", trust: "verified" as const },
-];
-
 const CustomerDetail = () => {
   const { isDemoMode } = useDataMode();
   const { id } = useParams<{ id: string }>();

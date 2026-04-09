@@ -3,49 +3,7 @@ import { Gauge, AlertTriangle, Check } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { usePortfolioPositions } from "@/hooks/use-investment-office";
-
-const DEMO_POSITIONS = [
-  {
-    symbol: "NVDA", name: "NVIDIA", icon: "💚",
-    conviction: 82, uncertainty: 28, catalystStrength: 85, downsideFragility: 35,
-    thesisClarity: 90, portfolioFit: 60, timeHorizonFit: 80,
-    overall: 78, verdict: "Strong conviction — moderate concentration concern",
-  },
-  {
-    symbol: "BTC", name: "Bitcoin", icon: "₿",
-    conviction: 72, uncertainty: 45, catalystStrength: 60, downsideFragility: 55,
-    thesisClarity: 75, portfolioFit: 45, timeHorizonFit: 85,
-    overall: 62, verdict: "Good conviction — allocation above policy, trim to improve fit",
-  },
-  {
-    symbol: "SOL", name: "Solana", icon: "◎",
-    conviction: 65, uncertainty: 55, catalystStrength: 50, downsideFragility: 65,
-    thesisClarity: 60, portfolioFit: 55, timeHorizonFit: 70,
-    overall: 55, verdict: "Moderate conviction — speculative allocation, size appropriately",
-  },
-  {
-    symbol: "XAUUSD", name: "Gold", icon: "🥇",
-    conviction: 75, uncertainty: 20, catalystStrength: 40, downsideFragility: 15,
-    thesisClarity: 85, portfolioFit: 90, timeHorizonFit: 90,
-    overall: 80, verdict: "High conviction — excellent portfolio hedge, low fragility",
-  },
-  {
-    symbol: "AAPL", name: "Apple", icon: "🍎",
-    conviction: 68, uncertainty: 30, catalystStrength: 55, downsideFragility: 30,
-    thesisClarity: 70, portfolioFit: 70, timeHorizonFit: 85,
-    overall: 68, verdict: "Solid conviction — quality hold with AI optionality",
-  },
-];
-
-const DEMO_DIMS: Array<{ key: keyof Pick<typeof DEMO_POSITIONS[0], "conviction" | "uncertainty" | "catalystStrength" | "downsideFragility" | "thesisClarity" | "portfolioFit" | "timeHorizonFit">; label: string; color: string; inverted?: boolean }> = [
-  { key: "conviction", label: "Conviction", color: "bg-primary" },
-  { key: "uncertainty", label: "Uncertainty", color: "bg-destructive", inverted: true },
-  { key: "catalystStrength", label: "Catalyst Strength", color: "bg-[hsl(var(--trust-safe))]" },
-  { key: "downsideFragility", label: "Downside Fragility", color: "bg-[hsl(var(--trust-warn))]", inverted: true },
-  { key: "thesisClarity", label: "Thesis Clarity", color: "bg-primary" },
-  { key: "portfolioFit", label: "Portfolio Fit", color: "bg-[hsl(var(--trust-safe))]" },
-  { key: "timeHorizonFit", label: "Time Horizon Fit", color: "bg-primary" },
-];
+import { DEMO_DIMS, DEMO_POSITIONS } from "@/lib/demo-data/investment";
 
 export default function ConvictionEngine() {
   const { isDemoMode } = useDataMode();

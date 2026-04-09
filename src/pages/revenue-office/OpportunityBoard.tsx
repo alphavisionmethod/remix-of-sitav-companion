@@ -4,15 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Lightbulb, TrendingUp, UserPlus, Star, RefreshCw, DollarSign, ArrowRight } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_opportunities = [
-  { title: "12 warm leads not yet contacted", impact: "$18,400", confidence: 87, effort: "Low", category: "Conversion", advisor: "CRM Advisor", icon: UserPlus, why: "These leads visited pricing page 3+ times but no follow-up scheduled" },
-  { title: "Upsell Premium tier to 34 Professional members", impact: "$6,800/mo", confidence: 72, effort: "Medium", category: "Upsell", advisor: "Retention Advisor", icon: TrendingUp, why: "Usage patterns match Premium member behavior" },
-  { title: "23 happy clients ready for review request", impact: "Trust boost", confidence: 91, effort: "Low", category: "Reputation", advisor: "Reputation Advisor", icon: Star, why: "NPS 9-10 scores, no review submitted yet" },
-  { title: "Reactivation: 18 dormant clients (90+ days)", impact: "$12,200", confidence: 54, effort: "Medium", category: "Reactivation", advisor: "Retention Advisor", icon: RefreshCw, why: "Previously high-value clients, no recent engagement" },
-  { title: "Bundle 'Growth + Marketing' courses", impact: "$8,500", confidence: 65, effort: "Low", category: "Packaging", advisor: "Offer Advisor", icon: DollarSign, why: "78% of Marketing buyers also view Growth Masterclass" },
-  { title: "Referral program for top 10% of clients", impact: "$22,000", confidence: 58, effort: "High", category: "Referral", advisor: "Revenue Strategist", icon: Lightbulb, why: "Top clients have high satisfaction but no referral incentive exists" },
-];
+import { DEMO_opportunities } from "@/lib/demo-data/revenue-office";
 
 const categoryColors: Record<string, string> = {
   Conversion: "bg-blue-500/10 text-blue-400",

@@ -19,6 +19,7 @@ import {
   useAddEcosystemDevice, useRemoveEcosystemDevice, useUpdateDeviceTrust,
   useToggleHealthConsent, useUpdatePushRoute,
 } from "@/hooks/useEcosystemDevices";
+import { DEMO_ADMIN_PROVIDER_CAPS as DEMO_PROVIDER_CAPS } from "@/lib/demo-data/admin-platform";
 
 const SURFACE_META: Record<string, { title: string; icon: any; desc: string; tech: string[]; capabilities: string[] }> = {
   android_phone: { title: "Android Phone Shell", icon: Smartphone, desc: "Primary Android surface — Material Design shell", tech: ["Kotlin", "Jetpack Compose", "WebView hybrid"], capabilities: ["push_fcm", "biometric", "camera", "nfc"] },
@@ -27,14 +28,6 @@ const SURFACE_META: Record<string, { title: string; icon: any; desc: string; tec
   android_push: { title: "Android Push (FCM)", icon: Wifi, desc: "FCM data/notification channels, DND awareness", tech: ["Firebase Cloud Messaging", "Notification channels"], capabilities: ["data_message", "notification", "channel_management", "dnd_check"] },
   health_connect: { title: "Health Connect", icon: Heart, desc: "Android health signal path with consent", tech: ["Health Connect API", "Permission model"], capabilities: ["heart_rate", "sleep", "steps", "exercise"] },
 };
-
-const DEMO_PROVIDER_CAPS = [
-  { key: "android_mobile_shell", label: "Mobile Shell", priority: "P0" },
-  { key: "wearos_surface", label: "Wear OS Surface", priority: "P1" },
-  { key: "android_push_channel", label: "Push Channel (FCM)", priority: "P0" },
-  { key: "android_device_trust", label: "Device Trust", priority: "P0" },
-  { key: "android_health_readiness", label: "Health Readiness", priority: "P1" },
-];
 
 const AND01AndroidEcosystemCenter = () => {
   const { isDemoMode } = useDataMode();

@@ -5,45 +5,7 @@ import { useState } from "react";
 import { MessageSquare, Code, Palette, Shield, Gauge, AlertTriangle, CheckCircle2, ArrowRight } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_DEBATES = [
-  {
-    id: 1, topic: "How to fix projection cache corruption",
-    status: "resolved" as const,
-    participants: [
-      { agent: "Backend Engineer", position: "Add Redis mutex lock with 30s TTL to prevent concurrent writes", confidence: 87, stance: "for" as const },
-      { agent: "Performance Optimizer", position: "Mutex will add 200-500ms latency. Use optimistic locking instead", confidence: 72, stance: "against" as const },
-      { agent: "Reliability Engineer", position: "Mutex is safer. Latency increase acceptable vs data corruption risk", confidence: 90, stance: "for" as const },
-      { agent: "Security Reviewer", position: "Agree with mutex. Optimistic locking may leave window for inconsistency", confidence: 85, stance: "for" as const },
-    ],
-    resolution: "Mutex lock approach selected (3-1). Performance Optimizer's latency concern noted — monitor post-deploy.",
-    consensus: 82,
-  },
-  {
-    id: 2, topic: "Admin shell performance — lazy imports vs route preloading",
-    status: "active" as const,
-    participants: [
-      { agent: "Frontend Engineer", position: "Full lazy imports with Suspense boundaries. Reduces initial bundle 60%", confidence: 85, stance: "for" as const },
-      { agent: "Performance Optimizer", position: "Lazy imports + prefetch on hover for critical routes. Best of both", confidence: 88, stance: "modified" as const },
-      { agent: "QA Engineer", position: "Lazy imports require route test updates. 8 tests need rewriting", confidence: 78, stance: "neutral" as const },
-      { agent: "Design Engineer", position: "Ensure loading skeletons match page layouts to avoid layout shift", confidence: 81, stance: "neutral" as const },
-    ],
-    resolution: null,
-    consensus: 68,
-  },
-  {
-    id: 3, topic: "Should feature flags require canary rollout?",
-    status: "resolved" as const,
-    participants: [
-      { agent: "Release Manager", position: "All feature flags must go through 10% → 50% → 100% canary stages", confidence: 88, stance: "for" as const },
-      { agent: "Engineering Lead", position: "Only high-impact flags need canary. Low-risk can go straight to 100%", confidence: 82, stance: "modified" as const },
-      { agent: "Reliability Engineer", position: "Recent flag rollback supports canary for all. 5 rollbacks in 30 days", confidence: 86, stance: "for" as const },
-      { agent: "Learning Analyst", position: "Data shows 80% of rollbacks were flags without canary stage", confidence: 79, stance: "for" as const },
-    ],
-    resolution: "Canary required for medium+ impact flags. Low-risk flags can opt out with explicit justification.",
-    consensus: 84,
-  },
-];
+import { DEMO_DEBATES } from "@/lib/demo-data/admin-platform";
 
 const stanceColors: Record<string, string> = {
   for: "text-[hsl(var(--trust-safe))]",

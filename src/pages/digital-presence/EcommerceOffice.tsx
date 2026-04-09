@@ -6,35 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useSites } from "@/hooks/use-digital-presence";
-
-const DEMO_PRODUCTS = [
-  { name: "Premium Yoga Mat", price: "$79", stock: 24, views: 1200, conversion: "4.2%", rating: 4.8, status: "active" },
-  { name: "Resistance Bands Set", price: "$29", stock: 156, views: 890, conversion: "6.1%", rating: 4.5, status: "active" },
-  { name: "Summer Tee (Limited)", price: "$45", stock: 3, views: 342, conversion: "2.8%", rating: 4.2, status: "low-stock" },
-  { name: "Wellness Journal", price: "$22", stock: 89, views: 120, conversion: "1.1%", rating: 3.9, status: "underperforming" },
-  { name: "Gift Bundle", price: "$120", stock: 45, views: 567, conversion: "3.5%", rating: 4.7, status: "active" },
-];
-
-const DEMO_COLLECTIONS = [
-  { name: "Best Sellers", products: 8, revenue: "$4,280", featured: true },
-  { name: "New Arrivals", products: 5, revenue: "$1,200", featured: true },
-  { name: "Summer Collection", products: 12, revenue: "$2,100", featured: false },
-  { name: "Gift Ideas", products: 6, revenue: "$890", featured: false },
-];
-
-const DEMO_CART_DIAGNOSTICS = [
-  { issue: "Shipping cost surprise at checkout", impact: "32% of cart abandonments", severity: "critical" },
-  { issue: "No guest checkout option", impact: "18% of abandonments", severity: "high" },
-  { issue: "Payment method limited to credit card", impact: "12% of abandonments", severity: "medium" },
-  { issue: "No urgency/scarcity signals", impact: "Estimated 5% lift possible", severity: "opportunity" },
-];
-
-const DEMO_MERCHANDISING_OPS = [
-  { action: "Feature 'Resistance Bands' on homepage — highest conversion", type: "opportunity", confidence: 89 },
-  { action: "Bundle 'Yoga Mat' + 'Resistance Bands' — natural pair", type: "opportunity", confidence: 82 },
-  { action: "Archive 'Wellness Journal' — low performance, update or remove", type: "cleanup", confidence: 75 },
-  { action: "Add related products to 'Gift Bundle' page", type: "improvement", confidence: 91 },
-];
+import { DEMO_CART_DIAGNOSTICS, DEMO_COLLECTIONS, DEMO_DPO_PRODUCTS as DEMO_PRODUCTS, DEMO_MERCHANDISING_OPS } from "@/lib/demo-data/digital-presence";
 
 export default function EcommerceOffice() {
   const { isDemoMode } = useDataMode();

@@ -9,38 +9,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_SEGMENTS = [
-  { id: "s1", name: "High-Value Clients", type: "dynamic", contacts: 34, revenue: "$284,000", criteria: ["LTV > $5,000", "Active in last 30d"], color: "border-l-emerald-400", growth: "+3 this month" },
-  { id: "s2", name: "Warm Leads (Engaged)", type: "dynamic", contacts: 67, revenue: "$0", criteria: ["Opened 3+ emails", "Visited pricing page", "Not yet converted"], color: "border-l-blue-400", growth: "+8 this week" },
-  { id: "s3", name: "At-Risk Clients", type: "dynamic", contacts: 12, revenue: "$48,000", criteria: ["No activity 60+ days", "Previously active", "LTV > $1,000"], color: "border-l-red-400", growth: "+2 this month" },
-  { id: "s4", name: "VIP Candidates", type: "smart", contacts: 18, revenue: "$126,000", criteria: ["LTV > $3,000", "NPS 9-10", "Referred others"], color: "border-l-amber-400", growth: "Stable" },
-  { id: "s5", name: "Email Unengaged", type: "dynamic", contacts: 89, revenue: "$0", criteria: ["No email open in 90d", "Still subscribed"], color: "border-l-muted", growth: "+12 this month" },
-  { id: "s6", name: "Coaching Clients", type: "static", contacts: 24, revenue: "$72,000", criteria: ["Product: Coaching Program", "Active subscription"], color: "border-l-purple-400", growth: "+1 this month" },
-  { id: "s7", name: "Webinar Attendees (No Purchase)", type: "dynamic", contacts: 156, revenue: "$0", criteria: ["Attended webinar", "No purchase within 14d"], color: "border-l-cyan-400", growth: "+28 this week" },
-  { id: "s8", name: "Repeat Buyers", type: "smart", contacts: 42, revenue: "$210,000", criteria: ["2+ purchases", "Active"], color: "border-l-green-400", growth: "+5 this month" },
-];
-
-const DEMO_SCORING_RULES = [
-  { signal: "Visited pricing page", points: 15, category: "Engagement" },
-  { signal: "Opened 3+ emails in 7 days", points: 10, category: "Email" },
-  { signal: "Booked a call", points: 25, category: "Intent" },
-  { signal: "Submitted a form", points: 20, category: "Conversion" },
-  { signal: "Replied to email", points: 15, category: "Engagement" },
-  { signal: "Watched webinar replay (>50%)", points: 12, category: "Content" },
-  { signal: "Downloaded resource", points: 8, category: "Content" },
-  { signal: "Referred a friend", points: 30, category: "Advocacy" },
-  { signal: "No activity 30+ days", points: -20, category: "Decay" },
-  { signal: "Unsubscribed from list", points: -15, category: "Decay" },
-];
-
-const DEMO_TOP_LEADS = [
-  { name: "Rachel Green", score: 87, company: "GreenCo", signals: ["Pricing page 5x", "Form submitted", "Email reply"], stage: "Qualified" },
-  { name: "Tom Hayes", score: 78, company: "Hayes Group", signals: ["VIP inquiry", "Booked call"], stage: "Proposal" },
-  { name: "Mia Zhang", score: 72, company: "Studio Co", signals: ["Webinar attended", "3 emails opened"], stage: "Warm" },
-  { name: "Alex Rivera", score: 65, company: "Rivera IO", signals: ["Resource download", "Pricing page 2x"], stage: "Warm" },
-  { name: "Jordan Lee", score: 54, company: "Lee & Partners", signals: ["Email opens", "Blog visits"], stage: "Cold" },
-];
+import { DEMO_REV_SEGMENTS_SEGMENTATION_ENGINE as DEMO_SEGMENTS, DEMO_SCORING_RULES, DEMO_TOP_LEADS } from "@/lib/demo-data/revenue-office";
 
 export default function SegmentationEngine() {
   const { isDemoMode } = useDataMode();

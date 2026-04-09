@@ -6,36 +6,9 @@ import { Progress } from "@/components/ui/progress";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const DEMO_PAGE_TREE = [
-  { path: "/", label: "Homepage", health: 92, views: 4201, mobile: 88, children: [
-    { path: "/services", label: "Services", health: 85, views: 2103, mobile: 72 },
-    { path: "/pricing", label: "Pricing", health: 78, views: 1204, mobile: 80 },
-    { path: "/about", label: "About", health: 95, views: 892, mobile: 91 },
-    { path: "/contact", label: "Contact", health: 70, views: 445, mobile: 65 },
-  ]},
-  { path: "/book", label: "Booking", health: 90, views: 1847, mobile: 85, children: [] },
-  { path: "/shop", label: "Shop", health: 82, views: 3102, mobile: 76, children: [
-    { path: "/shop/cart", label: "Cart", health: 75, views: 1200, mobile: 70 },
-    { path: "/shop/checkout", label: "Checkout", health: 68, views: 890, mobile: 62 },
-  ]},
-  { path: "/blog", label: "Blog", health: 60, views: 2800, mobile: 82, children: [] },
-];
-
-const DEMO_CONVERSION_PATHS = [
-  { name: "Homepage → Services → Book", rate: "12.4%", volume: 342, trend: "up" },
-  { name: "Homepage → Shop → Cart → Checkout", rate: "3.8%", volume: 198, trend: "down" },
-  { name: "Blog → Services → Contact", rate: "2.1%", volume: 87, trend: "stable" },
-  { name: "Landing Page → Book", rate: "18.2%", volume: 156, trend: "up" },
-];
-
-const DEMO_WEAK_NODES = [
-  { page: "/shop/checkout", issue: "68% drop-off at payment step", severity: "critical" },
-  { page: "/contact", issue: "Mobile form barely usable — 65% mobile score", severity: "high" },
-  { page: "/blog", issue: "14 posts older than 6 months, no updates", severity: "medium" },
-];
-
 function PageNode({ page, depth = 0 }: { page: typeof DEMO_PAGE_TREE[0]; depth?: number }) {
   const healthColor = page.health >= 85 ? "text-green-400" : page.health >= 70 ? "text-amber-400" : "text-red-400";
+import { DEMO_CONVERSION_PATHS, DEMO_PAGE_TREE, DEMO_WEAK_NODES } from "@/lib/demo-data/digital-presence";
   return (
     <div style={{ marginLeft: depth * 24 }}>
       <DemoModeBadge />

@@ -41,13 +41,6 @@ const buildDemoSimResult = (simInput: { amount: number; [key: string]: unknown }
 });
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 // Engine costs — canonical inline data (no mock import needed)
-const DEMO_ENGINE_COSTS = [
-  { service: "AI Model Calls", cost: "$12.40", percentage: 45, trend: "up" as const },
-  { service: "Database", cost: "$3.20", percentage: 12, trend: "flat" as const },
-  { service: "Edge Functions", cost: "$2.10", percentage: 8, trend: "down" as const },
-  { service: "Storage", cost: "$0.80", percentage: 3, trend: "flat" as const },
-  { service: "Connectors", cost: "$8.90", percentage: 32, trend: "up" as const },
-];
 import {
   useAdminIncidents, useAcknowledgeIncident, useResolveIncident, useCreateIncident,
   useAdminPolicies, useCreatePolicy, useSimulatePolicy,
@@ -80,6 +73,7 @@ import {
   Rocket, GitBranch, BookMarked, Headphones, FileCheck, Map, ExternalLink,
   CreditCard, Package
 } from "lucide-react";
+import { DEMO_ENGINE_COSTS } from "@/lib/demo-data/core-pages";
 
 type OwnerPage = "overview" | "workforce" | "incidents" | "connectors" | "costs" | "policies" | "audit" | "fleet" | "intelligence" | "council"
   | "trust-center" | "releases" | "model-routing" | "knowledge" | "support" | "change-review" | "rollback-center" | "system-map" | "autopilot" | "billing" | "governance" | "approvals";

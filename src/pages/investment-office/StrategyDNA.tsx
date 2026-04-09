@@ -4,27 +4,8 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useInvestmentStrategyRecords } from "@/hooks/use-investment-office";
 
-const DEMO_DNA_DIMENSIONS = [
-  { label: "Value-Tilted", score: 35, description: "Preference for undervalued assets based on fundamentals" },
-  { label: "Growth-Oriented", score: 72, description: "Tendency toward high-growth, high-multiple companies" },
-  { label: "Macro-Reactive", score: 58, description: "Sensitivity to macro regime changes in decision-making" },
-  { label: "Event-Driven", score: 25, description: "Appetite for catalyst-based and event-contract positions" },
-  { label: "Diversification-First", score: 40, description: "Priority given to spreading risk across uncorrelated assets" },
-  { label: "Momentum-Sensitive", score: 62, description: "Tendency to enter positions following price strength" },
-  { label: "Speculation-Prone", score: 55, description: "Willingness to take high-conviction, high-risk bets" },
-  { label: "Preservation-Oriented", score: 30, description: "Focus on protecting capital vs growing it aggressively" },
-  { label: "Thesis-Disciplined", score: 78, description: "Consistency in documenting and following investment theses" },
-  { label: "Patience Score", score: 70, description: "Ability to hold positions through volatility without panic" },
-];
-
 const STRATEGY_SUMMARY = "Your portfolio reveals a growth-oriented, thesis-disciplined investor with moderate macro awareness. You show strong patience but occasionally drift toward speculation. Event markets are underweight relative to your macro interest.";
-
-const DEMO_SUGGESTIONS = [
-  "Consider adding value exposure to balance growth concentration",
-  "Your thesis discipline is strong — leverage it for event-driven positions",
-  "Diversification score is low — review correlation clusters",
-  "Speculation tolerance is moderate but crypto allocation suggests higher in practice",
-];
+import { DEMO_DNA_DIMENSIONS, DEMO_SUGGESTIONS } from "@/lib/demo-data/investment";
 
 export default function StrategyDNA() {
   const { isDemoMode } = useDataMode();

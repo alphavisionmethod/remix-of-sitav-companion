@@ -8,25 +8,7 @@ import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useSites } from "@/hooks/use-digital-presence";
-
-const DEMO_PAGE_TYPES = [
-  { type: "Landing Page", desc: "High-converting campaign or product page", icon: Rocket, color: "text-blue-400" },
-  { type: "Service Page", desc: "Describe and sell a service offering", icon: FileText, color: "text-green-400" },
-  { type: "Booking Page", desc: "Let customers schedule appointments", icon: Calendar, color: "text-purple-400" },
-  { type: "Product Page", desc: "Showcase and sell a product", icon: ShoppingCart, color: "text-amber-400" },
-  { type: "Checkout Flow", desc: "Secure payment and order flow", icon: ShoppingCart, color: "text-rose-400" },
-  { type: "Member Page", desc: "Gated content for members only", icon: Users, color: "text-cyan-400" },
-  { type: "Campaign Microsite", desc: "Focused multi-page campaign experience", icon: Globe, color: "text-orange-400" },
-  { type: "Full Website", desc: "Complete multi-page website", icon: Layout, color: "text-indigo-400" },
-];
-
-const DEMO_EXISTING_PAGES = [
-  { name: "Homepage", type: "Landing Page", status: "published", lastEdit: "2 days ago", views: 4201 },
-  { name: "Summer Sale", type: "Campaign Microsite", status: "draft", lastEdit: "1 hour ago", views: 0 },
-  { name: "Book a Call", type: "Booking Page", status: "published", lastEdit: "1 week ago", views: 1847 },
-  { name: "Service: Web Design", type: "Service Page", status: "published", lastEdit: "3 days ago", views: 892 },
-  { name: "Checkout", type: "Checkout Flow", status: "published", lastEdit: "2 weeks ago", views: 890 },
-];
+import { DEMO_EXISTING_PAGES, DEMO_PAGE_TYPES } from "@/lib/demo-data/digital-presence";
 
 export default function SiteBuilder() {
   const { isDemoMode } = useDataMode();

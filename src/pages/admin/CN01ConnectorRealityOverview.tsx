@@ -12,6 +12,7 @@ import { Plug, Shield, Activity, TestTube, Presentation, RefreshCw, CheckCircle,
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_ADMIN_CAPABILITIES as DEMO_CAPABILITIES, DEMO_VERIFICATION_CHECKS } from "@/lib/demo-data/admin-platform";
 
 
 
@@ -35,22 +36,6 @@ interface VerificationCheck {
   label: string;
   check: (data: { registry: any[]; accounts: any[]; tokens: any[]; receipts: any[]; oauthConfig: any }) => boolean;
 }
-
-const DEMO_VERIFICATION_CHECKS: VerificationCheck[] = [
-  { label: "OAuth Configured", check: ({ oauthConfig }) => oauthConfig?.google_oauth_configured === true },
-  { label: "Registry Seeded", check: ({ registry }) => registry.some((r: Record<string, any>) => r.connector_class === "real") },
-  { label: "Callback Verified", check: ({ receipts }) => receipts.some((r: Record<string, any>) => r.event_type === "oauth_connect") },
-  { label: "Token Exchange", check: ({ tokens }) => tokens.length > 0 },
-  { label: "Connected Accounts", check: ({ accounts }) => accounts.some((a: Record<string, any>) => a.status === "connected" && !a.demo_mode) },
-  { label: "Reauth Flow", check: ({ tokens }) => tokens.some((t: Record<string, any>) => t.refresh_token) },
-  { label: "Disconnect Flow", check: ({ receipts }) => receipts.some((r: Record<string, any>) => r.event_type === "disconnect") },
-];
-
-const DEMO_CAPABILITIES = [
-  { key: "google_drive", label: "Google Drive", scopes: ["drive.readonly"] },
-  { key: "google_gmail", label: "Gmail", scopes: ["gmail.readonly"] },
-  { key: "google_calendar", label: "Google Calendar", scopes: ["calendar.readonly"] },
-];
 
 export default function CN01ConnectorRealityOverview() {
   const { isDemoMode } = useDataMode();

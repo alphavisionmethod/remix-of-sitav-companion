@@ -9,6 +9,7 @@ import { Progress } from "@/components/ui/progress";
 import { CheckCircle, AlertTriangle, XCircle, Database, Shield, ArrowRight } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_DOMAIN_MIGRATIONS } from "@/lib/demo-data/admin-platform";
 
 type DomainStatus = "real" | "demo_provider" | "mock_direct" | "mixed" | "blocked";
 
@@ -23,19 +24,6 @@ interface DomainMigration {
   blockers: string[];
   priority: "critical" | "high" | "medium" | "low";
 }
-
-const DEMO_DOMAIN_MIGRATIONS: DomainMigration[] = [
-  { domain: "Investment Office", status: "demo_provider", totalPages: 22, migratedPages: 22, realProviderReady: true, demoProviderReady: true, tablesExist: true, blockers: [], priority: "critical" },
-  { domain: "Boardroom", status: "demo_provider", totalPages: 1, migratedPages: 1, realProviderReady: true, demoProviderReady: true, tablesExist: true, blockers: [], priority: "critical" },
-  { domain: "Business CRM", status: "demo_provider", totalPages: 4, migratedPages: 4, realProviderReady: true, demoProviderReady: true, tablesExist: true, blockers: [], priority: "high" },
-  { domain: "Workspace", status: "demo_provider", totalPages: 3, migratedPages: 3, realProviderReady: true, demoProviderReady: true, tablesExist: false, blockers: ["No workspace content tables"], priority: "medium" },
-  { domain: "Owner Center", status: "demo_provider", totalPages: 3, migratedPages: 3, realProviderReady: true, demoProviderReady: true, tablesExist: true, blockers: [], priority: "high" },
-  { domain: "Money Office", status: "demo_provider", totalPages: 2, migratedPages: 2, realProviderReady: true, demoProviderReady: true, tablesExist: true, blockers: [], priority: "critical" },
-  { domain: "Calendar / Activity", status: "demo_provider", totalPages: 2, migratedPages: 2, realProviderReady: true, demoProviderReady: true, tablesExist: true, blockers: [], priority: "medium" },
-  { domain: "Revenue Engine", status: "demo_provider", totalPages: 2, migratedPages: 2, realProviderReady: true, demoProviderReady: true, tablesExist: true, blockers: [], priority: "high" },
-  { domain: "Mission Control", status: "demo_provider", totalPages: 1, migratedPages: 1, realProviderReady: true, demoProviderReady: true, tablesExist: true, blockers: [], priority: "medium" },
-  { domain: "Admin / Diagnostics", status: "mixed", totalPages: 5, migratedPages: 3, realProviderReady: true, demoProviderReady: false, tablesExist: true, blockers: ["Admin data services partially converted"], priority: "low" },
-];
 
 const statusConfig: Record<DomainStatus, { label: string; color: string; icon: typeof CheckCircle }> = {
   real: { label: "Real", color: "bg-primary/10 text-primary", icon: CheckCircle },

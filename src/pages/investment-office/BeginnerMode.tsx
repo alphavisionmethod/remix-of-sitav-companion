@@ -5,17 +5,9 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { PORTFOLIO } from "@/hooks/useInvestmentOfficeData";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useInvestmentStrategyRecords } from "@/hooks/use-investment-office";
+import { DEMO_LEARN_TOPICS } from "@/lib/demo-data/investment";
 
 const fmt = (n: number) => n >= 1e6 ? `$${(n / 1e6).toFixed(1)}M` : n >= 1e3 ? `$${(n / 1e3).toFixed(1)}K` : `$${n.toFixed(2)}`;
-
-const DEMO_LEARN_TOPICS = [
-  { icon: "📊", title: "What is a portfolio?", desc: "Your portfolio is the collection of all your investments across platforms. Think of it as your investment library." },
-  { icon: "⚖️", title: "What is risk?", desc: "Risk means how much your investments could lose. Higher risk means bigger possible gains AND losses." },
-  { icon: "🎯", title: "What is a thesis?", desc: "A thesis is your reason for investing. Writing it down helps you make better decisions and learn from results." },
-  { icon: "🔮", title: "What are event markets?", desc: "Event markets let you invest based on whether something will happen — like elections or rate decisions." },
-  { icon: "🛡️", title: "What is diversification?", desc: "Spreading money across different types of investments so one bad bet doesn't hurt your whole portfolio." },
-  { icon: "📈", title: "What are advisors?", desc: "SITA advisors are AI specialists that watch different parts of the market and give you guidance." },
-];
 
 export default function BeginnerMode() {
   const { isDemoMode } = useDataMode();

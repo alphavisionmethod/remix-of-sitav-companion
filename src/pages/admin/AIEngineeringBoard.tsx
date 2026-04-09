@@ -15,104 +15,20 @@ import { generateChiefSynthesis } from "@/lib/ai-engineering";
 import { getIntegrationHealthSummary, getIntegrationsByCategory } from "@/lib/ai-engineering/platform-integration";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_ADMIN_ENVIRONMENTS as DEMO_ENVIRONMENTS, DEMO_ADMIN_MISSIONS as DEMO_MISSIONS, DEMO_ADMIN_RELEASE_GATES as DEMO_RELEASE_GATES, DEMO_AGENT_SIGNALS, DEMO_ATTENTION_ITEMS, DEMO_CHANGES, DEMO_LEARNING_HIGHLIGHTS, DEMO_OVERVIEW_BAND, DEMO_RECENT_HEALS } from "@/lib/demo-data/admin-platform";
 
 // ═══════════════════════════════════════════════════════════════
 // DATA — Engineering Overview Band
 // ═══════════════════════════════════════════════════════════════
-const DEMO_OVERVIEW_BAND = [
-  { label: "Open Issues", value: 12, icon: AlertTriangle, color: "text-amber-500", bg: "bg-amber-500/10" },
-  { label: "Critical Issues", value: 2, icon: XCircle, color: "text-destructive", bg: "bg-destructive/10" },
-  { label: "Active Missions", value: 5, icon: Target, color: "text-primary", bg: "bg-primary/10" },
-  { label: "Self-Heal Rate", value: "92%", icon: Sparkles, color: "text-[hsl(var(--trust-safe))]", bg: "bg-[hsl(var(--trust-safe))]/10" },
-  { label: "Release Confidence", value: "82%", icon: Rocket, color: "text-[hsl(var(--trust-safe))]", bg: "bg-[hsl(var(--trust-safe))]/10" },
-  { label: "Regression Risk", value: "Low", icon: Shield, color: "text-[hsl(var(--trust-safe))]", bg: "bg-[hsl(var(--trust-safe))]/10" },
-  { label: "Verification Health", value: "94%", icon: ShieldCheck, color: "text-primary", bg: "bg-primary/10" },
-  { label: "Approvals Waiting", value: 2, icon: Clock, color: "text-amber-500", bg: "bg-amber-500/10" },
-];
-
 // Needs Attention
-const DEMO_ATTENTION_ITEMS = [
-  { title: "Elevated 500 errors on /api/projections/rebuild", type: "critical-issue", severity: "critical" as const, agent: "Reliability Engineer", time: "18m" },
-  { title: "Admin shell LCP 3.2s — exceeds 1.5s budget", type: "regression", severity: "high" as const, agent: "Performance Optimizer", time: "4h" },
-  { title: "Failed self-heal: layout restore caused secondary shift", type: "failed-heal", severity: "medium" as const, agent: "Self-Healing Supervisor", time: "1d" },
-  { title: "Release gate failing: Performance Budget", type: "release-gate", severity: "high" as const, agent: "Release Manager", time: "35m" },
-  { title: "Projection cache fix — awaiting approval", type: "blocked-change", severity: "high" as const, agent: "Backend Engineer", time: "2h" },
-];
-
 // Agent Signal Rail
-const DEMO_AGENT_SIGNALS = [
-  { name: "Engineering Lead", signal: "Coordinating shell performance sprint", confidence: 92, autonomy: "supervised", escalation: false, tasks: 3 },
-  { name: "Backend Engineer", signal: "Projection mutex lock ready for review", confidence: 88, autonomy: "draft-only", escalation: false, tasks: 2 },
-  { name: "Frontend Engineer", signal: "Accessibility sweep — 2 violations remaining", confidence: 85, autonomy: "supervised", escalation: false, tasks: 4 },
-  { name: "Design Engineer", signal: "Admin header redesign proposed", confidence: 79, autonomy: "draft-only", escalation: false, tasks: 2 },
-  { name: "QA Engineer", signal: "Generated 8 new regression tests", confidence: 91, autonomy: "auto-low-risk", escalation: false, tasks: 3 },
-  { name: "Error Fixer", signal: "Analyzing projection error cluster — 14 signals", confidence: 84, autonomy: "supervised", escalation: true, tasks: 5 },
-  { name: "Reliability Engineer", signal: "Monitoring elevated error rate", confidence: 90, autonomy: "auto-low-risk", escalation: false, tasks: 2 },
-  { name: "Security Reviewer", signal: "Schema migration risk — escalated to human", confidence: 87, autonomy: "observe-only", escalation: true, tasks: 1 },
-  { name: "Performance Optimizer", signal: "Admin shell lazy import analysis", confidence: 76, autonomy: "supervised", escalation: false, tasks: 2 },
-  { name: "Release Manager", signal: "Staging promotion blocked — perf gate", confidence: 82, autonomy: "supervised", escalation: false, tasks: 1 },
-  { name: "Self-Healing Supervisor", signal: "Cache auto-heal verified ✓", confidence: 88, autonomy: "auto-low-risk", escalation: false, tasks: 3 },
-  { name: "Learning Analyst", signal: "New pattern: flag rollbacks within 2h", confidence: 71, autonomy: "observe-only", escalation: false, tasks: 1 },
-  { name: "Docs Engineer", signal: "Deployment runbook updated", confidence: 93, autonomy: "auto-low-risk", escalation: false, tasks: 0 },
-];
-
 // Mission Lane
-const DEMO_MISSIONS = [
-  { title: "Fix projection cache corruption", agent: "Backend Engineer", progress: 75, status: "ready_for_approval", blocker: "Awaiting human approval", confidence: 87 },
-  { title: "Reduce admin shell load time to <1.2s", agent: "Performance Optimizer", progress: 68, status: "in_progress", blocker: null, confidence: 76 },
-  { title: "Achieve 95% test coverage on core flows", agent: "QA Engineer", progress: 82, status: "in_progress", blocker: null, confidence: 91 },
-  { title: "Zero critical accessibility violations", agent: "Frontend Engineer", progress: 91, status: "in_progress", blocker: null, confidence: 85 },
-  { title: "Add smoke gates for critical flows", agent: "Release Manager", progress: 45, status: "in_progress", blocker: null, confidence: 82 },
-];
-
 // Self-Healing Lane
 const HEAL_STATS = {
   attempted: 12, verified: 11, blocked: 3, rolledBack: 1 };
-const DEMO_RECENT_HEALS = [
-  { action: "Restarted unhealthy projection worker", time: "12m ago", verified: true },
-  { action: "Reverted bad feature flag: revenue-sidebar-v2", time: "1h ago", verified: true },
-  { action: "Auto-fixed broken route /admin/durability", time: "2h ago", verified: true },
-  { action: "Invalidated stale brand-kit CDN cache", time: "4h ago", verified: true },
-];
-
 // Learning Lane
-const DEMO_LEARNING_HIGHLIGHTS = [
-  { type: "pattern", detail: "Feature flag rollbacks cluster within 2h of activation", confidence: 82 },
-  { type: "optimization", detail: "Error Fixer accuracy improved +4% after lazy-import checks", confidence: 91 },
-  { type: "rejected", detail: "Design proposal using hardcoded colors — rejected 2x", confidence: 79 },
-  { type: "root-cause", detail: "Projection failures correlate with config concurrency changes", confidence: 84 },
-];
-
 // What Changed Lane
-const DEMO_CHANGES = [
-  { action: "Auto-fixed broken route /admin/durability", agent: "Error Fixer", time: "12m ago", type: "auto-heal" as const },
-  { action: "Proposed layout improvement for Mission Control header", agent: "Design Engineer", time: "28m ago", type: "proposal" as const },
-  { action: "Reverted bad feature flag for revenue-office sidebar", agent: "Reliability Engineer", time: "1h ago", type: "rollback" as const },
-  { action: "Generated regression tests for approval flow", agent: "QA Engineer", time: "2h ago", type: "improvement" as const },
-  { action: "Patched stale projection cache invalidation", agent: "Backend Engineer", time: "3h ago", type: "fix" as const },
-  { action: "Blocked risky schema migration — escalated to human", agent: "Security Reviewer", time: "4h ago", type: "blocked" as const },
-  { action: "Updated deployment runbook with new smoke gate", agent: "Documentation Engineer", time: "6h ago", type: "improvement" as const },
-  { action: "Release confidence: 78% → 82% after test additions", agent: "Release Manager", time: "7h ago", type: "improvement" as const },
-];
-
 // Environments + Release Gates
-const DEMO_ENVIRONMENTS = [
-  { env: "Production", status: "healthy" as const, confidence: 94, deployedAt: "2h ago", drift: "none", version: "v2.14.3" },
-  { env: "Staging", status: "warning" as const, confidence: 78, deployedAt: "35m ago", drift: "2 config diffs", version: "v2.15.0-rc1" },
-  { env: "Preview", status: "healthy" as const, confidence: 88, deployedAt: "12m ago", drift: "none", version: "v2.15.0-rc2" },
-];
-
-const DEMO_RELEASE_GATES = [
-  { gate: "Unit Tests", status: "pass" as const, detail: "1,247/1,247 passing" },
-  { gate: "Integration Tests", status: "pass" as const, detail: "89/89 passing" },
-  { gate: "Auth Smoke Test", status: "pass" as const, detail: "Login + OAuth verified" },
-  { gate: "Performance Budget", status: "warning" as const, detail: "Admin shell LCP 3.2s (budget: 1.5s)" },
-  { gate: "Accessibility Audit", status: "warning" as const, detail: "2 AA violations remaining" },
-  { gate: "Security Scan", status: "pass" as const, detail: "0 critical, 1 advisory" },
-  { gate: "Design Consistency", status: "pass" as const, detail: "92% token compliance" },
-  { gate: "Rollback Plan", status: "pass" as const, detail: "Automated rollback configured" },
-];
-
 const typeDotColor = (type: string) =>
   type === "auto-heal" ? "bg-[hsl(var(--trust-safe))]" :
   type === "rollback" ? "bg-amber-500" :

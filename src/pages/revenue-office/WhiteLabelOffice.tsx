@@ -6,27 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_PARTNERS = [
-  { name: "Peak Digital Agency", type: "Reseller", status: "active", clients: 12, revenue: 18400, margin: 35, health: 88 },
-  { name: "Northstar Consulting", type: "White-Label", status: "active", clients: 8, revenue: 24600, margin: 42, health: 92 },
-  { name: "Cascade Marketing", type: "Referral", status: "active", clients: 5, revenue: 7200, margin: 25, health: 75 },
-  { name: "Summit Solutions", type: "White-Label", status: "onboarding", clients: 0, revenue: 0, margin: 40, health: 60 },
-  { name: "Vertex Group", type: "Reseller", status: "paused", clients: 3, revenue: 4100, margin: 30, health: 45 },
-];
-
-const DEMO_BRANDS = [
-  { name: "Peak Digital Theme", partner: "Peak Digital Agency", colors: ["#2563EB","#1E293B","#F8FAFC"], domain: "portal.peakdigital.com", status: "live" },
-  { name: "Northstar Custom", partner: "Northstar Consulting", colors: ["#059669","#0F172A","#ECFDF5"], domain: "app.northstarconsult.com", status: "live" },
-  { name: "Summit Draft", partner: "Summit Solutions", colors: ["#D946EF","#1A1A2E","#FDF4FF"], domain: "pending", status: "draft" },
-];
-
-const DEMO_SPLITS = [
-  { partner: "Northstar Consulting", gross: 24600, theirs: 14760, yours: 9840, split: "60/40", pending: 2400 },
-  { partner: "Peak Digital Agency", gross: 18400, theirs: 11960, yours: 6440, split: "65/35", pending: 1200 },
-  { partner: "Cascade Marketing", gross: 7200, theirs: 5400, yours: 1800, split: "75/25", pending: 0 },
-  { partner: "Vertex Group", gross: 4100, theirs: 2870, yours: 1230, split: "70/30", pending: 800 },
-];
+import { DEMO_BRANDS, DEMO_PARTNERS, DEMO_SPLITS } from "@/lib/demo-data/revenue-office";
 
 const WhiteLabelOffice = () => {
   const [tab, setTab] = useState("partners");

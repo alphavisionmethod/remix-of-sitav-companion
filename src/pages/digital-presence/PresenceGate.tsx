@@ -6,33 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_WORKSPACES = [
-  { label: "Presence Boardroom", desc: "Health, traffic, conversions, advisors", icon: BarChart3, path: "/digital-presence/boardroom", color: "text-blue-400" },
-  { label: "Website Twin", desc: "Live model of pages, paths & performance", icon: Monitor, path: "/digital-presence/website-twin", color: "text-cyan-400" },
-  { label: "Site Builder", desc: "Create pages, sites, microsites", icon: Layout, path: "/digital-presence/builder", color: "text-indigo-400" },
-  { label: "Brand Studio", desc: "Logo, colors, typography, identity", icon: Palette, path: "/digital-presence/brand-studio", color: "text-purple-400" },
-  { label: "Connected Sites", desc: "Manage Shopify, WordPress, Webflow…", icon: Globe, path: "/digital-presence/connected-sites", color: "text-green-400" },
-  { label: "CRO Office", desc: "Conversion optimization & trust gaps", icon: BarChart3, path: "/digital-presence/cro", color: "text-amber-400" },
-  { label: "Ecommerce Office", desc: "Products, merchandising, cart recovery", icon: Store, path: "/digital-presence/ecommerce", color: "text-rose-400" },
-  { label: "Promotions Office", desc: "Banners, campaigns, launch coordination", icon: Megaphone, path: "/digital-presence/promotions", color: "text-orange-400" },
-  { label: "AI Web Team", desc: "Strategist, Designer, CRO, SEO advisors", icon: Sparkles, path: "/digital-presence/ai-team", color: "text-violet-400" },
-  { label: "Error & Opportunity Radar", desc: "Broken links, stale content, weak CTAs", icon: Wrench, path: "/digital-presence/radar", color: "text-red-400" },
-  { label: "Content Freshness", desc: "Outdated pages, expired offers, stale info", icon: Globe, path: "/digital-presence/content-freshness", color: "text-teal-400" },
-  { label: "Launch War Room", desc: "Launch readiness, rollback plans", icon: Rocket, path: "/digital-presence/launch", color: "text-pink-400" },
-  { label: "Time Machine", desc: "Replay changes, impact review", icon: Globe, path: "/digital-presence/time-machine", color: "text-sky-400" },
-  { label: "Self-Healing Queue", desc: "Safe auto-fixes, patch preview & verification", icon: Shield, path: "/digital-presence/self-healing", color: "text-emerald-400" },
-  { label: "App Experience Studio", desc: "PWA, portals, mini-apps, mobile-first", icon: Smartphone, path: "/digital-presence/app-studio", color: "text-lime-400" },
-  { label: "Presence Analytics", desc: "Traffic quality, source performance, impact", icon: BarChart3, path: "/digital-presence/analytics", color: "text-fuchsia-400" },
-  { label: "Domain & Publish", desc: "Domains, staging, rollback, release management", icon: Server, path: "/digital-presence/domains", color: "text-slate-400" },
-];
-
-const DEMO_HEALTH_STATS = [
-  { label: "Site Health", value: "87%", status: "good" },
-  { label: "Pages Active", value: "24", status: "neutral" },
-  { label: "Conversion Rate", value: "3.2%", status: "good" },
-  { label: "Issues Found", value: "7", status: "warning" },
-];
+import { DEMO_HEALTH_STATS, DEMO_WORKSPACES } from "@/lib/demo-data/digital-presence";
 
 export default function PresenceGate() {
   const { isDemoMode } = useDataMode();

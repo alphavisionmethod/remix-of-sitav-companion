@@ -6,15 +6,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { INSTRUMENTS, INVESTMENT_ADVISORS } from "@/hooks/useInvestmentOfficeData";
 import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_CLASS_TABS: { value: AssetClass | "all"; label: string; icon: string }[] = [
-  { value: "all", label: "All", icon: "🌐" },
-  { value: "stocks", label: "Stocks", icon: "📈" },
-  { value: "etfs", label: "ETFs", icon: "📊" },
-  { value: "crypto", label: "Crypto", icon: "🔐" },
-  { value: "commodities", label: "Commodities", icon: "⛏️" },
-  { value: "events", label: "Events", icon: "🔮" },
-];
+import { DEMO_CLASS_TABS } from "@/lib/demo-data/investment";
 
 const pctFmt = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
 

@@ -7,31 +7,8 @@ import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const DEMO_GROWTH_TRAITS = [
-  { trait: "Revenue Concentration", score: 72, status: "warning", insight: "Top 3 clients represent 58% of revenue", recommendation: "Target 3 new mid-market clients this quarter" },
-  { trait: "Repeat Purchase Rate", score: 85, status: "strong", insight: "85% of clients return within 90 days", recommendation: "Launch referral program to capitalize on loyalty" },
-  { trait: "Lead-to-Close Velocity", score: 61, status: "warning", insight: "Average 34 days from lead to close — 40% slower than benchmark", recommendation: "Streamline proposal stage — add quote templates" },
-  { trait: "Revenue per Client", score: 78, status: "strong", insight: "$4,200 avg revenue per client — above industry median", recommendation: "Introduce premium tier to increase ARPC to $5,500" },
-  { trait: "Churn Resilience", score: 45, status: "critical", insight: "No win-back system active — lost clients rarely return", recommendation: "Activate automated win-back sequences" },
-  { trait: "Seasonal Stability", score: 68, status: "moderate", insight: "Q1 revenue dips 22% — seasonal pattern detected", recommendation: "Pre-sell Q1 packages in Q4 to smooth revenue curve" },
-  { trait: "Referral Engine", score: 38, status: "critical", insight: "Only 8% of new clients come from referrals", recommendation: "Launch NPS-triggered referral campaign" },
-  { trait: "Upsell Penetration", score: 52, status: "moderate", insight: "32% of clients on base tier — upsell opportunity exists", recommendation: "Create mid-tier package with 2x margin" },
-];
-
-const DEMO_ARCHETYPES = [
-  { name: "Relationship Builder", match: 82, description: "Revenue grows through deep trust, repeat business, and referrals", strengths: ["Client retention", "Service quality"], risks: ["Over-reliance on existing clients"] },
-  { name: "Sales Machine", match: 45, description: "Revenue grows through systematic pipeline and volume", strengths: ["Lead generation", "Process efficiency"], risks: ["Client depth", "Relationship quality"] },
-  { name: "Platform Monetizer", match: 28, description: "Revenue grows through products, memberships, and recurring access", strengths: ["Scalability"], risks: ["Requires significant product investment"] },
-];
-
-const DEMO_PLAYS = [
-  { play: "Revenue Diversification Sprint", impact: "high", timeline: "60 days", expected: "+$15,000/mo", description: "Target 5 new mid-market prospects to reduce top-client concentration" },
-  { play: "Win-Back Automation", impact: "high", timeline: "14 days", expected: "+$8,400/mo", description: "Activate 3-touch win-back sequence for 23 churned clients" },
-  { play: "Referral Engine Launch", impact: "medium", timeline: "7 days", expected: "+$5,200/mo", description: "NPS-triggered referral asks with incentive for top 15 promoters" },
-  { play: "Premium Tier Introduction", impact: "high", timeline: "30 days", expected: "+$12,000/mo", description: "Create premium service tier at 2x price for top 20% of clients" },
-];
-
 const statusColor = (s: string) => s === "strong" ? "text-[hsl(var(--trust-safe))]" : s === "moderate" ? "text-yellow-400" : s === "warning" ? "text-orange-400" : "text-destructive";
+import { DEMO_GROWTH_TRAITS, DEMO_PLAYS, DEMO_REV_ARCHETYPES as DEMO_ARCHETYPES } from "@/lib/demo-data/revenue-office";
 
 const GrowthDNA = () => {
   const [tab, setTab] = useState("traits");

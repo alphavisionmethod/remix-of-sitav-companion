@@ -26,6 +26,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAction } from "@/lib/hooks/useAction";
 import { PlainEnglishPolicyEditor } from "@/components/sita/PlainEnglishPolicyEditor";
+import { DEMO_EXAMPLE_RULES } from "@/lib/demo-data/core-pages";
 
 
 
@@ -45,17 +46,6 @@ const CATEGORY_CONFIG: Record<string, { icon: React.ElementType; color: string; 
   memory: { icon: Brain, color: "text-indigo-400 bg-indigo-400/10", label: "Memory" },
   escalation: { icon: ChevronRight, color: "text-orange-400 bg-orange-400/10", label: "Escalation" },
 };
-
-const DEMO_EXAMPLE_RULES = [
-  "Never bother me after 8pm",
-  "My spouse must approve transfers above $500",
-  "When I'm overwhelmed, reduce options",
-  "Do not negotiate aggressively with family vendors",
-  "Limit daily spending to $200 without approval",
-  "Always require simulation before paying bills over $1000",
-  "Never share financial data with third-party apps",
-  "Batch all non-urgent notifications",
-];
 
 // ── Category Badge ──────────────────────────────────────────────
 

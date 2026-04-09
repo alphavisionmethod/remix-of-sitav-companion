@@ -18,6 +18,7 @@ import type { RealityClassification } from "@/lib/persistence/reality-classifica
 import { SCOPE_LEVELS, EVIDENCE_SIGNALS, PROGRESSION_REQUIREMENTS, type ScopeLevel, type LaunchImpact } from "@/lib/persistence/reality-classification-persistence";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_CONTRACT_STATUSES } from "@/lib/demo-data/admin-platform";
 
 const CLASSIFICATION_CONFIG = {
   presentational: { label: "Presentational", color: "bg-muted text-muted-foreground", icon: Eye, description: "UI shell — no backing logic or data truth" },
@@ -26,7 +27,6 @@ const CLASSIFICATION_CONFIG = {
   proven: { label: "Proven", color: "bg-emerald-500/20 text-emerald-400", icon: CheckCircle2, description: "Persisted + verified + contract-aligned + launch-honest" },
 } as const;
 
-const DEMO_CONTRACT_STATUSES = ["none", "partial", "aligned", "verified"] as const;
 const LAUNCH_IMPACT_CONFIG = {
   blocking: { label: "Blocking", color: "text-destructive" },
   degraded: { label: "Degraded", color: "text-yellow-400" },

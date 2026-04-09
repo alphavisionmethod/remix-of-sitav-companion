@@ -4,54 +4,7 @@ import { Clock, Brain, Check, X, AlertTriangle, ArrowRight, TrendingUp, Trending
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useInvestmentDecisions } from "@/hooks/use-investment-office";
-
-const DEMO_PAST_DECISIONS = [
-  {
-    id: "td1", date: "2025-08-15", action: "BUY 200 NVDA @ $95.50", instrument: "NVDA", symbol: "💚",
-    thesisAtTime: "AI infrastructure supercycle — NVDA dominant with 80%+ GPU share. Blackwell architecture extends moat.",
-    marketConditionsAtTime: "S&P at 5,200. Fed paused at 5.25%. VIX at 14. AI narrative accelerating post-earnings beat.",
-    advisorViewsAtTime: [
-      { advisor: "Maven (Equity)", view: "Strong buy — AI capex cycle early innings", confidence: 88 },
-      { advisor: "Sentinel (Risk)", view: "Size carefully — tech concentration already elevated", confidence: 82 },
-      { advisor: "Atlas (Macro)", view: "Supportive macro — risk-on regime intact", confidence: 75 },
-    ],
-    whatChangedAfter: ["NVDA rallied 42% in 6 months", "AI capex spending exceeded estimates", "Export controls didn't expand significantly", "Blackwell ramp confirmed strong demand"],
-    wasRight: true,
-    disciplineFollowed: true,
-    lessonLearned: "Thesis-driven entry with patient sizing paid off. The dip before GTC was the opportunity.",
-    currentPrice: 135.20, entryPrice: 95.50,
-  },
-  {
-    id: "td2", date: "2025-11-01", action: "BUY 1.5 BTC @ $62,000", instrument: "BTC", symbol: "₿",
-    thesisAtTime: "Post-halving cycle. ETF inflows creating structural demand floor.",
-    marketConditionsAtTime: "BTC at $62K. ETF approval fresh. Institutional flows positive. Fed signaling rate cuts ahead.",
-    advisorViewsAtTime: [
-      { advisor: "Cipher (Crypto)", view: "Structural bull — halving dynamics and ETF flows supportive", confidence: 72 },
-      { advisor: "Sentinel (Risk)", view: "Size appropriately — crypto volatile, keep within sleeve", confidence: 80 },
-      { advisor: "Mirror (Behavioral)", view: "Entry looks disciplined, not FOMO-driven", confidence: 85 },
-    ],
-    whatChangedAfter: ["BTC reached $97K — +56% from entry", "ETF inflows remained strong", "No major regulatory crackdown occurred", "Crypto allocation drifted above policy target"],
-    wasRight: true,
-    disciplineFollowed: false,
-    lessonLearned: "Entry was excellent but failed to trim when allocation exceeded policy target. Discipline gap in risk management.",
-    currentPrice: 97450, entryPrice: 62000,
-  },
-  {
-    id: "td3", date: "2026-01-15", action: "BUY 100 SOL @ $120", instrument: "SOL", symbol: "◎",
-    thesisAtTime: "Fastest growing DeFi ecosystem. High-performance chain gaining developer adoption.",
-    marketConditionsAtTime: "SOL recovering from lows. DeFi TVL growing. Network stability improved.",
-    advisorViewsAtTime: [
-      { advisor: "Cipher (Crypto)", view: "Constructive — ecosystem momentum strong", confidence: 65 },
-      { advisor: "Sentinel (Risk)", view: "Speculative allocation — size small", confidence: 78 },
-      { advisor: "Mirror (Behavioral)", view: "Patient entry after waiting for pullback — good discipline", confidence: 90 },
-    ],
-    whatChangedAfter: ["SOL rallied to $185 — +54%", "Network had congestion event", "TVL crossed $8B milestone", "Pushed crypto sleeve above target"],
-    wasRight: true,
-    disciplineFollowed: true,
-    lessonLearned: "Waiting for the pullback rather than chasing the rally was the right call. Mirror flagged potential FOMO earlier and user waited.",
-    currentPrice: 185.40, entryPrice: 120,
-  },
-];
+import { DEMO_PAST_DECISIONS } from "@/lib/demo-data/investment";
 
 export default function TimeMachineReview() {
   const { isDemoMode } = useDataMode();

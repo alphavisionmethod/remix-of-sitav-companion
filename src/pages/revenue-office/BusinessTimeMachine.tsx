@@ -5,31 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_PERIODS = [
-  { period: "This Month", revenue: 42800, clients: 28, deals: 7, conversion: 23, trend: "up" as const },
-  { period: "Last Month", revenue: 38200, clients: 26, deals: 5, conversion: 19, trend: "up" as const },
-  { period: "2 Months Ago", revenue: 35600, clients: 25, deals: 6, conversion: 21, trend: "stable" as const },
-  { period: "3 Months Ago", revenue: 31400, clients: 24, deals: 4, conversion: 17, trend: "down" as const },
-  { period: "6 Months Ago", revenue: 28100, clients: 22, deals: 3, conversion: 15, trend: "down" as const },
-  { period: "1 Year Ago", revenue: 19800, clients: 16, deals: 2, conversion: 12, trend: "stable" as const },
-];
-
-const DEMO_DECISIONS = [
-  { date: "Mar 15", decision: "Launched premium service tier", impact: "positive" as const, metric: "+$8,200/mo", detail: "23% of existing clients upgraded within 30 days" },
-  { date: "Feb 28", decision: "Activated automated follow-up sequences", impact: "positive" as const, metric: "+12% conv", detail: "Lead-to-close time reduced by 8 days" },
-  { date: "Feb 10", decision: "Hired second account manager", impact: "neutral" as const, metric: "+$4,500 cost", detail: "Client satisfaction up 15% but ROI still developing" },
-  { date: "Jan 20", decision: "Raised prices 15%", impact: "positive" as const, metric: "+$5,400/mo", detail: "Only 2 clients churned — net positive after 60 days" },
-  { date: "Dec 5", decision: "Paused Google Ads", impact: "negative" as const, metric: "-18% leads", detail: "Organic couldn't compensate — resumed after 3 weeks" },
-  { date: "Nov 1", decision: "Launched referral program", impact: "positive" as const, metric: "+4 clients", detail: "8% of new clients now come from referrals" },
-];
-
-const DEMO_WHATIF = [
-  { q: "What if you raise prices 10%?", proj: "Revenue: +$4,280/mo · Risk: ~5% churn", conf: 72, rec: "Based on Jan data, clients showed low elasticity. Recommended." },
-  { q: "What if you stop all paid ads?", proj: "New leads: -35% in 60 days · Revenue: -$6,200/mo by Q3", conf: 65, rec: "Reduce spend 30% instead of eliminating." },
-  { q: "What if you launch a retainer model?", proj: "MRR potential: +$12,000/mo if 40% adopt", conf: 55, rec: "High potential. Start with top 10 clients." },
-  { q: "What if Bloom Studio churns?", proj: "Revenue: -$6,800/mo · 16% concentration risk realized", conf: 80, rec: "Activate retention protocol now." },
-];
+import { DEMO_DECISIONS, DEMO_PERIODS, DEMO_WHATIF } from "@/lib/demo-data/revenue-office";
 
 const ti = (t: string) => t === "up" ? <TrendingUp className="h-3.5 w-3.5 text-[hsl(var(--trust-safe))]" /> : t === "down" ? <TrendingDown className="h-3.5 w-3.5 text-destructive" /> : <span className="text-muted-foreground">—</span>;
 

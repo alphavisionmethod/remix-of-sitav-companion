@@ -13,8 +13,7 @@ import { toast } from "sonner";
 import { Shield, Plus, Edit, Trash2, ToggleLeft, ToggleRight, ChevronRight, Play, AlertTriangle, FileText, Lock } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_CATEGORIES = ["general", "financial", "business", "household", "advisor", "device"];
+import { DEMO_CORE_CATEGORIES_POLICY_EDITOR as DEMO_CATEGORIES } from "@/lib/demo-data/core-pages";
 
 const PolicyEditor = () => {
   const { isDemoMode } = useDataMode();

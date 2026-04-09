@@ -12,17 +12,9 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_CORE_CATEGORIES_NOTIFICATION_PREFERENCES as DEMO_CATEGORIES } from "@/lib/demo-data/core-pages";
 
 
-
-const DEMO_CATEGORIES = [
-  { key: "incident", label: "Incidents & Alerts", description: "Critical system issues and security alerts" },
-  { key: "approval", label: "Approvals", description: "Pending approval requests and decisions" },
-  { key: "ai_activity", label: "AI Activity", description: "Agent completions, learning events, and recommendations" },
-  { key: "connector", label: "Connectors", description: "Connection status changes and sync updates" },
-  { key: "workflow", label: "Workflows", description: "Workflow completions and failures" },
-  { key: "system", label: "System", description: "Maintenance, updates, and general system notifications" },
-];
 
 export default function NotificationPreferences() {
   const { isDemoMode } = useDataMode();

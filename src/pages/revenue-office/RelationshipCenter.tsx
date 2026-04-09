@@ -10,25 +10,9 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { useCustomers } from "@/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/sita/EmptyState";
+import { DEMO_CONTACTS, DEMO_LIFECYCLE_STAGES } from "@/lib/demo-data/revenue-office";
 
 
-
-const DEMO_LIFECYCLE_STAGES = [
-  { label: "Subscriber", count: 234, color: "bg-blue-400" },
-  { label: "Lead", count: 89, color: "bg-cyan-400" },
-  { label: "Qualified", count: 34, color: "bg-green-400" },
-  { label: "Opportunity", count: 18, color: "bg-yellow-400" },
-  { label: "Customer", count: 67, color: "bg-purple-400" },
-  { label: "Advocate", count: 12, color: "bg-pink-400" },
-];
-
-const DEMO_CONTACTS = [
-  { name: "Sarah Mitchell", company: "Apex Digital", stage: "Customer", health: 92, ltv: "$12,400", lastContact: "2 days ago", tags: ["enterprise", "upsell-ready"] },
-  { name: "James Chen", company: "Nova Labs", stage: "Opportunity", health: 75, ltv: "$0", lastContact: "5 days ago", tags: ["mid-market", "demo-scheduled"] },
-  { name: "Emily Rodriguez", company: "Bright Path Co", stage: "Qualified", health: 68, ltv: "$0", lastContact: "1 week ago", tags: ["coaching", "warm"] },
-  { name: "Michael Park", company: "Summit Group", stage: "Customer", health: 45, ltv: "$8,200", lastContact: "3 weeks ago", tags: ["at-risk", "enterprise"] },
-  { name: "Lisa Wang", company: "Craft Studios", stage: "Advocate", health: 98, ltv: "$18,600", lastContact: "1 day ago", tags: ["referral-source", "vip"] },
-];
 
 export default function RelationshipCenter() {
   const { isDemoMode } = useDataMode();

@@ -12,6 +12,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 type GateStatus = "passed" | "failed" | "pending" | "skipped" | "blocked";
 type RingStatus = "deployed" | "canary" | "staging" | "blocked" | "pending";
+import { DEMO_ADMIN_ENVIRONMENTS_ADMIN_DEPLOYMENT_RINGS as DEMO_ENVIRONMENTS, DEMO_PROMOTION_GATES, DEMO_RINGS } from "@/lib/demo-data/admin-platform";
 
 interface DeploymentRing {
   name: string;
@@ -31,33 +32,6 @@ interface PromotionGate {
   checkedAt?: string;
   blocker?: boolean;
 }
-
-const DEMO_RINGS: DeploymentRing[] = [
-  { name: "Development", status: "deployed", version: "v2.14.0-dev.42", deployedAt: "2h ago", health: 100, instances: 1, errorRate: 0 },
-  { name: "Staging", status: "deployed", version: "v2.13.1-rc.3", deployedAt: "1d ago", health: 98, instances: 2, errorRate: 0.2 },
-  { name: "Canary", status: "canary", version: "v2.13.1-rc.3", deployedAt: "6h ago", health: 96, instances: 1, errorRate: 0.8 },
-  { name: "Production (Ring 1)", status: "pending", version: "v2.13.0", deployedAt: "3d ago", health: 99, instances: 4, errorRate: 0.1 },
-  { name: "Production (Ring 2)", status: "blocked", version: "v2.12.4", deployedAt: "1w ago", health: 99, instances: 8, errorRate: 0.05 },
-];
-
-const DEMO_PROMOTION_GATES: PromotionGate[] = [
-  { name: "Unit Tests", status: "passed", description: "All unit tests passing", evidence: "342/342 passed", checkedAt: "2h ago" },
-  { name: "Integration Tests", status: "passed", description: "API and DB integration tests", evidence: "89/89 passed", checkedAt: "2h ago" },
-  { name: "Type Safety", status: "passed", description: "TypeScript strict mode", evidence: "0 errors", checkedAt: "2h ago" },
-  { name: "Security Scan", status: "passed", description: "Dependency vulnerability scan", evidence: "0 critical, 2 low", checkedAt: "1h ago" },
-  { name: "RLS Policy Audit", status: "passed", description: "All tables have RLS enabled", evidence: "48/48 tables covered", checkedAt: "1h ago" },
-  { name: "Performance Budget", status: "passed", description: "Bundle size and LCP within budget", evidence: "Bundle: 412KB, LCP: 1.2s", checkedAt: "1h ago" },
-  { name: "Canary Health", status: "pending", description: "Canary error rate < 1% for 2h", evidence: "Current: 0.8%, elapsed: 45min", checkedAt: "45m ago", blocker: true },
-  { name: "Manual Approval", status: "pending", description: "Operator sign-off required", blocker: true },
-  { name: "Rollback Plan", status: "passed", description: "Verified rollback procedure exists", evidence: "Rollback script validated", checkedAt: "2h ago" },
-  { name: "Data Migration", status: "skipped", description: "No schema changes in this release" },
-];
-
-const DEMO_ENVIRONMENTS = [
-  { name: "Development", status: "healthy", version: "v2.14.0-dev.42", uptime: "99.9%", lastDeploy: "2h ago", features: ["hot-reload", "debug-mode", "mock-data"] },
-  { name: "Staging", status: "healthy", version: "v2.13.1-rc.3", uptime: "99.5%", lastDeploy: "1d ago", features: ["seeded-data", "integration-tests"] },
-  { name: "Production", status: "healthy", version: "v2.13.0", uptime: "99.99%", lastDeploy: "3d ago", features: ["full-rls", "monitoring", "alerting"] },
-];
 
 const GATE_ICONS: Record<GateStatus, { icon: typeof CheckCircle; color: string }> = {
   passed: { icon: CheckCircle, color: "text-emerald-400" },

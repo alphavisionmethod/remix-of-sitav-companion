@@ -4,36 +4,7 @@ import { FlaskConical, TrendingUp, TrendingDown, AlertTriangle, ChevronRight } f
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
-
-const DEMO_EVENTS = [
-  {
-    id: "e1", title: "Fed Rate Cut — June 2026", probability: 62, previousProbability: 55, trend: "rising",
-    branches: [
-      { label: "25bp Cut", probability: 42, impact: "+1.2% portfolio", sentiment: "bullish" },
-      { label: "50bp Cut", probability: 20, impact: "+2.1% portfolio", sentiment: "bullish" },
-      { label: "Hold", probability: 38, impact: "-0.4% portfolio", sentiment: "bearish" },
-    ],
-    sleeveExposure: 2.1, catalystDate: "2026-06-18", confidence: 65,
-  },
-  {
-    id: "e2", title: "US Presidential Election 2028", probability: 51, previousProbability: 48, trend: "rising",
-    branches: [
-      { label: "Current Party Wins", probability: 51, impact: "Neutral — continuity", sentiment: "neutral" },
-      { label: "Opposition Wins", probability: 42, impact: "Policy uncertainty ±2%", sentiment: "neutral" },
-      { label: "Third Party Significant", probability: 7, impact: "High uncertainty", sentiment: "bearish" },
-    ],
-    sleeveExposure: 0.8, catalystDate: "2028-11-03", confidence: 35,
-  },
-  {
-    id: "e3", title: "BTC ETF Inflows Exceed $100B AUM", probability: 72, previousProbability: 68, trend: "rising",
-    branches: [
-      { label: "Achieved by Q3 2026", probability: 45, impact: "BTC +15-20%", sentiment: "bullish" },
-      { label: "Achieved by EOY 2026", probability: 27, impact: "BTC +8-12%", sentiment: "bullish" },
-      { label: "Not Achieved 2026", probability: 28, impact: "BTC range-bound", sentiment: "neutral" },
-    ],
-    sleeveExposure: 1.5, catalystDate: "2026-12-31", confidence: 55,
-  },
-];
+import { DEMO_EVENTS } from "@/lib/demo-data/investment";
 
 export default function EventProbabilityLab() {
   const { isDemoMode } = useDataMode();

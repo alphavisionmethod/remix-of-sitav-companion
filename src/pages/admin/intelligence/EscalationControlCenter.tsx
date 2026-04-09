@@ -9,16 +9,7 @@ import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_ESCALATIONS = [
-  { id: "esc-1", domain: "engineering", trigger: "low_confidence", from: "utility", to: "premium", cost: 180, justified: true, outcome: "accepted", desc: "Complex race condition in payment flow", ago: "2hr" },
-  { id: "esc-2", domain: "investment-finance", trigger: "high_stakes", from: "standard", to: "premium", cost: 120, justified: true, outcome: "accepted", desc: "Portfolio rebalance recommendation $200k+", ago: "4hr" },
-  { id: "esc-3", domain: "revenue-business", trigger: "ambiguity", from: "utility", to: "standard", cost: 45, justified: false, outcome: "overridden", desc: "Lead scoring edge case — could have been cached", ago: "6hr" },
-  { id: "esc-4", domain: "compliance-trust", trigger: "explicit_user_request", from: "standard", to: "exceptional", cost: 350, justified: true, outcome: "accepted", desc: "Regulatory compliance deep analysis requested", ago: "8hr" },
-  { id: "esc-5", domain: "digital-presence", trigger: "invalidated_prior_reasoning", from: "utility", to: "premium", cost: 150, justified: true, outcome: "accepted", desc: "Major layout change invalidated all prior analysis", ago: "1d" },
-  { id: "esc-6", domain: "engineering", trigger: "novelty", from: "standard", to: "premium", cost: 130, justified: false, outcome: "low_value", desc: "New framework — could have used reference pattern", ago: "1d" },
-  { id: "esc-7", domain: "admin-ops", trigger: "enterprise_policy", from: "utility", to: "standard", cost: 60, justified: true, outcome: "accepted", desc: "Enterprise policy requires standard+ for ops decisions", ago: "2d" },
-];
+import { DEMO_ESCALATIONS } from "@/lib/demo-data/admin-intelligence";
 
 const triggerColors: Record<string, string> = {
   low_confidence: "text-amber-400 bg-amber-500/10",

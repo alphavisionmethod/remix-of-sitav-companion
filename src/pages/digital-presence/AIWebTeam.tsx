@@ -8,6 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_DPO_DISAGREEMENTS as DEMO_DISAGREEMENTS } from "@/lib/demo-data/digital-presence";
 
 type Intensity = "quiet" | "balanced" | "proactive";
 type AgentStatus = "active" | "inactive" | "watching";
@@ -156,28 +157,6 @@ const AGENTS: AgentProfile[] = [
       { title: "No PWA manifest detected", summary: "Consider adding PWA support for mobile engagement.", confidence: 65, type: "opportunity", impact: "low" },
     ],
     confidence: 60, uncertainty: 35, tasksActive: 0, tasksPending: 1, lastAction: "Checked mobile experience quality"
-  },
-];
-
-const DEMO_DISAGREEMENTS = [
-  {
-    topic: "Homepage hero redesign priority",
-    agents: ["Web Strategist", "Design Director", "CRO Advisor"],
-    positions: [
-      { agent: "Web Strategist", position: "Prioritize value prop rewrite first", confidence: 87 },
-      { agent: "Design Director", position: "Visual hierarchy fix is more impactful", confidence: 82 },
-      { agent: "CRO Advisor", position: "CTA above fold is the fastest win", confidence: 92 },
-    ],
-    resolution: "CRO Advisor's suggestion has highest confidence and fastest impact. Recommend CTA fix first, then content, then layout."
-  },
-  {
-    topic: "Blog content refresh vs new landing pages",
-    agents: ["Content Strategist", "Web Strategist"],
-    positions: [
-      { agent: "Content Strategist", position: "Refresh 12 stale blogs — engagement declining", confidence: 94 },
-      { agent: "Web Strategist", position: "New campaign landing page will drive more conversions", confidence: 76 },
-    ],
-    resolution: "Content refresh has higher confidence. Recommend parallel execution — refresh blogs while drafting landing page."
   },
 ];
 

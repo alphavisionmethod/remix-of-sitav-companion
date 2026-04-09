@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Eye, CheckCircle, AlertTriangle, XCircle, RefreshCw, FileText, GitBranch, Layers } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_CLAIMS } from "@/lib/demo-data/admin-platform";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -28,15 +29,6 @@ interface TruthClaim {
   lastChecked: string;
   remediation?: string;
 }
-
-const DEMO_CLAIMS: TruthClaim[] = [
-  { id: "tc-1", capability: "User Authentication", claimedStatus: "Fully operational with RLS", runtimeEvidence: "Auth endpoints responding, RLS policies active", status: "verified", severity: "low", lastChecked: "2026-04-05T10:20:00Z" },
-  { id: "tc-2", capability: "Real-time Subscriptions", claimedStatus: "Active on all tables", runtimeEvidence: "Only 12/45 tables have realtime enabled", status: "drift", severity: "high", lastChecked: "2026-04-05T10:15:00Z", remediation: "Enable realtime on remaining tables or update documentation" },
-  { id: "tc-3", capability: "Edge Function Auto-deploy", claimedStatus: "All functions auto-deploy on push", runtimeEvidence: "Deployment pipeline active", status: "verified", severity: "low", lastChecked: "2026-04-05T10:18:00Z" },
-  { id: "tc-4", capability: "Backup & Recovery", claimedStatus: "Daily automated backups with PITR", runtimeEvidence: "Last backup timestamp found, PITR status unconfirmed", status: "unverified", severity: "medium", lastChecked: "2026-04-04T23:00:00Z", remediation: "Verify PITR configuration in Supabase dashboard" },
-  { id: "tc-5", capability: "AI Advisory System", claimedStatus: "Multi-advisor with memory", runtimeEvidence: "Advisor configs exist, memory tables populated", status: "verified", severity: "low", lastChecked: "2026-04-05T10:10:00Z" },
-  { id: "tc-6", capability: "Connector Health Monitoring", claimedStatus: "Real-time health checks every 5m", runtimeEvidence: "Last health check was 45m ago", status: "stale", severity: "medium", lastChecked: "2026-04-05T09:35:00Z", remediation: "Investigate health-check scheduler" },
-];
 
 const PlatformTruthRegistry = () => {
   const { isDemoMode } = useDataMode();

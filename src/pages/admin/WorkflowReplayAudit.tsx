@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useWorkflowReplay, useTransitionValidator } from "@/contexts/SitaKernelContext";
+import { DEMO_RUNS } from "@/lib/demo-data/admin-platform";
 
 interface WorkflowRun {
   id: string;
@@ -34,50 +35,6 @@ interface WorkflowStep {
   output?: string;
   receiptRef?: string;
 }
-
-const DEMO_RUNS: WorkflowRun[] = [
-  {
-    id: "WF-RUN-001", workflowName: "Invoice Approval & Payment", status: "completed", startedAt: "2h ago", completedAt: "1h 45m ago", actor: "owner", receiptId: "REC-W001", branchPath: "standard → approved → paid",
-    steps: [
-      { name: "Invoice submitted", status: "completed", type: "event", timestamp: "2h ago", actor: "system" },
-      { name: "Validation check", status: "completed", type: "check", timestamp: "2h ago", duration: "0.3s", output: "Valid: amount=$450, vendor=trusted" },
-      { name: "Policy evaluation", status: "completed", type: "decision", timestamp: "1h 58m ago", duration: "0.1s", output: "Route: manual approval (amount > $100)" },
-      { name: "Owner approval", status: "completed", type: "approval", timestamp: "1h 50m ago", actor: "owner", receiptRef: "REC-A012" },
-      { name: "Payment execution", status: "completed", type: "action", timestamp: "1h 48m ago", duration: "2.1s", output: "Payment confirmed via Stripe" },
-      { name: "Receipt generation", status: "completed", type: "event", timestamp: "1h 47m ago", receiptRef: "REC-P042" },
-      { name: "Audit log entry", status: "completed", type: "event", timestamp: "1h 47m ago" },
-    ],
-  },
-  {
-    id: "WF-RUN-002", workflowName: "Connector Re-authentication", status: "failed", startedAt: "6h ago", actor: "system", branchPath: "detect → notify → timeout",
-    steps: [
-      { name: "Staleness detected", status: "completed", type: "event", timestamp: "6h ago", output: "Google Calendar: 4h stale" },
-      { name: "Re-auth notification sent", status: "completed", type: "action", timestamp: "5h 55m ago" },
-      { name: "User re-auth", status: "failed", type: "approval", timestamp: "—", output: "Timeout: no response in 4h" },
-      { name: "Escalation", status: "skipped", type: "action", timestamp: "—" },
-    ],
-  },
-  {
-    id: "WF-RUN-003", workflowName: "AI Model Downgrade", status: "completed", startedAt: "12h ago", completedAt: "12h ago", actor: "model_router", receiptId: "REC-W003", branchPath: "detect → downgrade → verify",
-    steps: [
-      { name: "Latency threshold breached", status: "completed", type: "event", timestamp: "12h ago", output: "p95 > 8s for 15min" },
-      { name: "Fallback model selected", status: "completed", type: "decision", timestamp: "12h ago", output: "gpt-4 → gpt-4o-mini" },
-      { name: "Model swap executed", status: "completed", type: "action", timestamp: "12h ago", duration: "0.5s" },
-      { name: "Post-swap verification", status: "completed", type: "check", timestamp: "11h 58m ago", output: "Latency normalized: p95 = 1.8s" },
-      { name: "Cost ledger updated", status: "completed", type: "event", timestamp: "11h 58m ago" },
-    ],
-  },
-  {
-    id: "WF-RUN-004", workflowName: "Bulk Lead Import", status: "rolled-back", startedAt: "1d ago", actor: "owner", rollbackRef: "RB-001", branchPath: "import → validate → rollback",
-    steps: [
-      { name: "CSV uploaded", status: "completed", type: "event", timestamp: "1d ago", output: "142 records" },
-      { name: "Validation", status: "completed", type: "check", timestamp: "1d ago", output: "12 duplicate emails detected" },
-      { name: "Import executed", status: "completed", type: "action", timestamp: "1d ago", output: "130 records imported" },
-      { name: "Owner review", status: "completed", type: "approval", timestamp: "23h ago", actor: "owner", output: "Rejected: wrong segment mapping" },
-      { name: "Rollback executed", status: "completed", type: "action", timestamp: "23h ago", duration: "1.2s", output: "130 records removed" },
-    ],
-  },
-];
 
 const STEP_ICONS: Record<string, { icon: typeof CheckCircle; color: string }> = {
   action: { icon: Play, color: "text-blue-400" },

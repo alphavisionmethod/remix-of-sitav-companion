@@ -5,31 +5,9 @@ import { Badge } from "@/components/ui/badge";
 import { useRoutingPolicies } from "@/hooks/use-sag-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_EXAMPLE_STAGES } from "@/lib/demo-data/admin-platform";
 
 
-
-const DEMO_EXAMPLE_STAGES = [
-  { pattern: 'Classify → Synthesize → Resolve', stages: [
-    { label: 'Utility Classifier', model: 'gemini-2.5-flash-lite', cost: '0.1¢', purpose: 'Cheap task classification' },
-    { label: 'Standard Synthesis', model: 'gemini-3-flash', cost: '2¢', purpose: 'Mid-tier content synthesis' },
-    { label: 'Premium Resolver', model: 'gemini-2.5-pro', cost: '25¢', purpose: 'Only if ambiguity remains' },
-  ]},
-  { pattern: 'Retrieve → Differential → Deep', stages: [
-    { label: 'Cache/Reuse Check', model: 'deterministic', cost: '0¢', purpose: 'Check intelligence library' },
-    { label: 'Differential Reasoning', model: 'gemini-2.5-flash', cost: '1¢', purpose: 'Reason about what changed' },
-    { label: 'Deep Reasoning', model: 'gpt-5', cost: '50¢', purpose: 'Only if invalidated' },
-  ]},
-  { pattern: 'Extract → Ground → Explain', stages: [
-    { label: 'Utility Extraction', model: 'flash-lite', cost: '0.1¢', purpose: 'Structured data extraction' },
-    { label: 'Deterministic Grounding', model: 'code', cost: '0¢', purpose: 'Validate against state' },
-    { label: 'Standard Explanation', model: 'gemini-3-flash', cost: '3¢', purpose: 'User-facing explanation' },
-  ]},
-  { pattern: 'Draft → Verify → Escalate', stages: [
-    { label: 'Draft Model', model: 'gpt-5-nano', cost: '0.5¢', purpose: 'Fast initial draft' },
-    { label: 'Verifier Model', model: 'gemini-2.5-flash', cost: '1¢', purpose: 'Quality validation' },
-    { label: 'Premium Escalation', model: 'claude-sonnet-4', cost: '30¢', purpose: 'Only when needed' },
-  ]},
-];
 
 const SAGMultiStageExplorer = () => {
   const { isDemoMode } = useDataMode();

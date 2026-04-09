@@ -15,6 +15,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_ADMIN_SERVICES_MISSION_CONTROL_HOME as DEMO_SERVICES, DEMO_URGENT_ACTIONS } from "@/lib/demo-data/admin-platform";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -27,23 +28,6 @@ const statusColor: Record<HealthStatus, string> = {
   degraded: "bg-orange-500/10 text-orange-500 border-orange-500/20",
   critical: "bg-red-500/10 text-red-500 border-red-500/20",
 };
-
-const DEMO_SERVICES = [
-  { name: "Brain Core", status: "healthy" as HealthStatus, latency: 12, uptime: 99.99 },
-  { name: "Approval Engine", status: "healthy" as HealthStatus, latency: 18, uptime: 99.97 },
-  { name: "Workflow Engine", status: "warning" as HealthStatus, latency: 45, uptime: 99.91 },
-  { name: "Projection Service", status: "healthy" as HealthStatus, latency: 8, uptime: 99.99 },
-  { name: "Connector Gateway", status: "degraded" as HealthStatus, latency: 120, uptime: 99.4 },
-  { name: "Event Bus", status: "healthy" as HealthStatus, latency: 3, uptime: 100 },
-  { name: "Notification Center", status: "healthy" as HealthStatus, latency: 15, uptime: 99.98 },
-  { name: "Admin Service", status: "healthy" as HealthStatus, latency: 10, uptime: 99.99 },
-];
-
-const DEMO_URGENT_ACTIONS = [
-  { id: "1", title: "Connector degradation — Slack sync stale >15m", severity: "high", route: "/admin/connectors" },
-  { id: "2", title: "Workflow engine latency spike (p99 >200ms)", severity: "medium", route: "/admin/incidents" },
-  { id: "3", title: "2 pending approval requests >1h", severity: "low", route: "/admin/dashboard" },
-];
 
 const MissionControlHome = () => {
   const [lastRefresh, setLastRefresh] = useState(new Date());

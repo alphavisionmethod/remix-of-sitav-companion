@@ -6,19 +6,7 @@ import { Switch } from "@/components/ui/switch";
 import { Heart, ShieldCheck, Eye, EyeOff, Lock, Clock, Activity, Trash2, CheckCircle2, AlertTriangle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_SIGNALS = [
-  { key: "heart_rate", label: "Heart Rate", unit: "bpm", sensitivity: "high", retention: 90 },
-  { key: "steps", label: "Steps", unit: "count", sensitivity: "low", retention: 365 },
-  { key: "sleep", label: "Sleep Sessions", unit: "hours", sensitivity: "medium", retention: 180 },
-  { key: "exercise", label: "Exercise Sessions", unit: "session", sensitivity: "low", retention: 365 },
-  { key: "blood_glucose", label: "Blood Glucose", unit: "mg/dL", sensitivity: "high", retention: 90 },
-  { key: "body_temperature", label: "Body Temperature", unit: "°C", sensitivity: "high", retention: 90 },
-  { key: "oxygen_saturation", label: "Oxygen Saturation", unit: "%", sensitivity: "high", retention: 90 },
-  { key: "respiratory_rate", label: "Respiratory Rate", unit: "brpm", sensitivity: "high", retention: 90 },
-  { key: "distance", label: "Distance", unit: "km", sensitivity: "low", retention: 365 },
-  { key: "nutrition", label: "Nutrition", unit: "calories", sensitivity: "medium", retention: 180 },
-];
+import { DEMO_ADMIN_SIGNALS as DEMO_SIGNALS } from "@/lib/demo-data/admin-platform";
 
 type ConsentMap = Record<string, { read: boolean; routing: boolean; assistant: boolean }>;
 

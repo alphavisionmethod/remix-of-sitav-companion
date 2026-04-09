@@ -8,19 +8,7 @@ import { useModelRegistry, usePromptFamilies, useRoutingPolicies, useTaskRequest
 import { TASK_CLASSES, MODEL_CLASSES } from "@/lib/sovereign-ai-gateway/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_BUILDER_STEPS = [
-  { step: 1, label: 'Capability', icon: Layers, desc: 'Select capability ID for this AI feature' },
-  { step: 2, label: 'Prompt Family', icon: MessageSquare, desc: 'Select or create prompt family' },
-  { step: 3, label: 'Task Class', icon: Zap, desc: 'Assign task classification' },
-  { step: 4, label: 'Schema', icon: FileText, desc: 'Define output schema' },
-  { step: 5, label: 'Risk/Autonomy', icon: Shield, desc: 'Assign risk and autonomy tiers' },
-  { step: 6, label: 'Context', icon: Database, desc: 'Select context and memory sources' },
-  { step: 7, label: 'Routing', icon: Code2, desc: 'Configure routing policy' },
-  { step: 8, label: 'Verification', icon: CheckCircle2, desc: 'Set verification requirements' },
-  { step: 9, label: 'Fallback', icon: Shield, desc: 'Configure fallback chain' },
-  { step: 10, label: 'Validate', icon: CheckCircle2, desc: 'Compliance validation' },
-];
+import { DEMO_ADMIN_BUILDER_STEPS_S_A_G_BUILDER_CONSOLE as DEMO_BUILDER_STEPS } from "@/lib/demo-data/admin-platform";
 
 const SAGBuilderConsole = () => {
   const { isDemoMode } = useDataMode();

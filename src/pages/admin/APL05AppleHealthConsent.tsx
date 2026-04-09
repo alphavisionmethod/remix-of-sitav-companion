@@ -7,19 +7,7 @@ import { Heart, ShieldCheck, Eye, EyeOff, Lock, AlertTriangle, CheckCircle2, Clo
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { Button } from "@/components/ui/button";
-
-const DEMO_SIGNALS = [
-  { key: "heart_rate", label: "Heart Rate", unit: "bpm", sensitivity: "high", retentionDays: 90 },
-  { key: "hrv", label: "Heart Rate Variability", unit: "ms", sensitivity: "high", retentionDays: 90 },
-  { key: "sleep", label: "Sleep Analysis", unit: "hours", sensitivity: "medium", retentionDays: 180 },
-  { key: "steps", label: "Step Count", unit: "count", sensitivity: "low", retentionDays: 365 },
-  { key: "vo2max", label: "VO2 Max", unit: "mL/kg/min", sensitivity: "medium", retentionDays: 365 },
-  { key: "workout", label: "Workout Sessions", unit: "session", sensitivity: "low", retentionDays: 365 },
-  { key: "stand_hours", label: "Stand Hours", unit: "hours", sensitivity: "low", retentionDays: 180 },
-  { key: "respiratory_rate", label: "Respiratory Rate", unit: "brpm", sensitivity: "high", retentionDays: 90 },
-  { key: "blood_oxygen", label: "Blood Oxygen", unit: "%", sensitivity: "high", retentionDays: 90 },
-  { key: "resting_hr", label: "Resting Heart Rate", unit: "bpm", sensitivity: "medium", retentionDays: 180 },
-];
+import { DEMO_ADMIN_SIGNALS_A_P_L05_APPLE_HEALTH_CONSENT as DEMO_SIGNALS } from "@/lib/demo-data/admin-platform";
 
 type ConsentState = Record<string, { read: boolean; routing: boolean; boardroom: boolean; assistant: boolean }>;
 

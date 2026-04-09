@@ -15,14 +15,9 @@ import { toast } from "sonner";
 import { classifyFeatureDomain } from "@/lib/delivery-methodology/feature-factory";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_ADMIN_ARCHETYPES as DEMO_ARCHETYPES } from "@/lib/demo-data/admin-platform";
 
 
-
-const DEMO_ARCHETYPES = [
-  "boardroom","office","simulator","workflow","onboarding","crud",
-  "action-center","dashboard","detail-view","connector-flow",
-  "intelligence","proof-evidence","admin-control","timeline","settings",
-];
 
 const FeatureIntakeDesk = () => {
   const { isDemoMode } = useDataMode();

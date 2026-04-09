@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_TASKS } from "@/lib/demo-data/admin-platform";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -32,14 +33,6 @@ interface ConciergeTask {
   continuityBroken: boolean;
   receiptRef?: string;
 }
-
-const DEMO_TASKS: ConciergeTask[] = [
-  { id: "ct-1", title: "Book dentist appointment for Tuesday", domain: "task", state: "active", assignee: "Concierge Agent", lastUpdated: "2026-04-05T10:00:00Z", continuityBroken: false },
-  { id: "ct-2", title: "Flight rebooking — SFO→JFK May 12", domain: "travel", state: "active", assignee: "Travel Agent", lastUpdated: "2026-04-05T09:30:00Z", continuityBroken: false },
-  { id: "ct-3", title: "Grocery delivery coordination", domain: "household", state: "completed", assignee: "Household Agent", lastUpdated: "2026-04-04T18:00:00Z", continuityBroken: false, receiptRef: "rcpt-445" },
-  { id: "ct-4", title: "Follow-up with insurance broker", domain: "promise", state: "broken", assignee: "Concierge Agent", lastUpdated: "2026-04-03T14:00:00Z", continuityBroken: true },
-  { id: "ct-5", title: "Renew passport — expedited processing", domain: "task", state: "stale", assignee: "Concierge Agent", lastUpdated: "2026-04-01T10:00:00Z", continuityBroken: true },
-];
 
 const domainIcon: Record<string, typeof Activity> = { task: Activity, travel: Plane, household: Home, promise: CheckCircle };
 

@@ -3,26 +3,10 @@ import { Landmark, Shield, TrendingUp, Wallet, Zap, Calendar, Target, Coins } fr
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useCapitalPurposeBuckets } from "@/hooks/use-investment-office";
-
-const DEMO_PURPOSES = [
-  { id: "ltw", label: "Long-Term Wealth", icon: <TrendingUp className="h-5 w-5" />, emoji: "🏦", allocated: 245000, target: 60, actual: 49.2, color: "bg-primary" },
-  { id: "fam", label: "Family Security", icon: <Shield className="h-5 w-5" />, emoji: "🛡️", allocated: 85000, target: 20, actual: 17.1, color: "bg-[hsl(var(--trust-safe))]" },
-  { id: "res", label: "Reserve Cash", icon: <Wallet className="h-5 w-5" />, emoji: "💵", allocated: 62000, target: 10, actual: 12.4, color: "bg-muted-foreground" },
-  { id: "opp", label: "Opportunity Sleeve", icon: <Target className="h-5 w-5" />, emoji: "🎯", allocated: 48000, target: 5, actual: 9.6, color: "bg-[hsl(var(--trust-warn))]" },
-  { id: "spec", label: "Speculative Sleeve", icon: <Zap className="h-5 w-5" />, emoji: "⚡", allocated: 35000, target: 3, actual: 7.0, color: "bg-destructive" },
-  { id: "evt", label: "Event Sleeve", icon: <Calendar className="h-5 w-5" />, emoji: "📅", allocated: 12000, target: 1, actual: 2.4, color: "bg-purple-500" },
-  { id: "inc", label: "Income Sleeve", icon: <Coins className="h-5 w-5" />, emoji: "💰", allocated: 11000, target: 1, actual: 2.2, color: "bg-amber-500" },
-];
+import { DEMO_INV_PURPOSES as DEMO_PURPOSES, DEMO_INV_RULES as DEMO_RULES } from "@/lib/demo-data/investment";
 
 const TOTAL = DEMO_PURPOSES.reduce((s, p) => s + p.allocated, 0);
 const fmt = (n: number) => n >= 1e6 ? `$${(n / 1e6).toFixed(2)}M` : `$${(n / 1e3).toFixed(1)}K`;
-
-const DEMO_RULES = [
-  { rule: "Speculative sleeve must not exceed 5% of total capital", status: "violated", detail: "Currently 7.0% — trim $10K" },
-  { rule: "Reserve cash must cover 6 months of expenses", status: "pass", detail: "$62K covers ~8 months" },
-  { rule: "Family security must be in low-volatility assets only", status: "pass", detail: "Gold + bonds + cash" },
-  { rule: "Event sleeve capped at 2% of total", status: "violated", detail: "Currently 2.4% — reduce by $2K" },
-];
 
 export default function CapitalPurpose() {
   const { isDemoMode } = useDataMode();

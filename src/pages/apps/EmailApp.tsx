@@ -7,6 +7,7 @@ import { Mail, Inbox, Send, Star, Trash2, Archive, Search, Plus, Paperclip, Chev
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_EMAILS } from "@/lib/demo-data/apps";
 
 interface Email {
   id: string;
@@ -19,15 +20,6 @@ interface Email {
   category: "primary" | "social" | "promotions" | "updates";
   hasAttachment: boolean;
 }
-
-const DEMO_EMAILS: Email[] = [
-  { id: "1", from: "Sarah Chen", subject: "Q2 Revenue Projections", preview: "Hi, I've attached the updated revenue projections for Q2. Please review before our meeting tomorrow...", time: "10:32 AM", read: false, starred: true, category: "primary", hasAttachment: true },
-  { id: "2", from: "SITA System", subject: "Weekly AI Team Performance Report", preview: "Your AI team processed 1,247 tasks this week with 96.4% accuracy. 3 agents were upgraded to beta status...", time: "9:15 AM", read: false, starred: false, category: "updates", hasAttachment: false },
-  { id: "3", from: "Alex Rivera", subject: "Contract Review: Apex Corp", preview: "The legal team has reviewed the contract. A few minor changes needed on clause 4.2 regarding...", time: "Yesterday", read: true, starred: false, category: "primary", hasAttachment: true },
-  { id: "4", from: "Money Advisor", subject: "Bill Payment Reminder", preview: "You have 2 bills due this week: AWS ($342) and Figma ($15). Auto-pay is enabled for both...", time: "Yesterday", read: true, starred: false, category: "updates", hasAttachment: false },
-  { id: "5", from: "Dev Team", subject: "Sprint 12 Retrospective Notes", preview: "Great sprint everyone! Key wins: launched advisor memory system, deployed personalization engine...", time: "2 days ago", read: true, starred: true, category: "primary", hasAttachment: false },
-  { id: "6", from: "LinkedIn", subject: "5 new connections this week", preview: "Your network is growing! You have 5 new connection requests and 12 profile views...", time: "3 days ago", read: true, starred: false, category: "social", hasAttachment: false },
-];
 
 const categoryColors: Record<string, string> = {
   primary: "bg-blue-500/10 text-blue-500",

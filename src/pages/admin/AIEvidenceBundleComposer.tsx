@@ -11,72 +11,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 type ExportMode = "json" | "markdown" | "approval" | "pr-ready" | "investor";
-
-const DEMO_EXPORT_MODES: {
-  mode: ExportMode; label: string; icon: typeof FileJson; description: string }[] = [
-  { mode: "json", label: "JSON Bundle", icon: FileJson, description: "Machine-readable evidence bundle with full metadata" },
-  { mode: "markdown", label: "Markdown Report", icon: BookOpen, description: "Human-readable report for docs, wikis, or runbooks" },
-  { mode: "approval", label: "Approval Attachment", icon: Shield, description: "Attach to approval queue item with risk & evidence summary" },
-  { mode: "pr-ready", label: "PR-Ready Evidence", icon: GitBranch, description: "Structured evidence block for pull request descriptions" },
-  { mode: "investor", label: "Investor/Compliance", icon: Users, description: "High-level proof of engineering governance and quality" },
-];
-
-const DEMO_BUNDLE_ITEMS = [
-  {
-    id: "b1", missionTitle: "Fix projection cache corruption", type: "fix" as const,
-    confidence: 87, status: "applied", agent: "Backend Engineer",
-    evidence: [
-      { type: "Root cause analysis", detail: "Race condition when PROJECTION_REBUILD_CONCURRENCY > 2" },
-      { type: "Signal cluster", detail: "14 projection 500 errors over 4 hours" },
-      { type: "Agent debate", detail: "3-1 consensus for mutex over optimistic locking" },
-    ],
-    tests: [
-      { name: "Concurrent write stress test", passed: true },
-      { name: "Projection rebuild integration", passed: true },
-      { name: "Cache invalidation propagation", passed: true },
-    ],
-    verificationGates: [
-      { gate: "Type Check", result: "pass" as const },
-      { gate: "Unit Tests", result: "pass" as const },
-      { gate: "Security Scan", result: "pass" as const },
-      { gate: "Policy Compliance", result: "pass" as const },
-    ],
-    rollbackPlan: "Remove mutex lock, revert to optimistic writes. No data loss expected.",
-    impact: "Eliminated 14 concurrent rebuild errors. Zero projection corruption since.",
-    appliedAt: "Apr 5, 09:30", receipt: "exec-1712312345-ab12",
-  },
-  {
-    id: "b2", missionTitle: "Auto-fix broken route /admin/durability", type: "self-heal" as const,
-    confidence: 96, status: "applied", agent: "Error Fixer",
-    evidence: [
-      { type: "Signal", detail: "404 on known internal route /admin/durability" },
-      { type: "Self-healing rule", detail: "Auto-fix obvious broken route mappings" },
-    ],
-    tests: [{ name: "Route resolution test", passed: true }],
-    verificationGates: [
-      { gate: "Type Check", result: "pass" as const },
-      { gate: "Route Test", result: "pass" as const },
-      { gate: "Policy", result: "pass" as const },
-    ],
-    rollbackPlan: "Revert single route entry. Zero cascading effects.",
-    impact: "Route restored in 12 seconds. Zero user disruption.",
-    appliedAt: "Apr 5, 08:15", receipt: "exec-1712301234-cd34",
-  },
-  {
-    id: "b3", missionTitle: "Feature flag canary rollout policy", type: "improvement" as const,
-    confidence: 84, status: "proposed", agent: "Release Manager",
-    evidence: [
-      { type: "Learning pattern", detail: "80% of flag rollbacks were flags without canary stage" },
-      { type: "Agent debate", detail: "3-1 consensus for canary requirement" },
-      { type: "Incident data", detail: "5 flag rollbacks in 30 days" },
-    ],
-    tests: [],
-    verificationGates: [],
-    rollbackPlan: "Remove canary enforcement. Flags return to instant 100% activation.",
-    impact: "Estimated: -60% flag rollbacks, -80% flag-related incidents",
-    appliedAt: null, receipt: null,
-  },
-];
+import { DEMO_BUNDLE_ITEMS, DEMO_EXPORT_MODES } from "@/lib/demo-data/admin-platform";
 
 const typeColors: Record<string, string> = {
   fix: "text-[hsl(var(--trust-safe))]",

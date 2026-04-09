@@ -14,6 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_CATEGORY_REVENUE, DEMO_RETENTION_DATA, DEMO_REVENUE_TREND } from "@/lib/demo-data/core-pages";
 
 // ── Mock Analytics Data ─────────────────────────────────────────
 
@@ -25,32 +26,6 @@ const PACK_ANALYTICS: PackAnalytics[] = [
   { pack_id: "pack-med-spa", attach_rate: 0.22, time_to_first_value_avg: "20 min", retention_lift: 0.32, arpu_uplift: 0.52, activation_speed: "Fast", workflow_completion_lift: 0.38, install_completion_rate: 0.89, uninstall_reasons: ["Wrong vertical"], revenue_generated: 22620 },
   { pack_id: "pack-investment-office", attach_rate: 0.08, time_to_first_value_avg: "12 min", retention_lift: 0.35, arpu_uplift: 0.85, activation_speed: "Slow", workflow_completion_lift: 0.15, install_completion_rate: 0.82, uninstall_reasons: ["Too expensive"], revenue_generated: 22120 },
   { pack_id: "pack-lead-recovery", attach_rate: 0.34, time_to_first_value_avg: "1.5 hr", retention_lift: 0.12, arpu_uplift: 0.20, activation_speed: "Fast", workflow_completion_lift: 0.30, install_completion_rate: 0.93, uninstall_reasons: ["Low lead volume"], revenue_generated: 27000 },
-];
-
-const DEMO_REVENUE_TREND = [
-  { month: "Oct", revenue: 18200, installs: 420 },
-  { month: "Nov", revenue: 22800, installs: 510 },
-  { month: "Dec", revenue: 19500, installs: 380 },
-  { month: "Jan", revenue: 28400, installs: 620 },
-  { month: "Feb", revenue: 32100, installs: 710 },
-  { month: "Mar", revenue: 38500, installs: 840 },
-];
-
-const DEMO_CATEGORY_REVENUE = [
-  { name: "Founders", value: 100310, color: "hsl(var(--accent))" },
-  { name: "Families", value: 38400, color: "hsl(var(--trust-safe))" },
-  { name: "Service Biz", value: 22620, color: "hsl(var(--primary))" },
-  { name: "Finance", value: 22120, color: "hsl(212, 70%, 55%)" },
-  { name: "Workflows", value: 66900, color: "hsl(var(--trust-review))" },
-];
-
-const DEMO_RETENTION_DATA = [
-  { month: "M0", withPack: 100, withoutPack: 100 },
-  { month: "M1", withPack: 92, withoutPack: 78 },
-  { month: "M2", withPack: 87, withoutPack: 65 },
-  { month: "M3", withPack: 84, withoutPack: 55 },
-  { month: "M6", withPack: 78, withoutPack: 42 },
-  { month: "M12", withPack: 72, withoutPack: 30 },
 ];
 
 const StoreAnalyticsPage = () => {

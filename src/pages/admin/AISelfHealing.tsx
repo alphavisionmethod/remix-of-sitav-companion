@@ -6,38 +6,7 @@ import { useState } from "react";
 import { Sparkles, CheckCircle2, AlertTriangle, Shield, TrendingUp, Clock, RotateCcw, Eye, Settings } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_HEALED = [
-  { title: "Restarted unhealthy projection rebuild worker", time: "12m ago", risk: "low", verified: true, learned: true },
-  { title: "Reverted bad feature flag: revenue-sidebar-v2", time: "1h ago", risk: "low", verified: true, learned: true },
-  { title: "Auto-fixed broken internal route /admin/durability", time: "2h ago", risk: "low", verified: true, learned: false },
-  { title: "Invalidated stale brand-kit CDN cache", time: "4h ago", risk: "low", verified: true, learned: true },
-  { title: "Retried stuck connector sync job (Stripe)", time: "6h ago", risk: "low", verified: true, learned: false },
-  { title: "Restored known-good layout variant for mobile sidebar", time: "1d ago", risk: "medium", verified: true, learned: true },
-];
-
-const DEMO_RULES = [
-  { rule: "Auto-restart unhealthy noncritical processes", scope: "Infrastructure", risk: "low", enabled: true, healCount: 12 },
-  { rule: "Revert recent bad feature flag/config", scope: "Feature Flags", risk: "low", enabled: true, healCount: 4 },
-  { rule: "Disable broken panel behind feature flag", scope: "UI Components", risk: "low", enabled: true, healCount: 7 },
-  { rule: "Restore known-good layout variant", scope: "UI Layouts", risk: "medium", enabled: true, healCount: 3 },
-  { rule: "Retry stuck sync jobs (max 3 attempts)", scope: "Connectors", risk: "low", enabled: true, healCount: 18 },
-  { rule: "Invalidate bad cache entries", scope: "Caching", risk: "low", enabled: true, healCount: 9 },
-  { rule: "Auto-fix obvious broken route mappings", scope: "Routing", risk: "low", enabled: true, healCount: 2 },
-  { rule: "Downgrade degraded integration to safe mode", scope: "Integrations", risk: "medium", enabled: false, healCount: 0 },
-];
-
-const DEMO_BLOCKED = [
-  { title: "Schema migration — new column on customers table", reason: "Blast radius too high for auto-heal", risk: "high", agent: "Security Reviewer" },
-  { title: "Permission policy change — admin role expansion", reason: "Trust-sensitive change requires human approval", risk: "critical", agent: "Security Reviewer" },
-  { title: "Core routing restructure — /admin/* paths", reason: "Affects 20+ routes — exceeds auto-heal scope", risk: "high", agent: "Engineering Lead" },
-];
-
-const DEMO_PATTERNS = [
-  { pattern: "Projection rebuild failures cluster after deployments", frequency: "3x in 14 days", action: "Added pre-deploy projection health check", confidence: 78 },
-  { pattern: "Feature flag rollbacks happen within 2 hours of activation", frequency: "5x in 30 days", action: "Suggested canary rollout for all feature flags", confidence: 82 },
-  { pattern: "CDN cache staleness correlates with brand kit updates", frequency: "Weekly", action: "Auto-invalidate on brand kit mutation", confidence: 91 },
-];
+import { DEMO_ADMIN_PATTERNS_A_I_SELF_HEALING as DEMO_PATTERNS, DEMO_ADMIN_RULES as DEMO_RULES, DEMO_BLOCKED, DEMO_HEALED } from "@/lib/demo-data/admin-platform";
 
 const AISelfHealing = () => {
   const { isDemoMode } = useDataMode();

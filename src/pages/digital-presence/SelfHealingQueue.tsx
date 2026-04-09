@@ -7,6 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_DPO_STATS as DEMO_STATS } from "@/lib/demo-data/digital-presence";
 
 type PatchStatus = "pending" | "approved" | "applied" | "rejected" | "verified";
 
@@ -33,13 +34,6 @@ const INITIAL_PATCHES: Patch[] = [
   { id: "p4", issue: "Trust badges missing on checkout", page: "/checkout", fixPlan: "Add SSL + payment trust badges near CTA", confidence: 90, severity: "critical", autoFixEligible: false, status: "pending", beforeSnippet: "<CheckoutForm />", afterSnippet: "<CheckoutForm />\n<TrustBadges />", detectedBy: "CRO Advisor", verifiedAfterApply: false, affectedPages: ["/checkout"] },
   { id: "p5", issue: "Image not optimized (2.4MB)", page: "/services", fixPlan: "Compress hero image from 2.4MB to ~180KB", confidence: 99, severity: "low", autoFixEligible: true, status: "applied", beforeSnippet: "hero.png (2.4MB)", afterSnippet: "hero.webp (182KB)", detectedBy: "Technical QA", verifiedAfterApply: true, affectedPages: ["/services"] },
   { id: "p6", issue: "Contact form 404 on mobile", page: "/contact", fixPlan: "Fix mobile route handler for form submission", confidence: 82, severity: "critical", autoFixEligible: false, status: "pending", beforeSnippet: "POST /api/contact → 404", afterSnippet: "POST /api/contact → 200", detectedBy: "Technical QA", verifiedAfterApply: false, affectedPages: ["/contact"] },
-];
-
-const DEMO_STATS = [
-  { label: "Pending Patches", value: 4, color: "text-amber-400" },
-  { label: "Auto-Fix Eligible", value: 3, color: "text-green-400" },
-  { label: "Applied This Week", value: 5, color: "text-blue-400" },
-  { label: "Verified Clean", value: 4, color: "text-primary" },
 ];
 
 export default function SelfHealingQueue() {

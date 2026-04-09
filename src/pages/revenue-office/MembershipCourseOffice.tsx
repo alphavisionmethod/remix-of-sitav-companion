@@ -5,13 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { GraduationCap, Users, BookOpen, PlayCircle, Star, TrendingUp, AlertTriangle, Clock } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_courses = [
-  { name: "Business Growth Masterclass", members: 342, completion: 67, modules: 12, rating: 4.8, status: "live", revenue: 28400, churnRisk: 8 },
-  { name: "Marketing Foundations", members: 189, completion: 54, modules: 8, rating: 4.6, status: "live", revenue: 12600, churnRisk: 15 },
-  { name: "Leadership Accelerator", members: 78, completion: 82, modules: 6, rating: 4.9, status: "live", revenue: 15600, churnRisk: 3 },
-  { name: "Sales Playbook Pro", members: 0, completion: 0, modules: 10, rating: 0, status: "draft", revenue: 0, churnRisk: 0 },
-];
+import { DEMO_courses } from "@/lib/demo-data/revenue-office";
 
 const memberships = [
   { tier: "Premium", members: 156, mrr: 7800, churn: 3.2, retention: 96.8, trend: "up" },

@@ -3,33 +3,7 @@ import { GitCompareArrows, AlertTriangle, Check, HelpCircle } from "lucide-react
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useInvestmentDecisions } from "@/hooks/use-investment-office";
-
-const DEMO_DISAGREEMENTS = [
-  {
-    id: "dis1", topic: "NVDA Add Position",
-    advisorA: { name: "Maven (Equity)", emoji: "📈", stance: "Constructive", confidence: 78, reasoning: "AI capex cycle intact. Blackwell ramp strong. Earnings trajectory supports current valuation. Add on any dip." },
-    advisorB: { name: "Sentinel (Risk)", emoji: "🛡️", stance: "Cautious", confidence: 72, reasoning: "Concentration already 6.2%. Adding creates 9.2% single-stock exposure. Tech correlation amplifies portfolio risk in drawdown." },
-    keyAssumptionConflict: "Growth trajectory vs concentration risk — Equity sees upside justifying the bet; Risk sees portfolio fragility from concentration.",
-    resolvingEvidence: "Next earnings report and Fed rate decision will clarify growth vs macro risk balance. Wait for both catalysts before deciding.",
-    implication: "opportunity",
-  },
-  {
-    id: "dis2", topic: "Crypto Sleeve Sizing",
-    advisorA: { name: "Cipher (Crypto)", emoji: "🔐", stance: "Bullish", confidence: 70, reasoning: "ETF inflows structural. Halving dynamics playing out. Institutional adoption creating demand floor. Maintain or grow sleeve." },
-    advisorB: { name: "Mirror (Behavioral)", emoji: "🪞", stance: "Cautious", confidence: 65, reasoning: "User has increased crypto 3x in 4 months. Pattern suggests momentum-chasing. Crypto sleeve already above policy target. Pause and review." },
-    keyAssumptionConflict: "Market opportunity vs behavioral pattern — Crypto sees structural bull case; Behavioral sees potential FOMO-driven overallocation.",
-    resolvingEvidence: "Compare pre-trade thesis documentation quality for recent crypto adds. If thesis quality is declining while position size is increasing, behavioral concern is valid.",
-    implication: "caution",
-  },
-  {
-    id: "dis3", topic: "Gold Allocation Increase",
-    advisorA: { name: "Atlas (Macro)", emoji: "🌍", stance: "Strongly Supportive", confidence: 82, reasoning: "Rate cuts incoming. Central bank buying at record. Geopolitical risk premium justified. Gold is the regime hedge." },
-    advisorB: { name: "Router (Execution)", emoji: "🔄", stance: "Supportive with Timing Note", confidence: 60, reasoning: "Gold at ATH. Entry price risk is elevated. Consider staged entry over 3 tranches to average in rather than lump-sum at peak." },
-    keyAssumptionConflict: "Thesis strength vs entry timing — both agree on direction but disagree on execution approach.",
-    resolvingEvidence: "This is an execution disagreement, not a thesis disagreement. Can be resolved by using staged entry as a compromise.",
-    implication: "proceed",
-  },
-];
+import { DEMO_INV_DISAGREEMENTS as DEMO_DISAGREEMENTS } from "@/lib/demo-data/investment";
 
 export default function DisagreementEngine() {
   const { isDemoMode } = useDataMode();

@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_ADMIN_DOMAINS_H_Q_APPROVAL_QUEUE as DEMO_DOMAINS, DEMO_ADMIN_STATUSES as DEMO_STATUSES, DEMO_RECOMMENDATION_TYPES, DEMO_RISK_TIERS } from "@/lib/demo-data/admin-platform";
 
 
 
@@ -55,11 +56,6 @@ interface QueueItem {
   created_at: string;
   user_id: string;
 }
-
-const DEMO_STATUSES = ["pending", "under_review", "approved", "rejected", "returned_for_revision", "deferred", "queued_for_execution", "executed", "expired"];
-const DEMO_RISK_TIERS = ["low", "medium", "high", "critical"];
-const DEMO_RECOMMENDATION_TYPES = ["recommendation", "proposed_policy_change", "proposed_config_change", "proposed_remediation", "proposed_launch_decision", "proposed_followup_task"];
-const DEMO_DOMAINS = ["architecture", "runtime-truth", "connectors", "ai-governance", "launch-readiness", "budget", "data-schema", "device-surface", "quality-ci", "incidents"];
 
 // ── Data fetching ──
 async function fetchQueue(filters: Record<string, string>) {

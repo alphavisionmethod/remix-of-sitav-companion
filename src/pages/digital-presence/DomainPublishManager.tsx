@@ -8,36 +8,7 @@ import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useWebsiteManager } from "@/contexts/SitaKernelContext";
-
-const DEMO_DOMAINS = [
-  { domain: "mybusiness.com", type: "primary", ssl: true, status: "active", dnsOk: true, lastPublished: "2 hours ago" },
-  { domain: "www.mybusiness.com", type: "redirect", ssl: true, status: "active", dnsOk: true, lastPublished: "2 hours ago" },
-  { domain: "shop.mybusiness.com", type: "subdomain", ssl: true, status: "active", dnsOk: true, lastPublished: "1 day ago" },
-  { domain: "staging.mybusiness.com", type: "staging", ssl: true, status: "ready", dnsOk: true, lastPublished: "30 min ago" },
-];
-
-const DEMO_ENVIRONMENTS = [
-  { env: "Production", url: "mybusiness.com", status: "live", version: "v2.4.1", lastDeploy: "2 hours ago", deployer: "Auto (approved)" },
-  { env: "Staging", url: "staging.mybusiness.com", status: "ready", version: "v2.5.0-beta", lastDeploy: "30 min ago", deployer: "Design Director" },
-  { env: "Preview", url: "preview-abc123.sita.app", status: "active", version: "v2.5.0-beta.2", lastDeploy: "5 min ago", deployer: "AI Web Team" },
-];
-
-const DEMO_PUBLISH_HISTORY = [
-  { version: "v2.4.1", date: "Apr 3, 2:14 PM", changes: "Homepage hero redesign, checkout trust badges", approvedBy: "Owner", status: "live" },
-  { version: "v2.4.0", date: "Apr 1, 10:30 AM", changes: "Summer sale banner, product page updates", approvedBy: "Owner", status: "archived" },
-  { version: "v2.3.2", date: "Mar 28, 4:45 PM", changes: "Blog content refresh, SEO meta fixes", approvedBy: "Auto", status: "archived" },
-  { version: "v2.3.1", date: "Mar 25, 11:00 AM", changes: "Contact form fix, image compression", approvedBy: "Auto", status: "archived" },
-  { version: "v2.3.0", date: "Mar 20, 9:15 AM", changes: "Mobile nav redesign, pricing table", approvedBy: "Owner", status: "archived" },
-];
-
-const DEMO_PUBLISH_RULES = [
-  { rule: "Require owner approval for homepage changes", active: true },
-  { rule: "Auto-publish low-risk SEO fixes", active: true },
-  { rule: "Require preview before any checkout changes", active: true },
-  { rule: "Block publish if critical issues detected", active: true },
-  { rule: "Auto-notify team on publish", active: false },
-  { rule: "Require staging test before production", active: false },
-];
+import { DEMO_DPO_DOMAINS as DEMO_DOMAINS, DEMO_DPO_ENVIRONMENTS as DEMO_ENVIRONMENTS, DEMO_PUBLISH_HISTORY, DEMO_PUBLISH_RULES } from "@/lib/demo-data/digital-presence";
 
 export default function DomainPublishManager() {
   const { isDemoMode } = useDataMode();

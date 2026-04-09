@@ -6,22 +6,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { PORTFOLIO } from "@/hooks/useInvestmentOfficeData";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useCapitalPurposeBuckets } from "@/hooks/use-investment-office";
-
-const DEMO_PURPOSES = [
-  { id: "long-term", label: "Long-Term Wealth", icon: "🏛️", color: "hsl(var(--primary))", allocated: 45, value: PORTFOLIO.totalValue * 0.45, target: 50, risk: "moderate" },
-  { id: "family-security", label: "Family Security", icon: "🛡️", color: "hsl(152 55% 48%)", allocated: 15, value: PORTFOLIO.totalValue * 0.15, target: 15, risk: "very-low" },
-  { id: "reserve", label: "Reserve Cash", icon: "💵", color: "hsl(200 65% 55%)", allocated: 8, value: PORTFOLIO.totalCash, target: 10, risk: "very-low" },
-  { id: "opportunity", label: "Opportunity Sleeve", icon: "🎯", color: "hsl(38 85% 58%)", allocated: 15, value: PORTFOLIO.totalValue * 0.15, target: 15, risk: "high" },
-  { id: "speculative", label: "Speculative Sleeve", icon: "🔥", color: "hsl(0 65% 55%)", allocated: 12, value: PORTFOLIO.totalValue * 0.12, target: 8, risk: "very-high" },
-  { id: "event", label: "Event Sleeve", icon: "🔮", color: "hsl(280 60% 55%)", allocated: 3, value: PORTFOLIO.totalValue * 0.03, target: 2, risk: "high" },
-  { id: "income", label: "Income Sleeve", icon: "📈", color: "hsl(152 55% 48%)", allocated: 2, value: PORTFOLIO.totalValue * 0.02, target: 5, risk: "low" },
-];
-
-const DEMO_SHOCK_ZONES = [
-  { label: "Tech + Crypto Correlation", severity: "high", exposure: 70, detail: "A risk-off event could hit ~70% of portfolio simultaneously" },
-  { label: "USD Denomination", severity: "moderate", exposure: 95, detail: "Nearly all assets denominated in USD — no currency diversification" },
-  { label: "Exchange/Counterparty", severity: "low", exposure: 28, detail: "Coinbase holds 28% — manageable but monitor" },
-];
+import { DEMO_INV_PURPOSES_CAPITAL_TWIN as DEMO_PURPOSES, DEMO_SHOCK_ZONES } from "@/lib/demo-data/investment";
 
 export default function CapitalTwin() {
   const { isDemoMode } = useDataMode();

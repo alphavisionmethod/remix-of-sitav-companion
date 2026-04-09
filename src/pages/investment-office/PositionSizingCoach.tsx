@@ -4,34 +4,8 @@ import { Ruler, AlertTriangle, Check, Info, Shield, Target } from "lucide-react"
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { usePortfolioPositions } from "@/hooks/use-investment-office";
+import { DEMO_SIZING_SCENARIOS } from "@/lib/demo-data/investment";
 
-
-const DEMO_SIZING_SCENARIOS = [
-  {
-    asset: "NVDA", icon: "💚", proposedSize: 15000,
-    currentAllocation: 6.2, postAllocation: 9.2,
-    maxAllowed: 7, violatesPolicy: true, violation: "Exceeds 7% max position size",
-    riskBudgetUsed: 65, concentrationImpact: "Tech concentration → 47%",
-    advisorSuggestion: "Size at $8,000 instead to stay within policy while expressing conviction",
-    suggestedSize: 8000,
-  },
-  {
-    asset: "SOL", icon: "◎", proposedSize: 5000,
-    currentAllocation: 3.7, postAllocation: 4.7,
-    maxAllowed: 7, violatesPolicy: false, violation: null,
-    riskBudgetUsed: 80, concentrationImpact: "Crypto sleeve → 32% (above 20% target)",
-    advisorSuggestion: "Size is within position limits but pushes crypto sleeve further above target. Consider $3,000.",
-    suggestedSize: 3000,
-  },
-  {
-    asset: "XAUUSD", icon: "🥇", proposedSize: 10000,
-    currentAllocation: 5.3, postAllocation: 7.3,
-    maxAllowed: 7, violatesPolicy: true, violation: "Marginally exceeds 7% limit",
-    riskBudgetUsed: 30, concentrationImpact: "Low correlation — improves diversification",
-    advisorSuggestion: "Consider raising gold position limit to 10% given its hedging role. Policy update recommended.",
-    suggestedSize: 10000,
-  },
-];
 
 export default function PositionSizingCoach() {
   const { isDemoMode } = useDataMode();

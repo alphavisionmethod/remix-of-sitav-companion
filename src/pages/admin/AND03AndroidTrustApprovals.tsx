@@ -5,27 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { Shield, Fingerprint, Smartphone, Watch, Lock, CheckCircle2, XCircle, ArrowRight, AlertTriangle, Key } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_TRUST_CLASSES = [
-  { cls: "trusted_phone", label: "Phone", bio: "Fingerprint / Face", keystore: true, playIntegrity: true, riskCeiling: "critical", trustScore: 90, session: "24h" },
-  { cls: "trusted_tablet", label: "Tablet", bio: "Fingerprint / Face", keystore: true, playIntegrity: true, riskCeiling: "critical", trustScore: 88, session: "24h" },
-  { cls: "trusted_watch", label: "Wear OS", bio: "Wrist detection", keystore: false, playIntegrity: false, riskCeiling: "medium", trustScore: 60, session: "while_worn" },
-];
-
-const DEMO_ESCALATION_MATRIX = [
-  { risk: "Low", action: "Approve on any trusted device", bio: "None", escalate: false },
-  { risk: "Medium", action: "Biometric required on phone/tablet", bio: "Fingerprint/Face", escalate: false },
-  { risk: "High", action: "Phone with biometric + session elevation", bio: "Required + elevated", escalate: true },
-  { risk: "Critical", action: "Escalate to web/desktop with MFA", bio: "Required + MFA", escalate: true },
-];
-
-const DEMO_VERIFICATION_EVENTS = [
-  { event: "App launch", method: "biometric_or_pin", frequency: "once_per_session" },
-  { event: "Approval action", method: "biometric", frequency: "per_action" },
-  { event: "Financial transaction", method: "biometric + session_elevation", frequency: "per_action" },
-  { event: "Settings change", method: "biometric", frequency: "per_action" },
-  { event: "Export data", method: "biometric + mfa", frequency: "per_action" },
-];
+import { DEMO_ADMIN_TRUST_CLASSES as DEMO_TRUST_CLASSES, DEMO_ADMIN_VERIFICATION_EVENTS as DEMO_VERIFICATION_EVENTS, DEMO_ESCALATION_MATRIX } from "@/lib/demo-data/admin-platform";
 
 const AND03AndroidTrustApprovals = () => (
   <div className="p-6 max-w-[1400px] mx-auto space-y-6">

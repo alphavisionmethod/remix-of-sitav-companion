@@ -7,11 +7,10 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { CILaunchGateWidget } from "@/components/sita/CILaunchGateWidget";
 
-const DEMO_ALL_DOMAINS: ProviderDomain[] = ["boardroom", "investment", "money", "business", "workspace", "owner", "calendar", "advisor"];
-
 interface GateCheck {
   label: string;
   status: "pass" | "warn" | "fail";
+import { DEMO_ADMIN_ALL_DOMAINS_D_R_S10_DUAL_REALITY_LAUNCH_GATE as DEMO_ALL_DOMAINS } from "@/lib/demo-data/admin-platform";
   detail: string;
 }
 

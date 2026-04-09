@@ -12,18 +12,7 @@ import { Shield, Brain, Plug, Monitor, Eye, Layers, RefreshCw, Activity, Smartph
 import { Button } from "@/components/ui/button";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_INDEX_CONFIG = [
-  { key: "runtimeTruth", label: "Runtime Truth Index", icon: Shield, color: "text-blue-400" },
-  { key: "launchHonesty", label: "Launch Honesty Index", icon: Eye, color: "text-emerald-400" },
-  { key: "aiTruth", label: "AI Truth Index", icon: Brain, color: "text-purple-400" },
-  { key: "connectorTruth", label: "Connector Truth Index", icon: Plug, color: "text-amber-400" },
-  { key: "demoGovernance", label: "Demo Governance Index", icon: Layers, color: "text-cyan-400" },
-  { key: "surfacePortability", label: "Surface Portability Index", icon: Monitor, color: "text-pink-400" },
-  { key: "deviceReadiness", label: "Device Readiness Index", icon: Smartphone, color: "text-orange-400" },
-  { key: "observability", label: "Observability Index", icon: Activity, color: "text-teal-400" },
-  { key: "securityPrivacy", label: "Security & Privacy Index", icon: Lock, color: "text-red-400" },
-] as const;
+import { DEMO_INDEX_CONFIG } from "@/lib/demo-data/admin-platform";
 
 function getScoreColor(score: number): string {
   if (score >= 90) return "text-emerald-400";

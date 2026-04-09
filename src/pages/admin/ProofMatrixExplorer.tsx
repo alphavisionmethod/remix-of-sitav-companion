@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useReceiptVerification, useSharedMemory } from "@/contexts/SitaKernelContext";
+import { DEMO_PROOFS } from "@/lib/demo-data/admin-platform";
 
 interface ProofRecord {
   id: string;
@@ -26,17 +27,6 @@ interface ProofRecord {
   finality: "tentative" | "provisional" | "committed" | "finalized" | "irreversible";
   rollbackEligible: boolean;
 }
-
-const DEMO_PROOFS: ProofRecord[] = [
-  { id: "PR-001", type: "approval", action: "Invoice #1042 approved for payment", actor: "owner", timestamp: new Date(Date.now() - 3600000).toISOString(), verified: true, receiptId: "REC-A001", evidenceCount: 3, chain: ["approval_queue", "payment_engine", "audit_log"], domain: "finance", finality: "committed", rollbackEligible: true },
-  { id: "PR-002", type: "action", action: "Connector re-auth: Google Calendar", actor: "system", timestamp: new Date(Date.now() - 7200000).toISOString(), verified: true, receiptId: "REC-A002", evidenceCount: 2, chain: ["connector_engine", "credential_store"], domain: "platform", finality: "finalized", rollbackEligible: false },
-  { id: "PR-003", type: "verification", action: "Cash flow projection recalculated", actor: "finance-advisor", timestamp: new Date(Date.now() - 14400000).toISOString(), verified: true, receiptId: "REC-V001", evidenceCount: 5, chain: ["calculation_engine", "projection_store", "truth_registry"], domain: "finance", finality: "provisional", rollbackEligible: true },
-  { id: "PR-004", type: "payment", action: "Subscription renewal — $49/mo", actor: "payment_engine", timestamp: new Date(Date.now() - 86400000).toISOString(), verified: true, receiptId: "REC-P001", evidenceCount: 4, chain: ["stripe", "payment_engine", "invoice_ledger", "audit_log"], domain: "finance", finality: "irreversible", rollbackEligible: false },
-  { id: "PR-005", type: "rollback", action: "Workflow rollback: stuck approval chain", actor: "operator", timestamp: new Date(Date.now() - 172800000).toISOString(), verified: true, receiptId: "REC-R001", evidenceCount: 3, chain: ["workflow_engine", "rollback_log", "audit_log"], domain: "platform", finality: "finalized", rollbackEligible: false },
-  { id: "PR-006", type: "system", action: "RLS policy audit completed", actor: "security_scanner", timestamp: new Date(Date.now() - 259200000).toISOString(), verified: true, evidenceCount: 1, chain: ["security_engine"], domain: "platform", finality: "committed", rollbackEligible: false },
-  { id: "PR-007", type: "action", action: "AI model downgrade: gpt-4 → gpt-4o-mini", actor: "model_router", timestamp: new Date(Date.now() - 43200000).toISOString(), verified: true, receiptId: "REC-A003", evidenceCount: 2, chain: ["model_router", "cost_ledger"], domain: "platform", finality: "provisional", rollbackEligible: true },
-  { id: "PR-008", type: "approval", action: "Team member invite: alex@team.io", actor: "owner", timestamp: new Date(Date.now() - 345600000).toISOString(), verified: true, receiptId: "REC-A004", evidenceCount: 2, chain: ["auth_service", "audit_log"], domain: "platform", finality: "finalized", rollbackEligible: true },
-];
 
 const TYPE_CONFIG: Record<string, { color: string; label: string }> = {
   action: { color: "text-blue-400", label: "Action" },

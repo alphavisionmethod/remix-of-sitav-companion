@@ -6,33 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { Watch, Vibrate, CheckCircle, ArrowRight, Clock, Zap, Eye, AlertTriangle, Smartphone, Bell } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_GLANCE_CARDS = [
-  { id: "wmn", name: "What Matters Now", priority: 1, refresh: "30s", maxItems: 3, sources: ["approvals", "alerts", "tasks"], interaction: "tap → open on phone" },
-  { id: "pulse", name: "Daily Pulse", priority: 2, refresh: "60s", maxItems: 1, sources: ["pulse_score", "key_metric"], interaction: "tap → expand" },
-  { id: "urgent", name: "Urgent Alerts", priority: 0, refresh: "realtime", maxItems: 5, sources: ["critical_alerts", "incidents"], interaction: "tap → detail + action" },
-  { id: "schedule", name: "Next Up", priority: 3, refresh: "60s", maxItems: 2, sources: ["calendar", "tasks"], interaction: "tap → detail" },
-];
-
-const DEMO_HAPTIC_PATTERNS = [
-  { pattern: "Urgent Alert", type: "notification", intensity: "strong", repeat: 2, desc: "Two strong taps — demands attention" },
-  { pattern: "Approval Request", type: "success", intensity: "medium", repeat: 1, desc: "Single confirmation tap" },
-  { pattern: "Gentle Nudge", type: "click", intensity: "light", repeat: 1, desc: "Subtle reminder" },
-  { pattern: "Escalation Warning", type: "directionUp", intensity: "strong", repeat: 3, desc: "Rising pattern — action needed soon" },
-  { pattern: "Timer Expiry", type: "failure", intensity: "medium", repeat: 2, desc: "Double tap — time's up" },
-  { pattern: "Silent Pulse", type: "selection", intensity: "light", repeat: 1, desc: "Ambient awareness — no action needed" },
-];
-
-const DEMO_MICRO_CONSTRAINTS = [
-  { label: "Max pending approvals", value: "5", desc: "Queue excess to phone" },
-  { label: "Risk ceiling", value: "medium", desc: "High+ escalates to phone" },
-  { label: "Biometric", value: "wrist detection", desc: "Passive verification only" },
-  { label: "Batch actions", value: "not supported", desc: "One-at-a-time only" },
-  { label: "Auto-escalate timeout", value: "120s", desc: "No response → push to phone" },
-  { label: "Max text input", value: "none", desc: "Voice dictation or preset replies" },
-  { label: "Offline support", value: "queue + sync", desc: "Actions queued for next sync" },
-  { label: "Complication slots", value: "4 available", desc: "Pending, pulse, focus, timer" },
-];
+import { DEMO_GLANCE_CARDS, DEMO_HAPTIC_PATTERNS, DEMO_MICRO_CONSTRAINTS } from "@/lib/demo-data/admin-platform";
 
 const APL03AppleWatchExperience = () => {
   const { isDemoMode } = useDataMode();

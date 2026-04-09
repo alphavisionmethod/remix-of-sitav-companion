@@ -21,15 +21,15 @@ const statusConfig: Record<DurabilityStatus, { color: string; icon: typeof Check
   noncanonical: { color: "bg-orange-500/10 text-orange-500 border-orange-500/20", icon: AlertTriangle, label: "Non-canonical" },
 };
 
-const MOCK_MUTATIONS = DEMO_MUTATIONS;
+
 
 const AdminDurabilityBoard = () => {
   const [tab, setTab] = useState("all");
 
-  const filtered = tab === "all" ? MOCK_MUTATIONS : MOCK_MUTATIONS.filter(m => m.durabilityStatus === tab);
-  const persistedPct = Math.round((MOCK_MUTATIONS.filter(m => m.durabilityStatus === "persisted").length / MOCK_MUTATIONS.length) * 100);
-  const lineagePct = Math.round((MOCK_MUTATIONS.filter(m => m.lineageComplete).length / MOCK_MUTATIONS.length) * 100);
-  const canonicalPct = Math.round((MOCK_MUTATIONS.filter(m => m.canonicalWritePath).length / MOCK_MUTATIONS.length) * 100);
+  const filtered = tab === "all" ? DEMO_MUTATIONS : DEMO_MUTATIONS.filter(m => m.durabilityStatus === tab);
+  const persistedPct = Math.round((DEMO_MUTATIONS.filter(m => m.durabilityStatus === "persisted").length / DEMO_MUTATIONS.length) * 100);
+  const lineagePct = Math.round((DEMO_MUTATIONS.filter(m => m.lineageComplete).length / DEMO_MUTATIONS.length) * 100);
+  const canonicalPct = Math.round((DEMO_MUTATIONS.filter(m => m.canonicalWritePath).length / DEMO_MUTATIONS.length) * 100);
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">

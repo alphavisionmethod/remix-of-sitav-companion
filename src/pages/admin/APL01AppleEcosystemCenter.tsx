@@ -19,6 +19,7 @@ import {
   useAddEcosystemDevice, useRemoveEcosystemDevice, useUpdateDeviceTrust,
   useToggleHealthConsent, useUpdatePushRoute,
 } from "@/hooks/useEcosystemDevices";
+import { DEMO_ADMIN_PROVIDER_CAPS_A_P_L01_APPLE_ECOSYSTEM_CENTER as DEMO_PROVIDER_CAPS } from "@/lib/demo-data/admin-platform";
 
 const SURFACE_META: Record<string, { title: string; icon: any; desc: string; tech: string[]; capabilities: string[] }> = {
   iphone: { title: "iPhone Shell", icon: Smartphone, desc: "Primary mobile — task, approval, advisor", tech: ["Swift/SwiftUI", "WebView hybrid"], capabilities: ["push", "biometric", "camera", "haptic"] },
@@ -27,16 +28,6 @@ const SURFACE_META: Record<string, { title: string; icon: any; desc: string; tec
   mac_desktop: { title: "Mac Desktop", icon: Monitor, desc: "Desktop surface — full workspace", tech: ["AppKit/SwiftUI", "Catalyst"], capabilities: ["keyboard", "multi_window"] },
   vision_pro: { title: "Vision Pro", icon: Monitor, desc: "Spatial computing surface", tech: ["RealityKit", "SwiftUI"], capabilities: ["gaze", "gesture", "spatial_audio"] },
 };
-
-const DEMO_PROVIDER_CAPS = [
-  { key: "apple_identity", label: "Identity", priority: "P0" },
-  { key: "apple_mobile_shell", label: "Mobile Shell", priority: "P0" },
-  { key: "apple_watch_surface", label: "Watch Surface", priority: "P1" },
-  { key: "apple_health_readiness", label: "Health Readiness", priority: "P1" },
-  { key: "apple_push_channel", label: "Push Channel", priority: "P0" },
-  { key: "apple_device_trust", label: "Device Trust", priority: "P0" },
-  { key: "apple_continuity", label: "Continuity", priority: "P2" },
-];
 
 const APL01AppleEcosystemCenter = () => {
   const { isDemoMode } = useDataMode();

@@ -13,39 +13,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-const DEMO_REVENUE_DATA = [
-  { month: "Jan", revenue: 42000, expenses: 28000, profit: 14000 },
-  { month: "Feb", revenue: 38000, expenses: 26000, profit: 12000 },
-  { month: "Mar", revenue: 51000, expenses: 30000, profit: 21000 },
-  { month: "Apr", revenue: 47000, expenses: 29000, profit: 18000 },
-  { month: "May", revenue: 55000, expenses: 32000, profit: 23000 },
-  { month: "Jun", revenue: 62000, expenses: 35000, profit: 27000 },
-];
-
-const DEMO_PIPELINE_DATA = [
-  { stage: "Lead", count: 24, value: 180000 },
-  { stage: "Qualified", count: 12, value: 120000 },
-  { stage: "Proposal", count: 8, value: 95000 },
-  { stage: "Negotiation", count: 4, value: 60000 },
-  { stage: "Closed", count: 6, value: 85000 },
-];
-
-const DEMO_DOMAIN_BREAKDOWN = [
-  { name: "Business", value: 45, color: "hsl(var(--primary))" },
-  { name: "Finance", value: 25, color: "#10b981" },
-  { name: "Household", value: 15, color: "#f59e0b" },
-  { name: "Personal", value: 15, color: "#8b5cf6" },
-];
-
-const DEMO_COMPLETION_TREND = [
-  { week: "W1", tasks: 18, workflows: 5 },
-  { week: "W2", tasks: 22, workflows: 7 },
-  { week: "W3", tasks: 15, workflows: 4 },
-  { week: "W4", tasks: 28, workflows: 9 },
-  { week: "W5", tasks: 24, workflows: 6 },
-  { week: "W6", tasks: 31, workflows: 8 },
-];
-
+import { DEMO_COMPLETION_TREND, DEMO_DOMAIN_BREAKDOWN, DEMO_PIPELINE_DATA, DEMO_REVENUE_DATA } from "@/lib/demo-data/core-pages";
 const fadeUp = { hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.3 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.06 } } };
 

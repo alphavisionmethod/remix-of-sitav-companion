@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { RefreshCw, CheckCircle2, Database, Layers, Shield, FileCheck, GitBranch, Loader2 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_ADMIN_CORE_SERVICES as DEMO_CORE_SERVICES } from "@/lib/demo-data/admin-platform";
 
 interface ServiceStatus {
   name: string;
@@ -16,49 +17,6 @@ interface ServiceStatus {
   wired: boolean;
   description: string;
 }
-
-const DEMO_CORE_SERVICES: ServiceStatus[] = [
-  {
-    name: "EventBus",
-    icon: <Layers className="h-4 w-4" />,
-    adapter: "event-bus-persistence.ts",
-    table: "os_event_log",
-    wired: true,
-    description: "Durable event emission, dead-letter persistence, replay from storage",
-  },
-  {
-    name: "MemoryService",
-    icon: <Database className="h-4 w-4" />,
-    adapter: "memory-service-persistence.ts",
-    table: "os_memory_scoped",
-    wired: true,
-    description: "Scoped memory with privacy tiers, supersession, forget audit, hydration",
-  },
-  {
-    name: "PolicyEngine",
-    icon: <Shield className="h-4 w-4" />,
-    adapter: "policy-engine-persistence.ts",
-    table: "os_policy_evaluations",
-    wired: true,
-    description: "Meaningful policy evaluations (deny/approval/simulation) durably recorded",
-  },
-  {
-    name: "ReceiptService",
-    icon: <FileCheck className="h-4 w-4" />,
-    adapter: "supabase-adapters.ts",
-    table: "sita_receipts",
-    wired: true,
-    description: "Hash-chained receipts with durable persistence and hydration",
-  },
-  {
-    name: "Action Lineage",
-    icon: <GitBranch className="h-4 w-4" />,
-    adapter: "action-lineage-persistence.ts",
-    table: "os_action_lineage",
-    wired: true,
-    description: "16-state action lifecycle with cross-linked events/receipts/policies",
-  },
-];
 
 function useSubstrateStats() {
   return useQuery({

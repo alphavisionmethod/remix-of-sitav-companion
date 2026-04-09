@@ -12,30 +12,7 @@ import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_AGENTS = [
-  { id: "a-1", name: "Finance Advisor", composite: 82, quality: 88, costEff: 76, acceptance: 0.92, override: 0.08, falsePositive: 0.03, verification: 0.95, reuse: 0.45, downstream: 78, trend: "improving" },
-  { id: "a-2", name: "Self-Healing Agent", composite: 91, quality: 90, costEff: 95, acceptance: 0.95, override: 0.05, falsePositive: 0.02, verification: 0.98, reuse: 0.62, downstream: 88, trend: "improving" },
-  { id: "a-3", name: "Strategy Synthesizer", composite: 71, quality: 85, costEff: 52, acceptance: 0.78, override: 0.22, falsePositive: 0.08, verification: 0.82, reuse: 0.28, downstream: 65, trend: "degrading" },
-  { id: "a-4", name: "Growth Agent", composite: 74, quality: 80, costEff: 68, acceptance: 0.85, override: 0.15, falsePositive: 0.05, verification: 0.88, reuse: 0.35, downstream: 72, trend: "stable" },
-  { id: "a-5", name: "Monitor Agent", composite: 93, quality: 92, costEff: 96, acceptance: 0.98, override: 0.02, falsePositive: 0.01, verification: 0.99, reuse: 0.72, downstream: 90, trend: "improving" },
-  { id: "a-6", name: "Design Agent", composite: 77, quality: 83, costEff: 71, acceptance: 0.82, override: 0.18, falsePositive: 0.06, verification: 0.86, reuse: 0.40, downstream: 74, trend: "stable" },
-];
-
-const DEMO_WORKFLOWS = [
-  { id: "w-1", name: "Incident Response", composite: 88, quality: 92, costEff: 84, acceptance: 0.96, override: 0.04, reuse: 0.58, trend: "improving" },
-  { id: "w-2", name: "Release Approval", composite: 82, quality: 86, costEff: 78, acceptance: 0.90, override: 0.10, reuse: 0.42, trend: "stable" },
-  { id: "w-3", name: "Lead Qualification", composite: 76, quality: 80, costEff: 72, acceptance: 0.85, override: 0.15, reuse: 0.35, trend: "stable" },
-  { id: "w-4", name: "Portfolio Rebalance", composite: 69, quality: 75, costEff: 63, acceptance: 0.78, override: 0.22, reuse: 0.30, trend: "degrading" },
-];
-
-const DEMO_PATHS = [
-  { label: "root-cause → fix-plan", composite: 90, cost: 45, quality: 94, acceptance: 0.96, reuse: 0.65 },
-  { label: "fingerprint → self-heal", composite: 92, cost: 20, quality: 96, acceptance: 0.98, reuse: 0.78 },
-  { label: "thesis → trade-memo", composite: 72, cost: 120, quality: 82, acceptance: 0.80, reuse: 0.25 },
-  { label: "diagnostic → recommendation", composite: 78, cost: 80, quality: 84, acceptance: 0.85, reuse: 0.38 },
-  { label: "strategy → synthesis", composite: 68, cost: 150, quality: 80, acceptance: 0.75, reuse: 0.20 },
-];
+import { DEMO_INTEL_AGENTS as DEMO_AGENTS, DEMO_PATHS, DEMO_WORKFLOWS } from "@/lib/demo-data/admin-intelligence";
 
 const trendIcons = { improving: TrendingUp, stable: Activity, degrading: TrendingDown };
 const trendColors = { improving: "text-emerald-400", stable: "text-muted-foreground", degrading: "text-rose-400" };

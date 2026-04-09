@@ -33,13 +33,13 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Derived Data (computed from hook data in main component, passed via context) ──
 // Module-level fallback for sub-components that render before hooks resolve
-const MOCK_REGIME = detectRegime({ vix: 19, sp500Change30d: 2.4, yieldSpread: 1.2, correlationIndex: 0.38, pendingEvents: ["nfp release Friday"] });
-let MOCK_CAPITAL_BUCKETS_REF = MOCK_CAPITAL_BUCKETS;
-let MOCK_INV_POSITIONS = FALLBACK_POSITIONS;
-let MOCK_INV_THESES = FALLBACK_THESES;
-let capitalMap = buildCapitalMap(MOCK_CAPITAL_BUCKETS_REF);
-let riskMetrics = analyzePortfolioRisk(MOCK_INV_POSITIONS, capitalMap.reserveCapital);
-let stressScenarios = runStressScenarios(MOCK_INV_POSITIONS, capitalMap.reserveCapital);
+const DEMO_REGIME = detectRegime({ vix: 19, sp500Change30d: 2.4, yieldSpread: 1.2, correlationIndex: 0.38, pendingEvents: ["nfp release Friday"] });
+let DEMO_CAPITAL_BUCKETS_REF = MOCK_CAPITAL_BUCKETS;
+let DEMO_INV_POSITIONS = FALLBACK_POSITIONS;
+let DEMO_INV_THESES = FALLBACK_THESES;
+let capitalMap = buildCapitalMap(DEMO_CAPITAL_BUCKETS_REF);
+let riskMetrics = analyzePortfolioRisk(DEMO_INV_POSITIONS, capitalMap.reserveCapital);
+let stressScenarios = runStressScenarios(DEMO_INV_POSITIONS, capitalMap.reserveCapital);
 
 const regimeColor = (value: string) => {
   if (["extreme", "crisis", "flight-to-safety", "stressed", "dislocating", "strong-down"].includes(value)) return "text-destructive bg-destructive/10";
@@ -112,7 +112,7 @@ const PortfolioView = () => (
       <KPITile label="Cash" value={`${(riskMetrics.cashPct * 100).toFixed(0)}%`} sub="Portfolio cash allocation" />
     </div>
     <div className="space-y-2">
-      {MOCK_INV_POSITIONS.map((p, i) => {
+      {DEMO_INV_POSITIONS.map((p, i) => {
         const value = p.quantity * p.currentPrice;
         const pnl = (p.currentPrice - p.avgCostBasis) * p.quantity;
         const pnlPct = ((p.currentPrice - p.avgCostBasis) / p.avgCostBasis) * 100;
@@ -143,9 +143,9 @@ const PortfolioView = () => (
 const RegimeView = () => (
   <div className="space-y-4">
     <SitaCard>
-      <SitaCardTitle sub={`Confidence: ${(MOCK_REGIME.confidence * 100).toFixed(0)}% · Data: ${MOCK_REGIME.dataFreshness}`}>Current Market Regime</SitaCardTitle>
+      <SitaCardTitle sub={`Confidence: ${(DEMO_REGIME.confidence * 100).toFixed(0)}% · Data: ${DEMO_REGIME.dataFreshness}`}>Current Market Regime</SitaCardTitle>
       <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        {(Object.entries(MOCK_REGIME) as [string, string][]).filter(([k]) => ["volatility", "trend", "liquidity", "correlation", "riskAppetite", "macroEvent", "instability"].includes(k)).map(([key, value]) => (
+        {(Object.entries(DEMO_REGIME) as [string, string][]).filter(([k]) => ["volatility", "trend", "liquidity", "correlation", "riskAppetite", "macroEvent", "instability"].includes(k)).map(([key, value]) => (
           <div key={key} className="rounded-xl border border-border p-3">
             <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider capitalize">{key.replace(/([A-Z])/g, " $1")}</p>
             <p className={`mt-1 text-sm font-bold rounded-full inline-block px-2 py-0.5 capitalize ${regimeColor(value)}`}>{value.replace(/-/g, " ")}</p>
@@ -156,11 +156,11 @@ const RegimeView = () => (
     <SitaCard>
       <SitaCardTitle sub="Honest regime framing — not predictions">What This Means</SitaCardTitle>
       <div className="mt-3 space-y-2 text-sm text-muted-foreground">
-        <p>Current regime looks <span className="font-semibold text-foreground capitalize">{MOCK_REGIME.riskAppetite.replace(/-/g, " ")}</span> with <span className="font-semibold text-foreground capitalize">{MOCK_REGIME.volatility}</span> volatility.</p>
-        {MOCK_REGIME.volatility === "elevated" || MOCK_REGIME.volatility === "extreme" ?
+        <p>Current regime looks <span className="font-semibold text-foreground capitalize">{DEMO_REGIME.riskAppetite.replace(/-/g, " ")}</span> with <span className="font-semibold text-foreground capitalize">{DEMO_REGIME.volatility}</span> volatility.</p>
+        {DEMO_REGIME.volatility === "elevated" || DEMO_REGIME.volatility === "extreme" ?
           <p className="text-amber-600">⚠️ Elevated volatility regime — position sizing should be reduced.</p> :
           <p>Volatility environment is supportive for measured position-taking within risk budget.</p>}
-        {MOCK_REGIME.macroEvent !== "none" && <p className="text-amber-600">⚠️ Pending macro event: {MOCK_REGIME.macroEvent.replace(/-/g, " ")}</p>}
+        {DEMO_REGIME.macroEvent !== "none" && <p className="text-amber-600">⚠️ Pending macro event: {DEMO_REGIME.macroEvent.replace(/-/g, " ")}</p>}
         <p className="text-[11px] italic">This does not tell the future. It describes the current environment.</p>
       </div>
     </SitaCard>
@@ -201,8 +201,8 @@ const RiskView = () => (
 
 const ThesisVault = () => (
   <div className="space-y-4">
-    {MOCK_INV_THESES.map((thesis, i) => {
-      const eval_ = evaluateThesis(thesis, MOCK_REGIME);
+    {DEMO_INV_THESES.map((thesis, i) => {
+      const eval_ = evaluateThesis(thesis, DEMO_REGIME);
       return (
         <motion.div key={thesis.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
           <SitaCard className="p-5">
@@ -239,10 +239,10 @@ const CommitteeView = () => (
     <SitaCard>
       <SitaCardTitle sub="Synthesized investment committee perspective">Committee Summary</SitaCardTitle>
       <div className="mt-4 space-y-3 text-sm text-muted-foreground">
-        <p>Regime: <span className="font-semibold text-foreground capitalize">{MOCK_REGIME.riskAppetite.replace(/-/g, " ")}</span> · Volatility: <span className="font-semibold text-foreground capitalize">{MOCK_REGIME.volatility}</span></p>
+        <p>Regime: <span className="font-semibold text-foreground capitalize">{DEMO_REGIME.riskAppetite.replace(/-/g, " ")}</span> · Volatility: <span className="font-semibold text-foreground capitalize">{DEMO_REGIME.volatility}</span></p>
         <p>Portfolio concentration risk: <span className="font-semibold text-foreground capitalize">{riskMetrics.concentrationRisk}</span></p>
         <p>Reserve coverage: <span className="font-semibold text-foreground">{riskMetrics.reserveCoverage.toFixed(1)} months</span></p>
-        <p>Active theses: <span className="font-semibold text-foreground">{MOCK_INV_THESES.filter(t => t.status === "active").length}</span> — {MOCK_INV_THESES.filter(t => evaluateThesis(t, MOCK_REGIME).stillValid).length} valid, {MOCK_INV_THESES.filter(t => !evaluateThesis(t, MOCK_REGIME).stillValid).length} need review</p>
+        <p>Active theses: <span className="font-semibold text-foreground">{DEMO_INV_THESES.filter(t => t.status === "active").length}</span> — {DEMO_INV_THESES.filter(t => evaluateThesis(t, DEMO_REGIME).stillValid).length} valid, {DEMO_INV_THESES.filter(t => !evaluateThesis(t, DEMO_REGIME).stillValid).length} need review</p>
         <div className="mt-4 p-3 rounded-xl bg-secondary/50 border border-border">
           <p className="text-[11px] font-semibold text-foreground mb-1">System Posture</p>
           <p className="text-[11px]">Observe-only mode active. All recommendations require approval. No autonomous execution. Simulation-first for new positions.</p>
@@ -461,9 +461,9 @@ const InvestmentOffice = () => {
   const { data: hookTheses } = useTheses();
 
   // Update module-level refs so sub-components pick up hook data
-  if (hookBuckets?.length) { MOCK_CAPITAL_BUCKETS_REF = hookBuckets as never; capitalMap = buildCapitalMap(MOCK_CAPITAL_BUCKETS_REF); }
-  if (hookPositions?.length) { MOCK_INV_POSITIONS = hookPositions as never; riskMetrics = analyzePortfolioRisk(MOCK_INV_POSITIONS, capitalMap.reserveCapital); stressScenarios = runStressScenarios(MOCK_INV_POSITIONS, capitalMap.reserveCapital); }
-  if (hookTheses?.length) { MOCK_INV_THESES = hookTheses as never; }
+  if (hookBuckets?.length) { DEMO_CAPITAL_BUCKETS_REF = hookBuckets as never; capitalMap = buildCapitalMap(DEMO_CAPITAL_BUCKETS_REF); }
+  if (hookPositions?.length) { DEMO_INV_POSITIONS = hookPositions as never; riskMetrics = analyzePortfolioRisk(DEMO_INV_POSITIONS, capitalMap.reserveCapital); stressScenarios = runStressScenarios(DEMO_INV_POSITIONS, capitalMap.reserveCapital); }
+  if (hookTheses?.length) { DEMO_INV_THESES = hookTheses as never; }
   const tabs = [
     { key: "overview", label: "Capital Map" },
     { key: "portfolio", label: "Portfolio" },
