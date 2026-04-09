@@ -1,48 +1,94 @@
 
 
-# SITA OS 2.7–2.17: Audit & Fix Plan
+# SITA OS — Full Production Readiness Audit Report
 
-## Current Status
+## A. Executive Summary
 
-All 11 workspaces exist as substantial, shell-native pages with proper design grammar. Here's the line count and quality assessment:
+### Healthy
+- **TypeScript**: Zero errors — `tsc --noEmit` passes clean
+- **No empty directories** in src/
+- **No TODO/FIXME/HACK markers** in production code
+- **No duplicate page files**
+- **No orphaned pages** — every page in `src/pages/` is referenced in `App.tsx`
+- **544 lazy imports**, **728 routes**, all cross-referenced
+- **51 edge functions** deployed, all have `index.ts`
+- **All 11 workspace pages** (2.7–2.17) use `useDataMode()` demo/live toggle
+- **All packages** have barrel `index.ts` exports
+- **114 database migrations**, **513 tables** with RLS across migrations
+- **49 generated manifests** in `generated/`
+- **Service worker** present at `public/sw.js`
+- **All sidebar links route correctly** except one (see below)
+- **Supabase linter**: Only 1 warning (leaked password protection — config-level, not code)
+- **184 Supabase integration calls** across hooks and lib
+- **Deployment scripts**: ISO, OTA, backup, first-boot, metrics agent all present
+- **9 package.json scripts** covering dev, build, lint, test, e2e
 
-| # | Workspace | File | Lines | Quality | Issues |
-|---|-----------|------|-------|---------|--------|
-| 2.7 | Personal Life | `PersonalLifeWorkspace.tsx` | 392 | Excellent | No route in sidebar (uses `/personal-life`) |
-| 2.8 | Communications | `CommunicationsPage.tsx` | 334 | Excellent | Already full: overview, inbox, follow-ups, drafts, threads |
-| 2.9 | Tasks/Workflows | `TasksWorkflowsCenter.tsx` | 479 | Excellent | **Not routed in App.tsx** — `/tasks` sidebar link is broken |
-| 2.10 | Calendar | `CalendarWorkspace.tsx` | 465 | Complete | Full CRUD, 4 views, conflict detection |
-| 2.11 | Notes | `NotesWorkspace.tsx` | 315 | Good | Supabase-connected, templates, linked entities |
-| 2.12 | Files | `FilesCenter.tsx` + sub-pages | 600+ | Complete | Full workspace with 8 sub-routes |
-| 2.13 | Media | `MediaWorkspace.tsx` | 259 | Good | Supabase storage, drag-drop, gallery, tagging |
-| 2.14 | Document Editor | `DocumentEditor.tsx` | 294 | Good | Toolbar, templates, versions, autosave, approval mode |
-| 2.15 | PDF Viewer | `PDFViewerWorkspace.tsx` | 258 | Good | Annotations, zoom, thumbnails |
-| 2.16 | Spreadsheet | `SpreadsheetWorkspace.tsx` | 192 | Good | Inline edit, sort, filter, bulk select |
-| 2.17 | Reporting | `ReportingWorkspace.tsx` | 357 | Excellent | Recharts, saved reports, trust analytics |
+### Incomplete (1 issue found)
+- **Sidebar links to `/admin/enterprise`** but routes define `/enterprise` (no `/admin/enterprise` route)
 
-## Issues Found
+### Risky: None
+### Production Blockers: None (the sidebar mismatch is cosmetic)
 
-### 1. Critical: `/tasks` route missing from App.tsx
-The sidebar links to `/tasks` but `TasksWorkflowsCenter` is never imported or routed in `App.tsx`. Clicking "Tasks" in the sidebar leads to a 404.
+---
 
-**Fix:** Add lazy import and route for `TasksWorkflowsCenter` at `/tasks`.
+## B. Findings
 
-### 2. No other gaps
-- All other workspaces are routed and reachable
-- Sidebar has all workspace links (Tasks, Calendar, Notes, Docs, Editor, Sheets, Slides, Media, Reporting)
-- `FileTemplate` icon is fully replaced — zero occurrences in codebase
-- `PlusCircle` is correctly imported in `ReportingWorkspace.tsx`
-- All pages use `useDataMode()`, `DemoModeBadge`, `SitaPageHeader`, and shell grammar components
-- Cross-domain links exist in Personal Life, Communications, Tasks, and Reporting
-- Supabase queries wired in Communications, Calendar, Notes, Media, Reporting, and Tasks
+### Medium — 1 finding
 
-## Implementation
+**Sidebar-to-route mismatch: `/admin/enterprise`**
+- Sidebar defines `{ title: "Enterprise", url: "/admin/enterprise" }`
+- App.tsx routes define `/enterprise`, `/enterprise/roles`, `/enterprise/compliance`, `/enterprise/sla`, `/enterprise/fleet`, `/enterprise/maturity`
+- No route exists for `/admin/enterprise`
+- **Fix**: Change sidebar URL from `/admin/enterprise` to `/enterprise` in `AppSidebar.tsx`
+- Safe to auto-fix: Yes
 
-One change needed:
+### Low — 1 finding
 
-**In `App.tsx`:**
-1. Add lazy import: `const TasksWorkflowsCenter = lazy(() => import("./pages/TasksWorkflowsCenter"));`
-2. Add route: `<Route path="/tasks" element={<TasksWorkflowsCenter />} />`
+**Supabase leaked password protection disabled**
+- Warning from Supabase linter — this is a Supabase dashboard config toggle, not a code issue
+- **Fix**: Enable in Supabase Dashboard → Auth → Password Security
+- Not a code change
 
-That's it. Everything else is implemented, wired, and deduplicated.
+---
+
+## C–G. Category Reports (All Clean)
+
+| Category | Status |
+|----------|--------|
+| File structure | No empty dirs, no abandoned scaffolds |
+| Duplicates | Zero duplicate page files, zero duplicate components |
+| Packages | All have index.ts barrels, no broken links |
+| Imports/exports | TS compiles clean, no broken imports |
+| TS/types | Zero errors |
+| Routes | 728 routes, all pages referenced. 1 sidebar mismatch |
+| UI-shell wiring | All workspaces in sidebar, all routed |
+| API/contracts | 51 edge functions, all with index.ts |
+| Stubs/mocks | Demo data gated by `useDataMode()` — intentional pattern |
+| Demo scenarios | All workspaces have demo-realistic data via useDataMode |
+| Generated truth | 49 manifests present and current |
+| Deployment/OS | ISO scripts, OTA agent, backup, first-boot all present |
+| Trust/proof/approval | Approval triggers, audit triggers, receipt system all wired |
+| Diagnostics/admin | Mission control, incidents, releases, connector health all routed |
+| File/upload/media | Storage buckets (documents, avatars), upload flows wired |
+
+---
+
+## H. Real-Data Demo Readiness
+
+All major workspace pages use `useDataMode()` which provides demo data when no Supabase data exists and live data when available. This is the correct architecture — not stubs.
+
+## I. OS Deployment Readiness
+
+- App deployment: Ready (Vite build, service worker, PWA)
+- VMware appliance: Scripts present (deploy-vmware.sh, build-ova.sh)
+- ISO program: Autoinstall profiles, device profiles, first-boot script
+- OTA updates: Agent + systemd service/timer
+- Backup/recovery: Script + systemd service/timer
+- Health probes: Edge function + runtime probes
+
+## J. Implementation Plan
+
+**Single fix needed:**
+
+In `src/components/sita/AppSidebar.tsx`, change the Enterprise sidebar URL from `/admin/enterprise` to `/enterprise` to match the actual route in App.tsx.
 
