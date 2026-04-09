@@ -34,6 +34,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 // ── Derived Data (computed from hook data in main component, passed via context) ──
 // Module-level fallback for sub-components that render before hooks resolve
 const FALLBACK_REGIME = detectRegime({ vix: 19, sp500Change30d: 2.4, yieldSpread: 1.2, correlationIndex: 0.38, pendingEvents: ["nfp release Friday"] });
+const DEMO_REGIME = FALLBACK_REGIME;
 let DEMO_CAPITAL_BUCKETS_REF = MOCK_CAPITAL_BUCKETS;
 let DEMO_INV_POSITIONS = FALLBACK_POSITIONS;
 let DEMO_INV_THESES = FALLBACK_THESES;
