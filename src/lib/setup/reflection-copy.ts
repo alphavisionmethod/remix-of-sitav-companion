@@ -24,6 +24,8 @@ export interface ReflectionInput {
   rituals?: string[];
   householdNodes?: { name: string; role: string }[];
   memoryConsent?: string;
+  operatingContext?: string;
+  relationshipFocus?: string;
 }
 
 export interface ReflectionLine {
@@ -119,7 +121,29 @@ export function generateReflections(input: ReflectionInput): ReflectionLine[] {
     }
   }
 
-  // Advisors
+  // Operating context (Req #2)
+  if (input.operatingContext) {
+    const ctxMsgs: Record<string, string> = {
+      rebuilding: "You're rebuilding structure — SITA will prioritize stabilization and gentle routines.",
+      scaling: "You're scaling something — SITA will focus on leverage, delegation, and keeping pace.",
+      "managing-complexity": "You're managing complexity — SITA will emphasize visibility, triage, and coordination.",
+      "regaining-control": "You're regaining control — SITA will keep things calm and recovery-focused.",
+    };
+    if (ctxMsgs[input.operatingContext]) {
+      lines.push({ text: ctxMsgs[input.operatingContext], category: "context" });
+    }
+  }
+
+  // Relationship sensitivity (Req #5)
+  if (input.relationshipFocus) {
+    const relMsgs: Record<string, string> = {
+      people: "SITA will help you stay connected with important people and track relationship health.",
+      tasks: "SITA will focus on task completion and operational efficiency over relationship tracking.",
+    };
+    if (relMsgs[input.relationshipFocus]) {
+      lines.push({ text: relMsgs[input.relationshipFocus], category: "personalization" });
+    }
+  }
   const enabledAdvisors = input.advisorActivation?.filter(a => a.enabled) || [];
   if (enabledAdvisors.length > 0) {
     const quietOnes = enabledAdvisors.filter(a => a.priority === "quiet");
