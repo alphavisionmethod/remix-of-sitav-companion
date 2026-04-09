@@ -1,2 +1,6 @@
-// Reverse shim — canonical source is core-services/verification-engine
-export * from "@/lib/core-services/verification-engine";
+// @persistence: none — stateless module, no durable state to persist
+export * from "./verification.service";
+export * from "./rollback-signals.service";
+export * from "./postcondition-checks.service";
+export * from "./receipt-verification.service";
+export * from "./replay-verification.service";

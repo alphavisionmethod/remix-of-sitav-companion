@@ -1,2 +1,4 @@
-// Reverse shim — canonical source is core-services/event-bus
-export * from "@/lib/core-services/event-bus";
+// @persistence: durable — persists events to os_event_log via event-bus-persistence adapter
+export * from "./event-envelope";
+export * from "./publish-event.service";
+export * from "./subscribe-event.service";
