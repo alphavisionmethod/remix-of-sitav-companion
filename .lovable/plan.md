@@ -1,118 +1,109 @@
 
 
-# SITA OS — Full Spec Compliance Audit & Gap Implementation Plan
+# SITA OS — Full Implementation Audit & Enhancement Plan
 
-## Audit: Spec Screens vs Current Implementation
+## Audit Result: 30/32 Screens Implemented, 2 Gaps + 3 Enhancements
 
-| Spec Screen | Maps To | Status |
-|---|---|---|
-| P1 — Transition into Personalization ("Let's shape this around you") | No dedicated screen. Jump straight from privacy → quick-identity. | **MISSING** |
-| P2 — Setup Depth Selection | `SetupStyleChooser` (express/guided/advanced) | Done |
-| P3 — Current-Life Snapshot (5 questions) | `QuickIdentityStep` (5-question progressive) | Done |
-| P4 — Life Stage / Operating Context | `OperatingContextStep` (4 options) | Done — but missing 3 options from spec: "Maintaining what already works", "A transition period", "Not sure / mixed". Also missing follow-up "What would feel most helpful?" |
-| P5 — Life Rhythm Discovery | `LifeRhythmStep` | Done |
-| P6 — Cognitive Load / Stress Mapping | `StressSlippageStep` with recovery UX | Done |
-| P7 — Household Context | `DeepWorldModelingStep` household chapter + `HouseholdGraphStep` | Done |
-| P8 — Work / Business Context | `DeepWorldModelingStep` work chapter | Done |
-| P9 — Money Context | `DeepWorldModelingStep` money chapter | Done |
-| P10 — Communications Context | `CommunicationsContextStep` | Done |
-| P11 — Planning Style | `PlanningStyleStep` | Done |
-| P12 — Relationship & People Mapping | `HouseholdGraphStep` + `RelationshipSensitivityStep` | Done |
-| P13 — Support Style & Presence | `PresenceStyleStep` + `InterruptionStyleStep` + `ExplanationStyleStep` | Done |
-| P14 — Trust & Autonomy Calibration | `TrustCalibrationStep` (5-level ladder, thresholds) | Done |
-| P15 — Advisors & Support Team | `AdvisorActivationStep` | Done |
-| P16 — Connect What Matters First | `FirstConnectionsStep` | Done |
-| P17 — First Win Recommendation | `FirstWinSetupStep` | Done |
-| P18 — Environment Is Ready | `EnvironmentSummaryStep` + `ArrivalPrepStep` | Done |
+### What Is Fully Implemented (30 screens)
 
-## Previous 10 Requirements — Verification
+| Screen | Component | Status |
+|--------|-----------|--------|
+| S01 Boot | `FirstBootScreen` | Done |
+| S02 Secure Init | `SecureFoundationStep` | Done |
+| S03 Locale | `SetupLanguageRegion` | Done |
+| S04 Network | `NetworkSetupStep` | Done |
+| S05 Readiness | `DeviceReadinessStep` | Done |
+| S06 Ownership | `DeviceOwnershipStep` | Done |
+| S07 Account | `AccountEnvironmentStep` | Done |
+| S08 Restore | `RestorePreviewStep` | Done |
+| S09 Access | `AccessProtectionStep` | Done |
+| S10 Privacy | `PrivacyTransparencyStep` | Done |
+| S11 Pivot | `PersonalizationPivotStep` | Done |
+| S12 Depth | `SetupStyleChooser` | Done |
+| S13 Snapshot | `QuickIdentityStep` | Done |
+| S14 Context | `OperatingContextStep` (7 options + follow-up) | Done |
+| S15 Rhythm | `LifeRhythmStep` | Done |
+| S16 Stress | `StressSlippageStep` | Done |
+| S17 Household | `DeepWorldModelingStep` + `HouseholdGraphStep` | Done |
+| S18 Work | `DeepWorldModelingStep` work chapter | Done |
+| S19 Money | `DeepWorldModelingStep` money chapter | Done |
+| S20 Comms | `CommunicationsContextStep` | Done |
+| S21 Planning | `PlanningStyleStep` | Done |
+| S22 People | `HouseholdGraphStep` + `RelationshipSensitivityStep` | Done |
+| S23 Support | `PresenceStyleStep` + `InterruptionStyleStep` + `ExplanationStyleStep` | Done |
+| S24 Trust | `TrustCalibrationStep` | Done |
+| S25 Advisors | `AdvisorActivationStep` | Done |
+| S26 Connections | `FirstConnectionsStep` | Done |
+| S27 First Win | `FirstWinSetupStep` | Done |
+| S28 Summary | `EnvironmentSummaryStep` | Done |
+| S29 Arrival | `DesktopTransitionStep` | Done |
+| S32 Calibration | `FirstWeekCalibration` (wired in DesktopPage) | Done |
 
-| # | Requirement | Status |
-|---|---|---|
-| 1 | Confidence + "still learning" | **Done** — LearningPanel + EnvironmentSummaryStep |
-| 2 | Operating context | **Done** — OperatingContextStep (needs options expansion) |
-| 3 | Stress → desktop density | **Done** — `computeDesktopDensity()` |
-| 4 | Time horizon | **Done** — LifeRhythmStep |
-| 5 | Relationship sensitivity | **Done** — RelationshipSensitivityStep |
-| 6 | Recovery/forgiveness UX | **Done** — StressSlippageStep + EnvironmentSummaryStep |
-| 7 | Adaptive depth | **Done** — SetupStyleChooser |
-| 8 | "Show what changes" previews | **Done** — LifeRhythmStep, PlanningStyleStep, CommunicationsContextStep, ExplanationStyleStep |
-| 9 | Post-onboarding refinement plan | **Done** — ArrivalPrepStep learning roadmap |
-| 10 | First-week calibration loop | **Done** — FirstWeekCalibration.tsx + calibration_checkpoints table |
+### Also Verified
+- **DAG**: 38 phases, all wired with dependencies and branch conditions
+- **Branching**: Express/Guided/Advanced via `setupStyleCondition`
+- **Data persistence**: 35+ fields → `user_memory`, domain confidence, desktop density
+- **Reflection copy**: All contexts covered
+- **LearningPanel**: Live with domain confidence badges + reflections
+- **Background tasks**: 14 task factories for hardware, network, connectors, system checks
+- **FirstWinActivation page**: Post-onboarding route at `/first-win`
+- **LearnLaterPage**: Post-onboarding route at `/learn-later` with `LearnLaterHub`
 
-## Gaps Identified
+---
 
-### Gap 1: Missing Screen P1 — Personalization Pivot Screen
-The spec requires a dedicated emotional transition screen ("Let's shape this around you") between privacy/memory-consent and quick-identity. This is the emotional mode shift from "We're preparing your system" to "Now let's shape your environment around you." Currently the flow jumps directly to QuickIdentityStep.
+## Gaps Found
 
-**Fix:** Create `PersonalizationPivotStep.tsx` — a calm, cinematic transition screen with title "Let's shape this around you", ambient preview evolution, and secondary CTAs for "I'd like a faster setup" / "I want the deeper setup". Wire as new phase `personalization-pivot` between `memory-consent` and `quick-identity`.
+### Gap 1: S30 — First Desktop Welcome (ContextualWelcomeTour never rendered)
+`ContextualWelcomeTour` is imported in `OSSetupExperience.tsx` (line 75) but `<ContextualWelcomeTour` is never rendered anywhere — not in OSSetupExperience, not in DesktopPage, not in FirstWinActivation. The component exists and works (145 lines, derives personalized tour steps from preferences), but the user never sees it.
 
-### Gap 2: OperatingContextStep Missing Options
-Spec defines 7 options but only 4 exist. Missing: "Maintaining what already works", "A transition period", "Not sure / mixed". Also missing the follow-up question "What would feel most helpful right now?" (Stability, Clarity, Follow-through, Less stress, Better visibility, Better planning, More consistency).
+**Fix**: Render `ContextualWelcomeTour` in `DesktopPage.tsx` after onboarding completes. Show it once on first desktop visit, driven by a `welcome_tour_shown` flag in `user_memory`. This covers the S30 "First Desktop Welcome" spec requirement.
 
-**Fix:** Add 3 missing options + add `supportNeedPrimary` follow-up question to OperatingContextStep. Add `supportNeedPrimary` to SetupData and persist it.
+### Gap 2: S31 — Deferred Completion Center not surfaced on desktop
+`DeferredCompletionCenter` exists in `src/components/sita/setup/DeferredCompletionCenter.tsx` and `LearnLaterHub` exists at `/learn-later`, but neither is surfaced on the main desktop. Users who skip steps have no visible path back to complete them from the desktop itself.
 
-### Gap 3: Data Model Completeness (Part 5)
-The spec defines 16 data models (A through P). Most are covered, but some fields are missing:
-- `onboardingSession.confidenceSummary` — not tracked
-- `currentOperatingContext.currentPressureMode` — partially covered by stress map
-- `supportStyleProfile.notificationDensityPreference` — not explicitly captured
-- `moneyProfile.thresholdPreferences` — partially in trustCalibration
-- `communicationProfile.messageLoadSensitivity` — not captured
-- `environmentShapingProfile.preferredShellMode` — not captured
-- `confidenceMetadata` per domain — computed at render time but not persisted
+**Fix**: Add a subtle deferred-items indicator to `DesktopPage.tsx` that appears when the user has deferred connections or skipped phases. Link to `/learn-later` or render inline. Query `user_memory` for `deferred_connections` on mount.
 
-**Fix:** These are mostly cosmetic gaps — the data is either inferred from existing fields or would require new questions that overlap with existing ones. The main actionable gap is persisting `confidenceMetadata` per domain to `user_memory`. Add this to `finishSetup()`.
+### Gap 3: CinematicIntro imported but never rendered
+`CinematicIntro` (line 73) is imported but never used. Not a spec gap per se, but dead code.
 
-### Gap 4: Wow Moment Choreography (Spec Part 6) — Not fully integrated
-Most wow moments exist conceptually but lack explicit choreography hooks:
-- Wow 3 (support map forms) — StressSlippageStep has the load visualization
-- Wow 4 (relationship graph) — HouseholdGraphStep has the graph
-- Wow 5 (trust spectrum) — TrustCalibrationStep has behavioral previews
-- Missing: Wow 1 (personalization pivot ambient shift) — needs the P1 screen
-- Missing: Wow 9 (environment reveal) — EnvironmentSummaryStep exists but could be more cinematic
+**Fix**: Remove unused import (cleanup).
 
-**Fix:** Wow 1 is solved by Gap 1. Wow 9 enhancement is polish — the current EnvironmentSummaryStep already shows all domains, advisors, trust mode, and confidence. Acceptable as-is.
+---
 
-### Gap 5: FirstWeekCalibration not wired into the desktop
-`FirstWeekCalibration.tsx` exists but is never rendered anywhere in the app shell/desktop.
+## Enhancements (not missing, but can be stronger)
 
-**Fix:** Add `<FirstWeekCalibration />` to the main desktop layout component so it appears after onboarding completion.
+### Enhancement 1: LearningPanel doesn't show all data fields
+The LearningPanel reads `enabledDomains`, `trustLevel`, `painPoints`, `protectionPriorities`, `presenceStyle`, `rituals`, `homeComposition` — but does NOT reflect: `operatingContext`, `supportNeedPrimary`, `relationshipFocus`, `lifeRhythm`, `stressMap`, `commsContext`, `planningStyle`, or `desktopDensity`. These are all available on the `state` object but unused.
 
-## Implementation Plan
+**Fix**: Expand LearningPanel's `SetupSnapshot` interface to include the new fields and display them as live insights (operating context, rhythm, stress load, communication style, desktop density).
 
-### 1. Create PersonalizationPivotStep (Screen P1)
-New file: `src/components/sita/onboarding/PersonalizationPivotStep.tsx`
-- Title: "Let's shape this around you"
-- Subtitle: "We'll start with what matters most right now — and refine as SITA learns with you"
-- Ambient preview showing labels fading in: "Your priorities", "Your support style", "Your active domains", "Your advisors"
-- CTAs: Continue, "I'd like a faster setup", "I want the deeper setup"
-- Wire as `personalization-pivot` phase in DAG (order 9.8, after memory-consent, before quick-identity)
-- Add to SetupPhaseId type and phase definitions
+### Enhancement 2: Missing "You can change this later" copy on several steps
+The spec requires every major section to reinforce "You can refine this anytime." Currently only `OperatingContextStep` and `EnvironmentSummaryStep` have this. Missing from: `TrustCalibrationStep`, `AdvisorActivationStep`, `PresenceStyleStep`, `PlanningStyleStep`.
 
-### 2. Expand OperatingContextStep
-- Add 3 missing options: "Maintaining what already works", "A transition period", "Not sure / mixed"
-- Add follow-up question: "What would feel most helpful right now?" with 7 chip options
-- Add `supportNeedPrimary: string` to SetupData
-- Persist to user_memory
+**Fix**: Add a small `<p>` tag with "You can refine this anytime in Settings" to 4 steps.
 
-### 3. Persist domain confidence metadata
-- In `finishSetup()`, compute and persist `domain_confidence` to user_memory as a map of domain → { confidence, source, editableLater }
+### Enhancement 3: Sensitive-answer skip affordance
+The spec says some areas should be "skippable and clearly private" with a sensitive marker. Currently every non-required step can be skipped via the `canSkipCurrent` logic, but there's no visible "This is private — skip if you prefer" indicator on sensitive steps (stress, money, household).
 
-### 4. Wire FirstWeekCalibration into desktop
-- Find the main desktop/shell layout component and add `<FirstWeekCalibration />`
+**Fix**: Add a subtle privacy indicator to `StressSlippageStep`, money chapter in `DeepWorldModelingStep`, and `HouseholdGraphStep`.
 
-### 5. Minor: reflection copy for new supportNeedPrimary
-- Add reflection copy for the new supportNeedPrimary field
+---
 
-### Files Created
-- `src/components/sita/onboarding/PersonalizationPivotStep.tsx`
+## Implementation Summary
 
-### Files Modified
-- `src/components/sita/onboarding/OperatingContextStep.tsx` — add options + follow-up
-- `src/components/sita/OSSetupExperience.tsx` — add phase, import, state field, renderer, persistence
-- `src/packages/contracts/specialized/setup-orchestration.ts` — add `personalization-pivot` to SetupPhaseId
-- `src/lib/engines/setup-phase-definitions.ts` — add phase definition
-- `src/lib/setup/reflection-copy.ts` — add supportNeedPrimary reflections
-- Desktop shell component — add FirstWeekCalibration render
+### Files to modify
+1. **`src/pages/DesktopPage.tsx`** — Add ContextualWelcomeTour (first visit only) + deferred items indicator
+2. **`src/components/sita/onboarding/LearningPanel.tsx`** — Expand SetupSnapshot to show operatingContext, lifeRhythm, stressMap, commsContext, planningStyle, desktopDensity
+3. **`src/components/sita/onboarding/TrustCalibrationStep.tsx`** — Add "refine later" copy
+4. **`src/components/sita/onboarding/AdvisorActivationStep.tsx`** — Add "refine later" copy
+5. **`src/components/sita/onboarding/PresenceStyleStep.tsx`** — Add "refine later" copy + privacy note
+6. **`src/components/sita/onboarding/PlanningStyleStep.tsx`** — Add "refine later" copy
+7. **`src/components/sita/onboarding/StressSlippageStep.tsx`** — Add "private, skip if you prefer" indicator
+8. **`src/components/sita/OSSetupExperience.tsx`** — Remove unused CinematicIntro import
+
+### No new files needed
+All components already exist. This is purely wiring and enhancement.
+
+### No database changes needed
+Query existing `user_memory` for `deferred_connections` and `welcome_tour_shown`.
 
