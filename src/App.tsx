@@ -870,6 +870,10 @@ const App = () => (
                     <Route path="/revenue-office/calls" element={<CallDesk />} />
                     <Route path="/revenue-office/onboarding" element={<BusinessOnboarding />} />
 
+                    {/* ═══════════════════════════════════════════════════════════════
+                        TIER 4: ADMIN / BUILDER — Platform governance, /admin/* prefix
+                        ~280 routes: AI Engineering, DRS, SAG, Automation, Launch, Security, etc.
+                       ═══════════════════════════════════════════════════════════════ */}
                     {/* AI Runtime */}
                     <Route path="/admin/ai-runtime" element={<AIRuntimeStatus />} />
                     <Route path="/admin/persistence-status" element={<PersistenceStatus />} />
@@ -1535,6 +1539,11 @@ const App = () => (
                     <Route path="/media" element={<MediaWorkspace />} />
                     <Route path="/templates" element={<TemplateCenter />} />
                     <Route path="/import-export" element={<ImportExportCenter />} />
+
+                    {/* ── Supplementary Admin Routes (from src/routes/AdminRoutes.tsx) ── */}
+                    <AdminRoutes />
+
+                    {/* ── Supplementary Owner Routes (from src/routes/OwnerRoutes.tsx — deduplicated) ── */}
 
                     <Route path="*" element={<NotFound />} />
                   </Routes>
