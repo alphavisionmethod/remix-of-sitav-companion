@@ -194,6 +194,10 @@ const DownloadsCenter = lazy(() => import("./pages/DownloadsCenter"));
 const StorageManager = lazy(() => import("./pages/StorageManager"));
 const NetworkUtility = lazy(() => import("./pages/NetworkUtility"));
 const PlanningCanvas = lazy(() => import("./pages/PlanningCanvas"));
+const PDFViewerWorkspace = lazy(() => import("./pages/PDFViewerWorkspace"));
+const SpreadsheetWorkspace = lazy(() => import("./pages/SpreadsheetWorkspace"));
+const ClipboardHistory = lazy(() => import("./pages/ClipboardHistory"));
+const PrintScanCenter = lazy(() => import("./pages/PrintScanCenter"));
 
 // ── AI Engineering Board ──
 const AIEngineeringBoard = lazy(() => import("./pages/admin/AIEngineeringBoard"));
@@ -1131,6 +1135,14 @@ const App = () => (
                     <Route path="/files/memory-review" element={<FilesCenter />} />
                     <Route path="/files/sensitive" element={<FilesCenter />} />
                     <Route path="/files/settings" element={<FilesCenter />} />
+                    <Route path="/files/pdf-viewer" element={<PDFViewerWorkspace />} />
+
+                    {/* Data Grid / Spreadsheet */}
+                    <Route path="/workspace/data-grid" element={<SpreadsheetWorkspace />} />
+
+                    {/* System Utilities */}
+                    <Route path="/clipboard-history" element={<ClipboardHistory />} />
+                    <Route path="/print-scan" element={<PrintScanCenter />} />
 
                     {/* Control */}
                     <Route path="/personalization" element={<PersonalizationStudio />} />
