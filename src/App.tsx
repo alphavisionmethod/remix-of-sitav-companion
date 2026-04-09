@@ -611,6 +611,16 @@ const DeviceSettingsPage = lazy(() => import("./pages/settings/DeviceSettings"))
 const TrustedDeviceManager = lazy(() => import("./pages/settings/TrustedDeviceManager"));
 const CommunicationInbox = lazy(() => import("./pages/CommunicationInbox"));
 
+// ── Part V: Shell/Admin/Mobile additions ──
+const MobileDeviceTrust = lazy(() => import("./pages/mobile/MobileDeviceTrust"));
+const MobileEmergencyActions = lazy(() => import("./pages/mobile/MobileEmergencyActions"));
+const MobileQuickCapture = lazy(() => import("./pages/mobile/MobileQuickCapture"));
+const EnvironmentAppliancePage = lazy(() => import("./pages/admin/EnvironmentAppliancePage"));
+const AuditComplianceWorkspace = lazy(() => import("./pages/admin/AuditComplianceWorkspace"));
+const CommandHistory = lazy(() => import("./pages/CommandHistory"));
+const EnvironmentSwitcherPage = lazy(() => import("./pages/EnvironmentSwitcher"));
+const UpdateCenterPage = lazy(() => import("./pages/UpdateCenter"));
+
 const queryClient = createQueryClient();
 
 // Premium loading skeleton — uses PageSkeleton for content-aware loading
