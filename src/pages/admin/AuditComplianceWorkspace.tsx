@@ -56,7 +56,7 @@ const ACTOR_ICONS = {
 };
 
 export default function AuditComplianceWorkspace() {
-  const { isDemo } = useDataMode();
+  const { isDemoMode } = useDataMode();
   const [category, setCategory] = useState<AuditCategory>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -78,7 +78,7 @@ export default function AuditComplianceWorkspace() {
           <Download className="h-4 w-4" /> Export Audit Log
         </button>
       </SitaPageHeader>
-      {isDemo && <DemoModeBadge />}
+      {isDemoMode && <DemoModeBadge />}
 
       {/* Filters */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">

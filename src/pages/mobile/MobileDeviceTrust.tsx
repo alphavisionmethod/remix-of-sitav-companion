@@ -125,7 +125,7 @@ const DeviceCard = ({ device, onRevoke, onReEnroll }: { device: DeviceInfo; onRe
 };
 
 export default function MobileDeviceTrust() {
-  const { isDemo } = useDataMode();
+  const { isDemoMode } = useDataMode();
   const [devices] = useState<DeviceInfo[]>(MOCK_DEVICES);
 
   const handleRevoke = (id: string) => {
@@ -140,7 +140,7 @@ export default function MobileDeviceTrust() {
 
   return (
     <MobileShell title="Device Trust">
-      {isDemo && <DemoModeBadge />}
+      {isDemoMode && <DemoModeBadge />}
 
       {/* Trust Health Summary */}
       <div className="rounded-xl border border-border/40 bg-gradient-to-br from-primary/5 via-card to-card p-4 mb-4">

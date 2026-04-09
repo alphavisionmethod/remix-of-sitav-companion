@@ -41,7 +41,7 @@ const LIFECYCLE_EVENTS = [
 ];
 
 export default function EnvironmentAppliancePage() {
-  const { isDemo } = useDataMode();
+  const { isDemoMode } = useDataMode();
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
@@ -50,7 +50,7 @@ export default function EnvironmentAppliancePage() {
         title="Environment & Appliance"
         subtitle="VM status, resource usage, backup state, and appliance lifecycle"
       />
-      {isDemo && <DemoModeBadge />}
+      {isDemoMode && <DemoModeBadge />}
 
       {/* Resource Usage */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">

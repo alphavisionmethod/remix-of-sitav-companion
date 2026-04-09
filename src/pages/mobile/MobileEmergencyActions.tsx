@@ -65,7 +65,7 @@ const SEVERITY_STYLES: Record<string, { bg: string; border: string; text: string
 };
 
 export default function MobileEmergencyActions() {
-  const { isDemo } = useDataMode();
+  const { isDemoMode } = useDataMode();
   const [confirming, setConfirming] = useState<string | null>(null);
   const [completed, setCompleted] = useState<string[]>([]);
 
@@ -83,7 +83,7 @@ export default function MobileEmergencyActions() {
 
   return (
     <MobileShell title="Emergency Actions">
-      {isDemo && <DemoModeBadge />}
+      {isDemoMode && <DemoModeBadge />}
 
       {/* Warning Banner */}
       <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-4 mb-4">

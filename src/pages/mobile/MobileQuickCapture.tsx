@@ -37,7 +37,7 @@ const WORKFLOW_TARGETS = [
 ];
 
 export default function MobileQuickCapture() {
-  const { isDemo } = useDataMode();
+  const { isDemoMode } = useDataMode();
   const [activeMode, setActiveMode] = useState<CaptureMode>("note");
   const [noteText, setNoteText] = useState("");
   const [recentCaptures, setRecentCaptures] = useState<CapturedItem[]>([
@@ -72,7 +72,7 @@ export default function MobileQuickCapture() {
 
   return (
     <MobileShell title="Quick Capture">
-      {isDemo && <DemoModeBadge />}
+      {isDemoMode && <DemoModeBadge />}
       <input ref={fileInputRef} type="file" className="hidden" onChange={() => toast.success("File queued for upload")} />
 
       {/* Capture Mode Selector */}

@@ -24,7 +24,7 @@ const CHANNELS = [
 ];
 
 export default function UpdateCenter() {
-  const { isDemo } = useDataMode();
+  const { isDemoMode } = useDataMode();
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
@@ -33,7 +33,7 @@ export default function UpdateCenter() {
         title="Update Center"
         subtitle="Manage update channels, view available updates, and review update history"
       />
-      {isDemo && <DemoModeBadge />}
+      {isDemoMode && <DemoModeBadge />}
 
       {/* Current Status */}
       <Card>

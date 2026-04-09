@@ -40,7 +40,7 @@ const TYPE_STYLES = {
 };
 
 export default function EnvironmentSwitcher() {
-  const { isDemo } = useDataMode();
+  const { isDemoMode } = useDataMode();
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
@@ -49,7 +49,7 @@ export default function EnvironmentSwitcher() {
         title="Environment Manager"
         subtitle="Switch environments, manage backups, and restore from snapshots"
       />
-      {isDemo && <DemoModeBadge />}
+      {isDemoMode && <DemoModeBadge />}
 
       {/* Environments */}
       <div className="space-y-3">
