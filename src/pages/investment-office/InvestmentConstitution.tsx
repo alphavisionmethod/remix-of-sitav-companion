@@ -13,36 +13,8 @@ interface Rule {
   category: "sizing" | "behavior" | "governance" | "discipline";
   active: boolean;
   severity: "hard" | "soft";
+import { DEMO_CONSTITUTION_RULES, DEMO_CURRENT_VIOLATIONS, DEMO_INV_CATEGORIES as DEMO_CATEGORIES } from "@/lib/demo-data/investment";
 }
-
-const DEMO_CONSTITUTION_RULES: Rule[] = [
-  { id: "r1", label: "Max Position Size", description: "No single position may exceed this % of total portfolio", value: "7%", category: "sizing", active: true, severity: "hard" },
-  { id: "r2", label: "Max Platform Concentration", description: "No single platform/exchange may hold more than this % of total capital", value: "40%", category: "sizing", active: true, severity: "hard" },
-  { id: "r3", label: "Max Speculative Sleeve", description: "Total speculative allocation may not exceed this %", value: "8%", category: "sizing", active: true, severity: "hard" },
-  { id: "r4", label: "Max Event Market Exposure", description: "Prediction/event market positions combined limit", value: "3%", category: "sizing", active: true, severity: "hard" },
-  { id: "r5", label: "Max Correlated Theme Overlap", description: "Correlated risk cluster may not exceed this % of portfolio", value: "50%", category: "sizing", active: true, severity: "soft" },
-  { id: "r6", label: "No Chase Rule", description: "Do not buy any asset that has moved more than X% in 24 hours", value: "10%", category: "behavior", active: true, severity: "soft" },
-  { id: "r7", label: "Require Simulation", description: "Positions above this size must be simulated before execution", value: ">$5,000", category: "governance", active: true, severity: "hard" },
-  { id: "r8", label: "Require Approval", description: "Trades above this value need manual approval confirmation", value: ">$10,000", category: "governance", active: false, severity: "hard" },
-  { id: "r9", label: "Force Downside Review", description: "Execution desk must show downside scenario before confirming", value: "Always", category: "discipline", active: true, severity: "soft" },
-  { id: "r10", label: "Journal Required", description: "Thesis must be documented before these trade types", value: "New positions", category: "discipline", active: true, severity: "soft" },
-  { id: "r11", label: "Drawdown Alert", description: "Alert when portfolio drawdown exceeds this threshold", value: "-10%", category: "discipline", active: true, severity: "hard" },
-  { id: "r12", label: "Crypto Allocation Cap", description: "Total crypto exposure hard ceiling", value: "20%", category: "sizing", active: true, severity: "hard" },
-];
-
-const DEMO_CATEGORIES = [
-  { id: "all", label: "All Rules" },
-  { id: "sizing", label: "Position Sizing" },
-  { id: "behavior", label: "Behavioral" },
-  { id: "governance", label: "Governance" },
-  { id: "discipline", label: "Discipline" },
-];
-
-const DEMO_CURRENT_VIOLATIONS = [
-  { ruleId: "r3", detail: "Speculative sleeve at 12% — exceeds 8% limit by 4%" },
-  { ruleId: "r12", detail: "Crypto allocation at 28% — exceeds 20% cap by 8%" },
-  { ruleId: "r5", detail: "Tech + Crypto correlation cluster at ~70% — exceeds 50% soft limit" },
-];
 
 export default function InvestmentConstitution() {
   const { isDemoMode } = useDataMode();

@@ -17,48 +17,13 @@ const weeklyStats = {
   proofRecorded: 14, approvalsHandled: 3,
 };
 
-const DEMO_priorities = [
-  { item: "Kids' passport renewal — expires in 60 days", urgency: "high" as const, category: "Admin", action: "Start renewal process", why: "6–8 week processing time" },
-  { item: "Birthday party venue — decision needed by Apr 10", urgency: "medium" as const, category: "Events", action: "Compare 3 venues", why: "Venue holds expire in 48h" },
-  { item: "Oil change — 2 weeks overdue", urgency: "medium" as const, category: "Vehicle", action: "Schedule with Elite Auto", why: "Risk of engine damage" },
-  { item: "Travel insurance — Cancún trip", urgency: "low" as const, category: "Travel", action: "Review and purchase", why: "Trip in 18 days" },
-];
-
-const DEMO_carryover = [
-  { item: "Annual home insurance review", weeks: 3 },
-  { item: "Schedule HVAC maintenance", weeks: 2 },
-  { item: "Update emergency contacts at school", weeks: 1 },
-];
-
-const DEMO_nextMoves = [
-  { move: "Begin passport renewal — both kids", why: "60-day expiration window, 6–8 week processing", confidence: "high" as const },
-  { move: "Confirm birthday venue by Friday", why: "Venue holds for 48 hours only", confidence: "high" as const },
-  { move: "Schedule oil change — Elite Auto", why: "2 weeks overdue, next available: Thursday", confidence: "medium" as const },
-  { move: "Review travel insurance quotes", why: "Cancún trip in 18 days — coverage needed", confidence: "medium" as const },
-  { move: "Defer home insurance review to next week", why: "No renewal deadline pressure this week", confidence: "high" as const },
-  { move: "Book pet sitter for spring break", why: "Preferred sitter has limited slots", confidence: "high" as const },
-];
-
-const DEMO_scheduleConflicts = [
-  { conflict: "Emma's soccer match overlaps with family dinner — Saturday", resolution: "Move dinner to 7 PM" },
-  { conflict: "Parent-teacher conference conflicts with your 10 AM client meeting — Tuesday", resolution: "Reschedule client meeting to 11 AM" },
-];
-
-const DEMO_proofSummary = [
-  { action: "12 tasks completed with proof", icon: CheckSquare },
-  { action: "3 provider interactions logged", icon: Wrench },
-  { action: "1 grocery run tracked — $87.42", icon: ShoppingCart },
-  { action: "6 calendar events confirmed", icon: Calendar },
-  { action: "2 school forms submitted", icon: GraduationCap },
-  { action: "1 travel booking confirmed", icon: Plane },
-];
-
 const familyWellness = {
   routineAdherence: 82, stressLevel: "Moderate", mealPlanAdherence: 75,
   screenTime: "Within limits", exerciseGoals: "On track", familyDinners: "5 of 7 days",
 };
 
 type BoardroomView = "weekly" | "school" | "shopping" | "travel" | "monthly";
+import { DEMO_carryover, DEMO_nextMoves, DEMO_priorities, DEMO_proofSummary, DEMO_scheduleConflicts } from "@/lib/demo-data/concierge";
 
 const FamilyBoardroom = () => {
   const [view, setView] = useState<BoardroomView>("weekly");

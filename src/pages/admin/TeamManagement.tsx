@@ -29,6 +29,7 @@ const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transi
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.04 } } };
 
 type AgentStatus = "active" | "idle" | "paused" | "degraded";
+import { DEMO_ADVISOR_TYPE_OPTIONS, DEMO_DOMAIN_OPTIONS } from "@/lib/demo-data/admin-platform";
 
 const statusConfig: Record<AgentStatus, { color: string; icon: React.ElementType; label: string }> = {
   active: { color: "text-emerald-500 bg-emerald-500/10", icon: CheckCircle, label: "Active" },
@@ -36,9 +37,6 @@ const statusConfig: Record<AgentStatus, { color: string; icon: React.ElementType
   paused: { color: "text-amber-500 bg-amber-500/10", icon: Pause, label: "Paused" },
   degraded: { color: "text-red-500 bg-red-500/10", icon: AlertTriangle, label: "Degraded" },
 };
-
-const DEMO_DOMAIN_OPTIONS = ["general", "finance", "business", "household", "health", "legal", "travel", "education", "lifestyle"];
-const DEMO_ADVISOR_TYPE_OPTIONS = ["reactive", "proactive", "autonomous", "observing", "specialist"];
 
 interface AdvisorFormData {
   display_name: string;

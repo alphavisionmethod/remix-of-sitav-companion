@@ -4,37 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { KeyRound, Link, User, Shield, ArrowRight, CheckCircle2, AlertTriangle, Lock, Mail, Fingerprint } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_IDENTITY_ARCHITECTURE = [
-  { field: "Provider", value: "apple_sign_in", badge: "primary" },
-  { field: "Protocol", value: "OAuth 2.0 + OIDC", badge: "outline" },
-  { field: "Session model", value: "JWT (httpOnly cookie)", badge: "outline" },
-  { field: "Email relay", value: "Private relay supported", badge: "outline" },
-  { field: "Device-bound trust", value: "Linkable via DCAppAttest", badge: "outline" },
-  { field: "Identity graph", value: "Unified across providers", badge: "outline" },
-  { field: "Token refresh", value: "Silent refresh via refresh_token", badge: "outline" },
-  { field: "Revocation", value: "Supported (user-initiated + admin)", badge: "outline" },
-];
-
-const DEMO_LINK_FLOW_STEPS = [
-  { step: 1, icon: User, label: "User taps Sign in with Apple", detail: "Native AuthenticationServices dialog presented" },
-  { step: 2, icon: Shield, label: "Apple verifies identity", detail: "Face ID / Touch ID + Apple ID password" },
-  { step: 3, icon: Mail, label: "Email decision", detail: "User chooses real email or Apple private relay" },
-  { step: 4, icon: KeyRound, label: "Authorization code issued", detail: "One-time auth code sent to SITA backend" },
-  { step: 5, icon: Lock, label: "Backend validates + creates session", detail: "Exchange code for ID token, create/link profile" },
-  { step: 6, icon: Link, label: "Apple ID linked to identity graph", detail: "Unified identity with device trust context" },
-  { step: 7, icon: Fingerprint, label: "Device trust registered", detail: "Current device added to trusted devices list" },
-];
-
-const DEMO_SECURITY_POLICIES = [
-  { policy: "Token lifetime", value: "15 minutes (access) / 7 days (refresh)", severity: "medium" },
-  { policy: "Concurrent sessions", value: "Max 5 devices", severity: "medium" },
-  { policy: "Session revocation", value: "Immediate on user request", severity: "high" },
-  { policy: "Credential rotation", value: "Automatic on Apple-side changes", severity: "high" },
-  { policy: "MFA requirement", value: "Apple's built-in 2FA", severity: "critical" },
-  { policy: "Account deletion", value: "Full data erasure within 30 days", severity: "critical" },
-  { policy: "Cross-provider linking", value: "Manual confirmation required", severity: "high" },
-];
+import { DEMO_IDENTITY_ARCHITECTURE, DEMO_LINK_FLOW_STEPS, DEMO_SECURITY_POLICIES } from "@/lib/demo-data/admin-platform";
 
 const APL04AppleIdentityAccounts = () => (
   <div className="p-6 max-w-[1400px] mx-auto space-y-6">

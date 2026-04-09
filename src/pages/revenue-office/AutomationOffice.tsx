@@ -12,65 +12,7 @@ import {
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_automationStats = [
-  { label: "Active Automations", value: "24", delta: "+3 this week", icon: Play, color: "text-emerald-400" },
-  { label: "Paused / Under Review", value: "5", delta: "2 need attention", icon: Pause, color: "text-amber-400" },
-  { label: "Actions This Week", value: "1,247", delta: "+18% vs last week", icon: Zap, color: "text-blue-400" },
-  { label: "Revenue Recovered", value: "$34,800", delta: "from leak repair", icon: DollarSign, color: "text-emerald-400" },
-  { label: "Leads Rescued", value: "68", delta: "via recovery flows", icon: Users, color: "text-purple-400" },
-  { label: "Automation Health", value: "94%", delta: "2 issues detected", icon: Activity, color: "text-blue-400" },
-];
-
-const DEMO_activeAutomations = [
-  { name: "Stale Lead Recovery (48hr)", status: "active", triggers: 42, success: 78, contacts: 156, revenue: "$12,400", category: "Lead Recovery", level: "Auto-run (L3)", icon: Users, trend: "improving" },
-  { name: "No-Show Rescue + Rebook", status: "active", triggers: 18, success: 61, contacts: 48, revenue: "$4,200", category: "Booking", level: "Draft for review (L2)", icon: Phone, trend: "stable" },
-  { name: "Post-Service Review Request", status: "active", triggers: 35, success: 84, contacts: 220, revenue: "—", category: "Reputation", level: "Auto-run (L3)", icon: Star, trend: "improving" },
-  { name: "Quote Follow-up (3/5/7 day)", status: "active", triggers: 12, success: 67, contacts: 34, revenue: "$8,900", category: "Sales", level: "Auto-run (L3)", icon: FileText, trend: "declining" },
-  { name: "Welcome Onboarding (7-step)", status: "active", triggers: 28, success: 92, contacts: 112, revenue: "—", category: "Onboarding", level: "Auto-run (L3)", icon: UserPlus, trend: "improving" },
-  { name: "Nurture Sequence (14-day)", status: "active", triggers: 89, success: 71, contacts: 340, revenue: "$6,800", category: "Nurture", level: "Auto-run (L3)", icon: Mail, trend: "stable" },
-  { name: "Churn Prevention Check-in", status: "warning", triggers: 8, success: 50, contacts: 22, revenue: "$3,100", category: "Retention", level: "AI suggests (L1)", icon: Heart, trend: "declining" },
-  { name: "Upsell After Delivery", status: "active", triggers: 14, success: 43, contacts: 38, revenue: "$5,600", category: "Growth", level: "Draft for review (L2)", icon: Package, trend: "stable" },
-  { name: "Abandoned Checkout Recovery", status: "active", triggers: 22, success: 58, contacts: 64, revenue: "$7,200", category: "Sales", level: "Auto-run (L3)", icon: Target, trend: "improving" },
-  { name: "Reactivation Campaign (90-day)", status: "active", triggers: 34, success: 38, contacts: 78, revenue: "$2,800", category: "Growth", level: "Draft for review (L2)", icon: RefreshCw, trend: "stable" },
-];
-
-const DEMO_atRiskAutomations = [
-  { name: "Quote Follow-up (3/5/7 day)", issue: "Conversion rate dropped from 78% to 67% this week — possible message fatigue", severity: "medium", action: "Review messaging and timing" },
-  { name: "Churn Prevention Check-in", issue: "Only 50% success — many clients not engaging with check-in emails", severity: "high", action: "Advisor suggests switching to SMS + personal call" },
-  { name: "Lead Assignment Engine", issue: "5 leads unassigned due to rule mismatch — sales team missing warm leads", severity: "high", action: "Fix assignment rules for 'enterprise' segment" },
-  { name: "Nurture Sequence B", issue: "3 emails bouncing, deliverability at 94% — below 97% threshold", severity: "medium", action: "Clean list and verify sending domain" },
-  { name: "Upsell After Delivery", issue: "Low engagement — 8% open rate vs 24% benchmark", severity: "low", action: "Test new subject lines and timing" },
-];
-
-const DEMO_advisorRecommendations = [
-  { advisor: "CRM Advisor", recommendation: "12 warm leads have no next step scheduled — create a follow-up automation to prevent drop-off", impact: "$8,200 at risk", confidence: 87, urgency: "high", autoType: "Lead Recovery" },
-  { advisor: "Booking Advisor", recommendation: "No-show rate at 18% — add SMS reminder 1hr before appointments to improve show rate by ~22%", impact: "+22% show rate", confidence: 82, urgency: "medium", autoType: "Booking" },
-  { advisor: "Retention Advisor", recommendation: "34 clients inactive 60+ days — launch reactivation sequence before they churn permanently", impact: "$12,400 at risk", confidence: 65, urgency: "high", autoType: "Retention" },
-  { advisor: "Revenue Ops Advisor", recommendation: "Quote reminders not being sent after 3 days — enable quote expiry flow to recover stalled proposals", impact: "$4,800 at risk", confidence: 91, urgency: "medium", autoType: "Sales" },
-  { advisor: "Funnel Advisor", recommendation: "Landing page → form conversion at 12% — create abandoned form recovery sequence for visitors who started but didn't complete", impact: "+35 leads/mo", confidence: 74, urgency: "medium", autoType: "Lead Recovery" },
-  { advisor: "Reputation Advisor", recommendation: "28 happy clients never asked for review — create post-delivery review request with 48hr delay", impact: "+12 reviews/mo", confidence: 88, urgency: "low", autoType: "Reputation" },
-  { advisor: "Campaign Advisor", recommendation: "Nurture sequence engagement drops 40% at email 4 — create branch for disengaged contacts with different messaging", impact: "+18% nurture conversion", confidence: 70, urgency: "medium", autoType: "Nurture" },
-  { advisor: "Chief Revenue Strategist", recommendation: "Your biggest automation gap is post-call follow-up — only 40% of discovery calls get a same-day follow-up. Automating this could recover $15K/mo", impact: "$15,000/mo", confidence: 78, urgency: "critical", autoType: "Sales" },
-];
-
-const DEMO_leakRepairOpportunities = [
-  { leak: "Post-call follow-up gap", estimatedLoss: "$15,000/mo", contacts: 24, status: "no automation", fixDifficulty: "easy" },
-  { leak: "Quote viewed but no response (>5 days)", estimatedLoss: "$8,400/mo", contacts: 18, status: "partial automation", fixDifficulty: "easy" },
-  { leak: "Onboarding incomplete after 3 days", estimatedLoss: "$4,200/mo", contacts: 8, status: "no automation", fixDifficulty: "medium" },
-  { leak: "Happy clients never asked for review", estimatedLoss: "reputation cost", contacts: 28, status: "no automation", fixDifficulty: "easy" },
-  { leak: "Dormant leads (30-60 days)", estimatedLoss: "$12,400/mo", contacts: 34, status: "no automation", fixDifficulty: "medium" },
-  { leak: "Failed payment retry", estimatedLoss: "$2,100/mo", contacts: 6, status: "no automation", fixDifficulty: "easy" },
-];
-
-const DEMO_businessStageAutomations = [
-  { stage: "Awareness", automations: 4, coverage: 72, gaps: ["Abandoned form recovery", "Social engagement follow-up"] },
-  { stage: "Consideration", automations: 6, coverage: 85, gaps: ["Competitor comparison sends"] },
-  { stage: "Conversion", automations: 5, coverage: 68, gaps: ["Post-call follow-up", "Quote objection handling"] },
-  { stage: "Onboarding", automations: 3, coverage: 78, gaps: ["Milestone celebration", "Satisfaction pulse at day 7"] },
-  { stage: "Retention", automations: 4, coverage: 55, gaps: ["Anniversary recognition", "Usage drop detection", "Renewal warmup"] },
-  { stage: "Advocacy", automations: 2, coverage: 40, gaps: ["Referral program", "Case study request", "Community invitation"] },
-];
+import { DEMO_activeAutomations, DEMO_advisorRecommendations, DEMO_atRiskAutomations, DEMO_automationStats, DEMO_businessStageAutomations, DEMO_leakRepairOpportunities } from "@/lib/demo-data/revenue-office";
 
 const levelColors: Record<string, string> = {
   "Auto-run (L3)": "bg-emerald-500/10 text-emerald-400",

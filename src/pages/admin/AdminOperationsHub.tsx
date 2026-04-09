@@ -11,30 +11,10 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_ADMIN_ALERTS as DEMO_ALERTS, DEMO_RUNBOOKS, DEMO_SLOS } from "@/lib/demo-data/admin-platform";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
-
-const DEMO_ALERTS = [
-  { id: "a1", title: "Connector Slack sync lag >15m", severity: "high" as const, source: "connector-monitor", time: "2m ago", runbook: "connector-resync", status: "active" },
-  { id: "a2", title: "Workflow engine p99 latency >200ms", severity: "medium" as const, source: "apm-agent", time: "8m ago", runbook: "workflow-perf", status: "active" },
-  { id: "a3", title: "Event bus consumer group rebalance", severity: "low" as const, source: "kafka-monitor", time: "12m ago", status: "suppressed" },
-  { id: "a4", title: "Memory pressure on projection-worker", severity: "medium" as const, source: "infra-monitor", time: "22m ago", runbook: "scale-projection", status: "active" },
-];
-
-const DEMO_SLOS = [
-  { name: "API Availability", target: 99.95, current: 99.98, burnRate: 0.8 },
-  { name: "API Latency p99", target: 500, current: 320, burnRate: 0.3, unit: "ms" },
-  { name: "Incident Response", target: 15, current: 8, burnRate: 0.5, unit: "min" },
-  { name: "Deployment Success", target: 99.0, current: 100, burnRate: 0.0 },
-];
-
-const DEMO_RUNBOOKS = [
-  { id: "rb1", name: "Connector Resync", steps: 4, avgTime: "3m", lastUsed: "1d ago" },
-  { id: "rb2", name: "Workflow Perf Triage", steps: 6, avgTime: "8m", lastUsed: "3d ago" },
-  { id: "rb3", name: "Scale Projection Worker", steps: 3, avgTime: "2m", lastUsed: "5d ago" },
-  { id: "rb4", name: "Database Failover", steps: 8, avgTime: "15m", lastUsed: "30d ago" },
-];
 
 const sevColor = { high: "text-red-500", medium: "text-amber-500", low: "text-blue-500" };
 

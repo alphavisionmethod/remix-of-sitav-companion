@@ -9,51 +9,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_STATS = [
-  { label: "Average Rating", value: "4.8", icon: Star, trend: "+0.1", color: "text-amber-400" },
-  { label: "Total Reviews", value: "186", icon: MessageCircle, trend: "+12 this month", color: "text-blue-400" },
-  { label: "NPS Score", value: "72", icon: ThumbsUp, trend: "+4", color: "text-emerald-400" },
-  { label: "Response Rate", value: "96%", icon: Clock, trend: "+2%", color: "text-purple-400" },
-];
-
-const DEMO_REVIEWS = [
-  { id: "r1", author: "Sarah K.", rating: 5, text: "Absolutely transformed our business strategy. The coaching sessions were invaluable and the follow-through was exceptional.", platform: "Google", date: "2 days ago", responded: true, sentiment: "positive", helpfulCount: 8 },
-  { id: "r2", author: "James C.", rating: 5, text: "Best investment we've made this year. Clear, actionable, and premium. Would recommend to anyone.", platform: "Trustpilot", date: "5 days ago", responded: true, sentiment: "positive", helpfulCount: 12 },
-  { id: "r3", author: "Michael R.", rating: 4, text: "Great results overall, scheduling could be smoother. The strategy framework was excellent.", platform: "Google", date: "1 week ago", responded: false, sentiment: "mixed", helpfulCount: 3 },
-  { id: "r4", author: "Lisa W.", rating: 5, text: "The VIP Day was worth every penny. Highly recommend for anyone serious about growth.", platform: "Google", date: "2 weeks ago", responded: true, sentiment: "positive", helpfulCount: 15 },
-  { id: "r5", author: "David P.", rating: 3, text: "Good content but felt rushed at times. Would have appreciated more follow-up.", platform: "Yelp", date: "3 weeks ago", responded: false, sentiment: "negative", helpfulCount: 1 },
-  { id: "r6", author: "Amy T.", rating: 5, text: "Incredible experience from start to finish. The team really cares.", platform: "Google", date: "1 month ago", responded: true, sentiment: "positive", helpfulCount: 6 },
-  { id: "r7", author: "Brian M.", rating: 4, text: "Solid program with measurable results. Pricing is fair for the value.", platform: "Trustpilot", date: "1 month ago", responded: true, sentiment: "positive", helpfulCount: 4 },
-];
-
-const DEMO_RATING_DIST = [
-  { stars: 5, count: 142, pct: 76 },
-  { stars: 4, count: 28, pct: 15 },
-  { stars: 3, count: 10, pct: 5 },
-  { stars: 2, count: 4, pct: 2 },
-  { stars: 1, count: 2, pct: 1 },
-];
-
-const DEMO_PLATFORMS = [
-  { name: "Google Business", reviews: 98, rating: 4.9, linked: true, lastSync: "2h ago" },
-  { name: "Trustpilot", reviews: 52, rating: 4.7, linked: true, lastSync: "4h ago" },
-  { name: "Yelp", reviews: 24, rating: 4.4, linked: true, lastSync: "6h ago" },
-  { name: "Facebook", reviews: 12, rating: 4.8, linked: false, lastSync: "—" },
-];
-
-const DEMO_CAMPAIGNS = [
-  { name: "Post-VIP Day Review Request", status: "active", sent: 34, responses: 28, convRate: "82%", lastSent: "1d ago" },
-  { name: "Quarterly NPS Survey", status: "active", sent: 120, responses: 86, convRate: "72%", lastSent: "2w ago" },
-  { name: "3-Month Anniversary", status: "paused", sent: 45, responses: 18, convRate: "40%", lastSent: "1m ago" },
-];
-
-const DEMO_TESTIMONIALS = [
-  { author: "Sarah K.", text: "Absolutely transformed our business strategy.", rating: 5, approved: true, featured: true, usedOn: ["landing-page", "funnel-1"] },
-  { author: "Lisa W.", text: "The VIP Day was worth every penny.", rating: 5, approved: true, featured: true, usedOn: ["homepage"] },
-  { author: "James C.", text: "Best investment we've made this year.", rating: 5, approved: true, featured: false, usedOn: [] },
-  { author: "Brian M.", text: "Solid program with measurable results.", rating: 4, approved: false, featured: false, usedOn: [] },
-];
+import { DEMO_RATING_DIST, DEMO_REVIEWS, DEMO_REV_CAMPAIGNS_REPUTATION_ENGINE as DEMO_CAMPAIGNS, DEMO_REV_PLATFORMS as DEMO_PLATFORMS, DEMO_REV_STATS_REPUTATION_ENGINE as DEMO_STATS, DEMO_TESTIMONIALS } from "@/lib/demo-data/revenue-office";
 
 export default function ReputationEngine() {
   const { isDemoMode } = useDataMode();

@@ -6,22 +6,9 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useReadinessStates } from "@/hooks/use-health-signal-data";
 import { DEMO_READINESS_FACTORS } from "@/lib/demo-data/health-signals";
+import { DEMO_ADMIN_PIPELINE_STAGES as DEMO_PIPELINE_STAGES, DEMO_COMBINE_STRATEGIES } from "@/lib/demo-data/admin-platform";
 
 
-
-const DEMO_PIPELINE_STAGES = [
-  { stage: 1, name: "Raw Signals", desc: "heart_rate, sleep, steps, hrv, workout, focus_mode", color: "bg-blue-500/10", examples: ["72 bpm", "7.2h sleep", "8,500 steps"] },
-  { stage: 2, name: "Normalized States", desc: "activity, sleep_quality, strain, recovery, focus", color: "bg-green-500/10", examples: ["activity: moderate", "sleep: good", "strain: high"] },
-  { stage: 3, name: "Readiness Level", desc: "high, medium, low, overload_risk, deep_focus", color: "bg-amber-500/10", examples: ["readiness: medium", "context: post-workout"] },
-  { stage: 4, name: "Interruption Posture", desc: "open, selective, restricted, silent", color: "bg-purple-500/10", examples: ["posture: selective", "override: emergency-only"] },
-];
-
-const DEMO_COMBINE_STRATEGIES = [
-  { name: "worst_case", desc: "If any signal indicates low readiness, overall is low", use: "Default for health-sensitive decisions" },
-  { name: "highest_priority", desc: "Highest-priority rule wins regardless of others", use: "Override scenarios (emergency, DND)" },
-  { name: "weighted_average", desc: "Confidence-weighted combination of all signals", use: "Normal ambient assessment" },
-  { name: "user_override", desc: "User manually sets readiness state", use: "Always takes precedence" },
-];
 
 const HRS03ReadinessExplanation = () => {
   const { isDemoMode } = useDataMode();

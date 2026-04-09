@@ -11,49 +11,8 @@ import { useDataMode } from "@/contexts/DataModeContext";
 const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const today = 2;
 
-const DEMO_familyMembers = [
-  { name: "You", DEMO_events: 5, color: "bg-primary" },
-  { name: "Partner", DEMO_events: 3, color: "bg-accent" },
-  { name: "Emma", DEMO_events: 4, color: "bg-chart-2" },
-  { name: "Liam", DEMO_events: 3, color: "bg-amber-500" },
-];
-
-const DEMO_events = [
-  { id: "1", title: "Soccer practice", time: "Today 4:00 PM", who: "Emma", location: "Riverside Park", category: "Sports", owner: "Partner", transportTime: "15 min", prep: ["Shin guards", "Water bottle"] },
-  { id: "2", title: "Carpool duty — morning route", time: "Tomorrow 7:30 AM", who: "You", category: "Transport", owner: "You" },
-  { id: "3", title: "Piano lesson", time: "Tomorrow 3:30 PM", who: "Liam", location: "Music Academy", category: "Education", owner: "Partner", transportTime: "20 min", prep: ["Music book"] },
-  { id: "4", title: "Parent-teacher conference", time: "Next Tuesday 9:00 AM", who: "Parents", location: "Lincoln Elementary", category: "School", owner: "Both", transportTime: "10 min", prep: ["Review report card", "Prepare questions"] },
-  { id: "5", title: "Dentist — kids checkup", time: "Next Thursday 10:00 AM", who: "Emma & Liam", location: "Dr. Patel", category: "Health", owner: "You", transportTime: "25 min", prep: ["Insurance cards", "Brush teeth morning of"] },
-  { id: "6", title: "Soccer match", time: "Saturday 2:00 PM", who: "Emma", location: "County Field", category: "Sports", owner: "Partner", transportTime: "30 min", conflict: true },
-  { id: "7", title: "Family dinner — Chez Marie", time: "Saturday 6:00 PM", who: "Everyone", location: "Chez Marie", category: "Family", owner: "You", prep: ["Reservation confirmed"], conflict: true },
-  { id: "8", title: "Birthday party — Max", time: "Sunday 3:00 PM", who: "Liam", location: "FunZone", category: "Social", owner: "Partner", transportTime: "15 min", prep: ["Wrap gift", "RSVP done"] },
-  { id: "9", title: "HVAC maintenance", time: "Apr 8, 2:00–4:00 PM", who: "Home", location: "At home", category: "Home", owner: "Partner", prep: ["Clear area around furnace", "Service contract ready"] },
-  { id: "10", title: "Annual physical", time: "Apr 10, 8:30 AM", who: "You", location: "West Health Clinic", category: "Health", owner: "You", transportTime: "15 min", prep: ["Fast after 10 PM", "List of meds", "ID + Insurance card"] },
-];
-
-const DEMO_conflicts = [
-  {
-    DEMO_events: [
-      { title: "Soccer match (Emma)", time: "Saturday 2:00 PM", who: "Emma" },
-      { title: "Family dinner", time: "Saturday 6:00 PM", who: "Everyone" },
-    ],
-    resolution: "Soccer match ends ~3:30 PM. Move dinner to 7 PM — restaurant has availability. This resolves the timing pressure.",
-  },
-];
-
-const DEMO_prepItems = [
-  { title: "Dentist prep — kids checkup", linkedEvent: "Next Thursday 10 AM", items: ["Brush teeth morning of", "Bring insurance cards", "Request x-ray copies"], owner: "You", dueIn: "5 days" },
-  { title: "Annual physical prep", linkedEvent: "Apr 10, 8:30 AM", items: ["Fast after 10 PM night before", "List current medications", "Bring ID + insurance card"], owner: "You", dueIn: "8 days" },
-  { title: "HVAC maintenance prep", linkedEvent: "Apr 8, 2–4 PM", items: ["Clear area around furnace", "Have service contract accessible", "Someone must be home"], owner: "Partner", dueIn: "6 days" },
-];
-
-const DEMO_transportDuties = [
-  { event: "Soccer practice", time: "Today 4 PM", driver: "Partner", route: "Home → Riverside Park → Home", duration: "45 min total" },
-  { event: "Carpool duty", time: "Tomorrow 7:30 AM", driver: "You", route: "3-kid route → Lincoln Elementary", duration: "25 min" },
-  { event: "Piano lesson", time: "Tomorrow 3:30 PM", driver: "Partner", route: "School → Music Academy → Home", duration: "40 min" },
-];
-
 type CalendarView = "week" | "day" | "family" | "conflicts" | "prep" | "transport";
+import { DEMO_conflicts, DEMO_events, DEMO_familyMembers, DEMO_prepItems, DEMO_transportDuties } from "@/lib/demo-data/concierge";
 
 const FamilyCalendar = () => {
   const [view, setView] = useState<CalendarView>("week");

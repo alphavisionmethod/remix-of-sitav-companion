@@ -10,15 +10,7 @@ import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_DIFFS = [
-  { id: "dr-1", domain: "investment-finance", desc: "Portfolio state — minor price fluctuation", materiality: 22, action: "reuse-as-is", costFull: 120, costActual: 5, deltas: 2, confidence: 92, preserved: 8, invalidated: 0, changes: ["AAPL +1.2%", "Bond yield -0.05%"] },
-  { id: "dr-2", domain: "engineering", desc: "Build pipeline — new dependency added", materiality: 68, action: "partial-update", costFull: 120, costActual: 35, deltas: 5, confidence: 65, preserved: 4, invalidated: 3, changes: ["New dep: @supabase/ssr", "CI config updated", "Test coverage drop 2%", "Build time +8s", "Lock file changed"] },
-  { id: "dr-3", domain: "revenue-business", desc: "CRM state — one lead status change", materiality: 12, action: "reuse-as-is", costFull: 80, costActual: 3, deltas: 1, confidence: 96, preserved: 12, invalidated: 0, changes: ["Lead #42 → qualified"] },
-  { id: "dr-4", domain: "digital-presence", desc: "Website structure — major layout change detected", materiality: 85, action: "full-reanalysis", costFull: 150, costActual: 150, deltas: 8, confidence: 38, preserved: 1, invalidated: 6, changes: ["Hero section redesign", "Nav restructure", "CTA moved", "Footer updated", "New section added", "Color scheme shift", "Font change", "Mobile layout changed"] },
-  { id: "dr-5", domain: "compliance-trust", desc: "Trust policy — no changes", materiality: 5, action: "reuse-as-is", costFull: 100, costActual: 4, deltas: 0, confidence: 98, preserved: 5, invalidated: 0, changes: [] },
-  { id: "dr-6", domain: "admin-ops", desc: "Team structure — new member added", materiality: 35, action: "partial-update", costFull: 90, costActual: 28, deltas: 3, confidence: 78, preserved: 6, invalidated: 1, changes: ["New team member", "Permission grant", "Workflow route updated"] },
-];
+import { DEMO_INTEL_DIFFS as DEMO_DIFFS } from "@/lib/demo-data/admin-intelligence";
 
 const actionColors: Record<string, string> = {
   "reuse-as-is": "text-emerald-400 bg-emerald-500/10",

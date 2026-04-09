@@ -8,43 +8,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_FORMS = [
-  { id: "f1", name: "Free Consultation Application", status: "live", submissions: 186, convRate: "24%", lastSubmission: "2h ago", fields: 8, linkedFunnel: "Free Consultation Funnel", tags: ["lead-gen", "discovery"] },
-  { id: "f2", name: "VIP Day Inquiry", status: "live", submissions: 34, convRate: "67%", lastSubmission: "1d ago", fields: 12, linkedFunnel: "VIP Funnel", tags: ["high-value", "qualification"] },
-  { id: "f3", name: "Webinar Registration", status: "live", submissions: 412, convRate: "38%", lastSubmission: "45m ago", fields: 4, linkedFunnel: "Webinar Registration", tags: ["event", "lead-gen"] },
-  { id: "f4", name: "Client Feedback Survey", status: "live", submissions: 89, convRate: "72%", lastSubmission: "3d ago", fields: 10, tags: ["feedback", "nps"] },
-  { id: "f5", name: "Partnership Application", status: "draft", submissions: 0, convRate: "—", lastSubmission: "—", fields: 15, tags: ["partnership", "b2b"] },
-];
-
-const DEMO_FIELD_TYPES = [
-  { type: "text", label: "Short Text", icon: Type },
-  { type: "email", label: "Email", icon: Mail },
-  { type: "phone", label: "Phone", icon: Phone },
-  { type: "number", label: "Number", icon: Hash },
-  { type: "date", label: "Date", icon: Calendar },
-  { type: "checkbox", label: "Checkbox", icon: CheckSquare },
-  { type: "dropdown", label: "Dropdown", icon: List },
-  { type: "textarea", label: "Long Text", icon: AlignLeft },
-  { type: "file", label: "File Upload", icon: Upload },
-  { type: "rating", label: "Rating", icon: Star },
-];
-
-const DEMO_SAMPLE_FIELDS = [
-  { id: "sf1", type: "text", label: "Full Name", required: true, placeholder: "Enter your name" },
-  { id: "sf2", type: "email", label: "Email Address", required: true, placeholder: "your@email.com" },
-  { id: "sf3", type: "phone", label: "Phone Number", required: false, placeholder: "+1 (555) 000-0000" },
-  { id: "sf4", type: "dropdown", label: "How did you hear about us?", required: false, options: ["Google", "Referral", "Social Media", "Other"] },
-  { id: "sf5", type: "textarea", label: "Tell us about your business", required: true, placeholder: "Share your goals and challenges..." },
-  { id: "sf6", type: "dropdown", label: "Budget Range", required: true, options: ["$1K-$5K", "$5K-$15K", "$15K-$50K", "$50K+"] },
-];
-
-const DEMO_STATS = [
-  { label: "Total Forms", value: DEMO_FORMS.length },
-  { label: "Total Submissions", value: "721" },
-  { label: "Avg. Conversion", value: "42%" },
-  { label: "Active Forms", value: DEMO_FORMS.filter(f => f.status === "live").length },
-];
+import { DEMO_FIELD_TYPES, DEMO_FORMS, DEMO_REV_STATS_FORMS_BUILDER as DEMO_STATS, DEMO_SAMPLE_FIELDS } from "@/lib/demo-data/revenue-office";
 
 export default function FormsBuilder() {
   const { isDemoMode } = useDataMode();

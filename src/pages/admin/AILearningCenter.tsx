@@ -6,32 +6,7 @@ import { useState } from "react";
 import { TrendingUp, Brain, AlertTriangle, CheckCircle2, RotateCcw, Sparkles, Target, Users } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_PATTERNS = [
-  { pattern: "Route mapping errors recur after lazy-import refactors", frequency: "4x in 30 days", domain: "Frontend", confidence: 88, severity: "high", improvement: "Added pre-commit route validation check", status: "implemented" as const },
-  { pattern: "Feature flag rollbacks within 2 hours of activation", frequency: "5x in 30 days", domain: "Deployment", confidence: 82, severity: "medium", improvement: "Proposed canary rollout requirement for all flags", status: "proposed" as const },
-  { pattern: "CDN cache staleness after brand kit mutations", frequency: "Weekly", domain: "Infrastructure", confidence: 91, severity: "medium", improvement: "Auto-invalidate cache on brand kit save", status: "implemented" as const },
-  { pattern: "Operator overrides approval threshold for low-risk changes", frequency: "8x in 30 days", domain: "Governance", confidence: 76, severity: "low", improvement: "Lower approval threshold for low-risk auto-heals", status: "proposed" as const },
-  { pattern: "Test flakiness in approval workflow suite", frequency: "3x in 14 days", domain: "QA", confidence: 84, severity: "medium", improvement: "Identified timing-dependent assertions, propose retries", status: "in_review" as const },
-  { pattern: "UI regression in admin cards after design updates", frequency: "2x in 14 days", domain: "Design", confidence: 79, severity: "medium", improvement: "Add visual regression snapshots for admin surfaces", status: "proposed" as const },
-];
-
-const DEMO_OUTCOMES = [
-  { recommendation: "Add mutex lock on projection rebuilds", accepted: true, outcome: "success", impact: "Eliminated 14 concurrent rebuild errors", confidence_delta: "+8%" },
-  { recommendation: "Canary rollout for sidebar feature flag", accepted: true, outcome: "success", impact: "Caught rendering bug before 100% rollout", confidence_delta: "+5%" },
-  { recommendation: "Raise prices 10% on premium tier", accepted: false, outcome: "rejected", impact: "User chose conservative approach", confidence_delta: "-2%" },
-  { recommendation: "Auto-fix broken /admin/durability route", accepted: true, outcome: "success", impact: "Route restored in 12 seconds", confidence_delta: "+3%" },
-  { recommendation: "Disable brand-kit preview caching", accepted: true, outcome: "partial", impact: "Fixed staleness but increased load by 200ms", confidence_delta: "+1%" },
-];
-
-const DEMO_CALIBRATION = [
-  { agent: "Error Fixer", accuracy: 91, falsePositives: 3, missedIssues: 1, trend: "improving" as const },
-  { agent: "QA Engineer", accuracy: 88, falsePositives: 5, missedIssues: 2, trend: "stable" as const },
-  { agent: "Design Engineer", accuracy: 79, falsePositives: 8, missedIssues: 1, trend: "improving" as const },
-  { agent: "Reliability Engineer", accuracy: 93, falsePositives: 2, missedIssues: 0, trend: "stable" as const },
-  { agent: "Performance Optimizer", accuracy: 74, falsePositives: 6, missedIssues: 3, trend: "declining" as const },
-  { agent: "Security Reviewer", accuracy: 96, falsePositives: 1, missedIssues: 0, trend: "stable" as const },
-];
+import { DEMO_ADMIN_OUTCOMES as DEMO_OUTCOMES, DEMO_ADMIN_PATTERNS as DEMO_PATTERNS, DEMO_CALIBRATION } from "@/lib/demo-data/admin-platform";
 
 const AILearningCenter = () => {
   const { isDemoMode } = useDataMode();

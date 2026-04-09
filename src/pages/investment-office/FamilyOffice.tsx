@@ -3,27 +3,7 @@ import { Users, Shield, Landmark, Heart, GraduationCap, Home, Check, AlertTriang
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useCapitalPurposeBuckets } from "@/hooks/use-investment-office";
-
-const DEMO_FAMILY_MEMBERS = [
-  { name: "You (Owner)", role: "Primary", permissions: "Full access", emoji: "👤" },
-  { name: "Partner", role: "Co-Manager", permissions: "View, approve, execute (shared accounts)", emoji: "👥" },
-  { name: "Financial Advisor", role: "Advisor", permissions: "View only, recommendations", emoji: "🧑‍💼" },
-];
-
-const DEMO_FAMILY_GOALS = [
-  { id: "g1", label: "Children's Education Fund", emoji: "🎓", icon: <GraduationCap className="h-4 w-4" />, target: 200000, current: 68000, deadline: "2038", status: "on-track", monthlyContribution: 800 },
-  { id: "g2", label: "Home Down Payment", emoji: "🏠", icon: <Home className="h-4 w-4" />, target: 120000, current: 95000, deadline: "2027", status: "on-track", monthlyContribution: 2500 },
-  { id: "g3", label: "Family Emergency Reserve", emoji: "🛡️", icon: <Shield className="h-4 w-4" />, target: 50000, current: 52000, deadline: "Ongoing", status: "funded", monthlyContribution: 0 },
-  { id: "g4", label: "Retirement Portfolio", emoji: "🏖️", icon: <Landmark className="h-4 w-4" />, target: 1500000, current: 310000, deadline: "2050", status: "on-track", monthlyContribution: 3000 },
-];
-
-const DEMO_FAMILY_RULES = [
-  { rule: "Speculative sleeve capped at 3% of household capital", status: "pass" },
-  { rule: "Education fund must be in conservative assets only", status: "pass" },
-  { rule: "Any trade >$10K requires partner approval", status: "active" },
-  { rule: "Emergency reserve must stay above $50K", status: "pass" },
-  { rule: "No crypto in retirement accounts", status: "pass" },
-];
+import { DEMO_FAMILY_GOALS, DEMO_FAMILY_MEMBERS, DEMO_FAMILY_RULES } from "@/lib/demo-data/investment";
 
 const fmt = (n: number) => n >= 1e6 ? `$${(n / 1e6).toFixed(2)}M` : `$${(n / 1e3).toFixed(0)}K`;
 

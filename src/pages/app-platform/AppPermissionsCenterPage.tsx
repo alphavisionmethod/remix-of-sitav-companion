@@ -10,17 +10,7 @@ import { APP_CATALOG } from "@/lib/app-platform";
 import { AppIcon } from "@/components/sita/app-platform/AppStoreComponents";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_PERMISSION_DOMAINS = [
-  { id: "files", label: "Files & Folders", icon: FolderOpen, description: "Access to read/write files" },
-  { id: "camera", label: "Camera", icon: Camera, description: "Access to camera hardware" },
-  { id: "microphone", label: "Microphone", icon: Mic, description: "Access to microphone" },
-  { id: "notifications", label: "Notifications", icon: Bell, description: "Send notifications" },
-  { id: "clipboard", label: "Clipboard", icon: Clipboard, description: "Access clipboard contents" },
-  { id: "network", label: "Network", icon: Network, description: "Network access behavior" },
-  { id: "calendar", label: "Calendar", icon: Calendar, description: "Calendar integration" },
-  { id: "contacts", label: "Contacts", icon: Shield, description: "Access contacts" },
-];
+import { DEMO_PERMISSION_DOMAINS } from "@/lib/demo-data/core-pages";
 
 const AppPermissionsCenterPage = () => {
   const { isDemoMode } = useDataMode();

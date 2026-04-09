@@ -12,53 +12,7 @@ import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_REUSE_DATA = {
-  reuseRate: 0.64,
-  adaptedReuseRate: 0.22,
-  directReuseRate: 0.42,
-  costAvoided: 8420,
-  totalReuses: 187,
-  invalidatedAssets: 6,
-  avgConfidence: 87,
-  confidenceTrend: "improving" as const,
-};
-
-const DEMO_ASSET_CLASSES = [
-  { type: "root-cause-analysis", reuses: 42, savings: 2100, trend: "up" },
-  { type: "issue-fingerprint", reuses: 38, savings: 1900, trend: "up" },
-  { type: "automation-playbook", reuses: 31, savings: 1550, trend: "stable" },
-  { type: "strategic-summary", reuses: 24, savings: 960, trend: "up" },
-  { type: "investment-thesis", reuses: 18, savings: 720, trend: "down" },
-  { type: "website-diagnostic", reuses: 15, savings: 600, trend: "stable" },
-  { type: "design-recommendation", reuses: 12, savings: 360, trend: "up" },
-  { type: "release-readiness-packet", reuses: 7, savings: 230, trend: "stable" },
-];
-
-const DEMO_DOMAIN_REUSE = [
-  { domain: "engineering", reuseRate: 0.72, savings: 3200, assets: 28, invalidated: 2 },
-  { domain: "revenue-business", reuseRate: 0.68, savings: 1800, assets: 15, invalidated: 1 },
-  { domain: "investment-finance", reuseRate: 0.58, savings: 1400, assets: 12, invalidated: 0 },
-  { domain: "digital-presence", reuseRate: 0.52, savings: 980, assets: 10, invalidated: 2 },
-  { domain: "admin-ops", reuseRate: 0.48, savings: 640, assets: 8, invalidated: 1 },
-  { domain: "compliance-trust", reuseRate: 0.45, savings: 400, assets: 5, invalidated: 0 },
-];
-
-const DEMO_INVALIDATION_FEED = [
-  { asset: "Q1 revenue projection model", reason: "pricing_change", domain: "revenue-business", ago: "2hr" },
-  { asset: "Build pipeline root-cause", reason: "dependency_update", domain: "engineering", ago: "4hr" },
-  { asset: "Homepage conversion diagnosis", reason: "layout_change", domain: "digital-presence", ago: "6hr" },
-  { asset: "API timeout pattern", reason: "architecture_change", domain: "engineering", ago: "1d" },
-  { asset: "SEO keyword strategy", reason: "content_update", domain: "digital-presence", ago: "1d" },
-  { asset: "Quarterly ops synthesis", reason: "policy_change", domain: "admin-ops", ago: "2d" },
-];
-
-const DEMO_CONFIDENCE_TREND = [
-  { period: "Week 1", avg: 78 },
-  { period: "Week 2", avg: 81 },
-  { period: "Week 3", avg: 84 },
-  { period: "Week 4", avg: 87 },
-];
+import { DEMO_ASSET_CLASSES, DEMO_CONFIDENCE_TREND, DEMO_DOMAIN_REUSE, DEMO_INVALIDATION_FEED, DEMO_REUSE_DATA } from "@/lib/demo-data/admin-intelligence";
 
 const HeroCard = ({ icon: Icon, label, value, sub, color }: { icon: typeof Brain; label: string; value: string; sub: string; color?: string }) => (
   <Card className="bg-card/80 border-border/50">

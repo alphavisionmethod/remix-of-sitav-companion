@@ -17,6 +17,7 @@ import { Plus, Trash2, Search, ArrowRight, AlertTriangle, CheckCircle2, Clock, B
 import type { MockReplacement } from "@/lib/persistence/mock-replacement-persistence";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_ADMIN_STATUSES_MOCK_REPLACEMENT_PROGRAM as DEMO_STATUSES, DEMO_MOCK_TYPES, DEMO_PRIORITIES } from "@/lib/demo-data/admin-platform";
 
 const STATUS_CONFIG: Record<MockReplacement["migration_status"], { label: string; color: string; icon: any }> = {
   identified: { label: "Identified", color: "bg-muted text-muted-foreground", icon: CircleDot },
@@ -33,10 +34,6 @@ const PRIORITY_COLORS: Record<string, string> = {
   medium: "text-yellow-400 border-yellow-400/30",
   low: "text-muted-foreground",
 };
-
-const DEMO_MOCK_TYPES = ["hardcoded", "local_array", "localstorage", "in_memory_engine", "pure_function", "demo_flow"] as const;
-const DEMO_STATUSES = ["identified", "planned", "in_progress", "blocked", "completed", "validated"] as const;
-const DEMO_PRIORITIES = ["critical", "high", "medium", "low"] as const;
 
 interface MockFormData {
   feature_name: string;

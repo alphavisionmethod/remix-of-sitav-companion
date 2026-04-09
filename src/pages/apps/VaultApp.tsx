@@ -17,17 +17,9 @@ interface VaultEntry {
   category: "login" | "card" | "note" | "api";
   lastUsed: string;
   strength: "strong" | "medium" | "weak";
+import { DEMO_ENTRIES } from "@/lib/demo-data/apps";
   breached: boolean;
 }
-
-const DEMO_ENTRIES: VaultEntry[] = [
-  { id: "1", name: "Google Workspace", username: "admin@company.com", url: "google.com", category: "login", lastUsed: "Today", strength: "strong", breached: false },
-  { id: "2", name: "AWS Console", username: "devops@company.com", url: "aws.amazon.com", category: "login", lastUsed: "Yesterday", strength: "strong", breached: false },
-  { id: "3", name: "Stripe Dashboard", username: "finance@company.com", url: "stripe.com", category: "login", lastUsed: "2 days ago", strength: "medium", breached: false },
-  { id: "4", name: "OpenAI API Key", username: "sk-...4f2a", url: "platform.openai.com", category: "api", lastUsed: "Today", strength: "strong", breached: false },
-  { id: "5", name: "Company Visa Card", username: "•••• 4242", url: "", category: "card", lastUsed: "Last week", strength: "strong", breached: false },
-  { id: "6", name: "Legacy CRM Login", username: "admin", url: "old-crm.com", category: "login", lastUsed: "30 days ago", strength: "weak", breached: true },
-];
 
 const categoryIcons: Record<string, React.ElementType> = { login: Globe, card: CreditCard, api: Server, note: Key };
 const strengthColors: Record<string, string> = { strong: "text-emerald-500", medium: "text-amber-500", weak: "text-red-500" };

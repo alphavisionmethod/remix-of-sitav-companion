@@ -20,6 +20,7 @@ interface PolicyDraft {
   affectedSystems: string[];
   affectedUsers: number;
   riskLevel: "low" | "medium" | "high";
+import { DEMO_DRAFTS } from "@/lib/demo-data/admin-platform";
   approvalPath: string[];
   createdAt: string;
 }
@@ -35,13 +36,6 @@ interface SimulationResult {
   successProbability: number;
   adoptionForecast: string;
 }
-
-const DEMO_DRAFTS: PolicyDraft[] = [
-  { id: "POL-001", name: "Auto-approve low-risk invoices under $100", description: "Skip manual approval for invoices below threshold from trusted vendors", rule: "IF invoice.amount < 100 AND vendor.trust_score >= 80 THEN auto_approve", status: "simulated", affectedSystems: ["approval_queue", "payment_engine", "audit_log"], affectedUsers: 12, riskLevel: "low", approvalPath: ["Owner", "Finance Advisor"], createdAt: "2h ago" },
-  { id: "POL-002", name: "Require 2FA for all admin mutations", description: "Enforce multi-factor authentication for any admin-level data change", rule: "IF actor.role == 'admin' AND action.type == 'mutation' THEN require_2fa", status: "draft", affectedSystems: ["auth_service", "admin_service", "audit_log"], affectedUsers: 3, riskLevel: "medium", approvalPath: ["Owner", "Security Council"], createdAt: "1d ago" },
-  { id: "POL-003", name: "Rate limit AI advisor to 500 calls/day", description: "Prevent cost overruns by capping daily advisor invocations", rule: "IF advisor.daily_calls >= 500 THEN throttle_to_queue", status: "active", affectedSystems: ["advisor_router", "cost_ledger", "notification_queue"], affectedUsers: 1, riskLevel: "low", approvalPath: ["Owner"], createdAt: "5d ago" },
-  { id: "POL-004", name: "Block external data export without approval", description: "Require explicit approval for any data export to external systems", rule: "IF action.type == 'export' AND target.scope == 'external' THEN require_approval", status: "draft", affectedSystems: ["export_engine", "approval_queue", "audit_log"], affectedUsers: 8, riskLevel: "high", approvalPath: ["Owner", "Security Council", "Data Protection"], createdAt: "3h ago" },
-];
 
 const SIMULATION: SimulationResult = {
   policyId: "POL-001",

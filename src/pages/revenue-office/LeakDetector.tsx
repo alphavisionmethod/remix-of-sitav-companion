@@ -9,43 +9,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { useRevenueLeakItems } from "@/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/sita/EmptyState";
-
-const DEMO_LEAKS = [
-  {
-    category: "Stale Leads", icon: Users, items: 12, revenue: "$34,200", severity: "high",
-    description: "Leads with no follow-up in 14+ days", action: "Launch re-engagement sequence",
-    details: [
-      { name: "Summit Group", value: "$12,000", days: 18 },
-      { name: "Nova Ventures", value: "$8,500", days: 22 },
-      { name: "Apex Digital", value: "$6,200", days: 15 },
-    ],
-  },
-  {
-    category: "Abandoned Checkouts", icon: ShoppingCart, items: 8, revenue: "$6,400", severity: "medium",
-    description: "Checkout started but not completed", action: "Send cart recovery emails",
-    details: [
-      { name: "Growth Blueprint", value: "$297", days: 2 },
-      { name: "Coaching Package", value: "$500", days: 3 },
-      { name: "VIP Bundle", value: "$697", days: 1 },
-    ],
-  },
-  {
-    category: "Missed Follow-ups", icon: Mail, items: 5, revenue: "$18,500", severity: "high",
-    description: "Scheduled follow-ups not executed", action: "Complete follow-ups today",
-    details: [
-      { name: "Green Valley Co", value: "$8,000", days: 5 },
-      { name: "Bright Path Inc", value: "$6,500", days: 3 },
-    ],
-  },
-  {
-    category: "Expired Quotes", icon: FileText, items: 3, revenue: "$12,000", severity: "medium",
-    description: "Proposals past expiry without response", action: "Resend with updated terms",
-    details: [
-      { name: "Atlas Corp", value: "$8,000", days: 10 },
-      { name: "Peak Studios", value: "$4,000", days: 7 },
-    ],
-  },
-];
+import { DEMO_REV_LEAKS_LEAK_DETECTOR as DEMO_LEAKS } from "@/lib/demo-data/revenue-office";
 
 export default function LeakDetector() {
   const { isDemoMode } = useDataMode();

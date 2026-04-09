@@ -10,43 +10,7 @@ import {
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_healthMetrics = [
-  { label: "Overall Health", value: 94, target: 95, color: "text-emerald-400", icon: Activity },
-  { label: "Success Rate", value: 91, target: 90, color: "text-emerald-400", icon: CheckCircle },
-  { label: "Delivery Rate", value: 97, target: 98, color: "text-emerald-400", icon: Mail },
-  { label: "Engagement Rate", value: 68, target: 70, color: "text-amber-400", icon: Target },
-  { label: "Conversion Rate", value: 24, target: 25, color: "text-blue-400", icon: TrendingUp },
-  { label: "Fatigue Score", value: 12, target: 10, color: "text-amber-400", icon: AlertTriangle },
-];
-
-const DEMO_automations = [
-  { name: "Welcome Onboarding (7-step)", status: "healthy", successRate: 98, triggers: 28, failures: 0, lastRun: "2hrs ago", contacts: 112, revenue: "—", trend: [95, 96, 97, 98], category: "Onboarding" },
-  { name: "Stale Lead Recovery (48hr)", status: "healthy", successRate: 94, triggers: 42, failures: 3, lastRun: "1hr ago", contacts: 156, revenue: "$12,400", trend: [88, 90, 92, 94], category: "Lead Recovery" },
-  { name: "Post-Service Review Request", status: "healthy", successRate: 96, triggers: 35, failures: 1, lastRun: "4hrs ago", contacts: 220, revenue: "—", trend: [92, 94, 95, 96], category: "Reputation" },
-  { name: "Post-Call Follow-up", status: "healthy", successRate: 89, triggers: 22, failures: 2, lastRun: "30min ago", contacts: 88, revenue: "$15,000", trend: [85, 86, 88, 89], category: "Sales" },
-  { name: "Quote Follow-up (3/5/7 day)", status: "warning", successRate: 82, triggers: 12, failures: 2, lastRun: "6hrs ago", contacts: 34, revenue: "$4,800", trend: [88, 85, 83, 82], category: "Sales" },
-  { name: "Nurture Sequence (14-day)", status: "warning", successRate: 76, triggers: 89, failures: 21, lastRun: "30min ago", contacts: 340, revenue: "$6,800", trend: [82, 80, 78, 76], category: "Nurture" },
-  { name: "Abandoned Checkout Recovery", status: "healthy", successRate: 88, triggers: 22, failures: 3, lastRun: "2hrs ago", contacts: 64, revenue: "$7,200", trend: [84, 85, 87, 88], category: "Sales" },
-  { name: "Lead Assignment Engine", status: "error", successRate: 60, triggers: 15, failures: 6, lastRun: "45min ago", contacts: 15, revenue: "—", trend: [78, 72, 65, 60], category: "Operations" },
-  { name: "Upsell After Delivery", status: "underperforming", successRate: 43, triggers: 14, failures: 1, lastRun: "1day ago", contacts: 38, revenue: "$5,600", trend: [48, 46, 44, 43], category: "Growth" },
-  { name: "Churn Prevention Check-in", status: "warning", successRate: 50, triggers: 8, failures: 0, lastRun: "8hrs ago", contacts: 22, revenue: "$3,100", trend: [55, 53, 51, 50], category: "Retention" },
-  { name: "Reactivation Campaign (90-day)", status: "healthy", successRate: 85, triggers: 34, failures: 5, lastRun: "3hrs ago", contacts: 78, revenue: "$2,800", trend: [80, 82, 84, 85], category: "Growth" },
-  { name: "No-Show Rescue + Rebook", status: "healthy", successRate: 92, triggers: 18, failures: 1, lastRun: "5hrs ago", contacts: 48, revenue: "$4,200", trend: [88, 89, 91, 92], category: "Booking" },
-];
-
-const DEMO_fatigueAlerts = [
-  { contact: "Sarah Chen", DEMO_automations: 4, messagesThisWeek: 7, risk: "high", action: "Pause non-critical sequences for 7 days" },
-  { contact: "Marcus Johnson", DEMO_automations: 3, messagesThisWeek: 5, risk: "medium", action: "Reduce to 1 message per 3 days" },
-  { contact: "Emily Rodriguez", DEMO_automations: 2, messagesThisWeek: 6, risk: "high", action: "Remove from nurture, keep only appointment reminders" },
-];
-
-const DEMO_advisorInsights = [
-  { advisor: "Campaign Advisor", insight: "Nurture Sequence engagement drops 40% at email 4. Test shorter 3-email variant or change topic at email 4.", action: "Create A/B test" },
-  { advisor: "Revenue Ops Advisor", insight: "Lead Assignment Engine failing due to missing 'enterprise' segment rule. 5 leads unassigned since yesterday.", action: "Fix rule now" },
-  { advisor: "Retention Advisor", insight: "Churn Prevention check-ins have only 50% open rate. Switch to SMS for initial touch — similar businesses see 78% read rate.", action: "Generate SMS variant" },
-  { advisor: "Offer Advisor", insight: "Upsell After Delivery at 43% — well below benchmark. Content may be too generic. Test personalized upsells based on service type.", action: "Personalize templates" },
-];
+import { DEMO_advisorInsights, DEMO_automations, DEMO_fatigueAlerts, DEMO_healthMetrics } from "@/lib/demo-data/revenue-office";
 
 const statusIcon = { healthy: CheckCircle, warning: AlertTriangle, error: XCircle, underperforming: TrendingUp };
 const statusColor = { healthy: "text-emerald-400", warning: "text-amber-400", error: "text-red-400", underperforming: "text-blue-400" };

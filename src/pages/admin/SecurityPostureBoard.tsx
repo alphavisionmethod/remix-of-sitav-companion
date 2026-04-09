@@ -15,19 +15,11 @@ interface PostureItem {
   encryption: "full" | "partial" | "none";
   rlsEnabled: boolean;
   secretsIntegrity: "verified" | "unverified" | "expired";
+import { DEMO_POSTURE } from "@/lib/demo-data/admin-platform";
   sensitiveData: boolean;
   lastVerified: string;
   gaps: string[];
 }
-
-const DEMO_POSTURE: PostureItem[] = [
-  { domain: "User Auth & Profiles", encryption: "full", rlsEnabled: true, secretsIntegrity: "verified", sensitiveData: true, lastVerified: "2026-04-05T08:00:00Z", gaps: [] },
-  { domain: "Financial Data", encryption: "full", rlsEnabled: true, secretsIntegrity: "verified", sensitiveData: true, lastVerified: "2026-04-05T07:30:00Z", gaps: [] },
-  { domain: "Connector Credentials", encryption: "full", rlsEnabled: true, secretsIntegrity: "verified", sensitiveData: true, lastVerified: "2026-04-05T09:00:00Z", gaps: [] },
-  { domain: "Audit Logs", encryption: "full", rlsEnabled: true, secretsIntegrity: "verified", sensitiveData: false, lastVerified: "2026-04-05T08:15:00Z", gaps: [] },
-  { domain: "Workflow State", encryption: "partial", rlsEnabled: true, secretsIntegrity: "verified", sensitiveData: false, lastVerified: "2026-04-04T22:00:00Z", gaps: ["Event payloads not encrypted at rest"] },
-  { domain: "Device Fleet", encryption: "full", rlsEnabled: true, secretsIntegrity: "unverified", sensitiveData: false, lastVerified: "2026-04-03T12:00:00Z", gaps: ["Secret rotation overdue"] },
-];
 
 const encColor = { full: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20", partial: "text-amber-500 bg-amber-500/10 border-amber-500/20", none: "text-red-500 bg-red-500/10 border-red-500/20" };
 const secColor = { verified: "text-emerald-500 bg-emerald-500/10 border-emerald-500/20", unverified: "text-amber-500 bg-amber-500/10 border-amber-500/20", expired: "text-red-500 bg-red-500/10 border-red-500/20" };

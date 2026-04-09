@@ -5,29 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Watch, ArrowRight, Clock, Zap, Eye, Smartphone, AlertTriangle, Vibrate } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_TILES = [
-  { id: "wmn", name: "What Matters Now", priority: 0, refresh: "30s", layout: "compact", items: 3, sources: ["approvals", "alerts", "tasks"] },
-  { id: "pulse", name: "Daily Pulse", priority: 1, refresh: "60s", layout: "expanded", items: 1, sources: ["pulse_score"] },
-  { id: "urgent", name: "Urgent Alerts", priority: 0, refresh: "realtime", layout: "list", items: 5, sources: ["critical_alerts"] },
-  { id: "schedule", name: "Next Up", priority: 2, refresh: "60s", layout: "compact", items: 2, sources: ["calendar", "tasks"] },
-  { id: "focus", name: "Focus State", priority: 3, refresh: "5m", layout: "compact", items: 1, sources: ["focus_mode"] },
-];
-
-const DEMO_MICRO_ACTIONS = [
-  { action: "Approve", riskCeiling: "medium", biometric: "wrist_detection", gesture: "tap", feedback: "haptic_success" },
-  { action: "Reject", riskCeiling: "medium", biometric: "wrist_detection", gesture: "tap", feedback: "haptic_failure" },
-  { action: "Snooze", riskCeiling: "any", biometric: "none", gesture: "swipe", feedback: "haptic_click" },
-  { action: "Escalate to Phone", riskCeiling: "any", biometric: "none", gesture: "long_press", feedback: "haptic_direction_up" },
-  { action: "Dismiss", riskCeiling: "any", biometric: "none", gesture: "swipe_away", feedback: "none" },
-];
-
-const DEMO_COMPLICATIONS = [
-  { name: "Pending Approvals", family: "graphicCircular", update: "realtime", data: "count" },
-  { name: "Daily Pulse Score", family: "graphicCorner", update: "hourly", data: "gauge" },
-  { name: "Next Action Timer", family: "graphicBezel", update: "per_minute", data: "countdown" },
-  { name: "Focus State", family: "graphicCircular", update: "on_change", data: "icon" },
-];
+import { DEMO_COMPLICATIONS, DEMO_MICRO_ACTIONS, DEMO_TILES } from "@/lib/demo-data/admin-platform";
 
 const AND02WearOSExperience = () => (
   <div className="p-6 max-w-[1400px] mx-auto space-y-6">

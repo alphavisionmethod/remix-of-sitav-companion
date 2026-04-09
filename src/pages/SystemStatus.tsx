@@ -9,14 +9,6 @@ import { Progress } from "@/components/ui/progress";
 import { useSLOs } from "@/hooks/use-admin-data";
 import { useCloudControlPlane } from "@/contexts/SitaKernelContext";
 // Engine-backed connector data (replaces @/lib/mocks import)
-const DEMO_ENGINE_CONNECTORS = [
-  { id: "slack", name: "Slack", status: "connected" as const, lastSync: "2 min ago", category: "communication" },
-  { id: "resend", name: "Resend", status: "connected" as const, lastSync: "Just now", category: "email" },
-  { id: "twilio", name: "Twilio", status: "connected" as const, lastSync: "5 min ago", category: "sms" },
-  { id: "stripe", name: "Stripe", status: "connected" as const, lastSync: "1 min ago", category: "payments" },
-  { id: "google-calendar", name: "Google Calendar", status: "connected" as const, lastSync: "3 min ago", category: "calendar" },
-  { id: "quickbooks", name: "QuickBooks", status: "degraded" as const, lastSync: "2h ago", category: "accounting" },
-];
 import {
   createSelfHealingService,
   createImmuneController,
@@ -149,13 +141,6 @@ const StateBadgeInline = ({ state }: { state: string }) => {
 
 // ── Main Component ──────────────────────────────────────────────
 
-const DEMO_FALLBACK_APPROVALS = [
-  { action: "Bill payment: AWS — $340", result: "Auto-approved", time: "1h ago", trust: "verified" as const },
-  { action: "Quote #1042 to Sarah Chen — $2,500", result: "User approved", time: "3h ago", trust: "verified" as const },
-  { action: "Follow-up email to Emily Watson", result: "Pending review", time: "4h ago", trust: "review" as const },
-  { action: "Subscription cancellation: Adobe CC", result: "Awaiting approval", time: "Yesterday", trust: "approval" as const },
-];
-
 const SystemStatus = () => {
   const { isDemoMode } = useDataMode();
   const { listRegions, getTopology, getDemoTopology } = useCloudControlPlane();
@@ -174,6 +159,7 @@ const SystemStatus = () => {
     if (location.pathname.includes("/slos")) return "slos";
     if (location.pathname.includes("/history")) return "history";
     return "overview";
+import { DEMO_ENGINE_CONNECTORS, DEMO_FALLBACK_APPROVALS } from "@/lib/demo-data/core-pages";
   })();
 
   const goTo = (key: string) => {

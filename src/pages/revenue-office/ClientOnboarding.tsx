@@ -9,48 +9,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_JOURNEYS = [
-  {
-    id: "j1", name: "Coaching Client Onboarding", status: "active", activeClients: 8, completionRate: "78%", avgDays: 5,
-    steps: [
-      { name: "Welcome Email", type: "email", auto: true, completionRate: 100 },
-      { name: "Intake Form", type: "form", auto: false, completionRate: 92 },
-      { name: "Schedule Kick-off Call", type: "booking", auto: false, completionRate: 85 },
-      { name: "Resource Access", type: "access", auto: true, completionRate: 100 },
-      { name: "First Session", type: "meeting", auto: false, completionRate: 78 },
-      { name: "Feedback Check-in", type: "email", auto: true, completionRate: 65 },
-    ],
-  },
-  {
-    id: "j2", name: "VIP Day Preparation", status: "active", activeClients: 2, completionRate: "90%", avgDays: 7,
-    steps: [
-      { name: "Confirmation + Payment", type: "payment", auto: true, completionRate: 100 },
-      { name: "Pre-Work Questionnaire", type: "form", auto: true, completionRate: 95 },
-      { name: "Calendar Block", type: "booking", auto: false, completionRate: 90 },
-      { name: "Materials Sent", type: "delivery", auto: true, completionRate: 100 },
-      { name: "Pre-Call Check", type: "meeting", auto: false, completionRate: 85 },
-    ],
-  },
-  {
-    id: "j3", name: "Retainer Setup", status: "draft", activeClients: 0, completionRate: "—", avgDays: 0,
-    steps: [
-      { name: "Contract Signing", type: "document", auto: false, completionRate: 0 },
-      { name: "Kickoff Meeting", type: "meeting", auto: false, completionRate: 0 },
-      { name: "Team Introductions", type: "email", auto: true, completionRate: 0 },
-      { name: "Access Provisioning", type: "access", auto: true, completionRate: 0 },
-      { name: "First Deliverable", type: "delivery", auto: false, completionRate: 0 },
-    ],
-  },
-];
-
-const DEMO_ACTIVE_CLIENTS = [
-  { name: "Sarah Mitchell", journey: "Coaching Client Onboarding", step: 4, totalSteps: 6, startedAt: "3 days ago", status: "on-track" },
-  { name: "James Chen", journey: "Coaching Client Onboarding", step: 3, totalSteps: 6, startedAt: "5 days ago", status: "on-track" },
-  { name: "Emily Rodriguez", journey: "VIP Day Preparation", step: 3, totalSteps: 5, startedAt: "4 days ago", status: "on-track" },
-  { name: "Michael Park", journey: "Coaching Client Onboarding", step: 2, totalSteps: 6, startedAt: "7 days ago", status: "delayed" },
-  { name: "Kate Adams", journey: "VIP Day Preparation", step: 5, totalSteps: 5, startedAt: "6 days ago", status: "completed" },
-];
+import { DEMO_ACTIVE_CLIENTS, DEMO_JOURNEYS } from "@/lib/demo-data/revenue-office";
 
 const stepTypeIcons: Record<string, typeof Mail> = { email: Mail, form: FileText, booking: Calendar, meeting: Calendar, payment: Package, access: Settings, delivery: Package, document: FileText };
 

@@ -10,19 +10,7 @@ import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_PROFILES = [
-  { domain: "engineering", taskType: "root-cause", version: "v3.2", maxContext: "B", packetDriven: true, redundancy: 8, costReduction: 42, qualityImpact: 2, active: true },
-  { domain: "engineering", taskType: "fix-plan", version: "v2.8", maxContext: "B", packetDriven: true, redundancy: 12, costReduction: 38, qualityImpact: 1, active: true },
-  { domain: "revenue-business", taskType: "lead-scoring", version: "v2.1", maxContext: "A", packetDriven: true, redundancy: 5, costReduction: 55, qualityImpact: 0, active: true },
-  { domain: "revenue-business", taskType: "strategy", version: "v1.5", maxContext: "C", packetDriven: false, redundancy: 28, costReduction: 15, qualityImpact: -3, active: true },
-  { domain: "digital-presence", taskType: "seo-audit", version: "v2.0", maxContext: "B", packetDriven: true, redundancy: 15, costReduction: 35, qualityImpact: 1, active: true },
-  { domain: "digital-presence", taskType: "conversion-analysis", version: "v1.8", maxContext: "C", packetDriven: false, redundancy: 32, costReduction: 10, qualityImpact: -2, active: true },
-  { domain: "investment-finance", taskType: "thesis-generation", version: "v2.4", maxContext: "C", packetDriven: true, redundancy: 18, costReduction: 28, qualityImpact: 0, active: true },
-  { domain: "investment-finance", taskType: "risk-assessment", version: "v3.0", maxContext: "B", packetDriven: true, redundancy: 6, costReduction: 48, qualityImpact: 3, active: true },
-  { domain: "compliance-trust", taskType: "policy-check", version: "v2.6", maxContext: "A", packetDriven: true, redundancy: 3, costReduction: 62, qualityImpact: 5, active: true },
-  { domain: "admin-ops", taskType: "synthesis", version: "v1.2", maxContext: "D", packetDriven: false, redundancy: 45, costReduction: 5, qualityImpact: -5, active: false },
-];
+import { DEMO_PROFILES } from "@/lib/demo-data/admin-intelligence";
 
 const offenders = DEMO_PROFILES
   .filter(p => p.redundancy > 20)

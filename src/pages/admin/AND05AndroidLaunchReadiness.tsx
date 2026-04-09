@@ -5,14 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Rocket, CheckCircle2, XCircle, AlertTriangle, ArrowRight, Clock } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_TARGETS = [
-  { target: "Android Shell", key: "and_shell", stage: "planned", readiness: 10, demo: false, pilot: false, launch: false, blockers: ["Architecture design", "Material Design implementation"], deps: [], critical: true },
-  { target: "Wear OS Shell", key: "and_wearos", stage: "planned", readiness: 8, demo: true, pilot: false, launch: false, blockers: ["Tile SDK integration", "Complication design"], deps: ["and_shell"], critical: false },
-  { target: "Android Trust", key: "and_trust", stage: "planned", readiness: 5, demo: false, pilot: false, launch: false, blockers: ["Keystore integration", "SafetyNet flow"], deps: [], critical: true },
-  { target: "Android Health", key: "and_health", stage: "planned", readiness: 6, demo: true, pilot: false, launch: false, blockers: ["Health Connect API", "Consent flow design"], deps: ["and_shell"], critical: false },
-  { target: "Android Push (FCM)", key: "and_push", stage: "planned", readiness: 12, demo: false, pilot: false, launch: false, blockers: ["FCM setup", "Channel config"], deps: [], critical: true },
-];
+import { DEMO_ADMIN_TARGETS as DEMO_TARGETS } from "@/lib/demo-data/admin-platform";
 
 const AND05AndroidLaunchReadiness = () => {
   const { isDemoMode } = useDataMode();

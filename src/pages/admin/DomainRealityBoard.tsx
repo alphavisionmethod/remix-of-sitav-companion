@@ -32,83 +32,11 @@ interface DomainReality {
   overallReadiness: number;
 }
 
-const DEMO_DOMAINS: DomainReality[] = [
-  {
-    domain: "Investment Office",
-    overallReadiness: 72,
-    features: [
-      { feature: "Portfolio Overview", readPath: "real", writePath: "none", emptyState: true, loadingState: true, errorState: true, tables: ["asset_master", "asset_market_snapshots"] },
-      { feature: "Holdings", readPath: "real", writePath: "none", emptyState: true, loadingState: true, errorState: true, tables: ["asset_master"] },
-      { feature: "Capital Buckets", readPath: "real", writePath: "real", emptyState: true, loadingState: true, errorState: true, tables: ["capital_purpose_buckets"] },
-      { feature: "Watchlists", readPath: "demo", writePath: "none", emptyState: true, loadingState: true, errorState: false, tables: [] },
-      { feature: "Theses", readPath: "demo", writePath: "none", emptyState: true, loadingState: true, errorState: false, tables: [] },
-      { feature: "Market Explorer", readPath: "demo", writePath: "none", emptyState: true, loadingState: true, errorState: false, tables: ["asset_master"] },
-      { feature: "Strategy Studio", readPath: "demo", writePath: "simulated", emptyState: true, loadingState: true, errorState: false, tables: [] },
-      { feature: "Execution Desk", readPath: "demo", writePath: "simulated", emptyState: true, loadingState: true, errorState: false, tables: [] },
-    ],
-  },
-  {
-    domain: "Boardroom",
-    overallReadiness: 65,
-    features: [
-      { feature: "Daily Pulse", readPath: "real", writePath: "none", emptyState: true, loadingState: true, errorState: true, tables: ["os_event_log"] },
-      { feature: "Weekly Boardroom", readPath: "demo", writePath: "none", emptyState: true, loadingState: true, errorState: false, tables: [] },
-      { feature: "Advisor Synthesis", readPath: "demo", writePath: "none", emptyState: true, loadingState: true, errorState: false, tables: ["advisor_responses"] },
-      { feature: "Action Queue", readPath: "real", writePath: "real", emptyState: true, loadingState: true, errorState: true, tables: ["approval_queue"] },
-    ],
-  },
-  {
-    domain: "Business CRM",
-    overallReadiness: 78,
-    features: [
-      { feature: "Customer List", readPath: "real", writePath: "real", emptyState: true, loadingState: true, errorState: true, tables: ["customers"] },
-      { feature: "Deals Pipeline", readPath: "real", writePath: "real", emptyState: true, loadingState: true, errorState: true, tables: ["deals"] },
-      { feature: "Collections", readPath: "demo", writePath: "simulated", emptyState: true, loadingState: true, errorState: false, tables: [] },
-      { feature: "Revenue Autopilot", readPath: "real", writePath: "none", emptyState: true, loadingState: true, errorState: true, tables: ["invoices"] },
-    ],
-  },
-  {
-    domain: "Money Office",
-    overallReadiness: 70,
-    features: [
-      { feature: "Reserves & Savings", readPath: "real", writePath: "real", emptyState: true, loadingState: true, errorState: true, tables: ["capital_allocations"] },
-      { feature: "Bills", readPath: "real", writePath: "real", emptyState: true, loadingState: true, errorState: true, tables: ["bills"] },
-      { feature: "Safe to Spend", readPath: "demo", writePath: "none", emptyState: true, loadingState: true, errorState: false, tables: [] },
-    ],
-  },
-  {
-    domain: "Workspace",
-    overallReadiness: 45,
-    features: [
-      { feature: "Documents", readPath: "real", writePath: "none", emptyState: true, loadingState: true, errorState: true, tables: ["file_metadata"] },
-      { feature: "Sheets", readPath: "demo", writePath: "none", emptyState: true, loadingState: true, errorState: false, tables: [] },
-      { feature: "Slides", readPath: "demo", writePath: "none", emptyState: true, loadingState: true, errorState: false, tables: [] },
-    ],
-  },
-  {
-    domain: "Owner Center",
-    overallReadiness: 68,
-    features: [
-      { feature: "Approvals", readPath: "real", writePath: "real", emptyState: true, loadingState: true, errorState: true, tables: ["approval_queue"] },
-      { feature: "Pricing Editor", readPath: "demo", writePath: "simulated", emptyState: true, loadingState: true, errorState: false, tables: [] },
-      { feature: "Leases", readPath: "real", writePath: "real", emptyState: true, loadingState: true, errorState: true, tables: ["deals"] },
-    ],
-  },
-  {
-    domain: "Calendar / Activity",
-    overallReadiness: 65,
-    features: [
-      { feature: "Calendar", readPath: "real", writePath: "real", emptyState: true, loadingState: true, errorState: true, tables: ["events"] },
-      { feature: "Activity Timeline", readPath: "real", writePath: "none", emptyState: true, loadingState: true, errorState: true, tables: ["audit_logs"] },
-      { feature: "Inbox", readPath: "real", writePath: "real", emptyState: true, loadingState: true, errorState: true, tables: ["notifications_queue"] },
-    ],
-  },
-];
-
 const pathColor = (p: string) => {
   if (p === "real") return "bg-primary/10 text-primary";
   if (p === "demo" || p === "simulated") return "bg-amber-500/10 text-amber-600";
   return "bg-muted text-muted-foreground";
+import { DEMO_ADMIN_DOMAINS as DEMO_DOMAINS } from "@/lib/demo-data/admin-platform";
 };
 
 export default function DomainRealityBoard() {

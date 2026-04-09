@@ -7,6 +7,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 type AutonomyLevel = "observe_only" | "draft_only" | "safe_auto_heal" | "approval_required" | "never_automate";
+import { DEMO_AGENT_BOUNDARIES, DEMO_CHANGE_TYPE_BOUNDARIES, DEMO_MISSION_BOUNDARIES } from "@/lib/demo-data/admin-platform";
 
 const AUTONOMY_LABELS: Record<AutonomyLevel, { label: string; icon: typeof Eye; color: string; bg: string; description: string }> = {
   observe_only: { label: "Observe Only", icon: Eye, color: "text-muted-foreground", bg: "bg-muted", description: "Agent watches and reports. No proposals, no changes." },
@@ -38,48 +39,6 @@ interface ChangeTypeBoundary {
   requiresCanary: boolean;
   rationale: string;
 }
-
-const DEMO_AGENT_BOUNDARIES: AgentBoundary[] = [
-  { agent: "Engineering Lead", icon: Brain, autonomy: "approval_required", scope: "Sprint coordination, cross-agent synthesis" },
-  { agent: "Backend Engineer", icon: Wrench, autonomy: "draft_only", scope: "APIs, services, data models, runtime" },
-  { agent: "Frontend Engineer", icon: Wrench, autonomy: "draft_only", scope: "Routes, components, state, rendering" },
-  { agent: "Design Engineer", icon: Palette, autonomy: "draft_only", scope: "Layouts, visual consistency, dark mode" },
-  { agent: "QA Engineer", icon: ShieldCheck, autonomy: "safe_auto_heal", scope: "Test generation, regression checks, coverage" },
-  { agent: "Error Fixer", icon: Bug, autonomy: "safe_auto_heal", scope: "Stack traces, runtime errors, patches" },
-  { agent: "Reliability Engineer", icon: Shield, autonomy: "safe_auto_heal", scope: "Incidents, health, retries, recovery", lastOverride: "Apr 4 — escalated flag revert to auto-heal" },
-  { agent: "Security Reviewer", icon: Lock, autonomy: "observe_only", scope: "Permissions, policies, secrets, posture" },
-  { agent: "Performance Optimizer", icon: Gauge, autonomy: "draft_only", scope: "Latency, caching, rendering cost" },
-  { agent: "Documentation Engineer", icon: BookOpen, autonomy: "safe_auto_heal", scope: "Docs, changelogs, runbooks" },
-  { agent: "Release Manager", icon: Rocket, autonomy: "approval_required", scope: "Release readiness, promotion, rollout" },
-  { agent: "Self-Healing Supervisor", icon: Sparkles, autonomy: "safe_auto_heal", scope: "Auto-fix rules, verification, boundaries" },
-  { agent: "Learning Analyst", icon: Brain, autonomy: "observe_only", scope: "Pattern detection, routing improvements" },
-];
-
-const DEMO_MISSION_BOUNDARIES: MissionBoundary[] = [
-  { missionType: "Fix broken route", defaultAutonomy: "safe_auto_heal", overridable: true, rationale: "Isolated, low-risk, easily verifiable" },
-  { missionType: "Performance optimization", defaultAutonomy: "draft_only", overridable: true, rationale: "Can have subtle cascading effects" },
-  { missionType: "Design improvement", defaultAutonomy: "approval_required", overridable: false, rationale: "Visual changes need human judgment" },
-  { missionType: "Incident resolution", defaultAutonomy: "approval_required", overridable: true, rationale: "High urgency but high blast radius" },
-  { missionType: "Security hardening", defaultAutonomy: "never_automate", overridable: false, rationale: "Security changes must be human-reviewed" },
-  { missionType: "Schema/migration change", defaultAutonomy: "never_automate", overridable: false, rationale: "Data-affecting changes are irreversible" },
-  { missionType: "Test generation", defaultAutonomy: "safe_auto_heal", overridable: true, rationale: "Tests are additive, zero production risk" },
-  { missionType: "Documentation update", defaultAutonomy: "safe_auto_heal", overridable: true, rationale: "Non-functional, easily reversible" },
-  { missionType: "Feature flag change", defaultAutonomy: "approval_required", overridable: true, rationale: "User-facing behavior change" },
-  { missionType: "Core routing change", defaultAutonomy: "approval_required", overridable: false, rationale: "Affects all surfaces and navigation" },
-];
-
-const DEMO_CHANGE_TYPE_BOUNDARIES: ChangeTypeBoundary[] = [
-  { changeType: "UI copy/label fix", maxAutonomy: "safe_auto_heal", requiresSimulation: false, requiresCanary: false, rationale: "Minimal risk, instantly verifiable" },
-  { changeType: "Component style change", maxAutonomy: "draft_only", requiresSimulation: false, requiresCanary: false, rationale: "Visual impact needs review" },
-  { changeType: "Route mapping fix", maxAutonomy: "safe_auto_heal", requiresSimulation: false, requiresCanary: false, rationale: "Isolated, verifiable via route test" },
-  { changeType: "API endpoint change", maxAutonomy: "approval_required", requiresSimulation: true, requiresCanary: true, rationale: "Breaking change risk" },
-  { changeType: "Database schema change", maxAutonomy: "never_automate", requiresSimulation: true, requiresCanary: true, rationale: "Irreversible data impact" },
-  { changeType: "Auth/permissions change", maxAutonomy: "never_automate", requiresSimulation: true, requiresCanary: false, rationale: "Security-critical" },
-  { changeType: "Feature flag toggle", maxAutonomy: "approval_required", requiresSimulation: false, requiresCanary: true, rationale: "User-facing behavior" },
-  { changeType: "Cache invalidation", maxAutonomy: "safe_auto_heal", requiresSimulation: false, requiresCanary: false, rationale: "Safe, self-healing eligible" },
-  { changeType: "Config value change", maxAutonomy: "approval_required", requiresSimulation: true, requiresCanary: false, rationale: "Can have cascading effects" },
-  { changeType: "Broad layout redesign", maxAutonomy: "approval_required", requiresSimulation: true, requiresCanary: true, rationale: "Visual regression risk across surfaces" },
-];
 
 const AIHumanBoundaryControls = () => {
   const { isDemoMode } = useDataMode();

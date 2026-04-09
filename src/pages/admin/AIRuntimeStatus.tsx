@@ -40,14 +40,6 @@ function CheckRow({ label, ok, detail }: { label: string; ok: boolean | null; de
   );
 }
 
-const DEMO_AI_FEATURES = [
-  { name: "Chat Advisor", fn: "chat-advisor", surface: "AdvisorChat", description: "Streaming advisor conversations across money/business/concierge/family/growth" },
-  { name: "Brain Core", fn: "brain-core", surface: "BrainCore hook", description: "Structured advisory with rules engine + LLM escalation" },
-  { name: "Personal Brain", fn: "personal-brain", surface: "Personal Brain page", description: "Think/Learn/Build/Create modes with streaming" },
-  { name: "Agent Executor", fn: "agent-executor", surface: "Agent diagnostics", description: "Pod-based agent diagnostics (no AI calls)" },
-  { name: "Admin Intelligence", fn: "admin-intelligence", surface: "Admin analytics", description: "Anomaly detection, forecasting, optimization (no AI calls)" },
-];
-
 export default function AIRuntimeStatus() {
   const { isDemoMode } = useDataMode();
   const { data: health, isLoading, refetch, isFetching } = useAIHealth();
@@ -168,6 +160,7 @@ export default function AIRuntimeStatus() {
                   {DEMO_AI_FEATURES.map((feature) => {
                     const fnHealthy = health?.checks.edge_functions_healthy?.[feature.fn];
                     const usesAI = feature.fn === "chat-advisor" || feature.fn === "brain-core" || feature.fn === "personal-brain";
+import { DEMO_AI_FEATURES } from "@/lib/demo-data/admin-platform";
                     const featureStatus = usesAI
                       ? (available ? "operational" : health?.status === "degraded" ? "degraded" : "blocked")
                       : "operational"; // non-AI functions are always operational

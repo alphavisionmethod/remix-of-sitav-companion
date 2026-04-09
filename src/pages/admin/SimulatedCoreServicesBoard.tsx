@@ -12,19 +12,9 @@ interface CoreService {
   persistenceTarget: string;
   stateLossSeverity: "critical" | "high" | "medium" | "low";
   migrationStatus: "not_started" | "planned" | "in_progress" | "completed";
+import { DEMO_ADMIN_CORE_SERVICES_SIMULATED_CORE_SERVICES_BOARD as DEMO_CORE_SERVICES } from "@/lib/demo-data/admin-platform";
   owner: string;
 }
-
-const DEMO_CORE_SERVICES: CoreService[] = [
-  { name: "EventBus", backing: "memory-only", domains: ["system", "all"], persistenceTarget: "Supabase agent_signals", stateLossSeverity: "high", migrationStatus: "not_started", owner: "Platform" },
-  { name: "MemoryService", backing: "memory-only", domains: ["advisors", "mission-control"], persistenceTarget: "Supabase advisor_memories", stateLossSeverity: "high", migrationStatus: "planned", owner: "AI Team" },
-  { name: "PolicyEngine", backing: "memory-only", domains: ["owner", "approvals", "governance"], persistenceTarget: "Supabase owner_policies", stateLossSeverity: "critical", migrationStatus: "not_started", owner: "Platform" },
-  { name: "Setup Persistence", backing: "localStorage", domains: ["onboarding", "setup"], persistenceTarget: "Supabase user_preferences", stateLossSeverity: "medium", migrationStatus: "planned", owner: "Platform" },
-  { name: "InvestmentEngine", backing: "memory-only", domains: ["investment", "money"], persistenceTarget: "Supabase positions + allocations", stateLossSeverity: "high", migrationStatus: "not_started", owner: "Finance" },
-  { name: "RevenueEngine", backing: "memory-only", domains: ["business", "revenue"], persistenceTarget: "Supabase invoices + leakage", stateLossSeverity: "high", migrationStatus: "in_progress", owner: "Business" },
-  { name: "ComputeGovernance", backing: "memory-only", domains: ["ai", "compute"], persistenceTarget: "Supabase compute_budget_snapshots", stateLossSeverity: "medium", migrationStatus: "not_started", owner: "AI Team" },
-  { name: "AgentOrchestration", backing: "hybrid", domains: ["agents", "mission-control"], persistenceTarget: "Supabase agent_* tables", stateLossSeverity: "critical", migrationStatus: "in_progress", owner: "Platform" },
-];
 
 const SEVERITY_COLORS: Record<string, string> = { critical: "text-destructive", high: "text-orange-400", medium: "text-yellow-400", low: "text-muted-foreground" };
 const BACKING_ICONS: Record<string, typeof Server> = { "memory-only": Cpu, localStorage: Database, demo: AlertTriangle, db: Database, hybrid: Server };

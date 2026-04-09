@@ -48,15 +48,6 @@ interface TrendPoint {
 
 // ── Demo Data ──────────────────────────────────────────────────
 
-const DEMO_PLAYBOOK_REVENUE: PlaybookRevenue[] = [
-  { id: "receivable-recovery", name: "Receivable Recovery", category: "recovery", recovered: 47200, generated: 0, actionsRun: 142, successRate: 78, roi: 1240, trend: 12.5 },
-  { id: "win-back-cold", name: "Win-Back Cold Customers", category: "recovery", recovered: 18600, generated: 8400, actionsRun: 89, successRate: 34, roi: 890, trend: 8.2 },
-  { id: "leak-seal", name: "Leak Seal", category: "recovery", recovered: 12300, generated: 0, actionsRun: 67, successRate: 92, roi: 2100, trend: -3.1 },
-  { id: "growth-accelerator", name: "Growth Accelerator", category: "growth", recovered: 0, generated: 31500, actionsRun: 204, successRate: 41, roi: 680, trend: 22.7 },
-  { id: "churn-prevention", name: "Churn Prevention", category: "retention", recovered: 22800, generated: 5200, actionsRun: 53, successRate: 85, roi: 1560, trend: 15.3 },
-  { id: "capacity-optimizer", name: "Capacity Optimizer", category: "efficiency", recovered: 0, generated: 9800, actionsRun: 31, successRate: 88, roi: 950, trend: 4.8 },
-];
-
 function generateTrend(granularity: Granularity): TrendPoint[] {
   const points: TrendPoint[] = [];
   const count = granularity === "daily" ? 30 : granularity === "weekly" ? 12 : 6;
@@ -90,6 +81,7 @@ function generateTrend(granularity: Granularity): TrendPoint[] {
 const RECOVERED_COLOR = "hsl(var(--trust-safe))";
 const GENERATED_COLOR = "hsl(var(--accent))";
 import { PIE_COLORS } from "@/lib/constants/ui-config";
+import { DEMO_PLAYBOOK_REVENUE } from "@/lib/demo-data/business";
 
 
 

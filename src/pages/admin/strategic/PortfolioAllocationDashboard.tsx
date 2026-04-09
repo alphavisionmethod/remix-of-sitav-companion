@@ -7,14 +7,7 @@ import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { useComputeSnapshots } from "@/lib/hooks/useIntelligencePersistence";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_DEFAULT_CATEGORIES = [
-  { cat: "defensive", target: 25, desc: "Monitoring, self-healing, compliance" },
-  { cat: "growth", target: 35, desc: "Revenue, lead scoring, optimization" },
-  { cat: "strategic_premium", target: 20, desc: "Deep analysis, synthesis, strategy" },
-  { cat: "experimentation", target: 10, desc: "New capabilities, benchmark tests" },
-  { cat: "emergency_reserve", target: 10, desc: "Incident response, critical escalation" },
-];
+import { DEMO_DEFAULT_CATEGORIES } from "@/lib/demo-data/admin-platform";
 
 const PortfolioAllocationDashboard = () => {
   const { isDemoMode } = useDataMode();

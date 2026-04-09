@@ -5,28 +5,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Cloud, Sun, CloudRain, Wind, Droplets, Thermometer, Newspaper, TrendingUp, Clock, ExternalLink, Eye, MapPin, Sunrise, Sunset } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_forecast, DEMO_newsArticles } from "@/lib/demo-data/apps";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.06 } } };
-
-const DEMO_forecast = [
-  { day: "Today", icon: Sun, temp: 24, high: 26, low: 18, condition: "Sunny", rain: 0 },
-  { day: "Tue", icon: Cloud, temp: 22, high: 23, low: 17, condition: "Cloudy", rain: 10 },
-  { day: "Wed", icon: CloudRain, temp: 19, high: 20, low: 15, condition: "Rain", rain: 70 },
-  { day: "Thu", icon: CloudRain, temp: 18, high: 19, low: 14, condition: "Showers", rain: 60 },
-  { day: "Fri", icon: Cloud, temp: 21, high: 22, low: 16, condition: "Partly Cloudy", rain: 20 },
-  { day: "Sat", icon: Sun, temp: 25, high: 27, low: 19, condition: "Sunny", rain: 5 },
-  { day: "Sun", icon: Sun, temp: 27, high: 29, low: 20, condition: "Clear", rain: 0 },
-];
-
-const DEMO_newsArticles = [
-  { title: "AI Agents Are Reshaping How Businesses Operate", source: "TechCrunch", time: "2h ago", category: "Technology", preview: "A new wave of autonomous AI agents is transforming enterprise workflows, from customer support to financial planning." },
-  { title: "Fed Signals Rate Cut Likely in September", source: "Bloomberg", time: "4h ago", category: "Finance", preview: "Federal Reserve officials indicated that a rate reduction could come as early as September, citing cooling inflation." },
-  { title: "Remote Work Productivity Study Reveals Surprising Results", source: "HBR", time: "6h ago", category: "Business", preview: "A comprehensive 3-year study of 10,000 remote workers shows nuanced productivity patterns." },
-  { title: "Cybersecurity Threats Surge 300% in Q1 2026", source: "Wired", time: "8h ago", category: "Security", preview: "AI-powered attacks are growing exponentially, with phishing and deepfakes leading the charge." },
-  { title: "New EU Regulations for AI Transparency Take Effect", source: "Reuters", time: "12h ago", category: "Policy", preview: "The European Union's AI Act compliance requirements begin today for high-risk systems." },
-  { title: "Sustainable Investing Outperforms Traditional Portfolios", source: "FT", time: "1d ago", category: "Finance", preview: "ESG-focused funds have consistently outperformed traditional indices over the past 12 months." },
-];
 
 const categoryColors: Record<string, string> = {
   Technology: "bg-blue-500/10 text-blue-500",

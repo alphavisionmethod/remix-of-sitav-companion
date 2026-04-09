@@ -10,17 +10,7 @@ import { CANONICAL_DOMAIN_PACKS } from "@/lib/delivery-methodology/domain-packs"
 import { LIFECYCLE_STAGES, getStageLabel } from "@/lib/delivery-methodology/feature-lifecycle";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_ARCHETYPE_DOCS = [
-  { key: "boardroom", label: "Boardroom", desc: "Executive synthesis surface with advisor views and overlays", files: ["BoardroomPage.tsx", "SynthesisPanel.tsx", "AdvisorOverlay.tsx"], contracts: ["synthesis-contract", "advisor-panel-contract"] },
-  { key: "office", label: "Office / Workspace", desc: "Full workspace with panels, actions, and deep domain logic", files: ["OfficePage.tsx", "PanelRegistry.tsx", "ActionCenter.tsx"], contracts: ["workspace-contract", "panel-registry-contract"] },
-  { key: "workflow", label: "Workflow", desc: "Multi-step process with approvals and state transitions", files: ["WorkflowPage.tsx", "StepRenderer.tsx", "ApprovalGate.tsx"], contracts: ["workflow-definition-contract", "approval-contract"] },
-  { key: "dashboard", label: "Dashboard", desc: "KPI overview with charts and status summaries", files: ["DashboardPage.tsx", "KPICards.tsx", "ChartPanel.tsx"], contracts: ["kpi-contract", "chart-data-contract"] },
-  { key: "crud", label: "CRUD Surface", desc: "Entity management with create/read/update/delete", files: ["EntityList.tsx", "EntityForm.tsx", "EntityDetail.tsx"], contracts: ["entity-contract", "validation-contract"] },
-  { key: "connector-flow", label: "Connector Flow", desc: "Integration setup with auth, mapping, and health", files: ["ConnectorSetup.tsx", "MappingEditor.tsx", "HealthMonitor.tsx"], contracts: ["connector-auth-contract", "sync-contract"] },
-  { key: "intelligence", label: "Intelligence Surface", desc: "AI analysis with confidence, evidence, recommendations", files: ["AnalysisPage.tsx", "ConfidenceBand.tsx", "EvidencePanel.tsx"], contracts: ["analysis-contract", "confidence-contract"] },
-  { key: "admin-control", label: "Admin Control", desc: "System admin with config, monitoring, governance", files: ["AdminPage.tsx", "ConfigPanel.tsx", "GovernanceBoard.tsx"], contracts: ["policy-contract", "governance-contract"] },
-];
+import { DEMO_ARCHETYPE_DOCS } from "@/lib/demo-data/admin-platform";
 
 const BuilderKnowledgeBase = () => {
   const { isDemoMode } = useDataMode();

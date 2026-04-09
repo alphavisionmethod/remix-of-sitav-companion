@@ -10,30 +10,9 @@ import { APP_CATALOG } from "@/lib/app-platform";
 import { AppIcon } from "@/components/sita/app-platform/AppStoreComponents";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_APP_SLOTS, DEMO_FILE_TYPES } from "@/lib/demo-data/core-pages";
 
 
-
-const DEMO_APP_SLOTS = [
-  { id: "browser", label: "Default Browser", icon: Globe, currentApp: "chrome", candidates: ["chrome", "firefox"] },
-  { id: "email", label: "Default Email", icon: Mail, currentApp: "gmail", candidates: ["gmail"] },
-  { id: "calendar", label: "Default Calendar", icon: Calendar, currentApp: null, candidates: [] },
-  { id: "pdf", label: "PDF Viewer", icon: FileText, currentApp: null, candidates: [] },
-  { id: "images", label: "Image Viewer", icon: Image, currentApp: null, candidates: [] },
-  { id: "code", label: "Code Editor", icon: FileCode, currentApp: "vscode", candidates: ["vscode", "obsidian"] },
-];
-
-const DEMO_FILE_TYPES = [
-  { ext: ".html", label: "HTML files", apps: ["chrome", "firefox", "vscode"] },
-  { ext: ".js", label: "JavaScript", apps: ["vscode"] },
-  { ext: ".ts", label: "TypeScript", apps: ["vscode"] },
-  { ext: ".md", label: "Markdown", apps: ["vscode", "obsidian"] },
-  { ext: ".json", label: "JSON", apps: ["vscode"] },
-  { ext: ".py", label: "Python", apps: ["vscode"] },
-  { ext: ".fig", label: "Figma files", apps: ["figma"] },
-  { ext: ".sh", label: "Shell scripts", apps: ["terminal"] },
-  { ext: ".eml", label: "Email files", apps: ["gmail"] },
-  { ext: ".svg", label: "SVG files", apps: ["chrome", "figma"] },
-];
 
 const AppAssociationsPage = () => {
   const { isDemoMode } = useDataMode();

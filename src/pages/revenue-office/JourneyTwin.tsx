@@ -4,57 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_JOURNEY_STAGES = [
-  {
-    stage: "Awareness",
-    touchpoints: [
-      { type: "ad", label: "Google Ad Click", time: "Day 0", icon: Eye },
-      { type: "page", label: "Landing Page Visit", time: "Day 0", icon: MousePointer },
-    ],
-    metrics: { entered: 2840, exited: 1598, conversion: "43.7%" },
-  },
-  {
-    stage: "Engagement",
-    touchpoints: [
-      { type: "form", label: "Lead Magnet Download", time: "Day 0", icon: MousePointer },
-      { type: "email", label: "Welcome Email Opened", time: "Day 1", icon: Mail },
-      { type: "email", label: "Follow-Up Email Clicked", time: "Day 3", icon: Mail },
-    ],
-    metrics: { entered: 1242, exited: 556, conversion: "55.2%" },
-  },
-  {
-    stage: "Consideration",
-    touchpoints: [
-      { type: "page", label: "Sales Page Visit", time: "Day 4", icon: Eye },
-      { type: "call", label: "Discovery Call Booked", time: "Day 5", icon: Phone },
-      { type: "email", label: "Case Study Sent", time: "Day 6", icon: Mail },
-    ],
-    metrics: { entered: 686, exited: 399, conversion: "41.8%" },
-  },
-  {
-    stage: "Decision",
-    touchpoints: [
-      { type: "proposal", label: "Proposal Viewed", time: "Day 7", icon: Eye },
-      { type: "call", label: "Closing Call", time: "Day 10", icon: Phone },
-    ],
-    metrics: { entered: 287, exited: 200, conversion: "30.3%" },
-  },
-  {
-    stage: "Purchase",
-    touchpoints: [
-      { type: "checkout", label: "Checkout Completed", time: "Day 12", icon: CreditCard },
-    ],
-    metrics: { entered: 87, exited: 0, conversion: "100%" },
-  },
-  {
-    stage: "Advocacy",
-    touchpoints: [
-      { type: "review", label: "Review Submitted", time: "Day 30+", icon: Star },
-    ],
-    metrics: { entered: 87, exited: 75, conversion: "13.8%" },
-  },
-];
+import { DEMO_JOURNEY_STAGES } from "@/lib/demo-data/revenue-office";
 
 export default function JourneyTwin() {
   const { isDemoMode } = useDataMode();

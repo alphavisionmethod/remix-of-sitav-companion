@@ -10,17 +10,9 @@ import { APP_CATALOG } from "@/lib/app-platform";
 import { AppIcon, VerificationBadge } from "@/components/sita/app-platform/AppStoreComponents";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_FILES } from "@/lib/demo-data/core-pages";
 
 
-
-const DEMO_FILES = [
-  { name: "report.html", ext: ".html", candidates: ["chrome", "firefox", "vscode"] },
-  { name: "project.md", ext: ".md", candidates: ["vscode", "obsidian"] },
-  { name: "design.fig", ext: ".fig", candidates: ["figma"] },
-  { name: "deploy.sh", ext: ".sh", candidates: ["terminal", "vscode"] },
-  { name: "data.json", ext: ".json", candidates: ["vscode"] },
-  { name: "invoice.eml", ext: ".eml", candidates: ["gmail"] },
-];
 
 const OpenWithPage = () => {
   const { isDemoMode } = useDataMode();

@@ -5,40 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_CTA_ANALYSIS = [
-  { page: "Homepage", cta: "Book a Free Call", clicks: 342, ctr: "8.1%", position: "Above fold", score: 92 },
-  { page: "Services", cta: "Get Started", clicks: 89, ctr: "4.2%", position: "Below fold", score: 65 },
-  { page: "Pricing", cta: "Choose Plan", clicks: 156, ctr: "13.0%", position: "Above fold", score: 88 },
-  { page: "Blog Post", cta: "Read More", clicks: 34, ctr: "1.2%", position: "Bottom", score: 35 },
-];
-
-const DEMO_TRUST_GAPS = [
-  { page: "Services", gap: "No testimonials or social proof", impact: "high", fix: "Add 3+ client testimonials" },
-  { page: "Checkout", gap: "Missing security badges", impact: "high", fix: "Add SSL + payment trust badges" },
-  { page: "Pricing", gap: "No money-back guarantee visible", impact: "medium", fix: "Add guarantee badge near CTA" },
-  { page: "About", gap: "No team photos or credentials", impact: "low", fix: "Add team section with headshots" },
-];
-
-const DEMO_FUNNEL_LEAKS = [
-  { step: "Landing → Services", dropoff: "38%", visitors: 4201, issue: "Weak value proposition above fold" },
-  { step: "Services → Book", dropoff: "45%", visitors: 2103, issue: "CTA below fold on mobile" },
-  { step: "Cart → Checkout", dropoff: "32%", visitors: 1200, issue: "Surprise shipping costs" },
-  { step: "Checkout → Complete", dropoff: "28%", visitors: 890, issue: "Too many form fields" },
-];
-
-const DEMO_FORM_FRICTION = [
-  { page: "Contact", fields: 7, avgTime: "2m 34s", abandon: "42%", recommendation: "Reduce to 4 fields" },
-  { page: "Booking", fields: 5, avgTime: "1m 12s", abandon: "18%", recommendation: "Good — minor label improvements" },
-  { page: "Checkout", fields: 9, avgTime: "3m 48s", abandon: "35%", recommendation: "Add autofill, reduce to 6 fields" },
-];
-
-const DEMO_MOBILE_ISSUES = [
-  { page: "/services", issue: "CTA button too small on mobile (32px)", severity: "high" },
-  { page: "/contact", issue: "Form layout breaks on iPhone SE", severity: "high" },
-  { page: "/shop", issue: "Product images not lazy-loaded", severity: "medium" },
-  { page: "/pricing", issue: "Table not responsive — horizontal scroll", severity: "medium" },
-];
+import { DEMO_CTA_ANALYSIS, DEMO_FORM_FRICTION, DEMO_FUNNEL_LEAKS, DEMO_MOBILE_ISSUES, DEMO_TRUST_GAPS } from "@/lib/demo-data/digital-presence";
 
 export default function CROOffice() {
   const { isDemoMode } = useDataMode();

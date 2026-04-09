@@ -11,24 +11,9 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
+import { DEMO_EXPORTABLE_TABLES, DEMO_PAST_EXPORTS } from "@/lib/demo-data/core-pages";
 
 
-
-const DEMO_EXPORTABLE_TABLES = [
-  { name: "Profiles", rows: 1, size: "2 KB" },
-  { name: "Connector Configs", rows: 5, size: "8 KB" },
-  { name: "Workflows", rows: 34, size: "45 KB" },
-  { name: "Receipts & Proofs", rows: 128, size: "156 KB" },
-  { name: "Approvals", rows: 23, size: "18 KB" },
-  { name: "Memory Store", rows: 67, size: "89 KB" },
-  { name: "AI Agent Tasks", rows: 234, size: "312 KB" },
-  { name: "Communication Log", rows: 89, size: "67 KB" },
-];
-
-const DEMO_PAST_EXPORTS = [
-  { id: "1", date: "2026-03-28", format: "JSON", size: "1.2 MB", status: "completed" as const },
-  { id: "2", date: "2026-02-15", format: "CSV", size: "890 KB", status: "completed" as const },
-];
 
 export default function SovereignExportPage() {
   const { isDemoMode } = useDataMode();

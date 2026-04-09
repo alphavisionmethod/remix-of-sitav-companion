@@ -12,6 +12,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 type BlockerSeverity = "critical" | "high" | "medium" | "low";
 type BlockerStatus = "open" | "in-progress" | "resolved" | "accepted-risk";
+import { DEMO_ADMIN_READINESS_CHECKS as DEMO_READINESS_CHECKS, DEMO_BLOCKERS } from "@/lib/demo-data/admin-platform";
 
 interface LaunchBlocker {
   id: string;
@@ -31,76 +32,6 @@ interface ReadinessCheck {
   category: string;
   checks: { name: string; status: "pass" | "fail" | "warning" | "skip"; detail: string }[];
 }
-
-const DEMO_BLOCKERS: LaunchBlocker[] = [
-  {
-    id: "BLK-001", title: "Canary error rate above threshold", severity: "critical", status: "open", domain: "deployment", owner: "Platform Team",
-    description: "Canary ring showing 0.8% error rate — needs to be below 0.5% for 2h before promotion.",
-    evidenceMissing: ["2h clean canary window"], unblockSteps: ["Wait for canary stabilization", "Investigate error source", "Re-deploy if needed"],
-    ringImpact: ["Production Ring 1", "Production Ring 2"], createdAt: new Date(Date.now() - 3600000).toISOString(),
-  },
-  {
-    id: "BLK-002", title: "Manual approval not yet obtained", severity: "high", status: "open", domain: "governance", owner: "Owner",
-    description: "Operator sign-off required for production promotion. No approval on record.",
-    evidenceMissing: ["Operator approval receipt"], unblockSteps: ["Review deployment diff", "Sign off in approval queue"],
-    ringImpact: ["Production Ring 1"], createdAt: new Date(Date.now() - 7200000).toISOString(),
-  },
-  {
-    id: "BLK-003", title: "Accounting connector not connected", severity: "medium", status: "accepted-risk", domain: "connectors", owner: "Owner",
-    description: "Accounting platform connector not set up. Tax and financial reporting features degraded.",
-    ringImpact: ["All rings"], createdAt: new Date(Date.now() - 604800000).toISOString(),
-  },
-  {
-    id: "BLK-004", title: "Performance regression in advisor latency", severity: "low", status: "in-progress", domain: "performance", owner: "AI Team",
-    description: "P95 advisor response time increased from 2.1s to 3.8s after model update.",
-    unblockSteps: ["Profile latency source", "Consider model swap", "Add caching layer"],
-    ringImpact: ["Staging", "Canary"], createdAt: new Date(Date.now() - 172800000).toISOString(),
-  },
-];
-
-const DEMO_READINESS_CHECKS: ReadinessCheck[] = [
-  {
-    category: "Security", checks: [
-      { name: "RLS policies on all tables", status: "pass", detail: "48/48 tables covered" },
-      { name: "Auth flow tested", status: "pass", detail: "Email + Google OAuth verified" },
-      { name: "Secrets encrypted at rest", status: "pass", detail: "vault integration active" },
-      { name: "CORS configuration", status: "pass", detail: "Restricted to known origins" },
-      { name: "Rate limiting", status: "warning", detail: "Edge function rate limiting basic" },
-    ],
-  },
-  {
-    category: "Data Integrity", checks: [
-      { name: "Database backups", status: "pass", detail: "Point-in-time recovery enabled" },
-      { name: "Migration history clean", status: "pass", detail: "All migrations applied" },
-      { name: "Foreign key integrity", status: "pass", detail: "No orphaned references" },
-      { name: "Audit log coverage", status: "pass", detail: "All sensitive tables audited" },
-    ],
-  },
-  {
-    category: "Performance", checks: [
-      { name: "Bundle size budget", status: "pass", detail: "412KB < 500KB limit" },
-      { name: "LCP target", status: "pass", detail: "1.2s < 2.5s target" },
-      { name: "API response times", status: "warning", detail: "P95 at 3.8s (target: 2s)" },
-      { name: "Database query performance", status: "pass", detail: "No slow queries detected" },
-    ],
-  },
-  {
-    category: "Observability", checks: [
-      { name: "Error tracking", status: "pass", detail: "Incident auto-creation active" },
-      { name: "Telemetry collection", status: "pass", detail: "Agent metrics flowing" },
-      { name: "Health endpoints", status: "warning", detail: "12/18 services have health checks" },
-      { name: "Alert rules configured", status: "pass", detail: "Critical alerts active" },
-    ],
-  },
-  {
-    category: "Business Readiness", checks: [
-      { name: "Core workflows tested", status: "pass", detail: "CRM, invoicing, scheduling verified" },
-      { name: "Onboarding flow complete", status: "pass", detail: "First-use experience built" },
-      { name: "Payment processing", status: "skip", detail: "Not yet in scope" },
-      { name: "Email delivery", status: "pass", detail: "Transactional emails configured" },
-    ],
-  },
-];
 
 const SEV_CONFIG: Record<BlockerSeverity, { color: string; bg: string }> = {
   critical: { color: "text-red-400", bg: "bg-red-500/10" },

@@ -6,22 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_CLIENTS = [
-  { client: "Bloom Studio", score: 92, trend: "up" as const, lastContact: "2d ago", signals: { resp: 95, pay: 100, engage: 88, sat: 85 }, risks: [] as string[], opps: ["Referral candidate", "Case study"] },
-  { client: "Carter Legal", score: 78, trend: "stable" as const, lastContact: "5d ago", signals: { resp: 80, pay: 90, engage: 65, sat: 75 }, risks: ["Engagement declining"], opps: ["Upsell premium"] },
-  { client: "Nova Digital", score: 65, trend: "down" as const, lastContact: "12d ago", signals: { resp: 55, pay: 85, engage: 50, sat: 70 }, risks: ["Contact gap growing"], opps: ["Re-engagement"] },
-  { client: "Skyline Props", score: 88, trend: "up" as const, lastContact: "1d ago", signals: { resp: 90, pay: 95, engage: 82, sat: 85 }, risks: [] as string[], opps: ["Cross-sell booking"] },
-  { client: "Meridian Health", score: 42, trend: "down" as const, lastContact: "28d ago", signals: { resp: 30, pay: 60, engage: 25, sat: 50 }, risks: ["Churn risk", "Payment delays", "No contact"], opps: ["Win-back needed"] },
-  { client: "Atlas Ventures", score: 71, trend: "stable" as const, lastContact: "8d ago", signals: { resp: 70, pay: 80, engage: 60, sat: 72 }, risks: ["Engagement plateaued"], opps: ["Strategy review"] },
-];
-
-const DEMO_ALERTS = [
-  { client: "Meridian Health", msg: "No contact in 28 days — churn probability 68%", severity: "critical" as const, action: "Schedule check-in call" },
-  { client: "Nova Digital", msg: "Invoice #847 is 5 days overdue", severity: "warning" as const, action: "Send gentle reminder" },
-  { client: "Carter Legal", msg: "Meeting frequency dropped 40% vs last quarter", severity: "warning" as const, action: "Propose quarterly review" },
-  { client: "Bloom Studio", msg: "Left 5-star Google review — strong promoter", severity: "positive" as const, action: "Request referral" },
-];
+import { DEMO_CLIENTS, DEMO_REV_ALERTS as DEMO_ALERTS } from "@/lib/demo-data/revenue-office";
 
 const ti = (t: string) => t === "up" ? <TrendingUp className="h-3.5 w-3.5 text-[hsl(var(--trust-safe))]" /> : t === "down" ? <TrendingDown className="h-3.5 w-3.5 text-destructive" /> : <span className="text-muted-foreground">—</span>;
 

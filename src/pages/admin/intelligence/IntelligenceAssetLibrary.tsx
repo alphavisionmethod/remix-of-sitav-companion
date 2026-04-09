@@ -13,17 +13,7 @@ import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_ASSETS = [
-  { id: "ia-1", type: "root-cause-analysis", domain: "engineering", title: "Memory leak in portfolio renderer", confidence: 92, freshness: "2hr", verificationState: "verified", reuseEligible: true, usageCount: 12, qualityScore: 92, acceptanceRate: 0.95, status: "active", savings: 540, invalidationTriggers: ["deployment", "dependency_update"], evidenceRefs: 3, lastUsed: "1hr ago" },
-  { id: "ia-2", type: "investment-thesis", domain: "investment-finance", title: "Tech sector rotation thesis Q2", confidence: 88, freshness: "6hr", verificationState: "verified", reuseEligible: true, usageCount: 8, qualityScore: 88, acceptanceRate: 0.88, status: "active", savings: 960, invalidationTriggers: ["market_event"], evidenceRefs: 5, lastUsed: "3hr ago" },
-  { id: "ia-3", type: "automation-playbook", domain: "revenue-business", title: "Lead follow-up sequence playbook", confidence: 85, freshness: "1d", verificationState: "verified", reuseEligible: true, usageCount: 24, qualityScore: 85, acceptanceRate: 0.92, status: "active", savings: 1080, invalidationTriggers: ["pricing_change"], evidenceRefs: 2, lastUsed: "30min ago" },
-  { id: "ia-4", type: "website-diagnostic", domain: "digital-presence", title: "Homepage conversion bottleneck", confidence: 78, freshness: "4hr", verificationState: "pending", reuseEligible: true, usageCount: 6, qualityScore: 78, acceptanceRate: 0.83, status: "active", savings: 420, invalidationTriggers: ["layout_change", "content_update"], evidenceRefs: 4, lastUsed: "2hr ago" },
-  { id: "ia-5", type: "issue-fingerprint", domain: "engineering", title: "API timeout pattern — payment service", confidence: 94, freshness: "30min", verificationState: "verified", reuseEligible: true, usageCount: 18, qualityScore: 94, acceptanceRate: 0.97, status: "active", savings: 810, invalidationTriggers: ["architecture_change"], evidenceRefs: 6, lastUsed: "15min ago" },
-  { id: "ia-6", type: "strategic-summary", domain: "admin-ops", title: "Q2 operational priorities synthesis", confidence: 62, freshness: "3d", verificationState: "stale", reuseEligible: false, usageCount: 5, qualityScore: 62, acceptanceRate: 0.80, status: "stale", savings: 450, invalidationTriggers: ["policy_change"], evidenceRefs: 2, lastUsed: "2d ago" },
-  { id: "ia-7", type: "decision-frame", domain: "compliance-trust", title: "Data residency decision framework", confidence: 90, freshness: "12hr", verificationState: "verified", reuseEligible: true, usageCount: 3, qualityScore: 90, acceptanceRate: 1.0, status: "active", savings: 360, invalidationTriggers: ["regulatory_change"], evidenceRefs: 8, lastUsed: "6hr ago" },
-  { id: "ia-8", type: "pattern", domain: "engineering", title: "Common N+1 query regression pattern", confidence: 96, freshness: "1hr", verificationState: "verified", reuseEligible: true, usageCount: 31, qualityScore: 96, acceptanceRate: 0.98, status: "active", savings: 1400, invalidationTriggers: ["schema_change"], evidenceRefs: 12, lastUsed: "10min ago" },
-];
+import { DEMO_INTEL_ASSETS as DEMO_ASSETS } from "@/lib/demo-data/admin-intelligence";
 
 const [selectedAsset, setSelectedAsset] = [null as typeof DEMO_ASSETS[0] | null, (_: typeof DEMO_ASSETS[0] | null) => {}];
 

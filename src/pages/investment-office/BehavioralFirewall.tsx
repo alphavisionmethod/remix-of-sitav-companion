@@ -4,14 +4,7 @@ import { ShieldAlert, Brain, AlertTriangle, Check, Clock, Eye, TrendingUp, Zap, 
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useRiskScenarios } from "@/hooks/use-investment-office";
-
-const DEMO_BEHAVIORAL_SIGNALS = [
-  { id: "bs1", type: "attention", severity: "moderate", title: "Attention Clustering on NVDA", detail: "You've checked NVDA 12 times this week (baseline: 3). This pattern correlates with loss-aversion monitoring after drawdowns.", suggestion: "Set a price alert at your limit order ($130) and reduce manual checking. The thesis is either valid or invalidated — checking the price doesn't change that.", timestamp: "Today", icon: "👁️" },
-  { id: "bs2", type: "discipline", severity: "positive", title: "SOL Entry Was Disciplined", detail: "You waited for the pullback rather than chasing the rally — exactly what Mirror recommended. Good pattern.", suggestion: "Continue this approach. Thesis-first, price-second discipline is your strongest investing habit.", timestamp: "Last week", icon: "✅" },
-  { id: "bs3", type: "allocation", severity: "warning", title: "Crypto Sleeve Drift Unaddressed", detail: "Crypto allocation has been above your 20% policy target for 3 weeks without action. This could indicate either intentional override or passive drift.", suggestion: "Either formally update your constitution to reflect new target, or trim to bring within policy. Ambiguity erodes discipline.", timestamp: "3 weeks", icon: "⚠️" },
-  { id: "bs4", type: "consistency", severity: "positive", title: "Thesis Documentation Consistent", detail: "You've documented rationale for your last 3 positions before entering. This is strong investment process.", suggestion: "Keep maintaining this habit. Documented theses improve post-trade review quality.", timestamp: "Ongoing", icon: "📝" },
-  { id: "bs5", type: "timing", severity: "info", title: "No Overtrading Detected", detail: "Your trade frequency is normal (2 trades/month). No signs of churning or impulsive activity.", suggestion: "Current pace is healthy. Avoid increasing frequency during volatile periods without thesis justification.", timestamp: "This month", icon: "⏱️" },
-];
+import { DEMO_BEHAVIORAL_SIGNALS } from "@/lib/demo-data/investment";
 
 const FIREWALL_STATUS = {
   overallHealth: 85,

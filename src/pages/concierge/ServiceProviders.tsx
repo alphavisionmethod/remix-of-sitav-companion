@@ -10,6 +10,7 @@ import { useInspector } from "@/contexts/InspectorContext";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useServiceProvidersList } from "@/hooks/use-concierge-data";
+import { DEMO_CONC_categories_SERVICE_PROVIDERS as DEMO_categories } from "@/lib/demo-data/concierge";
 
 interface ServiceRecord {
   date: string;
@@ -104,8 +105,6 @@ const providers: Provider[] = [
     ],
   },
 ];
-
-const DEMO_categories = [...new Set(providers.map((p) => p.category))];
 
 const ServiceProviders = () => {
   const [search, setSearch] = useState("");

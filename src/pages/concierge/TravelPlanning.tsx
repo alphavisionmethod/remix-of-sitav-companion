@@ -24,38 +24,8 @@ const trips: Trip[] = [
   { id: "3", destination: "NYC — Business + Family Extension", dates: "May 5–8, 2026", status: "planning", travelers: "2 travelers", budget: "$2,800", spent: "$0", tasks: 6, completedTasks: 0, documents: 0, daysUntil: 43, type: "mixed" },
 ];
 
-const DEMO_itinerary = [
-  { day: "Day 1 — Apr 10", items: ["Flight DEN → CUN 8:30 AM (United 1442)", "Airport transfer — pre-booked", "Hotel check-in: Hyatt Ziva 3 PM", "Dinner at La Habichuela"] },
-  { day: "Day 2 — Apr 11", items: ["Breakfast at hotel", "Snorkeling excursion 10 AM — 4 tickets", "Lunch at Tacos Rigo", "Pool afternoon", "Sunset dinner cruise 6 PM"] },
-  { day: "Day 3 — Apr 12", items: ["Chichén Itzá day trip (depart 7 AM)", "Packed lunch from hotel", "Return by 5 PM", "Casual dinner at hotel"] },
-];
-
-const DEMO_preTripChecklist = [
-  { title: "Flights & Transport", items: ["Book flights — ✅ Done", "Airport transfer — ✅ Booked", "Car rental (days 3–5) — Pending"], dueIn: "8 days" },
-  { title: "Accommodation", items: ["Hotel confirmed — ✅ Hyatt Ziva", "Room upgrade request — Pending", "Late checkout request — Not yet"], dueIn: "10 days" },
-  { title: "Documents", items: ["Passports — ⚠ Kids need renewal!", "Travel insurance — Compare quotes", "Hotel confirmation printout"], dueIn: "ASAP" },
-  { title: "Home Prep", items: ["Pet sitter — ⚠ Needs booking ($280)", "Mail hold — Not started", "Security cameras — Check batteries", "Water plants arrangement"], dueIn: "7 days" },
-  { title: "Packing", items: ["Kids' swimwear & sun gear", "Snorkeling gear or rental", "Medications & first aid", "Entertainment for flight"], dueIn: "5 days" },
-];
-
-const DEMO_householdSpillover = [
-  { item: "Pet sitter needed — Sarah M. has limited availability", urgency: "high", cost: "$280" },
-  { item: "Mail hold — set up with USPS", urgency: "medium" },
-  { item: "Grocery — no weekly order needed Apr 10–17", urgency: "low" },
-  { item: "School — notify about kids' absence Apr 10–17", urgency: "high" },
-  { item: "HVAC maintenance — reschedule if conflicts", urgency: "low" },
-];
-
-const DEMO_postTripTasks = [
-  "Unpack and laundry",
-  "Restock groceries",
-  "Review and file receipts",
-  "Thank-you messages if applicable",
-  "Resume weekly routines",
-  "Pet pickup from sitter",
-];
-
 type TravelView = "trips" | "active" | "prep" | "itinerary" | "logistics" | "post-trip";
+import { DEMO_householdSpillover, DEMO_itinerary, DEMO_postTripTasks, DEMO_preTripChecklist } from "@/lib/demo-data/concierge";
 
 const TravelPlanning = () => {
   const [view, setView] = useState<TravelView>("trips");

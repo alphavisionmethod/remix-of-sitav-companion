@@ -6,51 +6,7 @@ import { useState } from "react";
 import { Rocket, CheckCircle2, AlertTriangle, Shield, Clock, ArrowRight, RotateCcw, Activity, GitBranch, Eye, TrendingUp } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_ENVIRONMENTS = [
-  { env: "Production", status: "healthy" as const, confidence: 94, version: "v2.14.3", deployedAt: "Apr 4, 14:22", drift: "none", rollbackTo: "v2.14.2" },
-  { env: "Staging", status: "warning" as const, confidence: 78, version: "v2.15.0-rc1", deployedAt: "Apr 5, 09:45", drift: "2 config diffs", rollbackTo: "v2.14.3" },
-  { env: "Preview", status: "healthy" as const, confidence: 88, version: "v2.15.0-rc2", deployedAt: "Apr 5, 10:12", drift: "none", rollbackTo: "v2.15.0-rc1" },
-];
-
-const DEMO_RELEASE_GATES = [
-  { gate: "Unit Tests", status: "pass" as const, detail: "1,247/1,247 passing", required: true },
-  { gate: "Integration Tests", status: "pass" as const, detail: "89/89 passing", required: true },
-  { gate: "Auth Smoke Test", status: "pass" as const, detail: "Login + OAuth + session refresh verified", required: true },
-  { gate: "Core Flow Smoke", status: "pass" as const, detail: "Business, Money, Concierge flows verified", required: true },
-  { gate: "Performance Budget", status: "fail" as const, detail: "Admin shell LCP 3.2s — budget 1.5s", required: true },
-  { gate: "Accessibility Audit", status: "warning" as const, detail: "2 AA violations in admin sidebar", required: false },
-  { gate: "Security Scan", status: "pass" as const, detail: "0 critical, 1 low advisory", required: true },
-  { gate: "Design Consistency", status: "pass" as const, detail: "92% design token compliance", required: false },
-  { gate: "API Contract Check", status: "pass" as const, detail: "All endpoints match schema", required: true },
-  { gate: "Rollback Plan", status: "pass" as const, detail: "Automated rollback to v2.14.2 ready", required: true },
-  { gate: "Data Migration", status: "pass" as const, detail: "No pending migrations", required: true },
-  { gate: "Feature Flag Review", status: "pass" as const, detail: "3 flags reviewed, 1 scheduled sunset", required: false },
-];
-
-const DEMO_ROLLOUT_HISTORY = [
-  { version: "v2.14.3", env: "Production", at: "Apr 4, 14:22", status: "live" as const, confidence: 94, gates: "11/12 pass", issues: 0 },
-  { version: "v2.14.2", env: "Production", at: "Apr 2, 11:05", status: "replaced" as const, confidence: 91, gates: "12/12 pass", issues: 1 },
-  { version: "v2.14.1", env: "Production", at: "Mar 30, 16:40", status: "replaced" as const, confidence: 88, gates: "10/12 pass", issues: 0 },
-  { version: "v2.14.0", env: "Production", at: "Mar 28, 09:15", status: "rolled_back" as const, confidence: 62, gates: "8/12 pass", issues: 3 },
-  { version: "v2.13.5", env: "Production", at: "Mar 25, 14:30", status: "replaced" as const, confidence: 95, gates: "12/12 pass", issues: 0 },
-];
-
-const DEMO_ROLLBACK_OPTIONS = [
-  { target: "v2.14.2", risk: "low", impact: "Reverts 1 edge function update + 3 UI fixes", estimated: "< 2 min", dataLoss: "None" },
-  { target: "v2.14.1", risk: "medium", impact: "Reverts 5 edge functions + projection cache changes", estimated: "< 5 min", dataLoss: "None" },
-  { target: "v2.13.5", risk: "high", impact: "Reverts 12 features + 2 schema-dependent changes", estimated: "< 10 min", dataLoss: "Possible projection staleness" },
-];
-
-const DEMO_PROMOTION_EVIDENCE = [
-  { check: "All required gates passing", met: true },
-  { check: "Staging soak time > 4 hours", met: false, detail: "Currently 35 minutes" },
-  { check: "No active P0 incidents", met: true },
-  { check: "Performance within SLO", met: false, detail: "Admin shell LCP exceeds budget" },
-  { check: "Security review complete", met: true },
-  { check: "QA sign-off", met: true },
-  { check: "Rollback plan verified", met: true },
-];
+import { DEMO_ADMIN_ENVIRONMENTS_A_I_RELEASES_CENTER as DEMO_ENVIRONMENTS, DEMO_ADMIN_RELEASE_GATES_A_I_RELEASES_CENTER as DEMO_RELEASE_GATES, DEMO_PROMOTION_EVIDENCE, DEMO_ROLLBACK_OPTIONS, DEMO_ROLLOUT_HISTORY } from "@/lib/demo-data/admin-platform";
 
 const AIReleasesCenter = () => {
   const { isDemoMode } = useDataMode();

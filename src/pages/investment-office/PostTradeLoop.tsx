@@ -4,33 +4,7 @@ import { RotateCcw, TrendingUp, TrendingDown, Brain, Check, AlertTriangle, Arrow
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { usePortfolioPositions } from "@/hooks/use-investment-office";
-
-const DEMO_ACTIVE_POSITIONS = [
-  {
-    id: "p1", symbol: "NVDA", name: "NVIDIA", icon: "💚", entryPrice: 95.50, currentPrice: 135.20, entryDate: "2025-08-15",
-    thesisStatus: "strengthened", recommendation: "hold", advisorNote: "AI capex cycle confirmed. Thesis intact. Consider trimming 10% to manage concentration.",
-    whatChanged: ["Blackwell revenue exceeded estimates", "AI capex spending accelerated", "Export controls stable"],
-    thesisIntact: true, shouldReview: false,
-  },
-  {
-    id: "p2", symbol: "BTC", name: "Bitcoin", icon: "₿", entryPrice: 62000, currentPrice: 97450, entryDate: "2025-11-01",
-    thesisStatus: "intact", recommendation: "trim", advisorNote: "Thesis valid but allocation has drifted above policy. Trim to bring within 20% crypto sleeve target.",
-    whatChanged: ["ETF inflows strong", "Halving dynamics playing out", "Allocation breached policy limit"],
-    thesisIntact: true, shouldReview: true,
-  },
-  {
-    id: "p3", symbol: "SOL", name: "Solana", icon: "◎", entryPrice: 120, currentPrice: 185.40, entryDate: "2026-01-15",
-    thesisStatus: "strengthened", recommendation: "hold", advisorNote: "Ecosystem momentum strong. TVL milestone crossed. Network congestion risk monitored.",
-    whatChanged: ["TVL crossed $8B", "Network congestion event occurred but resolved", "DeFi ecosystem expanding"],
-    thesisIntact: true, shouldReview: false,
-  },
-  {
-    id: "p4", symbol: "XAUUSD", name: "Gold", icon: "🥇", entryPrice: 2400, currentPrice: 2640, entryDate: "2025-06-01",
-    thesisStatus: "intact", recommendation: "hold", advisorNote: "Safe haven thesis intact. Central bank buying structural. No action needed.",
-    whatChanged: ["Central bank buying at record pace", "Geopolitical uncertainty elevated", "Real rates declining"],
-    thesisIntact: true, shouldReview: false,
-  },
-];
+import { DEMO_ACTIVE_POSITIONS } from "@/lib/demo-data/investment";
 
 export default function PostTradeLoop() {
   const { isDemoMode } = useDataMode();

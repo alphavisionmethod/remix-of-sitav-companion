@@ -9,23 +9,11 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { useHealthSignalConsents } from "@/hooks/use-health-signal-data";
 import { useToggleSignalConsent } from "@/hooks/use-health-signal-mutations";
 import { DEMO_CONSENT_CATEGORIES, DEMO_REVOCATION_ACTIONS } from "@/lib/demo-data/health-signals";
+import { DEMO_PRINCIPLES } from "@/lib/demo-data/admin-platform";
 
 
 
 const ICON_MAP: Record<string, any> = { ingestion: Eye, routing: ShieldCheck, boardroom: FileText, assistant: Heart };
-
-const DEMO_PRINCIPLES = [
-  "Every signal type requires explicit opt-in",
-  "Routing influence requires separate consent from ingestion",
-  "Boardroom visibility requires explicit signal-level approval",
-  "Assistant use requires separate consent from boardroom",
-  "Revoke & erase available at any time — immediate effect",
-  "Privacy explanation mandatory before consent grant",
-  "No signal data shared with third parties",
-  "Consent state version-controlled and auditable",
-  "Granular per-signal, per-scope control",
-  "Derived data inherits strictest consent of its inputs",
-];
 
 const HRS01HealthConsentCenter = () => {
   const { isDemoMode } = useDataMode();

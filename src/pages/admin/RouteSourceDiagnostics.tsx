@@ -22,40 +22,13 @@ interface RouteSource {
   pageName: string;
   domain: string;
   activeProvider: "real" | "demo" | "mixed" | "none";
+import { DEMO_ROUTES } from "@/lib/demo-data/admin-platform";
   dataServices: string[];
   mockImports: string[];
   scenarioBinding: string | null;
   launchHonesty: LaunchHonesty;
   notes: string;
 }
-
-const DEMO_ROUTES: RouteSource[] = [
-  // Investment Office
-  { path: "/investment-office", pageName: "Investment Gate", domain: "Investment", activeProvider: "demo", dataServices: ["investment-data-service"], mockImports: ["investment-office/mock-data"], scenarioBinding: "investor-demo", launchHonesty: "demo-backed", notes: "Rich demo data via classified provider" },
-  { path: "/investment-office/portfolio", pageName: "Portfolio Office", domain: "Investment", activeProvider: "demo", dataServices: ["investment-data-service"], mockImports: ["investment-office/mock-data"], scenarioBinding: "investor-demo", launchHonesty: "demo-backed", notes: "Classified demo provider" },
-  { path: "/investment-office/market", pageName: "Market Explorer", domain: "Investment", activeProvider: "demo", dataServices: ["investment-data-service"], mockImports: ["investment-office/mock-data"], scenarioBinding: "investor-demo", launchHonesty: "demo-backed", notes: "Classified demo provider" },
-  { path: "/investment-office/strategy", pageName: "Strategy Studio", domain: "Investment", activeProvider: "demo", dataServices: ["investment-data-service"], mockImports: ["investment-office/mock-data"], scenarioBinding: "investor-demo", launchHonesty: "demo-backed", notes: "Classified demo provider" },
-  { path: "/investment-office/execution", pageName: "Execution Desk", domain: "Investment", activeProvider: "demo", dataServices: ["investment-data-service"], mockImports: ["investment-office/mock-data"], scenarioBinding: "investor-demo", launchHonesty: "demo-backed", notes: "Classified demo provider" },
-  { path: "/investment-office/risk", pageName: "Risk Office", domain: "Investment", activeProvider: "demo", dataServices: ["investment-data-service"], mockImports: ["investment-office/mock-data"], scenarioBinding: "investor-demo", launchHonesty: "demo-backed", notes: "Classified demo provider" },
-  // Boardroom
-  { path: "/boardroom", pageName: "Boardroom", domain: "Boardroom", activeProvider: "mixed", dataServices: ["boardroom-data-service"], mockImports: ["advisor-mission-control"], scenarioBinding: "boardroom-demo", launchHonesty: "mixed", notes: "Boardroom packet is real, advisor data is demo" },
-  // Business
-  { path: "/business/customers", pageName: "Customers", domain: "Business", activeProvider: "real", dataServices: ["business-data-service"], mockImports: [], scenarioBinding: null, launchHonesty: "truthful", notes: "Uses mode-aware data service with Supabase" },
-  { path: "/business/collections", pageName: "Collections", domain: "Business", activeProvider: "demo", dataServices: ["business-data-service"], mockImports: [], scenarioBinding: "business-demo", launchHonesty: "demo-backed", notes: "Type imports from data service" },
-  { path: "/business/revenue-autopilot", pageName: "Revenue Autopilot", domain: "Business", activeProvider: "demo", dataServices: ["revenue-data-service"], mockImports: ["mock-data/revenue-autopilot"], scenarioBinding: "revenue-demo", launchHonesty: "demo-backed", notes: "Classified demo data" },
-  // Workspace
-  { path: "/workspace/docs", pageName: "Docs Workspace", domain: "Workspace", activeProvider: "real", dataServices: ["workspace-data-service"], mockImports: [], scenarioBinding: null, launchHonesty: "truthful", notes: "Uses mode-aware hook, types from data service" },
-  { path: "/workspace/sheets", pageName: "Sheets Workspace", domain: "Workspace", activeProvider: "demo", dataServices: ["workspace-data-service"], mockImports: [], scenarioBinding: null, launchHonesty: "demo-backed", notes: "No real sheets table yet" },
-  { path: "/workspace/slides", pageName: "Slides Workspace", domain: "Workspace", activeProvider: "demo", dataServices: ["workspace-data-service"], mockImports: [], scenarioBinding: null, launchHonesty: "demo-backed", notes: "No real slides table yet" },
-  // Owner
-  { path: "/owner", pageName: "Owner Center", domain: "Owner", activeProvider: "real", dataServices: ["owner-data-service"], mockImports: [], scenarioBinding: null, launchHonesty: "truthful", notes: "Uses approval_queue table" },
-  { path: "/owner/approvals", pageName: "Approvals", domain: "Owner", activeProvider: "real", dataServices: ["owner-data-service"], mockImports: [], scenarioBinding: null, launchHonesty: "truthful", notes: "Types from data service" },
-  { path: "/owner/pricing", pageName: "Pricing Editor", domain: "Owner", activeProvider: "demo", dataServices: ["owner-data-service"], mockImports: [], scenarioBinding: null, launchHonesty: "demo-backed", notes: "Types from data service" },
-  // Money
-  { path: "/money", pageName: "Money Office", domain: "Money", activeProvider: "real", dataServices: ["money-data-service"], mockImports: [], scenarioBinding: null, launchHonesty: "truthful", notes: "Uses capital_allocations table" },
-  // Calendar
-  { path: "/calendar", pageName: "Calendar", domain: "Calendar", activeProvider: "real", dataServices: ["calendar-data-service"], mockImports: [], scenarioBinding: null, launchHonesty: "truthful", notes: "Uses events table" },
-];
 
 const honestyConfig: Record<LaunchHonesty, { label: string; color: string; icon: typeof CheckCircle }> = {
   truthful: { label: "Truthful", color: "bg-primary/10 text-primary", icon: CheckCircle },

@@ -6,16 +6,9 @@ import { useRoutingPolicies, useProviderHealth, useTaskRequests } from "@/hooks/
 import { PROVIDERS } from "@/lib/sovereign-ai-gateway/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_FALLBACK_STRATEGIES } from "@/lib/demo-data/admin-platform";
 
 
-
-const DEMO_FALLBACK_STRATEGIES = [
-  { id: 'same_provider_downgrade', label: 'Same Provider Downgrade', desc: 'Use cheaper model from same provider', icon: '↓' },
-  { id: 'cross_provider', label: 'Cross-Provider Failover', desc: 'Switch to alternative provider', icon: '↔' },
-  { id: 'degrade_summary', label: 'Degrade to Summary', desc: 'Return cheaper summary instead', icon: '📝' },
-  { id: 'async_defer', label: 'Async Deferral', desc: 'Queue for later when available', icon: '⏳' },
-  { id: 'structured_refusal', label: 'Structured Refusal', desc: 'Honest degraded explanation', icon: '⚠️' },
-];
 
 const SAGFallbackCenter = () => {
   const { isDemoMode } = useDataMode();

@@ -6,17 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_TIMELINE_EVENTS = [
-  { date: "Apr 3", event: "Homepage hero redesign", type: "design", impact: "+18% CTR", positive: true, details: "New value prop + hero image. CRO Advisor recommended duplicating CTA." },
-  { date: "Apr 1", event: "Added checkout trust badges", type: "trust", impact: "-8% abandonment", positive: true, details: "SSL + payment badges added near CTA. Advisor-generated recommendation." },
-  { date: "Mar 28", event: "Summer sale banner deployed", type: "promotion", impact: "+12% revenue", positive: true, details: "Homepage hero banner for 20% off sale. Auto-cleanup scheduled for Apr 11." },
-  { date: "Mar 25", event: "Blog content refresh (5 posts)", type: "content", impact: "+22% organic traffic", positive: true, details: "Content Strategist flagged 5 stale posts. Updated with current data." },
-  { date: "Mar 20", event: "Contact form reduced to 4 fields", type: "cro", impact: "-15% form abandon", positive: true, details: "CRO Advisor recommendation. Removed company, title, budget fields." },
-  { date: "Mar 15", event: "Mobile nav redesign", type: "design", impact: "-3% mobile time", positive: false, details: "New hamburger menu. Some users struggle with nested items. Under review." },
-  { date: "Mar 10", event: "Product page A/B test launched", type: "experiment", impact: "Running", positive: true, details: "Testing larger images vs current layout. 60% through test." },
-  { date: "Mar 5", event: "WordPress security patches", type: "maintenance", impact: "3 CVEs fixed", positive: true, details: "Auto-fix applied by Technical QA advisor. No downtime." },
-];
+import { DEMO_TIMELINE_EVENTS } from "@/lib/demo-data/digital-presence";
 
 export default function PresenceTimeMachine() {
   const { isDemoMode } = useDataMode();

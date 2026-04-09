@@ -5,29 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_READINESS_CHECKS = [
-  { area: "Landing Page", status: "ready", score: 95, details: "Page live, CTA strong, mobile optimized" },
-  { area: "Copy & Content", status: "ready", score: 90, details: "Headlines tested, descriptions complete" },
-  { area: "Visual Design", status: "ready", score: 88, details: "Brand-aligned, responsive, images optimized" },
-  { area: "Checkout Flow", status: "warning", score: 72, details: "Guest checkout missing — recommend adding" },
-  { area: "Tracking & Analytics", status: "ready", score: 85, details: "UTMs set, conversion pixels active" },
-  { area: "Email / SMS Automation", status: "ready", score: 91, details: "Welcome sequence, abandoned cart ready" },
-  { area: "Cart Recovery", status: "warning", score: 65, details: "Only 1 recovery email — add 2 more" },
-  { area: "Rollback Plan", status: "ready", score: 100, details: "Previous version saved, instant rollback" },
-];
-
-const DEMO_LAUNCH_TIMELINE = [
-  { time: "T-48h", task: "Final copy review", status: "done" },
-  { time: "T-24h", task: "Visual QA pass", status: "done" },
-  { time: "T-12h", task: "Checkout test orders", status: "done" },
-  { time: "T-6h", task: "Analytics verification", status: "done" },
-  { time: "T-2h", task: "Team notification", status: "pending" },
-  { time: "T-1h", task: "Final approval", status: "pending" },
-  { time: "Launch", task: "Go live", status: "pending" },
-  { time: "T+1h", task: "Monitor metrics", status: "pending" },
-  { time: "T+24h", task: "Performance review", status: "pending" },
-];
+import { DEMO_DPO_READINESS_CHECKS as DEMO_READINESS_CHECKS, DEMO_LAUNCH_TIMELINE } from "@/lib/demo-data/digital-presence";
 
 const overallScore = Math.round(DEMO_READINESS_CHECKS.reduce((sum, c) => sum + c.score, 0) / DEMO_READINESS_CHECKS.length);
 

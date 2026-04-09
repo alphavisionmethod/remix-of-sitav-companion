@@ -14,16 +14,9 @@ import { Shield, AlertTriangle, Zap, Bot, Heart, Wrench } from "lucide-react";
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_ADMIN_SCOPES as DEMO_SCOPES } from "@/lib/demo-data/admin-platform";
 
 
-
-const DEMO_SCOPES = [
-  { scope: "global", label: "Global Kill Switch", description: "Stops ALL recurring automation", icon: Shield, color: "text-destructive" },
-  { scope: "domain", scope_id: "self-healing", label: "Self-Healing", description: "Disable self-healing execution", icon: Heart, color: "text-accent" },
-  { scope: "domain", scope_id: "agent", label: "Agent Execution", description: "Disable agent scheduler jobs", icon: Bot, color: "text-primary" },
-  { scope: "domain", scope_id: "maintenance", label: "Maintenance", description: "Disable system maintenance jobs", icon: Wrench, color: "text-muted-foreground" },
-  { scope: "job_class", scope_id: "agent_heartbeat", label: "Agent Heartbeats", description: "Disable heartbeat checks only", icon: Zap, color: "text-accent" },
-];
 
 export default function AR08KillSwitchCenter() {
   const { isDemoMode } = useDataMode();

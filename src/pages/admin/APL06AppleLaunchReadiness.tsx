@@ -8,16 +8,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
-
-const DEMO_TARGETS = [
-  { target: "iPhone Shell", key: "apl_iphone", stage: "alpha", readiness: 35, demo: true, pilot: false, launch: false, blockers: ["Core navigation shell", "Push integration"], deps: ["apple_identity"], critical: true },
-  { target: "iPad Shell", key: "apl_ipad", stage: "planned", readiness: 8, demo: false, pilot: false, launch: false, blockers: ["Awaiting iPhone shell", "Tablet layout design"], deps: ["apl_iphone"], critical: false },
-  { target: "Apple Watch", key: "apl_watch", stage: "planned", readiness: 12, demo: true, pilot: false, launch: false, blockers: ["WatchKit integration", "Complication design"], deps: ["apl_iphone"], critical: false },
-  { target: "Sign in with Apple", key: "apl_identity", stage: "planned", readiness: 5, demo: false, pilot: false, launch: false, blockers: ["Apple Developer Program", "Identity provider integration"], deps: [], critical: true },
-  { target: "Apple Health", key: "apl_health", stage: "planned", readiness: 10, demo: true, pilot: false, launch: false, blockers: ["HealthKit permissions", "Consent UI", "Privacy review"], deps: ["apl_iphone", "apl_identity"], critical: false },
-  { target: "Apple Continuity", key: "apl_continuity", stage: "planned", readiness: 3, demo: false, pilot: false, launch: false, blockers: ["Native app on both surfaces", "Handoff API"], deps: ["apl_iphone", "apl_ipad"], critical: false },
-  { target: "Device Trust", key: "apl_trust", stage: "planned", readiness: 8, demo: false, pilot: false, launch: false, blockers: ["Biometric verification flow", "Trust receipt architecture"], deps: ["apl_identity"], critical: true },
-];
+import { DEMO_ADMIN_TARGETS_A_P_L06_APPLE_LAUNCH_READINESS as DEMO_TARGETS } from "@/lib/demo-data/admin-platform";
 
 const APL06AppleLaunchReadiness = () => {
   const { isDemoMode } = useDataMode();

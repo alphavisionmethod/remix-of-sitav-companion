@@ -7,17 +7,6 @@ import { INVESTMENT_ADVISORS, SAMPLE_ORDERS, SAMPLE_SCENARIOS } from "@/hooks/us
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useInvestmentDecisions } from "@/hooks/use-investment-office";
 
-const DEMO_READINESS_DIMENSIONS = [
-  { label: "Research Completeness", score: 85, status: "ready" },
-  { label: "Thesis Clarity", score: 90, status: "ready" },
-  { label: "Risk Clarity", score: 72, status: "review" },
-  { label: "Catalyst Understanding", score: 80, status: "ready" },
-  { label: "Portfolio Fit", score: 55, status: "simulate" },
-  { label: "Emotional Discipline", score: 88, status: "ready" },
-  { label: "Execution Readiness", score: 92, status: "ready" },
-  { label: "Policy Fit", score: 60, status: "review" },
-];
-
 export default function DecisionTheater() {
   const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useInvestmentDecisions();
@@ -25,6 +14,7 @@ export default function DecisionTheater() {
   const order = SAMPLE_ORDERS[0];
   const overallReadiness = Math.round(DEMO_READINESS_DIMENSIONS.reduce((s, d) => s + d.score, 0) / DEMO_READINESS_DIMENSIONS.length);
   const readinessLabel = overallReadiness >= 80 ? "Ready" : overallReadiness >= 65 ? "Needs Review" : overallReadiness >= 50 ? "Simulate First" : "Wait";
+import { DEMO_READINESS_DIMENSIONS } from "@/lib/demo-data/investment";
 
 
   return (

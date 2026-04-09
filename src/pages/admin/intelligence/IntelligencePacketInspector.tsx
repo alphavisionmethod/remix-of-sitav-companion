@@ -12,18 +12,7 @@ import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_PACKETS = [
-  { domain: "admin-ops", tokenCount: 1200, compressionRatio: 0.12, fresh: true, changes: 3, risks: 1, constraints: 2, priorRecs: 4, unresolved: 1, confidence: 82, compiledAgo: "15min", compileCost: 8, compileLatency: 240, qualityScore: 85 },
-  { domain: "engineering", tokenCount: 1800, compressionRatio: 0.15, fresh: true, changes: 5, risks: 2, constraints: 3, priorRecs: 6, unresolved: 2, confidence: 76, compiledAgo: "8min", compileCost: 12, compileLatency: 380, qualityScore: 78 },
-  { domain: "revenue-business", tokenCount: 1400, compressionRatio: 0.11, fresh: true, changes: 2, risks: 0, constraints: 1, priorRecs: 5, unresolved: 0, confidence: 89, compiledAgo: "22min", compileCost: 9, compileLatency: 290, qualityScore: 88 },
-  { domain: "digital-presence", tokenCount: 2100, compressionRatio: 0.18, fresh: false, changes: 8, risks: 3, constraints: 2, priorRecs: 3, unresolved: 4, confidence: 58, compiledAgo: "2hr", compileCost: 15, compileLatency: 520, qualityScore: 62 },
-  { domain: "investment-finance", tokenCount: 1600, compressionRatio: 0.14, fresh: true, changes: 4, risks: 1, constraints: 4, priorRecs: 7, unresolved: 1, confidence: 84, compiledAgo: "12min", compileCost: 10, compileLatency: 340, qualityScore: 86 },
-  { domain: "concierge-household", tokenCount: 900, compressionRatio: 0.08, fresh: true, changes: 1, risks: 0, constraints: 0, priorRecs: 2, unresolved: 0, confidence: 94, compiledAgo: "45min", compileCost: 5, compileLatency: 150, qualityScore: 92 },
-  { domain: "connectors-integrations", tokenCount: 1100, compressionRatio: 0.10, fresh: true, changes: 2, risks: 1, constraints: 1, priorRecs: 3, unresolved: 1, confidence: 80, compiledAgo: "30min", compileCost: 7, compileLatency: 210, qualityScore: 82 },
-  { domain: "launch-deployment", tokenCount: 1500, compressionRatio: 0.13, fresh: true, changes: 3, risks: 2, constraints: 2, priorRecs: 4, unresolved: 2, confidence: 72, compiledAgo: "18min", compileCost: 11, compileLatency: 360, qualityScore: 74 },
-  { domain: "compliance-trust", tokenCount: 1300, compressionRatio: 0.12, fresh: true, changes: 0, risks: 0, constraints: 5, priorRecs: 3, unresolved: 0, confidence: 96, compiledAgo: "1hr", compileCost: 8, compileLatency: 260, qualityScore: 94 },
-];
+import { DEMO_INTEL_PACKETS as DEMO_PACKETS } from "@/lib/demo-data/admin-intelligence";
 
 const IntelligencePacketInspector = () => {
   const { isAdmin, loading } = useRequireAdmin();

@@ -7,29 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Shield, Smartphone, Watch, Monitor, Fingerprint, Lock, ArrowRight, AlertTriangle, CheckCircle2, XCircle, Eye } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_TRUST_CLASSES = [
-  { cls: "trusted_iphone", label: "iPhone", bio: "Face ID / Touch ID", riskCeiling: "critical", keychain: true, attestation: true, icon: Smartphone, sessionDuration: "24h", reauth: "biometric", trustScore: 95 },
-  { cls: "trusted_ipad", label: "iPad", bio: "Face ID / Touch ID", riskCeiling: "critical", keychain: true, attestation: true, icon: Monitor, sessionDuration: "24h", reauth: "biometric", trustScore: 92 },
-  { cls: "trusted_watch", label: "Apple Watch", bio: "Wrist detection", riskCeiling: "medium", keychain: false, attestation: false, icon: Watch, sessionDuration: "while_worn", reauth: "proximity", trustScore: 65 },
-  { cls: "trusted_mac", label: "Mac", bio: "Touch ID / Password", riskCeiling: "critical", keychain: true, attestation: true, icon: Monitor, sessionDuration: "8h", reauth: "biometric_or_password", trustScore: 90 },
-];
-
-const DEMO_ESCALATION_RULES = [
-  { from: "Watch", to: "iPhone", trigger: "Risk > medium", timeout: "120s", method: "Push + haptic" },
-  { from: "iPhone", to: "iPad/Mac", trigger: "Risk = critical + session expired", timeout: "300s", method: "Push notification" },
-  { from: "Any device", to: "Web fallback", trigger: "No trusted device available", timeout: "immediate", method: "Email link" },
-  { from: "Watch", to: "iPhone", trigger: "Batch approval (>3 items)", timeout: "immediate", method: "Deep link handoff" },
-];
-
-const DEMO_VERIFICATION_EVENTS = [
-  { event: "App launch", requires: "biometric_or_passcode", frequency: "once_per_session", risk: "n/a" },
-  { event: "Approval action", requires: "biometric", frequency: "per_action", risk: "medium+" },
-  { event: "Financial transaction", requires: "biometric + session_elevation", frequency: "per_action", risk: "high+" },
-  { event: "Settings change", requires: "biometric", frequency: "per_action", risk: "medium+" },
-  { event: "Export data", requires: "biometric + mfa", frequency: "per_action", risk: "critical" },
-  { event: "Device revocation", requires: "biometric + mfa + cooldown", frequency: "per_action", risk: "critical" },
-];
+import { DEMO_ADMIN_TRUST_CLASSES_A_P_L02_APPLE_DEVICES_TRUST as DEMO_TRUST_CLASSES, DEMO_ADMIN_VERIFICATION_EVENTS_A_P_L02_APPLE_DEVICES_TRUST as DEMO_VERIFICATION_EVENTS, DEMO_ESCALATION_RULES } from "@/lib/demo-data/admin-platform";
 
 const APL02AppleDevicesTrust = () => {
   const { isDemoMode } = useDataMode();

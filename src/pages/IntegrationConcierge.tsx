@@ -18,25 +18,9 @@ import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
 import type { ConnectorUseCase } from "@/lib/engines/connector-concierge";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_CORE_BUNDLES as DEMO_BUNDLES, DEMO_CORE_CATEGORIES as DEMO_CATEGORIES } from "@/lib/demo-data/core-pages";
 
 // ── Category Config ────────────────────────────────────────────
-const DEMO_CATEGORIES = [
-  { id: "all", label: "All", icon: Sparkles },
-  { id: "revenue", label: "Revenue", icon: DollarSign },
-  { id: "money", label: "Money", icon: BarChart3 },
-  { id: "productivity", label: "Productivity", icon: Zap },
-  { id: "family", label: "Family", icon: Users },
-  { id: "operations", label: "Operations", icon: Package },
-] as const;
-
-const DEMO_BUNDLES = [
-  { id: "founder-productivity", name: "Founder Productivity Bundle", useCases: ["founder-productivity", "lead-recovery"], icon: "🚀", description: "Gmail, Calendar, and lead recovery for founders", savings: "5+ hrs/week" },
-  { id: "lead-recovery-bundle", name: "Lead Recovery Bundle", useCases: ["lead-recovery", "crm-recovery", "campaign-to-cash"], icon: "💰", description: "Recover missed leads and track campaign ROI", savings: "$2k-10k/mo" },
-  { id: "money-os-bundle", name: "QuickBooks Money OS Bundle", useCases: ["invoice-cash-timing"], icon: "📊", description: "Invoices, cash flow, and expense tracking", savings: "30-day forecast" },
-  { id: "family-bundle", name: "Family Calendar Bundle", useCases: ["family-calendar"], icon: "👨‍👩‍👧‍👦", description: "Family schedule coordination and prep reminders", savings: "Zero conflicts" },
-  { id: "service-ops-bundle", name: "Service Business Ops", useCases: ["founder-productivity", "invoice-cash-timing", "lead-recovery"], icon: "🏗️", description: "End-to-end ops for service businesses", savings: "Full pipeline" },
-];
-
 // ── Use Case Card ──────────────────────────────────────────────
 function UseCaseCard({ useCase, onSelect }: { useCase: ConnectorUseCase; onSelect: () => void }) {
   const difficultyColor = { easy: "text-trust-safe", moderate: "text-accent", advanced: "text-destructive" };

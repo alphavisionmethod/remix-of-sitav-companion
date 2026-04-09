@@ -4,33 +4,7 @@ import { ShieldOff, AlertTriangle, Clock, Zap, TrendingDown, Globe } from "lucid
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useRiskScenarios } from "@/hooks/use-investment-office";
-
-const DEMO_TRADES = [
-  {
-    id: "t1", symbol: "NVDA", name: "Add $8K to NVIDIA", icon: "💚",
-    invalidations: [
-      { trigger: "AI capex cycle peaks and enterprise spending declines", severity: "high", probability: 25, timeframe: "6-12 months" },
-      { trigger: "Export controls expanded to block key markets", severity: "critical", probability: 15, timeframe: "Any time" },
-      { trigger: "Competitor achieves GPU parity (AMD MI400, custom silicon)", severity: "medium", probability: 20, timeframe: "12-24 months" },
-      { trigger: "Broad market selloff >15% — high-beta drawdown amplified", severity: "high", probability: 30, timeframe: "3-6 months" },
-    ],
-    hiddenRisks: ["Concentration already at 6.2% — adding pushes to 9.2%", "Tech correlation with existing AAPL, MSFT positions", "Valuation premium leaves little margin for disappointment"],
-    waitingLogic: "Earnings in 3 weeks — thesis will be tested. Consider waiting for post-earnings clarity.",
-    fragility: 62,
-  },
-  {
-    id: "t2", symbol: "SOL", name: "New $3K SOL Position", icon: "◎",
-    invalidations: [
-      { trigger: "Network outage or consensus failure", severity: "critical", probability: 15, timeframe: "Any time" },
-      { trigger: "Regulatory action against Solana ecosystem", severity: "high", probability: 10, timeframe: "6-12 months" },
-      { trigger: "DeFi TVL decline >40% from current levels", severity: "medium", probability: 25, timeframe: "3-6 months" },
-      { trigger: "Crypto market enters prolonged bear cycle", severity: "high", probability: 30, timeframe: "6-18 months" },
-    ],
-    hiddenRisks: ["Crypto sleeve already above 20% target", "High correlation with BTC — not true diversification", "Liquidity risk in stress scenarios"],
-    waitingLogic: "No imminent catalyst. Consider entering after next major network upgrade milestone.",
-    fragility: 75,
-  },
-];
+import { DEMO_TRADES } from "@/lib/demo-data/investment";
 
 export default function WhatWouldBreak() {
   const { isDemoMode } = useDataMode();

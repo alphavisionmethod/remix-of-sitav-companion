@@ -6,23 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_HEALTH_SEGMENTS = [
-  { label: "Thriving", count: 38, pct: 57, color: "bg-green-400" },
-  { label: "Stable", count: 16, pct: 24, color: "bg-blue-400" },
-  { label: "Cooling", count: 8, pct: 12, color: "bg-yellow-400" },
-  { label: "At Risk", count: 5, pct: 7, color: "bg-red-400" },
-];
-
-const DEMO_AT_RISK = [
-  { name: "Michael Park", company: "Summit Group", ltv: "$8,200", lastActive: "3 weeks ago", signals: ["No login 21d", "Support ticket unresolved", "Engagement ↓ 60%"] },
-  { name: "Rachel Kim", company: "Bright Ideas", ltv: "$4,600", lastActive: "2 weeks ago", signals: ["Usage ↓ 40%", "Skipped last session", "No email opens 14d"] },
-];
-
-const DEMO_WIN_BACK = [
-  { name: "Tom Bradley", churned: "45 days ago", ltv: "$3,200", reason: "Pricing concern", strategy: "Offer 20% loyalty discount" },
-  { name: "Ana Santos", churned: "30 days ago", ltv: "$5,800", reason: "Competitor switch", strategy: "Feature comparison + personal call" },
-];
+import { DEMO_AT_RISK, DEMO_HEALTH_SEGMENTS, DEMO_WIN_BACK } from "@/lib/demo-data/revenue-office";
 
 export default function RetentionOffice() {
   const { isDemoMode } = useDataMode();

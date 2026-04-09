@@ -41,13 +41,6 @@ const buildDemoSimResult = (simInput: { amount: number; [key: string]: unknown }
 });
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 // Engine costs — canonical inline data (no mock import needed)
-const DEMO_ENGINE_COSTS = [
-  { service: "AI Model Calls", cost: "$12.40", percentage: 45, trend: "up" as const },
-  { service: "Database", cost: "$3.20", percentage: 12, trend: "flat" as const },
-  { service: "Edge Functions", cost: "$2.10", percentage: 8, trend: "down" as const },
-  { service: "Storage", cost: "$0.80", percentage: 3, trend: "flat" as const },
-  { service: "Connectors", cost: "$8.90", percentage: 32, trend: "up" as const },
-];
 import {
   useAdminIncidents, useAcknowledgeIncident, useResolveIncident, useCreateIncident,
   useAdminPolicies, useCreatePolicy, useSimulatePolicy,
@@ -2464,6 +2457,7 @@ const getEventColor = (topic: string): string => {
   if (topic.includes("completed") || topic.includes("passed") || topic.includes("approved")) return "border-trust-safe/30 bg-trust-safe/5";
   if (topic.includes("requested") || topic.includes("pending")) return "border-accent/30 bg-accent/5";
   return "border-border/30 bg-secondary/20";
+import { DEMO_ENGINE_COSTS } from "@/lib/demo-data/core-pages";
 };
 
 const LiveActivityFeed = () => {

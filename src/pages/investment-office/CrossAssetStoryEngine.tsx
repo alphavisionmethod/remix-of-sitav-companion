@@ -4,51 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
-
-const DEMO_NARRATIVES = [
-  {
-    id: "n1", title: "AI Infrastructure Supercycle", icon: "🤖", strength: 90,
-    connections: [
-      { asset: "NVDA", class: "Equity", role: "GPU monopoly — direct beneficiary" },
-      { asset: "MSFT", class: "Equity", role: "Azure AI / Copilot — infrastructure + monetization" },
-      { asset: "BTC", class: "Crypto", role: "Risk-on correlation — AI narrative lifts crypto sentiment" },
-      { asset: "SPY", class: "ETF", role: "Tech-heavy index benefits from AI leadership" },
-    ],
-    macroDrivers: ["Fed easing supports growth multiples", "Corporate AI capex accelerating", "Productivity gains visible in earnings"],
-    risks: ["Capex cycle peaking", "Regulation of AI models", "Export controls on chips"],
-  },
-  {
-    id: "n2", title: "Monetary Easing Cycle", icon: "🏦", strength: 65,
-    connections: [
-      { asset: "XAUUSD", class: "Commodity", role: "Lower real rates support gold" },
-      { asset: "BTC", class: "Crypto", role: "Liquidity expansion historically bullish for BTC" },
-      { asset: "SPY", class: "ETF", role: "Rate cuts support risk assets broadly" },
-      { asset: "FED-CUT-JUN", class: "Event", role: "Direct probability trade on rate decision" },
-    ],
-    macroDrivers: ["Inflation declining toward target", "Labor market cooling", "Global central banks coordinating"],
-    risks: ["Inflation re-acceleration", "Fiscal spending overwhelms rate cuts", "Fed credibility questioned"],
-  },
-  {
-    id: "n3", title: "Crypto Structural Adoption", icon: "⛓️", strength: 72,
-    connections: [
-      { asset: "BTC", class: "Crypto", role: "ETF inflows creating structural demand floor" },
-      { asset: "ETH", class: "Crypto", role: "Smart contract platform for institutional DeFi" },
-      { asset: "SOL", class: "Crypto", role: "High-performance chain for consumer DeFi" },
-    ],
-    macroDrivers: ["ETF approval legitimized asset class", "Institutional allocation growing", "Halving supply dynamics"],
-    risks: ["Regulatory crackdown", "Exchange failures", "Liquidity fragmentation"],
-  },
-  {
-    id: "n4", title: "Geopolitical Risk Premium", icon: "🌍", strength: 48,
-    connections: [
-      { asset: "XAUUSD", class: "Commodity", role: "Traditional safe haven" },
-      { asset: "CL", class: "Commodity", role: "Supply disruption risk in energy" },
-      { asset: "SPY", class: "ETF", role: "Risk-off pressure on equities" },
-    ],
-    macroDrivers: ["Middle East tensions", "US-China competition", "Trade policy uncertainty"],
-    risks: ["De-escalation reduces premium", "Markets price in conflict fatigue"],
-  },
-];
+import { DEMO_NARRATIVES } from "@/lib/demo-data/investment";
 
 export default function CrossAssetStoryEngine() {
   const { isDemoMode } = useDataMode();

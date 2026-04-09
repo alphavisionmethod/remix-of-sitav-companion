@@ -35,13 +35,6 @@ const INITIAL_PATCHES: Patch[] = [
   { id: "p6", issue: "Contact form 404 on mobile", page: "/contact", fixPlan: "Fix mobile route handler for form submission", confidence: 82, severity: "critical", autoFixEligible: false, status: "pending", beforeSnippet: "POST /api/contact → 404", afterSnippet: "POST /api/contact → 200", detectedBy: "Technical QA", verifiedAfterApply: false, affectedPages: ["/contact"] },
 ];
 
-const DEMO_STATS = [
-  { label: "Pending Patches", value: 4, color: "text-amber-400" },
-  { label: "Auto-Fix Eligible", value: 3, color: "text-green-400" },
-  { label: "Applied This Week", value: 5, color: "text-blue-400" },
-  { label: "Verified Clean", value: 4, color: "text-primary" },
-];
-
 export default function SelfHealingQueue() {
   const { isDemoMode } = useDataMode();
   const [patches, setPatches] = useState(INITIAL_PATCHES);
@@ -55,6 +48,7 @@ export default function SelfHealingQueue() {
   };
 
   const sevColor = (s: string) => s === "critical" ? "text-red-400" : s === "high" ? "text-amber-400" : s === "medium" ? "text-yellow-400" : "text-muted-foreground";
+import { DEMO_DPO_STATS as DEMO_STATS } from "@/lib/demo-data/digital-presence";
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">

@@ -6,19 +6,9 @@ import { useComplianceViolations, useGatewayStats } from "@/hooks/use-sag-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import type { ComplianceGate, TenantFirewallRule, SecurityIncident } from "@/packages/enterprise-contracts";
+import { DEMO_VIOLATION_TYPES } from "@/lib/demo-data/admin-platform";
 
 
-
-const DEMO_VIOLATION_TYPES = [
-  { type: 'direct_provider_call', label: 'Direct Provider Call', severity: 'critical', icon: Ban },
-  { type: 'missing_capability_id', label: 'Missing Capability ID', severity: 'high', icon: AlertTriangle },
-  { type: 'missing_prompt_family', label: 'Missing Prompt Family', severity: 'high', icon: AlertTriangle },
-  { type: 'missing_output_schema', label: 'Missing Output Schema', severity: 'medium', icon: AlertTriangle },
-  { type: 'premium_misuse', label: 'Premium Model Misuse', severity: 'medium', icon: AlertTriangle },
-  { type: 'no_fallback_critical', label: 'No Fallback for Critical', severity: 'high', icon: ShieldAlert },
-  { type: 'unverified_high_risk', label: 'Unverified High-Risk', severity: 'critical', icon: Ban },
-  { type: 'missing_receipt', label: 'Missing Receipt/Trace', severity: 'medium', icon: AlertTriangle },
-];
 
 const sevColors: Record<string, string> = {
   critical: 'bg-destructive/10 text-destructive',

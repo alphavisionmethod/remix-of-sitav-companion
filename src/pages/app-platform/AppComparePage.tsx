@@ -11,13 +11,7 @@ import { AppIcon, VerificationBadge, AppSourceLabel, InstallSheet } from "@/comp
 import type { AppDefinition } from "@/lib/app-platform/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_COMPARE_PAIRS = [
-  { label: "Browsers", ids: ["chrome", "firefox"] },
-  { label: "Git Clients", ids: ["github-desktop", "github-web"] },
-  { label: "Note Taking", ids: ["notion", "obsidian"] },
-  { label: "Design", ids: ["figma", "canva"] },
-];
+import { DEMO_COMPARE_PAIRS } from "@/lib/demo-data/core-pages";
 
 const AppComparePage = () => {
   const { isDemoMode } = useDataMode();

@@ -11,25 +11,7 @@ import {
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_quoteStats = [
-  { label: "Active Quotes", value: "18", delta: "+4 this week", icon: FileText, color: "text-blue-400" },
-  { label: "Pipeline Value", value: "$124,800", delta: "across 18 DEMO_quotes", icon: DollarSign, color: "text-emerald-400" },
-  { label: "Acceptance Rate", value: "68%", delta: "+5% vs last month", icon: CheckCircle, color: "text-emerald-400" },
-  { label: "Avg Time to Accept", value: "4.2 days", delta: "-0.8 days improvement", icon: Clock, color: "text-amber-400" },
-  { label: "Revenue from Quotes", value: "$84,200", delta: "this month closed", icon: TrendingUp, color: "text-emerald-400" },
-  { label: "At-Risk Quotes", value: "4", delta: "$32,400 at risk", icon: AlertTriangle, color: "text-red-400" },
-];
-
-const DEMO_quotes = [
-  { client: "Apex Coaching Co.", service: "Growth Strategy Package", amount: 12500, status: "viewed", sentAt: "2 days ago", viewedAt: "1 day ago", viewCount: 3, expiresIn: "5 days", followUp: "Auto reminder at day 5", discount: null, priority: "high", objections: "Comparing with competitor", aiInsight: "Client viewed pricing section 3x — likely price-sensitive. Consider adding ROI projections." },
-  { client: "Studio Bloom", service: "Marketing Retainer (6mo)", amount: 4800, status: "sent", sentAt: "1 day ago", viewedAt: null, viewCount: 0, expiresIn: "13 days", followUp: "Reminder at day 3", discount: null, priority: "medium", objections: null, aiInsight: "Similar clients in creative industry convert 40% higher with case study inclusion." },
-  { client: "NextLevel Fitness", service: "Website + Funnel Bundle", amount: 8900, status: "accepted", sentAt: "5 days ago", viewedAt: "4 days ago", viewCount: 2, expiresIn: null, followUp: "Invoice generated → onboarding triggered", discount: "5%", priority: "closed", objections: null, aiInsight: "Accepted after case study send. Pattern: fitness clients respond to visual portfolio." },
-  { client: "Zenith Consulting", service: "Advisory Retainer + SEO", amount: 6200, status: "expired", sentAt: "16 days ago", viewedAt: "10 days ago", viewCount: 1, expiresIn: null, followUp: "Reactivation needed", discount: null, priority: "low", objections: "Budget timing", aiInsight: "Client engaged with email but didn't return to quote. Personal call recommended." },
-  { client: "Peak Performance", service: "Coaching Program (6mo)", amount: 18000, status: "draft", sentAt: null, viewedAt: null, viewCount: 0, expiresIn: null, followUp: "Awaiting review", discount: null, priority: "high", objections: null, aiInsight: "High-value opportunity. Include testimonial from similar coaching client." },
-  { client: "Harmony Health", service: "Content Marketing Package", amount: 3200, status: "viewed", sentAt: "3 days ago", viewedAt: "2 days ago", viewCount: 5, expiresIn: "11 days", followUp: "Day 3 reminder (today)", discount: null, priority: "medium", objections: "Wants to see more examples", aiInsight: "5 views in 2 days = very interested but hesitant. Call may close this." },
-  { client: "Urban Eats Co.", service: "Social Media Management", amount: 2400, status: "sent", sentAt: "4 hrs ago", viewedAt: null, viewCount: 0, expiresIn: "14 days", followUp: "Reminder at day 3", discount: "10%", priority: "medium", objections: null, aiInsight: "Discount applied per manager approval. Track if discount drives faster conversion." },
-];
+import { DEMO_pricingInsights, DEMO_quoteStats, DEMO_quotes, DEMO_upsellSuggestions } from "@/lib/demo-data/revenue-office";
 
 const statusColors: Record<string, string> = {
   draft: "bg-muted text-muted-foreground",
@@ -38,20 +20,6 @@ const statusColors: Record<string, string> = {
   accepted: "bg-emerald-500/10 text-emerald-400",
   expired: "bg-red-500/10 text-red-400",
 };
-
-const DEMO_upsellSuggestions = [
-  { client: "Apex Coaching Co.", suggestion: "Add Monthly Analytics Report (+$800/mo)", confidence: 78, reason: "They asked about reporting in discovery call", impact: "$9,600/yr" },
-  { client: "Studio Bloom", suggestion: "Bundle Social Media Management (+$1,200/mo)", confidence: 65, reason: "Competitor analysis shows content gap", impact: "$14,400/yr" },
-  { client: "Harmony Health", suggestion: "Add Email Newsletter Setup (+$500 one-time)", confidence: 82, reason: "They mentioned email list growth in intake form", impact: "$500" },
-  { client: "Urban Eats Co.", suggestion: "Photography Package (+$600/mo)", confidence: 71, reason: "Food businesses see 3x engagement with pro photos", impact: "$7,200/yr" },
-];
-
-const DEMO_pricingInsights = [
-  { insight: "Your average quote value ($7,143) is 12% below market for your service category", type: "pricing", action: "Review pricing strategy" },
-  { insight: "Quotes with case studies have 45% higher acceptance rate than those without", type: "content", action: "Add case studies" },
-  { insight: "Quotes viewed 3+ times without response have 80% close rate with a personal call", type: "behavior", action: "Generate call list" },
-  { insight: "5% discount converts 2.3x better than 10% — minimize margin erosion", type: "discounting", action: "Update discount rules" },
-];
 
 export default function QuoteStudio() {
   const { isDemoMode } = useDataMode();

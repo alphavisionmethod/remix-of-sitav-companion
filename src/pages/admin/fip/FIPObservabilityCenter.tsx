@@ -5,10 +5,9 @@ import { Badge } from "@/components/ui/badge";
 import { useComplianceRecords, useFeatureSpecs } from "@/hooks/use-fip-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_OBSERVABILITY_FIELDS } from "@/lib/demo-data/admin-platform";
 
 
-
-const DEMO_OBSERVABILITY_FIELDS = ['structured_logs', 'metrics', 'traces', 'correlation_ids', 'error_codes', 'diagnostic_bundles', 'replay_path', 'incident_summary', 'runbooks'];
 
 const FIPObservabilityCenter = () => {
   const { isDemoMode } = useDataMode();

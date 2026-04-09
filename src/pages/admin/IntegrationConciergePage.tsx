@@ -19,35 +19,9 @@ interface UseCase {
   connectors: { name: string; status: "connected" | "available" | "required" }[];
   workflows: string[];
   riskLevel: "low" | "medium" | "high";
+import { DEMO_USE_CASES } from "@/lib/demo-data/admin-platform";
   readiness: number;
 }
-
-const DEMO_USE_CASES: UseCase[] = [
-  {
-    id: "uc-1", title: "Lead Recovery & Nurture", description: "Automatically capture, score, and nurture leads across channels",
-    connectors: [{ name: "Email (Resend)", status: "connected" }, { name: "CRM", status: "available" }, { name: "Analytics", status: "required" }],
-    workflows: ["Lead scoring pipeline", "Nurture email sequence", "CRM sync"],
-    riskLevel: "low", readiness: 65,
-  },
-  {
-    id: "uc-2", title: "Incident Alerting to Slack", description: "Route critical incidents to Slack channels in real-time",
-    connectors: [{ name: "Slack", status: "available" }, { name: "Incident Monitor", status: "connected" }],
-    workflows: ["Incident → Slack notification", "Escalation routing"],
-    riskLevel: "low", readiness: 40,
-  },
-  {
-    id: "uc-3", title: "Investor Evidence Bundles", description: "Auto-generate compliance and proof bundles for investors",
-    connectors: [{ name: "Storage", status: "connected" }, { name: "Audit Service", status: "connected" }],
-    workflows: ["Evidence collection", "Bundle generation", "Export pipeline"],
-    riskLevel: "medium", readiness: 80,
-  },
-  {
-    id: "uc-4", title: "Booking + CRM + Reminders", description: "Unified booking flow with CRM sync and automated reminders",
-    connectors: [{ name: "Calendar", status: "required" }, { name: "CRM", status: "available" }, { name: "Email (Resend)", status: "connected" }],
-    workflows: ["Booking creation", "CRM contact sync", "Reminder sequence"],
-    riskLevel: "low", readiness: 30,
-  },
-];
 
 const connectorStatusColor = { connected: "bg-emerald-500/10 text-emerald-500 border-emerald-500/20", available: "bg-blue-500/10 text-blue-500 border-blue-500/20", required: "bg-amber-500/10 text-amber-500 border-amber-500/20" };
 

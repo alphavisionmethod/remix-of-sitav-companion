@@ -13,15 +13,9 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_SESSIONS } from "@/lib/demo-data/core-pages";
 
 
-
-const DEMO_SESSIONS = [
-  { id: "demo-1", title: "Weekly Executive Review", session_type: "weekly", status: "completed", confidence_score: 87, started_at: new Date(Date.now() - 86400000 * 2).toISOString(), completed_at: new Date(Date.now() - 86400000 * 2 + 1800000).toISOString(), decisions_count: 4 },
-  { id: "demo-2", title: "Financial Health Check", session_type: "financial-health", status: "completed", confidence_score: 92, started_at: new Date(Date.now() - 86400000 * 5).toISOString(), completed_at: new Date(Date.now() - 86400000 * 5 + 1200000).toISOString(), decisions_count: 2 },
-  { id: "demo-3", title: "Pipeline Review", session_type: "pipeline-review", status: "completed", confidence_score: 79, started_at: new Date(Date.now() - 86400000 * 9).toISOString(), completed_at: new Date(Date.now() - 86400000 * 9 + 2400000).toISOString(), decisions_count: 5 },
-  { id: "demo-4", title: "Morning Briefing", session_type: "morning-briefing", status: "active", confidence_score: 81, started_at: new Date().toISOString(), completed_at: null, decisions_count: 0 },
-];
 
 export default function BoardroomHistory() {
   const { isDemoMode } = useDataMode();

@@ -14,16 +14,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { EmptyState } from "@/components/sita/SitaComponents";
+import { DEMO_CORE_AGENTS as DEMO_AGENTS } from "@/lib/demo-data/core-pages";
 
 
-
-const DEMO_AGENTS = [
-  { id: "1", name: "Revenue Scout", role: "Lead Qualification", status: "active" as const, tasksCompleted: 142, trustScore: 94, costToday: 2.34 },
-  { id: "2", name: "Invoice Guardian", role: "Payment Follow-up", status: "active" as const, tasksCompleted: 89, trustScore: 97, costToday: 1.12 },
-  { id: "3", name: "Content Architect", role: "Content Generation", status: "paused" as const, tasksCompleted: 56, trustScore: 82, costToday: 0 },
-  { id: "4", name: "Data Sentinel", role: "Anomaly Detection", status: "active" as const, tasksCompleted: 234, trustScore: 99, costToday: 0.87 },
-  { id: "5", name: "Meeting Maestro", role: "Scheduling & Prep", status: "idle" as const, tasksCompleted: 67, trustScore: 91, costToday: 0.45 },
-];
 
 const statusColor = { active: "bg-emerald-500", paused: "bg-amber-500", idle: "bg-muted" };
 

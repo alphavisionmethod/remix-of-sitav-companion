@@ -7,8 +7,8 @@ import { Gavel, CheckCircle, XCircle, Clock } from "lucide-react";
 import { computeLaunchReadiness, getGoNoGoConditions, type LaunchReadinessResult, type GoNoGoCondition, type LaunchMode } from "@/lib/services/launch-readiness/launch-readiness-engine";
 import { cn } from "@/lib/utils";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_MODE_ORDER } from "@/lib/demo-data/admin-platform";
 
-const DEMO_MODE_ORDER: LaunchMode[] = ["not_launch_safe", "internal_only", "pilot_ready", "private_beta_ready", "public_launch_qualified", "public_launch_ready"];
 const MODE_LABELS: Record<LaunchMode, string> = {
   not_launch_safe: "Not Launch Safe",
   internal_only: "Internal Only",

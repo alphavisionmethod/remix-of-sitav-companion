@@ -4,17 +4,7 @@ import { Calendar, Zap, AlertTriangle, Clock, Target, TrendingUp } from "lucide-
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useRiskScenarios } from "@/hooks/use-investment-office";
-
-const DEMO_CATALYST_EVENTS = [
-  { id: "ce1", title: "CPI Release", date: "2026-05-14", type: "macro", impact: "high", assets: ["SPY", "XAUUSD", "FED-CUT-JUN"], description: "Key inflation data — determines Fed rate path", portfolioExposure: 45 },
-  { id: "ce2", title: "Fed FOMC Meeting", date: "2026-06-18", type: "macro", impact: "high", assets: ["SPY", "XAUUSD", "BTC", "FED-CUT-JUN"], description: "Rate decision and forward guidance", portfolioExposure: 80 },
-  { id: "ce3", title: "AAPL Q3 Earnings", date: "2026-07-31", type: "earnings", impact: "moderate", assets: ["AAPL"], description: "Fiscal Q3 results — AI integration and Services growth", portfolioExposure: 8 },
-  { id: "ce4", title: "BTC Halving Anniversary", date: "2026-04-20", type: "event", impact: "moderate", assets: ["BTC", "ETH", "SOL"], description: "One year post-halving — supply dynamics catalyst", portfolioExposure: 28 },
-  { id: "ce5", title: "TSLA Robotaxi Launch", date: "2026-08-08", type: "product", impact: "high", assets: ["TSLA"], description: "Autonomous ride-hailing service commercial launch", portfolioExposure: 3 },
-  { id: "ce6", title: "NVDA GTC Conference", date: "2026-09-15", type: "product", impact: "high", assets: ["NVDA"], description: "Next-gen architecture reveal expected", portfolioExposure: 6 },
-  { id: "ce7", title: "Jobs Report", date: "2026-05-02", type: "macro", impact: "moderate", assets: ["SPY", "FED-CUT-JUN"], description: "Non-farm payrolls and unemployment rate", portfolioExposure: 50 },
-  { id: "ce8", title: "OPEC+ Meeting", date: "2026-06-01", type: "macro", impact: "moderate", assets: ["CL"], description: "Production quota review — OPEC discipline under pressure", portfolioExposure: 0 },
-];
+import { DEMO_CATALYST_EVENTS } from "@/lib/demo-data/investment";
 
 const TYPE_COLORS: Record<string, string> = {
   macro: "bg-primary/10 text-primary",

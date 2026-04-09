@@ -22,31 +22,6 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { supabase } from "@/integrations/supabase/client";
 
-const DEMO_TASK_TYPES = [
-  { key: "summarize", label: "Summarize", desc: "Generate synthesis of scope area" },
-  { key: "diagnose", label: "Diagnose", desc: "Root-cause analysis" },
-  { key: "classify", label: "Classify", desc: "Categorize inputs" },
-  { key: "audit", label: "Audit", desc: "Structured compliance review" },
-  { key: "recommend", label: "Recommend", desc: "Generate actionable recommendations" },
-  { key: "investigate", label: "Investigate", desc: "Deep-dive evidence analysis" },
-  { key: "produce_remediation_plan", label: "Remediation Plan", desc: "Phased fix plan from findings" },
-  { key: "generate_digest", label: "Generate Digest", desc: "Executive summary" },
-  { key: "compare", label: "Compare", desc: "Diff two states or versions" },
-  { key: "propose", label: "Propose Change", desc: "Draft a governed proposal" },
-];
-
-const DEMO_BUDGET_POSTURES = [
-  { key: "economy_admin", label: "Economy", desc: "Cheapest — flash models", costBand: "$0.001–$0.01", icon: "💰" },
-  { key: "balanced_admin", label: "Balanced", desc: "Good quality/cost ratio", costBand: "$0.01–$0.05", icon: "⚖️" },
-  { key: "premium_architecture", label: "Premium", desc: "Full reasoning — architecture only", costBand: "$0.05–$0.30", icon: "🏆" },
-  { key: "auto", label: "Auto", desc: "Let routing decide", costBand: "varies", icon: "🤖" },
-];
-
-const DEMO_SCOPE_DOMAINS = [
-  "architecture", "runtime-truth", "connectors", "ai-governance", "launch-readiness",
-  "budget", "data-schema", "device-surface", "quality-ci", "incidents",
-];
-
 export default function AIT03TaskInvocation() {
   const { isDemoMode } = useDataMode();
   const [selectedRole, setSelectedRole] = useState("");
@@ -68,6 +43,7 @@ export default function AIT03TaskInvocation() {
   const selectedTaskMeta = DEMO_TASK_TYPES.find(t => t.key === selectedTask);
   const selectedRoleMeta = roles.find(r => r.role_key === selectedRole);
   const isApprovalNeeded = selectedRoleMeta?.approval_required || selectedTask === "propose";
+import { DEMO_BUDGET_POSTURES, DEMO_SCOPE_DOMAINS, DEMO_TASK_TYPES } from "@/lib/demo-data/admin-platform";
 
   const handleInvoke = async () => {
     if (!selectedRole || !selectedTask) { toast.error("Select a role and task type"); return; }

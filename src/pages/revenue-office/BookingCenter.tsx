@@ -8,29 +8,9 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { useBookings } from "@/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/sita/EmptyState";
+import { DEMO_REV_SERVICES as DEMO_SERVICES, DEMO_REV_STATS as DEMO_STATS, DEMO_UPCOMING } from "@/lib/demo-data/revenue-office";
 
 
-
-const DEMO_UPCOMING = [
-  { client: "Sarah Mitchell", type: "Strategy Call", time: "Today, 2:00 PM", duration: "45 min", mode: "video", status: "confirmed" },
-  { client: "James Chen", type: "Discovery Call", time: "Today, 4:30 PM", duration: "30 min", mode: "video", status: "confirmed" },
-  { client: "Emily Rodriguez", type: "Coaching Session", time: "Tomorrow, 10:00 AM", duration: "60 min", mode: "video", status: "pending" },
-  { client: "Michael Park", type: "Quarterly Review", time: "Apr 8, 1:00 PM", duration: "45 min", mode: "in-person", status: "confirmed" },
-];
-
-const DEMO_SERVICES = [
-  { name: "Discovery Call", duration: "30 min", price: "Free", bookings: 24, conversionRate: "33%" },
-  { name: "Strategy Session", duration: "45 min", price: "$150", bookings: 18, conversionRate: "67%" },
-  { name: "Coaching Hour", duration: "60 min", price: "$250", bookings: 12, conversionRate: "83%" },
-  { name: "VIP Day", duration: "4 hours", price: "$2,000", bookings: 3, conversionRate: "100%" },
-];
-
-const DEMO_STATS = [
-  { label: "This Week", value: "8 bookings", sub: "+2 from last week" },
-  { label: "Show Rate", value: "94%", sub: "Excellent" },
-  { label: "Revenue from Bookings", value: "$4,350", sub: "This month" },
-  { label: "Avg. Lead Time", value: "3.2 days", sub: "Booking to appointment" },
-];
 
 export default function BookingCenter() {
   const { isDemoMode } = useDataMode();

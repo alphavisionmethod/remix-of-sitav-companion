@@ -28,20 +28,12 @@ interface ConnectorStatus {
   errorRate: number;
   syncCount24h: number;
   credentialStatus: "valid" | "expiring" | "expired" | "missing";
+import { DEMO_ADMIN_CONNECTORS as DEMO_CONNECTORS, DEMO_FALLBACK_SYNC_HISTORY, DEMO_POLICIES } from "@/lib/demo-data/admin-platform";
   credentialExpiresIn?: string;
   affectedDomains: string[];
   latencyMs: number;
   dataFreshness: string;
 }
-
-const DEMO_CONNECTORS: ConnectorStatus[] = [
-  { id: "plaid", name: "Plaid Banking", type: "finance", status: "healthy", lastSyncAt: "15m ago", staleness: "fresh", errorRate: 0.1, syncCount24h: 48, credentialStatus: "valid", affectedDomains: ["finance", "cash-flow"], latencyMs: 245, dataFreshness: "Real-time" },
-  { id: "stripe", name: "Stripe Payments", type: "payments", status: "healthy", lastSyncAt: "5m ago", staleness: "fresh", errorRate: 0, syncCount24h: 96, credentialStatus: "valid", affectedDomains: ["finance", "invoicing"], latencyMs: 120, dataFreshness: "Real-time" },
-  { id: "google-cal", name: "Google Calendar", type: "calendar", status: "degraded", lastSyncAt: "2h ago", staleness: "warning", errorRate: 2.1, syncCount24h: 24, credentialStatus: "expiring", credentialExpiresIn: "3 days", affectedDomains: ["concierge", "scheduling"], latencyMs: 890, dataFreshness: "2h stale" },
-  { id: "gmail", name: "Gmail", type: "email", status: "healthy", lastSyncAt: "10m ago", staleness: "fresh", errorRate: 0.3, syncCount24h: 72, credentialStatus: "valid", affectedDomains: ["communication", "crm"], latencyMs: 310, dataFreshness: "Near real-time" },
-  { id: "crm-hub", name: "CRM Sync", type: "crm", status: "stale", lastSyncAt: "6h ago", staleness: "stale", errorRate: 5.2, syncCount24h: 8, credentialStatus: "valid", affectedDomains: ["sales", "pipeline"], latencyMs: 1200, dataFreshness: "6h stale" },
-  { id: "accounting", name: "Accounting Platform", type: "accounting", status: "disconnected", lastSyncAt: "—", staleness: "critical", errorRate: 100, syncCount24h: 0, credentialStatus: "missing", affectedDomains: ["finance", "tax"], latencyMs: 0, dataFreshness: "No data" },
-];
 
 const STATUS_CONFIG: Record<string, { color: string; bg: string }> = {
   healthy: { color: "text-emerald-400", bg: "bg-emerald-500/10" },
@@ -57,22 +49,6 @@ const CRED_CONFIG: Record<string, { color: string }> = {
   expired: { color: "text-red-400" },
   missing: { color: "text-muted-foreground" },
 };
-
-const DEMO_FALLBACK_SYNC_HISTORY = [
-  { connector: "Plaid Banking", time: "15m ago", status: "success", records: 24, duration: "1.2s" },
-  { connector: "Stripe Payments", time: "5m ago", status: "success", records: 8, duration: "0.4s" },
-  { connector: "Gmail", time: "10m ago", status: "success", records: 15, duration: "2.1s" },
-  { connector: "Google Calendar", time: "2h ago", status: "partial", records: 6, duration: "3.8s" },
-  { connector: "CRM Sync", time: "6h ago", status: "failed", records: 0, duration: "12s" },
-];
-
-const DEMO_POLICIES = [
-  { connector: "plaid", maxStaleness: "1 hour", syncInterval: "30 min", retryPolicy: "3 attempts, exponential backoff", affectedFields: ["account-balances", "transaction-records"] },
-  { connector: "stripe", maxStaleness: "30 min", syncInterval: "15 min", retryPolicy: "5 attempts, linear", affectedFields: ["payment-confirmations", "invoice-records"] },
-  { connector: "google-cal", maxStaleness: "30 min", syncInterval: "30 min", retryPolicy: "3 attempts, exponential", affectedFields: ["calendar-events"] },
-  { connector: "gmail", maxStaleness: "15 min", syncInterval: "15 min", retryPolicy: "3 attempts, exponential", affectedFields: ["email-content"] },
-  { connector: "crm-hub", maxStaleness: "2 hours", syncInterval: "1 hour", retryPolicy: "3 attempts, linear", affectedFields: ["customer-records", "deal-records"] },
-];
 
 export default function ConnectorGovernanceCenter() {
   const { isDemoMode } = useDataMode();

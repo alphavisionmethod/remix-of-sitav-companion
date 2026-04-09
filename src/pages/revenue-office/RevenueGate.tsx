@@ -9,33 +9,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useDeals, useCampaigns } from "@/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
-
-const DEMO_METRICS = [
-  { label: "Monthly Revenue", value: "$47,280", change: "+12.4%", trend: "up" },
-  { label: "Active Pipeline", value: "$183,500", change: "+8.2%", trend: "up" },
-  { label: "Conversion Rate", value: "24.8%", change: "+3.1%", trend: "up" },
-  { label: "Customer LTV", value: "$2,840", change: "-1.2%", trend: "down" },
-];
-
-const DEMO_WHAT_CHANGED = [
-  { text: "3 leads moved to qualified stage", time: "2h ago", type: "positive" },
-  { text: "Funnel 'Launch Pro' conversion dropped 4%", time: "5h ago", type: "warning" },
-  { text: "New review: 5★ from Sarah K.", time: "8h ago", type: "positive" },
-  { text: "Invoice #1042 overdue by 7 days", time: "1d ago", type: "alert" },
-];
-
-const DEMO_QUICK_ACTIONS = [
-  { label: "Growth Boardroom", path: "/revenue-office/boardroom", icon: BarChart3 },
-  { label: "Pipeline", path: "/revenue-office/pipeline", icon: Target },
-  { label: "Campaigns", path: "/revenue-office/campaigns", icon: Zap },
-  { label: "Relationships", path: "/revenue-office/relationships", icon: Users },
-];
-
-const DEMO_ADVISOR_PREVIEW = [
-  { name: "Growth Advisor", stance: "Expand top-of-funnel — acquisition cost is low right now", confidence: 0.82 },
-  { name: "Retention Advisor", stance: "Watch cohort 3 — engagement dropping", confidence: 0.74 },
-  { name: "Pricing Advisor", stance: "Current pricing has room for 8-12% increase", confidence: 0.68 },
-];
+import { DEMO_ADVISOR_PREVIEW, DEMO_QUICK_ACTIONS, DEMO_REV_METRICS as DEMO_METRICS, DEMO_WHAT_CHANGED } from "@/lib/demo-data/revenue-office";
 
 export default function RevenueGate() {
   const navigate = useNavigate();

@@ -28,16 +28,6 @@ const SURFACE_META: Record<string, { title: string; icon: any; desc: string; tec
   vision_pro: { title: "Vision Pro", icon: Monitor, desc: "Spatial computing surface", tech: ["RealityKit", "SwiftUI"], capabilities: ["gaze", "gesture", "spatial_audio"] },
 };
 
-const DEMO_PROVIDER_CAPS = [
-  { key: "apple_identity", label: "Identity", priority: "P0" },
-  { key: "apple_mobile_shell", label: "Mobile Shell", priority: "P0" },
-  { key: "apple_watch_surface", label: "Watch Surface", priority: "P1" },
-  { key: "apple_health_readiness", label: "Health Readiness", priority: "P1" },
-  { key: "apple_push_channel", label: "Push Channel", priority: "P0" },
-  { key: "apple_device_trust", label: "Device Trust", priority: "P0" },
-  { key: "apple_continuity", label: "Continuity", priority: "P2" },
-];
-
 const APL01AppleEcosystemCenter = () => {
   const { isDemoMode } = useDataMode();
   const [showDependencies, setShowDependencies] = useState(false);
@@ -195,6 +185,7 @@ const APL01AppleEcosystemCenter = () => {
                     {DEMO_PROVIDER_CAPS.map((cap) => {
                       const matchingLaunch = launchData?.find((r: Record<string, any>) => r.target.includes(cap.key.replace("apple_", "")));
                       const status = matchingLaunch?.launch_stage || "planned";
+import { DEMO_ADMIN_PROVIDER_CAPS_A_P_L01_APPLE_ECOSYSTEM_CENTER as DEMO_PROVIDER_CAPS } from "@/lib/demo-data/admin-platform";
                       return (
                         <tr key={cap.key} className="border-b hover:bg-muted/30">
                           <td className="p-2 font-mono">{cap.key}</td>

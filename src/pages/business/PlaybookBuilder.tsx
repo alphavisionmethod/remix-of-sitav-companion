@@ -81,36 +81,7 @@ const STEP_TYPES: { type: BuilderStep["type"]; label: string; icon: typeof Zap; 
   { type: "gate", label: "Approval Gate", icon: Shield, description: "Require human approval" },
 ];
 
-const DEMO_TRIGGER_EVENTS = [
-  { value: "invoice-overdue", label: "Invoice becomes overdue" },
-  { value: "lead-cold", label: "Lead goes cold (no activity 30d)" },
-  { value: "customer-churn-risk", label: "Customer churn risk detected" },
-  { value: "quote-stale", label: "Quote not viewed in 7 days" },
-  { value: "payment-failed", label: "Payment attempt failed" },
-  { value: "subscription-expiring", label: "Subscription expiring soon" },
-  { value: "capacity-available", label: "Capacity becomes available" },
-  { value: "deal-stage-change", label: "Deal stage changes" },
-];
-
-const DEMO_CONDITION_FIELDS = [
-  { value: "customer.ltv", label: "Customer LTV" },
-  { value: "customer.health_score", label: "Health Score" },
-  { value: "invoice.amount", label: "Invoice Amount" },
-  { value: "invoice.days_overdue", label: "Days Overdue" },
-  { value: "lead.score", label: "Lead Score" },
-  { value: "deal.value", label: "Deal Value" },
-  { value: "customer.segment", label: "Customer Segment" },
-  { value: "customer.last_contact_days", label: "Days Since Contact" },
-];
-
 import { OPERATORS, DELAY_OPTIONS } from "@/lib/constants/ui-config";
-
-const DEMO_CATEGORIES: { value: PlaybookDraft["category"]; label: string; color: string }[] = [
-  { value: "recovery", label: "Recovery", color: "bg-trust-safe/10 text-trust-safe" },
-  { value: "growth", label: "Growth", color: "bg-accent/10 text-accent" },
-  { value: "retention", label: "Retention", color: "bg-primary/10 text-primary" },
-  { value: "efficiency", label: "Efficiency", color: "bg-muted text-muted-foreground" },
-];
 
 // ── Helpers ──────────────────────────────────────────────────────
 
@@ -459,6 +430,7 @@ const PreviewPanel = ({ draft }: { draft: PlaybookDraft }) => {
     : draft.trigger.type === "schedule" ? draft.trigger.schedule
     : draft.trigger.type === "threshold" ? `${draft.trigger.threshold?.field} ${draft.trigger.threshold?.operator} ${draft.trigger.threshold?.value}`
     : "Manual trigger";
+import { DEMO_BIZ_CATEGORIES as DEMO_CATEGORIES, DEMO_CONDITION_FIELDS, DEMO_TRIGGER_EVENTS } from "@/lib/demo-data/business";
 
   return (
     <SitaCard className="p-4" hover={false}>

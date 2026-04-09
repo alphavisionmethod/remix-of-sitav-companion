@@ -13,15 +13,8 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 
-const DEMO_ALLOCATIONS = [
-  { asset: "US Equities", target: 40, current: 42.3, value: 423000, drift: 2.3, color: "bg-blue-500" },
-  { asset: "International Equities", target: 20, current: 18.1, value: 181000, drift: -1.9, color: "bg-purple-500" },
-  { asset: "Fixed Income", target: 25, current: 24.8, value: 248000, drift: -0.2, color: "bg-emerald-500" },
-  { asset: "Real Estate", target: 10, current: 10.5, value: 105000, drift: 0.5, color: "bg-amber-500" },
-  { asset: "Cash & Equivalents", target: 5, current: 4.3, value: 43000, drift: -0.7, color: "bg-gray-400" },
-];
-
 import { ASSET_COLORS } from "@/lib/constants/ui-config";
+import { DEMO_ALLOCATIONS } from "@/lib/demo-data/core-pages";
 
 export default function CapitalAllocationPage() {
   const { isDemoMode } = useDataMode();

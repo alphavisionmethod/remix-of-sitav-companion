@@ -6,23 +6,11 @@ import { Progress } from "@/components/ui/progress";
 import { BarChart3, TrendingUp, DollarSign, ArrowUpRight, RefreshCw, Zap, Target, CheckCircle, AlertTriangle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_AUTOPILOT_ACTIONS, DEMO_WINBACKS } from "@/lib/demo-data/admin-platform";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
-
-const DEMO_AUTOPILOT_ACTIONS = [
-  { id: "ra-1", action: "Re-engagement email to 12 dormant leads", result: "3 reopened conversations", value: "$2,400", confidence: 0.85, status: "completed" as const },
-  { id: "ra-2", action: "Pricing optimization suggestion for Premium tier", result: "Pending approval", value: "$800/mo est.", confidence: 0.72, status: "pending" as const },
-  { id: "ra-3", action: "Churn risk mitigation — 2 at-risk accounts contacted", result: "1 saved, 1 pending", value: "$1,200", confidence: 0.68, status: "active" as const },
-  { id: "ra-4", action: "Upsell recommendation for 5 qualified accounts", result: "2 accepted", value: "$3,100", confidence: 0.91, status: "completed" as const },
-];
-
-const DEMO_WINBACKS = [
-  { name: "Acme Corp", lostRevenue: 2400, probability: 0.65, lastContact: "12d ago" },
-  { name: "StartupXYZ", lostRevenue: 800, probability: 0.45, lastContact: "30d ago" },
-  { name: "TechFlow Inc", lostRevenue: 1600, probability: 0.78, lastContact: "5d ago" },
-];
 
 const statusColor = { completed: "bg-emerald-500/10 text-emerald-500 border-emerald-500/20", pending: "bg-amber-500/10 text-amber-500 border-amber-500/20", active: "bg-blue-500/10 text-blue-500 border-blue-500/20" };
 

@@ -8,15 +8,7 @@ import { cn } from "@/lib/utils";
 import { AppIcon, VerificationBadge } from "@/components/sita/app-platform/AppStoreComponents";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_ENTERPRISE_APPS = [
-  { id: "ent-crm", name: "Internal CRM", publisher: "Your Organization", icon: "📊", iconBg: "from-blue-600 to-blue-400", version: "3.2.1", description: "Customer relationship management tool", status: "available", roles: ["Sales", "Support"], managed: true },
-  { id: "ent-hr", name: "HR Portal", publisher: "Your Organization", icon: "👥", iconBg: "from-green-600 to-green-400", version: "2.0.0", description: "Employee self-service and HR management", status: "available", roles: ["All employees"], managed: true },
-  { id: "ent-wiki", name: "Internal Wiki", publisher: "Your Organization", icon: "📚", iconBg: "from-purple-600 to-purple-400", version: "1.8.0", description: "Company knowledge base and documentation", status: "installed", roles: ["All employees"], managed: true },
-  { id: "ent-vpn", name: "Secure VPN", publisher: "IT Department", icon: "🔒", iconBg: "from-gray-700 to-gray-500", version: "5.1.0", description: "Enterprise VPN for secure access", status: "required", roles: ["Remote workers"], managed: true },
-  { id: "ent-analytics", name: "Business Analytics", publisher: "Your Organization", icon: "📈", iconBg: "from-indigo-600 to-indigo-400", version: "4.0.0", description: "Data analytics and reporting dashboard", status: "restricted", roles: ["Managers", "Analysts"], managed: true },
-  { id: "ent-deploy", name: "Deploy Pipeline", publisher: "DevOps Team", icon: "🚀", iconBg: "from-orange-600 to-orange-400", version: "2.3.0", description: "CI/CD pipeline management", status: "available", roles: ["Engineering"], managed: true },
-];
+import { DEMO_ENTERPRISE_APPS } from "@/lib/demo-data/core-pages";
 
 const statusConfig: Record<string, { label: string; color: string; icon: typeof Check }> = {
   available: { label: "Available", color: "bg-primary text-primary-foreground", icon: Check },

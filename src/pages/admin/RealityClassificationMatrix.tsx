@@ -26,7 +26,6 @@ const CLASSIFICATION_CONFIG = {
   proven: { label: "Proven", color: "bg-emerald-500/20 text-emerald-400", icon: CheckCircle2, description: "Persisted + verified + contract-aligned + launch-honest" },
 } as const;
 
-const DEMO_CONTRACT_STATUSES = ["none", "partial", "aligned", "verified"] as const;
 const LAUNCH_IMPACT_CONFIG = {
   blocking: { label: "Blocking", color: "text-destructive" },
   degraded: { label: "Degraded", color: "text-yellow-400" },
@@ -329,6 +328,7 @@ function ProgressionCard({ data }: { data: RealityClassification[] }) {
   const progression = useMemo(() => {
     const items = data.filter(d => d.classification !== "proven").map(d => {
       const nextState = d.classification === "persisted" ? "proven" : d.classification === "simulated" ? "persisted" : "simulated";
+import { DEMO_CONTRACT_STATUSES } from "@/lib/demo-data/admin-platform";
       const key = `${d.classification}→${nextState}`;
       const required = PROGRESSION_REQUIREMENTS[key] ?? [];
       const met = required.filter(r => (d.evidence_inputs ?? []).includes(r)).length;

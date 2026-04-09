@@ -13,27 +13,12 @@ interface ServiceMigration {
   currentBacking: "memory-only" | "hybrid" | "durable";
   targetBacking: string;
   phase: "not-started" | "adapter-built" | "wired" | "validated" | "complete";
+import { DEMO_ADMIN_SERVICES as DEMO_SERVICES, DEMO_PHASE_ORDER } from "@/lib/demo-data/admin-platform";
   blockers: string[];
   continuityGain: string;
   tables: string[];
 }
 
-const DEMO_SERVICES: ServiceMigration[] = [
-  { name: "EventBus", currentBacking: "hybrid", targetBacking: "os_event_log", phase: "complete", blockers: [], continuityGain: "Events survive refresh, replay possible", tables: ["os_event_log"] },
-  { name: "MemoryService", currentBacking: "hybrid", targetBacking: "os_memory_scoped", phase: "complete", blockers: [], continuityGain: "Scoped memory survives sessions, hydration on boot", tables: ["os_memory_scoped"] },
-  { name: "PolicyEngine", currentBacking: "hybrid", targetBacking: "os_policy_evaluations", phase: "complete", blockers: [], continuityGain: "Policy decisions inspectable, audit trail", tables: ["os_policy_evaluations"] },
-  { name: "ActionStateMachine", currentBacking: "hybrid", targetBacking: "os_action_lineage", phase: "complete", blockers: [], continuityGain: "Canonical 16-state lifecycle, full lineage", tables: ["os_action_lineage"] },
-  { name: "Intelligence Assets", currentBacking: "durable", targetBacking: "intelligence_assets_library", phase: "complete", blockers: [], continuityGain: "Reusable artifacts across sessions", tables: ["intelligence_assets_library"] },
-  { name: "Quality Floor Engine", currentBacking: "durable", targetBacking: "quality_floor_configs", phase: "complete", blockers: [], continuityGain: "Quality rules persist", tables: ["quality_floor_configs"] },
-  { name: "Compute Governance", currentBacking: "durable", targetBacking: "compute_budget_snapshots", phase: "complete", blockers: [], continuityGain: "Budget snapshots durable", tables: ["compute_budget_snapshots"] },
-  { name: "Operator Taste Memory", currentBacking: "durable", targetBacking: "operator_taste_profiles", phase: "complete", blockers: [], continuityGain: "Operator preferences persist", tables: ["operator_taste_profiles"] },
-  { name: "Receipts/Proofs", currentBacking: "durable", targetBacking: "sita_receipts/sita_proofs", phase: "complete", blockers: [], continuityGain: "Proof linkage complete", tables: ["sita_receipts", "sita_proofs"] },
-  { name: "Advisor Orchestration", currentBacking: "hybrid", targetBacking: "engine_state", phase: "wired", blockers: ["Consumer offset tracking"], continuityGain: "Advisor state survives refresh", tables: ["engine_state"] },
-  { name: "Digital Twin Engine", currentBacking: "hybrid", targetBacking: "engine_state", phase: "wired", blockers: [], continuityGain: "Twin projections persist", tables: ["engine_state"] },
-  { name: "Entity Role Graph", currentBacking: "hybrid", targetBacking: "engine_state", phase: "adapter-built", blockers: ["Needs graph serialization"], continuityGain: "Role graph survives sessions", tables: ["engine_state"] },
-];
-
-const DEMO_PHASE_ORDER = ["not-started", "adapter-built", "wired", "validated", "complete"];
 const PHASE_COLORS: Record<string, string> = { "not-started": "bg-red-500/20 text-red-400", "adapter-built": "bg-amber-500/20 text-amber-400", "wired": "bg-blue-500/20 text-blue-400", "validated": "bg-emerald-500/20 text-emerald-400", "complete": "bg-teal-500/20 text-teal-400" };
 
 export default function CoreServiceMigrationBoard() {

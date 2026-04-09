@@ -5,44 +5,7 @@ import { useState } from "react";
 import { Eye, CheckCircle2, ArrowRight, Palette, Layout, Accessibility, Moon, Type, Move } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_DIFFS = [
-  {
-    id: 1, title: "Admin header — gradient accent upgrade", area: "Admin Shell", agent: "Design Engineer",
-    before: { description: "Flat header with icon + title. No depth, no visual hierarchy. Blends with card background.", visual: "border-border bg-card p-4 rounded-lg" },
-    after: { description: "Gradient header with accent icon badge, subtitle, and action slot. Creates premium feel.", visual: "border-primary/20 bg-gradient-to-br from-primary/5 via-card to-card p-4 rounded-2xl" },
-    rationale: "Improves scannability. Creates visual weight consistent with boardroom surfaces. Guides the eye to title first, then actions.",
-    confidence: 84, consistency: 92, impact: "medium", tokens: ["--primary", "--card", "rounded-2xl"], status: "ready" as const
-  },
-  {
-    id: 2, title: "Dark mode — table header contrast fix", area: "Data Tables", agent: "Design Engineer",
-    before: { description: "bg-muted/30 with text-muted-foreground. Contrast ratio 3.2:1 — fails WCAG AA.", visual: "bg-muted/30 text-muted-foreground p-3 rounded-lg" },
-    after: { description: "bg-muted/50 with text-foreground. Contrast ratio 5.1:1 — passes WCAG AA.", visual: "bg-muted/50 text-foreground p-3 rounded-lg" },
-    rationale: "WCAG AA requires 4.5:1 for normal text. Current table headers fail in dark mode. This is a compliance-blocking issue.",
-    confidence: 95, consistency: 88, impact: "high", tokens: ["--muted", "--foreground"], status: "applied" as const
-  },
-  {
-    id: 3, title: "Mission Control cards — progressive disclosure", area: "Mission Control", agent: "Design Engineer",
-    before: { description: "Dense cards with 8 inline metrics, small badges, and crowded layout. Cognitive overload.", visual: "border-border/40 bg-card p-3 rounded-lg" },
-    after: { description: "3 key metrics visible at glance. Expandable detail section for deep data. Cleaner hierarchy.", visual: "border-border/40 bg-card p-4 rounded-xl" },
-    rationale: "Operator surfaces should show decision-relevant data first. Detail-on-demand reduces cognitive load by ~40%.",
-    confidence: 77, consistency: 85, impact: "medium", tokens: ["rounded-xl", "text-sm"], status: "proposal" as const
-  },
-  {
-    id: 4, title: "Revenue Office stat cards — premium upgrade", area: "Revenue Office", agent: "Design Engineer",
-    before: { description: "Plain border cards with centered text and no icon emphasis. Functional but flat.", visual: "border-border/40 bg-card p-4 text-center rounded-xl" },
-    after: { description: "Subtle gradient cards with accent icon, trend indicators, and richer typography.", visual: "border-primary/10 bg-gradient-to-br from-primary/5 via-card to-card p-4 rounded-xl" },
-    rationale: "Aligns with premium design language used in Investment Office and Boardroom. Creates consistency across offices.",
-    confidence: 82, consistency: 90, impact: "medium", tokens: ["--primary", "gradient"], status: "ready" as const
-  },
-  {
-    id: 5, title: "Sidebar — active state indicator refinement", area: "Navigation", agent: "Design Engineer",
-    before: { description: "Active route shown with bg-muted. No left indicator, no color accent. Hard to spot in long lists.", visual: "bg-muted rounded-md p-2" },
-    after: { description: "Left accent bar (2px primary) + bg-primary/5 + font-medium. Instantly visible active state.", visual: "border-l-2 border-primary bg-primary/5 rounded-md p-2 font-medium" },
-    rationale: "With 40+ sidebar items, fast identification of current location is critical. Left-bar pattern is proven in premium UIs.",
-    confidence: 89, consistency: 94, impact: "low", tokens: ["--primary", "border-l-2"], status: "ready" as const
-  },
-];
+import { DEMO_ADMIN_DIFFS as DEMO_DIFFS } from "@/lib/demo-data/admin-platform";
 
 const AIDesignDiffTheater = () => {
   const { isDemoMode } = useDataMode();

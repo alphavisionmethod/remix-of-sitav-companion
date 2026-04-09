@@ -5,54 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_FUNNELS = [
-  {
-    name: "Launch Pro Funnel",
-    status: "live",
-    visitors: 2840,
-    optIns: 682,
-    sales: 47,
-    revenue: "$14,100",
-    conversionRate: "1.65%",
-    steps: [
-      { name: "Landing Page", visitors: 2840, conversion: "24.0%" },
-      { name: "Opt-In Form", visitors: 682, conversion: "42.1%" },
-      { name: "Sales Page", visitors: 287, conversion: "16.4%" },
-      { name: "Checkout", visitors: 47, conversion: "100%" },
-      { name: "Thank You", visitors: 47, conversion: "—" },
-    ],
-  },
-  {
-    name: "Free Consultation Funnel",
-    status: "live",
-    visitors: 1240,
-    optIns: 186,
-    sales: 12,
-    revenue: "$28,800",
-    conversionRate: "0.97%",
-    steps: [
-      { name: "Landing Page", visitors: 1240, conversion: "15.0%" },
-      { name: "Application Form", visitors: 186, conversion: "38.7%" },
-      { name: "Booking Page", visitors: 72, conversion: "16.7%" },
-      { name: "Confirmation", visitors: 12, conversion: "—" },
-    ],
-  },
-  {
-    name: "Webinar Registration",
-    status: "draft",
-    visitors: 0,
-    optIns: 0,
-    sales: 0,
-    revenue: "$0",
-    conversionRate: "—",
-    steps: [
-      { name: "Registration Page", visitors: 0, conversion: "—" },
-      { name: "Confirmation", visitors: 0, conversion: "—" },
-      { name: "Replay + Offer", visitors: 0, conversion: "—" },
-    ],
-  },
-];
+import { DEMO_FUNNELS } from "@/lib/demo-data/revenue-office";
 
 export default function FunnelBuilder() {
   const { isDemoMode } = useDataMode();

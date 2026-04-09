@@ -6,29 +6,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useDeals } from "@/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
-
-const DEMO_PIPELINE_STAGES = [
-  { name: "Awareness", count: 142, value: "$0", conversion: "100%" },
-  { name: "Interest", count: 89, value: "$0", conversion: "62.7%" },
-  { name: "Consideration", count: 34, value: "$85,000", conversion: "38.2%" },
-  { name: "Intent", count: 18, value: "$126,000", conversion: "52.9%" },
-  { name: "Negotiation", count: 8, value: "$92,000", conversion: "44.4%" },
-  { name: "Won", count: 5, value: "$47,280", conversion: "62.5%" },
-];
-
-const DEMO_LEAKS = [
-  { area: "Stale leads (>14 days)", count: 12, revenue: "$34,200", severity: "high" },
-  { area: "Abandoned checkouts", count: 8, revenue: "$6,400", severity: "medium" },
-  { area: "Missed follow-ups", count: 5, revenue: "$18,500", severity: "high" },
-  { area: "Expired quotes", count: 3, revenue: "$12,000", severity: "medium" },
-];
-
-const DEMO_ADVISOR_SIGNALS = [
-  { advisor: "Growth", signal: "Lead volume up 18% — nurture sequences should scale", type: "opportunity" },
-  { advisor: "Sales", signal: "Close rate declining in Enterprise segment", type: "warning" },
-  { advisor: "Marketing", signal: "Email open rates strong — increase send frequency", type: "opportunity" },
-  { advisor: "Retention", signal: "2 high-value clients showing disengagement signals", type: "alert" },
-];
+import { DEMO_REV_ADVISOR_SIGNALS as DEMO_ADVISOR_SIGNALS, DEMO_REV_LEAKS as DEMO_LEAKS, DEMO_REV_PIPELINE_STAGES as DEMO_PIPELINE_STAGES } from "@/lib/demo-data/revenue-office";
 
 export default function GrowthBoardroom() {
   const { isDemoMode } = useDataMode();

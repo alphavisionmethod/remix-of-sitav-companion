@@ -13,6 +13,7 @@ const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
 
 type AlertSeverity = "critical" | "high" | "medium" | "low";
 type AlertStatus = "active" | "acknowledged" | "suppressed" | "resolved";
+import { DEMO_ADMIN_ALERTS_ALERT_TRIAGE_BOARD as DEMO_ALERTS } from "@/lib/demo-data/admin-platform";
 
 const sevConfig: Record<AlertSeverity, { color: string; bg: string }> = {
   critical: { color: "text-red-500", bg: "bg-red-500/10 border-red-500/20" },
@@ -34,14 +35,6 @@ interface Alert {
   createdAt: string;
   likelyImpact: string;
 }
-
-const DEMO_ALERTS: Alert[] = [
-  { id: "al-1", title: "Database connection pool exhaustion", severity: "critical", status: "active", source: "db-monitor", cluster: "database", timeToBreachMin: 5, runbookId: "rb-db-pool", createdAt: "2026-04-05T10:22:00Z", likelyImpact: "API failures, user-facing errors" },
-  { id: "al-2", title: "Connector Slack OAuth token expiring", severity: "high", status: "active", source: "connector-health", cluster: "connectors", timeToBreachMin: 120, runbookId: "rb-conn-refresh", createdAt: "2026-04-05T10:15:00Z", likelyImpact: "Slack integration failure" },
-  { id: "al-3", title: "Workflow engine memory pressure", severity: "medium", status: "acknowledged", source: "k8s-monitor", cluster: "compute", assignee: "ops-team", createdAt: "2026-04-05T09:50:00Z", likelyImpact: "Workflow processing delays" },
-  { id: "al-4", title: "SSL certificate renewal due in 14d", severity: "low", status: "active", source: "cert-monitor", createdAt: "2026-04-05T08:00:00Z", likelyImpact: "None if renewed on time" },
-  { id: "al-5", title: "Duplicate event bus messages detected", severity: "medium", status: "suppressed", source: "event-bus", cluster: "messaging", createdAt: "2026-04-05T09:30:00Z", likelyImpact: "Idempotency handling required" },
-];
 
 const AlertTriageBoard = () => {
   const { isDemoMode } = useDataMode();

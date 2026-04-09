@@ -15,15 +15,6 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
-const DEMO_CATEGORIES = [
-  { key: "incident", label: "Incidents & Alerts", description: "Critical system issues and security alerts" },
-  { key: "approval", label: "Approvals", description: "Pending approval requests and decisions" },
-  { key: "ai_activity", label: "AI Activity", description: "Agent completions, learning events, and recommendations" },
-  { key: "connector", label: "Connectors", description: "Connection status changes and sync updates" },
-  { key: "workflow", label: "Workflows", description: "Workflow completions and failures" },
-  { key: "system", label: "System", description: "Maintenance, updates, and general system notifications" },
-];
-
 export default function NotificationPreferences() {
   const { isDemoMode } = useDataMode();
   const { user } = useAuth();
@@ -49,6 +40,7 @@ export default function NotificationPreferences() {
 
   const permissionLabel = permissionState === "granted" ? "Granted" : permissionState === "denied" ? "Blocked" : permissionState === "default" ? "Not Asked" : "Unsupported";
   const permissionColor = permissionState === "granted" ? "bg-emerald-500/15 text-emerald-400" : permissionState === "denied" ? "bg-destructive/15 text-destructive" : "bg-muted text-muted-foreground";
+import { DEMO_CORE_CATEGORIES_NOTIFICATION_PREFERENCES as DEMO_CATEGORIES } from "@/lib/demo-data/core-pages";
 
   return (
     <div className="p-6 max-w-3xl mx-auto space-y-6" data-testid="notification-preferences-page">

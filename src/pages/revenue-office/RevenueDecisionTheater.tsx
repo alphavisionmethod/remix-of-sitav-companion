@@ -4,34 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Theater, AlertTriangle, CheckCircle, Users, TrendingUp, Shield, Zap, ArrowRight } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_pendingDecisions = [
-  {
-    title: "Launch 'Summer Accelerator' Campaign",
-    type: "Campaign Launch",
-    impact: "Est. 120 new leads, $18,000 revenue",
-    risk: "Audience fatigue if timing overlaps with Spring campaign",
-    affected: "3 funnels, 2 segments, 1,200 contacts",
-    advisors: [
-      { name: "Campaign Advisor", stance: "Approve — timing is good, but delay 5 days to avoid overlap", confidence: 78 },
-      { name: "Funnel Advisor", stance: "Approve — landing pages are strong", confidence: 85 },
-      { name: "Revenue Strategist", stance: "Approve with caution — watch fatigue signals", confidence: 72 },
-    ],
-    whatBreaks: ["Audience fatigue from recent Spring campaign", "Email deliverability if volume spikes", "Support capacity during launch week"],
-  },
-  {
-    title: "Enable Auto-Booking for Free Consultations",
-    type: "Booking Policy",
-    impact: "Est. +40% booking rate, capacity utilization from 60% to 85%",
-    risk: "No-show rate may increase without qualification step",
-    affected: "All booking pages, 3 funnels, calendar",
-    advisors: [
-      { name: "Booking Advisor", stance: "Approve — add SMS reminder to offset no-shows", confidence: 82 },
-      { name: "CRM Advisor", stance: "Approve — but add pre-call form for qualification", confidence: 76 },
-    ],
-    whatBreaks: ["No-show rate increase", "Calendar overwhelm without capacity limits", "Unqualified leads consuming time"],
-  },
-];
+import { DEMO_pendingDecisions } from "@/lib/demo-data/revenue-office";
 
 export default function DecisionTheater() {
   const { isDemoMode } = useDataMode();

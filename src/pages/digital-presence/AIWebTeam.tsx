@@ -159,28 +159,6 @@ const AGENTS: AgentProfile[] = [
   },
 ];
 
-const DEMO_DISAGREEMENTS = [
-  {
-    topic: "Homepage hero redesign priority",
-    agents: ["Web Strategist", "Design Director", "CRO Advisor"],
-    positions: [
-      { agent: "Web Strategist", position: "Prioritize value prop rewrite first", confidence: 87 },
-      { agent: "Design Director", position: "Visual hierarchy fix is more impactful", confidence: 82 },
-      { agent: "CRO Advisor", position: "CTA above fold is the fastest win", confidence: 92 },
-    ],
-    resolution: "CRO Advisor's suggestion has highest confidence and fastest impact. Recommend CTA fix first, then content, then layout."
-  },
-  {
-    topic: "Blog content refresh vs new landing pages",
-    agents: ["Content Strategist", "Web Strategist"],
-    positions: [
-      { agent: "Content Strategist", position: "Refresh 12 stale blogs — engagement declining", confidence: 94 },
-      { agent: "Web Strategist", position: "New campaign landing page will drive more conversions", confidence: 76 },
-    ],
-    resolution: "Content refresh has higher confidence. Recommend parallel execution — refresh blogs while drafting landing page."
-  },
-];
-
 const SYNTHESIS = {
   biggestProblem: "Contact form abandonment at 40% is the largest conversion leak",
   biggestOpportunity: "Adding social proof to checkout could lift conversion by ~15%",
@@ -337,6 +315,7 @@ export default function AIWebTeam() {
           {AGENTS.map((agent, i) => {
             const isExpanded = expandedAgent === agent.id;
             const intensityColor = intensities[agent.id] === "proactive" ? "text-green-400" : intensities[agent.id] === "balanced" ? "text-amber-400" : "text-slate-400";
+import { DEMO_DPO_DISAGREEMENTS as DEMO_DISAGREEMENTS } from "@/lib/demo-data/digital-presence";
 
             return (
               <motion.div key={agent.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>

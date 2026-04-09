@@ -4,45 +4,7 @@ import { Settings2, Eye, Search, Zap, Calendar, Activity, Shield } from "lucide-
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useInvestmentStrategyRecords } from "@/hooks/use-investment-office";
-
-const DEMO_MODES = [
-  {
-    id: "quiet", label: "Quiet Monitoring", icon: <Eye className="h-5 w-5" />, emoji: "🌙",
-    description: "Low-intensity passive observation. Advisors watch silently. Alerts only for material changes.",
-    density: "Minimal", advisorIntensity: "Silent / alert-only", alerting: "Critical only", riskFraming: "Steady-state",
-    color: "hsl(var(--primary))",
-  },
-  {
-    id: "research", label: "Research Day", icon: <Search className="h-5 w-5" />, emoji: "🔬",
-    description: "Deep analysis mode. Research library and dossiers prioritized. Advisors provide longer-form intelligence.",
-    density: "Medium", advisorIntensity: "Detailed memos", alerting: "Low", riskFraming: "Analytical",
-    color: "hsl(200 65% 55%)",
-  },
-  {
-    id: "execution", label: "Execution Day", icon: <Zap className="h-5 w-5" />, emoji: "⚡",
-    description: "Active trading mode. Execution desk prominent. Advisors provide real-time trade prep commentary.",
-    density: "High", advisorIntensity: "Real-time", alerting: "Active", riskFraming: "Pre-trade focus",
-    color: "hsl(38 85% 58%)",
-  },
-  {
-    id: "event", label: "Event Week", icon: <Calendar className="h-5 w-5" />, emoji: "📅",
-    description: "Catalyst-aware mode. War room active. Event markets highlighted. Timeline-driven framing.",
-    density: "High", advisorIntensity: "Event-focused", alerting: "Catalyst-driven", riskFraming: "Event sensitivity",
-    color: "hsl(280 60% 55%)",
-  },
-  {
-    id: "volatility", label: "High Volatility", icon: <Activity className="h-5 w-5" />, emoji: "🌊",
-    description: "Storm mode. Risk office prominent. Behavioral firewall elevated. Execution requires extra review.",
-    density: "Dense", advisorIntensity: "Maximum", alerting: "All channels", riskFraming: "Defensive",
-    color: "hsl(0 65% 55%)",
-  },
-  {
-    id: "preservation", label: "Capital Preservation", icon: <Shield className="h-5 w-5" />, emoji: "🛡️",
-    description: "Safety mode. Focus on reserve health, hedging, and income. Aggressive actions require elevated approval.",
-    density: "Low", advisorIntensity: "Cautious", alerting: "Risk-only", riskFraming: "Preservation-first",
-    color: "hsl(152 55% 48%)",
-  },
-];
+import { DEMO_MODES } from "@/lib/demo-data/investment";
 
 export default function OperatingModes() {
   const { isDemoMode } = useDataMode();

@@ -4,49 +4,7 @@ import { useState } from "react";
 import { History, ArrowRight, TrendingUp, TrendingDown, AlertTriangle, CheckCircle2, Zap, RotateCcw, GitBranch } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_TIMELINE = [
-  {
-    time: "Apr 5, 10:12", event: "Preview deploy v2.15.0-rc2", type: "deploy" as const,
-    details: "Added 8 AI Engineering Board pages, updated App.tsx routing",
-    impact: "positive" as const, metrics: { errors: "0 new", performance: "No change", tests: "All pass" }
-  },
-  {
-    time: "Apr 5, 09:45", event: "Staging deploy v2.15.0-rc1", type: "deploy" as const,
-    details: "Projection cache strategy update + admin shell lazy imports",
-    impact: "mixed" as const, metrics: { errors: "+14 projection errors", performance: "Admin LCP 3.2s (+191%)", tests: "2 flaky" }
-  },
-  {
-    time: "Apr 4, 16:30", event: "Feature flag: revenue-sidebar-v2 enabled", type: "config" as const,
-    details: "New sidebar layout for Revenue Office activated for 100% of users",
-    impact: "negative" as const, metrics: { errors: "+3 render errors", performance: "No change", tests: "N/A" }
-  },
-  {
-    time: "Apr 4, 17:15", event: "Feature flag: revenue-sidebar-v2 reverted", type: "rollback" as const,
-    details: "Reliability Engineer auto-reverted after detecting render errors",
-    impact: "positive" as const, metrics: { errors: "-3 (resolved)", performance: "Restored", tests: "N/A" }
-  },
-  {
-    time: "Apr 4, 14:22", event: "Production deploy v2.14.3", type: "deploy" as const,
-    details: "Cache strategy update, 3 bug fixes, 1 new admin page",
-    impact: "positive" as const, metrics: { errors: "0 new", performance: "Slight improvement", tests: "All pass" }
-  },
-  {
-    time: "Apr 3, 11:00", event: "Config: PROJECTION_REBUILD_CONCURRENCY → 5", type: "config" as const,
-    details: "Increased from 2 to 5 to speed up projection rebuilds",
-    impact: "negative" as const, metrics: { errors: "Contributed to race condition", performance: "Faster rebuilds", tests: "N/A" }
-  },
-  {
-    time: "Apr 2, 11:05", event: "Production deploy v2.14.2", type: "deploy" as const,
-    details: "Brand kit refresh, 2 edge function updates",
-    impact: "positive" as const, metrics: { errors: "1 minor", performance: "No change", tests: "All pass" }
-  },
-  {
-    time: "Mar 30, 16:40", event: "Production deploy v2.14.1", type: "deploy" as const,
-    details: "Approval flow improvements, accessibility fixes",
-    impact: "positive" as const, metrics: { errors: "0", performance: "No change", tests: "All pass" }
-  },
-];
+import { DEMO_ADMIN_TIMELINE as DEMO_TIMELINE } from "@/lib/demo-data/admin-platform";
 
 const typeIcons: Record<string, typeof GitBranch> = { deploy: GitBranch, config: Zap, rollback: RotateCcw };
 const impactColors: Record<string, string> = { positive: "text-[hsl(var(--trust-safe))]", negative: "text-destructive", mixed: "text-amber-500" };

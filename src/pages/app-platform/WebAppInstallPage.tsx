@@ -15,15 +15,7 @@ import { AppIcon, VerificationBadge } from "@/components/sita/app-platform/AppSt
 import type { AppDefinition } from "@/lib/app-platform/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-const DEMO_DETECTED_SITES = [
-  { url: "https://mail.google.com", name: "Gmail", icon: "📧", trustLevel: "sita-verified" as const, installable: true },
-  { url: "https://github.com", name: "GitHub", icon: "🐙", trustLevel: "sita-verified" as const, installable: true },
-  { url: "https://linear.app", name: "Linear", icon: "📐", trustLevel: "sita-verified" as const, installable: true },
-  { url: "https://notion.so", name: "Notion", icon: "📝", trustLevel: "sita-verified" as const, installable: true },
-  { url: "https://figma.com", name: "Figma", icon: "🎨", trustLevel: "sita-verified" as const, installable: true },
-  { url: "https://canva.com", name: "Canva", icon: "🖌️", trustLevel: "sita-verified" as const, installable: true },
-];
+import { DEMO_DETECTED_SITES } from "@/lib/demo-data/core-pages";
 
 const WebAppInstallPage = () => {
   const { isDemoMode } = useDataMode();
