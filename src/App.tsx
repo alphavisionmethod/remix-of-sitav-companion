@@ -770,6 +770,11 @@ const App = () => (
                     <Route path="/profile" element={<UserProfilePage />} />
                     <Route path="/life" element={<LifeDashboard />} />
                     <Route path="/life-simulator" element={<LifeSimulator />} />
+                    <Route path="/personal-life" element={<PersonalLifeWorkspace />} />
+                    <Route path="/downloads" element={<DownloadsCenter />} />
+                    <Route path="/storage" element={<StorageManager />} />
+                    <Route path="/network" element={<NetworkUtility />} />
+                    <Route path="/planning-canvas" element={<PlanningCanvas />} />
                     <Route path="/my-activity" element={<MyActivity />} />
 
                     {/* ── 3B: OS Core Space — Business ── */}
