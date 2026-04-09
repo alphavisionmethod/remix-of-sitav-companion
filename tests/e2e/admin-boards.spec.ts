@@ -23,6 +23,7 @@ const ADMIN_ROUTES = [
   "/admin/customer-journey/broken-clicks",
   "/admin/customer-journey/remediation",
   "/admin/cn01-connector-reality",
+  "/admin/conscience-gate",
 ];
 
 test.describe("Admin Boards", () => {
