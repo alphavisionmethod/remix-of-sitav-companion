@@ -21,6 +21,3 @@ export {
   getProviderById,
 } from "@/lib/core-services/integration-hub/providers";
 
-export type {
-  IntegrationProvider,
-} from "@/lib/core-services/integration-hub/providers";
