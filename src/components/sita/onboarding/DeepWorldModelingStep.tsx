@@ -209,6 +209,7 @@ export function DeepWorldModelingStep({ data, onUpdate, onNext, onPrev }: Props)
                         )}
                         {ch.id === "money" && (
                           <>
+                            <p className="text-[10px] text-muted-foreground/60 italic mb-2">This is private — skip if you prefer.</p>
                             <div>
                               <label className="text-xs font-semibold text-muted-foreground mb-2 block">Financial posture</label>
                               <div className="flex items-center gap-3">
