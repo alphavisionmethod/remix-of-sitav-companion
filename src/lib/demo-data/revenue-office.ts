@@ -10,7 +10,7 @@ import {
 
 interface Deal {
   id: string; name: string; value: number; probability: number; age: number;
-  owner: string; contact: string; nextAction: string; nextActionDate: string;
+  owner: string; contact: string; nextAction?: string; nextActionDate?: string;
   source: string; tags: string[];
 }
 
