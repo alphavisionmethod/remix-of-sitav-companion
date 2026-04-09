@@ -1,5 +1,7 @@
 import { QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { AdminRoutes } from "@/routes/AdminRoutes";
+import { OwnerRoutes } from "@/routes/OwnerRoutes";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -694,14 +696,20 @@ const App = () => (
           <RealityModeProvider>
           <Suspense fallback={<PageLoader />}>
           <Routes>
-            {/* Public routes — no kernel, no OS runtime */}
+            {/* ═══════════════════════════════════════════════════════════════
+                TIER 1: PUBLIC — No kernel, no OS runtime, PublicLayout only
+                5 routes: landing, login, signup, forgot/reset password
+               ═══════════════════════════════════════════════════════════════ */}
             <Route path="/login" element={<PublicLayout><PublicRoute><Login /></PublicRoute></PublicLayout>} />
             <Route path="/signup" element={<PublicLayout><PublicRoute><Signup /></PublicRoute></PublicLayout>} />
             <Route path="/forgot-password" element={<PublicLayout><PublicRoute><ForgotPassword /></PublicRoute></PublicLayout>} />
             <Route path="/reset-password" element={<PublicLayout><ResetPassword /></PublicLayout>} />
             <Route path="/" element={<PublicLayout><HomeRoute /></PublicLayout>} />
 
-            {/* Authenticated routes — full OS provider tree */}
+            {/* ═══════════════════════════════════════════════════════════════
+                TIER 2: AUTHENTICATED, NO SHELL — OS providers active, no sidebar
+                Onboarding ceremony, mobile shell, auth callback
+               ═══════════════════════════════════════════════════════════════ */}
             <Route path="/*" element={
               <AuthenticatedProviders>
               <Suspense fallback={<PageLoader />}>
@@ -721,12 +729,17 @@ const App = () => (
             <Route path="/mobile/approval/:id" element={<ProtectedRoute><MobileApprovalDetail /></ProtectedRoute>} />
             <Route path="/mobile/settings" element={<ProtectedRoute><MobileSettings /></ProtectedRoute>} />
 
+            {/* ═══════════════════════════════════════════════════════════════
+                TIER 3: FULL OS SHELL — Authenticated + ShellLayout (sidebar, header, command palette)
+                ~380 routes: OS Core, Offices, Workspaces, Built-in Apps, App Platform
+               ═══════════════════════════════════════════════════════════════ */}
             <Route path="*" element={
               <ProtectedRoute>
                 <ShellLayout>
                   <RouteErrorBoundary>
                   <Suspense fallback={<PageLoader />}>
                   <Routes>
+                    {/* ── 3A: OS Home & Desktop ── */}
                     <Route path="/" element={<DesktopPage />} />
                     <Route path="/home" element={<DailyPulse />} />
                     <Route path="/desktop" element={<DesktopPage />} />
