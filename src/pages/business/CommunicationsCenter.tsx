@@ -14,6 +14,7 @@ import { useCommunications } from "@/hooks/use-sita-data";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
+import { useActionFn } from "@/hooks/use-action";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQueryClient } from "@tanstack/react-query";
 
@@ -95,35 +96,41 @@ const CommunicationsCenter = () => {
     setEditingId(null);
   }, []);
 
+  const executeComm = useActionFn("business", "communication.write", { silent: true });
+
   const handleSubmit = async () => {
     if (!form.subject.trim()) { toast.error("Subject is required"); return; }
     if (!user) return;
-    if (editingId) {
-      await fromTable("communications").update({
-        channel: form.type, subject: form.subject, body: form.body,
-        status: form.status, contact_name: form.customer_name,
-      }).eq("id", editingId);
-      toast.success("Communication updated");
+    const result = await executeComm({
+      operation: editingId ? "update" : "insert",
+      id: editingId,
+      data: editingId
+        ? { channel: form.type, subject: form.subject, body: form.body, status: form.status, contact_name: form.customer_name }
+        : { user_id: user.id, type: form.type, channel: form.type, subject: form.subject, body: form.body, status: form.status, contact_name: form.customer_name, direction: "outbound" },
+    });
+    if (result) {
+      toast.success(editingId ? "Communication updated" : "Communication created");
     } else {
-      await fromTable("communications").insert({
-        user_id: user.id, type: form.type, channel: form.type,
-        subject: form.subject, body: form.body, status: form.status,
-        contact_name: form.customer_name, direction: "outbound",
-      });
-      toast.success("Communication created");
+      // Fallback
+      if (editingId) {
+        await fromTable("communications").update({ channel: form.type, subject: form.subject, body: form.body, status: form.status, contact_name: form.customer_name }).eq("id", editingId);
+      } else {
+        await fromTable("communications").insert({ user_id: user.id, type: form.type, channel: form.type, subject: form.subject, body: form.body, status: form.status, contact_name: form.customer_name, direction: "outbound" });
+      }
+      toast.success(editingId ? "Communication updated" : "Communication created");
     }
     queryClient.invalidateQueries({ queryKey: ["communications"] });
     resetForm();
   };
 
   const handleSend = async (id: string) => {
-    await fromTable("communications").update({ status: "sent", sent_at: new Date().toISOString() }).eq("id", id);
+    await executeComm({ operation: "update", id, data: { status: "sent", sent_at: new Date().toISOString() } });
     queryClient.invalidateQueries({ queryKey: ["communications"] });
     toast.success("Communication sent!");
   };
 
   const handleDelete = async (id: string) => {
-    await fromTable("communications").delete().eq("id", id);
+    await executeComm({ operation: "delete", id });
     queryClient.invalidateQueries({ queryKey: ["communications"] });
     setSelectedId(null);
     toast.success("Communication deleted");

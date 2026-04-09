@@ -12,6 +12,7 @@ import { TrustBadge } from "@/components/sita/TrustBadge";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
+import { useActionFn } from "@/hooks/use-action";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDataMode } from "@/contexts/DataModeContext";
 import {
@@ -145,17 +146,25 @@ const SettingsPage = () => {
     if (prefs.largeFontMode !== undefined) setLargeFontMode(prefs.largeFontMode);
   };
 
-  // Save all settings to profiles.preferences
+  const updateProfileFn = useActionFn("workspace", "profile.update", {
+    successMessage: "Settings saved",
+    errorMessage: "Failed to save",
+  });
+
   const saveProfile = async () => {
     if (!user) return;
     setIsSaving(true);
     try {
       const preferences = { autonomy, trustMode, notifFreq, dndEnabled, piiRedaction, budgetMode, confidence, simPref, contradictions, docRetention, largeFontMode };
-      const { error } = await fromTable("profiles").update({ display_name: displayName, preferences }).eq("user_id", user.id);
-      if (error) throw error;
-      toast.success("Settings saved");
-    } catch (e: any) {
-      toast.error(e.message || "Failed to save");
+      const result = await updateProfileFn({ table: "profiles", updates: { display_name: displayName, preferences }, userId: user.id });
+      if (!result) {
+        // Fallback
+        const { error } = await fromTable("profiles").update({ display_name: displayName, preferences }).eq("user_id", user.id);
+        if (error) throw error;
+      }
+    } catch (e: unknown) {
+      const msg = e instanceof Error ? e.message : "Failed to save";
+      toast.error(msg);
     } finally {
       setIsSaving(false);
     }
