@@ -73,6 +73,8 @@ import { PreviewExampleModal } from "@/components/sita/onboarding/PreviewExample
 import { CinematicIntro } from "@/components/sita/onboarding/CinematicIntro";
 import { RestorePreviewStep } from "@/components/sita/onboarding/RestorePreviewStep";
 import { ContextualWelcomeTour } from "@/components/sita/onboarding/ContextualWelcomeTour";
+import { OperatingContextStep } from "@/components/sita/onboarding/OperatingContextStep";
+import { RelationshipSensitivityStep } from "@/components/sita/onboarding/RelationshipSensitivityStep";
 import { Progress } from "@/components/ui/progress";
 
 // ── Types ───────────────────────────────────────────────────
@@ -125,6 +127,9 @@ interface SetupData {
   memoryConsent: string;
   homeComposition: string;
   recoverFirst: string;
+  operatingContext: string;
+  relationshipFocus: string;
+  desktopDensity: string;
 }
 
 // ── Phase Status Indicator ──────────────────────────────────
@@ -461,6 +466,9 @@ export function OSSetupExperience() {
     memoryConsent: "",
     homeComposition: "",
     recoverFirst: "",
+    operatingContext: "",
+    relationshipFocus: "",
+    desktopDensity: "",
   });
 
   // Sync setup state to engine for branch evaluation
