@@ -3,9 +3,9 @@ import { Dna, Info } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useInvestmentStrategyRecords } from "@/hooks/use-investment-office";
+import { DEMO_DNA_DIMENSIONS, DEMO_SUGGESTIONS } from "@/lib/demo-data/investment";
 
 const STRATEGY_SUMMARY = "Your portfolio reveals a growth-oriented, thesis-disciplined investor with moderate macro awareness. You show strong patience but occasionally drift toward speculation. Event markets are underweight relative to your macro interest.";
-import { DEMO_DNA_DIMENSIONS, DEMO_SUGGESTIONS } from "@/lib/demo-data/investment";
 
 export default function StrategyDNA() {
   const { isDemoMode } = useDataMode();

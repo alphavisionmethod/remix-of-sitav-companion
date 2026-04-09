@@ -9,10 +9,10 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_ADMIN_READINESS_CHECKS as DEMO_READINESS_CHECKS, DEMO_BLOCKERS } from "@/lib/demo-data/admin-platform";
 
 type BlockerSeverity = "critical" | "high" | "medium" | "low";
 type BlockerStatus = "open" | "in-progress" | "resolved" | "accepted-risk";
-import { DEMO_ADMIN_READINESS_CHECKS as DEMO_READINESS_CHECKS, DEMO_BLOCKERS } from "@/lib/demo-data/admin-platform";
 
 interface LaunchBlocker {
   id: string;

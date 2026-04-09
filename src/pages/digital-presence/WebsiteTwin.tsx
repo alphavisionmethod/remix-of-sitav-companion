@@ -5,10 +5,10 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_CONVERSION_PATHS, DEMO_PAGE_TREE, DEMO_WEAK_NODES } from "@/lib/demo-data/digital-presence";
 
 function PageNode({ page, depth = 0 }: { page: typeof DEMO_PAGE_TREE[0]; depth?: number }) {
   const healthColor = page.health >= 85 ? "text-green-400" : page.health >= 70 ? "text-amber-400" : "text-red-400";
-import { DEMO_CONVERSION_PATHS, DEMO_PAGE_TREE, DEMO_WEAK_NODES } from "@/lib/demo-data/digital-presence";
   return (
     <div style={{ marginLeft: depth * 24 }}>
       <DemoModeBadge />

@@ -5,9 +5,9 @@ import { useState } from "react";
 import { Shield, Eye, FileEdit, Sparkles, CheckCircle2, Lock, AlertTriangle, Users, Wrench, Palette, Bug, Gauge, BookOpen, Rocket, ShieldCheck, Brain } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_AGENT_BOUNDARIES, DEMO_CHANGE_TYPE_BOUNDARIES, DEMO_MISSION_BOUNDARIES } from "@/lib/demo-data/admin-platform";
 
 type AutonomyLevel = "observe_only" | "draft_only" | "safe_auto_heal" | "approval_required" | "never_automate";
-import { DEMO_AGENT_BOUNDARIES, DEMO_CHANGE_TYPE_BOUNDARIES, DEMO_MISSION_BOUNDARIES } from "@/lib/demo-data/admin-platform";
 
 const AUTONOMY_LABELS: Record<AutonomyLevel, { label: string; icon: typeof Eye; color: string; bg: string; description: string }> = {
   observe_only: { label: "Observe Only", icon: Eye, color: "text-muted-foreground", bg: "bg-muted", description: "Agent watches and reports. No proposals, no changes." },

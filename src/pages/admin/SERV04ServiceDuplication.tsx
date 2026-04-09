@@ -10,11 +10,11 @@ import { getDuplicateActionPatterns, getRoutesWithShadowRisk } from "@/lib/servi
 import { AlertTriangle, Copy, Ghost, Shield, CheckCircle, ArrowRight } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_SHADOW_PATTERNS } from "@/lib/demo-data/admin-platform";
 
 interface ShadowPattern {
   pattern: string;
   severity: "high" | "medium" | "low";
-import { DEMO_SHADOW_PATTERNS } from "@/lib/demo-data/admin-platform";
   domain: string;
   description: string;
   recommendation: string;
