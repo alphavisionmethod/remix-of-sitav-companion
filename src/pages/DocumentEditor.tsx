@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Document Editor
+// SITA OS — Document Editor 
 // Rich text editing with toolbar, templates, version history,
 // autosave, comments, and approval-ready draft mode.
 // ═══════════════════════════════════════════════════════════════
