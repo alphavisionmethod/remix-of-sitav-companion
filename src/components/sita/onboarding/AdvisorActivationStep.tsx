@@ -260,6 +260,11 @@ export function AdvisorActivationStep({ advisors, onUpdate, primaryUseMode, pain
             })}
           </div>
 
+          {/* Refine later */}
+          <p className="text-[10px] text-muted-foreground text-center">
+            You can add, remove, or tune advisors anytime in Settings → Advisors.
+          </p>
+
           {/* Navigation */}
           <StageTransitionController
             onPrev={onPrev}

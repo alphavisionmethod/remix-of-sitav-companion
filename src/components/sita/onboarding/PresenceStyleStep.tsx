@@ -60,6 +60,10 @@ export function PresenceStyleStep({ selected, onSelect, onNext, onPrev }: Presen
         ))}
       </div>
 
+      <p className="text-[10px] text-muted-foreground text-center pt-1">
+        You can change how SITA shows up anytime in Settings → Presence.
+      </p>
+
       <div className="flex items-center justify-between pt-2">
         <button onClick={onPrev} className="text-sm text-muted-foreground hover:text-foreground transition-colors">Back</button>
         <button onClick={onNext}

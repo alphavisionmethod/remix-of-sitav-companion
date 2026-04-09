@@ -52,6 +52,9 @@ export const StressSlippageStep = ({ data, onUpdate, onNext, onPrev }: Props) =>
         </div>
         <h2 className="text-xl font-semibold text-foreground">Where does support matter most?</h2>
         <p className="text-sm text-muted-foreground mt-1">SITA will prioritize help where life feels heaviest</p>
+        <p className="text-[10px] text-muted-foreground/60 mt-2 italic">
+          This is private — skip if you prefer. You can revisit anytime.
+        </p>
       </div>
 
       <div className="space-y-6">

@@ -64,6 +64,9 @@ export function HouseholdGraphStep({ nodes, onUpdate, onNext, onPrev }: Househol
       <div className="text-center">
         <h2 className="font-display text-2xl font-bold text-foreground">Your world</h2>
         <p className="mt-1.5 text-sm text-muted-foreground">Add the people and entities that matter. This builds your relationship graph.</p>
+        <p className="text-[10px] text-muted-foreground/60 mt-2 italic">
+          This is private — skip if you prefer. You can add people anytime later.
+        </p>
       </div>
 
       {/* Role chips */}

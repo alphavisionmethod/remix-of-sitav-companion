@@ -70,7 +70,7 @@ import { FirstSimulationStep } from "@/components/sita/onboarding/FirstSimulatio
 import { FirstActionsStep } from "@/components/sita/onboarding/FirstActionsStep";
 import { RecoverFirstStep } from "@/components/sita/onboarding/RecoverFirstStep";
 import { PreviewExampleModal } from "@/components/sita/onboarding/PreviewExampleModal";
-import { CinematicIntro } from "@/components/sita/onboarding/CinematicIntro";
+// CinematicIntro available but not used in main flow
 import { RestorePreviewStep } from "@/components/sita/onboarding/RestorePreviewStep";
 import { ContextualWelcomeTour } from "@/components/sita/onboarding/ContextualWelcomeTour";
 import { OperatingContextStep } from "@/components/sita/onboarding/OperatingContextStep";
