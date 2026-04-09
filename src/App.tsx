@@ -748,7 +748,7 @@ const App = () => (
                     <Route path="/life-simulator" element={<LifeSimulator />} />
                     <Route path="/my-activity" element={<MyActivity />} />
 
-                    {/* Business — parent container handles sub-routing via tabs */}
+                    {/* ── 3B: OS Core Space — Business ── */}
                     <Route path="/business" element={<BusinessCenter />} />
                     <Route path="/business/overview" element={<BusinessCenter />} />
                     <Route path="/business/leads" element={<BusinessCenter />} />
@@ -770,7 +770,7 @@ const App = () => (
                     <Route path="/business/customers/:id" element={<CustomerDetail />} />
                     <Route path="/business/customer-health" element={<CustomerHealthPage />} />
 
-                    {/* Money — parent container handles sub-routing via tabs */}
+                    {/* ── 3B: OS Core Space — Money ── */}
                     <Route path="/money" element={<MoneyCenter />} />
                     <Route path="/money/overview" element={<MoneyCenter />} />
                     <Route path="/money/bills" element={<MoneyCenter />} />
@@ -788,7 +788,7 @@ const App = () => (
                     <Route path="/money/boardroom" element={<MoneyCenter />} />
                     <Route path="/money/settings" element={<MoneyCenter />} />
 
-                    {/* Investment Office */}
+                    {/* ── 3B: OS Office — Investment Office (38 routes) ── */}
                     <Route path="/investments" element={<InvestmentGate />} />
                     <Route path="/investments/boardroom" element={<InvestmentBoardroom />} />
                     <Route path="/investments/markets" element={<MarketExplorer />} />
@@ -829,7 +829,7 @@ const App = () => (
                     <Route path="/investments/family-office" element={<FamilyOffice />} />
                     <Route path="/money/investments" element={<InvestmentGate />} />
 
-                    {/* Revenue Office */}
+                    {/* ── 3B: OS Office — Revenue Office (40 routes) ── */}
                     <Route path="/revenue-office" element={<RevenueGate />} />
                     <Route path="/revenue-office/boardroom" element={<GrowthBoardroom />} />
                     <Route path="/revenue-office/relationships" element={<RelationshipCenter />} />
@@ -944,7 +944,7 @@ const App = () => (
                     <Route path="/admin/customer-journey/coverage" element={<CJ08RouteActionCoverage />} />
                     <Route path="/admin/customer-journey/recent-runs" element={<CJ09RecentVerificationRuns />} />
 
-                    {/* Digital Presence Office */}
+                    {/* ── 3B: OS Office — Digital Presence Office (19 routes) ── */}
                     <Route path="/digital-presence" element={<PresenceGate />} />
                     <Route path="/digital-presence/boardroom" element={<PresenceBoardroom />} />
                     <Route path="/digital-presence/website-twin" element={<WebsiteTwin />} />
@@ -965,7 +965,7 @@ const App = () => (
                     <Route path="/digital-presence/domains" element={<DomainPublishManager />} />
                     <Route path="/digital-presence/onboarding" element={<DPOOnboarding />} />
 
-                    {/* Concierge — parent container handles sub-routing via tabs */}
+                    {/* ── 3B: OS Core Space — Concierge ── */}
                     <Route path="/concierge" element={<ConciergeCenter />} />
                     <Route path="/concierge/overview" element={<ConciergeCenter />} />
                     <Route path="/concierge/calendar" element={<ConciergeCenter />} />
@@ -1516,7 +1516,7 @@ const App = () => (
 
                      <Route path="/personal-brain" element={<PersonalBrain />} />
 
-                    {/* OS Apps */}
+                    {/* ── 3C: OS Built-in Apps ── */}
                     <Route path="/apps/email" element={<EmailApp />} />
                     <Route path="/apps/messenger" element={<MessengerApp />} />
                     <Route path="/apps/vault" element={<VaultApp />} />
@@ -1524,7 +1524,7 @@ const App = () => (
                     <Route path="/apps/gallery" element={<GalleryApp />} />
                     <Route path="/apps/weather-news" element={<WeatherNewsApp />} />
 
-                    {/* New Workspaces */}
+                    {/* ── 3D: OS Workspaces ── */}
                     <Route path="/calendar" element={<CalendarWorkspace />} />
                     <Route path="/notes" element={<NotesWorkspace />} />
                     <Route path="/people" element={<PeopleWorkspace />} />
