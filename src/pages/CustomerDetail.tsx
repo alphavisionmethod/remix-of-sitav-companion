@@ -40,7 +40,7 @@ const DEMO_CUSTOMERS_DATA: Record<string, {
   },
 };
 
-const timeline = [
+const DEMO_TIMELINE = [
   { icon: CheckCircle, color: "text-trust-verified", title: "Invoice #1038 paid — $4,200", subtitle: "Payment received via Stripe", time: "2 hours ago" },
   { icon: FileText, color: "text-primary", title: "Quote #1037 sent — $3,200", subtitle: "Website maintenance package", time: "5 days ago" },
   { icon: Phone, color: "text-accent", title: "Follow-up call completed", subtitle: "Discussed Q2 projects — 18 min", time: "1 week ago" },
@@ -50,13 +50,13 @@ const timeline = [
   { icon: Briefcase, color: "text-primary", title: "Customer onboarded", subtitle: "Referred by Lisa Thompson", time: "Jan 2023" },
 ];
 
-const actions = [
+const DEMO_ACTIONS = [
   { title: "Send follow-up on Quote #1037", priority: "high", state: "queued" as const, reason: "Quote viewed 3x but no response in 5 days" },
   { title: "Schedule Q2 planning call", priority: "medium", state: "proposed" as const, reason: "Annual review cycle — relationship maintenance" },
   { title: "Collect on Invoice #1035", priority: "high", state: "escalated" as const, reason: "7 days overdue, 2 reminders sent" },
 ];
 
-const documents = [
+const DEMO_DOCUMENTS = [
   { name: "Invoice_1038.pdf", type: "Invoice", date: "Mar 28", trust: "verified" as const },
   { name: "Quote_1037_Maintenance.pdf", type: "Quote", date: "Mar 23", trust: "verified" as const },
   { name: "Service_Agreement_v2.pdf", type: "Contract", date: "Jan 15", trust: "verified" as const },
