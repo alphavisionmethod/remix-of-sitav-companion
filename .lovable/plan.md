@@ -1,70 +1,56 @@
 
 
-# Fix Kernel/Execution Reality Audit — Section G to 100%
+# Fix Section H — OS Layer Reality Audit (3 Services)
 
 ## Current State
 
-The kernel infrastructure is complete and well-designed. The gap is **adoption** — 8 pages still bypass the kernel with direct `fromTable().insert/update/delete/upsert` calls instead of routing through `useAction()` / `useActionFn()`.
+Investigation reveals:
+- **brain-core**: Already canonical in `core-services/brain-core/`, exported via `lib/services/index.ts` line 19 → reachable through barrel. Has admin UI (`BrainCoreDashboard`). **Actually compliant.**
+- **ModelRouter**: Already canonical in `core-services/model-router/`, exported via `lib/services/index.ts` line 90. Has admin UI via `BrainCoreDashboard`. **Actually compliant.**
+- **ConscienceGate**: Canonical in `core-services/conscience-gate/` with reverse shim in `lib/services/conscience-gate/`. **BUT not exported from `lib/services/index.ts` barrel** → not reachable via `core-services/index.ts`. Also has **no dedicated admin inspection UI** (only a status line in GodTierRuntimeBoard).
 
-| Audit Item | Current | After Fix |
-|-----------|---------|-----------|
-| `useAction()` adoption | 43 pages | 51 pages (all mutation pages) |
-| `useCanonicalAction()` | 1 page (admin) | N/A — `useAction` wraps it |
-| ActionEnvelope contract | Not used by pages | Used implicitly via kernel chain |
-| Receipt-first execution | Not enforced | Enforced (all writes → kernel → receipt) |
-| Policy-before-execution | Not enforced | Enforced (all writes → kernel → policy) |
-| Kill switch / safe mode | Exists in kernel, not wired to EmergencyHaltService | Wired together |
-| Execution modes | Defined, not enforced | Enforced via kernel chain |
+## Fixes Required
 
-## What Needs Fixing
+### Fix 1: Export conscience-gate from `lib/services/index.ts` barrel
+Add `export * from "./conscience-gate";` after the existing domain OS exports (line 22). This makes it reachable through the `core-services/index.ts` facade like brain-core and model-router.
 
-### Part 1: Wire 8 Non-Admin Pages to Kernel (remove direct DB writes)
+**File**: `src/lib/services/index.ts` — add 1 line
 
-These pages have `useAction` imported but ALSO do direct `fromTable()` writes alongside. Fix: replace direct writes with the existing `useAction`/`useActionFn` calls.
+### Fix 2: Create admin ConscienceGate inspection page
+Create `src/pages/admin/ConscienceGateDashboard.tsx` with:
+- Live gate verdict history (using ConscienceGate service functions)
+- CritiqueLoop results display
+- Evidence state + budget state panels
+- Gate decision distribution (pass/caveat/block/refuse)
+- Routing hints summary
 
-| Page | Direct Writes | Fix |
-|------|--------------|-----|
-| `Onboarding.tsx` | `.upsert()` + `.update()` on lines 112-114 | Already has `useActionFn` — use it instead of direct calls |
-| `SettingsPage.tsx` | `.update()` on line 162 | Already has `useActionFn` — route through it |
-| `UserProfilePage.tsx` | `.update()` on line 76 | Add `useAction("workspace", "profile.update")` |
-| `NotificationSettingsPage.tsx` | `.update()` on line 163 | Add `useAction("workspace", "notification.preferences.update")` |
-| `owner/ConstitutionEditor.tsx` | `.insert()`, `.update()`, `.delete()` | Add `useAction` for constitution CRUD |
-| `business/CommunicationsCenter.tsx` | `.insert()` + `.update()` | Add `useAction("business", "communication.send")` |
-| `PolicyEditor.tsx` | Direct writes | Add `useAction("system", "policy.update")` |
-| `concierge/HouseholdTasks.tsx` | Direct writes | Add `useAction("concierge", "task.update")` |
+This mirrors the pattern used by `BrainCoreDashboard` — demo data in demo mode, real service calls in live mode.
 
-**Note**: Admin pages (AIT04to08, TeamManagement, HQApprovalQueue, etc.) and pages that already use `useAction` for their mutations (SubscriptionsWaste, BillsWorkspace, etc.) are already compliant — the `fromTable` calls are read-only queries.
+**File**: `src/pages/admin/ConscienceGateDashboard.tsx` — new page (~200 lines)
 
-### Part 2: Wire Kill Switch to EmergencyHaltService
+### Fix 3: Add route for ConscienceGate dashboard
+Add route in `App.tsx` under the admin routes section.
 
-The kernel has a kill switch (`setKillSwitch()`) but it's disconnected from the `EmergencyHaltService`. Fix: wire the kernel's kill switch to check the `EmergencyHaltService` during `executeAction()`.
+**File**: `src/App.tsx` — add 1 route
 
-**Changes to `src/lib/sita-kernel.ts`**:
-1. Import `EmergencyHaltService` from core-services
-2. Add `readonly emergencyHalt: EmergencyHaltService` to kernel
-3. In `checkKillSwitch()`, also check `emergencyHalt.check("global")`
-4. Expose `emergencyHalt` for the admin kill switch page to call
+### Fix 4: Add sidebar link for ConscienceGate
+Add a link in the admin sidebar navigation to the new dashboard.
 
-**Changes to `src/contexts/SitaKernelContext.tsx`**:
-1. Add `useEmergencyHalt()` hook exposing `kernel.emergencyHalt`
+## After Fix — Audit Status
 
-### Part 3: Register Missing Capabilities
-
-The `CapabilityRouter` has only 4 capabilities registered. Add registrations for the most common mutation domains:
-- `workspace.profile.update`, `workspace.memory.upsert`, `workspace.notification.preferences.update`
-- `business.communication.send`, `business.communication.update`
-- `owner.constitution.create`, `owner.constitution.update`, `owner.constitution.delete`
-- `concierge.task.update`
-
-**File**: `src/lib/core-services/capability-router.ts` — add to default registry
+| System | Real OS Primitive? | Cross-Module? | Inspectable? | Governable? | In core-services? |
+|--------|-------------------|---------------|-------------|-------------|-------------------|
+| Brain (brain-core) | ✅ | ✅ | Via admin | ✅ | ✅ |
+| ModelRouter | ✅ | ✅ | Via admin | ✅ | ✅ |
+| ConscienceGate | ✅ | ✅ | Via admin | ✅ | ✅ |
 
 ## Files Changed
+- `src/lib/services/index.ts` — 1 export line added
+- `src/pages/admin/ConscienceGateDashboard.tsx` — new admin page
+- `src/App.tsx` — 1 route added
+- Admin sidebar component — 1 nav link added
 
-- **8 page files**: Replace direct DB writes with `useAction`/`useActionFn` calls
-- **`src/lib/sita-kernel.ts`**: Wire EmergencyHaltService, expose in kernel
-- **`src/contexts/SitaKernelContext.tsx`**: Add `useEmergencyHalt()` hook
-- **`src/lib/core-services/capability-router.ts`**: Register new capabilities
-
-## Risk
-Low — all pages already have `useAction` imported or can trivially add it. The kernel chain already handles all writes correctly. EmergencyHaltService already exists and just needs wiring.
+## Verification
+- `npx tsc --noEmit` → 0 errors
+- All three services reachable via both `core-services/` and `lib/services/` import paths
 
