@@ -118,7 +118,7 @@ export default function FL01FlagshipLoopsExecutive() {
   const { grade: overallGrade, color: overallColor } = getLoopGrade(overallTruth);
   const criticalCount = loopList.filter((l: Record<string, any>) => l.launch_importance === "launch_critical").length;
   const activeCount = loopList.filter((l: Record<string, any>) => l.status === "active").length;
-  const blockerCount = loopList.reduce((s: number, l: any) => s + (Array.isArray(l.launch_blockers) ? l.launch_blockers.length : 0), 0);
+  const blockerCount = loopList.reduce((s: number,  l: Record<string, any>) => s + (Array.isArray(l.launch_blockers) ? l.launch_blockers.length : 0), 0);
 
   // Map verification runs to loop keys for proof overlay
   const loopProofMap = new Map<string, { passed: number; failed: number; lastRun: string; confidence: string; commitSha: string }>();

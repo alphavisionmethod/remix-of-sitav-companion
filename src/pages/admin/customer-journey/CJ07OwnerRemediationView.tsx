@@ -23,7 +23,7 @@ export default function CJ07OwnerRemediationView() {
   );
 
   // Group by owner
-  const byOwner = needsWork.reduce<Record<string, any[]>>((acc, j: any) => {
+  const byOwner = needsWork.reduce<Record<string, any[]>>((acc,  j: Record<string, any>) => {
     const owner = j.owner || "unassigned";
     if (!acc[owner]) acc[owner] = [];
     acc[owner].push(j);

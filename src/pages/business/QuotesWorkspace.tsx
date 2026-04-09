@@ -81,7 +81,7 @@ const QuotesWorkspace = () => {
     : tab === "action" ? quotes.filter((q: Record<string, any>) => q.status === "draft" || q.status === "sent")
     : quotes.filter((q: Record<string, any>) => ["accepted", "declined", "expired"].includes(q.status));
 
-  const totalValue = quotes.reduce((sum: number, q: any) => sum + (q.total || 0), 0);
+  const totalValue = quotes.reduce((sum: number,  q: Record<string, any>) => sum + (q.total || 0), 0);
   const activeCount = quotes.filter((q: Record<string, any>) => !["accepted", "declined", "expired"].includes(q.status)).length;
 
   return (

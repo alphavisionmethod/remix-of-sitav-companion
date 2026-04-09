@@ -33,7 +33,7 @@ export default function CJ09RecentVerificationRuns() {
     if (seenIds.has(id)) return false;
     seenIds.add(id);
     return true;
-  }).sort((a: any, b: any) => {
+  }).sort((a: any,  b: Record<string, any>) => {
     const da = new Date(a.created_at || a.completed_at || 0).getTime();
     const db = new Date(b.created_at || b.completed_at || 0).getTime();
     return db - da;

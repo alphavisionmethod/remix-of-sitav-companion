@@ -176,7 +176,7 @@ const NotificationCenter = () => {
     const combined = [
       ...notifications.map((n: Record<string, any>) => ({ ...n, source: "queue" })),
       ...legacyNotifs.map((n: Record<string, any>) => ({ ...n, source: "legacy", category: n.domain || n.type || "system" })),
-    ].sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+    ].sort((a: any,  b: Record<string, any>) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 
     if (isDemoMode) {
       return [

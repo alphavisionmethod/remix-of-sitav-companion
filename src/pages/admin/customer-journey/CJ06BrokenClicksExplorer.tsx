@@ -21,7 +21,7 @@ export default function CJ06BrokenClicksExplorer() {
   );
 
   // Group by root cause layer
-  const byCause = brokenRuns.reduce<Record<string, any[]>>((acc, r: any) => {
+  const byCause = brokenRuns.reduce<Record<string, any[]>>((acc,  r: Record<string, any>) => {
     const layer = r.root_cause_layer || "unknown";
     if (!acc[layer]) acc[layer] = [];
     acc[layer].push(r);

@@ -41,7 +41,7 @@ export default function NOT03DeliveryReceiptsExplorer() {
   const failedCount = receipts.filter((r: Record<string, any>) => r.status === "failed").length;
   const suppressedCount = receipts.filter((r: Record<string, any>) => r.status === "suppressed").length;
   const avgLatency = receipts.filter((r: Record<string, any>) => r.latency_ms).length > 0
-    ? Math.round(receipts.filter((r: Record<string, any>) => r.latency_ms).reduce((s: number, r: any) => s + r.latency_ms, 0) / receipts.filter((r: Record<string, any>) => r.latency_ms).length)
+    ? Math.round(receipts.filter((r: Record<string, any>) => r.latency_ms).reduce((s: number,  r: Record<string, any>) => s + r.latency_ms, 0) / receipts.filter((r: Record<string, any>) => r.latency_ms).length)
     : 0;
 
   return (

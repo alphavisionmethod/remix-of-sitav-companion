@@ -72,7 +72,7 @@ export default function AR01AutomationOverview() {
     { label: "Kill Switches Active", value: activeKills.length, icon: Shield, color: activeKills.length > 0 ? "text-destructive" : "text-muted-foreground" },
   ];
 
-  const domainCounts = jobs.reduce((acc: Record<string, number>, j: any) => {
+  const domainCounts = jobs.reduce((acc: Record<string, number>,  j: Record<string, any>) => {
     acc[j.domain] = (acc[j.domain] || 0) + 1;
     return acc;
   }, {});

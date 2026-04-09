@@ -16,7 +16,7 @@ const HRS06SignalLaunchHonesty = () => {
   const seedMutation = useSeedEcosystemData();
 
   const items = subsystems ?? [];
-  const overall = items.length > 0 ? Math.round(items.reduce((s: number, t: any) => s + (t.readiness ?? 0), 0) / items.length) : 0;
+  const overall = items.length > 0 ? Math.round(items.reduce((s: number,  t: Record<string, any>) => s + (t.readiness ?? 0), 0) / items.length) : 0;
 
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">

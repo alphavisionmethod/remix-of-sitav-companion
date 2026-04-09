@@ -32,7 +32,7 @@ export default function DRS04ScenarioEntityGraph() {
 
   if (isLoading) return <div className="flex items-center justify-center p-12"><Loader2 className="h-6 w-6 animate-spin text-muted-foreground" /></div>;
 
-  const typeGroups = (data?.entities ?? []).reduce((acc: Record<string, any[]>, e: any) => {
+  const typeGroups = (data?.entities ?? []).reduce((acc: Record<string, any[]>,  e: Record<string, any>) => {
     (acc[e.entity_type] ??= []).push(e); return acc;
   }, {});
 

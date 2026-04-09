@@ -100,7 +100,7 @@ const MoneyBoardroom = () => {
           <SitaCardTitle>Proof Summary</SitaCardTitle>
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
             <KPITile label="Total Balance" value={`$${(k.totalBalance / 1000).toFixed(1)}K`} icon={DollarSign} sub="Across all accounts" className="text-sm" />
-            <KPITile label="Savings Reserved" value={`$${(reserves.reduce((s: number, r: any) => s + (r.current_amount || 0), 0) / 1000).toFixed(1)}K`} icon={PiggyBank} sub="On track" className="text-sm" />
+            <KPITile label="Savings Reserved" value={`$${(reserves.reduce((s: number,  r: Record<string, any>) => s + (r.current_amount || 0), 0) / 1000).toFixed(1)}K`} icon={PiggyBank} sub="On track" className="text-sm" />
             <KPITile label="Bills Due" value={`$${k.billsDue7d.toLocaleString()}`} icon={Shield} sub="Next 7 days" className="text-sm" />
             <KPITile label="Monthly Burn" value={`$${k.monthlyBurn.toLocaleString()}`} icon={TrendingUp} sub="Projected" className="text-sm" />
           </div>

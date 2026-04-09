@@ -55,7 +55,7 @@ export default function CJ01ExecutiveReport() {
   const hasViewData = viewJourneys.length > 0;
 
   const viewStatuses = useMemo(() => {
-    return (hasViewData ? viewJourneys : journeys ?? []).reduce((acc: Record<string, number>, j: any) => {
+    return (hasViewData ? viewJourneys : journeys ?? []).reduce((acc: Record<string, number>,  j: Record<string, any>) => {
       const s = j.current_status || "unverified";
       acc[s] = (acc[s] || 0) + 1;
       return acc;
@@ -65,7 +65,7 @@ export default function CJ01ExecutiveReport() {
   // Proof confidence distribution
   const proofDist = useMemo(() => {
     const source = hasViewData ? viewJourneys : (journeys ?? []);
-    return source.reduce((acc: Record<string, number>, j: any) => {
+    return source.reduce((acc: Record<string, number>,  j: Record<string, any>) => {
       const p = j.proof_confidence || "unverified";
       acc[p] = (acc[p] || 0) + 1;
       return acc;

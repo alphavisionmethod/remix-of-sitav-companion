@@ -35,8 +35,8 @@ export default function AITokenDashboard() {
   if (!isAdmin) return null;
 
   const records = ledger ?? [];
-  const totalTokens = records.reduce((s, r: any) => s + (r.total_tokens || 0), 0);
-  const totalCost = records.reduce((s, r: any) => s + (Number(r.estimated_cost_usd) || 0), 0);
+  const totalTokens = records.reduce((s,  r: Record<string, any>) => s + (r.total_tokens || 0), 0);
+  const totalCost = records.reduce((s,  r: Record<string, any>) => s + (Number(r.estimated_cost_usd) || 0), 0);
   const uniqueCapabilities = new Set(records.map((r: Record<string, any>) => r.capability_key)).size;
 
   // By capability breakdown

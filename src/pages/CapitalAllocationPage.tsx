@@ -33,7 +33,7 @@ export default function CapitalAllocationPage() {
     queryFn: async () => {
       const { data } = await fromTable("financial_accounts").select("*").eq("user_id", user!.id);
       if (!data?.length) return null;
-      const total = data.reduce((s: number, a: any) => s + (a.balance_cents || 0), 0);
+      const total = data.reduce((s: number,  a: Record<string, any>) => s + (a.balance_cents || 0), 0);
       return data.map((a: any, i: number) => {
         const value = (a.balance_cents || 0) / 100;
         const current = total > 0 ? (a.balance_cents / total) * 100 : 0;

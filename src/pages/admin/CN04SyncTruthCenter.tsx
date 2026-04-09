@@ -48,7 +48,7 @@ export default function CN04SyncTruthCenter() {
 
   const completed = syncRuns.filter((s: Record<string, any>) => s.status === "completed").length;
   const failed = syncRuns.filter((s: Record<string, any>) => s.status === "failed").length;
-  const totalRecords = syncRuns.reduce((acc: number, s: any) => acc + (s.records_imported || 0), 0);
+  const totalRecords = syncRuns.reduce((acc: number,  s: Record<string, any>) => acc + (s.records_imported || 0), 0);
 
   return (
     <div className="space-y-6 p-6"  >

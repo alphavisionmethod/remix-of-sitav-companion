@@ -13,8 +13,8 @@ import { useDataMode } from "@/contexts/DataModeContext";
 const FIPComplianceBoard = () => {
   const { data: records = [], isLoading } = useComplianceRecords();
 
-  const avgScore = records.length > 0 ? Math.round(records.reduce((sum: number, r: any) => sum + (r.completeness_score || 0), 0) / records.length) : 0;
-  const totalViolations = records.reduce((sum: number, r: any) => sum + (r.violation_count || 0), 0);
+  const avgScore = records.length > 0 ? Math.round(records.reduce((sum: number,  r: Record<string, any>) => sum + (r.completeness_score || 0), 0) / records.length) : 0;
+  const totalViolations = records.reduce((sum: number,  r: Record<string, any>) => sum + (r.violation_count || 0), 0);
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">

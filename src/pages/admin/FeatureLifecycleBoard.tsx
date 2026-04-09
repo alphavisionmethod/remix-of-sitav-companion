@@ -40,7 +40,7 @@ const FeatureLifecycleBoard = () => {
   const getLatestStage = (featureId: string) => {
     const featureStages = (stages ?? []).filter((s: Record<string, any>) => s.feature_id === featureId);
     if (featureStages.length === 0) return "proposed";
-    return featureStages.sort((a: any, b: any) => b.stage_order - a.stage_order)[0]?.stage ?? "proposed";
+    return featureStages.sort((a: any,  b: Record<string, any>) => b.stage_order - a.stage_order)[0]?.stage ?? "proposed";
   };
 
   const stageCounts = LIFECYCLE_STAGES.reduce((acc, stage) => {

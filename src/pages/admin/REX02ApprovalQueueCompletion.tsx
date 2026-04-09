@@ -21,7 +21,7 @@ function useApprovalQueueStats() {
       const highRiskPending = pending.filter((i: Record<string, any>) => i.risk_tier === "critical" || i.risk_tier === "elevated");
       const resolved = items.filter((i: Record<string, any>) => i.resolved_at);
       const avgLatencyMs = resolved.length > 0
-        ? resolved.reduce((acc: number, i: any) => {
+        ? resolved.reduce((acc: number,  i: Record<string, any>) => {
             const created = new Date(i.created_at).getTime();
             const resolvedAt = new Date(i.resolved_at).getTime();
             return acc + (resolvedAt - created);

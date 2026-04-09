@@ -13,7 +13,7 @@ const SAGReceiptExplorer = () => {
   const { data: tasks = [] } = useTaskRequests();
 
   const verified = receipts.filter((r: Record<string, any>) => r.verification_outcome === 'passed').length;
-  const totalCost = receipts.reduce((s: number, r: any) => s + (r.cost_actual_cents || 0), 0);
+  const totalCost = receipts.reduce((s: number,  r: Record<string, any>) => s + (r.cost_actual_cents || 0), 0);
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">

@@ -41,7 +41,7 @@ const MoneyApprovals = () => {
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         <KPITile label="Pending Approvals" value={pendingCount} icon={Shield} />
         <KPITile label="Total Actions" value={approvals.length} icon={Sparkles} />
-        <KPITile label="Total Impact" value={`$${approvals.reduce((s: number, a: any) => s + (Number(a.proposed_action?.amount) || 0), 0).toLocaleString()}`} icon={DollarSign} />
+        <KPITile label="Total Impact" value={`$${approvals.reduce((s: number,  a: Record<string, any>) => s + (Number(a.proposed_action?.amount) || 0), 0).toLocaleString()}`} icon={DollarSign} />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-5">

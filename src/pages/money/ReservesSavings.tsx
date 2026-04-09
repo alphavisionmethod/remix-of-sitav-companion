@@ -61,10 +61,10 @@ const ReservesSavings = () => {
     invalidateKeys: [["reserves"], ["reserves-savings"]],
   });
 
-  const totalCurrent = reserves.reduce((s: number, r: any) => s + (r.current_amount || 0), 0);
-  const totalTarget = reserves.reduce((s: number, r: any) => s + (r.target_amount || 0), 0);
+  const totalCurrent = reserves.reduce((s: number,  r: Record<string, any>) => s + (r.current_amount || 0), 0);
+  const totalTarget = reserves.reduce((s: number,  r: Record<string, any>) => s + (r.target_amount || 0), 0);
   const overallHealth = totalTarget > 0 ? Math.round((totalCurrent / totalTarget) * 100) : 0;
-  const monthlyTotal = reserves.reduce((s: number, r: any) => s + (r.contribution_amount || 0), 0);
+  const monthlyTotal = reserves.reduce((s: number,  r: Record<string, any>) => s + (r.contribution_amount || 0), 0);
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>

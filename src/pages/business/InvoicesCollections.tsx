@@ -83,9 +83,9 @@ const InvoicesCollections = () => {
     : tab === "overdue" ? invoices.filter((i: Record<string, any>) => i.computedStatus === "overdue")
     : invoices.filter((i: Record<string, any>) => i.computedStatus === "paid");
 
-  const outstanding = invoices.filter((i: Record<string, any>) => !["paid", "draft"].includes(i.computedStatus)).reduce((s: number, i: any) => s + Number(i.amount), 0);
-  const overdue = invoices.filter((i: Record<string, any>) => i.computedStatus === "overdue").reduce((s: number, i: any) => s + Number(i.amount), 0);
-  const paidThisMonth = invoices.filter((i: Record<string, any>) => i.status === "paid" && new Date(i.updated_at).getMonth() === new Date().getMonth()).reduce((s: number, i: any) => s + Number(i.amount), 0);
+  const outstanding = invoices.filter((i: Record<string, any>) => !["paid", "draft"].includes(i.computedStatus)).reduce((s: number,  i: Record<string, any>) => s + Number(i.amount), 0);
+  const overdue = invoices.filter((i: Record<string, any>) => i.computedStatus === "overdue").reduce((s: number,  i: Record<string, any>) => s + Number(i.amount), 0);
+  const paidThisMonth = invoices.filter((i: Record<string, any>) => i.status === "paid" && new Date(i.updated_at).getMonth() === new Date().getMonth()).reduce((s: number,  i: Record<string, any>) => s + Number(i.amount), 0);
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>

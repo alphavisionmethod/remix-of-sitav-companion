@@ -50,7 +50,7 @@ function derivePriorities(tasks: any[], events: any[]) {
   // Add overdue and today's tasks
   tasks
     .filter((t: Record<string, any>) => t.status !== "done" && t.due_date && t.due_date <= todayStr)
-    .sort((a: any, b: any) => {
+    .sort((a: any,  b: Record<string, any>) => {
       const pOrder: Record<string, number> = { high: 0, medium: 1, low: 2 };
       return (pOrder[a.priority] ?? 1) - (pOrder[b.priority] ?? 1);
     })
@@ -91,7 +91,7 @@ function deriveUpcomingSchedule(events: any[]) {
   const now = new Date();
   return events
     .filter((e: Record<string, any>) => e.event_date && e.event_date >= now.toISOString().slice(0, 10))
-    .sort((a: any, b: any) => (a.event_date || "").localeCompare(b.event_date || ""))
+    .sort((a: any,  b: Record<string, any>) => (a.event_date || "").localeCompare(b.event_date || ""))
     .slice(0, 6)
     .map((e: Record<string, any>) => ({
       event: e.title,
@@ -179,7 +179,7 @@ const ConciergeOverview = () => {
   const recentProof = useMemo(() => {
     return tasks
       .filter((t: Record<string, any>) => t.status === "done")
-      .sort((a: any, b: any) => (b.updated_at || "").localeCompare(a.updated_at || ""))
+      .sort((a: any,  b: Record<string, any>) => (b.updated_at || "").localeCompare(a.updated_at || ""))
       .slice(0, 4)
       .map((t: Record<string, any>) => ({
         action: t.title,

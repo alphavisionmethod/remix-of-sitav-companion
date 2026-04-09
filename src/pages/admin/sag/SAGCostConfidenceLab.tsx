@@ -13,8 +13,8 @@ const SAGCostConfidenceLab = () => {
   const { data: tasks = [] } = useTaskRequests();
 
   const withConfidence = tasks.filter((t: Record<string, any>) => t.verification_confidence != null);
-  const avgConfidence = withConfidence.length ? withConfidence.reduce((s: number, t: any) => s + t.verification_confidence, 0) / withConfidence.length : 0;
-  const avgCost = tasks.length ? tasks.reduce((s: number, t: any) => s + (t.cost_actual_cents || 0), 0) / tasks.length : 0;
+  const avgConfidence = withConfidence.length ? withConfidence.reduce((s: number,  t: Record<string, any>) => s + t.verification_confidence, 0) / withConfidence.length : 0;
+  const avgCost = tasks.length ? tasks.reduce((s: number,  t: Record<string, any>) => s + (t.cost_actual_cents || 0), 0) / tasks.length : 0;
 
   const costBuckets = [
     { label: '0-1¢', tasks: tasks.filter((t: Record<string, any>) => (t.cost_actual_cents || 0) <= 1) },
@@ -50,7 +50,7 @@ const SAGCostConfidenceLab = () => {
                 {b.tasks.length > 0 && (
                   <p className="text-[10px] text-muted-foreground mt-1">
                     Avg conf: {b.tasks.filter((t: Record<string, any>) => t.verification_confidence != null).length > 0 ?
-                      (b.tasks.filter((t: Record<string, any>) => t.verification_confidence != null).reduce((s: number, t: any) => s + t.verification_confidence, 0) /
+                      (b.tasks.filter((t: Record<string, any>) => t.verification_confidence != null).reduce((s: number,  t: Record<string, any>) => s + t.verification_confidence, 0) /
                        b.tasks.filter((t: Record<string, any>) => t.verification_confidence != null).length * 100).toFixed(0) + '%' : '—'}
                   </p>
                 )}

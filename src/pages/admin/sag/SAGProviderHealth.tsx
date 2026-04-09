@@ -30,7 +30,7 @@ const SAGProviderHealth = () => {
       <div className="grid grid-cols-2 gap-4">
         {PROVIDERS.map(provider => {
           const records = health.filter((h: Record<string, any>) => h.provider === provider.id);
-          const avgAvail = records.length ? records.reduce((s: number, r: any) => s + (r.availability || 0), 0) / records.length : 1;
+          const avgAvail = records.length ? records.reduce((s: number,  r: Record<string, any>) => s + (r.availability || 0), 0) / records.length : 1;
           const hasIncident = records.some((r: Record<string, any>) => r.incident_status !== 'none');
           return (
             <Card key={provider.id} className={hasIncident ? 'border-destructive/30' : ''}>

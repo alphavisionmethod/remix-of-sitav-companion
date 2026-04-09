@@ -32,7 +32,7 @@ const MoneyProof = () => {
 
   const verifiedCount = proofItems.filter((p: Record<string, any>) => p.details?.verification === "verified").length;
   const pendingCount = proofItems.filter((p: Record<string, any>) => p.details?.verification === "pending").length;
-  const totalValue = proofItems.reduce((s: number, p: any) => s + (Number(p.details?.amount) || 0), 0);
+  const totalValue = proofItems.reduce((s: number,  p: Record<string, any>) => s + (Number(p.details?.amount) || 0), 0);
 
   if (isLoading) return <SectionSkeleton cards={4} columns={1} />;
 

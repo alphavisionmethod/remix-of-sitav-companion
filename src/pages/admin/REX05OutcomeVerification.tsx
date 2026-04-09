@@ -19,7 +19,7 @@ export default function REX05OutcomeVerification() {
 
   const verified = verifications?.filter((v: Record<string, any>) => v.verified) || [];
   const avgScoreAdj = verified.length > 0
-    ? verified.reduce((acc: number, v: any) => acc + (v.score_adjustment || 0), 0) / verified.length
+    ? verified.reduce((acc: number,  v: Record<string, any>) => acc + (v.score_adjustment || 0), 0) / verified.length
     : 0;
 
   return (

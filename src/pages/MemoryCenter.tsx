@@ -107,7 +107,7 @@ const MemoryCenter = () => {
     : tabMemories;
 
   const totalMemories = memories.length;
-  const avgConfidence = memories.length > 0 ? Math.round(memories.reduce((s: number, m: any) => s + (m.confidence || 0), 0) / memories.length * 100) : 0;
+  const avgConfidence = memories.length > 0 ? Math.round(memories.reduce((s: number,  m: Record<string, any>) => s + (m.confidence || 0), 0) / memories.length * 100) : 0;
   const sensitiveCount = memories.filter((m: Record<string, any>) => m.category === "financial" || m.category === "household").length;
   const lastUpdated = allMemories[0]?.updated_at ? new Date(allMemories[0].updated_at).toLocaleString() : "—";
 

@@ -89,8 +89,8 @@ const OpportunitiesCenter = () => {
     : tab === "high-value" ? opportunities.filter((o: Record<string, any>) => (o.confidence || 0) >= 70)
     : opportunities.filter((o: Record<string, any>) => o.stage === "won");
 
-  const totalValue = opportunities.reduce((sum: number, o: any) => sum + (o.value || 0), 0);
-  const avgConf = opportunities.length > 0 ? Math.round(opportunities.reduce((s: number, o: any) => s + (o.confidence || 0), 0) / opportunities.length) : 0;
+  const totalValue = opportunities.reduce((sum: number,  o: Record<string, any>) => sum + (o.value || 0), 0);
+  const avgConf = opportunities.length > 0 ? Math.round(opportunities.reduce((s: number,  o: Record<string, any>) => s + (o.confidence || 0), 0) / opportunities.length) : 0;
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
@@ -148,7 +148,7 @@ const OpportunitiesCenter = () => {
         <div className="flex gap-3 overflow-x-auto pb-4 -mx-2 px-2">
           {["lead", "discovery", "qualified", "proposal", "negotiation", "won"].map(stage => {
             const stageOpps = opportunities.filter((o: Record<string, any>) => o.stage === stage);
-            const stageValue = stageOpps.reduce((s: number, o: any) => s + (o.value || 0), 0);
+            const stageValue = stageOpps.reduce((s: number,  o: Record<string, any>) => s + (o.value || 0), 0);
             return (
               <div key={stage} className="flex-shrink-0 w-64 rounded-xl border border-border bg-card/50">
                 <div className="p-3 border-b border-border/50">

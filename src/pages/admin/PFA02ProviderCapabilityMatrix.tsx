@@ -18,7 +18,7 @@ export default function PFA02ProviderCapabilityMatrix() {
     queryFn: async () => { const { data } = await fromTable("provider_capabilities").select("*, provider_families(name, provider_key)").order("capability_key"); return data || []; },
   });
 
-  const grouped = capabilities.reduce((acc: any, c: any) => {
+  const grouped = capabilities.reduce((acc: any,  c: Record<string, any>) => {
     const family = c.provider_families?.name || "Unknown";
     if (!acc[family]) acc[family] = [];
     acc[family].push(c);

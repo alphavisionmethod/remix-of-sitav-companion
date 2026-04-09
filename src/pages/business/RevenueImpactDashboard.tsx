@@ -134,7 +134,7 @@ const RevenueImpactDashboard = () => {
       const { data: invoices } = await fromTable("invoices").select("id, total_cents, status, paid_at, created_at").eq("user_id", user!.id);
       if (!invoices?.length) return null;
       const paid = invoices.filter((i: Record<string, any>) => i.status === "paid");
-      const recovered = paid.reduce((s: number, i: any) => s + (i.total_cents || 0), 0) / 100;
+      const recovered = paid.reduce((s: number,  i: Record<string, any>) => s + (i.total_cents || 0), 0) / 100;
       return {
         recovered,
         generated: recovered * 0.4,

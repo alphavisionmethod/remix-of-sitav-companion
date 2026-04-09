@@ -48,7 +48,7 @@ export default function ISA06UnifiedAccountGraphExplorer() {
     },
   });
 
-  const byType = nodes.reduce((acc: Record<string, any[]>, n: any) => {
+  const byType = nodes.reduce((acc: Record<string, any[]>,  n: Record<string, any>) => {
     const t = n.node_type || "unknown";
     if (!acc[t]) acc[t] = [];
     acc[t].push(n);

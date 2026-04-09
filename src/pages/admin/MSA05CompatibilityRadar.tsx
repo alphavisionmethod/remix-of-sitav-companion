@@ -78,7 +78,7 @@ export default function MSA05CompatibilityRadar() {
   // Migration recommendations
   const recommendations = boundaries
     .filter((b: Record<string, any>) => b.migration_target)
-    .sort((a: any, b: any) => {
+    .sort((a: any,  b: Record<string, any>) => {
       const priority: Record<string, number> = { critical: 0, high: 1, medium: 2, low: 3 };
       return (priority[a.migration_priority] || 3) - (priority[b.migration_priority] || 3);
     })

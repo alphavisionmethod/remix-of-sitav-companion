@@ -29,10 +29,10 @@ const BusinessBoardroom = () => {
 
     const recentInvoices = invoices.filter((i: Record<string, any>) => i.created_at >= weekStr);
     const paidThisWeek = recentInvoices.filter((i: Record<string, any>) => i.status === "paid");
-    const revenue = paidThisWeek.reduce((sum: number, i: any) => sum + (i.amount || 0), 0);
+    const revenue = paidThisWeek.reduce((sum: number,  i: Record<string, any>) => sum + (i.amount || 0), 0);
     const newLeads = leads.filter((l: Record<string, any>) => l.created_at >= weekStr).length;
     const overdue = invoices.filter((i: Record<string, any>) => i.status === "overdue");
-    const atRisk = overdue.reduce((sum: number, i: any) => sum + (i.amount || 0), 0);
+    const atRisk = overdue.reduce((sum: number,  i: Record<string, any>) => sum + (i.amount || 0), 0);
 
     return { revenue, newLeads, atRisk, overdueInvoices: overdue };
   }, [leads, invoices]);
@@ -171,7 +171,7 @@ const BusinessBoardroom = () => {
             <KPITile label="Active Leads" value={leads.length} icon={Users} sub="All sources" className="text-sm" />
             <KPITile label="Customers" value={customers.length} icon={CheckCircle} sub="Total" className="text-sm" />
             <KPITile label="Invoices" value={invoices.length} icon={FileText} sub="All statuses" className="text-sm" />
-            <KPITile label="Pipeline Value" value={`$${opportunities.reduce((s: number, o: any) => s + (o.value || 0), 0).toLocaleString()}`} icon={TrendingUp} sub="Total" className="text-sm" />
+            <KPITile label="Pipeline Value" value={`$${opportunities.reduce((s: number,  o: Record<string, any>) => s + (o.value || 0), 0).toLocaleString()}`} icon={TrendingUp} sub="Total" className="text-sm" />
           </div>
         </div>
       </div>

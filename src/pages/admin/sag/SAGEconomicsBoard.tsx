@@ -16,8 +16,8 @@ const SAGEconomicsBoard = () => {
   const { data: stats } = useGatewayStats();
   const s = stats || { totalCost: 0, totalRequests: 0 };
 
-  const totalBudget = allocations.reduce((s: number, a: any) => s + (a.budget_cents || 0), 0);
-  const totalSpent = allocations.reduce((s: number, a: any) => s + (a.spent_cents || 0), 0);
+  const totalBudget = allocations.reduce((s: number,  a: Record<string, any>) => s + (a.budget_cents || 0), 0);
+  const totalSpent = allocations.reduce((s: number,  a: Record<string, any>) => s + (a.spent_cents || 0), 0);
   const costPerRequest = s.totalRequests > 0 ? s.totalCost / s.totalRequests : 0;
 
   // Domain spend

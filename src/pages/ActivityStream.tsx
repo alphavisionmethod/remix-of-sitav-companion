@@ -339,7 +339,7 @@ const ActivityStream = () => {
     }
 
     const allEvents = [...liveEvents, ...approvalEvents, ...proofEvents]
-      .sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+      .sort((a: any,  b: Record<string, any>) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 
     return allEvents.map((ev: any, i: number) => {
       const type = ev.type || "system.event";

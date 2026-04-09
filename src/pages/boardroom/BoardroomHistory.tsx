@@ -47,7 +47,7 @@ export default function BoardroomHistory() {
   const completed = sessions.filter((s: Record<string, any>) => s.status === "completed").length;
   const active = sessions.filter((s: Record<string, any>) => s.status === "active").length;
   const avgConfidence = sessions.length > 0
-    ? Math.round(sessions.reduce((a: number, s: any) => a + (s.confidence_score || 0), 0) / sessions.length)
+    ? Math.round(sessions.reduce((a: number,  s: Record<string, any>) => a + (s.confidence_score || 0), 0) / sessions.length)
     : 0;
 
   return (

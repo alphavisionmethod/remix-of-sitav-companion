@@ -47,7 +47,7 @@ export default function OutcomeEnginePage() {
   const spillovers = isDemoMode ? DEMO_SPILLOVERS : [];
 
   const totalProgress = outcomes.length > 0
-    ? Math.round(outcomes.reduce((s: number, o: any) => s + o.progress, 0) / outcomes.length)
+    ? Math.round(outcomes.reduce((s: number,  o: Record<string, any>) => s + o.progress, 0) / outcomes.length)
     : 0;
 
   return (

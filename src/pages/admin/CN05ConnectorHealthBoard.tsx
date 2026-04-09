@@ -40,7 +40,7 @@ export default function CN05ConnectorHealthBoard() {
     onError: (e: Record<string, any>) => toast.error(`Health check failed: ${e.message}`),
   });
 
-  const grouped = healthRecords.reduce((acc: any, h: any) => {
+  const grouped = healthRecords.reduce((acc: any,  h: Record<string, any>) => {
     const key = h.account_id || h.registry_id || "unknown";
     if (!acc[key]) acc[key] = [];
     acc[key].push(h);

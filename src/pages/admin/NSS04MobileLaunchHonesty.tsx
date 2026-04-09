@@ -12,7 +12,7 @@ import { useNssLaunchReadiness } from "@/hooks/use-native-shell-data";
 const NSS04MobileLaunchHonesty = () => {
   const { data: targets, isLoading } = useNssLaunchReadiness();
   const items = targets ?? [];
-  const overall = items.length ? Math.round(items.reduce((s: number, t: any) => s + (t.readiness ?? 0), 0) / items.length) : 0;
+  const overall = items.length ? Math.round(items.reduce((s: number,  t: Record<string, any>) => s + (t.readiness ?? 0), 0) / items.length) : 0;
 
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">

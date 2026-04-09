@@ -1260,7 +1260,7 @@ const OwnerCenter = () => {
                   const activeAgents = councilAgents.filter((a: Record<string, any>) => a.runtime?.status === "active").length;
                   const sup = workforceData?.supervisors?.find((s: Record<string, any>) => s.supervisorId === council.supervisorId);
                   const CouncilIcon = councilIcons[council.councilId] || Bot;
-                  const totalEscalations = councilAgents.reduce((sum: number, a: any) => sum + (a.runtime?.escalationCount || 0), 0);
+                  const totalEscalations = councilAgents.reduce((sum: number,  a: Record<string, any>) => sum + (a.runtime?.escalationCount || 0), 0);
 
                   return (
                     <SitaCard key={council.councilId} hover className="p-5 cursor-pointer" onClick={() => setSelectedCouncil(council.councilId)}>

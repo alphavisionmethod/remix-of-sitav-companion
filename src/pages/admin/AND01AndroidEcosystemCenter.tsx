@@ -62,7 +62,7 @@ const AND01AndroidEcosystemCenter = () => {
   const launchReadyCount = launchData?.filter((r: Record<string, any>) => r.launch_ready).length ?? 0;
 
   const overallReadiness = launchData && launchData.length > 0
-    ? Math.round(launchData.reduce((sum: number, r: any) => {
+    ? Math.round(launchData.reduce((sum: number,  r: Record<string, any>) => {
         const stageScore: Record<string, number> = { planned: 5, internal: 25, demo: 40, pilot: 60, launch_ready: 85, production: 100 };
         return sum + (stageScore[r.launch_stage] ?? 0);
       }, 0) / launchData.length)
