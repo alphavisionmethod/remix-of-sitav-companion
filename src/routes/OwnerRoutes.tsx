@@ -10,6 +10,7 @@ const ConstitutionEditor = lazy(() => import("@/pages/owner/ConstitutionEditor")
 const OwnerPulsePage = lazy(() => import("@/pages/owner/OwnerPulsePage"));
 const OwnerApprovalsPage = lazy(() => import("@/pages/owner/OwnerApprovalsPage"));
 const OwnerAiTeamUpdatesPage = lazy(() => import("@/pages/owner/OwnerAiTeamUpdatesPage"));
+const ReleaseDeploymentWorkspace = lazy(() => import("@/pages/owner/ReleaseDeploymentWorkspace"));
 
 export const OwnerRoutes = () => (
   <>

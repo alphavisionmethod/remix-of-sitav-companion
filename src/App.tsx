@@ -1135,6 +1135,14 @@ const App = () => (
                     <Route path="/files/memory-review" element={<FilesCenter />} />
                     <Route path="/files/sensitive" element={<FilesCenter />} />
                     <Route path="/files/settings" element={<FilesCenter />} />
+                    <Route path="/files/pdf-viewer" element={<PDFViewerWorkspace />} />
+
+                    {/* Data Grid / Spreadsheet */}
+                    <Route path="/workspace/data-grid" element={<SpreadsheetWorkspace />} />
+
+                    {/* System Utilities */}
+                    <Route path="/clipboard-history" element={<ClipboardHistory />} />
+                    <Route path="/print-scan" element={<PrintScanCenter />} />
 
                     {/* Control */}
                     <Route path="/personalization" element={<PersonalizationStudio />} />
