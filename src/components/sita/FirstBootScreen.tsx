@@ -311,9 +311,14 @@ export function FirstBootScreen({ onComplete }: FirstBootScreenProps) {
   const stageIdx = Math.min(JOURNEY_STAGES.length - 1, Math.max(0, Math.floor(progressFraction * JOURNEY_STAGES.length)));
 
   const constellationNodes = useMemo(() => {
+    // Scale node count by performance tier: low=8, medium=16, high=24
+    const tier = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ? "low"
+      : navigator.hardwareConcurrency <= 2 ? "low"
+      : navigator.hardwareConcurrency <= 4 ? "medium" : "high";
+    const count = tier === "low" ? 8 : tier === "medium" ? 16 : 24;
     const nodes: { x: number; y: number; delay: number }[] = [];
-    for (let i = 0; i < 24; i++) {
-      const angle = (i / 24) * Math.PI * 2;
+    for (let i = 0; i < count; i++) {
+      const angle = (i / count) * Math.PI * 2;
       const radius = 120 + (((i * 7 + 3) % 11) / 11) * 80;
       nodes.push({ x: Math.cos(angle) * radius, y: Math.sin(angle) * radius, delay: i * 0.3 });
     }
