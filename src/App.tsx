@@ -604,6 +604,12 @@ const DataProtectionPosture = lazy(() => import("./pages/atlas/DataProtectionPos
 const ValidationCommandCenter = lazy(() => import("./pages/atlas/ValidationCommandCenter"));
 const AdminDurabilityBoard = lazy(() => import("./pages/atlas/AdminDurabilityBoard"));
 const AtlasHub = lazy(() => import("./pages/atlas/AtlasHub"));
+const CalmFocusMode = lazy(() => import("./pages/CalmFocusMode"));
+const WeeklyBoardroom = lazy(() => import("./pages/WeeklyBoardroom"));
+const AccessibilitySettings = lazy(() => import("./pages/settings/AccessibilitySettings"));
+const DeviceSettingsPage = lazy(() => import("./pages/settings/DeviceSettings"));
+const TrustedDeviceManager = lazy(() => import("./pages/settings/TrustedDeviceManager"));
+const CommunicationInbox = lazy(() => import("./pages/CommunicationInbox"));
 
 const queryClient = createQueryClient();
 
@@ -1159,6 +1165,18 @@ const App = () => (
                     <Route path="/settings/notifications" element={<SettingsPage />} />
                     <Route path="/settings/privacy" element={<SettingsPage />} />
                     <Route path="/settings/appearance" element={<SettingsPage />} />
+                    <Route path="/settings/accessibility" element={<AccessibilitySettings />} />
+                    <Route path="/settings/device" element={<DeviceSettingsPage />} />
+                    <Route path="/settings/trusted-devices" element={<TrustedDeviceManager />} />
+
+                    {/* Display Modes */}
+                    <Route path="/display-modes" element={<CalmFocusMode />} />
+
+                    {/* Weekly Boardroom */}
+                    <Route path="/boardroom/weekly-review" element={<WeeklyBoardroom />} />
+
+                    {/* Unified Communication Inbox */}
+                    <Route path="/communication-inbox" element={<CommunicationInbox />} />
 
                     {/* Mission Control — explicit sub-routes */}
                     <Route path="/mission-control" element={<MissionControl />} />
