@@ -22,11 +22,11 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Derived data (fallback to mock, overridden in component) ──
-let MOCK_LEAKAGE = detectLeakage(MOCK_LEAKAGE_INPUT);
-let MOCK_RECOVERY_ACTIONS = suggestRecoveryActions(MOCK_LEAKAGE);
-let MOCK_RECOVERED = MOCK_RECOVERED_VALUES;
-let MOCK_OPPORTUNITIES = rankOpportunities(MOCK_RAW_OPPORTUNITIES);
-let SUMMARY = computeAutopilotSummary(MOCK_LEAKAGE, MOCK_RECOVERY_ACTIONS, MOCK_RECOVERED);
+let DEMO_LEAKAGE = detectLeakage(MOCK_LEAKAGE_INPUT);
+let DEMO_RECOVERY_ACTIONS = suggestRecoveryActions(DEMO_LEAKAGE);
+let DEMO_RECOVERED = MOCK_RECOVERED_VALUES;
+let DEMO_OPPORTUNITIES = rankOpportunities(MOCK_RAW_OPPORTUNITIES);
+let SUMMARY = computeAutopilotSummary(DEMO_LEAKAGE, DEMO_RECOVERY_ACTIONS, DEMO_RECOVERED);
 
 // ── Severity Colors ─────────────────────────────────────────────
 
@@ -44,12 +44,12 @@ const LeakageRadar = () => {
   <div className="space-y-4">
     <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
       <KPITile label="Total Leakage Detected" value={`$${Math.round(SUMMARY.totalLeakageDetected).toLocaleString()}`} sub="Across all sources" trend="down" />
-      <KPITile label="Recoverable" value={`$${Math.round(SUMMARY.totalRecoverable).toLocaleString()}`} sub={`${MOCK_LEAKAGE.filter(l => l.recoverable).length} items`} />
-      <KPITile label="Critical Items" value={String(MOCK_LEAKAGE.filter(l => l.severity === "critical").length)} sub="Need immediate action" trend="down" />
+      <KPITile label="Recoverable" value={`$${Math.round(SUMMARY.totalRecoverable).toLocaleString()}`} sub={`${DEMO_LEAKAGE.filter(l => l.recoverable).length} items`} />
+      <KPITile label="Critical Items" value={String(DEMO_LEAKAGE.filter(l => l.severity === "critical").length)} sub="Need immediate action" trend="down" />
       <KPITile label="Health Score" value={`${SUMMARY.healthScore}/100`} sub="Revenue health" trend="up" />
     </div>
     <div className="space-y-2">
-      {MOCK_LEAKAGE.map((item, i) => (
+      {DEMO_LEAKAGE.map((item, i) => (
         <motion.div key={item.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
           <SitaCard className="p-4" hover>
             <div className="flex items-center gap-4">
@@ -84,11 +84,11 @@ const RecoveryEngine = () => (
   <div className="space-y-4">
     <div className="grid gap-3 sm:grid-cols-3">
       <KPITile label="Active Recoveries" value={String(SUMMARY.activeRecoveryActions)} sub="In progress" />
-      <KPITile label="Suggested Actions" value={String(MOCK_RECOVERY_ACTIONS.length)} sub="Ready to launch" />
-      <KPITile label="Approval Required" value={String(MOCK_RECOVERY_ACTIONS.filter(r => r.approvalRequired).length)} sub="Need your OK" />
+      <KPITile label="Suggested Actions" value={String(DEMO_RECOVERY_ACTIONS.length)} sub="Ready to launch" />
+      <KPITile label="Approval Required" value={String(DEMO_RECOVERY_ACTIONS.filter(r => r.approvalRequired).length)} sub="Need your OK" />
     </div>
     <div className="space-y-2">
-      {MOCK_RECOVERY_ACTIONS.map((action, i) => (
+      {DEMO_RECOVERY_ACTIONS.map((action, i) => (
         <motion.div key={action.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
           <SitaCard className="p-4" hover>
             <div className="flex items-center gap-4">
@@ -120,7 +120,7 @@ const RecoveryEngine = () => (
 const OpportunitiesRanked = () => (
   <div className="space-y-4">
     <div className="space-y-2">
-      {MOCK_OPPORTUNITIES.map((opp, i) => (
+      {DEMO_OPPORTUNITIES.map((opp, i) => (
         <motion.div key={opp.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
           <SitaCard className="p-4" hover>
             <div className="flex items-center gap-4">
@@ -148,7 +148,7 @@ const OpportunitiesRanked = () => (
 );
 
 const RecoveredValueLedger = () => {
-  const summary = computeRecoveredValueSummary(MOCK_RECOVERED);
+  const summary = computeRecoveredValueSummary(DEMO_RECOVERED);
   return (
     <div className="space-y-4">
       <div className="grid gap-3 sm:grid-cols-3">
@@ -157,7 +157,7 @@ const RecoveredValueLedger = () => {
         <KPITile label="Categories" value={String(Object.keys(summary.byCategory).length)} sub="Active recovery types" />
       </div>
       <div className="space-y-2">
-        {MOCK_RECOVERED.map((entry, i) => (
+        {DEMO_RECOVERED.map((entry, i) => (
           <motion.div key={entry.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
             <SitaCard className="p-4" hover>
               <div className="flex items-center gap-4">
