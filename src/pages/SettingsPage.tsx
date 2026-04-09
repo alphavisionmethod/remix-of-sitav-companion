@@ -261,9 +261,9 @@ const SettingsPage = () => {
                       const { data: urlData } = supabase.storage.from("avatars").getPublicUrl(path);
                       const url = urlData.publicUrl;
                       setAvatarUrl(url);
-                      await fromTable("profiles").update({ avatar_url: url }).eq("user_id", user.id);
+                      await updateProfileFn({ table: "profiles", updates: { avatar_url: url }, userId: user.id });
                       toast.success("Photo updated");
-                    } catch (err: any) { toast.error(err.message || "Upload failed"); }
+                    } catch (err: unknown) { toast.error(err instanceof Error ? err.message : "Upload failed"); }
                     finally { setUploadingAvatar(false); }
                   }} />
                 </label>
