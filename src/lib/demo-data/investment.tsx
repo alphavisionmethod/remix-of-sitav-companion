@@ -1,5 +1,50 @@
 // SITA OS — Demo Data: Investment
 
+import {
+  Activity,
+  Calendar,
+  Coins,
+  Eye,
+  GraduationCap,
+  Home,
+  Landmark,
+  Search,
+  Shield,
+  Target,
+  TrendingUp,
+  Wallet,
+  Zap,
+} from "lucide-react";
+
+type RuleCategory = "sizing" | "behavior" | "governance" | "discipline";
+type AssetClass = "stocks" | "etfs" | "crypto" | "commodities" | "events" | "cash";
+
+interface Rule {
+  id: string;
+  label: string;
+  description: string;
+  value: string;
+  category: RuleCategory;
+  active: boolean;
+  severity: "hard" | "soft";
+}
+
+interface Receipt {
+  id: string;
+  type: "trade" | "approval" | "thesis" | "risk-change" | "rebalance" | "advisor-snapshot";
+  title: string;
+  description: string;
+  timestamp: string;
+  actor: string;
+  status: "completed" | "approved" | "rejected" | "pending";
+  metadata: Record<string, string>;
+}
+
+const PORTFOLIO = {
+  totalValue: 500000,
+  totalCash: 62000,
+};
+
 export const DEMO_LEARN_TOPICS = [
   { icon: "📊", title: "What is a portfolio?", desc: "Your portfolio is the collection of all your investments across platforms. Think of it as your investment library." },
   { icon: "⚖️", title: "What is risk?", desc: "Risk means how much your investments could lose. Higher risk means bigger possible gains AND losses." },
