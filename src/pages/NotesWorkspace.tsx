@@ -113,7 +113,7 @@ const NotesWorkspace = () => {
       >
         <div className="flex items-center gap-2">
           <Button size="sm" variant="outline" className="gap-1.5 text-xs" onClick={() => setShowTemplates(!showTemplates)}>
-            <FileTemplate className="w-3.5 h-3.5" /> Templates
+            <FileBox className="w-3.5 h-3.5" /> Templates
           </Button>
           <Button size="sm" className="gap-1.5 text-xs">
             <Plus className="w-3.5 h-3.5" /> New Note

@@ -21,7 +21,7 @@ import { toast } from "sonner";
 import {
   BarChart3, TrendingUp, DollarSign, Users, Briefcase, Download, Calendar,
   Filter, PieChart, Activity, Target, ArrowUpRight, ArrowDownRight, FileText,
-  Save, Share2, Clock, Shield, CheckCircle2, AlertTriangle, Bookmark,
+  Save, Share2, Clock, Shield, CheckCircle2, AlertTriangle, Bookmark, PlusCircle,
   ChevronRight, Eye, RotateCcw,
 } from "lucide-react";
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, BarChart, Bar, PieChart as RechartsPie, Pie, Cell, LineChart, Line, CartesianGrid } from "recharts";
