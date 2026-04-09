@@ -7,6 +7,8 @@ import { Radar, TrendingDown, AlertTriangle, Repeat } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+
 const LT07TruthRegressionRadar = () => {
   const { data: regressions } = useQuery({
     queryKey: ["regressions-all"],
@@ -16,14 +18,14 @@ const LT07TruthRegressionRadar = () => {
     },
   });
 
-  const active = regressions?.filter((r: any) => !r.resolved) ?? [];
-  const resolved = regressions?.filter((r: any) => r.resolved) ?? [];
-  const highSev = active.filter((r: any) => r.severity === "critical" || r.severity === "high");
-  const flaky = active.filter((r: any) => r.occurrence_count > 3);
+  const active = regressions?.filter((r: Record<string, any>) => !r.resolved) ?? [];
+  const resolved = regressions?.filter((r: Record<string, any>) => r.resolved) ?? [];
+  const highSev = active.filter((r: Record<string, any>) => r.severity === "critical" || r.severity === "high");
+  const flaky = active.filter((r: Record<string, any>) => r.occurrence_count > 3);
 
   // Domain heatmap
   const domainCounts: Record<string, number> = {};
-  active.forEach((r: any) => {
+  active.forEach((r: Record<string, any>) => {
     const d = r.domain || "unknown";
     domainCounts[d] = (domainCounts[d] || 0) + 1;
   });
@@ -88,7 +90,7 @@ const LT07TruthRegressionRadar = () => {
         <CardContent>
           {active.length > 0 ? (
             <div className="space-y-2">
-              {active.map((r: any) => (
+              {active.map((r: Record<string, any>) => (
                 <div key={r.id} className="flex items-center justify-between p-3 rounded border">
                   <div>
                     <p className="font-medium">{r.description || r.route || "Unknown regression"}</p>

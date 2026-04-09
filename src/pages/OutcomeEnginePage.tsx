@@ -21,6 +21,8 @@ import { DEMO_OUTCOMES, DEMO_INTERVENTIONS, DEMO_SPILLOVERS } from "@/lib/demo-d
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useOutcomes } from "@/hooks/use-live-data";
 
+
+
 export default function OutcomeEnginePage() {
   const { isDemoMode } = useDataMode();
   const { data: liveOutcomes } = useOutcomes();
@@ -29,7 +31,7 @@ export default function OutcomeEnginePage() {
   const outcomes = useMemo(() => {
     if (isDemoMode) return DEMO_OUTCOMES;
     if (!liveOutcomes?.length) return [];
-    return liveOutcomes.map((o: any) => ({
+    return liveOutcomes.map((o: Record<string, any>) => ({
       id: o.id,
       title: o.title,
       description: o.description || "",
@@ -45,7 +47,7 @@ export default function OutcomeEnginePage() {
   const spillovers = isDemoMode ? DEMO_SPILLOVERS : [];
 
   const totalProgress = outcomes.length > 0
-    ? Math.round(outcomes.reduce((s: number, o: any) => s + o.progress, 0) / outcomes.length)
+    ? Math.round(outcomes.reduce((s: number,  o: Record<string, any>) => s + o.progress, 0) / outcomes.length)
     : 0;
 
   return (
@@ -96,7 +98,7 @@ export default function OutcomeEnginePage() {
             <EmptyState icon={Target} title="No outcomes yet" description="Add your first outcome to start tracking progress." />
           ) : (
             <div className="grid gap-4 lg:grid-cols-2">
-              {outcomes.map((o: any) => (
+              {outcomes.map((o: Record<string, any>) => (
                 <OutcomeProgress
                   key={o.id}
                   title={o.title}

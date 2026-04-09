@@ -9,6 +9,8 @@ import { Bell, CheckCircle, XCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+
 const urgencyColors: Record<string, string> = { critical: "bg-red-500/20 text-red-400", high: "bg-orange-500/20 text-orange-400", normal: "bg-blue-500/20 text-blue-400", low: "bg-muted text-muted-foreground" };
 
 export default function UAO04NotificationRouter() {
@@ -39,7 +41,7 @@ export default function UAO04NotificationRouter() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <Card className="bg-card border-border"><CardContent className="pt-4"><p className="text-xs text-muted-foreground">Active Routes</p><p className="text-2xl font-bold">{routes.filter((r: any) => r.enabled).length}</p></CardContent></Card>
+        <Card className="bg-card border-border"><CardContent className="pt-4"><p className="text-xs text-muted-foreground">Active Routes</p><p className="text-2xl font-bold">{routes.filter((r: Record<string, any>) => r.enabled).length}</p></CardContent></Card>
         <Card className="bg-card border-border"><CardContent className="pt-4"><p className="text-xs text-muted-foreground">Max/Hour</p><p className="text-2xl font-bold">{fp?.max_notifications_per_hour || "—"}</p></CardContent></Card>
         <Card className="bg-card border-border"><CardContent className="pt-4"><p className="text-xs text-muted-foreground">Watch Max/Hour</p><p className="text-2xl font-bold">{fp?.max_watch_notifications_per_hour || "—"}</p></CardContent></Card>
         <Card className="bg-card border-border"><CardContent className="pt-4"><p className="text-xs text-muted-foreground">Interruption Policies</p><p className="text-2xl font-bold">{interruption.length}</p></CardContent></Card>
@@ -68,7 +70,7 @@ export default function UAO04NotificationRouter() {
             <Table>
               <TableHeader><TableRow><TableHead>Route</TableHead><TableHead>Urgency</TableHead><TableHead>Surface</TableHead><TableHead>Device Family</TableHead><TableHead>Fatigue</TableHead><TableHead>Enabled</TableHead><TableHead>Priority</TableHead></TableRow></TableHeader>
               <TableBody>
-                {routes.map((r: any) => (
+                {routes.map((r: Record<string, any>) => (
                   <TableRow key={r.id}>
                     <TableCell className="font-medium">{r.route_name}</TableCell>
                     <TableCell><Badge className={urgencyColors[r.urgency_level] || ""}>{r.urgency_level}</Badge></TableCell>
@@ -92,7 +94,7 @@ export default function UAO04NotificationRouter() {
             <Table>
               <TableHeader><TableRow><TableHead>Policy</TableHead><TableHead>Time Range</TableHead><TableHead>Allowed Urgencies</TableHead><TableHead>Suppress</TableHead><TableHead>Enabled</TableHead></TableRow></TableHeader>
               <TableBody>
-                {interruption.map((p: any) => (
+                {interruption.map((p: Record<string, any>) => (
                   <TableRow key={p.id}>
                     <TableCell className="font-medium">{p.policy_name}</TableCell>
                     <TableCell className="text-xs">{p.time_range_start || "—"} — {p.time_range_end || "—"}</TableCell>

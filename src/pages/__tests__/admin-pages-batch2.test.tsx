@@ -2,6 +2,8 @@ import { describe, it, expect, vi } from "vitest";
 import { render } from "@/test/test-utils";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+
 vi.mock("react-router-dom", async () => {
   const actual = await vi.importActual("react-router-dom");
   return { ...actual, useNavigate: () => vi.fn(), useParams: () => ({ id: "test" }), useSearchParams: () => [new URLSearchParams(), vi.fn()] };
@@ -40,7 +42,7 @@ const pages = [
 ] as const;
 
 function getComponent(mod: any) {
-  return mod.default || Object.values(mod).find((v: any) => typeof v === "function");
+  return mod.default || Object.values(mod).find((v: unknown) => typeof v === "function");
 }
 
 describe("Admin Pages Batch 2", () => {

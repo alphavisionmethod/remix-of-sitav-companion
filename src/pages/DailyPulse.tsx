@@ -37,6 +37,8 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
+
+
 // ── Mission Mode Emphasis Config ─────────────────────────────────
 const MISSION_MODE_CONFIG: Record<string, {
   greeting: string;
@@ -168,16 +170,16 @@ const DailyPulse = () => {
 
   const hasAnyData = isDemoMode || leads.length > 0 || invoices.length > 0 || bills.length > 0 || householdTasks.length > 0;
 
-  const pendingApprovals = approvals.filter((a: any) => a.status === "pending");
+  const pendingApprovals = approvals.filter((a: Record<string, any>) => a.status === "pending");
 
   const crossDomainInsights = evaluateCrossDomainIntelligence({
     invoices: invoices as never[], bills: bills as never[], leads: leads as never[], cashFlow: cashFlow as never,
     householdTasks: householdTasks as never[], familyEvents: familyEvents as never[], travel: travel as never[], subscriptions: subscriptions as never[],
   });
 
-  const staleLeads = (leads as never[]).filter((l: any) => l.status === "cooling" || l.lastTouch?.includes("d ago"));
-  const overdueBills = (bills as never[]).filter((b: any) => b.status === "overdue");
-  const upcomingBills = (bills as never[]).filter((b: any) => b.status === "upcoming");
+  const staleLeads = (leads as never[]).filter((l: Record<string, any>) => l.status === "cooling" || l.lastTouch?.includes("d ago"));
+  const overdueBills = (bills as never[]).filter((b: Record<string, any>) => b.status === "overdue");
+  const upcomingBills = (bills as never[]).filter((b: Record<string, any>) => b.status === "upcoming");
   const actionCount = staleLeads.length + overdueBills.length + pendingApprovals.length;
 
   // ── Domain Engine Computations ──────────────────────────────
@@ -479,7 +481,7 @@ const DailyPulse = () => {
                           aiInsight.mutate(
                             { intent: "daily_pulse_insight", domain, context: { section: move.advisor } },
                             {
-                              onSuccess: (data: any) => {
+                              onSuccess: (data: Record<string, any>) => {
                                 if (data?.recommendation) {
                                   setAiInsights(prev => ({ ...prev, [domain]: data.recommendation }));
                                 }

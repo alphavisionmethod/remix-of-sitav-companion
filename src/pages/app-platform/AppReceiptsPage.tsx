@@ -16,6 +16,8 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 
+
+
 const AppReceiptsPage = () => {
   const navigate = useNavigate();
   const { appId } = useParams<{ appId: string }>();
@@ -30,7 +32,7 @@ const AppReceiptsPage = () => {
       if (appId) query = query.eq("metadata->>appId", appId);
       const { data } = await query;
       if (!data?.length) return null;
-      return data.map((r: any) => ({
+      return data.map((r: Record<string, any>) => ({
         receiptId: r.id,
         appId: r.metadata?.appId || appId || "unknown",
         appName: r.metadata?.appName || r.action || "App",

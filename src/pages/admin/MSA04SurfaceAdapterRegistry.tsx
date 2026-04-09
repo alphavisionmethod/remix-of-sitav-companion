@@ -9,6 +9,8 @@ import { Settings2 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+
 const statusColors: Record<string, string> = {
   active: "bg-green-500/20 text-green-400", in_development: "bg-blue-500/20 text-blue-400",
   planned: "bg-muted text-muted-foreground", deprecated: "bg-red-500/20 text-red-400",
@@ -26,7 +28,7 @@ export default function MSA04SurfaceAdapterRegistry() {
     queryFn: async () => { const { data } = await fromTable("surface_types").select("*"); return data || []; },
   });
 
-  const getSurface = (id: string) => surfaces.find((s: any) => s.id === id);
+  const getSurface = (id: string) => surfaces.find((s: Record<string, any>) => s.id === id);
 
   return (
     <div className="space-y-6 p-6">
@@ -51,7 +53,7 @@ export default function MSA04SurfaceAdapterRegistry() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {adapters.map((a: any) => {
+              {adapters.map((a: Record<string, any>) => {
                 const surface = getSurface(a.surface_id);
                 const navGrammar = a.navigation_grammar as Record<string, any> || {};
                 const interGrammar = a.interaction_grammar as Record<string, any> || {};
@@ -73,7 +75,7 @@ export default function MSA04SurfaceAdapterRegistry() {
       </Card>
 
       {/* Detailed Adapter Cards */}
-      {adapters.map((a: any) => {
+      {adapters.map((a: Record<string, any>) => {
         const surface = getSurface(a.surface_id);
         return (
           <Card key={a.id} className="bg-card border-border">

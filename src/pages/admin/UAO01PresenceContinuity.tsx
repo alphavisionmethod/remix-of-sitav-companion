@@ -11,6 +11,8 @@ import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+
 const surfaceIcons: Record<string, React.ReactNode> = { web: <Monitor className="h-4 w-4" />, phone: <Smartphone className="h-4 w-4" />, watch: <Watch className="h-4 w-4" /> };
 
 export default function UAO01PresenceContinuity() {
@@ -43,11 +45,11 @@ export default function UAO01PresenceContinuity() {
       if (error) throw error;
     },
     onSuccess: () => { toast.success("Presence updated"); queryClient.invalidateQueries(); },
-    onError: (e: any) => toast.error(e.message),
+    onError: (e: Record<string, any>) => toast.error(e.message),
   });
 
   const current = presence[0];
-  const completedHandoffs = handoffs.filter((h: any) => h.handoff_status === "completed");
+  const completedHandoffs = handoffs.filter((h: Record<string, any>) => h.handoff_status === "completed");
 
   return (
     <div className="space-y-6 p-6">
@@ -88,7 +90,7 @@ export default function UAO01PresenceContinuity() {
             <Table>
               <TableHeader><TableRow><TableHead>Device</TableHead><TableHead>Family</TableHead><TableHead>Trust</TableHead><TableHead>Reachable</TableHead><TableHead>Primary</TableHead><TableHead>Last Seen</TableHead></TableRow></TableHeader>
               <TableBody>
-                {devices.map((d: any) => (
+                {devices.map((d: Record<string, any>) => (
                   <TableRow key={d.id}>
                     <TableCell className="font-medium">{d.device_name}</TableCell>
                     <TableCell><Badge variant="outline" className="text-xs">{d.device_families?.name || d.platform}</Badge></TableCell>
@@ -111,7 +113,7 @@ export default function UAO01PresenceContinuity() {
             <Table>
               <TableHeader><TableRow><TableHead>From</TableHead><TableHead>To</TableHead><TableHead>Status</TableHead><TableHead>Quality</TableHead><TableHead>When</TableHead></TableRow></TableHeader>
               <TableBody>
-                {handoffs.slice(0, 10).map((h: any) => (
+                {handoffs.slice(0, 10).map((h: Record<string, any>) => (
                   <TableRow key={h.id}>
                     <TableCell className="text-xs">{h.source_surface}</TableCell>
                     <TableCell className="text-xs">{h.target_surface}</TableCell>

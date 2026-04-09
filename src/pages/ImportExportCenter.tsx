@@ -11,6 +11,8 @@ import { DEMO_UPLOADS, DEMO_EXPORTS, type DemoUploadItem as UploadItem, type Dem
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useImportExportJobs } from "@/hooks/use-live-data";
 
+
+
 const STATUS_STYLES = { uploading: "text-primary", processing: "text-amber-400", complete: "text-emerald-400", failed: "text-red-400", generating: "text-amber-400", ready: "text-emerald-400", expired: "text-muted-foreground", pending: "text-amber-400" };
 const STATUS_ICONS = { uploading: Clock, processing: Clock, complete: CheckCircle2, failed: AlertTriangle, generating: Clock, ready: CheckCircle2, expired: AlertTriangle, pending: Clock };
 
@@ -23,7 +25,7 @@ const ImportExportCenter = () => {
   const uploads = useMemo(() => {
     if (isDemoMode) return DEMO_UPLOADS;
     if (!liveJobs?.length) return [];
-    return liveJobs.filter((j: any) => j.job_type === "import").map((j: any) => ({
+    return liveJobs.filter((j: Record<string, any>) => j.job_type === "import").map((j: Record<string, any>) => ({
       id: j.id,
       name: j.file_name || "Untitled",
       type: j.format || "file",
@@ -37,7 +39,7 @@ const ImportExportCenter = () => {
   const exports = useMemo(() => {
     if (isDemoMode) return DEMO_EXPORTS;
     if (!liveJobs?.length) return [];
-    return liveJobs.filter((j: any) => j.job_type === "export").map((j: any) => ({
+    return liveJobs.filter((j: Record<string, any>) => j.job_type === "export").map((j: Record<string, any>) => ({
       id: j.id,
       name: j.file_name || "Export",
       type: j.format || "file",
@@ -80,7 +82,7 @@ const ImportExportCenter = () => {
             <EmptyState icon={Upload} title="No uploads yet" description="Upload files to see them here." />
           ) : (
             <div className="space-y-2">
-              {uploads.map((item: any) => {
+              {uploads.map((item: Record<string, any>) => {
                 const StatusIcon = STATUS_ICONS[item.status as keyof typeof STATUS_ICONS] || Clock;
                 return (
                   <SitaCard key={item.id} className="p-3" hover>
@@ -155,7 +157,7 @@ const ImportExportCenter = () => {
             <EmptyState icon={Download} title="No exports yet" description="Export data to see download history here." />
           ) : (
             <div className="space-y-2">
-              {exports.map((item: any) => {
+              {exports.map((item: Record<string, any>) => {
                 const StatusIcon = STATUS_ICONS[item.status as keyof typeof STATUS_ICONS] || Clock;
                 return (
                   <SitaCard key={item.id} className="p-3" hover>

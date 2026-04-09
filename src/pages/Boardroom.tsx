@@ -44,6 +44,8 @@ import type { AdvisorConfig } from "@/packages/advisor-config";
 import { cn } from "@/lib/utils";
 import { useBoardroomData } from "@/hooks/use-boardroom-data";
 
+
+
 // ── Section Renderers (preserved from original) ───────────────
 
 const MetricCardGrid = ({ data, title }: { data: MetricCardData[]; title: string }) => {
@@ -587,21 +589,21 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
   });
 
   // Build PrepPack data from real DB queries
-  const prepPriorities = pendingApprovals.slice(0, 4).map((a: any) => ({
+  const prepPriorities = pendingApprovals.slice(0, 4).map((a: Record<string, any>) => ({
     title: a.title,
     detail: a.description || `${a.risk_level} risk · ${a.domain || "general"}`,
     domain: (a.domain || "general") as "business" | "money" | "concierge" | "general",
     urgency: (a.risk_level === "high" ? "critical" : a.risk_level === "medium" ? "high" : "medium") as "critical" | "high" | "medium" | "low",
   }));
 
-  const prepCarryovers = overdueTasks.slice(0, 4).map((t: any) => ({
+  const prepCarryovers = overdueTasks.slice(0, 4).map((t: Record<string, any>) => ({
     title: t.title,
     detail: t.due_at ? `Overdue since ${new Date(t.due_at).toLocaleDateString()}` : "No due date",
     domain: (t.domain || "general") as "business" | "money" | "concierge" | "general",
     urgency: (t.priority === "high" ? "high" : "medium") as "critical" | "high" | "medium" | "low",
   }));
 
-  const prepDecisions = pendingApprovals.filter((a: any) => a.risk_level !== "high").slice(0, 2).map((a: any) => ({
+  const prepDecisions = pendingApprovals.filter((a: Record<string, any>) => a.risk_level !== "high").slice(0, 2).map((a: Record<string, any>) => ({
     title: a.title,
     detail: a.description || "Ready for decision",
     domain: (a.domain || "general") as "business" | "money" | "concierge" | "general",
@@ -612,7 +614,7 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
     activeGoals.length > 0 ? `${activeGoals.length} active goals tracked` : null,
     pendingApprovals.length > 0 ? `${pendingApprovals.length} approvals pending` : null,
     overdueTasks.length > 0 ? `${overdueTasks.length} overdue tasks need attention` : null,
-    recentProofs.length > 0 ? `${recentProofs.filter((p: any) => p.verification_status === "verified").length} proofs verified` : null,
+    recentProofs.length > 0 ? `${recentProofs.filter((p: Record<string, any>) => p.verification_status === "verified").length} proofs verified` : null,
   ].filter(Boolean) as string[];
 
   return (

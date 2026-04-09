@@ -9,6 +9,8 @@ import { CheckCircle, XCircle, Minus, Zap } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+
 const portColors: Record<string, string> = {
   portable: "bg-green-500/20 text-green-400", web_preferred: "bg-cyan-500/20 text-cyan-400",
   surface_specific: "bg-yellow-500/20 text-yellow-400", not_portable: "bg-red-500/20 text-red-400",
@@ -37,10 +39,10 @@ export default function MSA03CapabilityPortability() {
     queryFn: async () => { const { data } = await fromTable("surface_types").select("id, surface_key, display_name").order("created_at"); return data || []; },
   });
 
-  const getBinding = (capId: string, surfaceId: string) => bindings.find((b: any) => b.capability_id === capId && b.surface_id === surfaceId);
+  const getBinding = (capId: string, surfaceId: string) => bindings.find((b: Record<string, any>) => b.capability_id === capId && b.surface_id === surfaceId);
 
-  const domains = [...new Set(capabilities.map((c: any) => c.domain))];
-  const portable = capabilities.filter((c: any) => c.portability_class === "portable").length;
+  const domains = [...new Set(capabilities.map((c: Record<string, any>) => c.domain))];
+  const portable = capabilities.filter((c: Record<string, any>) => c.portability_class === "portable").length;
 
   return (
     <div className="space-y-6 p-6">
@@ -52,7 +54,7 @@ export default function MSA03CapabilityPortability() {
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {Object.entries(portColors).map(([key, color]) => {
-          const count = capabilities.filter((c: any) => c.portability_class === key).length;
+          const count = capabilities.filter((c: Record<string, any>) => c.portability_class === key).length;
           return (
             <Card key={key} className="bg-card border-border"><CardContent className="pt-4">
               <p className="text-sm text-muted-foreground capitalize">{key.replace(/_/g, " ")}</p>
@@ -62,8 +64,8 @@ export default function MSA03CapabilityPortability() {
         })}
       </div>
 
-      {domains.map((domain: any) => {
-        const domainCaps = capabilities.filter((c: any) => c.domain === domain);
+      {domains.map((domain: Record<string, any>) => {
+        const domainCaps = capabilities.filter((c: Record<string, any>) => c.domain === domain);
         return (
           <Card key={domain} className="bg-card border-border">
             <CardHeader><CardTitle className="capitalize">{domain} Domain</CardTitle></CardHeader>
@@ -75,17 +77,17 @@ export default function MSA03CapabilityPortability() {
                     <TableHead>Type</TableHead>
                     <TableHead>Risk</TableHead>
                     <TableHead>Portability</TableHead>
-                    {surfaces.map((s: any) => <TableHead key={s.id}>{s.display_name}</TableHead>)}
+                    {surfaces.map((s: Record<string, any>) => <TableHead key={s.id}>{s.display_name}</TableHead>)}
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {domainCaps.map((c: any) => (
+                  {domainCaps.map((c: Record<string, any>) => (
                     <TableRow key={c.id}>
                       <TableCell className="font-mono text-xs">{c.capability_key}</TableCell>
                       <TableCell><Badge variant="outline">{c.action_type}</Badge></TableCell>
                       <TableCell><Badge variant="outline">{c.risk_tier}</Badge></TableCell>
                       <TableCell><Badge className={portColors[c.portability_class] || ""}>{c.portability_class}</Badge></TableCell>
-                      {surfaces.map((s: any) => {
+                      {surfaces.map((s: Record<string, any>) => {
                         const binding = getBinding(c.id, s.id);
                         return (
                           <TableCell key={s.id}>

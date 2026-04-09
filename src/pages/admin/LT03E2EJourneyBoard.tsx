@@ -7,6 +7,8 @@ import { TestTube, Play, Camera, Filter } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+
 const LT03E2EJourneyBoard = () => {
   const { data: journeys } = useQuery({
     queryKey: ["e2e-journeys-all"],
@@ -24,7 +26,7 @@ const LT03E2EJourneyBoard = () => {
     },
   });
 
-  const getLatestRun = (journeyId: string) => runs?.find((r: any) => r.journey_id === journeyId);
+  const getLatestRun = (journeyId: string) => runs?.find((r: Record<string, any>) => r.journey_id === journeyId);
 
   return (
     <div className="space-y-6 p-6">
@@ -51,7 +53,7 @@ const LT03E2EJourneyBoard = () => {
           <CardContent className="pt-4">
             <div className="text-sm text-muted-foreground mb-1">Pass Rate</div>
             <div className="text-3xl font-bold">
-              {runs && runs.length > 0 ? Math.round((runs.filter((r: any) => r.status === "pass").length / runs.length) * 100) : 0}%
+              {runs && runs.length > 0 ? Math.round((runs.filter((r: Record<string, any>) => r.status === "pass").length / runs.length) * 100) : 0}%
             </div>
           </CardContent>
         </Card>
@@ -67,7 +69,7 @@ const LT03E2EJourneyBoard = () => {
                   <th className="p-2">Journey</th><th className="p-2">Domain</th><th className="p-2">Criticality</th><th className="p-2">Mode</th><th className="p-2">Latest</th>
                 </tr></thead>
                 <tbody>
-                  {journeys.map((j: any) => {
+                  {journeys.map((j: Record<string, any>) => {
                     const latest = getLatestRun(j.id);
                     return (
                       <tr key={j.id} className="border-b hover:bg-muted/50">
@@ -94,7 +96,7 @@ const LT03E2EJourneyBoard = () => {
         <CardContent>
           {runs && runs.length > 0 ? (
             <div className="space-y-2">
-              {runs.slice(0, 10).map((run: any) => (
+              {runs.slice(0, 10).map((run: Record<string, any>) => (
                 <div key={run.id} className="flex items-center justify-between p-3 rounded border">
                   <div>
                     <p className="font-medium text-sm">{run.environment} run</p>

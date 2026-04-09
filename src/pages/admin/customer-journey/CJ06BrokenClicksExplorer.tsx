@@ -10,16 +10,18 @@ import { JOURNEY_STATUS_CONFIG } from "@/lib/customer-journey/journey-registry";
 import { Bug, Loader2 } from "lucide-react";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+
 export default function CJ06BrokenClicksExplorer() {
   const { isDemoMode } = useDataMode();
   const { data: runs, isLoading } = useCustomerJourneyRuns();
 
-  const brokenRuns = (runs ?? []).filter((r: any) =>
+  const brokenRuns = (runs ?? []).filter((r: Record<string, any>) =>
     r.status === "broken" || r.status === "partial" || r.status === "degraded_usable"
   );
 
   // Group by root cause layer
-  const byCause = brokenRuns.reduce<Record<string, any[]>>((acc, r: any) => {
+  const byCause = brokenRuns.reduce<Record<string, any[]>>((acc,  r: Record<string, any>) => {
     const layer = r.root_cause_layer || "unknown";
     if (!acc[layer]) acc[layer] = [];
     acc[layer].push(r);
@@ -50,19 +52,19 @@ export default function CJ06BrokenClicksExplorer() {
           <div className="grid grid-cols-3 gap-3">
             <Card>
               <CardContent className="p-4 text-center">
-                <div className="text-2xl font-bold text-destructive">{brokenRuns.filter((r: any) => r.status === "broken").length}</div>
+                <div className="text-2xl font-bold text-destructive">{brokenRuns.filter((r: Record<string, any>) => r.status === "broken").length}</div>
                 <div className="text-xs text-muted-foreground">Broken</div>
               </CardContent>
             </Card>
             <Card>
               <CardContent className="p-4 text-center">
-                <div className="text-2xl font-bold text-amber-400">{brokenRuns.filter((r: any) => r.status === "partial").length}</div>
+                <div className="text-2xl font-bold text-amber-400">{brokenRuns.filter((r: Record<string, any>) => r.status === "partial").length}</div>
                 <div className="text-xs text-muted-foreground">Partial</div>
               </CardContent>
             </Card>
             <Card>
               <CardContent className="p-4 text-center">
-                <div className="text-2xl font-bold text-orange-400">{brokenRuns.filter((r: any) => r.status === "degraded_usable").length}</div>
+                <div className="text-2xl font-bold text-orange-400">{brokenRuns.filter((r: Record<string, any>) => r.status === "degraded_usable").length}</div>
                 <div className="text-xs text-muted-foreground">Degraded</div>
               </CardContent>
             </Card>
@@ -75,7 +77,7 @@ export default function CJ06BrokenClicksExplorer() {
                 <CardTitle className="text-sm capitalize">{layer} Layer ({layerRuns.length})</CardTitle>
               </CardHeader>
               <CardContent className="space-y-2">
-                {layerRuns.map((r: any) => {
+                {layerRuns.map((r: Record<string, any>) => {
                   const statusCfg = JOURNEY_STATUS_CONFIG[r.status] || JOURNEY_STATUS_CONFIG.unverified;
                   return (
                     <div key={r.id} className="p-3 rounded border bg-card space-y-1">

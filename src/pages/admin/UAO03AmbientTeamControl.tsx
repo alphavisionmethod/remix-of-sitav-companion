@@ -11,6 +11,8 @@ import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+
 const toneColors: Record<string, string> = { executive: "bg-purple-500/20 text-purple-400", professional: "bg-blue-500/20 text-blue-400", analytical: "bg-cyan-500/20 text-cyan-400", concise: "bg-muted text-muted-foreground", caring: "bg-green-500/20 text-green-400", direct: "bg-orange-500/20 text-orange-400", precise: "bg-yellow-500/20 text-yellow-400", calm: "bg-teal-500/20 text-teal-400" };
 const intensityColors: Record<string, string> = { high: "bg-red-500/20 text-red-400", normal: "bg-blue-500/20 text-blue-400", low: "bg-muted text-muted-foreground" };
 
@@ -34,11 +36,11 @@ export default function UAO03AmbientTeamControl() {
       if (error) throw error;
     },
     onSuccess: () => { toast.success("Assistant roles seeded"); queryClient.invalidateQueries(); },
-    onError: (e: any) => toast.error(e.message),
+    onError: (e: Record<string, any>) => toast.error(e.message),
   });
 
-  const activeRoles = roles.filter((r: any) => r.active);
-  const proactiveRoles = roles.filter((r: any) => r.proactive_mode);
+  const activeRoles = roles.filter((r: Record<string, any>) => r.active);
+  const proactiveRoles = roles.filter((r: Record<string, any>) => r.proactive_mode);
 
   return (
     <div className="space-y-6 p-6">
@@ -68,7 +70,7 @@ export default function UAO03AmbientTeamControl() {
             <Table>
               <TableHeader><TableRow><TableHead>Role</TableHead><TableHead>Description</TableHead><TableHead>Intensity</TableHead><TableHead>Tone</TableHead><TableHead>Proactive</TableHead><TableHead>Escalation</TableHead><TableHead>Active</TableHead></TableRow></TableHeader>
               <TableBody>
-                {roles.map((r: any) => (
+                {roles.map((r: Record<string, any>) => (
                   <TableRow key={r.id}>
                     <TableCell className="font-medium">{r.role_name}</TableCell>
                     <TableCell className="text-xs max-w-[250px] truncate">{r.description}</TableCell>

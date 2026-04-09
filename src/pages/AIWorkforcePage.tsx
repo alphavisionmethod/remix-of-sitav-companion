@@ -15,6 +15,8 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { EmptyState } from "@/components/sita/SitaComponents";
 
+
+
 const DEMO_AGENTS = [
   { id: "1", name: "Revenue Scout", role: "Lead Qualification", status: "active" as const, tasksCompleted: 142, trustScore: 94, costToday: 2.34 },
   { id: "2", name: "Invoice Guardian", role: "Payment Follow-up", status: "active" as const, tasksCompleted: 89, trustScore: 97, costToday: 1.12 },
@@ -35,7 +37,7 @@ export default function AIWorkforcePage() {
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
       const { data } = await fromTable("advisor_registry").select("*").eq("active", true);
-      return (data ?? []).map((a: any) => ({
+      return (data ?? []).map((a: Record<string, any>) => ({
         id: a.id, name: a.display_name, role: a.advisor_type,
         status: "active" as const, tasksCompleted: 0, trustScore: Math.round(a.trust_threshold * 100), costToday: 0,
       }));

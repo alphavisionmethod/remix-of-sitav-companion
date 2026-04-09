@@ -10,6 +10,8 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { getRelation, parseProviderFamilyRef, parseProviderCapabilityRef } from "@/lib/types/relation-parsers";
 
+
+
 const categoryIcons: Record<string, React.ReactNode> = {
   storage: <HardDrive className="h-4 w-4" />,
   email: <Mail className="h-4 w-4" />,
@@ -55,9 +57,9 @@ export default function ISA02ConnectorProviderRegistryBoard() {
     },
   });
 
-  const connectedCount = services.filter((s: any) => s.status === "connected").length;
-  const errorCount = services.filter((s: any) => s.health_state === "error").length;
-  const categories = [...new Set(capabilities.map((c: any) => c.category))];
+  const connectedCount = services.filter((s: Record<string, any>) => s.status === "connected").length;
+  const errorCount = services.filter((s: Record<string, any>) => s.health_state === "error").length;
+  const categories = [...new Set(capabilities.map((c: Record<string, any>) => c.category))];
 
   return (
     <div className="space-y-6 p-6">
@@ -124,7 +126,7 @@ export default function ISA02ConnectorProviderRegistryBoard() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {capabilities.map((cap: any) => (
+              {capabilities.map((cap: Record<string, any>) => (
                 <TableRow key={cap.id}>
                   <TableCell className="font-medium flex items-center gap-2">
                     {categoryIcons[cap.category] || <Plug className="h-4 w-4" />}
@@ -166,7 +168,7 @@ export default function ISA02ConnectorProviderRegistryBoard() {
         <CardContent>
           {services.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-              {services.map((svc: any) => (
+              {services.map((svc: Record<string, any>) => (
                 <Card key={svc.id} className="bg-muted/30 border-border">
                   <CardContent className="pt-4">
                     <div className="flex items-center justify-between mb-2">

@@ -7,6 +7,8 @@ import { GitBranch, Clock, CheckCircle, XCircle, TrendingUp } from "lucide-react
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+
 const LT02CIPipelineCenter = () => {
   const { data: ciRuns } = useQuery({
     queryKey: ["ci-runs"],
@@ -25,8 +27,8 @@ const LT02CIPipelineCenter = () => {
   });
 
   const latestRun = ciRuns?.[0];
-  const successCount = ciRuns?.filter((r: any) => r.status === "success").length ?? 0;
-  const failCount = ciRuns?.filter((r: any) => r.status === "failure").length ?? 0;
+  const successCount = ciRuns?.filter((r: Record<string, any>) => r.status === "success").length ?? 0;
+  const failCount = ciRuns?.filter((r: Record<string, any>) => r.status === "failure").length ?? 0;
 
   const statusColor = (s: string) => {
     if (s === "success") return "default";
@@ -80,7 +82,7 @@ const LT02CIPipelineCenter = () => {
                   <th className="p-2">Branch</th><th className="p-2">Commit</th><th className="p-2">Trigger</th><th className="p-2">Status</th><th className="p-2">Time</th>
                 </tr></thead>
                 <tbody>
-                  {ciRuns.map((run: any) => (
+                  {ciRuns.map((run: Record<string, any>) => (
                     <tr key={run.id} className="border-b hover:bg-muted/50">
                       <td className="p-2 font-mono text-xs">{run.branch ?? "—"}</td>
                       <td className="p-2 font-mono text-xs">{run.commit_sha?.slice(0, 8) ?? "—"}</td>
@@ -104,7 +106,7 @@ const LT02CIPipelineCenter = () => {
         <CardContent>
           {ciJobs && ciJobs.length > 0 ? (
             <div className="space-y-2">
-              {ciJobs.slice(0, 10).map((job: any) => (
+              {ciJobs.slice(0, 10).map((job: Record<string, any>) => (
                 <div key={job.id} className="flex items-center justify-between p-2 rounded border">
                   <div>
                     <span className="font-medium">{job.job_name}</span>

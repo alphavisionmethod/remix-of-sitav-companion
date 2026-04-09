@@ -15,6 +15,8 @@ import { Link } from "react-router-dom";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+
 export default function AIT01TeamOverview() {
   const { isDemoMode } = useDataMode();
   const { data: stats, isLoading } = useQuery({ queryKey: ["ai-workforce-stats"], queryFn: getWorkforceStats });
@@ -31,8 +33,8 @@ export default function AIT01TeamOverview() {
   const fallbackToday = todayInvocations.filter(i => i.fallback_occurred).length;
   const degradedToday = todayInvocations.filter(i => i.status === "degraded" || i.status === "fallback_success").length;
   const pendingApprovals = approvals.length;
-  const newRecs = recs.filter((r: any) => r.status === "new" || r.status === "reviewing").length;
-  const acceptedToday = recs.filter((r: any) => r.status === "accepted").length;
+  const newRecs = recs.filter((r: Record<string, any>) => r.status === "new" || r.status === "reviewing").length;
+  const acceptedToday = recs.filter((r: Record<string, any>) => r.status === "accepted").length;
   const budgetAlerts = todayInvocations.filter(i => i.status === "blocked_budget").length;
 
   const kpis = [
@@ -168,7 +170,7 @@ export default function AIT01TeamOverview() {
           <CardContent className="space-y-1.5">
             {recs.length === 0 ? (
               <p className="text-sm text-muted-foreground">No recommendations yet.</p>
-            ) : recs.slice(0, 5).map((r: any) => (
+            ) : recs.slice(0, 5).map((r: Record<string, any>) => (
               <div key={r.id} className="p-2 rounded border">
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-medium">{r.title}</span>

@@ -22,6 +22,8 @@ import { useQueryFreshness } from "@/hooks/use-query-freshness";
 import { ContextualEmptyState } from "@/components/sita/ContextualEmptyState";
 import { getContextualEmptyState } from "@/lib/ux-trust/contextual-empty-states";
 
+
+
 const ReservesSavings = () => {
   const { data: reservesData = [] } = useReservesSavings();
   const { user } = useAuth();
@@ -59,10 +61,10 @@ const ReservesSavings = () => {
     invalidateKeys: [["reserves"], ["reserves-savings"]],
   });
 
-  const totalCurrent = reserves.reduce((s: number, r: any) => s + (r.current_amount || 0), 0);
-  const totalTarget = reserves.reduce((s: number, r: any) => s + (r.target_amount || 0), 0);
+  const totalCurrent = reserves.reduce((s: number,  r: Record<string, any>) => s + (r.current_amount || 0), 0);
+  const totalTarget = reserves.reduce((s: number,  r: Record<string, any>) => s + (r.target_amount || 0), 0);
   const overallHealth = totalTarget > 0 ? Math.round((totalCurrent / totalTarget) * 100) : 0;
-  const monthlyTotal = reserves.reduce((s: number, r: any) => s + (r.contribution_amount || 0), 0);
+  const monthlyTotal = reserves.reduce((s: number,  r: Record<string, any>) => s + (r.contribution_amount || 0), 0);
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
@@ -91,7 +93,7 @@ const ReservesSavings = () => {
         <EmptyState icon={PiggyBank} title="No reserves yet" description="Create your first savings goal to start building financial resilience." />
       ) : (
         <div className="space-y-4">
-          {reserves.map((r: any) => {
+          {reserves.map((r: Record<string, any>) => {
             const pct = r.target_amount > 0 ? Math.round((r.current_amount / r.target_amount) * 100) : 0;
             const healthColor = pct >= 80 ? "bg-trust-verified" : pct >= 50 ? "bg-trust-review" : "bg-urgency-high";
             const healthText = pct >= 80 ? "text-trust-verified" : pct >= 50 ? "text-trust-review" : "text-urgency-high";

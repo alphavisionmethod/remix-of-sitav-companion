@@ -6,6 +6,8 @@ import { useComplianceRecords, useFeatureSpecs } from "@/hooks/use-fip-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+
 const DEMO_OBSERVABILITY_FIELDS = ['structured_logs', 'metrics', 'traces', 'correlation_ids', 'error_codes', 'diagnostic_bundles', 'replay_path', 'incident_summary', 'runbooks'];
 
 const FIPObservabilityCenter = () => {
@@ -13,8 +15,8 @@ const FIPObservabilityCenter = () => {
   const { data: compliance = [] } = useComplianceRecords();
   const { data: specs = [] } = useFeatureSpecs();
 
-  const obsCount = compliance.filter((c: any) => c.observability_defined).length;
-  const specsWithObs = specs.filter((s: any) => s.observability_support && Object.keys(s.observability_support).length > 0);
+  const obsCount = compliance.filter((c: Record<string, any>) => c.observability_defined).length;
+  const specsWithObs = specs.filter((s: Record<string, any>) => s.observability_support && Object.keys(s.observability_support).length > 0);
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
@@ -35,7 +37,7 @@ const FIPObservabilityCenter = () => {
         <CardContent>
           <div className="grid grid-cols-3 gap-3">
             {DEMO_OBSERVABILITY_FIELDS.map(field => {
-              const count = specsWithObs.filter((s: any) => s.observability_support?.[field]).length;
+              const count = specsWithObs.filter((s: Record<string, any>) => s.observability_support?.[field]).length;
               return (
                 <div key={field} className="flex items-center justify-between p-2 border rounded">
                   <span className="text-sm capitalize">{field.replace(/_/g, ' ')}</span>
@@ -54,7 +56,7 @@ const FIPObservabilityCenter = () => {
         <CardHeader><CardTitle className="text-base">Support Readiness Panel</CardTitle></CardHeader>
         <CardContent className="space-y-2">
           {compliance.length === 0 ? <p className="text-center py-4 text-muted-foreground text-sm">No features to check support readiness for.</p> :
-            compliance.map((c: any) => (
+            compliance.map((c: Record<string, any>) => (
               <div key={c.id} className="flex items-center justify-between py-2 border-b last:border-0">
                 <div className="flex items-center gap-2">
                   {c.observability_defined ? <CheckCircle2 className="h-4 w-4 text-green-500" /> : <XCircle className="h-4 w-4 text-destructive" />}

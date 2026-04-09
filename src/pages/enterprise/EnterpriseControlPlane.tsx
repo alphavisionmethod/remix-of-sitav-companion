@@ -26,6 +26,8 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 
+
+
 // ── Demo Fallback Data ──────────────────────────────────────────
 const DEMO_TEAM_MEMBERS = [
   { id: "1", name: "Sarah Chen", email: "sarah@acme.co", role: "admin", status: "active", lastSeen: "2 min ago", trustScore: 98 },
@@ -76,7 +78,7 @@ const EnterpriseControlPlane = () => {
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
       const { data } = await fromTable("profiles").select("*, user_roles(role)").limit(50);
-      return (data ?? []).map((p: any) => ({
+      return (data ?? []).map((p: Record<string, any>) => ({
         id: p.id || p.user_id,
         name: p.display_name || p.email || "Unknown",
         email: p.email || "",
@@ -93,7 +95,7 @@ const EnterpriseControlPlane = () => {
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
       const { data } = await fromTable("audit_logs").select("*").eq("category", "deployment").order("created_at", { ascending: false }).limit(10);
-      return (data ?? []).map((a: any) => ({
+      return (data ?? []).map((a: Record<string, any>) => ({
         id: a.id,
         env: a.details?.environment || "production",
         version: a.details?.version || "v2.x",

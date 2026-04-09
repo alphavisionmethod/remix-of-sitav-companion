@@ -17,6 +17,8 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQueryClient } from "@tanstack/react-query";
 
+
+
 type CommStatus = "draft" | "review" | "approved" | "sent" | "delivered" | "opened" | "replied" | "failed";
 
 interface Communication {
@@ -60,7 +62,7 @@ const CommunicationsCenter = () => {
   const { data: dbComms = [] } = useCommunications();
 
   // Map DB communications to local type
-  const liveComms: Communication[] = dbComms.map((c: any) => ({
+  const liveComms: Communication[] = dbComms.map((c: Record<string, any>) => ({
     id: c.id,
     type: (c.channel || c.type || "email") as "email" | "sms" | "message",
     subject: c.subject || "",

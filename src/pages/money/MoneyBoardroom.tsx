@@ -14,6 +14,8 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { useMoneyKPIs, useReservesSavings } from "@/hooks/use-domain-data";
 import { useSubscriptions } from "@/hooks/use-sita-data";
 
+
+
 const MoneyBoardroom = () => {
   const [mode, setMode] = useState("weekly");
   const { data: kpis, isLoading } = useMoneyKPIs();
@@ -21,7 +23,7 @@ const MoneyBoardroom = () => {
   const { data: subscriptions = [] } = useSubscriptions();
 
   const k = kpis || { totalBalance: 0, safeToSpend: 0, reserveHealth: 0, estWaste: 0, wasteCount: 0, billsDue7d: 0, monthlyBurn: 0 };
-  const wasteSubscriptions = subscriptions.filter((s: any) => s.is_waste);
+  const wasteSubscriptions = subscriptions.filter((s: Record<string, any>) => s.is_waste);
 
   if (isLoading) return <SectionSkeleton cards={4} columns={2} />;
 
@@ -67,7 +69,7 @@ const MoneyBoardroom = () => {
         <SitaCard hover={false}>
           <SitaCardTitle>Reserve Health Summary</SitaCardTitle>
           <div className="mt-4 space-y-4">
-            {reserves.length > 0 ? reserves.map((r: any) => {
+            {reserves.length > 0 ? reserves.map((r: Record<string, any>) => {
               const pct = r.target_amount > 0 ? Math.round((r.current_amount / r.target_amount) * 100) : 0;
               return (
                 <div key={r.id}>
@@ -87,7 +89,7 @@ const MoneyBoardroom = () => {
         {/* Waste from DB */}
         <div className="space-y-4">
           <SitaSectionHeader title="Waste Reduction Opportunities" />
-          {wasteSubscriptions.length > 0 ? wasteSubscriptions.map((sub: any) => (
+          {wasteSubscriptions.length > 0 ? wasteSubscriptions.map((sub: Record<string, any>) => (
             <OpportunityCard key={sub.id} title={`Cancel ${sub.name} — $${(Number(sub.cost) * 12).toFixed(0)}/yr savings`} description={`Usage: ${sub.usage_level || "Low"}. Cost: $${Number(sub.cost).toFixed(2)}/mo`} action="Review" />
           )) : <SitaCard hover={false} className="p-4"><p className="text-sm text-muted-foreground">No waste opportunities detected</p></SitaCard>}
         </div>
@@ -98,7 +100,7 @@ const MoneyBoardroom = () => {
           <SitaCardTitle>Proof Summary</SitaCardTitle>
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
             <KPITile label="Total Balance" value={`$${(k.totalBalance / 1000).toFixed(1)}K`} icon={DollarSign} sub="Across all accounts" className="text-sm" />
-            <KPITile label="Savings Reserved" value={`$${(reserves.reduce((s: number, r: any) => s + (r.current_amount || 0), 0) / 1000).toFixed(1)}K`} icon={PiggyBank} sub="On track" className="text-sm" />
+            <KPITile label="Savings Reserved" value={`$${(reserves.reduce((s: number,  r: Record<string, any>) => s + (r.current_amount || 0), 0) / 1000).toFixed(1)}K`} icon={PiggyBank} sub="On track" className="text-sm" />
             <KPITile label="Bills Due" value={`$${k.billsDue7d.toLocaleString()}`} icon={Shield} sub="Next 7 days" className="text-sm" />
             <KPITile label="Monthly Burn" value={`$${k.monthlyBurn.toLocaleString()}`} icon={TrendingUp} sub="Projected" className="text-sm" />
           </div>

@@ -10,6 +10,8 @@ import { useMemo } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+
 function retentionFromClassification(c: string | null): string {
   if (!c) return "7 years";
   const cl = c.toLowerCase();
@@ -24,8 +26,8 @@ const FilesSensitive = () => {
   const { data: sensitiveFiles = [], isLoading } = useFilesBySensitivity(["restricted", "confidential", "governed"]);
 
   const governed = useMemo(() =>
-    sensitiveFiles.filter((f: any) => f.sensitivity === "governed" || (f.extracted_data?.text || "").toLowerCase().match(/medical|insurance|identity|estate|passport/))
-      .map((f: any) => ({
+    sensitiveFiles.filter((f: Record<string, any>) => f.sensitivity === "governed" || (f.extracted_data?.text || "").toLowerCase().match(/medical|insurance|identity|estate|passport/))
+      .map((f: Record<string, any>) => ({
         fileName: f.filename,
         sensitivity: "governed" as const,
         visibility: "Owner only",
@@ -37,9 +39,9 @@ const FilesSensitive = () => {
   );
 
   const restricted = useMemo(() =>
-    sensitiveFiles.filter((f: any) => f.sensitivity === "restricted" || f.sensitivity === "confidential")
-      .filter((f: any) => !governed.some(g => g.fileName === f.filename))
-      .map((f: any) => ({
+    sensitiveFiles.filter((f: Record<string, any>) => f.sensitivity === "restricted" || f.sensitivity === "confidential")
+      .filter((f: Record<string, any>) => !governed.some(g => g.fileName === f.filename))
+      .map((f: Record<string, any>) => ({
         fileName: f.filename,
         sensitivity: f.sensitivity as "restricted" | "confidential",
         visibility: f.sensitivity === "restricted" ? "Owner only" : "Owner + Trusted",

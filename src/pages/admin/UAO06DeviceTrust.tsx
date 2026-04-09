@@ -9,6 +9,8 @@ import { ShieldCheck, CheckCircle, XCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+
 const trustColors: Record<string, string> = { high: "bg-green-500/20 text-green-400", standard: "bg-blue-500/20 text-blue-400", low: "bg-muted text-muted-foreground", untrusted: "bg-red-500/20 text-red-400" };
 
 export default function UAO06DeviceTrust() {
@@ -40,7 +42,7 @@ export default function UAO06DeviceTrust() {
         <Card className="bg-card border-border"><CardContent className="pt-4"><p className="text-xs text-muted-foreground">Trust Records</p><p className="text-2xl font-bold">{trust.length}</p></CardContent></Card>
         <Card className="bg-card border-border"><CardContent className="pt-4"><p className="text-xs text-muted-foreground">Approval Policies</p><p className="text-2xl font-bold">{policies.length}</p></CardContent></Card>
         <Card className="bg-card border-border"><CardContent className="pt-4"><p className="text-xs text-muted-foreground">Approval Receipts</p><p className="text-2xl font-bold">{receipts.length}</p></CardContent></Card>
-        <Card className="bg-card border-border"><CardContent className="pt-4"><p className="text-xs text-muted-foreground">Financial Allowed</p><p className="text-2xl font-bold">{trust.filter((t: any) => t.financial_actions_allowed).length}</p></CardContent></Card>
+        <Card className="bg-card border-border"><CardContent className="pt-4"><p className="text-xs text-muted-foreground">Financial Allowed</p><p className="text-2xl font-bold">{trust.filter((t: Record<string, any>) => t.financial_actions_allowed).length}</p></CardContent></Card>
       </div>
 
       {trust.length > 0 && (
@@ -50,7 +52,7 @@ export default function UAO06DeviceTrust() {
             <Table>
               <TableHeader><TableRow><TableHead>Device</TableHead><TableHead>Trust</TableHead><TableHead>Biometric</TableHead><TableHead>Approval Tier</TableHead><TableHead>Financial</TableHead><TableHead>High Risk</TableHead><TableHead>Last Verified</TableHead></TableRow></TableHeader>
               <TableBody>
-                {trust.map((t: any) => (
+                {trust.map((t: Record<string, any>) => (
                   <TableRow key={t.id}>
                     <TableCell className="font-medium">{t.connected_devices?.device_name || "—"}</TableCell>
                     <TableCell><Badge className={trustColors[t.trust_level] || ""}>{t.trust_level}</Badge></TableCell>
@@ -74,7 +76,7 @@ export default function UAO06DeviceTrust() {
             <Table>
               <TableHeader><TableRow><TableHead>Device Family</TableHead><TableHead>Approval Class</TableHead><TableHead>Allowed</TableHead><TableHead>Biometric</TableHead><TableHead>Max Value</TableHead><TableHead>Cooldown</TableHead><TableHead>Escalation</TableHead></TableRow></TableHeader>
               <TableBody>
-                {policies.map((p: any) => (
+                {policies.map((p: Record<string, any>) => (
                   <TableRow key={p.id}>
                     <TableCell className="font-medium">{p.device_family_key}</TableCell>
                     <TableCell className="text-xs">{p.approval_class}</TableCell>
@@ -98,7 +100,7 @@ export default function UAO06DeviceTrust() {
             <Table>
               <TableHeader><TableRow><TableHead>Device</TableHead><TableHead>Class</TableHead><TableHead>Action</TableHead><TableHead>Decision</TableHead><TableHead>Biometric</TableHead><TableHead>When</TableHead></TableRow></TableHeader>
               <TableBody>
-                {receipts.slice(0, 10).map((r: any) => (
+                {receipts.slice(0, 10).map((r: Record<string, any>) => (
                   <TableRow key={r.id}>
                     <TableCell className="text-xs">{r.connected_devices?.device_name || r.device_family_key}</TableCell>
                     <TableCell className="text-xs">{r.approval_class}</TableCell>

@@ -25,6 +25,8 @@ import {
 import { DEMO_ACTIVITY_TIMELINE } from "@/lib/demo-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
+
+
 // ── Category System ──────────────────────────────────────────
 type FeedCategory = "all" | "actions" | "approvals" | "proof" | "workflows" | "finance" | "communications" | "household" | "system";
 
@@ -293,7 +295,7 @@ const ActivityStream = () => {
         .select("*")
         .order("created_at", { ascending: false })
         .limit(20);
-      return (data || []).map((a: any) => ({
+      return (data || []).map((a: Record<string, any>) => ({
         type: `approval.${a.status}`,
         created_at: a.created_at,
         payload: { summary: a.action_summary, action_type: a.action_type },
@@ -313,7 +315,7 @@ const ActivityStream = () => {
         .select("*")
         .order("created_at", { ascending: false })
         .limit(20);
-      return (data || []).map((p: any) => ({
+      return (data || []).map((p: Record<string, any>) => ({
         type: "receipt.created",
         created_at: p.created_at,
         payload: { summary: p.action_summary, domain: p.domain },
@@ -337,7 +339,7 @@ const ActivityStream = () => {
     }
 
     const allEvents = [...liveEvents, ...approvalEvents, ...proofEvents]
-      .sort((a: any, b: any) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+      .sort((a: any,  b: Record<string, any>) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 
     return allEvents.map((ev: any, i: number) => {
       const type = ev.type || "system.event";

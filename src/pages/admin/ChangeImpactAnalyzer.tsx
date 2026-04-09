@@ -15,6 +15,8 @@ import { analyzeChangeImpact, type ChangeProposal } from "@/lib/delivery-methodo
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+
 const ChangeImpactAnalyzer = () => {
   const queryClient = useQueryClient();
   const [form, setForm] = useState({ title: "", changeType: "feature", domains: "", featureIds: "", description: "" });
@@ -111,7 +113,7 @@ const ChangeImpactAnalyzer = () => {
           <CardHeader><CardTitle>Recent Impact Analyses</CardTitle></CardHeader>
           <CardContent>
             <div className="space-y-2">
-              {(records ?? []).map((r: any) => (
+              {(records ?? []).map((r: Record<string, any>) => (
                 <div key={r.id} className="flex items-center justify-between p-2 rounded border">
                   <span className="text-sm">{r.change_title}</span>
                   <div className="flex gap-2">

@@ -8,6 +8,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+
 // ── Heatmap Grid ────────────────────────────────────────────
 
 const DAYS = 7;
@@ -121,7 +123,7 @@ const MyActivity = () => {
 
       const hm: Record<string, number> = {};
       const fu: Record<string, number> = {};
-      data.forEach((row: any) => {
+      data.forEach((row: Record<string, any>) => {
         const day = row.created_at.slice(0, 10);
         hm[day] = (hm[day] || 0) + 1;
         const cat = row.category || "other";

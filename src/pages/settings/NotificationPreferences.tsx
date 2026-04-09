@@ -12,6 +12,8 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+
 const DEMO_CATEGORIES = [
   { key: "incident", label: "Incidents & Alerts", description: "Critical system issues and security alerts" },
   { key: "approval", label: "Approvals", description: "Pending approval requests and decisions" },
@@ -53,11 +55,11 @@ export default function NotificationPreferences() {
       queryClient.invalidateQueries({ queryKey: ["notification-preferences"] });
       toast.success("Preference saved");
     },
-    onError: (e: any) => toast.error(`Failed: ${e.message}`),
+    onError: (e: Record<string, any>) => toast.error(`Failed: ${e.message}`),
   });
 
   const getPref = (category: string) => {
-    const existing = preferences.find((p: any) => p.category === category);
+    const existing = preferences.find((p: Record<string, any>) => p.category === category);
     return { channel_push: existing?.channel_push ?? true, channel_in_app: existing?.channel_in_app ?? true, urgency_minimum: existing?.urgency_minimum ?? "low" };
   };
 

@@ -91,6 +91,8 @@ const RECOVERED_COLOR = "hsl(var(--trust-safe))";
 const GENERATED_COLOR = "hsl(var(--accent))";
 import { PIE_COLORS } from "@/lib/constants/ui-config";
 
+
+
 const categoryColors: Record<string, string> = {
   recovery: "bg-trust-safe/10 text-trust-safe",
   growth: "bg-accent/10 text-accent",
@@ -105,7 +107,7 @@ const ChartTooltip = ({ active, payload, label }: any) => {
   return (
     <div className="rounded-xl border border-border bg-card p-3 shadow-lg">
       <p className="text-[10px] text-muted-foreground mb-1.5">{label}</p>
-      {payload.map((p: any) => (
+      {payload.map((p: Record<string, any>) => (
         <div key={p.dataKey} className="flex items-center gap-2">
           <div className="h-2 w-2 rounded-full" style={{ background: p.color }} />
           <span className="text-[11px] text-muted-foreground capitalize">{p.dataKey}</span>
@@ -131,8 +133,8 @@ const RevenueImpactDashboard = () => {
     queryFn: async () => {
       const { data: invoices } = await fromTable("invoices").select("id, total_cents, status, paid_at, created_at").eq("user_id", user!.id);
       if (!invoices?.length) return null;
-      const paid = invoices.filter((i: any) => i.status === "paid");
-      const recovered = paid.reduce((s: number, i: any) => s + (i.total_cents || 0), 0) / 100;
+      const paid = invoices.filter((i: Record<string, any>) => i.status === "paid");
+      const recovered = paid.reduce((s: number,  i: Record<string, any>) => s + (i.total_cents || 0), 0) / 100;
       return {
         recovered,
         generated: recovered * 0.4,

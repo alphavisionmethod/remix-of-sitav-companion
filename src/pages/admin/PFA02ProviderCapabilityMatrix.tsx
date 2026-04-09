@@ -9,6 +9,8 @@ import { Layers, CheckCircle, XCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+
 export default function PFA02ProviderCapabilityMatrix() {
   const { isDemoMode } = useDataMode();
   const { data: capabilities = [] } = useQuery({
@@ -16,7 +18,7 @@ export default function PFA02ProviderCapabilityMatrix() {
     queryFn: async () => { const { data } = await fromTable("provider_capabilities").select("*, provider_families(name, provider_key)").order("capability_key"); return data || []; },
   });
 
-  const grouped = capabilities.reduce((acc: any, c: any) => {
+  const grouped = capabilities.reduce((acc: any,  c: Record<string, any>) => {
     const family = c.provider_families?.name || "Unknown";
     if (!acc[family]) acc[family] = [];
     acc[family].push(c);
@@ -48,7 +50,7 @@ export default function PFA02ProviderCapabilityMatrix() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {caps.map((c: any) => (
+                {caps.map((c: Record<string, any>) => (
                   <TableRow key={c.id}>
                     <TableCell className="font-mono text-xs">{c.capability_key}</TableCell>
                     <TableCell><Badge variant="outline">{c.category}</Badge></TableCell>

@@ -11,6 +11,8 @@ import ReactMarkdown from "react-markdown";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+
 type Mode = "think" | "learn" | "build" | "create";
 
 interface Message {

@@ -7,6 +7,8 @@ import { PROVIDERS } from "@/lib/sovereign-ai-gateway/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+
 const DEMO_FALLBACK_STRATEGIES = [
   { id: 'same_provider_downgrade', label: 'Same Provider Downgrade', desc: 'Use cheaper model from same provider', icon: '↓' },
   { id: 'cross_provider', label: 'Cross-Provider Failover', desc: 'Switch to alternative provider', icon: '↔' },
@@ -20,7 +22,7 @@ const SAGFallbackCenter = () => {
   const { data: policies = [] } = useRoutingPolicies();
   const { data: health = [] } = useProviderHealth();
   const { data: tasks = [] } = useTaskRequests();
-  const fallbackTasks = tasks.filter((t: any) => t.fallback_used);
+  const fallbackTasks = tasks.filter((t: Record<string, any>) => t.fallback_used);
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
@@ -31,10 +33,10 @@ const SAGFallbackCenter = () => {
       </motion.div>
 
       <div className="grid grid-cols-4 gap-4">
-        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{policies.filter((p: any) => p.fallback_provider || p.fallback_chain?.length > 0).length}</p><p className="text-xs text-muted-foreground">Policies with Fallback</p></CardContent></Card>
+        <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{policies.filter((p: Record<string, any>) => p.fallback_provider || p.fallback_chain?.length > 0).length}</p><p className="text-xs text-muted-foreground">Policies with Fallback</p></CardContent></Card>
         <Card><CardContent className="pt-4"><p className="text-2xl font-bold">{fallbackTasks.length}</p><p className="text-xs text-muted-foreground">Fallback Activations</p></CardContent></Card>
-        <Card><CardContent className="pt-4"><p className="text-2xl font-bold text-green-500">{health.filter((h: any) => (h.availability || 0) >= 0.99).length}</p><p className="text-xs text-muted-foreground">Healthy Providers</p></CardContent></Card>
-        <Card><CardContent className="pt-4"><p className="text-2xl font-bold text-destructive">{health.filter((h: any) => h.incident_status !== 'none').length}</p><p className="text-xs text-muted-foreground">Provider Incidents</p></CardContent></Card>
+        <Card><CardContent className="pt-4"><p className="text-2xl font-bold text-green-500">{health.filter((h: Record<string, any>) => (h.availability || 0) >= 0.99).length}</p><p className="text-xs text-muted-foreground">Healthy Providers</p></CardContent></Card>
+        <Card><CardContent className="pt-4"><p className="text-2xl font-bold text-destructive">{health.filter((h: Record<string, any>) => h.incident_status !== 'none').length}</p><p className="text-xs text-muted-foreground">Provider Incidents</p></CardContent></Card>
       </div>
 
       <Card>
@@ -57,7 +59,7 @@ const SAGFallbackCenter = () => {
         <CardContent>
           <div className="grid grid-cols-3 gap-3">
             {PROVIDERS.filter(p => p.id !== 'local' && p.id !== 'specialist').map(provider => {
-              const h = health.find((r: any) => r.provider === provider.id);
+              const h = health.find((r: Record<string, any>) => r.provider === provider.id);
               const isHealthy = !h || Number((h as Record<string, unknown>).availability) >= 0.95;
               return (
                 <div key={provider.id} className={`p-3 border rounded-lg ${isHealthy ? 'border-green-500/30' : 'border-destructive/30'}`}>
@@ -77,7 +79,7 @@ const SAGFallbackCenter = () => {
         <h2 className="font-semibold">Recent Fallback Activations</h2>
         {fallbackTasks.length === 0 ?
           <Card><CardContent className="py-8 text-center text-muted-foreground">No fallback activations recorded. Fallbacks activate when primary providers are unavailable.</CardContent></Card> :
-          fallbackTasks.slice(0, 10).map((t: any) => (
+          fallbackTasks.slice(0, 10).map((t: Record<string, any>) => (
             <Card key={t.id}>
               <CardContent className="py-3 flex items-center justify-between">
                 <div className="flex items-center gap-2"><RotateCcw className="h-4 w-4 text-yellow-500" /><span className="text-sm">{t.capability_id || t.task_class}</span></div>

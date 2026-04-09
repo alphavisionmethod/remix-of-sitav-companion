@@ -7,6 +7,8 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { useReadinessStates } from "@/hooks/use-health-signal-data";
 import { DEMO_READINESS_FACTORS } from "@/lib/demo-data/health-signals";
 
+
+
 const DEMO_PIPELINE_STAGES = [
   { stage: 1, name: "Raw Signals", desc: "heart_rate, sleep, steps, hrv, workout, focus_mode", color: "bg-blue-500/10", examples: ["72 bpm", "7.2h sleep", "8,500 steps"] },
   { stage: 2, name: "Normalized States", desc: "activity, sleep_quality, strain, recovery, focus", color: "bg-green-500/10", examples: ["activity: moderate", "sleep: good", "strain: high"] },
@@ -98,7 +100,7 @@ const HRS03ReadinessExplanation = () => {
                 <table className="w-full text-xs">
                   <thead><tr className="border-b"><th className="text-left p-2">Level</th><th className="text-left p-2">Confidence</th><th className="text-left p-2">Source</th><th className="text-left p-2">Assessed</th></tr></thead>
                   <tbody>
-                    {dbReadiness.map((r: any) => (
+                    {dbReadiness.map((r: Record<string, any>) => (
                       <tr key={r.id} className="border-b hover:bg-muted/30">
                         <td className="p-2 font-mono font-medium">{r.readiness_level}</td>
                         <td className="p-2">{r.confidence != null ? `${Math.round(r.confidence * 100)}%` : "—"}</td>

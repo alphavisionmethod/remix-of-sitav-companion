@@ -11,6 +11,8 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useLeads, useCustomers, useInvoices, useOpportunities } from "@/hooks/use-sita-data";
 
+
+
 const BusinessBoardroom = () => {
   const { isDemoMode } = useDataMode();
   const [mode, setMode] = useState("weekly");
@@ -25,12 +27,12 @@ const BusinessBoardroom = () => {
     const weekAgo = new Date(now.getTime() - 7 * 86400000);
     const weekStr = weekAgo.toISOString();
 
-    const recentInvoices = invoices.filter((i: any) => i.created_at >= weekStr);
-    const paidThisWeek = recentInvoices.filter((i: any) => i.status === "paid");
-    const revenue = paidThisWeek.reduce((sum: number, i: any) => sum + (i.amount || 0), 0);
-    const newLeads = leads.filter((l: any) => l.created_at >= weekStr).length;
-    const overdue = invoices.filter((i: any) => i.status === "overdue");
-    const atRisk = overdue.reduce((sum: number, i: any) => sum + (i.amount || 0), 0);
+    const recentInvoices = invoices.filter((i: Record<string, any>) => i.created_at >= weekStr);
+    const paidThisWeek = recentInvoices.filter((i: Record<string, any>) => i.status === "paid");
+    const revenue = paidThisWeek.reduce((sum: number,  i: Record<string, any>) => sum + (i.amount || 0), 0);
+    const newLeads = leads.filter((l: Record<string, any>) => l.created_at >= weekStr).length;
+    const overdue = invoices.filter((i: Record<string, any>) => i.status === "overdue");
+    const atRisk = overdue.reduce((sum: number,  i: Record<string, any>) => sum + (i.amount || 0), 0);
 
     return { revenue, newLeads, atRisk, overdueInvoices: overdue };
   }, [leads, invoices]);
@@ -40,17 +42,17 @@ const BusinessBoardroom = () => {
     const items: Array<{ text: string; urgency: string }> = [];
 
     // Overdue invoices are critical
-    kpis.overdueInvoices.slice(0, 2).forEach((inv: any) => {
+    kpis.overdueInvoices.slice(0, 2).forEach((inv: Record<string, any>) => {
       items.push({ text: `Collect overdue Invoice — ${inv.customer_name || "Customer"} ($${(inv.amount || 0).toLocaleString()})`, urgency: "critical" });
     });
 
     // Hot leads
-    leads.filter((l: any) => l.status === "new" || l.status === "contacted").slice(0, 2).forEach((l: any) => {
+    leads.filter((l: Record<string, any>) => l.status === "new" || l.status === "contacted").slice(0, 2).forEach((l: Record<string, any>) => {
       items.push({ text: `Follow up with ${l.name || l.company || "Lead"} — ${l.source || "Inbound"}`, urgency: "high" });
     });
 
     // Open opportunities
-    opportunities.filter((o: any) => o.stage === "proposal" || o.stage === "negotiation").slice(0, 2).forEach((o: any) => {
+    opportunities.filter((o: Record<string, any>) => o.stage === "proposal" || o.stage === "negotiation").slice(0, 2).forEach((o: Record<string, any>) => {
       items.push({ text: `Close deal: ${o.title || o.customer_name || "Opportunity"} — $${(o.value || 0).toLocaleString()}`, urgency: "medium" });
     });
 
@@ -63,7 +65,7 @@ const BusinessBoardroom = () => {
   const risks = useMemo(() => {
     const items: Array<{ title: string; description: string; severity: "high" | "medium" | "low" }> = [];
 
-    kpis.overdueInvoices.forEach((inv: any) => {
+    kpis.overdueInvoices.forEach((inv: Record<string, any>) => {
       const days = Math.ceil((Date.now() - new Date(inv.due_date || inv.created_at).getTime()) / 86400000);
       items.push({
         title: `Invoice overdue — ${inv.customer_name || "Customer"}`,
@@ -72,7 +74,7 @@ const BusinessBoardroom = () => {
       });
     });
 
-    leads.filter((l: any) => l.status === "cold" || l.status === "stale").slice(0, 2).forEach((l: any) => {
+    leads.filter((l: Record<string, any>) => l.status === "cold" || l.status === "stale").slice(0, 2).forEach((l: Record<string, any>) => {
       items.push({
         title: `Lead going cold: ${l.name || l.company || "Lead"}`,
         description: `${l.source || "Unknown source"} — needs re-engagement`,
@@ -169,7 +171,7 @@ const BusinessBoardroom = () => {
             <KPITile label="Active Leads" value={leads.length} icon={Users} sub="All sources" className="text-sm" />
             <KPITile label="Customers" value={customers.length} icon={CheckCircle} sub="Total" className="text-sm" />
             <KPITile label="Invoices" value={invoices.length} icon={FileText} sub="All statuses" className="text-sm" />
-            <KPITile label="Pipeline Value" value={`$${opportunities.reduce((s: number, o: any) => s + (o.value || 0), 0).toLocaleString()}`} icon={TrendingUp} sub="Total" className="text-sm" />
+            <KPITile label="Pipeline Value" value={`$${opportunities.reduce((s: number,  o: Record<string, any>) => s + (o.value || 0), 0).toLocaleString()}`} icon={TrendingUp} sub="Total" className="text-sm" />
           </div>
         </div>
       </div>

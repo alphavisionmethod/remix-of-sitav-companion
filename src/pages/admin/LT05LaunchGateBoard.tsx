@@ -9,6 +9,8 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { CILaunchGateWidget } from "@/components/sita/CILaunchGateWidget";
 
+
+
 const LT05LaunchGateBoard = () => {
   const { data: gates } = useQuery({
     queryKey: ["launch-gates"],
@@ -35,7 +37,7 @@ const LT05LaunchGateBoard = () => {
   });
 
   const gate = gates?.[0];
-  const metCriteria = criteria?.filter((c: any) => c.status === "met").length ?? 0;
+  const metCriteria = criteria?.filter((c: Record<string, any>) => c.status === "met").length ?? 0;
   const totalCriteria = criteria?.length ?? 0;
   const truthScore = totalCriteria > 0 ? Math.round((metCriteria / totalCriteria) * 100) : 0;
 
@@ -109,7 +111,7 @@ const LT05LaunchGateBoard = () => {
         <CardContent>
           {blockers && blockers.length > 0 ? (
             <div className="space-y-2">
-              {blockers.map((b: any) => (
+              {blockers.map((b: Record<string, any>) => (
                 <div key={b.id} className="flex items-center justify-between p-3 rounded border border-destructive/20">
                   <div>
                     <p className="font-medium">{b.title}</p>
@@ -132,7 +134,7 @@ const LT05LaunchGateBoard = () => {
         <CardContent>
           {criteria && criteria.length > 0 ? (
             <div className="space-y-2">
-              {criteria.map((c: any) => (
+              {criteria.map((c: Record<string, any>) => (
                 <div key={c.id} className="flex items-center justify-between p-2 rounded border">
                   <div>
                     <span className="font-medium">{c.name}</span>

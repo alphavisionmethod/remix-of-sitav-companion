@@ -6,6 +6,8 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useCapabilitySurfaceBindings } from "@/hooks/use-native-shell-data";
 
+
+
 const getBadgeVariant = (v: string) => v === "full" ? "default" as const : v === "n/a" ? "outline" as const : "secondary" as const;
 
 const NSS02CapabilityMatrix = () => {
@@ -20,7 +22,7 @@ const NSS02CapabilityMatrix = () => {
     { fit: "mobile_only", desc: "Requires mobile hardware (camera, NFC)" },
     { fit: "not_mobile", desc: "Desktop-only — too complex for mobile" },
     { fit: "mobile_supported", desc: "Supported on mobile with full experience" },
-  ].map(f => ({ ...f, count: items.filter((c: any) => (c.fit ?? c.surface_fit) === f.fit).length })).filter(f => f.count > 0);
+  ].map(f => ({ ...f, count: items.filter((c: Record<string, any>) => (c.fit ?? c.surface_fit) === f.fit).length })).filter(f => f.count > 0);
 
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">
@@ -56,7 +58,7 @@ const NSS02CapabilityMatrix = () => {
                       <th className="p-2">Native</th>
                     </tr></thead>
                     <tbody>
-                      {items.map((r: any) => (
+                      {items.map((r: Record<string, any>) => (
                         <tr key={r.cap ?? r.capability_key} className="border-b hover:bg-muted/30">
                           <td className="p-2 font-medium">{r.cap ?? r.capability_name}</td>
                           <td className="p-2 text-center"><Badge variant={getBadgeVariant(r.mobile ?? "n/a")} className="text-[10px]">{r.mobile ?? r.mobile_experience}</Badge></td>
@@ -95,7 +97,7 @@ const NSS02CapabilityMatrix = () => {
           <Card>
             <CardHeader><CardTitle className="text-sm">Native-Required Capabilities</CardTitle></CardHeader>
             <CardContent className="space-y-2">
-              {items.filter((c: any) => c.nativeRequired ?? c.requires_native_api).map((c: any) => (
+              {items.filter((c: Record<string, any>) => c.nativeRequired ?? c.requires_native_api).map((c: Record<string, any>) => (
                 <div key={c.cap ?? c.capability_key} className="flex items-center justify-between p-3 rounded border text-xs">
                   <div className="flex items-center gap-2"><AlertTriangle className="h-3 w-3 text-amber-500" /><span className="font-medium">{c.cap ?? c.capability_name}</span></div>
                   <div className="flex gap-1">

@@ -11,6 +11,8 @@ import { AppIcon, VerificationBadge } from "@/components/sita/app-platform/AppSt
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+
 const DEMO_FILES = [
   { name: "report.html", ext: ".html", candidates: ["chrome", "firefox", "vscode"] },
   { name: "project.md", ext: ".md", candidates: ["vscode", "obsidian"] },
@@ -66,7 +68,7 @@ const OpenWithPage = () => {
 
       {/* App List */}
       <div className="space-y-2">
-        {candidateApps.map((app: any) => {
+        {candidateApps.map((app: Record<string, any>) => {
           const isRecommended = app.id === recommended?.id;
           const isSelected = selectedApp === app.id;
           return (

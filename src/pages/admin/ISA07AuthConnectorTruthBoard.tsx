@@ -10,6 +10,8 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { getRelation, parseProviderFamilyRef } from "@/lib/types/relation-parsers";
 
+
+
 const severityColors: Record<string, string> = {
   info: "bg-blue-500/20 text-blue-400",
   warning: "bg-yellow-500/20 text-yellow-400",
@@ -77,7 +79,7 @@ export default function ISA07AuthConnectorTruthBoard() {
   }> = [];
 
   // Check 1: Any family with both identity and connector using SAME OAuth client?
-  const clientsByFamily = oauthClients.reduce((acc: Record<string, any[]>, c: any) => {
+  const clientsByFamily = oauthClients.reduce((acc: Record<string, any[]>,  c: Record<string, any>) => {
     const fk = getRelation(c, "provider_families", parseProviderFamilyRef).provider_key || "unknown";
     if (!acc[fk]) acc[fk] = [];
     acc[fk].push(c);
@@ -85,7 +87,7 @@ export default function ISA07AuthConnectorTruthBoard() {
   }, {});
 
   Object.entries(clientsByFamily).forEach(([fam, clients]: [string, any[]]) => {
-    const purposes = clients.map((c: any) => c.client_purpose);
+    const purposes = clients.map((c: Record<string, any>) => c.client_purpose);
     const hasIdentity = purposes.some((p: string) => p?.startsWith("identity"));
     const hasConnector = purposes.some((p: string) => p?.startsWith("connector"));
     if (hasIdentity && hasConnector && clients.length < 2) {
@@ -109,9 +111,9 @@ export default function ISA07AuthConnectorTruthBoard() {
   });
 
   // Check 2: Identity link implies connector access? (should NOT)
-  const identityFamilies = new Set(identityLinks.map((l: any) => getRelation(l, "provider_families", parseProviderFamilyRef).provider_key));
-  const connectorFamilies = new Set(connectorLinks.map((l: any) => getRelation(l, "provider_families", parseProviderFamilyRef).provider_key));
-  identityFamilies.forEach((fam: any) => {
+  const identityFamilies = new Set(identityLinks.map((l: Record<string, any>) => getRelation(l, "provider_families", parseProviderFamilyRef).provider_key));
+  const connectorFamilies = new Set(connectorLinks.map((l: Record<string, any>) => getRelation(l, "provider_families", parseProviderFamilyRef).provider_key));
+  identityFamilies.forEach((fam: Record<string, any>) => {
     if (fam && connectorFamilies.has(fam)) {
       findings.push({
         type: "ux_confusion",
@@ -124,10 +126,10 @@ export default function ISA07AuthConnectorTruthBoard() {
   });
 
   // Check 3: Connector scopes mixed with identity scopes?
-  const identityScopes = scopes.filter((s: any) => s.category === "identity_minimal");
-  const connectorScopes = scopes.filter((s: any) => s.category?.startsWith("connector"));
-  const identityScopeKeys = new Set(identityScopes.map((s: any) => s.scope_key));
-  const connectorScopeKeys = new Set(connectorScopes.map((s: any) => s.scope_key));
+  const identityScopes = scopes.filter((s: Record<string, any>) => s.category === "identity_minimal");
+  const connectorScopes = scopes.filter((s: Record<string, any>) => s.category?.startsWith("connector"));
+  const identityScopeKeys = new Set(identityScopes.map((s: Record<string, any>) => s.scope_key));
+  const connectorScopeKeys = new Set(connectorScopes.map((s: Record<string, any>) => s.scope_key));
   const overlap = [...identityScopeKeys].filter((k) => connectorScopeKeys.has(k));
   if (overlap.length > 0) {
     findings.push({
@@ -140,7 +142,7 @@ export default function ISA07AuthConnectorTruthBoard() {
   }
 
   // Check 4: Families with identity but no separate connector capability registered
-  families.forEach((f: any) => {
+  families.forEach((f: Record<string, any>) => {
     if (f.identity_support && f.connector_support) {
       const famClients = clientsByFamily[f.provider_key] || [];
       if (famClients.length === 0) {
@@ -202,9 +204,9 @@ export default function ISA07AuthConnectorTruthBoard() {
               <p className="font-medium">Identity Layer</p>
             </div>
             <div className="space-y-1 text-sm text-muted-foreground">
-              <p>{families.filter((f: any) => f.identity_support).length} identity-capable families</p>
+              <p>{families.filter((f: Record<string, any>) => f.identity_support).length} identity-capable families</p>
               <p>{identityLinks.length} linked identities</p>
-              <p>{oauthClients.filter((c: any) => c.client_purpose?.startsWith("identity")).length} identity OAuth clients</p>
+              <p>{oauthClients.filter((c: Record<string, any>) => c.client_purpose?.startsWith("identity")).length} identity OAuth clients</p>
               <p>{identityScopes.length} identity scopes</p>
             </div>
           </CardContent>
@@ -216,9 +218,9 @@ export default function ISA07AuthConnectorTruthBoard() {
               <p className="font-medium">Connector Layer</p>
             </div>
             <div className="space-y-1 text-sm text-muted-foreground">
-              <p>{families.filter((f: any) => f.connector_support).length} connector-capable families</p>
+              <p>{families.filter((f: Record<string, any>) => f.connector_support).length} connector-capable families</p>
               <p>{connectorLinks.length} connected services</p>
-              <p>{oauthClients.filter((c: any) => c.client_purpose?.startsWith("connector")).length} connector OAuth clients</p>
+              <p>{oauthClients.filter((c: Record<string, any>) => c.client_purpose?.startsWith("connector")).length} connector OAuth clients</p>
               <p>{connectorScopes.length} connector scopes</p>
             </div>
           </CardContent>

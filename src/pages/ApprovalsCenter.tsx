@@ -13,6 +13,8 @@ import {
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
+
+
 const ApprovalsCenter = () => {
   const { data: approvals = [], isLoading } = useApprovals();
   const { approve, reject } = useApprovalQueue();
@@ -20,8 +22,8 @@ const ApprovalsCenter = () => {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [rejectionReason, setRejectionReason] = useState("");
 
-  const pending = approvals.filter((a: any) => a.status === "pending");
-  const decided = approvals.filter((a: any) => a.status !== "pending");
+  const pending = approvals.filter((a: Record<string, any>) => a.status === "pending");
+  const decided = approvals.filter((a: Record<string, any>) => a.status !== "pending");
 
   const handleApprove = (id: string) => {
     if (isDemoMode) return;
@@ -51,8 +53,8 @@ const ApprovalsCenter = () => {
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KPITile label="Pending" value={pending.length} icon={Clock} className="gradient-sita-subtle" />
-        <KPITile label="Approved (30d)" value={decided.filter((a: any) => a.status === "approved").length} icon={CheckCircle} />
-        <KPITile label="Rejected (30d)" value={decided.filter((a: any) => a.status === "rejected").length} icon={XCircle} />
+        <KPITile label="Approved (30d)" value={decided.filter((a: Record<string, any>) => a.status === "approved").length} icon={CheckCircle} />
+        <KPITile label="Rejected (30d)" value={decided.filter((a: Record<string, any>) => a.status === "rejected").length} icon={XCircle} />
         <KPITile label="Total Decided" value={decided.length} sub="All time" icon={Zap} />
       </div>
 

@@ -10,6 +10,8 @@ import { useCampaigns } from "@/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/sita/EmptyState";
 
+
+
 const DEMO_CAMPAIGNS = [
   { name: "Welcome Sequence", type: "email", status: "active", subscribers: 234, openRate: 68.4, clickRate: 24.2, conversions: 18, revenue: "$5,400", steps: 5, completionRate: 72 },
   { name: "Re-Engagement Series", type: "email", status: "active", subscribers: 89, openRate: 42.1, clickRate: 12.8, conversions: 6, revenue: "$2,400", steps: 4, completionRate: 45 },
@@ -29,7 +31,7 @@ export default function CampaignOrchestrator() {
   const { isDemoMode } = useDataMode();
   const { data: liveCampaigns, isLoading } = useCampaigns();
 
-  const CAMPAIGNS = isDemoMode ? DEMO_CAMPAIGNS : (liveCampaigns?.map((c: any) => ({
+  const CAMPAIGNS = isDemoMode ? DEMO_CAMPAIGNS : (liveCampaigns?.map((c: Record<string, any>) => ({
     name: c.name, type: c.channel || "email", status: c.status, subscribers: c.audience_size || 0,
     openRate: c.open_rate || 0, clickRate: c.click_rate || 0, conversions: c.conversions || 0,
     revenue: `$${c.revenue_generated || 0}`, steps: c.steps || 0, completionRate: c.completion_rate || 0,

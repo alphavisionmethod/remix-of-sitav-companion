@@ -32,7 +32,7 @@ describe("Workspace Pages", () => {
   pages.forEach(([name, loader]) => {
     it(`${name} renders without crashing`, async () => {
       const mod = await loader();
-      const Component = mod.default || Object.values(mod).find((v: any) => typeof v === "function");
+      const Component = mod.default || Object.values(mod).find((v: Record<string, unknown>) => typeof v === "function");
       const { container } = render(<Component />);
       expect(container).toBeTruthy();
     });

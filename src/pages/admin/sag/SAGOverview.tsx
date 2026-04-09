@@ -7,6 +7,8 @@ import { useGatewayStats, useTaskRequests, useProviderHealth } from "@/hooks/use
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+
 const SAGOverview = () => {
   const { data: stats } = useGatewayStats();
   const { data: tasks = [] } = useTaskRequests();
@@ -71,7 +73,7 @@ const SAGOverview = () => {
         <CardContent>
           {tasks.length === 0 ? <p className="text-center py-6 text-muted-foreground">No AI task requests yet. All inference will be tracked here.</p> :
             <div className="space-y-2">
-              {tasks.slice(0, 10).map((t: any) => (
+              {tasks.slice(0, 10).map((t: Record<string, any>) => (
                 <div key={t.id} className="flex items-center justify-between py-2 border-b last:border-0">
                   <div className="flex items-center gap-2">
                     <Zap className="h-3 w-3 text-primary" />

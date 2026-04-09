@@ -25,6 +25,8 @@ import { toast } from "sonner";
 // ── Types (re-use demo-data interface) ────────────────────────
 import { DEMO_APPROVAL_ITEMS, type DemoApprovalItem as ApprovalItem } from "@/lib/demo-data/approval-chamber";
 
+
+
 const MOCK_APPROVALS = DEMO_APPROVAL_ITEMS;
 
 // ── Risk Styling ─────────────────────────────────────────────
@@ -296,7 +298,7 @@ const ApprovalChamber = () => {
   const [tab, setTab] = useState("pending");
 
   // Map DB approvals to ApprovalItem interface, fall back to mocks when empty
-  const items: ApprovalItem[] = (dbApprovals.length > 0 && !isDemoMode) ? dbApprovals.map((a: any) => ({
+  const items: ApprovalItem[] = (dbApprovals.length > 0 && !isDemoMode) ? dbApprovals.map((a: Record<string, any>) => ({
     id: a.id,
     title: a.action_summary || a.title || "Untitled",
     description: a.description || JSON.stringify(a.proposed_action || {}),

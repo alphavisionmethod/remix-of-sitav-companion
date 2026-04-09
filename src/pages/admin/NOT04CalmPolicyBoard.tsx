@@ -13,6 +13,8 @@ import { Moon, Shield, Clock, Volume2, VolumeX, Bell, BellOff } from "lucide-rea
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { cn } from "@/lib/utils";
+
+
 export default function NOT04CalmPolicyBoard() {
   const { isDemoMode } = useDataMode();
   const { data: policies = [] } = useQuery({
@@ -35,7 +37,7 @@ export default function NOT04CalmPolicyBoard() {
     },
   });
 
-  const activePolicies = policies.filter((p: any) => p.active !== false);
+  const activePolicies = policies.filter((p: Record<string, any>) => p.active !== false);
 
   return (
     <div className="p-6 space-y-6 max-w-6xl" data-testid="not04-calm-board">
@@ -81,7 +83,7 @@ export default function NOT04CalmPolicyBoard() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {policies.map((p: any) => (
+                {policies.map((p: Record<string, any>) => (
                   <TableRow key={p.id}>
                     <TableCell className="text-xs font-medium">{p.policy_name || p.id?.slice(0, 8)}</TableCell>
                     <TableCell className="text-xs">{p.surface || "all"}</TableCell>
@@ -127,7 +129,7 @@ export default function NOT04CalmPolicyBoard() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {deliveryReceipts.map((r: any) => (
+                {deliveryReceipts.map((r: Record<string, any>) => (
                   <TableRow key={r.id}>
                     <TableCell className="text-xs text-muted-foreground">
                       {r.created_at ? new Date(r.created_at).toLocaleString(undefined, { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" }) : "—"}

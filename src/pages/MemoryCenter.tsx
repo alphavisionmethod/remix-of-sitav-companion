@@ -16,6 +16,8 @@ import {
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+
 const categoryMap: Record<string, string> = {
   profile: "context",
   business: "business",
@@ -94,19 +96,19 @@ const MemoryCenter = () => {
   interface MemoryItem { id: string; key: string; value: unknown; category: string; source?: string; updated_at: string; expires_at?: string; confidence?: number; }
   const memories = allMemories as MemoryItem[];
   const dbCategory = categoryMap[activeTab] || "context";
-  const tabMemories = memories.filter((m: any) => m.category === dbCategory);
+  const tabMemories = memories.filter((m: Record<string, any>) => m.category === dbCategory);
 
   // Count per tab
-  const countForTab = (key: string) => memories.filter((m: any) => m.category === (categoryMap[key] || "context")).length;
+  const countForTab = (key: string) => memories.filter((m: Record<string, any>) => m.category === (categoryMap[key] || "context")).length;
 
   // Search
   const filtered = search
-    ? tabMemories.filter((m: any) => m.key?.toLowerCase().includes(search.toLowerCase()) || JSON.stringify(m.value).toLowerCase().includes(search.toLowerCase()))
+    ? tabMemories.filter((m: Record<string, any>) => m.key?.toLowerCase().includes(search.toLowerCase()) || JSON.stringify(m.value).toLowerCase().includes(search.toLowerCase()))
     : tabMemories;
 
   const totalMemories = memories.length;
-  const avgConfidence = memories.length > 0 ? Math.round(memories.reduce((s: number, m: any) => s + (m.confidence || 0), 0) / memories.length * 100) : 0;
-  const sensitiveCount = memories.filter((m: any) => m.category === "financial" || m.category === "household").length;
+  const avgConfidence = memories.length > 0 ? Math.round(memories.reduce((s: number,  m: Record<string, any>) => s + (m.confidence || 0), 0) / memories.length * 100) : 0;
+  const sensitiveCount = memories.filter((m: Record<string, any>) => m.category === "financial" || m.category === "household").length;
   const lastUpdated = allMemories[0]?.updated_at ? new Date(allMemories[0].updated_at).toLocaleString() : "—";
 
   const formatValue = (val: unknown): string => {

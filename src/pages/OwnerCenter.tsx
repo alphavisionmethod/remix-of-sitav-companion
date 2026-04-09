@@ -66,6 +66,8 @@ import {
 } from "@/lib/internal-agents/rights";
 import { validateLaunchReadiness, getCouncilSummary, getAllCouncilSummaries, ACTION_PIPELINE_STATES } from "@/lib/internal-agents/launch-readiness";
 import type { InternalAgentCouncil, InternalAgentDefinition } from "@/lib/internal-agents/types";
+
+
 import {
   Shield, Activity, Wifi, CheckCircle, AlertTriangle, Clock, Eye, Lock, Cpu, Zap, BarChart3,
   Globe, Key, History, Users, RotateCcw, DollarSign, FileText, Server, Database, RefreshCw,
@@ -236,7 +238,7 @@ const OwnerCenter = () => {
   const { data: rollbackData } = useRollbackCenter();
   const { data: serviceMapData } = useServiceMap();
   const { data: approvalQueueData = [] } = useApprovalQueue();
-  const pendingApprovals = approvalQueueData.filter((a: any) => a.status === "pending");
+  const pendingApprovals = approvalQueueData.filter((a: Record<string, any>) => a.status === "pending");
 
   // Mutations
   const acknowledgeIncident = useAcknowledgeIncident();
@@ -280,7 +282,7 @@ const OwnerCenter = () => {
   const devices = fltD?.devices || [];
   const decisions = cncD?.decisions || [];
 
-  const openIncidents = incidents.filter((i: any) => i.status === "open").length;
+  const openIncidents = incidents.filter((i: Record<string, any>) => i.status === "open").length;
 
   const goTo = (key: string) => {
     const routeMap: Record<string, string> = {
@@ -350,7 +352,7 @@ const OwnerCenter = () => {
       {/* KPI Row */}
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
         <KPITile label="System Health" value={openIncidents === 0 ? "100%" : openIncidents <= 2 ? "94%" : "82%"} trend={openIncidents === 0 ? "up" : "down"} icon={Shield} className="gradient-sita-subtle" />
-        <KPITile label="Open Incidents" value={openIncidents} icon={AlertTriangle} sub={openIncidents > 0 ? `${incidents.filter((i: any) => i.severity === "SEV-1").length} critical` : "All clear"} />
+        <KPITile label="Open Incidents" value={openIncidents} icon={AlertTriangle} sub={openIncidents > 0 ? `${incidents.filter((i: Record<string, any>) => i.severity === "SEV-1").length} critical` : "All clear"} />
         <KPITile label="Fleet Devices" value={`${fltD?.kpis?.online || 0}/${fltD?.kpis?.total || 0}`} sub="Online" icon={Server} />
         <KPITile label="Active Policies" value={polD?.summary?.active || 0} icon={Shield} />
         <KPITile label="Anomalies" value={intelligenceData?.anomalies?.total_anomalies || 0} icon={Zap} sub={`${intelligenceData?.anomalies?.severity_summary?.critical || 0} critical`} />
@@ -384,7 +386,7 @@ const OwnerCenter = () => {
                   { text: "2 invoices overdue — total $4,200. Auto-reminder ready to send.", risk: "high" as const, action: "Send Reminders", ignore: "Late fees may apply. Cash flow impact in 5 days." },
                   { text: "Connector 'Stripe' degraded — last sync 4 hours ago.", risk: "medium" as const, action: "Check Health", ignore: "Payment processing may miss recent transactions." },
                   { text: "Council vote pending: approve Growth Advisor autonomy upgrade.", risk: "low" as const, action: "Review Vote", ignore: "Growth recommendations stay in suggest-only mode." },
-                  openIncidents > 0 ? { text: `${openIncidents} open incident${openIncidents > 1 ? "s" : ""} — ${incidents.filter((i: any) => i.severity === "SEV-1").length} critical.`, risk: "critical" as const, action: "View Incidents", ignore: "System health may degrade without intervention." } : null,
+                  openIncidents > 0 ? { text: `${openIncidents} open incident${openIncidents > 1 ? "s" : ""} — ${incidents.filter((i: Record<string, any>) => i.severity === "SEV-1").length} critical.`, risk: "critical" as const, action: "View Incidents", ignore: "System health may degrade without intervention." } : null,
                 ].filter(Boolean).slice(0, 4).map((item: any, i) => (
                   <div key={i} className="flex items-center justify-between gap-3 rounded-xl border border-border/30 bg-secondary/20 p-3 transition-all hover:bg-secondary/30">
                     <div className="flex items-center gap-3 min-w-0 flex-1">
@@ -591,9 +593,9 @@ const OwnerCenter = () => {
             </div>
 
             {incidents
-              .filter((inc: any) => statusFilter === "all" || inc.status === statusFilter)
-              .filter((inc: any) => !searchFilter || inc.title.toLowerCase().includes(searchFilter.toLowerCase()))
-              .map((inc: any) => (
+              .filter((inc: Record<string, any>) => statusFilter === "all" || inc.status === statusFilter)
+              .filter((inc: Record<string, any>) => !searchFilter || inc.title.toLowerCase().includes(searchFilter.toLowerCase()))
+              .map((inc: Record<string, any>) => (
                 <SitaCard key={inc.id} hover={false} className="p-5" lane={inc.status === "open" ? "action" : undefined}>
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex-1 min-w-0">
@@ -692,7 +694,7 @@ const OwnerCenter = () => {
                       <div className="flex items-center justify-between mb-2">
                         <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{metric}</p>
                         {data.anomalies.length > 0 ? (
-                          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${data.anomalies.some((a: any) => a.severity === "critical") ? "bg-destructive/10 text-destructive" : "bg-amber-500/10 text-amber-500"}`}>
+                          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${data.anomalies.some((a: Record<string, any>) => a.severity === "critical") ? "bg-destructive/10 text-destructive" : "bg-amber-500/10 text-amber-500"}`}>
                             {data.anomalies.length} anomal{data.anomalies.length === 1 ? "y" : "ies"}
                           </span>
                         ) : (
@@ -721,7 +723,7 @@ const OwnerCenter = () => {
             <div>
               <SitaSectionHeader title="Predictive Forecasts" subtitle="Linear regression projections with confidence intervals — computed live" />
               <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                {(intelligenceData?.forecasts || []).map((f: any) => (
+                {(intelligenceData?.forecasts || []).map((f: Record<string, any>) => (
                   <SitaCard key={f.id} hover={false} className="p-5" lane={f.severity === "warning" ? "action" : undefined}>
                     <div className="flex items-start gap-3 mb-3">
                       <div className={`rounded-xl p-2.5 ${f.severity === "warning" ? "bg-amber-500/10" : f.type === "all-clear" ? "bg-trust-safe/10" : "bg-blue-500/10"}`}>
@@ -735,8 +737,8 @@ const OwnerCenter = () => {
                     {f.projectedValues && f.projectedValues.length > 0 && (
                       <div className="mb-3 flex items-end gap-1 h-10">
                         {f.projectedValues.map((pv: any, i: number) => {
-                          const max = Math.max(...f.projectedValues.map((p: any) => p.upperBound));
-                          const min = Math.min(...f.projectedValues.map((p: any) => p.lowerBound));
+                          const max = Math.max(...f.projectedValues.map((p: Record<string, any>) => p.upperBound));
+                          const min = Math.min(...f.projectedValues.map((p: Record<string, any>) => p.lowerBound));
                           const range = max - min || 1;
                           const height = ((pv.value - min) / range) * 100;
                           return (
@@ -794,7 +796,7 @@ const OwnerCenter = () => {
                 </div>
               )}
               <div className="grid gap-3 sm:grid-cols-2">
-                {(intelligenceData?.optimization?.suggestions || []).map((s: any) => (
+                {(intelligenceData?.optimization?.suggestions || []).map((s: Record<string, any>) => (
                   <SitaCard key={s.id} hover={false} className="p-5">
                     <div className="flex items-start gap-3 mb-3">
                       <div className="rounded-xl bg-accent/10 p-2.5">
@@ -856,7 +858,7 @@ const OwnerCenter = () => {
             </div>
 
             <div className="grid gap-3 sm:grid-cols-2">
-              {policies.map((p: any) => (
+              {policies.map((p: Record<string, any>) => (
                 <SitaCard key={p.id} hover={false} className="p-5">
                   <div className="flex items-start justify-between mb-3">
                     <div>
@@ -1008,7 +1010,7 @@ const OwnerCenter = () => {
             </div>
 
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {devices.map((d: any) => (
+              {devices.map((d: Record<string, any>) => (
                 <SitaCard key={d.device_id} hover={false} className="p-5" lane={d.health === "degraded" ? "action" : d.connectivity === "offline" ? "unresolved" : undefined}>
                   <div className="flex items-start justify-between mb-3">
                     <div className="flex items-center gap-3">
@@ -1083,7 +1085,7 @@ const OwnerCenter = () => {
               <KPITile label="Rejected" value={cncD?.summary?.rejected || 0} icon={XCircle} />
             </div>
 
-            {decisions.map((d: any) => (
+            {decisions.map((d: Record<string, any>) => (
               <SitaCard key={d.id} hover={false} className="p-5" lane={d.status === "pending" ? "action" : undefined}>
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">
@@ -1169,8 +1171,8 @@ const OwnerCenter = () => {
                   </thead>
                   <tbody>
                     {auditLogs
-                      .filter((log: any) => !searchFilter || log.action.toLowerCase().includes(searchFilter.toLowerCase()))
-                      .map((log: any) => (
+                      .filter((log: Record<string, any>) => !searchFilter || log.action.toLowerCase().includes(searchFilter.toLowerCase()))
+                      .map((log: Record<string, any>) => (
                         <tr key={log.id} className="border-b border-border/50 hover:bg-secondary/20 transition-colors">
                           <td className="px-4 py-3 text-xs text-muted-foreground whitespace-nowrap">
                             {new Date(log.created_at).toLocaleString(undefined, { month: "short", day: "numeric", hour: "2-digit", minute: "2-digit" })}
@@ -1206,7 +1208,7 @@ const OwnerCenter = () => {
           <motion.div key="workforce" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
             {/* Chief of Staff Banner */}
             {(() => {
-              const cos = workforceData?.supervisors?.find((s: any) => s.supervisorId === "chief-of-staff");
+              const cos = workforceData?.supervisors?.find((s: Record<string, any>) => s.supervisorId === "chief-of-staff");
               return (
                 <SitaCard hover={false} glow className="p-4">
                   <div className="flex items-center justify-between">
@@ -1253,12 +1255,12 @@ const OwnerCenter = () => {
             {/* ── COUNCILS VIEW ── */}
             {workforceView === "councils" && !selectedCouncil && (
               <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                {(workforceData?.councils || []).map((council: any) => {
-                  const councilAgents = (workforceData?.agents || []).filter((a: any) => a.council === council.councilId);
-                  const activeAgents = councilAgents.filter((a: any) => a.runtime?.status === "active").length;
-                  const sup = workforceData?.supervisors?.find((s: any) => s.supervisorId === council.supervisorId);
+                {(workforceData?.councils || []).map((council: Record<string, any>) => {
+                  const councilAgents = (workforceData?.agents || []).filter((a: Record<string, any>) => a.council === council.councilId);
+                  const activeAgents = councilAgents.filter((a: Record<string, any>) => a.runtime?.status === "active").length;
+                  const sup = workforceData?.supervisors?.find((s: Record<string, any>) => s.supervisorId === council.supervisorId);
                   const CouncilIcon = councilIcons[council.councilId] || Bot;
-                  const totalEscalations = councilAgents.reduce((sum: number, a: any) => sum + (a.runtime?.escalationCount || 0), 0);
+                  const totalEscalations = councilAgents.reduce((sum: number,  a: Record<string, any>) => sum + (a.runtime?.escalationCount || 0), 0);
 
                   return (
                     <SitaCard key={council.councilId} hover className="p-5 cursor-pointer" onClick={() => setSelectedCouncil(council.councilId)}>
@@ -1303,9 +1305,9 @@ const OwnerCenter = () => {
 
             {/* ── COUNCIL DRILL-DOWN ── */}
             {workforceView === "councils" && selectedCouncil && (() => {
-              const council = (workforceData?.councils || []).find((c: any) => c.councilId === selectedCouncil);
-              const councilAgents = (workforceData?.agents || []).filter((a: any) => a.council === selectedCouncil);
-              const sup = workforceData?.supervisors?.find((s: any) => s.supervisorId === council?.supervisorId);
+              const council = (workforceData?.councils || []).find((c: Record<string, any>) => c.councilId === selectedCouncil);
+              const councilAgents = (workforceData?.agents || []).filter((a: Record<string, any>) => a.council === selectedCouncil);
+              const sup = workforceData?.supervisors?.find((s: Record<string, any>) => s.supervisorId === council?.supervisorId);
 
               return (
                 <div className="space-y-4">
@@ -1344,7 +1346,7 @@ const OwnerCenter = () => {
 
                   {/* Agent Cards */}
                   <div className="grid gap-3 sm:grid-cols-2">
-                    {councilAgents.map((agent: any) => {
+                    {councilAgents.map((agent: Record<string, any>) => {
                       const isExpanded = expandedAgent === agent.agentId;
                       const level = getAutonomyLevel(agent.maxAutonomyLevel);
 
@@ -1459,7 +1461,7 @@ const OwnerCenter = () => {
                   <SitaSectionHeader title="Autonomy Ladder" subtitle="7-tier rights model — agents cannot self-promote" />
                   <div className="space-y-2">
                     {AUTONOMY_TIERS.map(tier => {
-                      const agentsAtLevel = (workforceData?.agents || []).filter((a: any) => getAutonomyLevel(a.maxAutonomyLevel) === tier.level);
+                      const agentsAtLevel = (workforceData?.agents || []).filter((a: Record<string, any>) => getAutonomyLevel(a.maxAutonomyLevel) === tier.level);
                       return (
                         <SitaCard key={tier.level} hover={false} className="p-3">
                           <div className="flex items-center gap-3">
@@ -1593,7 +1595,7 @@ const OwnerCenter = () => {
                 <SitaSectionHeader title="Watchdog Status" subtitle="Dedicated monitoring for critical system concerns" />
                 <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                   {WATCHDOG_CONCERNS.map(w => {
-                    const agent = (workforceData?.agents || []).find((a: any) => a.agentId === w.agentId);
+                    const agent = (workforceData?.agents || []).find((a: Record<string, any>) => a.agentId === w.agentId);
                     return (
                       <SitaCard key={w.concern} hover={false} className="p-4">
                         <div className="flex items-start gap-3 mb-3">
@@ -1899,7 +1901,7 @@ const OwnerCenter = () => {
             </SitaCard>
             <SitaSectionHeader title="Domain Trust Scores" />
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {(trustData?.domains || []).map((d: any) => (
+              {(trustData?.domains || []).map((d: Record<string, any>) => (
                 <SitaCard key={d.domain} hover={false} className="p-4">
                   <div className="flex items-center justify-between mb-2">
                     <p className="text-sm font-semibold text-foreground">{d.domain}</p>
@@ -1935,7 +1937,7 @@ const OwnerCenter = () => {
             </div>
             <SitaSectionHeader title="Release Rings" />
             <div className="grid gap-3 sm:grid-cols-3">
-              {(releasesData?.rings || []).map((r: any) => (
+              {(releasesData?.rings || []).map((r: Record<string, any>) => (
                 <SitaCard key={r.ring} hover={false} className="p-4">
                   <div className="flex items-center justify-between mb-2">
                     <p className="text-sm font-semibold text-foreground">Ring {r.ring}: {r.name}</p>
@@ -1949,7 +1951,7 @@ const OwnerCenter = () => {
             <SitaSectionHeader title="Release Gates" />
             <SitaCard hover={false} className="p-4">
               <div className="grid gap-1.5 sm:grid-cols-2 lg:grid-cols-3">
-                {(releasesData?.gates || []).map((g: any) => (
+                {(releasesData?.gates || []).map((g: Record<string, any>) => (
                   <div key={g.name} className="flex items-center gap-2 text-xs">
                     {g.passed ? <CheckCircle className="h-3.5 w-3.5 text-trust-safe" /> : <XCircle className="h-3.5 w-3.5 text-destructive" />}
                     <span className="text-foreground">{g.name}</span>
@@ -1985,7 +1987,7 @@ const OwnerCenter = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {(modelData?.models || []).map((m: any) => (
+                    {(modelData?.models || []).map((m: Record<string, any>) => (
                       <tr key={m.id} className="border-b border-border/50 hover:bg-secondary/20">
                         <td className="px-4 py-3 text-xs font-medium text-foreground">{m.name}</td>
                         <td className="px-4 py-3 text-xs text-muted-foreground">${m.costPer1kTokens}</td>
@@ -2014,7 +2016,7 @@ const OwnerCenter = () => {
               <KPITile label="Registry Sync" value={`${knowledgeData?.registryInSync || 0}/${knowledgeData?.registryFiles || 0}`} icon={Database} />
             </div>
             <SitaSectionHeader title="Stale Documents" />
-            {(knowledgeData?.staleDcosList || []).map((d: any) => (
+            {(knowledgeData?.staleDcosList || []).map((d: Record<string, any>) => (
               <SitaCard key={d.name} hover={false} className="p-3" lane="action">
                 <div className="flex items-center justify-between">
                   <div>
@@ -2026,7 +2028,7 @@ const OwnerCenter = () => {
               </SitaCard>
             ))}
             <SitaSectionHeader title="Registry Drift Detection" />
-            {(knowledgeData?.driftDetections || []).map((d: any) => (
+            {(knowledgeData?.driftDetections || []).map((d: Record<string, any>) => (
               <SitaCard key={d.file} hover={false} className="p-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -2047,7 +2049,7 @@ const OwnerCenter = () => {
         {activePage === "support" && (
           <motion.div key="support" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
             <SitaSectionHeader title="Support Cases" subtitle="Diagnostic bundles and investigation tools" />
-            {(supportData || []).map((c: any) => (
+            {(supportData || []).map((c: Record<string, any>) => (
               <SitaCard key={c.id} hover={false} className="p-4" lane={c.status === "open" ? "action" : undefined}>
                 <div className="flex items-center justify-between">
                   <div>
@@ -2071,7 +2073,7 @@ const OwnerCenter = () => {
         {activePage === "change-review" && (
           <motion.div key="change-review" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
             <SitaSectionHeader title="Architecture Decision Records" subtitle="ADR tracking and compliance" />
-            {(changeData || []).map((adr: any) => (
+            {(changeData || []).map((adr: Record<string, any>) => (
               <SitaCard key={adr.id} hover={false} className="p-4">
                 <div className="flex items-center justify-between">
                   <div>
@@ -2107,7 +2109,7 @@ const OwnerCenter = () => {
             </SitaCard>
             <SitaSectionHeader title="Per-Service Rollback Readiness" />
             <div className="grid gap-3 sm:grid-cols-2">
-              {(rollbackData?.services || []).map((s: any) => (
+              {(rollbackData?.services || []).map((s: Record<string, any>) => (
                 <SitaCard key={s.name} hover={false} className="p-4">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
@@ -2141,7 +2143,7 @@ const OwnerCenter = () => {
             </div>
             <SitaSectionHeader title="Platform Topology" subtitle="All 9 architectural layers" />
             <div className="space-y-2">
-              {(serviceMapData?.layers || []).map((layer: any) => (
+              {(serviceMapData?.layers || []).map((layer: Record<string, any>) => (
                 <SitaCard key={layer.id} hover={false} className="p-4">
                   <div className="flex items-center justify-between mb-2">
                     <p className="text-sm font-semibold text-foreground">{layer.name}</p>
@@ -2209,7 +2211,7 @@ const OwnerCenter = () => {
               </SitaCard>
             ) : (
               <div className="space-y-2">
-                {approvalQueueData.map((item: any) => (
+                {approvalQueueData.map((item: Record<string, any>) => (
                   <SitaCard key={item.id} hover={false} className="p-4">
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex-1 min-w-0">

@@ -14,6 +14,8 @@ import { Shield, Eye, Cpu, CheckCircle2, AlertTriangle, TrendingUp, Layers, Rock
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+
 const STATE_COLORS = {
   presentational: { bg: "bg-muted", text: "text-muted-foreground", icon: Eye, label: "Presentational" },
   simulated: { bg: "bg-yellow-500/20", text: "text-yellow-400", icon: Cpu, label: "Simulated" },

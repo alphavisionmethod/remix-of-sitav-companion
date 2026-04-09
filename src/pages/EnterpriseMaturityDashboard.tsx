@@ -21,6 +21,8 @@ import {
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+
 // ── SLO Card ───────────────────────────────────────────────────
 function SLOCard({ slo }: { slo: { id: string; name: string; target: number; currentValue: number; budget: number; budgetConsumed: number; status: string; window: string } }) {
   const statusColor = { met: "text-trust-safe", "at-risk": "text-accent", breached: "text-destructive" };
@@ -125,7 +127,7 @@ function ReleaseCard({ release }: { release: any }) {
         ))}
       </div>
       <div className="flex items-center gap-2">
-        <span className="text-[9px] text-muted-foreground">Checklist: {release.readinessChecklist.filter((c: any) => c.met).length}/{release.readinessChecklist.length}</span>
+        <span className="text-[9px] text-muted-foreground">Checklist: {release.readinessChecklist.filter((c: Record<string, any>) => c.met).length}/{release.readinessChecklist.length}</span>
         {release.impactPrediction.riskLevel !== "low" && (
           <Badge className="bg-accent/10 text-accent border-accent/20 text-[9px]">
             <AlertTriangle className="h-2.5 w-2.5 mr-1" />{release.impactPrediction.riskLevel} risk

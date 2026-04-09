@@ -11,6 +11,8 @@ import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+
 const statusColors: Record<string, string> = {
   healthy: "bg-green-500/20 text-green-400", degraded: "bg-yellow-500/20 text-yellow-400",
   unhealthy: "bg-red-500/20 text-red-400", token_expired: "bg-red-500/20 text-red-400",
@@ -34,11 +36,11 @@ export default function CN05ConnectorHealthBoard() {
       if (error) throw error;
       return data;
     },
-    onSuccess: (data: any) => { toast.success(`Health check: ${data?.results?.length || 0} accounts checked`); queryClient.invalidateQueries({ queryKey: ["connector-health-all"] }); },
-    onError: (e: any) => toast.error(`Health check failed: ${e.message}`),
+    onSuccess: (data: Record<string, any>) => { toast.success(`Health check: ${data?.results?.length || 0} accounts checked`); queryClient.invalidateQueries({ queryKey: ["connector-health-all"] }); },
+    onError: (e: Record<string, any>) => toast.error(`Health check failed: ${e.message}`),
   });
 
-  const grouped = healthRecords.reduce((acc: any, h: any) => {
+  const grouped = healthRecords.reduce((acc: any,  h: Record<string, any>) => {
     const key = h.account_id || h.registry_id || "unknown";
     if (!acc[key]) acc[key] = [];
     acc[key].push(h);

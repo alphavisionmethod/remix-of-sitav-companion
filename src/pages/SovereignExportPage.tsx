@@ -12,6 +12,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 
+
+
 const DEMO_EXPORTABLE_TABLES = [
   { name: "Profiles", rows: 1, size: "2 KB" },
   { name: "Connector Configs", rows: 5, size: "8 KB" },

@@ -12,6 +12,8 @@ import { Bell, CheckCircle, XCircle, Ban, Clock, Zap } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+
 const statusConfig: Record<string, { color: string; icon: React.ReactNode }> = {
   sent: { color: "bg-emerald-500/15 text-emerald-400", icon: <CheckCircle className="h-3 w-3" /> },
   delivered: { color: "bg-emerald-500/15 text-emerald-400", icon: <CheckCircle className="h-3 w-3" /> },
@@ -35,11 +37,11 @@ export default function NOT03DeliveryReceiptsExplorer() {
     },
   });
 
-  const sentCount = receipts.filter((r: any) => r.status === "sent" || r.status === "delivered").length;
-  const failedCount = receipts.filter((r: any) => r.status === "failed").length;
-  const suppressedCount = receipts.filter((r: any) => r.status === "suppressed").length;
-  const avgLatency = receipts.filter((r: any) => r.latency_ms).length > 0
-    ? Math.round(receipts.filter((r: any) => r.latency_ms).reduce((s: number, r: any) => s + r.latency_ms, 0) / receipts.filter((r: any) => r.latency_ms).length)
+  const sentCount = receipts.filter((r: Record<string, any>) => r.status === "sent" || r.status === "delivered").length;
+  const failedCount = receipts.filter((r: Record<string, any>) => r.status === "failed").length;
+  const suppressedCount = receipts.filter((r: Record<string, any>) => r.status === "suppressed").length;
+  const avgLatency = receipts.filter((r: Record<string, any>) => r.latency_ms).length > 0
+    ? Math.round(receipts.filter((r: Record<string, any>) => r.latency_ms).reduce((s: number,  r: Record<string, any>) => s + r.latency_ms, 0) / receipts.filter((r: Record<string, any>) => r.latency_ms).length)
     : 0;
 
   return (
@@ -87,7 +89,7 @@ export default function NOT03DeliveryReceiptsExplorer() {
             </div>
           ) : (
             <div className="space-y-2 max-h-[500px] overflow-y-auto">
-              {receipts.map((r: any) => {
+              {receipts.map((r: Record<string, any>) => {
                 const cfg = statusConfig[r.status] || statusConfig.failed;
                 return (
                   <div key={r.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/30 border border-border">
@@ -127,7 +129,7 @@ export default function NOT03DeliveryReceiptsExplorer() {
           <CardContent>
             <p className="text-sm text-muted-foreground mb-3">{suppressedCount} notifications suppressed by calm routing or preferences</p>
             <div className="space-y-2">
-              {receipts.filter((r: any) => r.status === "suppressed").slice(0, 10).map((r: any) => (
+              {receipts.filter((r: Record<string, any>) => r.status === "suppressed").slice(0, 10).map((r: Record<string, any>) => (
                 <div key={r.id} className="flex items-center justify-between p-2 rounded bg-muted/20">
                   <Badge variant="outline" className="bg-amber-500/15 text-amber-400">{r.failure_reason || "suppressed"}</Badge>
                   <span className="text-xs text-muted-foreground">{new Date(r.sent_at).toLocaleString()}</span>

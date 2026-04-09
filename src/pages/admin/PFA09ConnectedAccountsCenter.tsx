@@ -8,6 +8,8 @@ import { User, Shield, Link2, CheckCircle, XCircle, AlertTriangle, ArrowUpCircle
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+
 const statusColors: Record<string, string> = { connected: "bg-green-500/20 text-green-400", disconnected: "bg-muted text-muted-foreground", error: "bg-red-500/20 text-red-400" };
 const healthIcons: Record<string, React.ReactNode> = { healthy: <CheckCircle className="h-4 w-4 text-green-400" />, degraded: <AlertTriangle className="h-4 w-4 text-yellow-400" />, error: <XCircle className="h-4 w-4 text-red-400" />, unknown: <div className="h-4 w-4 rounded-full bg-muted-foreground/30" /> };
 
@@ -45,7 +47,7 @@ export default function PFA09ConnectedAccountsCenter() {
       <Card className="bg-card border-border">
         <CardHeader><CardTitle className="flex items-center gap-2"><Shield className="h-5 w-5" /> Sign-In Identity</CardTitle></CardHeader>
         <CardContent className="space-y-3">
-          {identities.length > 0 ? identities.map((id: any) => (
+          {identities.length > 0 ? identities.map((id: Record<string, any>) => (
             <div key={id.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/10 border border-border">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-sm font-bold">{id.provider_families?.name?.charAt(0)}</div>
@@ -69,8 +71,8 @@ export default function PFA09ConnectedAccountsCenter() {
       <Card className="bg-card border-border">
         <CardHeader><CardTitle className="flex items-center gap-2"><Link2 className="h-5 w-5" /> Connected Services</CardTitle></CardHeader>
         <CardContent className="space-y-3">
-          {services.length > 0 ? services.map((svc: any) => {
-            const level = levels.find((l: any) => l.provider_capability_id === svc.provider_capability_id);
+          {services.length > 0 ? services.map((svc: Record<string, any>) => {
+            const level = levels.find((l: Record<string, any>) => l.provider_capability_id === svc.provider_capability_id);
             return (
               <div key={svc.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/10 border border-border">
                 <div className="flex items-center gap-3">
@@ -107,9 +109,9 @@ export default function PFA09ConnectedAccountsCenter() {
           <CardHeader><CardTitle>Available Providers</CardTitle></CardHeader>
           <CardContent>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-              {families.map((f: any) => {
-                const hasIdentity = identities.some((i: any) => i.provider_family_id === f.id);
-                const connectedServices = services.filter((s: any) => s.provider_family_id === f.id);
+              {families.map((f: Record<string, any>) => {
+                const hasIdentity = identities.some((i: Record<string, any>) => i.provider_family_id === f.id);
+                const connectedServices = services.filter((s: Record<string, any>) => s.provider_family_id === f.id);
                 return (
                   <div key={f.id} className="p-3 rounded-lg border border-border bg-muted/5 space-y-1">
                     <div className="flex items-center gap-2">

@@ -9,6 +9,8 @@ import { Key, CheckCircle, XCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+
 const purposeColors: Record<string, string> = {
   identity_web: "bg-blue-500/20 text-blue-400", connector_web: "bg-green-500/20 text-green-400",
   mobile_ios: "bg-purple-500/20 text-purple-400", mobile_android: "bg-orange-500/20 text-orange-400",
@@ -34,7 +36,7 @@ export default function PFA03OAuthClientRegistry() {
         {["identity_web", "connector_web", "mobile_ios", "mobile_android"].map(purpose => (
           <Card key={purpose} className="bg-card border-border"><CardContent className="pt-4">
             <p className="text-xs text-muted-foreground">{purpose.replace(/_/g, " ").toUpperCase()}</p>
-            <p className="text-2xl font-bold">{clients.filter((c: any) => c.client_purpose === purpose).length}</p>
+            <p className="text-2xl font-bold">{clients.filter((c: Record<string, any>) => c.client_purpose === purpose).length}</p>
           </CardContent></Card>
         ))}
       </div>
@@ -56,7 +58,7 @@ export default function PFA03OAuthClientRegistry() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {clients.map((c: any) => (
+                {clients.map((c: Record<string, any>) => (
                   <TableRow key={c.id}>
                     <TableCell className="font-medium">{c.client_name}</TableCell>
                     <TableCell>{c.provider_families?.name}</TableCell>

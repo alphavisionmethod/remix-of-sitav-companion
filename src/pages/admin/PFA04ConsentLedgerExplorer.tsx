@@ -9,6 +9,8 @@ import { BookOpen } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+
 export default function PFA04ConsentLedgerExplorer() {
   const { isDemoMode } = useDataMode();
   const { data: consents = [] } = useQuery({
@@ -39,7 +41,7 @@ export default function PFA04ConsentLedgerExplorer() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card className="bg-card border-border"><CardContent className="pt-4">
           <p className="text-xs text-muted-foreground">Active Consents</p>
-          <p className="text-2xl font-bold">{consents.filter((c: any) => c.consent_status === "active").length}</p>
+          <p className="text-2xl font-bold">{consents.filter((c: Record<string, any>) => c.consent_status === "active").length}</p>
         </CardContent></Card>
         <Card className="bg-card border-border"><CardContent className="pt-4">
           <p className="text-xs text-muted-foreground">Upgrades</p>
@@ -68,7 +70,7 @@ export default function PFA04ConsentLedgerExplorer() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {consents.map((c: any) => (
+                {consents.map((c: Record<string, any>) => (
                   <TableRow key={c.id}>
                     <TableCell>{c.provider_families?.name || "—"}</TableCell>
                     <TableCell>{c.provider_capabilities?.display_name || "—"}</TableCell>

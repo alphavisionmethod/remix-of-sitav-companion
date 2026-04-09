@@ -11,14 +11,16 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { useMoneyApprovals, useApproveMoneyAction, useRejectMoneyAction } from "@/hooks/use-domain-data";
 import { toast } from "sonner";
 
+
+
 const MoneyApprovals = () => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const { data: approvals = [], isLoading } = useMoneyApprovals();
   const approveMut = useApproveMoneyAction();
   const rejectMut = useRejectMoneyAction();
 
-  const selected = approvals.find((a: any) => a.id === selectedId);
-  const pendingCount = approvals.filter((a: any) => a.status === "pending").length;
+  const selected = approvals.find((a: Record<string, any>) => a.id === selectedId);
+  const pendingCount = approvals.filter((a: Record<string, any>) => a.status === "pending").length;
 
   const handleApprove = () => {
     if (!selectedId) return;
@@ -39,14 +41,14 @@ const MoneyApprovals = () => {
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         <KPITile label="Pending Approvals" value={pendingCount} icon={Shield} />
         <KPITile label="Total Actions" value={approvals.length} icon={Sparkles} />
-        <KPITile label="Total Impact" value={`$${approvals.reduce((s: number, a: any) => s + (Number(a.proposed_action?.amount) || 0), 0).toLocaleString()}`} icon={DollarSign} />
+        <KPITile label="Total Impact" value={`$${approvals.reduce((s: number,  a: Record<string, any>) => s + (Number(a.proposed_action?.amount) || 0), 0).toLocaleString()}`} icon={DollarSign} />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-5">
         <div className="lg:col-span-3 space-y-2">
           {approvals.length === 0 ? (
             <EmptyState icon={Shield} title="No pending approvals" description="All financial actions are resolved" />
-          ) : approvals.map((a: any) => {
+          ) : approvals.map((a: Record<string, any>) => {
             const pa = a.proposed_action || {};
             const risk = pa.risk || "low";
             return (

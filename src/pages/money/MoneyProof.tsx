@@ -10,6 +10,8 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { useMoneyProofItems } from "@/hooks/use-domain-data";
 import { formatDistanceToNow } from "date-fns";
 
+
+
 const categoryLabels: Record<string, string> = {
   bill: "Bill", subscription: "Subscription", reserve: "Reserve", transfer: "Transfer", invoice: "Invoice", approval: "Approval", money: "Money",
 };
@@ -19,18 +21,18 @@ const MoneyProof = () => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const { data: proofItems = [], isLoading } = useMoneyProofItems();
 
-  const selected = proofItems.find((p: any) => p.id === selectedId);
+  const selected = proofItems.find((p: Record<string, any>) => p.id === selectedId);
 
   const filtered = useMemo(() => {
     if (tab === "all") return proofItems;
-    if (tab === "verified") return proofItems.filter((p: any) => p.details?.verification === "verified");
-    if (tab === "pending") return proofItems.filter((p: any) => p.details?.verification === "pending" || p.details?.result === "pending");
+    if (tab === "verified") return proofItems.filter((p: Record<string, any>) => p.details?.verification === "verified");
+    if (tab === "pending") return proofItems.filter((p: Record<string, any>) => p.details?.verification === "pending" || p.details?.result === "pending");
     return proofItems;
   }, [tab, proofItems]);
 
-  const verifiedCount = proofItems.filter((p: any) => p.details?.verification === "verified").length;
-  const pendingCount = proofItems.filter((p: any) => p.details?.verification === "pending").length;
-  const totalValue = proofItems.reduce((s: number, p: any) => s + (Number(p.details?.amount) || 0), 0);
+  const verifiedCount = proofItems.filter((p: Record<string, any>) => p.details?.verification === "verified").length;
+  const pendingCount = proofItems.filter((p: Record<string, any>) => p.details?.verification === "pending").length;
+  const totalValue = proofItems.reduce((s: number,  p: Record<string, any>) => s + (Number(p.details?.amount) || 0), 0);
 
   if (isLoading) return <SectionSkeleton cards={4} columns={1} />;
 
@@ -60,7 +62,7 @@ const MoneyProof = () => {
         <div className="lg:col-span-3 space-y-2">
           {filtered.length === 0 ? (
             <EmptyState icon={Shield} title="No proof items" description="Financial actions will generate proof records automatically" />
-          ) : filtered.map((p: any) => {
+          ) : filtered.map((p: Record<string, any>) => {
             const d = p.details || {};
             const isVerified = d.verification === "verified";
             const ts = p.created_at ? formatDistanceToNow(new Date(p.created_at), { addSuffix: true }) : "";

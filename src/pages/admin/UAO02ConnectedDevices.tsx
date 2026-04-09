@@ -11,6 +11,8 @@ import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+
 const stageColors: Record<string, string> = { alpha: "bg-blue-500/20 text-blue-400", planned: "bg-muted text-muted-foreground", future: "bg-muted text-muted-foreground/50", production: "bg-green-500/20 text-green-400" };
 
 export default function UAO02ConnectedDevices() {
@@ -40,7 +42,7 @@ export default function UAO02ConnectedDevices() {
       if (e2) throw e2;
     },
     onSuccess: () => { toast.success("Device families & wearable providers seeded"); queryClient.invalidateQueries(); },
-    onError: (e: any) => toast.error(e.message),
+    onError: (e: Record<string, any>) => toast.error(e.message),
   });
 
   return (
@@ -61,7 +63,7 @@ export default function UAO02ConnectedDevices() {
         <Card className="bg-card border-border"><CardContent className="pt-4"><p className="text-xs text-muted-foreground">Device Families</p><p className="text-2xl font-bold">{families.length}</p></CardContent></Card>
         <Card className="bg-card border-border"><CardContent className="pt-4"><p className="text-xs text-muted-foreground">Connected Devices</p><p className="text-2xl font-bold">{devices.length}</p></CardContent></Card>
         <Card className="bg-card border-border"><CardContent className="pt-4"><p className="text-xs text-muted-foreground">Wearable Providers</p><p className="text-2xl font-bold">{wearables.length}</p></CardContent></Card>
-        <Card className="bg-card border-border"><CardContent className="pt-4"><p className="text-xs text-muted-foreground">Trusted Devices</p><p className="text-2xl font-bold">{devices.filter((d: any) => d.trust_level === "high").length}</p></CardContent></Card>
+        <Card className="bg-card border-border"><CardContent className="pt-4"><p className="text-xs text-muted-foreground">Trusted Devices</p><p className="text-2xl font-bold">{devices.filter((d: Record<string, any>) => d.trust_level === "high").length}</p></CardContent></Card>
       </div>
 
       {families.length > 0 && (
@@ -71,7 +73,7 @@ export default function UAO02ConnectedDevices() {
             <Table>
               <TableHeader><TableRow><TableHead>Family</TableHead><TableHead>Interaction</TableHead><TableHead>Screen</TableHead><TableHead>Notify</TableHead><TableHead>Quick Act</TableHead><TableHead>Handoff</TableHead><TableHead>Trust</TableHead><TableHead>Stage</TableHead></TableRow></TableHeader>
               <TableBody>
-                {families.map((f: any) => (
+                {families.map((f: Record<string, any>) => (
                   <TableRow key={f.id}>
                     <TableCell className="font-medium">{f.name}</TableCell>
                     <TableCell className="text-xs">{f.interaction_type}</TableCell>
@@ -96,7 +98,7 @@ export default function UAO02ConnectedDevices() {
             <Table>
               <TableHeader><TableRow><TableHead>Provider</TableHead><TableHead>Categories</TableHead><TableHead>Health</TableHead><TableHead>Activity</TableHead><TableHead>Sleep</TableHead><TableHead>Readiness</TableHead><TableHead>Native App</TableHead><TableHead>Stage</TableHead></TableRow></TableHeader>
               <TableBody>
-                {wearables.map((w: any) => (
+                {wearables.map((w: Record<string, any>) => (
                   <TableRow key={w.id}>
                     <TableCell className="font-medium">{w.name}</TableCell>
                     <TableCell className="flex gap-1 flex-wrap">{(w.categories || []).map((c: string) => <Badge key={c} variant="outline" className="text-xs">{c}</Badge>)}</TableCell>

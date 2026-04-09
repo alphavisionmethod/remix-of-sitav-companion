@@ -11,6 +11,8 @@ import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+
 const sevColors: Record<string, string> = { critical: "bg-red-500/20 text-red-400", high: "bg-orange-500/20 text-orange-400", medium: "bg-yellow-500/20 text-yellow-400", low: "bg-muted text-muted-foreground" };
 const healthColors: Record<string, string> = { healthy: "bg-green-500/20 text-green-400", degraded: "bg-yellow-500/20 text-yellow-400", error: "bg-red-500/20 text-red-400", unknown: "bg-muted text-muted-foreground" };
 
@@ -34,10 +36,10 @@ export default function PFA07ConnectorHealthDrift() {
       if (error) throw error;
     },
     onSuccess: () => { toast.success("Drift check complete"); queryClient.invalidateQueries(); },
-    onError: (e: any) => toast.error(e.message),
+    onError: (e: Record<string, any>) => toast.error(e.message),
   });
 
-  const unresolvedDrifts = drifts.filter((d: any) => !d.resolved);
+  const unresolvedDrifts = drifts.filter((d: Record<string, any>) => !d.resolved);
 
   return (
     <div className="space-y-6 p-6">
@@ -83,7 +85,7 @@ export default function PFA07ConnectorHealthDrift() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {drifts.map((d: any) => (
+                {drifts.map((d: Record<string, any>) => (
                   <TableRow key={d.id}>
                     <TableCell className="text-xs">{d.provider_capabilities?.display_name || "—"}</TableCell>
                     <TableCell><Badge variant="outline" className="text-xs">{d.drift_type}</Badge></TableCell>

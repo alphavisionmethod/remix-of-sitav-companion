@@ -11,6 +11,8 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { useCashTimingWindows, useMoneyKPIs } from "@/hooks/use-domain-data";
 import { useCashflowAnalysis, useCashflowForecast, useSafeToSpend } from "@/hooks/use-backend-actions";
 
+
+
 const CashTiming = () => {
   const { data: windows = [], isLoading } = useCashTimingWindows();
   const { data: kpis } = useMoneyKPIs();
@@ -26,8 +28,8 @@ const CashTiming = () => {
   const safeToSpend = safeToSpendData?.safe_to_spend_cents
     ? Math.round(Number(safeToSpendData.safe_to_spend_cents) / 100)
     : k.safeToSpend;
-  const minBalance = windows.length > 0 ? Math.min(...windows.map((w: any) => w.balance)) : 0;
-  const stressWindows = windows.filter((w: any) => w.stress);
+  const minBalance = windows.length > 0 ? Math.min(...windows.map((w: Record<string, any>) => w.balance)) : 0;
+  const stressWindows = windows.filter((w: Record<string, any>) => w.stress);
 
   if (isLoading) return <SectionSkeleton cards={3} columns={1} />;
 

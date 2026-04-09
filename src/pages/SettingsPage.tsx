@@ -31,6 +31,8 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useConfirmation } from "@/hooks/use-confirmation";
 import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
 
+
+
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.04 } } };
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.25 } } };
 
@@ -179,8 +181,8 @@ const SettingsPage = () => {
       const { data: configs } = await fromTable("connector_configs").select("*").order("updated_at", { ascending: false });
       
       // Merge accounts with registry display names
-      const merged = (accounts || []).map((acc: any) => {
-        const reg = (registry || []).find((r: any) => r.connector_type === acc.connector_type);
+      const merged = (accounts || []).map((acc: Record<string, any>) => {
+        const reg = (registry || []).find((r: Record<string, any>) => r.connector_type === acc.connector_type);
         return {
           service: reg?.display_name || acc.connector_type,
           status: acc.status || "inactive",
@@ -189,7 +191,7 @@ const SettingsPage = () => {
       });
       // Add any configs not in accounts
       if (merged.length === 0 && configs && configs.length > 0) {
-        return configs.map((c: any) => ({ service: c.service || c.connector_type, status: c.status || "inactive", last_sync_at: c.last_sync_at }));
+        return configs.map((c: Record<string, any>) => ({ service: c.service || c.connector_type, status: c.status || "inactive", last_sync_at: c.last_sync_at }));
       }
       return merged.length > 0 ? merged : [];
     },
@@ -500,7 +502,7 @@ const SettingsPage = () => {
                 { service: "Stripe", status: "active", last_sync_at: new Date(Date.now() - 300000).toISOString() },
                 { service: "QuickBooks", status: "inactive", last_sync_at: null },
                 { service: "Google Calendar", status: "active", last_sync_at: new Date(Date.now() - 60000).toISOString() },
-              ]).map((conn: any) => (
+              ]).map((conn: Record<string, any>) => (
                 <div key={conn.service} className="flex items-center justify-between rounded-xl bg-secondary/30 p-3">
                   <div className="flex items-center gap-3">
                     <Wifi className={cn("h-4 w-4", conn.status === "active" ? "text-trust-verified" : "text-muted-foreground")} />

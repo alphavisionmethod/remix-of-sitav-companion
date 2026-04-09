@@ -7,6 +7,8 @@ import { CheckCircle2, XCircle, TrendingUp } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { useDataMode } from "@/contexts/DataModeContext";
 
+
+
 export default function REX05OutcomeVerification() {
   const { isDemoMode } = useDataMode();
   const { data: verifications, isLoading } = useQuery({
@@ -15,9 +17,9 @@ export default function REX05OutcomeVerification() {
     staleTime: 30_000,
   });
 
-  const verified = verifications?.filter((v: any) => v.verified) || [];
+  const verified = verifications?.filter((v: Record<string, any>) => v.verified) || [];
   const avgScoreAdj = verified.length > 0
-    ? verified.reduce((acc: number, v: any) => acc + (v.score_adjustment || 0), 0) / verified.length
+    ? verified.reduce((acc: number,  v: Record<string, any>) => acc + (v.score_adjustment || 0), 0) / verified.length
     : 0;
 
   return (
@@ -70,7 +72,7 @@ export default function REX05OutcomeVerification() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {(verifications || []).map((v: any) => (
+                {(verifications || []).map((v: Record<string, any>) => (
                   <TableRow key={v.id}>
                     <TableCell className="text-foreground text-sm max-w-[200px] truncate">{v.expected_improvement || "—"}</TableCell>
                     <TableCell className="text-foreground text-sm max-w-[200px] truncate">{v.actual_improvement || "—"}</TableCell>
