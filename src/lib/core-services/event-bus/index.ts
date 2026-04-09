@@ -1,3 +1,6 @@
-// Canonical re-export — core-services/event-bus
-// Implementation lives in the flat file ../event-bus.ts
+// Canonical — core-services/event-bus
+// Flat engine + all sub-services
 export * from "../event-bus";
+export * from "@/lib/services/event-bus/event-envelope";
+export * from "@/lib/services/event-bus/publish-event.service";
+export * from "@/lib/services/event-bus/subscribe-event.service";

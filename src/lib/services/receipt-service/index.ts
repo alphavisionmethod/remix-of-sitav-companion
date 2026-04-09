@@ -1,6 +1,2 @@
-// @persistence: durable — persists receipts to sita_receipts via supabase-adapters
-export * from "./receipts.service";
-export * from "./proof-bundles.service";
-export * from "./approval-receipts.service";
-export * from "./execution-receipts.service";
-
+// Reverse shim — canonical source is core-services/receipt-service
+export * from "@/lib/core-services/receipt-service";
