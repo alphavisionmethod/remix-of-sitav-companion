@@ -1,4 +1,19 @@
 // SITA OS — Demo Data: Revenue Office
+import {
+  Activity, CheckCircle, Mail, Target, TrendingUp, AlertTriangle,
+  Play, Pause, Zap, DollarSign, Users, Phone, Star, FileText, UserPlus,
+  Heart, Package, RefreshCw, Calendar, Brain, Shield, Eye, MousePointer,
+  Clock, MessageSquare, TrendingDown, Type, Hash, CheckSquare, List,
+  AlignLeft, Upload, CreditCard, ShoppingCart, ShoppingBag, Workflow,
+  Lightbulb, MessageCircle, ThumbsUp,
+} from "lucide-react";
+
+interface Deal {
+  id: string; name: string; value: number; probability: number; age: number;
+  owner: string; contact: string; nextAction: string; nextActionDate: string;
+  source: string; tags: string[];
+}
+
 
 export const DEMO_healthMetrics = [
   { label: "Overall Health", value: 94, target: 95, color: "text-emerald-400", icon: Activity },
