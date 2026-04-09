@@ -169,8 +169,15 @@ export const SETUP_PHASE_DEFINITIONS: SetupPhaseDefinition[] = [
 
   // ── Phase 3: Personalization Ceremony ──
   {
-    id: "quick-identity", title: "Quick Identity", description: "Help SITA understand where to begin",
+    id: "personalization-pivot", title: "Personalization Pivot", description: "Transition from system setup to personal environment shaping",
     dependencies: ["privacy-transparency"], blocking: true, required: true,
+    backgroundTaskIds: [], branchConditions: [], requiredHardware: [],
+    timeout: DEFAULT_TIMEOUT, order: 9.8, excludedFromSteps: true,
+    statusUX: defaultStatusUX("Personalization Pivot"),
+  },
+  {
+    id: "quick-identity", title: "Quick Identity", description: "Help SITA understand where to begin",
+    dependencies: ["personalization-pivot"], blocking: true, required: true,
     backgroundTaskIds: [], branchConditions: [], requiredHardware: [],
     timeout: DEFAULT_TIMEOUT, order: 10, excludedFromSteps: true,
     statusUX: defaultStatusUX("Quick Identity"),

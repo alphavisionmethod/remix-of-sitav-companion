@@ -32,16 +32,46 @@ const CONTEXTS = [
     desc: "Things feel scattered or reactive — you want calm, clarity, and follow-through.",
     tone: "SITA will prioritize calm, recovery, and reducing overwhelm.",
   },
+  {
+    key: "maintaining",
+    title: "Maintaining what already works",
+    desc: "Life is mostly stable — you want to keep it running smoothly.",
+    tone: "SITA will prioritize consistency, gentle reminders, and keeping things humming.",
+  },
+  {
+    key: "transition",
+    title: "A transition period",
+    desc: "Something is changing — new job, move, relationship shift, life stage change.",
+    tone: "SITA will adapt flexibly and help you build new routines as things settle.",
+  },
+  {
+    key: "unsure",
+    title: "Not sure / mixed",
+    desc: "Hard to pin down — some areas feel fine, others don't.",
+    tone: "SITA will learn your rhythm over time and adjust as patterns emerge.",
+  },
+];
+
+const SUPPORT_NEEDS = [
+  { key: "stability", label: "Stability" },
+  { key: "clarity", label: "Clarity" },
+  { key: "follow-through", label: "Follow-through" },
+  { key: "less-stress", label: "Less stress" },
+  { key: "better-visibility", label: "Better visibility" },
+  { key: "better-planning", label: "Better planning" },
+  { key: "more-consistency", label: "More consistency" },
 ];
 
 interface OperatingContextStepProps {
   selected: string;
   onSelect: (key: string) => void;
+  supportNeedPrimary?: string;
+  onSupportNeedSelect?: (key: string) => void;
   onNext: () => void;
   onPrev: () => void;
 }
 
-export function OperatingContextStep({ selected, onSelect, onNext, onPrev }: OperatingContextStepProps) {
+export function OperatingContextStep({ selected, onSelect, supportNeedPrimary, onSupportNeedSelect, onNext, onPrev }: OperatingContextStepProps) {
   const selectedContext = CONTEXTS.find(c => c.key === selected);
 
   return (
@@ -56,13 +86,13 @@ export function OperatingContextStep({ selected, onSelect, onNext, onPrev }: Ope
           <Compass className="h-3.5 w-3.5 text-primary" />
           <span className="text-[10px] font-semibold text-primary uppercase tracking-wider">Your Reality</span>
         </div>
-        <h2 className="text-xl font-semibold text-foreground">Where are you right now?</h2>
+        <h2 className="text-xl font-semibold text-foreground">What kind of season are you in right now?</h2>
         <p className="text-sm text-muted-foreground mt-1">
           This helps SITA understand whether to emphasize stability, growth, or recovery
         </p>
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-3 max-h-[320px] overflow-y-auto pr-1">
         {CONTEXTS.map(ctx => (
           <button
             key={ctx.key}
@@ -102,6 +132,34 @@ export function OperatingContextStep({ selected, onSelect, onNext, onPrev }: Ope
         >
           <p className="text-[10px] text-primary font-semibold uppercase tracking-wider mb-1">How this shapes SITA</p>
           <p className="text-[11px] text-muted-foreground">{selectedContext.tone}</p>
+        </motion.div>
+      )}
+
+      {/* Follow-up: What would feel most helpful? */}
+      {selected && onSupportNeedSelect && (
+        <motion.div
+          initial={{ opacity: 0, height: 0 }}
+          animate={{ opacity: 1, height: "auto" }}
+          transition={{ delay: 0.2 }}
+          className="mt-5"
+        >
+          <p className="text-sm font-medium text-foreground mb-2">What would feel most helpful right now?</p>
+          <div className="flex flex-wrap gap-2">
+            {SUPPORT_NEEDS.map(need => (
+              <button
+                key={need.key}
+                onClick={() => onSupportNeedSelect(need.key)}
+                className={cn(
+                  "rounded-full border px-3 py-1.5 text-xs transition-all",
+                  supportNeedPrimary === need.key
+                    ? "border-primary bg-primary/10 text-primary font-medium"
+                    : "border-border text-muted-foreground hover:border-primary/30 hover:text-foreground"
+                )}
+              >
+                {need.label}
+              </button>
+            ))}
+          </div>
         </motion.div>
       )}
 

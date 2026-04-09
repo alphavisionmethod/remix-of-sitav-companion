@@ -25,6 +25,7 @@ export interface ReflectionInput {
   householdNodes?: { name: string; role: string }[];
   memoryConsent?: string;
   operatingContext?: string;
+  supportNeedPrimary?: string;
   relationshipFocus?: string;
 }
 
@@ -128,9 +129,28 @@ export function generateReflections(input: ReflectionInput): ReflectionLine[] {
       scaling: "You're scaling something — SITA will focus on leverage, delegation, and keeping pace.",
       "managing-complexity": "You're managing complexity — SITA will emphasize visibility, triage, and coordination.",
       "regaining-control": "You're regaining control — SITA will keep things calm and recovery-focused.",
+      maintaining: "You're maintaining stability — SITA will keep things running smoothly with gentle oversight.",
+      transition: "You're in a transition — SITA will adapt flexibly as things settle.",
+      unsure: "You're figuring things out — SITA will learn your rhythm and adjust over time.",
     };
     if (ctxMsgs[input.operatingContext]) {
       lines.push({ text: ctxMsgs[input.operatingContext], category: "context" });
+    }
+  }
+
+  // Support need primary (Req #2 follow-up)
+  if (input.supportNeedPrimary) {
+    const needMsgs: Record<string, string> = {
+      stability: "Your top need is stability — SITA will anchor around consistency and reliability.",
+      clarity: "Your top need is clarity — SITA will surface what matters and reduce noise.",
+      "follow-through": "Your top need is follow-through — SITA will track commitments and close loops.",
+      "less-stress": "Your top need is less stress — SITA will keep things calm and manageable.",
+      "better-visibility": "Your top need is visibility — SITA will make sure nothing hides in blind spots.",
+      "better-planning": "Your top need is better planning — SITA will help you think ahead.",
+      "more-consistency": "Your top need is consistency — SITA will help you build sustainable routines.",
+    };
+    if (needMsgs[input.supportNeedPrimary]) {
+      lines.push({ text: needMsgs[input.supportNeedPrimary], category: "context" });
     }
   }
 

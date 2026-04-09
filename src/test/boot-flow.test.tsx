@@ -45,6 +45,7 @@ const onboardingComponents = [
   ["LearnLaterHub", "@/components/sita/onboarding/LearnLaterHub"],
   ["RecoverFirstStep", "@/components/sita/onboarding/RecoverFirstStep"],
   ["ContextualWelcomeTour", "@/components/sita/onboarding/ContextualWelcomeTour"],
+  ["PersonalizationPivotStep", "@/components/sita/onboarding/PersonalizationPivotStep"],
 ] as const;
 
 describe("Onboarding Components", () => {
