@@ -1,3 +1,4 @@
+import { useAction } from "@/hooks/use-action";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — AIT04-08: Full Spec Boards
 // Activity Feed, Cost & Efficiency, Recommendations,
@@ -5,7 +6,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -248,13 +249,8 @@ export function AIT06Recommendations() {
     queryFn: () => getRecommendations(),
   });
 
-  const updateStatus = useMutation({
-    mutationFn: async ({ id, status }: { id: string; status: string }) => {
-      const { error } = await fromTable("ai_workforce_recommendations").update({ status }).eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ["ai-workforce-recommendations"] }); toast.success("Recommendation updated"); },
-    onError: (err: Record<string, any>) => toast.error(err.message),
+  const updateStatus = useAction("admin", "status.update", {
+    invalidateKeys: [["ai-workforce-recommendations"]],
   });
 
   const filtered = recs.filter((r: Record<string, any>) => {
@@ -370,13 +366,8 @@ export function AIT07ApprovalQueue() {
     queryFn: () => getApprovalQueue(filterStatus === "all" ? undefined : filterStatus),
   });
 
-  const updateApproval = useMutation({
-    mutationFn: async ({ id, status }: { id: string; status: string }) => {
-      const { error } = await fromTable("ai_workforce_approval_queue").update({ status, reviewed_at: new Date().toISOString() }).eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ["ai-workforce-approval-queue"] }); toast.success("Approval updated"); },
-    onError: (err: Record<string, any>) => toast.error(err.message),
+  const updateApproval = useAction("admin", "approval.update", {
+    invalidateKeys: [["ai-workforce-approval-queue"]],
   });
 
   return (

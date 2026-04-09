@@ -1,8 +1,9 @@
+import { useAction } from "@/hooks/use-action";
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -34,16 +35,7 @@ export default function UAO02ConnectedDevices() {
     queryFn: async () => { const { data } = await fromTable("wearable_providers").select("*").order("name"); return data || []; },
   });
 
-  const seedMutation = useMutation({
-    mutationFn: async () => {
-      const { error: e1 } = await supabase.functions.invoke("ambient-os-operations", { body: { action: "seed_device_families" } });
-      if (e1) throw e1;
-      const { error: e2 } = await supabase.functions.invoke("ambient-os-operations", { body: { action: "seed_wearable_providers" } });
-      if (e2) throw e2;
-    },
-    onSuccess: () => { toast.success("Device families & wearable providers seeded"); queryClient.invalidateQueries(); },
-    onError: (e: Record<string, any>) => toast.error(e.message),
-  });
+  const seedMutation = useAction("admin", "seed.run");
 
   return (
     <div className="space-y-6 p-6">
@@ -53,7 +45,7 @@ export default function UAO02ConnectedDevices() {
           <h1 className="text-2xl font-bold flex items-center gap-2"><Cpu className="h-6 w-6" /> Connected Devices Center</h1>
           <p className="text-sm text-muted-foreground mt-1">Phones, watches, wearables, trust levels, and sync</p>
         </div>
-        <Button onClick={() => seedMutation.mutate()} disabled={seedMutation.isPending} size="sm" variant="outline">
+        <Button onClick={() => seedMutation.mutate({})} disabled={seedMutation.isPending} size="sm" variant="outline">
           <RefreshCw className={`h-4 w-4 mr-2 ${seedMutation.isPending ? "animate-spin" : ""}`} />
           {families.length === 0 ? "Initialize Devices" : "Re-Seed"}
         </Button>

@@ -1,8 +1,9 @@
+import { useAction } from "@/hooks/use-action";
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -30,14 +31,7 @@ export default function UAO03AmbientTeamControl() {
     queryFn: async () => { const { data } = await fromTable("proactive_interventions").select("*").order("created_at", { ascending: false }).limit(20); return data || []; },
   });
 
-  const seedRoles = useMutation({
-    mutationFn: async () => {
-      const { error } = await supabase.functions.invoke("ambient-os-operations", { body: { action: "seed_assistant_roles" } });
-      if (error) throw error;
-    },
-    onSuccess: () => { toast.success("Assistant roles seeded"); queryClient.invalidateQueries(); },
-    onError: (e: Record<string, any>) => toast.error(e.message),
-  });
+  const seedRoles = useAction("admin", "roles.seed");
 
   const activeRoles = roles.filter((r: Record<string, any>) => r.active);
   const proactiveRoles = roles.filter((r: Record<string, any>) => r.proactive_mode);
@@ -50,7 +44,7 @@ export default function UAO03AmbientTeamControl() {
           <h1 className="text-2xl font-bold flex items-center gap-2"><Users className="h-6 w-6" /> Ambient Team Control</h1>
           <p className="text-sm text-muted-foreground mt-1">Assistant roles, proactive modes, escalation behavior</p>
         </div>
-        <Button onClick={() => seedRoles.mutate()} disabled={seedRoles.isPending} size="sm" variant="outline">
+        <Button onClick={() => seedRoles.mutate({})} disabled={seedRoles.isPending} size="sm" variant="outline">
           <RefreshCw className={`h-4 w-4 mr-2 ${seedRoles.isPending ? "animate-spin" : ""}`} />
           {roles.length === 0 ? "Initialize Team" : "Re-Seed"}
         </Button>

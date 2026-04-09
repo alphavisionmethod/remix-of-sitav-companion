@@ -1,8 +1,9 @@
+import { useAction } from "@/hooks/use-action";
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -37,14 +38,7 @@ export default function UAO05HealthReadiness() {
     queryFn: async () => { const { data } = await fromTable("readiness_states").select("*").order("updated_at", { ascending: false }).limit(5); return data || []; },
   });
 
-  const checkReadiness = useMutation({
-    mutationFn: async () => {
-      const { error } = await supabase.functions.invoke("ambient-os-operations", { body: { action: "check_readiness" } });
-      if (error) throw error;
-    },
-    onSuccess: () => { toast.success("Readiness checked"); queryClient.invalidateQueries(); },
-    onError: (e: Record<string, any>) => toast.error(e.message),
-  });
+  const checkReadiness = useAction("admin", "health.check-readiness");
 
   const current = readiness[0];
   const consentedCount = consents.filter((c: Record<string, any>) => c.consented).length;
@@ -57,7 +51,7 @@ export default function UAO05HealthReadiness() {
           <h1 className="text-2xl font-bold flex items-center gap-2"><Heart className="h-6 w-6" /> Health & Readiness Signals</h1>
           <p className="text-sm text-muted-foreground mt-1">Signal sources, consent, readiness, and privacy controls</p>
         </div>
-        <Button onClick={() => checkReadiness.mutate()} disabled={checkReadiness.isPending} size="sm" variant="outline">
+        <Button onClick={() => checkReadiness.mutate({})} disabled={checkReadiness.isPending} size="sm" variant="outline">
           <RefreshCw className={`h-4 w-4 mr-2 ${checkReadiness.isPending ? "animate-spin" : ""}`} /> Check Readiness
         </Button>
       </div>

@@ -1,10 +1,11 @@
+import { useAction } from "@/hooks/use-action";
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge, TrustLevel } from "@/components/sita/TrustBadge";
 import { StateBadge, ExecutionState } from "@/components/sita/StateBadge";
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
 import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
@@ -56,30 +57,14 @@ const OpportunitiesCenter = () => {
     enabled: !!user,
   });
 
-  const addOpp = useMutation({
-    mutationFn: async () => {
-      if (!user || !form.title.trim()) throw new Error("Title required");
-      const { error } = await fromTable("opportunities").insert({
-        user_id: user.id, title: form.title.trim(), value: form.value ? parseFloat(form.value) : null,
-        confidence: form.confidence, stage: form.stage, next_action: form.next_action || null,
-      });
-      if (error) throw error;
-    },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["opportunities"] }); setShowAdd(false); setForm({ title: "", value: "", confidence: 50, stage: "lead", next_action: "" }); toast.success("Opportunity added"); },
-    onError: (e: Error) => toast.error(e.message),
+  const addOpp = useAction("business", "opportunity.create");
+
+  const updateStage = useAction("business", "opportunity.update-stage", {
+    invalidateKeys: [["opportunities"]],
   });
 
-  const updateStage = useMutation({
-    mutationFn: async ({ id, stage }: { id: string; stage: string }) => {
-      const { error } = await fromTable("opportunities").update({ stage, last_movement_at: new Date().toISOString() }).eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["opportunities"] }); toast.success("Stage updated"); },
-  });
-
-  const deleteOpp = useMutation({
-    mutationFn: async (id: string) => { const { error } = await fromTable("opportunities").delete().eq("id", id); if (error) throw error; },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["opportunities"] }); setSelectedId(null); toast.success("Deleted"); },
+  const deleteOpp = useAction("business", "opportunity.delete", {
+    invalidateKeys: [["opportunities"]],
   });
 
   const selected = opportunities.find((o: Record<string, any>) => o.id === selectedId);
@@ -120,7 +105,7 @@ const OpportunitiesCenter = () => {
                 <input value={form.next_action} onChange={e => setForm({ ...form, next_action: e.target.value })} placeholder="Next action" className="rounded-lg border border-border/50 bg-secondary/20 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/30" />
               </div>
               <div className="flex justify-end mt-4">
-                <button onClick={() => addOpp.mutate()} disabled={addOpp.isPending || !form.title.trim()} className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50 transition-colors">{addOpp.isPending ? "Adding..." : "Add Opportunity"}</button>
+                <button onClick={() => addOpp.mutate({ title: form.title.trim(), value: form.value ? parseFloat(form.value) : null, confidence: form.confidence, stage: form.stage, next_action: form.next_action || null })} disabled={addOpp.isPending || !form.title.trim()} className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50 transition-colors">{addOpp.isPending ? "Adding..." : "Add Opportunity"}</button>
               </div>
             </SitaCard>
           </motion.div>

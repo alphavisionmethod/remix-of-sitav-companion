@@ -1,10 +1,11 @@
+import { useAction } from "@/hooks/use-action";
 import { SitaPageHeader, SitaCard, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
 import { ConnectorStatusCard, SensitivityBadge } from "@/components/sita/FilesComponents";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { Settings, Upload, Brain, Shield, Clock, Zap, Eye, Globe, Lock } from "lucide-react";
 import { motion } from "framer-motion";
 import { useFileSettings } from "@/hooks/use-domain-data";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { upsertFileSettings } from "@/lib/data-services/files-data-service";
 import { toast } from "sonner";
 import { useState, useEffect } from "react";
@@ -55,13 +56,9 @@ const FilesSettings = () => {
     }
   }, [savedSettings]);
 
-  const saveMutation = useMutation({
-    mutationFn: (newSettings: Partial<SettingsState>) => upsertFileSettings(newSettings),
-    onSuccess: () => {
-      toast.success("Settings saved");
-      queryClient.invalidateQueries({ queryKey: ["file-settings"] });
-    },
-    onError: () => toast.error("Failed to save settings"),
+  const saveMutation = useAction("files", "settings.save", {
+    successMessage: "Settings saved",
+    invalidateKeys: [["file-settings"]],
   });
 
   const toggle = (key: keyof SettingsState) => {

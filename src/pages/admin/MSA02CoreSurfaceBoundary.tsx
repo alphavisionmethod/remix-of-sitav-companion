@@ -1,8 +1,9 @@
+import { useAction } from "@/hooks/use-action";
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -33,15 +34,7 @@ export default function MSA02CoreSurfaceBoundary() {
     queryFn: async () => { const { data } = await fromTable("architecture_boundary_records").select("*").order("migration_priority"); return data || []; },
   });
 
-  const auditMutation = useMutation({
-    mutationFn: async () => {
-      const { data, error } = await supabase.functions.invoke("msa-operations", { body: { action: "audit_boundaries" } });
-      if (error) throw error;
-      return data;
-    },
-    onSuccess: (data: Record<string, any>) => { toast.success(`Audit complete: ${data?.violations} violations found`); queryClient.invalidateQueries({ queryKey: ["architecture-boundaries"] }); },
-    onError: (e: Record<string, any>) => toast.error(`Audit failed: ${e.message}`),
-  });
+  const auditMutation = useAction("admin", "audit.run");
 
   const violations = boundaries.filter((b: Record<string, any>) => b.is_boundary_violation);
   const clean = boundaries.filter((b: Record<string, any>) => !b.is_boundary_violation);
@@ -54,7 +47,7 @@ export default function MSA02CoreSurfaceBoundary() {
           <h1 className="text-2xl font-bold flex items-center gap-2"><Layers className="h-6 w-6" /> Core vs Surface Boundary</h1>
           <p className="text-sm text-muted-foreground mt-1">What lives in core runtime vs shell layer — violations and migration candidates</p>
         </div>
-        <Button onClick={() => auditMutation.mutate()} disabled={auditMutation.isPending} size="sm" variant="outline">
+        <Button onClick={() => auditMutation.mutate({})} disabled={auditMutation.isPending} size="sm" variant="outline">
           <RefreshCw className={`h-4 w-4 mr-2 ${auditMutation.isPending ? "animate-spin" : ""}`} /> Run Audit
         </Button>
       </div>

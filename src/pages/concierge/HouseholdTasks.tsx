@@ -1,9 +1,10 @@
+import { useAction } from "@/hooks/use-action";
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { MemberAvatar, HouseholdAdvisor } from "@/components/sita/HouseholdComponents";
 import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
@@ -60,50 +61,14 @@ const HouseholdTasks = () => {
     enabled: !!user,
   });
 
-  const addTask = useMutation({
-    mutationFn: async () => {
-      if (!user || !newTask.title.trim()) throw new Error("Title required");
-      const { error } = await fromTable("tasks").insert({
-        user_id: user.id,
-        title: newTask.title.trim(),
-        category: newTask.category || "General",
-        priority: newTask.priority,
-        due_date: newTask.due_date || null,
-        description: newTask.description || null,
-        assigned_to: newTask.assigned_to || null,
-        status: "todo",
-      });
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["concierge-tasks"] });
-      setShowAdd(false);
-      setNewTask({ title: "", category: "General", priority: "medium", due_date: "", description: "", assigned_to: "" });
-      toast.success("Task added");
-    },
-    onError: (e: Error) => toast.error(e.message),
+  const addTask = useAction("concierge", "task.create");
+
+  const updateStatus = useAction("concierge", "status.update", {
+    invalidateKeys: [["concierge-tasks"]],
   });
 
-  const updateStatus = useMutation({
-    mutationFn: async ({ id, status }: { id: string; status: string }) => {
-      const { error } = await fromTable("tasks").update({ status }).eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["concierge-tasks"] });
-      toast.success("Status updated");
-    },
-  });
-
-  const deleteTask = useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await fromTable("tasks").delete().eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["concierge-tasks"] });
-      toast.success("Task deleted");
-    },
+  const deleteTask = useAction("concierge", "task.delete", {
+    invalidateKeys: [["concierge-tasks"]],
   });
 
   const now = new Date();
@@ -176,7 +141,7 @@ const HouseholdTasks = () => {
                 <textarea value={newTask.description} onChange={e => setNewTask({ ...newTask, description: e.target.value })} placeholder="Notes" rows={2} className="col-span-2 rounded-lg border border-border/50 bg-secondary/20 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/30" />
               </div>
               <div className="flex justify-end mt-4">
-                <button onClick={() => addTask.mutate()} disabled={addTask.isPending || !newTask.title.trim()} className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50 transition-colors">
+                <button onClick={() => addTask.mutate({ title: newTask.title.trim(), category: newTask.category || "General", priority: newTask.priority, due_date: newTask.due_date || null, description: newTask.description || null, assigned_to: newTask.assigned_to || null, status: "todo" })} disabled={addTask.isPending || !newTask.title.trim()} className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50 transition-colors">
                   {addTask.isPending ? "Adding..." : "Add Task"}
                 </button>
               </div>

@@ -114,3 +114,38 @@ registerCapability("business.quote.update", async (params) => {
   if (error) return { success: false, error: error.message };
   return { success: true };
 });
+
+// ── Opportunity Stage Update ────────────────────────────────────
+
+registerCapability("business.opportunity.update-stage", async (params) => {
+  const { id, stage } = params;
+  const { error } = await fromDynamicTable("opportunities")
+    .update({ stage, last_movement_at: new Date().toISOString() }).eq("id", id as string);
+  if (error) return { success: false, error: error.message };
+  return { success: true };
+});
+
+registerCapability("business.opportunity.delete", async (params) => {
+  const { error } = await fromDynamicTable("opportunities")
+    .delete().eq("id", params.id as string);
+  if (error) return { success: false, error: error.message };
+  return { success: true };
+});
+
+// ── Quote Status Update & Delete ────────────────────────────────
+
+registerCapability("business.status.update", async (params) => {
+  const { id, table, ...updates } = params;
+  const targetTable = (table as string) || "quotes";
+  const { error } = await fromDynamicTable(targetTable)
+    .update(updates).eq("id", id as string);
+  if (error) return { success: false, error: error.message };
+  return { success: true };
+});
+
+registerCapability("business.quote.delete", async (params) => {
+  const { error } = await fromDynamicTable("quotes")
+    .delete().eq("id", params.id as string);
+  if (error) return { success: false, error: error.message };
+  return { success: true };
+});

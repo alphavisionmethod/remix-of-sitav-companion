@@ -1,5 +1,6 @@
+import { useAction } from "@/hooks/use-action";
 import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { motion } from "framer-motion";
@@ -41,29 +42,9 @@ const FeatureIntakeDesk = () => {
     },
   });
 
-  const createBlueprint = useMutation({
-    mutationFn: async () => {
-      const domain = form.domain || classifyFeatureDomain(form.title, form.description);
-      const featureId = form.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").slice(0, 40);
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error("Not authenticated");
-      const { error } = await fromTable("feature_blueprints").insert({
-        user_id: user.id, feature_id: featureId, title: form.title, domain,
-        archetype_key: form.archetypeKey, description: form.description,
-        user_intent: form.userIntent, persistence_class: form.persistenceClass,
-        trust_needs: form.trustNeeds, ai_compute_class: form.aiComputeClass,
-        interaction_criticality: form.interactionCriticality,
-        journey_criticality: form.journeyCriticality,
-        launch_criticality: form.launchCriticality,
-        status: "draft",
-      } as never);
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      toast.success("Blueprint created");
-      queryClient.invalidateQueries({ queryKey: ["feature-blueprints"] });
-      setForm({ ...form, title: "", description: "", userIntent: "" });
-    },
+  const createBlueprint = useAction("admin", "blueprint.create", {
+    successMessage: "Blueprint created",
+    invalidateKeys: [["feature-blueprints"]],
   });
 
   const autoDomain = form.title || form.description ? classifyFeatureDomain(form.title, form.description) : "";
@@ -151,7 +132,7 @@ const FeatureIntakeDesk = () => {
                 </Select>
               </div>
             </div>
-            <Button onClick={() => createBlueprint.mutate()} disabled={!form.title || createBlueprint.isPending} className="w-full">
+            <Button onClick={() => createBlueprint.mutate({})} disabled={!form.title || createBlueprint.isPending} className="w-full">
               <Sparkles className="h-4 w-4 mr-2" /> Create Blueprint & Enter Pipeline
             </Button>
           </CardContent>

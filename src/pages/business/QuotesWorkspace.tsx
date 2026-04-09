@@ -1,8 +1,9 @@
+import { useAction } from "@/hooks/use-action";
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { StateBadge } from "@/components/sita/StateBadge";
 import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
@@ -48,30 +49,14 @@ const QuotesWorkspace = () => {
     enabled: !!user,
   });
 
-  const addQuote = useMutation({
-    mutationFn: async () => {
-      if (!user || !form.title.trim()) throw new Error("Title required");
-      const { error } = await fromTable("quotes").insert({
-        user_id: user.id, title: form.title.trim(), total: form.total ? parseFloat(form.total) : null,
-        expiry_date: form.expiry_date || null, notes: form.notes || null, status: "draft",
-      });
-      if (error) throw error;
-    },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["quotes"] }); setShowAdd(false); setForm({ title: "", total: "", expiry_date: "", notes: "" }); toast.success("Quote created"); },
-    onError: (e: Error) => toast.error(e.message),
+  const addQuote = useAction("business", "quote.create");
+
+  const updateStatus = useAction("business", "status.update", {
+    invalidateKeys: [["quotes"]],
   });
 
-  const updateStatus = useMutation({
-    mutationFn: async ({ id, status }: { id: string; status: string }) => {
-      const { error } = await fromTable("quotes").update({ status }).eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["quotes"] }); toast.success("Status updated"); },
-  });
-
-  const deleteQuote = useMutation({
-    mutationFn: async (id: string) => { const { error } = await fromTable("quotes").delete().eq("id", id); if (error) throw error; },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["quotes"] }); setSelectedId(null); toast.success("Deleted"); },
+  const deleteQuote = useAction("business", "quote.delete", {
+    invalidateKeys: [["quotes"]],
   });
 
   const selected = quotes.find((q: Record<string, any>) => q.id === selectedId);
@@ -103,7 +88,7 @@ const QuotesWorkspace = () => {
                 <textarea value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} placeholder="Notes" rows={2} className="col-span-2 rounded-lg border border-border/50 bg-secondary/20 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/30" />
               </div>
               <div className="flex justify-end mt-4">
-                <button onClick={() => addQuote.mutate()} disabled={addQuote.isPending || !form.title.trim()} className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50 transition-colors">{addQuote.isPending ? "Creating..." : "Create Quote"}</button>
+                <button onClick={() => addQuote.mutate({ title: form.title.trim(), total: form.total ? parseFloat(form.total) : null, expiry_date: form.expiry_date || null, notes: form.notes || null, status: "draft" })} disabled={addQuote.isPending || !form.title.trim()} className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 disabled:opacity-50 transition-colors">{addQuote.isPending ? "Creating..." : "Create Quote"}</button>
               </div>
             </SitaCard>
           </motion.div>

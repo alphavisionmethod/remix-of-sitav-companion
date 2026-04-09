@@ -1,8 +1,9 @@
+import { useAction } from "@/hooks/use-action";
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
 import { KPITile, EmptyState, SitaTabs } from "@/components/sita/SitaComponents";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { TrustBadge } from "@/components/sita/TrustBadge";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
@@ -93,40 +94,10 @@ const ConnectorHub = () => {
   });
 
   // Connect mutation (OAuth initiate)
-  const connectMutation = useMutation({
-    mutationFn: async (connectorId: string) => {
-      const { data, error } = await supabase.functions.invoke("connector-oauth", {
-        body: { action: "initiate", connector_id: connectorId },
-      });
-      if (error) throw error;
-      return data;
-    },
-    onSuccess: (data) => {
-      if (data?.authorization_url) {
-        toast.info("Opening Google authorization…");
-        window.open(data.authorization_url, "_blank", "width=600,height=700");
-      } else if (data?.error === "google_oauth_not_configured") {
-        toast.error("Google OAuth not configured. Set up GOOGLE_CONNECTOR_CLIENT_ID and GOOGLE_CONNECTOR_CLIENT_SECRET.");
-      }
-    },
-    onError: (e: Record<string, any>) => toast.error(`Connect failed: ${e.message}`),
-  });
+  const connectMutation = useAction("system", "connector.connect");
 
   // Disconnect mutation
-  const disconnectMutation = useMutation({
-    mutationFn: async (accountId: string) => {
-      const { data, error } = await supabase.functions.invoke("connector-oauth", {
-        body: { action: "disconnect", account_id: accountId },
-      });
-      if (error) throw error;
-      return data;
-    },
-    onSuccess: () => {
-      toast.success("Connector disconnected");
-      queryClient.invalidateQueries({ queryKey: ["real-connector-accounts"] });
-    },
-    onError: (e: Record<string, any>) => toast.error(`Disconnect failed: ${e.message}`),
-  });
+  const disconnectMutation = useAction("system", "connector.disconnect");
 
   const filtered = filter === "all" ? connectors : connectors.filter((c: Record<string, any>) => c.status === filter);
   const selected = connectors.find((c: Record<string, any>) => c.id === selectedId);

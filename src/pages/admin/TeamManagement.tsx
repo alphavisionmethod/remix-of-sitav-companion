@@ -1,3 +1,4 @@
+import { useAction } from "@/hooks/use-action";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -15,7 +16,7 @@ import {
   MoreVertical, CheckCircle, AlertTriangle, XCircle, Sparkles, Play
 } from "lucide-react";
 import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
@@ -104,73 +105,18 @@ export default function TeamManagement() {
   });
 
   // ── Mutations ────────────────────────────────────
-  const createAdvisor = useMutation({
-    mutationFn: async (form: AdvisorFormData) => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error("Not authenticated");
-      const { error } = await fromTable("advisor_registry").insert({
-        user_id: user.id,
-        display_name: form.display_name,
-        domain: form.domain,
-        advisor_type: form.advisor_type,
-        trust_threshold: form.trust_threshold,
-        active: form.active,
-        explanation_style: form.explanation_style,
-        memory_scope: form.memory_scope,
-      });
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["admin-advisor-registry"] });
-      toast.success("Advisor created");
-      setFormDialog(prev => ({ ...prev, open: false }));
-    },
-    onError: (e) => toast.error("Failed to create advisor: " + e.message),
+  const createAdvisor = useAction("admin", "advisor.create");
+
+  const updateAdvisor = useAction("admin", "advisor.update", {
+    invalidateKeys: [["admin-advisor-registry"]],
   });
 
-  const updateAdvisor = useMutation({
-    mutationFn: async ({ id, ...form }: AdvisorFormData & { id: string }) => {
-      const { error } = await fromTable("advisor_registry").update({
-        display_name: form.display_name,
-        domain: form.domain,
-        advisor_type: form.advisor_type,
-        trust_threshold: form.trust_threshold,
-        active: form.active,
-        explanation_style: form.explanation_style,
-        memory_scope: form.memory_scope,
-      }).eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["admin-advisor-registry"] });
-      toast.success("Advisor updated");
-      setFormDialog(prev => ({ ...prev, open: false }));
-    },
-    onError: (e) => toast.error("Failed to update: " + e.message),
+  const toggleActive = useAction("admin", "advisor.toggle", {
+    invalidateKeys: [["admin-advisor-registry"]],
   });
 
-  const toggleActive = useMutation({
-    mutationFn: async ({ id, active }: { id: string; active: boolean }) => {
-      const { error } = await fromTable("advisor_registry").update({ active }).eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["admin-advisor-registry"] });
-      toast.success("Advisor status toggled");
-    },
-  });
-
-  const deleteAdvisor = useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await fromTable("advisor_registry").delete().eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ["admin-advisor-registry"] });
-      setSelectedAdvisor(null);
-      toast.success("Advisor deleted");
-    },
-    onError: (e) => toast.error("Failed to delete: " + e.message),
+  const deleteAdvisor = useAction("admin", "advisor.delete", {
+    invalidateKeys: [["admin-advisor-registry"]],
   });
 
   // Build merged agent list from registry + performance + token usage

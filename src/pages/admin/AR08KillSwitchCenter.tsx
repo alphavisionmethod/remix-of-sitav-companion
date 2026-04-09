@@ -1,8 +1,9 @@
+import { useAction } from "@/hooks/use-action";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — AR08: Kill Switch & Safety Center
 // ═══════════════════════════════════════════════════════════════
 
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
@@ -41,40 +42,7 @@ export default function AR08KillSwitchCenter() {
     );
   };
 
-  const toggleMutation = useMutation({
-    mutationFn: async ({ scope, scopeId, enable }: { scope: string; scopeId?: string; enable: boolean }) => {
-      const existing = switches.find((s: Record<string, any>) =>
-        s.scope === scope && (scopeId ? s.scope_id === scopeId : !s.scope_id)
-      );
-
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error("Not authenticated");
-
-      if (existing) {
-        await fromTable("automation_kill_switches")
-          .update({
-            enabled: enable,
-            activated_at: enable ? new Date().toISOString() : String((existing as Record<string, unknown>).activated_at ?? ""),
-            deactivated_at: enable ? null : new Date().toISOString(),
-            reason: enable ? "Manual activation" : undefined,
-          })
-          .eq("id", String((existing as Record<string, unknown>).id ?? ""));
-      } else {
-        await fromTable("automation_kill_switches").insert({
-          user_id: user.id,
-          scope,
-          scope_id: scopeId || null,
-          enabled: enable,
-          reason: "Manual activation",
-          activated_by: "operator",
-        });
-      }
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["kill-switches"] });
-      toast.success("Kill switch updated");
-    },
-  });
+  const toggleMutation = useAction("admin", "kill-switch.toggle");
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">

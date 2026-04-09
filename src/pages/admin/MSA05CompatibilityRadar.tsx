@@ -1,8 +1,9 @@
+import { useAction } from "@/hooks/use-action";
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -49,15 +50,7 @@ export default function MSA05CompatibilityRadar() {
     queryFn: async () => { const { data } = await fromTable("capability_surface_bindings").select("*, capability_definitions(domain, capability_key)"); return data || []; },
   });
 
-  const checkMutation = useMutation({
-    mutationFn: async () => {
-      const { data, error } = await supabase.functions.invoke("msa-operations", { body: { action: "check_consistency" } });
-      if (error) throw error;
-      return data;
-    },
-    onSuccess: (data: Record<string, any>) => { toast.success(`Consistency check: ${data?.inconsistent || 0} drifts found`); queryClient.invalidateQueries(); },
-    onError: (e: Record<string, any>) => toast.error(`Check failed: ${e.message}`),
-  });
+  const checkMutation = useAction("admin", "compatibility.check");
 
   const consistent = consistency.filter((c: Record<string, any>) => c.consistent);
   const drifts = consistency.filter((c: Record<string, any>) => !c.consistent);
@@ -92,7 +85,7 @@ export default function MSA05CompatibilityRadar() {
           <h1 className="text-2xl font-bold flex items-center gap-2"><Radar className="h-6 w-6" /> Future Surface Compatibility Radar</h1>
           <p className="text-sm text-muted-foreground mt-1">Detect web-trapped logic, cross-surface drift, and portability blockers</p>
         </div>
-        <Button onClick={() => checkMutation.mutate()} disabled={checkMutation.isPending} size="sm" variant="outline">
+        <Button onClick={() => checkMutation.mutate({})} disabled={checkMutation.isPending} size="sm" variant="outline">
           <RefreshCw className={`h-4 w-4 mr-2 ${checkMutation.isPending ? "animate-spin" : ""}`} /> Run Consistency Check
         </Button>
       </div>

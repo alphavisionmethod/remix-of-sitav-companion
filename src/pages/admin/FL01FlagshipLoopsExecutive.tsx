@@ -1,4 +1,5 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useAction } from "@/hooks/use-action";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   fetchFlagshipLoops,
   seedFlagshipLoops,
@@ -102,15 +103,8 @@ export default function FL01FlagshipLoopsExecutive() {
     staleTime: 60_000,
   });
 
-  const seedMutation = useMutation({
-    mutationFn: seedFlagshipLoops,
-    onSuccess: (results) => {
-      const seeded = results.filter((r) => r.status === "seeded").length;
-      const updated = results.filter((r) => r.status === "updated").length;
-      toast.success(`${seeded} seeded, ${updated} updated`);
-      queryClient.invalidateQueries({ queryKey: ["fl01-flagship-loops"] });
-    },
-    onError: (err: Error) => toast.error(err.message),
+  const seedMutation = useAction("admin", "seed.run", {
+    invalidateKeys: [["fl01-flagship-loops"]],
   });
 
   const loopList = loops || [];
@@ -157,7 +151,7 @@ export default function FL01FlagshipLoopsExecutive() {
           <p className="text-muted-foreground text-sm">5 flagship product loops — health, truth, proof, and launch readiness.</p>
         </div>
         <Button
-          onClick={() => seedMutation.mutate()}
+          onClick={() => seedMutation.mutate({})}
           disabled={seedMutation.isPending}
           size="sm"
           variant={loopList.length === 0 ? "default" : "outline"}

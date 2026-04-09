@@ -1,3 +1,4 @@
+import { useAction } from "@/hooks/use-action";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,7 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Users, Search, Shield, Ban, UserCheck, ChevronRight } from "lucide-react";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { supabase } from "@/integrations/supabase/client";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
@@ -43,21 +44,7 @@ export default function UserManagement() {
     enabled: isAdmin,
   });
 
-  const actionMutation = useMutation({
-    mutationFn: async (params: { action: string; target_user_id: string; role?: string }) => {
-      const { data, error } = await supabase.functions.invoke("admin-users", {
-        method: "POST",
-        body: params,
-      });
-      if (error) throw error;
-      return data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["admin-users"] });
-      toast.success("Action completed");
-    },
-    onError: (e: Error) => toast.error(e.message),
-  });
+  const actionMutation = useAction("admin", "user.action");
 
   if (adminLoading) return <div className="p-6 text-center text-muted-foreground">Checking access...</div>;
   if (!isAdmin) return null;

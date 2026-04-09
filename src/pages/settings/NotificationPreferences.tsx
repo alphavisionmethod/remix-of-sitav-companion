@@ -1,3 +1,4 @@
+import { useAction } from "@/hooks/use-action";
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -8,7 +9,7 @@ import { usePushNotifications } from "@/hooks/use-push-notifications";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useDataMode } from "@/contexts/DataModeContext";
 
@@ -39,24 +40,7 @@ export default function NotificationPreferences() {
     enabled: !!user?.id,
   });
 
-  const upsertPref = useMutation({
-    mutationFn: async (pref: { category: string; channel_push: boolean; channel_in_app: boolean; urgency_minimum: string }) => {
-      if (!user?.id) return;
-      const { error } = await fromTable("notification_preferences").upsert({
-        user_id: user.id,
-        category: pref.category,
-        channel_push: pref.channel_push,
-        channel_in_app: pref.channel_in_app,
-        urgency_minimum: pref.urgency_minimum,
-      }, { onConflict: "user_id,category" });
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["notification-preferences"] });
-      toast.success("Preference saved");
-    },
-    onError: (e: Record<string, any>) => toast.error(`Failed: ${e.message}`),
-  });
+  const upsertPref = useAction("system", "notification-pref.upsert");
 
   const getPref = (category: string) => {
     const existing = preferences.find((p: Record<string, any>) => p.category === category);

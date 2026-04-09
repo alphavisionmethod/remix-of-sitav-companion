@@ -1,8 +1,9 @@
+import { useAction } from "@/hooks/use-action";
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { KPITile, EmptyState, SitaTabs } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
@@ -36,36 +37,14 @@ const PolicyEditor = () => {
     },
   });
 
-  const createPolicy = useMutation({
-    mutationFn: async () => {
-      const { error } = await fromTable("policies").insert({
-        user_id: user!.id,
-        name: newName,
-        category: newCategory,
-        approval_required: newApproval,
-        conditions: [],
-        actions: [],
-      });
-      if (error) throw error;
-    },
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ["policies"] }); toast.success("Policy created"); setShowCreate(false); setNewName(""); },
-    onError: (e: Error) => toast.error(e.message),
+  const createPolicy = useAction("system", "policy.create");
+
+  const togglePolicy = useAction("system", "policy.toggle", {
+    invalidateKeys: [["policies"]],
   });
 
-  const togglePolicy = useMutation({
-    mutationFn: async ({ id, active }: { id: string; active: boolean }) => {
-      const { error } = await fromTable("policies").update({ active }).eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ["policies"] }); },
-  });
-
-  const deletePolicy = useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await fromTable("policies").delete().eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ["policies"] }); toast.success("Policy deleted"); setSelectedId(null); },
+  const deletePolicy = useAction("system", "policy.delete", {
+    invalidateKeys: [["policies"]],
   });
 
   const filtered = category === "all" ? policies : policies.filter(p => p.category === category);
@@ -107,7 +86,7 @@ const PolicyEditor = () => {
               Requires manual approval
             </label>
             <div className="flex gap-2">
-              <SitaButton variant="primary" onClick={() => createPolicy.mutate()}>Create</SitaButton>
+              <SitaButton variant="primary" onClick={() => createPolicy.mutate({ name: newName, category: newCategory, approval_required: newApproval, conditions: [], actions: [] })}>Create</SitaButton>
               <SitaButton variant="secondary" onClick={() => setShowCreate(false)}>Cancel</SitaButton>
             </div>
           </div>

@@ -1,5 +1,6 @@
+import { useAction } from "@/hooks/use-action";
 import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { motion } from "framer-motion";
@@ -40,22 +41,9 @@ const ChangeImpactAnalyzer = () => {
     setAnalysis(analyzeChangeImpact(proposal));
   };
 
-  const saveMutation = useMutation({
-    mutationFn: async () => {
-      if (!analysis) return;
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error("Not authenticated");
-      const { error } = await fromTable("change_impact_records").insert({
-        user_id: user.id, change_title: analysis.changeTitle, change_type: form.changeType,
-        affected_routes: analysis.affectedRoutes as never, affected_contracts: analysis.affectedContracts as never,
-        affected_probes: analysis.affectedProbes as never, affected_journeys: analysis.affectedJourneys as never,
-        affected_domains: analysis.affectedDomains as never, migration_risks: analysis.migrationRisks as never,
-        rollout_risks: analysis.rolloutRisks as never, trust_risks: analysis.trustRisks as never,
-        severity: analysis.severity, status: "pending",
-      } as never);
-      if (error) throw error;
-    },
-    onSuccess: () => { toast.success("Impact analysis saved"); queryClient.invalidateQueries({ queryKey: ["change-impact-records"] }); },
+  const saveMutation = useAction("admin", "settings.save", {
+    successMessage: "Impact analysis saved",
+    invalidateKeys: [["change-impact-records"]],
   });
 
   const severityColor = { low: "text-green-400", medium: "text-amber-400", high: "text-orange-400", critical: "text-red-400" };
@@ -101,7 +89,7 @@ const ChangeImpactAnalyzer = () => {
                 {analysis.migrationRisks.length > 0 && <div><div className="text-xs font-semibold mb-1">Migration Risks</div>{analysis.migrationRisks.map((r, i) => <div key={i} className="text-xs text-muted-foreground">⚠️ {r.risk}</div>)}</div>}
                 {analysis.trustRisks.length > 0 && <div><div className="text-xs font-semibold mb-1">Trust Risks</div>{analysis.trustRisks.map((r, i) => <div key={i} className="text-xs text-red-400">🛡️ {r.risk}</div>)}</div>}
                 {analysis.recommendations.length > 0 && <div><div className="text-xs font-semibold mb-1">Recommendations</div>{analysis.recommendations.map((r, i) => <div key={i} className="text-xs text-muted-foreground flex items-center gap-1"><ArrowRight className="h-3 w-3" /> {r}</div>)}</div>}
-                <Button onClick={() => saveMutation.mutate()} size="sm" variant="secondary" className="w-full">Save Analysis</Button>
+                <Button onClick={() => saveMutation.mutate({})} size="sm" variant="secondary" className="w-full">Save Analysis</Button>
               </CardContent>
             </Card>
           </motion.div>
