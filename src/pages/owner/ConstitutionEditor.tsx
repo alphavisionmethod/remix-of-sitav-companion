@@ -24,7 +24,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
-import { useAction } from "@/lib/hooks/useAction";
+import { useAction } from "@/hooks/use-action";
 import { PlainEnglishPolicyEditor } from "@/components/sita/PlainEnglishPolicyEditor";
 import { DEMO_EXAMPLE_RULES } from "@/lib/demo-data/core-pages";
 

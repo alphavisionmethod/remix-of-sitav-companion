@@ -1,2 +1,2 @@
-// Canonical re-export — core-services/launch-readiness
-export * from "@/lib/services/launch-readiness";
+// Canonical — core-services/launch-readiness
+export * from "./launch-readiness-engine";
