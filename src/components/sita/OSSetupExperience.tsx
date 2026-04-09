@@ -535,6 +535,9 @@ export function OSSetupExperience() {
         mem("memory_consent", state.memoryConsent, "privacy", { sensitivity: "high" }),
         mem("home_composition", state.homeComposition, "preference"),
         mem("recover_first", state.recoverFirst, "preference"),
+        mem("operating_context", state.operatingContext, "preference"),
+        mem("relationship_focus", state.relationshipFocus, "preference"),
+        mem("desktop_density", computeDesktopDensity(state), "preference", { source: "derived", confidence: 0.8 }),
       ].filter(m => m.value && m.value !== '""' && m.value !== '[]' && m.value !== '{}');
 
       await fromTable("user_memory").upsert(memoryItems, { onConflict: "user_id,key" });
