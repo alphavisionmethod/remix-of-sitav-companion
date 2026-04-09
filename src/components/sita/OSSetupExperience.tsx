@@ -787,6 +787,7 @@ export function OSSetupExperience() {
                   <PrivacyTransparencyStep key="privacy-transparency"
                     permissionChoices={state.permissionChoices}
                     onUpdate={choices => setState(s => ({ ...s, permissionChoices: choices }))}
+                    deviceOwnership={state.deviceOwnership}
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
@@ -963,6 +964,7 @@ export function OSSetupExperience() {
                     firstWinAction={state.firstWin.action}
                     permissionChoices={state.permissionChoices}
                     deferredCount={state.deferredConnections.length}
+                    deferredItems={state.deferredConnections}
                     trustCalibrationLevel={state.trustCalibration.level}
                     onNext={goNext} onPrev={goPrev} />
                 )}
