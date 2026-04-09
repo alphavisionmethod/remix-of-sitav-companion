@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
-import { SitaCard, SitaTabs } from "@/components/sita/SitaComponents";
+import { SitaTabs } from "@/components/sita/SitaComponents";
+import { SitaCard } from "@/components/sita/SitaCard";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { Printer, ScanLine, FileText, Clock, CheckCircle2, AlertTriangle, Trash2, RotateCw, Settings, Camera, Upload, FolderOpen } from "lucide-react";

@@ -1,6 +1,7 @@
 import { useState, useMemo } from "react";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
-import { SitaCard, SitaTabs } from "@/components/sita/SitaComponents";
+import { SitaTabs } from "@/components/sita/SitaComponents";
+import { SitaCard } from "@/components/sita/SitaCard";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { Grid3X3, Download, Upload, Plus, Filter, ArrowUpDown, Search, Trash2, Copy, Edit3, MoreHorizontal, FileSpreadsheet } from "lucide-react";
