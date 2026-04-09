@@ -26,6 +26,7 @@ import { useGlobalSearch, type SearchResult } from "@/hooks/use-global-search";
 import { useShellIndicators } from "@/hooks/use-shell-indicators";
 import { toast } from "sonner";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { IntentRibbon } from "./IntentRibbon";
 
 // ── Command Index ────────────────────────────────────────────
 
@@ -434,6 +435,11 @@ export function UniversalCommandSurface({ open, onClose }: UniversalCommandSurfa
                 )}
                 <kbd className="hidden sm:flex items-center rounded-md border border-border/30 bg-muted px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground">ESC</kbd>
               </div>
+
+              {/* Intent Interpretation Ribbon */}
+              {query.trim() && commandState === "searching" && (
+                <IntentRibbon mode="idle" query={query} className="border-b border-border/10" />
+              )}
 
               {/* Content */}
               <ScrollArea className="max-h-[440px]">
