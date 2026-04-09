@@ -1,4 +1,17 @@
 // SITA OS — Demo Data: Concierge
+import { CheckSquare, Wrench, ShoppingCart, Calendar, GraduationCap, Plane } from "lucide-react";
+
+const initialItems = [
+  { category: "Groceries", store: "Whole Foods" },
+  { category: "Household", store: "Target" },
+  { category: "Groceries", store: "Trader Joe's" },
+  { category: "Personal", store: "CVS" },
+];
+const providers = [
+  { category: "Home" },
+  { category: "Auto" },
+  { category: "Health" },
+];
 
 export const DEMO_fallbackPriorities = [
   { title: "No tasks yet — add your first household task", due: "Today", category: "General", who: "You", icon: CheckSquare, urgency: "low" as const },

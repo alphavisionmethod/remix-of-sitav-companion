@@ -1,5 +1,8 @@
 // SITA OS — Demo Data: Atlas
 
+const h = (hours: number) => `${hours}h ago`;
+
+
 export const DEMO_connectors = [
   { id: "google-ads", name: "Google Ads", status: "active", health: 98, lastSync: h(0.5), syncStatus: "success", lifecycleState: "active", capabilities: ["read-campaigns", "read-metrics", "write-campaigns"], approvalRequired: true, auditEntries: 45, failureCount: 0, enterprise: true },
   { id: "meta-ads", name: "Meta Ads", status: "error", health: 0, lastSync: h(48), syncStatus: "auth-expired", lifecycleState: "error", capabilities: ["read-campaigns", "read-metrics"], approvalRequired: true, auditEntries: 23, failureCount: 3, enterprise: true },

@@ -1,4 +1,12 @@
 // SITA OS — Demo Data: Core Pages
+import {
+  CheckCircle, FileText, Phone, Mail, Calendar, DollarSign, Briefcase,
+  Sparkles, BarChart3, Zap, Users, Package, Brain, Headphones,
+  Table2, Presentation, Globe, FileCode, FolderOpen, Camera, Mic, Bell,
+  Clipboard, Network, Shield, Code, GitBranch, Database, Terminal, Wrench,
+  Image,
+} from "lucide-react";
+
 
 export const DEMO_CORE_AGENTS = [
   { id: "1", name: "Revenue Scout", role: "Lead Qualification", status: "active" as const, tasksCompleted: 142, trustScore: 94, costToday: 2.34 },
