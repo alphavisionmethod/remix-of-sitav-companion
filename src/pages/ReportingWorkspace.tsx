@@ -327,7 +327,7 @@ const ReportingWorkspace = () => {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle className="text-base">Saved Reports</CardTitle>
-                <Button size="sm" variant="outline" className="gap-1.5 text-xs"><Plus className="w-3.5 h-3.5" /> New Report</Button>
+                <Button size="sm" variant="outline" className="gap-1.5 text-xs"><PlusCircle className="w-3.5 h-3.5" /> New Report</Button>
               </div>
             </CardHeader>
             <CardContent className="space-y-2">
