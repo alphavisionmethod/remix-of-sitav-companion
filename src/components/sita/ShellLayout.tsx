@@ -105,6 +105,12 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
 
   return (
     <SidebarProvider>
+      {/* WCAG: Skip to content link */}
+      <SkipToContent />
+
+      {/* WCAG: Route change announcer for screen readers */}
+      <RouteAnnouncer />
+
       {/* Desktop Entry Ceremony */}
       {showEntryCeremony && (
         <DesktopEntryCeremony onComplete={() => setShowEntryCeremony(false)} />
@@ -133,6 +139,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
             <div className="flex flex-1 flex-col min-w-0">
               {/* Main content with bottom padding for mobile nav + companion bar */}
               <main
+                id="main-content"
                 role="main"
                 aria-label="Page content"
                 className="flex-1 overflow-auto scrollbar-thin pb-28 md:pb-16"
