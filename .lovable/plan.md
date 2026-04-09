@@ -1,48 +1,70 @@
 
 
-# Fix Service Family Layer — Deduplicate 7 DUP Services
+# Fix Kernel/Execution Reality Audit — Section G to 100%
 
 ## Current State
 
-The first 6 services (brain-core, model-router, inference-gateway, conscience-gate, trust-governor, mnemosyne) are **already correctly canonical** in `core-services/` with real implementations and reverse shims in `lib/services/`. No action needed.
+The kernel infrastructure is complete and well-designed. The gap is **adoption** — 8 pages still bypass the kernel with direct `fromTable().insert/update/delete/upsert` calls instead of routing through `useAction()` / `useActionFn()`.
 
-The 7 DUP services have a split-brain problem:
-- `core-services/X/index.ts` re-exports from a **flat file** (`core-services/X.ts`) — the main engine
-- `lib/services/X/` has **additional implementation files** (sub-services) NOT available through core-services
+| Audit Item | Current | After Fix |
+|-----------|---------|-----------|
+| `useAction()` adoption | 43 pages | 51 pages (all mutation pages) |
+| `useCanonicalAction()` | 1 page (admin) | N/A — `useAction` wraps it |
+| ActionEnvelope contract | Not used by pages | Used implicitly via kernel chain |
+| Receipt-first execution | Not enforced | Enforced (all writes → kernel → receipt) |
+| Policy-before-execution | Not enforced | Enforced (all writes → kernel → policy) |
+| Kill switch / safe mode | Exists in kernel, not wired to EmergencyHaltService | Wired together |
+| Execution modes | Defined, not enforced | Enforced via kernel chain |
 
-| Service | Flat file (core) | Extra files in lib/services | Total exports split |
-|---------|-----------------|----------------------------|-------------------|
-| memory-service | 357 lines | 7 files (profile, workflow, boardroom, correction, preference, trust) | Split |
-| executor-service | 380 lines | 3 files (action, connector-action, workflow-step) | Split |
-| event-bus | 251 lines | 4 files (envelope, publish, subscribe, unified) | Split |
-| receipt-service | 285 lines | 4 files (receipts, proof-bundles, approval, execution) | Split |
-| policy-engine | 252 lines | 4 files (truth-boundaries, approval-req, sensitive-doc, outbound-comm) | Split |
-| capability-router | 131 lines | 3 files (registry, pack-enablement, shell-space) | Split |
-| verification-engine | 231 lines | 5 files (verification, rollback, postcondition, receipt-verify, replay) | Split |
+## What Needs Fixing
 
-Only 5 remaining imports go through `lib/services/` (all in test files) — the reverse shims handle them.
+### Part 1: Wire 8 Non-Admin Pages to Kernel (remove direct DB writes)
 
-## Fix
+These pages have `useAction` imported but ALSO do direct `fromTable()` writes alongside. Fix: replace direct writes with the existing `useAction`/`useActionFn` calls.
 
-For each of the 7 DUP services, update `core-services/X/index.ts` to re-export **both** the flat canonical file AND all `lib/services/X/` sub-services. Then convert `lib/services/X/index.ts` to a pure reverse shim.
+| Page | Direct Writes | Fix |
+|------|--------------|-----|
+| `Onboarding.tsx` | `.upsert()` + `.update()` on lines 112-114 | Already has `useActionFn` — use it instead of direct calls |
+| `SettingsPage.tsx` | `.update()` on line 162 | Already has `useActionFn` — route through it |
+| `UserProfilePage.tsx` | `.update()` on line 76 | Add `useAction("workspace", "profile.update")` |
+| `NotificationSettingsPage.tsx` | `.update()` on line 163 | Add `useAction("workspace", "notification.preferences.update")` |
+| `owner/ConstitutionEditor.tsx` | `.insert()`, `.update()`, `.delete()` | Add `useAction` for constitution CRUD |
+| `business/CommunicationsCenter.tsx` | `.insert()` + `.update()` | Add `useAction("business", "communication.send")` |
+| `PolicyEditor.tsx` | Direct writes | Add `useAction("system", "policy.update")` |
+| `concierge/HouseholdTasks.tsx` | Direct writes | Add `useAction("concierge", "task.update")` |
 
-### Per-service changes (14 files total)
+**Note**: Admin pages (AIT04to08, TeamManagement, HQApprovalQueue, etc.) and pages that already use `useAction` for their mutations (SubscriptionsWaste, BillsWorkspace, etc.) are already compliant — the `fromTable` calls are read-only queries.
 
-**For each service:**
-1. `core-services/X/index.ts` — add `export * from "@/lib/services/X/sub-service"` lines for each sub-service file
-2. `lib/services/X/index.ts` — replace with `export * from "@/lib/core-services/X"` reverse shim
+### Part 2: Wire Kill Switch to EmergencyHaltService
 
-This makes `core-services/` the single canonical source while keeping `lib/services/` as a compatibility shim.
+The kernel has a kill switch (`setKillSwitch()`) but it's disconnected from the `EmergencyHaltService`. Fix: wire the kernel's kill switch to check the `EmergencyHaltService` during `executeAction()`.
 
-### Verification
-- Run `npx tsc --noEmit` to confirm 0 errors
-- Grep to confirm no remaining split exports
+**Changes to `src/lib/sita-kernel.ts`**:
+1. Import `EmergencyHaltService` from core-services
+2. Add `readonly emergencyHalt: EmergencyHaltService` to kernel
+3. In `checkKillSwitch()`, also check `emergencyHalt.check("global")`
+4. Expose `emergencyHalt` for the admin kill switch page to call
+
+**Changes to `src/contexts/SitaKernelContext.tsx`**:
+1. Add `useEmergencyHalt()` hook exposing `kernel.emergencyHalt`
+
+### Part 3: Register Missing Capabilities
+
+The `CapabilityRouter` has only 4 capabilities registered. Add registrations for the most common mutation domains:
+- `workspace.profile.update`, `workspace.memory.upsert`, `workspace.notification.preferences.update`
+- `business.communication.send`, `business.communication.update`
+- `owner.constitution.create`, `owner.constitution.update`, `owner.constitution.delete`
+- `concierge.task.update`
+
+**File**: `src/lib/core-services/capability-router.ts` — add to default registry
 
 ## Files Changed
-- 7 `core-services/*/index.ts` — expanded to include all sub-service exports
-- 7 `lib/services/*/index.ts` — converted to reverse shims
-- 0 consumer changes needed (shims maintain compatibility)
+
+- **8 page files**: Replace direct DB writes with `useAction`/`useActionFn` calls
+- **`src/lib/sita-kernel.ts`**: Wire EmergencyHaltService, expose in kernel
+- **`src/contexts/SitaKernelContext.tsx`**: Add `useEmergencyHalt()` hook
+- **`src/lib/core-services/capability-router.ts`**: Register new capabilities
 
 ## Risk
-Low — reverse shims ensure all existing imports continue to resolve. Build verification catches any missing re-exports.
+Low — all pages already have `useAction` imported or can trivially add it. The kernel chain already handles all writes correctly. EmergencyHaltService already exists and just needs wiring.
 
