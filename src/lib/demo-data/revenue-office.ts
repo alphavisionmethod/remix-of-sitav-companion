@@ -13,7 +13,7 @@ interface Deal {
   owner: string; contact: string; nextAction?: string; nextActionDate?: string;
   source: string; tags: string[];
 }
-
+import { BarChart3 } from "lucide-react";
 
 export const DEMO_healthMetrics = [
   { label: "Overall Health", value: 94, target: 95, color: "text-emerald-400", icon: Activity },
