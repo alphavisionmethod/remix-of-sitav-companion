@@ -7,6 +7,7 @@ import { lazy, Suspense } from "react";
 import { FileText, Table2, Presentation, Sparkles, Clock, Star, Plus } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_RECENT_DOCS } from "@/lib/demo-data/core-pages";
 
 const DocsWorkspace = lazy(() => import("./workspace/DocsWorkspace"));
 const SheetsWorkspace = lazy(() => import("./workspace/SheetsWorkspace"));
@@ -19,7 +20,6 @@ const subpageFromPath = (path: string): SubPage => {
   if (path.includes("/sheets")) return "sheets";
   if (path.includes("/slides")) return "slides";
   return "overview";
-import { DEMO_RECENT_DOCS } from "@/lib/demo-data/core-pages";
 };
 
 const OverviewPage = () => {

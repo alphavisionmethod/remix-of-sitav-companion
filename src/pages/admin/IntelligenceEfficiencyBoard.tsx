@@ -15,6 +15,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import type { IntelligenceAssetType, EfficiencyScore, OutcomeType, DomainId } from "@/lib/intelligence-architecture";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_ADMIN_ASSETS as DEMO_ASSETS, DEMO_ADMIN_OUTCOMES_INTELLIGENCE_EFFICIENCY_BOARD as DEMO_OUTCOMES, DEMO_ADMIN_PACKETS as DEMO_PACKETS, DEMO_CROSS_TENANT_PATTERNS, DEMO_DIFFERENTIALS, DEMO_EFFICIENCY } from "@/lib/demo-data/admin-platform";
 
 // ── Mock Data ───────────────────────────────────────────────
 
@@ -53,7 +54,6 @@ const IntelligenceEfficiencyBoard = () => {
   const totalOutcomeValue = DEMO_OUTCOMES.reduce((s, o) => s + o.valueCents, 0);
   const totalOutcomeCost = DEMO_OUTCOMES.reduce((s, o) => s + o.costCents, 0);
   const overallROI = totalOutcomeCost > 0 ? (totalOutcomeValue / totalOutcomeCost).toFixed(1) : "0";
-import { DEMO_ADMIN_ASSETS as DEMO_ASSETS, DEMO_ADMIN_OUTCOMES_INTELLIGENCE_EFFICIENCY_BOARD as DEMO_OUTCOMES, DEMO_ADMIN_PACKETS as DEMO_PACKETS, DEMO_CROSS_TENANT_PATTERNS, DEMO_DIFFERENTIALS, DEMO_EFFICIENCY } from "@/lib/demo-data/admin-platform";
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">

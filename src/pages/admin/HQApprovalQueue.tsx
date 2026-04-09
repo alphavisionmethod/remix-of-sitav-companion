@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_ADMIN_DOMAINS_H_Q_APPROVAL_QUEUE as DEMO_DOMAINS, DEMO_ADMIN_STATUSES as DEMO_STATUSES, DEMO_RECOMMENDATION_TYPES, DEMO_RISK_TIERS } from "@/lib/demo-data/admin-platform";
 
 
 
@@ -74,7 +75,6 @@ const riskColor = (tier: string) =>
   tier === "critical" ? "destructive" : tier === "high" ? "default" : "secondary";
 const severityColor = (sev: string) =>
   sev === "critical" ? "text-destructive" : sev === "high" ? "text-amber-500" : "text-muted-foreground";
-import { DEMO_ADMIN_DOMAINS_H_Q_APPROVAL_QUEUE as DEMO_DOMAINS, DEMO_ADMIN_STATUSES as DEMO_STATUSES, DEMO_RECOMMENDATION_TYPES, DEMO_RISK_TIERS } from "@/lib/demo-data/admin-platform";
 
 // ════════════════════════════════════════════════════════════════
 // Main Page

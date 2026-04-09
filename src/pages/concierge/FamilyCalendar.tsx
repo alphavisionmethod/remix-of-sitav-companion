@@ -7,12 +7,12 @@ import { motion } from "framer-motion";
 import { Calendar, Users, Clock, MapPin, AlertCircle, Heart, GraduationCap, Dumbbell, Stethoscope, Wrench, Car, Sparkles } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_conflicts, DEMO_events, DEMO_familyMembers, DEMO_prepItems, DEMO_transportDuties } from "@/lib/demo-data/concierge";
 
 const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const today = 2;
 
 type CalendarView = "week" | "day" | "family" | "conflicts" | "prep" | "transport";
-import { DEMO_conflicts, DEMO_events, DEMO_familyMembers, DEMO_prepItems, DEMO_transportDuties } from "@/lib/demo-data/concierge";
 
 const FamilyCalendar = () => {
   const [view, setView] = useState<CalendarView>("week");

@@ -6,6 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { Lock, Shield, CheckCircle, AlertTriangle, XCircle, Eye, RefreshCw, Key, Database, Server } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_POSTURE } from "@/lib/demo-data/admin-platform";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -15,7 +16,6 @@ interface PostureItem {
   encryption: "full" | "partial" | "none";
   rlsEnabled: boolean;
   secretsIntegrity: "verified" | "unverified" | "expired";
-import { DEMO_POSTURE } from "@/lib/demo-data/admin-platform";
   sensitiveData: boolean;
   lastVerified: string;
   gaps: string[];

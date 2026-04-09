@@ -24,6 +24,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { DEMO_ADVISOR_SCORECARDS, DEMO_ESCALATION_LOG, DEMO_HANDOFF_LOG } from "@/lib/demo-data/core-pages";
 
 // ── Demo Data ────────────────────────────────────────────────
 
@@ -156,7 +157,6 @@ function useAgentIntelligence(action: string) {
 export default function AdvisorCouncilDashboard() {
   const [searchParams] = useSearchParams();
   const initialTab = searchParams.get("tab") || "scorecards";
-import { DEMO_ADVISOR_SCORECARDS, DEMO_ESCALATION_LOG, DEMO_HANDOFF_LOG } from "@/lib/demo-data/core-pages";
   const [tab, setTab] = useState(initialTab);
   const { isDemoMode } = useDataMode();
 

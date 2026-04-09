@@ -12,6 +12,7 @@ import { Plug, Shield, Activity, TestTube, Presentation, RefreshCw, CheckCircle,
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_ADMIN_CAPABILITIES as DEMO_CAPABILITIES, DEMO_VERIFICATION_CHECKS } from "@/lib/demo-data/admin-platform";
 
 
 
@@ -207,7 +208,6 @@ export default function CN01ConnectorRealityOverview() {
                     const hasReauth = capTokens.some((t: Record<string, any>) => t.refresh_token);
                     const oauthOk = oauthConfig?.google_oauth_configured === true;
                     const status = isConnected ? "live_verified" : oauthOk ? "partial" : "not_configured";
-import { DEMO_ADMIN_CAPABILITIES as DEMO_CAPABILITIES, DEMO_VERIFICATION_CHECKS } from "@/lib/demo-data/admin-platform";
                     return (
                       <TableRow key={cap.key}>
                         <TableCell className="font-medium text-sm">{cap.label}</TableCell>

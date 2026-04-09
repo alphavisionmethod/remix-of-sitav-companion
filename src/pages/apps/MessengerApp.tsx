@@ -6,6 +6,7 @@ import { MessageSquare, Send, Search, Plus, Paperclip, Smile, Phone, Video, More
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_CHATS, DEMO_MESSAGES } from "@/lib/demo-data/apps";
 
 interface Chat {
   id: string;
@@ -21,7 +22,6 @@ interface Chat {
 interface Message {
   id: string;
   sender: "me" | "other";
-import { DEMO_CHATS, DEMO_MESSAGES } from "@/lib/demo-data/apps";
   text: string;
   time: string;
   read: boolean;

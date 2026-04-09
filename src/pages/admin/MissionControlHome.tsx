@@ -15,6 +15,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_ADMIN_SERVICES_MISSION_CONTROL_HOME as DEMO_SERVICES, DEMO_URGENT_ACTIONS } from "@/lib/demo-data/admin-platform";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -49,7 +50,6 @@ const MissionControlHome = () => {
 
   const healthyCount = DEMO_SERVICES.filter(s => s.status === "healthy").length;
   const overallHealth: HealthStatus = DEMO_SERVICES.some(s => s.status === "critical") ? "critical" : DEMO_SERVICES.some(s => s.status === "degraded") ? "degraded" : DEMO_SERVICES.some(s => s.status === "warning") ? "warning" : "healthy";
-import { DEMO_ADMIN_SERVICES_MISSION_CONTROL_HOME as DEMO_SERVICES, DEMO_URGENT_ACTIONS } from "@/lib/demo-data/admin-platform";
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">

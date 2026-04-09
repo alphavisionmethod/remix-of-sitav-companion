@@ -7,13 +7,13 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Bell, AlertTriangle, Clock, CheckCircle, XCircle, Play, Eye, VolumeX, User, RefreshCw } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_ADMIN_ALERTS_ALERT_TRIAGE_BOARD as DEMO_ALERTS } from "@/lib/demo-data/admin-platform";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
 
 type AlertSeverity = "critical" | "high" | "medium" | "low";
 type AlertStatus = "active" | "acknowledged" | "suppressed" | "resolved";
-import { DEMO_ADMIN_ALERTS_ALERT_TRIAGE_BOARD as DEMO_ALERTS } from "@/lib/demo-data/admin-platform";
 
 const sevConfig: Record<AlertSeverity, { color: string; bg: string }> = {
   critical: { color: "text-red-500", bg: "bg-red-500/10 border-red-500/20" },

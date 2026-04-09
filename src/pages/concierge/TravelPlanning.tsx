@@ -11,6 +11,7 @@ import {
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useTravelPlans } from "@/hooks/use-concierge-data";
+import { DEMO_householdSpillover, DEMO_itinerary, DEMO_postTripTasks, DEMO_preTripChecklist } from "@/lib/demo-data/concierge";
 
 interface Trip {
   id: string; destination: string; dates: string; status: "planning" | "booked" | "upcoming" | "active" | "completed";
@@ -25,7 +26,6 @@ const trips: Trip[] = [
 ];
 
 type TravelView = "trips" | "active" | "prep" | "itinerary" | "logistics" | "post-trip";
-import { DEMO_householdSpillover, DEMO_itinerary, DEMO_postTripTasks, DEMO_preTripChecklist } from "@/lib/demo-data/concierge";
 
 const TravelPlanning = () => {
   const [view, setView] = useState<TravelView>("trips");

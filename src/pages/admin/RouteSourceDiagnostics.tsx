@@ -14,6 +14,7 @@ import {
   Search, Database, Shield, CheckCircle, AlertTriangle,
   XCircle, Eye, ArrowRight, Globe, Code
 } from "lucide-react";
+import { DEMO_ROUTES } from "@/lib/demo-data/admin-platform";
 
 type LaunchHonesty = "truthful" | "demo-backed" | "mixed" | "overstated" | "blocked";
 
@@ -22,7 +23,6 @@ interface RouteSource {
   pageName: string;
   domain: string;
   activeProvider: "real" | "demo" | "mixed" | "none";
-import { DEMO_ROUTES } from "@/lib/demo-data/admin-platform";
   dataServices: string[];
   mockImports: string[];
   scenarioBinding: string | null;

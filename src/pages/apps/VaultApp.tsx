@@ -8,6 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useVaultItems } from "@/hooks/use-apps-data";
+import { DEMO_ENTRIES } from "@/lib/demo-data/apps";
 
 interface VaultEntry {
   id: string;
@@ -17,7 +18,6 @@ interface VaultEntry {
   category: "login" | "card" | "note" | "api";
   lastUsed: string;
   strength: "strong" | "medium" | "weak";
-import { DEMO_ENTRIES } from "@/lib/demo-data/apps";
   breached: boolean;
 }
 

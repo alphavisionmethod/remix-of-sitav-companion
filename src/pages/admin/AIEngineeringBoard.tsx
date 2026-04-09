@@ -15,6 +15,7 @@ import { generateChiefSynthesis } from "@/lib/ai-engineering";
 import { getIntegrationHealthSummary, getIntegrationsByCategory } from "@/lib/ai-engineering/platform-integration";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_ADMIN_ENVIRONMENTS as DEMO_ENVIRONMENTS, DEMO_ADMIN_MISSIONS as DEMO_MISSIONS, DEMO_ADMIN_RELEASE_GATES as DEMO_RELEASE_GATES, DEMO_AGENT_SIGNALS, DEMO_ATTENTION_ITEMS, DEMO_CHANGES, DEMO_LEARNING_HIGHLIGHTS, DEMO_OVERVIEW_BAND, DEMO_RECENT_HEALS } from "@/lib/demo-data/admin-platform";
 
 // ═══════════════════════════════════════════════════════════════
 // DATA — Engineering Overview Band
@@ -38,7 +39,6 @@ const attentionColor = (severity: string) =>
   severity === "critical" ? "border-destructive/30 bg-destructive/5" :
   severity === "high" ? "border-amber-500/30 bg-amber-500/5" :
   "border-border/40 bg-card";
-import { DEMO_ADMIN_ENVIRONMENTS as DEMO_ENVIRONMENTS, DEMO_ADMIN_MISSIONS as DEMO_MISSIONS, DEMO_ADMIN_RELEASE_GATES as DEMO_RELEASE_GATES, DEMO_AGENT_SIGNALS, DEMO_ATTENTION_ITEMS, DEMO_CHANGES, DEMO_LEARNING_HIGHLIGHTS, DEMO_OVERVIEW_BAND, DEMO_RECENT_HEALS } from "@/lib/demo-data/admin-platform";
 
 const AIEngineeringBoard = () => {
   const { isDemoMode } = useDataMode();

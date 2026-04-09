@@ -7,12 +7,12 @@ import { Progress } from "@/components/ui/progress";
 import { BarChart3, CheckCircle, AlertTriangle, Clock, RefreshCw, Database, Layers, ArrowRight, XCircle, Zap } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_MODELS } from "@/lib/demo-data/admin-platform";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
 
 type FreshnessState = "fresh" | "stale" | "rebuilding" | "degraded" | "fallback";
-import { DEMO_MODELS } from "@/lib/demo-data/admin-platform";
 
 const freshnessConfig: Record<FreshnessState, { color: string; label: string }> = {
   fresh: { color: "bg-emerald-500/10 text-emerald-500 border-emerald-500/20", label: "Fresh" },

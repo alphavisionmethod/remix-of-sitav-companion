@@ -12,6 +12,7 @@ import {
   GraduationCap, Stethoscope, Gift, FileText, Shield, Sparkles, Car, Home, Bell, BarChart3, Headphones
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { DEMO_changedSinceYesterday, DEMO_fallbackPriorities } from "@/lib/demo-data/concierge";
 
 
 
@@ -116,7 +117,6 @@ const pendingApproval = {
 };
 
 type ViewVariant = "admin" | "partner" | "professional" | "founder";
-import { DEMO_changedSinceYesterday, DEMO_fallbackPriorities } from "@/lib/demo-data/concierge";
 
 const ConciergeOverview = () => {
   const [variant, setVariant] = useState<ViewVariant>("admin");

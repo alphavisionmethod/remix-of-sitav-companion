@@ -4,6 +4,7 @@ import { ScrollText, Shield, Check, AlertTriangle, Settings, Lock } from "lucide
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useInvestmentStrategyRecords } from "@/hooks/use-investment-office";
+import { DEMO_CONSTITUTION_RULES, DEMO_CURRENT_VIOLATIONS, DEMO_INV_CATEGORIES as DEMO_CATEGORIES } from "@/lib/demo-data/investment";
 
 interface Rule {
   id: string;
@@ -13,7 +14,6 @@ interface Rule {
   category: "sizing" | "behavior" | "governance" | "discipline";
   active: boolean;
   severity: "hard" | "soft";
-import { DEMO_CONSTITUTION_RULES, DEMO_CURRENT_VIOLATIONS, DEMO_INV_CATEGORIES as DEMO_CATEGORIES } from "@/lib/demo-data/investment";
 }
 
 export default function InvestmentConstitution() {

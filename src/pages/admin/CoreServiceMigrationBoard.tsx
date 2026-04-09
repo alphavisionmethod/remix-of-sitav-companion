@@ -5,6 +5,7 @@ import { Progress } from "@/components/ui/progress";
 import { Server, CheckCircle, AlertTriangle, ArrowRight, Database, Shield } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_ADMIN_SERVICES as DEMO_SERVICES, DEMO_PHASE_ORDER } from "@/lib/demo-data/admin-platform";
 
 const fade = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } };
 
@@ -13,7 +14,6 @@ interface ServiceMigration {
   currentBacking: "memory-only" | "hybrid" | "durable";
   targetBacking: string;
   phase: "not-started" | "adapter-built" | "wired" | "validated" | "complete";
-import { DEMO_ADMIN_SERVICES as DEMO_SERVICES, DEMO_PHASE_ORDER } from "@/lib/demo-data/admin-platform";
   blockers: string[];
   continuityGain: string;
   tables: string[];

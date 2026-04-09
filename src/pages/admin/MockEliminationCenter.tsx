@@ -9,6 +9,7 @@ import { Progress } from "@/components/ui/progress";
 import { CheckCircle, AlertTriangle, XCircle, Database, Shield, ArrowRight } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_DOMAIN_MIGRATIONS } from "@/lib/demo-data/admin-platform";
 
 type DomainStatus = "real" | "demo_provider" | "mock_direct" | "mixed" | "blocked";
 
@@ -22,7 +23,6 @@ interface DomainMigration {
   tablesExist: boolean;
   blockers: string[];
   priority: "critical" | "high" | "medium" | "low";
-import { DEMO_DOMAIN_MIGRATIONS } from "@/lib/demo-data/admin-platform";
 }
 
 const statusConfig: Record<DomainStatus, { label: string; color: string; icon: typeof CheckCircle }> = {

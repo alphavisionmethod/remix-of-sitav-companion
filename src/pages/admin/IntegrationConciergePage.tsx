@@ -8,6 +8,7 @@ import { Globe, Sparkles, CheckCircle, ArrowRight, Search, Zap, Shield, Play } f
 import { Input } from "@/components/ui/input";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_USE_CASES } from "@/lib/demo-data/admin-platform";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -19,7 +20,6 @@ interface UseCase {
   connectors: { name: string; status: "connected" | "available" | "required" }[];
   workflows: string[];
   riskLevel: "low" | "medium" | "high";
-import { DEMO_USE_CASES } from "@/lib/demo-data/admin-platform";
   readiness: number;
 }
 

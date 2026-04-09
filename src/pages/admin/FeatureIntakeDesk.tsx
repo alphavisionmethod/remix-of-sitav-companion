@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import { classifyFeatureDomain } from "@/lib/delivery-methodology/feature-factory";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_ADMIN_ARCHETYPES as DEMO_ARCHETYPES } from "@/lib/demo-data/admin-platform";
 
 
 
@@ -42,7 +43,6 @@ const FeatureIntakeDesk = () => {
   });
 
   const autoDomain = form.title || form.description ? classifyFeatureDomain(form.title, form.description) : "";
-import { DEMO_ADMIN_ARCHETYPES as DEMO_ARCHETYPES } from "@/lib/demo-data/admin-platform";
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">

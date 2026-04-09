@@ -21,6 +21,7 @@ import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { supabase } from "@/integrations/supabase/client";
+import { DEMO_BUDGET_POSTURES, DEMO_SCOPE_DOMAINS, DEMO_TASK_TYPES } from "@/lib/demo-data/admin-platform";
 
 export default function AIT03TaskInvocation() {
   const { isDemoMode } = useDataMode();
@@ -43,7 +44,6 @@ export default function AIT03TaskInvocation() {
   const selectedTaskMeta = DEMO_TASK_TYPES.find(t => t.key === selectedTask);
   const selectedRoleMeta = roles.find(r => r.role_key === selectedRole);
   const isApprovalNeeded = selectedRoleMeta?.approval_required || selectedTask === "propose";
-import { DEMO_BUDGET_POSTURES, DEMO_SCOPE_DOMAINS, DEMO_TASK_TYPES } from "@/lib/demo-data/admin-platform";
 
   const handleInvoke = async () => {
     if (!selectedRole || !selectedTask) { toast.error("Select a role and task type"); return; }

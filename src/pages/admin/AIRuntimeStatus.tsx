@@ -6,6 +6,7 @@ import { Progress } from "@/components/ui/progress";
 import { RefreshCw, CheckCircle2, XCircle, AlertTriangle, Loader2, Activity, Zap, Shield, DollarSign, Clock, Server } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_AI_FEATURES } from "@/lib/demo-data/admin-platform";
 
 const statusColors = {
   healthy: "bg-green-500/20 text-green-400 border-green-500/30",
@@ -160,7 +161,6 @@ export default function AIRuntimeStatus() {
                   {DEMO_AI_FEATURES.map((feature) => {
                     const fnHealthy = health?.checks.edge_functions_healthy?.[feature.fn];
                     const usesAI = feature.fn === "chat-advisor" || feature.fn === "brain-core" || feature.fn === "personal-brain";
-import { DEMO_AI_FEATURES } from "@/lib/demo-data/admin-platform";
                     const featureStatus = usesAI
                       ? (available ? "operational" : health?.status === "degraded" ? "degraded" : "blocked")
                       : "operational"; // non-AI functions are always operational

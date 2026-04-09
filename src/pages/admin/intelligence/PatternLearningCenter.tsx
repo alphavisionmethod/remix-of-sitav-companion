@@ -10,6 +10,7 @@ import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_INTEL_PATTERNS_PATTERN_LEARNING_CENTER as DEMO_PATTERNS } from "@/lib/demo-data/admin-intelligence";
 
 const privacyBadges: Record<string, { icon: typeof Globe; color: string }> = {
   public_safe: { icon: Globe, color: "text-emerald-400" },
@@ -71,7 +72,6 @@ const PatternLearningCenter = () => {
               {DEMO_PATTERNS.sort((a, b) => b.confidence - a.confidence).map(p => {
                 const PrivIcon = privacyBadges[p.privacy]?.icon || Shield;
                 const privColor = privacyBadges[p.privacy]?.color || "text-muted-foreground";
-import { DEMO_INTEL_PATTERNS_PATTERN_LEARNING_CENTER as DEMO_PATTERNS } from "@/lib/demo-data/admin-intelligence";
                 return (
                   <TableRow key={p.id}>
                     <TableCell className="text-xs font-medium text-foreground max-w-[220px] truncate">{p.label}</TableCell>

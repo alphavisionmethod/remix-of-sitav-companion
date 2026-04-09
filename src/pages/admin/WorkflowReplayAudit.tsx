@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useWorkflowReplay, useTransitionValidator } from "@/contexts/SitaKernelContext";
+import { DEMO_RUNS } from "@/lib/demo-data/admin-platform";
 
 interface WorkflowRun {
   id: string;
@@ -28,7 +29,6 @@ interface WorkflowStep {
   name: string;
   status: "completed" | "failed" | "skipped" | "pending";
   type: "action" | "approval" | "decision" | "event" | "check";
-import { DEMO_RUNS } from "@/lib/demo-data/admin-platform";
   actor?: string;
   timestamp: string;
   duration?: string;

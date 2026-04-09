@@ -5,6 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
+import { DEMO_RECEIPTS } from "@/lib/demo-data/investment";
 
 
 
@@ -16,7 +17,6 @@ interface Receipt {
   timestamp: string;
   actor: string;
   status: "completed" | "approved" | "rejected" | "pending";
-import { DEMO_RECEIPTS } from "@/lib/demo-data/investment";
   metadata: Record<string, string>;
 }
 

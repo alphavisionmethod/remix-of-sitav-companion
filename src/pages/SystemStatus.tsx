@@ -27,6 +27,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_ENGINE_CONNECTORS, DEMO_FALLBACK_APPROVALS } from "@/lib/demo-data/core-pages";
 
 // ── Initialize services with demo data ──────────────────────────
 
@@ -159,7 +160,6 @@ const SystemStatus = () => {
     if (location.pathname.includes("/slos")) return "slos";
     if (location.pathname.includes("/history")) return "history";
     return "overview";
-import { DEMO_ENGINE_CONNECTORS, DEMO_FALLBACK_APPROVALS } from "@/lib/demo-data/core-pages";
   })();
 
   const goTo = (key: string) => {

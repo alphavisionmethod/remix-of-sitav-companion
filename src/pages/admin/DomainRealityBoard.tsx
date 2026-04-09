@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_ADMIN_DOMAINS as DEMO_DOMAINS } from "@/lib/demo-data/admin-platform";
 
 interface FeatureReality {
   feature: string;
@@ -36,7 +37,6 @@ const pathColor = (p: string) => {
   if (p === "real") return "bg-primary/10 text-primary";
   if (p === "demo" || p === "simulated") return "bg-amber-500/10 text-amber-600";
   return "bg-muted text-muted-foreground";
-import { DEMO_ADMIN_DOMAINS as DEMO_DOMAINS } from "@/lib/demo-data/admin-platform";
 };
 
 export default function DomainRealityBoard() {

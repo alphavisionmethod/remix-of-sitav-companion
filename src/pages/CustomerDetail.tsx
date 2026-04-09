@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_ACTIONS, DEMO_CORE_TIMELINE as DEMO_TIMELINE, DEMO_CUSTOMERS_DATA, DEMO_DOCUMENTS } from "@/lib/demo-data/core-pages";
 
 // Mock customer data keyed by ID
 const CustomerDetail = () => {
@@ -22,7 +23,6 @@ const CustomerDetail = () => {
 
   const healthColor = customer.health >= 80 ? "text-trust-verified" : customer.health >= 50 ? "text-trust-review" : "text-urgency-high";
   const healthBg = customer.health >= 80 ? "bg-trust-verified" : customer.health >= 50 ? "bg-trust-review" : "bg-urgency-high";
-import { DEMO_ACTIONS, DEMO_CORE_TIMELINE as DEMO_TIMELINE, DEMO_CUSTOMERS_DATA, DEMO_DOCUMENTS } from "@/lib/demo-data/core-pages";
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">

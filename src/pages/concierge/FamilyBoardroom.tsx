@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_carryover, DEMO_nextMoves, DEMO_priorities, DEMO_proofSummary, DEMO_scheduleConflicts } from "@/lib/demo-data/concierge";
 
 const weeklyStats = {
   tasksCompleted: 12, tasksTotal: 18, eventsAttended: 6, eventsTotal: 7,
@@ -23,7 +24,6 @@ const familyWellness = {
 };
 
 type BoardroomView = "weekly" | "school" | "shopping" | "travel" | "monthly";
-import { DEMO_carryover, DEMO_nextMoves, DEMO_priorities, DEMO_proofSummary, DEMO_scheduleConflicts } from "@/lib/demo-data/concierge";
 
 const FamilyBoardroom = () => {
   const [view, setView] = useState<BoardroomView>("weekly");

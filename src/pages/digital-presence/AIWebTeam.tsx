@@ -8,6 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_DPO_DISAGREEMENTS as DEMO_DISAGREEMENTS } from "@/lib/demo-data/digital-presence";
 
 type Intensity = "quiet" | "balanced" | "proactive";
 type AgentStatus = "active" | "inactive" | "watching";
@@ -315,7 +316,6 @@ export default function AIWebTeam() {
           {AGENTS.map((agent, i) => {
             const isExpanded = expandedAgent === agent.id;
             const intensityColor = intensities[agent.id] === "proactive" ? "text-green-400" : intensities[agent.id] === "balanced" ? "text-amber-400" : "text-slate-400";
-import { DEMO_DPO_DISAGREEMENTS as DEMO_DISAGREEMENTS } from "@/lib/demo-data/digital-presence";
 
             return (
               <motion.div key={agent.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>

@@ -7,6 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_DPO_STATS as DEMO_STATS } from "@/lib/demo-data/digital-presence";
 
 type PatchStatus = "pending" | "approved" | "applied" | "rejected" | "verified";
 
@@ -48,7 +49,6 @@ export default function SelfHealingQueue() {
   };
 
   const sevColor = (s: string) => s === "critical" ? "text-red-400" : s === "high" ? "text-amber-400" : s === "medium" ? "text-yellow-400" : "text-muted-foreground";
-import { DEMO_DPO_STATS as DEMO_STATS } from "@/lib/demo-data/digital-presence";
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">

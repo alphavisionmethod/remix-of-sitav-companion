@@ -7,6 +7,7 @@ import { Mail, Inbox, Send, Star, Trash2, Archive, Search, Plus, Paperclip, Chev
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_EMAILS } from "@/lib/demo-data/apps";
 
 interface Email {
   id: string;
@@ -17,7 +18,6 @@ interface Email {
   read: boolean;
   starred: boolean;
   category: "primary" | "social" | "promotions" | "updates";
-import { DEMO_EMAILS } from "@/lib/demo-data/apps";
   hasAttachment: boolean;
 }
 

@@ -12,6 +12,7 @@ import { Shield, Brain, Plug, Monitor, Eye, Layers, RefreshCw, Activity, Smartph
 import { Button } from "@/components/ui/button";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_INDEX_CONFIG } from "@/lib/demo-data/admin-platform";
 
 function getScoreColor(score: number): string {
   if (score >= 90) return "text-emerald-400";
@@ -25,7 +26,6 @@ function getScoreBadgeVariant(score: number): "default" | "secondary" | "destruc
   if (score >= 75) return "default";
   if (score >= 50) return "secondary";
   return "destructive";
-import { DEMO_INDEX_CONFIG } from "@/lib/demo-data/admin-platform";
 }
 
 export default function TruthIndexDashboard() {

@@ -15,6 +15,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { ConnectorSyncDashboard } from "@/components/sita/ConnectorSyncDashboard";
 import { toast } from "sonner";
+import { DEMO_ADMIN_CONNECTORS as DEMO_CONNECTORS, DEMO_FALLBACK_SYNC_HISTORY, DEMO_POLICIES } from "@/lib/demo-data/admin-platform";
 
 
 
@@ -28,7 +29,6 @@ interface ConnectorStatus {
   errorRate: number;
   syncCount24h: number;
   credentialStatus: "valid" | "expiring" | "expired" | "missing";
-import { DEMO_ADMIN_CONNECTORS as DEMO_CONNECTORS, DEMO_FALLBACK_SYNC_HISTORY, DEMO_POLICIES } from "@/lib/demo-data/admin-platform";
   credentialExpiresIn?: string;
   affectedDomains: string[];
   latencyMs: number;

@@ -10,6 +10,7 @@ import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_INTEL_OUTCOMES as DEMO_OUTCOMES, DEMO_REASONING_PATHS } from "@/lib/demo-data/admin-intelligence";
 
 const recColors: Record<string, string> = {
   expand: "text-emerald-400 bg-emerald-500/10",
@@ -27,7 +28,6 @@ const OutcomeEconomicsBoard = () => {
   const totalValue = DEMO_OUTCOMES.reduce((s, o) => s + o.valueCents, 0);
   const totalOutcomes = DEMO_OUTCOMES.reduce((s, o) => s + o.count, 0);
   const overallROI = totalCost > 0 ? (totalValue / totalCost).toFixed(1) : "0";
-import { DEMO_INTEL_OUTCOMES as DEMO_OUTCOMES, DEMO_REASONING_PATHS } from "@/lib/demo-data/admin-intelligence";
   const totalAccepted = DEMO_OUTCOMES.reduce((s, o) => s + o.accepted, 0);
   const totalRejected = DEMO_OUTCOMES.reduce((s, o) => s + o.rejected, 0);
 

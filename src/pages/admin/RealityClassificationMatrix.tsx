@@ -18,6 +18,7 @@ import type { RealityClassification } from "@/lib/persistence/reality-classifica
 import { SCOPE_LEVELS, EVIDENCE_SIGNALS, PROGRESSION_REQUIREMENTS, type ScopeLevel, type LaunchImpact } from "@/lib/persistence/reality-classification-persistence";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_CONTRACT_STATUSES } from "@/lib/demo-data/admin-platform";
 
 const CLASSIFICATION_CONFIG = {
   presentational: { label: "Presentational", color: "bg-muted text-muted-foreground", icon: Eye, description: "UI shell — no backing logic or data truth" },
@@ -328,7 +329,6 @@ function ProgressionCard({ data }: { data: RealityClassification[] }) {
   const progression = useMemo(() => {
     const items = data.filter(d => d.classification !== "proven").map(d => {
       const nextState = d.classification === "persisted" ? "proven" : d.classification === "simulated" ? "persisted" : "simulated";
-import { DEMO_CONTRACT_STATUSES } from "@/lib/demo-data/admin-platform";
       const key = `${d.classification}→${nextState}`;
       const required = PROGRESSION_REQUIREMENTS[key] ?? [];
       const met = required.filter(r => (d.evidence_inputs ?? []).includes(r)).length;

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Network, ArrowRight, AlertTriangle, Bug, Server, Layout, Database, Shield, Zap } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_GRAPH_EDGES, DEMO_GRAPH_NODES } from "@/lib/demo-data/admin-platform";
 
 const typeStyles: Record<string, { icon: typeof Bug; color: string; bg: string }> = {
   symptom: { icon: AlertTriangle, color: "text-destructive", bg: "bg-destructive/10 border-destructive/20" },
@@ -80,7 +81,6 @@ const AIRootCauseGraph = () => {
                   {connectedEdges.map((e, i) => {
                     const other = DEMO_GRAPH_NODES.find(n => n.id === (e.from === selectedNode ? e.to : e.from));
                     const direction = e.from === selectedNode ? "→" : "←";
-import { DEMO_GRAPH_EDGES, DEMO_GRAPH_NODES } from "@/lib/demo-data/admin-platform";
                     return (
                       <div key={i} className="flex items-center gap-2 text-xs">
                         <span className="text-muted-foreground">{direction}</span>

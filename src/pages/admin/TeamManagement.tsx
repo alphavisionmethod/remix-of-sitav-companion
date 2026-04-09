@@ -24,12 +24,12 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { useConfirmation } from "@/hooks/use-confirmation";
 import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
 import { toast } from "sonner";
+import { DEMO_ADVISOR_TYPE_OPTIONS, DEMO_DOMAIN_OPTIONS } from "@/lib/demo-data/admin-platform";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.04 } } };
 
 type AgentStatus = "active" | "idle" | "paused" | "degraded";
-import { DEMO_ADVISOR_TYPE_OPTIONS, DEMO_DOMAIN_OPTIONS } from "@/lib/demo-data/admin-platform";
 
 const statusConfig: Record<AgentStatus, { color: string; icon: React.ElementType; label: string }> = {
   active: { color: "text-emerald-500 bg-emerald-500/10", icon: CheckCircle, label: "Active" },

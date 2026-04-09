@@ -73,6 +73,7 @@ import {
   Rocket, GitBranch, BookMarked, Headphones, FileCheck, Map, ExternalLink,
   CreditCard, Package
 } from "lucide-react";
+import { DEMO_ENGINE_COSTS } from "@/lib/demo-data/core-pages";
 
 type OwnerPage = "overview" | "workforce" | "incidents" | "connectors" | "costs" | "policies" | "audit" | "fleet" | "intelligence" | "council"
   | "trust-center" | "releases" | "model-routing" | "knowledge" | "support" | "change-review" | "rollback-center" | "system-map" | "autopilot" | "billing" | "governance" | "approvals";
@@ -2457,7 +2458,6 @@ const getEventColor = (topic: string): string => {
   if (topic.includes("completed") || topic.includes("passed") || topic.includes("approved")) return "border-trust-safe/30 bg-trust-safe/5";
   if (topic.includes("requested") || topic.includes("pending")) return "border-accent/30 bg-accent/5";
   return "border-border/30 bg-secondary/20";
-import { DEMO_ENGINE_COSTS } from "@/lib/demo-data/core-pages";
 };
 
 const LiveActivityFeed = () => {

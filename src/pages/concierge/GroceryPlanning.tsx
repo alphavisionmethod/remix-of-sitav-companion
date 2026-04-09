@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useGroceryLists } from "@/hooks/use-concierge-data";
+import { DEMO_CONC_categories as DEMO_categories, DEMO_recurringSupplies, DEMO_stores } from "@/lib/demo-data/concierge";
 
 interface GroceryItem {
   id: string; name: string; category: string; quantity: string; estimated: string;
@@ -32,7 +33,6 @@ const initialItems: GroceryItem[] = [
 ];
 
 type GroceryView = "shopping" | "recurring" | "by-store" | "urgency" | "event-prep";
-import { DEMO_CONC_categories as DEMO_categories, DEMO_recurringSupplies, DEMO_stores } from "@/lib/demo-data/concierge";
 
 const GroceryPlanning = () => {
   const [items, setItems] = useState(initialItems);

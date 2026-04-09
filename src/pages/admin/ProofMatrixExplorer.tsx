@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useReceiptVerification, useSharedMemory } from "@/contexts/SitaKernelContext";
+import { DEMO_PROOFS } from "@/lib/demo-data/admin-platform";
 
 interface ProofRecord {
   id: string;
@@ -24,7 +25,6 @@ interface ProofRecord {
   chain: string[];
   domain: string;
   finality: "tentative" | "provisional" | "committed" | "finalized" | "irreversible";
-import { DEMO_PROOFS } from "@/lib/demo-data/admin-platform";
   rollbackEligible: boolean;
 }
 

@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_DRAFTS } from "@/lib/demo-data/admin-platform";
 
 interface PolicyDraft {
   id: string;
@@ -20,7 +21,6 @@ interface PolicyDraft {
   affectedSystems: string[];
   affectedUsers: number;
   riskLevel: "low" | "medium" | "high";
-import { DEMO_DRAFTS } from "@/lib/demo-data/admin-platform";
   approvalPath: string[];
   createdAt: string;
 }

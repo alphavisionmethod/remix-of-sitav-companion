@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_TASKS } from "@/lib/demo-data/admin-platform";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -26,7 +27,6 @@ interface ConciergeTask {
   id: string;
   title: string;
   domain: "task" | "travel" | "household" | "promise";
-import { DEMO_TASKS } from "@/lib/demo-data/admin-platform";
   state: TaskState;
   assignee: string;
   lastUpdated: string;

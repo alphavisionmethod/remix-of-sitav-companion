@@ -19,6 +19,7 @@ import {
   useAddEcosystemDevice, useRemoveEcosystemDevice, useUpdateDeviceTrust,
   useToggleHealthConsent, useUpdatePushRoute,
 } from "@/hooks/useEcosystemDevices";
+import { DEMO_ADMIN_PROVIDER_CAPS as DEMO_PROVIDER_CAPS } from "@/lib/demo-data/admin-platform";
 
 const SURFACE_META: Record<string, { title: string; icon: any; desc: string; tech: string[]; capabilities: string[] }> = {
   android_phone: { title: "Android Phone Shell", icon: Smartphone, desc: "Primary Android surface — Material Design shell", tech: ["Kotlin", "Jetpack Compose", "WebView hybrid"], capabilities: ["push_fcm", "biometric", "camera", "nfc"] },
@@ -186,7 +187,6 @@ const AND01AndroidEcosystemCenter = () => {
                     {DEMO_PROVIDER_CAPS.map((cap) => {
                       const matchingLaunch = launchData?.find((r: Record<string, any>) => r.target.includes(cap.key.replace("android_", "")));
                       const status = matchingLaunch?.launch_stage || "planned";
-import { DEMO_ADMIN_PROVIDER_CAPS as DEMO_PROVIDER_CAPS } from "@/lib/demo-data/admin-platform";
                       return (
                         <tr key={cap.key} className="border-b hover:bg-muted/30">
                           <td className="p-2 font-mono">{cap.key}</td>

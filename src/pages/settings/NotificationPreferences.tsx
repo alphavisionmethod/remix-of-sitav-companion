@@ -12,6 +12,7 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_CORE_CATEGORIES_NOTIFICATION_PREFERENCES as DEMO_CATEGORIES } from "@/lib/demo-data/core-pages";
 
 
 
@@ -40,7 +41,6 @@ export default function NotificationPreferences() {
 
   const permissionLabel = permissionState === "granted" ? "Granted" : permissionState === "denied" ? "Blocked" : permissionState === "default" ? "Not Asked" : "Unsupported";
   const permissionColor = permissionState === "granted" ? "bg-emerald-500/15 text-emerald-400" : permissionState === "denied" ? "bg-destructive/15 text-destructive" : "bg-muted text-muted-foreground";
-import { DEMO_CORE_CATEGORIES_NOTIFICATION_PREFERENCES as DEMO_CATEGORIES } from "@/lib/demo-data/core-pages";
 
   return (
     <div className="p-6 max-w-3xl mx-auto space-y-6" data-testid="notification-preferences-page">

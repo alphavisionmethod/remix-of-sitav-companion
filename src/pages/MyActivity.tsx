@@ -7,6 +7,7 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_DAY_LABELS, DEMO_FEATURES } from "@/lib/demo-data/core-pages";
 
 
 
@@ -117,7 +118,6 @@ const MyActivity = () => {
         const day = row.created_at.slice(0, 10);
         hm[day] = (hm[day] || 0) + 1;
         const cat = row.category || "other";
-import { DEMO_DAY_LABELS, DEMO_FEATURES } from "@/lib/demo-data/core-pages";
         fu[cat] = (fu[cat] || 0) + 1;
       });
       setHeatmapData(hm);

@@ -4,6 +4,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Server, AlertTriangle, Database, Cpu } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_ADMIN_CORE_SERVICES_SIMULATED_CORE_SERVICES_BOARD as DEMO_CORE_SERVICES } from "@/lib/demo-data/admin-platform";
 
 interface CoreService {
   name: string;
@@ -12,7 +13,6 @@ interface CoreService {
   persistenceTarget: string;
   stateLossSeverity: "critical" | "high" | "medium" | "low";
   migrationStatus: "not_started" | "planned" | "in_progress" | "completed";
-import { DEMO_ADMIN_CORE_SERVICES_SIMULATED_CORE_SERVICES_BOARD as DEMO_CORE_SERVICES } from "@/lib/demo-data/admin-platform";
   owner: string;
 }
 
