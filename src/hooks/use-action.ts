@@ -39,7 +39,7 @@ export interface UseActionOptions {
  * createInvoice.mutate({ amount: 1000, customer_id: "..." });
  * ```
  */
-export function useAction(
+export function useAction<TPayload = Record<string, unknown>>(
   domain: string,
   capabilityId: string,
   options: UseActionOptions = {},
@@ -47,9 +47,9 @@ export function useAction(
   const { execute } = useCanonicalAction();
   const qc = useQueryClient();
 
-  return useMutation({
-    mutationFn: async (payload: Record<string, unknown>) => {
-      const result = await execute(domain, capabilityId, payload);
+  return useMutation<Record<string, unknown> | null, Error, TPayload>({
+    mutationFn: async (payload: TPayload) => {
+      const result = await execute(domain, capabilityId, payload as unknown as Record<string, unknown>);
       if (!result && !options.silent) {
         throw new Error(options.errorMessage ?? `Action ${capabilityId} failed`);
       }
@@ -79,7 +79,7 @@ export function useAction(
  * Imperative variant for non-React-Query contexts (event handlers, etc.).
  * Returns a simple async function instead of a mutation object.
  */
-export function useActionFn(
+export function useActionFn<TPayload = Record<string, unknown>>(
   domain: string,
   capabilityId: string,
   options: UseActionOptions = {},
@@ -87,9 +87,9 @@ export function useActionFn(
   const { execute } = useCanonicalAction();
   const qc = useQueryClient();
 
-  return useCallback(async (payload: Record<string, unknown>) => {
+  return useCallback(async (payload: TPayload) => {
     try {
-      const result = await execute(domain, capabilityId, payload);
+      const result = await execute(domain, capabilityId, payload as unknown as Record<string, unknown>);
       if (!options.silent && options.successMessage) {
         toast.success(options.successMessage);
       }
