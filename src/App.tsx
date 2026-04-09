@@ -1323,7 +1323,8 @@ const App = () => (
                     <Route path="/users" element={<UsersAdminPage />} />
                     <Route path="/policy-simulator" element={<Navigate to="/mission/policies/simulate" replace />} />
                     <Route path="/system-status" element={<Navigate to="/observability" replace />} />
-                    <Route path="/service-architecture" element={<Navigate to="/observability" replace />} />
+                    <Route path="/service-architecture" element={<ServiceArchitectureDashboard />} />
+                    <Route path="/permissions" element={<PermissionsCenter />} />
 
                     {/* Redirects — merge rule */}
                     <Route path="/policies/simulator" element={<Navigate to="/mission/policies/simulate" replace />} />
