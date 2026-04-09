@@ -1,0 +1,134 @@
+{
+  "setup": {
+    "boot": {
+      "preparing": "Preparing your environment",
+      "subtitle": "Your system is forming around you",
+      "verified": "System verified",
+      "personalizing": "Personalizing your experience",
+      "activating": "Activating your environment",
+      "arriving": "Almost ready",
+      "ready": "Your environment is ready",
+      "hardwareDetect": "Detecting your system capabilities",
+      "secureInit": "Establishing secure foundation",
+      "workspacePrep": "Preparing your workspace",
+      "trustedServices": "Starting trusted services",
+      "finalizing": "Finalizing your environment"
+    },
+    "secureInit": {
+      "title": "Securing your system",
+      "subtitle": "Building a protected foundation for your data",
+      "encryption": "Storage protection",
+      "integrity": "System integrity",
+      "privacy": "Privacy baseline",
+      "recovery": "Recovery readiness",
+      "complete": "System secured",
+      "deviceProtection": "Device protection",
+      "privacyBaseline": "Privacy baseline",
+      "recoveryReadiness": "Recovery readiness"
+    },
+    "language": {
+      "title": "Language & Region",
+      "subtitle": "Choose your language and regional preferences",
+      "language": "Language",
+      "region": "Region",
+      "timezone": "Timezone",
+      "dateFormat": "Date format",
+      "currency": "Currency"
+    },
+    "trust": {
+      "title": "Choose how SITA should help",
+      "subtitle": "You control what SITA can suggest, simulate, and handle",
+      "observeOnly": "Observe only",
+      "observeDesc": "SITA watches, never acts",
+      "suggest": "Suggest",
+      "suggestDesc": "SITA recommends, you decide",
+      "simulate": "Simulate before action",
+      "simulateDesc": "SITA previews outcomes, asks before proceeding",
+      "askBefore": "Ask before acting",
+      "askBeforeDesc": "SITA prepares actions, executes only on approval",
+      "handleRoutine": "Handle routine tasks",
+      "handleRoutineDesc": "SITA manages repetitive tasks, flags exceptions",
+      "fineTune": "Fine-tune permissions",
+      "spendingThreshold": "Spending threshold",
+      "financialApprovals": "Financial approvals",
+      "calendarApprovals": "Calendar approvals",
+      "communicationApprovals": "Communication approvals",
+      "reminderFrequency": "Reminder frequency",
+      "escalationBehavior": "Escalation behavior",
+      "familyPermissions": "Family permissions",
+      "businessPermissions": "Business permissions",
+      "proofPreview": {
+        "title": "How SITA proves every action",
+        "detected": "Pattern detected",
+        "detectedDesc": "SITA notices a recurring $14.99 charge for an unused service",
+        "suggested": "Suggestion prepared",
+        "suggestedDesc": "\"Cancel this subscription\" — with projected savings of $179.88/year",
+        "drafted": "Action drafted",
+        "draftedDesc": "Cancellation request prepared, not yet sent",
+        "approved": "Your approval",
+        "approvedDesc": "You review and tap \"Approve\" — or dismiss",
+        "executed": "Action executed",
+        "executedDesc": "Cancellation confirmed. Receipt stored in your proof log.",
+        "auditTitle": "Proof log preview",
+        "auditDesc": "Every action SITA takes is permanently recorded with full context"
+      }
+    },
+    "privacy": {
+      "title": "Privacy & Transparency",
+      "subtitle": "Control what SITA can observe and access"
+    },
+    "identity": {
+      "title": "Tell SITA about you",
+      "subtitle": "Help SITA understand how to support you best"
+    },
+    "advisor": {
+      "title": "Choose your advisors",
+      "subtitle": "Activate the domains where you want intelligent support"
+    },
+    "connections": {
+      "title": "Connect your world",
+      "subtitle": "Link accounts and services to unlock SITA's full potential"
+    },
+    "certificate": {
+      "title": "Trust established",
+      "subtitle": "Your environment is personalized, secured, and ready"
+    },
+    "common": {
+      "continue": "Continue",
+      "back": "Back",
+      "skip": "Skip for now",
+      "skipLater": "You can set this up later in Settings",
+      "retry": "Try again",
+      "startOver": "Start over",
+      "advancedDetails": "Advanced details",
+      "fewMoments": "A few moments",
+      "finishLater": "Finish later in Settings"
+    },
+    "progress": {
+      "preparing": "Preparing",
+      "securing": "Securing",
+      "connecting": "Connecting",
+      "personalizing": "Personalizing",
+      "activating": "Activating",
+      "arriving": "Arriving"
+    },
+    "recovery": {
+      "neverBlame": "This isn't your fault",
+      "progressSaved": "Your progress has been saved",
+      "continueReduced": "Continue with reduced capability",
+      "retryAction": "Try again",
+      "networkLost": "Connection interrupted",
+      "networkLostDesc": "Your setup progress is saved. Reconnect to continue.",
+      "storageIssue": "Storage needs attention",
+      "storageIssueDesc": "We detected an issue with your storage. Let's work through it.",
+      "secureBootIssue": "Security verification notice",
+      "secureBootIssueDesc": "Some security features may be limited on this device."
+    },
+    "accessibility": {
+      "largeText": "Large text",
+      "highContrast": "High contrast",
+      "reducedMotion": "Reduced motion",
+      "screenReader": "Screen reader optimized"
+    }
+  }
+}
