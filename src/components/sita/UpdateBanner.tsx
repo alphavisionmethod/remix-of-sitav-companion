@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Download, X, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { SystemUpdateService, type UpdateRelease } from "@/lib/services/system-updates";
+import { SystemUpdateService, type UpdateRelease } from "@/lib/core-services/system-updates";
 import { motion, AnimatePresence } from "framer-motion";
 
 export const UpdateBanner = () => {

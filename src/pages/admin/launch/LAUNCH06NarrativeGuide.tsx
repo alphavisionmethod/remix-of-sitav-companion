@@ -3,7 +3,7 @@ import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MessageSquare, CheckCircle, AlertTriangle, XCircle } from "lucide-react";
-import { computeLaunchReadiness, type LaunchNarrative } from "@/lib/services/launch-readiness/launch-readiness-engine";
+import { computeLaunchReadiness, type LaunchNarrative } from "@/lib/core-services/launch-readiness/launch-readiness-engine";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 export default function LAUNCH06NarrativeGuide() {

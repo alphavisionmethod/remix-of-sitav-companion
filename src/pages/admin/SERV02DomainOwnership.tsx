@@ -5,8 +5,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { SERVICE_OWNERSHIP_REGISTRY } from "@/lib/services/service-registry/service-ownership-registry";
-import { ROUTE_SERVICE_INVENTORY } from "@/lib/services/service-registry/route-to-service-inventory";
+import { SERVICE_OWNERSHIP_REGISTRY } from "@/lib/core-services/service-registry/service-ownership-registry";
+import { ROUTE_SERVICE_INVENTORY } from "@/lib/core-services/service-registry/route-to-service-inventory";
 import { Shield, AlertTriangle, Layers } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";

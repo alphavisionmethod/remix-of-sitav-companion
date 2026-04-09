@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRightLeft, X, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { getHandoffService, type PersistedHandoff } from "@/lib/services/handoff";
+import { getHandoffService, type PersistedHandoff } from "@/lib/core-services/handoff";
 import { useAuth } from "@/contexts/AuthContext";
 
 export function ContinuityBanner() {

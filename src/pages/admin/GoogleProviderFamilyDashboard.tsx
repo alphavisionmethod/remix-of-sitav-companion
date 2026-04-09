@@ -14,8 +14,8 @@ import {
 import { useGoogleProviderFamily } from "@/hooks/use-google-provider-family";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-import type { GoogleCapabilityKey } from "@/lib/services/google-provider-family/types";
-import { GOOGLE_API_REQUIREMENTS, GOOGLE_OAUTH_CLIENT_TEMPLATES } from "@/lib/services/google-provider-family/types";
+import type { GoogleCapabilityKey } from "@/lib/core-services/google-provider-family/types";
+import { GOOGLE_API_REQUIREMENTS, GOOGLE_OAUTH_CLIENT_TEMPLATES } from "@/lib/core-services/google-provider-family/types";
 
 
 

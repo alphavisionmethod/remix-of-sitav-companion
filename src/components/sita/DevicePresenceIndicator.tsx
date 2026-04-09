@@ -1,4 +1,4 @@
-import { getCurrentDevicePresence, type DevicePresence } from "@/lib/services/device-presence-service";
+import { getCurrentDevicePresence, type DevicePresence } from "@/lib/core-services/device-presence-service";
 import { Monitor, Smartphone, Wifi, WifiOff } from "lucide-react";
 import { useEffect, useState } from "react";
 

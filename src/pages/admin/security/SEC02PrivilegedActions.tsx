@@ -1,7 +1,7 @@
 import { Shield, Key, AlertTriangle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { PRIVILEGED_ACTIONS } from "@/lib/services/security/security-posture-engine";
+import { PRIVILEGED_ACTIONS } from "@/lib/core-services/security/security-posture-engine";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 const riskBadge = (level: string) => {

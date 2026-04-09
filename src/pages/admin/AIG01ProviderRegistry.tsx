@@ -6,7 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Server, Shield, Activity, CheckCircle, XCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-import { getProviderRegistry, getProviderHealth, getDistinctProviders } from "@/lib/services/ai-gateway";
+import { getProviderRegistry, getProviderHealth, getDistinctProviders } from "@/lib/core-services/ai-gateway";
 
 export default function AIG01ProviderRegistry() {
   const { isDemoMode } = useDataMode();

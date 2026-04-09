@@ -1,4 +1,4 @@
-import { SERVICE_OWNERSHIP_REGISTRY, getHighRiskDomains, getClassificationSummary, ANTI_SPRAWL_RULES, SERVICE_DIRECTORY_CLASSIFICATION } from "@/lib/services/service-registry/service-ownership-registry";
+import { SERVICE_OWNERSHIP_REGISTRY, getHighRiskDomains, getClassificationSummary, ANTI_SPRAWL_RULES, SERVICE_DIRECTORY_CLASSIFICATION } from "@/lib/core-services/service-registry/service-ownership-registry";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";

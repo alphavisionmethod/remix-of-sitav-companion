@@ -9,7 +9,7 @@ import {
   STATE_MATURITY,
   MISSING_TO_WORLD_CLASS,
   computeFrontendQualityScore,
-} from "@/lib/services/frontend/frontend-quality-engine";
+} from "@/lib/core-services/frontend/frontend-quality-engine";
 
 const tierBadge = (tier: string) => {
   switch (tier) {

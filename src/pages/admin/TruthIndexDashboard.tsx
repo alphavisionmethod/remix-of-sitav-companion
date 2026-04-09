@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { computeTruthIndices, type TruthIndexSummary } from "@/lib/services/truth-indices/truth-index-aggregator";
+import { computeTruthIndices, type TruthIndexSummary } from "@/lib/core-services/truth-indices/truth-index-aggregator";
 import { Shield, Brain, Plug, Monitor, Eye, Layers, RefreshCw, Activity, Smartphone, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";

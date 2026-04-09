@@ -4,8 +4,8 @@ import {
   getLoopGrade,
   getImportanceBadge,
   getStatusBadge,
-} from "@/lib/services/flagship-loops/flagship-loop-service";
-import { getDomainsByFlagshipLoop } from "@/lib/services/service-registry/service-ownership-registry";
+} from "@/lib/core-services/flagship-loops/flagship-loop-service";
+import { getDomainsByFlagshipLoop } from "@/lib/core-services/service-registry/service-ownership-registry";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";

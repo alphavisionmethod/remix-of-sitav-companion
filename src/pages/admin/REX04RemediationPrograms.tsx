@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchRemediationPrograms } from "@/lib/services/recommendation-execution/recommendation-loop-service";
+import { fetchRemediationPrograms } from "@/lib/core-services/recommendation-execution/recommendation-loop-service";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Layers, CheckCircle2, Clock, Target } from "lucide-react";

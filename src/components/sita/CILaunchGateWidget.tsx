@@ -14,7 +14,7 @@ import {
   computeLocalLaunchGateStatus,
   getPromotionEligibility,
   type LaunchGateStatus,
-} from "@/lib/services/ci-launch-gate-service";
+} from "@/lib/core-services/ci-launch-gate-service";
 
 const STATE_CONFIG: Record<string, { icon: React.ReactNode; color: string; label: string }> = {
   blocked: { icon: <XCircle className="h-5 w-5 text-destructive" />, color: "border-destructive/30 bg-destructive/5", label: "Blocked" },

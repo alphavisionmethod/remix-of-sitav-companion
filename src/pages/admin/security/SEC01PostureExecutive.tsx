@@ -9,7 +9,7 @@ import {
   EDGE_FUNCTION_AUDIT,
   DEPLOYABILITY_MATRIX,
   type SecurityScore,
-} from "@/lib/services/security/security-posture-engine";
+} from "@/lib/core-services/security/security-posture-engine";
 
 const scoreColor = (score: number) =>
   score >= 85 ? "text-green-400" : score >= 70 ? "text-yellow-400" : score >= 50 ? "text-orange-400" : "text-red-400";

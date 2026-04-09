@@ -1,7 +1,7 @@
 import { Shield, ShieldAlert, ShieldCheck, Code } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { EDGE_FUNCTION_AUDIT } from "@/lib/services/security/security-posture-engine";
+import { EDGE_FUNCTION_AUDIT } from "@/lib/core-services/security/security-posture-engine";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 const classificationBadge = (c: string) => {

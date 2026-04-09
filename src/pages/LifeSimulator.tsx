@@ -8,7 +8,7 @@ import {
   TrendingDown, BarChart3, ChevronRight
 } from "lucide-react";
 import { useLifeSimulator } from "@/contexts/SitaKernelContext";
-import type { ShockType, ShockImpactReport } from "@/lib/services/life-simulation";
+import type { ShockType, ShockImpactReport } from "@/lib/core-services/life-simulation";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 

@@ -21,7 +21,7 @@ import {
   computeIntegrationScore,
   type IntegrationAction,
   type SprawlRisk,
-} from "@/lib/services/architecture/god-tier-integration-engine";
+} from "@/lib/core-services/architecture/god-tier-integration-engine";
 import { Brain, Shield, Layers, Target, AlertTriangle, CheckCircle, XCircle, Clock, ArrowRight, Zap, TrendingDown } from "lucide-react";
 import { useDataMode } from "@/contexts/DataModeContext";
 

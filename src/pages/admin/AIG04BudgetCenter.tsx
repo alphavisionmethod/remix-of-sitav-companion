@@ -6,7 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { DollarSign, TrendingUp, AlertTriangle, ShieldAlert } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-import { getBudgetSummary, getPortfolioAllocations, getCostLedger, getBudgetPolicies, getBudgetAlerts } from "@/lib/services/ai-gateway";
+import { getBudgetSummary, getPortfolioAllocations, getCostLedger, getBudgetPolicies, getBudgetAlerts } from "@/lib/core-services/ai-gateway";
 
 export default function AIG04BudgetCenter() {
   const { isDemoMode } = useDataMode();

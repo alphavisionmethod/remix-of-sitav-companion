@@ -7,7 +7,7 @@ import {
   KILL_SWITCHES,
   BACKUP_RECOVERY_PLAN,
   MISSING_TO_SECURE_LAUNCH,
-} from "@/lib/services/security/security-posture-engine";
+} from "@/lib/core-services/security/security-posture-engine";
 
 const severityColor = (level: string) => {
   switch (level) {

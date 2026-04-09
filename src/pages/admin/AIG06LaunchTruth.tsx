@@ -6,8 +6,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Eye, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-import { getAILaunchHonestyBoard, getLaunchHonestyRecords } from "@/lib/services/ai-gateway";
-import type { LaunchHonestyLevel } from "@/lib/services/ai-gateway";
+import { getAILaunchHonestyBoard, getLaunchHonestyRecords } from "@/lib/core-services/ai-gateway";
+import type { LaunchHonestyLevel } from "@/lib/core-services/ai-gateway";
 
 const LEVEL_COLORS: Record<LaunchHonestyLevel, string> = {
   real: "default",

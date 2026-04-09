@@ -13,7 +13,7 @@ import { Plug, Wifi, WifiOff, RefreshCw, Clock, ChevronRight, Activity, Database
 import { ConnectorSyncDashboard } from "@/components/sita/ConnectorSyncDashboard";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-import { fetchConnectorHealth, type ConnectorHealthResult } from "@/lib/services/connector-health-service";
+import { fetchConnectorHealth, type ConnectorHealthResult } from "@/lib/core-services/connector-health-service";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 
