@@ -1,65 +1,68 @@
 
 
-# Fix All P1 Items — Rename mock Arrays, Gate Behind isDemoMode, Verify Wiring
+# Fix Remaining Audit Items: Headings, DEMO_ Consolidation, Edge Functions
 
-## Status Summary
+## Investigation Results
 
-| P1 Item | Current State | Action Needed |
-|---------|--------------|---------------|
-| Wire 88 pages to isDemoMode | **Only 6 pages remain unwired** — all are auth/landing pages that correctly don't need it | **None** |
-| Prefix 151 hardcoded arrays with DEMO_ | **35 `mock*` arrays across 17 files + 7 non-prefixed data arrays across 3 files = 42 total** | **Rename all 42** |
-| Wire 24 orphaned tables | **All 24 confirmed wired** in data services | **None** |
-| Wire ConstitutionEditor form | **Already fully wired** — loads from DB, persists create/toggle/delete via `constitution_rules` table | **None** |
+### Item 1: ~44 Pages Without Headings → Actually 3 Pages
+After filtering:
+- **3 mobile pages** (`MobileAlerts`, `MobileApprovals`, `MobileProof`) — already covered by `MobileShell` which renders `<h1>`
+- **14 onboarding screens** + `LiveOfficeSidebar` + `BranchingQuestionsPanel` — sub-components inside `FormationShell`, not direct routes
+- **3 real pages** need sr-only headings:
+  - `DesktopPage.tsx` — desktop shell wrapper
+  - `BusinessOnboarding.tsx` — formation flow entry
+  - `FormationShell.tsx` — multi-step wizard container
 
-## What Actually Needs Fixing
+### Item 2: 430 Inline DEMO_ Arrays → Consolidate into Domain Modules
+- 430 arrays across 210 page files
+- 380 unique names, 42 names duplicated across files (101 occurrences)
+- Duplicated names (e.g. `DEMO_CATEGORIES`, `DEMO_STATS`) contain different domain-specific data — not true duplicates
 
-**42 hardcoded data arrays** across **19 files** need renaming from `mock*`/generic names to `DEMO_*` to match the codebase convention. All 19 files already have `isDemoMode` wired — the arrays just need the naming convention applied.
+**Strategy**: Create ~15 domain-grouped demo-data modules in `src/lib/demo-data/` and move all 430 arrays out of pages. Pages import from shared modules. This eliminates inline data from all page files and makes the `check-inline-mocks.ts` script pass cleanly.
 
-### Files and Renames
+New files:
+- `src/lib/demo-data/admin-ai.ts` — AI ops boards (~60 arrays)
+- `src/lib/demo-data/admin-platform.ts` — Platform admin (~40 arrays)
+- `src/lib/demo-data/admin-intelligence.ts` — Intelligence boards (~30 arrays)
+- `src/lib/demo-data/admin-connectors.ts` — Connector pages (~15 arrays)
+- `src/lib/demo-data/admin-misc.ts` — Remaining admin (~25 arrays)
+- `src/lib/demo-data/revenue-office.ts` — Revenue office (~35 arrays)
+- `src/lib/demo-data/digital-presence.ts` — DPO pages (~25 arrays)
+- `src/lib/demo-data/concierge.ts` — Concierge pages (~20 arrays)
+- `src/lib/demo-data/enterprise.ts` — Enterprise pages (~15 arrays)
+- `src/lib/demo-data/atlas.ts` — Atlas/mission pages (~15 arrays)
+- `src/lib/demo-data/investment.ts` — Investment office extras (~20 arrays)
+- `src/lib/demo-data/apps.ts` — App pages (~10 arrays)
+- `src/lib/demo-data/core-pages.ts` — Top-level pages (~40 arrays)
+- `src/lib/demo-data/workspace.ts` — Workspace pages (~15 arrays)
+- `src/lib/demo-data/mobile.ts` — Mobile-specific (~5 arrays)
 
-**17 files with `mock*` prefix (35 arrays):**
+For duplicated names, prefix with domain: `DEMO_ADMIN_CATEGORIES`, `DEMO_REVENUE_CATEGORIES`, etc.
 
-1. `src/pages/admin/ComputeGovernanceBoard.tsx` — 6 arrays: `mockTenantSpend`, `mockAgentSpend`, `mockAnomalies`, `mockBudgets`, `mockRoutingEvents`, `mockDeepJobs`
-2. `src/pages/admin/IntelligenceEfficiencyBoard.tsx` — 6 arrays: `mockAssets`, `mockDifferentials`, `mockEfficiency`, `mockOutcomes`, `mockPackets`, `mockCrossTenantPatterns`
-3. `src/pages/admin/intelligence/AIEfficiencyScoreboard.tsx` — 3: `mockAgents`, `mockWorkflows`, `mockPaths`
-4. `src/pages/admin/intelligence/CrossTenantGovernance.tsx` — 1: `mockPatterns`
-5. `src/pages/admin/intelligence/DifferentialReasoningExplorer.tsx` — 1: `mockDiffs`
-6. `src/pages/admin/intelligence/EscalationControlCenter.tsx` — 1: `mockEscalations`
-7. `src/pages/admin/intelligence/IntelligenceAssetLibrary.tsx` — 1: `mockAssets`
-8. `src/pages/admin/intelligence/IntelligencePacketInspector.tsx` — 1: `mockPackets`
-9. `src/pages/admin/intelligence/IntelligenceReuseOverview.tsx` — 5: `mockReuseData`, `mockAssetClasses`, `mockDomainReuse`, `mockInvalidationFeed`, `mockConfidenceTrend`
-10. `src/pages/admin/intelligence/OutcomeEconomicsBoard.tsx` — 2: `mockOutcomes`, `mockReasoningPaths`
-11. `src/pages/admin/intelligence/PatternLearningCenter.tsx` — 1: `mockPatterns`
-12. `src/pages/admin/intelligence/SmartDigestCenter.tsx` — 1: `mockDigests`
-13. `src/pages/admin/intelligence/ZeroWastePromptView.tsx` — 1: `mockProfiles`
-14. `src/pages/apps/EmailApp.tsx` — 1: `mockEmails`
-15. `src/pages/apps/GalleryApp.tsx` — 1: `mockPhotos`
-16. `src/pages/apps/MessengerApp.tsx` — 2: `mockChats`, `mockMessages`
-17. `src/pages/apps/VaultApp.tsx` — 1: `mockEntries`
+### Item 3: Edge Function Placeholders → Already Resolved
+Investigation found **zero** actual placeholder/TODO comments in data services. The grep matches were legitimate `"pending"` status values in data records (e.g., approval status). No action needed.
 
-**3 files with generic names (7 arrays):**
+## Implementation
 
-18. `src/pages/CustomerDetail.tsx` — 4: `customersData`, `timeline`, `actions`, `documents`
-19. `src/pages/ProductivityHub.tsx` — 1: `recentDocs`
-20. `src/pages/admin/intelligence/CrossTenantGovernance.tsx` — 2: `restrictedDomains`, `enterpriseExclusions`
+### Step 1: Add sr-only headings (3 files)
+Add `<h1 className="sr-only">` to `DesktopPage.tsx`, `BusinessOnboarding.tsx`, `FormationShell.tsx`.
 
-### Implementation
+### Step 2: Create ~15 demo-data modules
+Extract all `const DEMO_*` arrays from 210 page files into grouped modules under `src/lib/demo-data/`. Disambiguate colliding names with domain prefixes.
 
-For each file:
-1. Rename `mock*` → `DEMO_*` (e.g., `mockTenantSpend` → `DEMO_TENANT_SPEND`)
-2. Rename generic names → `DEMO_*` (e.g., `timeline` → `DEMO_TIMELINE`)
-3. Update all references within the same file
-4. No logic changes — these files already have `isDemoMode` wired
+### Step 3: Update 210 page files
+Replace inline `const DEMO_*` declarations with imports from the new shared modules.
 
-### Verification
+### Step 4: Verify
+- `grep -rn "^const DEMO_" src/pages/` → 0 matches
+- `npx tsc --noEmit` → 0 errors
+- `check-inline-mocks.ts` → passes
 
-- Run `grep -rn "^const mock" src/pages` — expect 0 matches (excluding tests)
-- Run `npx tsc --noEmit` — expect 0 errors
-- All 4 P1 items confirmed resolved
+## Files Changed
+- **3 updated**: heading fixes
+- **~15 created**: `src/lib/demo-data/*.ts` domain modules
+- **~210 updated**: page files (replace inline arrays with imports)
 
-## Technical Details
-
-- **Pattern**: Simple find-and-replace within each file; no cross-file dependencies since these are module-scoped constants
-- **Risk**: Zero — purely cosmetic rename, no logic changes
-- **Files changed**: 19 files (1 file appears in both lists: CrossTenantGovernance)
+## Risk
+Low — pure data extraction, no logic changes. All arrays are module-scoped constants with no external consumers.
 
