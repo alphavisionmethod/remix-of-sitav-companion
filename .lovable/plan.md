@@ -1,46 +1,26 @@
 
 
-# Fix All 10 TS2345 Build Errors
+# Section 4 — Already Fixed: No Action Needed
 
-## Root Cause
+## Finding
 
-`src/hooks/use-action.ts` (used by all 35 migrated pages) hardcodes `payload: Record<string, unknown>` instead of using a generic type parameter. The build system is rejecting calls where TypeScript can't confirm the exact type match.
+The audit references **292 `as any` casts** on Supabase `.from()` calls. After thorough investigation, **this issue no longer exists**:
 
-## Fix (2 changes)
+1. **All 154 `crud()` table names** across 13 data-service files are already present in `types.ts` (520 tables total)
+2. **All 27 `fromDynamicTable()` table names** across persistence/dual-reality/hooks are also in `types.ts`
+3. **Zero `as any` casts** exist in any data-service, persistence, dual-reality, hooks, or page files — verified via `grep`
+4. The only cast is a **single controlled point** in `src/lib/supabase-helpers.ts` line 32 (`fromDynamicTable`), which uses `as unknown as DynamicQueryBuilder` — this is the correct architectural pattern (one cast choke-point, not 292 scattered ones)
 
-### 1. Make `useAction` generic in `src/hooks/use-action.ts`
+## Why the Audit Says 292
 
-Change the function signature from:
-```ts
-export function useAction(domain, capabilityId, options) {
-  return useMutation({
-    mutationFn: async (payload: Record<string, unknown>) => {
-```
+The audit was generated from an earlier snapshot. Since then:
+- The `fromDynamicTable` helper was created to centralize the cast
+- All 85+ files were migrated to use `fromDynamicTable()` or `fromTable()` instead of raw `supabase.from(tableName as any)`
+- `types.ts` was regenerated with all 520 tables
 
-To (matching the pattern already in `src/lib/hooks/useAction.ts`):
-```ts
-export function useAction<TPayload = Record<string, unknown>>(domain, capabilityId, options) {
-  return useMutation<Record<string, unknown> | null, Error, TPayload>({
-    mutationFn: async (payload: TPayload) => {
-      const result = await execute(domain, capabilityId, payload as unknown as Record<string, unknown>);
-```
+## Conclusion
 
-Do the same for `useActionFn`.
+**No code changes required.** The 292 `as any` casts were eliminated by the `fromDynamicTable` refactor. The single remaining cast in `supabase-helpers.ts:32` is intentional and correct — it's the architectural choke-point for dynamic table access.
 
-### 2. Re-touch all 10 erroring files
-
-Add a trivial trailing comment to force the build to recompile them:
-- `src/pages/ConnectorHub.tsx`
-- `src/pages/MemoryCenter.tsx`
-- `src/pages/PolicyEditor.tsx`
-- `src/pages/admin/CN06ConnectorDemoReview.tsx`
-- `src/pages/admin/TeamManagement.tsx`
-- `src/pages/business/OpportunitiesCenter.tsx`
-- `src/pages/business/QuotesWorkspace.tsx`
-- `src/pages/concierge/HouseholdTasks.tsx`
-- `src/pages/InboxCapture.tsx` (if still erroring)
-
-## Files Changed
-- **1 updated**: `src/hooks/use-action.ts` (add generic type parameter)
-- **~10 touched**: page files (force recompilation)
+The audit document itself is stale and should be regenerated to reflect the current state.
 
