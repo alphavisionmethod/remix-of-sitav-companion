@@ -192,6 +192,38 @@ export const ArrivalPrepStep = ({
                 </motion.div>
               )}
 
+              {/* Post-onboarding refinement plan (Req #9) */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.85 }}
+                className="rounded-xl border border-primary/15 bg-primary/5 p-3.5 space-y-2"
+              >
+                <div className="flex items-center gap-2">
+                  <TrendingUp className="h-3.5 w-3.5 text-primary" />
+                  <span className="text-[10px] font-semibold text-primary uppercase tracking-wider">
+                    What SITA will keep learning
+                  </span>
+                </div>
+                <div className="space-y-1.5">
+                  {[
+                    { label: "Your communication patterns", timeline: "over the next week" },
+                    { label: "Your schedule rhythm", timeline: "over the next month" },
+                    { label: "Your spending patterns", timeline: "as data connects" },
+                    { label: "Your priorities", timeline: "refined every boardroom session" },
+                    { label: "Your support preferences", timeline: "with each calibration check-in" },
+                  ].map((item, i) => (
+                    <p key={i} className="text-[10px] text-foreground/70">
+                      <span className="text-foreground font-medium">{item.label}</span>{" "}
+                      — <span className="text-muted-foreground italic">{item.timeline}</span>
+                    </p>
+                  ))}
+                </div>
+                <p className="text-[9px] text-muted-foreground mt-1">
+                  Refine anytime in Settings → Personalization
+                </p>
+              </motion.div>
+
               {/* Status line */}
               <motion.div
                 initial={{ opacity: 0 }}
