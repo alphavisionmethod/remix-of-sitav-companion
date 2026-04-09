@@ -3,7 +3,10 @@
 // Extracted from FleetHealthWidget for boundary compliance
 // ═══════════════════════════════════════════════════════════════
 
-export const DEMO_FLEET_SERVICES = [
+export const DEMO_FLEET_SERVICES: Array<{
+  id: string; name: string; deps: string[];
+  passed: boolean; metrics: { uptimePercent: number; avgLatencyMs: number; p99LatencyMs: number; errorRate: number; requestsPerMinute: number };
+}> = [
   { id: "auth-service", name: "Authentication", deps: [] as string[], passed: true, metrics: { uptimePercent: 99.97, avgLatencyMs: 42, p99LatencyMs: 180, errorRate: 0.1, requestsPerMinute: 320 } },
   { id: "advisor-engine", name: "Advisor Engine", deps: ["auth-service"], passed: true, metrics: { uptimePercent: 99.8, avgLatencyMs: 210, p99LatencyMs: 850, errorRate: 0.5, requestsPerMinute: 95 } },
   { id: "canonical-chain", name: "Canonical Chain", deps: ["auth-service"], passed: true, metrics: { uptimePercent: 100, avgLatencyMs: 15, p99LatencyMs: 45, errorRate: 0, requestsPerMinute: 180 } },
