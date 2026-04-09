@@ -12,6 +12,7 @@ import { SetupStageHeader, StageTransitionController } from "@/components/sita/s
 interface Props {
   permissionChoices: Record<string, boolean>;
   onUpdate: (choices: Record<string, boolean>) => void;
+  deviceOwnership?: "personal" | "family" | "work" | "";
   onNext: () => void;
   onPrev: () => void;
 }
@@ -83,7 +84,7 @@ const PROOF_STEPS = [
   { icon: Lock, label: "Approval required before action", detail: "SITA will not reschedule without your explicit approval", color: "text-[hsl(var(--trust-safe))]" },
 ];
 
-export function PrivacyTransparencyStep({ permissionChoices, onUpdate, onNext, onPrev }: Props) {
+export function PrivacyTransparencyStep({ permissionChoices, onUpdate, deviceOwnership, onNext, onPrev }: Props) {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [reviewed, setReviewed] = useState<Set<string>>(new Set());
   const [proofStep, setProofStep] = useState(0);
@@ -127,6 +128,15 @@ export function PrivacyTransparencyStep({ permissionChoices, onUpdate, onNext, o
         <p className="text-xs text-muted-foreground/70 mb-6">
           Expand each card to review what SITA can access. Toggle permissions on or off. Every choice can be changed later.
         </p>
+
+        {deviceOwnership === "work" && (
+          <div className="flex items-center gap-2 rounded-xl border border-[hsl(var(--sita-gold))]/30 bg-[hsl(var(--sita-gold))]/5 px-4 py-3 mb-4">
+            <AlertTriangle className="h-4 w-4 text-[hsl(var(--sita-gold))] shrink-0" />
+            <p className="text-xs text-muted-foreground">
+              <span className="font-semibold text-foreground">Managed device:</span> Your organization may have visibility into work-related data. Personal items remain private by default.
+            </p>
+          </div>
+        )}
 
         <div className="space-y-3">
           {PERMISSIONS.map((perm, i) => {

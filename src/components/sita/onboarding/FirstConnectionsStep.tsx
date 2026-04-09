@@ -183,7 +183,12 @@ export function FirstConnectionsStep({ enabledDomains, primaryUseMode, onConnect
       });
     } catch (err) {
       console.error("Connection error:", err);
-      toast.error(`Could not connect ${connector.name}. You can try again later.`);
+      toast.error(`Could not connect ${connector.name}. You can try again later.`, {
+        action: {
+          label: "Retry",
+          onClick: () => handleConnect(connector),
+        },
+      });
     } finally {
       setConnecting(null);
     }

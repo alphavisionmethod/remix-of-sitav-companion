@@ -441,7 +441,7 @@ export function OSSetupExperience() {
     trustCalibration: {
       level: 0, spendingThreshold: 100, financialApprovals: true, calendarApprovals: false,
       communicationApprovals: true, reminderFrequency: "balanced", escalationBehavior: "notify",
-      familyPermissions: false, businessPermissions: false,
+      familyPermissions: false, businessPermissions: false, silentAutomation: false,
     },
     advisorActivation: [],
     deferredConnections: [],
@@ -787,6 +787,7 @@ export function OSSetupExperience() {
                   <PrivacyTransparencyStep key="privacy-transparency"
                     permissionChoices={state.permissionChoices}
                     onUpdate={choices => setState(s => ({ ...s, permissionChoices: choices }))}
+                    deviceOwnership={state.deviceOwnership}
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
@@ -963,6 +964,7 @@ export function OSSetupExperience() {
                     firstWinAction={state.firstWin.action}
                     permissionChoices={state.permissionChoices}
                     deferredCount={state.deferredConnections.length}
+                    deferredItems={state.deferredConnections}
                     trustCalibrationLevel={state.trustCalibration.level}
                     onNext={goNext} onPrev={goPrev} />
                 )}

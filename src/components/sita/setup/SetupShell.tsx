@@ -20,7 +20,7 @@ export function SetupShell({ children, className, hideAmbient }: SetupShellProps
             style={{ background: "hsl(38 85% 58% / 0.03)" }} />
         </div>
       )}
-      <div className="relative z-10 flex items-start gap-6 w-full max-w-4xl justify-center">
+      <div className="relative z-10 flex items-start gap-6 w-full max-w-4xl 2xl:max-w-5xl justify-center">
         {children}
       </div>
     </div>

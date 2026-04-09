@@ -6,6 +6,16 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 
 const roles = ["Partner", "Family", "Team", "Assistant", "Client", "Advisor", "Entity"];
 
+const ROLE_COLORS: Record<string, string> = {
+  Partner: "hsl(265 55% 58%)",
+  Family: "hsl(152 55% 48%)",
+  Team: "hsl(38 85% 58%)",
+  Assistant: "hsl(200 70% 55%)",
+  Client: "hsl(340 65% 55%)",
+  Advisor: "hsl(280 50% 55%)",
+  Entity: "hsl(180 40% 50%)",
+};
+
 interface HouseholdNode {
   name: string;
   role: string;
@@ -31,6 +41,16 @@ export function HouseholdGraphStep({ nodes, onUpdate, onNext, onPrev }: Househol
 
   const removeNode = (idx: number) => {
     onUpdate(nodes.filter((_, i) => i !== idx));
+  };
+
+  // Calculate positions for visual graph (radial layout around center "You" node)
+  const getNodePosition = (index: number, total: number) => {
+    const angle = (index / Math.max(total, 1)) * Math.PI * 2 - Math.PI / 2;
+    const radius = total <= 3 ? 90 : total <= 6 ? 100 : 110;
+    return {
+      x: Math.cos(angle) * radius,
+      y: Math.sin(angle) * radius,
+    };
   };
 
   return (
@@ -79,35 +99,93 @@ export function HouseholdGraphStep({ nodes, onUpdate, onNext, onPrev }: Househol
         </button>
       </div>
 
-      {/* Node display */}
-      <div className="min-h-[120px] rounded-2xl border border-border bg-card/50 p-4">
+      {/* Visual Node Graph */}
+      <div className="min-h-[260px] rounded-2xl border border-border bg-card/50 p-4 flex items-center justify-center">
         {nodes.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-6 text-muted-foreground">
             <Users className="h-8 w-8 mb-2 opacity-30" />
             <p className="text-xs">Add people to start building your graph</p>
           </div>
         ) : (
-          <div className="flex flex-wrap gap-2">
+          <div className="relative" style={{ width: 260, height: 260 }}>
+            {/* Center "You" node */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+              <div className="h-14 w-14 rounded-full bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center shadow-lg shadow-primary/20 border-2 border-primary/30">
+                <span className="text-xs font-bold text-primary-foreground">You</span>
+              </div>
+            </div>
+
+            {/* Connection lines + person nodes */}
             <AnimatePresence mode="popLayout">
-              {nodes.map((n, i) => (
-                <motion.div
-                  key={`${n.name}-${i}`}
-                  initial={reduced ? {} : { opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={reduced ? {} : { opacity: 0, scale: 0.8 }}
-                  className="flex items-center gap-2 rounded-full border border-border bg-secondary/40 pl-3 pr-1.5 py-1.5"
-                >
-                  <span className="text-xs font-semibold text-foreground">{n.name}</span>
-                  <span className="text-[10px] text-muted-foreground bg-secondary px-1.5 py-0.5 rounded-full">{n.role}</span>
-                  <button onClick={() => removeNode(i)} className="rounded-full p-0.5 hover:bg-destructive/10 transition-colors">
-                    <X className="h-3 w-3 text-muted-foreground" />
-                  </button>
-                </motion.div>
-              ))}
+              {nodes.map((n, i) => {
+                const pos = getNodePosition(i, nodes.length);
+                const roleColor = ROLE_COLORS[n.role] || "hsl(265 55% 58%)";
+                return (
+                  <motion.div
+                    key={`${n.name}-${i}`}
+                    initial={reduced ? {} : { opacity: 0, scale: 0.5 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={reduced ? {} : { opacity: 0, scale: 0.5 }}
+                    className="absolute top-1/2 left-1/2 z-20"
+                    style={{ transform: `translate(calc(-50% + ${pos.x}px), calc(-50% + ${pos.y}px))` }}
+                  >
+                    {/* Connection line (SVG would be cleaner but this is simpler) */}
+                    <div
+                      className="absolute top-1/2 left-1/2 origin-left h-px opacity-20"
+                      style={{
+                        width: Math.sqrt(pos.x * pos.x + pos.y * pos.y),
+                        transform: `rotate(${Math.atan2(-pos.y, -pos.x)}rad)`,
+                        backgroundColor: roleColor,
+                      }}
+                    />
+                    {/* Person node */}
+                    <div className="relative group cursor-pointer">
+                      <div
+                        className="h-11 w-11 rounded-full flex items-center justify-center border-2 transition-all hover:scale-110"
+                        style={{ backgroundColor: `${roleColor}20`, borderColor: `${roleColor}40` }}
+                      >
+                        <span className="text-[10px] font-bold" style={{ color: roleColor }}>
+                          {n.name.slice(0, 2).toUpperCase()}
+                        </span>
+                      </div>
+                      {/* Label */}
+                      <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 whitespace-nowrap text-center">
+                        <p className="text-[9px] font-semibold text-foreground">{n.name}</p>
+                      </div>
+                      {/* Role badge */}
+                      <div
+                        className="absolute -top-1 -right-1 px-1 py-0.5 rounded text-[7px] font-bold"
+                        style={{ backgroundColor: `${roleColor}25`, color: roleColor }}
+                      >
+                        {n.role.slice(0, 3)}
+                      </div>
+                      {/* Remove button */}
+                      <button
+                        onClick={() => removeNode(i)}
+                        className="absolute -top-1 -left-1 h-4 w-4 rounded-full bg-destructive/80 text-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <X className="h-2.5 w-2.5" />
+                      </button>
+                    </div>
+                  </motion.div>
+                );
+              })}
             </AnimatePresence>
           </div>
         )}
       </div>
+
+      {/* Node list (compact) */}
+      {nodes.length > 0 && (
+        <div className="flex flex-wrap gap-1.5">
+          {nodes.map((n, i) => (
+            <span key={`list-${n.name}-${i}`}
+              className="text-[10px] text-muted-foreground bg-secondary/30 rounded-full px-2 py-0.5">
+              {n.name} · {n.role}
+            </span>
+          ))}
+        </div>
+      )}
 
       <p className="text-center text-[11px] text-muted-foreground">You can always add more people later from Settings</p>
 
