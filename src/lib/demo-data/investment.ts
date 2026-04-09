@@ -1,10 +1,13 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Demo Data Facade: Investment Office
-// Pages import from here instead of core-services directly
+// Re-exports all investment demo data + core-service facades
 // ═══════════════════════════════════════════════════════════════
 
+// Re-export all demo data from the .tsx file
+export * from "./investment.tsx";
+
+// Re-export investment service functions (facade layer)
 export {
-  getPortfolioSummary,
   getWatchlist,
   getTradeReviewPackets,
   getExecutionIntents,
