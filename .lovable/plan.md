@@ -1,124 +1,130 @@
 
 
-# SITA OS — Full Gap Audit: What's Missing for Production-Ready
+# SITA OS — Complete Gap Audit for Full Production Readiness
 
-## Current State (What's Done)
-- 0 TypeScript errors (`tsc --noEmit` clean)
-- 0 `as any` in `src/pages/` (was 69)
-- 0 `as unknown as` in `src/pages/` (was 11)
-- Architecture boundary checks pass (0 violations)
-- 169 test files with substantial coverage
-- Auth flow working (login, signup, reset, demo mode)
+## Current State Summary
+
+**What's solid:**
+- 0 TypeScript errors, 0 `as any` in pages, 0 `as unknown as` in pages, 0 `useState<any>`
+- 485 database tables, all with RLS enabled
 - 52 edge functions deployed
 - ~200+ admin pages, ~100+ user-facing pages
-- Type guards and relation parsers established
+- Auth flow (login, signup, reset, demo mode) working
+- PWA manifest + service worker + icons present
+- Context switcher built and mounted in top bar
+- Contextual rail built (205 lines, entity details + proof chain + advisor notes)
+- Docker + nginx + systemd service + OTA agent ready
+- Service manifest clean (0 `undefined` entries — previously fixed)
+- 169 test files, error boundaries, loading states across 214 pages
 
 ---
 
-## Remaining Gaps (Ordered by Severity)
+## What's Still Missing (Grouped: App Layer → OS Layer → Ops Layer)
 
-### P0 — Type Safety Debt Still Hidden
+### APP LAYER — Code Quality & Features
 
-**1. 3,700+ `: any)` callback parameters across 237 page files**
-This is the single largest remaining type gap. Pattern:
-```ts
-data.map((row: any) => ...)
-.filter((r: any) => r.status === "pass")
-.then(({ data }: any) => ...)
-```
-These hide the same class of bugs we just fixed (`as any`), just in a different syntax. ~237 files affected.
+#### A1. Type 635 remaining `: any)` callback parameters (P0)
+Still 635 instances across ~230 page files. Pattern: `.map((row: any) => ...)`. Each hides runtime bugs.
 
-**Fix:** For each query result, type the callback parameter using DB row types or view-model interfaces. Bulk-fixable per-domain.
+**Fix:** Domain-by-domain sweep — type each callback using DB row types or view-model interfaces. Split into batches:
+- Batch 1: admin/ pages (~150 files, ~300 instances)
+- Batch 2: money/, business/, concierge/ pages (~40 files)
+- Batch 3: remaining user-facing pages (~40 files)
 
-**2. 66 `useState<any>` across 11 page files**
-Files: `DWE01–07`, `ReplayRecoveryConsole`, `AIT02RoleRegistry`, `AdvisorCouncilDashboard`, `OwnerCenter`.
-These produce `any`-typed state that infects all downstream usage.
+#### A2. Fix 3 `as any` in platform bridge (P4)
+`push-registration-service.ts` lines 27, 28, 237 — `(window as any)?.Capacitor`. Use typed declarations from `vite-env.d.ts`.
 
-**Fix:** Replace with typed state: `useState<DeviceTrustRecord[]>([])`, etc.
+#### A3. Consolidate mock-data → demo-data (P2)
+24 files in `src/lib/mock-data/`, 15 in `src/lib/demo-data/`. Merge into one canonical `demo-data/` directory. Audit 5 pages that still use mock fallback patterns when live data is empty.
 
-**3. 7 admin DWE pages use raw `useEffect` + `fromTable().then()` instead of `useQuery`**
-Files: `DWE01` through `DWE07`. They use `useState<any[]>` + bare `useEffect` fetches with no error handling, no loading states, no cache invalidation.
+#### A4. Calendar reconciliation (P3 — Sprint 2)
+Not implemented. Needs: a calendar sync service, reconciliation UI comparing SITA calendar vs external provider (Google Calendar connector exists), conflict resolution flow.
 
-**Fix:** Migrate to `useQuery` pattern matching the rest of the codebase.
+#### A5. Task delegation flow (P3 — Sprint 2)
+Not implemented. Needs: delegation assignment UI in concierge, delegation receipt tracking, delegated-task status in Daily Pulse.
 
----
-
-### P1 — Security
-
-**4. RLS policies on 30 tables use `{public}` role instead of `{authenticated}`**
-Security scan flagged: `vault_items`, `health_logs`, `tax_estimates`, `appointments`, `money_approvals`, `receivables`, `trade_orders`, etc. While `auth.uid() = user_id` prevents actual data leaks today, this violates least-privilege.
-
-**Fix:** Migration to change all 30 policies from `public` to `authenticated`.
-
-**5. Leaked password protection disabled**
-Flagged by security scanner (currently ignored with note "configured via dashboard"). Should be enabled in Supabase Dashboard → Auth → Settings.
+#### A6. Advisor simulation studio (P3 — Sprint 2)
+Partially built. Single advisor view exists. Missing: side-by-side simulation comparison, policy impact preview, "what if" scenario runner connecting to the existing `AutomationSimLab`.
 
 ---
 
-### P2 — Architecture Compliance
+### SECURITY LAYER
 
-**6. 131 orphan service warnings in `service-manifest.json`**
-All entries resolve to `"undefined"` name/ID. The manifest generator (`sync-registry-manifests.ts`) is producing broken entries.
+#### S1. Fix 30 RLS policies: `public` → `authenticated` (P1)
+Security scan confirmed: `vault_items`, `health_logs`, `tax_estimates`, `appointments`, `money_approvals`, `receivables`, `trade_orders`, and 23 more tables have policies assigned to `{public}` instead of `{authenticated}`.
 
-**Fix:** Fix the manifest generator to correctly read service metadata, then regenerate.
+**Fix:** Single migration altering all 30 policies. No data change, just role assignment.
 
-**7. Mock data still used as production fallback in ~89 pages**
-Pattern: `isDemoMode ? MOCK_DATA : liveData`. This is correct for demo mode, but some pages fall back to mock data when live queries return empty — masking real data issues.
-
-**Fix:** Audit each page to ensure mock data is ONLY used when `isDemoMode === true`, never as a silent fallback for empty live data.
+#### S2. Enable leaked password protection (P1)
+Supabase linter flags this. Must be enabled in Supabase Dashboard → Auth → Settings. Not fixable via code — operator action.
 
 ---
 
-### P3 — Sprint Plan Incomplete Items
+### OS LAYER — Deployment & Infrastructure
 
-**8. Concierge depth (Sprint 2 remaining)**
-- Calendar reconciliation not implemented
-- Task delegation flow incomplete
+#### O1. OTA update agent script (P2)
+`sita-ota.service` exists and references `/opt/sita/sita-ota-agent.sh` but the actual script doesn't exist in the repo.
 
-**9. Right contextual rail**
-Not built yet. Mentioned in sprint plan as NEXT.
+**Fix:** Create `scripts/release/iso/sita-ota-agent.sh` with: version check against update endpoint, download new Docker images, `docker compose pull && docker compose up -d`, rollback on health check failure, receipt logging.
 
-**10. Context switcher (household/org/entity)**
-`EntityContextProvider` exists but no UI switcher component.
+#### O2. First-boot provisioning script completeness (P2)
+`sita-first-boot.sh` exists in `scripts/release/iso/` but needs validation against the first-boot spec (device ID generation, tenant binding, trust baseline, key generation).
 
-**11. Advisor workspace completion**
-Single advisor view exists but simulation studio integration is partial.
+#### O3. Backup/restore scripts (P2)
+`restore-backup.sh` and `restore-backup.ps1` exist. Need: automated `pg_dump` backup script, volume snapshot script, backup verification/integrity check.
+
+#### O4. ISO build pipeline (P3)
+`scripts/build-ova.sh` exists for OVA. Missing: actual ISO builder using Ubuntu autoinstall (profiles exist in `scripts/release/iso/autoinstall/` and `scripts/release/iso/profiles/`). Need a `build-iso.sh` that packages autoinstall + Docker images + SITA runtime into a bootable ISO.
+
+#### O5. Health endpoint for containers (P2)
+Docker Compose references health checks but the actual `/health` endpoint in the nginx config and a health check page need verification.
 
 ---
 
-### P4 — Code Quality / Maintenance
+### OPS LAYER — Monitoring & Quality
 
-**12. 24 mock data files in `src/lib/mock-data/`**
-These should be consolidated into `src/lib/demo-data/` (some already migrated). Having both `mock-data/` and `demo-data/` directories creates confusion about which is canonical.
+#### Q1. Generate production-ready manifests (P2)
+Several generated manifests need regeneration with latest code state. Run `scripts/generate-all.ts` to sync all manifests.
 
-**13. 3 remaining `as any` in platform bridges**
-In `push-registration-service.ts` — `(window as any)?.Capacitor` and `(window as any).electron`. These are acceptable for native platform detection but should use the typed declarations in `vite-env.d.ts`.
+#### Q2. E2E test coverage (P3)
+`tests/e2e/` and `tests/integration/` directories exist but coverage of critical flows (auth → onboarding → daily pulse → money → approvals) needs audit.
 
-**14. Test `as any` in test files**
-5 instances in test files (`self-healing.test.ts`, `capability-registry.integration.test.ts`). Low priority but technically violates the "no `as any`" standard.
+#### Q3. Performance budget enforcement (P3)
+`generated/surface-performance-budget.json` exists. Need: actual Lighthouse CI or bundle-size check in build pipeline.
 
 ---
 
 ## Recommended Implementation Order
 
-| Priority | Task | Files | Effort |
-|----------|------|-------|--------|
-| **P0-1** | Type all `: any)` callbacks in pages | ~237 files | Large (split by domain) |
-| **P0-2** | Fix 66 `useState<any>` | 11 files | Medium |
-| **P0-3** | Migrate DWE01–07 from useEffect to useQuery | 7 files | Medium |
-| **P1-1** | Fix 30 RLS policies: public → authenticated | 1 migration | Small |
-| **P2-1** | Fix service-manifest generator | 1-2 files | Small |
-| **P2-2** | Audit mock fallback paths | ~89 files | Medium |
-| **P3** | Sprint 2 remaining features | Multiple | Large |
-| **P4** | Consolidate mock-data → demo-data | ~24 files | Medium |
+| # | Task | Type | Effort | Priority |
+|---|------|------|--------|----------|
+| 1 | Fix 30 RLS policies `public` → `authenticated` | Migration | Small | P1 |
+| 2 | Type `: any)` callbacks — admin batch | Code | Large | P0 |
+| 3 | Type `: any)` callbacks — money/business/concierge | Code | Medium | P0 |
+| 4 | Type `: any)` callbacks — remaining pages | Code | Medium | P0 |
+| 5 | Create OTA agent script | OS | Small | P2 |
+| 6 | Consolidate mock-data → demo-data | Code | Medium | P2 |
+| 7 | Fix platform bridge `as any` (3 instances) | Code | Tiny | P4 |
+| 8 | Calendar reconciliation feature | Feature | Large | P3 |
+| 9 | Task delegation flow | Feature | Medium | P3 |
+| 10 | Advisor simulation studio completion | Feature | Medium | P3 |
+| 11 | Backup automation scripts | OS | Small | P2 |
+| 12 | ISO build pipeline script | OS | Medium | P3 |
+| 13 | Regenerate all manifests | Ops | Small | P2 |
 
-### What's Actually Ready
-- Auth, routing, shell, sidebar, theming — production-ready
-- Type safety at page level (the layer we just fixed) — clean
-- Edge functions — deployed and functional
-- Architecture contracts and boundary enforcement — working
-- Test infrastructure — comprehensive
+## What's Ready Now
+- App shell, routing, auth, theming, sidebar — production-ready
+- Page-level type safety (no `as any`, no `as unknown as`, no `useState<any>`) — clean
+- Edge functions deployed and functional
+- PWA installable (manifest, service worker, icons, offline caching)
+- Context switcher and contextual rail — built
+- Docker + nginx + systemd + OTA timer — structured
+- Architecture contracts and boundary enforcement — passing
+- 485 tables with RLS enabled
 
-### What Blocks "Fully Advanced"
-The **3,700+ `: any)` callbacks** are the elephant in the room. Every query result, every `.map()`, every `.filter()` in those 237 files is operating on untyped data. This is the same class of problem we solved for `as any` — just 50x more instances. Fixing it systematically (domain by domain, using DB row types) would make the codebase genuinely type-safe end-to-end.
+## What Blocks "Fully Advanced"
+1. **635 `: any)` callbacks** — the remaining type safety gap
+2. **30 RLS policies on `public`** — security compliance
+3. **Missing OTA agent script** — OS deployment gap
+4. **Calendar reconciliation + task delegation** — Sprint 2 incomplete features
 
