@@ -194,6 +194,10 @@ const DownloadsCenter = lazy(() => import("./pages/DownloadsCenter"));
 const StorageManager = lazy(() => import("./pages/StorageManager"));
 const NetworkUtility = lazy(() => import("./pages/NetworkUtility"));
 const PlanningCanvas = lazy(() => import("./pages/PlanningCanvas"));
+const PDFViewerWorkspace = lazy(() => import("./pages/PDFViewerWorkspace"));
+const SpreadsheetWorkspace = lazy(() => import("./pages/SpreadsheetWorkspace"));
+const ClipboardHistory = lazy(() => import("./pages/ClipboardHistory"));
+const PrintScanCenter = lazy(() => import("./pages/PrintScanCenter"));
 
 // ── AI Engineering Board ──
 const AIEngineeringBoard = lazy(() => import("./pages/admin/AIEngineeringBoard"));
