@@ -149,8 +149,8 @@ const CustomerDetail = () => {
           <div className="lg:col-span-3 space-y-6">
             {/* Action Queue */}
             <div className="space-y-3">
-              <SitaSectionHeader title="Action Queue" subtitle={`${actions.length} items pending`} />
-              {actions.map((a, i) => (
+              <SitaSectionHeader title="Action Queue" subtitle={`${DEMO_ACTIONS.length} items pending`} />
+              {DEMO_ACTIONS.map((a, i) => (
                 <SitaCard key={i} lane="action" className="p-4 pl-5">
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex-1">
@@ -183,7 +183,7 @@ const CustomerDetail = () => {
             <div className="space-y-3">
               <SitaSectionHeader title="Recent Activity" action={<button onClick={() => setTab("timeline")} className="text-xs text-primary hover:underline">View all</button>} />
               <SitaCard hover={false} className="p-4">
-                {timeline.slice(0, 4).map((t, i) => (
+                {DEMO_TIMELINE.slice(0, 4).map((t, i) => (
                   <TimelineItem key={i} {...t} />
                 ))}
               </SitaCard>
@@ -235,7 +235,7 @@ const CustomerDetail = () => {
         <SitaCard hover={false} className="p-5">
           <SitaCardTitle sub="Complete relationship history">Full Timeline</SitaCardTitle>
           <div className="mt-4">
-            {timeline.map((t, i) => <TimelineItem key={i} {...t} />)}
+            {DEMO_TIMELINE.map((t, i) => <TimelineItem key={i} {...t} />)}
           </div>
         </SitaCard>
       )}
@@ -278,7 +278,7 @@ const CustomerDetail = () => {
       {tab === "documents" && (
         <div className="space-y-3">
           <SitaSectionHeader title="Customer Documents" subtitle="All files linked to this customer" />
-          {documents.map((doc, i) => (
+          {DEMO_DOCUMENTS.map((doc, i) => (
             <SitaCard key={i} className="p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
