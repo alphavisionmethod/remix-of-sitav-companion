@@ -232,7 +232,7 @@ interface ConnectorStatus {
   id: string;
   name: string;
   type: string;
-  status: "healthy" | "degraded" | "stale" | "disconnected";
+  status: "healthy" | "degraded" | "stale" | "critical" | "disconnected";
   lastSyncAt: string;
   staleness: string;
   errorRate: number;

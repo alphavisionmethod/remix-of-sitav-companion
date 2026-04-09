@@ -6,6 +6,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
+import { useActionFn } from "@/hooks/use-action";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
@@ -262,10 +263,16 @@ export default function BoardroomReplay() {
   const INTERVAL = 15;
   const [elapsed, setElapsed] = useState(0);
 
+  const saveSession = useActionFn("workspace", "activity.log", {
+    successMessage: "Session saved to history",
+    errorMessage: "Failed to save session",
+  });
+
   const handleSaveSession = async () => {
     if (!user || sessionSaved) return;
-    try {
-      await fromTable("boardroom_sessions").insert({
+    const result = await saveSession({
+      table: "boardroom_sessions",
+      data: {
         user_id: user.id,
         session_type: "weekly",
         title: "Weekly Executive Review",
@@ -273,12 +280,9 @@ export default function BoardroomReplay() {
         confidence_score: 87,
         status: "completed",
         completed_at: new Date().toISOString(),
-      });
-      setSessionSaved(true);
-      toast.success("Session saved to history");
-    } catch {
-      toast.error("Failed to save session");
-    }
+      },
+    });
+    if (result) setSessionSaved(true);
   };
 
   useEffect(() => {
