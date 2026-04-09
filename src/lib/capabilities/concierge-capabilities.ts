@@ -39,6 +39,15 @@ registerCapability("concierge.task.delete", async (params) => {
   return { success: true };
 });
 
+registerCapability("concierge.status.update", async (params) => {
+  const { id, table, ...updates } = params;
+  const targetTable = (table as string) || "tasks";
+  const { error } = await fromDynamicTable(targetTable)
+    .update(updates).eq("id", id as string);
+  if (error) return { success: false, error: error.message };
+  return { success: true };
+});
+
 // ── Booking Operations ──────────────────────────────────────────
 
 registerCapability("concierge.booking.create", async (params) => {
