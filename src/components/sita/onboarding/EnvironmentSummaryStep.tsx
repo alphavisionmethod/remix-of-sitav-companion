@@ -159,7 +159,7 @@ export const EnvironmentSummaryStep = ({ displayName, trustLevel, primaryUseMode
           </motion.div>
         )}
 
-        {/* Planning & rhythm */}
+      {/* Planning & rhythm */}
         {(planningStyle || lifeRhythm) && (
           <div className="rounded-xl border border-border bg-card p-3">
             <p className="text-[9px] text-muted-foreground uppercase tracking-wider mb-2">Your Style</p>
@@ -175,6 +175,46 @@ export const EnvironmentSummaryStep = ({ displayName, trustLevel, primaryUseMode
               )}
             </div>
           </div>
+        )}
+
+        {/* Confidence indicators per domain (Req #1) */}
+        <div className="rounded-xl border border-border bg-card p-3">
+          <p className="text-[9px] text-muted-foreground uppercase tracking-wider mb-2">Confidence Level</p>
+          <div className="space-y-1.5">
+            {enabledDomains.map(d => {
+              const meta = DOMAIN_META[d] || DOMAIN_META.personal;
+              const hasDeepData = d === "business" ? (stressMap?.heavierThanShould?.length > 0) :
+                d === "money" ? (stressMap?.heavierThanShould?.length > 0) : !!lifeRhythm?.weekStructure;
+              return (
+                <div key={`conf-${d}`} className="flex items-center justify-between">
+                  <span className="text-[11px] text-foreground">{meta.label}</span>
+                  <span className={cn("text-[10px] font-medium rounded-full px-2 py-0.5",
+                    hasDeepData ? "bg-[hsl(var(--trust-safe))]/10 text-[hsl(var(--trust-safe))]" : "bg-primary/10 text-primary"
+                  )}>
+                    {hasDeepData ? "Good signal" : "Still learning"}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+          <p className="text-[10px] text-muted-foreground mt-2 italic">
+            You can refine this anytime in Settings → Personalization
+          </p>
+        </div>
+
+        {/* Recovery/forgiveness tone (Req #6) */}
+        {stressMap && stressMap.heavierThanShould?.length >= 4 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="rounded-2xl border border-[hsl(var(--trust-safe))]/20 bg-[hsl(var(--trust-safe))]/5 p-4"
+          >
+            <p className="text-xs text-foreground font-medium mb-1">SITA is here to help you recover, not add more</p>
+            <p className="text-[11px] text-muted-foreground">
+              You're carrying a lot. SITA has set a gentler pace — calmer notifications, simpler summaries,
+              and recovery-focused priorities. This will adjust as things stabilize.
+            </p>
+          </motion.div>
         )}
       </div>
 
