@@ -24,6 +24,7 @@ export interface TrustCalibrationData {
   escalationBehavior: string;
   familyPermissions: boolean;
   businessPermissions: boolean;
+  silentAutomation: boolean;
 }
 
 interface TrustCalibrationStepProps {
@@ -239,6 +240,34 @@ export function TrustCalibrationStep({ data, onUpdate, onNext, onPrev }: TrustCa
                         )}
                       >{opt}</button>
                     ))}
+                  </div>
+                </div>
+
+                {/* Silent automation toggle */}
+                <div className="rounded-xl border border-border bg-card p-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Eye className="h-4 w-4 text-primary" />
+                      <div>
+                        <span className="text-xs font-semibold text-foreground">Silent automation</span>
+                        <p className="text-[10px] text-muted-foreground mt-0.5">
+                          {data.silentAutomation
+                            ? "Routine tasks run quietly — no notification unless flagged"
+                            : "Every automated action shows a visible notification"}
+                        </p>
+                      </div>
+                    </div>
+                    <div
+                      onClick={() => update({ silentAutomation: !data.silentAutomation })}
+                      className={cn("relative h-6 w-11 rounded-full cursor-pointer transition-colors",
+                        data.silentAutomation ? "bg-primary" : "bg-muted")}
+                    >
+                      <motion.div
+                        animate={{ x: data.silentAutomation ? 20 : 2 }}
+                        transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                        className="absolute top-1 h-4 w-4 rounded-full bg-white shadow"
+                      />
+                    </div>
                   </div>
                 </div>
               </motion.div>

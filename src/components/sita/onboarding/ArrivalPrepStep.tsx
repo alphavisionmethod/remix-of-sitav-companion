@@ -24,6 +24,7 @@ interface ArrivalPrepStepProps {
   firstWinAction: string;
   permissionChoices: Record<string, boolean>;
   deferredCount: number;
+  deferredItems?: string[];
   trustCalibrationLevel?: number;
   onNext: () => void;
   onPrev: () => void;
@@ -62,7 +63,7 @@ const useModeLabels: Record<string, string> = {
 export const ArrivalPrepStep = ({
   displayName, enabledDomains, trustLevel, rituals, aiStyle,
   primaryUseMode, activeAdvisors, connectedSystems, firstWinAction,
-  permissionChoices, deferredCount, trustCalibrationLevel, onNext, onPrev,
+  permissionChoices, deferredCount, deferredItems, trustCalibrationLevel, onNext, onPrev,
 }: ArrivalPrepStepProps) => {
   const enabledAdvisors = activeAdvisors.filter(a => a.enabled);
   const enabledPermissions = Object.values(permissionChoices).filter(Boolean).length;
@@ -171,12 +172,23 @@ export const ArrivalPrepStep = ({
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.8 }}
-                  className="flex items-center gap-2 rounded-xl border border-border/30 bg-secondary/10 p-3"
+                  className="rounded-xl border border-border/30 bg-secondary/10 p-3 space-y-1.5"
                 >
-                  <Clock className="h-3.5 w-3.5 text-muted-foreground" />
-                  <span className="text-[10px] text-muted-foreground">
-                    {deferredCount} item{deferredCount !== 1 ? "s" : ""} deferred — available in Settings
-                  </span>
+                  <div className="flex items-center gap-2">
+                    <Clock className="h-3.5 w-3.5 text-muted-foreground" />
+                    <span className="text-[10px] text-muted-foreground font-medium">
+                      {deferredCount} item{deferredCount !== 1 ? "s" : ""} deferred — available in Settings
+                    </span>
+                  </div>
+                  {deferredItems && deferredItems.length > 0 && (
+                    <div className="flex flex-wrap gap-1 pl-5">
+                      {deferredItems.map((item, i) => (
+                        <span key={i} className="text-[9px] text-muted-foreground/70 bg-secondary/30 rounded-full px-2 py-0.5 capitalize">
+                          {item.replace(/-/g, " ")}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </motion.div>
               )}
 

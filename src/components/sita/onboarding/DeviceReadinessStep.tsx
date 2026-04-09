@@ -175,6 +175,20 @@ export function DeviceReadinessStep({ onNext, onPrev }: Props) {
             </div>
           </div>
 
+          {/* Low battery prompt */}
+          {readinessChecks.find(c => c.id === "battery" && c.status === "warning") && (
+            <motion.div initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }}
+              className="rounded-xl border border-[hsl(var(--sita-gold))]/20 bg-[hsl(var(--sita-gold))]/5 p-4 space-y-2">
+              <div className="flex items-center gap-2">
+                <Battery className="h-4 w-4 text-[hsl(var(--sita-gold))]" />
+                <span className="text-sm font-medium text-foreground">Battery is low</span>
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Consider connecting to power before continuing. Heavy updates will be deferred to protect your session.
+              </p>
+            </motion.div>
+          )}
+
           {/* Reboot required notice (simulated — shows when all critical done) */}
           {allCriticalDone && (
             <motion.div initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }}
