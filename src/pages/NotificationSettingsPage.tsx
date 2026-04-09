@@ -12,6 +12,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+import { useActionFn } from "@/hooks/use-action";
 
 interface NotificationChannel {
   id: string;
@@ -133,6 +134,11 @@ export default function NotificationSettingsPage() {
     ));
   };
 
+  const saveNotifPrefs = useActionFn("workspace", "notification.preferences.update", {
+    successMessage: "Notification preferences saved",
+    errorMessage: "Failed to save preferences",
+  });
+
   const handleSave = useCallback(async () => {
     if (!user) return;
     setSaving(true);
@@ -158,18 +164,15 @@ export default function NotificationSettingsPage() {
         digestFrequency,
       };
 
-      await supabase
-        .from("profiles")
-        .update({ preferences: merged as never })
-        .eq("user_id", user.id);
-
-      toast.success("Notification preferences saved");
-    } catch {
-      toast.error("Failed to save preferences");
+      await saveNotifPrefs({
+        table: "profiles",
+        updates: { preferences: merged },
+        userId: user.id,
+      });
     } finally {
       setSaving(false);
     }
-  }, [user, categories, quietHoursEnabled, quietStart, quietEnd, digestFrequency]);
+  }, [user, categories, quietHoursEnabled, quietStart, quietEnd, digestFrequency, saveNotifPrefs]);
 
   return (
     <div className="space-y-6 p-6 max-w-3xl" data-testid="notification-settings-page">

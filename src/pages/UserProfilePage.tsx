@@ -12,6 +12,7 @@ import { User, Shield, Calendar, Activity, Receipt, Link as LinkIcon, Settings, 
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useActionFn } from "@/hooks/use-action";
 
 const UserProfilePage = () => {
   const { isDemoMode } = useDataMode();
@@ -68,20 +69,24 @@ const UserProfilePage = () => {
     load();
   }, [user]);
 
+  const saveProfileFn = useActionFn("workspace", "profile.update", {
+    successMessage: "Profile saved",
+    errorMessage: "Failed to save profile",
+  });
+
   const handleSave = async () => {
     if (!user) return;
     setSaving(true);
-    const { error } = await supabase
-      .from("profiles")
-      .update({
+    await saveProfileFn({
+      table: "profiles",
+      updates: {
         display_name: profile.display_name,
         avatar_url: profile.avatar_url,
         preferences: { bio: profile.bio, timezone: profile.timezone, locale: profile.locale },
-      })
-      .eq("user_id", user.id);
+      },
+      userId: user.id,
+    });
     setSaving(false);
-    if (error) toast.error("Failed to save profile");
-    else toast.success("Profile saved");
   };
 
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
