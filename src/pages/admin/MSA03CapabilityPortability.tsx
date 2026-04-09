@@ -64,7 +64,7 @@ export default function MSA03CapabilityPortability() {
         })}
       </div>
 
-      {domains.map((domain: Record<string, any>) => {
+      {domains.map((domain: string) => {
         const domainCaps = capabilities.filter((c: Record<string, any>) => c.domain === domain);
         return (
           <Card key={domain} className="bg-card border-border">

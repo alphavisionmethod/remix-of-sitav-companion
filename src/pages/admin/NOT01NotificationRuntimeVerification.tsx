@@ -67,7 +67,7 @@ export default function NOT01NotificationRuntimeVerification() {
   const dispatchVerified = successReceipts.length > 0;
   const receiptVerified = receipts.length > 0;
 
-  const channels: ChannelRow[] = [
+  const channels: Array<{ channel: string; icon: React.ReactNode; configured: boolean; subscriptionAvailable: boolean; dispatchVerified: boolean; receiptVerified: boolean; notes: string }> = [
     {
       channel: "Web Push (VAPID)",
       icon: <Globe className="h-4 w-4" />,
