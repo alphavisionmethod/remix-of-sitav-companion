@@ -36,13 +36,13 @@ export const OwnerRoutes = () => (
     <Route path="/owner/trust-center" element={<OwnerCenter />} />
     <Route path="/owner/autopilot" element={<OwnerCenter />} />
     <Route path="/owner/billing" element={<OwnerCenter />} />
-    <Route path="/owner/releases" element={<OwnerCenter />} />
+    <Route path="/owner/releases" element={<ReleaseDeploymentWorkspace />} />
     <Route path="/owner/model-routing" element={<OwnerCenter />} />
     <Route path="/owner/system-map" element={<OwnerCenter />} />
     <Route path="/owner/knowledge" element={<OwnerCenter />} />
     <Route path="/owner/support" element={<OwnerCenter />} />
     <Route path="/owner/change-review" element={<OwnerCenter />} />
-    <Route path="/owner/rollback-center" element={<OwnerCenter />} />
+    <Route path="/owner/rollback-center" element={<ReleaseDeploymentWorkspace />} />
     <Route path="/owner/governance" element={<OwnerCenter />} />
     <Route path="/owner/pricing" element={<PricingEditor />} />
     <Route path="/owner/packs" element={<PackEditorPage />} />
