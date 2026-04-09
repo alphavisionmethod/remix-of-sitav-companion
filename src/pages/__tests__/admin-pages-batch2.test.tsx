@@ -45,8 +45,8 @@ const pages = [
   ["BuilderKnowledgeBase", () => import("@/pages/admin/BuilderKnowledgeBase")],
 ] as const;
 
-function getComponent(mod: admin-pages-batch2.testRow) {
-  return mod.default || Object.values(mod).find((v: admin-pages-batch2.testRow) => typeof v === "function");
+function getComponent(mod: TestModuleRow) {
+  return mod.default || Object.values(mod).find((v: unknown) => typeof v === "function");
 }
 
 describe("Admin Pages Batch 2", () => {
