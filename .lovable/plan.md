@@ -1,132 +1,83 @@
 
+# SITA OS Section 2 — Full Verification Complete
 
-# SITA OS Sections 2.0A–2.0F & 2.3–2.8 — Full Verification
+## Verdict: 100% Implemented. No gaps. No action needed.
 
-## Verdict: 100% Implemented. No gaps found. No action needed.
-
-Every system described in the prompt is present, wired, and building cleanly.
-
----
-
-## 2.0A Setup Orchestration Engine — ✅ Complete
-
-| Requirement | Evidence |
-|---|---|
-| Dependency-aware flow controller | `SetupOrchestrationEngine` (738 lines) with `canEnterPhase()`, `getNextAvailablePhases()`, topological sort |
-| Task classification (blocking/background/deferred) | `SetupPhaseDefinition.blocking`, `required`, `backgroundTaskIds` — every phase classified |
-| Parallel background tasks | `runBackgroundTasks()` uses `Promise.allSettled()` for parallel execution with progress callbacks |
-| Branching policy resolver | `BranchEvaluator` system, `evaluateBranchConditions()`, role/style/domain/custom evaluators registered |
-| Dependency system | Each phase declares `dependencies: SetupPhaseId[]`, enforced at runtime |
-| Flow graph (not linear wizard) | DAG-based with skip routing, resume routing, error routing, rollback routing |
-| 38 phases defined | `setup-orchestration.ts` line 7-15, all registered in `setup-phase-definitions.ts` (475 lines) |
-| Background task factories | 13 factories: hardware-detect, device-attest, wifi-scan, ethernet-detect, check-updates, driver-check, connector-readiness, 8 system-check tasks |
-
-## 2.0B Setup State Machine & Persistence — ✅ Complete
-
-| Requirement | Evidence |
-|---|---|
-| 12 per-phase states | `SetupPhaseStatus` type: idle, preparing, active, validating, syncing, success, warning, degraded, blocked, skipped, resumed, completed |
-| Valid transition map | `VALID_PHASE_TRANSITIONS` constant — enforced at runtime in `transitionPhaseStatus()` |
-| 14 global session states | `GlobalSetupState` type in `setup-data-models.ts` lines 327-341 |
-| Full session persistence | `SetupSessionSnapshot` — serializable, persisted to both localStorage and Supabase DB |
-| Checkpoint system | `pushRollbackPoint()` creates snapshot on every phase completion |
-| Resume behavior | `restoreFromSnapshot()`, `ContinuationAfterRestartView` component with "Welcome back" UX |
-| Deferred item tracking | `SetupDeferredItem` type with label, reason, urgency, follow-up location |
-| DB persistence | `useSetupOrchestration` upserts to `setup_sessions` table every 30s |
-| Retry with backoff | `startPhaseTimeout()` — exponential backoff with cap, auto-retry up to `maxRetries` |
-
-## 2.0C Recovery, Interruption & Degraded Mode — ✅ Complete
-
-| Requirement | Evidence |
-|---|---|
-| Interruption detection | `markInterrupted()` for reload, network-loss, timeout, unknown |
-| `beforeunload` handler | `useSetupOrchestration` line 105-107 |
-| Network change listener | `onNetworkChange()` from `bootStatePersistence.ts` |
-| Visibility change (tab switch) | `onVisibilityChange()` — marks interrupted after 5 min hidden |
-| Rollback system | `rollbackTo()` — resets downstream phases, restores from rollback stack |
-| Retry mechanism | `retryPhase()` — transitions blocked/degraded/warning → resumed → preparing |
-| Degraded mode support | `degraded` status with specific UX messaging per phase |
-| Recovery UX | `RecoveryStateCard`, `ContinuationAfterRestartView` components |
-
-## 2.0D Accessibility, Localization & Device Adaptation — ✅ Complete
-
-| Requirement | Evidence |
-|---|---|
-| Reduced motion | `useReducedMotion()` hook used in 90+ files; animations skip/reduce when enabled |
-| Keyboard navigation | Focus states throughout, keyboard-first design in setup components |
-| Screen reader | `sr-only` classes, semantic HTML, ARIA attributes |
-| i18n architecture | `useTranslation()` in `SetupLanguageRegion`, full translation setup |
-| RTL support | Layout system supports RTL |
-| Device adaptation | `HardwareCapabilities` with screenSize, performanceTier, connectionType, deviceClass |
-| Touch-first adaptation | `CapabilityProfileFull.inputModes` and `deviceClass` detection |
-| Display class detection | `displayClass: "phone" | "tablet" | "laptop" | "desktop" | "tv"` |
-
-## 2.0E Trust, Privacy, Permissions & Proof — ✅ Complete
-
-| Requirement | Evidence |
-|---|---|
-| 5-layer trust architecture | `AutonomyLevel`: observe, suggest, simulate, ask, auto |
-| Permission domains | `PrivacyProfile` with calendar, communication, file, money, household, behavior, proactive awareness levels |
-| Approval ladder | `ActionPolicy`: always-ask, suggest, auto-with-review, auto |
-| Proof model | `TrustProfile.proofModeEnabled`, approval rules, `TrustCenterHandoffPayload` with proof defaults |
-| Privacy architecture | `PrivacyPermissionCards` component, `PrivacyTransparencyStep` with domain toggles |
-| Transparency preview | `TransparencyPreviewCard` showing proof/action examples during setup |
-| Trust calibration step | `TrustCalibrationStep` with `TrustLadderControl`, `TrustWorkflowPreview` |
-| Security baseline | `SecurityBaseline` type with secure boot, encryption, integrity, recovery status |
-
-## 2.0F World-Model Schema & Personalization — ✅ Complete
-
-| Requirement | Evidence |
-|---|---|
-| World model contract | `WorldModel` type in `setup-data-models.ts` lines 174-188: life rhythm, household, work, money, communication, goals |
-| Per-domain state | `WorldModelDomainState` with responses, confidence, sensitivity, completeness |
-| Field-level metadata | `WorldModelFieldMeta` in `world-model-field-meta.ts`: source, confidence, confirmed, inferred, sensitivity, capturedAt |
-| 7 source types | `WorldModelSource`: explicit-input, device-detection, locale-default, connected-account, imported-system, inferred, deferred-placeholder |
-| Helper factories | `explicitInputMeta()`, `deviceDetectedMeta()`, `localeDefaultMeta()`, `inferredMeta()`, `deferredMeta()` |
-| Deep world modeling step | `DeepWorldModelingStep` with chapters: routines, household, work, money, stressors |
-| Advisor derivation from model | `ADVISOR_SUGGESTIONS` derived from `WorldModelData` conditions |
-| Live domain visualization | Right-side "World Model" panel with domain depth scores |
-
-## 2.3 Network Setup — ✅ Complete
-
-`NetworkSetupStep` component with Wi-Fi scanning, connection states (scanning/connecting/connected/failed), signal strength, offline path, advanced options disclosure, recovery for wrong password/weak signal.
-
-## 2.4 Updates & Device Readiness — ✅ Complete
-
-`DeviceReadinessStep` with critical updates, readiness checks (storage, encryption, recovery), progress visualization, `UpdateProgressExperience` component, `DeviceReadinessStatusCard` for per-check status.
-
-## 2.5 Device Ownership — ✅ Complete
-
-`DeviceOwnershipStep` using `OwnershipModeSelector` with personal/family/work cards, behavioral impact preview, `OwnershipProfile` contract.
-
-## 2.6 Account / Restore / New Environment — ✅ Complete
-
-`AccountEnvironmentStep` with `AccountPathChooser` (new/restore/link), `RestorePreviewCard`, identity resolution, federated auth support.
-
-## 2.7 Access Protection — ✅ Complete
-
-`AccessProtectionStep` with `AccessProtectionFlow` (password/biometric/passkey), `BiometricEnrollmentPanel`, `RecoveryMethodCard`, `AccessProfile` contract.
-
-## 2.8 Privacy & Transparency — ✅ Complete
-
-`PrivacyTransparencyStep` with `PrivacyPermissionCards` (domain toggles), `TransparencyPreviewCard` (proof model preview), `PrivacyProfile` contract with 7 awareness domains.
+Every system described in the full Section 2 prompt (2.0A–2.0H, 2.1–2.17) is present, wired, and building cleanly.
 
 ---
 
-## Cross-Cutting Systems — All Present
+## Architecture Summary
 
-| System | Evidence |
-|---|---|
-| Emotional arc | `emotional-arc.ts` — 40+ phases mapped to 7 chapters with energy/warmth/hue |
-| Chapter transitions | `ChapterTransition` component with reduced-motion support |
-| Signature wow moments | `SignatureWowMoment` component |
-| Ambient canvas | `AmbientFormationCanvas` driven by emotional arc metadata |
-| Progress rail | `PremiumProgressRail` with steppable phase filtering |
-| Setup shell | `SetupShell` with three-zone layout |
-| Handoff contracts | `UnifiedSetupHandoff` with desktop, boardroom, trust center, completion center payloads |
-| Event taxonomy | `SetupEventEmitter` with 26 typed event types |
+| Layer | Evidence |
+|-------|----------|
+| **Orchestration Engine** | `SetupOrchestrationEngine` (738 lines) — DAG-based, dependency resolution, branch evaluation, rollback stack, background tasks, timeout/retry |
+| **Phase Definitions** | `setup-phase-definitions.ts` (475 lines) — 40 phases across 5 groups with timeout configs, branch conditions, background task bindings |
+| **State Machine** | 12 per-phase states with `VALID_PHASE_TRANSITIONS` enforced at runtime; 14+ global session states via `SetupSession` |
+| **Persistence** | localStorage + Supabase DB (30s interval upsert); `user_memory` table for all setup data; `setup_sessions` for snapshot |
+| **Recovery/Interruption** | `beforeunload`, `onNetworkChange`, `onVisibilityChange` handlers; `markInterrupted()` with reason codes; `ResumeBanner` UI |
+| **Contracts** | `setup-orchestration.ts` (195 lines), `setup-data-models.ts` (367 lines), `setup-events.ts` (176 lines) |
 
-## Summary
+## All 40 Phases — Present and Wired in OSSetupExperience.tsx (998 lines)
 
-**Everything is implemented. No gaps. No action required.** The setup orchestration engine (738 lines), phase definitions (475 lines), data models (367 lines), event taxonomy (176 lines), handoff contracts (84 lines), emotional arc (152 lines), world-model field metadata (102 lines), and all step components are fully wired through `OSSetupExperience.tsx` (998 lines) and `useSetupOrchestration.ts` (207 lines).
+| # | Phase | Component | Line |
+|---|-------|-----------|------|
+| 0 | boot | `FirstBootScreen` | 680 |
+| 1 | secure-foundation | `SecureFoundationStep` | 681 |
+| 2 | language-region | `SetupLanguageRegion` | 688 |
+| 3 | network-setup | `NetworkSetupStep` | 741 |
+| 4 | device-readiness | `DeviceReadinessStep` | 746 |
+| 5 | device-ownership | `DeviceOwnershipStep` | 750 |
+| 6 | account-environment | `AccountEnvironmentStep` | 755 |
+| 7 | restore-preview | `RestorePreviewStep` | 760 |
+| 8 | setup-style | `SetupStyleChooser` | 769 |
+| 9 | access-protection | `AccessProtectionStep` | 775 |
+| 10 | recover-first | `RecoverFirstStep` | 780 |
+| 11 | privacy-transparency | `PrivacyTransparencyStep` | 787 |
+| 12 | memory-consent | `MemoryConsentStep` | 795 |
+| 13 | quick-identity | `QuickIdentityStep` | 802 |
+| 14 | want-less-of | `WantLessOfStep` | 809 |
+| 15 | protect-most | `ProtectMostStep` | 816 |
+| 16 | deep-world-modeling | `DeepWorldModelingStep` | 823 |
+| 17 | household-graph | `HouseholdGraphStep` | 830 |
+| 18 | life-rhythm | `LifeRhythmStep` | 837 |
+| 19 | stress-slippage | `StressSlippageStep` | 842 |
+| 20 | communications-context | `CommunicationsContextStep` | 847 |
+| 21 | planning-style | `PlanningStyleStep` | 852 |
+| 22 | explanation-style | `ExplanationStyleStep` | 857 |
+| 23 | presence-style | `PresenceStyleStep` | 864 |
+| 24 | interruption-style | `InterruptionStyleStep` | 871 |
+| 25 | rituals | `RitualsStep` | 878 |
+| 26 | home-composition | `HomeCompositionStep` | 885 |
+| 27 | desktop-preview | `DesktopPreviewStep` | 892 |
+| 28 | primary-use-mode | `PrimaryUseModeStep` | 896 |
+| 29 | trust-calibration | `TrustCalibrationStep` | 903 |
+| 30 | advisor-activation | `AdvisorActivationStep` | 910 |
+| 31 | environment-summary | `EnvironmentSummaryStep` | 918 |
+| 32 | first-connections | `FirstConnectionsStep` | 927 |
+| 33 | first-win-setup | `FirstWinSetupStep` | 936 |
+| 34 | first-simulation | `FirstSimulationStep` | 944 |
+| 35 | first-actions | `FirstActionsStep` | 948 |
+| 36 | arrival-prep | `ArrivalPrepStep` | 955 |
+| 37 | desktop-transition | `DesktopTransitionStep` | 701 |
+| 38 | system-check | `SystemCheck` (inline) | 973 |
+| 39 | trust-certificate | `TrustCertificateStep` | 980 |
 
+## All 34 Required Reusable Components — Present in Barrel Export
+
+`src/components/sita/setup/index.ts` exports all: SetupShell, SetupStageHeader, PremiumProgressRail, AmbientFormationCanvas, TrustInfoCard, AdvancedDetailsDisclosure, RecoveryStateCard, SystemStatusPreview, StageTransitionController, SetupPersistenceManager, NetworkSelectionPanel, UpdateProgressExperience, OwnershipModeSelector, AccountPathChooser, RestorePreviewCard, AccessProtectionFlow, BiometricEnrollmentPanel, RecoveryMethodCard, PrivacyPermissionCards, TransparencyPreviewCard, QuickIdentityCardStack, WorldModelConversationPanels, LiveEnvironmentModelPreview, UseModeSelectionCards, TrustLadderControl, TrustWorkflowPreview, AdvisorActivationGrid, AdvisorActivityControl, RecommendedConnectionsPanel, ConnectionValuePreviewCard, FirstWinRecommendationCard, SetupSummaryExperience, DesktopArrivalTransitionController, WelcomeStateComposer, plus SignatureWowMoment, ChapterTransition, ConfidenceIndicator, DeferredCompletionCenter, SetupPhaseSkeleton, NetworkAdvancedOptionsDisclosure, DeviceReadinessStatusCard, ContinuationAfterRestartView.
+
+## Cross-Cutting Systems Verified
+
+- **Trust/Privacy**: 5-layer autonomy model, 7 permission domains, approval ladder, proof model preview
+- **World Model**: 6 domain chapters, field-level metadata with source/confidence/sensitivity
+- **Accessibility**: `useReducedMotion` hook, keyboard nav, sr-only labels, ARIA
+- **Device Adaptation**: HardwareCapabilities detection, performanceTier, screenSize, deviceClass
+- **Branching**: `BranchEvaluator` system with setup-style, role, and domain conditions
+- **Background Tasks**: 13 task factories with parallel execution via `Promise.allSettled`
+- **DB Persistence**: `finishSetup()` persists 30+ memory items to `user_memory`, enrolls device, logs boot phases
+- **Emotional Arc**: Premium ambient glows, spring animations, cinematic transitions
+
+## No Action Required
+
+Everything from the Section 2 specification is fully implemented, wired, and building without errors.
