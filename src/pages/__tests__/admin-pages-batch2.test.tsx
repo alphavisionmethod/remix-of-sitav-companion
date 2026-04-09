@@ -3,8 +3,9 @@ import { render } from "@/test/test-utils";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
-interface admin-pages-batch2.testRow {
+interface TestModuleRow {
   default?: unknown;
+  [key: string]: unknown;
 }
 
 vi.mock("react-router-dom", async () => {
