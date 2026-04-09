@@ -11,6 +11,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { SetupStageHeader, StageTransitionController } from "@/components/sita/setup";
+import { getRecommendationReason } from "@/lib/setup/reflection-copy";
 
 export interface AdvisorActivation {
   id: string;
@@ -22,6 +23,8 @@ interface AdvisorActivationStepProps {
   advisors: AdvisorActivation[];
   onUpdate: (advisors: AdvisorActivation[]) => void;
   primaryUseMode: string;
+  painPoints?: string[];
+  householdNodes?: { name: string; role: string }[];
   onNext: () => void;
   onPrev: () => void;
 }
@@ -91,7 +94,7 @@ const OS_REGIONS = [
   { id: "boardroom", label: "Boardroom", x: 45, y: 85, advisors: ["growth", "life"] },
 ];
 
-export function AdvisorActivationStep({ advisors, onUpdate, primaryUseMode, onNext, onPrev }: AdvisorActivationStepProps) {
+export function AdvisorActivationStep({ advisors, onUpdate, primaryUseMode, painPoints, householdNodes, onNext, onPrev }: AdvisorActivationStepProps) {
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const getAdvisorState = (id: string) => advisors.find(a => a.id === id) || { id, enabled: false, priority: "normal" };
@@ -139,6 +142,7 @@ export function AdvisorActivationStep({ advisors, onUpdate, primaryUseMode, onNe
             {ADVISORS.map((advisor, i) => {
               const state = getAdvisorState(advisor.id);
               const isRecommended = advisor.recommendedFor.includes(primaryUseMode);
+              const whyText = getRecommendationReason("advisor", advisor.id, { primaryUseMode, painPoints, householdNodes });
               const isExpanded = expandedId === advisor.id;
 
               return (
@@ -173,6 +177,9 @@ export function AdvisorActivationStep({ advisors, onUpdate, primaryUseMode, onNe
                           )}
                         </div>
                         <p className="text-xs text-muted-foreground">{advisor.role}</p>
+                        {whyText && (
+                          <p className="text-[10px] text-primary/70 mt-0.5">{whyText}</p>
+                        )}
                       </div>
                       <div className="flex items-center gap-2">
                         <button

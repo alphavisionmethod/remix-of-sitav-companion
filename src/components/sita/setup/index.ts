@@ -68,3 +68,9 @@ export { SetupPhaseSkeleton } from "./SetupPhaseSkeleton";
 
 // Language & Region
 export { SetupLanguageRegion } from "./SetupLanguageRegion";
+
+// Extracted Reusable Components
+export { NetworkAdvancedOptionsDisclosure } from "./NetworkAdvancedOptionsDisclosure";
+export { DeviceReadinessStatusCard } from "./DeviceReadinessStatusCard";
+export type { ReadinessStatus } from "./DeviceReadinessStatusCard";
+export { ContinuationAfterRestartView } from "./ContinuationAfterRestartView";
