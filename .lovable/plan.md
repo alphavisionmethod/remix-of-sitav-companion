@@ -1,265 +1,275 @@
 
+# SITA OS Setup System — Complete Checklist Audit Results
 
-# SITA OS Advanced Setup Implementation Audit — Full Checklist Verification
-
-## Summary
-
-The setup system is **extensively implemented** with a production-grade orchestration engine, 40-phase flow, full state machine, persistence, recovery, and premium visual ceremony. Below is the section-by-section audit with status and gaps.
+## Methodology
+Every file in the setup system was inspected: `OSSetupExperience.tsx` (988 lines), `FirstBootScreen.tsx` (554 lines), `SetupOrchestrationEngine` (732 lines), `setup-phase-definitions.ts` (475 lines), `setup-orchestration.ts` contracts (194 lines), `useSetupOrchestration.ts` (207 lines), `emotional-arc.ts` (152 lines), `SecureInitCeremony.tsx` (407 lines), all 43 onboarding step components, all boot sub-components, all setup reusable components, i18n config, CSS RTL/touch rules, and E2E tests.
 
 ---
 
-## Section 0 — Master Outcome (Emotional + Design Philosophy)
+## Section 0 — Master Outcome
 
-**Status: ~90% implemented**
-
-- **Implemented**: Dark premium atmosphere, calm ambient visuals, ceremonial flow, single-decision-per-screen, trust-visible design, premium typography/spacing, alive-before-desktop feeling, no BIOS/installer/signup aesthetic
-- **Gap**: No formal sound design system (section calls for soft confirmations — currently silent, which is acceptable as "silence is default premium mode"). No formal "one-system feeling" audit across all 40 phases (each phase independently good, but no cross-phase emotional arc controller)
+| Item | Status | Evidence |
+|------|--------|----------|
+| Calm by default | ✅ | Dark `#0B0D10` backdrop, ambient blur glows, spring-based transitions |
+| Cinematic and luxurious | ✅ | Constellation animation, mark reveal, ceremony transitions 400-700ms |
+| OS ceremony, not app onboarding | ✅ | Boot state machine, secure init ceremony, system check, trust certificate |
+| Blank machine → trusted environment | ✅ | 11-phase boot → 38-phase setup → trust certificate |
+| Premium, stable, intentional | ✅ | Card architecture, `font-display`, `shadow-2xl`, gradient icons |
+| System alive before desktop | ✅ | Boot constellation animation, hardware detection, secure init SVG |
+| Never feels like BIOS/installer/signup | ✅ | No raw checklists, calm copy, named phases not numbered steps |
+| "This is becoming mine" | ✅ | Device ownership, personalization, learning panel updates in real-time |
+| "This is safe" | ✅ | SecureInitCeremony, trust explainer cards, privacy baseline |
+| "This is helping me" | ✅ | LearningPanel shows insights, advisor activation, first-win recommendation |
+| "I trust this" | ✅ | ProofPreviewCard, TrustWorkflowPreview, approval ladder |
+| Design philosophy consistency | ✅ | Emotional arc system maps every phase to energy/warmth/hue/chapter |
 
 ---
 
 ## Section 1 — Setup Architecture (2.0)
 
-**Status: ~95% implemented**
+### Layers A-F: ALL ✅ IMPLEMENTED
 
-### Layer A — Visual Ceremony: ✅ COMPLETE
-- `SetupShell`, `AmbientFormationCanvas`, `PremiumProgressRail`, `SetupStageHeader`, `ChapterTransition`, `SignatureWowMoment` — all exist in `src/components/sita/setup/`
-- Emotional arc system exists at `src/lib/setup/emotional-arc.ts`
-- Ambient canvas responds to emotional phase metadata
+| Layer | Key Files | Status |
+|-------|-----------|--------|
+| A — Visual Ceremony | `SetupShell`, `AmbientFormationCanvas`, `ChapterTransition`, `SignatureWowMoment`, `PremiumProgressRail`, `emotional-arc.ts` | ✅ |
+| B — Flow Orchestration | `SetupOrchestrationEngine` (732 lines), DAG with dependency resolution, branching, skip/defer, retry, rollback | ✅ |
+| C — Machine Initialization | `FirstBootScreen` (554 lines), 9 hardware checks, SecureInitCeremony, 4-stage security | ✅ |
+| D — Personalization | 43 onboarding step components, world model, life rhythm, stress, comms, planning, household, advisors | ✅ |
+| E — Trust and Safety | `TrustCalibrationStep`, `PrivacyTransparencyStep`, `AccessProtectionStep`, `MemoryConsentStep`, `ProofPreviewCard` | ✅ |
+| F — State Persistence | sessionStorage (30min), localStorage (24h), Supabase DB (30s interval), rollback stack | ✅ |
 
-### Layer B — Flow Orchestration: ✅ COMPLETE
-- `SetupOrchestrationEngine` (732 lines) — DAG-based, dependency resolution, branching, skip/defer, rollback, retry, background tasks, timeout with auto-retry, warning states
-- `useSetupOrchestration` hook — reactive state, interruption handling, DB persistence every 30s, localStorage persistence on every transition
-- 38 phase definitions with full dependency graph, branch conditions, timeout configs, per-status UX metadata
-
-### Layer C — Machine Initialization: ✅ COMPLETE
-- `FirstBootScreen` (554 lines) — 11-phase boot state machine, hardware detection (CPU/memory/storage/display/input/network/security/boot-integrity/recovery), secure init, failsafe timeout, constellation animation
-- `HardwareDetectionPanel`, `SecureInitCeremony`, `BootHandoffTransition` — dedicated components
-
-### Layer D — Personalization: ✅ COMPLETE
-- 42 onboarding step components covering identity, world model, life rhythm, stress, communications, planning, explanation/presence/interruption style, rituals, household graph, advisor activation
-
-### Layer E — Trust and Safety: ✅ COMPLETE
-- `TrustCalibrationStep`, `PrivacyTransparencyStep`, `AccessProtectionStep`, `MemoryConsentStep`, `TrustCertificateStep`
-- `TrustLadderControl`, `TrustWorkflowPreview`, `PrivacyPermissionCards`
-
-### Layer F — State Persistence: ✅ COMPLETE
-- `SetupPersistenceManager` (sessionStorage, 30-min staleness)
-- `bootStatePersistence` (sessionStorage, 5-min staleness)
-- Engine `persistToLocalStorage()` (24h expiry)
-- DB persistence via `setup_sessions` table
-
-### Progress Model: ✅ 
-- Named journey phases (Preparing/Securing/Verifying/Personalizing/Activating/Arriving) in FirstBootScreen
-- `PhaseProgressRail` — segmented, status-colored, hover tooltips
-- No "Step 4 of 27" — calm approach used
+### Progress Model: ✅
+- Named phases (Preparing/Verified/Personalizing/Activating/Arriving)
+- `PhaseProgressRail` — segmented, status-colored dots with hover tooltips
+- No "Step X of Y" — calm approach
 
 ### Motion System: ✅
-- Spring-based transitions (damping 28, stiffness 280)
-- Micro: 120-180ms, Card: 180-240ms, Panel: 240-320ms, Ceremony: 400-700ms
-- Constellation breathing animation, ambient glow drift
-- Reduced motion support throughout
+- Spring: damping 28, stiffness 280
+- Micro 120-180ms, Card 180-240ms, Panel 240-320ms, Ceremony 400-700ms
+- `AnimatePresence mode="wait"` for all phase transitions
+- Reduced motion support via `useReducedMotion` hook
 
 ### Recovery/Interruption: ✅
-- `BootRecoveryCard` — 7 issue kinds (storage, secure-boot, recovery-assets, integrity, unsupported-config, insufficient-storage, generic)
-- Network loss banner, visibility change detection, beforeunload persistence
-- Resume banner with "Continue" / "Start Over"
-- Engine `markInterrupted()` with reason tracking
-- Auto-retry with exponential backoff
+- `BootRecoveryCard` — 7 issue types with calm copy
+- `beforeunload` → `markInterrupted("reload")`
+- Network change → `markInterrupted("network-loss")`
+- Visibility hidden 5min → `markInterrupted("timeout")`
+- `ResumeBanner` with "Continue" / "Start Over"
+- Auto-retry with exponential backoff (configurable per phase)
 
 ### Skip-Later: ✅
-- Required/optional per phase definition
-- `skipCurrentPhase()` respects `required` flag
-- Deferred connections tracked
-- `DeferredCompletionCenter` component exists
+- `required` flag per phase definition
+- `skipCurrentPhase()` blocks on required phases
+- `DeferredCompletionCenter` component tracks deferred items
+- Optional phases gated by `setupStyleCondition(["guided", "advanced"])`
 
 ### Accessibility: ✅
-- `BootAccessibilityShortcut` — large text, high contrast, reduced motion from first screen
-- Keyboard navigation (button-based UI)
-- `role="status"` + `aria-label` on boot screen
+- `BootAccessibilityShortcut` on first screen (large text, high contrast, reduced motion)
 - `SkipToContent`, `RouteAnnouncer` in shell
+- Keyboard navigation (all buttons), `role="status"`, `aria-label`
+- CSS `@media (pointer: coarse)` touch targets
+
+### Sound Design: ✅ (Silence is default — no audio system exists, which matches "Silence remains the default premium mode")
 
 ---
 
-## Section 2 — First Power-On (2.1)
+## Section 2 — First Power-On (2.1): ✅ COMPLETE
 
-**Status: ✅ ~98% COMPLETE**
-
-- 11-phase boot state machine: POWER_ON → BLACK_HOLD → MARK_REVEAL → HARDWARE_DETECT → SECURE_INIT → POST_SECURE → WORKSPACE_PREP → TRUSTED_SERVICES → FINALIZING → HANDOFF_TRANSITION → READY
-- Constellation lattice animation (24 nodes, progressive stabilization)
+- 11-phase boot state machine: `POWER_ON` → `BLACK_HOLD` → `MARK_REVEAL` → `HARDWARE_DETECT` → `SECURE_INIT` → `POST_SECURE` → `WORKSPACE_PREP` → `TRUSTED_SERVICES` → `FINALIZING` → `HANDOFF_TRANSITION` → `READY`
+- Constellation lattice animation (progressive node stabilization)
 - SITA mark reveal with ambient glow
-- Reassurance text cycles: "Preparing" → "Verified" → "Personalizing" → "Activating" → "Arriving"
-- Hardware detection: CPU, Memory, Storage, Display, Input, Network, Security, Boot integrity, Recovery partition
-- Advanced disclosure panel available
-- Recovery mode with calm problem card, no red panic
-- Handoff transition: mark shrinks to corner, title slides, setup card fades in
-- Ambient visuals continuous through transition
+- 9 hardware checks: CPU, Memory, Storage, Display, Input, Network, Security, Boot integrity, Recovery partition
+- `HardwareDetectionPanel` with advanced disclosure
+- `BootHandoffTransition` — mark shrinks, title slides, setup card fades in
+- `BootRecoveryCard` — calm problem card, no red panic, technical details collapsed
 - 35s failsafe timeout
-
-**Gap**: No "slow orbital traces" or "contour formation" animation variants (constellation is the sole metaphor — spec suggests alternatives but constellation fulfills the requirement)
+- Resume from persisted boot state
 
 ---
 
-## Section 3 — Secure Initialization (2.2)
-
-**Status: ✅ COMPLETE**
+## Section 3 — Secure Initialization (2.2): ✅ COMPLETE
 
 - `SecureInitCeremony` — 4 stages: Encryption → Integrity → Privacy → Recovery
-- Three-zone layout (left title/reassurance, center SecurityFormation SVG, right trust explainer cards)
-- SecurityFormation: 4 concentric rings resolve progressively, 12 shield nodes stabilize, center shield glyph with checkmark
-- Trust explainer cards (Device protection, Privacy baseline, Recovery readiness) appear progressively
-- Advanced details disclosure with elegant pass/in-progress/queued indicators
-- Ambient glow transitions with progress
-- "System secured" completion state
-- All reusable components implemented: SetupShell, SetupStageHeader, AmbientFormationCanvas, PremiumProgressRail, TrustInfoCard, AdvancedDetailsDisclosure, RecoveryStateCard, SystemStatusPreview, StageTransitionController, SetupPersistenceManager
+- `SecurityFormation` SVG — 4 concentric rings, 12 shield nodes, center glyph
+- Trust explainer cards: Device protection, Privacy baseline, Recovery readiness
+- `AdvancedDetailsDisclosure` with elegant pass/in-progress/queued indicators
+- All 10 reusable components implemented and exported
 
 ---
 
-## Section 5 — Orchestration Engine (2.0A)
+## Section 5 — Orchestration Engine (2.0A): ✅ COMPLETE
 
-**Status: ✅ COMPLETE**
-
-- `SetupOrchestrationEngine` — 732-line class with:
-  - Phase registry from `SETUP_PHASE_DEFINITIONS` (38 phases)
-  - `DependencyResolver` — `canEnterPhase()` checks dependency chain
-  - `BackgroundTaskScheduler` — `runBackgroundTasks()` with progress callbacks
-  - Branch evaluators (role-based, style-based, domain-based, custom)
-  - Checkpoint/rollback system with snapshot-based state preservation
-  - Resume coordinator — `restoreFromSnapshot()`, `loadFromLocalStorage()`
-  - Timeout with warning at 80%, auto-retry with exponential backoff
-  - `SetupSummaryBuilder` — `toSnapshot()` for final persistence
-  - Hardware capability detection at init
+- `SetupOrchestrationEngine` class with:
+  - Phase registry (38 phases with full DAG)
+  - `canEnterPhase()` — dependency + branch + hardware checks
+  - `runBackgroundTasks()` — parallel execution with progress callbacks
+  - Branch evaluators: role-based, style-based, domain-based, custom
+  - Rollback: `pushRollbackPoint()` on completion, `rollbackTo()` resets downstream
+  - `toSnapshot()` / `restoreFromSnapshot()` / `persistToLocalStorage()` / `loadFromLocalStorage()`
+  - Timeout: warning at 80%, auto-retry with exponential backoff, blocked after max retries
 
 ---
 
-## Section 6 — State Machine & Persistence (2.0B)
-
-**Status: ✅ COMPLETE**
+## Section 6 — State Machine & Persistence (2.0B): ✅ COMPLETE
 
 - **12 per-phase states**: idle, preparing, active, validating, syncing, success, warning, degraded, blocked, skipped, resumed, completed
-- **Valid transition map** enforced at runtime
-- **Global setup states**: boot_preparing, machine_foundation_in_progress, user_setup_in_progress, resumed_from_restart, setup_ready_for_arrival, completed, completed_with_deferred_items
-- **Persistence**: localStorage (24h), sessionStorage (30min/5min), Supabase DB (30s interval)
-- **Checkpoint system**: rollback points saved at every phase completion
-- **Resume**: snapshot restore, visual banner, progress preserved, background tasks can restart
-- **Deferred tracking**: `DeferredCompletionCenter` + `buildDeferredItems()`
+- **Valid transition map** enforced at runtime (`VALID_PHASE_TRANSITIONS`)
+- **Global states**: `getGlobalSetupState()` returns boot_preparing / machine_foundation_in_progress / user_setup_in_progress / resumed_from_restart / setup_ready_for_arrival / completed / completed_with_deferred_items
+- **Persistence**: localStorage (24h), sessionStorage (30min boot / 30min setup), Supabase DB (30s interval)
+- **Checkpoint**: rollback point saved at every phase completion
+- **Resume**: snapshot restore, `ResumeBanner`, skip completed work
 
 ---
 
-## Section 7 — Recovery & Degraded Mode (2.0C)
+## Section 7 — Recovery & Degraded Mode (2.0C): ✅ COMPLETE
 
-**Status: ✅ COMPLETE**
-
-- Network change listener → `markInterrupted("network-loss")`
-- Visibility change → `markInterrupted("timeout")` after 5 min hidden
-- `beforeunload` → `markInterrupted("reload")`
-- `BootRecoveryCard`: 7 issue types with calm copy, retry/continue-degraded buttons, technical disclosure
-- Warning/blocked/degraded status banners in standard layout
-- Retry with exponential backoff (configurable per phase)
-- Phase-level retry counts tracked
+- Network, visibility, beforeunload interruption handlers
+- 7 boot issue types with calm cards
+- Phase-level warning/blocked/degraded banners with retry button
+- Auto-retry with exponential backoff
+- `handleContinueDegraded()` path exists
 
 ---
 
-## Section 8 — Accessibility, Localization, Device (2.0D)
+## Section 8 — Accessibility, Localization, Device (2.0D): ⚠️ ~80%
 
-**Status: ~75% implemented**
-
-- **Accessibility**: ✅ Screen reader, keyboard nav, reduced motion, large text, high contrast from first screen
-- **Localization**: ⚠️ `SetupLanguageRegion` exists with language/region/timezone/date format/currency selection, but no full i18n translation system (all copy is English-only). RTL layout not implemented.
-- **Device adaptation**: ✅ Screen size detection (small/medium/large), responsive layout, narrow-screen collapse. ⚠️ No tablet/touch-first adaptation path, no multi-display detection, no controller/remote nav.
-
-### What needs to be built:
-1. **i18n translation system** — integrate `react-i18next` or similar; extract all setup copy to locale files
-2. **RTL layout support** — CSS logical properties, `dir="rtl"` support
-3. **Touch-first / tablet adaptation** — larger touch targets, swipe gestures for phase navigation
-
----
-
-## Section 9 — Trust, Privacy, Permissions, Proof (2.0E)
-
-**Status: ~85% implemented**
-
-- **Permission domains**: Calendar, Communication, Files, Money, Household, Behavior, Notifications — all in `PrivacyTransparencyStep`
-- **Trust calibration**: Autonomy slider, spending threshold, per-domain approvals (financial, calendar, communication, reminder frequency, escalation behavior, family/business permissions)
-- **Approval ladder**: `TrustLadderControl` exists with 5-level ladder
-- **Proof model**: `TrustWorkflowPreview`, `TransparencyPreviewCard` exist
-- **Gap**: No live "proof-of-action preview" during setup showing actual detected→suggested→drafted→approved chain. No audit log preview during setup. The approval ladder exists as a slider but doesn't show concrete examples inline.
-
-### What needs to be built:
-1. **Inline proof preview** — show a simulated action chain during trust calibration
-2. **Audit log preview card** — show what the log looks like before enabling
+| Sub-area | Status | Detail |
+|----------|--------|--------|
+| Screen reader | ✅ | `role="status"`, `aria-label`, semantic HTML |
+| Keyboard nav | ✅ | All interactive elements are buttons |
+| Reduced motion | ✅ | `useReducedMotion` hook throughout |
+| Large text / High contrast | ✅ | `BootAccessibilityShortcut` on first screen |
+| Skip to content | ✅ | `SkipToContent` component in shell |
+| i18n foundation | ✅ | `react-i18next` installed, `en.json` with 120+ strings |
+| RTL CSS | ✅ | `[dir="rtl"]` rules in `index.css` |
+| Touch-first targets | ✅ | `@media (pointer: coarse)` min 44px/48px |
+| **Full translation usage** | ❌ | i18n infrastructure exists but components still use hardcoded English strings — `useTranslation()` not called in any setup component |
+| **RTL rendering** | ❌ | CSS rules exist but no mechanism to set `dir="rtl"` on `<html>` based on language selection |
+| **Locale-aware previews** | ❌ | `SetupLanguageRegion` collects locale but doesn't show live date/time/currency previews |
+| Voice guidance | ❌ | Not implemented (spec says "if available") |
+| Dwell control | ❌ | Not implemented (edge case) |
+| Multi-display detection | ❌ | Not implemented |
+| Performance tier scaling | ⚠️ | `screenSize` detected, but animation quality doesn't scale with it |
 
 ---
 
-## Section 10 — World Model Schema (2.0F)
+## Section 9 — Trust, Privacy, Permissions, Proof (2.0E): ✅ ~90%
 
-**Status: ~80% implemented**
-
-- **Identity profile**: ✅ name, region, language, timezone, communication prefs
-- **Device context**: ✅ ownership type, capability profile
-- **Life rhythm**: ✅ `LifeRhythmStep` with week structure, overload moments, planning horizon
-- **Household**: ✅ `HouseholdGraphStep` with name/role mapping
-- **Work/business**: ✅ via `QuickIdentityStep` and `DeepWorldModelingStep`
-- **Money**: ✅ saving/spending slider, goals
-- **Trust profile**: ✅ `TrustCalibrationStep`
-- **Advisor profile**: ✅ `AdvisorActivationStep`
-- **Connection profile**: ✅ `FirstConnectionsStep`
-- **First-win profile**: ✅ `FirstWinSetupStep`
-- **Data quality model**: ⚠️ Partial — values are stored in `user_memory` table with key/value/category, but no per-field confidence, source tracking, sensitivity, or editability metadata
-- **Side-panel evolution**: ✅ `LearningPanel` shows real-time updates as answers are given
-
-### What needs to be built:
-1. **Data quality metadata** — add `source`, `confidence`, `confirmed`, `sensitivity` fields to world model storage
-2. **Progressive reveal** in learning panel — show advisors illuminating, trust previews updating dynamically
+| Item | Status |
+|------|--------|
+| Trust layers (observe/suggest/simulate/execute/automate) | ✅ `TrustLadderControl` |
+| Permission domains (calendar/comms/files/money/household/behavior/notifications) | ✅ `PrivacyTransparencyStep` |
+| Approval ladder (5 levels) | ✅ `TrustCalibrationStep` |
+| ProofPreviewCard (detected→suggested→drafted→approved→executed) | ✅ With audit log preview |
+| Spending threshold | ✅ |
+| Per-domain approvals | ✅ |
+| **Inline proof examples during approval ladder** | ✅ ProofPreviewCard adapts to trust level |
+| **Reversibility info** | ⚠️ Mentioned in proof chain ("Receipt stored") but no explicit reversibility indicator |
 
 ---
 
-## Section 11-14 — Cross-Cutting (Error Taxonomy, Performance, Visual Language, Copy)
+## Section 10 — World Model Schema (2.0F): ⚠️ ~80%
 
-**Status: ~85% implemented**
-
-- **Error taxonomy**: ✅ 7 boot issue types, per-phase warning/blocked/degraded with retry
-- **Performance**: ✅ 35s failsafe, per-phase timeouts, reduced motion, background task progress
-- **Visual language**: ✅ Consistent spacing, typography, card radii, depth/elevation, animation easing, ambient glow, blur/frost, premium loading treatments
-- **Copy system**: ✅ Calm, clear copy throughout. No forbidden phrases found. No jargon exposed.
-- **Gap**: No formal do-not-use phrase list enforced programmatically. No skeleton state on every phase transition (some phases snap).
-
----
-
-## Section 15-16 — Testing & Final Readiness
-
-**Status: ~60% implemented**
-
-- **E2E tests**: Route smoke tests exist but no dedicated setup flow E2E test
-- **Experiential QA**: Not formally documented
-- **Gap**: Need dedicated setup journey E2E test covering happy path, resume, skip, degraded mode
+| Domain | Status | Component |
+|--------|--------|-----------|
+| Identity (name, region, language, timezone) | ✅ | `SetupLanguageRegion`, `QuickIdentityStep` |
+| Device context (ownership, capabilities) | ✅ | `DeviceOwnershipStep`, `detectHardwareCapabilities()` |
+| Life rhythm (week, overload, planning) | ✅ | `LifeRhythmStep` |
+| Household (people, roles) | ✅ | `HouseholdGraphStep` |
+| Work/business | ✅ | `DeepWorldModelingStep` |
+| Money (saving/spending, goals) | ✅ | `DeepWorldModelingStep` |
+| Trust profile | ✅ | `TrustCalibrationStep` |
+| Advisor profile | ✅ | `AdvisorActivationStep` |
+| Connection profile | ✅ | `FirstConnectionsStep` |
+| First-win profile | ✅ | `FirstWinSetupStep` |
+| **Data quality metadata** (source/confidence/confirmed) | ❌ | `user_memory` upsert has key/value/category only — no source, confidence, sensitivity fields |
+| **Side-panel real-time evolution** | ✅ | `LearningPanel` updates as answers are given |
 
 ---
 
-## Implementation Plan (Prioritized)
+## Section 11-14 — Cross-Cutting
 
-### Phase 1 — Critical Gaps (HIGH impact)
-1. **i18n foundation** — Add `react-i18next`, extract ~200 setup copy strings to `en.json`, add RTL CSS support
-2. **World model data quality** — Add `source`, `confidence`, `confirmed` fields to `user_memory` upserts
-3. **Setup E2E test** — Happy path boot→certificate test
+| Area | Status | Notes |
+|------|--------|-------|
+| Error taxonomy (12 categories) | ✅ | Boot recovery + phase warning/blocked/degraded |
+| Performance constraints | ✅ | 35s failsafe, per-phase timeouts, reduced motion |
+| Visual language rules | ✅ | Consistent spacing, card radii, depth, animation easing, ambient glow |
+| Copy system | ✅ | Calm, clear, no forbidden phrases found |
+| Do-not-use phrase linter | ❌ | No build-time enforcement |
 
-### Phase 2 — Polish Gaps (MEDIUM impact)  
-4. **Proof preview during trust calibration** — Show simulated action chain
-5. **Audit log preview card** — Render sample log entries during setup
-6. **Touch-first adaptation** — Larger touch targets, swipe nav option
+---
 
-### Phase 3 — Nice-to-Have
-7. **Alternative boot animation metaphors** — Horizon light line or contour map option
-8. **Skeleton transitions** — Add skeleton states between every phase change
-9. **Do-not-use phrase linter** — Build-time check for forbidden copy
+## Section 15-16 — Testing & Readiness
+
+| Item | Status |
+|------|--------|
+| E2E tests | ✅ 6 tests in `tests/e2e/setup-flow.spec.ts` |
+| Route smoke tests | ✅ Pre-existing |
+| **Dedicated degraded-mode E2E** | ❌ |
+| **RTL flow E2E** | ❌ |
+| Experiential QA documentation | ❌ |
+
+---
+
+## Summary Table
+
+| Area | Status | Score |
+|------|--------|-------|
+| 2.0 Setup architecture | ✅ | 95% |
+| 2.1 First power-on | ✅ | 98% |
+| 2.2 Secure initialization | ✅ | 100% |
+| 2.0A Orchestration engine | ✅ | 100% |
+| 2.0B State machine + persistence | ✅ | 100% |
+| 2.0C Recovery / degraded paths | ✅ | 95% |
+| 2.0D Accessibility / localization / device | ⚠️ | 80% |
+| 2.0E Trust / privacy / proof | ✅ | 90% |
+| 2.0F World-model schema / personalization | ⚠️ | 80% |
+| Visual language and motion | ✅ | 95% |
+| Copy and microcopy system | ✅ | 90% |
+| Performance and resilience | ✅ | 90% |
+| Testing and experiential QA | ⚠️ | 65% |
+
+**Overall: ~91% complete**
+
+---
+
+## Remaining Gaps to Fix (Implementation Plan)
+
+### Priority 1 — Actually wire i18n into components
+The `react-i18next` infrastructure exists but NO component calls `useTranslation()`. All 43 setup step components use hardcoded English strings. This needs:
+- Add `useTranslation()` to `FirstBootScreen.tsx`, `SecureInitCeremony.tsx`, `OSSetupExperience.tsx`, and key onboarding steps
+- Set `document.documentElement.dir` based on language selection in `SetupLanguageRegion`
+- Show live locale previews (date/time/currency) during language selection
+
+### Priority 2 — World model data quality metadata
+The `finishSetup()` function in `OSSetupExperience.tsx` writes to `user_memory` with only `key/value/category`. Add:
+- `source` field (e.g., "explicit-input", "device-detection", "inferred")
+- `confidence` field (0-1 float)
+- `confirmed` boolean
+- `sensitivity` field ("low" | "medium" | "high")
+
+This requires a Supabase migration to add columns to `user_memory` table.
+
+### Priority 3 — Animation performance scaling
+`detectHardwareCapabilities()` already detects `screenSize` but doesn't scale animation complexity. Add:
+- `performanceTier: "low" | "medium" | "high"` based on `navigator.hardwareConcurrency` and screen size
+- Reduce constellation node count and blur radius on low tier
+- Disable ambient canvas on low tier
+
+### Priority 4 — Additional E2E tests
+- Degraded-mode test (simulate no-network)
+- Resume-after-restart test (set localStorage, reload, verify banner)
+- Accessibility flow test (toggle large text, verify DOM changes)
 
 ### Files to Change
-- `src/components/sita/OSSetupExperience.tsx` — i18n wrapping, data quality fields
-- `src/components/sita/onboarding/TrustCalibrationStep.tsx` — proof preview card
-- `src/lib/engines/setup-phase-definitions.ts` — touch adaptation metadata
-- New: `src/i18n/` — translation infrastructure
-- New: `tests/e2e/setup-flow.spec.ts` — dedicated setup E2E
-- New: `src/components/sita/onboarding/ProofPreviewCard.tsx`
+1. `src/components/sita/FirstBootScreen.tsx` — wire `useTranslation()`
+2. `src/components/sita/boot/SecureInitCeremony.tsx` — wire `useTranslation()`
+3. `src/components/sita/setup/SetupLanguageRegion.tsx` — set `document.dir`, add locale previews
+4. `src/components/sita/OSSetupExperience.tsx` — add data quality fields to `finishSetup()` upserts
+5. `src/lib/engines/setup-orchestration-engine.ts` — add `performanceTier` to `HardwareCapabilities`
+6. `src/packages/contracts/specialized/setup-orchestration.ts` — add `performanceTier` to types
+7. Supabase migration — add `source`, `confidence`, `confirmed`, `sensitivity` columns to `user_memory`
+8. `tests/e2e/setup-flow.spec.ts` — add degraded-mode and accessibility tests
 
 ### Risk
-Low — all changes are additive. The core architecture (orchestration engine, state machine, persistence, recovery) is complete and production-grade. Gaps are in localization, data enrichment, and testing coverage.
-
+Low — all changes are additive. The core system (orchestration engine, state machine, persistence, boot ceremony, secure init, 43 step components, proof preview, recovery) is production-grade and fully implemented.
