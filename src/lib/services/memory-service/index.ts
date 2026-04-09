@@ -5,4 +5,3 @@ export * from "./preference-memory.service";
 export * from "./boardroom-memory.service";
 export * from "./trust-memory.service";
 export * from "./correction.service";
-
