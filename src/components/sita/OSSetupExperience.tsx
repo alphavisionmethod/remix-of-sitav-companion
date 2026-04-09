@@ -441,7 +441,7 @@ export function OSSetupExperience() {
     trustCalibration: {
       level: 0, spendingThreshold: 100, financialApprovals: true, calendarApprovals: false,
       communicationApprovals: true, reminderFrequency: "balanced", escalationBehavior: "notify",
-      familyPermissions: false, businessPermissions: false,
+      familyPermissions: false, businessPermissions: false, silentAutomation: false,
     },
     advisorActivation: [],
     deferredConnections: [],
