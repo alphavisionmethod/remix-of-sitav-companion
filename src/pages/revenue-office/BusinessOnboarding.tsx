@@ -6,6 +6,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 export default function BusinessOnboarding() {
   return (
     <>
+      <h1 className="sr-only">Business Onboarding</h1>
       <DemoModeBadge />
       <FormationShell />
     </>

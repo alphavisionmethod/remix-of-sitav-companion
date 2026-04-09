@@ -27,12 +27,15 @@ export default function DesktopPage() {
   }
 
   return (
-    <DesktopSurface
+    <>
+      <h1 className="sr-only">Desktop</h1>
+      <DesktopSurface
       userName={user?.user_metadata?.full_name || user?.email?.split("@")[0] || "User"}
       trustPosture={state.trustPosture}
       notifications={state.notifications}
       continuity={state.continuity}
       onOpenCommand={openCommand}
     />
+    </>
   );
 }
