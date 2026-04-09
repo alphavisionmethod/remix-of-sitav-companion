@@ -1144,6 +1144,7 @@ const App = () => (
                     {/* System Utilities */}
                     <Route path="/clipboard-history" element={<ClipboardHistory />} />
                     <Route path="/print-scan" element={<PrintScanCenter />} />
+                    <Route path="/recovery" element={<RecoveryCenter />} />
 
                     {/* Control */}
                     <Route path="/personalization" element={<PersonalizationStudio />} />
