@@ -1,66 +1,93 @@
 
 
-# Fix All Missing & Stale Documentation
+# SITA OS — Fix Everything for 100% Production Readiness
 
-## Problem
+## Current State (Verified)
 
-1. **7 major page domains have zero architecture docs** (137 pages undocumented)
-2. **3 generated markdown reports are stale** (dated April 4, not reflecting recent fixes)
-3. **Existing docs need updates** to reflect completed work (RLS hardened, type safety clean, OTA/backup scripts added)
+| Metric | Status |
+|--------|--------|
+| TypeScript errors | **0** (tsc clean) |
+| `as any` in pages | **0** |
+| `as unknown as` in pages | **0** |
+| TODO/FIXME markers | **0** |
+| Pages | **658** |
+| Edge functions | **51** |
+| Security scan | **1 warning** (leaked password — already ignored, Supabase Dashboard action) |
+| OTA agent | Exists |
+| Backup scripts | Exist |
 
-## Missing Architecture Docs
+## Remaining Gaps (5 categories)
 
-| Domain | Pages | Needed Doc |
-|--------|-------|------------|
-| `investment-office/` | 38 | `INVESTMENT_OFFICE_AND_CAPITAL_SYSTEM.md` |
-| `revenue-office/` | 39 | `REVENUE_OFFICE_AND_GROWTH_SYSTEM.md` |
-| `digital-presence/` | 19 | `DIGITAL_PRESENCE_AND_WEB_SYSTEM.md` |
-| `atlas/` | 11 | `ATLAS_OPERATIONS_AND_PLATFORM_TRUTH.md` |
-| `mobile/` | 9 | `MOBILE_EXPERIENCE_SYSTEM.md` |
-| `app-platform/` | 16 | `APP_PLATFORM_AND_INTEGRATIONS.md` |
-| `auth/` | 4 | Covered by existing PREMIUM_OS doc — add Auth section |
+### 1. Type Safety: 963 `: any)` callbacks across 230 page files
+The biggest remaining gap. Every `.filter((x: any) => ...)` and `.map((r: any) => ...)` is operating on untyped query results. Fix by creating row-type interfaces and replacing `: any)` with typed parameters.
 
-## What Each New Doc Contains
+**Approach:** Process by domain cluster (top 20 worst files first, then sweep remaining):
+- **Batch 1** — OwnerCenter (40), ConciergeOverview (25), CN01 (25), MSA01 (18), InvoicesCollections (16) = 124 fixes
+- **Batch 2** — MSA05 (15), OpportunitiesCenter (14), ISA07 (14), ConnectorHub (14), BusinessBoardroom (12) = 69 fixes
+- **Batch 3** — NSS04 (11), APL01 (11), AND01 (11), QuotesWorkspace (10), NOT01 (10), AR01 (10) = 63 fixes
+- **Batch 4** — Remaining 210 files (~706 fixes), processed in groups of 10-15 files
 
-Each follows the existing pattern (40–75 lines): Ownership, Core Capabilities, Page Map, Data Model, Proof Model, Integration Points.
+**For each file:** Extract query result shapes into typed interfaces (e.g., `interface ConnectorRow { id: string; name: string; status: string; ... }`), then replace `(x: any)` with `(x: ConnectorRow)`.
 
-### Step 1: Create 6 new architecture docs
-- `INVESTMENT_OFFICE_AND_CAPITAL_SYSTEM.md` — Portfolio, risk, thesis, family office, market exploration, behavioral firewall. Ownership: `finance-os`.
-- `REVENUE_OFFICE_AND_GROWTH_SYSTEM.md` — Pipeline, campaigns, automation, booking, retention, growth DNA. Ownership: `business-os`.
-- `DIGITAL_PRESENCE_AND_WEB_SYSTEM.md` — Site builder, brand studio, SEO, CRO, ecommerce, domain publishing. Ownership: `business-os`.
-- `ATLAS_OPERATIONS_AND_PLATFORM_TRUTH.md` — Durability, deployment truth, proof coverage, validation, projections. Ownership: `platform`.
-- `MOBILE_EXPERIENCE_SYSTEM.md` — Mobile shell, approvals, boardroom, receipts, alerts. Ownership: `platform`.
-- `APP_PLATFORM_AND_INTEGRATIONS.md` — Installed apps, connector hub, email/vault/health/gallery apps. Ownership: `platform`.
+### 2. Dead/duplicate route cleanup in App.tsx
+- Audit all 579 lazy imports against actual route usage
+- Remove any imports with no corresponding `<Route>` entry
+- Deduplicate any routes pointing to the same component unnecessarily
 
-### Step 2: Update 3 stale generated markdown reports
-- `generated/drift-report.md` — Update date to current, reflect 48 artifacts (was 36), add new scripts
-- `generated/production-truth-dashboard.md` — Update date, service count, add security status section
-- `generated/validation-summary.json` — Update timestamp (content already valid)
+### 3. Edge function test coverage
+- Currently only `brain-core` has integration tests
+- Add `_test.ts` files for the top 10 critical edge functions: `event-processor`, `connector-proxy`, `admin-api`, `invoice-generate`, `payment-process`, `crm-sync`, `cashflow-calculate`, `push-dispatch`, `ai-gateway`, `booking-manage`
 
-### Step 3: Update existing docs with completed work
-- `docs/vmware-deployment.md` — Add OTA agent and backup script references (new scripts created)
-- `docs/architecture/VMWARE_DEPLOYMENT_AND_OPS.md` — Add OTA, backup, ISO build sections
-- `docs/architecture/SENSITIVE_DOCUMENT_GOVERNED_MODE.md` — Note RLS hardening complete
-- `docs/architecture/PREMIUM_OS_EXPERIENCE_SYSTEM.md` — Add auth flow section, note type safety completion
+### 4. E2E smoke tests for critical user journeys
+- Create Vitest-based integration tests for: login → desktop → business center → create lead → proof receipt
+- Create tests for: money center → create bill → approval flow
+- Create tests for: concierge → create task → workflow trigger
 
-### Step 4: Update registry
-- `docs/architecture/registry/services.yaml` — Add missing service entries for investment, revenue, digital-presence domains
+### 5. Deployment manifest validation
+- Update `scripts/validate-deployment.sh` to check all new scripts (metrics agent, first-boot)
+- Update `scripts/check-edge-function-health.ts` to include all 51 functions (currently only checks 17)
+- Ensure `generated/service-manifest.json` reflects current service count
 
-## Files Created/Modified
+## Technical Details
 
-**6 new files:**
-- `docs/architecture/INVESTMENT_OFFICE_AND_CAPITAL_SYSTEM.md`
-- `docs/architecture/REVENUE_OFFICE_AND_GROWTH_SYSTEM.md`
-- `docs/architecture/DIGITAL_PRESENCE_AND_WEB_SYSTEM.md`
-- `docs/architecture/ATLAS_OPERATIONS_AND_PLATFORM_TRUTH.md`
-- `docs/architecture/MOBILE_EXPERIENCE_SYSTEM.md`
-- `docs/architecture/APP_PLATFORM_AND_INTEGRATIONS.md`
+**Type safety pattern** (applied to every file):
+```typescript
+// BEFORE
+const pending = approvals.filter((a: any) => a.status === "pending");
 
-**6 updated files:**
-- `generated/drift-report.md`
-- `generated/production-truth-dashboard.md`
-- `generated/validation-summary.json`
-- `docs/vmware-deployment.md`
-- `docs/architecture/VMWARE_DEPLOYMENT_AND_OPS.md`
-- `docs/architecture/registry/services.yaml`
+// AFTER  
+interface ApprovalRow {
+  id: string;
+  status: string;
+  action_type: string;
+  proposed_action?: { amount?: number };
+}
+const pending = approvals.filter((a: ApprovalRow) => a.status === "pending");
+```
+
+**Edge function test pattern:**
+```typescript
+import "https://deno.land/std@0.224.0/dotenv/load.ts";
+Deno.test("returns 401 without auth", async () => {
+  const res = await fetch(`${SUPABASE_URL}/functions/v1/event-processor`, { method: "POST" });
+  await res.text();
+  assertEquals(res.status, 401);
+});
+```
+
+## Execution Order
+
+1. Type safety batches 1-4 (largest impact, ~963 fixes across 230 files)
+2. Dead import/route cleanup in App.tsx
+3. Edge function tests (10 new test files)
+4. E2E smoke tests (3 journey files)
+5. Deployment manifest updates (3 scripts)
+
+## Files Changed
+
+- **~230 page files** — type annotations replacing `: any)`
+- **~10 new test files** — `supabase/functions/*/index_test.ts`
+- **3 new E2E test files** — `src/test/e2e-*.test.ts`
+- **1 updated** — `src/App.tsx` (dead import cleanup)
+- **3 updated** — deployment validation scripts
 
