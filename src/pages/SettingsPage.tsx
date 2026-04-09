@@ -156,12 +156,7 @@ const SettingsPage = () => {
     setIsSaving(true);
     try {
       const preferences = { autonomy, trustMode, notifFreq, dndEnabled, piiRedaction, budgetMode, confidence, simPref, contradictions, docRetention, largeFontMode };
-      const result = await updateProfileFn({ table: "profiles", updates: { display_name: displayName, preferences }, userId: user.id });
-      if (!result) {
-        // Fallback
-        const { error } = await fromTable("profiles").update({ display_name: displayName, preferences }).eq("user_id", user.id);
-        if (error) throw error;
-      }
+      await updateProfileFn({ table: "profiles", updates: { display_name: displayName, preferences }, userId: user.id });
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : "Failed to save";
       toast.error(msg);

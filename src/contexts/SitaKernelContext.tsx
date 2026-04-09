@@ -481,3 +481,18 @@ export function useSelfHealingServices() {
 export function useLifeSimulator(scenarioCount = 500) {
   return useMemo(() => new LifeShockSimulator(scenarioCount), [scenarioCount]);
 }
+
+// ── Emergency Halt Hook ─────────────────────────────────────────
+
+export function useEmergencyHalt() {
+  const kernel = useSitaKernel();
+  return {
+    issueHalt: kernel.emergencyHalt.issueHalt.bind(kernel.emergencyHalt),
+    resolveHalt: kernel.emergencyHalt.resolveHalt.bind(kernel.emergencyHalt),
+    checkHalt: kernel.emergencyHalt.checkHalt.bind(kernel.emergencyHalt),
+    isSystemHalted: kernel.emergencyHalt.isSystemHalted.bind(kernel.emergencyHalt),
+    getActiveOrders: kernel.emergencyHalt.getActiveOrders.bind(kernel.emergencyHalt),
+    getAllOrders: kernel.emergencyHalt.getAllOrders.bind(kernel.emergencyHalt),
+    service: kernel.emergencyHalt,
+  };
+}

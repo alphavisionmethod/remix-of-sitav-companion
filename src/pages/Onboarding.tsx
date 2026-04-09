@@ -5,7 +5,7 @@ import { SitaButton, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard"
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+
 import { useActionFn } from "@/hooks/use-action";
 import { toast } from "sonner";
 import logo from "@/assets/logo.jpeg";
@@ -102,19 +102,10 @@ const Onboarding = () => {
         { user_id: user.id, key: "first_win", value: JSON.stringify(state.firstWin), category: "preference" },
       ].filter(m => m.value && m.value !== '""' && m.value !== "[]");
 
-      // Route through kernel
-      const result = await upsertMemory({ table: "user_memory", items: memoryItems, onConflict: "user_id,key" });
-      if (result) {
-        await updateProfile({ table: "profiles", updates: { onboarding_completed: true }, userId: user.id });
-        toast.success("Your preferences have been saved!");
-      } else {
-        // Fallback to direct write
-        const { error } = await fromTable("user_memory").upsert(memoryItems, { onConflict: "user_id,key" });
-        if (!error) {
-          await fromTable("profiles").update({ onboarding_completed: true }).eq("user_id", user.id);
-          toast.success("Your preferences have been saved!");
-        }
-      }
+      // Route through kernel — no direct DB writes
+      await upsertMemory({ table: "user_memory", items: memoryItems, onConflict: "user_id,key" });
+      await updateProfile({ table: "profiles", updates: { onboarding_completed: true }, userId: user.id });
+      toast.success("Your preferences have been saved!");
     } catch (e) {
       console.error("Onboarding persistence error:", e);
     } finally {
