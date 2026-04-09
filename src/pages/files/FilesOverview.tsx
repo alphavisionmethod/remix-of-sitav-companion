@@ -7,7 +7,7 @@ import { TrustBadge } from "@/components/sita/TrustBadge";
 import { useState, useMemo } from "react";
 import { SitaTabs } from "@/components/sita/SitaComponents";
 import { motion } from "framer-motion";
-import { classifyFile, detectSensitivity, type FileClassification, type SensitivityLevel } from "@/lib/core-services/file-ingestion";
+import { classifyFile, detectSensitivity, type FileClassification, type SensitivityLevel } from "@/lib/utils/file-classification";
 import { FileUploader } from "@/components/sita/FileUploader";
 import { useFilesOverview } from "@/hooks/use-domain-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";

@@ -14,7 +14,7 @@ import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { toast } from "sonner";
 import { format, differenceInDays, parseISO } from "date-fns";
 import { motion } from "framer-motion";
-import { simulatePayment, type PaymentSimulation } from "@/lib/core-services/payment-execution";
+import { simulatePayment, type PaymentSimulation } from "@/lib/utils/payment-simulation";
 import { initiatePayment } from "@/lib/api/payment-api";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
