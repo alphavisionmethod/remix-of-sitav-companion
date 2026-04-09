@@ -1,101 +1,117 @@
 
 
-# Update All Existing Documents with Latest Data
+# Fix Kernel Adoption, Service Duplication & PublicLayout — Full Plan
 
-## What Changed Since April 7
+## Problem Summary
 
-Since these documents were generated, major work was completed:
-- **Type safety sweep**: `as any` in pages dropped from 710+ to **0**; `: any)` callbacks from 963 to **47**
-- **Investment-office**: wired from 3% to **100%** (38/38 pages)
-- **Deploy scripts created**: `deploy/ota-agent.sh`, `deploy/first-boot.sh`, `deploy/metrics-agent.sh`, `deploy/backup.sh`, `deploy/sita-eula.sh`
-- **PWA assets created**: `manifest.webmanifest`, `icon-192.png`, `icon-512.png`
-- **Edge function tests**: 26 test files now (up from 16)
-- **0 TypeScript errors** confirmed
-- **Routes**: 707 (up from 701), lazy imports: 519
-- **Migrations**: 113 (up from 110)
-- **Pages**: 662 total (up from 657)
+1. **Kernel adoption at 0.15%**: 8 pages use `useAction()` (kernel path), but ~35 pages bypass it with raw `useMutation()` + direct Supabase calls
+2. **Service duplication**: `core-services/` and `services/` have overlapping modules (e.g. both have `workflow-engine`, `policy-engine`, `receipt-service`, `event-bus`, `memory-service`, `approval-service`, `connector-runners`, `verification-engine`, `entity-graph`)
+3. **No PublicLayout on `/`**: The `HomeRoute` at `/` renders `LandingPage` for unauthenticated users without `PublicLayout`, meaning it sits inside the global provider tree (ThemeProvider, RealityModeProvider, etc.) but not explicitly wrapped like `/login` and `/signup`
 
-## Documents to Update (8 files, no new files)
+## Fix 1: Migrate Raw Mutations to `useAction()` (~35 pages)
 
-### 1. `SITA_OS_MISSING_Audit.md`
-- Update executive summary table with current numbers (662 pages, 0 `as any`, 47 `: any)`, 50 edge functions, 26 tests)
-- Mark deploy scripts as **RESOLVED** (all 5 exist in `deploy/`)
-- Mark PWA manifest/icons as **RESOLVED**
-- Update investment-office from 3% to 100% wired
-- Update broken logo.jpeg count (still 11)
-- Update remaining gaps list — remove completed items, keep only true remaining issues
+Pages currently doing `useMutation({ mutationFn: async () => { supabase... } })` should use `useAction("domain", "capability.id", { ... })` instead, routing writes through the kernel's 12-stage canonical execution path.
 
-### 2. `SITA_OS_APP_FULL_STRUCTURAL_AUDIT.md`
-- Update structural health score (type safety improved dramatically)
-- Fix `as any` count from 710 to **0** in pages, **7** total codebase
-- Fix `: any)` from 963 to **47**
-- Update edge function count and test coverage (26 tests)
-- Update deploy/PWA status from "missing" to "present"
-- Update kernel adoption and service counts
+**Target pages** (all files with raw `useMutation(` in `src/pages/`):
+- `PolicyEditor.tsx` — 3 mutations → `useAction("system", "policy.create/toggle/delete")`
+- `InboxCapture.tsx` — 1 mutation → `useAction("system", "inbox.capture")`
+- `business/OpportunitiesCenter.tsx` — 3 mutations → `useAction("business", "opportunity.create/update/delete")`
+- `business/QuotesWorkspace.tsx` — 3 mutations → `useAction("business", "quote.create/update/delete")`
+- `files/FilesSettings.tsx` — 1 mutation → `useAction("system", "file-settings.save")`
+- `admin/CN04SyncTruthCenter.tsx` — mutation → `useAction`
+- `admin/CN06ConnectorDemoReview.tsx` — mutation → `useAction`
+- `admin/MSA01MultiSurfaceOverview.tsx` — mutation → `useAction`
+- `admin/MSA02CoreSurfaceBoundary.tsx` — mutation → `useAction`
+- `admin/MSA05CompatibilityRadar.tsx` — mutation → `useAction`
+- `admin/ReplayRecoveryConsole.tsx` — mutation → `useAction`
+- `admin/FeatureIntakeDesk.tsx` — mutation → `useAction`
+- `admin/UAO01PresenceContinuity.tsx` — mutation → `useAction`
+- `admin/UAO02ConnectedDevices.tsx` — mutation → `useAction`
+- `admin/PFA01ProviderFamilyRegistry.tsx` — mutation → `useAction`
+- `CalendarWorkspace.tsx` — mutation → `useAction`
+- `SettingsPage.tsx` — 4 direct supabase calls → wrap in `useAction` where appropriate (avatar upload, seed, GDPR export/delete)
+- Remaining ~15 admin pages with raw mutations
 
-### 3. `SITA_OS_Data_Wiring_Report.md`
-- Update wired pages count: 513/630 non-test pages (81%)
-- Update hook count: 80
-- Update data services: 29 files
-- Update edge functions: 50
+**Pattern for each migration:**
+```tsx
+// BEFORE (bypasses kernel)
+const createPolicy = useMutation({
+  mutationFn: async () => {
+    const { error } = await fromTable("policies").insert({...});
+    if (error) throw error;
+  },
+  onSuccess: () => queryClient.invalidateQueries(...)
+});
 
-### 4. `FULL_SITAOS_AUTONOMOUS_HUMAN_EQUIVALENT_VERIFICATION_MASTER.md`
-- Update census numbers: 662 pages, 707 routes, 50 edge functions, 113 migrations, 328 components, 80 hooks, 29 data services
-- Update type safety section: 0 `as any`, 47 `: any)`
-- Update deploy readiness: all scripts present, PWA complete
-- Update test counts: 28 page test files + 26 edge function tests + 61 other tests
-- Update remaining gaps section
+// AFTER (routes through kernel)
+const createPolicy = useAction("system", "policy.create", {
+  successMessage: "Policy created",
+  invalidateKeys: [["policies"]],
+});
+```
 
-### 5. `FULL_SITAOS_DEVELOPER_OPERATOR_BIBLE_PART2.md`
-- Update structural health score upward (type safety went from D to A)
-- Fix `as any` from 679 to **7**
-- Update edge function count to 50 with 26 tests
-- Update investment-office wiring to 100%
-- Update top 5 fixes list (remove completed items)
+**Capability registration**: For each new capability ID used, register a handler in the appropriate capability file (`src/lib/capabilities/system-capabilities.ts`, `business-capabilities.ts`, etc.) that performs the actual Supabase operation.
 
-### 6. `SITA_OS_Screen_Inventory_v2.md`
-- Update total from 657 to 662 (5 new pages added)
-- Update investment-office wired column to all ✅
+## Fix 2: Resolve Service Duplication (9 overlapping modules)
 
-### 7. `SITA_OS_Module_Status.md`
-- Update investment-office from 3% to 100% wired
-- Update revenue-office percentage if changed
-- Update all module hook usage to reflect new type-safe hooks
+The following exist in BOTH `src/lib/core-services/` AND `src/lib/services/`:
 
-### 8. `SITA_OS_Master_Audit_v8.md`
-- Update all counts: 662 pages, 707 routes, 50 edge functions, 113 migrations, 328 components
-- Update `as any`: 0 in pages
-- Update isDemoMode wired: 513 pages
-- Update edge function test count: 26
-- Update remaining gaps (remove resolved items, keep actual gaps)
-- Investment-office: 100% wired
+| Service | core-services/ | services/ | Resolution |
+|---------|---------------|-----------|------------|
+| workflow-engine | ✅ | ✅ | `core-services/` re-exports from `services/` — make explicit, remove duplicate logic |
+| policy-engine | ✅ | ✅ | Same — consolidate into `services/`, re-export |
+| receipt-service | ✅ | ✅ | Same |
+| event-bus | ✅ | ✅ | Same |
+| memory-service | ✅ | ✅ | Same |
+| approval-service | ✅ | ✅ | Same |
+| connector-runners | ✅ | ✅ | Same |
+| verification-engine | ✅ | ✅ | Same |
+| entity-graph | ✅ | ✅ | Same |
 
-## Execution Approach
+**Resolution approach**: `core-services/index.ts` already does `export * from "@/lib/services"` (line 25), so the `services/` barrel is canonical. For each duplicate:
+1. Verify `core-services/<name>.ts` and `services/<name>/index.ts` — determine which has real logic
+2. Make the `core-services/` version a thin re-export: `export * from "@/lib/services/<name>"`
+3. Update any imports that reference `core-services/<name>` directly to use `services/<name>` or the barrel
 
-Run a single Python script that reads each file, applies regex/string replacements for outdated numbers, and overwrites in place. For the Missing Audit specifically, restructure the remaining gaps to accurately reflect only what's truly still missing (broken logo.jpeg imports, `: any)` callbacks, kernel adoption gap).
+**7 missing OS services** mentioned in the audit — verify these exist in `services/`:
+- `brain-core` ✅ (`services/brain-core/`)
+- `model-router` ✅ (`services/model-router/`)
+- `conscience-gate` ✅ (`services/conscience-gate/`)
+- `inference-gateway` ✅ (`services/inference-gateway/`)
+- `mnemosyne` ✅ (`services/mnemosyne/`)
+- `trust-governor` ✅ (`services/trust-governor/`)
+- `approval-engine` ✅ (`services/approval-engine/`)
 
-## Key Numbers for All Documents
+All 7 are present. Update `core-services/index.ts` comment block to confirm and remove the "missing" designation.
 
-| Metric | Old (Apr 7) | Current (Apr 9) |
-|--------|-------------|-----------------|
-| Total pages | 657 | **662** |
-| Routes | 701 | **707** |
-| TS errors | 0 | **0** |
-| `as any` in pages | 710+ | **0** |
-| `as any` total | 710+ | **7** |
-| `: any)` callbacks | 963 | **47** |
-| Edge functions | 50 | **50** |
-| Edge function tests | 16 | **26** |
-| Migrations | 110 | **113** |
-| Components | 344 | **328** |
-| Hooks | 80 | **80** |
-| Data services | 29 | **29** |
-| isDemoMode wired | 595/657 | **513/630** |
-| Investment-office wired | 3% | **100%** |
-| Deploy scripts | Missing | **5 present** |
-| PWA manifest | Missing | **Present** |
-| PWA icons | Missing | **192+512 present** |
-| Broken logo.jpeg | 11 | **11** |
-| console.log in pages | 0 | **0** |
-| Architecture docs | — | **24 files** |
+## Fix 3: Wrap `/` Route in PublicLayout
+
+Currently:
+```tsx
+<Route path="/" element={<HomeRoute />} />
+```
+
+The `HomeRoute` renders `LandingPage` for unauthenticated users but doesn't use `PublicLayout`. Fix:
+
+```tsx
+<Route path="/" element={<PublicLayout><HomeRoute /></PublicLayout>} />
+```
+
+This ensures unauthenticated visitors on `/` get the lightweight provider tree, not the full OS kernel boot.
+
+## Execution Order
+
+1. **PublicLayout on `/`** — 1 line change in `App.tsx` (instant fix)
+2. **Service duplication cleanup** — convert 9 `core-services/*.ts` files to re-exports, update `core-services/index.ts` comment
+3. **Register ~30 new capability handlers** in capability files (system, business, admin)
+4. **Migrate ~35 pages** from raw `useMutation` to `useAction()`
+5. **Verify 0 TS errors** after all changes
+
+## Files Changed
+
+- **1 updated**: `src/App.tsx` (PublicLayout wrap on `/`)
+- **~9 updated**: `src/lib/core-services/*.ts` (duplicate → re-export)
+- **1 updated**: `src/lib/core-services/index.ts` (comment fix)
+- **~4 updated**: capability registration files in `src/lib/capabilities/`
+- **~35 updated**: page files migrated from `useMutation` to `useAction`
 
