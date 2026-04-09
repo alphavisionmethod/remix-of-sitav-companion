@@ -3,10 +3,13 @@
 // Full timezone/currency/country selection with live preview
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Globe, Clock, Calendar, DollarSign, ChevronRight, Search, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
+
+const RTL_LANGUAGES = ["ar", "he", "fa", "ur"];
 
 interface Props {
   onNext: (data: { language: string; region: string; timezone: string; dateFormat: string; currency: string }) => void;
@@ -144,6 +147,7 @@ const ALL_TIMEZONES = getAllTimezones();
 const fadeIn = { initial: { opacity: 0, y: 8 }, animate: { opacity: 1, y: 0 } };
 
 export function SetupLanguageRegion({ onNext, onBack, step, total }: Props) {
+  const { t, i18n } = useTranslation();
   const [language, setLanguage] = useState("en");
   const [regionCode, setRegionCode] = useState(() => {
     // Auto-detect from browser
@@ -167,6 +171,14 @@ export function SetupLanguageRegion({ onNext, onBack, step, total }: Props) {
   const [tzSearch, setTzSearch] = useState("");
 
   // When country changes, update currency & tz
+  // Set document direction and i18n language when language changes
+  useEffect(() => {
+    const isRtl = RTL_LANGUAGES.includes(language);
+    document.documentElement.dir = isRtl ? "rtl" : "ltr";
+    document.documentElement.lang = language;
+    i18n.changeLanguage(language);
+  }, [language, i18n]);
+
   const selectCountry = (code: string) => {
     setRegionCode(code);
     const c = COUNTRIES.find(r => r.code === code);

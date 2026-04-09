@@ -77,9 +77,14 @@ export class SetupOrchestrationEngine {
 
   private detectHardwareCapabilities(): HardwareCapabilities {
     if (typeof navigator === "undefined") {
-      return { hasCamera: false, hasBiometric: false, hasGeolocation: false, screenSize: "large", connectionType: "fast", storageAvailable: true, notificationsSupported: false };
+      return { hasCamera: false, hasBiometric: false, hasGeolocation: false, screenSize: "large", connectionType: "fast", storageAvailable: true, notificationsSupported: false, performanceTier: "high" };
     }
     const w = window.innerWidth;
+    const cores = navigator.hardwareConcurrency ?? 4;
+    const memoryGb = (navigator as unknown as { deviceMemory?: number }).deviceMemory ?? 4;
+    const performanceTier: "low" | "medium" | "high" =
+      (cores <= 2 || memoryGb <= 2 || w < 768) ? "low" :
+      (cores <= 4 || memoryGb <= 4) ? "medium" : "high";
     return {
       hasCamera: !!(navigator.mediaDevices?.getUserMedia),
       hasBiometric: !!(window as unknown as Record<string, unknown>).PublicKeyCredential,
@@ -88,6 +93,7 @@ export class SetupOrchestrationEngine {
       connectionType: navigator.onLine ? "fast" : "offline",
       storageAvailable: (() => { try { localStorage.setItem("__test", "1"); localStorage.removeItem("__test"); return true; } catch { return false; } })(),
       notificationsSupported: "Notification" in window,
+      performanceTier,
     };
   }
 
