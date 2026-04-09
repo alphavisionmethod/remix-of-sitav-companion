@@ -744,6 +744,9 @@ const App = () => (
             <Route path="/mobile/receipt/:id" element={<ProtectedRoute><MobileReceiptDetail /></ProtectedRoute>} />
             <Route path="/mobile/approval/:id" element={<ProtectedRoute><MobileApprovalDetail /></ProtectedRoute>} />
             <Route path="/mobile/settings" element={<ProtectedRoute><MobileSettings /></ProtectedRoute>} />
+            <Route path="/mobile/device-trust" element={<ProtectedRoute><MobileDeviceTrust /></ProtectedRoute>} />
+            <Route path="/mobile/emergency" element={<ProtectedRoute><MobileEmergencyActions /></ProtectedRoute>} />
+            <Route path="/mobile/capture" element={<ProtectedRoute><MobileQuickCapture /></ProtectedRoute>} />
 
             {/* ═══════════════════════════════════════════════════════════════
                 TIER 3: FULL OS SHELL — Authenticated + ShellLayout (sidebar, header, command palette)
@@ -1187,6 +1190,13 @@ const App = () => (
 
                     {/* Unified Communication Inbox */}
                     <Route path="/communication-inbox" element={<CommunicationInbox />} />
+
+                    {/* Part V: Shell/Admin additions */}
+                    <Route path="/command-history" element={<CommandHistory />} />
+                    <Route path="/environment-switcher" element={<EnvironmentSwitcherPage />} />
+                    <Route path="/update-center" element={<UpdateCenterPage />} />
+                    <Route path="/admin/environment-appliance" element={<EnvironmentAppliancePage />} />
+                    <Route path="/admin/audit-compliance" element={<AuditComplianceWorkspace />} />
 
                     {/* Mission Control — explicit sub-routes */}
                     <Route path="/mission-control" element={<MissionControl />} />
