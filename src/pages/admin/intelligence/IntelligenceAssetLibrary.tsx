@@ -14,7 +14,7 @@ import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const mockAssets = [
+const DEMO_ASSETS = [
   { id: "ia-1", type: "root-cause-analysis", domain: "engineering", title: "Memory leak in portfolio renderer", confidence: 92, freshness: "2hr", verificationState: "verified", reuseEligible: true, usageCount: 12, qualityScore: 92, acceptanceRate: 0.95, status: "active", savings: 540, invalidationTriggers: ["deployment", "dependency_update"], evidenceRefs: 3, lastUsed: "1hr ago" },
   { id: "ia-2", type: "investment-thesis", domain: "investment-finance", title: "Tech sector rotation thesis Q2", confidence: 88, freshness: "6hr", verificationState: "verified", reuseEligible: true, usageCount: 8, qualityScore: 88, acceptanceRate: 0.88, status: "active", savings: 960, invalidationTriggers: ["market_event"], evidenceRefs: 5, lastUsed: "3hr ago" },
   { id: "ia-3", type: "automation-playbook", domain: "revenue-business", title: "Lead follow-up sequence playbook", confidence: 85, freshness: "1d", verificationState: "verified", reuseEligible: true, usageCount: 24, qualityScore: 85, acceptanceRate: 0.92, status: "active", savings: 1080, invalidationTriggers: ["pricing_change"], evidenceRefs: 2, lastUsed: "30min ago" },
@@ -25,7 +25,7 @@ const mockAssets = [
   { id: "ia-8", type: "pattern", domain: "engineering", title: "Common N+1 query regression pattern", confidence: 96, freshness: "1hr", verificationState: "verified", reuseEligible: true, usageCount: 31, qualityScore: 96, acceptanceRate: 0.98, status: "active", savings: 1400, invalidationTriggers: ["schema_change"], evidenceRefs: 12, lastUsed: "10min ago" },
 ];
 
-const [selectedAsset, setSelectedAsset] = [null as typeof mockAssets[0] | null, (_: typeof mockAssets[0] | null) => {}];
+const [selectedAsset, setSelectedAsset] = [null as typeof DEMO_ASSETS[0] | null, (_: typeof DEMO_ASSETS[0] | null) => {}];
 
 const verificationColors: Record<string, string> = {
   verified: "text-emerald-400",
@@ -42,15 +42,15 @@ const IntelligenceAssetLibrary = () => {
 
   if (loading || !isAdmin) return null;
 
-  const filtered = mockAssets.filter(a => {
+  const filtered = DEMO_ASSETS.filter(a => {
     if (filterDomain !== "all" && a.domain !== filterDomain) return false;
     if (filterType !== "all" && a.type !== filterType) return false;
     if (search && !a.title.toLowerCase().includes(search.toLowerCase())) return false;
     return true;
   });
 
-  const domains = [...new Set(mockAssets.map(a => a.domain))];
-  const types = [...new Set(mockAssets.map(a => a.type))];
+  const domains = [...new Set(DEMO_ASSETS.map(a => a.domain))];
+  const types = [...new Set(DEMO_ASSETS.map(a => a.type))];
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -144,7 +144,7 @@ const IntelligenceAssetLibrary = () => {
         <CardContent>
           <div className="flex flex-wrap gap-2">
             {Object.entries(
-              mockAssets.flatMap(a => a.invalidationTriggers).reduce<Record<string, number>>((acc, t) => { acc[t] = (acc[t] || 0) + 1; return acc; }, {})
+              DEMO_ASSETS.flatMap(a => a.invalidationTriggers).reduce<Record<string, number>>((acc, t) => { acc[t] = (acc[t] || 0) + 1; return acc; }, {})
             ).sort(([, a], [, b]) => b - a).map(([trigger, count]) => (
               <Badge key={trigger} variant="outline" className="text-xs gap-1">
                 {trigger.replace(/_/g, " ")} <span className="text-muted-foreground">({count})</span>
@@ -160,7 +160,7 @@ const IntelligenceAssetLibrary = () => {
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {Object.entries(
-              mockAssets.reduce<Record<string, { count: number; totalSavings: number }>>((acc, a) => {
+              DEMO_ASSETS.reduce<Record<string, { count: number; totalSavings: number }>>((acc, a) => {
                 if (!acc[a.type]) acc[a.type] = { count: 0, totalSavings: 0 };
                 acc[a.type].count++;
                 acc[a.type].totalSavings += a.savings;

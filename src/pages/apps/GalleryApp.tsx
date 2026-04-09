@@ -33,7 +33,7 @@ const DEMO_placeholderColors = [
   "from-teal-500/30 to-cyan-500/30",
 ];
 
-const mockPhotos: Photo[] = Array.from({ length: 12 }, (_, i) => ({
+const DEMO_PHOTOS: Photo[] = Array.from({ length: 12 }, (_, i) => ({
   id: String(i + 1),
   url: "",
   title: ["Team Offsite", "Product Launch", "Dashboard V3", "Architecture Diagram", "Sunset Walk", "Office Setup", "Whiteboard Session", "Coffee Break", "Code Review", "Sprint Demo", "Celebration", "Morning Run"][i],
@@ -51,7 +51,7 @@ export default function GalleryApp() {
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
   const [album, setAlbum] = useState("All");
 
-  const filtered = mockPhotos.filter(p => {
+  const filtered = DEMO_PHOTOS.filter(p => {
     if (album !== "All" && p.album !== album) return false;
     if (search && !p.title.toLowerCase().includes(search.toLowerCase())) return false;
     return true;
@@ -64,7 +64,7 @@ export default function GalleryApp() {
         <div className="flex items-center gap-2">
           <Image className="h-6 w-6 text-primary" />
           <h1 className="text-xl font-bold text-foreground">Gallery</h1>
-          <Badge variant="secondary" className="text-xs">{mockPhotos.length} items</Badge>
+          <Badge variant="secondary" className="text-xs">{DEMO_PHOTOS.length} items</Badge>
         </div>
         <Button size="sm"><Upload className="h-3.5 w-3.5 mr-1.5" /> Upload</Button>
       </div>

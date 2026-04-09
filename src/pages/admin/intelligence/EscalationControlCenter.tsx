@@ -10,7 +10,7 @@ import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const mockEscalations = [
+const DEMO_ESCALATIONS = [
   { id: "esc-1", domain: "engineering", trigger: "low_confidence", from: "utility", to: "premium", cost: 180, justified: true, outcome: "accepted", desc: "Complex race condition in payment flow", ago: "2hr" },
   { id: "esc-2", domain: "investment-finance", trigger: "high_stakes", from: "standard", to: "premium", cost: 120, justified: true, outcome: "accepted", desc: "Portfolio rebalance recommendation $200k+", ago: "4hr" },
   { id: "esc-3", domain: "revenue-business", trigger: "ambiguity", from: "utility", to: "standard", cost: 45, justified: false, outcome: "overridden", desc: "Lead scoring edge case — could have been cached", ago: "6hr" },
@@ -40,12 +40,12 @@ const EscalationControlCenter = () => {
   const { isAdmin, loading } = useRequireAdmin();
   if (loading || !isAdmin) return null;
 
-  const totalCost = mockEscalations.reduce((s, e) => s + e.cost, 0);
-  const justified = mockEscalations.filter(e => e.justified).length;
-  const unnecessary = mockEscalations.filter(e => !e.justified).length;
-  const accepted = mockEscalations.filter(e => e.outcome === "accepted").length;
+  const totalCost = DEMO_ESCALATIONS.reduce((s, e) => s + e.cost, 0);
+  const justified = DEMO_ESCALATIONS.filter(e => e.justified).length;
+  const unnecessary = DEMO_ESCALATIONS.filter(e => !e.justified).length;
+  const accepted = DEMO_ESCALATIONS.filter(e => e.outcome === "accepted").length;
 
-  const byTrigger = mockEscalations.reduce<Record<string, { count: number; cost: number }>>((acc, e) => {
+  const byTrigger = DEMO_ESCALATIONS.reduce<Record<string, { count: number; cost: number }>>((acc, e) => {
     if (!acc[e.trigger]) acc[e.trigger] = { count: 0, cost: 0 };
     acc[e.trigger].count++;
     acc[e.trigger].cost += e.cost;
@@ -63,7 +63,7 @@ const EscalationControlCenter = () => {
 
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         {[
-          { label: "Total Escalations", value: String(mockEscalations.length), color: "text-foreground" },
+          { label: "Total Escalations", value: String(DEMO_ESCALATIONS.length), color: "text-foreground" },
           { label: "Total Cost", value: `$${(totalCost / 100).toFixed(0)}`, color: "text-foreground" },
           { label: "Justified", value: String(justified), color: "text-emerald-400" },
           { label: "Unnecessary", value: String(unnecessary), color: "text-amber-400" },
@@ -110,7 +110,7 @@ const EscalationControlCenter = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {mockEscalations.map(e => (
+              {DEMO_ESCALATIONS.map(e => (
                 <TableRow key={e.id}>
                   <TableCell className="text-xs font-medium text-foreground">{e.domain}</TableCell>
                   <TableCell className="text-xs text-muted-foreground max-w-[200px] truncate">{e.desc}</TableCell>
@@ -132,7 +132,7 @@ const EscalationControlCenter = () => {
         <Card className="bg-card/80 border-amber-500/20">
           <CardHeader className="pb-2"><CardTitle className="text-sm flex items-center gap-2"><AlertTriangle className="h-4 w-4 text-amber-400" /> Unnecessary Escalations — Optimization Opportunities</CardTitle></CardHeader>
           <CardContent className="space-y-2">
-            {mockEscalations.filter(e => !e.justified).map(e => (
+            {DEMO_ESCALATIONS.filter(e => !e.justified).map(e => (
               <div key={e.id} className="flex items-center justify-between p-3 rounded-lg bg-amber-500/5">
                 <div>
                   <p className="text-xs font-medium text-foreground">{e.desc}</p>

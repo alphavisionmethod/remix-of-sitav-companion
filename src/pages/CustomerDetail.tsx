@@ -13,7 +13,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 // Mock customer data keyed by ID
-const customersData: Record<string, {
+const DEMO_CUSTOMERS_DATA: Record<string, {
   name: string; initials: string; email: string; phone: string; company?: string; location: string; website?: string;
   since: string; trust: "verified" | "review" | "degraded"; health: number; healthLabel: string; healthTrend: "up" | "down" | "flat";
   totalRevenue: string; invoicesPaid: number; invoicesTotal: number; outstanding: string; avgPayDays: number;
@@ -40,7 +40,7 @@ const customersData: Record<string, {
   },
 };
 
-const timeline = [
+const DEMO_TIMELINE = [
   { icon: CheckCircle, color: "text-trust-verified", title: "Invoice #1038 paid — $4,200", subtitle: "Payment received via Stripe", time: "2 hours ago" },
   { icon: FileText, color: "text-primary", title: "Quote #1037 sent — $3,200", subtitle: "Website maintenance package", time: "5 days ago" },
   { icon: Phone, color: "text-accent", title: "Follow-up call completed", subtitle: "Discussed Q2 projects — 18 min", time: "1 week ago" },
@@ -50,13 +50,13 @@ const timeline = [
   { icon: Briefcase, color: "text-primary", title: "Customer onboarded", subtitle: "Referred by Lisa Thompson", time: "Jan 2023" },
 ];
 
-const actions = [
+const DEMO_ACTIONS = [
   { title: "Send follow-up on Quote #1037", priority: "high", state: "queued" as const, reason: "Quote viewed 3x but no response in 5 days" },
   { title: "Schedule Q2 planning call", priority: "medium", state: "proposed" as const, reason: "Annual review cycle — relationship maintenance" },
   { title: "Collect on Invoice #1035", priority: "high", state: "escalated" as const, reason: "7 days overdue, 2 reminders sent" },
 ];
 
-const documents = [
+const DEMO_DOCUMENTS = [
   { name: "Invoice_1038.pdf", type: "Invoice", date: "Mar 28", trust: "verified" as const },
   { name: "Quote_1037_Maintenance.pdf", type: "Quote", date: "Mar 23", trust: "verified" as const },
   { name: "Service_Agreement_v2.pdf", type: "Contract", date: "Jan 15", trust: "verified" as const },
@@ -69,7 +69,7 @@ const CustomerDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [tab, setTab] = useState("overview");
-  const customer = customersData[id || "marcus-johnson"] || customersData["marcus-johnson"];
+  const customer = DEMO_CUSTOMERS_DATA[id || "marcus-johnson"] || DEMO_CUSTOMERS_DATA["marcus-johnson"];
 
   const healthColor = customer.health >= 80 ? "text-trust-verified" : customer.health >= 50 ? "text-trust-review" : "text-urgency-high";
   const healthBg = customer.health >= 80 ? "bg-trust-verified" : customer.health >= 50 ? "bg-trust-review" : "bg-urgency-high";
@@ -149,8 +149,8 @@ const CustomerDetail = () => {
           <div className="lg:col-span-3 space-y-6">
             {/* Action Queue */}
             <div className="space-y-3">
-              <SitaSectionHeader title="Action Queue" subtitle={`${actions.length} items pending`} />
-              {actions.map((a, i) => (
+              <SitaSectionHeader title="Action Queue" subtitle={`${DEMO_ACTIONS.length} items pending`} />
+              {DEMO_ACTIONS.map((a, i) => (
                 <SitaCard key={i} lane="action" className="p-4 pl-5">
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex-1">
@@ -183,7 +183,7 @@ const CustomerDetail = () => {
             <div className="space-y-3">
               <SitaSectionHeader title="Recent Activity" action={<button onClick={() => setTab("timeline")} className="text-xs text-primary hover:underline">View all</button>} />
               <SitaCard hover={false} className="p-4">
-                {timeline.slice(0, 4).map((t, i) => (
+                {DEMO_TIMELINE.slice(0, 4).map((t, i) => (
                   <TimelineItem key={i} {...t} />
                 ))}
               </SitaCard>
@@ -235,7 +235,7 @@ const CustomerDetail = () => {
         <SitaCard hover={false} className="p-5">
           <SitaCardTitle sub="Complete relationship history">Full Timeline</SitaCardTitle>
           <div className="mt-4">
-            {timeline.map((t, i) => <TimelineItem key={i} {...t} />)}
+            {DEMO_TIMELINE.map((t, i) => <TimelineItem key={i} {...t} />)}
           </div>
         </SitaCard>
       )}
@@ -278,7 +278,7 @@ const CustomerDetail = () => {
       {tab === "documents" && (
         <div className="space-y-3">
           <SitaSectionHeader title="Customer Documents" subtitle="All files linked to this customer" />
-          {documents.map((doc, i) => (
+          {DEMO_DOCUMENTS.map((doc, i) => (
             <SitaCard key={i} className="p-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">

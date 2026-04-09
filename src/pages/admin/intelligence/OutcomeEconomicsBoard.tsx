@@ -11,7 +11,7 @@ import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const mockOutcomes = [
+const DEMO_OUTCOMES = [
   { type: "incident_prevented", count: 8, costCents: 2400, valueCents: 48000, roi: 20.0, accepted: 8, rejected: 0, domain: "engineering" },
   { type: "self_heal_success", count: 22, costCents: 1100, valueCents: 22000, roi: 20.0, accepted: 21, rejected: 1, domain: "engineering" },
   { type: "retention_saved", count: 2, costCents: 1600, valueCents: 24000, roi: 15.0, accepted: 2, rejected: 0, domain: "revenue-business" },
@@ -24,7 +24,7 @@ const mockOutcomes = [
   { type: "cost_saved", count: 7, costCents: 3500, valueCents: 12000, roi: 3.4, accepted: 6, rejected: 1, domain: "admin-ops" },
 ];
 
-const mockReasoningPaths = [
+const DEMO_REASONING_PATHS = [
   { path: "fingerprint → self-heal", cost: 1100, value: 22000, acceptance: 0.95, recommendation: "expand" as const },
   { path: "root-cause → fix-plan", cost: 2400, value: 48000, acceptance: 0.92, recommendation: "expand" as const },
   { path: "lead-scoring → follow-up", cost: 1800, value: 18000, acceptance: 0.83, recommendation: "maintain" as const },
@@ -45,15 +45,15 @@ const OutcomeEconomicsBoard = () => {
   const { isAdmin, loading } = useRequireAdmin();
   if (loading || !isAdmin) return null;
 
-  const totalCost = mockOutcomes.reduce((s, o) => s + o.costCents, 0);
-  const totalValue = mockOutcomes.reduce((s, o) => s + o.valueCents, 0);
-  const totalOutcomes = mockOutcomes.reduce((s, o) => s + o.count, 0);
+  const totalCost = DEMO_OUTCOMES.reduce((s, o) => s + o.costCents, 0);
+  const totalValue = DEMO_OUTCOMES.reduce((s, o) => s + o.valueCents, 0);
+  const totalOutcomes = DEMO_OUTCOMES.reduce((s, o) => s + o.count, 0);
   const overallROI = totalCost > 0 ? (totalValue / totalCost).toFixed(1) : "0";
-  const totalAccepted = mockOutcomes.reduce((s, o) => s + o.accepted, 0);
-  const totalRejected = mockOutcomes.reduce((s, o) => s + o.rejected, 0);
+  const totalAccepted = DEMO_OUTCOMES.reduce((s, o) => s + o.accepted, 0);
+  const totalRejected = DEMO_OUTCOMES.reduce((s, o) => s + o.rejected, 0);
 
-  const highValue = mockOutcomes.filter(o => o.roi >= 10);
-  const lowValue = mockOutcomes.filter(o => o.roi < 5);
+  const highValue = DEMO_OUTCOMES.filter(o => o.roi >= 10);
+  const lowValue = DEMO_OUTCOMES.filter(o => o.roi < 5);
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -104,7 +104,7 @@ const OutcomeEconomicsBoard = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {mockOutcomes.sort((a, b) => b.roi - a.roi).map(o => (
+              {DEMO_OUTCOMES.sort((a, b) => b.roi - a.roi).map(o => (
                 <TableRow key={o.type}>
                   <TableCell className="text-xs font-medium text-foreground">{o.type.replace(/_/g, " ")}</TableCell>
                   <TableCell className="text-xs text-muted-foreground">{o.domain}</TableCell>
@@ -172,7 +172,7 @@ const OutcomeEconomicsBoard = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {mockReasoningPaths.map(p => (
+              {DEMO_REASONING_PATHS.map(p => (
                 <TableRow key={p.path}>
                   <TableCell className="text-xs font-medium text-foreground font-mono">{p.path}</TableCell>
                   <TableCell className="text-xs text-right font-mono">${(p.cost / 100).toFixed(0)}</TableCell>

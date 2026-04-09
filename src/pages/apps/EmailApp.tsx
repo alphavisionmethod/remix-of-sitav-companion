@@ -20,7 +20,7 @@ interface Email {
   hasAttachment: boolean;
 }
 
-const mockEmails: Email[] = [
+const DEMO_EMAILS: Email[] = [
   { id: "1", from: "Sarah Chen", subject: "Q2 Revenue Projections", preview: "Hi, I've attached the updated revenue projections for Q2. Please review before our meeting tomorrow...", time: "10:32 AM", read: false, starred: true, category: "primary", hasAttachment: true },
   { id: "2", from: "SITA System", subject: "Weekly AI Team Performance Report", preview: "Your AI team processed 1,247 tasks this week with 96.4% accuracy. 3 agents were upgraded to beta status...", time: "9:15 AM", read: false, starred: false, category: "updates", hasAttachment: false },
   { id: "3", from: "Alex Rivera", subject: "Contract Review: Apex Corp", preview: "The legal team has reviewed the contract. A few minor changes needed on clause 4.2 regarding...", time: "Yesterday", read: true, starred: false, category: "primary", hasAttachment: true },
@@ -40,9 +40,9 @@ export default function EmailApp() {
   const { isDemoMode } = useDataMode();
   const [search, setSearch] = useState("");
   const [selectedEmail, setSelectedEmail] = useState<Email | null>(null);
-  const unread = mockEmails.filter(e => !e.read).length;
+  const unread = DEMO_EMAILS.filter(e => !e.read).length;
 
-  const filtered = mockEmails.filter(e => !search || e.subject.toLowerCase().includes(search.toLowerCase()) || e.from.toLowerCase().includes(search.toLowerCase()));
+  const filtered = DEMO_EMAILS.filter(e => !search || e.subject.toLowerCase().includes(search.toLowerCase()) || e.from.toLowerCase().includes(search.toLowerCase()));
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-4">

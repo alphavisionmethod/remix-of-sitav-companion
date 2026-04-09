@@ -11,7 +11,7 @@ import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-const mockDigests = [
+const DEMO_DIGESTS = [
   { id: "d-1", type: "daily_summary", domain: "engineering", fresh: true, hitRate: 0.82, genCost: 15, avoidedSpend: 120, age: "2hr", expiresIn: "22hr", cacheStatus: "cached" },
   { id: "d-2", type: "boardroom_packet", domain: "admin-ops", fresh: true, hitRate: 0.75, genCost: 25, avoidedSpend: 200, age: "4hr", expiresIn: "20hr", cacheStatus: "cached" },
   { id: "d-3", type: "risk_packet", domain: "compliance-trust", fresh: true, hitRate: 0.68, genCost: 18, avoidedSpend: 90, age: "1hr", expiresIn: "23hr", cacheStatus: "cached" },
@@ -26,11 +26,11 @@ const SmartDigestCenter = () => {
   const { isAdmin, loading } = useRequireAdmin();
   if (loading || !isAdmin) return null;
 
-  const freshCount = mockDigests.filter(d => d.fresh).length;
-  const staleCount = mockDigests.filter(d => !d.fresh).length;
-  const avgHitRate = Math.round(mockDigests.reduce((s, d) => s + d.hitRate, 0) / mockDigests.length * 100);
-  const totalGenCost = mockDigests.reduce((s, d) => s + d.genCost, 0);
-  const totalAvoided = mockDigests.reduce((s, d) => s + d.avoidedSpend, 0);
+  const freshCount = DEMO_DIGESTS.filter(d => d.fresh).length;
+  const staleCount = DEMO_DIGESTS.filter(d => !d.fresh).length;
+  const avgHitRate = Math.round(DEMO_DIGESTS.reduce((s, d) => s + d.hitRate, 0) / DEMO_DIGESTS.length * 100);
+  const totalGenCost = DEMO_DIGESTS.reduce((s, d) => s + d.genCost, 0);
+  const totalAvoided = DEMO_DIGESTS.reduce((s, d) => s + d.avoidedSpend, 0);
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -43,7 +43,7 @@ const SmartDigestCenter = () => {
 
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         {[
-          { label: "Total Digests", value: String(mockDigests.length) },
+          { label: "Total Digests", value: String(DEMO_DIGESTS.length) },
           { label: "Fresh", value: String(freshCount), color: "text-emerald-400" },
           { label: "Stale", value: String(staleCount), color: staleCount > 0 ? "text-amber-400" : "text-emerald-400" },
           { label: "Avg Hit Rate", value: `${avgHitRate}%` },
@@ -76,7 +76,7 @@ const SmartDigestCenter = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {mockDigests.sort((a, b) => b.hitRate - a.hitRate).map(d => (
+              {DEMO_DIGESTS.sort((a, b) => b.hitRate - a.hitRate).map(d => (
                 <TableRow key={d.id}>
                   <TableCell className="text-xs font-medium text-foreground">{d.type.replace(/_/g, " ")}</TableCell>
                   <TableCell className="text-xs text-muted-foreground">{d.domain}</TableCell>
@@ -103,7 +103,7 @@ const SmartDigestCenter = () => {
         <Card className="bg-card/80 border-amber-500/20">
           <CardHeader className="pb-2"><CardTitle className="text-sm flex items-center gap-2"><AlertTriangle className="h-4 w-4 text-amber-400" /> Stale Digest Warnings</CardTitle></CardHeader>
           <CardContent className="space-y-2">
-            {mockDigests.filter(d => !d.fresh).map(d => (
+            {DEMO_DIGESTS.filter(d => !d.fresh).map(d => (
               <div key={d.id} className="flex items-center justify-between p-3 rounded-lg bg-amber-500/5">
                 <div>
                   <p className="text-xs font-medium text-foreground">{d.type.replace(/_/g, " ")} — {d.domain}</p>
@@ -122,7 +122,7 @@ const SmartDigestCenter = () => {
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
             {Object.entries(
-              mockDigests.reduce<Record<string, { avoided: number; genCost: number; count: number }>>((acc, d) => {
+              DEMO_DIGESTS.reduce<Record<string, { avoided: number; genCost: number; count: number }>>((acc, d) => {
                 if (!acc[d.type]) acc[d.type] = { avoided: 0, genCost: 0, count: 0 };
                 acc[d.type].avoided += d.avoidedSpend;
                 acc[d.type].genCost += d.genCost;
