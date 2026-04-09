@@ -171,7 +171,7 @@ const ConnectorHub = () => {
                         <Badge variant="outline" className="bg-emerald-500/15 text-emerald-400 border-emerald-500/30">Connected</Badge>
                         <SitaButton
                           variant="danger"
-                          onClick={() => disconnectMutation.mutate(account.id)}
+                          onClick={() => disconnectMutation.mutate({ accountId: account.id })}
                           disabled={disconnectMutation.isPending}
                         >
                           <Unplug className="h-3.5 w-3.5" /> Disconnect
@@ -180,7 +180,7 @@ const ConnectorHub = () => {
                     ) : isGoogleConfigured ? (
                       <SitaButton
                         variant="primary"
-                        onClick={() => connectMutation.mutate(reg.connector_id)}
+                        onClick={() => connectMutation.mutate({ connectorId: reg.connector_id })}
                         disabled={connectMutation.isPending}
                       >
                         <ExternalLink className="h-3.5 w-3.5" /> Connect

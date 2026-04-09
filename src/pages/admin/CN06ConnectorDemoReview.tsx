@@ -30,10 +30,10 @@ export default function CN06ConnectorDemoReview() {
       <DemoModeBadge />
       <div className="space-y-6">
         <div className="flex gap-2">
-          <Button size="sm" variant="outline" onClick={() => activateMutation.mutate("demo_google_drive")} disabled={activateMutation.isPending}>
+          <Button size="sm" variant="outline" onClick={() => activateMutation.mutate({ id: "demo_google_drive" })} disabled={activateMutation.isPending}>
             <Play className="h-4 w-4 mr-2" /> Activate Demo Drive
           </Button>
-          <Button size="sm" variant="outline" onClick={() => activateMutation.mutate("demo_inbox")} disabled={activateMutation.isPending}>
+          <Button size="sm" variant="outline" onClick={() => activateMutation.mutate({ id: "demo_inbox" })} disabled={activateMutation.isPending}>
             <Play className="h-4 w-4 mr-2" /> Activate Demo Inbox
           </Button>
         </div>

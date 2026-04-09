@@ -160,7 +160,7 @@ const QuotesWorkspace = () => {
               <div className="flex gap-2 flex-wrap">
                 {selected.status === "draft" && <button onClick={() => updateStatus.mutate({ id: selected.id, status: "sent" })} className="flex-1 flex items-center justify-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors"><Send className="h-3.5 w-3.5" /> Mark Sent</button>}
                 {selected.status === "sent" && <button onClick={() => updateStatus.mutate({ id: selected.id, status: "accepted" })} className="flex-1 flex items-center justify-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors"><CheckCircle className="h-3.5 w-3.5" /> Mark Accepted</button>}
-                <button onClick={() => deleteQuote.mutate(selected.id)} className="rounded-lg border border-border px-3 py-2 text-xs text-muted-foreground hover:text-destructive hover:border-destructive/30 transition-colors"><Trash2 className="h-3.5 w-3.5" /></button>
+                <button onClick={() => deleteQuote.mutate({ id: selected.id })} className="rounded-lg border border-border px-3 py-2 text-xs text-muted-foreground hover:text-destructive hover:border-destructive/30 transition-colors"><Trash2 className="h-3.5 w-3.5" /></button>
               </div>
             </>
           ) : <EmptyState icon={FileText} title="Select a quote" description="Click on a quote to see details and actions" />}

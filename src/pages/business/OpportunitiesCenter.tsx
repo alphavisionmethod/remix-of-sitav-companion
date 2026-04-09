@@ -217,7 +217,7 @@ const OpportunitiesCenter = () => {
                 </SitaCard>
                 <div className="flex gap-2 flex-wrap">
                   {selected.stage !== "won" && <button onClick={() => updateStage.mutate({ id: selected.id, stage: "won" })} className="flex-1 flex items-center justify-center gap-1.5 rounded-lg bg-primary px-3 py-2 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors"><CheckCircle className="h-3.5 w-3.5" /> Mark Won</button>}
-                  <button onClick={() => deleteOpp.mutate(selected.id)} className="rounded-lg border border-border px-3 py-2 text-xs text-muted-foreground hover:text-destructive hover:border-destructive/30 transition-colors"><Trash2 className="h-3.5 w-3.5" /></button>
+                  <button onClick={() => deleteOpp.mutate({ id: selected.id })} className="rounded-lg border border-border px-3 py-2 text-xs text-muted-foreground hover:text-destructive hover:border-destructive/30 transition-colors"><Trash2 className="h-3.5 w-3.5" /></button>
                 </div>
               </>
             ) : <EmptyState icon={Target} title="Select an opportunity" description="Click on an opportunity to see details and actions" />}
