@@ -1,0 +1,17 @@
+[Unit]
+Description=SITA OS — Automated Backup
+Documentation=https://sita.dev/docs/backup
+After=network-online.target docker.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/opt/sita/sita-backup.sh
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=sita-backup
+TimeoutStartSec=900
+ProtectSystem=strict
+ReadWritePaths=/opt/sita /var/backups/sita /var/log
+ProtectHome=true
+PrivateTmp=false
