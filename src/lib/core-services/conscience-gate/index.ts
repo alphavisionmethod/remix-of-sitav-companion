@@ -1,3 +1,3 @@
-// Canonical re-export — core-services/conscience-gate
-// Import from here; implementation lives in lib/services/conscience-gate
-export * from "@/lib/services/conscience-gate";
+// Canonical implementation — core-services/conscience-gate
+export * from "./conscience-gate";
+export * from "./critique-loop";
