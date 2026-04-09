@@ -151,6 +151,7 @@ export interface HardwareCapabilities {
   connectionType: "fast" | "slow" | "offline";
   storageAvailable: boolean;
   notificationsSupported: boolean;
+  performanceTier: "low" | "medium" | "high";
 }
 
 /** Full session state */

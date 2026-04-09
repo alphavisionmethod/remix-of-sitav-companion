@@ -24536,10 +24536,12 @@ export type Database = {
         Row: {
           category: string
           confidence: number | null
+          confirmed: boolean | null
           created_at: string
           expires_at: string | null
           id: string
           key: string
+          sensitivity: string | null
           source: string | null
           updated_at: string
           user_id: string
@@ -24548,10 +24550,12 @@ export type Database = {
         Insert: {
           category?: string
           confidence?: number | null
+          confirmed?: boolean | null
           created_at?: string
           expires_at?: string | null
           id?: string
           key: string
+          sensitivity?: string | null
           source?: string | null
           updated_at?: string
           user_id: string
@@ -24560,10 +24564,12 @@ export type Database = {
         Update: {
           category?: string
           confidence?: number | null
+          confirmed?: boolean | null
           created_at?: string
           expires_at?: string | null
           id?: string
           key?: string
+          sensitivity?: string | null
           source?: string | null
           updated_at?: string
           user_id?: string
