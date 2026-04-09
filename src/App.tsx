@@ -1591,6 +1591,7 @@ const App = () => (
 
                     {/* ── 3D: OS Workspaces ── */}
                     <Route path="/calendar" element={<CalendarWorkspace />} />
+                    <Route path="/tasks" element={<TasksWorkflowsCenter />} />
                     <Route path="/notes" element={<NotesWorkspace />} />
                     <Route path="/people" element={<PeopleWorkspace />} />
                     <Route path="/team" element={<TeamWorkspace />} />
