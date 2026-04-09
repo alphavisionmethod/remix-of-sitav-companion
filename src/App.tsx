@@ -862,6 +862,7 @@ const App = () => (
                     <Route path="/admin/persistence-status" element={<PersistenceStatus />} />
                     <Route path="/admin/system-health" element={<SystemHealthDashboard />} />
                     <Route path="/admin/brain-core" element={<BrainCoreDashboard />} />
+                    <Route path="/admin/conscience-gate" element={<ConscienceGateDashboard />} />
                     <Route path="/admin/drs/overview" element={<DRS01RealityModeOverview />} />
                     <Route path="/admin/drs/registry" element={<DRS02ModeRegistryConsole />} />
                     <Route path="/admin/drs/scenarios" element={<DRS03ScenarioLibrary />} />
