@@ -45,6 +45,17 @@ The OS shell is built from:
 | Analyst | Maximum density, all metrics visible |
 | Presentation | Boardroom fullscreen, no chrome |
 
+## Auth Flow
+
+SITA OS authentication supports:
+- **Email/password** — standard signup and login
+- **Magic link** — passwordless email login
+- **Demo mode** — sandboxed experience without account creation
+- **Password reset** — email-based recovery flow
+- **Session management** — JWT with automatic refresh rotation
+
+Auth pages: `/auth/login`, `/auth/signup`, `/auth/reset-password`, `/auth/callback`
+
 ## Trust States
 
 Every advisor output flows through:
@@ -53,6 +64,14 @@ suggestion → draft → simulated → approval-required → approved → execut
 ```
 
 Failed states: `failed`, `rolled-back`, `escalated`
+
+## Type Safety Status
+
+- 0 TypeScript errors (`tsc --noEmit` clean)
+- 0 `as any` in page files
+- 0 `as unknown as` in page files
+- 0 `useState<any>` in codebase
+- All page callbacks typed with DB row types or view-model interfaces
 
 ## Cross-Domain Intelligence
 

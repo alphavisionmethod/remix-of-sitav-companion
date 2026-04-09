@@ -27,6 +27,13 @@ Activated when documents contain:
 | Advisor | Metadata only | No | Yes |
 | Support | Redacted summary | No | Yes |
 
+## RLS Hardening
+
+As of 2026-04-09, all sensitive document tables (`vault_items` and related) have RLS policies enforced with `TO authenticated` (not `public`). This ensures:
+- No unauthenticated access to sensitive data
+- All access requires valid JWT
+- Audit trail tied to authenticated `auth.uid()`
+
 ## Policy Contracts
 
 See `packages/policy-contracts`:

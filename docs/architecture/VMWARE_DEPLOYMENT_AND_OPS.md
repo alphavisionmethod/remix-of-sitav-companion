@@ -25,16 +25,37 @@ Environment variables:
 Each container exposes `/health` endpoint.
 Docker Compose health checks ensure startup order.
 
+## OTA Updates
+
+Automated over-the-air updates via `scripts/release/iso/sita-ota-agent.sh`:
+- Version check against update endpoint (`SITA_UPDATE_URL`)
+- Docker image pull and rolling restart
+- Health check validation post-update
+- Automatic rollback on failure
+- Managed by `sita-ota.service` + `sita-ota.timer` (systemd)
+
+## Backup & Recovery
+
+Automated backups via `scripts/release/iso/sita-backup.sh`:
+- **Database**: `pg_dump` scheduled backups (daily via systemd timer)
+- **Volumes**: Docker volume snapshots for `sita-*` volumes
+- **Config**: Version-controlled env files backup
+- **Retention**: 30-day rolling retention with automatic cleanup
+- **Restore**: `scripts/restore-backup.sh` for database recovery
+
+Managed by `sita-backup.service` + `sita-backup.timer` (systemd).
+
+## ISO Build
+
+For air-gapped or appliance deployments:
+- Autoinstall profiles in `scripts/release/iso/autoinstall/`
+- Device profiles in `scripts/release/iso/profiles/`
+- OVA export via `scripts/build-ova.sh`
+
 ## Monitoring
 
 - Container health via Docker health checks
 - Application health via Mission Control
 - Connector health via connector-control-plane
-
-## Backup
-
-- Database: pg_dump scheduled backups
-- File storage: Volume snapshots
-- Configuration: Version-controlled env files
 
 See `docs/vmware-deployment.md` for detailed setup instructions.

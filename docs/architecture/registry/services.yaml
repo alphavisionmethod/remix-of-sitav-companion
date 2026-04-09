@@ -146,3 +146,35 @@ services:
     owner: platform
     status: scaffold
     dependencies: [receipt-service, verification-engine, memory-service]
+
+  # --- New domain services ---
+
+  - id: investment-office
+    owner: finance
+    status: alpha
+    dependencies: [finance-os, sovereign-calculation, receipt-service, policy-engine, event-bus]
+
+  - id: revenue-office
+    owner: business
+    status: alpha
+    dependencies: [business-os, connector-control-plane, receipt-service, event-bus]
+
+  - id: digital-presence
+    owner: business
+    status: alpha
+    dependencies: [business-os, connector-control-plane, receipt-service, event-bus]
+
+  - id: atlas
+    owner: platform
+    status: alpha
+    dependencies: [verification-engine, receipt-service, event-bus, support-diagnostics]
+
+  - id: mobile-shell
+    owner: platform
+    status: alpha
+    dependencies: [event-bus, receipt-service]
+
+  - id: app-platform
+    owner: platform
+    status: alpha
+    dependencies: [connector-control-plane, connector-runners, policy-engine, receipt-service]
