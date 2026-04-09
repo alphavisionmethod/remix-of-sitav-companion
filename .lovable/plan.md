@@ -1,89 +1,118 @@
 
 
-# SITA OS — Personalization Gap Audit & Implementation Plan
+# SITA OS — Full Spec Compliance Audit & Gap Implementation Plan
 
-## Gap Analysis: 10 Requirements vs Current Implementation
+## Audit: Spec Screens vs Current Implementation
 
-| # | Requirement | Status | Detail |
-|---|---|---|---|
-| 1 | Confidence + uncertainty per domain | **MISSING** | `world-model-field-meta.ts` has per-field confidence types, but the onboarding UI never shows "still learning" language or per-domain confidence indicators. No "refine anytime" messaging. |
-| 2 | Life stage / operating context detection | **MISSING** | No step asks "rebuilding, scaling, managing complexity, or trying to feel in control." `primaryUseMode` only captures personal/family/business/money/full. |
-| 3 | Emotional load / cognitive style | **PARTIAL** | `StressSlippageStep` has "too much to track / decisions / messages / moving parts" — this maps directly to cognitive overload. But there's no follow-through: this data isn't used to adjust desktop density or advisor behavior visibility. |
-| 4 | Time horizon preference | **IMPLEMENTED** | `LifeRhythmStep` has PLANNING_HORIZONS: today / this week / this month / longer-term. Persisted as `life_rhythm.planningHorizon`. |
-| 5 | Relationship sensitivity model | **MISSING** | No question asking "Should SITA help keep up with people or focus on tasks?" `HouseholdGraphStep` captures people but not the sensitivity preference. |
-| 6 | Recovery / forgiveness UX | **MISSING** | No adaptive tone when user signals overwhelm. If stress map shows high load, the flow doesn't soften copy or shift to restorative messaging. |
-| 7 | Adaptive onboarding depth | **IMPLEMENTED** | `SetupStyleChooser` offers Express (~5min) / Guided (~10min) / Advanced (~15min) with branch conditions in the DAG. |
-| 8 | "Show me what this changes" previews | **PARTIAL** | `LearningPanel` sidebar shows live advisor/trust/priority updates. Some steps have inline previews (stress load map, trust ladder). But most steps (life rhythm, planning style, comms context) have NO "this changes X on your desktop" preview. |
-| 9 | Post-onboarding refinement plan | **MISSING** | `EnvironmentSummaryStep` and `ArrivalPrepStep` show deferred items but no explicit "what SITA will keep learning" section or refinement roadmap. |
-| 10 | First-week calibration loop | **MISSING** | No day-1 pulse, day-3 refinement, or week-1 reset system. No "is this helping the right way?" check. |
+| Spec Screen | Maps To | Status |
+|---|---|---|
+| P1 — Transition into Personalization ("Let's shape this around you") | No dedicated screen. Jump straight from privacy → quick-identity. | **MISSING** |
+| P2 — Setup Depth Selection | `SetupStyleChooser` (express/guided/advanced) | Done |
+| P3 — Current-Life Snapshot (5 questions) | `QuickIdentityStep` (5-question progressive) | Done |
+| P4 — Life Stage / Operating Context | `OperatingContextStep` (4 options) | Done — but missing 3 options from spec: "Maintaining what already works", "A transition period", "Not sure / mixed". Also missing follow-up "What would feel most helpful?" |
+| P5 — Life Rhythm Discovery | `LifeRhythmStep` | Done |
+| P6 — Cognitive Load / Stress Mapping | `StressSlippageStep` with recovery UX | Done |
+| P7 — Household Context | `DeepWorldModelingStep` household chapter + `HouseholdGraphStep` | Done |
+| P8 — Work / Business Context | `DeepWorldModelingStep` work chapter | Done |
+| P9 — Money Context | `DeepWorldModelingStep` money chapter | Done |
+| P10 — Communications Context | `CommunicationsContextStep` | Done |
+| P11 — Planning Style | `PlanningStyleStep` | Done |
+| P12 — Relationship & People Mapping | `HouseholdGraphStep` + `RelationshipSensitivityStep` | Done |
+| P13 — Support Style & Presence | `PresenceStyleStep` + `InterruptionStyleStep` + `ExplanationStyleStep` | Done |
+| P14 — Trust & Autonomy Calibration | `TrustCalibrationStep` (5-level ladder, thresholds) | Done |
+| P15 — Advisors & Support Team | `AdvisorActivationStep` | Done |
+| P16 — Connect What Matters First | `FirstConnectionsStep` | Done |
+| P17 — First Win Recommendation | `FirstWinSetupStep` | Done |
+| P18 — Environment Is Ready | `EnvironmentSummaryStep` + `ArrivalPrepStep` | Done |
+
+## Previous 10 Requirements — Verification
+
+| # | Requirement | Status |
+|---|---|---|
+| 1 | Confidence + "still learning" | **Done** — LearningPanel + EnvironmentSummaryStep |
+| 2 | Operating context | **Done** — OperatingContextStep (needs options expansion) |
+| 3 | Stress → desktop density | **Done** — `computeDesktopDensity()` |
+| 4 | Time horizon | **Done** — LifeRhythmStep |
+| 5 | Relationship sensitivity | **Done** — RelationshipSensitivityStep |
+| 6 | Recovery/forgiveness UX | **Done** — StressSlippageStep + EnvironmentSummaryStep |
+| 7 | Adaptive depth | **Done** — SetupStyleChooser |
+| 8 | "Show what changes" previews | **Done** — LifeRhythmStep, PlanningStyleStep, CommunicationsContextStep, ExplanationStyleStep |
+| 9 | Post-onboarding refinement plan | **Done** — ArrivalPrepStep learning roadmap |
+| 10 | First-week calibration loop | **Done** — FirstWeekCalibration.tsx + calibration_checkpoints table |
+
+## Gaps Identified
+
+### Gap 1: Missing Screen P1 — Personalization Pivot Screen
+The spec requires a dedicated emotional transition screen ("Let's shape this around you") between privacy/memory-consent and quick-identity. This is the emotional mode shift from "We're preparing your system" to "Now let's shape your environment around you." Currently the flow jumps directly to QuickIdentityStep.
+
+**Fix:** Create `PersonalizationPivotStep.tsx` — a calm, cinematic transition screen with title "Let's shape this around you", ambient preview evolution, and secondary CTAs for "I'd like a faster setup" / "I want the deeper setup". Wire as new phase `personalization-pivot` between `memory-consent` and `quick-identity`.
+
+### Gap 2: OperatingContextStep Missing Options
+Spec defines 7 options but only 4 exist. Missing: "Maintaining what already works", "A transition period", "Not sure / mixed". Also missing the follow-up question "What would feel most helpful right now?" (Stability, Clarity, Follow-through, Less stress, Better visibility, Better planning, More consistency).
+
+**Fix:** Add 3 missing options + add `supportNeedPrimary` follow-up question to OperatingContextStep. Add `supportNeedPrimary` to SetupData and persist it.
+
+### Gap 3: Data Model Completeness (Part 5)
+The spec defines 16 data models (A through P). Most are covered, but some fields are missing:
+- `onboardingSession.confidenceSummary` — not tracked
+- `currentOperatingContext.currentPressureMode` — partially covered by stress map
+- `supportStyleProfile.notificationDensityPreference` — not explicitly captured
+- `moneyProfile.thresholdPreferences` — partially in trustCalibration
+- `communicationProfile.messageLoadSensitivity` — not captured
+- `environmentShapingProfile.preferredShellMode` — not captured
+- `confidenceMetadata` per domain — computed at render time but not persisted
+
+**Fix:** These are mostly cosmetic gaps — the data is either inferred from existing fields or would require new questions that overlap with existing ones. The main actionable gap is persisting `confidenceMetadata` per domain to `user_memory`. Add this to `finishSetup()`.
+
+### Gap 4: Wow Moment Choreography (Spec Part 6) — Not fully integrated
+Most wow moments exist conceptually but lack explicit choreography hooks:
+- Wow 3 (support map forms) — StressSlippageStep has the load visualization
+- Wow 4 (relationship graph) — HouseholdGraphStep has the graph
+- Wow 5 (trust spectrum) — TrustCalibrationStep has behavioral previews
+- Missing: Wow 1 (personalization pivot ambient shift) — needs the P1 screen
+- Missing: Wow 9 (environment reveal) — EnvironmentSummaryStep exists but could be more cinematic
+
+**Fix:** Wow 1 is solved by Gap 1. Wow 9 enhancement is polish — the current EnvironmentSummaryStep already shows all domains, advisors, trust mode, and confidence. Acceptable as-is.
+
+### Gap 5: FirstWeekCalibration not wired into the desktop
+`FirstWeekCalibration.tsx` exists but is never rendered anywhere in the app shell/desktop.
+
+**Fix:** Add `<FirstWeekCalibration />` to the main desktop layout component so it appears after onboarding completion.
 
 ## Implementation Plan
 
-### Phase 1: New onboarding step — OperatingContextStep (Req #2)
-- New file: `src/components/sita/onboarding/OperatingContextStep.tsx`
-- 4 options: "Rebuilding structure", "Scaling something", "Managing complexity", "Trying to feel more in control"
-- Add to `SetupData` as `operatingContext: string`
-- Wire into OSSetupExperience after `quick-identity` phase
-- Persist to `user_memory` as `operating_context`
+### 1. Create PersonalizationPivotStep (Screen P1)
+New file: `src/components/sita/onboarding/PersonalizationPivotStep.tsx`
+- Title: "Let's shape this around you"
+- Subtitle: "We'll start with what matters most right now — and refine as SITA learns with you"
+- Ambient preview showing labels fading in: "Your priorities", "Your support style", "Your active domains", "Your advisors"
+- CTAs: Continue, "I'd like a faster setup", "I want the deeper setup"
+- Wire as `personalization-pivot` phase in DAG (order 9.8, after memory-consent, before quick-identity)
+- Add to SetupPhaseId type and phase definitions
 
-### Phase 2: New step — RelationshipSensitivityStep (Req #5)
-- New file: `src/components/sita/onboarding/RelationshipSensitivityStep.tsx`
-- Binary choice: "Help me keep up with important people" vs "Focus mostly on tasks and commitments"
-- Add `relationshipFocus: "people" | "tasks" | ""` to `SetupData`
-- Wire after `household-graph` phase
+### 2. Expand OperatingContextStep
+- Add 3 missing options: "Maintaining what already works", "A transition period", "Not sure / mixed"
+- Add follow-up question: "What would feel most helpful right now?" with 7 chip options
+- Add `supportNeedPrimary: string` to SetupData
+- Persist to user_memory
 
-### Phase 3: Add confidence indicators to EnvironmentSummaryStep (Req #1)
-- Add per-domain confidence badges ("High confidence" / "Still learning") based on how many questions were answered for each domain
-- Add "You can refine this anytime in Settings → Personalization" message
-- Add "still learning" language to `LearningPanel` sidebar
+### 3. Persist domain confidence metadata
+- In `finishSetup()`, compute and persist `domain_confidence` to user_memory as a map of domain → { confidence, source, editableLater }
 
-### Phase 4: Recovery/forgiveness adaptive tone (Req #6)
-- In `StressSlippageStep`, if 4+ items selected, show compassionate transition copy
-- In `EnvironmentSummaryStep`, if stress is high, use restorative framing: "SITA is here to help you recover, not add more"
-- Adjust `LearningPanel` reflections to include recovery-aware copy
+### 4. Wire FirstWeekCalibration into desktop
+- Find the main desktop/shell layout component and add `<FirstWeekCalibration />`
 
-### Phase 5: Enhanced "show what changes" previews (Req #8)
-- Add small preview cards to `LifeRhythmStep`, `PlanningStyleStep`, `CommunicationsContextStep`, and `ExplanationStyleStep` showing: "This will change: [boardroom density / notification frequency / daily summary style]"
-- Reuse the existing inline preview pattern from `StressSlippageStep`
-
-### Phase 6: Post-onboarding refinement plan (Req #9)
-- Add "What SITA will keep learning" section to `ArrivalPrepStep`:
-  - "Your communication patterns — over the next week"
-  - "Your schedule rhythm — over the next month"
-  - "Your spending patterns — as data connects"
-  - "Your priorities — refined every boardroom session"
-- Add "Refine anytime" link to Settings
-
-### Phase 7: First-week calibration loop (Req #10)
-- New file: `src/components/sita/FirstWeekCalibration.tsx` — banner component shown on desktop
-- New Supabase table: `calibration_checkpoints` (user_id, checkpoint_key, triggered_at, response, dismissed)
-- Schedule logic:
-  - Day 1: "How was your first pulse?" 
-  - Day 3: "Is SITA helping with the right things?"
-  - Day 7: "Weekly reset — refine your support style"
-- Show as gentle banner/card on desktop, dismissible, responses update `user_memory`
-
-### Phase 8: Stress-to-desktop density wiring (Req #3 completion)
-- Use `stressMap.heavierThanShould` length + `operatingContext` to compute a `desktopDensity` preference (calm/balanced/dense)
-- Persist to `user_memory` as `desktop_density`
-- Reference this in boardroom and desktop layout components
-
-### Database Migration
-- Add `calibration_checkpoints` table with RLS
-- No changes to existing tables needed — all other data fits in `user_memory`
-
-### Files Modified
-- `src/components/sita/OSSetupExperience.tsx` — add 2 new phases, update SetupData, wire persistence
-- `src/components/sita/onboarding/EnvironmentSummaryStep.tsx` — add confidence indicators + refinement messaging
-- `src/components/sita/onboarding/LearningPanel.tsx` — add "still learning" language
-- `src/components/sita/onboarding/StressSlippageStep.tsx` — add recovery tone when overwhelmed
-- `src/components/sita/onboarding/ArrivalPrepStep.tsx` — add learning roadmap section
-- `src/components/sita/onboarding/LifeRhythmStep.tsx` — add "this changes" preview
-- `src/components/sita/onboarding/PlanningStyleStep.tsx` — add "this changes" preview
-- `src/components/sita/onboarding/CommunicationsContextStep.tsx` — add "this changes" preview
+### 5. Minor: reflection copy for new supportNeedPrimary
+- Add reflection copy for the new supportNeedPrimary field
 
 ### Files Created
-- `src/components/sita/onboarding/OperatingContextStep.tsx`
-- `src/components/sita/onboarding/RelationshipSensitivityStep.tsx`
-- `src/components/sita/FirstWeekCalibration.tsx`
+- `src/components/sita/onboarding/PersonalizationPivotStep.tsx`
+
+### Files Modified
+- `src/components/sita/onboarding/OperatingContextStep.tsx` — add options + follow-up
+- `src/components/sita/OSSetupExperience.tsx` — add phase, import, state field, renderer, persistence
+- `src/packages/contracts/specialized/setup-orchestration.ts` — add `personalization-pivot` to SetupPhaseId
+- `src/lib/engines/setup-phase-definitions.ts` — add phase definition
+- `src/lib/setup/reflection-copy.ts` — add supportNeedPrimary reflections
+- Desktop shell component — add FirstWeekCalibration render
 
