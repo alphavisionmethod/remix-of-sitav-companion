@@ -1,10 +1,11 @@
+import { useAction } from "@/hooks/use-action";
 import { SitaPageHeader, SitaCard, SitaButton } from "@/components/sita/SitaCard";
 import { useInboxItems } from "@/hooks/use-domain-data";
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { StateBadge } from "@/components/sita/StateBadge";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
@@ -55,19 +56,7 @@ const InboxCapture = () => {
     },
   });
 
-  const captureNote = useMutation({
-    mutationFn: async (content: string) => {
-      const { error } = await fromTable("events").insert({
-        user_id: user!.id,
-        type: "inbox.capture",
-        source: "quick-capture",
-        payload: { content, type: "note" },
-      });
-      if (error) throw error;
-    },
-    onSuccess: () => { toast.success("Captured!"); setQuickInput(""); },
-    onError: (e: Error) => toast.error(e.message),
-  });
+  const captureNote = useAction("system", "inbox.capture");
 
   const liveItems = liveFiles.map(f => ({
     id: f.id,

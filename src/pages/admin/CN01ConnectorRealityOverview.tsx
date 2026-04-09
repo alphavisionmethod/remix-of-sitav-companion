@@ -1,10 +1,11 @@
+import { useAction } from "@/hooks/use-action";
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { Plug, Shield, Activity, TestTube, Presentation, RefreshCw, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
@@ -111,15 +112,7 @@ export default function CN01ConnectorRealityOverview() {
     },
   });
 
-  const seedMutation = useMutation({
-    mutationFn: async () => {
-      const { data, error } = await supabase.functions.invoke("connector-operations", { body: { action: "seed_registry" } });
-      if (error) throw error;
-      return data;
-    },
-    onSuccess: () => { toast.success("Connector registry seeded"); queryClient.invalidateQueries({ queryKey: ["connector-registry"] }); queryClient.invalidateQueries({ queryKey: ["connector-launch-readiness"] }); },
-    onError: (e: Record<string, any>) => toast.error(`Seed failed: ${e.message}`),
-  });
+  const seedMutation = useAction("admin", "seed.run");
 
   const realConnectors = registry.filter((r: Record<string, any>) => r.connector_class === "real");
   const testConnectors = registry.filter((r: Record<string, any>) => r.connector_class === "internal_test");

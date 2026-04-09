@@ -1,3 +1,4 @@
+import { useAction } from "@/hooks/use-action";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — AIG09: AI Runtime Verification Board (Full 8-Section)
 // Mission-control-grade operator surface for AI runtime truth
@@ -6,7 +7,7 @@
 import { useState } from "react";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { useAIRuntimeVerification, type CapabilityVerification } from "@/lib/ai/hooks/use-ai-runtime-verification";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { reclassifyAIFeatures, type ReclassificationResult } from "@/lib/ai/ai-launch-honesty-reclassifier";
 import { seedAIRoutingActivation } from "@/lib/ai/ai-routing-seed-service";
@@ -466,18 +467,8 @@ function AIR08SeedActivation() {
   const queryClient = useQueryClient();
   const [results, setResults] = useState<{ phase: string; status: string; message: string }[]>([]);
 
-  const seedMutation = useMutation({
-    mutationFn: async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error("Not authenticated");
-      return seedAIRoutingActivation(user.id);
-    },
-    onSuccess: (data) => {
-      setResults(data);
-      queryClient.invalidateQueries({ queryKey: ["air-provider-health"] });
-      queryClient.invalidateQueries({ queryKey: ["air-model-readiness"] });
-      queryClient.invalidateQueries({ queryKey: ["air-launch-honesty-reclass"] });
-    },
+  const seedMutation = useAction("admin", "seed.run", {
+    invalidateKeys: [["air-provider-health"]],
   });
 
   return (

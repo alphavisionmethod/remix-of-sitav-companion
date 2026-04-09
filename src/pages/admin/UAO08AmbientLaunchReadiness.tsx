@@ -1,8 +1,9 @@
+import { useAction } from "@/hooks/use-action";
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -24,14 +25,7 @@ export default function UAO08AmbientLaunchReadiness() {
     queryFn: async () => { const { data } = await fromTable("ambient_launch_readiness").select("*").order("target_type, target_name"); return data || []; },
   });
 
-  const seedReadiness = useMutation({
-    mutationFn: async () => {
-      const { error } = await supabase.functions.invoke("ambient-os-operations", { body: { action: "seed_launch_readiness" } });
-      if (error) throw error;
-    },
-    onSuccess: () => { toast.success("Launch readiness seeded"); queryClient.invalidateQueries(); },
-    onError: (e: Record<string, any>) => toast.error(e.message),
-  });
+  const seedReadiness = useAction("admin", "readiness.seed");
 
   const deviceFamilies = readiness.filter((r: Record<string, any>) => r.target_type === "device_family");
   const wearableProviders = readiness.filter((r: Record<string, any>) => r.target_type === "wearable_provider");

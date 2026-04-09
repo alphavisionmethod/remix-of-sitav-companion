@@ -1,9 +1,10 @@
+import { useAction } from "@/hooks/use-action";
 import React from "react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { Activity, RefreshCw } from "lucide-react";
@@ -30,15 +31,7 @@ export default function CN05ConnectorHealthBoard() {
     queryFn: async () => { const { data } = await fromTable("connector_health_records").select("*").order("checked_at", { ascending: false }).limit(50); return data || []; },
   });
 
-  const healthCheckMutation = useMutation({
-    mutationFn: async () => {
-      const { data, error } = await supabase.functions.invoke("connector-operations", { body: { action: "health_check" } });
-      if (error) throw error;
-      return data;
-    },
-    onSuccess: (data: Record<string, any>) => { toast.success(`Health check: ${data?.results?.length || 0} accounts checked`); queryClient.invalidateQueries({ queryKey: ["connector-health-all"] }); },
-    onError: (e: Record<string, any>) => toast.error(`Health check failed: ${e.message}`),
-  });
+  const healthCheckMutation = useAction("admin", "health.check");
 
   const grouped = healthRecords.reduce((acc: any,  h: Record<string, any>) => {
     const key = h.account_id || h.registry_id || "unknown";

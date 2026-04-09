@@ -1,8 +1,9 @@
+import { useAction } from "@/hooks/use-action";
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -27,17 +28,7 @@ export default function PFA01ProviderFamilyRegistry() {
     queryFn: async () => { const { data } = await fromTable("provider_families").select("*").order("name"); return data || []; },
   });
 
-  const seedMutation = useMutation({
-    mutationFn: async () => {
-      const { error: e1 } = await supabase.functions.invoke("provider-family-operations", { body: { action: "seed_provider_families" } });
-      if (e1) throw e1;
-      const { error: e2 } = await supabase.functions.invoke("provider-family-operations", { body: { action: "seed_google_family" } });
-      if (e2) throw e2;
-      return true;
-    },
-    onSuccess: () => { toast.success("Provider families seeded"); queryClient.invalidateQueries(); },
-    onError: (e: Record<string, any>) => toast.error(`Seed failed: ${e.message}`),
-  });
+  const seedMutation = useAction("admin", "seed.run");
 
   return (
     <div className="space-y-6 p-6">

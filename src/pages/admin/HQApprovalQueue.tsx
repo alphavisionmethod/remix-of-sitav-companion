@@ -1,10 +1,11 @@
+import { useAction } from "@/hooks/use-action";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — HQ01-HQ04: Human Approval & Recommendation Queue
 // Full governance queue with overview, detail, decision history, filters
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useMemo } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -207,21 +208,8 @@ function HQ02QueueDetail() {
     queryFn: () => fetchQueue(filters),
   });
 
-  const updateItem = useMutation({
-    mutationFn: async ({ id, status, notes }: { id: string; status: string; notes?: string }) => {
-      const updates: any = {
-        status,
-        reviewed_at: new Date().toISOString(),
-      };
-      if (["approved", "rejected", "executed", "expired"].includes(status)) {
-        updates.resolved_at = new Date().toISOString();
-      }
-      if (notes) updates.reviewer_notes = notes;
-      const { error } = await fromTable("ai_workforce_approval_queue").update(updates).eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ["hq-queue"] }); qc.invalidateQueries({ queryKey: ["hq-all-items"] }); toast.success("Queue item updated"); },
-    onError: (err: Record<string, any>) => toast.error(err.message),
+  const updateItem = useAction("admin", "approval.update", {
+    invalidateKeys: [["hq-queue"]],
   });
 
   const setFilter = (key: string, val: string) => setFilters(prev => ({ ...prev, [key]: val }));

@@ -1,8 +1,9 @@
+import { useAction } from "@/hooks/use-action";
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { StateBadge } from "@/components/sita/StateBadge";
 import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
@@ -48,30 +49,14 @@ const QuotesWorkspace = () => {
     enabled: !!user,
   });
 
-  const addQuote = useMutation({
-    mutationFn: async () => {
-      if (!user || !form.title.trim()) throw new Error("Title required");
-      const { error } = await fromTable("quotes").insert({
-        user_id: user.id, title: form.title.trim(), total: form.total ? parseFloat(form.total) : null,
-        expiry_date: form.expiry_date || null, notes: form.notes || null, status: "draft",
-      });
-      if (error) throw error;
-    },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["quotes"] }); setShowAdd(false); setForm({ title: "", total: "", expiry_date: "", notes: "" }); toast.success("Quote created"); },
-    onError: (e: Error) => toast.error(e.message),
+  const addQuote = useAction("business", "quote.create");
+
+  const updateStatus = useAction("business", "status.update", {
+    invalidateKeys: [["quotes"]],
   });
 
-  const updateStatus = useMutation({
-    mutationFn: async ({ id, status }: { id: string; status: string }) => {
-      const { error } = await fromTable("quotes").update({ status }).eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["quotes"] }); toast.success("Status updated"); },
-  });
-
-  const deleteQuote = useMutation({
-    mutationFn: async (id: string) => { const { error } = await fromTable("quotes").delete().eq("id", id); if (error) throw error; },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["quotes"] }); setSelectedId(null); toast.success("Deleted"); },
+  const deleteQuote = useAction("business", "quote.delete", {
+    invalidateKeys: [["quotes"]],
   });
 
   const selected = quotes.find((q: Record<string, any>) => q.id === selectedId);

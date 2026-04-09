@@ -1,8 +1,9 @@
+import { useAction } from "@/hooks/use-action";
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { Progress } from "@/components/ui/progress";
@@ -60,23 +61,7 @@ export default function MSA01MultiSurfaceOverview() {
     queryFn: async () => { const { data } = await fromTable("surface_launch_profiles").select("*"); return data || []; },
   });
 
-  const seedMutation = useMutation({
-    mutationFn: async () => {
-      const { error: e1 } = await supabase.functions.invoke("msa-operations", { body: { action: "seed_surfaces" } });
-      if (e1) throw e1;
-      const { error: e2 } = await supabase.functions.invoke("msa-operations", { body: { action: "seed_capabilities" } });
-      if (e2) throw e2;
-      const { error: e3 } = await supabase.functions.invoke("msa-operations", { body: { action: "seed_experience_grammars" } });
-      if (e3) throw e3;
-      const { error: e4 } = await supabase.functions.invoke("msa-operations", { body: { action: "portability_report" } });
-      if (e4) throw e4;
-      const { error: e5 } = await supabase.functions.invoke("msa-operations", { body: { action: "surface_launch_profile_check" } });
-      if (e5) throw e5;
-      return true;
-    },
-    onSuccess: () => { toast.success("MSA fully seeded"); queryClient.invalidateQueries(); },
-    onError: (e: Record<string, any>) => toast.error(`Seed failed: ${e.message}`),
-  });
+  const seedMutation = useAction("admin", "seed.run");
 
   const activeSurfaces = surfaces.filter((s: Record<string, any>) => s.surface_class === "active").length;
   const plannedSurfaces = surfaces.filter((s: Record<string, any>) => s.surface_class !== "active" && s.surface_class !== "deprecated").length;

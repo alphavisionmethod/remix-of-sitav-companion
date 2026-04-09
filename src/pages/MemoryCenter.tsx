@@ -1,10 +1,11 @@
+import { useAction } from "@/hooks/use-action";
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
@@ -73,23 +74,13 @@ const MemoryCenter = () => {
   });
 
   // Delete mutation
-  const forgetMutation = useMutation({
-    mutationFn: async (id: string) => {
-      const { error } = await fromTable("user_memory").delete().eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ["user_memory"] }); toast.success("Memory forgotten"); },
-    onError: (e: Error) => toast.error(e.message),
+  const forgetMutation = useAction("system", "memory.forget", {
+    invalidateKeys: [["user_memory"]],
   });
 
   // Update mutation
-  const updateMutation = useMutation({
-    mutationFn: async ({ id, value }: { id: string; value: string }) => {
-      const { error } = await fromTable("user_memory").update({ value: JSON.parse(`"${value}"`) }).eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ["user_memory"] }); toast.success("Memory updated"); setEditingId(null); },
-    onError: (e: Error) => toast.error(e.message),
+  const updateMutation = useAction("system", "memory.update", {
+    invalidateKeys: [["user_memory"]],
   });
 
   // Filter by active tab category

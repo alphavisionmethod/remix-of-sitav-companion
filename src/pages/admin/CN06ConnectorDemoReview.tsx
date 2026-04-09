@@ -1,9 +1,10 @@
+import { useAction } from "@/hooks/use-action";
 import React from "react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { Presentation, Play } from "lucide-react";
@@ -22,15 +23,7 @@ export default function CN06ConnectorDemoReview() {
     queryFn: async () => { const { data } = await fromTable("connector_demo_bindings").select("*"); return data || []; },
   });
 
-  const activateMutation = useMutation({
-    mutationFn: async (connectorType: string) => {
-      const { data, error } = await supabase.functions.invoke("connector-operations", { body: { action: "demo_activate", connector_type: connectorType } });
-      if (error) throw error;
-      return data;
-    },
-    onSuccess: () => { toast.success("Demo connector activated"); queryClient.invalidateQueries({ queryKey: ["connector-accounts"] }); },
-    onError: (e: Record<string, any>) => toast.error(`Activation failed: ${e.message}`),
-  });
+  const activateMutation = useAction("admin", "connector.activate");
 
   return (
     <div className="space-y-6 p-6"  >

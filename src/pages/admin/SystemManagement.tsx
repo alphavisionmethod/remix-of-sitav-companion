@@ -1,3 +1,4 @@
+import { useAction } from "@/hooks/use-action";
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,7 +14,7 @@ import {
   Lock, Eye, Zap, Archive
 } from "lucide-react";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
@@ -53,20 +54,7 @@ const SystemManagement = () => {
     enabled: isAdmin,
   });
 
-  const sendCommand = useMutation({
-    mutationFn: async ({ deviceId, command }: { deviceId: string; command: string }) => {
-      const { data, error } = await supabase.functions.invoke("os-command", {
-        body: { device_id: deviceId, command },
-      });
-      if (error) throw error;
-      return data;
-    },
-    onSuccess: () => {
-      toast.success("Command queued successfully");
-      queryClient.invalidateQueries({ queryKey: ["admin-signals"] });
-    },
-    onError: (e) => toast.error(e.message),
-  });
+  const sendCommand = useAction("admin", "command.send");
 
   if (adminLoading) return <PageSkeleton rows={3} />;
   if (!isAdmin) return null;

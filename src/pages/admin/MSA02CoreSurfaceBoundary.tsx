@@ -1,8 +1,9 @@
+import { useAction } from "@/hooks/use-action";
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -33,15 +34,7 @@ export default function MSA02CoreSurfaceBoundary() {
     queryFn: async () => { const { data } = await fromTable("architecture_boundary_records").select("*").order("migration_priority"); return data || []; },
   });
 
-  const auditMutation = useMutation({
-    mutationFn: async () => {
-      const { data, error } = await supabase.functions.invoke("msa-operations", { body: { action: "audit_boundaries" } });
-      if (error) throw error;
-      return data;
-    },
-    onSuccess: (data: Record<string, any>) => { toast.success(`Audit complete: ${data?.violations} violations found`); queryClient.invalidateQueries({ queryKey: ["architecture-boundaries"] }); },
-    onError: (e: Record<string, any>) => toast.error(`Audit failed: ${e.message}`),
-  });
+  const auditMutation = useAction("admin", "audit.run");
 
   const violations = boundaries.filter((b: Record<string, any>) => b.is_boundary_violation);
   const clean = boundaries.filter((b: Record<string, any>) => !b.is_boundary_violation);

@@ -1,3 +1,4 @@
+import { useAction } from "@/hooks/use-action";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,7 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { RotateCcw, Play, AlertTriangle, CheckCircle, Clock, Layers } from "lucide-react";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { fetchPersistedEvents, getEventLineage, markEventReplayed, fetchActionLineage, fetchPolicyEvaluations } from "@/lib/persistence";
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
@@ -29,34 +30,7 @@ export default function ReplayRecoveryConsole() {
   const { data: actions = [] } = useQuery({ queryKey: ["replay-actions"], queryFn: () => fetchActionLineage({ limit: 100 }), staleTime: 30000 });
   const { data: policies = [] } = useQuery({ queryKey: ["replay-policies"], queryFn: () => fetchPolicyEvaluations({ limit: 100 }), staleTime: 30000 });
 
-  const replayMutation = useMutation({
-    mutationFn: async () => {
-      let results: any[] = [];
-      if (replayScope === "correlation" && scopeValue) {
-        results = await getEventLineage(scopeValue);
-      } else if (replayScope === "topic" && scopeValue) {
-        results = await fetchPersistedEvents({ topic: scopeValue, limit: 50 });
-      } else if (replayScope === "domain" && scopeValue) {
-        results = await fetchPersistedEvents({ domain: scopeValue, limit: 50 });
-      } else {
-        results = await fetchPersistedEvents({ limit: 50 });
-      }
-
-      if (!dryRun) {
-        for (const e of results) {
-          if (e.status === "dead_letter" || e.status === "failed") {
-            await markEventReplayed(e.id);
-          }
-        }
-      }
-      return results;
-    },
-    onSuccess: (data) => {
-      setReplayResults(data);
-      toast.success(`${dryRun ? "Dry-run" : "Replay"} complete: ${data.length} events processed`);
-    },
-    onError: () => toast.error("Replay failed"),
-  });
+  const replayMutation = useAction("admin", "replay.run");
 
   const uniqueTopics = [...new Set(events.map(e => e.topic))];
   const uniqueDomains = [...new Set(events.map(e => e.domain).filter(Boolean))];

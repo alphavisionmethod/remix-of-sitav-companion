@@ -698,7 +698,7 @@ const App = () => (
             <Route path="/signup" element={<PublicLayout><PublicRoute><Signup /></PublicRoute></PublicLayout>} />
             <Route path="/forgot-password" element={<PublicLayout><PublicRoute><ForgotPassword /></PublicRoute></PublicLayout>} />
             <Route path="/reset-password" element={<PublicLayout><ResetPassword /></PublicLayout>} />
-            <Route path="/" element={<HomeRoute />} />
+            <Route path="/" element={<PublicLayout><HomeRoute /></PublicLayout>} />
 
             {/* Authenticated routes — full OS provider tree */}
             <Route path="/*" element={
