@@ -1,5 +1,7 @@
 import { QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { AdminRoutes } from "@/routes/AdminRoutes";
+import { OwnerRoutes } from "@/routes/OwnerRoutes";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -694,14 +696,20 @@ const App = () => (
           <RealityModeProvider>
           <Suspense fallback={<PageLoader />}>
           <Routes>
-            {/* Public routes — no kernel, no OS runtime */}
+            {/* ═══════════════════════════════════════════════════════════════
+                TIER 1: PUBLIC — No kernel, no OS runtime, PublicLayout only
+                5 routes: landing, login, signup, forgot/reset password
+               ═══════════════════════════════════════════════════════════════ */}
             <Route path="/login" element={<PublicLayout><PublicRoute><Login /></PublicRoute></PublicLayout>} />
             <Route path="/signup" element={<PublicLayout><PublicRoute><Signup /></PublicRoute></PublicLayout>} />
             <Route path="/forgot-password" element={<PublicLayout><PublicRoute><ForgotPassword /></PublicRoute></PublicLayout>} />
             <Route path="/reset-password" element={<PublicLayout><ResetPassword /></PublicLayout>} />
             <Route path="/" element={<PublicLayout><HomeRoute /></PublicLayout>} />
 
-            {/* Authenticated routes — full OS provider tree */}
+            {/* ═══════════════════════════════════════════════════════════════
+                TIER 2: AUTHENTICATED, NO SHELL — OS providers active, no sidebar
+                Onboarding ceremony, mobile shell, auth callback
+               ═══════════════════════════════════════════════════════════════ */}
             <Route path="/*" element={
               <AuthenticatedProviders>
               <Suspense fallback={<PageLoader />}>
@@ -721,12 +729,17 @@ const App = () => (
             <Route path="/mobile/approval/:id" element={<ProtectedRoute><MobileApprovalDetail /></ProtectedRoute>} />
             <Route path="/mobile/settings" element={<ProtectedRoute><MobileSettings /></ProtectedRoute>} />
 
+            {/* ═══════════════════════════════════════════════════════════════
+                TIER 3: FULL OS SHELL — Authenticated + ShellLayout (sidebar, header, command palette)
+                ~380 routes: OS Core, Offices, Workspaces, Built-in Apps, App Platform
+               ═══════════════════════════════════════════════════════════════ */}
             <Route path="*" element={
               <ProtectedRoute>
                 <ShellLayout>
                   <RouteErrorBoundary>
                   <Suspense fallback={<PageLoader />}>
                   <Routes>
+                    {/* ── 3A: OS Home & Desktop ── */}
                     <Route path="/" element={<DesktopPage />} />
                     <Route path="/home" element={<DailyPulse />} />
                     <Route path="/desktop" element={<DesktopPage />} />
@@ -735,7 +748,7 @@ const App = () => (
                     <Route path="/life-simulator" element={<LifeSimulator />} />
                     <Route path="/my-activity" element={<MyActivity />} />
 
-                    {/* Business — parent container handles sub-routing via tabs */}
+                    {/* ── 3B: OS Core Space — Business ── */}
                     <Route path="/business" element={<BusinessCenter />} />
                     <Route path="/business/overview" element={<BusinessCenter />} />
                     <Route path="/business/leads" element={<BusinessCenter />} />
@@ -757,7 +770,7 @@ const App = () => (
                     <Route path="/business/customers/:id" element={<CustomerDetail />} />
                     <Route path="/business/customer-health" element={<CustomerHealthPage />} />
 
-                    {/* Money — parent container handles sub-routing via tabs */}
+                    {/* ── 3B: OS Core Space — Money ── */}
                     <Route path="/money" element={<MoneyCenter />} />
                     <Route path="/money/overview" element={<MoneyCenter />} />
                     <Route path="/money/bills" element={<MoneyCenter />} />
@@ -775,7 +788,7 @@ const App = () => (
                     <Route path="/money/boardroom" element={<MoneyCenter />} />
                     <Route path="/money/settings" element={<MoneyCenter />} />
 
-                    {/* Investment Office */}
+                    {/* ── 3B: OS Office — Investment Office (38 routes) ── */}
                     <Route path="/investments" element={<InvestmentGate />} />
                     <Route path="/investments/boardroom" element={<InvestmentBoardroom />} />
                     <Route path="/investments/markets" element={<MarketExplorer />} />
@@ -816,7 +829,7 @@ const App = () => (
                     <Route path="/investments/family-office" element={<FamilyOffice />} />
                     <Route path="/money/investments" element={<InvestmentGate />} />
 
-                    {/* Revenue Office */}
+                    {/* ── 3B: OS Office — Revenue Office (40 routes) ── */}
                     <Route path="/revenue-office" element={<RevenueGate />} />
                     <Route path="/revenue-office/boardroom" element={<GrowthBoardroom />} />
                     <Route path="/revenue-office/relationships" element={<RelationshipCenter />} />
@@ -857,6 +870,10 @@ const App = () => (
                     <Route path="/revenue-office/calls" element={<CallDesk />} />
                     <Route path="/revenue-office/onboarding" element={<BusinessOnboarding />} />
 
+                    {/* ═══════════════════════════════════════════════════════════════
+                        TIER 4: ADMIN / BUILDER — Platform governance, /admin/* prefix
+                        ~280 routes: AI Engineering, DRS, SAG, Automation, Launch, Security, etc.
+                       ═══════════════════════════════════════════════════════════════ */}
                     {/* AI Runtime */}
                     <Route path="/admin/ai-runtime" element={<AIRuntimeStatus />} />
                     <Route path="/admin/persistence-status" element={<PersistenceStatus />} />
@@ -931,7 +948,7 @@ const App = () => (
                     <Route path="/admin/customer-journey/coverage" element={<CJ08RouteActionCoverage />} />
                     <Route path="/admin/customer-journey/recent-runs" element={<CJ09RecentVerificationRuns />} />
 
-                    {/* Digital Presence Office */}
+                    {/* ── 3B: OS Office — Digital Presence Office (19 routes) ── */}
                     <Route path="/digital-presence" element={<PresenceGate />} />
                     <Route path="/digital-presence/boardroom" element={<PresenceBoardroom />} />
                     <Route path="/digital-presence/website-twin" element={<WebsiteTwin />} />
@@ -952,7 +969,7 @@ const App = () => (
                     <Route path="/digital-presence/domains" element={<DomainPublishManager />} />
                     <Route path="/digital-presence/onboarding" element={<DPOOnboarding />} />
 
-                    {/* Concierge — parent container handles sub-routing via tabs */}
+                    {/* ── 3B: OS Core Space — Concierge ── */}
                     <Route path="/concierge" element={<ConciergeCenter />} />
                     <Route path="/concierge/overview" element={<ConciergeCenter />} />
                     <Route path="/concierge/calendar" element={<ConciergeCenter />} />
@@ -1503,7 +1520,7 @@ const App = () => (
 
                      <Route path="/personal-brain" element={<PersonalBrain />} />
 
-                    {/* OS Apps */}
+                    {/* ── 3C: OS Built-in Apps ── */}
                     <Route path="/apps/email" element={<EmailApp />} />
                     <Route path="/apps/messenger" element={<MessengerApp />} />
                     <Route path="/apps/vault" element={<VaultApp />} />
@@ -1511,7 +1528,7 @@ const App = () => (
                     <Route path="/apps/gallery" element={<GalleryApp />} />
                     <Route path="/apps/weather-news" element={<WeatherNewsApp />} />
 
-                    {/* New Workspaces */}
+                    {/* ── 3D: OS Workspaces ── */}
                     <Route path="/calendar" element={<CalendarWorkspace />} />
                     <Route path="/notes" element={<NotesWorkspace />} />
                     <Route path="/people" element={<PeopleWorkspace />} />
@@ -1522,6 +1539,11 @@ const App = () => (
                     <Route path="/media" element={<MediaWorkspace />} />
                     <Route path="/templates" element={<TemplateCenter />} />
                     <Route path="/import-export" element={<ImportExportCenter />} />
+
+                    {/* ── Supplementary Admin Routes (from src/routes/AdminRoutes.tsx) ── */}
+                    <AdminRoutes />
+
+                    {/* ── Supplementary Owner Routes (from src/routes/OwnerRoutes.tsx — deduplicated) ── */}
 
                     <Route path="*" element={<NotFound />} />
                   </Routes>
