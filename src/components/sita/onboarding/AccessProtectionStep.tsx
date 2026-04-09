@@ -42,9 +42,11 @@ export function AccessProtectionStep({ onNext, onPrev, onStateChange }: Props) {
       .catch(() => setBiometricAvailable(false));
   }, []);
 
+  const onStateChangeRef = useRef(onStateChange);
+  onStateChangeRef.current = onStateChange;
   useEffect(() => {
-    onStateChange({ accessMethod, recoveryMethod });
-  }, [accessMethod, recoveryMethod, onStateChange]);
+    onStateChangeRef.current({ accessMethod, recoveryMethod });
+  }, [accessMethod, recoveryMethod]);
 
   const handleBiometricEnroll = useCallback(async () => {
     setBiometricLoading(true);

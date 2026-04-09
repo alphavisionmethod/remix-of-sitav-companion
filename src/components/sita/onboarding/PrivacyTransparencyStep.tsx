@@ -98,16 +98,16 @@ export function PrivacyTransparencyStep({ permissionChoices, onUpdate, deviceOwn
     onUpdate({ ...permissionChoices, [id]: !permissionChoices[id] });
   };
 
-  const allReviewed = reviewed.size >= PERMISSIONS.length;
+  const allReviewed = true; // Allow advancing without reviewing every domain
   const enabledCount = Object.values(permissionChoices).filter(Boolean).length;
 
   // Animate proof steps
-  useState(() => {
+  useEffect(() => {
     const interval = setInterval(() => {
       setProofStep(prev => (prev + 1) % (PROOF_STEPS.length + 1));
     }, 2500);
     return () => clearInterval(interval);
-  });
+  }, []);
 
   return (
     <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
