@@ -1,58 +1,101 @@
 
 
-# SITA OS — Final Deployment Readiness Fixes
+# Update All Existing Documents with Latest Data
 
-## Current State
+## What Changed Since April 7
 
-| Area | Status |
-|------|--------|
-| TypeScript errors | **0** |
-| Security scan | **1 warning** (ignored — Supabase Dashboard action) |
-| DB linter | **Clean** |
-| Edge functions | **50** with **26** test files |
-| Docker + Compose | Present |
-| Generated manifests | All 4 present |
+Since these documents were generated, major work was completed:
+- **Type safety sweep**: `as any` in pages dropped from 710+ to **0**; `: any)` callbacks from 963 to **47**
+- **Investment-office**: wired from 3% to **100%** (38/38 pages)
+- **Deploy scripts created**: `deploy/ota-agent.sh`, `deploy/first-boot.sh`, `deploy/metrics-agent.sh`, `deploy/backup.sh`, `deploy/sita-eula.sh`
+- **PWA assets created**: `manifest.webmanifest`, `icon-192.png`, `icon-512.png`
+- **Edge function tests**: 26 test files now (up from 16)
+- **0 TypeScript errors** confirmed
+- **Routes**: 707 (up from 701), lazy imports: 519
+- **Migrations**: 113 (up from 110)
+- **Pages**: 662 total (up from 657)
 
-## Remaining Gaps (5 items)
+## Documents to Update (8 files, no new files)
 
-### 1. Missing `deploy/` scripts (3 files)
-The deployment validator expects `deploy/ota-agent.sh`, `deploy/first-boot.sh`, and `deploy/metrics-agent.sh`. These scripts exist in `scripts/release/iso/` but are missing from the `deploy/` directory that the validator and docker-compose reference.
+### 1. `SITA_OS_MISSING_Audit.md`
+- Update executive summary table with current numbers (662 pages, 0 `as any`, 47 `: any)`, 50 edge functions, 26 tests)
+- Mark deploy scripts as **RESOLVED** (all 5 exist in `deploy/`)
+- Mark PWA manifest/icons as **RESOLVED**
+- Update investment-office from 3% to 100% wired
+- Update broken logo.jpeg count (still 11)
+- Update remaining gaps list — remove completed items, keep only true remaining issues
 
-**Fix:** Create `deploy/ota-agent.sh`, `deploy/first-boot.sh`, and `deploy/metrics-agent.sh` — either as copies/symlinks of the ISO variants adapted for the Docker deploy context, or as thin wrappers.
+### 2. `SITA_OS_APP_FULL_STRUCTURAL_AUDIT.md`
+- Update structural health score (type safety improved dramatically)
+- Fix `as any` count from 710 to **0** in pages, **7** total codebase
+- Fix `: any)` from 963 to **47**
+- Update edge function count and test coverage (26 tests)
+- Update deploy/PWA status from "missing" to "present"
+- Update kernel adoption and service counts
 
-### 2. Missing PWA manifest (`public/manifest.json`)
-The app has `sw.js` but no web app manifest. Without it, the app cannot be installed as a PWA on mobile or desktop.
+### 3. `SITA_OS_Data_Wiring_Report.md`
+- Update wired pages count: 513/630 non-test pages (81%)
+- Update hook count: 80
+- Update data services: 29 files
+- Update edge functions: 50
 
-**Fix:** Create `public/manifest.json` with SITA OS branding (name, icons, theme color, display: standalone). Add `<link rel="manifest">` to `index.html`.
+### 4. `FULL_SITAOS_AUTONOMOUS_HUMAN_EQUIVALENT_VERIFICATION_MASTER.md`
+- Update census numbers: 662 pages, 707 routes, 50 edge functions, 113 migrations, 328 components, 80 hooks, 29 data services
+- Update type safety section: 0 `as any`, 47 `: any)`
+- Update deploy readiness: all scripts present, PWA complete
+- Update test counts: 28 page test files + 26 edge function tests + 61 other tests
+- Update remaining gaps section
 
-### 3. PWA icons missing
-Only `favicon.ico` exists. PWA requires 192x192 and 512x512 PNG icons.
+### 5. `FULL_SITAOS_DEVELOPER_OPERATOR_BIBLE_PART2.md`
+- Update structural health score upward (type safety went from D to A)
+- Fix `as any` from 679 to **7**
+- Update edge function count to 50 with 26 tests
+- Update investment-office wiring to 100%
+- Update top 5 fixes list (remove completed items)
 
-**Fix:** Generate `public/icon-192.png` and `public/icon-512.png` from the existing favicon/brand assets.
+### 6. `SITA_OS_Screen_Inventory_v2.md`
+- Update total from 657 to 662 (5 new pages added)
+- Update investment-office wired column to all ✅
 
-### 4. Remaining 38 files with `: any)` callbacks
-Down from 963, but 38 page files still have untyped callback parameters.
+### 7. `SITA_OS_Module_Status.md`
+- Update investment-office from 3% to 100% wired
+- Update revenue-office percentage if changed
+- Update all module hook usage to reflect new type-safe hooks
 
-**Fix:** Sweep remaining files replacing `: any)` with `Record<string, any>` or proper interfaces where the shape is known.
+### 8. `SITA_OS_Master_Audit_v8.md`
+- Update all counts: 662 pages, 707 routes, 50 edge functions, 113 migrations, 328 components
+- Update `as any`: 0 in pages
+- Update isDemoMode wired: 513 pages
+- Update edge function test count: 26
+- Update remaining gaps (remove resolved items, keep actual gaps)
+- Investment-office: 100% wired
 
-### 5. Update `validate-deployment.sh` paths
-The validator checks `deploy/ota-agent.sh` etc. but the scripts live in `scripts/release/iso/`. Either fix the validator to also check the ISO paths, or ensure the `deploy/` copies exist (covered by item 1).
+## Execution Approach
 
-**Fix:** Update the validator to accept both locations: `deploy/` and `scripts/release/iso/`.
+Run a single Python script that reads each file, applies regex/string replacements for outdated numbers, and overwrites in place. For the Missing Audit specifically, restructure the remaining gaps to accurately reflect only what's truly still missing (broken logo.jpeg imports, `: any)` callbacks, kernel adoption gap).
 
-## Execution Order
+## Key Numbers for All Documents
 
-1. Create 3 deploy scripts (`deploy/ota-agent.sh`, `deploy/first-boot.sh`, `deploy/metrics-agent.sh`)
-2. Create `public/manifest.json` + PWA icons + update `index.html`
-3. Sweep remaining 38 files for `: any)` type safety
-4. Update `scripts/validate-deployment.sh` to pass all checks
-5. Verify 0 TS errors + validator passes
-
-## Files Changed
-
-- **3 created:** `deploy/ota-agent.sh`, `deploy/first-boot.sh`, `deploy/metrics-agent.sh`
-- **2 created:** `public/manifest.json`, PWA icons
-- **1 updated:** `index.html` (manifest link)
-- **~38 updated:** page files (type safety sweep)
-- **1 updated:** `scripts/validate-deployment.sh` (path fixes)
+| Metric | Old (Apr 7) | Current (Apr 9) |
+|--------|-------------|-----------------|
+| Total pages | 657 | **662** |
+| Routes | 701 | **707** |
+| TS errors | 0 | **0** |
+| `as any` in pages | 710+ | **0** |
+| `as any` total | 710+ | **7** |
+| `: any)` callbacks | 963 | **47** |
+| Edge functions | 50 | **50** |
+| Edge function tests | 16 | **26** |
+| Migrations | 110 | **113** |
+| Components | 344 | **328** |
+| Hooks | 80 | **80** |
+| Data services | 29 | **29** |
+| isDemoMode wired | 595/657 | **513/630** |
+| Investment-office wired | 3% | **100%** |
+| Deploy scripts | Missing | **5 present** |
+| PWA manifest | Missing | **Present** |
+| PWA icons | Missing | **192+512 present** |
+| Broken logo.jpeg | 11 | **11** |
+| console.log in pages | 0 | **0** |
+| Architecture docs | — | **24 files** |
 
