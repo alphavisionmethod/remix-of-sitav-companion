@@ -21,7 +21,7 @@ import { RouteErrorBoundary } from "@/components/sita/RouteErrorBoundary";
 import { createQueryClient } from "@/lib/query-config";
 import { Suspense, lazy, type ReactNode } from "react";
 import { PlatformInit } from "@/components/sita/PlatformInit";
-import { PublicLayout } from "@/components/sita/PublicLayout";
+import { PublicLayout } from "@/layouts/PublicLayout";
 
 // ═══════════════════════════════════════════════════
 // CODE-SPLIT: Lazy-load all page components
