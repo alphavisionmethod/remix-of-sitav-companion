@@ -1,5 +1,8 @@
 // SITA OS — Enterprise Control Plane
 import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
+// Re-export release and route-truth services for unified access
+export { recordRelease, promoteRelease, rollbackRelease, getReleaseHistory, getReleaseById, getEvidenceForRelease, saveEvidenceChain, getRollbackEvents } from "@/lib/services/release-persistence-service";
+export { validateRouteTruth, getRouteMismatches, getManifestStaleness, loadManifest } from "@/lib/services/admin-route-truth-service";
 // @persistence: os_service_state — state survives refresh via universal adapter
 export interface TenantConfig { id: string; name: string; tier: string; limits: Record<string, number>; features: string[]; createdAt: string; }
 export interface VerticalPack { id: string; name: string; domain: string; modules: string[]; active: boolean; }
