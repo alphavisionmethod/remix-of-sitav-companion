@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { Brain, Shield, Sparkles, BarChart3, Home, Activity } from "lucide-react";
+import { Brain, Shield, Sparkles, BarChart3, Home, Activity, MessageCircle } from "lucide-react";
 import { useMemo } from "react";
+import { generateReflections, type ReflectionInput } from "@/lib/setup/reflection-copy";
 
 interface SetupSnapshot {
   displayName: string;
@@ -59,6 +60,18 @@ export function LearningPanel({ state }: LearningPanelProps) {
     return items;
   }, [state]);
 
+  const reflections = useMemo(() => {
+    const input: ReflectionInput = {
+      trustLevel: state.trustLevel,
+      presenceStyle: state.presenceStyle,
+      primaryUseMode: state.role,
+      painPoints: state.painPoints,
+      rituals: state.rituals,
+      householdNodes: state.homeComposition ? [{ name: "member", role: state.homeComposition }] : undefined,
+    };
+    return generateReflections(input).slice(0, 2);
+  }, [state]);
+
   return (
     <motion.div
       initial={{ opacity: 0, x: 20 }}
@@ -90,7 +103,20 @@ export function LearningPanel({ state }: LearningPanelProps) {
         ))}
       </AnimatePresence>
 
-      {insights.length === 0 && (
+      {/* Reflection copy — what SITA understands */}
+      {reflections.length > 0 && (
+        <div className="border-t border-border/50 pt-3 space-y-2">
+          <div className="flex items-center gap-1.5">
+            <MessageCircle className="h-3 w-3 text-primary/60" />
+            <p className="text-[9px] font-semibold uppercase tracking-wider text-muted-foreground">What SITA understands</p>
+          </div>
+          {reflections.map(r => (
+            <p key={r.category} className="text-[10px] text-foreground/70 leading-relaxed">{r.text}</p>
+          ))}
+        </div>
+      )}
+
+      {insights.length === 0 && reflections.length === 0 && (
         <p className="text-xs text-muted-foreground text-center py-4">
           Make your first choices to see SITA learn…
         </p>
