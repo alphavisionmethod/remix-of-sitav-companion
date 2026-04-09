@@ -119,6 +119,38 @@ sudo systemctl restart nginx
 
 ---
 
+## OTA Updates
+
+Once deployed, SITA OS supports automated over-the-air updates:
+
+```bash
+# Install the OTA agent
+sudo cp scripts/release/iso/sita-ota-agent.sh /opt/sita/
+sudo cp scripts/release/iso/sita-ota.service /etc/systemd/system/
+sudo cp scripts/release/iso/sita-ota.timer /etc/systemd/system/
+sudo systemctl enable --now sita-ota.timer
+```
+
+The OTA agent checks for updates every 6 hours, pulls new Docker images, and rolls back on health check failure.
+
+---
+
+## Automated Backups
+
+```bash
+# Install the backup service
+sudo cp scripts/release/iso/sita-backup.sh /opt/sita/
+sudo cp scripts/release/iso/sita-backup.service /etc/systemd/system/
+sudo cp scripts/release/iso/sita-backup.timer /etc/systemd/system/
+sudo systemctl enable --now sita-backup.timer
+```
+
+Backups include database (`pg_dump`), Docker volumes, and configuration files. 30-day retention with automatic cleanup.
+
+To restore: `scripts/restore-backup.sh <backup-file>`
+
+---
+
 ## Environment Variables
 
 For live mode with real connectors, set these environment variables:
