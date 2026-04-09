@@ -48,7 +48,7 @@ const InvoicesCollections = () => {
       if (!user) return [];
       const { data, error } = await fromTable("invoices").select("*, customers(name)").eq("user_id", user.id).order("created_at", { ascending: false });
       if (error) throw error;
-      return data.map((inv: Record<string, any>) => {
+      return data.map((inv: any) => {
         const due = new Date(inv.due_date);
         const now = new Date();
         const daysOverdue = inv.status !== "paid" ? Math.max(0, Math.floor((now.getTime() - due.getTime()) / 86400000)) : 0;

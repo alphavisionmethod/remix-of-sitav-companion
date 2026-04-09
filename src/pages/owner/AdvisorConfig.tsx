@@ -46,7 +46,7 @@ const AdvisorConfig = () => {
   const { isDemoMode } = useDataMode();
   const [advisors, setAdvisors] = useState(ADVISORS);
 
-  const updateAdvisor = (id: string, field: keyof AdvisorConfigItem,  value: Record<string, any>) => {
+  const updateAdvisor = (id: string, field: keyof AdvisorConfigItem, value: any) => {
     setAdvisors(prev => prev.map(a => a.id === id ? { ...a, [field]: value } : a));
   };
 

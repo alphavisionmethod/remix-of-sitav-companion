@@ -67,7 +67,7 @@ export default function NOT01NotificationRuntimeVerification() {
   const dispatchVerified = successReceipts.length > 0;
   const receiptVerified = receipts.length > 0;
 
-  const channels: ChannelRow[] = [
+  const channels: any[] = [
     {
       channel: "Web Push (VAPID)",
       icon: <Globe className="h-4 w-4" />,

@@ -58,7 +58,7 @@ const EMPTY_FORM: MockFormData = {
   migration_owner: "", blockers_text: "", sequence_order: 0, dependencies_text: "",
 };
 
-function MockFormDialog({ trigger, initial, onSave }: { trigger: React.ReactNode; initial?: MockFormData; onSave: (d: Record<string, unknown>) => void }) {
+function MockFormDialog({ trigger, initial, onSave }: { trigger: React.ReactNode; initial?: MockFormData; onSave: (d: any) => void }) {
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState<MockFormData>(initial ?? EMPTY_FORM);
   const handleOpen = (v: boolean) => { if (v) setForm(initial ?? EMPTY_FORM); setOpen(v); };

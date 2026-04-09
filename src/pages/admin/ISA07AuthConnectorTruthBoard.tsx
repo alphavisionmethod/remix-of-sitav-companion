@@ -113,12 +113,12 @@ export default function ISA07AuthConnectorTruthBoard() {
   // Check 2: Identity link implies connector access? (should NOT)
   const identityFamilies = new Set(identityLinks.map((l: Record<string, any>) => getRelation(l, "provider_families", parseProviderFamilyRef).provider_key));
   const connectorFamilies = new Set(connectorLinks.map((l: Record<string, any>) => getRelation(l, "provider_families", parseProviderFamilyRef).provider_key));
-  identityFamilies.forEach((fam: Record<string, any>) => {
+  identityFamilies.forEach((fam: string) => {
     if (fam && connectorFamilies.has(fam)) {
       findings.push({
         type: "ux_confusion",
         severity: "info",
-        family: fam as string,
+        family: fam,
         description: `${fam}: User has both identity link and connector access. Verify UX doesn't conflate them.`,
         resolved: true,
       });
