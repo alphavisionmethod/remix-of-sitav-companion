@@ -62,3 +62,9 @@ export { ConfidenceIndicator, computeConfidenceLevel } from "./ConfidenceIndicat
 export type { ConfidenceLevel } from "./ConfidenceIndicator";
 export { DeferredCompletionCenter, buildDeferredItems } from "./DeferredCompletionCenter";
 export type { DeferredItem } from "./DeferredCompletionCenter";
+
+// Skeleton & Transitions
+export { SetupPhaseSkeleton } from "./SetupPhaseSkeleton";
+
+// Language & Region
+export { SetupLanguageRegion } from "./SetupLanguageRegion";
