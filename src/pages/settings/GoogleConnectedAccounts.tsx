@@ -3,7 +3,7 @@
 // Shows identity vs connector status clearly separated
 // ═══════════════════════════════════════════════════════════════
 
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -13,7 +13,9 @@ import {
 import { useGoogleProviderFamily } from "@/hooks/use-google-provider-family";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { PermissionUpgradeDialog } from "@/components/sita/PermissionUpgradeDialog";
 import type { GoogleConnectorState } from "@/lib/core-services/google-provider-family/types";
+import type { GenericScopeTier } from "@/lib/services/provider-family/types";
 
 const CAPABILITY_ICONS: Record<string, React.ReactNode> = {
   google_drive: <HardDrive className="h-5 w-5" />,
@@ -36,7 +38,7 @@ const HEALTH_ICONS: Record<string, React.ReactNode> = {
   unknown: <div className="h-4 w-4 rounded-full bg-muted-foreground/30" />,
 };
 
-function ConnectorCard({ connector }: { connector: GoogleConnectorState }) {
+function ConnectorCard({ connector, onUpgrade }: { connector: GoogleConnectorState; onUpgrade?: (c: GoogleConnectorState) => void }) {
   const icon = CAPABILITY_ICONS[connector.capabilityKey] ?? <Link2 className="h-5 w-5" />;
   const isConnected = connector.connectionStatus === "connected";
   const isPlanned = connector.launchStage === "planned";
@@ -68,7 +70,15 @@ function ConnectorCard({ connector }: { connector: GoogleConnectorState }) {
         {HEALTH_ICONS[connector.healthStatus]}
         <Badge className={STATUS_COLORS[connector.connectionStatus] ?? ""}>{connector.connectionStatus}</Badge>
         {connector.reauthNeeded && <AlertTriangle className="h-4 w-4 text-yellow-400" />}
-        {connector.upgradeAvailable && isConnected && <ArrowUpCircle className="h-4 w-4 text-blue-400" />}
+        {connector.upgradeAvailable && isConnected && (
+          <button
+            onClick={() => onUpgrade?.(connector)}
+            className="hover:opacity-80 transition-opacity"
+            title="Request permission upgrade"
+          >
+            <ArrowUpCircle className="h-4 w-4 text-primary" />
+          </button>
+        )}
       </div>
     </div>
   );
