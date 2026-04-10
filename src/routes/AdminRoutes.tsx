@@ -9,7 +9,6 @@ const AITokenDashboard = lazy(() => import("@/pages/admin/AITokenDashboard"));
 const GeneratedTruthDashboard = lazy(() => import("@/pages/admin/GeneratedTruthDashboard"));
 const FleetHealthPage = lazy(() => import("@/pages/admin/FleetHealthPage"));
 
-
 const IntelligenceReuseOverview = lazy(() => import("@/pages/admin/intelligence/IntelligenceReuseOverview"));
 const IntelligenceAssetLibrary = lazy(() => import("@/pages/admin/intelligence/IntelligenceAssetLibrary"));
 const DifferentialReasoningExplorer = lazy(() => import("@/pages/admin/intelligence/DifferentialReasoningExplorer"));
@@ -57,6 +56,23 @@ const AIT08LaunchTruth = lazy(() => import("@/pages/admin/AIT04to08Boards").then
 const HQApprovalQueue = lazy(() => import("@/pages/admin/HQApprovalQueue"));
 const AITSetupChecklist = lazy(() => import("@/pages/admin/AITSetupChecklist"));
 const TruthIndexDashboard = lazy(() => import("@/pages/admin/TruthIndexDashboard"));
+
+// ── CAI: Coordinated Ambient Intelligence Operator Consoles ──
+const CAI01PersonalGraphExplorer = lazy(() => import("@/pages/admin/CAI01PersonalGraphExplorer"));
+const CAI02IntentTraceBoard = lazy(() => import("@/pages/admin/CAI02IntentTraceBoard"));
+const CAI03AttentionCenter = lazy(() => import("@/pages/admin/CAI03AttentionCenter"));
+const CAI04ContinuityCenter = lazy(() => import("@/pages/admin/CAI04ContinuityCenter"));
+const CAI05TrustActionsBoard = lazy(() => import("@/pages/admin/CAI05TrustActionsBoard"));
+const CAI06ChiefOfStaffCenter = lazy(() => import("@/pages/admin/CAI06ChiefOfStaffCenter"));
+const CAI07TimingStudio = lazy(() => import("@/pages/admin/CAI07TimingStudio"));
+const CAI08RelationshipCenter = lazy(() => import("@/pages/admin/CAI08RelationshipCenter"));
+const CAI09DigestConsole = lazy(() => import("@/pages/admin/CAI09DigestConsole"));
+const CAI10ModesCenter = lazy(() => import("@/pages/admin/CAI10ModesCenter"));
+const CAI11InterfaceProfiler = lazy(() => import("@/pages/admin/CAI11InterfaceProfiler"));
+const CAI12OpportunityBoard = lazy(() => import("@/pages/admin/CAI12OpportunityBoard"));
+const CAI13MemoryGovernance = lazy(() => import("@/pages/admin/CAI13MemoryGovernance"));
+const CAI14BoundaryControl = lazy(() => import("@/pages/admin/CAI14BoundaryControl"));
+const CAI15SignatureStudio = lazy(() => import("@/pages/admin/CAI15SignatureStudio"));
 
 export function getAdminRoutes() {
   return [
