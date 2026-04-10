@@ -1,15 +1,11 @@
 // ═══════════════════════════════════════════════════════════════
 // ITC01 — Implementation Truth Overview
-// Hero band, readiness heatmap, top gaps, links to sub-pages
 // ═══════════════════════════════════════════════════════════════
 
-import { AdminShell } from "@/components/admin/shells/AdminShell";
-import { Shield } from "lucide-react";
 import { useSpecRegistry, useImplementationStats, useDriftDetection, STATUS_TIERS } from "@/hooks/use-implementation-truth";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Shield, GitBranch, FileCheck, BarChart3, Radar, BookOpen, AlertTriangle, CheckCircle2, ArrowRight } from "lucide-react";
 
@@ -28,53 +24,34 @@ export default function ITC01Overview() {
 
   return (
     <div className="space-y-6">
-      <div className="mb-2">
-        <h1 className="text-xl font-semibold text-foreground">TITLE_PLACEHOLDER</h1>
-        <p className="text-sm text-muted-foreground">DESC_PLACEHOLDER</p>
+      <div>
+        <div className="flex items-center gap-2 mb-1">
+          <Shield className="h-5 w-5 text-primary" />
+          <h1 className="text-xl font-semibold text-foreground">Implementation Truth Center</h1>
+          <Badge variant="outline" className="text-[8px]">ITC</Badge>
+        </div>
+        <p className="text-sm text-muted-foreground">Unified verification: spec → contract → wiring → runtime → proof</p>
       </div>
 
-      {/* Hero Band */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-        <Card>
-          <CardContent className="pt-4 text-center">
-            <div className="text-2xl font-bold text-foreground">{stats.total}</div>
-            <div className="text-[10px] text-muted-foreground">Total Specs</div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-4 text-center">
-            <div className="text-2xl font-bold text-foreground">{stats.avgReadiness}%</div>
-            <div className="text-[10px] text-muted-foreground">Avg Readiness</div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-4 text-center">
-            <div className="text-2xl font-bold text-green-500">{stats.byStatus.proven + stats.byStatus.launch_ready}</div>
-            <div className="text-[10px] text-muted-foreground">Proven+</div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-4 text-center">
-            <div className="text-2xl font-bold text-orange-500">{stats.byStatus.partial + stats.byStatus.advanced_unwired}</div>
-            <div className="text-[10px] text-muted-foreground">In Progress</div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="pt-4 text-center">
-            <div className="text-2xl font-bold text-destructive">{driftCount}</div>
-            <div className="text-[10px] text-muted-foreground">Drift Alerts</div>
-          </CardContent>
-        </Card>
+        {[
+          { label: "Total Specs", value: stats.total },
+          { label: "Avg Readiness", value: `${stats.avgReadiness}%` },
+          { label: "Proven+", value: stats.byStatus.proven + stats.byStatus.launch_ready, cls: "text-green-500" },
+          { label: "In Progress", value: stats.byStatus.partial + stats.byStatus.advanced_unwired, cls: "text-orange-500" },
+          { label: "Drift Alerts", value: driftCount, cls: "text-destructive" },
+        ].map(m => (
+          <Card key={m.label}>
+            <CardContent className="pt-4 text-center">
+              <div className={`text-2xl font-bold ${m.cls || "text-foreground"}`}>{m.value}</div>
+              <div className="text-[10px] text-muted-foreground">{m.label}</div>
+            </CardContent>
+          </Card>
+        ))}
       </div>
 
-      {/* Readiness by Status */}
       <Card>
-        <CardHeader className="pb-2">
-          <CardTitle className="text-sm flex items-center gap-2">
-            <Shield className="h-4 w-4" />
-            Status Distribution
-          </CardTitle>
-        </CardHeader>
+        <CardHeader className="pb-2"><CardTitle className="text-sm flex items-center gap-2"><Shield className="h-4 w-4" />Status Distribution</CardTitle></CardHeader>
         <CardContent>
           <div className="space-y-2">
             {STATUS_TIERS.map(tier => {
@@ -93,14 +70,8 @@ export default function ITC01Overview() {
       </Card>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* Top Gaps */}
         <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm flex items-center gap-2">
-              <AlertTriangle className="h-4 w-4 text-destructive" />
-              Top Readiness Gaps
-            </CardTitle>
-          </CardHeader>
+          <CardHeader className="pb-2"><CardTitle className="text-sm flex items-center gap-2"><AlertTriangle className="h-4 w-4 text-destructive" />Top Readiness Gaps</CardTitle></CardHeader>
           <CardContent>
             {stats.topGaps.length === 0 ? (
               <div className="text-[11px] text-muted-foreground py-4 text-center">No specs registered</div>
@@ -120,14 +91,8 @@ export default function ITC01Overview() {
           </CardContent>
         </Card>
 
-        {/* Recent Drifts */}
         <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm flex items-center gap-2">
-              <Radar className="h-4 w-4 text-orange-500" />
-              Recent Drift Alerts
-            </CardTitle>
-          </CardHeader>
+          <CardHeader className="pb-2"><CardTitle className="text-sm flex items-center gap-2"><Radar className="h-4 w-4 text-orange-500" />Recent Drift Alerts</CardTitle></CardHeader>
           <CardContent>
             {drifts.length === 0 ? (
               <div className="flex items-center gap-2 text-[11px] text-green-500 py-4 justify-center">
@@ -137,9 +102,7 @@ export default function ITC01Overview() {
               <div className="space-y-2">
                 {drifts.slice(0, 5).map((d, i) => (
                   <div key={i} className="flex items-start gap-2">
-                    <Badge variant={d.severity === "high" ? "destructive" : "secondary"} className="text-[8px] h-4 mt-0.5">
-                      {d.severity}
-                    </Badge>
+                    <Badge variant={d.severity === "high" ? "destructive" : "secondary"} className="text-[8px] h-4 mt-0.5">{d.severity}</Badge>
                     <div>
                       <div className="text-[11px] font-medium text-foreground">{d.canonical_name}</div>
                       <div className="text-[10px] text-muted-foreground">{d.issue}</div>
@@ -152,7 +115,6 @@ export default function ITC01Overview() {
         </Card>
       </div>
 
-      {/* Sub-page Links */}
       <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-3">
         {SUB_PAGES.map(p => (
           <Link key={p.path} to={p.path}>

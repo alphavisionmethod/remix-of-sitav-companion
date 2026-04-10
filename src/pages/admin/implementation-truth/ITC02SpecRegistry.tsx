@@ -1,20 +1,18 @@
 // ═══════════════════════════════════════════════════════════════
 // ITC02 — Spec Registry
-// Full CRUD table with readiness scores, search, seed button
 // ═══════════════════════════════════════════════════════════════
 
 import { useState } from "react";
-import { Shield } from "lucide-react";
 import { useSpecRegistry, useDeleteSpec, STATUS_TIERS, type SpecRegistryEntry, type ImplementationStatus } from "@/hooks/use-implementation-truth";
 import { useSeedSpecs } from "@/hooks/use-spec-seed";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Progress } from "@/components/ui/progress";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown, ChevronRight, Database, Trash2, Search, Loader2 } from "lucide-react";
+import { ChevronDown, ChevronRight, Database, Trash2, Search, Loader2, BookOpen } from "lucide-react";
 
 function StatusBadge({ status }: { status: ImplementationStatus }) {
   const tier = STATUS_TIERS.find(t => t.value === status);
@@ -46,20 +44,19 @@ export default function ITC02SpecRegistry() {
 
   return (
     <div className="space-y-6">
-      <div className="mb-2">
-        <h1 className="text-xl font-semibold text-foreground">TITLE_PLACEHOLDER</h1>
-        <p className="text-sm text-muted-foreground">DESC_PLACEHOLDER</p>
+      <div>
+        <div className="flex items-center gap-2 mb-1">
+          <BookOpen className="h-5 w-5 text-primary" />
+          <h1 className="text-xl font-semibold text-foreground">Spec Registry</h1>
+          <Badge variant="outline" className="text-[8px]">ITC-02</Badge>
+        </div>
+        <p className="text-sm text-muted-foreground">Canonical record of every major platform system and its verification state</p>
       </div>
 
       <div className="flex items-center justify-between gap-3">
         <div className="relative flex-1 max-w-sm">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
-          <Input
-            placeholder="Search specs…"
-            value={search}
-            onChange={e => setSearch(e.target.value)}
-            className="pl-9 h-8 text-sm"
-          />
+          <Input placeholder="Search specs…" value={search} onChange={e => setSearch(e.target.value)} className="pl-9 h-8 text-sm" />
         </div>
         <Button size="sm" variant="outline" onClick={() => seedMut.mutate()} disabled={seedMut.isPending}>
           {seedMut.isPending ? <Loader2 className="h-3 w-3 animate-spin mr-1" /> : <Database className="h-3 w-3 mr-1" />}
@@ -110,7 +107,7 @@ export default function ITC02SpecRegistry() {
                         <TableCell className="text-[10px]">{spec.required_routes.length}</TableCell>
                         <TableCell className="text-[10px]">{spec.required_components.length}</TableCell>
                         <TableCell>
-                          {spec.id !== spec.spec_id && spec.user_id !== "demo" && (
+                          {spec.user_id !== "demo" && (
                             <Button variant="ghost" size="icon" className="h-6 w-6" onClick={e => { e.stopPropagation(); deleteMut.mutate(spec.id); }}>
                               <Trash2 className="h-3 w-3 text-destructive" />
                             </Button>
