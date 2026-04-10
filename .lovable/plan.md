@@ -1,109 +1,128 @@
 
 
-# SITA OS — Identity Auth vs Connector Auth Separation: Audit & Completion Plan
+# SITA OS — Schema Completion Audit: Gaps Found & Fix Plan
 
-## Audit Summary: What's Already Built
+## Audit Results
 
-The Identity Auth vs Connector Auth separation architecture is **95% built**. This is one of the most complete subsystems in the project.
+### Tables: 22/23 exist — 1 missing
 
-### Fully Implemented and Working
+| Table | Status |
+|-------|--------|
+| provider_families | Exists with equivalent columns |
+| provider_capabilities | Exists with equivalent columns |
+| oauth_client_registry | Exists |
+| identity_provider_registry | Exists |
+| identity_provider_links (linked_identity_providers) | Exists |
+| connected_service_links (connected_service_accounts) | Exists with all required columns |
+| connector_oauth_tokens | Exists — **missing 4 columns** |
+| connector_health_records | Exists |
+| connector_sync_runs | Exists |
+| scope_policy_matrix | Exists |
+| consent_ledger | Exists |
+| permission_upgrade_requests | Exists |
+| unified_account_nodes | Exists |
+| unified_account_edges | Exists |
+| auth_connector_separation_audits | Exists |
+| identity_session_audit | Exists |
+| connector_disconnection_events | Exists |
+| integration_launch_honesty | Exists |
+| device_auth_clients | Exists |
+| **oauth_state_sessions** | **MISSING** |
 
-| Component | Evidence |
-|-----------|----------|
-| **Type system** | `types.ts` — 198 lines: GoogleCapabilityKey, OAuth client purposes, scope tiers, connection/health/launch states |
-| **Google Provider Family service** | `google-provider-family.service.ts` — queries 5 DB tables in parallel: provider_families, identity_provider_links, connected_service_links, oauth_client_registry, scope_policy_matrix |
-| **Demo provider** | `google-demo-provider.ts` — 116 lines of governed demo data |
-| **React hook** | `use-google-provider-family.ts` — dual-reality mode support |
-| **User-facing GoogleConnectedAccounts** | 258-line page with Identity section, Connector cards, Status Summary, Launch Honesty |
-| **SettingsPage "connected-accounts" tab** | Sign-in Identity card + Data Mode toggle + GoogleConnectedAccounts embedded |
-| **Admin ISA01-ISA07** | All 7 Identity/Connector separation boards built, routed, querying real DB |
-| **Admin PFA01-PFA10** | All 10 Provider Family boards built, routed |
-| **Google Provider Family Dashboard** | Master admin dashboard |
-| **Edge function** | `provider-family-operations` — seed, drift check, scope recommendation, graph report |
-| **DB tables** | provider_families, provider_capabilities, oauth_client_registry, scope_policy_matrix, identity_provider_links, connected_service_links, consent_ledger, consent_revocations, consent_scope_records, permission_levels, permission_upgrade_requests, unified_account_nodes, unified_account_edges, auth_connector_separation_audits, integration_launch_honesty, permission_drift_records |
-| **Core architectural rule** | `doesIdentityImplyConnector()` returns `false` — hardcoded, never changes |
-| **Scope definitions** | Canonical Google scopes for identity, Drive, Gmail, Calendar with tiered access |
-| **OAuth client templates** | 4 templates: identity_web, connector_web, mobile_ios, mobile_android |
+### Views: 4/4 exist
+All views (`v_connected_accounts_center`, `v_identity_methods`, `v_consent_history`, `v_account_graph_summary`) exist.
 
-### Remaining Gaps (5 items)
+### RLS: Enabled on all tables
+All tables have RLS enabled with user-scoped policies.
 
-**Gap 1 — SettingsPage Connected Accounts lacks Consent & Permissions section**
-The prompt requires Section C showing "what was granted, when, for what service, permission upgrades, revoke/reconnect controls." The SettingsPage `connected-accounts` tab has Sign-in Identity and GoogleConnectedAccounts but no consent history visible to users.
+## Remaining Gaps (3 items)
 
-**Gap 2 — SettingsPage Connected Accounts lacks Device & Trusted Access section**
-The prompt requires Section D showing "trusted phone, trusted watch, device-bound approval eligibility." The `devices` tab exists separately but is not integrated into the Connected Accounts center as a unified view.
+### Gap 1 — `oauth_state_sessions` table does not exist
+Required by Part 4, Table 19. Tracks OAuth initiation/callback state for CSRF protection during connector authorization flows.
 
-**Gap 3 — No generic provider family types for Apple/Microsoft/Stripe/Slack**
-Only Google has a full type system and service. Other providers mentioned in the prompt (Apple, Microsoft, Stripe, Slack, Dropbox) have no provider family service. The DB tables support them generically, but no typed client code exists for non-Google families.
+### Gap 2 — `connector_oauth_tokens` missing columns
+Currently has: `id, user_id, account_id, access_token, refresh_token, token_type, expires_at, scopes, reauth_required, last_refreshed_at, refresh_failure_count, metadata, created_at, updated_at`
 
-**Gap 4 — No user-facing permission upgrade flow UI**
-`PFA06PermissionUpgradeCenter` exists as admin, but there's no user-facing component allowing a user to request scope upgrades (e.g., upgrading Drive from read-only to read-write) from the Connected Accounts Center.
+Missing per spec:
+- `oauth_client_registry_id uuid` — FK to oauth_client_registry, needed to track which OAuth client issued the token
+- `scope_string text` — raw scope string from provider
+- `refresh_failed_at timestamptz` — when last refresh failed
+- `refresh_failure_reason text` — why refresh failed
+- `mode text default 'real'` — dual-reality support
 
-**Gap 5 — Connected Accounts Center doesn't show non-Google provider families**
-The user-facing SettingsPage only shows GoogleConnectedAccounts. Other provider families (even if seeded in DB) have no user-facing cards or status displays.
+### Gap 3 — Missing performance indexes
+Most tables only have PK indexes. The spec requires indexes on FK columns, state columns, and timestamp columns for query performance. Tables affected:
+- `connected_service_links`: needs indexes on `user_id`, `provider_family_id`, `provider_capability_id`, `connection_status`
+- `identity_provider_links`: needs indexes on `user_id`, `provider_family_id`
+- `consent_ledger`: needs indexes on `user_id`, `provider_capability_id`, `consent_type`
+- `connector_oauth_tokens`: needs indexes on `account_id`, `expires_at`, `reauth_required`
+- `connector_health_records`: needs index on `account_id`, `health_status`
 
 ## Implementation Plan
 
-### Fix 1 — Add Consent & Permissions section to Connected Accounts tab
-**File:** `src/pages/SettingsPage.tsx`
-- After `<GoogleConnectedAccounts />`, add a `ConsentPermissionsCard` section
-- Query `consent_ledger` joined with `provider_families` to show recent grants
-- Show: service name, scopes granted, date, action type (grant/upgrade/revoke)
-- Include revoke button (calls consent_revocations insert)
-- Keep it compact — last 10 entries with "View all" link to admin
+### Migration 1 — Create `oauth_state_sessions` table
+```sql
+CREATE TABLE oauth_state_sessions (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id uuid NOT NULL,
+  provider_family_id uuid REFERENCES provider_families(id),
+  provider_capability_id uuid REFERENCES provider_capabilities(id),
+  oauth_client_registry_id uuid REFERENCES oauth_client_registry(id),
+  state_token text UNIQUE NOT NULL,
+  code_verifier text,
+  redirect_uri text,
+  requested_scopes jsonb DEFAULT '[]',
+  flow_type text NOT NULL DEFAULT 'connector_grant',
+  status text NOT NULL DEFAULT 'initiated',
+  initiated_at timestamptz NOT NULL DEFAULT now(),
+  completed_at timestamptz,
+  expires_at timestamptz NOT NULL DEFAULT (now() + interval '10 minutes'),
+  error_message text,
+  metadata jsonb DEFAULT '{}',
+  created_at timestamptz NOT NULL DEFAULT now()
+);
+ALTER TABLE oauth_state_sessions ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Users manage own oauth states" ON oauth_state_sessions FOR ALL USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
+CREATE INDEX idx_oauth_state_sessions_user ON oauth_state_sessions(user_id);
+CREATE INDEX idx_oauth_state_sessions_state ON oauth_state_sessions(state_token);
+CREATE INDEX idx_oauth_state_sessions_status ON oauth_state_sessions(status);
+```
 
-### Fix 2 — Add Device & Trusted Access section to Connected Accounts tab
-**File:** `src/pages/SettingsPage.tsx`
-- After consent section, add a `DeviceTrustCard` showing trusted devices from `connected_devices` table
-- Show: device name, platform, trust level, last seen
-- Link to full Devices tab for management
-- This unifies the Connected Accounts Center per the prompt's Section D
+### Migration 2 — Add missing columns to `connector_oauth_tokens`
+```sql
+ALTER TABLE connector_oauth_tokens
+  ADD COLUMN IF NOT EXISTS oauth_client_registry_id uuid REFERENCES oauth_client_registry(id),
+  ADD COLUMN IF NOT EXISTS scope_string text,
+  ADD COLUMN IF NOT EXISTS refresh_failed_at timestamptz,
+  ADD COLUMN IF NOT EXISTS refresh_failure_reason text,
+  ADD COLUMN IF NOT EXISTS mode text DEFAULT 'real';
+```
 
-### Fix 3 — Create generic ProviderFamilyTypes for multi-provider support
-**New file:** `src/lib/services/provider-family/types.ts`
-- Define generic `ProviderFamilyKey` union: `"google" | "apple" | "microsoft" | "stripe" | "slack" | "dropbox"`
-- Define `GenericProviderFamilyState` interface (mirrors Google's but generic)
-- Define `GenericConnectorState` for non-Google connectors
-- Keep Google's typed service as the reference; others use generic types
+### Migration 3 — Add performance indexes
+```sql
+CREATE INDEX IF NOT EXISTS idx_csl_user ON connected_service_links(user_id);
+CREATE INDEX IF NOT EXISTS idx_csl_provider_family ON connected_service_links(provider_family_id);
+CREATE INDEX IF NOT EXISTS idx_csl_capability ON connected_service_links(provider_capability_id);
+CREATE INDEX IF NOT EXISTS idx_csl_status ON connected_service_links(connection_status);
+CREATE INDEX IF NOT EXISTS idx_ipl_user ON identity_provider_links(user_id);
+CREATE INDEX IF NOT EXISTS idx_ipl_provider_family ON identity_provider_links(provider_family_id);
+CREATE INDEX IF NOT EXISTS idx_cl_user ON consent_ledger(user_id);
+CREATE INDEX IF NOT EXISTS idx_cl_capability ON consent_ledger(provider_capability_id);
+CREATE INDEX IF NOT EXISTS idx_cl_type ON consent_ledger(consent_type);
+CREATE INDEX IF NOT EXISTS idx_cot_account ON connector_oauth_tokens(account_id);
+CREATE INDEX IF NOT EXISTS idx_cot_expires ON connector_oauth_tokens(expires_at);
+CREATE INDEX IF NOT EXISTS idx_cot_reauth ON connector_oauth_tokens(reauth_required);
+CREATE INDEX IF NOT EXISTS idx_chr_account ON connector_health_records(account_id);
+CREATE INDEX IF NOT EXISTS idx_chr_status ON connector_health_records(health_status);
+```
 
-### Fix 4 — Create AllProviderFamilies component for Connected Accounts
-**New file:** `src/components/sita/AllProviderFamiliesStatus.tsx`
-- Query `provider_families` + `connected_service_links` for all families
-- Render compact status cards for each family (Google details handled by existing GoogleConnectedAccounts)
-- For non-Google families: show family name, number of connected services, overall status
-- Placeholder "Coming soon" for families with no capabilities seeded
+### What This Does NOT Do
+- No table renames (existing names are semantically equivalent)
+- No column renames (existing column names work fine)
+- No RLS changes (current policies are correctly scoped)
+- No view changes (all 4 views already work)
+- No frontend code changes needed
 
-### Fix 5 — Add user-facing permission upgrade request component
-**New file:** `src/components/sita/PermissionUpgradeDialog.tsx`
-- Modal/dialog for requesting scope upgrades on a connected service
-- Shows current scope tier, requested tier, scope diff
-- Inserts into `permission_upgrade_requests` table
-- Updates `consent_ledger` on approval
-- Triggered from connector cards in GoogleConnectedAccounts via upgrade button
-
-### Fix 6 — Wire upgrade button in GoogleConnectedAccounts
-**File:** `src/pages/settings/GoogleConnectedAccounts.tsx`
-- When `connector.upgradeAvailable && connector.connectionStatus === "connected"`, make the existing `ArrowUpCircle` icon clickable
-- Opens `PermissionUpgradeDialog` with current connector context
-
-### Files Modified (2)
-| File | Change |
-|------|--------|
-| `src/pages/SettingsPage.tsx` | Add Consent/Permissions + Device Trust sections to connected-accounts tab |
-| `src/pages/settings/GoogleConnectedAccounts.tsx` | Wire upgrade button to PermissionUpgradeDialog |
-
-### Files Created (3)
-| File | Purpose |
-|------|---------|
-| `src/lib/services/provider-family/types.ts` | Generic provider family types for multi-provider support |
-| `src/components/sita/AllProviderFamiliesStatus.tsx` | Multi-provider status cards for Connected Accounts |
-| `src/components/sita/PermissionUpgradeDialog.tsx` | User-facing scope upgrade request flow |
-
-### What This Achieves
-- Connected Accounts Center becomes the "one beautiful place" the prompt demands — all 4 sections present
-- Consent history visible to users, not just admins
-- Device trust integrated into the account control center
-- Permission upgrade flow exists for users, not just admin observation
-- Multi-provider support scaffolded for Apple/Microsoft/Stripe/Slack
-- Zero new DB tables, edge functions, or services — pure frontend wiring to existing schema
+### Summary
+3 migrations total. 1 new table, 5 new columns, 15 new indexes. Zero duplicates, zero stubs.
 
