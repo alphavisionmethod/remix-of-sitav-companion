@@ -137,6 +137,7 @@ const DailyPulse = () => {
   const { isDemoMode } = useDataMode();
   const { inspect } = useInspector();
   const { missionMode } = useDisplayMode();
+  const { user } = useAuth();
   const os = useOSOrchestration();
   const interfaceState = useAdaptiveInterface();
   const signature = useExperienceSignature();
@@ -162,15 +163,16 @@ const DailyPulse = () => {
     let cancelled = false;
     os.dailyPulse(user?.user_metadata?.full_name).then(digest => {
       if (!cancelled) {
-        setOsPulseDigest(digest.content || digest.summary || JSON.stringify(digest.sections));
+        const digestText = digest.greeting + "\n" + digest.sections.map(s => `${s.title}: ${s.summary}`).join("\n");
+        setOsPulseDigest(digestText);
         // Persist the generated digest to CAI table
         import("@/lib/persistence/cai-persistence-bridge").then(({ persistDigestCompilation }) => {
           persistDigestCompilation({
             digest_type: "daily_pulse",
             mode: currentMode as string,
-            source_refs: digest.providers || [],
+            source_refs: digest.sections.map(s => s.type),
             delivery_surface: "desktop",
-            summary_ref: digest.summary || "",
+            summary_ref: digest.greeting,
           });
         });
       }
