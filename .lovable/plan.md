@@ -1,131 +1,157 @@
 
 
-# Phase 3 Core Persistence Substrate — Audit & Implementation Plan
+# Platform Truth & Implementation Verification System — Implementation Plan
 
-## Current State Assessment
+## Existing Infrastructure Audit
 
-**Already fully implemented and wired:**
+The project already has significant verification infrastructure that must NOT be duplicated:
 
-| System | Service | Persistence Adapter | DB Table | RLS | Wired to Service |
-|--------|---------|---------------------|----------|-----|-------------------|
-| EventBus | `event-bus.ts` | `event-bus-persistence.ts` | `os_event_log` (18 cols) | Yes (CRUD) | Yes — publish() auto-persists |
-| MemoryService | `memory-service.ts` | `memory-service-persistence.ts` | `os_memory_scoped` (18 cols) | Yes (CRUD) | Yes — store()/forget() auto-persist |
-| PolicyEngine | `policy-engine.ts` | `policy-engine-persistence.ts` | `os_policy_evaluations` (21 cols) | Yes (select/insert) | Yes — evaluate() auto-persists |
-| ActionStateMachine | `action-state-machine.ts` | `action-lineage-persistence.ts` | `os_action_lineage` (23 cols) | Yes (select/insert/update) | Yes — constructor + transition auto-persist |
-| Intelligence Assets | — | `intelligence-asset-persistence.ts` | `intelligence_assets_library` | Yes | Yes — full CRUD |
-| Receipt/Proof | `receipt-service.ts` | `supabase-adapters.ts` | `sita_receipts` / `sita_proof_records` | Yes | Yes |
-| Memory Forget Log | — | via memory-service-persistence | `sita_memory_forget_log` | Yes | Yes |
-| Engine State | — | `engine-persistence-adapter.ts` | `os_service_state` | Yes | Yes — 100+ services use loadPersistedState() |
+| Existing System | Location | What It Does |
+|---|---|---|
+| Reality Classification Matrix | `RealityClassificationMatrix.tsx` + `reality_classifications` table | Classifies routes as presentational/simulated/persisted/proven |
+| Route Reality Heatmap | `RouteRealityHeatmap.tsx` | Visual route-level reality state |
+| Domain Reality Board | `DomainRealityBoard.tsx` | Per-domain implementation truth |
+| Mock Elimination Center | `MockEliminationCenter.tsx` | Tracks mock→real migration |
+| Mock Replacement Program | `MockReplacementProgram.tsx` | Detailed mock replacement tracking |
+| Platform Truth Dashboard | `PlatformTruthDashboard.tsx` (Mission Control tab) | Projections, degraded states, launch gates, registries |
+| Validation Command Center | `ValidationCommandCenter.tsx` (Atlas) | Coverage, architecture, readiness scoring |
+| Truth Index Dashboard | `TruthIndexDashboard.tsx` | Real-time truth indices from DB |
+| Generated Truth Dashboard | `GeneratedTruthDashboard.tsx` | JSON manifest validation |
+| SERV01-06 | Service ownership, domain ownership, route trace, duplication, canonical actions, flagship trace |
+| FIP system (14 screens) | Feature intake, specs, compliance, readiness, rollout, deprecation, memory graph, observability |
+| Persistence Drift Radar | `PersistenceDriftRadar.tsx` | Persistence gap detection |
+| LT01-07 | Behavioral truth, CI pipeline, E2E journeys, runtime probes, launch gates, route interaction, regression radar |
+| Architecture scripts (17) | `scripts/architecture/` | Boundary, contract, event, policy, proof checks |
 
-**All 10 CPS admin surfaces exist and are routed:**
+**What is genuinely missing (the 10-layer gap analysis):**
 
-| Screen | File | Route |
-|--------|------|-------|
-| CPS01 Core Overview | `CorePersistenceOverview.tsx` | `/admin/core-persistence` |
-| CPS02 Event Stream | `EventStreamExplorer.tsx` | `/admin/event-stream` |
-| CPS03 Memory Center | `MemoryContinuityCenter.tsx` | `/admin/memory-continuity` |
-| CPS04 Policy Ledger | `PolicyDecisionLedger.tsx` | `/admin/policy-ledger` |
-| CPS05 Intelligence Library | `IntelligenceArtifactLibrary.tsx` | `/admin/intelligence-library` |
-| CPS06 Action Lineage | `ActionLineageExplorer.tsx` | `/admin/action-lineage` |
-| CPS07 Replay Console | `ReplayRecoveryConsole.tsx` | `/admin/replay-console` |
-| CPS08 Migration Board | `CoreServiceMigrationBoard.tsx` | `/admin/service-migration` |
-| CPS09 Drift Radar | `PersistenceDriftRadar.tsx` | `/admin/persistence-drift` |
-| CPS10 Continuity Board | `RuntimeContinuityBoard.tsx` | `/admin/runtime-continuity` |
-
-**All persistence adapters correctly use `fromDynamicTable()` for Supabase queries, handle auth, and are non-blocking (fire-and-forget).**
-
----
-
-## What Is Missing
-
-### 1. Boot Hydration Hook
-The kernel creates `EventBus`, `MemoryService`, `ReceiptService` in memory but **never calls `hydrate()` or `replayFromStorage()` on boot**. The services support it (methods exist), but nothing triggers hydration after login/refresh. `PlatformInit.tsx` only wires Electron bridge and offline store — no substrate hydration.
-
-### 2. Build Error Fix
-`src/hooks/use-intelligence-screen-data.ts` has `effectiveMode` references that the build system reports as errors. The file on disk appears to have `mode` (already fixed), but the build may have a stale cache. We need to ensure a clean rebuild triggers.
-
-### 3. Replay/Recovery Console Not Fully Wired
-`ReplayRecoveryConsole.tsx` uses `useWorkflowRecovery()` (workflow-level replay) but doesn't use the durable `replayFromStorage()` from EventBus or the `fetchActionLineage`-based replay. It should support correlation ID-scoped event replay from durable storage and dry-run modes.
-
-### 4. Action Lineage Missing Linked Projection References
-The `os_action_lineage` table has `linked_event_ids`, `linked_memory_ids`, `linked_policy_ids`, `linked_receipt_ids` but no `linked_projection_ids`. The spec requires projection linkage for full lineage.
-
-### 5. Persistence Drift Radar Uses Hardcoded Demo Data
-`PersistenceDriftRadar.tsx` does a single `fetchPersistedEvents` check but most of the drift detection is hardcoded demo data, not live analysis of actual persistence gaps.
-
-### 6. Runtime Continuity Board Manual Checks
-`RuntimeContinuityBoard.tsx` runs local checks but doesn't actually test cross-session continuity by reading from durable storage.
+1. **Spec-to-Implementation Registry** — No unified registry mapping every major system to its required routes/components/services/contracts/tests with completion status
+2. **Feature Verification Manifests** — No machine-readable manifest per feature declaring expected artifacts
+3. **Wiring Graph** — No end-to-end trace visualization (spec → route → hook → contract → service → event → projection → proof)
+4. **Contract Verification Dashboard** — No unified view of contract existence, consumer/implementer alignment, shadow detection
+5. **Prompt-to-Build Traceability** — No tracking of which prompts created which features
+6. **Implementation Truth Center** — No unified hub aggregating all verification layers into one command surface
 
 ---
 
 ## Implementation Plan
 
-### Step 1: Create Boot Hydration Hook
-Create `src/hooks/useCoreSubstrateHydration.ts` — a hook mounted in `PlatformInit.tsx` that runs once after auth and hydrates:
-- `kernel.memory.hydrate()` — loads scoped memory from `os_memory_scoped`
-- `kernel.receipts.hydrate()` — loads receipts from `sita_receipts`
-- `kernel.eventBus.replayFromStorage({ limit: 200 })` — warms event log
-- Emits `kernel.substrate.hydrated.v1` event on completion
-- Tracks hydration status for the RuntimeContinuityBoard
+### Database: 2 New Tables
 
-### Step 2: Fix Build Error
-Force-write `use-intelligence-screen-data.ts` to ensure all `effectiveMode` references are `mode`. The file may have been partially saved.
+**`implementation_spec_registry`** — Canonical record of every major system/feature
+- `id`, `user_id`, `spec_id` (unique key like `money-office`), `canonical_name`, `owning_module`, `description`
+- `required_routes text[]`, `required_components text[]`, `required_services text[]`, `required_contracts text[]`, `required_events text[]`, `required_tests text[]`, `required_proofs text[]`
+- `implementation_status` (enum: not_started, scaffolded, partial, advanced_unwired, wired_unproven, proven, launch_ready)
+- `prompt_origin text`, `acceptance_criteria text[]`, `dependencies text[]`
+- `spec_score int`, `ui_score int`, `contract_score int`, `wiring_score int`, `runtime_score int`, `overall_readiness int`
+- `last_verified_at`, `created_at`, `updated_at`
+- RLS: user-scoped CRUD
 
-### Step 3: Add Projection Linkage to Action Lineage
-- Migration: add `linked_projection_ids text[] default '{}'` to `os_action_lineage`
-- Add `linkProjectionToAction()` function to `action-lineage-persistence.ts`
-- Export from barrel
+**`implementation_wiring_edges`** — Directed graph edges for wiring visualization
+- `id`, `user_id`, `spec_id`, `source_type` (route/component/hook/contract/service/event/projection/proof), `source_name`, `target_type`, `target_name`
+- `status` (connected/broken/missing), `evidence text`, `verified_at`
+- RLS: user-scoped CRUD
 
-### Step 4: Wire Replay Console to Durable Storage
-Enhance `ReplayRecoveryConsole.tsx` to include:
-- Event replay from `os_event_log` by correlation ID
-- Action lineage replay (reconstruct action history from `os_action_lineage`)
-- Dry-run toggle that marks replayed events with `replayed` status
-- Diff panel showing before/after state
+### New Hook: `src/hooks/use-implementation-truth.ts`
+- `useSpecRegistry()` — CRUD for spec registry records
+- `useWiringEdges(specId)` — fetch/create wiring edges
+- `useImplementationStats()` — aggregate readiness scores
+- `useContractVerification()` — cross-references `contract-manifest.json` + `reality_classifications` + spec registry
+- `useDriftDetection()` — compares spec requirements vs actual route/component existence
+- All with demo data fallback via `useDataMode()`
 
-### Step 5: Wire Persistence Drift Radar to Live Data
-Enhance `PersistenceDriftRadar.tsx` to actually detect drift by:
-- Querying each `os_*` table for recent activity
-- Comparing in-memory event count vs persisted count
-- Detecting memory scope coverage gaps
-- Flagging domains with no policy evaluations
+### New Hook: `src/hooks/use-spec-seed.ts`
+- Seeds ~20 canonical spec registry entries (money-office, revenue-office, digital-presence, ai-engineering-board, compute-governance, intelligence-architecture, admin-control-plane, onboarding-ceremony, etc.) on first use
+- Each entry has accurate `required_routes`, `required_components`, `required_services` from the actual codebase
 
-### Step 6: Wire Runtime Continuity Board to Live Storage
-Enhance `RuntimeContinuityBoard.tsx` to actually test:
-- Memory hydration success (read from `os_memory_scoped`)
-- Event durability (read from `os_event_log`)
-- Receipt chain integrity (read from `sita_receipts`)
-- Action lineage completeness (read from `os_action_lineage`)
+### 6 New Pages (Implementation Truth Center)
 
----
+All under `/admin/implementation-truth/*`, inside existing `AdminShellLayout`:
 
-## Files Changed
+**ITC01 — Implementation Truth Overview** (`/admin/implementation-truth`)
+- Hero band: total specs, average readiness %, specs by status tier
+- Readiness heatmap by module/domain
+- Top gaps list, recent drift alerts
+- Links to all sub-pages
+
+**ITC02 — Spec Registry** (`/admin/implementation-truth/specs`)
+- Full CRUD table of all registered features/systems
+- Per-spec: name, module, status, readiness scores (spec/UI/contract/wiring/runtime)
+- Inline scoring, search/filter by domain, expandable detail with required artifacts checklist
+- Auto-seed button for canonical specs
+
+**ITC03 — Contract Verification Board** (`/admin/implementation-truth/contracts`)
+- Reads from `generated/contract-manifest.json` + spec registry + reality classifications
+- Shows: all contracts, their package, consumers, implementers, alignment status
+- Detects: missing contracts, shadow/duplicate contracts, unused contracts
+- Per-spec contract checklist
+
+**ITC04 — Wiring Graph Explorer** (`/admin/implementation-truth/wiring`)
+- Per-spec directed graph: spec → routes → components → hooks → contracts → services → events → projections → proofs
+- Each node shows status (present/missing/broken)
+- Edge evidence and verification timestamps
+- Broken chain highlighting
+
+**ITC05 — Readiness Scorecards** (`/admin/implementation-truth/readiness`)
+- Per-feature scorecard: 10 dimensions (spec, UI, contract, backend, wiring, test, runtime, policy/proof, docs, production)
+- Status tiers: not_started → scaffolded → partial → advanced_unwired → wired_unproven → proven → launch_ready
+- Overall platform readiness composite
+- Comparison view across all features
+
+**ITC06 — Drift & Traceability Radar** (`/admin/implementation-truth/drift`)
+- Spec says X routes exist → checks if routes are in App.tsx
+- Spec says Y components exist → checks if component files exist
+- Prompt-to-build traceability: which prompt origin maps to which spec, what's missing
+- Cross-references with reality_classifications for reality state
+- Drift timeline showing when gaps were detected
+
+### Integration Points (no stubs)
+
+- **Existing Reality Classification system**: ITC reads from `reality_classifications` table for route-level reality state
+- **Existing FIP system**: ITC links to feature specs/compliance records where applicable
+- **Generated manifests**: ITC reads `route-manifest.json`, `service-manifest.json`, `contract-manifest.json` for verification
+- **Architecture scripts**: ITC surfaces results from `architecture-compliance-report.json`
+- **Persistence layer**: ITC reads from `os_event_log`, `os_action_lineage`, `sita_receipts` for runtime evidence
+- **Truth Index**: ITC incorporates truth index scores as runtime evidence
+
+### Route Registration in App.tsx
+
+6 new routes under `AdminShellLayout`:
+```
+/admin/implementation-truth
+/admin/implementation-truth/specs
+/admin/implementation-truth/contracts
+/admin/implementation-truth/wiring
+/admin/implementation-truth/readiness
+/admin/implementation-truth/drift
+```
+
+### Sidebar Integration
+
+Add "Implementation Truth" entry under the existing admin navigation group.
+
+### Files Created/Modified
 
 | File | Action |
 |------|--------|
-| `src/hooks/useCoreSubstrateHydration.ts` | **New** — boot hydration hook |
-| `src/components/sita/PlatformInit.tsx` | **Edit** — mount hydration hook |
-| `src/hooks/use-intelligence-screen-data.ts` | **Edit** — fix effectiveMode build error |
-| `src/lib/persistence/action-lineage-persistence.ts` | **Edit** — add linkProjectionToAction |
-| `src/lib/persistence/index.ts` | **Edit** — export new function |
-| `src/pages/admin/ReplayRecoveryConsole.tsx` | **Edit** — wire to durable event/action replay |
-| `src/pages/admin/PersistenceDriftRadar.tsx` | **Edit** — wire to live persistence gap detection |
-| `src/pages/admin/RuntimeContinuityBoard.tsx` | **Edit** — wire to live continuity checks |
-| Migration SQL | **New** — add linked_projection_ids column |
+| `src/hooks/use-implementation-truth.ts` | **New** — all data hooks |
+| `src/hooks/use-spec-seed.ts` | **New** — canonical spec seeder |
+| `src/pages/admin/implementation-truth/ITC01Overview.tsx` | **New** |
+| `src/pages/admin/implementation-truth/ITC02SpecRegistry.tsx` | **New** |
+| `src/pages/admin/implementation-truth/ITC03ContractVerification.tsx` | **New** |
+| `src/pages/admin/implementation-truth/ITC04WiringGraph.tsx` | **New** |
+| `src/pages/admin/implementation-truth/ITC05ReadinessScoreboard.tsx` | **New** |
+| `src/pages/admin/implementation-truth/ITC06DriftRadar.tsx` | **New** |
+| `src/App.tsx` | **Edit** — add 6 routes + lazy imports |
+| Migration SQL | **New** — 2 tables + RLS |
 
-**Total: 2 new files, 6 enhanced files, 1 migration. No stubs. Everything wired to real Supabase tables.**
+### What This Does NOT Duplicate
 
-## What Does NOT Need Change
-
-The following are already fully implemented and wired — no work needed:
-- EventBus persistence (publish auto-persists, replay from storage exists)
-- MemoryService persistence (store/forget auto-persist, hydrate method exists)
-- PolicyEngine persistence (evaluate auto-persists denials/approvals)
-- ActionStateMachine persistence (auto-persists records and transitions)
-- Intelligence asset persistence (full CRUD)
-- Receipt/proof persistence (full CRUD)
-- All 10 CPS admin page components and routes
-- 100+ services with loadPersistedState/hydrate patterns via engine-persistence-adapter
-- RLS policies on all os_* tables
-- DB schema for all 5 core tables
+- Does NOT recreate route reality heatmap (references existing `reality_classifications`)
+- Does NOT recreate mock elimination (links to existing)
+- Does NOT recreate architecture scripts (reads their output)
+- Does NOT recreate FIP (complementary — FIP = feature lifecycle, ITC = implementation verification)
+- Does NOT recreate truth indices (consumes them as evidence)
+- Does NOT recreate SERV01-06 (references their data)
+- Does NOT recreate persistence drift radar (different scope — ITC is spec-to-implementation, CPS09 is persistence gaps)
 
