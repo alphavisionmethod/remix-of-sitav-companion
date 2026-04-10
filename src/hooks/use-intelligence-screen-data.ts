@@ -108,7 +108,7 @@ function timeAgo(dateStr: string | null): string {
 // ── Asset Library Hook ───────────────────────────────────────────
 
 export function useIntelligenceAssetLibrary(filters?: { domain?: string; type?: string }) {
-  const { effectiveMode } = useDataMode();
+  const { mode } = useDataMode();
   const [assets, setAssets] = useState<IntelligenceAsset[]>([]);
   const [loading, setLoading] = useState(true);
   const [isDemo, setIsDemo] = useState(false);
@@ -116,7 +116,7 @@ export function useIntelligenceAssetLibrary(filters?: { domain?: string; type?: 
   const reload = useCallback(async () => {
     setLoading(true);
 
-    if (effectiveMode === "demo") {
+    if (mode === "demo") {
       setAssets(DEMO_INTEL_ASSETS);
       setIsDemo(true);
       setLoading(false);
@@ -196,7 +196,7 @@ export function useIntelligenceAssetLibrary(filters?: { domain?: string; type?: 
     }
 
     setLoading(false);
-  }, [effectiveMode, filters?.domain, filters?.type]);
+  }, [mode, filters?.domain, filters?.type]);
 
   useEffect(() => { reload(); }, [reload]);
 
@@ -206,7 +206,7 @@ export function useIntelligenceAssetLibrary(filters?: { domain?: string; type?: 
 // ── Efficiency Scoreboard Hook ───────────────────────────────────
 
 export function useEfficiencyScoreboard() {
-  const { effectiveMode } = useDataMode();
+  const { mode } = useDataMode();
   const [agents, setAgents] = useState<EfficiencyAgent[]>([]);
   const [loading, setLoading] = useState(true);
   const [isDemo, setIsDemo] = useState(false);
@@ -214,7 +214,7 @@ export function useEfficiencyScoreboard() {
   const reload = useCallback(async () => {
     setLoading(true);
 
-    if (effectiveMode === "demo") {
+    if (mode === "demo") {
       setAgents(DEMO_INTEL_AGENTS);
       setIsDemo(true);
       setLoading(false);
@@ -272,7 +272,7 @@ export function useEfficiencyScoreboard() {
     }
 
     setLoading(false);
-  }, [effectiveMode]);
+  }, [mode]);
 
   useEffect(() => { reload(); }, [reload]);
 
@@ -283,7 +283,7 @@ export function useEfficiencyScoreboard() {
 // ── Outcome Economics Hook ───────────────────────────────────────
 
 export function useOutcomeEconomics() {
-  const { effectiveMode } = useDataMode();
+  const { mode } = useDataMode();
   const [outcomes, setOutcomes] = useState<OutcomeRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [isDemo, setIsDemo] = useState(false);
@@ -291,7 +291,7 @@ export function useOutcomeEconomics() {
   const reload = useCallback(async () => {
     setLoading(true);
 
-    if (effectiveMode === "demo") {
+    if (mode === "demo") {
       setOutcomes(DEMO_INTEL_OUTCOMES);
       setIsDemo(true);
       setLoading(false);
@@ -355,7 +355,7 @@ export function useOutcomeEconomics() {
     }
 
     setLoading(false);
-  }, [effectiveMode]);
+  }, [mode]);
 
   useEffect(() => { reload(); }, [reload]);
 
@@ -365,7 +365,7 @@ export function useOutcomeEconomics() {
 // ── Reuse Overview Hook ──────────────────────────────────────────
 
 export function useReuseOverview() {
-  const { effectiveMode } = useDataMode();
+  const { mode } = useDataMode();
   const [stats, setStats] = useState<ReuseStats>(DEMO_REUSE_DATA);
   const [assetClasses, setAssetClasses] = useState(DEMO_ASSET_CLASSES);
   const [domainReuse, setDomainReuse] = useState(DEMO_DOMAIN_REUSE);
@@ -377,7 +377,7 @@ export function useReuseOverview() {
   const reload = useCallback(async () => {
     setLoading(true);
 
-    if (effectiveMode === "demo") {
+    if (mode === "demo") {
       setStats(DEMO_REUSE_DATA);
       setAssetClasses(DEMO_ASSET_CLASSES);
       setDomainReuse(DEMO_DOMAIN_REUSE);
@@ -484,7 +484,7 @@ export function useReuseOverview() {
     }
 
     setLoading(false);
-  }, [effectiveMode]);
+  }, [mode]);
 
   useEffect(() => { reload(); }, [reload]);
 
