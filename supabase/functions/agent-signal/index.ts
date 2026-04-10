@@ -18,12 +18,13 @@ const COUNCIL_AGENTS: Record<string, string[]> = {
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
-  // Zod input validation
+  // Parse body once — Deno Request.json() can only be called once
+  let parsedBody: Record<string, unknown> = {};
   if (req.method === "POST" || req.method === "PUT" || req.method === "PATCH") {
     try {
+      parsedBody = await req.json();
       const BodySchema = z.object({ agent_id: z.string().min(1), signal_type: z.string().min(1), payload: z.record(z.unknown()).optional() });
-      const body = await req.json();
-      const parsed = BodySchema.safeParse(body);
+      const parsed = BodySchema.safeParse(parsedBody);
       if (!parsed.success) {
         return new Response(JSON.stringify({ error: "Validation failed", details: parsed.error.flatten().fieldErrors }), {
           status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" }
@@ -78,8 +79,7 @@ serve(async (req) => {
     }
 
     // ── POST: send a signal ──
-    const body = await req.json();
-    const { from_agent, to_agent, signal_type, payload = {}, priority = 5, broadcast_council } = body;
+    const { from_agent, to_agent, signal_type, payload = {}, priority = 5, broadcast_council } = parsedBody as Record<string, unknown>;
 
     if (!from_agent || !signal_type) {
       return new Response(JSON.stringify({ error: "from_agent and signal_type required" }), {

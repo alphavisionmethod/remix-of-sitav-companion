@@ -8,12 +8,13 @@ import { z } from "https://esm.sh/zod@3.23.8";
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response("ok", { headers: corsHeaders });
 
-  // Zod input validation
+  // Parse body once — Deno Request.json() can only be called once
+  let parsedBody: Record<string, unknown> = {};
   if (req.method === "POST" || req.method === "PUT" || req.method === "PATCH") {
     try {
+      parsedBody = await req.json();
       const BodySchema = z.object({ operation: z.string().min(1), params: z.record(z.unknown()).optional() });
-      const body = await req.json();
-      const parsed = BodySchema.safeParse(body);
+      const parsed = BodySchema.safeParse(parsedBody);
       if (!parsed.success) {
         return new Response(JSON.stringify({ error: "Validation failed", details: parsed.error.flatten().fieldErrors }), {
           status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" }
@@ -34,7 +35,7 @@ serve(async (req) => {
     const { data: { user }, error: authError } = await supabase.auth.getUser(token);
     if (authError || !user) return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401, headers: corsHeaders });
 
-    const body = await req.json();
+    const body = parsedBody;
     const { action } = body;
 
     switch (action) {
