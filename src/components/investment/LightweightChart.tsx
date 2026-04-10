@@ -69,10 +69,6 @@ export default function LightweightChart({ symbol, basePrice, changePct, classNa
       seriesRef.current = null;
     }
 
-    const root = getComputedStyle(document.documentElement);
-    const fg = root.getPropertyValue("--foreground").trim();
-    const bg = root.getPropertyValue("--background").trim();
-    const border = root.getPropertyValue("--border").trim();
 
     const chart = createChart(containerRef.current, {
       width: containerRef.current.clientWidth,
