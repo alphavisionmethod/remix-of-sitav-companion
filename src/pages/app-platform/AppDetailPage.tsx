@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — App Detail Page
+// SITA OS — App Detail Page (fully wired)
 // Full per-app management with trust, permissions, associations
 // ═══════════════════════════════════════════════════════════════
 
@@ -9,26 +9,31 @@ import { motion } from "framer-motion";
 import {
   ArrowLeft, Download, Check, ExternalLink, Star, Clock, Shield,
   Bell, FileText, Link2, Package, ChevronDown, ChevronUp, RefreshCw,
-  Trash2, Pin, Settings, HardDrive,
+  Trash2, Pin, Settings, HardDrive, Sparkles, Lock, Layers,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { getAppById, APP_CATALOG } from "@/lib/app-platform";
 import {
   AppIcon, VerificationBadge, AppSourceLabel, WorksWithSitaBadge,
-  PermissionDomainCard, InstallSheet, AppReceiptCard,
+  PermissionDomainCard, InstallSheet, SourceOriginLabel, PackageTypeLabel,
+  SandboxLevelBadge, UpdateSourceInfo, TrustInstallBehavior,
 } from "@/components/sita/app-platform/AppStoreComponents";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
+import { toast } from "sonner";
 
 const AppDetailPage = () => {
   const { isDemoMode } = useDataMode();
   const { appId } = useParams<{ appId: string }>();
   const navigate = useNavigate();
-  const { getApp: getLiveApp, installApp, apps } = useAppPlatform();
+  const {
+    getApp: getLiveApp, installApp, uninstallApp, pinToDock, unpinFromDock,
+    togglePermission, setNotificationEnabled, apps, receipts,
+  } = useAppPlatform();
   const [showInstall, setShowInstall] = useState(false);
   const [showPermissions, setShowPermissions] = useState(false);
   const [showReleaseNotes, setShowReleaseNotes] = useState(false);
+  const [showReceipts, setShowReceipts] = useState(false);
 
   const app = getLiveApp(appId || "");
   if (!app) {
@@ -47,6 +52,28 @@ const AppDetailPage = () => {
 
   const isInstalled = app.installStatus === "installed";
   const similarApps = apps.filter(a => a.category === app.category && a.id !== app.id).slice(0, 4);
+  const appReceipts = receipts.filter(r => r.appId === app.id);
+
+  const handleInstall = async () => {
+    await installApp(app.id);
+    setShowInstall(false);
+    toast.success(`${app.name} installed`);
+  };
+
+  const handleUninstall = async () => {
+    await uninstallApp(app.id);
+    toast.success(`${app.name} uninstalled`);
+  };
+
+  const handlePinToggle = () => {
+    if (app.pinnedToDock) {
+      unpinFromDock(app.id);
+      toast.success(`${app.name} unpinned from dock`);
+    } else {
+      pinToDock(app.id);
+      toast.success(`${app.name} pinned to dock`);
+    }
+  };
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
@@ -64,12 +91,19 @@ const AppDetailPage = () => {
             <div className="flex items-center gap-3 mt-2">
               <VerificationBadge level={app.trustLevel} size="md" />
               <AppSourceLabel appClass={app.appClass} size="md" />
+              {app.sourceOrigin && <SourceOriginLabel origin={app.sourceOrigin} size="md" />}
             </div>
             <div className="flex items-center gap-4 mt-4">
               {isInstalled ? (
-                <button className="rounded-xl bg-white/20 backdrop-blur-sm px-6 py-2.5 text-sm font-semibold text-white hover:bg-white/30 transition-colors flex items-center gap-2">
-                  <Check className="h-4 w-4" /> Open
-                </button>
+                <>
+                  <button className="rounded-xl bg-white/20 backdrop-blur-sm px-6 py-2.5 text-sm font-semibold text-white hover:bg-white/30 transition-colors flex items-center gap-2">
+                    <Check className="h-4 w-4" /> Open
+                  </button>
+                  <button onClick={() => navigate(`/app-store/manage/${app.id}`)}
+                    className="rounded-xl bg-white/10 px-4 py-2.5 text-sm font-medium text-white/80 hover:bg-white/20 transition-colors flex items-center gap-2">
+                    <Settings className="h-3.5 w-3.5" /> Manage
+                  </button>
+                </>
               ) : (
                 <button onClick={() => setShowInstall(true)}
                   className="rounded-xl bg-white px-6 py-2.5 text-sm font-semibold text-gray-900 hover:bg-white/90 transition-colors flex items-center gap-2">
@@ -95,6 +129,7 @@ const AppDetailPage = () => {
         <div className="flex items-center gap-1 text-xs text-muted-foreground">
           <Clock className="h-3 w-3" /> Updated {app.lastUpdated}
         </div>
+        {app.packageType && <PackageTypeLabel type={app.packageType} />}
       </div>
 
       {/* Description */}
@@ -103,7 +138,7 @@ const AppDetailPage = () => {
         <p className="text-sm text-muted-foreground leading-relaxed">{app.fullDescription}</p>
         {app.whySitaRecommends && (
           <div className="rounded-xl bg-primary/5 border border-primary/10 p-3">
-            <p className="text-xs text-primary font-medium">💡 Why SITA recommends this</p>
+            <p className="text-xs text-primary font-medium flex items-center gap-1"><Sparkles className="h-3 w-3" /> Why SITA recommends this</p>
             <p className="text-xs text-muted-foreground mt-1">{app.whySitaRecommends}</p>
           </div>
         )}
@@ -112,7 +147,9 @@ const AppDetailPage = () => {
       {/* Works with SITA */}
       {app.worksWithSita.length > 0 && (
         <div className="rounded-2xl border border-border bg-card p-6 space-y-3">
-          <h3 className="text-sm font-semibold text-foreground">Works with SITA</h3>
+          <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
+            <Sparkles className="h-4 w-4 text-primary" /> Works with SITA
+          </h3>
           <WorksWithSitaBadge features={app.worksWithSita} />
         </div>
       )}
@@ -122,13 +159,17 @@ const AppDetailPage = () => {
         <div className="rounded-2xl border border-border bg-card p-6 space-y-3">
           <button onClick={() => setShowPermissions(!showPermissions)}
             className="flex items-center justify-between w-full">
-            <h3 className="text-sm font-semibold text-foreground">Permissions ({app.permissions.length})</h3>
+            <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
+              <Lock className="h-4 w-4 text-muted-foreground" />
+              Permissions ({app.permissions.length})
+            </h3>
             {showPermissions ? <ChevronUp className="h-4 w-4 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 text-muted-foreground" />}
           </button>
           {showPermissions && (
             <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} className="space-y-2">
               {app.permissions.map(p => (
-                <PermissionDomainCard key={p.id} permission={p} onToggle={() => {}} />
+                <PermissionDomainCard key={p.id} permission={p}
+                  onToggle={() => isInstalled ? togglePermission(app.id, p.id) : undefined} />
               ))}
             </motion.div>
           )}
@@ -182,7 +223,9 @@ const AppDetailPage = () => {
 
       {/* Trust & Privacy */}
       <div className="rounded-2xl border border-border bg-card p-6 space-y-3">
-        <h3 className="text-sm font-semibold text-foreground">Trust & Privacy</h3>
+        <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
+          <Shield className="h-4 w-4 text-primary" /> Trust & Privacy
+        </h3>
         <div className="grid gap-3 sm:grid-cols-2">
           <div className="flex items-center gap-2 text-xs text-muted-foreground">
             <Shield className="h-3.5 w-3.5 text-primary" />
@@ -200,6 +243,18 @@ const AppDetailPage = () => {
             <HardDrive className="h-3.5 w-3.5" />
             <span>Size: <strong className="text-foreground">{app.size}</strong></span>
           </div>
+          {app.sandboxLevel && (
+            <div className="flex items-center gap-2 text-xs text-muted-foreground sm:col-span-2">
+              <Lock className="h-3.5 w-3.5" />
+              <span>Sandbox: </span><SandboxLevelBadge level={app.sandboxLevel} />
+            </div>
+          )}
+        </div>
+        <TrustInstallBehavior level={app.trustLevel} />
+        <UpdateSourceInfo updateSource={app.updateSource} />
+        <div className="rounded-xl bg-secondary/20 border border-border p-3 flex items-center gap-2 text-[10px] text-muted-foreground">
+          <Shield className="h-3.5 w-3.5 text-primary" />
+          <span>Every install, update, and permission change produces a verifiable receipt.</span>
         </div>
       </div>
 
@@ -208,19 +263,64 @@ const AppDetailPage = () => {
         <div className="rounded-2xl border border-border bg-card p-6 space-y-3">
           <h3 className="text-sm font-semibold text-foreground">Manage</h3>
           <div className="grid gap-2 sm:grid-cols-3">
-            <button className="flex items-center gap-2 rounded-xl bg-secondary px-4 py-3 text-xs font-medium text-foreground hover:bg-secondary/80 transition-colors">
-              <Pin className="h-3.5 w-3.5" /> {app.pinnedToDock ? "Unpin from Dock" : "Pin to Dock"}
+            <button onClick={handlePinToggle}
+              className="flex items-center gap-2 rounded-xl bg-secondary px-4 py-3 text-xs font-medium text-foreground hover:bg-secondary/80 transition-colors">
+              <Pin className={cn("h-3.5 w-3.5", app.pinnedToDock && "text-primary")} />
+              {app.pinnedToDock ? "Unpin from Dock" : "Pin to Dock"}
             </button>
-            <button className="flex items-center gap-2 rounded-xl bg-secondary px-4 py-3 text-xs font-medium text-foreground hover:bg-secondary/80 transition-colors">
+            <button onClick={() => navigate(`/app-store/manage/${app.id}`)}
+              className="flex items-center gap-2 rounded-xl bg-secondary px-4 py-3 text-xs font-medium text-foreground hover:bg-secondary/80 transition-colors">
               <Settings className="h-3.5 w-3.5" /> App Settings
+            </button>
+            <button onClick={() => navigate(`/app-store/receipts/${app.id}`)}
+              className="flex items-center gap-2 rounded-xl bg-secondary px-4 py-3 text-xs font-medium text-foreground hover:bg-secondary/80 transition-colors">
+              <Shield className="h-3.5 w-3.5" /> View Receipts
             </button>
             <button className="flex items-center gap-2 rounded-xl bg-secondary px-4 py-3 text-xs font-medium text-foreground hover:bg-secondary/80 transition-colors">
               <RefreshCw className="h-3.5 w-3.5" /> Repair
             </button>
-            <button className="flex items-center gap-2 rounded-xl bg-destructive/10 px-4 py-3 text-xs font-medium text-destructive hover:bg-destructive/20 transition-colors">
+            <button onClick={() => navigate(`/app-store/first-launch/${app.id}`)}
+              className="flex items-center gap-2 rounded-xl bg-secondary px-4 py-3 text-xs font-medium text-foreground hover:bg-secondary/80 transition-colors">
+              <Layers className="h-3.5 w-3.5" /> First Launch Setup
+            </button>
+            <button onClick={handleUninstall}
+              className="flex items-center gap-2 rounded-xl bg-destructive/10 px-4 py-3 text-xs font-medium text-destructive hover:bg-destructive/20 transition-colors">
               <Trash2 className="h-3.5 w-3.5" /> Uninstall
             </button>
           </div>
+        </div>
+      )}
+
+      {/* Install Receipts (if any) */}
+      {appReceipts.length > 0 && (
+        <div className="rounded-2xl border border-border bg-card p-6 space-y-3">
+          <button onClick={() => setShowReceipts(!showReceipts)}
+            className="flex items-center justify-between w-full">
+            <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
+              <Shield className="h-4 w-4 text-primary" /> Lifecycle Receipts ({appReceipts.length})
+            </h3>
+            {showReceipts ? <ChevronUp className="h-4 w-4 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 text-muted-foreground" />}
+          </button>
+          {showReceipts && (
+            <div className="space-y-2">
+              {appReceipts.slice(0, 5).map(r => (
+                <div key={r.receiptId} className="rounded-lg bg-secondary/20 p-3 space-y-1 text-xs">
+                  <div className="flex items-center justify-between">
+                    <span className={cn("rounded-full px-2 py-0.5 text-[10px] font-semibold capitalize",
+                      r.actionType === "install" ? "bg-primary/10 text-primary" :
+                      r.actionType === "uninstall" ? "bg-destructive/10 text-destructive" :
+                      "bg-accent/10 text-accent")}>{r.actionType}</span>
+                    <span className="text-[10px] text-muted-foreground">{new Date(r.timestamp).toLocaleDateString()}</span>
+                  </div>
+                  <p className="text-muted-foreground">v{r.version} · {r.sourceInfo} · {r.result}</p>
+                </div>
+              ))}
+              {appReceipts.length > 5 && (
+                <button onClick={() => navigate(`/app-store/receipts/${app.id}`)}
+                  className="text-xs text-primary hover:underline">View all {appReceipts.length} receipts →</button>
+              )}
+            </div>
+          )}
         </div>
       )}
 
@@ -237,6 +337,7 @@ const AppDetailPage = () => {
                   <p className="text-xs font-semibold text-foreground truncate">{a.name}</p>
                   <p className="text-[10px] text-muted-foreground truncate">{a.shortDescription}</p>
                 </div>
+                <VerificationBadge level={a.trustLevel} />
               </div>
             ))}
           </div>
@@ -245,7 +346,7 @@ const AppDetailPage = () => {
 
       {/* Install Sheet */}
       {showInstall && (
-        <InstallSheet app={app} onClose={() => setShowInstall(false)} onInstall={async () => { await installApp(app.id); setShowInstall(false); }} />
+        <InstallSheet app={app} onClose={() => setShowInstall(false)} onInstall={handleInstall} />
       )}
     </div>
   );
