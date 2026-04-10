@@ -207,7 +207,7 @@ const MoneyOverview = () => {
       </SitaCard>
 
       {/* Peace Score Mini-Badge */}
-      <div className="grid gap-3 sm:grid-cols-4">
+      <div className="grid gap-3 grid-cols-2 sm:grid-cols-4">
         <SitaCard hover className="p-3 text-center cursor-pointer" onClick={() => navigate("/money/peace-score")}>
           <p className="text-[10px] text-muted-foreground mb-1">Peace Score</p>
           <p className="font-display text-2xl font-bold text-primary">72</p>
@@ -316,14 +316,14 @@ const MoneyOverview = () => {
           <div className="space-y-3">
             <SitaSectionHeader title="Bill Calendar" action={<button onClick={() => navigate("/money/bills")} className="text-xs text-primary hover:underline">View all</button>} />
             <SitaCard hover={false} className="p-4">
-              <div className="flex gap-1 mb-3">
+              <div className="flex gap-0.5 sm:gap-1 mb-3">
                 {Array.from({ length: 7 }, (_, i) => {
                   const d = new Date(); d.setDate(d.getDate() + i);
                   const dayName = d.toLocaleDateString("en", { weekday: "short" });
                   const dayNum = d.getDate();
                   const hasBill = upcomingBills.some(b => b.daysLeft === i);
                   return (
-                    <div key={i} className={`flex-1 text-center rounded-lg py-2 transition-colors ${i === 0 ? "bg-primary/10 border border-primary/20" : hasBill ? "bg-[hsl(var(--sita-gold))]/10 border border-[hsl(var(--sita-gold))]/20" : "bg-secondary/30"}`}>
+                    <div key={i} className={`flex-1 text-center rounded-lg py-1.5 sm:py-2 transition-colors touch-manipulation ${i === 0 ? "bg-primary/10 border border-primary/20" : hasBill ? "bg-[hsl(var(--sita-gold))]/10 border border-[hsl(var(--sita-gold))]/20" : "bg-secondary/30"}`}>
                       <p className="text-[10px] text-muted-foreground">{dayName}</p>
                       <p className={`text-sm font-semibold ${i === 0 ? "text-primary" : "text-foreground"}`}>{dayNum}</p>
                       {hasBill && <div className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--sita-gold))] mx-auto mt-1" />}
