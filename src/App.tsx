@@ -251,6 +251,14 @@ const CoreServiceMigrationBoard = lazy(() => import("./pages/admin/CoreServiceMi
 const PersistenceDriftRadar = lazy(() => import("./pages/admin/PersistenceDriftRadar"));
 const RuntimeContinuityBoard = lazy(() => import("./pages/admin/RuntimeContinuityBoard"));
 
+// ── ITC: Implementation Truth Center ──
+const ITC01Overview = lazy(() => import("./pages/admin/implementation-truth/ITC01Overview"));
+const ITC02SpecRegistry = lazy(() => import("./pages/admin/implementation-truth/ITC02SpecRegistry"));
+const ITC03ContractVerification = lazy(() => import("./pages/admin/implementation-truth/ITC03ContractVerification"));
+const ITC04WiringGraph = lazy(() => import("./pages/admin/implementation-truth/ITC04WiringGraph"));
+const ITC05ReadinessScoreboard = lazy(() => import("./pages/admin/implementation-truth/ITC05ReadinessScoreboard"));
+const ITC06DriftRadar = lazy(() => import("./pages/admin/implementation-truth/ITC06DriftRadar"));
+
 // ── Phase 4 Unification Pages ──
 const TrustStateRegistry = lazy(() => import("./pages/admin/TrustStateRegistry"));
 const ActionStateDriftViewer = lazy(() => import("./pages/admin/ActionStateDriftViewer"));
