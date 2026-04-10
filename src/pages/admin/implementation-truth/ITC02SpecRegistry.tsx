@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState } from "react";
-import { AdminPageHeader } from "@/components/sita/admin/AdminPageHeader";
+import { Shield } from "lucide-react";
 import { useSpecRegistry, useDeleteSpec, STATUS_TIERS, type SpecRegistryEntry, type ImplementationStatus } from "@/hooks/use-implementation-truth";
 import { useSeedSpecs } from "@/hooks/use-spec-seed";
 import { Badge } from "@/components/ui/badge";
@@ -46,11 +46,10 @@ export default function ITC02SpecRegistry() {
 
   return (
     <div className="space-y-6">
-      <AdminPageHeader
-        title="Spec Registry"
-        description="Canonical record of every major platform system and its verification state"
-        badge="ITC-02"
-      />
+      <div className="mb-2">
+        <h1 className="text-xl font-semibold text-foreground">TITLE_PLACEHOLDER</h1>
+        <p className="text-sm text-muted-foreground">DESC_PLACEHOLDER</p>
+      </div>
 
       <div className="flex items-center justify-between gap-3">
         <div className="relative flex-1 max-w-sm">

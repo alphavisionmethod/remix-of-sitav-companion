@@ -5,7 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState } from "react";
-import { AdminPageHeader } from "@/components/sita/admin/AdminPageHeader";
+import { Shield } from "lucide-react";
 import { useSpecRegistry, useWiringEdges, type SpecRegistryEntry } from "@/hooks/use-implementation-truth";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -91,11 +91,10 @@ export default function ITC04WiringGraph() {
 
   return (
     <div className="space-y-6">
-      <AdminPageHeader
-        title="Wiring Graph Explorer"
-        description="End-to-end trace: spec → route → component → contract → service → proof"
-        badge="ITC-04"
-      />
+      <div className="mb-2">
+        <h1 className="text-xl font-semibold text-foreground">TITLE_PLACEHOLDER</h1>
+        <p className="text-sm text-muted-foreground">DESC_PLACEHOLDER</p>
+      </div>
 
       <div className="flex items-center gap-3">
         <Select value={selectedSpec} onValueChange={setSelectedSpec}>

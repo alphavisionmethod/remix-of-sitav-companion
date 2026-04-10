@@ -3,7 +3,7 @@
 // Spec vs implementation drift, prompt-to-build traceability
 // ═══════════════════════════════════════════════════════════════
 
-import { AdminPageHeader } from "@/components/sita/admin/AdminPageHeader";
+import { Shield } from "lucide-react";
 import { useSpecRegistry, useDriftDetection, STATUS_TIERS, type SpecRegistryEntry } from "@/hooks/use-implementation-truth";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -58,11 +58,10 @@ export default function ITC06DriftRadar() {
 
   return (
     <div className="space-y-6">
-      <AdminPageHeader
-        title="Drift & Traceability Radar"
-        description="Detect spec-to-implementation drift and trace prompt-to-build lineage"
-        badge="ITC-06"
-      />
+      <div className="mb-2">
+        <h1 className="text-xl font-semibold text-foreground">TITLE_PLACEHOLDER</h1>
+        <p className="text-sm text-muted-foreground">DESC_PLACEHOLDER</p>
+      </div>
 
       {/* Drift Summary */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">

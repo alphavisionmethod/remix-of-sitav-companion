@@ -3,7 +3,7 @@
 // Cross-references contracts across specs, detects gaps/shadows
 // ═══════════════════════════════════════════════════════════════
 
-import { AdminPageHeader } from "@/components/sita/admin/AdminPageHeader";
+import { Shield } from "lucide-react";
 import { useSpecRegistry, useContractVerification } from "@/hooks/use-implementation-truth";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -32,11 +32,10 @@ export default function ITC03ContractVerification() {
 
   return (
     <div className="space-y-6">
-      <AdminPageHeader
-        title="Contract Verification Board"
-        description="Cross-reference contract existence, alignment, and shadow detection across all specs"
-        badge="ITC-03"
-      />
+      <div className="mb-2">
+        <h1 className="text-xl font-semibold text-foreground">TITLE_PLACEHOLDER</h1>
+        <p className="text-sm text-muted-foreground">DESC_PLACEHOLDER</p>
+      </div>
 
       {/* Summary */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
