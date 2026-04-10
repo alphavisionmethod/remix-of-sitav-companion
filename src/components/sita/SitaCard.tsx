@@ -80,19 +80,19 @@ export const SitaSectionHeader = ({ title, subtitle, action, className }: { titl
 );
 
 export const SitaPageHeader = ({ title, subtitle, actions, className }: { title: string; subtitle?: string; actions?: ReactNode; className?: string }) => (
-  <div role="banner" className={cn("flex items-start justify-between gap-4", className)}>
+  <div role="banner" className={cn("flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4", className)}>
     <div className="min-w-0">
-      <h1 className="font-display text-[1.65rem] font-bold tracking-tight text-foreground">{title}</h1>
-      {subtitle && <p className="mt-1 text-sm text-muted-foreground max-w-lg">{subtitle}</p>}
+      <h1 className="font-display text-xl sm:text-[1.65rem] font-bold tracking-tight text-foreground">{title}</h1>
+      {subtitle && <p className="mt-1 text-xs sm:text-sm text-muted-foreground max-w-lg">{subtitle}</p>}
     </div>
-    {actions && <div className="flex items-center gap-2 shrink-0">{actions}</div>}
+    {actions && <div className="flex items-center gap-2 shrink-0 flex-wrap">{actions}</div>}
   </div>
 );
 
 export const SitaButton = ({ children, variant = "primary", size = "default", className, ...props }: { children: ReactNode; variant?: "primary" | "secondary" | "ghost" | "accent" | "danger"; size?: "sm" | "default"; className?: string } & React.ButtonHTMLAttributes<HTMLButtonElement>) => (
   <button
     className={cn(
-      "inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ring/30",
+      "inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ring/30 touch-manipulation active:scale-[0.97]",
       size === "sm" ? "px-3 py-1.5 text-xs" : "px-4 py-2 text-sm",
       variant === "primary" && "bg-primary text-primary-foreground hover:bg-primary/90 shadow-xs",
       variant === "secondary" && "border border-border bg-secondary text-secondary-foreground hover:bg-muted",
