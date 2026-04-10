@@ -316,14 +316,40 @@ export const SitaOSProvider = ({ children }: { children: ReactNode }) => {
         neglectedContacts: neglected.length,
       });
 
-      // Run opportunity detection
+      // Run opportunity detection + persist new signals to CAI table
       k.opportunityEngine.runPatternDetection();
+      const newOpps = k.opportunityEngine.getNew();
+      for (const opp of newOpps.slice(0, 5)) {
+        persistOpportunitySignal({
+          domain: opp.domain, signal_type: opp.type, title: opp.actionRequired,
+          summary: `Confidence: ${Math.round(opp.confidence * 100)}%`,
+          importance_tier: opp.confidence > 0.8 ? "high" : opp.confidence > 0.5 ? "medium" : "low",
+          confidence: opp.confidence, status: "new",
+        }).catch(() => {});
+      }
+
+      // Persist current operating mode to CAI table
+      persistOperatingMode({
+        mode_key: k.sitaModes.getMode(),
+        active: true,
+        metadata: { source: "hydration" },
+      }).catch(() => {});
+
+      // Persist priority snapshot
+      const stack = k.attentionOS.getAttentionStack();
+      persistPrioritySnapshot({
+        mode: k.sitaModes.getMode(),
+        stack_date: new Date().toISOString(),
+        top_items_json: [...stack.critical, ...stack.active].slice(0, 10).map(i => ({ id: i.id, title: i.title })),
+        urgency_summary: `${stack.critical.length} critical, ${stack.active.length} active`,
+        attention_posture: cogLoad.score > 70 ? "overloaded" : cogLoad.score > 40 ? "active" : "calm",
+      });
 
       // Apply memory decay
       k.memoryGovernance.applyDecay();
 
       setKernel({ ...k, hydrated: true });
-      console.log("[SitaOS] Kernel hydrated — 15 services cross-wired and active");
+      console.log("[SitaOS] Kernel hydrated — 15 services cross-wired, CAI tables active");
     }).catch((err) => {
       console.warn("[SitaOS] Partial hydration error:", err);
       setKernel({ ...k, hydrated: true });
