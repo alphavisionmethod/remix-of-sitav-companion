@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { Users, Search, Filter, Star, Clock, ArrowRight, Heart, MessageSquare, TrendingUp, TrendingDown, Minus, Zap, Mail, Phone, Calendar, FileText, DollarSign } from "lucide-react";
+import { Users, Search, Filter, Star, Clock, ArrowRight, Heart, MessageSquare, TrendingUp, TrendingDown, Minus, Zap, Mail, Phone, Calendar, FileText, DollarSign, SmilePlus } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -13,6 +13,7 @@ import { useCustomers } from "@/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/sita/EmptyState";
 import { DEMO_CONTACTS, DEMO_LIFECYCLE_STAGES, DEMO_NEXT_BEST_ACTIONS, DEMO_CONVERSATION_HISTORY, DEMO_RELATIONSHIP_GRAPH } from "@/lib/demo-data/revenue-office";
+import { clientSentimentService } from "@/lib/services/client-sentiment";
 
 export default function RelationshipCenter() {
   const { isDemoMode } = useDataMode();
@@ -71,6 +72,7 @@ export default function RelationshipCenter() {
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList className="bg-muted/30 border border-border/40 h-8 p-0.5 gap-0.5">
           <TabsTrigger value="contacts" className="text-[10px] h-7 px-2.5 gap-1"><Users className="h-3 w-3" />Contacts</TabsTrigger>
+          <TabsTrigger value="sentiment" className="text-[10px] h-7 px-2.5 gap-1"><SmilePlus className="h-3 w-3" />Sentiment</TabsTrigger>
           <TabsTrigger value="actions" className="text-[10px] h-7 px-2.5 gap-1"><Zap className="h-3 w-3" />Next Best Action</TabsTrigger>
           <TabsTrigger value="graph" className="text-[10px] h-7 px-2.5 gap-1"><ArrowRight className="h-3 w-3" />Relationship Map</TabsTrigger>
           <TabsTrigger value="history" className="text-[10px] h-7 px-2.5 gap-1"><Clock className="h-3 w-3" />History</TabsTrigger>
@@ -143,6 +145,43 @@ export default function RelationshipCenter() {
                 </motion.div>
               ))}
             </div>
+          </TabsContent>
+
+          {/* Client Sentiment */}
+          <TabsContent value="sentiment">
+            <Card className="bg-card/50 border-border/50">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-sm font-medium flex items-center gap-2">
+                  <SmilePlus className="w-4 h-4 text-primary" /> Client Sentiment Radar
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                <p className="text-xs text-muted-foreground">Analyzes communication tone and trends per client using lexicon-based sentiment scoring.</p>
+                {CONTACTS.slice(0, 6).map((c: any, i: number) => {
+                  const sampleText = `Thank you for the ${c.health > 70 ? "great" : c.health > 40 ? "reasonable" : "disappointing"} service`;
+                  const { score, level } = clientSentimentService.analyzeSentiment(sampleText);
+                  const levelColor = level.includes("positive") ? "text-emerald-500" : level === "neutral" ? "text-muted-foreground" : "text-red-500";
+                  return (
+                    <div key={i} className="flex items-center justify-between p-2 rounded border border-border/30 bg-card/30">
+                      <div className="flex items-center gap-2">
+                        <div className="w-7 h-7 rounded-full bg-primary/20 flex items-center justify-center text-[10px] font-bold text-primary">
+                          {c.name.split(" ").map((n: string) => n[0]).join("")}
+                        </div>
+                        <div>
+                          <p className="text-xs font-medium text-foreground">{c.name}</p>
+                          <p className="text-[10px] text-muted-foreground">{c.company}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Progress value={Math.round((score + 1) * 50)} className="h-1.5 w-16" />
+                        <Badge variant="outline" className={`text-[9px] ${levelColor}`}>{level.replace("_", " ")}</Badge>
+                      </div>
+                    </div>
+                  );
+                })}
+                <p className="text-[10px] text-muted-foreground italic">Live analysis requires active communications data. Connect CRM for real-time scores.</p>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           {/* Next Best Actions */}

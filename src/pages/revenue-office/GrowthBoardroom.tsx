@@ -1,5 +1,6 @@
+import { useMemo } from "react";
 import { motion } from "framer-motion";
-import { TrendingUp, AlertTriangle, Target, Users, DollarSign, ArrowUpRight, ArrowDownRight, Activity, Zap, CalendarCheck, Star, RefreshCw, ArrowRight } from "lucide-react";
+import { TrendingUp, AlertTriangle, Target, Users, DollarSign, ArrowUpRight, ArrowDownRight, Activity, Zap, CalendarCheck, Star, RefreshCw, ArrowRight, Swords } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -12,6 +13,7 @@ import { useDeals } from "@/hooks/use-revenue-office";
 import { useNavigate } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DEMO_REV_ADVISOR_SIGNALS as DEMO_ADVISOR_SIGNALS, DEMO_REV_LEAKS as DEMO_LEAKS, DEMO_REV_PIPELINE_STAGES as DEMO_PIPELINE_STAGES, DEMO_WHAT_CHANGED } from "@/lib/demo-data/revenue-office";
+import { competitiveIntelligenceService, type CompetitivePosition } from "@/lib/services/competitive-intelligence";
 
 const CAMPAIGN_HEALTH = [
   { name: "Summer Accelerator", status: "active", performance: 78, leads: 42, spend: "$2,400" },
@@ -28,6 +30,8 @@ export default function GrowthBoardroom() {
   const { isBeginner } = useRevenueOfficeMode();
   const { data: liveDeals, isLoading } = useDeals();
   const navigate = useNavigate();
+
+  const competitivePosition = useMemo(() => competitiveIntelligenceService.assessPosition(), []);
 
   const PIPELINE_STAGES = isDemoMode ? DEMO_PIPELINE_STAGES : DEMO_PIPELINE_STAGES;
   const LEAKS = isDemoMode ? DEMO_LEAKS : DEMO_LEAKS;
@@ -182,23 +186,62 @@ export default function GrowthBoardroom() {
         </Card>
       </div>
 
-      {/* Advisor Signals */}
-      <Card className="bg-card/50 border-border/50">
-        <CardHeader className="pb-3"><CardTitle className="text-sm font-medium flex items-center gap-2"><Activity className="w-4 h-4 text-primary" /> Advisor Board Signals</CardTitle></CardHeader>
-        <CardContent>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            {ADVISOR_SIGNALS.map(s => (
-              <div key={s.advisor} className={`p-3 rounded-lg border ${s.type === "alert" ? "border-red-500/30 bg-red-500/5" : s.type === "warning" ? "border-yellow-500/30 bg-yellow-500/5" : "border-green-500/30 bg-green-500/5"}`}>
-                <div className="flex items-center gap-2 mb-1">
-                  <Badge variant="outline" className="text-xs">{s.advisor}</Badge>
-                  <Badge variant={s.type === "alert" ? "destructive" : s.type === "warning" ? "secondary" : "default"} className="text-xs">{s.type}</Badge>
+      {/* Advisor Signals + Competitive Position */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <Card className="bg-card/50 border-border/50">
+          <CardHeader className="pb-3"><CardTitle className="text-sm font-medium flex items-center gap-2"><Activity className="w-4 h-4 text-primary" /> Advisor Board Signals</CardTitle></CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 gap-3">
+              {ADVISOR_SIGNALS.map(s => (
+                <div key={s.advisor} className={`p-3 rounded-lg border ${s.type === "alert" ? "border-red-500/30 bg-red-500/5" : s.type === "warning" ? "border-yellow-500/30 bg-yellow-500/5" : "border-green-500/30 bg-green-500/5"}`}>
+                  <div className="flex items-center gap-2 mb-1">
+                    <Badge variant="outline" className="text-xs">{s.advisor}</Badge>
+                    <Badge variant={s.type === "alert" ? "destructive" : s.type === "warning" ? "secondary" : "default"} className="text-xs">{s.type}</Badge>
+                  </div>
+                  <p className="text-sm text-foreground">{s.signal}</p>
                 </div>
-                <p className="text-sm text-foreground">{s.signal}</p>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Competitive Intelligence Widget */}
+        <Card className="bg-card/50 border-border/50">
+          <CardHeader className="pb-3"><CardTitle className="text-sm font-medium flex items-center gap-2"><Swords className="w-4 h-4 text-primary" /> Competitive Position</CardTitle></CardHeader>
+          <CardContent className="space-y-3">
+            <div className="flex items-center gap-3">
+              <div className="relative w-14 h-14">
+                <svg className="w-14 h-14 -rotate-90" viewBox="0 0 36 36">
+                  <circle cx="18" cy="18" r="15.91" fill="none" className="stroke-muted/20" strokeWidth="2.5" />
+                  <circle cx="18" cy="18" r="15.91" fill="none" className={competitivePosition.overallScore >= 70 ? "stroke-emerald-500" : competitivePosition.overallScore >= 40 ? "stroke-amber-500" : "stroke-red-500"} strokeWidth="2.5" strokeDasharray={`${competitivePosition.overallScore} ${100 - competitivePosition.overallScore}`} strokeLinecap="round" />
+                </svg>
+                <span className="absolute inset-0 flex items-center justify-center text-sm font-bold text-foreground">{competitivePosition.overallScore}</span>
               </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+              <div className="flex-1 space-y-1">
+                {competitivePosition.recommendations.slice(0, 2).map((r, i) => (
+                  <p key={i} className="text-[10px] text-muted-foreground">• {r}</p>
+                ))}
+              </div>
+            </div>
+            {competitivePosition.opportunities.length > 0 && (
+              <div>
+                <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">Opportunities</p>
+                {competitivePosition.opportunities.slice(0, 3).map((o, i) => (
+                  <p key={i} className="text-xs text-foreground">• {o}</p>
+                ))}
+              </div>
+            )}
+            {competitivePosition.threats.length > 0 && (
+              <div>
+                <p className="text-[10px] font-medium text-muted-foreground uppercase tracking-wider mb-1">Threats</p>
+                {competitivePosition.threats.slice(0, 3).map((t, i) => (
+                  <p key={i} className="text-xs text-red-400">• {t}</p>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 }
