@@ -138,7 +138,7 @@ const DebtCreditOffice = () => {
           <SitaSectionHeader title="Credit Score Pulse" />
           <SitaCard hover={false} className="p-4">
             <div className="text-center mb-4">
-              <p className="font-display text-4xl font-bold">{pulse.estimatedScore}</p>
+              <p className="font-display text-2xl sm:text-4xl font-bold">{pulse.estimatedScore}</p>
               <p className={`text-xs font-semibold ${pulse.trend === "improving" ? "text-trust-verified" : pulse.trend === "declining" ? "text-red-500" : "text-muted-foreground"}`}>
                 {pulse.trend === "improving" ? "↑ Improving" : pulse.trend === "declining" ? "↓ Declining" : "→ Stable"}
               </p>

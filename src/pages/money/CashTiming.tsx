@@ -42,17 +42,17 @@ const CashTiming = () => {
         <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-3">
           <div className="text-center">
             <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">Safe to Spend</p>
-            <p className="mt-2 font-display text-4xl font-bold text-trust-verified">${safeToSpend.toLocaleString()}</p>
+            <p className="mt-2 font-display text-2xl sm:text-4xl font-bold text-trust-verified">${safeToSpend.toLocaleString()}</p>
             <p className="mt-1 text-xs text-muted-foreground">After bills, reserves, and obligations</p>
           </div>
           <div className="text-center">
             <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">Lowest Point (15d)</p>
-            <p className="mt-2 font-display text-4xl font-bold text-foreground">${minBalance.toLocaleString()}</p>
+            <p className="mt-2 font-display text-2xl sm:text-4xl font-bold text-foreground">${minBalance.toLocaleString()}</p>
             <p className="mt-1 text-xs text-muted-foreground">Projected minimum balance</p>
           </div>
           <div className="text-center">
             <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">Stress Windows</p>
-            <p className={`mt-2 font-display text-4xl font-bold ${stressWindows.length > 0 ? "text-urgency-high" : "text-trust-verified"}`}>{stressWindows.length}</p>
+            <p className={`mt-2 font-display text-2xl sm:text-4xl font-bold ${stressWindows.length > 0 ? "text-urgency-high" : "text-trust-verified"}`}>{stressWindows.length}</p>
             <p className="mt-1 text-xs text-muted-foreground">{stressWindows.length > 0 ? "High-outflow days ahead" : "No concerns"}</p>
           </div>
         </div>
