@@ -646,6 +646,32 @@ export const STRATEGY_ADVISOR_COMMENTS: Record<string, { advisorId: string; advi
   ],
 };
 
+// ── Multi-Layer Explainability ─────────────────────────────────
+export type ExplainabilityDepth = "simple" | "analyst" | "committee" | "execution" | "risk";
+
+export interface ExplainabilityLayer {
+  depth: ExplainabilityDepth;
+  label: string;
+  content: string;
+}
+
+export const EXPLAINABILITY_LAYERS: Record<string, ExplainabilityLayer[]> = {
+  nvda: [
+    { depth: "simple", label: "Simple", content: "NVIDIA makes the chips that power AI. Demand is very high right now, which is good for the stock price. The risk is that demand could slow down." },
+    { depth: "analyst", label: "Analyst", content: "• Revenue growth driven by data center GPU demand (H100/B100 cycle)\n• Forward P/E at 35x reflects high expectations — EPS must deliver $6+ for FY27\n• Key risk: export controls to China could reduce TAM by ~15%\n• Catalyst: GTC Conference in September may reveal next-gen architecture\n• Technical: Support at $125, resistance at $153 (52W high)" },
+    { depth: "committee", label: "Committee", content: "Equity Advisor (Maven): Strong buy — AI infrastructure thesis remains the decade's strongest secular trend. 72% confidence.\n\nRisk Advisor (Sentinel): Caution — position already at 6.2% of portfolio. Adding more increases concentration risk. Recommend capping at 8%.\n\nMacro Advisor (Atlas): Supportive — current rate environment and tech spending cycle are tailwinds. However, a 2026 slowdown could compress multiples.\n\nSynthesis: Board leans positive but recommends staged entry rather than a full add." },
+    { depth: "execution", label: "Execution", content: "Recommended action: Add $4K now (half of planned $8K), hold remaining for post-earnings clarity.\n\nEntry: Limit order at $133.50 (1.3% below current)\nStop loss: $118 (-12.5% from entry)\nTarget: $165 (+23.6%)\nSize: 2% of portfolio per tranche\nTimeline: Enter first tranche this week, second after Q3 earnings (July 31)\nPlatform: Schwab brokerage account" },
+    { depth: "risk", label: "Risk", content: "Concentration risk: Adding $8K would push NVDA to 9.2% of portfolio — above the 8% single-position limit in your Investment Constitution.\n\nCorrelation risk: High beta to tech sector. Combined with AAPL (5.1%) and MSFT (4.8%), technology exposure would reach 19.1%.\n\nDrawdown scenario: In a broad market selloff (-15%), NVDA could decline -25% to -30% given its beta of 1.8.\n\nLiquidity risk: Low — average daily volume $42B.\n\nEvent risk: Export control expansion could trigger -15% to -20% gap down.\n\nRecommendation: Reduce planned size from $8K to $4K to stay within constitution limits." },
+  ],
+  btc: [
+    { depth: "simple", label: "Simple", content: "Bitcoin is a digital currency that some people treat like digital gold. It goes up and down a lot. Right now, big companies are buying it through ETFs." },
+    { depth: "analyst", label: "Analyst", content: "• Post-halving supply dynamics: daily issuance reduced to ~450 BTC\n• ETF net inflows averaging $200M/week — institutional demand accelerating\n• On-chain metrics: long-term holder supply ratio at 78% (bullish)\n• Resistance at $100K psychological level; support at $88K\n• Correlation with equities has increased to 0.6 — less of a diversifier" },
+    { depth: "committee", label: "Committee", content: "Crypto Advisor (Oracle): Bullish — halving cycle historically produces 12-18 month rallies. 55% confidence due to macro uncertainty.\n\nRisk Advisor (Sentinel): Position at 12% is already above the 10% crypto sleeve target. No further additions recommended.\n\nBehavioral Advisor (Mirror): Detected FOMO pattern — last two BTC entries were reactive. Recommend simulation before any action.\n\nSynthesis: Hold current position. No additions until price consolidation or thesis strengthens." },
+    { depth: "execution", label: "Execution", content: "Recommended action: HOLD — no new additions at current levels.\n\nIf adding despite board caution:\nEntry: DCA over 4 weeks at $1K/week\nStop loss: $78,000 (-20% from current)\nMax allocation: 12% (already at limit)\nPlatform: Coinbase\nNote: Behavioral firewall flagged FOMO pattern — requires simulation before execution." },
+    { depth: "risk", label: "Risk", content: "Allocation risk: At 12%, BTC exceeds the 10% crypto sleeve target set in your Investment Constitution.\n\nVolatility risk: 30-day realized volatility at 65% annualized. A 2-sigma move = -$11,700 portfolio impact.\n\nRegulatory risk: SEC enforcement actions against exchanges remain ongoing.\n\nCorrelation risk: BTC + ETH + SOL combined = 18.4% crypto exposure. In a crypto-specific crash (-50%), portfolio impact = -9.2%.\n\nCustody risk: Exchange-held assets (Coinbase) carry counterparty risk.\n\nRecommendation: No additions. Consider reducing to 10% target on next rally above $100K." },
+  ],
+};
+
 // ── Demo Source Classification ─────────────────────────────────
 export const __DEMO_SOURCE__ = true;
 export const __DATA_CLASSIFICATION__ = "demo-scenario" as const;
