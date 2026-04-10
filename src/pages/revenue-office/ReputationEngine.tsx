@@ -9,7 +9,11 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-import { DEMO_RATING_DIST, DEMO_REVIEWS, DEMO_REV_CAMPAIGNS_REPUTATION_ENGINE as DEMO_CAMPAIGNS, DEMO_REV_PLATFORMS as DEMO_PLATFORMS, DEMO_REV_STATS_REPUTATION_ENGINE as DEMO_STATS, DEMO_TESTIMONIALS } from "@/lib/demo-data/revenue-office";
+import {
+  DEMO_RATING_DIST, DEMO_REVIEWS, DEMO_REV_CAMPAIGNS_REPUTATION_ENGINE as DEMO_CAMPAIGNS,
+  DEMO_REV_PLATFORMS as DEMO_PLATFORMS, DEMO_REV_STATS_REPUTATION_ENGINE as DEMO_STATS,
+  DEMO_TESTIMONIALS, DEMO_SENTIMENT_TREND,
+} from "@/lib/demo-data/revenue-office";
 
 export default function ReputationEngine() {
   const { isDemoMode } = useDataMode();
@@ -22,7 +26,7 @@ export default function ReputationEngine() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-foreground">Reputation Engine</h1>
-            <p className="text-sm text-muted-foreground">Reviews, testimonials, NPS, platform monitoring, and review campaigns</p>
+            <p className="text-sm text-muted-foreground">Reviews, testimonials, NPS, sentiment trends, platform monitoring, and review campaigns</p>
           </div>
           <Button size="sm" className="gap-1.5"><Send className="w-3.5 h-3.5" />Request Reviews</Button>
         </div>
@@ -50,6 +54,7 @@ export default function ReputationEngine() {
             { value: "platforms", label: "Platforms", icon: Globe },
             { value: "campaigns", label: "Campaigns", icon: Send },
             { value: "testimonials", label: "Testimonials", icon: Star },
+            { value: "sentiment", label: "Sentiment", icon: TrendingUp },
             { value: "analytics", label: "Analytics", icon: BarChart3 },
           ].map(t => (
             <TabsTrigger key={t.value} value={t.value} className="text-[10px] h-7 px-2.5 gap-1"><t.icon className="h-3 w-3" />{t.label}</TabsTrigger>
@@ -57,6 +62,7 @@ export default function ReputationEngine() {
         </TabsList>
 
         <div className="mt-4">
+          {/* Reviews Tab */}
           <TabsContent value="reviews">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <Card className="bg-card/50 border-border/50">
@@ -111,6 +117,7 @@ export default function ReputationEngine() {
             </div>
           </TabsContent>
 
+          {/* Platforms Tab */}
           <TabsContent value="platforms">
             <h3 className="text-sm font-semibold mb-4">Connected Platforms</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -139,6 +146,7 @@ export default function ReputationEngine() {
             </div>
           </TabsContent>
 
+          {/* Campaigns Tab */}
           <TabsContent value="campaigns">
             <h3 className="text-sm font-semibold mb-4">Review Request Campaigns</h3>
             <div className="space-y-3">
@@ -165,6 +173,7 @@ export default function ReputationEngine() {
             </div>
           </TabsContent>
 
+          {/* Testimonials Tab */}
           <TabsContent value="testimonials">
             <h3 className="text-sm font-semibold mb-4">Testimonial Library</h3>
             <div className="space-y-3">
@@ -195,6 +204,41 @@ export default function ReputationEngine() {
             </div>
           </TabsContent>
 
+          {/* Sentiment Trend Tab — NEW */}
+          <TabsContent value="sentiment">
+            <Card className="bg-card/50 border-border/50">
+              <CardHeader className="pb-3"><CardTitle className="text-sm font-medium flex items-center gap-2"><TrendingUp className="w-4 h-4 text-primary" /> Sentiment Trend (Monthly)</CardTitle></CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {DEMO_SENTIMENT_TREND.map(s => (
+                    <div key={s.month} className="space-y-1">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs text-foreground font-medium w-8">{s.month}</span>
+                        <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
+                          <span className="text-emerald-400">{s.positive}% positive</span>
+                          <span>{s.neutral}% neutral</span>
+                          <span className="text-red-400">{s.negative}% negative</span>
+                        </div>
+                      </div>
+                      <div className="flex h-3 rounded-full overflow-hidden">
+                        <div className="bg-emerald-500/70 h-full" style={{ width: `${s.positive}%` }} />
+                        <div className="bg-muted/40 h-full" style={{ width: `${s.neutral}%` }} />
+                        <div className="bg-red-500/70 h-full" style={{ width: `${s.negative}%` }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="mt-4 p-3 rounded-lg bg-emerald-500/5 border border-emerald-500/20">
+                  <p className="text-xs text-muted-foreground flex items-center gap-1">
+                    <Zap className="w-3 h-3 text-emerald-400" />
+                    Reputation Advisor: Positive sentiment increased from 78% to 85% over 4 months. Negative reviews trending down to 4% — strong trust signal. Continue requesting reviews post-service.
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Analytics Tab */}
           <TabsContent value="analytics">
             <div className="grid grid-cols-2 gap-4">
               <Card className="bg-card/50 border-border/50">
