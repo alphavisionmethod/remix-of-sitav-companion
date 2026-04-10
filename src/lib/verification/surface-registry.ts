@@ -6,8 +6,10 @@
 export type SurfaceShell = "public" | "user" | "admin" | "mobile" | "owner";
 export type SurfaceClass = "page" | "tab" | "modal" | "drawer" | "card_action" | "button" | "form" | "form_field" | "table_action" | "ai_input" | "upload" | "toggle" | "navigation" | "redirect" | "keyboard_shortcut" | "command_palette";
 export type ActionType = "navigation" | "submit" | "open_modal" | "open_drawer" | "close_modal" | "close_drawer" | "refresh" | "generate" | "upload" | "approve" | "reject" | "connect" | "disconnect" | "filter" | "search" | "expand" | "download" | "trigger_ai" | "copy" | "delete" | "edit" | "save" | "toggle" | "sign_in" | "sign_out" | "sign_up" | "keyboard_shortcut" | "command_action" | "redirect" | "focus_trap" | "escape";
+export type TestPriority = "P0" | "P1" | "P2";
+export type VerificationStatus = "untested" | "pass" | "fail" | "blocked" | "skipped";
+export type LaunchHonestyClass = "real" | "demo_governed" | "simulated" | "structural" | "planned" | "unavailable";
 
-export interface SurfaceEntry {
   routeKey: string;
   routePath: string;
   shell: SurfaceShell;
