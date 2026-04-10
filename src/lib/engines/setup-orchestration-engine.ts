@@ -225,12 +225,28 @@ export class SetupOrchestrationEngine {
 
   private evaluateBranchConditions(def: SetupPhaseDefinition): boolean {
     if (def.branchConditions.length === 0) return true;
-    return def.branchConditions.every(cond => {
-      const evaluator = this.branchEvaluators.get(cond.evaluatorKey);
-      if (!evaluator) return true; // unknown evaluator → include
-      const result = evaluator(this.session);
-      return cond.includeWhen ? result : !result;
-    });
+
+    // Group conditions: same orGroup → OR'd; different groups → AND'd
+    const groups = new Map<string, SetupBranchCondition[]>();
+    let ungroupedIdx = 0;
+    for (const cond of def.branchConditions) {
+      const key = cond.orGroup ?? `__ungrouped_${ungroupedIdx++}`;
+      const arr = groups.get(key) ?? [];
+      arr.push(cond);
+      groups.set(key, arr);
+    }
+
+    // Every group must have at least one passing condition (AND of ORs)
+    for (const [, conditions] of groups) {
+      const groupPasses = conditions.some(cond => {
+        const evaluator = this.branchEvaluators.get(cond.evaluatorKey);
+        if (!evaluator) return true;
+        const result = evaluator(this.session);
+        return cond.includeWhen ? result : !result;
+      });
+      if (!groupPasses) return false;
+    }
+    return true;
   }
 
   registerBranchEvaluator(key: string, evaluator: BranchEvaluator): void {
