@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Cpu, Search, CheckCircle, Clock, Archive, FileCode } from "lucide-react";
+import { Cpu, Search, CheckCircle, Clock, Archive, FileCode, XCircle } from "lucide-react";
 import { SCAFFOLD_REGISTRY, type ScaffoldEntry } from "@/lib/platform-law/platform-law-registry";
 
 const PLE03ScaffoldRegistry = () => {
@@ -21,6 +21,18 @@ const PLE03ScaffoldRegistry = () => {
 
   const avgCoverage = Math.round(SCAFFOLD_REGISTRY.reduce((s, g) => s + g.complianceCoverage, 0) / SCAFFOLD_REGISTRY.length);
   const totalProduced = SCAFFOLD_REGISTRY.reduce((s, g) => s + g.produces.length, 0);
+  const withManifests = SCAFFOLD_REGISTRY.filter(s => s.includesManifests).length;
+  const withContracts = SCAFFOLD_REGISTRY.filter(s => s.includesContracts).length;
+
+  const includesFlags: { key: keyof ScaffoldEntry; label: string }[] = [
+    { key: "includesManifests", label: "Manifests" },
+    { key: "includesContracts", label: "Contracts" },
+    { key: "includesTests", label: "Tests" },
+    { key: "includesProbeScaffold", label: "Probes" },
+    { key: "includesRouteShellBinding", label: "Route/Shell" },
+    { key: "includesHelpRegistration", label: "Help" },
+    { key: "includesCommandRegistration", label: "Command" },
+  ];
 
   return (
     <div className="space-y-6 p-4 sm:p-6">
@@ -28,16 +40,16 @@ const PLE03ScaffoldRegistry = () => {
         <div className="p-2 rounded-lg bg-primary/10"><Cpu className="h-6 w-6 text-primary" /></div>
         <div>
           <h1 className="text-2xl font-bold">Scaffold & Generator Registry</h1>
-          <p className="text-sm text-muted-foreground">{SCAFFOLD_REGISTRY.length} generators · {totalProduced} artifacts produced · {avgCoverage}% avg coverage</p>
+          <p className="text-sm text-muted-foreground">{SCAFFOLD_REGISTRY.length} generators · {totalProduced} artifacts · {avgCoverage}% avg coverage · {withManifests} include manifests</p>
         </div>
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         {[
           { label: "Generators", value: SCAFFOLD_REGISTRY.length, icon: Cpu, color: "text-blue-400" },
-          { label: "Artifacts Produced", value: totalProduced, icon: FileCode, color: "text-purple-400" },
+          { label: "With Manifests", value: withManifests, icon: FileCode, color: "text-purple-400" },
+          { label: "With Contracts", value: withContracts, icon: FileCode, color: "text-cyan-400" },
           { label: "Avg Coverage", value: `${avgCoverage}%`, icon: CheckCircle, color: avgCoverage >= 85 ? "text-emerald-400" : "text-amber-400" },
-          { label: "Active", value: SCAFFOLD_REGISTRY.filter(s => s.status === "active").length, icon: CheckCircle, color: "text-emerald-400" },
         ].map(k => (
           <Card key={k.label} className="bg-card/50"><CardContent className="p-3 text-center">
             <k.icon className={`h-4 w-4 mx-auto mb-1 ${k.color}`} />
@@ -68,10 +80,10 @@ const PLE03ScaffoldRegistry = () => {
                 <TableRow>
                   <TableHead className="w-16">ID</TableHead>
                   <TableHead>Generator</TableHead>
-                  <TableHead className="w-32">Script</TableHead>
+                  <TableHead className="w-20">Domain</TableHead>
                   <TableHead className="w-16">Status</TableHead>
                   <TableHead className="w-20 text-right">Coverage</TableHead>
-                  <TableHead className="w-24">Last Used</TableHead>
+                  <TableHead className="w-16">Version</TableHead>
                   <TableHead className="w-16 text-right">Outputs</TableHead>
                 </TableRow>
               </TableHeader>
@@ -83,7 +95,7 @@ const PLE03ScaffoldRegistry = () => {
                       <div className="font-medium text-sm">{s.name}</div>
                       <div className="text-xs text-muted-foreground truncate max-w-[250px]">{s.description}</div>
                     </TableCell>
-                    <TableCell className="font-mono text-[10px] text-muted-foreground truncate max-w-[120px]">{s.scriptPath.split("/").pop()}</TableCell>
+                    <TableCell className="text-xs">{s.domain}</TableCell>
                     <TableCell>
                       <Badge variant={s.status === "active" ? "default" : s.status === "planned" ? "secondary" : "outline"} className="text-[10px]">
                         {s.status === "active" && <CheckCircle className="h-2.5 w-2.5 mr-1" />}
@@ -100,7 +112,7 @@ const PLE03ScaffoldRegistry = () => {
                         <span className="text-xs font-mono">{s.complianceCoverage}%</span>
                       </div>
                     </TableCell>
-                    <TableCell className="text-xs text-muted-foreground">{s.lastUsed || "—"}</TableCell>
+                    <TableCell className="font-mono text-xs text-muted-foreground">{s.version}</TableCell>
                     <TableCell className="text-right font-mono text-xs">{s.produces.length}</TableCell>
                   </TableRow>
                 ))}
@@ -120,11 +132,30 @@ const PLE03ScaffoldRegistry = () => {
           </CardHeader>
           <CardContent className="space-y-3 text-sm">
             <p>{selected.description}</p>
-            <div><span className="text-muted-foreground text-xs">Script Path</span><div className="font-mono text-xs">{selected.scriptPath}</div></div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+              <div><span className="text-muted-foreground text-xs">Script Path</span><div className="font-mono text-xs">{selected.scriptPath}</div></div>
+              <div><span className="text-muted-foreground text-xs">Domain</span><div>{selected.domain}</div></div>
+              <div><span className="text-muted-foreground text-xs">Version</span><div className="font-mono">{selected.version}</div></div>
+            </div>
             <div>
               <span className="text-muted-foreground text-xs">Produces</span>
               <div className="flex flex-wrap gap-1 mt-1">
                 {selected.produces.map(p => <Badge key={p} variant="outline" className="text-[10px] font-mono">{p}</Badge>)}
+              </div>
+            </div>
+            {/* Includes Checklist */}
+            <div>
+              <span className="text-muted-foreground text-xs">Compliance Includes</span>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-1">
+                {includesFlags.map(f => {
+                  const val = selected[f.key] as boolean;
+                  return (
+                    <div key={f.key} className={`flex items-center gap-1.5 text-xs p-1.5 rounded ${val ? "bg-emerald-500/10 text-emerald-400" : "bg-muted/30 text-muted-foreground"}`}>
+                      {val ? <CheckCircle className="h-3 w-3" /> : <XCircle className="h-3 w-3" />}
+                      {f.label}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </CardContent>

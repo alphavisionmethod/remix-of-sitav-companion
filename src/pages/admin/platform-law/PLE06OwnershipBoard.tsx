@@ -1,13 +1,15 @@
 import { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Users, AlertTriangle, CheckCircle, Shield, TrendingDown } from "lucide-react";
+import { Users, CheckCircle, TrendingDown, ArrowUpRight } from "lucide-react";
 import { OWNERSHIP_REGISTRY, getOwnerComplianceAverage, type OwnershipEntry } from "@/lib/platform-law/platform-law-registry";
 
 const PLE06OwnershipBoard = () => {
   const [typeFilter, setTypeFilter] = useState<"all" | OwnershipEntry["type"]>("all");
   const [sortBy, setSortBy] = useState<"compliance" | "violations" | "drift">("compliance");
+  const [selected, setSelected] = useState<OwnershipEntry | null>(null);
 
   const filtered = useMemo(() => {
     let items = typeFilter === "all" ? [...OWNERSHIP_REGISTRY] : OWNERSHIP_REGISTRY.filter(o => o.type === typeFilter);
@@ -20,19 +22,19 @@ const PLE06OwnershipBoard = () => {
   const avgScore = getOwnerComplianceAverage();
   const totalViolations = OWNERSHIP_REGISTRY.reduce((s, o) => s + o.unresolvedViolations, 0);
   const totalDrift = OWNERSHIP_REGISTRY.reduce((s, o) => s + o.driftCount, 0);
-  const totalMissing = OWNERSHIP_REGISTRY.reduce((s, o) => s + o.missingManifests, 0);
 
   const ownerGroups = useMemo(() => {
-    const map = new Map<string, { score: number; violations: number; areas: number }>();
+    const map = new Map<string, { score: number; violations: number; areas: number; team: string }>();
     OWNERSHIP_REGISTRY.forEach(o => {
-      const existing = map.get(o.owner) || { score: 0, violations: 0, areas: 0 };
+      const existing = map.get(o.owner) || { score: 0, violations: 0, areas: 0, team: o.team };
       existing.score += o.complianceScore;
       existing.violations += o.unresolvedViolations;
       existing.areas += 1;
+      existing.team = o.team;
       map.set(o.owner, existing);
     });
     return Array.from(map.entries()).map(([owner, data]) => ({
-      owner, avgScore: Math.round(data.score / data.areas), violations: data.violations, areas: data.areas
+      owner, avgScore: Math.round(data.score / data.areas), violations: data.violations, areas: data.areas, team: data.team
     })).sort((a, b) => a.avgScore - b.avgScore);
   }, []);
 
@@ -42,7 +44,7 @@ const PLE06OwnershipBoard = () => {
         <div className="p-2 rounded-lg bg-primary/10"><Users className="h-6 w-6 text-primary" /></div>
         <div>
           <h1 className="text-2xl font-bold">Ownership Accountability Board</h1>
-          <p className="text-sm text-muted-foreground">{OWNERSHIP_REGISTRY.length} areas tracked · {avgScore}% avg compliance · {totalViolations} unresolved violations</p>
+          <p className="text-sm text-muted-foreground">{OWNERSHIP_REGISTRY.length} areas · {avgScore}% avg compliance · {totalViolations} violations · {totalDrift} drift</p>
         </div>
       </div>
 
@@ -74,6 +76,7 @@ const PLE06OwnershipBoard = () => {
                   <div className="flex items-center gap-2">
                     <span className="font-medium text-sm">{og.owner}</span>
                     <Badge variant="outline" className="text-[10px]">{og.areas} areas</Badge>
+                    <span className="text-[10px] text-muted-foreground">{og.team}</span>
                   </div>
                   <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden mt-1">
                     <div className={`h-full rounded-full ${og.avgScore >= 90 ? "bg-emerald-500" : og.avgScore >= 80 ? "bg-amber-500" : "bg-red-500"}`} style={{ width: `${og.avgScore}%` }} />
@@ -112,19 +115,20 @@ const PLE06OwnershipBoard = () => {
                   <TableHead className="w-16">ID</TableHead>
                   <TableHead>Area</TableHead>
                   <TableHead className="w-24">Owner</TableHead>
+                  <TableHead className="w-24">Team</TableHead>
                   <TableHead className="w-20">Type</TableHead>
                   <TableHead className="w-20 text-right">Score</TableHead>
                   <TableHead className="w-20 text-right">Violations</TableHead>
                   <TableHead className="w-16 text-right">Drift</TableHead>
-                  <TableHead className="w-20 text-right">Missing</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filtered.map(o => (
-                  <TableRow key={o.id} className={o.complianceScore < 80 ? "bg-red-500/5" : ""}>
+                  <TableRow key={o.id} className={`cursor-pointer hover:bg-muted/30 ${o.complianceScore < 80 ? "bg-red-500/5" : ""}`} onClick={() => setSelected(o)}>
                     <TableCell className="font-mono text-xs">{o.id}</TableCell>
                     <TableCell className="font-medium text-sm">{o.area}</TableCell>
                     <TableCell className="text-xs">{o.owner}</TableCell>
+                    <TableCell className="text-xs text-muted-foreground">{o.team}</TableCell>
                     <TableCell><Badge variant="outline" className="text-[10px]">{o.type}</Badge></TableCell>
                     <TableCell className="text-right">
                       <span className={`font-mono text-xs ${o.complianceScore >= 90 ? "text-emerald-400" : o.complianceScore >= 80 ? "text-amber-400" : "text-red-400"}`}>{o.complianceScore}%</span>
@@ -133,7 +137,6 @@ const PLE06OwnershipBoard = () => {
                       {o.unresolvedViolations > 0 ? <span className="text-red-400 font-mono text-xs">{o.unresolvedViolations}</span> : <CheckCircle className="h-3.5 w-3.5 text-emerald-400 ml-auto" />}
                     </TableCell>
                     <TableCell className="text-right font-mono text-xs">{o.driftCount}</TableCell>
-                    <TableCell className="text-right font-mono text-xs">{o.missingManifests}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -141,6 +144,37 @@ const PLE06OwnershipBoard = () => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Detail Drawer */}
+      {selected && (
+        <Card className="border-primary/30">
+          <CardHeader className="pb-3"><div className="flex items-center justify-between">
+            <CardTitle className="text-sm">{selected.id} — {selected.area}</CardTitle>
+            <Button variant="ghost" size="sm" onClick={() => setSelected(null)}>✕</Button>
+          </div></CardHeader>
+          <CardContent className="space-y-3 text-sm">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div><span className="text-muted-foreground text-xs">Primary Owner</span><div className="font-medium">{selected.owner}</div></div>
+              <div><span className="text-muted-foreground text-xs">Secondary Owner</span><div>{selected.secondaryOwner || <span className="text-muted-foreground">None</span>}</div></div>
+              <div><span className="text-muted-foreground text-xs">Team</span><div>{selected.team}</div></div>
+              <div><span className="text-muted-foreground text-xs">Type</span><div><Badge variant="outline">{selected.type}</Badge></div></div>
+            </div>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div><span className="text-muted-foreground text-xs">Compliance</span><div className={`font-mono font-bold ${selected.complianceScore >= 90 ? "text-emerald-400" : selected.complianceScore >= 80 ? "text-amber-400" : "text-red-400"}`}>{selected.complianceScore}%</div></div>
+              <div><span className="text-muted-foreground text-xs">Violations</span><div className={selected.unresolvedViolations > 0 ? "text-red-400 font-mono" : "text-emerald-400 font-mono"}>{selected.unresolvedViolations}</div></div>
+              <div><span className="text-muted-foreground text-xs">Drift</span><div className="font-mono">{selected.driftCount}</div></div>
+              <div><span className="text-muted-foreground text-xs">Missing Manifests</span><div className="font-mono">{selected.missingManifests}</div></div>
+            </div>
+            <div>
+              <span className="text-muted-foreground text-xs">Escalation Path</span>
+              <div className="flex items-center gap-1 mt-1 text-xs">
+                <ArrowUpRight className="h-3 w-3 text-amber-400" />
+                <span>{selected.escalationPath}</span>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 };
