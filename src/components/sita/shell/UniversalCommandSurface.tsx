@@ -564,9 +564,8 @@ export function UniversalCommandSurface({ open, onClose }: UniversalCommandSurfa
                             {result.subtitle && <p className="text-[11px] text-muted-foreground truncate">{result.subtitle}</p>}
                             <WhyThisResult
                               reasons={[
-                                ...(result.relevanceScore && result.relevanceScore > 80 ? ["high-relevance" as ResultReason] : []),
-                                ...(result.sensitivity === "confidential" || result.sensitivity === "private" ? ["trust-related" as ResultReason] : []),
-                                ...(!result.relevanceScore || result.relevanceScore <= 80 ? ["recent" as ResultReason] : []),
+                                ...(result.sensitivity === "restricted" ? ["trust-related" as ResultReason] : []),
+                                ...(i === 0 ? ["high-relevance" as ResultReason] : ["recent" as ResultReason]),
                               ]}
                             />
                           </div>
