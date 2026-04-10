@@ -1,57 +1,69 @@
 
 
-# Compute Governance — Remaining Gaps & Fixes
+# Audit Results: Ultra-Efficient Intelligence Architecture
 
-## What's Already Solid (no changes needed)
-- All 6 backend engine files in `src/lib/compute-governance/` (2,000+ lines)
-- All 10 core systems from Part 3 exist as pure logic
-- 11-tab Compute Governance Board (CG01–CG11) with full UI
-- 5 React Query hooks in `use-compute-governance.ts`
-- Edge function `check-ai-budget` deployed
-- User-facing `MyPlanUsage.tsx` (395 lines)
-- DB functions: `check_ai_budget_policies`, `update_ai_budget_usage`, `aggregate_ai_daily_spend`
+## Verified as Complete and Wired (No Changes Needed)
 
-## Gaps Found
+### Backend Layers (3.2–3.11) — All 10 layers + pipeline orchestrator
+All implemented as pure logic in `src/lib/intelligence-architecture/`:
 
-### 1. `classifyTask()` returns incomplete output
-The spec (3.2) requires: `taskClass`, `estimatedCostBand`, `allowedModelTiers`, `maxContextBudget`, `syncOrAsyncPreference`, `escalationPolicy`. Currently it only returns a `CostClass` string.
+| Layer | File | Key Functions | Lines |
+|-------|------|---------------|-------|
+| 3.2 Signal Intake | `signal-intake.ts` | `normalizeSignal()`, `batchNormalize()`, `filterByRoute()` — 13 sources, 6 routes | ~100 |
+| 3.3 Asset Generation | `asset-generation.ts` | `generateAsset()`, `shouldGenerateAsset()` — 11 sources, invalidation triggers, freshness TTL | ~142 |
+| 3.4 Pattern Extraction | `pattern-extraction.ts` | `extractPattern()`, `fingerprintSimilarity()`, `findMatchingPatterns()` — 12 types, privacy gating | ~159 |
+| 3.5 Differential Reasoning | `differential-reasoning-engine.ts` | `analyzeDifferential()` — delta detection, materiality scoring, 4 actions | ~105 |
+| 3.6 Packet Compiler | `domain-packet-compiler.ts` | `compileDomainPacket()` — 9 domains, freshness, recompile check | ~130 |
+| 3.7 Reuse Decision | `reuse-decision-engine.ts` | `decideReuse()` — 4 modes, stakes-aware, differential-integrated | ~140 |
+| 3.8 Escalation | `differential-reasoning-engine.ts` | `evaluateEscalation()` — weighted scoring, 4 tiers, cost estimation | ~55 |
+| 3.9 Efficiency Scoring | `efficiency-scoring.ts` | `computeEfficiencyScore()` — 10 metrics, weighted composite, trend | ~72 |
+| 3.10 Outcome Economics | `outcome-economics-engine.ts` | `evaluateOutcomeEconomics()`, `analyzeReasoningPaths()` — 14 categories, value benchmarks | ~140 |
+| 3.11 Cross-Tenant | `cross-tenant-generalization.ts` | `generalizePattern()`, `evaluateGeneralizationEligibility()`, `anonymizeFingerprint()` | ~105 |
+| Pipeline | `intelligence-pipeline.ts` | `processSignal()` — orchestrates all layers into one flow | ~208 |
 
-**Fix:** Create a `TaskClassification` interface and a richer `classifyTaskFull()` function that returns all 6 fields by combining `classifyTask` + `COST_CLASS_SPECS` lookup.
+### UI Screens (UIE01–UIE11) — All 11 present with routes
+All registered in `AdminRoutes.tsx` (routes a20–a30):
 
-### 2. CG sub-components use only hardcoded mock data
-`CG04MarginProtectionTab`, `CG06MissionCostTab`, and `CG10PricingSimulatorTab` have zero hook integration — they render inline mock arrays only. The main board partially uses hooks but CG01 still has inline hardcoded spend-by-plan, spend-by-workspace, cache stats, and optimization suggestions.
+| Screen | File | Route | Components |
+|--------|------|-------|------------|
+| UIE01 Reuse Overview | `IntelligenceReuseOverview.tsx` (153 lines) | `/admin/intelligence/reuse` | Hero metrics, asset class table, domain reuse, invalidation feed, confidence trend |
+| UIE02 Asset Library | `IntelligenceAssetLibrary.tsx` (173 lines) | `/admin/intelligence/assets` | Search/filter, asset grid table, invalidation rules, type distribution |
+| UIE03 Differential Explorer | `DifferentialReasoningExplorer.tsx` (157 lines) | `/admin/intelligence/differential` | Summary cards, diff table, materiality gauge, reasoning mode, savings |
+| UIE04 Packet Inspector | `IntelligencePacketInspector.tsx` (122 lines) | `/admin/intelligence/packets` | Packet summary, content tabs, compression, freshness, compiler metadata |
+| UIE05 Efficiency Scoreboard | `AIEfficiencyScoreboard.tsx` (210 lines) | `/admin/intelligence/efficiency` | Tabs: agents/workflows/paths, ranking table, composite scores |
+| UIE06 Outcome Economics | `OutcomeEconomicsBoard.tsx` | `/admin/intelligence/outcomes` | Value hero, cost/outcome table, payback, high-value/waste panels, reasoning paths |
+| UIE07 Escalation Control | `EscalationControlCenter.tsx` (145 lines) | `/admin/intelligence/escalation` | Timeline, trigger breakdown, cost impact, approval-linked panel |
+| UIE08 Pattern Learning | `PatternLearningCenter.tsx` | `/admin/intelligence/patterns` | Pattern grid, fingerprint viewer, confidence, reusability, privacy |
+| UIE09 Zero-Waste Prompts | `ZeroWastePromptView.tsx` | `/admin/intelligence/prompts` | Profile table, redundancy, packet-driven usage, cost reduction, offenders |
+| UIE10 Smart Digest | `SmartDigestCenter.tsx` | `/admin/intelligence/digests` | Digest library, freshness, hit rate, avoided spend, stale warnings |
+| UIE11 Cross-Tenant Gov | `CrossTenantGovernance.tsx` | `/admin/intelligence/cross-tenant` | Approval table, privacy controls, eligibility, restrictions |
 
-**Fix:** Wire these components to the existing governance hooks. Add a `useMissionCostData()` hook and a `useMarginProtectionFeed()` hook. Keep mock data as demo-mode fallback.
+### Wiring — Verified
+- Pipeline: `intelligence-pipeline.ts` → wires signal intake → asset generation → pattern extraction → differential reasoning → reuse decision → outcome economics
+- Budget gate: `budget-gate.ts` → called by `ai-capability-client.ts` before every AI invocation
+- Persistence: `intelligence-asset-persistence.ts` → full CRUD for `intelligence_assets_library` table
+- DB functions: `check_ai_budget_policies` (real-time budget enforcement), `aggregate_ai_daily_spend`
+- Demo data: `admin-intelligence.ts` — 185 lines of realistic data for all 11 screens
+- Barrel export: `intelligence-architecture/index.ts` — all types and functions exported
 
-### 3. JSX rendering bug in CG07
-Line 702 has broken nested JSX: `<p>...{<p>...</p>}%</p>` — the Fair Use Pressure "Premium Escalation" card renders incorrectly.
+---
 
-**Fix:** Remove the nested `<p>` tag and fix the display.
+## One Bug Found — Fix Required
 
-### 4. No client-side AI gateway wrapper
-The `check-ai-budget` edge function exists but nothing in the app calls it before AI invocations. There's no `enforceAIBudget()` wrapper.
+**File**: `src/pages/admin/intelligence/IntelligenceAssetLibrary.tsx`, line 18
 
-**Fix:** Create `src/lib/ai-gateway/budget-gate.ts` with an `enforceAIBudget(capabilityKey, estimatedCost)` function that calls the edge function and returns allow/deny/downgrade. Wire it into existing AI invocation paths.
+**Problem**: State declaration outside component body — this is dead code that doesn't actually work as React state:
+```typescript
+const [selectedAsset, setSelectedAsset] = [null as typeof DEMO_ASSETS[0] | null, (_: typeof DEMO_ASSETS[0] | null) => {}];
+```
 
-### 5. Missing `useMissionCostData` and `useMarginProtectionFeed` hooks
-CG06 and CG04 need hooks to query `ai_usage_ledger` grouped by mission/workflow and to track margin protection actions.
+**Fix**: Move inside the component as proper `useState`, and add an asset detail drawer to complete the UIE02 spec (AssetDetailDrawer, ReuseHistoryPanel, FreshnessAndConfidenceStrip, InvalidationRulesCard are listed as required components but the drawer is not implemented).
 
-**Fix:** Add these 2 hooks to `use-compute-governance.ts`.
-
-## Files Changed
+### Changes
 
 | File | Action |
 |------|--------|
-| `src/lib/compute-governance/model-routing-engine.ts` | Edit — add `TaskClassification` interface and `classifyTaskFull()` |
-| `src/hooks/use-compute-governance.ts` | Edit — add `useMissionCostData()` and `useMarginProtectionFeed()` hooks |
-| `src/lib/ai-gateway/budget-gate.ts` | Create — client-side budget enforcement wrapper |
-| `src/components/admin/compute-governance/CG04MarginProtectionTab.tsx` | Edit — wire to `useMarginProtectionFeed()` with demo fallback |
-| `src/components/admin/compute-governance/CG06MissionCostTab.tsx` | Edit — wire to `useMissionCostData()` with demo fallback |
-| `src/pages/admin/ComputeGovernanceBoard.tsx` | Edit — fix CG07 JSX bug (line 702), wire CG01 metrics to hooks |
+| `src/pages/admin/intelligence/IntelligenceAssetLibrary.tsx` | Fix line 18 — move `selectedAsset` state inside component as `useState`, add an AssetDetailDrawer panel that shows when an asset row is clicked (detail view with freshness/confidence strip, reuse history, invalidation rules per spec) |
 
-## Technical Notes
-- No new DB tables or migrations needed — all existing tables are sufficient
-- No duplication — all new code calls existing engine functions
-- Demo fallback preserved everywhere via `useDataMode()`
-- Budget gate uses `supabase.functions.invoke()` per edge function best practices
+This is the only change needed. Everything else — all 10 backend layers, the pipeline orchestrator, all 11 UI screens, all wiring, persistence, budget gate integration, demo data — is fully implemented with real logic, no stubs, no duplicates.
 
