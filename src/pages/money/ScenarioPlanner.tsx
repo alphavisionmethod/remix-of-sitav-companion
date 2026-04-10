@@ -50,7 +50,7 @@ const ScenarioPlanner = () => {
         <div className="flex flex-wrap gap-2 mt-3">
           {presets.map(p => (
             <SitaButton key={p.id} size="sm"
-              variant={activeScenario.id === p.id ? "accent" : "outline"}
+              variant={activeScenario.id === p.id ? "accent" : "ghost"}
               onClick={() => setActiveScenario(p)}
             >
               {p.name}
@@ -64,16 +64,12 @@ const ScenarioPlanner = () => {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <KPITile label="Monthly Impact" value={`${sign(result.netImpactMonthlyCents)}${fmt(result.netImpactMonthlyCents)}`}
           icon={result.netImpactMonthlyCents >= 0 ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" />}
-          color={result.netImpactMonthlyCents >= 0 ? "emerald" : "red"} />
         <KPITile label="Annual Impact" value={`${sign(result.netImpactAnnualCents)}${fmt(result.netImpactAnnualCents)}`}
           icon={DollarSign}
-          color={result.netImpactAnnualCents >= 0 ? "emerald" : "red"} />
         <KPITile label="Safe-to-Spend" value={fmt(result.projectedSafeToSpend)}
           icon={Shield}
-          color={result.projectedSafeToSpend > CTX.safeToSpendCents ? "emerald" : "amber"} />
         <KPITile label="Risk Level" value={result.riskLevel.toUpperCase()}
           icon={AlertTriangle}
-          color={result.riskLevel === "low" ? "emerald" : result.riskLevel === "moderate" ? "amber" : "red"} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

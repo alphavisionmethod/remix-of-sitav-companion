@@ -57,9 +57,7 @@ const BudgetEnvelopeOffice = () => {
         <KPITile label="Allocated" value={fmt(budget.totalAllocatedCents)} icon={Wallet} />
         <KPITile label="Spent So Far" value={fmt(totalSpent)} icon={TrendingUp} />
         <KPITile label="Available" value={fmt(totalAvailable)} icon={PiggyBank}
-          color={totalAvailable >= 0 ? "emerald" : "red"} />
         <KPITile label="Unallocated" value={fmt(budget.unallocatedCents)} icon={AlertTriangle}
-          color={budget.unallocatedCents > 0 ? "amber" : "emerald"} />
       </div>
 
       {/* Pace Status */}

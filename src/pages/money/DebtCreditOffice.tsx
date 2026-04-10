@@ -44,11 +44,8 @@ const DebtCreditOffice = () => {
         <KPITile label="Total Debt" value={fmt(profile.totalDebtCents)} icon={CreditCard} />
         <KPITile label="Monthly Interest Drag" value={fmt(profile.interestDragMonthlyCents)} icon={TrendingDown} />
         <KPITile label="Utilization" value={`${profile.utilizationPercent.toFixed(0)}%`} icon={<BarChart3 className="h-4 w-4" />}
-          color={profile.utilizationPercent < 30 ? "emerald" : "amber"} />
         <KPITile label="DTI Ratio" value={`${profile.debtToIncomeRatio.toFixed(0)}%`} icon={Target}
-          color={profile.debtToIncomeRatio < 36 ? "emerald" : "red"} />
         <KPITile label="Credit Score" value={pulse.estimatedScore.toString()} icon={Shield}
-          color={pulse.estimatedScore >= 700 ? "emerald" : pulse.estimatedScore >= 600 ? "amber" : "red"}
           trend={pulse.trend === "improving" ? "up" : pulse.trend === "declining" ? "down" : undefined} />
       </div>
 
@@ -101,7 +98,7 @@ const DebtCreditOffice = () => {
           <SitaCard hover={false} className="p-4 space-y-4">
             <div className="flex gap-2">
               {(["avalanche", "snowball"] as const).map(s => (
-                <SitaButton key={s} variant={strategy === s ? "accent" : "outline"} size="sm" onClick={() => setStrategy(s)}>
+                <SitaButton key={s} variant={strategy === s ? "accent" : "ghost"} size="sm" onClick={() => setStrategy(s)}>
                   {s === "avalanche" ? "🏔️ Avalanche" : "⛄ Snowball"}
                 </SitaButton>
               ))}

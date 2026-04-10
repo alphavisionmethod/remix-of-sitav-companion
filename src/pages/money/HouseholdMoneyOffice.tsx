@@ -45,8 +45,6 @@ const HouseholdMoneyOffice = () => {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <KPITile label="Household Income" value={fmt(hh.totalIncomeCents)} icon={DollarSign} />
         <KPITile label="Shared Expenses" value={fmt(hh.totalExpensesCents)} icon={Home} />
-        <KPITile label="Monthly Surplus" value={fmt(surplus)} icon={PiggyBank} color={surplus > 0 ? "emerald" : "red"} />
-        <KPITile label="Budget Health" value={`${hh.sharedBudgetHealth}%`} icon={Heart} color={hh.sharedBudgetHealth >= 70 ? "emerald" : "amber"} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
