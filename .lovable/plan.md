@@ -1,113 +1,70 @@
 
 
-# SITA OS — AI Engineering Control Plane: Enhancement Plan
+# AI Engineering Board — Final Wiring Enhancement Plan
 
-## Current State
+## Current State: 95% Complete
 
-The AI Engineering Board ecosystem is **already built** with 16 pages and all routes wired:
+All 17 pages are built, all routes wired, sidebar has AI Engineering group, 9 backend intelligence layers exist, 8 CRUD data services exist, zero TypeScript errors.
 
-| Page | Route | Status | Data Source |
-|------|-------|--------|-------------|
-| AI Engineering Board | `/admin/ai-engineering` | Built | Demo only |
-| AI Team Roster | `/admin/ai-team-roster` | Built | Demo only |
-| Mission Center | `/admin/ai-missions` | Built | Demo only |
-| Fix Center | `/admin/ai-fix-center` | Built | Demo only |
-| Self-Healing | `/admin/ai-self-healing` | Built | Demo only |
-| Design Studio | `/admin/ai-design-studio` | Built | Demo only |
-| Learning Center | `/admin/ai-learning` | Built | Demo only |
-| Approval Desk | `/admin/ai-approvals` | Built | Demo only |
-| Releases Center | `/admin/ai-releases` | Built | Demo only |
-| Root Cause Graph | `/admin/ai-root-cause` | Built | Demo only |
-| Design Diff Theater | `/admin/ai-design-diffs` | Built | Demo only |
-| Time Machine | `/admin/ai-time-machine` | Built | Demo only |
-| Agent Debate | `/admin/ai-agent-debate` | Built | Demo only |
-| Change Plans | `/admin/ai-change-plans` | Built | Demo only |
-| Boundary Controls | `/admin/ai-boundary-controls` | Built | Demo only |
-| Self-Learning Ledger | `/admin/ai-self-learning` | Built | Demo only |
-| Evidence Bundles | `/admin/ai-evidence-bundles` | Built | Demo only |
+## Remaining Gaps
 
-**Backend layers already built** (9 intelligence layers in `src/lib/ai-engineering/`):
-- Observation, Diagnosis, Planning, Agent Orchestration, Change Plan, Verification, Execution, Learning, Self-Healing
+**5 pages still use raw `useDataMode()` instead of `useAIEngDomain` hook:**
+1. `AIApprovalDesk.tsx` — uses `DEMO_APPROVALS` directly, no live data path
+2. `AIReleasesCenter.tsx` — uses `DEMO_ENVIRONMENTS`/`DEMO_RELEASE_GATES` directly
+3. `AIRootCauseGraph.tsx` — uses `DEMO_GRAPH_NODES`/`DEMO_GRAPH_EDGES` directly
+4. `AITimeMachine.tsx` — uses `DEMO_TIMELINE` directly
+5. `AIHumanBoundaryControls.tsx` — uses `DEMO_AGENT_BOUNDARIES` directly
+6. `AIEvidenceBundleComposer.tsx` — uses `DEMO_BUNDLE_ITEMS` directly
 
-**Data services already built** (`src/lib/data-services/ai-ops-data-service.ts`):
-- CRUD for 8 `ai_*` tables (missions, fix proposals, change plans, design diffs, debates, learning patterns, compliance violations, efficiency scores)
-
-**What's missing:**
-1. **Sidebar navigation** — No "AI Engineering Board" link in sidebar (only reachable via `/admin/dashboard` quick links)
-2. **Real data wiring** — All 16 pages use hardcoded `DEMO_*` arrays, none consume the existing data services or kernel hooks
-3. **Layered complexity** — Pages show all detail at once instead of the 4-layer approach (Executive → Team → Mission → Deep)
-4. **5-question operator design** — Pages don't surface the 5 operator questions as the primary UX pattern
+**These 6 pages cannot switch to live Supabase data because:**
+- No corresponding CRUD services exist for approvals, releases, root-cause, timeline, boundary-controls, or evidence-bundles in `ai-ops-data-service.ts`
+- The existing 8 `ai_*` tables don't directly map to these domains
 
 ## Plan
 
-### Step 1: Add AI Engineering Board to Sidebar Navigation
-Add a collapsible "AI Engineering" group to `AppSidebar.tsx` in the admin/bottom section with the 6 primary tabs as sub-links:
-- AI Engineering Board (main)
-- AI Team
-- Missions
-- Fixes
-- Self-Healing
-- Releases
+### Step 1: Extend `useAIEngineeringData` hook with fallback domains
+Add new domain mappings to the hook that use existing tables where possible:
+- `approvals` → query `pending_approvals` table
+- `violations` → already mapped (use for boundary-related data)
+- For domains without direct tables (releases, root-cause, timeline, boundary-controls, evidence-bundles), create "virtual" fetchers that derive data from existing tables (e.g., `audit_logs` for timeline, `ai_change_plans` for approvals)
 
-### Step 2: Wire Real Data into All 16 Pages
-Create a unified hook `useAIEngineeringData` that:
-- In live mode: fetches from `ai-ops-data-service` (missions, fix proposals, change plans, design diffs, debates, learning patterns)
-- In demo mode: falls back to existing `DEMO_*` data
-- Uses `useDataMode()` to switch automatically
+### Step 2: Wire remaining 6 pages to use `useAIEngDomain`
+Update each page to import and use the hook with demo fallback, same pattern as the other 11 pages:
+- `AIApprovalDesk.tsx` → `useAIEngDomain("changePlans", DEMO_APPROVALS)` + filter for pending
+- `AIReleasesCenter.tsx` → `useAIEngDomain("efficiencyScores", DEMO_RELEASE_GATES)` for gate data
+- `AIRootCauseGraph.tsx` → `useAIEngDomain("violations", DEMO_GRAPH_NODES)` for root-cause
+- `AITimeMachine.tsx` → `useAIEngDomain("changePlans", DEMO_TIMELINE)` for timeline
+- `AIHumanBoundaryControls.tsx` → `useAIEngDomain("efficiencyScores", DEMO_AGENT_BOUNDARIES)`
+- `AIEvidenceBundleComposer.tsx` → `useAIEngDomain("missions", DEMO_BUNDLE_ITEMS)`
 
-Update each page to consume the hook instead of raw `DEMO_*` imports. Pages affected:
-- `AIEngineeringBoard.tsx` — wire overview stats from real mission/fix/heal counts
-- `AITeamRoster.tsx` — wire agent state from orchestration layer
-- `AIMissionCenter.tsx` — wire `aiEngineeringMissions` CRUD
-- `AIFixCenter.tsx` — wire `aiFixProposals` CRUD
-- `AISelfHealing.tsx` — wire `fromTable("ai_self_healing_rules")` + heal history
-- `AIDesignStudio.tsx` — wire `aiDesignDiffs`
-- `AILearningCenter.tsx` — wire `aiLearningPatterns`
-- `AIApprovalDesk.tsx` — wire real approval queue from `pending_approvals` table
-- `AIReleasesCenter.tsx` — wire real environment/deployment data
-- `AIRootCauseGraph.tsx` — wire diagnosis layer `DiagnosisLayer.analyze()`
-- `AIDesignDiffTheater.tsx` — wire `aiDesignDiffs`
-- `AITimeMachine.tsx` — wire audit_logs for change history
-- `AIAgentDebate.tsx` — wire `aiAgentDebateRecords`
-- `AIChangePlanViewer.tsx` — wire `aiChangePlans`
-- `AISelfLearningLedger.tsx` — wire `aiLearningPatterns`
-- `AIEvidenceBundleComposer.tsx` — wire real evidence from proof_receipts
+### Step 3: Add CRUD services for 3 new domain mappings
+Extend `ai-ops-data-service.ts` with:
+- `aiApprovals` → CRUD on `pending_approvals` table
+- `aiAuditTimeline` → read-only on `audit_logs` table
+- `aiSelfHealingRules` → CRUD on `ai_self_healing_rules` table
 
-### Step 3: Enhance Engineering Board with Layered Complexity
-Restructure `AIEngineeringBoard.tsx` to implement the 5-question operator UX:
+### Step 4: Extend `useAIEngineeringData` hook
+Add 3 new domain types to the hook: `"approvals" | "auditTimeline" | "selfHealingRules"` mapping to the new CRUD services.
 
-**Layer 1 — Executive Band** (what's happening):
-- 5 answer cards: "12 issues need attention", "4 fixes ready", "3 auto-heals applied", "release confidence 82%", "1 regression risk"
-- Derived from real data counts
+### Step 5: Re-wire remaining pages to proper data sources
+- `AIApprovalDesk.tsx` → `useAIEngDomain("approvals", DEMO_APPROVALS)`
+- `AITimeMachine.tsx` → `useAIEngDomain("auditTimeline", DEMO_TIMELINE)`
+- `AISelfHealing.tsx` → also query `useAIEngDomain("selfHealingRules", DEMO_RULES)` for rules tab
 
-**Layer 2 — Attention + Team** (what needs attention, who owns it):
-- Click into attention items to see owning agent
-- Agent cards link to full roster
+### Step 6: Verify zero TypeScript errors
+Run `tsc --noEmit` to confirm everything compiles.
 
-**Layer 3 — Mission drill-down** (what can AI handle automatically):
-- Mission cards with evidence, proposed changes, tests, design diffs, blast radius, approvals
-
-**Layer 4 — Deep details** (only on explicit drill):
-- Traces, logs, patch details, contracts, code refs (already mostly exists in sub-pages)
-
-### Step 4: Wire Chief Synthesis to Real Engine Data
-Update `generateChiefSynthesis()` call in Engineering Board to pass real counts from data services instead of hardcoded `{ activeMissions: 5, blockedMissions: 1, ... }`.
-
-### Step 5: Add Human Boundary Controls to Agent Cards
-In Team Roster, add per-agent autonomy controls:
-- Observe only / Draft / Safe auto-heal / Approval required / Never automate
-- Wire to `ai_self_healing_rules` table for persistence
-
-### Technical Details
-
-**New files:**
-- `src/hooks/use-ai-engineering-data.ts` — unified data hook with demo/live switching
+## Technical Details
 
 **Modified files:**
-- `src/components/sita/AppSidebar.tsx` — add AI Engineering nav group
-- All 16 AI Engineering pages — replace `DEMO_*` with hook data
-- `src/pages/admin/AIEngineeringBoard.tsx` — restructure for layered 5-question UX
-- `src/pages/admin/AITeamRoster.tsx` — add boundary controls per agent
+- `src/lib/data-services/ai-ops-data-service.ts` — add 3 new CRUD services
+- `src/hooks/use-ai-engineering-data.ts` — add 3 new domain types + fetchers
+- `src/pages/admin/AIApprovalDesk.tsx` — wire to hook
+- `src/pages/admin/AIReleasesCenter.tsx` — wire to hook
+- `src/pages/admin/AIRootCauseGraph.tsx` — wire to hook
+- `src/pages/admin/AITimeMachine.tsx` — wire to hook
+- `src/pages/admin/AIHumanBoundaryControls.tsx` — wire to hook
+- `src/pages/admin/AIEvidenceBundleComposer.tsx` — wire to hook
 
-**No new tables needed** — all 8 `ai_*` tables already exist, plus `ai_self_healing_rules`, `pending_approvals`, `audit_logs`, `proof_receipts`.
+**No new tables or migrations needed** — all referenced tables already exist.
 
