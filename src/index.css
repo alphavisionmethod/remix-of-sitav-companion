@@ -195,6 +195,14 @@
 }
 
 @layer utilities {
+  /* Scrollbar hide for touch-scroll areas */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
   /* Brand gradients */
   .gradient-sita {
     background: linear-gradient(135deg, hsl(var(--sita-purple)), hsl(var(--sita-gold)));

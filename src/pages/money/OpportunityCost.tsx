@@ -44,7 +44,7 @@ const OpportunityCost = () => {
         <div className="mt-4">
           <ConfidenceBar value={Math.min(100, Math.round((totalSpent / 200000) * 100))} label="Spending vs. Financial Growth Potential" size="lg" />
         </div>
-        <div className="mt-3 grid grid-cols-3 gap-3 text-center">
+        <div className="mt-3 grid grid-cols-1 sm:grid-cols-3 gap-3 text-center">
           <div className="rounded-lg bg-secondary/30 p-3">
             <p className="text-[10px] uppercase text-muted-foreground font-medium">If saved</p>
             <p className="font-display text-lg font-bold text-trust-verified">${(totalSpent / 100).toLocaleString()}</p>

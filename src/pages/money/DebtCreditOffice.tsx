@@ -68,7 +68,7 @@ const DebtCreditOffice = () => {
                   <p className="text-xs text-muted-foreground">{a.interestRate}% APR</p>
                 </div>
               </div>
-              <div className="grid grid-cols-3 gap-2 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
                 <div>
                   <p className="text-muted-foreground">Min Payment</p>
                   <p className="font-semibold">{fmt(a.minimumPaymentCents)}/mo</p>

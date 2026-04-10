@@ -68,7 +68,7 @@ const CashTiming = () => {
               <div className="w-16 shrink-0">
                 <p className={`text-sm font-semibold ${w.stress ? "text-urgency-high" : "text-foreground"}`}>{w.day}</p>
               </div>
-              <div className="flex-1 grid grid-cols-3 gap-4 text-sm">
+              <div className="flex-1 grid grid-cols-1 sm:grid-cols-3 gap-2 sm:gap-4 text-sm">
                 <div>{w.inflows > 0 ? <span className="text-trust-verified font-medium">+${w.inflows.toLocaleString()}</span> : <span className="text-muted-foreground">—</span>}</div>
                 <div>{w.outflows > 0 ? <span className="text-urgency-high font-medium">-${w.outflows.toLocaleString()}</span> : <span className="text-muted-foreground">—</span>}</div>
                 <div className="text-right"><span className="font-display font-bold text-foreground">${w.balance.toLocaleString()}</span></div>

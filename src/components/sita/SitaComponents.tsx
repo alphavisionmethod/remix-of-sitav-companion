@@ -272,29 +272,52 @@ export const ContextDrawer = ({ open, onClose, title, children, className }: {
 /* =============== TAB BAR =============== */
 export const SitaTabs = ({ tabs, active, onChange, className }: {
   tabs: { key: string; label: string; count?: number }[]; active: string; onChange: (key: string) => void; className?: string;
-}) => (
-  <div className={cn("flex gap-0.5 rounded-xl bg-surface-1 p-1 border border-border/40", className)}>
-    {tabs.map((t) => (
-      <button
-        key={t.key}
-        onClick={() => onChange(t.key)}
-        className={cn(
-          "rounded-lg px-3.5 py-1.5 text-xs font-medium transition-all duration-200 whitespace-nowrap",
-          active === t.key
-            ? "bg-card text-foreground shadow-xs border border-border/60"
-            : "text-muted-foreground hover:text-foreground hover:bg-surface-2"
-        )}
+}) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const activeLabel = tabs.find((t) => t.key === active)?.label ?? active;
+
+  // Auto-scroll active tab into view
+  useEffect(() => {
+    const container = scrollRef.current;
+    if (!container) return;
+    const activeBtn = container.querySelector("[data-active='true']") as HTMLElement | null;
+    if (activeBtn) {
+      activeBtn.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+    }
+  }, [active]);
+
+  return (
+    <div className={cn("relative", className)}>
+      {/* Scrollable pill bar */}
+      <div
+        ref={scrollRef}
+        className="flex gap-0.5 rounded-xl bg-surface-1 p-1 border border-border/40 overflow-x-auto scrollbar-hide snap-x snap-mandatory touch-pan-x"
+        style={{ WebkitOverflowScrolling: "touch" }}
       >
-        {t.label}
-        {t.count !== undefined && (
-          <span className={cn("ml-1.5 rounded-full px-1.5 py-px text-[10px]", active === t.key ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground")}>
-            {t.count}
-          </span>
-        )}
-      </button>
-    ))}
-  </div>
-);
+        {tabs.map((t) => (
+          <button
+            key={t.key}
+            data-active={active === t.key}
+            onClick={() => onChange(t.key)}
+            className={cn(
+              "rounded-lg px-3.5 py-2 text-xs font-medium transition-all duration-200 whitespace-nowrap snap-start shrink-0 min-h-[36px] touch-manipulation",
+              active === t.key
+                ? "bg-card text-foreground shadow-xs border border-border/60"
+                : "text-muted-foreground hover:text-foreground hover:bg-surface-2"
+            )}
+          >
+            {t.label}
+            {t.count !== undefined && (
+              <span className={cn("ml-1.5 rounded-full px-1.5 py-px text-[10px]", active === t.key ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground")}>
+                {t.count}
+              </span>
+            )}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+};
 
 /* =============== SECTION HEADER =============== */
 export const SectionHeader = ({ title, subtitle, action, className }: {

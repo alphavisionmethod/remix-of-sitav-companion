@@ -106,7 +106,7 @@ export function MoneyOnboardingFlow({ onComplete }: Props) {
 
   return (
     <SetupShell>
-      <div className="w-full max-w-xl mx-auto">
+      <div className="w-full max-w-xl mx-auto pb-24 sm:pb-0">
         {/* Progress */}
         <div className="mb-6">
           <div className="flex items-center justify-between mb-2">
