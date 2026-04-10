@@ -156,6 +156,28 @@ const DailyPulse = () => {
   const currentMode = os.getCurrentMode();
   const activeInterventions = os.getActiveInterventions();
 
+  // Activate daily pulse digest from the 7 registered providers
+  useEffect(() => {
+    if (!os.hydrated) return;
+    let cancelled = false;
+    os.dailyPulse(user?.user_metadata?.full_name).then(digest => {
+      if (!cancelled) {
+        setOsPulseDigest(digest.content || digest.summary || JSON.stringify(digest.sections));
+        // Persist the generated digest to CAI table
+        import("@/lib/persistence/cai-persistence-bridge").then(({ persistDigestCompilation }) => {
+          persistDigestCompilation({
+            digest_type: "daily_pulse",
+            mode: currentMode as string,
+            source_refs: digest.providers || [],
+            delivery_surface: "desktop",
+            summary_ref: digest.summary || "",
+          });
+        });
+      }
+    }).catch(e => console.warn("[DailyPulse] digest generation:", e));
+    return () => { cancelled = true; };
+  }, [os.hydrated]);
+
   // Domain projection hooks (wired from use-domain-projections + use-calendar-data)
   const financeProjection = useFinanceProjection();
   const now = new Date();
