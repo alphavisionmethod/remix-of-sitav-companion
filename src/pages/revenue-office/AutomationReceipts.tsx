@@ -1,11 +1,13 @@
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
   Receipt, CheckCircle, Users, Mail, Phone, FileText, Clock, Undo2,
   AlertTriangle, Shield, Eye, DollarSign, MessageSquare, Star, UserPlus,
-  Heart, Target, RefreshCw, Brain, ArrowRight
+  Heart, Target, RefreshCw, Brain, ArrowRight, BarChart3, Filter
 } from "lucide-react";
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
@@ -17,27 +19,57 @@ const categoryIcons: Record<string, typeof Mail> = {
   Onboarding: UserPlus, Operations: Target, Retention: Heart, Growth: RefreshCw, Revenue: DollarSign,
 };
 
+const IMPACT_SUMMARY = [
+  { label: "Revenue Protected", value: "$34,800", color: "text-emerald-400" },
+  { label: "Leads Rescued", value: "68", color: "text-blue-400" },
+  { label: "Reviews Generated", value: "14", color: "text-amber-400" },
+  { label: "Hours Saved", value: "42", color: "text-purple-400" },
+];
+
 export default function AutomationReceipts() {
   const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("all");
+  const [timeFilter, setTimeFilter] = useState("48h");
   const categories = ["all", ...Array.from(new Set(DEMO_receipts.map(r => r.category)))];
-
   const filtered = tab === "all" ? DEMO_receipts : DEMO_receipts.filter(r => r.category === tab);
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
       <DemoModeBadge />
-      <div>
-        <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Receipt className="h-6 w-6 text-blue-400" />Automation Receipts & History</h1>
-        <p className="text-muted-foreground">Full audit trail — who created, what happened, which contacts affected, outcomes, approvals, and rollback options</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Receipt className="h-6 w-6 text-blue-400" />Automation Receipts & History</h1>
+          <p className="text-muted-foreground">Full audit trail — who created, what happened, which contacts affected, outcomes, and rollback options</p>
+        </div>
+        <div className="flex gap-1.5">
+          {["24h", "48h", "7d", "30d"].map(t => (
+            <Button key={t} variant={timeFilter === t ? "default" : "outline"} size="sm" className="text-[10px] h-7" onClick={() => setTimeFilter(t)}>{t}</Button>
+          ))}
+        </div>
       </div>
 
+      {/* KPIs */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <Card className="bg-card/50 border-border/50"><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-foreground">{DEMO_receipts.length}</p><p className="text-[10px] text-muted-foreground">Actions (48hrs)</p></CardContent></Card>
+        <Card className="bg-card/50 border-border/50"><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-foreground">{DEMO_receipts.length}</p><p className="text-[10px] text-muted-foreground">Actions ({timeFilter})</p></CardContent></Card>
         <Card className="bg-card/50 border-border/50"><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-emerald-400">{DEMO_receipts.reduce((a, r) => a + r.contacts, 0)}</p><p className="text-[10px] text-muted-foreground">Contacts Affected</p></CardContent></Card>
         <Card className="bg-card/50 border-border/50"><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-blue-400">{DEMO_receipts.filter(r => r.rollback).length}</p><p className="text-[10px] text-muted-foreground">Rollback Available</p></CardContent></Card>
         <Card className="bg-card/50 border-border/50"><CardContent className="p-3 text-center"><p className="text-2xl font-bold text-amber-400">{DEMO_receipts.filter(r => r.approvedBy.includes("Awaiting")).length}</p><p className="text-[10px] text-muted-foreground">Pending Approval</p></CardContent></Card>
       </div>
+
+      {/* Impact Summary */}
+      <Card className="bg-card/50 border-emerald-500/20">
+        <CardHeader className="pb-2"><CardTitle className="text-sm flex items-center gap-2"><BarChart3 className="h-4 w-4 text-emerald-400" />Automation Impact Summary</CardTitle></CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-4 gap-4">
+            {IMPACT_SUMMARY.map(s => (
+              <div key={s.label} className="text-center">
+                <p className={`text-lg font-bold ${s.color}`}>{s.value}</p>
+                <p className="text-[10px] text-muted-foreground">{s.label}</p>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Category Tabs */}
       <div className="flex flex-wrap gap-1.5">
@@ -66,7 +98,7 @@ export default function AutomationReceipts() {
                   <div className="flex items-center gap-2 flex-shrink-0">
                     <span className="text-[10px] text-muted-foreground">{r.time}</span>
                     {r.rollback && (
-                      <button className="px-2 py-1 rounded text-[10px] bg-secondary text-secondary-foreground flex items-center gap-1 hover:bg-secondary/80"><Undo2 className="h-3 w-3" />Rollback</button>
+                      <Button variant="outline" size="sm" className="text-[10px] h-6 gap-1"><Undo2 className="h-3 w-3" />Rollback</Button>
                     )}
                   </div>
                 </div>
