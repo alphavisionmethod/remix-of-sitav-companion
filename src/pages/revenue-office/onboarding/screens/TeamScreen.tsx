@@ -1,6 +1,8 @@
 import { Users } from "lucide-react";
-import { SectionTitle, ChapterBanner } from "../primitives";
+import { SectionTitle, ChapterBanner, Toggle } from "../primitives";
 import type { ScreenProps } from "../types";
+import { useCallback } from "react";
+import { FileText, Megaphone, Zap, Shield, Star, DollarSign } from "lucide-react";
 
 const roles = [
   { id: "leads", label: "Leads & inquiries" },
@@ -11,13 +13,26 @@ const roles = [
   { id: "campaigns", label: "Campaigns & marketing" },
   { id: "reviews", label: "Reviews & reputation" },
   { id: "retention", label: "Retention & renewals" },
+  { id: "support", label: "Support & communication" },
+];
+
+const approvalItems = [
+  { id: "discounts", label: "Discounts & pricing changes", icon: DollarSign },
+  { id: "quote_sending", label: "Quote / proposal sending", icon: FileText },
+  { id: "campaign_launches", label: "Campaign launches", icon: Megaphone },
+  { id: "automation_activation", label: "Automation activation", icon: Zap },
+  { id: "reputation_responses", label: "Reputation responses", icon: Star },
+  { id: "vip_actions", label: "VIP client actions", icon: Shield },
 ];
 
 export default function TeamScreen({ state, setState }: ScreenProps) {
-  
+  const toggleApproval = useCallback((v: string) => {
+    setState(p => ({ ...p, approvalActions: p.approvalActions.includes(v) ? p.approvalActions.filter(x => x !== v) : [...p.approvalActions, v] }));
+  }, [setState]);
+
   return (
     <div className="space-y-6">
-      
+
       <ChapterBanner chapter="Chapter 4: Operations" subtitle="Who runs what — powers delegation, routing, and approvals" />
       <div className="space-y-2.5">
         {roles.map(r => (
@@ -43,6 +58,16 @@ export default function TeamScreen({ state, setState }: ScreenProps) {
           </div>
         </label>
       </div>
+      {state.needsApprovals && (
+        <div>
+          <SectionTitle hint="Select all that require approval">What actions need approval before executing?</SectionTitle>
+          <div className="grid md:grid-cols-2 gap-2">
+            {approvalItems.map(a => (
+              <Toggle key={a.id} label={a.label} icon={a.icon} selected={state.approvalActions.includes(a.id)} onToggle={() => toggleApproval(a.id)} />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
