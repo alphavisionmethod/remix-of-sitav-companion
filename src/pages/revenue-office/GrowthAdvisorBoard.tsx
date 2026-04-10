@@ -8,6 +8,8 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useRevenueOfficeMode } from "@/contexts/RevenueOfficeModeContext";
+import { RevenueOfficeModeToggle } from "@/components/revenue-office/RevenueOfficeModeToggle";
 import { DEMO_ADVISORS, DEMO_ADVISOR_DEBATES, DEMO_ADVISOR_WHAT_CHANGED, DEMO_ADVISOR_INVALIDATION, DEMO_ALIGNMENT_CLUSTERS } from "@/lib/demo-data/revenue-office";
 
 type AdvisorQueryType = "disagree" | "missing" | "break";
@@ -77,7 +79,7 @@ const ADVISOR_RESPONSES: Record<string, Record<AdvisorQueryType, AdvisorQueryRes
 
 export default function GrowthAdvisorBoard() {
   const { isDemoMode } = useDataMode();
-  const [tab, setTab] = useState("council");
+  const { isBeginner } = useRevenueOfficeMode();
   const [expandedAdvisor, setExpandedAdvisor] = useState<string | null>(null);
   const [activeQueries, setActiveQueries] = useState<Record<string, AdvisorQueryType | null>>({});
   const [loadingQueries, setLoadingQueries] = useState<Record<string, boolean>>({});
