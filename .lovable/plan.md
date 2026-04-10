@@ -1,99 +1,54 @@
 
 
-# Platform Law — 10-Screen Spec Implementation Plan
+# Platform Law — Missing Component Enhancement
 
-## Gap Analysis: Spec (PLT01-10) vs Current (PLE01-07)
+## Gap Summary
 
-| Spec Screen | Current Page | Status | Action |
-|---|---|---|---|
-| PLT01 Overview | PLE01 | ⚠️ Missing: DomainComplianceHeatmap, LaunchBlockerPanel, top offender domains, noncompliant features | Enhance |
-| PLT02 Law Pack Explorer | PLE02 | ⚠️ Missing: VersionTimeline | Minor enhance |
-| PLT03 Manifest Coverage Board | PLE05 | ⚠️ Missing: DomainCoverageChart, CoverageTrendPanel, MissingManifestLane as dedicated sections | Enhance |
-| PLT04 Validation Run Center | PLE04 | ⚠️ Missing: FailureBreakdownChart, ViolationDrawer with per-violation detail, ReRunBar | Enhance |
-| PLT05 Violation Triage Board | ❌ Missing | Partially covered by violations table in PLE07, but needs dedicated page | **Create new** |
-| PLT06 Feature Compliance Detail | ❌ Missing | No per-feature deep compliance view exists | **Create new** |
-| PLT07 Generator Compliance | PLE03 | ⚠️ Missing: ArtifactMatrix, DriftWarnings, adoption rate | Enhance |
-| PLT08 Launch Enforcement Board | ❌ Missing | Launch gates exist in manifest enforcer tab, but no dedicated blocking/ring view | **Create new** |
-| PLT09 Ownership Board | PLE06 | ⚠️ Missing: OwnerScorecards, NoOwnerWarningLane, EscalationGraph, MTTR | Enhance |
-| PLT10 Drift Enforcement Radar | ❌ Missing | Drift shown in PLE01/PLE07 but no dedicated radar | **Create new** |
+All 10 pages exist and are routed. 4 pages (PLT05, PLT06, PLT08, PLT10) are fully spec-complete. 6 pages need enhancements:
 
-## Registry Additions Needed
+| Page | Missing Components |
+|---|---|
+| PLE01 (PLT01) | DomainComplianceHeatmap, LaunchBlockerPanel, top offender domains, noncompliant features lane |
+| PLE02 (PLT02) | VersionTimeline in detail drawer |
+| PLE04 (PLT04) | FailureBreakdownChart, ViolationDrawer (click run → violations), ReRunBar |
+| PLE05 (PLT03) | DomainCoverageChart, CoverageTrendPanel, MissingManifestLane |
+| PLE03 (PLT07) | ArtifactMatrix, DriftWarnings, adoption rate KPI |
+| PLE06 (PLT09) | OwnerScorecards, NoOwnerWarningLane, EscalationGraph, MTTR metric |
 
-The registry needs new data + helpers for:
-- **Enforcement architecture model** (5 layers A-E with probe classes, escalation strategy)
-- **PR template** and **feature generator template** as typed records
-- **Probe class definitions** with output expectations
-- **Domain compliance scores** (aggregated from existing data)
-- **Waiver records** for violation triage
-- **Feature-level compliance aggregation** helper functions
-- **Escalation state tracking** (persist time, MTTR estimates)
+## Changes
 
-## Files to Create (4 new pages)
+### 1. `PLE01Overview.tsx` — Add 4 sections
+- **DomainComplianceHeatmap**: Color-coded grid using `getDomainComplianceScores()` — 6 domains with score/violations/feature count
+- **LaunchBlockerPanel**: Card listing blocked P0 features from `getLaunchBlockers()` with reasons
+- **Top Offender Domains**: Strip showing domains sorted by violations desc
+- **Noncompliant New Features**: Lane of features with compliance score < 50
 
-| File | Spec | Purpose |
-|---|---|---|
-| `src/pages/admin/platform-law/PLT05ViolationTriage.tsx` | PLT05 | Operational triage: open violations, blockers, owners, age, waivers, repeat violators |
-| `src/pages/admin/platform-law/PLT06FeatureCompliance.tsx` | PLT06 | Per-feature deep view: manifests, contracts, routes, shell, interactions, journeys, tests, runtime evidence, readiness, violations |
-| `src/pages/admin/platform-law/PLT08LaunchEnforcement.tsx` | PLT08 | Launch blockers: failing journeys, missing evidence, contract drift, ring impact, release eligibility |
-| `src/pages/admin/platform-law/PLT10DriftRadar.tsx` | PLT10 | Full drift radar: heatmap by category, timeline, aging, resolution flow |
+### 2. `PLE02LawRegistry.tsx` — Add VersionTimeline
+- In the detail drawer, add a simulated version history timeline (v1→v2→current) showing law evolution dates
 
-## Files to Edit
+### 3. `PLE04CIGateMonitor.tsx` — Add 3 components
+- **FailureBreakdownChart**: Visual severity distribution bars (critical/high/medium/low) from `VALIDATION_VIOLATIONS`
+- **ViolationDrawer**: Click a validation run → show its violations filtered by `validationRunId`
+- **ReRunBar**: Simulated re-run action bar with button + last run timestamp
 
-### 1. `src/lib/platform-law/platform-law-registry.ts`
-- Add `ProbeClassDefinition` type + `PROBE_CLASSES[]` seed (8 probe types: page, journey, write-flow, approval, command-palette, money-safe, admin-critical, deployment-gate)
-- Add `EnforcementArchitectureLayer` type + `ENFORCEMENT_ARCHITECTURE[]` seed (5 layers A-E: Local, PR/CI, Nightly, Runtime, Release)
-- Add `PRTemplateField` type + `PR_TEMPLATE[]` seed (all required fields/checklist items)
-- Add `FeatureGeneratorTemplate` type + `FEATURE_GENERATOR_TEMPLATE[]` seed
-- Add `WaiverRecord` type + `WAIVERS[]` seed (~4 records)
-- Add helper: `getViolationsByOwner()`, `getViolationsByFeature()`, `getViolationAge()`, `getRepeatViolators()`, `getDriftByCategory()`, `getDriftTimeline()`, `getFeatureComplianceScore()`, `getDomainComplianceScores()`, `getLaunchBlockers()`, `getNoOwnerGaps()`, `getOwnerMTTR()`
+### 4. `PLE05ManifestEnforcer.tsx` — Add 3 sections to Coverage tab
+- **DomainCoverageChart**: Coverage bars per domain (finance, business, concierge, platform, admin)
+- **CoverageTrendPanel**: Trend arrows (up/down/stable) per manifest type
+- **MissingManifestLane**: Features missing each manifest class (feature, interaction, journey, runtime, readiness)
 
-### 2. `src/pages/admin/platform-law/PLE01Overview.tsx` (→ PLT01)
-- Add DomainComplianceHeatmap (grid of domain scores by color)
-- Add LaunchBlockerPanel (features blocked from release)
-- Add top offender domains strip
-- Add noncompliant new features lane
+### 5. `PLE03ScaffoldRegistry.tsx` — Add 3 components
+- **ArtifactMatrix**: Grid showing which generators produce which artifact types (route, contract, manifest, test, probe, etc.)
+- **DriftWarnings**: Generators with `complianceCoverage < 80%` flagged as drifted
+- **Adoption Rate KPI**: Percentage of active generators vs total
 
-### 3. `src/pages/admin/platform-law/PLE02LawRegistry.tsx` (→ PLT02)
-- Add VersionTimeline in detail drawer (showing law version history)
+### 6. `PLE06OwnershipBoard.tsx` — Add 4 components
+- **OwnerScorecards**: Card-based view per unique owner with aggregated compliance, violations, areas, MTTR
+- **NoOwnerWarningLane**: Using `getNoOwnerGaps()` to show unowned areas
+- **EscalationGraph**: Visual escalation path (Primary → Secondary → Domain → Launch Blocker)
+- **MTTR Metric**: Using `getOwnerMTTR()` to show mean time to resolution per owner
 
-### 4. `src/pages/admin/platform-law/PLE04CIGateMonitor.tsx` (→ PLT04)
-- Add FailureBreakdownChart (violations by severity visual)
-- Add ViolationDrawer (click a run → see its violations)
-- Add ReRunBar (simulated re-run action)
-
-### 5. `src/pages/admin/platform-law/PLE05ManifestEnforcer.tsx` (→ PLT03)
-- Add DomainCoverageChart (coverage bars by domain)
-- Add CoverageTrendPanel (trend indicators)
-- Add MissingManifestLane (features missing each manifest class)
-
-### 6. `src/pages/admin/platform-law/PLE03ScaffoldRegistry.tsx` (→ PLT07)
-- Add ArtifactMatrix (which generators produce which artifact types)
-- Add DriftWarnings (templates out of date)
-- Add adoption rate KPI
-
-### 7. `src/pages/admin/platform-law/PLE06OwnershipBoard.tsx` (→ PLT09)
-- Add OwnerScorecards (detailed per-owner compliance cards)
-- Add NoOwnerWarningLane (areas with no assigned owner)
-- Add EscalationGraph (visual escalation path)
-- Add MTTR metric
-
-### 8. `src/App.tsx`
-- Add 4 lazy imports + 4 routes under `/admin/platform-law/violations`, `/admin/platform-law/feature-compliance`, `/admin/platform-law/launch-enforcement`, `/admin/platform-law/drift-radar`
-
-### 9. `src/components/admin/AdminCommandPalette.tsx`
-- Add 4 new navigation entries
-
-### 10. `src/pages/admin/platform-law/PLE01Overview.tsx`
-- Update subPages nav to include all 10 screens
-
-## Technical Approach
-
-- All data in-memory from registry — no DB tables
-- Each new page 200-300 lines, fully advanced with KPI bands, tables, filters, detail drawers
-- Existing pages enhanced in-place — no duplication
-- All spec components mapped to real implementations (no stubs)
-- Dark theme, premium styling matching existing ITC/JVC/PLE pages
-- Mobile-responsive grids
-- Cross-links between all pages and to ITC/JVC truth systems
-- Every helper function fully implemented with real logic against seeded data
+## Technical Details
+- All data from existing registry helpers — no new types or seeds needed
+- Each page gains 40-80 lines of additional JSX
+- No new routes or wiring changes required
 
