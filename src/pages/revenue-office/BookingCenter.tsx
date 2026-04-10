@@ -140,9 +140,19 @@ export default function BookingCenter() {
           {/* No-Show Recovery */}
           <TabsContent value="noshow">
             <div className="space-y-3">
-              <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
-                <AlertTriangle className="w-4 h-4 text-amber-400" /> No-Show Rescue & Rebook
-              </h3>
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
+                  <AlertTriangle className="w-4 h-4 text-amber-400" /> No-Show Rescue & Rebook
+                </h3>
+                <div className="flex gap-2">
+                  <Button variant="outline" size="sm" className="text-[10px] h-7 gap-1">
+                    <Zap className="w-3 h-3" />Automate no-show recovery
+                  </Button>
+                  <Button variant="outline" size="sm" className="text-[10px] h-7 gap-1">
+                    <Calendar className="w-3 h-3" />Automate post-appointment follow-up
+                  </Button>
+                </div>
+              </div>
               {DEMO_NOSHOW_RECOVERY.map((n, i) => (
                 <Card key={i} className={`border-border/50 ${n.rebooked ? "bg-card/50" : "bg-amber-500/5 border-amber-500/20"}`}>
                   <CardContent className="p-4 flex items-center justify-between">

@@ -103,7 +103,14 @@ export default function RetentionOffice() {
                   </div>
                   <div className="flex items-center justify-between">
                     <p className="text-xs text-primary flex items-center gap-1"><ArrowRight className="h-3 w-3" />{pred.action}</p>
-                    <Button variant="outline" size="sm" className="text-[10px] h-7">Execute</Button>
+                    <div className="flex gap-2">
+                      <Button variant="outline" size="sm" className="text-[10px] h-7 gap-1">
+                        <AlertTriangle className="h-3 w-3" />Execute
+                      </Button>
+                      <Button variant="outline" size="sm" className="text-[10px] h-7 gap-1 text-primary border-primary/30">
+                        <RefreshCw className="h-3 w-3" />Launch Retention Automation
+                      </Button>
+                    </div>
                   </div>
                 </div>
               ))}

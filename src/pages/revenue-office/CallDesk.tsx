@@ -100,6 +100,15 @@ export default function CallDesk() {
                   <span className="font-medium">Post-call:</span>
                   {c.postCallActions.map((action, i) => <span key={i} className="text-foreground">{action}{i < c.postCallActions.length - 1 ? " → " : ""}</span>)}
                 </div>
+
+                <div className="mt-2 pt-2 border-t border-border/20 flex items-center gap-2">
+                  <button className="px-3 py-1.5 rounded bg-primary/10 text-primary text-[10px] font-medium flex items-center gap-1">
+                    <Zap className="h-3 w-3" />Create post-call automation
+                  </button>
+                  <button className="px-3 py-1.5 rounded bg-secondary text-secondary-foreground text-[10px] flex items-center gap-1">
+                    <ArrowRight className="h-3 w-3" />Wire outcome → quote
+                  </button>
+                </div>
               </CardContent>
             </Card>
           ))}

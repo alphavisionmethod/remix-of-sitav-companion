@@ -28,7 +28,10 @@ export default function ReputationEngine() {
             <h1 className="text-2xl font-bold text-foreground">Reputation Engine</h1>
             <p className="text-sm text-muted-foreground">Reviews, testimonials, NPS, sentiment trends, platform monitoring, and review campaigns</p>
           </div>
-          <Button size="sm" className="gap-1.5"><Send className="w-3.5 h-3.5" />Request Reviews</Button>
+          <div className="flex gap-2">
+            <Button size="sm" variant="outline" className="gap-1.5 text-[10px]"><Zap className="w-3.5 h-3.5" />Automate Review Requests</Button>
+            <Button size="sm" className="gap-1.5"><Send className="w-3.5 h-3.5" />Request Reviews</Button>
+          </div>
         </div>
       </motion.div>
 
