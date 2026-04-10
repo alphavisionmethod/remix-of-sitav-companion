@@ -1585,6 +1585,13 @@ const App = () => (
                     <Route path="/admin/service-migration" element={<CoreServiceMigrationBoard />} />
                     <Route path="/admin/persistence-drift" element={<PersistenceDriftRadar />} />
                     <Route path="/admin/runtime-continuity" element={<RuntimeContinuityBoard />} />
+                    {/* ITC: Implementation Truth Center */}
+                    <Route path="/admin/implementation-truth" element={<ITC01Overview />} />
+                    <Route path="/admin/implementation-truth/specs" element={<ITC02SpecRegistry />} />
+                    <Route path="/admin/implementation-truth/contracts" element={<ITC03ContractVerification />} />
+                    <Route path="/admin/implementation-truth/wiring" element={<ITC04WiringGraph />} />
+                    <Route path="/admin/implementation-truth/readiness" element={<ITC05ReadinessScoreboard />} />
+                    <Route path="/admin/implementation-truth/drift" element={<ITC06DriftRadar />} />
                     {/* Phase 4 Unification */}
                     <Route path="/admin/trust-state" element={<TrustStateRegistry />} />
                     <Route path="/admin/action-state" element={<ActionStateDriftViewer />} />
