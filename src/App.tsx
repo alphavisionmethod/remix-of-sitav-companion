@@ -15,6 +15,7 @@ import { DisplayModeProvider } from "@/contexts/DisplayModeContext";
 import { InspectorProvider } from "@/contexts/InspectorContext";
 import { EntityContextProvider } from "@/contexts/EntityContext";
 import { SitaKernelProvider } from "@/contexts/SitaKernelContext";
+import { SitaOSProvider } from "@/contexts/SitaOSContext";
 import { AppPlatformProvider } from "@/contexts/AppPlatformContext";
 import { OSRuntimeProvider } from "@/lib/hooks/useOSRuntime";
 import { RealityModeProvider } from "@/lib/dual-reality/reality-mode-context";
@@ -779,6 +780,7 @@ const AuthenticatedProviders = ({ children }: { children: ReactNode }) => (
   <DisplayModeProvider>
   <EntityContextProvider>
   <SitaKernelProvider>
+  <SitaOSProvider>
   <OSRuntimeProvider>
   <AppPlatformProvider>
   <InspectorProvider>
@@ -787,6 +789,7 @@ const AuthenticatedProviders = ({ children }: { children: ReactNode }) => (
   </InspectorProvider>
   </AppPlatformProvider>
   </OSRuntimeProvider>
+  </SitaOSProvider>
   </SitaKernelProvider>
   </EntityContextProvider>
   </DisplayModeProvider>
