@@ -6,6 +6,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { CheckCircle, LucideIcon } from "lucide-react";
 import { useState, useCallback } from "react";
+import { useOptimisticMutation, type MutationStatus } from "@/hooks/use-optimistic-mutation";
 
 export interface SuccessFeedback {
   id: string;
@@ -53,3 +54,6 @@ export function ActionFeedbackStack({ feedbacks }: { feedbacks: SuccessFeedback[
     </div>
   );
 }
+
+// Re-export optimistic mutation for co-located patterns
+export { useOptimisticMutation, type MutationStatus } from "@/hooks/use-optimistic-mutation";

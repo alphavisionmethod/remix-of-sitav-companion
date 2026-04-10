@@ -27,6 +27,7 @@ import { useShellIndicators } from "@/hooks/use-shell-indicators";
 import { toast } from "sonner";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { IntentRibbon } from "./IntentRibbon";
+import { WhyThisResult, type ResultReason } from "./WhyThisResult";
 
 // ── Command Index ────────────────────────────────────────────
 
@@ -561,6 +562,12 @@ export function UniversalCommandSurface({ open, onClose }: UniversalCommandSurfa
                               <span className="text-[8px] px-1 py-0.5 rounded-full border border-border/30 text-muted-foreground capitalize shrink-0">{result.type}</span>
                             </div>
                             {result.subtitle && <p className="text-[11px] text-muted-foreground truncate">{result.subtitle}</p>}
+                            <WhyThisResult
+                              reasons={[
+                                ...(result.sensitivity === "restricted" ? ["trust-related" as ResultReason] : []),
+                                ...(i === 0 ? ["high-relevance" as ResultReason] : ["recent" as ResultReason]),
+                              ]}
+                            />
                           </div>
                           {result.sensitivity && result.sensitivity !== "public" && (
                             <Lock className="h-3 w-3 text-muted-foreground/40 shrink-0" />

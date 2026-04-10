@@ -5,3 +5,5 @@ export { UniversalCommandSurface } from "./UniversalCommandSurface";
 export { EnhancedLockScreen } from "./EnhancedLockScreen";
 export { TrustPostureChip } from "./TrustPostureChip";
 export { ShellStatusBar } from "./ShellStatusBar";
+export { IntentRibbon } from "./IntentRibbon";
+export { WhyThisResult } from "./WhyThisResult";
