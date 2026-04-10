@@ -1,70 +1,68 @@
 
 
-# SITA OS — Full Deployment Readiness Audit
+# SITA OS — Final Deployment Readiness Audit
 
 ## Summary
 
-Deep audit across edge functions, routing, contracts, kernels, and deployment artifacts. Found 5 categories of issues, none are showstoppers but several should be fixed for production hygiene.
+Deep audit complete. Found **4 categories of remaining issues** across edge functions and routing. Contract kernels are clean. No build errors. No security issues beyond pre-existing low-priority warning.
 
 ---
 
-## Issue 1: Duplicate Route Definitions (Medium)
+## Issue 1: 58 Duplicate Route Paths (Medium-High)
 
-**App.tsx** defines admin routes inline (lines 1522-1555) AND loads them again via `getAdminRoutes()` at line 1819. The following paths are registered twice:
+Three route module files exist (`AdminRoutes.tsx`, `OwnerRoutes.tsx`, `MobileRoutes.tsx`) but their routes are ALSO defined inline in `App.tsx`. This means every route in these modules is registered twice.
 
-- `/admin/dashboard`, `/admin/team`, `/admin/system`, `/admin/users`, `/admin/ai-tokens`, `/admin/generated-truth`, `/admin/fleet-health`
+| Module | Inline in App.tsx | In module file | Status |
+|--------|------------------|----------------|--------|
+| Owner routes | 37 routes | 37 routes in `OwnerRoutes.tsx` | `getOwnerRoutes()` imported but **never called** — dead import |
+| Mobile routes | 12 routes | 12 routes in `MobileRoutes.tsx` | **Not even imported** in App.tsx |
+| Admin AI-team | 11 routes | 10 routes in `AdminRoutes.tsx` | Both active via `getAdminRoutes()` — true duplicates |
+| Settings/notifications | 2 definitions | — | Two conflicting elements: `NotificationPreferences` vs `SettingsPage` |
 
-React Router uses first-match, so the inline definitions win and the duplicates in `getAdminRoutes()` are dead code. This wastes bundle via duplicate lazy imports in both `App.tsx` and `AdminRoutes.tsx`.
+**Fix:**
+- Remove the dead `import { getOwnerRoutes }` from App.tsx (line 4) — it's never called
+- Remove the 7 duplicate `/admin/ai-team/*` routes from inline App.tsx (lines 1720-1729) that overlap with `getAdminRoutes()` at line 1805. Keep the inline `/admin/ai-team` (base) and `/admin/ai-team/setup` which don't overlap.
+- Remove duplicate `/settings/notifications` at line 1358 (keep the one at line 1191 pointing to `NotificationPreferences`)
+- Leave `OwnerRoutes.tsx` and `MobileRoutes.tsx` files as-is (they aren't loaded, so no runtime impact — just dead code to clean up later)
 
-**Fix:** Remove the 7 overlapping route definitions from the inline block in App.tsx (lines 1524-1530), since `getAdminRoutes()` already handles them inside an `AdminShellLayout`. OR remove them from `AdminRoutes.tsx` — whichever layout wrapping is correct. Also remove the corresponding duplicate lazy import declarations from App.tsx (lines 168-179 for `GeneratedTruthDashboard`, `FleetHealthPage`, `AdminDashboard`, `TeamManagement`, `SystemManagement`, `UserManagement`, `AITokenDashboard`).
+## Issue 2: Edge Function SDK Version Drift — 6 Functions Still Outdated
+
+Previous fix missed several functions:
+
+| Function | Current | Target |
+|----------|---------|--------|
+| `admin-api` | 2.49.1 | 2.49.4 |
+| `admin-intelligence` | 2.49.1 | 2.49.4 |
+| `ambient-os-operations` | 2.39.3 | 2.49.4 |
+| `brain-core` | 2.49.1 | 2.49.4 |
+| `connector-proxy` | 2 (floating!) | 2.49.4 |
+| `seed-user-data` | 2.49.1 | 2.49.4 |
+| `verification-recorder` | 2 (floating!) | 2.49.4 |
+
+**Fix:** Pin all to `2.49.4`.
+
+## Issue 3: 5 Remaining `as unknown` Destructures in `admin-api` (Low)
+
+Lines 286, 333, 342, 375, 421 still use `body as unknown` — previous fix only caught 7 of 12.
+
+**Fix:** Change all to `body as Record<string, any>`.
+
+## Issue 4: `msa-operations` — 3 Incorrect `as unknown` Casts (Low)
+
+Lines 236-238 cast string `"fail"` to `as unknown` to assign to a typed status field. Should be a proper type assertion.
+
+**Fix:** Change `"fail" as unknown` to `"fail" as any` (or better, fix the type to accept `"fail"`).
 
 ---
 
-## Issue 2: Edge Function SDK Version Drift (Low-Medium)
+## What Passed (Clean)
 
-41 edge functions use `@supabase/supabase-js` but with 3 different versions:
-- `2.49.4` — majority (correct, latest)
-- `2.49.1` — `admin-ai-workforce-run`, `check-ai-budget`, `system-updates`, `event-processor`
-- **`2.39.3`** — `connector-operations` (10 minor versions behind)
-
-**Fix:** Standardize all to `2.49.4`. Search-and-replace across all edge function `index.ts` files.
-
----
-
-## Issue 3: `admin-intelligence` Double Body Consumption (Low)
-
-Lines 46 validates body via `req.json()` but discards the result. The function is primarily GET-based (routes by URL path), so POST calls would crash. Low risk since clients use GET, but still a latent bug.
-
-**Fix:** Apply the same parse-once pattern used in other functions.
-
----
-
-## Issue 4: `as unknown` Property Access in Edge Functions (Low)
-
-`payment-process/index.ts` (line 89-91) casts `approval.payload as unknown` then accesses `.amount_cents` — TypeScript should flag this. Same pattern in `admin-api/index.ts` at lines 112, 133, 162, 191, 206, 227, 257. Works at runtime (JS ignores types) but is incorrect TypeScript.
-
-**Fix:** Change `as unknown` to `as Record<string, any>` in these destructuring patterns.
-
----
-
-## Issue 5: `as any` in 13 Page Files (Low, Tracked)
-
-142 uses of `as any` across 13 page files. Production truth dashboard says 0, which means the dashboard check may be stale or scoped differently. Most are select/filter casts — low runtime risk but violates type safety goals.
-
-**Fix:** Not blocking deployment. Track for future type hardening sprint.
-
----
-
-## What Passed (No Issues Found)
-
-- **Contract boundaries**: Zero violations — no React imports, no runtime imports, no forbidden domain references
-- **Security**: No `localStorage` role checks, no `execute_sql`, no direct LLM calls outside gateway
-- **Kernel contracts**: Clean barrel exports, zero runtime dependencies
-- **PWA**: manifest.webmanifest + icon-192 + icon-512 present
-- **Deployment artifacts**: Dockerfile, docker-compose.yml, nginx config all present
-- **DB linter**: Clean (1 low-priority leaked password protection warning — pre-existing)
-- **Architecture rules**: No forbidden domains (crm-os, office-os, etc.), no cross-domain imports
-- **CalmAssistantChat**: Import dedup previously fixed, clean now
+- Contract kernels: zero forbidden imports (no React, no runtime, no component imports)
+- DB linter: clean (1 low-priority leaked password warning — pre-existing)
+- Console: no errors
+- All edge functions: single `req.json()` call only (double-parse fully eliminated)
+- `agent-signal`: `parsedBody` reference confirmed correct
+- Security: no `localStorage` role checks, no `execute_sql`, no direct LLM calls
 
 ---
 
@@ -72,17 +70,17 @@ Lines 46 validates body via `req.json()` but discards the result. The function i
 
 | File | Change |
 |------|--------|
-| `src/App.tsx` | Remove 7 duplicate route definitions + 7 duplicate lazy imports |
-| `supabase/functions/connector-operations/index.ts` | `2.39.3` → `2.49.4` |
-| `supabase/functions/admin-ai-workforce-run/index.ts` | `2.49.1` → `2.49.4` |
-| `supabase/functions/check-ai-budget/index.ts` | `2.49.1` → `2.49.4` |
-| `supabase/functions/system-updates/index.ts` | `2.49.1` → `2.49.4` |
-| `supabase/functions/event-processor/index.ts` | `2.49.1` → `2.49.4` |
-| `supabase/functions/admin-intelligence/index.ts` | Fix double body parse |
-| `supabase/functions/payment-process/index.ts` | `as unknown` → `as Record<string, any>` |
-| `supabase/functions/admin-api/index.ts` | `as unknown` → `as Record<string, any>` (6 occurrences) |
+| `src/App.tsx` | Remove dead `getOwnerRoutes` import, remove 7 duplicate AI-team routes, remove duplicate `/settings/notifications` |
+| `supabase/functions/admin-api/index.ts` | SDK `2.49.1` → `2.49.4` + fix 5 remaining `as unknown` |
+| `supabase/functions/admin-intelligence/index.ts` | SDK `2.49.1` → `2.49.4` |
+| `supabase/functions/ambient-os-operations/index.ts` | SDK `2.39.3` → `2.49.4` |
+| `supabase/functions/brain-core/index.ts` | SDK `2.49.1` → `2.49.4` |
+| `supabase/functions/connector-proxy/index.ts` | SDK `2` → `2.49.4` |
+| `supabase/functions/seed-user-data/index.ts` | SDK `2.49.1` → `2.49.4` |
+| `supabase/functions/verification-recorder/index.ts` | SDK `2` → `2.49.4` |
+| `supabase/functions/msa-operations/index.ts` | Fix 3 `"fail" as unknown` casts |
 
-Redeploy: `connector-operations`, `admin-ai-workforce-run`, `check-ai-budget`, `system-updates`, `event-processor`, `admin-intelligence`, `payment-process`, `admin-api`
+Redeploy: `admin-api`, `admin-intelligence`, `ambient-os-operations`, `brain-core`, `connector-proxy`, `seed-user-data`, `verification-recorder`, `msa-operations`
 
 No database changes. No new files.
 
