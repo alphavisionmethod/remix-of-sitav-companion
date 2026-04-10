@@ -94,6 +94,7 @@ const AppManagePage = lazy(() => import("./pages/app-platform/AppManagePage"));
 const WebAppInstallPage = lazy(() => import("./pages/app-platform/WebAppInstallPage"));
 const ExternalInstallerPage = lazy(() => import("./pages/app-platform/ExternalInstallerPage"));
 const AppReceiptsPage = lazy(() => import("./pages/app-platform/AppReceiptsPage"));
+const AppReceiptDetailPage = lazy(() => import("./pages/app-platform/AppReceiptDetailPage"));
 const EnterpriseCatalogPage = lazy(() => import("./pages/app-platform/EnterpriseCatalogPage"));
 const DevToolsCatalogPage = lazy(() => import("./pages/app-platform/DevToolsCatalogPage"));
 const OpenWithPage = lazy(() => import("./pages/app-platform/OpenWithPage"));
@@ -1098,6 +1099,7 @@ const App = () => (
                     <Route path="/app-store/external-install" element={<ExternalInstallerPage />} />
                     <Route path="/app-store/receipts" element={<AppReceiptsPage />} />
                     <Route path="/app-store/receipts/:appId" element={<AppReceiptsPage />} />
+                    <Route path="/app-store/receipt/:receiptId" element={<AppReceiptDetailPage />} />
                     <Route path="/app-store/enterprise" element={<EnterpriseCatalogPage />} />
                     <Route path="/app-store/dev-tools" element={<DevToolsCatalogPage />} />
                     <Route path="/app-store/open-with" element={<OpenWithPage />} />
