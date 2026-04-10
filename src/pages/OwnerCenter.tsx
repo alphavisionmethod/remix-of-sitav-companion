@@ -5,6 +5,7 @@ import { StateBadge } from "@/components/sita/StateBadge";
 import { TrustDebtPanel, ExecutionDebtHeatmap, DragIndexRadar, ReadinessGauge, DelegationRegistryTable } from "@/components/governance";
 import { useState, useEffect, useMemo } from "react";
 import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
+import { FounderBottleneckEngine } from "@/lib/engines/founder-bottleneck-engine";
 import { useKernelEventStream } from "@/hooks/use-kernel-events";
 import { useKernelStatus } from "@/contexts/SitaKernelContext";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -449,6 +450,9 @@ const OwnerCenter = () => {
                 </div>
               </SitaCard>
             </div>
+
+            {/* ── Founder Bottleneck Detection ── */}
+            <FounderBottleneckCard />
 
             {/* ── Platform Maturity + Safe Mode + Undo ── */}
             <div className="grid gap-4 lg:grid-cols-3">
