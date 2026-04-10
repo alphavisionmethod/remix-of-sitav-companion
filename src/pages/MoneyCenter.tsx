@@ -1,6 +1,7 @@
 import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
 import { SitaTabs } from "@/components/sita/SitaComponents";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Navigate } from "react-router-dom";
+import { isMoneyOnboardingComplete } from "@/components/sita/money-onboarding";
 import { motion, AnimatePresence } from "framer-motion";
 
 import MoneyOverview from "./money/MoneyOverview";
