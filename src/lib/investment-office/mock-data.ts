@@ -499,8 +499,66 @@ export const SAMPLE_ORDERS: TradeOrder[] = [
   { id: "ord1", instrumentId: "nvda", instrument: getInstrument("nvda")!, action: "buy", quantity: 50, orderType: "limit", limitPrice: 130, platform: "Interactive Brokers", estimatedCost: 6500, estimatedFees: 1.50, riskPreview: "Adds 1.2% portfolio weight to NVDA. Total tech exposure rises to 44%.", status: "draft", rationale: "Adding on dip before GTC conference catalyst", thesisId: "th1", approvalRequired: false, createdAt: "2026-04-05" },
 ];
 
+// ── Stress Scenarios ──
+export const STRESS_SCENARIOS = [
+  { id: "ss1", name: "Rates Spike +100bps", icon: "📈", impact: -14.2, description: "Fed forced to hike due to inflation resurgence", affectedClasses: ["stocks", "crypto", "events"], portfolioImpact: { stocks: -8, crypto: -22, commodities: +5, events: -15, etfs: -7 } },
+  { id: "ss2", name: "Crypto Crash -40%", icon: "💥", impact: -11.2, description: "Major exchange failure or regulatory crackdown", affectedClasses: ["crypto"], portfolioImpact: { stocks: -2, crypto: -40, commodities: 0, events: -5, etfs: -1 } },
+  { id: "ss3", name: "Geopolitical Crisis", icon: "⚠️", impact: -18.5, description: "Major conflict escalation disrupting energy and trade", affectedClasses: ["stocks", "crypto", "commodities"], portfolioImpact: { stocks: -15, crypto: -25, commodities: +12, events: -10, etfs: -14 } },
+  { id: "ss4", name: "Liquidity Freeze", icon: "🧊", impact: -22.0, description: "Credit market seizure similar to 2008", affectedClasses: ["stocks", "crypto", "events"], portfolioImpact: { stocks: -20, crypto: -35, commodities: -10, events: -20, etfs: -18 } },
+  { id: "ss5", name: "AI Bubble Pop", icon: "🫧", impact: -16.8, description: "AI capex cycle reverses, semiconductor demand collapses", affectedClasses: ["stocks"], portfolioImpact: { stocks: -25, crypto: -10, commodities: -3, events: -5, etfs: -12 } },
+];
+
+// ── Risk Policy Settings ──
+export const RISK_POLICIES = [
+  { id: "rp1", label: "Max Single Position", value: "8%", current: "5.6% (NVDA)", status: "ok" as const },
+  { id: "rp2", label: "Max Sector Concentration", value: "35%", current: "42% (Tech)", status: "breach" as const },
+  { id: "rp3", label: "Max Crypto Allocation", value: "20%", current: "28%", status: "breach" as const },
+  { id: "rp4", label: "Max Drawdown Alert", value: "-15%", current: "-8.2% est.", status: "ok" as const },
+  { id: "rp5", label: "Min Cash Reserve", value: "10%", current: "8.3%", status: "warn" as const },
+  { id: "rp6", label: "Max Platform Exposure", value: "50%", current: "36% (IB)", status: "ok" as const },
+];
+
+// ── Advisor Memos ──
+export const ADVISOR_MEMOS = [
+  { id: "am1", advisorId: "adv-macro", advisorName: "Atlas", advisorIcon: "🌍", title: "Macro Regime Update: Late-Cycle With Easing Bias", date: "2026-04-08", summary: "Soft landing remains base case. The Fed's data-dependent stance means CPI releases are the primary catalyst for rate expectations. Watch May 14 CPI closely.", tags: ["macro", "fed", "rates"] },
+  { id: "am2", advisorId: "adv-risk", advisorName: "Sentinel", advisorIcon: "🛡️", title: "Portfolio Risk Alert: Concentration Breach", date: "2026-04-07", summary: "Tech concentration at 42% breaches 35% policy limit. Crypto at 28% breaches 20% limit. Combined correlated exposure creates -22% estimated drawdown in moderate stress.", tags: ["risk", "concentration", "policy"] },
+  { id: "am3", advisorId: "adv-equity", advisorName: "Maven", advisorIcon: "📈", title: "Earnings Season Preview: Key Watchpoints", date: "2026-04-05", summary: "Q2 earnings begin in 3 weeks. NVDA GTC conference in September is the next major catalyst. MSFT approaching ATH on Copilot revenue traction.", tags: ["earnings", "nvda", "msft"] },
+  { id: "am4", advisorId: "adv-behavioral", advisorName: "Mirror", advisorIcon: "🪞", title: "Behavioral Pattern: NVDA Attention Clustering", date: "2026-04-04", summary: "12 NVDA checks this week vs 3/week baseline. This matches loss-aversion monitoring pattern. Thesis unchanged — set price alert and reduce manual checking.", tags: ["behavioral", "nvda", "discipline"] },
+];
+
+// ── Catalyst Calendar (for Research Library) ──
+export const CATALYST_CALENDAR = [
+  { id: "cc1", date: "2026-05-14", title: "CPI Release", type: "macro", instruments: ["ev-fed"], impact: "high", description: "Key inflation data — drives Fed rate cut probability" },
+  { id: "cc2", date: "2026-06-18", title: "FOMC Meeting", type: "macro", instruments: ["ev-fed", "gold"], impact: "high", description: "Rate decision and updated dot plot" },
+  { id: "cc3", date: "2026-07-31", title: "Apple Q3 Earnings", type: "earnings", instruments: ["aapl"], impact: "high", description: "Fiscal Q3 results — AI device integration update" },
+  { id: "cc4", date: "2026-08-08", title: "Tesla Robotaxi Launch", type: "product", instruments: ["tsla"], impact: "high", description: "Autonomous ride-hailing service debut" },
+  { id: "cc5", date: "2026-09-15", title: "NVIDIA GTC Conference", type: "product", instruments: ["nvda"], impact: "high", description: "Next-gen architecture reveal" },
+  { id: "cc6", date: "2026-04-20", title: "Bitcoin Halving Anniversary", type: "event", instruments: ["btc"], impact: "medium", description: "One year post-halving supply dynamics assessment" },
+];
+
+// ── Performance Timeline Data ──
+export const PERFORMANCE_TIMELINE: Record<string, number> = {
+  "1D": 0.82, "1W": 1.45, "1M": 3.21, "3M": 8.76, "6M": 14.52, "YTD": 11.38, "1Y": 22.65,
+};
+
+// ── Sync History (for Platform Connections) ──
+export const SYNC_HISTORY = [
+  { id: "sh1", platformId: "pc-ib", timestamp: "2026-04-05T12:30:00Z", status: "success" as const, positionsSynced: 5, duration: "1.2s" },
+  { id: "sh2", platformId: "pc-cb", timestamp: "2026-04-05T13:00:00Z", status: "success" as const, positionsSynced: 3, duration: "0.8s" },
+  { id: "sh3", platformId: "pc-schwab", timestamp: "2026-04-05T11:45:00Z", status: "success" as const, positionsSynced: 2, duration: "1.5s" },
+  { id: "sh4", platformId: "pc-poly", timestamp: "2026-04-05T12:00:00Z", status: "success" as const, positionsSynced: 1, duration: "0.6s" },
+  { id: "sh5", platformId: "pc-meta", timestamp: "2026-04-01T09:00:00Z", status: "failed" as const, positionsSynced: 0, duration: "—" },
+];
+
+// ── Platform Permissions ──
+export const PLATFORM_PERMISSIONS: Record<string, string[]> = {
+  "pc-ib": ["Read Positions", "Read Balances", "Place Orders", "View History"],
+  "pc-schwab": ["Read Positions", "Read Balances", "View History"],
+  "pc-cb": ["Read Positions", "Read Balances", "Place Orders", "View History", "Withdraw"],
+  "pc-poly": ["Read Positions", "Read Balances", "Place Orders"],
+  "pc-meta": [],
+};
+
 // ── Demo Source Classification ─────────────────────────────────
-// All data in this file is DEMO SCENARIO DATA for the Investment Office.
-// In real mode, pages should use mode-aware investment data services.
 export const __DEMO_SOURCE__ = true;
 export const __DATA_CLASSIFICATION__ = "demo-scenario" as const;

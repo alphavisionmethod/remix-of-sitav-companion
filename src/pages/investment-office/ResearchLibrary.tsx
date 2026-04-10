@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { BookOpen, Search, Calendar, Tag, ChevronRight } from "lucide-react";
+import { BookOpen, Search, Calendar, Tag, Brain, Zap } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { INSTRUMENTS, SAMPLE_RESEARCH } from "@/hooks/useInvestmentOfficeData";
+import { ADVISOR_MEMOS, CATALYST_CALENDAR } from "@/lib/investment-office/mock-data";
 import { useInvestmentThesisEntries } from "@/hooks/use-investment-office";
 import { useDataMode } from "@/contexts/DataModeContext";
 
@@ -42,7 +43,69 @@ export default function ResearchLibrary() {
         ))}
       </div>
 
+      {/* Advisor Memos */}
       <div className="space-y-3">
+        <h3 className="text-sm font-semibold text-foreground flex items-center gap-2"><Brain className="h-4 w-4 text-primary" /> Advisor Memos</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {ADVISOR_MEMOS.map(memo => (
+            <div key={memo.id} className="rounded-2xl border border-border bg-card p-4 space-y-2 hover:border-primary/15 transition-all cursor-pointer">
+              <div className="flex items-start gap-2.5">
+                <span className="text-lg">{memo.advisorIcon}</span>
+                <div className="flex-1">
+                  <p className="text-xs font-semibold text-foreground">{memo.title}</p>
+                  <p className="text-[10px] text-muted-foreground">{memo.advisorName} · {memo.date}</p>
+                </div>
+              </div>
+              <p className="text-[11px] text-muted-foreground leading-relaxed">{memo.summary}</p>
+              <div className="flex gap-1 flex-wrap">
+                {memo.tags.map(t => (
+                  <span key={t} className="rounded-md bg-secondary px-1.5 py-0.5 text-[9px] text-muted-foreground flex items-center gap-0.5">
+                    <Tag className="h-2 w-2" /> {t}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Catalyst Calendar */}
+      <div className="space-y-3">
+        <h3 className="text-sm font-semibold text-foreground flex items-center gap-2"><Zap className="h-4 w-4 text-accent" /> Catalyst Calendar</h3>
+        <div className="space-y-2">
+          {CATALYST_CALENDAR.sort((a, b) => a.date.localeCompare(b.date)).map(cat => {
+            const isPast = new Date(cat.date) < new Date();
+            return (
+              <div key={cat.id} className={`rounded-xl border border-border bg-card p-4 flex items-start gap-3 ${isPast ? "opacity-60" : ""}`}>
+                <div className="rounded-lg bg-primary/10 p-2 text-center min-w-[48px]">
+                  <p className="text-[10px] text-primary font-bold">{new Date(cat.date).toLocaleDateString("en-US", { month: "short" })}</p>
+                  <p className="text-sm font-bold text-foreground">{new Date(cat.date).getDate()}</p>
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2">
+                    <p className="text-xs font-semibold text-foreground">{cat.title}</p>
+                    <span className={`rounded-full px-1.5 py-0.5 text-[8px] font-bold uppercase ${
+                      cat.impact === "high" ? "bg-destructive/10 text-destructive" : "bg-secondary text-muted-foreground"
+                    }`}>{cat.impact}</span>
+                    <span className="rounded-full bg-secondary px-1.5 py-0.5 text-[8px] text-muted-foreground capitalize">{cat.type}</span>
+                  </div>
+                  <p className="text-[11px] text-muted-foreground mt-0.5">{cat.description}</p>
+                </div>
+                <div className="flex gap-1">
+                  {cat.instruments.map(id => {
+                    const inst = INSTRUMENTS.find(i => i.id === id);
+                    return inst ? <span key={id} className="text-sm">{inst.logoIcon}</span> : null;
+                  })}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Research Notes */}
+      <div className="space-y-3">
+        <h3 className="text-sm font-semibold text-foreground">Research Notes</h3>
         {filtered.map(note => (
           <div key={note.id} className="rounded-2xl border border-border bg-card p-5 space-y-2 hover:border-primary/15 transition-all cursor-pointer">
             <div className="flex items-start justify-between">

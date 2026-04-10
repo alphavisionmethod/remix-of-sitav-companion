@@ -1,6 +1,7 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { GraduationCap, Shield, Brain, TrendingUp, Eye, Target, ChevronRight, HelpCircle, Lightbulb, DollarSign } from "lucide-react";
+import { GraduationCap, Shield, Brain, TrendingUp, Eye, Target, ChevronRight, HelpCircle, Lightbulb, DollarSign, CheckCircle2, BarChart3, Wallet } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { PORTFOLIO } from "@/hooks/useInvestmentOfficeData";
 import { useDataMode } from "@/contexts/DataModeContext";
@@ -9,12 +10,19 @@ import { DEMO_LEARN_TOPICS } from "@/lib/demo-data/investment";
 
 const fmt = (n: number) => n >= 1e6 ? `$${(n / 1e6).toFixed(1)}M` : n >= 1e3 ? `$${(n / 1e3).toFixed(1)}K` : `$${n.toFixed(2)}`;
 
+const WIZARD_STEPS = [
+  { id: 1, title: "Explore Markets", icon: Eye, description: "Browse assets with plain-language explanations. No jargon — just clear information about stocks, crypto, and more.", action: "Let's Explore", path: "/investments/markets" },
+  { id: 2, title: "Ask Your Advisors", icon: Brain, description: "Your investment team watches the market for you. See what they think before you make any decisions.", action: "Meet Advisors", path: "/investments/advisors" },
+  { id: 3, title: "Simulate First", icon: BarChart3, description: "Test any investment idea without risking real money. See what would happen in different scenarios.", action: "Try Simulator", path: "/investments/strategy" },
+  { id: 4, title: "Invest With Confidence", icon: Target, description: "When you're ready, execute with full risk review, advisor guidance, and a receipt for every decision.", action: "Open Desk", path: "/investments/execute" },
+];
+
 export default function BeginnerMode() {
   const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useInvestmentStrategyRecords();
   const navigate = useNavigate();
   const p = PORTFOLIO;
-
+  const [wizardStep, setWizardStep] = useState(0);
 
   return (
     <div className="mx-auto max-w-5xl space-y-8 pb-12">
@@ -33,6 +41,56 @@ export default function BeginnerMode() {
           This is your guided starting point. Everything here is explained in plain language. You'll simulate before you invest, and advisors will guide you along the way. No jargon, no pressure.
         </p>
       </motion.div>
+
+      {/* First Investment Wizard */}
+      <div className="rounded-2xl border border-primary/15 bg-card p-6 space-y-5">
+        <div className="flex items-center gap-2">
+          <Lightbulb className="h-5 w-5 text-accent" />
+          <h3 className="text-sm font-semibold text-foreground">Your First Investment — 4 Steps</h3>
+        </div>
+        <div className="grid grid-cols-4 gap-2">
+          {WIZARD_STEPS.map((step, i) => (
+            <button key={step.id} onClick={() => setWizardStep(i)}
+              className={`rounded-xl p-1.5 text-center transition-all ${wizardStep === i ? "bg-primary/10 border border-primary/20" : "bg-secondary/30 border border-transparent"}`}>
+              <p className={`text-[10px] font-bold ${wizardStep === i ? "text-primary" : "text-muted-foreground"}`}>Step {step.id}</p>
+              <p className="text-[9px] text-muted-foreground mt-0.5">{step.title}</p>
+            </button>
+          ))}
+        </div>
+        <motion.div key={wizardStep} initial={{ opacity: 0, x: 10 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.2 }}
+          className="rounded-xl border border-border bg-secondary/20 p-5 space-y-3">
+          <div className="flex items-center gap-3">
+            {(() => { const StepIcon = WIZARD_STEPS[wizardStep].icon; return <StepIcon className="h-6 w-6 text-primary" />; })()}
+            <div>
+              <p className="text-sm font-semibold text-foreground">{WIZARD_STEPS[wizardStep].title}</p>
+              <p className="text-[10px] text-muted-foreground">Step {wizardStep + 1} of 4</p>
+            </div>
+          </div>
+          <p className="text-xs text-muted-foreground leading-relaxed">{WIZARD_STEPS[wizardStep].description}</p>
+          <div className="flex items-center gap-3">
+            <button onClick={() => navigate(WIZARD_STEPS[wizardStep].path)}
+              className="rounded-xl bg-primary px-4 py-2 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors flex items-center gap-2">
+              {WIZARD_STEPS[wizardStep].action} <ChevronRight className="h-3.5 w-3.5" />
+            </button>
+            {wizardStep < 3 && (
+              <button onClick={() => setWizardStep(wizardStep + 1)}
+                className="text-xs text-muted-foreground hover:text-foreground transition-colors">
+                Skip to next step →
+              </button>
+            )}
+          </div>
+          {/* Safety Reminder */}
+          <div className="flex items-center gap-2 pt-2 border-t border-border">
+            <Shield className="h-3.5 w-3.5 text-[hsl(var(--trust-safe))]" />
+            <p className="text-[10px] text-[hsl(var(--trust-safe))]">
+              {wizardStep === 0 && "Browsing is free — no risk, no commitment"}
+              {wizardStep === 1 && "Advisors help you understand — they don't pressure you"}
+              {wizardStep === 2 && "Simulations use play money — nothing is real yet"}
+              {wizardStep === 3 && "Every trade gets a risk review and a receipt"}
+            </p>
+          </div>
+        </motion.div>
+      </div>
 
       {/* Simple Capital View */}
       <div className="rounded-2xl border border-border bg-card p-6 space-y-4">

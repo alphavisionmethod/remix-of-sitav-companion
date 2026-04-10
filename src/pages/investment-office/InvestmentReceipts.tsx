@@ -1,4 +1,5 @@
-import { FileCheck, Download, ChevronRight, Target, Shield, Brain, RefreshCw } from "lucide-react";
+import { useState } from "react";
+import { FileCheck, Download, Target, Shield, Brain, RefreshCw, ChevronDown, ChevronUp } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useAuth } from "@/contexts/AuthContext";
@@ -6,8 +7,6 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { DEMO_RECEIPTS } from "@/lib/demo-data/investment";
-
-
 
 interface Receipt {
   id: string;
@@ -27,6 +26,7 @@ const STATUS_COLORS: Record<string, string> = { completed: "text-[hsl(var(--trus
 export default function InvestmentReceipts() {
   const { isDemoMode } = useDataMode();
   const { user } = useAuth();
+  const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const { data: realReceipts } = useQuery({
     queryKey: ["investment-receipts", user?.id],
@@ -65,36 +65,82 @@ export default function InvestmentReceipts() {
       <div className="space-y-3">
         {receipts.map(receipt => {
           const Icon = TYPE_ICONS[receipt.type] || Target;
+          const isExpanded = expandedId === receipt.id;
           return (
-            <div key={receipt.id} className="rounded-2xl border border-border bg-card p-5 space-y-3 hover:border-primary/15 transition-all">
-              <div className="flex items-start gap-3">
-                <div className={`rounded-xl p-2 ${TYPE_COLORS[receipt.type]}`}><Icon className="h-4 w-4" /></div>
-                <div className="flex-1 min-w-0">
+            <div key={receipt.id} className="rounded-2xl border border-border bg-card overflow-hidden hover:border-primary/15 transition-all">
+              <div className="p-5 space-y-3 cursor-pointer" onClick={() => setExpandedId(isExpanded ? null : receipt.id)}>
+                <div className="flex items-start gap-3">
+                  <div className={`rounded-xl p-2 ${TYPE_COLORS[receipt.type]}`}><Icon className="h-4 w-4" /></div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-sm font-semibold text-foreground">{receipt.title}</h3>
+                      <span className={`text-[9px] font-medium capitalize ${STATUS_COLORS[receipt.status]}`}>{receipt.status}</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-0.5">{receipt.description}</p>
+                  </div>
                   <div className="flex items-center gap-2">
-                    <h3 className="text-sm font-semibold text-foreground">{receipt.title}</h3>
-                    <span className={`text-[9px] font-medium capitalize ${STATUS_COLORS[receipt.status]}`}>{receipt.status}</span>
+                    <div className="text-right shrink-0">
+                      <p className="text-[10px] text-muted-foreground">{new Date(receipt.timestamp).toLocaleDateString()}</p>
+                      <p className="text-[9px] text-muted-foreground">{new Date(receipt.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</p>
+                    </div>
+                    {isExpanded ? <ChevronUp className="h-4 w-4 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 text-muted-foreground" />}
                   </div>
-                  <p className="text-xs text-muted-foreground mt-0.5">{receipt.description}</p>
                 </div>
-                <div className="text-right shrink-0">
-                  <p className="text-[10px] text-muted-foreground">{new Date(receipt.timestamp).toLocaleDateString()}</p>
-                  <p className="text-[9px] text-muted-foreground">{new Date(receipt.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</p>
+
+                <div className="rounded-xl border border-border bg-secondary/20 p-3 grid grid-cols-2 md:grid-cols-3 gap-2">
+                  {Object.entries(receipt.metadata).map(([k, v]) => (
+                    <div key={k}>
+                      <p className="text-[9px] text-muted-foreground uppercase tracking-wider">{k}</p>
+                      <p className="text-[11px] font-medium text-foreground">{String(v)}</p>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] text-muted-foreground">Actor: {receipt.actor}</span>
+                  <span className="rounded-full bg-secondary px-2 py-0.5 text-[9px] text-muted-foreground capitalize">{receipt.type.replace("-", " ")}</span>
                 </div>
               </div>
 
-              <div className="rounded-xl border border-border bg-secondary/20 p-3 grid grid-cols-2 md:grid-cols-3 gap-2">
-                {Object.entries(receipt.metadata).map(([k, v]) => (
-                  <div key={k}>
-                    <p className="text-[9px] text-muted-foreground uppercase tracking-wider">{k}</p>
-                    <p className="text-[11px] font-medium text-foreground">{String(v)}</p>
-                  </div>
-                ))}
-              </div>
+              {/* Expanded Detail */}
+              {isExpanded && (
+                <div className="border-t border-border bg-secondary/10 p-5 space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {/* Proof Chain */}
+                    <div className="space-y-2">
+                      <p className="text-[10px] font-semibold text-foreground uppercase tracking-wider">Proof Chain</p>
+                      <div className="space-y-1.5">
+                        {[
+                          { step: "Intent Declared", time: receipt.timestamp, status: "✓" },
+                          { step: "Risk Review", time: receipt.timestamp, status: receipt.type === "trade" ? "✓ Passed" : "—" },
+                          { step: "Advisor Check", time: receipt.timestamp, status: "✓ No objections" },
+                          { step: receipt.status === "approved" || receipt.status === "completed" ? "Executed" : "Pending", time: receipt.timestamp, status: receipt.status === "completed" ? "✓" : "⏳" },
+                        ].map((s, i) => (
+                          <div key={i} className="flex items-center gap-2 text-[10px]">
+                            <span className={`w-4 text-center ${s.status.includes("✓") ? "text-[hsl(var(--trust-safe))]" : "text-muted-foreground"}`}>{s.status.charAt(0)}</span>
+                            <span className="text-foreground">{s.step}</span>
+                            <span className="text-muted-foreground ml-auto">{new Date(s.time).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
 
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] text-muted-foreground">Actor: {receipt.actor}</span>
-                <span className="rounded-full bg-secondary px-2 py-0.5 text-[9px] text-muted-foreground capitalize">{receipt.type.replace("-", " ")}</span>
-              </div>
+                    {/* Linked Context */}
+                    <div className="space-y-2">
+                      <p className="text-[10px] font-semibold text-foreground uppercase tracking-wider">Linked Context</p>
+                      <div className="space-y-1.5 text-[10px]">
+                        <div className="flex justify-between"><span className="text-muted-foreground">Receipt ID</span><span className="text-foreground font-mono">{receipt.id.slice(0, 12)}…</span></div>
+                        <div className="flex justify-between"><span className="text-muted-foreground">Type</span><span className="text-foreground capitalize">{receipt.type.replace("-", " ")}</span></div>
+                        <div className="flex justify-between"><span className="text-muted-foreground">Actor</span><span className="text-foreground">{receipt.actor}</span></div>
+                        <div className="flex justify-between"><span className="text-muted-foreground">Governance</span><span className="text-foreground">{receipt.status === "approved" ? "Approval-linked" : "Standard"}</span></div>
+                      </div>
+                      <button className="mt-2 rounded-lg bg-secondary px-3 py-1.5 text-[10px] font-medium text-muted-foreground hover:text-foreground flex items-center gap-1.5 transition-colors">
+                        <Download className="h-3 w-3" /> Export Receipt
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           );
         })}

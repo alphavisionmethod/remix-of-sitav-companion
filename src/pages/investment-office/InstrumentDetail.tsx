@@ -1,10 +1,11 @@
 import { useParams, useNavigate } from "react-router-dom";
 import {
   ArrowLeft, TrendingUp, TrendingDown, Shield, Zap, BarChart3, Brain,
-  Target, AlertTriangle, ChevronRight, Calendar, Eye, Plus
+  Target, AlertTriangle, ChevronRight, Calendar, Eye, Plus, Info, Activity, Link2
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { INVESTMENT_ADVISORS, PORTFOLIO, SAMPLE_THESES, getInstrument } from "@/hooks/useInvestmentOfficeData";
+import { INVESTMENT_ADVISORS, PORTFOLIO, SAMPLE_THESES, PLATFORM_CONNECTIONS, getInstrument } from "@/hooks/useInvestmentOfficeData";
+import { SAMPLE_SCENARIOS } from "@/lib/investment-office/mock-data";
 import { usePortfolioPositions } from "@/hooks/use-investment-office";
 import { useDataMode } from "@/contexts/DataModeContext";
 
@@ -12,6 +13,14 @@ const pctFmt = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
 const fmt = (n: number) => n >= 1e12 ? `$${(n / 1e12).toFixed(2)}T` : n >= 1e9 ? `$${(n / 1e9).toFixed(1)}B` : n >= 1e6 ? `$${(n / 1e6).toFixed(1)}M` : `$${n.toLocaleString()}`;
 
 const RISK_COLORS = { "very-low": "text-[hsl(var(--trust-safe))]", "low": "text-[hsl(var(--trust-safe))]", "moderate": "text-primary", "high": "text-[hsl(var(--trust-warn))]", "very-high": "text-destructive" };
+
+const ASSET_EXPLAINERS: Record<string, string> = {
+  stocks: "A stock represents partial ownership in a company. When the company grows and profits, the stock price typically rises. Stocks can pay dividends and historically offer strong long-term returns, but prices can be volatile in the short term.",
+  crypto: "Cryptocurrency is a digital asset that uses blockchain technology. Prices are driven by adoption, network effects, and market sentiment. Crypto is highly volatile — large gains and losses are common. Only invest what you can afford to lose.",
+  commodities: "Commodities are physical goods like gold, oil, and agricultural products. They're influenced by supply/demand, geopolitical events, and inflation expectations. Gold is often used as a portfolio hedge against uncertainty.",
+  events: "Event contracts let you invest based on whether something will happen — like a rate cut or election outcome. The price reflects the market's probability estimate. These are inherently uncertain and should be sized small.",
+  etfs: "An ETF (Exchange-Traded Fund) holds a basket of assets — like stocks or bonds — and trades like a single stock. ETFs offer instant diversification and are a great starting point for building a portfolio.",
+};
 
 export default function InstrumentDetail() {
   const { isDemoMode } = useDataMode();
@@ -32,11 +41,17 @@ export default function InstrumentDetail() {
     a.domain === "risk"
   );
 
+  const availablePlatforms = PLATFORM_CONNECTIONS.filter(pc => {
+    if (inst.assetClass === "stocks" || inst.assetClass === "etfs") return pc.type === "brokerage";
+    if (inst.assetClass === "crypto") return pc.type === "exchange" || pc.type === "wallet";
+    if (inst.assetClass === "commodities") return pc.type === "brokerage";
+    if (inst.assetClass === "events") return pc.type === "event-market";
+    return false;
+  });
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
       <DemoModeBadge />
-      {/* Header */}
       <button onClick={() => navigate(-1)} className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
         <ArrowLeft className="h-3.5 w-3.5" /> Back
       </button>
@@ -74,10 +89,16 @@ export default function InstrumentDetail() {
             {inst.low52w && <div><p className="font-medium text-foreground">${inst.low52w.toLocaleString()}</p><p>52w Low</p></div>}
           </div>
         </div>
-        {/* Chart placeholder */}
         <div className="mt-6 h-48 rounded-xl bg-secondary/30 border border-border flex items-center justify-center text-muted-foreground text-sm">
           <BarChart3 className="h-5 w-5 mr-2" /> Chart — connect data provider for live charts
         </div>
+      </div>
+
+      {/* What It Is — Plain Language Explainer */}
+      <div className="rounded-2xl border border-primary/15 bg-primary/5 p-5 space-y-2">
+        <h3 className="text-sm font-semibold text-foreground flex items-center gap-2"><Info className="h-4 w-4 text-primary" /> What is this?</h3>
+        <p className="text-xs text-muted-foreground leading-relaxed">{ASSET_EXPLAINERS[inst.assetClass] || inst.description}</p>
+        <p className="text-[10px] text-muted-foreground italic">This is a {inst.assetClass === "events" ? "prediction contract" : inst.assetClass.slice(0, -1)} — {inst.riskLevel.replace("-", " ")} risk level</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
@@ -161,6 +182,73 @@ export default function InstrumentDetail() {
         </div>
       </div>
 
+      {/* Risk Profile */}
+      <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
+        <h3 className="text-sm font-semibold text-foreground flex items-center gap-2"><Activity className="h-4 w-4 text-primary" /> Risk Profile</h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="rounded-xl bg-secondary/30 p-3">
+            <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Volatility</p>
+            <p className={`text-sm font-bold capitalize ${RISK_COLORS[inst.riskLevel]}`}>{inst.riskLevel.replace("-", " ")}</p>
+          </div>
+          <div className="rounded-xl bg-secondary/30 p-3">
+            <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Liquidity</p>
+            <p className="text-sm font-bold text-foreground">{inst.volume24h ? (inst.volume24h > 1e9 ? "Very High" : inst.volume24h > 1e7 ? "High" : "Moderate") : "—"}</p>
+          </div>
+          <div className="rounded-xl bg-secondary/30 p-3">
+            <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Portfolio Impact</p>
+            <p className="text-sm font-bold text-foreground">{holding ? `${holding.weight.toFixed(1)}% weight` : "No position"}</p>
+          </div>
+          <div className="rounded-xl bg-secondary/30 p-3">
+            <p className="text-[10px] text-muted-foreground uppercase tracking-wider">52w Range Position</p>
+            <p className="text-sm font-bold text-foreground">
+              {inst.high52w && inst.low52w ? `${(((inst.price - inst.low52w) / (inst.high52w - inst.low52w)) * 100).toFixed(0)}%` : "—"}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Scenario Simulator Preview */}
+      <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-semibold text-foreground flex items-center gap-2"><BarChart3 className="h-4 w-4 text-primary" /> Scenario Preview</h3>
+          <button onClick={() => navigate("/investments/strategy")} className="text-[10px] text-primary hover:underline flex items-center gap-1">
+            Full simulator <ChevronRight className="h-3 w-3" />
+          </button>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          {SAMPLE_SCENARIOS.slice(0, 3).map(sc => {
+            const positionValue = holding?.currentValue || inst.price * 10;
+            const impactValue = positionValue * (sc.projectedReturn / 100);
+            return (
+              <div key={sc.id} className="rounded-xl border border-border bg-secondary/20 p-4 space-y-2">
+                <p className="text-xs font-semibold text-foreground">{sc.name}</p>
+                <p className="text-[10px] text-muted-foreground">{sc.description}</p>
+                <div className="flex items-center justify-between pt-2 border-t border-border">
+                  <div>
+                    <p className="text-[9px] text-muted-foreground uppercase">Est. Impact</p>
+                    <p className={`text-sm font-bold ${sc.projectedReturn >= 0 ? "text-[hsl(var(--trust-safe))]" : "text-destructive"}`}>
+                      {sc.projectedReturn >= 0 ? "+" : ""}{sc.projectedReturn}%
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-[9px] text-muted-foreground uppercase">Value Change</p>
+                    <p className={`text-xs font-medium ${impactValue >= 0 ? "text-[hsl(var(--trust-safe))]" : "text-destructive"}`}>
+                      {impactValue >= 0 ? "+" : ""}${Math.abs(impactValue).toLocaleString(undefined, { maximumFractionDigits: 0 })}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-1">
+                  <div className="h-1 flex-1 rounded-full bg-secondary overflow-hidden">
+                    <div className="h-full rounded-full bg-primary/40" style={{ width: `${sc.probability}%` }} />
+                  </div>
+                  <span className="text-[9px] text-muted-foreground">{sc.probability}% prob</span>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
       {/* Catalysts */}
       {inst.catalysts.length > 0 && (
         <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
@@ -179,6 +267,28 @@ export default function InstrumentDetail() {
           </div>
         </div>
       )}
+
+      {/* Platform Availability */}
+      <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
+        <h3 className="text-sm font-semibold text-foreground flex items-center gap-2"><Link2 className="h-4 w-4 text-primary" /> Where You Can Trade This</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
+          {availablePlatforms.map(pc => (
+            <div key={pc.id} className={`rounded-xl border p-3 flex items-center gap-3 ${pc.status === "connected" ? "border-[hsl(var(--trust-safe))]/20 bg-[hsl(var(--trust-safe))]/5" : "border-border bg-secondary/20"}`}>
+              <span className="text-xl">{pc.icon}</span>
+              <div className="flex-1">
+                <p className="text-xs font-medium text-foreground">{pc.name}</p>
+                <p className="text-[10px] text-muted-foreground capitalize">{pc.type}</p>
+              </div>
+              <span className={`text-[9px] font-medium px-2 py-0.5 rounded-full ${pc.status === "connected" ? "bg-[hsl(var(--trust-safe))]/10 text-[hsl(var(--trust-safe))]" : "bg-secondary text-muted-foreground"}`}>
+                {pc.status === "connected" ? "Ready" : "Connect"}
+              </span>
+            </div>
+          ))}
+          {availablePlatforms.length === 0 && (
+            <p className="text-xs text-muted-foreground col-span-full text-center py-4">No connected platforms support this asset type</p>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
