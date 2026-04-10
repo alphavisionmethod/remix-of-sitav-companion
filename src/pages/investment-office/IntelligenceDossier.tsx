@@ -1,15 +1,25 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { FileSearch, Brain, TrendingUp, TrendingDown, AlertTriangle, Check, Calendar, Target, Globe, Shield } from "lucide-react";
+import { FileSearch, Brain, TrendingUp, TrendingDown, AlertTriangle, Calendar, Globe, Shield, Layers } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { INSTRUMENTS, INVESTMENT_ADVISORS } from "@/hooks/useInvestmentOfficeData";
 import { useInvestmentThesisEntries } from "@/hooks/use-investment-office";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { EXPLAINABILITY_LAYERS, type ExplainabilityDepth } from "@/lib/investment-office/mock-data";
+
+const DEPTH_OPTIONS: { value: ExplainabilityDepth; label: string; description: string }[] = [
+  { value: "simple", label: "Simple", description: "Plain language" },
+  { value: "analyst", label: "Analyst", description: "Structured detail" },
+  { value: "committee", label: "Committee", description: "Multi-advisor view" },
+  { value: "execution", label: "Execution", description: "Action plan" },
+  { value: "risk", label: "Risk", description: "Risk-focused" },
+];
 
 export default function IntelligenceDossier() {
   const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useInvestmentThesisEntries();
   const [selectedId, setSelectedId] = useState("nvda");
+  const [explainDepth, setExplainDepth] = useState<ExplainabilityDepth>("simple");
   const inst = INSTRUMENTS.find(i => i.id === selectedId)!;
   const relevantAdvisors = INVESTMENT_ADVISORS.filter(a =>
     a.domain === "macro" || a.domain === "risk" ||
@@ -19,6 +29,8 @@ export default function IntelligenceDossier() {
     (inst.assetClass === "events" && a.domain === "events")
   );
 
+  const layers = EXPLAINABILITY_LAYERS[selectedId];
+  const activeLayer = layers?.find(l => l.depth === explainDepth);
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
@@ -59,6 +71,42 @@ export default function IntelligenceDossier() {
             </div>
           </div>
         </div>
+
+        {/* Multi-Layer Explainability */}
+        {layers && (
+          <div className="rounded-2xl border border-primary/15 bg-card p-6 space-y-4">
+            <h3 className="text-sm font-bold text-foreground flex items-center gap-2">
+              <Layers className="h-4 w-4 text-primary" /> Multi-Layer Explainability
+            </h3>
+            <div className="flex gap-1.5 overflow-x-auto pb-1">
+              {DEPTH_OPTIONS.map(opt => (
+                <button key={opt.value} onClick={() => setExplainDepth(opt.value)}
+                  className={`shrink-0 rounded-lg px-3 py-2 text-xs font-medium transition-all ${
+                    explainDepth === opt.value
+                      ? "bg-primary text-primary-foreground shadow-sm"
+                      : "bg-secondary/50 text-muted-foreground hover:bg-secondary hover:text-foreground"
+                  }`}>
+                  <span className="block">{opt.label}</span>
+                  <span className="block text-[8px] opacity-70 mt-0.5">{opt.description}</span>
+                </button>
+              ))}
+            </div>
+            {activeLayer && (
+              <motion.div key={explainDepth} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}
+                className={`rounded-xl p-5 ${
+                  explainDepth === "simple" ? "bg-secondary/20" :
+                  explainDepth === "analyst" ? "bg-primary/5 border border-primary/10" :
+                  explainDepth === "committee" ? "bg-accent/5 border border-accent/10" :
+                  explainDepth === "execution" ? "bg-[hsl(var(--trust-safe))]/5 border border-[hsl(var(--trust-safe))]/10" :
+                  "bg-destructive/5 border border-destructive/10"
+                }`}>
+                <p className={`leading-relaxed whitespace-pre-line ${
+                  explainDepth === "simple" ? "text-base text-foreground" : "text-sm text-foreground"
+                }`}>{activeLayer.content}</p>
+              </motion.div>
+            )}
+          </div>
+        )}
 
         {/* What Matters Now */}
         <div className="rounded-2xl border border-border bg-card p-6 space-y-3">
