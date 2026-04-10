@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { Bug, AlertTriangle, CheckCircle2, Wrench, Shield, RotateCcw, Sparkles, FileCheck, Eye, Code, Server, Layout } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_FIXES } from "@/lib/demo-data/admin-platform";
 
 const severityColors: Record<string, string> = {
@@ -24,20 +24,20 @@ const blastRadiusColors: Record<string, string> = {
 };
 
 const AIFixCenter = () => {
-  const { isDemoMode } = useDataMode();
+  const { data: fixes, isDemo } = useAIEngDomain("fixes", DEMO_FIXES);
   const [expanded, setExpanded] = useState<number | null>(1);
   const [tab, setTab] = useState("all");
   const [view, setView] = useState("severity");
 
-  const filtered = tab === "all" ? DEMO_FIXES :
-    tab === "critical" ? DEMO_FIXES.filter(f => f.severity === "critical") :
-    tab === "auto-fix" ? DEMO_FIXES.filter(f => f.autoFixEligible) :
-    tab === "approval" ? DEMO_FIXES.filter(f => f.approvalNeeded) :
-    DEMO_FIXES;
+  const filtered = tab === "all" ? fixes :
+    tab === "critical" ? fixes.filter((f: any) => f.severity === "critical") :
+    tab === "auto-fix" ? fixes.filter((f: any) => f.autoFixEligible) :
+    tab === "approval" ? fixes.filter((f: any) => f.approvalNeeded) :
+    fixes;
 
   const sorted = view === "severity" ? filtered :
-    view === "confidence" ? [...filtered].sort((a, b) => b.confidence - a.confidence) :
-    view === "blast" ? [...filtered].sort((a, b) => {
+    view === "confidence" ? [...filtered].sort((a: any, b: any) => b.confidence - a.confidence) :
+    view === "blast" ? [...filtered].sort((a: any, b: any) => {
       const order = ["isolated", "component", "surface", "cross-surface", "platform-wide"];
       return order.indexOf(b.blastRadius) - order.indexOf(a.blastRadius);
     }) :
@@ -50,12 +50,12 @@ const AIFixCenter = () => {
 
       <div className="grid grid-cols-6 gap-2">
         {[
-          { l: "Critical", v: DEMO_FIXES.filter(f => f.severity === "critical").length, c: "text-destructive" },
-          { l: "High", v: DEMO_FIXES.filter(f => f.severity === "high").length, c: "text-amber-500" },
-          { l: "Medium", v: DEMO_FIXES.filter(f => f.severity === "medium").length, c: "text-foreground" },
-          { l: "Low", v: DEMO_FIXES.filter(f => f.severity === "low").length, c: "text-muted-foreground" },
-          { l: "Auto-Fix Eligible", v: DEMO_FIXES.filter(f => f.autoFixEligible).length, c: "text-[hsl(var(--trust-safe))]" },
-          { l: "Avg Confidence", v: `${Math.round(DEMO_FIXES.reduce((a,f) => a + f.confidence, 0) / DEMO_FIXES.length)}%`, c: "text-primary" },
+          { l: "Critical", v: fixes.filter((f: any) => f.severity === "critical").length, c: "text-destructive" },
+          { l: "High", v: fixes.filter((f: any) => f.severity === "high").length, c: "text-amber-500" },
+          { l: "Medium", v: fixes.filter((f: any) => f.severity === "medium").length, c: "text-foreground" },
+          { l: "Low", v: fixes.filter((f: any) => f.severity === "low").length, c: "text-muted-foreground" },
+          { l: "Auto-Fix Eligible", v: fixes.filter((f: any) => f.autoFixEligible).length, c: "text-[hsl(var(--trust-safe))]" },
+          { l: "Avg Confidence", v: `${Math.round(fixes.reduce((a: number, f: any) => a + (f.confidence || 0), 0) / Math.max(fixes.length, 1))}%`, c: "text-primary" },
         ].map(c => (
           <div key={c.l} className="rounded-xl border border-border/40 bg-card p-3 text-center">
             <p className={`text-lg font-bold ${c.c}`}>{c.v}</p>
@@ -83,8 +83,8 @@ const AIFixCenter = () => {
       </div>
 
       <div className="space-y-2">
-        {sorted.map(f => (
-          <div key={f.id} className={`rounded-xl border bg-card transition-all overflow-hidden ${severityColors[f.severity]}`}>
+        {sorted.map((f: any) => (
+          <div key={f.id} className={`rounded-xl border bg-card transition-all overflow-hidden ${severityColors[f.severity] || ""}`}>
             <div className="p-4 cursor-pointer" onClick={() => setExpanded(expanded === f.id ? null : f.id)}>
               <div className="flex items-center justify-between mb-1">
                 <div className="flex items-center gap-2">
@@ -94,7 +94,7 @@ const AIFixCenter = () => {
                   {f.autoFixEligible && <Badge variant="outline" className="text-[10px] text-[hsl(var(--trust-safe))] border-[hsl(var(--trust-safe))]/30">Auto-fix eligible</Badge>}
                 </div>
                 <div className="flex items-center gap-2">
-                  <Badge variant="outline" className={`text-[10px] ${blastRadiusColors[f.blastRadius]}`}>{f.blastRadius}</Badge>
+                  <Badge variant="outline" className={`text-[10px] ${blastRadiusColors[f.blastRadius] || ""}`}>{f.blastRadius}</Badge>
                   <span className="text-sm font-bold">{f.confidence}%</span>
                 </div>
               </div>
@@ -114,32 +114,30 @@ const AIFixCenter = () => {
                   </div>
                 </div>
 
-                {/* Blast Radius Map */}
                 <div>
                   <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-2">Blast Radius</p>
                   <div className="grid grid-cols-3 gap-2">
                     <div>
                       <p className="text-[9px] text-muted-foreground mb-1">Routes</p>
                       <div className="flex flex-wrap gap-1">
-                        {f.affectedRoutes.map(r => <Badge key={r} variant="outline" className="text-[9px] font-mono">{r}</Badge>)}
+                        {f.affectedRoutes?.map((r: string) => <Badge key={r} variant="outline" className="text-[9px] font-mono">{r}</Badge>)}
                       </div>
                     </div>
                     <div>
                       <p className="text-[9px] text-muted-foreground mb-1">Components</p>
                       <div className="flex flex-wrap gap-1">
-                        {f.affectedComponents.map(c => <Badge key={c} variant="outline" className="text-[9px]">{c}</Badge>)}
+                        {f.affectedComponents?.map((c: string) => <Badge key={c} variant="outline" className="text-[9px]">{c}</Badge>)}
                       </div>
                     </div>
                     <div>
                       <p className="text-[9px] text-muted-foreground mb-1">Services</p>
                       <div className="flex flex-wrap gap-1">
-                        {f.affectedServices.map(s => <Badge key={s} variant="outline" className="text-[9px]">{s}</Badge>)}
+                        {f.affectedServices?.map((s: string) => <Badge key={s} variant="outline" className="text-[9px]">{s}</Badge>)}
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Meta Row */}
                 <div className="flex flex-wrap gap-4 text-xs text-muted-foreground">
                   <span className="flex items-center gap-1"><FileCheck className="h-3 w-3" /> {f.testImpact}</span>
                   <span className="flex items-center gap-1">{f.approvalNeeded ? <AlertTriangle className="h-3 w-3 text-amber-500" /> : <CheckCircle2 className="h-3 w-3 text-[hsl(var(--trust-safe))]" />} {f.approvalNeeded ? "Approval needed" : "No approval needed"}</span>

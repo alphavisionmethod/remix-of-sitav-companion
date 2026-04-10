@@ -4,7 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
 import { Palette, Eye, CheckCircle2, ArrowRight, Sparkles, Sun, Moon, Accessibility, Layout, Type, Move } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_IMPROVEMENTS } from "@/lib/demo-data/admin-platform";
 
 const typeIcons: Record<string, typeof Layout> = {
@@ -17,7 +17,7 @@ const typeIcons: Record<string, typeof Layout> = {
 };
 
 const AIDesignStudio = () => {
-  const { isDemoMode } = useDataMode();
+  const { data: improvements, isDemo } = useAIEngDomain("designDiffs", DEMO_IMPROVEMENTS);
   const [expanded, setExpanded] = useState<number | null>(null);
 
   return (
@@ -27,10 +27,10 @@ const AIDesignStudio = () => {
 
       <div className="grid grid-cols-4 gap-3">
         {[
-          { l: "Improvements Ready", v: DEMO_IMPROVEMENTS.filter(i => i.status === "ready").length },
-          { l: "Applied", v: DEMO_IMPROVEMENTS.filter(i => i.status === "applied").length },
-          { l: "Avg Confidence", v: `${Math.round(DEMO_IMPROVEMENTS.reduce((a,i) => a + i.confidence, 0) / DEMO_IMPROVEMENTS.length)}%` },
-          { l: "Avg Consistency", v: `${Math.round(DEMO_IMPROVEMENTS.reduce((a,i) => a + i.consistency, 0) / DEMO_IMPROVEMENTS.length)}%` },
+          { l: "Improvements Ready", v: improvements.filter((i: any) => i.status === "ready").length },
+          { l: "Applied", v: improvements.filter((i: any) => i.status === "applied").length },
+          { l: "Avg Confidence", v: `${Math.round(improvements.reduce((a: number, i: any) => a + (i.confidence || 0), 0) / Math.max(improvements.length, 1))}%` },
+          { l: "Avg Consistency", v: `${Math.round(improvements.reduce((a: number, i: any) => a + (i.consistency || i.consistency_score || 0), 0) / Math.max(improvements.length, 1))}%` },
         ].map(c => (
           <div key={c.l} className="rounded-xl border border-border/40 bg-card p-4 text-center">
             <p className="text-xl font-bold">{c.v}</p>
@@ -40,7 +40,7 @@ const AIDesignStudio = () => {
       </div>
 
       <div className="space-y-3">
-        {DEMO_IMPROVEMENTS.map(imp => {
+        {improvements.map((imp: any) => {
           const TypeIcon = typeIcons[imp.type] || Palette;
           return (
             <div key={imp.id} className="rounded-xl border border-border/40 bg-card overflow-hidden">
@@ -49,11 +49,11 @@ const AIDesignStudio = () => {
                   <div className="flex items-center gap-2">
                     <TypeIcon className="h-4 w-4 text-primary" />
                     <span className="text-sm font-semibold">{imp.title}</span>
-                    <Badge variant="outline" className="text-[10px]">{imp.type}</Badge>
+                    <Badge variant="outline" className="text-[10px]">{imp.type || imp.area || "design"}</Badge>
                   </div>
                   <Badge variant={imp.status === "applied" ? "default" : imp.status === "ready" ? "outline" : "secondary"}>{imp.status}</Badge>
                 </div>
-                <p className="text-xs text-muted-foreground">{imp.area} · Impact: {imp.impact} · Confidence: {imp.confidence}%</p>
+                <p className="text-xs text-muted-foreground">{imp.area} · Impact: {imp.impact || imp.impact_level || "—"} · Confidence: {imp.confidence}%</p>
               </div>
 
               {expanded === imp.id && (
@@ -61,16 +61,16 @@ const AIDesignStudio = () => {
                   <div className="grid grid-cols-2 gap-4">
                     <div className="rounded-lg bg-destructive/5 border border-destructive/10 p-3">
                       <p className="text-[10px] text-destructive uppercase tracking-wider mb-1">Before</p>
-                      <p className="text-sm">{imp.before}</p>
+                      <p className="text-sm">{imp.before || "—"}</p>
                     </div>
                     <div className="rounded-lg bg-[hsl(var(--trust-safe))]/5 border border-[hsl(var(--trust-safe))]/10 p-3">
                       <p className="text-[10px] text-[hsl(var(--trust-safe))] uppercase tracking-wider mb-1">After</p>
-                      <p className="text-sm">{imp.after}</p>
+                      <p className="text-sm">{imp.after || "—"}</p>
                     </div>
                   </div>
                   <div>
                     <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">Rationale</p>
-                    <p className="text-sm">{imp.rationale}</p>
+                    <p className="text-sm">{imp.rationale || "—"}</p>
                   </div>
                   <div className="flex gap-6">
                     <div>
@@ -80,8 +80,8 @@ const AIDesignStudio = () => {
                     </div>
                     <div>
                       <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">Consistency Check</p>
-                      <Progress value={imp.consistency} className="h-1.5 w-24" />
-                      <p className="text-xs mt-1">{imp.consistency}%</p>
+                      <Progress value={imp.consistency || imp.consistency_score || 0} className="h-1.5 w-24" />
+                      <p className="text-xs mt-1">{imp.consistency || imp.consistency_score || 0}%</p>
                     </div>
                   </div>
                 </div>

@@ -5,11 +5,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { BookOpen, TrendingUp, CheckCircle2, AlertTriangle, RotateCcw, Brain, Target, Users, ArrowRight } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_BEHAVIOR_CHANGES, DEMO_LEARNED_PATTERNS, DEMO_ROUTING_WEIGHTS } from "@/lib/demo-data/admin-platform";
 
 const AISelfLearningLedger = () => {
-  const { isDemoMode } = useDataMode();
+  const { data: patterns, isDemo } = useAIEngDomain("learningPatterns", DEMO_LEARNED_PATTERNS);
   const [tab, setTab] = useState("patterns");
 
   return (
@@ -19,9 +19,9 @@ const AISelfLearningLedger = () => {
 
       <div className="grid grid-cols-4 gap-3">
         {[
-          { l: "Active Patterns", v: DEMO_LEARNED_PATTERNS.filter(p => p.status === "active").length },
+          { l: "Active Patterns", v: patterns.filter((p: any) => p.status === "active").length },
           { l: "Behavior Changes", v: DEMO_BEHAVIOR_CHANGES.length },
-          { l: "Avg Pattern Confidence", v: `${Math.round(DEMO_LEARNED_PATTERNS.reduce((a,p) => a + p.confidence, 0) / DEMO_LEARNED_PATTERNS.length)}%` },
+          { l: "Avg Pattern Confidence", v: `${Math.round(patterns.reduce((a: number, p: any) => a + (p.confidence || 0), 0) / Math.max(patterns.length, 1))}%` },
           { l: "Top Agent Weight", v: Math.max(...DEMO_ROUTING_WEIGHTS.map(w => w.weight)).toFixed(2) },
         ].map(c => (
           <div key={c.l} className="rounded-xl border border-border/40 bg-card p-4 text-center">
@@ -39,10 +39,10 @@ const AISelfLearningLedger = () => {
         </TabsList>
 
         <TabsContent value="patterns" className="space-y-2 mt-4">
-          {DEMO_LEARNED_PATTERNS.map((p, i) => (
+          {patterns.map((p: any, i: number) => (
             <div key={i} className="rounded-xl border border-border/40 bg-card p-4">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-semibold">{p.pattern}</span>
+                <span className="text-sm font-semibold">{p.pattern || p.pattern_description}</span>
                 <Badge variant={p.status === "active" ? "default" : "outline"}>{p.status}</Badge>
               </div>
               <div className="flex gap-4 text-xs text-muted-foreground mb-2">
@@ -51,11 +51,11 @@ const AISelfLearningLedger = () => {
               <div className="grid grid-cols-2 gap-3">
                 <div className="rounded-lg bg-primary/5 p-2">
                   <p className="text-[10px] text-primary uppercase tracking-wider mb-0.5">Action Taken</p>
-                  <p className="text-xs">{p.action}</p>
+                  <p className="text-xs">{p.action || p.action_taken || "—"}</p>
                 </div>
                 <div className="rounded-lg bg-[hsl(var(--trust-safe))]/5 p-2">
                   <p className="text-[10px] text-[hsl(var(--trust-safe))] uppercase tracking-wider mb-0.5">Impact</p>
-                  <p className="text-xs">{p.impact}</p>
+                  <p className="text-xs">{p.impact || p.impact_result || "—"}</p>
                 </div>
               </div>
             </div>

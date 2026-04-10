@@ -5,11 +5,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { TrendingUp, Brain, AlertTriangle, CheckCircle2, RotateCcw, Sparkles, Target, Users } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_ADMIN_OUTCOMES as DEMO_OUTCOMES, DEMO_ADMIN_PATTERNS as DEMO_PATTERNS, DEMO_CALIBRATION } from "@/lib/demo-data/admin-platform";
 
 const AILearningCenter = () => {
-  const { isDemoMode } = useDataMode();
+  const { data: patterns, isDemo } = useAIEngDomain("learningPatterns", DEMO_PATTERNS);
   const [tab, setTab] = useState("patterns");
 
   return (
@@ -19,8 +19,8 @@ const AILearningCenter = () => {
 
       <div className="grid grid-cols-4 gap-3">
         {[
-          { l: "Patterns Discovered", v: DEMO_PATTERNS.length },
-          { l: "Improvements Implemented", v: DEMO_PATTERNS.filter(p => p.status === "implemented").length },
+          { l: "Patterns Discovered", v: patterns.length },
+          { l: "Improvements Implemented", v: patterns.filter((p: any) => p.status === "implemented").length },
           { l: "Recommendations Tracked", v: DEMO_OUTCOMES.length },
           { l: "Avg Agent Accuracy", v: `${Math.round(DEMO_CALIBRATION.reduce((a,c) => a + c.accuracy, 0) / DEMO_CALIBRATION.length)}%` },
         ].map(c => (
@@ -39,17 +39,17 @@ const AILearningCenter = () => {
         </TabsList>
 
         <TabsContent value="patterns" className="space-y-2 mt-4">
-          {DEMO_PATTERNS.map((p, i) => (
+          {patterns.map((p: any, i: number) => (
             <div key={i} className="rounded-xl border border-border/40 bg-card p-4">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-semibold">{p.pattern}</span>
+                <span className="text-sm font-semibold">{p.pattern || p.pattern_description}</span>
                 <Badge variant={p.status === "implemented" ? "default" : "outline"}>{p.status}</Badge>
               </div>
               <div className="flex gap-4 text-xs text-muted-foreground mb-2">
                 <span>{p.domain}</span><span>Frequency: {p.frequency}</span><span>Confidence: {p.confidence}%</span>
               </div>
               <div className="rounded-lg bg-primary/5 p-2">
-                <p className="text-xs text-primary">→ {p.improvement}</p>
+                <p className="text-xs text-primary">→ {p.improvement || p.action_taken || "—"}</p>
               </div>
             </div>
           ))}
