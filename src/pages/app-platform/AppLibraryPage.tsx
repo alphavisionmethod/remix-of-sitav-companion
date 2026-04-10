@@ -1,43 +1,39 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — App Library Page
-// Installed app management
+// Installed app management with live state
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, Grid3X3, List, Pin, Clock, Globe, Monitor, Package, ArrowRight } from "lucide-react";
+import { Search, Grid3X3, List, Pin, Globe, Monitor, Package, ArrowRight, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { APP_CATALOG, getInstalledApps } from "@/lib/app-platform";
-import { AppCard, AppIcon, VerificationBadge, AppSourceLabel, CategoryStrip } from "@/components/sita/app-platform/AppStoreComponents";
-import { APP_CATEGORIES } from "@/lib/app-platform/catalog";
-import type { AppDefinition } from "@/lib/app-platform/types";
+import { useAppPlatform } from "@/contexts/AppPlatformContext";
+import { AppIcon, VerificationBadge, AppSourceLabel } from "@/components/sita/app-platform/AppStoreComponents";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-type LibView = "all" | "pinned" | "recent" | "web" | "native" | "updates";
+type LibView = "all" | "pinned" | "web" | "native" | "updates";
 
 const AppLibraryPage = () => {
   const { isDemoMode } = useDataMode();
+  const { apps, installedApps } = useAppPlatform();
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [view, setView] = useState<LibView>("all");
   const [layout, setLayout] = useState<"grid" | "list">("grid");
 
-  const installed = getInstalledApps();
-  const allApps = APP_CATALOG; // Show all for demo
-
   const filteredApps = useMemo(() => {
-    let apps = allApps;
-    if (view === "pinned") apps = apps.filter(a => a.pinnedToDock);
-    if (view === "web") apps = apps.filter(a => a.appClass === "web-app" || a.appClass === "wrapped-app");
-    if (view === "native") apps = apps.filter(a => a.appClass === "native" || a.appClass === "internal");
-    if (view === "updates") apps = apps.filter(a => a.installStatus === "update-available");
+    let list = view === "all" ? apps : 
+               view === "pinned" ? apps.filter(a => a.pinnedToDock) :
+               view === "web" ? apps.filter(a => a.appClass === "web-app" || a.appClass === "wrapped-app") :
+               view === "native" ? apps.filter(a => a.appClass === "native" || a.appClass === "internal") :
+               apps.filter(a => a.installStatus === "update-available");
     if (query) {
       const q = query.toLowerCase();
-      apps = apps.filter(a => a.name.toLowerCase().includes(q) || a.publisher.toLowerCase().includes(q));
+      list = list.filter(a => a.name.toLowerCase().includes(q) || a.publisher.toLowerCase().includes(q));
     }
-    return apps;
-  }, [allApps, view, query]);
+    return list;
+  }, [apps, view, query]);
 
   const views: { id: LibView; label: string; icon: typeof Package }[] = [
     { id: "all", label: "All Apps", icon: Grid3X3 },
@@ -50,13 +46,11 @@ const AppLibraryPage = () => {
   return (
     <div className="mx-auto max-w-6xl space-y-6">
       <DemoModeBadge />
-      {/* Header */}
       <div>
         <h1 className="font-display text-2xl font-bold text-foreground">App Library</h1>
-        <p className="text-sm text-muted-foreground mt-1">{installed.length} installed · {allApps.length} available</p>
+        <p className="text-sm text-muted-foreground mt-1">{installedApps.length} installed · {apps.length} available</p>
       </div>
 
-      {/* View Tabs */}
       <div className="flex items-center gap-2 overflow-x-auto pb-1">
         {views.map(v => (
           <button key={v.id} onClick={() => setView(v.id)}
@@ -67,7 +61,6 @@ const AppLibraryPage = () => {
         ))}
       </div>
 
-      {/* Search + Layout */}
       <div className="flex items-center gap-3">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
@@ -85,7 +78,6 @@ const AppLibraryPage = () => {
         </div>
       </div>
 
-      {/* Apps */}
       {layout === "grid" ? (
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {filteredApps.map(app => (
@@ -120,7 +112,7 @@ const AppLibraryPage = () => {
               <VerificationBadge level={app.trustLevel} />
               <AppSourceLabel appClass={app.appClass} />
               {app.installStatus === "installed" ? (
-                <span className="text-[10px] text-[hsl(var(--trust-safe))] font-medium">Installed</span>
+                <span className="text-[10px] text-[hsl(var(--trust-safe))] font-medium flex items-center gap-1"><Check className="h-3 w-3" />Installed</span>
               ) : (
                 <span className="text-[10px] text-primary font-medium">Get</span>
               )}

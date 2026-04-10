@@ -71,6 +71,7 @@ const controlNav = [
 ];
 
 const appsNav = [
+  { title: "App Store", url: "/app-store", icon: Package },
   { title: "Email", url: "/apps/email", icon: Mail },
   { title: "Messenger", url: "/apps/messenger", icon: MessageSquare },
   { title: "Vault", url: "/apps/vault", icon: Lock },

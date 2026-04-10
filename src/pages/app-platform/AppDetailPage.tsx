@@ -19,16 +19,18 @@ import {
 } from "@/components/sita/app-platform/AppStoreComponents";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useAppPlatform } from "@/contexts/AppPlatformContext";
 
 const AppDetailPage = () => {
   const { isDemoMode } = useDataMode();
   const { appId } = useParams<{ appId: string }>();
   const navigate = useNavigate();
+  const { getApp: getLiveApp, installApp, apps } = useAppPlatform();
   const [showInstall, setShowInstall] = useState(false);
   const [showPermissions, setShowPermissions] = useState(false);
   const [showReleaseNotes, setShowReleaseNotes] = useState(false);
 
-  const app = getAppById(appId || "");
+  const app = getLiveApp(appId || "");
   if (!app) {
     return (
       <div className="mx-auto max-w-4xl">
@@ -44,7 +46,7 @@ const AppDetailPage = () => {
   }
 
   const isInstalled = app.installStatus === "installed";
-  const similarApps = APP_CATALOG.filter(a => a.category === app.category && a.id !== app.id).slice(0, 4);
+  const similarApps = apps.filter(a => a.category === app.category && a.id !== app.id).slice(0, 4);
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">

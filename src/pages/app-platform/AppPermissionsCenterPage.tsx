@@ -1,12 +1,12 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — App Permissions Center
+// SITA OS — App Permissions Center (fully wired)
 // ═══════════════════════════════════════════════════════════════
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Lock, Shield, Bell, Camera, Mic, Clipboard, FolderOpen, Network, Calendar } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { APP_CATALOG } from "@/lib/app-platform";
+import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { AppIcon } from "@/components/sita/app-platform/AppStoreComponents";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
@@ -14,10 +14,11 @@ import { DEMO_PERMISSION_DOMAINS } from "@/lib/demo-data/core-pages";
 
 const AppPermissionsCenterPage = () => {
   const { isDemoMode } = useDataMode();
+  const { apps, togglePermission } = useAppPlatform();
   const navigate = useNavigate();
   const [activeDomain, setActiveDomain] = useState("files");
 
-  const appsWithPermission = APP_CATALOG.filter(app =>
+  const appsWithPermission = apps.filter(app =>
     app.permissions.some(p => p.domain === activeDomain)
   );
 
@@ -39,7 +40,7 @@ const AppPermissionsCenterPage = () => {
       <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-thin">
         {DEMO_PERMISSION_DOMAINS.map(d => {
           const Icon = d.icon;
-          const count = APP_CATALOG.filter(a => a.permissions.some(p => p.domain === d.id)).length;
+          const count = apps.filter(a => a.permissions.some(p => p.domain === d.id)).length;
           return (
             <button key={d.id} onClick={() => setActiveDomain(d.id)}
               className={cn("shrink-0 flex items-center gap-1.5 rounded-lg px-3 py-2 text-xs font-medium transition-all",
@@ -73,11 +74,12 @@ const AppPermissionsCenterPage = () => {
                 <p className="text-[10px] text-muted-foreground">{perm.description}</p>
               </div>
               {perm.required && <span className="text-[9px] text-muted-foreground bg-secondary px-2 py-0.5 rounded-full">Required</span>}
-              <div className={cn("relative h-6 w-11 rounded-full cursor-pointer transition-colors",
-                perm.granted ? "bg-[hsl(var(--trust-safe))]" : "bg-muted")}>
+              <button onClick={() => togglePermission(app.id, perm.id)}
+                className={cn("relative h-6 w-11 rounded-full cursor-pointer transition-colors",
+                  perm.granted ? "bg-[hsl(var(--trust-safe))]" : "bg-muted")}>
                 <div className={cn("absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform",
                   perm.granted ? "translate-x-5" : "translate-x-0.5")} />
-              </div>
+              </button>
             </div>
           );
         })}
