@@ -186,7 +186,7 @@ export default function GoogleConnectedAccounts() {
         </CardHeader>
         <CardContent className="space-y-3">
           {connectors.length > 0 ? (
-            connectors.map((c) => <ConnectorCard key={c.capabilityKey} connector={c} />)
+            connectors.map((c) => <ConnectorCard key={c.capabilityKey} connector={c} onUpgrade={setUpgradeTarget} />)
           ) : (
             <p className="text-sm text-muted-foreground text-center py-4">
               No Google services available. Seed provider data in Admin OS.
