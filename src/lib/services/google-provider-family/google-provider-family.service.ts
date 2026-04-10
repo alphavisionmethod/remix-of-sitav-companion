@@ -123,29 +123,28 @@ async function fetchGoogleConnectors(
   if (!capabilities?.length) return [];
 
   // Get connected service links for these capabilities
-  const capIds = capabilities.map((c: Record<string, unknown>) => c.id);
+  const capIds = capabilities.map((c: Record<string, unknown>) => c.id as string);
   const { data: services } = await supabase
     .from("connected_service_links")
     .select("*")
     .in("provider_capability_id", capIds);
 
-  type CapRecord = Record<string, unknown>;
   type SvcRecord = Record<string, unknown>;
   const findSvc = (capId: unknown) => services?.find((s: SvcRecord) => s.provider_capability_id === capId);
 
-  return capabilities.map((cap: CapRecord): GoogleConnectorState => {
+  return capabilities.map((cap: Record<string, unknown>): GoogleConnectorState => {
     const svc = findSvc(cap.id);
     return {
       capabilityKey: cap.capability_key as GoogleCapabilityKey,
       displayName: String(cap.display_name ?? ""),
-      connectionStatus: (svc?.connection_status as string ?? "disconnected") as never,
-      healthStatus: (svc?.health_status as string ?? "unknown") as never,
-      permissionLevel: (svc?.permission_level as string ?? "minimal") as never,
+      connectionStatus: (svc?.connection_status ?? "disconnected") as GoogleConnectorState["connectionStatus"],
+      healthStatus: (svc?.health_status ?? "unknown") as GoogleConnectorState["healthStatus"],
+      permissionLevel: (svc?.permission_level ?? "minimal") as GoogleConnectorState["permissionLevel"],
       grantedScopes: (svc?.granted_scopes as string[]) ?? [],
       reauthNeeded: (svc?.reauth_needed as boolean) ?? false,
       lastSyncAt: (svc?.last_sync_at as string) ?? null,
       mode,
-      launchStage: (cap.launch_stage as string ?? "planned") as never,
+      launchStage: (cap.launch_stage ?? "planned") as GoogleConnectorState["launchStage"],
       upgradeAvailable: (cap.upgrade_path_support as boolean) ?? false,
       serviceAccountId: (svc?.id as string) ?? null,
     };
@@ -161,10 +160,10 @@ async function fetchGoogleOAuthClients(familyId: string): Promise<GoogleOAuthCli
     .eq("provider_family_id", familyId)
     .order("client_name");
 
-  return (clients ?? []).map((c: Record<string, unknown>) => ({
+  return (clients ?? []).map((c: Record<string, unknown>): GoogleOAuthClientInfo => ({
     id: c.id as string,
     clientName: c.client_name as string,
-    purpose: c.client_purpose as string,
+    purpose: c.client_purpose as GoogleOAuthClientInfo["purpose"],
     allowedCapabilities: (c.allowed_capabilities as string[]) ?? [],
     environment: (c.environment as string) ?? "production",
     launchStage: (c.launch_stage as string) ?? "planned",
@@ -186,13 +185,13 @@ async function fetchGoogleScopePolicies(familyId: string): Promise<GoogleScopePo
   type PolicyRecord = Record<string, unknown> & { provider_capabilities?: { capability_key?: string; display_name?: string } };
   return (policies ?? [])
     .filter((p: PolicyRecord) => googleKeys.has(p.provider_capabilities?.capability_key ?? ""))
-    .map((p: PolicyRecord) => ({
-      capabilityKey: p.provider_capabilities?.capability_key ?? "",
+    .map((p: PolicyRecord): GoogleScopePolicyEntry => ({
+      capabilityKey: (p.provider_capabilities?.capability_key ?? "") as GoogleCapabilityKey,
       displayName: p.provider_capabilities?.display_name ?? "",
       minimumScopes: (p.minimum_scopes as string[]) ?? [],
       optionalScopes: (p.optional_scopes as string[]) ?? [],
       disallowedScopes: (p.disallowed_scopes as string[]) ?? [],
-      defaultGrantProfile: (p.default_grant_profile as string) ?? "read_only",
+      defaultGrantProfile: ((p.default_grant_profile as string) ?? "read_only") as GoogleScopePolicyEntry["defaultGrantProfile"],
       upgradePathAvailable: (p.upgrade_path_available as boolean) ?? false,
       approvalRequired: (p.approval_required_for_upgrade as boolean) ?? false,
     }));
@@ -207,10 +206,10 @@ async function fetchGoogleLaunchHonesty(familyId: string): Promise<GoogleLaunchH
     .eq("provider_family_id", familyId);
 
   type HonestyRecord = Record<string, unknown> & { provider_capabilities?: { capability_key?: string; display_name?: string } };
-  return (entries ?? []).map((e: HonestyRecord) => ({
-    capabilityKey: e.provider_capabilities?.capability_key ?? "unknown",
+  return (entries ?? []).map((e: HonestyRecord): GoogleLaunchHonestyEntry => ({
+    capabilityKey: (e.provider_capabilities?.capability_key ?? "unknown") as GoogleCapabilityKey,
     displayName: e.provider_capabilities?.display_name ?? "",
-    launchLabel: (e.launch_label as string) ?? "unknown",
+    launchLabel: ((e.launch_label as string) ?? "unknown") as GoogleLaunchHonestyEntry["launchLabel"],
     blockers: (e.blockers as string[]) ?? [],
     publicClaimSafe: ((e.blockers as string[]) ?? []).length === 0,
     qualifierRequired: e.launch_label !== "production",

@@ -12,7 +12,7 @@ import { runAllProbes, getOverallHealth, type ProbeResult } from "@/lib/observab
 import { getCostSummary, type CostSummary } from "@/lib/observability/cost-governance";
 import { getLogBuffer, type LogEntry } from "@/lib/observability/structured-logger";
 import { serviceHeartbeat, type HeartbeatSummary } from "@/lib/services/service-registry/heartbeat";
-import { getRegisteredServices } from "@/lib/services/service-registry";
+import { serviceRegistry } from "@/lib/services/service-registry";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
@@ -41,7 +41,7 @@ export default function SystemHealthDashboard() {
       const [results, summary, hb] = await Promise.all([
         runAllProbes(),
         getCostSummary(),
-        serviceHeartbeat.runHeartbeat(getRegisteredServices()),
+        serviceHeartbeat.runHeartbeat(serviceRegistry.getAll()),
       ]);
       setProbes(results);
       setOverallHealth(getOverallHealth(results));
