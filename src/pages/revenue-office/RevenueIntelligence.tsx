@@ -7,6 +7,8 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useRevenueOfficeMode } from "@/contexts/RevenueOfficeModeContext";
+import { RevenueOfficeModeToggle } from "@/components/revenue-office/RevenueOfficeModeToggle";
 import { DEMO_COHORT_DATA, DEMO_LEAKAGE, DEMO_REVENUE_STREAMS } from "@/lib/demo-data/revenue-office";
 
 const UNIT_ECONOMICS = [
@@ -27,15 +29,19 @@ const FORECAST = [
 
 export default function RevenueIntelligence() {
   const { isDemoMode } = useDataMode();
+  const { isBeginner } = useRevenueOfficeMode();
   const [tab, setTab] = useState("streams");
   const totalLeakage = DEMO_LEAKAGE.reduce((s, l) => s + parseInt(l.value.replace(/[^0-9]/g, "")), 0);
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-2xl font-bold text-foreground">Revenue Intelligence</h1>
-        <p className="text-sm text-muted-foreground">Forecasting, unit economics, cohort analysis, LTV, and leakage detection</p>
+      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-foreground">{isBeginner ? "Revenue Overview" : "Revenue Intelligence"}</h1>
+          <p className="text-sm text-muted-foreground">{isBeginner ? "How your business makes money and where you can improve" : "Forecasting, unit economics, cohort analysis, LTV, and leakage detection"}</p>
+        </div>
+        <RevenueOfficeModeToggle />
       </motion.div>
 
       {/* KPI Strip */}
@@ -61,11 +67,11 @@ export default function RevenueIntelligence() {
 
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList className="bg-muted/30 border border-border/40 h-8 p-0.5 gap-0.5">
-          <TabsTrigger value="streams" className="text-[10px] h-7 px-2.5 gap-1"><BarChart3 className="h-3 w-3" />Streams</TabsTrigger>
-          <TabsTrigger value="unit" className="text-[10px] h-7 px-2.5 gap-1"><DollarSign className="h-3 w-3" />Unit Economics</TabsTrigger>
-          <TabsTrigger value="forecast" className="text-[10px] h-7 px-2.5 gap-1"><TrendingUp className="h-3 w-3" />Forecast</TabsTrigger>
-          <TabsTrigger value="cohort" className="text-[10px] h-7 px-2.5 gap-1"><Users className="h-3 w-3" />Cohorts</TabsTrigger>
-          <TabsTrigger value="leakage" className="text-[10px] h-7 px-2.5 gap-1"><AlertTriangle className="h-3 w-3" />Leakage</TabsTrigger>
+          <TabsTrigger value="streams" className="text-[10px] h-7 px-2.5 gap-1"><BarChart3 className="h-3 w-3" />{isBeginner ? "Income" : "Streams"}</TabsTrigger>
+          <TabsTrigger value="unit" className="text-[10px] h-7 px-2.5 gap-1"><DollarSign className="h-3 w-3" />{isBeginner ? "Costs" : "Unit Economics"}</TabsTrigger>
+          {!isBeginner && <TabsTrigger value="forecast" className="text-[10px] h-7 px-2.5 gap-1"><TrendingUp className="h-3 w-3" />Forecast</TabsTrigger>}
+          {!isBeginner && <TabsTrigger value="cohort" className="text-[10px] h-7 px-2.5 gap-1"><Users className="h-3 w-3" />Cohorts</TabsTrigger>}
+          <TabsTrigger value="leakage" className="text-[10px] h-7 px-2.5 gap-1"><AlertTriangle className="h-3 w-3" />{isBeginner ? "Lost Money" : "Leakage"}</TabsTrigger>
         </TabsList>
 
         <div className="mt-4">
