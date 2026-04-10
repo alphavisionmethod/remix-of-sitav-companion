@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — APS08 App Manage Detail
+// SITA OS — APS08 App Manage Detail (fully wired)
 // ═══════════════════════════════════════════════════════════════
 
 import { useState } from "react";
@@ -8,25 +8,28 @@ import { motion } from "framer-motion";
 import {
   ArrowLeft, Pin, Bell, HardDrive, RefreshCw, Trash2, Settings, Play,
   Shield, Clock, FileText, Link2, Lock, ChevronDown, ChevronUp,
-  ToggleLeft, ToggleRight, Download, Check, AlertTriangle,
+  Download, Check, AlertTriangle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { getAppById } from "@/lib/app-platform";
-import { AppIcon, VerificationBadge, AppSourceLabel, PermissionDomainCard, AppReceiptCard } from "@/components/sita/app-platform/AppStoreComponents";
+import { useAppPlatform } from "@/contexts/AppPlatformContext";
+import { AppIcon, VerificationBadge, AppSourceLabel, PermissionDomainCard } from "@/components/sita/app-platform/AppStoreComponents";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { toast } from "sonner";
 
 const AppManagePage = () => {
   const { isDemoMode } = useDataMode();
   const { appId } = useParams<{ appId: string }>();
   const navigate = useNavigate();
+  const {
+    getApp, togglePermission, pinToDock, unpinFromDock,
+    setNotificationEnabled, setStartupBehavior, uninstallApp, installApp,
+  } = useAppPlatform();
+
   const [showPerms, setShowPerms] = useState(true);
   const [showAssoc, setShowAssoc] = useState(false);
-  const [pinned, setPinned] = useState(false);
-  const [notifications, setNotifications] = useState(true);
-  const [startup, setStartup] = useState("none");
 
-  const app = getAppById(appId || "");
+  const app = getApp(appId || "");
   if (!app) return (
     <div className="mx-auto max-w-4xl">
       <DemoModeBadge />
@@ -36,6 +39,20 @@ const AppManagePage = () => {
       <p className="text-center py-20 text-foreground font-medium">App not found</p>
     </div>
   );
+
+  const isInstalled = app.installStatus === "installed";
+
+  const handleUninstall = async () => {
+    await uninstallApp(app.id);
+    toast.success(`${app.name} uninstalled`);
+    navigate("/app-store/library");
+  };
+
+  const handleReinstall = async () => {
+    await uninstallApp(app.id);
+    await installApp(app.id);
+    toast.success(`${app.name} reinstalled`);
+  };
 
   const Section = ({ title, icon: Icon, children, collapsible, open, onToggle }: any) => (
     <div className="rounded-2xl border border-border bg-card overflow-hidden">
@@ -48,7 +65,7 @@ const AppManagePage = () => {
     </div>
   );
 
-  const Toggle = ({ label, desc, value, onChange }: any) => (
+  const Toggle = ({ label, desc, value, onChange }: { label: string; desc?: string; value: boolean; onChange: (v: boolean) => void }) => (
     <div className="flex items-center justify-between py-2">
       <div>
         <p className="text-sm text-foreground">{label}</p>
@@ -78,20 +95,30 @@ const AppManagePage = () => {
             <AppSourceLabel appClass={app.appClass} size="md" />
           </div>
         </div>
-        <button className="rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors flex items-center gap-2">
-          <Play className="h-3.5 w-3.5" /> Open
-        </button>
+        {isInstalled ? (
+          <button className="rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors flex items-center gap-2">
+            <Play className="h-3.5 w-3.5" /> Open
+          </button>
+        ) : (
+          <button onClick={() => installApp(app.id)}
+            className="rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors flex items-center gap-2">
+            <Download className="h-3.5 w-3.5" /> Install
+          </button>
+        )}
       </div>
 
       {/* Launch & Dock */}
       <Section title="Launch & Dock" icon={Settings}>
-        <Toggle label="Pin to Dock" desc="Keep in the dock for quick access" value={pinned} onChange={setPinned} />
+        <Toggle label="Pin to Dock" desc="Keep in the dock for quick access"
+          value={app.pinnedToDock}
+          onChange={v => v ? pinToDock(app.id) : unpinFromDock(app.id)} />
         <div className="flex items-center justify-between py-2">
           <div>
             <p className="text-sm text-foreground">Startup behavior</p>
             <p className="text-[10px] text-muted-foreground">How app launches on login</p>
           </div>
-          <select value={startup} onChange={e => setStartup(e.target.value)}
+          <select value={app.startupBehavior}
+            onChange={e => setStartupBehavior(app.id, e.target.value as "none" | "background" | "visible")}
             className="rounded-lg bg-secondary px-3 py-1.5 text-xs text-foreground border border-border">
             <option value="none">None</option>
             <option value="background">Background</option>
@@ -102,13 +129,15 @@ const AppManagePage = () => {
 
       {/* Notifications */}
       <Section title="Notifications" icon={Bell}>
-        <Toggle label="Allow notifications" desc="Receive alerts from this app" value={notifications} onChange={setNotifications} />
+        <Toggle label="Allow notifications" desc="Receive alerts from this app"
+          value={app.notificationPermission}
+          onChange={v => setNotificationEnabled(app.id, v)} />
       </Section>
 
       {/* Permissions */}
       <Section title={`Permissions (${app.permissions.length})`} icon={Lock} collapsible open={showPerms} onToggle={() => setShowPerms(!showPerms)}>
         {app.permissions.length > 0 ? app.permissions.map(p => (
-          <PermissionDomainCard key={p.id} permission={p} onToggle={() => {}} />
+          <PermissionDomainCard key={p.id} permission={p} onToggle={() => togglePermission(app.id, p.id)} />
         )) : <p className="text-xs text-muted-foreground">No special permissions required</p>}
       </Section>
 
@@ -184,16 +213,20 @@ const AppManagePage = () => {
           <button className="flex items-center gap-2 rounded-xl bg-secondary px-4 py-3 text-xs font-medium text-foreground hover:bg-secondary/80 transition-colors">
             <RefreshCw className="h-3.5 w-3.5" /> Repair
           </button>
-          <button className="flex items-center gap-2 rounded-xl bg-secondary px-4 py-3 text-xs font-medium text-foreground hover:bg-secondary/80 transition-colors">
+          <button onClick={handleReinstall}
+            className="flex items-center gap-2 rounded-xl bg-secondary px-4 py-3 text-xs font-medium text-foreground hover:bg-secondary/80 transition-colors">
             <Download className="h-3.5 w-3.5" /> Reinstall
           </button>
           <button onClick={() => navigate(`/app-store/receipts/${app.id}`)}
             className="flex items-center gap-2 rounded-xl bg-secondary px-4 py-3 text-xs font-medium text-foreground hover:bg-secondary/80 transition-colors">
             <Shield className="h-3.5 w-3.5" /> View Receipts
           </button>
-          <button className="flex items-center gap-2 rounded-xl bg-destructive/10 px-4 py-3 text-xs font-medium text-destructive hover:bg-destructive/20 transition-colors sm:col-span-3">
-            <Trash2 className="h-3.5 w-3.5" /> Uninstall {app.name}
-          </button>
+          {isInstalled && (
+            <button onClick={handleUninstall}
+              className="flex items-center gap-2 rounded-xl bg-destructive/10 px-4 py-3 text-xs font-medium text-destructive hover:bg-destructive/20 transition-colors sm:col-span-3">
+              <Trash2 className="h-3.5 w-3.5" /> Uninstall {app.name}
+            </button>
+          )}
         </div>
       </div>
     </div>

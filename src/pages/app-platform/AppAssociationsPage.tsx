@@ -1,23 +1,28 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Default Apps & Associations Manager
+// SITA OS — Default Apps & Associations Manager (fully wired)
 // ═══════════════════════════════════════════════════════════════
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Globe, FileText, Link2, Mail, Image, FileCode, Calendar, Check } from "lucide-react";
+import { ArrowLeft, FileText, Link2, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { APP_CATALOG } from "@/lib/app-platform";
+import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { AppIcon } from "@/components/sita/app-platform/AppStoreComponents";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_APP_SLOTS, DEMO_FILE_TYPES } from "@/lib/demo-data/core-pages";
 
-
-
 const AppAssociationsPage = () => {
   const { isDemoMode } = useDataMode();
+  const { apps, defaultApps, setDefaultApp } = useAppPlatform();
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<"defaults" | "files" | "protocols">("defaults");
+  const [changingSlot, setChangingSlot] = useState<string | null>(null);
+
+  const handleSetDefault = (role: string, appId: string) => {
+    setDefaultApp(role, appId);
+    setChangingSlot(null);
+  };
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
@@ -45,26 +50,53 @@ const AppAssociationsPage = () => {
         <div className="space-y-3">
           {DEMO_APP_SLOTS.map(slot => {
             const Icon = slot.icon;
-            const currentApp = slot.currentApp ? APP_CATALOG.find(a => a.id === slot.currentApp) : null;
+            const currentAppId = defaultApps[slot.id] || slot.currentApp;
+            const currentApp = currentAppId ? apps.find(a => a.id === currentAppId) : null;
+            const isChanging = changingSlot === slot.id;
+
             return (
-              <div key={slot.id} className="rounded-xl border border-border bg-card p-4 flex items-center gap-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-secondary">
-                  <Icon className="h-5 w-5 text-muted-foreground" />
+              <div key={slot.id} className="rounded-xl border border-border bg-card p-4 space-y-3">
+                <div className="flex items-center gap-4">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-secondary">
+                    <Icon className="h-5 w-5 text-muted-foreground" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-sm font-medium text-foreground">{slot.label}</p>
+                    {currentApp ? (
+                      <div className="flex items-center gap-1.5 mt-1">
+                        <span className="text-lg">{currentApp.icon}</span>
+                        <span className="text-xs text-muted-foreground">{currentApp.name}</span>
+                      </div>
+                    ) : (
+                      <p className="text-xs text-muted-foreground mt-1">No default set</p>
+                    )}
+                  </div>
+                  <button onClick={() => setChangingSlot(isChanging ? null : slot.id)}
+                    className="rounded-lg bg-secondary px-3 py-1.5 text-xs font-medium text-foreground hover:bg-secondary/80 transition-colors">
+                    {isChanging ? "Cancel" : "Change"}
+                  </button>
                 </div>
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-foreground">{slot.label}</p>
-                  {currentApp ? (
-                    <div className="flex items-center gap-1.5 mt-1">
-                      <span className="text-lg">{currentApp.icon}</span>
-                      <span className="text-xs text-muted-foreground">{currentApp.name}</span>
-                    </div>
-                  ) : (
-                    <p className="text-xs text-muted-foreground mt-1">No default set</p>
-                  )}
-                </div>
-                <button className="rounded-lg bg-secondary px-3 py-1.5 text-xs font-medium text-foreground hover:bg-secondary/80 transition-colors">
-                  Change
-                </button>
+
+                {isChanging && (
+                  <div className="space-y-1.5 pt-2 border-t border-border">
+                    {slot.candidates.length > 0 ? slot.candidates.map(candidateId => {
+                      const candidateApp = apps.find(a => a.id === candidateId);
+                      if (!candidateApp) return null;
+                      const isSelected = currentAppId === candidateId;
+                      return (
+                        <button key={candidateId} onClick={() => handleSetDefault(slot.id, candidateId)}
+                          className={cn("w-full flex items-center gap-3 rounded-lg p-2.5 transition-colors text-left",
+                            isSelected ? "bg-primary/10 border border-primary/20" : "hover:bg-secondary")}>
+                          <span className="text-lg">{candidateApp.icon}</span>
+                          <span className="text-sm text-foreground flex-1">{candidateApp.name}</span>
+                          {isSelected && <Check className="h-4 w-4 text-primary" />}
+                        </button>
+                      );
+                    }) : (
+                      <p className="text-xs text-muted-foreground py-2">No candidate apps available. Install compatible apps first.</p>
+                    )}
+                  </div>
+                )}
               </div>
             );
           })}
@@ -74,7 +106,7 @@ const AppAssociationsPage = () => {
       {activeTab === "files" && (
         <div className="space-y-2">
           {DEMO_FILE_TYPES.map(ft => {
-            const apps = ft.apps.map(id => APP_CATALOG.find(a => a.id === id)).filter(Boolean);
+            const ftApps = ft.apps.map(id => apps.find(a => a.id === id)).filter(Boolean);
             return (
               <div key={ft.ext} className="rounded-xl border border-border bg-card p-3 flex items-center gap-3">
                 <FileText className="h-4 w-4 text-muted-foreground shrink-0" />
@@ -83,7 +115,7 @@ const AppAssociationsPage = () => {
                   <p className="text-[10px] text-muted-foreground">{ft.ext}</p>
                 </div>
                 <div className="flex items-center gap-1">
-                  {apps.map((a: Record<string, any>) => (
+                  {ftApps.map((a: any) => (
                     <span key={a.id} className="text-sm" title={a.name}>{a.icon}</span>
                   ))}
                 </div>
@@ -96,7 +128,7 @@ const AppAssociationsPage = () => {
 
       {activeTab === "protocols" && (
         <div className="space-y-2">
-          {APP_CATALOG.filter(a => a.protocolAssociations.length > 0).map(app => (
+          {apps.filter(a => a.protocolAssociations.length > 0).map(app => (
             app.protocolAssociations.map(p => (
               <div key={`${app.id}-${p.protocol}`} className="rounded-xl border border-border bg-card p-3 flex items-center gap-3">
                 <Link2 className="h-4 w-4 text-muted-foreground shrink-0" />

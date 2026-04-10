@@ -1,54 +1,74 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — App Store Home Page
-// Premium software discovery marketplace
+// Premium software discovery marketplace with live state
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, SlidersHorizontal } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { Search } from "lucide-react";
+import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import {
-  APP_CATALOG, APP_BUNDLES, APP_CATEGORIES,
-  getInstalledApps, getFeaturedApps, searchApps, getAppsByCategory,
+  APP_BUNDLES, APP_CATEGORIES, searchApps,
 } from "@/lib/app-platform";
 import {
   StoreHero, AppCard, FeaturedAppCard, AppLane, BundleCard,
   CategoryStrip, InstallSheet,
 } from "@/components/sita/app-platform/AppStoreComponents";
-import type { AppDefinition } from "@/lib/app-platform/types";
+import type { AppDefinition, AppCategory } from "@/lib/app-platform/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 const AppStorePage = () => {
   const { isDemoMode } = useDataMode();
+  const { apps, installedApps, installApp } = useAppPlatform();
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("all");
   const [installTarget, setInstallTarget] = useState<AppDefinition | null>(null);
 
-  const installed = getInstalledApps();
-  const featured = getFeaturedApps();
-
-  const searchResults = useMemo(() => query.length > 1 ? searchApps(query) : null, [query]);
+  const searchResults = useMemo(() => {
+    if (query.length <= 1) return null;
+    const q = query.toLowerCase();
+    return apps.filter(a =>
+      a.name.toLowerCase().includes(q) ||
+      a.publisher.toLowerCase().includes(q) ||
+      a.tags.some(t => t.includes(q)) ||
+      a.category.includes(q)
+    );
+  }, [query, apps]);
 
   const filteredApps = useMemo(() => {
-    if (activeCategory === "all") return APP_CATALOG;
-    return getAppsByCategory(activeCategory as never);
-  }, [activeCategory]);
+    if (activeCategory === "all") return apps;
+    return apps.filter(a => a.category === activeCategory);
+  }, [activeCategory, apps]);
 
-  const webApps = APP_CATALOG.filter(a => a.appClass === "web-app" || a.appClass === "wrapped-app");
-  const devApps = APP_CATALOG.filter(a => a.category === "developer-tools");
-  const commApps = APP_CATALOG.filter(a => a.category === "communication");
-  const prodApps = APP_CATALOG.filter(a => a.category === "productivity");
-  const newApps = APP_CATALOG.filter(a => a.isNew);
+  const webApps = useMemo(() => apps.filter(a => a.appClass === "web-app" || a.appClass === "wrapped-app"), [apps]);
+  const devApps = useMemo(() => apps.filter(a => a.category === "developer-tools"), [apps]);
+  const commApps = useMemo(() => apps.filter(a => a.category === "communication"), [apps]);
+  const prodApps = useMemo(() => apps.filter(a => a.category === "productivity"), [apps]);
+  const newApps = useMemo(() => apps.filter(a => a.isNew), [apps]);
+
+  // Profile-aware recommendations
+  const recommendedApps = useMemo(() => {
+    return apps.filter(a =>
+      a.installStatus !== "installed" && (a.featured || a.whySitaRecommends)
+    ).slice(0, 6);
+  }, [apps]);
 
   const goApp = (id: string) => navigate(`/app-store/app/${id}`);
+
+  const handleInstall = async () => {
+    if (installTarget) {
+      await installApp(installTarget.id);
+      setInstallTarget(null);
+    }
+  };
 
   return (
     <div className="mx-auto max-w-6xl space-y-8">
       <DemoModeBadge />
       <h1 className="sr-only">App Store</h1>
-      <StoreHero installedCount={installed.length} appsAvailable={APP_CATALOG.length} />
+      <StoreHero installedCount={installedApps.length} appsAvailable={apps.length} />
 
       {/* Quick Nav */}
       <div className="flex gap-2 overflow-x-auto pb-1 scrollbar-thin">
@@ -94,14 +114,22 @@ const AppStorePage = () => {
       {/* Main Content (hidden during search) */}
       {!searchResults && (
         <>
-          {/* Featured */}
-          {featured.length > 0 && (
-            <div className="grid gap-3 sm:grid-cols-2">
-              {featured.slice(0, 2).map(app => (
-                <FeaturedAppCard key={app.id} app={app} onClick={() => goApp(app.id)} />
-              ))}
-            </div>
+          {/* Recommended for Your Environment */}
+          {recommendedApps.length > 0 && (
+            <AppLane title="Recommended for Your Environment" subtitle="Based on your setup and preferences" apps={recommendedApps} onAppClick={goApp} />
           )}
+
+          {/* Featured */}
+          {(() => {
+            const featured = apps.filter(a => a.featured);
+            return featured.length > 0 ? (
+              <div className="grid gap-3 sm:grid-cols-2">
+                {featured.slice(0, 2).map(app => (
+                  <FeaturedAppCard key={app.id} app={app} onClick={() => goApp(app.id)} />
+                ))}
+              </div>
+            ) : null;
+          })()}
 
           {/* Categories */}
           <CategoryStrip categories={APP_CATEGORIES} active={activeCategory} onSelect={setActiveCategory} />
@@ -116,16 +144,9 @@ const AppStorePage = () => {
             </div>
           ) : (
             <>
-              {/* Web Apps Lane */}
               <AppLane title="Web Apps You Can Install" subtitle="Beautiful shell-native experiences" apps={webApps} onAppClick={goApp} />
-
-              {/* Communication */}
               <AppLane title="Communication" subtitle="Stay connected" apps={commApps} onAppClick={goApp} />
-
-              {/* Productivity */}
               <AppLane title="Productivity" subtitle="Get more done" apps={prodApps} onAppClick={goApp} />
-
-              {/* Developer Tools */}
               <AppLane title="Developer Tools" subtitle="Your complete dev environment" apps={devApps} onAppClick={goApp}
                 onSeeAll={() => setActiveCategory("developer-tools")} />
 
@@ -135,23 +156,19 @@ const AppStorePage = () => {
                 <p className="text-xs text-muted-foreground -mt-1">Curated collections to get started fast</p>
                 <div className="grid gap-3 sm:grid-cols-2">
                   {APP_BUNDLES.map(bundle => {
-                    const bundleApps = bundle.appIds.map(id => APP_CATALOG.find(a => a.id === id)).filter(Boolean) as AppDefinition[];
+                    const bundleApps = bundle.appIds.map(id => apps.find(a => a.id === id)).filter(Boolean) as AppDefinition[];
                     return <BundleCard key={bundle.id} bundle={bundle} apps={bundleApps}
                       onClick={() => navigate(`/app-store/bundle/${bundle.id}`)} />;
                   })}
                 </div>
               </div>
 
-              {/* New Releases */}
-              {newApps.length > 0 && (
-                <AppLane title="New Releases" apps={newApps} onAppClick={goApp} />
-              )}
+              {newApps.length > 0 && <AppLane title="New Releases" apps={newApps} onAppClick={goApp} />}
 
-              {/* All Apps */}
               <div className="space-y-3">
                 <h3 className="text-lg font-bold text-foreground">All Apps</h3>
                 <div className="grid gap-3 sm:grid-cols-2">
-                  {APP_CATALOG.map(app => <AppCard key={app.id} app={app} onClick={() => goApp(app.id)} />)}
+                  {apps.map(app => <AppCard key={app.id} app={app} onClick={() => goApp(app.id)} />)}
                 </div>
               </div>
             </>
@@ -162,7 +179,7 @@ const AppStorePage = () => {
       {/* Install Sheet */}
       {installTarget && (
         <InstallSheet app={installTarget} onClose={() => setInstallTarget(null)}
-          onInstall={() => { /* update state */ }} />
+          onInstall={handleInstall} />
       )}
     </div>
   );
