@@ -123,7 +123,7 @@ function getOrCreateKernel(): SitaOSKernel {
     return null;
   });
 
-  // 3. Attention OS integration: feed processed intents into attention stack
+  // 3. Attention OS integration: feed processed intents into attention stack + persist to CAI table
   intentOrchestrator.use(async (intent: IntentRequest) => {
     const urgency = intent.classification === "financial" ? 9 : intent.classification === "approval" ? 8 : intent.classification === "scheduling" ? 6 : 4;
     const importance = intent.classification === "financial" ? 9 : intent.classification === "approval" ? 8 : 5;
@@ -135,6 +135,28 @@ function getOrCreateKernel(): SitaOSKernel {
       priority: urgency >= 9 ? "critical" : urgency >= 7 ? "high" : urgency >= 4 ? "medium" : "low",
       metadata: { intentId: intent.id },
     });
+
+    // Persist intent resolution to dedicated CAI table (fire-and-forget)
+    persistIntentResolution({
+      source_surface: intent.surface,
+      raw_input: intent.raw.slice(0, 500),
+      resolved_intent: intent.classification ?? "unknown",
+      confidence: 0.85,
+      target_capability: intent.domain ?? "platform",
+      status: "resolved",
+    }).catch(() => {});
+
+    // Persist attention decision
+    persistAttentionDecision({
+      event_ref: intent.id,
+      urgency_class: urgency >= 9 ? "critical" : urgency >= 7 ? "high" : "normal",
+      routing_decision: "stack",
+      selected_surface: intent.surface,
+      deferred: false,
+      reason: `${intent.classification} from ${intent.source}`,
+      fatigue_score: attentionOS.getCognitiveLoad().score,
+    }).catch(() => {});
+
     return null; // never block
   });
 
