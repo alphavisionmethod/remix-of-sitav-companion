@@ -1,158 +1,75 @@
 
 
-# SITA OS — Runtime Truth Activation: Master Implementation Plan
+# SITA OS — Runtime Truth Activation: Final Gaps Audit & Fix Plan
 
-## Current State Assessment
+## What's Already Implemented and Working
 
-### What's Already Real and Working
-| System | Status |
-|--------|--------|
-| AI Gateway edge function | 465 lines, LOVABLE_API_KEY, auth, budget check, routing, receipt logging, fallback chains |
-| Chat-Advisor edge function | 460 lines, streaming SSE, 8 advisor personalities, auth, correlation IDs |
-| AI Capability Client | Canonical `invokeAICapability()`, budget gate, response normalization |
-| AI State Types | 17 canonical states, launch honesty levels, surface categories |
-| EventBus | Durable — persists to `os_event_log` via `event-bus-persistence` |
-| MemoryService | Durable — persists to `os_memory_scoped` via `memory-service-persistence` |
-| ReceiptService | Hash-chained, persistence adapter wired |
-| OS Kernel (SitaOSContext) | 15 services instantiated, cross-wired, persisted via `universal-service-persistence` |
-| RuntimeTruthProbe | Mounted in sidebar, checks OS hydration + gateway + CAI tables |
-| DemoGovernanceBanner | Mounted in ShellLayout |
-| DataModeContext | localStorage toggle, demo/live modes |
-| Streaming Chat | Real SSE hook calling `chat-advisor` edge function with auth |
+| Workstream | Status |
+|-----------|--------|
+| **A: AI Gateway ping** | Done — `body.ping` handler in `ai-gateway/index.ts` |
+| **A: AIDegradedState component** | Done — `src/components/ai/AIDegradedState.tsx` (108 lines) |
+| **A: AI degraded in AdvisorChat** | Partially done — shows `streamError` banner, but does NOT use `AIDegradedState` component |
+| **B: Core substrate durability** | Done — EventBus, Memory, Receipt all persist to Supabase tables |
+| **C: Boardroom mock gating** | Partially done — `ConfidenceLadder` gated (line 733), but `mockAdvisors` still imported unconditionally and used in `ExecutionTracker` fallback (line 771-775) |
+| **C: AdvisorWorkspace mock gating** | Done — all mock usage gated behind `isDemoMode` with `return null` guards |
+| **D: RevenueGate mock fix** | Done — live mode returns empty arrays |
+| **D: RevenueCallingPage contacts/logs** | Done — gated behind `isDemoMode` |
+| **D: DataModeContext live connectors** | Done — queries `connector_configs` from Supabase |
+| **E: RuntimeTruthProbe** | Done — mounted in sidebar |
+| **F: Degraded state taxonomy** | Done — `src/lib/degraded-state-classes.ts` |
+| **F: DegradedStateBanner** | Done — `src/components/sita/truth/DegradedStateBanner.tsx` |
+| **F: EmptyStateCTA mode-aware** | Done — accepts `mode` prop |
+| **F: DemoGovernanceBanner** | Done — mounted in ShellLayout |
 
-### Critical Gaps Found (8 items)
+## Remaining Gaps (5 actionable items)
 
-**Gap 1 — Boardroom uses raw mock imports unconditionally**
-`Boardroom.tsx` line 33 imports `mockAdvisors, mockRecommendations, mockSynthesis, mockApprovals, mockProofHistory` and uses them directly in all sub-components — no `isDemoMode` guard. These mocks render as "live intelligence" regardless of mode.
+### Gap 1 — `use-business-data.ts` silently falls back to mock in live mode
+Lines 16-18, 24-26, 33-34, 41-42: When real queries return empty or error, functions return `MOCK_*` data even in real mode. This is the exact "silent fallback-to-mock" pattern the prompt demands eliminating.
 
-**Gap 2 — AdvisorWorkspace uses raw mock imports unconditionally**
-`AdvisorWorkspace.tsx` line 27 imports the same 7 mock arrays and uses them directly for advisor cards, recommendation panels, synthesis views, approval pipelines. No mode gating. The streaming chat is real, but everything around it is always mock.
+**Fix:** When mode is "real" and query returns empty/error, return empty array `[]` instead of mock data.
 
-**Gap 3 — RevenueCallingPage uses raw mock imports in launch path**
-`RevenueCallingPage.tsx` line 26 imports `MOCK_CONTACTS, MOCK_CALL_LOGS, MOCK_CALL_SCRIPTS` and uses them alongside live query hooks — but the mock data is the unconditional fallback with no mode label.
+### Gap 2 — `RevenueCallingPage.tsx` uses `MOCK_SCRIPTS` unconditionally
+Line 116: `const script = MOCK_SCRIPTS.find(...)` in `ActiveDialer` — no mode check. Line 486: scripts tab renders `MOCK_SCRIPTS.map(...)` unconditionally.
 
-**Gap 4 — ~15 investment-office sub-pages import demo-data unconditionally**
-All investment sub-pages import from `@/lib/demo-data/investment` and gate on `isDemoMode` — but in live mode they show empty states without clear "no data yet" messaging.
+**Fix:** Gate `MOCK_SCRIPTS` usage behind `isDemoMode`. In live mode, show empty or "no scripts configured" state.
 
-**Gap 5 — DataModeContext live connector refresh is a stub**
-`refreshConnectors` in live mode sets all connectors to "disconnected" — it never queries real `connector_configs` from Supabase.
+### Gap 3 — `Boardroom.tsx` ExecutionTracker has hardcoded mock fallback
+Lines 771-775: When `overdueTasks.length === 0`, falls back to 3 hardcoded mock tasks regardless of mode. This creates "live intelligence" theater.
 
-**Gap 6 — AI gateway has no ping/health endpoint**
-`RuntimeTruthProbe` sends `{ ping: true }` to `ai-gateway` but the gateway tries to process it as a full AI request (requires messages), making the health check unreliable.
+**Fix:** When not in demo mode and no real tasks exist, pass empty array. Only show hardcoded fallback in demo mode.
 
-**Gap 7 — No degraded-state UI component for AI surfaces**
-When AI returns `degraded_*` or `unavailable_*` states, there's no reusable component to display this elegantly. Each surface handles it ad-hoc or not at all.
+### Gap 4 — `AdvisorChat.tsx` doesn't use `AIDegradedState` component
+Lines 321-329: Shows a basic inline error banner for `streamError` instead of using the canonical `AIDegradedState` component with retry, proper state mapping, and premium UX.
 
-**Gap 8 — RevenueGate uses demo data even in live mode**
-`RevenueGate.tsx` line 32-34: `isDemoMode ? DEMO_METRICS : DEMO_METRICS` — identical in both branches. Silent mock contamination.
+**Fix:** Replace inline error banner with `<AIDegradedState>` component import and usage.
+
+### Gap 5 — `AdvisorWorkspace.tsx` AdvisorDetailView uses mocks unconditionally
+Line 549: `const advisor = mockAdvisors.find(a => a.id === advisorId) || mockAdvisors[0]` — no mode guard. Lines 550-552 similarly use mock data for recs, proofs, memories.
+
+**Fix:** Gate behind `isDemoMode`. In live mode, show empty/placeholder state for individual advisor detail.
 
 ## Implementation Plan
 
-### Workstream A — AI Runtime Truth (Priority 1)
+### File 1: `src/hooks/use-business-data.ts`
+- Change all 4 fetch functions: when mode is "real" and query returns empty/error, return `[]` instead of mock data
+- Keep mock returns only for non-"real" mode
 
-**A1. Add ping handler to AI gateway**
-File: `supabase/functions/ai-gateway/index.ts`
-- After parsing `body`, check `if (body.ping)` → return `{ status: "ok", timestamp }` with 200
-- Costs zero tokens, validates auth + key presence + function reachability
+### File 2: `src/pages/RevenueCallingPage.tsx`
+- Gate `MOCK_SCRIPTS` usage in `ActiveDialer` behind `isDemoMode` (pass mode prop)
+- Gate scripts tab rendering behind `isDemoMode`
 
-**A2. Create reusable `AIDegradedState` component**
-New file: `src/components/sita/AIDegradedState.tsx`
-- Accepts `state: AIState`, `reason?: string`, `onRetry?: () => void`
-- Renders elegant, branded degraded messaging using `STATE_LABELS` from `ai-state-types`
-- Covers: provider unavailable, budget limited, config missing, rate limited, payment required, unavailable
-- Premium feel: icon, explanation, next-step CTA where relevant
+### File 3: `src/pages/Boardroom.tsx`
+- Gate ExecutionTracker hardcoded fallback behind `isDemoMode`
+- In live mode with no tasks, pass empty array
 
-**A3. Wire AIDegradedState into AdvisorChat**
-File: `src/components/sita/AdvisorChat.tsx`
-- When streaming chat returns error states (402, 429, 503), render `AIDegradedState` instead of raw error text
+### File 4: `src/components/sita/AdvisorChat.tsx`
+- Import `AIDegradedState` from `@/components/ai/AIDegradedState`
+- Replace inline error div (lines 321-329) with `<AIDegradedState state="error" reason={streamError} onRetry={() => streamClear()} />`
 
-### Workstream B — Flagship Mock Elimination (Priority 2)
+### File 5: `src/pages/advisors/AdvisorWorkspace.tsx`
+- Gate `AdvisorDetailView` mock usage behind `isDemoMode`
+- In live mode, show honest empty state for advisor detail
 
-**B1. Gate Boardroom mock data behind isDemoMode**
-File: `src/pages/Boardroom.tsx`
-- Wrap all mock usage in `isDemoMode` checks
-- In live mode, replace `mockAdvisors` with empty arrays and show "Connect advisors to see live intelligence" empty states
-- The boardroom packet data (from `useBoardroomData`) is already real — only the advisor/recommendation overlays are mock
-
-**B2. Gate AdvisorWorkspace mock data behind isDemoMode**
-File: `src/pages/advisors/AdvisorWorkspace.tsx`
-- Gate `mockAdvisors`, `mockRecommendations`, `mockSimulations`, `mockApprovals`, `mockProofHistory`, `mockMemoryItems`, `mockSynthesis` behind `isDemoMode`
-- In live mode, the real streaming chat panel already works — but the surrounding advisor council, synthesis, and proof panels should show honest empty states
-- Keep chat panel functional in both modes
-
-**B3. Gate RevenueCallingPage mock data**
-File: `src/pages/RevenueCallingPage.tsx`
-- Already has `useCallingContacts` and `useCallLogs` live hooks
-- Gate `MOCK_CONTACTS`, `MOCK_CALL_LOGS`, `MOCK_SCRIPTS` behind `isDemoMode`
-- In live mode, use the live query results with empty state fallback
-
-**B4. Fix RevenueGate silent demo contamination**
-File: `src/pages/revenue-office/RevenueGate.tsx`
-- Replace `isDemoMode ? DEMO_METRICS : DEMO_METRICS` with proper gating
-- In live mode, query real metrics or show empty state
-
-### Workstream C — DataMode Live Connector Reality (Priority 3)
-
-**C1. Wire live connector status from Supabase**
-File: `src/contexts/DataModeContext.tsx`
-- In `refreshConnectors`, when mode is "live", query `connector_configs` table from Supabase
-- Map results to `ConnectorStatus[]` shape
-- If no connectors configured, show empty array (not fake disconnected ones)
-
-### Workstream D — Degraded State Standardization (Priority 4)
-
-**D1. Create canonical degraded state classes**
-New file: `src/lib/degraded-state-classes.ts`
-- Define `DegradedStateClass` union type: `"unavailable" | "demo" | "internal_only" | "not_configured" | "provider_missing" | "rate_limited" | "setup_required" | "partial" | "stale" | "coming_soon"`
-- Export `getDegradedLabel(cls)` and `getDegradedDescription(cls)` helpers
-- Export `getDegradedNextAction(cls)` for user guidance
-
-**D2. Create `DegradedStateBanner` component**
-New file: `src/components/sita/DegradedStateBanner.tsx`
-- Reusable inline banner for any surface to declare its truth state
-- Accepts `stateClass`, optional `surfaceName`, optional `onAction`
-- Premium, calm design — not alarming, just honest
-
-### Workstream E — Empty State Honesty for Live Mode (Priority 5)
-
-**E1. Enhance EmptyStateCTA for mode-aware messaging**
-File: `src/components/sita/EmptyStateCTA.tsx` (if exists, otherwise create)
-- Accept optional `mode: "demo" | "live"` prop
-- In live mode: "No data yet — this surface activates when real data flows in"
-- In demo mode: "Switch to demo mode to see sample data"
-
-### Files Modified (8)
-| File | Change |
-|------|--------|
-| `supabase/functions/ai-gateway/index.ts` | Add ping health check handler |
-| `src/pages/Boardroom.tsx` | Gate mock data behind isDemoMode |
-| `src/pages/advisors/AdvisorWorkspace.tsx` | Gate mock data behind isDemoMode |
-| `src/pages/RevenueCallingPage.tsx` | Gate mock data behind isDemoMode |
-| `src/pages/revenue-office/RevenueGate.tsx` | Fix silent demo contamination |
-| `src/contexts/DataModeContext.tsx` | Wire live connector query from Supabase |
-| `src/components/sita/AdvisorChat.tsx` | Wire AIDegradedState for error states |
-| `src/components/sita/EmptyStateCTA.tsx` | Add mode-aware messaging |
-
-### Files Created (3)
-| File | Purpose |
-|------|---------|
-| `src/components/sita/AIDegradedState.tsx` | Reusable AI degraded state display |
-| `src/lib/degraded-state-classes.ts` | Canonical degraded state taxonomy |
-| `src/components/sita/DegradedStateBanner.tsx` | Generic degraded state banner |
-
-### What This Achieves
-- AI gateway becomes health-checkable — RuntimeTruthProbe gets reliable results
-- Boardroom and AdvisorWorkspace stop presenting mock intelligence as real in live mode
-- Revenue surfaces stop silent mock contamination
-- AI degraded states become elegant and honest across all surfaces
-- Live mode shows honest empty states instead of fake data
-- Degraded state taxonomy becomes reusable across the entire platform
-- Zero new services, domains, or edge functions (one ping handler addition)
-
-### What This Does NOT Do
-- Does not add new connectors or integrations
-- Does not expand device/mobile architecture
-- Does not add new admin pages
-- Does not change the AI gateway's core routing logic
-- Focuses purely on truth, honesty, and mock elimination
+### Files Modified: 5
+No new files created. Pure wiring and mock elimination.
 
