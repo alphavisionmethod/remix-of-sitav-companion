@@ -14,6 +14,8 @@ import { Input } from "@/components/ui/input";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useAuth } from "@/contexts/AuthContext";
+import { useOSOrchestration } from "@/hooks/useOSOrchestration";
+import { useAdaptiveInterface } from "@/hooks/useAdaptiveInterface";
 import { useQuery } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";
 import { motion, AnimatePresence } from "framer-motion";

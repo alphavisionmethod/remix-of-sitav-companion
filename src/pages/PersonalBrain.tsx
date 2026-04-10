@@ -53,7 +53,7 @@ function PersonalBrainInner() {
 
     // Route through OS intent orchestrator for tracking
     if (os.hydrated) {
-      os.processIntent(input.trim(), "chat", "desktop").catch(() => {});
+      os.processIntent(input.trim(), "assistant", "desktop").catch(() => {});
     }
 
     try {
