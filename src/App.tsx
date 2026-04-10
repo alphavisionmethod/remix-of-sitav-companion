@@ -1,7 +1,7 @@
 import { QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
-import { AdminRoutes } from "@/routes/AdminRoutes";
-import { OwnerRoutes } from "@/routes/OwnerRoutes";
+import { getAdminRoutes } from "@/routes/AdminRoutes";
+import { getOwnerRoutes } from "@/routes/OwnerRoutes";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -1609,8 +1609,8 @@ const App = () => (
                     <Route path="/templates" element={<TemplateCenter />} />
                     <Route path="/import-export" element={<ImportExportCenter />} />
 
-                    {/* ── Supplementary Admin Routes (from src/routes/AdminRoutes.tsx) ── */}
-                    <AdminRoutes />
+                    {/* ── Supplementary Admin Routes ── */}
+                    {getAdminRoutes()}
 
                     {/* ── Supplementary Owner Routes (from src/routes/OwnerRoutes.tsx — deduplicated) ── */}
 
