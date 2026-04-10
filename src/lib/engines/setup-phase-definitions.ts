@@ -189,7 +189,7 @@ export const SETUP_PHASE_DEFINITIONS: SetupPhaseDefinition[] = [
   {
     id: "operating-context", title: "Operating Context", description: "Understand your current life stage and operating reality",
     dependencies: ["quick-identity"], blocking: false, required: false,
-    backgroundTaskIds: [], branchConditions: [setupStyleCondition(["guided", "advanced"])], requiredHardware: [],
+    backgroundTaskIds: [], branchConditions: [], requiredHardware: [],
     timeout: DEFAULT_TIMEOUT, order: 10.5, excludedFromSteps: true,
     statusUX: defaultStatusUX("Operating Context"),
   },
@@ -341,7 +341,7 @@ export const SETUP_PHASE_DEFINITIONS: SetupPhaseDefinition[] = [
     id: "first-connections", title: "First Connections", description: "Connect email, calendar, payments",
     dependencies: ["environment-summary"], blocking: false, required: false,
     backgroundTaskIds: ["connector-readiness-check"],
-    branchConditions: [setupStyleCondition(["guided", "advanced"])],
+    branchConditions: [],
     requiredHardware: [],
     timeout: DEFAULT_TIMEOUT, order: 29, excludedFromSteps: true,
     statusUX: defaultStatusUX("First Connections"),
