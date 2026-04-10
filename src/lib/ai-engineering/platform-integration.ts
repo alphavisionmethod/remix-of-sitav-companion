@@ -126,6 +126,15 @@ const ADMIN_INTEGRATIONS: IntegrationPoint[] = [
     healthCheck: () => "healthy",
   },
   {
+    id: "undo-redo",
+    name: "Undo / Redo",
+    category: "admin-control-plane",
+    description: "Action undo/redo stack for reversible operator actions",
+    dataFlowIn: ["undo-stack-state", "redo-stack-state", "revertible-actions"],
+    dataFlowOut: ["undo-requests", "redo-requests", "rollback-receipts"],
+    healthCheck: () => "healthy",
+  },
+  {
     id: "deployment-truth",
     name: "Deployment Truth Center",
     category: "admin-control-plane",
