@@ -1,99 +1,112 @@
 
+# SITA OS — Operational Activation: Focus Areas 4-10 Implementation Plan
 
-# SITA OS — Runtime Truth Activation: Remaining Gaps & Enhancement Plan
+## Current State Assessment
 
-## Audit Summary: What's Done vs What's Missing
+### Already Built and Working
+| System | Status |
+|--------|--------|
+| **Google Provider Family** | Full type system, demo provider, admin dashboard (PFA09), user-facing GoogleConnectedAccounts page, hook |
+| **Device Presence Service** | Service + UI indicator in ShellLayout, admin pages UAO01/UAO02 |
+| **Attention OS** | Full service (265 lines), cognitive load, priority stack, fatigue, bundling, suppression — all wired into SitaOSContext |
+| **Chief-of-Staff** | Full service (282 lines), 7 personas, proactive checks, interventions — wired into SitaOSContext with proactive trigger loop |
+| **Continuity Engine** | Full service, threads, surfaces, handoff log — persisted |
+| **Trust-Weighted Actions** | Full service, wired into ApprovalChamber |
+| **Observability Hub** | Basic metric push/query service — persisted |
+| **RuntimeTruthProbe** | Component exists but NOT mounted in ShellLayout or Settings |
+| **Demo Governance** | Service + seeder + admin pages exist |
+| **Timing Intelligence** | Service exists, wired into SitaOSContext |
+| **15 OS Services** | All instantiated, cross-wired, persisted |
 
-### Already Implemented and Working
+### Gaps Identified (8 actionable items)
 
-| System | Status | Evidence |
-|--------|--------|----------|
-| **OS Orchestration Hook** | Real auth user ID wired | `useAuth()` in `useOSOrchestration.ts` line 52-53 |
-| **Intent Orchestrator** | Full 312-line service with 3 middlewares | Classifies, routes, builds execution plans, persists to CAI |
-| **Attention OS** | Wired into 6 flagship pages | Cognitive load, priority stacks, attention routing all active |
-| **Digest Engine** | 7 registered providers, DailyPulse triggers + persists | `useEffect` in DailyPulse.tsx calls `os.dailyPulse()` |
-| **Experience Signature** | Computes tone/verbosity from mode + cognitive load | Used by Boardroom, PersonalBrain, ConciergeCenter |
-| **Adaptive Interface** | CSS variables applied globally via ShellLayout | Density, animation, font scale all reactive |
-| **EventBus Durability** | Full Supabase persistence via `event-bus-persistence.ts` | Persists events, dead letters, supports replay |
-| **Memory Service Durability** | Full Supabase persistence via `memory-service-persistence.ts` | Insert, supersede, forget, fetch all durable |
-| **Universal Service Persistence** | All 15 OS services persist to `os_service_state` | Upsert/load/delete per user per service |
-| **CAI Persistence Bridge** | 23 persist functions for 23 CAI tables | All fire-and-forget, debounced where appropriate |
-| **AI Gateway** | 465-line edge function with auth, budget, receipts | `invokeAICapability()` canonical client routes all AI |
-| **AI Budget Policies** | DB functions for daily/weekly/monthly budget checks | `check_ai_budget_policies()` + `update_ai_budget_usage()` |
-| **PersonalBrain** | Routes through intent orchestrator + edge function | Passes OS mode + tone to backend |
-| **SettingsPage** | 12-mode selector persists to `operating_modes` CAI table | Audit trail via `persistOperatingMode()` |
-| **Boardroom** | Queries `opportunity_signals`, `priority_stacks`, `digest_compilations` | CAI React Query hooks wired |
-| **ConciergeCenter** | Queries `relationship_contexts`, `human_obligations` | CAI hooks wired |
-| **Sidebar** | Mode badge + cognitive load indicator | Visual OS presence |
-| **Receipt Service** | Hash-chained receipts with persistence adapter | Tests verify chain integrity |
-| **Policy Engine** | Evaluates policies, risk tiers, constraints | Used by canonical chain orchestrator |
+**Gap 1 — RuntimeTruthProbe not mounted anywhere**
+Component exists but is never rendered. No user ever sees it.
 
-### Remaining Gaps (5 items)
+**Gap 2 — SettingsPage has no "Connected Accounts" tab**
+GoogleConnectedAccounts page exists at `/settings/google-connected-accounts` but SettingsPage tabs don't include a unified "Connected Accounts" section. Users have no obvious way to find it.
 
-**Gap 1 — BusinessCenter has zero OS wiring**
-The BusinessCenter page (15 sub-pages, core domain) has no `useOSOrchestration`, no `useExperienceSignature`, no `useAdaptiveInterface`, no CAI data queries. It's the only major center completely disconnected from the OS layer.
+**Gap 3 — DevicePresenceIndicator hidden on mobile**
+`hidden lg:block` — invisible on the primary device surface (phones).
 
-**Gap 2 — ConciergeCenter queries CAI data but doesn't pass it to sub-pages**
-`caiRelationships` and `caiObligations` are fetched (line 74-75) but never passed to `PageComponent` — the data is queried and discarded.
+**Gap 4 — Chief-of-Staff interventions not surfaced in user pages**
+CAI06 admin page shows interventions, but no user-facing page (DailyPulse, Boardroom, NotificationCenter) renders chief-of-staff nudges/briefings.
 
-**Gap 3 — Boardroom queries CAI data but doesn't render it**
-`caiOpportunities`, `caiPriorities`, `caiDigests` are fetched (lines 983-985) but never passed to `PacketView` or any child component — the data is queried and discarded.
+**Gap 5 — ObservabilityHub has no structured logging or correlation IDs**
+Only stores raw numeric metrics. No trace IDs, no correlation, no structured log entries.
 
-**Gap 4 — No runtime truth probe for launch readiness**
-There's no client-side health check that validates: "Are OS services hydrated? Is the AI gateway reachable? Are CAI tables accessible?" The launch-truth-audit script only checks generated JSON files.
+**Gap 6 — No unified Connected Accounts Center in user settings**
+Google page exists, but no unified view showing all providers, sign-in methods, connected services, scopes, health, and reauth in one place.
 
-**Gap 5 — ApprovalChamber/ApprovalsCenter not wired to OS trust evaluation**
-The approval pages exist but don't use `os.evaluateAction()` for trust-weighted decisions before approvals execute.
+**Gap 7 — Attention OS urgency/fatigue not visible in NotificationCenter**
+NotificationCenter has quiet mode based on cogLoad but doesn't show urgency classes, fatigue state, or suppression counts to the user.
 
-## Fix Plan
+**Gap 8 — Demo mode labels inconsistent on flagship pages**
+Some pages show DemoModeBadge, others don't. No consistent "you're seeing demo data" governance banner.
 
-### Fix 1 — Wire BusinessCenter to OS Layer
-**File:** `src/pages/BusinessCenter.tsx`
-- Import `useOSOrchestration`, `useExperienceSignature`, `useAdaptiveInterface`
-- Consume attention stack for business-domain priority sorting
-- Apply experience signature for tone consistency
-- Query `opportunity_signals` filtered by domain="business" from CAI
+## Implementation Plan
 
-### Fix 2 — Pass CAI data from ConciergeCenter to sub-pages
-**File:** `src/pages/ConciergeCenter.tsx`
-- Create a React context or pass `caiRelationships` and `caiObligations` as props to `PageComponent`
-- At minimum, pass as context so ConciergeOverview can display real relationship data
+### Fix 1 — Mount RuntimeTruthProbe in sidebar footer
+**File:** `src/components/sita/AppSidebar.tsx`
+Add `RuntimeTruthProbe` compact indicator next to the cognitive load bar in the sidebar footer.
 
-### Fix 3 — Pass CAI data from Boardroom to child components
-**File:** `src/pages/Boardroom.tsx`
-- Pass `caiOpportunities` to the opportunity-board PacketView
-- Pass `caiPriorities` to the morning-briefing PacketView
-- Pass `caiDigests` to show historical digest compilations
+### Fix 2 — Add "Connected Accounts" tab to SettingsPage
+**File:** `src/pages/SettingsPage.tsx`
+- Add "Connected Accounts" to the sidebar tab list
+- Add `case "connected-accounts"` that renders the GoogleConnectedAccounts component inline, plus a section showing sign-in providers from Supabase auth identities
 
-### Fix 4 — Add runtime truth probe component
-**New file:** `src/components/sita/RuntimeTruthProbe.tsx`
-- Small utility component that checks: OS hydrated, AI gateway reachable (via a lightweight ping), CAI table accessible
-- Shows a subtle status indicator in the sidebar or settings
-- Logs results to console for debugging
+### Fix 3 — Show DevicePresenceIndicator on mobile
+**File:** `src/components/sita/ShellLayout.tsx`
+Change `hidden lg:block` to responsive positioning that works on mobile (bottom bar or header badge).
 
-### Fix 5 — Wire ApprovalChamber to OS trust evaluation
-**File:** `src/pages/ApprovalChamber.tsx`
-- Import `useOSOrchestration`
-- Before executing an approved action, call `os.evaluateAction()` to get trust-weighted routing
-- Display trust class and risk tier on approval cards
+### Fix 4 — Surface chief-of-staff interventions in DailyPulse
+**File:** `src/pages/DailyPulse.tsx`
+- `activeInterventions` is already fetched (line 159) but not rendered
+- Add a section below the pulse digest that displays active interventions as actionable cards with role persona, urgency, and dismiss/act buttons
 
-### Files Modified (5)
+### Fix 5 — Add correlation context to ObservabilityHub
+**File:** `src/lib/services/observability-hub/index.ts`
+- Extend `HubMetric` with optional `correlationId`, `traceId`, `level` (info/warn/error)
+- Add `log(entry)` method for structured entries
+- Add `getTraceLog(correlationId)` query method
+
+### Fix 6 — Show attention state in NotificationCenter
+**File:** `src/pages/NotificationCenter.tsx`
+- Display cognitive load level, fatigue state, suppression count from AttentionOS
+- Show urgency class badges on notification items
+
+### Fix 7 — Add demo governance banner to flagship pages
+**File:** `src/components/sita/DemoGovernanceBanner.tsx` (new)
+- Single component that reads `useDataMode()` and shows a clear, dismissible "Demo Mode — data shown is simulated" banner
+- Mount in ShellLayout so all pages inherit it consistently
+
+### Files Modified (7)
 | File | Change |
 |------|--------|
-| `src/pages/BusinessCenter.tsx` | Add OS hooks + CAI opportunity queries |
-| `src/pages/ConciergeCenter.tsx` | Pass CAI relationship data to sub-pages via context |
-| `src/pages/Boardroom.tsx` | Pass CAI data to PacketView children |
-| `src/pages/ApprovalChamber.tsx` | Wire trust evaluation from OS |
+| `src/components/sita/AppSidebar.tsx` | Mount RuntimeTruthProbe |
+| `src/pages/SettingsPage.tsx` | Add Connected Accounts tab |
+| `src/components/sita/ShellLayout.tsx` | Mobile-visible device presence |
+| `src/pages/DailyPulse.tsx` | Render chief-of-staff interventions |
+| `src/lib/services/observability-hub/index.ts` | Add structured logging + correlation IDs |
+| `src/pages/NotificationCenter.tsx` | Show attention state + urgency classes |
 
 ### Files Created (1)
 | File | Purpose |
 |------|---------|
-| `src/components/sita/RuntimeTruthProbe.tsx` | Lightweight runtime health check component |
+| `src/components/sita/DemoGovernanceBanner.tsx` | Consistent demo mode banner for all pages |
+
+### What This Does NOT Do (by design)
+- Does not add new services, domains, or edge functions
+- Does not expand wearable/ring/band architecture
+- Does not add new admin pages
+- Does not duplicate existing components
+- Focuses purely on wiring existing systems into user-facing surfaces
 
 ### What This Achieves
-- BusinessCenter (the largest domain center) joins the OS orchestration layer
-- CAI data actually flows to the components that render it (not just queried and discarded)
-- Runtime truth is verifiable at startup
-- Approval flows respect trust-weighted action evaluation
-- Zero new services, domains, or edge functions
-
+- RuntimeTruthProbe becomes visible — launch readiness is observable
+- Connected Accounts becomes discoverable in Settings
+- Device presence works on mobile (the primary surface)
+- Chief-of-Staff interventions surface in the daily experience
+- Observability gains structured logging with trace correlation
+- Attention OS state visible to users in NotificationCenter
+- Demo governance is consistent and honest across all surfaces
