@@ -1,9 +1,11 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — AI Gateway Callable Functions
 // Direct callers for brain-core and ai-gateway edge functions.
+// ConscienceGate pre-flight validation before edge function calls.
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+import { conscienceGate } from "@/lib/services/conscience-gate";
 
 export interface BrainCoreResponse {
   request_id: string;
@@ -28,14 +30,46 @@ export interface AIGatewayResponse {
 
 /**
  * Call brain-core for advisor intelligence.
+ * Runs ConscienceGate pre-flight validation before the edge function call.
  */
 export async function callBrainCore(
   advisor: string,
   intent: string,
   context?: Record<string, unknown>,
 ): Promise<BrainCoreResponse> {
+  // Pre-flight: ConscienceGate validation
+  const gateVerdict = await conscienceGate.evaluate({
+    taskType: `advisor.${advisor}`,
+    userId: context?.userId as string || "anonymous",
+    tenantId: context?.tenantId as string || "default",
+    input: { intent, advisor, ...(context || {}) },
+    correlationId: crypto.randomUUID(),
+  });
+
+  if (gateVerdict.decision === "block" || gateVerdict.decision === "refuse") {
+    return {
+      request_id: crypto.randomUUID(),
+      correlation_id: gateVerdict.correlationId || crypto.randomUUID(),
+      advisor,
+      recommendation: `Request blocked by ConscienceGate: ${gateVerdict.reasons.join("; ")}`,
+      confidence: 0,
+      reasoning: gateVerdict.reasons.join("; "),
+      actions: [],
+      source: "error",
+      requiresApproval: false,
+    };
+  }
+
   const { data, error } = await supabase.functions.invoke("brain-core", {
-    body: { intent, advisor, context: context || {} },
+    body: {
+      intent,
+      advisor,
+      context: {
+        ...(context || {}),
+        gateDecision: gateVerdict.decision,
+        gateRiskClass: gateVerdict.riskClass,
+      },
+    },
   });
   if (error) throw new Error((error as Error)?.message ?? (String(error) || "Brain Core error"));
   return data as BrainCoreResponse;
@@ -59,4 +93,3 @@ export async function callAIGateway(
   if (error) throw new Error((error as Error)?.message ?? (String(error) || "AI Gateway error"));
   return data as AIGatewayResponse;
 }
-
