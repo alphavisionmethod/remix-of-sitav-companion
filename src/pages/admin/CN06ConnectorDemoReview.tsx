@@ -11,6 +11,7 @@ import { Presentation, Play } from "lucide-react";
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import CNSubNav from "@/components/admin/CNSubNav";
 
 
 
@@ -26,7 +27,8 @@ export default function CN06ConnectorDemoReview() {
   const activateMutation = useAction("admin", "connector.activate");
 
   return (
-    <div className="space-y-6 p-6"  >
+    <div className="space-y-6 p-6">
+      <CNSubNav />
       <DemoModeBadge />
       <h1 className="sr-only">Connector Demo Review</h1>
       <div className="space-y-6">
