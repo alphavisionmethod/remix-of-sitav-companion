@@ -14,11 +14,15 @@ const SUB_PAGES = [
   { path: "/admin/implementation-truth/contracts", label: "Contract Verification", icon: FileCheck, desc: "Contract alignment & shadow detection" },
   { path: "/admin/implementation-truth/wiring", label: "Wiring Graph", icon: GitBranch, desc: "End-to-end trace from spec to proof" },
   { path: "/admin/implementation-truth/readiness", label: "Readiness Scorecards", icon: BarChart3, desc: "10-dimension per-feature scoring" },
-  { path: "/admin/implementation-truth/drift", label: "Drift & Traceability", icon: Radar, desc: "Spec vs. implementation drift radar" },
+  { path: "/admin/implementation-truth/drift", label: "Drift Radar", icon: Radar, desc: "Drift detection & classification by category" },
   { path: "/admin/implementation-truth/map", label: "Implementation Map", icon: Map, desc: "Per-spec artifact inventory & presence" },
   { path: "/admin/implementation-truth/architecture", label: "Architecture Compliance", icon: ShieldCheck, desc: "17 architecture enforcement checks" },
   { path: "/admin/implementation-truth/routes", label: "Route Inventory", icon: Route, desc: "Unified route & component registry" },
   { path: "/admin/implementation-truth/runtime", label: "Runtime Evidence", icon: Activity, desc: "Live runtime signals per spec" },
+  { path: "/admin/implementation-truth/prompts", label: "Prompt Traceability", icon: BookOpen, desc: "Prompt-to-build lineage & coverage" },
+  { path: "/admin/implementation-truth/pipeline", label: "Validation Pipeline", icon: Shield, desc: "Static & runtime validation results" },
+  { path: "/admin/implementation-truth/launch-gate", label: "Launch Truth Gate", icon: BarChart3, desc: "Go/no-go launch readiness verdict" },
+  { path: "/admin/implementation-truth/manifests", label: "Feature Manifests", icon: FileCheck, desc: "Per-feature verification manifest explorer" },
 ];
 
 export default function ITC01Overview() {

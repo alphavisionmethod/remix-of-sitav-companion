@@ -25,10 +25,10 @@ function buildManifestAreas(spec: SpecRegistryEntry): ManifestArea[] {
   };
 
   return [
-    area("Routes", spec.required_routes, spec.route_completeness || 0),
-    area("Components", spec.required_components, spec.component_coverage || 0),
-    area("Contracts", spec.required_contracts, spec.contract_completeness || 0),
-    area("Services", spec.required_services, spec.service_coverage || 0),
+    area("Routes", spec.required_routes, spec.ui_score || 0),
+    area("Components", spec.required_components, spec.ui_score || 0),
+    area("Contracts", spec.required_contracts, spec.contract_score || 0),
+    area("Services", spec.required_services, spec.wiring_score || 0),
     area("Shells", spec.required_shells, (spec.required_shells?.length || 0) > 0 ? (spec.architecture_score || 0) : 0),
     area("Endpoints", spec.required_endpoints, (spec.required_endpoints?.length || 0) > 0 ? (spec.architecture_score || 0) : 0),
     area("Events", spec.required_events, spec.proof_score || 0),
@@ -36,7 +36,7 @@ function buildManifestAreas(spec: SpecRegistryEntry): ManifestArea[] {
     area("Tests", spec.required_tests, spec.test_score || 0),
     area("Schemas", spec.required_schemas, (spec.required_schemas?.length || 0) > 0 ? (spec.architecture_score || 0) : 0),
     area("Docs", spec.required_docs, spec.docs_score || 0),
-    area("Screens", spec.required_screens, spec.route_completeness || 0),
+    area("Screens", spec.required_screens, spec.ui_score || 0),
     area("Projections", spec.required_projections, spec.proof_score || 0),
   ];
 }

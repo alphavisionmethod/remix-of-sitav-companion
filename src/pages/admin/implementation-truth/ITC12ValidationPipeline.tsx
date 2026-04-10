@@ -77,7 +77,7 @@ export default function ITC12ValidationPipeline() {
     };
 
     const contractSpecs = allSpecs.filter(s => s.required_contracts.length > 0);
-    const contractPass = contractSpecs.filter(s => (s.contract_completeness || 0) >= 50).length;
+    const contractPass = contractSpecs.filter(s => (s.contract_score || 0) >= 50).length;
     const contractCheck: PipelineCheck = {
       name: "Contract Validation",
       icon: Shield,
@@ -89,7 +89,7 @@ export default function ITC12ValidationPipeline() {
     };
 
     const routeSpecs = allSpecs.filter(s => s.required_routes.length > 0);
-    const routePass = routeSpecs.filter(s => (s.route_completeness || 0) >= 50).length;
+    const routePass = routeSpecs.filter(s => (s.ui_score || 0) >= 50).length;
     const routeCheck: PipelineCheck = {
       name: "Route Inventory Validation",
       icon: Route,

@@ -27,8 +27,8 @@ function uselaunchBlockers(specs: SpecRegistryEntry[]): LaunchBlocker[] {
       if ((spec.runtime_score || 0) === 0 && (spec.required_proofs?.length || 0) + (spec.required_events?.length || 0) > 0) {
         blockers.push({ spec, reason: "No runtime evidence collected", category: "runtime", severity: "critical" });
       }
-      if ((spec.contract_completeness || 0) < 30 && spec.required_contracts.length > 0) {
-        blockers.push({ spec, reason: `Contract completeness at ${spec.contract_completeness || 0}%`, category: "contract", severity: "high" });
+      if ((spec.contract_score || 0) < 30 && spec.required_contracts.length > 0) {
+        blockers.push({ spec, reason: `Contract score at ${spec.contract_score || 0}%`, category: "contract", severity: "high" });
       }
       if ((spec.proof_score || 0) === 0 && (spec.required_proofs?.length || 0) > 0) {
         blockers.push({ spec, reason: "Proof/trust edges missing", category: "proof", severity: "high" });

@@ -262,6 +262,10 @@ const ITC07ImplementationMap = lazy(() => import("./pages/admin/implementation-t
 const ITC08ArchitectureCompliance = lazy(() => import("./pages/admin/implementation-truth/ITC08ArchitectureCompliance"));
 const ITC09RouteInventory = lazy(() => import("./pages/admin/implementation-truth/ITC09RouteInventory"));
 const ITC10RuntimeEvidence = lazy(() => import("./pages/admin/implementation-truth/ITC10RuntimeEvidence"));
+const ITC11PromptTraceability = lazy(() => import("./pages/admin/implementation-truth/ITC11PromptTraceability"));
+const ITC12ValidationPipeline = lazy(() => import("./pages/admin/implementation-truth/ITC12ValidationPipeline"));
+const ITC13LaunchTruthGate = lazy(() => import("./pages/admin/implementation-truth/ITC13LaunchTruthGate"));
+const ITC14ManifestExplorer = lazy(() => import("./pages/admin/implementation-truth/ITC14ManifestExplorer"));
 
 // ── Phase 4 Unification Pages ──
 const TrustStateRegistry = lazy(() => import("./pages/admin/TrustStateRegistry"));
@@ -1600,6 +1604,10 @@ const App = () => (
                     <Route path="/admin/implementation-truth/architecture" element={<ITC08ArchitectureCompliance />} />
                     <Route path="/admin/implementation-truth/routes" element={<ITC09RouteInventory />} />
                     <Route path="/admin/implementation-truth/runtime" element={<ITC10RuntimeEvidence />} />
+                    <Route path="/admin/implementation-truth/prompts" element={<ITC11PromptTraceability />} />
+                    <Route path="/admin/implementation-truth/pipeline" element={<ITC12ValidationPipeline />} />
+                    <Route path="/admin/implementation-truth/launch-gate" element={<ITC13LaunchTruthGate />} />
+                    <Route path="/admin/implementation-truth/manifests" element={<ITC14ManifestExplorer />} />
                     {/* Phase 4 Unification */}
                     <Route path="/admin/trust-state" element={<TrustStateRegistry />} />
                     <Route path="/admin/action-state" element={<ActionStateDriftViewer />} />
