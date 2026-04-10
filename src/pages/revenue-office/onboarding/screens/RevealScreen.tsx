@@ -19,7 +19,7 @@ const REVENUE_ESTIMATES: Record<string, number> = {
   onboarding: 3800,
 };
 
-export default function RevealScreen({ state }: ScreenProps) {
+export default function RevealScreen({ state, onBack }: ScreenProps) {
   const navigate = useNavigate();
   const [phase, setPhase] = useState<"building" | "revealing" | "ready">("building");
   const [revealedCount, setRevealedCount] = useState(0);

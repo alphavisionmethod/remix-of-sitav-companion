@@ -1,5 +1,6 @@
-import { Globe, Phone, MessageSquare, FileText, ShoppingCart, MapPin, Users, Mail, Calendar, Brain, Eye, Shield, Heart, ClipboardList } from "lucide-react";
+import { Globe, Phone, MessageSquare, FileText, ShoppingCart, MapPin, Users, Mail, Calendar, Brain, Eye, Shield, Heart, ClipboardList, AlertTriangle } from "lucide-react";
 import { Toggle, SectionTitle, ScreenHeader } from "../primitives";
+import SitaInsightCallout from "./SitaInsightCallout";
 import type { ScreenProps } from "../types";
 import { useCallback } from "react";
 
@@ -28,18 +29,30 @@ const closeOptions = [
   { id: "trial", label: "Free trial", icon: Eye },
 ];
 
+const weaknessOptions = [
+  { id: "lead_capture", label: "Lead capture", icon: ClipboardList },
+  { id: "follow_up", label: "Follow-up", icon: MessageSquare },
+  { id: "show_up_rate", label: "Show-up rate", icon: Calendar },
+  { id: "quote_conversion", label: "Quote conversion", icon: FileText },
+  { id: "checkout_conversion", label: "Checkout conversion", icon: ShoppingCart },
+  { id: "nurture", label: "Nurture", icon: Brain },
+  { id: "trust_reputation", label: "Trust / reputation", icon: Shield },
+  { id: "objection_handling", label: "Objection handling", icon: AlertTriangle },
+];
+
 export default function ConversionScreen({ state, setState }: ScreenProps) {
-  
   const toggleBuy = useCallback((v: string) => {
     setState(p => ({ ...p, preBuyBehavior: p.preBuyBehavior.includes(v) ? p.preBuyBehavior.filter(x => x !== v) : [...p.preBuyBehavior, v] }));
   }, [setState]);
   const toggleClose = useCallback((v: string) => {
     setState(p => ({ ...p, whatCloses: p.whatCloses.includes(v) ? p.whatCloses.filter(x => x !== v) : [...p.whatCloses, v] }));
   }, [setState]);
+  const toggleWeakness = useCallback((v: string) => {
+    setState(p => ({ ...p, conversionWeakness: p.conversionWeakness.includes(v) ? p.conversionWeakness.filter(x => x !== v) : [...p.conversionWeakness, v] }));
+  }, [setState]);
 
   return (
     <div className="space-y-6">
-      
       <ScreenHeader icon={ShoppingCart} title="How do people usually become customers?" subtitle="This maps your conversion motion and funnel structure" color="text-purple-400" />
       <div>
         <SectionTitle hint="Select all that apply">What do customers do before they buy?</SectionTitle>
@@ -53,6 +66,22 @@ export default function ConversionScreen({ state, setState }: ScreenProps) {
           {closeOptions.map(o => <Toggle key={o.id} label={o.label} icon={o.icon} selected={state.whatCloses.includes(o.id)} onToggle={() => toggleClose(o.id)} />)}
         </div>
       </div>
+      <div>
+        <SectionTitle hint="Select all that apply">What part of conversion feels weakest today?</SectionTitle>
+        <div className="grid md:grid-cols-2 gap-2">
+          {weaknessOptions.map(o => <Toggle key={o.id} label={o.label} icon={o.icon} selected={state.conversionWeakness.includes(o.id)} onToggle={() => toggleWeakness(o.id)} />)}
+        </div>
+      </div>
+      <SitaInsightCallout
+        show={state.conversionWeakness.includes("follow_up") && state.conversionWeakness.includes("show_up_rate")}
+        message="Follow-up and show-up issues detected — SITA will prioritize Call Desk reminders and rescue automations."
+        type="detected"
+      />
+      <SitaInsightCallout
+        show={state.conversionWeakness.includes("quote_conversion") && state.whatCloses.includes("proposal")}
+        message="Quote conversion weakness in a proposal-driven model — Quote Studio will be a priority module."
+        type="detected"
+      />
     </div>
   );
 }
