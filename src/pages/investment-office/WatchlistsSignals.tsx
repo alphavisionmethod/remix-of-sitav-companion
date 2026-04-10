@@ -2,10 +2,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye, Plus, Bell, Brain, TrendingUp, TrendingDown, ChevronRight, Star, Zap, Shield } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { SparklineChart } from "@/components/sita/SparklineChart";
 import { INSTRUMENTS, PORTFOLIO, WATCHLISTS } from "@/hooks/useInvestmentOfficeData";
+import { SPARKLINE_DATA } from "@/lib/investment-office/mock-data";
 import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
 import { useDataMode } from "@/contexts/DataModeContext";
-import type { CompetitiveGapAnalysis, TrustPostureReport } from "@/packages/moat-contracts";
 
 export default function WatchlistsSignals() {
   const { isDemoMode } = useDataMode();
@@ -15,11 +16,9 @@ export default function WatchlistsSignals() {
   const [specialView, setSpecialView] = useState<"none" | "advisor" | "risk" | "catalyst">("none");
   const current = WATCHLISTS.find(w => w.id === activeList) || WATCHLISTS[0];
 
-  // Derive advisor-driven and risk watchlists
   const highRiskHoldings = PORTFOLIO.holdings.filter(h => h.weight > 12);
   const catalystInstruments = INSTRUMENTS.filter(i => i.catalysts.length > 0);
 
-  // Build display instruments based on active view
   const displayInstruments = specialView === "advisor"
     ? highRiskHoldings.map(h => h.instrument)
     : specialView === "catalyst"
@@ -103,9 +102,12 @@ export default function WatchlistsSignals() {
                 </div>
                 <p className="text-[11px] text-muted-foreground truncate">{inst.name}</p>
               </div>
+              {SPARKLINE_DATA[inst.id] && (
+                <SparklineChart data={SPARKLINE_DATA[inst.id]} width={64} height={20} />
+              )}
               <div className="text-right shrink-0">
                 <p className="text-sm font-medium text-foreground">${inst.price.toLocaleString()}</p>
-                <p className={`text-[10px] font-medium ${inst.changePct24h >= 0 ? "text-[hsl(var(--trust-safe))]" : "text-destructive"}`}>
+                <p className={`text-[10px] font-medium ${inst.changePct24h >= 0 ? "text-trust-safe" : "text-destructive"}`}>
                   {inst.changePct24h >= 0 ? "+" : ""}{inst.changePct24h.toFixed(2)}%
                 </p>
               </div>
@@ -122,7 +124,6 @@ export default function WatchlistsSignals() {
 
       {/* Signal Alerts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* Catalyst Watch */}
         <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
           <h3 className="text-sm font-semibold text-foreground flex items-center gap-2"><Zap className="h-4 w-4 text-accent" /> Catalyst Alerts</h3>
           {catalystInstruments.slice(0, 4).map(inst => (
@@ -133,13 +134,12 @@ export default function WatchlistsSignals() {
                 <p className="text-[10px] text-muted-foreground">{inst.catalysts[0].date} · {inst.catalysts[0].type}</p>
               </div>
               <span className={`text-[9px] font-medium rounded-full px-2 py-0.5 ${
-                inst.catalysts[0].impact === "positive" ? "bg-[hsl(var(--trust-safe))]/10 text-[hsl(var(--trust-safe))]" : "bg-secondary text-muted-foreground"
+                inst.catalysts[0].impact === "positive" ? "bg-[hsl(var(--trust-safe))]/10 text-trust-safe" : "bg-secondary text-muted-foreground"
               }`}>{inst.catalysts[0].impact}</span>
             </div>
           ))}
         </div>
 
-        {/* Risk Watch */}
         <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
           <h3 className="text-sm font-semibold text-foreground flex items-center gap-2"><Shield className="h-4 w-4 text-[hsl(var(--trust-warn))]" /> Risk Watch</h3>
           {highRiskHoldings.map(h => (

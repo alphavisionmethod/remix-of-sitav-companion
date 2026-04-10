@@ -3,15 +3,71 @@ import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   TrendingUp, TrendingDown, DollarSign, PieChart, Shield, Eye, Calendar,
-  ArrowRight, BarChart3, Briefcase, AlertTriangle, Clock, Brain, ChevronRight
+  ArrowRight, BarChart3, Briefcase, AlertTriangle, Clock, Brain, ChevronRight,
+  RefreshCw, Zap, Info
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { SparklineChart } from "@/components/sita/SparklineChart";
 import { INSTRUMENTS, INVESTMENT_ADVISORS, PORTFOLIO, SAMPLE_ORDERS, SAMPLE_THESES, WATCHLISTS } from "@/hooks/useInvestmentOfficeData";
+import { SPARKLINE_DATA, WHAT_CHANGED } from "@/lib/investment-office/mock-data";
 import { useInvestmentDecisions } from "@/hooks/use-investment-office";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 const fmt = (n: number) => n >= 1e9 ? `$${(n / 1e9).toFixed(1)}B` : n >= 1e6 ? `$${(n / 1e6).toFixed(1)}M` : n >= 1e3 ? `$${(n / 1e3).toFixed(1)}K` : `$${n.toFixed(2)}`;
 const pctFmt = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
+
+// ── Animated Ticker Ribbon ──
+function TickerRibbon() {
+  const tickerItems = PORTFOLIO.holdings.map(h => ({
+    symbol: h.instrument.symbol,
+    icon: h.instrument.logoIcon,
+    price: h.instrument.price,
+    pct: h.instrument.changePct24h,
+  }));
+  // Duplicate for seamless scroll
+  const doubled = [...tickerItems, ...tickerItems];
+
+  return (
+    <div className="relative overflow-hidden rounded-xl border border-border bg-card/80 backdrop-blur">
+      <div className="flex animate-ticker-scroll whitespace-nowrap py-2">
+        {doubled.map((t, i) => (
+          <div key={i} className="flex items-center gap-1.5 px-4 border-r border-border/30 shrink-0">
+            <span className="text-xs">{t.icon}</span>
+            <span className="text-[10px] font-semibold text-foreground">{t.symbol}</span>
+            <span className="text-[10px] text-foreground">${t.price.toLocaleString()}</span>
+            <span className={`text-[9px] font-bold ${t.pct >= 0 ? "text-trust-safe" : "text-destructive"}`}>
+              {t.pct >= 0 ? "+" : ""}{t.pct.toFixed(2)}%
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── What Changed Card ──
+function WhatChangedCard() {
+  const severityColors = {
+    info: "bg-primary/10 text-primary",
+    warn: "bg-[hsl(var(--trust-warn))]/10 text-[hsl(var(--trust-warn))]",
+    alert: "bg-destructive/10 text-destructive",
+  };
+  return (
+    <div className="rounded-2xl border border-primary/15 bg-gradient-to-br from-primary/5 via-card to-card p-5 space-y-3">
+      <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
+        <RefreshCw className="h-4 w-4 text-primary" /> Since Last Visit
+      </h3>
+      {WHAT_CHANGED.map((item, i) => (
+        <div key={i} className="flex items-start gap-2.5">
+          <span className={`shrink-0 mt-0.5 rounded-full px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider ${severityColors[item.severity]}`}>
+            {item.type}
+          </span>
+          <p className="text-[11px] text-foreground leading-relaxed">{item.text}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export default function InvestmentBoardroom() {
   const { isDemoMode } = useDataMode();
@@ -19,7 +75,6 @@ export default function InvestmentBoardroom() {
   const navigate = useNavigate();
   const p = PORTFOLIO;
   const topMovers = [...INSTRUMENTS].sort((a, b) => Math.abs(b.changePct24h) - Math.abs(a.changePct24h)).slice(0, 5);
-
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
@@ -49,14 +104,17 @@ export default function InvestmentBoardroom() {
         </div>
       </div>
 
+      {/* Ticker Ribbon */}
+      <TickerRibbon />
+
       {/* Capital Overview */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
         {[
           { label: "Total Capital", value: fmt(p.totalValue + p.totalCash), icon: DollarSign, color: "text-primary" },
           { label: "Invested", value: fmt(p.totalValue), icon: BarChart3, color: "text-foreground" },
           { label: "Cash", value: fmt(p.totalCash), icon: DollarSign, color: "text-muted-foreground" },
-          { label: "Total P&L", value: pctFmt(p.totalPnlPct), icon: p.totalPnl >= 0 ? TrendingUp : TrendingDown, color: p.totalPnl >= 0 ? "text-[hsl(var(--trust-safe))]" : "text-destructive" },
-          { label: "Risk Score", value: `${p.riskScore}/100`, icon: Shield, color: p.riskScore > 70 ? "text-[hsl(var(--trust-warn))]" : "text-[hsl(var(--trust-safe))]" },
+          { label: "Total P&L", value: pctFmt(p.totalPnlPct), icon: p.totalPnl >= 0 ? TrendingUp : TrendingDown, color: p.totalPnl >= 0 ? "text-trust-safe" : "text-destructive" },
+          { label: "Risk Score", value: `${p.riskScore}/100`, icon: Shield, color: p.riskScore > 70 ? "text-[hsl(var(--trust-warn))]" : "text-trust-safe" },
         ].map((s, i) => (
           <motion.div key={s.label} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
             className="rounded-2xl border border-border bg-card p-4">
@@ -68,25 +126,12 @@ export default function InvestmentBoardroom() {
         ))}
       </div>
 
+      {/* What Changed + Allocation + Advisor Summary */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {/* Allocation Breakdown */}
-        <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
-          <h3 className="text-sm font-semibold text-foreground flex items-center gap-2"><PieChart className="h-4 w-4 text-primary" /> Allocation</h3>
-          {Object.entries(p.allocationByClass).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1]).map(([cls, pct]) => (
-            <div key={cls} className="flex items-center gap-3">
-              <span className="w-20 text-xs text-muted-foreground capitalize">{cls}</span>
-              <div className="flex-1 h-2 rounded-full bg-secondary overflow-hidden">
-                <div className="h-full rounded-full bg-primary/60 transition-all" style={{ width: `${pct}%` }} />
-              </div>
-              <span className="text-xs font-medium text-foreground w-12 text-right">{pct.toFixed(1)}%</span>
-            </div>
-          ))}
-          <button onClick={() => navigate("/investments/portfolio")} className="text-[10px] text-primary hover:underline flex items-center gap-1 mt-2">
-            View full portfolio <ChevronRight className="h-3 w-3" />
-          </button>
-        </div>
+        {/* What Changed */}
+        <WhatChangedCard />
 
-        {/* What Changed / Movers */}
+        {/* Top Movers with Sparklines */}
         <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
           <h3 className="text-sm font-semibold text-foreground flex items-center gap-2"><TrendingUp className="h-4 w-4 text-primary" /> Top Movers</h3>
           {topMovers.map(inst => (
@@ -97,9 +142,12 @@ export default function InvestmentBoardroom() {
                 <p className="text-xs font-medium text-foreground">{inst.symbol}</p>
                 <p className="text-[10px] text-muted-foreground truncate">{inst.name}</p>
               </div>
+              {SPARKLINE_DATA[inst.id] && (
+                <SparklineChart data={SPARKLINE_DATA[inst.id]} width={60} height={20} />
+              )}
               <div className="text-right">
                 <p className="text-xs font-medium text-foreground">${inst.price.toLocaleString()}</p>
-                <p className={`text-[10px] font-medium ${inst.changePct24h >= 0 ? "text-[hsl(var(--trust-safe))]" : "text-destructive"}`}>
+                <p className={`text-[10px] font-medium ${inst.changePct24h >= 0 ? "text-trust-safe" : "text-destructive"}`}>
                   {pctFmt(inst.changePct24h)}
                 </p>
               </div>
@@ -118,7 +166,11 @@ export default function InvestmentBoardroom() {
                 <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">{adv.title}</p>
                 <p className="text-[11px] text-foreground leading-tight mt-0.5 line-clamp-2">{adv.currentInsight}</p>
               </div>
-              <div className="shrink-0 text-[9px] font-medium text-muted-foreground">{adv.confidence}%</div>
+              <div className={`shrink-0 text-[9px] font-medium rounded-full px-2 py-0.5 ${
+                adv.confidenceLevel === "high" ? "bg-[hsl(var(--trust-safe))]/10 text-trust-safe animate-pulse-safe" :
+                adv.confidenceLevel === "moderate" ? "bg-[hsl(var(--trust-warn))]/10 text-[hsl(var(--trust-warn))] animate-pulse-warn" :
+                "bg-destructive/10 text-destructive animate-pulse-danger"
+              }`}>{adv.confidence}%</div>
             </button>
           ))}
           <button onClick={() => navigate("/investments/advisors")} className="text-[10px] text-primary hover:underline flex items-center gap-1 mt-1">
@@ -129,20 +181,21 @@ export default function InvestmentBoardroom() {
 
       {/* Bottom Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {/* Watchlist */}
+        {/* Allocation */}
         <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
-          <h3 className="text-sm font-semibold text-foreground flex items-center gap-2"><Eye className="h-4 w-4 text-primary" /> Watchlist</h3>
-          {WATCHLISTS[0].instruments.map(inst => (
-            <button key={inst.id} onClick={() => navigate(`/investments/instrument/${inst.id}`)}
-              className="w-full flex items-center gap-3 text-left hover:bg-secondary/50 rounded-xl p-2 -mx-2 transition-colors">
-              <span className="text-sm">{inst.logoIcon}</span>
-              <div className="flex-1"><p className="text-xs font-medium text-foreground">{inst.symbol}</p></div>
-              <p className="text-xs text-foreground">${inst.price.toLocaleString()}</p>
-              <p className={`text-[10px] font-medium w-14 text-right ${inst.changePct24h >= 0 ? "text-[hsl(var(--trust-safe))]" : "text-destructive"}`}>
-                {pctFmt(inst.changePct24h)}
-              </p>
-            </button>
+          <h3 className="text-sm font-semibold text-foreground flex items-center gap-2"><PieChart className="h-4 w-4 text-primary" /> Allocation</h3>
+          {Object.entries(p.allocationByClass).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1]).map(([cls, pct]) => (
+            <div key={cls} className="flex items-center gap-3">
+              <span className="w-20 text-xs text-muted-foreground capitalize">{cls}</span>
+              <div className="flex-1 h-2 rounded-full bg-secondary overflow-hidden">
+                <div className="h-full rounded-full bg-primary/60 transition-all" style={{ width: `${pct}%` }} />
+              </div>
+              <span className="text-xs font-medium text-foreground w-12 text-right">{pct.toFixed(1)}%</span>
+            </div>
           ))}
+          <button onClick={() => navigate("/investments/portfolio")} className="text-[10px] text-primary hover:underline flex items-center gap-1 mt-2">
+            View full portfolio <ChevronRight className="h-3 w-3" />
+          </button>
         </div>
 
         {/* Upcoming Catalysts */}
@@ -156,7 +209,7 @@ export default function InvestmentBoardroom() {
                 <p className="text-[10px] text-muted-foreground">{cat.instrument.symbol} · {cat.date}</p>
               </div>
               <span className={`text-[9px] font-medium rounded-full px-2 py-0.5 ${
-                cat.impact === "positive" ? "bg-[hsl(var(--trust-safe))]/10 text-[hsl(var(--trust-safe))]" :
+                cat.impact === "positive" ? "bg-[hsl(var(--trust-safe))]/10 text-trust-safe" :
                 cat.impact === "negative" ? "bg-destructive/10 text-destructive" :
                 "bg-secondary text-muted-foreground"
               }`}>{cat.impact}</span>
