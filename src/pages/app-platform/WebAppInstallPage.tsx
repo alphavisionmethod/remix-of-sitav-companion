@@ -21,7 +21,7 @@ import { toast } from "sonner";
 const WebAppInstallPage = () => {
   const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
-  const { installApp, pinToDock, setNotificationEnabled, setStartupBehavior } = useAppPlatform();
+  const { apps, installApp, pinToDock, setNotificationEnabled, setStartupBehavior } = useAppPlatform();
   const [selectedSite, setSelectedSite] = useState<typeof DEMO_DETECTED_SITES[0] | null>(null);
   const [installing, setInstalling] = useState(false);
   const [installed, setInstalled] = useState(false);
