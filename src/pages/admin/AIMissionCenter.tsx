@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { Target, Clock, CheckCircle2, AlertTriangle, Pause, RotateCcw, Sparkles, Shield, FileCheck, ArrowRight, Eye, Users, Bug, Wrench } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_ADMIN_MISSIONS_A_I_MISSION_CENTER as DEMO_MISSIONS } from "@/lib/demo-data/admin-platform";
 
 const statusConfig: Record<string, { label: string; color: string; icon: typeof Clock }> = {
@@ -26,10 +26,10 @@ const taskStatusIcon = (status: string) =>
   <div className="h-3 w-3 rounded-full border border-border" />;
 
 const AIMissionCenter = () => {
-  const { isDemoMode } = useDataMode();
+  const { data: missions, isDemo } = useAIEngDomain("missions", DEMO_MISSIONS);
   const [tab, setTab] = useState("all");
   const [expanded, setExpanded] = useState<number | null>(1);
-  const filtered = tab === "all" ? DEMO_MISSIONS : DEMO_MISSIONS.filter(m => m.status === tab);
+  const filtered = tab === "all" ? missions : missions.filter((m: any) => m.status === tab);
 
   return (
     <div className="space-y-6 p-6">
@@ -38,11 +38,11 @@ const AIMissionCenter = () => {
 
       <div className="grid grid-cols-5 gap-3">
         {[
-          { l: "Active", v: DEMO_MISSIONS.filter(m => ["in_progress","simulated","ready_for_approval"].includes(m.status)).length },
-          { l: "Awaiting Approval", v: DEMO_MISSIONS.filter(m => m.status === "ready_for_approval").length },
-          { l: "P0 Critical", v: DEMO_MISSIONS.filter(m => m.priority === "P0").length, c: "text-destructive" },
-          { l: "Learned From", v: DEMO_MISSIONS.filter(m => m.status === "learned_from").length },
-          { l: "Avg Confidence", v: `${Math.round(DEMO_MISSIONS.reduce((a,m) => a + m.confidence, 0) / DEMO_MISSIONS.length)}%` },
+          { l: "Active", v: missions.filter((m: any) => ["in_progress","simulated","ready_for_approval"].includes(m.status)).length },
+          { l: "Awaiting Approval", v: missions.filter((m: any) => m.status === "ready_for_approval").length },
+          { l: "P0 Critical", v: missions.filter((m: any) => m.priority === "P0").length, c: "text-destructive" },
+          { l: "Learned From", v: missions.filter((m: any) => m.status === "learned_from").length },
+          { l: "Avg Confidence", v: `${Math.round(missions.reduce((a: number, m: any) => a + (m.confidence || 0), 0) / Math.max(missions.length, 1))}%` },
         ].map(c => (
           <div key={c.l} className="rounded-xl border border-border/40 bg-card p-4 text-center">
             <p className={`text-xl font-bold ${c.c || ""}`}>{c.v}</p>
@@ -62,8 +62,8 @@ const AIMissionCenter = () => {
       </Tabs>
 
       <div className="space-y-3">
-        {filtered.map(m => {
-          const sc = statusConfig[m.status];
+        {filtered.map((m: any) => {
+          const sc = statusConfig[m.status] || statusConfig.suggested;
           const isExpanded = expanded === m.id;
           return (
             <div key={m.id} className={`rounded-xl border bg-card overflow-hidden ${
@@ -74,58 +74,59 @@ const AIMissionCenter = () => {
                   <div className="flex items-center gap-2">
                     <sc.icon className={`h-4 w-4 ${sc.color}`} />
                     <span className="text-sm font-semibold">{m.title}</span>
-                    <Badge variant="outline" className="text-[10px]">{m.priority}</Badge>
-                    <Badge variant="outline" className="text-[10px]">{m.type}</Badge>
+                    {m.priority && <Badge variant="outline" className="text-[10px]">{m.priority}</Badge>}
+                    {m.type && <Badge variant="outline" className="text-[10px]">{m.type}</Badge>}
                   </div>
                   <Badge variant="outline" className={`text-[10px] ${sc.color}`}>{sc.label}</Badge>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  {m.agents.join(", ")} · Confidence: {m.confidence}% · Blast: {m.blastRadius} · {m.evidence} evidence · {m.tests} tests
+                  {m.agents?.join(", ") || m.agent || "—"} · Confidence: {m.confidence}% · {m.evidence || 0} evidence · {m.tests || 0} tests
                 </p>
               </div>
 
               {isExpanded && (
                 <div className="px-4 pb-4 space-y-4 border-t border-border/20 pt-4">
-                  {/* Mission Details */}
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">Mission Statement</p>
-                      <p className="text-sm">{m.description}</p>
+                      <p className="text-sm">{m.description || "—"}</p>
                     </div>
                     <div>
                       <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">Why This Exists</p>
-                      <p className="text-sm">{m.why}</p>
+                      <p className="text-sm">{m.why || "—"}</p>
                     </div>
                   </div>
 
-                  <div>
-                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">Expected Impact</p>
-                    <p className="text-sm text-[hsl(var(--trust-safe))]">{m.impact}</p>
-                  </div>
-
-                  {/* Task Decomposition */}
-                  <div>
-                    <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-2">Task Decomposition</p>
-                    <div className="space-y-1">
-                      {m.tasks.map((t, i) => (
-                        <div key={i} className="flex items-center gap-2 text-xs py-1.5 border-b border-border/10 last:border-0">
-                          {taskStatusIcon(t.status)}
-                          <span className={`flex-1 ${t.status === "done" ? "line-through text-muted-foreground" : ""}`}>{t.task}</span>
-                          <span className="text-muted-foreground">{t.agent}</span>
-                          <Badge variant="outline" className="text-[9px]">{t.status}</Badge>
-                        </div>
-                      ))}
+                  {m.impact && (
+                    <div>
+                      <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">Expected Impact</p>
+                      <p className="text-sm text-[hsl(var(--trust-safe))]">{m.impact}</p>
                     </div>
-                  </div>
+                  )}
 
-                  {/* Risk & Safety */}
+                  {m.tasks && (
+                    <div>
+                      <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-2">Task Decomposition</p>
+                      <div className="space-y-1">
+                        {m.tasks.map((t: any, i: number) => (
+                          <div key={i} className="flex items-center gap-2 text-xs py-1.5 border-b border-border/10 last:border-0">
+                            {taskStatusIcon(t.status)}
+                            <span className={`flex-1 ${t.status === "done" ? "line-through text-muted-foreground" : ""}`}>{t.task}</span>
+                            <span className="text-muted-foreground">{t.agent}</span>
+                            <Badge variant="outline" className="text-[9px]">{t.status}</Badge>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
                   <div className="grid grid-cols-4 gap-3">
                     <div className="rounded-lg bg-muted/20 p-2 text-center">
                       <p className="text-xs font-bold">{m.confidence}%</p>
                       <p className="text-[9px] text-muted-foreground">Confidence</p>
                     </div>
                     <div className="rounded-lg bg-muted/20 p-2 text-center">
-                      <p className="text-xs font-bold">{m.blastRadius}</p>
+                      <p className="text-xs font-bold">{m.blastRadius || "—"}</p>
                       <p className="text-[9px] text-muted-foreground">Blast Radius</p>
                     </div>
                     <div className="rounded-lg bg-muted/20 p-2 text-center">
@@ -133,7 +134,7 @@ const AIMissionCenter = () => {
                       <p className="text-[9px] text-muted-foreground">Rollback</p>
                     </div>
                     <div className="rounded-lg bg-muted/20 p-2 text-center">
-                      <p className="text-xs font-bold">{m.changePlans}</p>
+                      <p className="text-xs font-bold">{m.changePlans || 0}</p>
                       <p className="text-[9px] text-muted-foreground">Change Plans</p>
                     </div>
                   </div>

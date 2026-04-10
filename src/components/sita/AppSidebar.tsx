@@ -1,5 +1,5 @@
 import { Home, Briefcase, DollarSign, Headphones, Workflow, Receipt, BarChart3, FolderOpen, Settings, Shield, LogOut, Map, Blocks,
-  Brain, Sparkles, Inbox, Activity, Zap, Eye, Server, CheckCircle, Users, FileText, Table2, Presentation, Package, Heart, ChevronRight, Globe, Sliders, Key, ScrollText, CreditCard, Cpu, Gauge, RotateCcw, Target, GitBranch, MessageSquare, Bell, Mail, Lock, Image, Cloud, LayoutDashboard, TrendingUp, Landmark, Calendar, StickyNote, PieChart, ListTodo, Edit3 } from "lucide-react";
+  Brain, Sparkles, Inbox, Activity, Zap, Eye, Server, CheckCircle, Users, FileText, Table2, Presentation, Package, Heart, ChevronRight, Globe, Sliders, Key, ScrollText, CreditCard, Cpu, Gauge, RotateCcw, Target, GitBranch, MessageSquare, Bell, Mail, Lock, Image, Cloud, LayoutDashboard, TrendingUp, Landmark, Calendar, StickyNote, PieChart, ListTodo, Edit3, Bug, Rocket } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NavLink } from "@/components/NavLink";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -88,6 +88,15 @@ const appsNav = [
   { title: "Health", url: "/apps/health", icon: Heart },
   { title: "Gallery", url: "/apps/gallery", icon: Image },
   { title: "Weather & News", url: "/apps/weather-news", icon: Cloud },
+];
+
+const aiEngineeringNav = [
+  { title: "AI Board", url: "/admin/ai-engineering", icon: Brain },
+  { title: "AI Team", url: "/admin/ai-team-roster", icon: Users },
+  { title: "Missions", url: "/admin/ai-missions", icon: Target },
+  { title: "Fixes", url: "/admin/ai-fix-center", icon: Bug },
+  { title: "Self-Healing", url: "/admin/ai-self-healing", icon: Sparkles },
+  { title: "Releases", url: "/admin/ai-releases", icon: Rocket },
 ];
 
 const bottomNav = [
@@ -296,6 +305,7 @@ export function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter className="px-2 pb-4 border-t border-sidebar-border pt-2">
+        <CollapsibleNavGroup items={aiEngineeringNav} label="AI Engineering" collapsed={collapsed} />
         <SidebarGroup>
           <SidebarGroupContent>
             <NavItems items={bottomNav} collapsed={collapsed} />

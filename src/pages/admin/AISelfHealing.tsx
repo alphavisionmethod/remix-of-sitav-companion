@@ -5,11 +5,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { Sparkles, CheckCircle2, AlertTriangle, Shield, TrendingUp, Clock, RotateCcw, Eye, Settings } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_ADMIN_PATTERNS_A_I_SELF_HEALING as DEMO_PATTERNS, DEMO_ADMIN_RULES as DEMO_RULES, DEMO_BLOCKED, DEMO_HEALED } from "@/lib/demo-data/admin-platform";
 
 const AISelfHealing = () => {
-  const { isDemoMode } = useDataMode();
+  const { data: patterns, isDemo } = useAIEngDomain("learningPatterns", DEMO_PATTERNS);
   const [tab, setTab] = useState("recent");
 
   return (
@@ -22,7 +22,7 @@ const AISelfHealing = () => {
           { l: "Healed This Week", v: DEMO_HEALED.length, c: "text-[hsl(var(--trust-safe))]" },
           { l: "Active Rules", v: DEMO_RULES.filter(r => r.enabled).length, c: "text-primary" },
           { l: "Blocked (Human Needed)", v: DEMO_BLOCKED.length, c: "text-amber-500" },
-          { l: "Patterns Discovered", v: DEMO_PATTERNS.length, c: "text-primary" },
+          { l: "Patterns Discovered", v: (isDemo ? DEMO_PATTERNS : patterns).length, c: "text-primary" },
         ].map(c => (
           <div key={c.l} className="rounded-xl border border-border/40 bg-card p-4 text-center">
             <p className={`text-xl font-bold ${c.c}`}>{c.v}</p>
@@ -83,15 +83,15 @@ const AISelfHealing = () => {
         </TabsContent>
 
         <TabsContent value="patterns" className="space-y-3 mt-4">
-          {DEMO_PATTERNS.map((p, i) => (
+          {(isDemo ? DEMO_PATTERNS : patterns).map((p: any, i: number) => (
             <div key={i} className="rounded-xl border border-border/40 bg-card p-4">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-semibold">{p.pattern}</span>
+                <span className="text-sm font-semibold">{p.pattern || p.pattern_description}</span>
                 <Badge variant="outline">{p.confidence}% confidence</Badge>
               </div>
               <p className="text-xs text-muted-foreground mb-1">Frequency: {p.frequency}</p>
               <div className="rounded-lg bg-muted/30 p-2">
-                <p className="text-xs text-primary">→ {p.action}</p>
+                <p className="text-xs text-primary">→ {p.action || p.action_taken || "—"}</p>
               </div>
             </div>
           ))}

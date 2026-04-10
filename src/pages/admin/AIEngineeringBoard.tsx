@@ -12,23 +12,23 @@ import {
   Plug, ArrowDown, ArrowUp, Minus, Star
 } from "lucide-react";
 import { generateChiefSynthesis } from "@/lib/ai-engineering";
-import { getIntegrationHealthSummary, getIntegrationsByCategory } from "@/lib/ai-engineering/platform-integration";
+import { getIntegrationHealthSummary } from "@/lib/ai-engineering/platform-integration";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
-import { DEMO_ADMIN_ENVIRONMENTS as DEMO_ENVIRONMENTS, DEMO_ADMIN_MISSIONS as DEMO_MISSIONS, DEMO_ADMIN_RELEASE_GATES as DEMO_RELEASE_GATES, DEMO_AGENT_SIGNALS, DEMO_ATTENTION_ITEMS, DEMO_CHANGES, DEMO_LEARNING_HIGHLIGHTS, DEMO_OVERVIEW_BAND, DEMO_RECENT_HEALS } from "@/lib/demo-data/admin-platform";
+import { useAIEngineeringData } from "@/hooks/use-ai-engineering-data";
+import {
+  DEMO_ADMIN_ENVIRONMENTS as DEMO_ENVIRONMENTS,
+  DEMO_ADMIN_MISSIONS as DEMO_MISSIONS,
+  DEMO_ADMIN_RELEASE_GATES as DEMO_RELEASE_GATES,
+  DEMO_AGENT_SIGNALS,
+  DEMO_ATTENTION_ITEMS,
+  DEMO_CHANGES,
+  DEMO_LEARNING_HIGHLIGHTS,
+  DEMO_OVERVIEW_BAND,
+  DEMO_RECENT_HEALS,
+} from "@/lib/demo-data/admin-platform";
 
-// ═══════════════════════════════════════════════════════════════
-// DATA — Engineering Overview Band
-// ═══════════════════════════════════════════════════════════════
-// Needs Attention
-// Agent Signal Rail
-// Mission Lane
-// Self-Healing Lane
-const HEAL_STATS = {
-  attempted: 12, verified: 11, blocked: 3, rolledBack: 1 };
-// Learning Lane
-// What Changed Lane
-// Environments + Release Gates
+const HEAL_STATS = { attempted: 12, verified: 11, blocked: 3, rolledBack: 1 };
+
 const typeDotColor = (type: string) =>
   type === "auto-heal" ? "bg-[hsl(var(--trust-safe))]" :
   type === "rollback" ? "bg-amber-500" :
@@ -41,12 +41,28 @@ const attentionColor = (severity: string) =>
   "border-border/40 bg-card";
 
 const AIEngineeringBoard = () => {
-  const { isDemoMode } = useDataMode();
+  const { data: engData, isDemo } = useAIEngineeringData({
+    missions: DEMO_MISSIONS,
+    fixes: [],
+    changePlans: [],
+    debates: [],
+    learningPatterns: [],
+  });
+
   const [tab, setTab] = useState("overview");
 
+  const missionsList = engData.missions ?? DEMO_MISSIONS;
+  const activeMissions = missionsList.filter((m: any) => ["in_progress", "simulated", "ready_for_approval"].includes(m.status)).length;
+  const blockedMissions = missionsList.filter((m: any) => m.status === "blocked").length;
+  const completedMissions = missionsList.filter((m: any) => m.status === "applied" || m.status === "learned_from").length;
+
   const chiefSynthesis = useMemo(() => generateChiefSynthesis({
-    activeMissions: 5, blockedMissions: 1, completedMissions: 12,
-    criticalIssues: 2, selfHealSuccessRate: 92, releaseConfidence: 82,
+    activeMissions: isDemo ? 5 : activeMissions,
+    blockedMissions: isDemo ? 1 : blockedMissions,
+    completedMissions: isDemo ? 12 : completedMissions,
+    criticalIssues: 2,
+    selfHealSuccessRate: 92,
+    releaseConfidence: 82,
     topRisk: "Projection cache corruption affecting admin dashboards",
     topOpportunity: "Self-healing maturity allows expanding auto-heal to low-risk UI fixes",
     agentDisagreements: [
@@ -55,7 +71,7 @@ const AIEngineeringBoard = () => {
         { agent: "Frontend Engineer", position: "Route-level code splitting first" },
       ]},
     ],
-  }), []);
+  }), [isDemo, activeMissions, blockedMissions, completedMissions]);
 
   const integrationHealth = useMemo(() => getIntegrationHealthSummary(), []);
 
@@ -172,7 +188,7 @@ const AIEngineeringBoard = () => {
               <Link to="/admin/ai-missions" className="text-xs text-primary hover:underline flex items-center gap-1">Mission Center <ArrowUpRight className="h-3 w-3" /></Link>
             </div>
             <div className="space-y-2">
-              {DEMO_MISSIONS.map(m => (
+              {(missionsList as any[]).slice(0, 5).map((m: any) => (
                 <div key={m.title} className="rounded-lg border border-border/20 p-3">
                   <div className="flex items-center justify-between mb-1.5">
                     <span className="text-sm font-medium">{m.title}</span>
@@ -233,9 +249,7 @@ const AIEngineeringBoard = () => {
               {DEMO_LEARNING_HIGHLIGHTS.map((l, i) => (
                 <div key={i} className="rounded-lg bg-muted/20 p-2.5 flex items-start gap-2">
                   <Badge variant="outline" className="text-[9px] shrink-0 mt-0.5">{l.type}</Badge>
-                  <div className="flex-1">
-                    <p className="text-xs">{l.detail}</p>
-                  </div>
+                  <div className="flex-1"><p className="text-xs">{l.detail}</p></div>
                   <span className="text-[10px] text-muted-foreground shrink-0">{l.confidence}%</span>
                 </div>
               ))}
@@ -289,14 +303,14 @@ const AIEngineeringBoard = () => {
           </div>
         </TabsContent>
 
-        {/* ── TAB 3: DEMO_MISSIONS ── */}
+        {/* ── TAB 3: MISSIONS ── */}
         <TabsContent value="missions" className="mt-4">
           <div className="flex items-center justify-between mb-3">
-            <p className="text-sm text-muted-foreground">{DEMO_MISSIONS.length} active missions</p>
+            <p className="text-sm text-muted-foreground">{(missionsList as any[]).length} active missions</p>
             <Link to="/admin/ai-missions" className="text-xs text-primary hover:underline flex items-center gap-1">Mission Center <ArrowUpRight className="h-3 w-3" /></Link>
           </div>
           <div className="space-y-2">
-            {DEMO_MISSIONS.map(m => (
+            {(missionsList as any[]).map((m: any) => (
               <div key={m.title} className="rounded-xl border border-border/40 bg-card p-4">
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-sm font-medium">{m.title}</span>

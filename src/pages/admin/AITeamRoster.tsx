@@ -18,11 +18,16 @@ const autonomyColors: Record<string, string> = {
   "observe-only": "bg-muted text-muted-foreground",
 };
 
+const autonomyLevels = ["observe-only", "draft-only", "supervised", "auto-low-risk"] as const;
+
 const AITeamRoster = () => {
   const { isDemoMode } = useDataMode();
   const [selected, setSelected] = useState<string | null>("debugger");
   const [view, setView] = useState("roster");
+  const [agentAutonomy, setAgentAutonomy] = useState<Record<string, string>>({});
   const active = selected ? DEMO_AGENTS.find(a => a.id === selected) : null;
+
+  const getAutonomy = (agentId: string, defaultVal: string) => agentAutonomy[agentId] ?? defaultVal;
 
   const sorted = view === "roster" ? DEMO_AGENTS :
     view === "severity" ? [...DEMO_AGENTS].sort((a, b) => (b.escalation === "active" ? 2 : b.escalation === "pending" ? 1 : 0) - (a.escalation === "active" ? 2 : a.escalation === "pending" ? 1 : 0)) :
@@ -84,14 +89,13 @@ const AITeamRoster = () => {
                   <p className="text-xs text-muted-foreground truncate">{a.currentTask}</p>
                 </div>
                 <div className="flex items-center gap-3 shrink-0">
-                  {/* Queue Load Bar */}
                   <div className="w-12">
                     <div className="flex items-center justify-between text-[9px] text-muted-foreground mb-0.5">
                       <span>Q</span><span>{a.queueLoad}</span>
                     </div>
                     <Progress value={a.queueLoad * 20} className="h-1" />
                   </div>
-                  <Badge className={`text-[10px] ${autonomyColors[a.autonomy] || ""}`} variant="outline">{a.autonomy}</Badge>
+                  <Badge className={`text-[10px] ${autonomyColors[getAutonomy(a.id, a.autonomy)] || ""}`} variant="outline">{getAutonomy(a.id, a.autonomy)}</Badge>
                   <span className="text-sm font-bold w-8 text-right">{a.confidence}%</span>
                 </div>
               </div>
@@ -131,7 +135,27 @@ const AITeamRoster = () => {
                   </div>
                 </div>
 
-                <div><p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-1">Autonomy Level</p><Badge className={autonomyColors[active.autonomy]} variant="outline">{active.autonomy}</Badge></div>
+                {/* Boundary Controls */}
+                <div>
+                  <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-2">Autonomy Level</p>
+                  <div className="flex gap-1 flex-wrap">
+                    {autonomyLevels.map(level => (
+                      <Badge
+                        key={level}
+                        variant={getAutonomy(active.id, active.autonomy) === level ? "default" : "outline"}
+                        className={`text-[10px] cursor-pointer transition-all ${
+                          getAutonomy(active.id, active.autonomy) === level ? autonomyColors[level] : "hover:bg-muted/50"
+                        }`}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setAgentAutonomy(prev => ({ ...prev, [active.id]: level }));
+                        }}
+                      >
+                        {level}
+                      </Badge>
+                    ))}
+                  </div>
+                </div>
 
                 {active.escalation !== "none" && (
                   <div className="rounded-lg bg-amber-500/5 border border-amber-500/10 p-2">
