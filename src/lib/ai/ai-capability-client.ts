@@ -18,7 +18,7 @@ const AI_GATEWAY_FUNCTION = "ai-gateway";
 export async function invokeAICapability(
   request: AICapabilityRequest,
 ): Promise<AIResponseEnvelope> {
-  const { capabilityKey, messages, taskClass, maxTokens, temperature, stream } = request;
+  const { capabilityKey, messages, taskClass, maxTokens, temperature, stream, surface, intent, traceRequested, receiptRequested } = request;
 
   try {
     // Budget gate check before invocation
@@ -39,6 +39,10 @@ export async function invokeAICapability(
         stream: stream ?? false,
         maxTokens,
         temperature,
+        surface,
+        intent,
+        traceRequested,
+        receiptRequested,
       },
     });
 

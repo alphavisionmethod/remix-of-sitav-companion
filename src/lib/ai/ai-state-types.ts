@@ -71,6 +71,7 @@ export interface AICapabilityRequest {
   temperature?: number;
   stream?: boolean;
   traceRequested?: boolean;
+  receiptRequested?: boolean;
 }
 
 // ── Response Envelope ──────────────────────────────────────────
