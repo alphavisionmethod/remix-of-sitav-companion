@@ -1,6 +1,8 @@
-import { Shield, AlertTriangle, BarChart3, PieChart, TrendingDown, Eye } from "lucide-react";
+import { useState } from "react";
+import { Shield, AlertTriangle, BarChart3, PieChart, Eye, Settings, Zap } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { INVESTMENT_ADVISORS, PLATFORM_CONNECTIONS, PORTFOLIO } from "@/hooks/useInvestmentOfficeData";
+import { STRESS_SCENARIOS, RISK_POLICIES } from "@/lib/investment-office/mock-data";
 import { useRiskScenarios } from "@/hooks/use-investment-office";
 import { useDataMode } from "@/contexts/DataModeContext";
 
@@ -10,6 +12,7 @@ export default function RiskOffice() {
   const p = PORTFOLIO;
   const riskAdvisor = INVESTMENT_ADVISORS.find(a => a.domain === "risk");
   const behavAdvisor = INVESTMENT_ADVISORS.find(a => a.domain === "behavioral");
+  const macroAdvisor = INVESTMENT_ADVISORS.find(a => a.domain === "macro");
 
   const concentrationWarnings = p.holdings
     .filter(h => h.weight > 15)
@@ -91,6 +94,64 @@ export default function RiskOffice() {
         </div>
       </div>
 
+      {/* Scenario Stress Tests */}
+      <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
+        <h3 className="text-sm font-semibold text-foreground flex items-center gap-2"><Zap className="h-4 w-4 text-destructive" /> Scenario Stress Tests</h3>
+        <p className="text-[10px] text-muted-foreground">Estimated portfolio impact under adverse scenarios</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+          {STRESS_SCENARIOS.map(ss => (
+            <div key={ss.id} className="rounded-xl border border-border bg-secondary/20 p-4 space-y-3">
+              <div className="flex items-center gap-2">
+                <span className="text-lg">{ss.icon}</span>
+                <div className="flex-1">
+                  <p className="text-xs font-semibold text-foreground">{ss.name}</p>
+                  <p className="text-[10px] text-muted-foreground">{ss.description}</p>
+                </div>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="text-[9px] text-muted-foreground uppercase">Portfolio Impact</span>
+                <span className="text-sm font-bold text-destructive">{ss.impact}%</span>
+              </div>
+              <div className="space-y-1">
+                {Object.entries(ss.portfolioImpact).filter(([, v]) => v !== 0).map(([cls, impact]) => (
+                  <div key={cls} className="flex items-center justify-between text-[10px]">
+                    <span className="text-muted-foreground capitalize">{cls}</span>
+                    <span className={impact >= 0 ? "text-[hsl(var(--trust-safe))]" : "text-destructive"}>{impact >= 0 ? "+" : ""}{impact}%</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Risk Policy Controls */}
+      <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
+        <h3 className="text-sm font-semibold text-foreground flex items-center gap-2"><Settings className="h-4 w-4 text-primary" /> Risk Policy Controls</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+          {RISK_POLICIES.map(rp => (
+            <div key={rp.id} className={`rounded-xl border p-3 space-y-1 ${
+              rp.status === "breach" ? "border-destructive/20 bg-destructive/5" :
+              rp.status === "warn" ? "border-[hsl(var(--trust-warn))]/20 bg-[hsl(var(--trust-warn))]/5" :
+              "border-border bg-secondary/20"
+            }`}>
+              <div className="flex items-center justify-between">
+                <p className="text-xs font-medium text-foreground">{rp.label}</p>
+                <span className={`text-[9px] font-bold uppercase px-1.5 py-0.5 rounded-full ${
+                  rp.status === "breach" ? "bg-destructive/10 text-destructive" :
+                  rp.status === "warn" ? "bg-[hsl(var(--trust-warn))]/10 text-[hsl(var(--trust-warn))]" :
+                  "bg-[hsl(var(--trust-safe))]/10 text-[hsl(var(--trust-safe))]"
+                }`}>{rp.status}</span>
+              </div>
+              <div className="flex items-center justify-between text-[10px]">
+                <span className="text-muted-foreground">Limit: {rp.value}</span>
+                <span className="text-foreground">Current: {rp.current}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* Platform / Counterparty Risk */}
       <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
         <h3 className="text-sm font-semibold text-foreground flex items-center gap-2"><Eye className="h-4 w-4 text-primary" /> Platform & Counterparty Risk</h3>
@@ -113,6 +174,25 @@ export default function RiskOffice() {
               </div>
             );
           })}
+        </div>
+      </div>
+
+      {/* Multi-Advisor Risk Council */}
+      <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
+        <h3 className="text-sm font-semibold text-foreground flex items-center gap-2"><Shield className="h-4 w-4 text-primary" /> Risk Advisor Council</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          {[riskAdvisor, macroAdvisor, behavAdvisor].filter(Boolean).map(adv => adv && (
+            <div key={adv.id} className="rounded-xl border border-border bg-secondary/20 p-4 space-y-2">
+              <div className="flex items-center gap-2">
+                <span className="text-lg">{adv.icon}</span>
+                <div>
+                  <p className="text-xs font-semibold text-foreground">{adv.title}</p>
+                  <p className="text-[10px] text-muted-foreground">{adv.confidenceLevel} confidence</p>
+                </div>
+              </div>
+              <p className="text-[11px] text-foreground leading-relaxed">{adv.portfolioAwareness}</p>
+            </div>
+          ))}
         </div>
       </div>
 

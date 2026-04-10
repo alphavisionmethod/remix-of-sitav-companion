@@ -1,28 +1,45 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { DollarSign, TrendingUp, TrendingDown, PieChart, Shield, RefreshCw, ExternalLink, AlertTriangle, Brain, Target } from "lucide-react";
+import { DollarSign, TrendingUp, TrendingDown, PieChart, Shield, RefreshCw, AlertTriangle, Wallet } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { SparklineChart } from "@/components/sita/SparklineChart";
 import { PLATFORM_CONNECTIONS, PORTFOLIO, SAMPLE_THESES } from "@/hooks/useInvestmentOfficeData";
-import { SPARKLINE_DATA } from "@/lib/investment-office/mock-data";
+import { SPARKLINE_DATA, PERFORMANCE_TIMELINE } from "@/lib/investment-office/mock-data";
 import { usePortfolioPositions } from "@/hooks/use-investment-office";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 const fmt = (n: number) => n >= 1e6 ? `$${(n / 1e6).toFixed(2)}M` : n >= 1e3 ? `$${(n / 1e3).toFixed(1)}K` : `$${n.toFixed(2)}`;
 const pctFmt = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
 
-// Conviction overlay helper
 function getConvictionBadge(instrumentId: string) {
   const thesis = SAMPLE_THESES.find(t => t.instrumentId === instrumentId && t.status === "active");
-  if (!thesis) return null;
-  return thesis;
+  return thesis || null;
 }
+
+type AllocView = "class" | "sector" | "theme";
 
 export default function PortfolioOffice() {
   const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = usePortfolioPositions();
   const navigate = useNavigate();
+  const [allocView, setAllocView] = useState<AllocView>("class");
+  const [perfPeriod, setPerfPeriod] = useState("YTD");
   const p = PORTFOLIO;
   const sortedHoldings = [...p.holdings].sort((a, b) => b.currentValue - a.currentValue);
+
+  // Compute allocation breakdowns
+  const allocByClass = p.allocationByClass;
+  const allocBySector: Record<string, number> = {};
+  const allocByTheme: Record<string, number> = {};
+  p.holdings.forEach(h => {
+    const sector = h.instrument.sector || h.instrument.assetClass;
+    allocBySector[sector] = (allocBySector[sector] || 0) + h.weight;
+    (h.instrument.theme || []).forEach(t => {
+      allocByTheme[t] = (allocByTheme[t] || 0) + h.weight;
+    });
+  });
+
+  const currentAlloc = allocView === "class" ? allocByClass : allocView === "sector" ? allocBySector : allocByTheme;
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
@@ -41,7 +58,7 @@ export default function PortfolioOffice() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
           { label: "Portfolio Value", value: fmt(p.totalValue), sub: `+ ${fmt(p.totalCash)} cash` },
-          { label: "Unrealized P&L", value: fmt(p.totalPnl), sub: pctFmt(p.totalPnlPct), color: p.totalPnl >= 0 ? "text-trust-safe" : "text-destructive" },
+          { label: "Unrealized P&L", value: fmt(p.totalPnl), sub: pctFmt(p.totalPnlPct), color: p.totalPnl >= 0 ? "text-[hsl(var(--trust-safe))]" : "text-destructive" },
           { label: "Positions", value: String(p.holdings.length), sub: `${new Set(p.holdings.map(h => h.platform)).size} platforms` },
           { label: "Risk Score", value: `${p.riskScore}/100`, sub: p.riskScore > 70 ? "Elevated" : "Moderate" },
         ].map(s => (
@@ -51,6 +68,53 @@ export default function PortfolioOffice() {
             <p className="text-[10px] text-muted-foreground">{s.sub}</p>
           </div>
         ))}
+      </div>
+
+      {/* Performance Timeline */}
+      <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-semibold text-foreground flex items-center gap-2"><TrendingUp className="h-4 w-4 text-primary" /> Performance</h3>
+          <div className="flex gap-1">
+            {Object.keys(PERFORMANCE_TIMELINE).map(period => (
+              <button key={period} onClick={() => setPerfPeriod(period)}
+                className={`rounded-lg px-2.5 py-1 text-[10px] font-medium transition-colors ${perfPeriod === period ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground"}`}>
+                {period}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="flex items-center gap-4">
+          <p className={`text-3xl font-bold ${PERFORMANCE_TIMELINE[perfPeriod] >= 0 ? "text-[hsl(var(--trust-safe))]" : "text-destructive"}`}>
+            {PERFORMANCE_TIMELINE[perfPeriod] >= 0 ? "+" : ""}{PERFORMANCE_TIMELINE[perfPeriod]}%
+          </p>
+          <p className="text-xs text-muted-foreground">{perfPeriod} return across all positions</p>
+        </div>
+      </div>
+
+      {/* Allocation Map */}
+      <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-semibold text-foreground flex items-center gap-2"><PieChart className="h-4 w-4 text-primary" /> Allocation Breakdown</h3>
+          <div className="flex gap-1">
+            {(["class", "sector", "theme"] as AllocView[]).map(v => (
+              <button key={v} onClick={() => setAllocView(v)}
+                className={`rounded-lg px-2.5 py-1 text-[10px] font-medium capitalize transition-colors ${allocView === v ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground"}`}>
+                {v}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="space-y-2">
+          {Object.entries(currentAlloc).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1]).map(([label, pct]) => (
+            <div key={label} className="flex items-center gap-3">
+              <span className="w-28 text-xs text-muted-foreground capitalize truncate">{label}</span>
+              <div className="flex-1 h-2.5 rounded-full bg-secondary overflow-hidden">
+                <div className={`h-full rounded-full transition-all ${pct > 40 ? "bg-[hsl(var(--trust-warn))]" : "bg-primary/60"}`} style={{ width: `${Math.min(pct, 100)}%` }} />
+              </div>
+              <span className={`text-xs font-medium w-14 text-right ${pct > 40 ? "text-[hsl(var(--trust-warn))]" : "text-foreground"}`}>{pct.toFixed(1)}%</span>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Holdings Table */}
@@ -93,7 +157,7 @@ export default function PortfolioOffice() {
                     </td>
                     <td className="text-right px-3 py-3 text-foreground">${h.instrument.price.toLocaleString()}</td>
                     <td className="text-right px-3 py-3 font-medium text-foreground">{fmt(h.currentValue)}</td>
-                    <td className={`text-right px-3 py-3 font-medium ${h.unrealizedPnl >= 0 ? "text-trust-safe" : "text-destructive"}`}>
+                    <td className={`text-right px-3 py-3 font-medium ${h.unrealizedPnl >= 0 ? "text-[hsl(var(--trust-safe))]" : "text-destructive"}`}>
                       {pctFmt(h.unrealizedPnlPct)}
                     </td>
                     <td className="text-right px-3 py-3 text-muted-foreground">{h.weight.toFixed(1)}%</td>
@@ -101,7 +165,7 @@ export default function PortfolioOffice() {
                       <div className="flex items-center justify-center gap-1">
                         {thesis ? (
                           <span className={`rounded-full px-2 py-0.5 text-[8px] font-bold uppercase tracking-wider ${
-                            thesis.conviction === "high" ? "bg-[hsl(var(--trust-safe))]/10 text-trust-safe" :
+                            thesis.conviction === "high" ? "bg-[hsl(var(--trust-safe))]/10 text-[hsl(var(--trust-safe))]" :
                             thesis.conviction === "medium" ? "bg-primary/10 text-primary" :
                             "bg-secondary text-muted-foreground"
                           }`}>{thesis.conviction}</span>
@@ -124,6 +188,30 @@ export default function PortfolioOffice() {
         </div>
       </div>
 
+      {/* Cash & Reserves */}
+      <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
+        <h3 className="text-sm font-semibold text-foreground flex items-center gap-2"><Wallet className="h-4 w-4 text-primary" /> Cash & Reserves</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          <div className="rounded-xl bg-secondary/30 p-4">
+            <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Unallocated Cash</p>
+            <p className="text-xl font-bold text-foreground mt-1">{fmt(p.totalCash)}</p>
+            <p className="text-[10px] text-muted-foreground">{((p.totalCash / (p.totalValue + p.totalCash)) * 100).toFixed(1)}% of total capital</p>
+          </div>
+          <div className="rounded-xl bg-secondary/30 p-4">
+            <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Dry Powder Policy</p>
+            <p className="text-xl font-bold text-foreground mt-1">10% minimum</p>
+            <p className={`text-[10px] ${(p.totalCash / (p.totalValue + p.totalCash)) * 100 < 10 ? "text-[hsl(var(--trust-warn))]" : "text-[hsl(var(--trust-safe))]"}`}>
+              {(p.totalCash / (p.totalValue + p.totalCash)) * 100 < 10 ? "⚠ Below target" : "✓ Within policy"}
+            </p>
+          </div>
+          <div className="rounded-xl bg-secondary/30 p-4">
+            <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Buying Power</p>
+            <p className="text-xl font-bold text-[hsl(var(--trust-safe))] mt-1">{fmt(p.totalCash)}</p>
+            <p className="text-[10px] text-muted-foreground">Available for new positions</p>
+          </div>
+        </div>
+      </div>
+
       {/* Connected Platforms */}
       <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
         <h3 className="text-sm font-semibold text-foreground">Connected Platforms</h3>
@@ -136,7 +224,7 @@ export default function PortfolioOffice() {
                 <p className="text-[10px] text-muted-foreground capitalize">{pc.type} · {pc.status}</p>
                 {pc.accountValue && <p className="text-[10px] text-foreground font-medium">{fmt(pc.accountValue)}</p>}
               </div>
-              <div className={`h-2 w-2 rounded-full ${pc.status === "connected" ? "bg-trust-safe" : pc.status === "error" ? "bg-destructive" : "bg-muted-foreground"}`} />
+              <div className={`h-2 w-2 rounded-full ${pc.status === "connected" ? "bg-[hsl(var(--trust-safe))]" : pc.status === "error" ? "bg-destructive" : "bg-muted-foreground"}`} />
             </div>
           ))}
         </div>
