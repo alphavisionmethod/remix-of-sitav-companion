@@ -3,22 +3,35 @@ import { Badge } from "@/components/ui/badge";
 import { Rocket, Users, Target, FileText, Phone, Star, Search, Upload, RefreshCw, TrendingUp, Check } from "lucide-react";
 import { ChapterBanner } from "../primitives";
 import type { ScreenProps } from "../types";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+
+const BASE_VALUES: Record<string, number> = {
+  lead_followup: 8200, no_shows: 4800, reactivation: 3200, reviews: 2400, upsells: 5600,
+};
 
 export default function FirstWinScreen({ state, setState }: ScreenProps) {
-  const { isDemoMode } = useDataMode();
-  const wins = useMemo(() => [
-    { id: "stale_leads", label: "Recover stale leads", desc: "Find and re-engage leads that went quiet", icon: Users, impact: "$8,200 at risk", relevant: state.growthBottlenecks.includes("lead_followup") || state.leadSources.length > 0 },
-    { id: "journey_twin", label: "Build Customer Journey Twin", desc: "Live model of how customers move through your business", icon: Target, impact: "Strategic clarity", relevant: !!state.journeyTemplate },
-    { id: "quote_automation", label: "Create quote automation", desc: "Auto-generate proposals and follow up", icon: FileText, impact: "$4,800/mo recovered", relevant: state.revenueSources.includes("proposals") },
-    { id: "noshow_rescue", label: "Build no-show recovery", desc: "Rescue missed appointments with automated rebooking", icon: Phone, impact: "+22% show rate", relevant: state.growthBottlenecks.includes("no_shows") },
-    { id: "review_workflow", label: "Launch review requests", desc: "Ask happy clients for reviews at the perfect moment", icon: Star, impact: "+12 reviews/mo", relevant: state.postSaleSlips.includes("reviews") || state.businessTypes.includes("local") },
-    { id: "leak_detection", label: "Find biggest revenue leak", desc: "Scan your journey for the #1 place money is lost", icon: Search, impact: "$15K/mo potential", relevant: true },
-    { id: "import_contacts", label: "Import and unify contacts", desc: "Bring contacts into a unified CRM", icon: Upload, impact: "Foundation", relevant: state.connectedSystems.length > 0 || state.importedFiles.length > 0 },
-    { id: "reactivation", label: "Reactivation campaign", desc: "Re-engage past customers who went cold", icon: RefreshCw, impact: "$3,200/mo", relevant: state.growthBottlenecks.includes("reactivation") },
-    { id: "upsell", label: "Surface upsell opportunities", desc: "Find clients ready for additional services", icon: TrendingUp, impact: "$5,600/mo", relevant: state.postSaleSlips.includes("upsells") },
-  ].sort((a, b) => (b.relevant ? 1 : 0) - (a.relevant ? 1 : 0)), [state]);
+  const wins = useMemo(() => {
+    const leakMultiplier = state.growthBottlenecks.length > 3 ? 1.3 : 1;
+    return [
+      { id: "stale_leads", label: "Recover stale leads", desc: "Find and re-engage leads that went quiet", icon: Users,
+        impact: `$${Math.round((BASE_VALUES.lead_followup || 8200) * leakMultiplier).toLocaleString()}/mo`, relevant: state.growthBottlenecks.includes("lead_followup") || state.leadSources.length > 0 },
+      { id: "journey_twin", label: "Build Customer Journey Twin", desc: "Live model of how customers move through your business", icon: Target,
+        impact: "Strategic clarity", relevant: !!state.journeyTemplate },
+      { id: "quote_automation", label: "Create quote automation", desc: "Auto-generate proposals and follow up", icon: FileText,
+        impact: `$${Math.round(4800 * leakMultiplier).toLocaleString()}/mo`, relevant: state.revenueSources.includes("proposals") },
+      { id: "noshow_rescue", label: "Build no-show recovery", desc: "Rescue missed appointments with automated rebooking", icon: Phone,
+        impact: `+${state.growthBottlenecks.includes("no_shows") ? "28" : "22"}% show rate`, relevant: state.growthBottlenecks.includes("no_shows") },
+      { id: "review_workflow", label: "Launch review requests", desc: "Ask happy clients for reviews at the perfect moment", icon: Star,
+        impact: `+${state.businessTypes.includes("local") ? "18" : "12"} reviews/mo`, relevant: state.postSaleSlips.includes("reviews") || state.businessTypes.includes("local") },
+      { id: "leak_detection", label: "Find biggest revenue leak", desc: "Scan your journey for the #1 place money is lost", icon: Search,
+        impact: `$${Math.round(15000 * leakMultiplier).toLocaleString()}/mo`, relevant: true },
+      { id: "import_contacts", label: "Import and unify contacts", desc: "Bring contacts into a unified CRM", icon: Upload,
+        impact: "Foundation", relevant: state.connectedSystems.length > 0 || state.importedFiles.length > 0 },
+      { id: "reactivation", label: "Reactivation campaign", desc: "Re-engage past customers who went cold", icon: RefreshCw,
+        impact: `$${Math.round((BASE_VALUES.reactivation || 3200) * leakMultiplier).toLocaleString()}/mo`, relevant: state.growthBottlenecks.includes("reactivation") },
+      { id: "upsell", label: "Surface upsell opportunities", desc: "Find clients ready for additional services", icon: TrendingUp,
+        impact: `$${Math.round((BASE_VALUES.upsells || 5600) * leakMultiplier).toLocaleString()}/mo`, relevant: state.postSaleSlips.includes("upsells") },
+    ].sort((a, b) => (b.relevant ? 1 : 0) - (a.relevant ? 1 : 0));
+  }, [state]);
 
   const toggleWin = (id: string) => {
     setState(p => {
@@ -31,7 +44,6 @@ export default function FirstWinScreen({ state, setState }: ScreenProps) {
 
   return (
     <div className="space-y-6">
-      <DemoModeBadge />
       <ChapterBanner chapter="Chapter 7: Launch" subtitle="Choose what SITA should do for you right now" />
       <div className="text-center mb-2">
         <h2 className="text-xl font-bold text-foreground">Your first wins</h2>

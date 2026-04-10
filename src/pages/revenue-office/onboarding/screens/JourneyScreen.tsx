@@ -1,11 +1,10 @@
-import { useMemo, useCallback } from "react";
-import { motion } from "framer-motion";
+import { useMemo, useCallback, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
-import { Target, Briefcase, GraduationCap, ShoppingCart, MapPin, Users, PenTool, Heart, Layers, Brain, Check, ArrowRight, MessageSquare, Phone, FileText, RefreshCw } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Target, Briefcase, GraduationCap, ShoppingCart, MapPin, Users, PenTool, Heart, Layers, Brain, Check, ArrowRight, MessageSquare, Phone, FileText, RefreshCw, Plus, X, AlertTriangle, Star } from "lucide-react";
 import { Toggle, SectionTitle, ScreenHeader } from "../primitives";
 import type { ScreenProps } from "../types";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 const templates = [
   { id: "service", label: "Service Business", flow: ["Lead", "Inquiry", "Call", "Quote", "Close", "Onboarding", "Delivery", "Review"], icon: Briefcase },
@@ -30,16 +29,35 @@ const painOptions = [
 ];
 
 export default function JourneyScreen({ state, setState }: ScreenProps) {
-  const { isDemoMode } = useDataMode();
   const selected = useMemo(() => templates.find(t => t.id === state.journeyTemplate), [state.journeyTemplate]);
+  const [newStage, setNewStage] = useState("");
+  const [stageMarkers, setStageMarkers] = useState<Record<string, "critical" | "weak" | null>>({});
 
   const togglePain = useCallback((v: string) => {
     setState(p => ({ ...p, journeyPainPoints: p.journeyPainPoints.includes(v) ? p.journeyPainPoints.filter(x => x !== v) : [...p.journeyPainPoints, v] }));
   }, [setState]);
 
+  const addCustomStage = useCallback(() => {
+    if (!newStage.trim()) return;
+    setState(p => ({ ...p, journeyStages: [...p.journeyStages, newStage.trim()] }));
+    setNewStage("");
+  }, [newStage, setState]);
+
+  const removeStage = useCallback((index: number) => {
+    setState(p => ({ ...p, journeyStages: p.journeyStages.filter((_, i) => i !== index) }));
+  }, [setState]);
+
+  const toggleMarker = useCallback((stage: string) => {
+    setStageMarkers(prev => {
+      const current = prev[stage];
+      if (!current) return { ...prev, [stage]: "critical" };
+      if (current === "critical") return { ...prev, [stage]: "weak" };
+      return { ...prev, [stage]: null };
+    });
+  }, []);
+
   return (
     <div className="space-y-6">
-      <DemoModeBadge />
       <ScreenHeader icon={Target} title="Let's sketch how customers move through your business" subtitle="SITA will build a Customer Journey Twin from this pattern" color="text-blue-400" />
       <div className="space-y-2">
         {templates.map(t => (
@@ -60,15 +78,63 @@ export default function JourneyScreen({ state, setState }: ScreenProps) {
         <>
           <Card className="bg-card/60 border-primary/15 overflow-hidden">
             <CardContent className="p-4">
-              <div className="flex items-center gap-2 mb-3"><Brain className="h-4 w-4 text-primary" /><p className="text-xs font-semibold text-foreground">Journey Twin Preview</p></div>
-              <div className="flex items-center gap-1 overflow-x-auto pb-2 scrollbar-none">
-                {selected.flow.map((step, i) => (
-                  <div key={i} className="flex items-center gap-1 flex-shrink-0">
-                    <div className="px-2.5 py-1.5 rounded-lg bg-primary/10 border border-primary/20 text-[10px] font-medium text-primary whitespace-nowrap">{step}</div>
-                    {i < selected.flow.length - 1 && <ArrowRight className="h-3 w-3 text-muted-foreground/40 flex-shrink-0" />}
-                  </div>
-                ))}
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-2"><Brain className="h-4 w-4 text-primary" /><p className="text-xs font-semibold text-foreground">Journey Twin Preview</p></div>
+                <p className="text-[8px] text-muted-foreground">Tap stages to mark critical/weak</p>
               </div>
+              <div className="flex items-center gap-1 overflow-x-auto pb-2 scrollbar-none">
+                {state.journeyStages.map((step, i) => {
+                  const marker = stageMarkers[step];
+                  return (
+                    <div key={i} className="flex items-center gap-1 flex-shrink-0">
+                      <button onClick={() => toggleMarker(step)}
+                        className={`px-2.5 py-1.5 rounded-lg border text-[10px] font-medium whitespace-nowrap transition-all ${
+                          marker === "critical" ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-400 ring-1 ring-emerald-500/20" :
+                          marker === "weak" ? "bg-amber-500/10 border-amber-500/20 text-amber-400 ring-1 ring-amber-500/20" :
+                          "bg-primary/10 border-primary/20 text-primary"
+                        }`}>
+                        {marker === "critical" && <Star className="h-2.5 w-2.5 inline mr-0.5" />}
+                        {marker === "weak" && <AlertTriangle className="h-2.5 w-2.5 inline mr-0.5" />}
+                        {step}
+                      </button>
+                      {i < state.journeyStages.length - 1 && <ArrowRight className="h-3 w-3 text-muted-foreground/40 flex-shrink-0" />}
+                    </div>
+                  );
+                })}
+              </div>
+              <div className="flex items-center gap-3 mt-2 text-[8px] text-muted-foreground">
+                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-emerald-400" />Critical (high-value)</span>
+                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-amber-400" />Weak (needs help)</span>
+                <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-full bg-primary" />Normal</span>
+              </div>
+
+              {/* Add Custom Stage */}
+              <div className="flex items-center gap-2 mt-3 pt-3 border-t border-border/30">
+                <input type="text" value={newStage} onChange={e => setNewStage(e.target.value)} placeholder="Add custom stage..."
+                  onKeyDown={e => e.key === "Enter" && addCustomStage()}
+                  className="flex-1 px-3 py-1.5 text-[11px] rounded-lg bg-muted/30 border border-border/40 text-foreground placeholder:text-muted-foreground/50 focus:outline-none focus:border-primary/40" />
+                <button onClick={addCustomStage} disabled={!newStage.trim()}
+                  className="p-1.5 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors disabled:opacity-30">
+                  <Plus className="h-3.5 w-3.5" />
+                </button>
+              </div>
+
+              {/* Remove custom stages */}
+              <AnimatePresence>
+                {state.journeyStages.length > (selected?.flow.length || 0) && (
+                  <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="mt-2">
+                    <p className="text-[9px] text-muted-foreground mb-1">Custom stages added:</p>
+                    <div className="flex flex-wrap gap-1">
+                      {state.journeyStages.slice(selected?.flow.length || 0).map((s, i) => (
+                        <Badge key={i} className="bg-primary/10 text-primary text-[9px] gap-1 cursor-pointer hover:bg-destructive/10 hover:text-destructive"
+                          onClick={() => removeStage((selected?.flow.length || 0) + i)}>
+                          {s} <X className="h-2.5 w-2.5" />
+                        </Badge>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </CardContent>
           </Card>
           <div>

@@ -3,13 +3,23 @@ import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Gauge, Brain, Activity, CircleDot, Layers, MapPin, Heart, Phone, Users, AlertTriangle, Star, MessageSquare, TrendingUp, Link2, FileText, Target } from "lucide-react";
+import { Gauge, Brain, Activity, CircleDot, Layers, MapPin, Heart, Phone, Users, AlertTriangle, Star, MessageSquare, TrendingUp, Link2, FileText, Target, DollarSign, ArrowRight } from "lucide-react";
 import type { OnboardingState } from "./types";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+
+const BOTTLENECK_VALUES: Record<string, { label: string; value: number }> = {
+  lead_followup: { label: "Lead follow-up gap", value: 8200 },
+  no_shows: { label: "No-show losses", value: 4800 },
+  conversion: { label: "Conversion leaks", value: 6100 },
+  reactivation: { label: "Reactivation gap", value: 3200 },
+  pricing: { label: "Pricing optimization", value: 5600 },
+  retention: { label: "Retention leaks", value: 7300 },
+  reviews: { label: "Review gap", value: 2400 },
+  followup: { label: "Follow-up slips", value: 4100 },
+  upsells: { label: "Upsell opportunities", value: 5600 },
+  onboarding: { label: "Onboarding gap", value: 3800 },
+};
 
 export default function LiveOfficeSidebar({ state, stage }: { state: OnboardingState; stage: number }) {
-  const { isDemoMode } = useDataMode();
   const insights = useMemo(() => {
     const items: { icon: any; text: string; type: "detected" | "ready" | "warning" | "opportunity" }[] = [];
     if (state.businessTypes.length > 1) items.push({ icon: Layers, text: `Hybrid model: ${state.businessTypes.length} types`, type: "detected" });
@@ -43,6 +53,27 @@ export default function LiveOfficeSidebar({ state, stage }: { state: OnboardingS
     return Math.min(s, 100);
   }, [state]);
 
+  const revenueImpact = useMemo(() => {
+    const items: { label: string; value: number }[] = [];
+    [...state.growthBottlenecks, ...state.postSaleSlips].forEach(key => {
+      const entry = BOTTLENECK_VALUES[key];
+      if (entry && !items.find(i => i.label === entry.label)) items.push(entry);
+    });
+    return items;
+  }, [state.growthBottlenecks, state.postSaleSlips]);
+
+  const totalRecoverable = revenueImpact.reduce((s, i) => s + i.value, 0);
+
+  const modulesActivated = useMemo(() => {
+    let count = 3; // Boardroom, Journey, Advisors always on
+    if (state.revenueSources.includes("proposals")) count++;
+    if (state.whatCloses.includes("call")) count++;
+    if (state.businessTypes.includes("local")) count++;
+    if (state.businessTypes.includes("ecommerce")) count++;
+    if (state.automationLevel) count++;
+    return count;
+  }, [state]);
+
   const advisors = useMemo(() => [
     { name: "Revenue Strategist", active: stage >= 3 },
     { name: "CRM Advisor", active: state.leadSources.length > 0 },
@@ -59,15 +90,54 @@ export default function LiveOfficeSidebar({ state, stage }: { state: OnboardingS
 
   return (
     <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="hidden lg:block w-72 flex-shrink-0">
-      <DemoModeBadge />
       <div className="sticky top-28 space-y-4">
         <Card className="bg-card/60 border-border/40 backdrop-blur-sm">
           <CardContent className="p-4">
             <div className="flex items-center gap-2 mb-2"><Gauge className="h-3.5 w-3.5 text-primary" /><p className="text-[11px] font-semibold text-foreground">Revenue Office Forming</p></div>
             <Progress value={readiness} className="h-1.5 mb-1.5" />
-            <p className="text-[10px] text-muted-foreground">{readiness}% personalized</p>
+            <div className="flex items-center justify-between">
+              <p className="text-[10px] text-muted-foreground">{readiness}% personalized</p>
+              <Badge className="bg-primary/10 text-primary text-[8px]">{modulesActivated} modules</Badge>
+            </div>
           </CardContent>
         </Card>
+
+        {totalRecoverable > 0 && (
+          <Card className="bg-emerald-500/5 border-emerald-500/20 backdrop-blur-sm">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <DollarSign className="h-3.5 w-3.5 text-emerald-400" />
+                <p className="text-[11px] font-semibold text-foreground">Estimated Recoverable</p>
+              </div>
+              <p className="text-lg font-bold text-emerald-400 mb-2">${totalRecoverable.toLocaleString()}<span className="text-[9px] font-normal text-muted-foreground">/mo</span></p>
+              <div className="space-y-1">
+                {revenueImpact.slice(0, 4).map((item, i) => (
+                  <div key={i} className="flex items-center justify-between text-[9px]">
+                    <span className="text-muted-foreground">{item.label}</span>
+                    <span className="text-emerald-400 font-medium">${item.value.toLocaleString()}</span>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {state.journeyTemplate && (
+          <Card className="bg-card/60 border-border/40 backdrop-blur-sm">
+            <CardContent className="p-3">
+              <div className="flex items-center gap-1.5 mb-2"><Target className="h-3 w-3 text-blue-400" /><p className="text-[10px] font-semibold text-foreground">Journey Twin</p></div>
+              <div className="flex items-center gap-0.5 flex-wrap">
+                {state.journeyStages.slice(0, 5).map((s, i) => (
+                  <div key={i} className="flex items-center gap-0.5">
+                    <span className="text-[8px] px-1.5 py-0.5 rounded bg-primary/10 text-primary whitespace-nowrap">{s}</span>
+                    {i < Math.min(state.journeyStages.length, 5) - 1 && <ArrowRight className="h-2 w-2 text-muted-foreground/40" />}
+                  </div>
+                ))}
+                {state.journeyStages.length > 5 && <span className="text-[8px] text-muted-foreground">+{state.journeyStages.length - 5}</span>}
+              </div>
+            </CardContent>
+          </Card>
+        )}
 
         {insights.length > 0 && (
           <Card className="bg-card/60 border-border/40 backdrop-blur-sm">
