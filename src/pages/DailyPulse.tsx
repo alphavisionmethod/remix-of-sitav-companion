@@ -39,6 +39,7 @@ import {
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useAuth } from "@/contexts/AuthContext";
 
 
 // ── Mission Mode Emphasis Config ─────────────────────────────────
