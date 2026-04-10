@@ -42,6 +42,10 @@ export interface OSRuntime {
     releases: ReleaseSafetyEngine;
     trustDevice: TrustDeviceEngine;
     compliance: ComplianceAuditEngine;
+    executionDebt: ExecutionDebtEngine;
+    invisibleLabor: InvisibleLaborEngine;
+    drag: DragEngine;
+    bottleneck: FounderBottleneckEngine;
   };
   createAction: typeof ActionStateMachine;
 }
