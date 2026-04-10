@@ -1,28 +1,40 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — APS18 Open With Dialog (standalone page version)
+// SITA OS — APS18 Open With Dialog (fully wired)
 // ═══════════════════════════════════════════════════════════════
 
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, FileText, Star, Check, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { APP_CATALOG } from "@/lib/app-platform";
+import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { AppIcon, VerificationBadge } from "@/components/sita/app-platform/AppStoreComponents";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_FILES } from "@/lib/demo-data/core-pages";
-
-
+import { toast } from "sonner";
 
 const OpenWithPage = () => {
   const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
+  const { apps, setDefaultApp } = useAppPlatform();
   const [selectedFile, setSelectedFile] = useState(DEMO_FILES[0]);
   const [alwaysUse, setAlwaysUse] = useState(false);
   const [selectedApp, setSelectedApp] = useState<string | null>(null);
 
-  const candidateApps = selectedFile.candidates.map(id => APP_CATALOG.find(a => a.id === id)).filter(Boolean);
+  const candidateApps = selectedFile.candidates.map(id => apps.find(a => a.id === id)).filter(Boolean);
   const recommended = candidateApps[0];
+
+  const handleOpen = () => {
+    if (!selectedApp) return;
+    if (alwaysUse) {
+      // Derive a role from the file extension
+      const role = selectedFile.ext.replace(".", "");
+      setDefaultApp(role, selectedApp);
+      toast.success(`Default for ${selectedFile.ext} set to ${apps.find(a => a.id === selectedApp)?.name}`);
+    } else {
+      toast.success(`Opening ${selectedFile.name}`);
+    }
+  };
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
@@ -101,7 +113,7 @@ const OpenWithPage = () => {
       {/* Actions */}
       <div className="flex items-center justify-between">
         <button onClick={() => navigate("/app-store/associations")} className="text-sm text-muted-foreground hover:text-foreground transition-colors">Cancel</button>
-        <button disabled={!selectedApp}
+        <button disabled={!selectedApp} onClick={handleOpen}
           className={cn("rounded-xl px-6 py-2.5 text-sm font-semibold flex items-center gap-2 transition-colors",
             selectedApp ? "bg-primary text-primary-foreground hover:bg-primary/90" : "bg-muted text-muted-foreground cursor-not-allowed")}>
           Open <ChevronRight className="h-3.5 w-3.5" />

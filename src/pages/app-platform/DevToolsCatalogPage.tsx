@@ -1,12 +1,13 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — APS22 Developer Tools Catalog
+// SITA OS — APS22 Developer Tools Catalog (fully wired)
 // ═══════════════════════════════════════════════════════════════
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Code, Terminal, GitBranch, Database, Globe, Package, Wrench } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { APP_CATALOG, APP_BUNDLES } from "@/lib/app-platform";
+import { useAppPlatform } from "@/contexts/AppPlatformContext";
+import { APP_BUNDLES } from "@/lib/app-platform";
 import { AppCard, BundleCard, AppIcon } from "@/components/sita/app-platform/AppStoreComponents";
 import type { AppDefinition } from "@/lib/app-platform/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
@@ -16,19 +17,23 @@ import { DEMO_DEV_CATEGORIES } from "@/lib/demo-data/core-pages";
 const DevToolsCatalogPage = () => {
   const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
+  const { apps } = useAppPlatform();
   const [activeCat, setActiveCat] = useState("all");
 
-  const devApps = APP_CATALOG.filter(a => a.category === "developer-tools");
+  const devApps = useMemo(() => apps.filter(a => a.category === "developer-tools"), [apps]);
   const devBundle = APP_BUNDLES.find(b => b.id === "developer-essentials");
 
-  const filtered = activeCat === "all" ? devApps : devApps.filter(a => {
-    if (activeCat === "editors") return a.tags.some(t => ["code", "editor"].includes(t));
-    if (activeCat === "git") return a.tags.some(t => ["git", "github", "version-control"].includes(t));
-    if (activeCat === "api") return a.tags.some(t => ["api", "testing"].includes(t));
-    if (activeCat === "containers") return a.tags.some(t => ["containers", "devops", "kubernetes"].includes(t));
-    if (activeCat === "terminal") return a.tags.some(t => ["terminal", "shell", "cli"].includes(t));
-    return false;
-  });
+  const filtered = useMemo(() => {
+    if (activeCat === "all") return devApps;
+    return devApps.filter(a => {
+      if (activeCat === "editors") return a.tags.some(t => ["code", "editor"].includes(t));
+      if (activeCat === "git") return a.tags.some(t => ["git", "github", "version-control"].includes(t));
+      if (activeCat === "api") return a.tags.some(t => ["api", "testing"].includes(t));
+      if (activeCat === "containers") return a.tags.some(t => ["containers", "devops", "kubernetes"].includes(t));
+      if (activeCat === "terminal") return a.tags.some(t => ["terminal", "shell", "cli"].includes(t));
+      return false;
+    });
+  }, [activeCat, devApps]);
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
@@ -53,7 +58,7 @@ const DevToolsCatalogPage = () => {
         <div className="space-y-2">
           <h3 className="text-sm font-semibold text-foreground">Quick Start</h3>
           <BundleCard bundle={devBundle}
-            apps={devBundle.appIds.map(id => APP_CATALOG.find(a => a.id === id)).filter(Boolean) as AppDefinition[]}
+            apps={devBundle.appIds.map(id => apps.find(a => a.id === id)).filter(Boolean) as AppDefinition[]}
             onClick={() => navigate(`/app-store/bundle/${devBundle.id}`)} />
         </div>
       )}

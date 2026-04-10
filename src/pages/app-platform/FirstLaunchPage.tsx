@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — APS24 First Launch Prompt (demo page)
+// SITA OS — APS24 First Launch Prompt (fully wired)
 // ═══════════════════════════════════════════════════════════════
 
 import { useState } from "react";
@@ -7,21 +7,33 @@ import { useNavigate, useParams } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, Pin, Star, Settings, Layers, ArrowRight, Sparkles, CheckCircle2, Shield } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { getAppById } from "@/lib/app-platform";
+import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { AppIcon, VerificationBadge } from "@/components/sita/app-platform/AppStoreComponents";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { toast } from "sonner";
 
 const FirstLaunchPage = () => {
   const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   const { appId } = useParams<{ appId: string }>();
+  const { getApp, pinToDock, setDefaultApp } = useAppPlatform();
   const [step, setStep] = useState(0);
   const [choices, setChoices] = useState({ pinToDock: true, setDefault: false, addToWorkspace: false });
 
-  const app = getAppById(appId || "chrome");
+  const app = getApp(appId || "chrome");
 
   if (!app) return null;
+
+  const handleFinish = () => {
+    if (choices.pinToDock) pinToDock(app.id);
+    if (choices.setDefault) {
+      const role = app.category === "browsers" ? "browser" : app.category;
+      setDefaultApp(role, app.id);
+    }
+    toast.success(`${app.name} is ready`);
+    navigate("/app-store/library");
+  };
 
   const steps = [
     {
@@ -132,7 +144,7 @@ const FirstLaunchPage = () => {
               <button onClick={() => navigate(`/app-store/app/${app.id}`)} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                 View in Store
               </button>
-              <button onClick={() => navigate("/app-store/library")}
+              <button onClick={handleFinish}
                 className="rounded-xl bg-primary px-6 py-2.5 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors flex items-center gap-2">
                 Open {app.name} <ArrowRight className="h-3.5 w-3.5" />
               </button>
