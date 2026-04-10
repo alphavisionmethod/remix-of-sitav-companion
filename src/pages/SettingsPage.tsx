@@ -11,7 +11,7 @@ import { Progress } from "@/components/ui/progress";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 import { useActionFn } from "@/hooks/use-action";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDataMode } from "@/contexts/DataModeContext";
@@ -33,7 +33,121 @@ import { useConfirmation } from "@/hooks/use-confirmation";
 import { useOSOrchestration } from "@/hooks/useOSOrchestration";
 import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
 import GoogleConnectedAccounts from "@/pages/settings/GoogleConnectedAccounts";
+import { AllProviderFamiliesStatus } from "@/components/sita/AllProviderFamiliesStatus";
 
+// ── Consent & Permissions Section (Connected Accounts Center) ──
+function ConsentPermissionsSection() {
+  const { user } = useAuth();
+  const { data: consentEntries } = useQuery({
+    queryKey: ["consent-ledger-user", user?.id],
+    queryFn: async () => {
+      if (!user?.id) return [];
+      const { data } = await fromDynamicTable("consent_ledger")
+        .select("id, action_type, capability_key, scopes_granted, created_at, mode")
+        .eq("user_id", user.id)
+        .order("created_at", { ascending: false })
+        .limit(10);
+      return data ?? [];
+    },
+    enabled: !!user?.id,
+  });
+
+  return (
+    <SitaCard hover={false} className="p-5">
+      <SitaCardTitle sub="History of permissions granted, upgraded, and revoked">
+        <div className="flex items-center gap-2"><Shield className="h-4 w-4 text-primary" /> Consent & Permissions</div>
+      </SitaCardTitle>
+      <div className="mt-4 space-y-2">
+        {!consentEntries || consentEntries.length === 0 ? (
+          <div className="text-center py-6">
+            <Shield className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+            <p className="text-xs text-muted-foreground">No consent history yet.</p>
+            <p className="text-[10px] text-muted-foreground mt-1">Grants and upgrades will appear here.</p>
+          </div>
+        ) : (
+          consentEntries.map((entry: any) => (
+            <div key={entry.id} className="flex items-center justify-between rounded-xl bg-secondary/30 p-3">
+              <div className="flex items-center gap-3">
+                <Shield className="h-4 w-4 text-primary" />
+                <div>
+                  <p className="text-xs font-medium text-foreground capitalize">
+                    {(entry.action_type ?? "grant").replace(/_/g, " ")}
+                  </p>
+                  <p className="text-[10px] text-muted-foreground">
+                    {entry.capability_key?.replace(/_/g, " ")} · {new Date(entry.created_at).toLocaleDateString()}
+                  </p>
+                </div>
+              </div>
+              <TrustBadge
+                level={entry.action_type === "revoked" ? "degraded" : "verified"}
+                label={entry.mode ?? "real"}
+                size="sm"
+              />
+            </div>
+          ))
+        )}
+      </div>
+    </SitaCard>
+  );
+}
+
+// ── Device & Trusted Access Section (Connected Accounts Center) ──
+function DeviceTrustSection() {
+  const { user } = useAuth();
+  const { data: trustedDevices } = useQuery({
+    queryKey: ["connected-devices-trust", user?.id],
+    queryFn: async () => {
+      if (!user?.id) return [];
+      const { data } = await fromDynamicTable("connected_devices")
+        .select("id, device_name, device_type, os, trust_level, last_seen, status")
+        .eq("user_id", user.id)
+        .order("last_seen", { ascending: false })
+        .limit(5);
+      return data ?? [];
+    },
+    enabled: !!user?.id,
+  });
+
+  return (
+    <SitaCard hover={false} className="p-5">
+      <SitaCardTitle sub="Trusted devices and device-bound approval eligibility">
+        <div className="flex items-center gap-2"><Smartphone className="h-4 w-4 text-primary" /> Device & Trusted Access</div>
+      </SitaCardTitle>
+      <div className="mt-4 space-y-2">
+        {!trustedDevices || trustedDevices.length === 0 ? (
+          <div className="text-center py-6">
+            <Smartphone className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+            <p className="text-xs text-muted-foreground">No trusted devices registered.</p>
+            <p className="text-[10px] text-muted-foreground mt-1">Devices register automatically on sign-in.</p>
+          </div>
+        ) : (
+          trustedDevices.map((d: any) => (
+            <div key={d.id} className="flex items-center justify-between rounded-xl bg-secondary/30 p-3">
+              <div className="flex items-center gap-3">
+                {d.device_type === "phone" ? (
+                  <Smartphone className="h-4 w-4 text-primary" />
+                ) : (
+                  <Monitor className="h-4 w-4 text-primary" />
+                )}
+                <div>
+                  <p className="text-xs font-medium text-foreground">{d.device_name}</p>
+                  <p className="text-[10px] text-muted-foreground">
+                    {d.os} · Trust: {d.trust_level ?? "standard"} · Last seen {new Date(d.last_seen).toLocaleTimeString()}
+                  </p>
+                </div>
+              </div>
+              <TrustBadge
+                level={d.status === "online" ? "verified" : "degraded"}
+                label={d.status ?? "offline"}
+                size="sm"
+              />
+            </div>
+          ))
+        )}
+      </div>
+    </SitaCard>
+  );
+}
 
 
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.04 } } };
@@ -697,6 +811,15 @@ const SettingsPage = () => {
 
             {/* Google Connected Accounts */}
             <GoogleConnectedAccounts />
+
+            {/* All Other Provider Families */}
+            <AllProviderFamiliesStatus />
+
+            {/* Consent & Permissions History */}
+            <ConsentPermissionsSection />
+
+            {/* Device & Trusted Access */}
+            <DeviceTrustSection />
           </div>
         );
 

@@ -3,7 +3,7 @@
 // Shows identity vs connector status clearly separated
 // ═══════════════════════════════════════════════════════════════
 
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -13,7 +13,9 @@ import {
 import { useGoogleProviderFamily } from "@/hooks/use-google-provider-family";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { PermissionUpgradeDialog } from "@/components/sita/PermissionUpgradeDialog";
 import type { GoogleConnectorState } from "@/lib/core-services/google-provider-family/types";
+import type { GenericScopeTier } from "@/lib/services/provider-family/types";
 
 const CAPABILITY_ICONS: Record<string, React.ReactNode> = {
   google_drive: <HardDrive className="h-5 w-5" />,
@@ -36,7 +38,7 @@ const HEALTH_ICONS: Record<string, React.ReactNode> = {
   unknown: <div className="h-4 w-4 rounded-full bg-muted-foreground/30" />,
 };
 
-function ConnectorCard({ connector }: { connector: GoogleConnectorState }) {
+function ConnectorCard({ connector, onUpgrade }: { connector: GoogleConnectorState; onUpgrade?: (c: GoogleConnectorState) => void }) {
   const icon = CAPABILITY_ICONS[connector.capabilityKey] ?? <Link2 className="h-5 w-5" />;
   const isConnected = connector.connectionStatus === "connected";
   const isPlanned = connector.launchStage === "planned";
@@ -68,11 +70,27 @@ function ConnectorCard({ connector }: { connector: GoogleConnectorState }) {
         {HEALTH_ICONS[connector.healthStatus]}
         <Badge className={STATUS_COLORS[connector.connectionStatus] ?? ""}>{connector.connectionStatus}</Badge>
         {connector.reauthNeeded && <AlertTriangle className="h-4 w-4 text-yellow-400" />}
-        {connector.upgradeAvailable && isConnected && <ArrowUpCircle className="h-4 w-4 text-blue-400" />}
+        {connector.upgradeAvailable && isConnected && (
+          <button
+            onClick={() => onUpgrade?.(connector)}
+            className="hover:opacity-80 transition-opacity"
+            title="Request permission upgrade"
+          >
+            <ArrowUpCircle className="h-4 w-4 text-primary" />
+          </button>
+        )}
       </div>
     </div>
   );
 }
+
+// Next tier lookup for upgrades
+const NEXT_TIER: Record<string, GenericScopeTier> = {
+  minimal: "read_only",
+  read_only: "read_write",
+  read_write: "elevated",
+  elevated: "full",
+};
 
 export default function GoogleConnectedAccounts() {
   const { isDemoMode } = useDataMode();
@@ -80,6 +98,8 @@ export default function GoogleConnectedAccounts() {
     isLoading, identity, connectors, summary,
     launchHonesty, realityMode, loaded,
   } = useGoogleProviderFamily();
+
+  const [upgradeTarget, setUpgradeTarget] = useState<GoogleConnectorState | null>(null);
 
   if (isLoading) {
     return (
@@ -166,7 +186,7 @@ export default function GoogleConnectedAccounts() {
         </CardHeader>
         <CardContent className="space-y-3">
           {connectors.length > 0 ? (
-            connectors.map((c) => <ConnectorCard key={c.capabilityKey} connector={c} />)
+            connectors.map((c) => <ConnectorCard key={c.capabilityKey} connector={c} onUpgrade={setUpgradeTarget} />)
           ) : (
             <p className="text-sm text-muted-foreground text-center py-4">
               No Google services available. Seed provider data in Admin OS.
@@ -238,6 +258,21 @@ export default function GoogleConnectedAccounts() {
             </div>
           </CardContent>
         </Card>
+       )}
+
+      {/* ── Permission Upgrade Dialog ── */}
+      {upgradeTarget && (
+        <PermissionUpgradeDialog
+          open={!!upgradeTarget}
+          onOpenChange={(open) => { if (!open) setUpgradeTarget(null); }}
+          capabilityKey={upgradeTarget.capabilityKey}
+          displayName={upgradeTarget.displayName}
+          currentTier={upgradeTarget.permissionLevel as GenericScopeTier}
+          requestedTier={(NEXT_TIER[upgradeTarget.permissionLevel] ?? "read_write") as GenericScopeTier}
+          currentScopes={upgradeTarget.grantedScopes}
+          additionalScopes={[]}
+          providerFamilyId={null}
+        />
       )}
     </div>
   );
