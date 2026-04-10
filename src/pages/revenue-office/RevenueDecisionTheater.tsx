@@ -231,7 +231,4 @@ export default function DecisionTheater() {
     </motion.div>
   );
 
-  function stateColor(s: DecisionState) {
-    return s === "approved" ? "text-[hsl(var(--trust-safe))]" : s === "executed" ? "text-primary" : s === "review" ? "text-orange-400" : "text-muted-foreground";
-  }
 }
