@@ -529,8 +529,6 @@ const RevenueCallingPage = () => {
           ))}
         </div>
       )}
-        </div>
-      )}
     </motion.div>
   );
 };
