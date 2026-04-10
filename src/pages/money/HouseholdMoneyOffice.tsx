@@ -39,14 +39,14 @@ const HouseholdMoneyOffice = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
-      <DomainHeader domain="finance" title="Household Money Office" subtitle="Shared finances, family goals, partner visibility" />
+      <DomainHeader domain="money" title="Household Money Office" subtitle="Shared finances, family goals, partner visibility" />
       <DemoModeBadge />
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <KPITile label="Household Income" value={fmt(hh.totalIncomeCents)} icon={<DollarSign className="h-4 w-4" />} color="blue" />
-        <KPITile label="Shared Expenses" value={fmt(hh.totalExpensesCents)} icon={<Home className="h-4 w-4" />} color="amber" />
-        <KPITile label="Monthly Surplus" value={fmt(surplus)} icon={<PiggyBank className="h-4 w-4" />} color={surplus > 0 ? "emerald" : "red"} />
-        <KPITile label="Budget Health" value={`${hh.sharedBudgetHealth}%`} icon={<Heart className="h-4 w-4" />} color={hh.sharedBudgetHealth >= 70 ? "emerald" : "amber"} />
+        <KPITile label="Household Income" value={fmt(hh.totalIncomeCents)} icon={DollarSign} color="blue" />
+        <KPITile label="Shared Expenses" value={fmt(hh.totalExpensesCents)} icon={Home} color="amber" />
+        <KPITile label="Monthly Surplus" value={fmt(surplus)} icon={PiggyBank} color={surplus > 0 ? "emerald" : "red"} />
+        <KPITile label="Budget Health" value={`${hh.sharedBudgetHealth}%`} icon={Heart} color={hh.sharedBudgetHealth >= 70 ? "emerald" : "amber"} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -122,7 +122,7 @@ const HouseholdMoneyOffice = () => {
             demoRecommendation={`Household savings rate is ${((surplus / hh.totalIncomeCents) * 100).toFixed(0)}%. Emergency fund at ${((hh.sharedGoals[0]?.currentCents ?? 0) / (hh.sharedGoals[0]?.targetCents || 1) * 100).toFixed(0)}% — on track.`}
             demoReasoning="Combined income/expense analysis with goal pacing projections."
           />
-          <ConfidenceBar score={0.88} label="Data completeness" />
+          <ConfidenceBar value={Math.round(0.88 * 100)} label="Data completeness" />
           <TrustBadge level="verified" />
         </div>
       </div>

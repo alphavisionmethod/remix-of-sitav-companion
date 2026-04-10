@@ -61,15 +61,15 @@ const DebtCreditOffice = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
-      <DomainHeader domain="finance" title="Transaction Intelligence" subtitle="Smart categorization, anomaly detection, business/personal classification" />
+      <DomainHeader domain="money" title="Transaction Intelligence" subtitle="Smart categorization, anomaly detection, business/personal classification" />
       <DemoModeBadge />
 
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-        <KPITile label="Transactions" value={stats.total.toString()} icon={<Receipt className="h-4 w-4" />} color="blue" />
-        <KPITile label="AI Categorized" value={stats.aiCategorized.toString()} icon={<Sparkles className="h-4 w-4" />} color="purple" />
-        <KPITile label="Flagged" value={stats.flagged.toString()} icon={<AlertTriangle className="h-4 w-4" />} color="amber" />
-        <KPITile label="Recurring" value={stats.recurring.toString()} icon={<Repeat className="h-4 w-4" />} color="emerald" />
-        <KPITile label="Avg Confidence" value={`${(stats.avgConfidence * 100).toFixed(0)}%`} icon={<Shield className="h-4 w-4" />} color="blue" />
+        <KPITile label="Transactions" value={stats.total.toString()} icon={Receipt} color="blue" />
+        <KPITile label="AI Categorized" value={stats.aiCategorized.toString()} icon={Sparkles} color="purple" />
+        <KPITile label="Flagged" value={stats.flagged.toString()} icon={AlertTriangle} color="amber" />
+        <KPITile label="Recurring" value={stats.recurring.toString()} icon={Repeat} color="emerald" />
+        <KPITile label="Avg Confidence" value={`${(stats.avgConfidence * 100).toFixed(0)}%`} icon={Shield} color="blue" />
       </div>
 
       {/* Filter Tabs */}
@@ -118,7 +118,7 @@ const DebtCreditOffice = () => {
                 <p className={`font-display text-sm font-bold ${tx.type === "credit" ? "text-trust-verified" : ""}`}>
                   {tx.type === "credit" ? "+" : "-"}{fmt(tx.amountCents)}
                 </p>
-                <ConfidenceBar score={tx.confidence} size="sm" className="mt-1" />
+                <ConfidenceBar value={Math.round(tx.confidence * 100)} size="sm" className="mt-1" />
               </div>
             </div>
             {tx.flags.length > 0 && (

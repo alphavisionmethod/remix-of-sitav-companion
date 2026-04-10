@@ -54,7 +54,7 @@ const FinancialHealthPulse = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
-      <DomainHeader domain="finance" title="Financial Health Pulse" subtitle="Composite health score across all money dimensions" />
+      <DomainHeader domain="money" title="Financial Health Pulse" subtitle="Composite health score across all money dimensions" />
       <DemoModeBadge />
 
       {/* Overall Score */}

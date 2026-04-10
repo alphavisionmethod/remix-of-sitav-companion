@@ -83,7 +83,7 @@ const MoneyAdvisorBoard = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
-      <DomainHeader domain="finance" title="Money Advisor Board" subtitle="8 specialized advisors synthesizing your complete financial picture" />
+      <DomainHeader domain="money" title="Money Advisor Board" subtitle="8 specialized advisors synthesizing your complete financial picture" />
       <DemoModeBadge />
 
       {/* Chief Strategist */}

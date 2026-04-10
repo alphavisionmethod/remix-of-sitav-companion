@@ -52,16 +52,16 @@ const NetWorthOffice = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
-      <DomainHeader domain="finance" title="Net Worth & Balance Sheet" subtitle="Total financial position across all accounts" />
+      <DomainHeader domain="money" title="Net Worth & Balance Sheet" subtitle="Total financial position across all accounts" />
       <DemoModeBadge />
 
       {/* KPI Row */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <KPITile label="Net Worth" value={fmt(analysis.netWorth)} icon={<DollarSign className="h-4 w-4" />}
+        <KPITile label="Net Worth" value={fmt(analysis.netWorth)} icon={DollarSign}
           color={analysis.netWorth >= 0 ? "emerald" : "red"} trend={analysis.netWorth >= 0 ? "up" : "down"} trendValue="+3.2% this month" />
-        <KPITile label="Total Assets" value={fmt(analysis.totalAssets)} icon={<TrendingUp className="h-4 w-4" />}
+        <KPITile label="Total Assets" value={fmt(analysis.totalAssets)} icon={TrendingUp}
           color="blue" />
-        <KPITile label="Total Liabilities" value={fmt(analysis.totalLiabilities)} icon={<TrendingDown className="h-4 w-4" />}
+        <KPITile label="Total Liabilities" value={fmt(analysis.totalLiabilities)} icon={TrendingDown}
           color="amber" />
         <KPITile label="Equity Ratio" value={`${pct}%`} icon={<BarChart3 className="h-4 w-4" />}
           color={Number(pct) >= 50 ? "emerald" : "amber"} />
@@ -190,7 +190,7 @@ const NetWorthOffice = () => {
             demoReasoning="Asset growth of 3.2% this month vs 1.1% liability reduction — positive momentum."
           />
 
-          <ConfidenceBar score={0.92} label="Balance accuracy" />
+          <ConfidenceBar value={Math.round(0.92 * 100)} label="Balance accuracy" />
         </div>
       </div>
     </motion.div>

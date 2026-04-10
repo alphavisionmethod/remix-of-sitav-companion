@@ -41,7 +41,7 @@ const ScenarioPlanner = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
-      <DomainHeader domain="finance" title="Scenario Planner" subtitle="What-if projections — see the impact before you decide" />
+      <DomainHeader domain="money" title="Scenario Planner" subtitle="What-if projections — see the impact before you decide" />
       <DemoModeBadge />
 
       {/* Scenario Selector */}
@@ -66,13 +66,13 @@ const ScenarioPlanner = () => {
           icon={result.netImpactMonthlyCents >= 0 ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" />}
           color={result.netImpactMonthlyCents >= 0 ? "emerald" : "red"} />
         <KPITile label="Annual Impact" value={`${sign(result.netImpactAnnualCents)}${fmt(result.netImpactAnnualCents)}`}
-          icon={<DollarSign className="h-4 w-4" />}
+          icon={DollarSign}
           color={result.netImpactAnnualCents >= 0 ? "emerald" : "red"} />
         <KPITile label="Safe-to-Spend" value={fmt(result.projectedSafeToSpend)}
-          icon={<Shield className="h-4 w-4" />}
+          icon={Shield}
           color={result.projectedSafeToSpend > CTX.safeToSpendCents ? "emerald" : "amber"} />
         <KPITile label="Risk Level" value={result.riskLevel.toUpperCase()}
-          icon={<AlertTriangle className="h-4 w-4" />}
+          icon={AlertTriangle}
           color={result.riskLevel === "low" ? "emerald" : result.riskLevel === "moderate" ? "amber" : "red"} />
       </div>
 
@@ -122,7 +122,7 @@ const ScenarioPlanner = () => {
               {result.riskLevel === "low" ? <CheckCircle className="h-4 w-4 text-trust-verified" /> : <AlertTriangle className={`h-4 w-4 ${riskColor}`} />}
               <SitaCardTitle>Risk: {result.riskLevel.toUpperCase()}</SitaCardTitle>
             </div>
-            <ConfidenceBar score={result.confidenceScore} label="Projection confidence" />
+            <ConfidenceBar value={Math.round(result.confidenceScore * 100)} label="Projection confidence" />
           </SitaCard>
 
           {/* Tradeoffs */}

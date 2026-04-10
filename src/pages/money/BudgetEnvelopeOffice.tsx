@@ -48,17 +48,17 @@ const BudgetEnvelopeOffice = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
-      <DomainHeader domain="finance" title="Budget & Envelope Office" subtitle="Give every dollar a job — YNAB-style envelope budgeting" />
+      <DomainHeader domain="money" title="Budget & Envelope Office" subtitle="Give every dollar a job — YNAB-style envelope budgeting" />
       <DemoModeBadge />
 
       {/* KPI Row */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-        <KPITile label="Monthly Income" value={fmt(budget.totalIncomeCents)} icon={<DollarSign className="h-4 w-4" />} color="blue" />
-        <KPITile label="Allocated" value={fmt(budget.totalAllocatedCents)} icon={<Wallet className="h-4 w-4" />} color="emerald" />
-        <KPITile label="Spent So Far" value={fmt(totalSpent)} icon={<TrendingUp className="h-4 w-4" />} color="amber" />
-        <KPITile label="Available" value={fmt(totalAvailable)} icon={<PiggyBank className="h-4 w-4" />}
+        <KPITile label="Monthly Income" value={fmt(budget.totalIncomeCents)} icon={DollarSign} color="blue" />
+        <KPITile label="Allocated" value={fmt(budget.totalAllocatedCents)} icon={Wallet} color="emerald" />
+        <KPITile label="Spent So Far" value={fmt(totalSpent)} icon={TrendingUp} color="amber" />
+        <KPITile label="Available" value={fmt(totalAvailable)} icon={PiggyBank}
           color={totalAvailable >= 0 ? "emerald" : "red"} />
-        <KPITile label="Unallocated" value={fmt(budget.unallocatedCents)} icon={<AlertTriangle className="h-4 w-4" />}
+        <KPITile label="Unallocated" value={fmt(budget.unallocatedCents)} icon={AlertTriangle}
           color={budget.unallocatedCents > 0 ? "amber" : "emerald"} />
       </div>
 

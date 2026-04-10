@@ -36,18 +36,18 @@ const DebtCreditOffice = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
-      <DomainHeader domain="finance" title="Debt, Credit & Liability Office" subtitle="Payoff strategies, utilization monitoring, credit pulse" />
+      <DomainHeader domain="money" title="Debt, Credit & Liability Office" subtitle="Payoff strategies, utilization monitoring, credit pulse" />
       <DemoModeBadge />
 
       {/* KPI Row */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-        <KPITile label="Total Debt" value={fmt(profile.totalDebtCents)} icon={<CreditCard className="h-4 w-4" />} color="amber" />
-        <KPITile label="Monthly Interest Drag" value={fmt(profile.interestDragMonthlyCents)} icon={<TrendingDown className="h-4 w-4" />} color="red" />
+        <KPITile label="Total Debt" value={fmt(profile.totalDebtCents)} icon={CreditCard} color="amber" />
+        <KPITile label="Monthly Interest Drag" value={fmt(profile.interestDragMonthlyCents)} icon={TrendingDown} color="red" />
         <KPITile label="Utilization" value={`${profile.utilizationPercent.toFixed(0)}%`} icon={<BarChart3 className="h-4 w-4" />}
           color={profile.utilizationPercent < 30 ? "emerald" : "amber"} />
-        <KPITile label="DTI Ratio" value={`${profile.debtToIncomeRatio.toFixed(0)}%`} icon={<Target className="h-4 w-4" />}
+        <KPITile label="DTI Ratio" value={`${profile.debtToIncomeRatio.toFixed(0)}%`} icon={Target}
           color={profile.debtToIncomeRatio < 36 ? "emerald" : "red"} />
-        <KPITile label="Credit Score" value={pulse.estimatedScore.toString()} icon={<Shield className="h-4 w-4" />}
+        <KPITile label="Credit Score" value={pulse.estimatedScore.toString()} icon={Shield}
           color={pulse.estimatedScore >= 700 ? "emerald" : pulse.estimatedScore >= 600 ? "amber" : "red"}
           trend={pulse.trend === "improving" ? "up" : pulse.trend === "declining" ? "down" : undefined} />
       </div>
@@ -156,7 +156,7 @@ const DebtCreditOffice = () => {
                 </div>
               ))}
             </div>
-            <ConfidenceBar score={0.78} label="Score confidence" className="mt-3" />
+            <ConfidenceBar value={Math.round(0.78 * 100)} label="Score confidence" className="mt-3" />
           </SitaCard>
 
           <LiveAdvisorCard
