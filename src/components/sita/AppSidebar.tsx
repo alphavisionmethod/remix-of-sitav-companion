@@ -305,6 +305,7 @@ export function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter className="px-2 pb-4 border-t border-sidebar-border pt-2">
+        <CollapsibleNavGroup items={aiEngineeringNav} label="AI Engineering" collapsed={collapsed} />
         <SidebarGroup>
           <SidebarGroupContent>
             <NavItems items={bottomNav} collapsed={collapsed} />
