@@ -1,4 +1,3 @@
-import { useAction } from "@/hooks/use-action";
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — AIT04-08: Full Spec Boards
 // Activity Feed, Cost & Efficiency, Recommendations,
@@ -17,6 +16,7 @@ import { computeTruthIndices } from "@/lib/core-services/truth-indices/truth-ind
 import { Activity, DollarSign, Lightbulb, CheckCircle, Shield, TrendingDown, TrendingUp, Filter, AlertTriangle, XCircle, Clock, Zap, ArrowRight } from "lucide-react";
 import { formatFreshness } from "@/lib/ai/ai-surface-grammar";
 import { supabase } from "@/integrations/supabase/client";
+import { updateRecommendationStatus, updateApprovalQueueItem } from "@/lib/admin-ai/admin-ai-workforce-client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
@@ -249,9 +249,11 @@ export function AIT06Recommendations() {
     queryFn: () => getRecommendations(),
   });
 
-  const updateStatus = useAction("admin", "status.update", {
-    invalidateKeys: [["ai-workforce-recommendations"]],
-  });
+  const queryClient = useQueryClient();
+  const updateStatus = async (id: string, status: string) => {
+    await updateRecommendationStatus(id, status);
+    queryClient.invalidateQueries({ queryKey: ["ai-workforce-recommendations"] });
+  };
 
   const filtered = recs.filter((r: Record<string, any>) => {
     if (filterDomain !== "all" && r.domain !== filterDomain) return false;
@@ -333,16 +335,16 @@ export function AIT06Recommendations() {
                 {r.confidence && <Badge variant="outline" className="text-[10px]">conf: {r.confidence}%</Badge>}
               </div>
               <div className="flex gap-2 pt-1 border-t">
-                <Button size="sm" variant="default" className="h-7 text-xs" onClick={() => updateStatus.mutate({ id: r.id, status: "accepted" })}>
+                <Button size="sm" variant="default" className="h-7 text-xs" onClick={() => updateStatus(r.id, "accepted")}>
                   <CheckCircle className="h-3 w-3 mr-1" />Accept
                 </Button>
-                <Button size="sm" variant="outline" className="h-7 text-xs" onClick={() => updateStatus.mutate({ id: r.id, status: "rejected" })}>
+                <Button size="sm" variant="outline" className="h-7 text-xs" onClick={() => updateStatus(r.id, "rejected")}>
                   <XCircle className="h-3 w-3 mr-1" />Reject
                 </Button>
-                <Button size="sm" variant="outline" className="h-7 text-xs" onClick={() => updateStatus.mutate({ id: r.id, status: "deferred" })}>
+                <Button size="sm" variant="outline" className="h-7 text-xs" onClick={() => updateStatus(r.id, "deferred")}>
                   <Clock className="h-3 w-3 mr-1" />Defer
                 </Button>
-                <Button size="sm" variant="outline" className="h-7 text-xs" onClick={() => updateStatus.mutate({ id: r.id, status: "queued_for_execution" })}>
+                <Button size="sm" variant="outline" className="h-7 text-xs" onClick={() => updateStatus(r.id, "queued_for_execution")}>
                   <Zap className="h-3 w-3 mr-1" />Queue
                 </Button>
               </div>
@@ -358,7 +360,7 @@ export function AIT06Recommendations() {
 // AIT07 — Human Approval Queue (Full Spec)
 // ═══════════════════════════════════════════════════════════════
 export function AIT07ApprovalQueue() {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
   const [filterStatus, setFilterStatus] = useState("pending");
 
   const { data: queue = [] } = useQuery({
@@ -366,9 +368,10 @@ export function AIT07ApprovalQueue() {
     queryFn: () => getApprovalQueue(filterStatus === "all" ? undefined : filterStatus),
   });
 
-  const updateApproval = useAction("admin", "approval.update", {
-    invalidateKeys: [["ai-workforce-approval-queue"]],
-  });
+  const updateApproval = async (id: string, updates: Record<string, unknown>) => {
+    await updateApprovalQueueItem(id, updates);
+    queryClient.invalidateQueries({ queryKey: ["ai-workforce-approval-queue"] });
+  };
 
   return (
     <div className="space-y-6 p-6 max-w-[1600px] mx-auto">
@@ -417,13 +420,13 @@ export function AIT07ApprovalQueue() {
               </div>
               {item.status === "pending" && (
                 <div className="flex gap-2 pt-2 border-t">
-                  <Button size="sm" variant="default" className="h-7 text-xs gap-1" onClick={() => updateApproval.mutate({ id: item.id, status: "approved" })}>
+                  <Button size="sm" variant="default" className="h-7 text-xs gap-1" onClick={() => updateApproval(item.id, { status: "approved" })}>
                     <CheckCircle className="h-3 w-3" />Approve
                   </Button>
-                  <Button size="sm" variant="destructive" className="h-7 text-xs gap-1" onClick={() => updateApproval.mutate({ id: item.id, status: "rejected" })}>
+                  <Button size="sm" variant="destructive" className="h-7 text-xs gap-1" onClick={() => updateApproval(item.id, { status: "rejected" })}>
                     <XCircle className="h-3 w-3" />Reject
                   </Button>
-                  <Button size="sm" variant="outline" className="h-7 text-xs gap-1" onClick={() => updateApproval.mutate({ id: item.id, status: "returned" })}>
+                  <Button size="sm" variant="outline" className="h-7 text-xs gap-1" onClick={() => updateApproval(item.id, { status: "returned" })}>
                     Request More Evidence
                   </Button>
                 </div>

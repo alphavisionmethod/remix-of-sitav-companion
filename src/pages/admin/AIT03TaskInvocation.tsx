@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import AITSubNav from "@/components/admin/AITSubNav";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
@@ -80,6 +81,7 @@ export default function AIT03TaskInvocation() {
 
   return (
     <div className="space-y-6 p-6 max-w-[1600px] mx-auto">
+      <AITSubNav />
       <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2">

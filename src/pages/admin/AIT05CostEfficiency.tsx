@@ -10,6 +10,7 @@ import { getRecentInvocations, getWorkforceStats } from "@/lib/core-services/ai-
 import { ROLE_BUDGET_POLICIES, DEFAULT_THRESHOLDS, BUDGET_CLASS_SPECS, type AdminBudgetClass } from "@/lib/core-services/ai-workforce/admin-budget-routing-policy";
 import { DollarSign, TrendingUp, TrendingDown, Lightbulb, AlertTriangle, Shield, Zap } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import AITSubNav from "@/components/admin/AITSubNav";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 export function AIT05CostEfficiency() {
@@ -93,6 +94,7 @@ export function AIT05CostEfficiency() {
 
   return (
     <div className="space-y-6 p-6 max-w-[1600px] mx-auto">
+      <AITSubNav />
       <DemoModeBadge />
       <h1 className="text-2xl font-bold flex items-center gap-2"><DollarSign className="h-6 w-6 text-primary" /> AIT05 — Cost & Efficiency</h1>
       <p className="text-muted-foreground text-sm">Budget policy metrics, spend analysis, and optimization insights</p>

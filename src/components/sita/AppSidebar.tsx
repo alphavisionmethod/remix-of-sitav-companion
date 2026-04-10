@@ -95,7 +95,7 @@ const appsNav = [
 
 const aiEngineeringNav = [
   { title: "AI Board", url: "/admin/ai-engineering", icon: Brain },
-  { title: "AI Team", url: "/admin/ai-team-roster", icon: Users },
+  { title: "AI Team", url: "/admin/ai-team", icon: Users },
   { title: "Missions", url: "/admin/ai-missions", icon: Target },
   { title: "Fixes", url: "/admin/ai-fix-center", icon: Bug },
   { title: "Self-Healing", url: "/admin/ai-self-healing", icon: Sparkles },

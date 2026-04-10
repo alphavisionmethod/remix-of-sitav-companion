@@ -13,6 +13,7 @@ import { getWorkforceRoles, getWorkforceStats } from "@/lib/core-services/ai-wor
 import { DEFAULT_THRESHOLDS, ROLE_BUDGET_POLICIES } from "@/lib/core-services/ai-workforce/admin-budget-routing-policy";
 import { ClipboardCheck, Shield, DollarSign, Zap, CheckCircle, AlertTriangle, Eye, Lock, Repeat, FileText, BarChart3, Users } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import AITSubNav from "@/components/admin/AITSubNav";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 interface CheckItem {
@@ -145,6 +146,7 @@ export default function AITSetupChecklist() {
 
   return (
     <div className="space-y-6 p-6 max-w-[1200px] mx-auto">
+      <AITSubNav />
       <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2">
