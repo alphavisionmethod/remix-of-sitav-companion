@@ -143,10 +143,10 @@ export function processSignal(
       persistStage("differential_reasoning", {
         signal_id: raw.signalId,
         domain: normalized.domain,
-        materiality: diff.materialityScore,
+        materiality: diff.totalMateriality,
         confidence_in_reuse: diff.confidenceInReuse,
         escalation_needed: escalationNeeded,
-        escalation_tier: escalation.tier,
+        escalation_tier: escalation.suggestedTier,
       });
 
       // Attempt reuse if candidates exist
@@ -176,10 +176,10 @@ export function processSignal(
 
         persistStage("reuse_decision", {
           signal_id: raw.signalId,
-          decision: reuseDecision.decision,
+          decision: reuseDecision.mode,
           candidates_evaluated: candidates.length,
           cost_estimate_cents: reuseDecision.costEstimateCents,
-          savings_cents: reuseDecision.estimatedSavingsCents,
+          savings_cents: reuseDecision.savingsCents,
         });
       }
     }
@@ -220,7 +220,7 @@ export function processSignal(
       ai_cost_cents: input.aiCostCents,
       estimated_value_cents: input.estimatedValueCents,
       payback_ratio: outcomeEconomics.paybackRatio,
-      value_tier: outcomeEconomics.valueTier,
+      value_class: outcomeEconomics.valueClass,
     });
   }
 
@@ -232,7 +232,7 @@ export function processSignal(
     signal_id: raw.signalId,
     assets_generated: generatedAssets.length,
     patterns_extracted: extractedPatterns.length,
-    reuse_decision: reuseDecision?.decision || "none",
+    reuse_decision: reuseDecision?.mode || "none",
     escalation_needed: escalationNeeded,
     processing_cost_cents: costEstimate,
     processing_latency_ms: latency,
