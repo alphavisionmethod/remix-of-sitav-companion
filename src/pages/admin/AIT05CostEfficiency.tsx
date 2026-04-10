@@ -10,6 +10,7 @@ import { getRecentInvocations, getWorkforceStats } from "@/lib/core-services/ai-
 import { ROLE_BUDGET_POLICIES, DEFAULT_THRESHOLDS, BUDGET_CLASS_SPECS, type AdminBudgetClass } from "@/lib/core-services/ai-workforce/admin-budget-routing-policy";
 import { DollarSign, TrendingUp, TrendingDown, Lightbulb, AlertTriangle, Shield, Zap } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import AITSubNav from "@/components/admin/AITSubNav";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 export function AIT05CostEfficiency() {

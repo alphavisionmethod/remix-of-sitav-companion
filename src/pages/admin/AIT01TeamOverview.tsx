@@ -13,6 +13,7 @@ import { computeTruthIndices } from "@/lib/core-services/truth-indices/truth-ind
 import { Bot, DollarSign, Zap, Clock, Shield, Activity, AlertTriangle, CheckCircle2, Lightbulb, TrendingUp, ArrowRight, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import AITSubNav from "@/components/admin/AITSubNav";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 
@@ -52,6 +53,7 @@ export default function AIT01TeamOverview() {
 
   return (
     <div className="space-y-6 p-6 max-w-[1600px] mx-auto">
+      <AITSubNav />
       <DemoModeBadge />
       <div className="flex items-center justify-between">
         <div>

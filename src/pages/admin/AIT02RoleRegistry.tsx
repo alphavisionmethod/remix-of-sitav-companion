@@ -8,6 +8,7 @@ import type { WorkforceRole } from "@/lib/core-services/ai-workforce/workforce-o
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import AITSubNav from "@/components/admin/AITSubNav";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -47,6 +48,7 @@ export default function AIT02RoleRegistry() {
 
   return (
     <div className="space-y-6 p-6 max-w-[1600px] mx-auto">
+      <AITSubNav />
       <DemoModeBadge />
       <div className="flex items-center justify-between">
         <div>
