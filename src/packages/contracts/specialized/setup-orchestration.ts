@@ -79,6 +79,9 @@ export interface SetupBranchCondition {
   evaluatorKey: string;
   /** If true, phase is included when condition passes; if false, phase is skipped */
   includeWhen: boolean;
+  /** Conditions sharing the same orGroup are OR'd; different groups are AND'd.
+   *  Conditions without an orGroup each form their own AND clause. */
+  orGroup?: string;
 }
 
 /** Background task for a phase */

@@ -104,23 +104,44 @@ export class SetupOrchestrationEngine {
       return role === "family-office" || role === "personal";
     });
 
-    // Setup style based
-    for (const combo of ["style:guided,advanced", "style:advanced"]) {
+    // Setup style based — register all combos used in phase definitions
+    for (const combo of ["style:express,guided,advanced", "style:guided,advanced", "style:advanced"]) {
       const styles = combo.replace("style:", "").split(",");
-      this.branchEvaluators.set(combo, (s) => {
+      this.branchEvaluators.set(combo, () => {
         const style = this.getSessionData<string>("setupStyle") ?? "guided";
         return styles.includes(style);
       });
     }
 
-    // Domain-based (generic)
-    this.branchEvaluators.set("domain:money", (s) => {
+    // Domain-based evaluators — check enabledDomains OR quickIdentity signals
+    const domainEvaluator = (domainKeys: string[]) => () => {
       const domains = this.getSessionData<string[]>("enabledDomains") ?? [];
-      return domains.includes("money");
+      const painPoints = this.getSessionData<string[]>("painPoints") ?? [];
+      const focusAreas = this.getSessionData<string[]>("focusAreas") ?? [];
+      return domainKeys.some(k =>
+        domains.includes(k) || painPoints.includes(k) || focusAreas.includes(k)
+      );
+    };
+
+    this.branchEvaluators.set("domain:household", domainEvaluator(["household", "family", "home", "shared-living"]));
+    this.branchEvaluators.set("domain:work", domainEvaluator(["business", "work", "clients", "team", "leads", "ops"]));
+    this.branchEvaluators.set("domain:money", domainEvaluator(["money", "bills", "spending", "approvals", "budget"]));
+    this.branchEvaluators.set("domain:communications", domainEvaluator(["communications", "messages", "replies", "follow-up", "email"]));
+
+    // Tone branching — overwhelmed indicator
+    this.branchEvaluators.set("tone:overwhelmed", () => {
+      const stressAreas = this.getSessionData<string[]>("stressAreas") ?? [];
+      const operatingContext = this.getSessionData<string>("operatingContext") ?? "";
+      return stressAreas.length >= 4 || operatingContext === "regaining-control" || operatingContext === "overwhelmed";
     });
 
-    // Custom: user-chose-restore / user-chose-enterprise are manual overrides
-    this.branchEvaluators.set("user-chose-restore", () => false);
+    // Custom: restore-path checks accountPath
+    this.branchEvaluators.set("custom:restore-path", () => {
+      const accountPath = this.getSessionData<string>("accountPath") ?? "";
+      return accountPath === "restore" || accountPath === "restore-lookup";
+    });
+
+    // Custom: enterprise is manual override
     this.branchEvaluators.set("user-chose-enterprise", () => false);
   }
 
@@ -204,12 +225,28 @@ export class SetupOrchestrationEngine {
 
   private evaluateBranchConditions(def: SetupPhaseDefinition): boolean {
     if (def.branchConditions.length === 0) return true;
-    return def.branchConditions.every(cond => {
-      const evaluator = this.branchEvaluators.get(cond.evaluatorKey);
-      if (!evaluator) return true; // unknown evaluator → include
-      const result = evaluator(this.session);
-      return cond.includeWhen ? result : !result;
-    });
+
+    // Group conditions: same orGroup → OR'd; different groups → AND'd
+    const groups = new Map<string, SetupBranchCondition[]>();
+    let ungroupedIdx = 0;
+    for (const cond of def.branchConditions) {
+      const key = cond.orGroup ?? `__ungrouped_${ungroupedIdx++}`;
+      const arr = groups.get(key) ?? [];
+      arr.push(cond);
+      groups.set(key, arr);
+    }
+
+    // Every group must have at least one passing condition (AND of ORs)
+    for (const [, conditions] of groups) {
+      const groupPasses = conditions.some(cond => {
+        const evaluator = this.branchEvaluators.get(cond.evaluatorKey);
+        if (!evaluator) return true;
+        const result = evaluator(this.session);
+        return cond.includeWhen ? result : !result;
+      });
+      if (!groupPasses) return false;
+    }
+    return true;
   }
 
   registerBranchEvaluator(key: string, evaluator: BranchEvaluator): void {
@@ -717,6 +754,18 @@ export class SetupOrchestrationEngine {
 
   isPhaseRequired(phaseId: SetupPhaseId): boolean {
     return this.definitions.get(phaseId)?.required ?? false;
+  }
+
+  /** Compute tone context based on stress/overwhelm signals */
+  getToneContext(): { isOverwhelmed: boolean; copyDensity: "light" | "standard" | "rich"; toneClass: "calm" | "neutral" | "energetic" } {
+    const evaluator = this.branchEvaluators.get("tone:overwhelmed");
+    const isOverwhelmed = evaluator ? evaluator(this.session) : false;
+    const style = this.getSessionData<string>("setupStyle") ?? "guided";
+    return {
+      isOverwhelmed,
+      copyDensity: isOverwhelmed ? "light" : style === "advanced" ? "rich" : "standard",
+      toneClass: isOverwhelmed ? "calm" : "neutral",
+    };
   }
 
   /** Cleanup all timers */

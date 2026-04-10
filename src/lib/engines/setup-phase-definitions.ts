@@ -51,8 +51,12 @@ function defaultStatusUX(title: string): Record<SetupPhaseStatus, PhaseStatusUX>
 
 // ── Branch condition factories ──────────────────────────────
 
-function setupStyleCondition(styles: string[]): SetupBranchCondition {
-  return { type: "setup-style", description: `Include for styles: ${styles.join(", ")}`, evaluatorKey: `style:${styles.join(",")}`, includeWhen: true };
+function setupStyleCondition(styles: string[], orGroup?: string): SetupBranchCondition {
+  return { type: "setup-style", description: `Include for styles: ${styles.join(", ")}`, evaluatorKey: `style:${styles.join(",")}`, includeWhen: true, orGroup };
+}
+
+function domainCondition(domain: string, orGroup?: string): SetupBranchCondition {
+  return { type: "domain-selection", description: `Include when ${domain} domain is relevant`, evaluatorKey: `domain:${domain}`, includeWhen: true, orGroup };
 }
 
 // ── Phase Definitions ───────────────────────────────────────
@@ -213,14 +217,20 @@ export const SETUP_PHASE_DEFINITIONS: SetupPhaseDefinition[] = [
   {
     id: "household-graph", title: "Household Graph", description: "Map the people in your world",
     dependencies: ["deep-world-modeling"], blocking: false, required: false,
-    backgroundTaskIds: [], branchConditions: [setupStyleCondition(["guided", "advanced"])], requiredHardware: [],
+    backgroundTaskIds: [], branchConditions: [
+      setupStyleCondition(["guided", "advanced"], "include-gate"),
+      domainCondition("household", "include-gate"),
+    ], requiredHardware: [],
     timeout: DEFAULT_TIMEOUT, order: 14, excludedFromSteps: true,
     statusUX: defaultStatusUX("Household Graph"),
   },
   {
     id: "relationship-sensitivity", title: "Relationship Focus", description: "Should SITA help with people or focus on tasks",
     dependencies: ["household-graph"], blocking: false, required: false,
-    backgroundTaskIds: [], branchConditions: [setupStyleCondition(["guided", "advanced"])], requiredHardware: [],
+    backgroundTaskIds: [], branchConditions: [
+      setupStyleCondition(["guided", "advanced"], "include-gate"),
+      domainCondition("household", "include-gate"),
+    ], requiredHardware: [],
     timeout: DEFAULT_TIMEOUT, order: 14.5, excludedFromSteps: true,
     statusUX: defaultStatusUX("Relationship Focus"),
   },
@@ -241,7 +251,10 @@ export const SETUP_PHASE_DEFINITIONS: SetupPhaseDefinition[] = [
   {
     id: "communications-context", title: "Communications", description: "Understand your communication load",
     dependencies: ["deep-world-modeling"], blocking: false, required: false,
-    backgroundTaskIds: [], branchConditions: [setupStyleCondition(["guided", "advanced"])], requiredHardware: [],
+    backgroundTaskIds: [], branchConditions: [
+      setupStyleCondition(["guided", "advanced"], "include-gate"),
+      domainCondition("communications", "include-gate"),
+    ], requiredHardware: [],
     timeout: DEFAULT_TIMEOUT, order: 17, excludedFromSteps: true,
     statusUX: defaultStatusUX("Communications"),
   },

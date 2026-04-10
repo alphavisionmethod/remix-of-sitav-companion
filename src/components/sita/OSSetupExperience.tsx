@@ -509,7 +509,17 @@ export function OSSetupExperience() {
     setSessionData("role", state.role);
     setSessionData("setupStyle", state.setupStyle);
     setSessionData("enabledDomains", state.enabledDomains);
-  }, [state.role, state.setupStyle, state.enabledDomains, setSessionData]);
+    setSessionData("accountPath", state.accountPath);
+    setSessionData("operatingContext", state.operatingContext);
+    // Derive pain points and focus areas from quick identity for domain branching
+    setSessionData("painPoints", state.quickIdentity.slipPoints);
+    setSessionData("focusAreas", state.quickIdentity.runFirst);
+    setSessionData("stressAreas", state.stressMap.heavierThanShould);
+  }, [
+    state.role, state.setupStyle, state.enabledDomains, state.accountPath,
+    state.operatingContext, state.quickIdentity.slipPoints, state.quickIdentity.runFirst,
+    state.stressMap.heavierThanShould, setSessionData,
+  ]);
 
   const currentStepNum = currentStepIndex >= 0 ? currentStepIndex : 0;
 
@@ -695,6 +705,9 @@ export function OSSetupExperience() {
   const canSkipCurrent = !isPhaseRequired(phase);
   const showRollbackBtn = state.setupStyle === "advanced";
   const currentBgTasks = backgroundTasks.filter(t => t.phaseId === phase);
+  const toneContext = useMemo(() => engine.getToneContext(), [
+    state.stressMap.heavierThanShould.length, state.operatingContext, state.setupStyle,
+  ]);
 
   const handleResume = useCallback(() => { setShowResumeBanner(false); }, []);
   const handleRestart = useCallback(() => {
@@ -768,6 +781,15 @@ export function OSSetupExperience() {
           <div className="relative z-10 flex items-start gap-6 w-full max-w-4xl justify-center">
             <div className="flex-1 min-w-0">
               <BackgroundTaskBar tasks={currentBgTasks} />
+
+              {/* Tone-aware calm mode indicator */}
+              {toneContext.isOverwhelmed && showLearningPanel && (
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                  className="mb-3 rounded-xl border border-primary/10 bg-primary/5 px-4 py-2 flex items-center gap-2">
+                  <Sun className="h-3.5 w-3.5 text-primary/60" />
+                  <span className="text-[11px] text-muted-foreground">Calm mode — shorter steps, lighter detail. Take your time.</span>
+                </motion.div>
+              )}
 
               {(phaseStatus === "warning" || phaseStatus === "blocked" || phaseStatus === "degraded") && (
                 <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
