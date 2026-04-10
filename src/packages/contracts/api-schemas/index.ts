@@ -767,6 +767,7 @@ export interface EdgeFunctionMap {
   "tax-estimate": { request: TaxEstimateRequest; response: TaxEstimateResponse };
   "vapid-public-key": { request: VapidPublicKeyRequest; response: VapidPublicKeyResponse };
   "verification-recorder": { request: VerificationRecorderRequest; response: VerificationRecorderResponse };
+  "intelligence-api": { request: Record<string, unknown>; response: Record<string, unknown> };
 }
 
 export type EdgeFunctionName = keyof EdgeFunctionMap;

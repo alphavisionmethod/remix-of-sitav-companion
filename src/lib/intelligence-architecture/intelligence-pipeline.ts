@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Intelligence Pipeline Orchestrator
 // Wires all architecture layers (3.2–3.11) into a single
-// processing pipeline with integration hooks.
+// processing pipeline with integration hooks + persistence.
 // ═══════════════════════════════════════════════════════════════
 
 import { normalizeSignal, filterByRoute, type RawSignal, type NormalizedSignal } from "./signal-intake";
@@ -13,6 +13,7 @@ import { evaluateOutcomeEconomics, type OutcomeEconomicsInput, type OutcomeEcono
 import { generalizePattern } from "./cross-tenant-generalization";
 import type { IntelligenceAsset, ReuseCandidate } from "./intelligence-reuse-engine";
 import { computeEfficiencyScore, type EfficiencyScore } from "./efficiency-scoring";
+import { appendEngineEvent } from "@/lib/persistence/engine-persistence-adapter";
 
 // ── Pipeline Result ─────────────────────────────────────────
 
@@ -40,6 +41,12 @@ export function createEmptyPipelineState(): PipelineState {
   return { knownPatterns: [], verifiedStates: {}, assetLibrary: [] };
 }
 
+// ── Persistence helper (fire-and-forget) ────────────────────
+
+function persistStage(stage: string, data: Record<string, unknown>) {
+  appendEngineEvent("intelligence-pipeline", stage, data).catch(() => {});
+}
+
 // ── Pipeline Execution ──────────────────────────────────────
 
 export function processSignal(
@@ -60,6 +67,15 @@ export function processSignal(
   let outcomeEconomics: OutcomeEconomicsResult | undefined;
   let escalationNeeded = false;
 
+  // Persist signal intake
+  persistStage("signal_intake", {
+    signal_id: raw.signalId,
+    source: normalized.source,
+    domain: normalized.domain,
+    novelty_score: normalized.noveltyScore,
+    routes: normalized.routeTo,
+  });
+
   // ── Route: Asset Generation ───────────────────────────────
   if (normalized.routeTo.includes("asset_generation")) {
     const source = mapSignalToAssetSource(normalized.source);
@@ -78,6 +94,13 @@ export function processSignal(
       });
       generatedAssets.push(result.asset);
       state.assetLibrary.push(result.asset);
+
+      persistStage("asset_generation", {
+        signal_id: raw.signalId,
+        asset_id: result.asset.assetId,
+        domain: result.asset.domain,
+        confidence: result.asset.confidence,
+      });
     }
   }
 
@@ -91,6 +114,14 @@ export function processSignal(
     if (result.isNew) {
       state.knownPatterns.push(result.pattern);
     }
+
+    persistStage("pattern_extraction", {
+      signal_id: raw.signalId,
+      pattern_id: result.pattern.patternId,
+      pattern_type: result.pattern.patternType,
+      is_new: result.isNew,
+      confidence: result.pattern.confidence,
+    });
   }
 
   // ── Route: Differential Reasoning ─────────────────────────
@@ -108,6 +139,15 @@ export function processSignal(
         70,
       );
       escalationNeeded = escalation.shouldEscalate;
+
+      persistStage("differential_reasoning", {
+        signal_id: raw.signalId,
+        domain: normalized.domain,
+        materiality: diff.materialityScore,
+        confidence_in_reuse: diff.confidenceInReuse,
+        escalation_needed: escalationNeeded,
+        escalation_tier: escalation.tier,
+      });
 
       // Attempt reuse if candidates exist
       if (state.assetLibrary.length > 0) {
@@ -132,6 +172,14 @@ export function processSignal(
           differentialResult: diff,
           minConfidence: options?.minReuseConfidence || 60,
           stakes: options?.stakes || "medium",
+        });
+
+        persistStage("reuse_decision", {
+          signal_id: raw.signalId,
+          decision: reuseDecision.decision,
+          candidates_evaluated: candidates.length,
+          cost_estimate_cents: reuseDecision.costEstimateCents,
+          savings_cents: reuseDecision.estimatedSavingsCents,
         });
       }
     }
@@ -165,10 +213,30 @@ export function processSignal(
       accepted: true,
     };
     outcomeEconomics = evaluateOutcomeEconomics(input);
+
+    persistStage("outcome_economics", {
+      signal_id: raw.signalId,
+      outcome_category: input.outcomeCategory,
+      ai_cost_cents: input.aiCostCents,
+      estimated_value_cents: input.estimatedValueCents,
+      payback_ratio: outcomeEconomics.paybackRatio,
+      value_tier: outcomeEconomics.valueTier,
+    });
   }
 
   const latency = Date.now() - start;
   const costEstimate = reuseDecision?.costEstimateCents || 10;
+
+  // Persist pipeline completion
+  persistStage("pipeline_complete", {
+    signal_id: raw.signalId,
+    assets_generated: generatedAssets.length,
+    patterns_extracted: extractedPatterns.length,
+    reuse_decision: reuseDecision?.decision || "none",
+    escalation_needed: escalationNeeded,
+    processing_cost_cents: costEstimate,
+    processing_latency_ms: latency,
+  });
 
   return {
     signalId: raw.signalId,
