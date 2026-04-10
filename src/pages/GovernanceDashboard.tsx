@@ -25,14 +25,8 @@ export default function GovernanceDashboard() {
   const { engines } = useOSRuntime();
 
   // Invisible labor stats from engine
-  const laborStats = useMemo(() => {
-    const engine = engines.invisibleLabor;
-    return engine.getEqualizationSuggestions("current-user");
-  }, [engines]);
-
-  // Drag index from engine
-  const dragStats = useMemo(() => {
-    return engines.drag.getStats();
+  const laborSuggestions = useMemo(() => {
+    return engines.invisibleLabor.getEqualizationSuggestions("current-user", "household");
   }, [engines]);
 
   // Build readiness input from real governance data
