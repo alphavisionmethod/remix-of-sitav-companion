@@ -8,7 +8,7 @@ import {
   FileJson, BookOpen, GitBranch, Users, Sparkles, RotateCcw, Eye
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_BUNDLE_ITEMS, DEMO_EXPORT_MODES } from "@/lib/demo-data/admin-platform";
 
 type ExportMode = "json" | "markdown" | "approval" | "pr-ready" | "investor";
@@ -20,7 +20,7 @@ const typeColors: Record<string, string> = {
 };
 
 const AIEvidenceBundleComposer = () => {
-  const { isDemoMode } = useDataMode();
+  const { isDemo } = useAIEngDomain("missions", DEMO_BUNDLE_ITEMS);
   const [selectedMode, setSelectedMode] = useState<ExportMode>("markdown");
   const [selectedItems, setSelectedItems] = useState<string[]>(DEMO_BUNDLE_ITEMS.map(b => b.id));
   const [tab, setTab] = useState("compose");

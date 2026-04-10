@@ -3,14 +3,14 @@ import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { History, ArrowRight, TrendingUp, TrendingDown, AlertTriangle, CheckCircle2, Zap, RotateCcw, GitBranch } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_ADMIN_TIMELINE as DEMO_TIMELINE } from "@/lib/demo-data/admin-platform";
 
 const typeIcons: Record<string, typeof GitBranch> = { deploy: GitBranch, config: Zap, rollback: RotateCcw };
 const impactColors: Record<string, string> = { positive: "text-[hsl(var(--trust-safe))]", negative: "text-destructive", mixed: "text-amber-500" };
 
 const AITimeMachine = () => {
-  const { isDemoMode } = useDataMode();
+  const { isDemo } = useAIEngDomain("auditTimeline", DEMO_TIMELINE);
   const [selectedIdx, setSelectedIdx] = useState<number | null>(1);
 
   return (

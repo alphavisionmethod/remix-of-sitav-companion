@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { Shield, Eye, FileEdit, Sparkles, CheckCircle2, Lock, AlertTriangle, Users, Wrench, Palette, Bug, Gauge, BookOpen, Rocket, ShieldCheck, Brain } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_AGENT_BOUNDARIES, DEMO_CHANGE_TYPE_BOUNDARIES, DEMO_MISSION_BOUNDARIES } from "@/lib/demo-data/admin-platform";
 
 type AutonomyLevel = "observe_only" | "draft_only" | "safe_auto_heal" | "approval_required" | "never_automate";
@@ -41,7 +41,7 @@ interface ChangeTypeBoundary {
 }
 
 const AIHumanBoundaryControls = () => {
-  const { isDemoMode } = useDataMode();
+  const { isDemo } = useAIEngDomain("selfHealingRules", DEMO_AGENT_BOUNDARIES);
   const [tab, setTab] = useState("agents");
 
   return (

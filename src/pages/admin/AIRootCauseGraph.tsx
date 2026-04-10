@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { Network, ArrowRight, AlertTriangle, Bug, Server, Layout, Database, Shield, Zap } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_GRAPH_EDGES, DEMO_GRAPH_NODES } from "@/lib/demo-data/admin-platform";
 
 const typeStyles: Record<string, { icon: typeof Bug; color: string; bg: string }> = {
@@ -15,7 +15,7 @@ const typeStyles: Record<string, { icon: typeof Bug; color: string; bg: string }
 };
 
 const AIRootCauseGraph = () => {
-  const { isDemoMode } = useDataMode();
+  const { isDemo } = useAIEngDomain("violations", DEMO_GRAPH_NODES);
   const [selectedNode, setSelectedNode] = useState<string | null>("root-1");
   const selected = DEMO_GRAPH_NODES.find(n => n.id === selectedNode);
   const connectedEdges = DEMO_GRAPH_EDGES.filter(e => e.from === selectedNode || e.to === selectedNode);
