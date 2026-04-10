@@ -161,10 +161,29 @@ function userAiBudgetRows(userId: string) {
 
 // ── Scheduled Jobs ──────────────────────────────────────────
 function scheduledJobRows(userId: string) {
+  const job = (name: string, domain: string, job_class: string, cron: string, target: string, risk: string = "low", autonomy: string = "supervised", desc?: string) => ({
+    user_id: userId, name, domain, job_class, cron_expression: cron, target_function: target,
+    description: desc || `${name} — ${job_class}`, risk_tier: risk, autonomy_tier: autonomy,
+    state: "configured", retry_policy: "exponential", max_retries: 3, environment: "production",
+    kill_switch_class: "global", metadata: {},
+  });
   return [
-    { user_id: userId, job_key: "daily_truth_audit", display_name: "Daily Runtime Truth Audit", schedule: "0 6 * * *", enabled: true, job_type: "ai_workforce_task", config: { role: "runtime_truth_analyst", task: "runtime_truth_audit" } },
-    { user_id: userId, job_key: "weekly_budget_review", display_name: "Weekly Budget Review", schedule: "0 9 * * 1", enabled: true, job_type: "ai_workforce_task", config: { role: "budget_efficiency_analyst", task: "cost_optimization_review" } },
-    { user_id: userId, job_key: "connector_health_check", display_name: "Connector Health Check", schedule: "*/30 * * * *", enabled: true, job_type: "system", config: { action: "check_connector_health" } },
+    job("Daily Health Check", "platform", "health_check", "0 */6 * * *", "system-updates", "low", "autonomous", "Platform-wide health probe"),
+    job("Self-Healing: Connector Repair", "connectors", "self_heal", "*/30 * * * *", "self-healing", "medium", "supervised", "Detect and repair degraded connectors"),
+    job("Self-Healing: Stale Data Cleanup", "data", "self_heal", "0 3 * * *", "self-healing", "medium", "supervised", "Clean stale data artifacts"),
+    job("Agent Heartbeat Monitor", "agents", "agent_heartbeat", "*/5 * * * *", "agent-heartbeat", "low", "autonomous", "Verify all agents are responsive"),
+    job("Agent Task Dispatcher", "agents", "agent_execution", "*/15 * * * *", "agent-scheduler", "medium", "supervised", "Dispatch queued agent tasks"),
+    job("System Maintenance: DB Vacuum", "platform", "maintenance", "0 4 * * 0", "system-updates", "low", "autonomous", "Weekly database maintenance"),
+    job("Expired Signal Cleanup", "platform", "cleanup", "0 2 * * *", "system-updates", "low", "autonomous", "Remove expired signals and stale queue items"),
+    job("Data Consistency Check", "data", "consistency_check", "0 5 * * *", "system-updates", "low", "autonomous", "Verify cross-table referential integrity"),
+    job("Projection Rebuild: Metrics", "analytics", "projection_rebuild", "0 1 * * 1", "system-updates", "low", "supervised", "Weekly metrics projection refresh"),
+    job("Scheduled Notification Digest", "notifications", "scheduled_notification", "0 8 * * *", "system-updates", "low", "autonomous", "Morning notification digest"),
+    job("Scheduled Verification Sweep", "compliance", "scheduled_verification", "0 7 * * *", "system-updates", "low", "supervised", "Verify pending compliance items"),
+    job("Connector Sync Check", "connectors", "scheduled_sync", "*/60 * * * *", "system-updates", "low", "autonomous", "Check connector sync freshness"),
+    job("Budget Enforcement Scan", "ai", "budget_enforcement", "0 */4 * * *", "system-updates", "low", "autonomous", "Enforce AI budget thresholds"),
+    job("Policy Audit Scan", "compliance", "policy_audit", "0 6 * * 1", "system-updates", "low", "supervised", "Weekly policy compliance audit"),
+    job("Daily Intelligence Digest", "ai", "digest_generation", "0 9 * * *", "system-updates", "low", "autonomous", "Generate daily AI usage digest"),
+    job("Runtime Truth Audit", "platform", "health_check", "0 6 * * *", "system-updates", "low", "supervised", "Daily runtime truth verification"),
   ];
 }
 
