@@ -99,7 +99,7 @@ function _serializeState(): Record<string, unknown> {
 
 function _hydrateState(state: Record<string, unknown>): void {
   if (!state) return;
-  if (state.store) { store.clear(); (state.store as never[]).forEach(([k, v]: any) => store.set(k, v)); }
+  if (state.store) { store.clear(); (state.store as Array<[string, ApprovalRequest]>).forEach(([k, v]) => store.set(k, v)); }
 }
 
 export async function loadPersistedState(): Promise<void> {

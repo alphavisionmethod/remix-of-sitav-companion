@@ -217,7 +217,7 @@ export const DUPLICATE_CLUSTER_RESOLUTIONS: ClusterResolution[] = [
     canonical: "ai-gateway",
     adapters: ["brain-core", "model-router", "capability-router"],
     deprecated: ["personal-operating-model", "ai-memory-graph"],
-    transitional: ["groundedness-gate", "prompt-assembler"],
+    transitional: ["prompt-assembler"],
     rationale: "ai-gateway is the single canonical inference entry. brain-core is an edge function adapter. model-router/capability-router feed routing decisions.",
     riskLevel: "high",
     migrationStatus: "in-progress",
@@ -405,7 +405,7 @@ export const SERVICE_DIRECTORY_CLASSIFICATION: ServiceDirectoryClassification[] 
   { directory: "model-router", classification: "supporting", domain: "ai-runtime" },
   { directory: "capability-router", classification: "supporting", domain: "ai-runtime" },
   { directory: "prompt-assembler", classification: "supporting", domain: "ai-runtime" },
-  { directory: "groundedness-gate", classification: "supporting", domain: "ai-runtime" },
+  // groundedness-gate — DELETED, consolidated into conscience-gate/
   { directory: "receipt-service", classification: "supporting", domain: "ai-runtime" },
   { directory: "ai-workforce", classification: "supporting", domain: "ai-runtime" },
   { directory: "ai-economics", classification: "supporting", domain: "ai-runtime" },
