@@ -3,8 +3,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { GitBranch, Search, CheckCircle, XCircle, Clock, Shield, AlertTriangle, FileText } from "lucide-react";
-import { CI_GATE_REGISTRY, getCIGatePassRate, type CIGateEntry } from "@/lib/platform-law/platform-law-registry";
+import { GitBranch, Search, CheckCircle, XCircle, Clock, Shield, AlertTriangle, FileText, Activity } from "lucide-react";
+import {
+  CI_GATE_REGISTRY, VALIDATION_RUNS, getCIGatePassRate, getRecentValidationRuns,
+  type CIGateEntry
+} from "@/lib/platform-law/platform-law-registry";
 
 const PLE04CIGateMonitor = () => {
   const [search, setSearch] = useState("");
@@ -25,6 +28,7 @@ const PLE04CIGateMonitor = () => {
   const passRate = getCIGatePassRate();
   const blocking = CI_GATE_REGISTRY.filter(g => g.type === "blocking").length;
   const failing = CI_GATE_REGISTRY.filter(g => g.lastStatus === "fail").length;
+  const recentRuns = getRecentValidationRuns(5);
 
   const statusIcon: Record<string, JSX.Element> = {
     pass: <CheckCircle className="h-3.5 w-3.5 text-emerald-400" />,
@@ -34,17 +38,13 @@ const PLE04CIGateMonitor = () => {
   };
 
   const prChecklist = [
-    "Feature ID declared",
-    "Feature manifest updated",
-    "Contracts added/updated",
-    "Route registered with shell",
-    "Interaction IDs added for P0",
-    "Journey coverage updated",
-    "Proof/receipt path considered",
-    "Degraded/error/loading states included",
-    "Runtime evidence/probe added",
-    "Readiness impact noted",
+    "Feature ID declared", "Feature manifest updated", "Contracts added/updated",
+    "Route registered with shell", "Interaction IDs added for P0", "Journey coverage updated",
+    "Proof/receipt path considered", "Degraded/error/loading states included",
+    "Runtime evidence/probe added", "Readiness impact noted",
   ];
+
+  const runStatusColor: Record<string, string> = { pass: "text-emerald-400", fail: "text-red-400", partial: "text-amber-400" };
 
   return (
     <div className="space-y-6 p-4 sm:p-6">
@@ -69,6 +69,31 @@ const PLE04CIGateMonitor = () => {
           </CardContent></Card>
         ))}
       </div>
+
+      {/* Validation Run History */}
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-sm flex items-center gap-2"><Activity className="h-4 w-4" /> Validation Run History</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-2">
+            {recentRuns.map(run => (
+              <div key={run.validationRunId} className="flex items-center justify-between p-2 rounded bg-muted/30 text-sm">
+                <div className="flex items-center gap-2">
+                  <span className={`font-mono text-xs font-bold ${runStatusColor[run.overallStatus]}`}>{run.overallStatus.toUpperCase()}</span>
+                  <Badge variant="outline" className="text-[10px]">{run.runType}</Badge>
+                  <span className="text-xs text-muted-foreground">{run.lawPackIds.join(", ")}</span>
+                </div>
+                <div className="flex items-center gap-3 text-xs">
+                  {run.blockerCount > 0 && <span className="text-red-400">{run.blockerCount} blockers</span>}
+                  {run.warningCount > 0 && <span className="text-amber-400">{run.warningCount} warnings</span>}
+                  <span className="text-muted-foreground">{run.completedAt.split("T")[0]}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
 
       <div className="flex flex-wrap gap-2">
         <div className="relative flex-1 min-w-[200px]">
@@ -135,7 +160,6 @@ const PLE04CIGateMonitor = () => {
         </CardContent>
       </Card>
 
-      {/* PR Template Checklist */}
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="text-sm flex items-center gap-2"><FileText className="h-4 w-4" /> Required PR Checklist Template</CardTitle>

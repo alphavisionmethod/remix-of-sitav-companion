@@ -4,13 +4,15 @@ import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import {
   Shield, Scale, AlertTriangle, CheckCircle, XCircle, Layers, Users, Cpu,
-  FileText, GitBranch, Target, TrendingUp, ArrowRight, Gavel
+  FileText, GitBranch, Target, ArrowRight, Gavel, Clock, Activity, Waypoints
 } from "lucide-react";
 import {
   PLATFORM_LAWS, SCAFFOLD_REGISTRY, CI_GATE_REGISTRY, MANIFEST_REQUIREMENTS,
-  OWNERSHIP_REGISTRY, ENFORCEMENT_LAYERS,
+  OWNERSHIP_REGISTRY, ENFORCEMENT_LAYERS, LAW_PACKS, VALIDATION_RUNS, DRIFT_RECORDS,
+  VALIDATION_VIOLATIONS,
   getOverallComplianceScore, getTotalViolations, getBlockingLaws, getViolatedLaws,
-  getCIGatePassRate, getManifestCompletionRate, getOwnerComplianceAverage, getEnforcementLayerAverage
+  getCIGatePassRate, getManifestCompletionRate, getOwnerComplianceAverage, getEnforcementLayerAverage,
+  getRecentValidationRuns, getUnresolvedDrift, getOpenViolations
 } from "@/lib/platform-law/platform-law-registry";
 
 const PLE01Overview = () => {
@@ -23,6 +25,9 @@ const PLE01Overview = () => {
   const manifestRate = getManifestCompletionRate();
   const ownerAvg = getOwnerComplianceAverage();
   const layerAvg = getEnforcementLayerAverage();
+  const recentRuns = getRecentValidationRuns(4);
+  const unresolvedDrift = getUnresolvedDrift();
+  const openViolations = getOpenViolations();
 
   const kpis = [
     { label: "Platform Laws", value: PLATFORM_LAWS.length, icon: Scale, color: "text-blue-400" },
@@ -31,7 +36,7 @@ const PLE01Overview = () => {
     { label: "Blocking Laws", value: blockingLaws.length, icon: XCircle, color: "text-red-400" },
     { label: "CI Gate Pass Rate", value: `${ciPassRate}%`, icon: GitBranch, color: ciPassRate >= 90 ? "text-emerald-400" : "text-amber-400" },
     { label: "Manifest Coverage", value: `${manifestRate}%`, icon: FileText, color: manifestRate >= 70 ? "text-emerald-400" : "text-amber-400" },
-    { label: "Owner Compliance", value: `${ownerAvg}%`, icon: Users, color: ownerAvg >= 85 ? "text-emerald-400" : "text-amber-400" },
+    { label: "Unresolved Drift", value: unresolvedDrift.length, icon: Activity, color: unresolvedDrift.length === 0 ? "text-emerald-400" : "text-amber-400" },
     { label: "Layer Health", value: `${layerAvg}%`, icon: Layers, color: layerAvg >= 80 ? "text-emerald-400" : "text-amber-400" },
   ];
 
@@ -43,6 +48,8 @@ const PLE01Overview = () => {
     { title: "Ownership Accountability Board", desc: `${OWNERSHIP_REGISTRY.length} owners tracked`, path: "/admin/platform-law/ownership", icon: Users },
     { title: "Compliance Mode Dashboard", desc: `7 enforcement layers · ${layerAvg}% health`, path: "/admin/platform-law/compliance", icon: Layers },
   ];
+
+  const statusColor: Record<string, string> = { pass: "text-emerald-400", fail: "text-red-400", partial: "text-amber-400" };
 
   return (
     <div className="space-y-6 p-4 sm:p-6">
@@ -66,6 +73,52 @@ const PLE01Overview = () => {
           </Card>
         ))}
       </div>
+
+      {/* Law Pack Summary Strip */}
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-sm flex items-center gap-2"><Waypoints className="h-4 w-4" /> Law Packs ({LAW_PACKS.length})</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {LAW_PACKS.map(pack => (
+              <div key={pack.lawPackId} className="p-3 rounded-lg border border-border/50 hover:border-primary/50 transition-colors cursor-pointer" onClick={() => navigate("/admin/platform-law/laws")}>
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-mono text-muted-foreground">{pack.lawPackId}</span>
+                  <Badge variant={pack.active ? "default" : "secondary"} className="text-[10px]">v{pack.version}</Badge>
+                </div>
+                <div className="font-medium text-sm">{pack.name}</div>
+                <div className="text-[10px] text-muted-foreground mt-1">{pack.ruleIds.length} rules · {pack.severityModel}</div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Recent Validation Runs */}
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-sm flex items-center gap-2"><Clock className="h-4 w-4" /> Recent Validation Runs</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-2">
+            {recentRuns.map(run => (
+              <div key={run.validationRunId} className="flex items-center justify-between p-2 rounded bg-muted/30 text-sm">
+                <div className="flex items-center gap-2">
+                  <span className={`font-mono text-xs font-bold ${statusColor[run.overallStatus]}`}>{run.overallStatus.toUpperCase()}</span>
+                  <Badge variant="outline" className="text-[10px]">{run.runType}</Badge>
+                  <span className="text-xs text-muted-foreground">{run.lawPackIds.join(", ")}</span>
+                </div>
+                <div className="flex items-center gap-3 text-xs">
+                  {run.blockerCount > 0 && <span className="text-red-400">{run.blockerCount} blockers</span>}
+                  {run.warningCount > 0 && <span className="text-amber-400">{run.warningCount} warnings</span>}
+                  <span className="text-muted-foreground">{run.completedAt.split("T")[0]}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Enforcement Mode Distribution */}
       <Card>
@@ -115,6 +168,32 @@ const PLE01Overview = () => {
           )}
         </CardContent>
       </Card>
+
+      {/* Drift Alerts */}
+      {unresolvedDrift.length > 0 && (
+        <Card className="border-amber-500/30">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm flex items-center gap-2"><Activity className="h-4 w-4 text-amber-400" /> Active Drift ({unresolvedDrift.length})</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              {unresolvedDrift.slice(0, 4).map(d => (
+                <div key={d.driftEnforcementId} className="flex items-center justify-between p-2 rounded bg-muted/30 text-sm">
+                  <div className="flex items-center gap-2">
+                    {d.blocking && <Badge variant="destructive" className="text-[10px]">BLOCKING</Badge>}
+                    <Badge variant="outline" className="text-[10px]">{d.driftType}</Badge>
+                    <span className="text-xs">{d.scopeId}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-muted-foreground">{d.owner}</span>
+                    <span className="text-xs text-muted-foreground">{d.detectedAt}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* 7-Layer Health Strip */}
       <Card>
