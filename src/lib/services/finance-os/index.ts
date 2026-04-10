@@ -27,4 +27,8 @@ export * from "./fx-watchlist.service";
 export * from "./crypto-exposure.service";
 export * from "./finance-boardroom-inputs.service";
 export * from "./committee-boardroom-inputs.service";
+export * from "./debt-analyzer.service";
+export * from "./financial-health.service";
+export * from "./scenario-engine.service";
+export * from "./envelope-budget.service";
 
