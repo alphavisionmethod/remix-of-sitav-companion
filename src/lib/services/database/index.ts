@@ -123,7 +123,7 @@ export class DatabaseService {
   async upsert<T = unknown>(table: string, records: Record<string, unknown> | Record<string, unknown>[], onConflict?: string): Promise<QueryResult<T[]>> {
     const start = Date.now();
     try {
-      const opts: any = {};
+      const opts: { onConflict?: string } = {};
       if (onConflict) opts.onConflict = onConflict;
       const { data, error } = await fromDynamicTable(table).upsert(records, opts).select();
       const durationMs = Date.now() - start;

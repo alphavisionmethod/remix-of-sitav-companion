@@ -32,8 +32,8 @@ export async function rollupAccountHealth(account: CRMAccount): Promise<AccountH
 
     const opps = oppsRes.data || [];
     const invs = invsRes.data || [];
-    const overdueCount = invs.filter((i: any) => i.status !== "paid" && new Date(i.due_date) < new Date()).length;
-    const openOpps = opps.filter((o: any) => o.stage !== "closed-won" && o.stage !== "closed-lost").length;
+    const overdueCount = invs.filter((i: Record<string, unknown>) => i.status !== "paid" && new Date(String(i.due_date)) < new Date()).length;
+    const openOpps = opps.filter((o: Record<string, unknown>) => o.stage !== "closed-won" && o.stage !== "closed-lost").length;
 
     if (account.healthScore < 40) riskFlags.push("Schedule urgent check-in");
     if (overdueCount > 0) riskFlags.push(`${overdueCount} overdue invoice(s) — follow up immediately`);

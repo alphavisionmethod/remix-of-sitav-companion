@@ -8,7 +8,7 @@ export interface SyncQueueItem {
   id: string;
   table: string;
   operation: 'insert' | 'update' | 'delete';
-  data: Record<string, any>;
+  data: Record<string, unknown>;
   timestamp: number;
   retries: number;
   synced: boolean;
@@ -66,7 +66,7 @@ class OfflineSyncEngine {
     });
   }
 
-  async cacheData(table: string, data: any[]): Promise<void> {
+  async cacheData(table: string, data: Array<Record<string, unknown>>): Promise<void> {
     if (!this.db) return;
 
     const tx = this.db.transaction(CACHE_STORE, 'readwrite');
@@ -87,7 +87,7 @@ class OfflineSyncEngine {
     }
   }
 
-  async getCachedData(table: string): Promise<any[]> {
+  async getCachedData(table: string): Promise<Array<Record<string, unknown>>> {
     if (!this.db) return [];
 
     return new Promise((resolve) => {
@@ -97,13 +97,13 @@ class OfflineSyncEngine {
       const request = index.getAll(table);
 
       request.onsuccess = () => {
-        resolve((request.result || []).map((r: any) => r.data));
+        resolve((request.result || []).map((r: { data: Record<string, unknown> }) => r.data));
       };
       request.onerror = () => resolve([]);
     });
   }
 
-  async queueOperation(table: string, operation: 'insert' | 'update' | 'delete', data: Record<string, any>): Promise<void> {
+  async queueOperation(table: string, operation: 'insert' | 'update' | 'delete', data: Record<string, unknown>): Promise<void> {
     if (!this.db) return;
 
     const item: SyncQueueItem = {

@@ -114,11 +114,11 @@ class AutoProposalGenerator {
     return items;
   }
 
-  private generateSummary(lead: any): string {
+  private generateSummary(lead: Record<string, unknown>): string {
     return `Thank you for your interest, ${lead.name}. Based on our discussion, we've prepared this proposal tailored to ${lead.company || 'your'} needs. This document outlines our recommended approach, deliverables, timeline, and investment.`;
   }
 
-  private generateSections(lead: any, lineItems: ProposalLineItem[]): ProposalSection[] {
+  private generateSections(lead: Record<string, unknown>, lineItems: ProposalLineItem[]): ProposalSection[] {
     return [
       {
         title: 'Executive Summary',
