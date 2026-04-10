@@ -1,65 +1,69 @@
 
 
-# SITA OS — AI Model Routing Matrix: Enhancement Plan
+# SITA OS — Budget Policy + Admin UI Enhancement Plan
 
 ## Current State
-
-The routing infrastructure is 95% built. Three layers exist:
-1. **Edge gateway** (`ai-gateway/index.ts`) — 4-tier task class → model mapping with budget checks, fallback, and triple-table receipt logging
-2. **Compute governance** (`model-routing-engine.ts`) — Cost class A/B/C/D routing with cache, budget downgrade, and approval logic
-3. **Brain-core model router** (`brain-core/model-router.ts`) — Complexity/risk → tier routing with budget enforcement
-4. **Seed service** (`ai-routing-seed-service.ts`) — 7 capability seeds with routing/budget/honesty metadata
-5. **Types** (`ai-gateway/types.ts`) — All 5 routing classes defined: `premium_synthesis`, `balanced_assistant`, `economy_utility`, `fallback`, `internal_only`
+All 10 DB tables, 4 views, 3 DB functions, RLS policies, and 9 admin pages (AIG01-AIG09) exist. The budget policy schema is 100% complete (all columns per spec including `critical_threshold_percent`). The `check_ai_budget_policies` DB function handles all scope types, threshold checks, premium blocking, fallback, and alerting.
 
 ## Gaps Found
 
-### Gap 1 — Missing `memory.summarize` capability in seed data
-The spec requires 6 canonical capability mappings. Only 5 of 6 are seeded. `memory.summarize` is absent.
+### Gap 1 — Missing dedicated Usage Ledger Explorer page
+The spec requires **AIG05 — AI Usage Ledger Explorer** as a separate page showing recent invocations with filters for failures, fallbacks, demo mode, premium, and blocked requests. Currently AIG05 is the Receipts page (which should be AIG06 per spec). No dedicated ledger explorer exists.
 
-### Gap 2 — Seed routing_class values don't match canonical types
-Seeds use short names (`"balanced"`, `"premium"`, `"utility"`) but the canonical `RoutingClass` type uses `"balanced_assistant"`, `"premium_synthesis"`, `"economy_utility"`. This mismatch means admin dashboards filtering by canonical routing class won't find these seeds.
+### Gap 2 — AIG04 Budget Center lacks usage-ledger-based analytics
+The spec requires: spend by capability, spend by model, premium vs economy split, blocked/downgraded request counts, and threshold progress bars. Currently AIG04 only shows legacy `ai_cost_ledger` data and portfolio allocations.
 
-### Gap 3 — `admin.synthesis` should use `internal_only` routing class
-The spec says admin.synthesis must be `internal_only` routing class, but the seed uses `"balanced"`. It should also allow premium/reasoning models per the spec.
-
-### Gap 4 — No `internal_only` handling in the gateway
-The gateway's `TASK_CLASS_MODELS` has no entry for `internal_only`. If an internal capability resolves to this class, it falls through to the default model instead of using a premium/reasoning model.
-
-### Gap 5 — Seed models missing Google provider entry
-The seed service has OpenAI, Anthropic, and Lovable providers but all Gemini models are only under `lovable` provider. A dedicated `google` provider entry is missing for direct Google API use.
+### Gap 3 — No consolidated top metrics bar
+The spec requires top-level metric cards: providers healthy, active models, capabilities routed, budget burn today, premium spend %, fallback events today, failed invocations today, public-safe AI capabilities count. These don't exist as a unified section.
 
 ## Implementation Plan
 
-### Step 1 — Enhance seed service with full spec compliance
-Update `src/lib/ai/ai-routing-seed-service.ts`:
-- Add `memory.summarize` capability seed (balanced_assistant, medium budget, medium quality)
-- Fix all `routing_class` values to use canonical names: `"balanced"` → `"balanced_assistant"`, `"premium"` → `"premium_synthesis"`, `"utility"` → `"economy_utility"`
-- Change `admin.synthesis` routing_class to `"internal_only"`
-- Add `google` provider seed entry
-- Add more model seeds: `gemini-2.5-pro` (premium), `gemini-3-flash-preview` (balanced), `gpt-5` (premium OpenAI)
+### Step 1 — Create AIG05 Usage Ledger Explorer (new page)
+New file: `src/pages/admin/AIG05UsageLedgerExplorer.tsx`
+- Full table of `ai_usage_ledger` with all spec columns: timestamp, capability, provider, model, status, token counts, estimated cost, latency, user/workspace, mode
+- Filter buttons: All, Failures, Fallbacks, Demo Mode, Premium, Blocked
+- Summary cards: total invocations, success rate, total cost, avg latency, blocked count
+- Uses `getUsageLedger()` from existing budget.service
 
-### Step 2 — Add `internal_only` task class to gateway
-Update `supabase/functions/ai-gateway/index.ts`:
-- Add `internal_only: "google/gemini-2.5-pro"` to `TASK_CLASS_MODELS` (premium model for internal ops)
-- Add cost entry for `google/gemini-2.5-pro` in `COST_PER_1K` if missing
+### Step 2 — Renumber existing pages in SubNav
+Update `src/components/admin/AIGSubNav.tsx`:
+- Insert "Usage Ledger" between Budget and Receipts
+- Add route `/admin/aig/usage-ledger`
+- Rename existing Receipts label to "Receipts/Traces" (AIG06)
 
-### Step 3 — Enhance seed launch honesty for new capability
-Add `memory.summarize` to `LAUNCH_HONESTY_SEEDS` in the seed service.
+### Step 3 — Add route for new page
+Update router config to add `/admin/aig/usage-ledger` → `AIG05UsageLedgerExplorer`
+
+### Step 4 — Enhance AIG04 Budget Center
+Update `src/pages/admin/AIG04BudgetCenter.tsx`:
+- Add usage-ledger-based spend cards: spend by capability, spend by model, premium vs economy split
+- Add blocked/downgraded request counts from usage ledger (status = `blocked_budget` or `fallback_success`)
+- Add threshold progress bars for active policies (daily spend / daily budget)
+- Query `v_ai_budget_summary` view for aggregated data
+- Add top metrics bar: providers healthy, active models, capabilities routed, budget burn today, premium %, fallback events today, failed today, public-safe count
+
+### Step 5 — Enhance budget.service with missing queries
+Add to `src/lib/services/ai-gateway/budget.service.ts`:
+- `getUsageLedgerStats()` — aggregate from usage ledger: spend by capability, by model, premium vs economy, blocked/downgraded counts
+- `getBudgetBurnToday()` — daily total from usage ledger
 
 ## Files Changed
 
 | File | Change |
 |------|--------|
-| `src/lib/ai/ai-routing-seed-service.ts` | Add memory.summarize, fix routing_class names, add google provider, add models |
-| `supabase/functions/ai-gateway/index.ts` | Add `internal_only` to TASK_CLASS_MODELS |
+| `src/pages/admin/AIG05UsageLedgerExplorer.tsx` | **New** — Usage Ledger Explorer with filters |
+| `src/components/admin/AIGSubNav.tsx` | Add Usage Ledger nav item |
+| `src/pages/admin/AIG04BudgetCenter.tsx` | Enhance with ledger analytics, progress bars, top metrics |
+| `src/lib/services/ai-gateway/budget.service.ts` | Add `getUsageLedgerStats()`, `getBudgetBurnToday()` |
+| Router config | Add route for new page |
 
 ## What This Does NOT Change
-- No new database tables or columns
-- No new frontend pages (admin dashboards already display whatever is seeded)
-- No changes to compute-governance or brain-core routers (different layer, already correct)
-- No changes to client SDK or hooks
-- No changes to shared budget/receipt utilities
+- No new database tables or columns (schema is complete)
+- No new migrations
+- No edge function changes
+- No seed service changes
+- No changes to existing working pages (AIG01-03, AIG06-09)
 
 ## Summary
-2 file enhancements. Aligns seed data with canonical types, adds missing capability, and ensures internal_only routing works end-to-end in the gateway.
+1 new admin page, 3 file enhancements. Closes the Usage Ledger Explorer gap and upgrades the Budget Center with real ledger-based analytics, threshold progress bars, and consolidated top metrics.
 
