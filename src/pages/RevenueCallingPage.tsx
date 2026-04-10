@@ -113,7 +113,8 @@ function ActiveDialer({ contact, onEnd, onSkip }: { contact: Contact; onEnd: () 
     return () => clearInterval(timer);
   });
 
-  const script = MOCK_SCRIPTS.find(s => s.stage === contact.stage) || MOCK_SCRIPTS[0];
+  const { isDemoMode } = useDataMode();
+  const script = isDemoMode ? (MOCK_SCRIPTS.find(s => s.stage === contact.stage) || MOCK_SCRIPTS[0]) : null;
 
   const handleEndCall = () => {
     setState("wrapping-up");
@@ -174,7 +175,7 @@ function ActiveDialer({ contact, onEnd, onSkip }: { contact: Contact; onEnd: () 
       )}
 
       {/* Call Script (during connected state) */}
-      {state === "connected" && showScript && (
+      {state === "connected" && showScript && script && (
         <div className="rounded-xl border border-primary/15 bg-primary/3 p-3 space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-bold text-primary uppercase tracking-wider flex items-center gap-1">
@@ -483,7 +484,13 @@ const RevenueCallingPage = () => {
       {/* Scripts */}
       {activeView === "scripts" && (
         <div className="space-y-3">
-          {MOCK_SCRIPTS.map(script => (
+          {!isDemoMode ? (
+            <SitaCard className="p-6 text-center">
+              <FileText className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+              <p className="text-sm font-medium text-foreground">No Scripts Configured</p>
+              <p className="text-xs text-muted-foreground mt-1">Call scripts activate when configured. Switch to demo mode to preview.</p>
+            </SitaCard>
+          ) : MOCK_SCRIPTS.map(script => (
             <SitaCard key={script.id} className="p-4">
               <div className="space-y-3">
                 <div className="flex items-center gap-2">

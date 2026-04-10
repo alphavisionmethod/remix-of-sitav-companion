@@ -11,6 +11,7 @@ import {
   ChevronDown, Cpu, CheckCircle, Zap, MessageSquare, ShieldAlert, Eye, FlaskConical,
   AlertTriangle, Coins, StopCircle
 } from "lucide-react";
+import { AIDegradedState } from "@/components/ai/AIDegradedState";
 
 type AdvisorDomain = "money" | "business" | "concierge" | "family" | "growth" | "general";
 type ChatMode = "single" | "council";
@@ -319,13 +320,12 @@ export const AdvisorChat = ({ isOpen, onClose }: AdvisorChatProps) => {
 
             {/* Degraded state banner */}
             {streamError && (
-              <div data-testid="advisor-degraded-banner" className="flex items-start gap-2 rounded-xl border border-destructive/30 bg-destructive/5 px-4 py-3">
-                <AlertTriangle className="h-4 w-4 text-destructive mt-0.5 shrink-0" />
-                <div>
-                  <p className="text-xs font-medium text-destructive">Advisor Unavailable</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">{streamError}</p>
-                </div>
-              </div>
+              <AIDegradedState
+                state="error"
+                reason={streamError}
+                onRetry={() => streamClear()}
+                compact
+              />
             )}
 
             {(isLoading || isStreaming) && streamMsgs.filter(m => m.role === "assistant").length === 0 && !streamError && (
