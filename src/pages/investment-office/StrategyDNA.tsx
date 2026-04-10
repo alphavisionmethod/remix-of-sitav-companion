@@ -2,14 +2,20 @@ import { motion } from "framer-motion";
 import { Dna, Info } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-import { useInvestmentStrategyRecords } from "@/hooks/use-investment-office";
+import { useStrategyDnaProfile, useDecisionRecords, useThesisRecords, useBehavioralSignals, usePortfolioPositionsMemory } from "@/hooks/use-investment-memory";
+import { inferStrategyDNA } from "@/lib/services/finance-os/investment-memory.service";
 import { DEMO_DNA_DIMENSIONS, DEMO_SUGGESTIONS } from "@/lib/demo-data/investment";
 
 const STRATEGY_SUMMARY = "Your portfolio reveals a growth-oriented, thesis-disciplined investor with moderate macro awareness. You show strong patience but occasionally drift toward speculation. Event markets are underweight relative to your macro interest.";
 
 export default function StrategyDNA() {
   const { isDemoMode } = useDataMode();
-  const { data: liveData, isLoading } = useInvestmentStrategyRecords();
+  const { data: dnaProfile } = useStrategyDnaProfile();
+  const { data: decisions } = useDecisionRecords();
+  const { data: theses } = useThesisRecords();
+  const { data: behavioralSignals } = useBehavioralSignals();
+  const { data: positions } = usePortfolioPositionsMemory();
+  const liveInference = inferStrategyDNA(decisions ?? [], theses ?? [], behavioralSignals ?? [], positions ?? []);
   return (
     <div className="mx-auto max-w-5xl space-y-6">
       <DemoModeBadge />

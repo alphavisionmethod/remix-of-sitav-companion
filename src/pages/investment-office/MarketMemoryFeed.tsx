@@ -2,7 +2,8 @@ import { motion } from "framer-motion";
 import { History, TrendingUp, TrendingDown, AlertTriangle, Brain, RefreshCw, Zap, Shield, FileText, Globe } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
+import { useMarketMemoryEvents, useAdvisorObservations, useCatalystEvents, useBehavioralSignals, usePortfolioPositionsMemory } from "@/hooks/use-investment-memory";
+import { computeWhatChanged } from "@/lib/services/finance-os/investment-memory.service";
 import { DEMO_MEMORY_EVENTS } from "@/lib/demo-data/investment";
 
 const SEVERITY_STYLES: Record<string, string> = {
@@ -14,7 +15,15 @@ const SEVERITY_STYLES: Record<string, string> = {
 
 export default function MarketMemoryFeed() {
   const { isDemoMode } = useDataMode();
-  const { data: liveData, isLoading } = useMarketWatchlistItems();
+  const { data: liveMemoryEvents } = useMarketMemoryEvents();
+  const { data: liveObservations } = useAdvisorObservations();
+  const { data: liveCatalysts } = useCatalystEvents();
+  const { data: liveBehavioral } = useBehavioralSignals();
+  const { data: livePositions } = usePortfolioPositionsMemory();
+  const liveChanges = computeWhatChanged(
+    liveObservations ?? [], livePositions ?? [], liveCatalysts ?? [],
+    liveMemoryEvents ?? [], liveBehavioral ?? []
+  );
   return (
     <div className="mx-auto max-w-4xl space-y-6">
       <DemoModeBadge />

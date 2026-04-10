@@ -3,7 +3,8 @@ import { motion } from "framer-motion";
 import { ShieldAlert, Brain, AlertTriangle, Check, Clock, Eye, TrendingUp, Zap, MessageSquare } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-import { useRiskScenarios } from "@/hooks/use-investment-office";
+import { useBehavioralSignals, useInvestmentConstitution } from "@/hooks/use-investment-memory";
+import { assessBehavioralFirewall } from "@/lib/services/finance-os/investment-memory.service";
 import { DEMO_BEHAVIORAL_SIGNALS } from "@/lib/demo-data/investment";
 
 const FIREWALL_STATUS = {
@@ -16,7 +17,9 @@ const FIREWALL_STATUS = {
 
 export default function BehavioralFirewall() {
   const { isDemoMode } = useDataMode();
-  const { data: liveData, isLoading } = useRiskScenarios();
+  const { data: liveBehavioralSignals } = useBehavioralSignals();
+  const { data: constitution } = useInvestmentConstitution();
+  const firewallState = assessBehavioralFirewall(liveBehavioralSignals ?? [], constitution);
   const [filter, setFilter] = useState<string>("all");
   const filtered = DEMO_BEHAVIORAL_SIGNALS.filter(s => filter === "all" || s.type === filter);
 
