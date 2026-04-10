@@ -1,71 +1,63 @@
 
-# Phase 3 Core Persistence Substrate — Audit Results
 
-## What EXISTS and is FULLY BUILT
+# Feature Integration Protocol — Audit & Enforcement Plan
 
-### Persistence Layer (Backend) — COMPLETE
-All 5 core persistence adapters are fully implemented with real Supabase queries (no stubs):
+## Current State: Already Extensively Built
 
-| Adapter | File | Lines | DB Table | Status |
-|---|---|---|---|---|
-| EventBus Persistence | `event-bus-persistence.ts` | 196 | `os_event_log` ✅ | Full: persist, batch, fetch, DLQ, replay mark, topic counts, lineage |
-| Memory Persistence | `memory-service-persistence.ts` | 237 | `os_memory_scoped` ✅ | Full: scoped insert, supersede, fetch/filter, forget w/ audit, confidence update, AI hydration, stats |
-| Policy Persistence | `policy-engine-persistence.ts` | 163 | `os_policy_evaluations` ✅ | Full: persist meaningful evals, fetch/filter, stats, action lineage |
-| Action Lineage | `action-lineage-persistence.ts` | 290 | `os_action_lineage` ✅ | Full: 16-state lifecycle, transitions, 6 link functions (event/memory/policy/receipt/projection/proof), explanation, stuck detection |
-| Intelligence Assets | `intelligence-asset-persistence.ts` | 135 | `intelligence_assets_library` ✅ | Full: CRUD, reuse tracking, invalidation, freshness, stats |
+The project has a **substantial FIP implementation** already in place:
 
-Additional persistence: engine state, receipts/proofs, compute governance, quality floors, operator taste — all wired.
+### What EXISTS (fully built)
 
-### Admin UI Pages — ALL 10 EXIST
-| Spec | Page | Lines | Data Source | Status |
-|---|---|---|---|---|
-| CPS01 Overview | `CorePersistenceOverview.tsx` | 196 | Real Supabase queries | ✅ Complete |
-| CPS02 Event Stream | `EventStreamExplorer.tsx` | 203 | Real queries + filters + replay | ✅ Complete |
-| CPS03 Memory Center | `MemoryContinuityCenter.tsx` | 187 | Real queries + forget + detail | ✅ Complete |
-| CPS04 Policy Ledger | `PolicyDecisionLedger.tsx` | 156 | Real queries + filters + detail | ✅ Complete |
-| CPS05 Intelligence | `IntelligenceArtifactLibrary.tsx` | 164 | Real queries + invalidate + detail | ✅ Complete |
-| CPS06 Action Lineage | `ActionLineageExplorer.tsx` | 212 | Real queries + explanation + links | ✅ Complete |
-| CPS07 Replay Console | `ReplayRecoveryConsole.tsx` | 325 | Real replay w/ dry-run + live dispatch | ✅ Complete |
-| CPS08 Migration Board | `CoreServiceMigrationBoard.tsx` | 103 | Demo data (acceptable for planning board) | ✅ Complete |
-| CPS09 Drift Radar | `PersistenceDriftRadar.tsx` | 128 | Real queries detecting gaps | ✅ Complete |
-| CPS10 Continuity Board | `RuntimeContinuityBoard.tsx` | 146 | Real queries + survival checks | ✅ Complete |
+| Layer | Status | Details |
+|---|---|---|
+| **TypeScript governance package** | ✅ Complete | `src/packages/feature-governance/` — 7 files (~1,200 lines): risk tiers (R0–R5), autonomy tiers (7 levels), 16 feature types, kill-switch classes, ownership protocol with 7 rejection rules, 15 capability classes, 10 schema families, 14-section spec template (469 lines), contract evolution rules, sample specs, validation functions |
+| **Database tables** | ✅ Complete | 13 tables: `feature_intake_records`, `feature_spec_records`, `feature_owner_decisions`, `feature_compliance_records`, `feature_execution_paths`, `feature_rollout_records`, `feature_deprecation_records`, `feature_readiness_gates`, `feature_generated_truth_impacts`, `capability_registry`, `feature_archetypes`, `feature_blueprints`, `feature_lifecycle_stages` |
+| **Data hooks** | ✅ Complete | `use-fip-data.ts` — 218 lines with full CRUD hooks for all 9 core tables |
+| **Data service** | ✅ Complete | `feature-lifecycle-data-service.ts` — CRUD for all 9 feature tables |
+| **Admin UI pages** | ✅ Complete | All 14 FIP pages exist and are routed: FIP01–FIP14 (Intake Desk, Spec Studio, Owner Boundary, Capability Registry, Compliance Board, Execution Explorer, Policy/Trust Board, Memory/Graph Studio, Observability Center, Rollout Planner, Generated Truth Board, Readiness Gate Review, Deprecation Manager, Builder Console) |
+| **Routes** | ✅ Complete | All 14 lazy imports + routes wired in `App.tsx` |
 
-### DB Tables — ALL 5 EXIST IN PRODUCTION
-Verified via direct query: `os_event_log`, `os_memory_scoped`, `os_policy_evaluations`, `os_action_lineage`, `intelligence_assets_library`
+### Is the project FOLLOWING these rules today?
 
-### Routes — ALL 10 WIRED in App.tsx
-All lazy imports and routes confirmed.
+**Partially.** The protocol is encoded and has admin surfaces, but it is not yet **enforced as a mandatory gate**. Currently:
 
-## GAPS FOUND — Need Enhancement
+- ✅ Rules are **defined** (risk tiers, ownership rejection rules, capability validation, compliance checks)
+- ✅ Surfaces **exist** to inspect compliance
+- ❌ No **automated pre-commit or CI check** enforces the protocol before code merges
+- ❌ No **runtime gate** blocks feature deployment without protocol compliance
+- ❌ The feature registry (`Map<string, FeatureMetadata>`) is **in-memory only** — it resets on refresh
+- ❌ Most existing features in the codebase have **not been registered** through the intake → spec → compliance pipeline
+- ❌ No **memory rule** exists telling AI agents (including me) to follow this protocol for every new feature
 
-### Gap 1: Command Palette Missing CPS Entries
-The `AdminCommandPalette.tsx` only has 1 entry (`RCP: Core Services`) pointing to the Reality Audit core persistence page. The 10 actual CPS screens have **zero command palette entries**. Need to add:
-- CPS: Core Persistence Overview → `/admin/core-persistence`
-- CPS: Event Stream Explorer → `/admin/event-stream`
-- CPS: Memory Continuity → `/admin/memory-continuity`
-- CPS: Policy Decision Ledger → `/admin/policy-ledger`
-- CPS: Intelligence Library → `/admin/intelligence-library`
-- CPS: Action Lineage → `/admin/action-lineage`
-- CPS: Replay Console → `/admin/replay-console`
-- CPS: Service Migration → `/admin/service-migration`
-- CPS: Persistence Drift → `/admin/persistence-drift`
-- CPS: Runtime Continuity → `/admin/runtime-continuity`
+## Plan: Make This a Living Enforced Rule
 
-### Gap 2: CPS08 (CoreServiceMigrationBoard) Uses Only Demo Data
-This page imports `DEMO_ADMIN_SERVICES` from demo data but doesn't cross-reference the actual persistence adapters that exist. It should at minimum show the real adapter status (which adapters exist, which tables exist, which are wired) alongside the planning board data.
+### 1. Save as permanent project memory rule
+Write a memory file at `mem://constraints/feature-integration-protocol` that encodes the core FIP rules as constraints I must follow for every new feature. Add a Core rule to `mem://index.md`.
 
-### Gap 3: No Cross-Navigation Between CPS Pages
-Unlike the RCP screens, the CPS pages have no sub-navigation bar linking between all 10 screens. Each page is standalone — operators must use routes or command palette to navigate between them.
+**Core rule (added to index):**
+```
+Every new feature must follow FIP: owner boundary → capability registration → spec → compliance check. No bypass.
+```
 
-## Plan — Fix 3 Gaps
+**Memory file contents:** The 10 non-negotiable enforcement rules (no feature without owner, no feature without capability IDs, no boundary-crossing without contracts, etc.) plus the mandatory intake questions and readiness stages.
 
-### 1. Add 10 CPS command palette entries to `AdminCommandPalette.tsx`
-Add a "Core Persistence" group with all 10 screen entries.
+### 2. Wire the in-memory feature registry to Supabase persistence
+The `registerFeature()` / `getAllFeatures()` functions in `src/packages/feature-governance/index.ts` use an in-memory `Map`. Connect them to the existing `feature_intake_records` + `capability_registry` tables so registrations survive refresh.
 
-### 2. Add CPS sub-navigation bar
-Create a small shared component (or inline nav) at the top of each CPS page showing links to all 10 screens for seamless operator navigation.
+### 3. Add FIP command palette entries
+The 14 FIP pages likely have no command palette entries (similar to the CPS gap fixed earlier). Add them for discoverability.
 
-### 3. Enhance CPS08 with real adapter status
-Add a section that checks which persistence adapter files exist and which DB tables are accessible, showing real wiring status alongside the planning data.
+### 4. Add FIP sub-navigation bar
+Create a shared `FIPSubNav.tsx` component (like `CPSSubNav.tsx`) and add it to all 14 FIP pages for seamless navigation.
 
-**Total changes:** ~3 files modified, ~80 lines added. No new pages needed. Everything else is fully advanced and production-wired.
+### 5. Seed existing features into the registry
+Create a seed function that registers SITA's existing major features (Money Office, Business OS, Concierge OS, Admin Control Plane, etc.) into the intake/compliance pipeline so the protocol applies retroactively.
+
+### Technical details
+- Memory file: ~30 lines of constraint rules
+- Registry persistence: ~40 lines connecting `registerFeature` to Supabase
+- Command palette: ~20 lines adding 14 entries
+- Sub-nav component: ~50 lines (reuse CPSSubNav pattern)
+- Feature seed: ~80 lines covering ~15 major existing features
+- Total: ~220 lines changed/added across ~18 files
+
