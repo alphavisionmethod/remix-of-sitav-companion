@@ -50,12 +50,12 @@ const FinancialHealthPulse = () => {
 
   // ── Income Quality Score ──
   const incomeQuality = useMemo(() => computeIncomeQuality({
-    streams: [
-      { name: "Consulting Retainer", monthlyCents: 600000, recurring: true, clientName: "Acme Corp", paymentDelayDays: 5, seasonal: false },
-      { name: "SaaS Revenue", monthlyCents: 150000, recurring: true, clientName: "Platform", paymentDelayDays: 0, seasonal: false },
-      { name: "Freelance Projects", monthlyCents: 100000, recurring: false, clientName: "Various", paymentDelayDays: 30, seasonal: true },
-    ],
-    householdDependents: 2,
+    recurringIncomePct: 75,
+    topClientConcentrationPct: 45,
+    seasonalVariationPct: 20,
+    avgPaymentDelayDays: 12,
+    oneTimeIncomePct: 15,
+    householdDependencyOnUnstablePct: 25,
   }), []);
 
   // ── Emotional Finance Patterns ──
