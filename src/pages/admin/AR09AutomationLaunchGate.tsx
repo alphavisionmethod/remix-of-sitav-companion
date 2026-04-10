@@ -10,7 +10,7 @@ import { Badge } from "@/components/ui/badge";
 import { CheckCircle, XCircle, AlertTriangle, Shield, Rocket } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
+import ARSubNav from "@/components/admin/ARSubNav";
 
 
 interface GateCheck {
@@ -105,6 +105,7 @@ export default function AR09AutomationLaunchGate() {
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
       <DemoModeBadge />
+      <ARSubNav />
       <SitaPageHeader
         title="Automation Launch Gate"
         subtitle="Use automation truth as a launch readiness signal"

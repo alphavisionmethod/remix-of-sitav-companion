@@ -11,7 +11,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Wrench, CheckCircle, XCircle, Clock } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
+import ARSubNav from "@/components/admin/ARSubNav";
 
 
 export default function AR05SystemMaintenanceBoard() {
@@ -40,6 +40,7 @@ export default function AR05SystemMaintenanceBoard() {
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
       <DemoModeBadge />
+      <ARSubNav />
       <SitaPageHeader
         title="System Updates & Maintenance"
         subtitle="Inspect maintenance cadences, cleanup runs, and consistency checks"

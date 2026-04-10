@@ -11,7 +11,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Heart, CheckCircle, XCircle, Clock, AlertTriangle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
+import ARSubNav from "@/components/admin/ARSubNav";
 
 
 export default function AR03SelfHealingBoard() {
@@ -46,6 +46,7 @@ export default function AR03SelfHealingBoard() {
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
       <DemoModeBadge />
+      <ARSubNav />
       <SitaPageHeader
         title="Self-Healing Execution Board"
         subtitle="Inspect actual self-healing behavior — rules, schedules, and execution results"

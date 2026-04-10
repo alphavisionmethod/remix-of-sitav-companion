@@ -15,7 +15,7 @@ import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_ADMIN_SCOPES as DEMO_SCOPES } from "@/lib/demo-data/admin-platform";
-
+import ARSubNav from "@/components/admin/ARSubNav";
 
 
 export default function AR08KillSwitchCenter() {
@@ -40,6 +40,7 @@ export default function AR08KillSwitchCenter() {
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
       <DemoModeBadge />
+      <ARSubNav />
       <SitaPageHeader
         title="Kill Switch & Safety Center"
         subtitle="Control automation safety — disable recurring execution globally or by domain"

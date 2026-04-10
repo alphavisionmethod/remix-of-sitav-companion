@@ -10,6 +10,7 @@ import { motion } from "framer-motion";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useKernelQuery } from "@/hooks/use-kernel-query";
+import ARSubNav from "@/components/admin/ARSubNav";
 
 function useScheduledJobs() {
   return useKernelQuery("automation", "scheduled_jobs", {
@@ -64,6 +65,7 @@ export default function AR01AutomationOverview() {
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
       <DemoModeBadge />
+      <ARSubNav />
       <SitaPageHeader
         title="Automation Reality Overview"
         subtitle="Executive view of all scheduled automation, execution health, and safety controls"

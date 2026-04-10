@@ -11,7 +11,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Calendar, Zap, Clock, AlertTriangle, Pause, Play, Ban } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
+import ARSubNav from "@/components/admin/ARSubNav";
 
 
 const stateColors: Record<string, string> = {
@@ -41,6 +41,7 @@ export default function AR02ScheduledJobRegistry() {
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
       <DemoModeBadge />
+      <ARSubNav />
       <SitaPageHeader
         title="Scheduled Job Registry"
         subtitle="Canonical source of truth for all recurring jobs"

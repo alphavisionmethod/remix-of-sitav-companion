@@ -12,6 +12,7 @@ import { AlertTriangle, XCircle, RotateCcw, ArrowUpRight } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { getRelation, parseScheduledJobRef } from "@/lib/types/relation-parsers";
+import ARSubNav from "@/components/admin/ARSubNav";
 
 export default function AR07RetryFailureCenter() {
   const { isDemoMode } = useDataMode();
@@ -31,6 +32,7 @@ export default function AR07RetryFailureCenter() {
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
       <DemoModeBadge />
+      <ARSubNav />
       <SitaPageHeader
         title="Retry / Failure / Escalation Center"
         subtitle="Inspect and manage recurring job failures, retries, and escalations"
