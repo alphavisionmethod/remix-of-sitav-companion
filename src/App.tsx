@@ -1383,7 +1383,8 @@ const App = () => (
                     {/* Global Search */}
                     <Route path="/search" element={<SearchPage />} />
 
-                    {/* Admin */}
+                    {/* Admin — wrapped in AdminShell */}
+                    <Route element={<AdminShellLayout />}>
                     <Route path="/admin/generated-truth" element={<GeneratedTruthDashboard />} />
                     <Route path="/admin/fleet-health" element={<FleetHealthPage />} />
                     <Route path="/admin/dashboard" element={<AdminDashboard />} />
