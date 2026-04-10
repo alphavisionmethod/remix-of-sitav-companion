@@ -10,7 +10,7 @@ import { Separator } from "@/components/ui/separator";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
+import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 import {
   COST_CLASS_SPECS, PLANS, UPSELL_ADDONS, FAIR_USE_POLICY, DEFAULT_MODELS, CLASS_COMPRESSION,
   createEnvelope, forecastSpend, evaluateFairUse, getApplicableAddons,
@@ -22,6 +22,7 @@ import { CG10PricingSimulatorTab } from "@/components/admin/compute-governance/C
 import { classColors, tierColors, budgetStatusColors, fmt } from "@/components/admin/compute-governance/shared";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useComputeBudgetStatus, useAISpendSummary, useModelRoutingStats, useMarginSnapshot } from "@/hooks/use-compute-governance";
 import { DEMO_AGENT_SPEND, DEMO_ANOMALIES, DEMO_BUDGETS, DEMO_DEEP_JOBS, DEMO_ROUTING_EVENTS, DEMO_TENANT_SPEND } from "@/lib/demo-data/admin-platform";
 
 // ── Mock Data ───────────────────────────────────────────────
