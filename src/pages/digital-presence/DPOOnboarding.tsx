@@ -92,7 +92,6 @@ function ToggleChip({ label, selected, onClick, icon: Icon }: { label: string; s
           : "border-border/50 bg-card/30 text-muted-foreground hover:border-primary/30 hover:text-foreground"
         }`}
     >
-      <DemoModeBadge />
       {Icon && <Icon className="w-3.5 h-3.5" />}
       {label}
     </button>

@@ -6,11 +6,13 @@ import { Progress } from "@/components/ui/progress";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_CTA_ANALYSIS, DEMO_FORM_FRICTION, DEMO_FUNNEL_LEAKS, DEMO_MOBILE_ISSUES, DEMO_TRUST_GAPS } from "@/lib/demo-data/digital-presence";
+import DPOSubNav from "./DPOSubNav";
 
 export default function CROOffice() {
   const { isDemoMode } = useDataMode();
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DPOSubNav />
       <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">Conversion Optimization Office</h1>

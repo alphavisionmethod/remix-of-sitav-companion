@@ -6,12 +6,12 @@ import { Progress } from "@/components/ui/progress";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_CONVERSION_PATHS, DEMO_PAGE_TREE, DEMO_WEAK_NODES } from "@/lib/demo-data/digital-presence";
+import DPOSubNav from "./DPOSubNav";
 
 function PageNode({ page, depth = 0 }: { page: typeof DEMO_PAGE_TREE[0]; depth?: number }) {
   const healthColor = page.health >= 85 ? "text-green-400" : page.health >= 70 ? "text-amber-400" : "text-red-400";
   return (
     <div style={{ marginLeft: depth * 24 }}>
-      <DemoModeBadge />
       <div className="flex items-center justify-between p-2 hover:bg-muted/30 rounded-md transition-colors">
         <div className="flex items-center gap-2">
           {depth > 0 && <ArrowRight className="w-3 h-3 text-muted-foreground" />}
@@ -34,6 +34,7 @@ export default function WebsiteTwin() {
   const { isDemoMode } = useDataMode();
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DPOSubNav />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">Website Twin</h1>
         <p className="text-sm text-muted-foreground">Live model of your site hierarchy, performance & customer paths</p>

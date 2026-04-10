@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_HEALTH_STATS, DEMO_WORKSPACES } from "@/lib/demo-data/digital-presence";
+import DPOSubNav from "./DPOSubNav";
 
 export default function PresenceGate() {
   const { isDemoMode } = useDataMode();
@@ -14,6 +15,7 @@ export default function PresenceGate() {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-8">
+      <DPOSubNav />
       <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center gap-3 mb-1">

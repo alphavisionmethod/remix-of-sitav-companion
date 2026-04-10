@@ -1,16 +1,21 @@
 import { motion } from "framer-motion";
-import { BarChart3, Globe, TrendingUp, AlertTriangle, Eye, ShoppingCart, ArrowUpRight, ArrowDownRight, Sparkles, Clock } from "lucide-react";
+import { BarChart3, Globe, TrendingUp, AlertTriangle, Eye, ShoppingCart, ArrowUpRight, ArrowDownRight, Sparkles, Clock, ArrowRight } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_DPO_ADVISOR_SIGNALS as DEMO_ADVISOR_SIGNALS, DEMO_DPO_METRICS as DEMO_METRICS, DEMO_LIVE_PROMOTIONS, DEMO_TOP_PAGES, DEMO_WEAK_PAGES } from "@/lib/demo-data/digital-presence";
+import DPOSubNav from "./DPOSubNav";
 
 export default function PresenceBoardroom() {
   const { isDemoMode } = useDataMode();
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DPOSubNav />
       <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">Presence Boardroom</h1>
@@ -109,6 +114,26 @@ export default function PresenceBoardroom() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Revenue Office Sync */}
+      <Card className="bg-card/50 border-border/50 border-primary/20">
+        <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><ArrowRight className="w-4 h-4 text-primary" /> Revenue Office Sync</CardTitle></CardHeader>
+        <CardContent>
+          <p className="text-[10px] text-muted-foreground mb-3">Promotions, campaigns, and offers sync between Revenue Office and your digital presence.</p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+            {[
+              { label: "Funnel Studio", path: "/revenue-office/funnels" },
+              { label: "Campaign Office", path: "/revenue-office/campaigns" },
+              { label: "Offers & Products", path: "/revenue-office/offers" },
+              { label: "Revenue Gate", path: "/revenue-office" },
+            ].map(link => (
+              <Button key={link.label} variant="outline" size="sm" className="text-[10px] h-7" onClick={() => navigate(link.path)}>
+                {link.label} <ArrowRight className="w-3 h-3 ml-1" />
+              </Button>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

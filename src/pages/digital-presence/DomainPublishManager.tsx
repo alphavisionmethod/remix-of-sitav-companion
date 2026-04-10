@@ -9,6 +9,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useWebsiteManager } from "@/contexts/SitaKernelContext";
 import { DEMO_DPO_DOMAINS as DEMO_DOMAINS, DEMO_DPO_ENVIRONMENTS as DEMO_ENVIRONMENTS, DEMO_PUBLISH_HISTORY, DEMO_PUBLISH_RULES } from "@/lib/demo-data/digital-presence";
+import DPOSubNav from "./DPOSubNav";
 
 export default function DomainPublishManager() {
   const { isDemoMode } = useDataMode();
@@ -17,6 +18,7 @@ export default function DomainPublishManager() {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DPOSubNav />
       <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">Domain / Publish / Environment Manager</h1>

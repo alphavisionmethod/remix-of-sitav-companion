@@ -7,12 +7,14 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useSites } from "@/hooks/use-digital-presence";
 import { DEMO_CART_DIAGNOSTICS, DEMO_COLLECTIONS, DEMO_DPO_PRODUCTS as DEMO_PRODUCTS, DEMO_MERCHANDISING_OPS } from "@/lib/demo-data/digital-presence";
+import DPOSubNav from "./DPOSubNav";
 
 export default function EcommerceOffice() {
   const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useSites();
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DPOSubNav />
       <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">Ecommerce / Merchandising Office</h1>
