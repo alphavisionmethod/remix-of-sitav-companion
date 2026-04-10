@@ -782,6 +782,15 @@ export function OSSetupExperience() {
             <div className="flex-1 min-w-0">
               <BackgroundTaskBar tasks={currentBgTasks} />
 
+              {/* Tone-aware calm mode indicator */}
+              {toneContext.isOverwhelmed && showLearningPanel && (
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+                  className="mb-3 rounded-xl border border-primary/10 bg-primary/5 px-4 py-2 flex items-center gap-2">
+                  <Sun className="h-3.5 w-3.5 text-primary/60" />
+                  <span className="text-[11px] text-muted-foreground">Calm mode — shorter steps, lighter detail. Take your time.</span>
+                </motion.div>
+              )}
+
               {(phaseStatus === "warning" || phaseStatus === "blocked" || phaseStatus === "degraded") && (
                 <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
                   className={cn("mb-4 rounded-xl border p-3 flex items-center gap-3",
