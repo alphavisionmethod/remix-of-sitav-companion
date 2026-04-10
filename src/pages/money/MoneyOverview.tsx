@@ -167,14 +167,14 @@ const MoneyOverview = () => {
               </div>
               {flows.map(f => (
                 <div key={f.label} className="flex items-center gap-3">
-                  <span className="text-xs text-muted-foreground w-40 shrink-0">{f.label}</span>
+                  <span className="text-xs text-muted-foreground w-24 sm:w-40 shrink-0 truncate">{f.label}</span>
                   <div className="flex-1 h-3 bg-secondary/40 rounded-full overflow-hidden">
                     <div className={`h-full rounded-full ${f.color}`} style={{ width: `${Math.max(2, (f.amount / flowTotal) * 100)}%` }} />
                   </div>
-                  <span className="text-xs font-semibold text-foreground w-20 text-right">${f.amount.toLocaleString()}</span>
-                  <span className={`text-[9px] px-1.5 py-0.5 rounded ${f.tag === "locked" ? "bg-urgency-high/10 text-urgency-high" : f.tag === "available" ? "bg-emerald-500/10 text-emerald-500" : f.tag === "watch" ? "bg-amber-500/10 text-amber-500" : f.tag === "secured" ? "bg-primary/10 text-primary" : f.tag === "fix" ? "bg-destructive/10 text-destructive" : "bg-emerald-500/10 text-emerald-500"}`}>
-                    {f.tag}
-                  </span>
+                  <span className="text-xs font-semibold text-foreground w-16 sm:w-20 text-right">${f.amount.toLocaleString()}</span>
+                   <span className={`hidden sm:inline text-[9px] px-1.5 py-0.5 rounded ${f.tag === "locked" ? "bg-urgency-high/10 text-urgency-high" : f.tag === "available" ? "bg-emerald-500/10 text-emerald-500" : f.tag === "watch" ? "bg-amber-500/10 text-amber-500" : f.tag === "secured" ? "bg-primary/10 text-primary" : f.tag === "fix" ? "bg-destructive/10 text-destructive" : "bg-emerald-500/10 text-emerald-500"}`}>
+                     {f.tag}
+                   </span>
                 </div>
               ))}
             </div>
@@ -207,7 +207,7 @@ const MoneyOverview = () => {
       </SitaCard>
 
       {/* Peace Score Mini-Badge */}
-      <div className="grid gap-3 sm:grid-cols-4">
+      <div className="grid gap-3 grid-cols-2 sm:grid-cols-4">
         <SitaCard hover className="p-3 text-center cursor-pointer" onClick={() => navigate("/money/peace-score")}>
           <p className="text-[10px] text-muted-foreground mb-1">Peace Score</p>
           <p className="font-display text-2xl font-bold text-primary">72</p>
@@ -290,7 +290,7 @@ const MoneyOverview = () => {
               <SitaCardTitle>Safe to Spend</SitaCardTitle>
               <span className="ml-auto text-[10px] text-muted-foreground rounded-full bg-secondary px-2 py-0.5">Deterministic</span>
             </div>
-            <p className="font-display text-4xl font-bold text-foreground tracking-tight">${k.safeToSpend.toLocaleString()}</p>
+            <p className="font-display text-2xl sm:text-4xl font-bold text-foreground tracking-tight">${k.safeToSpend.toLocaleString()}</p>
             <p className="mt-1 text-xs text-muted-foreground">Available after all obligations</p>
             <div className="mt-4 space-y-2 border-t border-border/30 pt-4">
               {[
@@ -316,14 +316,14 @@ const MoneyOverview = () => {
           <div className="space-y-3">
             <SitaSectionHeader title="Bill Calendar" action={<button onClick={() => navigate("/money/bills")} className="text-xs text-primary hover:underline">View all</button>} />
             <SitaCard hover={false} className="p-4">
-              <div className="flex gap-1 mb-3">
+              <div className="flex gap-0.5 sm:gap-1 mb-3">
                 {Array.from({ length: 7 }, (_, i) => {
                   const d = new Date(); d.setDate(d.getDate() + i);
                   const dayName = d.toLocaleDateString("en", { weekday: "short" });
                   const dayNum = d.getDate();
                   const hasBill = upcomingBills.some(b => b.daysLeft === i);
                   return (
-                    <div key={i} className={`flex-1 text-center rounded-lg py-2 transition-colors ${i === 0 ? "bg-primary/10 border border-primary/20" : hasBill ? "bg-[hsl(var(--sita-gold))]/10 border border-[hsl(var(--sita-gold))]/20" : "bg-secondary/30"}`}>
+                    <div key={i} className={`flex-1 text-center rounded-lg py-1.5 sm:py-2 transition-colors touch-manipulation ${i === 0 ? "bg-primary/10 border border-primary/20" : hasBill ? "bg-[hsl(var(--sita-gold))]/10 border border-[hsl(var(--sita-gold))]/20" : "bg-secondary/30"}`}>
                       <p className="text-[10px] text-muted-foreground">{dayName}</p>
                       <p className={`text-sm font-semibold ${i === 0 ? "text-primary" : "text-foreground"}`}>{dayNum}</p>
                       {hasBill && <div className="h-1.5 w-1.5 rounded-full bg-[hsl(var(--sita-gold))] mx-auto mt-1" />}

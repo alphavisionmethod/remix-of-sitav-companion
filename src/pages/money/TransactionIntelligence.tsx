@@ -64,7 +64,7 @@ const TransactionIntelligence = () => {
       <DomainHeader domain="money" title="Transaction Intelligence" subtitle="Smart categorization, anomaly detection, business/personal classification" />
       <DemoModeBadge />
 
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4">
         <KPITile label="Transactions" value={stats.total.toString()} icon={Receipt} />
         <KPITile label="AI Categorized" value={stats.aiCategorized.toString()} icon={Sparkles} />
         <KPITile label="Flagged" value={stats.flagged.toString()} icon={AlertTriangle} />

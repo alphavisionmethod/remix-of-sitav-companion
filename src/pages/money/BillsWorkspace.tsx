@@ -152,7 +152,7 @@ const BillsWorkspace = () => {
           <Calendar className="h-4 w-4 text-primary" />
           <SitaCardTitle>Payment Timeline — Next 15 Days</SitaCardTitle>
         </div>
-        <div className="flex gap-1">
+        <div className="flex gap-1 overflow-x-auto -mx-1 px-1 pb-1 scrollbar-none">
           {Array.from({ length: 15 }, (_, i) => {
             const day = i + 1;
             const dayBills = enriched.filter(b => b.daysLeft === day);
@@ -160,7 +160,7 @@ const BillsWorkspace = () => {
             const isStress = total > 2000;
             return (
               <div key={day} className="flex-1 text-center">
-                <div className={`mx-auto h-12 rounded-lg flex items-end justify-center pb-1 text-[9px] font-bold transition-all ${isStress ? "bg-urgency-high/20 text-urgency-high" : total > 0 ? "bg-primary/10 text-primary" : "bg-secondary/30 text-muted-foreground"}`}
+                <div className={`mx-auto h-10 sm:h-12 min-w-[2rem] rounded-lg flex items-end justify-center pb-1 text-[8px] sm:text-[9px] font-bold transition-all ${isStress ? "bg-urgency-high/20 text-urgency-high" : total > 0 ? "bg-primary/10 text-primary" : "bg-secondary/30 text-muted-foreground"}`}
                   style={{ paddingTop: `${Math.max(4, 48 - (total / 100))}px` }}>
                   {total > 0 ? `$${total >= 1000 ? (total / 1000).toFixed(1) + "K" : total}` : ""}
                 </div>
@@ -188,7 +188,7 @@ const BillsWorkspace = () => {
         <EmptyState icon={CreditCard} title="No bills yet" description="Add your first bill to start tracking payments and due dates" action={<SitaButton variant="primary" onClick={() => setShowForm(true)}><Plus className="h-4 w-4" /> Add Bill</SitaButton>} />
       ) : (
         <div className="grid gap-6 lg:grid-cols-5">
-          <div className="lg:col-span-3 space-y-2">
+          <div className="lg:col-span-3 space-y-2 order-1">
             {filtered.map((bill) => (
               <SitaCard key={bill.id} onClick={() => setSelectedId(bill.id)} selected={selectedId === bill.id}
                 lane={bill.computedStatus === "overdue" ? "action" : bill.daysLeft <= 2 && bill.computedStatus !== "scheduled" && bill.computedStatus !== "paid" ? "action" : undefined} className="p-4">
@@ -260,21 +260,21 @@ const BillsWorkspace = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="text-xs font-medium text-muted-foreground">Payee *</label>
-            <input className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2 text-sm text-foreground focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20" value={form.payee} onChange={e => setForm({ ...form, payee: e.target.value })} required />
+            <input className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2.5 text-sm text-foreground touch-manipulation focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20" value={form.payee} onChange={e => setForm({ ...form, payee: e.target.value })} required />
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="text-xs font-medium text-muted-foreground">Amount *</label>
-              <input type="number" step="0.01" className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2 text-sm text-foreground focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20" value={form.amount} onChange={e => setForm({ ...form, amount: e.target.value })} required />
+              <input type="number" step="0.01" className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2.5 text-sm text-foreground touch-manipulation focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20" value={form.amount} onChange={e => setForm({ ...form, amount: e.target.value })} required />
             </div>
             <div>
               <label className="text-xs font-medium text-muted-foreground">Due Date *</label>
-              <input type="date" className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2 text-sm text-foreground focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20" value={form.due_date} onChange={e => setForm({ ...form, due_date: e.target.value })} required />
+              <input type="date" className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2.5 text-sm text-foreground touch-manipulation focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20" value={form.due_date} onChange={e => setForm({ ...form, due_date: e.target.value })} required />
             </div>
           </div>
           <div>
             <label className="text-xs font-medium text-muted-foreground">Category</label>
-            <input className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2 text-sm text-foreground focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20" placeholder="e.g. Business · Rent" value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} />
+            <input className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2.5 text-sm text-foreground touch-manipulation focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20" placeholder="e.g. Business · Rent" value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} />
           </div>
           <div className="flex items-center gap-4">
             <label className="flex items-center gap-2 text-sm text-foreground">
@@ -287,7 +287,7 @@ const BillsWorkspace = () => {
           {form.recurring && (
             <div>
               <label className="text-xs font-medium text-muted-foreground">Frequency</label>
-              <select className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2 text-sm text-foreground focus:border-primary/40 focus:outline-none" value={form.frequency} onChange={e => setForm({ ...form, frequency: e.target.value })}>
+              <select className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2.5 text-sm text-foreground touch-manipulation focus:border-primary/40 focus:outline-none" value={form.frequency} onChange={e => setForm({ ...form, frequency: e.target.value })}>
                 <option value="weekly">Weekly</option>
                 <option value="monthly">Monthly</option>
                 <option value="quarterly">Quarterly</option>
@@ -297,7 +297,7 @@ const BillsWorkspace = () => {
           )}
           <div>
             <label className="text-xs font-medium text-muted-foreground">Notes</label>
-            <textarea className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2 text-sm text-foreground focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none" rows={3} value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} />
+            <textarea className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2.5 text-sm text-foreground touch-manipulation focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none" rows={3} value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} />
           </div>
           <div className="flex gap-2 pt-2">
             <SitaButton type="submit" variant="primary" className="flex-1">{editId ? "Update Bill" : "Create Bill"}</SitaButton>

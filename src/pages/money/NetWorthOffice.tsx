@@ -56,7 +56,7 @@ const NetWorthOffice = () => {
       <DemoModeBadge />
 
       {/* KPI Row */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
         <KPITile label="Net Worth" value={fmt(analysis.netWorth)} icon={DollarSign} />
         <KPITile label="Total Assets" value={fmt(analysis.totalAssets)} icon={TrendingUp} />
         <KPITile label="Total Liabilities" value={fmt(analysis.totalLiabilities)} icon={TrendingDown} />

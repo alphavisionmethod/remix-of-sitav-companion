@@ -40,7 +40,7 @@ const DebtCreditOffice = () => {
       <DemoModeBadge />
 
       {/* KPI Row */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4">
         <KPITile label="Total Debt" value={fmt(profile.totalDebtCents)} icon={CreditCard} />
         <KPITile label="Monthly Interest Drag" value={fmt(profile.interestDragMonthlyCents)} icon={TrendingDown} />
         <KPITile label="Utilization" value={`${profile.utilizationPercent.toFixed(0)}%`} icon={BarChart3} />
@@ -106,7 +106,7 @@ const DebtCreditOffice = () => {
             <div className="text-xs text-muted-foreground">
               {strategy === "avalanche" ? "Pays highest interest first — saves the most money" : "Pays smallest balance first — fastest psychological wins"}
             </div>
-            <div className="grid grid-cols-2 gap-4 text-sm">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
               <div>
                 <p className="text-muted-foreground text-xs">Projected Payoff</p>
                 <p className="font-display font-bold">{profile.payoffPlan.projectedMonths} months</p>
@@ -138,7 +138,7 @@ const DebtCreditOffice = () => {
           <SitaSectionHeader title="Credit Score Pulse" />
           <SitaCard hover={false} className="p-4">
             <div className="text-center mb-4">
-              <p className="font-display text-4xl font-bold">{pulse.estimatedScore}</p>
+              <p className="font-display text-2xl sm:text-4xl font-bold">{pulse.estimatedScore}</p>
               <p className={`text-xs font-semibold ${pulse.trend === "improving" ? "text-trust-verified" : pulse.trend === "declining" ? "text-red-500" : "text-muted-foreground"}`}>
                 {pulse.trend === "improving" ? "↑ Improving" : pulse.trend === "declining" ? "↓ Declining" : "→ Stable"}
               </p>
