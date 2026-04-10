@@ -72,6 +72,7 @@ export default function RelationshipCenter() {
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList className="bg-muted/30 border border-border/40 h-8 p-0.5 gap-0.5">
           <TabsTrigger value="contacts" className="text-[10px] h-7 px-2.5 gap-1"><Users className="h-3 w-3" />Contacts</TabsTrigger>
+          <TabsTrigger value="sentiment" className="text-[10px] h-7 px-2.5 gap-1"><SmilePlus className="h-3 w-3" />Sentiment</TabsTrigger>
           <TabsTrigger value="actions" className="text-[10px] h-7 px-2.5 gap-1"><Zap className="h-3 w-3" />Next Best Action</TabsTrigger>
           <TabsTrigger value="graph" className="text-[10px] h-7 px-2.5 gap-1"><ArrowRight className="h-3 w-3" />Relationship Map</TabsTrigger>
           <TabsTrigger value="history" className="text-[10px] h-7 px-2.5 gap-1"><Clock className="h-3 w-3" />History</TabsTrigger>
