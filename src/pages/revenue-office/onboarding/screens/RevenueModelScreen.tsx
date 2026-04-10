@@ -1,4 +1,4 @@
-import { DollarSign, Phone, FileText, RefreshCw, Package, Heart, ShoppingBag, MapPin, Users, Megaphone, Layers } from "lucide-react";
+import { DollarSign, Phone, FileText, RefreshCw, Package, Heart, ShoppingBag, MapPin, Users, Megaphone, Layers, TrendingUp, Star, Repeat, Target, BarChart3, UserPlus } from "lucide-react";
 import { Toggle, SectionTitle, ScreenHeader, SingleSelect } from "../primitives";
 import BranchingQuestionsPanel from "./BranchingQuestionsPanel";
 import { getRevenueEngineBranch } from "../branching";
@@ -19,10 +19,24 @@ const sources = [
   { id: "mixed", label: "Mixed / evolving", icon: Layers },
 ];
 
+const growthOptions = [
+  { id: "leads", label: "More leads", icon: UserPlus },
+  { id: "conversions", label: "Better conversions", icon: Target },
+  { id: "aov", label: "Higher order / offer value", icon: BarChart3 },
+  { id: "repeat", label: "Repeat business", icon: Repeat },
+  { id: "retention", label: "Retention", icon: Heart },
+  { id: "referrals", label: "Referrals", icon: Users },
+  { id: "reviews", label: "Reviews / reputation", icon: Star },
+];
+
 export default function RevenueModelScreen({ state, setState }: ScreenProps) {
-  
+
   const toggle = useCallback((v: string) => {
     setState(p => ({ ...p, revenueSources: p.revenueSources.includes(v) ? p.revenueSources.filter(x => x !== v) : [...p.revenueSources, v] }));
+  }, [setState]);
+
+  const toggleGrowth = useCallback((v: string) => {
+    setState(p => ({ ...p, growthGoals: p.growthGoals.includes(v) ? p.growthGoals.filter(x => x !== v) : [...p.growthGoals, v] }));
   }, [setState]);
 
   const selectedSources = sources.filter(s => state.revenueSources.includes(s.id));
@@ -37,7 +51,7 @@ export default function RevenueModelScreen({ state, setState }: ScreenProps) {
 
   return (
     <div className="space-y-6">
-      
+
       <ScreenHeader icon={DollarSign} title="How does money come into the business?" subtitle="Select all that apply — we'll ask which matter most" color="text-emerald-400" />
       <div className="grid md:grid-cols-2 gap-2">
         {sources.map(s => <Toggle key={s.id} label={s.label} icon={s.icon} selected={state.revenueSources.includes(s.id)} onToggle={() => toggle(s.id)} />)}
@@ -69,6 +83,12 @@ export default function RevenueModelScreen({ state, setState }: ScreenProps) {
           </div>
         </div>
       )}
+      <div>
+        <SectionTitle hint="Select all that apply">What would you like to grow most?</SectionTitle>
+        <div className="grid md:grid-cols-2 gap-2">
+          {growthOptions.map(o => <Toggle key={o.id} label={o.label} icon={o.icon} selected={state.growthGoals.includes(o.id)} onToggle={() => toggleGrowth(o.id)} />)}
+        </div>
+      </div>
       {state.setupDepth === "deep" && branchQuestions.length > 0 && (
         <BranchingQuestionsPanel questions={branchQuestions} answers={state.branchAnswers} onAnswer={handleBranch} />
       )}

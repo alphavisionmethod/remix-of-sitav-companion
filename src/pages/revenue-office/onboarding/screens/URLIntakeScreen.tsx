@@ -5,12 +5,12 @@ import { ScreenHeader } from "../primitives";
 import type { ScreenProps } from "../types";
 
 const urlSlots = [
-  { key: "website", label: "Website URL", placeholder: "https://yourbusiness.com", icon: Globe },
-  { key: "booking", label: "Booking link", placeholder: "https://calendly.com/you", icon: Calendar },
-  { key: "sales", label: "Sales or landing page", placeholder: "https://yourbusiness.com/offer", icon: Target },
-  { key: "product", label: "Product / checkout page", placeholder: "https://yourbusiness.com/product", icon: ShoppingCart },
-  { key: "membership", label: "Membership page", placeholder: "https://yourbusiness.com/membership", icon: Users },
-  { key: "social", label: "Social profile", placeholder: "https://instagram.com/you", icon: Megaphone },
+  { key: "website", label: "Website URL", placeholder: "https://yourbusiness.com", icon: Globe, infers: "Service vs product model, offer structure, CTA strategy" },
+  { key: "booking", label: "Booking link", placeholder: "https://calendly.com/you", icon: Calendar, infers: "Booking dependence, appointment flow, scheduling friction" },
+  { key: "sales", label: "Sales or landing page", placeholder: "https://yourbusiness.com/offer", icon: Target, infers: "Funnel complexity, trust emphasis, conversion motion" },
+  { key: "product", label: "Product / checkout page", placeholder: "https://yourbusiness.com/product", icon: ShoppingCart, infers: "Checkout vs booking motion, pricing patterns, cart structure" },
+  { key: "membership", label: "Membership page", placeholder: "https://yourbusiness.com/membership", icon: Users, infers: "Membership tiers, retention model, renewal structure" },
+  { key: "social", label: "Social profile", placeholder: "https://instagram.com/you", icon: Megaphone, infers: "Audience engagement, content strategy, lead capture paths" },
 ];
 
 export default function URLIntakeScreen({ state, setState }: ScreenProps) {
@@ -37,6 +37,7 @@ export default function URLIntakeScreen({ state, setState }: ScreenProps) {
               <label className="text-[10px] text-muted-foreground block mb-0.5">{s.label}</label>
               <input type="url" value={urls[s.key] || ""} onChange={e => handleChange(s.key, e.target.value)}
                 placeholder={s.placeholder} className="w-full bg-transparent text-sm text-foreground placeholder:text-muted-foreground/40 outline-none" />
+              {urls[s.key]?.trim() && <p className="text-[9px] text-primary/70 mt-0.5">↳ {s.infers}</p>}
             </div>
           </div>
         ))}

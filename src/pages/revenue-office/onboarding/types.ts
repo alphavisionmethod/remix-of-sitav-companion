@@ -47,9 +47,16 @@ export interface OnboardingState {
   urlInferences: string[];
   // RO-ONB-16
   reconActions: Record<string, string>;
+  reconConfirmed: boolean;
   // Trust & automation
   automationLevel: string;
   humanOnlyTasks: string[];
+  // Conversion weakness
+  conversionWeakness: string[];
+  // Growth goals
+  growthGoals: string[];
+  // Granular approval actions
+  approvalActions: string[];
   // Advisor activation
   activeAdvisors: string[];
   advisorIntensity: Record<string, "low" | "medium" | "high">;
@@ -97,6 +104,10 @@ export const defaultOnboardingState: OnboardingState = {
   reconActions: {},
   automationLevel: "draft_review",
   humanOnlyTasks: [],
+  conversionWeakness: [],
+  growthGoals: [],
+  approvalActions: [],
+  reconConfirmed: false,
   activeAdvisors: [],
   advisorIntensity: {},
   branchAnswers: {},
