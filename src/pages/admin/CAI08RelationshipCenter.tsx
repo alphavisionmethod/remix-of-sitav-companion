@@ -28,7 +28,7 @@ export default function CAI08RelationshipCenter() {
                   <SitaCardTitle sub={contact.name}>{followUp.description}</SitaCardTitle>
                   <Clock className="h-3.5 w-3.5 text-urgency-high" />
                 </SitaCardHeader>
-                <p className="text-xs text-muted-foreground">Due: {followUp.dueDate} · {contact.relationship}</p>
+                <p className="text-xs text-muted-foreground">Due: {followUp.dueDate} · {contact.type}</p>
               </SitaCard>
             ))}
           </div>
