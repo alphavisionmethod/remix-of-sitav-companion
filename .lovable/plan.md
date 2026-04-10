@@ -1,120 +1,92 @@
 
 
-# SITA OS — Full Codebase Audit Report
+# SITA OS — Full Codebase Audit Report (Post-Phase 1-3)
 
-## Summary
+## Previous Audit Completions (verified)
 
-After examining every major layer — services, edge functions, admin pages, routing, persistence, AI pipeline, and contracts — the codebase is **remarkably comprehensive**. ~400 pages, ~200 services, ~55 edge functions, a canonical AI gateway, and a full persistence layer. However, there are **specific gaps** that prevent the system from being 100% advanced and correctly wired.
+The Phase 1-3 work from the last audit was correctly implemented:
+- **event-broker** deleted, barrel export removed ✅
+- **groundedness-gate** deleted, barrel export removed ✅
+- **Pipeline orchestrator** wired to `callAIGateway` ✅
+- **ConscienceGate pre-flight** in `callBrainCore` ✅
+- **Mnemosyne context-assembler** expanded (425 lines, memory graph, persisted conversation, rich profiles) ✅
+- **Unified Event Service** Realtime bridge added ✅
+- **Service heartbeat** created ✅
+- **Type safety** fixed in `database`, `offline-sync`, `accounts.service`, `auto-proposal` ✅
 
----
+## Remaining Gaps Found
 
-## Findings
+### 1. Stale References to Deleted Services (5 files)
 
-### 1. Dead Code: `event-broker` Service (orphaned)
+The god-tier-integration-engine.ts and service-ownership-registry.ts still reference `groundedness-gate/` and `event-broker/` as if they exist. These references should be updated to reflect the completed consolidations.
 
-**File:** `src/lib/services/event-broker/index.ts`
+**Files:**
+- `src/lib/services/architecture/god-tier-integration-engine.ts` — lines 65-85 (ConscienceGate entry still says "groundedness-gate/" exists), lines 200-216 (Event Bus entry still says "event-broker/" exists), lines 560-564 (anti-sprawl matrix), lines 676-680 (phase roadmap)
+- `src/lib/services/service-registry/service-ownership-registry.ts` — line 220 (transitional: `groundedness-gate`), line 408 (directory classification)
 
-The `UnifiedEventService` in `src/lib/services/event-bus/unified-event-service.ts` already supersedes this. Zero imports of `event-broker` exist anywhere in the codebase. This should be **deleted** and its barrel export removed from `src/lib/services/index.ts` (if referenced).
+### 2. Remaining `: any` Types (6 files, ~80 instances)
 
-### 2. Dead Code: `groundedness-gate` Service (orphaned)
+**Priority files:**
+- `src/lib/services/finance-os/overview.service.ts:36` — `(a: any)`
+- `src/lib/services/flagship-loops/flagship-loop-service.ts:284-286` — `loops: any[]`, `(l: any)`
+- `src/lib/services/google-provider-family/google-provider-family.service.ts` — 14 instances of `(c: any)`, `(s: any)`, `(p: any)`, `(e: any)`, plus `getGoogleConsentHistory(): Promise<any[]>`
+- `src/lib/services/observability/observability-service.ts:174-176,189` — `(r: any)`, `(d: any)`
+- `src/lib/services/approval-engine/approval-requests.service.ts:102` — `([k, v]: any)`
+- `src/lib/services/push-notification/push-registration-service.ts:90` — `mod: any` (legitimate dynamic import, can ignore)
 
-**File:** `src/lib/services/groundedness-gate/index.ts`
+### 3. Realtime Bridge Not Wired into PlatformInit
 
-Zero imports exist. The canonical `ConscienceGate` in `src/lib/core-services/conscience-gate/conscience-gate.ts` (250 lines, fully advanced) already replaces this. Should be **deleted**.
+`startRealtimeBridge()` exists in `UnifiedEventService` but is never called. It should be invoked from `PlatformInit.tsx` (or a new hook) so server-side events flow to the client bus after authentication.
 
-### 3. Mnemosyne — Missing Memory Service File
+### 4. Service Heartbeat Not Wired into SystemHealthDashboard
 
-The `context-assembler.ts` (307 lines) is **fully advanced** — retrieval, scoping, token budgeting, truncation, evidence assembly. However, the god-tier integration engine flags Mnemosyne as needing expansion with:
-- **Conversation history persistence** (currently in-memory only via `getConversationWindow`)
-- **Memory graph integration** — the `ai-memory-graph` service exists but is not wired into the context assembler
-- **Profile context enrichment** — preferences retrieval is basic (name + onboarded flag only)
+`serviceHeartbeat` is created but never imported anywhere. The `SystemHealthDashboard` page uses `runAllProbes()` from `health-probes` but doesn't include service registry heartbeat data.
 
-### 4. Canonical Pipeline — Placeholder Output
+### 5. Stale Mnemosyne Description in god-tier-integration-engine
 
-**File:** `src/lib/services/canonical-pipeline/pipeline-orchestrator.ts:164`
-```
-output: request.input, // Placeholder — real inference happens via edge function
-```
-The inference step returns input as output. While this is correctly noted as "real inference happens via edge function," the pipeline orchestrator should properly delegate to the `callAIGateway` callable rather than returning a placeholder.
+Lines 124-136 still describe Mnemosyne as "stub — 34 lines" needing expansion, but it's now 425 lines with memory graph, profile enrichment, and conversation persistence.
 
-### 5. Dual Service Locations (Shim Pattern)
+### 6. Stale `mnemosyne-service.ts` Reference
 
-Multiple services exist in both `src/lib/services/` and `src/lib/core-services/` with reverse shims. While this is architecturally functional, the following have **trivial shim files that could be consolidated**:
-- `approval-engine` → shim to `core-services/approval-engine`
-- `conscience-gate` → shim to `core-services/conscience-gate`
-- Many others follow the same pattern
-
-This is not broken but adds indirection. Low priority — leave as-is unless consolidation sprint is planned.
-
-### 6. `: any` Usage (38 files)
-
-543 instances of `return []`, `return {}`, or `: any` across 38 service files. Most are legitimate fallback returns. The true problems are:
-- `src/lib/services/database/index.ts:126` — `const opts: any = {}`
-- `src/lib/services/offline-sync/index.ts:69,90,100` — multiple `any` params
-- `src/lib/services/business-os/accounts.service.ts:35-36` — `(i: any)`, `(o: any)`
-- `src/lib/services/auto-proposal/index.ts:117,121` — `(lead: any)`
-
-These should be properly typed.
-
-### 7. Edge Function: `push-dispatch` — Missing `pg_net` Dependency
-
-The `dispatch_push_notification` DB function calls `net.http_post()` which requires the `pg_net` extension. If not enabled, push dispatch silently fails (caught by the exception handler). Should verify the extension is active.
-
-### 8. Missing: Unified Event Bus Integration with Edge Functions
-
-The `UnifiedEventService` operates entirely in-memory on the client side. Server-side events (from edge functions like `event-processor`, `agent-signal`) don't connect to this bus. For true OS-level event architecture, the event bus needs:
-- A Supabase Realtime channel subscription that bridges server events to the client bus
-- Currently, `event-processor` edge function exists but nothing subscribes to its output
-
-### 9. Missing: Brain Core → ConscienceGate Wiring
-
-The `brain-core` edge function (751 lines) is fully advanced with intent classification, multi-advisor composition, memory retrieval, policy enforcement, and fallback chains. However, the client-side `ConscienceGate` (pre-response validation) is never called before the edge function invocation in `callBrainCore`. The gate should validate intent before the network call.
-
-### 10. Missing: Service Registry Runtime Validation
-
-`src/lib/services/service-registry/` exists but services register themselves statically. No runtime health check confirms all services are actually initialized and operational. The `SystemHealthDashboard` admin page should pull from a live service heartbeat rather than static config.
+The god-tier engine references `src/lib/services/mnemosyne/mnemosyne-service.ts` (line 126) which no longer exists. The canonical file is `context-assembler.ts`.
 
 ---
 
 ## Implementation Plan
 
-### Phase 1 — Cleanup (quick wins)
-1. **Delete dead services**: Remove `event-broker/index.ts` and `groundedness-gate/index.ts`
-2. **Type safety**: Replace `any` with proper types in the 6 identified service files
-3. **Canonical pipeline**: Wire `callAIGateway` into pipeline orchestrator instead of placeholder
+### Phase A — Update Stale Architecture References (~15 min)
+1. Update `god-tier-integration-engine.ts`:
+   - ConscienceGate entry: mark as "✅ Completed — consolidated into conscience-gate/"
+   - Event Bus entry: mark as "✅ Completed — merged into unified-event-service.ts"
+   - Mnemosyne entry: update to "✅ Completed — 425-line context assembler with memory graph"
+   - Anti-sprawl matrix: update statuses to "completed"
+   - Phase roadmap: mark items as done
+2. Update `service-ownership-registry.ts`: remove `groundedness-gate` from transitional and directory classification arrays
 
-### Phase 2 — Wiring Gaps
-4. **ConscienceGate pre-flight**: Add gate check in `callBrainCore` before edge function invocation
-5. **Mnemosyne expansion**: Wire `ai-memory-graph` into `ContextAssembler`, add preferences enrichment
-6. **Event bus bridge**: Add Supabase Realtime subscription to `UnifiedEventService` to receive server-side events
+### Phase B — Fix Remaining `: any` Types (~15 min)
+3. Type `finance-os/overview.service.ts` — replace `(a: any)` with proper record type
+4. Type `flagship-loops/flagship-loop-service.ts` — replace `any[]` with `{ truth_pct?: number }[]`
+5. Type `google-provider-family.service.ts` — replace all 14 `any` instances with `Record<string, unknown>` and type the consent history return
+6. Type `observability/observability-service.ts` — replace `(r: any)` with `{ data: unknown[] }` pattern
+7. Type `approval-engine/approval-requests.service.ts` — replace `([k, v]: any)` with `[string, unknown]`
 
-### Phase 3 — Runtime Integrity
-7. **Service heartbeat**: Add runtime registration + heartbeat to service registry, surface in SystemHealthDashboard
-8. **pg_net verification**: Add migration check for `pg_net` extension status
+### Phase C — Wire Unused Services (~10 min)
+8. Add `useRealtimeBridge` hook that calls `unifiedEventService.startRealtimeBridge()` on auth, wire into `PlatformInit.tsx`
+9. Add heartbeat section to `SystemHealthDashboard.tsx` importing `serviceHeartbeat`
 
----
+### Technical Details
 
-## Technical Details
+**Files to modify:**
+- `src/lib/services/architecture/god-tier-integration-engine.ts` — update ~8 status fields
+- `src/lib/services/service-registry/service-ownership-registry.ts` — remove 2 stale entries
+- `src/lib/services/finance-os/overview.service.ts` — 1 line type fix
+- `src/lib/services/flagship-loops/flagship-loop-service.ts` — 3 line type fix
+- `src/lib/services/google-provider-family/google-provider-family.service.ts` — 14 type fixes
+- `src/lib/services/observability/observability-service.ts` — 4 type fixes
+- `src/lib/services/approval-engine/approval-requests.service.ts` — 1 type fix
+- `src/components/sita/PlatformInit.tsx` — add Realtime bridge init
+- `src/pages/admin/SystemHealthDashboard.tsx` — add heartbeat section
 
-### Files to Delete
-- `src/lib/services/event-broker/index.ts`
-- `src/lib/services/groundedness-gate/index.ts`
-
-### Files to Modify
-- `src/lib/services/canonical-pipeline/pipeline-orchestrator.ts` — replace placeholder with `callAIGateway`
-- `src/lib/services/ai-gateway/callable.ts` — add ConscienceGate pre-check to `callBrainCore`
-- `src/lib/services/mnemosyne/context-assembler.ts` — integrate memory graph + richer profile
-- `src/lib/services/event-bus/unified-event-service.ts` — add Realtime bridge
-- `src/lib/services/database/index.ts` — type `opts`
-- `src/lib/services/offline-sync/index.ts` — type all `any` params
-- `src/lib/services/business-os/accounts.service.ts` — type filter callbacks
-- `src/lib/services/auto-proposal/index.ts` — type `lead` param
-
-### New Files
-- `src/lib/services/service-registry/heartbeat.ts` — runtime service health check
-
-### Estimated Scope
-- **Phase 1**: ~30 min — 2 deletions, 5 file edits
-- **Phase 2**: ~60 min — 3 substantial integrations
-- **Phase 3**: ~30 min — 1 new file, 1 migration check
+**New files:**
+- `src/hooks/useRealtimeBridge.ts` — hook to start/stop Realtime bridge on auth state
 
