@@ -1,4 +1,4 @@
-import { useMemo, useState, useCallback, lazy, Suspense } from "react";
+import { useMemo, useState, useCallback, useEffect, lazy, Suspense } from "react";
 import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
 import { PostArrivalDesktop } from "@/components/sita/PostArrivalDesktop";
 import { useInspector, type InspectorEntity } from "@/contexts/InspectorContext";
