@@ -5,6 +5,8 @@ import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { EdgeLogger } from "../_shared/logger.ts";
 import { z } from "https://esm.sh/zod@3.23.8";
 import { requireAuth } from "../_shared/auth.ts";
+import { logAIReceipt } from "../_shared/ai-receipt-logger.ts";
+import { checkAIBudget } from "../_shared/ai-budget-check.ts";
 
 const logger = new EdgeLogger("file-ingestion");
 
@@ -51,7 +53,13 @@ serve(async (req) => {
     let sensitivity = "internal";
 
     if (LOVABLE_API_KEY) {
-      try {
+      // Budget check before classification
+      const budgetDecision = await checkAIBudget(supabase, user.id, "file_ingestion.classify", 0.003);
+      
+      if (!budgetDecision.allowed) {
+        console.warn("Budget blocked file classification:", budgetDecision.reason);
+      } else try {
+        const classifyStartMs = Date.now();
         const classifyResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
           method: "POST",
           headers: {
@@ -92,12 +100,27 @@ serve(async (req) => {
 
         if (classifyResponse.ok) {
           const data = await classifyResponse.json();
+          const classifyLatencyMs = Date.now() - classifyStartMs;
           const toolCall = data.choices?.[0]?.message?.tool_calls?.[0];
           if (toolCall?.function?.arguments) {
             const parsed = JSON.parse(toolCall.function.arguments);
             classification = parsed.classification || "general";
             sensitivity = parsed.sensitivity || "internal";
             extractedData = parsed.extracted_fields || {};
+          }
+          // Canonical receipt
+          const tokensUsed = data.usage?.total_tokens || 0;
+          if (tokensUsed > 0) {
+            logAIReceipt(supabase, {
+              userId: user.id,
+              capabilityKey: "file_ingestion.classify",
+              model: "google/gemini-2.5-flash-lite",
+              provider: "lovable-gateway",
+              inputTokens: data.usage?.prompt_tokens || Math.round(tokensUsed * 0.7),
+              outputTokens: data.usage?.completion_tokens || Math.round(tokensUsed * 0.3),
+              estimatedCostUsd: tokensUsed * 0.0000005,
+              latencyMs: classifyLatencyMs,
+            });
           }
         }
       } catch (aiErr) {

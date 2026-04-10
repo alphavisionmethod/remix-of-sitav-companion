@@ -5,6 +5,8 @@ import { requireAuth } from "../_shared/auth.ts";
 import { zodValidate, ChatAdvisorSchema } from "../_shared/zod-validate.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { EdgeLogger } from "../_shared/logger.ts";
+import { logAIReceipt } from "../_shared/ai-receipt-logger.ts";
+import { checkAIBudget } from "../_shared/ai-budget-check.ts";
 
 // ═══════════════════════════════════════════════════════════════
 // Deep Advisor Personalities — unique expertise per advisor
@@ -422,6 +424,20 @@ serve(async (req) => {
     const adminClient = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
     const inputApprox = JSON.stringify(messages).length / 4;
     logTokenUsage(adminClient, user.id, advisor, budgetResult.model, inputApprox, advisor);
+
+    // Canonical receipt logging for AIG04/AIG05
+    const estCostUsd = inputApprox * 0.000002;
+    logAIReceipt(adminClient, {
+      userId: user.id,
+      capabilityKey: `advisor.chat.${advisor}`,
+      model: budgetResult.model,
+      provider: "lovable-gateway",
+      inputTokens: Math.ceil(inputApprox),
+      outputTokens: 0,
+      estimatedCostUsd: estCostUsd,
+      latencyMs: aiLatencyMs,
+      correlationId,
+    });
 
     // Record advisor response with latency for traceability
     adminClient.from("advisor_responses").insert({

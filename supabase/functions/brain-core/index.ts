@@ -4,6 +4,8 @@ import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { EdgeLogger } from "../_shared/logger.ts";
 import { handleCors, corsHeaders, corsResponse, corsError } from "../_shared/cors.ts";
 import { zodValidate, BrainCoreSchema } from "../_shared/zod-validate.ts";
+import { logAIReceipt } from "../_shared/ai-receipt-logger.ts";
+import { checkAIBudget } from "../_shared/ai-budget-check.ts";
 
 // ── Types ───────────────────────────────────────────────────────────────────
 
@@ -598,12 +600,22 @@ serve(async (req) => {
           complexity,
         };
       } else {
+        // ── Canonical budget check ──
+        const budgetDecision = await checkAIBudget(supabase, user.id, `brain_core.${body.intent}`, 0.01);
+        if (!budgetDecision.allowed) {
+          return new Response(JSON.stringify({ error: "AI budget exceeded", code: "BUDGET_EXCEEDED", correlation_id: correlationId }), {
+            status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" },
+          });
+        }
+        const effectiveModel = budgetDecision.shouldDowngrade && budgetDecision.fallbackModelId
+          ? budgetDecision.fallbackModelId : model;
+
         const systemPrompt = advisorConfig?.system_prompt || defaultPrompts[domain] || defaultPrompts.general;
         const memoryContext = memory.map(m => `${m.category}/${m.key}: ${JSON.stringify(m.value)}`).join("\n");
         const userPrompt = `Intent: ${body.intent}\n\nContext:\n${JSON.stringify(context, null, 2)}\n\nUser Memory:\n${memoryContext || "No memory stored yet."}`;
 
         try {
-          const llmResult = await callLLM(systemPrompt, userPrompt, LOVABLE_API_KEY, model);
+          const llmResult = await callLLM(systemPrompt, userPrompt, LOVABLE_API_KEY, effectiveModel);
 
           // Check if confidence is below escalation threshold
           const needsApproval = llmResult.confidence < escalationThreshold;
@@ -671,7 +683,7 @@ serve(async (req) => {
 
     const latencyMs = Date.now() - startTime;
 
-    // ── Token metering via budget RPC ──
+    // ── Token metering via budget RPC + canonical receipts ──
     if (finalResponse.tokens && finalResponse.tokens > 0) {
       const estCost = Math.ceil(finalResponse.tokens * 0.002);
       supabase.rpc("update_ai_budget_usage", {
@@ -679,6 +691,19 @@ serve(async (req) => {
         p_tokens: finalResponse.tokens,
         p_cost: estCost,
       }).then(() => {}).catch(e => console.error("Budget metering error:", e));
+
+      // Canonical receipt for AIG04/AIG05
+      logAIReceipt(supabase, {
+        userId: user.id,
+        capabilityKey: `brain_core.${body.intent}`,
+        model: finalResponse.model || model,
+        provider: "lovable-gateway",
+        inputTokens: Math.round(finalResponse.tokens * 0.7),
+        outputTokens: Math.round(finalResponse.tokens * 0.3),
+        estimatedCostUsd: estCost / 100,
+        latencyMs: latencyMs,
+        correlationId,
+      });
     }
 
     // ── Persist: Response, Proof, Approval ──
