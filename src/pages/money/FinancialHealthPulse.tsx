@@ -129,9 +129,9 @@ const FinancialHealthPulse = () => {
     return "bg-red-500";
   };
 
-  const iqGradeColor = incomeQuality.compositeGrade === "A" ? "text-trust-verified" :
-    incomeQuality.compositeGrade === "B" ? "text-primary" :
-    incomeQuality.compositeGrade === "C" ? "text-amber-500" : "text-red-500";
+  const iqGradeColor = incomeQuality.grade === "A" ? "text-trust-verified" :
+    incomeQuality.grade === "B" ? "text-primary" :
+    incomeQuality.grade === "C" ? "text-amber-500" : "text-red-500";
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
@@ -195,7 +195,7 @@ const FinancialHealthPulse = () => {
             <BarChart3 className="h-5 w-5 text-primary" />
           </div>
           <div>
-            <p className="font-display text-lg font-bold">Income Quality: <span className={iqGradeColor}>{incomeQuality.compositeGrade}</span></p>
+            <p className="font-display text-lg font-bold">Income Quality: <span className={iqGradeColor}>{incomeQuality.grade}</span></p>
             <p className="text-xs text-muted-foreground">Composite score: {incomeQuality.compositeScore}/100 — Not all income is equal</p>
           </div>
         </div>
@@ -343,7 +343,7 @@ const FinancialHealthPulse = () => {
             demoName="Chief Money Strategist"
             demoRole="Holistic Financial Intelligence"
             demoConfidence="High"
-            demoRecommendation={`Overall health: ${health.grade} (${health.overallScore}/100). Income quality: ${incomeQuality.compositeGrade}. ${emotionalPatterns.length} emotional patterns detected. ${health.actionItems.length} improvement opportunities. Focus on ${health.actionItems[0]?.title || "maintaining current trajectory"}.`}
+            demoRecommendation={`Overall health: ${health.grade} (${health.overallScore}/100). Income quality: ${incomeQuality.grade}. ${emotionalPatterns.length} emotional patterns detected. ${health.actionItems.length} improvement opportunities. Focus on ${health.actionItems[0]?.title || "maintaining current trajectory"}.`}
             demoReasoning="Synthesized analysis across safe-to-spend, debt pressure, reserves, savings rate, credit, tax preparedness, income quality, and emotional spending patterns."
           />
         </div>
