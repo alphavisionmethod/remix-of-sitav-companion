@@ -1,122 +1,71 @@
 
 
-# SITA OS Admin Control Plane — Gap Analysis & Implementation Plan
+# SITA OS Admin Control Plane Phase 4 — Implementation Plan
 
 ## Audit Summary
 
-After thorough codebase inspection, the admin control plane has **strong coverage** across 22+ operator surfaces, 16 truth components, and 12 ATLAS pages. However, several spec requirements remain unimplemented:
+After thorough codebase inspection, the admin control plane already has significant coverage:
 
-### MISSING PAGES (4 entirely absent)
+**Already implemented (keeping):**
+- ComputeGovernanceBoard (968 LOC, 10 tabs — fully advanced)
+- IntegrationConciergePage (105 LOC — use-case-first connector setup)
+- RevenueAutopilotMonitor (101 LOC — basic autopilot + win-back)
+- InvestorProofLedger (96 LOC — proof chain + export)
+- MemoryContinuityCenter (187 LOC — scoped memory with privacy tiers)
+- ActionLineageExplorer (212 LOC — cross-domain action state)
+- TrustRibbon component (exists, wired to hooks)
+- QuickActionsDock component (exists, 12 actions)
+- 5 summary panels in `src/components/admin/panels/` (Revenue, Risk, Connector, Incident, Replay)
+- AdminCommandPalette + AdminKeyboardShortcuts (already wired)
 
-1. **Intelligence Dashboard** (`/admin/intelligence`) — No page exists. Spec requires: incident forecasting, anomaly detection, cost optimization, trend momentum, confidence scoring, preventive recommendations, root-cause-linked insights.
+**Missing — to be created:**
 
-2. **Founder Council** (`/admin/founder-council`) — No page exists. Spec requires: decision proposals, strategic context, stakeholder impact, council recommendations, historical precedent, implementation risk, confidence scores, approval linkage.
+### A. Shell Components (4 new files)
+1. **AdminShell** — Top-level admin container with TrustRibbon, RolloutStatusBanner, breadcrumbs, density toggle, degraded-state banner, error boundary
+2. **OwnerModeShell** — Simplified founder-safe wrapper with plain-English labels, SafeModeBanner, large controls, protective defaults
+3. **OwnerWorkspaceShell** — Rich owner workspace with sidebar tabs (home/health/pulse/trust/approvals/ai-team/revenue/risks), panel composition region
+4. **MissionOpsShell** — Deep operational layout with left registry panel, center content, right detail pane, bottom action log
 
-3. **Canonical Chain Explorer** (`/admin/chain-explorer`) — No page exists. Spec requires: trigger → policy → approval → execution → event → receipt → projection → replay/rollback tracing for any single action.
+### B. RolloutStatusBanner (1 new component)
+- Active rollout state, warning level, ring/environment, impacted surfaces, confidence
 
-4. **Release Ring Command Board** (`/admin/release-ring`) — No page exists. Spec requires: Ring 0/1/2 readiness, blockers, evidence checklists, feedback gates, incident impact, promotion actions, rollback visibility.
+### C. Upgraded Existing Pages (4 pages need depth)
 
-### MISSING POWER-USER SYSTEM (3 components absent)
+5. **RevenueAutopilotMonitor** — Upgrade from 101 → ~280 LOC: Add tabs for Recovered Value Board, Saved Cost Timeline, Revenue Action Proof, autopilot health/limits, confidence and proof for revenue recommendations
+6. **InvestorProofLedger** — Upgrade from 96 → ~300 LOC: Add tabs for Evidence Bundle Composer, Migration Decision Snapshots, Rollback Evidence, Compliance Trail Explorer, exportable bundles
+7. **IntegrationConciergePage** — Upgrade from 105 → ~250 LOC: Add tabs for Connector Recommendation Engine, Post-Connect Workflow Composer, Connection Simulation results, trust/approval gating
+8. **ComputeGovernanceBoard** — Already 968 LOC with 10 tabs. Add Advisor Efficiency Matrix tab as CG11
 
-5. **Global Command Palette** (`Cmd+K`) — The `cmdk` library exists, but no `AdminCommandPalette` component is wired. Spec requires: fuzzy search, route/action/record search, recent actions, pinned commands, keyboard-only execution.
+### D. New Unification Pages (3 new pages)
 
-6. **Keyboard Shortcuts System** — No global shortcut handler exists. Spec requires: `Cmd+K`, `J/K` navigation, `Cmd+Z/Shift+Z` undo/redo, `Cmd+R` refresh, investigation keys (F/T/M/G/P).
+9. **TrustStateRegistry** (`/admin/trust-state`) — Cross-domain trust observatory: proof state, approval/receipt link graph, global proof explorer, degraded-state map
+10. **ActionStateDriftViewer** (`/admin/action-state`) — Cross-domain action lifecycle: noncanonical action detector, action-state drift, stuck action finder
+11. **CrossDomainMemoryExplorer** (`/admin/cross-domain-memory`) — What Changed Across Domains timeline, Memory Scope Visualizer, cross-domain context links
 
-7. **Shortcut Overlay** (`?`) — No overlay component. Spec requires: categorized shortcut display triggered by `?` key.
+### E. Route Wiring + Shell Integration
+- Add 3 new routes in App.tsx
+- Wrap admin routes with AdminShell (inject TrustRibbon + RolloutStatusBanner globally)
+- Wrap `/owner/*` routes with OwnerWorkspaceShell
+- Wrap `/mission/*` routes with MissionOpsShell
 
-### PAGES NEEDING DEPTH UPGRADE (2 pages)
+## Files Created/Modified
 
-8. **AlertTriageBoard** (118 LOC, single filter) — Missing: cluster grouping view, ownership assignment panel, suppression management, investigation launch workflow, time-to-breach countdown. Needs tabs for severity lanes, cluster themes, suppression state.
+| File | Action | LOC |
+|---|---|---|
+| `src/components/admin/shells/AdminShell.tsx` | **NEW** | ~120 |
+| `src/components/admin/shells/OwnerModeShell.tsx` | **NEW** | ~100 |
+| `src/components/admin/shells/OwnerWorkspaceShell.tsx` | **NEW** | ~150 |
+| `src/components/admin/shells/MissionOpsShell.tsx` | **NEW** | ~130 |
+| `src/components/admin/shells/RolloutStatusBanner.tsx` | **NEW** | ~60 |
+| `src/components/admin/shells/index.ts` | **NEW** | barrel |
+| `src/pages/admin/TrustStateRegistry.tsx` | **NEW** | ~250 |
+| `src/pages/admin/ActionStateDriftViewer.tsx` | **NEW** | ~230 |
+| `src/pages/admin/CrossDomainMemoryExplorer.tsx` | **NEW** | ~220 |
+| `src/pages/admin/RevenueAutopilotMonitor.tsx` | **UPGRADE** | ~280 |
+| `src/pages/admin/InvestorProofLedger.tsx` | **UPGRADE** | ~300 |
+| `src/pages/admin/IntegrationConciergePage.tsx` | **UPGRADE** | ~250 |
+| `src/pages/admin/ComputeGovernanceBoard.tsx` | **ADD TAB** | +80 |
+| `src/App.tsx` | **MODIFY** | +routes |
 
-9. **MissionControlHome** (191 LOC) — Missing: projection freshness warnings, admin durability warnings, council/decision pulse, "what changed since last visit" section, deployment readiness summary, proof coverage highlights as live indicators.
-
----
-
-## Implementation Plan
-
-### Step 1 — Create 4 Missing Pages
-
-**IntelligenceDashboard.tsx** (~250 LOC)
-- 4 tabs: Smart Alerts, Forecasts, Optimization, Strategic Intelligence
-- IntelligenceCard components with confidence scores, evidence links, trend indicators
-- Demo data for 6+ forecasts, 4+ optimizations, 3+ strategic insights
-
-**FounderCouncilBoard.tsx** (~200 LOC)
-- Decision proposals list with status, stakeholder impact, confidence scores
-- Historical precedent panel, implementation risk assessment
-- Approval/receipt linkage for each decision
-
-**CanonicalChainExplorer.tsx** (~230 LOC)
-- Step-by-step chain visualization: trigger → policy → approval → execution → event → receipt → projection
-- Evidence cards per step, branch chooser, proof artifact panel
-- Demo data for 3+ capability chains
-
-**ReleaseRingCommandBoard.tsx** (~220 LOC)
-- Ring 0/1/2 status cards with readiness scores
-- Blocker lane, evidence checklists, feedback gates
-- Promotion action bar with rollback visibility
-
-### Step 2 — Build Global Command Palette
-
-**AdminCommandPalette.tsx** (~180 LOC)
-- Uses existing `cmdk` library
-- `Cmd+K` to open, fuzzy search across routes/actions/records
-- Sections: Navigation, Actions, Recent, Pinned
-- Integrated into admin layout
-
-### Step 3 — Build Keyboard System
-
-**AdminKeyboardShortcuts.tsx** (~120 LOC)
-- Global `useEffect` listener for all spec shortcuts
-- `?` triggers ShortcutOverlay modal
-- `Cmd+K` opens command palette
-- `Cmd+R` refresh, `J/K` nav, investigation keys
-
-**ShortcutOverlay.tsx** (~80 LOC)
-- Categorized shortcut display (Global, Navigation, Editing, Investigation)
-
-### Step 4 — Upgrade AlertTriageBoard
-
-Expand from 118 → ~250 LOC:
-- Add tabs: Severity Lanes, Cluster Themes, Suppression, Ownership
-- Add cluster grouping, ownership assignment, time-to-breach countdown
-- Add investigation launch workflow
-
-### Step 5 — Upgrade MissionControlHome
-
-Expand from 191 → ~300 LOC:
-- Add "What Changed" section showing recent mutations/events
-- Add projection freshness warnings banner
-- Add admin durability warnings
-- Add deployment readiness + proof coverage as live KPIs
-- Add council decision pulse
-
-### Step 6 — Wire Routes in App.tsx
-
-Add 4 new lazy imports and routes:
-- `/admin/intelligence` → IntelligenceDashboard
-- `/admin/founder-council` → FounderCouncilBoard
-- `/admin/chain-explorer` → CanonicalChainExplorer
-- `/admin/release-ring` → ReleaseRingCommandBoard
-
-### Step 7 — Integrate Command Palette into Shell
-
-Wire AdminCommandPalette into the admin layout so it's accessible from any admin page via `Cmd+K`.
-
-### Files Created/Modified
-
-| File | Action |
-|---|---|
-| `src/pages/admin/IntelligenceDashboard.tsx` | **NEW** |
-| `src/pages/admin/FounderCouncilBoard.tsx` | **NEW** |
-| `src/pages/admin/CanonicalChainExplorer.tsx` | **NEW** |
-| `src/pages/admin/ReleaseRingCommandBoard.tsx` | **NEW** |
-| `src/components/admin/AdminCommandPalette.tsx` | **NEW** |
-| `src/components/admin/AdminKeyboardShortcuts.tsx` | **NEW** |
-| `src/components/admin/ShortcutOverlay.tsx` | **NEW** |
-| `src/pages/admin/AlertTriageBoard.tsx` | **UPGRADE** |
-| `src/pages/admin/MissionControlHome.tsx` | **UPGRADE** |
-| `src/App.tsx` | **MODIFY** (add 4 routes) |
-
-No duplicates. All new pages use existing demo data patterns and truth components.
+No duplicates. All new shells integrate existing TrustRibbon, QuickActionsDock, and panel system. Existing good implementations preserved and extended.
 
