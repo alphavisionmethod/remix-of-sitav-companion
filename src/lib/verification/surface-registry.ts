@@ -4,8 +4,8 @@
 // ═══════════════════════════════════════════════════════
 
 export type SurfaceShell = "public" | "user" | "admin" | "mobile" | "owner";
-export type SurfaceClass = "page" | "tab" | "modal" | "drawer" | "card_action" | "button" | "form" | "table_action" | "ai_input" | "upload" | "toggle" | "navigation";
-export type ActionType = "navigation" | "submit" | "open_modal" | "open_drawer" | "refresh" | "generate" | "upload" | "approve" | "reject" | "connect" | "disconnect" | "filter" | "search" | "expand" | "download" | "trigger_ai" | "copy" | "delete" | "edit" | "save" | "toggle" | "sign_in" | "sign_out" | "sign_up";
+export type SurfaceClass = "page" | "tab" | "modal" | "drawer" | "card_action" | "button" | "form" | "form_field" | "table_action" | "ai_input" | "upload" | "toggle" | "navigation" | "redirect" | "keyboard_shortcut" | "command_palette";
+export type ActionType = "navigation" | "submit" | "open_modal" | "open_drawer" | "close_modal" | "close_drawer" | "refresh" | "generate" | "upload" | "approve" | "reject" | "connect" | "disconnect" | "filter" | "search" | "expand" | "download" | "trigger_ai" | "copy" | "delete" | "edit" | "save" | "toggle" | "sign_in" | "sign_out" | "sign_up" | "keyboard_shortcut" | "command_action" | "redirect" | "focus_trap" | "escape";
 export type TestPriority = "P0" | "P1" | "P2";
 export type VerificationStatus = "untested" | "pass" | "fail" | "blocked" | "skipped";
 export type LaunchHonestyClass = "real" | "demo_governed" | "simulated" | "structural" | "planned" | "unavailable";
@@ -26,6 +26,15 @@ export interface SurfaceEntry {
   launchHonestyClass: LaunchHonestyClass;
   testPriority: TestPriority;
   owner?: string;
+  // Extended fields for JVC boards
+  redirectTarget?: string;
+  formFields?: string[];
+  focusTrapExpected?: boolean;
+  shortcutKey?: string;
+  shortcutConflicts?: string[];
+  modalCleanupRequired?: boolean;
+  expectedPersistence?: boolean;
+  proofReceiptRequired?: boolean;
 }
 
 // ═══════════════════════════════════════════════════════
@@ -153,6 +162,66 @@ const P2_SURFACES: SurfaceEntry[] = [
 ];
 
 // ═══════════════════════════════════════════════════════
+// REDIRECT SURFACES
+// ═══════════════════════════════════════════════════════
+
+const REDIRECT_SURFACES: SurfaceEntry[] = [
+  { routeKey: "redirect.auth.login_success", routePath: "/login", shell: "public", surfaceClass: "redirect", domain: "auth", actionType: "redirect", actionLabel: "Post-Login Redirect", expectedResult: "Redirects to / after successful sign-in", redirectTarget: "/", supportedModes: ["real"], launchHonestyClass: "real", testPriority: "P0" },
+  { routeKey: "redirect.auth.signup_success", routePath: "/signup", shell: "public", surfaceClass: "redirect", domain: "auth", actionType: "redirect", actionLabel: "Post-Signup Redirect", expectedResult: "Redirects to / after account creation", redirectTarget: "/", supportedModes: ["real"], launchHonestyClass: "real", testPriority: "P0" },
+  { routeKey: "redirect.auth.signout", routePath: "/", shell: "user", surfaceClass: "redirect", domain: "auth", actionType: "redirect", actionLabel: "Post-Signout Redirect", expectedResult: "Redirects to /login after sign-out", redirectTarget: "/login", supportedModes: ["real"], launchHonestyClass: "real", testPriority: "P0" },
+  { routeKey: "redirect.auth.unauthed_guard", routePath: "/*", shell: "user", surfaceClass: "redirect", domain: "auth", actionType: "redirect", actionLabel: "Unauthed Guard Redirect", expectedResult: "Redirects unauthenticated users to /login", redirectTarget: "/login", supportedModes: ["real"], launchHonestyClass: "real", testPriority: "P0" },
+  { routeKey: "redirect.approval.post_approve", routePath: "/approvals", shell: "user", surfaceClass: "redirect", domain: "approvals", actionType: "redirect", actionLabel: "Post-Approval Stay", expectedResult: "Stays on /approvals after approving", redirectTarget: "/approvals", supportedModes: ["real"], launchHonestyClass: "real", testPriority: "P1" },
+  { routeKey: "redirect.settings.save", routePath: "/settings", shell: "user", surfaceClass: "redirect", domain: "settings", actionType: "redirect", actionLabel: "Post-Settings Save", expectedResult: "Stays on current settings tab after save", redirectTarget: "/settings", supportedModes: ["real"], launchHonestyClass: "real", testPriority: "P1" },
+  { routeKey: "redirect.money.tab_switch", routePath: "/money", shell: "user", surfaceClass: "redirect", domain: "money", actionType: "redirect", actionLabel: "Money Tab Navigation", expectedResult: "Tab switch updates URL path", redirectTarget: "/money/*", supportedModes: ["real", "demo"], launchHonestyClass: "real", testPriority: "P1" },
+  { routeKey: "redirect.forgot_password.submit", routePath: "/forgot-password", shell: "public", surfaceClass: "redirect", domain: "auth", actionType: "redirect", actionLabel: "Post Password Reset", expectedResult: "Shows confirmation or redirects to /login", redirectTarget: "/login", supportedModes: ["real"], launchHonestyClass: "real", testPriority: "P1" },
+];
+
+// ═══════════════════════════════════════════════════════
+// FORM SURFACES
+// ═══════════════════════════════════════════════════════
+
+const FORM_SURFACES: SurfaceEntry[] = [
+  { routeKey: "form.login", routePath: "/login", shell: "public", surfaceClass: "form", domain: "auth", actionType: "submit", actionLabel: "Login Form", actionSelector: "[data-testid='login-submit']", expectedResult: "Authenticates user", formFields: ["email", "password"], expectedPersistence: false, backendDependency: "supabase.auth.signInWithPassword", supportedModes: ["real"], launchHonestyClass: "real", testPriority: "P0" },
+  { routeKey: "form.signup", routePath: "/signup", shell: "public", surfaceClass: "form", domain: "auth", actionType: "submit", actionLabel: "Signup Form", actionSelector: "[data-testid='signup-submit']", expectedResult: "Creates account", formFields: ["email", "password", "confirmPassword"], expectedPersistence: true, backendDependency: "supabase.auth.signUp", supportedModes: ["real"], launchHonestyClass: "real", testPriority: "P0" },
+  { routeKey: "form.forgot_password", routePath: "/forgot-password", shell: "public", surfaceClass: "form", domain: "auth", actionType: "submit", actionLabel: "Forgot Password Form", expectedResult: "Sends password reset email", formFields: ["email"], expectedPersistence: false, supportedModes: ["real"], launchHonestyClass: "real", testPriority: "P0" },
+  { routeKey: "form.settings.profile", routePath: "/settings/profile", shell: "user", surfaceClass: "form", domain: "settings", actionType: "save", actionLabel: "Profile Settings Form", actionSelector: "[data-testid='settings-save']", expectedResult: "Profile data persisted", formFields: ["displayName", "avatar"], expectedPersistence: true, backendDependency: "profiles.update", supportedModes: ["real"], launchHonestyClass: "real", testPriority: "P1" },
+  { routeKey: "form.advisor.chat", routePath: "/advisors/:id", shell: "user", surfaceClass: "form", domain: "ai", actionType: "trigger_ai", actionLabel: "Advisor Chat Input", actionSelector: "[data-testid='advisor-chat-input']", expectedResult: "AI response generated", formFields: ["message"], expectedPersistence: true, backendDependency: "edge:ai-gateway", supportedModes: ["real", "demo"], launchHonestyClass: "real", testPriority: "P0" },
+  { routeKey: "form.connector.config", routePath: "/connectors", shell: "user", surfaceClass: "form", domain: "connectors", actionType: "connect", actionLabel: "Connector Configuration", expectedResult: "Connector saved and tested", formFields: ["apiKey", "endpoint", "syncFrequency"], expectedPersistence: true, supportedModes: ["real"], launchHonestyClass: "real", testPriority: "P1" },
+];
+
+// ═══════════════════════════════════════════════════════
+// MODAL / DRAWER SURFACES
+// ═══════════════════════════════════════════════════════
+
+const MODAL_DRAWER_SURFACES: SurfaceEntry[] = [
+  { routeKey: "modal.command_palette", routePath: "/*", shell: "user", surfaceClass: "modal", domain: "core", actionType: "open_modal", actionLabel: "Command Palette", actionSelector: "[data-testid='command-palette']", expectedResult: "Command palette opens with search", focusTrapExpected: true, modalCleanupRequired: true, supportedModes: ["real", "demo"], launchHonestyClass: "real", testPriority: "P0" },
+  { routeKey: "modal.keyboard_shortcuts", routePath: "/*", shell: "admin", surfaceClass: "modal", domain: "core", actionType: "open_modal", actionLabel: "Keyboard Shortcuts Overlay", expectedResult: "Shortcuts overlay renders all groups", focusTrapExpected: true, modalCleanupRequired: true, supportedModes: ["real", "demo"], launchHonestyClass: "real", testPriority: "P1" },
+  { routeKey: "modal.approval_confirm", routePath: "/approvals", shell: "user", surfaceClass: "modal", domain: "approvals", actionType: "open_modal", actionLabel: "Approval Confirmation", expectedResult: "Confirmation dialog opens, action completes on confirm", focusTrapExpected: true, modalCleanupRequired: true, proofReceiptRequired: true, supportedModes: ["real"], launchHonestyClass: "real", testPriority: "P0" },
+  { routeKey: "drawer.evidence_detail", routePath: "/admin/verification/evidence", shell: "admin", surfaceClass: "drawer", domain: "admin.verification", actionType: "open_drawer", actionLabel: "Evidence Detail Drawer", expectedResult: "Evidence detail panel opens with artifacts", focusTrapExpected: false, modalCleanupRequired: true, supportedModes: ["real"], launchHonestyClass: "real", testPriority: "P1" },
+  { routeKey: "drawer.journey_detail", routePath: "/admin/customer-journey/detail", shell: "admin", surfaceClass: "drawer", domain: "admin.journey", actionType: "open_drawer", actionLabel: "Journey Step Drawer", expectedResult: "Step detail opens with assertions", focusTrapExpected: false, modalCleanupRequired: true, supportedModes: ["real"], launchHonestyClass: "real", testPriority: "P1" },
+  { routeKey: "modal.file_preview", routePath: "/files", shell: "user", surfaceClass: "modal", domain: "files", actionType: "open_modal", actionLabel: "File Preview Modal", expectedResult: "File previews with download option", focusTrapExpected: true, modalCleanupRequired: true, supportedModes: ["real"], launchHonestyClass: "real", testPriority: "P1" },
+  { routeKey: "drawer.money_advisor", routePath: "/money/*", shell: "user", surfaceClass: "drawer", domain: "money", actionType: "open_drawer", actionLabel: "Money Advisor Drawer", expectedResult: "Live advisor card opens with insights", focusTrapExpected: false, modalCleanupRequired: true, supportedModes: ["real", "demo"], launchHonestyClass: "real", testPriority: "P1" },
+];
+
+// ═══════════════════════════════════════════════════════
+// KEYBOARD / COMMAND SURFACES
+// ═══════════════════════════════════════════════════════
+
+const KEYBOARD_COMMAND_SURFACES: SurfaceEntry[] = [
+  { routeKey: "shortcut.command_palette", routePath: "/*", shell: "user", surfaceClass: "keyboard_shortcut", domain: "core", actionType: "keyboard_shortcut", actionLabel: "⌘K — Open Command Palette", shortcutKey: "⌘K", expectedResult: "Command palette opens", supportedModes: ["real", "demo"], launchHonestyClass: "real", testPriority: "P0" },
+  { routeKey: "shortcut.shortcuts_overlay", routePath: "/*", shell: "admin", surfaceClass: "keyboard_shortcut", domain: "core", actionType: "keyboard_shortcut", actionLabel: "? — Show Shortcuts", shortcutKey: "?", expectedResult: "Shortcuts overlay opens", supportedModes: ["real"], launchHonestyClass: "real", testPriority: "P1" },
+  { routeKey: "shortcut.go_home", routePath: "/*", shell: "admin", surfaceClass: "keyboard_shortcut", domain: "core", actionType: "keyboard_shortcut", actionLabel: "G H — Go to Mission Control", shortcutKey: "G H", expectedResult: "Navigates to /admin/mission-control", redirectTarget: "/admin/mission-control", supportedModes: ["real"], launchHonestyClass: "real", testPriority: "P1" },
+  { routeKey: "shortcut.go_incidents", routePath: "/*", shell: "admin", surfaceClass: "keyboard_shortcut", domain: "core", actionType: "keyboard_shortcut", actionLabel: "G I — Go to Incidents", shortcutKey: "G I", expectedResult: "Navigates to /admin/incidents", redirectTarget: "/admin/incidents", supportedModes: ["real"], launchHonestyClass: "real", testPriority: "P1" },
+  { routeKey: "shortcut.go_deployment", routePath: "/*", shell: "admin", surfaceClass: "keyboard_shortcut", domain: "core", actionType: "keyboard_shortcut", actionLabel: "G D — Go to Deployment", shortcutKey: "G D", expectedResult: "Navigates to /admin/deployment", redirectTarget: "/admin/deployment", supportedModes: ["real"], launchHonestyClass: "real", testPriority: "P1" },
+  { routeKey: "shortcut.go_proof", routePath: "/*", shell: "admin", surfaceClass: "keyboard_shortcut", domain: "core", actionType: "keyboard_shortcut", actionLabel: "G P — Go to Proof Matrix", shortcutKey: "G P", expectedResult: "Navigates to /admin/proof-matrix", redirectTarget: "/admin/proof-matrix", supportedModes: ["real"], launchHonestyClass: "real", testPriority: "P1" },
+  { routeKey: "shortcut.go_operations", routePath: "/*", shell: "admin", surfaceClass: "keyboard_shortcut", domain: "core", actionType: "keyboard_shortcut", actionLabel: "G O — Go to Operations", shortcutKey: "G O", expectedResult: "Navigates to /admin/operations", redirectTarget: "/admin/operations", supportedModes: ["real"], launchHonestyClass: "real", testPriority: "P1" },
+  { routeKey: "shortcut.escape_close", routePath: "/*", shell: "user", surfaceClass: "keyboard_shortcut", domain: "core", actionType: "escape", actionLabel: "Esc — Close Overlay", shortcutKey: "Escape", expectedResult: "Closes current modal/drawer/overlay", supportedModes: ["real", "demo"], launchHonestyClass: "real", testPriority: "P0" },
+  { routeKey: "command.navigate_home", routePath: "/*", shell: "user", surfaceClass: "command_palette", domain: "core", actionType: "command_action", actionLabel: "Command: Go Home", expectedResult: "Navigates to /", redirectTarget: "/", supportedModes: ["real", "demo"], launchHonestyClass: "real", testPriority: "P1" },
+  { routeKey: "command.navigate_money", routePath: "/*", shell: "user", surfaceClass: "command_palette", domain: "core", actionType: "command_action", actionLabel: "Command: Open Money Office", expectedResult: "Navigates to /money", redirectTarget: "/money", supportedModes: ["real", "demo"], launchHonestyClass: "real", testPriority: "P1" },
+  { routeKey: "command.navigate_settings", routePath: "/*", shell: "user", surfaceClass: "command_palette", domain: "core", actionType: "command_action", actionLabel: "Command: Open Settings", expectedResult: "Navigates to /settings", redirectTarget: "/settings", supportedModes: ["real", "demo"], launchHonestyClass: "real", testPriority: "P1" },
+];
+
+// ═══════════════════════════════════════════════════════
 // FULL REGISTRY EXPORT
 // ═══════════════════════════════════════════════════════
 
@@ -176,6 +245,10 @@ export const SURFACE_REGISTRY: SurfaceEntry[] = [
   ...P1_REVENUE,
   ...P1_DIGITAL_PRESENCE,
   ...P2_SURFACES,
+  ...REDIRECT_SURFACES,
+  ...FORM_SURFACES,
+  ...MODAL_DRAWER_SURFACES,
+  ...KEYBOARD_COMMAND_SURFACES,
 ];
 
 // ═══════════════════════════════════════════════════════

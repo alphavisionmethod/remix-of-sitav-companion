@@ -325,6 +325,12 @@ const V04ModeVerificationBoard = lazy(() => import("./pages/admin/verification/V
 const V05FailureTriageBoard = lazy(() => import("./pages/admin/verification/V05FailureTriageBoard"));
 const V06EvidenceExplorer = lazy(() => import("./pages/admin/verification/V06EvidenceExplorer"));
 const V07LaunchBlockerBoard = lazy(() => import("./pages/admin/verification/V07LaunchBlockerBoard"));
+const JVC05RedirectIntegrityMap = lazy(() => import("./pages/admin/verification/JVC05RedirectIntegrityMap"));
+const JVC07FormVerificationCenter = lazy(() => import("./pages/admin/verification/JVC07FormVerificationCenter"));
+const JVC08ModalDrawerBoard = lazy(() => import("./pages/admin/verification/JVC08ModalDrawerBoard"));
+const JVC09KeyboardCommandBoard = lazy(() => import("./pages/admin/verification/JVC09KeyboardCommandBoard"));
+const JVC11JourneyReplay = lazy(() => import("./pages/admin/verification/JVC11JourneyReplay"));
+const JVC13InteractionDriftRadar = lazy(() => import("./pages/admin/verification/JVC13InteractionDriftRadar"));
 
 // CJ — Customer Journey Proof System
 const CJ01ExecutiveReport = lazy(() => import("./pages/admin/customer-journey/CJ01ExecutiveReport"));
@@ -1012,6 +1018,12 @@ const App = () => (
                     <Route path="/admin/verification/failures" element={<V05FailureTriageBoard />} />
                     <Route path="/admin/verification/evidence" element={<V06EvidenceExplorer />} />
                     <Route path="/admin/verification/blockers" element={<V07LaunchBlockerBoard />} />
+                    <Route path="/admin/verification/redirects" element={<JVC05RedirectIntegrityMap />} />
+                    <Route path="/admin/verification/forms" element={<JVC07FormVerificationCenter />} />
+                    <Route path="/admin/verification/modals" element={<JVC08ModalDrawerBoard />} />
+                    <Route path="/admin/verification/keyboard" element={<JVC09KeyboardCommandBoard />} />
+                    <Route path="/admin/verification/replay" element={<JVC11JourneyReplay />} />
+                    <Route path="/admin/verification/drift" element={<JVC13InteractionDriftRadar />} />
 
                     {/* CJ — Customer Journey Proof System */}
                     <Route path="/admin/customer-journey/executive" element={<CJ01ExecutiveReport />} />
