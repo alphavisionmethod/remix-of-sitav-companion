@@ -22,6 +22,18 @@ const DEFAULT_SCOPE = { ownerId: "current-user", visibility: "private" as const 
 export default function GovernanceDashboard() {
   const { data: gov, isLoading } = useGovernanceSummary();
   const { isDemoMode } = useDataMode();
+  const { engines } = useOSRuntime();
+
+  // Invisible labor stats from engine
+  const laborStats = useMemo(() => {
+    const engine = engines.invisibleLabor;
+    return engine.getEqualizationSuggestions("current-user");
+  }, [engines]);
+
+  // Drag index from engine
+  const dragStats = useMemo(() => {
+    return engines.drag.getStats();
+  }, [engines]);
 
   // Build readiness input from real governance data
   const readinessInput: ReadinessInput = {
