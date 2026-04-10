@@ -239,9 +239,11 @@ export default function GrowthAdvisorBoard() {
                                     <Badge className="bg-primary/10 text-primary text-[9px] border-primary/20">
                                       {ADVISOR_QUERY_LABELS[queryResponse.queryType].label}
                                     </Badge>
-                                    <span className="text-[10px] text-muted-foreground">
-                                      Confidence: <span className="text-foreground font-medium">{Math.round(queryResponse.confidence * 100)}%</span>
-                                    </span>
+                                    {!isBeginner && (
+                                      <span className="text-[10px] text-muted-foreground">
+                                        Confidence: <span className="text-foreground font-medium">{Math.round(queryResponse.confidence * 100)}%</span>
+                                      </span>
+                                    )}
                                   </div>
                                   <button
                                     onClick={(e) => { e.stopPropagation(); setActiveQueries(prev => ({ ...prev, [a.name]: null })); }}
