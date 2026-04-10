@@ -20,6 +20,7 @@ import {
   useToggleHealthConsent, useUpdatePushRoute,
 } from "@/hooks/useEcosystemDevices";
 import { DEMO_ADMIN_PROVIDER_CAPS_A_P_L01_APPLE_ECOSYSTEM_CENTER as DEMO_PROVIDER_CAPS } from "@/lib/demo-data/admin-platform";
+import APLSubNav from "@/components/admin/APLSubNav";
 
 const SURFACE_META: Record<string, { title: string; icon: any; desc: string; tech: string[]; capabilities: string[] }> = {
   iphone: { title: "iPhone Shell", icon: Smartphone, desc: "Primary mobile — task, approval, advisor", tech: ["Swift/SwiftUI", "WebView hybrid"], capabilities: ["push", "biometric", "camera", "haptic"] },
@@ -63,6 +64,7 @@ const APL01AppleEcosystemCenter = () => {
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">
       <DemoModeBadge />
+      <APLSubNav />
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-lg bg-primary/10"><Apple className="h-8 w-8 text-primary" /></div>

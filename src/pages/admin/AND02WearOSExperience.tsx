@@ -6,10 +6,12 @@ import { Watch, ArrowRight, Clock, Zap, Eye, Smartphone, AlertTriangle, Vibrate 
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_COMPLICATIONS, DEMO_MICRO_ACTIONS, DEMO_TILES } from "@/lib/demo-data/admin-platform";
+import ANDSubNav from "@/components/admin/ANDSubNav";
 
 const AND02WearOSExperience = () => (
   <div className="p-6 max-w-[1400px] mx-auto space-y-6">
     <DemoModeBadge />
+      <ANDSubNav />
     <div className="flex items-center gap-3">
       <div className="p-2 rounded-lg bg-primary/10"><Watch className="h-8 w-8 text-primary" /></div>
       <div>

@@ -7,6 +7,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { useReadinessStates } from "@/hooks/use-health-signal-data";
 import { DEMO_READINESS_FACTORS } from "@/lib/demo-data/health-signals";
 import { DEMO_ADMIN_PIPELINE_STAGES as DEMO_PIPELINE_STAGES, DEMO_COMBINE_STRATEGIES } from "@/lib/demo-data/admin-platform";
+import HRSSubNav from "@/components/admin/HRSSubNav";
 
 
 
@@ -17,6 +18,7 @@ const HRS03ReadinessExplanation = () => {
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">
       <DemoModeBadge />
+      <HRSSubNav />
       <div className="flex items-center gap-3">
         <div className="p-2 rounded-lg bg-primary/10"><Brain className="h-8 w-8 text-primary" /></div>
         <div>

@@ -6,6 +6,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useReadinessStates } from "@/hooks/use-health-signal-data";
 import { DEMO_TIMING_RULES, DEMO_BRIEFING_WINDOWS, DEMO_HOLD_VS_ACT } from "@/lib/demo-data/health-signals";
+import HRSSubNav from "@/components/admin/HRSSubNav";
 
 
 
@@ -18,6 +19,7 @@ const HRS05AssistantTimingBoard = () => {
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">
       <DemoModeBadge />
+      <HRSSubNav />
       <div className="flex items-center gap-3">
         <div className="p-2 rounded-lg bg-primary/10"><Timer className="h-8 w-8 text-primary" /></div>
         <div>

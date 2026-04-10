@@ -10,6 +10,7 @@ import { useHealthSignalConsents } from "@/hooks/use-health-signal-data";
 import { useToggleSignalConsent } from "@/hooks/use-health-signal-mutations";
 import { DEMO_CONSENT_CATEGORIES, DEMO_REVOCATION_ACTIONS } from "@/lib/demo-data/health-signals";
 import { DEMO_PRINCIPLES } from "@/lib/demo-data/admin-platform";
+import HRSSubNav from "@/components/admin/HRSSubNav";
 
 
 
@@ -38,6 +39,7 @@ const HRS01HealthConsentCenter = () => {
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">
       <DemoModeBadge />
+      <HRSSubNav />
       <div className="flex items-center gap-3">
         <div className="p-2 rounded-lg bg-primary/10"><ShieldCheck className="h-8 w-8 text-primary" /></div>
         <div>

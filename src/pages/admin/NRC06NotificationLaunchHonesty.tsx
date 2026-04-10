@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Rocket, CheckCircle2, XCircle, AlertTriangle, Bell, Smartphone, Monitor, Apple } from "lucide-react";
 import { useDataMode } from "@/contexts/DataModeContext";
+import NRCSubNav from "@/components/admin/NRCSubNav";
 
 
 
@@ -124,6 +125,7 @@ export default function NRC06NotificationLaunchHonesty() {
 
   return (
     <div className="space-y-6">
+      <NRCSubNav />
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-lg bg-primary/10">

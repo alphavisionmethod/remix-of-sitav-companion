@@ -6,10 +6,12 @@ import { Shield, Fingerprint, Smartphone, Watch, Lock, CheckCircle2, XCircle, Ar
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_ADMIN_TRUST_CLASSES as DEMO_TRUST_CLASSES, DEMO_ADMIN_VERIFICATION_EVENTS as DEMO_VERIFICATION_EVENTS, DEMO_ESCALATION_MATRIX } from "@/lib/demo-data/admin-platform";
+import ANDSubNav from "@/components/admin/ANDSubNav";
 
 const AND03AndroidTrustApprovals = () => (
   <div className="p-6 max-w-[1400px] mx-auto space-y-6">
     <DemoModeBadge />
+      <ANDSubNav />
     <div className="flex items-center gap-3">
       <div className="p-2 rounded-lg bg-primary/10"><Shield className="h-8 w-8 text-primary" /></div>
       <div>

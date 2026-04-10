@@ -7,6 +7,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useWearableProviders } from "@/hooks/use-health-signal-data";
 import { DEMO_SIGNAL_PROVIDERS } from "@/lib/demo-data/health-signals";
+import HRSSubNav from "@/components/admin/HRSSubNav";
 
 
 
@@ -31,6 +32,7 @@ const HRS02SignalSourcesBoard = () => {
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">
       <DemoModeBadge />
+      <HRSSubNav />
       <div className="flex items-center gap-3">
         <div className="p-2 rounded-lg bg-primary/10"><Radio className="h-8 w-8 text-primary" /></div>
         <div>

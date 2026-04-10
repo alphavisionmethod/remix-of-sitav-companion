@@ -7,6 +7,7 @@ import { Heart, ShieldCheck, Eye, EyeOff, Lock, Clock, Activity, Trash2, CheckCi
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_ADMIN_SIGNALS as DEMO_SIGNALS } from "@/lib/demo-data/admin-platform";
+import ANDSubNav from "@/components/admin/ANDSubNav";
 
 type ConsentMap = Record<string, { read: boolean; routing: boolean; assistant: boolean }>;
 
@@ -25,6 +26,7 @@ const AND04AndroidHealthConsent = () => {
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">
       <DemoModeBadge />
+      <ANDSubNav />
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-lg bg-primary/10"><Heart className="h-8 w-8 text-primary" /></div>

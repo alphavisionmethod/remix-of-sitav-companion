@@ -6,6 +6,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useFatigueProfiles } from "@/hooks/use-notification-calm-data";
 import { DEMO_SUPPRESSION_ACTIONS, DEMO_OVERLOAD_TRIGGERS } from "@/lib/demo-data/notification-calm";
+import NRCSubNav from "@/components/admin/NRCSubNav";
 
 
 
@@ -17,6 +18,7 @@ const NRC03FatigueBoard = () => {
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">
       <DemoModeBadge />
+      <NRCSubNav />
       <div className="flex items-center gap-3">
         <div className="p-2 rounded-lg bg-primary/10"><TrendingDown className="h-8 w-8 text-primary" /></div>
         <div>
