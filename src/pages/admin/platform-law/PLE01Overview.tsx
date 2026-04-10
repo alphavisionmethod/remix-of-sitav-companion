@@ -44,9 +44,13 @@ const PLE01Overview = () => {
     { title: "Architecture Law Registry", desc: `${PLATFORM_LAWS.length} laws · ${violatedLaws.length} violated`, path: "/admin/platform-law/laws", icon: Scale },
     { title: "Scaffold & Generator Registry", desc: `${SCAFFOLD_REGISTRY.length} generators`, path: "/admin/platform-law/scaffolds", icon: Cpu },
     { title: "CI & PR Gate Monitor", desc: `${CI_GATE_REGISTRY.length} gates · ${ciPassRate}% passing`, path: "/admin/platform-law/ci-gates", icon: GitBranch },
-    { title: "Manifest Requirement Enforcer", desc: `${manifestRate}% manifest coverage`, path: "/admin/platform-law/manifests", icon: FileText },
-    { title: "Ownership Accountability Board", desc: `${OWNERSHIP_REGISTRY.length} owners tracked`, path: "/admin/platform-law/ownership", icon: Users },
-    { title: "Compliance Mode Dashboard", desc: `7 enforcement layers · ${layerAvg}% health`, path: "/admin/platform-law/compliance", icon: Layers },
+    { title: "Manifest Coverage Board", desc: `${manifestRate}% manifest coverage`, path: "/admin/platform-law/manifests", icon: FileText },
+    { title: "Violation Triage Board", desc: `${openViolations.length} open violations`, path: "/admin/platform-law/violations", icon: AlertTriangle },
+    { title: "Feature Compliance Detail", desc: "Per-feature deep compliance view", path: "/admin/platform-law/feature-compliance", icon: Target },
+    { title: "Launch Enforcement Board", desc: "Release blocking & ring impact", path: "/admin/platform-law/launch-enforcement", icon: Shield },
+    { title: "Ownership Accountability", desc: `${OWNERSHIP_REGISTRY.length} owners tracked`, path: "/admin/platform-law/ownership", icon: Users },
+    { title: "Drift Enforcement Radar", desc: `${unresolvedDrift.length} unresolved drift`, path: "/admin/platform-law/drift-radar", icon: Activity },
+    { title: "Compliance Dashboard", desc: `7 layers · ${layerAvg}% health`, path: "/admin/platform-law/compliance", icon: Layers },
   ];
 
   const statusColor: Record<string, string> = { pass: "text-emerald-400", fail: "text-red-400", partial: "text-amber-400" };

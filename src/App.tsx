@@ -363,6 +363,10 @@ const PLE04CIGateMonitor = lazy(() => import("./pages/admin/platform-law/PLE04CI
 const PLE05ManifestEnforcer = lazy(() => import("./pages/admin/platform-law/PLE05ManifestEnforcer"));
 const PLE06OwnershipBoard = lazy(() => import("./pages/admin/platform-law/PLE06OwnershipBoard"));
 const PLE07ComplianceDashboard = lazy(() => import("./pages/admin/platform-law/PLE07ComplianceDashboard"));
+const PLT05ViolationTriage = lazy(() => import("./pages/admin/platform-law/PLT05ViolationTriage"));
+const PLT06FeatureCompliance = lazy(() => import("./pages/admin/platform-law/PLT06FeatureCompliance"));
+const PLT08LaunchEnforcement = lazy(() => import("./pages/admin/platform-law/PLT08LaunchEnforcement"));
+const PLT10DriftRadar = lazy(() => import("./pages/admin/platform-law/PLT10DriftRadar"));
 
 // CJ — Customer Journey Proof System
 const CJ01ExecutiveReport = lazy(() => import("./pages/admin/customer-journey/CJ01ExecutiveReport"));
@@ -1081,6 +1085,10 @@ const App = () => (
                      <Route path="/admin/platform-law/manifests" element={<PLE05ManifestEnforcer />} />
                      <Route path="/admin/platform-law/ownership" element={<PLE06OwnershipBoard />} />
                      <Route path="/admin/platform-law/compliance" element={<PLE07ComplianceDashboard />} />
+                     <Route path="/admin/platform-law/violations" element={<PLT05ViolationTriage />} />
+                     <Route path="/admin/platform-law/feature-compliance" element={<PLT06FeatureCompliance />} />
+                     <Route path="/admin/platform-law/launch-enforcement" element={<PLT08LaunchEnforcement />} />
+                     <Route path="/admin/platform-law/drift-radar" element={<PLT10DriftRadar />} />
 
                      {/* CJ — Customer Journey Proof System */}
                     <Route path="/admin/customer-journey/executive" element={<CJ01ExecutiveReport />} />

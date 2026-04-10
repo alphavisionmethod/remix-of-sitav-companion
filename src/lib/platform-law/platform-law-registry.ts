@@ -660,8 +660,129 @@ export const ENFORCEMENT_LAYERS: EnforcementLayer[] = [
   { id: "L3", name: "Static Enforcement", description: "CI/PR checks before merge", healthScore: 91, totalChecks: 29, passingChecks: 28, linkedPage: "/admin/platform-law/ci-gates", artifacts: ["lint rules", "import rules", "manifest validators", "contract validators"] },
   { id: "L4", name: "Behavioral Enforcement", description: "Checks if UI actually works", healthScore: 72, totalChecks: 14, passingChecks: 10, linkedPage: "/admin/verification/overview", artifacts: ["interaction registry", "journey manifests", "E2E tests", "runtime probes"] },
   { id: "L5", name: "Runtime Enforcement", description: "Checks live system truth", healthScore: 68, totalChecks: 12, passingChecks: 8, linkedPage: "/admin/implementation-truth/runtime", artifacts: ["health probes", "mutation evidence", "proof generation", "page load probes"] },
-  { id: "L6", name: "Release Enforcement", description: "Blocks launches if critical truth is missing", healthScore: 85, totalChecks: 8, passingChecks: 7, linkedPage: "/admin/implementation-truth/launch-gate", artifacts: ["launch truth gates", "behavior truth gates", "readiness thresholds"] },
+  { id: "L6", name: "Release Enforcement", description: "Blocks launches if critical truth is missing", healthScore: 85, totalChecks: 8, passingChecks: 7, linkedPage: "/admin/platform-law/launch-enforcement", artifacts: ["launch truth gates", "behavior truth gates", "readiness thresholds"] },
   { id: "L7", name: "Governance Visibility", description: "Makes truth visible to humans", healthScore: 90, totalChecks: 7, passingChecks: 7, linkedPage: "/admin/platform-law", artifacts: ["truth center", "compliance dashboards", "drift radar", "accountability boards"] },
+];
+
+// ═══════════════════════════════════════════════════════════════
+// ENFORCEMENT ARCHITECTURE (5 Layers A-E)
+// ═══════════════════════════════════════════════════════════════
+
+export interface EnforcementArchitectureLayer {
+  id: string;
+  name: string;
+  description: string;
+  checks: string[];
+  blocksOn: string[];
+  warnsOn: string[];
+}
+
+export const ENFORCEMENT_ARCHITECTURE: EnforcementArchitectureLayer[] = [
+  { id: "A", name: "Local Developer Enforcement", description: "Runs before commit / during development", checks: ["manifest linting", "route-shell checks", "contract presence checks", "selector/test-id checks", "feature generator validation", "import boundary validation"], blocksOn: ["forbidden boundary violated", "route added without shell mapping"], warnsOn: ["naming drift", "documentation lag"] },
+  { id: "B", name: "PR / CI Enforcement", description: "Runs on every PR", checks: ["full law pack validation", "feature manifest validation", "interaction/journey validation", "contract validation", "route/shell validation", "readiness impact validation", "changed-feature criticality checks", "blocker violation gating"], blocksOn: ["blocker law violated", "major feature lacks manifest", "critical journey changed without manifest update", "contract required but absent"], warnsOn: ["low-criticality coverage gaps", "noncritical stale evidence"] },
+  { id: "C", name: "Nightly Truth Audit", description: "Runs across repo and integrated envs", checks: ["drift scans", "manifest coverage audit", "route inventory audit", "interaction coverage audit", "contract consumer/implementer audit", "selector drift scan", "runtime evidence freshness scan"], blocksOn: [], warnsOn: ["all findings surfaced as drift records"] },
+  { id: "D", name: "Runtime Probe Enforcement", description: "Runs in staging and production-safe environments", checks: ["page load probes", "CTA probes", "form probes", "journey probes", "redirect integrity probes", "proof/receipt checks", "projection update checks", "environment-specific truth checks"], blocksOn: ["P0 journey failures"], warnsOn: ["degraded performance", "non-critical probe failures"] },
+  { id: "E", name: "Release / Launch Gate Enforcement", description: "Runs before ring promotion or release", checks: ["readiness threshold checks", "P0 interaction/journey pass checks", "critical manifest completeness", "runtime evidence recency", "unresolved blocker count", "launch-gate manifest rules"], blocksOn: ["P0 journey failures unresolved", "required runtime evidence missing", "readiness below threshold", "unresolved critical drift", "launch gate manifest conditions unmet"], warnsOn: ["informational naming drift"] },
+];
+
+// ═══════════════════════════════════════════════════════════════
+// PROBE CLASS DEFINITIONS
+// ═══════════════════════════════════════════════════════════════
+
+export interface ProbeClassDefinition {
+  id: string;
+  name: string;
+  description: string;
+  outputs: string[];
+  environment: "staging" | "production" | "both";
+  criticality: "P0" | "P1" | "P2";
+}
+
+export const PROBE_CLASSES: ProbeClassDefinition[] = [
+  { id: "PC-001", name: "Read-Only Page Probes", description: "Verifies page renders, loads data, displays expected content", outputs: ["pass/fail", "screenshot", "timing", "DOM assertions"], environment: "both", criticality: "P0" },
+  { id: "PC-002", name: "Synthetic User Journey Probes", description: "Replays canonical user journeys end-to-end", outputs: ["pass/fail", "screenshot/video", "redirect trace", "timing", "evidence refs"], environment: "staging", criticality: "P0" },
+  { id: "PC-003", name: "Write-Flow Probes", description: "Tests mutations in controlled environments", outputs: ["pass/fail", "receipt verification", "state change confirmation"], environment: "staging", criticality: "P0" },
+  { id: "PC-004", name: "Approval/Receipt Verification Probes", description: "Confirms approval workflows produce receipts", outputs: ["pass/fail", "receipt hash", "evidence bundle"], environment: "staging", criticality: "P1" },
+  { id: "PC-005", name: "Command Palette Probes", description: "Verifies command palette actions are registered and functional", outputs: ["pass/fail", "action count", "navigation verification"], environment: "both", criticality: "P1" },
+  { id: "PC-006", name: "Money/Account-Link Safe Probes", description: "Safe financial operation verification without real transactions", outputs: ["pass/fail", "mock transaction trace", "balance assertions"], environment: "staging", criticality: "P0" },
+  { id: "PC-007", name: "Admin Critical-Action Probes", description: "Verifies admin operations work correctly", outputs: ["pass/fail", "audit trail", "permission verification"], environment: "staging", criticality: "P1" },
+  { id: "PC-008", name: "Deployment Gate Probes", description: "Pre-deploy verification of critical paths", outputs: ["pass/fail", "canary metrics", "rollback readiness"], environment: "staging", criticality: "P0" },
+];
+
+// ═══════════════════════════════════════════════════════════════
+// WAIVER RECORDS
+// ═══════════════════════════════════════════════════════════════
+
+export interface WaiverRecord {
+  waiverId: string;
+  violationId: string;
+  ruleId: string;
+  justification: string;
+  approvedBy: string;
+  expiresAt: string;
+  status: "active" | "expired" | "revoked";
+  createdAt: string;
+}
+
+export const WAIVERS: WaiverRecord[] = [
+  { waiverId: "WV-001", violationId: "VV-003", ruleId: "LAW-023", justification: "Test ID will be added in next sprint. Interaction is not user-facing yet.", approvedBy: "platform-lead", expiresAt: "2026-04-20", status: "active", createdAt: "2026-04-10" },
+  { waiverId: "WV-002", violationId: "VV-009", ruleId: "LAW-024", justification: "Journey manifest deferred — feature is behind flag and not in launch scope.", approvedBy: "finance-lead", expiresAt: "2026-05-01", status: "active", createdAt: "2026-04-10" },
+  { waiverId: "WV-003", violationId: "VV-008", ruleId: "LAW-027", justification: "Status corrected, readiness updated to match evidence.", approvedBy: "finance-lead", expiresAt: "2026-04-15", status: "expired", createdAt: "2026-04-08" },
+  { waiverId: "WV-004", violationId: "VV-006", ruleId: "LAW-022", justification: "Connector contract in progress, expected completion by 2026-04-15.", approvedBy: "platform-lead", expiresAt: "2026-04-15", status: "active", createdAt: "2026-04-10" },
+];
+
+// ═══════════════════════════════════════════════════════════════
+// PR TEMPLATE & FEATURE GENERATOR TEMPLATE
+// ═══════════════════════════════════════════════════════════════
+
+export interface PRTemplateField {
+  id: string;
+  field: string;
+  type: "text" | "boolean" | "select";
+  required: boolean;
+  category: "metadata" | "manifest" | "compliance";
+}
+
+export const PR_TEMPLATE: PRTemplateField[] = [
+  { id: "PR-001", field: "Feature ID", type: "text", required: true, category: "metadata" },
+  { id: "PR-002", field: "Domain", type: "select", required: true, category: "metadata" },
+  { id: "PR-003", field: "Owner", type: "text", required: true, category: "metadata" },
+  { id: "PR-004", field: "Criticality", type: "select", required: true, category: "metadata" },
+  { id: "PR-005", field: "Feature manifest added/updated?", type: "boolean", required: true, category: "manifest" },
+  { id: "PR-006", field: "Interaction manifest added/updated?", type: "boolean", required: true, category: "manifest" },
+  { id: "PR-007", field: "Journey manifest added/updated?", type: "boolean", required: true, category: "manifest" },
+  { id: "PR-008", field: "Contract(s) added/updated?", type: "boolean", required: true, category: "manifest" },
+  { id: "PR-009", field: "Route(s) registered with shell?", type: "boolean", required: true, category: "manifest" },
+  { id: "PR-010", field: "Runtime evidence expectations added?", type: "boolean", required: true, category: "manifest" },
+  { id: "PR-011", field: "I used or updated a canonical feature manifest", type: "boolean", required: true, category: "compliance" },
+  { id: "PR-012", field: "All new routes assigned to correct shell", type: "boolean", required: true, category: "compliance" },
+  { id: "PR-013", field: "All new APIs use canonical contracts", type: "boolean", required: true, category: "compliance" },
+  { id: "PR-014", field: "No forbidden imports introduced", type: "boolean", required: true, category: "compliance" },
+  { id: "PR-015", field: "Critical interactions have stable selectors", type: "boolean", required: true, category: "compliance" },
+  { id: "PR-016", field: "Error/loading/empty/degraded states handled", type: "boolean", required: true, category: "compliance" },
+];
+
+export interface FeatureGeneratorTemplateRecord {
+  generatorTemplateId: string;
+  templateName: string;
+  domain: string;
+  includesManifests: boolean;
+  includesContracts: boolean;
+  includesTests: boolean;
+  includesProbeScaffold: boolean;
+  includesRouteShellBinding: boolean;
+  includesHelpRegistration: boolean;
+  includesCommandRegistration: boolean;
+  version: string;
+  createdAt: string;
+  generatedFiles: string[];
+  generatedMetadata: string[];
+}
+
+export const FEATURE_GENERATOR_TEMPLATES: FeatureGeneratorTemplateRecord[] = [
+  { generatorTemplateId: "FGT-001", templateName: "Standard Feature", domain: "all", includesManifests: true, includesContracts: true, includesTests: true, includesProbeScaffold: true, includesRouteShellBinding: true, includesHelpRegistration: true, includesCommandRegistration: true, version: "2.0.0", createdAt: "2026-03-01", generatedFiles: ["feature folder", "route file(s)", "shell binding", "component scaffold", "contracts file", "feature manifest", "interaction manifest", "readiness manifest", "test scaffold", "probe scaffold", "ownership file"], generatedMetadata: ["feature ID", "canonical domain", "owner", "criticality", "prompt/spec origin", "readiness defaults", "rule pack refs"] },
+  { generatorTemplateId: "FGT-002", templateName: "Finance Domain Feature", domain: "finance", includesManifests: true, includesContracts: true, includesTests: true, includesProbeScaffold: true, includesRouteShellBinding: true, includesHelpRegistration: true, includesCommandRegistration: true, version: "1.5.0", createdAt: "2026-03-15", generatedFiles: ["finance subfolder", "route under /money", "FinanceShell binding", "contract stubs", "journey manifest template", "receipt wiring"], generatedMetadata: ["feature ID", "finance domain owner", "P0 criticality default", "receipt requirements"] },
+  { generatorTemplateId: "FGT-003", templateName: "Admin Panel Feature", domain: "admin", includesManifests: true, includesContracts: false, includesTests: true, includesProbeScaffold: false, includesRouteShellBinding: true, includesHelpRegistration: true, includesCommandRegistration: true, version: "1.2.0", createdAt: "2026-04-01", generatedFiles: ["admin page", "route under /admin", "AdminShell binding", "command palette entry", "help registration"], generatedMetadata: ["feature ID", "admin domain", "P1 criticality default"] },
 ];
 
 // ═══════════════════════════════════════════════════════════════
@@ -716,7 +837,6 @@ export function getEnforcementLayerAverage(): number {
   return Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
 }
 
-// New helpers for extended types
 export function getLawPackById(id: string): PlatformLawPack | undefined {
   return LAW_PACKS.find(p => p.lawPackId === id);
 }
@@ -771,4 +891,144 @@ export function getLaunchGateForScope(scopeId: string): LaunchGateManifestRecord
 
 export function getRuntimeEvidenceByFeature(featureId: string): RuntimeEvidenceManifestRecord[] {
   return RUNTIME_EVIDENCE_MANIFESTS.filter(r => r.featureId === featureId);
+}
+
+// ── New helpers for PLT05-PLT10 ──────────────────────────────
+
+export function getViolationsByOwner(): Map<string, ValidationViolationRecord[]> {
+  const map = new Map<string, ValidationViolationRecord[]>();
+  VALIDATION_VIOLATIONS.forEach(v => {
+    const list = map.get(v.owner) || [];
+    list.push(v);
+    map.set(v.owner, list);
+  });
+  return map;
+}
+
+export function getViolationsByFeature(): Map<string, ValidationViolationRecord[]> {
+  const map = new Map<string, ValidationViolationRecord[]>();
+  VALIDATION_VIOLATIONS.filter(v => v.featureId).forEach(v => {
+    const list = map.get(v.featureId!) || [];
+    list.push(v);
+    map.set(v.featureId!, list);
+  });
+  return map;
+}
+
+export function getViolationAge(v: ValidationViolationRecord): number {
+  const created = new Date(v.createdAt).getTime();
+  const now = new Date("2026-04-10").getTime();
+  return Math.round((now - created) / (1000 * 60 * 60 * 24));
+}
+
+export function getRepeatViolators(): { owner: string; count: number; openCount: number }[] {
+  const map = new Map<string, { count: number; openCount: number }>();
+  VALIDATION_VIOLATIONS.forEach(v => {
+    const existing = map.get(v.owner) || { count: 0, openCount: 0 };
+    existing.count++;
+    if (v.status === "open") existing.openCount++;
+    map.set(v.owner, existing);
+  });
+  return Array.from(map.entries())
+    .map(([owner, data]) => ({ owner, ...data }))
+    .sort((a, b) => b.count - a.count);
+}
+
+export function getDriftByCategory(): Map<DriftType, DriftEnforcementRecord[]> {
+  const map = new Map<DriftType, DriftEnforcementRecord[]>();
+  DRIFT_RECORDS.forEach(d => {
+    const list = map.get(d.driftType) || [];
+    list.push(d);
+    map.set(d.driftType, list);
+  });
+  return map;
+}
+
+export function getDriftTimeline(): { date: string; count: number; resolved: number }[] {
+  const dates = new Map<string, { count: number; resolved: number }>();
+  DRIFT_RECORDS.forEach(d => {
+    const date = d.detectedAt;
+    const existing = dates.get(date) || { count: 0, resolved: 0 };
+    existing.count++;
+    if (d.resolvedAt) existing.resolved++;
+    dates.set(date, existing);
+  });
+  return Array.from(dates.entries())
+    .map(([date, data]) => ({ date, ...data }))
+    .sort((a, b) => a.date.localeCompare(b.date));
+}
+
+export function getFeatureComplianceScore(featureId: string): {
+  hasManifest: boolean; hasInteractions: boolean; hasJourneys: boolean;
+  hasContracts: boolean; hasRuntimeEvidence: boolean; hasReadiness: boolean;
+  violations: number; score: number;
+} {
+  const hasManifest = FEATURE_MANIFESTS.some(f => f.featureId === featureId);
+  const hasInteractions = INTERACTION_MANIFESTS.some(i => i.featureId === featureId);
+  const hasJourneys = JOURNEY_MANIFESTS.some(j => j.featureId === featureId);
+  const hasContracts = CONTRACT_MANIFESTS.some(c => c.contractId.includes(featureId.replace("feat-", "")));
+  const hasRuntimeEvidence = RUNTIME_EVIDENCE_MANIFESTS.some(r => r.featureId === featureId);
+  const hasReadiness = READINESS_MANIFESTS.some(r => r.featureId === featureId);
+  const violations = VALIDATION_VIOLATIONS.filter(v => v.featureId === featureId && v.status === "open").length;
+  const checks = [hasManifest, hasInteractions, hasJourneys, hasContracts, hasRuntimeEvidence, hasReadiness];
+  const passing = checks.filter(Boolean).length;
+  const violationPenalty = Math.min(violations * 5, 30);
+  const score = Math.max(0, Math.round((passing / checks.length) * 100) - violationPenalty);
+  return { hasManifest, hasInteractions, hasJourneys, hasContracts, hasRuntimeEvidence, hasReadiness, violations, score };
+}
+
+export function getDomainComplianceScores(): { domain: string; score: number; features: number; violations: number }[] {
+  const domains = ["finance", "business", "concierge", "platform", "admin", "ai"];
+  return domains.map(domain => {
+    const features = FEATURE_MANIFESTS.filter(f => f.domain === domain);
+    const violations = VALIDATION_VIOLATIONS.filter(v => v.owner.includes(domain) && v.status === "open").length;
+    const ownerEntries = OWNERSHIP_REGISTRY.filter(o => o.area.toLowerCase().includes(domain));
+    const avgScore = ownerEntries.length > 0
+      ? Math.round(ownerEntries.reduce((s, o) => s + o.complianceScore, 0) / ownerEntries.length)
+      : 85;
+    return { domain, score: avgScore, features: features.length, violations };
+  });
+}
+
+export function getLaunchBlockers(): { featureId: string; reasons: string[] }[] {
+  const blockers: { featureId: string; reasons: string[] }[] = [];
+  FEATURE_MANIFESTS.filter(f => f.criticality === "P0").forEach(f => {
+    const reasons: string[] = [];
+    const violations = VALIDATION_VIOLATIONS.filter(v => v.featureId === f.featureId && v.status === "open" && v.severity === "critical");
+    if (violations.length > 0) reasons.push(`${violations.length} critical violations`);
+    const drift = DRIFT_RECORDS.filter(d => d.scopeId === f.featureId && d.blocking && !d.resolvedAt);
+    if (drift.length > 0) reasons.push(`${drift.length} blocking drift`);
+    const readiness = READINESS_MANIFESTS.find(r => r.featureId === f.featureId);
+    if (!readiness) reasons.push("No readiness manifest");
+    const runtimeEvidence = RUNTIME_EVIDENCE_MANIFESTS.filter(r => r.featureId === f.featureId && r.requiredForLaunch);
+    if (runtimeEvidence.length === 0) reasons.push("No launch-required runtime evidence");
+    if (reasons.length > 0) blockers.push({ featureId: f.featureId, reasons });
+  });
+  return blockers;
+}
+
+export function getNoOwnerGaps(): string[] {
+  const ownedAreas = new Set(OWNERSHIP_REGISTRY.map(o => o.area.toLowerCase()));
+  const expectedAreas = ["spending analytics", "task management", "notifications", "search", "help system"];
+  return expectedAreas.filter(a => !ownedAreas.has(a));
+}
+
+export function getOwnerMTTR(): { owner: string; avgDays: number; resolvedCount: number }[] {
+  const map = new Map<string, { totalDays: number; count: number }>();
+  VALIDATION_VIOLATIONS.filter(v => v.status === "resolved" && v.resolvedAt).forEach(v => {
+    const created = new Date(v.createdAt).getTime();
+    const resolved = new Date(v.resolvedAt!).getTime();
+    const days = Math.max(1, Math.round((resolved - created) / (1000 * 60 * 60 * 24)));
+    const existing = map.get(v.owner) || { totalDays: 0, count: 0 };
+    existing.totalDays += days;
+    existing.count++;
+    map.set(v.owner, existing);
+  });
+  return Array.from(map.entries()).map(([owner, data]) => ({
+    owner, avgDays: Math.round(data.totalDays / data.count), resolvedCount: data.count
+  }));
+}
+
+export function getWaiverForViolation(violationId: string): WaiverRecord | undefined {
+  return WAIVERS.find(w => w.violationId === violationId && w.status === "active");
 }
