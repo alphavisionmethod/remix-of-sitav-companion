@@ -1,93 +1,114 @@
 
 
-# Enhancement Plan — Connect & Complete Everything from Last 20 Prompts
+# Business Formation Ceremony — Comprehensive Audit & Enhancement Plan
 
-## Audit Summary
+## Audit Result: What Exists (All Verified Working)
 
-After thorough review of all files, here is what exists and what needs fixing/enhancing:
+### Complete 20-Screen Onboarding Flow (All Present & Functional)
+Every screen from the spec exists and is wired:
 
-### Already Fully Implemented & Working
-- **Automation Office** (652 LOC): 10 tabs — Boardroom, Surface Map, Active, At Risk, Advisor Recs, Leak Repair, Quality Scoring, Shadow Board, Promises, OS Map
-- **Automation Builder** (298 LOC): Visual node editor, 65+ node types, 4 trust levels, advisor-generated templates
-- **Automation Templates** — Ready-made gallery
-- **Automation SimLab** — Pre-activation simulation
-- **Automation Health** — Domain-level monitoring
-- **Automation Receipts** (198 LOC): Full audit trail + "Why This Was Sent" transparency
-- **Automation Policy** (445 LOC): 9 tabs — Trust Levels, Constitution, No-Guess Mode, Pause/Rollback, Human Handoff, Escalation, Compliance, Human vs AI, Audit Log
-- **Quote Studio** — Full quote generation workspace
-- **Call Desk** — Call queue, prep, post-call automation
-- **Business Formation Ceremony** — 20 screens across 7 chapters with branching, custom journey editor, revenue estimator
-- **Growth Advisor Board** (422 LOC): Interactive queries (disagree/missing/break) with 27 evidence-backed responses
-- **All routes wired** in App.tsx (9 automation routes + quotes + calls + onboarding)
-- **Demo data layer** fully populated in `revenue-office.ts`
+| # | Screen | File | Status |
+|---|--------|------|--------|
+| 1 | Welcome/Ceremony | CeremonyScreen.tsx | ✅ Premium entrance, floating nodes, chapter preview, deep/quick choice |
+| 2 | Business Identity | IdentityScreen.tsx | ✅ 9 business types, name, team size, stage, multi-brand/client, branching |
+| 3 | Revenue Model | RevenueModelScreen.tsx | ✅ 10 sources, growing/weakest selectors, revenue engine branching |
+| 4 | Acquisition | AcquisitionScreen.tsx | ✅ 9 lead sources, best/least predictable/want more from (deep mode) |
+| 5 | Conversion | ConversionScreen.tsx | ✅ 11 pre-buy behaviors, 8 close options |
+| 6 | Journey Mapping | JourneyScreen.tsx | ✅ 8 templates with visual flow, interactive editor, custom stages, critical/weak markers, 8 pain points |
+| 7 | Delivery | DeliveryScreen.tsx | ✅ 9 post-sale steps, 8 slip options |
+| 8 | Friction & Leaks | FrictionScreen.tsx | ✅ 13 bottlenecks with branching, relief priority, "SITA will prioritize" |
+| 9 | Team & Roles | TeamScreen.tsx | ✅ 8 roles with assignment, approval checkbox |
+| 10 | Business Shape Summary | ShapeSummaryScreen.tsx | ✅ Business DNA, revenue mix bars, journey flow viz, signals, strengths/leaks, modules |
+| 11 | Intake Hub | IntakeHubScreen.tsx | ✅ 4 intake paths (connect, import, artifacts, URLs), skip option |
+| 12 | Connections | ConnectionsScreen.tsx | ✅ 17 systems across CRM/email/calendar/payments/etc |
+| 13 | File Import | FileImportScreen.tsx | ✅ 10 import types with drag target |
+| 14 | Artifacts | ArtifactScreen.tsx | ✅ 14 artifact types with inference descriptions |
+| 15 | URL Intake | URLIntakeScreen.tsx | ✅ 6 URL slots with inference preview |
+| 16 | Reconciliation | ReconciliationScreen.tsx | ✅ First Import Intelligence, stale leads, duplicates, immediate wins |
+| 17 | Automation & Trust | AutomationScreen.tsx | ✅ 4 trust levels with visual dots, 8 human-only tasks |
+| 18 | Advisor Activation | AdvisorActivationScreen.tsx | ✅ 9 advisors with recommended/active, intensity cycling |
+| 19 | First Wins | FirstWinScreen.tsx | ✅ 9 context-aware wins with dynamic revenue estimates, 1.3x leak multiplier |
+| 20 | Office Reveal | RevealScreen.tsx | ✅ Building animation, staggered module reveal, revenue estimate, localStorage persistence |
 
-### Issues Found — Need Fixing
+### Supporting Infrastructure (All Present)
+- **FormationShell.tsx**: 176 LOC — stage management, smart skip logic, chapter transitions, progress rail
+- **LiveOfficeSidebar.tsx**: 175 LOC — readiness score, revenue estimator ($X/mo), journey twin preview, "SITA Noticed" insights, advisor board
+- **branching.ts**: 345 LOC — business-type, revenue-engine, bottleneck branching + signal inference + advisor recommendations
+- **business-twin.ts**: 332 LOC — Complete typed Business Twin schema (15 interfaces)
+- **primitives.tsx**: Toggle, SectionTitle, ChapterBanner, ScreenHeader, SingleSelect
+- **types.ts**: OnboardingState (62 fields), 20 STAGES, 7 CHAPTERS
 
-**1. Redundant DemoModeBadge in 13 onboarding screens**
-`DemoModeBadge` is rendered inside individual screens (IdentityScreen, DeliveryScreen, TeamScreen, AutomationScreen, ConversionScreen, FileImportScreen, IntakeHubScreen, AdvisorActivationScreen, BranchingQuestionsPanel, etc.) even though `FormationShell.tsx` already renders it at the top level (line 106). This causes 2-5 redundant badge renders per screen.
+### Cross-System Integration (Verified)
+- **AutomationSubNav.tsx**: Shared nav bar across all 7 automation pages
+- **AppSidebar.tsx**: Collapsible Revenue Office sub-menu with 6 workspace links
+- **AutomationOffice.tsx**: "Policies" and "New Automation" buttons wired with navigate
+- **RevenueGate.tsx**: Workspaces panel with Automation Office, Quote Studio, Call Desk, Advisors, Formation
+- **RevealScreen.tsx**: Persists state to localStorage on "Enter Your Revenue Office"
 
-**Fix:** Remove `<DemoModeBadge />` and unused `useDataMode`/`DemoModeBadge` imports from all 13 onboarding screen files.
+## Gaps Identified — Things That Need Enhancement
 
-**2. No sidebar sub-navigation for Revenue Office**
-The sidebar only has a single "Revenue Office" link. There's no expandable sub-menu for Automation Office, Quote Studio, Call Desk, etc. Users cannot discover these workspaces from the sidebar.
+### 1. DemoModeBadge still present in some onboarding screens
+Several screens still have `DemoModeBadge` or `useDataMode` imports that were supposed to be cleaned but may not have fully succeeded (based on the code I see, some still have empty lines where imports were). Need to verify and clean completely.
 
-**Fix:** Add a collapsible Revenue Office sub-menu in `AppSidebar.tsx` with key workspace links (Boardroom, Automation, Quotes, Calls, Pipeline, Advisors, Journey Twin).
+### 2. No "We Noticed..." intelligence panel between screens
+The spec calls for contextual "We noticed..." messages appearing between stages as the user progresses. The LiveOfficeSidebar has "SITA Noticed" but there's no inline intelligence panel within the flow itself — something like a small callout between screens saying "Your business appears to rely heavily on booked consultations" based on prior answers.
 
-**3. Automation Office header buttons are non-functional**
-The "Policies" and "New Automation" buttons (lines 81-86 in AutomationOffice.tsx) don't navigate anywhere.
+### 3. No live office preview that changes as user answers
+The sidebar shows readiness % and module count, but doesn't show a miniature preview of the actual Revenue Boardroom changing shape. This is a "wow" feature from the spec — as they answer, the Boardroom preview should shift.
 
-**Fix:** Wire them to `/revenue-office/automation/policy` and `/revenue-office/automation/builder` respectively using `useNavigate`.
+### 4. BranchingQuestionsPanel lacks "We noticed" inference callouts
+When branching questions appear, they should include an insight like "Based on your selections, your business appears proposal-driven" — right now it only says "SITA wants to understand more."
 
-**4. Cross-module navigation missing throughout**
-AutomationReceipts, AutomationHealth, AutomationSimLab, AutomationTemplates don't link back to each other or to the main Automation Office. No breadcrumb or tab-level navigation between the 7 automation sub-pages.
+### 5. No auto-inference from artifacts/URLs
+When artifacts are uploaded or URLs pasted, the spec calls for SITA inferring things like "Your uploaded materials suggest onboarding is document-heavy" or "We detected a hybrid model." The ArtifactScreen shows static inference text, but doesn't produce dynamic signals visible in the sidebar or summary. The `inferBusinessSignals` function does check `uploadedArtifacts` but only for onboarding_docs/intake_forms.
 
-**Fix:** Add a shared Automation sub-nav bar component used across all 7 automation pages, linking them together.
+### 6. Journey screen doesn't show "Is this close to how your business works?"
+The spec says after showing the template, ask "Is this close?" — currently it just shows the flow and lets users pick pain points.
 
-**5. RevealScreen "Enter Your Revenue Office" navigates to `/revenue-office/boardroom` but doesn't pass onboarding state**
-The onboarding data (business type, journey template, bottlenecks, first wins) is lost after navigation. No persistence to localStorage or Supabase.
+### 7. Missing "What happens next" question in Revenue Engine
+The spec asks "What usually happens next?" with options (inquiry, form, call, quote, proposal, etc.) — this is partially covered by ConversionScreen's pre-buy behavior, but is a separate question about the sales process sequence, not just pre-buy behavior.
 
-**Fix:** Save onboarding state to localStorage on reveal, and load it in the Boardroom/Advisor pages for personalization.
+## Enhancement Plan
 
-**6. RevenueGate (landing page) doesn't surface Automation Office**
-The Revenue Office gate page likely doesn't include navigation cards for the Automation Office, Quote Studio, or Call Desk workspaces added in recent prompts.
+### Phase 1: Add inline "SITA Noticed" intelligence callouts (~1 new component, 5 screen edits)
+Create a `SitaInsightCallout` component that shows contextual business intelligence between screen sections. Add it to:
+- IdentityScreen (after business type selection): "We detected a hybrid model" or "Service-heavy business pattern"
+- RevenueModelScreen (after source selection): "Proposal-driven revenue engine detected"  
+- JourneyScreen (after template pick): "Is this close to how your business works?"
+- FrictionScreen (after bottleneck selection): "These bottlenecks suggest $X/mo in recoverable revenue"
+- AutomationScreen (after trust level): "Based on your bottlenecks, we recommend draft-review mode"
 
-**Fix:** Add workspace cards for Automation Office, Quote Studio, and Call Desk to RevenueGate.
+### Phase 2: Enhance artifact/URL inference signals (~2 file edits)
+Expand `inferBusinessSignals` in branching.ts to generate more signals from uploaded artifacts and pasted URLs:
+- proposal_templates → "Proposal-driven workflow detected"
+- call_scripts → "Call-dependent sales motion"
+- email_sequences → "Nurture funnel infrastructure present"
+- price_sheets + offer_decks → "Structured pricing model"
+- sops → "Process maturity signal"
 
-## Implementation Plan
+Update LiveOfficeSidebar to show these additional artifact-based signals.
 
-### Phase 1: Clean DemoModeBadge from 13 screens (~13 files)
-Remove redundant `<DemoModeBadge />` renders and unused imports from:
-- IdentityScreen, DeliveryScreen, TeamScreen, AutomationScreen, ConversionScreen
-- FileImportScreen, IntakeHubScreen, AdvisorActivationScreen, BranchingQuestionsPanel
-- AcquisitionScreen, RevenueModelScreen, ArtifactScreen, URLIntakeScreen, ConnectionsScreen, FrictionScreen
+### Phase 3: Add journey confirmation step (~1 file edit)
+In JourneyScreen, after template selection but before pain points, add a brief "Is this close to how your business works?" prompt with options: "Yes, this is close", "Close but missing steps", "Quite different." This makes it feel like SITA is checking rather than assuming.
 
-### Phase 2: Automation sub-nav component (~1 new file, 7 file edits)
-Create `src/pages/revenue-office/AutomationSubNav.tsx` — a horizontal nav bar linking all 7 automation pages. Add it to AutomationOffice, AutomationBuilder, AutomationTemplates, AutomationSimLab, AutomationHealth, AutomationReceipts, AutomationPolicy.
-
-### Phase 3: Wire Automation Office buttons (~1 file)
-Add `useNavigate` to AutomationOffice.tsx and connect the "Policies" and "New Automation" buttons.
-
-### Phase 4: Sidebar Revenue Office sub-menu (~1 file)
-Add collapsible sub-menu in AppSidebar.tsx under "Revenue Office" with links: Boardroom, Automation, Pipeline, Advisors, Quotes, Calls, Journey Twin, Reputation, Retention.
-
-### Phase 5: Persist onboarding state (~2 files)
-Save `OnboardingState` to `localStorage` in RevealScreen on "Enter" click. Load in GrowthBoardroom to show personalized summary.
-
-### Phase 6: RevenueGate workspace cards (~1 file)
-Add Automation Office, Quote Studio, Call Desk cards to the Revenue Office landing page.
+### Phase 4: Clean any remaining DemoModeBadge residue (~13 files verification)
+Verify all 13 onboarding screens are completely clean of DemoModeBadge/useDataMode imports and renders. Fix any that still have empty lines or residual imports.
 
 ## Files Changed
 
 | File | Change |
 |------|--------|
-| 13 onboarding screens | Remove redundant DemoModeBadge |
-| `AutomationSubNav.tsx` (NEW) | Shared automation sub-navigation |
-| 7 automation pages | Add AutomationSubNav import |
-| `AutomationOffice.tsx` | Wire header buttons with navigate |
-| `AppSidebar.tsx` | Add Revenue Office expandable sub-menu |
-| `RevealScreen.tsx` | Persist state to localStorage |
-| `GrowthBoardroom.tsx` | Load onboarding state for personalization |
-| `RevenueGate.tsx` | Add Automation/Quote/Call workspace cards |
+| `SitaInsightCallout.tsx` (NEW) | Reusable "We noticed..." callout component |
+| `IdentityScreen.tsx` | Add inline insight callout after business type selection |
+| `RevenueModelScreen.tsx` | Add inline insight after revenue source selection |
+| `JourneyScreen.tsx` | Add "Is this close?" confirmation + insight callout |
+| `FrictionScreen.tsx` | Add revenue impact insight callout |
+| `AutomationScreen.tsx` | Add trust recommendation callout |
+| `branching.ts` | Expand inferBusinessSignals with artifact/URL signals |
+| `LiveOfficeSidebar.tsx` | Surface expanded artifact signals |
+| 13 onboarding screens | Verify/clean DemoModeBadge residue |
 
-Total: ~25 files touched, ~120 net LOC added, ~50 LOC removed.
+Total: ~80 net LOC added, 1 new file, ~20 files touched for cleanup verification.
+
+All other spec requirements (Business Twin typed schema, 20 screens, 7 chapters, branching logic, advisor recommendations, revenue estimator, reconciliation intelligence, staggered reveal, state persistence, sidebar sub-nav, automation sub-nav) are fully implemented and working.
 
