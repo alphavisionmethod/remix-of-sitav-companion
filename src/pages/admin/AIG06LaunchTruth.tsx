@@ -8,6 +8,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { getAILaunchHonestyBoard, getLaunchHonestyRecords } from "@/lib/core-services/ai-gateway";
 import type { LaunchHonestyLevel } from "@/lib/core-services/ai-gateway";
+import AIGSubNav from "@/components/admin/AIGSubNav";
 
 const LEVEL_COLORS: Record<LaunchHonestyLevel, string> = {
   real: "default",
@@ -47,6 +48,7 @@ export default function AIG06LaunchTruth() {
   return (
     <div className="space-y-6 p-6">
       <DemoModeBadge />
+      <AIGSubNav />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Eye className="h-6 w-6" /> AIG06 — AI Launch Truth Board</h1>
         <p className="text-sm text-muted-foreground mt-1">Which AI features are real, demo, partial, blocked, or planned — with canonical honesty records</p>

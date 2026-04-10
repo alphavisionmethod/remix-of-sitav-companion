@@ -7,6 +7,7 @@ import { Server, Shield, Activity, CheckCircle, XCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { getProviderRegistry, getProviderHealth, getDistinctProviders } from "@/lib/core-services/ai-gateway";
+import AIGSubNav from "@/components/admin/AIGSubNav";
 
 export default function AIG01ProviderRegistry() {
   const { isDemoMode } = useDataMode();
@@ -30,6 +31,7 @@ export default function AIG01ProviderRegistry() {
   return (
     <div className="space-y-6 p-6">
       <DemoModeBadge />
+      <AIGSubNav />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Server className="h-6 w-6" /> AIG01 — AI Provider Registry</h1>
         <p className="text-sm text-muted-foreground mt-1">Configured AI providers, health, secret availability, and launch stage</p>

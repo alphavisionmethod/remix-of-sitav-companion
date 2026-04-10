@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { useDataMode } from "@/contexts/DataModeContext";
+import AIGSubNav from "@/components/admin/AIGSubNav";
 
 const STATUS_CONFIG: Record<CapabilityVerification["last_status"], { icon: React.ReactNode; label: string; variant: "default" | "secondary" | "destructive" | "outline" }> = {
   success: { icon: <CheckCircle2 className="h-4 w-4" />, label: "Pass", variant: "default" },

@@ -7,6 +7,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import type { ComplianceGate, TenantFirewallRule, SecurityIncident } from "@/packages/enterprise-contracts";
 import { DEMO_VIOLATION_TYPES } from "@/lib/demo-data/admin-platform";
+import SAGSubNav from "@/components/admin/SAGSubNav";
 
 
 
@@ -30,6 +31,7 @@ const SAGComplianceGate = () => {
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
       <DemoModeBadge />
+      <SAGSubNav />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold flex items-center gap-2"><ShieldAlert className="h-6 w-6 text-primary" /> SAG12 — AI Launch & Compliance Gate</h1>
         <p className="text-muted-foreground mt-1">AI governance truth as a launch gate</p>

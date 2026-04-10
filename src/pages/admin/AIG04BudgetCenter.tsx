@@ -7,6 +7,7 @@ import { DollarSign, TrendingUp, AlertTriangle, ShieldAlert } from "lucide-react
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { getBudgetSummary, getPortfolioAllocations, getCostLedger, getBudgetPolicies, getBudgetAlerts } from "@/lib/core-services/ai-gateway";
+import AIGSubNav from "@/components/admin/AIGSubNav";
 
 export default function AIG04BudgetCenter() {
   const { isDemoMode } = useDataMode();
@@ -38,6 +39,7 @@ export default function AIG04BudgetCenter() {
   return (
     <div className="space-y-6 p-6">
       <DemoModeBadge />
+      <AIGSubNav />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2"><DollarSign className="h-6 w-6" /> AIG04 — AI Budget & Spend Center</h1>
         <p className="text-sm text-muted-foreground mt-1">Budget policies, spend tracking, alerts, and cost governance</p>
