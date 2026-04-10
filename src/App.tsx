@@ -1018,6 +1018,12 @@ const App = () => (
                     <Route path="/admin/verification/failures" element={<V05FailureTriageBoard />} />
                     <Route path="/admin/verification/evidence" element={<V06EvidenceExplorer />} />
                     <Route path="/admin/verification/blockers" element={<V07LaunchBlockerBoard />} />
+                    <Route path="/admin/verification/redirects" element={<JVC05RedirectIntegrityMap />} />
+                    <Route path="/admin/verification/forms" element={<JVC07FormVerificationCenter />} />
+                    <Route path="/admin/verification/modals" element={<JVC08ModalDrawerBoard />} />
+                    <Route path="/admin/verification/keyboard" element={<JVC09KeyboardCommandBoard />} />
+                    <Route path="/admin/verification/replay" element={<JVC11JourneyReplay />} />
+                    <Route path="/admin/verification/drift" element={<JVC13InteractionDriftRadar />} />
 
                     {/* CJ — Customer Journey Proof System */}
                     <Route path="/admin/customer-journey/executive" element={<CJ01ExecutiveReport />} />
