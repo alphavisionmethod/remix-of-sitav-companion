@@ -241,6 +241,11 @@ const CoreServiceMigrationBoard = lazy(() => import("./pages/admin/CoreServiceMi
 const PersistenceDriftRadar = lazy(() => import("./pages/admin/PersistenceDriftRadar"));
 const RuntimeContinuityBoard = lazy(() => import("./pages/admin/RuntimeContinuityBoard"));
 
+// ── Phase 4 Unification Pages ──
+const TrustStateRegistry = lazy(() => import("./pages/admin/TrustStateRegistry"));
+const ActionStateDriftViewer = lazy(() => import("./pages/admin/ActionStateDriftViewer"));
+const CrossDomainMemoryExplorer = lazy(() => import("./pages/admin/CrossDomainMemoryExplorer"));
+
 // Delivery OS surfaces
 const FeatureIntakeDesk = lazy(() => import("./pages/admin/FeatureIntakeDesk"));
 const FeatureLifecycleBoard = lazy(() => import("./pages/admin/FeatureLifecycleBoard"));
@@ -1520,6 +1525,10 @@ const App = () => (
                     <Route path="/admin/service-migration" element={<CoreServiceMigrationBoard />} />
                     <Route path="/admin/persistence-drift" element={<PersistenceDriftRadar />} />
                     <Route path="/admin/runtime-continuity" element={<RuntimeContinuityBoard />} />
+                    {/* Phase 4 Unification */}
+                    <Route path="/admin/trust-state" element={<TrustStateRegistry />} />
+                    <Route path="/admin/action-state" element={<ActionStateDriftViewer />} />
+                    <Route path="/admin/cross-domain-memory" element={<CrossDomainMemoryExplorer />} />
                     {/* Delivery OS */}
                     <Route path="/admin/feature-intake" element={<FeatureIntakeDesk />} />
                     <Route path="/admin/feature-lifecycle" element={<FeatureLifecycleBoard />} />

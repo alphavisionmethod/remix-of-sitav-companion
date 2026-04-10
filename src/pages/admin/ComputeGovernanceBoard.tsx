@@ -91,6 +91,7 @@ const ComputeGovernanceBoard = () => {
           <TabsTrigger value="deep-reasoning" className="text-xs">CG08 · Deep Reasoning</TabsTrigger>
           <TabsTrigger value="anomalies" className="text-xs">CG09 · Anomalies</TabsTrigger>
           <TabsTrigger value="simulator" className="text-xs">CG10 · Simulator</TabsTrigger>
+          <TabsTrigger value="efficiency" className="text-xs">CG11 · Advisor Efficiency</TabsTrigger>
         </TabsList>
 
         {/* ══ CG01 — Overview ══════════════════════════════════ */}
@@ -959,6 +960,63 @@ const ComputeGovernanceBoard = () => {
         {/* ══ CG10 — Pricing & Packaging Simulator ════════════ */}
         <TabsContent value="simulator" className="mt-4">
           <CG10PricingSimulatorTab />
+        </TabsContent>
+
+        {/* ══ CG11 — Advisor Efficiency Matrix ════════════════ */}
+        <TabsContent value="efficiency" className="mt-4 space-y-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {[
+              { label: "Active Advisors", value: "8", sub: "across 5 domains" },
+              { label: "Avg Efficiency", value: "87%", sub: "composite score" },
+              { label: "Cost per Decision", value: "$0.12", sub: "30-day avg" },
+              { label: "Override Rate", value: "4.2%", sub: "operator corrections" },
+            ].map(m => (
+              <Card key={m.label} className="bg-card/80 border-border/50">
+                <CardContent className="p-3">
+                  <p className="text-lg font-bold text-foreground">{m.value}</p>
+                  <p className="text-[10px] text-muted-foreground">{m.label}</p>
+                  <p className="text-[10px] text-muted-foreground/60">{m.sub}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          <Card className="bg-card/80 border-border/50">
+            <CardHeader className="pb-2"><CardTitle className="text-sm flex items-center gap-2"><Target className="h-4 w-4 text-primary" /> Advisor Efficiency Matrix</CardTitle></CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                {[
+                  { advisor: "Revenue Advisor", domain: "Business", calls: 342, avgCost: 0.08, acceptance: 94, override: 2.1, efficiency: 96, reuse: 38 },
+                  { advisor: "Finance Advisor", domain: "Money", calls: 218, avgCost: 0.11, acceptance: 91, override: 3.4, efficiency: 92, reuse: 29 },
+                  { advisor: "Concierge Advisor", domain: "Concierge", calls: 156, avgCost: 0.14, acceptance: 88, override: 5.1, efficiency: 84, reuse: 22 },
+                  { advisor: "Operations Advisor", domain: "Admin", calls: 401, avgCost: 0.06, acceptance: 97, override: 1.2, efficiency: 98, reuse: 45 },
+                  { advisor: "Design Advisor", domain: "UI/UX", calls: 89, avgCost: 0.22, acceptance: 82, override: 8.4, efficiency: 74, reuse: 15 },
+                  { advisor: "Security Advisor", domain: "Security", calls: 67, avgCost: 0.18, acceptance: 96, override: 1.8, efficiency: 94, reuse: 31 },
+                  { advisor: "Growth Advisor", domain: "Revenue", calls: 134, avgCost: 0.13, acceptance: 86, override: 6.2, efficiency: 81, reuse: 19 },
+                  { advisor: "Strategic Advisor", domain: "Boardroom", calls: 45, avgCost: 0.31, acceptance: 78, override: 12.0, efficiency: 68, reuse: 8 },
+                ].map(a => (
+                  <div key={a.advisor} className="p-3 rounded-lg border hover:bg-muted/20 transition-colors">
+                    <div className="flex items-center justify-between mb-1.5">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-semibold text-foreground">{a.advisor}</span>
+                        <Badge variant="outline" className="text-[9px]">{a.domain}</Badge>
+                      </div>
+                      <Badge variant="outline" className={`text-[9px] ${a.efficiency >= 90 ? "bg-emerald-500/10 text-emerald-500 border-emerald-500/20" : a.efficiency >= 75 ? "bg-amber-500/10 text-amber-500 border-amber-500/20" : "bg-red-500/10 text-red-500 border-red-500/20"}`}>
+                        {a.efficiency}% efficient
+                      </Badge>
+                    </div>
+                    <div className="grid grid-cols-5 gap-2 text-[10px] text-muted-foreground">
+                      <span>Calls: <span className="text-foreground font-medium">{a.calls}</span></span>
+                      <span>Cost/call: <span className="text-foreground font-medium">${a.avgCost}</span></span>
+                      <span>Accept: <span className={a.acceptance >= 90 ? "text-emerald-500" : "text-amber-500"}>{a.acceptance}%</span></span>
+                      <span>Override: <span className={a.override <= 5 ? "text-foreground" : "text-amber-500"}>{a.override}%</span></span>
+                      <span>Reuse: <span className="text-foreground font-medium">{a.reuse}%</span></span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
         </TabsContent>
       </Tabs>
     </div>
