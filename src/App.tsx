@@ -7,6 +7,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { ConnectivityProvider } from "@/contexts/ConnectivityContext";
+import { OfflineBanner } from "@/components/sita/OfflineBanner";
 import { useUserPreferences } from "@/hooks/use-user-preferences";
 import { DataModeProvider } from "@/contexts/DataModeContext";
 import { DemoModeProvider } from "@/contexts/DemoModeProvider";
