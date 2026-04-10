@@ -203,3 +203,6 @@ export { OpportunityRadarEngine, createOpportunityRadar } from "./opportunity-ra
 export { DecisionIntelligenceEngine, createDecisionIntelligence } from "./decision-intelligence";
 export { AmbientIntelligenceService, createAmbientIntelligence } from "./os-awareness";
 
+// ── Phase 13: OS Orchestration (15 Systems) ──────────────────
+export * from "./os-orchestration";
+
