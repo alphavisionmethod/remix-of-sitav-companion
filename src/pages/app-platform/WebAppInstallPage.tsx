@@ -31,12 +31,13 @@ const WebAppInstallPage = () => {
     if (!selectedSite) return;
     setInstalling(true);
 
-    // Install the app via context if it maps to a catalog app
-    if (selectedSite.appId) {
-      await installApp(selectedSite.appId, { sourceOrigin: "web-install" });
-      if (config.pinToDock) pinToDock(selectedSite.appId);
-      if (config.notifications) setNotificationEnabled(selectedSite.appId, true);
-      if (config.startupLaunch) setStartupBehavior(selectedSite.appId, "background");
+    // Try to match detected site to a catalog app by name
+    const matchedApp = apps.find(a => a.name.toLowerCase() === selectedSite.name.toLowerCase());
+    if (matchedApp) {
+      await installApp(matchedApp.id, { sourceOrigin: "web-install" });
+      if (config.pinToDock) pinToDock(matchedApp.id);
+      if (config.notifications) setNotificationEnabled(matchedApp.id, true);
+      if (config.startupLaunch) setStartupBehavior(matchedApp.id, "background");
     }
 
     // Brief delay for visual feedback
