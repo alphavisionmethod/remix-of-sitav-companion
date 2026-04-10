@@ -1,47 +1,65 @@
 
 
-# SITA OS — AI Gateway: Final Gap — 6 Missing Performance Indexes
+# SITA OS — AI Model Routing Matrix: Enhancement Plan
 
-## Audit Result
+## Current State
 
-All **10 tables**, **4 views**, **all RLS policies**, **3 DB functions** (`check_ai_budget_policies`, `aggregate_ai_daily_spend`, `update_ai_budget_usage`), **9 admin pages** (AIG01–AIG09), **5 edge functions** with shared budget/receipt utilities, and the **central ai-gateway** edge function are fully implemented and wired.
+The routing infrastructure is 95% built. Three layers exist:
+1. **Edge gateway** (`ai-gateway/index.ts`) — 4-tier task class → model mapping with budget checks, fallback, and triple-table receipt logging
+2. **Compute governance** (`model-routing-engine.ts`) — Cost class A/B/C/D routing with cache, budget downgrade, and approval logic
+3. **Brain-core model router** (`brain-core/model-router.ts`) — Complexity/risk → tier routing with budget enforcement
+4. **Seed service** (`ai-routing-seed-service.ts`) — 7 capability seeds with routing/budget/honesty metadata
+5. **Types** (`ai-gateway/types.ts`) — All 5 routing classes defined: `premium_synthesis`, `balanced_assistant`, `economy_utility`, `fallback`, `internal_only`
 
-The schema uses slightly different column names than the spec in a few places (e.g. `model_id` instead of `model_key`, `provider` instead of `provider_key`, `context_length` integer instead of `context_window_class` text) but these are functionally equivalent or superior, and all views/functions/services already reference them correctly. Renaming would break working code for zero functional benefit.
+## Gaps Found
 
-## Only Gap: 6 Missing Performance Indexes
+### Gap 1 — Missing `memory.summarize` capability in seed data
+The spec requires 6 canonical capability mappings. Only 5 of 6 are seeded. `memory.summarize` is absent.
 
-The spec requires indexes that do not yet exist:
+### Gap 2 — Seed routing_class values don't match canonical types
+Seeds use short names (`"balanced"`, `"premium"`, `"utility"`) but the canonical `RoutingClass` type uses `"balanced_assistant"`, `"premium_synthesis"`, `"economy_utility"`. This mismatch means admin dashboards filtering by canonical routing class won't find these seeds.
 
-| Table | Column | Purpose |
-|-------|--------|---------|
-| `ai_model_registry` | `quality_tier` | Filter models by quality tier in routing |
-| `ai_model_registry` | `cost_tier` | Filter models by cost class |
-| `ai_model_registry` | `provider_registry_id` | Join to provider registry |
-| `ai_usage_ledger` | `model_id` | Query spend by model |
-| `ai_usage_ledger` | `workspace_id` | Query spend by workspace |
-| `ai_capability_routing` | `budget_class` | Filter routing by budget class |
+### Gap 3 — `admin.synthesis` should use `internal_only` routing class
+The spec says admin.synthesis must be `internal_only` routing class, but the seed uses `"balanced"`. It should also allow premium/reasoning models per the spec.
 
-## Implementation
+### Gap 4 — No `internal_only` handling in the gateway
+The gateway's `TASK_CLASS_MODELS` has no entry for `internal_only`. If an internal capability resolves to this class, it falls through to the default model instead of using a premium/reasoning model.
 
-One SQL migration with 6 `CREATE INDEX IF NOT EXISTS` statements. No table changes, no column changes, no code changes.
+### Gap 5 — Seed models missing Google provider entry
+The seed service has OpenAI, Anthropic, and Lovable providers but all Gemini models are only under `lovable` provider. A dedicated `google` provider entry is missing for direct Google API use.
 
-```sql
-CREATE INDEX IF NOT EXISTS idx_ai_model_registry_quality ON public.ai_model_registry(quality_tier);
-CREATE INDEX IF NOT EXISTS idx_ai_model_registry_cost ON public.ai_model_registry(cost_tier);
-CREATE INDEX IF NOT EXISTS idx_ai_model_registry_provider ON public.ai_model_registry(provider_registry_id);
-CREATE INDEX IF NOT EXISTS idx_ai_usage_ledger_model ON public.ai_usage_ledger(model_id);
-CREATE INDEX IF NOT EXISTS idx_ai_usage_ledger_workspace ON public.ai_usage_ledger(workspace_id);
-CREATE INDEX IF NOT EXISTS idx_ai_capability_routing_budget ON public.ai_capability_routing(budget_class);
-```
+## Implementation Plan
+
+### Step 1 — Enhance seed service with full spec compliance
+Update `src/lib/ai/ai-routing-seed-service.ts`:
+- Add `memory.summarize` capability seed (balanced_assistant, medium budget, medium quality)
+- Fix all `routing_class` values to use canonical names: `"balanced"` → `"balanced_assistant"`, `"premium"` → `"premium_synthesis"`, `"utility"` → `"economy_utility"`
+- Change `admin.synthesis` routing_class to `"internal_only"`
+- Add `google` provider seed entry
+- Add more model seeds: `gemini-2.5-pro` (premium), `gemini-3-flash-preview` (balanced), `gpt-5` (premium OpenAI)
+
+### Step 2 — Add `internal_only` task class to gateway
+Update `supabase/functions/ai-gateway/index.ts`:
+- Add `internal_only: "google/gemini-2.5-pro"` to `TASK_CLASS_MODELS` (premium model for internal ops)
+- Add cost entry for `google/gemini-2.5-pro` in `COST_PER_1K` if missing
+
+### Step 3 — Enhance seed launch honesty for new capability
+Add `memory.summarize` to `LAUNCH_HONESTY_SEEDS` in the seed service.
+
+## Files Changed
+
+| File | Change |
+|------|--------|
+| `src/lib/ai/ai-routing-seed-service.ts` | Add memory.summarize, fix routing_class names, add google provider, add models |
+| `supabase/functions/ai-gateway/index.ts` | Add `internal_only` to TASK_CLASS_MODELS |
 
 ## What This Does NOT Change
-- No new tables (all 10 exist)
-- No new columns (all spec columns present)
-- No frontend/admin page changes
-- No edge function changes
-- No view changes
-- No RLS policy changes
+- No new database tables or columns
+- No new frontend pages (admin dashboards already display whatever is seeded)
+- No changes to compute-governance or brain-core routers (different layer, already correct)
+- No changes to client SDK or hooks
+- No changes to shared budget/receipt utilities
 
 ## Summary
-1 migration, 6 indexes. After this, the AI Gateway schema is 100% spec-complete and deployment-ready.
+2 file enhancements. Aligns seed data with canonical types, adds missing capability, and ensures internal_only routing works end-to-end in the gateway.
 
