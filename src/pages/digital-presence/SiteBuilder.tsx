@@ -9,6 +9,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useSites } from "@/hooks/use-digital-presence";
 import { DEMO_EXISTING_PAGES, DEMO_PAGE_TYPES } from "@/lib/demo-data/digital-presence";
+import DPOSubNav from "./DPOSubNav";
 
 export default function SiteBuilder() {
   const { isDemoMode } = useDataMode();
@@ -17,6 +18,7 @@ export default function SiteBuilder() {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DPOSubNav />
       <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">Site / Experience Builder</h1>
@@ -52,6 +54,28 @@ export default function SiteBuilder() {
           <div className="flex gap-2">
             <Input placeholder="E.g., 'A booking page for yoga classes with testimonials and pricing'" className="text-sm" />
             <Button size="sm"><Sparkles className="w-3.5 h-3.5 mr-1.5" /> Generate</Button>
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Experience Rewrite */}
+      <Card className="bg-card/50 border-border/50 border-violet-500/20">
+        <CardContent className="p-5">
+          <div className="flex items-center gap-3 mb-3">
+            <Rocket className="w-5 h-5 text-violet-400" />
+            <div>
+              <h3 className="text-sm font-semibold text-foreground">Experience Rewrite / Refresh Mode</h3>
+              <p className="text-[10px] text-muted-foreground">Ask SITA to redesign, refresh, or rewrite any page — get strategy, copy, layout, variants & publish plan</p>
+            </div>
+          </div>
+          <div className="flex gap-2 mb-3">
+            <Input placeholder="E.g., 'Refresh homepage for our summer campaign with stronger CTA'" className="text-sm" />
+            <Button size="sm" className="bg-violet-600 hover:bg-violet-700"><Sparkles className="w-3.5 h-3.5 mr-1.5" /> Rewrite</Button>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {["Strategy brief", "Copy variants", "Layout options", "Mobile preview", "Publish plan"].map(item => (
+              <Badge key={item} variant="outline" className="text-[10px] border-violet-500/30 text-violet-400">{item}</Badge>
+            ))}
           </div>
         </CardContent>
       </Card>

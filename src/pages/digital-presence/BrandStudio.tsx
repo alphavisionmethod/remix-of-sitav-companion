@@ -9,6 +9,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useBrandAssets } from "@/hooks/use-digital-presence";
 import { DEMO_BRAND_ASSETS, DEMO_BRAND_COLORS, DEMO_REUSABLE_BLOCKS, DEMO_TYPOGRAPHY } from "@/lib/demo-data/digital-presence";
+import DPOSubNav from "./DPOSubNav";
 
 export default function BrandStudio() {
   const { isDemoMode } = useDataMode();
@@ -17,6 +18,7 @@ export default function BrandStudio() {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DPOSubNav />
       <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">Brand Studio</h1>
@@ -117,6 +119,30 @@ export default function BrandStudio() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Brand Evolution Engine */}
+      <Card className="bg-card/50 border-border/50 border-emerald-500/20">
+        <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Sparkles className="w-4 h-4 text-emerald-400" /> Brand Evolution Engine</CardTitle></CardHeader>
+        <CardContent className="space-y-3">
+          <p className="text-[10px] text-muted-foreground">Coherent, campaign-driven style evolution — seasonal looks, offer visuals, and visual tone refinements without losing brand identity.</p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+            {[
+              { label: "Spring / Fresh", active: false },
+              { label: "Summer / Bold", active: true },
+              { label: "Autumn / Warm", active: false },
+              { label: "Holiday / Festive", active: false },
+            ].map(s => (
+              <div key={s.label} className={`p-3 rounded-lg border text-center text-xs font-medium cursor-pointer transition-all ${s.active ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-400" : "border-border/50 bg-muted/20 text-muted-foreground hover:border-emerald-500/20"}`}>
+                {s.label}
+              </div>
+            ))}
+          </div>
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm" className="text-[10px]"><Sparkles className="w-3 h-3 mr-1" /> Generate Campaign Style</Button>
+            <Button variant="outline" size="sm" className="text-[10px]"><Eye className="w-3 h-3 mr-1" /> Preview Evolution</Button>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
