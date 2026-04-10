@@ -1416,8 +1416,10 @@ const App = () => (
                     <Route path="/admin/pfa/upgrades" element={<PFA06PermissionUpgradeCenter />} />
                     <Route path="/admin/pfa/health-drift" element={<PFA07ConnectorHealthDrift />} />
                     <Route path="/admin/pfa/account-graph" element={<PFA08AccountGraphExplorer />} />
-                    <Route path="/settings/connected-accounts" element={<PFA09ConnectedAccountsCenter />} />
-                    <Route path="/settings/google" element={<GoogleConnectedAccounts />} />
+                     </Route>
+                     <Route path="/settings/connected-accounts" element={<PFA09ConnectedAccountsCenter />} />
+                     <Route path="/settings/google" element={<GoogleConnectedAccounts />} />
+                     <Route element={<AdminShellLayout />}>
                     <Route path="/admin/pfa/launch-honesty" element={<PFA10IntegrationLaunchHonesty />} />
                     <Route path="/admin/pfa/google" element={<GoogleProviderFamilyDashboard />} />
                     <Route path="/admin/isa/identity-providers" element={<ISA01IdentityProviderRegistryBoard />} />
@@ -1620,6 +1622,8 @@ const App = () => (
                      <Route path="/admin/architecture/god-tier-integration" element={<GodTierIntegrationBoard />} />
                      <Route path="/admin/architecture/god-tier-runtime" element={<GodTierRuntimeBoard />} />
                      <Route path="/admin/architecture/epistemic-firewall" element={<EpistemicFirewallBoard />} />
+
+                    </Route>
 
                      <Route path="/personal-brain" element={<PersonalBrain />} />
 
