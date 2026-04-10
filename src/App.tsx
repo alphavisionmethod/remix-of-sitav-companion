@@ -743,8 +743,9 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <AuthProvider>
-          <ConnectivityProvider>
-          <ThemeProvider>
+           <ConnectivityProvider>
+           <OfflineBanner />
+           <ThemeProvider>
           <RealityModeProvider>
           <Suspense fallback={<PageLoader />}>
           <Routes>
