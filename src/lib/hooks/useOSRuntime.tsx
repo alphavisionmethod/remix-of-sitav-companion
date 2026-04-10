@@ -12,6 +12,7 @@ import {
   TokenGovernanceEngine, IntegrationConciergeEngine,
   EnterpriseControlPlaneEngine, SupportDiagnosticsEngine, ObservabilityEngine,
   ReleaseSafetyEngine, TrustDeviceEngine, ComplianceAuditEngine,
+  ExecutionDebtEngine, InvisibleLaborEngine, DragEngine, FounderBottleneckEngine,
 } from "@/lib/engines";
 import { ReplayRecoveryEngine } from "@/lib/engines/replay-recovery";
 import type { OSRuntimeContext } from "@/packages/contracts";
