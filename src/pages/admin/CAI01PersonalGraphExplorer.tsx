@@ -10,8 +10,9 @@ export default function CAI01PersonalGraphExplorer() {
   const [selectedNode, setSelectedNode] = useState<string | null>(null);
 
   const stats = personalGraph.getStats();
-  const ignoredItems = personalGraph.getIgnoredItems?.() ?? [];
+  const ignoredItems = personalGraph.getIgnoredItems();
   const crossDomain = selectedNode ? personalGraph.resolveCrossDomain(selectedNode) : null;
+  const domains = Object.keys(stats.byDomain);
 
   return (
     <div className="space-y-6 p-6">
@@ -20,21 +21,19 @@ export default function CAI01PersonalGraphExplorer() {
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <SitaCard><SitaMetric label="Total Nodes" value={stats.totalNodes} /></SitaCard>
         <SitaCard><SitaMetric label="Total Edges" value={stats.totalEdges} /></SitaCard>
-        <SitaCard><SitaMetric label="Domains" value={stats.domains?.length ?? 0} /></SitaCard>
-        <SitaCard><SitaMetric label="Ignored Items" value={ignoredItems.length} trend={ignoredItems.length > 5 ? "down" : "flat"} /></SitaCard>
+        <SitaCard><SitaMetric label="Domains" value={domains.length} /></SitaCard>
+        <SitaCard><SitaMetric label="Avg Trust" value={`${Math.round(stats.avgTrust * 100)}%`} trend={stats.avgTrust > 0.7 ? "up" : "flat"} /></SitaCard>
       </div>
 
       <SitaSectionHeader title="Nodes by Domain" subtitle="Distribution across the personal operating graph" />
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {(stats.domains ?? ["identity", "household", "business", "finance", "relationships", "devices"]).map((domain: string) => (
+        {domains.map((domain) => (
           <SitaCard key={domain} hover onClick={() => setSelectedNode(domain)}>
             <SitaCardHeader>
               <SitaCardTitle>{domain}</SitaCardTitle>
               <Layers className="h-4 w-4 text-muted-foreground" />
             </SitaCardHeader>
-            <p className="text-xs text-muted-foreground">
-              {stats.nodesByDomain?.[domain] ?? 0} nodes · {stats.edgesByDomain?.[domain] ?? 0} edges
-            </p>
+            <p className="text-xs text-muted-foreground">{stats.byDomain[domain] ?? 0} nodes · {stats.byType[domain] ?? 0} by type</p>
           </SitaCard>
         ))}
       </div>
@@ -57,20 +56,20 @@ export default function CAI01PersonalGraphExplorer() {
         <>
           <SitaSectionHeader title="Ignored Items" subtitle="Items deprioritized by the attention system" />
           <div className="grid gap-2 sm:grid-cols-2">
-            {ignoredItems.slice(0, 8).map((item: any, i: number) => (
-              <SitaCard key={i} lane="unresolved">
+            {ignoredItems.slice(0, 8).map((item, i) => (
+              <SitaCard key={item.id ?? i} lane="unresolved">
                 <div className="flex items-center gap-2">
                   <AlertTriangle className="h-3.5 w-3.5 text-urgency-medium" />
-                  <span className="text-sm text-foreground">{item.label ?? item.id ?? `Item ${i + 1}`}</span>
+                  <span className="text-sm text-foreground">{item.label}</span>
                 </div>
-                <p className="mt-1 text-xs text-muted-foreground">{item.reason ?? "Deprioritized"}</p>
+                <p className="mt-1 text-xs text-muted-foreground">{item.domain} · ignored {item.ignoreCount ?? 0} times</p>
               </SitaCard>
             ))}
           </div>
         </>
       )}
 
-      <SitaSectionHeader title="Meeting Context Lookup" subtitle="Enter a contact ID to preview meeting prep" />
+      <SitaSectionHeader title="Meeting Context Lookup" subtitle="Select a contact node to preview meeting context" />
       <SitaCard>
         <div className="flex items-center gap-3">
           <Users className="h-5 w-5 text-muted-foreground" />
