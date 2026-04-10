@@ -70,6 +70,10 @@ const ConciergeCenter = () => {
   const os = useOSOrchestration();
   const activePage = subpageFromPath(location.pathname);
 
+  // Wire CAI relationship + obligation data for real persistence
+  const { data: caiRelationships } = useRelationshipContexts({ limit: 20 });
+  const { data: caiObligations } = useHumanObligations({ limit: 20 });
+
   const goTo = (key: string) => {
     if (key === "overview") navigate("/concierge");
     else navigate(`/concierge/${key}`);
