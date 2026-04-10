@@ -1,119 +1,144 @@
 
 
-# SITA OS — Full Project Audit Report
+# SITA OS — Complete Wiring Audit
 
-## Project Scale
+## Project Scale (Updated)
 
 | Metric | Count |
 |--------|-------|
-| Route paths in App.tsx | 736 |
+| Routes in App.tsx | 749 |
 | Lazy imports | 554 |
-| Page files | 503 |
-| Services | 171 |
-| Edge Functions | 50 |
+| Page files | 697 (including sub-components & tests) |
+| Services | 178 |
+| Engines | 23 |
+| Edge Functions | 51 |
 | Database Migrations | 116 |
-| Registered Capabilities | 152 |
-| Generated Artifacts | 47 |
+| Registered Capabilities | 142 |
 | TypeScript Errors | **0** |
+| Dangling references | **0** |
 
 ---
 
-## What's Fully Wired & Working
+## Already Wired & Verified (No Action Needed)
 
-- **AdminShell** wraps all `/admin/*` routes via `AdminShellLayout` in App.tsx
-- **OwnerWorkspaceShell** wraps all `/owner/*` routes via `OwnerShellLayout` in App.tsx
-- **5 Summary Panels** (Revenue, Risk, Connector, Incident, Replay) rendered in MissionControlHome
-- **AdminCommandPalette** (Cmd+K) and **AdminKeyboardShortcuts** (`?`, `G+key`) globally active
-- **RevenueOfficeModeProvider** wraps all 40 `/revenue-office/*` routes with Beginner/Advanced toggle
-- **SitaKernel** + **OSRuntime** wired into ~20 key pages (Boardroom, ProofCenter, SystemStatus, etc.)
-- **Supabase** queries active in 28 pages
-- **All admin routes** (intelligence, strategic, AIT, verification boards) routed via `getAdminRoutes()`
-- **Investment Office** (38 pages), **Revenue Office** (40+ pages), **Digital Presence** (19 pages), **ATLAS**, **App Platform**, **Enterprise** — all routed
-- **Business Formation Ceremony** — 20 screens, FormationShell, branching logic all complete
-- **Interactive Advisor Q&A** — working in GrowthAdvisorBoard with 3 query types × 9 advisors
-- **Lightweight Charts** — Candlestick/Line/Area rendering with all timeframes
-- **Strategy Allocation Rebalancer** — Sliders, locking, presets all functional
+- All 554 lazy imports resolve to existing files
+- All edge functions are referenced from frontend code
+- All page files are referenced by at least one other file (no truly orphaned pages)
+- `AdminShell`, `OwnerWorkspaceShell`, `RevenueOfficeModeProvider` all correctly wrapping routes
+- `PlatformInit` mounted in App.tsx (Electron bridge + offline sync)
+- `SitaKernelProvider`, `OSRuntimeProvider`, `AppPlatformProvider` all mounted in App.tsx
+- 4 services wired to UI in previous session: anomaly-alert, fraud-sentinel, client-sentiment, competitive-intelligence
+- Sidebar now has Digital Presence, ATLAS, App Platform, Investment Office links
+- Deleted shells (`MissionOpsShell`, `OwnerModeShell`) have zero dangling references
+- Zero TypeScript errors
 
 ---
 
-## What's Missing / Not Wired
+## What's Still Unwired
 
-### Priority 1 — Orphaned Shells (built but never used)
+### Gap 1 — 171 Services Never Imported by Pages/Components
 
-| Component | Status |
-|-----------|--------|
-| `MissionOpsShell` (92 LOC) | Defined at `src/components/admin/shells/MissionOpsShell.tsx` — **never imported anywhere** |
-| `OwnerModeShell` (48 LOC) | Defined at `src/components/admin/shells/OwnerModeShell.tsx` — **never imported anywhere** |
-
-**Fix**: Wire `MissionOpsShell` around `/mission-control` route or delete if redundant with AdminShell. Wire `OwnerModeShell` around `/owner-mode` route or delete.
-
-### Priority 2 — Sidebar Navigation Gaps
-
-The sidebar (`AppSidebar.tsx`, 347 LOC) is missing links to major workspaces:
-
-| Workspace | Sidebar Entry | Actual Routes |
-|-----------|--------------|---------------|
-| Digital Presence Office | ❌ Missing | `/digital-presence/*` (19 pages) |
-| ATLAS | ❌ Missing | `/atlas/*` (10+ pages) |
-| App Platform | ❌ Missing (only "App Store") | `/app-platform/*` (24 pages) |
-| Investment Office | ⚠️ Nested under Money as `/money/investments` | `/investments/*` (38 pages) |
-| Owner/Admin (for admins) | ✅ Present | `/owner/*`, `/admin/*` |
-
-**Fix**: Add Digital Presence, ATLAS, and App Platform to sidebar. Consider promoting Investment Office to a top-level entry pointing to `/investments`.
-
-### Priority 3 — Data Layer Gap (Demo Data vs Real Data)
-
-~261 pages reference `DEMO_`, `MOCK_`, or `mockData` patterns. While this is expected for a demo-mode app, the vast majority of pages (~475 of 503) do **not** query Supabase directly. Only 28 pages have live Supabase queries.
-
-**This is architectural by design** — the `DataModeContext` and `DemoModeProvider` handle the demo/real toggle. However, when real connectors are activated, most pages will still show hardcoded demo data unless each page's data layer is wired to Supabase.
-
-**Fix**: Not urgent — demo mode is the current deployment target. But plan for a systematic data-wiring pass when moving to production.
-
-### Priority 4 — Kernel/Runtime Adoption
-
-Only ~20 pages use `useOSRuntime` or `useSitaKernel`. The remaining ~480 pages operate independently of the kernel singleton. This means most pages don't participate in the unified event bus, receipt tracking, or trust state.
-
-**Fix**: Not urgent for MVP. The kernel is wired for the pages that need it (admin, observability, proof). Expanding to all pages would be a Phase 5+ effort.
-
-### Priority 5 — 93 Services Without UI Consumers
-
-171 services exist under `src/lib/services/`. 93 of them are never imported by any page or component. These include:
-- `accuracy-classifier`, `anomaly-alert`, `autonomous-negotiation`, `client-sentiment`, `competitive-intelligence`, `digital-legacy-vault`, `duress-detection`, `epistemic-firewall`, `fraud-sentinel`, `immune-controller`, `injection-firewall`, and many more.
-
-**Fix**: These are backend-ready services waiting for UI surfaces. Not broken — just not yet consumed. Prioritize wiring the ones that map to existing pages (e.g., `fraud-sentinel` → Risk pages, `anomaly-alert` → Incident pages).
-
----
-
-## Implementation Plan (If Approved)
-
-### Step 1 — Wire or Remove Orphaned Shells
-- Wire `MissionOpsShell` around mission-control routes OR remove if AdminShell covers it
-- Wire `OwnerModeShell` around `/owner-mode` route OR remove if OwnerWorkspaceShell covers it
-
-### Step 2 — Add Missing Sidebar Navigation
-- Add **Digital Presence Office** link to sidebar (`/digital-presence`)
-- Add **ATLAS** link to sidebar (`/atlas`)
-- Add **App Platform** link to sidebar (`/app-platform`)
-- Promote **Investment Office** to top-level (`/investments`)
-
-### Step 3 — Wire Key Services to Existing Pages
-Connect the most impactful unused services to their natural UI consumers:
+All 178 services in `src/lib/services/` are unused by pages/components except for 7:
 - `anomaly-alert` → IncidentCommandCenter
-- `fraud-sentinel` → Risk summary panels
-- `client-sentiment` → CRM/Relationship pages
-- `competitive-intelligence` → Growth Boardroom
+- `fraud-sentinel` → RiskSummaryPanel
+- `client-sentiment` → RelationshipCenter
+- `competitive-intelligence` → GrowthBoardroom
+- `finance-os/investment-memory.service` → 3 investment pages
+- `setup` → OSSetupExperience
+
+**However**: Per the project's own architecture rule (`services/index.ts` comments), pages SHOULD NOT import services directly — they should use `engines/` or `hooks/`. The 7 current direct imports technically violate this rule. The remaining 171 are backend-ready infrastructure.
+
+**Recommendation**: This is **by design**. Services are meant to be consumed via engines and hooks, not pages. No wiring needed now. When production data flows are built, services will be wired through the engine/hook layer.
+
+### Gap 2 — 18 of 23 Engines Never Used by Pages/Components
+
+These engines exist but are not consumed:
+
+| Engine | Natural Consumer |
+|--------|-----------------|
+| `action-state-machine` | Workflow pages |
+| `advisor-orchestration` | Advisor workspace |
+| `delegation-engine` | Task delegation UI |
+| `enterprise-maturity` | EnterpriseMaturityDashboard (has its own inline logic) |
+| `execution-debt-engine` | Proof/receipt pages |
+| `founder-bottleneck-engine` | Owner dashboard |
+| `invisible-labor-engine` | AI Economics |
+| `memory-governance` | Memory management pages |
+| `meta-governance-engine` | Governance pages |
+| `policy-depth-engine` | Policy simulator |
+| `replay-recovery` | Workflow replay |
+| `revenue-opportunity` | Revenue Office |
+| `setup-phase-definitions` | Onboarding |
+| `token-governance` | AI token budget pages |
+| `trust-debt-engine` | Trust/governance pages |
+| `workspace-view-engine` | Workspace pages |
+| `drag-engine` | Drag-and-drop UI |
+| `entity-role-graph` | Entity management |
+
+**Recommendation**: Wire the **5 highest-impact** engines to their natural pages.
+
+### Gap 3 — 4 Unused Hooks
+
+| Hook | Purpose |
+|------|---------|
+| `use-kernel-mutation` | Wraps writes through canonical execution chain |
+| `use-kernel-query` | Routes reads through kernel projection layer |
+| `use-optimistic-mutation` | Optimistic UI mutation pattern |
+| `use-revenue-memory` | Revenue memory domain queries |
+
+**Recommendation**: `use-kernel-mutation` and `use-kernel-query` are the canonical data hooks — they should be adopted by admin/mission pages that currently use raw Supabase or demo data. `use-revenue-memory` should be wired to Revenue Office pages.
+
+### Gap 4 — `useConnectivity` Provider Mounted but Never Consumed
+
+`ConnectivityProvider` wraps the entire app in `App.tsx`, but `useConnectivity()` is never called in any page or component (only in tests). This means offline state is tracked but never surfaced to users.
+
+**Recommendation**: Wire `useConnectivity` into the main layout to show an offline banner when `isOnline === false`.
+
+### Gap 5 — Only 28 of ~590 Pages Query Supabase
+
+~260 pages use hardcoded demo data. This is architectural by design (demo mode). No action needed for MVP.
+
+### Gap 6 — Only ~16 Pages Use `useOSRuntime`
+
+The kernel/runtime is wired for admin and observability pages. The remaining ~574 pages operate independently. This is expected — kernel adoption is a Phase 5+ effort.
+
+---
+
+## Implementation Plan
+
+### Step 1 — Wire 5 High-Impact Engines to Pages
+Connect engines that have clear, existing page consumers:
+- `founder-bottleneck-engine` → Owner Home dashboard
+- `revenue-opportunity` → Revenue Office GrowthBoardroom
+- `trust-debt-engine` → Owner Trust Center
+- `token-governance` → AI Economics page
+- `replay-recovery` → Workflow Replay Hub
+
+### Step 2 — Wire Unused Hooks
+- `use-revenue-memory` → Revenue Office pages (Boardroom, Pipeline)
+- `use-kernel-query` → Mission Control (replace raw demo reads)
+
+### Step 3 — Surface Offline State
+- Create an `OfflineBanner` component
+- Wire `useConnectivity()` in the main layout
+- Show a toast/banner when `isOnline` flips to false
 
 ### Files Modified
 
 | File | Change |
-|---|---|
-| `src/components/sita/AppSidebar.tsx` | Add 4 missing workspace links |
-| `src/App.tsx` | Wire MissionOpsShell/OwnerModeShell or remove dead imports |
-| `src/pages/admin/IncidentCommandCenter.tsx` | Connect anomaly-alert service |
-| `src/pages/revenue-office/GrowthBoardroom.tsx` | Connect competitive-intelligence service |
+|------|--------|
+| `src/pages/owner/OwnerHome.tsx` | Import + render founder-bottleneck-engine data |
+| `src/pages/revenue-office/GrowthBoardroom.tsx` | Import revenue-opportunity engine |
+| `src/pages/owner/TrustCenter.tsx` | Import trust-debt-engine |
+| `src/pages/AIEconomicsPage.tsx` | Import token-governance engine |
+| `src/pages/WorkflowReplayHub.tsx` | Import replay-recovery engine |
+| `src/pages/revenue-office/RevenueBoardroom.tsx` | Use `use-revenue-memory` hook |
+| `src/components/sita/OfflineBanner.tsx` | **New** — offline indicator |
+| `src/layouts/AppLayout.tsx` or equivalent | Wire `useConnectivity` + `OfflineBanner` |
 
 ### What NOT to Do
-- Do NOT rewrite 475 pages to use Supabase — demo mode is intentional
-- Do NOT wire all 93 services — most are future-ready infrastructure
-- Do NOT add more routes — 736 is already comprehensive
+- Do NOT wire all 171 services directly to pages — architecture says use engines/hooks
+- Do NOT wire all 18 engines — focus on the 5 with clear page consumers
+- Do NOT expand `useOSRuntime` to all pages — Phase 5+ effort
+- Do NOT migrate 260 demo-data pages to Supabase — demo mode is intentional
 
