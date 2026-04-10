@@ -893,45 +893,47 @@ const App = () => (
                     <Route path="/money/investments" element={<InvestmentGate />} />
 
                     {/* ── 3B: OS Office — Revenue Office (40 routes) ── */}
-                    <Route path="/revenue-office" element={<RevenueGate />} />
-                    <Route path="/revenue-office/boardroom" element={<GrowthBoardroom />} />
-                    <Route path="/revenue-office/relationships" element={<RelationshipCenter />} />
-                    <Route path="/revenue-office/pipeline" element={<PipelineStudio />} />
-                    <Route path="/revenue-office/funnels" element={<FunnelBuilder />} />
-                    <Route path="/revenue-office/campaigns" element={<CampaignOrchestrator />} />
-                    <Route path="/revenue-office/bookings" element={<BookingCenter />} />
-                    <Route path="/revenue-office/offers" element={<OffersWorkspace />} />
-                    <Route path="/revenue-office/reputation" element={<ReputationEngine />} />
-                    <Route path="/revenue-office/intelligence" element={<RevenueIntelligence />} />
-                    <Route path="/revenue-office/retention" element={<RetentionOffice />} />
-                    <Route path="/revenue-office/advisors" element={<GrowthAdvisorBoard />} />
-                    <Route path="/revenue-office/journey-twin" element={<JourneyTwin />} />
-                    <Route path="/revenue-office/leaks" element={<LeakDetector />} />
-                    <Route path="/revenue-office/conversion-lab" element={<ConversionLab />} />
-                    <Route path="/revenue-office/memberships" element={<MembershipCourseOffice />} />
-                    <Route path="/revenue-office/opportunities" element={<OpportunityBoard />} />
-                    <Route path="/revenue-office/trust-pulse" element={<TrustPulse />} />
-                    <Route path="/revenue-office/white-label" element={<WhiteLabelOffice />} />
-                    <Route path="/revenue-office/time-machine" element={<BusinessTimeMachine />} />
-                    <Route path="/revenue-office/decision-theater" element={<RevenueDecisionTheater />} />
-                    <Route path="/revenue-office/what-breaks" element={<WhatBreaksGrowth />} />
-                    <Route path="/revenue-office/growth-dna" element={<GrowthDNA />} />
-                    <Route path="/revenue-office/operating-modes" element={<GrowthOperatingModes />} />
-                    <Route path="/revenue-office/synthesis" element={<ChiefRevenueSynthesis />} />
-                    <Route path="/revenue-office/memory-feed" element={<CommercialMemoryFeed />} />
-                    <Route path="/revenue-office/forms" element={<FormsBuilder />} />
-                    <Route path="/revenue-office/segmentation" element={<SegmentationEngine />} />
-                    <Route path="/revenue-office/client-onboarding" element={<ClientOnboarding />} />
-                    <Route path="/revenue-office/automation" element={<AutomationOffice />} />
-                    <Route path="/revenue-office/automation/builder" element={<AutomationBuilder />} />
-                    <Route path="/revenue-office/automation/templates" element={<AutomationTemplates />} />
-                    <Route path="/revenue-office/automation/simulation" element={<AutomationSimLab />} />
-                    <Route path="/revenue-office/automation/health" element={<AutomationHealth />} />
-                    <Route path="/revenue-office/automation/receipts" element={<AutomationReceipts />} />
-                    <Route path="/revenue-office/automation/policy" element={<AutomationPolicy />} />
-                    <Route path="/revenue-office/quotes" element={<QuoteStudio />} />
-                    <Route path="/revenue-office/calls" element={<CallDesk />} />
-                    <Route path="/revenue-office/onboarding" element={<BusinessOnboarding />} />
+                    <Route element={<RevenueOfficeModeLayout />}>
+                     <Route path="/revenue-office" element={<RevenueGate />} />
+                     <Route path="/revenue-office/boardroom" element={<GrowthBoardroom />} />
+                     <Route path="/revenue-office/relationships" element={<RelationshipCenter />} />
+                     <Route path="/revenue-office/pipeline" element={<PipelineStudio />} />
+                     <Route path="/revenue-office/funnels" element={<FunnelBuilder />} />
+                     <Route path="/revenue-office/campaigns" element={<CampaignOrchestrator />} />
+                     <Route path="/revenue-office/bookings" element={<BookingCenter />} />
+                     <Route path="/revenue-office/offers" element={<OffersWorkspace />} />
+                     <Route path="/revenue-office/reputation" element={<ReputationEngine />} />
+                     <Route path="/revenue-office/intelligence" element={<RevenueIntelligence />} />
+                     <Route path="/revenue-office/retention" element={<RetentionOffice />} />
+                     <Route path="/revenue-office/advisors" element={<GrowthAdvisorBoard />} />
+                     <Route path="/revenue-office/journey-twin" element={<JourneyTwin />} />
+                     <Route path="/revenue-office/leaks" element={<LeakDetector />} />
+                     <Route path="/revenue-office/conversion-lab" element={<ConversionLab />} />
+                     <Route path="/revenue-office/memberships" element={<MembershipCourseOffice />} />
+                     <Route path="/revenue-office/opportunities" element={<OpportunityBoard />} />
+                     <Route path="/revenue-office/trust-pulse" element={<TrustPulse />} />
+                     <Route path="/revenue-office/white-label" element={<WhiteLabelOffice />} />
+                     <Route path="/revenue-office/time-machine" element={<BusinessTimeMachine />} />
+                     <Route path="/revenue-office/decision-theater" element={<RevenueDecisionTheater />} />
+                     <Route path="/revenue-office/what-breaks" element={<WhatBreaksGrowth />} />
+                     <Route path="/revenue-office/growth-dna" element={<GrowthDNA />} />
+                     <Route path="/revenue-office/operating-modes" element={<GrowthOperatingModes />} />
+                     <Route path="/revenue-office/synthesis" element={<ChiefRevenueSynthesis />} />
+                     <Route path="/revenue-office/memory-feed" element={<CommercialMemoryFeed />} />
+                     <Route path="/revenue-office/forms" element={<FormsBuilder />} />
+                     <Route path="/revenue-office/segmentation" element={<SegmentationEngine />} />
+                     <Route path="/revenue-office/client-onboarding" element={<ClientOnboarding />} />
+                     <Route path="/revenue-office/automation" element={<AutomationOffice />} />
+                     <Route path="/revenue-office/automation/builder" element={<AutomationBuilder />} />
+                     <Route path="/revenue-office/automation/templates" element={<AutomationTemplates />} />
+                     <Route path="/revenue-office/automation/simulation" element={<AutomationSimLab />} />
+                     <Route path="/revenue-office/automation/health" element={<AutomationHealth />} />
+                     <Route path="/revenue-office/automation/receipts" element={<AutomationReceipts />} />
+                     <Route path="/revenue-office/automation/policy" element={<AutomationPolicy />} />
+                     <Route path="/revenue-office/quotes" element={<QuoteStudio />} />
+                     <Route path="/revenue-office/calls" element={<CallDesk />} />
+                     <Route path="/revenue-office/onboarding" element={<BusinessOnboarding />} />
+                    </Route>
 
                     {/* ═══════════════════════════════════════════════════════════════
                         TIER 4: ADMIN / BUILDER — Platform governance, /admin/* prefix
