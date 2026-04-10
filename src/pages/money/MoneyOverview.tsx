@@ -167,14 +167,14 @@ const MoneyOverview = () => {
               </div>
               {flows.map(f => (
                 <div key={f.label} className="flex items-center gap-3">
-                  <span className="text-xs text-muted-foreground w-40 shrink-0">{f.label}</span>
+                  <span className="text-xs text-muted-foreground w-24 sm:w-40 shrink-0 truncate">{f.label}</span>
                   <div className="flex-1 h-3 bg-secondary/40 rounded-full overflow-hidden">
                     <div className={`h-full rounded-full ${f.color}`} style={{ width: `${Math.max(2, (f.amount / flowTotal) * 100)}%` }} />
                   </div>
-                  <span className="text-xs font-semibold text-foreground w-20 text-right">${f.amount.toLocaleString()}</span>
-                  <span className={`text-[9px] px-1.5 py-0.5 rounded ${f.tag === "locked" ? "bg-urgency-high/10 text-urgency-high" : f.tag === "available" ? "bg-emerald-500/10 text-emerald-500" : f.tag === "watch" ? "bg-amber-500/10 text-amber-500" : f.tag === "secured" ? "bg-primary/10 text-primary" : f.tag === "fix" ? "bg-destructive/10 text-destructive" : "bg-emerald-500/10 text-emerald-500"}`}>
-                    {f.tag}
-                  </span>
+                  <span className="text-xs font-semibold text-foreground w-16 sm:w-20 text-right">${f.amount.toLocaleString()}</span>
+                   <span className={`hidden sm:inline text-[9px] px-1.5 py-0.5 rounded ${f.tag === "locked" ? "bg-urgency-high/10 text-urgency-high" : f.tag === "available" ? "bg-emerald-500/10 text-emerald-500" : f.tag === "watch" ? "bg-amber-500/10 text-amber-500" : f.tag === "secured" ? "bg-primary/10 text-primary" : f.tag === "fix" ? "bg-destructive/10 text-destructive" : "bg-emerald-500/10 text-emerald-500"}`}>
+                     {f.tag}
+                   </span>
                 </div>
               ))}
             </div>
