@@ -27,7 +27,6 @@ import AdvisorActivationScreen from "./screens/AdvisorActivationScreen";
 import FirstWinScreen from "./screens/FirstWinScreen";
 import RevealScreen from "./screens/RevealScreen";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 const screenMap: Record<StageId, React.ComponentType<any>> = {
   ceremony: CeremonyScreen,
@@ -53,7 +52,6 @@ const screenMap: Record<StageId, React.ComponentType<any>> = {
 };
 
 export default function FormationShell() {
-  const { isDemoMode } = useDataMode();
   const [stage, setStage] = useState(0);
   const [state, setState] = useState<OnboardingState>(defaultOnboardingState);
   const [showChapterTransition, setShowChapterTransition] = useState(false);
@@ -70,6 +68,10 @@ export default function FormationShell() {
     if (id === "artifacts" && !state.intakePaths.includes("artifacts")) return true;
     if (id === "url_intake" && !state.intakePaths.includes("urls")) return true;
     if (id === "reconciliation" && state.importedFiles.length === 0 && state.connectedSystems.length === 0) return true;
+    // In balanced mode, skip team and some deep screens
+    if (state.setupDepth === "quick") {
+      if (["team", "shape_summary"].includes(id)) return true;
+    }
     return false;
   }, [state]);
 
@@ -101,13 +103,23 @@ export default function FormationShell() {
   const Screen = screenMap[STAGES[stage].id];
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background relative">
       <h1 className="sr-only">Business Formation</h1>
       <DemoModeBadge />
+
+      {/* Ambient background */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div className="absolute top-1/4 left-1/4 h-96 w-96 rounded-full blur-[160px] transition-opacity duration-1000"
+          style={{ background: "hsl(var(--primary) / 0.03)", opacity: stage > 0 ? 1 : 0.5 }} />
+        <div className="absolute bottom-1/3 right-1/4 h-64 w-64 rounded-full blur-[120px] transition-opacity duration-1000"
+          style={{ background: "hsl(var(--sita-gold) / 0.02)", opacity: stage > 5 ? 1 : 0 }} />
+      </div>
+
       {/* Chapter transition overlay */}
       <AnimatePresence>
         {showChapterTransition && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="fixed inset-0 z-50 bg-background flex items-center justify-center">
+          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 bg-background flex items-center justify-center">
             <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 1.1, opacity: 0 }}>
               <p className="text-2xl font-bold text-foreground text-center">{STAGES[nextStage(stage)]?.chapter}</p>
               <div className="flex justify-center mt-3"><Waves className="h-5 w-5 text-primary animate-pulse" /></div>
@@ -124,6 +136,9 @@ export default function FormationShell() {
               <div className="flex items-center gap-2">
                 <Badge className="bg-primary/10 text-primary text-[9px]">{currentChapter}</Badge>
                 <p className="text-[10px] text-muted-foreground">Step {stage} of {STAGES.length - 1}</p>
+                {state.setupDepth && (
+                  <Badge className="bg-muted text-muted-foreground text-[8px] capitalize">{state.setupDepth} mode</Badge>
+                )}
               </div>
               <p className="text-[10px] text-muted-foreground">{Math.round(pct)}%</p>
             </div>
@@ -134,9 +149,11 @@ export default function FormationShell() {
                 const skipped = shouldSkip(idx);
                 if (skipped) return null;
                 return (
-                  <button key={s.id} onClick={() => setStage(idx)}
+                  <button key={s.id} onClick={() => idx <= stage ? setStage(idx) : null}
                     className={`px-2 py-0.5 rounded-md text-[9px] font-medium whitespace-nowrap transition-all flex-shrink-0 ${
-                      idx === stage ? "bg-primary/10 text-primary" : idx < stage ? "text-emerald-400" : "text-muted-foreground/50 hover:text-muted-foreground"
+                      idx === stage ? "bg-primary/10 text-primary" :
+                      idx < stage ? "text-[hsl(var(--trust-safe))] cursor-pointer" :
+                      "text-muted-foreground/50"
                     }`}>
                     {idx < stage ? <Check className="h-2.5 w-2.5 inline mr-0.5" /> : null}
                     <span className="hidden md:inline">{s.label}</span>
@@ -149,7 +166,7 @@ export default function FormationShell() {
       )}
 
       {/* Content + Sidebar */}
-      <div className="max-w-6xl mx-auto px-6 py-8 flex gap-8">
+      <div className="relative z-[1] max-w-6xl mx-auto px-6 py-8 flex gap-8">
         <div className="flex-1 min-w-0">
           <AnimatePresence mode="wait">
             <motion.div key={STAGES[stage].id} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.25 }}>
