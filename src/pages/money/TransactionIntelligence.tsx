@@ -65,11 +65,11 @@ const DebtCreditOffice = () => {
       <DemoModeBadge />
 
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-        <KPITile label="Transactions" value={stats.total.toString()} icon={Receipt} color="blue" />
-        <KPITile label="AI Categorized" value={stats.aiCategorized.toString()} icon={Sparkles} color="purple" />
-        <KPITile label="Flagged" value={stats.flagged.toString()} icon={AlertTriangle} color="amber" />
-        <KPITile label="Recurring" value={stats.recurring.toString()} icon={Repeat} color="emerald" />
-        <KPITile label="Avg Confidence" value={`${(stats.avgConfidence * 100).toFixed(0)}%`} icon={Shield} color="blue" />
+        <KPITile label="Transactions" value={stats.total.toString()} icon={Receipt} />
+        <KPITile label="AI Categorized" value={stats.aiCategorized.toString()} icon={Sparkles} />
+        <KPITile label="Flagged" value={stats.flagged.toString()} icon={AlertTriangle} />
+        <KPITile label="Recurring" value={stats.recurring.toString()} icon={Repeat} />
+        <KPITile label="Avg Confidence" value={`${(stats.avgConfidence * 100).toFixed(0)}%`} icon={Shield} />
       </div>
 
       {/* Filter Tabs */}

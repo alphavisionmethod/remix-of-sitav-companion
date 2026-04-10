@@ -53,9 +53,9 @@ const BudgetEnvelopeOffice = () => {
 
       {/* KPI Row */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-        <KPITile label="Monthly Income" value={fmt(budget.totalIncomeCents)} icon={DollarSign} color="blue" />
-        <KPITile label="Allocated" value={fmt(budget.totalAllocatedCents)} icon={Wallet} color="emerald" />
-        <KPITile label="Spent So Far" value={fmt(totalSpent)} icon={TrendingUp} color="amber" />
+        <KPITile label="Monthly Income" value={fmt(budget.totalIncomeCents)} icon={DollarSign} />
+        <KPITile label="Allocated" value={fmt(budget.totalAllocatedCents)} icon={Wallet} />
+        <KPITile label="Spent So Far" value={fmt(totalSpent)} icon={TrendingUp} />
         <KPITile label="Available" value={fmt(totalAvailable)} icon={PiggyBank}
           color={totalAvailable >= 0 ? "emerald" : "red"} />
         <KPITile label="Unallocated" value={fmt(budget.unallocatedCents)} icon={AlertTriangle}

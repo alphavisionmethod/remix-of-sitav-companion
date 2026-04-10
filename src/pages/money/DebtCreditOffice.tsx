@@ -41,8 +41,8 @@ const DebtCreditOffice = () => {
 
       {/* KPI Row */}
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-        <KPITile label="Total Debt" value={fmt(profile.totalDebtCents)} icon={CreditCard} color="amber" />
-        <KPITile label="Monthly Interest Drag" value={fmt(profile.interestDragMonthlyCents)} icon={TrendingDown} color="red" />
+        <KPITile label="Total Debt" value={fmt(profile.totalDebtCents)} icon={CreditCard} />
+        <KPITile label="Monthly Interest Drag" value={fmt(profile.interestDragMonthlyCents)} icon={TrendingDown} />
         <KPITile label="Utilization" value={`${profile.utilizationPercent.toFixed(0)}%`} icon={<BarChart3 className="h-4 w-4" />}
           color={profile.utilizationPercent < 30 ? "emerald" : "amber"} />
         <KPITile label="DTI Ratio" value={`${profile.debtToIncomeRatio.toFixed(0)}%`} icon={Target}
