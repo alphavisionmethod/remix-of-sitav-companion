@@ -21,7 +21,7 @@ export default function DecisionTheater() {
   const setDecisionState = (idx: number, state: DecisionState) => setDecisionStates(prev => ({ ...prev, [idx]: state }));
   const setScenarioState = (idx: number, state: "pending" | "approved" | "rejected") => setScenarioStates(prev => ({ ...prev, [idx]: state }));
 
-  const stateColor = (s: DecisionState) => s === "approved" ? "text-[hsl(var(--trust-safe))]" : s === "executed" ? "text-primary" : s === "review" ? "text-orange-400" : "text-muted-foreground";
+  const getStateColor = (s: DecisionState) => s === "approved" ? "text-[hsl(var(--trust-safe))]" : s === "executed" ? "text-primary" : s === "review" ? "text-orange-400" : "text-muted-foreground";
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
