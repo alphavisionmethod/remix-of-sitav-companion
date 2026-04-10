@@ -60,11 +60,17 @@ const NAV_ITEMS = [
   { label: "PLT: Feature Compliance", path: "/admin/platform-law/feature-compliance", icon: Target, group: "Navigation" },
   { label: "PLT: Launch Enforcement", path: "/admin/platform-law/launch-enforcement", icon: Rocket, group: "Navigation" },
   { label: "PLT: Drift Radar", path: "/admin/platform-law/drift-radar", icon: Activity, group: "Navigation" },
-  { label: "RA: Reality Classification Matrix", path: "/admin/reality-audit", icon: Eye, group: "Reality Audit" },
-  { label: "RA: Mock Replacement Program", path: "/admin/reality-audit/mock-replacement", icon: RefreshCw, group: "Reality Audit" },
-  { label: "RA: Core Service Persistence", path: "/admin/reality-audit/core-persistence", icon: Database, group: "Reality Audit" },
-  { label: "RA: Runtime Truth Gate", path: "/admin/reality-audit/runtime-truth", icon: Shield, group: "Reality Audit" },
-  { label: "RA: Launch Honesty Board", path: "/admin/reality-audit/launch-honesty", icon: Target, group: "Reality Audit" },
+  { label: "RCP: Overview", path: "/admin/reality-audit/overview", icon: Activity, group: "Reality Conversion" },
+  { label: "RCP: Classification Matrix", path: "/admin/reality-audit", icon: Eye, group: "Reality Conversion" },
+  { label: "RCP: Mock Replacement Board", path: "/admin/reality-audit/mock-replacement", icon: RefreshCw, group: "Reality Conversion" },
+  { label: "RCP: Mock Source Inventory", path: "/admin/reality-audit/mock-sources", icon: Eye, group: "Reality Conversion" },
+  { label: "RCP: Core Services", path: "/admin/reality-audit/core-persistence", icon: Database, group: "Reality Conversion" },
+  { label: "RCP: Route Heatmap", path: "/admin/reality-audit/route-heatmap", icon: Target, group: "Reality Conversion" },
+  { label: "RCP: Contract Readiness", path: "/admin/reality-audit/contract-readiness", icon: Shield, group: "Reality Conversion" },
+  { label: "RCP: Launch Honesty", path: "/admin/reality-audit/launch-honesty", icon: Target, group: "Reality Conversion" },
+  { label: "RCP: Wave Planner", path: "/admin/reality-audit/wave-planner", icon: Activity, group: "Reality Conversion" },
+  { label: "RCP: Progress Timeline", path: "/admin/reality-audit/progress", icon: Activity, group: "Reality Conversion" },
+  { label: "RCP: Runtime Validation", path: "/admin/reality-audit/runtime-truth", icon: Shield, group: "Reality Conversion" },
 ];
 
 const ACTION_ITEMS = [

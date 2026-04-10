@@ -1,12 +1,19 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Database, AlertTriangle, CheckCircle, ArrowRight } from "lucide-react";
-import { CORE_SERVICE_PERSISTENCE, getCoreServiceHealth } from "@/lib/reality-audit/reality-audit-registry";
+import { Database, AlertTriangle, ArrowRight } from "lucide-react";
+import { CORE_SERVICE_PERSISTENCE, getCoreServiceHealth, type PromiseSeverity } from "@/lib/reality-audit/reality-audit-registry";
 
 const stateColors: Record<string, string> = {
   "in-memory": "text-red-400 bg-red-500/10 border-red-500/30",
   "partially-persisted": "text-amber-400 bg-amber-500/10 border-amber-500/30",
   "fully-persisted": "text-emerald-400 bg-emerald-500/10 border-emerald-500/30",
+};
+
+const severityColors: Record<PromiseSeverity, string> = {
+  critical: "text-red-400 bg-red-500/10",
+  high: "text-amber-400 bg-amber-500/10",
+  medium: "text-blue-400 bg-blue-500/10",
+  low: "text-muted-foreground bg-muted/30",
 };
 
 const CoreServicePersistence = () => {
@@ -17,7 +24,7 @@ const CoreServicePersistence = () => {
       <div className="flex items-center gap-3">
         <div className="p-2 rounded-lg bg-primary/10"><Database className="h-6 w-6 text-primary" /></div>
         <div>
-          <h1 className="text-2xl font-bold">Core Service Persistence Program</h1>
+          <h1 className="text-2xl font-bold">Simulated Core Services Board</h1>
           <p className="text-sm text-muted-foreground">Converting in-memory OS core into durable, persistent services</p>
         </div>
       </div>
@@ -36,7 +43,22 @@ const CoreServicePersistence = () => {
         ))}
       </div>
 
-      {/* Service cards */}
+      {/* StateLossSeverityCards */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        {(["critical", "high", "medium", "low"] as PromiseSeverity[]).map(sev => {
+          const count = CORE_SERVICE_PERSISTENCE.filter(s => s.stateLossSeverity === sev).length;
+          return count > 0 ? (
+            <Card key={sev} className="bg-card/50">
+              <CardContent className="p-3 text-center">
+                <div className={`text-lg font-bold ${severityColors[sev].split(" ")[0]}`}>{count}</div>
+                <div className="text-[10px] text-muted-foreground capitalize">{sev} State Loss</div>
+              </CardContent>
+            </Card>
+          ) : null;
+        })}
+      </div>
+
+      {/* Service cards with usage domains and dependencies */}
       <div className="space-y-4">
         {CORE_SERVICE_PERSISTENCE.map(s => (
           <Card key={s.id} className={s.currentState === "in-memory" && s.priority === "P0" ? "border-red-500/30" : ""}>
@@ -45,27 +67,42 @@ const CoreServicePersistence = () => {
                 <CardTitle className="text-sm flex items-center gap-2">
                   <Database className="h-4 w-4" /> {s.serviceName}
                   <Badge variant={s.priority === "P0" ? "destructive" : "secondary"} className="text-[10px]">{s.priority}</Badge>
+                  <span className={`text-[10px] px-2 py-0.5 rounded ${severityColors[s.stateLossSeverity]}`}>{s.stateLossSeverity} loss</span>
                 </CardTitle>
                 <span className={`text-[10px] px-2 py-0.5 rounded border ${stateColors[s.currentState]}`}>{s.currentState}</span>
               </div>
             </CardHeader>
             <CardContent className="space-y-3 text-sm">
-              {/* Current → Target */}
               <div className="flex items-center gap-2 text-xs">
                 <span className={`px-2 py-1 rounded border ${stateColors[s.currentState]}`}>{s.currentState}</span>
                 <ArrowRight className="h-3 w-3 text-muted-foreground" />
                 <span className="px-2 py-1 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">{s.persistenceTarget}</span>
               </div>
 
+              {/* Usage domains */}
+              <div>
+                <span className="text-muted-foreground text-xs">Usage Domains</span>
+                <div className="flex flex-wrap gap-1 mt-0.5">
+                  {s.usageDomains.map(d => <Badge key={d} variant="secondary" className="text-[10px] capitalize">{d}</Badge>)}
+                </div>
+              </div>
+
+              {/* Dependencies */}
+              {s.dependsOn.length > 0 && (
+                <div>
+                  <span className="text-muted-foreground text-xs">Depends On</span>
+                  <div className="flex flex-wrap gap-1 mt-0.5">
+                    {s.dependsOn.map(dep => {
+                      const depService = CORE_SERVICE_PERSISTENCE.find(cs => cs.id === dep);
+                      return <Badge key={dep} variant="outline" className="text-[10px]">{depService?.serviceName || dep}</Badge>;
+                    })}
+                  </div>
+                </div>
+              )}
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div>
-                  <span className="text-muted-foreground text-xs">Event Model</span>
-                  <p className="text-xs mt-0.5">{s.eventModel}</p>
-                </div>
-                <div>
-                  <span className="text-muted-foreground text-xs">Projection Model</span>
-                  <p className="text-xs mt-0.5">{s.projectionModel}</p>
-                </div>
+                <div><span className="text-muted-foreground text-xs">Event Model</span><p className="text-xs mt-0.5">{s.eventModel}</p></div>
+                <div><span className="text-muted-foreground text-xs">Projection Model</span><p className="text-xs mt-0.5">{s.projectionModel}</p></div>
               </div>
 
               <div>
@@ -81,11 +118,9 @@ const CoreServicePersistence = () => {
         ))}
       </div>
 
-      {/* Migration path */}
+      {/* Migration order */}
       <Card>
-        <CardHeader className="pb-3">
-          <CardTitle className="text-sm">Recommended Migration Order</CardTitle>
-        </CardHeader>
+        <CardHeader className="pb-3"><CardTitle className="text-sm">Recommended Migration Order</CardTitle></CardHeader>
         <CardContent>
           <div className="flex flex-wrap items-center gap-2">
             {CORE_SERVICE_PERSISTENCE.filter(s => s.priority === "P0").map((s, i) => (
@@ -101,6 +136,30 @@ const CoreServicePersistence = () => {
                 {i < CORE_SERVICE_PERSISTENCE.filter(x => x.priority === "P1").length - 1 && <ArrowRight className="h-4 w-4 text-muted-foreground" />}
               </div>
             ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* UsageDependencyMap */}
+      <Card>
+        <CardHeader className="pb-3"><CardTitle className="text-sm">Dependency Map</CardTitle></CardHeader>
+        <CardContent>
+          <div className="space-y-2">
+            {CORE_SERVICE_PERSISTENCE.filter(s => s.dependsOn.length > 0).map(s => (
+              <div key={s.id} className="flex items-center gap-2 text-xs p-2 rounded bg-muted/30">
+                <span className="font-medium">{s.serviceName}</span>
+                <span className="text-muted-foreground">depends on</span>
+                {s.dependsOn.map(dep => {
+                  const depService = CORE_SERVICE_PERSISTENCE.find(cs => cs.id === dep);
+                  return <Badge key={dep} variant="outline" className="text-[10px]">{depService?.serviceName || dep}</Badge>;
+                })}
+              </div>
+            ))}
+            {CORE_SERVICE_PERSISTENCE.filter(s => s.dependsOn.length === 0).length > 0 && (
+              <div className="text-[10px] text-muted-foreground">
+                {CORE_SERVICE_PERSISTENCE.filter(s => s.dependsOn.length === 0).map(s => s.serviceName).join(", ")} — no dependencies (can migrate independently)
+              </div>
+            )}
           </div>
         </CardContent>
       </Card>
