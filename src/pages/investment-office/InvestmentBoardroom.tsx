@@ -126,9 +126,11 @@ export default function InvestmentBoardroom() {
             { label: "Execute", path: "/investments/execute" },
             { label: "Research", path: "/investments/research" },
             { label: "Risk", path: "/investments/risk" },
+            { label: "Knowledge Graph", path: "/investments/knowledge-graph", icon: Network },
           ].map(l => (
             <button key={l.path} onClick={() => navigate(l.path)}
-              className="rounded-lg bg-secondary px-3 py-2 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors">
+              className="rounded-lg bg-secondary px-3 py-2 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5">
+              {l.icon && <l.icon className="h-3 w-3" />}
               {l.label}
             </button>
           ))}
