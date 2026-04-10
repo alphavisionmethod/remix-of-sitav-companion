@@ -29,6 +29,7 @@ const LT03E2EJourneyBoard = () => {
 
   return (
     <div className="space-y-6 p-6">
+      <LTSubNav />
       <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold">E2E Journey Board</h1>

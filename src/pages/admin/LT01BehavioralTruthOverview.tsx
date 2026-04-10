@@ -52,6 +52,7 @@ const LT01BehavioralTruthOverview = () => {
 
   return (
     <div className="space-y-6 p-6">
+      <LTSubNav />
       <DemoModeBadge />
       <div className="flex items-center justify-between">
         <div>

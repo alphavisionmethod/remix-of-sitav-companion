@@ -37,6 +37,7 @@ const LT02CIPipelineCenter = () => {
 
   return (
     <div className="space-y-6 p-6">
+      <LTSubNav />
       <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold">CI Pipeline Center</h1>

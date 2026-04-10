@@ -25,6 +25,7 @@ const LT06RouteInteractionTruth = () => {
 
   return (
     <div className="space-y-6 p-6">
+      <LTSubNav />
       <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold">P0 Route & Interaction Truth</h1>

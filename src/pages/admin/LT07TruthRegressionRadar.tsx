@@ -31,6 +31,7 @@ const LT07TruthRegressionRadar = () => {
 
   return (
     <div className="space-y-6 p-6">
+      <LTSubNav />
       <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold">Truth Regression Radar</h1>

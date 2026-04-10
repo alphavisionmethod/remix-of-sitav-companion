@@ -53,6 +53,7 @@ const LT05LaunchGateBoard = () => {
 
   return (
     <div className="space-y-6 p-6">
+      <LTSubNav />
       <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold">Launch Gate Board</h1>
