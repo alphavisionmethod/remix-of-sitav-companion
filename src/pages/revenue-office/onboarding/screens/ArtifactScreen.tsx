@@ -4,8 +4,6 @@ import { FileText, DollarSign, Package, Phone, MessageSquare, ClipboardList, Glo
 import { Toggle, ScreenHeader } from "../primitives";
 import type { ScreenProps } from "../types";
 import { useCallback } from "react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 const artifacts = [
   { id: "price_sheets", label: "Price sheets", icon: DollarSign, inference: "Pricing logic for automated quoting" },
@@ -25,7 +23,7 @@ const artifacts = [
 ];
 
 export default function ArtifactScreen({ state, setState }: ScreenProps) {
-  const { isDemoMode } = useDataMode();
+  
   const toggle = useCallback((v: string) => {
     setState(p => ({ ...p, uploadedArtifacts: p.uploadedArtifacts.includes(v) ? p.uploadedArtifacts.filter(x => x !== v) : [...p.uploadedArtifacts, v] }));
   }, [setState]);
@@ -34,7 +32,7 @@ export default function ArtifactScreen({ state, setState }: ScreenProps) {
 
   return (
     <div className="space-y-6">
-      <DemoModeBadge />
+      
       <ScreenHeader icon={FileText} title="Upload your business materials" subtitle="SITA uses these to understand your service model, pricing, onboarding, and offers" color="text-purple-400" />
       <div className="grid md:grid-cols-2 gap-2">
         {artifacts.map(a => <Toggle key={a.id} label={a.label} icon={a.icon} selected={state.uploadedArtifacts.includes(a.id)} onToggle={() => toggle(a.id)} />)}

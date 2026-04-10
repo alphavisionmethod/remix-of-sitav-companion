@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import AutomationSubNav from "./AutomationSubNav";
 import { DEMO_REV_categories as DEMO_categories, DEMO_templates } from "@/lib/demo-data/revenue-office";
 
 const RECENTLY_USED = [
@@ -36,6 +37,7 @@ export default function AutomationTemplates() {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
       <DemoModeBadge />
+      <AutomationSubNav />
       <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
           <Layout className="h-6 w-6 text-primary" />Automation Template Gallery

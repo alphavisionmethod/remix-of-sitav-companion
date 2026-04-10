@@ -12,6 +12,7 @@ import {
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import AutomationSubNav from "./AutomationSubNav";
 import { DEMO_receipts, DEMO_WHY_SENT } from "@/lib/demo-data/revenue-office";
 
 const categoryIcons: Record<string, typeof Mail> = {
@@ -37,6 +38,7 @@ export default function AutomationReceipts() {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
       <DemoModeBadge />
+      <AutomationSubNav />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Receipt className="h-6 w-6 text-blue-400" />Automation Receipts & History</h1>

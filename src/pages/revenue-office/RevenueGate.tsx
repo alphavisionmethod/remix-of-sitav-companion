@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { TrendingUp, Users, Target, Zap, ArrowRight, BarChart3, AlertTriangle, Sparkles, Shield, Activity, CheckCircle, XCircle } from "lucide-react";
+import { TrendingUp, Users, Target, Zap, ArrowRight, BarChart3, AlertTriangle, Sparkles, Shield, Activity, CheckCircle, XCircle, FileText } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -107,6 +107,27 @@ export default function RevenueGate() {
         </Card>
 
         <Card className="bg-card/50 border-border/50">
+          <CardHeader className="pb-3"><CardTitle className="text-sm font-medium text-muted-foreground">Workspaces</CardTitle></CardHeader>
+          <CardContent className="space-y-2">
+            {[
+              { label: "Automation Office", path: "/revenue-office/automation", icon: Zap, desc: "Build, simulate, and monitor automations" },
+              { label: "Quote Studio", path: "/revenue-office/quotes", icon: FileText, desc: "Generate and track quotes & proposals" },
+              { label: "Call Desk", path: "/revenue-office/calls", icon: Activity, desc: "Call queue, prep, and post-call flows" },
+              { label: "Growth Advisors", path: "/revenue-office/advisors", icon: Sparkles, desc: "AI advisor board with strategic insights" },
+              { label: "Business Formation", path: "/revenue-office/onboarding", icon: Target, desc: "Re-run onboarding and calibration" },
+            ].map(w => (
+              <Button key={w.label} variant="ghost" className="w-full justify-between text-foreground hover:bg-accent/50 h-auto py-2" onClick={() => navigate(w.path)}>
+                <span className="flex items-center gap-2 text-left">
+                  <w.icon className="w-4 h-4 text-primary flex-shrink-0" />
+                  <span><span className="block text-sm">{w.label}</span><span className="block text-[10px] text-muted-foreground font-normal">{w.desc}</span></span>
+                </span>
+                <ArrowRight className="w-3 h-3 text-muted-foreground flex-shrink-0" />
+              </Button>
+            ))}
+          </CardContent>
+        </Card>
+
+        <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm font-medium text-muted-foreground">What Changed</CardTitle></CardHeader>
           <CardContent className="space-y-3">
             {whatChanged.map((w, i) => (
@@ -117,7 +138,9 @@ export default function RevenueGate() {
             ))}
           </CardContent>
         </Card>
+      </div>
 
+      <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2"><Sparkles className="w-3.5 h-3.5 text-primary" /> Advisor Signals</CardTitle></CardHeader>
           <CardContent className="space-y-4">

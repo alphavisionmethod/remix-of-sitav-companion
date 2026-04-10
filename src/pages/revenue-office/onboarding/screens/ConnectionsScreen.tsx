@@ -2,8 +2,6 @@ import { Globe, Mail, Calendar, DollarSign, ShoppingCart, GraduationCap, FileTex
 import { Toggle, SectionTitle, ScreenHeader } from "../primitives";
 import type { ScreenProps } from "../types";
 import { useCallback } from "react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 const systems = [
   { id: "hubspot", label: "HubSpot", icon: Globe, cat: "CRM" },
@@ -26,14 +24,14 @@ const systems = [
 ];
 
 export default function ConnectionsScreen({ state, setState }: ScreenProps) {
-  const { isDemoMode } = useDataMode();
+  
   const toggle = useCallback((v: string) => {
     setState(p => ({ ...p, connectedSystems: p.connectedSystems.includes(v) ? p.connectedSystems.filter(x => x !== v) : [...p.connectedSystems, v] }));
   }, [setState]);
 
   return (
     <div className="space-y-6">
-      <DemoModeBadge />
+      
       <ScreenHeader icon={Globe} title="Connect live systems" subtitle="Select the tools you use — connection setup happens after formation" color="text-blue-400" />
       <div className="grid md:grid-cols-2 gap-2">
         {systems.map(s => <Toggle key={s.id} label={s.label} desc={s.cat} icon={s.icon} selected={state.connectedSystems.includes(s.id)} onToggle={() => toggle(s.id)} />)}

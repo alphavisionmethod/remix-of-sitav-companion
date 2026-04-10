@@ -2,8 +2,6 @@ import { Globe, Phone, MessageSquare, FileText, ShoppingCart, MapPin, Users, Mai
 import { Toggle, SectionTitle, ScreenHeader } from "../primitives";
 import type { ScreenProps } from "../types";
 import { useCallback } from "react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 const preBuyOptions = [
   { id: "discover_online", label: "Discover me online", icon: Globe },
@@ -31,7 +29,7 @@ const closeOptions = [
 ];
 
 export default function ConversionScreen({ state, setState }: ScreenProps) {
-  const { isDemoMode } = useDataMode();
+  
   const toggleBuy = useCallback((v: string) => {
     setState(p => ({ ...p, preBuyBehavior: p.preBuyBehavior.includes(v) ? p.preBuyBehavior.filter(x => x !== v) : [...p.preBuyBehavior, v] }));
   }, [setState]);
@@ -41,7 +39,7 @@ export default function ConversionScreen({ state, setState }: ScreenProps) {
 
   return (
     <div className="space-y-6">
-      <DemoModeBadge />
+      
       <ScreenHeader icon={ShoppingCart} title="How do people usually become customers?" subtitle="This maps your conversion motion and funnel structure" color="text-purple-400" />
       <div>
         <SectionTitle hint="Select all that apply">What do customers do before they buy?</SectionTitle>

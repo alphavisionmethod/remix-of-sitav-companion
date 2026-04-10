@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import AutomationSubNav from "./AutomationSubNav";
 
 const sampleNodes = [
   { id: 1, type: "trigger", label: "Lead enters 'Stale' status (>48hrs no contact)", icon: Zap, color: "bg-amber-500/10 border-amber-500/30 text-amber-400" },
@@ -82,6 +83,7 @@ export default function AutomationBuilder() {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
       <DemoModeBadge />
+      <AutomationSubNav />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">

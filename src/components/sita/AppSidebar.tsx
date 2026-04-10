@@ -21,7 +21,14 @@ const primaryNav = [
   { title: "Life Dashboard", url: "/life", icon: Heart },
   { title: "Business", url: "/business", icon: Briefcase },
   { title: "Money", url: "/money", icon: DollarSign },
-  { title: "Revenue Office", url: "/revenue-office", icon: TrendingUp },
+  { title: "Revenue Office", url: "/revenue-office", icon: TrendingUp, subItems: [
+    { title: "Boardroom", url: "/revenue-office/boardroom", icon: BarChart3 },
+    { title: "Automation", url: "/revenue-office/automation", icon: Workflow },
+    { title: "Advisors", url: "/revenue-office/advisors", icon: Brain },
+    { title: "Quotes", url: "/revenue-office/quotes", icon: FileText },
+    { title: "Calls", url: "/revenue-office/calls", icon: Headphones },
+    { title: "Formation", url: "/revenue-office/onboarding", icon: Sparkles },
+  ]},
   { title: "Investment Office", url: "/money/investments", icon: Landmark },
   { title: "Concierge", url: "/concierge", icon: Headphones },
   { title: "Files", url: "/files", icon: FolderOpen },
@@ -112,6 +119,55 @@ const NavItems = ({ items, collapsed }: { items: typeof primaryNav; collapsed: b
     <SidebarMenu>
       {items.map((item) => {
         const active = isActive(item.url);
+        const hasSubItems = "subItems" in item && Array.isArray((item as any).subItems);
+        const subItems = hasSubItems ? (item as any).subItems as typeof primaryNav : [];
+        const subActive = subItems.some((sub: any) => isActive(sub.url));
+
+        if (hasSubItems && !collapsed) {
+          return (
+            <SidebarMenuItem key={item.title}>
+              <Collapsible defaultOpen={active || subActive}>
+                <CollapsibleTrigger className="w-full">
+                  <div className={cn(
+                    "flex items-center gap-3 rounded-lg px-3 py-2 text-[13px] font-medium transition-all duration-200 w-full",
+                    active || subActive
+                      ? "bg-primary/8 text-foreground shadow-xs border border-primary/10"
+                      : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                  )}>
+                    <item.icon className={cn("h-[18px] w-[18px] shrink-0", (active || subActive) && "text-primary")} strokeWidth={1.8} />
+                    <span className="flex-1 text-left">{item.title}</span>
+                    <ChevronRight className="h-3 w-3 text-muted-foreground/40 transition-transform duration-200 group-data-[state=open]:rotate-90" />
+                  </div>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <div className="ml-4 mt-1 space-y-0.5 border-l border-border/30 pl-3">
+                    {subItems.map((sub: any) => {
+                      const subIsActive = isActive(sub.url);
+                      return (
+                        <SidebarMenuButton key={sub.title} asChild isActive={subIsActive}>
+                          <NavLink
+                            to={sub.url}
+                            className={cn(
+                              "flex items-center gap-2 rounded-md px-2 py-1.5 text-[12px] font-medium transition-all duration-200",
+                              subIsActive
+                                ? "text-primary bg-primary/5"
+                                : "text-muted-foreground hover:text-foreground hover:bg-muted/50"
+                            )}
+                            activeClassName=""
+                          >
+                            <sub.icon className={cn("h-3.5 w-3.5 shrink-0", subIsActive && "text-primary")} strokeWidth={1.8} />
+                            <span>{sub.title}</span>
+                          </NavLink>
+                        </SidebarMenuButton>
+                      );
+                    })}
+                  </div>
+                </CollapsibleContent>
+              </Collapsible>
+            </SidebarMenuItem>
+          );
+        }
+
         return (
           <SidebarMenuItem key={item.title}>
             <SidebarMenuButton asChild isActive={active}>
