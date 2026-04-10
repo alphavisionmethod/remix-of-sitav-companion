@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useSitaOS } from "@/contexts/SitaOSContext";
+import { useAuth } from "@/contexts/AuthContext";
 import type { IntentSource, IntentResolution } from "@/lib/services/intent-orchestrator/intent-orchestrator";
 import type { AttentionStack } from "@/lib/services/attention-os/attention-os";
 import type { MeetingContext } from "@/lib/services/personal-graph/personal-operating-graph";
@@ -48,7 +49,8 @@ export interface OSOrchestrationAPI {
 
 export function useOSOrchestration(): OSOrchestrationAPI {
   const kernel = useSitaOS();
-  const userId = "current-user"; // Placeholder — replaced by auth context in real usage
+  const { user } = useAuth();
+  const userId = user?.id ?? "anonymous";
 
   return {
     hydrated: kernel.hydrated,
