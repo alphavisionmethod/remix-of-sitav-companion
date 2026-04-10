@@ -2526,4 +2526,45 @@ const LiveActivityFeed = () => {
   );
 };
 
+// ── Founder Bottleneck Card ──────────────────────
+function FounderBottleneckCard() {
+  const engine = useMemo(() => new FounderBottleneckEngine(), []);
+  const active = useMemo(() => engine.getActive(), [engine]);
+  const cost = useMemo(() => engine.getTotalCost(), [engine]);
+  const section = useMemo(() => engine.getBoardroomSection(), [engine]);
+
+  return (
+    <SitaCard hover={false} className="p-5">
+      <div className="flex items-center gap-3 mb-3">
+        <div className={cn("flex h-9 w-9 items-center justify-center rounded-xl", section.severity === "critical" ? "bg-destructive/10" : section.severity === "warning" ? "bg-amber-500/10" : "bg-primary/10")}>
+          <Target className={cn("h-5 w-5", section.severity === "critical" ? "text-destructive" : section.severity === "warning" ? "text-amber-500" : "text-primary")} />
+        </div>
+        <div className="flex-1">
+          <p className="text-sm font-bold text-foreground">Founder Bottleneck</p>
+          <p className="text-[10px] text-muted-foreground">{section.summary}</p>
+        </div>
+        <Badge variant="outline" className="text-[9px]">{active.length} active</Badge>
+      </div>
+      <div className="grid grid-cols-3 gap-3">
+        {section.metrics.map(m => (
+          <div key={m.label} className="text-center rounded-lg border border-border/30 bg-secondary/20 py-2">
+            <p className="text-lg font-bold text-foreground">{m.value}</p>
+            <p className="text-[9px] text-muted-foreground">{m.label}</p>
+          </div>
+        ))}
+      </div>
+      {section.actionItems.length > 0 && (
+        <div className="mt-3 space-y-1">
+          {section.actionItems.map((a, i) => (
+            <div key={i} className="flex items-center gap-2 text-[10px] text-muted-foreground">
+              <div className={cn("h-1.5 w-1.5 rounded-full shrink-0", a.priority === "high" ? "bg-destructive" : "bg-amber-500")} />
+              {a.description}
+            </div>
+          ))}
+        </div>
+      )}
+    </SitaCard>
+  );
+}
+
 export default OwnerCenter;
