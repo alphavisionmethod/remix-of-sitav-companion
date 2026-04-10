@@ -170,3 +170,47 @@ export function classifyTask(
   if (taskType === "deep-analysis" || taskType === "boardroom") return "D";
   return "B";
 }
+
+// ── Full Task Classification (Spec 3.2) ────────────────────
+
+export interface TaskClassification {
+  taskClass: CostClass;
+  estimatedCostBand: "micro" | "low" | "mid" | "high" | "premium";
+  allowedModelTiers: ComputeModelTier[];
+  maxContextBudget: number;
+  syncOrAsyncPreference: "sync" | "async" | "either";
+  escalationPolicy: "none" | "approval_required" | "operator_override" | "enterprise_only";
+}
+
+/**
+ * Full task classification returning all 6 spec-mandated fields.
+ * Combines classifyTask + COST_CLASS_SPECS lookup.
+ */
+export function classifyTaskFull(
+  taskType: string,
+  riskLevel: "low" | "medium" | "high" | "critical",
+  isProactive: boolean,
+): TaskClassification {
+  const taskClass = classifyTask(taskType, riskLevel, isProactive);
+  const spec = COST_CLASS_SPECS[taskClass];
+
+  const costBandMap: Record<CostClass, TaskClassification["estimatedCostBand"]> = {
+    A: "micro", B: "low", C: "high", D: "premium",
+  };
+
+  const asyncPref: TaskClassification["syncOrAsyncPreference"] =
+    spec.asyncPreferred ? "async" : taskClass === "A" ? "either" : "sync";
+
+  let escalation: TaskClassification["escalationPolicy"] = "none";
+  if (taskClass === "D") escalation = riskLevel === "critical" ? "enterprise_only" : "operator_override";
+  else if (spec.approvalRequired) escalation = "approval_required";
+
+  return {
+    taskClass,
+    estimatedCostBand: costBandMap[taskClass],
+    allowedModelTiers: [...spec.allowedTiers],
+    maxContextBudget: spec.maxTokens,
+    syncOrAsyncPreference: asyncPref,
+    escalationPolicy: escalation,
+  };
+}

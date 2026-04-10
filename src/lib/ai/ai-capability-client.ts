@@ -7,6 +7,7 @@
 import { supabase } from "@/integrations/supabase/client";
 import { normalizeGatewayResponse } from "./ai-response-normalizer";
 import type { AICapabilityRequest, AIResponseEnvelope } from "./ai-state-types";
+import { enforceAIBudget } from "@/lib/ai-gateway/budget-gate";
 
 const AI_GATEWAY_FUNCTION = "ai-gateway";
 
@@ -20,6 +21,16 @@ export async function invokeAICapability(
   const { capabilityKey, messages, taskClass, maxTokens, temperature, stream } = request;
 
   try {
+    // Budget gate check before invocation
+    const budgetCheck = await enforceAIBudget(capabilityKey, 0.05);
+    if (!budgetCheck.allowed) {
+      return normalizeGatewayResponse(
+        { error: `Budget policy blocked: ${budgetCheck.reason}` },
+        capabilityKey,
+        429,
+      );
+    }
+
     const { data, error } = await supabase.functions.invoke(AI_GATEWAY_FUNCTION, {
       body: {
         capabilityId: capabilityKey,
