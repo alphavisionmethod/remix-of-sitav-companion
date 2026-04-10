@@ -17,12 +17,13 @@ const COUNCIL_AGENTS: Record<string, string[]> = {
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
-  // Zod input validation
+  // Parse body once — Deno Request.json() can only be called once
+  let parsedBody: Record<string, unknown> = {};
   if (req.method === "POST" || req.method === "PUT" || req.method === "PATCH") {
     try {
+      parsedBody = await req.json();
       const BodySchema = z.object({ agent_id: z.string().min(1), query: z.string().optional(), context: z.record(z.unknown()).optional() });
-      const body = await req.json();
-      const parsed = BodySchema.safeParse(body);
+      const parsed = BodySchema.safeParse(parsedBody);
       if (!parsed.success) {
         return new Response(JSON.stringify({ error: "Validation failed", details: parsed.error.flatten().fieldErrors }), {
           status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" }
@@ -52,7 +53,7 @@ serve(async (req) => {
     }
 
     const url = new URL(req.url);
-    const { action = "fleet-status" } = req.method === "POST" ? await req.json() : { action: url.searchParams.get("action") || "fleet-status" };
+    const { action = "fleet-status" } = req.method === "POST" ? parsedBody as { action?: string } : { action: url.searchParams.get("action") || "fleet-status" };
 
     switch (action) {
       // ── Fleet Status ──
