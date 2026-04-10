@@ -36,12 +36,13 @@ serve(async (req) => {
     return new Response("ok", { headers: corsHeaders });
   }
 
-  // Input validation
+  // Parse body once — Deno Request.json() can only be called once
+  let parsedBody: Record<string, unknown> = {};
   if (req.method === "POST" || req.method === "PUT" || req.method === "PATCH") {
     try {
+      parsedBody = await req.json();
       const BodySchema = z.object({ connector: z.string().min(1), action: z.string().min(1), payload: z.record(z.unknown()).optional() });
-      const body = await req.json();
-      const parsed = BodySchema.safeParse(body);
+      const parsed = BodySchema.safeParse(parsedBody);
       if (!parsed.success) {
         return new Response(JSON.stringify({ error: "Validation failed", details: parsed.error.flatten().fieldErrors }), {
           status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" }
@@ -83,8 +84,8 @@ serve(async (req) => {
       );
     }
 
-    // Parse request
-    const { connector, action, payload } = await req.json();
+    // Use pre-parsed body
+    const { connector, action, payload } = parsedBody as { connector: string; action: string; payload?: Record<string, unknown> };
 
     if (!connector || !action) {
       return new Response(

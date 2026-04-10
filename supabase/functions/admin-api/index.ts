@@ -50,18 +50,21 @@ function parseEndpoint(req: Request, body: Record<string, unknown>): { endpoint:
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
-  // Zod input validation
-  if (req.method === "POST" || req.method === "PUT" || req.method === "PATCH") {
+  // Parse body once — Deno Request.json() can only be called once
+  let parsedBody: Record<string, unknown> = {};
+  if (req.method === "POST" || req.method === "PUT" || req.method === "PATCH" || req.method === "DELETE") {
     try {
-      const BodySchema = z.object({ action: z.string().min(1), target: z.string().optional(), params: z.record(z.unknown()).optional() });
-      const body = await req.json();
-      const parsed = BodySchema.safeParse(body);
-      if (!parsed.success) {
-        return new Response(JSON.stringify({ error: "Validation failed", details: parsed.error.flatten().fieldErrors }), {
-          status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" }
-        });
+      parsedBody = await req.json();
+      if (req.method !== "DELETE") {
+        const BodySchema = z.object({ action: z.string().min(1), target: z.string().optional(), params: z.record(z.unknown()).optional() });
+        const parsed = BodySchema.safeParse(parsedBody);
+        if (!parsed.success) {
+          return new Response(JSON.stringify({ error: "Validation failed", details: parsed.error.flatten().fieldErrors }), {
+            status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" }
+          });
+        }
       }
-    } catch (_) { /* non-JSON or GET */ }
+    } catch (_) { /* non-JSON */ parsedBody = {}; }
   }
 
   try {
@@ -76,10 +79,7 @@ serve(async (req) => {
 
     const url = new URL(req.url);
     const method = req.method;
-    let body: Record<string, unknown> = {};
-    if (method === "POST" || method === "PUT" || method === "PATCH" || method === "DELETE") {
-      try { body = await req.json(); } catch { body = {}; }
-    }
+    const body = parsedBody;
 
     const { endpoint, subId, subAction } = parseEndpoint(req, body);
     const days = parseInt(url.searchParams.get("days") || "7");
