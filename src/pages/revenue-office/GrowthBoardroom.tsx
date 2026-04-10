@@ -1,5 +1,6 @@
+import { useMemo } from "react";
 import { motion } from "framer-motion";
-import { TrendingUp, AlertTriangle, Target, Users, DollarSign, ArrowUpRight, ArrowDownRight, Activity, Zap, CalendarCheck, Star, RefreshCw, ArrowRight } from "lucide-react";
+import { TrendingUp, AlertTriangle, Target, Users, DollarSign, ArrowUpRight, ArrowDownRight, Activity, Zap, CalendarCheck, Star, RefreshCw, ArrowRight, Swords } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -12,6 +13,7 @@ import { useDeals } from "@/hooks/use-revenue-office";
 import { useNavigate } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DEMO_REV_ADVISOR_SIGNALS as DEMO_ADVISOR_SIGNALS, DEMO_REV_LEAKS as DEMO_LEAKS, DEMO_REV_PIPELINE_STAGES as DEMO_PIPELINE_STAGES, DEMO_WHAT_CHANGED } from "@/lib/demo-data/revenue-office";
+import { competitiveIntelligenceService, type CompetitivePosition } from "@/lib/services/competitive-intelligence";
 
 const CAMPAIGN_HEALTH = [
   { name: "Summer Accelerator", status: "active", performance: 78, leads: 42, spend: "$2,400" },
