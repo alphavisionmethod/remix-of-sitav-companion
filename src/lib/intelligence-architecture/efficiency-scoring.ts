@@ -1,8 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — AI Efficiency Scoring & Outcome Economics
+// SITA OS — AI Efficiency Scoring (3.9)
 // Scores every agent/workflow on quality, cost efficiency,
-// acceptance rate, and outcome value. Tracks cost per useful
-// outcome for routing optimization.
+// acceptance rate, and outcome value.
 // ═══════════════════════════════════════════════════════════════
 
 // ── Efficiency Score ────────────────────────────────────────
@@ -27,6 +26,20 @@ export interface EfficiencyScore {
   trend: "improving" | "stable" | "degrading";
   recommendation: string;
 }
+
+export type OutcomeType =
+  | "incident-prevented"
+  | "bug-resolved"
+  | "lead-recovered"
+  | "customer-retained"
+  | "self-heal-success"
+  | "release-approved"
+  | "strategic-recommendation-accepted"
+  | "operator-decision-made"
+  | "automation-completed"
+  | "cost-saved"
+  | "revenue-generated"
+  | "risk-mitigated";
 
 export function computeEfficiencyScore(
   entityId: string,
@@ -69,112 +82,4 @@ export function computeEfficiencyScore(
     trend,
     recommendation,
   };
-}
-
-// ── Outcome Economics ───────────────────────────────────────
-
-export type OutcomeType =
-  | "incident-prevented"
-  | "bug-resolved"
-  | "lead-recovered"
-  | "customer-retained"
-  | "self-heal-success"
-  | "release-approved"
-  | "strategic-recommendation-accepted"
-  | "operator-decision-made"
-  | "automation-completed"
-  | "cost-saved"
-  | "revenue-generated"
-  | "risk-mitigated";
-
-export interface OutcomeRecord {
-  outcomeId: string;
-  outcomeType: OutcomeType;
-  domain: string;
-  description: string;
-  costCents: number;                  // total AI cost to achieve
-  estimatedValueCents: number;        // estimated business value
-  roi: number;                        // value / cost
-  agentsInvolved: string[];
-  intelligenceAssetsUsed: string[];   // reused asset IDs
-  modelTiersUsed: string[];
-  timestamp: string;
-  tenantId: string;
-  verified: boolean;
-}
-
-export interface OutcomeEconomicsReport {
-  period: string;
-  totalOutcomes: number;
-  totalCostCents: number;
-  totalValueCents: number;
-  overallROI: number;
-  byOutcomeType: Record<string, { count: number; costCents: number; valueCents: number; avgROI: number }>;
-  byDomain: Record<string, { count: number; costCents: number; valueCents: number }>;
-  topHighROI: OutcomeRecord[];
-  topLowROI: OutcomeRecord[];
-  costPerOutcomeType: Record<string, number>;
-  recommendations: string[];
-}
-
-export function computeOutcomeEconomics(outcomes: OutcomeRecord[]): OutcomeEconomicsReport {
-  const totalCost = outcomes.reduce((s, o) => s + o.costCents, 0);
-  const totalValue = outcomes.reduce((s, o) => s + o.estimatedValueCents, 0);
-
-  const byType: Record<string, { count: number; costCents: number; valueCents: number; avgROI: number }> = {};
-  const byDomain: Record<string, { count: number; costCents: number; valueCents: number }> = {};
-  const costPerType: Record<string, number> = {};
-
-  for (const o of outcomes) {
-    if (!byType[o.outcomeType]) byType[o.outcomeType] = { count: 0, costCents: 0, valueCents: 0, avgROI: 0 };
-    byType[o.outcomeType].count++;
-    byType[o.outcomeType].costCents += o.costCents;
-    byType[o.outcomeType].valueCents += o.estimatedValueCents;
-
-    if (!byDomain[o.domain]) byDomain[o.domain] = { count: 0, costCents: 0, valueCents: 0 };
-    byDomain[o.domain].count++;
-    byDomain[o.domain].costCents += o.costCents;
-    byDomain[o.domain].valueCents += o.estimatedValueCents;
-  }
-
-  for (const [type, stats] of Object.entries(byType)) {
-    stats.avgROI = stats.costCents > 0 ? stats.valueCents / stats.costCents : 0;
-    costPerType[type] = stats.count > 0 ? Math.round(stats.costCents / stats.count) : 0;
-  }
-
-  const sorted = [...outcomes].sort((a, b) => b.roi - a.roi);
-  const recs: string[] = [];
-  const lowROI = sorted.filter(o => o.roi < 1);
-  if (lowROI.length > 3) recs.push(`${lowROI.length} outcomes with ROI < 1x — review if these are worth the compute`);
-  const highReuse = outcomes.filter(o => o.intelligenceAssetsUsed.length > 0);
-  if (highReuse.length < outcomes.length * 0.3) recs.push("Low intelligence reuse rate — expand asset library");
-
-  return {
-    period: new Date().toISOString().slice(0, 7),
-    totalOutcomes: outcomes.length,
-    totalCostCents: totalCost,
-    totalValueCents: totalValue,
-    overallROI: totalCost > 0 ? Math.round((totalValue / totalCost) * 100) / 100 : 0,
-    byOutcomeType: byType,
-    byDomain,
-    topHighROI: sorted.slice(0, 5),
-    topLowROI: sorted.slice(-5).reverse(),
-    costPerOutcomeType: costPerType,
-    recommendations: recs,
-  };
-}
-
-// ── Cross-Tenant Pattern Learning ───────────────────────────
-
-export interface AnonymizedPattern {
-  patternId: string;
-  patternType: "issue-signature" | "regression" | "crm-leakage" | "trust-gap" | "deployment-failure" | "self-heal-outcome" | "low-value-loop";
-  description: string;
-  frequency: number;
-  confidence: number;
-  tenantCount: number;                // anonymized
-  applicableDomains: string[];
-  suggestedAction: string;
-  createdAt: string;
-  lastSeenAt: string;
 }
