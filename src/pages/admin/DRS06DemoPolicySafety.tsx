@@ -10,6 +10,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
+import DRSSubNav from "@/components/admin/DRSSubNav";
 
 
 
@@ -58,6 +59,7 @@ export default function DRS06DemoPolicySafety() {
   return (
     <div className="space-y-6 p-6">
       <DemoModeBadge />
+      <DRSSubNav />
       <div>
         <h1 className="text-2xl font-bold text-foreground">DRS06 — Demo Policy & Safety Board</h1>
         <p className="text-sm text-muted-foreground mt-1">Govern demo mode safety controls and kill switches</p>

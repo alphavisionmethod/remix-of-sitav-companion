@@ -7,6 +7,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { CILaunchGateWidget } from "@/components/sita/CILaunchGateWidget";
 import { DEMO_ADMIN_ALL_DOMAINS_D_R_S10_DUAL_REALITY_LAUNCH_GATE as DEMO_ALL_DOMAINS } from "@/lib/demo-data/admin-platform";
+import DRSSubNav from "@/components/admin/DRSSubNav";
 
 interface GateCheck {
   label: string;
@@ -69,6 +70,7 @@ export default function DRS10DualRealityLaunchGate() {
   return (
     <div className="space-y-6 p-6">
       <DemoModeBadge />
+      <DRSSubNav />
       <div>
         <h1 className="text-2xl font-bold text-foreground">DRS10 — Dual Reality Launch Gate</h1>
         <p className="text-sm text-muted-foreground mt-1">Ensure demo mode never corrupts production truth</p>

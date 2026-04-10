@@ -6,7 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Network, User, Link2, CheckCircle, XCircle, Shield, ScrollText } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
+import PFASubNav from "@/components/admin/PFASubNav";
 
 import {
   getAccountNodes,
@@ -58,6 +58,7 @@ export default function PFA08AccountGraphExplorer() {
   return (
     <div className="space-y-6 p-6">
       <DemoModeBadge />
+      <PFASubNav />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Network className="h-6 w-6" /> Unified Account Graph</h1>
         <p className="text-sm text-muted-foreground mt-1">Identity auth (sign-in) and connector auth (external access) — fully separated</p>

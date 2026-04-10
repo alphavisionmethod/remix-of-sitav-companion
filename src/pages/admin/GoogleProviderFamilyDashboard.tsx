@@ -16,6 +16,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import type { GoogleCapabilityKey } from "@/lib/core-services/google-provider-family/types";
 import { GOOGLE_API_REQUIREMENTS, GOOGLE_OAUTH_CLIENT_TEMPLATES } from "@/lib/core-services/google-provider-family/types";
+import PFASubNav from "@/components/admin/PFASubNav";
 
 
 
@@ -49,6 +50,7 @@ export default function GoogleProviderFamilyDashboard() {
   return (
     <div className="space-y-6 p-6">
       <DemoModeBadge />
+      <PFASubNav />
 
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2">

@@ -7,6 +7,7 @@ import { Plug, CheckCircle2, AlertCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_ADMIN_ALL_DOMAINS as DEMO_ALL_DOMAINS } from "@/lib/demo-data/admin-platform";
+import DRSSubNav from "@/components/admin/DRSSubNav";
 
 export default function DRS05ProviderConsole() {
   const { isDemoMode } = useDataMode();
@@ -17,6 +18,7 @@ export default function DRS05ProviderConsole() {
   return (
     <div className="space-y-6 p-6">
       <DemoModeBadge />
+      <DRSSubNav />
       <div>
         <h1 className="text-2xl font-bold text-foreground">DRS05 — Mode-Aware Provider Console</h1>
         <p className="text-sm text-muted-foreground mt-1">Inspect provider resolution across domains</p>

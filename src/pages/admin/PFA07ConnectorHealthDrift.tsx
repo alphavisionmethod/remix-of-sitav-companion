@@ -11,6 +11,7 @@ import { Activity, RefreshCw, AlertTriangle, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import PFASubNav from "@/components/admin/PFASubNav";
 
 
 
@@ -38,6 +39,7 @@ export default function PFA07ConnectorHealthDrift() {
   return (
     <div className="space-y-6 p-6">
       <DemoModeBadge />
+      <PFASubNav />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2"><Activity className="h-6 w-6" /> Connector Health & Drift</h1>

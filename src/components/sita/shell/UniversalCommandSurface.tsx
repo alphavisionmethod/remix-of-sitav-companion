@@ -18,7 +18,7 @@ import {
   Zap, Bell, Workflow, Clock, AlertTriangle,
   MessageSquare, Hash, BookOpen, Layout, Globe,
   ShieldCheck, Lock, Send, Play, Pause, ExternalLink,
-  Loader2, Info, ArrowUpRight, Server, Route, Layers, Cpu,
+  Loader2, Info, ArrowUpRight, Server, Route, Layers, Cpu, Rocket,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
@@ -199,6 +199,40 @@ const COMMAND_INDEX: CommandItem[] = [
   { id: "aig-launch-detail", label: "AIG Launch Detail", sublabel: "AIG07 — AI launch truth detail", icon: ShieldCheck, path: "/admin/aig/launch-truth-detail", category: "navigate", domain: "system", keywords: ["aig", "launch", "detail", "aig07"] },
   { id: "aig-degraded", label: "AIG Degraded Diagnostics", sublabel: "AIG08 — Degraded mode diagnostics", icon: AlertTriangle, path: "/admin/aig/degraded", category: "navigate", domain: "system", keywords: ["aig", "degraded", "diagnostics", "aig08"] },
   { id: "aig-runtime", label: "AIG Runtime Verification", sublabel: "AIG09 — Runtime verification dashboard", icon: Activity, path: "/admin/aig/runtime-verification", category: "navigate", domain: "system", keywords: ["aig", "runtime", "verification", "aig09"] },
+  // DRS — Dual Reality System
+  { id: "drs-overview", label: "DRS Overview", sublabel: "DRS01 — Reality mode overview", icon: Eye, path: "/admin/drs/overview", category: "navigate", domain: "system", keywords: ["drs", "dual", "reality", "mode", "overview", "drs01"] },
+  { id: "drs-registry", label: "DRS Mode Registry", sublabel: "DRS02 — Mode registry console", icon: Server, path: "/admin/drs/registry", category: "navigate", domain: "system", keywords: ["drs", "mode", "registry", "console", "drs02"] },
+  { id: "drs-scenarios", label: "DRS Scenarios", sublabel: "DRS03 — Scenario library", icon: BookOpen, path: "/admin/drs/scenarios", category: "navigate", domain: "system", keywords: ["drs", "scenario", "library", "demo", "drs03"] },
+  { id: "drs-entities", label: "DRS Entity Graph", sublabel: "DRS04 — Scenario entity graph", icon: Globe, path: "/admin/drs/entities", category: "navigate", domain: "system", keywords: ["drs", "entity", "graph", "scenario", "drs04"] },
+  { id: "drs-providers", label: "DRS Providers", sublabel: "DRS05 — Provider console", icon: Server, path: "/admin/drs/providers", category: "navigate", domain: "system", keywords: ["drs", "provider", "console", "drs05"] },
+  { id: "drs-safety", label: "DRS Safety", sublabel: "DRS06 — Demo policy safety", icon: Shield, path: "/admin/drs/safety", category: "navigate", domain: "system", keywords: ["drs", "safety", "demo", "policy", "drs06"] },
+  { id: "drs-ai", label: "DRS AI Control", sublabel: "DRS07 — Demo AI control", icon: Brain, path: "/admin/drs/ai-control", category: "navigate", domain: "system", keywords: ["drs", "ai", "control", "demo", "drs07"] },
+  { id: "drs-analytics", label: "DRS Analytics", sublabel: "DRS08 — Analytics segregation", icon: Activity, path: "/admin/drs/analytics", category: "navigate", domain: "system", keywords: ["drs", "analytics", "segregation", "drs08"] },
+  { id: "drs-truth", label: "DRS Truth Labels", sublabel: "DRS09 — Truth labeling", icon: ShieldCheck, path: "/admin/drs/truth", category: "navigate", domain: "system", keywords: ["drs", "truth", "labeling", "drs09"] },
+  { id: "drs-launch", label: "DRS Launch Gate", sublabel: "DRS10 — Dual reality launch gate", icon: Rocket, path: "/admin/drs/launch-gate", category: "navigate", domain: "system", keywords: ["drs", "launch", "gate", "dual", "reality", "drs10"] },
+  // PFA — Provider Family Architecture
+  { id: "pfa-families", label: "Provider Families", sublabel: "PFA01 — Provider family registry", icon: FolderOpen, path: "/admin/pfa/families", category: "navigate", domain: "system", keywords: ["pfa", "provider", "family", "registry", "pfa01"] },
+  { id: "pfa-capabilities", label: "Provider Capabilities", sublabel: "PFA02 — Capability matrix", icon: Target, path: "/admin/pfa/capabilities", category: "navigate", domain: "system", keywords: ["pfa", "capability", "matrix", "provider", "pfa02"] },
+  { id: "pfa-oauth", label: "OAuth Clients", sublabel: "PFA03 — OAuth client registry", icon: Lock, path: "/admin/pfa/oauth-clients", category: "navigate", domain: "system", keywords: ["pfa", "oauth", "client", "registry", "pfa03"] },
+  { id: "pfa-consent", label: "Consent Ledger", sublabel: "PFA04 — Consent ledger explorer", icon: ShieldCheck, path: "/admin/pfa/consent", category: "navigate", domain: "system", keywords: ["pfa", "consent", "ledger", "explorer", "pfa04"] },
+  { id: "pfa-scope", label: "Scope Policy", sublabel: "PFA05 — Scope policy matrix", icon: Shield, path: "/admin/pfa/scope-policy", category: "navigate", domain: "system", keywords: ["pfa", "scope", "policy", "matrix", "pfa05"] },
+  { id: "pfa-upgrades", label: "Permission Upgrades", sublabel: "PFA06 — Permission upgrade center", icon: Activity, path: "/admin/pfa/upgrades", category: "navigate", domain: "system", keywords: ["pfa", "permission", "upgrade", "center", "pfa06"] },
+  { id: "pfa-health", label: "Health Drift", sublabel: "PFA07 — Connector health drift", icon: Activity, path: "/admin/pfa/health-drift", category: "navigate", domain: "system", keywords: ["pfa", "health", "drift", "connector", "pfa07"] },
+  { id: "pfa-graph", label: "Account Graph", sublabel: "PFA08 — Account graph explorer", icon: Globe, path: "/admin/pfa/account-graph", category: "navigate", domain: "system", keywords: ["pfa", "account", "graph", "explorer", "pfa08"] },
+  { id: "pfa-launch", label: "Integration Launch Honesty", sublabel: "PFA10 — Integration launch honesty", icon: Rocket, path: "/admin/pfa/launch-honesty", category: "navigate", domain: "system", keywords: ["pfa", "launch", "honesty", "integration", "pfa10"] },
+  { id: "pfa-google", label: "Google Provider Family", sublabel: "Google provider family dashboard", icon: Globe, path: "/admin/pfa/google", category: "navigate", domain: "system", keywords: ["pfa", "google", "provider", "family"] },
+  // RCP — Reality Compliance Program
+  { id: "rcp-overview", label: "RCP Overview", sublabel: "RCP01 — Reality compliance overview", icon: Eye, path: "/admin/reality-audit/overview", category: "navigate", domain: "system", keywords: ["rcp", "reality", "compliance", "overview", "rcp01"] },
+  { id: "rcp-classification", label: "RCP Classification", sublabel: "RCP02 — Reality classification matrix", icon: Target, path: "/admin/reality-audit", category: "navigate", domain: "system", keywords: ["rcp", "classification", "matrix", "reality", "rcp02"] },
+  { id: "rcp-mock-replace", label: "Mock Replacement", sublabel: "RCP04 — Mock replacement program", icon: Activity, path: "/admin/reality-audit/mock-replacement", category: "navigate", domain: "system", keywords: ["rcp", "mock", "replacement", "program", "rcp04"] },
+  { id: "rcp-mock-sources", label: "Mock Sources", sublabel: "RCP05 — Mock source inventory", icon: FileText, path: "/admin/reality-audit/mock-sources", category: "navigate", domain: "system", keywords: ["rcp", "mock", "source", "inventory", "rcp05"] },
+  { id: "rcp-persistence", label: "Core Persistence", sublabel: "RCP06 — Core service persistence", icon: Server, path: "/admin/reality-audit/core-persistence", category: "navigate", domain: "system", keywords: ["rcp", "core", "persistence", "service", "rcp06"] },
+  { id: "rcp-heatmap", label: "Route Heatmap", sublabel: "RCP07 — Route heatmap", icon: Globe, path: "/admin/reality-audit/route-heatmap", category: "navigate", domain: "system", keywords: ["rcp", "route", "heatmap", "rcp07"] },
+  { id: "rcp-contracts", label: "Contract Readiness", sublabel: "RCP08 — Contract readiness", icon: ShieldCheck, path: "/admin/reality-audit/contract-readiness", category: "navigate", domain: "system", keywords: ["rcp", "contract", "readiness", "rcp08"] },
+  { id: "rcp-launch", label: "RCP Launch Honesty", sublabel: "RCP09 — Launch honesty board", icon: Rocket, path: "/admin/reality-audit/launch-honesty", category: "navigate", domain: "system", keywords: ["rcp", "launch", "honesty", "rcp09"] },
+  { id: "rcp-wave", label: "Wave Planner", sublabel: "RCP10 — Wave planner", icon: Layers, path: "/admin/reality-audit/wave-planner", category: "navigate", domain: "system", keywords: ["rcp", "wave", "planner", "rcp10"] },
+  { id: "rcp-progress", label: "Progress Timeline", sublabel: "RCP11 — Progress timeline", icon: Activity, path: "/admin/reality-audit/progress", category: "navigate", domain: "system", keywords: ["rcp", "progress", "timeline", "rcp11"] },
+  { id: "rcp-runtime", label: "Runtime Truth Gate", sublabel: "RCP12 — Runtime truth gate", icon: ShieldCheck, path: "/admin/reality-audit/runtime-truth", category: "navigate", domain: "system", keywords: ["rcp", "runtime", "truth", "gate", "rcp12"] },
 ];
 
 const CATEGORY_CONFIG: Record<string, { label: string; color: string; order: number }> = {

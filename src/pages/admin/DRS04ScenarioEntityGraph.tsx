@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Loader2, Network, User, Building2, FileText, Briefcase } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import DRSSubNav from "@/components/admin/DRSSubNav";
 
 
 
@@ -39,6 +40,7 @@ export default function DRS04ScenarioEntityGraph() {
   return (
     <div className="space-y-6 p-6">
       <DemoModeBadge />
+      <DRSSubNav />
       <div>
         <h1 className="text-2xl font-bold text-foreground">DRS04 — Scenario Entity Graph</h1>
         <p className="text-sm text-muted-foreground mt-1">Inspect synthetic demo world composition</p>
