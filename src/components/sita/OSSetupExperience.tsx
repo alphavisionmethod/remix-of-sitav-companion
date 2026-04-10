@@ -613,6 +613,8 @@ export function OSSetupExperience() {
         mem("relationship_focus", state.relationshipFocus, "preference"),
         mem("desktop_density", computeDesktopDensity(state), "preference", { source: "derived", confidence: 0.8 }),
         mem("domain_confidence", computeDomainConfidence(state), "preference", { source: "derived", confidence: 0.7 }),
+      ];
+
       // Trust-derived settings (Part 5: approval pathways, proof expectations, automation boundaries)
       const trustDerived = computeTrustDerivedSettings(state);
       memoryItems.push(
