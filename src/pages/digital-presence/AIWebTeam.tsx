@@ -9,6 +9,7 @@ import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_DPO_DISAGREEMENTS as DEMO_DISAGREEMENTS } from "@/lib/demo-data/digital-presence";
+import DPOSubNav from "./DPOSubNav";
 
 type Intensity = "quiet" | "balanced" | "proactive";
 type AgentStatus = "active" | "inactive" | "watching";
@@ -174,7 +175,6 @@ function ConfidenceBar({ value, label }: { value: number; label: string }) {
   const color = value >= 85 ? "bg-green-500" : value >= 70 ? "bg-amber-500" : "bg-red-500";
   return (
     <div className="space-y-1">
-      <DemoModeBadge />
       <div className="flex justify-between text-[10px]">
         <span className="text-muted-foreground">{label}</span>
         <span className="text-foreground font-medium">{value}%</span>
@@ -272,6 +272,7 @@ export default function AIWebTeam() {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DPOSubNav />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center gap-3 mb-1">
           <Users className="w-7 h-7 text-primary" />
