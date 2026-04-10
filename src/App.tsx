@@ -1057,6 +1057,9 @@ const App = () => (
                     <Route path="/admin/verification/drift" element={<JVC13InteractionDriftRadar />} />
                     <Route path="/admin/verification/buttons" element={<JVC04ButtonCTAHealth />} />
                     <Route path="/admin/verification/page-load" element={<JVC06PageLoadIntegrity />} />
+                    <Route path="/admin/verification/overview" element={<JVC01JourneyVerificationOverview />} />
+                    <Route path="/admin/verification/probes" element={<JVC10RuntimeProbeCenter />} />
+                    <Route path="/admin/verification/launch-gate" element={<JVC14LaunchInteractionGate />} />
 
                     {/* CJ — Customer Journey Proof System */}
                     <Route path="/admin/customer-journey/executive" element={<CJ01ExecutiveReport />} />
