@@ -258,6 +258,21 @@ export default function GoogleConnectedAccounts() {
             </div>
           </CardContent>
         </Card>
+       )}
+
+      {/* ── Permission Upgrade Dialog ── */}
+      {upgradeTarget && (
+        <PermissionUpgradeDialog
+          open={!!upgradeTarget}
+          onOpenChange={(open) => { if (!open) setUpgradeTarget(null); }}
+          capabilityKey={upgradeTarget.capabilityKey}
+          displayName={upgradeTarget.displayName}
+          currentTier={upgradeTarget.permissionLevel as GenericScopeTier}
+          requestedTier={(NEXT_TIER[upgradeTarget.permissionLevel] ?? "read_write") as GenericScopeTier}
+          currentScopes={upgradeTarget.grantedScopes}
+          additionalScopes={[]}
+          providerFamilyId={null}
+        />
       )}
     </div>
   );
