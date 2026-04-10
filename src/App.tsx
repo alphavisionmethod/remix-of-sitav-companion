@@ -66,6 +66,7 @@ const PolicySimulator = lazy(() => import("./pages/mission/PolicySimulatorPage")
 const MissionError = lazy(() => import("./pages/mission/MissionErrorPage"));
 const AdvisorWorkspace = lazy(() => import("./pages/advisors/AdvisorWorkspace"));
 const AdvisorCouncilDashboard = lazy(() => import("./pages/advisors/AdvisorCouncilDashboard"));
+const CalmAssistantChat = lazy(() => import("./pages/advisors/CalmAssistantChat"));
 const Onboarding = lazy(() => import("./pages/OnboardingWrapper"));
 const LearnLaterPage = lazy(() => import("./pages/LearnLaterPage"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -1208,6 +1209,7 @@ const App = () => (
 
                     {/* Advisor Workspace — explicit sub-routes + wildcard */}
                     <Route path="/advisors" element={<AdvisorWorkspace />} />
+                    <Route path="/advisors/chat" element={<CalmAssistantChat />} />
                     <Route path="/advisors/council-dashboard" element={<AdvisorCouncilDashboard />} />
                     <Route path="/advisors/overview" element={<AdvisorWorkspace />} />
                     <Route path="/advisors/compare" element={<AdvisorWorkspace />} />
