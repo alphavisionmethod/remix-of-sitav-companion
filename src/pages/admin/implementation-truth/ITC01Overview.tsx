@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Link } from "react-router-dom";
-import { Shield, GitBranch, FileCheck, BarChart3, Radar, BookOpen, AlertTriangle, CheckCircle2, ArrowRight } from "lucide-react";
+import { Shield, GitBranch, FileCheck, BarChart3, Radar, BookOpen, AlertTriangle, CheckCircle2, ArrowRight, Map, ShieldCheck, Route, Activity } from "lucide-react";
 
 const SUB_PAGES = [
   { path: "/admin/implementation-truth/specs", label: "Spec Registry", icon: BookOpen, desc: "Canonical records of every major system" },
@@ -15,6 +15,10 @@ const SUB_PAGES = [
   { path: "/admin/implementation-truth/wiring", label: "Wiring Graph", icon: GitBranch, desc: "End-to-end trace from spec to proof" },
   { path: "/admin/implementation-truth/readiness", label: "Readiness Scorecards", icon: BarChart3, desc: "10-dimension per-feature scoring" },
   { path: "/admin/implementation-truth/drift", label: "Drift & Traceability", icon: Radar, desc: "Spec vs. implementation drift radar" },
+  { path: "/admin/implementation-truth/map", label: "Implementation Map", icon: Map, desc: "Per-spec artifact inventory & presence" },
+  { path: "/admin/implementation-truth/architecture", label: "Architecture Compliance", icon: ShieldCheck, desc: "17 architecture enforcement checks" },
+  { path: "/admin/implementation-truth/routes", label: "Route Inventory", icon: Route, desc: "Unified route & component registry" },
+  { path: "/admin/implementation-truth/runtime", label: "Runtime Evidence", icon: Activity, desc: "Live runtime signals per spec" },
 ];
 
 export default function ITC01Overview() {
@@ -115,7 +119,7 @@ export default function ITC01Overview() {
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-3 pb-4">
         {SUB_PAGES.map(p => (
           <Link key={p.path} to={p.path}>
             <Card className="hover:border-primary/40 transition-colors cursor-pointer h-full">

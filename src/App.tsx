@@ -258,6 +258,10 @@ const ITC03ContractVerification = lazy(() => import("./pages/admin/implementatio
 const ITC04WiringGraph = lazy(() => import("./pages/admin/implementation-truth/ITC04WiringGraph"));
 const ITC05ReadinessScoreboard = lazy(() => import("./pages/admin/implementation-truth/ITC05ReadinessScoreboard"));
 const ITC06DriftRadar = lazy(() => import("./pages/admin/implementation-truth/ITC06DriftRadar"));
+const ITC07ImplementationMap = lazy(() => import("./pages/admin/implementation-truth/ITC07ImplementationMap"));
+const ITC08ArchitectureCompliance = lazy(() => import("./pages/admin/implementation-truth/ITC08ArchitectureCompliance"));
+const ITC09RouteInventory = lazy(() => import("./pages/admin/implementation-truth/ITC09RouteInventory"));
+const ITC10RuntimeEvidence = lazy(() => import("./pages/admin/implementation-truth/ITC10RuntimeEvidence"));
 
 // ── Phase 4 Unification Pages ──
 const TrustStateRegistry = lazy(() => import("./pages/admin/TrustStateRegistry"));
@@ -1592,6 +1596,10 @@ const App = () => (
                     <Route path="/admin/implementation-truth/wiring" element={<ITC04WiringGraph />} />
                     <Route path="/admin/implementation-truth/readiness" element={<ITC05ReadinessScoreboard />} />
                     <Route path="/admin/implementation-truth/drift" element={<ITC06DriftRadar />} />
+                    <Route path="/admin/implementation-truth/map" element={<ITC07ImplementationMap />} />
+                    <Route path="/admin/implementation-truth/architecture" element={<ITC08ArchitectureCompliance />} />
+                    <Route path="/admin/implementation-truth/routes" element={<ITC09RouteInventory />} />
+                    <Route path="/admin/implementation-truth/runtime" element={<ITC10RuntimeEvidence />} />
                     {/* Phase 4 Unification */}
                     <Route path="/admin/trust-state" element={<TrustStateRegistry />} />
                     <Route path="/admin/action-state" element={<ActionStateDriftViewer />} />
