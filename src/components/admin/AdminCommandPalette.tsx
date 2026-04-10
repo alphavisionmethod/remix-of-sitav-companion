@@ -56,6 +56,10 @@ const NAV_ITEMS = [
   { label: "PLE: Manifest Enforcer", path: "/admin/platform-law/manifests", icon: FileText, group: "Navigation" },
   { label: "PLE: Ownership Board", path: "/admin/platform-law/ownership", icon: Crown, group: "Navigation" },
   { label: "PLE: Compliance Dashboard", path: "/admin/platform-law/compliance", icon: Layers, group: "Navigation" },
+  { label: "PLT: Violation Triage", path: "/admin/platform-law/violations", icon: AlertTriangle, group: "Navigation" },
+  { label: "PLT: Feature Compliance", path: "/admin/platform-law/feature-compliance", icon: Target, group: "Navigation" },
+  { label: "PLT: Launch Enforcement", path: "/admin/platform-law/launch-enforcement", icon: Rocket, group: "Navigation" },
+  { label: "PLT: Drift Radar", path: "/admin/platform-law/drift-radar", icon: Activity, group: "Navigation" },
 ];
 
 const ACTION_ITEMS = [
