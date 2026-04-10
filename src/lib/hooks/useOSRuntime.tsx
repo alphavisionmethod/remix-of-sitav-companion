@@ -70,6 +70,10 @@ function buildRuntime(userId: string): OSRuntime {
   const releases = new ReleaseSafetyEngine();
   const trustDevice = new TrustDeviceEngine();
   const compliance = new ComplianceAuditEngine();
+  const executionDebt = new ExecutionDebtEngine();
+  const invisibleLabor = new InvisibleLaborEngine();
+  const drag = new DragEngine();
+  const bottleneck = new FounderBottleneckEngine();
 
   const context: OSRuntimeContext = {
     userId,
