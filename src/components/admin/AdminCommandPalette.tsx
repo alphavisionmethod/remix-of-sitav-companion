@@ -6,7 +6,8 @@ import {
 import {
   Activity, AlertTriangle, Brain, Crown, Database, Eye, GitBranch, Globe,
   Layers, Link2, Lock, Rocket, Server, Shield, Target, TrendingUp, Zap,
-  BarChart3, Cpu, FileText, Play, RefreshCw, Settings, Search, Scale
+  BarChart3, Cpu, FileText, Play, RefreshCw, Settings, Search, Scale,
+  DollarSign, Receipt, RotateCcw
 } from "lucide-react";
 
 const NAV_ITEMS = [
@@ -95,6 +96,27 @@ const NAV_ITEMS = [
   { label: "FIP: Readiness Gates", path: "/admin/fip/readiness", icon: Target, group: "Feature Integration" },
   { label: "FIP: Deprecation", path: "/admin/fip/deprecation", icon: AlertTriangle, group: "Feature Integration" },
   { label: "FIP: Builder Console", path: "/admin/fip/builder", icon: Cpu, group: "Feature Integration" },
+  { label: "SAG: Overview", path: "/admin/sag/overview", icon: Brain, group: "Sovereign AI Gateway" },
+  { label: "SAG: Model Registry", path: "/admin/sag/models", icon: Database, group: "Sovereign AI Gateway" },
+  { label: "SAG: Routing Policy", path: "/admin/sag/routing", icon: GitBranch, group: "Sovereign AI Gateway" },
+  { label: "SAG: Provider Health", path: "/admin/sag/health", icon: Activity, group: "Sovereign AI Gateway" },
+  { label: "SAG: Prompt Registry", path: "/admin/sag/prompts", icon: Layers, group: "Sovereign AI Gateway" },
+  { label: "SAG: Economics Board", path: "/admin/sag/economics", icon: DollarSign, group: "Sovereign AI Gateway" },
+  { label: "SAG: Cost-Confidence Lab", path: "/admin/sag/cost-confidence", icon: TrendingUp, group: "Sovereign AI Gateway" },
+  { label: "SAG: Multi-Stage Explorer", path: "/admin/sag/multi-stage", icon: GitBranch, group: "Sovereign AI Gateway" },
+  { label: "SAG: Receipt Explorer", path: "/admin/sag/receipts", icon: Receipt, group: "Sovereign AI Gateway" },
+  { label: "SAG: Fallback Center", path: "/admin/sag/fallback", icon: RotateCcw, group: "Sovereign AI Gateway" },
+  { label: "SAG: Builder Console", path: "/admin/sag/builder", icon: Cpu, group: "Sovereign AI Gateway" },
+  { label: "SAG: Compliance Gate", path: "/admin/sag/compliance", icon: Shield, group: "Sovereign AI Gateway" },
+  { label: "AIG: Provider Registry", path: "/admin/aig/providers", icon: Server, group: "Sovereign AI Gateway" },
+  { label: "AIG: Model Registry", path: "/admin/aig/models", icon: Database, group: "Sovereign AI Gateway" },
+  { label: "AIG: Routing Matrix", path: "/admin/aig/routing", icon: GitBranch, group: "Sovereign AI Gateway" },
+  { label: "AIG: Budget Center", path: "/admin/aig/budget", icon: DollarSign, group: "Sovereign AI Gateway" },
+  { label: "AIG: Receipts Explorer", path: "/admin/aig/receipts", icon: Receipt, group: "Sovereign AI Gateway" },
+  { label: "AIG: Launch Truth", path: "/admin/aig/launch-truth", icon: Target, group: "Sovereign AI Gateway" },
+  { label: "AIG: Launch Truth Detail", path: "/admin/aig/launch-truth-detail", icon: Eye, group: "Sovereign AI Gateway" },
+  { label: "AIG: Degraded Diagnostics", path: "/admin/aig/degraded", icon: AlertTriangle, group: "Sovereign AI Gateway" },
+  { label: "AIG: Runtime Verification", path: "/admin/aig/runtime-verification", icon: Shield, group: "Sovereign AI Gateway" },
 ];
 
 const ACTION_ITEMS = [
