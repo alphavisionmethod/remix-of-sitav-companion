@@ -1,86 +1,76 @@
 
 
-# Money Office — Comprehensive Audit & Gap Closure Plan
+# Money Office Onboarding — Financial Formation Ceremony
 
-## Audit Results (20 Features)
+## What's Missing
 
-### Fully Implemented as Dedicated Pages or Sections (14/20)
-
-| # | Feature | Location | Status |
-|---|---------|----------|--------|
-| 1 | Money Twin | `MoneyOverview.tsx` (flow bars) | Basic — needs upgrade |
-| 2 | Financial Stress Radar | `StressRadar.tsx` + `stress-radar.service.ts` | Full page + engine |
-| 3 | Life-to-Money Impact Engine | `LifeMoneyEngine.tsx` | Full page, 11 events |
-| 4 | Founder Split Brain Protection | `FinancialHealthPulse.tsx` (boundary section) + `MoneyRituals.tsx` (separation ritual) | Partial — needs full Split Brain section |
-| 5 | Cashflow Storyline | `CashTiming.tsx` (narrative section) | Implemented |
-| 6 | Money Operating Modes | `MoneyModes.tsx` | Full page, 10 modes |
-| 7 | Cash Allocation AI | `CashAllocator.tsx` + `cash-allocator.service.ts` | Full page + engine |
-| 9 | Decision Simulator | `ScenarioPlanner.tsx` | Full page |
-| 10 | Money Rituals | `MoneyRituals.tsx` | Full page, 7 rituals |
-| 11 | Invisible Waste Detector | `MoneyOverview.tsx` (waste section) + `SubscriptionsWaste.tsx` (leak radar) | Implemented |
-| 13 | Income Quality Score | `income-quality.service.ts` engine exists | Engine only — no UI |
-| 17 | Financial Trust Graph | `TrustGraph.tsx` | Full page |
-| 18 | Opportunity Cost Dashboard | `OpportunityCost.tsx` | Full page |
-| 20 | Financial Peace Score | `PeaceScore.tsx` + `peace-score.service.ts` | Full page + engine |
-
-### Missing or Incomplete (6/20)
-
-| # | Feature | What's Missing |
-|---|---------|---------------|
-| 8 | **Financial Boundary Monitor** | No page exists. No search results. Completely missing. |
-| 12 | **Emotional Finance Layer** | No panic/guilt/avoidance/feast-famine detection anywhere. The `EmotionalPattern` type exists in contracts but no UI or service uses it. |
-| 13 | **Income Quality Score UI** | The `income-quality.service.ts` engine exists but NO page renders it. Was supposed to be added to `FinancialHealthPulse.tsx` but wasn't. |
-| 14 | **Subscription Negotiation/Downgrade Advisor** | Was supposed to be added to `SubscriptionsWaste.tsx` but never was. No downgrade paths, cancellation ordering, or alternatives section exists. |
-| 15 | **Tax Shock Prevention** | Was supposed to be added to `TaxEstimator.tsx` but never was. No under-set-aside detection, irregular income tax risk, or quarter-end danger section. |
-| 19 | **Adaptive Advisor Personality** | MoneyAdvisorBoard.tsx shows 9 advisors but with static tone. No mode badge, no tone adaptation based on current Money Mode. Was supposed to be enhanced but wasn't. |
-
-### Upgrade Needed (2/20)
-
-| # | Feature | Gap |
-|---|---------|-----|
-| 1 | **Money Twin** | Currently just 5 flow bars. Missing: committed vs flexible vs risky vs safe vs decaying vs improving model. Missing stress radar summary lane and peace score badge. |
-| 4 | **Founder Split Brain Protection** | Current boundary section only shows co-mingling detection. Missing: fake profitability detection, delayed reimbursements, dangerous founder optimism, payroll/operating reserve weakness. |
+The entire 10-step Money Office onboarding flow (MO-ONB-01 through MO-ONB-10) does not exist. Zero files, zero routes, zero components. The OS-level onboarding exists but has no money-specific ceremony.
 
 ## Implementation Plan
 
-### 1. New Page: Financial Boundary Monitor
-**`src/pages/money/FinancialBoundaryMonitor.tsx`** — New page detecting: blurred household/business finances, budget leakage, obligations without category ownership, purposeless money movement, large unexplained drains, reimbursement drift, hidden credit dependency, obligations not in plans. KPIs + signal cards + advisor.
+### 1. Create MoneyOnboarding orchestrator component
+**`src/components/sita/money-onboarding/MoneyOnboardingFlow.tsx`**
 
-### 2. Enhance: FinancialHealthPulse.tsx
-- Add **Emotional Finance Layer** section: detect panic, guilt, avoidance, stress-float, defer-pattern, feast-famine patterns. Show severity, frequency, guidance, and suggested mode for each.
-- Add **Income Quality Score** section: render the existing `computeIncomeQuality()` engine output with 6 dimension bars + composite grade.
-- Expand **Founder Split Brain Protection**: add fake profitability alert, delayed reimbursement tracker, dangerous founder optimism indicator, payroll/operating reserve weakness.
+A self-contained 10-step flow using the existing `SetupShell` + `SetupStageHeader` + `PremiumProgressRail` primitives. State machine managing steps 1-10, persisting selections to local state, with animated transitions between steps. Integrates with existing `useDataMode()` for demo/live awareness.
 
-### 3. Enhance: SubscriptionsWaste.tsx
-- Add **Negotiation/Downgrade Advisor** section after Leak Radar: for each subscription, show downgrade path, better billing cycle, cancellation ordering, timing recommendation, alternatives, and monthly burn impact.
+### 2. Create 10 step components
 
-### 4. Enhance: TaxEstimator.tsx
-- Add **Tax Shock Prevention** section: under-set-aside detection, irregular income tax risk, founder draw tax distortion, under-categorized deductible expenses, documentation weakness, quarter-end danger alerts.
+Each step follows the existing onboarding pattern (card-based, single-action, animated):
 
-### 5. Enhance: MoneyAdvisorBoard.tsx
-- Add **Adaptive Personality** system: show current Money Mode badge on the page, and adjust each advisor's recommendation text and tone indicator based on the active mode (recovery = gentle, debt-attack = aggressive, etc.).
+| File | Step | Key UI |
+|------|------|--------|
+| `MoneyWelcomeStep.tsx` | MO-ONB-01 | Welcome message + 4 path cards (Personal / Founder / Household / Hybrid) |
+| `MoneyIdentityStep.tsx` | MO-ONB-02 | Money mode selection, business toggle, household toggle — outputs money mode + advisor activation |
+| `FinancialPrioritiesStep.tsx` | MO-ONB-03 | 9 priority chips (multi-select): control spending, understand flows, build reserves, reduce debt, avoid bill stress, separate biz/personal, tax readiness, household, goals |
+| `ConnectAccountsStep.tsx` | MO-ONB-04 | Account connection cards (banks, cards, loans, business, household, CSV) with trust state + permission scope display |
+| `MoneyStructureStep.tsx` | MO-ONB-05 | Structure mapping — bills, recurring, debt, goals, reserves, household commitments, tax, payroll/draw — builds initial Money Twin skeleton |
+| `BudgetStyleStep.tsx` | MO-ONB-06 | Budget style chooser: envelope / category / lightweight / advisor-guided + rollover + sinking fund toggles |
+| `FounderBoundaryStep.tsx` | MO-ONB-07 | Conditional (founder mode) — business accounts, draw habits, payroll, tax reserve, reimbursements, blur points |
+| `HouseholdSharingStep.tsx` | MO-ONB-08 | Conditional (household mode) — shared vs private, partner visibility, shared goals, permission boundaries |
+| `OperatingModeStep.tsx` | MO-ONB-09 | 10 operating mode cards (Stable, Tighten, Recovery, Growth, Expansion, Debt Attack, Tax Protection, Founder Conservation, Household Protection, Launch) |
+| `MoneyOfficeRevealStep.tsx` | MO-ONB-10 | Animated reveal showing Boardroom, Safe-to-Spend, first stress signals, advisor summary, connected accounts, first obligations, first opportunities + "Enter Money Office" CTA |
 
-### 6. Enhance: MoneyOverview.tsx
-- Upgrade **Money Twin** from basic flow bars to full model with committed/flexible/risky/safe/decaying/improving breakdown.
-- Add **Stress Radar Summary Lane** (top 3 signals with severity badges and link to full Stress Radar page).
-- Add **Peace Score Mini-Badge** in the KPI strip.
+All files in `src/components/sita/money-onboarding/` with barrel export.
 
-### 7. Wire New Page
-- Add `FinancialBoundaryMonitor` as tab "Boundaries" in `MoneyCenter.tsx`
-- Add route `/money/boundaries` in `App.tsx`
+### 3. Create entry page + route
+
+**`src/pages/MoneyOnboarding.tsx`** — wrapper page using `SetupShell` + `DemoModeBadge` + `MoneyOnboardingFlow`.
+
+Add route `/money/onboarding` in `App.tsx`.
+
+### 4. Wire entry point
+
+Add a check in `MoneyCenter.tsx`: if user hasn't completed money onboarding (check local storage flag or a simple state), redirect to `/money/onboarding`. After completion, set flag and navigate to `/money`.
+
+### 5. Design details
+
+- Uses existing SITA brand: sita-purple, sita-gold, trust-safe colors
+- Uses existing primitives: `SetupShell`, `SetupStageHeader`, `PremiumProgressRail`, `ChapterTransition`, `SignatureWowMoment`
+- Step 7 (Founder) and Step 8 (Household) are conditionally shown based on Step 2 selections
+- Step 10 reveal uses `SignatureWowMoment` for the wow effect
+- Progress rail shows chapters: Welcome → Identity → Priorities → Connect → Structure → Style → [Founder] → [Household] → Mode → Reveal
+- All selections stored in a single `MoneyOnboardingState` object, persisted via `localStorage`
+- Reduced motion support via `useReducedMotion()`
 
 ### File Summary
 
 | File | Action |
 |------|--------|
-| `src/pages/money/FinancialBoundaryMonitor.tsx` | New — financial integrity monitoring page |
-| `src/pages/money/FinancialHealthPulse.tsx` | Enhance — Emotional Finance + Income Quality Score + full Founder Split Brain |
-| `src/pages/money/SubscriptionsWaste.tsx` | Enhance — Negotiation/Downgrade Advisor section |
-| `src/pages/money/TaxEstimator.tsx` | Enhance — Tax Shock Prevention section |
-| `src/pages/money/MoneyAdvisorBoard.tsx` | Enhance — Adaptive Personality system |
-| `src/pages/money/MoneyOverview.tsx` | Enhance — full Money Twin + stress lane + peace badge |
-| `src/pages/MoneyCenter.tsx` | Add 1 tab (Boundaries) |
-| `src/App.tsx` | Add 1 route |
+| `src/components/sita/money-onboarding/MoneyOnboardingFlow.tsx` | New — orchestrator |
+| `src/components/sita/money-onboarding/MoneyWelcomeStep.tsx` | New — MO-ONB-01 |
+| `src/components/sita/money-onboarding/MoneyIdentityStep.tsx` | New — MO-ONB-02 |
+| `src/components/sita/money-onboarding/FinancialPrioritiesStep.tsx` | New — MO-ONB-03 |
+| `src/components/sita/money-onboarding/ConnectAccountsStep.tsx` | New — MO-ONB-04 |
+| `src/components/sita/money-onboarding/MoneyStructureStep.tsx` | New — MO-ONB-05 |
+| `src/components/sita/money-onboarding/BudgetStyleStep.tsx` | New — MO-ONB-06 |
+| `src/components/sita/money-onboarding/FounderBoundaryStep.tsx` | New — MO-ONB-07 |
+| `src/components/sita/money-onboarding/HouseholdSharingStep.tsx` | New — MO-ONB-08 |
+| `src/components/sita/money-onboarding/OperatingModeStep.tsx` | New — MO-ONB-09 |
+| `src/components/sita/money-onboarding/MoneyOfficeRevealStep.tsx` | New — MO-ONB-10 |
+| `src/components/sita/money-onboarding/index.ts` | New — barrel export |
+| `src/pages/MoneyOnboarding.tsx` | New — page wrapper |
+| `src/App.tsx` | Add route `/money/onboarding` |
+| `src/pages/MoneyCenter.tsx` | Add onboarding-complete check + redirect |
 
-**Total: 8 file changes (1 new, 7 enhanced). Uses existing services (income-quality, stress-radar, peace-score) and existing contract types (EmotionalPattern). No new services or DB tables needed.**
+**Total: 14 new files, 2 enhanced files. No duplicates. Uses existing primitives and patterns.**
 
