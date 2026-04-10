@@ -149,9 +149,9 @@ const NotificationCenter = () => {
   const [quietMode, setQuietMode] = useState(false);
 
   // Auto-activate quiet mode when cognitive load is high
-  useMemo(() => {
+  useEffect(() => {
     if (cogLoad > 0.8 && !quietMode) setQuietMode(true);
-  }, [cogLoad]);
+  }, [cogLoad, quietMode]);
 
   // Fetch notifications from queue
   const { data: notifications = [], isLoading } = useQuery({
