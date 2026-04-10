@@ -509,7 +509,17 @@ export function OSSetupExperience() {
     setSessionData("role", state.role);
     setSessionData("setupStyle", state.setupStyle);
     setSessionData("enabledDomains", state.enabledDomains);
-  }, [state.role, state.setupStyle, state.enabledDomains, setSessionData]);
+    setSessionData("accountPath", state.accountPath);
+    setSessionData("operatingContext", state.operatingContext);
+    // Derive pain points and focus areas from quick identity for domain branching
+    setSessionData("painPoints", state.quickIdentity.slipPoints);
+    setSessionData("focusAreas", state.quickIdentity.runFirst);
+    setSessionData("stressAreas", state.stressMap.heavierThanShould);
+  }, [
+    state.role, state.setupStyle, state.enabledDomains, state.accountPath,
+    state.operatingContext, state.quickIdentity.slipPoints, state.quickIdentity.runFirst,
+    state.stressMap.heavierThanShould, setSessionData,
+  ]);
 
   const currentStepNum = currentStepIndex >= 0 ? currentStepIndex : 0;
 
