@@ -1,71 +1,94 @@
 
+# Money Office — Advanced Feature Implementation Plan
 
-# Money Office — Full Audit Report & Enhancement Plan
+## Audit Summary
 
-## Audit Findings
+**Already implemented (10 features):** Money Twin (basic), Founder Boundary Monitor, Cashflow Storyline, Subscription Leak Radar, Bill Shock Prevention, Scenario Planner, Financial Health Pulse, 9 Advisors, Waste Detector, Money Time Machine.
 
-### Fully Implemented & Working (21 pages, 34 services, all contracts)
+**Missing (13 features need new pages or major enhancements):**
 
-**Pages (21 tabs):** Overview, Bills, Subscriptions, Budgets, Transactions, Net Worth, Debt & Credit, Reserves, Cash Timing, Receivables, Health Pulse, Household, Scenarios, Investment Office, Tax, Advisors, Approvals, Proof, Documents, Boardroom, Settings — all wired in MoneyCenter.tsx with route mapping in App.tsx.
+## Implementation
 
-**Backend Services (34):** All exported from `src/lib/services/finance-os/index.ts` including debt-analyzer, financial-health, scenario-engine, envelope-budget, plus 30 original services.
+### Phase 1: New Services (4 files)
 
-**Contracts:** All 6 contract sub-modules exported: reserves, subscriptions, family-office, investment-office, debt-credit, health-score, envelope-budget, scenario.
+**`src/lib/services/finance-os/stress-radar.service.ts`**
+Deterministic engine detecting: cash squeeze windows, bill collisions, reserve weakness, debt inflection points, cashflow fragility, founder draw instability, tax shortfall risk, subscription creep, float reliance, utilization danger. Returns typed `StressSignal[]` with severity/timing/impact.
 
-**Routes:** All 8 new routes confirmed in App.tsx (lines 861-868).
+**`src/lib/services/finance-os/income-quality.service.ts`**
+Scores income on: recurring reliability, client concentration, seasonality, payment delay risk, one-time dependency, household dependency on unstable inflows. Returns `IncomeQualityScore` with composite + per-dimension breakdown.
 
-### Issues Found (3 bugs)
+**`src/lib/services/finance-os/cash-allocator.service.ts`**
+Given available cash, recommends allocation across bills, tax reserve, emergency reserve, debt payoff, sinking funds, payroll reserve, discretionary, investments, expansion. Returns conservative/balanced/aggressive plans with amounts and reasoning.
 
-**Bug 1: TransactionIntelligence.tsx exports wrong component name**
-Line 151: `export default DebtCreditOffice;` — the component function is also named `DebtCreditOffice` (line 36) instead of `TransactionIntelligence`. This is a naming collision. The file works because MoneyCenter imports it as `TransactionIntelligence` from the file path, and the default export is what matters, but the internal function name is confusing and would cause issues in React DevTools. The function name on line 36 should be `TransactionIntelligence` and the export on line 151 should match.
+**`src/lib/services/finance-os/peace-score.service.ts`**
+Composite "Financial Peace Score" from: reserve strength, bill safety, debt burden, tax preparedness, income predictability, obligation pressure, discretionary breathing room, household coordination. Distinct from Health Pulse (which is clinical — Peace Score is emotional).
 
-**Bug 2: HouseholdMoneyOffice.tsx missing 2 KPI tiles**
-Line 46-48 only shows 2 KPITiles (Household Income, Shared Expenses) out of 4 grid columns. The plan called for 4: surplus, savings rate, shared budget health, and member count. The `grid-cols-4` layout looks sparse with only 2 tiles.
+### Phase 2: Contract Types (1 file enhancement)
 
-**Bug 3: MoneyOverview.tsx missing "wow" features**
-The plan specified adding Money Twin (Sankey-style flow visualization) to MoneyOverview, Cashflow Storyline to CashTiming, Subscription Leak Radar to SubscriptionsWaste, and Bill Shock Prevention to BillsWorkspace. None of these "wow" features were added to the existing pages — they were only built into the NEW pages (FinancialHealthPulse has Founder Boundary, BudgetEnvelopeOffice has pace tracking, etc.). The 4 planned enhancements to existing pages were skipped.
+**`src/packages/finance-contracts/advanced-intelligence.ts`** (new)
+Types for: `StressSignal`, `LifeEvent`, `LifeMoneyImpact`, `MoneyMode`, `CashAllocationPlan`, `IncomeQualityScore`, `PeaceScoreResult`, `FinancialTrustNode`, `OpportunityCostEntry`, `MoneyRitual`, `EmotionalPattern`. Export from finance-contracts index.
 
-### What's Missing (4 "wow" feature enhancements to existing pages)
+### Phase 3: New Pages (8 files)
 
-1. **Money Twin section in MoneyOverview.tsx** — A visual Sankey-style flow map showing income → bills → budgets → debt → reserves → goals. Not present.
+**`src/pages/money/StressRadar.tsx`** — Full stress detection dashboard. KPIs for active stress signals, severity breakdown. Timeline of upcoming squeeze windows. Bill collision calendar. Reserve weakness alerts. Utilization danger zones. Advisor card.
 
-2. **Cashflow Storyline in CashTiming.tsx** — A narrative-driven section describing where money came from, went, what changed, what's coming. Not present.
+**`src/pages/money/LifeMoneyEngine.tsx`** — Life event selector (moving, child, hiring, home purchase, job change, etc.). Each event shows: cashflow impact, safe-to-spend change, reserve needs, budget shifts, bill pressure, risk windows, suggested setup changes. Uses scenario engine underneath.
 
-3. **Subscription Leak Radar enhancement in SubscriptionsWaste.tsx** — The page already has waste detection and duplicate detection via `enrichSub()`, but lacks the explicit "Leak Radar" section showing rising costs, forgotten renewals, and downgrade opportunities as a distinct visual panel.
+**`src/pages/money/MoneyModes.tsx`** — Mode selector: Stable, Tighten, Recovery, Growth, Expansion, Debt Attack, Tax Protection, Founder Conservation, Household Protection, Launch Mode. Each mode shows changed behaviors: safe-to-spend posture, warning thresholds, reserve targets, advisor tone, bill prioritization logic. Mode selection persists.
 
-4. **Bill Shock Prevention in BillsWorkspace.tsx** — No section for detecting unusually large incoming charges, annual renewals colliding, or low-cash timing risks.
+**`src/pages/money/CashAllocator.tsx`** — Shows current available cash and three allocation plans (conservative/balanced/aggressive) with bar visualizations per bucket. User can adjust and see ripple effects. Advisor card for recommendation.
 
-## Fix Plan
+**`src/pages/money/TrustGraph.tsx`** — Financial dependency graph: bills tied to accounts, debt tied to reserves, family commitments tied to cashflow, payroll tied to receivables, card utilization tied to spending, tax obligations tied to inflows. Visual node-link layout using CSS grid (no D3 needed). Color-coded by health.
 
-### Fix 1: TransactionIntelligence.tsx — rename function
-- Line 36: rename `DebtCreditOffice` → `TransactionIntelligence`
-- Line 151: rename export `DebtCreditOffice` → `TransactionIntelligence`
+**`src/pages/money/OpportunityCost.tsx`** — For each spending category shows: what it prevented (reserve growth delayed, debt payoff delayed, goal progress traded away). "What if you hadn't spent X" counterfactuals. Monthly and cumulative views.
 
-### Fix 2: HouseholdMoneyOffice.tsx — add missing KPIs
-- Add 2 more KPITiles: "Monthly Surplus" and "Budget Health" to fill the 4-column grid
+**`src/pages/money/MoneyRituals.tsx`** — Guided ritual system: Weekly Reset, Month Close, Bill Planning, Debt Check, Subscription Cleanup, Founder Cash Separation, Tax Reserve. Each ritual has steps, checklist, completion state, and schedule. Premium feel.
 
-### Fix 3: MoneyOverview.tsx — add Money Twin section
-- Add a "Money Flow" visual section after the KPI strip showing income allocation flow with horizontal bars for: Bills → Subscriptions → Debt → Reserves → Savings → Safe-to-Spend. This is the Money Twin concept rendered as a deterministic flow breakdown rather than a full Sankey (which would require a charting library not in the stack).
+**`src/pages/money/PeaceScore.tsx`** — Financial Peace Score dashboard. Composite score with dimension breakdown (reserve strength, bill safety, debt burden, tax prep, income predictability, obligation pressure, breathing room, household coordination). Trend over time. Comparison to goals. Advisor guidance.
 
-### Fix 4: CashTiming.tsx — add Cashflow Storyline
-- Add a narrative card section after the chart that summarizes in plain language: "This month, $X came in from Y sources. $Z went to obligations. Your biggest change was [item]. Coming up: [upcoming large items]."
+### Phase 4: Enhancements to Existing Pages (5 files)
 
-### Fix 5: SubscriptionsWaste.tsx — add Leak Radar panel
-- Add a "Subscription Leak Radar" card section showing: rising cost subscriptions, renewals in next 30 days, cost trend over 3 months. Uses existing subscription data + enrichment.
+**`src/pages/money/MoneyOverview.tsx`** — Enhance Money Twin from basic bars to full model showing: committed vs flexible vs risky vs safe vs decaying vs improving categories. Add Financial Stress Radar summary lane (top 3 stress signals with link to full page). Add Peace Score mini-badge.
 
-### Fix 6: BillsWorkspace.tsx — add Bill Shock Prevention
-- Add a "Bill Shock Alerts" card detecting: bills significantly larger than their average, annual renewals coming up, days where multiple large bills collide, low-cash timing risks.
+**`src/pages/money/FinancialHealthPulse.tsx`** — Add Emotional Finance Layer section: detect panic/guilt/avoidance/feast-famine patterns from spending data. Add Income Quality Score section. Enhance Founder Boundary Monitor with full Split Brain Protection (fake profitability detection, delayed reimbursements, dangerous optimism).
 
-### File Summary
+**`src/pages/money/TaxEstimator.tsx`** — Add Tax Shock Prevention section: under-set-aside detection, irregular income tax risk, founder draw tax distortion, under-categorized deductibles, documentation weakness, quarter-end danger alerts.
+
+**`src/pages/money/SubscriptionsWaste.tsx`** — Add Negotiation/Downgrade Advisor section: downgrade paths, better billing cycles, cancellation ordering, timing, alternatives, monthly burn impact.
+
+**`src/pages/money/MoneyAdvisorBoard.tsx`** — Add Adaptive Personality system: advisor tone changes based on current Money Mode (recovery = gentle/supportive, growth = ambitious, debt attack = aggressive/focused, etc.). Show current mode badge on each advisor.
+
+### Phase 5: Wiring (2 files)
+
+**`src/pages/MoneyCenter.tsx`** — Add 8 new tabs: "Stress Radar", "Life Impact", "Modes", "Allocator", "Trust Graph", "Opportunity Cost", "Rituals", "Peace Score". Wire imports and route mapping.
+
+**`src/App.tsx`** — Add 8 new routes: `/money/stress-radar`, `/money/life-impact`, `/money/modes`, `/money/allocator`, `/money/trust-graph`, `/money/opportunity-cost`, `/money/rituals`, `/money/peace-score`.
+
+## File Summary
 
 | File | Action |
 |------|--------|
-| `src/pages/money/TransactionIntelligence.tsx` | Rename function + export (2 lines) |
-| `src/pages/money/HouseholdMoneyOffice.tsx` | Add 2 KPITiles (line 48) |
-| `src/pages/money/MoneyOverview.tsx` | Add Money Twin flow visualization section |
-| `src/pages/money/CashTiming.tsx` | Add Cashflow Storyline narrative section |
-| `src/pages/money/SubscriptionsWaste.tsx` | Add Subscription Leak Radar panel |
-| `src/pages/money/BillsWorkspace.tsx` | Add Bill Shock Prevention alerts |
+| `src/packages/finance-contracts/advanced-intelligence.ts` | New — all advanced types |
+| `src/packages/finance-contracts/index.ts` | Add export |
+| `src/lib/services/finance-os/stress-radar.service.ts` | New — stress detection engine |
+| `src/lib/services/finance-os/income-quality.service.ts` | New — income scoring engine |
+| `src/lib/services/finance-os/cash-allocator.service.ts` | New — allocation engine |
+| `src/lib/services/finance-os/peace-score.service.ts` | New — peace score engine |
+| `src/lib/services/finance-os/index.ts` | Add 4 new exports |
+| `src/pages/money/StressRadar.tsx` | New page |
+| `src/pages/money/LifeMoneyEngine.tsx` | New page |
+| `src/pages/money/MoneyModes.tsx` | New page |
+| `src/pages/money/CashAllocator.tsx` | New page |
+| `src/pages/money/TrustGraph.tsx` | New page |
+| `src/pages/money/OpportunityCost.tsx` | New page |
+| `src/pages/money/MoneyRituals.tsx` | New page |
+| `src/pages/money/PeaceScore.tsx` | New page |
+| `src/pages/money/MoneyOverview.tsx` | Enhance — full Money Twin + stress lane + peace badge |
+| `src/pages/money/FinancialHealthPulse.tsx` | Enhance — emotional layer + income quality + full founder protection |
+| `src/pages/money/TaxEstimator.tsx` | Enhance — tax shock prevention |
+| `src/pages/money/SubscriptionsWaste.tsx` | Enhance — negotiation advisor |
+| `src/pages/money/MoneyAdvisorBoard.tsx` | Enhance — adaptive personality |
+| `src/pages/MoneyCenter.tsx` | Add 8 tabs + imports |
+| `src/App.tsx` | Add 8 routes |
 
-All fixes use existing data hooks, existing primitives (SitaCard, KPITile, SitaSectionHeader), and existing service logic. No new services, contracts, or routes needed.
-
+**Total: 22 file changes (12 new, 10 enhanced). All using existing SITA primitives, existing hooks, deterministic engines. No new DB tables needed.**
