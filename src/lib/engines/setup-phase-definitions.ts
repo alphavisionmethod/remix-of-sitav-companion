@@ -51,12 +51,12 @@ function defaultStatusUX(title: string): Record<SetupPhaseStatus, PhaseStatusUX>
 
 // ── Branch condition factories ──────────────────────────────
 
-function setupStyleCondition(styles: string[]): SetupBranchCondition {
-  return { type: "setup-style", description: `Include for styles: ${styles.join(", ")}`, evaluatorKey: `style:${styles.join(",")}`, includeWhen: true };
+function setupStyleCondition(styles: string[], orGroup?: string): SetupBranchCondition {
+  return { type: "setup-style", description: `Include for styles: ${styles.join(", ")}`, evaluatorKey: `style:${styles.join(",")}`, includeWhen: true, orGroup };
 }
 
-function domainCondition(domain: string): SetupBranchCondition {
-  return { type: "domain-selection", description: `Include when ${domain} domain is relevant`, evaluatorKey: `domain:${domain}`, includeWhen: true };
+function domainCondition(domain: string, orGroup?: string): SetupBranchCondition {
+  return { type: "domain-selection", description: `Include when ${domain} domain is relevant`, evaluatorKey: `domain:${domain}`, includeWhen: true, orGroup };
 }
 
 // ── Phase Definitions ───────────────────────────────────────
