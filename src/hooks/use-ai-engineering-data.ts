@@ -6,6 +6,7 @@
 
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useQuery } from "@tanstack/react-query";
+import { useAIEngineeringRealtime } from "@/hooks/use-ai-engineering-realtime";
 import {
   aiEngineeringMissions,
   aiFixProposals,
@@ -58,6 +59,8 @@ export function useAIEngDomain<T>(
   limit = 100,
 ) {
   const { isDemoMode } = useDataMode();
+  // Activate realtime — invalidates query keys automatically on DB changes
+  const { isConnected: realtimeConnected } = useAIEngineeringRealtime();
 
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["ai-eng", domain, isDemoMode ? "demo" : "live"],
@@ -80,6 +83,7 @@ export function useAIEngDomain<T>(
     isLoading: !isDemoMode && isLoading,
     error: error as Error | null,
     refetch,
+    realtimeConnected,
     source: isDemoMode ? "demo" as const : (data && data.length > 0 ? "real" as const : "empty" as const),
   };
 }
@@ -102,6 +106,7 @@ export function useAIEngineeringData(demoSets: {
   selfHealingRules?: any[];
 }) {
   const { isDemoMode } = useDataMode();
+  const { isConnected: realtimeConnected } = useAIEngineeringRealtime();
 
   const domains = Object.keys(demoSets) as AIEngDomain[];
 
@@ -133,5 +138,6 @@ export function useAIEngineeringData(demoSets: {
     isLoading: !isDemoMode && isLoading,
     error: error as Error | null,
     refetch,
+    realtimeConnected,
   };
 }
