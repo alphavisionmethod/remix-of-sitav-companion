@@ -9,8 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
-import { DEMO_INTEL_OUTCOMES as DEMO_OUTCOMES, DEMO_REASONING_PATHS } from "@/lib/demo-data/admin-intelligence";
+import { useOutcomeEconomics } from "@/hooks/use-intelligence-screen-data";
 
 const recColors: Record<string, string> = {
   expand: "text-emerald-400 bg-emerald-500/10",
@@ -21,22 +20,24 @@ const recColors: Record<string, string> = {
 };
 
 const OutcomeEconomicsBoard = () => {
-  const { isAdmin, loading } = useRequireAdmin();
-  if (loading || !isAdmin) return null;
+  const { isAdmin, loading: authLoading } = useRequireAdmin();
+  const { outcomes, reasoningPaths, loading: dataLoading, isDemo } = useOutcomeEconomics();
 
-  const totalCost = DEMO_OUTCOMES.reduce((s, o) => s + o.costCents, 0);
-  const totalValue = DEMO_OUTCOMES.reduce((s, o) => s + o.valueCents, 0);
-  const totalOutcomes = DEMO_OUTCOMES.reduce((s, o) => s + o.count, 0);
+  if (authLoading || !isAdmin) return null;
+
+  const totalCost = outcomes.reduce((s, o) => s + o.costCents, 0);
+  const totalValue = outcomes.reduce((s, o) => s + o.valueCents, 0);
+  const totalOutcomes = outcomes.reduce((s, o) => s + o.count, 0);
   const overallROI = totalCost > 0 ? (totalValue / totalCost).toFixed(1) : "0";
-  const totalAccepted = DEMO_OUTCOMES.reduce((s, o) => s + o.accepted, 0);
-  const totalRejected = DEMO_OUTCOMES.reduce((s, o) => s + o.rejected, 0);
+  const totalAccepted = outcomes.reduce((s, o) => s + o.accepted, 0);
+  const totalRejected = outcomes.reduce((s, o) => s + o.rejected, 0);
 
-  const highValue = DEMO_OUTCOMES.filter(o => o.roi >= 10);
-  const lowValue = DEMO_OUTCOMES.filter(o => o.roi < 5);
+  const highValue = outcomes.filter(o => o.roi >= 10);
+  const lowValue = outcomes.filter(o => o.roi < 5);
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      <DemoModeBadge />
+      {isDemo && <DemoModeBadge />}
       <SitaPageHeader
         icon={<Target className="h-6 w-6" />}
         title="Outcome Economics Board"
@@ -83,7 +84,7 @@ const OutcomeEconomicsBoard = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {DEMO_OUTCOMES.sort((a, b) => b.roi - a.roi).map(o => (
+              {[...outcomes].sort((a, b) => b.roi - a.roi).map(o => (
                 <TableRow key={o.type}>
                   <TableCell className="text-xs font-medium text-foreground">{o.type.replace(/_/g, " ")}</TableCell>
                   <TableCell className="text-xs text-muted-foreground">{o.domain}</TableCell>
@@ -151,7 +152,7 @@ const OutcomeEconomicsBoard = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {DEMO_REASONING_PATHS.map(p => (
+              {reasoningPaths.map(p => (
                 <TableRow key={p.path}>
                   <TableCell className="text-xs font-medium text-foreground font-mono">{p.path}</TableCell>
                   <TableCell className="text-xs text-right font-mono">${(p.cost / 100).toFixed(0)}</TableCell>

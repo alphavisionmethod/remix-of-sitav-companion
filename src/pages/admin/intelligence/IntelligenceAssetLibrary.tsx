@@ -14,7 +14,7 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { DEMO_INTEL_ASSETS as DEMO_ASSETS } from "@/lib/demo-data/admin-intelligence";
+import { useIntelligenceAssetLibrary, type IntelligenceAsset } from "@/hooks/use-intelligence-screen-data";
 
 const verificationColors: Record<string, string> = {
   verified: "text-emerald-400",
@@ -30,10 +30,8 @@ const freshnessColors: Record<string, string> = {
   stale: "bg-rose-500",
 };
 
-type DemoAsset = typeof DEMO_ASSETS[0];
-
 /* ── Freshness & Confidence Strip (UIE02 spec) ── */
-function FreshnessAndConfidenceStrip({ asset }: { asset: DemoAsset }) {
+function FreshnessAndConfidenceStrip({ asset }: { asset: IntelligenceAsset }) {
   return (
     <div className="flex items-center gap-4 p-3 rounded-lg bg-secondary/20">
       <div className="flex-1 space-y-1">
@@ -62,13 +60,12 @@ function FreshnessAndConfidenceStrip({ asset }: { asset: DemoAsset }) {
 }
 
 /* ── Reuse History Panel (UIE02 spec) ── */
-function ReuseHistoryPanel({ asset }: { asset: DemoAsset }) {
-  // Generate synthetic but realistic reuse history from asset data
+function ReuseHistoryPanel({ asset }: { asset: IntelligenceAsset }) {
   const reuseEvents = Array.from({ length: Math.min(asset.usageCount, 6) }, (_, i) => {
     const daysAgo = i * 3 + 1;
     const modes = ["direct", "adapted", "reference"] as const;
     const mode = modes[i % 3];
-    const costSaved = Math.round((asset.savings / asset.usageCount) * (0.8 + Math.random() * 0.4));
+    const costSaved = Math.round((asset.savings / Math.max(asset.usageCount, 1)) * (0.8 + Math.random() * 0.4));
     return {
       id: `${asset.id}-reuse-${i}`,
       date: `${daysAgo}d ago`,
@@ -110,7 +107,7 @@ function ReuseHistoryPanel({ asset }: { asset: DemoAsset }) {
 }
 
 /* ── Invalidation Rules Card (UIE02 spec) ── */
-function InvalidationRulesCard({ asset }: { asset: DemoAsset }) {
+function InvalidationRulesCard({ asset }: { asset: IntelligenceAsset }) {
   return (
     <div className="space-y-2">
       <h4 className="text-xs font-semibold text-foreground flex items-center gap-1.5">
@@ -137,7 +134,7 @@ function AssetDetailDrawer({
   open,
   onClose,
 }: {
-  asset: DemoAsset | null;
+  asset: IntelligenceAsset | null;
   open: boolean;
   onClose: () => void;
 }) {
@@ -167,10 +164,7 @@ function AssetDetailDrawer({
         </SheetHeader>
 
         <div className="space-y-5">
-          {/* Freshness & Confidence Strip */}
           <FreshnessAndConfidenceStrip asset={asset} />
-
-          {/* Key Metrics */}
           <div className="grid grid-cols-3 gap-3">
             <div className="p-3 rounded-lg bg-secondary/20 text-center">
               <p className="text-lg font-bold text-foreground">{asset.usageCount}</p>
@@ -185,14 +179,8 @@ function AssetDetailDrawer({
               <p className="text-[10px] text-muted-foreground">Evidence Refs</p>
             </div>
           </div>
-
-          {/* Reuse History */}
           <ReuseHistoryPanel asset={asset} />
-
-          {/* Invalidation Rules */}
           <InvalidationRulesCard asset={asset} />
-
-          {/* Metadata */}
           <div className="space-y-2">
             <h4 className="text-xs font-semibold text-foreground">Metadata</h4>
             <div className="grid grid-cols-2 gap-2 text-xs">
@@ -222,27 +210,29 @@ function AssetDetailDrawer({
 
 /* ── Main Component ── */
 const IntelligenceAssetLibrary = () => {
-  const { isAdmin, loading } = useRequireAdmin();
+  const { isAdmin, loading: authLoading } = useRequireAdmin();
   const [filterDomain, setFilterDomain] = useState("all");
   const [filterType, setFilterType] = useState("all");
   const [search, setSearch] = useState("");
-  const [selectedAsset, setSelectedAsset] = useState<DemoAsset | null>(null);
+  const [selectedAsset, setSelectedAsset] = useState<IntelligenceAsset | null>(null);
 
-  if (loading || !isAdmin) return null;
+  const { assets, loading: dataLoading, isDemo } = useIntelligenceAssetLibrary();
 
-  const filtered = DEMO_ASSETS.filter(a => {
+  if (authLoading || !isAdmin) return null;
+
+  const filtered = assets.filter(a => {
     if (filterDomain !== "all" && a.domain !== filterDomain) return false;
     if (filterType !== "all" && a.type !== filterType) return false;
     if (search && !a.title.toLowerCase().includes(search.toLowerCase())) return false;
     return true;
   });
 
-  const domains = [...new Set(DEMO_ASSETS.map(a => a.domain))];
-  const types = [...new Set(DEMO_ASSETS.map(a => a.type))];
+  const domains = [...new Set(assets.map(a => a.domain))];
+  const types = [...new Set(assets.map(a => a.type))];
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      <DemoModeBadge />
+      {isDemo && <DemoModeBadge />}
       <SitaPageHeader
         icon={<Library className="h-6 w-6" />}
         title="Intelligence Asset Library"
@@ -336,7 +326,7 @@ const IntelligenceAssetLibrary = () => {
         <CardContent>
           <div className="flex flex-wrap gap-2">
             {Object.entries(
-              DEMO_ASSETS.flatMap(a => a.invalidationTriggers).reduce<Record<string, number>>((acc, t) => { acc[t] = (acc[t] || 0) + 1; return acc; }, {})
+              assets.flatMap(a => a.invalidationTriggers).reduce<Record<string, number>>((acc, t) => { acc[t] = (acc[t] || 0) + 1; return acc; }, {})
             ).sort(([, a], [, b]) => b - a).map(([trigger, count]) => (
               <Badge key={trigger} variant="outline" className="text-xs gap-1">
                 {trigger.replace(/_/g, " ")} <span className="text-muted-foreground">({count})</span>
@@ -352,7 +342,7 @@ const IntelligenceAssetLibrary = () => {
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {Object.entries(
-              DEMO_ASSETS.reduce<Record<string, { count: number; totalSavings: number }>>((acc, a) => {
+              assets.reduce<Record<string, { count: number; totalSavings: number }>>((acc, a) => {
                 if (!acc[a.type]) acc[a.type] = { count: 0, totalSavings: 0 };
                 acc[a.type].count++;
                 acc[a.type].totalSavings += a.savings;
