@@ -8,6 +8,7 @@ import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_DPO_STATS as DEMO_STATS } from "@/lib/demo-data/digital-presence";
+import DPOSubNav from "./DPOSubNav";
 
 type PatchStatus = "pending" | "approved" | "applied" | "rejected" | "verified";
 
