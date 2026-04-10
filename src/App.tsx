@@ -1,7 +1,7 @@
 import { QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes, Navigate, Outlet } from "react-router-dom";
 import { getAdminRoutes } from "@/routes/AdminRoutes";
-import { getOwnerRoutes } from "@/routes/OwnerRoutes";
+
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -1355,7 +1355,7 @@ const App = () => (
                     <Route path="/settings/connectors" element={<SettingsPage />} />
                     <Route path="/settings/permissions" element={<SettingsPage />} />
                     <Route path="/settings/billing" element={<SettingsPage />} />
-                    <Route path="/settings/notifications" element={<SettingsPage />} />
+                    
                     <Route path="/settings/privacy" element={<SettingsPage />} />
                     <Route path="/settings/appearance" element={<SettingsPage />} />
                     <Route path="/settings/plan-usage" element={<MyPlanUsage />} />
@@ -1718,13 +1718,6 @@ const App = () => (
 
                     {/* AIT — AI Engineering Team */}
                     <Route path="/admin/ai-team" element={<AIT01TeamOverview />} />
-                    <Route path="/admin/ai-team/overview" element={<AIT01TeamOverview />} />
-                    <Route path="/admin/ai-team/roles" element={<AIT02RoleRegistry />} />
-                    <Route path="/admin/ai-team/invoke" element={<AIT03TaskInvocation />} />
-                    <Route path="/admin/ai-team/activity" element={<AIT04ActivityFeedPage />} />
-                    <Route path="/admin/ai-team/cost" element={<AIT05CostEfficiencyPage />} />
-                    <Route path="/admin/ai-team/recommendations" element={<AIT06RecommendationsPage />} />
-                    <Route path="/admin/ai-team/approvals" element={<AIT07ApprovalQueuePage />} />
                     <Route path="/admin/ai-team/truth" element={<AIT08LaunchTruthPage />} />
                     <Route path="/admin/ai-team/setup" element={<AITSetupChecklist />} />
                     <Route path="/admin/ai-design-diffs" element={<AIDesignDiffTheater />} />

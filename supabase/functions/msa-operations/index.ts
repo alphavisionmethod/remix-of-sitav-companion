@@ -233,9 +233,9 @@ async function checkConsistency(supabase: any, userId: string) {
   const { data: readiness } = await supabase.from("surface_readiness_records").select("surface_id").eq("user_id", userId);
 
   const surfaceCount = surfaces?.length || 0;
-  if ((adapters?.length || 0) < surfaceCount) checks[0].status = "fail" as unknown;
-  if ((shells?.length || 0) < surfaceCount) checks[2].status = "fail" as unknown;
-  if ((readiness?.length || 0) < surfaceCount) checks[3].status = "fail" as unknown;
+  if ((adapters?.length || 0) < surfaceCount) checks[0].status = "fail" as any;
+  if ((shells?.length || 0) < surfaceCount) checks[2].status = "fail" as any;
+  if ((readiness?.length || 0) < surfaceCount) checks[3].status = "fail" as any;
 
   const passing = checks.filter(c => c.status === "pass").length;
   return jsonRes({ success: true, checks, passing, total: checks.length, consistent: passing === checks.length });
