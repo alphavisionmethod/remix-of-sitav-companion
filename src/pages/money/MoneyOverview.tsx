@@ -134,41 +134,101 @@ const MoneyOverview = () => {
         ))}
       </motion.div>
 
-      {/* Money Twin — Flow Visualization */}
+      {/* Money Twin — Full Financial Reality Model */}
       <SitaCard hover={false} className="p-5">
         <div className="flex items-center gap-2 mb-4">
           <Zap className="h-4 w-4 text-primary" />
-          <SitaCardTitle sub="Where your money flows each month">Money Twin</SitaCardTitle>
+          <SitaCardTitle sub="Living map of your financial reality">Money Twin</SitaCardTitle>
+          <span className="ml-auto text-[10px] bg-primary/10 text-primary rounded-full px-2 py-0.5 font-medium">Live Model</span>
         </div>
         {(() => {
           const totalIn = k.totalBalance + k.monthlyBurn;
+          const committed = k.billsDue7d * 4 + k.subscriptionMonthly;
+          const flexible = k.safeToSpend;
+          const risky = Math.round(k.totalBalance * 0.08);
+          const safe = Math.round(k.totalBalance * 0.1);
+          const decaying = Math.round(k.estWaste * 12);
+          const improving = Math.round(k.totalBalance * 0.05);
+
           const flows = [
-            { label: "Bills & Obligations", amount: k.billsDue7d * 4, color: "bg-urgency-high" },
-            { label: "Subscriptions", amount: k.subscriptionMonthly, color: "bg-[hsl(var(--sita-gold))]" },
-            { label: "Reserves", amount: Math.round(k.totalBalance * 0.1), color: "bg-primary" },
-            { label: "Savings Goals", amount: Math.round(k.totalBalance * 0.05), color: "bg-trust-verified" },
-            { label: "Safe to Spend", amount: k.safeToSpend, color: "bg-[hsl(var(--trust-safe))]" },
+            { label: "Committed (Fixed)", amount: committed, color: "bg-urgency-high", tag: "locked" },
+            { label: "Flexible (Discretionary)", amount: flexible, color: "bg-[hsl(var(--trust-safe))]", tag: "available" },
+            { label: "At Risk (Fragile)", amount: risky, color: "bg-amber-500", tag: "watch" },
+            { label: "Safe (Protected)", amount: safe, color: "bg-primary", tag: "secured" },
+            { label: "Decaying (Waste/Drag)", amount: decaying, color: "bg-destructive/70", tag: "fix" },
+            { label: "Improving (Growth)", amount: improving, color: "bg-trust-verified", tag: "positive" },
           ];
           const flowTotal = flows.reduce((s, f) => s + f.amount, 0) || 1;
           return (
             <div className="space-y-2">
               <div className="flex items-center justify-between text-xs text-muted-foreground mb-1">
-                <span>Income In</span>
+                <span>Total Financial Universe</span>
                 <span className="font-semibold text-foreground">${(totalIn > 0 ? totalIn : k.totalBalance).toLocaleString()}</span>
               </div>
               {flows.map(f => (
                 <div key={f.label} className="flex items-center gap-3">
-                  <span className="text-xs text-muted-foreground w-32 shrink-0">{f.label}</span>
+                  <span className="text-xs text-muted-foreground w-40 shrink-0">{f.label}</span>
                   <div className="flex-1 h-3 bg-secondary/40 rounded-full overflow-hidden">
                     <div className={`h-full rounded-full ${f.color}`} style={{ width: `${Math.max(2, (f.amount / flowTotal) * 100)}%` }} />
                   </div>
                   <span className="text-xs font-semibold text-foreground w-20 text-right">${f.amount.toLocaleString()}</span>
+                  <span className={`text-[9px] px-1.5 py-0.5 rounded ${f.tag === "locked" ? "bg-urgency-high/10 text-urgency-high" : f.tag === "available" ? "bg-emerald-500/10 text-emerald-500" : f.tag === "watch" ? "bg-amber-500/10 text-amber-500" : f.tag === "secured" ? "bg-primary/10 text-primary" : f.tag === "fix" ? "bg-destructive/10 text-destructive" : "bg-emerald-500/10 text-emerald-500"}`}>
+                    {f.tag}
+                  </span>
                 </div>
               ))}
             </div>
           );
         })()}
       </SitaCard>
+
+      {/* Stress Radar Summary Lane */}
+      <SitaCard hover={false} className="p-4 border-l-4 border-l-amber-500">
+        <div className="flex items-center gap-2 mb-3">
+          <AlertTriangle className="h-4 w-4 text-amber-500" />
+          <SitaCardTitle>Stress Radar</SitaCardTitle>
+          <button onClick={() => navigate("/money/stress-radar")} className="ml-auto text-[10px] text-primary hover:underline">View full radar →</button>
+        </div>
+        <div className="grid gap-2 sm:grid-cols-3">
+          {[
+            { signal: "Bill collision in 5 days", severity: "high", description: "3 bills totaling $1,450 due within 48 hours" },
+            { signal: "Reserve weakness", severity: "medium", description: "Emergency fund at 60% — below 3-month target" },
+            { signal: "Subscription creep", severity: "low", description: "Monthly subscription total up 8% over 90 days" },
+          ].map((s, i) => (
+            <div key={i} className={`rounded-lg p-3 ${s.severity === "high" ? "bg-destructive/5 border border-destructive/20" : s.severity === "medium" ? "bg-amber-500/5 border border-amber-500/20" : "bg-secondary/30 border border-border"}`}>
+              <div className="flex items-center gap-1.5 mb-1">
+                <div className={`h-2 w-2 rounded-full ${s.severity === "high" ? "bg-destructive" : s.severity === "medium" ? "bg-amber-500" : "bg-muted-foreground"}`} />
+                <p className="text-xs font-semibold text-foreground">{s.signal}</p>
+              </div>
+              <p className="text-[10px] text-muted-foreground">{s.description}</p>
+            </div>
+          ))}
+        </div>
+      </SitaCard>
+
+      {/* Peace Score Mini-Badge */}
+      <div className="grid gap-3 sm:grid-cols-4">
+        <SitaCard hover className="p-3 text-center cursor-pointer" onClick={() => navigate("/money/peace-score")}>
+          <p className="text-[10px] text-muted-foreground mb-1">Peace Score</p>
+          <p className="font-display text-2xl font-bold text-primary">72</p>
+          <p className="text-[10px] text-muted-foreground">/ 100</p>
+        </SitaCard>
+        <SitaCard hover className="p-3 text-center cursor-pointer" onClick={() => navigate("/money/health")}>
+          <p className="text-[10px] text-muted-foreground mb-1">Health Grade</p>
+          <p className="font-display text-2xl font-bold text-trust-verified">B+</p>
+          <p className="text-[10px] text-muted-foreground">76/100</p>
+        </SitaCard>
+        <SitaCard hover className="p-3 text-center cursor-pointer" onClick={() => navigate("/money/modes")}>
+          <p className="text-[10px] text-muted-foreground mb-1">Active Mode</p>
+          <p className="font-display text-lg font-bold text-primary">Stable</p>
+          <p className="text-[10px] text-muted-foreground">Balanced posture</p>
+        </SitaCard>
+        <SitaCard hover className="p-3 text-center cursor-pointer" onClick={() => navigate("/money/boundaries")}>
+          <p className="text-[10px] text-muted-foreground mb-1">Integrity</p>
+          <p className="font-display text-2xl font-bold text-amber-500">64</p>
+          <p className="text-[10px] text-muted-foreground">/ 100</p>
+        </SitaCard>
+      </div>
 
       {/* Fraud Monitor */}
       <SitaCard hover={false} className="p-4">

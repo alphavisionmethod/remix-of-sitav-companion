@@ -32,12 +32,14 @@ import TrustGraph from "./money/TrustGraph";
 import OpportunityCost from "./money/OpportunityCost";
 import MoneyRituals from "./money/MoneyRituals";
 import PeaceScore from "./money/PeaceScore";
+import FinancialBoundaryMonitor from "./money/FinancialBoundaryMonitor";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-type SubPage = "overview" | "bills" | "subscriptions" | "reserves" | "cash-timing" | "receivables" | "investment-office" | "tax" | "approvals" | "boardroom" | "proof" | "files" | "settings" | "net-worth" | "debt-credit" | "budgets" | "transactions" | "household" | "health" | "advisors" | "scenarios" | "stress-radar" | "life-impact" | "modes" | "allocator" | "trust-graph" | "opportunity-cost" | "rituals" | "peace-score";
+type SubPage = "overview" | "bills" | "subscriptions" | "reserves" | "cash-timing" | "receivables" | "investment-office" | "tax" | "approvals" | "boardroom" | "proof" | "files" | "settings" | "net-worth" | "debt-credit" | "budgets" | "transactions" | "household" | "health" | "advisors" | "scenarios" | "stress-radar" | "life-impact" | "modes" | "allocator" | "trust-graph" | "opportunity-cost" | "rituals" | "peace-score" | "boundaries";
 
 const subpageFromPath = (path: string): SubPage => {
+  if (path.includes("/boundaries")) return "boundaries";
   if (path.includes("/stress-radar")) return "stress-radar";
   if (path.includes("/life-impact")) return "life-impact";
   if (path.includes("/modes")) return "modes";
@@ -99,6 +101,7 @@ const pages: Record<SubPage, React.ComponentType> = {
   "opportunity-cost": OpportunityCost,
   rituals: MoneyRituals,
   "peace-score": PeaceScore,
+  boundaries: FinancialBoundaryMonitor,
 };
 
 const MoneyCenter = () => {
@@ -145,6 +148,7 @@ const MoneyCenter = () => {
             { key: "trust-graph", label: "Trust Graph" },
             { key: "opportunity-cost", label: "Opportunity Cost" },
             { key: "rituals", label: "Rituals" },
+            { key: "boundaries", label: "Boundaries" },
             { key: "household", label: "Household" },
             { key: "scenarios", label: "Scenarios" },
             { key: "investment-office", label: "Investment Office" },
