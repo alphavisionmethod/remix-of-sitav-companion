@@ -1,6 +1,6 @@
 export interface OnboardingState {
   // RO-ONB-01
-  setupDepth: "quick" | "deep" | "";
+  setupDepth: "quick" | "balanced" | "deep" | "";
   // RO-ONB-02
   businessName: string;
   businessTypes: string[];
