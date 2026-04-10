@@ -79,16 +79,16 @@ export default function LightweightChart({ symbol, basePrice, changePct, classNa
       height: 280,
       layout: {
         background: { color: "transparent" },
-        textColor: `hsl(${fg})`,
+        textColor: "#94a3b8",
         fontSize: 11,
       },
       grid: {
-        vertLines: { color: `hsl(${border} / 0.3)` },
-        horzLines: { color: `hsl(${border} / 0.3)` },
+        vertLines: { color: "rgba(148, 163, 184, 0.1)" },
+        horzLines: { color: "rgba(148, 163, 184, 0.1)" },
       },
       crosshair: { mode: 0 },
-      rightPriceScale: { borderColor: `hsl(${border} / 0.5)` },
-      timeScale: { borderColor: `hsl(${border} / 0.5)`, timeVisible: range === "1D" },
+      rightPriceScale: { borderColor: "rgba(148, 163, 184, 0.2)" },
+      timeScale: { borderColor: "rgba(148, 163, 184, 0.2)", timeVisible: range === "1D" },
     });
 
     chartRef.current = chart;
