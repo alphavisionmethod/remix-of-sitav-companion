@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useCallback, useEffect } from "react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 type DataMode = "demo" | "live";
 
@@ -77,14 +78,37 @@ export function DataModeProvider({ children }: { children: React.ReactNode }) {
     });
   }, []);
 
-  const refreshConnectors = useCallback(() => {
-    // In live mode, this would call the connector-proxy edge function
-    // For now, simulate a refresh
+  const refreshConnectors = useCallback(async () => {
     if (mode === "demo") {
       setConnectors(demoConnectors);
     } else {
-      // In live mode, connectors start as disconnected until actually connected
-      setConnectors(demoConnectors.map(c => ({ ...c, status: "disconnected" as const, lastSync: undefined })));
+      // Query real connector_configs from Supabase
+      try {
+        const { data, error } = await supabase
+          .from("connector_configs" as any)
+          .select("id, connector_type, display_name, status, health_score, last_health_check")
+          .order("created_at", { ascending: false });
+        
+        if (error || !data || data.length === 0) {
+          // No connectors configured — show empty, not fake disconnected ones
+          setConnectors([]);
+        } else {
+          setConnectors((data as any[]).map((c: any) => ({
+            id: c.id,
+            name: c.display_name || c.connector_type,
+            type: c.connector_type as any,
+            status: c.status === "active" ? "connected" as const
+              : c.status === "error" ? "error" as const
+              : c.status === "degraded" ? "degraded" as const
+              : "disconnected" as const,
+            lastSync: c.last_health_check
+              ? new Date(c.last_health_check).toLocaleString()
+              : undefined,
+          })));
+        }
+      } catch {
+        setConnectors([]);
+      }
     }
     toast.info("Connector status refreshed");
   }, [mode]);

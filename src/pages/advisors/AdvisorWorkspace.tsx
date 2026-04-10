@@ -65,9 +65,10 @@ const TRUST_PIPELINE: ExecutionState[] = [
 // ── Main Guide Identity ─────────────────────────────────────────
 
 const MainGuideHeader = ({ mode, onModeChange }: { mode: CouncilMode; onModeChange: (m: CouncilMode) => void }) => {
-  const totalApprovals = mockAdvisors.reduce((s, a) => s + a.pendingApprovals, 0);
-  const activeAdvisors = mockAdvisors.filter(a => a.status === "active").length;
-  const highImpact = mockRecommendations.filter(r => r.impact === "high").length;
+  const { isDemoMode } = useDataMode();
+  const totalApprovals = isDemoMode ? mockAdvisors.reduce((s, a) => s + a.pendingApprovals, 0) : 0;
+  const activeAdvisors = isDemoMode ? mockAdvisors.filter(a => a.status === "active").length : 0;
+  const highImpact = isDemoMode ? mockRecommendations.filter(r => r.impact === "high").length : 0;
 
   return (
     <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
@@ -105,7 +106,7 @@ const MainGuideHeader = ({ mode, onModeChange }: { mode: CouncilMode; onModeChan
           <MetricPill label="High-Impact Moves" value={highImpact} accent />
           <MetricPill label="Active Advisors" value={activeAdvisors} />
           <MetricPill label="Pending Approvals" value={totalApprovals} accent={totalApprovals > 0} />
-          <MetricPill label="Simulations Ready" value={mockSimulations.length} />
+          <MetricPill label="Simulations Ready" value={isDemoMode ? mockSimulations.length : 0} />
         </div>
 
         {/* Operating mode selector */}
@@ -148,10 +149,11 @@ const MetricPill = ({ label, value, accent }: { label: string; value: number; ac
 
 const CouncilGrid = ({ mode }: { mode: CouncilMode }) => {
   const navigate = useNavigate();
+  const { isDemoMode } = useDataMode();
   const modeConfig = MODES.find(m => m.id === mode)!;
-  const filtered = modeConfig.domains.includes("all")
-    ? mockAdvisors
-    : mockAdvisors.filter(a => modeConfig.domains.includes(a.domain));
+  const filtered = isDemoMode
+    ? (modeConfig.domains.includes("all") ? mockAdvisors : mockAdvisors.filter(a => modeConfig.domains.includes(a.domain)))
+    : [];
 
   const advisorIds = useMemo(() => filtered.map(a => a.id), [filtered]);
   const liveStatuses = useAdvisorStatuses(advisorIds);
@@ -202,6 +204,9 @@ const CouncilGrid = ({ mode }: { mode: CouncilMode }) => {
 // ── What Matters Now — Priority Recommendations ─────────────────
 
 const WhatMattersNow = ({ mode }: { mode: CouncilMode }) => {
+  const { isDemoMode } = useDataMode();
+  if (!isDemoMode) return null;
+  
   const modeConfig = MODES.find(m => m.id === mode)!;
   const recs = modeConfig.domains.includes("all")
     ? mockRecommendations
@@ -233,6 +238,9 @@ const WhatMattersNow = ({ mode }: { mode: CouncilMode }) => {
 // ── Disagreement & Synthesis Cards ──────────────────────────────
 
 const DisagreementPanel = () => {
+  const { isDemoMode } = useDataMode();
+  if (!isDemoMode) return null;
+  
   const disagreements = mockSynthesis.filter(s => s.disagreements && s.disagreements.length > 0);
 
   if (disagreements.length === 0 && mockSynthesis.length === 0) return null;
@@ -279,6 +287,9 @@ const DisagreementPanel = () => {
 // ── Confidence Ladder Panel ─────────────────────────────────────
 
 const ConfidencePanel = ({ mode }: { mode: CouncilMode }) => {
+  const { isDemoMode } = useDataMode();
+  if (!isDemoMode) return null;
+  
   const modeConfig = MODES.find(m => m.id === mode)!;
   const advisors = modeConfig.domains.includes("all")
     ? mockAdvisors
@@ -297,6 +308,9 @@ const ConfidencePanel = ({ mode }: { mode: CouncilMode }) => {
 // ── Trust State Pipeline Visualization ──────────────────────────
 
 const TrustPipelineStrip = () => {
+  const { isDemoMode } = useDataMode();
+  if (!isDemoMode) return null;
+  
   const states: { state: ExecutionState; count: number }[] = [
     { state: "proposed", count: 3 },
     { state: "simulated", count: 2 },
@@ -324,6 +338,9 @@ const TrustPipelineStrip = () => {
 // ── What Changed Panel ──────────────────────────────────────────
 
 const WhatChangedPanel = () => {
+  const { isDemoMode } = useDataMode();
+  if (!isDemoMode) return null;
+  
   const recentProof = mockProofHistory.slice(0, 4);
 
   return (
@@ -490,31 +507,39 @@ const MemoryTransparency = () => {
 
 // ── Proof & History ─────────────────────────────────────────────
 
-const ProofHistory = () => (
-  <div className="space-y-6">
-    <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
-      className="rounded-xl border border-trust-verified/15 bg-trust-verified/5 p-5"
-    >
-      <div className="flex items-center gap-3 mb-2">
-        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-trust-verified/15">
-          <FileText className="h-5 w-5 text-trust-verified" />
+const ProofHistory = () => {
+  const { isDemoMode } = useDataMode();
+  
+  return (
+    <div className="space-y-6">
+      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+        className="rounded-xl border border-trust-verified/15 bg-trust-verified/5 p-5"
+      >
+        <div className="flex items-center gap-3 mb-2">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-trust-verified/15">
+            <FileText className="h-5 w-5 text-trust-verified" />
+          </div>
+          <div>
+            <h2 className="text-base font-bold text-foreground font-display">Advisor Proof & History</h2>
+            <p className="text-xs text-muted-foreground">Complete audit trail — every recommendation, action, and verification</p>
+          </div>
         </div>
-        <div>
-          <h2 className="text-base font-bold text-foreground font-display">Advisor Proof & History</h2>
-          <p className="text-xs text-muted-foreground">Complete audit trail — every recommendation, action, and verification</p>
-        </div>
-      </div>
-    </motion.div>
+      </motion.div>
 
-    <div className="space-y-2">
-      {mockProofHistory.map((p, i) => (
-        <motion.div key={p.id} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
-          <ProofCard item={p} />
-        </motion.div>
-      ))}
+      {isDemoMode ? (
+        <div className="space-y-2">
+          {mockProofHistory.map((p, i) => (
+            <motion.div key={p.id} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
+              <ProofCard item={p} />
+            </motion.div>
+          ))}
+        </div>
+      ) : (
+        <EmptyState icon={FileText} title="No proof history yet" description="Actions and verifications will appear here as advisors operate in live mode" />
+      )}
     </div>
-  </div>
-);
+  );
+};
 
 // ── Single Advisor Workspace ────────────────────────────────────
 
@@ -862,6 +887,7 @@ const CouncilChatPanel = ({ mode }: { mode: CouncilMode }) => {
 export default function AdvisorWorkspace() {
   const [mode, setMode] = useState<CouncilMode>("daily-pulse");
   const [activeTab, setActiveTab] = useState("council");
+  const { isDemoMode } = useDataMode();
   const params = useParams();
   const advisorId = params["*"];
 
@@ -892,11 +918,11 @@ export default function AdvisorWorkspace() {
           </TabsTrigger>
           <TabsTrigger value="simulations" className="text-[11px] h-8 px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm">
             <Play className="h-3 w-3 mr-1.5" />Simulations
-            {mockSimulations.length > 0 && <Badge className="ml-1 h-4 px-1 text-[9px] bg-state-simulated/20 text-state-simulated">{mockSimulations.length}</Badge>}
+            {isDemoMode && mockSimulations.length > 0 && <Badge className="ml-1 h-4 px-1 text-[9px] bg-state-simulated/20 text-state-simulated">{mockSimulations.length}</Badge>}
           </TabsTrigger>
           <TabsTrigger value="approvals" className="text-[11px] h-8 px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm">
             <CheckCircle className="h-3 w-3 mr-1.5" />Approvals
-            {mockApprovals.length > 0 && <Badge className="ml-1 h-4 px-1 text-[9px] bg-trust-approval/20 text-trust-approval">{mockApprovals.length}</Badge>}
+            {isDemoMode && mockApprovals.length > 0 && <Badge className="ml-1 h-4 px-1 text-[9px] bg-trust-approval/20 text-trust-approval">{mockApprovals.length}</Badge>}
           </TabsTrigger>
           <TabsTrigger value="memory" className="text-[11px] h-8 px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm">
             <Eye className="h-3 w-3 mr-1.5" />Memory

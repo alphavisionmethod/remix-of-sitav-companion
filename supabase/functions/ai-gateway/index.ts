@@ -71,6 +71,17 @@ serve(async (req) => {
     }
 
     const body = await req.json();
+
+    // Health check / ping endpoint — zero cost, validates reachability + auth
+    if (body.ping) {
+      return corsResponse({
+        status: "ok",
+        timestamp: new Date().toISOString(),
+        userId: user.id,
+        hasApiKey: !!LOVABLE_API_KEY,
+      }, 200);
+    }
+
     const {
       capabilityId = "general",
       taskClass = "balanced_assistant",

@@ -29,9 +29,10 @@ export default function RevenueGate() {
   const { data: liveDeals, isLoading } = useDeals();
   const [operatingMode, setOperatingMode] = useState<typeof OPERATING_MODES[number]>("Growth");
 
-  const metrics = isDemoMode ? DEMO_METRICS : DEMO_METRICS;
-  const whatChanged = isDemoMode ? DEMO_WHAT_CHANGED : DEMO_WHAT_CHANGED;
-  const advisorPreview = isDemoMode ? DEMO_ADVISOR_PREVIEW : DEMO_ADVISOR_PREVIEW;
+  // In live mode, show real data or empty states — never silently use demo data
+  const metrics = isDemoMode ? DEMO_METRICS : [];
+  const whatChanged = isDemoMode ? DEMO_WHAT_CHANGED : [];
+  const advisorPreview = isDemoMode ? DEMO_ADVISOR_PREVIEW : [];
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
