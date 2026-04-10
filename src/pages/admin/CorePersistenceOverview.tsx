@@ -62,6 +62,7 @@ export default function CorePersistenceOverview() {
 
   return (
     <div className="space-y-6 p-6 max-w-7xl mx-auto">
+      <CPSSubNav />
       <motion.div initial="hidden" animate="show" variants={stagger} className="space-y-6">
         <motion.div variants={fade}>
           <div className="flex items-center gap-3 mb-1">

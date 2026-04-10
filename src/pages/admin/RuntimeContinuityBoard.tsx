@@ -57,6 +57,7 @@ export default function RuntimeContinuityBoard() {
 
   return (
     <div className="space-y-6 p-6 max-w-7xl mx-auto">
+      <CPSSubNav />
       <DemoModeBadge />
       <motion.div initial="hidden" animate="show" variants={{ show: { transition: { staggerChildren: 0.04 } } }} className="space-y-4">
         <motion.div variants={fade} className="flex items-center gap-3">
