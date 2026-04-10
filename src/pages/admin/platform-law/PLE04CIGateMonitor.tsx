@@ -1,12 +1,13 @@
 import { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { GitBranch, Search, CheckCircle, XCircle, Clock, Shield, AlertTriangle, FileText, Activity } from "lucide-react";
+import { GitBranch, Search, CheckCircle, XCircle, Clock, Shield, AlertTriangle, FileText, Activity, RotateCw, BarChart3 } from "lucide-react";
 import {
-  CI_GATE_REGISTRY, VALIDATION_RUNS, getCIGatePassRate, getRecentValidationRuns,
-  type CIGateEntry
+  CI_GATE_REGISTRY, VALIDATION_RUNS, VALIDATION_VIOLATIONS, getCIGatePassRate, getRecentValidationRuns,
+  type CIGateEntry, type ValidationRunRecord
 } from "@/lib/platform-law/platform-law-registry";
 
 const PLE04CIGateMonitor = () => {
@@ -29,6 +30,19 @@ const PLE04CIGateMonitor = () => {
   const blocking = CI_GATE_REGISTRY.filter(g => g.type === "blocking").length;
   const failing = CI_GATE_REGISTRY.filter(g => g.lastStatus === "fail").length;
   const recentRuns = getRecentValidationRuns(5);
+  const [selectedRun, setSelectedRun] = useState<ValidationRunRecord | null>(null);
+  const [rerunning, setRerunning] = useState(false);
+
+  const severityBreakdown = useMemo(() => {
+    const counts = { critical: 0, high: 0, medium: 0, low: 0 };
+    VALIDATION_VIOLATIONS.forEach(v => { if (v.severity in counts) counts[v.severity as keyof typeof counts]++; });
+    return counts;
+  }, []);
+
+  const runViolations = useMemo(() => {
+    if (!selectedRun) return [];
+    return VALIDATION_VIOLATIONS.filter(v => v.validationRunId === selectedRun.validationRunId);
+  }, [selectedRun]);
 
   const statusIcon: Record<string, JSX.Element> = {
     pass: <CheckCircle className="h-3.5 w-3.5 text-emerald-400" />,
@@ -70,6 +84,47 @@ const PLE04CIGateMonitor = () => {
         ))}
       </div>
 
+      {/* Failure Breakdown Chart */}
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-sm flex items-center gap-2"><BarChart3 className="h-4 w-4" /> Failure Breakdown by Severity</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-2">
+            {(["critical", "high", "medium", "low"] as const).map(sev => {
+              const count = severityBreakdown[sev];
+              const total = VALIDATION_VIOLATIONS.length || 1;
+              const pct = Math.round((count / total) * 100);
+              const colors: Record<string, string> = { critical: "bg-red-500", high: "bg-orange-500", medium: "bg-amber-500", low: "bg-blue-500" };
+              return (
+                <div key={sev} className="space-y-1">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="capitalize font-medium">{sev}</span>
+                    <span className="font-mono text-xs">{count} ({pct}%)</span>
+                  </div>
+                  <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
+                    <div className={`h-full rounded-full ${colors[sev]}`} style={{ width: `${pct}%` }} />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Re-Run Bar */}
+      <Card>
+        <CardContent className="p-3 flex items-center justify-between">
+          <div className="text-sm text-muted-foreground">
+            Last validation: <span className="font-mono text-foreground">{recentRuns[0]?.completedAt?.split("T")[0] || "Never"}</span>
+          </div>
+          <Button size="sm" variant="outline" disabled={rerunning} onClick={() => { setRerunning(true); setTimeout(() => setRerunning(false), 2000); }}>
+            <RotateCw className={`h-3.5 w-3.5 mr-1 ${rerunning ? "animate-spin" : ""}`} />
+            {rerunning ? "Running..." : "Re-Run Validation"}
+          </Button>
+        </CardContent>
+      </Card>
+
       {/* Validation Run History */}
       <Card>
         <CardHeader className="pb-3">
@@ -78,7 +133,7 @@ const PLE04CIGateMonitor = () => {
         <CardContent>
           <div className="space-y-2">
             {recentRuns.map(run => (
-              <div key={run.validationRunId} className="flex items-center justify-between p-2 rounded bg-muted/30 text-sm">
+              <div key={run.validationRunId} className={`flex items-center justify-between p-2 rounded text-sm cursor-pointer transition-colors ${selectedRun?.validationRunId === run.validationRunId ? "bg-primary/10 border border-primary/30" : "bg-muted/30 hover:bg-muted/50"}`} onClick={() => setSelectedRun(selectedRun?.validationRunId === run.validationRunId ? null : run)}>
                 <div className="flex items-center gap-2">
                   <span className={`font-mono text-xs font-bold ${runStatusColor[run.overallStatus]}`}>{run.overallStatus.toUpperCase()}</span>
                   <Badge variant="outline" className="text-[10px]">{run.runType}</Badge>
@@ -94,6 +149,37 @@ const PLE04CIGateMonitor = () => {
           </div>
         </CardContent>
       </Card>
+
+      {/* Violation Drawer for selected run */}
+      {selectedRun && (
+        <Card className="border-primary/30">
+          <CardHeader className="pb-3">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-sm">Run {selectedRun.validationRunId} — {runViolations.length} Violations</CardTitle>
+              <Button variant="ghost" size="sm" onClick={() => setSelectedRun(null)}>✕</Button>
+            </div>
+          </CardHeader>
+          <CardContent>
+            {runViolations.length === 0 ? (
+              <div className="flex items-center gap-2 text-emerald-400 text-sm"><CheckCircle className="h-4 w-4" /> No violations in this run</div>
+            ) : (
+              <div className="space-y-2">
+                {runViolations.map(v => (
+                  <div key={v.validationViolationId} className="p-2 rounded bg-muted/30 text-sm">
+                    <div className="flex items-center gap-2 mb-1">
+                      <Badge variant={v.severity === "critical" ? "destructive" : "secondary"} className="text-[10px]">{v.severity}</Badge>
+                      <span className="font-mono text-xs text-muted-foreground">{v.ruleId}</span>
+                      <Badge variant={v.status === "open" ? "destructive" : "default"} className="text-[10px]">{v.status}</Badge>
+                    </div>
+                    <p className="text-xs">{v.message}</p>
+                    {v.remediationSuggestion && <p className="text-[10px] text-emerald-400 mt-1">Fix: {v.remediationSuggestion}</p>}
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
 
       <div className="flex flex-wrap gap-2">
         <div className="relative flex-1 min-w-[200px]">

@@ -82,6 +82,87 @@ const PLE05ManifestEnforcer = () => {
               </div>
             </CardContent>
           </Card>
+
+          {/* Domain Coverage Chart */}
+          <Card className="mt-4">
+            <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><Target className="h-4 w-4" /> Domain Coverage</CardTitle></CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {["finance", "business", "concierge", "platform", "admin"].map(domain => {
+                  const domainFeatures = FEATURE_MANIFESTS.filter(f => f.domain === domain);
+                  const withInteractions = domainFeatures.filter(f => INTERACTION_MANIFESTS.some(im => im.featureId === f.featureId)).length;
+                  const withJourneys = domainFeatures.filter(f => JOURNEY_MANIFESTS.some(jm => jm.featureId === f.featureId)).length;
+                  const pct = domainFeatures.length > 0 ? Math.round(((withInteractions + withJourneys) / (domainFeatures.length * 2)) * 100) : 0;
+                  return (
+                    <div key={domain} className="space-y-1">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="capitalize font-medium">{domain}</span>
+                        <span className="font-mono text-xs">{domainFeatures.length} features · {pct}%</span>
+                      </div>
+                      <div className="w-full h-2 bg-muted rounded-full overflow-hidden">
+                        <div className={`h-full rounded-full ${pct >= 70 ? "bg-emerald-500" : pct >= 40 ? "bg-amber-500" : "bg-red-500"}`} style={{ width: `${pct}%` }} />
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Coverage Trend Panel */}
+          <Card className="mt-4">
+            <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><TrendingUp className="h-4 w-4" /> Coverage Trends</CardTitle></CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                {MANIFEST_REQUIREMENTS.map(m => {
+                  const trend = m.completionRate >= 70 ? "up" : m.completionRate >= 50 ? "stable" : "down";
+                  const arrow = trend === "up" ? "↑" : trend === "down" ? "↓" : "→";
+                  const color = trend === "up" ? "text-emerald-400" : trend === "down" ? "text-red-400" : "text-amber-400";
+                  return (
+                    <div key={m.id} className="p-2 rounded bg-muted/30 text-center">
+                      <div className={`text-lg font-bold ${color}`}>{arrow} {m.completionRate}%</div>
+                      <div className="text-[10px] text-muted-foreground">{m.type}</div>
+                    </div>
+                  );
+                })}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Missing Manifest Lane */}
+          <Card className="mt-4">
+            <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><AlertTriangle className="h-4 w-4 text-amber-400" /> Missing Manifests by Class</CardTitle></CardHeader>
+            <CardContent>
+              <div className="space-y-3">
+                {[
+                  { label: "Feature Manifest", check: (fId: string) => FEATURE_MANIFESTS.some(f => f.featureId === fId) },
+                  { label: "Interaction Manifest", check: (fId: string) => INTERACTION_MANIFESTS.some(im => im.featureId === fId) },
+                  { label: "Journey Manifest", check: (fId: string) => JOURNEY_MANIFESTS.some(jm => jm.featureId === fId) },
+                  { label: "Runtime Evidence", check: (fId: string) => RUNTIME_EVIDENCE_MANIFESTS.some(re => re.featureId === fId) },
+                  { label: "Readiness", check: (fId: string) => READINESS_MANIFESTS.some(rm => rm.featureId === fId) },
+                ].map(cls => {
+                  const missing = FEATURE_MANIFESTS.filter(f => !cls.check(f.featureId));
+                  return (
+                    <div key={cls.label}>
+                      <div className="flex items-center justify-between text-sm mb-1">
+                        <span className="font-medium">{cls.label}</span>
+                        <span className="text-xs text-muted-foreground">{missing.length} missing</span>
+                      </div>
+                      {missing.length > 0 ? (
+                        <div className="flex flex-wrap gap-1">
+                          {missing.slice(0, 6).map(f => <Badge key={f.featureId} variant="outline" className="text-[10px]">{f.featureId}</Badge>)}
+                          {missing.length > 6 && <Badge variant="secondary" className="text-[10px]">+{missing.length - 6}</Badge>}
+                        </div>
+                      ) : (
+                        <div className="text-[10px] text-emerald-400 flex items-center gap-1"><CheckCircle className="h-3 w-3" /> All covered</div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </CardContent>
+          </Card>
+
           {/* Critical Gaps */}
           <Card className="mt-4">
             <CardHeader className="pb-3"><CardTitle className="text-sm flex items-center gap-2"><AlertTriangle className="h-4 w-4 text-amber-400" /> Critical Gaps (P0, &lt;60%)</CardTitle></CardHeader>

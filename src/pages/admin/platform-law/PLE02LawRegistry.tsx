@@ -181,6 +181,24 @@ const PLE02LawRegistry = () => {
             <div className="text-[10px] text-muted-foreground">Created: {selected.createdAt} · Active: {selected.active ? "Yes" : "No"}</div>
             {selected.linkedScript && <div><span className="text-muted-foreground text-xs">Linked Script</span><div className="font-mono text-xs flex items-center gap-1"><ExternalLink className="h-3 w-3" />{selected.linkedScript}</div></div>}
             {selected.linkedCIGate && <div><span className="text-muted-foreground text-xs">CI Gate</span><div className="font-mono text-xs">{selected.linkedCIGate}</div></div>}
+
+            {/* Version Timeline */}
+            <div>
+              <span className="text-muted-foreground text-xs">Version History</span>
+              <div className="mt-2 relative pl-4 border-l-2 border-border/50 space-y-3">
+                {[
+                  { version: "v1.0", date: "2025-01-15", note: "Initial rule definition — advisory mode" },
+                  { version: "v1.1", date: "2025-03-01", note: "Elevated to warning mode after repeated violations" },
+                  { version: "v2.0 (current)", date: selected.createdAt || "2025-06-01", note: `Current — ${selected.enforcementMode} mode · ${selected.severity} severity` },
+                ].map((v, i) => (
+                  <div key={i} className="relative">
+                    <div className="absolute -left-[21px] top-1 w-2.5 h-2.5 rounded-full border-2 border-primary bg-background" />
+                    <div className="text-xs font-medium">{v.version} <span className="text-muted-foreground font-normal">— {v.date}</span></div>
+                    <div className="text-[10px] text-muted-foreground">{v.note}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </CardContent>
         </Card>
       )}

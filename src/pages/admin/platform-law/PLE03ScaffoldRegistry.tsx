@@ -59,6 +59,68 @@ const PLE03ScaffoldRegistry = () => {
         ))}
       </div>
 
+      {/* Artifact Matrix */}
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-sm flex items-center gap-2"><Archive className="h-4 w-4" /> Artifact Matrix</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {(() => {
+            const allArtifacts = Array.from(new Set(SCAFFOLD_REGISTRY.flatMap(s => s.produces))).sort();
+            return (
+              <div className="overflow-x-auto">
+                <table className="w-full text-xs">
+                  <thead><tr><th className="text-left p-1 text-muted-foreground">Generator</th>{allArtifacts.map(a => <th key={a} className="p-1 text-center text-muted-foreground">{a.replace(/-/g, " ")}</th>)}</tr></thead>
+                  <tbody>{SCAFFOLD_REGISTRY.map(s => (
+                    <tr key={s.id} className="border-t border-border/30">
+                      <td className="p-1 font-medium">{s.name}</td>
+                      {allArtifacts.map(a => <td key={a} className="p-1 text-center">{s.produces.includes(a) ? <CheckCircle className="h-3 w-3 text-emerald-400 mx-auto" /> : <span className="text-muted-foreground">—</span>}</td>)}
+                    </tr>
+                  ))}</tbody>
+                </table>
+              </div>
+            );
+          })()}
+        </CardContent>
+      </Card>
+
+      {/* Drift Warnings */}
+      {SCAFFOLD_REGISTRY.filter(s => s.complianceCoverage < 80).length > 0 && (
+        <Card className="border-amber-500/20">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm flex items-center gap-2"><XCircle className="h-4 w-4 text-amber-400" /> Drift Warnings (Coverage &lt; 80%)</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              {SCAFFOLD_REGISTRY.filter(s => s.complianceCoverage < 80).map(s => (
+                <div key={s.id} className="flex items-center justify-between p-2 rounded bg-amber-500/10 text-sm">
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium">{s.name}</span>
+                    <Badge variant="outline" className="text-[10px]">{s.domain}</Badge>
+                  </div>
+                  <span className="text-amber-400 font-mono text-xs">{s.complianceCoverage}% coverage</span>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Adoption Rate KPI */}
+      <Card>
+        <CardContent className="p-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <div className="text-sm font-medium">Generator Adoption Rate</div>
+              <div className="text-[10px] text-muted-foreground">{SCAFFOLD_REGISTRY.filter(s => s.status === "active").length} active of {SCAFFOLD_REGISTRY.length} total</div>
+            </div>
+            <div className={`text-2xl font-bold ${Math.round((SCAFFOLD_REGISTRY.filter(s => s.status === "active").length / SCAFFOLD_REGISTRY.length) * 100) >= 80 ? "text-emerald-400" : "text-amber-400"}`}>
+              {Math.round((SCAFFOLD_REGISTRY.filter(s => s.status === "active").length / SCAFFOLD_REGISTRY.length) * 100)}%
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
       <div className="flex flex-wrap gap-2">
         <div className="relative flex-1 min-w-[200px]">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
