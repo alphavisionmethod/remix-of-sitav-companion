@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { useState } from "react";
+import { RuntimeTruthProbe } from "./RuntimeTruthProbe";
 
 const primaryNav = [
   { title: "Desktop", url: "/desktop", icon: LayoutDashboard },
@@ -382,6 +383,11 @@ export function AppSidebar() {
               style={{ width: `${Math.round(cogLoad * 100)}%` }}
             />
           </div>
+        </div>
+      )}
+      {!collapsed && (
+        <div className="px-4 pb-2">
+          <RuntimeTruthProbe compact />
         </div>
       )}
       </SidebarFooter>

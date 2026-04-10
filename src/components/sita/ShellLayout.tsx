@@ -23,6 +23,7 @@ import { DevicePresenceIndicator } from "./DevicePresenceIndicator";
 import { SuccessCelebration } from "./SuccessCelebration";
 import { ModeResolutionBanner } from "@/components/reality/ModeResolutionBanner";
 import { DemoStateBanner } from "@/components/reality/DemoStateBanner";
+import { DemoGovernanceBanner } from "./DemoGovernanceBanner";
 import { RealityStateBadge } from "@/components/reality/RealityStateBadge";
 import { AIGate } from "./AIGate";
 import { DesktopEntryCeremony } from "./DesktopEntryCeremony";
@@ -126,6 +127,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         {/* Ambient background — subtle, always present */}
         <ShellAmbientBackground intensity="subtle" className="fixed" />
 
+        <DemoGovernanceBanner />
         <DemoStateBanner />
         <NetworkStatusBar />
         <UpdateBanner />
@@ -208,8 +210,8 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
       {/* Trust Transition Indicator */}
       <TrustTransitionIndicator />
 
-      {/* Device Presence Indicator — status bar */}
-      <div className="fixed bottom-20 left-4 z-50 hidden lg:block">
+      {/* Device Presence Indicator — status bar (visible on all screens) */}
+      <div className="fixed bottom-20 left-4 z-50 hidden sm:block">
         <DevicePresenceIndicator />
       </div>
 
