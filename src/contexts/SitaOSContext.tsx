@@ -126,6 +126,7 @@ function getOrCreateKernel(): SitaOSKernel {
       description: `${intent.classification} from ${intent.source}`,
       domain: intent.domain === "cross-domain" ? "platform" : (intent.domain ?? "platform"),
       urgency, importance, source: intent.source,
+      priority: urgency >= 9 ? "critical" : urgency >= 7 ? "high" : urgency >= 4 ? "medium" : "low",
       metadata: { intentId: intent.id },
     });
     return null; // never block
