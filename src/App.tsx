@@ -55,6 +55,7 @@ const BoardroomReplay = lazy(() => import("./pages/boardroom/BoardroomReplay"));
 const BoardroomHistory = lazy(() => import("./pages/boardroom/BoardroomHistory"));
 const FilesCenter = lazy(() => import("./pages/FilesCenter"));
 const SettingsPage = lazy(() => import("./pages/SettingsPage"));
+const MyPlanUsage = lazy(() => import("./pages/settings/MyPlanUsage"));
 const MissionControl = lazy(() => import("./pages/mission-control/MissionControlPage"));
 const MissionOverview = lazy(() => import("./pages/mission/MissionOverviewPage"));
 const ConnectorDetail = lazy(() => import("./pages/mission/ConnectorDetailPage"));
@@ -1236,6 +1237,7 @@ const App = () => (
                     <Route path="/settings/notifications" element={<SettingsPage />} />
                     <Route path="/settings/privacy" element={<SettingsPage />} />
                     <Route path="/settings/appearance" element={<SettingsPage />} />
+                    <Route path="/settings/plan-usage" element={<MyPlanUsage />} />
                     <Route path="/settings/accessibility" element={<AccessibilitySettings />} />
                     <Route path="/settings/device" element={<DeviceSettingsPage />} />
                     <Route path="/settings/trusted-devices" element={<TrustedDeviceManager />} />
