@@ -52,7 +52,7 @@ const BudgetEnvelopeOffice = () => {
       <DemoModeBadge />
 
       {/* KPI Row */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4">
         <KPITile label="Monthly Income" value={fmt(budget.totalIncomeCents)} icon={DollarSign} />
         <KPITile label="Allocated" value={fmt(budget.totalAllocatedCents)} icon={Wallet} />
         <KPITile label="Spent So Far" value={fmt(totalSpent)} icon={TrendingUp} />

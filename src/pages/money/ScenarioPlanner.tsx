@@ -61,7 +61,7 @@ const ScenarioPlanner = () => {
       </SitaCard>
 
       {/* Impact KPIs */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
         <KPITile label="Monthly Impact" value={`${sign(result.netImpactMonthlyCents)}${fmt(result.netImpactMonthlyCents)}`}
           icon={result.netImpactMonthlyCents >= 0 ? TrendingUp : TrendingDown} />
         <KPITile label="Annual Impact" value={`${sign(result.netImpactAnnualCents)}${fmt(result.netImpactAnnualCents)}`}

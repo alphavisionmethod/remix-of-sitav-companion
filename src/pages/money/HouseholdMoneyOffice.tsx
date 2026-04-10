@@ -42,7 +42,7 @@ const HouseholdMoneyOffice = () => {
       <DomainHeader domain="money" title="Household Money Office" subtitle="Shared finances, family goals, partner visibility" />
       <DemoModeBadge />
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
         <KPITile label="Household Income" value={fmt(hh.totalIncomeCents)} icon={DollarSign} />
         <KPITile label="Shared Expenses" value={fmt(hh.totalExpensesCents)} icon={Home} />
         <KPITile label="Monthly Surplus" value={fmt(surplus)} icon={PiggyBank} sub={`${((surplus / hh.totalIncomeCents) * 100).toFixed(0)}% savings rate`} />

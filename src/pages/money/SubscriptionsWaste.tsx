@@ -192,7 +192,7 @@ const SubscriptionsWaste = () => {
         <EmptyState icon={CreditCard} title="No subscriptions yet" description="Add your subscriptions to track spending, detect waste, and find savings" action={<SitaButton variant="primary" onClick={() => setShowForm(true)}><Plus className="h-4 w-4" /> Add Subscription</SitaButton>} />
       ) : (
         <div className="grid gap-6 lg:grid-cols-5">
-          <div className="lg:col-span-3 space-y-2">
+          <div className="lg:col-span-3 space-y-2 order-1">
             {filtered.map((sub) => {
                const usage = usageLabelMap[String(enrichSub(sub as Record<string, unknown>).usage_level || sub.usage_score || "unknown")] || usageLabelMap.unknown;
                return (
@@ -283,7 +283,7 @@ const SubscriptionsWaste = () => {
             <label className="text-xs font-medium text-muted-foreground">Service Name *</label>
             <input className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2 text-sm text-foreground focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20" value={form.service_name} onChange={e => setForm({ ...form, service_name: e.target.value })} required />
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="text-xs font-medium text-muted-foreground">Amount *</label>
               <input type="number" step="0.01" className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2 text-sm text-foreground focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20" value={form.amount} onChange={e => setForm({ ...form, amount: e.target.value })} required />
@@ -298,7 +298,7 @@ const SubscriptionsWaste = () => {
               </select>
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="text-xs font-medium text-muted-foreground">Category</label>
               <input className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2 text-sm text-foreground focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20" placeholder="e.g. Communication" value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} />
