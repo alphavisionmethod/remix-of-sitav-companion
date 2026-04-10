@@ -3,12 +3,12 @@
 // ═══════════════════════════════════════════════════════════════
 
 export {
-  routeTask, classifyTask,
+  routeTask, classifyTask, classifyTaskFull,
   DEFAULT_MODELS, COST_CLASS_SPECS,
 } from "./model-routing-engine";
 export type {
   ComputeModelTier, ModelDefinition, RoutingContext,
-  CostClass, RoutingDecision,
+  CostClass, RoutingDecision, TaskClassification,
 } from "./model-routing-engine";
 
 export {

@@ -699,7 +699,7 @@ const ComputeGovernanceBoard = () => {
                 </div>
                 <div className="p-3 rounded-lg bg-secondary/20 text-center">
                   <p className="text-xs text-muted-foreground">Premium Escalation</p>
-                  <p className="text-lg font-bold text-foreground">{<p className="text-lg font-bold text-foreground">{FAIR_USE_POLICY.maxEscalationsPerHour}/hr</p>}%</p>
+                  <p className="text-lg font-bold text-foreground">{FAIR_USE_POLICY.maxEscalationsPerHour}/hr</p>
                 </div>
                 <div className="p-3 rounded-lg bg-secondary/20 text-center">
                   <p className="text-xs text-muted-foreground">Escalation Steps</p>
