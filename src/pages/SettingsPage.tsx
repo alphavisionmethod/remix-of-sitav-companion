@@ -33,6 +33,7 @@ import { useConfirmation } from "@/hooks/use-confirmation";
 import { useOSOrchestration } from "@/hooks/useOSOrchestration";
 import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
 import GoogleConnectedAccounts from "@/pages/settings/GoogleConnectedAccounts";
+import { AllProviderFamiliesStatus } from "@/components/sita/AllProviderFamiliesStatus";
 
 
 
@@ -697,6 +698,15 @@ const SettingsPage = () => {
 
             {/* Google Connected Accounts */}
             <GoogleConnectedAccounts />
+
+            {/* All Other Provider Families */}
+            <AllProviderFamiliesStatus />
+
+            {/* Consent & Permissions History */}
+            <ConsentPermissionsSection />
+
+            {/* Device & Trusted Access */}
+            <DeviceTrustSection />
           </div>
         );
 
