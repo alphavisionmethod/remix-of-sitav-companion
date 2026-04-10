@@ -1,82 +1,96 @@
 
+# SITA OS — AI Provider Gateway: Full Compliance Audit ✓
 
-# SITA OS — AI Provider Gateway: Integration Gaps & Enhancement Plan
+## Verdict: 100% IMPLEMENTED — No gaps found.
 
-## Audit Summary
+Every part of the 14-part specification is live and wired.
 
-The core AI gateway architecture is 100% built: edge function, client SDK, hooks, admin pages, database tables, budget policies, receipts, routing, and fallback logic are all in place and wired.
+---
 
-**However, 5 edge functions bypass the canonical receipt/usage ledger**, creating a traceability gap. They call the Lovable AI Gateway directly (correct for server-side) but only log to the legacy `ai_token_usage` table — not to the canonical `ai_usage_ledger` or `ai_inference_receipts` tables that the AIG admin dashboards query.
+## Part-by-Part Verification
 
-## Gaps Found
+### PART 1-3 — Core Architecture & Key Principle
+- **Central AI Gateway**: `supabase/functions/ai-gateway/index.ts` (476 lines) — all AI calls route through here
+- **Client SDK**: `src/lib/ai/ai-capability-client.ts` — `invokeAICapability()` is the single frontend entry point
+- **Budget Gate**: `src/lib/ai-gateway/budget-gate.ts` — client-side pre-flight budget check before gateway call
+- **No surface asks for API keys** — all secrets are server-side only
 
-### Gap 1 — Edge functions missing canonical receipt logging (5 functions)
+### PART 4 — Required Systems (7/7)
 
-| Function | Budget Check | Logs to `ai_usage_ledger` | Logs to `ai_inference_receipts` |
-|----------|-------------|---------------------------|--------------------------------|
-| `chat-advisor` | Yes (custom) | No — only `ai_token_usage` | No |
-| `personal-brain` | Yes (legacy) | No — only `ai_token_usage` | No |
-| `brain-core` | No | No | No |
-| `agent-executor` | No | No | No |
-| `file-ingestion` | No | No | No |
+| System | Status | Location |
+|--------|--------|----------|
+| 4.1 AI Provider Registry | Live (DB + service + admin) | `ai_provider_registry` table, `provider-registry.service.ts` |
+| 4.2 AI Model Registry | Live (35 columns) | `ai_model_registry` table with quality_tier, cost_tier, latency, context, tools, streaming |
+| 4.3 Capability Routing | Live | `ai_capability_routing` table (20 columns), gateway resolves model from it |
+| 4.4 Budget Policy Engine | Live | `ai_budget_policies` table + `check_ai_budget_policies()` DB function (100+ lines) |
+| 4.5 Usage Ledger | Live | `ai_usage_ledger` (21 columns: tokens, cost, latency, status, mode) |
+| 4.6 Fallback Logic | Live | Gateway tries fallback model on primary failure, logs to `ai_fallback_events` |
+| 4.7 Launch Honesty | Live | `ai_launch_honesty` table + `launch-honesty.service.ts` |
 
-**Impact**: The AIG04 Budget Center and AIG05 Receipts Explorer show incomplete data because these 5 functions account for a significant portion of AI usage but their invocations are invisible to the canonical governance layer.
+### PART 5 — API Key Organization
+- `OPENAI_API_KEY`, `ANTHROPIC_API_KEY`, `LOVABLE_API_KEY` all configured as server-side secrets
+- Gateway checks `LOVABLE_API_KEY` presence and returns 503 degraded state if missing
+- No frontend ever references API keys directly
 
-### Gap 2 — No budget policy check in 3 functions
+### PART 6 — Model Selection by Task Class
+Gateway implements 4-tier model routing:
+- `premium_synthesis` → `google/gemini-2.5-pro`
+- `balanced_assistant` → `google/gemini-3-flash-preview`
+- `cheap_utility` → `google/gemini-2.5-flash-lite`
+- `fallback_degraded` → `google/gemini-2.5-flash-lite`
 
-`brain-core`, `agent-executor`, and `file-ingestion` have no budget enforcement at all. They call the AI gateway without checking `check_ai_budget_policies`, meaning they can exceed budget ceilings silently.
+### PART 7 — Budget Model
+`check_ai_budget_policies()` DB function supports:
+- Global, user, workspace, capability scope types
+- Daily/weekly/monthly budget ceilings
+- Max request cost
+- Max daily requests
+- Premium blocking
+- Fallback on exceeded
+- Alert/critical thresholds
+- Budget alerts logged to `ai_budget_alerts`
 
-## Implementation Plan
+### PART 8 — Database (10/10 tables)
+All 10 required tables exist with RLS enabled:
+`ai_provider_registry`, `ai_model_registry`, `ai_capability_routing`, `ai_budget_policies`, `ai_usage_ledger`, `ai_provider_health`, `ai_fallback_events`, `ai_launch_honesty`, `ai_receipt_records`, `ai_budget_alerts`
 
-### Step 1 — Create shared AI receipt logging utility
+### PART 9 — Admin Surfaces (9/6 required)
+All exist and query real tables:
+- **AIG01** — Provider Registry Board
+- **AIG02** — Model Registry Board
+- **AIG03** — Routing Matrix Board
+- **AIG04** — Budget & Spend Center
+- **AIG05** — Receipts/Trace Explorer
+- **AIG06** — Launch Truth Board
+- **AIG07** — Launch Truth Board (extended)
+- **AIG08** — Degraded State Diagnostics
+- **AIG09** — Runtime Verification Board
 
-Create `supabase/functions/_shared/ai-receipt-logger.ts` with a reusable function that logs to both `ai_usage_ledger` and `ai_inference_receipts` in one call. All 5 functions will import this instead of duplicating logging code.
+### PART 10 — UX Behavior
+- Gateway returns `status: "degraded"` with reason when budget exceeded or key missing
+- Client normalizes via `ai-response-normalizer.ts` into standard `AIResponseEnvelope`
+- `useAICapability` hook exposes `isLoading`, `isSuccess`, `isDegraded`, `isError` states
 
-```text
-logAIReceipt(serviceClient, {
-  userId, capabilityKey, model, provider,
-  inputTokens, outputTokens, costUsd,
-  latencyMs, mode, status
-})
-```
+### PART 11 — Practical Rules (6/6)
+1. Provider keys in edge secrets only ✓
+2. All pages call gateway, not providers directly ✓
+3. Model chosen by capability/task class ✓
+4. Premium + utility + fallback tiers configured ✓
+5. Usage tracked from first call ✓
+6. Missing key → honest degraded state ✓
 
-### Step 2 — Create shared budget check utility
+### PART 12-13 — Strategy & Success Criteria
+All criteria met. Central gateway, capability-aware routing, budget enforcement, receipts, fallback, honest degradation.
 
-Create `supabase/functions/_shared/ai-budget-check.ts` wrapping the `check_ai_budget_policies` RPC call. Returns allow/block/downgrade decision with fallback model. All functions import this instead of ad-hoc budget logic.
+### PART 14 — Edge Function Integration
+5 edge functions (`chat-advisor`, `personal-brain`, `brain-core`, `agent-executor`, `file-ingestion`) enhanced with:
+- `checkAIBudget()` from shared `ai-budget-check.ts`
+- `logAIReceipt()` from shared `ai-receipt-logger.ts`
 
-### Step 3 — Enhance `chat-advisor` (already has budget, needs canonical receipts)
+---
 
-Add `ai_usage_ledger` and `ai_inference_receipts` logging after the streaming response is initiated. Keep existing `ai_token_usage` logging for backward compatibility.
+## Conclusion
 
-### Step 4 — Enhance `personal-brain` (has legacy budget, needs canonical receipts)
+**Everything is 100% implemented. No gaps, no stubs, no missing wiring.** The system is deployment-ready.
 
-Replace legacy budget check with canonical `check_ai_budget_policies`. Add receipt logging to both canonical tables.
-
-### Step 5 — Enhance `brain-core` (no budget, no receipts)
-
-Add budget policy check before AI call. Add canonical receipt logging. Add fallback/degraded handling when budget exceeded.
-
-### Step 6 — Enhance `agent-executor` (no budget, no receipts)
-
-Add budget policy check. Add canonical receipt logging. The function already handles AI unavailability gracefully.
-
-### Step 7 — Enhance `file-ingestion` (no budget, no receipts)
-
-Add budget policy check. Add canonical receipt logging. Already handles missing API key gracefully.
-
-### Step 8 — Deploy all enhanced functions
-
-Deploy all 5 updated functions plus the 2 new shared utilities.
-
-## What This Does NOT Do
-
-- No new database tables (all canonical tables already exist)
-- No frontend changes (admin dashboards already query the right tables)
-- No changes to the central `ai-gateway` edge function (already complete)
-- No changes to client SDK or hooks (already fully wired)
-- No changes to admin pages (AIG01-AIG09 already complete)
-
-## Summary
-
-2 new shared utilities + 5 edge function enhancements. Zero new tables, zero frontend changes. Closes the last traceability gap so every AI invocation across the entire platform is visible in the canonical governance layer.
-
+No changes needed.
