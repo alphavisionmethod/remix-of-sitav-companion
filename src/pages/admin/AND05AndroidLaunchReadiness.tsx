@@ -6,6 +6,7 @@ import { Rocket, CheckCircle2, XCircle, AlertTriangle, ArrowRight, Clock } from 
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_ADMIN_TARGETS as DEMO_TARGETS } from "@/lib/demo-data/admin-platform";
+import ANDSubNav from "@/components/admin/ANDSubNav";
 
 const AND05AndroidLaunchReadiness = () => {
   const { isDemoMode } = useDataMode();
@@ -14,6 +15,7 @@ const AND05AndroidLaunchReadiness = () => {
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">
       <DemoModeBadge />
+      <ANDSubNav />
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-lg bg-primary/10"><Rocket className="h-8 w-8 text-primary" /></div>

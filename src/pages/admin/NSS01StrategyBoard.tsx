@@ -7,6 +7,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useNativeShellPlatforms } from "@/hooks/use-native-shell-data";
 import { DEMO_STRATEGY_PRINCIPLES, DEMO_ARCHITECTURE_LAYERS } from "@/lib/demo-data/native-shell";
+import NSSSubNav from "@/components/admin/NSSSubNav";
 
 
 
@@ -17,6 +18,7 @@ const NSS01StrategyBoard = () => {
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">
       <DemoModeBadge />
+      <NSSSubNav />
       <div className="flex items-center gap-3">
         <div className="p-2 rounded-lg bg-primary/10"><Layers className="h-8 w-8 text-primary" /></div>
         <div>

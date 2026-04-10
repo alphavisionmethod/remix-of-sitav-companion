@@ -5,10 +5,12 @@ import { KeyRound, Link, User, Shield, ArrowRight, CheckCircle2, AlertTriangle, 
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_IDENTITY_ARCHITECTURE, DEMO_LINK_FLOW_STEPS, DEMO_SECURITY_POLICIES } from "@/lib/demo-data/admin-platform";
+import APLSubNav from "@/components/admin/APLSubNav";
 
 const APL04AppleIdentityAccounts = () => (
   <div className="p-6 max-w-[1400px] mx-auto space-y-6">
     <DemoModeBadge />
+      <APLSubNav />
     <div className="flex items-center gap-3">
       <div className="p-2 rounded-lg bg-primary/10"><KeyRound className="h-8 w-8 text-primary" /></div>
       <div>

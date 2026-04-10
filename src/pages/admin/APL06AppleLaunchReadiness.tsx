@@ -9,6 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { DEMO_ADMIN_TARGETS_A_P_L06_APPLE_LAUNCH_READINESS as DEMO_TARGETS } from "@/lib/demo-data/admin-platform";
+import APLSubNav from "@/components/admin/APLSubNav";
 
 const APL06AppleLaunchReadiness = () => {
   const { isDemoMode } = useDataMode();
@@ -26,6 +27,7 @@ const APL06AppleLaunchReadiness = () => {
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">
       <DemoModeBadge />
+      <APLSubNav />
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-lg bg-primary/10"><Rocket className="h-8 w-8 text-primary" /></div>

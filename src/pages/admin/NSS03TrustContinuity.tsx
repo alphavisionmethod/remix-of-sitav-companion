@@ -5,6 +5,7 @@ import { Shield, ArrowRightLeft, CheckCircle2, AlertTriangle, ArrowRight } from 
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_SECURE_ACTIONS, DEMO_CONTINUITY_FLOWS, DEMO_TRUST_CONTINUITY } from "@/lib/demo-data/native-shell";
+import NSSSubNav from "@/components/admin/NSSSubNav";
 
 const NSS03TrustContinuity = () => {
   const secureActions = DEMO_SECURE_ACTIONS;
@@ -14,6 +15,7 @@ const NSS03TrustContinuity = () => {
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">
       <DemoModeBadge />
+      <NSSSubNav />
       <div className="flex items-center gap-3">
         <div className="p-2 rounded-lg bg-primary/10"><Shield className="h-8 w-8 text-primary" /></div>
         <div>
