@@ -1,16 +1,18 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — System Health Dashboard
-// Real-time display of health probes and observability data
+// Real-time display of health probes, service heartbeat, and observability data
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Activity, RefreshCw, Shield, Database, HardDrive } from "lucide-react";
+import { Activity, RefreshCw, Shield, Database, HardDrive, HeartPulse } from "lucide-react";
 import { runAllProbes, getOverallHealth, type ProbeResult } from "@/lib/observability/health-probes";
 import { getCostSummary, type CostSummary } from "@/lib/observability/cost-governance";
 import { getLogBuffer, type LogEntry } from "@/lib/observability/structured-logger";
+import { serviceHeartbeat, type HeartbeatSummary } from "@/lib/services/service-registry/heartbeat";
+import { getRegisteredServices } from "@/lib/services/service-registry";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
@@ -18,7 +20,8 @@ const statusColor = (s: string) => {
   switch (s) {
     case "healthy": return "bg-green-500/20 text-green-400 border-green-500/30";
     case "degraded": return "bg-yellow-500/20 text-yellow-400 border-yellow-500/30";
-    case "unhealthy": return "bg-red-500/20 text-red-400 border-red-500/30";
+    case "unhealthy":
+    case "down": return "bg-red-500/20 text-red-400 border-red-500/30";
     default: return "bg-muted text-muted-foreground";
   }
 };
@@ -29,16 +32,21 @@ export default function SystemHealthDashboard() {
   const [overallHealth, setOverallHealth] = useState<string>("unknown");
   const [costSummary, setCostSummary] = useState<CostSummary | null>(null);
   const [recentLogs, setRecentLogs] = useState<LogEntry[]>([]);
+  const [heartbeat, setHeartbeat] = useState<HeartbeatSummary | null>(null);
   const [loading, setLoading] = useState(false);
 
   const refresh = async () => {
     setLoading(true);
     try {
-      const results = await runAllProbes();
+      const [results, summary, hb] = await Promise.all([
+        runAllProbes(),
+        getCostSummary(),
+        serviceHeartbeat.runHeartbeat(getRegisteredServices()),
+      ]);
       setProbes(results);
       setOverallHealth(getOverallHealth(results));
-      const summary = await getCostSummary();
       setCostSummary(summary);
+      setHeartbeat(hb);
       setRecentLogs(getLogBuffer().slice(-20));
     } finally {
       setLoading(false);
@@ -99,6 +107,57 @@ export default function SystemHealthDashboard() {
           );
         })}
       </div>
+
+      {/* Service Heartbeat */}
+      {heartbeat && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-sm flex items-center gap-2">
+              <HeartPulse className="h-4 w-4" />
+              Service Registry Heartbeat
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-5 gap-4 text-sm mb-4">
+              <div>
+                <p className="text-muted-foreground">Checked</p>
+                <p className="font-mono font-bold">{heartbeat.totalChecked}</p>
+              </div>
+              <div>
+                <p className="text-muted-foreground">Healthy</p>
+                <p className="font-mono font-bold text-green-400">{heartbeat.healthy}</p>
+              </div>
+              <div>
+                <p className="text-muted-foreground">Degraded</p>
+                <p className="font-mono font-bold text-yellow-400">{heartbeat.degraded}</p>
+              </div>
+              <div>
+                <p className="text-muted-foreground">Down</p>
+                <p className="font-mono font-bold text-red-400">{heartbeat.down}</p>
+              </div>
+              <div>
+                <p className="text-muted-foreground">Avg Latency</p>
+                <p className="font-mono font-bold">{heartbeat.avgLatencyMs}ms</p>
+              </div>
+            </div>
+            {heartbeat.results.length > 0 && (
+              <div className="space-y-1 max-h-48 overflow-y-auto">
+                {heartbeat.results.map((r) => (
+                  <div key={r.serviceId} className="flex items-center justify-between text-xs py-1 border-b border-border/50">
+                    <span className="font-medium">{r.serviceName}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-muted-foreground">{r.latencyMs}ms</span>
+                      <Badge variant="outline" className={`text-[10px] h-4 ${statusColor(r.status)}`}>
+                        {r.status}
+                      </Badge>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      )}
 
       {/* Cost Summary */}
       {costSummary && (

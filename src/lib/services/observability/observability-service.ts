@@ -170,10 +170,11 @@ export async function computeObservabilityIndex(): Promise<number> {
 
 /** Compute device readiness index */
 export async function computeDeviceReadinessIndex(): Promise<number> {
+  type QueryResult = { data: Record<string, unknown>[] | null };
   const [families, devices, readiness] = await Promise.all([
-    fromDynamicTable("device_families").select("*").then((r: any) => r.data ?? []),
-    fromDynamicTable("connected_devices").select("*").then((r: any) => r.data ?? []),
-    fromDynamicTable("surface_readiness_records").select("*").then((r: any) => r.data ?? []),
+    fromDynamicTable("device_families").select("*").then((r: QueryResult) => r.data ?? []),
+    fromDynamicTable("connected_devices").select("*").then((r: QueryResult) => r.data ?? []),
+    fromDynamicTable("surface_readiness_records").select("*").then((r: QueryResult) => r.data ?? []),
   ]);
 
   // Fallback to canonical families if DB is empty
@@ -186,7 +187,7 @@ export async function computeDeviceReadinessIndex(): Promise<number> {
 
   // Active devices: 25 points
   if (devices.length > 0) {
-    const activeDevices = devices.filter((d: any) => d.reachable && d.health_status === "healthy");
+    const activeDevices = devices.filter((d: Record<string, unknown>) => d.reachable && d.health_status === "healthy");
     score += activeDevices.length > 0 ? 25 : 0;
   } else {
     // No devices registered = assume current browser session is active
@@ -195,7 +196,7 @@ export async function computeDeviceReadinessIndex(): Promise<number> {
 
   // Readiness records: 25 points
   if (readiness.length > 0) {
-    const avgPortability = readiness.reduce((s: number, r: any) => s + Number(r.portability_score ?? 0), 0) / readiness.length;
+    const avgPortability = readiness.reduce((s: number, r: Record<string, unknown>) => s + Number(r.portability_score ?? 0), 0) / readiness.length;
     score += Math.round((avgPortability / 100) * 25);
   } else {
     // Fallback: web surfaces are ready
@@ -203,7 +204,7 @@ export async function computeDeviceReadinessIndex(): Promise<number> {
   }
 
   // Live families: 25 points
-  const liveFamilies = effectiveFamilies.filter((f: any) => f.launch_stage === "live");
+  const liveFamilies = effectiveFamilies.filter((f: Record<string, unknown> | { family_key: string; launch_stage: string }) => (f as Record<string, unknown>).launch_stage === "live");
   score += Math.round((liveFamilies.length / effectiveFamilies.length) * 25);
 
   return Math.min(100, score);

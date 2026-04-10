@@ -281,9 +281,9 @@ export async function updateFlagshipLoop(id: string, updates: Partial<FlagshipLo
 
 // ── Computed helpers ─────────────────────────────────────────
 
-export function getOverallTruthScore(loops: any[]): number {
+export function getOverallTruthScore(loops: Array<{ truth_pct?: number }>): number {
   if (!loops.length) return 0;
-  const total = loops.reduce((s: number, l: any) => s + (l.truth_pct || 0), 0);
+  const total = loops.reduce((s: number, l: { truth_pct?: number }) => s + (l.truth_pct || 0), 0);
   return Math.round(total / loops.length);
 }
 

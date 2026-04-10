@@ -123,26 +123,33 @@ async function fetchGoogleConnectors(
   if (!capabilities?.length) return [];
 
   // Get connected service links for these capabilities
-  const capIds = capabilities.map((c: any) => c.id);
+  const capIds = capabilities.map((c: Record<string, unknown>) => c.id);
   const { data: services } = await supabase
     .from("connected_service_links")
     .select("*")
     .in("provider_capability_id", capIds);
 
-  return capabilities.map((cap: any): GoogleConnectorState => ({
-    capabilityKey: cap.capability_key as GoogleCapabilityKey,
-    displayName: cap.display_name,
-    connectionStatus: (svc => svc?.connection_status ?? "disconnected")(services?.find((s: any) => s.provider_capability_id === cap.id)) as never,
-    healthStatus: (svc => svc?.health_status ?? "unknown")(services?.find((s: any) => s.provider_capability_id === cap.id)) as never,
-    permissionLevel: (svc => svc?.permission_level ?? "minimal")(services?.find((s: any) => s.provider_capability_id === cap.id)) as never,
-    grantedScopes: services?.find((s: any) => s.provider_capability_id === cap.id)?.granted_scopes ?? [],
-    reauthNeeded: services?.find((s: any) => s.provider_capability_id === cap.id)?.reauth_needed ?? false,
-    lastSyncAt: services?.find((s: any) => s.provider_capability_id === cap.id)?.last_sync_at ?? null,
-    mode,
-    launchStage: (cap.launch_stage ?? "planned") as never,
-    upgradeAvailable: cap.upgrade_path_support ?? false,
-    serviceAccountId: services?.find((s: any) => s.provider_capability_id === cap.id)?.id ?? null,
-  }));
+  type CapRecord = Record<string, unknown>;
+  type SvcRecord = Record<string, unknown>;
+  const findSvc = (capId: unknown) => services?.find((s: SvcRecord) => s.provider_capability_id === capId);
+
+  return capabilities.map((cap: CapRecord): GoogleConnectorState => {
+    const svc = findSvc(cap.id);
+    return {
+      capabilityKey: cap.capability_key as GoogleCapabilityKey,
+      displayName: String(cap.display_name ?? ""),
+      connectionStatus: (svc?.connection_status as string ?? "disconnected") as never,
+      healthStatus: (svc?.health_status as string ?? "unknown") as never,
+      permissionLevel: (svc?.permission_level as string ?? "minimal") as never,
+      grantedScopes: (svc?.granted_scopes as string[]) ?? [],
+      reauthNeeded: (svc?.reauth_needed as boolean) ?? false,
+      lastSyncAt: (svc?.last_sync_at as string) ?? null,
+      mode,
+      launchStage: (cap.launch_stage as string ?? "planned") as never,
+      upgradeAvailable: (cap.upgrade_path_support as boolean) ?? false,
+      serviceAccountId: (svc?.id as string) ?? null,
+    };
+  });
 }
 
 // ── OAuth Clients ────────────────────────────────────────────
@@ -154,14 +161,14 @@ async function fetchGoogleOAuthClients(familyId: string): Promise<GoogleOAuthCli
     .eq("provider_family_id", familyId)
     .order("client_name");
 
-  return (clients ?? []).map((c: any) => ({
-    id: c.id,
-    clientName: c.client_name,
-    purpose: c.client_purpose,
-    allowedCapabilities: c.allowed_capabilities ?? [],
-    environment: c.environment ?? "production",
-    launchStage: c.launch_stage ?? "planned",
-    active: c.active ?? true,
+  return (clients ?? []).map((c: Record<string, unknown>) => ({
+    id: c.id as string,
+    clientName: c.client_name as string,
+    purpose: c.client_purpose as string,
+    allowedCapabilities: (c.allowed_capabilities as string[]) ?? [],
+    environment: (c.environment as string) ?? "production",
+    launchStage: (c.launch_stage as string) ?? "planned",
+    active: (c.active as boolean) ?? true,
   }));
 }
 
@@ -176,17 +183,18 @@ async function fetchGoogleScopePolicies(familyId: string): Promise<GoogleScopePo
   // Filter to Google capabilities only
   const googleKeys = new Set(["google_identity", "google_drive", "google_gmail", "google_calendar", "google_docs", "google_contacts", "google_tasks"]);
   
+  type PolicyRecord = Record<string, unknown> & { provider_capabilities?: { capability_key?: string; display_name?: string } };
   return (policies ?? [])
-    .filter((p: any) => googleKeys.has(p.provider_capabilities?.capability_key))
-    .map((p: any) => ({
-      capabilityKey: p.provider_capabilities?.capability_key,
+    .filter((p: PolicyRecord) => googleKeys.has(p.provider_capabilities?.capability_key ?? ""))
+    .map((p: PolicyRecord) => ({
+      capabilityKey: p.provider_capabilities?.capability_key ?? "",
       displayName: p.provider_capabilities?.display_name ?? "",
-      minimumScopes: p.minimum_scopes ?? [],
-      optionalScopes: p.optional_scopes ?? [],
-      disallowedScopes: p.disallowed_scopes ?? [],
-      defaultGrantProfile: p.default_grant_profile ?? "read_only",
-      upgradePathAvailable: p.upgrade_path_available ?? false,
-      approvalRequired: p.approval_required_for_upgrade ?? false,
+      minimumScopes: (p.minimum_scopes as string[]) ?? [],
+      optionalScopes: (p.optional_scopes as string[]) ?? [],
+      disallowedScopes: (p.disallowed_scopes as string[]) ?? [],
+      defaultGrantProfile: (p.default_grant_profile as string) ?? "read_only",
+      upgradePathAvailable: (p.upgrade_path_available as boolean) ?? false,
+      approvalRequired: (p.approval_required_for_upgrade as boolean) ?? false,
     }));
 }
 
@@ -198,26 +206,28 @@ async function fetchGoogleLaunchHonesty(familyId: string): Promise<GoogleLaunchH
     .select("*, provider_capabilities(capability_key, display_name)")
     .eq("provider_family_id", familyId);
 
-  return (entries ?? []).map((e: any) => ({
+  type HonestyRecord = Record<string, unknown> & { provider_capabilities?: { capability_key?: string; display_name?: string } };
+  return (entries ?? []).map((e: HonestyRecord) => ({
     capabilityKey: e.provider_capabilities?.capability_key ?? "unknown",
     displayName: e.provider_capabilities?.display_name ?? "",
-    launchLabel: e.launch_label ?? "unknown",
-    blockers: e.blockers ?? [],
-    publicClaimSafe: (e.blockers ?? []).length === 0,
+    launchLabel: (e.launch_label as string) ?? "unknown",
+    blockers: (e.blockers as string[]) ?? [],
+    publicClaimSafe: ((e.blockers as string[]) ?? []).length === 0,
     qualifierRequired: e.launch_label !== "production",
   }));
 }
 
 // ── Consent Ledger ───────────────────────────────────────────
 
-export async function getGoogleConsentHistory(): Promise<any[]> {
+export async function getGoogleConsentHistory(): Promise<Array<Record<string, unknown>>> {
   const { data } = await supabase
     .from("consent_ledger")
     .select("*, provider_families(name, provider_key)")
     .order("created_at", { ascending: false })
     .limit(50);
   
-  return (data ?? []).filter((c: any) => c.provider_families?.provider_key === "google");
+  type ConsentRecord = Record<string, unknown> & { provider_families?: { provider_key?: string } };
+  return ((data ?? []) as ConsentRecord[]).filter((c) => c.provider_families?.provider_key === "google");
 }
 
 // ── Validation Helpers ───────────────────────────────────────

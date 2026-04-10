@@ -33,7 +33,7 @@ export async function buildInvestmentOverview(): Promise<InvestmentSummary> {
       };
     }
 
-    const totalValue = accounts.reduce((s: number, a: any) => s + (a.balance_cents || 0), 0);
+    const totalValue = accounts.reduce((s: number, a: Record<string, unknown>) => s + (Number(a.balance_cents) || 0), 0);
 
     // Build allocations from capital_allocations table
     const allocationMap = new Map<string, number>();
