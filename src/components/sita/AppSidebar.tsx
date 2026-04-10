@@ -77,6 +77,7 @@ const controlNav = [
   { title: "Agent Activity", url: "/agent-activity", icon: Activity },
   { title: "Communications", url: "/communications", icon: MessageSquare },
   { title: "Notifications", url: "/notifications/settings", icon: Bell },
+  { title: "Plan & Usage", url: "/settings/plan-usage", icon: Gauge },
   { title: "System", url: "/system", icon: Shield },
 ];
 
