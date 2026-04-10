@@ -601,3 +601,29 @@ export const DEMO_TRADES = [
     fragility: 75,
   },
 ];
+
+// ── Emotional Journal Entries ──
+export type EmotionStress = "low" | "moderate" | "high";
+export type EmotionUrgency = "patient" | "moderate" | "urgent";
+export type ConvictionType = "thesis-driven" | "reactive" | "mixed";
+
+export interface JournalEmotionalTag {
+  id: string;
+  thesisId: string;
+  symbol: string;
+  action: string;
+  date: string;
+  confidence: number; // 1-5
+  stressLevel: EmotionStress;
+  urgency: EmotionUrgency;
+  fomoFlag: boolean;
+  convictionType: ConvictionType;
+  emotionNote: string;
+}
+
+export const DEMO_JOURNAL_ENTRIES: JournalEmotionalTag[] = [
+  { id: "je1", thesisId: "th-nvda", symbol: "NVDA", action: "Added $8K position", date: "2026-03-15", confidence: 4, stressLevel: "low", urgency: "patient", fomoFlag: false, convictionType: "thesis-driven", emotionNote: "Clear thesis — AI capex cycle thesis is well-supported by data. Calm execution." },
+  { id: "je2", thesisId: "th-btc", symbol: "BTC", action: "Increased allocation to 12%", date: "2026-02-20", confidence: 3, stressLevel: "moderate", urgency: "moderate", fomoFlag: true, convictionType: "mixed", emotionNote: "Felt pressure from price movement. Halving narrative is strong but I noticed FOMO influencing sizing." },
+  { id: "je3", thesisId: "th-sol", symbol: "SOL", action: "New $3K starter position", date: "2026-01-10", confidence: 2, stressLevel: "high", urgency: "urgent", fomoFlag: true, convictionType: "reactive", emotionNote: "Entered after 20% rally. Regretted not buying earlier — classic FOMO entry. Should have waited for pullback." },
+  { id: "je4", thesisId: "th-gold", symbol: "XAUUSD", action: "Rebalanced to 15% allocation", date: "2026-03-28", confidence: 5, stressLevel: "low", urgency: "patient", fomoFlag: false, convictionType: "thesis-driven", emotionNote: "Deliberate hedge sizing. No emotional pressure — purely strategic rebalance per investment constitution." },
+];

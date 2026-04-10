@@ -1,14 +1,21 @@
 import { useNavigate } from "react-router-dom";
-import { Brain, Target, AlertTriangle, TrendingUp, TrendingDown, Plus, ChevronRight, Calendar } from "lucide-react";
+import { Brain, Target, AlertTriangle, TrendingUp, TrendingDown, Plus, ChevronRight, Calendar, Heart, Activity } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { SAMPLE_THESES, getInstrument } from "@/hooks/useInvestmentOfficeData";
 import { useInvestmentThesisEntries } from "@/hooks/use-investment-office";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { DEMO_JOURNAL_ENTRIES } from "@/lib/demo-data/investment.tsx";
 
 export default function ThesisJournal() {
   const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useInvestmentThesisEntries();
   const navigate = useNavigate();
+
+  const thesisDrivenCount = DEMO_JOURNAL_ENTRIES.filter(e => e.convictionType === "thesis-driven").length;
+  const fomoCount = DEMO_JOURNAL_ENTRIES.filter(e => e.fomoFlag).length;
+  const avgConfidence = (DEMO_JOURNAL_ENTRIES.reduce((s, e) => s + e.confidence, 0) / DEMO_JOURNAL_ENTRIES.length).toFixed(1);
+  const stressCounts = { low: DEMO_JOURNAL_ENTRIES.filter(e => e.stressLevel === "low").length, moderate: DEMO_JOURNAL_ENTRIES.filter(e => e.stressLevel === "moderate").length, high: DEMO_JOURNAL_ENTRIES.filter(e => e.stressLevel === "high").length };
+  const dominantStress = Object.entries(stressCounts).sort((a, b) => b[1] - a[1])[0][0];
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
@@ -16,16 +23,43 @@ export default function ThesisJournal() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Brain className="h-6 w-6 text-primary" /> Thesis & Journal</h1>
-          <p className="text-sm text-muted-foreground mt-1">Investment ideas, rationale, reviews, and lessons</p>
+          <p className="text-sm text-muted-foreground mt-1">Investment ideas, rationale, reviews, and emotional discipline</p>
         </div>
         <button className="rounded-xl bg-primary px-4 py-2.5 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors flex items-center gap-2">
           <Plus className="h-4 w-4" /> New Thesis
         </button>
       </div>
 
+      {/* Emotional Patterns Summary */}
+      <div className="rounded-2xl border border-primary/15 bg-gradient-to-r from-primary/5 via-card to-card p-5">
+        <h3 className="text-xs font-bold text-foreground uppercase tracking-wider flex items-center gap-1.5 mb-3">
+          <Heart className="h-3.5 w-3.5 text-primary" /> Emotional Trading Patterns
+        </h3>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div className="rounded-xl bg-card border border-border p-3">
+            <p className="text-[9px] font-semibold text-muted-foreground uppercase">Avg Confidence</p>
+            <p className="text-xl font-bold text-foreground">{avgConfidence}<span className="text-xs text-muted-foreground">/5</span></p>
+          </div>
+          <div className="rounded-xl bg-card border border-border p-3">
+            <p className="text-[9px] font-semibold text-muted-foreground uppercase">Thesis-Driven</p>
+            <p className="text-xl font-bold text-[hsl(var(--trust-safe))]">{thesisDrivenCount}<span className="text-xs text-muted-foreground">/{DEMO_JOURNAL_ENTRIES.length}</span></p>
+          </div>
+          <div className="rounded-xl bg-card border border-border p-3">
+            <p className="text-[9px] font-semibold text-muted-foreground uppercase">FOMO Detections</p>
+            <p className="text-xl font-bold text-destructive">{fomoCount}</p>
+          </div>
+          <div className="rounded-xl bg-card border border-border p-3">
+            <p className="text-[9px] font-semibold text-muted-foreground uppercase">Dominant Stress</p>
+            <p className={`text-xl font-bold capitalize ${dominantStress === "low" ? "text-[hsl(var(--trust-safe))]" : dominantStress === "moderate" ? "text-[hsl(var(--trust-warn))]" : "text-destructive"}`}>{dominantStress}</p>
+          </div>
+        </div>
+      </div>
+
+      {/* Thesis Cards */}
       <div className="space-y-4">
         {SAMPLE_THESES.map(th => {
           const inst = getInstrument(th.instrumentId);
+          const emotionalTag = DEMO_JOURNAL_ENTRIES.find(e => e.symbol === inst?.symbol);
           return (
             <div key={th.id} className="rounded-2xl border border-border bg-card p-6 space-y-4">
               <div className="flex items-start gap-4">
@@ -100,6 +134,49 @@ export default function ThesisJournal() {
                       <span key={i} className="rounded-lg bg-accent/10 px-2.5 py-1 text-[10px] font-medium text-accent">{c}</span>
                     ))}
                   </div>
+                </div>
+              )}
+
+              {/* Emotional Profile */}
+              {emotionalTag && (
+                <div className="pt-3 border-t border-border space-y-2">
+                  <p className="text-[10px] font-semibold text-primary uppercase tracking-wider flex items-center gap-1">
+                    <Activity className="h-3 w-3" /> Emotional Profile — {emotionalTag.date}
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {/* Confidence bar */}
+                    <div className="flex items-center gap-1.5 rounded-lg bg-secondary/30 px-2.5 py-1">
+                      <span className="text-[9px] font-semibold text-muted-foreground">Confidence</span>
+                      <div className="flex gap-0.5">
+                        {[1,2,3,4,5].map(n => (
+                          <div key={n} className={`h-2.5 w-2.5 rounded-sm ${n <= emotionalTag.confidence ? "bg-primary" : "bg-border"}`} />
+                        ))}
+                      </div>
+                    </div>
+                    {/* Stress */}
+                    <span className={`rounded-lg px-2.5 py-1 text-[10px] font-medium ${
+                      emotionalTag.stressLevel === "low" ? "bg-[hsl(var(--trust-safe))]/10 text-[hsl(var(--trust-safe))]" :
+                      emotionalTag.stressLevel === "moderate" ? "bg-[hsl(var(--trust-warn))]/10 text-[hsl(var(--trust-warn))]" :
+                      "bg-destructive/10 text-destructive"
+                    }`}>Stress: {emotionalTag.stressLevel}</span>
+                    {/* Urgency */}
+                    <span className={`rounded-lg px-2.5 py-1 text-[10px] font-medium ${
+                      emotionalTag.urgency === "patient" ? "bg-[hsl(var(--trust-safe))]/10 text-[hsl(var(--trust-safe))]" :
+                      emotionalTag.urgency === "moderate" ? "bg-secondary text-muted-foreground" :
+                      "bg-destructive/10 text-destructive"
+                    }`}>Urgency: {emotionalTag.urgency}</span>
+                    {/* Conviction type */}
+                    <span className={`rounded-lg px-2.5 py-1 text-[10px] font-medium ${
+                      emotionalTag.convictionType === "thesis-driven" ? "bg-primary/10 text-primary" :
+                      emotionalTag.convictionType === "reactive" ? "bg-destructive/10 text-destructive" :
+                      "bg-[hsl(var(--trust-warn))]/10 text-[hsl(var(--trust-warn))]"
+                    }`}>{emotionalTag.convictionType}</span>
+                    {/* FOMO */}
+                    {emotionalTag.fomoFlag && (
+                      <span className="rounded-lg bg-destructive/10 px-2.5 py-1 text-[10px] font-bold text-destructive">⚠ FOMO Detected</span>
+                    )}
+                  </div>
+                  <p className="text-[11px] text-muted-foreground italic leading-relaxed">"{emotionalTag.emotionNote}"</p>
                 </div>
               )}
             </div>
