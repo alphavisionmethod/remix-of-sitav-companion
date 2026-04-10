@@ -594,6 +594,7 @@ const RenderSection = ({ section }: { section: BoardroomContentSection }) => {
 const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; perspective?: PerspectiveLevel }) => {
   const { packet, isLoading, regenerate } = useBoardroomPacket(type);
   const config = getPerspectiveConfig(perspective);
+  const { isDemoMode } = useDataMode();
   const { pendingApprovals, activeGoals, overdueTasks, recentProofs } = useBoardroomData();
 
   if (isLoading || !packet) return <div className="p-8 text-center text-muted-foreground">Generating boardroom packet…</div>;
