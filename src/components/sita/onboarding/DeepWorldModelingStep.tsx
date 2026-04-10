@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Globe, Clock, Users, Briefcase, DollarSign, MessageSquare, Target,
@@ -22,6 +22,9 @@ interface Props {
   onUpdate: (data: WorldModelData) => void;
   onNext: () => void;
   onPrev: () => void;
+  setupStyle?: "express" | "guided" | "advanced";
+  relevantDomains?: string[];
+  toneContext?: { isOverwhelmed: boolean; copyDensity: "light" | "standard" | "rich"; toneClass: "calm" | "neutral" | "energetic" };
 }
 
 const CHAPTERS = [
@@ -56,8 +59,41 @@ const ADVISOR_SUGGESTIONS: { condition: (d: WorldModelData) => boolean; name: st
 
 const spring = { type: "spring" as const, damping: 28, stiffness: 280 };
 
-export function DeepWorldModelingStep({ data, onUpdate, onNext, onPrev }: Props) {
-  const [openChapter, setOpenChapter] = useState<string>("routines");
+export function DeepWorldModelingStep({ data, onUpdate, onNext, onPrev, setupStyle = "guided", relevantDomains, toneContext }: Props) {
+  // Domain filtering: express → most relevant only, guided → relevant, advanced → all
+  const visibleChapters = useMemo(() => {
+    if (setupStyle === "advanced" || !relevantDomains) return CHAPTERS;
+    if (setupStyle === "express") {
+      // Show routines + goals always, plus the single most relevant domain chapter
+      const domainToChapter: Record<string, string> = {
+        household: "household", family: "household", home: "household",
+        business: "work", work: "work", clients: "work", team: "work",
+        money: "money", bills: "money", spending: "money",
+        communications: "communication", messages: "communication", email: "communication",
+      };
+      const relevantChapterIds = new Set(["routines", "goals"]);
+      for (const d of relevantDomains) {
+        const chId = domainToChapter[d];
+        if (chId) { relevantChapterIds.add(chId); break; } // only first match for express
+      }
+      return CHAPTERS.filter(ch => relevantChapterIds.has(ch.id));
+    }
+    // guided — show routines, goals, + all relevant domain chapters
+    const domainToChapter: Record<string, string> = {
+      household: "household", family: "household", home: "household",
+      business: "work", work: "work", clients: "work", team: "work",
+      money: "money", bills: "money", spending: "money",
+      communications: "communication", messages: "communication", email: "communication",
+    };
+    const relevantChapterIds = new Set(["routines", "goals"]);
+    for (const d of relevantDomains) {
+      const chId = domainToChapter[d];
+      if (chId) relevantChapterIds.add(chId);
+    }
+    return CHAPTERS.filter(ch => relevantChapterIds.has(ch.id));
+  }, [setupStyle, relevantDomains]);
+
+  const [openChapter, setOpenChapter] = useState<string>(visibleChapters[0]?.id ?? "routines");
 
   const chapterComplete = (id: string): boolean => {
     switch (id) {
@@ -71,7 +107,7 @@ export function DeepWorldModelingStep({ data, onUpdate, onNext, onPrev }: Props)
     }
   };
 
-  const completedCount = CHAPTERS.filter(c => chapterComplete(c.id)).length;
+  const completedCount = visibleChapters.filter(c => chapterComplete(c.id)).length;
   const canAdvance = completedCount >= 1;
 
   const toggleChip = (path: string, value: string) => {
@@ -119,14 +155,14 @@ export function DeepWorldModelingStep({ data, onUpdate, onNext, onPrev }: Props)
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mb-6">
           <SetupStageHeader
             icon={Globe}
-            title="Help SITA understand your world"
-            subtitle="We'll use this to shape your environment, advisors, and first workflows"
+            title={toneContext?.copyDensity === "light" ? "Tell SITA what matters" : "Help SITA understand your world"}
+            subtitle={toneContext?.copyDensity === "light" ? "Just the essentials — skip anything that doesn't apply" : "We'll use this to shape your environment, advisors, and first workflows"}
             align="left"
           />
         </motion.div>
 
         <div className="space-y-2">
-          {CHAPTERS.map((ch, i) => {
+          {visibleChapters.map((ch, i) => {
             const isOpen = openChapter === ch.id;
             const isDone = chapterComplete(ch.id);
             return (

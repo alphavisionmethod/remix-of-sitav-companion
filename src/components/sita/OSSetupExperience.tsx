@@ -533,6 +533,36 @@ export function OSSetupExperience() {
     persistSetupState(state, phase);
   }, [orchGoPrev, state, phase]);
 
+  // Derive trust-based settings for Part 5 compliance
+  const computeTrustDerivedSettings = (s: SetupData) => {
+    const tc = s.trustCalibration;
+    const approvalPathways: Record<string, string> = {};
+    for (const domain of s.enabledDomains) {
+      approvalPathways[domain] = tc.level >= 70 ? "auto" : tc.level >= 40 ? "notify-after" : "require-approval";
+    }
+    if (tc.financialApprovals) approvalPathways["financial"] = "require-approval";
+    if (tc.communicationApprovals) approvalPathways["communication"] = "require-approval";
+
+    const proofExpectations = {
+      generateReceipts: true,
+      requireExplanation: tc.level < 50,
+      auditTrailLevel: tc.level >= 70 ? "summary" : "detailed",
+      showConfidence: tc.level < 60,
+    };
+
+    const automationBoundaries = {
+      maxAutonomyTier: tc.level >= 80 ? "autonomous" : tc.level >= 50 ? "supervised" : "assisted",
+      spendingCeiling: tc.spendingThreshold,
+      silentAutomationAllowed: tc.silentAutomation,
+      escalationBehavior: tc.escalationBehavior,
+      calendarAutoManage: !tc.calendarApprovals,
+      businessAutoManage: tc.businessPermissions,
+      familyAutoManage: tc.familyPermissions,
+    };
+
+    return { approvalPathways, proofExpectations, automationBoundaries };
+  };
+
   const finishSetup = async () => {
     if (!user) { navigate("/"); return; }
     try {
@@ -583,9 +613,19 @@ export function OSSetupExperience() {
         mem("relationship_focus", state.relationshipFocus, "preference"),
         mem("desktop_density", computeDesktopDensity(state), "preference", { source: "derived", confidence: 0.8 }),
         mem("domain_confidence", computeDomainConfidence(state), "preference", { source: "derived", confidence: 0.7 }),
-      ].filter(m => m.value && m.value !== '""' && m.value !== '[]' && m.value !== '{}');
+      ];
 
-      await fromTable("user_memory").upsert(memoryItems, { onConflict: "user_id,key" });
+      // Trust-derived settings (Part 5: approval pathways, proof expectations, automation boundaries)
+      const trustDerived = computeTrustDerivedSettings(state);
+      memoryItems.push(
+        mem("approval_pathways", trustDerived.approvalPathways, "trust", { source: "derived", confidence: 0.9, sensitivity: "medium" }),
+        mem("proof_expectations", trustDerived.proofExpectations, "trust", { source: "derived", confidence: 0.9 }),
+        mem("automation_boundaries", trustDerived.automationBoundaries, "trust", { source: "derived", confidence: 0.85, sensitivity: "medium" }),
+      );
+
+      const filtered = memoryItems.filter(m => m.value && m.value !== '""' && m.value !== '[]' && m.value !== '{}');
+
+      await fromTable("user_memory").upsert(filtered, { onConflict: "user_id,key" });
       await fromTable("profiles").update({ onboarding_completed: true }).eq("user_id", user.id);
 
       const snapshot = engine.toSnapshot();
@@ -908,6 +948,9 @@ export function OSSetupExperience() {
                   <DeepWorldModelingStep key="deep-world-modeling"
                     data={state.worldModel}
                     onUpdate={wm => setState(s => ({ ...s, worldModel: wm }))}
+                    setupStyle={state.setupStyle}
+                    relevantDomains={[...state.enabledDomains, ...state.quickIdentity.runFirst, ...state.quickIdentity.slipPoints]}
+                    toneContext={toneContext}
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
@@ -1012,6 +1055,7 @@ export function OSSetupExperience() {
                     activeAdvisors={state.advisorActivation} lifeRhythm={state.lifeRhythm}
                     stressMap={state.stressMap} commsContext={state.commsContext} planningStyle={state.planningStyle}
                     connectedSystems={state.connectedSystems} firstWinAction={state.firstWin.action}
+                    copyDensity={toneContext.copyDensity}
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
@@ -1029,6 +1073,8 @@ export function OSSetupExperience() {
                     data={state.firstWin}
                     onUpdate={fw => setState(s => ({ ...s, firstWin: fw }))}
                     primaryUseMode={state.primaryUseMode}
+                    painPoints={state.quickIdentity.slipPoints}
+                    toneClass={toneContext.toneClass}
                     onNext={goNext} onPrev={goPrev} />
                 )}
 

@@ -25,6 +25,7 @@ interface FirstWinSetupStepProps {
   onUpdate: (data: FirstWinData) => void;
   primaryUseMode: string;
   painPoints?: string[];
+  toneClass?: "calm" | "neutral" | "energetic";
   onNext: () => void;
   onPrev: () => void;
 }
@@ -68,10 +69,14 @@ const WIN_OPTIONS: Record<string, WinOption[]> = {
 
 const FLOW_STEPS = ["Select", "Preview", "Approve", "Prepare", "Ready"];
 
-export function FirstWinSetupStep({ data, onUpdate, primaryUseMode, painPoints, onNext, onPrev }: FirstWinSetupStepProps) {
+export function FirstWinSetupStep({ data, onUpdate, primaryUseMode, painPoints, toneClass, onNext, onPrev }: FirstWinSetupStepProps) {
   const [flowStep, setFlowStep] = useState(data.approved ? (data.prepared ? 4 : 3) : data.action ? 1 : 0);
-
-  const options = WIN_OPTIONS[primaryUseMode] || WIN_OPTIONS.personal;
+  // When calm/overwhelmed, prioritize restorative options first
+  const baseOptions = WIN_OPTIONS[primaryUseMode] || WIN_OPTIONS.personal;
+  const options = toneClass === "calm" ? [
+    ...baseOptions.filter(o => o.id.includes("daily-pulse") || o.id.includes("weekly-plan") || o.id.includes("task-rhythm")),
+    ...baseOptions.filter(o => !o.id.includes("daily-pulse") && !o.id.includes("weekly-plan") && !o.id.includes("task-rhythm")),
+  ] : baseOptions;
   const selectedOption = options.find(o => o.id === data.action);
 
   // Preparation animation
@@ -109,8 +114,12 @@ export function FirstWinSetupStep({ data, onUpdate, primaryUseMode, painPoints, 
           className="inline-flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary/60 shadow-lg shadow-primary/20 mb-4">
           <Trophy className="h-7 w-7 text-primary-foreground" />
         </motion.div>
-        <h2 className="font-display text-2xl font-bold text-foreground">Let's set up your first win</h2>
-        <p className="mt-1.5 text-sm text-muted-foreground">Choose one useful thing for SITA to prepare first</p>
+        <h2 className="font-display text-2xl font-bold text-foreground">
+          {toneClass === "calm" ? "One small thing to start" : "Let's set up your first win"}
+        </h2>
+        <p className="mt-1.5 text-sm text-muted-foreground">
+          {toneClass === "calm" ? "Pick something gentle — no pressure" : "Choose one useful thing for SITA to prepare first"}
+        </p>
       </div>
 
       {/* Flow progress */}

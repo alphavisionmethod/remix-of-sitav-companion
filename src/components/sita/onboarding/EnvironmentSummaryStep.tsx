@@ -18,6 +18,7 @@ interface Props {
   planningStyle?: PlanningStyleData;
   connectedSystems: number;
   firstWinAction: string;
+  copyDensity?: "light" | "standard" | "rich";
   onNext: () => void;
   onPrev: () => void;
 }
@@ -29,7 +30,7 @@ const DOMAIN_META: Record<string, { icon: typeof Briefcase; label: string }> = {
   personal: { icon: Eye, label: "Personal" },
 };
 
-export const EnvironmentSummaryStep = ({ displayName, trustLevel, primaryUseMode, enabledDomains, activeAdvisors, lifeRhythm, stressMap, commsContext, planningStyle, connectedSystems, firstWinAction, onNext, onPrev }: Props) => {
+export const EnvironmentSummaryStep = ({ displayName, trustLevel, primaryUseMode, enabledDomains, activeAdvisors, lifeRhythm, stressMap, commsContext, planningStyle, connectedSystems, firstWinAction, copyDensity = "standard", onNext, onPrev }: Props) => {
   const enabledAdvisors = activeAdvisors.filter(a => a.enabled);
 
   // Reflective copy based on answers
@@ -58,8 +59,12 @@ export const EnvironmentSummaryStep = ({ displayName, trustLevel, primaryUseMode
           <Sparkles className="h-3.5 w-3.5 text-[hsl(var(--sita-gold))]" />
           <span className="text-[10px] font-semibold text-[hsl(var(--sita-gold))] uppercase tracking-wider">Environment Ready</span>
         </div>
-        <h2 className="text-xl font-semibold text-foreground">Your environment is ready, {displayName}</h2>
-        <p className="text-sm text-muted-foreground mt-1">Here's what SITA has shaped around you</p>
+        <h2 className="text-xl font-semibold text-foreground">
+          {copyDensity === "light" ? `Ready, ${displayName}` : `Your environment is ready, ${displayName}`}
+        </h2>
+        <p className="text-sm text-muted-foreground mt-1">
+          {copyDensity === "light" ? "Here's the summary" : "Here's what SITA has shaped around you"}
+        </p>
       </div>
 
       <div className="space-y-4">

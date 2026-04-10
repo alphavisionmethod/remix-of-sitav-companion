@@ -126,7 +126,17 @@ export class SetupOrchestrationEngine {
     this.branchEvaluators.set("domain:household", domainEvaluator(["household", "family", "home", "shared-living"]));
     this.branchEvaluators.set("domain:work", domainEvaluator(["business", "work", "clients", "team", "leads", "ops"]));
     this.branchEvaluators.set("domain:money", domainEvaluator(["money", "bills", "spending", "approvals", "budget"]));
-    this.branchEvaluators.set("domain:communications", domainEvaluator(["communications", "messages", "replies", "follow-up", "email"]));
+    // Communications also triggers when work domain is active (spec: "or work path active")
+    this.branchEvaluators.set("domain:communications", () => {
+      const domains = this.getSessionData<string[]>("enabledDomains") ?? [];
+      const painPoints = this.getSessionData<string[]>("painPoints") ?? [];
+      const focusAreas = this.getSessionData<string[]>("focusAreas") ?? [];
+      const commsKeys = ["communications", "messages", "replies", "follow-up", "email"];
+      const workKeys = ["business", "work", "clients", "team", "leads", "ops"];
+      const hasComms = commsKeys.some(k => domains.includes(k) || painPoints.includes(k) || focusAreas.includes(k));
+      const hasWork = workKeys.some(k => domains.includes(k) || painPoints.includes(k) || focusAreas.includes(k));
+      return hasComms || hasWork;
+    });
 
     // Tone branching — overwhelmed indicator
     this.branchEvaluators.set("tone:overwhelmed", () => {
