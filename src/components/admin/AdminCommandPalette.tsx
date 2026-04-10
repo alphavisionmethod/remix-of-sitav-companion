@@ -6,7 +6,7 @@ import {
 import {
   Activity, AlertTriangle, Brain, Crown, Database, Eye, GitBranch, Globe,
   Layers, Link2, Lock, Rocket, Server, Shield, Target, TrendingUp, Zap,
-  BarChart3, Cpu, FileText, Play, RefreshCw, Settings, Search
+  BarChart3, Cpu, FileText, Play, RefreshCw, Settings, Search, Scale
 } from "lucide-react";
 
 const NAV_ITEMS = [
@@ -49,6 +49,13 @@ const NAV_ITEMS = [
   { label: "Journey Verification Overview", path: "/admin/verification/overview", icon: Activity, group: "Navigation" },
   { label: "Runtime Probe Center", path: "/admin/verification/probes", icon: Zap, group: "Navigation" },
   { label: "Launch Interaction Gate", path: "/admin/verification/launch-gate", icon: Target, group: "Navigation" },
+  { label: "PLE: Platform Law Overview", path: "/admin/platform-law", icon: Shield, group: "Navigation" },
+  { label: "PLE: Architecture Law Registry", path: "/admin/platform-law/laws", icon: Scale, group: "Navigation" },
+  { label: "PLE: Scaffold & Generator Registry", path: "/admin/platform-law/scaffolds", icon: Cpu, group: "Navigation" },
+  { label: "PLE: CI & PR Gate Monitor", path: "/admin/platform-law/ci-gates", icon: GitBranch, group: "Navigation" },
+  { label: "PLE: Manifest Enforcer", path: "/admin/platform-law/manifests", icon: FileText, group: "Navigation" },
+  { label: "PLE: Ownership Board", path: "/admin/platform-law/ownership", icon: Crown, group: "Navigation" },
+  { label: "PLE: Compliance Dashboard", path: "/admin/platform-law/compliance", icon: Layers, group: "Navigation" },
 ];
 
 const ACTION_ITEMS = [

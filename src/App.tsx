@@ -355,6 +355,15 @@ const JVC01JourneyVerificationOverview = lazy(() => import("./pages/admin/verifi
 const JVC10RuntimeProbeCenter = lazy(() => import("./pages/admin/verification/JVC10RuntimeProbeCenter"));
 const JVC14LaunchInteractionGate = lazy(() => import("./pages/admin/verification/JVC14LaunchInteractionGate"));
 
+// PLE — Platform Law & Truth Enforcement
+const PLE01Overview = lazy(() => import("./pages/admin/platform-law/PLE01Overview"));
+const PLE02LawRegistry = lazy(() => import("./pages/admin/platform-law/PLE02LawRegistry"));
+const PLE03ScaffoldRegistry = lazy(() => import("./pages/admin/platform-law/PLE03ScaffoldRegistry"));
+const PLE04CIGateMonitor = lazy(() => import("./pages/admin/platform-law/PLE04CIGateMonitor"));
+const PLE05ManifestEnforcer = lazy(() => import("./pages/admin/platform-law/PLE05ManifestEnforcer"));
+const PLE06OwnershipBoard = lazy(() => import("./pages/admin/platform-law/PLE06OwnershipBoard"));
+const PLE07ComplianceDashboard = lazy(() => import("./pages/admin/platform-law/PLE07ComplianceDashboard"));
+
 // CJ — Customer Journey Proof System
 const CJ01ExecutiveReport = lazy(() => import("./pages/admin/customer-journey/CJ01ExecutiveReport"));
 const CJ02JourneyTruthMatrix = lazy(() => import("./pages/admin/customer-journey/CJ02JourneyTruthMatrix"));
@@ -1064,7 +1073,16 @@ const App = () => (
                     <Route path="/admin/verification/probes" element={<JVC10RuntimeProbeCenter />} />
                     <Route path="/admin/verification/launch-gate" element={<JVC14LaunchInteractionGate />} />
 
-                    {/* CJ — Customer Journey Proof System */}
+                     {/* PLE — Platform Law & Truth Enforcement */}
+                     <Route path="/admin/platform-law" element={<PLE01Overview />} />
+                     <Route path="/admin/platform-law/laws" element={<PLE02LawRegistry />} />
+                     <Route path="/admin/platform-law/scaffolds" element={<PLE03ScaffoldRegistry />} />
+                     <Route path="/admin/platform-law/ci-gates" element={<PLE04CIGateMonitor />} />
+                     <Route path="/admin/platform-law/manifests" element={<PLE05ManifestEnforcer />} />
+                     <Route path="/admin/platform-law/ownership" element={<PLE06OwnershipBoard />} />
+                     <Route path="/admin/platform-law/compliance" element={<PLE07ComplianceDashboard />} />
+
+                     {/* CJ — Customer Journey Proof System */}
                     <Route path="/admin/customer-journey/executive" element={<CJ01ExecutiveReport />} />
                     <Route path="/admin/customer-journey/matrix" element={<CJ02JourneyTruthMatrix />} />
                     <Route path="/admin/customer-journey/detail" element={<CJ03JourneyDetailView />} />
