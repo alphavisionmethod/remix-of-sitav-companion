@@ -90,6 +90,26 @@ export default function GovernanceDashboard() {
         <ReadinessGauge input={readinessInput} entityScope={DEFAULT_SCOPE} />
       </div>
 
+      {/* Invisible Labor */}
+      <SitaSectionHeader title="Invisible Labor" />
+      <SitaCard>
+        <div className="p-4 space-y-2">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Eye className="h-4 w-4" />
+            <span>{laborSuggestions.length} equalization suggestions detected</span>
+          </div>
+          {laborSuggestions.length === 0 && (
+            <p className="text-xs text-muted-foreground">No labor imbalances detected. Tracking is consent-gated and privacy-first.</p>
+          )}
+          {laborSuggestions.map((s, i) => (
+            <div key={i} className="rounded-lg border border-border/40 bg-card/60 p-3 text-xs">
+              <span className="font-semibold text-foreground">{s.suggestion}</span>
+              {s.reason && <p className="text-muted-foreground mt-1">{s.reason}</p>}
+            </div>
+          ))}
+        </div>
+      </SitaCard>
+
       {/* Delegation */}
       <SitaSectionHeader title="Delegation Registry" />
       <DelegationRegistryTable />
