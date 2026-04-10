@@ -7,8 +7,7 @@ import { ShieldCheck, AlertTriangle, XCircle, Activity, Route, Brain, FileCheck 
 import { Progress } from "@/components/ui/progress";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-
+import LTSubNav from "@/components/admin/LTSubNav";
 
 const LT01BehavioralTruthOverview = () => {
   const { data: routeTruth } = useQuery({
@@ -53,6 +52,7 @@ const LT01BehavioralTruthOverview = () => {
 
   return (
     <div className="space-y-6 p-6">
+      <LTSubNav />
       <DemoModeBadge />
       <div className="flex items-center justify-between">
         <div>

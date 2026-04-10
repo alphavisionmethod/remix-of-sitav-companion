@@ -6,8 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Radar, TrendingDown, AlertTriangle, Repeat } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-
+import LTSubNav from "@/components/admin/LTSubNav";
 
 const LT07TruthRegressionRadar = () => {
   const { data: regressions } = useQuery({
@@ -32,6 +31,7 @@ const LT07TruthRegressionRadar = () => {
 
   return (
     <div className="space-y-6 p-6">
+      <LTSubNav />
       <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold">Truth Regression Radar</h1>

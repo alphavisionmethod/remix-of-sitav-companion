@@ -6,8 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { TestTube, Play, Camera, Filter } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-
+import LTSubNav from "@/components/admin/LTSubNav";
 
 const LT03E2EJourneyBoard = () => {
   const { data: journeys } = useQuery({
@@ -30,6 +29,7 @@ const LT03E2EJourneyBoard = () => {
 
   return (
     <div className="space-y-6 p-6">
+      <LTSubNav />
       <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold">E2E Journey Board</h1>

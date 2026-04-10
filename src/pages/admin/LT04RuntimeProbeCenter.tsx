@@ -6,8 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Radar, Clock, Shield, Zap } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-
+import LTSubNav from "@/components/admin/LTSubNav";
 
 const LT04RuntimeProbeCenter = () => {
   const { data: probes } = useQuery({
@@ -43,6 +42,7 @@ const LT04RuntimeProbeCenter = () => {
 
   return (
     <div className="space-y-6 p-6">
+      <LTSubNav />
       <DemoModeBadge />
       <div className="flex items-center justify-between">
         <div>

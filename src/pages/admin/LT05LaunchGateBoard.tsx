@@ -8,8 +8,7 @@ import { Progress } from "@/components/ui/progress";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { CILaunchGateWidget } from "@/components/sita/CILaunchGateWidget";
-
-
+import LTSubNav from "@/components/admin/LTSubNav";
 
 const LT05LaunchGateBoard = () => {
   const { data: gates } = useQuery({
@@ -54,6 +53,7 @@ const LT05LaunchGateBoard = () => {
 
   return (
     <div className="space-y-6 p-6">
+      <LTSubNav />
       <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold">Launch Gate Board</h1>
