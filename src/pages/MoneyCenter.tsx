@@ -24,12 +24,28 @@ import HouseholdMoneyOffice from "./money/HouseholdMoneyOffice";
 import FinancialHealthPulse from "./money/FinancialHealthPulse";
 import MoneyAdvisorBoard from "./money/MoneyAdvisorBoard";
 import ScenarioPlanner from "./money/ScenarioPlanner";
+import StressRadar from "./money/StressRadar";
+import LifeMoneyEngine from "./money/LifeMoneyEngine";
+import MoneyModes from "./money/MoneyModes";
+import CashAllocator from "./money/CashAllocator";
+import TrustGraph from "./money/TrustGraph";
+import OpportunityCost from "./money/OpportunityCost";
+import MoneyRituals from "./money/MoneyRituals";
+import PeaceScore from "./money/PeaceScore";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-type SubPage = "overview" | "bills" | "subscriptions" | "reserves" | "cash-timing" | "receivables" | "investment-office" | "tax" | "approvals" | "boardroom" | "proof" | "files" | "settings" | "net-worth" | "debt-credit" | "budgets" | "transactions" | "household" | "health" | "advisors" | "scenarios";
+type SubPage = "overview" | "bills" | "subscriptions" | "reserves" | "cash-timing" | "receivables" | "investment-office" | "tax" | "approvals" | "boardroom" | "proof" | "files" | "settings" | "net-worth" | "debt-credit" | "budgets" | "transactions" | "household" | "health" | "advisors" | "scenarios" | "stress-radar" | "life-impact" | "modes" | "allocator" | "trust-graph" | "opportunity-cost" | "rituals" | "peace-score";
 
 const subpageFromPath = (path: string): SubPage => {
+  if (path.includes("/stress-radar")) return "stress-radar";
+  if (path.includes("/life-impact")) return "life-impact";
+  if (path.includes("/modes")) return "modes";
+  if (path.includes("/allocator")) return "allocator";
+  if (path.includes("/trust-graph")) return "trust-graph";
+  if (path.includes("/opportunity-cost")) return "opportunity-cost";
+  if (path.includes("/rituals")) return "rituals";
+  if (path.includes("/peace-score")) return "peace-score";
   if (path.includes("/net-worth")) return "net-worth";
   if (path.includes("/debt-credit")) return "debt-credit";
   if (path.includes("/budgets")) return "budgets";
@@ -75,6 +91,14 @@ const pages: Record<SubPage, React.ComponentType> = {
   health: FinancialHealthPulse,
   advisors: MoneyAdvisorBoard,
   scenarios: ScenarioPlanner,
+  "stress-radar": StressRadar,
+  "life-impact": LifeMoneyEngine,
+  modes: MoneyModes,
+  allocator: CashAllocator,
+  "trust-graph": TrustGraph,
+  "opportunity-cost": OpportunityCost,
+  rituals: MoneyRituals,
+  "peace-score": PeaceScore,
 };
 
 const MoneyCenter = () => {
@@ -113,6 +137,14 @@ const MoneyCenter = () => {
             { key: "cash-timing", label: "Cash Timing" },
             { key: "receivables", label: "Receivables" },
             { key: "health", label: "Health Pulse" },
+            { key: "peace-score", label: "Peace Score" },
+            { key: "stress-radar", label: "Stress Radar" },
+            { key: "modes", label: "Modes" },
+            { key: "allocator", label: "Allocator" },
+            { key: "life-impact", label: "Life Impact" },
+            { key: "trust-graph", label: "Trust Graph" },
+            { key: "opportunity-cost", label: "Opportunity Cost" },
+            { key: "rituals", label: "Rituals" },
             { key: "household", label: "Household" },
             { key: "scenarios", label: "Scenarios" },
             { key: "investment-office", label: "Investment Office" },
