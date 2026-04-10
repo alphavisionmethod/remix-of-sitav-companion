@@ -1,13 +1,15 @@
 // ═══════════════════════════════════════════════════════════════
-// ITC04 — Wiring Graph Explorer
+// ITC04 — Wiring Graph Explorer (with edge CRUD)
 // ═══════════════════════════════════════════════════════════════
 
 import { useState } from "react";
-import { useSpecRegistry, useWiringEdges, type SpecRegistryEntry } from "@/hooks/use-implementation-truth";
+import { useSpecRegistry, useWiringEdges, useUpsertWiringEdge, useDeleteWiringEdge, type SpecRegistryEntry } from "@/hooks/use-implementation-truth";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { GitBranch, ArrowRight, CheckCircle2, XCircle, AlertTriangle } from "lucide-react";
+import { GitBranch, ArrowRight, CheckCircle2, XCircle, AlertTriangle, Plus, Trash2 } from "lucide-react";
 
 function StatusIcon({ status }: { status: string }) {
   if (status === "connected") return <CheckCircle2 className="h-3 w-3 text-green-500" />;
@@ -26,6 +28,8 @@ function NodeBadge({ type, name }: { type: string; name: string }) {
     event: "bg-amber-500/10 text-amber-600 border-amber-500/30",
     projection: "bg-pink-500/10 text-pink-600 border-pink-500/30",
     proof: "bg-green-500/10 text-green-600 border-green-500/30",
+    endpoint: "bg-teal-500/10 text-teal-600 border-teal-500/30",
+    shell: "bg-violet-500/10 text-violet-600 border-violet-500/30",
   };
   return (
     <div className={`inline-flex items-center gap-1 px-2 py-1 rounded border text-[9px] font-mono ${colors[type] || "bg-muted text-muted-foreground border-border"}`}>
@@ -57,16 +61,39 @@ function buildSyntheticChain(spec: SpecRegistryEntry) {
   return chain;
 }
 
+const EDGE_TYPES = ["spec", "route", "component", "hook", "contract", "service", "event", "projection", "proof", "endpoint", "shell"];
+const EDGE_STATUSES = ["connected", "broken", "missing"];
+
 export default function ITC04WiringGraph() {
   const { data: specs } = useSpecRegistry();
   const [selectedSpec, setSelectedSpec] = useState<string>("");
   const currentSpec = specs?.find(s => s.spec_id === selectedSpec);
   const { data: edges } = useWiringEdges(selectedSpec);
+  const upsertEdge = useUpsertWiringEdge();
+  const deleteEdge = useDeleteWiringEdge();
+
+  const [showForm, setShowForm] = useState(false);
+  const [newEdge, setNewEdge] = useState({ source_type: "route", source_name: "", target_type: "component", target_name: "", edge_status: "connected", evidence: "" });
 
   const displayEdges = edges && edges.length > 0 ? edges : currentSpec ? buildSyntheticChain(currentSpec) : [];
   const connectedCount = displayEdges.filter(e => e.edge_status === "connected").length;
   const brokenCount = displayEdges.filter(e => e.edge_status === "broken").length;
   const missingCount = displayEdges.filter(e => e.edge_status === "missing").length;
+
+  const handleAddEdge = () => {
+    if (!selectedSpec || !newEdge.source_name || !newEdge.target_name) return;
+    upsertEdge.mutate({
+      spec_id: selectedSpec,
+      source_type: newEdge.source_type,
+      source_name: newEdge.source_name,
+      target_type: newEdge.target_type,
+      target_name: newEdge.target_name,
+      edge_status: newEdge.edge_status as any,
+      evidence: newEdge.evidence || null,
+    });
+    setNewEdge({ source_type: "route", source_name: "", target_type: "component", target_name: "", edge_status: "connected", evidence: "" });
+    setShowForm(false);
+  };
 
   return (
     <div className="space-y-6">
@@ -85,13 +112,65 @@ export default function ITC04WiringGraph() {
           <SelectContent>{(specs || []).map(s => <SelectItem key={s.spec_id} value={s.spec_id}>{s.canonical_name}</SelectItem>)}</SelectContent>
         </Select>
         {selectedSpec && (
-          <div className="flex items-center gap-3 text-[10px]">
-            <span className="text-green-500">● {connectedCount} connected</span>
-            <span className="text-yellow-500">● {brokenCount} broken</span>
-            <span className="text-destructive">● {missingCount} missing</span>
-          </div>
+          <>
+            <div className="flex items-center gap-3 text-[10px]">
+              <span className="text-green-500">● {connectedCount} connected</span>
+              <span className="text-yellow-500">● {brokenCount} broken</span>
+              <span className="text-destructive">● {missingCount} missing</span>
+            </div>
+            <Button size="sm" variant="outline" onClick={() => setShowForm(!showForm)} className="ml-auto">
+              <Plus className="h-3 w-3 mr-1" />Add Edge
+            </Button>
+          </>
         )}
       </div>
+
+      {showForm && selectedSpec && (
+        <Card>
+          <CardHeader className="pb-2"><CardTitle className="text-sm">Create Wiring Edge</CardTitle></CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              <div>
+                <label className="text-[10px] text-muted-foreground mb-1 block">Source Type</label>
+                <Select value={newEdge.source_type} onValueChange={v => setNewEdge(p => ({ ...p, source_type: v }))}>
+                  <SelectTrigger className="h-8 text-sm"><SelectValue /></SelectTrigger>
+                  <SelectContent>{EDGE_TYPES.map(t => <SelectItem key={t} value={t}>{t}</SelectItem>)}</SelectContent>
+                </Select>
+              </div>
+              <div>
+                <label className="text-[10px] text-muted-foreground mb-1 block">Source Name</label>
+                <Input className="h-8 text-sm" value={newEdge.source_name} onChange={e => setNewEdge(p => ({ ...p, source_name: e.target.value }))} />
+              </div>
+              <div>
+                <label className="text-[10px] text-muted-foreground mb-1 block">Target Type</label>
+                <Select value={newEdge.target_type} onValueChange={v => setNewEdge(p => ({ ...p, target_type: v }))}>
+                  <SelectTrigger className="h-8 text-sm"><SelectValue /></SelectTrigger>
+                  <SelectContent>{EDGE_TYPES.map(t => <SelectItem key={t} value={t}>{t}</SelectItem>)}</SelectContent>
+                </Select>
+              </div>
+              <div>
+                <label className="text-[10px] text-muted-foreground mb-1 block">Target Name</label>
+                <Input className="h-8 text-sm" value={newEdge.target_name} onChange={e => setNewEdge(p => ({ ...p, target_name: e.target.value }))} />
+              </div>
+              <div>
+                <label className="text-[10px] text-muted-foreground mb-1 block">Status</label>
+                <Select value={newEdge.edge_status} onValueChange={v => setNewEdge(p => ({ ...p, edge_status: v }))}>
+                  <SelectTrigger className="h-8 text-sm"><SelectValue /></SelectTrigger>
+                  <SelectContent>{EDGE_STATUSES.map(s => <SelectItem key={s} value={s}>{s}</SelectItem>)}</SelectContent>
+                </Select>
+              </div>
+              <div>
+                <label className="text-[10px] text-muted-foreground mb-1 block">Evidence</label>
+                <Input className="h-8 text-sm" value={newEdge.evidence} onChange={e => setNewEdge(p => ({ ...p, evidence: e.target.value }))} placeholder="Optional" />
+              </div>
+            </div>
+            <div className="flex justify-end mt-3 gap-2">
+              <Button size="sm" variant="ghost" onClick={() => setShowForm(false)}>Cancel</Button>
+              <Button size="sm" onClick={handleAddEdge} disabled={!newEdge.source_name || !newEdge.target_name}>Save Edge</Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {!selectedSpec ? (
         <Card><CardContent className="py-12 text-center text-muted-foreground text-[11px]">Select a spec to explore its wiring graph</CardContent></Card>
@@ -109,6 +188,13 @@ export default function ITC04WiringGraph() {
                     <div className="flex items-center gap-1"><StatusIcon status={edge.edge_status} /><ArrowRight className="h-3 w-3 text-muted-foreground" /></div>
                     <NodeBadge type={edge.target_type} name={edge.target_name} />
                     {edge.edge_status !== "connected" && <Badge variant={edge.edge_status === "broken" ? "secondary" : "destructive"} className="text-[7px] h-4">{edge.edge_status}</Badge>}
+                    {"evidence" in edge && edge.evidence && <span className="text-[8px] text-muted-foreground italic ml-2">{edge.evidence}</span>}
+                    {"verified_at" in edge && edge.verified_at && <span className="text-[8px] text-muted-foreground ml-1">✓ {new Date(edge.verified_at).toLocaleDateString()}</span>}
+                    {"id" in edge && edge.id && !(edge as any).id?.startsWith("e") && (
+                      <Button variant="ghost" size="icon" className="h-5 w-5 ml-auto" onClick={() => deleteEdge.mutate({ id: (edge as any).id, spec_id: selectedSpec })}>
+                        <Trash2 className="h-3 w-3 text-destructive" />
+                      </Button>
+                    )}
                   </div>
                 ))}
               </div>
