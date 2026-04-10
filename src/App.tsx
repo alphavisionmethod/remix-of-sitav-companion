@@ -25,6 +25,11 @@ import { createQueryClient } from "@/lib/query-config";
 import { Suspense, lazy, type ReactNode } from "react";
 import { PlatformInit } from "@/components/sita/PlatformInit";
 import { PublicLayout } from "@/layouts/PublicLayout";
+import { AdminCommandPalette } from "@/components/admin/AdminCommandPalette";
+import { AdminKeyboardShortcuts } from "@/components/admin/AdminKeyboardShortcuts";
+
+const AdminCommandPaletteWrapper = () => <AdminCommandPalette />;
+const AdminKeyboardShortcutsWrapper = () => <AdminKeyboardShortcuts />;
 
 // ═══════════════════════════════════════════════════
 // CODE-SPLIT: Lazy-load all page components
@@ -171,6 +176,10 @@ const ConciergeRuntimeBoard = lazy(() => import("./pages/admin/ConciergeRuntimeB
 const AlertTriageBoard = lazy(() => import("./pages/admin/AlertTriageBoard"));
 const AdminPolicySimulator = lazy(() => import("./pages/admin/PolicySimulator"));
 const WorkflowReplayAudit = lazy(() => import("./pages/admin/WorkflowReplayAudit"));
+const IntelligenceDashboard = lazy(() => import("./pages/admin/IntelligenceDashboard"));
+const FounderCouncilBoard = lazy(() => import("./pages/admin/FounderCouncilBoard"));
+const CanonicalChainExplorer = lazy(() => import("./pages/admin/CanonicalChainExplorer"));
+const ReleaseRingCommandBoard = lazy(() => import("./pages/admin/ReleaseRingCommandBoard"));
 const ComputeGovernanceBoard = lazy(() => import("./pages/admin/ComputeGovernanceBoard"));
 const SystemHealthDashboard = lazy(() => import("./pages/admin/SystemHealthDashboard"));
 const BrainCoreDashboard = lazy(() => import("./pages/admin/BrainCoreDashboard"));
@@ -771,6 +780,8 @@ const App = () => (
             <Route path="*" element={
               <ProtectedRoute>
                 <ShellLayout>
+                  <AdminCommandPaletteWrapper />
+                  <AdminKeyboardShortcutsWrapper />
                   <RouteErrorBoundary>
                   <Suspense fallback={<PageLoader />}>
                   <Routes>
@@ -1477,6 +1488,10 @@ const App = () => (
                     <Route path="/admin/alert-triage" element={<AlertTriageBoard />} />
                     <Route path="/admin/policy-simulator" element={<AdminPolicySimulator />} />
                     <Route path="/admin/workflow-replay" element={<WorkflowReplayAudit />} />
+                    <Route path="/admin/intelligence" element={<IntelligenceDashboard />} />
+                    <Route path="/admin/founder-council" element={<FounderCouncilBoard />} />
+                    <Route path="/admin/chain-explorer" element={<CanonicalChainExplorer />} />
+                    <Route path="/admin/release-ring" element={<ReleaseRingCommandBoard />} />
                     <Route path="/admin/compute-governance" element={<ComputeGovernanceBoard />} />
                     <Route path="/admin/integration-concierge" element={<IntegrationConciergePage />} />
                     <Route path="/admin/revenue-autopilot" element={<RevenueAutopilotMonitor />} />

@@ -1,0 +1,94 @@
+import { useEffect, useState, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  Command, CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator
+} from "@/components/ui/command";
+import {
+  Activity, AlertTriangle, Brain, Crown, Database, Eye, GitBranch, Globe,
+  Layers, Link2, Lock, Rocket, Server, Shield, Target, TrendingUp, Zap,
+  BarChart3, Cpu, FileText, Play, RefreshCw, Settings, Search
+} from "lucide-react";
+
+const NAV_ITEMS = [
+  { label: "Mission Control", path: "/admin/mission-control", icon: Activity, group: "Navigation" },
+  { label: "Intelligence Dashboard", path: "/admin/intelligence", icon: Brain, group: "Navigation" },
+  { label: "Incidents", path: "/admin/incidents", icon: AlertTriangle, group: "Navigation" },
+  { label: "Operations Hub", path: "/admin/operations", icon: Zap, group: "Navigation" },
+  { label: "Alert Triage", path: "/admin/alert-triage", icon: AlertTriangle, group: "Navigation" },
+  { label: "Deployment Truth", path: "/admin/deployment", icon: GitBranch, group: "Navigation" },
+  { label: "Release Rings", path: "/admin/release-ring", icon: Rocket, group: "Navigation" },
+  { label: "Proof Matrix", path: "/admin/proof-matrix", icon: Layers, group: "Navigation" },
+  { label: "Chain Explorer", path: "/admin/chain-explorer", icon: Link2, group: "Navigation" },
+  { label: "Projections", path: "/admin/projections", icon: BarChart3, group: "Navigation" },
+  { label: "Durability Board", path: "/admin/durability", icon: Database, group: "Navigation" },
+  { label: "Connectors", path: "/admin/connectors", icon: Globe, group: "Navigation" },
+  { label: "Fleet Health", path: "/admin/fleet-health", icon: Cpu, group: "Navigation" },
+  { label: "Security Posture", path: "/admin/security-posture", icon: Lock, group: "Navigation" },
+  { label: "Truth Registry", path: "/admin/truth-registry", icon: Eye, group: "Navigation" },
+  { label: "Launch Readiness", path: "/admin/launch-readiness", icon: Target, group: "Navigation" },
+  { label: "Founder Council", path: "/admin/founder-council", icon: Crown, group: "Navigation" },
+  { label: "Concierge Runtime", path: "/admin/concierge-runtime", icon: Server, group: "Navigation" },
+  { label: "Policy Simulator", path: "/admin/policy-simulator", icon: Shield, group: "Navigation" },
+  { label: "Workflow Replay", path: "/admin/workflow-replay", icon: Play, group: "Navigation" },
+];
+
+const ACTION_ITEMS = [
+  { label: "Refresh Platform State", action: "refresh", icon: RefreshCw, group: "Actions" },
+  { label: "Export Evidence Bundle", action: "export", icon: FileText, group: "Actions" },
+  { label: "Run Diagnostics", action: "diagnostics", icon: Search, group: "Actions" },
+  { label: "Open Settings", action: "settings", icon: Settings, group: "Actions" },
+];
+
+export function AdminCommandPalette() {
+  const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setOpen(o => !o);
+      }
+    };
+    document.addEventListener("keydown", down);
+    return () => document.removeEventListener("keydown", down);
+  }, []);
+
+  const handleNavSelect = useCallback((path: string) => {
+    setOpen(false);
+    navigate(path);
+  }, [navigate]);
+
+  const handleActionSelect = useCallback((action: string) => {
+    setOpen(false);
+    if (action === "refresh") window.location.reload();
+    if (action === "settings") navigate("/settings");
+  }, [navigate]);
+
+  return (
+    <CommandDialog open={open} onOpenChange={setOpen}>
+      <CommandInput placeholder="Type a command or search…" />
+      <CommandList>
+        <CommandEmpty>No results found.</CommandEmpty>
+        <CommandGroup heading="Navigation">
+          {NAV_ITEMS.map(item => (
+            <CommandItem key={item.path} onSelect={() => handleNavSelect(item.path)} className="cursor-pointer">
+              <item.icon className="mr-2 h-4 w-4 text-muted-foreground" />
+              <span>{item.label}</span>
+              <span className="ml-auto text-[9px] text-muted-foreground font-mono">{item.path}</span>
+            </CommandItem>
+          ))}
+        </CommandGroup>
+        <CommandSeparator />
+        <CommandGroup heading="Actions">
+          {ACTION_ITEMS.map(item => (
+            <CommandItem key={item.action} onSelect={() => handleActionSelect(item.action)} className="cursor-pointer">
+              <item.icon className="mr-2 h-4 w-4 text-muted-foreground" />
+              <span>{item.label}</span>
+            </CommandItem>
+          ))}
+        </CommandGroup>
+      </CommandList>
+    </CommandDialog>
+  );
+}
