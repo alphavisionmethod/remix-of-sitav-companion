@@ -4,12 +4,12 @@ import { motion } from "framer-motion";
 import {
   TrendingUp, TrendingDown, DollarSign, PieChart, Shield, Eye, Calendar,
   ArrowRight, BarChart3, Briefcase, AlertTriangle, Clock, Brain, ChevronRight,
-  RefreshCw, Zap, Info
+  RefreshCw, Zap, Info, Bell
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { SparklineChart } from "@/components/sita/SparklineChart";
 import { INSTRUMENTS, INVESTMENT_ADVISORS, PORTFOLIO, SAMPLE_ORDERS, SAMPLE_THESES, WATCHLISTS } from "@/hooks/useInvestmentOfficeData";
-import { SPARKLINE_DATA, WHAT_CHANGED } from "@/lib/investment-office/mock-data";
+import { SPARKLINE_DATA, WHAT_CHANGED, ADVISOR_EVENT_ALERTS } from "@/lib/investment-office/mock-data";
 import { useInvestmentDecisions } from "@/hooks/use-investment-office";
 import { useDataMode } from "@/contexts/DataModeContext";
 
@@ -24,7 +24,6 @@ function TickerRibbon() {
     price: h.instrument.price,
     pct: h.instrument.changePct24h,
   }));
-  // Duplicate for seamless scroll
   const doubled = [...tickerItems, ...tickerItems];
 
   return (
@@ -35,7 +34,7 @@ function TickerRibbon() {
             <span className="text-xs">{t.icon}</span>
             <span className="text-[10px] font-semibold text-foreground">{t.symbol}</span>
             <span className="text-[10px] text-foreground">${t.price.toLocaleString()}</span>
-            <span className={`text-[9px] font-bold ${t.pct >= 0 ? "text-trust-safe" : "text-destructive"}`}>
+            <span className={`text-[9px] font-bold ${t.pct >= 0 ? "text-[hsl(var(--trust-safe))]" : "text-destructive"}`}>
               {t.pct >= 0 ? "+" : ""}{t.pct.toFixed(2)}%
             </span>
           </div>
@@ -113,8 +112,8 @@ export default function InvestmentBoardroom() {
           { label: "Total Capital", value: fmt(p.totalValue + p.totalCash), icon: DollarSign, color: "text-primary" },
           { label: "Invested", value: fmt(p.totalValue), icon: BarChart3, color: "text-foreground" },
           { label: "Cash", value: fmt(p.totalCash), icon: DollarSign, color: "text-muted-foreground" },
-          { label: "Total P&L", value: pctFmt(p.totalPnlPct), icon: p.totalPnl >= 0 ? TrendingUp : TrendingDown, color: p.totalPnl >= 0 ? "text-trust-safe" : "text-destructive" },
-          { label: "Risk Score", value: `${p.riskScore}/100`, icon: Shield, color: p.riskScore > 70 ? "text-[hsl(var(--trust-warn))]" : "text-trust-safe" },
+          { label: "Total P&L", value: pctFmt(p.totalPnlPct), icon: p.totalPnl >= 0 ? TrendingUp : TrendingDown, color: p.totalPnl >= 0 ? "text-[hsl(var(--trust-safe))]" : "text-destructive" },
+          { label: "Risk Score", value: `${p.riskScore}/100`, icon: Shield, color: p.riskScore > 70 ? "text-[hsl(var(--trust-warn))]" : "text-[hsl(var(--trust-safe))]" },
         ].map((s, i) => (
           <motion.div key={s.label} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}
             className="rounded-2xl border border-border bg-card p-4">
@@ -126,12 +125,10 @@ export default function InvestmentBoardroom() {
         ))}
       </div>
 
-      {/* What Changed + Allocation + Advisor Summary */}
+      {/* What Changed + Top Movers + Advisor Summary */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {/* What Changed */}
         <WhatChangedCard />
 
-        {/* Top Movers with Sparklines */}
         <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
           <h3 className="text-sm font-semibold text-foreground flex items-center gap-2"><TrendingUp className="h-4 w-4 text-primary" /> Top Movers</h3>
           {topMovers.map(inst => (
@@ -147,7 +144,7 @@ export default function InvestmentBoardroom() {
               )}
               <div className="text-right">
                 <p className="text-xs font-medium text-foreground">${inst.price.toLocaleString()}</p>
-                <p className={`text-[10px] font-medium ${inst.changePct24h >= 0 ? "text-trust-safe" : "text-destructive"}`}>
+                <p className={`text-[10px] font-medium ${inst.changePct24h >= 0 ? "text-[hsl(var(--trust-safe))]" : "text-destructive"}`}>
                   {pctFmt(inst.changePct24h)}
                 </p>
               </div>
@@ -155,7 +152,6 @@ export default function InvestmentBoardroom() {
           ))}
         </div>
 
-        {/* Advisor Council Summary */}
         <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
           <h3 className="text-sm font-semibold text-foreground flex items-center gap-2"><Brain className="h-4 w-4 text-primary" /> Advisor Council</h3>
           {INVESTMENT_ADVISORS.slice(0, 5).map(adv => (
@@ -167,9 +163,9 @@ export default function InvestmentBoardroom() {
                 <p className="text-[11px] text-foreground leading-tight mt-0.5 line-clamp-2">{adv.currentInsight}</p>
               </div>
               <div className={`shrink-0 text-[9px] font-medium rounded-full px-2 py-0.5 ${
-                adv.confidenceLevel === "high" ? "bg-[hsl(var(--trust-safe))]/10 text-trust-safe animate-pulse-safe" :
-                adv.confidenceLevel === "moderate" ? "bg-[hsl(var(--trust-warn))]/10 text-[hsl(var(--trust-warn))] animate-pulse-warn" :
-                "bg-destructive/10 text-destructive animate-pulse-danger"
+                adv.confidenceLevel === "high" ? "bg-[hsl(var(--trust-safe))]/10 text-[hsl(var(--trust-safe))]" :
+                adv.confidenceLevel === "moderate" ? "bg-[hsl(var(--trust-warn))]/10 text-[hsl(var(--trust-warn))]" :
+                "bg-destructive/10 text-destructive"
               }`}>{adv.confidence}%</div>
             </button>
           ))}
@@ -179,9 +175,40 @@ export default function InvestmentBoardroom() {
         </div>
       </div>
 
+      {/* Upcoming Event Alerts (Advisor-Annotated) */}
+      <div className="rounded-2xl border border-primary/15 bg-card p-6 space-y-4">
+        <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
+          <Bell className="h-4 w-4 text-primary" /> Upcoming Event Alerts
+        </h3>
+        <p className="text-xs text-muted-foreground">Catalyst events with advisor intelligence attached.</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          {ADVISOR_EVENT_ALERTS.slice(0, 4).map(alert => (
+            <div key={alert.id} className={`rounded-xl border p-4 space-y-2.5 ${
+              alert.urgency === "high" ? "border-destructive/20 bg-destructive/5" : "border-border bg-secondary/20"
+            }`}>
+              <div className="flex items-start gap-2">
+                <span className="text-lg">{alert.advisorIcon}</span>
+                <div className="flex-1">
+                  <div className="flex items-center gap-2">
+                    <p className="text-xs font-semibold text-foreground">{alert.title}</p>
+                    <span className={`rounded-full px-2 py-0.5 text-[8px] font-bold uppercase tracking-wider ${
+                      alert.urgency === "high" ? "bg-destructive/10 text-destructive" : "bg-[hsl(var(--trust-warn))]/10 text-[hsl(var(--trust-warn))]"
+                    }`}>{alert.urgency}</span>
+                  </div>
+                  <p className="text-[10px] text-muted-foreground">{alert.advisorName} · {alert.advisorIcon}</p>
+                </div>
+              </div>
+              <p className="text-[11px] text-foreground leading-relaxed">{alert.advisorNote}</p>
+              <div className="rounded-lg bg-primary/5 border border-primary/10 px-3 py-1.5">
+                <p className="text-[10px] text-primary flex items-center gap-1"><ArrowRight className="h-3 w-3" /> {alert.actionSuggestion}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* Bottom Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        {/* Allocation */}
         <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
           <h3 className="text-sm font-semibold text-foreground flex items-center gap-2"><PieChart className="h-4 w-4 text-primary" /> Allocation</h3>
           {Object.entries(p.allocationByClass).filter(([, v]) => v > 0).sort((a, b) => b[1] - a[1]).map(([cls, pct]) => (
@@ -198,7 +225,6 @@ export default function InvestmentBoardroom() {
           </button>
         </div>
 
-        {/* Upcoming Catalysts */}
         <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
           <h3 className="text-sm font-semibold text-foreground flex items-center gap-2"><Calendar className="h-4 w-4 text-primary" /> Upcoming Catalysts</h3>
           {INSTRUMENTS.flatMap(i => i.catalysts.map(c => ({ ...c, instrument: i }))).sort((a, b) => a.date.localeCompare(b.date)).slice(0, 5).map(cat => (
@@ -209,7 +235,7 @@ export default function InvestmentBoardroom() {
                 <p className="text-[10px] text-muted-foreground">{cat.instrument.symbol} · {cat.date}</p>
               </div>
               <span className={`text-[9px] font-medium rounded-full px-2 py-0.5 ${
-                cat.impact === "positive" ? "bg-[hsl(var(--trust-safe))]/10 text-trust-safe" :
+                cat.impact === "positive" ? "bg-[hsl(var(--trust-safe))]/10 text-[hsl(var(--trust-safe))]" :
                 cat.impact === "negative" ? "bg-destructive/10 text-destructive" :
                 "bg-secondary text-muted-foreground"
               }`}>{cat.impact}</span>
@@ -217,7 +243,6 @@ export default function InvestmentBoardroom() {
           ))}
         </div>
 
-        {/* Pending Actions */}
         <div className="rounded-2xl border border-border bg-card p-5 space-y-3">
           <h3 className="text-sm font-semibold text-foreground flex items-center gap-2"><Clock className="h-4 w-4 text-primary" /> Pending Actions</h3>
           {SAMPLE_ORDERS.filter(o => o.status === "draft").map(ord => (
