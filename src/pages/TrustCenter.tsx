@@ -13,6 +13,7 @@ import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { TrustDebtEngine } from "@/lib/engines/trust-debt-engine";
 
 
 const fadeUp = { hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.25 } } };
@@ -24,6 +25,11 @@ const TrustCenter = () => {
   const [tab, setTab] = useState("overview");
   const [automationsPaused, setAutomationsPaused] = useState(false);
   const [trustMode, setTrustMode] = useState<"suggest" | "approve-execute" | "autonomous">("approve-execute");
+
+  const trustDebtEngine = useMemo(() => new TrustDebtEngine(), []);
+  const debtScore = useMemo(() => trustDebtEngine.computeDebtScore(), [trustDebtEngine]);
+  const debtCounts = useMemo(() => trustDebtEngine.getUnresolvedCounts(), [trustDebtEngine]);
+  const boardroomSection = useMemo(() => trustDebtEngine.getBoardroomSection(), [trustDebtEngine]);
 
   const { data: devices = [] } = useQuery({
     queryKey: ["trust_devices", user?.id],
@@ -89,6 +95,7 @@ const TrustCenter = () => {
               <div><div className="text-2xl font-bold text-emerald-400">{recentApprovals.length || 3}</div><div className="text-[10px] text-muted-foreground">Recent Approvals</div></div>
               <div><div className="text-2xl font-bold">{recentReceipts.length || 7}</div><div className="text-[10px] text-muted-foreground">Proof Records</div></div>
               <div><div className="text-2xl font-bold">{displayDevices.length}</div><div className="text-[10px] text-muted-foreground">Trusted Devices</div></div>
+              <div><div className={cn("text-2xl font-bold", debtScore === 0 ? "text-emerald-400" : debtScore < 0.3 ? "text-amber-400" : "text-destructive")}>{Math.round((1 - debtScore) * 100)}%</div><div className="text-[10px] text-muted-foreground">Trust Health</div></div>
             </div>
           </div>
         </SitaCard>

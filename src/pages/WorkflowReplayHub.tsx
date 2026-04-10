@@ -29,6 +29,7 @@ export default function WorkflowReplayHub() {
   const [filter, setFilter] = useState<string>("all");
   const recovery = useRecoverySummary();
   const { engines } = useOSRuntime();
+  const replayEngineStats = useMemo(() => engines?.replay?.getStats() ?? { totalPackets: 0, totalRollbacks: 0, completedRollbacks: 0, failedRollbacks: 0, diagnosticBundles: 0 }, [engines]);
 
   const { data: replayableData = [] } = useReplayableWorkflows();
   // Engine-backed replayable workflows
@@ -54,6 +55,19 @@ export default function WorkflowReplayHub() {
           ].map(m => (
             <div key={m.label} className={cn("rounded-xl border px-3 py-2.5 text-center", m.ok ? "border-border bg-card/50" : "border-accent/20 bg-accent/5")}>
               <p className={cn("font-display text-lg font-bold", m.ok ? "text-foreground" : "text-accent")}>{m.value}</p>
+              <p className="text-[9px] text-muted-foreground">{m.label}</p>
+            </div>
+          ))}
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 w-full mt-3">
+          {[
+            { label: "Replay Packets", value: replayEngineStats.totalPackets },
+            { label: "Rollbacks", value: replayEngineStats.totalRollbacks },
+            { label: "Completed", value: replayEngineStats.completedRollbacks },
+            { label: "Diagnostics", value: replayEngineStats.diagnosticBundles },
+          ].map(m => (
+            <div key={m.label} className="rounded-xl border border-border/50 px-3 py-2 text-center bg-card/30">
+              <p className="font-display text-sm font-bold text-muted-foreground">{m.value}</p>
               <p className="text-[9px] text-muted-foreground">{m.label}</p>
             </div>
           ))}

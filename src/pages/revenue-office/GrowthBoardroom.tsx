@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { motion } from "framer-motion";
-import { TrendingUp, AlertTriangle, Target, Users, DollarSign, ArrowUpRight, ArrowDownRight, Activity, Zap, CalendarCheck, Star, RefreshCw, ArrowRight, Swords } from "lucide-react";
+import { TrendingUp, AlertTriangle, Target, Users, DollarSign, ArrowUpRight, ArrowDownRight, Activity, Zap, CalendarCheck, Star, RefreshCw, ArrowRight, Swords, Droplets } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -14,6 +14,8 @@ import { useNavigate } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DEMO_REV_ADVISOR_SIGNALS as DEMO_ADVISOR_SIGNALS, DEMO_REV_LEAKS as DEMO_LEAKS, DEMO_REV_PIPELINE_STAGES as DEMO_PIPELINE_STAGES, DEMO_WHAT_CHANGED } from "@/lib/demo-data/revenue-office";
 import { competitiveIntelligenceService, type CompetitivePosition } from "@/lib/services/competitive-intelligence";
+import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
+import { useRevenueWhatChanged } from "@/hooks/use-revenue-memory";
 
 const CAMPAIGN_HEALTH = [
   { name: "Summer Accelerator", status: "active", performance: 78, leads: 42, spend: "$2,400" },
@@ -32,6 +34,9 @@ export default function GrowthBoardroom() {
   const navigate = useNavigate();
 
   const competitivePosition = useMemo(() => competitiveIntelligenceService.assessPosition(), []);
+  const { engines } = useOSRuntime();
+  const revenueStats = useMemo(() => engines?.revenue?.getStats() ?? null, [engines]);
+  const { data: whatChangedData } = useRevenueWhatChanged();
 
   const PIPELINE_STAGES = isDemoMode ? DEMO_PIPELINE_STAGES : DEMO_PIPELINE_STAGES;
   const LEAKS = isDemoMode ? DEMO_LEAKS : DEMO_LEAKS;
@@ -144,6 +149,28 @@ export default function GrowthBoardroom() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Revenue Leakage Engine Stats */}
+      {revenueStats && (
+        <Card className="bg-card/50 border-border/50">
+          <CardContent className="p-4">
+            <div className="flex items-center gap-2 mb-3"><Droplets className="w-4 h-4 text-primary" /><span className="text-xs font-medium text-muted-foreground">Revenue Leakage Engine</span></div>
+            <div className="grid grid-cols-4 gap-3 text-center">
+              {[
+                { label: "Detected", value: revenueStats.detected, color: "text-amber-400" },
+                { label: "In Recovery", value: revenueStats.inRecovery, color: "text-primary" },
+                { label: "Recovered", value: revenueStats.recovered, color: "text-[hsl(var(--trust-safe))]" },
+                { label: "Potential Value", value: `$${revenueStats.totalPotentialValue.toLocaleString()}`, color: "text-foreground" },
+              ].map(s => (
+                <div key={s.label}>
+                  <p className={`text-lg font-bold ${s.color}`}>{s.value}</p>
+                  <p className="text-[9px] text-muted-foreground">{s.label}</p>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Main Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
