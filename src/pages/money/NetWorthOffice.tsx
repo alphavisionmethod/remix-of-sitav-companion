@@ -12,9 +12,9 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useFinancialAccounts, useMoneyKPIs } from "@/hooks/use-domain-data";
 import { useSavingsGoals } from "@/hooks/use-money-data";
-import { DollarSign, TrendingUp, TrendingDown, Building, PiggyBank, CreditCard, BarChart3, ArrowUpRight, ArrowDownRight, Wallet } from "lucide-react";
+import { DollarSign, TrendingUp, TrendingDown, Building, PiggyBank, CreditCard, BarChart3, ArrowUpRight, ArrowDownRight, Wallet, Clock, Rewind } from "lucide-react";
 import { motion } from "framer-motion";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 const NetWorthOffice = () => {
   const { isDemoMode } = useDataMode();
