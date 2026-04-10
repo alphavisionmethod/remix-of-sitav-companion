@@ -1,0 +1,82 @@
+import { useSitaOS } from "@/contexts/SitaOSContext";
+import { AdminPageHeader } from "@/components/sita/admin/AdminPageHeader";
+import { SitaCard, SitaCardHeader, SitaCardTitle, SitaMetric, SitaSectionHeader } from "@/components/sita/SitaCard";
+import { Share2, Layers, AlertTriangle, Users } from "lucide-react";
+import { motion } from "framer-motion";
+import { useState } from "react";
+
+export default function CAI01PersonalGraphExplorer() {
+  const { personalGraph } = useSitaOS();
+  const [selectedNode, setSelectedNode] = useState<string | null>(null);
+
+  const stats = personalGraph.getStats();
+  const ignoredItems = personalGraph.getIgnoredItems?.() ?? [];
+  const crossDomain = selectedNode ? personalGraph.resolveCrossDomain(selectedNode) : null;
+
+  return (
+    <div className="space-y-6 p-6">
+      <AdminPageHeader icon={Share2} title="Personal Operating Graph" subtitle="Canonical graph of your operating world — identity, relationships, tasks, devices, and opportunities" accent="primary" />
+
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <SitaCard><SitaMetric label="Total Nodes" value={stats.totalNodes} /></SitaCard>
+        <SitaCard><SitaMetric label="Total Edges" value={stats.totalEdges} /></SitaCard>
+        <SitaCard><SitaMetric label="Domains" value={stats.domains?.length ?? 0} /></SitaCard>
+        <SitaCard><SitaMetric label="Ignored Items" value={ignoredItems.length} trend={ignoredItems.length > 5 ? "down" : "flat"} /></SitaCard>
+      </div>
+
+      <SitaSectionHeader title="Nodes by Domain" subtitle="Distribution across the personal operating graph" />
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {(stats.domains ?? ["identity", "household", "business", "finance", "relationships", "devices"]).map((domain: string) => (
+          <SitaCard key={domain} hover onClick={() => setSelectedNode(domain)}>
+            <SitaCardHeader>
+              <SitaCardTitle>{domain}</SitaCardTitle>
+              <Layers className="h-4 w-4 text-muted-foreground" />
+            </SitaCardHeader>
+            <p className="text-xs text-muted-foreground">
+              {stats.nodesByDomain?.[domain] ?? 0} nodes · {stats.edgesByDomain?.[domain] ?? 0} edges
+            </p>
+          </SitaCard>
+        ))}
+      </div>
+
+      {crossDomain && (
+        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
+          <SitaSectionHeader title="Cross-Domain Resolution" subtitle={`Resolving: ${selectedNode}`} />
+          <SitaCard>
+            <p className="text-sm text-foreground font-medium">{crossDomain.narrative}</p>
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {crossDomain.touchedDomains.map((d: string) => (
+                <span key={d} className="rounded-md bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">{d}</span>
+              ))}
+            </div>
+          </SitaCard>
+        </motion.div>
+      )}
+
+      {ignoredItems.length > 0 && (
+        <>
+          <SitaSectionHeader title="Ignored Items" subtitle="Items deprioritized by the attention system" />
+          <div className="grid gap-2 sm:grid-cols-2">
+            {ignoredItems.slice(0, 8).map((item: any, i: number) => (
+              <SitaCard key={i} lane="unresolved">
+                <div className="flex items-center gap-2">
+                  <AlertTriangle className="h-3.5 w-3.5 text-urgency-medium" />
+                  <span className="text-sm text-foreground">{item.label ?? item.id ?? `Item ${i + 1}`}</span>
+                </div>
+                <p className="mt-1 text-xs text-muted-foreground">{item.reason ?? "Deprioritized"}</p>
+              </SitaCard>
+            ))}
+          </div>
+        </>
+      )}
+
+      <SitaSectionHeader title="Meeting Context Lookup" subtitle="Enter a contact ID to preview meeting prep" />
+      <SitaCard>
+        <div className="flex items-center gap-3">
+          <Users className="h-5 w-5 text-muted-foreground" />
+          <p className="text-sm text-muted-foreground">Select a relationship node above to view meeting context and cross-domain connections.</p>
+        </div>
+      </SitaCard>
+    </div>
+  );
+}
