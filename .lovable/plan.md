@@ -1,95 +1,93 @@
 
 
-# Revenue Office — Automation Operating System Enhancement Plan
+# Enhancement Plan — Connect & Complete Everything from Last 20 Prompts
 
-## Current State
+## Audit Summary
 
-The Revenue Office has **39 pages, ~7,500 LOC**, with a full 7-page Automation suite already implemented:
+After thorough review of all files, here is what exists and what needs fixing/enhancing:
 
-| Page | LOC | Coverage |
-|------|:---:|----------|
-| AutomationOffice | 307 | Boardroom, 4-level trust, stats, active/at-risk/advisors/leaks/stages tabs |
-| AutomationBuilder | 244 | Visual node editor, 13-node sample flow, trust selector, node palette, advisor preview |
-| AutomationSimLab | 232 | Full simulation with audience, steps, risks, edge cases, policy checks |
-| AutomationPolicy | 216 | Trust levels, escalation rules, compliance, human-vs-AI, audit log |
-| AutomationHealth | 145 | Health metrics, advisor insights, per-automation sparklines, fatigue alerts |
-| AutomationReceipts | 125 | Audit trail, rollback, impact summary, category filtering |
-| AutomationTemplates | 162 | Gallery, combos, recently used, advisor notes |
+### Already Fully Implemented & Working
+- **Automation Office** (652 LOC): 10 tabs — Boardroom, Surface Map, Active, At Risk, Advisor Recs, Leak Repair, Quality Scoring, Shadow Board, Promises, OS Map
+- **Automation Builder** (298 LOC): Visual node editor, 65+ node types, 4 trust levels, advisor-generated templates
+- **Automation Templates** — Ready-made gallery
+- **Automation SimLab** — Pre-activation simulation
+- **Automation Health** — Domain-level monitoring
+- **Automation Receipts** (198 LOC): Full audit trail + "Why This Was Sent" transparency
+- **Automation Policy** (445 LOC): 9 tabs — Trust Levels, Constitution, No-Guess Mode, Pause/Rollback, Human Handoff, Escalation, Compliance, Human vs AI, Audit Log
+- **Quote Studio** — Full quote generation workspace
+- **Call Desk** — Call queue, prep, post-call automation
+- **Business Formation Ceremony** — 20 screens across 7 chapters with branching, custom journey editor, revenue estimator
+- **Growth Advisor Board** (422 LOC): Interactive queries (disagree/missing/break) with 27 evidence-backed responses
+- **All routes wired** in App.tsx (9 automation routes + quotes + calls + onboarding)
+- **Demo data layer** fully populated in `revenue-office.ts`
 
-Supporting pages also exist: **CallDesk** (152 LOC — call queue, prep briefs, talking points, post-call actions, analytics), **QuoteStudio** (155 LOC — pipeline, upsell suggestions, pricing insights, capabilities), **RetentionOffice** (192 LOC — churn prediction, NPS, win-back, health segments), **ClientOnboarding** (136 LOC — journey templates, active clients, step tracking).
+### Issues Found — Need Fixing
 
-## Gap Analysis Against Spec
+**1. Redundant DemoModeBadge in 13 onboarding screens**
+`DemoModeBadge` is rendered inside individual screens (IdentityScreen, DeliveryScreen, TeamScreen, AutomationScreen, ConversionScreen, FileImportScreen, IntakeHubScreen, AdvisorActivationScreen, BranchingQuestionsPanel, etc.) even though `FormationShell.tsx` already renders it at the top level (line 106). This causes 2-5 redundant badge renders per screen.
 
-After comparing the spec's "Automation Operating System" requirements against every page, these are the real gaps:
+**Fix:** Remove `<DemoModeBadge />` and unused `useDataMode`/`DemoModeBadge` imports from all 13 onboarding screen files.
 
-### 1. AutomationOffice — Missing "Automation Surface Coverage Map"
-The spec demands a full map of all 10 automatable domains (lead recovery, calling, quotes, email/SMS, booking, onboarding, churn, reputation, offers/upsells, leak repair) with coverage percentages. The "By Stage" tab partially covers this, but does not show all 10 domains with their specific sub-capabilities and whether each is at L1/L2/L3/L4 or missing entirely.
+**2. No sidebar sub-navigation for Revenue Office**
+The sidebar only has a single "Revenue Office" link. There's no expandable sub-menu for Automation Office, Quote Studio, Call Desk, etc. Users cannot discover these workspaces from the sidebar.
 
-### 2. AutomationBuilder — Missing "Generate from Advisor" Flow
-The builder has a node palette and sample flow, but lacks the ability to auto-generate a workflow from an advisor recommendation (e.g., clicking "Generate lead recovery workflow" in the Office should show a pre-built flow in the Builder). Need a "Generate from Template/Advisor" entry point.
+**Fix:** Add a collapsible Revenue Office sub-menu in `AppSidebar.tsx` with key workspace links (Boardroom, Automation, Quotes, Calls, Pipeline, Advisors, Journey Twin).
 
-### 3. CallDesk — Missing Post-Call Automation Wiring
-Call outcomes don't visually wire to the automation system (e.g., "After call outcome = interested → trigger quote generation automation"). The post-call actions exist as text but aren't shown as automation nodes.
+**3. Automation Office header buttons are non-functional**
+The "Policies" and "New Automation" buttons (lines 81-86 in AutomationOffice.tsx) don't navigate anywhere.
 
-### 4. QuoteStudio — Missing Auto-Generation from Context
-The spec demands quote generation from "notes, forms, call transcripts, or booking context." The Capabilities tab describes this, but the actual pipeline tab has no "Generate from CRM context" button per quote.
+**Fix:** Wire them to `/revenue-office/automation/policy` and `/revenue-office/automation/builder` respectively using `useNavigate`.
 
-### 5. RetentionOffice — Missing Automation Integration
-Churn predictions show an "Execute" button, but there's no visible link to the Automation Office (e.g., "Launch churn prevention automation for this client"). Win-back campaigns don't link to automation templates.
+**4. Cross-module navigation missing throughout**
+AutomationReceipts, AutomationHealth, AutomationSimLab, AutomationTemplates don't link back to each other or to the main Automation Office. No breadcrumb or tab-level navigation between the 7 automation sub-pages.
 
-### 6. ClientOnboarding — Missing Automation Depth
-Journey steps show completion rates, but don't show which steps are automated (L1-L4), which have failed automations, or link to the Automation Health monitor.
+**Fix:** Add a shared Automation sub-nav bar component used across all 7 automation pages, linking them together.
 
-### 7. Cross-Page Wiring — Missing Automation Trigger Points
-Several pages (BookingCenter, ReputationEngine, CampaignOrchestrator, OffersWorkspace) don't have visible "automate this" entry points that link into the Automation Office.
+**5. RevealScreen "Enter Your Revenue Office" navigates to `/revenue-office/boardroom` but doesn't pass onboarding state**
+The onboarding data (business type, journey template, bottlenecks, first wins) is lost after navigation. No persistence to localStorage or Supabase.
 
-### 8. No Centralized Automation Surface Map Component
-There's no single component that shows all 10 automatable domains with their current automation level, coverage, and gaps — a "Commercial Automation Engine" overview.
+**Fix:** Save onboarding state to localStorage on reveal, and load it in the Boardroom/Advisor pages for personalization.
+
+**6. RevenueGate (landing page) doesn't surface Automation Office**
+The Revenue Office gate page likely doesn't include navigation cards for the Automation Office, Quote Studio, or Call Desk workspaces added in recent prompts.
+
+**Fix:** Add workspace cards for Automation Office, Quote Studio, and Call Desk to RevenueGate.
 
 ## Implementation Plan
 
-### Phase 1: Automation Surface Coverage Map (AutomationOffice.tsx)
-Replace the "By Stage" tab with a comprehensive "Automation Surface" tab showing all 10 domains from the spec (Lead Recovery, Calling, Quotes, Email/SMS, Booking, Onboarding, Churn/Retention, Reputation, Offers/Upsells, Leak Repair). Each domain shows sub-capabilities, current automation level (L1-L4 or None), coverage percentage, estimated value, and a "Build" button linking to AutomationBuilder.
+### Phase 1: Clean DemoModeBadge from 13 screens (~13 files)
+Remove redundant `<DemoModeBadge />` renders and unused imports from:
+- IdentityScreen, DeliveryScreen, TeamScreen, AutomationScreen, ConversionScreen
+- FileImportScreen, IntakeHubScreen, AdvisorActivationScreen, BranchingQuestionsPanel
+- AcquisitionScreen, RevenueModelScreen, ArtifactScreen, URLIntakeScreen, ConnectionsScreen, FrictionScreen
 
-### Phase 2: Deepen AutomationBuilder with Context-Aware Generation
-Add a "Generate" dropdown that pre-populates flows from:
-- Advisor recommendations (pre-built lead recovery, no-show rescue, etc.)
-- CRM context (stale leads → recovery flow)
-- Call outcomes (call completed → quote/follow-up automation)
-- Booking events (no-show → rescue flow)
+### Phase 2: Automation sub-nav component (~1 new file, 7 file edits)
+Create `src/pages/revenue-office/AutomationSubNav.tsx` — a horizontal nav bar linking all 7 automation pages. Add it to AutomationOffice, AutomationBuilder, AutomationTemplates, AutomationSimLab, AutomationHealth, AutomationReceipts, AutomationPolicy.
 
-Add a "Post-Activation Monitoring" section showing what happens after activation (links to Health monitor, receipt generation, rollback path).
+### Phase 3: Wire Automation Office buttons (~1 file)
+Add `useNavigate` to AutomationOffice.tsx and connect the "Policies" and "New Automation" buttons.
 
-### Phase 3: Wire Cross-Page Automation Entry Points
-Add "Automate" buttons/links to:
-- **CallDesk**: Post-call outcome → "Create automation from this outcome pattern"
-- **QuoteStudio**: "Generate quote from CRM context" button on each pipeline item
-- **RetentionOffice**: Churn prediction "Execute" → links to specific automation template
-- **ClientOnboarding**: Show automation level (L1-L4) on each step, link failing steps to Health monitor
-- **BookingCenter**: "Automate no-show recovery" and "Automate post-appointment follow-up"
-- **ReputationEngine**: "Automate review request" for happy clients
+### Phase 4: Sidebar Revenue Office sub-menu (~1 file)
+Add collapsible sub-menu in AppSidebar.tsx under "Revenue Office" with links: Boardroom, Automation, Pipeline, Advisors, Quotes, Calls, Journey Twin, Reputation, Retention.
 
-### Phase 4: Enhance AutomationHealth with Domain-Level Health
-Add a "By Domain" view showing health per automation domain (lead recovery health, booking automation health, etc.) rather than just per-individual-automation.
+### Phase 5: Persist onboarding state (~2 files)
+Save `OnboardingState` to `localStorage` in RevealScreen on "Enter" click. Load in GrowthBoardroom to show personalized summary.
 
-### Phase 5: Add Automation Interconnection Diagram to AutomationOffice
-Add a visual "Automation OS Map" showing how automations connect across CRM → Booking → Quotes → Campaigns → Retention → Reputation with data flow indicators.
+### Phase 6: RevenueGate workspace cards (~1 file)
+Add Automation Office, Quote Studio, Call Desk cards to the Revenue Office landing page.
 
 ## Files Changed
 
-| File | Change Type | Estimated LOC |
-|------|------------|:---:|
-| AutomationOffice.tsx | Major enhancement — add Surface Coverage tab, Interconnection map | 307→450 |
-| AutomationBuilder.tsx | Add context-aware generation dropdown | 244→300 |
-| CallDesk.tsx | Add post-call automation wiring buttons | 152→180 |
-| QuoteStudio.tsx | Add "Generate from CRM context" button | 155→180 |
-| RetentionOffice.tsx | Wire churn execute to automation templates | 192→210 |
-| ClientOnboarding.tsx | Add automation level indicators per step | 136→160 |
-| BookingCenter.tsx | Add automation entry points | 239→260 |
-| ReputationEngine.tsx | Add review automation trigger | 281→295 |
-| AutomationHealth.tsx | Add domain-level health view | 145→190 |
-| revenue-office.ts (demo data) | Add surface coverage data, domain health data | +80 LOC |
+| File | Change |
+|------|--------|
+| 13 onboarding screens | Remove redundant DemoModeBadge |
+| `AutomationSubNav.tsx` (NEW) | Shared automation sub-navigation |
+| 7 automation pages | Add AutomationSubNav import |
+| `AutomationOffice.tsx` | Wire header buttons with navigate |
+| `AppSidebar.tsx` | Add Revenue Office expandable sub-menu |
+| `RevealScreen.tsx` | Persist state to localStorage |
+| `GrowthBoardroom.tsx` | Load onboarding state for personalization |
+| `RevenueGate.tsx` | Add Automation/Quote/Call workspace cards |
 
-### Build Verification
-Run `tsc --noEmit` after all changes. Zero errors required.
+Total: ~25 files touched, ~120 net LOC added, ~50 LOC removed.
 
