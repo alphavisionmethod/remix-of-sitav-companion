@@ -10,6 +10,7 @@ export type TestPriority = "P0" | "P1" | "P2";
 export type VerificationStatus = "untested" | "pass" | "fail" | "blocked" | "skipped";
 export type LaunchHonestyClass = "real" | "demo_governed" | "simulated" | "structural" | "planned" | "unavailable";
 
+export interface SurfaceEntry {
   routeKey: string;
   routePath: string;
   shell: SurfaceShell;
