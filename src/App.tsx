@@ -368,12 +368,19 @@ const PLT06FeatureCompliance = lazy(() => import("./pages/admin/platform-law/PLT
 const PLT08LaunchEnforcement = lazy(() => import("./pages/admin/platform-law/PLT08LaunchEnforcement"));
 const PLT10DriftRadar = lazy(() => import("./pages/admin/platform-law/PLT10DriftRadar"));
 
-// RA — Reality Audit & Classification System (upgraded versions)
+// RA — Reality Conversion Program (12 screens)
+const RAOverview = lazy(() => import("./pages/admin/reality-audit/RCP01Overview"));
 const RAClassificationMatrix = lazy(() => import("./pages/admin/reality-audit/RealityClassificationMatrix"));
+const RAFeatureDetail = lazy(() => import("./pages/admin/reality-audit/RCP03FeatureDetail"));
 const RAMockReplacement = lazy(() => import("./pages/admin/reality-audit/MockReplacementProgram"));
+const RAMockSourceInventory = lazy(() => import("./pages/admin/reality-audit/RCP05MockSourceInventory"));
 const RACoreServicePersistence = lazy(() => import("./pages/admin/reality-audit/CoreServicePersistence"));
-const RARuntimeTruthGate = lazy(() => import("./pages/admin/reality-audit/RuntimeTruthGate"));
+const RARouteHeatmap = lazy(() => import("./pages/admin/reality-audit/RCP07RouteHeatmap"));
+const RAContractReadiness = lazy(() => import("./pages/admin/reality-audit/RCP08ContractReadiness"));
 const RALaunchHonesty = lazy(() => import("./pages/admin/reality-audit/LaunchHonestyBoard"));
+const RAWavePlanner = lazy(() => import("./pages/admin/reality-audit/RCP10WavePlanner"));
+const RAProgressTimeline = lazy(() => import("./pages/admin/reality-audit/RCP11ProgressTimeline"));
+const RARuntimeTruthGate = lazy(() => import("./pages/admin/reality-audit/RuntimeTruthGate"));
 
 // CJ — Customer Journey Proof System
 const CJ01ExecutiveReport = lazy(() => import("./pages/admin/customer-journey/CJ01ExecutiveReport"));
@@ -1097,12 +1104,19 @@ const App = () => (
                      <Route path="/admin/platform-law/launch-enforcement" element={<PLT08LaunchEnforcement />} />
                      <Route path="/admin/platform-law/drift-radar" element={<PLT10DriftRadar />} />
 
-                     {/* RA — Reality Audit & Classification */}
+                     {/* RA — Reality Conversion Program (12 screens) */}
+                     <Route path="/admin/reality-audit/overview" element={<RAOverview />} />
                      <Route path="/admin/reality-audit" element={<RAClassificationMatrix />} />
+                     <Route path="/admin/reality-audit/feature/:featureId" element={<RAFeatureDetail />} />
                      <Route path="/admin/reality-audit/mock-replacement" element={<RAMockReplacement />} />
+                     <Route path="/admin/reality-audit/mock-sources" element={<RAMockSourceInventory />} />
                      <Route path="/admin/reality-audit/core-persistence" element={<RACoreServicePersistence />} />
-                     <Route path="/admin/reality-audit/runtime-truth" element={<RARuntimeTruthGate />} />
+                     <Route path="/admin/reality-audit/route-heatmap" element={<RARouteHeatmap />} />
+                     <Route path="/admin/reality-audit/contract-readiness" element={<RAContractReadiness />} />
                      <Route path="/admin/reality-audit/launch-honesty" element={<RALaunchHonesty />} />
+                     <Route path="/admin/reality-audit/wave-planner" element={<RAWavePlanner />} />
+                     <Route path="/admin/reality-audit/progress" element={<RAProgressTimeline />} />
+                     <Route path="/admin/reality-audit/runtime-truth" element={<RARuntimeTruthGate />} />
 
                      {/* CJ — Customer Journey Proof System */}
                     <Route path="/admin/customer-journey/executive" element={<CJ01ExecutiveReport />} />
