@@ -12,9 +12,9 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useFinancialAccounts, useMoneyKPIs } from "@/hooks/use-domain-data";
 import { useSavingsGoals } from "@/hooks/use-money-data";
-import { DollarSign, TrendingUp, TrendingDown, Building, PiggyBank, CreditCard, BarChart3, ArrowUpRight, ArrowDownRight, Wallet } from "lucide-react";
+import { DollarSign, TrendingUp, TrendingDown, Building, PiggyBank, CreditCard, BarChart3, ArrowUpRight, ArrowDownRight, Wallet, Clock, Rewind } from "lucide-react";
 import { motion } from "framer-motion";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 const NetWorthOffice = () => {
   const { isDemoMode } = useDataMode();
@@ -152,26 +152,63 @@ const NetWorthOffice = () => {
           ))}
         </div>
 
-        {/* Insights Column */}
+        {/* Money Time Machine + Insights */}
         <div className="space-y-4">
-          <SitaSectionHeader title="Net Worth Trend" />
+          <SitaSectionHeader title="Money Time Machine" />
           <SitaCard hover={false} className="p-4">
-            <div className="space-y-2">
-              {(isDemoMode ? [
-                { month: "Nov", nw: 95000 }, { month: "Dec", nw: 102000 }, { month: "Jan", nw: 108000 },
-                { month: "Feb", nw: 112000 }, { month: "Mar", nw: 118000 }, { month: "Apr", nw: 125000 },
-              ] : analysis.trend.map(t => ({ month: t.month, nw: t.netWorth / 100 }))).map((t, i) => (
-                <div key={t.month} className="flex items-center justify-between text-sm">
-                  <span className="text-muted-foreground w-10">{t.month}</span>
-                  <div className="flex-1 mx-3">
-                    <div className="h-2 bg-muted rounded-full overflow-hidden">
-                      <div className="h-full bg-primary rounded-full transition-all" style={{ width: `${Math.min(100, (t.nw / 150000) * 100)}%` }} />
-                    </div>
-                  </div>
-                  <span className="font-display font-semibold w-20 text-right">${t.nw.toLocaleString()}</span>
-                </div>
-              ))}
+            <div className="flex items-center gap-2 mb-3">
+              <Rewind className="h-4 w-4 text-primary" />
+              <SitaCardTitle sub="Replay how your finances evolved">Historical Replay</SitaCardTitle>
             </div>
+            {(() => {
+              const timeMachine = isDemoMode ? [
+                { month: "Nov", nw: 95000, event: null, debt: 32000, savings: 12000, burden: 48 },
+                { month: "Dec", nw: 102000, event: "Holiday bonus +$5K", debt: 30000, savings: 15000, burden: 46 },
+                { month: "Jan", nw: 108000, event: "Paid off credit card", debt: 24000, savings: 18000, burden: 42 },
+                { month: "Feb", nw: 112000, event: null, debt: 23000, savings: 20000, burden: 41 },
+                { month: "Mar", nw: 118000, event: "Tax refund +$3.2K", debt: 21500, savings: 24000, burden: 39 },
+                { month: "Apr", nw: 125000, event: "Salary increase +8%", debt: 20000, savings: 28000, burden: 36 },
+              ] : analysis.trend.map(t => ({ month: t.month, nw: t.netWorth / 100, event: null as string | null, debt: t.liabilities / 100, savings: (t.assets - t.liabilities) / 100, burden: Math.round((t.liabilities / Math.max(t.assets, 1)) * 100) }));
+
+              return (
+                <div className="space-y-2">
+                  {timeMachine.map((t, i) => (
+                    <div key={t.month} className="flex items-center gap-3 rounded-xl bg-secondary/20 p-3">
+                      <div className="w-10 text-center">
+                        <p className="text-xs font-semibold text-foreground">{t.month}</p>
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between text-xs mb-1">
+                          <span className="text-muted-foreground">Net Worth</span>
+                          <span className="font-display font-bold text-foreground">${t.nw.toLocaleString()}</span>
+                        </div>
+                        <div className="h-1.5 bg-muted rounded-full overflow-hidden">
+                          <div className="h-full bg-primary rounded-full transition-all" style={{ width: `${Math.min(100, (t.nw / (timeMachine[timeMachine.length - 1]?.nw || 1)) * 100)}%` }} />
+                        </div>
+                        <div className="flex justify-between text-[10px] text-muted-foreground mt-1">
+                          <span>Debt: ${t.debt.toLocaleString()}</span>
+                          <span>Burden: {t.burden}%</span>
+                        </div>
+                      </div>
+                      {t.event && (
+                        <div className="shrink-0 max-w-[120px]">
+                          <span className="text-[10px] text-primary bg-primary/10 px-2 py-0.5 rounded-full">{t.event}</span>
+                        </div>
+                      )}
+                      {i > 0 && (
+                        <div className="shrink-0">
+                          {t.nw > timeMachine[i - 1].nw ? (
+                            <ArrowUpRight className="h-3.5 w-3.5 text-trust-verified" />
+                          ) : t.nw < timeMachine[i - 1].nw ? (
+                            <ArrowDownRight className="h-3.5 w-3.5 text-urgency-high" />
+                          ) : null}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              );
+            })()}
             <TrustBadge level="verified" className="mt-3" />
           </SitaCard>
 
