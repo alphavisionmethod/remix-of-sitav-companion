@@ -1,5 +1,5 @@
 import { QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate, Outlet } from "react-router-dom";
 import { getAdminRoutes } from "@/routes/AdminRoutes";
 import { getOwnerRoutes } from "@/routes/OwnerRoutes";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -27,6 +27,8 @@ import { PlatformInit } from "@/components/sita/PlatformInit";
 import { PublicLayout } from "@/layouts/PublicLayout";
 import { AdminCommandPalette } from "@/components/admin/AdminCommandPalette";
 import { AdminKeyboardShortcuts } from "@/components/admin/AdminKeyboardShortcuts";
+import { AdminShell } from "@/components/admin/shells/AdminShell";
+import { OwnerWorkspaceShell } from "@/components/admin/shells/OwnerWorkspaceShell";
 
 const AdminCommandPaletteWrapper = () => <AdminCommandPalette />;
 const AdminKeyboardShortcutsWrapper = () => <AdminKeyboardShortcuts />;
