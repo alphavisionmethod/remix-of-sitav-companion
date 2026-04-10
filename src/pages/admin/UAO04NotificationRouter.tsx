@@ -1,3 +1,4 @@
+import UAOSubNav from "@/components/admin/UAOSubNav";
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -34,6 +35,7 @@ export default function UAO04NotificationRouter() {
 
   return (
     <div className="space-y-6 p-6">
+      <UAOSubNav />
       <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Bell className="h-6 w-6" /> Notification & Escalation Router</h1>

@@ -1,3 +1,4 @@
+import DWESubNav from "@/components/admin/DWESubNav";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { MonitorSmartphone, ArrowRightLeft, Eye, Radio } from "lucide-react";
@@ -43,6 +44,7 @@ export default function DWE02PresenceContinuityCenter() {
 
   return (
     <div className="space-y-6 p-6">
+      <DWESubNav />
       <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground">DWE02 — Presence & Continuity Center</h1>

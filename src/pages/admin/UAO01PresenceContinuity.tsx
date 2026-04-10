@@ -1,3 +1,4 @@
+import UAOSubNav from "@/components/admin/UAOSubNav";
 import { useAction } from "@/hooks/use-action";
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -47,6 +48,7 @@ export default function UAO01PresenceContinuity() {
 
   return (
     <div className="space-y-6 p-6">
+      <UAOSubNav />
       <DemoModeBadge />
       <div className="flex items-center justify-between">
         <div>
