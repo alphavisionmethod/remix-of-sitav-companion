@@ -39,6 +39,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 type SubPage = "overview" | "bills" | "subscriptions" | "reserves" | "cash-timing" | "receivables" | "investment-office" | "tax" | "approvals" | "boardroom" | "proof" | "files" | "settings" | "net-worth" | "debt-credit" | "budgets" | "transactions" | "household" | "health" | "advisors" | "scenarios" | "stress-radar" | "life-impact" | "modes" | "allocator" | "trust-graph" | "opportunity-cost" | "rituals" | "peace-score" | "boundaries";
 
 const subpageFromPath = (path: string): SubPage => {
+  if (path.includes("/boundaries")) return "boundaries";
   if (path.includes("/stress-radar")) return "stress-radar";
   if (path.includes("/life-impact")) return "life-impact";
   if (path.includes("/modes")) return "modes";
@@ -100,6 +101,7 @@ const pages: Record<SubPage, React.ComponentType> = {
   "opportunity-cost": OpportunityCost,
   rituals: MoneyRituals,
   "peace-score": PeaceScore,
+  boundaries: FinancialBoundaryMonitor,
 };
 
 const MoneyCenter = () => {
