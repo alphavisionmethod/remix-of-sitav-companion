@@ -8,11 +8,16 @@ import {
   Zap, Play, Pause, AlertTriangle, CheckCircle, TrendingUp, Users, Mail, Phone,
   FileText, Star, RefreshCw, ShieldCheck, Clock, ArrowRight, Activity, BarChart3,
   DollarSign, Target, Eye, XCircle, Settings, Workflow, Brain, Shield, Lightbulb,
-  MessageSquare, UserPlus, Heart, Package, ArrowUpRight, Layers
+  MessageSquare, UserPlus, Heart, Package, ArrowUpRight, Layers, Globe, Calendar,
+  GitBranch, Send
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-import { DEMO_activeAutomations, DEMO_advisorRecommendations, DEMO_atRiskAutomations, DEMO_automationStats, DEMO_businessStageAutomations, DEMO_leakRepairOpportunities } from "@/lib/demo-data/revenue-office";
+import {
+  DEMO_activeAutomations, DEMO_advisorRecommendations, DEMO_atRiskAutomations,
+  DEMO_automationStats, DEMO_businessStageAutomations, DEMO_leakRepairOpportunities,
+  DEMO_AUTOMATION_SURFACE_MAP, DEMO_AUTOMATION_OS_CONNECTIONS
+} from "@/lib/demo-data/revenue-office";
 
 const levelColors: Record<string, string> = {
   "Auto-run (L3)": "bg-emerald-500/10 text-emerald-400",
@@ -32,6 +37,14 @@ const urgencyColors: Record<string, string> = {
   high: "bg-amber-500/10 text-amber-400",
   medium: "bg-blue-500/10 text-blue-400",
   low: "bg-muted text-muted-foreground",
+};
+
+const levelBadgeColors: Record<string, string> = {
+  "L4": "bg-amber-500/10 text-amber-400 border-amber-500/20",
+  "L3": "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+  "L2": "bg-blue-500/10 text-blue-400 border-blue-500/20",
+  "L1": "bg-purple-500/10 text-purple-400 border-purple-500/20",
+  "None": "bg-red-500/10 text-red-400 border-red-500/20",
 };
 
 export default function AutomationOffice() {
@@ -78,11 +91,12 @@ export default function AutomationOffice() {
       <Tabs value={selectedTab} onValueChange={setSelectedTab}>
         <TabsList className="bg-card/50">
           <TabsTrigger value="overview">Boardroom</TabsTrigger>
+          <TabsTrigger value="surface">Surface Map</TabsTrigger>
           <TabsTrigger value="active">Active ({DEMO_activeAutomations.length})</TabsTrigger>
           <TabsTrigger value="atRisk">At Risk ({DEMO_atRiskAutomations.length})</TabsTrigger>
           <TabsTrigger value="advisors">Advisor Recs ({DEMO_advisorRecommendations.length})</TabsTrigger>
           <TabsTrigger value="leaks">Leak Repair ({DEMO_leakRepairOpportunities.length})</TabsTrigger>
-          <TabsTrigger value="stages">By Stage</TabsTrigger>
+          <TabsTrigger value="osmap">OS Map</TabsTrigger>
         </TabsList>
 
         {/* BOARDROOM TAB */}
@@ -164,6 +178,107 @@ export default function AutomationOffice() {
               ))}
             </CardContent>
           </Card>
+        </TabsContent>
+
+        {/* AUTOMATION SURFACE COVERAGE MAP TAB */}
+        <TabsContent value="surface" className="space-y-4">
+          <Card className="bg-card/50 border-primary/20 border">
+            <CardContent className="p-4 flex items-start gap-3">
+              <Globe className="h-5 w-5 text-primary mt-0.5" />
+              <div>
+                <p className="text-sm font-semibold text-foreground mb-1">Commercial Automation Engine — Surface Coverage</p>
+                <p className="text-xs text-muted-foreground">All 10 automatable business domains with current level (L1–L4), sub-capability coverage, estimated value, and gaps. Build missing automations directly from here.</p>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Overall Coverage */}
+          <div className="grid md:grid-cols-3 gap-3">
+            {[
+              { label: "Domains Covered", value: `${DEMO_AUTOMATION_SURFACE_MAP.filter(d => d.currentLevel !== "None").length}/10`, color: "text-emerald-400" },
+              { label: "Average Coverage", value: `${Math.round(DEMO_AUTOMATION_SURFACE_MAP.reduce((a, d) => a + d.coveragePct, 0) / DEMO_AUTOMATION_SURFACE_MAP.length)}%`, color: "text-blue-400" },
+              { label: "Total Estimated Value", value: "$127K/mo", color: "text-primary" },
+            ].map((m) => (
+              <Card key={m.label} className="bg-card/50 border-border/50">
+                <CardContent className="p-3 text-center">
+                  <p className={`text-2xl font-bold ${m.color}`}>{m.value}</p>
+                  <p className="text-[10px] text-muted-foreground">{m.label}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* Domain Cards */}
+          <div className="space-y-3">
+            {DEMO_AUTOMATION_SURFACE_MAP.map((domain) => (
+              <Card key={domain.domain} className="bg-card/50 border-border/50 hover:border-primary/20 transition-colors">
+                <CardContent className="p-4">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 rounded-lg bg-primary/10">
+                        <domain.icon className="h-5 w-5 text-primary" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-foreground">{domain.domain}</p>
+                        <p className="text-[10px] text-muted-foreground">{domain.description}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <Badge className={`text-[10px] border ${levelBadgeColors[domain.currentLevel]}`}>
+                        {domain.currentLevel === "None" ? "Not Automated" : `Level ${domain.currentLevel}`}
+                      </Badge>
+                      <span className={`text-sm font-bold ${domain.coveragePct >= 80 ? "text-emerald-400" : domain.coveragePct >= 50 ? "text-amber-400" : "text-red-400"}`}>{domain.coveragePct}%</span>
+                    </div>
+                  </div>
+
+                  <Progress value={domain.coveragePct} className="h-1.5 mb-3" />
+
+                  {/* Sub-capabilities */}
+                  <div className="grid md:grid-cols-2 gap-2 mb-3">
+                    {domain.subCapabilities.map((sub) => (
+                      <div key={sub.name} className={`p-2 rounded-lg border text-xs flex items-center justify-between ${sub.automated ? "bg-emerald-500/5 border-emerald-500/20" : "bg-muted/10 border-border/30"}`}>
+                        <div className="flex items-center gap-2">
+                          {sub.automated ? <CheckCircle className="h-3 w-3 text-emerald-400" /> : <XCircle className="h-3 w-3 text-muted-foreground" />}
+                          <span className={sub.automated ? "text-foreground" : "text-muted-foreground"}>{sub.name}</span>
+                        </div>
+                        <Badge variant="outline" className="text-[8px]">{sub.level}</Badge>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Value + Actions */}
+                  <div className="flex items-center justify-between pt-2 border-t border-border/20">
+                    <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                      <span>Est. value: <span className="text-emerald-400 font-medium">{domain.estimatedValue}</span></span>
+                      <span>Active automations: <span className="text-foreground">{domain.activeAutomations}</span></span>
+                      {domain.gaps.length > 0 && (
+                        <span className="text-amber-400">{domain.gaps.length} gaps</span>
+                      )}
+                    </div>
+                    <div className="flex gap-2">
+                      {domain.gaps.length > 0 && (
+                        <button className="px-3 py-1.5 rounded bg-primary/10 text-primary text-[10px] font-medium flex items-center gap-1">
+                          <Zap className="h-3 w-3" />Build Missing
+                        </button>
+                      )}
+                      <button className="px-3 py-1.5 rounded bg-secondary text-secondary-foreground text-[10px]">View Health</button>
+                    </div>
+                  </div>
+
+                  {/* Gaps */}
+                  {domain.gaps.length > 0 && (
+                    <div className="mt-2 flex flex-wrap gap-1">
+                      {domain.gaps.map((gap) => (
+                        <Badge key={gap} variant="outline" className="text-[10px] text-amber-400 border-amber-500/20 cursor-pointer hover:bg-amber-500/10 transition-colors">
+                          {gap}
+                        </Badge>
+                      ))}
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
         </TabsContent>
 
         {/* ACTIVE AUTOMATIONS TAB */}
@@ -274,32 +389,64 @@ export default function AutomationOffice() {
           ))}
         </TabsContent>
 
-        {/* BY STAGE TAB */}
-        <TabsContent value="stages" className="space-y-3">
-          {DEMO_businessStageAutomations.map((stage) => (
-            <Card key={stage.stage} className="bg-card/50 border-border/50">
-              <CardContent className="p-4">
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-3">
-                    <p className="text-sm font-semibold text-foreground">{stage.stage}</p>
-                    <Badge variant="secondary" className="text-[10px]">{stage.automations} automations</Badge>
+        {/* AUTOMATION OS MAP TAB */}
+        <TabsContent value="osmap" className="space-y-4">
+          <Card className="bg-card/50 border-primary/20 border">
+            <CardContent className="p-4 flex items-start gap-3">
+              <Layers className="h-5 w-5 text-primary mt-0.5" />
+              <div>
+                <p className="text-sm font-semibold text-foreground mb-1">Automation Operating System — Interconnection Map</p>
+                <p className="text-xs text-muted-foreground">How your business automations connect across CRM, Booking, Quotes, Campaigns, Retention, and Reputation with live data flow indicators.</p>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Visual Connection Map */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
+            {DEMO_AUTOMATION_OS_CONNECTIONS.map((conn) => (
+              <Card key={conn.from + conn.to} className="bg-card/50 border-border/50 hover:border-primary/20 transition-colors">
+                <CardContent className="p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Badge variant="outline" className="text-[10px] font-semibold">{conn.from}</Badge>
+                    <ArrowRight className="h-3 w-3 text-primary" />
+                    <Badge variant="outline" className="text-[10px] font-semibold">{conn.to}</Badge>
                   </div>
-                  <span className={`text-sm font-bold ${stage.coverage >= 80 ? "text-emerald-400" : stage.coverage >= 60 ? "text-amber-400" : "text-red-400"}`}>{stage.coverage}% coverage</span>
-                </div>
-                <Progress value={stage.coverage} className="h-1.5 mb-2" />
-                {stage.gaps.length > 0 && (
-                  <div>
-                    <p className="text-[10px] text-muted-foreground mb-1">Gaps:</p>
-                    <div className="flex flex-wrap gap-1">
-                      {stage.gaps.map((gap) => (
-                        <Badge key={gap} variant="outline" className="text-[10px] cursor-pointer hover:bg-primary/10 hover:text-primary transition-colors">{gap}</Badge>
+                  <p className="text-xs text-foreground mb-1">{conn.description}</p>
+                  <div className="flex items-center gap-3 text-[10px] text-muted-foreground">
+                    <span className={conn.status === "active" ? "text-emerald-400" : conn.status === "partial" ? "text-amber-400" : "text-red-400"}>● {conn.status}</span>
+                    <span>{conn.dataFlow}</span>
+                    {conn.automationsCount > 0 && <span>{conn.automationsCount} automations</span>}
+                  </div>
+                  {conn.triggers.length > 0 && (
+                    <div className="flex flex-wrap gap-1 mt-2">
+                      {conn.triggers.map((t) => (
+                        <Badge key={t} variant="secondary" className="text-[8px]">{t}</Badge>
                       ))}
                     </div>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          ))}
+                  )}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* Automation Layers Summary */}
+          <Card className="bg-card/50 border-border/50">
+            <CardHeader><CardTitle className="text-sm flex items-center gap-2"><Shield className="h-4 w-4 text-emerald-400" />Governance Layers</CardTitle></CardHeader>
+            <CardContent className="grid md:grid-cols-4 gap-3">
+              {[
+                { layer: "Policy Engine", desc: "Trust levels, escalation rules, fatigue guards", status: "Active", color: "border-emerald-500/30" },
+                { layer: "Approval Chain", desc: "Human review for L2+, dual approval for L4 high-impact", status: "Active", color: "border-emerald-500/30" },
+                { layer: "Receipt System", desc: "Every automated action generates immutable proof receipt", status: "Active", color: "border-emerald-500/30" },
+                { layer: "Rollback Engine", desc: "Undo capability for L3/L4 actions within 24hr window", status: "Ready", color: "border-blue-500/30" },
+              ].map((l) => (
+                <div key={l.layer} className={`p-3 rounded-lg bg-background/50 border ${l.color}`}>
+                  <p className="text-xs font-semibold text-foreground">{l.layer}</p>
+                  <p className="text-[10px] text-muted-foreground mb-2">{l.desc}</p>
+                  <Badge variant="outline" className="text-[8px]">{l.status}</Badge>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
         </TabsContent>
       </Tabs>
     </motion.div>

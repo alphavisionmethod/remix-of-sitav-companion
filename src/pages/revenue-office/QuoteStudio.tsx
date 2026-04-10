@@ -81,8 +81,16 @@ export default function QuoteStudio() {
                   <span className="text-foreground">{q.followUp}</span>
                 </div>
                 {q.objections && <p className="text-[10px] text-amber-400 mb-1">Objection noted: {q.objections}</p>}
-                <div className="p-2 rounded bg-primary/5 border border-primary/10">
+                <div className="p-2 rounded bg-primary/5 border border-primary/10 mb-2">
                   <p className="text-[10px] text-foreground flex items-start gap-1"><Brain className="h-3 w-3 text-primary mt-0.5 flex-shrink-0" />{q.aiInsight}</p>
+                </div>
+                <div className="flex items-center gap-2 pt-2 border-t border-border/20">
+                  <button className="px-3 py-1.5 rounded bg-emerald-500/10 text-emerald-400 text-[10px] font-medium flex items-center gap-1">
+                    <Zap className="h-3 w-3" />Generate from CRM context
+                  </button>
+                  <button className="px-3 py-1.5 rounded bg-secondary text-secondary-foreground text-[10px] flex items-center gap-1">
+                    <RefreshCw className="h-3 w-3" />Auto follow-up
+                  </button>
                 </div>
               </CardContent>
             </Card>

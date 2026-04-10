@@ -90,9 +90,16 @@ export default function ClientOnboarding() {
                               <StepIcon className="w-3.5 h-3.5 mx-auto mb-1 text-muted-foreground" />
                               <p className="text-[10px] font-medium text-foreground">{step.name}</p>
                               <div className="flex items-center justify-center gap-1 mt-1">
-                                {step.auto && <Badge variant="outline" className="text-[7px]">Auto</Badge>}
+                                {step.auto ? (
+                                  <Badge variant="outline" className="text-[7px] bg-emerald-500/10 text-emerald-400 border-emerald-500/20">L3 Auto</Badge>
+                                ) : (
+                                  <Badge variant="outline" className="text-[7px] bg-muted text-muted-foreground">Manual</Badge>
+                                )}
                                 <span className="text-[9px] text-muted-foreground">{step.completionRate}%</span>
                               </div>
+                              {step.completionRate < 50 && (
+                                <button className="mt-1 text-[7px] text-primary font-medium">⚡ Automate</button>
+                              )}
                             </div>
                             {si < journey.steps.length - 1 && <ArrowRight className="w-3 h-3 text-muted-foreground flex-shrink-0" />}
                           </div>
