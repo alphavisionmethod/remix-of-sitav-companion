@@ -1649,7 +1649,9 @@ const App = () => (
                     <Route path="/import-export" element={<ImportExportCenter />} />
 
                     {/* ── Supplementary Admin Routes ── */}
-                    {getAdminRoutes()}
+                    <Route element={<AdminShellLayout />}>
+                      {getAdminRoutes()}
+                    </Route>
 
                     {/* ── Supplementary Owner Routes (from src/routes/OwnerRoutes.tsx — deduplicated) ── */}
 
