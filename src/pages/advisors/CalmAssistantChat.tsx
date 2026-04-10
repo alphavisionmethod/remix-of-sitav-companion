@@ -5,12 +5,12 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useAdvisorChat } from "@/lib/ai";
-import { SitaPageHeader, SitaCard } from "@/components/sita/SitaCard";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
+import { STATE_BADGE_CONFIG, isDegradedState } from "@/lib/ai";
 import ReactMarkdown from "react-markdown";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -18,15 +18,20 @@ import {
   ShieldCheck, Clock, AlertTriangle
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { STATE_BADGE_CONFIG, formatFreshness } from "@/lib/ai";
 
 const SYSTEM_PROMPT = `You are SITA's Chief of Staff — a calm, precise, and proactive executive assistant.
 You orchestrate across all domains (business, money, family, operations) with quiet confidence.
 Be concise. Surface what matters. Offer next actions. Never overwhelm.
 When uncertain, say so honestly with confidence levels.`;
 
+const QUICK_PROMPTS = [
+  "What's my top priority today?",
+  "Summarize this week's business",
+  "Any urgent items I should know about?",
+];
+
 export default function CalmAssistantChat() {
-  const { isDemo } = useDataMode();
+  const { isDemoMode } = useDataMode();
   const [input, setInput] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -41,7 +46,7 @@ export default function CalmAssistantChat() {
     capabilityKey: "advisor.chat.primary",
     systemPrompt: SYSTEM_PROMPT,
     onResponse: (envelope) => {
-      console.log("[CalmAssistant] Response:", envelope.status, envelope.model);
+      console.log("[CalmAssistant] Response:", envelope.status, envelope.modelUsed);
     },
   });
 
@@ -63,27 +68,29 @@ export default function CalmAssistantChat() {
     }
   };
 
-  const stateBadge = STATE_BADGE_CONFIG[state] ?? STATE_BADGE_CONFIG.idle;
+  const badge = STATE_BADGE_CONFIG[state];
 
   return (
-    <div className="flex flex-col h-[calc(100vh-4rem)] max-w-4xl mx-auto p-4 gap-4">
+    <div className="flex flex-col h-[calc(100vh-4rem)] max-w-4xl mx-auto p-4 gap-4" data-testid="advisors-page">
       {/* Header */}
       <div className="flex items-center justify-between">
-        <SitaPageHeader
-          icon={Crown}
-          title="Chief of Staff"
-          subtitle="Your calm, cross-domain executive assistant"
-        />
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+            <Crown className="h-5 w-5 text-primary" />
+          </div>
+          <div>
+            <h1 className="text-lg font-semibold text-foreground">Chief of Staff</h1>
+            <p className="text-xs text-muted-foreground">Your calm, cross-domain executive assistant</p>
+          </div>
+        </div>
         <div className="flex items-center gap-2">
-          {isDemo && <DemoModeBadge />}
-          <Badge variant="outline" className={cn("text-[10px] gap-1", stateBadge.className)}>
-            {stateBadge.icon && <stateBadge.icon className="h-3 w-3" />}
-            {stateBadge.label}
+          {isDemoMode && <DemoModeBadge />}
+          <Badge variant={badge.variant} className={cn("text-[10px]", badge.className)}>
+            {badge.label}
           </Badge>
           {messages.length > 0 && (
             <Button variant="ghost" size="sm" onClick={clearChat} className="text-muted-foreground">
-              <Trash2 className="h-3.5 w-3.5 mr-1" />
-              Clear
+              <Trash2 className="h-3.5 w-3.5 mr-1" /> Clear
             </Button>
           )}
         </div>
@@ -99,10 +106,10 @@ export default function CalmAssistantChat() {
             <Crown className="h-12 w-12 opacity-20" />
             <p className="text-sm font-medium">What can I help you with today?</p>
             <div className="flex flex-wrap gap-2 justify-center max-w-md">
-              {["What's my top priority today?", "Summarize this week's business", "Any urgent items?"].map((q) => (
+              {QUICK_PROMPTS.map((q) => (
                 <button
                   key={q}
-                  onClick={() => { setInput(q); }}
+                  onClick={() => setInput(q)}
                   className="px-3 py-1.5 rounded-full border border-border/50 text-xs hover:bg-muted/50 transition-colors"
                 >
                   {q}
@@ -120,10 +127,8 @@ export default function CalmAssistantChat() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
-              className={cn(
-                "flex gap-3",
-                msg.role === "user" ? "justify-end" : "justify-start"
-              )}
+              className={cn("flex gap-3", msg.role === "user" ? "justify-end" : "justify-start")}
+              data-testid="chat-message"
             >
               {msg.role === "assistant" && (
                 <div className="flex-shrink-0 w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center">
@@ -137,6 +142,7 @@ export default function CalmAssistantChat() {
                     ? "bg-primary text-primary-foreground rounded-br-md"
                     : "bg-muted/50 border border-border/30 rounded-bl-md"
                 )}
+                data-testid={msg.role === "assistant" ? "advisor-chat-response" : undefined}
               >
                 {msg.role === "assistant" ? (
                   <div className="prose prose-sm dark:prose-invert max-w-none">
@@ -145,23 +151,19 @@ export default function CalmAssistantChat() {
                 ) : (
                   <p>{msg.content}</p>
                 )}
-                {msg.envelope && (
+                {msg.envelope?.usageSummary && (
                   <div className="flex items-center gap-2 mt-2 pt-2 border-t border-border/20 text-[10px] text-muted-foreground">
-                    {msg.envelope.model && (
+                    {msg.envelope.modelUsed && (
                       <span className="flex items-center gap-1">
-                        <Sparkles className="h-2.5 w-2.5" /> {msg.envelope.model}
+                        <Sparkles className="h-2.5 w-2.5" /> {msg.envelope.modelUsed}
                       </span>
                     )}
-                    {msg.envelope.latencyMs && (
-                      <span className="flex items-center gap-1">
-                        <Clock className="h-2.5 w-2.5" /> {msg.envelope.latencyMs}ms
-                      </span>
-                    )}
-                    {msg.envelope.confidence != null && (
-                      <span className="flex items-center gap-1">
-                        <ShieldCheck className="h-2.5 w-2.5" /> {Math.round(msg.envelope.confidence * 100)}%
-                      </span>
-                    )}
+                    <span className="flex items-center gap-1">
+                      <Clock className="h-2.5 w-2.5" /> {msg.envelope.usageSummary.latencyMs}ms
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <ShieldCheck className="h-2.5 w-2.5" /> {msg.envelope.usageSummary.inputTokens + msg.envelope.usageSummary.outputTokens} tok
+                    </span>
                   </div>
                 )}
               </div>
@@ -182,16 +184,16 @@ export default function CalmAssistantChat() {
         )}
       </div>
 
-      {/* Degraded / Error Banner */}
-      {(state === "degraded" || state === "error") && lastEnvelope && (
-        <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-destructive/10 border border-destructive/20 text-xs text-destructive">
+      {/* Degraded Banner */}
+      {isDegradedState(state) && lastEnvelope && (
+        <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-destructive/10 border border-destructive/20 text-xs text-destructive" data-testid="advisor-degraded-banner">
           <AlertTriangle className="h-3.5 w-3.5" />
           <span>{lastEnvelope.degradedReason || "AI capability is running in degraded mode"}</span>
         </div>
       )}
 
       {/* Input Area */}
-      <div className="flex gap-2 items-end" data-testid="advisor-chat-input-area">
+      <div className="flex gap-2 items-end">
         <Textarea
           data-testid="advisor-chat-input"
           value={input}
