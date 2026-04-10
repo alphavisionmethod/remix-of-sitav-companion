@@ -16,29 +16,61 @@ import { useDataMode } from "@/contexts/DataModeContext";
 const fmt = (n: number) => n >= 1e9 ? `$${(n / 1e9).toFixed(1)}B` : n >= 1e6 ? `$${(n / 1e6).toFixed(1)}M` : n >= 1e3 ? `$${(n / 1e3).toFixed(1)}K` : `$${n.toFixed(2)}`;
 const pctFmt = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
 
-// ── Animated Ticker Ribbon ──
+// ── Animated Ticker Ribbon with simulated real-time prices ──
 function TickerRibbon() {
+  const [tick, setTick] = useState(0);
+  const [prices, setPrices] = useState(() =>
+    Object.fromEntries(PORTFOLIO.holdings.map(h => [h.instrument.symbol, h.instrument.price]))
+  );
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPrices(prev => {
+        const next = { ...prev };
+        const keys = Object.keys(next);
+        // Randomly update 2-3 prices each tick
+        const count = 2 + Math.floor(Math.random() * 2);
+        for (let i = 0; i < count; i++) {
+          const key = keys[Math.floor(Math.random() * keys.length)];
+          const change = next[key] * (Math.random() - 0.5) * 0.004;
+          next[key] = Math.max(0.01, next[key] + change);
+        }
+        return next;
+      });
+      setTick(t => t + 1);
+    }, 1800);
+    return () => clearInterval(interval);
+  }, []);
+
   const tickerItems = PORTFOLIO.holdings.map(h => ({
     symbol: h.instrument.symbol,
     icon: h.instrument.logoIcon,
-    price: h.instrument.price,
+    price: prices[h.instrument.symbol] ?? h.instrument.price,
     pct: h.instrument.changePct24h,
+    prevPrice: h.instrument.price,
   }));
   const doubled = [...tickerItems, ...tickerItems];
 
   return (
     <div className="relative overflow-hidden rounded-xl border border-border bg-card/80 backdrop-blur">
       <div className="flex animate-ticker-scroll whitespace-nowrap py-2">
-        {doubled.map((t, i) => (
-          <div key={i} className="flex items-center gap-1.5 px-4 border-r border-border/30 shrink-0">
-            <span className="text-xs">{t.icon}</span>
-            <span className="text-[10px] font-semibold text-foreground">{t.symbol}</span>
-            <span className="text-[10px] text-foreground">${t.price.toLocaleString()}</span>
-            <span className={`text-[9px] font-bold ${t.pct >= 0 ? "text-[hsl(var(--trust-safe))]" : "text-destructive"}`}>
-              {t.pct >= 0 ? "+" : ""}{t.pct.toFixed(2)}%
-            </span>
-          </div>
-        ))}
+        {doubled.map((t, i) => {
+          const dir = t.price > t.prevPrice ? "up" : t.price < t.prevPrice ? "down" : null;
+          return (
+            <div key={i} className="flex items-center gap-1.5 px-4 border-r border-border/30 shrink-0">
+              <span className="text-xs">{t.icon}</span>
+              <span className="text-[10px] font-semibold text-foreground">{t.symbol}</span>
+              <span className={`text-[10px] font-mono tabular-nums transition-colors duration-500 ${
+                dir === "up" ? "text-[hsl(var(--trust-safe))]" : dir === "down" ? "text-destructive" : "text-foreground"
+              }`}>
+                ${t.price >= 1000 ? t.price.toLocaleString(undefined, { maximumFractionDigits: 0 }) : t.price.toFixed(2)}
+              </span>
+              <span className={`text-[9px] font-bold ${t.pct >= 0 ? "text-[hsl(var(--trust-safe))]" : "text-destructive"}`}>
+                {t.pct >= 0 ? "+" : ""}{t.pct.toFixed(2)}%
+              </span>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
