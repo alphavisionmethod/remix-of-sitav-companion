@@ -1,3 +1,4 @@
+import RCPSubNav from "@/components/admin/RCPSubNav";
 import { useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -47,6 +48,7 @@ const RCP03FeatureDetail = () => {
   if (!feature) {
     return (
       <div className="p-6 space-y-4">
+        <RCPSubNav />
         <Button variant="ghost" onClick={() => navigate("/admin/reality-audit")}><ArrowLeft className="h-4 w-4 mr-2" /> Back to Matrix</Button>
         <p className="text-muted-foreground">Feature not found.</p>
       </div>
@@ -59,6 +61,7 @@ const RCP03FeatureDetail = () => {
 
   return (
     <div className="space-y-6 p-4 sm:p-6">
+      <RCPSubNav />
       <Button variant="ghost" size="sm" onClick={() => navigate("/admin/reality-audit")}><ArrowLeft className="h-4 w-4 mr-2" /> Back to Matrix</Button>
 
       {/* FeatureRealityHero */}
