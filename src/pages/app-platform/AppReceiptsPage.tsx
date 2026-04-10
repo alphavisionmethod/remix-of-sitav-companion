@@ -58,7 +58,8 @@ const AppReceiptsPage = () => {
         {filteredReceipts.map(receipt => {
           const receiptApp = getApp(receipt.appId);
           return (
-            <div key={receipt.receiptId} className="rounded-2xl border border-border bg-card p-5 space-y-3 transition-all hover:border-primary/15">
+            <div key={receipt.receiptId} onClick={() => navigate(`/app-store/receipt/${receipt.receiptId}`)}
+              className="rounded-2xl border border-border bg-card p-5 space-y-3 transition-all hover:border-primary/15 cursor-pointer hover:shadow-sm">
               <div className="flex items-center gap-3">
                 {actionIcon(receipt.actionType)}
                 <div className="flex-1 min-w-0">

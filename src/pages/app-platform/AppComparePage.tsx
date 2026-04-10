@@ -17,7 +17,7 @@ import { toast } from "sonner";
 const AppComparePage = () => {
   const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
-  const { apps, installApp } = useAppPlatform();
+  const { apps, installApp, pinToDock } = useAppPlatform();
   const [searchParams] = useSearchParams();
   const [installTarget, setInstallTarget] = useState<AppDefinition | null>(null);
 
@@ -149,7 +149,9 @@ const AppComparePage = () => {
         </div>
       </div>
 
-      {installTarget && <InstallSheet app={installTarget} onClose={() => setInstallTarget(null)} onInstall={handleInstall} />}
+      {installTarget && <InstallSheet app={installTarget} onClose={() => setInstallTarget(null)} onInstall={handleInstall}
+        onPinToDock={(id) => { pinToDock(id); toast.success("Pinned to dock"); }}
+        onOpen={() => setInstallTarget(null)} />}
     </div>
   );
 };
