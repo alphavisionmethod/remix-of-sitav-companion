@@ -1209,6 +1209,7 @@ const App = () => (
 
                     {/* Advisor Workspace — explicit sub-routes + wildcard */}
                     <Route path="/advisors" element={<AdvisorWorkspace />} />
+                    <Route path="/advisors/chat" element={<CalmAssistantChat />} />
                     <Route path="/advisors/council-dashboard" element={<AdvisorCouncilDashboard />} />
                     <Route path="/advisors/overview" element={<AdvisorWorkspace />} />
                     <Route path="/advisors/compare" element={<AdvisorWorkspace />} />
