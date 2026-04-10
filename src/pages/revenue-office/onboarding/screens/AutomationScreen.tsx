@@ -2,6 +2,7 @@ import { Eye, FileText, CheckCircle, Zap, Check, DollarSign, Star, AlertTriangle
 import { Toggle, SectionTitle, ChapterBanner } from "../primitives";
 import type { ScreenProps } from "../types";
 import { useCallback } from "react";
+import SitaInsightCallout from "./SitaInsightCallout";
 
 const levels = [
   { id: "suggest", label: "Suggestions only", desc: "SITA observes and recommends — you decide everything", icon: Eye, trust: 1 },
@@ -55,7 +56,17 @@ export default function AutomationScreen({ state, setState }: ScreenProps) {
               </div>
             </button>
           ))}
-        </div>
+      </div>
+      <SitaInsightCallout
+        show={state.automationLevel === "suggest" && state.growthBottlenecks.length >= 2}
+        message="Based on your bottlenecks, 'Draft for review' mode could save significant time while keeping you in control."
+        type="recommendation"
+      />
+      <SitaInsightCallout
+        show={state.automationLevel === "broad_auto" && state.humanOnlyTasks.length === 0}
+        message="Broad automation selected with no guardrails — consider marking at least pricing and proposals as human-only."
+        type="recommendation"
+      />
       </div>
       <div>
         <SectionTitle>What should always remain human?</SectionTitle>

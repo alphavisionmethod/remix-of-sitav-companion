@@ -35,6 +35,10 @@ export default function LiveOfficeSidebar({ state, stage }: { state: OnboardingS
     if (state.growthBottlenecks.includes("lead_followup")) items.push({ icon: TrendingUp, text: "Lead follow-up gap — $8K+ at risk", type: "warning" });
     if (state.connectedSystems.length > 0) items.push({ icon: Link2, text: `${state.connectedSystems.length} systems to connect`, type: "ready" });
     if (state.uploadedArtifacts.length > 0) items.push({ icon: FileText, text: `${state.uploadedArtifacts.length} materials for SITA`, type: "ready" });
+    if (state.uploadedArtifacts.includes("proposal_templates")) items.push({ icon: FileText, text: "Proposal-driven workflow detected", type: "detected" });
+    if (state.uploadedArtifacts.includes("call_scripts")) items.push({ icon: Phone, text: "Call-dependent sales motion", type: "detected" });
+    if (state.uploadedArtifacts.includes("sops")) items.push({ icon: Brain, text: "Process maturity — SOP-driven ops", type: "detected" });
+    if (state.pastedUrls.length >= 2) items.push({ icon: Link2, text: `Multi-channel: ${state.pastedUrls.length} touchpoints`, type: "detected" });
     if (state.journeyTemplate) items.push({ icon: Target, text: "Journey Twin forming", type: "ready" });
     return items;
   }, [state]);

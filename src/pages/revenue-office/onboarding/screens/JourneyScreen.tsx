@@ -4,6 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Target, Briefcase, GraduationCap, ShoppingCart, MapPin, Users, PenTool, Heart, Layers, Brain, Check, ArrowRight, MessageSquare, Phone, FileText, RefreshCw, Plus, X, AlertTriangle, Star } from "lucide-react";
 import { Toggle, SectionTitle, ScreenHeader } from "../primitives";
+import SitaInsightCallout from "./SitaInsightCallout";
 import type { ScreenProps } from "../types";
 
 const templates = [
@@ -32,6 +33,7 @@ export default function JourneyScreen({ state, setState }: ScreenProps) {
   const selected = useMemo(() => templates.find(t => t.id === state.journeyTemplate), [state.journeyTemplate]);
   const [newStage, setNewStage] = useState("");
   const [stageMarkers, setStageMarkers] = useState<Record<string, "critical" | "weak" | null>>({});
+  const [journeyFit, setJourneyFit] = useState<"" | "close" | "missing" | "different">("");
 
   const togglePain = useCallback((v: string) => {
     setState(p => ({ ...p, journeyPainPoints: p.journeyPainPoints.includes(v) ? p.journeyPainPoints.filter(x => x !== v) : [...p.journeyPainPoints, v] }));
@@ -76,6 +78,31 @@ export default function JourneyScreen({ state, setState }: ScreenProps) {
       </div>
       {selected && selected.id !== "custom" && (
         <>
+          {/* Journey confirmation */}
+          <div className="space-y-2">
+            <SitaInsightCallout
+              show={!!state.journeyTemplate && state.journeyTemplate !== "custom"}
+              message="Is this close to how your business actually works?"
+              type="confirmation"
+            />
+            <div className="grid grid-cols-3 gap-2">
+              {([
+                { id: "close", label: "Yes, this is close" },
+                { id: "missing", label: "Close, but missing steps" },
+                { id: "different", label: "Quite different" },
+              ] as const).map(opt => (
+                <button key={opt.id} onClick={() => setJourneyFit(opt.id)}
+                  className={`p-2.5 rounded-lg border text-[11px] font-medium transition-all ${
+                    journeyFit === opt.id
+                      ? "bg-primary/10 border-primary/30 text-foreground"
+                      : "bg-card/50 border-border/50 text-muted-foreground hover:border-primary/20"
+                  }`}>
+                  {journeyFit === opt.id && <Check className="h-3 w-3 inline mr-1 text-primary" />}
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          </div>
           <Card className="bg-card/60 border-primary/15 overflow-hidden">
             <CardContent className="p-4">
               <div className="flex items-center justify-between mb-3">
