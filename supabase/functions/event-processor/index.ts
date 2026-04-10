@@ -9,18 +9,19 @@ import { requireAuth } from "../_shared/auth.ts";
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
-  // Zod input validation
+  // Parse body once — Deno Request.json() can only be called once
+  let parsedBody: Record<string, unknown> = {};
   if (req.method === "POST" || req.method === "PUT" || req.method === "PATCH") {
     try {
+      parsedBody = await req.json();
       const BodySchema = z.object({ event_type: z.string().min(1), payload: z.record(z.unknown()).optional() });
-      const body = await req.json();
-      const parsed = BodySchema.safeParse(body);
-      if (!parsed.success) {
-        return new Response(JSON.stringify({ error: "Validation failed", details: parsed.error.flatten().fieldErrors }), {
+      const validated = BodySchema.safeParse(parsedBody);
+      if (!validated.success) {
+        return new Response(JSON.stringify({ error: "Validation failed", details: validated.error.flatten().fieldErrors }), {
           status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" }
         });
       }
-    } catch (_) { /* non-JSON or GET */ }
+    } catch (_) { /* non-JSON */ }
   }
 
   try {
@@ -35,7 +36,7 @@ serve(async (req) => {
 
     const userId = user.id;
 
-    const body = await req.json().catch(() => ({}));
+    const body = parsedBody;
     const mode = body.mode || "process"; // "process" | "emit"
 
     // ── Emit Mode: Create a new event ──

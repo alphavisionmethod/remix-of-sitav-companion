@@ -115,7 +115,7 @@ serve(async (req) => {
 
     // ── Process: mark signals as processed ──
     if (path === "process") {
-      const { signal_ids } = body;
+      const { signal_ids } = parsedBody as Record<string, unknown>;
       if (signal_ids?.length) {
         await supabase.from("agent_signals")
           .update({ status: "processed", processed_at: new Date().toISOString() })

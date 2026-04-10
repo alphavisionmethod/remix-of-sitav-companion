@@ -7,14 +7,15 @@ import { z } from "https://esm.sh/zod@3.23.8";
 Deno.serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
-  // Zod input validation
+  // Parse body once — Deno Request.json() can only be called once
+  let parsedBody: Record<string, unknown> = {};
   if (req.method === "POST" || req.method === "PUT" || req.method === "PATCH") {
     try {
+      parsedBody = await req.json();
       const BodySchema = z.object({ update_type: z.string().optional(), force: z.boolean().optional() });
-      const body = await req.json();
-      const parsed = BodySchema.safeParse(body);
-      if (!parsed.success) {
-        return new Response(JSON.stringify({ error: "Validation failed", details: parsed.error.flatten().fieldErrors }), {
+      const validated = BodySchema.safeParse(parsedBody);
+      if (!validated.success) {
+        return new Response(JSON.stringify({ error: "Validation failed", details: validated.error.flatten().fieldErrors }), {
           status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" }
         });
       }
@@ -55,7 +56,7 @@ Deno.serve(async (req) => {
 
     // POST — register device or report update
     if (req.method === "POST") {
-      const body = await req.json();
+      const body = parsedBody;
       const action = body.action;
 
       if (action === "register") {

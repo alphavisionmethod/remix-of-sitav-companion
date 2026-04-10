@@ -31,14 +31,15 @@ Deno.serve(async (req: Request) => {
     return rateLimitResponse(rl, corsHeaders);
   }
 
-  // Input validation
+  // Parse body once — Deno Request.json() can only be called once
+  let parsedBody: Record<string, unknown> = {};
   if (req.method === "POST" || req.method === "PUT" || req.method === "PATCH") {
     try {
-  const BodySchema = z.object({ action: z.string().min(1), amount: z.number().optional(), metadata: z.record(z.unknown()).optional() });
-      const body = await req.json();
-      const parsed = BodySchema.safeParse(body);
-      if (!parsed.success) {
-        return new Response(JSON.stringify({ error: "Validation failed", details: parsed.error.flatten().fieldErrors }), {
+      parsedBody = await req.json();
+      const BodySchema = z.object({ action: z.string().min(1), amount: z.number().optional(), metadata: z.record(z.unknown()).optional() });
+      const validated = BodySchema.safeParse(parsedBody);
+      if (!validated.success) {
+        return new Response(JSON.stringify({ error: "Validation failed", details: validated.error.flatten().fieldErrors }), {
           status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" }
         });
       }
@@ -70,7 +71,7 @@ Deno.serve(async (req: Request) => {
       });
     }
 
-    const body: CallRequest = await req.json();
+    const body = parsedBody as unknown as CallRequest;
 
     if (body.action === "call") {
       if (!body.to || !body.contactId) {
