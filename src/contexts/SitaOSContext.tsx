@@ -24,6 +24,12 @@ import { createMemoryGovernance, type MemoryGovernanceEngine } from "@/lib/servi
 import { createBoundaryEngine, type BoundaryEngineService } from "@/lib/services/boundary-engine/boundary-engine";
 import { createExperienceSignature, type ExperienceSignatureService } from "@/lib/services/experience-signature/experience-signature";
 
+// ── CAI Persistence Bridge ──────────────────────────────────────
+import {
+  persistIntentResolution, persistOperatingMode, persistPrioritySnapshot,
+  persistAttentionDecision, persistOpportunitySignal, persistDigestCompilation,
+} from "@/lib/persistence/cai-persistence-bridge";
+
 // ── Kernel Shape ─────────────────────────────────────────────────
 
 export interface SitaOSKernel {
