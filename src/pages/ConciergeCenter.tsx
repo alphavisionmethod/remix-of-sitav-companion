@@ -2,6 +2,8 @@ import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
 import { SitaTabs } from "@/components/sita/SitaComponents";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import { useExperienceSignature } from "@/hooks/useExperienceSignature";
+import { useOSOrchestration } from "@/hooks/useOSOrchestration";
 
 import ConciergeOverview from "./concierge/ConciergeOverview";
 import HouseholdTasks from "./concierge/HouseholdTasks";
@@ -63,6 +65,8 @@ const ConciergeCenter = () => {
   const { isDemoMode } = useDataMode();
   const location = useLocation();
   const navigate = useNavigate();
+  const signature = useExperienceSignature();
+  const os = useOSOrchestration();
   const activePage = subpageFromPath(location.pathname);
 
   const goTo = (key: string) => {

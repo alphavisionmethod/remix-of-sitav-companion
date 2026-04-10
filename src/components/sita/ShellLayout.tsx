@@ -37,6 +37,7 @@ import { useRealtimeNotifications } from "@/hooks/use-realtime-notifications";
 import { useProactiveNotifications } from "@/hooks/use-proactive-notifications";
 import { useDisplayMode } from "@/contexts/DisplayModeContext";
 import { useInspector } from "@/contexts/InspectorContext";
+import { useAdaptiveInterface } from "@/hooks/useAdaptiveInterface";
 import { useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -74,6 +75,8 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
   const [commandOpen, setCommandOpen] = useState(false);
   const { isCalm, isFocus } = useDisplayMode();
   const { isOpen: railOpen } = useInspector();
+  // Activate OS adaptive interface CSS variables globally
+  useAdaptiveInterface();
   const location = useLocation();
 
   // Check for desktop entry ceremony trigger

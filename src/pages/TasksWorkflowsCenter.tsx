@@ -14,6 +14,8 @@ import { Input } from "@/components/ui/input";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useAuth } from "@/contexts/AuthContext";
+import { useOSOrchestration } from "@/hooks/useOSOrchestration";
+import { useAdaptiveInterface } from "@/hooks/useAdaptiveInterface";
 import { useQuery } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";
 import { motion, AnimatePresence } from "framer-motion";
@@ -88,6 +90,9 @@ const DOMAIN_COLORS: Record<TaskDomain, string> = {
 export default function TasksWorkflowsCenter() {
   const { isDemoMode } = useDataMode();
   const { user } = useAuth();
+  const os = useOSOrchestration();
+  const interfaceState = useAdaptiveInterface();
+  const attentionStack = os.hydrated ? os.getAttentionStack() : { critical: [], active: [], queued: [], deferred: [] };
   const [activeTab, setActiveTab] = useState("overview");
   const [search, setSearch] = useState("");
   const [domainFilter, setDomainFilter] = useState<string>("all");

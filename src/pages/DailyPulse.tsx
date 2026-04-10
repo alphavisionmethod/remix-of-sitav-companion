@@ -28,6 +28,9 @@ import type { DomainId, Opportunity, Receipt as ReceiptContract } from "@/packag
 import type { BusinessHealthResult } from "@/lib/domain-engines/business-os";
 import type { FinancialHealthResult, CashflowAnalysis, ReserveAssessment, BillCalendarResult } from "@/lib/domain-engines/finance-os";
 import type { TaskPrioritization } from "@/lib/domain-engines/concierge-os";
+import { useOSOrchestration } from "@/hooks/useOSOrchestration";
+import { useAdaptiveInterface } from "@/hooks/useAdaptiveInterface";
+import { useExperienceSignature } from "@/hooks/useExperienceSignature";
 import {
   Briefcase, DollarSign, Workflow, Clock, AlertTriangle, CheckCircle, ArrowRight, Sparkles, BarChart3, Receipt, Brain,
   Plane, Users, CalendarDays, FileText, Headphones, Settings, ShieldCheck, Zap, Home, TrendingUp, Shield, Target,
@@ -36,7 +39,6 @@ import {
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-
 
 
 // ── Mission Mode Emphasis Config ─────────────────────────────────
@@ -135,14 +137,24 @@ const DailyPulse = () => {
   const { isDemoMode } = useDataMode();
   const { inspect } = useInspector();
   const { missionMode } = useDisplayMode();
+  const os = useOSOrchestration();
+  const interfaceState = useAdaptiveInterface();
+  const signature = useExperienceSignature();
   const [showPostArrival, setShowPostArrival] = useState(() => {
     return !localStorage.getItem("sita-post-arrival-seen") && sessionStorage.getItem("sita-post-arrival-trigger") === "true";
   });
   const [seeding, setSeeding] = useState(false);
   const [aiInsights, setAiInsights] = useState<Record<string, string>>({});
+  const [osPulseDigest, setOsPulseDigest] = useState<string | null>(null);
   const aiInsight = useAIInsight();
   const hour = new Date().getHours();
   const timeGreeting = hour < 12 ? "Good morning" : hour < 18 ? "Good afternoon" : "Good evening";
+
+  // OS-driven daily pulse generation
+  const cognitiveLoad = os.getCognitiveLoad();
+  const attentionStack = os.getAttentionStack();
+  const currentMode = os.getCurrentMode();
+  const activeInterventions = os.getActiveInterventions();
 
   // Domain projection hooks (wired from use-domain-projections + use-calendar-data)
   const financeProjection = useFinanceProjection();
