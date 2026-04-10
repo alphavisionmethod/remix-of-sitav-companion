@@ -1,96 +1,109 @@
 
 
-# Intelligence Architecture Enhancement Plan
+# Money Office Enhancement Plan
 
-## Audit Results
+## Current State
 
-**Fully implemented and verified (no changes needed):**
-- 12 strategic intelligence engines (A–L) in `src/lib/strategic-intelligence/` — all real logic, no stubs
-- 12 admin dashboards in `src/pages/admin/strategic/` — all wired to persistence hooks
-- All 12 routes registered in `AdminRoutes.tsx`
-- 4 dedicated persistence layers: intelligence-asset, quality-floor, operator-taste, compute-governance
-- Generic engine persistence adapter (`engine_state` + `engine_events` tables)
-- Barrel export with all types and functions
+MoneyCenter has 13 tabs and 33 backend services. Core capabilities (bills, subscriptions, reserves, tax, cash timing, receivables, investment office, approvals, proof, documents, boardroom, settings) are fully implemented with real CRUD, edge function wiring, and advisor cards.
 
-**What's missing — the REST API layer (contracts A–J from spec):**
+## What's Missing
 
-The `admin-intelligence` edge function only has 3 endpoints (`anomalies`, `forecast`, `optimize`). None of the 10 API contract families specified in the prompt exist as server-side endpoints:
+Seven major workspace pages and five "wow" features need to be added. No backend services need creation — the finance-os service layer already covers the logic. This is primarily a frontend expansion with MoneyCenter tab/route wiring.
 
-| Contract | Endpoint Pattern | Status |
-|----------|-----------------|--------|
-| A. Asset Library | `GET/POST /assets`, `POST /assets/:id/reuse-evaluate` | Missing |
-| B. Differential Reasoning | `POST /differential-reasoning/evaluate` | Missing |
-| C. Intelligence Packets | `POST /packets/compile`, `GET /packets/:id` | Missing |
-| D. Efficiency Scores | `GET /efficiency/scores`, `GET /scores/:id/history` | Missing |
-| E. Outcome Economics | `GET /outcomes/economics`, `GET /high-value-categories` | Missing |
-| F. Escalation | `POST /escalations` | Missing |
-| G. Digests | `GET/POST /digests` | Missing |
-| H. Patterns | `GET/POST /patterns`, `POST /:id/generalize` | Missing |
-| I. Prompt Profiles | `GET/POST /prompt-profiles`, `POST /:id/evaluate` | Missing |
-| J. Overview | `GET /overview` (unified dashboard API) | Missing |
+## New Pages to Add
 
-The dashboards currently work by querying Supabase directly via client-side persistence hooks. The API layer adds programmatic/server-to-server access and enables the intelligence pipeline to be called from edge functions and agents.
+### 1. `src/pages/money/NetWorthOffice.tsx`
+Balance sheet view: total net worth, asset vs liability breakdown, trend over time, account contributions to change, personal/business/household net worth split. Uses existing `AccountSummary.netWorth` from finance contracts and `useFinancialAccounts` hook.
 
-## Implementation Plan
+### 2. `src/pages/money/DebtCreditOffice.tsx`
+Credit cards, loans, mortgage, utilization monitoring, payoff plans, interest drag analysis, credit score pulse, debt payoff simulations. Pulls from existing `FinancialAccount` records where type is "credit" or "loan", plus new debt-specific computations.
 
-### 1. Build `intelligence-api` edge function (~400 lines)
-Single edge function with path-based routing covering all 10 contract families. Each handler:
-- Validates input with Zod
-- Uses service-role Supabase client for DB access
-- Calls the actual engine functions (imported logic patterns applied server-side)
-- Returns the exact response shapes from the spec
+### 3. `src/pages/money/BudgetEnvelopeOffice.tsx`
+YNAB-style envelope budgeting: category budgets, "give every dollar a job", rollover logic, overspend handling, planned vs actual, monthly budget view. Uses existing `BudgetHealth` contract type.
 
-Endpoints implemented:
-- `GET /assets` — list with filters (domain, type, confidence, freshness, verification, page, limit)
-- `GET /assets/:id` — detail with usageStats
-- `POST /assets` — create new asset
-- `POST /assets/:id/reuse-evaluate` — evaluate reuse decision
-- `POST /differential-reasoning/evaluate` — run differential analysis
-- `GET /differential-reasoning/:id` — fetch prior result
-- `POST /packets/compile` — compile domain packet
-- `GET /packets/:id` — fetch packet
-- `GET /efficiency/scores` — list efficiency scores with scope filters
-- `GET /efficiency/scores/:id/history` — trend history
-- `GET /outcomes/economics` — value-per-dollar view
-- `GET /outcomes/high-value-categories` — high vs low value
-- `POST /escalations` — log/trigger escalation
-- `GET /digests` — list digests
-- `POST /digests/generate` — generate digest
-- `GET /patterns` — list patterns
-- `POST /patterns/extract` — extract pattern from sources
-- `POST /patterns/:id/generalize` — move to cross-tenant review
-- `GET /prompt-profiles` — list prompt profiles
-- `POST /prompt-profiles` — create profile
-- `POST /prompt-profiles/:id/evaluate` — evaluate prompt efficiency
-- `GET /overview` — unified operator dashboard snapshot
+### 4. `src/pages/money/TransactionIntelligence.tsx`
+Transaction feed with categorization, merchant intelligence, recurring detection, anomaly detection, duplicate detection, split transactions, business vs personal classification, confidence scores. Uses existing `TransactionRecord` contract and `transaction-categorizer.service.ts`.
 
-### 2. Wire the existing dashboards to use the API
-Update the 6 dashboards that currently rely on `useEngineEvents` (generic event-based) to optionally call the new API for richer, structured responses:
-- `CostToConfidenceDashboard` → `/efficiency/scores` + `/overview`
-- `ValueRiskDashboard` → enriched from `/overview`
-- `TimeToTruthDashboard` → `/efficiency/scores/:id/history`
-- `BenchmarkLabDashboard` → `/overview`
-- `IntelligenceInsuranceDashboard` → `/escalations` data
-- `ReasoningReplayDashboard` → `/differential-reasoning` data
+### 5. `src/pages/money/HouseholdMoneyOffice.tsx`
+Shared accounts, household goals, family spending categories, partner visibility, shared budget views. Links to existing `HouseholdCommandCenter` data via `useHouseholds` hook.
 
-The other 6 dashboards (Capital Index, Quality Floor, Decay Monitor, Intelligence Market, Portfolio Allocation, Operator Taste) already use dedicated persistence hooks and are correctly wired.
+### 6. `src/pages/money/FinancialHealthPulse.tsx`
+Composite "money health" scoring: safe-to-spend, debt pressure, bill coverage, cash stability, savings progress, credit utilization, recurring burden, spending discipline, tax preparedness, reserve health. Synthesizes data from all other money hooks into a single health score.
 
-### 3. Connect pipeline to API persistence
-Ensure `processSignal()` in `intelligence-pipeline.ts` writes results to the persistence layer so dashboards show real pipeline output — append engine events for each pipeline stage completion.
+### 7. `src/pages/money/MoneyAdvisorBoard.tsx`
+Dedicated advisor surface with 8 specialized advisors: Cash Flow, Budget, Debt, Credit, Tax Readiness, Household Finance, Founder Money, Safe-to-Spend, plus Chief Money Strategist synthesis. Each uses `LiveAdvisorCard` with domain-specific intents.
 
-### Technical Details
+### 8. `src/pages/money/ScenarioPlanner.tsx`
+What-if engine: "cut subscriptions", "increase savings 10%", "revenue drops", "pay off debt X first", "hire someone". Uses existing `TreasuryScenarioResult` contract with interactive parameter controls.
 
-**File changes:**
+## Wow Features (embedded in existing + new pages)
+
+- **Money Twin**: Added as a visual section in MoneyOverview — a live Sankey-style flow map of income → bills → budgets → debt → reserves → goals
+- **Cashflow Storyline**: Added to CashTiming — narrative flow of where money came from, went, what changed, what's coming
+- **Subscription Leak Radar**: Enhanced in SubscriptionsWaste — duplicate detection, rising costs, forgotten renewals
+- **Bill Shock Prevention**: Enhanced in BillsWorkspace — annual renewal detection, low-cash timing collision alerts
+- **Founder Boundary Monitor**: Added to MoneyOverview or as section in new FinancialHealthPulse — personal/business co-mingling detection
+
+## Wiring Changes
+
+### `src/pages/MoneyCenter.tsx`
+Add 8 new SubPage entries, imports, tab definitions, and route mapping.
+
+### `src/App.tsx`
+Add 8 new routes: `/money/net-worth`, `/money/debt-credit`, `/money/budgets`, `/money/transactions`, `/money/household`, `/money/health`, `/money/advisors`, `/money/scenarios`.
+
+### `src/pages/__tests__/money-pages.test.tsx`
+Add 8 new page entries to the test array.
+
+## Finance Contracts Enhancement
+
+### `src/packages/finance-contracts/index.ts`
+Add new types:
+- `DebtProfile` (credit cards, loans, utilization, payoff plan)
+- `FinancialHealthScore` (composite scoring)
+- `ScenarioInput` / `ScenarioOutput` (what-if parameters)
+- `EnvelopeBudget` (YNAB-style envelope)
+- `HouseholdFinanceSummary`
+
+## Backend Services Enhancement
+
+### `src/lib/services/finance-os/debt-analyzer.service.ts` (new)
+Interest drag, payoff ordering (avalanche/snowball), utilization scoring, debt-to-income ratio.
+
+### `src/lib/services/finance-os/financial-health.service.ts` (new)
+Composite health score computation from all money dimensions.
+
+### `src/lib/services/finance-os/scenario-engine.service.ts` (new)
+What-if projection engine using existing cashflow/budget/reserve data.
+
+### `src/lib/services/finance-os/envelope-budget.service.ts` (new)
+Envelope allocation, rollover, overspend recovery logic.
+
+## File Summary
 
 | File | Action |
 |------|--------|
-| `supabase/functions/intelligence-api/index.ts` | **New** — ~400 line edge function with all 10 API contract families |
-| `src/lib/hooks/useIntelligenceAPI.ts` | **New** — React hooks that call the edge function for structured data |
-| `src/pages/admin/strategic/CostToConfidenceDashboard.tsx` | Update to use API hook for richer data |
-| `src/pages/admin/strategic/ValueRiskDashboard.tsx` | Update to use API hook |
-| `src/pages/admin/strategic/TimeToTruthDashboard.tsx` | Update to use API hook |
-| `src/pages/admin/strategic/BenchmarkLabDashboard.tsx` | Update to use API hook |
-| `src/pages/admin/strategic/IntelligenceInsuranceDashboard.tsx` | Update to use API hook |
-| `src/pages/admin/strategic/ReasoningReplayDashboard.tsx` | Update to use API hook |
-| `src/lib/intelligence-architecture/intelligence-pipeline.ts` | Add persistence calls after each pipeline stage |
+| `src/packages/finance-contracts/index.ts` | Add 5 new contract types |
+| `src/lib/services/finance-os/debt-analyzer.service.ts` | New — debt payoff engine |
+| `src/lib/services/finance-os/financial-health.service.ts` | New — composite health scoring |
+| `src/lib/services/finance-os/scenario-engine.service.ts` | New — what-if projections |
+| `src/lib/services/finance-os/envelope-budget.service.ts` | New — YNAB-style envelope logic |
+| `src/lib/services/finance-os/index.ts` | Update barrel exports |
+| `src/pages/money/NetWorthOffice.tsx` | New — balance sheet page |
+| `src/pages/money/DebtCreditOffice.tsx` | New — debt/credit/liability page |
+| `src/pages/money/BudgetEnvelopeOffice.tsx` | New — YNAB-style budgets |
+| `src/pages/money/TransactionIntelligence.tsx` | New — smart transaction feed |
+| `src/pages/money/HouseholdMoneyOffice.tsx` | New — shared/family finances |
+| `src/pages/money/FinancialHealthPulse.tsx` | New — composite health score |
+| `src/pages/money/MoneyAdvisorBoard.tsx` | New — 8 specialized advisors |
+| `src/pages/money/ScenarioPlanner.tsx` | New — what-if engine |
+| `src/pages/MoneyCenter.tsx` | Add 8 tabs + imports + routing |
+| `src/App.tsx` | Add 8 routes |
+| `src/pages/__tests__/money-pages.test.tsx` | Add 8 test entries |
+| `src/pages/money/MoneyOverview.tsx` | Enhance with Money Twin flow visualization |
+| `src/pages/money/BillsWorkspace.tsx` | Enhance with Bill Shock Prevention alerts |
+| `src/pages/money/SubscriptionsWaste.tsx` | Enhance with Subscription Leak Radar |
+| `src/pages/money/CashTiming.tsx` | Enhance with Cashflow Storyline narrative |
+
+All new pages use existing SITA primitives (SitaCard, KPITile, TrustBadge, ConfidenceBar, LiveAdvisorCard, DomainHeader), existing hooks, and existing finance-os services. No stubs — every component renders real computed data from deterministic engines.
 
