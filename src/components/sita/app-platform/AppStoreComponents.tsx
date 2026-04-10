@@ -242,8 +242,9 @@ export function CategoryStrip({ categories, active, onSelect }: {
 
 // ── Install Sheet (Modal Overlay) ──
 
-export function InstallSheet({ app, onClose, onInstall }: {
+export function InstallSheet({ app, onClose, onInstall, onPinToDock, onOpen }: {
   app: AppDefinition; onClose: () => void; onInstall: () => void;
+  onPinToDock?: (appId: string) => void; onOpen?: () => void;
 }) {
   const [status, setStatus] = useState<"review" | "permissions" | "scope" | "installing" | "installed">("review");
   const [progress, setProgress] = useState(0);
