@@ -165,18 +165,11 @@ const CommunicationsPage = lazy(() => import("./pages/CommunicationsPage"));
 const NotificationSettingsPage = lazy(() => import("./pages/NotificationSettingsPage"));
 const NotificationCenter = lazy(() => import("./pages/NotificationCenter"));
 const CustomerHealthPage = lazy(() => import("./pages/CustomerHealthPage"));
-const GeneratedTruthDashboard = lazy(() => import("./pages/admin/GeneratedTruthDashboard"));
-const FleetHealthPage = lazy(() => import("./pages/admin/FleetHealthPage"));
-const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
 const IncidentCommandCenter = lazy(() => import("./pages/admin/IncidentCommandCenter"));
 const AdminDeploymentTruthCenter = lazy(() => import("./pages/admin/AdminDeploymentRings"));
 const ProofMatrixExplorer = lazy(() => import("./pages/admin/ProofMatrixExplorer"));
 const ConnectorGovernanceCenter = lazy(() => import("./pages/admin/ConnectorGovernanceCenter"));
 const LaunchReadinessBoard = lazy(() => import("./pages/admin/LaunchReadinessBoard"));
-const TeamManagement = lazy(() => import("./pages/admin/TeamManagement"));
-const SystemManagement = lazy(() => import("./pages/admin/SystemManagement"));
-const UserManagement = lazy(() => import("./pages/admin/UserManagement"));
-const AITokenDashboard = lazy(() => import("./pages/admin/AITokenDashboard"));
 const MissionControlHome = lazy(() => import("./pages/admin/MissionControlHome"));
 const AdminDurabilityBoardPage = lazy(() => import("./pages/admin/AdminMutationAudit"));
 const AdminProjectionControl = lazy(() => import("./pages/admin/AdminProjectionModels"));
@@ -1521,13 +1514,6 @@ const App = () => (
 
                     {/* Admin — wrapped in AdminShell */}
                     <Route element={<AdminShellLayout />}>
-                    <Route path="/admin/generated-truth" element={<GeneratedTruthDashboard />} />
-                    <Route path="/admin/fleet-health" element={<FleetHealthPage />} />
-                    <Route path="/admin/dashboard" element={<AdminDashboard />} />
-                    <Route path="/admin/team" element={<TeamManagement />} />
-                    <Route path="/admin/system" element={<SystemManagement />} />
-                    <Route path="/admin/users" element={<UserManagement />} />
-                    <Route path="/admin/ai-tokens" element={<AITokenDashboard />} />
                     <Route path="/admin/incidents" element={<IncidentCommandCenter />} />
                     <Route path="/admin/deployment" element={<AdminDeploymentTruthCenter />} />
                     <Route path="/admin/proof-matrix" element={<ProofMatrixExplorer />} />
