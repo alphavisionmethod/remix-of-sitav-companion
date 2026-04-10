@@ -21,9 +21,9 @@ export const SitaCard = ({ children, className, glow, hover = true, elevated, la
     transition={{ duration: 0.25, ease: "easeOut" }}
     onClick={onClick}
     className={cn(
-      "rounded-xl border border-border bg-card transition-all duration-200",
+      "rounded-xl border border-border bg-card transition-all duration-200 touch-manipulation",
       elevated ? "bg-card-elevated" : "",
-      hover && "hover:shadow-card-hover hover:border-primary/15 cursor-pointer",
+      hover && "hover:shadow-card-hover hover:border-primary/15 cursor-pointer active:scale-[0.98]",
       glow && "shadow-glow-purple border-primary/20",
       selected && "border-primary/40 shadow-glow-purple ring-1 ring-primary/20",
       lane === "action" && "lane-action",
