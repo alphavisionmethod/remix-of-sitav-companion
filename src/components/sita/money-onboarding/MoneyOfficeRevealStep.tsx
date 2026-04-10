@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Sparkles, BarChart3, ShieldCheck, Brain, Landmark, Receipt, Target, ArrowRight } from "lucide-react";
+import { Sparkles, BarChart3, ShieldCheck, Brain, Landmark, Receipt, Target, ArrowRight, Building2 } from "lucide-react";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { cn } from "@/lib/utils";
 import type { MoneyOnboardingState } from "./types";
@@ -91,6 +91,3 @@ export function MoneyOfficeRevealStep({ state, onEnterMoneyOffice }: Props) {
     </div>
   );
 }
-
-// Need Building2 import for founder notice
-import { Building2 } from "lucide-react";
