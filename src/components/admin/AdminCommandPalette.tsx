@@ -40,6 +40,10 @@ const NAV_ITEMS = [
   { label: "ITC: Architecture", path: "/admin/implementation-truth/architecture", icon: Cpu, group: "Navigation" },
   { label: "ITC: Route Inventory", path: "/admin/implementation-truth/routes", icon: Globe, group: "Navigation" },
   { label: "ITC: Runtime Evidence", path: "/admin/implementation-truth/runtime", icon: Zap, group: "Navigation" },
+  { label: "ITC: Prompt Traceability", path: "/admin/implementation-truth/prompts", icon: FileText, group: "Navigation" },
+  { label: "ITC: Validation Pipeline", path: "/admin/implementation-truth/pipeline", icon: Activity, group: "Navigation" },
+  { label: "ITC: Launch Truth Gate", path: "/admin/implementation-truth/launch-gate", icon: Target, group: "Navigation" },
+  { label: "ITC: Feature Manifests", path: "/admin/implementation-truth/manifests", icon: Layers, group: "Navigation" },
 ];
 
 const ACTION_ITEMS = [
