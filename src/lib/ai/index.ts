@@ -21,7 +21,7 @@ export {
 } from "./ai-surface-grammar";
 
 // Launch honesty reclassifier
-export { reclassifyAIFeatures } from "./launch-honesty-reclassifier";
+export { reclassifyAIFeatures } from "./ai-launch-honesty-reclassifier";
 
 // Hooks
 export { useAICapability } from "./hooks/use-ai-capability";
