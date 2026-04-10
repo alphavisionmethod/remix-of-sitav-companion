@@ -165,7 +165,10 @@ export default function RevealScreen({ state }: ScreenProps) {
           )}
 
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: phase === "ready" ? 1 : 0.3 }} transition={{ delay: 0.3 }}>
-            <button onClick={() => navigate("/revenue-office/boardroom")} disabled={phase !== "ready"}
+            <button onClick={() => {
+              try { localStorage.setItem("sita_onboarding_state", JSON.stringify(state)); } catch {}
+              navigate("/revenue-office/boardroom");
+            }} disabled={phase !== "ready"}
               className="w-full p-4 rounded-xl bg-primary text-primary-foreground text-sm font-semibold flex items-center justify-center gap-2 hover:bg-primary/90 transition-colors disabled:opacity-50">
               Enter Your Revenue Office <ArrowRight className="h-4 w-4" />
             </button>
