@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import {
-  ArrowLeft, TrendingUp, TrendingDown, Shield, Zap, Brain,
+  ArrowLeft, TrendingUp, TrendingDown, Shield, Zap, Brain, BarChart3,
   Target, AlertTriangle, ChevronRight, Calendar, Eye, Plus, Info, Activity, Link2
 } from "lucide-react";
 import LightweightChart from "@/components/investment/LightweightChart";
