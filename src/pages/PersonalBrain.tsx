@@ -10,6 +10,8 @@ import { supabase } from "@/integrations/supabase/client";
 import ReactMarkdown from "react-markdown";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useOSOrchestration } from "@/hooks/useOSOrchestration";
+import { useExperienceSignature } from "@/hooks/useExperienceSignature";
 
 
 
@@ -29,6 +31,8 @@ const modes: { id: Mode; label: string; icon: React.ElementType; description: st
 
 function PersonalBrainInner() {
   const { user } = useAuth();
+  const os = useOSOrchestration();
+  const signature = useExperienceSignature();
   const [mode, setMode] = useState<Mode>("think");
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
@@ -47,9 +51,14 @@ function PersonalBrainInner() {
     setInput("");
     setStreaming(true);
 
+    // Route through OS intent orchestrator for tracking
+    if (os.hydrated) {
+      os.processIntent(input.trim(), "chat", "desktop").catch(() => {});
+    }
+
     try {
       const { data, error } = await supabase.functions.invoke("personal-brain", {
-        body: { messages: newMessages, mode },
+        body: { messages: newMessages, mode, osMode: os.getCurrentMode(), tone: signature.tone },
       });
 
       if (error) throw error;

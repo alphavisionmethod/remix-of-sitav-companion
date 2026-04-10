@@ -14,6 +14,9 @@ import { TrustBadge } from "@/components/sita/TrustBadge";
 import { StateBadge, StateStep } from "@/components/sita/StateBadge";
 import { ConfidenceLadder } from "@/components/sita/AdvisorComponents";
 import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
+import { useOSOrchestration } from "@/hooks/useOSOrchestration";
+import { useExperienceSignature } from "@/hooks/useExperienceSignature";
+import { useAdaptiveInterface } from "@/hooks/useAdaptiveInterface";
 import { Progress } from "@/components/ui/progress";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -43,7 +46,6 @@ import type { ProofPack } from "@/packages/proof-model";
 import type { AdvisorConfig } from "@/packages/advisor-config";
 import { cn } from "@/lib/utils";
 import { useBoardroomData } from "@/hooks/use-boardroom-data";
-
 
 
 // ── Section Renderers (preserved from original) ───────────────
@@ -970,6 +972,11 @@ const FullscreenPresentation = ({ type, onExit }: { type: BoardroomType; onExit:
 // ── Main Boardroom ────────────────────────────────────────────
 
 const Boardroom = () => {
+  const os = useOSOrchestration();
+  const signature = useExperienceSignature();
+  const interfaceState = useAdaptiveInterface();
+  const attentionStack = os.getAttentionStack();
+  const currentMode = os.getCurrentMode();
 
   const [activeType, setActiveType] = useState<BoardroomType>("morning-briefing");
   const [isPresenting, setIsPresenting] = useState(false);

@@ -20,7 +20,7 @@ import {
   ToggleLeft, ToggleRight, Zap, DollarSign, Workflow, TrendingUp, FileText,
   ChevronRight, Check, AlertTriangle, Clock, Wifi, Download, Trash2, ShieldAlert,
   Settings, Home, Users, Monitor, Smartphone, Key, Volume2, VolumeX,
-  HelpCircle, Wrench, Database, RefreshCw, Cpu, Search
+  HelpCircle, Wrench, Database, RefreshCw, Cpu, Search, Activity
 } from "lucide-react";
 import { useDemoMode } from "@/hooks/use-brain-core";
 import { toast } from "sonner";
@@ -30,6 +30,7 @@ import { useGovernanceSimulator } from "@/contexts/SitaKernelContext";
 import type { SimulationResult } from "@/lib/core-services/governance-simulator";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useConfirmation } from "@/hooks/use-confirmation";
+import { useOSOrchestration } from "@/hooks/useOSOrchestration";
 import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
 
 
@@ -38,10 +39,11 @@ const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.04 } } };
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.25 } } };
 
 type SettingsSection = "identity" | "trust" | "privacy" | "advisors" | "integrations" | "appearance" |
-  "notifications" | "devices" | "household" | "business" | "workflows" | "backup" | "support";
+  "notifications" | "devices" | "household" | "business" | "workflows" | "backup" | "support" | "operating-modes";
 
 const settingsSections: { key: SettingsSection; label: string; icon: typeof Settings; description: string }[] = [
   { key: "identity", label: "Identity", icon: User, description: "Profile, account, and environment" },
+  { key: "operating-modes", label: "Operating Modes", icon: Activity, description: "Focus, Travel, Boardroom, Recovery…" },
   { key: "trust", label: "Trust & Security", icon: Shield, description: "Trust mode, approvals, and boundaries" },
   { key: "privacy", label: "Privacy", icon: Lock, description: "Data visibility, learning, and export" },
   { key: "advisors", label: "Advisors & AI", icon: Brain, description: "AI behavior, autonomy, and budget" },
@@ -98,6 +100,8 @@ const SettingsPage = () => {
   const { isDemoMode } = useDataMode();
   const { isLoading, toggleDemoMode } = useDemoMode();
   const { confirmation, confirm: confirmAction } = useConfirmation();
+  const os = useOSOrchestration();
+  const currentMode = os.getCurrentMode();
   const [activeSection, setActiveSection] = useState<SettingsSection>("identity");
   const [autonomy, setAutonomy] = useState("simulate-first");
   const [confidence, setConfidence] = useState("70");

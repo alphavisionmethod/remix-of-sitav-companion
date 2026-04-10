@@ -10,6 +10,8 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useAdaptiveInterface } from "@/hooks/useAdaptiveInterface";
+import { useOSOrchestration } from "@/hooks/useOSOrchestration";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useMemo } from "react";
 import { cn } from "@/lib/utils";
@@ -140,8 +142,16 @@ const NotificationCenter = () => {
   const { user } = useAuth();
   const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
+  const interfaceState = useAdaptiveInterface();
+  const os = useOSOrchestration();
+  const cogLoad = os.getCognitiveLoad();
   const [category, setCategory] = useState<NotifCategory>("all");
   const [quietMode, setQuietMode] = useState(false);
+
+  // Auto-activate quiet mode when cognitive load is high
+  useMemo(() => {
+    if (cogLoad > 0.8 && !quietMode) setQuietMode(true);
+  }, [cogLoad]);
 
   // Fetch notifications from queue
   const { data: notifications = [], isLoading } = useQuery({
