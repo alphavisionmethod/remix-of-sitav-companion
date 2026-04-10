@@ -1,3 +1,4 @@
+import FIPSubNav from "@/components/admin/FIPSubNav";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Cpu, ArrowRight, CheckCircle2, Layers, FileText, Shield, Zap, Rocket, Database, Code2 } from "lucide-react";
@@ -21,6 +22,7 @@ const FIPBuilderConsole = () => {
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
+      <FIPSubNav />
       <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Cpu className="h-6 w-6 text-primary" /> FIP14 — AI Engineer Builder Console</h1>

@@ -1,3 +1,4 @@
+import FIPSubNav from "@/components/admin/FIPSubNav";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Layers, Plus, Shield, Zap, Eye, Target } from "lucide-react";
@@ -31,6 +32,7 @@ const FIPCapabilityRegistry = () => {
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
+      <FIPSubNav />
       <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center justify-between">

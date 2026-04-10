@@ -1,3 +1,4 @@
+import FIPSubNav from "@/components/admin/FIPSubNav";
 import { motion } from "framer-motion";
 import { Zap, ArrowRight, Shield, RotateCcw, CheckCircle2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -20,6 +21,7 @@ const FIPExecutionExplorer = () => {
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
+      <FIPSubNav />
       <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Zap className="h-6 w-6 text-primary" /> FIP06 — Execution Path Explorer</h1>
