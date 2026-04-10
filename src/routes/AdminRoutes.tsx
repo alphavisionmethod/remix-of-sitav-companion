@@ -9,7 +9,6 @@ const AITokenDashboard = lazy(() => import("@/pages/admin/AITokenDashboard"));
 const GeneratedTruthDashboard = lazy(() => import("@/pages/admin/GeneratedTruthDashboard"));
 const FleetHealthPage = lazy(() => import("@/pages/admin/FleetHealthPage"));
 
-
 const IntelligenceReuseOverview = lazy(() => import("@/pages/admin/intelligence/IntelligenceReuseOverview"));
 const IntelligenceAssetLibrary = lazy(() => import("@/pages/admin/intelligence/IntelligenceAssetLibrary"));
 const DifferentialReasoningExplorer = lazy(() => import("@/pages/admin/intelligence/DifferentialReasoningExplorer"));
@@ -57,6 +56,23 @@ const AIT08LaunchTruth = lazy(() => import("@/pages/admin/AIT04to08Boards").then
 const HQApprovalQueue = lazy(() => import("@/pages/admin/HQApprovalQueue"));
 const AITSetupChecklist = lazy(() => import("@/pages/admin/AITSetupChecklist"));
 const TruthIndexDashboard = lazy(() => import("@/pages/admin/TruthIndexDashboard"));
+
+// ── CAI: Coordinated Ambient Intelligence Operator Consoles ──
+const CAI01PersonalGraphExplorer = lazy(() => import("@/pages/admin/CAI01PersonalGraphExplorer"));
+const CAI02IntentTraceBoard = lazy(() => import("@/pages/admin/CAI02IntentTraceBoard"));
+const CAI03AttentionCenter = lazy(() => import("@/pages/admin/CAI03AttentionCenter"));
+const CAI04ContinuityCenter = lazy(() => import("@/pages/admin/CAI04ContinuityCenter"));
+const CAI05TrustActionsBoard = lazy(() => import("@/pages/admin/CAI05TrustActionsBoard"));
+const CAI06ChiefOfStaffCenter = lazy(() => import("@/pages/admin/CAI06ChiefOfStaffCenter"));
+const CAI07TimingStudio = lazy(() => import("@/pages/admin/CAI07TimingStudio"));
+const CAI08RelationshipCenter = lazy(() => import("@/pages/admin/CAI08RelationshipCenter"));
+const CAI09DigestConsole = lazy(() => import("@/pages/admin/CAI09DigestConsole"));
+const CAI10ModesCenter = lazy(() => import("@/pages/admin/CAI10ModesCenter"));
+const CAI11InterfaceProfiler = lazy(() => import("@/pages/admin/CAI11InterfaceProfiler"));
+const CAI12OpportunityBoard = lazy(() => import("@/pages/admin/CAI12OpportunityBoard"));
+const CAI13MemoryGovernance = lazy(() => import("@/pages/admin/CAI13MemoryGovernance"));
+const CAI14BoundaryControl = lazy(() => import("@/pages/admin/CAI14BoundaryControl"));
+const CAI15SignatureStudio = lazy(() => import("@/pages/admin/CAI15SignatureStudio"));
 
 export function getAdminRoutes() {
   return [
@@ -111,5 +127,21 @@ export function getAdminRoutes() {
     <Route key="a49" path="/admin/strategic/benchmark" element={<BenchmarkLabDashboard />} />,
     <Route key="a50" path="/admin/strategic/value-risk" element={<ValueRiskDashboard />} />,
     <Route key="a51" path="/admin/strategic/operator-taste" element={<OperatorTasteDashboard />} />,
+    // ── CAI: Coordinated Ambient Intelligence ──
+    <Route key="cai01" path="/admin/cai/graph" element={<CAI01PersonalGraphExplorer />} />,
+    <Route key="cai02" path="/admin/cai/intent" element={<CAI02IntentTraceBoard />} />,
+    <Route key="cai03" path="/admin/cai/attention" element={<CAI03AttentionCenter />} />,
+    <Route key="cai04" path="/admin/cai/continuity" element={<CAI04ContinuityCenter />} />,
+    <Route key="cai05" path="/admin/cai/trust-actions" element={<CAI05TrustActionsBoard />} />,
+    <Route key="cai06" path="/admin/cai/chief-of-staff" element={<CAI06ChiefOfStaffCenter />} />,
+    <Route key="cai07" path="/admin/cai/timing" element={<CAI07TimingStudio />} />,
+    <Route key="cai08" path="/admin/cai/relationships" element={<CAI08RelationshipCenter />} />,
+    <Route key="cai09" path="/admin/cai/digest" element={<CAI09DigestConsole />} />,
+    <Route key="cai10" path="/admin/cai/modes" element={<CAI10ModesCenter />} />,
+    <Route key="cai11" path="/admin/cai/interface" element={<CAI11InterfaceProfiler />} />,
+    <Route key="cai12" path="/admin/cai/opportunities" element={<CAI12OpportunityBoard />} />,
+    <Route key="cai13" path="/admin/cai/memory" element={<CAI13MemoryGovernance />} />,
+    <Route key="cai14" path="/admin/cai/boundaries" element={<CAI14BoundaryControl />} />,
+    <Route key="cai15" path="/admin/cai/signature" element={<CAI15SignatureStudio />} />,
   ];
 }
