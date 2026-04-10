@@ -1,74 +1,71 @@
 
+# Phase 3 Core Persistence Substrate — Audit Results
 
-# Reality Conversion Program — Full 12-Screen Implementation
+## What EXISTS and is FULLY BUILT
 
-## Current State: 5 pages exist → Spec requires 12
+### Persistence Layer (Backend) — COMPLETE
+All 5 core persistence adapters are fully implemented with real Supabase queries (no stubs):
 
-| Spec Screen | Current Page | Status |
-|---|---|---|
-| RCP01 Overview | ❌ Missing | No executive overview with all KPIs aggregated |
-| RCP02 Classification Matrix | ✅ RealityClassificationMatrix | Missing: confidence field, DomainHeatmap, scope filters, transition readiness |
-| RCP03 Feature Reality Detail | ❌ Missing | No deep-dive per-feature page with evidence, mock usage, transition checklist |
-| RCP04 Mock Replacement Board | ⚠️ MockReplacementProgram | Missing: many spec fields (mockType, owner, blockers, migrationStatus lifecycle, validationEvidence) |
-| RCP05 Mock Source Inventory | ❌ Missing | No mock file/source inventory with import graph |
-| RCP06 Simulated Core Services | ⚠️ CoreServicePersistence | Missing: usage domains detail, state loss severity, dependency map |
-| RCP07 Route Reality Heatmap | ❌ Missing | No visual route heatmap |
-| RCP08 Contract & Backend Readiness | ❌ Missing | No contract/endpoint/schema readiness board |
-| RCP09 Launch Honesty Board | ⚠️ LaunchHonestyBoard | Missing: claim severity, domain truth breakdown, promotion risk matrix |
-| RCP10 Migration Wave Planner | ❌ Missing | No wave planning with dependency timeline |
-| RCP11 Reality Progress Timeline | ❌ Missing | No conversion progress tracking |
-| RCP12 Runtime Reality Validation | ⚠️ RuntimeTruthGate | Missing: post-migration verification, drift, mutation cards |
+| Adapter | File | Lines | DB Table | Status |
+|---|---|---|---|---|
+| EventBus Persistence | `event-bus-persistence.ts` | 196 | `os_event_log` ✅ | Full: persist, batch, fetch, DLQ, replay mark, topic counts, lineage |
+| Memory Persistence | `memory-service-persistence.ts` | 237 | `os_memory_scoped` ✅ | Full: scoped insert, supersede, fetch/filter, forget w/ audit, confidence update, AI hydration, stats |
+| Policy Persistence | `policy-engine-persistence.ts` | 163 | `os_policy_evaluations` ✅ | Full: persist meaningful evals, fetch/filter, stats, action lineage |
+| Action Lineage | `action-lineage-persistence.ts` | 290 | `os_action_lineage` ✅ | Full: 16-state lifecycle, transitions, 6 link functions (event/memory/policy/receipt/projection/proof), explanation, stuck detection |
+| Intelligence Assets | `intelligence-asset-persistence.ts` | 135 | `intelligence_assets_library` ✅ | Full: CRUD, reuse tracking, invalidation, freshness, stats |
 
-**Registry gaps:** `FeatureRealityRecord` missing `confidence`, `scopeLevel`, `components`, `services`, `backingSourceTypes`, `nextRequiredTransition`, `transitionBlockers`. `MockReplacementRecord` missing `mockType`, `owner`, `blockers[]`, `migrationStatus` lifecycle, `validationEvidence[]`, `truthSeverity`. No mock source inventory data. No migration wave data. No progress timeline data. No contract readiness data.
+Additional persistence: engine state, receipts/proofs, compute governance, quality floors, operator taste — all wired.
 
-## Plan
+### Admin UI Pages — ALL 10 EXIST
+| Spec | Page | Lines | Data Source | Status |
+|---|---|---|---|---|
+| CPS01 Overview | `CorePersistenceOverview.tsx` | 196 | Real Supabase queries | ✅ Complete |
+| CPS02 Event Stream | `EventStreamExplorer.tsx` | 203 | Real queries + filters + replay | ✅ Complete |
+| CPS03 Memory Center | `MemoryContinuityCenter.tsx` | 187 | Real queries + forget + detail | ✅ Complete |
+| CPS04 Policy Ledger | `PolicyDecisionLedger.tsx` | 156 | Real queries + filters + detail | ✅ Complete |
+| CPS05 Intelligence | `IntelligenceArtifactLibrary.tsx` | 164 | Real queries + invalidate + detail | ✅ Complete |
+| CPS06 Action Lineage | `ActionLineageExplorer.tsx` | 212 | Real queries + explanation + links | ✅ Complete |
+| CPS07 Replay Console | `ReplayRecoveryConsole.tsx` | 325 | Real replay w/ dry-run + live dispatch | ✅ Complete |
+| CPS08 Migration Board | `CoreServiceMigrationBoard.tsx` | 103 | Demo data (acceptable for planning board) | ✅ Complete |
+| CPS09 Drift Radar | `PersistenceDriftRadar.tsx` | 128 | Real queries detecting gaps | ✅ Complete |
+| CPS10 Continuity Board | `RuntimeContinuityBoard.tsx` | 146 | Real queries + survival checks | ✅ Complete |
 
-### 1. Massively expand `src/lib/reality-audit/reality-audit-registry.ts`
+### DB Tables — ALL 5 EXIST IN PRODUCTION
+Verified via direct query: `os_event_log`, `os_memory_scoped`, `os_policy_evaluations`, `os_action_lineage`, `intelligence_assets_library`
 
-**Extend existing types:**
-- `FeatureRealityRecord` → add `confidence`, `scopeLevel`, `components[]`, `services[]`, `backingSourceTypes[]`, `nextRequiredTransition`, `transitionBlockers[]`, `owner`
-- `MockReplacementRecord` → add `mockType`, `owner`, `blockers[]`, `migrationStatus` (identified→planned→in_progress→blocked→completed→validated), `validationEvidence[]`, `truthSeverity`, `expectedContracts[]`, `persistenceTarget`
-- Update all seed data to include new fields
+### Routes — ALL 10 WIRED in App.tsx
+All lazy imports and routes confirmed.
 
-**New types + seeds:**
-- `MockSourceRecord` — mock file/source with importing pages, domain, criticality, allowed/forbidden (~15 records)
-- `ContractReadinessRecord` — expected contract, existence, endpoint, edge fn, schema, query readiness (~12 records)  
-- `MigrationWaveRecord` — wave ID, priority, domain group, features[], owner, effort, readiness gain (~4 waves)
-- `RealityTransitionRecord` — feature, from state, to state, date, evidence (seed ~5 historical transitions)
+## GAPS FOUND — Need Enhancement
 
-**New helpers:**
-- `getMockSourceInventory()`, `getContractReadiness()`, `getMigrationWaves()`, `getRouteHeatmapData()`, `getDomainRealityRollups()`, `getFeatureTransitionChecklist()`, `getProgressTimeline()`, `getPostMigrationValidation()`
+### Gap 1: Command Palette Missing CPS Entries
+The `AdminCommandPalette.tsx` only has 1 entry (`RCP: Core Services`) pointing to the Reality Audit core persistence page. The 10 actual CPS screens have **zero command palette entries**. Need to add:
+- CPS: Core Persistence Overview → `/admin/core-persistence`
+- CPS: Event Stream Explorer → `/admin/event-stream`
+- CPS: Memory Continuity → `/admin/memory-continuity`
+- CPS: Policy Decision Ledger → `/admin/policy-ledger`
+- CPS: Intelligence Library → `/admin/intelligence-library`
+- CPS: Action Lineage → `/admin/action-lineage`
+- CPS: Replay Console → `/admin/replay-console`
+- CPS: Service Migration → `/admin/service-migration`
+- CPS: Persistence Drift → `/admin/persistence-drift`
+- CPS: Runtime Continuity → `/admin/runtime-continuity`
 
-### 2. Create 7 new pages
+### Gap 2: CPS08 (CoreServiceMigrationBoard) Uses Only Demo Data
+This page imports `DEMO_ADMIN_SERVICES` from demo data but doesn't cross-reference the actual persistence adapters that exist. It should at minimum show the real adapter status (which adapters exist, which tables exist, which are wired) alongside the planning board data.
 
-| File | Spec |
-|---|---|
-| `RCP01Overview.tsx` | Executive overview: state distribution chart, mock-backed critical lane, migration progress, launch blockers, recent conversions |
-| `RCP03FeatureDetail.tsx` | Per-feature deep dive: evidence panel, mock usage, persistence status, interaction/runtime, state transition checklist |
-| `RCP05MockSourceInventory.tsx` | Mock file inventory: source table, importing pages, forbidden usage warnings, domain impact |
-| `RCP07RouteHeatmap.tsx` | Visual route clusters by domain color-coded by reality state, criticality legend, launch overlay |
-| `RCP08ContractReadiness.tsx` | Contract gap matrix, endpoint status, edge fn existence, migration dependency panel |
-| `RCP10WavePlanner.tsx` | Migration wave board with dependency timeline, effort vs truth gain, owner assignment |
-| `RCP11ProgressTimeline.tsx` | Conversion progress: state transitions over time, mock reduction, proven growth, milestones |
+### Gap 3: No Cross-Navigation Between CPS Pages
+Unlike the RCP screens, the CPS pages have no sub-navigation bar linking between all 10 screens. Each page is standalone — operators must use routes or command palette to navigate between them.
 
-### 3. Enhance 4 existing pages
+## Plan — Fix 3 Gaps
 
-- **RealityClassificationMatrix (RCP02)**: Add confidence badges, scope filters, domain heatmap section, transition readiness drawer
-- **MockReplacementProgram (RCP04)**: Add full migration status lifecycle, owner column, blockers drawer, validation checklist panel  
-- **CoreServicePersistence (RCP06)**: Add usage domain detail, state loss severity cards, usage dependency map
-- **LaunchHonestyBoard (RCP09)**: Add claim severity column, domain truth breakdown section, promotion risk matrix
-- **RuntimeTruthGate (RCP12)**: Add post-migration verification feed, mutation persistence cards, drift detection
+### 1. Add 10 CPS command palette entries to `AdminCommandPalette.tsx`
+Add a "Core Persistence" group with all 10 screen entries.
 
-### 4. Wire routes + navigation
+### 2. Add CPS sub-navigation bar
+Create a small shared component (or inline nav) at the top of each CPS page showing links to all 10 screens for seamless operator navigation.
 
-- Add 7 lazy imports + 7 routes in `App.tsx`
-- Add 7 command palette entries in `AdminCommandPalette.tsx`
-- Add sub-page navigation across all 12 RCP screens
+### 3. Enhance CPS08 with real adapter status
+Add a section that checks which persistence adapter files exist and which DB tables are accessible, showing real wiring status alongside the planning data.
 
-### Technical approach
-- All in-memory data, consistent with existing pattern
-- Each new page 150-300 lines with KPI bands, tables, filters, detail drawers
-- Existing pages enhanced in-place
-- Dark theme, premium styling matching existing pages
-- Cross-links between all 12 screens
-
+**Total changes:** ~3 files modified, ~80 lines added. No new pages needed. Everything else is fully advanced and production-wired.
