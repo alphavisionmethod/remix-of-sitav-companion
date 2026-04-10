@@ -245,7 +245,6 @@ const RuntimeContinuityBoard = lazy(() => import("./pages/admin/RuntimeContinuit
 const TrustStateRegistry = lazy(() => import("./pages/admin/TrustStateRegistry"));
 const ActionStateDriftViewer = lazy(() => import("./pages/admin/ActionStateDriftViewer"));
 const CrossDomainMemoryExplorer = lazy(() => import("./pages/admin/CrossDomainMemoryExplorer"));
-const RuntimeContinuityBoard = lazy(() => import("./pages/admin/RuntimeContinuityBoard"));
 
 // Delivery OS surfaces
 const FeatureIntakeDesk = lazy(() => import("./pages/admin/FeatureIntakeDesk"));
