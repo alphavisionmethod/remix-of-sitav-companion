@@ -63,13 +63,13 @@ const ScenarioPlanner = () => {
       {/* Impact KPIs */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <KPITile label="Monthly Impact" value={`${sign(result.netImpactMonthlyCents)}${fmt(result.netImpactMonthlyCents)}`}
-          icon={result.netImpactMonthlyCents >= 0 ? <TrendingUp className="h-4 w-4" /> : <TrendingDown className="h-4 w-4" />}
+          icon={result.netImpactMonthlyCents >= 0 ? TrendingUp : TrendingDown} />
         <KPITile label="Annual Impact" value={`${sign(result.netImpactAnnualCents)}${fmt(result.netImpactAnnualCents)}`}
-          icon={DollarSign}
+          icon={DollarSign} />
         <KPITile label="Safe-to-Spend" value={fmt(result.projectedSafeToSpend)}
-          icon={Shield}
+          icon={Shield} />
         <KPITile label="Risk Level" value={result.riskLevel.toUpperCase()}
-          icon={AlertTriangle}
+          icon={AlertTriangle} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

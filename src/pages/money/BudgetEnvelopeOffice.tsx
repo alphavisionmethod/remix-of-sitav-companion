@@ -56,8 +56,8 @@ const BudgetEnvelopeOffice = () => {
         <KPITile label="Monthly Income" value={fmt(budget.totalIncomeCents)} icon={DollarSign} />
         <KPITile label="Allocated" value={fmt(budget.totalAllocatedCents)} icon={Wallet} />
         <KPITile label="Spent So Far" value={fmt(totalSpent)} icon={TrendingUp} />
-        <KPITile label="Available" value={fmt(totalAvailable)} icon={PiggyBank}
-        <KPITile label="Unallocated" value={fmt(budget.unallocatedCents)} icon={AlertTriangle}
+        <KPITile label="Available" value={fmt(totalAvailable)} icon={PiggyBank} />
+        <KPITile label="Unallocated" value={fmt(budget.unallocatedCents)} icon={AlertTriangle} />
       </div>
 
       {/* Pace Status */}
