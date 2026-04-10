@@ -1,62 +1,61 @@
 
-# SITA OS — AI Governance Center: Final Audit & Fix Plan
 
-## Audit Summary
+# SITA OS — Frontend AI Integration: Final Completion Plan
 
-All 10 admin pages exist and are routed. All database tables, views, RLS, and DB functions are complete. The SubNav and router are correctly wired. However, two pages have spec gaps:
+## Audit Result
 
-### Gap 1 — AIG02 Model Registry missing 2 spec columns
-The spec requires "quality tier" and "recommended uses" columns. The DB has both (`quality_tier`, `recommended_use_cases`) but the page does not display them. The `model_class` column is shown but labeled "Class" — this should be renamed or supplemented with quality_tier.
+The frontend AI integration is **95% built**. All major layers exist: canonical client, response normalizer, state taxonomy (16 states), surface grammar, 6 hooks, 6 components, workforce executor, launch honesty reclassifier, and runtime verification. The architecture is correct and non-duplicated.
 
-### Gap 2 — AIG03 Routing Matrix has no capability family filter
-The spec requires: "filtering by capability family" and "highlighting expensive/premium routes". Currently it shows all routes flat with no filter UI. Premium routes are already visually distinguished via Badge variant, but there's no filter dropdown or button group.
+## Gaps Found
 
-### Gap 3 — AIG02 missing "active/inactive" display from `is_active` column
-The spec requires showing active/inactive status. Currently it shows deprecated/launch_stage but not the `is_active` boolean.
+### Gap 1 — Missing `useMemorySummary` hook
+The `memory.summarize` capability is seeded in routing data but has no dedicated frontend hook. All other canonical capabilities have one.
 
-### Gap 4 — Numbering mismatch: AIG05 file named "Receipts" but spec says AIG06
-The file `AIG05ReceiptsExplorer.tsx` is still titled "AIG05" in its header, but per spec it should be AIG06. Similarly AIG06LaunchTruth should be AIG07 per spec numbering. The actual page content and routing are correct — it's only the internal `<h1>` label mismatch.
+### Gap 2 — Client doesn't forward `surface`, `intent`, `traceRequested` to edge function
+`AICapabilityRequest` accepts these fields but `invokeAICapability()` strips them — only sends `capabilityId`, `taskClass`, `messages`, `stream`, `maxTokens`, `temperature`. The gateway can't use surface/intent metadata for routing or receipts.
 
-## Implementation Plan
+### Gap 3 — `AICapabilityRequest` missing `receiptRequested` field
+Spec Part 5 requires `receiptRequested` in the request contract.
 
-### Step 1 — Enhance AIG02 Model Registry
-Add `quality_tier`, `recommended_use_cases`, and `is_active` columns to the table:
-- Add "Quality Tier" column after "Class" showing `m.quality_tier`
-- Add "Recommended Uses" column showing `m.recommended_use_cases` (truncated text or tag list)
-- Change "Status" column to show `is_active` state combined with deprecated/launch_stage
+### Gap 4 — Barrel index incomplete
+`src/lib/ai/index.ts` doesn't export: `reclassifyAIFeatures`, `useAIRuntimeVerification`, or the new `useMemorySummary` hook. Components in `src/components/ai/` have no barrel.
 
-### Step 2 — Add capability family filter to AIG03 Routing Matrix
-- Extract capability families from `capability_key` (prefix before first `.`)
-- Add a filter button row at the top: "All", plus each unique family (e.g. "advisor", "boardroom", "daily_pulse", "classification", "memory", "admin")
-- Add "Premium Only" toggle that highlights/filters premium_synthesis routes
-- No structural change — just a `useState` filter + `useMemo` filtered list
+### Gap 5 — No AI components barrel
+`src/components/ai/` has 6 components but no `index.ts` for clean imports.
 
-### Step 3 — Fix page header numbering
-- `AIG05ReceiptsExplorer.tsx` header: "AIG05" → "AIG06"
-- `AIG06LaunchTruth.tsx` header: "AIG06" → "AIG07" (already says AIG06 but spec mapping is: Usage Ledger=AIG05, Receipts=AIG06, Launch Truth=AIG07)
-- `AIG07LaunchTruth.tsx` header: keep as "AIG07" (already correct per the spec — this is the Launch Detail page)
+## Implementation
 
-Wait — re-checking: The SubNav goes Providers(01), Models(02), Routing(03), Budget(04), Usage Ledger(05), Receipts/Traces(06), Launch Truth(07), Launch Detail(08?), Degraded(08), Verification(09). The file naming is slightly off but the routing works. The key fix is just the `<h1>` labels for consistency.
+### Step 1 — Add `receiptRequested` to request type + forward all fields in client
+**File: `src/lib/ai/ai-state-types.ts`** — Add `receiptRequested?: boolean` to `AICapabilityRequest`.
 
-Correction: Looking at spec numbering — AIG05=Usage Ledger, AIG06=Receipts, AIG07=Launch Truth, AIG08=Degraded. The files and headers should match.
+**File: `src/lib/ai/ai-capability-client.ts`** — Forward `surface`, `intent`, `traceRequested`, `receiptRequested` in the edge function body.
 
-Files to fix headers:
-- `AIG05ReceiptsExplorer.tsx`: "AIG05" → "AIG06" in `<h1>`
-- `AIG06LaunchTruth.tsx`: already says "AIG06" but should be "AIG07"
-- The current SubNav "Launch Detail" page (AIG07LaunchTruth.tsx) is an enhanced version — keep at "AIG07" subtitle
+### Step 2 — Create `useMemorySummary` hook
+**New file: `src/lib/ai/hooks/use-memory-summary.ts`** — Thin hook wrapping `useAICapability` with `capabilityKey: "memory.summarize"`, `taskClass: "balanced_assistant"`, `surface: "web.utility"`, `intent: "summarize"`.
+
+### Step 3 — Create AI components barrel
+**New file: `src/components/ai/index.ts`** — Re-exports all 6 components.
+
+### Step 4 — Complete AI lib barrel
+**File: `src/lib/ai/index.ts`** — Add exports for `reclassifyAIFeatures`, `useAIRuntimeVerification`, `useMemorySummary`.
 
 ## Files Changed
 
 | File | Change |
 |------|--------|
-| `src/pages/admin/AIG02ModelRegistry.tsx` | Add quality_tier, recommended_use_cases, is_active columns |
-| `src/pages/admin/AIG03RoutingMatrix.tsx` | Add capability family filter buttons + premium highlight toggle |
-| `src/pages/admin/AIG05ReceiptsExplorer.tsx` | Fix header label to "AIG06" |
-| `src/pages/admin/AIG06LaunchTruth.tsx` | Fix header label to "AIG07" |
+| `src/lib/ai/ai-state-types.ts` | Add `receiptRequested` to `AICapabilityRequest` |
+| `src/lib/ai/ai-capability-client.ts` | Forward surface/intent/trace/receipt fields to gateway |
+| `src/lib/ai/hooks/use-memory-summary.ts` | **New** — Memory summarization hook |
+| `src/components/ai/index.ts` | **New** — Components barrel |
+| `src/lib/ai/index.ts` | Add missing exports |
 
 ## What This Does NOT Change
 - No database changes
-- No new files
 - No edge function changes
-- No service layer changes
-- No routing changes
+- No new admin pages
+- No component redesigns (all 6 components are spec-complete)
+- No hook rewrites (all existing hooks are correctly thin + capability-driven)
+
+## Summary
+2 new files (hook + barrel), 3 enhancements. After this, the frontend AI integration is 100% spec-complete across all 16 parts of the prompt.
+
