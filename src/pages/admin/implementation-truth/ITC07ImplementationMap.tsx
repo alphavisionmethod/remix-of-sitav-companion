@@ -1,6 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// ITC07 — Implementation Map
-// Per-spec artifact presence: routes, components, services, contracts
+// ITC07 — Implementation Map (all 13 artifact sections)
 // ═══════════════════════════════════════════════════════════════
 
 import { useState } from "react";
@@ -10,16 +9,24 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Map, CheckCircle2, XCircle, ChevronDown, ChevronRight, Search } from "lucide-react";
 
-type ArtifactType = "required_routes" | "required_components" | "required_services" | "required_contracts" | "required_events" | "required_tests" | "required_proofs";
+type ArtifactKey = "required_routes" | "required_screens" | "required_components" | "required_shells" |
+  "required_services" | "required_contracts" | "required_endpoints" | "required_schemas" |
+  "required_events" | "required_tests" | "required_proofs" | "required_projections" | "required_docs";
 
-const ARTIFACT_SECTIONS: { key: ArtifactType; label: string }[] = [
+const ARTIFACT_SECTIONS: { key: ArtifactKey; label: string }[] = [
   { key: "required_routes", label: "Routes" },
+  { key: "required_screens", label: "Screens" },
   { key: "required_components", label: "Components" },
+  { key: "required_shells", label: "Shells" },
   { key: "required_services", label: "Services" },
   { key: "required_contracts", label: "Contracts" },
+  { key: "required_endpoints", label: "Endpoints" },
+  { key: "required_schemas", label: "Schemas" },
   { key: "required_events", label: "Events" },
   { key: "required_tests", label: "Tests" },
   { key: "required_proofs", label: "Proofs" },
+  { key: "required_projections", label: "Projections" },
+  { key: "required_docs", label: "Docs" },
 ];
 
 function ArtifactList({ items }: { items: string[] }) {
@@ -27,9 +34,7 @@ function ArtifactList({ items }: { items: string[] }) {
   return (
     <div className="flex flex-wrap gap-1">
       {items.map((item, i) => (
-        <Badge key={i} variant="outline" className="text-[9px] font-mono h-5">
-          {item}
-        </Badge>
+        <Badge key={i} variant="outline" className="text-[9px] font-mono h-5">{item}</Badge>
       ))}
     </div>
   );
@@ -39,13 +44,13 @@ function SpecCard({ spec }: { spec: SpecRegistryEntry }) {
   const [open, setOpen] = useState(false);
 
   const totalArtifacts = ARTIFACT_SECTIONS.reduce((sum, s) => {
-    const arr = (spec as any)[s.key] as string[] | null;
-    return sum + (arr?.length || 0);
+    const arr = spec[s.key];
+    return sum + (Array.isArray(arr) ? arr.length : 0);
   }, 0);
 
   const filledSections = ARTIFACT_SECTIONS.filter(s => {
-    const arr = (spec as any)[s.key] as string[] | null;
-    return arr && arr.length > 0;
+    const arr = spec[s.key];
+    return Array.isArray(arr) && arr.length > 0;
   }).length;
 
   return (
@@ -71,16 +76,15 @@ function SpecCard({ spec }: { spec: SpecRegistryEntry }) {
         <CardContent className="pt-0 space-y-3">
           <div className="text-[10px] text-muted-foreground">Module: <span className="text-foreground">{spec.owning_module}</span></div>
           {ARTIFACT_SECTIONS.map(section => {
-            const arr = (spec as any)[section.key] as string[] | null;
+            const arr = spec[section.key];
+            const items = Array.isArray(arr) ? arr : [];
             return (
               <div key={section.key}>
                 <div className="flex items-center gap-2 mb-1">
                   <span className="text-[10px] font-medium text-muted-foreground">{section.label}</span>
-                  <Badge variant={arr && arr.length > 0 ? "default" : "secondary"} className="text-[8px] h-4">
-                    {arr?.length || 0}
-                  </Badge>
+                  <Badge variant={items.length > 0 ? "default" : "secondary"} className="text-[8px] h-4">{items.length}</Badge>
                 </div>
-                <ArtifactList items={arr || []} />
+                <ArtifactList items={items} />
               </div>
             );
           })}
@@ -108,7 +112,7 @@ export default function ITC07ImplementationMap() {
           <h1 className="text-xl font-semibold text-foreground">Implementation Map</h1>
           <Badge variant="outline" className="text-[8px]">ITC07</Badge>
         </div>
-        <p className="text-sm text-muted-foreground">Per-spec artifact inventory — routes, components, services, contracts, events, tests, proofs</p>
+        <p className="text-sm text-muted-foreground">Per-spec artifact inventory — 13 sections: routes, screens, components, shells, services, contracts, endpoints, schemas, events, tests, proofs, projections, docs</p>
       </div>
 
       <div className="relative max-w-sm">

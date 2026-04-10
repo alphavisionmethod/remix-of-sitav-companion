@@ -45,6 +45,7 @@ const GO_ROUTES: Record<string, string> = {
   l: "/admin/launch-readiness",
   r: "/admin/release-ring",
   n: "/admin/intelligence",
+  t: "/admin/implementation-truth",
 };
 
 export function AdminKeyboardShortcuts() {

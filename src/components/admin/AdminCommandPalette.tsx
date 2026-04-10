@@ -30,6 +30,16 @@ const NAV_ITEMS = [
   { label: "Concierge Runtime", path: "/admin/concierge-runtime", icon: Server, group: "Navigation" },
   { label: "Policy Simulator", path: "/admin/policy-simulator", icon: Shield, group: "Navigation" },
   { label: "Workflow Replay", path: "/admin/workflow-replay", icon: Play, group: "Navigation" },
+  { label: "Implementation Truth Center", path: "/admin/implementation-truth", icon: Eye, group: "Navigation" },
+  { label: "ITC: Spec Registry", path: "/admin/implementation-truth/specs", icon: FileText, group: "Navigation" },
+  { label: "ITC: Contracts", path: "/admin/implementation-truth/contracts", icon: Shield, group: "Navigation" },
+  { label: "ITC: Wiring Graph", path: "/admin/implementation-truth/wiring", icon: GitBranch, group: "Navigation" },
+  { label: "ITC: Readiness", path: "/admin/implementation-truth/readiness", icon: BarChart3, group: "Navigation" },
+  { label: "ITC: Drift Radar", path: "/admin/implementation-truth/drift", icon: Activity, group: "Navigation" },
+  { label: "ITC: Implementation Map", path: "/admin/implementation-truth/map", icon: Layers, group: "Navigation" },
+  { label: "ITC: Architecture", path: "/admin/implementation-truth/architecture", icon: Cpu, group: "Navigation" },
+  { label: "ITC: Route Inventory", path: "/admin/implementation-truth/routes", icon: Globe, group: "Navigation" },
+  { label: "ITC: Runtime Evidence", path: "/admin/implementation-truth/runtime", icon: Zap, group: "Navigation" },
 ];
 
 const ACTION_ITEMS = [
