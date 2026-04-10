@@ -3,6 +3,9 @@ import { SitaTabs } from "@/components/sita/SitaComponents";
 import { useNavigate, useLocation, Navigate } from "react-router-dom";
 import { isMoneyOnboardingComplete } from "@/components/sita/money-onboarding";
 import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { ChevronDown } from "lucide-react";
 
 import MoneyOverview from "./money/MoneyOverview";
 import BillsWorkspace from "./money/BillsWorkspace";
@@ -105,10 +108,127 @@ const pages: Record<SubPage, React.ComponentType> = {
   boundaries: FinancialBoundaryMonitor,
 };
 
+const TAB_GROUPS = [
+  {
+    label: "Core",
+    tabs: [
+      { key: "overview", label: "Overview" },
+      { key: "bills", label: "Bills" },
+      { key: "subscriptions", label: "Subscriptions" },
+      { key: "budgets", label: "Budgets" },
+      { key: "transactions", label: "Transactions" },
+    ],
+  },
+  {
+    label: "Wealth",
+    tabs: [
+      { key: "net-worth", label: "Net Worth" },
+      { key: "debt-credit", label: "Debt & Credit" },
+      { key: "reserves", label: "Reserves" },
+      { key: "investment-office", label: "Investments" },
+      { key: "tax", label: "Tax" },
+    ],
+  },
+  {
+    label: "Flow",
+    tabs: [
+      { key: "cash-timing", label: "Cash Timing" },
+      { key: "receivables", label: "Receivables" },
+      { key: "allocator", label: "Allocator" },
+    ],
+  },
+  {
+    label: "Insights",
+    tabs: [
+      { key: "health", label: "Health Pulse" },
+      { key: "peace-score", label: "Peace Score" },
+      { key: "stress-radar", label: "Stress Radar" },
+      { key: "life-impact", label: "Life Impact" },
+      { key: "trust-graph", label: "Trust Graph" },
+      { key: "opportunity-cost", label: "Opportunity Cost" },
+    ],
+  },
+  {
+    label: "Lifestyle",
+    tabs: [
+      { key: "modes", label: "Modes" },
+      { key: "rituals", label: "Rituals" },
+      { key: "boundaries", label: "Boundaries" },
+      { key: "household", label: "Household" },
+      { key: "scenarios", label: "Scenarios" },
+    ],
+  },
+  {
+    label: "Office",
+    tabs: [
+      { key: "advisors", label: "Advisors" },
+      { key: "approvals", label: "Approvals" },
+      { key: "proof", label: "Proof" },
+      { key: "files", label: "Documents" },
+      { key: "boardroom", label: "Boardroom" },
+      { key: "settings", label: "Settings" },
+    ],
+  },
+];
+
+const ALL_TABS = TAB_GROUPS.flatMap((g) => g.tabs);
+
+/* ─── Mobile Tab Selector (grouped dropdown) ─── */
+const MobileTabSelector = ({
+  active,
+  onChange,
+}: {
+  active: SubPage;
+  onChange: (key: string) => void;
+}) => {
+  const [open, setOpen] = useState(false);
+  const activeLabel = ALL_TABS.find((t) => t.key === active)?.label ?? "Overview";
+
+  return (
+    <div className="relative">
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex w-full items-center justify-between gap-2 rounded-xl border border-border bg-card px-4 py-3 text-sm font-medium text-foreground touch-manipulation"
+      >
+        <span>{activeLabel}</span>
+        <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+      {open && (
+        <>
+          <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
+          <div className="absolute left-0 right-0 top-full z-50 mt-1 max-h-[70vh] overflow-y-auto rounded-xl border border-border bg-card shadow-lg">
+            {TAB_GROUPS.map((group) => (
+              <div key={group.label}>
+                <div className="sticky top-0 bg-muted/80 backdrop-blur-sm px-4 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                  {group.label}
+                </div>
+                {group.tabs.map((t) => (
+                  <button
+                    key={t.key}
+                    onClick={() => { onChange(t.key); setOpen(false); }}
+                    className={`w-full px-4 py-3 text-left text-sm transition-colors touch-manipulation ${
+                      active === t.key
+                        ? "bg-primary/10 text-primary font-medium"
+                        : "text-foreground hover:bg-muted/50"
+                    }`}
+                  >
+                    {t.label}
+                  </button>
+                ))}
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
+
 const MoneyCenter = () => {
   const { isDemoMode } = useDataMode();
   const location = useLocation();
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
 
   if (!isMoneyOnboardingComplete()) {
     return <Navigate to="/money/onboarding" replace />;
@@ -124,52 +244,23 @@ const MoneyCenter = () => {
   const PageComponent = pages[activePage];
 
   return (
-    <div className="mx-auto max-w-7xl space-y-6">
+    <div className="mx-auto max-w-7xl space-y-4 sm:space-y-6 px-3 sm:px-0">
       <h1 className="sr-only">Money Center</h1>
       <DemoModeBadge />
-      <motion.div
-        className="overflow-x-auto -mx-2 px-2"
-        initial={{ opacity: 0, y: -8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.25 }}
-      >
-        <SitaTabs
-          tabs={[
-            { key: "overview", label: "Overview" },
-            { key: "bills", label: "Bills" },
-            { key: "subscriptions", label: "Subscriptions" },
-            { key: "budgets", label: "Budgets" },
-            { key: "transactions", label: "Transactions" },
-            { key: "net-worth", label: "Net Worth" },
-            { key: "debt-credit", label: "Debt & Credit" },
-            { key: "reserves", label: "Reserves" },
-            { key: "cash-timing", label: "Cash Timing" },
-            { key: "receivables", label: "Receivables" },
-            { key: "health", label: "Health Pulse" },
-            { key: "peace-score", label: "Peace Score" },
-            { key: "stress-radar", label: "Stress Radar" },
-            { key: "modes", label: "Modes" },
-            { key: "allocator", label: "Allocator" },
-            { key: "life-impact", label: "Life Impact" },
-            { key: "trust-graph", label: "Trust Graph" },
-            { key: "opportunity-cost", label: "Opportunity Cost" },
-            { key: "rituals", label: "Rituals" },
-            { key: "boundaries", label: "Boundaries" },
-            { key: "household", label: "Household" },
-            { key: "scenarios", label: "Scenarios" },
-            { key: "investment-office", label: "Investment Office" },
-            { key: "tax", label: "Tax" },
-            { key: "advisors", label: "Advisors" },
-            { key: "approvals", label: "Approvals" },
-            { key: "proof", label: "Proof" },
-            { key: "files", label: "Documents" },
-            { key: "boardroom", label: "Boardroom" },
-            { key: "settings", label: "Settings" },
-          ]}
-          active={activePage}
-          onChange={goTo}
-        />
-      </motion.div>
+
+      {/* Tab Navigation — mobile dropdown, desktop scrollable tabs */}
+      {isMobile ? (
+        <MobileTabSelector active={activePage} onChange={goTo} />
+      ) : (
+        <motion.div
+          className="overflow-x-auto -mx-2 px-2"
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.25 }}
+        >
+          <SitaTabs tabs={ALL_TABS} active={activePage} onChange={goTo} />
+        </motion.div>
+      )}
 
       <AnimatePresence mode="wait">
         <motion.div
