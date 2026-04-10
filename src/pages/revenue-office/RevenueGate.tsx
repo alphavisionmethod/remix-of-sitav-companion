@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { TrendingUp, Users, Target, Zap, ArrowRight, BarChart3, AlertTriangle, Sparkles } from "lucide-react";
+import { TrendingUp, Users, Target, Zap, ArrowRight, BarChart3, AlertTriangle, Sparkles, Shield, Activity, CheckCircle, XCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -7,16 +7,29 @@ import { Progress } from "@/components/ui/progress";
 import { useNavigate } from "react-router-dom";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-import { useDeals, useCampaigns } from "@/hooks/use-revenue-office";
+import { useDeals } from "@/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DEMO_ADVISOR_PREVIEW, DEMO_QUICK_ACTIONS, DEMO_REV_METRICS as DEMO_METRICS, DEMO_WHAT_CHANGED } from "@/lib/demo-data/revenue-office";
+import { useState } from "react";
+
+const CONNECTION_HEALTH = [
+  { service: "CRM / Pipeline", status: "connected", health: 98 },
+  { service: "Booking Engine", status: "connected", health: 95 },
+  { service: "Campaign Platform", status: "connected", health: 92 },
+  { service: "Reputation System", status: "connected", health: 88 },
+  { service: "Payment Gateway", status: "connected", health: 100 },
+  { service: "Analytics", status: "degraded", health: 72 },
+];
+
+const OPERATING_MODES = ["Growth", "Stability", "Recovery", "Launch"] as const;
 
 export default function RevenueGate() {
   const navigate = useNavigate();
   const { isDemoMode } = useDataMode();
   const { data: liveDeals, isLoading } = useDeals();
+  const [operatingMode, setOperatingMode] = useState<typeof OPERATING_MODES[number]>("Growth");
 
-  const metrics = isDemoMode ? DEMO_METRICS : DEMO_METRICS; // Aggregate from live deals when available
+  const metrics = isDemoMode ? DEMO_METRICS : DEMO_METRICS;
   const whatChanged = isDemoMode ? DEMO_WHAT_CHANGED : DEMO_WHAT_CHANGED;
   const advisorPreview = isDemoMode ? DEMO_ADVISOR_PREVIEW : DEMO_ADVISOR_PREVIEW;
 
@@ -29,15 +42,40 @@ export default function RevenueGate() {
             <h1 className="text-3xl font-bold text-foreground tracking-tight">Revenue Office</h1>
             <p className="text-muted-foreground">Your commercial growth command center</p>
           </div>
-          <Badge variant="outline" className="text-xs border-primary/30 text-primary">
-            <Sparkles className="w-3 h-3 mr-1" /> Active Mode
-          </Badge>
+          <div className="flex items-center gap-2">
+            {OPERATING_MODES.map(mode => (
+              <Button key={mode} variant={operatingMode === mode ? "default" : "outline"} size="sm" className="text-xs h-7" onClick={() => setOperatingMode(mode)}>
+                {mode}
+              </Button>
+            ))}
+          </div>
         </div>
       </motion.div>
 
+      {/* Connection Health */}
+      <Card className="bg-card/50 border-border/50">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-sm flex items-center gap-2"><Activity className="w-4 h-4 text-primary" /> Connection Health</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2">
+            {CONNECTION_HEALTH.map(c => (
+              <div key={c.service} className={`p-2 rounded-lg border text-center ${c.status === "connected" ? "border-border/30 bg-muted/10" : "border-orange-400/30 bg-orange-400/5"}`}>
+                <div className="flex items-center justify-center gap-1 mb-1">
+                  {c.status === "connected" ? <CheckCircle className="w-3 h-3 text-[hsl(var(--trust-safe))]" /> : <AlertTriangle className="w-3 h-3 text-orange-400" />}
+                  <span className="text-[10px] font-medium text-foreground">{c.service}</span>
+                </div>
+                <Progress value={c.health} className="h-1" />
+                <span className="text-[9px] text-muted-foreground">{c.health}%</span>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
       {!isDemoMode && isLoading ? (
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {[1,2,3,4].map(i => <Skeleton key={i} className="h-24 rounded-xl" />)}
+          {[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-24 rounded-xl" />)}
         </div>
       ) : (
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -74,43 +112,29 @@ export default function RevenueGate() {
             {whatChanged.map((w, i) => (
               <div key={i} className="flex items-start gap-2">
                 <div className={`w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0 ${w.type === "positive" ? "bg-green-400" : w.type === "warning" ? "bg-yellow-400" : "bg-red-400"}`} />
-                <div>
-                  <p className="text-sm text-foreground">{w.text}</p>
-                  <p className="text-xs text-muted-foreground">{w.time}</p>
-                </div>
+                <div><p className="text-sm text-foreground">{w.text}</p><p className="text-xs text-muted-foreground">{w.time}</p></div>
               </div>
             ))}
           </CardContent>
         </Card>
 
         <Card className="bg-card/50 border-border/50">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-              <Sparkles className="w-3.5 h-3.5 text-primary" /> Advisor Signals
-            </CardTitle>
-          </CardHeader>
+          <CardHeader className="pb-3"><CardTitle className="text-sm font-medium text-muted-foreground flex items-center gap-2"><Sparkles className="w-3.5 h-3.5 text-primary" /> Advisor Signals</CardTitle></CardHeader>
           <CardContent className="space-y-4">
             {advisorPreview.map(a => (
               <div key={a.name} className="space-y-1.5">
-                <div className="flex items-center justify-between">
-                  <span className="text-xs font-medium text-foreground">{a.name}</span>
-                  <span className="text-xs text-muted-foreground">{Math.round(a.confidence * 100)}%</span>
-                </div>
+                <div className="flex items-center justify-between"><span className="text-xs font-medium text-foreground">{a.name}</span><span className="text-xs text-muted-foreground">{Math.round(a.confidence * 100)}%</span></div>
                 <p className="text-xs text-muted-foreground">{a.stance}</p>
                 <Progress value={a.confidence * 100} className="h-1" />
               </div>
             ))}
-            <Button variant="ghost" size="sm" className="w-full text-xs text-primary" onClick={() => navigate("/revenue-office/advisors")}>
-              Open Advisor Board <ArrowRight className="w-3 h-3 ml-1" />
-            </Button>
+            <Button variant="ghost" size="sm" className="w-full text-xs text-primary" onClick={() => navigate("/revenue-office/advisors")}>Open Advisor Board <ArrowRight className="w-3 h-3 ml-1" /></Button>
           </CardContent>
         </Card>
       </div>
 
       <Card className="bg-card/50 border-border/50">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-sm font-medium text-muted-foreground">Revenue Health Overview</CardTitle>
-        </CardHeader>
+        <CardHeader className="pb-3"><CardTitle className="text-sm font-medium text-muted-foreground">Revenue Health Overview</CardTitle></CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
             {[
