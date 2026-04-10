@@ -1,18 +1,9 @@
 import { motion } from "framer-motion";
-import { Shield, TrendingDown, AlertTriangle, CheckCircle, Clock, Zap, Activity } from "lucide-react";
+import { Shield, TrendingDown, AlertTriangle, Clock, Zap, Activity } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { Separator } from "@/components/ui/separator";
-
-const mockProtections = [
-  { id: "p1", action: "model-tier-downgrade", from: "premium", to: "standard", scope: "Household Smith", reason: "Budget at 92% — soft limit breach", impact: "Slightly slower synthesis", costSaved: 340, time: "4min ago", severity: "warning" as const },
-  { id: "p2", action: "force-async", scope: "Acme Corp", reason: "3 concurrent premium jobs exceeded plan limit", impact: "User sees async queue notice", costSaved: 180, time: "12min ago", severity: "info" as const },
-  { id: "p3", action: "compress-context", scope: "Finance Workspace", reason: "Context size 42k tokens — exceeding Class B ceiling", impact: "None visible to user", costSaved: 95, time: "18min ago", severity: "info" as const },
-  { id: "p4", action: "block-premium-escalation", scope: "Solo User", reason: "Starter plan — no Class D access", impact: "User offered upgrade path", costSaved: 620, time: "1hr ago", severity: "critical" as const },
-  { id: "p5", action: "pause-deep-loop", scope: "Strategy Synthesizer", reason: "Repeated expensive re-analysis with low confidence delta", impact: "Agent paused, operator notified", costSaved: 1240, time: "2hr ago", severity: "warning" as const },
-  { id: "p6", action: "digest-mode-shift", scope: "Global Monitor", reason: "Proactive inference budget at 85%", impact: "Switched from real-time to digest", costSaved: 210, time: "3hr ago", severity: "info" as const },
-];
+import { useMarginProtectionFeed, type MarginProtectionEvent } from "@/hooks/use-compute-governance";
 
 const sevColors = { critical: "text-rose-400", warning: "text-amber-400", info: "text-blue-400" };
 const actionIcons: Record<string, typeof Shield> = {
@@ -25,9 +16,13 @@ const actionIcons: Record<string, typeof Shield> = {
 };
 
 export const CG04MarginProtectionTab = () => {
-  const totalSaved = mockProtections.reduce((s, p) => s + p.costSaved, 0);
-  const criticalCount = mockProtections.filter(p => p.severity === "critical").length;
-  const warningCount = mockProtections.filter(p => p.severity === "warning").length;
+  const { data: protections = [], isLoading } = useMarginProtectionFeed();
+
+  const totalSaved = protections.reduce((s, p) => s + p.costSaved, 0);
+  const criticalCount = protections.filter(p => p.severity === "critical").length;
+  const warningCount = protections.filter(p => p.severity === "warning").length;
+
+  const uxImpactCategories = categorizeUXImpact(protections);
 
   return (
     <div className="space-y-4">
@@ -42,18 +37,18 @@ export const CG04MarginProtectionTab = () => {
               <p className="text-xs text-muted-foreground mt-1">Overall margin protection posture across all tenants</p>
             </div>
             <div className="text-right">
-              <p className="text-4xl font-bold text-foreground">72</p>
-              <p className="text-xs text-muted-foreground">/ 100 (Good)</p>
+              <p className="text-4xl font-bold text-foreground">{computeRiskScore(protections)}</p>
+              <p className="text-xs text-muted-foreground">/ 100 ({getRiskLabel(computeRiskScore(protections))})</p>
             </div>
           </div>
-          <Progress value={72} className="h-3 mt-4" />
+          <Progress value={computeRiskScore(protections)} className="h-3 mt-4" />
           <div className="grid grid-cols-4 gap-4 mt-4 text-xs text-center">
             <div className="p-2 rounded-lg bg-secondary/20">
               <p className="text-lg font-bold text-emerald-400">${(totalSaved / 100).toFixed(2)}</p>
               <p className="text-muted-foreground">Cost Saved Today</p>
             </div>
             <div className="p-2 rounded-lg bg-secondary/20">
-              <p className="text-lg font-bold text-foreground">{mockProtections.length}</p>
+              <p className="text-lg font-bold text-foreground">{protections.length}</p>
               <p className="text-muted-foreground">Actions Taken</p>
             </div>
             <div className="p-2 rounded-lg bg-secondary/20">
@@ -73,12 +68,7 @@ export const CG04MarginProtectionTab = () => {
         <Card className="bg-card/80 border-border/50">
           <CardHeader className="pb-2"><CardTitle className="text-sm">User Experience Impact</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {[
-              { label: "Invisible protections", count: 2, desc: "Context compression, caching — no user impact", color: "text-emerald-400" },
-              { label: "Minor delays", count: 2, desc: "Async shift, slower synthesis — subtle UX change", color: "text-amber-400" },
-              { label: "Visible blocks", count: 1, desc: "Premium blocked with upgrade prompt", color: "text-orange-400" },
-              { label: "Agent interventions", count: 1, desc: "Deep loop paused, operator notified", color: "text-rose-400" },
-            ].map(item => (
+            {uxImpactCategories.map(item => (
               <div key={item.label} className="flex items-center justify-between p-2 rounded-lg bg-secondary/20">
                 <div>
                   <p className={`text-xs font-medium ${item.color}`}>{item.label}</p>
@@ -95,7 +85,9 @@ export const CG04MarginProtectionTab = () => {
           <Card className="bg-card/80 border-border/50">
             <CardHeader className="pb-2"><CardTitle className="text-sm">Margin Protection Feed</CardTitle></CardHeader>
             <CardContent className="space-y-2 max-h-[500px] overflow-y-auto">
-              {mockProtections.map((p, i) => {
+              {isLoading ? (
+                <p className="text-xs text-muted-foreground py-4 text-center">Loading protection events…</p>
+              ) : protections.map((p, i) => {
                 const Icon = actionIcons[p.action] || Shield;
                 return (
                   <motion.div
@@ -133,10 +125,10 @@ export const CG04MarginProtectionTab = () => {
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {[
-              { label: "Budget protection", confidence: 94, risk: "low" },
-              { label: "Model routing", confidence: 88, risk: "low" },
+              { label: "Budget protection", confidence: Math.min(100, 70 + Math.round(totalSaved / 50)), risk: criticalCount === 0 ? "low" : "medium" },
+              { label: "Model routing", confidence: protections.filter(p => p.action === "model-tier-downgrade").length > 3 ? 65 : 88, risk: "low" },
               { label: "Cache efficiency", confidence: 72, risk: "medium" },
-              { label: "Deep reasoning control", confidence: 81, risk: "low" },
+              { label: "Deep reasoning control", confidence: protections.filter(p => p.action === "pause-deep-loop").length > 2 ? 60 : 81, risk: "low" },
             ].map(item => (
               <div key={item.label} className="p-3 rounded-lg bg-secondary/20 text-center space-y-1">
                 <p className="text-xs font-medium text-foreground">{item.label}</p>
@@ -150,3 +142,33 @@ export const CG04MarginProtectionTab = () => {
     </div>
   );
 };
+
+// ── Helpers ──────────────────────────────────────────────────
+
+function computeRiskScore(protections: MarginProtectionEvent[]): number {
+  if (protections.length === 0) return 85;
+  const critical = protections.filter(p => p.severity === "critical").length;
+  const warning = protections.filter(p => p.severity === "warning").length;
+  return Math.max(0, Math.min(100, 85 - critical * 12 - warning * 4));
+}
+
+function getRiskLabel(score: number): string {
+  if (score >= 80) return "Good";
+  if (score >= 60) return "Moderate";
+  if (score >= 40) return "Elevated";
+  return "Critical";
+}
+
+function categorizeUXImpact(protections: MarginProtectionEvent[]) {
+  const invisible = protections.filter(p => ["compress-context", "digest-mode-shift"].includes(p.action)).length;
+  const minor = protections.filter(p => ["force-async", "model-tier-downgrade"].includes(p.action)).length;
+  const visible = protections.filter(p => p.action === "block-premium-escalation").length;
+  const agent = protections.filter(p => p.action === "pause-deep-loop").length;
+
+  return [
+    { label: "Invisible protections", count: invisible, desc: "Context compression, caching — no user impact", color: "text-emerald-400" },
+    { label: "Minor delays", count: minor, desc: "Async shift, slower synthesis — subtle UX change", color: "text-amber-400" },
+    { label: "Visible blocks", count: visible, desc: "Premium blocked with upgrade prompt", color: "text-orange-400" },
+    { label: "Agent interventions", count: agent, desc: "Deep loop paused, operator notified", color: "text-rose-400" },
+  ];
+}
