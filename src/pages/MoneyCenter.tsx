@@ -32,10 +32,11 @@ import TrustGraph from "./money/TrustGraph";
 import OpportunityCost from "./money/OpportunityCost";
 import MoneyRituals from "./money/MoneyRituals";
 import PeaceScore from "./money/PeaceScore";
+import FinancialBoundaryMonitor from "./money/FinancialBoundaryMonitor";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-type SubPage = "overview" | "bills" | "subscriptions" | "reserves" | "cash-timing" | "receivables" | "investment-office" | "tax" | "approvals" | "boardroom" | "proof" | "files" | "settings" | "net-worth" | "debt-credit" | "budgets" | "transactions" | "household" | "health" | "advisors" | "scenarios" | "stress-radar" | "life-impact" | "modes" | "allocator" | "trust-graph" | "opportunity-cost" | "rituals" | "peace-score";
+type SubPage = "overview" | "bills" | "subscriptions" | "reserves" | "cash-timing" | "receivables" | "investment-office" | "tax" | "approvals" | "boardroom" | "proof" | "files" | "settings" | "net-worth" | "debt-credit" | "budgets" | "transactions" | "household" | "health" | "advisors" | "scenarios" | "stress-radar" | "life-impact" | "modes" | "allocator" | "trust-graph" | "opportunity-cost" | "rituals" | "peace-score" | "boundaries";
 
 const subpageFromPath = (path: string): SubPage => {
   if (path.includes("/stress-radar")) return "stress-radar";
