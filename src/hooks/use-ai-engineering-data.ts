@@ -15,6 +15,9 @@ import {
   aiLearningPatterns,
   aiComplianceViolations,
   aiEfficiencyScores,
+  aiApprovals,
+  aiAuditTimeline,
+  aiSelfHealingRules,
 } from "@/lib/data-services/ai-ops-data-service";
 
 export type AIEngDomain =
@@ -25,7 +28,10 @@ export type AIEngDomain =
   | "debates"
   | "learningPatterns"
   | "violations"
-  | "efficiencyScores";
+  | "efficiencyScores"
+  | "approvals"
+  | "auditTimeline"
+  | "selfHealingRules";
 
 const fetchers: Record<AIEngDomain, { list: (f?: any) => Promise<any[]> }> = {
   missions: aiEngineeringMissions,
@@ -36,6 +42,9 @@ const fetchers: Record<AIEngDomain, { list: (f?: any) => Promise<any[]> }> = {
   learningPatterns: aiLearningPatterns,
   violations: aiComplianceViolations,
   efficiencyScores: aiEfficiencyScores,
+  approvals: aiApprovals,
+  auditTimeline: aiAuditTimeline,
+  selfHealingRules: aiSelfHealingRules,
 };
 
 /**
@@ -88,6 +97,9 @@ export function useAIEngineeringData(demoSets: {
   learningPatterns?: any[];
   violations?: any[];
   efficiencyScores?: any[];
+  approvals?: any[];
+  auditTimeline?: any[];
+  selfHealingRules?: any[];
 }) {
   const { isDemoMode } = useDataMode();
 

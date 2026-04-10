@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — AI Ops Data Service
-// CRUD operations for 8 ai_* orphaned tables
+// CRUD operations for ai_* tables + related operational tables
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
@@ -53,6 +53,7 @@ function crud(table: string) {
   };
 }
 
+// ── Core AI Engineering tables ──
 export const aiAgentDebateRecords = crud("ai_agent_debate_records");
 export const aiChangePlans = crud("ai_change_plans");
 export const aiComplianceViolations = crud("ai_compliance_violations");
@@ -61,3 +62,8 @@ export const aiEfficiencyScores = crud("ai_efficiency_scores");
 export const aiEngineeringMissions = crud("ai_engineering_missions");
 export const aiFixProposals = crud("ai_fix_proposals");
 export const aiLearningPatterns = crud("ai_learning_patterns");
+
+// ── Extended operational tables ──
+export const aiApprovals = crud("pending_approvals");
+export const aiAuditTimeline = crud("audit_logs");
+export const aiSelfHealingRules = crud("ai_self_healing_rules");
