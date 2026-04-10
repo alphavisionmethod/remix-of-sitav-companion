@@ -483,7 +483,14 @@ const SettingsPage = () => {
                 {(["standard", "focus", "executive", "family", "travel", "emergency", "recovery", "execution", "founder", "investor_demo", "boardroom", "stealth"] as const).map(m => (
                   <button
                     key={m}
-                    onClick={() => { os.setMode(m); toast.success(`Switched to ${m} mode`); }}
+                    onClick={() => {
+                      os.setMode(m);
+                      toast.success(`Switched to ${m} mode`);
+                      // Persist mode change to CAI operating_modes table for audit trail
+                      import("@/lib/persistence/cai-persistence-bridge").then(({ persistOperatingMode }) => {
+                        persistOperatingMode({ mode_key: m, active: true, metadata: { source: "settings" } });
+                      });
+                    }}
                     className={cn(
                       "rounded-xl border p-3 text-left transition-all",
                       currentMode === m ? "border-primary/40 bg-primary/8" : "border-border hover:border-primary/20"

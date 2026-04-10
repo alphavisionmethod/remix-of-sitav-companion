@@ -1,4 +1,4 @@
-import { useMemo, useState, useCallback, lazy, Suspense } from "react";
+import { useMemo, useState, useCallback, useEffect, lazy, Suspense } from "react";
 import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
 import { PostArrivalDesktop } from "@/components/sita/PostArrivalDesktop";
 import { useInspector, type InspectorEntity } from "@/contexts/InspectorContext";
@@ -39,6 +39,7 @@ import {
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useAuth } from "@/contexts/AuthContext";
 
 
 // ── Mission Mode Emphasis Config ─────────────────────────────────
@@ -137,6 +138,7 @@ const DailyPulse = () => {
   const { isDemoMode } = useDataMode();
   const { inspect } = useInspector();
   const { missionMode } = useDisplayMode();
+  const { user } = useAuth();
   const os = useOSOrchestration();
   const interfaceState = useAdaptiveInterface();
   const signature = useExperienceSignature();
@@ -155,6 +157,29 @@ const DailyPulse = () => {
   const attentionStack = os.getAttentionStack();
   const currentMode = os.getCurrentMode();
   const activeInterventions = os.getActiveInterventions();
+
+  // Activate daily pulse digest from the 7 registered providers
+  useEffect(() => {
+    if (!os.hydrated) return;
+    let cancelled = false;
+    os.dailyPulse(user?.user_metadata?.full_name).then(digest => {
+      if (!cancelled) {
+        const digestText = digest.greeting + "\n" + digest.sections.map(s => `${s.title}: ${s.summary}`).join("\n");
+        setOsPulseDigest(digestText);
+        // Persist the generated digest to CAI table
+        import("@/lib/persistence/cai-persistence-bridge").then(({ persistDigestCompilation }) => {
+          persistDigestCompilation({
+            digest_type: "daily_pulse",
+            mode: currentMode as string,
+            source_refs: digest.sections.map(s => s.type),
+            delivery_surface: "desktop",
+            summary_ref: digest.greeting,
+          });
+        });
+      }
+    }).catch(e => console.warn("[DailyPulse] digest generation:", e));
+    return () => { cancelled = true; };
+  }, [os.hydrated]);
 
   // Domain projection hooks (wired from use-domain-projections + use-calendar-data)
   const financeProjection = useFinanceProjection();

@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useExperienceSignature } from "@/hooks/useExperienceSignature";
 import { useOSOrchestration } from "@/hooks/useOSOrchestration";
+import { useRelationshipContexts, useHumanObligations } from "@/hooks/useCAIData";
 
 import ConciergeOverview from "./concierge/ConciergeOverview";
 import HouseholdTasks from "./concierge/HouseholdTasks";
@@ -68,6 +69,10 @@ const ConciergeCenter = () => {
   const signature = useExperienceSignature();
   const os = useOSOrchestration();
   const activePage = subpageFromPath(location.pathname);
+
+  // Wire CAI relationship + obligation data for real persistence
+  const { data: caiRelationships } = useRelationshipContexts({ limit: 20 });
+  const { data: caiObligations } = useHumanObligations({ limit: 20 });
 
   const goTo = (key: string) => {
     if (key === "overview") navigate("/concierge");
