@@ -244,6 +244,7 @@ const EventStreamExplorer = lazy(() => import("./pages/admin/EventStreamExplorer
 const MemoryContinuityCenter = lazy(() => import("./pages/admin/MemoryContinuityCenter"));
 const PolicyDecisionLedger = lazy(() => import("./pages/admin/PolicyDecisionLedger"));
 const IntelligenceArtifactLibrary = lazy(() => import("./pages/admin/IntelligenceArtifactLibrary"));
+const IntelligenceAssetLibrary = lazy(() => import("./pages/admin/intelligence/IntelligenceAssetLibrary"));
 const ActionLineageExplorer = lazy(() => import("./pages/admin/ActionLineageExplorer"));
 const ReplayRecoveryConsole = lazy(() => import("./pages/admin/ReplayRecoveryConsole"));
 const CoreServiceMigrationBoard = lazy(() => import("./pages/admin/CoreServiceMigrationBoard"));
@@ -1568,6 +1569,7 @@ const App = () => (
                     <Route path="/admin/memory-continuity" element={<MemoryContinuityCenter />} />
                     <Route path="/admin/policy-ledger" element={<PolicyDecisionLedger />} />
                     <Route path="/admin/intelligence-library" element={<IntelligenceArtifactLibrary />} />
+                    <Route path="/admin/intelligence-assets" element={<IntelligenceAssetLibrary />} />
                     <Route path="/admin/action-lineage" element={<ActionLineageExplorer />} />
                     <Route path="/admin/replay-console" element={<ReplayRecoveryConsole />} />
                     <Route path="/admin/service-migration" element={<CoreServiceMigrationBoard />} />
