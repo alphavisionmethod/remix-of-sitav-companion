@@ -101,6 +101,7 @@ export {
   linkMemoryToAction,
   linkPolicyToAction,
   linkReceiptToAction,
+  linkProjectionToAction,
   addProofToAction,
   fetchActionLineage,
   getActionExplanation,
