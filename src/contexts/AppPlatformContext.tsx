@@ -199,9 +199,9 @@ export function AppPlatformProvider({ children }: { children: ReactNode }) {
           .select("*")
           .eq("user_id", userId);
 
-        if (!cancelled && rows && (rows as any[]).length > 0) {
+        if (!cancelled && rows && (rows as unknown as any[]).length > 0) {
           const loaded: Record<string, AppUserState> = {};
-          for (const r of rows as InstalledAppRow[]) {
+          for (const r of rows as unknown as InstalledAppRow[]) {
             loaded[r.app_id] = {
               installStatus: r.install_status as AppInstallStatus,
               installScope: r.install_scope as AppInstallScope,
@@ -225,9 +225,9 @@ export function AppPlatformProvider({ children }: { children: ReactNode }) {
           .select("*")
           .eq("user_id", userId);
 
-        if (!cancelled && assocRows && (assocRows as any[]).length > 0) {
+        if (!cancelled && assocRows && (assocRows as unknown as any[]).length > 0) {
           const loaded: Record<string, string> = {};
-          for (const r of assocRows as DefaultAssocRow[]) {
+          for (const r of assocRows as unknown as DefaultAssocRow[]) {
             loaded[r.role] = r.app_id;
           }
           setDefaultApps(prev => ({ ...prev, ...loaded }));
