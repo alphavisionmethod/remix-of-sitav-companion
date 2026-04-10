@@ -62,19 +62,20 @@ export type {
 
 // 3.9 — Efficiency Scoring
 export {
-  computeEfficiencyScore, computeOutcomeEconomics,
+  computeEfficiencyScore,
 } from "./efficiency-scoring";
 export type {
-  EfficiencyScore, OutcomeType, OutcomeRecord,
-  OutcomeEconomicsReport, AnonymizedPattern,
+  EfficiencyScore, OutcomeType,
 } from "./efficiency-scoring";
 
 // 3.10 — Outcome Economics Engine
 export {
-  evaluateOutcomeEconomics,
+  evaluateOutcomeEconomics, analyzeReasoningPaths,
+  estimateOutcomeValue, OUTCOME_VALUE_BENCHMARKS,
 } from "./outcome-economics-engine";
 export type {
   OutcomeEconomicsInput, OutcomeEconomicsResult,
+  OutcomeCategory, ReasoningPathEconomics,
 } from "./outcome-economics-engine";
 
 // 3.11 — Cross-Tenant Generalization

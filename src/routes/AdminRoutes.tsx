@@ -1,4 +1,4 @@
-import { Route } from "react-router-dom";
+import { Route, Navigate } from "react-router-dom";
 import { lazy } from "react";
 
 const AdminDashboard = lazy(() => import("@/pages/admin/AdminDashboard"));
@@ -8,7 +8,7 @@ const UserManagement = lazy(() => import("@/pages/admin/UserManagement"));
 const AITokenDashboard = lazy(() => import("@/pages/admin/AITokenDashboard"));
 const GeneratedTruthDashboard = lazy(() => import("@/pages/admin/GeneratedTruthDashboard"));
 const FleetHealthPage = lazy(() => import("@/pages/admin/FleetHealthPage"));
-const IntelligenceEfficiencyBoard = lazy(() => import("@/pages/admin/IntelligenceEfficiencyBoard"));
+
 
 const IntelligenceReuseOverview = lazy(() => import("@/pages/admin/intelligence/IntelligenceReuseOverview"));
 const IntelligenceAssetLibrary = lazy(() => import("@/pages/admin/intelligence/IntelligenceAssetLibrary"));
@@ -67,7 +67,7 @@ export function getAdminRoutes() {
     <Route key="a5" path="/admin/system" element={<SystemManagement />} />,
     <Route key="a6" path="/admin/users" element={<UserManagement />} />,
     <Route key="a7" path="/admin/ai-tokens" element={<AITokenDashboard />} />,
-    <Route key="a8" path="/admin/intelligence-efficiency" element={<IntelligenceEfficiencyBoard />} />,
+    <Route key="a8" path="/admin/intelligence-efficiency" element={<Navigate to="/admin/intelligence/efficiency" replace />} />,
     <Route key="a9" path="/admin/truth-indices" element={<TruthIndexDashboard />} />,
     <Route key="a10" path="/admin/ai-team/overview" element={<AIT01TeamOverview />} />,
     <Route key="a11" path="/admin/ai-team/roles" element={<AIT02RoleRegistry />} />,
