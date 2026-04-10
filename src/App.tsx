@@ -351,6 +351,9 @@ const JVC11JourneyReplay = lazy(() => import("./pages/admin/verification/JVC11Jo
 const JVC13InteractionDriftRadar = lazy(() => import("./pages/admin/verification/JVC13InteractionDriftRadar"));
 const JVC04ButtonCTAHealth = lazy(() => import("./pages/admin/verification/JVC04ButtonCTAHealth"));
 const JVC06PageLoadIntegrity = lazy(() => import("./pages/admin/verification/JVC06PageLoadIntegrity"));
+const JVC01JourneyVerificationOverview = lazy(() => import("./pages/admin/verification/JVC01JourneyVerificationOverview"));
+const JVC10RuntimeProbeCenter = lazy(() => import("./pages/admin/verification/JVC10RuntimeProbeCenter"));
+const JVC14LaunchInteractionGate = lazy(() => import("./pages/admin/verification/JVC14LaunchInteractionGate"));
 
 // CJ — Customer Journey Proof System
 const CJ01ExecutiveReport = lazy(() => import("./pages/admin/customer-journey/CJ01ExecutiveReport"));
