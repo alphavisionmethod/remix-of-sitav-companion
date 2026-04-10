@@ -25,6 +25,14 @@ const pages = [
   ["CapitalAllocationPage", () => import("@/pages/CapitalAllocationPage")],
   ["RecoveredValuePage", () => import("@/pages/RecoveredValuePage")],
   ["SpilloverDashboard", () => import("@/pages/SpilloverDashboard")],
+  ["NetWorthOffice", () => import("@/pages/money/NetWorthOffice")],
+  ["DebtCreditOffice", () => import("@/pages/money/DebtCreditOffice")],
+  ["BudgetEnvelopeOffice", () => import("@/pages/money/BudgetEnvelopeOffice")],
+  ["TransactionIntelligence", () => import("@/pages/money/TransactionIntelligence")],
+  ["HouseholdMoneyOffice", () => import("@/pages/money/HouseholdMoneyOffice")],
+  ["FinancialHealthPulse", () => import("@/pages/money/FinancialHealthPulse")],
+  ["MoneyAdvisorBoard", () => import("@/pages/money/MoneyAdvisorBoard")],
+  ["ScenarioPlanner", () => import("@/pages/money/ScenarioPlanner")],
 ] as const;
 
 describe("Money Pages", () => {

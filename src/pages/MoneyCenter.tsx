@@ -16,12 +16,28 @@ import MoneyDocuments from "./money/MoneyDocuments";
 import MoneySettings from "./money/MoneySettings";
 import InvestmentOffice from "./money/InvestmentOffice";
 import TaxEstimator from "./money/TaxEstimator";
+import NetWorthOffice from "./money/NetWorthOffice";
+import DebtCreditOffice from "./money/DebtCreditOffice";
+import BudgetEnvelopeOffice from "./money/BudgetEnvelopeOffice";
+import TransactionIntelligence from "./money/TransactionIntelligence";
+import HouseholdMoneyOffice from "./money/HouseholdMoneyOffice";
+import FinancialHealthPulse from "./money/FinancialHealthPulse";
+import MoneyAdvisorBoard from "./money/MoneyAdvisorBoard";
+import ScenarioPlanner from "./money/ScenarioPlanner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-type SubPage = "overview" | "bills" | "subscriptions" | "reserves" | "cash-timing" | "receivables" | "investment-office" | "tax" | "approvals" | "boardroom" | "proof" | "files" | "settings";
+type SubPage = "overview" | "bills" | "subscriptions" | "reserves" | "cash-timing" | "receivables" | "investment-office" | "tax" | "approvals" | "boardroom" | "proof" | "files" | "settings" | "net-worth" | "debt-credit" | "budgets" | "transactions" | "household" | "health" | "advisors" | "scenarios";
 
 const subpageFromPath = (path: string): SubPage => {
+  if (path.includes("/net-worth")) return "net-worth";
+  if (path.includes("/debt-credit")) return "debt-credit";
+  if (path.includes("/budgets")) return "budgets";
+  if (path.includes("/transactions")) return "transactions";
+  if (path.includes("/household")) return "household";
+  if (path.includes("/health")) return "health";
+  if (path.includes("/advisors")) return "advisors";
+  if (path.includes("/scenarios")) return "scenarios";
   if (path.includes("/tax")) return "tax";
   if (path.includes("/investment-office")) return "investment-office";
   if (path.includes("/bills")) return "bills";
@@ -51,6 +67,14 @@ const pages: Record<SubPage, React.ComponentType> = {
   files: MoneyDocuments,
   settings: MoneySettings,
   boardroom: MoneyBoardroom,
+  "net-worth": NetWorthOffice,
+  "debt-credit": DebtCreditOffice,
+  budgets: BudgetEnvelopeOffice,
+  transactions: TransactionIntelligence,
+  household: HouseholdMoneyOffice,
+  health: FinancialHealthPulse,
+  advisors: MoneyAdvisorBoard,
+  scenarios: ScenarioPlanner,
 };
 
 const MoneyCenter = () => {
@@ -81,11 +105,19 @@ const MoneyCenter = () => {
             { key: "overview", label: "Overview" },
             { key: "bills", label: "Bills" },
             { key: "subscriptions", label: "Subscriptions" },
+            { key: "budgets", label: "Budgets" },
+            { key: "transactions", label: "Transactions" },
+            { key: "net-worth", label: "Net Worth" },
+            { key: "debt-credit", label: "Debt & Credit" },
             { key: "reserves", label: "Reserves" },
             { key: "cash-timing", label: "Cash Timing" },
             { key: "receivables", label: "Receivables" },
+            { key: "health", label: "Health Pulse" },
+            { key: "household", label: "Household" },
+            { key: "scenarios", label: "Scenarios" },
             { key: "investment-office", label: "Investment Office" },
             { key: "tax", label: "Tax" },
+            { key: "advisors", label: "Advisors" },
             { key: "approvals", label: "Approvals" },
             { key: "proof", label: "Proof" },
             { key: "files", label: "Documents" },
