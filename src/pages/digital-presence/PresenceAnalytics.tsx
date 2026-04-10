@@ -7,12 +7,14 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useSeoReports } from "@/hooks/use-digital-presence";
 import { DEMO_AGENT_CONFIDENCE, DEMO_OVERVIEW_METRICS, DEMO_PAGE_IMPACT, DEMO_PROMO_PERFORMANCE, DEMO_SOURCE_PERFORMANCE } from "@/lib/demo-data/digital-presence";
+import DPOSubNav from "./DPOSubNav";
 
 export default function PresenceAnalytics() {
   const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useSeoReports();
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
+      <DPOSubNav />
       <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">Presence Analytics & Insight Review</h1>
