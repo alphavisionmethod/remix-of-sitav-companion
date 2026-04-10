@@ -12,7 +12,7 @@ import { useAction } from "@/lib/hooks/useAction";
 import { CreditCard, AlertTriangle, TrendingDown, CheckCircle, XCircle, Eye, Sparkles, Calendar, DollarSign, Plus, Trash2, Pencil, Pause, Play } from "lucide-react";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { toast } from "sonner";
-import { format, parseISO } from "date-fns";
+import { format, parseISO, differenceInDays } from "date-fns";
 import { motion } from "framer-motion";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
