@@ -705,6 +705,9 @@ export function OSSetupExperience() {
   const canSkipCurrent = !isPhaseRequired(phase);
   const showRollbackBtn = state.setupStyle === "advanced";
   const currentBgTasks = backgroundTasks.filter(t => t.phaseId === phase);
+  const toneContext = useMemo(() => engine.getToneContext(), [
+    state.stressMap.heavierThanShould.length, state.operatingContext, state.setupStyle,
+  ]);
 
   const handleResume = useCallback(() => { setShowResumeBanner(false); }, []);
   const handleRestart = useCallback(() => {
