@@ -324,7 +324,7 @@ const ApprovalChamber = () => {
 
   const handleAction = async (id: string, action: string) => {
     // Trust-weighted evaluation before execution
-    const trustEval = os.evaluateAction(id, { deviceId: "browser", trustLevel: "medium", surface: "desktop", hasBiometric: false, hasKeyboard: true, lastAuthAt: new Date().toISOString(), sessionAge: 0 }, { sessionAge: 0, recentActions: 0, trustScore: 0.8 });
+    const trustEval = os.evaluateAction(id, { deviceId: "browser", trustLevel: "medium", surface: "desktop", hasBiometric: false, hasKeyboard: true, lastAuthAt: new Date().toISOString(), sessionAge: 0 }, { userId: "current", overallTrustScore: 80, recentViolations: 0, accountAge: 30, verifiedIdentity: true, mfaEnabled: false });
     if (trustEval.riskTier === "critical" && action === "approve") {
       toast.warning(`High risk action (${trustEval.executionMode}) — requires elevated approval`);
     }
