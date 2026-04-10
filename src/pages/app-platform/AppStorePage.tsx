@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useMemo } from "react";
+import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { Search, Shield, Sparkles } from "lucide-react";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
