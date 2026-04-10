@@ -10,6 +10,7 @@ import {
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import AutomationSubNav from "./AutomationSubNav";
 import { DEMO_advisorInsights, DEMO_automations, DEMO_fatigueAlerts, DEMO_healthMetrics, DEMO_DOMAIN_HEALTH } from "@/lib/demo-data/revenue-office";
 
 const statusIcon = { healthy: CheckCircle, warning: AlertTriangle, error: XCircle, underperforming: TrendingUp };
@@ -22,6 +23,7 @@ export default function AutomationHealth() {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
       <DemoModeBadge />
+      <AutomationSubNav />
       <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Activity className="h-6 w-6 text-blue-400" />Automation Health Monitor</h1>
         <p className="text-muted-foreground">Track success, failures, delays, fatigue, engagement, and conversion across all automations</p>

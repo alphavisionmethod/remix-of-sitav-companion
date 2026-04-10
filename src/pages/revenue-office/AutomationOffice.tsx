@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -19,6 +20,7 @@ import {
   DEMO_AUTOMATION_SURFACE_MAP, DEMO_AUTOMATION_OS_CONNECTIONS,
   DEMO_AUTOMATION_QUALITY_SCORES, DEMO_SHADOW_BOARD, DEMO_PROMISES
 } from "@/lib/demo-data/revenue-office";
+import AutomationSubNav from "./AutomationSubNav";
 
 const levelColors: Record<string, string> = {
   "Auto-run (L3)": "bg-emerald-500/10 text-emerald-400",
@@ -64,6 +66,7 @@ const promiseStatusColors: Record<string, string> = {
 
 export default function AutomationOffice() {
   const { isDemoMode } = useDataMode();
+  const navigate = useNavigate();
   const [selectedTab, setSelectedTab] = useState("overview");
 
   return (
@@ -78,14 +81,16 @@ export default function AutomationOffice() {
           <p className="text-muted-foreground">Commercial automation command center — build, simulate, approve, monitor, and repair automations with advisor intelligence</p>
         </div>
         <div className="flex gap-2">
-          <button className="px-4 py-2 rounded-lg bg-secondary text-secondary-foreground text-sm font-medium flex items-center gap-2">
+          <button onClick={() => navigate("/revenue-office/automation/policy")} className="px-4 py-2 rounded-lg bg-secondary text-secondary-foreground text-sm font-medium flex items-center gap-2">
             <Settings className="h-4 w-4" />Policies
           </button>
-          <button className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium flex items-center gap-2">
+          <button onClick={() => navigate("/revenue-office/automation/builder")} className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium flex items-center gap-2">
             <Zap className="h-4 w-4" />New Automation
           </button>
         </div>
       </div>
+
+      <AutomationSubNav />
 
       {/* Stats Band */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">

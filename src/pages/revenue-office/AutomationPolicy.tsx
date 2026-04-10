@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import AutomationSubNav from "./AutomationSubNav";
 import {
   DEMO_humanVsAI, DEMO_policies, DEMO_trustLevels,
   DEMO_COMMERCIAL_CONSTITUTION, DEMO_NO_GUESS_RULES,
@@ -76,6 +77,7 @@ export default function AutomationPolicy() {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
       <DemoModeBadge />
+      <AutomationSubNav />
       <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><ShieldCheck className="h-6 w-6 text-emerald-400" />Automation Policy Center</h1>
         <p className="text-muted-foreground">Trust boundaries, constitution, no-guess mode, pause/rollback, human handoff, safety rules, and audit trail</p>
