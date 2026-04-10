@@ -18,8 +18,8 @@ const healthColors: Record<TrustEdgeHealth, string> = {
   unknown: "border-muted-foreground text-muted-foreground bg-secondary/40",
 };
 
-const healthBadge: Record<TrustEdgeHealth, "verified" | "review" | "degraded" | "unverified"> = {
-  healthy: "verified", stressed: "review", broken: "degraded", unknown: "unverified",
+const healthBadge: Record<TrustEdgeHealth, "verified" | "review" | "degraded" | "low-confidence"> = {
+  healthy: "verified", stressed: "review", broken: "degraded", unknown: "low-confidence",
 };
 
 const nodeIcons: Record<string, typeof Wallet> = {
