@@ -254,6 +254,24 @@ export function inferBusinessSignals(state: OnboardingState): { type: string; ti
   if (state.uploadedArtifacts.includes("onboarding_docs") || state.uploadedArtifacts.includes("intake_forms")) {
     signals.push({ type: "onboarding_document_heavy", title: "Onboarding appears document-heavy", confidence: 78 });
   }
+  if (state.uploadedArtifacts.includes("proposal_templates")) {
+    signals.push({ type: "proposal_workflow", title: "Proposal-driven workflow detected", confidence: 82 });
+  }
+  if (state.uploadedArtifacts.includes("call_scripts")) {
+    signals.push({ type: "call_dependent_sales", title: "Call-dependent sales motion", confidence: 80 });
+  }
+  if (state.uploadedArtifacts.includes("email_sequences")) {
+    signals.push({ type: "nurture_funnel", title: "Nurture funnel infrastructure present", confidence: 79 });
+  }
+  if (state.uploadedArtifacts.includes("price_sheets") || state.uploadedArtifacts.includes("offer_decks")) {
+    signals.push({ type: "structured_pricing", title: "Structured pricing model detected", confidence: 81 });
+  }
+  if (state.uploadedArtifacts.includes("sops")) {
+    signals.push({ type: "process_maturity", title: "Process maturity signal — SOP-driven operations", confidence: 77 });
+  }
+  if (state.pastedUrls.length >= 2) {
+    signals.push({ type: "multi_channel_presence", title: `Multi-channel presence: ${state.pastedUrls.length} touchpoints`, confidence: 74 });
+  }
   if (state.postSaleSlips.includes("reviews") || state.businessTypes.includes("local")) {
     signals.push({ type: "review_opportunity_high", title: "High review collection opportunity", confidence: 82 });
   }

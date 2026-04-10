@@ -6,7 +6,6 @@ import { Target, Briefcase, GraduationCap, ShoppingCart, MapPin, Users, PenTool,
 import { Toggle, SectionTitle, ScreenHeader } from "../primitives";
 import SitaInsightCallout from "./SitaInsightCallout";
 import type { ScreenProps } from "../types";
-import type { ScreenProps } from "../types";
 
 const templates = [
   { id: "service", label: "Service Business", flow: ["Lead", "Inquiry", "Call", "Quote", "Close", "Onboarding", "Delivery", "Review"], icon: Briefcase },
