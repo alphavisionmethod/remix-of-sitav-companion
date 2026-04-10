@@ -11,8 +11,8 @@ const ltPages = [
   { label: "E2E Journeys", path: "/admin/truth/e2e-journeys", icon: TestTube },
   { label: "Runtime Probes", path: "/admin/truth/runtime-probes", icon: Radar },
   { label: "Launch Gate", path: "/admin/truth/launch-gate", icon: Rocket },
-  { label: "Route Truth", path: "/admin/truth/route-truth", icon: Route },
-  { label: "Regressions", path: "/admin/truth/regressions", icon: TrendingDown },
+  { label: "Route Truth", path: "/admin/truth/route-interaction", icon: Route },
+  { label: "Regressions", path: "/admin/truth/regression-radar", icon: TrendingDown },
 ];
 
 export default function LTSubNav() {

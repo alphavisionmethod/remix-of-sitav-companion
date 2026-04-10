@@ -98,6 +98,14 @@ const COMMAND_INDEX: CommandItem[] = [
   { id: "ar-failures", label: "Failure Center", sublabel: "AR07 — Retry & escalation", icon: AlertTriangle, path: "/admin/automation/failures", category: "system", keywords: ["failure", "retry", "escalation", "ar07"] },
   { id: "ar-killswitch", label: "Kill Switches", sublabel: "AR08 — Automation safety controls", icon: Shield, path: "/admin/automation/kill-switches", category: "system", keywords: ["kill", "switch", "safety", "disable", "ar08"] },
   { id: "ar-gate", label: "Automation Launch Gate", sublabel: "AR09 — Launch readiness gate", icon: ShieldCheck, path: "/admin/automation/launch-gate", category: "system", keywords: ["launch", "gate", "readiness", "automation", "ar09"] },
+  // Launch Truth
+  { id: "lt-behavioral", label: "Behavioral Truth", sublabel: "LT01 — Behavioral truth overview", icon: ShieldCheck, path: "/admin/truth/behavioral", category: "system", keywords: ["behavioral", "truth", "overview", "lt01"] },
+  { id: "lt-ci", label: "CI Pipeline", sublabel: "LT02 — CI pipeline center", icon: Activity, path: "/admin/truth/ci-pipeline", category: "system", keywords: ["ci", "pipeline", "build", "lt02"] },
+  { id: "lt-e2e", label: "E2E Journeys", sublabel: "LT03 — End-to-end journey board", icon: Target, path: "/admin/truth/e2e-journeys", category: "system", keywords: ["e2e", "journeys", "playwright", "tests", "lt03"] },
+  { id: "lt-probes", label: "Runtime Probes", sublabel: "LT04 — Runtime probe center", icon: Activity, path: "/admin/truth/runtime-probes", category: "system", keywords: ["runtime", "probes", "health", "lt04"] },
+  { id: "lt-gate", label: "Launch Gate", sublabel: "LT05 — Launch gate board", icon: ShieldCheck, path: "/admin/truth/launch-gate", category: "system", keywords: ["launch", "gate", "readiness", "lt05"] },
+  { id: "lt-route", label: "Route Truth", sublabel: "LT06 — P0 route & interaction truth", icon: Globe, path: "/admin/truth/route-interaction", category: "system", keywords: ["route", "truth", "interaction", "p0", "lt06"] },
+  { id: "lt-regressions", label: "Regression Radar", sublabel: "LT07 — Truth regression radar", icon: AlertTriangle, path: "/admin/truth/regression-radar", category: "system", keywords: ["regression", "radar", "flake", "lt07"] },
 ];
 
 const CATEGORY_CONFIG: Record<string, { label: string; color: string; order: number }> = {

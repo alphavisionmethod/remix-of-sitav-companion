@@ -6,8 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Route, MousePointer, Eye } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-
+import LTSubNav from "@/components/admin/LTSubNav";
 
 const LT06RouteInteractionTruth = () => {
   const { data: routeRecords } = useQuery({

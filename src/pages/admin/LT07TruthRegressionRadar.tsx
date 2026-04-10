@@ -6,8 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Radar, TrendingDown, AlertTriangle, Repeat } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-
+import LTSubNav from "@/components/admin/LTSubNav";
 
 const LT07TruthRegressionRadar = () => {
   const { data: regressions } = useQuery({
