@@ -13,7 +13,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { useAdaptiveInterface } from "@/hooks/useAdaptiveInterface";
 import { useOSOrchestration } from "@/hooks/useOSOrchestration";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import {
