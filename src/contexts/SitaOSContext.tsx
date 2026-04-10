@@ -24,6 +24,12 @@ import { createMemoryGovernance, type MemoryGovernanceEngine } from "@/lib/servi
 import { createBoundaryEngine, type BoundaryEngineService } from "@/lib/services/boundary-engine/boundary-engine";
 import { createExperienceSignature, type ExperienceSignatureService } from "@/lib/services/experience-signature/experience-signature";
 
+// ── CAI Persistence Bridge ──────────────────────────────────────
+import {
+  persistIntentResolution, persistOperatingMode, persistPrioritySnapshot,
+  persistAttentionDecision, persistOpportunitySignal, persistDigestCompilation,
+} from "@/lib/persistence/cai-persistence-bridge";
+
 // ── Kernel Shape ─────────────────────────────────────────────────
 
 export interface SitaOSKernel {
@@ -117,7 +123,7 @@ function getOrCreateKernel(): SitaOSKernel {
     return null;
   });
 
-  // 3. Attention OS integration: feed processed intents into attention stack
+  // 3. Attention OS integration: feed processed intents into attention stack + persist to CAI table
   intentOrchestrator.use(async (intent: IntentRequest) => {
     const urgency = intent.classification === "financial" ? 9 : intent.classification === "approval" ? 8 : intent.classification === "scheduling" ? 6 : 4;
     const importance = intent.classification === "financial" ? 9 : intent.classification === "approval" ? 8 : 5;
@@ -129,6 +135,28 @@ function getOrCreateKernel(): SitaOSKernel {
       priority: urgency >= 9 ? "critical" : urgency >= 7 ? "high" : urgency >= 4 ? "medium" : "low",
       metadata: { intentId: intent.id },
     });
+
+    // Persist intent resolution to dedicated CAI table (fire-and-forget)
+    persistIntentResolution({
+      source_surface: intent.surface,
+      raw_input: intent.raw.slice(0, 500),
+      resolved_intent: intent.classification ?? "unknown",
+      confidence: 0.85,
+      target_capability: intent.domain ?? "platform",
+      status: "resolved",
+    }).catch(() => {});
+
+    // Persist attention decision
+    persistAttentionDecision({
+      event_ref: intent.id,
+      urgency_class: urgency >= 9 ? "critical" : urgency >= 7 ? "high" : "normal",
+      routing_decision: "stack",
+      selected_surface: intent.surface,
+      deferred: false,
+      reason: `${intent.classification} from ${intent.source}`,
+      fatigue_score: attentionOS.getCognitiveLoad().score,
+    }).catch(() => {});
+
     return null; // never block
   });
 
@@ -288,14 +316,40 @@ export const SitaOSProvider = ({ children }: { children: ReactNode }) => {
         neglectedContacts: neglected.length,
       });
 
-      // Run opportunity detection
+      // Run opportunity detection + persist new signals to CAI table
       k.opportunityEngine.runPatternDetection();
+      const newOpps = k.opportunityEngine.getNew();
+      for (const opp of newOpps.slice(0, 5)) {
+        persistOpportunitySignal({
+          domain: opp.domain, signal_type: opp.type, title: opp.actionRequired,
+          summary: `Confidence: ${Math.round(opp.confidence * 100)}%`,
+          importance_tier: opp.confidence > 0.8 ? "high" : opp.confidence > 0.5 ? "medium" : "low",
+          confidence: opp.confidence, status: "new",
+        }).catch(() => {});
+      }
+
+      // Persist current operating mode to CAI table
+      persistOperatingMode({
+        mode_key: k.sitaModes.getMode(),
+        active: true,
+        metadata: { source: "hydration" },
+      }).catch(() => {});
+
+      // Persist priority snapshot
+      const stack = k.attentionOS.getAttentionStack();
+      persistPrioritySnapshot({
+        mode: k.sitaModes.getMode(),
+        stack_date: new Date().toISOString(),
+        top_items_json: [...stack.critical, ...stack.active].slice(0, 10).map(i => ({ id: i.id, title: i.title })),
+        urgency_summary: `${stack.critical.length} critical, ${stack.active.length} active`,
+        attention_posture: cogLoad.score > 70 ? "overloaded" : cogLoad.score > 40 ? "active" : "calm",
+      });
 
       // Apply memory decay
       k.memoryGovernance.applyDecay();
 
       setKernel({ ...k, hydrated: true });
-      console.log("[SitaOS] Kernel hydrated — 15 services cross-wired and active");
+      console.log("[SitaOS] Kernel hydrated — 15 services cross-wired, CAI tables active");
     }).catch((err) => {
       console.warn("[SitaOS] Partial hydration error:", err);
       setKernel({ ...k, hydrated: true });
