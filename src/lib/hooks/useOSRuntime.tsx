@@ -107,6 +107,7 @@ function buildRuntime(userId: string): OSRuntime {
       entityGraph, memory, advisors, policy, revenue,
       twins, boardroom, scenarios, tokens, integrations, replay,
       enterprise, support, observability, releases, trustDevice, compliance,
+      executionDebt, invisibleLabor, drag, bottleneck,
     },
     createAction: ActionStateMachine,
   };
