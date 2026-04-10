@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { AlertTriangle, Clock, CheckCircle, XCircle, Shield, Activity, Users, Zap, ArrowRight, Filter, Search, BarChart3, Eye, RefreshCw, Bell } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,6 +15,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useIncidentManagement, useEntityScoped } from "@/contexts/SitaKernelContext";
 import { DEMO_INCIDENTS, type DemoIncident as Incident, type Severity, type IncidentStatus } from "@/lib/demo-data/incidents";
+import { anomalyAlertSystem, type Anomaly } from "@/lib/services/anomaly-alert";
 
 const SEVERITY_CONFIG: Record<Severity, { color: string; bg: string; border: string }> = {
   critical: { color: "text-red-400", bg: "bg-red-500/10", border: "border-red-500/30" },
@@ -48,6 +49,13 @@ export default function IncidentCommandCenter() {
   const [tab, setTab] = useState("active");
   const [search, setSearch] = useState("");
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [anomalies, setAnomalies] = useState<Anomaly[]>([]);
+
+  // Wire anomaly-alert service — scan on mount
+  useEffect(() => {
+    const userId = entityId || "system";
+    anomalyAlertSystem.scan(userId).then(setAnomalies).catch(() => {});
+  }, [entityId]);
 
   const { data: dbIncidents } = useQuery({
     queryKey: ["admin-incidents-all"],
@@ -90,6 +98,30 @@ export default function IncidentCommandCenter() {
         </Card>
       )}
 
+      {/* Anomaly Alert Feed */}
+      {anomalies.length > 0 && (
+        <Card className="border-amber-500/30 bg-amber-500/5">
+          <CardContent className="p-4 space-y-2">
+            <div className="flex items-center gap-2 mb-1">
+              <Zap className="w-4 h-4 text-amber-400" />
+              <span className="text-xs font-semibold text-foreground">Anomaly Detection Feed</span>
+              <Badge variant="outline" className="text-[9px] bg-amber-500/10 text-amber-500 border-amber-500/20">{anomalies.length} detected</Badge>
+            </div>
+            {anomalies.slice(0, 5).map(a => (
+              <div key={a.id} className="flex items-center justify-between p-2 rounded border border-border/30 bg-card/30">
+                <div className="flex items-center gap-2">
+                  <div className={cn("w-2 h-2 rounded-full", a.severity === "critical" ? "bg-red-500" : a.severity === "warning" ? "bg-amber-500" : "bg-blue-500")} />
+                  <span className="text-xs text-foreground">{a.title}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Badge variant="outline" className="text-[8px]">{a.type.replace("_", " ")}</Badge>
+                  <span className="text-[9px] text-muted-foreground">Δ {a.metric.deviation.toFixed(1)}σ</span>
+                </div>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      )}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
         {[
           { label: "Open", value: active.length, color: active.length > 0 ? "text-red-400" : "text-emerald-400" },
