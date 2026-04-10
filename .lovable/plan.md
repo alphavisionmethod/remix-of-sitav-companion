@@ -1,119 +1,75 @@
 
 
-# Revenue Office — Full Enhancement Plan
+# Revenue Office — Remaining "Never Seen Before" Features Enhancement
 
-## Current State Summary
+## Assessment Summary
 
-The Revenue Office has **40 pages** across **40 routes** with **4,636 total lines**, **15 React Query hooks**, and **1,066 lines of demo data**. However, many critical pages are thin shells (43-72 lines) that display static demo data without interactive depth, debate logic, memory services, or advanced features.
+The 10 features from the spec have all been **created as pages** with demo data, but several are still thin shells that lack the depth described in the spec. Here's the gap analysis:
 
-## Critical Gaps Found
+| Feature | Current Lines | Gap |
+|---------|:---:|-----|
+| 1. Customer Journey Twin | 67 | No automation overlay, no stall detection, no advocate tracking, no churn mapping |
+| 2. Revenue Leakage Map (LeakDetector) | 96 | No repair tracking (DEMO_LEAK_REPAIR_TRACKING unused), no historical trends (DEMO_LEAK_TRENDS unused), no recovery ROI |
+| 3. Business Decision Theater | 69 | No scenario simulation (DEMO_SCENARIO_CARDS unused), no governance/proof panel, no receipt generation |
+| 4. What Breaks Growth | 99 | Already enhanced with repair actions and invalidation triggers — **DONE** |
+| 5. Growth DNA | 51 | Has traits/archetypes/plays but no firewall alerts (DEMO_GROWTH_FIREWALL_ALERTS unused), no deviation detection |
+| 6. Opportunity Board | 62 | No theme clustering (DEMO_OPPORTUNITY_THEMES unused), no priority scoring, no urgency indicators |
+| 7. Trust & Reputation Pulse | 48 | No trust dimensions (DEMO_TRUST_DIMENSIONS unused), no sentiment trend (DEMO_SENTIMENT_TREND unused) |
+| 8. White-Label Office | 48 | Functional — has partners, brands, revenue splits, controls. Needs growth health per client |
+| 9. Business Time Machine | 43 | Has periods/decisions/what-if but no advisor-then-vs-now snapshots, no lesson capture |
+| 10. GrowthBoardroom (Full Boardroom) | 127 | No campaign health, booking load, reputation pulse, operating mode, what-changed feed |
 
-### Missing Infrastructure
-1. **No Revenue Memory Service** — unlike Investment Office which has `investment-memory.service.ts`, there is no equivalent for revenue
-2. **No `use-revenue-memory.ts` hooks** — no memory domain hooks exist
-3. **No Advisor Debate/Disagreement Engine** — GrowthAdvisorBoard (66 lines) is a flat card list with no debate mode, alignment mapping, or "what changed"
-4. **No receipt/proof integration** on any page
+Additionally: **RetentionOffice** (102 lines) lacks churn prediction (DEMO_CHURN_PREDICTION unused) and NPS (DEMO_NPS_DATA unused). **ChiefRevenueSynthesis** (93 lines) lacks historical comparison (DEMO_CHIEF_HISTORICAL unused). **RevenueGate** (139 lines) lacks operating mode selector.
 
-### Thin Pages Needing Major Enhancement
-
-| Page | Lines | What's Missing |
-|------|:---:|---|
-| **GrowthAdvisorBoard** | 66 | No debate engine, no alignment map, no per-advisor history, no "what would change mind", no confidence/uncertainty split |
-| **FunnelBuilder** | 72 | No visual journey canvas, no step drag/reorder, no per-step leak detection, no A/B variants, no trigger logic |
-| **GrowthDNA** | 51 | No live data wiring, no deviation alerts, no strategy recommendations engine |
-| **WhatBreaksGrowth** | 51 | No repair actions, no advisor-linked invalidation, no recovery tracking |
-| **BusinessTimeMachine** | 43 | No snapshot comparison, no advisor-then-vs-now, no lesson capture |
-| **CommercialMemoryFeed** | 50 | No pin/acknowledge, no task conversion, no domain filtering |
-| **OpportunityBoard** | 62 | No advisor scoring, no theme clusters, no priority ranking |
-| **TrustPulse** | 48 | No sentiment trend chart, no trust breakdown by dimension |
-| **RevenueDecisionTheater** | 69 | No scenario simulation, no governance/proof panel, no receipt generation |
-| **GrowthAdvisorBoard** | 66 | Needs full 9-advisor council with debate |
-| **LeakDetector** | 96 | No automated repair suggestions, no recovery tracking, no historical trends |
-
-### Pages That Are Good But Need Enhancement
-
-| Page | Lines | Enhancement Needed |
-|------|:---:|---|
-| **GrowthBoardroom** | 127 | Add campaign health, booking load, reputation pulse, operating mode, what-changed feed |
-| **RelationshipCenter** | 125 | Add relationship graph, opportunity score, next-best-action, conversation timeline |
-| **CampaignOrchestrator** | 118 | Add lifecycle journey builder, fatigue scoring, deliverability signals, attribution |
-| **BookingCenter** | 125 | Add no-show recovery, prep workflows, post-call follow-up, conversion tracking |
-| **OffersWorkspace** | 98 | Add upsell/downsell flows, onboarding sequences, pricing experiments |
-| **MembershipCourseOffice** | 120 | Add drip release, gated content, engagement heatmap, renewal signals |
-| **RetentionOffice** | 102 | Add churn prediction model, NPS tracking, re-engagement workflow builder |
-| **RevenueGate** | 139 | Add connection health, operating mode selector, richer what-changed |
-| **ChiefRevenueSynthesis** | 93 | Add historical synthesis comparison, actionable next-step buttons |
+## What's Already Done
+- Revenue Memory Service (383 lines) with computeWhatChanged, inferGrowthDNA, assessGrowthFirewall
+- Revenue Memory Hooks (208 lines) with 15 React Query hooks
+- GrowthAdvisorBoard (262 lines) — full 9-advisor council with debate engine
+- FunnelBuilder (225 lines) — visual journey studio with leak detection
+- RelationshipCenter (238 lines) — advanced CRM with relationship graph
+- CampaignOrchestrator (118 lines) — enhanced with attribution
+- CommercialMemoryFeed (105 lines) — pin/acknowledge/task conversion
+- WhatBreaksGrowth (99 lines) — repair actions and invalidation triggers
+- Demo data: 1,300+ lines with all needed data exports already existing
 
 ## Implementation Plan
 
-### Step 1: Create Revenue Memory Service (~300 lines)
-`src/lib/services/finance-os/revenue-memory.service.ts`
-- `computeWhatChanged()` — analyze advisor stances, pipeline shifts, client health changes
-- `inferGrowthDNA()` — derive business growth traits from decisions, campaigns, funnel data
-- `assessGrowthFirewall()` — detect impulsive campaign launches, underprepared scaling
-- `buildTimeMachineSnapshot()` — capture current state for future replay
-- `getAdvisorMemory()` — track past advisor stances and confidence evolution
+### 1. Enhance JourneyTwin (67→~220 lines)
+Add: automation overlay showing active automations per stage, stall detection ("18 leads stuck >7 days"), advocate tracking with referral/review signals, churn exit mapping with counts, interactive stage expansion, stage health indicators
 
-### Step 2: Create Revenue Memory Hooks (~200 lines)
-`src/hooks/use-revenue-memory.ts`
-- Hooks for each memory domain: user, advisor, client, campaign, revenue pipeline
-- Unified `useRevenueWhatChanged()` aggregator
+### 2. Enhance LeakDetector (96→~230 lines)
+Wire: DEMO_LEAK_REPAIR_TRACKING for recovery progress bars, DEMO_LEAK_TRENDS for historical trend visualization, recovery ROI calculations, advisor-linked repair recommendations
 
-### Step 3: Enhance Growth Advisor Board → Full 9-Advisor Council (~400 lines)
-Transform from 66-line flat list into Investment Office-style advisor workspace:
-- 9 specialized advisors (Funnel, CRM, Campaign, Offer, Booking, Retention, Reputation, RevOps, Chief)
-- Debate mode with disagreement detection
-- Alignment map visualization
-- Per-advisor "what changed since last review"
-- "What would change my mind" for each stance
-- Confidence + uncertainty split
-- Synthesis memo from Chief Revenue Advisor
+### 3. Enhance RevenueDecisionTheater (69→~220 lines)
+Wire: DEMO_SCENARIO_CARDS for upside/base/downside simulation, governance/proof panel with receipt preview, final authorization flow with state management (draft→review→approved→executed)
 
-### Step 4: Deepen GrowthBoardroom → Executive Command Center (~350 lines)
-Add: campaigns running panel, booking load indicator, reputation health card, funnel conversion pulse, operating mode selector, what-changed live feed, advisor signal rail with links
+### 4. Enhance GrowthDNA (51→~150 lines)
+Wire: DEMO_GROWTH_FIREWALL_ALERTS for behavioral deviation alerts, add strategy alignment/conflict indicators per archetype, connect to revenue memory service
 
-### Step 5: Deepen FunnelBuilder → Visual Journey Studio (~350 lines)
-Add: visual step canvas with drag reorder, per-step conversion analytics with leak detection ("this step loses 34%"), A/B variant tabs, trigger logic panel, step types (page, form, email, booking, checkout, follow-up), "what's leaking?" intelligence card
+### 5. Enhance OpportunityBoard (62→~180 lines)
+Wire: DEMO_OPPORTUNITY_THEMES for theme clustering visualization, add priority scoring algorithm (impact × confidence / effort), urgency indicators, watchlist integration
 
-### Step 6: Deepen RelationshipCenter → Advanced CRM (~300 lines)
-Add: relationship warmth graph, lead/opportunity scoring with visual bars, next-best-action recommendations panel, conversation history timeline, churn risk indicator per contact, proposal/invoice links
+### 6. Enhance TrustPulse (48→~180 lines)
+Wire: DEMO_TRUST_DIMENSIONS for multi-axis trust breakdown (responsiveness, delivery, payment, engagement, satisfaction), DEMO_SENTIMENT_TREND for trend chart, advisor correlation
 
-### Step 7: Deepen CampaignOrchestrator (~280 lines)
-Add: lifecycle journey builder with branching preview, fatigue scoring per segment, deliverability health indicators, content sequence timeline, conversion attribution chart, advisor guidance panel
+### 7. Enhance BusinessTimeMachine (43→~180 lines)
+Add: advisor-then-vs-now comparison panels, lesson capture form with save-to-memory, snapshot delta highlighting, link to current strategy
 
-### Step 8: Enhance Remaining Core Pages (6 pages, ~150-200 lines each)
-- **BookingCenter**: no-show recovery workflows, prep checklist, post-call automation, conversion tracking
-- **OffersWorkspace**: upsell/downsell flow builder, onboarding sequences, pricing experiments, offer-market fit signals
-- **MembershipCourseOffice**: drip release scheduler, gated content, engagement heatmap, renewal/churn signals
-- **RetentionOffice**: churn prediction scoring, NPS tracking, re-engagement workflow builder, renewal timing
-- **LeakDetector**: automated repair action cards, recovery tracking with ROI, historical leak trends, advisor-linked recommendations
-- **ReputationEngine**: already solid at 237 lines — add sentiment trend chart
+### 8. Enhance GrowthBoardroom (127→~280 lines)
+Add: campaign health indicator, booking load gauge, reputation pulse card, funnel conversion pulse, operating mode selector, what-changed live feed panel linking to memory service
 
-### Step 9: Enhance Wow Feature Pages (6 pages, ~100-200 lines each)
-- **RevenueDecisionTheater**: scenario simulation cards, governance/proof panel, receipt generation, final authorization flow
-- **GrowthDNA**: wire to memory service, deviation alerts, play recommendations based on actual data
-- **WhatBreaksGrowth**: per-category drill-down, advisor-linked invalidation, repair action cards
-- **BusinessTimeMachine**: richer then-vs-now panels, advisor state snapshots, lesson capture + constitution update
-- **CommercialMemoryFeed**: acknowledge/pin/task conversion, domain filtering tabs, advisor-change highlighting
-- **OpportunityBoard**: advisor-scored ranking, confidence/uncertainty, theme clustering
+### 9. Enhance RetentionOffice (102→~220 lines)
+Wire: DEMO_CHURN_PREDICTION for churn prediction model cards, DEMO_NPS_DATA for NPS dashboard with trend visualization, add re-engagement workflow section
 
-### Step 10: Enhance Supporting Pages
-- **RevenueGate**: connection health panel, operating mode indicator, recent what-changed cards
-- **ChiefRevenueSynthesis**: wire to memory service, add actionable buttons, historical comparison
-
-### Step 11: Extend Demo Data (~400 lines)
-Add richer demo data to `src/lib/demo-data/revenue-office.ts` for all new sections: advisor debate data, memory events, funnel step analytics, relationship graph data, campaign attribution data
+### 10. Enhance Supporting Pages
+- **ChiefRevenueSynthesis** (93→~150 lines): Wire DEMO_CHIEF_HISTORICAL for historical comparison, add actionable next-step buttons
+- **RevenueGate** (139→~180 lines): Add operating mode selector, connection health panel
+- **WhiteLabelOffice** (48→~100 lines): Add growth health trend per client, reputation cross-client summary
 
 ## Technical Approach
-- No new routes — all enhancements to existing pages
-- Follows existing demo-first pattern with live Supabase fallback
-- Uses existing UI components (Card, Badge, Progress, Tabs, etc.)
-- Zero new dependencies
-- All hooks follow `useAuth()` + React Query pattern from existing `use-revenue-office.ts`
-
-## Estimated Scope
-- 2 new files (service + hooks): ~500 lines
-- ~15 pages significantly enhanced: adding 100-300 lines each
-- ~400 lines additional demo data
-- Total: ~4,500 lines of new/enhanced code across ~18 files
+- All demo data exports already exist — just need to be imported and wired
+- No new routes, dependencies, or services needed
+- All pages maintain existing demo-first pattern with Supabase fallback
+- Estimated: ~2,500 lines of enhanced code across 12 files
+- Zero new files needed
 
