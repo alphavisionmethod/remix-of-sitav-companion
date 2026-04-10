@@ -1,58 +1,69 @@
 
 
-# SITA OS Application Platform — Completion Audit
+# Investment Office Enhancement Plan
 
-## Current State: 95% Complete
+## Current State (Audit Complete)
 
-All 24 spec screens (APS01–APS24) are implemented as pages, all wired to `AppPlatformContext`, with Supabase persistence + localStorage fallback. The catalog has 35+ apps across all required categories. 7 bundles cover all spec packs. 30+ reusable components exist in `AppStoreComponents.tsx`.
+The Investment Office is 100% implemented with 38 pages (4,879 lines), 27+ Supabase tables, 9 deeply-modeled advisors, and complete routing. All 10 spec layers are functional. No stubs, no placeholders, no duplicates.
 
-## Remaining Gaps (2 items)
+## Enhancement Plan — Premium "Wow" Features
 
-### Gap 1: InstallSheet post-install buttons not wired
-**File:** `src/components/sita/app-platform/AppStoreComponents.tsx` (lines 404–409)
+### 1. Sparkline Mini-Charts on Instrument Cards (Market Explorer, Boardroom, Watchlists)
 
-The "Open" and "Pin to Dock" buttons in the `InstallSheet`'s installed state are plain buttons with no `onClick`. They should:
-- **Open**: close the sheet (the app is already "open" in a web context)
-- **Pin to Dock**: call `pinToDock(app.id)` via a new prop, then show a toast
+Add inline SVG sparkline components to every instrument tile showing 7-day price movement. This is the single biggest visual upgrade to make it feel like a real terminal.
 
-**Fix:** Add `onPinToDock` and `onOpen` callback props to InstallSheet, wire them from all calling pages (AppStorePage, AppDetailPage, AppComparePage, etc.).
+- Create `SparklineChart` component (SVG-based, ~40 lines)
+- Add mock 7-day price history arrays to each instrument in mock-data
+- Integrate into MarketExplorer instrument cards, Boardroom movers, Watchlist rows, and Portfolio holdings
 
-### Gap 2: No dedicated Receipt Detail view (APS23)
-Receipts are shown inline on the `AppReceiptsPage`, but spec calls for a dedicated receipt detail page with:
-- Full receipt metadata
-- Source verification card
-- Permission diff panel
-- Action timeline
-- Export receipt button
+### 2. Animated Ticker Ribbon on Boardroom
 
-**Fix:** Create `src/pages/app-platform/AppReceiptDetailPage.tsx` with route `/app-store/receipt/:receiptId`. Make each receipt card in `AppReceiptsPage` clickable to navigate there.
+Add a horizontally scrolling price ticker at the top of InvestmentBoardroom showing all portfolio positions with live-feeling price animations. CSS marquee-style with staggered color transitions for gainers/losers.
 
-## Files to Modify
+### 3. Glowing Pulse on Advisor Confidence Badges
 
-1. **`src/components/sita/app-platform/AppStoreComponents.tsx`** — Add `onPinToDock`/`onOpen` props to InstallSheet's installed state buttons
-2. **`src/pages/app-platform/AppStorePage.tsx`** — Pass pin/open handlers to InstallSheet
-3. **`src/pages/app-platform/AppDetailPage.tsx`** — Pass pin/open handlers to InstallSheet
-4. **`src/pages/app-platform/AppComparePage.tsx`** — Pass pin/open handlers to InstallSheet
-5. **`src/pages/app-platform/AppReceiptDetailPage.tsx`** — New file: dedicated receipt detail view
-6. **`src/pages/app-platform/AppReceiptsPage.tsx`** — Make receipt cards clickable → navigate to detail
-7. **`src/App.tsx`** — Add route for `/app-store/receipt/:receiptId`
+Add a subtle CSS pulse animation on advisor confidence badges — green glow for "high", amber for "moderate", red for "low". Makes the Advisor Board feel alive.
 
-## What Is Already Complete (no changes needed)
+### 4. Trade Prep Receipt Sheet (Pre-Execution)
 
-All other spec requirements are fully implemented:
-- 35+ apps across browsers, communication, productivity, dev tools, business, finance, security, household, utilities, entertainment
-- 7 bundles with batch install + progress
-- Full trust model (6 levels), source origins (8), sandbox levels (5), package types (6), update modes (5)
-- Install Sheet with animated progress, scope selector, sandbox recommendations
-- Permissions Center with domain-based views
-- Default Apps + File + Protocol association managers
-- Open With dialog
-- Enterprise catalog with role-based access
-- Developer tools catalog with category filters
-- First Launch 3-step handoff flow
-- External installer with verified/unknown source analysis
-- Web app install with "Add to SITA" magic
-- Compare view with feature/permission diff matrix
-- All pages wired to reactive context with Supabase persistence
-- Receipt generation on every lifecycle action
+Enhance ExecutionDesk "review" state with a formal Trade Prep Receipt — a beautifully formatted document-style card showing intent, rationale, advisor views, risk assessment, and approval status before execution. This is the "every decision gets a receipt" wow moment.
+
+### 5. "What Changed" Summary Card on Boardroom
+
+Add a dedicated "Since Last Visit" card to the Boardroom showing portfolio changes, advisor view shifts, catalyst countdowns, and watchlist movements — with color-coded severity badges. Uses the existing MarketMemoryFeed data.
+
+### 6. Conviction + Risk Overlay Badges on Holdings
+
+Add small conviction/risk overlay indicators to every holding row in PortfolioOffice — showing thesis conviction level and risk contribution as compact inline badges, linking directly to the thesis journal.
+
+### 7. Strategy Template Gallery in Strategy Studio
+
+Add a "Strategy Templates" section to StrategyStudio with 6 pre-built allocation templates (Conservative Diversified, Growth & Innovation, Crypto Satellite, Event Speculation, Commodity Hedge, Income Preservation) — each showing target allocation bars and one-tap "Apply" simulation.
+
+### 8. Cinematic Entry Animation on InvestmentGate
+
+Enhance the Investment Office landing page with staggered entrance animations — fade-up hero, delayed stats, cascading navigation cards with scale-in transitions. Make the first impression feel premium.
+
+## Technical Approach
+
+- All enhancements are additive (no breaking changes)
+- SparklineChart is a new reusable primitive component
+- Mock data extensions are backward-compatible
+- CSS animations use existing Tailwind keyframes + new custom ones
+- No new database tables needed
+- No new dependencies required
+
+## Files Modified
+
+- `src/components/sita/SparklineChart.tsx` (new)
+- `src/lib/investment-office/mock-data.ts` (add sparkline data)
+- `src/pages/investment-office/InvestmentBoardroom.tsx` (ticker + what-changed + sparklines)
+- `src/pages/investment-office/MarketExplorer.tsx` (sparklines on cards)
+- `src/pages/investment-office/PortfolioOffice.tsx` (conviction overlays)
+- `src/pages/investment-office/ExecutionDesk.tsx` (trade prep receipt)
+- `src/pages/investment-office/StrategyStudio.tsx` (template gallery)
+- `src/pages/investment-office/AdvisorBoard.tsx` (pulse animations)
+- `src/pages/investment-office/InvestmentGate.tsx` (cinematic entry)
+- `src/pages/investment-office/WatchlistsSignals.tsx` (sparklines)
+- `tailwind.config.ts` (pulse keyframes)
 
