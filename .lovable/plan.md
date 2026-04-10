@@ -1,128 +1,82 @@
 
 
-# SITA OS — Schema Completion Audit: Gaps Found & Fix Plan
+# SITA OS — AI Provider Gateway: Integration Gaps & Enhancement Plan
 
-## Audit Results
+## Audit Summary
 
-### Tables: 22/23 exist — 1 missing
+The core AI gateway architecture is 100% built: edge function, client SDK, hooks, admin pages, database tables, budget policies, receipts, routing, and fallback logic are all in place and wired.
 
-| Table | Status |
-|-------|--------|
-| provider_families | Exists with equivalent columns |
-| provider_capabilities | Exists with equivalent columns |
-| oauth_client_registry | Exists |
-| identity_provider_registry | Exists |
-| identity_provider_links (linked_identity_providers) | Exists |
-| connected_service_links (connected_service_accounts) | Exists with all required columns |
-| connector_oauth_tokens | Exists — **missing 4 columns** |
-| connector_health_records | Exists |
-| connector_sync_runs | Exists |
-| scope_policy_matrix | Exists |
-| consent_ledger | Exists |
-| permission_upgrade_requests | Exists |
-| unified_account_nodes | Exists |
-| unified_account_edges | Exists |
-| auth_connector_separation_audits | Exists |
-| identity_session_audit | Exists |
-| connector_disconnection_events | Exists |
-| integration_launch_honesty | Exists |
-| device_auth_clients | Exists |
-| **oauth_state_sessions** | **MISSING** |
+**However, 5 edge functions bypass the canonical receipt/usage ledger**, creating a traceability gap. They call the Lovable AI Gateway directly (correct for server-side) but only log to the legacy `ai_token_usage` table — not to the canonical `ai_usage_ledger` or `ai_inference_receipts` tables that the AIG admin dashboards query.
 
-### Views: 4/4 exist
-All views (`v_connected_accounts_center`, `v_identity_methods`, `v_consent_history`, `v_account_graph_summary`) exist.
+## Gaps Found
 
-### RLS: Enabled on all tables
-All tables have RLS enabled with user-scoped policies.
+### Gap 1 — Edge functions missing canonical receipt logging (5 functions)
 
-## Remaining Gaps (3 items)
+| Function | Budget Check | Logs to `ai_usage_ledger` | Logs to `ai_inference_receipts` |
+|----------|-------------|---------------------------|--------------------------------|
+| `chat-advisor` | Yes (custom) | No — only `ai_token_usage` | No |
+| `personal-brain` | Yes (legacy) | No — only `ai_token_usage` | No |
+| `brain-core` | No | No | No |
+| `agent-executor` | No | No | No |
+| `file-ingestion` | No | No | No |
 
-### Gap 1 — `oauth_state_sessions` table does not exist
-Required by Part 4, Table 19. Tracks OAuth initiation/callback state for CSRF protection during connector authorization flows.
+**Impact**: The AIG04 Budget Center and AIG05 Receipts Explorer show incomplete data because these 5 functions account for a significant portion of AI usage but their invocations are invisible to the canonical governance layer.
 
-### Gap 2 — `connector_oauth_tokens` missing columns
-Currently has: `id, user_id, account_id, access_token, refresh_token, token_type, expires_at, scopes, reauth_required, last_refreshed_at, refresh_failure_count, metadata, created_at, updated_at`
+### Gap 2 — No budget policy check in 3 functions
 
-Missing per spec:
-- `oauth_client_registry_id uuid` — FK to oauth_client_registry, needed to track which OAuth client issued the token
-- `scope_string text` — raw scope string from provider
-- `refresh_failed_at timestamptz` — when last refresh failed
-- `refresh_failure_reason text` — why refresh failed
-- `mode text default 'real'` — dual-reality support
-
-### Gap 3 — Missing performance indexes
-Most tables only have PK indexes. The spec requires indexes on FK columns, state columns, and timestamp columns for query performance. Tables affected:
-- `connected_service_links`: needs indexes on `user_id`, `provider_family_id`, `provider_capability_id`, `connection_status`
-- `identity_provider_links`: needs indexes on `user_id`, `provider_family_id`
-- `consent_ledger`: needs indexes on `user_id`, `provider_capability_id`, `consent_type`
-- `connector_oauth_tokens`: needs indexes on `account_id`, `expires_at`, `reauth_required`
-- `connector_health_records`: needs index on `account_id`, `health_status`
+`brain-core`, `agent-executor`, and `file-ingestion` have no budget enforcement at all. They call the AI gateway without checking `check_ai_budget_policies`, meaning they can exceed budget ceilings silently.
 
 ## Implementation Plan
 
-### Migration 1 — Create `oauth_state_sessions` table
-```sql
-CREATE TABLE oauth_state_sessions (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id uuid NOT NULL,
-  provider_family_id uuid REFERENCES provider_families(id),
-  provider_capability_id uuid REFERENCES provider_capabilities(id),
-  oauth_client_registry_id uuid REFERENCES oauth_client_registry(id),
-  state_token text UNIQUE NOT NULL,
-  code_verifier text,
-  redirect_uri text,
-  requested_scopes jsonb DEFAULT '[]',
-  flow_type text NOT NULL DEFAULT 'connector_grant',
-  status text NOT NULL DEFAULT 'initiated',
-  initiated_at timestamptz NOT NULL DEFAULT now(),
-  completed_at timestamptz,
-  expires_at timestamptz NOT NULL DEFAULT (now() + interval '10 minutes'),
-  error_message text,
-  metadata jsonb DEFAULT '{}',
-  created_at timestamptz NOT NULL DEFAULT now()
-);
-ALTER TABLE oauth_state_sessions ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "Users manage own oauth states" ON oauth_state_sessions FOR ALL USING (auth.uid() = user_id) WITH CHECK (auth.uid() = user_id);
-CREATE INDEX idx_oauth_state_sessions_user ON oauth_state_sessions(user_id);
-CREATE INDEX idx_oauth_state_sessions_state ON oauth_state_sessions(state_token);
-CREATE INDEX idx_oauth_state_sessions_status ON oauth_state_sessions(status);
+### Step 1 — Create shared AI receipt logging utility
+
+Create `supabase/functions/_shared/ai-receipt-logger.ts` with a reusable function that logs to both `ai_usage_ledger` and `ai_inference_receipts` in one call. All 5 functions will import this instead of duplicating logging code.
+
+```text
+logAIReceipt(serviceClient, {
+  userId, capabilityKey, model, provider,
+  inputTokens, outputTokens, costUsd,
+  latencyMs, mode, status
+})
 ```
 
-### Migration 2 — Add missing columns to `connector_oauth_tokens`
-```sql
-ALTER TABLE connector_oauth_tokens
-  ADD COLUMN IF NOT EXISTS oauth_client_registry_id uuid REFERENCES oauth_client_registry(id),
-  ADD COLUMN IF NOT EXISTS scope_string text,
-  ADD COLUMN IF NOT EXISTS refresh_failed_at timestamptz,
-  ADD COLUMN IF NOT EXISTS refresh_failure_reason text,
-  ADD COLUMN IF NOT EXISTS mode text DEFAULT 'real';
-```
+### Step 2 — Create shared budget check utility
 
-### Migration 3 — Add performance indexes
-```sql
-CREATE INDEX IF NOT EXISTS idx_csl_user ON connected_service_links(user_id);
-CREATE INDEX IF NOT EXISTS idx_csl_provider_family ON connected_service_links(provider_family_id);
-CREATE INDEX IF NOT EXISTS idx_csl_capability ON connected_service_links(provider_capability_id);
-CREATE INDEX IF NOT EXISTS idx_csl_status ON connected_service_links(connection_status);
-CREATE INDEX IF NOT EXISTS idx_ipl_user ON identity_provider_links(user_id);
-CREATE INDEX IF NOT EXISTS idx_ipl_provider_family ON identity_provider_links(provider_family_id);
-CREATE INDEX IF NOT EXISTS idx_cl_user ON consent_ledger(user_id);
-CREATE INDEX IF NOT EXISTS idx_cl_capability ON consent_ledger(provider_capability_id);
-CREATE INDEX IF NOT EXISTS idx_cl_type ON consent_ledger(consent_type);
-CREATE INDEX IF NOT EXISTS idx_cot_account ON connector_oauth_tokens(account_id);
-CREATE INDEX IF NOT EXISTS idx_cot_expires ON connector_oauth_tokens(expires_at);
-CREATE INDEX IF NOT EXISTS idx_cot_reauth ON connector_oauth_tokens(reauth_required);
-CREATE INDEX IF NOT EXISTS idx_chr_account ON connector_health_records(account_id);
-CREATE INDEX IF NOT EXISTS idx_chr_status ON connector_health_records(health_status);
-```
+Create `supabase/functions/_shared/ai-budget-check.ts` wrapping the `check_ai_budget_policies` RPC call. Returns allow/block/downgrade decision with fallback model. All functions import this instead of ad-hoc budget logic.
 
-### What This Does NOT Do
-- No table renames (existing names are semantically equivalent)
-- No column renames (existing column names work fine)
-- No RLS changes (current policies are correctly scoped)
-- No view changes (all 4 views already work)
-- No frontend code changes needed
+### Step 3 — Enhance `chat-advisor` (already has budget, needs canonical receipts)
 
-### Summary
-3 migrations total. 1 new table, 5 new columns, 15 new indexes. Zero duplicates, zero stubs.
+Add `ai_usage_ledger` and `ai_inference_receipts` logging after the streaming response is initiated. Keep existing `ai_token_usage` logging for backward compatibility.
+
+### Step 4 — Enhance `personal-brain` (has legacy budget, needs canonical receipts)
+
+Replace legacy budget check with canonical `check_ai_budget_policies`. Add receipt logging to both canonical tables.
+
+### Step 5 — Enhance `brain-core` (no budget, no receipts)
+
+Add budget policy check before AI call. Add canonical receipt logging. Add fallback/degraded handling when budget exceeded.
+
+### Step 6 — Enhance `agent-executor` (no budget, no receipts)
+
+Add budget policy check. Add canonical receipt logging. The function already handles AI unavailability gracefully.
+
+### Step 7 — Enhance `file-ingestion` (no budget, no receipts)
+
+Add budget policy check. Add canonical receipt logging. Already handles missing API key gracefully.
+
+### Step 8 — Deploy all enhanced functions
+
+Deploy all 5 updated functions plus the 2 new shared utilities.
+
+## What This Does NOT Do
+
+- No new database tables (all canonical tables already exist)
+- No frontend changes (admin dashboards already query the right tables)
+- No changes to the central `ai-gateway` edge function (already complete)
+- No changes to client SDK or hooks (already fully wired)
+- No changes to admin pages (AIG01-AIG09 already complete)
+
+## Summary
+
+2 new shared utilities + 5 edge function enhancements. Zero new tables, zero frontend changes. Closes the last traceability gap so every AI invocation across the entire platform is visible in the canonical governance layer.
 
