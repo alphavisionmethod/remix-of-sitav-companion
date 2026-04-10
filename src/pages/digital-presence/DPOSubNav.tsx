@@ -9,7 +9,7 @@ import {
 const dpoPages = [
   { label: "Hub", path: "/digital-presence", icon: Globe },
   { label: "Boardroom", path: "/digital-presence/boardroom", icon: BarChart3 },
-  { label: "Twin", path: "/digital-presence/twin", icon: Layout },
+  { label: "Twin", path: "/digital-presence/website-twin", icon: Layout },
   { label: "Builder", path: "/digital-presence/builder", icon: Layout },
   { label: "Brand", path: "/digital-presence/brand-studio", icon: Palette },
   { label: "Connected", path: "/digital-presence/connected-sites", icon: Link2 },
