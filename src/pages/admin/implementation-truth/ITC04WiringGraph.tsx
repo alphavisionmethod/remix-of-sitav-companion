@@ -188,8 +188,8 @@ export default function ITC04WiringGraph() {
                     <div className="flex items-center gap-1"><StatusIcon status={edge.edge_status} /><ArrowRight className="h-3 w-3 text-muted-foreground" /></div>
                     <NodeBadge type={edge.target_type} name={edge.target_name} />
                     {edge.edge_status !== "connected" && <Badge variant={edge.edge_status === "broken" ? "secondary" : "destructive"} className="text-[7px] h-4">{edge.edge_status}</Badge>}
-                    {"evidence" in edge && edge.evidence && <span className="text-[8px] text-muted-foreground italic ml-2">{edge.evidence}</span>}
-                    {"verified_at" in edge && edge.verified_at && <span className="text-[8px] text-muted-foreground ml-1">✓ {new Date(edge.verified_at).toLocaleDateString()}</span>}
+                    {"evidence" in edge && (edge as any).evidence && <span className="text-[8px] text-muted-foreground italic ml-2">{String((edge as any).evidence)}</span>}
+                    {"verified_at" in edge && (edge as any).verified_at && <span className="text-[8px] text-muted-foreground ml-1">✓ {new Date(String((edge as any).verified_at)).toLocaleDateString()}</span>}
                     {"id" in edge && edge.id && !(edge as any).id?.startsWith("e") && (
                       <Button variant="ghost" size="icon" className="h-5 w-5 ml-auto" onClick={() => deleteEdge.mutate({ id: (edge as any).id, spec_id: selectedSpec })}>
                         <Trash2 className="h-3 w-3 text-destructive" />
