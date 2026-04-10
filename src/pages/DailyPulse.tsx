@@ -447,6 +447,33 @@ const DailyPulse = () => {
         {orderedKpis}
       </div>
 
+      {/* ── Chief-of-Staff Interventions ── */}
+      {activeInterventions.length > 0 && (
+        <div className="space-y-3">
+          <SitaSectionHeader title="Chief-of-Staff" subtitle="Proactive nudges from your OS" />
+          <div className="grid gap-2 sm:grid-cols-2">
+            {activeInterventions.slice(0, 4).map((intervention: any, i: number) => (
+              <SitaCard key={i} hover className="p-4">
+                <div className="flex items-start gap-3">
+                  <div className="rounded-lg bg-accent/10 p-2 shrink-0">
+                    <Lightbulb className="h-4 w-4 text-accent" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-semibold text-foreground">{intervention.type || "Nudge"}</p>
+                    <p className="text-[11px] text-muted-foreground mt-0.5 line-clamp-2">{intervention.message || intervention.suggestion || "Review recommended"}</p>
+                    {intervention.persona && (
+                      <span className="inline-block mt-1.5 text-[9px] font-medium text-primary bg-primary/10 rounded-full px-2 py-0.5 capitalize">
+                        {intervention.persona}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </SitaCard>
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* ── Inline Approval Queue (with ApprovalGate) ── */}
       {showSection("approvals") && pendingApprovals.length > 0 && (
         <div className="space-y-3">

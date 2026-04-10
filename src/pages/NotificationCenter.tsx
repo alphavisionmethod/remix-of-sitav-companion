@@ -243,13 +243,22 @@ const NotificationCenter = () => {
         }
       />
 
-      {/* KPIs */}
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      {/* Attention OS State */}
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
         <KPITile label="Unread" value={unreadCount} icon={Bell} sub={unreadCount === 0 ? "All clear" : "needs attention"} />
         <KPITile label="Critical" value={criticalCount} icon={AlertCircle} sub={criticalCount > 0 ? "immediate" : "none"} />
         <KPITile label="Approvals" value={approvalCount} icon={Shield} sub="waiting" />
+        <KPITile label="Cog. Load" value={`${Math.round(cogLoad * 100)}%`} icon={Activity} sub={cogLoad > 0.8 ? "high — quiet mode" : cogLoad > 0.5 ? "moderate" : "low"} />
         <KPITile label="Total" value={allNotifs.length} icon={Eye} sub="notifications" />
       </div>
+
+      {/* Quiet mode reasoning */}
+      {quietMode && (
+        <div className="flex items-center gap-2 rounded-lg bg-accent/5 border border-accent/15 px-3 py-2 text-[11px] text-accent">
+          <VolumeX className="h-3.5 w-3.5 shrink-0" />
+          <span>Quiet mode active — cognitive load at {Math.round(cogLoad * 100)}%. Only critical notifications will interrupt.</span>
+        </div>
+      )}
 
       {/* Critical banner */}
       {criticalCount > 0 && !quietMode && (
