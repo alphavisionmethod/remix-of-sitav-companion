@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   TrendingUp, TrendingDown, DollarSign, PieChart, Shield, Eye, Calendar,
   ArrowRight, BarChart3, Briefcase, AlertTriangle, Clock, Brain, ChevronRight,
-  RefreshCw, Zap, Info, Bell
+  RefreshCw, Zap, Info, Bell, Network
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { SparklineChart } from "@/components/sita/SparklineChart";
