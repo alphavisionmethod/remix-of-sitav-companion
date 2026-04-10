@@ -631,7 +631,74 @@ const SettingsPage = () => {
         );
 
       case "connected-accounts":
-        return <GoogleConnectedAccounts />;
+        return (
+          <div className="space-y-4">
+            {/* Data Mode Governance Toggle */}
+            <SitaCard hover={false} className="p-5">
+              <SitaCardTitle sub="Control whether SITA operates with real or simulated data">
+                <div className="flex items-center gap-2"><ShieldAlert className="h-4 w-4 text-primary" /> Data Mode Governance</div>
+              </SitaCardTitle>
+              <div className="mt-4">
+                <div className="flex items-center justify-between rounded-xl bg-secondary/30 p-4">
+                  <div>
+                    <p className="text-sm font-medium text-foreground">
+                      {isDemoMode ? "Demo Mode Active" : "Live Mode Active"}
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      {isDemoMode
+                        ? "All data is simulated. No real connections, analytics, or side-effects."
+                        : "Connected to real services. Actions have real consequences."}
+                    </p>
+                  </div>
+                  <button
+                    onClick={async () => {
+                      const action = isDemoMode ? "Switch to Live Mode" : "Switch to Demo Mode";
+                      const desc = isDemoMode
+                        ? "Live mode connects to real services. Actions will have real consequences."
+                        : "Demo mode uses simulated data. No real side-effects will occur.";
+                      if (await confirmAction({ title: action, description: desc })) {
+                        handleToggle();
+                      }
+                    }}
+                    className={cn(
+                      "rounded-lg px-4 py-2 text-xs font-medium transition-colors",
+                      isDemoMode
+                        ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                        : "bg-amber-500/15 text-amber-600 dark:text-amber-400 hover:bg-amber-500/25"
+                    )}
+                  >
+                    {isDemoMode ? "Go Live" : "Switch to Demo"}
+                  </button>
+                </div>
+              </div>
+            </SitaCard>
+
+            {/* Sign-in Provider Info */}
+            <SitaCard hover={false} className="p-5">
+              <SitaCardTitle sub="Your authentication identity and sign-in method">
+                <div className="flex items-center gap-2"><Key className="h-4 w-4 text-primary" /> Sign-in Identity</div>
+              </SitaCardTitle>
+              <div className="mt-4 space-y-2">
+                <div className="flex items-center justify-between rounded-xl bg-secondary/30 p-3">
+                  <div className="flex items-center gap-3">
+                    <User className="h-4 w-4 text-primary" />
+                    <div>
+                      <p className="text-xs font-medium text-foreground">{user?.email || "Not signed in"}</p>
+                      <p className="text-[10px] text-muted-foreground">
+                        Provider: {user?.app_metadata?.provider || "email"}
+                        {user?.app_metadata?.providers?.length > 1 && ` + ${user.app_metadata.providers.length - 1} more`}
+                      </p>
+                    </div>
+                  </div>
+                  <TrustBadge level="verified" label="Active" size="sm" />
+                </div>
+              </div>
+            </SitaCard>
+
+            {/* Google Connected Accounts */}
+            <GoogleConnectedAccounts />
+          </div>
+        );
 
       default:
         return (
