@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { useDataMode } from "@/contexts/DataModeContext";
+import AIGSubNav from "@/components/admin/AIGSubNav";
 
 const STATUS_CONFIG: Record<CapabilityVerification["last_status"], { icon: React.ReactNode; label: string; variant: "default" | "secondary" | "destructive" | "outline" }> = {
   success: { icon: <CheckCircle2 className="h-4 w-4" />, label: "Pass", variant: "default" },
@@ -508,6 +509,7 @@ export default function AIG09RuntimeVerification() {
 
   return (
     <div className="space-y-6 p-6 max-w-[1600px] mx-auto">
+      <AIGSubNav />
       <div className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2">

@@ -7,6 +7,7 @@ import { Receipt, BarChart3, ArrowDownUp } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { getInferenceReceipts, getReceiptStats, getReceiptRecords, getFallbackEvents } from "@/lib/core-services/ai-gateway";
+import AIGSubNav from "@/components/admin/AIGSubNav";
 
 export default function AIG05ReceiptsExplorer() {
   const { isDemoMode } = useDataMode();
@@ -33,6 +34,7 @@ export default function AIG05ReceiptsExplorer() {
   return (
     <div className="space-y-6 p-6">
       <DemoModeBadge />
+      <AIGSubNav />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Receipt className="h-6 w-6" /> AIG05 — AI Receipts / Trace Explorer</h1>
         <p className="text-sm text-muted-foreground mt-1">Every AI invocation: provider, model, latency, cost, validation, fallbacks</p>

@@ -7,6 +7,7 @@ import { Route, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { getRoutingPolicies, getCapabilityRouting } from "@/lib/core-services/ai-gateway";
+import AIGSubNav from "@/components/admin/AIGSubNav";
 
 export default function AIG03RoutingMatrix() {
   const { isDemoMode } = useDataMode();
@@ -27,6 +28,7 @@ export default function AIG03RoutingMatrix() {
   return (
     <div className="space-y-6 p-6">
       <DemoModeBadge />
+      <AIGSubNav />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <Route className="h-6 w-6" /> AIG03 — AI Routing Matrix

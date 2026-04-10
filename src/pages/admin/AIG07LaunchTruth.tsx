@@ -8,6 +8,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { getAILaunchHonestyBoard, getLaunchHonestyRecords } from "@/lib/core-services/ai-gateway";
 import type { LaunchHonestyLevel } from "@/lib/core-services/ai-gateway";
+import AIGSubNav from "@/components/admin/AIGSubNav";
 
 const LEVEL_VARIANT: Record<LaunchHonestyLevel, string> = {
   real: "default",
@@ -54,6 +55,7 @@ export default function AIG07LaunchTruth() {
   return (
     <div className="space-y-6 p-6">
       <DemoModeBadge />
+      <AIGSubNav />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <ShieldCheck className="h-6 w-6" /> AIG07 — AI Launch Truth Board
