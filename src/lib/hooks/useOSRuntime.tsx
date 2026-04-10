@@ -12,6 +12,7 @@ import {
   TokenGovernanceEngine, IntegrationConciergeEngine,
   EnterpriseControlPlaneEngine, SupportDiagnosticsEngine, ObservabilityEngine,
   ReleaseSafetyEngine, TrustDeviceEngine, ComplianceAuditEngine,
+  ExecutionDebtEngine, InvisibleLaborEngine, DragEngine, FounderBottleneckEngine,
 } from "@/lib/engines";
 import { ReplayRecoveryEngine } from "@/lib/engines/replay-recovery";
 import type { OSRuntimeContext } from "@/packages/contracts";
@@ -41,6 +42,10 @@ export interface OSRuntime {
     releases: ReleaseSafetyEngine;
     trustDevice: TrustDeviceEngine;
     compliance: ComplianceAuditEngine;
+    executionDebt: ExecutionDebtEngine;
+    invisibleLabor: InvisibleLaborEngine;
+    drag: DragEngine;
+    bottleneck: FounderBottleneckEngine;
   };
   createAction: typeof ActionStateMachine;
 }
@@ -65,6 +70,10 @@ function buildRuntime(userId: string): OSRuntime {
   const releases = new ReleaseSafetyEngine();
   const trustDevice = new TrustDeviceEngine();
   const compliance = new ComplianceAuditEngine();
+  const executionDebt = new ExecutionDebtEngine();
+  const invisibleLabor = new InvisibleLaborEngine();
+  const drag = new DragEngine();
+  const bottleneck = new FounderBottleneckEngine();
 
   const context: OSRuntimeContext = {
     userId,
@@ -98,6 +107,7 @@ function buildRuntime(userId: string): OSRuntime {
       entityGraph, memory, advisors, policy, revenue,
       twins, boardroom, scenarios, tokens, integrations, replay,
       enterprise, support, observability, releases, trustDevice, compliance,
+      executionDebt, invisibleLabor, drag, bottleneck,
     },
     createAction: ActionStateMachine,
   };

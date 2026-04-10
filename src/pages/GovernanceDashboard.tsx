@@ -10,16 +10,24 @@ import { KPITile } from "@/components/sita/SitaComponents";
 import { TrustDebtPanel, ExecutionDebtHeatmap, DragIndexRadar, ReadinessGauge, DelegationRegistryTable } from "@/components/governance";
 import { useGovernanceSummary } from "@/hooks/use-admin-durable-state";
 import { useDataMode } from "@/contexts/DataModeContext";
-import { Scale, Shield, AlertTriangle, CheckCircle, Clock } from "lucide-react";
+import { Scale, Shield, AlertTriangle, CheckCircle, Clock, Eye } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { ReadinessInput } from "@/lib/engines/readiness-engine";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
+import { useMemo } from "react";
 
 const DEFAULT_SCOPE = { ownerId: "current-user", visibility: "private" as const };
 
 export default function GovernanceDashboard() {
   const { data: gov, isLoading } = useGovernanceSummary();
   const { isDemoMode } = useDataMode();
+  const { engines } = useOSRuntime();
+
+  // Invisible labor stats from engine
+  const laborSuggestions = useMemo(() => {
+    return engines.invisibleLabor.getEqualizationSuggestions("current-user", "household");
+  }, [engines]);
 
   // Build readiness input from real governance data
   const readinessInput: ReadinessInput = {
@@ -81,6 +89,26 @@ export default function GovernanceDashboard() {
         <DragIndexRadar entityScope={DEFAULT_SCOPE} />
         <ReadinessGauge input={readinessInput} entityScope={DEFAULT_SCOPE} />
       </div>
+
+      {/* Invisible Labor */}
+      <SitaSectionHeader title="Invisible Labor" />
+      <SitaCard>
+        <div className="p-4 space-y-2">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Eye className="h-4 w-4" />
+            <span>{laborSuggestions.length} equalization suggestions detected</span>
+          </div>
+          {laborSuggestions.length === 0 && (
+            <p className="text-xs text-muted-foreground">No labor imbalances detected. Tracking is consent-gated and privacy-first.</p>
+          )}
+          {laborSuggestions.map((s) => (
+            <div key={s.id} className="rounded-lg border border-border/40 bg-card/60 p-3 text-xs">
+              <span className="font-semibold text-foreground">{s.description}</span>
+              <p className="text-muted-foreground mt-1">{s.respectfulExplanation}</p>
+            </div>
+          ))}
+        </div>
+      </SitaCard>
 
       {/* Delegation */}
       <SitaSectionHeader title="Delegation Registry" />

@@ -1,47 +1,31 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — AR01: Automation Reality Overview
+// Now wired through useKernelQuery for kernel-observed reads.
 // ═══════════════════════════════════════════════════════════════
 
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
 import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
 import { Activity, Zap, AlertTriangle, Shield, Clock, CheckCircle, XCircle, Pause } from "lucide-react";
 import { motion } from "framer-motion";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-
+import { useKernelQuery } from "@/hooks/use-kernel-query";
 
 function useScheduledJobs() {
-  return useQuery({
-    queryKey: ["scheduled-jobs"],
-    queryFn: async () => {
-      const { data } = await fromTable("scheduled_jobs").select("*").order("created_at", { ascending: false });
-      return data || [];
-    },
+  return useKernelQuery("automation", "scheduled_jobs", {
+    orderBy: "created_at",
   });
 }
 
 function useRecentExecutions() {
-  return useQuery({
-    queryKey: ["recent-executions"],
-    queryFn: async () => {
-      const { data } = await fromTable("job_executions").select("*").order("started_at", { ascending: false }).limit(100);
-      return data || [];
-    },
+  return useKernelQuery("automation", "job_executions", {
+    orderBy: "started_at",
+    limit: 100,
   });
 }
 
 function useKillSwitches() {
-  return useQuery({
-    queryKey: ["kill-switches"],
-    queryFn: async () => {
-      const { data } = await fromTable("automation_kill_switches").select("*");
-      return data || [];
-    },
-  });
+  return useKernelQuery("automation", "automation_kill_switches");
 }
 
 export default function AR01AutomationOverview() {
