@@ -20,7 +20,7 @@ import {
   Bell, BellOff, Shield, Clock, CheckCircle, AlertTriangle, DollarSign,
   Briefcase, Home, Zap, Eye, Filter, Trash2, RotateCcw, ChevronRight,
   ArrowRight, Volume2, VolumeX, Pin, XCircle, AlertCircle, Sparkles,
-  MessageSquare, Calendar, Settings
+  MessageSquare, Calendar, Settings, Activity
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
