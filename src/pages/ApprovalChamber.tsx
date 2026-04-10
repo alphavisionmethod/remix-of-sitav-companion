@@ -324,16 +324,16 @@ const ApprovalChamber = () => {
 
   const handleAction = async (id: string, action: string) => {
     // Trust-weighted evaluation before execution
-    const trustEval = os.evaluateAction(id, { deviceId: "browser", trustLevel: "verified", surface: "desktop" }, { sessionAge: 0, recentActions: 0, trustScore: 0.8 });
+    const trustEval = os.evaluateAction(id, { deviceId: "browser", trustLevel: "medium" as any, surface: "desktop", hasBiometric: false, hasKeyboard: true, screenSize: "large" }, { sessionAge: 0, recentActions: 0, trustScore: 0.8 });
     if (trustEval.riskTier === "critical" && action === "approve") {
-      toast.warning(`High risk action (${trustEval.trustClass}) — requires elevated approval`);
+      toast.warning(`High risk action (${trustEval.executionMode}) — requires elevated approval`);
     }
 
     if (dbApprovals.length > 0 && !isDemoMode) {
       try {
         if (action === "approve") approve(id);
         else if (action === "reject") reject(id);
-        toast.success(`Approval ${action}ed (trust: ${trustEval.trustClass})`);
+        toast.success(`Approval ${action}ed (mode: ${trustEval.executionMode})`);
       } catch (e: any) {
         toast.error(e.message || `Failed to ${action}`);
       }
