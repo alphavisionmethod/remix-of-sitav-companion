@@ -9,7 +9,7 @@ import { DurabilityStateBadge } from "@/components/sita/truth/DurabilityStateBad
 import { StalenessIndicator } from "@/components/sita/truth/StalenessIndicator";
 import {
   Briefcase, Home, Plane, CheckCircle, Clock, AlertTriangle, FileCheck,
-  Users, Calendar, MapPin, Package, Heart, RotateCcw, Activity
+  Users, Calendar, MapPin, Package, Heart, RotateCcw, Activity, ShoppingCart, Link2
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
@@ -52,6 +52,31 @@ const receiptFeed = [
   { action: "Dinner reservation confirmed — Mama's Fish House Apr 13 7pm", time: h(36), domain: "travel", type: "commitment" },
 ];
 
+const continuityChecks = [
+  { module: "Task Persistence", status: "healthy" as const, verified: true, lastCheck: h(0.1), evidence: "5/5 tasks persisted in DB, 0 orphaned" },
+  { module: "Travel Itinerary Sync", status: "healthy" as const, verified: true, lastCheck: h(0.5), evidence: "All bookings confirmed, 0 conflicts" },
+  { module: "Calendar Integration", status: "healthy" as const, verified: true, lastCheck: h(0.1), evidence: "8 events synced, bi-directional" },
+  { module: "Grocery List Sync", status: "degraded" as const, verified: false, lastCheck: h(24), evidence: "Last sync 24h ago — connector stale" },
+  { module: "Appointment Reminders", status: "healthy" as const, verified: true, lastCheck: h(0.2), evidence: "3 upcoming reminders scheduled" },
+  { module: "Bill Payment Tracking", status: "healthy" as const, verified: true, lastCheck: h(1), evidence: "3 bills tracked, 1 due soon" },
+];
+
+const serviceProviderSLA = [
+  { provider: "Airport Transfer Service", slaTarget: "24h confirmation", met: true, lastInteraction: h(12), responseTime: "2h" },
+  { provider: "Insurance Broker", slaTarget: "48h quote turnaround", met: true, lastInteraction: h(2), responseTime: "4h" },
+  { provider: "Restaurant Reservations", slaTarget: "Instant confirmation", met: true, lastInteraction: h(36), responseTime: "instant" },
+  { provider: "Medical Scheduling", slaTarget: "Same-day callback", met: false, lastInteraction: h(24), responseTime: "pending" },
+  { provider: "School Admin Office", slaTarget: "3-day processing", met: true, lastInteraction: h(4), responseTime: "2 days" },
+];
+
+const crossModuleHealth = [
+  { integration: "Calendar ↔ Tasks", status: "healthy" as const, evidence: "Due dates synced for 3 tasks" },
+  { integration: "Calendar ↔ Travel", status: "healthy" as const, evidence: "All flights/hotels on calendar" },
+  { integration: "Tasks ↔ Receipts", status: "healthy" as const, evidence: "3/5 tasks have receipts" },
+  { integration: "Travel ↔ Expenses", status: "healthy" as const, evidence: "Booking costs tracked" },
+  { integration: "Grocery ↔ Inventory", status: "degraded" as const, evidence: "Stale sync — no recent update" },
+];
+
 export default function ConciergeCommandCenter() {
   const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("tasks");
@@ -61,15 +86,16 @@ export default function ConciergeCommandCenter() {
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mx-auto max-w-7xl space-y-6 p-6">
       <DemoModeBadge />
-      <SitaPageHeader title="Concierge Command Center" subtitle="Task continuity, household state, travel execution, commitment tracking, and receipt/promise feed" />
+      <SitaPageHeader title="Concierge Command Center" subtitle="Task continuity, household state, travel execution, SLA tracking, cross-module health, and commitment feed" />
 
-      <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
+      <div className="grid grid-cols-3 lg:grid-cols-6 gap-3">
         {[
           { label: "Active Tasks", value: active, color: "text-foreground" },
           { label: "Urgent", value: urgent, color: urgent > 0 ? "text-red-400" : "text-green-400" },
           { label: "Completed", value: tasks.filter(t => t.status === "completed").length, color: "text-green-400" },
           { label: "Commitments", value: receiptFeed.filter(r => r.type === "commitment").length, color: "text-blue-400" },
-          { label: "Household Areas", value: householdState.length, color: "text-foreground" },
+          { label: "Continuity", value: `${continuityChecks.filter(c => c.status === "healthy").length}/${continuityChecks.length}`, color: "text-green-400" },
+          { label: "SLA Met", value: `${serviceProviderSLA.filter(s => s.met).length}/${serviceProviderSLA.length}`, color: "text-green-400" },
         ].map((k, i) => (
           <Card key={i} className="bg-card/50 border-border/50">
             <CardContent className="p-3 text-center">
@@ -83,10 +109,13 @@ export default function ConciergeCommandCenter() {
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList className="bg-muted/30 border border-border/40 h-8 p-0.5 gap-0.5 flex-wrap">
           {[
-            { value: "tasks", label: "Task Tracker", icon: CheckCircle },
+            { value: "tasks", label: "Tasks", icon: CheckCircle },
             { value: "household", label: "Household", icon: Home },
             { value: "travel", label: "Travel", icon: Plane },
-            { value: "receipts", label: "Receipt Feed", icon: FileCheck },
+            { value: "continuity", label: "Continuity", icon: Activity },
+            { value: "sla", label: "SLA Tracking", icon: Clock },
+            { value: "crossmod", label: "Cross-Module", icon: Link2 },
+            { value: "receipts", label: "Receipts", icon: FileCheck },
           ].map(t => (
             <TabsTrigger key={t.value} value={t.value} className="text-[10px] h-7 px-2.5 gap-1"><t.icon className="h-3 w-3" />{t.label}</TabsTrigger>
           ))}
@@ -151,6 +180,63 @@ export default function ConciergeCommandCenter() {
                 ))}
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="continuity">
+            <h3 className="text-xs font-semibold mb-3">State Persistence Verification</h3>
+            <div className="space-y-1.5">
+              {continuityChecks.map(c => (
+                <div key={c.module} className="flex items-center justify-between p-2.5 bg-muted/20 rounded-lg">
+                  <div className="flex items-center gap-2">
+                    {c.status === "healthy" ? <CheckCircle className="w-3.5 h-3.5 text-green-400" /> : <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />}
+                    <div>
+                      <p className="text-[10px] font-medium text-foreground">{c.module}</p>
+                      <p className="text-[9px] text-muted-foreground">{c.evidence}</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Badge variant={c.status === "healthy" ? "default" : "secondary"} className="text-[9px] capitalize">{c.status}</Badge>
+                    <StalenessIndicator lastUpdated={c.lastCheck} thresholdSeconds={3600} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="sla">
+            <h3 className="text-xs font-semibold mb-3">Service Provider SLA Compliance</h3>
+            <div className="space-y-1.5">
+              {serviceProviderSLA.map(s => (
+                <div key={s.provider} className="flex items-center justify-between p-2.5 bg-muted/20 rounded-lg">
+                  <div className="flex items-center gap-2">
+                    {s.met ? <CheckCircle className="w-3.5 h-3.5 text-green-400" /> : <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />}
+                    <div>
+                      <p className="text-[10px] font-medium text-foreground">{s.provider}</p>
+                      <p className="text-[9px] text-muted-foreground">SLA: {s.slaTarget} • Response: {s.responseTime}</p>
+                    </div>
+                  </div>
+                  <Badge variant={s.met ? "default" : "destructive"} className="text-[9px]">{s.met ? "Met" : "Missed"}</Badge>
+                </div>
+              ))}
+            </div>
+          </TabsContent>
+
+          <TabsContent value="crossmod">
+            <h3 className="text-xs font-semibold mb-3">Cross-Module Integration Health</h3>
+            <div className="space-y-1.5">
+              {crossModuleHealth.map(cm => (
+                <div key={cm.integration} className="flex items-center justify-between p-2.5 bg-muted/20 rounded-lg">
+                  <div className="flex items-center gap-2">
+                    {cm.status === "healthy" ? <Link2 className="w-3.5 h-3.5 text-green-400" /> : <AlertTriangle className="w-3.5 h-3.5 text-amber-400" />}
+                    <div>
+                      <p className="text-[10px] font-medium text-foreground">{cm.integration}</p>
+                      <p className="text-[9px] text-muted-foreground">{cm.evidence}</p>
+                    </div>
+                  </div>
+                  <Badge variant={cm.status === "healthy" ? "default" : "secondary"} className="text-[9px] capitalize">{cm.status}</Badge>
+                </div>
+              ))}
+            </div>
           </TabsContent>
 
           <TabsContent value="receipts">
