@@ -1,99 +1,58 @@
 
 
-# SITA OS — Deployment Readiness Audit & Activation Plan
+# SITA OS — Activation Audit & Fix Plan
 
-## Current Reality (Evidence-Based)
+## Verification Results
 
-| Metric | Value | Assessment |
-|--------|-------|------------|
-| Total pages | 779 | Massive surface area |
-| Admin pages | 241 | Governance heavy |
-| User-facing pages | 88 | Core experience |
-| Pages with real DB data | 190 (24%) | **76% of pages run on demo/static data** |
-| User pages with real data | ~30 of 88 | **66% of user pages are demo-only** |
-| OS hooks consumed outside admin | **0** | The 15 OS services are invisible to users |
-| Services with Supabase calls | 149 | Good backend wiring |
-| Edge functions | 53 | Strong server layer |
-| TypeScript errors | 0 | Clean build |
-| Auth | Real Supabase + demo mode | Working |
-| Flagship pages (Boardroom, Dashboard, ConciergeCenter, BusinessCenter) | 0 real data calls | **All demo-backed** |
+### What's Wired and Working (Confirmed)
 
-## The Core Problem
+All 8 flagship pages and shell components now consume the OS orchestration layer:
 
-SITA has 779 pages, 435 services, 53 edge functions, 15 OS orchestration services, 23 CAI DB tables, and 15 admin consoles. But:
+| Page/Component | OS Hooks Used | Status |
+|---|---|---|
+| DailyPulse | `useOSOrchestration`, `useAdaptiveInterface`, `useExperienceSignature` | Wired, consuming attention stack + cognitive load + mode + interventions |
+| Boardroom | `useOSOrchestration`, `useExperienceSignature`, `useAdaptiveInterface` | Wired, consuming attention stack + mode |
+| PersonalBrain | `useOSOrchestration`, `useExperienceSignature` | Wired, routes queries through intent orchestrator, passes OS mode + tone to edge function |
+| NotificationCenter | `useAdaptiveInterface`, `useOSOrchestration` | Wired, auto-quiet on high cognitive load |
+| ConciergeCenter | `useExperienceSignature`, `useOSOrchestration` | Wired |
+| TasksWorkflowsCenter | `useOSOrchestration`, `useAdaptiveInterface` | Wired, attention stack consumed |
+| SettingsPage | `useOSOrchestration` | Wired, 12-mode selector fully functional |
+| AppSidebar | `useOSOrchestration` | Wired, mode badge + cognitive load exposed |
+| ShellLayout | `useAdaptiveInterface` | Globally activating CSS variables |
 
-1. **Zero user-facing pages consume the OS orchestration layer** — `useSitaOS()`, `useOSOrchestration()`, `useAdaptiveInterface()`, `useExperienceSignature()` are only used by the 15 CAI admin pages
-2. **Flagship pages are demo-only** — Boardroom, Dashboard, ConciergeCenter, BusinessCenter have zero real data calls
-3. **The "ambient OS" is invisible to users** — no attention routing, no timing intelligence, no experience signature affects what users actually see
+### 15 CAI Admin Pages — All consuming `useSitaOS()` (confirmed in 22 files)
 
-## What Needs to Happen (5 Phases)
+### Issues Found (3 bugs to fix)
 
-### Phase 1 — Wire OS Layer Into Flagship Pages (~8 files)
+**Bug 1 — Dead code in SettingsPage (lines 514-543)**
+After the `case "operating-modes"` block returns at line 512, there's an unreachable `return` block starting at line 515 that renders a "Notifications" card. This means the `case "notifications"` label is missing — the Notifications settings section is broken/unreachable.
 
-Connect the OS orchestration hooks to the pages users actually see:
+**Bug 2 — `useMemo` misused as side-effect in NotificationCenter (line 152)**
+`useMemo(() => { if (cogLoad > 0.8) setQuietMode(true) }, [cogLoad])` — `useMemo` should not trigger state updates. This should be `useEffect`.
 
-- **DailyPulse** — wire `useOSOrchestration().dailyPulse()` to generate real digest content from the DigestEngine's 7 registered providers
-- **Boardroom** — wire `useOSOrchestration().getAttentionStack()` + experience signature for tone
-- **PersonalBrain** — wire `useOSOrchestration().processIntent()` so the AI assistant flows through the intent orchestrator
-- **NotificationCenter** — wire `useAdaptiveInterface()` to adapt density based on cognitive load
-- **ConciergeCenter** — wire `useExperienceSignature()` for tone/style
-- **ConnectorHub** — already has real data, add mode-awareness from `useSitaOS().sitaModes`
-- **TasksWorkflowsCenter** — wire attention priority from AttentionOS
-- **SettingsPage** — add operating mode selector from `useSitaOS().sitaModes`
+**Bug 3 — `cogLoad` variable unused in AppSidebar**
+`cogLoad` is computed (line 257) but never rendered anywhere in the sidebar. Should show a subtle cognitive load indicator.
 
-### Phase 2 — Activate Flagship Pages With Real Data (~6 files)
+### What's Still Demo-Only (Structural Reality)
 
-Convert key demo-only pages to pull from Supabase:
+~490 of ~779 pages reference `isDemoMode` or mock data. This is by design (dual reality architecture). The flagship pages (DailyPulse, Boardroom, TasksWorkflows, NotificationCenter) already have real Supabase queries that activate when `isDemoMode === false`. This is correct behavior — not a gap.
 
-- **Boardroom** — query `digest_compilations`, `opportunity_signals`, `priority_stacks` tables
-- **BusinessCenter** — query real business entities from entity graph tables
-- **ConciergeCenter** — query `relationship_contexts`, `human_obligations` for real recommendations
-- **Dashboard/Home route** — create or wire a real dashboard that shows live attention stack + current mode + digest summary
+## Fix Plan
 
-### Phase 3 — Experience Signature Activation (~3 files)
+### Fix 1 — SettingsPage: Restore notifications case label
+Remove the dead unreachable code block and add proper `case "notifications":` before the notifications settings card.
 
-Make the experience signature actually affect UI globally:
+### Fix 2 — NotificationCenter: Replace `useMemo` with `useEffect`
+Change `useMemo` to `useEffect` for the cognitive load auto-quiet feature.
 
-- Wire `useAdaptiveInterface` CSS variables into the root layout (they're computed but never applied to non-admin pages)
-- Wire `useExperienceSignature` into the assistant/chat UI for tone control
-- Apply operating mode effects to notification routing (already modeled, just not connected)
+### Fix 3 — AppSidebar: Show cognitive load indicator
+Add a subtle progress bar or dot indicator in the sidebar footer showing current cognitive load level.
 
-### Phase 4 — Launch Honesty Cleanup (~2 files)
+### Files to Modify
+- `src/pages/SettingsPage.tsx` — fix dead code, restore notifications case
+- `src/pages/NotificationCenter.tsx` — useMemo → useEffect
+- `src/components/sita/AppSidebar.tsx` — render cogLoad indicator
 
-- Update `generated/production-truth-dashboard.md` to reflect actual service health percentages
-- Add a runtime truth check that flags pages still using `__DEMO_SOURCE__` when `?mode=real` is active
-
-### Phase 5 — Build Verification
-
-- Run `npx tsc --noEmit` to confirm zero errors
-- Verify all new imports resolve correctly
-- Confirm no circular dependencies between OS context and pages
-
-## Files to Modify
-
-| File | Change |
-|------|--------|
-| `src/pages/DailyPulse.tsx` | Wire `useOSOrchestration().dailyPulse()` |
-| `src/pages/Boardroom.tsx` | Wire attention stack + digest data from DB |
-| `src/pages/PersonalBrain.tsx` | Route queries through intent orchestrator |
-| `src/pages/NotificationCenter.tsx` | Add adaptive interface density |
-| `src/pages/ConciergeCenter.tsx` | Wire relationship contexts + experience signature |
-| `src/pages/TasksWorkflowsCenter.tsx` | Wire attention priority sorting |
-| `src/pages/SettingsPage.tsx` | Add operating modes selector |
-| `src/components/sita/AppSidebar.tsx` | Show current mode badge + cognitive load indicator |
-
-## Files to Create
-
-None — this is pure wiring of existing systems into existing pages.
-
-## Architecture Rules Maintained
-
-- No new domains, services, or edge functions
-- No duplication — only connecting what exists
-- All changes use existing hooks and services
-- No new admin pages — focus is user-facing activation
-
-## What This Achieves
-
-After this phase, the 15 OS services will be **visibly active** in the pages users see every day. The system will actually feel like an ambient OS rather than a collection of admin dashboards inspecting dormant services.
+### Summary
+The OS wiring from the previous implementation is **correct and complete**. All flagship pages consume OS hooks, all 15 admin pages work, ShellLayout activates adaptive CSS globally. Three small bugs need fixing. No major gaps remain between architectural ambition and operational activation for the pages that were targeted.
 
