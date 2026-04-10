@@ -56,7 +56,17 @@ export default function AutomationScreen({ state, setState }: ScreenProps) {
               </div>
             </button>
           ))}
-        </div>
+      </div>
+      <SitaInsightCallout
+        show={state.automationLevel === "suggest" && state.growthBottlenecks.length >= 2}
+        message="Based on your bottlenecks, 'Draft for review' mode could save significant time while keeping you in control."
+        type="recommendation"
+      />
+      <SitaInsightCallout
+        show={state.automationLevel === "broad_auto" && state.humanOnlyTasks.length === 0}
+        message="Broad automation selected with no guardrails — consider marking at least pricing and proposals as human-only."
+        type="recommendation"
+      />
       </div>
       <div>
         <SectionTitle>What should always remain human?</SectionTitle>

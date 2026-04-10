@@ -46,7 +46,21 @@ export default function IdentityScreen({ state, setState }: ScreenProps) {
         <SectionTitle hint="Choose all that apply — most businesses are hybrids">What best describes what you do?</SectionTitle>
         <div className="grid md:grid-cols-2 gap-2">
           {businessTypes.map(bt => <Toggle key={bt.id} label={bt.label} desc={bt.desc} icon={bt.icon} selected={state.businessTypes.includes(bt.id)} onToggle={() => toggle(bt.id)} />)}
-        </div>
+      </div>
+      <SitaInsightCallout
+        show={state.businessTypes.length > 1}
+        message={state.businessTypes.length > 2
+          ? `We detected a complex hybrid model with ${state.businessTypes.length} revenue types — SITA will adapt across all of them.`
+          : state.businessTypes.length === 2
+            ? "Hybrid model detected — SITA will map both revenue streams and find crossover opportunities."
+            : ""}
+        type="detected"
+      />
+      <SitaInsightCallout
+        show={state.businessTypes.length === 1 && state.businessTypes.includes("service")}
+        message="Service-heavy business pattern — SITA will prioritize proposals, delivery milestones, and client retention."
+        type="detected"
+      />
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div>

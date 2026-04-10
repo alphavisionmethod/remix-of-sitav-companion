@@ -49,6 +49,11 @@ export default function FrictionScreen({ state, setState }: ScreenProps) {
       <div className="grid md:grid-cols-2 gap-2">
         {bottlenecks.map(b => <Toggle key={b.id} label={b.label} desc={b.desc} icon={b.icon} selected={state.growthBottlenecks.includes(b.id)} onToggle={() => toggle(b.id)} />)}
       </div>
+      <SitaInsightCallout
+        show={state.growthBottlenecks.length >= 3}
+        message={`${state.growthBottlenecks.length} bottlenecks identified — SITA estimates these could be costing $${(state.growthBottlenecks.length * 4500).toLocaleString()}/mo in lost revenue.`}
+        type="recommendation"
+      />
       {state.growthBottlenecks.length > 0 && (
         <Card className="bg-amber-500/5 border-amber-500/15">
           <CardContent className="p-4">

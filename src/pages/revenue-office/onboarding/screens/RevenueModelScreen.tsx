@@ -42,6 +42,21 @@ export default function RevenueModelScreen({ state, setState }: ScreenProps) {
       <div className="grid md:grid-cols-2 gap-2">
         {sources.map(s => <Toggle key={s.id} label={s.label} icon={s.icon} selected={state.revenueSources.includes(s.id)} onToggle={() => toggle(s.id)} />)}
       </div>
+      <SitaInsightCallout
+        show={state.revenueSources.includes("proposals") && state.revenueSources.includes("appointments")}
+        message="Proposal-driven revenue engine detected — Quote Studio and Call Desk will be priority modules."
+        type="detected"
+      />
+      <SitaInsightCallout
+        show={state.revenueSources.includes("ecommerce") && !state.revenueSources.includes("proposals")}
+        message="Checkout-driven model detected — cart recovery and repeat purchase will be key automations."
+        type="detected"
+      />
+      <SitaInsightCallout
+        show={state.revenueSources.length >= 4}
+        message={`${state.revenueSources.length} revenue streams detected — SITA will map each one and find where they reinforce or compete.`}
+        type="detected"
+      />
       {selectedSources.length >= 2 && (
         <div className="grid md:grid-cols-2 gap-4">
           <div>
