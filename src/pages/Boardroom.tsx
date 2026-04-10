@@ -46,6 +46,7 @@ import type { ProofPack } from "@/packages/proof-model";
 import type { AdvisorConfig } from "@/packages/advisor-config";
 import { cn } from "@/lib/utils";
 import { useBoardroomData } from "@/hooks/use-boardroom-data";
+import { useOpportunitySignals, usePriorityStacks, useDigestCompilations } from "@/hooks/useCAIData";
 
 
 // ── Section Renderers (preserved from original) ───────────────
@@ -977,6 +978,11 @@ const Boardroom = () => {
   const interfaceState = useAdaptiveInterface();
   const attentionStack = os.getAttentionStack();
   const currentMode = os.getCurrentMode();
+
+  // Wire CAI historical data for real persistence
+  const { data: caiOpportunities } = useOpportunitySignals({ limit: 10 });
+  const { data: caiPriorities } = usePriorityStacks({ limit: 5 });
+  const { data: caiDigests } = useDigestCompilations({ limit: 5 });
 
   const [activeType, setActiveType] = useState<BoardroomType>("morning-briefing");
   const [isPresenting, setIsPresenting] = useState(false);

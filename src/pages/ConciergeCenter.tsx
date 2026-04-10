@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useExperienceSignature } from "@/hooks/useExperienceSignature";
 import { useOSOrchestration } from "@/hooks/useOSOrchestration";
+import { useRelationshipContexts, useHumanObligations } from "@/hooks/useCAIData";
 
 import ConciergeOverview from "./concierge/ConciergeOverview";
 import HouseholdTasks from "./concierge/HouseholdTasks";
