@@ -152,20 +152,27 @@ export function AdminCommandPalette() {
     if (action === "settings") navigate("/settings");
   }, [navigate]);
 
+  const groups = NAV_ITEMS.reduce<Record<string, typeof NAV_ITEMS>>((acc, item) => {
+    (acc[item.group] ??= []).push(item);
+    return acc;
+  }, {});
+
   return (
     <CommandDialog open={open} onOpenChange={setOpen}>
       <CommandInput placeholder="Type a command or search…" />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
-        <CommandGroup heading="Navigation">
-          {NAV_ITEMS.map(item => (
-            <CommandItem key={item.path} onSelect={() => handleNavSelect(item.path)} className="cursor-pointer">
-              <item.icon className="mr-2 h-4 w-4 text-muted-foreground" />
-              <span>{item.label}</span>
-              <span className="ml-auto text-[9px] text-muted-foreground font-mono">{item.path}</span>
-            </CommandItem>
-          ))}
-        </CommandGroup>
+        {Object.entries(groups).map(([group, items]) => (
+          <CommandGroup key={group} heading={group}>
+            {items.map(item => (
+              <CommandItem key={item.path} onSelect={() => handleNavSelect(item.path)} className="cursor-pointer">
+                <item.icon className="mr-2 h-4 w-4 text-muted-foreground" />
+                <span>{item.label}</span>
+                <span className="ml-auto text-[9px] text-muted-foreground font-mono">{item.path}</span>
+              </CommandItem>
+            ))}
+          </CommandGroup>
+        ))}
         <CommandSeparator />
         <CommandGroup heading="Actions">
           {ACTION_ITEMS.map(item => (
