@@ -1,4 +1,5 @@
 import { useAction } from "@/hooks/use-action";
+// useKernelMutation removed — useAction covers all mutation needs
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — AIT04-08: Full Spec Boards
 // Activity Feed, Cost & Efficiency, Recommendations,
