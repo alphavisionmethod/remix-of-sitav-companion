@@ -1727,6 +1727,18 @@ const App = () => (
                     <Route path="/admin/ai-approvals" element={<AIApprovalDesk />} />
                     <Route path="/admin/ai-releases" element={<AIReleasesCenter />} />
                     <Route path="/admin/ai-root-cause" element={<AIRootCauseGraph />} />
+
+                    {/* AIT — AI Engineering Team */}
+                    <Route path="/admin/ai-team" element={<AIT01TeamOverview />} />
+                    <Route path="/admin/ai-team/overview" element={<AIT01TeamOverview />} />
+                    <Route path="/admin/ai-team/roles" element={<AIT02RoleRegistry />} />
+                    <Route path="/admin/ai-team/invoke" element={<AIT03TaskInvocation />} />
+                    <Route path="/admin/ai-team/activity" element={<AIT04ActivityFeedPage />} />
+                    <Route path="/admin/ai-team/cost" element={<AIT05CostEfficiencyPage />} />
+                    <Route path="/admin/ai-team/recommendations" element={<AIT06RecommendationsPage />} />
+                    <Route path="/admin/ai-team/approvals" element={<AIT07ApprovalQueuePage />} />
+                    <Route path="/admin/ai-team/truth" element={<AIT08LaunchTruthPage />} />
+                    <Route path="/admin/ai-team/setup" element={<AITSetupChecklist />} />
                     <Route path="/admin/ai-design-diffs" element={<AIDesignDiffTheater />} />
                     <Route path="/admin/ai-time-machine" element={<AITimeMachine />} />
                     <Route path="/admin/ai-agent-debate" element={<AIAgentDebate />} />
