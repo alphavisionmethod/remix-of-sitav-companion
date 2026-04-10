@@ -1,127 +1,106 @@
 
 
-# Implementation Truth System — Final Gap Closure Plan
+# Interaction Truth & Journey Verification — Gap Analysis & Enhancement Plan
 
-## Current State: 10 of 14 Screens Built
+## Current State: 13 pages exist, 2 missing, 4 need enhancement
 
-| Spec Screen | Current Page | Status |
+### Fully Complete (no changes needed)
+| Spec Board | Existing Page | Lines | Verdict |
+|---|---|---|---|
+| 5. Redirect Integrity Map | JVC05 | 215 | ✅ Loop detection, dead ends, auth redirects, search |
+| 7. Form Verification Center | JVC07 | 220 | ✅ Field tracking, persistence, proof, submit, per-form drill |
+| 8. Modal/Drawer Board | JVC08 | 180 | ✅ Focus trap, zombie detection, cleanup, escape |
+| 9. Keyboard/Command Board | JVC09 | 197 | ✅ Conflicts, shortcuts, command palette, redirect targets |
+| 10. Runtime Probe Center | LT04 | 122 | ✅ Live probe execution, DB-backed, edge function calls |
+| 11. Journey Replay | JVC11 | 240 | ✅ Step-by-step, domain filter, evidence, run history |
+| 12. Interaction Drift Radar | JVC13 | 272 | ✅ 7 drift categories, severity rail, timeline, resolution workflow |
+| 1. Interaction Registry | V01 | 133 | ✅ Full SURFACE_REGISTRY, seed, filter, search |
+
+### Missing Pages (need creation)
+| Spec Board | Required |
+|---|---|
+| **4. Button & CTA Health Board** | Dedicated board: clickability, disabled-state correctness, destination, duplicate submit risk, stale selectors, ghost buttons |
+| **6. Page Load Integrity Board** | Page load, shell load, data load, error/empty/degraded states, time to first usable view, client error rate |
+
+### Pages Needing Enhancement
+| Spec Board | Current Page | Gap |
 |---|---|---|
-| ITS01 Overview | ITC01 | ✅ Complete |
-| ITS02 Spec Registry | ITC02 | ✅ Complete (10 dims, 13 artifacts, CRUD, seed) |
-| ITS03 Feature Detail / Implementation Map | ITC07 | ✅ Complete (per-spec artifact inventory) |
-| ITS04 Feature Verification Manifest Explorer | — | **MISSING** |
-| ITS05 Contract Registry | ITC03 | ✅ Complete (types, orphans, shadows, consumers) |
-| ITS06 Wiring Graph Explorer | ITC04 | ✅ Complete (CRUD, synthetic chains, edge types) |
-| ITS07 Architecture Compliance Board | ITC08 | ✅ Complete (reads generated report) |
-| ITS08 Route/Shell/Component Inventory | ITC09 | ✅ Complete (manifest + reality cross-ref) |
-| ITS09 Runtime Evidence Center | ITC10 | ✅ Complete (4 OS tables, per-spec mapping) |
-| ITS10 Readiness Scorecards | ITC05 | ✅ Complete (10 dimensions, averages) |
-| ITS11 Prompt Traceability Explorer | ITC06 (combined) | **Needs separation** — currently merged with drift |
-| ITS12 Drift Radar | ITC06 (combined) | **Needs separation** — currently merged with traceability |
-| ITS13 Validation Pipeline Monitor | — | **MISSING** |
-| ITS14 Launch Truth Gate View | — | **MISSING** |
+| **3. Behavior Coverage Board** | V02 (72 lines) | Too thin — needs: % interactions registered vs tested vs probed, critical uncovered buttons, routes with incomplete coverage, by-priority breakdown |
+| **2. Journey Manifest Registry** | V03 (83 lines) | Only shows P0 families — needs: full CUSTOMER_JOURNEY_REGISTRY browser, all domains, step counts, launch importance, status from DB |
 
-## What Needs to Be Built
+---
 
-### 1. Split ITC06 into two separate pages
+## Plan
 
-**ITC06 — Drift Radar** (keep at `/admin/implementation-truth/drift`)
-- Move ONLY the drift detection content here: drift stats cards, Active Drift Alerts table, DriftHeatmap by category (spec/code, contract/code, docs/runtime, route/manifest, shell/component, runtime claim), severity rail, drift resolution workflow hints
-- Add drift category tabs for filtering
-- Add drift_state per spec from DB
+### Step 1: Create JVC04 — Button & CTA Health Board
+New file: `src/pages/admin/verification/JVC04ButtonCTAHealth.tsx`
 
-**ITC11 — Prompt Traceability Explorer** (new at `/admin/implementation-truth/prompts`)
-- Move prompt-to-build traceability content here
-- Add: prompt source table, prompt-to-feature mapping, coverage heatmap (how many specs per prompt phase are fully implemented), gap-by-prompt panel showing unimplemented features per prompt
-- Coverage score per prompt phase
+Reads from SURFACE_REGISTRY filtering `surfaceClass` in [button, card_action, form submit, toggle]. Shows:
+- KPI band: total CTAs, P0 CTAs, with selectors, without selectors, with redirects
+- Clickability matrix: per button — visible, disabled rules, destination, action type
+- Duplicate submit risk panel: forms without proof/receipt that mutate
+- Ghost button detection: buttons with no actionSelector or stale selectors
+- Stale selector warnings: selectors not using data-testid pattern
+- Per-CTA verification status from DB runs
 
-### 2. New: ITC12 — Validation Pipeline Monitor (`/admin/implementation-truth/pipeline`)
+### Step 2: Create JVC06 — Page Load Integrity Board
+New file: `src/pages/admin/verification/JVC06PageLoadIntegrity.tsx`
 
-Shows static and runtime validation pipeline results:
-- Last CI/validation run status (reads `generated/architecture-compliance-report.json` timestamp)
-- Manifest validation: checks if route-manifest.json exists and is fresh
-- Contract validation: summarizes ITC03 contract present/missing counts
-- Route inventory validation: summarizes ITC09 classified/unclassified counts
-- Runtime probe validation: summarizes ITC10 live/no-evidence counts
-- Failing rule summary from architecture compliance
-- Re-run instructions panel
-- ValidationRunTimeline showing historical data points
+Reads from SURFACE_REGISTRY filtering `surfaceClass === "page"`. Shows:
+- KPI band: total pages, with loading state, with error state, with empty state, with shell assignment
+- Page inventory grid: route, shell, backend dependency, launch honesty class
+- Missing state alerts: pages missing loading/error/degraded state indicators
+- Shell assignment map: which pages use which shell
+- Data dependency panel: pages with backend dependencies vs those without
+- Verification status per page from DB
 
-### 3. New: ITC13 — Launch Truth Gate View (`/admin/implementation-truth/launch-gate`)
+### Step 3: Enhance V02 — Behavior Coverage Board
+Expand from 72 → ~150 lines:
+- Add: % of SURFACE_REGISTRY entries that are tested (from DB runs)
+- Add: % of entries that are runtime-probed (cross-ref with runtime_probes table)
+- Add: critical uncovered buttons section (P0 surfaces with no verification runs)
+- Add: by-priority breakdown (P0/P1/P2 coverage bars)
+- Add: by-surface-class breakdown (buttons, forms, pages, modals each with coverage %)
 
-Shows implementation truth as launch blocker source:
-- Features not ready (readiness < 50%)
-- Runtime-unverified features (runtime_score = 0)
-- Critical contract gaps (contract_score < 30 with required_contracts.length > 0)
-- Proof/trust missing edges (proof_score = 0 with required_proofs.length > 0)
-- Documentation truth gaps (docs_score < 20 with required_docs.length > 0)
-- Ring impact panel showing how many specs per domain are launch-blocking
-- Promotion eligibility badge strip per spec
-- LaunchGateSummary with go/no-go verdict
+### Step 4: Enhance V03 → Full Journey Manifest Registry
+Expand from 83 → ~200 lines. Currently only shows 8 hardcoded P0 families. Change to:
+- Browse ALL journeys from CUSTOMER_JOURNEY_REGISTRY (50+ entries)
+- Domain filter, persona filter, launch importance filter
+- Per-journey: step count, launch importance badge, status from customer_journey_status DB table
+- Journey step drill-down: expand to see all steps with expected behavior
+- Missing journey warnings: domains with < 2 journeys registered
 
-### 4. New: ITC14 — Feature Verification Manifest Explorer (`/admin/implementation-truth/manifests`)
+### Step 5: Wire new routes in App.tsx
+Add 2 lazy imports + 2 Route entries:
+- JVC04ButtonCTAHealth → `/admin/verification/buttons`
+- JVC06PageLoadIntegrity → `/admin/verification/page-load`
 
-Per-feature manifest inspection:
-- Select a spec, see its full manifest (all 13 artifact categories as a structured manifest view)
-- Last validation assessment: compare required artifacts vs scores to determine pass/fail per area
-- Missing expectations list: artifacts with 0 items or scores at 0
-- Runtime evidence requirements card: required_proofs + required_events vs runtime_score
-- Ownership panel showing owning_module and dependencies
+### Step 6: Add command palette entries
+Add 2 new entries to AdminCommandPalette.tsx for the new pages.
 
-### 5. Update ITC01 Overview
-
-Add 4 new sub-page links to SUB_PAGES array:
-- Prompt Traceability → `/admin/implementation-truth/prompts`
-- Validation Pipeline → `/admin/implementation-truth/pipeline`
-- Launch Truth Gate → `/admin/implementation-truth/launch-gate`
-- Feature Manifests → `/admin/implementation-truth/manifests`
-
-Total: 13 sub-page links from overview.
-
-### 6. Wire routes in App.tsx
-
-4 new lazy imports + 4 new Route entries:
-- ITC11PromptTraceability
-- ITC12ValidationPipeline
-- ITC13LaunchTruthGate
-- ITC14ManifestExplorer
-
-### 7. Update Command Palette
-
-Add 4 new entries to AdminCommandPalette.tsx for the new pages.
+---
 
 ## Files Changed
 
 | File | Action |
 |---|---|
-| `src/pages/admin/implementation-truth/ITC06DriftRadar.tsx` | **Edit** — remove prompt traceability section, add drift category tabs and drift heatmap |
-| `src/pages/admin/implementation-truth/ITC11PromptTraceability.tsx` | **New** — dedicated prompt-to-build traceability explorer |
-| `src/pages/admin/implementation-truth/ITC12ValidationPipeline.tsx` | **New** — validation pipeline monitor |
-| `src/pages/admin/implementation-truth/ITC13LaunchTruthGate.tsx` | **New** — launch truth gate view |
-| `src/pages/admin/implementation-truth/ITC14ManifestExplorer.tsx` | **New** — feature verification manifest explorer |
-| `src/pages/admin/implementation-truth/ITC01Overview.tsx` | **Edit** — add 4 new sub-page links |
-| `src/App.tsx` | **Edit** — 4 lazy imports + 4 routes |
-| `src/components/admin/AdminCommandPalette.tsx` | **Edit** — add 4 nav entries |
+| `src/pages/admin/verification/JVC04ButtonCTAHealth.tsx` | **New** — Button & CTA Health Board |
+| `src/pages/admin/verification/JVC06PageLoadIntegrity.tsx` | **New** — Page Load Integrity Board |
+| `src/pages/admin/verification/V02InteractionCoverageBoard.tsx` | **Edit** — expand with priority/class breakdown, uncovered P0s, probe cross-ref |
+| `src/pages/admin/verification/V03P0JourneyBoard.tsx` | **Edit** — full journey manifest browser with filters, DB status, step drill-down |
+| `src/App.tsx` | **Edit** — 2 lazy imports + 2 routes |
+| `src/components/admin/AdminCommandPalette.tsx` | **Edit** — 2 nav entries |
 
 ## What Does NOT Change
-
-- ITC02 Spec Registry — already has 10 dims, 13 artifacts, CRUD, seed, drift badge
-- ITC03 Contract Verification — already has types, orphans, shadows, consumers
-- ITC04 Wiring Graph — already has CRUD, synthetic chains, delete, evidence
-- ITC05 Readiness Scorecards — already has 10 dimensions, platform averages
-- ITC07 Implementation Map — already has 13 artifact sections, search
-- ITC08 Architecture Compliance — already reads generated report
-- ITC09 Route Inventory — already cross-references manifest + reality
-- ITC10 Runtime Evidence — already queries 4 OS tables
-- DB schema — no new tables or columns needed
-- Hooks — all existing hooks sufficient for the 4 new pages
-- Seed data — 27 specs already cover all required entries
-
-## No New DB Tables Needed
-
-All 4 new pages consume existing data:
-- ITC11: `useSpecRegistry()` grouped by prompt_origin
-- ITC12: fetches generated JSON files + reuses ITC03/ITC09/ITC10 aggregation logic
-- ITC13: `useSpecRegistry()` filtered by score thresholds
-- ITC14: `useSpecRegistry()` single-spec detail view
+- V01 SurfaceInventoryBoard — already complete with seed, search, filter
+- JVC05 RedirectIntegrityMap — already has loop detection, dead ends
+- JVC07 FormVerificationCenter — already has field tracking, persistence
+- JVC08 ModalDrawerBoard — already has focus trap, zombie detection
+- JVC09 KeyboardCommandBoard — already has conflicts, shortcuts
+- JVC11 JourneyReplay — already has step replay, evidence
+- JVC13 InteractionDriftRadar — already has 7 categories, resolution workflow
+- LT04 RuntimeProbeCenter — already has live probes
+- surface-registry.ts — already has full SurfaceEntry type with all required fields
+- journey-registry.ts — already has 50+ journey definitions
+- verification-hooks.ts — already has useVerificationSurfaces, useVerificationRuns, useSeedSurfaces
 
