@@ -1,15 +1,18 @@
-import { TrendingUp } from "lucide-react";
+import { TrendingUp, BarChart3, DollarSign, Zap } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { useEngineEvents } from "@/lib/hooks/useEngineEventsData";
+import { useIntelligenceOverview, useEfficiencyScores } from "@/lib/hooks/useIntelligenceAPI";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { Progress } from "@/components/ui/progress";
 
 const CostToConfidenceDashboard = () => {
   const { isAdmin, loading: authLoading } = useRequireAdmin();
   const { events, loading } = useEngineEvents("cost-to-confidence", { limit: 50 });
+  const { data: overview } = useIntelligenceOverview();
+  const { data: effScores } = useEfficiencyScores();
 
   if (authLoading || !isAdmin) return null;
 
@@ -24,10 +27,47 @@ const CostToConfidenceDashboard = () => {
     createdAt: e.created_at,
   }));
 
+  const avgCost = curves.length > 0 ? curves.reduce((s, c) => s + c.costSpent, 0) / curves.length : 0;
+  const avgConf = curves.length > 0 ? curves.reduce((s, c) => s + c.confidence, 0) / curves.length : 0;
+  const avgDiminishing = curves.length > 0 ? curves.reduce((s, c) => s + c.diminishingAt, 0) / curves.length : 0;
+
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <DemoModeBadge />
       <SitaPageHeader icon={<TrendingUp className="h-6 w-6" />} title="Cost-to-Confidence Curve" subtitle="Confidence achieved vs cost spent, with diminishing returns identification" />
+
+      {/* Summary Cards */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        {[
+          { l: "Avg Cost/Task", v: `$${(avgCost / 100).toFixed(2)}`, icon: DollarSign },
+          { l: "Avg Confidence", v: `${Math.round(avgConf)}%`, c: avgConf > 80 ? "text-emerald-400" : "text-amber-400", icon: BarChart3 },
+          { l: "Diminishing Point", v: `${Math.round(avgDiminishing)}%`, icon: TrendingUp },
+          { l: "Efficiency Score", v: overview ? `${Math.round(overview.avgEfficiency * 100)}%` : "—", c: "text-primary", icon: Zap },
+        ].map(m => (
+          <Card key={m.l} className="bg-card/80 border-border/50"><CardContent className="p-3 text-center">
+            <m.icon className={`h-4 w-4 mx-auto mb-1 ${m.c || "text-muted-foreground"}`} />
+            <p className={`text-xl font-bold ${m.c || "text-foreground"}`}>{m.v}</p>
+            <p className="text-[10px] text-muted-foreground">{m.l}</p>
+          </CardContent></Card>
+        ))}
+      </div>
+
+      {/* Efficiency Trend from API */}
+      {overview && overview.efficiencyTrend.length > 0 && (
+        <Card className="bg-card/80 border-border/50">
+          <CardHeader className="pb-2"><CardTitle className="text-sm">Efficiency Trend (Last 30 Days)</CardTitle></CardHeader>
+          <CardContent className="space-y-2">
+            {overview.efficiencyTrend.slice(0, 10).map((t, i) => (
+              <div key={i} className="flex items-center gap-3">
+                <span className="text-[10px] text-muted-foreground w-20 shrink-0">{new Date(t.measuredAt).toLocaleDateString()}</span>
+                <Progress value={Number(t.score) * 100} className="flex-1 h-2" />
+                <span className="text-xs font-mono w-12 text-right">{(Number(t.score) * 100).toFixed(0)}%</span>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      )}
+
       {loading ? (
         <div className="text-center text-muted-foreground py-12">Loading cost-to-confidence data…</div>
       ) : curves.length === 0 ? (

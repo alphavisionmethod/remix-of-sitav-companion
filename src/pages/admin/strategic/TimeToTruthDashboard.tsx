@@ -1,15 +1,16 @@
-import { Clock } from "lucide-react";
+import { Clock, Activity, Zap, CheckCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { useEngineEvents } from "@/lib/hooks/useEngineEventsData";
+import { useIntelligenceOverview } from "@/lib/hooks/useIntelligenceAPI";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 const TimeToTruthDashboard = () => {
   const { isAdmin, loading: authLoading } = useRequireAdmin();
   const { events, loading } = useEngineEvents("time-to-truth", { limit: 50 });
+  const { data: overview } = useIntelligenceOverview();
 
   if (authLoading || !isAdmin) return null;
 
@@ -23,10 +24,45 @@ const TimeToTruthDashboard = () => {
     createdAt: e.created_at,
   }));
 
+  const avgUsable = entries.length > 0 ? entries.reduce((s, e) => s + e.timeToUsable, 0) / entries.length : 0;
+  const avgVerified = entries.length > 0 ? entries.reduce((s, e) => s + e.timeToVerified, 0) / entries.length : 0;
+  const fastest = entries.length > 0 ? Math.min(...entries.map(e => e.timeToUsable)) : 0;
+
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <DemoModeBadge />
       <SitaPageHeader icon={<Clock className="h-6 w-6" />} title="Time-to-Truth Optimizer" subtitle="Track time to usable, confident, verified, and approved answers" />
+
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        {[
+          { l: "Avg → Usable", v: `${(avgUsable / 1000).toFixed(1)}s`, icon: Zap },
+          { l: "Avg → Verified", v: `${(avgVerified / 1000).toFixed(1)}s`, icon: CheckCircle },
+          { l: "Fastest", v: `${(fastest / 1000).toFixed(1)}s`, c: "text-emerald-400", icon: Activity },
+          { l: "Optimizations", v: overview ? String(overview.topOptimizations.length) : "—", icon: Clock },
+        ].map(m => (
+          <Card key={m.l} className="bg-card/80 border-border/50"><CardContent className="p-3 text-center">
+            <m.icon className={`h-4 w-4 mx-auto mb-1 ${m.c || "text-muted-foreground"}`} />
+            <p className={`text-xl font-bold ${m.c || "text-foreground"}`}>{m.v}</p>
+            <p className="text-[10px] text-muted-foreground">{m.l}</p>
+          </CardContent></Card>
+        ))}
+      </div>
+
+      {/* Optimization Suggestions from API */}
+      {overview && overview.topOptimizations.length > 0 && (
+        <Card className="bg-card/80 border-border/50">
+          <CardHeader className="pb-2"><CardTitle className="text-sm">Optimization Suggestions</CardTitle></CardHeader>
+          <CardContent className="space-y-1">
+            {overview.topOptimizations.map((opt, i) => (
+              <div key={i} className="flex items-center gap-2 text-xs text-muted-foreground">
+                <Zap className="h-3 w-3 text-amber-400 shrink-0" />
+                <span>{opt}</span>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      )}
+
       {loading ? (
         <div className="text-center text-muted-foreground py-12">Loading time-to-truth data…</div>
       ) : entries.length === 0 ? (
