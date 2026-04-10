@@ -7,25 +7,25 @@ import {
   Workflow, Plus, Zap, GitBranch, Clock, Users, Mail, MessageSquare, CheckCircle,
   AlertTriangle, ArrowDown, Settings, Phone, FileText, Shield, Star,
   UserPlus, Heart, Target, Eye, Play, Pause, RefreshCw, Brain, ShieldCheck,
-  Package, Send, ArrowRight, Layers, DollarSign
+  Package, Send, ArrowRight, Layers, DollarSign, ChevronDown, Activity, Calendar
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 const sampleNodes = [
-  { id: 1, type: "trigger", label: "Lead enters 'Stale' status (>48hrs no contact)", icon: Zap, color: "bg-amber-500/10 border-amber-500/30 text-amber-400", config: { event: "lead.status_changed", condition: "stale_48h" } },
-  { id: 2, type: "condition", label: "Lead value > $500 AND source = organic/referral?", icon: GitBranch, color: "bg-blue-500/10 border-blue-500/30 text-blue-400", config: { field: "deal_value", operator: ">", value: 500 } },
-  { id: 3, type: "action", label: "Enrich lead: pull CRM history, last activity, relationship warmth", icon: Users, color: "bg-emerald-500/10 border-emerald-500/30 text-emerald-400", config: { action: "enrich_lead" } },
-  { id: 4, type: "delay", label: "Wait 2 hours (respect business hours)", icon: Clock, color: "bg-purple-500/10 border-purple-500/30 text-purple-400", config: { delay: "2h", businessHoursOnly: true } },
-  { id: 5, type: "action", label: "Draft personalized recovery email using AI (tone: warm, professional)", icon: Mail, color: "bg-emerald-500/10 border-emerald-500/30 text-emerald-400", config: { action: "draft_email", aiGenerated: true } },
-  { id: 6, type: "approval", label: "Require review if lead value > $2,000", icon: ShieldCheck, color: "bg-amber-500/10 border-amber-500/30 text-amber-400", config: { condition: "value > 2000" } },
-  { id: 7, type: "action", label: "Send recovery email", icon: Send, color: "bg-emerald-500/10 border-emerald-500/30 text-emerald-400", config: { action: "send_email" } },
-  { id: 8, type: "action", label: "Create callback task for sales owner", icon: Phone, color: "bg-emerald-500/10 border-emerald-500/30 text-emerald-400", config: { action: "create_task" } },
-  { id: 9, type: "delay", label: "Wait 24 hours", icon: Clock, color: "bg-purple-500/10 border-purple-500/30 text-purple-400", config: { delay: "24h" } },
-  { id: 10, type: "condition", label: "Email opened within 24hrs?", icon: GitBranch, color: "bg-blue-500/10 border-blue-500/30 text-blue-400", config: { field: "email.opened" } },
-  { id: 11, type: "action", label: "YES: Send SMS follow-up with booking link", icon: MessageSquare, color: "bg-emerald-500/10 border-emerald-500/30 text-emerald-400", config: { action: "send_sms", branch: "yes" } },
-  { id: 12, type: "action", label: "NO: Try different subject line + escalate to manager", icon: AlertTriangle, color: "bg-red-500/10 border-red-500/30 text-red-400", config: { action: "escalate", branch: "no" } },
-  { id: 13, type: "stop", label: "Update pipeline stage → 'Re-engaged' + generate receipt", icon: CheckCircle, color: "bg-emerald-500/10 border-emerald-500/30 text-emerald-400", config: { action: "update_stage" } },
+  { id: 1, type: "trigger", label: "Lead enters 'Stale' status (>48hrs no contact)", icon: Zap, color: "bg-amber-500/10 border-amber-500/30 text-amber-400" },
+  { id: 2, type: "condition", label: "Lead value > $500 AND source = organic/referral?", icon: GitBranch, color: "bg-blue-500/10 border-blue-500/30 text-blue-400" },
+  { id: 3, type: "action", label: "Enrich lead: pull CRM history, last activity, relationship warmth", icon: Users, color: "bg-emerald-500/10 border-emerald-500/30 text-emerald-400" },
+  { id: 4, type: "delay", label: "Wait 2 hours (respect business hours)", icon: Clock, color: "bg-purple-500/10 border-purple-500/30 text-purple-400" },
+  { id: 5, type: "action", label: "Draft personalized recovery email using AI (tone: warm, professional)", icon: Mail, color: "bg-emerald-500/10 border-emerald-500/30 text-emerald-400" },
+  { id: 6, type: "approval", label: "Require review if lead value > $2,000", icon: ShieldCheck, color: "bg-amber-500/10 border-amber-500/30 text-amber-400" },
+  { id: 7, type: "action", label: "Send recovery email", icon: Send, color: "bg-emerald-500/10 border-emerald-500/30 text-emerald-400" },
+  { id: 8, type: "action", label: "Create callback task for sales owner", icon: Phone, color: "bg-emerald-500/10 border-emerald-500/30 text-emerald-400" },
+  { id: 9, type: "delay", label: "Wait 24 hours", icon: Clock, color: "bg-purple-500/10 border-purple-500/30 text-purple-400" },
+  { id: 10, type: "condition", label: "Email opened within 24hrs?", icon: GitBranch, color: "bg-blue-500/10 border-blue-500/30 text-blue-400" },
+  { id: 11, type: "action", label: "YES: Send SMS follow-up with booking link", icon: MessageSquare, color: "bg-emerald-500/10 border-emerald-500/30 text-emerald-400" },
+  { id: 12, type: "action", label: "NO: Try different subject line + escalate to manager", icon: AlertTriangle, color: "bg-red-500/10 border-red-500/30 text-red-400" },
+  { id: 13, type: "stop", label: "Update pipeline stage → 'Re-engaged' + generate receipt", icon: CheckCircle, color: "bg-emerald-500/10 border-emerald-500/30 text-emerald-400" },
 ];
 
 const nodeTypes = [
@@ -61,9 +61,23 @@ const nodeTypes = [
   ]},
 ];
 
+const GENERATE_TEMPLATES = [
+  { label: "Lead Recovery (48hr stale)", icon: Users, desc: "Detect stale leads → enrich → personalized outreach → escalate", domain: "Lead Recovery" },
+  { label: "No-Show Rescue + Rebook", icon: Calendar, desc: "Missed appointment → rescue SMS → rebook link → follow-up call task", domain: "Booking" },
+  { label: "Quote Follow-Up (3/5/7)", icon: FileText, desc: "Quote sent → view tracking → reminder cadence → expiry alert → human escalate", domain: "Quotes" },
+  { label: "Post-Call Follow-Up", icon: Phone, desc: "Call completed → log outcome → draft follow-up → send quote/booking → receipt", domain: "Calling" },
+  { label: "Churn Prevention Check-In", icon: Heart, desc: "Health score drop → outreach → offer retention deal → escalate if no response", domain: "Retention" },
+  { label: "Review Request (Happy Client)", icon: Star, desc: "Service completed → satisfaction check → request review → thank → harvest testimonial", domain: "Reputation" },
+  { label: "Onboarding Welcome (7-step)", icon: UserPlus, desc: "New client → welcome email → intake form → kickoff booking → milestone tracking", domain: "Onboarding" },
+  { label: "Reactivation Campaign (90-day)", icon: RefreshCw, desc: "Inactive 90d → segment → personalized reactivation → special offer → follow-up", domain: "Retention" },
+  { label: "Upsell After Delivery", icon: Package, desc: "Service delivered → wait period → suggest upgrade → draft proposal → booking link", domain: "Offers/Upsells" },
+  { label: "Revenue Leak Auto-Repair", icon: AlertTriangle, desc: "Leak detected → classify → draft fix workflow → simulate → approve → deploy → monitor", domain: "Leak Repair" },
+];
+
 export default function AutomationBuilder() {
   const { isDemoMode } = useDataMode();
   const [trustLevel, setTrustLevel] = useState("draft_review");
+  const [showGenerate, setShowGenerate] = useState(false);
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
@@ -77,14 +91,36 @@ export default function AutomationBuilder() {
         </div>
         <div className="flex gap-2">
           <button className="px-4 py-2 rounded-lg bg-secondary text-secondary-foreground text-sm font-medium">Load Template</button>
+          <div className="relative">
+            <button onClick={() => setShowGenerate(!showGenerate)} className="px-4 py-2 rounded-lg bg-emerald-500/10 text-emerald-400 text-sm font-medium flex items-center gap-2">
+              <Brain className="h-4 w-4" />Generate from Advisor<ChevronDown className="h-3 w-3" />
+            </button>
+            {showGenerate && (
+              <div className="absolute right-0 top-full mt-1 w-96 bg-card border border-border/50 rounded-lg shadow-xl z-50 max-h-[400px] overflow-y-auto">
+                <div className="p-3 border-b border-border/30">
+                  <p className="text-xs font-semibold text-foreground">Generate Automation from Template</p>
+                  <p className="text-[10px] text-muted-foreground">Pre-built flows recommended by advisors — click to generate a full workflow</p>
+                </div>
+                {GENERATE_TEMPLATES.map((t) => (
+                  <button key={t.label} onClick={() => setShowGenerate(false)} className="w-full p-3 text-left hover:bg-primary/5 transition-colors border-b border-border/10 last:border-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <t.icon className="h-3.5 w-3.5 text-primary flex-shrink-0" />
+                      <span className="text-xs font-medium text-foreground">{t.label}</span>
+                      <Badge variant="outline" className="text-[8px] ml-auto">{t.domain}</Badge>
+                    </div>
+                    <p className="text-[10px] text-muted-foreground pl-5">{t.desc}</p>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
           <button className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium flex items-center gap-2"><Plus className="h-4 w-4" />New Automation</button>
         </div>
       </div>
 
       <div className="grid lg:grid-cols-3 gap-6">
-        {/* Left Panel: Palette + Trust + Settings */}
+        {/* Left Panel */}
         <div className="space-y-4">
-          {/* Node Palette */}
           <Card className="bg-card/50 border-border/50">
             <CardHeader><CardTitle className="text-sm flex items-center gap-2"><Layers className="h-4 w-4 text-blue-400" />Node Palette</CardTitle></CardHeader>
             <CardContent className="space-y-4 max-h-[400px] overflow-y-auto">
@@ -101,7 +137,6 @@ export default function AutomationBuilder() {
             </CardContent>
           </Card>
 
-          {/* Trust Level Selector */}
           <Card className="bg-card/50 border-border/50">
             <CardHeader><CardTitle className="text-sm flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-emerald-400" />Human-AI Boundary Control</CardTitle></CardHeader>
             <CardContent className="space-y-2">
@@ -124,7 +159,6 @@ export default function AutomationBuilder() {
             </CardContent>
           </Card>
 
-          {/* Automation Settings */}
           <Card className="bg-card/50 border-border/50">
             <CardHeader><CardTitle className="text-sm">Automation Settings</CardTitle></CardHeader>
             <CardContent className="space-y-3">
@@ -162,7 +196,7 @@ export default function AutomationBuilder() {
         </div>
 
         {/* Center + Right: Visual Flow */}
-        <div className="lg:col-span-2">
+        <div className="lg:col-span-2 space-y-4">
           <Card className="bg-card/50 border-border/50">
             <CardHeader>
               <div className="flex items-center justify-between">
@@ -198,7 +232,6 @@ export default function AutomationBuilder() {
                 ))}
               </div>
 
-              {/* Action buttons */}
               <div className="flex items-center justify-between mt-4 pt-4 border-t border-border/30">
                 <button className="px-3 py-1.5 rounded bg-secondary text-secondary-foreground text-xs flex items-center gap-1"><Plus className="h-3 w-3" />Add Node</button>
                 <div className="flex gap-2">
@@ -210,8 +243,29 @@ export default function AutomationBuilder() {
             </CardContent>
           </Card>
 
+          {/* Post-Activation Monitoring Preview */}
+          <Card className="bg-card/50 border-border/50">
+            <CardHeader><CardTitle className="text-sm flex items-center gap-2"><Activity className="h-4 w-4 text-blue-400" />Post-Activation Monitoring</CardTitle></CardHeader>
+            <CardContent className="grid md:grid-cols-3 gap-3">
+              {[
+                { label: "Health Monitor", desc: "Auto-linked to Automation Health — real-time success/failure tracking", icon: Activity, link: "View Health →" },
+                { label: "Receipt Generation", desc: "Every execution generates immutable proof receipt with full audit trail", icon: Shield, link: "View Receipts →" },
+                { label: "Rollback Path", desc: "Undo capability within 24hr window — reverse CRM changes, unsend messages", icon: RefreshCw, link: "Configure →" },
+              ].map((m) => (
+                <div key={m.label} className="p-3 rounded-lg bg-background/50 border border-border/30">
+                  <div className="flex items-center gap-2 mb-1">
+                    <m.icon className="h-4 w-4 text-primary" />
+                    <p className="text-xs font-medium text-foreground">{m.label}</p>
+                  </div>
+                  <p className="text-[10px] text-muted-foreground mb-2">{m.desc}</p>
+                  <button className="text-[10px] text-primary font-medium">{m.link}</button>
+                </div>
+              ))}
+            </CardContent>
+          </Card>
+
           {/* Advisor Preview */}
-          <Card className="bg-card/50 border-primary/20 border mt-4">
+          <Card className="bg-card/50 border-primary/20 border">
             <CardContent className="p-4">
               <div className="flex items-center gap-2 mb-2">
                 <Brain className="h-4 w-4 text-primary" />
@@ -224,7 +278,7 @@ export default function AutomationBuilder() {
                 </div>
                 <div className="p-2 rounded bg-background/50 border border-border/30">
                   <p className="text-[10px] text-muted-foreground font-medium mb-1">Revenue Ops Advisor</p>
-                  <p className="text-xs text-foreground"><p className="text-xs text-foreground">{"The approval step for >$2K deals is smart. Consider also adding an approval for leads with existing open quotes to avoid conflicting messages."}</p> Consider also adding an approval for leads with existing open quotes to avoid conflicting messages.</p>
+                  <p className="text-xs text-foreground">The approval step for &gt;$2K deals is smart. Consider also adding an approval for leads with existing open quotes to avoid conflicting messages.</p>
                 </div>
                 <div className="p-2 rounded bg-background/50 border border-border/30">
                   <p className="text-[10px] text-muted-foreground font-medium mb-1">Campaign Advisor</p>

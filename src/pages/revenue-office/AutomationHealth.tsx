@@ -5,12 +5,12 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
   Activity, CheckCircle, XCircle, Clock, AlertTriangle, TrendingUp, Zap,
-  RefreshCw, Users, Mail, Phone, Heart, Shield, Brain, BarChart3, Target
+  RefreshCw, Users, Mail, Phone, Heart, Shield, Brain, BarChart3, Target, Globe
 } from "lucide-react";
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-import { DEMO_advisorInsights, DEMO_automations, DEMO_fatigueAlerts, DEMO_healthMetrics } from "@/lib/demo-data/revenue-office";
+import { DEMO_advisorInsights, DEMO_automations, DEMO_fatigueAlerts, DEMO_healthMetrics, DEMO_DOMAIN_HEALTH } from "@/lib/demo-data/revenue-office";
 
 const statusIcon = { healthy: CheckCircle, warning: AlertTriangle, error: XCircle, underperforming: TrendingUp };
 const statusColor = { healthy: "text-emerald-400", warning: "text-amber-400", error: "text-red-400", underperforming: "text-blue-400" };
@@ -24,7 +24,7 @@ export default function AutomationHealth() {
       <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Activity className="h-6 w-6 text-blue-400" />Automation Health Monitor</h1>
-        <p className="text-muted-foreground">Track success, failures, delays, fatigue, engagement, and conversion across all DEMO_automations</p>
+        <p className="text-muted-foreground">Track success, failures, delays, fatigue, engagement, and conversion across all automations</p>
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
@@ -63,7 +63,8 @@ export default function AutomationHealth() {
           <TabsTrigger value="all">All ({DEMO_automations.length})</TabsTrigger>
           <TabsTrigger value="healthy">Healthy ({DEMO_automations.filter(a => a.status === "healthy").length})</TabsTrigger>
           <TabsTrigger value="issues">Issues ({DEMO_automations.filter(a => a.status !== "healthy").length})</TabsTrigger>
-          <TabsTrigger value="fatigue">Fatigue Alerts ({DEMO_fatigueAlerts.length})</TabsTrigger>
+          <TabsTrigger value="fatigue">Fatigue ({DEMO_fatigueAlerts.length})</TabsTrigger>
+          <TabsTrigger value="domain">By Domain ({DEMO_DOMAIN_HEALTH.length})</TabsTrigger>
         </TabsList>
 
         <TabsContent value="all" className="space-y-2">
@@ -131,12 +132,69 @@ export default function AutomationHealth() {
         <TabsContent value="fatigue" className="space-y-2">
           {DEMO_fatigueAlerts.map((f, i) => (
             <Card key={i} className="bg-card/50 border-border/50"><CardContent className="p-3 flex items-center justify-between">
-              <div><p className="text-sm text-foreground">{f.contact}</p><p className="text-[10px] text-muted-foreground">{f.DEMO_automations} active DEMO_automations · {f.messagesThisWeek} messages this week</p></div>
+              <div><p className="text-sm text-foreground">{f.contact}</p><p className="text-[10px] text-muted-foreground">{f.DEMO_automations} active automations · {f.messagesThisWeek} messages this week</p></div>
               <div className="flex items-center gap-2">
                 <Badge variant={f.risk === "high" ? "destructive" : "secondary"} className="text-[10px]">{f.risk}</Badge>
                 <span className="text-[10px] text-foreground">{f.action}</span>
               </div>
             </CardContent></Card>
+          ))}
+        </TabsContent>
+
+        {/* DOMAIN-LEVEL HEALTH TAB */}
+        <TabsContent value="domain" className="space-y-3">
+          <Card className="bg-card/50 border-primary/20 border">
+            <CardContent className="p-4 flex items-start gap-3">
+              <Globe className="h-5 w-5 text-primary mt-0.5" />
+              <div>
+                <p className="text-sm font-semibold text-foreground mb-1">Domain-Level Automation Health</p>
+                <p className="text-xs text-muted-foreground">Health metrics broken down by business domain — identify which automation areas need attention across your entire commercial engine.</p>
+              </div>
+            </CardContent>
+          </Card>
+
+          {DEMO_DOMAIN_HEALTH.map((d) => (
+            <Card key={d.domain} className="bg-card/50 border-border/50 hover:border-primary/20 transition-colors">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <div className="flex items-center gap-3">
+                    <d.icon className="h-5 w-5 text-primary" />
+                    <div>
+                      <p className="text-sm font-semibold text-foreground">{d.domain}</p>
+                      <p className="text-[10px] text-muted-foreground">{d.automationCount} automations · {d.triggersThisWeek} triggers this week</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className={`text-lg font-bold ${d.healthScore >= 90 ? "text-emerald-400" : d.healthScore >= 70 ? "text-amber-400" : "text-red-400"}`}>{d.healthScore}%</span>
+                    <Badge variant={d.status === "healthy" ? "default" : d.status === "warning" ? "secondary" : "destructive"} className="text-[10px]">{d.status}</Badge>
+                  </div>
+                </div>
+                <Progress value={d.healthScore} className="h-1.5 mb-2" />
+                <div className="grid grid-cols-4 gap-3 text-xs text-muted-foreground">
+                  <div>
+                    <p className="text-[10px]">Success Rate</p>
+                    <p className={`font-bold ${d.successRate >= 90 ? "text-emerald-400" : "text-amber-400"}`}>{d.successRate}%</p>
+                  </div>
+                  <div>
+                    <p className="text-[10px]">Failures</p>
+                    <p className={`font-bold ${d.failures === 0 ? "text-emerald-400" : "text-red-400"}`}>{d.failures}</p>
+                  </div>
+                  <div>
+                    <p className="text-[10px]">Revenue Impact</p>
+                    <p className="font-bold text-foreground">{d.revenueImpact}</p>
+                  </div>
+                  <div>
+                    <p className="text-[10px]">Trend</p>
+                    <p className={`font-bold ${d.trend === "improving" ? "text-emerald-400" : d.trend === "stable" ? "text-blue-400" : "text-red-400"}`}>{d.trend}</p>
+                  </div>
+                </div>
+                {d.topIssue && (
+                  <div className="mt-2 p-2 rounded bg-amber-500/5 border border-amber-500/20">
+                    <p className="text-[10px] text-amber-400"><AlertTriangle className="h-3 w-3 inline mr-1" />{d.topIssue}</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
           ))}
         </TabsContent>
       </Tabs>
