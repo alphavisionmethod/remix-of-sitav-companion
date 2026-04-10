@@ -25,6 +25,11 @@ import { createQueryClient } from "@/lib/query-config";
 import { Suspense, lazy, type ReactNode } from "react";
 import { PlatformInit } from "@/components/sita/PlatformInit";
 import { PublicLayout } from "@/layouts/PublicLayout";
+import { AdminCommandPalette } from "@/components/admin/AdminCommandPalette";
+import { AdminKeyboardShortcuts } from "@/components/admin/AdminKeyboardShortcuts";
+
+const AdminCommandPaletteWrapper = () => <AdminCommandPalette />;
+const AdminKeyboardShortcutsWrapper = () => <AdminKeyboardShortcuts />;
 
 // ═══════════════════════════════════════════════════
 // CODE-SPLIT: Lazy-load all page components
