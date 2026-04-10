@@ -125,7 +125,7 @@ const OutcomeEconomicsDashboard = () => {
         <SitaPageHeader
           title="Outcome Economics"
           subtitle="ROI per outcome type · reasoning path analysis · cost-per-saved-incident · value benchmarks"
-          icon={TrendingUp}
+          icon={<TrendingUp className="h-5 w-5" />}
         />
         <Select value={period} onValueChange={setPeriod}>
           <SelectTrigger className="w-28">
