@@ -1064,3 +1064,245 @@ export const DEMO_SPLITS = [
   { partner: "Cascade Marketing", gross: 7200, theirs: 5400, yours: 1800, split: "75/25", pending: 0 },
   { partner: "Vertex Group", gross: 4100, theirs: 2870, yours: 1230, split: "70/30", pending: 800 },
 ];
+
+// ═══════════════════════════════════════════════════════════════
+// Extended Demo Data: Advisor Debate, Memory, Funnel Analytics,
+// Relationship Graph, Campaign Attribution
+// ═══════════════════════════════════════════════════════════════
+
+export const DEMO_ADVISOR_DEBATES = [
+  {
+    topic: "Growth vs Protection",
+    disagreements: [
+      { advisorA: "Growth Advisor", stanceA: "Scale acquisition spend 15%", confidenceA: 0.82, advisorB: "Retention Advisor", stanceB: "Protect retention — 2 clients at risk", confidenceB: 0.74, severity: "moderate" as const },
+      { advisorA: "Pricing Advisor", stanceA: "Test 10% price increase", confidenceA: 0.68, advisorB: "Relationship Advisor", stanceB: "Don't risk loyalty with price hike", confidenceB: 0.71, severity: "mild" as const },
+    ],
+    synthesis: "Board leans toward controlled growth with retention safeguards. Pricing test should target new customers only.",
+  },
+  {
+    topic: "Channel Allocation",
+    disagreements: [
+      { advisorA: "Marketing Advisor", stanceA: "Increase email frequency", confidenceA: 0.79, advisorB: "Retention Advisor", stanceB: "Fatigue risk — reduce to 2/week", confidenceB: 0.74, severity: "strong" as const },
+    ],
+    synthesis: "Segment-based frequency: engaged contacts at 3/week, others at 1/week.",
+  },
+];
+
+export const DEMO_ADVISOR_WHAT_CHANGED = [
+  { advisor: "Growth Advisor", change: "Confidence increased from 76% to 82%", reason: "Lead volume up 18% this week", when: "2d ago" },
+  { advisor: "Retention Advisor", change: "Stance shifted to cautious", reason: "2 high-value clients showing churn signals", when: "1d ago" },
+  { advisor: "Pricing Advisor", change: "New recommendation added", reason: "Competitor raised prices 15%", when: "3d ago" },
+  { advisor: "Sales Advisor", change: "Confidence dropped from 82% to 76%", reason: "Enterprise deal cycle extended 8 days", when: "4d ago" },
+];
+
+export const DEMO_ADVISOR_INVALIDATION = [
+  { advisor: "Growth Advisor", condition: "If lead quality drops >15% while volume rises", impact: "Acquisition scaling would damage pipeline quality" },
+  { advisor: "Pricing Advisor", condition: "If churn exceeds 8% after price test", impact: "Price increase thesis invalidated" },
+  { advisor: "Retention Advisor", condition: "If both at-risk clients renew", impact: "Churn concern downgrades from alert to watch" },
+  { advisor: "Sales Advisor", condition: "If 3+ stale deals close this week", impact: "Pipeline velocity concern resolved" },
+  { advisor: "Marketing Advisor", condition: "If open rates drop below 18%", impact: "Content strategy needs overhaul" },
+];
+
+export const DEMO_ALIGNMENT_CLUSTERS = [
+  { theme: "Growth Opportunity", advisors: ["Growth Advisor", "Marketing Advisor", "Pricing Advisor"], avgConfidence: 0.76, direction: "bullish" as const },
+  { theme: "Risk & Protection", advisors: ["Retention Advisor", "Relationship Advisor"], avgConfidence: 0.73, direction: "bearish" as const },
+  { theme: "Execution Focus", advisors: ["Sales Advisor", "Revenue Ops Advisor"], avgConfidence: 0.74, direction: "neutral" as const },
+];
+
+export const DEMO_FUNNEL_STEP_ANALYTICS = [
+  { step: "Landing Page", visitors: 2840, converted: 1242, dropoff: 1598, dropoffPct: 56.3, leakReason: "Page load 4.2s on mobile, no social proof", abVariants: [{ name: "A — Original", conversion: 43.7 }, { name: "B — With Testimonials", conversion: 52.1 }] },
+  { step: "Lead Magnet", visitors: 1242, converted: 894, dropoff: 348, dropoffPct: 28.0, leakReason: "Form asks 6 fields — too many", abVariants: [{ name: "A — 6 fields", conversion: 72.0 }, { name: "B — 3 fields", conversion: 84.3 }] },
+  { step: "Email Nurture", visitors: 894, converted: 686, dropoff: 208, dropoffPct: 23.3, leakReason: "Engagement drops after email 4", abVariants: [{ name: "A — 5 emails", conversion: 76.7 }, { name: "B — 3 emails + offer", conversion: 81.2 }] },
+  { step: "Sales Page", visitors: 686, converted: 287, dropoff: 399, dropoffPct: 58.2, leakReason: "No urgency element, pricing section confusing", abVariants: [] },
+  { step: "Checkout", visitors: 287, converted: 87, dropoff: 200, dropoffPct: 69.7, leakReason: "8-field checkout form, no payment alternatives", abVariants: [{ name: "A — Long form", conversion: 30.3 }, { name: "B — Stripe 1-click", conversion: 48.6 }] },
+];
+
+export const DEMO_FUNNEL_TRIGGERS = [
+  { trigger: "Page Visit > 60s", action: "Show exit-intent popup", status: "active" },
+  { trigger: "Form Abandoned", action: "Send recovery email in 1hr", status: "active" },
+  { trigger: "Email 3 Not Opened", action: "Switch to SMS channel", status: "active" },
+  { trigger: "Pricing Page 3x Visit", action: "Trigger sales alert", status: "active" },
+  { trigger: "Cart Abandoned", action: "Send 3-step recovery", status: "active" },
+  { trigger: "Checkout Failed", action: "Retry + alternative payment", status: "draft" },
+];
+
+export const DEMO_RELATIONSHIP_GRAPH = [
+  { from: "Sarah Mitchell", to: "Lisa Wang", type: "referred_by", strength: 95 },
+  { from: "Sarah Mitchell", to: "James Chen", type: "same_company", strength: 60 },
+  { from: "Lisa Wang", to: "Michael Park", type: "introduced", strength: 40 },
+  { from: "Emily Rodriguez", to: "David Kim", type: "same_industry", strength: 30 },
+];
+
+export const DEMO_NEXT_BEST_ACTIONS = [
+  { contact: "Michael Park", action: "Schedule check-in call", reason: "Inactive 21 days, churn risk 68%", urgency: "critical", estimatedImpact: "$8,200 at risk" },
+  { contact: "James Chen", action: "Send case study", reason: "Viewed pricing 3x, comparing competitors", urgency: "high", estimatedImpact: "$18,000 potential" },
+  { contact: "Emily Rodriguez", action: "Book discovery call", reason: "Qualified lead, warm engagement", urgency: "medium", estimatedImpact: "$4,800 potential" },
+  { contact: "Lisa Wang", action: "Ask for referral", reason: "NPS 10, recent 5★ review", urgency: "low", estimatedImpact: "+2 referrals estimated" },
+  { contact: "Sarah Mitchell", action: "Propose upsell package", reason: "Usage patterns match Premium tier", urgency: "medium", estimatedImpact: "$6,800/yr" },
+];
+
+export const DEMO_CONVERSATION_HISTORY = [
+  { contact: "Sarah Mitchell", entries: [
+    { type: "email", direction: "out", subject: "Q2 Strategy Review", date: "2d ago", status: "opened" },
+    { type: "call", direction: "in", subject: "Project check-in", date: "1w ago", status: "completed", duration: "18 min" },
+    { type: "meeting", direction: "out", subject: "Quarterly business review", date: "3w ago", status: "completed", duration: "45 min" },
+    { type: "email", direction: "in", subject: "Re: Invoice #1038", date: "1mo ago", status: "replied" },
+  ]},
+];
+
+export const DEMO_CAMPAIGN_ATTRIBUTION = [
+  { campaign: "Spring Launch Email", channel: "Email", sent: 1200, opened: 408, clicked: 144, converted: 18, revenue: "$5,346", roi: "340%", cost: "$120" },
+  { campaign: "Google Ads — Growth", channel: "Paid", impressions: 24000, clicks: 720, leads: 42, converted: 8, revenue: "$12,400", roi: "280%", cost: "$340" },
+  { campaign: "Webinar: Scale Your Biz", channel: "Event", registered: 340, attended: 186, leads: 67, converted: 12, revenue: "$8,200", roi: "520%", cost: "$150" },
+  { campaign: "Referral Incentive Q1", channel: "Referral", sent: 45, responded: 18, leads: 8, converted: 4, revenue: "$6,800", roi: "680%", cost: "$100" },
+];
+
+export const DEMO_CAMPAIGN_FATIGUE = [
+  { segment: "High-Value Clients", messagesThisWeek: 4, threshold: 3, status: "over" as const, recommendation: "Reduce to 2/week or combine into digest" },
+  { segment: "Warm Leads", messagesThisWeek: 2, threshold: 4, status: "ok" as const, recommendation: "Room for 1 more targeted send" },
+  { segment: "Newsletter Subscribers", messagesThisWeek: 1, threshold: 2, status: "ok" as const, recommendation: "Can increase frequency for engaged subset" },
+  { segment: "Trial Users", messagesThisWeek: 5, threshold: 3, status: "over" as const, recommendation: "Consolidate onboarding emails — fatigue risk high" },
+];
+
+export const DEMO_DELIVERABILITY = [
+  { metric: "Delivery Rate", value: 97.2, target: 98, status: "warning" },
+  { metric: "Open Rate", value: 34.1, target: 25, status: "healthy" },
+  { metric: "Bounce Rate", value: 2.1, target: 2, status: "warning" },
+  { metric: "Spam Complaints", value: 0.04, target: 0.1, status: "healthy" },
+  { metric: "Unsubscribe Rate", value: 0.8, target: 1, status: "healthy" },
+];
+
+export const DEMO_BOOKING_ANALYTICS = [
+  { metric: "No-Show Rate", value: "18%", trend: "-4% vs last month", status: "improving" },
+  { metric: "Avg. Booking Lead Time", value: "3.2 days", trend: "-0.5 days", status: "improving" },
+  { metric: "Conversion to Client", value: "42%", trend: "+8%", status: "strong" },
+  { metric: "Repeat Booking Rate", value: "67%", trend: "+3%", status: "strong" },
+  { metric: "Cancellation Rate", value: "12%", trend: "+2%", status: "watch" },
+];
+
+export const DEMO_NOSHOW_RECOVERY = [
+  { client: "Marcus J.", date: "Today 2:00 PM", type: "Strategy Call", rescueSent: true, rebooked: true, rebookDate: "Tomorrow 10:00 AM" },
+  { client: "Tom B.", date: "Yesterday 3:30 PM", type: "Discovery Call", rescueSent: true, rebooked: false, rebookDate: null },
+  { client: "Ana S.", date: "Apr 3, 1:00 PM", type: "Coaching Session", rescueSent: true, rebooked: true, rebookDate: "Apr 8, 2:00 PM" },
+];
+
+export const DEMO_PREP_CHECKLISTS = [
+  { appointment: "Sarah Mitchell — Strategy Call", time: "Today, 2:00 PM", items: [
+    { task: "Review last meeting notes", done: true },
+    { task: "Check project status", done: true },
+    { task: "Prepare Q2 proposal draft", done: false },
+    { task: "Pull latest revenue metrics", done: false },
+  ]},
+  { appointment: "James Chen — Discovery Call", time: "Today, 4:30 PM", items: [
+    { task: "Review lead source and form data", done: true },
+    { task: "Prepare case study for SaaS companies", done: false },
+    { task: "Set up screen share for demo", done: false },
+  ]},
+];
+
+export const DEMO_OFFER_UPSELLS = [
+  { from: "Growth Strategy Blueprint", to: "1:1 Coaching — Monthly", conversionRate: "23%", avgRevenue: "$500/mo", trigger: "7 days post-purchase" },
+  { from: "Starter Kit Bundle", to: "Growth Strategy Blueprint", conversionRate: "18%", avgRevenue: "$297", trigger: "Course completion >50%" },
+  { from: "VIP Day Experience", to: "Community Membership", conversionRate: "67%", avgRevenue: "$47/mo", trigger: "Post-VIP follow-up" },
+];
+
+export const DEMO_PRICING_EXPERIMENTS = [
+  { name: "Growth Blueprint Price Test", variant: "A: $297 vs B: $347", status: "running", participants: 240, winner: null, confidence: 62, metric: "Conversion Rate", resultA: "8.2%", resultB: "7.4%" },
+  { name: "Coaching Bundle Discount", variant: "A: No discount vs B: First month free", status: "completed", participants: 180, winner: "B", confidence: 94, metric: "Trial Starts", resultA: "12%", resultB: "28%" },
+];
+
+export const DEMO_DRIP_SCHEDULE = [
+  { module: "Module 1: Foundations", releaseDay: 0, status: "released", completionRate: 89 },
+  { module: "Module 2: Strategy", releaseDay: 7, status: "released", completionRate: 72 },
+  { module: "Module 3: Execution", releaseDay: 14, status: "released", completionRate: 58 },
+  { module: "Module 4: Scaling", releaseDay: 21, status: "scheduled", completionRate: 0 },
+  { module: "Module 5: Optimization", releaseDay: 28, status: "scheduled", completionRate: 0 },
+];
+
+export const DEMO_ENGAGEMENT_HEATMAP = [
+  { module: "Module 1", week1: 95, week2: 88, week3: 72, week4: 65 },
+  { module: "Module 2", week1: 78, week2: 68, week3: 55, week4: 48 },
+  { module: "Module 3", week1: 62, week2: 52, week3: 40, week4: 35 },
+];
+
+export const DEMO_CHURN_PREDICTION = [
+  { client: "Meridian Health", probability: 68, signals: ["No login 21d", "Support ticket unresolved"], ltv: "$4,200", action: "Personal call + service recovery" },
+  { client: "Nova Digital", probability: 45, signals: ["Usage ↓ 40%", "Skipped webinar"], ltv: "$6,800", action: "Re-engagement campaign" },
+  { client: "Carter Legal", probability: 32, signals: ["Meeting frequency ↓ 40%"], ltv: "$8,200", action: "Propose quarterly review" },
+];
+
+export const DEMO_NPS_DATA = {
+  current: 72,
+  previous: 68,
+  trend: "+4",
+  distribution: [
+    { range: "Promoters (9-10)", count: 38, pct: 57 },
+    { range: "Passives (7-8)", count: 20, pct: 30 },
+    { range: "Detractors (0-6)", count: 9, pct: 13 },
+  ],
+  recentResponses: [
+    { name: "Lisa Wang", score: 10, comment: "Exceptional service, wouldn't go anywhere else" },
+    { name: "James Chen", score: 8, comment: "Good value, could improve onboarding" },
+    { name: "David Kim", score: 6, comment: "Service was fine but felt impersonal lately" },
+  ],
+};
+
+export const DEMO_LEAK_REPAIR_TRACKING = [
+  { leak: "Post-call follow-up gap", repairDate: "Mar 15", status: "repaired", recoveredRevenue: "$12,400", recoveredPct: 83, method: "Automated follow-up sequence" },
+  { leak: "Quote follow-up delay", repairDate: "Mar 8", status: "repaired", recoveredRevenue: "$4,200", recoveredPct: 50, method: "3/5/7 day reminder flow" },
+  { leak: "No-show recovery", repairDate: "Feb 28", status: "partial", recoveredRevenue: "$2,100", recoveredPct: 33, method: "SMS rescue + rebook" },
+  { leak: "Review request gap", repairDate: "Feb 20", status: "repaired", recoveredRevenue: "N/A", recoveredPct: 0, method: "Post-service automation" },
+];
+
+export const DEMO_LEAK_TRENDS = [
+  { month: "Jan", totalLeakage: 82400, repaired: 18200, net: 64200 },
+  { month: "Feb", totalLeakage: 71200, repaired: 24800, net: 46400 },
+  { month: "Mar", totalLeakage: 65800, repaired: 31600, net: 34200 },
+  { month: "Apr", totalLeakage: 58200, repaired: 34800, net: 23400 },
+];
+
+export const DEMO_GROWTH_FIREWALL_ALERTS = [
+  { ruleId: "gf-rapid-launch", ruleName: "Rapid Campaign Launches", severity: "warning" as const, description: "3 campaigns launched in 7 days — audience fatigue risk", recommendation: "Stagger launches by 5-7 days" },
+  { ruleId: "gf-unaddressed-churn", ruleName: "Unaddressed Churn Risks", severity: "critical" as const, description: "4 churn risk signals unaddressed for >7 days", recommendation: "Prioritize at-risk client outreach" },
+  { ruleId: "gf-concentration", ruleName: "Revenue Concentration", severity: "warning" as const, description: "Top 3 clients = 58% of revenue", recommendation: "Diversify with 3 new mid-market targets" },
+];
+
+export const DEMO_TRUST_DIMENSIONS = [
+  { dimension: "Service Quality", score: 92, trend: "+3", evidence: "4.8★ average, 96% satisfaction" },
+  { dimension: "Communication", score: 85, trend: "+1", evidence: "Avg response time 2.4hrs" },
+  { dimension: "Reliability", score: 88, trend: "-2", evidence: "1 missed deadline this month" },
+  { dimension: "Value Perception", score: 78, trend: "+5", evidence: "8/10 clients say 'worth the price'" },
+  { dimension: "Transparency", score: 91, trend: "0", evidence: "All invoices itemized, progress shared weekly" },
+];
+
+export const DEMO_SENTIMENT_TREND = [
+  { month: "Jan", positive: 78, neutral: 15, negative: 7 },
+  { month: "Feb", positive: 80, neutral: 14, negative: 6 },
+  { month: "Mar", positive: 82, neutral: 13, negative: 5 },
+  { month: "Apr", positive: 85, neutral: 11, negative: 4 },
+];
+
+export const DEMO_SCENARIO_CARDS = [
+  { title: "Launch Summer Accelerator", projectedRevenue: "+$18,000", risk: "Medium — audience fatigue overlap", confidence: 72, advisorVotes: { approve: 2, cautious: 1, oppose: 0 }, timeframe: "30 days" },
+  { title: "Enable Auto-Booking", projectedRevenue: "+$4,800/mo", risk: "Low — add SMS reminder safeguard", confidence: 82, advisorVotes: { approve: 2, cautious: 0, oppose: 0 }, timeframe: "7 days" },
+  { title: "10% Price Increase (New Customers)", projectedRevenue: "+$4,280/mo", risk: "Low — test on new only", confidence: 68, advisorVotes: { approve: 1, cautious: 2, oppose: 0 }, timeframe: "14 days" },
+];
+
+export const DEMO_OPPORTUNITY_THEMES = [
+  { theme: "Conversion Optimization", opportunities: 3, totalImpact: "$27,200", avgConfidence: 82 },
+  { theme: "Revenue Expansion", opportunities: 2, totalImpact: "$19,600/mo", avgConfidence: 65 },
+  { theme: "Trust & Reputation", opportunities: 2, totalImpact: "Brand value", avgConfidence: 88 },
+];
+
+export const DEMO_MEMORY_PINNED = [
+  { id: "mp1", title: "Pricing increase validated — low churn impact", domain: "pricing", date: "Mar 15", pinned: true },
+  { id: "mp2", title: "Post-call follow-up automation activated", domain: "automation", date: "Feb 28", pinned: true },
+  { id: "mp3", title: "Enterprise segment velocity declining", domain: "pipeline", date: "Apr 1", pinned: true },
+];
+
+export const DEMO_CHIEF_HISTORICAL = [
+  { date: "Apr 1", synthesis: "Strong growth trajectory. Key risk: Enterprise pipeline slowdown and 2 at-risk clients. Priority: protect retention while scaling.", score: 82 },
+  { date: "Mar 1", synthesis: "Momentum building. Pricing increase validated. Funnel conversion improving. Watch: seasonal Q1 dip pattern.", score: 78 },
+  { date: "Feb 1", synthesis: "Stabilizing after Q4 churn event. Automation investments showing ROI. Need: stronger referral engine.", score: 71 },
+];
+
