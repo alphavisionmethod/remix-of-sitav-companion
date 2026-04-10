@@ -6,6 +6,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { CheckCircle, LucideIcon } from "lucide-react";
 import { useState, useCallback } from "react";
+import { useOptimisticMutation, type MutationStatus } from "@/hooks/use-optimistic-mutation";
 
 export interface SuccessFeedback {
   id: string;
