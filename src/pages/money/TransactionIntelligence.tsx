@@ -33,7 +33,7 @@ const DEMO_TXS: DemoTx[] = [
   { id: "t10", date: "2026-04-05", description: "STARBUCKS #4521", merchant: "Starbucks", amountCents: 685, category: "Dining", type: "debit", isRecurring: false, categorizedBy: "ai", confidence: 0.92, flags: [], classification: "personal" },
 ];
 
-const DebtCreditOffice = () => {
+const TransactionIntelligence = () => {
   const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
@@ -148,4 +148,4 @@ const DebtCreditOffice = () => {
   );
 };
 
-export default DebtCreditOffice;
+export default TransactionIntelligence;
