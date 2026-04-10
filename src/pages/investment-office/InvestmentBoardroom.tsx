@@ -197,9 +197,9 @@ export default function InvestmentBoardroom() {
                 <p className="text-[11px] text-foreground leading-tight mt-0.5 line-clamp-2">{adv.currentInsight}</p>
               </div>
               <div className={`shrink-0 text-[9px] font-medium rounded-full px-2 py-0.5 ${
-                adv.confidenceLevel === "high" ? "bg-[hsl(var(--trust-safe))]/10 text-[hsl(var(--trust-safe))]" :
-                adv.confidenceLevel === "moderate" ? "bg-[hsl(var(--trust-warn))]/10 text-[hsl(var(--trust-warn))]" :
-                "bg-destructive/10 text-destructive"
+                adv.confidenceLevel === "high" ? "bg-[hsl(var(--trust-safe))]/10 text-[hsl(var(--trust-safe))] animate-pulse-safe" :
+                adv.confidenceLevel === "moderate" ? "bg-[hsl(var(--trust-warn))]/10 text-[hsl(var(--trust-warn))] animate-pulse-warn" :
+                "bg-destructive/10 text-destructive animate-pulse-danger"
               }`}>{adv.confidence}%</div>
             </button>
           ))}
