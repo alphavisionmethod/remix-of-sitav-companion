@@ -1,3 +1,4 @@
+import DWESubNav from "@/components/admin/DWESubNav";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Smartphone, Watch, Laptop, Monitor, Wifi, WifiOff, Shield, Activity } from "lucide-react";
@@ -42,6 +43,7 @@ export default function DWE01ConnectedDevicesCenter() {
 
   return (
     <div className="space-y-6 p-6">
+      <DWESubNav />
       <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground">DWE01 — Connected Devices Center</h1>

@@ -1,3 +1,4 @@
+import DWESubNav from "@/components/admin/DWESubNav";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Activity, HeartPulse, Shield, Lock } from "lucide-react";
@@ -50,6 +51,7 @@ export default function DWE03WearableSignalsCenter() {
 
   return (
     <div className="space-y-6 p-6">
+      <DWESubNav />
       <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground">DWE03 — Wearable Signals & Readiness Center</h1>

@@ -1,3 +1,4 @@
+import DWESubNav from "@/components/admin/DWESubNav";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Bell, Route, Volume2, VolumeX, Smartphone, Watch, Laptop } from "lucide-react";
@@ -47,6 +48,7 @@ export default function DWE04NotificationRoutingStudio() {
 
   return (
     <div className="space-y-6 p-6">
+      <DWESubNav />
       <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground">DWE04 — Notification Routing Studio</h1>

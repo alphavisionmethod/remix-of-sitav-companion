@@ -1,3 +1,4 @@
+import DWESubNav from "@/components/admin/DWESubNav";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Rocket, CheckCircle, XCircle, Beaker } from "lucide-react";
@@ -37,6 +38,7 @@ export default function DWE07DeviceLaunchHonestyBoard() {
 
   return (
     <div className="space-y-6 p-6">
+      <DWESubNav />
       <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground">DWE07 — Device & Wearable Launch Honesty Board</h1>

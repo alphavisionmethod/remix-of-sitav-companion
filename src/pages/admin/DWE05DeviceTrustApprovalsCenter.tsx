@@ -1,3 +1,4 @@
+import DWESubNav from "@/components/admin/DWESubNav";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Shield, Fingerprint, ShieldCheck, ShieldAlert, KeyRound } from "lucide-react";
@@ -47,6 +48,7 @@ export default function DWE05DeviceTrustApprovalsCenter() {
 
   return (
     <div className="space-y-6 p-6">
+      <DWESubNav />
       <DemoModeBadge />
       <div>
         <h1 className="text-2xl font-bold text-foreground">DWE05 — Device Trust & Approvals Center</h1>
