@@ -401,10 +401,12 @@ export function InstallSheet({ app, onClose, onInstall }: {
                   <p className="text-xs text-muted-foreground mt-1">Install receipt created · Ready to launch</p>
                 </div>
                 <div className="flex gap-2 justify-center mt-4">
-                  <button className="rounded-xl bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors">
+                  <button onClick={() => { onOpen?.(); onClose(); }}
+                    className="rounded-xl bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors">
                     Open
                   </button>
-                  <button className="rounded-xl bg-secondary px-5 py-2 text-sm font-medium text-foreground hover:bg-secondary/80 transition-colors">
+                  <button onClick={() => onPinToDock?.(app.id)}
+                    className="rounded-xl bg-secondary px-5 py-2 text-sm font-medium text-foreground hover:bg-secondary/80 transition-colors">
                     Pin to Dock
                   </button>
                 </div>

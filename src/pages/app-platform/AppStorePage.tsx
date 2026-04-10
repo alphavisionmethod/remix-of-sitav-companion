@@ -20,7 +20,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 const AppStorePage = () => {
   const { isDemoMode } = useDataMode();
-  const { apps, installedApps, installApp } = useAppPlatform();
+  const { apps, installedApps, installApp, pinToDock } = useAppPlatform();
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("all");
@@ -270,7 +270,9 @@ const AppStorePage = () => {
       {/* Install Sheet */}
       {installTarget && (
         <InstallSheet app={installTarget} onClose={() => setInstallTarget(null)}
-          onInstall={handleInstall} />
+          onInstall={handleInstall}
+          onPinToDock={(id) => { pinToDock(id); toast.success("Pinned to dock"); }}
+          onOpen={() => setInstallTarget(null)} />
       )}
     </div>
   );

@@ -346,7 +346,9 @@ const AppDetailPage = () => {
 
       {/* Install Sheet */}
       {showInstall && (
-        <InstallSheet app={app} onClose={() => setShowInstall(false)} onInstall={handleInstall} />
+        <InstallSheet app={app} onClose={() => setShowInstall(false)} onInstall={handleInstall}
+          onPinToDock={(id) => { pinToDock(id); toast.success("Pinned to dock"); }}
+          onOpen={() => setShowInstall(false)} />
       )}
     </div>
   );
