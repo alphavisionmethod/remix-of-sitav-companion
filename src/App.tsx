@@ -47,6 +47,7 @@ const UserProfilePage = lazy(() => import("./pages/UserProfilePage"));
 const BusinessCenter = lazy(() => import("./pages/BusinessCenter"));
 const CustomerDetail = lazy(() => import("./pages/CustomerDetail"));
 const MoneyCenter = lazy(() => import("./pages/MoneyCenter"));
+const MoneyOnboarding = lazy(() => import("./pages/MoneyOnboarding"));
 const ConciergeCenter = lazy(() => import("./pages/ConciergeCenter"));
 const WorkflowsCenter = lazy(() => import("./pages/WorkflowsCenter"));
 const ProofCenter = lazy(() => import("./pages/ProofCenter"));
@@ -842,6 +843,7 @@ const App = () => (
                     <Route path="/business/customer-health" element={<CustomerHealthPage />} />
 
                     {/* ── 3B: OS Core Space — Money ── */}
+                    <Route path="/money/onboarding" element={<MoneyOnboarding />} />
                     <Route path="/money" element={<MoneyCenter />} />
                     <Route path="/money/overview" element={<MoneyCenter />} />
                     <Route path="/money/bills" element={<MoneyCenter />} />
