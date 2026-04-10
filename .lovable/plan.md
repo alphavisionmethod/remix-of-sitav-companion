@@ -1,78 +1,122 @@
 
 
-# ATLAS Closure — Advanced Operational Enhancements Plan
+# SITA OS Admin Control Plane — Gap Analysis & Implementation Plan
 
 ## Audit Summary
 
-After thorough codebase inspection, the 10 ATLAS areas listed in the spec **already have substantial implementations**. However, several pages need deepening from "good overview" to "fully advanced operational product." Here's what's genuinely thin vs solid:
+After thorough codebase inspection, the admin control plane has **strong coverage** across 22+ operator surfaces, 16 truth components, and 12 ATLAS pages. However, several spec requirements remain unimplemented:
 
-### Already Solid (no changes needed)
-- **Admin Durability Board** (278 LOC) — mutation provenance, write-path registry, lineage gaps, projection impact, receipts
-- **Operations Command Center** (196 LOC) — service health, SLO burn rates, alert triage, incidents, queue lag, runbooks
-- **Proof Coverage Board** (259 LOC) — 29 capabilities, chain explorer, replay/rollback verification
-- **Connector Control Center** (200 LOC) — lifecycle FSM, health matrix, capability registry, audit timeline
-- **Mission Control** (1301 LOC) — system pulse, agent cards, incidents, connectors, workflows, costs, policies, releases, safe mode
-- **Owner Center** (2525 LOC) — pulse, approvals, AI team, timeline, service map, governance
-- **Release/Deployment Workspace** (228 LOC) — ring promotion with evidence, canary, rollback
+### MISSING PAGES (4 entirely absent)
 
-### Needs Enhancement (genuine gaps found)
+1. **Intelligence Dashboard** (`/admin/intelligence`) — No page exists. Spec requires: incident forecasting, anomaly detection, cost optimization, trend momentum, confidence scoring, preventive recommendations, root-cause-linked insights.
 
-| Area | Current | Gap |
-|------|---------|-----|
-| **DeploymentTruthCenter** (194 LOC) | Ring gates, environments, basic secrets | Missing: CI/CD pipeline integration, HA/DR checks detail, smoke/load gate evidence, secret rotation status, cert expiry monitoring |
-| **DataProtectionPosture** (169 LOC) | Encryption domains, secret integrity | Missing: at-rest encryption coverage detail, key rotation schedules, sensitive data classification matrix, compliance mapping |
-| **ProjectionControlCenter** (203 LOC) | 14 projections, freshness | Missing: rebuild/replay controls, fallback masking detail, materialization queue, honest staleness handling |
-| **ValidationCommandCenter** (171 LOC) | Test counts, readiness | Missing: cross-domain E2E flow coverage, operational/admin test matrix, test run history, failure pattern analysis |
-| **PlatformTruthRegistry** (178 LOC) | Manifest sync, claim verification | Missing: generated truth update workflows, manifest drift auto-detection, docs coverage scoring, architecture gate visibility |
-| **ConciergeCommandCenter** (183 LOC) | Task continuity, travel, receipts | Missing: household continuity depth, task/travel/grocery state persistence verification, service provider SLA tracking |
-| **AtlasHub** (77 LOC) | Simple nav grid | Missing: aggregate health score, cross-program dependency view, closure progress tracking |
-| **LT02CIPipelineCenter** (128 LOC) | Basic CI/CD | Missing: smoke/load gate evidence, deployment artifact validation, VMware evidence link |
+2. **Founder Council** (`/admin/founder-council`) — No page exists. Spec requires: decision proposals, strategic context, stakeholder impact, council recommendations, historical precedent, implementation risk, confidence scores, approval linkage.
 
-## Plan
+3. **Canonical Chain Explorer** (`/admin/chain-explorer`) — No page exists. Spec requires: trigger → policy → approval → execution → event → receipt → projection → replay/rollback tracing for any single action.
 
-### 1. Enhance DeploymentTruthCenter — add CI/CD truth, HA/DR, cert/secret monitoring
-Add tabs for: CI Pipeline Status (build/test/deploy stages with evidence), HA/DR Readiness (replica status, failover testing, backup verification), Secret & Cert Health (rotation schedule, expiry warnings, integrity checks), Smoke/Load Gates (gate results with pass/fail evidence).
+4. **Release Ring Command Board** (`/admin/release-ring`) — No page exists. Spec requires: Ring 0/1/2 readiness, blockers, evidence checklists, feedback gates, incident impact, promotion actions, rollback visibility.
 
-### 2. Enhance DataProtectionPosture — encryption at rest, key rotation, compliance
-Add: at-rest encryption coverage per table/bucket, key rotation schedule with staleness indicators, sensitive data classification matrix (PII/financial/health), compliance mapping (SOC2/GDPR checklist items).
+### MISSING POWER-USER SYSTEM (3 components absent)
 
-### 3. Enhance ProjectionControlCenter — rebuild controls, fallback masking, materialization
-Add: rebuild/replay action buttons per projection, fallback masking audit (which projections serve fallback data), materialization queue with processing rates, staleness threshold configuration, honest degraded-state indicators per projection.
+5. **Global Command Palette** (`Cmd+K`) — The `cmdk` library exists, but no `AdminCommandPalette` component is wired. Spec requires: fuzzy search, route/action/record search, recent actions, pinned commands, keyboard-only execution.
 
-### 4. Enhance ValidationCommandCenter — E2E coverage, cross-domain, operational tests
-Add: cross-domain E2E flow matrix (investment→receipt, revenue→automation, etc.), operational/admin test coverage grid, test run history timeline, failure pattern clustering, architecture gate compliance summary.
+6. **Keyboard Shortcuts System** — No global shortcut handler exists. Spec requires: `Cmd+K`, `J/K` navigation, `Cmd+Z/Shift+Z` undo/redo, `Cmd+R` refresh, investigation keys (F/T/M/G/P).
 
-### 5. Enhance PlatformTruthRegistry — generated truth workflows, architecture gates
-Add: manifest-truth sync workflows with diff view, auto-detection of docs/code drift, architecture gate visibility (which gates passed/failed for current build), generated truth file freshness tracking, claim verification automation status.
+7. **Shortcut Overlay** (`?`) — No overlay component. Spec requires: categorized shortcut display triggered by `?` key.
 
-### 6. Enhance ConciergeCommandCenter — continuity depth, SLA tracking
-Add: task/travel/household state persistence verification, service provider SLA compliance tracking, grocery/appointment data continuity checks, cross-module integration health (calendar↔tasks↔travel).
+### PAGES NEEDING DEPTH UPGRADE (2 pages)
 
-### 7. Enhance AtlasHub — aggregate health, closure tracking
-Add: aggregate closure health score (weighted from all 10 programs), cross-program dependency graph, per-program progress bars, quick-action buttons for common operator workflows, recent closure activity feed.
+8. **AlertTriageBoard** (118 LOC, single filter) — Missing: cluster grouping view, ownership assignment panel, suppression management, investigation launch workflow, time-to-breach countdown. Needs tabs for severity lanes, cluster themes, suppression state.
 
-### 8. Add OperationalInfraMonitor — cert expiry, replica lag, DB exhaustion, pool health
-New page at `/atlas/infrastructure` covering: cert expiry countdown timers, database pool utilization and exhaustion warnings, replica lag monitoring, event bus lag, storage pressure, connection pool saturation. This is the missing "operational UX" layer.
+9. **MissionControlHome** (191 LOC) — Missing: projection freshness warnings, admin durability warnings, council/decision pulse, "what changed since last visit" section, deployment readiness summary, proof coverage highlights as live indicators.
 
-## Files Changed
+---
 
-| File | Change |
-|------|--------|
-| `src/pages/atlas/DeploymentTruthCenter.tsx` | Add CI/CD, HA/DR, cert/secret, smoke/load tabs (~+200 LOC) |
-| `src/pages/atlas/DataProtectionPosture.tsx` | Add encryption-at-rest, key rotation, compliance (~+180 LOC) |
-| `src/pages/atlas/ProjectionControlCenter.tsx` | Add rebuild controls, fallback masking, materialization (~+160 LOC) |
-| `src/pages/atlas/ValidationCommandCenter.tsx` | Add E2E matrix, cross-domain, test history (~+180 LOC) |
-| `src/pages/atlas/PlatformTruthRegistry.tsx` | Add manifest workflows, arch gates, drift detection (~+170 LOC) |
-| `src/pages/atlas/ConciergeCommandCenter.tsx` | Add continuity depth, SLA tracking (~+120 LOC) |
-| `src/pages/atlas/AtlasHub.tsx` | Add health score, progress, dependency view (~+150 LOC) |
-| `src/pages/atlas/OperationalInfraMonitor.tsx` (NEW) | Cert expiry, replica lag, DB pools, storage pressure (~250 LOC) |
-| `src/lib/demo-data/atlas.ts` | Expand demo data for all new sections (~+200 LOC) |
-| `src/App.tsx` | Add route for `/atlas/infrastructure` |
+## Implementation Plan
 
-**Total: ~1 new file, ~9 files enhanced, ~1,600 net LOC added.**
+### Step 1 — Create 4 Missing Pages
 
-## Technical Approach
-- All enhancements use existing patterns: `DemoModeBadge`, `SitaPageHeader`, `DegradedStateBanner`, `StalenessIndicator`, `Tabs`, `Badge`, `Progress`, `Card`
-- Demo data expanded in `atlas.ts` — no stubs, all interactive
-- Every new section has actionable operator controls (rebuild, acknowledge, dismiss, drill-down)
+**IntelligenceDashboard.tsx** (~250 LOC)
+- 4 tabs: Smart Alerts, Forecasts, Optimization, Strategic Intelligence
+- IntelligenceCard components with confidence scores, evidence links, trend indicators
+- Demo data for 6+ forecasts, 4+ optimizations, 3+ strategic insights
+
+**FounderCouncilBoard.tsx** (~200 LOC)
+- Decision proposals list with status, stakeholder impact, confidence scores
+- Historical precedent panel, implementation risk assessment
+- Approval/receipt linkage for each decision
+
+**CanonicalChainExplorer.tsx** (~230 LOC)
+- Step-by-step chain visualization: trigger → policy → approval → execution → event → receipt → projection
+- Evidence cards per step, branch chooser, proof artifact panel
+- Demo data for 3+ capability chains
+
+**ReleaseRingCommandBoard.tsx** (~220 LOC)
+- Ring 0/1/2 status cards with readiness scores
+- Blocker lane, evidence checklists, feedback gates
+- Promotion action bar with rollback visibility
+
+### Step 2 — Build Global Command Palette
+
+**AdminCommandPalette.tsx** (~180 LOC)
+- Uses existing `cmdk` library
+- `Cmd+K` to open, fuzzy search across routes/actions/records
+- Sections: Navigation, Actions, Recent, Pinned
+- Integrated into admin layout
+
+### Step 3 — Build Keyboard System
+
+**AdminKeyboardShortcuts.tsx** (~120 LOC)
+- Global `useEffect` listener for all spec shortcuts
+- `?` triggers ShortcutOverlay modal
+- `Cmd+K` opens command palette
+- `Cmd+R` refresh, `J/K` nav, investigation keys
+
+**ShortcutOverlay.tsx** (~80 LOC)
+- Categorized shortcut display (Global, Navigation, Editing, Investigation)
+
+### Step 4 — Upgrade AlertTriageBoard
+
+Expand from 118 → ~250 LOC:
+- Add tabs: Severity Lanes, Cluster Themes, Suppression, Ownership
+- Add cluster grouping, ownership assignment, time-to-breach countdown
+- Add investigation launch workflow
+
+### Step 5 — Upgrade MissionControlHome
+
+Expand from 191 → ~300 LOC:
+- Add "What Changed" section showing recent mutations/events
+- Add projection freshness warnings banner
+- Add admin durability warnings
+- Add deployment readiness + proof coverage as live KPIs
+- Add council decision pulse
+
+### Step 6 — Wire Routes in App.tsx
+
+Add 4 new lazy imports and routes:
+- `/admin/intelligence` → IntelligenceDashboard
+- `/admin/founder-council` → FounderCouncilBoard
+- `/admin/chain-explorer` → CanonicalChainExplorer
+- `/admin/release-ring` → ReleaseRingCommandBoard
+
+### Step 7 — Integrate Command Palette into Shell
+
+Wire AdminCommandPalette into the admin layout so it's accessible from any admin page via `Cmd+K`.
+
+### Files Created/Modified
+
+| File | Action |
+|---|---|
+| `src/pages/admin/IntelligenceDashboard.tsx` | **NEW** |
+| `src/pages/admin/FounderCouncilBoard.tsx` | **NEW** |
+| `src/pages/admin/CanonicalChainExplorer.tsx` | **NEW** |
+| `src/pages/admin/ReleaseRingCommandBoard.tsx` | **NEW** |
+| `src/components/admin/AdminCommandPalette.tsx` | **NEW** |
+| `src/components/admin/AdminKeyboardShortcuts.tsx` | **NEW** |
+| `src/components/admin/ShortcutOverlay.tsx` | **NEW** |
+| `src/pages/admin/AlertTriageBoard.tsx` | **UPGRADE** |
+| `src/pages/admin/MissionControlHome.tsx` | **UPGRADE** |
+| `src/App.tsx` | **MODIFY** (add 4 routes) |
+
+No duplicates. All new pages use existing demo data patterns and truth components.
 
