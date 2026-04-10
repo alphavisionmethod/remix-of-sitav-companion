@@ -24,7 +24,7 @@ export const useAuth = () => {
 };
 
 const DEMO_USER: User = {
-  id: "demo-admin-000",
+  id: "00000000-0000-0000-0000-000000000000",
   aud: "authenticated",
   role: "authenticated",
   email: "admin@sita.os",
