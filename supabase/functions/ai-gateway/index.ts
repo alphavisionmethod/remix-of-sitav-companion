@@ -23,7 +23,10 @@ const LOVABLE_AI_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
 const TASK_CLASS_MODELS: Record<string, string> = {
   premium_synthesis: "google/gemini-2.5-pro",
   balanced_assistant: "google/gemini-3-flash-preview",
+  economy_utility: "google/gemini-2.5-flash-lite",
   cheap_utility: "google/gemini-2.5-flash-lite",
+  internal_only: "google/gemini-2.5-pro",
+  fallback: "google/gemini-2.5-flash-lite",
   fallback_degraded: "google/gemini-2.5-flash-lite",
 };
 
