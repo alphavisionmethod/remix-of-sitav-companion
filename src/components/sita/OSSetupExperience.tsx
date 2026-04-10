@@ -908,6 +908,9 @@ export function OSSetupExperience() {
                   <DeepWorldModelingStep key="deep-world-modeling"
                     data={state.worldModel}
                     onUpdate={wm => setState(s => ({ ...s, worldModel: wm }))}
+                    setupStyle={state.setupStyle}
+                    relevantDomains={[...state.enabledDomains, ...state.quickIdentity.runFirst, ...state.quickIdentity.slipPoints]}
+                    toneContext={toneContext}
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
@@ -1012,6 +1015,7 @@ export function OSSetupExperience() {
                     activeAdvisors={state.advisorActivation} lifeRhythm={state.lifeRhythm}
                     stressMap={state.stressMap} commsContext={state.commsContext} planningStyle={state.planningStyle}
                     connectedSystems={state.connectedSystems} firstWinAction={state.firstWin.action}
+                    copyDensity={toneContext.copyDensity}
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
@@ -1029,6 +1033,8 @@ export function OSSetupExperience() {
                     data={state.firstWin}
                     onUpdate={fw => setState(s => ({ ...s, firstWin: fw }))}
                     primaryUseMode={state.primaryUseMode}
+                    painPoints={state.quickIdentity.slipPoints}
+                    toneClass={toneContext.toneClass}
                     onNext={goNext} onPrev={goPrev} />
                 )}
 
