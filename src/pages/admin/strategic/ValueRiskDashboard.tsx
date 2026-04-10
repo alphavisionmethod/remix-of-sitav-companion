@@ -1,16 +1,17 @@
-import { Grid3x3 } from "lucide-react";
+import { Grid3x3, TrendingUp, Shield, AlertTriangle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { useEngineEvents } from "@/lib/hooks/useEngineEventsData";
+import { useIntelligenceOverview } from "@/lib/hooks/useIntelligenceAPI";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 const ValueRiskDashboard = () => {
   const { isAdmin, loading: authLoading } = useRequireAdmin();
   const { events, loading } = useEngineEvents("value-risk-matrix", { limit: 50 });
+  const { data: overview } = useIntelligenceOverview();
 
   if (authLoading || !isAdmin) return null;
 
@@ -26,10 +27,48 @@ const ValueRiskDashboard = () => {
     createdAt: e.created_at,
   }));
 
+  const totalValue = entries.reduce((s, e) => s + e.expectedValue, 0);
+  const totalCost = entries.reduce((s, e) => s + e.expectedCost, 0);
+  const highRisk = entries.filter(e => e.blastRadius === "high" || e.blastRadius === "critical").length;
+
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <DemoModeBadge />
       <SitaPageHeader icon={<Grid3x3 className="h-6 w-6" />} title="Value-Risk Matrix" subtitle="Expected value vs cost, confidence, blast radius, and reversibility for major tasks" />
+
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        {[
+          { l: "Total Value", v: `$${(totalValue / 100).toFixed(0)}`, c: "text-emerald-400", icon: TrendingUp },
+          { l: "Total Cost", v: `$${(totalCost / 100).toFixed(0)}`, icon: Grid3x3 },
+          { l: "High Risk Tasks", v: String(highRisk), c: highRisk > 0 ? "text-amber-400" : "text-emerald-400", icon: AlertTriangle },
+          { l: "Reuse Rate", v: overview ? `${Math.round(overview.reuseRate * 100)}%` : "—", c: "text-primary", icon: Shield },
+        ].map(m => (
+          <Card key={m.l} className="bg-card/80 border-border/50"><CardContent className="p-3 text-center">
+            <m.icon className={`h-4 w-4 mx-auto mb-1 ${m.c || "text-muted-foreground"}`} />
+            <p className={`text-xl font-bold ${m.c || "text-foreground"}`}>{m.v}</p>
+            <p className="text-[10px] text-muted-foreground">{m.l}</p>
+          </CardContent></Card>
+        ))}
+      </div>
+
+      {/* Domain Value Breakdown from API */}
+      {overview && overview.domainBreakdown.length > 0 && (
+        <Card className="bg-card/80 border-border/50">
+          <CardHeader className="pb-2"><CardTitle className="text-sm">Value by Domain</CardTitle></CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+              {overview.domainBreakdown.map(d => (
+                <div key={d.domain} className="p-2 rounded bg-muted/30 text-center">
+                  <p className="text-xs font-medium text-foreground">{d.domain}</p>
+                  <p className="text-sm font-bold text-emerald-400">${d.valueUsd.toFixed(0)}</p>
+                  <p className="text-[10px] text-muted-foreground">{d.count} assets · {d.reuses} reuses</p>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {loading ? (
         <div className="text-center text-muted-foreground py-12">Loading value-risk data…</div>
       ) : entries.length === 0 ? (

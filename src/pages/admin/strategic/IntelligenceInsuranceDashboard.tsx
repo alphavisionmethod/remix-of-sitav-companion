@@ -1,16 +1,17 @@
-import { Shield, Activity } from "lucide-react";
+import { Shield, AlertTriangle, CheckCircle, DollarSign } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { useEngineEvents } from "@/lib/hooks/useEngineEventsData";
+import { useIntelligenceOverview } from "@/lib/hooks/useIntelligenceAPI";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 const IntelligenceInsuranceDashboard = () => {
   const { isAdmin, loading: authLoading } = useRequireAdmin();
   const { events, loading } = useEngineEvents("intelligence-insurance", { limit: 50 });
+  const { data: overview } = useIntelligenceOverview();
 
   if (authLoading || !isAdmin) return null;
 
@@ -26,6 +27,7 @@ const IntelligenceInsuranceDashboard = () => {
 
   const prevented = hedges.filter(h => h.result === "prevented_error").length;
   const totalCost = hedges.reduce((s, h) => s + h.cost, 0);
+  const escalationCount = overview?.recentEscalations?.length || 0;
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
@@ -33,17 +35,38 @@ const IntelligenceInsuranceDashboard = () => {
       <SitaPageHeader icon={<Shield className="h-6 w-6" />} title="Intelligence Insurance Layer" subtitle="Risk hedges against hallucination and false confidence" />
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
-          { l: "Insurance Events", v: String(hedges.length) },
-          { l: "Errors Prevented", v: String(prevented), c: "text-emerald-400" },
-          { l: "Insurance Cost", v: `$${(totalCost / 100).toFixed(0)}` },
-          { l: "Active", v: "Enabled", c: "text-emerald-400" },
+          { l: "Insurance Events", v: String(hedges.length), icon: Shield },
+          { l: "Errors Prevented", v: String(prevented), c: "text-emerald-400", icon: CheckCircle },
+          { l: "Insurance Cost", v: `$${(totalCost / 100).toFixed(0)}`, icon: DollarSign },
+          { l: "Recent Escalations", v: String(escalationCount), c: escalationCount > 0 ? "text-amber-400" : "text-emerald-400", icon: AlertTriangle },
         ].map(m => (
           <Card key={m.l} className="bg-card/80 border-border/50"><CardContent className="p-3 text-center">
+            <m.icon className={`h-4 w-4 mx-auto mb-1 ${m.c || "text-muted-foreground"}`} />
             <p className={`text-xl font-bold ${m.c || "text-foreground"}`}>{m.v}</p>
             <p className="text-[10px] text-muted-foreground">{m.l}</p>
           </CardContent></Card>
         ))}
       </div>
+
+      {/* Escalation Details from API */}
+      {overview && overview.recentEscalations.length > 0 && (
+        <Card className="bg-card/80 border-border/50">
+          <CardHeader className="pb-2"><CardTitle className="text-sm">Recent Escalations (from API)</CardTitle></CardHeader>
+          <CardContent className="space-y-2">
+            {overview.recentEscalations.map((e, i) => (
+              <div key={i} className="flex items-center justify-between p-2 rounded bg-muted/30 text-xs">
+                <div className="flex items-center gap-2">
+                  <AlertTriangle className="h-3 w-3 text-amber-400" />
+                  <span className="text-foreground font-medium">{String(e.domain || "unknown")}</span>
+                  <Badge variant="outline" className="text-[9px]">{String(e.from_level)} → {String(e.to_level)}</Badge>
+                </div>
+                <span className="text-muted-foreground">{String(e.trigger_type || "")}</span>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      )}
+
       {loading ? (
         <div className="text-center text-muted-foreground py-8">Loading insurance events…</div>
       ) : hedges.length === 0 ? (

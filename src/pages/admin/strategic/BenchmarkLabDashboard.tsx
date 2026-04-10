@@ -1,16 +1,17 @@
-import { FlaskConical, CheckCircle, Clock, DollarSign } from "lucide-react";
+import { FlaskConical, CheckCircle, Clock, DollarSign, TrendingUp } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { useEngineEvents } from "@/lib/hooks/useEngineEventsData";
+import { useIntelligenceOverview } from "@/lib/hooks/useIntelligenceAPI";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 const BenchmarkLabDashboard = () => {
   const { isAdmin, loading: authLoading } = useRequireAdmin();
   const { events: experiments, loading } = useEngineEvents("benchmark-lab", { limit: 50 });
+  const { data: overview } = useIntelligenceOverview();
 
   if (authLoading || !isAdmin) return null;
 
@@ -55,6 +56,24 @@ const BenchmarkLabDashboard = () => {
           </CardContent></Card>
         ))}
       </div>
+
+      {/* Asset Intelligence Summary from API */}
+      {overview && (
+        <Card className="bg-card/80 border-border/50">
+          <CardHeader className="pb-2"><CardTitle className="text-sm">Intelligence Capital Summary</CardTitle></CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-3 md:grid-cols-6 gap-2 text-center">
+              <div><p className="text-lg font-bold text-foreground">{overview.assetSummary.totalAssets}</p><p className="text-[10px] text-muted-foreground">Total Assets</p></div>
+              <div><p className="text-lg font-bold text-emerald-400">{overview.assetSummary.totalReuses}</p><p className="text-[10px] text-muted-foreground">Total Reuses</p></div>
+              <div><p className="text-lg font-bold text-emerald-400">${overview.assetSummary.totalCostAvoided.toFixed(0)}</p><p className="text-[10px] text-muted-foreground">Cost Avoided</p></div>
+              <div><p className="text-lg font-bold text-foreground">{overview.assetSummary.avgFreshness}%</p><p className="text-[10px] text-muted-foreground">Avg Freshness</p></div>
+              <div><p className="text-lg font-bold text-amber-400">{overview.assetSummary.staleAssets}</p><p className="text-[10px] text-muted-foreground">Stale</p></div>
+              <div><p className="text-lg font-bold text-foreground">{Math.round(overview.reuseRate * 100)}%</p><p className="text-[10px] text-muted-foreground">Reuse Rate</p></div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
       {loading ? (
         <div className="text-center text-muted-foreground py-8">Loading benchmark experiments…</div>
       ) : exps.length === 0 ? (
