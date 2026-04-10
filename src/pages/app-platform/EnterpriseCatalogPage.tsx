@@ -1,17 +1,19 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — APS21 Enterprise / Private Catalog
+// SITA OS — APS21 Enterprise / Private Catalog (fully wired)
 // ═══════════════════════════════════════════════════════════════
 
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, Building, Shield, Lock, Check, Users, AlertTriangle } from "lucide-react";
+import { ArrowLeft, Building, Shield, Lock, Check, Users, AlertTriangle, Download } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { AppIcon, VerificationBadge } from "@/components/sita/app-platform/AppStoreComponents";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_ENTERPRISE_APPS } from "@/lib/demo-data/core-pages";
+import { toast } from "sonner";
 
 const statusConfig: Record<string, { label: string; color: string; icon: typeof Check }> = {
-  available: { label: "Available", color: "bg-primary text-primary-foreground", icon: Check },
+  available: { label: "Install", color: "bg-primary text-primary-foreground hover:bg-primary/90", icon: Download },
   installed: { label: "Installed", color: "bg-[hsl(var(--trust-safe))]/10 text-[hsl(var(--trust-safe))]", icon: Check },
   required: { label: "Required", color: "bg-[hsl(var(--trust-warn))]/10 text-[hsl(var(--trust-warn))]", icon: AlertTriangle },
   restricted: { label: "Restricted", color: "bg-secondary text-muted-foreground", icon: Lock },
@@ -20,6 +22,12 @@ const statusConfig: Record<string, { label: string; color: string; icon: typeof 
 const EnterpriseCatalogPage = () => {
   const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
+  const { installApp } = useAppPlatform();
+
+  const handleInstall = async (appId: string, name: string) => {
+    await installApp(appId, { sourceOrigin: "private-catalog" });
+    toast.success(`${name} installed from enterprise catalog`);
+  };
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
@@ -71,7 +79,9 @@ const EnterpriseCatalogPage = () => {
                     )}
                   </div>
                 </div>
-                <button className={cn("shrink-0 rounded-lg px-4 py-2 text-xs font-medium flex items-center gap-1.5 transition-colors", st.color)}>
+                <button
+                  onClick={app.status === "available" ? () => handleInstall(app.id, app.name) : undefined}
+                  className={cn("shrink-0 rounded-lg px-4 py-2 text-xs font-medium flex items-center gap-1.5 transition-colors", st.color)}>
                   <Icon className="h-3 w-3" /> {st.label}
                 </button>
               </div>

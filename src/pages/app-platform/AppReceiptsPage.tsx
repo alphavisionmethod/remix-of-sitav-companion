@@ -1,57 +1,29 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — APS20+23 Install History / App Receipts
+// SITA OS — APS20+23 Install History / App Receipts (fully wired)
 // ═══════════════════════════════════════════════════════════════
 
+import { useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { ArrowLeft, Shield, Clock, Download, Check, AlertTriangle, FileText, RefreshCw, Trash2, Lock } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { APP_CATALOG, getAppById } from "@/lib/app-platform";
+import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { AppIcon } from "@/components/sita/app-platform/AppStoreComponents";
 import type { AppLifecycleReceipt } from "@/lib/app-platform/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { DEMO_APP_RECEIPTS } from "@/lib/demo-data/app-receipts";
 import { useDataMode } from "@/contexts/DataModeContext";
-import { useAuth } from "@/contexts/AuthContext";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
-
-
 
 const AppReceiptsPage = () => {
   const navigate = useNavigate();
   const { appId } = useParams<{ appId: string }>();
   const { isDemoMode } = useDataMode();
-  const { user } = useAuth();
+  const { receipts, getApp } = useAppPlatform();
 
-  const { data: realReceipts } = useQuery({
-    queryKey: ["app-receipts", user?.id, appId],
-    enabled: !!user && !isDemoMode,
-    queryFn: async () => {
-      let query = fromTable("proof_records").select("*").eq("user_id", user!.id).order("created_at", { ascending: false }).limit(50);
-      if (appId) query = query.eq("metadata->>appId", appId);
-      const { data } = await query;
-      if (!data?.length) return null;
-      return data.map((r: Record<string, any>) => ({
-        receiptId: r.id,
-        appId: r.metadata?.appId || appId || "unknown",
-        appName: r.metadata?.appName || r.action || "App",
-        appIcon: r.metadata?.appIcon || "📦",
-        actionType: r.metadata?.actionType || r.action || "install",
-        version: r.metadata?.version || "1.0.0",
-        timestamp: r.created_at,
-        actor: r.actor || "User",
-        result: r.outcome || "success",
-        sourceInfo: r.metadata?.source || "App Store",
-        approvalStatus: r.metadata?.approvalStatus || "auto-approved",
-        permissionSummary: r.metadata?.permissions || [],
-      }));
-    },
-  });
+  const filteredReceipts = useMemo(() => {
+    const list = appId ? receipts.filter(r => r.appId === appId) : receipts;
+    return list.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+  }, [receipts, appId]);
 
-  const receipts = isDemoMode ? DEMO_APP_RECEIPTS : (realReceipts ?? DEMO_APP_RECEIPTS);
-  const filteredReceipts = appId ? receipts.filter(r => r.appId === appId) : receipts;
-  const app = appId ? getAppById(appId) : null;
+  const app = appId ? getApp(appId) : null;
 
   const actionIcon = (type: string) => {
     switch (type) {
@@ -83,49 +55,65 @@ const AppReceiptsPage = () => {
       </div>
 
       <div className="space-y-3">
-        {filteredReceipts.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()).map(receipt => (
-          <div key={receipt.receiptId} className="rounded-2xl border border-border bg-card p-5 space-y-3 transition-all hover:border-primary/15">
-            <div className="flex items-center gap-3">
-              {actionIcon(receipt.actionType)}
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2">
-                  <span className={cn("rounded-full px-2 py-0.5 text-[10px] font-semibold capitalize",
-                    receipt.actionType === "install" ? "bg-primary/10 text-primary" :
-                    receipt.actionType === "update" ? "bg-accent/10 text-accent" :
-                    receipt.actionType === "uninstall" ? "bg-destructive/10 text-destructive" :
-                    receipt.actionType === "permission-change" ? "bg-[hsl(var(--trust-warn))]/10 text-[hsl(var(--trust-warn))]" :
-                    "bg-secondary text-muted-foreground"
-                  )}>{receipt.actionType.replace("-", " ")}</span>
-                  <span className="text-sm font-semibold text-foreground">{receipt.appName}</span>
-                  <span className="text-lg">{receipt.appIcon}</span>
+        {filteredReceipts.map(receipt => {
+          const receiptApp = getApp(receipt.appId);
+          return (
+            <div key={receipt.receiptId} className="rounded-2xl border border-border bg-card p-5 space-y-3 transition-all hover:border-primary/15">
+              <div className="flex items-center gap-3">
+                {actionIcon(receipt.actionType)}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className={cn("rounded-full px-2 py-0.5 text-[10px] font-semibold capitalize",
+                      receipt.actionType === "install" ? "bg-primary/10 text-primary" :
+                      receipt.actionType === "update" ? "bg-accent/10 text-accent" :
+                      receipt.actionType === "uninstall" ? "bg-destructive/10 text-destructive" :
+                      receipt.actionType === "permission-change" ? "bg-[hsl(var(--trust-warn))]/10 text-[hsl(var(--trust-warn))]" :
+                      "bg-secondary text-muted-foreground"
+                    )}>{receipt.actionType.replace("-", " ")}</span>
+                    <span className="text-sm font-semibold text-foreground">
+                      {receiptApp?.name || receipt.appId}
+                    </span>
+                    {receiptApp && <span className="text-lg">{receiptApp.icon}</span>}
+                  </div>
                 </div>
+                <span className={cn("text-[10px] font-medium",
+                  receipt.result === "success" ? "text-[hsl(var(--trust-safe))]" : "text-destructive")}>
+                  {receipt.result}
+                </span>
               </div>
-              <span className={cn("text-[10px] font-medium",
-                receipt.result === "success" ? "text-[hsl(var(--trust-safe))]" : "text-destructive")}>
-                {receipt.result}
-              </span>
-            </div>
 
-            <div className="grid gap-2 sm:grid-cols-2 text-xs text-muted-foreground">
-              <div className="flex items-center gap-1.5"><Clock className="h-3 w-3" /> {new Date(receipt.timestamp).toLocaleString()}</div>
-              <div>Version: <span className="text-foreground">{receipt.version}</span></div>
-              <div>Actor: <span className="text-foreground">{receipt.actor}</span></div>
-              <div>Source: <span className="text-foreground">{receipt.sourceInfo}</span></div>
-              <div>Approval: <span className="text-foreground capitalize">{receipt.approvalStatus}</span></div>
-              <div>Receipt: <span className="text-foreground font-mono text-[10px]">{receipt.receiptId}</span></div>
-            </div>
-
-            {receipt.permissionSummary.length > 0 && (
-              <div className="flex flex-wrap gap-1">
-                {receipt.permissionSummary.map(p => (
-                  <span key={p} className="inline-flex items-center gap-1 rounded-md bg-secondary px-2 py-0.5 text-[10px] text-muted-foreground">
-                    <Lock className="h-2.5 w-2.5" /> {p}
-                  </span>
-                ))}
+              <div className="grid gap-2 sm:grid-cols-2 text-xs text-muted-foreground">
+                <div className="flex items-center gap-1.5"><Clock className="h-3 w-3" /> {new Date(receipt.timestamp).toLocaleString()}</div>
+                <div>Version: <span className="text-foreground">{receipt.version}</span></div>
+                <div>Actor: <span className="text-foreground">{receipt.actor}</span></div>
+                <div>Source: <span className="text-foreground">{receipt.sourceInfo}</span></div>
+                <div>Approval: <span className="text-foreground capitalize">{receipt.approvalStatus}</span></div>
+                <div>Receipt: <span className="text-foreground font-mono text-[10px]">{receipt.receiptId.slice(0, 8)}…</span></div>
               </div>
-            )}
-          </div>
-        ))}
+
+              {receipt.permissionSummary.length > 0 && (
+                <div className="flex flex-wrap gap-1">
+                  {receipt.permissionSummary.map(p => (
+                    <span key={p} className="inline-flex items-center gap-1 rounded-md bg-secondary px-2 py-0.5 text-[10px] text-muted-foreground">
+                      <Lock className="h-2.5 w-2.5" /> {p}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              {receipt.permissionDelta && (
+                <div className="flex flex-wrap gap-2 text-[10px]">
+                  {receipt.permissionDelta.added.map(p => (
+                    <span key={`+${p}`} className="text-[hsl(var(--trust-safe))]">+ {p}</span>
+                  ))}
+                  {receipt.permissionDelta.removed.map(p => (
+                    <span key={`-${p}`} className="text-destructive">− {p}</span>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
 
       {filteredReceipts.length === 0 && (

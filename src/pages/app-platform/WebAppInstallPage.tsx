@@ -1,5 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — APS11+12 Install from Web / Web App Configure
+// SITA OS — APS11+12 Install from Web / Web App Configure (fully wired)
 // ═══════════════════════════════════════════════════════════════
 
 import { useState } from "react";
@@ -10,24 +10,41 @@ import {
   CheckCircle2, Sparkles, ExternalLink, Shield, Loader2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { APP_CATALOG } from "@/lib/app-platform";
+import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { AppIcon, VerificationBadge } from "@/components/sita/app-platform/AppStoreComponents";
 import type { AppDefinition } from "@/lib/app-platform/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_DETECTED_SITES } from "@/lib/demo-data/core-pages";
+import { toast } from "sonner";
 
 const WebAppInstallPage = () => {
   const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
+  const { apps, installApp, pinToDock, setNotificationEnabled, setStartupBehavior } = useAppPlatform();
   const [selectedSite, setSelectedSite] = useState<typeof DEMO_DETECTED_SITES[0] | null>(null);
   const [installing, setInstalling] = useState(false);
   const [installed, setInstalled] = useState(false);
   const [config, setConfig] = useState({ pinToDock: true, notifications: true, separateWindow: true, startupLaunch: false });
 
-  const handleInstall = () => {
+  const handleInstall = async () => {
+    if (!selectedSite) return;
     setInstalling(true);
-    setTimeout(() => { setInstalling(false); setInstalled(true); }, 2000);
+
+    // Try to match detected site to a catalog app by name
+    const matchedApp = apps.find(a => a.name.toLowerCase() === selectedSite.name.toLowerCase());
+    if (matchedApp) {
+      await installApp(matchedApp.id, { sourceOrigin: "web-install" });
+      if (config.pinToDock) pinToDock(matchedApp.id);
+      if (config.notifications) setNotificationEnabled(matchedApp.id, true);
+      if (config.startupLaunch) setStartupBehavior(matchedApp.id, "background");
+    }
+
+    // Brief delay for visual feedback
+    await new Promise(r => setTimeout(r, 1200));
+    setInstalling(false);
+    setInstalled(true);
+    toast.success(`${selectedSite.name} added to SITA`);
   };
 
   return (

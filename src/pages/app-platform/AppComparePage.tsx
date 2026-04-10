@@ -1,28 +1,30 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — APS05 Compare Apps View
+// SITA OS — APS05 Compare Apps View (fully wired)
 // ═══════════════════════════════════════════════════════════════
 
 import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { ArrowLeft, Check, X, Minus, Download } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { APP_CATALOG } from "@/lib/app-platform";
+import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { AppIcon, VerificationBadge, AppSourceLabel, InstallSheet } from "@/components/sita/app-platform/AppStoreComponents";
 import type { AppDefinition } from "@/lib/app-platform/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_COMPARE_PAIRS } from "@/lib/demo-data/core-pages";
+import { toast } from "sonner";
 
 const AppComparePage = () => {
   const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
+  const { apps, installApp } = useAppPlatform();
   const [searchParams] = useSearchParams();
   const [installTarget, setInstallTarget] = useState<AppDefinition | null>(null);
 
   const ids = searchParams.get("apps")?.split(",") || DEMO_COMPARE_PAIRS[0].ids;
-  const apps = ids.map(id => APP_CATALOG.find(a => a.id === id)).filter(Boolean) as AppDefinition[];
+  const compareApps = ids.map(id => apps.find(a => a.id === id)).filter(Boolean) as AppDefinition[];
 
-  if (apps.length < 2) {
+  if (compareApps.length < 2) {
     return (
       <div className="mx-auto max-w-5xl">
       <DemoModeBadge />
@@ -34,8 +36,16 @@ const AppComparePage = () => {
     );
   }
 
-  const allPerms = [...new Set(apps.flatMap(a => a.permissions.map(p => p.domain)))];
-  const allFeatures = [...new Set(apps.flatMap(a => a.worksWithSita))];
+  const allPerms = [...new Set(compareApps.flatMap(a => a.permissions.map(p => p.domain)))];
+  const allFeatures = [...new Set(compareApps.flatMap(a => a.worksWithSita))];
+
+  const handleInstall = async () => {
+    if (installTarget) {
+      await installApp(installTarget.id);
+      toast.success(`${installTarget.name} installed`);
+      setInstallTarget(null);
+    }
+  };
 
   const BoolCell = ({ value }: { value: boolean }) => value
     ? <Check className="h-4 w-4 text-[hsl(var(--trust-safe))]" />
@@ -66,9 +76,9 @@ const AppComparePage = () => {
       {/* Compare Table */}
       <div className="rounded-2xl border border-border bg-card overflow-hidden">
         {/* App Headers */}
-        <div className="grid border-b border-border" style={{ gridTemplateColumns: `200px repeat(${apps.length}, 1fr)` }}>
+        <div className="grid border-b border-border" style={{ gridTemplateColumns: `200px repeat(${compareApps.length}, 1fr)` }}>
           <div className="p-4 bg-secondary/30" />
-          {apps.map(app => (
+          {compareApps.map(app => (
             <div key={app.id} className="p-4 text-center border-l border-border">
               <div className="flex flex-col items-center gap-2">
                 <AppIcon icon={app.icon} iconBg={app.iconBg} />
@@ -79,7 +89,7 @@ const AppComparePage = () => {
                 <VerificationBadge level={app.trustLevel} />
                 <button onClick={() => app.installStatus === "installed" ? null : setInstallTarget(app)}
                   className={cn("rounded-lg px-4 py-1.5 text-xs font-medium transition-colors mt-1",
-                    app.installStatus === "installed" ? "bg-[hsl(var(--trust-safe))]/10 text-[hsl(var(--trust-safe))]" : "bg-primary text-primary-foreground")}>
+                    app.installStatus === "installed" ? "bg-[hsl(var(--trust-safe))]/10 text-[hsl(var(--trust-safe))]" : "bg-primary text-primary-foreground hover:bg-primary/90")}>
                   {app.installStatus === "installed" ? "Installed" : "Get"}
                 </button>
               </div>
@@ -98,9 +108,9 @@ const AppComparePage = () => {
           { label: "Startup", render: (a: AppDefinition) => <span className="text-xs text-foreground capitalize">{a.startupBehavior}</span> },
         ].map((row, i) => (
           <div key={row.label} className={cn("grid", i % 2 === 0 && "bg-secondary/10")}
-            style={{ gridTemplateColumns: `200px repeat(${apps.length}, 1fr)` }}>
+            style={{ gridTemplateColumns: `200px repeat(${compareApps.length}, 1fr)` }}>
             <div className="p-3 text-xs font-medium text-muted-foreground flex items-center">{row.label}</div>
-            {apps.map(app => (
+            {compareApps.map(app => (
               <div key={app.id} className="p-3 border-l border-border flex items-center justify-center">{row.render(app)}</div>
             ))}
           </div>
@@ -111,9 +121,9 @@ const AppComparePage = () => {
           <div className="p-3 bg-primary/5 text-xs font-semibold text-primary">Works with SITA</div>
           {allFeatures.map((feat, i) => (
             <div key={feat} className={cn("grid", i % 2 === 0 && "bg-secondary/10")}
-              style={{ gridTemplateColumns: `200px repeat(${apps.length}, 1fr)` }}>
+              style={{ gridTemplateColumns: `200px repeat(${compareApps.length}, 1fr)` }}>
               <div className="p-3 text-[11px] text-muted-foreground flex items-center">{feat}</div>
-              {apps.map(app => (
+              {compareApps.map(app => (
                 <div key={app.id} className="p-3 border-l border-border flex items-center justify-center">
                   <BoolCell value={app.worksWithSita.includes(feat)} />
                 </div>
@@ -127,9 +137,9 @@ const AppComparePage = () => {
           <div className="p-3 bg-secondary/30 text-xs font-semibold text-foreground">Permissions</div>
           {allPerms.map((perm, i) => (
             <div key={perm} className={cn("grid", i % 2 === 0 && "bg-secondary/10")}
-              style={{ gridTemplateColumns: `200px repeat(${apps.length}, 1fr)` }}>
+              style={{ gridTemplateColumns: `200px repeat(${compareApps.length}, 1fr)` }}>
               <div className="p-3 text-[11px] text-muted-foreground capitalize flex items-center">{perm}</div>
-              {apps.map(app => (
+              {compareApps.map(app => (
                 <div key={app.id} className="p-3 border-l border-border flex items-center justify-center">
                   <BoolCell value={app.permissions.some(p => p.domain === perm)} />
                 </div>
@@ -139,7 +149,7 @@ const AppComparePage = () => {
         </div>
       </div>
 
-      {installTarget && <InstallSheet app={installTarget} onClose={() => setInstallTarget(null)} onInstall={() => setInstallTarget(null)} />}
+      {installTarget && <InstallSheet app={installTarget} onClose={() => setInstallTarget(null)} onInstall={handleInstall} />}
     </div>
   );
 };
