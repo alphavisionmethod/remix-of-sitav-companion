@@ -66,6 +66,8 @@ const systemNav = [
   { title: "Workflows", url: "/workflows", icon: Workflow },
   { title: "Proof", url: "/proof", icon: Receipt },
   { title: "Boardroom", url: "/boardroom", icon: BarChart3 },
+  { title: "ATLAS", url: "/atlas", icon: Map },
+  { title: "App Platform", url: "/app-platform", icon: Blocks },
 ];
 
 const controlNav = [
