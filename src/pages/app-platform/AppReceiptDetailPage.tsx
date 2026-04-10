@@ -102,7 +102,7 @@ const AppReceiptDetailPage = () => {
         {/* App identity */}
         {app && (
           <div className="px-6 py-4 border-b border-border flex items-center gap-3">
-            <AppIcon icon={app.icon} bg={app.iconBg} size="md" />
+            <AppIcon icon={app.icon} iconBg={app.iconBg} size="md" />
             <div className="flex-1 min-w-0">
               <p className="text-sm font-semibold text-foreground">{app.name}</p>
               <p className="text-xs text-muted-foreground">{app.publisher}</p>
@@ -149,7 +149,7 @@ const AppReceiptDetailPage = () => {
             </div>
             <div className="rounded-xl bg-secondary/30 p-3">
               <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">Source Origin</p>
-              <AppSourceLabel origin={app.sourceOrigin || "sita-store"} />
+              <p className="text-sm text-foreground mt-1 capitalize">{(app.sourceOrigin || "sita-store").replace(/-/g, " ")}</p>
             </div>
             <div className="rounded-xl bg-secondary/30 p-3">
               <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium">Package Type</p>
