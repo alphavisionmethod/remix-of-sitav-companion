@@ -1,14 +1,14 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — App Store Home Page
-// Premium software discovery marketplace with live state
+// SITA OS — App Store Home Page (fully wired)
+// Premium software discovery marketplace with all lanes
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search } from "lucide-react";
+import { Search, Shield, Sparkles } from "lucide-react";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import {
-  APP_BUNDLES, APP_CATEGORIES, searchApps,
+  APP_BUNDLES, APP_CATEGORIES,
 } from "@/lib/app-platform";
 import {
   StoreHero, AppCard, FeaturedAppCard, AppLane, BundleCard,
@@ -42,11 +42,20 @@ const AppStorePage = () => {
     return apps.filter(a => a.category === activeCategory);
   }, [activeCategory, apps]);
 
+  // Category-based lanes
   const webApps = useMemo(() => apps.filter(a => a.appClass === "web-app" || a.appClass === "wrapped-app"), [apps]);
   const devApps = useMemo(() => apps.filter(a => a.category === "developer-tools"), [apps]);
   const commApps = useMemo(() => apps.filter(a => a.category === "communication"), [apps]);
   const prodApps = useMemo(() => apps.filter(a => a.category === "productivity"), [apps]);
+  const bizApps = useMemo(() => apps.filter(a => a.category === "business"), [apps]);
+  const finApps = useMemo(() => apps.filter(a => a.category === "finance"), [apps]);
+  const secApps = useMemo(() => apps.filter(a => a.category === "security"), [apps]);
+  const utilApps = useMemo(() => apps.filter(a => a.category === "utilities"), [apps]);
+  const householdApps = useMemo(() => apps.filter(a => a.category === "household"), [apps]);
+  const browserApps = useMemo(() => apps.filter(a => a.category === "browsers"), [apps]);
+  const entertainApps = useMemo(() => apps.filter(a => a.category === "entertainment"), [apps]);
   const newApps = useMemo(() => apps.filter(a => a.isNew), [apps]);
+  const recentlyUpdated = useMemo(() => [...apps].sort((a, b) => b.lastUpdated.localeCompare(a.lastUpdated)).slice(0, 6), [apps]);
 
   // Profile-aware recommendations
   const recommendedApps = useMemo(() => {
@@ -54,6 +63,9 @@ const AppStorePage = () => {
       a.installStatus !== "installed" && (a.featured || a.whySitaRecommends)
     ).slice(0, 6);
   }, [apps]);
+
+  // Verified apps
+  const verifiedApps = useMemo(() => apps.filter(a => a.trustLevel === "sita-verified" && a.installStatus !== "installed").slice(0, 8), [apps]);
 
   const goApp = (id: string) => navigate(`/app-store/app/${id}`);
 
@@ -82,6 +94,8 @@ const AppStorePage = () => {
           { label: "Dev Tools", path: "/app-store/dev-tools" },
           { label: "Enterprise", path: "/app-store/enterprise" },
           { label: "Receipts", path: "/app-store/receipts" },
+          { label: "Compare", path: "/app-store/compare" },
+          { label: "Open With", path: "/app-store/open-with" },
         ].map(link => (
           <button key={link.path} onClick={() => navigate(link.path)}
             className="shrink-0 rounded-lg bg-secondary px-3 py-2 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors">
@@ -116,7 +130,9 @@ const AppStorePage = () => {
         <>
           {/* Recommended for Your Environment */}
           {recommendedApps.length > 0 && (
-            <AppLane title="Recommended for Your Environment" subtitle="Based on your setup and preferences" apps={recommendedApps} onAppClick={goApp} />
+            <AppLane title="Recommended for Your Environment"
+              subtitle="Based on your setup, profile, and preferences"
+              apps={recommendedApps} onAppClick={goApp} />
           )}
 
           {/* Featured */}
@@ -144,11 +160,72 @@ const AppStorePage = () => {
             </div>
           ) : (
             <>
-              <AppLane title="Web Apps You Can Install" subtitle="Beautiful shell-native experiences" apps={webApps} onAppClick={goApp} />
-              <AppLane title="Communication" subtitle="Stay connected" apps={commApps} onAppClick={goApp} />
-              <AppLane title="Productivity" subtitle="Get more done" apps={prodApps} onAppClick={goApp} />
+              {/* Works beautifully with SITA */}
+              <AppLane title="Works Beautifully with SITA"
+                subtitle="Deep shell integration, trust-aware launches, and receipts"
+                apps={apps.filter(a => a.worksWithSita.length >= 4).slice(0, 8)}
+                onAppClick={goApp} />
+
+              {/* Web Apps */}
+              <AppLane title="Trusted Web Apps You Can Install"
+                subtitle="Beautiful shell-native experiences from the web"
+                apps={webApps} onAppClick={goApp}
+                onSeeAll={() => navigate("/app-store/web-install")} />
+
+              {/* Browsers */}
+              {browserApps.length > 0 && (
+                <AppLane title="Browsers" subtitle="Choose your default browser"
+                  apps={browserApps} onAppClick={goApp}
+                  onSeeAll={() => setActiveCategory("browsers")} />
+              )}
+
+              {/* Communication */}
+              <AppLane title="Communication" subtitle="Stay connected" apps={commApps} onAppClick={goApp}
+                onSeeAll={() => setActiveCategory("communication")} />
+
+              {/* Productivity */}
+              <AppLane title="Productivity" subtitle="Get more done" apps={prodApps} onAppClick={goApp}
+                onSeeAll={() => setActiveCategory("productivity")} />
+
+              {/* Business */}
+              {bizApps.length > 0 && (
+                <AppLane title="Business" subtitle="Tools for running your business" apps={bizApps} onAppClick={goApp}
+                  onSeeAll={() => setActiveCategory("business")} />
+              )}
+
+              {/* Developer Tools */}
               <AppLane title="Developer Tools" subtitle="Your complete dev environment" apps={devApps} onAppClick={goApp}
-                onSeeAll={() => setActiveCategory("developer-tools")} />
+                onSeeAll={() => navigate("/app-store/dev-tools")} />
+
+              {/* Finance */}
+              {finApps.length > 0 && (
+                <AppLane title="Finance" subtitle="Accounting, budgeting, and money tools" apps={finApps} onAppClick={goApp}
+                  onSeeAll={() => setActiveCategory("finance")} />
+              )}
+
+              {/* Security */}
+              {secApps.length > 0 && (
+                <AppLane title="Security & Privacy" subtitle="Protect your digital life" apps={secApps} onAppClick={goApp}
+                  onSeeAll={() => setActiveCategory("security")} />
+              )}
+
+              {/* Household */}
+              {householdApps.length > 0 && (
+                <AppLane title="Household & Family" subtitle="Coordinate your home life" apps={householdApps} onAppClick={goApp}
+                  onSeeAll={() => setActiveCategory("household")} />
+              )}
+
+              {/* Utilities */}
+              {utilApps.length > 0 && (
+                <AppLane title="Utilities" subtitle="Essential tools and managers" apps={utilApps} onAppClick={goApp}
+                  onSeeAll={() => setActiveCategory("utilities")} />
+              )}
+
+              {/* Entertainment */}
+              {entertainApps.length > 0 && (
+                <AppLane title="Entertainment" subtitle="Music, video, and fun" apps={entertainApps} onAppClick={goApp}
+                  onSeeAll={() => setActiveCategory("entertainment")} />
+              )}
 
               {/* Starter Packs */}
               <div className="space-y-3">
@@ -163,8 +240,22 @@ const AppStorePage = () => {
                 </div>
               </div>
 
+              {/* Verified Publishers */}
+              {verifiedApps.length > 0 && (
+                <AppLane title="SITA Verified"
+                  subtitle="Highest trust — signature verified and SITA-approved"
+                  apps={verifiedApps} onAppClick={goApp} />
+              )}
+
+              {/* New Releases */}
               {newApps.length > 0 && <AppLane title="New Releases" apps={newApps} onAppClick={goApp} />}
 
+              {/* Recently Updated */}
+              <AppLane title="Recently Updated"
+                subtitle="Latest versions with new features and patches"
+                apps={recentlyUpdated} onAppClick={goApp} />
+
+              {/* All Apps */}
               <div className="space-y-3">
                 <h3 className="text-lg font-bold text-foreground">All Apps</h3>
                 <div className="grid gap-3 sm:grid-cols-2">

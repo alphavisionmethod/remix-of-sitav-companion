@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Application Platform Mock Catalog
-// 35+ apps across all categories
+// 45+ apps across all categories
 // ═══════════════════════════════════════════════════════════════
 
 import type { AppDefinition, AppBundle, AppCategory } from "./types";
@@ -195,7 +195,7 @@ export const APP_CATALOG: AppDefinition[] = [
     installStatus: "not-installed", pinnedToDock: false, tags: ["music", "podcasts", "streaming"], receipts: [],
   },
 
-  // ── Utilities ──
+  // ── Security ──
   {
     id: "1password", name: "1Password", publisher: "AgileBits Inc.", icon: "🔐", iconBg: "from-blue-700 to-blue-500",
     category: "security", appClass: "native", trustLevel: "sita-verified", version: "8.10.30", size: "190 MB",
@@ -333,6 +333,202 @@ export const APP_CATALOG: AppDefinition[] = [
     updateSource: "store-managed", startupBehavior: "none", notificationPermission: false,
     installStatus: "installed", installedAt: "2026-01-01", pinnedToDock: false, tags: ["settings", "preferences"], receipts: [],
   },
+
+  // ── NEW APPS — Expanded Coverage ──
+
+  // Loom
+  {
+    id: "loom", name: "Loom", publisher: "Loom, Inc.", icon: "🎥", iconBg: "from-purple-500 to-indigo-500",
+    category: "productivity", appClass: "wrapped-app", trustLevel: "sita-verified", version: "Web", size: "0 MB",
+    shortDescription: "Async video messaging for work", fullDescription: "Loom helps you communicate faster with instant video messages. Record your screen, face, or both to share ideas without scheduling a meeting.",
+    whySitaRecommends: "Perfect for async communication and reducing meeting overload.",
+    screenshots: [], rating: 4.6, downloads: 2_300_000, lastUpdated: "2026-04-05",
+    releaseNotes: ["AI transcript summaries", "Variable speed playback", "Viewer analytics"],
+    permissions: [...defaultPerms(["notifications", "camera", "microphone"]), { id: "screen", domain: "screen", label: "Screen Recording", description: "Record your screen", granted: false, required: true, riskLevel: "medium" }],
+    fileAssociations: [], protocolAssociations: [{ protocol: "loom", label: "Loom links", isDefault: true }],
+    worksWithSita: ["Dock integration", "Shell notifications", "Dedicated app window", "Screen capture"],
+    updateSource: "publisher-managed", startupBehavior: "none", notificationPermission: true,
+    installStatus: "not-installed", pinnedToDock: false, isNew: true, tags: ["video", "async", "messaging", "screen-recording"], receipts: [],
+  },
+
+  // Dropbox
+  {
+    id: "dropbox", name: "Dropbox", publisher: "Dropbox, Inc.", icon: "📦", iconBg: "from-blue-600 to-blue-500",
+    category: "utilities", appClass: "native", trustLevel: "sita-verified", version: "198.4", size: "220 MB",
+    shortDescription: "Cloud file storage and sync", fullDescription: "Dropbox keeps your files safe, synced, and easy to share. Get cloud storage, file sharing, and collaboration tools that fit the way you work.",
+    screenshots: [], rating: 4.3, downloads: 3_400_000, lastUpdated: "2026-03-30",
+    releaseNotes: ["Dash AI search", "Improved sync engine", "New sharing controls"],
+    permissions: defaultPerms(["files", "notifications"]),
+    fileAssociations: [], protocolAssociations: [{ protocol: "dropbox", label: "Dropbox links", isDefault: true }],
+    worksWithSita: ["Dock integration", "Shell notifications", "Background sync", "Secure file handoff", "Startup launch"],
+    updateSource: "store-managed", startupBehavior: "background", notificationPermission: true,
+    installStatus: "not-installed", pinnedToDock: false, tags: ["cloud", "storage", "sync", "files"], receipts: [],
+  },
+
+  // Google Calendar
+  {
+    id: "google-calendar", name: "Google Calendar", publisher: "Google LLC", icon: "📅", iconBg: "from-blue-500 to-green-400",
+    category: "productivity", appClass: "wrapped-app", trustLevel: "sita-verified", version: "Web", size: "0 MB",
+    shortDescription: "Schedule and organize your time", fullDescription: "Google Calendar helps you keep track of your schedule. Add events, set reminders, share calendars, and sync across all your devices.",
+    whySitaRecommends: "Essential for household and business scheduling.",
+    screenshots: [], rating: 4.6, downloads: 6_500_000, lastUpdated: "2026-04-03",
+    releaseNotes: ["AI scheduling suggestions", "Time insights", "Improved meeting rooms"],
+    permissions: defaultPerms(["notifications", "calendar", "contacts"]),
+    fileAssociations: [{ extension: ".ics", mimeType: "text/calendar", label: "Calendar events", isDefault: true }],
+    protocolAssociations: [{ protocol: "webcal", label: "Calendar subscriptions", isDefault: true }],
+    worksWithSita: ["Dock integration", "Shell notifications", "Dedicated app window", "Calendar integration", "Default calendar app"],
+    updateSource: "publisher-managed", startupBehavior: "none", notificationPermission: true,
+    installStatus: "not-installed", pinnedToDock: false, featured: true, tags: ["calendar", "scheduling", "google"], receipts: [],
+  },
+
+  // QuickBooks
+  {
+    id: "quickbooks", name: "QuickBooks Online", publisher: "Intuit Inc.", icon: "📊", iconBg: "from-green-600 to-green-500",
+    category: "finance", appClass: "wrapped-app", trustLevel: "sita-verified", version: "Web", size: "0 MB",
+    shortDescription: "Accounting and invoicing", fullDescription: "QuickBooks Online helps you manage your business finances. Track income and expenses, send invoices, run reports, and prepare for taxes.",
+    whySitaRecommends: "Most popular small business accounting tool.",
+    screenshots: [], rating: 4.4, downloads: 3_100_000, lastUpdated: "2026-04-01",
+    releaseNotes: ["AI-powered categorization", "Bank feed improvements", "New cash flow planner"],
+    permissions: defaultPerms(["notifications", "files"]),
+    fileAssociations: [{ extension: ".qbo", mimeType: "application/x-quickbooks", label: "QuickBooks files", isDefault: true }, { extension: ".csv", mimeType: "text/csv", label: "CSV imports", isDefault: false }],
+    protocolAssociations: [],
+    worksWithSita: ["Dock integration", "Shell notifications", "Dedicated app window", "File associations", "Trust-aware launches"],
+    updateSource: "publisher-managed", startupBehavior: "none", notificationPermission: true,
+    installStatus: "not-installed", pinnedToDock: false, tags: ["accounting", "invoicing", "finance", "business"], receipts: [],
+  },
+
+  // Google Sheets
+  {
+    id: "google-sheets", name: "Google Sheets", publisher: "Google LLC", icon: "📊", iconBg: "from-green-500 to-green-400",
+    category: "productivity", appClass: "web-app", trustLevel: "sita-verified", version: "Web", size: "0 MB",
+    shortDescription: "Online spreadsheets", fullDescription: "Create and edit spreadsheets online. Collaborate in real time, use powerful formulas, create charts, and share with anyone.",
+    screenshots: [], rating: 4.5, downloads: 5_200_000, lastUpdated: "2026-04-02",
+    releaseNotes: ["Smart chips", "Named functions", "Timeline view"],
+    permissions: defaultPerms(["files", "clipboard"]),
+    fileAssociations: [{ extension: ".xlsx", mimeType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", label: "Excel files", isDefault: false }, { extension: ".csv", mimeType: "text/csv", label: "CSV files", isDefault: false }],
+    protocolAssociations: [],
+    worksWithSita: ["Dock integration", "Dedicated app window", "File associations"],
+    updateSource: "publisher-managed", startupBehavior: "none", notificationPermission: false,
+    installStatus: "not-installed", pinnedToDock: false, tags: ["spreadsheets", "data", "google"], receipts: [],
+  },
+
+  // Bitwarden
+  {
+    id: "bitwarden", name: "Bitwarden", publisher: "Bitwarden Inc.", icon: "🛡️", iconBg: "from-blue-800 to-blue-600",
+    category: "security", appClass: "native", trustLevel: "sita-verified", version: "2024.5", size: "140 MB",
+    shortDescription: "Open source password manager", fullDescription: "Bitwarden makes it easy to generate, store, and manage unique passwords. Open source, end-to-end encrypted, and available on every platform.",
+    whySitaRecommends: "Open-source, audited, and self-hostable for maximum trust.",
+    screenshots: [], rating: 4.7, downloads: 1_600_000, lastUpdated: "2026-03-28",
+    releaseNotes: ["Passkey support", "Emergency access improvements", "Generator enhancements"],
+    permissions: [...defaultPerms(["clipboard", "notifications"]), { id: "autofill", domain: "autofill", label: "Autofill", description: "Auto-fill passwords in apps and websites", granted: false, required: true, riskLevel: "high" }],
+    fileAssociations: [], protocolAssociations: [{ protocol: "bitwarden", label: "Bitwarden links", isDefault: true }],
+    worksWithSita: ["Dock integration", "Shell notifications", "Startup launch", "Autofill integration", "Enterprise policy control"],
+    updateSource: "store-managed", startupBehavior: "background", notificationPermission: true,
+    installStatus: "not-installed", pinnedToDock: false, tags: ["password", "security", "open-source"], receipts: [],
+  },
+
+  // Todoist
+  {
+    id: "todoist", name: "Todoist", publisher: "Doist Inc.", icon: "✅", iconBg: "from-red-500 to-red-400",
+    category: "productivity", appClass: "wrapped-app", trustLevel: "sita-verified", version: "Web", size: "0 MB",
+    shortDescription: "Task management and to-do lists", fullDescription: "Todoist helps you organize work and life. Create projects, set due dates, assign tasks, and track your productivity with intelligent tools.",
+    screenshots: [], rating: 4.7, downloads: 2_900_000, lastUpdated: "2026-04-01",
+    releaseNotes: ["AI task suggestions", "Kanban improvements", "Calendar integration"],
+    permissions: defaultPerms(["notifications", "calendar"]),
+    fileAssociations: [], protocolAssociations: [{ protocol: "todoist", label: "Todoist links", isDefault: true }],
+    worksWithSita: ["Dock integration", "Shell notifications", "Dedicated app window", "Calendar integration"],
+    updateSource: "publisher-managed", startupBehavior: "none", notificationPermission: true,
+    installStatus: "not-installed", pinnedToDock: false, tags: ["tasks", "todo", "productivity"], receipts: [],
+  },
+
+  // Signal
+  {
+    id: "signal", name: "Signal", publisher: "Signal Technology Foundation", icon: "🔵", iconBg: "from-blue-600 to-blue-500",
+    category: "communication", appClass: "native", trustLevel: "sita-verified", version: "7.8.0", size: "160 MB",
+    shortDescription: "Private messenger with end-to-end encryption", fullDescription: "Signal is a cross-platform messaging service that offers end-to-end encryption. Send text messages, voice calls, and video calls with privacy by default.",
+    whySitaRecommends: "Gold standard for private, encrypted communication.",
+    screenshots: [], rating: 4.8, downloads: 1_400_000, lastUpdated: "2026-03-29",
+    releaseNotes: ["Username support", "Post-quantum encryption", "Improved group calls"],
+    permissions: [...defaultPerms(["notifications", "camera", "microphone", "contacts"])],
+    fileAssociations: [], protocolAssociations: [{ protocol: "sgnl", label: "Signal links", isDefault: true }],
+    worksWithSita: ["Dock integration", "Shell notifications", "Startup launch", "Protocol handling"],
+    updateSource: "store-managed", startupBehavior: "background", notificationPermission: true,
+    installStatus: "not-installed", pinnedToDock: false, tags: ["messaging", "privacy", "encrypted"], receipts: [],
+  },
+
+  // Meta Business Suite
+  {
+    id: "meta-business", name: "Meta Business Suite", publisher: "Meta Platforms", icon: "📱", iconBg: "from-blue-700 to-blue-500",
+    category: "business", appClass: "wrapped-app", trustLevel: "publisher-verified", version: "Web", size: "0 MB",
+    shortDescription: "Manage Facebook and Instagram for business", fullDescription: "Meta Business Suite lets you manage all your business activities on Facebook and Instagram from one place. Create posts, reply to messages, view insights, and run ads.",
+    screenshots: [], rating: 4.0, downloads: 2_800_000, lastUpdated: "2026-04-02",
+    releaseNotes: ["Advantage+ AI campaigns", "New Reels analytics", "Improved scheduling"],
+    permissions: defaultPerms(["notifications"]),
+    fileAssociations: [], protocolAssociations: [],
+    worksWithSita: ["Dock integration", "Shell notifications", "Dedicated app window"],
+    updateSource: "publisher-managed", startupBehavior: "none", notificationPermission: true,
+    installStatus: "not-installed", pinnedToDock: false, tags: ["social", "marketing", "business"], receipts: [],
+  },
+
+  // Grocery / household planning
+  {
+    id: "anylist", name: "AnyList", publisher: "Purplecover Inc.", icon: "🛒", iconBg: "from-orange-500 to-yellow-400",
+    category: "household", appClass: "wrapped-app", trustLevel: "publisher-verified", version: "Web", size: "0 MB",
+    shortDescription: "Shared grocery and to-do lists", fullDescription: "AnyList makes grocery shopping and meal planning easy. Create and share lists with your household, organize recipes, and plan meals for the week.",
+    screenshots: [], rating: 4.6, downloads: 800_000, lastUpdated: "2026-03-20",
+    releaseNotes: ["Recipe scaling", "Aisle sorting", "Family sharing improvements"],
+    permissions: defaultPerms(["notifications"]),
+    fileAssociations: [], protocolAssociations: [],
+    worksWithSita: ["Dock integration", "Shell notifications", "Dedicated app window"],
+    updateSource: "publisher-managed", startupBehavior: "none", notificationPermission: true,
+    installStatus: "not-installed", pinnedToDock: false, tags: ["grocery", "lists", "household", "family"], receipts: [],
+  },
+
+  // Photos / Gallery
+  {
+    id: "google-photos", name: "Google Photos", publisher: "Google LLC", icon: "🖼️", iconBg: "from-red-400 to-yellow-400",
+    category: "media", appClass: "wrapped-app", trustLevel: "sita-verified", version: "Web", size: "0 MB",
+    shortDescription: "Photo storage and AI organization", fullDescription: "Google Photos stores and organizes all your photos and videos automatically. Search by people, places, and things with AI-powered tools.",
+    screenshots: [], rating: 4.6, downloads: 7_200_000, lastUpdated: "2026-04-03",
+    releaseNotes: ["Magic Editor improvements", "New collage layouts", "Better sharing"],
+    permissions: defaultPerms(["files", "notifications"]),
+    fileAssociations: [{ extension: ".jpg", mimeType: "image/jpeg", label: "JPEG images", isDefault: false }, { extension: ".png", mimeType: "image/png", label: "PNG images", isDefault: false }],
+    protocolAssociations: [],
+    worksWithSita: ["Dock integration", "Shell notifications", "Dedicated app window", "File associations"],
+    updateSource: "publisher-managed", startupBehavior: "none", notificationPermission: true,
+    installStatus: "not-installed", pinnedToDock: false, tags: ["photos", "gallery", "cloud", "ai"], receipts: [],
+  },
+
+  // PDF tool
+  {
+    id: "pdf-expert", name: "PDF Expert", publisher: "Readdle Inc.", icon: "📕", iconBg: "from-blue-500 to-indigo-500",
+    category: "utilities", appClass: "native", trustLevel: "publisher-verified", version: "3.5.0", size: "95 MB",
+    shortDescription: "Professional PDF editor", fullDescription: "PDF Expert is a fast, robust, and beautiful PDF editor. Read, annotate, sign, fill forms, and edit PDFs with ease.",
+    screenshots: [], rating: 4.7, downloads: 1_200_000, lastUpdated: "2026-03-25",
+    releaseNotes: ["AI text summarization", "Improved form filling", "Dark mode enhancements"],
+    permissions: defaultPerms(["files"]),
+    fileAssociations: [{ extension: ".pdf", mimeType: "application/pdf", label: "PDF documents", isDefault: true }],
+    protocolAssociations: [],
+    worksWithSita: ["Dock integration", "File associations", "Default PDF viewer", "Secure file handoff"],
+    updateSource: "store-managed", startupBehavior: "none", notificationPermission: false,
+    installStatus: "not-installed", pinnedToDock: false, tags: ["pdf", "documents", "editor"], receipts: [],
+  },
+
+  // VPN
+  {
+    id: "wireguard", name: "WireGuard", publisher: "WireGuard Project", icon: "🔒", iconBg: "from-red-600 to-red-500",
+    category: "security", appClass: "native", trustLevel: "publisher-verified", version: "1.0.20", size: "12 MB",
+    shortDescription: "Fast, modern VPN tunnel", fullDescription: "WireGuard is an extremely simple yet fast and modern VPN that utilizes state-of-the-art cryptography. It is lean and efficient.",
+    whySitaRecommends: "Fastest and most secure VPN protocol available.",
+    screenshots: [], rating: 4.9, downloads: 900_000, lastUpdated: "2026-03-15",
+    releaseNotes: ["Kernel module improvements", "Config import enhancements"],
+    permissions: [...defaultPerms(["network"]), { id: "system", domain: "system", label: "System Network", description: "VPN requires system-level network access", granted: false, required: true, riskLevel: "high" }],
+    fileAssociations: [{ extension: ".conf", mimeType: "text/plain", label: "WireGuard configs", isDefault: false }],
+    protocolAssociations: [],
+    worksWithSita: ["Dock integration", "Background operation", "Enterprise policy control", "Startup launch"],
+    updateSource: "store-managed", startupBehavior: "background", notificationPermission: false,
+    installStatus: "not-installed", pinnedToDock: false, tags: ["vpn", "security", "network", "privacy"], receipts: [],
+  },
 ];
 
 // ── Bundles ──
@@ -352,21 +548,33 @@ export const APP_BUNDLES: AppBundle[] = [
   },
   {
     id: "communication-pack", name: "Communication Pack", subtitle: "Stay connected everywhere",
-    description: "WhatsApp, Slack, Zoom, and Gmail — all your communication channels in one place.",
-    icon: "📡", iconBg: "from-green-500 to-emerald-400", appIds: ["whatsapp", "slack", "zoom", "gmail"],
-    recommendedFor: ["everyone", "business", "personal"], totalSize: "730 MB",
+    description: "WhatsApp, Slack, Zoom, Gmail, and Signal — all your communication channels in one place.",
+    icon: "📡", iconBg: "from-green-500 to-emerald-400", appIds: ["whatsapp", "slack", "zoom", "gmail", "signal"],
+    recommendedFor: ["everyone", "business", "personal"], totalSize: "890 MB",
   },
   {
     id: "creator-pack", name: "Creator Pack", subtitle: "Design, write, and create",
-    description: "Figma, Canva, Notion, Obsidian, and Google Docs — everything creative.",
-    icon: "🎨", iconBg: "from-pink-500 to-purple-500", appIds: ["figma", "canva", "notion", "obsidian", "google-docs"],
+    description: "Figma, Canva, Notion, Obsidian, Loom, and Google Docs — everything creative.",
+    icon: "🎨", iconBg: "from-pink-500 to-purple-500", appIds: ["figma", "canva", "notion", "obsidian", "loom", "google-docs"],
     recommendedFor: ["designer", "writer", "content"], totalSize: "265 MB",
   },
   {
     id: "household-pack", name: "Household Coordination Pack", subtitle: "Run your household smoothly",
-    description: "Chrome, WhatsApp, Gmail, Google Docs, and SITA Files — household essentials.",
-    icon: "🏠", iconBg: "from-amber-500 to-orange-400", appIds: ["chrome", "whatsapp", "gmail", "google-docs", "files-app"],
-    recommendedFor: ["family", "household", "personal"], totalSize: "405 MB",
+    description: "Google Calendar, WhatsApp, Gmail, AnyList, Google Photos — household essentials.",
+    icon: "🏠", iconBg: "from-amber-500 to-orange-400", appIds: ["google-calendar", "whatsapp", "gmail", "anylist", "google-photos"],
+    recommendedFor: ["family", "household", "personal"], totalSize: "245 MB",
+  },
+  {
+    id: "finance-admin-pack", name: "Finance & Admin Pack", subtitle: "Manage your money and paperwork",
+    description: "QuickBooks, Google Sheets, PDF Expert, Calculator, Dropbox — financial essentials.",
+    icon: "💰", iconBg: "from-emerald-600 to-emerald-400", appIds: ["quickbooks", "google-sheets", "pdf-expert", "calculator", "dropbox"],
+    recommendedFor: ["finance", "admin", "accountant"], totalSize: "527 MB",
+  },
+  {
+    id: "security-pack", name: "Security Essentials", subtitle: "Lock down your digital life",
+    description: "1Password or Bitwarden, WireGuard VPN, Signal — maximum privacy and security.",
+    icon: "🔐", iconBg: "from-gray-800 to-gray-600", appIds: ["1password", "bitwarden", "wireguard", "signal"],
+    recommendedFor: ["privacy", "security", "enterprise"], totalSize: "502 MB",
   },
 ];
 
