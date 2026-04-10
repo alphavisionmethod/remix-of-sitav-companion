@@ -1,5 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.1";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.49.4";
 import { handleCors, corsHeaders, corsResponse, corsError } from "../_shared/cors.ts";
 import { EdgeLogger } from "../_shared/logger.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
@@ -283,7 +283,7 @@ serve(async (req) => {
       result = { status: degraded > 0 || offline > 0 ? "issues" : "healthy", summary: `${total} devices: ${online} online, ${degraded} degraded, ${offline} offline`, devices: devices || [], kpis: { total, online, degraded, offline } };
     }
     else if (endpoint === "device-restart" && method === "POST") {
-      const { device_id } = body as unknown;
+      const { device_id } = body as Record<string, any>;
       if (!device_id) return new Response(JSON.stringify({ error: "device_id required" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
       const { data, error } = await supabase.from("device_statuses").update({ health: "restarting", last_heartbeat: new Date().toISOString(), issues: [] }).eq("device_id", device_id).eq("user_id", user.id).select().single();
       if (error) throw error;
@@ -330,7 +330,7 @@ serve(async (req) => {
       result = { council_id: subId, pending: data || [] };
     }
     else if (endpoint === "councils" && subId && subAction === "decisions" && method === "POST") {
-      const { topic, description, domain, quorum } = body as unknown;
+      const { topic, description, domain, quorum } = body as Record<string, any>;
       if (!topic) return new Response(JSON.stringify({ error: "topic required" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
       const decision = { council_id: subId, topic, description: description || "", domain: domain || "general", quorum: quorum || 3, user_id: user.id, status: "pending" };
       const { data, error } = await supabase.from("council_decisions").insert(decision).select().single();
@@ -339,7 +339,7 @@ serve(async (req) => {
       result = data;
     }
     else if (endpoint === "council-vote" && method === "POST") {
-      const { decision_id, vote } = body as unknown;
+      const { decision_id, vote } = body as Record<string, any>;
       if (!decision_id || !vote) return new Response(JSON.stringify({ error: "decision_id and vote required" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
       const { data: decision, error: fetchError } = await supabase.from("council_decisions").select("*").eq("id", decision_id).eq("user_id", user.id).single();
       if (fetchError || !decision) return new Response(JSON.stringify({ error: "Decision not found" }), { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } });
@@ -372,7 +372,7 @@ serve(async (req) => {
     // COUNCIL AUTO-ESCALATION
     // ══════════════════════════════════════════════
     else if (endpoint === "council-auto-escalate" && method === "POST") {
-      const { event_type, severity, services_affected, threat_score, amount, domain } = body as unknown;
+      const { event_type, severity, services_affected, threat_score, amount, domain } = body as Record<string, any>;
       const escalations: Array<{ council: string; reason: string; priority: string }> = [];
 
       // Build Council rules
@@ -418,7 +418,7 @@ serve(async (req) => {
     // AGENT GOVERNANCE CHECK
     // ══════════════════════════════════════════════
     else if (endpoint === "agent-governance" && method === "POST") {
-      const { agent_id, action: agentAction, autonomy_level_required, risk_score, estimated_tokens } = body as unknown;
+      const { agent_id, action: agentAction, autonomy_level_required, risk_score, estimated_tokens } = body as Record<string, any>;
       if (!agent_id) return new Response(JSON.stringify({ error: "agent_id required" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
 
       const checks: Array<{ check: string; passed: boolean; detail: string }> = [];
@@ -797,7 +797,7 @@ serve(async (req) => {
       const { data: devices } = await supabase.from("device_statuses").select("*").eq("user_id", user.id);
       const rings: Record<string, { devices: any[]; health: string }> = { canary: { devices: [], health: "healthy" }, staging: { devices: [], health: "healthy" }, production: { devices: [], health: "healthy" } };
       for (const d of devices || []) {
-        const ring = (d.metadata as unknown)?.ring || (d.device_type === "canary" ? "canary" : d.device_type === "staging" ? "staging" : "production");
+        const ring = (d.metadata as Record<string, any>)?.ring || (d.device_type === "canary" ? "canary" : d.device_type === "staging" ? "staging" : "production");
         if (!rings[ring]) rings[ring] = { devices: [], health: "healthy" };
         rings[ring].devices.push(d);
         if (d.health === "degraded" || d.health === "critical") rings[ring].health = d.health;
