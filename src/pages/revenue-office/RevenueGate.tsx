@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { TrendingUp, Users, Target, Zap, ArrowRight, BarChart3, AlertTriangle, Sparkles, Shield, Activity, CheckCircle, XCircle, FileText } from "lucide-react";
+import { TrendingUp, Users, Target, Zap, ArrowRight, BarChart3, AlertTriangle, Sparkles, Shield, Activity, CheckCircle, XCircle, FileText, Globe } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -115,6 +115,7 @@ export default function RevenueGate() {
               { label: "Call Desk", path: "/revenue-office/calls", icon: Activity, desc: "Call queue, prep, and post-call flows" },
               { label: "Growth Advisors", path: "/revenue-office/advisors", icon: Sparkles, desc: "AI advisor board with strategic insights" },
               { label: "Business Formation", path: "/revenue-office/onboarding", icon: Target, desc: "Re-run onboarding and calibration" },
+              { label: "Digital Presence", path: "/digital-presence", icon: BarChart3, desc: "Website, brand, CRO & digital strategy" },
             ].map(w => (
               <Button key={w.label} variant="ghost" className="w-full justify-between text-foreground hover:bg-accent/50 h-auto py-2" onClick={() => navigate(w.path)}>
                 <span className="flex items-center gap-2 text-left">
