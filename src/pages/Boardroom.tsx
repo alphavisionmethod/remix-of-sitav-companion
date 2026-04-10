@@ -202,6 +202,21 @@ const ConfidencePill = ({ value }: { value: number }) => {
 // ── NEW: Advisor Voice Track ──────────────────────────────────
 
 const AdvisorVoiceTrack = ({ type }: { type: BoardroomType }) => {
+  const { isDemoMode } = useDataMode();
+  
+  if (!isDemoMode) {
+    return (
+      <div className="space-y-3">
+        <SitaSectionHeader title="Advisor Voices" subtitle="Connect advisors to see live perspectives" />
+        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-border bg-card/30 p-8 text-center">
+          <Brain className="h-8 w-8 text-muted-foreground/30 mb-3" />
+          <p className="text-sm font-medium text-foreground">No live advisors connected</p>
+          <p className="text-xs text-muted-foreground mt-1">Advisor voices appear when real advisor sessions are active.</p>
+        </div>
+      </div>
+    );
+  }
+
   const relevantAdvisors = type === "financial-health" || type === "pipeline-review"
     ? mockAdvisors.filter(a => ["money", "treasury", "business", "sales", "risk"].includes(a.domain))
     : type === "household-ops"
@@ -255,6 +270,8 @@ const AdvisorVoiceTrack = ({ type }: { type: BoardroomType }) => {
 
 const DisagreementCards = () => {
   const { isDemoMode } = useDataMode();
+  if (!isDemoMode) return null;
+  
   const disagreements = mockSynthesis.filter(s => s.disagreements && s.disagreements.length > 0);
   if (disagreements.length === 0) return null;
 
@@ -287,6 +304,9 @@ const DisagreementCards = () => {
 // ── NEW: Decision Memory Strip ────────────────────────────────
 
 const DecisionMemoryStrip = () => {
+  const { isDemoMode } = useDataMode();
+  if (!isDemoMode) return null;
+  
   const decisions = mockProofHistory.filter(p => p.type === "approval" || p.type === "execution").slice(0, 5);
 
   return (
@@ -351,6 +371,9 @@ const CarryoverPanel = () => {
 // ── NEW: Proof Summary Board ──────────────────────────────────
 
 const ProofSummaryBoard = () => {
+  const { isDemoMode } = useDataMode();
+  if (!isDemoMode) return null;
+  
   const verified = mockProofHistory.filter(p => p.outcome === "verified").length;
   const executed = mockProofHistory.filter(p => p.outcome === "executed" || p.outcome === "accepted").length;
   const failed = mockProofHistory.filter(p => p.outcome === "rolled-back" || p.outcome === "rejected").length;
@@ -705,13 +728,15 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
       {/* Metrics & data sections */}
       {limitedSections.filter(s => s.type !== "narrative").map(s => <RenderSection key={s.id} section={s} />)}
 
-      {/* Confidence ladder for this boardroom */}
-      <div className="space-y-3">
-        <SitaSectionHeader title="Confidence Ladder" subtitle="Advisor certainty levels for this review" />
-        <SitaCard hover={false}>
-          <ConfidenceLadder items={mockAdvisors.slice(0, 5).map(a => ({ label: a.name, confidence: a.confidence }))} />
-        </SitaCard>
-      </div>
+      {/* Confidence ladder for this boardroom — gated behind demo */}
+      {isDemoMode && (
+        <div className="space-y-3">
+          <SitaSectionHeader title="Confidence Ladder" subtitle="Advisor certainty levels for this review" />
+          <SitaCard hover={false}>
+            <ConfidenceLadder items={mockAdvisors.slice(0, 5).map(a => ({ label: a.name, confidence: a.confidence }))} />
+          </SitaCard>
+        </div>
+      )}
 
       {/* Opportunities */}
       {config.showOpportunities && <OpportunitiesGrid opportunities={packet.opportunities} />}
