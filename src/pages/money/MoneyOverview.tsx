@@ -290,7 +290,7 @@ const MoneyOverview = () => {
               <SitaCardTitle>Safe to Spend</SitaCardTitle>
               <span className="ml-auto text-[10px] text-muted-foreground rounded-full bg-secondary px-2 py-0.5">Deterministic</span>
             </div>
-            <p className="font-display text-4xl font-bold text-foreground tracking-tight">${k.safeToSpend.toLocaleString()}</p>
+            <p className="font-display text-2xl sm:text-4xl font-bold text-foreground tracking-tight">${k.safeToSpend.toLocaleString()}</p>
             <p className="mt-1 text-xs text-muted-foreground">Available after all obligations</p>
             <div className="mt-4 space-y-2 border-t border-border/30 pt-4">
               {[
