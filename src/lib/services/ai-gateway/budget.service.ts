@@ -105,6 +105,58 @@ export async function getPortfolioAllocations(): Promise<AIPortfolioAllocation[]
   return data ?? [];
 }
 
+// ── Usage Ledger Stats (canonical analytics) ──────────────────
+export interface UsageLedgerStats {
+  spendByCapability: Record<string, number>;
+  spendByModel: Record<string, number>;
+  premiumCount: number;
+  economyCount: number;
+  blockedCount: number;
+  fallbackCount: number;
+  failedCount: number;
+  totalToday: number;
+  costToday: number;
+}
+
+export async function getUsageLedgerStats(): Promise<UsageLedgerStats> {
+  const todayStart = new Date();
+  todayStart.setHours(0, 0, 0, 0);
+
+  const { data, error } = await supabase
+    .from("ai_usage_ledger")
+    .select("capability_key, model_id, request_class, status, estimated_cost_usd")
+    .gte("created_at", todayStart.toISOString());
+  if (error) throw error;
+
+  const rows = data ?? [];
+  const stats: UsageLedgerStats = {
+    spendByCapability: {},
+    spendByModel: {},
+    premiumCount: 0,
+    economyCount: 0,
+    blockedCount: 0,
+    fallbackCount: 0,
+    failedCount: 0,
+    totalToday: rows.length,
+    costToday: 0,
+  };
+
+  rows.forEach(r => {
+    const cost = r.estimated_cost_usd ?? 0;
+    stats.costToday += cost;
+    stats.spendByCapability[r.capability_key] = (stats.spendByCapability[r.capability_key] ?? 0) + cost;
+    const model = r.model_id ?? "unknown";
+    stats.spendByModel[model] = (stats.spendByModel[model] ?? 0) + cost;
+    if (r.request_class === "premium_synthesis") stats.premiumCount++;
+    if (r.request_class === "economy_utility") stats.economyCount++;
+    if (r.status === "blocked_budget") stats.blockedCount++;
+    if (r.status === "fallback_success") stats.fallbackCount++;
+    if (r.status === "error") stats.failedCount++;
+  });
+
+  return stats;
+}
+
 // ── Budget Summary (unified) ───────────────────────────────────
 export async function getBudgetSummary(): Promise<AIBudgetSummary> {
   const [allocations, costs, policies, alerts] = await Promise.all([

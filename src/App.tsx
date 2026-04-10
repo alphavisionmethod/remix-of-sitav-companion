@@ -433,6 +433,7 @@ const AIG01ProviderRegistry = lazy(() => import("./pages/admin/AIG01ProviderRegi
 const AIG02ModelRegistry = lazy(() => import("./pages/admin/AIG02ModelRegistry"));
 const AIG03RoutingMatrix = lazy(() => import("./pages/admin/AIG03RoutingMatrix"));
 const AIG04BudgetCenter = lazy(() => import("./pages/admin/AIG04BudgetCenter"));
+const AIG05UsageLedgerExplorer = lazy(() => import("./pages/admin/AIG05UsageLedgerExplorer"));
 const AIG05ReceiptsExplorer = lazy(() => import("./pages/admin/AIG05ReceiptsExplorer"));
 const AIG06LaunchTruth = lazy(() => import("./pages/admin/AIG06LaunchTruth"));
 const AIG07LaunchTruth = lazy(() => import("./pages/admin/AIG07LaunchTruth"));
@@ -1557,6 +1558,7 @@ const App = () => (
                     <Route path="/admin/aig/models" element={<AIG02ModelRegistry />} />
                     <Route path="/admin/aig/routing" element={<AIG03RoutingMatrix />} />
                     <Route path="/admin/aig/budget" element={<AIG04BudgetCenter />} />
+                    <Route path="/admin/aig/usage-ledger" element={<AIG05UsageLedgerExplorer />} />
                     <Route path="/admin/aig/receipts" element={<AIG05ReceiptsExplorer />} />
                     <Route path="/admin/aig/launch-truth" element={<AIG06LaunchTruth />} />
                     <Route path="/admin/aig/launch-truth-detail" element={<AIG07LaunchTruth />} />

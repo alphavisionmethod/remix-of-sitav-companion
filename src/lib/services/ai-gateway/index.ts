@@ -40,6 +40,8 @@ export {
   getTokenUsage,
   getPortfolioAllocations,
   getBudgetSummary,
+  getUsageLedgerStats,
+  type UsageLedgerStats,
 } from "./budget.service";
 
 // Receipts & Trace
