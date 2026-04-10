@@ -106,6 +106,14 @@ const COMMAND_INDEX: CommandItem[] = [
   { id: "lt-gate", label: "Launch Gate", sublabel: "LT05 — Launch gate board", icon: ShieldCheck, path: "/admin/truth/launch-gate", category: "system", keywords: ["launch", "gate", "readiness", "lt05"] },
   { id: "lt-route", label: "Route Truth", sublabel: "LT06 — P0 route & interaction truth", icon: Globe, path: "/admin/truth/route-interaction", category: "system", keywords: ["route", "truth", "interaction", "p0", "lt06"] },
   { id: "lt-regressions", label: "Regression Radar", sublabel: "LT07 — Truth regression radar", icon: AlertTriangle, path: "/admin/truth/regression-radar", category: "system", keywords: ["regression", "radar", "flake", "lt07"] },
+  // Connector Reality
+  { id: "cn-overview", label: "Connector Overview", sublabel: "CN01 — Connector reality overview", icon: Globe, path: "/admin/connectors/overview", category: "system", keywords: ["connector", "overview", "integration", "cn01"] },
+  { id: "cn-registry", label: "Connector Registry", sublabel: "CN02 — Connector registry console", icon: Layout, path: "/admin/connectors/registry", category: "system", keywords: ["connector", "registry", "catalog", "cn02"] },
+  { id: "cn-accounts", label: "Account Linkage", sublabel: "CN03 — Account linkage board", icon: Users, path: "/admin/connectors/accounts", category: "system", keywords: ["account", "linkage", "oauth", "cn03"] },
+  { id: "cn-sync", label: "Sync Truth", sublabel: "CN04 — Sync truth center", icon: Activity, path: "/admin/connectors/sync", category: "system", keywords: ["sync", "truth", "connector", "cn04"] },
+  { id: "cn-health", label: "Connector Health", sublabel: "CN05 — Connector health board", icon: Activity, path: "/admin/connectors/health", category: "system", keywords: ["connector", "health", "status", "cn05"] },
+  { id: "cn-demo", label: "Connector Demo Review", sublabel: "CN06 — Connector demo review", icon: Eye, path: "/admin/connectors/demo", category: "system", keywords: ["connector", "demo", "review", "cn06"] },
+  { id: "cn-gate", label: "Connector Launch Gate", sublabel: "CN07 — Connector launch gate", icon: ShieldCheck, path: "/admin/connectors/launch-gate", category: "system", keywords: ["connector", "launch", "gate", "cn07"] },
 ];
 
 const CATEGORY_CONFIG: Record<string, { label: string; color: string; order: number }> = {

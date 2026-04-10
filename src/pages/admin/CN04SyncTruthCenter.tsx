@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import CNSubNav from "@/components/admin/CNSubNav";
 
 
 
@@ -44,7 +45,8 @@ export default function CN04SyncTruthCenter() {
   const totalRecords = syncRuns.reduce((acc: number,  s: Record<string, any>) => acc + (s.records_imported || 0), 0);
 
   return (
-    <div className="space-y-6 p-6"  >
+    <div className="space-y-6 p-6">
+      <CNSubNav />
       <DemoModeBadge />
       <h1 className="sr-only">Sync Truth Center</h1>
       <div className="space-y-6">

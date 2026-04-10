@@ -10,6 +10,7 @@ import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import CNSubNav from "@/components/admin/CNSubNav";
 
 
 
@@ -41,7 +42,8 @@ export default function CN07ConnectorLaunchGate() {
   const totalConnectors = readiness.length;
 
   return (
-    <div className="space-y-6 p-6"  >
+    <div className="space-y-6 p-6">
+      <CNSubNav />
       <DemoModeBadge />
       <h1 className="sr-only">Connector Launch Gate</h1>
       <div className="space-y-6">

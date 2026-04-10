@@ -12,6 +12,7 @@ import { Plug, Shield, Activity, TestTube, Presentation, RefreshCw, CheckCircle,
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import CNSubNav from "@/components/admin/CNSubNav";
 import { DEMO_ADMIN_CAPABILITIES as DEMO_CAPABILITIES, DEMO_VERIFICATION_CHECKS } from "@/lib/demo-data/admin-platform";
 
 
@@ -117,7 +118,8 @@ export default function CN01ConnectorRealityOverview() {
 
   return (
     <div className="space-y-6 p-6">
-       <DemoModeBadge />
+      <CNSubNav />
+      <DemoModeBadge />
       <h1 className="sr-only">Connector Reality Overview</h1>
       <div className="flex items-center gap-3">
         <Button onClick={() => seedMutation.mutate({})} disabled={seedMutation.isPending} size="sm" variant="outline">

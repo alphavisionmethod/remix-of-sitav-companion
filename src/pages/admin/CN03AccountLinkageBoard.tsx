@@ -11,6 +11,7 @@ import { Unplug } from "lucide-react";
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import CNSubNav from "@/components/admin/CNSubNav";
 
 
 
@@ -33,7 +34,8 @@ export default function CN03AccountLinkageBoard() {
   const disconnectMutation = useAction("admin", "connector.disconnect");
 
   return (
-    <div className="space-y-6 p-6"  >
+    <div className="space-y-6 p-6">
+      <CNSubNav />
       <DemoModeBadge />
       <h1 className="sr-only">Account Linkage Board</h1>
       <Card className="bg-card border-border">

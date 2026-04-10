@@ -9,6 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { CheckCircle, XCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import CNSubNav from "@/components/admin/CNSubNav";
 
 
 
@@ -25,7 +26,8 @@ export default function CN02ConnectorRegistryConsole() {
   });
 
   return (
-    <div className="space-y-6 p-6"  >
+    <div className="space-y-6 p-6">
+      <CNSubNav />
       <DemoModeBadge />
       <h1 className="sr-only">Connector Registry Console</h1>
       <Card className="bg-card border-border">
