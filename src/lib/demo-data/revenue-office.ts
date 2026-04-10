@@ -1306,3 +1306,174 @@ export const DEMO_CHIEF_HISTORICAL = [
   { date: "Feb 1", synthesis: "Stabilizing after Q4 churn event. Automation investments showing ROI. Need: stronger referral engine.", score: 71 },
 ];
 
+
+// ═══════════════════════════════════════════════════════════════
+// Automation Surface Coverage Map — 10 Business Domains
+// ═══════════════════════════════════════════════════════════════
+
+export const DEMO_AUTOMATION_SURFACE_MAP = [
+  {
+    domain: "Lead Recovery", icon: Users, description: "Detect stale leads, segment, personalize outreach, escalate high-value",
+    currentLevel: "L3", coveragePct: 85, estimatedValue: "$18,400/mo", activeAutomations: 3,
+    subCapabilities: [
+      { name: "Stale lead detection (48hr)", automated: true, level: "L3" },
+      { name: "Warm lead segmentation", automated: true, level: "L2" },
+      { name: "Personalized email/SMS outreach", automated: true, level: "L3" },
+      { name: "Callback task creation", automated: true, level: "L3" },
+      { name: "High-value lead escalation", automated: true, level: "L2" },
+      { name: "Multi-channel recovery (video, DM)", automated: false, level: "None" },
+    ],
+    gaps: ["Multi-channel recovery"],
+  },
+  {
+    domain: "Calling Customers", icon: Phone, description: "Call queue, prep briefs, post-call logging, follow-up automation",
+    currentLevel: "L2", coveragePct: 60, estimatedValue: "$15,000/mo", activeAutomations: 2,
+    subCapabilities: [
+      { name: "Call queue prioritization", automated: true, level: "L2" },
+      { name: "AI prep briefs/dossiers", automated: true, level: "L2" },
+      { name: "Post-call logging prompts", automated: true, level: "L1" },
+      { name: "Post-call follow-up automation", automated: false, level: "None" },
+      { name: "Call outcome → quote trigger", automated: false, level: "None" },
+      { name: "Missed call rescue", automated: false, level: "None" },
+    ],
+    gaps: ["Post-call follow-up", "Call→quote trigger", "Missed call rescue"],
+  },
+  {
+    domain: "Quote/Proposal Generation", icon: FileText, description: "Intake→quote, pricing rules, follow-up, expiry, approval workflows",
+    currentLevel: "L2", coveragePct: 55, estimatedValue: "$12,600/mo", activeAutomations: 2,
+    subCapabilities: [
+      { name: "Quote follow-up (3/5/7 day)", automated: true, level: "L3" },
+      { name: "Viewed-but-no-response rescue", automated: true, level: "L2" },
+      { name: "AI quote from CRM context", automated: false, level: "None" },
+      { name: "Upsell suggestion injection", automated: false, level: "None" },
+      { name: "Discount approval workflow", automated: false, level: "None" },
+      { name: "Expiry + re-quote automation", automated: true, level: "L1" },
+    ],
+    gaps: ["AI quote generation", "Upsell injection", "Discount approval"],
+  },
+  {
+    domain: "Email/SMS Workflows", icon: Mail, description: "Welcome, nurture, recovery, reminders, campaign branches",
+    currentLevel: "L3", coveragePct: 88, estimatedValue: "$22,000/mo", activeAutomations: 5,
+    subCapabilities: [
+      { name: "Welcome/onboarding flows", automated: true, level: "L3" },
+      { name: "Nurture sequences (14-day)", automated: true, level: "L3" },
+      { name: "Lead recovery outreach", automated: true, level: "L3" },
+      { name: "Appointment reminders", automated: true, level: "L4" },
+      { name: "Reactivation flows (90-day)", automated: true, level: "L3" },
+      { name: "Campaign branch logic", automated: true, level: "L2" },
+      { name: "Referral ask sequences", automated: false, level: "None" },
+    ],
+    gaps: ["Referral sequences"],
+  },
+  {
+    domain: "Booking & Appointments", icon: Calendar, description: "Confirmations, prep, no-show rescue, post-appointment follow-up",
+    currentLevel: "L3", coveragePct: 78, estimatedValue: "$8,400/mo", activeAutomations: 3,
+    subCapabilities: [
+      { name: "Confirmation messages", automated: true, level: "L4" },
+      { name: "Reminder sequences", automated: true, level: "L4" },
+      { name: "No-show rescue + rebook", automated: true, level: "L3" },
+      { name: "Pre-appointment intake", automated: true, level: "L2" },
+      { name: "Post-appointment follow-up", automated: false, level: "None" },
+      { name: "Lead stage update after appointment", automated: false, level: "None" },
+    ],
+    gaps: ["Post-appointment follow-up", "Auto stage update"],
+  },
+  {
+    domain: "Onboarding", icon: UserPlus, description: "Welcome, intake, kickoff, milestones, satisfaction, handoff",
+    currentLevel: "L3", coveragePct: 82, estimatedValue: "$6,200/mo", activeAutomations: 2,
+    subCapabilities: [
+      { name: "Welcome onboarding (7-step)", automated: true, level: "L3" },
+      { name: "Intake form collection", automated: true, level: "L3" },
+      { name: "Kickoff scheduling", automated: true, level: "L2" },
+      { name: "Milestone reminders", automated: true, level: "L2" },
+      { name: "Satisfaction check", automated: false, level: "None" },
+      { name: "Internal team task creation", automated: true, level: "L3" },
+    ],
+    gaps: ["Satisfaction check"],
+  },
+  {
+    domain: "Churn/Retention", icon: Heart, description: "Disengagement detection, health scoring, retention outreach, save offers",
+    currentLevel: "L2", coveragePct: 45, estimatedValue: "$14,500/mo", activeAutomations: 2,
+    subCapabilities: [
+      { name: "Churn risk scoring", automated: true, level: "L1" },
+      { name: "Check-in sequences", automated: true, level: "L2" },
+      { name: "Renewal reminders", automated: false, level: "None" },
+      { name: "Save offers", automated: false, level: "None" },
+      { name: "Account intervention tasks", automated: false, level: "None" },
+      { name: "Escalation to human", automated: true, level: "L1" },
+    ],
+    gaps: ["Renewal reminders", "Save offers", "Intervention tasks"],
+  },
+  {
+    domain: "Reputation", icon: Star, description: "Review requests, sentiment routing, recovery workflows, testimonial harvest",
+    currentLevel: "L3", coveragePct: 72, estimatedValue: "$4,800/mo", activeAutomations: 2,
+    subCapabilities: [
+      { name: "Post-service review request", automated: true, level: "L3" },
+      { name: "Follow-up if not left", automated: true, level: "L2" },
+      { name: "Negative sentiment → recovery", automated: false, level: "None" },
+      { name: "Happy client → public review prompt", automated: true, level: "L2" },
+      { name: "Testimonial harvesting", automated: false, level: "None" },
+    ],
+    gaps: ["Negative recovery", "Testimonial harvesting"],
+  },
+  {
+    domain: "Offers/Upsells", icon: Package, description: "Post-delivery upsell, cross-sell, renewal, bundle recommendations",
+    currentLevel: "L1", coveragePct: 35, estimatedValue: "$11,200/mo", activeAutomations: 1,
+    subCapabilities: [
+      { name: "Upsell after delivery", automated: true, level: "L1" },
+      { name: "Cross-sell by purchase history", automated: false, level: "None" },
+      { name: "Renewal campaigns", automated: false, level: "None" },
+      { name: "Bundle recommendations", automated: false, level: "None" },
+      { name: "Offer-fit triggers by segment", automated: false, level: "None" },
+    ],
+    gaps: ["Cross-sell", "Renewal campaigns", "Bundle recs", "Segment triggers"],
+  },
+  {
+    domain: "Revenue Leak Repair", icon: AlertTriangle, description: "Detect leaks, classify, estimate impact, auto-generate fix workflows",
+    currentLevel: "L1", coveragePct: 30, estimatedValue: "$14,000/mo", activeAutomations: 1,
+    subCapabilities: [
+      { name: "Leak detection", automated: true, level: "L1" },
+      { name: "Leak classification", automated: true, level: "L1" },
+      { name: "Impact estimation", automated: false, level: "None" },
+      { name: "Auto-generate repair workflow", automated: false, level: "None" },
+      { name: "Monitor repair effectiveness", automated: false, level: "None" },
+    ],
+    gaps: ["Impact estimation", "Auto-repair generation", "Repair monitoring"],
+  },
+];
+
+// ═══════════════════════════════════════════════════════════════
+// Automation OS Interconnection Map
+// ═══════════════════════════════════════════════════════════════
+
+export const DEMO_AUTOMATION_OS_CONNECTIONS = [
+  { from: "CRM", to: "Lead Recovery", description: "Stale lead detection triggers recovery workflows", status: "active", dataFlow: "Bi-directional", automationsCount: 3, triggers: ["lead.stale_48h", "lead.no_next_step", "lead.warmth_drop"] },
+  { from: "Booking", to: "No-Show Rescue", description: "Missed appointments trigger rescue + rebook sequences", status: "active", dataFlow: "Event-driven", automationsCount: 1, triggers: ["appointment.no_show", "appointment.cancelled_late"] },
+  { from: "Call Desk", to: "Quote Studio", description: "Call outcomes trigger quote generation and follow-up", status: "partial", dataFlow: "One-way", automationsCount: 0, triggers: ["call.outcome_interested", "call.quote_requested"] },
+  { from: "Quote Studio", to: "Campaigns", description: "Quote acceptance triggers onboarding campaign", status: "active", dataFlow: "Event-driven", automationsCount: 1, triggers: ["quote.accepted", "quote.expired"] },
+  { from: "Campaigns", to: "CRM", description: "Campaign engagement updates lead stages and warmth", status: "active", dataFlow: "Bi-directional", automationsCount: 2, triggers: ["email.opened", "email.clicked", "sms.replied"] },
+  { from: "Onboarding", to: "Retention", description: "Onboarding completion triggers retention monitoring", status: "active", dataFlow: "One-way", automationsCount: 1, triggers: ["onboarding.completed", "onboarding.stalled"] },
+  { from: "Retention", to: "Reputation", description: "Happy retained clients receive review request automation", status: "partial", dataFlow: "Event-driven", automationsCount: 1, triggers: ["health.promoter", "service.completed"] },
+  { from: "Reputation", to: "CRM", description: "Review sentiment updates client health and relationship warmth", status: "active", dataFlow: "One-way", automationsCount: 1, triggers: ["review.positive", "review.negative"] },
+  { from: "Leak Detector", to: "Automation Office", description: "Detected leaks suggest or generate repair automations", status: "partial", dataFlow: "Advisory", automationsCount: 0, triggers: ["leak.detected", "leak.classified"] },
+  { from: "Offers", to: "Campaigns", description: "New offers trigger targeted campaign sequences", status: "partial", dataFlow: "One-way", automationsCount: 1, triggers: ["offer.created", "offer.updated"] },
+  { from: "Call Desk", to: "CRM", description: "Call outcomes update lead stage, notes, and next actions", status: "active", dataFlow: "Bi-directional", automationsCount: 1, triggers: ["call.completed", "call.missed"] },
+  { from: "Booking", to: "CRM", description: "Appointment booking/completion updates pipeline and lead stage", status: "active", dataFlow: "Bi-directional", automationsCount: 2, triggers: ["appointment.booked", "appointment.completed"] },
+];
+
+// ═══════════════════════════════════════════════════════════════
+// Domain-Level Health Data
+// ═══════════════════════════════════════════════════════════════
+
+export const DEMO_DOMAIN_HEALTH = [
+  { domain: "Lead Recovery", icon: Users, healthScore: 92, successRate: 94, failures: 3, revenueImpact: "$12,400", automationCount: 3, triggersThisWeek: 42, status: "healthy", trend: "improving" as const, topIssue: null },
+  { domain: "Email/SMS Workflows", icon: Mail, healthScore: 88, successRate: 91, failures: 21, revenueImpact: "$22,000", automationCount: 5, triggersThisWeek: 189, status: "healthy", trend: "stable" as const, topIssue: "Nurture sequence email 4 has 40% open rate drop" },
+  { domain: "Booking & Appointments", icon: Calendar, healthScore: 90, successRate: 92, failures: 1, revenueImpact: "$4,200", automationCount: 3, triggersThisWeek: 18, status: "healthy", trend: "improving" as const, topIssue: null },
+  { domain: "Onboarding", icon: UserPlus, healthScore: 96, successRate: 98, failures: 0, revenueImpact: "$6,200", automationCount: 2, triggersThisWeek: 28, status: "healthy", trend: "improving" as const, topIssue: null },
+  { domain: "Reputation", icon: Star, healthScore: 94, successRate: 96, failures: 1, revenueImpact: "$4,800", automationCount: 2, triggersThisWeek: 35, status: "healthy", trend: "improving" as const, topIssue: null },
+  { domain: "Calling Customers", icon: Phone, healthScore: 72, successRate: 89, failures: 2, revenueImpact: "$15,000", automationCount: 2, triggersThisWeek: 22, status: "warning", trend: "stable" as const, topIssue: "Missing post-call follow-up automation — biggest revenue gap" },
+  { domain: "Quote/Proposal", icon: FileText, healthScore: 68, successRate: 82, failures: 2, revenueImpact: "$4,800", automationCount: 2, triggersThisWeek: 12, status: "warning", trend: "declining" as const, topIssue: "Quote follow-up success rate declining — test new subject lines" },
+  { domain: "Churn/Retention", icon: Heart, healthScore: 55, successRate: 50, failures: 0, revenueImpact: "$3,100", automationCount: 2, triggersThisWeek: 8, status: "warning", trend: "declining" as const, topIssue: "Churn prevention automation underperforming — only 50% success rate" },
+  { domain: "Offers/Upsells", icon: Package, healthScore: 45, successRate: 43, failures: 1, revenueImpact: "$5,600", automationCount: 1, triggersThisWeek: 14, status: "warning", trend: "declining" as const, topIssue: "Upsell after delivery has low conversion — needs timing/messaging redesign" },
+  { domain: "Revenue Leak Repair", icon: AlertTriangle, healthScore: 35, successRate: 60, failures: 6, revenueImpact: "$14,000", automationCount: 1, triggersThisWeek: 15, status: "error", trend: "declining" as const, topIssue: "Lead assignment engine failing — 6 unassigned leads" },
+];
