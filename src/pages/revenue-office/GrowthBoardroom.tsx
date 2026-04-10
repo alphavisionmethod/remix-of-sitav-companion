@@ -1,42 +1,53 @@
 import { motion } from "framer-motion";
-import { TrendingUp, AlertTriangle, Target, Users, DollarSign, ArrowUpRight, ArrowDownRight, Activity } from "lucide-react";
+import { TrendingUp, AlertTriangle, Target, Users, DollarSign, ArrowUpRight, ArrowDownRight, Activity, Zap, CalendarCheck, Star, RefreshCw, ArrowRight } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/ui/button";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useDeals } from "@/hooks/use-revenue-office";
+import { useNavigate } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
-import { DEMO_REV_ADVISOR_SIGNALS as DEMO_ADVISOR_SIGNALS, DEMO_REV_LEAKS as DEMO_LEAKS, DEMO_REV_PIPELINE_STAGES as DEMO_PIPELINE_STAGES } from "@/lib/demo-data/revenue-office";
+import { DEMO_REV_ADVISOR_SIGNALS as DEMO_ADVISOR_SIGNALS, DEMO_REV_LEAKS as DEMO_LEAKS, DEMO_REV_PIPELINE_STAGES as DEMO_PIPELINE_STAGES, DEMO_WHAT_CHANGED } from "@/lib/demo-data/revenue-office";
+
+const CAMPAIGN_HEALTH = [
+  { name: "Summer Accelerator", status: "active", performance: 78, leads: 42, spend: "$2,400" },
+  { name: "Referral Sprint", status: "active", performance: 92, leads: 18, spend: "$800" },
+  { name: "Re-engagement Q2", status: "paused", performance: 45, leads: 6, spend: "$1,200" },
+];
+
+const BOOKING_LOAD = { capacity: 40, booked: 32, utilizationPct: 80, noShowRate: 8, avgPrepScore: 85 };
+const REPUTATION_PULSE = { rating: 4.8, reviews: 127, responseRate: 96, nps: 72 };
+const OPERATING_MODE = "Growth";
 
 export default function GrowthBoardroom() {
   const { isDemoMode } = useDataMode();
   const { data: liveDeals, isLoading } = useDeals();
+  const navigate = useNavigate();
 
   const PIPELINE_STAGES = isDemoMode ? DEMO_PIPELINE_STAGES : DEMO_PIPELINE_STAGES;
   const LEAKS = isDemoMode ? DEMO_LEAKS : DEMO_LEAKS;
   const ADVISOR_SIGNALS = isDemoMode ? DEMO_ADVISOR_SIGNALS : DEMO_ADVISOR_SIGNALS;
 
   if (!isDemoMode && isLoading) {
-    return (
-      <div className="min-h-screen bg-background p-6 space-y-6">
-        <DemoModeBadge />
-        <Skeleton className="h-8 w-48" />
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {[1,2,3,4].map(i => <Skeleton key={i} className="h-24 rounded-xl" />)}
-        </div>
-        <Skeleton className="h-48 rounded-xl" />
-      </div>
-    );
+    return <div className="min-h-screen bg-background p-6 space-y-6"><DemoModeBadge /><Skeleton className="h-8 w-48" /><div className="grid grid-cols-2 lg:grid-cols-4 gap-4">{[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-24 rounded-xl" />)}</div></div>;
   }
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-2xl font-bold text-foreground">Growth Boardroom</h1>
-        <p className="text-sm text-muted-foreground">Executive revenue and growth command view</p>
+        <div className="flex items-center justify-between">
+          <div>
+            <h1 className="text-2xl font-bold text-foreground">Growth Boardroom</h1>
+            <p className="text-sm text-muted-foreground">Executive revenue command center</p>
+          </div>
+          <Badge variant="outline" className="text-xs border-primary/30 text-primary"><Zap className="w-3 h-3 mr-1" />{OPERATING_MODE} Mode</Badge>
+        </div>
       </motion.div>
 
+      {/* KPIs */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
           { label: "Monthly Revenue", value: "$47,280", change: "+12.4%", icon: DollarSign, up: true },
@@ -62,7 +73,71 @@ export default function GrowthBoardroom() {
         ))}
       </div>
 
+      {/* Health Gauges Row */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Campaign Health */}
+        <Card className="bg-card/50 border-border/50">
+          <CardContent className="p-4">
+            <div className="flex items-center gap-2 mb-2"><Zap className="w-4 h-4 text-primary" /><span className="text-xs font-medium text-muted-foreground">Campaign Health</span></div>
+            {CAMPAIGN_HEALTH.map(c => (
+              <div key={c.name} className="flex items-center justify-between mb-1.5">
+                <span className="text-[10px] text-foreground truncate flex-1">{c.name}</span>
+                <div className="flex items-center gap-1.5">
+                  <Progress value={c.performance} className="h-1 w-12" />
+                  <span className={`text-[10px] font-medium ${c.performance >= 70 ? "text-[hsl(var(--trust-safe))]" : "text-orange-400"}`}>{c.performance}%</span>
+                </div>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+
+        {/* Booking Load */}
+        <Card className="bg-card/50 border-border/50">
+          <CardContent className="p-4">
+            <div className="flex items-center gap-2 mb-2"><CalendarCheck className="w-4 h-4 text-primary" /><span className="text-xs font-medium text-muted-foreground">Booking Load</span></div>
+            <div className="relative w-16 h-16 mx-auto mb-2">
+              <svg className="w-16 h-16 -rotate-90" viewBox="0 0 36 36">
+                <circle cx="18" cy="18" r="15.91" fill="none" className="stroke-muted/20" strokeWidth="2" />
+                <circle cx="18" cy="18" r="15.91" fill="none" className={BOOKING_LOAD.utilizationPct >= 90 ? "stroke-orange-400" : "stroke-[hsl(var(--trust-safe))]"} strokeWidth="2" strokeDasharray={`${BOOKING_LOAD.utilizationPct} ${100 - BOOKING_LOAD.utilizationPct}`} strokeLinecap="round" />
+              </svg>
+              <span className="absolute inset-0 flex items-center justify-center text-sm font-bold text-foreground">{BOOKING_LOAD.utilizationPct}%</span>
+            </div>
+            <div className="text-center text-[10px] text-muted-foreground">{BOOKING_LOAD.booked}/{BOOKING_LOAD.capacity} slots · {BOOKING_LOAD.noShowRate}% no-show</div>
+          </CardContent>
+        </Card>
+
+        {/* Reputation Pulse */}
+        <Card className="bg-card/50 border-border/50">
+          <CardContent className="p-4">
+            <div className="flex items-center gap-2 mb-2"><Star className="w-4 h-4 text-amber-400" /><span className="text-xs font-medium text-muted-foreground">Reputation Pulse</span></div>
+            <div className="text-center">
+              <p className="text-2xl font-bold text-foreground">{REPUTATION_PULSE.rating}★</p>
+              <p className="text-[10px] text-muted-foreground">{REPUTATION_PULSE.reviews} reviews</p>
+            </div>
+            <div className="flex justify-between text-[10px] mt-2">
+              <span>Response: {REPUTATION_PULSE.responseRate}%</span>
+              <span>NPS: {REPUTATION_PULSE.nps}</span>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Funnel Conversion */}
+        <Card className="bg-card/50 border-border/50">
+          <CardContent className="p-4">
+            <div className="flex items-center gap-2 mb-2"><Target className="w-4 h-4 text-primary" /><span className="text-xs font-medium text-muted-foreground">Funnel Pulse</span></div>
+            {PIPELINE_STAGES.slice(0, 4).map(s => (
+              <div key={s.name} className="flex items-center justify-between mb-1">
+                <span className="text-[10px] text-foreground">{s.name}</span>
+                <span className="text-[10px] font-medium text-muted-foreground">{s.conversion}</span>
+              </div>
+            ))}
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Main Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Pipeline */}
         <Card className="bg-card/50 border-border/50">
           <CardHeader className="pb-3"><CardTitle className="text-sm font-medium">Pipeline Flow</CardTitle></CardHeader>
           <CardContent>
@@ -71,12 +146,7 @@ export default function GrowthBoardroom() {
                 <div key={s.name} className="flex items-center gap-3">
                   <span className="text-xs text-muted-foreground w-24 flex-shrink-0">{s.name}</span>
                   <div className="flex-1 h-6 bg-muted/20 rounded-full overflow-hidden relative">
-                    <motion.div
-                      className="h-full bg-gradient-to-r from-primary/60 to-primary rounded-full"
-                      initial={{ width: 0 }}
-                      animate={{ width: `${(s.count / 142) * 100}%` }}
-                      transition={{ delay: i * 0.1, duration: 0.5 }}
-                    />
+                    <motion.div className="h-full bg-gradient-to-r from-primary/60 to-primary rounded-full" initial={{ width: 0 }} animate={{ width: `${(s.count / 142) * 100}%` }} transition={{ delay: i * 0.1, duration: 0.5 }} />
                     <span className="absolute inset-0 flex items-center px-3 text-xs font-medium text-foreground">{s.count} · {s.value}</span>
                   </div>
                   <span className="text-xs text-muted-foreground w-12 text-right">{s.conversion}</span>
@@ -86,26 +156,27 @@ export default function GrowthBoardroom() {
           </CardContent>
         </Card>
 
+        {/* What Changed Live Feed */}
         <Card className="bg-card/50 border-border/50">
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <AlertTriangle className="w-4 h-4 text-yellow-400" /> Revenue Leaks
-            </CardTitle>
-          </CardHeader>
+          <CardHeader className="pb-3"><CardTitle className="text-sm font-medium flex items-center gap-2"><RefreshCw className="w-4 h-4 text-primary" /> What Changed</CardTitle></CardHeader>
           <CardContent className="space-y-3">
-            {LEAKS.map(l => (
-              <div key={l.area} className="flex items-center justify-between p-3 rounded-lg bg-muted/10 border border-border/30">
-                <div>
-                  <p className="text-sm text-foreground">{l.area}</p>
-                  <p className="text-xs text-muted-foreground">{l.count} items · {l.revenue} at risk</p>
+            {DEMO_WHAT_CHANGED.map((w, i) => (
+              <div key={i} className="flex items-start gap-2">
+                <div className={`w-1.5 h-1.5 rounded-full mt-2 flex-shrink-0 ${w.type === "positive" ? "bg-green-400" : w.type === "warning" ? "bg-yellow-400" : "bg-red-400"}`} />
+                <div className="flex-1">
+                  <p className="text-sm text-foreground">{w.text}</p>
+                  <p className="text-xs text-muted-foreground">{w.time}</p>
                 </div>
-                <Badge variant={l.severity === "high" ? "destructive" : "secondary"} className="text-xs">{l.severity}</Badge>
               </div>
             ))}
+            <Button variant="ghost" size="sm" className="w-full text-xs text-primary" onClick={() => navigate("/revenue-office/memory")}>
+              View Full Memory Feed <ArrowRight className="w-3 h-3 ml-1" />
+            </Button>
           </CardContent>
         </Card>
       </div>
 
+      {/* Advisor Signals */}
       <Card className="bg-card/50 border-border/50">
         <CardHeader className="pb-3"><CardTitle className="text-sm font-medium flex items-center gap-2"><Activity className="w-4 h-4 text-primary" /> Advisor Board Signals</CardTitle></CardHeader>
         <CardContent>
