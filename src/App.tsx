@@ -349,6 +349,8 @@ const JVC08ModalDrawerBoard = lazy(() => import("./pages/admin/verification/JVC0
 const JVC09KeyboardCommandBoard = lazy(() => import("./pages/admin/verification/JVC09KeyboardCommandBoard"));
 const JVC11JourneyReplay = lazy(() => import("./pages/admin/verification/JVC11JourneyReplay"));
 const JVC13InteractionDriftRadar = lazy(() => import("./pages/admin/verification/JVC13InteractionDriftRadar"));
+const JVC04ButtonCTAHealth = lazy(() => import("./pages/admin/verification/JVC04ButtonCTAHealth"));
+const JVC06PageLoadIntegrity = lazy(() => import("./pages/admin/verification/JVC06PageLoadIntegrity"));
 
 // CJ — Customer Journey Proof System
 const CJ01ExecutiveReport = lazy(() => import("./pages/admin/customer-journey/CJ01ExecutiveReport"));
@@ -1053,6 +1055,8 @@ const App = () => (
                     <Route path="/admin/verification/keyboard" element={<JVC09KeyboardCommandBoard />} />
                     <Route path="/admin/verification/replay" element={<JVC11JourneyReplay />} />
                     <Route path="/admin/verification/drift" element={<JVC13InteractionDriftRadar />} />
+                    <Route path="/admin/verification/buttons" element={<JVC04ButtonCTAHealth />} />
+                    <Route path="/admin/verification/page-load" element={<JVC06PageLoadIntegrity />} />
 
                     {/* CJ — Customer Journey Proof System */}
                     <Route path="/admin/customer-journey/executive" element={<CJ01ExecutiveReport />} />
