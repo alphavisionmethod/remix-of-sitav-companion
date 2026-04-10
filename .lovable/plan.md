@@ -1,109 +1,116 @@
 
 
-# Money Office Enhancement Plan
+# Interaction Truth & Journey Verification — Gap Analysis and Enhancement Plan
 
-## Current State
+## Current State (Already Implemented)
 
-MoneyCenter has 13 tabs and 33 backend services. Core capabilities (bills, subscriptions, reserves, tax, cash timing, receivables, investment office, approvals, proof, documents, boardroom, settings) are fully implemented with real CRUD, edge function wiring, and advisor cards.
+The project has robust existing systems that cover the majority of the prompt's requirements:
 
-## What's Missing
+**Verification Layer (V01–V07):** 7 boards at `/admin/verification/*` — Surface Inventory, Interaction Coverage, P0 Journey Board, Mode Verification, Failure Triage, Evidence Explorer, Launch Blockers. All wired to `verification_surfaces`, `verification_runs`, `verification_blockers`, `verification_evidence` tables via `verification-hooks.ts`.
 
-Seven major workspace pages and five "wow" features need to be added. No backend services need creation — the finance-os service layer already covers the logic. This is primarily a frontend expansion with MoneyCenter tab/route wiring.
+**Customer Journey Layer (CJ01–CJ09):** 9 boards at `/admin/customer-journey/*` — Executive Report, Journey Truth Matrix, Journey Detail, Launch Blockers, Demo vs Real, Broken Clicks Explorer, Owner Remediation, Route Action Coverage, Recent Verification Runs. All wired to `customer_journey_runs` table via `journey-hooks.ts`.
 
-## New Pages to Add
+**Supporting Infrastructure:**
+- `surface-registry.ts` — 215-line canonical interaction registry (P0/P1/P2 surfaces with stable selectors, expected behaviors, backend dependencies)
+- `journey-registry.ts` — 801-line journey manifest (60+ journeys with steps, outcomes, launch importance)
+- `runtime-probes` edge function + LT04 Runtime Probe Center
+- E2E test helpers (`selectors.ts`, `assertions.ts`, `journey-recorder.ts`, `auth.ts`)
+- `InteractionTracker` component for behavioral signal capture
+- Launch gate systems (V07 + CJ04 + LT05)
 
-### 1. `src/pages/money/NetWorthOffice.tsx`
-Balance sheet view: total net worth, asset vs liability breakdown, trend over time, account contributions to change, personal/business/household net worth split. Uses existing `AccountSummary.netWorth` from finance contracts and `useFinancialAccounts` hook.
+## What's Missing (5 Pages + 1 Enhancement)
 
-### 2. `src/pages/money/DebtCreditOffice.tsx`
-Credit cards, loans, mortgage, utilization monitoring, payoff plans, interest drag analysis, credit score pulse, debt payoff simulations. Pulls from existing `FinancialAccount` records where type is "credit" or "loan", plus new debt-specific computations.
+| JVC Screen | Purpose | Why it's needed |
+|---|---|---|
+| JVC05 — Redirect Integrity Map | Visualize navigation correctness, detect dead ends/loops | No redirect-specific verification exists |
+| JVC07 — Form Verification Center | Track form field validation, submit, persist, redirect | No form-specific verification exists |
+| JVC08 — Modal/Drawer Interaction Board | Verify transient UI correctness (open/close/focus trap) | Completely missing |
+| JVC09 — Keyboard/Command Verification | Track shortcuts, command palette, focus order | Completely missing |
+| JVC11 — Journey Replay | Visual step-by-step replay of journey executions | No replay timeline page |
+| JVC13 — Interaction Drift Radar | Detect mismatches between registry and actual behavior | No drift detection page |
 
-### 3. `src/pages/money/BudgetEnvelopeOffice.tsx`
-YNAB-style envelope budgeting: category budgets, "give every dollar a job", rollover logic, overspend handling, planned vs actual, monthly budget view. Uses existing `BudgetHealth` contract type.
+**Already fully covered (no changes needed):**
+- JVC01 → CJ01 Executive Report
+- JVC02 → V01 Surface Inventory Board
+- JVC03 → CJ02 + CJ03 Journey Matrix/Detail
+- JVC04 → CJ06 Broken Clicks Explorer
+- JVC06 → V03 + V04 Page Load Boards
+- JVC10 → LT04 Runtime Probe Center
+- JVC12 → V02 + CJ08 Behavior Coverage
+- JVC14 → V07 + CJ04 + LT05 Launch Gates
 
-### 4. `src/pages/money/TransactionIntelligence.tsx`
-Transaction feed with categorization, merchant intelligence, recurring detection, anomaly detection, duplicate detection, split transactions, business vs personal classification, confidence scores. Uses existing `TransactionRecord` contract and `transaction-categorizer.service.ts`.
+## Implementation Plan
 
-### 5. `src/pages/money/HouseholdMoneyOffice.tsx`
-Shared accounts, household goals, family spending categories, partner visibility, shared budget views. Links to existing `HouseholdCommandCenter` data via `useHouseholds` hook.
+### 1. Surface Registry Enhancement
+**File:** `src/lib/verification/surface-registry.ts`
+- Add new surface types: `redirect`, `form_field`, `modal`, `drawer`, `keyboard_shortcut`, `command_palette`
+- Add fields: `redirectTarget`, `formFields`, `focusTrapExpected`, `shortcutKey`
 
-### 6. `src/pages/money/FinancialHealthPulse.tsx`
-Composite "money health" scoring: safe-to-spend, debt pressure, bill coverage, cash stability, savings progress, credit utilization, recurring burden, spending discipline, tax preparedness, reserve health. Synthesizes data from all other money hooks into a single health score.
+### 2. New Pages (6 files)
 
-### 7. `src/pages/money/MoneyAdvisorBoard.tsx`
-Dedicated advisor surface with 8 specialized advisors: Cash Flow, Budget, Debt, Credit, Tax Readiness, Household Finance, Founder Money, Safe-to-Spend, plus Chief Money Strategist synthesis. Each uses `LiveAdvisorCard` with domain-specific intents.
+**`src/pages/admin/verification/JVC05RedirectIntegrityMap.tsx`**
+- Redirect flow graph from surface registry entries with `actionType: "navigation"`
+- Broken redirect list (entries pointing to non-existent routes)
+- Dead end warnings (routes with no outbound navigation)
+- Auth/permission redirect flows
+- Loop detection
 
-### 8. `src/pages/money/ScenarioPlanner.tsx`
-What-if engine: "cut subscriptions", "increase savings 10%", "revenue drops", "pay off debt X first", "hire someone". Uses existing `TreasuryScenarioResult` contract with interactive parameter controls.
+**`src/pages/admin/verification/JVC07FormVerificationCenter.tsx`**
+- Table of all registered forms from surface registry (`surfaceClass: "form"`)
+- Field validation coverage panel
+- Submission outcome history from verification_runs
+- Persistence verification (submit → refresh → data still present)
+- Proof/receipt linkage for applicable forms
 
-## Wow Features (embedded in existing + new pages)
+**`src/pages/admin/verification/JVC08ModalDrawerBoard.tsx`**
+- Grid of all modal/drawer interactions from registry
+- Open/close success tracking
+- Focus trap check panel
+- Escape handling verification
+- Zombie overlay alert detection
 
-- **Money Twin**: Added as a visual section in MoneyOverview — a live Sankey-style flow map of income → bills → budgets → debt → reserves → goals
-- **Cashflow Storyline**: Added to CashTiming — narrative flow of where money came from, went, what changed, what's coming
-- **Subscription Leak Radar**: Enhanced in SubscriptionsWaste — duplicate detection, rising costs, forgotten renewals
-- **Bill Shock Prevention**: Enhanced in BillsWorkspace — annual renewal detection, low-cash timing collision alerts
-- **Founder Boundary Monitor**: Added to MoneyOverview or as section in new FinancialHealthPulse — personal/business co-mingling detection
+**`src/pages/admin/verification/JVC09KeyboardCommandBoard.tsx`**
+- Shortcut registration table (from command palette + keyboard bindings)
+- Execution success tracking per shortcut
+- Command palette action results
+- Focus order inspector
+- Conflict detection (duplicate shortcuts)
 
-## Wiring Changes
+**`src/pages/admin/verification/JVC11JourneyReplay.tsx`**
+- Journey selection from registry
+- Step-by-step replay timeline with pass/fail per step
+- Route transition visualization
+- Screenshot/evidence carousel from verification_evidence
+- Semantic assertion panel showing expected vs actual
 
-### `src/pages/MoneyCenter.tsx`
-Add 8 new SubPage entries, imports, tab definitions, and route mapping.
+**`src/pages/admin/verification/JVC13InteractionDriftRadar.tsx`**
+- Compare surface registry entries against actual route/component existence
+- Selector drift detection (registered selector no longer in DOM)
+- Changed redirect targets
+- Lost success feedback
+- Drift severity rail and timeline
+- Resolution workflow panel
 
-### `src/App.tsx`
-Add 8 new routes: `/money/net-worth`, `/money/debt-credit`, `/money/budgets`, `/money/transactions`, `/money/household`, `/money/health`, `/money/advisors`, `/money/scenarios`.
+### 3. Route Wiring
+**File:** `src/App.tsx`
+- Add 6 new lazy imports and routes under `/admin/verification/*`
 
-### `src/pages/__tests__/money-pages.test.tsx`
-Add 8 new page entries to the test array.
+### 4. Data Model Extensions
+**File:** `src/lib/verification/surface-registry.ts`
+- Add entries for forms, modals, keyboard shortcuts, redirects across all major workspaces (Money Office, Admin, AI Engineering, etc.)
 
-## Finance Contracts Enhancement
-
-### `src/packages/finance-contracts/index.ts`
-Add new types:
-- `DebtProfile` (credit cards, loans, utilization, payoff plan)
-- `FinancialHealthScore` (composite scoring)
-- `ScenarioInput` / `ScenarioOutput` (what-if parameters)
-- `EnvelopeBudget` (YNAB-style envelope)
-- `HouseholdFinanceSummary`
-
-## Backend Services Enhancement
-
-### `src/lib/services/finance-os/debt-analyzer.service.ts` (new)
-Interest drag, payoff ordering (avalanche/snowball), utilization scoring, debt-to-income ratio.
-
-### `src/lib/services/finance-os/financial-health.service.ts` (new)
-Composite health score computation from all money dimensions.
-
-### `src/lib/services/finance-os/scenario-engine.service.ts` (new)
-What-if projection engine using existing cashflow/budget/reserve data.
-
-### `src/lib/services/finance-os/envelope-budget.service.ts` (new)
-Envelope allocation, rollover, overspend recovery logic.
-
-## File Summary
+### File Summary
 
 | File | Action |
-|------|--------|
-| `src/packages/finance-contracts/index.ts` | Add 5 new contract types |
-| `src/lib/services/finance-os/debt-analyzer.service.ts` | New — debt payoff engine |
-| `src/lib/services/finance-os/financial-health.service.ts` | New — composite health scoring |
-| `src/lib/services/finance-os/scenario-engine.service.ts` | New — what-if projections |
-| `src/lib/services/finance-os/envelope-budget.service.ts` | New — YNAB-style envelope logic |
-| `src/lib/services/finance-os/index.ts` | Update barrel exports |
-| `src/pages/money/NetWorthOffice.tsx` | New — balance sheet page |
-| `src/pages/money/DebtCreditOffice.tsx` | New — debt/credit/liability page |
-| `src/pages/money/BudgetEnvelopeOffice.tsx` | New — YNAB-style budgets |
-| `src/pages/money/TransactionIntelligence.tsx` | New — smart transaction feed |
-| `src/pages/money/HouseholdMoneyOffice.tsx` | New — shared/family finances |
-| `src/pages/money/FinancialHealthPulse.tsx` | New — composite health score |
-| `src/pages/money/MoneyAdvisorBoard.tsx` | New — 8 specialized advisors |
-| `src/pages/money/ScenarioPlanner.tsx` | New — what-if engine |
-| `src/pages/MoneyCenter.tsx` | Add 8 tabs + imports + routing |
-| `src/App.tsx` | Add 8 routes |
-| `src/pages/__tests__/money-pages.test.tsx` | Add 8 test entries |
-| `src/pages/money/MoneyOverview.tsx` | Enhance with Money Twin flow visualization |
-| `src/pages/money/BillsWorkspace.tsx` | Enhance with Bill Shock Prevention alerts |
-| `src/pages/money/SubscriptionsWaste.tsx` | Enhance with Subscription Leak Radar |
-| `src/pages/money/CashTiming.tsx` | Enhance with Cashflow Storyline narrative |
+|---|---|
+| `src/lib/verification/surface-registry.ts` | Enhance types + add form/modal/keyboard/redirect entries |
+| `src/pages/admin/verification/JVC05RedirectIntegrityMap.tsx` | New — redirect flow verification |
+| `src/pages/admin/verification/JVC07FormVerificationCenter.tsx` | New — form behavior verification |
+| `src/pages/admin/verification/JVC08ModalDrawerBoard.tsx` | New — modal/drawer interaction board |
+| `src/pages/admin/verification/JVC09KeyboardCommandBoard.tsx` | New — keyboard/command verification |
+| `src/pages/admin/verification/JVC11JourneyReplay.tsx` | New — journey execution replay |
+| `src/pages/admin/verification/JVC13InteractionDriftRadar.tsx` | New — behavior drift detection |
+| `src/App.tsx` | Add 6 routes |
 
-All new pages use existing SITA primitives (SitaCard, KPITile, TrustBadge, ConfidenceBar, LiveAdvisorCard, DomainHeader), existing hooks, and existing finance-os services. No stubs — every component renders real computed data from deterministic engines.
+All new pages will use existing hooks (`useVerificationSurfaces`, `useVerificationRuns`, `useCustomerJourneyRuns`), existing primitives (`SitaCard`, `Badge`, `Table`), and existing data from the surface registry and journey registry. No new database tables needed — all pages consume existing verification tables.
 
