@@ -1,78 +1,138 @@
 
 
-# Implementation Truth Center — Gap Analysis & Completion Plan
+# Implementation Truth System — Enhancement Plan
 
-## What's Already Built (6 of 10 layers)
+## Audit Summary
 
-| Layer | ITC Page | Status |
-|-------|----------|--------|
-| 1. Spec Registry | ITC02 | ✅ Full CRUD + seed |
-| 3. Contract Registry | ITC03 | ✅ Shadow detection |
-| 4. Wiring Graph | ITC04 | ✅ Per-spec chain |
-| 8. Readiness Scorecards | ITC05 | ✅ 5-dimension scoring |
-| 9. Prompt Traceability | ITC06 | ✅ Phase grouping |
-| 10. Drift Radar | ITC06 | ✅ Severity-based |
+All 10 ITC pages exist and are routed. The core DB tables (`implementation_spec_registry`, `implementation_wiring_edges`) are live with RLS. Data hooks and spec seeder are functional. Here is what needs enhancement or is missing:
 
-Also built: 2 DB tables with RLS, data hooks, spec seeder, 6 routes in App.tsx.
+## Gaps Found
 
-## What's Missing (4 layers + sidebar)
+### 1. Missing DB columns the spec requires
+The spec demands: `required_shells`, `required_endpoints`, `required_schemas`, `required_docs`, `required_screens`, `required_projections`, `drift_state`, `architecture_score`, `test_score`, `docs_score`, `proof_score`, `policy_score`. The current table only has: `required_routes`, `required_components`, `required_services`, `required_contracts`, `required_events`, `required_tests`, `required_proofs` + 5 scores. The spec asks for 10 scoring dimensions but only 5 exist in DB/hooks/UI.
 
-| Gap | What's Needed | Existing Infra to Reuse |
-|-----|---------------|------------------------|
-| **Implementation Map** | Per-spec file/route/component mapping view | Spec registry data already has required_routes/components |
-| **Architecture Compliance** | Surface architecture script results in ITC | `generated/architecture-compliance-report.json` exists |
-| **Route & Component Inventory** | Unified route inventory with shell/component status | `generated/route-manifest.json`, `reality_classifications` table |
-| **Runtime Evidence** | Aggregate runtime probes/evidence per spec | LT01-07 pages exist, `os_event_log`/`sita_receipts` tables |
-| **Sidebar Navigation** | ITC entry in admin sidebar | No sidebar entry currently |
+### 2. Hooks missing the extra fields
+`SpecRegistryEntry` type needs expansion to match the new columns. `useContractVerification` infers status from `contract_score` threshold rather than checking actual contract file existence. `useDriftDetection` only checks 4 heuristic rules — needs more checks (route-in-manifest, component-file-exists, contract-file-exists, shell-wrapping, endpoint-existence).
+
+### 3. Seed data incomplete
+`use-spec-seed.ts` has 20 specs but is missing several from the prompt: `money-twin`, `financial-stress-radar`, `founder-split-brain-protection`, `customer-journey-twin`, `intelligence-reuse-engine`, `deployment-truth-center`, `proof-coverage-board`. Also none of the seed entries populate the new fields (shells, endpoints, schemas, docs, screens, projections).
+
+### 4. ITC05 Readiness Scorecards only shows 5 dimensions
+The spec requires 10: spec, UI, contract, backend/wiring, test, runtime, architecture, proof/trust, docs, policy/production. Only 5 columns exist in DB.
+
+### 5. ITC03 Contract Registry lacks contract types
+The spec requires tracking: contract type (api, event, schema, view_model, action_state, proof, policy), frontend consumers, backend implementers, version, schema alignment. Current implementation only tracks name + requiredBy + present/missing status.
+
+### 6. ITC04 Wiring Graph lacks stored wiring edge CRUD UI
+Users cannot add/edit wiring edges from the UI — only view synthetic or DB-stored edges.
+
+### 7. Command palette and keyboard shortcuts missing ITC entry
+`AdminCommandPalette.tsx` and `AdminKeyboardShortcuts.tsx` have no ITC routes.
+
+### 8. No sidebar entry
+ITC is not in any admin sidebar/nav config.
+
+---
 
 ## Implementation Plan
 
-### Step 1: Add 4 new ITC pages
+### Step 1: DB Migration — Add missing columns
 
-**ITC07 — Implementation Map** (`/admin/implementation-truth/map`)
-- Per-spec expandable view showing: required routes (present/missing check against route-manifest), required components, required services, required contracts
-- Each artifact shows a checkmark if it exists in the codebase manifests
-- Reuses `useSpecRegistry()` data — no new DB tables needed
+Add to `implementation_spec_registry`:
+- `required_shells text[] DEFAULT '{}'`
+- `required_endpoints text[] DEFAULT '{}'`
+- `required_schemas text[] DEFAULT '{}'`
+- `required_docs text[] DEFAULT '{}'`
+- `required_screens text[] DEFAULT '{}'`
+- `required_projections text[] DEFAULT '{}'`
+- `drift_state text DEFAULT 'unknown'`
+- `architecture_score int DEFAULT 0`
+- `test_score int DEFAULT 0`
+- `docs_score int DEFAULT 0`
+- `proof_score int DEFAULT 0`
+- `policy_score int DEFAULT 0`
 
-**ITC08 — Architecture Compliance Board** (`/admin/implementation-truth/architecture`)
-- Reads `generated/architecture-compliance-report.json` via fetch
-- Shows pass/fail for each of the 17 architecture checks
-- Score summary, failed check details, last-run timestamp
-- Links to the existing architecture scripts
+### Step 2: Update `use-implementation-truth.ts`
 
-**ITC09 — Route & Component Inventory** (`/admin/implementation-truth/routes`)
-- Reads `generated/route-manifest.json` for all routes
-- Cross-references with `reality_classifications` table for reality state per route
-- Shows: route path, component, domain, shell wrapper status, reality classification
-- Highlights orphaned routes and missing components
+- Expand `SpecRegistryEntry` type with all new fields
+- Expand `DEMO_SPECS` with new fields populated
+- Expand `useImplementationStats` to use 10-dimension scoring
+- Enhance `useDriftDetection` with deeper heuristic checks (route-count mismatch, component-count mismatch, shell-count mismatch, endpoint-count mismatch, projection-count mismatch, proof vs runtime mismatch)
+- Enhance `useContractVerification` with contract type tracking
 
-**ITC10 — Runtime Evidence Center** (`/admin/implementation-truth/runtime`)
-- Queries `os_event_log` (recent event count), `sita_receipts` (receipt count), `os_action_lineage` (action count), `os_memory_scoped` (memory count) per domain
-- Shows per-spec: events emitted, receipts generated, actions tracked, memory persisted
-- "Live" vs "no evidence" badges per spec
-- Links to detailed LT01-07 pages for deeper inspection
+### Step 3: Update `use-spec-seed.ts`
 
-### Step 2: Update ITC01 Overview
-- Add the 4 new sub-pages to the SUB_PAGES navigation array
-- Total: 9 sub-page links (specs, contracts, wiring, readiness, drift, map, architecture, routes, runtime)
+- Add 7 missing spec entries (money-twin, financial-stress-radar, founder-split-brain-protection, customer-journey-twin, intelligence-reuse-engine, deployment-truth-center, proof-coverage-board)
+- Populate new fields (shells, endpoints, schemas, docs, screens, projections) for all 27 specs
+- Add realistic scores for the 5 new dimensions
 
-### Step 3: Wire routes in App.tsx
-- 4 new lazy imports + 4 new `<Route>` entries under AdminShellLayout
+### Step 4: Enhance ITC02 Spec Registry
 
-### Step 4: Add sidebar navigation entry
-- Find the admin sidebar/navigation config and add an "Implementation Truth" group with link to `/admin/implementation-truth`
+- Show all 10 dimension score bars in the expanded detail view
+- Display new artifact sections (shells, endpoints, schemas, docs, screens, projections)
+- Show drift_state badge per spec
+
+### Step 5: Enhance ITC03 Contract Verification
+
+- Add contract type column (inferred from name patterns or spec metadata)
+- Add frontend/backend consumer columns
+- Add orphan contract detection section
+
+### Step 6: Enhance ITC04 Wiring Graph
+
+- Add a "Create Edge" form so operators can manually record wiring edges
+- Add edge delete capability
+- Show edge evidence and verification timestamp inline
+
+### Step 7: Enhance ITC05 Readiness Scorecards
+
+- Expand from 5 to 10 scoring dimensions: spec, UI, contract, wiring, runtime, architecture, test, docs, proof, policy
+- Update Platform Dimension Averages to show all 10
+
+### Step 8: Enhance ITC06 Drift Radar
+
+- Add deeper drift detection rules:
+  - "Required shells specified but no shell data"
+  - "Required endpoints specified but no backend score"
+  - "Spec has projections but runtime score is 0"
+  - "Docs required but docs_score is 0"
+- Show drift_state from DB per spec in the traceability section
+
+### Step 9: Enhance ITC07 Implementation Map
+
+- Add new artifact sections: shells, endpoints, schemas, docs, screens, projections
+- Total artifact count includes new fields
+
+### Step 10: Wire into Command Palette + Keyboard Shortcuts
+
+- Add ITC entries to `AdminCommandPalette.tsx` NAV_ITEMS:
+  - "Implementation Truth Center" → `/admin/implementation-truth`
+  - Plus sub-page entries for specs, contracts, wiring, readiness, drift, map, architecture, routes, runtime
+- Add keyboard shortcut `g t` for Implementation Truth in `AdminKeyboardShortcuts.tsx`
+
+---
 
 ## Files Changed
 
 | File | Action |
 |------|--------|
-| `src/pages/admin/implementation-truth/ITC07ImplementationMap.tsx` | **New** |
-| `src/pages/admin/implementation-truth/ITC08ArchitectureCompliance.tsx` | **New** |
-| `src/pages/admin/implementation-truth/ITC09RouteInventory.tsx` | **New** |
-| `src/pages/admin/implementation-truth/ITC10RuntimeEvidence.tsx` | **New** |
-| `src/pages/admin/implementation-truth/ITC01Overview.tsx` | **Edit** — add 4 new sub-page links |
-| `src/App.tsx` | **Edit** — 4 lazy imports + 4 routes |
-| Admin sidebar config (TBD location) | **Edit** — add ITC nav entry |
+| Migration SQL | **New** — ALTER TABLE add 12 columns |
+| `src/hooks/use-implementation-truth.ts` | **Edit** — expanded types, 10 dimensions, deeper drift |
+| `src/hooks/use-spec-seed.ts` | **Edit** — 7 new specs, all specs get new fields |
+| `src/pages/admin/implementation-truth/ITC02SpecRegistry.tsx` | **Edit** — 10 score bars, new artifact sections, drift badge |
+| `src/pages/admin/implementation-truth/ITC03ContractVerification.tsx` | **Edit** — type column, consumer columns, orphan detection |
+| `src/pages/admin/implementation-truth/ITC04WiringGraph.tsx` | **Edit** — edge CRUD form |
+| `src/pages/admin/implementation-truth/ITC05ReadinessScoreboard.tsx` | **Edit** — 10 dimensions |
+| `src/pages/admin/implementation-truth/ITC06DriftRadar.tsx` | **Edit** — deeper drift rules, drift_state display |
+| `src/pages/admin/implementation-truth/ITC07ImplementationMap.tsx` | **Edit** — new artifact sections |
+| `src/components/admin/AdminCommandPalette.tsx` | **Edit** — add ITC nav entries |
+| `src/components/admin/AdminKeyboardShortcuts.tsx` | **Edit** — add ITC shortcut |
 
-No new database tables or migrations needed. All 4 new pages consume existing data sources (spec registry, generated manifests, Supabase tables).
+## What is NOT changed (already correct)
+- ITC01 Overview — already shows all 9 sub-page links, stats, drift alerts
+- ITC08 Architecture Compliance — already reads generated report, shows pass/fail
+- ITC09 Route Inventory — already cross-references route-manifest + reality_classifications
+- ITC10 Runtime Evidence — already queries 4 OS tables, shows per-spec evidence
+- DB tables structure (only adding columns, not restructuring)
+- All 10 routes in App.tsx (already registered)
 
