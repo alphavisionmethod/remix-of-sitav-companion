@@ -36,7 +36,7 @@ export default function AIG05ReceiptsExplorer() {
       <DemoModeBadge />
       <AIGSubNav />
       <div>
-        <h1 className="text-2xl font-bold flex items-center gap-2"><Receipt className="h-6 w-6" /> AIG05 — AI Receipts / Trace Explorer</h1>
+        <h1 className="text-2xl font-bold flex items-center gap-2"><Receipt className="h-6 w-6" /> AIG06 — AI Receipts / Trace Explorer</h1>
         <p className="text-sm text-muted-foreground mt-1">Every AI invocation: provider, model, latency, cost, validation, fallbacks</p>
       </div>
 

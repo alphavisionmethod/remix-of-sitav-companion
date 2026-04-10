@@ -55,11 +55,13 @@ export default function AIG02ModelRegistry() {
                 <TableHead>Model ID</TableHead>
                 <TableHead>Provider</TableHead>
                 <TableHead>Class</TableHead>
+                <TableHead>Quality Tier</TableHead>
                 <TableHead>Cost Tier</TableHead>
                 <TableHead>Latency</TableHead>
                 <TableHead>Context</TableHead>
                 <TableHead>Tool Use</TableHead>
                 <TableHead>Structured</TableHead>
+                <TableHead>Recommended Uses</TableHead>
                 <TableHead>Status</TableHead>
               </TableRow></TableHeader>
               <TableBody>
@@ -68,14 +70,24 @@ export default function AIG02ModelRegistry() {
                     <TableCell className="font-mono text-xs">{m.model_id}</TableCell>
                     <TableCell>{m.provider}</TableCell>
                     <TableCell><Badge variant="outline" className="text-xs">{m.model_class}</Badge></TableCell>
+                    <TableCell className="text-xs">{m.quality_tier ?? "—"}</TableCell>
                     <TableCell className="text-xs">{m.cost_tier ?? "—"}</TableCell>
                     <TableCell className="text-xs">{m.latency_tier ?? "—"}</TableCell>
                     <TableCell className="text-xs">{m.context_length ? `${(m.context_length / 1000).toFixed(0)}K` : "—"}</TableCell>
                     <TableCell>{m.tool_calling_support ? <CheckCircle className="h-3 w-3 text-green-400" /> : <XCircle className="h-3 w-3 text-muted-foreground" />}</TableCell>
                     <TableCell>{m.structured_output_support ? <CheckCircle className="h-3 w-3 text-green-400" /> : <XCircle className="h-3 w-3 text-muted-foreground" />}</TableCell>
+                    <TableCell className="text-xs max-w-[160px] truncate">
+                      {m.recommended_use_cases
+                        ? (typeof m.recommended_use_cases === "string"
+                            ? m.recommended_use_cases
+                            : Array.isArray(m.recommended_use_cases)
+                              ? (m.recommended_use_cases as string[]).join(", ")
+                              : JSON.stringify(m.recommended_use_cases))
+                        : "—"}
+                    </TableCell>
                     <TableCell>
-                      <Badge variant={m.deprecated ? "destructive" : "default"} className="text-xs">
-                        {m.deprecated ? "deprecated" : m.launch_stage ?? "active"}
+                      <Badge variant={m.deprecated ? "destructive" : m.is_active === false ? "secondary" : "default"} className="text-xs">
+                        {m.deprecated ? "deprecated" : m.is_active === false ? "inactive" : m.launch_stage ?? "active"}
                       </Badge>
                     </TableCell>
                   </TableRow>
