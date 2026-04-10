@@ -115,18 +115,7 @@ const COMMAND_INDEX: CommandItem[] = [
   { id: "cn-demo", label: "Connector Demo Review", sublabel: "CN06 — Connector demo review", icon: Eye, path: "/admin/connectors/demo", category: "system", keywords: ["connector", "demo", "review", "cn06"] },
   { id: "cn-gate", label: "Connector Launch Gate", sublabel: "CN07 — Connector launch gate", icon: ShieldCheck, path: "/admin/connectors/launch-gate", category: "system", keywords: ["connector", "launch", "gate", "cn07"] },
 
-  // Reality Audit (RCP)
-  { id: "rcp-overview", label: "Reality Overview", sublabel: "RCP01 — Reality conversion overview", icon: BarChart3, path: "/admin/reality-audit/overview", category: "system", keywords: ["reality", "audit", "overview", "rcp01"] },
-  { id: "rcp-classification", label: "Classification Matrix", sublabel: "RCP02 — Feature reality classification", icon: Eye, path: "/admin/reality-audit", category: "system", keywords: ["reality", "classification", "matrix", "rcp02"] },
-  { id: "rcp-mock-replacement", label: "Mock Replacement", sublabel: "RCP04 — Mock replacement program", icon: Target, path: "/admin/reality-audit/mock-replacement", category: "system", keywords: ["mock", "replacement", "rcp04"] },
-  { id: "rcp-mock-sources", label: "Mock Sources", sublabel: "RCP05 — Mock source inventory", icon: FileText, path: "/admin/reality-audit/mock-sources", category: "system", keywords: ["mock", "source", "inventory", "rcp05"] },
-  { id: "rcp-persistence", label: "Core Persistence", sublabel: "RCP06 — Core service persistence", icon: FolderOpen, path: "/admin/reality-audit/core-persistence", category: "system", keywords: ["core", "persistence", "service", "rcp06"] },
-  { id: "rcp-routes", label: "Route Heatmap", sublabel: "RCP07 — Route reality heatmap", icon: Layout, path: "/admin/reality-audit/route-heatmap", category: "system", keywords: ["route", "heatmap", "reality", "rcp07"] },
-  { id: "rcp-contracts", label: "Contract Readiness", sublabel: "RCP08 — Contract readiness", icon: Shield, path: "/admin/reality-audit/contract-readiness", category: "system", keywords: ["contract", "readiness", "rcp08"] },
-  { id: "rcp-honesty", label: "Launch Honesty", sublabel: "RCP09 — Launch honesty board", icon: ShieldCheck, path: "/admin/reality-audit/launch-honesty", category: "system", keywords: ["launch", "honesty", "rcp09"] },
-  { id: "rcp-waves", label: "Wave Planner", sublabel: "RCP10 — Migration wave planner", icon: Zap, path: "/admin/reality-audit/wave-planner", category: "system", keywords: ["wave", "planner", "migration", "rcp10"] },
-  { id: "rcp-progress", label: "Progress Timeline", sublabel: "RCP11 — Reality progress timeline", icon: Clock, path: "/admin/reality-audit/progress", category: "system", keywords: ["progress", "timeline", "reality", "rcp11"] },
-  { id: "rcp-runtime", label: "Runtime Truth Gate", sublabel: "RCP12 — Runtime truth gate", icon: Activity, path: "/admin/reality-audit/runtime-truth", category: "system", keywords: ["runtime", "truth", "gate", "rcp12"] },
+
   // Device & Wearable Expansion (DWE)
   { id: "dwe-devices", label: "Connected Devices", sublabel: "DWE01 — Connected devices center", icon: Layout, path: "/admin/dwe/devices", category: "system", keywords: ["device", "connected", "dwe01"] },
   { id: "dwe-presence", label: "Device Presence", sublabel: "DWE02 — Presence continuity center", icon: Activity, path: "/admin/dwe/presence", category: "system", keywords: ["presence", "continuity", "device", "dwe02"] },
