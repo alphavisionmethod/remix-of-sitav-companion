@@ -661,6 +661,7 @@ const MobileEmergencyActions = lazy(() => import("./pages/mobile/MobileEmergency
 const MobileQuickCapture = lazy(() => import("./pages/mobile/MobileQuickCapture"));
 const EnvironmentAppliancePage = lazy(() => import("./pages/admin/EnvironmentAppliancePage"));
 const AuditComplianceWorkspace = lazy(() => import("./pages/admin/AuditComplianceWorkspace"));
+const OutcomeEconomicsDashboard = lazy(() => import("./pages/admin/OutcomeEconomicsDashboard"));
 const CommandHistory = lazy(() => import("./pages/CommandHistory"));
 const EnvironmentSwitcherPage = lazy(() => import("./pages/EnvironmentSwitcher"));
 const UpdateCenterPage = lazy(() => import("./pages/UpdateCenter"));
@@ -1550,6 +1551,7 @@ const App = () => (
                     <Route path="/admin/integration-concierge" element={<IntegrationConciergePage />} />
                     <Route path="/admin/revenue-autopilot" element={<RevenueAutopilotMonitor />} />
                     <Route path="/admin/proof-ledger" element={<InvestorProofLedger />} />
+                    <Route path="/admin/outcome-economics" element={<OutcomeEconomicsDashboard />} />
                     <Route path="/admin/reality-matrix" element={<RealityClassificationMatrix />} />
                     <Route path="/admin/mock-replacement" element={<MockReplacementProgram />} />
                     <Route path="/admin/reality-overview" element={<RealityConversionOverview />} />
