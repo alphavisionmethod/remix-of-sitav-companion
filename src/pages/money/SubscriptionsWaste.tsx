@@ -376,14 +376,88 @@ const SubscriptionsWaste = () => {
         </div>
       </SitaCard>
 
+      {/* ═══ Negotiation / Downgrade Advisor ═══ */}
+      <SitaCard hover={false} className="p-5">
+        <div className="flex items-center gap-2 mb-4">
+          <Sparkles className="h-4 w-4 text-primary" />
+          <SitaCardTitle sub="Actionable savings recommendations for each subscription">Negotiation & Downgrade Advisor</SitaCardTitle>
+        </div>
+        <div className="space-y-3">
+          {[
+            {
+              name: "Zoom Pro",
+              currentCost: "$14.99/mo",
+              downgrade: "Zoom Basic (Free)",
+              savings: "$180/yr",
+              bestCycle: "N/A — free tier",
+              cancelTiming: "Before next renewal (Apr 6)",
+              alternative: "Google Meet (included in Workspace)",
+              burnImpact: "Reduces monthly burn by $14.99",
+              priority: 1,
+            },
+            {
+              name: "Dropbox Plus",
+              currentCost: "$11.99/mo",
+              downgrade: "Dropbox Basic (2GB Free)",
+              savings: "$144/yr",
+              bestCycle: "Switch to annual billing: save $24/yr on Plus",
+              cancelTiming: "After migrating files (allow 1 week)",
+              alternative: "Google Drive (15GB free, or Workspace plan)",
+              burnImpact: "Reduces monthly burn by $11.99",
+              priority: 2,
+            },
+            {
+              name: "Adobe Creative Cloud",
+              currentCost: "$54.99/mo",
+              downgrade: "Photography Plan ($9.99/mo)",
+              savings: "$540/yr",
+              bestCycle: "Annual prepaid saves $120 vs monthly",
+              cancelTiming: "End of current billing period (penalty for early cancel)",
+              alternative: "Figma (design), Canva (quick graphics)",
+              burnImpact: "Reduces monthly burn by $45.00",
+              priority: 3,
+            },
+            {
+              name: "Slack Pro",
+              currentCost: "$8.75/mo per user",
+              downgrade: "Slack Free (90-day message history)",
+              savings: "$105/yr per user",
+              bestCycle: "Annual billing saves 15% on Pro",
+              cancelTiming: "Review at team size change",
+              alternative: "Discord (free), Microsoft Teams (if using M365)",
+              burnImpact: "Saves $8.75/user/mo",
+              priority: 4,
+            },
+          ].map((sub, i) => (
+            <div key={i} className="rounded-xl border border-border/40 bg-secondary/20 p-4">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary/10 text-[10px] font-bold text-primary">{sub.priority}</span>
+                  <p className="font-display text-sm font-semibold">{sub.name}</p>
+                  <span className="text-xs text-muted-foreground">{sub.currentCost}</span>
+                </div>
+                <span className="text-xs font-bold text-trust-verified">{sub.savings} savings</span>
+              </div>
+              <div className="grid gap-2 sm:grid-cols-2 text-xs">
+                <div><span className="text-muted-foreground">Downgrade to:</span> <span className="text-foreground font-medium">{sub.downgrade}</span></div>
+                <div><span className="text-muted-foreground">Best billing:</span> <span className="text-foreground font-medium">{sub.bestCycle}</span></div>
+                <div><span className="text-muted-foreground">Cancel timing:</span> <span className="text-foreground font-medium">{sub.cancelTiming}</span></div>
+                <div><span className="text-muted-foreground">Alternative:</span> <span className="text-foreground font-medium">{sub.alternative}</span></div>
+              </div>
+              <p className="text-[10px] text-primary mt-2">📉 {sub.burnImpact}</p>
+            </div>
+          ))}
+        </div>
+      </SitaCard>
+
       <LiveAdvisorCard
         advisor="money"
         intent="subscription_audit"
         demoName="Waste Detection AI"
         demoRole="Subscription Advisor"
         demoConfidence="High"
-        demoRecommendation="2 subscriptions flagged as likely waste — low usage and available free alternatives. Canceling both saves $336/year. Review Zoom Pro before Apr 6 renewal."
-        demoReasoning="Based on usage analytics, cost-to-value ratio, duplicate detection, and renewal timing."
+        demoRecommendation="4 subscriptions analyzed for downgrade/cancellation. Total potential savings: $969/year. Priority: cancel Zoom Pro before Apr 6 renewal, then review Adobe plan at billing cycle end."
+        demoReasoning="Based on usage analytics, cost-to-value ratio, duplicate detection, renewal timing, and alternative availability."
       />
     </motion.div>
   );

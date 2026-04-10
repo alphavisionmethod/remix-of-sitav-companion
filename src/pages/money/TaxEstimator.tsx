@@ -155,6 +155,71 @@ const TaxEstimator = () => {
           </SitaCard>
         </div>
       </div>
+
+      {/* ═══ Tax Shock Prevention ═══ */}
+      <SitaCard hover={false} className="p-5 border-l-4 border-l-destructive">
+        <div className="flex items-center gap-2 mb-4">
+          <AlertTriangle className="h-4 w-4 text-destructive" />
+          <SitaCardTitle sub="Detect tax risks before they become tax shocks">Tax Shock Prevention</SitaCardTitle>
+        </div>
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {[
+            {
+              title: "Under-Set-Aside Detection",
+              severity: "high" as const,
+              description: "Current tax reserve covers 75% of estimated liability. At current income pace, you'll be $6,650 short at year-end.",
+              action: "Increase monthly tax set-aside by $555 to close the gap by December.",
+            },
+            {
+              title: "Irregular Income Tax Risk",
+              severity: "medium" as const,
+              description: "Freelance income variance of ±35% creates quarterly estimation risk. Q3 could be under-estimated if project pipeline fills.",
+              action: "Use rolling 3-month average for quarterly estimates instead of annualized projection.",
+            },
+            {
+              title: "Founder Draw Tax Distortion",
+              severity: "medium" as const,
+              description: "Owner draw of $5,000/mo is not being modeled as self-employment income for SE tax purposes.",
+              action: "Include owner draw in SE tax calculation. Additional liability: ~$765/quarter.",
+            },
+            {
+              title: "Under-Categorized Deductibles",
+              severity: "medium" as const,
+              description: "3 expense categories ($2,400 total) appear deductible but lack proper categorization. Potential tax savings: $528.",
+              action: "Review and categorize: home office supplies, professional development, and software subscriptions.",
+            },
+            {
+              title: "Documentation Weakness",
+              severity: "low" as const,
+              description: "12 deductible expenses ($3,100 total) have no receipt uploaded. These may be disallowed if audited.",
+              action: "Upload receipts via the Proof workspace. Focus on expenses over $75 first.",
+            },
+            {
+              title: "Quarter-End Danger",
+              severity: demo ? "high" as const : ((() => {
+                const month = new Date().getMonth();
+                return (month === 2 || month === 5 || month === 8 || month === 11) ? "high" as const : "low" as const;
+              })()),
+              description: `Q2 estimated payment due April 15. ${demo ? "25% of estimated liability not yet reserved." : "Review your reserve status."}`,
+              action: "Ensure quarterly payment is funded and scheduled 5 business days before due date.",
+            },
+          ].map((alert, i) => (
+            <div key={i} className={`rounded-xl border p-4 ${alert.severity === "high" ? "border-destructive/20 bg-destructive/5" : alert.severity === "medium" ? "border-amber-500/20 bg-amber-500/5" : "border-border bg-secondary/20"}`}>
+              <div className="flex items-center gap-2 mb-2">
+                <AlertTriangle className={`h-3.5 w-3.5 ${alert.severity === "high" ? "text-destructive" : alert.severity === "medium" ? "text-amber-500" : "text-muted-foreground"}`} />
+                <p className="text-xs font-semibold text-foreground">{alert.title}</p>
+                <span className={`text-[9px] uppercase font-medium px-1.5 py-0.5 rounded ${alert.severity === "high" ? "bg-destructive/10 text-destructive" : alert.severity === "medium" ? "bg-amber-500/10 text-amber-500" : "bg-secondary text-muted-foreground"}`}>
+                  {alert.severity}
+                </span>
+              </div>
+              <p className="text-[11px] text-muted-foreground mb-2">{alert.description}</p>
+              <div className="rounded-lg bg-primary/5 border border-primary/10 p-2">
+                <p className="text-[10px] text-primary">💡 {alert.action}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </SitaCard>
     </motion.div>
   );
 };
