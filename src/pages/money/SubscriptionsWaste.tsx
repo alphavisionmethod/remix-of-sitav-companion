@@ -12,7 +12,7 @@ import { useAction } from "@/lib/hooks/useAction";
 import { CreditCard, AlertTriangle, TrendingDown, CheckCircle, XCircle, Eye, Sparkles, Calendar, DollarSign, Plus, Trash2, Pencil, Pause, Play } from "lucide-react";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { toast } from "sonner";
-import { format, parseISO } from "date-fns";
+import { format, parseISO, differenceInDays } from "date-fns";
 import { motion } from "framer-motion";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
@@ -335,6 +335,46 @@ const SubscriptionsWaste = () => {
           </div>
         </form>
       </ContextDrawer>
+
+      {/* Subscription Leak Radar */}
+      <SitaCard hover={false} className="p-5 border-l-4 border-l-[hsl(var(--sita-gold))]">
+        <div className="flex items-center gap-2 mb-4">
+          <AlertTriangle className="h-4 w-4 text-[hsl(var(--sita-gold))]" />
+          <SitaCardTitle sub="Rising costs, upcoming renewals, and leakage signals">Subscription Leak Radar</SitaCardTitle>
+        </div>
+        <div className="grid gap-4 sm:grid-cols-3">
+          <div className="rounded-xl bg-secondary/30 p-4">
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium mb-1">Cost Trend (3mo)</p>
+            <p className="font-display text-lg font-bold text-foreground">${totalMonthly.toFixed(0)}/mo</p>
+            <p className="text-xs text-muted-foreground mt-1">{wasteSubs.length > 0 ? `${wasteSubs.length} flagged for waste` : "No leaks detected"}</p>
+          </div>
+          <div className="rounded-xl bg-secondary/30 p-4">
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium mb-1">Renewals (30 days)</p>
+            {(() => {
+              const upcoming = subscriptions.filter(s => {
+                if (!s.next_billing_date || s.status !== "active") return false;
+                const days = differenceInDays(parseISO(s.next_billing_date), new Date());
+                return days >= 0 && days <= 30;
+              });
+              return (
+                <>
+                  <p className="font-display text-lg font-bold text-foreground">{upcoming.length}</p>
+                  <div className="mt-1 space-y-1">
+                    {upcoming.slice(0, 3).map(s => (
+                      <p key={s.id} className="text-xs text-muted-foreground truncate">{s.name} — {format(parseISO(s.next_billing_date!), "MMM d")}</p>
+                    ))}
+                  </div>
+                </>
+              );
+            })()}
+          </div>
+          <div className="rounded-xl bg-secondary/30 p-4">
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium mb-1">Annual Leakage</p>
+            <p className="font-display text-lg font-bold text-urgency-high">${(wasteMonthly * 12).toFixed(0)}/yr</p>
+            <p className="text-xs text-muted-foreground mt-1">Recoverable if cancelled</p>
+          </div>
+        </div>
+      </SitaCard>
 
       <LiveAdvisorCard
         advisor="money"

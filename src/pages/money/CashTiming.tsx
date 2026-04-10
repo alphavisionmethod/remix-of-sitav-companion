@@ -116,6 +116,32 @@ const CashTiming = () => {
         </div>
       </div>
 
+      {/* Cashflow Storyline */}
+      <SitaCard hover={false} className="p-5">
+        <div className="flex items-center gap-2 mb-3">
+          <Sparkles className="h-4 w-4 text-primary" />
+          <SitaCardTitle sub="A narrative of your money this period">Cashflow Storyline</SitaCardTitle>
+        </div>
+        <div className="space-y-3 text-sm text-foreground">
+          <p>
+            This month, <span className="font-semibold text-trust-verified">${safeToSpend > 0 ? (safeToSpend + (stressWindows.reduce((s: number, w: any) => s + w.outflows, 0))).toLocaleString() : "—"}</span> came in across your income sources. 
+            Of that, <span className="font-semibold text-urgency-high">${windows.reduce((s: number, w: any) => s + (w.outflows || 0), 0).toLocaleString()}</span> went to bills and obligations.
+          </p>
+          {stressWindows.length > 0 && (
+            <p className="text-urgency-high">
+              ⚠ Watch out: {stressWindows.length} stress window{stressWindows.length > 1 ? "s" : ""} ahead — the heaviest outflow day is <span className="font-semibold">{stressWindows[0]?.day}</span> with ${stressWindows[0]?.outflows.toLocaleString()} going out.
+            </p>
+          )}
+          <p>
+            Your projected minimum balance is <span className={`font-semibold ${minBalance < 1000 ? "text-urgency-high" : "text-foreground"}`}>${minBalance.toLocaleString()}</span>. 
+            After all obligations, you have <span className="font-semibold text-trust-verified">${safeToSpend.toLocaleString()}</span> safe to spend.
+          </p>
+          {stressWindows.length === 0 && (
+            <p className="text-trust-verified">✓ No cash flow concerns detected for the next 15 days. Your timing looks healthy.</p>
+          )}
+        </div>
+      </SitaCard>
+
       <LiveAdvisorCard
         advisor="money"
         intent="cashflow_forecast"

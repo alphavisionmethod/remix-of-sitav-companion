@@ -306,6 +306,51 @@ const BillsWorkspace = () => {
         </form>
       </ContextDrawer>
 
+      {/* Bill Shock Prevention */}
+      <SitaCard hover={false} className="p-5 border-l-4 border-l-urgency-high">
+        <div className="flex items-center gap-2 mb-4">
+          <AlertTriangle className="h-4 w-4 text-urgency-high" />
+          <SitaCardTitle sub="Unusual charges, renewal collisions, and cash timing risks">Bill Shock Prevention</SitaCardTitle>
+        </div>
+        <div className="space-y-2">
+          {(() => {
+            const alerts: { label: string; detail: string; severity: "high" | "medium" | "low" }[] = [];
+            // Detect large bills (> 2x average)
+            const avg = enriched.length > 0 ? enriched.reduce((s, b) => s + Number(b.amount), 0) / enriched.length : 0;
+            enriched.filter(b => Number(b.amount) > avg * 2 && b.computedStatus !== "paid").forEach(b => {
+              alerts.push({ label: `Large bill: ${b.payee}`, detail: `$${Number(b.amount).toLocaleString()} — ${(Number(b.amount) / avg).toFixed(1)}x your average bill`, severity: "high" });
+            });
+            // Detect bill collision days (3+ bills same day)
+            const byDay: Record<string, typeof enriched> = {};
+            enriched.filter(b => b.daysLeft >= 0 && b.daysLeft <= 15 && b.computedStatus !== "paid").forEach(b => {
+              const key = b.due_date;
+              if (!byDay[key]) byDay[key] = [];
+              byDay[key].push(b);
+            });
+            Object.entries(byDay).filter(([, bs]) => bs.length >= 2).forEach(([date, bs]) => {
+              const total = bs.reduce((s, b) => s + Number(b.amount), 0);
+              alerts.push({ label: `Bill collision: ${format(parseISO(date), "MMM d")}`, detail: `${bs.length} bills totaling $${total.toLocaleString()} due on the same day`, severity: "medium" });
+            });
+            // Detect annual renewals
+            enriched.filter(b => b.frequency === "annually" && b.daysLeft >= 0 && b.daysLeft <= 30 && b.computedStatus !== "paid").forEach(b => {
+              alerts.push({ label: `Annual renewal: ${b.payee}`, detail: `$${Number(b.amount).toLocaleString()} annual charge due ${format(parseISO(b.due_date), "MMM d")}`, severity: "medium" });
+            });
+            if (alerts.length === 0) {
+              return <p className="text-sm text-trust-verified flex items-center gap-2"><CheckCircle className="h-4 w-4" /> No bill shock risks detected. Your payment schedule looks smooth.</p>;
+            }
+            return alerts.map((a, i) => (
+              <div key={i} className="flex items-start gap-3 rounded-xl bg-secondary/30 px-4 py-3">
+                <AlertTriangle className={`h-4 w-4 mt-0.5 shrink-0 ${a.severity === "high" ? "text-urgency-critical" : "text-urgency-high"}`} />
+                <div>
+                  <p className="text-sm font-medium text-foreground">{a.label}</p>
+                  <p className="text-xs text-muted-foreground">{a.detail}</p>
+                </div>
+              </div>
+            ));
+          })()}
+        </div>
+      </SitaCard>
+
       <LiveAdvisorCard
         advisor="money"
         intent="bill_optimization"

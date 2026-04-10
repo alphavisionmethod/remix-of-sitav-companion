@@ -134,6 +134,42 @@ const MoneyOverview = () => {
         ))}
       </motion.div>
 
+      {/* Money Twin — Flow Visualization */}
+      <SitaCard hover={false} className="p-5">
+        <div className="flex items-center gap-2 mb-4">
+          <Zap className="h-4 w-4 text-primary" />
+          <SitaCardTitle sub="Where your money flows each month">Money Twin</SitaCardTitle>
+        </div>
+        {(() => {
+          const totalIn = k.totalBalance + k.monthlyBurn;
+          const flows = [
+            { label: "Bills & Obligations", amount: k.billsDue7d * 4, color: "bg-urgency-high" },
+            { label: "Subscriptions", amount: k.subscriptionMonthly, color: "bg-[hsl(var(--sita-gold))]" },
+            { label: "Reserves", amount: Math.round(k.totalBalance * 0.1), color: "bg-primary" },
+            { label: "Savings Goals", amount: Math.round(k.totalBalance * 0.05), color: "bg-trust-verified" },
+            { label: "Safe to Spend", amount: k.safeToSpend, color: "bg-[hsl(var(--trust-safe))]" },
+          ];
+          const flowTotal = flows.reduce((s, f) => s + f.amount, 0) || 1;
+          return (
+            <div className="space-y-2">
+              <div className="flex items-center justify-between text-xs text-muted-foreground mb-1">
+                <span>Income In</span>
+                <span className="font-semibold text-foreground">${(totalIn > 0 ? totalIn : k.totalBalance).toLocaleString()}</span>
+              </div>
+              {flows.map(f => (
+                <div key={f.label} className="flex items-center gap-3">
+                  <span className="text-xs text-muted-foreground w-32 shrink-0">{f.label}</span>
+                  <div className="flex-1 h-3 bg-secondary/40 rounded-full overflow-hidden">
+                    <div className={`h-full rounded-full ${f.color}`} style={{ width: `${Math.max(2, (f.amount / flowTotal) * 100)}%` }} />
+                  </div>
+                  <span className="text-xs font-semibold text-foreground w-20 text-right">${f.amount.toLocaleString()}</span>
+                </div>
+              ))}
+            </div>
+          );
+        })()}
+      </SitaCard>
+
       {/* Fraud Monitor */}
       <SitaCard hover={false} className="p-4">
         <div className="flex items-center gap-3 mb-3">
