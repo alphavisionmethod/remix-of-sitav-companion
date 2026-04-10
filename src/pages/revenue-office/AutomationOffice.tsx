@@ -9,14 +9,15 @@ import {
   FileText, Star, RefreshCw, ShieldCheck, Clock, ArrowRight, Activity, BarChart3,
   DollarSign, Target, Eye, XCircle, Settings, Workflow, Brain, Shield, Lightbulb,
   MessageSquare, UserPlus, Heart, Package, ArrowUpRight, Layers, Globe, Calendar,
-  GitBranch, Send
+  GitBranch, Send, Award, Glasses, HandMetal
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import {
   DEMO_activeAutomations, DEMO_advisorRecommendations, DEMO_atRiskAutomations,
-  DEMO_automationStats, DEMO_businessStageAutomations, DEMO_leakRepairOpportunities,
-  DEMO_AUTOMATION_SURFACE_MAP, DEMO_AUTOMATION_OS_CONNECTIONS
+  DEMO_automationStats, DEMO_leakRepairOpportunities,
+  DEMO_AUTOMATION_SURFACE_MAP, DEMO_AUTOMATION_OS_CONNECTIONS,
+  DEMO_AUTOMATION_QUALITY_SCORES, DEMO_SHADOW_BOARD, DEMO_PROMISES
 } from "@/lib/demo-data/revenue-office";
 
 const levelColors: Record<string, string> = {
@@ -45,6 +46,20 @@ const levelBadgeColors: Record<string, string> = {
   "L2": "bg-blue-500/10 text-blue-400 border-blue-500/20",
   "L1": "bg-purple-500/10 text-purple-400 border-purple-500/20",
   "None": "bg-red-500/10 text-red-400 border-red-500/20",
+};
+
+const safetyColors: Record<string, string> = {
+  "Safe to automate": "bg-emerald-500/10 text-emerald-400",
+  "Review recommended": "bg-amber-500/10 text-amber-400",
+  "Needs redesign": "bg-red-500/10 text-red-400",
+  "Human only": "bg-purple-500/10 text-purple-400",
+};
+
+const promiseStatusColors: Record<string, string> = {
+  overdue: "bg-red-500/10 text-red-400",
+  due_today: "bg-amber-500/10 text-amber-400",
+  on_track: "bg-blue-500/10 text-blue-400",
+  completed: "bg-emerald-500/10 text-emerald-400",
 };
 
 export default function AutomationOffice() {
@@ -89,19 +104,21 @@ export default function AutomationOffice() {
       </div>
 
       <Tabs value={selectedTab} onValueChange={setSelectedTab}>
-        <TabsList className="bg-card/50">
+        <TabsList className="bg-card/50 flex-wrap">
           <TabsTrigger value="overview">Boardroom</TabsTrigger>
           <TabsTrigger value="surface">Surface Map</TabsTrigger>
           <TabsTrigger value="active">Active ({DEMO_activeAutomations.length})</TabsTrigger>
           <TabsTrigger value="atRisk">At Risk ({DEMO_atRiskAutomations.length})</TabsTrigger>
           <TabsTrigger value="advisors">Advisor Recs ({DEMO_advisorRecommendations.length})</TabsTrigger>
           <TabsTrigger value="leaks">Leak Repair ({DEMO_leakRepairOpportunities.length})</TabsTrigger>
+          <TabsTrigger value="quality">Quality Scoring</TabsTrigger>
+          <TabsTrigger value="shadow">Shadow Board</TabsTrigger>
+          <TabsTrigger value="promises">Promises ({DEMO_PROMISES.filter(p => p.status !== "completed").length})</TabsTrigger>
           <TabsTrigger value="osmap">OS Map</TabsTrigger>
         </TabsList>
 
         {/* BOARDROOM TAB */}
         <TabsContent value="overview" className="space-y-4">
-          {/* Chief Strategist Alert */}
           <Card className="bg-card/50 border-primary/20 border">
             <CardContent className="p-4 flex items-start gap-3">
               <Brain className="h-5 w-5 text-primary mt-0.5" />
@@ -118,7 +135,6 @@ export default function AutomationOffice() {
             </CardContent>
           </Card>
 
-          {/* Revenue Impact Summary */}
           <div className="grid md:grid-cols-4 gap-3">
             {[
               { label: "Revenue Protected", value: "$34,800", desc: "by active automations this month", color: "text-emerald-400", icon: Shield },
@@ -139,7 +155,6 @@ export default function AutomationOffice() {
             ))}
           </div>
 
-          {/* Trust Level Distribution */}
           <Card className="bg-card/50 border-border/50">
             <CardHeader><CardTitle className="flex items-center gap-2 text-sm"><ShieldCheck className="h-4 w-4 text-emerald-400" />Automation Trust Level Distribution</CardTitle></CardHeader>
             <CardContent className="grid md:grid-cols-4 gap-3">
@@ -162,7 +177,6 @@ export default function AutomationOffice() {
             </CardContent>
           </Card>
 
-          {/* Quick Actions */}
           <Card className="bg-card/50 border-border/50">
             <CardHeader><CardTitle className="text-sm flex items-center gap-2"><Lightbulb className="h-4 w-4 text-amber-400" />Quick Automation Actions</CardTitle></CardHeader>
             <CardContent className="grid md:grid-cols-3 gap-2">
@@ -192,7 +206,6 @@ export default function AutomationOffice() {
             </CardContent>
           </Card>
 
-          {/* Overall Coverage */}
           <div className="grid md:grid-cols-3 gap-3">
             {[
               { label: "Domains Covered", value: `${DEMO_AUTOMATION_SURFACE_MAP.filter(d => d.currentLevel !== "None").length}/10`, color: "text-emerald-400" },
@@ -208,7 +221,6 @@ export default function AutomationOffice() {
             ))}
           </div>
 
-          {/* Domain Cards */}
           <div className="space-y-3">
             {DEMO_AUTOMATION_SURFACE_MAP.map((domain) => (
               <Card key={domain.domain} className="bg-card/50 border-border/50 hover:border-primary/20 transition-colors">
@@ -233,7 +245,6 @@ export default function AutomationOffice() {
 
                   <Progress value={domain.coveragePct} className="h-1.5 mb-3" />
 
-                  {/* Sub-capabilities */}
                   <div className="grid md:grid-cols-2 gap-2 mb-3">
                     {domain.subCapabilities.map((sub) => (
                       <div key={sub.name} className={`p-2 rounded-lg border text-xs flex items-center justify-between ${sub.automated ? "bg-emerald-500/5 border-emerald-500/20" : "bg-muted/10 border-border/30"}`}>
@@ -246,7 +257,6 @@ export default function AutomationOffice() {
                     ))}
                   </div>
 
-                  {/* Value + Actions */}
                   <div className="flex items-center justify-between pt-2 border-t border-border/20">
                     <div className="flex items-center gap-4 text-xs text-muted-foreground">
                       <span>Est. value: <span className="text-emerald-400 font-medium">{domain.estimatedValue}</span></span>
@@ -265,7 +275,6 @@ export default function AutomationOffice() {
                     </div>
                   </div>
 
-                  {/* Gaps */}
                   {domain.gaps.length > 0 && (
                     <div className="mt-2 flex flex-wrap gap-1">
                       {domain.gaps.map((gap) => (
@@ -389,6 +398,197 @@ export default function AutomationOffice() {
           ))}
         </TabsContent>
 
+        {/* AUTOMATION QUALITY SCORING TAB */}
+        <TabsContent value="quality" className="space-y-4">
+          <Card className="bg-card/50 border-primary/20 border">
+            <CardContent className="p-4 flex items-start gap-3">
+              <Award className="h-5 w-5 text-primary mt-0.5" />
+              <div>
+                <p className="text-sm font-semibold text-foreground mb-1">Automation Quality Scoring</p>
+                <p className="text-xs text-muted-foreground">Every automation is scored across 7 dimensions: data completeness, template quality, consent readiness, edge-case coverage, failure history, advisor confidence, and business impact. Only automations scoring above 80 are recommended for L3+ trust.</p>
+              </div>
+            </CardContent>
+          </Card>
+
+          <div className="grid md:grid-cols-4 gap-3">
+            {[
+              { label: "Safe to Automate", value: DEMO_AUTOMATION_QUALITY_SCORES.filter(q => q.safetyLevel === "Safe to automate").length, color: "text-emerald-400" },
+              { label: "Review Recommended", value: DEMO_AUTOMATION_QUALITY_SCORES.filter(q => q.safetyLevel === "Review recommended").length, color: "text-amber-400" },
+              { label: "Needs Redesign", value: DEMO_AUTOMATION_QUALITY_SCORES.filter(q => q.safetyLevel === "Needs redesign").length, color: "text-red-400" },
+              { label: "Human Only", value: DEMO_AUTOMATION_QUALITY_SCORES.filter(q => q.safetyLevel === "Human only").length, color: "text-purple-400" },
+            ].map(m => (
+              <Card key={m.label} className="bg-card/50 border-border/50">
+                <CardContent className="p-3 text-center">
+                  <p className={`text-2xl font-bold ${m.color}`}>{m.value}</p>
+                  <p className="text-[10px] text-muted-foreground">{m.label}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {DEMO_AUTOMATION_QUALITY_SCORES.map((q) => (
+            <Card key={q.automation} className="bg-card/50 border-border/50 hover:border-primary/20 transition-colors">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <div>
+                    <p className="text-sm font-semibold text-foreground">{q.automation}</p>
+                    <div className="flex items-center gap-2 mt-1">
+                      <Badge className={`text-[10px] ${safetyColors[q.safetyLevel]}`}>{q.safetyLevel}</Badge>
+                      <Badge variant="outline" className="text-[10px]">Trust: {q.trustLevel}</Badge>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className={`text-2xl font-bold ${q.score >= 80 ? "text-emerald-400" : q.score >= 60 ? "text-amber-400" : "text-red-400"}`}>{q.score}</p>
+                    <p className="text-[10px] text-muted-foreground">quality score</p>
+                  </div>
+                </div>
+                <Progress value={q.score} className="h-2 mb-3" />
+                <div className="grid grid-cols-4 md:grid-cols-7 gap-2">
+                  {[
+                    { label: "Data", value: q.dataCompleteness },
+                    { label: "Template", value: q.templateQuality },
+                    { label: "Consent", value: q.consentReadiness },
+                    { label: "Edge Cases", value: q.edgeCoverage },
+                    { label: "History", value: q.failureHistory },
+                    { label: "Advisor", value: q.advisorConfidence },
+                    { label: "Impact", value: q.businessImpact },
+                  ].map(d => (
+                    <div key={d.label} className="text-center p-1.5 rounded bg-background/50 border border-border/20">
+                      <p className={`text-xs font-bold ${d.value >= 80 ? "text-emerald-400" : d.value >= 60 ? "text-amber-400" : "text-red-400"}`}>{d.value}%</p>
+                      <p className="text-[8px] text-muted-foreground">{d.label}</p>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </TabsContent>
+
+        {/* AUTOMATION SHADOW BOARD TAB */}
+        <TabsContent value="shadow" className="space-y-4">
+          <Card className="bg-card/50 border-primary/20 border">
+            <CardContent className="p-4 flex items-start gap-3">
+              <Glasses className="h-5 w-5 text-primary mt-0.5" />
+              <div>
+                <p className="text-sm font-semibold text-foreground mb-1">Automation Shadow Board</p>
+                <p className="text-xs text-muted-foreground">Compare what automation would have done vs. what humans actually did. Identify where automations should be promoted, downgraded, or where human judgment outperforms.</p>
+              </div>
+            </CardContent>
+          </Card>
+
+          <div className="grid md:grid-cols-3 gap-3">
+            {[
+              { label: "Automation Better", value: DEMO_SHADOW_BOARD.filter(s => s.betterOutcome === "automation").length, color: "text-emerald-400" },
+              { label: "Human Better", value: DEMO_SHADOW_BOARD.filter(s => s.betterOutcome === "human").length, color: "text-purple-400" },
+              { label: "Promotion Candidates", value: DEMO_SHADOW_BOARD.filter(s => s.promotionRecommendation.includes("Promote")).length, color: "text-blue-400" },
+            ].map(m => (
+              <Card key={m.label} className="bg-card/50 border-border/50">
+                <CardContent className="p-3 text-center">
+                  <p className={`text-2xl font-bold ${m.color}`}>{m.value}</p>
+                  <p className="text-[10px] text-muted-foreground">{m.label}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {DEMO_SHADOW_BOARD.map((s, i) => (
+            <Card key={i} className={`bg-card/50 ${s.betterOutcome === "automation" ? "border-emerald-500/20" : "border-purple-500/20"}`}>
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <div>
+                    <p className="text-sm font-semibold text-foreground">{s.automation}</p>
+                    <p className="text-[10px] text-muted-foreground">{s.period}</p>
+                  </div>
+                  <Badge className={`text-[10px] ${s.betterOutcome === "automation" ? "bg-emerald-500/10 text-emerald-400" : "bg-purple-500/10 text-purple-400"}`}>
+                    {s.betterOutcome === "automation" ? "🤖 Automation wins" : "👤 Human wins"}
+                  </Badge>
+                </div>
+                <div className="grid md:grid-cols-2 gap-3 mb-3">
+                  <div className="p-3 rounded-lg bg-emerald-500/5 border border-emerald-500/20">
+                    <p className="text-[10px] font-semibold text-emerald-400 uppercase tracking-wide mb-1">What automation would have done</p>
+                    <p className="text-xs text-foreground">{s.autoWouldHaveDone}</p>
+                  </div>
+                  <div className="p-3 rounded-lg bg-purple-500/5 border border-purple-500/20">
+                    <p className="text-[10px] font-semibold text-purple-400 uppercase tracking-wide mb-1">What human actually did</p>
+                    <p className="text-xs text-foreground">{s.humanActuallyDid}</p>
+                  </div>
+                </div>
+                <div className="p-2 rounded bg-background/50 border border-border/20 mb-2">
+                  <p className="text-[10px] text-muted-foreground"><span className="font-medium text-foreground">Divergence:</span> {s.divergence}</p>
+                </div>
+                <div className="p-2 rounded bg-primary/5 border border-primary/10">
+                  <p className="text-[10px] text-foreground flex items-start gap-1"><Brain className="h-3 w-3 text-primary mt-0.5 flex-shrink-0" />{s.promotionRecommendation}</p>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </TabsContent>
+
+        {/* PROMISE TRACKER TAB */}
+        <TabsContent value="promises" className="space-y-4">
+          <Card className="bg-card/50 border-primary/20 border">
+            <CardContent className="p-4 flex items-start gap-3">
+              <HandMetal className="h-5 w-5 text-primary mt-0.5" />
+              <div>
+                <p className="text-sm font-semibold text-foreground mb-1">Promise Tracker</p>
+                <p className="text-xs text-muted-foreground">Track every promise made to a lead or client — follow-ups, quotes, onboarding, callbacks. Alerts and automations ensure trust fulfillment so nothing falls through the cracks.</p>
+              </div>
+            </CardContent>
+          </Card>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {[
+              { label: "Overdue", value: DEMO_PROMISES.filter(p => p.status === "overdue").length, color: "text-red-400" },
+              { label: "Due Today", value: DEMO_PROMISES.filter(p => p.status === "due_today").length, color: "text-amber-400" },
+              { label: "On Track", value: DEMO_PROMISES.filter(p => p.status === "on_track").length, color: "text-blue-400" },
+              { label: "Completed", value: DEMO_PROMISES.filter(p => p.status === "completed").length, color: "text-emerald-400" },
+            ].map(m => (
+              <Card key={m.label} className="bg-card/50 border-border/50">
+                <CardContent className="p-3 text-center">
+                  <p className={`text-2xl font-bold ${m.color}`}>{m.value}</p>
+                  <p className="text-[10px] text-muted-foreground">{m.label}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {DEMO_PROMISES.map((p) => (
+            <Card key={p.id} className={`bg-card/50 ${p.status === "overdue" ? "border-red-500/30" : p.status === "due_today" ? "border-amber-500/30" : "border-border/50"}`}>
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between mb-2">
+                  <div>
+                    <p className="text-sm font-medium text-foreground">{p.contact}</p>
+                    <p className="text-xs text-muted-foreground">{p.company}</p>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Badge className={`text-[10px] ${promiseStatusColors[p.status]}`}>{p.status.replace(/_/g, " ")}</Badge>
+                    {p.daysOverdue > 0 && <span className="text-xs text-red-400 font-medium">{p.daysOverdue}d overdue</span>}
+                  </div>
+                </div>
+                <p className="text-xs text-foreground mb-2">{p.promise}</p>
+                <div className="flex items-center gap-4 text-[10px] text-muted-foreground">
+                  <span>Promised: {p.promisedAt}</span>
+                  <span>Deadline: {p.deadline}</span>
+                  <span>Channel: <span className="text-foreground">{p.channel}</span></span>
+                  {p.automation && <Badge variant="outline" className="text-[8px]">{p.automation}</Badge>}
+                </div>
+                {p.status !== "completed" && (
+                  <div className="mt-2 pt-2 border-t border-border/20 flex gap-2">
+                    <button className="px-3 py-1.5 rounded bg-primary/10 text-primary text-[10px] font-medium flex items-center gap-1">
+                      <Zap className="h-3 w-3" />Fulfill Now
+                    </button>
+                    {!p.automation && (
+                      <button className="px-3 py-1.5 rounded bg-secondary text-secondary-foreground text-[10px]">
+                        Create Automation
+                      </button>
+                    )}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          ))}
+        </TabsContent>
+
         {/* AUTOMATION OS MAP TAB */}
         <TabsContent value="osmap" className="space-y-4">
           <Card className="bg-card/50 border-primary/20 border">
@@ -401,7 +601,6 @@ export default function AutomationOffice() {
             </CardContent>
           </Card>
 
-          {/* Visual Connection Map */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-3">
             {DEMO_AUTOMATION_OS_CONNECTIONS.map((conn) => (
               <Card key={conn.from + conn.to} className="bg-card/50 border-border/50 hover:border-primary/20 transition-colors">
@@ -429,7 +628,6 @@ export default function AutomationOffice() {
             ))}
           </div>
 
-          {/* Automation Layers Summary */}
           <Card className="bg-card/50 border-border/50">
             <CardHeader><CardTitle className="text-sm flex items-center gap-2"><Shield className="h-4 w-4 text-emerald-400" />Governance Layers</CardTitle></CardHeader>
             <CardContent className="grid md:grid-cols-4 gap-3">
