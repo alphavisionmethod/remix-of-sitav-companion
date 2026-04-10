@@ -546,6 +546,7 @@ const CapitalPurpose = lazy(() => import("./pages/investment-office/CapitalPurpo
 const WhatWouldBreak = lazy(() => import("./pages/investment-office/WhatWouldBreak"));
 const DisagreementEngine = lazy(() => import("./pages/investment-office/DisagreementEngine"));
 const FamilyOffice = lazy(() => import("./pages/investment-office/FamilyOffice"));
+const KnowledgeGraph = lazy(() => import("./pages/investment-office/KnowledgeGraph"));
 const RevenueGate = lazy(() => import("./pages/revenue-office/RevenueGate"));
 const GrowthBoardroom = lazy(() => import("./pages/revenue-office/GrowthBoardroom"));
 const RelationshipCenter = lazy(() => import("./pages/revenue-office/RelationshipCenter"));
