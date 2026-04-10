@@ -109,7 +109,7 @@ serve(async (req) => {
       };
     }
     else if (endpoint === "incidents" && !subId && method === "POST") {
-      const { title, severity, impact, description } = body as unknown;
+      const { title, severity, impact, description } = body as Record<string, any>;
       if (!title || !severity) {
         return new Response(JSON.stringify({ error: "title and severity required" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
       }
@@ -130,7 +130,7 @@ serve(async (req) => {
     }
     else if (endpoint === "incidents" && subId && !subAction && method === "PUT") {
       const { data: before } = await supabase.from("incidents").select("*").eq("id", subId).eq("user_id", user.id).single();
-      const { title, severity, impact, description, status: newStatus, assigned_to } = body as unknown;
+      const { title, severity, impact, description, status: newStatus, assigned_to } = body as Record<string, any>;
       const updates: Record<string, unknown> = { updated_at: new Date().toISOString() };
       if (title) updates.title = title;
       if (severity) updates.severity = severity;
@@ -159,7 +159,7 @@ serve(async (req) => {
       result = data;
     }
     else if (endpoint === "incidents" && subId && subAction === "resolve") {
-      const { root_cause, notes } = body as unknown;
+      const { root_cause, notes } = body as Record<string, any>;
       const { data: incident, error: fetchError } = await supabase.from("incidents").select("*").eq("id", subId).eq("user_id", user.id).single();
       if (fetchError || !incident) return new Response(JSON.stringify({ error: "Incident not found" }), { status: 404, headers: { ...corsHeaders, "Content-Type": "application/json" } });
       const timeline = [...(incident.timeline || []), { action: "resolved", actor: user.id, timestamp: new Date().toISOString(), notes }];
@@ -188,7 +188,7 @@ serve(async (req) => {
       };
     }
     else if (endpoint === "policies" && !subId && method === "POST") {
-      const { name, category, conditions, actions, approval_required, active } = body as unknown;
+      const { name, category, conditions, actions, approval_required, active } = body as Record<string, any>;
       if (!name || !category) return new Response(JSON.stringify({ error: "name and category required" }), { status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } });
       const policy = { name, category, conditions: conditions || {}, actions: actions || {}, approval_required: approval_required ?? false, active: active ?? true, user_id: user.id };
       const { data, error } = await supabase.from("policies").insert(policy).select().single();
@@ -203,7 +203,7 @@ serve(async (req) => {
     }
     else if (endpoint === "policies" && subId && !subAction && method === "PUT") {
       const { data: before } = await supabase.from("policies").select("*").eq("id", subId).eq("user_id", user.id).single();
-      const { name, category, conditions, actions, approval_required, active, description } = body as unknown;
+      const { name, category, conditions, actions, approval_required, active, description } = body as Record<string, any>;
       const updates: Record<string, unknown> = { updated_at: new Date().toISOString() };
       if (name) updates.name = name;
       if (category) updates.category = category;
@@ -224,7 +224,7 @@ serve(async (req) => {
       result = { deleted: true };
     }
     else if (endpoint === "simulate" && method === "POST") {
-      const { domain, action: simAction, amount, context: simContext } = body as unknown;
+      const { domain, action: simAction, amount, context: simContext } = body as Record<string, any>;
       const { data: policies } = await supabase.from("policies").select("*").eq("user_id", user.id).eq("active", true);
       const matchingPolicies = (policies || []).filter((p: any) => !domain || p.category === domain);
       const results = matchingPolicies.map((p: any) => {
@@ -254,7 +254,7 @@ serve(async (req) => {
       result = { logs: data || [], total: data?.length || 0, offset, limit };
     }
     else if (endpoint === "audit-export" && method === "POST") {
-      const { start_date, end_date } = body as unknown;
+      const { start_date, end_date } = body as Record<string, any>;
       const startFilter = start_date || since;
       const endFilter = end_date || new Date().toISOString();
       const { data, error } = await supabase.from("audit_logs").select("*").eq("actor_id", user.id).gte("created_at", startFilter).lte("created_at", endFilter).order("created_at", { ascending: false }).limit(5000);
