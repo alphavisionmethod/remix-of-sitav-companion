@@ -1,8 +1,9 @@
 import { useParams, useNavigate } from "react-router-dom";
 import {
-  ArrowLeft, TrendingUp, TrendingDown, Shield, Zap, BarChart3, Brain,
+  ArrowLeft, TrendingUp, TrendingDown, Shield, Zap, Brain, BarChart3,
   Target, AlertTriangle, ChevronRight, Calendar, Eye, Plus, Info, Activity, Link2
 } from "lucide-react";
+import LightweightChart from "@/components/investment/LightweightChart";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { INVESTMENT_ADVISORS, PORTFOLIO, SAMPLE_THESES, PLATFORM_CONNECTIONS, getInstrument } from "@/hooks/useInvestmentOfficeData";
 import { SAMPLE_SCENARIOS } from "@/lib/investment-office/mock-data";
@@ -89,9 +90,12 @@ export default function InstrumentDetail() {
             {inst.low52w && <div><p className="font-medium text-foreground">${inst.low52w.toLocaleString()}</p><p>52w Low</p></div>}
           </div>
         </div>
-        <div className="mt-6 h-48 rounded-xl bg-secondary/30 border border-border flex items-center justify-center text-muted-foreground text-sm">
-          <BarChart3 className="h-5 w-5 mr-2" /> Chart — connect data provider for live charts
-        </div>
+        <LightweightChart
+          symbol={inst.symbol}
+          basePrice={inst.price}
+          changePct={inst.changePct24h}
+          className="mt-4"
+        />
       </div>
 
       {/* What It Is — Plain Language Explainer */}

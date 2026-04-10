@@ -6,6 +6,8 @@ import { PORTFOLIO, SAMPLE_SCENARIOS, SAMPLE_THESES } from "@/hooks/useInvestmen
 import { STRATEGY_TEMPLATES, STRATEGY_ADVISOR_COMMENTS } from "@/lib/investment-office/mock-data";
 import { useInvestmentStrategyRecords } from "@/hooks/use-investment-office";
 import { useDataMode } from "@/contexts/DataModeContext";
+import AllocationRebalancer from "@/components/investment/AllocationRebalancer";
+import { toast } from "sonner";
 
 const pctFmt = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(1)}%`;
 const ALLOC_COLORS: Record<string, string> = {
@@ -187,6 +189,24 @@ export default function StrategyStudio() {
             </div>
           ))}
         </div>
+      </div>
+
+      {/* Interactive Allocation Rebalancer */}
+      <div className="rounded-2xl border border-border bg-card p-6 space-y-4">
+        <h3 className="text-sm font-semibold text-foreground flex items-center gap-2"><Sliders className="h-4 w-4 text-primary" /> Allocation Rebalancer</h3>
+        <p className="text-xs text-muted-foreground">Drag sliders to adjust weights. Lock classes to preserve them. See real-time portfolio impact below.</p>
+        <AllocationRebalancer
+          totalValue={PORTFOLIO.totalValue}
+          classes={[
+            { key: "stocks", label: "Stocks", color: "bg-primary", currentWeight: PORTFOLIO.allocationByClass.stocks || 0 },
+            { key: "etfs", label: "ETFs", color: "bg-primary/60", currentWeight: PORTFOLIO.allocationByClass.etfs || 0 },
+            { key: "crypto", label: "Crypto", color: "bg-[hsl(var(--trust-warn))]", currentWeight: PORTFOLIO.allocationByClass.crypto || 0 },
+            { key: "commodities", label: "Commodities", color: "bg-[hsl(38,85%,58%)]", currentWeight: PORTFOLIO.allocationByClass.commodities || 0 },
+            { key: "events", label: "Events", color: "bg-[hsl(280,60%,55%)]", currentWeight: PORTFOLIO.allocationByClass.events || 0 },
+            { key: "cash", label: "Cash", color: "bg-muted-foreground", currentWeight: PORTFOLIO.allocationByClass.cash || 0 },
+          ]}
+          onApply={(weights) => toast.success("Rebalance simulation ready — review in Decision Theater", { description: Object.entries(weights).map(([k,v]) => `${k}: ${v.toFixed(1)}%`).join(" · ") })}
+        />
       </div>
 
       {/* Current Allocation */}
