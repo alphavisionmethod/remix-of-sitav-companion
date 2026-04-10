@@ -81,6 +81,20 @@ const NAV_ITEMS = [
   { label: "CPS: Service Migration", path: "/admin/service-migration", icon: Server, group: "Core Persistence" },
   { label: "CPS: Persistence Drift", path: "/admin/persistence-drift", icon: AlertTriangle, group: "Core Persistence" },
   { label: "CPS: Runtime Continuity", path: "/admin/runtime-continuity", icon: RefreshCw, group: "Core Persistence" },
+  { label: "FIP: Intake Desk", path: "/admin/fip/intake", icon: FileText, group: "Feature Integration" },
+  { label: "FIP: Spec Studio", path: "/admin/fip/spec-studio", icon: FileText, group: "Feature Integration" },
+  { label: "FIP: Owner Boundary", path: "/admin/fip/owner-boundary", icon: Crown, group: "Feature Integration" },
+  { label: "FIP: Capability Registry", path: "/admin/fip/capability-registry", icon: Layers, group: "Feature Integration" },
+  { label: "FIP: Compliance Board", path: "/admin/fip/compliance", icon: Shield, group: "Feature Integration" },
+  { label: "FIP: Execution Paths", path: "/admin/fip/execution-paths", icon: Zap, group: "Feature Integration" },
+  { label: "FIP: Policy & Trust", path: "/admin/fip/policy-trust", icon: Lock, group: "Feature Integration" },
+  { label: "FIP: Memory & Graph", path: "/admin/fip/memory-graph", icon: Brain, group: "Feature Integration" },
+  { label: "FIP: Observability", path: "/admin/fip/observability", icon: Activity, group: "Feature Integration" },
+  { label: "FIP: Rollout Planner", path: "/admin/fip/rollout", icon: Rocket, group: "Feature Integration" },
+  { label: "FIP: Generated Truth", path: "/admin/fip/generated-truth", icon: Database, group: "Feature Integration" },
+  { label: "FIP: Readiness Gates", path: "/admin/fip/readiness", icon: Target, group: "Feature Integration" },
+  { label: "FIP: Deprecation", path: "/admin/fip/deprecation", icon: AlertTriangle, group: "Feature Integration" },
+  { label: "FIP: Builder Console", path: "/admin/fip/builder", icon: Cpu, group: "Feature Integration" },
 ];
 
 const ACTION_ITEMS = [

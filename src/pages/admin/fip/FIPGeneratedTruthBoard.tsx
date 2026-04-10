@@ -1,3 +1,4 @@
+import FIPSubNav from "@/components/admin/FIPSubNav";
 import { motion } from "framer-motion";
 import { Database, CheckCircle2, XCircle, AlertTriangle, FileJson } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,6 +19,7 @@ const FIPGeneratedTruthBoard = () => {
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
+      <FIPSubNav />
       <DemoModeBadge />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Database className="h-6 w-6 text-primary" /> FIP11 — Generated Truth Impact Board</h1>
