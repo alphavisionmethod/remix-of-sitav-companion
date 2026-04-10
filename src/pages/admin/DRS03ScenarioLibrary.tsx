@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Loader2, BookOpen, Users, Layers } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import DRSSubNav from "@/components/admin/DRSSubNav";
 
 
 
@@ -28,6 +29,7 @@ export default function DRS03ScenarioLibrary() {
   return (
     <div className="space-y-6 p-6">
       <DemoModeBadge />
+      <DRSSubNav />
       <div>
         <h1 className="text-2xl font-bold text-foreground">DRS03 — Scenario Library</h1>
         <p className="text-sm text-muted-foreground mt-1">Inspect all demo scenarios and their composition</p>

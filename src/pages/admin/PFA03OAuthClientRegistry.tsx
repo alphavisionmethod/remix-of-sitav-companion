@@ -8,6 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Key, CheckCircle, XCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import PFASubNav from "@/components/admin/PFASubNav";
 
 
 
@@ -27,6 +28,7 @@ export default function PFA03OAuthClientRegistry() {
   return (
     <div className="space-y-6 p-6">
       <DemoModeBadge />
+      <PFASubNav />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Key className="h-6 w-6" /> OAuth Client Registry</h1>
         <p className="text-sm text-muted-foreground mt-1">Auth clients by purpose, environment, and provider family</p>

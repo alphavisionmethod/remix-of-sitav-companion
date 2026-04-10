@@ -7,6 +7,7 @@ import { Loader2, Eye, Tag, ShieldCheck } from "lucide-react";
 import { CANONICAL_MODES } from "@/lib/dual-reality/reality-mode-registry";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import DRSSubNav from "@/components/admin/DRSSubNav";
 
 
 
@@ -34,6 +35,7 @@ export default function DRS09TruthLabeling() {
   return (
     <div className="space-y-6 p-6">
       <DemoModeBadge />
+      <DRSSubNav />
       <div>
         <h1 className="text-2xl font-bold text-foreground">DRS09 — Demo Truth & Labeling Review</h1>
         <p className="text-sm text-muted-foreground mt-1">Ensure demo mode stays honest and properly labeled</p>

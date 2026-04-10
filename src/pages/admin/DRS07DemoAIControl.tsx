@@ -4,6 +4,7 @@ import { Brain, Zap, Database, DollarSign } from "lucide-react";
 import { evaluateAIPolicy } from "@/lib/dual-reality/demo-policy-engine";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import DRSSubNav from "@/components/admin/DRSSubNav";
 
 export default function DRS07DemoAIControl() {
   const { isDemoMode } = useDataMode();
@@ -20,6 +21,7 @@ export default function DRS07DemoAIControl() {
   return (
     <div className="space-y-6 p-6">
       <DemoModeBadge />
+      <DRSSubNav />
       <div>
         <h1 className="text-2xl font-bold text-foreground">DRS07 — Demo AI Control Center</h1>
         <p className="text-sm text-muted-foreground mt-1">Control AI behavior across reality modes</p>

@@ -7,6 +7,7 @@ import { Loader2, Settings } from "lucide-react";
 import { CANONICAL_MODES, type RealityModeKey } from "@/lib/dual-reality/reality-mode-registry";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import DRSSubNav from "@/components/admin/DRSSubNav";
 
 export default function DRS02ModeRegistryConsole() {
   const { isDemoMode } = useDataMode();
@@ -25,6 +26,7 @@ export default function DRS02ModeRegistryConsole() {
   return (
     <div className="space-y-6 p-6">
       <DemoModeBadge />
+      <DRSSubNav />
       <div>
         <h1 className="text-2xl font-bold text-foreground">DRS02 — Mode Registry Console</h1>
         <p className="text-sm text-muted-foreground mt-1">Manage and inspect runtime modes</p>

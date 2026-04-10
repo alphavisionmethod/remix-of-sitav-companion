@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Loader2, BarChart3, AlertTriangle, Filter } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import DRSSubNav from "@/components/admin/DRSSubNav";
 
 
 
@@ -27,6 +28,7 @@ export default function DRS08AnalyticsSegregation() {
   return (
     <div className="space-y-6 p-6">
       <DemoModeBadge />
+      <DRSSubNav />
       <div>
         <h1 className="text-2xl font-bold text-foreground">DRS08 — Analytics Segregation Board</h1>
         <p className="text-sm text-muted-foreground mt-1">Verify demo analytics separation from real data</p>

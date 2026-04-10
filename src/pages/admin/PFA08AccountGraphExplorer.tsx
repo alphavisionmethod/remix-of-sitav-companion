@@ -9,6 +9,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 
 
 import {
+import PFASubNav from "@/components/admin/PFASubNav";
   getAccountNodes,
   getAccountEdges,
   getUserIdentityLinks,
@@ -58,6 +59,7 @@ export default function PFA08AccountGraphExplorer() {
   return (
     <div className="space-y-6 p-6">
       <DemoModeBadge />
+      <PFASubNav />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Network className="h-6 w-6" /> Unified Account Graph</h1>
         <p className="text-sm text-muted-foreground mt-1">Identity auth (sign-in) and connector auth (external access) — fully separated</p>
