@@ -1,75 +1,88 @@
 
 
-# SITA OS — Deployment Readiness Audit & Fix Plan
+# SITA OS — Full Deployment Readiness Audit
 
-## Issues Found
+## Summary
 
-### CRITICAL: Edge Function Double Body Consumption (3 functions)
+Deep audit across edge functions, routing, contracts, kernels, and deployment artifacts. Found 5 categories of issues, none are showstoppers but several should be fixed for production hygiene.
 
-These functions call `req.json()` twice in different code paths that CAN both execute in a single request, causing "Body already consumed" crashes:
+---
 
-| Function | Issue |
-|----------|-------|
-| `event-processor` | Line 16: validation parse, Line 38: handler parse — both fire for POST |
-| `revenue-caller` | Line 38: validation parse, Line 73: handler parse — both fire for POST |
-| `system-updates` | Line 14: validation parse, Line 58: handler parse — both fire for POST |
+## Issue 1: Duplicate Route Definitions (Medium)
 
-**Fix pattern:** Parse body once at the top, store in variable, reuse throughout.
+**App.tsx** defines admin routes inline (lines 1522-1555) AND loads them again via `getAdminRoutes()` at line 1819. The following paths are registered twice:
 
-### CRITICAL: `agent-signal` stale `body` reference
+- `/admin/dashboard`, `/admin/team`, `/admin/system`, `/admin/users`, `/admin/ai-tokens`, `/admin/generated-truth`, `/admin/fleet-health`
 
-Line 118 references `body` (undefined) instead of `parsedBody`. This crashes the "process" path.
+React Router uses first-match, so the inline definitions win and the duplicates in `getAdminRoutes()` are dead code. This wastes bundle via duplicate lazy imports in both `App.tsx` and `AdminRoutes.tsx`.
 
-**Fix:** Change `const { signal_ids } = body;` to `const { signal_ids } = parsedBody;`
+**Fix:** Remove the 7 overlapping route definitions from the inline block in App.tsx (lines 1524-1530), since `getAdminRoutes()` already handles them inside an `AdminShellLayout`. OR remove them from `AdminRoutes.tsx` — whichever layout wrapping is correct. Also remove the corresponding duplicate lazy import declarations from App.tsx (lines 168-179 for `GeneratedTruthDashboard`, `FleetHealthPage`, `AdminDashboard`, `TeamManagement`, `SystemManagement`, `UserManagement`, `AITokenDashboard`).
 
-### No Other Issues Found
+---
 
-- All 9 AIG boards have `AIGSubNav` wired
-- All AIT boards have `AITSubNav` (directly or via delegation to `AIT04to08Boards`)
-- `intelligence-api` has 8 `req.json()` calls but in mutually exclusive route branches — safe
-- No double-parse in `ai-gateway`, `os-status`, `connector-oauth`, `admin-api`, `ambient-os-operations`, `connector-operations`, `connector-proxy`, `agent-intelligence`
-- No invalid cross-boundary imports in edge functions
-- `CalmAssistantChat.tsx` imports are clean (previously fixed)
-- Deployment artifacts (Dockerfile, docker-compose, nginx, PWA manifest, icons) all present
-- DB linter clean (1 low-priority warning: leaked password protection disabled)
-- Dev server logs clean (only a benign Tailwind ambiguity warning)
-- Security headers properly applied via shared module
+## Issue 2: Edge Function SDK Version Drift (Low-Medium)
 
-## Files Changed
+41 edge functions use `@supabase/supabase-js` but with 3 different versions:
+- `2.49.4` — majority (correct, latest)
+- `2.49.1` — `admin-ai-workforce-run`, `check-ai-budget`, `system-updates`, `event-processor`
+- **`2.39.3`** — `connector-operations` (10 minor versions behind)
+
+**Fix:** Standardize all to `2.49.4`. Search-and-replace across all edge function `index.ts` files.
+
+---
+
+## Issue 3: `admin-intelligence` Double Body Consumption (Low)
+
+Lines 46 validates body via `req.json()` but discards the result. The function is primarily GET-based (routes by URL path), so POST calls would crash. Low risk since clients use GET, but still a latent bug.
+
+**Fix:** Apply the same parse-once pattern used in other functions.
+
+---
+
+## Issue 4: `as unknown` Property Access in Edge Functions (Low)
+
+`payment-process/index.ts` (line 89-91) casts `approval.payload as unknown` then accesses `.amount_cents` — TypeScript should flag this. Same pattern in `admin-api/index.ts` at lines 112, 133, 162, 191, 206, 227, 257. Works at runtime (JS ignores types) but is incorrect TypeScript.
+
+**Fix:** Change `as unknown` to `as Record<string, any>` in these destructuring patterns.
+
+---
+
+## Issue 5: `as any` in 13 Page Files (Low, Tracked)
+
+142 uses of `as any` across 13 page files. Production truth dashboard says 0, which means the dashboard check may be stale or scoped differently. Most are select/filter casts — low runtime risk but violates type safety goals.
+
+**Fix:** Not blocking deployment. Track for future type hardening sprint.
+
+---
+
+## What Passed (No Issues Found)
+
+- **Contract boundaries**: Zero violations — no React imports, no runtime imports, no forbidden domain references
+- **Security**: No `localStorage` role checks, no `execute_sql`, no direct LLM calls outside gateway
+- **Kernel contracts**: Clean barrel exports, zero runtime dependencies
+- **PWA**: manifest.webmanifest + icon-192 + icon-512 present
+- **Deployment artifacts**: Dockerfile, docker-compose.yml, nginx config all present
+- **DB linter**: Clean (1 low-priority leaked password protection warning — pre-existing)
+- **Architecture rules**: No forbidden domains (crm-os, office-os, etc.), no cross-domain imports
+- **CalmAssistantChat**: Import dedup previously fixed, clean now
+
+---
+
+## Files to Change
 
 | File | Change |
 |------|--------|
-| `supabase/functions/event-processor/index.ts` | Parse body once, remove duplicate `req.json()` |
-| `supabase/functions/revenue-caller/index.ts` | Parse body once, remove duplicate `req.json()` |
-| `supabase/functions/system-updates/index.ts` | Parse body once, remove duplicate `req.json()` |
-| `supabase/functions/agent-signal/index.ts` | Line 118: `body` → `parsedBody` |
+| `src/App.tsx` | Remove 7 duplicate route definitions + 7 duplicate lazy imports |
+| `supabase/functions/connector-operations/index.ts` | `2.39.3` → `2.49.4` |
+| `supabase/functions/admin-ai-workforce-run/index.ts` | `2.49.1` → `2.49.4` |
+| `supabase/functions/check-ai-budget/index.ts` | `2.49.1` → `2.49.4` |
+| `supabase/functions/system-updates/index.ts` | `2.49.1` → `2.49.4` |
+| `supabase/functions/event-processor/index.ts` | `2.49.1` → `2.49.4` |
+| `supabase/functions/admin-intelligence/index.ts` | Fix double body parse |
+| `supabase/functions/payment-process/index.ts` | `as unknown` → `as Record<string, any>` |
+| `supabase/functions/admin-api/index.ts` | `as unknown` → `as Record<string, any>` (6 occurrences) |
 
-All 4 functions will be redeployed after fixes.
+Redeploy: `connector-operations`, `admin-ai-workforce-run`, `check-ai-budget`, `system-updates`, `event-processor`, `admin-intelligence`, `payment-process`, `admin-api`
 
-## Technical Detail
-
-**event-processor fix:**
-```text
-// Before: req.json() at line 16 (validation) AND line 38 (handler)
-// After: parse once before validation block, use stored variable
-```
-
-**revenue-caller fix:**
-```text
-// Before: req.json() at line 38 (validation) AND line 73 (handler)
-// After: parse once, store in parsedBody, alias as body in handler
-```
-
-**system-updates fix:**
-```text
-// Before: req.json() at line 14 (validation) AND line 58 (POST handler)
-// After: parse once at top for POST, reuse in handler
-```
-
-**agent-signal fix:**
-```text
-// Line 118: const { signal_ids } = body → const { signal_ids } = parsedBody
-```
-
-No database changes. No new files. 4 edge function redeploys.
+No database changes. No new files.
 
