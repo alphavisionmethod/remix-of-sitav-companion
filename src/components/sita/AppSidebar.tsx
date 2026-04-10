@@ -1,5 +1,5 @@
 import { Home, Briefcase, DollarSign, Headphones, Workflow, Receipt, BarChart3, FolderOpen, Settings, Shield, LogOut, Map, Blocks,
-  Brain, Sparkles, Inbox, Activity, Zap, Eye, Server, CheckCircle, Users, FileText, Table2, Presentation, Package, Heart, ChevronRight, Globe, Sliders, Key, ScrollText, CreditCard, Cpu, Gauge, RotateCcw, Target, GitBranch, MessageSquare, Bell, Mail, Lock, Image, Cloud, LayoutDashboard, TrendingUp, Landmark, Calendar, StickyNote, PieChart, ListTodo, Edit3 } from "lucide-react";
+  Brain, Sparkles, Inbox, Activity, Zap, Eye, Server, CheckCircle, Users, FileText, Table2, Presentation, Package, Heart, ChevronRight, Globe, Sliders, Key, ScrollText, CreditCard, Cpu, Gauge, RotateCcw, Target, GitBranch, MessageSquare, Bell, Mail, Lock, Image, Cloud, LayoutDashboard, TrendingUp, Landmark, Calendar, StickyNote, PieChart, ListTodo, Edit3, Bug, Rocket } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NavLink } from "@/components/NavLink";
 import { useLocation, useNavigate } from "react-router-dom";
