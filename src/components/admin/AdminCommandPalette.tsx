@@ -6,7 +6,7 @@ import {
 import {
   Activity, AlertTriangle, Brain, Crown, Database, Eye, GitBranch, Globe,
   Layers, Link2, Lock, Rocket, Server, Shield, Target, TrendingUp, Zap,
-  BarChart3, Cpu, FileText, Play, RefreshCw, Settings, Search
+  BarChart3, Cpu, FileText, Play, RefreshCw, Settings, Search, Scale
 } from "lucide-react";
 
 const NAV_ITEMS = [
