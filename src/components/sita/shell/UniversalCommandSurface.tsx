@@ -27,6 +27,7 @@ import { useShellIndicators } from "@/hooks/use-shell-indicators";
 import { toast } from "sonner";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { IntentRibbon } from "./IntentRibbon";
+import { WhyThisResult, type ResultReason } from "./WhyThisResult";
 
 // ── Command Index ────────────────────────────────────────────
 

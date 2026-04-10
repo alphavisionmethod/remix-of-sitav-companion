@@ -18,6 +18,7 @@ import { Activity, DollarSign, Lightbulb, CheckCircle, Shield, TrendingDown, Tre
 import { formatFreshness } from "@/lib/ai/ai-surface-grammar";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
+import { useKernelMutation } from "@/hooks/use-kernel-mutation";
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
