@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -9,11 +10,13 @@ import {
 import {
   PLATFORM_LAWS, SCAFFOLD_REGISTRY, CI_GATE_REGISTRY, MANIFEST_REQUIREMENTS,
   OWNERSHIP_REGISTRY, ENFORCEMENT_LAYERS, LAW_PACKS, VALIDATION_RUNS, DRIFT_RECORDS,
-  VALIDATION_VIOLATIONS,
+  VALIDATION_VIOLATIONS, FEATURE_MANIFESTS,
   getOverallComplianceScore, getTotalViolations, getBlockingLaws, getViolatedLaws,
   getCIGatePassRate, getManifestCompletionRate, getOwnerComplianceAverage, getEnforcementLayerAverage,
-  getRecentValidationRuns, getUnresolvedDrift, getOpenViolations
+  getRecentValidationRuns, getUnresolvedDrift, getOpenViolations,
+  getDomainComplianceScores, getLaunchBlockers, getFeatureComplianceScore
 } from "@/lib/platform-law/platform-law-registry";
+import { LaunchBlockerPanel, type LaunchBlocker } from "@/components/sita/truth/LaunchBlockerPanel";
 
 const PLE01Overview = () => {
   const navigate = useNavigate();
@@ -28,6 +31,31 @@ const PLE01Overview = () => {
   const recentRuns = getRecentValidationRuns(4);
   const unresolvedDrift = getUnresolvedDrift();
   const openViolations = getOpenViolations();
+  const domainScores = useMemo(() => getDomainComplianceScores(), []);
+  const launchBlockerData = useMemo(() => getLaunchBlockers(), []);
+
+  const launchBlockers: LaunchBlocker[] = useMemo(() =>
+    launchBlockerData.map((b, i) => ({
+      id: `lb-${i}`,
+      title: `${b.featureId} blocked`,
+      severity: "critical" as const,
+      domain: FEATURE_MANIFESTS.find(f => f.featureId === b.featureId)?.domain || "unknown",
+      resolved: false,
+      evidence: b.reasons.join(", "),
+    })),
+  [launchBlockerData]);
+
+  const noncompliantFeatures = useMemo(() =>
+    FEATURE_MANIFESTS.filter(f => {
+      const score = getFeatureComplianceScore(f.featureId);
+      const total = [score.hasManifest, score.hasInteractions, score.hasJourneys, score.hasContracts, score.hasRuntimeEvidence, score.hasReadiness].filter(Boolean).length;
+      return (total / 6) * 100 < 50;
+    }),
+  []);
+
+  const topOffenderDomains = useMemo(() =>
+    [...domainScores].sort((a, b) => b.violations - a.violations).slice(0, 4),
+  [domainScores]);
 
   const kpis = [
     { label: "Platform Laws", value: PLATFORM_LAWS.length, icon: Scale, color: "text-blue-400" },
@@ -192,6 +220,78 @@ const PLE01Overview = () => {
                     <span className="text-xs text-muted-foreground">{d.owner}</span>
                     <span className="text-xs text-muted-foreground">{d.detectedAt}</span>
                   </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Domain Compliance Heatmap */}
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-sm flex items-center gap-2"><Target className="h-4 w-4" /> Domain Compliance Heatmap</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+            {domainScores.map(d => {
+              const bg = d.score >= 85 ? "bg-emerald-500/15 border-emerald-500/30" : d.score >= 70 ? "bg-amber-500/15 border-amber-500/30" : "bg-red-500/15 border-red-500/30";
+              const textColor = d.score >= 85 ? "text-emerald-400" : d.score >= 70 ? "text-amber-400" : "text-red-400";
+              return (
+                <div key={d.domain} className={`p-3 rounded-lg border ${bg} text-center`}>
+                  <div className={`text-2xl font-bold ${textColor}`}>{d.score}%</div>
+                  <div className="text-xs font-medium capitalize mt-1">{d.domain}</div>
+                  <div className="text-[10px] text-muted-foreground">{d.features} features · {d.violations} violations</div>
+                </div>
+              );
+            })}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Launch Blockers */}
+      {launchBlockers.length > 0 && (
+        <LaunchBlockerPanel blockers={launchBlockers} />
+      )}
+
+      {/* Top Offender Domains */}
+      {topOffenderDomains.some(d => d.violations > 0) && (
+        <Card className="border-red-500/20">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm flex items-center gap-2"><AlertTriangle className="h-4 w-4 text-red-400" /> Top Offender Domains</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-wrap gap-3">
+              {topOffenderDomains.filter(d => d.violations > 0).map(d => (
+                <div key={d.domain} className="flex items-center gap-2 p-2 rounded bg-red-500/10 border border-red-500/20">
+                  <span className="text-red-400 font-mono text-lg font-bold">{d.violations}</span>
+                  <div>
+                    <div className="text-sm font-medium capitalize">{d.domain}</div>
+                    <div className="text-[10px] text-muted-foreground">{d.score}% compliance</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Noncompliant New Features */}
+      {noncompliantFeatures.length > 0 && (
+        <Card className="border-amber-500/20">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-sm flex items-center gap-2"><AlertTriangle className="h-4 w-4 text-amber-400" /> Noncompliant Features ({noncompliantFeatures.length})</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              {noncompliantFeatures.map(f => (
+                <div key={f.featureId} className="flex items-center justify-between p-2 rounded bg-amber-500/10 text-sm cursor-pointer hover:bg-amber-500/15" onClick={() => navigate("/admin/platform-law/feature-compliance")}>
+                  <div className="flex items-center gap-2">
+                    <Badge variant={f.criticality === "P0" ? "destructive" : "secondary"} className="text-[10px]">{f.criticality}</Badge>
+                    <span className="font-medium">{f.canonicalName}</span>
+                    <span className="text-[10px] text-muted-foreground capitalize">{f.domain}</span>
+                  </div>
+                  <span className="text-xs text-amber-400">Below 50% compliance</span>
                 </div>
               ))}
             </div>

@@ -3,8 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Users, CheckCircle, TrendingDown, ArrowUpRight } from "lucide-react";
-import { OWNERSHIP_REGISTRY, getOwnerComplianceAverage, type OwnershipEntry } from "@/lib/platform-law/platform-law-registry";
+import { Users, CheckCircle, TrendingDown, ArrowUpRight, AlertTriangle, Clock, ArrowRight } from "lucide-react";
+import { OWNERSHIP_REGISTRY, getOwnerComplianceAverage, getNoOwnerGaps, getOwnerMTTR, type OwnershipEntry } from "@/lib/platform-law/platform-law-registry";
 
 const PLE06OwnershipBoard = () => {
   const [typeFilter, setTypeFilter] = useState<"all" | OwnershipEntry["type"]>("all");
@@ -85,6 +85,95 @@ const PLE06OwnershipBoard = () => {
                 <div className="text-right">
                   <div className={`font-mono text-sm ${og.avgScore >= 90 ? "text-emerald-400" : og.avgScore >= 80 ? "text-amber-400" : "text-red-400"}`}>{og.avgScore}%</div>
                   {og.violations > 0 && <div className="text-[10px] text-red-400">{og.violations} violations</div>}
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Owner Scorecards */}
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-sm flex items-center gap-2"><Users className="h-4 w-4" /> Owner Scorecards</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {ownerGroups.map(og => {
+              const mttrData = getOwnerMTTR().find(m => m.owner === og.owner);
+              return (
+                <div key={og.owner} className="p-3 rounded-lg border border-border/50 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium text-sm">{og.owner}</span>
+                    <Badge variant="outline" className="text-[10px]">{og.team}</Badge>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2 text-center">
+                    <div><div className={`text-lg font-bold ${og.avgScore >= 90 ? "text-emerald-400" : og.avgScore >= 80 ? "text-amber-400" : "text-red-400"}`}>{og.avgScore}%</div><div className="text-[10px] text-muted-foreground">Score</div></div>
+                    <div><div className={`text-lg font-bold ${og.violations > 0 ? "text-red-400" : "text-emerald-400"}`}>{og.violations}</div><div className="text-[10px] text-muted-foreground">Violations</div></div>
+                    <div><div className="text-lg font-bold text-blue-400">{og.areas}</div><div className="text-[10px] text-muted-foreground">Areas</div></div>
+                  </div>
+                  {mttrData && (
+                    <div className="text-[10px] text-muted-foreground flex items-center gap-1">
+                      <Clock className="h-3 w-3" /> MTTR: {mttrData.avgDays}d ({mttrData.resolvedCount} resolved)
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* No Owner Warning Lane */}
+      {(() => {
+        const gaps = getNoOwnerGaps();
+        return gaps.length > 0 ? (
+          <Card className="border-red-500/20">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm flex items-center gap-2"><AlertTriangle className="h-4 w-4 text-red-400" /> No-Owner Gaps ({gaps.length})</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-wrap gap-2">
+                {gaps.map(g => (
+                  <div key={g} className="px-3 py-1.5 rounded bg-red-500/10 border border-red-500/20 text-sm text-red-400">{g}</div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        ) : null;
+      })()}
+
+      {/* Escalation Graph */}
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-sm flex items-center gap-2"><ArrowUpRight className="h-4 w-4" /> Escalation Path</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-center justify-center gap-2 flex-wrap">
+            {["Primary Owner", "Secondary Owner", "Domain Owner", "Launch Blocker"].map((step, i) => (
+              <div key={step} className="flex items-center gap-2">
+                <div className={`px-3 py-2 rounded-lg text-sm font-medium ${i === 3 ? "bg-red-500/15 text-red-400 border border-red-500/30" : "bg-muted/50 border border-border/50"}`}>{step}</div>
+                {i < 3 && <ArrowRight className="h-4 w-4 text-muted-foreground" />}
+              </div>
+            ))}
+          </div>
+          <p className="text-[10px] text-muted-foreground text-center mt-3">Violations escalate through ownership chain. Unresolved critical violations auto-elevate to launch blockers.</p>
+        </CardContent>
+      </Card>
+
+      {/* MTTR Metric */}
+      <Card>
+        <CardHeader className="pb-3">
+          <CardTitle className="text-sm flex items-center gap-2"><Clock className="h-4 w-4" /> Mean Time to Resolution (MTTR)</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-2">
+            {getOwnerMTTR().map(m => (
+              <div key={m.owner} className="flex items-center justify-between p-2 rounded bg-muted/30 text-sm">
+                <span className="font-medium">{m.owner}</span>
+                <div className="flex items-center gap-3">
+                  <span className={`font-mono text-xs ${m.avgDays <= 3 ? "text-emerald-400" : m.avgDays <= 7 ? "text-amber-400" : "text-red-400"}`}>{m.avgDays} days avg</span>
+                  <span className="text-[10px] text-muted-foreground">{m.resolvedCount} resolved</span>
                 </div>
               </div>
             ))}
