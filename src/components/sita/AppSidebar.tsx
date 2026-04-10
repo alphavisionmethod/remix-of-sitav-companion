@@ -6,6 +6,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useUserPreferences, showBusinessNav, showConciergeNav } from "@/hooks/use-user-preferences";
+import { useOSOrchestration } from "@/hooks/useOSOrchestration";
 import logo from "@/assets/logo.jpeg";
 import {
   Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu,
@@ -251,6 +252,9 @@ export function AppSidebar() {
   const { user, signOut } = useAuth();
   const { isDemoMode } = useDataMode();
   const { preferences } = useUserPreferences();
+  const os = useOSOrchestration();
+  const currentMode = os.hydrated ? os.getCurrentMode() : "standard";
+  const cogLoad = os.hydrated ? os.getCognitiveLoad() : 0;
   const role = preferences.role;
   const location = useLocation();
   const navigate = useNavigate();
@@ -276,9 +280,16 @@ export function AppSidebar() {
           {!collapsed && (
             <div>
               <h1 className="font-display text-[15px] font-bold tracking-tight gradient-sita-text">SITA</h1>
-              <p className={`text-[9px] tracking-[0.2em] uppercase font-semibold ${isDemoMode ? "text-amber-500" : "text-emerald-500"}`}>
-                {isDemoMode ? "Demo" : "Live"}
-              </p>
+              <div className="flex items-center gap-1.5">
+                <p className={`text-[9px] tracking-[0.2em] uppercase font-semibold ${isDemoMode ? "text-amber-500" : "text-emerald-500"}`}>
+                  {isDemoMode ? "Demo" : "Live"}
+                </p>
+                {currentMode !== "standard" && (
+                  <span className="text-[8px] tracking-wider uppercase font-medium text-primary bg-primary/10 px-1.5 py-0.5 rounded-full">
+                    {currentMode.replace("_", " ")}
+                  </span>
+                )}
+              </div>
             </div>
           )}
         </div>

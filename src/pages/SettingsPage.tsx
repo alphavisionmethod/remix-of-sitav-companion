@@ -471,7 +471,47 @@ const SettingsPage = () => {
           </SitaCard>
         );
 
-      case "notifications":
+      case "operating-modes":
+        return (
+          <SitaCard hover={false} className="p-5">
+            <SitaCardTitle sub="Switch between operating postures — affects notifications, AI tone, priorities, and interface density">
+              <div className="flex items-center gap-2"><Activity className="h-4 w-4 text-primary" /> Operating Modes</div>
+            </SitaCardTitle>
+            <div className="mt-4">
+              <p className="text-xs text-muted-foreground mb-3">Current mode: <span className="font-semibold text-foreground capitalize">{currentMode}</span></p>
+              <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                {(["standard", "focus", "executive", "family", "travel", "emergency", "recovery", "execution", "founder", "investor_demo", "boardroom", "stealth"] as const).map(m => (
+                  <button
+                    key={m}
+                    onClick={() => { os.setMode(m); toast.success(`Switched to ${m} mode`); }}
+                    className={cn(
+                      "rounded-xl border p-3 text-left transition-all",
+                      currentMode === m ? "border-primary/40 bg-primary/8" : "border-border hover:border-primary/20"
+                    )}
+                  >
+                    <p className={cn("text-xs font-medium capitalize", currentMode === m ? "text-primary" : "text-foreground")}>{m.replace("_", " ")}</p>
+                    <p className="text-[10px] text-muted-foreground mt-0.5">
+                      {m === "standard" && "Balanced view across all domains"}
+                      {m === "focus" && "Deep work, minimal interruptions"}
+                      {m === "executive" && "Strategic overview, formal tone"}
+                      {m === "family" && "Home-first, suppress business"}
+                      {m === "travel" && "Itineraries, on-the-go essentials"}
+                      {m === "emergency" && "Critical actions only"}
+                      {m === "recovery" && "Calm, minimal cognitive load"}
+                      {m === "execution" && "Action-dense, rapid execution"}
+                      {m === "founder" && "Full visibility, all domains"}
+                      {m === "investor_demo" && "Polished demo posture"}
+                      {m === "boardroom" && "Strategic presentation mode"}
+                      {m === "stealth" && "Minimal footprint, privacy-first"}
+                    </p>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </SitaCard>
+        );
+
+
         return (
           <SitaCard hover={false} className="p-5">
             <SitaCardTitle sub="Alert preferences and timing">
