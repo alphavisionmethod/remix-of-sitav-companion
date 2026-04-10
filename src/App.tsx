@@ -230,6 +230,15 @@ const AIDesignStudio = lazy(() => import("./pages/admin/AIDesignStudio"));
 const AILearningCenter = lazy(() => import("./pages/admin/AILearningCenter"));
 const AIApprovalDesk = lazy(() => import("./pages/admin/AIApprovalDesk"));
 const AIReleasesCenter = lazy(() => import("./pages/admin/AIReleasesCenter"));
+const AIT01TeamOverview = lazy(() => import("./pages/admin/AIT01TeamOverview"));
+const AIT02RoleRegistry = lazy(() => import("./pages/admin/AIT02RoleRegistry"));
+const AIT03TaskInvocation = lazy(() => import("./pages/admin/AIT03TaskInvocation"));
+const AIT05CostEfficiencyPage = lazy(() => import("./pages/admin/AIT05CostEfficiency"));
+const AITSetupChecklist = lazy(() => import("./pages/admin/AITSetupChecklist"));
+const AIT04ActivityFeedPage = lazy(() => import("./pages/admin/AIT04ActivityFeedPage"));
+const AIT06RecommendationsPage = lazy(() => import("./pages/admin/AIT06RecommendationsPage"));
+const AIT07ApprovalQueuePage = lazy(() => import("./pages/admin/AIT07ApprovalQueuePage"));
+const AIT08LaunchTruthPage = lazy(() => import("./pages/admin/AIT08LaunchTruthPage"));
 const AIRootCauseGraph = lazy(() => import("./pages/admin/AIRootCauseGraph"));
 const AIDesignDiffTheater = lazy(() => import("./pages/admin/AIDesignDiffTheater"));
 const AITimeMachine = lazy(() => import("./pages/admin/AITimeMachine"));
@@ -1718,6 +1727,18 @@ const App = () => (
                     <Route path="/admin/ai-approvals" element={<AIApprovalDesk />} />
                     <Route path="/admin/ai-releases" element={<AIReleasesCenter />} />
                     <Route path="/admin/ai-root-cause" element={<AIRootCauseGraph />} />
+
+                    {/* AIT — AI Engineering Team */}
+                    <Route path="/admin/ai-team" element={<AIT01TeamOverview />} />
+                    <Route path="/admin/ai-team/overview" element={<AIT01TeamOverview />} />
+                    <Route path="/admin/ai-team/roles" element={<AIT02RoleRegistry />} />
+                    <Route path="/admin/ai-team/invoke" element={<AIT03TaskInvocation />} />
+                    <Route path="/admin/ai-team/activity" element={<AIT04ActivityFeedPage />} />
+                    <Route path="/admin/ai-team/cost" element={<AIT05CostEfficiencyPage />} />
+                    <Route path="/admin/ai-team/recommendations" element={<AIT06RecommendationsPage />} />
+                    <Route path="/admin/ai-team/approvals" element={<AIT07ApprovalQueuePage />} />
+                    <Route path="/admin/ai-team/truth" element={<AIT08LaunchTruthPage />} />
+                    <Route path="/admin/ai-team/setup" element={<AITSetupChecklist />} />
                     <Route path="/admin/ai-design-diffs" element={<AIDesignDiffTheater />} />
                     <Route path="/admin/ai-time-machine" element={<AITimeMachine />} />
                     <Route path="/admin/ai-agent-debate" element={<AIAgentDebate />} />

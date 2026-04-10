@@ -231,3 +231,5 @@ export function AIT05CostEfficiency() {
     </div>
   );
 }
+
+export default AIT05CostEfficiency;
