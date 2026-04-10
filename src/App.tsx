@@ -852,6 +852,14 @@ const App = () => (
                     <Route path="/money/documents" element={<MoneyCenter />} />
                     <Route path="/money/boardroom" element={<MoneyCenter />} />
                     <Route path="/money/settings" element={<MoneyCenter />} />
+                    <Route path="/money/net-worth" element={<MoneyCenter />} />
+                    <Route path="/money/debt-credit" element={<MoneyCenter />} />
+                    <Route path="/money/budgets" element={<MoneyCenter />} />
+                    <Route path="/money/transactions" element={<MoneyCenter />} />
+                    <Route path="/money/household" element={<MoneyCenter />} />
+                    <Route path="/money/health" element={<MoneyCenter />} />
+                    <Route path="/money/advisors" element={<MoneyCenter />} />
+                    <Route path="/money/scenarios" element={<MoneyCenter />} />
 
                     {/* ── 3B: OS Office — Investment Office (38 routes) ── */}
                     <Route path="/investments" element={<InvestmentGate />} />
