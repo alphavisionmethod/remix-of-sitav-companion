@@ -550,17 +550,18 @@ const SettingsPage = () => {
       case "integrations":
         return (
           <SitaCard hover={false} className="p-5">
-            <SitaCardTitle sub="External integrations and sync">
+            <SitaCardTitle sub="External integrations and sync status">
               <div className="flex items-center gap-2"><Globe className="h-4 w-4 text-primary" /> Connections</div>
             </SitaCardTitle>
             <div className="mt-4 space-y-2">
-              {(connectors.length > 0 ? connectors : [
-                { service: "Gmail", status: "active", last_sync_at: new Date(Date.now() - 120000).toISOString() },
-                { service: "Stripe", status: "active", last_sync_at: new Date(Date.now() - 300000).toISOString() },
-                { service: "QuickBooks", status: "inactive", last_sync_at: null },
-                { service: "Google Calendar", status: "active", last_sync_at: new Date(Date.now() - 60000).toISOString() },
-              ]).map((conn: Record<string, any>) => (
-                <div key={conn.service} className="flex items-center justify-between rounded-xl bg-secondary/30 p-3">
+              {connectors.length === 0 ? (
+                <div className="text-center py-6">
+                  <Globe className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+                  <p className="text-xs text-muted-foreground">No connectors configured yet.</p>
+                  <p className="text-[10px] text-muted-foreground mt-1">Connect services in the Connected Accounts tab.</p>
+                </div>
+              ) : connectors.map((conn: Record<string, any>, i: number) => (
+                <div key={conn.service || i} className="flex items-center justify-between rounded-xl bg-secondary/30 p-3">
                   <div className="flex items-center gap-3">
                     <Wifi className={cn("h-4 w-4", conn.status === "active" ? "text-trust-verified" : "text-muted-foreground")} />
                     <div>
@@ -603,14 +604,17 @@ const SettingsPage = () => {
       case "devices":
         return (
           <SitaCard hover={false} className="p-5">
-            <SitaCardTitle sub="Trusted devices and sessions">
+            <SitaCardTitle sub="Trusted devices and active sessions">
               <div className="flex items-center gap-2"><Monitor className="h-4 w-4 text-primary" /> Devices</div>
             </SitaCardTitle>
             <div className="mt-4 space-y-2">
-              {(devices.length > 0 ? devices : [
-                { device_name: "MacBook Pro", device_type: "laptop", os: "macOS 15", status: "online", last_seen: new Date().toISOString() },
-                { device_name: "iPhone 16", device_type: "phone", os: "iOS 19", status: "online", last_seen: new Date(Date.now() - 300000).toISOString() },
-              ]).map((d: any, i: number) => (
+              {devices.length === 0 ? (
+                <div className="text-center py-6">
+                  <Monitor className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+                  <p className="text-xs text-muted-foreground">No device data yet.</p>
+                  <p className="text-[10px] text-muted-foreground mt-1">Device presence registers automatically on login.</p>
+                </div>
+              ) : devices.map((d: any, i: number) => (
                 <div key={i} className="flex items-center justify-between rounded-xl bg-secondary/30 p-3">
                   <div className="flex items-center gap-3">
                     {d.device_type === "phone" ? <Smartphone className="h-4 w-4 text-primary" /> : <Monitor className="h-4 w-4 text-primary" />}
