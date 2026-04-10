@@ -1,94 +1,86 @@
 
-# Money Office — Advanced Feature Implementation Plan
 
-## Audit Summary
+# Money Office — Comprehensive Audit & Gap Closure Plan
 
-**Already implemented (10 features):** Money Twin (basic), Founder Boundary Monitor, Cashflow Storyline, Subscription Leak Radar, Bill Shock Prevention, Scenario Planner, Financial Health Pulse, 9 Advisors, Waste Detector, Money Time Machine.
+## Audit Results (20 Features)
 
-**Missing (13 features need new pages or major enhancements):**
+### Fully Implemented as Dedicated Pages or Sections (14/20)
 
-## Implementation
+| # | Feature | Location | Status |
+|---|---------|----------|--------|
+| 1 | Money Twin | `MoneyOverview.tsx` (flow bars) | Basic — needs upgrade |
+| 2 | Financial Stress Radar | `StressRadar.tsx` + `stress-radar.service.ts` | Full page + engine |
+| 3 | Life-to-Money Impact Engine | `LifeMoneyEngine.tsx` | Full page, 11 events |
+| 4 | Founder Split Brain Protection | `FinancialHealthPulse.tsx` (boundary section) + `MoneyRituals.tsx` (separation ritual) | Partial — needs full Split Brain section |
+| 5 | Cashflow Storyline | `CashTiming.tsx` (narrative section) | Implemented |
+| 6 | Money Operating Modes | `MoneyModes.tsx` | Full page, 10 modes |
+| 7 | Cash Allocation AI | `CashAllocator.tsx` + `cash-allocator.service.ts` | Full page + engine |
+| 9 | Decision Simulator | `ScenarioPlanner.tsx` | Full page |
+| 10 | Money Rituals | `MoneyRituals.tsx` | Full page, 7 rituals |
+| 11 | Invisible Waste Detector | `MoneyOverview.tsx` (waste section) + `SubscriptionsWaste.tsx` (leak radar) | Implemented |
+| 13 | Income Quality Score | `income-quality.service.ts` engine exists | Engine only — no UI |
+| 17 | Financial Trust Graph | `TrustGraph.tsx` | Full page |
+| 18 | Opportunity Cost Dashboard | `OpportunityCost.tsx` | Full page |
+| 20 | Financial Peace Score | `PeaceScore.tsx` + `peace-score.service.ts` | Full page + engine |
 
-### Phase 1: New Services (4 files)
+### Missing or Incomplete (6/20)
 
-**`src/lib/services/finance-os/stress-radar.service.ts`**
-Deterministic engine detecting: cash squeeze windows, bill collisions, reserve weakness, debt inflection points, cashflow fragility, founder draw instability, tax shortfall risk, subscription creep, float reliance, utilization danger. Returns typed `StressSignal[]` with severity/timing/impact.
+| # | Feature | What's Missing |
+|---|---------|---------------|
+| 8 | **Financial Boundary Monitor** | No page exists. No search results. Completely missing. |
+| 12 | **Emotional Finance Layer** | No panic/guilt/avoidance/feast-famine detection anywhere. The `EmotionalPattern` type exists in contracts but no UI or service uses it. |
+| 13 | **Income Quality Score UI** | The `income-quality.service.ts` engine exists but NO page renders it. Was supposed to be added to `FinancialHealthPulse.tsx` but wasn't. |
+| 14 | **Subscription Negotiation/Downgrade Advisor** | Was supposed to be added to `SubscriptionsWaste.tsx` but never was. No downgrade paths, cancellation ordering, or alternatives section exists. |
+| 15 | **Tax Shock Prevention** | Was supposed to be added to `TaxEstimator.tsx` but never was. No under-set-aside detection, irregular income tax risk, or quarter-end danger section. |
+| 19 | **Adaptive Advisor Personality** | MoneyAdvisorBoard.tsx shows 9 advisors but with static tone. No mode badge, no tone adaptation based on current Money Mode. Was supposed to be enhanced but wasn't. |
 
-**`src/lib/services/finance-os/income-quality.service.ts`**
-Scores income on: recurring reliability, client concentration, seasonality, payment delay risk, one-time dependency, household dependency on unstable inflows. Returns `IncomeQualityScore` with composite + per-dimension breakdown.
+### Upgrade Needed (2/20)
 
-**`src/lib/services/finance-os/cash-allocator.service.ts`**
-Given available cash, recommends allocation across bills, tax reserve, emergency reserve, debt payoff, sinking funds, payroll reserve, discretionary, investments, expansion. Returns conservative/balanced/aggressive plans with amounts and reasoning.
+| # | Feature | Gap |
+|---|---------|-----|
+| 1 | **Money Twin** | Currently just 5 flow bars. Missing: committed vs flexible vs risky vs safe vs decaying vs improving model. Missing stress radar summary lane and peace score badge. |
+| 4 | **Founder Split Brain Protection** | Current boundary section only shows co-mingling detection. Missing: fake profitability detection, delayed reimbursements, dangerous founder optimism, payroll/operating reserve weakness. |
 
-**`src/lib/services/finance-os/peace-score.service.ts`**
-Composite "Financial Peace Score" from: reserve strength, bill safety, debt burden, tax preparedness, income predictability, obligation pressure, discretionary breathing room, household coordination. Distinct from Health Pulse (which is clinical — Peace Score is emotional).
+## Implementation Plan
 
-### Phase 2: Contract Types (1 file enhancement)
+### 1. New Page: Financial Boundary Monitor
+**`src/pages/money/FinancialBoundaryMonitor.tsx`** — New page detecting: blurred household/business finances, budget leakage, obligations without category ownership, purposeless money movement, large unexplained drains, reimbursement drift, hidden credit dependency, obligations not in plans. KPIs + signal cards + advisor.
 
-**`src/packages/finance-contracts/advanced-intelligence.ts`** (new)
-Types for: `StressSignal`, `LifeEvent`, `LifeMoneyImpact`, `MoneyMode`, `CashAllocationPlan`, `IncomeQualityScore`, `PeaceScoreResult`, `FinancialTrustNode`, `OpportunityCostEntry`, `MoneyRitual`, `EmotionalPattern`. Export from finance-contracts index.
+### 2. Enhance: FinancialHealthPulse.tsx
+- Add **Emotional Finance Layer** section: detect panic, guilt, avoidance, stress-float, defer-pattern, feast-famine patterns. Show severity, frequency, guidance, and suggested mode for each.
+- Add **Income Quality Score** section: render the existing `computeIncomeQuality()` engine output with 6 dimension bars + composite grade.
+- Expand **Founder Split Brain Protection**: add fake profitability alert, delayed reimbursement tracker, dangerous founder optimism indicator, payroll/operating reserve weakness.
 
-### Phase 3: New Pages (8 files)
+### 3. Enhance: SubscriptionsWaste.tsx
+- Add **Negotiation/Downgrade Advisor** section after Leak Radar: for each subscription, show downgrade path, better billing cycle, cancellation ordering, timing recommendation, alternatives, and monthly burn impact.
 
-**`src/pages/money/StressRadar.tsx`** — Full stress detection dashboard. KPIs for active stress signals, severity breakdown. Timeline of upcoming squeeze windows. Bill collision calendar. Reserve weakness alerts. Utilization danger zones. Advisor card.
+### 4. Enhance: TaxEstimator.tsx
+- Add **Tax Shock Prevention** section: under-set-aside detection, irregular income tax risk, founder draw tax distortion, under-categorized deductible expenses, documentation weakness, quarter-end danger alerts.
 
-**`src/pages/money/LifeMoneyEngine.tsx`** — Life event selector (moving, child, hiring, home purchase, job change, etc.). Each event shows: cashflow impact, safe-to-spend change, reserve needs, budget shifts, bill pressure, risk windows, suggested setup changes. Uses scenario engine underneath.
+### 5. Enhance: MoneyAdvisorBoard.tsx
+- Add **Adaptive Personality** system: show current Money Mode badge on the page, and adjust each advisor's recommendation text and tone indicator based on the active mode (recovery = gentle, debt-attack = aggressive, etc.).
 
-**`src/pages/money/MoneyModes.tsx`** — Mode selector: Stable, Tighten, Recovery, Growth, Expansion, Debt Attack, Tax Protection, Founder Conservation, Household Protection, Launch Mode. Each mode shows changed behaviors: safe-to-spend posture, warning thresholds, reserve targets, advisor tone, bill prioritization logic. Mode selection persists.
+### 6. Enhance: MoneyOverview.tsx
+- Upgrade **Money Twin** from basic flow bars to full model with committed/flexible/risky/safe/decaying/improving breakdown.
+- Add **Stress Radar Summary Lane** (top 3 signals with severity badges and link to full Stress Radar page).
+- Add **Peace Score Mini-Badge** in the KPI strip.
 
-**`src/pages/money/CashAllocator.tsx`** — Shows current available cash and three allocation plans (conservative/balanced/aggressive) with bar visualizations per bucket. User can adjust and see ripple effects. Advisor card for recommendation.
+### 7. Wire New Page
+- Add `FinancialBoundaryMonitor` as tab "Boundaries" in `MoneyCenter.tsx`
+- Add route `/money/boundaries` in `App.tsx`
 
-**`src/pages/money/TrustGraph.tsx`** — Financial dependency graph: bills tied to accounts, debt tied to reserves, family commitments tied to cashflow, payroll tied to receivables, card utilization tied to spending, tax obligations tied to inflows. Visual node-link layout using CSS grid (no D3 needed). Color-coded by health.
-
-**`src/pages/money/OpportunityCost.tsx`** — For each spending category shows: what it prevented (reserve growth delayed, debt payoff delayed, goal progress traded away). "What if you hadn't spent X" counterfactuals. Monthly and cumulative views.
-
-**`src/pages/money/MoneyRituals.tsx`** — Guided ritual system: Weekly Reset, Month Close, Bill Planning, Debt Check, Subscription Cleanup, Founder Cash Separation, Tax Reserve. Each ritual has steps, checklist, completion state, and schedule. Premium feel.
-
-**`src/pages/money/PeaceScore.tsx`** — Financial Peace Score dashboard. Composite score with dimension breakdown (reserve strength, bill safety, debt burden, tax prep, income predictability, obligation pressure, breathing room, household coordination). Trend over time. Comparison to goals. Advisor guidance.
-
-### Phase 4: Enhancements to Existing Pages (5 files)
-
-**`src/pages/money/MoneyOverview.tsx`** — Enhance Money Twin from basic bars to full model showing: committed vs flexible vs risky vs safe vs decaying vs improving categories. Add Financial Stress Radar summary lane (top 3 stress signals with link to full page). Add Peace Score mini-badge.
-
-**`src/pages/money/FinancialHealthPulse.tsx`** — Add Emotional Finance Layer section: detect panic/guilt/avoidance/feast-famine patterns from spending data. Add Income Quality Score section. Enhance Founder Boundary Monitor with full Split Brain Protection (fake profitability detection, delayed reimbursements, dangerous optimism).
-
-**`src/pages/money/TaxEstimator.tsx`** — Add Tax Shock Prevention section: under-set-aside detection, irregular income tax risk, founder draw tax distortion, under-categorized deductibles, documentation weakness, quarter-end danger alerts.
-
-**`src/pages/money/SubscriptionsWaste.tsx`** — Add Negotiation/Downgrade Advisor section: downgrade paths, better billing cycles, cancellation ordering, timing, alternatives, monthly burn impact.
-
-**`src/pages/money/MoneyAdvisorBoard.tsx`** — Add Adaptive Personality system: advisor tone changes based on current Money Mode (recovery = gentle/supportive, growth = ambitious, debt attack = aggressive/focused, etc.). Show current mode badge on each advisor.
-
-### Phase 5: Wiring (2 files)
-
-**`src/pages/MoneyCenter.tsx`** — Add 8 new tabs: "Stress Radar", "Life Impact", "Modes", "Allocator", "Trust Graph", "Opportunity Cost", "Rituals", "Peace Score". Wire imports and route mapping.
-
-**`src/App.tsx`** — Add 8 new routes: `/money/stress-radar`, `/money/life-impact`, `/money/modes`, `/money/allocator`, `/money/trust-graph`, `/money/opportunity-cost`, `/money/rituals`, `/money/peace-score`.
-
-## File Summary
+### File Summary
 
 | File | Action |
 |------|--------|
-| `src/packages/finance-contracts/advanced-intelligence.ts` | New — all advanced types |
-| `src/packages/finance-contracts/index.ts` | Add export |
-| `src/lib/services/finance-os/stress-radar.service.ts` | New — stress detection engine |
-| `src/lib/services/finance-os/income-quality.service.ts` | New — income scoring engine |
-| `src/lib/services/finance-os/cash-allocator.service.ts` | New — allocation engine |
-| `src/lib/services/finance-os/peace-score.service.ts` | New — peace score engine |
-| `src/lib/services/finance-os/index.ts` | Add 4 new exports |
-| `src/pages/money/StressRadar.tsx` | New page |
-| `src/pages/money/LifeMoneyEngine.tsx` | New page |
-| `src/pages/money/MoneyModes.tsx` | New page |
-| `src/pages/money/CashAllocator.tsx` | New page |
-| `src/pages/money/TrustGraph.tsx` | New page |
-| `src/pages/money/OpportunityCost.tsx` | New page |
-| `src/pages/money/MoneyRituals.tsx` | New page |
-| `src/pages/money/PeaceScore.tsx` | New page |
+| `src/pages/money/FinancialBoundaryMonitor.tsx` | New — financial integrity monitoring page |
+| `src/pages/money/FinancialHealthPulse.tsx` | Enhance — Emotional Finance + Income Quality Score + full Founder Split Brain |
+| `src/pages/money/SubscriptionsWaste.tsx` | Enhance — Negotiation/Downgrade Advisor section |
+| `src/pages/money/TaxEstimator.tsx` | Enhance — Tax Shock Prevention section |
+| `src/pages/money/MoneyAdvisorBoard.tsx` | Enhance — Adaptive Personality system |
 | `src/pages/money/MoneyOverview.tsx` | Enhance — full Money Twin + stress lane + peace badge |
-| `src/pages/money/FinancialHealthPulse.tsx` | Enhance — emotional layer + income quality + full founder protection |
-| `src/pages/money/TaxEstimator.tsx` | Enhance — tax shock prevention |
-| `src/pages/money/SubscriptionsWaste.tsx` | Enhance — negotiation advisor |
-| `src/pages/money/MoneyAdvisorBoard.tsx` | Enhance — adaptive personality |
-| `src/pages/MoneyCenter.tsx` | Add 8 tabs + imports |
-| `src/App.tsx` | Add 8 routes |
+| `src/pages/MoneyCenter.tsx` | Add 1 tab (Boundaries) |
+| `src/App.tsx` | Add 1 route |
 
-**Total: 22 file changes (12 new, 10 enhanced). All using existing SITA primitives, existing hooks, deterministic engines. No new DB tables needed.**
+**Total: 8 file changes (1 new, 7 enhanced). Uses existing services (income-quality, stress-radar, peace-score) and existing contract types (EmotionalPattern). No new services or DB tables needed.**
+
