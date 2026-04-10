@@ -1,12 +1,21 @@
 import { useNavigate } from "react-router-dom";
-import { DollarSign, TrendingUp, TrendingDown, PieChart, Shield, RefreshCw, ExternalLink, AlertTriangle } from "lucide-react";
+import { DollarSign, TrendingUp, TrendingDown, PieChart, Shield, RefreshCw, ExternalLink, AlertTriangle, Brain, Target } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { PLATFORM_CONNECTIONS, PORTFOLIO } from "@/hooks/useInvestmentOfficeData";
+import { SparklineChart } from "@/components/sita/SparklineChart";
+import { PLATFORM_CONNECTIONS, PORTFOLIO, SAMPLE_THESES } from "@/hooks/useInvestmentOfficeData";
+import { SPARKLINE_DATA } from "@/lib/investment-office/mock-data";
 import { usePortfolioPositions } from "@/hooks/use-investment-office";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 const fmt = (n: number) => n >= 1e6 ? `$${(n / 1e6).toFixed(2)}M` : n >= 1e3 ? `$${(n / 1e3).toFixed(1)}K` : `$${n.toFixed(2)}`;
 const pctFmt = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
+
+// Conviction overlay helper
+function getConvictionBadge(instrumentId: string) {
+  const thesis = SAMPLE_THESES.find(t => t.instrumentId === instrumentId && t.status === "active");
+  if (!thesis) return null;
+  return thesis;
+}
 
 export default function PortfolioOffice() {
   const { isDemoMode } = useDataMode();
@@ -14,7 +23,6 @@ export default function PortfolioOffice() {
   const navigate = useNavigate();
   const p = PORTFOLIO;
   const sortedHoldings = [...p.holdings].sort((a, b) => b.currentValue - a.currentValue);
-
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
@@ -33,7 +41,7 @@ export default function PortfolioOffice() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
           { label: "Portfolio Value", value: fmt(p.totalValue), sub: `+ ${fmt(p.totalCash)} cash` },
-          { label: "Unrealized P&L", value: fmt(p.totalPnl), sub: pctFmt(p.totalPnlPct), color: p.totalPnl >= 0 ? "text-[hsl(var(--trust-safe))]" : "text-destructive" },
+          { label: "Unrealized P&L", value: fmt(p.totalPnl), sub: pctFmt(p.totalPnlPct), color: p.totalPnl >= 0 ? "text-trust-safe" : "text-destructive" },
           { label: "Positions", value: String(p.holdings.length), sub: `${new Set(p.holdings.map(h => h.platform)).size} platforms` },
           { label: "Risk Score", value: `${p.riskScore}/100`, sub: p.riskScore > 70 ? "Elevated" : "Moderate" },
         ].map(s => (
@@ -55,34 +63,62 @@ export default function PortfolioOffice() {
             <thead>
               <tr className="border-b border-border text-muted-foreground">
                 <th className="text-left px-5 py-2.5 font-medium">Asset</th>
+                <th className="text-center px-2 py-2.5 font-medium">7d</th>
                 <th className="text-right px-3 py-2.5 font-medium">Price</th>
-                <th className="text-right px-3 py-2.5 font-medium">Qty</th>
                 <th className="text-right px-3 py-2.5 font-medium">Value</th>
-                <th className="text-right px-3 py-2.5 font-medium">Avg Cost</th>
                 <th className="text-right px-3 py-2.5 font-medium">P&L</th>
                 <th className="text-right px-3 py-2.5 font-medium">Weight</th>
+                <th className="text-center px-3 py-2.5 font-medium">Conviction</th>
                 <th className="text-right px-5 py-2.5 font-medium">Platform</th>
               </tr>
             </thead>
             <tbody>
-              {sortedHoldings.map(h => (
-                <tr key={h.id} onClick={() => navigate(`/investments/instrument/${h.instrumentId}`)}
-                  className="border-b border-border/50 hover:bg-secondary/30 cursor-pointer transition-colors">
-                  <td className="px-5 py-3 flex items-center gap-2.5">
-                    <span className="text-lg">{h.instrument.logoIcon}</span>
-                    <div><p className="font-medium text-foreground">{h.instrument.symbol}</p><p className="text-[10px] text-muted-foreground">{h.instrument.name}</p></div>
-                  </td>
-                  <td className="text-right px-3 py-3 text-foreground">${h.instrument.price.toLocaleString()}</td>
-                  <td className="text-right px-3 py-3 text-foreground">{h.quantity}</td>
-                  <td className="text-right px-3 py-3 font-medium text-foreground">{fmt(h.currentValue)}</td>
-                  <td className="text-right px-3 py-3 text-muted-foreground">${h.avgCost.toLocaleString()}</td>
-                  <td className={`text-right px-3 py-3 font-medium ${h.unrealizedPnl >= 0 ? "text-[hsl(var(--trust-safe))]" : "text-destructive"}`}>
-                    {pctFmt(h.unrealizedPnlPct)}
-                  </td>
-                  <td className="text-right px-3 py-3 text-muted-foreground">{h.weight.toFixed(1)}%</td>
-                  <td className="text-right px-5 py-3 text-muted-foreground">{h.platform}</td>
-                </tr>
-              ))}
+              {sortedHoldings.map(h => {
+                const thesis = getConvictionBadge(h.instrumentId);
+                const riskLevel = h.weight > 15 ? "high" : h.weight > 8 ? "moderate" : "low";
+                return (
+                  <tr key={h.id} onClick={() => navigate(`/investments/instrument/${h.instrumentId}`)}
+                    className="border-b border-border/50 hover:bg-secondary/30 cursor-pointer transition-colors">
+                    <td className="px-5 py-3 flex items-center gap-2.5">
+                      <span className="text-lg">{h.instrument.logoIcon}</span>
+                      <div>
+                        <p className="font-medium text-foreground">{h.instrument.symbol}</p>
+                        <p className="text-[10px] text-muted-foreground">{h.instrument.name}</p>
+                      </div>
+                    </td>
+                    <td className="px-2 py-3">
+                      {SPARKLINE_DATA[h.instrumentId] && (
+                        <SparklineChart data={SPARKLINE_DATA[h.instrumentId]} width={56} height={18} />
+                      )}
+                    </td>
+                    <td className="text-right px-3 py-3 text-foreground">${h.instrument.price.toLocaleString()}</td>
+                    <td className="text-right px-3 py-3 font-medium text-foreground">{fmt(h.currentValue)}</td>
+                    <td className={`text-right px-3 py-3 font-medium ${h.unrealizedPnl >= 0 ? "text-trust-safe" : "text-destructive"}`}>
+                      {pctFmt(h.unrealizedPnlPct)}
+                    </td>
+                    <td className="text-right px-3 py-3 text-muted-foreground">{h.weight.toFixed(1)}%</td>
+                    <td className="text-center px-3 py-3">
+                      <div className="flex items-center justify-center gap-1">
+                        {thesis ? (
+                          <span className={`rounded-full px-2 py-0.5 text-[8px] font-bold uppercase tracking-wider ${
+                            thesis.conviction === "high" ? "bg-[hsl(var(--trust-safe))]/10 text-trust-safe" :
+                            thesis.conviction === "medium" ? "bg-primary/10 text-primary" :
+                            "bg-secondary text-muted-foreground"
+                          }`}>{thesis.conviction}</span>
+                        ) : (
+                          <span className="text-[9px] text-muted-foreground">—</span>
+                        )}
+                        {riskLevel === "high" && (
+                          <span className="rounded-full bg-destructive/10 px-1.5 py-0.5 text-[8px] font-bold text-destructive" title="Concentrated position">
+                            <AlertTriangle className="h-2.5 w-2.5 inline" />
+                          </span>
+                        )}
+                      </div>
+                    </td>
+                    <td className="text-right px-5 py-3 text-muted-foreground">{h.platform}</td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
@@ -100,7 +136,7 @@ export default function PortfolioOffice() {
                 <p className="text-[10px] text-muted-foreground capitalize">{pc.type} · {pc.status}</p>
                 {pc.accountValue && <p className="text-[10px] text-foreground font-medium">{fmt(pc.accountValue)}</p>}
               </div>
-              <div className={`h-2 w-2 rounded-full ${pc.status === "connected" ? "bg-[hsl(var(--trust-safe))]" : pc.status === "error" ? "bg-destructive" : "bg-muted-foreground"}`} />
+              <div className={`h-2 w-2 rounded-full ${pc.status === "connected" ? "bg-trust-safe" : pc.status === "error" ? "bg-destructive" : "bg-muted-foreground"}`} />
             </div>
           ))}
         </div>

@@ -34,8 +34,9 @@ const REC_LABELS: Partial<Record<AdvisorRecommendation, string>> = {
 };
 
 function ConfidenceBadge({ level }: { level: AdvisorConfidenceLevel }) {
+  const pulseClass = level === "high" ? "animate-pulse-safe" : level === "moderate" ? "animate-pulse-warn" : level === "low" ? "animate-pulse-danger" : "";
   return (
-    <span className={`rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider ${CONFIDENCE_BG[level]} ${CONFIDENCE_COLORS[level]}`}>
+    <span className={`rounded-full px-2 py-0.5 text-[9px] font-bold uppercase tracking-wider ${CONFIDENCE_BG[level]} ${CONFIDENCE_COLORS[level]} ${pulseClass}`}>
       {level.replace("-", " ")}
     </span>
   );

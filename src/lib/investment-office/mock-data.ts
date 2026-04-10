@@ -22,6 +22,41 @@ export const INSTRUMENTS: Instrument[] = [
 
 export const getInstrument = (id: string) => INSTRUMENTS.find(i => i.id === id);
 
+// ── Sparkline Data (7-day price history) ──
+export const SPARKLINE_DATA: Record<string, number[]> = {
+  aapl: [222, 224, 223, 226, 225, 228, 227.45],
+  msft: [460, 463, 461, 465, 464, 470, 468.50],
+  nvda: [140, 138, 141, 137, 139, 136, 135.20],
+  btc: [94200, 95100, 94800, 96500, 97200, 96800, 97450],
+  eth: [3920, 3880, 3910, 3860, 3840, 3870, 3850],
+  sol: [172, 175, 178, 180, 176, 183, 185.40],
+  gold: [2620, 2628, 2635, 2630, 2638, 2642, 2645],
+  oil: [79.5, 79.1, 78.8, 79.2, 78.9, 78.6, 78.30],
+  "ev-fed": [0.55, 0.57, 0.56, 0.59, 0.58, 0.61, 0.62],
+  "ev-election": [0.48, 0.47, 0.46, 0.47, 0.46, 0.44, 0.45],
+  spy: [540, 543, 542, 545, 544, 547, 548.20],
+  tsla: [258, 255, 260, 252, 256, 250, 248.90],
+};
+
+// ── Strategy Templates ──
+export const STRATEGY_TEMPLATES = [
+  { id: "st1", name: "Conservative Diversified", icon: "🛡️", description: "Broad-based allocation designed for capital preservation with moderate growth", allocation: { stocks: 35, etfs: 15, crypto: 5, commodities: 15, events: 0, cash: 30 }, risk: "low", expectedReturn: "6-8%", maxDrawdown: "-12%" },
+  { id: "st2", name: "Growth & Innovation", icon: "🚀", description: "High-growth focus on technology, AI, and disruptive sectors", allocation: { stocks: 50, etfs: 15, crypto: 15, commodities: 5, events: 5, cash: 10 }, risk: "high", expectedReturn: "15-25%", maxDrawdown: "-30%" },
+  { id: "st3", name: "Crypto Satellite", icon: "₿", description: "Core traditional portfolio with aggressive crypto satellite allocation", allocation: { stocks: 30, etfs: 10, crypto: 35, commodities: 10, events: 5, cash: 10 }, risk: "very-high", expectedReturn: "20-40%", maxDrawdown: "-45%" },
+  { id: "st4", name: "Event Speculation", icon: "🎯", description: "Probability-weighted event market positioning with strong cash reserves", allocation: { stocks: 15, etfs: 10, crypto: 5, commodities: 5, events: 30, cash: 35 }, risk: "high", expectedReturn: "10-35%", maxDrawdown: "-25%" },
+  { id: "st5", name: "Commodity Hedge", icon: "⛏️", description: "Inflation and macro-risk hedged portfolio with commodity emphasis", allocation: { stocks: 25, etfs: 10, crypto: 5, commodities: 35, events: 0, cash: 25 }, risk: "moderate", expectedReturn: "8-12%", maxDrawdown: "-18%" },
+  { id: "st6", name: "Income Preservation", icon: "💰", description: "Maximum capital preservation with income focus and minimal volatility", allocation: { stocks: 15, etfs: 25, crypto: 0, commodities: 10, events: 0, cash: 50 }, risk: "very-low", expectedReturn: "4-6%", maxDrawdown: "-8%" },
+];
+
+// ── What Changed Data ──
+export const WHAT_CHANGED = [
+  { type: "portfolio" as const, severity: "info" as const, text: "SOL rally pushed crypto allocation 2% above target" },
+  { type: "advisor" as const, severity: "warn" as const, text: "Sentinel flags tech concentration at 42% vs 35% policy limit" },
+  { type: "catalyst" as const, severity: "info" as const, text: "CPI release in 34 days — key catalyst for Fed rate cut thesis" },
+  { type: "watchlist" as const, severity: "alert" as const, text: "NVDA down -1.74% on high volume — attention pattern flagged" },
+  { type: "macro" as const, severity: "info" as const, text: "Fed speaker tone shifted slightly dovish this week" },
+];
+
 // ── Holdings ──
 const makeHolding = (instId: string, qty: number, avgCost: number, platform: string): Holding => {
   const inst = getInstrument(instId)!;

@@ -3,7 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { Search, TrendingUp, TrendingDown, Filter, BarChart3, Globe, Zap, ChevronRight } from "lucide-react";
 import type { AssetClass } from "@/lib/investment-office/types";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { SparklineChart } from "@/components/sita/SparklineChart";
 import { INSTRUMENTS, INVESTMENT_ADVISORS } from "@/hooks/useInvestmentOfficeData";
+import { SPARKLINE_DATA } from "@/lib/investment-office/mock-data";
 import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_CLASS_TABS } from "@/lib/demo-data/investment";
@@ -23,7 +25,6 @@ export default function MarketExplorer() {
   );
 
   const regimeAdvisor = INVESTMENT_ADVISORS.find(a => a.domain === "macro");
-
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
@@ -84,16 +85,21 @@ export default function MarketExplorer() {
             <div className="flex items-end justify-between mt-3">
               <div>
                 <p className="text-lg font-bold text-foreground">${inst.price.toLocaleString()}</p>
-                <p className={`text-xs font-medium ${inst.changePct24h >= 0 ? "text-[hsl(var(--trust-safe))]" : "text-destructive"}`}>
+                <p className={`text-xs font-medium ${inst.changePct24h >= 0 ? "text-trust-safe" : "text-destructive"}`}>
                   {inst.changePct24h >= 0 ? <TrendingUp className="h-3 w-3 inline mr-1" /> : <TrendingDown className="h-3 w-3 inline mr-1" />}
                   {pctFmt(inst.changePct24h)}
                 </p>
               </div>
-              {inst.catalysts.length > 0 && (
-                <span className="rounded-full bg-accent/10 px-2 py-0.5 text-[9px] font-medium text-accent flex items-center gap-1">
-                  <Zap className="h-2.5 w-2.5" /> {inst.catalysts.length} catalyst{inst.catalysts.length > 1 ? "s" : ""}
-                </span>
-              )}
+              <div className="flex items-center gap-2">
+                {SPARKLINE_DATA[inst.id] && (
+                  <SparklineChart data={SPARKLINE_DATA[inst.id]} width={64} height={22} />
+                )}
+                {inst.catalysts.length > 0 && (
+                  <span className="rounded-full bg-accent/10 px-2 py-0.5 text-[9px] font-medium text-accent flex items-center gap-1">
+                    <Zap className="h-2.5 w-2.5" /> {inst.catalysts.length}
+                  </span>
+                )}
+              </div>
             </div>
             {inst.theme && inst.theme.length > 0 && (
               <div className="flex gap-1 mt-2 flex-wrap">
