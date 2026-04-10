@@ -32,6 +32,7 @@ export default function AR07RetryFailureCenter() {
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
       <DemoModeBadge />
+      <ARSubNav />
       <SitaPageHeader
         title="Retry / Failure / Escalation Center"
         subtitle="Inspect and manage recurring job failures, retries, and escalations"

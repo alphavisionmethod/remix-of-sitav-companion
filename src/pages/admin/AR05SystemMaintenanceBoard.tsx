@@ -40,6 +40,7 @@ export default function AR05SystemMaintenanceBoard() {
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
       <DemoModeBadge />
+      <ARSubNav />
       <SitaPageHeader
         title="System Updates & Maintenance"
         subtitle="Inspect maintenance cadences, cleanup runs, and consistency checks"

@@ -43,6 +43,7 @@ export default function AR04AgentScheduler() {
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
       <DemoModeBadge />
+      <ARSubNav />
       <SitaPageHeader
         title="Agent Scheduler Control Plane"
         subtitle="Recurring agent execution, heartbeats, and runtime health"

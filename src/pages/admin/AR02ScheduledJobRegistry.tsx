@@ -41,6 +41,7 @@ export default function AR02ScheduledJobRegistry() {
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
       <DemoModeBadge />
+      <ARSubNav />
       <SitaPageHeader
         title="Scheduled Job Registry"
         subtitle="Canonical source of truth for all recurring jobs"

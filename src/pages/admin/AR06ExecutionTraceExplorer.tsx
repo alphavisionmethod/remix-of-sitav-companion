@@ -33,6 +33,7 @@ export default function AR06ExecutionTraceExplorer() {
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
       <DemoModeBadge />
+      <ARSubNav />
       <SitaPageHeader
         title="Execution Trace Explorer"
         subtitle="Inspect any recurring execution from trigger to outcome"

@@ -65,6 +65,7 @@ export default function AR01AutomationOverview() {
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
       <DemoModeBadge />
+      <ARSubNav />
       <SitaPageHeader
         title="Automation Reality Overview"
         subtitle="Executive view of all scheduled automation, execution health, and safety controls"
