@@ -1,3 +1,4 @@
+import RCPSubNav from "@/components/admin/RCPSubNav";
 import { useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -21,7 +22,7 @@ const RCP01Overview = () => {
   const domainRollups = useMemo(() => getDomainRealityRollups(), []);
 
   return (
-    <div className="space-y-6 p-4 sm:p-6">
+    <div className="space-y-6 p-4 sm:p-6"> <RCPSubNav />
       <div className="flex items-center gap-3">
         <div className="p-2 rounded-lg bg-primary/10"><BarChart3 className="h-6 w-6 text-primary" /></div>
         <div>

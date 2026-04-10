@@ -1,3 +1,4 @@
+import RCPSubNav from "@/components/admin/RCPSubNav";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Waves, ArrowRight, Users, Clock, TrendingUp } from "lucide-react";
@@ -18,7 +19,7 @@ const RCP10WavePlanner = () => {
   const totalGain = MIGRATION_WAVES.reduce((s, w) => s + w.readinessGainEstimate, 0);
 
   return (
-    <div className="space-y-6 p-4 sm:p-6">
+    <div className="space-y-6 p-4 sm:p-6"> <RCPSubNav />
       <div className="flex items-center gap-3">
         <div className="p-2 rounded-lg bg-primary/10"><Waves className="h-6 w-6 text-primary" /></div>
         <div>
