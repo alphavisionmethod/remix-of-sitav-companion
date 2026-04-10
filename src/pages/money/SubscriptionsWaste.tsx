@@ -281,16 +281,16 @@ const SubscriptionsWaste = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="text-xs font-medium text-muted-foreground">Service Name *</label>
-            <input className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2 text-sm text-foreground focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20" value={form.service_name} onChange={e => setForm({ ...form, service_name: e.target.value })} required />
+            <input className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2.5 text-sm text-foreground touch-manipulation focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20" value={form.service_name} onChange={e => setForm({ ...form, service_name: e.target.value })} required />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="text-xs font-medium text-muted-foreground">Amount *</label>
-              <input type="number" step="0.01" className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2 text-sm text-foreground focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20" value={form.amount} onChange={e => setForm({ ...form, amount: e.target.value })} required />
+              <input type="number" step="0.01" className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2.5 text-sm text-foreground touch-manipulation focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20" value={form.amount} onChange={e => setForm({ ...form, amount: e.target.value })} required />
             </div>
             <div>
               <label className="text-xs font-medium text-muted-foreground">Billing Cycle</label>
-              <select className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2 text-sm text-foreground focus:border-primary/40 focus:outline-none" value={form.billing_cycle} onChange={e => setForm({ ...form, billing_cycle: e.target.value })}>
+              <select className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2.5 text-sm text-foreground touch-manipulation focus:border-primary/40 focus:outline-none" value={form.billing_cycle} onChange={e => setForm({ ...form, billing_cycle: e.target.value })}>
                 <option value="weekly">Weekly</option>
                 <option value="monthly">Monthly</option>
                 <option value="quarterly">Quarterly</option>
@@ -301,16 +301,16 @@ const SubscriptionsWaste = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="text-xs font-medium text-muted-foreground">Category</label>
-              <input className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2 text-sm text-foreground focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20" placeholder="e.g. Communication" value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} />
+              <input className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2.5 text-sm text-foreground touch-manipulation focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20" placeholder="e.g. Communication" value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} />
             </div>
             <div>
               <label className="text-xs font-medium text-muted-foreground">Renewal Date</label>
-              <input type="date" className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2 text-sm text-foreground focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20" value={form.renewal_date} onChange={e => setForm({ ...form, renewal_date: e.target.value })} />
+              <input type="date" className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2.5 text-sm text-foreground touch-manipulation focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20" value={form.renewal_date} onChange={e => setForm({ ...form, renewal_date: e.target.value })} />
             </div>
           </div>
           <div>
             <label className="text-xs font-medium text-muted-foreground">Usage Level</label>
-            <select className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2 text-sm text-foreground focus:border-primary/40 focus:outline-none" value={form.usage_level} onChange={e => setForm({ ...form, usage_level: e.target.value })}>
+            <select className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2.5 text-sm text-foreground touch-manipulation focus:border-primary/40 focus:outline-none" value={form.usage_level} onChange={e => setForm({ ...form, usage_level: e.target.value })}>
               <option value="high">High</option>
               <option value="medium">Medium</option>
               <option value="low">Low</option>
@@ -320,14 +320,14 @@ const SubscriptionsWaste = () => {
           </div>
           <div>
             <label className="text-xs font-medium text-muted-foreground">Duplicate Of</label>
-            <input className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2 text-sm text-foreground focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20" placeholder="e.g. Google Meet (free)" value={form.duplicate_of} onChange={e => setForm({ ...form, duplicate_of: e.target.value })} />
+            <input className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2.5 text-sm text-foreground touch-manipulation focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20" placeholder="e.g. Google Meet (free)" value={form.duplicate_of} onChange={e => setForm({ ...form, duplicate_of: e.target.value })} />
           </div>
           <label className="flex items-center gap-2 text-sm text-foreground">
             <input type="checkbox" className="rounded" checked={form.waste_flag} onChange={e => setForm({ ...form, waste_flag: e.target.checked })} /> Flag as likely waste
           </label>
           <div>
             <label className="text-xs font-medium text-muted-foreground">Notes</label>
-            <textarea className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2 text-sm text-foreground focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none" rows={3} value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} />
+            <textarea className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2.5 text-sm text-foreground touch-manipulation focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none" rows={3} value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} />
           </div>
           <div className="flex gap-2 pt-2">
             <SitaButton type="submit" variant="primary" className="flex-1">{editId ? "Update Subscription" : "Add Subscription"}</SitaButton>
