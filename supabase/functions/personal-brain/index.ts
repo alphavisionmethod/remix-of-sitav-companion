@@ -5,6 +5,8 @@ import { requireAuth } from "../_shared/auth.ts";
 import { zodValidate, PersonalBrainSchema } from "../_shared/zod-validate.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
 import { EdgeLogger } from "../_shared/logger.ts";
+import { logAIReceipt } from "../_shared/ai-receipt-logger.ts";
+import { checkAIBudget } from "../_shared/ai-budget-check.ts";
 
 const MODE_PROMPTS: Record<string, string> = {
   think: `You are SITA Brain — Think Mode. You are a reflective thinking partner. Help the user brainstorm, debate ideas, journal, analyze problems from multiple angles. Use Socratic questioning. Present counterarguments. Help them think deeply.`,
@@ -116,19 +118,20 @@ serve(async (req) => {
       });
     }
 
-    // Check budget
-    const { data: budget } = await supabaseClient
-      .from("user_ai_budgets")
-      .select("*")
-      .eq("user_id", user.id)
-      .eq("period", "monthly")
-      .maybeSingle();
+    // Canonical budget check via check_ai_budget_policies
+    const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
+    const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
+    const adminClient = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
 
+    const budgetDecision = await checkAIBudget(adminClient, user.id, `personal_brain.${mode}`, 0.005);
     let model = "google/gemini-3-flash-preview";
-    if (budget && budget.hard_limit && budget.used_cost_cents >= budget.limit_cost_cents) {
-      return new Response(JSON.stringify({ error: "Monthly AI budget exceeded. Upgrade or wait for reset.", code: "BUDGET_EXCEEDED", correlation_id: correlationId }), {
+    if (!budgetDecision.allowed) {
+      return new Response(JSON.stringify({ error: "AI budget exceeded. Upgrade or wait for reset.", code: "BUDGET_EXCEEDED", correlation_id: correlationId }), {
         status: 429, headers: { ...corsHeaders, "Content-Type": "application/json" },
       });
+    }
+    if (budgetDecision.shouldDowngrade && budgetDecision.fallbackModelId) {
+      model = budgetDecision.fallbackModelId;
     }
 
     const systemPrompt = await buildBrainContext(supabaseClient, user.id, mode);
@@ -159,10 +162,7 @@ serve(async (req) => {
       });
     }
 
-    // Log token usage
-    const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
-    const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
-    const adminClient = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
+    // Log token usage (legacy)
     const inputApprox = JSON.stringify(messages).length / 4;
     adminClient.from("ai_token_usage").insert({
       user_id: user.id,
@@ -176,6 +176,20 @@ serve(async (req) => {
       category: "inference",
       session_id: correlationId,
     }).then(() => {}).catch(e => console.error("Token log error:", e));
+
+    // Canonical receipt logging for AIG04/AIG05
+    const estCostUsd = inputApprox * 0.000002;
+    logAIReceipt(adminClient, {
+      userId: user.id,
+      capabilityKey: `personal_brain.${mode}`,
+      model,
+      provider: "lovable-gateway",
+      inputTokens: Math.ceil(inputApprox),
+      outputTokens: 0,
+      estimatedCostUsd: estCostUsd,
+      latencyMs: aiLatencyMs,
+      correlationId,
+    });
 
     // Budget metering
     const estCost = Math.ceil(inputApprox * 0.002);

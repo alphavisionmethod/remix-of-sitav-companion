@@ -4,6 +4,8 @@ import { corsHeaders } from "../_shared/cors.ts";
 import { z } from "https://esm.sh/zod@3.23.8";
 import { requireAuth } from "../_shared/auth.ts";
 import { checkRateLimit, rateLimitResponse } from "../_shared/rate-limit.ts";
+import { logAIReceipt } from "../_shared/ai-receipt-logger.ts";
+import { checkAIBudget } from "../_shared/ai-budget-check.ts";
 
 // ═══ AI Gateway integration ═══
 const AI_GATEWAY_URL = "https://ai.gateway.lovable.dev/v1/chat/completions";
@@ -376,20 +378,43 @@ serve(async (req) => {
     const isAIEligible = AI_ELIGIBLE_AGENTS.has(agent_id);
 
     if (use_ai && hasIssues && isAIEligible) {
-      const systemPrompt = AGENT_SYSTEM_PROMPTS[agent_id] ||
-        "You are an operations analyst. Analyze the diagnostic data and return JSON with: summary (string), recommendations (string[]), riskLevel (low|medium|high), health (healthy|degraded|critical).";
+      // Canonical budget check before AI call
+      const budgetDecision = await checkAIBudget(supabase, user.id, `agent_executor.${agent_id}`, 0.005);
+      
+      if (budgetDecision.allowed) {
+        const aiCallStart = Date.now();
+        const systemPrompt = AGENT_SYSTEM_PROMPTS[agent_id] ||
+          "You are an operations analyst. Analyze the diagnostic data and return JSON with: summary (string), recommendations (string[]), riskLevel (low|medium|high), health (healthy|degraded|critical).";
 
-      const aiResult = await callAI(
-        systemPrompt,
-        `Analyze this diagnostic data for agent "${agent_id}":\n${JSON.stringify(diagnosticData, null, 2)}`,
-      );
+        const aiResult = await callAI(
+          systemPrompt,
+          `Analyze this diagnostic data for agent "${agent_id}":\n${JSON.stringify(diagnosticData, null, 2)}`,
+        );
 
-      tokensUsed = aiResult.tokensUsed;
+        tokensUsed = aiResult.tokensUsed;
+        const aiLatencyMs = Date.now() - aiCallStart;
 
-      try {
-        aiAnalysis = JSON.parse(aiResult.content);
-      } catch {
-        aiAnalysis = { rawAnalysis: aiResult.content, parseError: true };
+        try {
+          aiAnalysis = JSON.parse(aiResult.content);
+        } catch {
+          aiAnalysis = { rawAnalysis: aiResult.content, parseError: true };
+        }
+
+        // Canonical receipt logging
+        if (tokensUsed > 0) {
+          logAIReceipt(supabase, {
+            userId: user.id,
+            capabilityKey: `agent_executor.${agent_id}`,
+            model: AI_MODEL,
+            provider: "lovable-gateway",
+            inputTokens: Math.round(tokensUsed * 0.7),
+            outputTokens: Math.round(tokensUsed * 0.3),
+            estimatedCostUsd: tokensUsed * 0.000001,
+            latencyMs: aiLatencyMs,
+          });
+        }
+      } else {
+        console.warn(`Budget blocked AI for agent ${agent_id}: ${budgetDecision.reason}`);
       }
     }
 
