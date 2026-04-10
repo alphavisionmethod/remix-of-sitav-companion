@@ -251,6 +251,14 @@ const CoreServiceMigrationBoard = lazy(() => import("./pages/admin/CoreServiceMi
 const PersistenceDriftRadar = lazy(() => import("./pages/admin/PersistenceDriftRadar"));
 const RuntimeContinuityBoard = lazy(() => import("./pages/admin/RuntimeContinuityBoard"));
 
+// ── ITC: Implementation Truth Center ──
+const ITC01Overview = lazy(() => import("./pages/admin/implementation-truth/ITC01Overview"));
+const ITC02SpecRegistry = lazy(() => import("./pages/admin/implementation-truth/ITC02SpecRegistry"));
+const ITC03ContractVerification = lazy(() => import("./pages/admin/implementation-truth/ITC03ContractVerification"));
+const ITC04WiringGraph = lazy(() => import("./pages/admin/implementation-truth/ITC04WiringGraph"));
+const ITC05ReadinessScoreboard = lazy(() => import("./pages/admin/implementation-truth/ITC05ReadinessScoreboard"));
+const ITC06DriftRadar = lazy(() => import("./pages/admin/implementation-truth/ITC06DriftRadar"));
+
 // ── Phase 4 Unification Pages ──
 const TrustStateRegistry = lazy(() => import("./pages/admin/TrustStateRegistry"));
 const ActionStateDriftViewer = lazy(() => import("./pages/admin/ActionStateDriftViewer"));
@@ -1577,6 +1585,13 @@ const App = () => (
                     <Route path="/admin/service-migration" element={<CoreServiceMigrationBoard />} />
                     <Route path="/admin/persistence-drift" element={<PersistenceDriftRadar />} />
                     <Route path="/admin/runtime-continuity" element={<RuntimeContinuityBoard />} />
+                    {/* ITC: Implementation Truth Center */}
+                    <Route path="/admin/implementation-truth" element={<ITC01Overview />} />
+                    <Route path="/admin/implementation-truth/specs" element={<ITC02SpecRegistry />} />
+                    <Route path="/admin/implementation-truth/contracts" element={<ITC03ContractVerification />} />
+                    <Route path="/admin/implementation-truth/wiring" element={<ITC04WiringGraph />} />
+                    <Route path="/admin/implementation-truth/readiness" element={<ITC05ReadinessScoreboard />} />
+                    <Route path="/admin/implementation-truth/drift" element={<ITC06DriftRadar />} />
                     {/* Phase 4 Unification */}
                     <Route path="/admin/trust-state" element={<TrustStateRegistry />} />
                     <Route path="/admin/action-state" element={<ActionStateDriftViewer />} />

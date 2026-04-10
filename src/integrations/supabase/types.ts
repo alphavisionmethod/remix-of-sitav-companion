@@ -12638,6 +12638,138 @@ export type Database = {
           },
         ]
       }
+      implementation_spec_registry: {
+        Row: {
+          acceptance_criteria: string[] | null
+          canonical_name: string
+          contract_score: number | null
+          created_at: string
+          dependencies: string[] | null
+          description: string | null
+          id: string
+          implementation_status: string
+          last_verified_at: string | null
+          overall_readiness: number | null
+          owning_module: string
+          prompt_origin: string | null
+          required_components: string[] | null
+          required_contracts: string[] | null
+          required_events: string[] | null
+          required_proofs: string[] | null
+          required_routes: string[] | null
+          required_services: string[] | null
+          required_tests: string[] | null
+          runtime_score: number | null
+          spec_id: string
+          spec_score: number | null
+          ui_score: number | null
+          updated_at: string
+          user_id: string
+          wiring_score: number | null
+        }
+        Insert: {
+          acceptance_criteria?: string[] | null
+          canonical_name: string
+          contract_score?: number | null
+          created_at?: string
+          dependencies?: string[] | null
+          description?: string | null
+          id?: string
+          implementation_status?: string
+          last_verified_at?: string | null
+          overall_readiness?: number | null
+          owning_module?: string
+          prompt_origin?: string | null
+          required_components?: string[] | null
+          required_contracts?: string[] | null
+          required_events?: string[] | null
+          required_proofs?: string[] | null
+          required_routes?: string[] | null
+          required_services?: string[] | null
+          required_tests?: string[] | null
+          runtime_score?: number | null
+          spec_id: string
+          spec_score?: number | null
+          ui_score?: number | null
+          updated_at?: string
+          user_id: string
+          wiring_score?: number | null
+        }
+        Update: {
+          acceptance_criteria?: string[] | null
+          canonical_name?: string
+          contract_score?: number | null
+          created_at?: string
+          dependencies?: string[] | null
+          description?: string | null
+          id?: string
+          implementation_status?: string
+          last_verified_at?: string | null
+          overall_readiness?: number | null
+          owning_module?: string
+          prompt_origin?: string | null
+          required_components?: string[] | null
+          required_contracts?: string[] | null
+          required_events?: string[] | null
+          required_proofs?: string[] | null
+          required_routes?: string[] | null
+          required_services?: string[] | null
+          required_tests?: string[] | null
+          runtime_score?: number | null
+          spec_id?: string
+          spec_score?: number | null
+          ui_score?: number | null
+          updated_at?: string
+          user_id?: string
+          wiring_score?: number | null
+        }
+        Relationships: []
+      }
+      implementation_wiring_edges: {
+        Row: {
+          created_at: string
+          edge_status: string
+          evidence: string | null
+          id: string
+          source_name: string
+          source_type: string
+          spec_id: string
+          target_name: string
+          target_type: string
+          updated_at: string
+          user_id: string
+          verified_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          edge_status?: string
+          evidence?: string | null
+          id?: string
+          source_name: string
+          source_type: string
+          spec_id: string
+          target_name: string
+          target_type: string
+          updated_at?: string
+          user_id: string
+          verified_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          edge_status?: string
+          evidence?: string | null
+          id?: string
+          source_name?: string
+          source_type?: string
+          spec_id?: string
+          target_name?: string
+          target_type?: string
+          updated_at?: string
+          user_id?: string
+          verified_at?: string | null
+        }
+        Relationships: []
+      }
       import_export_jobs: {
         Row: {
           completed_at: string | null
