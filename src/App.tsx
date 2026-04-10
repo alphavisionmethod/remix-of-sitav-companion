@@ -34,6 +34,7 @@ const AdminCommandPaletteWrapper = () => <AdminCommandPalette />;
 const AdminKeyboardShortcutsWrapper = () => <AdminKeyboardShortcuts />;
 const AdminShellLayout = () => <AdminShell><Outlet /></AdminShell>;
 const OwnerShellLayout = () => <OwnerWorkspaceShell><Outlet /></OwnerWorkspaceShell>;
+const RevenueOfficeModeLayout = () => <RevenueOfficeModeProvider><Outlet /></RevenueOfficeModeProvider>;
 
 // ═══════════════════════════════════════════════════
 // CODE-SPLIT: Lazy-load all page components
