@@ -32,13 +32,14 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useConfirmation } from "@/hooks/use-confirmation";
 import { useOSOrchestration } from "@/hooks/useOSOrchestration";
 import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
+import GoogleConnectedAccounts from "@/pages/settings/GoogleConnectedAccounts";
 
 
 
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.04 } } };
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.25 } } };
 
-type SettingsSection = "identity" | "trust" | "privacy" | "advisors" | "integrations" | "appearance" |
+type SettingsSection = "identity" | "trust" | "privacy" | "advisors" | "integrations" | "connected-accounts" | "appearance" |
   "notifications" | "devices" | "household" | "business" | "workflows" | "backup" | "support" | "operating-modes";
 
 const settingsSections: { key: SettingsSection; label: string; icon: typeof Settings; description: string }[] = [
@@ -49,6 +50,7 @@ const settingsSections: { key: SettingsSection; label: string; icon: typeof Sett
   { key: "advisors", label: "Advisors & AI", icon: Brain, description: "AI behavior, autonomy, and budget" },
   { key: "notifications", label: "Notifications", icon: Bell, description: "Urgency, channels, and quiet mode" },
   { key: "integrations", label: "Integrations", icon: Globe, description: "Connected services and sync" },
+  { key: "connected-accounts", label: "Connected Accounts", icon: Key, description: "Sign-in providers, Google, OAuth" },
   { key: "appearance", label: "Appearance", icon: Palette, description: "Theme, density, and display" },
   { key: "devices", label: "Devices", icon: Monitor, description: "Trusted devices and sessions" },
   { key: "household", label: "Household", icon: Home, description: "Family, shared users, and roles" },
@@ -623,6 +625,9 @@ const SettingsPage = () => {
             </div>
           </SitaCard>
         );
+
+      case "connected-accounts":
+        return <GoogleConnectedAccounts />;
 
       default:
         return (
