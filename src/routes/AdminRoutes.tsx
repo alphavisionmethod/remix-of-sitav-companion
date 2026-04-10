@@ -69,9 +69,9 @@ const AITSetupChecklist = lazy(() => import("@/pages/admin/AITSetupChecklist"));
 // Truth Index Dashboard
 const TruthIndexDashboard = lazy(() => import("@/pages/admin/TruthIndexDashboard"));
 
-export const AdminRoutes = () => (
-  <>
-    <Route path="/admin/generated-truth" element={<GeneratedTruthDashboard />} />
+export function adminRoutes() {
+  return [
+    <Route key="admin-gt" path="/admin/generated-truth" element={<GeneratedTruthDashboard />} />,
     <Route path="/admin/fleet-health" element={<FleetHealthPage />} />
     <Route path="/admin/dashboard" element={<AdminDashboard />} />
     <Route path="/admin/team" element={<TeamManagement />} />
