@@ -20,6 +20,9 @@ export {
   isStale,
 } from "./ai-surface-grammar";
 
+// Launch honesty reclassifier
+export { reclassifyAIFeatures } from "./ai-launch-honesty-reclassifier";
+
 // Hooks
 export { useAICapability } from "./hooks/use-ai-capability";
 export { useAdvisorChat } from "./hooks/use-advisor-chat";
@@ -27,6 +30,8 @@ export { useBoardroomSummary } from "./hooks/use-boardroom-summary";
 export { useDailyPulse } from "./hooks/use-daily-pulse";
 export { useAdminSynthesis } from "./hooks/use-admin-synthesis";
 export { useUtilityAI } from "./hooks/use-utility-ai";
+export { useMemorySummary } from "./hooks/use-memory-summary";
+export { useAIRuntimeVerification } from "./hooks/use-ai-runtime-verification";
 
 // Workforce executor
 export { executeWorkforceTask } from "./workforce-executor";
