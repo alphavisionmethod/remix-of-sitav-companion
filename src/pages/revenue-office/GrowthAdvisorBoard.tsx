@@ -178,13 +178,15 @@ export default function GrowthAdvisorBoard() {
                             <p className="text-xs text-muted-foreground">{a.domain}</p>
                           </div>
                         </div>
-                        <div className="text-right">
-                          <div className="flex items-center gap-2">
-                            <span className="text-xs text-muted-foreground">Confidence</span>
-                            <span className="text-sm font-bold text-foreground">{Math.round(a.confidence * 100)}%</span>
+                        {!isBeginner && (
+                          <div className="text-right">
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs text-muted-foreground">Confidence</span>
+                              <span className="text-sm font-bold text-foreground">{Math.round(a.confidence * 100)}%</span>
+                            </div>
+                            <span className="text-[10px] text-muted-foreground">Uncertainty: {Math.round((1 - a.confidence) * 100)}%</span>
                           </div>
-                          <span className="text-[10px] text-muted-foreground">Uncertainty: {Math.round((1 - a.confidence) * 100)}%</span>
-                        </div>
+                        )}
                       </div>
                       <p className="text-sm text-muted-foreground">{a.stance}</p>
                       <div className="flex gap-1 flex-wrap">
@@ -193,7 +195,7 @@ export default function GrowthAdvisorBoard() {
                       <div className="pt-2 border-t border-border/30">
                         <p className="text-xs text-primary font-medium">→ {a.recommendation}</p>
                       </div>
-                      <Progress value={a.confidence * 100} className="h-1" />
+                      {!isBeginner && <Progress value={a.confidence * 100} className="h-1" />}
 
                       {/* Interactive Advisor Query Buttons */}
                       <div className="pt-2 border-t border-border/30">
