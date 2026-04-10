@@ -164,9 +164,9 @@ async function fetchGoogleOAuthClients(familyId: string): Promise<GoogleOAuthCli
     id: c.id as string,
     clientName: c.client_name as string,
     purpose: c.client_purpose as GoogleOAuthClientInfo["purpose"],
-    allowedCapabilities: (c.allowed_capabilities as string[]) ?? [],
+    allowedCapabilities: (c.allowed_capabilities as GoogleCapabilityKey[]) ?? [],
     environment: (c.environment as string) ?? "production",
-    launchStage: (c.launch_stage as string) ?? "planned",
+    launchStage: (c.launch_stage ?? "planned") as GoogleOAuthClientInfo["launchStage"],
     active: (c.active as boolean) ?? true,
   }));
 }
