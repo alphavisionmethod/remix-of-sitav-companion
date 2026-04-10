@@ -12641,27 +12641,39 @@ export type Database = {
       implementation_spec_registry: {
         Row: {
           acceptance_criteria: string[] | null
+          architecture_score: number | null
           canonical_name: string
           contract_score: number | null
           created_at: string
           dependencies: string[] | null
           description: string | null
+          docs_score: number | null
+          drift_state: string | null
           id: string
           implementation_status: string
           last_verified_at: string | null
           overall_readiness: number | null
           owning_module: string
+          policy_score: number | null
           prompt_origin: string | null
+          proof_score: number | null
           required_components: string[] | null
           required_contracts: string[] | null
+          required_docs: string[] | null
+          required_endpoints: string[] | null
           required_events: string[] | null
+          required_projections: string[] | null
           required_proofs: string[] | null
           required_routes: string[] | null
+          required_schemas: string[] | null
+          required_screens: string[] | null
           required_services: string[] | null
+          required_shells: string[] | null
           required_tests: string[] | null
           runtime_score: number | null
           spec_id: string
           spec_score: number | null
+          test_score: number | null
           ui_score: number | null
           updated_at: string
           user_id: string
@@ -12669,27 +12681,39 @@ export type Database = {
         }
         Insert: {
           acceptance_criteria?: string[] | null
+          architecture_score?: number | null
           canonical_name: string
           contract_score?: number | null
           created_at?: string
           dependencies?: string[] | null
           description?: string | null
+          docs_score?: number | null
+          drift_state?: string | null
           id?: string
           implementation_status?: string
           last_verified_at?: string | null
           overall_readiness?: number | null
           owning_module?: string
+          policy_score?: number | null
           prompt_origin?: string | null
+          proof_score?: number | null
           required_components?: string[] | null
           required_contracts?: string[] | null
+          required_docs?: string[] | null
+          required_endpoints?: string[] | null
           required_events?: string[] | null
+          required_projections?: string[] | null
           required_proofs?: string[] | null
           required_routes?: string[] | null
+          required_schemas?: string[] | null
+          required_screens?: string[] | null
           required_services?: string[] | null
+          required_shells?: string[] | null
           required_tests?: string[] | null
           runtime_score?: number | null
           spec_id: string
           spec_score?: number | null
+          test_score?: number | null
           ui_score?: number | null
           updated_at?: string
           user_id: string
@@ -12697,27 +12721,39 @@ export type Database = {
         }
         Update: {
           acceptance_criteria?: string[] | null
+          architecture_score?: number | null
           canonical_name?: string
           contract_score?: number | null
           created_at?: string
           dependencies?: string[] | null
           description?: string | null
+          docs_score?: number | null
+          drift_state?: string | null
           id?: string
           implementation_status?: string
           last_verified_at?: string | null
           overall_readiness?: number | null
           owning_module?: string
+          policy_score?: number | null
           prompt_origin?: string | null
+          proof_score?: number | null
           required_components?: string[] | null
           required_contracts?: string[] | null
+          required_docs?: string[] | null
+          required_endpoints?: string[] | null
           required_events?: string[] | null
+          required_projections?: string[] | null
           required_proofs?: string[] | null
           required_routes?: string[] | null
+          required_schemas?: string[] | null
+          required_screens?: string[] | null
           required_services?: string[] | null
+          required_shells?: string[] | null
           required_tests?: string[] | null
           runtime_score?: number | null
           spec_id?: string
           spec_score?: number | null
+          test_score?: number | null
           ui_score?: number | null
           updated_at?: string
           user_id?: string
