@@ -8,7 +8,7 @@ import {
   Rocket, Sparkles, TrendingUp, Users, Eye, AlertTriangle, Activity
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_ADMIN_AGENTS as DEMO_AGENTS } from "@/lib/demo-data/admin-platform";
 
 const autonomyColors: Record<string, string> = {
