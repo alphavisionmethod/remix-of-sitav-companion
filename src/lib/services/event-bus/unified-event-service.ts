@@ -1,12 +1,14 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Unified Event Service
 // Merges event-bus + event-broker into single canonical system
-// Application-level — no Kafka/NATS
+// Includes Supabase Realtime bridge for server-side events
 // ═══════════════════════════════════════════════════════════════
 
 import { createEventEnvelope, type EventEnvelope } from "./event-envelope";
 import { publish as rawPublish, getEventLog as getRawEventLog } from "./publish-event.service";
 import type { DomainId } from "@/packages/contracts/_contract-scaffold";
+import { supabase } from "@/integrations/supabase/client";
+import type { RealtimeChannel } from "@supabase/supabase-js";
 
 // ── Unified Types ──────────────────────────────────────────────
 
@@ -25,6 +27,8 @@ interface UnifiedSubscription {
 export class UnifiedEventService {
   private subscriptions: UnifiedSubscription[] = [];
   private eventTrace: Array<{ eventType: string; domain: DomainId; correlationId: string; timestamp: string; delivered: number }> = [];
+  private realtimeChannel: RealtimeChannel | null = null;
+  private realtimeBridgeActive = false;
 
   publish(
     eventType: string,
@@ -78,6 +82,82 @@ export class UnifiedEventService {
     return false;
   }
 
+  // ── Supabase Realtime Bridge ─────────────────────────────────
+
+  /**
+   * Start listening to server-side events via Supabase Realtime.
+   * Bridges DB changes on key tables (agent_signals, notifications_queue, incidents)
+   * into the client-side event bus.
+   */
+  startRealtimeBridge(): void {
+    if (this.realtimeBridgeActive) return;
+
+    this.realtimeChannel = supabase
+      .channel("sita-os-events")
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "agent_signals" },
+        (payload) => {
+          const record = payload.new as Record<string, unknown>;
+          this.publish(
+            `server.agent_signal.${String(record.signal_type || "unknown")}`,
+            "platform" as DomainId,
+            String(record.user_id || "system"),
+            record,
+            { correlationId: String(record.id || crypto.randomUUID()) }
+          );
+        }
+      )
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "notifications_queue" },
+        (payload) => {
+          const record = payload.new as Record<string, unknown>;
+          this.publish(
+            `server.notification.${String(record.category || "general")}`,
+            "platform" as DomainId,
+            String(record.user_id || "system"),
+            record,
+            { correlationId: String(record.id || crypto.randomUUID()) }
+          );
+        }
+      )
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "incidents" },
+        (payload) => {
+          const record = payload.new as Record<string, unknown>;
+          this.publish(
+            `server.incident.${String(record.severity || "unknown")}`,
+            "platform" as DomainId,
+            String(record.user_id || "system"),
+            record,
+            { correlationId: String(record.id || crypto.randomUUID()) }
+          );
+        }
+      )
+      .subscribe((status) => {
+        this.realtimeBridgeActive = status === "SUBSCRIBED";
+      });
+  }
+
+  /**
+   * Stop the Realtime bridge.
+   */
+  stopRealtimeBridge(): void {
+    if (this.realtimeChannel) {
+      supabase.removeChannel(this.realtimeChannel);
+      this.realtimeChannel = null;
+      this.realtimeBridgeActive = false;
+    }
+  }
+
+  isRealtimeBridgeActive(): boolean {
+    return this.realtimeBridgeActive;
+  }
+
+  // ── Query Methods ────────────────────────────────────────────
+
   getEventLog(limit?: number): EventEnvelope[] {
     return getRawEventLog(limit);
   }
@@ -95,8 +175,8 @@ export class UnifiedEventService {
     return this.subscriptions.length;
   }
 
-  getTraceStats(): { totalEvents: number; uniqueTypes: number; uniqueCorrelations: number; avgDelivered: number } {
-    const stats = { totalEvents: this.eventTrace.length, uniqueTypes: 0, uniqueCorrelations: 0, avgDelivered: 0 };
+  getTraceStats(): { totalEvents: number; uniqueTypes: number; uniqueCorrelations: number; avgDelivered: number; realtimeBridge: boolean } {
+    const stats = { totalEvents: this.eventTrace.length, uniqueTypes: 0, uniqueCorrelations: 0, avgDelivered: 0, realtimeBridge: this.realtimeBridgeActive };
     if (stats.totalEvents === 0) return stats;
     const types = new Set(this.eventTrace.map((t) => t.eventType));
     const corrs = new Set(this.eventTrace.map((t) => t.correlationId));
@@ -108,4 +188,3 @@ export class UnifiedEventService {
 }
 
 export const unifiedEventService = new UnifiedEventService();
-

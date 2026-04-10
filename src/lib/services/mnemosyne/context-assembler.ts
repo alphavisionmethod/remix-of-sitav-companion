@@ -1,16 +1,18 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Mnemosyne Context Assembler
 // Scoped retrieval and context assembly for AI pipelines
+// Integrates memory graph + rich profile + conversation persistence
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 import { getTaskContract } from "@/lib/contracts/global-contracts-registry";
+import { aiMemoryGraphService, type MemoryNode } from "@/lib/services/ai-memory-graph";
 
 // ── Context Types ──────────────────────────────────────────────
 
 export interface ContextSource {
-  type: "file" | "profile" | "conversation" | "evidence" | "memory";
+  type: "file" | "profile" | "conversation" | "evidence" | "memory" | "memory_graph";
   id: string;
   content: string;
   tokenEstimate: number;
@@ -62,14 +64,18 @@ export class ContextAssembler {
       sources.push(...fileContexts);
     }
 
-    // 2. User profile context
+    // 2. Rich user profile context (expanded beyond name + onboarded)
     const profileContext = await this.getUserProfile(userId);
     if (profileContext) sources.push(profileContext);
 
-    // 3. Conversation window
+    // 3. Conversation window (with persistence via advisor_memories)
     if (options?.conversationHistory) {
       const convContext = this.getConversationWindow(options.conversationHistory, Math.floor(maxTokens * 0.3));
       if (convContext) sources.push(convContext);
+    } else {
+      // Fall back to persisted conversation history from advisor_memories
+      const persistedConv = await this.getPersistedConversation(userId, Math.floor(maxTokens * 0.2));
+      if (persistedConv) sources.push(persistedConv);
     }
 
     // 4. Evidence context (for evidence-required tasks)
@@ -78,7 +84,11 @@ export class ContextAssembler {
       sources.push(...evidenceContexts);
     }
 
-    // 5. Scope to token limit
+    // 5. Memory graph integration — pull relevant memory nodes
+    const memoryGraphContext = await this.getMemoryGraphContext(userId, Math.floor(maxTokens * 0.15));
+    if (memoryGraphContext) sources.push(memoryGraphContext);
+
+    // 6. Scope to token limit
     const scoped = this.scopeContext(sources, maxTokens, scopingDecisions);
 
     const result: AssembledContext = {
@@ -106,7 +116,6 @@ export class ContextAssembler {
     const sources: ContextSource[] = [];
 
     try {
-      // Best-effort file retrieval — table may not exist in all deployments
       const { data: files } = await fromDynamicTable("documents")
         .select("id, title, content, updated_at")
         .in("id", fileIds)
@@ -141,27 +150,100 @@ export class ContextAssembler {
         .eq("user_id", userId)
         .maybeSingle();
 
-      if (profile) {
-        const content = JSON.stringify({
-          name: profile.display_name,
-          onboarded: profile.onboarding_completed,
-          preferences: profile.preferences,
-        });
+      if (!profile) return null;
 
-        return {
-          type: "profile",
-          id: userId,
-          content,
-          tokenEstimate: Math.ceil(content.length / 4),
-          freshness: new Date().toISOString(),
-          confidence: 1.0,
-        };
+      // Enrich with user memory for deeper personalization
+      let memoryPreferences: Record<string, unknown> = {};
+      try {
+        const { data: memories } = await fromDynamicTable("user_memory")
+          .select("key, value, category, confidence")
+          .eq("user_id", userId)
+          .eq("category", "preference")
+          .order("confidence", { ascending: false })
+          .limit(10);
+
+        if (memories && Array.isArray(memories)) {
+          for (const m of memories) {
+            const mem = m as Record<string, unknown>;
+            memoryPreferences[String(mem.key)] = mem.value;
+          }
+        }
+      } catch {
+        // Memory enrichment is best-effort
       }
+
+      // Enrich with adaptive interface profile
+      let interfaceProfile: Record<string, unknown> | null = null;
+      try {
+        const { data: aip } = await supabase
+          .from("adaptive_interface_profiles")
+          .select("cognitive_load_class, density_preference, summary_depth, current_mode")
+          .eq("user_id", userId)
+          .maybeSingle();
+        if (aip) interfaceProfile = aip as Record<string, unknown>;
+      } catch {
+        // Interface profile enrichment is best-effort
+      }
+
+      const content = JSON.stringify({
+        name: profile.display_name,
+        onboarded: profile.onboarding_completed,
+        preferences: profile.preferences,
+        learnedPreferences: Object.keys(memoryPreferences).length > 0 ? memoryPreferences : undefined,
+        interfaceProfile: interfaceProfile || undefined,
+      });
+
+      return {
+        type: "profile",
+        id: userId,
+        content,
+        tokenEstimate: Math.ceil(content.length / 4),
+        freshness: new Date().toISOString(),
+        confidence: 1.0,
+      };
     } catch {
       // Profile retrieval is best-effort
     }
 
     return null;
+  }
+
+  private async getPersistedConversation(userId: string, maxTokens: number): Promise<ContextSource | null> {
+    try {
+      const { data: memories } = await supabase
+        .from("advisor_memories")
+        .select("content, memory_type, created_at")
+        .eq("user_id", userId)
+        .eq("memory_type", "conversation")
+        .order("created_at", { ascending: false })
+        .limit(20);
+
+      if (!memories || memories.length === 0) return null;
+
+      const messages: string[] = [];
+      let tokenCount = 0;
+
+      for (const m of memories) {
+        const msgTokens = Math.ceil(m.content.length / 4);
+        if (tokenCount + msgTokens > maxTokens) break;
+        messages.unshift(m.content);
+        tokenCount += msgTokens;
+      }
+
+      if (messages.length === 0) return null;
+
+      const content = messages.join("\n");
+      return {
+        type: "conversation",
+        id: `persisted-conv-${Date.now()}`,
+        content,
+        tokenEstimate: tokenCount,
+        freshness: memories[0].created_at,
+        confidence: 0.85,
+      };
+    } catch {
+      return null;
+    }
   }
 
   private getConversationWindow(
@@ -170,7 +252,6 @@ export class ContextAssembler {
   ): ContextSource | null {
     if (history.length === 0) return null;
 
-    // Take recent messages that fit within token budget
     const messages: Array<{ role: string; content: string }> = [];
     let tokenCount = 0;
 
@@ -196,11 +277,10 @@ export class ContextAssembler {
     };
   }
 
-  private async getEvidenceContext(userId: string, taskType: string): Promise<ContextSource[]> {
+  private async getEvidenceContext(userId: string, _taskType: string): Promise<ContextSource[]> {
     const sources: ContextSource[] = [];
 
     try {
-      // Pull from advisor knowledge base as evidence
       const { data: knowledge } = await supabase
         .from("advisor_knowledge")
         .select("id, title, content, confidence, updated_at")
@@ -228,12 +308,51 @@ export class ContextAssembler {
     return sources;
   }
 
+  private async getMemoryGraphContext(userId: string, maxTokens: number): Promise<ContextSource | null> {
+    try {
+      const graph = await aiMemoryGraphService.buildGraph(userId);
+
+      if (graph.nodes.length === 0) return null;
+
+      // Sort by confidence × recency, pick top nodes within token budget
+      const rankedNodes = [...graph.nodes]
+        .sort((a, b) => {
+          const scoreA = a.confidence * (a.accessCount + 1);
+          const scoreB = b.confidence * (b.accessCount + 1);
+          return scoreB - scoreA;
+        });
+
+      const entries: string[] = [];
+      let tokenCount = 0;
+
+      for (const node of rankedNodes) {
+        const entry = `[${node.category}] ${node.label}: ${node.value} (confidence: ${node.confidence})`;
+        const entryTokens = Math.ceil(entry.length / 4);
+        if (tokenCount + entryTokens > maxTokens) break;
+        entries.push(entry);
+        tokenCount += entryTokens;
+      }
+
+      if (entries.length === 0) return null;
+
+      return {
+        type: "memory_graph",
+        id: `memory-graph-${userId}`,
+        content: `Known facts about user (${entries.length} memories):\n${entries.join("\n")}`,
+        tokenEstimate: tokenCount,
+        freshness: new Date().toISOString(),
+        confidence: graph.stats.avgConfidence,
+      };
+    } catch {
+      return null;
+    }
+  }
+
   private scopeContext(
     sources: ContextSource[],
     maxTokens: number,
     decisions: ScopingDecision[]
   ): ContextSource[] {
-    // Sort by confidence desc, then by freshness desc
     const sorted = [...sources].sort((a, b) => {
       if (b.confidence !== a.confidence) return b.confidence - a.confidence;
       return new Date(b.freshness).getTime() - new Date(a.freshness).getTime();
@@ -254,7 +373,6 @@ export class ContextAssembler {
         });
         tokenBudget -= source.tokenEstimate;
       } else if (tokenBudget > 100) {
-        // Truncate to fit
         const truncatedTokens = tokenBudget - 50;
         const truncatedChars = truncatedTokens * 4;
         included.push({
@@ -305,4 +423,3 @@ export class ContextAssembler {
 }
 
 export const contextAssembler = new ContextAssembler();
-

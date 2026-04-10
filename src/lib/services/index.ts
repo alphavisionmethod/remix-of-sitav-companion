@@ -130,10 +130,8 @@ export { ConstitutionEngineService, createConstitutionEngine } from "./constitut
 export { DigitalTwinsService, createDigitalTwins } from "./digital-twins";
 export { DocumentEngineService, createDocumentEngine } from "./document-engine";
 export { EnterpriseControlPlaneService, createEnterpriseControlPlane } from "./enterprise-control-plane";
-export { EventBrokerService, createEventBroker } from "./event-broker";
 export { FleetService, createFleet } from "./fleet";
 export { GoldenTraceRunnerService, createGoldenTraceRunner } from "./golden-trace-runner";
-export { GroundednessGateService, createGroundednessGate } from "./groundedness-gate";
 export { IntentInboxService, createIntentInbox } from "./intent-inbox";
 export { MnemosyneService, createMnemosyne } from "./mnemosyne";
 export { ObservabilityHubService, createObservabilityHub } from "./observability-hub";
