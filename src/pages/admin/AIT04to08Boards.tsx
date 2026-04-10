@@ -51,6 +51,7 @@ export function AIT04ActivityFeed() {
 
   return (
     <div className="space-y-6 p-6 max-w-[1600px] mx-auto">
+      <AITSubNav />
       <DemoModeBadge />
       <div className="flex items-center justify-between">
         <div>
@@ -158,6 +159,7 @@ export function AIT05CostEfficiency() {
 
   return (
     <div className="space-y-6 p-6 max-w-[1600px] mx-auto">
+      <AITSubNav />
       <h1 className="text-2xl font-bold flex items-center gap-2"><DollarSign className="h-6 w-6 text-primary" /> AIT05 — Cost & Efficiency</h1>
 
       <div className="grid md:grid-cols-5 gap-4">
@@ -267,6 +269,7 @@ export function AIT06Recommendations() {
 
   return (
     <div className="space-y-6 p-6 max-w-[1600px] mx-auto">
+      <AITSubNav />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2"><Lightbulb className="h-6 w-6 text-primary" /> AIT06 — Recommendations & Remediation</h1>
@@ -376,6 +379,7 @@ export function AIT07ApprovalQueue() {
 
   return (
     <div className="space-y-6 p-6 max-w-[1600px] mx-auto">
+      <AITSubNav />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2"><CheckCircle className="h-6 w-6 text-primary" /> AIT07 — Human Approval Queue</h1>
@@ -471,6 +475,7 @@ export function AIT08LaunchTruth() {
 
   return (
     <div className="space-y-6 p-6 max-w-[1600px] mx-auto">
+      <AITSubNav />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2"><Shield className="h-6 w-6 text-primary" /> AIT08 — Launch Truth & Runtime Reality</h1>
