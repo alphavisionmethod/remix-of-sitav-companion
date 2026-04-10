@@ -8,26 +8,25 @@ import { z } from "https://esm.sh/zod@3.23.8";
 serve(async (req) => {
   if (req.method === "OPTIONS") return new Response(null, { headers: corsHeaders });
 
-  // Zod input validation
-  if (req.method === "POST" || req.method === "PUT" || req.method === "PATCH") {
-    try {
+  try {
+    // Parse body once — Deno Request.json() can only be called once
+    const body = await req.json();
+
+    // Zod input validation for write methods
+    if (req.method === "POST" || req.method === "PUT" || req.method === "PATCH") {
       const BodySchema = z.object({ device_id: z.string().min(1), metrics: z.record(z.unknown()).optional() });
-      const body = await req.json();
       const parsed = BodySchema.safeParse(body);
       if (!parsed.success) {
         return new Response(JSON.stringify({ error: "Validation failed", details: parsed.error.flatten().fieldErrors }), {
           status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" }
         });
       }
-    } catch (_) { /* non-JSON or GET */ }
-  }
+    }
 
-  try {
     const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
     const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const adminClient = createClient(SUPABASE_URL, SERVICE_ROLE_KEY);
 
-    const body = await req.json();
     const { device_id, user_id, hostname, metrics, version, channel } = body;
 
     if (!device_id) {

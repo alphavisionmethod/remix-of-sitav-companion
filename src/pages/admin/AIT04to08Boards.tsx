@@ -21,6 +21,7 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import AITSubNav from "@/components/admin/AITSubNav";
 
 
 

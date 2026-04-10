@@ -4,13 +4,12 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useRef, useEffect } from "react";
-import { useAdvisorChat } from "@/lib/ai";
+import { useAdvisorChat, STATE_BADGE_CONFIG, isDegradedState } from "@/lib/ai";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-import { STATE_BADGE_CONFIG, isDegradedState } from "@/lib/ai";
 import ReactMarkdown from "react-markdown";
 import { motion, AnimatePresence } from "framer-motion";
 import {
