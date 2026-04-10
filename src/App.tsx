@@ -29,6 +29,7 @@ import { AdminCommandPalette } from "@/components/admin/AdminCommandPalette";
 import { AdminKeyboardShortcuts } from "@/components/admin/AdminKeyboardShortcuts";
 import { AdminShell } from "@/components/admin/shells/AdminShell";
 import { OwnerWorkspaceShell } from "@/components/admin/shells/OwnerWorkspaceShell";
+import { RevenueOfficeModeProvider } from "@/contexts/RevenueOfficeModeContext";
 
 const AdminCommandPaletteWrapper = () => <AdminCommandPalette />;
 const AdminKeyboardShortcutsWrapper = () => <AdminKeyboardShortcuts />;
