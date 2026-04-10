@@ -1,112 +1,158 @@
 
-# SITA OS — Operational Activation: Focus Areas 4-10 Implementation Plan
+
+# SITA OS — Runtime Truth Activation: Master Implementation Plan
 
 ## Current State Assessment
 
-### Already Built and Working
+### What's Already Real and Working
 | System | Status |
 |--------|--------|
-| **Google Provider Family** | Full type system, demo provider, admin dashboard (PFA09), user-facing GoogleConnectedAccounts page, hook |
-| **Device Presence Service** | Service + UI indicator in ShellLayout, admin pages UAO01/UAO02 |
-| **Attention OS** | Full service (265 lines), cognitive load, priority stack, fatigue, bundling, suppression — all wired into SitaOSContext |
-| **Chief-of-Staff** | Full service (282 lines), 7 personas, proactive checks, interventions — wired into SitaOSContext with proactive trigger loop |
-| **Continuity Engine** | Full service, threads, surfaces, handoff log — persisted |
-| **Trust-Weighted Actions** | Full service, wired into ApprovalChamber |
-| **Observability Hub** | Basic metric push/query service — persisted |
-| **RuntimeTruthProbe** | Component exists but NOT mounted in ShellLayout or Settings |
-| **Demo Governance** | Service + seeder + admin pages exist |
-| **Timing Intelligence** | Service exists, wired into SitaOSContext |
-| **15 OS Services** | All instantiated, cross-wired, persisted |
+| AI Gateway edge function | 465 lines, LOVABLE_API_KEY, auth, budget check, routing, receipt logging, fallback chains |
+| Chat-Advisor edge function | 460 lines, streaming SSE, 8 advisor personalities, auth, correlation IDs |
+| AI Capability Client | Canonical `invokeAICapability()`, budget gate, response normalization |
+| AI State Types | 17 canonical states, launch honesty levels, surface categories |
+| EventBus | Durable — persists to `os_event_log` via `event-bus-persistence` |
+| MemoryService | Durable — persists to `os_memory_scoped` via `memory-service-persistence` |
+| ReceiptService | Hash-chained, persistence adapter wired |
+| OS Kernel (SitaOSContext) | 15 services instantiated, cross-wired, persisted via `universal-service-persistence` |
+| RuntimeTruthProbe | Mounted in sidebar, checks OS hydration + gateway + CAI tables |
+| DemoGovernanceBanner | Mounted in ShellLayout |
+| DataModeContext | localStorage toggle, demo/live modes |
+| Streaming Chat | Real SSE hook calling `chat-advisor` edge function with auth |
 
-### Gaps Identified (8 actionable items)
+### Critical Gaps Found (8 items)
 
-**Gap 1 — RuntimeTruthProbe not mounted anywhere**
-Component exists but is never rendered. No user ever sees it.
+**Gap 1 — Boardroom uses raw mock imports unconditionally**
+`Boardroom.tsx` line 33 imports `mockAdvisors, mockRecommendations, mockSynthesis, mockApprovals, mockProofHistory` and uses them directly in all sub-components — no `isDemoMode` guard. These mocks render as "live intelligence" regardless of mode.
 
-**Gap 2 — SettingsPage has no "Connected Accounts" tab**
-GoogleConnectedAccounts page exists at `/settings/google-connected-accounts` but SettingsPage tabs don't include a unified "Connected Accounts" section. Users have no obvious way to find it.
+**Gap 2 — AdvisorWorkspace uses raw mock imports unconditionally**
+`AdvisorWorkspace.tsx` line 27 imports the same 7 mock arrays and uses them directly for advisor cards, recommendation panels, synthesis views, approval pipelines. No mode gating. The streaming chat is real, but everything around it is always mock.
 
-**Gap 3 — DevicePresenceIndicator hidden on mobile**
-`hidden lg:block` — invisible on the primary device surface (phones).
+**Gap 3 — RevenueCallingPage uses raw mock imports in launch path**
+`RevenueCallingPage.tsx` line 26 imports `MOCK_CONTACTS, MOCK_CALL_LOGS, MOCK_CALL_SCRIPTS` and uses them alongside live query hooks — but the mock data is the unconditional fallback with no mode label.
 
-**Gap 4 — Chief-of-Staff interventions not surfaced in user pages**
-CAI06 admin page shows interventions, but no user-facing page (DailyPulse, Boardroom, NotificationCenter) renders chief-of-staff nudges/briefings.
+**Gap 4 — ~15 investment-office sub-pages import demo-data unconditionally**
+All investment sub-pages import from `@/lib/demo-data/investment` and gate on `isDemoMode` — but in live mode they show empty states without clear "no data yet" messaging.
 
-**Gap 5 — ObservabilityHub has no structured logging or correlation IDs**
-Only stores raw numeric metrics. No trace IDs, no correlation, no structured log entries.
+**Gap 5 — DataModeContext live connector refresh is a stub**
+`refreshConnectors` in live mode sets all connectors to "disconnected" — it never queries real `connector_configs` from Supabase.
 
-**Gap 6 — No unified Connected Accounts Center in user settings**
-Google page exists, but no unified view showing all providers, sign-in methods, connected services, scopes, health, and reauth in one place.
+**Gap 6 — AI gateway has no ping/health endpoint**
+`RuntimeTruthProbe` sends `{ ping: true }` to `ai-gateway` but the gateway tries to process it as a full AI request (requires messages), making the health check unreliable.
 
-**Gap 7 — Attention OS urgency/fatigue not visible in NotificationCenter**
-NotificationCenter has quiet mode based on cogLoad but doesn't show urgency classes, fatigue state, or suppression counts to the user.
+**Gap 7 — No degraded-state UI component for AI surfaces**
+When AI returns `degraded_*` or `unavailable_*` states, there's no reusable component to display this elegantly. Each surface handles it ad-hoc or not at all.
 
-**Gap 8 — Demo mode labels inconsistent on flagship pages**
-Some pages show DemoModeBadge, others don't. No consistent "you're seeing demo data" governance banner.
+**Gap 8 — RevenueGate uses demo data even in live mode**
+`RevenueGate.tsx` line 32-34: `isDemoMode ? DEMO_METRICS : DEMO_METRICS` — identical in both branches. Silent mock contamination.
 
 ## Implementation Plan
 
-### Fix 1 — Mount RuntimeTruthProbe in sidebar footer
-**File:** `src/components/sita/AppSidebar.tsx`
-Add `RuntimeTruthProbe` compact indicator next to the cognitive load bar in the sidebar footer.
+### Workstream A — AI Runtime Truth (Priority 1)
 
-### Fix 2 — Add "Connected Accounts" tab to SettingsPage
-**File:** `src/pages/SettingsPage.tsx`
-- Add "Connected Accounts" to the sidebar tab list
-- Add `case "connected-accounts"` that renders the GoogleConnectedAccounts component inline, plus a section showing sign-in providers from Supabase auth identities
+**A1. Add ping handler to AI gateway**
+File: `supabase/functions/ai-gateway/index.ts`
+- After parsing `body`, check `if (body.ping)` → return `{ status: "ok", timestamp }` with 200
+- Costs zero tokens, validates auth + key presence + function reachability
 
-### Fix 3 — Show DevicePresenceIndicator on mobile
-**File:** `src/components/sita/ShellLayout.tsx`
-Change `hidden lg:block` to responsive positioning that works on mobile (bottom bar or header badge).
+**A2. Create reusable `AIDegradedState` component**
+New file: `src/components/sita/AIDegradedState.tsx`
+- Accepts `state: AIState`, `reason?: string`, `onRetry?: () => void`
+- Renders elegant, branded degraded messaging using `STATE_LABELS` from `ai-state-types`
+- Covers: provider unavailable, budget limited, config missing, rate limited, payment required, unavailable
+- Premium feel: icon, explanation, next-step CTA where relevant
 
-### Fix 4 — Surface chief-of-staff interventions in DailyPulse
-**File:** `src/pages/DailyPulse.tsx`
-- `activeInterventions` is already fetched (line 159) but not rendered
-- Add a section below the pulse digest that displays active interventions as actionable cards with role persona, urgency, and dismiss/act buttons
+**A3. Wire AIDegradedState into AdvisorChat**
+File: `src/components/sita/AdvisorChat.tsx`
+- When streaming chat returns error states (402, 429, 503), render `AIDegradedState` instead of raw error text
 
-### Fix 5 — Add correlation context to ObservabilityHub
-**File:** `src/lib/services/observability-hub/index.ts`
-- Extend `HubMetric` with optional `correlationId`, `traceId`, `level` (info/warn/error)
-- Add `log(entry)` method for structured entries
-- Add `getTraceLog(correlationId)` query method
+### Workstream B — Flagship Mock Elimination (Priority 2)
 
-### Fix 6 — Show attention state in NotificationCenter
-**File:** `src/pages/NotificationCenter.tsx`
-- Display cognitive load level, fatigue state, suppression count from AttentionOS
-- Show urgency class badges on notification items
+**B1. Gate Boardroom mock data behind isDemoMode**
+File: `src/pages/Boardroom.tsx`
+- Wrap all mock usage in `isDemoMode` checks
+- In live mode, replace `mockAdvisors` with empty arrays and show "Connect advisors to see live intelligence" empty states
+- The boardroom packet data (from `useBoardroomData`) is already real — only the advisor/recommendation overlays are mock
 
-### Fix 7 — Add demo governance banner to flagship pages
-**File:** `src/components/sita/DemoGovernanceBanner.tsx` (new)
-- Single component that reads `useDataMode()` and shows a clear, dismissible "Demo Mode — data shown is simulated" banner
-- Mount in ShellLayout so all pages inherit it consistently
+**B2. Gate AdvisorWorkspace mock data behind isDemoMode**
+File: `src/pages/advisors/AdvisorWorkspace.tsx`
+- Gate `mockAdvisors`, `mockRecommendations`, `mockSimulations`, `mockApprovals`, `mockProofHistory`, `mockMemoryItems`, `mockSynthesis` behind `isDemoMode`
+- In live mode, the real streaming chat panel already works — but the surrounding advisor council, synthesis, and proof panels should show honest empty states
+- Keep chat panel functional in both modes
 
-### Files Modified (7)
+**B3. Gate RevenueCallingPage mock data**
+File: `src/pages/RevenueCallingPage.tsx`
+- Already has `useCallingContacts` and `useCallLogs` live hooks
+- Gate `MOCK_CONTACTS`, `MOCK_CALL_LOGS`, `MOCK_SCRIPTS` behind `isDemoMode`
+- In live mode, use the live query results with empty state fallback
+
+**B4. Fix RevenueGate silent demo contamination**
+File: `src/pages/revenue-office/RevenueGate.tsx`
+- Replace `isDemoMode ? DEMO_METRICS : DEMO_METRICS` with proper gating
+- In live mode, query real metrics or show empty state
+
+### Workstream C — DataMode Live Connector Reality (Priority 3)
+
+**C1. Wire live connector status from Supabase**
+File: `src/contexts/DataModeContext.tsx`
+- In `refreshConnectors`, when mode is "live", query `connector_configs` table from Supabase
+- Map results to `ConnectorStatus[]` shape
+- If no connectors configured, show empty array (not fake disconnected ones)
+
+### Workstream D — Degraded State Standardization (Priority 4)
+
+**D1. Create canonical degraded state classes**
+New file: `src/lib/degraded-state-classes.ts`
+- Define `DegradedStateClass` union type: `"unavailable" | "demo" | "internal_only" | "not_configured" | "provider_missing" | "rate_limited" | "setup_required" | "partial" | "stale" | "coming_soon"`
+- Export `getDegradedLabel(cls)` and `getDegradedDescription(cls)` helpers
+- Export `getDegradedNextAction(cls)` for user guidance
+
+**D2. Create `DegradedStateBanner` component**
+New file: `src/components/sita/DegradedStateBanner.tsx`
+- Reusable inline banner for any surface to declare its truth state
+- Accepts `stateClass`, optional `surfaceName`, optional `onAction`
+- Premium, calm design — not alarming, just honest
+
+### Workstream E — Empty State Honesty for Live Mode (Priority 5)
+
+**E1. Enhance EmptyStateCTA for mode-aware messaging**
+File: `src/components/sita/EmptyStateCTA.tsx` (if exists, otherwise create)
+- Accept optional `mode: "demo" | "live"` prop
+- In live mode: "No data yet — this surface activates when real data flows in"
+- In demo mode: "Switch to demo mode to see sample data"
+
+### Files Modified (8)
 | File | Change |
 |------|--------|
-| `src/components/sita/AppSidebar.tsx` | Mount RuntimeTruthProbe |
-| `src/pages/SettingsPage.tsx` | Add Connected Accounts tab |
-| `src/components/sita/ShellLayout.tsx` | Mobile-visible device presence |
-| `src/pages/DailyPulse.tsx` | Render chief-of-staff interventions |
-| `src/lib/services/observability-hub/index.ts` | Add structured logging + correlation IDs |
-| `src/pages/NotificationCenter.tsx` | Show attention state + urgency classes |
+| `supabase/functions/ai-gateway/index.ts` | Add ping health check handler |
+| `src/pages/Boardroom.tsx` | Gate mock data behind isDemoMode |
+| `src/pages/advisors/AdvisorWorkspace.tsx` | Gate mock data behind isDemoMode |
+| `src/pages/RevenueCallingPage.tsx` | Gate mock data behind isDemoMode |
+| `src/pages/revenue-office/RevenueGate.tsx` | Fix silent demo contamination |
+| `src/contexts/DataModeContext.tsx` | Wire live connector query from Supabase |
+| `src/components/sita/AdvisorChat.tsx` | Wire AIDegradedState for error states |
+| `src/components/sita/EmptyStateCTA.tsx` | Add mode-aware messaging |
 
-### Files Created (1)
+### Files Created (3)
 | File | Purpose |
 |------|---------|
-| `src/components/sita/DemoGovernanceBanner.tsx` | Consistent demo mode banner for all pages |
-
-### What This Does NOT Do (by design)
-- Does not add new services, domains, or edge functions
-- Does not expand wearable/ring/band architecture
-- Does not add new admin pages
-- Does not duplicate existing components
-- Focuses purely on wiring existing systems into user-facing surfaces
+| `src/components/sita/AIDegradedState.tsx` | Reusable AI degraded state display |
+| `src/lib/degraded-state-classes.ts` | Canonical degraded state taxonomy |
+| `src/components/sita/DegradedStateBanner.tsx` | Generic degraded state banner |
 
 ### What This Achieves
-- RuntimeTruthProbe becomes visible — launch readiness is observable
-- Connected Accounts becomes discoverable in Settings
-- Device presence works on mobile (the primary surface)
-- Chief-of-Staff interventions surface in the daily experience
-- Observability gains structured logging with trace correlation
-- Attention OS state visible to users in NotificationCenter
-- Demo governance is consistent and honest across all surfaces
+- AI gateway becomes health-checkable — RuntimeTruthProbe gets reliable results
+- Boardroom and AdvisorWorkspace stop presenting mock intelligence as real in live mode
+- Revenue surfaces stop silent mock contamination
+- AI degraded states become elegant and honest across all surfaces
+- Live mode shows honest empty states instead of fake data
+- Degraded state taxonomy becomes reusable across the entire platform
+- Zero new services, domains, or edge functions (one ping handler addition)
+
+### What This Does NOT Do
+- Does not add new connectors or integrations
+- Does not expand device/mobile architecture
+- Does not add new admin pages
+- Does not change the AI gateway's core routing logic
+- Focuses purely on truth, honesty, and mock elimination
+
