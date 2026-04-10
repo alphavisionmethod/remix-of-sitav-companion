@@ -1,58 +1,79 @@
 
 
-# SITA OS — Activation Audit & Fix Plan
+# SITA OS — Runtime Truth Activation & Enhancement Plan
 
-## Verification Results
+## Audit Findings
 
-### What's Wired and Working (Confirmed)
+### What's Built and Working
+1. **15 OS Services** — All instantiated, cross-wired, and persisted via `universal-service-persistence.ts` to `os_service_state` table
+2. **23 CAI DB Tables** — Full CRUD via `cai-data-service.ts`, persistence bridge wired in `SitaOSContext`
+3. **AI Gateway** — 465-line edge function with auth, budget checking, model routing, fallback chains, receipt logging, streaming support
+4. **AI Capability Client** — Canonical `invokeAICapability()` routes all AI through `ai-gateway` edge function
+5. **OS Hooks** — `useOSOrchestration`, `useAdaptiveInterface`, `useExperienceSignature` consumed by 8 flagship pages + 15 admin pages
+6. **ShellLayout** — Globally applies adaptive CSS variables
+7. **Cross-Wiring** — 3 intent middlewares (timing gate, boundary check, attention feed), 7 digest providers, proactive chief-of-staff checks
 
-All 8 flagship pages and shell components now consume the OS orchestration layer:
+### Gaps Found (5 issues)
 
-| Page/Component | OS Hooks Used | Status |
-|---|---|---|
-| DailyPulse | `useOSOrchestration`, `useAdaptiveInterface`, `useExperienceSignature` | Wired, consuming attention stack + cognitive load + mode + interventions |
-| Boardroom | `useOSOrchestration`, `useExperienceSignature`, `useAdaptiveInterface` | Wired, consuming attention stack + mode |
-| PersonalBrain | `useOSOrchestration`, `useExperienceSignature` | Wired, routes queries through intent orchestrator, passes OS mode + tone to edge function |
-| NotificationCenter | `useAdaptiveInterface`, `useOSOrchestration` | Wired, auto-quiet on high cognitive load |
-| ConciergeCenter | `useExperienceSignature`, `useOSOrchestration` | Wired |
-| TasksWorkflowsCenter | `useOSOrchestration`, `useAdaptiveInterface` | Wired, attention stack consumed |
-| SettingsPage | `useOSOrchestration` | Wired, 12-mode selector fully functional |
-| AppSidebar | `useOSOrchestration` | Wired, mode badge + cognitive load exposed |
-| ShellLayout | `useAdaptiveInterface` | Globally activating CSS variables |
+**Gap 1 — `useOSOrchestration` userId is hardcoded placeholder**
+Line 51: `const userId = "current-user"` — never reads from `useAuth()`. This means all digest generation, intent processing, and trust evaluations pass a fake user ID to the services.
 
-### 15 CAI Admin Pages — All consuming `useSitaOS()` (confirmed in 22 files)
+**Gap 2 — Flagship pages don't query CAI tables for real historical data**
+Boardroom, DailyPulse, ConciergeCenter only consume in-memory OS state. They never query `digest_compilations`, `opportunity_signals`, `priority_stacks`, or `relationship_contexts` from Supabase. The CAI React Query hooks (`useCAIData.ts`) exist but are only used by 2 admin pages (CAI02, CAI13).
 
-### Issues Found (3 bugs to fix)
+**Gap 3 — DailyPulse generates `osPulseDigest` state but never calls `os.dailyPulse()`**
+Line 148 creates `osPulseDigest` state variable but there's no `useEffect` that actually triggers `os.dailyPulse()` to populate it from the 7 registered digest providers.
 
-**Bug 1 — Dead code in SettingsPage (lines 514-543)**
-After the `case "operating-modes"` block returns at line 512, there's an unreachable `return` block starting at line 515 that renders a "Notifications" card. This means the `case "notifications"` label is missing — the Notifications settings section is broken/unreachable.
+**Gap 4 — Boardroom doesn't persist digest compilations when generating briefings**
+When a user views the morning briefing, the generated content is never persisted to `digest_compilations` via `persistDigestCompilation()`.
 
-**Bug 2 — `useMemo` misused as side-effect in NotificationCenter (line 152)**
-`useMemo(() => { if (cogLoad > 0.8) setQuietMode(true) }, [cogLoad])` — `useMemo` should not trigger state updates. This should be `useEffect`.
-
-**Bug 3 — `cogLoad` variable unused in AppSidebar**
-`cogLoad` is computed (line 257) but never rendered anywhere in the sidebar. Should show a subtle cognitive load indicator.
-
-### What's Still Demo-Only (Structural Reality)
-
-~490 of ~779 pages reference `isDemoMode` or mock data. This is by design (dual reality architecture). The flagship pages (DailyPulse, Boardroom, TasksWorkflows, NotificationCenter) already have real Supabase queries that activate when `isDemoMode === false`. This is correct behavior — not a gap.
+**Gap 5 — Mode changes in SettingsPage don't persist to CAI table**
+`os.setMode()` updates in-memory state and persists via `os_service_state`, but doesn't call `persistOperatingMode()` to log to the dedicated `operating_modes` CAI table for audit trail.
 
 ## Fix Plan
 
-### Fix 1 — SettingsPage: Restore notifications case label
-Remove the dead unreachable code block and add proper `case "notifications":` before the notifications settings card.
+### Fix 1 — Wire real user ID into `useOSOrchestration`
+**File:** `src/hooks/useOSOrchestration.ts`
+- Import `useAuth` from `@/contexts/AuthContext`
+- Replace `const userId = "current-user"` with `const { user } = useAuth(); const userId = user?.id ?? "anonymous";`
 
-### Fix 2 — NotificationCenter: Replace `useMemo` with `useEffect`
-Change `useMemo` to `useEffect` for the cognitive load auto-quiet feature.
+### Fix 2 — Wire CAI data queries into Boardroom
+**File:** `src/pages/Boardroom.tsx`
+- Import `useOpportunitySignals`, `usePriorityStacks`, `useDigestCompilations` from `useCAIData`
+- Display real persisted opportunity signals in the Opportunities tab
+- Display real persisted priority snapshots in the Morning Briefing
+- Persist digest compilations when briefings are generated
 
-### Fix 3 — AppSidebar: Show cognitive load indicator
-Add a subtle progress bar or dot indicator in the sidebar footer showing current cognitive load level.
+### Fix 3 — Activate DailyPulse digest generation
+**File:** `src/pages/DailyPulse.tsx`
+- Add `useEffect` that calls `os.dailyPulse(user?.display_name)` when `os.hydrated` becomes true
+- Store result in `osPulseDigest` state
+- Render the digest sections (priorities, opportunities, relationships, mode context) in the pulse UI
+- Persist the generated digest via `persistDigestCompilation()`
 
-### Files to Modify
-- `src/pages/SettingsPage.tsx` — fix dead code, restore notifications case
-- `src/pages/NotificationCenter.tsx` — useMemo → useEffect
-- `src/components/sita/AppSidebar.tsx` — render cogLoad indicator
+### Fix 4 — Wire ConciergeCenter to relationship CAI data
+**File:** `src/pages/ConciergeCenter.tsx`
+- Import `useRelationshipContexts`, `useHumanObligations` from `useCAIData`
+- Display real relationship contexts and overdue obligations
 
-### Summary
-The OS wiring from the previous implementation is **correct and complete**. All flagship pages consume OS hooks, all 15 admin pages work, ShellLayout activates adaptive CSS globally. Three small bugs need fixing. No major gaps remain between architectural ambition and operational activation for the pages that were targeted.
+### Fix 5 — Persist mode changes from SettingsPage
+**File:** `src/pages/SettingsPage.tsx`
+- Import `persistOperatingMode` from `cai-persistence-bridge`
+- After `os.setMode(mode)`, call `persistOperatingMode({ mode_key: mode, active: true, metadata: { source: "settings" } })`
+
+### Files Modified (5)
+| File | Change |
+|------|--------|
+| `src/hooks/useOSOrchestration.ts` | Replace placeholder userId with real auth user ID |
+| `src/pages/DailyPulse.tsx` | Trigger `os.dailyPulse()`, render digest sections, persist |
+| `src/pages/Boardroom.tsx` | Query CAI tables for real data, persist briefing digests |
+| `src/pages/ConciergeCenter.tsx` | Query relationship_contexts + human_obligations |
+| `src/pages/SettingsPage.tsx` | Persist mode changes to operating_modes table |
+
+### What This Achieves
+- Real user ID flows through the entire OS orchestration layer
+- Flagship pages display real persisted CAI data alongside live in-memory state
+- Daily Pulse actually generates digests from the 7 registered providers
+- Mode changes create audit trail records
+- Zero new files, services, or domains — pure wiring of existing systems
 
