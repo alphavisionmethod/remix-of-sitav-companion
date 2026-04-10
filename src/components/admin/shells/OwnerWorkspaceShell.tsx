@@ -18,12 +18,12 @@ const TABS = [
   { id: "home", label: "Home", icon: Home, path: "/owner/home" },
   { id: "health", label: "Health", icon: Activity, path: "/owner/health" },
   { id: "pulse", label: "Pulse", icon: Heart, path: "/owner/pulse" },
-  { id: "trust", label: "Trust", icon: Shield, path: "/admin/trust-state" },
+  { id: "trust", label: "Trust", icon: Shield, path: "/owner/trust-center" },
   { id: "approvals", label: "Approvals", icon: CheckCircle, path: "/owner/approvals" },
   { id: "ai-team", label: "AI Team", icon: Brain, path: "/owner/ai-team" },
-  { id: "revenue", label: "Revenue", icon: DollarSign, path: "/admin/revenue-autopilot" },
-  { id: "risks", label: "Risks", icon: AlertTriangle, path: "/admin/risk" },
-  { id: "launches", label: "Launches", icon: Rocket, path: "/admin/release-ring" },
+  { id: "revenue", label: "Revenue", icon: DollarSign, path: "/owner/billing" },
+  { id: "risks", label: "Risks", icon: AlertTriangle, path: "/owner/governance" },
+  { id: "launches", label: "Launches", icon: Rocket, path: "/owner/releases" },
 ] as const;
 
 export function OwnerWorkspaceShell({ children }: OwnerWorkspaceShellProps) {
