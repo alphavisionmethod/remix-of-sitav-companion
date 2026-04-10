@@ -887,6 +887,7 @@ const CouncilChatPanel = ({ mode }: { mode: CouncilMode }) => {
 export default function AdvisorWorkspace() {
   const [mode, setMode] = useState<CouncilMode>("daily-pulse");
   const [activeTab, setActiveTab] = useState("council");
+  const { isDemoMode } = useDataMode();
   const params = useParams();
   const advisorId = params["*"];
 
@@ -917,11 +918,11 @@ export default function AdvisorWorkspace() {
           </TabsTrigger>
           <TabsTrigger value="simulations" className="text-[11px] h-8 px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm">
             <Play className="h-3 w-3 mr-1.5" />Simulations
-            {mockSimulations.length > 0 && <Badge className="ml-1 h-4 px-1 text-[9px] bg-state-simulated/20 text-state-simulated">{mockSimulations.length}</Badge>}
+            {isDemoMode && mockSimulations.length > 0 && <Badge className="ml-1 h-4 px-1 text-[9px] bg-state-simulated/20 text-state-simulated">{mockSimulations.length}</Badge>}
           </TabsTrigger>
           <TabsTrigger value="approvals" className="text-[11px] h-8 px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm">
             <CheckCircle className="h-3 w-3 mr-1.5" />Approvals
-            {mockApprovals.length > 0 && <Badge className="ml-1 h-4 px-1 text-[9px] bg-trust-approval/20 text-trust-approval">{mockApprovals.length}</Badge>}
+            {isDemoMode && mockApprovals.length > 0 && <Badge className="ml-1 h-4 px-1 text-[9px] bg-trust-approval/20 text-trust-approval">{mockApprovals.length}</Badge>}
           </TabsTrigger>
           <TabsTrigger value="memory" className="text-[11px] h-8 px-3 data-[state=active]:bg-card data-[state=active]:shadow-sm">
             <Eye className="h-3 w-3 mr-1.5" />Memory
