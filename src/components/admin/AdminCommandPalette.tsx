@@ -71,6 +71,16 @@ const NAV_ITEMS = [
   { label: "RCP: Wave Planner", path: "/admin/reality-audit/wave-planner", icon: Activity, group: "Reality Conversion" },
   { label: "RCP: Progress Timeline", path: "/admin/reality-audit/progress", icon: Activity, group: "Reality Conversion" },
   { label: "RCP: Runtime Validation", path: "/admin/reality-audit/runtime-truth", icon: Shield, group: "Reality Conversion" },
+  { label: "CPS: Core Persistence Overview", path: "/admin/core-persistence", icon: Database, group: "Core Persistence" },
+  { label: "CPS: Event Stream Explorer", path: "/admin/event-stream", icon: Activity, group: "Core Persistence" },
+  { label: "CPS: Memory Continuity", path: "/admin/memory-continuity", icon: Brain, group: "Core Persistence" },
+  { label: "CPS: Policy Decision Ledger", path: "/admin/policy-ledger", icon: Shield, group: "Core Persistence" },
+  { label: "CPS: Intelligence Library", path: "/admin/intelligence-library", icon: Layers, group: "Core Persistence" },
+  { label: "CPS: Action Lineage", path: "/admin/action-lineage", icon: Layers, group: "Core Persistence" },
+  { label: "CPS: Replay Console", path: "/admin/replay-console", icon: Play, group: "Core Persistence" },
+  { label: "CPS: Service Migration", path: "/admin/service-migration", icon: Server, group: "Core Persistence" },
+  { label: "CPS: Persistence Drift", path: "/admin/persistence-drift", icon: AlertTriangle, group: "Core Persistence" },
+  { label: "CPS: Runtime Continuity", path: "/admin/runtime-continuity", icon: RefreshCw, group: "Core Persistence" },
 ];
 
 const ACTION_ITEMS = [
