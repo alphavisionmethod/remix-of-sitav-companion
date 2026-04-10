@@ -1,79 +1,99 @@
 
 
-# SITA OS — Runtime Truth Activation & Enhancement Plan
+# SITA OS — Runtime Truth Activation: Remaining Gaps & Enhancement Plan
 
-## Audit Findings
+## Audit Summary: What's Done vs What's Missing
 
-### What's Built and Working
-1. **15 OS Services** — All instantiated, cross-wired, and persisted via `universal-service-persistence.ts` to `os_service_state` table
-2. **23 CAI DB Tables** — Full CRUD via `cai-data-service.ts`, persistence bridge wired in `SitaOSContext`
-3. **AI Gateway** — 465-line edge function with auth, budget checking, model routing, fallback chains, receipt logging, streaming support
-4. **AI Capability Client** — Canonical `invokeAICapability()` routes all AI through `ai-gateway` edge function
-5. **OS Hooks** — `useOSOrchestration`, `useAdaptiveInterface`, `useExperienceSignature` consumed by 8 flagship pages + 15 admin pages
-6. **ShellLayout** — Globally applies adaptive CSS variables
-7. **Cross-Wiring** — 3 intent middlewares (timing gate, boundary check, attention feed), 7 digest providers, proactive chief-of-staff checks
+### Already Implemented and Working
 
-### Gaps Found (5 issues)
+| System | Status | Evidence |
+|--------|--------|----------|
+| **OS Orchestration Hook** | Real auth user ID wired | `useAuth()` in `useOSOrchestration.ts` line 52-53 |
+| **Intent Orchestrator** | Full 312-line service with 3 middlewares | Classifies, routes, builds execution plans, persists to CAI |
+| **Attention OS** | Wired into 6 flagship pages | Cognitive load, priority stacks, attention routing all active |
+| **Digest Engine** | 7 registered providers, DailyPulse triggers + persists | `useEffect` in DailyPulse.tsx calls `os.dailyPulse()` |
+| **Experience Signature** | Computes tone/verbosity from mode + cognitive load | Used by Boardroom, PersonalBrain, ConciergeCenter |
+| **Adaptive Interface** | CSS variables applied globally via ShellLayout | Density, animation, font scale all reactive |
+| **EventBus Durability** | Full Supabase persistence via `event-bus-persistence.ts` | Persists events, dead letters, supports replay |
+| **Memory Service Durability** | Full Supabase persistence via `memory-service-persistence.ts` | Insert, supersede, forget, fetch all durable |
+| **Universal Service Persistence** | All 15 OS services persist to `os_service_state` | Upsert/load/delete per user per service |
+| **CAI Persistence Bridge** | 23 persist functions for 23 CAI tables | All fire-and-forget, debounced where appropriate |
+| **AI Gateway** | 465-line edge function with auth, budget, receipts | `invokeAICapability()` canonical client routes all AI |
+| **AI Budget Policies** | DB functions for daily/weekly/monthly budget checks | `check_ai_budget_policies()` + `update_ai_budget_usage()` |
+| **PersonalBrain** | Routes through intent orchestrator + edge function | Passes OS mode + tone to backend |
+| **SettingsPage** | 12-mode selector persists to `operating_modes` CAI table | Audit trail via `persistOperatingMode()` |
+| **Boardroom** | Queries `opportunity_signals`, `priority_stacks`, `digest_compilations` | CAI React Query hooks wired |
+| **ConciergeCenter** | Queries `relationship_contexts`, `human_obligations` | CAI hooks wired |
+| **Sidebar** | Mode badge + cognitive load indicator | Visual OS presence |
+| **Receipt Service** | Hash-chained receipts with persistence adapter | Tests verify chain integrity |
+| **Policy Engine** | Evaluates policies, risk tiers, constraints | Used by canonical chain orchestrator |
 
-**Gap 1 — `useOSOrchestration` userId is hardcoded placeholder**
-Line 51: `const userId = "current-user"` — never reads from `useAuth()`. This means all digest generation, intent processing, and trust evaluations pass a fake user ID to the services.
+### Remaining Gaps (5 items)
 
-**Gap 2 — Flagship pages don't query CAI tables for real historical data**
-Boardroom, DailyPulse, ConciergeCenter only consume in-memory OS state. They never query `digest_compilations`, `opportunity_signals`, `priority_stacks`, or `relationship_contexts` from Supabase. The CAI React Query hooks (`useCAIData.ts`) exist but are only used by 2 admin pages (CAI02, CAI13).
+**Gap 1 — BusinessCenter has zero OS wiring**
+The BusinessCenter page (15 sub-pages, core domain) has no `useOSOrchestration`, no `useExperienceSignature`, no `useAdaptiveInterface`, no CAI data queries. It's the only major center completely disconnected from the OS layer.
 
-**Gap 3 — DailyPulse generates `osPulseDigest` state but never calls `os.dailyPulse()`**
-Line 148 creates `osPulseDigest` state variable but there's no `useEffect` that actually triggers `os.dailyPulse()` to populate it from the 7 registered digest providers.
+**Gap 2 — ConciergeCenter queries CAI data but doesn't pass it to sub-pages**
+`caiRelationships` and `caiObligations` are fetched (line 74-75) but never passed to `PageComponent` — the data is queried and discarded.
 
-**Gap 4 — Boardroom doesn't persist digest compilations when generating briefings**
-When a user views the morning briefing, the generated content is never persisted to `digest_compilations` via `persistDigestCompilation()`.
+**Gap 3 — Boardroom queries CAI data but doesn't render it**
+`caiOpportunities`, `caiPriorities`, `caiDigests` are fetched (lines 983-985) but never passed to `PacketView` or any child component — the data is queried and discarded.
 
-**Gap 5 — Mode changes in SettingsPage don't persist to CAI table**
-`os.setMode()` updates in-memory state and persists via `os_service_state`, but doesn't call `persistOperatingMode()` to log to the dedicated `operating_modes` CAI table for audit trail.
+**Gap 4 — No runtime truth probe for launch readiness**
+There's no client-side health check that validates: "Are OS services hydrated? Is the AI gateway reachable? Are CAI tables accessible?" The launch-truth-audit script only checks generated JSON files.
+
+**Gap 5 — ApprovalChamber/ApprovalsCenter not wired to OS trust evaluation**
+The approval pages exist but don't use `os.evaluateAction()` for trust-weighted decisions before approvals execute.
 
 ## Fix Plan
 
-### Fix 1 — Wire real user ID into `useOSOrchestration`
-**File:** `src/hooks/useOSOrchestration.ts`
-- Import `useAuth` from `@/contexts/AuthContext`
-- Replace `const userId = "current-user"` with `const { user } = useAuth(); const userId = user?.id ?? "anonymous";`
+### Fix 1 — Wire BusinessCenter to OS Layer
+**File:** `src/pages/BusinessCenter.tsx`
+- Import `useOSOrchestration`, `useExperienceSignature`, `useAdaptiveInterface`
+- Consume attention stack for business-domain priority sorting
+- Apply experience signature for tone consistency
+- Query `opportunity_signals` filtered by domain="business" from CAI
 
-### Fix 2 — Wire CAI data queries into Boardroom
-**File:** `src/pages/Boardroom.tsx`
-- Import `useOpportunitySignals`, `usePriorityStacks`, `useDigestCompilations` from `useCAIData`
-- Display real persisted opportunity signals in the Opportunities tab
-- Display real persisted priority snapshots in the Morning Briefing
-- Persist digest compilations when briefings are generated
-
-### Fix 3 — Activate DailyPulse digest generation
-**File:** `src/pages/DailyPulse.tsx`
-- Add `useEffect` that calls `os.dailyPulse(user?.display_name)` when `os.hydrated` becomes true
-- Store result in `osPulseDigest` state
-- Render the digest sections (priorities, opportunities, relationships, mode context) in the pulse UI
-- Persist the generated digest via `persistDigestCompilation()`
-
-### Fix 4 — Wire ConciergeCenter to relationship CAI data
+### Fix 2 — Pass CAI data from ConciergeCenter to sub-pages
 **File:** `src/pages/ConciergeCenter.tsx`
-- Import `useRelationshipContexts`, `useHumanObligations` from `useCAIData`
-- Display real relationship contexts and overdue obligations
+- Create a React context or pass `caiRelationships` and `caiObligations` as props to `PageComponent`
+- At minimum, pass as context so ConciergeOverview can display real relationship data
 
-### Fix 5 — Persist mode changes from SettingsPage
-**File:** `src/pages/SettingsPage.tsx`
-- Import `persistOperatingMode` from `cai-persistence-bridge`
-- After `os.setMode(mode)`, call `persistOperatingMode({ mode_key: mode, active: true, metadata: { source: "settings" } })`
+### Fix 3 — Pass CAI data from Boardroom to child components
+**File:** `src/pages/Boardroom.tsx`
+- Pass `caiOpportunities` to the opportunity-board PacketView
+- Pass `caiPriorities` to the morning-briefing PacketView
+- Pass `caiDigests` to show historical digest compilations
+
+### Fix 4 — Add runtime truth probe component
+**New file:** `src/components/sita/RuntimeTruthProbe.tsx`
+- Small utility component that checks: OS hydrated, AI gateway reachable (via a lightweight ping), CAI table accessible
+- Shows a subtle status indicator in the sidebar or settings
+- Logs results to console for debugging
+
+### Fix 5 — Wire ApprovalChamber to OS trust evaluation
+**File:** `src/pages/ApprovalChamber.tsx`
+- Import `useOSOrchestration`
+- Before executing an approved action, call `os.evaluateAction()` to get trust-weighted routing
+- Display trust class and risk tier on approval cards
 
 ### Files Modified (5)
 | File | Change |
 |------|--------|
-| `src/hooks/useOSOrchestration.ts` | Replace placeholder userId with real auth user ID |
-| `src/pages/DailyPulse.tsx` | Trigger `os.dailyPulse()`, render digest sections, persist |
-| `src/pages/Boardroom.tsx` | Query CAI tables for real data, persist briefing digests |
-| `src/pages/ConciergeCenter.tsx` | Query relationship_contexts + human_obligations |
-| `src/pages/SettingsPage.tsx` | Persist mode changes to operating_modes table |
+| `src/pages/BusinessCenter.tsx` | Add OS hooks + CAI opportunity queries |
+| `src/pages/ConciergeCenter.tsx` | Pass CAI relationship data to sub-pages via context |
+| `src/pages/Boardroom.tsx` | Pass CAI data to PacketView children |
+| `src/pages/ApprovalChamber.tsx` | Wire trust evaluation from OS |
+
+### Files Created (1)
+| File | Purpose |
+|------|---------|
+| `src/components/sita/RuntimeTruthProbe.tsx` | Lightweight runtime health check component |
 
 ### What This Achieves
-- Real user ID flows through the entire OS orchestration layer
-- Flagship pages display real persisted CAI data alongside live in-memory state
-- Daily Pulse actually generates digests from the 7 registered providers
-- Mode changes create audit trail records
-- Zero new files, services, or domains — pure wiring of existing systems
+- BusinessCenter (the largest domain center) joins the OS orchestration layer
+- CAI data actually flows to the components that render it (not just queried and discarded)
+- Runtime truth is verifiable at startup
+- Approval flows respect trust-weighted action evaluation
+- Zero new services, domains, or edge functions
 
