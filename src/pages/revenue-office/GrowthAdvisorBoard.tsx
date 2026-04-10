@@ -8,6 +8,8 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useRevenueOfficeMode } from "@/contexts/RevenueOfficeModeContext";
+import { RevenueOfficeModeToggle } from "@/components/revenue-office/RevenueOfficeModeToggle";
 import { DEMO_ADVISORS, DEMO_ADVISOR_DEBATES, DEMO_ADVISOR_WHAT_CHANGED, DEMO_ADVISOR_INVALIDATION, DEMO_ALIGNMENT_CLUSTERS } from "@/lib/demo-data/revenue-office";
 
 type AdvisorQueryType = "disagree" | "missing" | "break";
@@ -77,6 +79,7 @@ const ADVISOR_RESPONSES: Record<string, Record<AdvisorQueryType, AdvisorQueryRes
 
 export default function GrowthAdvisorBoard() {
   const { isDemoMode } = useDataMode();
+  const { isBeginner } = useRevenueOfficeMode();
   const [tab, setTab] = useState("council");
   const [expandedAdvisor, setExpandedAdvisor] = useState<string | null>(null);
   const [activeQueries, setActiveQueries] = useState<Record<string, AdvisorQueryType | null>>({});
@@ -115,36 +118,43 @@ export default function GrowthAdvisorBoard() {
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
-          <Sparkles className="w-6 h-6 text-primary" /> Growth Advisor Board
-        </h1>
-        <p className="text-sm text-muted-foreground">9-advisor council with debate engine, alignment mapping, interactive queries, and structured intelligence</p>
+      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
+            <Sparkles className="w-6 h-6 text-primary" /> Growth Advisor Board
+          </h1>
+          <p className="text-sm text-muted-foreground">{isBeginner ? "Your team of AI advisors helping grow your business" : "9-advisor council with debate engine, alignment mapping, interactive queries, and structured intelligence"}</p>
+        </div>
+        <RevenueOfficeModeToggle />
       </motion.div>
 
       {/* Board Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className={`grid ${isBeginner ? "grid-cols-2" : "grid-cols-2 lg:grid-cols-4"} gap-4`}>
         <Card className="bg-card/50 border-border/50"><CardContent className="p-4 text-center">
-          <p className="text-2xl font-bold text-foreground">{advisors.length}</p><p className="text-xs text-muted-foreground">Active Advisors</p>
+          <p className="text-2xl font-bold text-foreground">{advisors.length}</p><p className="text-xs text-muted-foreground">{isBeginner ? "Advisors" : "Active Advisors"}</p>
         </CardContent></Card>
         <Card className="bg-card/50 border-border/50"><CardContent className="p-4 text-center">
-          <p className="text-2xl font-bold text-primary">{boardConfidence}%</p><p className="text-xs text-muted-foreground">Board Confidence</p>
+          <p className="text-2xl font-bold text-primary">{boardConfidence}%</p><p className="text-xs text-muted-foreground">{isBeginner ? "Agreement Level" : "Board Confidence"}</p>
         </CardContent></Card>
-        <Card className="bg-card/50 border-border/50"><CardContent className="p-4 text-center">
-          <p className="text-2xl font-bold text-amber-400">{debateCount}</p><p className="text-xs text-muted-foreground">Active Debates</p>
-        </CardContent></Card>
-        <Card className="bg-card/50 border-border/50"><CardContent className="p-4 text-center">
-          <p className="text-2xl font-bold text-red-400">{alertCount}</p><p className="text-xs text-muted-foreground">Alerts</p>
-        </CardContent></Card>
+        {!isBeginner && (
+          <>
+            <Card className="bg-card/50 border-border/50"><CardContent className="p-4 text-center">
+              <p className="text-2xl font-bold text-amber-400">{debateCount}</p><p className="text-xs text-muted-foreground">Active Debates</p>
+            </CardContent></Card>
+            <Card className="bg-card/50 border-border/50"><CardContent className="p-4 text-center">
+              <p className="text-2xl font-bold text-red-400">{alertCount}</p><p className="text-xs text-muted-foreground">Alerts</p>
+            </CardContent></Card>
+          </>
+        )}
       </div>
 
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList className="bg-muted/30 border border-border/40 h-8 p-0.5 gap-0.5">
-          <TabsTrigger value="council" className="text-[10px] h-7 px-2.5 gap-1"><Users className="h-3 w-3" />Council</TabsTrigger>
-          <TabsTrigger value="debates" className="text-[10px] h-7 px-2.5 gap-1"><GitCompare className="h-3 w-3" />Debates</TabsTrigger>
-          <TabsTrigger value="alignment" className="text-[10px] h-7 px-2.5 gap-1"><Target className="h-3 w-3" />Alignment</TabsTrigger>
-          <TabsTrigger value="changes" className="text-[10px] h-7 px-2.5 gap-1"><Clock className="h-3 w-3" />What Changed</TabsTrigger>
-          <TabsTrigger value="synthesis" className="text-[10px] h-7 px-2.5 gap-1"><Sparkles className="h-3 w-3" />Synthesis</TabsTrigger>
+          <TabsTrigger value="council" className="text-[10px] h-7 px-2.5 gap-1"><Users className="h-3 w-3" />{isBeginner ? "Advisors" : "Council"}</TabsTrigger>
+          {!isBeginner && <TabsTrigger value="debates" className="text-[10px] h-7 px-2.5 gap-1"><GitCompare className="h-3 w-3" />Debates</TabsTrigger>}
+          {!isBeginner && <TabsTrigger value="alignment" className="text-[10px] h-7 px-2.5 gap-1"><Target className="h-3 w-3" />Alignment</TabsTrigger>}
+          {!isBeginner && <TabsTrigger value="changes" className="text-[10px] h-7 px-2.5 gap-1"><Clock className="h-3 w-3" />What Changed</TabsTrigger>}
+          <TabsTrigger value="synthesis" className="text-[10px] h-7 px-2.5 gap-1"><Sparkles className="h-3 w-3" />{isBeginner ? "Summary" : "Synthesis"}</TabsTrigger>
         </TabsList>
 
         <div className="mt-4">
@@ -168,13 +178,15 @@ export default function GrowthAdvisorBoard() {
                             <p className="text-xs text-muted-foreground">{a.domain}</p>
                           </div>
                         </div>
-                        <div className="text-right">
-                          <div className="flex items-center gap-2">
-                            <span className="text-xs text-muted-foreground">Confidence</span>
-                            <span className="text-sm font-bold text-foreground">{Math.round(a.confidence * 100)}%</span>
+                        {!isBeginner && (
+                          <div className="text-right">
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs text-muted-foreground">Confidence</span>
+                              <span className="text-sm font-bold text-foreground">{Math.round(a.confidence * 100)}%</span>
+                            </div>
+                            <span className="text-[10px] text-muted-foreground">Uncertainty: {Math.round((1 - a.confidence) * 100)}%</span>
                           </div>
-                          <span className="text-[10px] text-muted-foreground">Uncertainty: {Math.round((1 - a.confidence) * 100)}%</span>
-                        </div>
+                        )}
                       </div>
                       <p className="text-sm text-muted-foreground">{a.stance}</p>
                       <div className="flex gap-1 flex-wrap">
@@ -183,7 +195,7 @@ export default function GrowthAdvisorBoard() {
                       <div className="pt-2 border-t border-border/30">
                         <p className="text-xs text-primary font-medium">→ {a.recommendation}</p>
                       </div>
-                      <Progress value={a.confidence * 100} className="h-1" />
+                      {!isBeginner && <Progress value={a.confidence * 100} className="h-1" />}
 
                       {/* Interactive Advisor Query Buttons */}
                       <div className="pt-2 border-t border-border/30">
@@ -227,9 +239,11 @@ export default function GrowthAdvisorBoard() {
                                     <Badge className="bg-primary/10 text-primary text-[9px] border-primary/20">
                                       {ADVISOR_QUERY_LABELS[queryResponse.queryType].label}
                                     </Badge>
-                                    <span className="text-[10px] text-muted-foreground">
-                                      Confidence: <span className="text-foreground font-medium">{Math.round(queryResponse.confidence * 100)}%</span>
-                                    </span>
+                                    {!isBeginner && (
+                                      <span className="text-[10px] text-muted-foreground">
+                                        Confidence: <span className="text-foreground font-medium">{Math.round(queryResponse.confidence * 100)}%</span>
+                                      </span>
+                                    )}
                                   </div>
                                   <button
                                     onClick={(e) => { e.stopPropagation(); setActiveQueries(prev => ({ ...prev, [a.name]: null })); }}

@@ -6,6 +6,8 @@ import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useRevenueOfficeMode } from "@/contexts/RevenueOfficeModeContext";
+import { RevenueOfficeModeToggle } from "@/components/revenue-office/RevenueOfficeModeToggle";
 import { useDeals } from "@/hooks/use-revenue-office";
 import { useNavigate } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -23,6 +25,7 @@ const OPERATING_MODE = "Growth";
 
 export default function GrowthBoardroom() {
   const { isDemoMode } = useDataMode();
+  const { isBeginner } = useRevenueOfficeMode();
   const { data: liveDeals, isLoading } = useDeals();
   const navigate = useNavigate();
 
@@ -41,9 +44,12 @@ export default function GrowthBoardroom() {
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-foreground">Growth Boardroom</h1>
-            <p className="text-sm text-muted-foreground">Executive revenue command center</p>
+            <p className="text-sm text-muted-foreground">{isBeginner ? "Your business performance at a glance" : "Executive revenue command center"}</p>
           </div>
-          <Badge variant="outline" className="text-xs border-primary/30 text-primary"><Zap className="w-3 h-3 mr-1" />{OPERATING_MODE} Mode</Badge>
+          <div className="flex items-center gap-3">
+            <RevenueOfficeModeToggle />
+            <Badge variant="outline" className="text-xs border-primary/30 text-primary"><Zap className="w-3 h-3 mr-1" />{OPERATING_MODE} Mode</Badge>
+          </div>
         </div>
       </motion.div>
 

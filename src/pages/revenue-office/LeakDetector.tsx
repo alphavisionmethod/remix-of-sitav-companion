@@ -7,6 +7,8 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useRevenueOfficeMode } from "@/contexts/RevenueOfficeModeContext";
+import { RevenueOfficeModeToggle } from "@/components/revenue-office/RevenueOfficeModeToggle";
 import { useRevenueLeakItems } from "@/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DEMO_REV_LEAKS_LEAK_DETECTOR as DEMO_LEAKS, DEMO_LEAK_REPAIR_TRACKING, DEMO_LEAK_TRENDS } from "@/lib/demo-data/revenue-office";
@@ -14,6 +16,7 @@ import { useState } from "react";
 
 export default function LeakDetector() {
   const { isDemoMode } = useDataMode();
+  const { isBeginner } = useRevenueOfficeMode();
   const { data: liveLeaks, isLoading } = useRevenueLeakItems();
   const [tab, setTab] = useState("active");
 
@@ -32,11 +35,14 @@ export default function LeakDetector() {
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
-          <AlertTriangle className="w-6 h-6 text-yellow-400" /> Revenue Leakage Map
-        </h1>
-        <p className="text-sm text-muted-foreground">Every lost dollar mapped — with repair tracking and recovery ROI</p>
+      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
+            <AlertTriangle className="w-6 h-6 text-yellow-400" /> {isBeginner ? "Money You're Losing" : "Revenue Leakage Map"}
+          </h1>
+          <p className="text-sm text-muted-foreground">{isBeginner ? "Places where your business is losing money — and how to fix them" : "Every lost dollar mapped — with repair tracking and recovery ROI"}</p>
+        </div>
+        <RevenueOfficeModeToggle />
       </motion.div>
 
       {/* Summary */}
@@ -57,9 +63,9 @@ export default function LeakDetector() {
 
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList>
-          <TabsTrigger value="active"><AlertTriangle className="h-3.5 w-3.5 mr-1" />Active Leaks</TabsTrigger>
-          <TabsTrigger value="repairs"><Wrench className="h-3.5 w-3.5 mr-1" />Repair Tracking</TabsTrigger>
-          <TabsTrigger value="trends"><BarChart3 className="h-3.5 w-3.5 mr-1" />Historical Trends</TabsTrigger>
+          <TabsTrigger value="active"><AlertTriangle className="h-3.5 w-3.5 mr-1" />{isBeginner ? "Problems" : "Active Leaks"}</TabsTrigger>
+          <TabsTrigger value="repairs"><Wrench className="h-3.5 w-3.5 mr-1" />{isBeginner ? "Fixes" : "Repair Tracking"}</TabsTrigger>
+          {!isBeginner && <TabsTrigger value="trends"><BarChart3 className="h-3.5 w-3.5 mr-1" />Historical Trends</TabsTrigger>}
         </TabsList>
 
         {/* Active Leaks */}
