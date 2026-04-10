@@ -1,52 +1,50 @@
 
 
-# Investment Office Part 4-6 Enhancement Plan
+# Enhancement Plan: Emotional Tagging + Multi-Layer Explainability
 
-## Audit Summary
+## What's Already Working (23 of 25 features ✅)
 
-The advisor system already covers **most** of Parts 4-6. All 9 advisors have deep models (watches, uncertainty, whatWouldChangeMind, refusesToConclude, viewsByHorizon, priorViews, portfolioAwareness, beginnerExplanation, advancedAnalysis, dataSources, invalidationEvents). The Synthesis panel covers 4.3. Confidence/uncertainty system (4.4), time horizons (4.5), asset-class reasoning (4.6), portfolio awareness (4.7), beginner layer (4.8), event-driven memory (4.9), and recommendation discipline (4.10) are all fully implemented.
+All 25 pages exist, compile clean, and are routed. The following are fully implemented with rich data and interactive UIs:
+- Capital Twin, Operating Modes, Conviction Engine, Disagreement Engine, What Would Break, Decision Theater, Time Machine Review, Capital Purpose, Investment Constitution, Opportunity Map, Catalyst War Room, Portfolio Shock Simulator (in RiskOffice), Behavioral Firewall, Intelligence Dossier, Event Probability Lab, Family Office, Market Memory Feed, Cross-Asset Story Engine, Position Sizing Coach, Decision Readiness, Strategy DNA, Post-Trade Loop, and "Invisible Complexity" (embodied in boardroom/synthesis UX)
 
-## Remaining Gaps
+## Two Gaps to Fix
 
-### 1. "Ask an Advisor" Interaction (Part 6.1) — MISSING
-No way to ask a specific advisor a question. The detail panel shows static data but has no interactive Q&A. Need a set of pre-built questions users can click to get advisor-specific answers.
+### Gap 1: Trade Journal with Emotional Tagging (#17)
 
-**Fix**: Add a "Quick Questions" section to `AdvisorDetailPanel` with 6 clickable prompts ("What matters most?", "Why are you cautious?", "Explain simply", "What would change your mind?", "How would you size this?", "What's the biggest hidden risk?"). Each maps to existing advisor data fields, displayed in a response card on click.
+**Current state**: ThesisJournal.tsx shows theses with rationale, assumptions, risk factors, and catalysts — but zero emotional metadata. No confidence slider, no stress level, no urgency tag, no FOMO flag, no "long-term conviction vs short-term reaction" indicator.
 
-### 2. "Ask the Board" Interaction (Part 6.2) — MISSING
-No board-wide Q&A. Need a way to ask the entire council and see aggregated responses.
+**Fix**:
+- Add `DEMO_JOURNAL_ENTRIES` to `investment.tsx` with emotional tags per trade: `confidence` (1-5), `stressLevel` (low/moderate/high), `urgency` (patient/moderate/urgent), `fomoFlag` (boolean), `emotionNote` (free text), `convictionType` ("thesis-driven" | "reactive" | "mixed")
+- Enhance `ThesisJournal.tsx` with an "Emotional Profile" section per thesis showing these tags as colored chips and bars
+- Add a "Patterns" summary card at the top showing aggregated emotional trends (e.g., "3 of 4 entries were thesis-driven", "Average stress: moderate")
 
-**Fix**: Add a new "Ask the Board" view mode to AdvisorBoard with 4 clickable board questions ("What does the board think of this trade?", "What are the top disagreements?", "Where do you align?", "Strongest argument against this?"). Responses pull from existing synthesis data.
+**Files**: `src/lib/demo-data/investment.tsx` (~30 lines), `src/pages/investment-office/ThesisJournal.tsx` (~50 lines added)
 
-### 3. Advisor Dossier Memo (Part 5.3) — MISSING
-Detail panel shows structured data but no long-form "memo" view that reads like a written intelligence brief.
+### Gap 2: Multi-Layer Explainability (#19)
 
-**Fix**: Add a "Memo" tab to `AdvisorDetailPanel` that renders `advancedAnalysis` + `portfolioAwareness` + horizon views as a flowing document-style memo card.
+**Current state**: No implementation anywhere. Advisor insights are shown at one depth level only. The spec requires 5 depth views: Simple, Analyst, Committee, Execution, Risk.
 
-### 4. Strategy Advisor Comments (Part 5.5) — MISSING
-StrategyStudio has no advisor commentary on strategies.
+**Fix**:
+- Add `EXPLAINABILITY_LAYERS` data to `mock-data.ts` — for 2-3 sample recommendations, provide the same insight written at all 5 depth levels
+- Add a dedicated "Explainability" toggle/tab system to `IntelligenceDossier.tsx` (the most natural home) — a row of 5 depth buttons (Simple → Analyst → Committee → Execution → Risk) that re-renders the recommendation text at the selected depth
+- Each layer gets a distinct visual treatment: Simple = large text, few words; Analyst = structured bullet points; Committee = multi-advisor synthesis; Execution = actionable steps; Risk = risk-focused framing
 
-**Fix**: Add an "Advisor Debate" section to StrategyStudio that shows how each advisor views the selected strategy template or current allocation, using existing advisor data.
-
-### 5. Event Alerts Format (Part 5.6) — PARTIAL
-Catalysts exist but no dedicated advisor event alert cards.
-
-**Fix**: Add an "Upcoming Event Alerts" section to InvestmentBoardroom pulling catalyst data with the relevant advisor's view attached.
-
-### 6. Post-Execution Review (Part 6.4) — MISSING
-No advisor post-trade review capability.
-
-**Fix**: Add a "Post-Trade Review" section to InvestmentReceipts that shows advisor commentary on completed trades (what was expected, what changed, thesis accuracy).
-
-## Files Modified
-
-- `src/pages/investment-office/AdvisorBoard.tsx` — Add "Ask the Board" view mode + "Ask" questions in detail panel + "Memo" tab (~120 lines)
-- `src/pages/investment-office/StrategyStudio.tsx` — Add Advisor Debate section (~50 lines)
-- `src/pages/investment-office/InvestmentBoardroom.tsx` — Add Event Alerts section (~40 lines)
-- `src/pages/investment-office/InvestmentReceipts.tsx` — Add Post-Trade Review section (~50 lines)
-- `src/lib/investment-office/mock-data.ts` — Add advisor event alerts + post-trade reviews data (~60 lines)
+**Files**: `src/lib/investment-office/mock-data.ts` (~50 lines), `src/pages/investment-office/IntelligenceDossier.tsx` (~40 lines added)
 
 ## Technical Approach
 
-All enhancements are additive. No new components or dependencies. Advisor Q&A uses existing data fields mapped to question prompts (no AI API calls needed — this surfaces the deep advisor model data through interactive UX). Total: ~320 lines added across 5 files.
+- All changes are additive — no restructuring
+- Uses existing demo data patterns and component styles
+- Zero new dependencies
+- Will verify with `npx tsc --noEmit` after changes
+
+## Summary
+
+| Feature | Status | Action |
+|---------|--------|--------|
+| 1-16, 18, 20-25 | ✅ Complete | No changes |
+| 17. Emotional Tagging | ❌ Missing | Add to ThesisJournal |
+| 19. Multi-Layer Explainability | ❌ Missing | Add to IntelligenceDossier |
+
+Total: ~170 lines across 4 files.
 
