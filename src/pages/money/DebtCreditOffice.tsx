@@ -43,8 +43,8 @@ const DebtCreditOffice = () => {
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         <KPITile label="Total Debt" value={fmt(profile.totalDebtCents)} icon={CreditCard} />
         <KPITile label="Monthly Interest Drag" value={fmt(profile.interestDragMonthlyCents)} icon={TrendingDown} />
-        <KPITile label="Utilization" value={`${profile.utilizationPercent.toFixed(0)}%`} icon={<BarChart3 className="h-4 w-4" />}
-        <KPITile label="DTI Ratio" value={`${profile.debtToIncomeRatio.toFixed(0)}%`} icon={Target}
+        <KPITile label="Utilization" value={`${profile.utilizationPercent.toFixed(0)}%`} icon={BarChart3} />
+        <KPITile label="DTI Ratio" value={`${profile.debtToIncomeRatio.toFixed(0)}%`} icon={Target} />
         <KPITile label="Credit Score" value={pulse.estimatedScore.toString()} icon={Shield}
           trend={pulse.trend === "improving" ? "up" : pulse.trend === "declining" ? "down" : undefined} />
       </div>

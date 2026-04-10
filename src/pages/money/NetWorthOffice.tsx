@@ -57,12 +57,10 @@ const NetWorthOffice = () => {
 
       {/* KPI Row */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <KPITile label="Net Worth" value={fmt(analysis.netWorth)} icon={DollarSign}
-        <KPITile label="Total Assets" value={fmt(analysis.totalAssets)} icon={TrendingUp}
-          />
-        <KPITile label="Total Liabilities" value={fmt(analysis.totalLiabilities)} icon={TrendingDown}
-          />
-        <KPITile label="Equity Ratio" value={`${pct}%`} icon={<BarChart3 className="h-4 w-4" />}
+        <KPITile label="Net Worth" value={fmt(analysis.netWorth)} icon={DollarSign} />
+        <KPITile label="Total Assets" value={fmt(analysis.totalAssets)} icon={TrendingUp} />
+        <KPITile label="Total Liabilities" value={fmt(analysis.totalLiabilities)} icon={TrendingDown} />
+        <KPITile label="Equity Ratio" value={`${pct}%`} icon={BarChart3} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
