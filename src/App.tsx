@@ -866,6 +866,7 @@ const App = () => (
                     <Route path="/investments/what-would-break" element={<WhatWouldBreak />} />
                     <Route path="/investments/disagreements" element={<DisagreementEngine />} />
                     <Route path="/investments/family-office" element={<FamilyOffice />} />
+                    <Route path="/investments/knowledge-graph" element={<KnowledgeGraph />} />
                     <Route path="/money/investments" element={<InvestmentGate />} />
 
                     {/* ── 3B: OS Office — Revenue Office (40 routes) ── */}
