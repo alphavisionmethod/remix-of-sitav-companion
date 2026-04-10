@@ -53,4 +53,6 @@ export function ActionFeedbackStack({ feedbacks }: { feedbacks: SuccessFeedback[
       </AnimatePresence>
     </div>
   );
-}
+
+// Re-export optimistic mutation for co-located patterns
+export { useOptimisticMutation, type MutationStatus } from "@/hooks/use-optimistic-mutation";
