@@ -245,7 +245,7 @@ const AppDetailPage = () => {
 
       {/* Install Sheet */}
       {showInstall && (
-        <InstallSheet app={app} onClose={() => setShowInstall(false)} onInstall={() => setShowInstall(false)} />
+        <InstallSheet app={app} onClose={() => setShowInstall(false)} onInstall={async () => { await installApp(app.id); setShowInstall(false); }} />
       )}
     </div>
   );
