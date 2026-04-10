@@ -113,7 +113,8 @@ function ActiveDialer({ contact, onEnd, onSkip }: { contact: Contact; onEnd: () 
     return () => clearInterval(timer);
   });
 
-  const script = MOCK_SCRIPTS.find(s => s.stage === contact.stage) || MOCK_SCRIPTS[0];
+  const { isDemoMode } = useDataMode();
+  const script = isDemoMode ? (MOCK_SCRIPTS.find(s => s.stage === contact.stage) || MOCK_SCRIPTS[0]) : null;
 
   const handleEndCall = () => {
     setState("wrapping-up");

@@ -768,11 +768,11 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
           domain: (t.domain === "business" || t.domain === "money" || t.domain === "concierge" ? t.domain : "business") as "business" | "money" | "concierge",
           progress: t.status === "completed" ? 100 : t.status === "in_progress" ? 50 : 0,
           proofGenerated: false,
-        })) : [
+        })) : isDemoMode ? [
           { id: "t1", title: "Call Apex Corp about Quote #1039", assignee: "Owner", decidedAt: "Mar 25", dueBy: "Mar 26", status: "completed" as const, domain: "business" as const, progress: 100, proofGenerated: true },
           { id: "t2", title: "Send collections escalation to Green Valley", assignee: "SITA (delegated)", decidedAt: "Mar 25", dueBy: "Mar 27", status: "in-progress" as const, domain: "business" as const, progress: 60 },
           { id: "t3", title: "Cancel Zoom Pro subscription", assignee: "Owner", decidedAt: "Mar 25", dueBy: "Apr 5", status: "pending" as const, domain: "money" as const, progress: 0 },
-        ]}
+        ] : []}
       />
 
       {/* Confidence Envelope & Provenance */}

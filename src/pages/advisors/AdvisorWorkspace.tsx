@@ -545,7 +545,24 @@ const ProofHistory = () => {
 
 const SingleAdvisorView = ({ advisorId }: { advisorId: string }) => {
   const navigate = useNavigate();
+  const { isDemoMode } = useDataMode();
   const [activeSection, setActiveSection] = useState<"overview" | "simulations" | "history">("overview");
+
+  if (!isDemoMode) {
+    return (
+      <div className="space-y-6">
+        <button onClick={() => navigate("/advisors")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors">
+          <ArrowLeft className="h-4 w-4" /> Back to Council
+        </button>
+        <SitaCard className="p-8 text-center">
+          <Brain className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
+          <h3 className="text-lg font-display font-bold text-foreground mb-1">Advisor Not Available</h3>
+          <p className="text-sm text-muted-foreground">Individual advisor profiles activate when real advisor data flows in. Switch to demo mode to preview.</p>
+        </SitaCard>
+      </div>
+    );
+  }
+
   const advisor = mockAdvisors.find(a => a.id === advisorId) || mockAdvisors[0];
   const recs = mockRecommendations.filter(r => r.advisorId === advisor.id);
   const proofs = mockProofHistory.filter(p => p.advisor === advisor.name);
