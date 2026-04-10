@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState, useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Route, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
+import { Route, CheckCircle, XCircle, AlertTriangle, Filter } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { getRoutingPolicies, getCapabilityRouting } from "@/lib/core-services/ai-gateway";
@@ -11,6 +12,9 @@ import AIGSubNav from "@/components/admin/AIGSubNav";
 
 export default function AIG03RoutingMatrix() {
   const { isDemoMode } = useDataMode();
+  const [familyFilter, setFamilyFilter] = useState<string>("all");
+  const [premiumOnly, setPremiumOnly] = useState(false);
+
   const { data: policies = [] } = useQuery({
     queryKey: ["ai-routing-policies"],
     queryFn: getRoutingPolicies,
@@ -20,6 +24,22 @@ export default function AIG03RoutingMatrix() {
     queryKey: ["ai-capability-routing"],
     queryFn: getCapabilityRouting,
   });
+
+  const families = useMemo(() => {
+    const fams = new Set(capRouting.map(r => r.capability_key.split(".")[0]));
+    return ["all", ...Array.from(fams).sort()];
+  }, [capRouting]);
+
+  const filteredRouting = useMemo(() => {
+    let list = capRouting;
+    if (familyFilter !== "all") {
+      list = list.filter(r => r.capability_key.startsWith(familyFilter + ".") || r.capability_key === familyFilter);
+    }
+    if (premiumOnly) {
+      list = list.filter(r => r.routing_class === "premium_synthesis");
+    }
+    return list;
+  }, [capRouting, familyFilter, premiumOnly]);
 
   const activeRoutes = capRouting.filter(r => r.is_active).length;
   const premiumRoutes = capRouting.filter(r => r.routing_class === "premium_synthesis").length;
@@ -65,11 +85,35 @@ export default function AIG03RoutingMatrix() {
         </CardContent></Card>
       </div>
 
+      {/* Capability Family Filter */}
+      <div className="flex flex-wrap items-center gap-2">
+        <Filter className="h-4 w-4 text-muted-foreground" />
+        {families.map(f => (
+          <Button
+            key={f}
+            size="sm"
+            variant={familyFilter === f ? "default" : "outline"}
+            onClick={() => setFamilyFilter(f)}
+            className="text-xs capitalize"
+          >
+            {f === "all" ? "All Families" : f.replace(/_/g, " ")}
+          </Button>
+        ))}
+        <Button
+          size="sm"
+          variant={premiumOnly ? "default" : "outline"}
+          onClick={() => setPremiumOnly(!premiumOnly)}
+          className="text-xs ml-2"
+        >
+          Premium Only
+        </Button>
+      </div>
+
       {/* Canonical Capability Routing */}
       <Card className="bg-card border-border">
-        <CardHeader><CardTitle>Capability Routing Matrix</CardTitle></CardHeader>
+        <CardHeader><CardTitle>Capability Routing Matrix ({filteredRouting.length})</CardTitle></CardHeader>
         <CardContent>
-          {capRouting.length > 0 ? (
+          {filteredRouting.length > 0 ? (
             <Table>
               <TableHeader><TableRow>
                 <TableHead>Capability Key</TableHead>
@@ -85,7 +129,7 @@ export default function AIG03RoutingMatrix() {
                 <TableHead>Active</TableHead>
               </TableRow></TableHeader>
               <TableBody>
-                {capRouting.map(r => {
+                {filteredRouting.map(r => {
                   const hasFallback = !!(r.fallback_model_id || r.fallback_provider_id || r.can_fallback_to_demo || r.can_fallback_to_unavailable);
                   return (
                     <TableRow key={r.id}>

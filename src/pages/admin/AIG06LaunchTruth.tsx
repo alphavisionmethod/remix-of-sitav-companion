@@ -50,7 +50,7 @@ export default function AIG06LaunchTruth() {
       <DemoModeBadge />
       <AIGSubNav />
       <div>
-        <h1 className="text-2xl font-bold flex items-center gap-2"><Eye className="h-6 w-6" /> AIG06 — AI Launch Truth Board</h1>
+        <h1 className="text-2xl font-bold flex items-center gap-2"><Eye className="h-6 w-6" /> AIG07 — AI Launch Truth Board</h1>
         <p className="text-sm text-muted-foreground mt-1">Which AI features are real, demo, partial, blocked, or planned — with canonical honesty records</p>
       </div>
 
