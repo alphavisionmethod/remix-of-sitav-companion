@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { Users, Search, Filter, Star, Clock, ArrowRight, Heart, MessageSquare, TrendingUp, TrendingDown, Minus, Zap, Mail, Phone, Calendar, FileText, DollarSign } from "lucide-react";
+import { Users, Search, Filter, Star, Clock, ArrowRight, Heart, MessageSquare, TrendingUp, TrendingDown, Minus, Zap, Mail, Phone, Calendar, FileText, DollarSign, SmilePlus } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
@@ -13,6 +13,7 @@ import { useCustomers } from "@/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/sita/EmptyState";
 import { DEMO_CONTACTS, DEMO_LIFECYCLE_STAGES, DEMO_NEXT_BEST_ACTIONS, DEMO_CONVERSATION_HISTORY, DEMO_RELATIONSHIP_GRAPH } from "@/lib/demo-data/revenue-office";
+import { clientSentimentService } from "@/lib/services/client-sentiment";
 
 export default function RelationshipCenter() {
   const { isDemoMode } = useDataMode();
