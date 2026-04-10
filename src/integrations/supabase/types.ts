@@ -3569,6 +3569,33 @@ export type Database = {
         }
         Relationships: []
       }
+      app_default_associations: {
+        Row: {
+          app_id: string
+          created_at: string
+          id: string
+          role: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          app_id: string
+          created_at?: string
+          id?: string
+          role: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          app_id?: string
+          created_at?: string
+          id?: string
+          role?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       appointments: {
         Row: {
           appointment_date: string
@@ -12726,6 +12753,60 @@ export type Database = {
           status?: string
           timeline?: Json | null
           title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      installed_apps: {
+        Row: {
+          app_id: string
+          dock_pinned: boolean
+          id: string
+          install_scope: string
+          install_status: string
+          installed_at: string
+          notification_enabled: boolean
+          package_type: string
+          permissions_granted: Json
+          sandbox_level: string
+          source_origin: string
+          startup_behavior: string
+          update_mode: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          app_id: string
+          dock_pinned?: boolean
+          id?: string
+          install_scope?: string
+          install_status?: string
+          installed_at?: string
+          notification_enabled?: boolean
+          package_type?: string
+          permissions_granted?: Json
+          sandbox_level?: string
+          source_origin?: string
+          startup_behavior?: string
+          update_mode?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          app_id?: string
+          dock_pinned?: boolean
+          id?: string
+          install_scope?: string
+          install_status?: string
+          installed_at?: string
+          notification_enabled?: boolean
+          package_type?: string
+          permissions_granted?: Json
+          sandbox_level?: string
+          source_origin?: string
+          startup_behavior?: string
+          update_mode?: string
           updated_at?: string
           user_id?: string
         }
