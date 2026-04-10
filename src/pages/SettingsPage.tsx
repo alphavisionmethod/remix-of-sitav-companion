@@ -550,17 +550,18 @@ const SettingsPage = () => {
       case "integrations":
         return (
           <SitaCard hover={false} className="p-5">
-            <SitaCardTitle sub="External integrations and sync">
+            <SitaCardTitle sub="External integrations and sync status">
               <div className="flex items-center gap-2"><Globe className="h-4 w-4 text-primary" /> Connections</div>
             </SitaCardTitle>
             <div className="mt-4 space-y-2">
-              {(connectors.length > 0 ? connectors : [
-                { service: "Gmail", status: "active", last_sync_at: new Date(Date.now() - 120000).toISOString() },
-                { service: "Stripe", status: "active", last_sync_at: new Date(Date.now() - 300000).toISOString() },
-                { service: "QuickBooks", status: "inactive", last_sync_at: null },
-                { service: "Google Calendar", status: "active", last_sync_at: new Date(Date.now() - 60000).toISOString() },
-              ]).map((conn: Record<string, any>) => (
-                <div key={conn.service} className="flex items-center justify-between rounded-xl bg-secondary/30 p-3">
+              {connectors.length === 0 ? (
+                <div className="text-center py-6">
+                  <Globe className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+                  <p className="text-xs text-muted-foreground">No connectors configured yet.</p>
+                  <p className="text-[10px] text-muted-foreground mt-1">Connect services in the Connected Accounts tab.</p>
+                </div>
+              ) : connectors.map((conn: Record<string, any>, i: number) => (
+                <div key={conn.service || i} className="flex items-center justify-between rounded-xl bg-secondary/30 p-3">
                   <div className="flex items-center gap-3">
                     <Wifi className={cn("h-4 w-4", conn.status === "active" ? "text-trust-verified" : "text-muted-foreground")} />
                     <div>
@@ -603,14 +604,17 @@ const SettingsPage = () => {
       case "devices":
         return (
           <SitaCard hover={false} className="p-5">
-            <SitaCardTitle sub="Trusted devices and sessions">
+            <SitaCardTitle sub="Trusted devices and active sessions">
               <div className="flex items-center gap-2"><Monitor className="h-4 w-4 text-primary" /> Devices</div>
             </SitaCardTitle>
             <div className="mt-4 space-y-2">
-              {(devices.length > 0 ? devices : [
-                { device_name: "MacBook Pro", device_type: "laptop", os: "macOS 15", status: "online", last_seen: new Date().toISOString() },
-                { device_name: "iPhone 16", device_type: "phone", os: "iOS 19", status: "online", last_seen: new Date(Date.now() - 300000).toISOString() },
-              ]).map((d: any, i: number) => (
+              {devices.length === 0 ? (
+                <div className="text-center py-6">
+                  <Monitor className="h-8 w-8 text-muted-foreground mx-auto mb-2" />
+                  <p className="text-xs text-muted-foreground">No device data yet.</p>
+                  <p className="text-[10px] text-muted-foreground mt-1">Device presence registers automatically on login.</p>
+                </div>
+              ) : devices.map((d: any, i: number) => (
                 <div key={i} className="flex items-center justify-between rounded-xl bg-secondary/30 p-3">
                   <div className="flex items-center gap-3">
                     {d.device_type === "phone" ? <Smartphone className="h-4 w-4 text-primary" /> : <Monitor className="h-4 w-4 text-primary" />}
@@ -627,7 +631,74 @@ const SettingsPage = () => {
         );
 
       case "connected-accounts":
-        return <GoogleConnectedAccounts />;
+        return (
+          <div className="space-y-4">
+            {/* Data Mode Governance Toggle */}
+            <SitaCard hover={false} className="p-5">
+              <SitaCardTitle sub="Control whether SITA operates with real or simulated data">
+                <div className="flex items-center gap-2"><ShieldAlert className="h-4 w-4 text-primary" /> Data Mode Governance</div>
+              </SitaCardTitle>
+              <div className="mt-4">
+                <div className="flex items-center justify-between rounded-xl bg-secondary/30 p-4">
+                  <div>
+                    <p className="text-sm font-medium text-foreground">
+                      {isDemoMode ? "Demo Mode Active" : "Live Mode Active"}
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      {isDemoMode
+                        ? "All data is simulated. No real connections, analytics, or side-effects."
+                        : "Connected to real services. Actions have real consequences."}
+                    </p>
+                  </div>
+                  <button
+                    onClick={async () => {
+                      const action = isDemoMode ? "Switch to Live Mode" : "Switch to Demo Mode";
+                      const desc = isDemoMode
+                        ? "Live mode connects to real services. Actions will have real consequences."
+                        : "Demo mode uses simulated data. No real side-effects will occur.";
+                      if (await confirmAction({ title: action, description: desc })) {
+                        handleToggle();
+                      }
+                    }}
+                    className={cn(
+                      "rounded-lg px-4 py-2 text-xs font-medium transition-colors",
+                      isDemoMode
+                        ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                        : "bg-amber-500/15 text-amber-600 dark:text-amber-400 hover:bg-amber-500/25"
+                    )}
+                  >
+                    {isDemoMode ? "Go Live" : "Switch to Demo"}
+                  </button>
+                </div>
+              </div>
+            </SitaCard>
+
+            {/* Sign-in Provider Info */}
+            <SitaCard hover={false} className="p-5">
+              <SitaCardTitle sub="Your authentication identity and sign-in method">
+                <div className="flex items-center gap-2"><Key className="h-4 w-4 text-primary" /> Sign-in Identity</div>
+              </SitaCardTitle>
+              <div className="mt-4 space-y-2">
+                <div className="flex items-center justify-between rounded-xl bg-secondary/30 p-3">
+                  <div className="flex items-center gap-3">
+                    <User className="h-4 w-4 text-primary" />
+                    <div>
+                      <p className="text-xs font-medium text-foreground">{user?.email || "Not signed in"}</p>
+                      <p className="text-[10px] text-muted-foreground">
+                        Provider: {user?.app_metadata?.provider || "email"}
+                        {user?.app_metadata?.providers?.length > 1 && ` + ${user.app_metadata.providers.length - 1} more`}
+                      </p>
+                    </div>
+                  </div>
+                  <TrustBadge level="verified" label="Active" size="sm" />
+                </div>
+              </div>
+            </SitaCard>
+
+            {/* Google Connected Accounts */}
+            <GoogleConnectedAccounts />
+          </div>
+        );
 
       default:
         return (

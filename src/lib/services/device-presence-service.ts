@@ -67,6 +67,56 @@ export async function sendHeartbeat(): Promise<void> {
   }
 }
 
+/**
+ * Register the current device into `connected_devices` + `presence_states` tables.
+ * Upserts using the stable device ID from localStorage.
+ */
+export async function registerCurrentDevice(userId: string): Promise<void> {
+  const deviceId = generateDeviceId();
+  const { browser, os, screenResolution } = getBrowserInfo();
+  const isMobile = os === "iOS" || os === "Android";
+  const deviceName = `${browser} on ${os}`;
+  const now = new Date().toISOString();
+
+  try {
+    // Upsert into connected_devices
+    await supabase.from("connected_devices" as any).upsert(
+      {
+        id: deviceId,
+        user_id: userId,
+        device_name: deviceName,
+        device_type: isMobile ? "phone" : "desktop",
+        platform: os,
+        browser,
+        os_version: os,
+        screen_resolution: screenResolution,
+        trust_level: "standard",
+        capabilities: ["keyboard", ...(isMobile ? ["touch"] : ["mouse"])],
+        is_active: true,
+        last_seen_at: now,
+        registered_at: now,
+      },
+      { onConflict: "id" }
+    );
+
+    // Upsert into presence_states
+    await supabase.from("presence_states" as any).upsert(
+      {
+        device_id: deviceId,
+        user_id: userId,
+        status: navigator.onLine ? "online" : "offline",
+        last_seen: now,
+        surface_type: isMobile ? "mobile" : "desktop",
+      },
+      { onConflict: "device_id" }
+    );
+
+    console.log("[DevicePresence] Registered device:", deviceId);
+  } catch (e) {
+    console.warn("[DevicePresence] Registration failed:", e);
+  }
+}
+
 export function getCurrentDevicePresence(): DevicePresence {
   const deviceId = generateDeviceId();
   const { browser, os, screenResolution } = getBrowserInfo();

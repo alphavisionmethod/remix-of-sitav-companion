@@ -296,16 +296,23 @@ export const SitaOSProvider = ({ children }: { children: ReactNode }) => {
       k.memoryGovernance.loadPersistedState(),
       k.boundaryEngine.loadPersistedState(),
     ]).then(() => {
-      // Register the current web surface
+      // Register the current web surface with mobile detection
+      const isMobile = /iPhone|iPad|Android/i.test(navigator.userAgent);
       k.continuityEngine.registerSurface({
-        surfaceId: "web-desktop",
+        surfaceId: isMobile ? "web-mobile" : "web-desktop",
         deviceId: navigator.userAgent.slice(0, 32),
-        type: "desktop",
+        type: isMobile ? "mobile" : "desktop",
         lastSeen: new Date().toISOString(),
         active: true,
-        capabilities: ["keyboard", "touch", "biometric"],
+        capabilities: ["keyboard", ...(isMobile ? ["touch"] : ["mouse", "biometric"])],
       });
-      k.attentionOS.setActiveSurface("desktop");
+      k.attentionOS.setActiveSurface(isMobile ? "mobile" : "desktop");
+
+      // Start device heartbeat + persist device to connected_devices table
+      import("@/lib/services/device-presence-service").then(({ startHeartbeat, registerCurrentDevice }) => {
+        startHeartbeat(60_000);
+        if (user) registerCurrentDevice(user.id);
+      });
 
       // Run initial proactive checks with real signals
       const cogLoad = k.attentionOS.getCognitiveLoad();
