@@ -109,6 +109,11 @@ const MoneyCenter = () => {
   const { isDemoMode } = useDataMode();
   const location = useLocation();
   const navigate = useNavigate();
+
+  if (!isMoneyOnboardingComplete()) {
+    return <Navigate to="/money/onboarding" replace />;
+  }
+
   const activePage = subpageFromPath(location.pathname);
 
   const goTo = (key: string) => {
