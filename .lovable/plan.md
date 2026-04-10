@@ -1,71 +1,51 @@
 
+# Phase 4 Admin Control Plane — Audit Results & Integration Plan
 
-# SITA OS Admin Control Plane Phase 4 — Implementation Plan
+## Audit Findings
 
-## Audit Summary
+### What IS fully implemented
+- **4 Shell components** — AdminShell, OwnerModeShell, OwnerWorkspaceShell, MissionOpsShell (all with TrustRibbon, RolloutStatusBanner, density toggle, breadcrumbs)
+- **RolloutStatusBanner** — active rollout state, ring/environment, confidence, impacted surfaces
+- **5 Summary Panels** — Revenue, Risk, Connector, Incident (with live Supabase query), Replay
+- **Panel barrel export** — `src/components/admin/panels/index.ts` exists
+- **Shell barrel export** — `src/components/admin/shells/index.ts` exists
+- **AdminCommandPalette** — Cmd+K with fuzzy search, 20+ routes, actions — wired in App.tsx
+- **AdminKeyboardShortcuts** — `?` overlay, `G+letter` nav — wired in App.tsx
+- **3 Phase 4 Unification pages** — TrustStateRegistry (241 LOC, 4 tabs), ActionStateDriftViewer (159 LOC, 4 tabs), CrossDomainMemoryExplorer (207 LOC, 3 tabs) — all routed
+- **ComputeGovernanceBoard** — 1026 LOC, 11 tabs (CG01-CG11 including Advisor Efficiency Matrix)
+- **RevenueAutopilotMonitor** — 229 LOC, 6 tabs (Autopilot, Recovered Value, Saved Cost, Win-Back, Health, Proof)
+- **InvestorProofLedger** — 217 LOC, 5 tabs (Ledger, Evidence Bundles, Migration Snapshots, Rollback Evidence, Compliance)
+- **IntegrationConciergePage** — 201 LOC, 4 tabs (Discover, Recommendations, Workflow Composer, Simulations)
+- **QuickActionsDock** — 12 actions, used in OwnerModePage
 
-After thorough codebase inspection, the admin control plane already has significant coverage:
+### What is MISSING — Not wired/integrated
 
-**Already implemented (keeping):**
-- ComputeGovernanceBoard (968 LOC, 10 tabs — fully advanced)
-- IntegrationConciergePage (105 LOC — use-case-first connector setup)
-- RevenueAutopilotMonitor (101 LOC — basic autopilot + win-back)
-- InvestorProofLedger (96 LOC — proof chain + export)
-- MemoryContinuityCenter (187 LOC — scoped memory with privacy tiers)
-- ActionLineageExplorer (212 LOC — cross-domain action state)
-- TrustRibbon component (exists, wired to hooks)
-- QuickActionsDock component (exists, 12 actions)
-- 5 summary panels in `src/components/admin/panels/` (Revenue, Risk, Connector, Incident, Replay)
-- AdminCommandPalette + AdminKeyboardShortcuts (already wired)
+**Critical gap: Shells and panels are orphaned.** They exist as components but are **never imported or used** by any page or route wrapper. This means:
 
-**Missing — to be created:**
+1. **Shells not wrapping routes** — AdminShell, OwnerWorkspaceShell, MissionOpsShell are never used in App.tsx to wrap their respective route groups. Admin pages render without the unified shell chrome (TrustRibbon, RolloutStatusBanner, density toggle).
 
-### A. Shell Components (4 new files)
-1. **AdminShell** — Top-level admin container with TrustRibbon, RolloutStatusBanner, breadcrumbs, density toggle, degraded-state banner, error boundary
-2. **OwnerModeShell** — Simplified founder-safe wrapper with plain-English labels, SafeModeBanner, large controls, protective defaults
-3. **OwnerWorkspaceShell** — Rich owner workspace with sidebar tabs (home/health/pulse/trust/approvals/ai-team/revenue/risks), panel composition region
-4. **MissionOpsShell** — Deep operational layout with left registry panel, center content, right detail pane, bottom action log
+2. **Summary panels not consumed** — The 5 summary panels (Revenue, Risk, Connector, Incident, Replay) are never imported by MissionControlHome or any other page. They sit unused.
 
-### B. RolloutStatusBanner (1 new component)
-- Active rollout state, warning level, ring/environment, impacted surfaces, confidence
+3. **MissionControlHome doesn't use panels** — Despite being the "main operator boardroom," it doesn't import or render any of the summary panels that were built for it.
 
-### C. Upgraded Existing Pages (4 pages need depth)
+---
 
-5. **RevenueAutopilotMonitor** — Upgrade from 101 → ~280 LOC: Add tabs for Recovered Value Board, Saved Cost Timeline, Revenue Action Proof, autopilot health/limits, confidence and proof for revenue recommendations
-6. **InvestorProofLedger** — Upgrade from 96 → ~300 LOC: Add tabs for Evidence Bundle Composer, Migration Decision Snapshots, Rollback Evidence, Compliance Trail Explorer, exportable bundles
-7. **IntegrationConciergePage** — Upgrade from 105 → ~250 LOC: Add tabs for Connector Recommendation Engine, Post-Connect Workflow Composer, Connection Simulation results, trust/approval gating
-8. **ComputeGovernanceBoard** — Already 968 LOC with 10 tabs. Add Advisor Efficiency Matrix tab as CG11
+## Implementation Plan
 
-### D. New Unification Pages (3 new pages)
+### Step 1 — Wire Summary Panels into MissionControlHome
+Import and render all 5 summary panels (RevenueSummaryPanel, RiskSummaryPanel, ConnectorSummaryPanel, IncidentSummaryPanel, ReplaySummaryPanel) in the MissionControlHome page as a "Platform Pulse" grid section.
 
-9. **TrustStateRegistry** (`/admin/trust-state`) — Cross-domain trust observatory: proof state, approval/receipt link graph, global proof explorer, degraded-state map
-10. **ActionStateDriftViewer** (`/admin/action-state`) — Cross-domain action lifecycle: noncanonical action detector, action-state drift, stuck action finder
-11. **CrossDomainMemoryExplorer** (`/admin/cross-domain-memory`) — What Changed Across Domains timeline, Memory Scope Visualizer, cross-domain context links
+### Step 2 — Wrap Admin Routes with AdminShell in App.tsx
+Wrap the admin route group in App.tsx with `<AdminShell>` so every admin page gets the unified chrome: TrustRibbon, RolloutStatusBanner, density toggle, and degraded-state banner. This replaces the bare `<Suspense>` wrapper for admin routes.
 
-### E. Route Wiring + Shell Integration
-- Add 3 new routes in App.tsx
-- Wrap admin routes with AdminShell (inject TrustRibbon + RolloutStatusBanner globally)
-- Wrap `/owner/*` routes with OwnerWorkspaceShell
-- Wrap `/mission/*` routes with MissionOpsShell
+### Step 3 — Wrap Owner Routes with OwnerWorkspaceShell
+For `/owner/*` routes, wrap with `<OwnerWorkspaceShell>` to provide the sidebar tabs (Home, Health, Pulse, Trust, AI Team, Revenue, Risks, Launches).
 
-## Files Created/Modified
+### Files Modified
 
-| File | Action | LOC |
-|---|---|---|
-| `src/components/admin/shells/AdminShell.tsx` | **NEW** | ~120 |
-| `src/components/admin/shells/OwnerModeShell.tsx` | **NEW** | ~100 |
-| `src/components/admin/shells/OwnerWorkspaceShell.tsx` | **NEW** | ~150 |
-| `src/components/admin/shells/MissionOpsShell.tsx` | **NEW** | ~130 |
-| `src/components/admin/shells/RolloutStatusBanner.tsx` | **NEW** | ~60 |
-| `src/components/admin/shells/index.ts` | **NEW** | barrel |
-| `src/pages/admin/TrustStateRegistry.tsx` | **NEW** | ~250 |
-| `src/pages/admin/ActionStateDriftViewer.tsx` | **NEW** | ~230 |
-| `src/pages/admin/CrossDomainMemoryExplorer.tsx` | **NEW** | ~220 |
-| `src/pages/admin/RevenueAutopilotMonitor.tsx` | **UPGRADE** | ~280 |
-| `src/pages/admin/InvestorProofLedger.tsx` | **UPGRADE** | ~300 |
-| `src/pages/admin/IntegrationConciergePage.tsx` | **UPGRADE** | ~250 |
-| `src/pages/admin/ComputeGovernanceBoard.tsx` | **ADD TAB** | +80 |
-| `src/App.tsx` | **MODIFY** | +routes |
+| File | Change |
+|---|---|
+| `src/pages/admin/MissionControlHome.tsx` | Import and render 5 summary panels |
+| `src/App.tsx` | Wrap admin routes with AdminShell, owner routes with OwnerWorkspaceShell |
 
-No duplicates. All new shells integrate existing TrustRibbon, QuickActionsDock, and panel system. Existing good implementations preserved and extended.
-
+No new files needed. No duplicates. All components already exist — this is pure integration wiring.
