@@ -2,8 +2,6 @@ import { Upload, Check, Users, FileText, ShoppingCart, Calendar, Star, BarChart3
 import { ScreenHeader } from "../primitives";
 import type { ScreenProps } from "../types";
 import { useCallback } from "react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 const importTypes = [
   { id: "contacts", label: "Contacts CSV", icon: Users },
@@ -19,14 +17,14 @@ const importTypes = [
 ];
 
 export default function FileImportScreen({ state, setState }: ScreenProps) {
-  const { isDemoMode } = useDataMode();
+  
   const toggle = useCallback((v: string) => {
     setState(p => ({ ...p, importedFiles: p.importedFiles.includes(v) ? p.importedFiles.filter(x => x !== v) : [...p.importedFiles, v] }));
   }, [setState]);
 
   return (
     <div className="space-y-6">
-      <DemoModeBadge />
+      
       <ScreenHeader icon={Upload} title="Import your business data" subtitle="Select file types you have — mapping and deduplication happen automatically" color="text-emerald-400" />
       <div className="grid md:grid-cols-2 gap-2">
         {importTypes.map(t => (
