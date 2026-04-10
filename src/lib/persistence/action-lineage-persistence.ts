@@ -30,6 +30,7 @@ export interface PersistedActionLineage {
   linked_memory_ids: string[];
   linked_policy_ids: string[];
   linked_receipt_ids: string[];
+  linked_projection_ids: string[];
   initiating_surface: string | null;
   stuck_since: string | null;
   created_at: string;
