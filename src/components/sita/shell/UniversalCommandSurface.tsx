@@ -127,6 +127,23 @@ const COMMAND_INDEX: CommandItem[] = [
   { id: "rcp-waves", label: "Wave Planner", sublabel: "RCP10 — Migration wave planner", icon: Zap, path: "/admin/reality-audit/wave-planner", category: "system", keywords: ["wave", "planner", "migration", "rcp10"] },
   { id: "rcp-progress", label: "Progress Timeline", sublabel: "RCP11 — Reality progress timeline", icon: Clock, path: "/admin/reality-audit/progress", category: "system", keywords: ["progress", "timeline", "reality", "rcp11"] },
   { id: "rcp-runtime", label: "Runtime Truth Gate", sublabel: "RCP12 — Runtime truth gate", icon: Activity, path: "/admin/reality-audit/runtime-truth", category: "system", keywords: ["runtime", "truth", "gate", "rcp12"] },
+  // Device & Wearable Expansion (DWE)
+  { id: "dwe-devices", label: "Connected Devices", sublabel: "DWE01 — Connected devices center", icon: Layout, path: "/admin/dwe/devices", category: "system", keywords: ["device", "connected", "dwe01"] },
+  { id: "dwe-presence", label: "Device Presence", sublabel: "DWE02 — Presence continuity center", icon: Activity, path: "/admin/dwe/presence", category: "system", keywords: ["presence", "continuity", "device", "dwe02"] },
+  { id: "dwe-wearables", label: "Wearable Signals", sublabel: "DWE03 — Wearable signals center", icon: Activity, path: "/admin/dwe/wearables", category: "system", keywords: ["wearable", "signals", "watch", "ring", "dwe03"] },
+  { id: "dwe-notifications", label: "Notification Routing", sublabel: "DWE04 — Notification routing studio", icon: Globe, path: "/admin/dwe/notifications", category: "system", keywords: ["notification", "routing", "ambient", "dwe04"] },
+  { id: "dwe-trust", label: "Device Trust", sublabel: "DWE05 — Device trust & approvals", icon: Shield, path: "/admin/dwe/trust", category: "system", keywords: ["device", "trust", "approval", "dwe05"] },
+  { id: "dwe-assistant", label: "Ambient Assistant", sublabel: "DWE06 — Ambient assistant center", icon: Zap, path: "/admin/dwe/assistant", category: "system", keywords: ["ambient", "assistant", "proactive", "dwe06"] },
+  { id: "dwe-launch", label: "Device Launch Honesty", sublabel: "DWE07 — Device launch honesty board", icon: ShieldCheck, path: "/admin/dwe/launch-honesty", category: "system", keywords: ["device", "launch", "honesty", "dwe07"] },
+  // Unified Ambient OS (UAO)
+  { id: "uao-presence", label: "UAO Presence", sublabel: "UAO01 — Presence continuity", icon: Activity, path: "/admin/uao/presence", category: "system", keywords: ["uao", "presence", "continuity", "uao01"] },
+  { id: "uao-devices", label: "UAO Devices", sublabel: "UAO02 — Connected devices", icon: Layout, path: "/admin/uao/devices", category: "system", keywords: ["uao", "devices", "connected", "uao02"] },
+  { id: "uao-team", label: "Ambient Team", sublabel: "UAO03 — Ambient team control", icon: Users, path: "/admin/uao/team", category: "system", keywords: ["uao", "team", "ambient", "uao03"] },
+  { id: "uao-notifications", label: "UAO Notifications", sublabel: "UAO04 — Notification router", icon: Globe, path: "/admin/uao/notifications", category: "system", keywords: ["uao", "notification", "router", "uao04"] },
+  { id: "uao-health", label: "Health Readiness", sublabel: "UAO05 — Health & readiness signals", icon: Activity, path: "/admin/uao/health", category: "system", keywords: ["uao", "health", "readiness", "uao05"] },
+  { id: "uao-trust", label: "UAO Trust", sublabel: "UAO06 — Device trust governance", icon: Shield, path: "/admin/uao/trust", category: "system", keywords: ["uao", "trust", "device", "uao06"] },
+  { id: "uao-journeys", label: "Cross-Surface Journeys", sublabel: "UAO07 — Cross-surface journey tracker", icon: Target, path: "/admin/uao/journeys", category: "system", keywords: ["uao", "journey", "cross", "surface", "uao07"] },
+  { id: "uao-launch", label: "Ambient Launch", sublabel: "UAO08 — Ambient launch readiness", icon: ShieldCheck, path: "/admin/uao/launch", category: "system", keywords: ["uao", "ambient", "launch", "readiness", "uao08"] },
 ];
 
 const CATEGORY_CONFIG: Record<string, { label: string; color: string; order: number }> = {
