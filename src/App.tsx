@@ -1,5 +1,5 @@
 import { QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate, Outlet } from "react-router-dom";
 import { getAdminRoutes } from "@/routes/AdminRoutes";
 import { getOwnerRoutes } from "@/routes/OwnerRoutes";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -27,9 +27,13 @@ import { PlatformInit } from "@/components/sita/PlatformInit";
 import { PublicLayout } from "@/layouts/PublicLayout";
 import { AdminCommandPalette } from "@/components/admin/AdminCommandPalette";
 import { AdminKeyboardShortcuts } from "@/components/admin/AdminKeyboardShortcuts";
+import { AdminShell } from "@/components/admin/shells/AdminShell";
+import { OwnerWorkspaceShell } from "@/components/admin/shells/OwnerWorkspaceShell";
 
 const AdminCommandPaletteWrapper = () => <AdminCommandPalette />;
 const AdminKeyboardShortcutsWrapper = () => <AdminKeyboardShortcuts />;
+const AdminShellLayout = () => <AdminShell><Outlet /></AdminShell>;
+const OwnerShellLayout = () => <OwnerWorkspaceShell><Outlet /></OwnerWorkspaceShell>;
 
 // ═══════════════════════════════════════════════════
 // CODE-SPLIT: Lazy-load all page components
@@ -1289,42 +1293,44 @@ const App = () => (
 
                     <Route path="/incidents" element={<Navigate to="/mission-control" replace />} />
 
-                    {/* Owner — Advanced Workspace (Layer 2) */}
-                    <Route path="/owner" element={<OwnerCenter />} />
-                    <Route path="/owner/home" element={<Navigate to="/owner" replace />} />
-                    <Route path="/owner/health" element={<Navigate to="/owner" replace />} />
-                    <Route path="/owner/pulse" element={<OwnerPulsePage />} />
-                    <Route path="/owner/trust" element={<Navigate to="/owner/trust-center" replace />} />
-                    <Route path="/owner/approvals" element={<OwnerApprovalsPage />} />
-                    <Route path="/owner/ai-team" element={<Navigate to="/owner/internal-agents" replace />} />
-                    <Route path="/owner/ai-team/updates" element={<OwnerAiTeamUpdatesPage />} />
-                    <Route path="/owner/incidents" element={<OwnerCenter />} />
-                    <Route path="/owner/intelligence" element={<OwnerCenter />} />
-                    <Route path="/owner/policies" element={<OwnerCenter />} />
-                    <Route path="/owner/fleet" element={<OwnerCenter />} />
-                    <Route path="/owner/council" element={<OwnerCenter />} />
-                    <Route path="/owner/audit" element={<OwnerCenter />} />
-                    <Route path="/owner/connector-health" element={<OwnerCenter />} />
-                    <Route path="/owner/connectors" element={<OwnerCenter />} />
-                    <Route path="/owner/costs" element={<OwnerCenter />} />
-                    <Route path="/owner/internal-agents" element={<OwnerCenter />} />
-                    <Route path="/owner/workflow-control" element={<OwnerCenter />} />
-                    <Route path="/owner/trust-center" element={<OwnerCenter />} />
-                    <Route path="/owner/autopilot" element={<OwnerCenter />} />
-                    <Route path="/owner/billing" element={<OwnerCenter />} />
-                    <Route path="/owner/releases" element={<OwnerCenter />} />
-                    <Route path="/owner/model-routing" element={<OwnerCenter />} />
-                    <Route path="/owner/system-map" element={<OwnerCenter />} />
-                    <Route path="/owner/knowledge" element={<OwnerCenter />} />
-                    <Route path="/owner/support" element={<OwnerCenter />} />
-                    <Route path="/owner/change-review" element={<OwnerCenter />} />
-                    <Route path="/owner/rollback-center" element={<OwnerCenter />} />
-                    <Route path="/owner/governance" element={<OwnerCenter />} />
-                    <Route path="/owner/pricing" element={<PricingEditor />} />
-                    <Route path="/owner/packs" element={<PackEditorPage />} />
-                    <Route path="/owner/advisors" element={<AdvisorConfigPage />} />
-                    <Route path="/owner/leases" element={<LeaseDashboard />} />
-                    <Route path="/owner/constitution" element={<ConstitutionEditor />} />
+                    {/* Owner — Advanced Workspace (Layer 2) — wrapped in OwnerWorkspaceShell */}
+                    <Route element={<OwnerShellLayout />}>
+                      <Route path="/owner" element={<OwnerCenter />} />
+                      <Route path="/owner/home" element={<Navigate to="/owner" replace />} />
+                      <Route path="/owner/health" element={<Navigate to="/owner" replace />} />
+                      <Route path="/owner/pulse" element={<OwnerPulsePage />} />
+                      <Route path="/owner/trust" element={<Navigate to="/owner/trust-center" replace />} />
+                      <Route path="/owner/approvals" element={<OwnerApprovalsPage />} />
+                      <Route path="/owner/ai-team" element={<Navigate to="/owner/internal-agents" replace />} />
+                      <Route path="/owner/ai-team/updates" element={<OwnerAiTeamUpdatesPage />} />
+                      <Route path="/owner/incidents" element={<OwnerCenter />} />
+                      <Route path="/owner/intelligence" element={<OwnerCenter />} />
+                      <Route path="/owner/policies" element={<OwnerCenter />} />
+                      <Route path="/owner/fleet" element={<OwnerCenter />} />
+                      <Route path="/owner/council" element={<OwnerCenter />} />
+                      <Route path="/owner/audit" element={<OwnerCenter />} />
+                      <Route path="/owner/connector-health" element={<OwnerCenter />} />
+                      <Route path="/owner/connectors" element={<OwnerCenter />} />
+                      <Route path="/owner/costs" element={<OwnerCenter />} />
+                      <Route path="/owner/internal-agents" element={<OwnerCenter />} />
+                      <Route path="/owner/workflow-control" element={<OwnerCenter />} />
+                      <Route path="/owner/trust-center" element={<OwnerCenter />} />
+                      <Route path="/owner/autopilot" element={<OwnerCenter />} />
+                      <Route path="/owner/billing" element={<OwnerCenter />} />
+                      <Route path="/owner/releases" element={<OwnerCenter />} />
+                      <Route path="/owner/model-routing" element={<OwnerCenter />} />
+                      <Route path="/owner/system-map" element={<OwnerCenter />} />
+                      <Route path="/owner/knowledge" element={<OwnerCenter />} />
+                      <Route path="/owner/support" element={<OwnerCenter />} />
+                      <Route path="/owner/change-review" element={<OwnerCenter />} />
+                      <Route path="/owner/rollback-center" element={<OwnerCenter />} />
+                      <Route path="/owner/governance" element={<OwnerCenter />} />
+                      <Route path="/owner/pricing" element={<PricingEditor />} />
+                      <Route path="/owner/packs" element={<PackEditorPage />} />
+                      <Route path="/owner/advisors" element={<AdvisorConfigPage />} />
+                      <Route path="/owner/leases" element={<LeaseDashboard />} />
+                      <Route path="/owner/constitution" element={<ConstitutionEditor />} />
+                    </Route>
 
                     {/* Owner Mode — redirects to /owner */}
                     <Route path="/owner-mode" element={<Navigate to="/owner" replace />} />
@@ -1377,7 +1383,8 @@ const App = () => (
                     {/* Global Search */}
                     <Route path="/search" element={<SearchPage />} />
 
-                    {/* Admin */}
+                    {/* Admin — wrapped in AdminShell */}
+                    <Route element={<AdminShellLayout />}>
                     <Route path="/admin/generated-truth" element={<GeneratedTruthDashboard />} />
                     <Route path="/admin/fleet-health" element={<FleetHealthPage />} />
                     <Route path="/admin/dashboard" element={<AdminDashboard />} />
@@ -1409,8 +1416,10 @@ const App = () => (
                     <Route path="/admin/pfa/upgrades" element={<PFA06PermissionUpgradeCenter />} />
                     <Route path="/admin/pfa/health-drift" element={<PFA07ConnectorHealthDrift />} />
                     <Route path="/admin/pfa/account-graph" element={<PFA08AccountGraphExplorer />} />
-                    <Route path="/settings/connected-accounts" element={<PFA09ConnectedAccountsCenter />} />
-                    <Route path="/settings/google" element={<GoogleConnectedAccounts />} />
+                     </Route>
+                     <Route path="/settings/connected-accounts" element={<PFA09ConnectedAccountsCenter />} />
+                     <Route path="/settings/google" element={<GoogleConnectedAccounts />} />
+                     <Route element={<AdminShellLayout />}>
                     <Route path="/admin/pfa/launch-honesty" element={<PFA10IntegrationLaunchHonesty />} />
                     <Route path="/admin/pfa/google" element={<GoogleProviderFamilyDashboard />} />
                     <Route path="/admin/isa/identity-providers" element={<ISA01IdentityProviderRegistryBoard />} />
@@ -1614,6 +1623,8 @@ const App = () => (
                      <Route path="/admin/architecture/god-tier-runtime" element={<GodTierRuntimeBoard />} />
                      <Route path="/admin/architecture/epistemic-firewall" element={<EpistemicFirewallBoard />} />
 
+                    </Route>
+
                      <Route path="/personal-brain" element={<PersonalBrain />} />
 
                     {/* ── 3C: OS Built-in Apps ── */}
@@ -1638,7 +1649,9 @@ const App = () => (
                     <Route path="/import-export" element={<ImportExportCenter />} />
 
                     {/* ── Supplementary Admin Routes ── */}
-                    {getAdminRoutes()}
+                    <Route element={<AdminShellLayout />}>
+                      {getAdminRoutes()}
+                    </Route>
 
                     {/* ── Supplementary Owner Routes (from src/routes/OwnerRoutes.tsx — deduplicated) ── */}
 

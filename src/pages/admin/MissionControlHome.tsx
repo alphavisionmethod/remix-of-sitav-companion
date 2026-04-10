@@ -18,6 +18,13 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_ADMIN_SERVICES_MISSION_CONTROL_HOME as DEMO_SERVICES, DEMO_URGENT_ACTIONS } from "@/lib/demo-data/admin-platform";
 import { DEMO_MUTATIONS } from "@/lib/demo-data/durability";
+import {
+  RevenueSummaryPanel,
+  RiskSummaryPanel,
+  ConnectorSummaryPanel,
+  IncidentSummaryPanel,
+  ReplaySummaryPanel,
+} from "@/components/admin/panels";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -207,6 +214,20 @@ const MissionControlHome = () => {
             </Card>
           </motion.div>
         </div>
+
+        {/* Platform Pulse — Summary Panels */}
+        <motion.div variants={fadeUp}>
+          <h2 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
+            <Radio className="h-4 w-4 text-primary" /> Platform Pulse
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-3">
+            <RevenueSummaryPanel />
+            <RiskSummaryPanel />
+            <ConnectorSummaryPanel />
+            <IncidentSummaryPanel />
+            <ReplaySummaryPanel />
+          </div>
+        </motion.div>
 
         {/* Command Surfaces */}
         <motion.div variants={fadeUp}>
