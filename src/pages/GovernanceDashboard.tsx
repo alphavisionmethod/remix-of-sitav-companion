@@ -10,10 +10,12 @@ import { KPITile } from "@/components/sita/SitaComponents";
 import { TrustDebtPanel, ExecutionDebtHeatmap, DragIndexRadar, ReadinessGauge, DelegationRegistryTable } from "@/components/governance";
 import { useGovernanceSummary } from "@/hooks/use-admin-durable-state";
 import { useDataMode } from "@/contexts/DataModeContext";
-import { Scale, Shield, AlertTriangle, CheckCircle, Clock } from "lucide-react";
+import { Scale, Shield, AlertTriangle, CheckCircle, Clock, Eye } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { ReadinessInput } from "@/lib/engines/readiness-engine";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
+import { useMemo } from "react";
 
 const DEFAULT_SCOPE = { ownerId: "current-user", visibility: "private" as const };
 
