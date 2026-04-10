@@ -47,6 +47,7 @@ const UserProfilePage = lazy(() => import("./pages/UserProfilePage"));
 const BusinessCenter = lazy(() => import("./pages/BusinessCenter"));
 const CustomerDetail = lazy(() => import("./pages/CustomerDetail"));
 const MoneyCenter = lazy(() => import("./pages/MoneyCenter"));
+const MoneyOnboarding = lazy(() => import("./pages/MoneyOnboarding"));
 const ConciergeCenter = lazy(() => import("./pages/ConciergeCenter"));
 const WorkflowsCenter = lazy(() => import("./pages/WorkflowsCenter"));
 const ProofCenter = lazy(() => import("./pages/ProofCenter"));
