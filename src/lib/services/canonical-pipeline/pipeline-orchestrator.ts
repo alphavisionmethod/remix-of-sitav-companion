@@ -7,6 +7,7 @@
 import { conscienceGate, type GateVerdict, type GateRequest } from "@/lib/services/conscience-gate";
 import { runCritique, logCritique, type CritiqueResult, type EvidenceSource } from "@/lib/services/conscience-gate/critique-loop";
 import { getTaskContractOrThrow } from "@/lib/contracts/global-contracts-registry";
+import { callAIGateway } from "@/lib/services/ai-gateway/callable";
 
 // ── Pipeline Stage Enum ────────────────────────────────────────
 
@@ -157,15 +158,32 @@ export class PipelineOrchestrator {
 
       // Stage 5: INFERENCE
       await this.runStage(ctx, PipelineStage.INFERENCE, async () => {
-        // In production, delegates to InferenceEngine / ai-gateway edge function
-        ctx.inferenceResult = {
-          status: "completed",
-          model: (ctx.routingDecision as Record<string, unknown>)?.model || "gpt-4o-mini",
-          output: request.input, // Placeholder — real inference happens via edge function
-          tokensUsed: 0,
-          latencyMs: 0,
-        };
-        return { decision: "inferred", data: { model: (ctx.routingDecision as Record<string, unknown>)?.model } };
+        const model = String((ctx.routingDecision as Record<string, unknown>)?.model || "gpt-4o-mini");
+        const taskClass = String((ctx.routingDecision as Record<string, unknown>)?.routingClass || "balanced_assistant");
+
+        try {
+          const gatewayResponse = await callAIGateway(
+            [{ role: "user", content: JSON.stringify(request.input) }],
+            { taskClass, maxTokens: 4096 },
+          );
+          ctx.inferenceResult = {
+            status: "completed",
+            model: gatewayResponse.model,
+            output: { content: gatewayResponse.content },
+            tokensUsed: gatewayResponse.tokens_used,
+            costCents: gatewayResponse.cost_cents,
+          };
+        } catch (inferenceError) {
+          // Graceful degradation — mark as degraded but don't block pipeline
+          ctx.inferenceResult = {
+            status: "degraded",
+            model,
+            output: request.input,
+            tokensUsed: 0,
+            error: inferenceError instanceof Error ? inferenceError.message : "Inference unavailable",
+          };
+        }
+        return { decision: "inferred", data: { model: ctx.inferenceResult.model, status: ctx.inferenceResult.status } };
       }, request.onStageComplete);
 
       // Stage 6: TOOL_EXECUTION (conditional)

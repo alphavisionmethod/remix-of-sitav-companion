@@ -115,14 +115,14 @@ class AutoProposalGenerator {
   }
 
   private generateSummary(lead: Record<string, unknown>): string {
-    return `Thank you for your interest, ${lead.name}. Based on our discussion, we've prepared this proposal tailored to ${lead.company || 'your'} needs. This document outlines our recommended approach, deliverables, timeline, and investment.`;
+    return `Thank you for your interest, ${String(lead.name || '')}. Based on our discussion, we've prepared this proposal tailored to ${String(lead.company || 'your')} needs. This document outlines our recommended approach, deliverables, timeline, and investment.`;
   }
 
   private generateSections(lead: Record<string, unknown>, lineItems: ProposalLineItem[]): ProposalSection[] {
     return [
       {
         title: 'Executive Summary',
-        content: `We understand ${lead.company || 'your organization'} is looking for a solution that drives results. Our approach combines proven methodology with tailored execution.`,
+        content: `We understand ${String(lead.company || 'your organization')} is looking for a solution that drives results. Our approach combines proven methodology with tailored execution.`,
         order: 1,
       },
       {
