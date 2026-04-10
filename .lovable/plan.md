@@ -1,116 +1,71 @@
 
 
-# Interaction Truth & Journey Verification — Gap Analysis and Enhancement Plan
+# Money Office — Full Audit Report & Enhancement Plan
 
-## Current State (Already Implemented)
+## Audit Findings
 
-The project has robust existing systems that cover the majority of the prompt's requirements:
+### Fully Implemented & Working (21 pages, 34 services, all contracts)
 
-**Verification Layer (V01–V07):** 7 boards at `/admin/verification/*` — Surface Inventory, Interaction Coverage, P0 Journey Board, Mode Verification, Failure Triage, Evidence Explorer, Launch Blockers. All wired to `verification_surfaces`, `verification_runs`, `verification_blockers`, `verification_evidence` tables via `verification-hooks.ts`.
+**Pages (21 tabs):** Overview, Bills, Subscriptions, Budgets, Transactions, Net Worth, Debt & Credit, Reserves, Cash Timing, Receivables, Health Pulse, Household, Scenarios, Investment Office, Tax, Advisors, Approvals, Proof, Documents, Boardroom, Settings — all wired in MoneyCenter.tsx with route mapping in App.tsx.
 
-**Customer Journey Layer (CJ01–CJ09):** 9 boards at `/admin/customer-journey/*` — Executive Report, Journey Truth Matrix, Journey Detail, Launch Blockers, Demo vs Real, Broken Clicks Explorer, Owner Remediation, Route Action Coverage, Recent Verification Runs. All wired to `customer_journey_runs` table via `journey-hooks.ts`.
+**Backend Services (34):** All exported from `src/lib/services/finance-os/index.ts` including debt-analyzer, financial-health, scenario-engine, envelope-budget, plus 30 original services.
 
-**Supporting Infrastructure:**
-- `surface-registry.ts` — 215-line canonical interaction registry (P0/P1/P2 surfaces with stable selectors, expected behaviors, backend dependencies)
-- `journey-registry.ts` — 801-line journey manifest (60+ journeys with steps, outcomes, launch importance)
-- `runtime-probes` edge function + LT04 Runtime Probe Center
-- E2E test helpers (`selectors.ts`, `assertions.ts`, `journey-recorder.ts`, `auth.ts`)
-- `InteractionTracker` component for behavioral signal capture
-- Launch gate systems (V07 + CJ04 + LT05)
+**Contracts:** All 6 contract sub-modules exported: reserves, subscriptions, family-office, investment-office, debt-credit, health-score, envelope-budget, scenario.
 
-## What's Missing (5 Pages + 1 Enhancement)
+**Routes:** All 8 new routes confirmed in App.tsx (lines 861-868).
 
-| JVC Screen | Purpose | Why it's needed |
-|---|---|---|
-| JVC05 — Redirect Integrity Map | Visualize navigation correctness, detect dead ends/loops | No redirect-specific verification exists |
-| JVC07 — Form Verification Center | Track form field validation, submit, persist, redirect | No form-specific verification exists |
-| JVC08 — Modal/Drawer Interaction Board | Verify transient UI correctness (open/close/focus trap) | Completely missing |
-| JVC09 — Keyboard/Command Verification | Track shortcuts, command palette, focus order | Completely missing |
-| JVC11 — Journey Replay | Visual step-by-step replay of journey executions | No replay timeline page |
-| JVC13 — Interaction Drift Radar | Detect mismatches between registry and actual behavior | No drift detection page |
+### Issues Found (3 bugs)
 
-**Already fully covered (no changes needed):**
-- JVC01 → CJ01 Executive Report
-- JVC02 → V01 Surface Inventory Board
-- JVC03 → CJ02 + CJ03 Journey Matrix/Detail
-- JVC04 → CJ06 Broken Clicks Explorer
-- JVC06 → V03 + V04 Page Load Boards
-- JVC10 → LT04 Runtime Probe Center
-- JVC12 → V02 + CJ08 Behavior Coverage
-- JVC14 → V07 + CJ04 + LT05 Launch Gates
+**Bug 1: TransactionIntelligence.tsx exports wrong component name**
+Line 151: `export default DebtCreditOffice;` — the component function is also named `DebtCreditOffice` (line 36) instead of `TransactionIntelligence`. This is a naming collision. The file works because MoneyCenter imports it as `TransactionIntelligence` from the file path, and the default export is what matters, but the internal function name is confusing and would cause issues in React DevTools. The function name on line 36 should be `TransactionIntelligence` and the export on line 151 should match.
 
-## Implementation Plan
+**Bug 2: HouseholdMoneyOffice.tsx missing 2 KPI tiles**
+Line 46-48 only shows 2 KPITiles (Household Income, Shared Expenses) out of 4 grid columns. The plan called for 4: surplus, savings rate, shared budget health, and member count. The `grid-cols-4` layout looks sparse with only 2 tiles.
 
-### 1. Surface Registry Enhancement
-**File:** `src/lib/verification/surface-registry.ts`
-- Add new surface types: `redirect`, `form_field`, `modal`, `drawer`, `keyboard_shortcut`, `command_palette`
-- Add fields: `redirectTarget`, `formFields`, `focusTrapExpected`, `shortcutKey`
+**Bug 3: MoneyOverview.tsx missing "wow" features**
+The plan specified adding Money Twin (Sankey-style flow visualization) to MoneyOverview, Cashflow Storyline to CashTiming, Subscription Leak Radar to SubscriptionsWaste, and Bill Shock Prevention to BillsWorkspace. None of these "wow" features were added to the existing pages — they were only built into the NEW pages (FinancialHealthPulse has Founder Boundary, BudgetEnvelopeOffice has pace tracking, etc.). The 4 planned enhancements to existing pages were skipped.
 
-### 2. New Pages (6 files)
+### What's Missing (4 "wow" feature enhancements to existing pages)
 
-**`src/pages/admin/verification/JVC05RedirectIntegrityMap.tsx`**
-- Redirect flow graph from surface registry entries with `actionType: "navigation"`
-- Broken redirect list (entries pointing to non-existent routes)
-- Dead end warnings (routes with no outbound navigation)
-- Auth/permission redirect flows
-- Loop detection
+1. **Money Twin section in MoneyOverview.tsx** — A visual Sankey-style flow map showing income → bills → budgets → debt → reserves → goals. Not present.
 
-**`src/pages/admin/verification/JVC07FormVerificationCenter.tsx`**
-- Table of all registered forms from surface registry (`surfaceClass: "form"`)
-- Field validation coverage panel
-- Submission outcome history from verification_runs
-- Persistence verification (submit → refresh → data still present)
-- Proof/receipt linkage for applicable forms
+2. **Cashflow Storyline in CashTiming.tsx** — A narrative-driven section describing where money came from, went, what changed, what's coming. Not present.
 
-**`src/pages/admin/verification/JVC08ModalDrawerBoard.tsx`**
-- Grid of all modal/drawer interactions from registry
-- Open/close success tracking
-- Focus trap check panel
-- Escape handling verification
-- Zombie overlay alert detection
+3. **Subscription Leak Radar enhancement in SubscriptionsWaste.tsx** — The page already has waste detection and duplicate detection via `enrichSub()`, but lacks the explicit "Leak Radar" section showing rising costs, forgotten renewals, and downgrade opportunities as a distinct visual panel.
 
-**`src/pages/admin/verification/JVC09KeyboardCommandBoard.tsx`**
-- Shortcut registration table (from command palette + keyboard bindings)
-- Execution success tracking per shortcut
-- Command palette action results
-- Focus order inspector
-- Conflict detection (duplicate shortcuts)
+4. **Bill Shock Prevention in BillsWorkspace.tsx** — No section for detecting unusually large incoming charges, annual renewals colliding, or low-cash timing risks.
 
-**`src/pages/admin/verification/JVC11JourneyReplay.tsx`**
-- Journey selection from registry
-- Step-by-step replay timeline with pass/fail per step
-- Route transition visualization
-- Screenshot/evidence carousel from verification_evidence
-- Semantic assertion panel showing expected vs actual
+## Fix Plan
 
-**`src/pages/admin/verification/JVC13InteractionDriftRadar.tsx`**
-- Compare surface registry entries against actual route/component existence
-- Selector drift detection (registered selector no longer in DOM)
-- Changed redirect targets
-- Lost success feedback
-- Drift severity rail and timeline
-- Resolution workflow panel
+### Fix 1: TransactionIntelligence.tsx — rename function
+- Line 36: rename `DebtCreditOffice` → `TransactionIntelligence`
+- Line 151: rename export `DebtCreditOffice` → `TransactionIntelligence`
 
-### 3. Route Wiring
-**File:** `src/App.tsx`
-- Add 6 new lazy imports and routes under `/admin/verification/*`
+### Fix 2: HouseholdMoneyOffice.tsx — add missing KPIs
+- Add 2 more KPITiles: "Monthly Surplus" and "Budget Health" to fill the 4-column grid
 
-### 4. Data Model Extensions
-**File:** `src/lib/verification/surface-registry.ts`
-- Add entries for forms, modals, keyboard shortcuts, redirects across all major workspaces (Money Office, Admin, AI Engineering, etc.)
+### Fix 3: MoneyOverview.tsx — add Money Twin section
+- Add a "Money Flow" visual section after the KPI strip showing income allocation flow with horizontal bars for: Bills → Subscriptions → Debt → Reserves → Savings → Safe-to-Spend. This is the Money Twin concept rendered as a deterministic flow breakdown rather than a full Sankey (which would require a charting library not in the stack).
+
+### Fix 4: CashTiming.tsx — add Cashflow Storyline
+- Add a narrative card section after the chart that summarizes in plain language: "This month, $X came in from Y sources. $Z went to obligations. Your biggest change was [item]. Coming up: [upcoming large items]."
+
+### Fix 5: SubscriptionsWaste.tsx — add Leak Radar panel
+- Add a "Subscription Leak Radar" card section showing: rising cost subscriptions, renewals in next 30 days, cost trend over 3 months. Uses existing subscription data + enrichment.
+
+### Fix 6: BillsWorkspace.tsx — add Bill Shock Prevention
+- Add a "Bill Shock Alerts" card detecting: bills significantly larger than their average, annual renewals coming up, days where multiple large bills collide, low-cash timing risks.
 
 ### File Summary
 
 | File | Action |
-|---|---|
-| `src/lib/verification/surface-registry.ts` | Enhance types + add form/modal/keyboard/redirect entries |
-| `src/pages/admin/verification/JVC05RedirectIntegrityMap.tsx` | New — redirect flow verification |
-| `src/pages/admin/verification/JVC07FormVerificationCenter.tsx` | New — form behavior verification |
-| `src/pages/admin/verification/JVC08ModalDrawerBoard.tsx` | New — modal/drawer interaction board |
-| `src/pages/admin/verification/JVC09KeyboardCommandBoard.tsx` | New — keyboard/command verification |
-| `src/pages/admin/verification/JVC11JourneyReplay.tsx` | New — journey execution replay |
-| `src/pages/admin/verification/JVC13InteractionDriftRadar.tsx` | New — behavior drift detection |
-| `src/App.tsx` | Add 6 routes |
+|------|--------|
+| `src/pages/money/TransactionIntelligence.tsx` | Rename function + export (2 lines) |
+| `src/pages/money/HouseholdMoneyOffice.tsx` | Add 2 KPITiles (line 48) |
+| `src/pages/money/MoneyOverview.tsx` | Add Money Twin flow visualization section |
+| `src/pages/money/CashTiming.tsx` | Add Cashflow Storyline narrative section |
+| `src/pages/money/SubscriptionsWaste.tsx` | Add Subscription Leak Radar panel |
+| `src/pages/money/BillsWorkspace.tsx` | Add Bill Shock Prevention alerts |
 
-All new pages will use existing hooks (`useVerificationSurfaces`, `useVerificationRuns`, `useCustomerJourneyRuns`), existing primitives (`SitaCard`, `Badge`, `Table`), and existing data from the surface registry and journey registry. No new database tables needed — all pages consume existing verification tables.
+All fixes use existing data hooks, existing primitives (SitaCard, KPITile, SitaSectionHeader), and existing service logic. No new services, contracts, or routes needed.
 
