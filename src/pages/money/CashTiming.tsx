@@ -39,7 +39,7 @@ const CashTiming = () => {
       <SitaPageHeader title="Cash Timing & Safe-to-Spend" subtitle="Understand your money flow, avoid collisions" />
 
       <SitaCard hover={false} className="gradient-sita-subtle p-6">
-        <div className="grid gap-6 sm:grid-cols-3">
+        <div className="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-3">
           <div className="text-center">
             <p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">Safe to Spend</p>
             <p className="mt-2 font-display text-4xl font-bold text-trust-verified">${safeToSpend.toLocaleString()}</p>
