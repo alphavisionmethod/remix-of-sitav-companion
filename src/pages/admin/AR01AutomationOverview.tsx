@@ -10,6 +10,7 @@ import { motion } from "framer-motion";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useKernelQuery } from "@/hooks/use-kernel-query";
+import ARSubNav from "@/components/admin/ARSubNav";
 
 function useScheduledJobs() {
   return useKernelQuery("automation", "scheduled_jobs", {

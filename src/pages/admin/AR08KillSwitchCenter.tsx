@@ -15,7 +15,7 @@ import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_ADMIN_SCOPES as DEMO_SCOPES } from "@/lib/demo-data/admin-platform";
-
+import ARSubNav from "@/components/admin/ARSubNav";
 
 
 export default function AR08KillSwitchCenter() {

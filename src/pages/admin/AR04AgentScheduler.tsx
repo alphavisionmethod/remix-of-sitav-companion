@@ -11,7 +11,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Bot, CheckCircle, XCircle, Clock, AlertTriangle, Zap } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
+import ARSubNav from "@/components/admin/ARSubNav";
 
 
 export default function AR04AgentScheduler() {

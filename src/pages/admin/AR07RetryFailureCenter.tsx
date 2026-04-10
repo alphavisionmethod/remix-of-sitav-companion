@@ -12,6 +12,7 @@ import { AlertTriangle, XCircle, RotateCcw, ArrowUpRight } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { getRelation, parseScheduledJobRef } from "@/lib/types/relation-parsers";
+import ARSubNav from "@/components/admin/ARSubNav";
 
 export default function AR07RetryFailureCenter() {
   const { isDemoMode } = useDataMode();
