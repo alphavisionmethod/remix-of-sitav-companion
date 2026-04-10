@@ -245,3 +245,4 @@ export * from "./debt-credit";
 export * from "./health-score";
 export * from "./envelope-budget";
 export * from "./scenario";
+export * from "./advanced-intelligence";

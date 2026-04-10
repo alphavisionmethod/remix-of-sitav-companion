@@ -31,4 +31,8 @@ export * from "./debt-analyzer.service";
 export * from "./financial-health.service";
 export * from "./scenario-engine.service";
 export * from "./envelope-budget.service";
+export * from "./stress-radar.service";
+export * from "./income-quality.service";
+export * from "./cash-allocator.service";
+export * from "./peace-score.service";
 
