@@ -6622,9 +6622,14 @@ export type Database = {
           id: string
           last_refreshed_at: string | null
           metadata: Json | null
+          mode: string
+          oauth_client_registry_id: string | null
           reauth_required: boolean
+          refresh_failed_at: string | null
           refresh_failure_count: number
+          refresh_failure_reason: string | null
           refresh_token: string | null
+          scope_string: string | null
           scopes: string[] | null
           token_type: string | null
           updated_at: string
@@ -6638,9 +6643,14 @@ export type Database = {
           id?: string
           last_refreshed_at?: string | null
           metadata?: Json | null
+          mode?: string
+          oauth_client_registry_id?: string | null
           reauth_required?: boolean
+          refresh_failed_at?: string | null
           refresh_failure_count?: number
+          refresh_failure_reason?: string | null
           refresh_token?: string | null
+          scope_string?: string | null
           scopes?: string[] | null
           token_type?: string | null
           updated_at?: string
@@ -6654,9 +6664,14 @@ export type Database = {
           id?: string
           last_refreshed_at?: string | null
           metadata?: Json | null
+          mode?: string
+          oauth_client_registry_id?: string | null
           reauth_required?: boolean
+          refresh_failed_at?: string | null
           refresh_failure_count?: number
+          refresh_failure_reason?: string | null
           refresh_token?: string | null
+          scope_string?: string | null
           scopes?: string[] | null
           token_type?: string | null
           updated_at?: string
@@ -6668,6 +6683,13 @@ export type Database = {
             columns: ["account_id"]
             isOneToOne: false
             referencedRelation: "connector_accounts"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "connector_oauth_tokens_oauth_client_registry_id_fkey"
+            columns: ["oauth_client_registry_id"]
+            isOneToOne: false
+            referencedRelation: "oauth_client_registry"
             referencedColumns: ["id"]
           },
         ]
@@ -16605,6 +16627,88 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "oauth_client_registry_provider_family_id_fkey"
+            columns: ["provider_family_id"]
+            isOneToOne: false
+            referencedRelation: "provider_families"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      oauth_state_sessions: {
+        Row: {
+          code_verifier: string | null
+          completed_at: string | null
+          created_at: string
+          error_message: string | null
+          expires_at: string
+          flow_type: string
+          id: string
+          initiated_at: string
+          metadata: Json
+          oauth_client_registry_id: string | null
+          provider_capability_id: string | null
+          provider_family_id: string | null
+          redirect_uri: string | null
+          requested_scopes: Json
+          state_token: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          code_verifier?: string | null
+          completed_at?: string | null
+          created_at?: string
+          error_message?: string | null
+          expires_at?: string
+          flow_type?: string
+          id?: string
+          initiated_at?: string
+          metadata?: Json
+          oauth_client_registry_id?: string | null
+          provider_capability_id?: string | null
+          provider_family_id?: string | null
+          redirect_uri?: string | null
+          requested_scopes?: Json
+          state_token: string
+          status?: string
+          user_id: string
+        }
+        Update: {
+          code_verifier?: string | null
+          completed_at?: string | null
+          created_at?: string
+          error_message?: string | null
+          expires_at?: string
+          flow_type?: string
+          id?: string
+          initiated_at?: string
+          metadata?: Json
+          oauth_client_registry_id?: string | null
+          provider_capability_id?: string | null
+          provider_family_id?: string | null
+          redirect_uri?: string | null
+          requested_scopes?: Json
+          state_token?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "oauth_state_sessions_oauth_client_registry_id_fkey"
+            columns: ["oauth_client_registry_id"]
+            isOneToOne: false
+            referencedRelation: "oauth_client_registry"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "oauth_state_sessions_provider_capability_id_fkey"
+            columns: ["provider_capability_id"]
+            isOneToOne: false
+            referencedRelation: "provider_capabilities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "oauth_state_sessions_provider_family_id_fkey"
             columns: ["provider_family_id"]
             isOneToOne: false
             referencedRelation: "provider_families"
