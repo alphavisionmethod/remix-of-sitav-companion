@@ -13,8 +13,8 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import {
   getBudgetSummary, getPortfolioAllocations, getCostLedger,
   getBudgetPolicies, getBudgetAlerts, getUsageLedgerStats,
+  type UsageLedgerStats,
 } from "@/lib/core-services/ai-gateway";
-import type { UsageLedgerStats } from "@/lib/services/ai-gateway/budget.service";
 import AIGSubNav from "@/components/admin/AIGSubNav";
 import { supabase } from "@/integrations/supabase/client";
 
