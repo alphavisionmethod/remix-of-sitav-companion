@@ -1,45 +1,45 @@
 
 
-# Cron / Scheduler / Automation Reality — Remaining Gaps
+# CI / E2E / Behavioral Truth / Launch Gate — Gap Fix Plan
 
-## What's Already Working (Fully Built)
-- **3 DB tables**: `scheduled_jobs` (24 cols), `job_executions` (19 cols), `automation_kill_switches` (13 cols) — all with RLS
-- **pg_cron**: 4 active cron jobs calling `scheduler-dispatch` (*/3), `agent-scheduler` (*/5), `agent-heartbeat` (*/10), `runtime-probes` (*/15)
-- **scheduler-dispatch edge function** (270 lines): kill switch check, due job finder, edge function dispatcher, execution recorder, next-run calculator, retry/degradation logic
-- **self-healing edge function** (127 lines): stuck workflow recovery, connector freshness, notification checks, incident creation, telemetry
-- **agent-scheduler edge function** (135 lines): due agent detection, scheduled execution, schedule updates
-- **agent-heartbeat edge function** (80 lines): council-based heartbeat telemetry
-- **system-updates edge function** (113 lines): update checks, device registration, update reporting
-- **9 AR admin pages** (AR01–AR09): all with real Supabase queries, ARSubNav, DemoModeBadge
-- **9 command palette entries**: all AR pages discoverable via Cmd+K
-- **Seed data**: 16 canonical jobs covering all 14 job classes with correct schema
+## What Already Exists (Fully Built)
 
-## Critical Gap Found: target_function Format Mismatch
+| Layer | Status | Details |
+|---|---|---|
+| **CI Pipeline** | Complete | `.github/workflows/ci.yml` — 492 lines, 12 jobs: typecheck, lint, unit-tests, integration-tests, security-scan, build, architecture-validation, e2e-p0, docker-build, ring-promotion, launch-gate, bundle-size, pr-summary |
+| **E2E Tests** | Complete | 20+ Playwright spec files covering auth, files, advisors, approvals, boardroom, business, connectors, demo-mode, money, navigation, route-health, settings, interactions, responsive, push notifications |
+| **Runtime Probes** | Complete | `runtime-probes` edge function (312 lines) — 13 probes: db-health, auth-health, storage-health, edge-health, ai-gateway, scheduler-health, rls-health, notification-health, push-tokens, ai-budget, audit-health, realtime-health, self-healing |
+| **Database Tables** | Complete | `ci_runs`, `ci_jobs`, `e2e_journeys`, `e2e_runs`, `e2e_steps`, `runtime_probes`, `runtime_probe_runs`, `launch_gates`, `launch_gate_criteria`, `launch_blockers`, `route_truth_records`, `behavioral_regressions` — all with RLS |
+| **7 LT Admin Pages** | Complete | LT01–LT07 at `/admin/truth/*`, all querying real Supabase tables |
+| **Journey Reporter** | Complete | Custom Playwright reporter (175 lines) outputting structured JSON |
+| **DB Ingestion** | Complete | `scripts/ingest-journey-results.ts` (163 lines) ingesting into DB |
+| **CILaunchGateWidget** | Complete | Reusable component used in LT05 and DRS10 |
+| **Nightly Workflows** | Complete | `customer-journey-nightly.yml` and `playwright-proof-nightly.yml` |
+| **pg_cron Probe** | Complete | `runtime-probes` called every 15 min via pg_cron |
+| **Routes** | Complete | All 7 LT pages routed in App.tsx |
 
-The `scheduler-dispatch` edge function checks `job.target_function.startsWith("edge:")` to dispatch jobs. But the seeder writes bare function names (`"self-healing"`, `"agent-heartbeat"`, `"system-updates"`, `"agent-scheduler"`).
+## Gaps Found (2 Issues)
 
-When `scheduler-dispatch` processes a job, it hits the `else` branch:
-```
-outcome = "failure";
-errorMessage = `Unknown target_function format: ${job.target_function}`;
-```
+### Gap 1: No LTSubNav
+LT01–LT07 pages lack a sub-navigation bar. SAG, AIG, and AR pages all have sub-navs (`SAGSubNav`, `AIGSubNav`, `ARSubNav`). LT pages have none — users can't navigate between them without knowing URLs.
 
-**Every seeded job will fail at dispatch.** This is the single most critical wiring bug.
+**Fix**: Create `src/components/admin/LTSubNav.tsx` (same pattern as ARSubNav) and inject it into all 7 LT pages.
 
-### Fix
-Two options — I recommend fixing the seeder to use the `edge:` prefix since that's what the dispatcher expects:
+### Gap 2: No Command Palette Entries for LT Pages
+The command palette has entries for AR (9 entries), SAG (12 entries), and AIG (9 entries) — but zero entries for LT pages. They are not discoverable via Cmd+K.
 
-1. **Update `scheduledJobRows()` in the seeder** — prefix all target functions with `edge:` (e.g., `"edge:self-healing"`, `"edge:agent-heartbeat"`)
-
-This is a 1-line change per job (16 jobs). The dispatcher already handles `edge:` targets correctly by stripping the prefix and calling the function URL.
+**Fix**: Add 7 entries to `UniversalCommandSurface.tsx` under a "Launch Truth" group.
 
 ## Implementation Steps
 
-1. **Fix seeder target_function values** — change all 16 job targets from bare names to `edge:` prefixed format
-2. **Build verification** — confirm clean TypeScript build
+1. **Create `src/components/admin/LTSubNav.tsx`** — 7 navigation links matching `/admin/truth/*` routes (Behavioral Truth, CI Pipeline, E2E Journeys, Runtime Probes, Launch Gate, Route/Interaction Truth, Regression Radar)
+2. **Inject LTSubNav** into all 7 LT pages (LT01–LT07) — add import + render at top of each page
+3. **Add 7 Command Palette entries** to `UniversalCommandSurface.tsx` for all LT pages
+4. **Build verification** — confirm clean TypeScript build
 
 ### Technical Details
-- Change `"self-healing"` → `"edge:self-healing"`, `"agent-heartbeat"` → `"edge:agent-heartbeat"`, etc. in `scheduledJobRows()`
-- ~16 line edits in one function
-- No new files, tables, or migrations needed
+- LTSubNav: ~50 lines, follows exact ARSubNav pattern
+- 7 page edits: ~3 lines each (import + render)
+- Command palette: ~15 lines for 7 entries
+- No new tables, edge functions, or migrations needed — everything else is already fully implemented
 
