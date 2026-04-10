@@ -90,6 +90,15 @@ const appsNav = [
   { title: "Weather & News", url: "/apps/weather-news", icon: Cloud },
 ];
 
+const aiEngineeringNav = [
+  { title: "AI Board", url: "/admin/ai-engineering", icon: Brain },
+  { title: "AI Team", url: "/admin/ai-team-roster", icon: Users },
+  { title: "Missions", url: "/admin/ai-missions", icon: Target },
+  { title: "Fixes", url: "/admin/ai-fix-center", icon: Bug },
+  { title: "Self-Healing", url: "/admin/ai-self-healing", icon: Sparkles },
+  { title: "Releases", url: "/admin/ai-releases", icon: Rocket },
+];
+
 const bottomNav = [
   { title: "Admin", url: "/admin/dashboard", icon: LayoutDashboard },
   { title: "Users", url: "/admin/users", icon: Users },
