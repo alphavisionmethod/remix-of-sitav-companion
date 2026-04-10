@@ -127,5 +127,21 @@ export function getAdminRoutes() {
     <Route key="a49" path="/admin/strategic/benchmark" element={<BenchmarkLabDashboard />} />,
     <Route key="a50" path="/admin/strategic/value-risk" element={<ValueRiskDashboard />} />,
     <Route key="a51" path="/admin/strategic/operator-taste" element={<OperatorTasteDashboard />} />,
+    // ── CAI: Coordinated Ambient Intelligence ──
+    <Route key="cai01" path="/admin/cai/graph" element={<CAI01PersonalGraphExplorer />} />,
+    <Route key="cai02" path="/admin/cai/intent" element={<CAI02IntentTraceBoard />} />,
+    <Route key="cai03" path="/admin/cai/attention" element={<CAI03AttentionCenter />} />,
+    <Route key="cai04" path="/admin/cai/continuity" element={<CAI04ContinuityCenter />} />,
+    <Route key="cai05" path="/admin/cai/trust-actions" element={<CAI05TrustActionsBoard />} />,
+    <Route key="cai06" path="/admin/cai/chief-of-staff" element={<CAI06ChiefOfStaffCenter />} />,
+    <Route key="cai07" path="/admin/cai/timing" element={<CAI07TimingStudio />} />,
+    <Route key="cai08" path="/admin/cai/relationships" element={<CAI08RelationshipCenter />} />,
+    <Route key="cai09" path="/admin/cai/digest" element={<CAI09DigestConsole />} />,
+    <Route key="cai10" path="/admin/cai/modes" element={<CAI10ModesCenter />} />,
+    <Route key="cai11" path="/admin/cai/interface" element={<CAI11InterfaceProfiler />} />,
+    <Route key="cai12" path="/admin/cai/opportunities" element={<CAI12OpportunityBoard />} />,
+    <Route key="cai13" path="/admin/cai/memory" element={<CAI13MemoryGovernance />} />,
+    <Route key="cai14" path="/admin/cai/boundaries" element={<CAI14BoundaryControl />} />,
+    <Route key="cai15" path="/admin/cai/signature" element={<CAI15SignatureStudio />} />,
   ];
 }
