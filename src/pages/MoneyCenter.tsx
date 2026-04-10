@@ -148,6 +148,7 @@ const MoneyCenter = () => {
             { key: "trust-graph", label: "Trust Graph" },
             { key: "opportunity-cost", label: "Opportunity Cost" },
             { key: "rituals", label: "Rituals" },
+            { key: "boundaries", label: "Boundaries" },
             { key: "household", label: "Household" },
             { key: "scenarios", label: "Scenarios" },
             { key: "investment-office", label: "Investment Office" },
