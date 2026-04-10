@@ -2,6 +2,7 @@ import { Eye, FileText, CheckCircle, Zap, Check, DollarSign, Star, AlertTriangle
 import { Toggle, SectionTitle, ChapterBanner } from "../primitives";
 import type { ScreenProps } from "../types";
 import { useCallback } from "react";
+import SitaInsightCallout from "./SitaInsightCallout";
 
 const levels = [
   { id: "suggest", label: "Suggestions only", desc: "SITA observes and recommends — you decide everything", icon: Eye, trust: 1 },

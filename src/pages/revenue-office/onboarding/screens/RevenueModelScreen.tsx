@@ -4,6 +4,7 @@ import BranchingQuestionsPanel from "./BranchingQuestionsPanel";
 import { getRevenueEngineBranch } from "../branching";
 import type { ScreenProps } from "../types";
 import { useCallback, useMemo } from "react";
+import SitaInsightCallout from "./SitaInsightCallout";
 
 const sources = [
   { id: "appointments", label: "Booked calls / appointments", icon: Phone },

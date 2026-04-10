@@ -4,6 +4,7 @@ import BranchingQuestionsPanel from "./BranchingQuestionsPanel";
 import { getBusinessTypeBranch } from "../branching";
 import type { ScreenProps } from "../types";
 import { useCallback, useMemo } from "react";
+import SitaInsightCallout from "./SitaInsightCallout";
 
 const businessTypes = [
   { id: "service", label: "Service Business", desc: "Appointments, proposals, delivery milestones, reviews", icon: Briefcase },
