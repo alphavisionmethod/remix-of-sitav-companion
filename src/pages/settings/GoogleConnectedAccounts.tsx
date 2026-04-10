@@ -84,12 +84,22 @@ function ConnectorCard({ connector, onUpgrade }: { connector: GoogleConnectorSta
   );
 }
 
+// Next tier lookup for upgrades
+const NEXT_TIER: Record<string, GenericScopeTier> = {
+  minimal: "read_only",
+  read_only: "read_write",
+  read_write: "elevated",
+  elevated: "full",
+};
+
 export default function GoogleConnectedAccounts() {
   const { isDemoMode } = useDataMode();
   const {
     isLoading, identity, connectors, summary,
     launchHonesty, realityMode, loaded,
   } = useGoogleProviderFamily();
+
+  const [upgradeTarget, setUpgradeTarget] = useState<GoogleConnectorState | null>(null);
 
   if (isLoading) {
     return (
