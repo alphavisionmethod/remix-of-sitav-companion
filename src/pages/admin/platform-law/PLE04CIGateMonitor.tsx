@@ -165,14 +165,14 @@ const PLE04CIGateMonitor = () => {
             ) : (
               <div className="space-y-2">
                 {runViolations.map(v => (
-                  <div key={v.validationViolationId} className="p-2 rounded bg-muted/30 text-sm">
+                  <div key={v.violationId} className="p-2 rounded bg-muted/30 text-sm">
                     <div className="flex items-center gap-2 mb-1">
                       <Badge variant={v.severity === "critical" ? "destructive" : "secondary"} className="text-[10px]">{v.severity}</Badge>
                       <span className="font-mono text-xs text-muted-foreground">{v.ruleId}</span>
                       <Badge variant={v.status === "open" ? "destructive" : "default"} className="text-[10px]">{v.status}</Badge>
                     </div>
                     <p className="text-xs">{v.message}</p>
-                    {v.remediationSuggestion && <p className="text-[10px] text-emerald-400 mt-1">Fix: {v.remediationSuggestion}</p>}
+                    {v.remediationGuidance && <p className="text-[10px] text-emerald-400 mt-1">Fix: {v.remediationGuidance}</p>}
                   </div>
                 ))}
               </div>
