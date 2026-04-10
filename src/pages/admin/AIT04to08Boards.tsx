@@ -248,9 +248,11 @@ export function AIT06Recommendations() {
     queryFn: () => getRecommendations(),
   });
 
-  const updateStatus = useAction("admin", "status.update", {
-    invalidateKeys: [["ai-workforce-recommendations"]],
-  });
+  const queryClient = useQueryClient();
+  const updateStatus = async (id: string, status: string) => {
+    await updateRecommendationStatus(id, status);
+    queryClient.invalidateQueries({ queryKey: ["ai-workforce-recommendations"] });
+  };
 
   const filtered = recs.filter((r: Record<string, any>) => {
     if (filterDomain !== "all" && r.domain !== filterDomain) return false;
@@ -365,9 +367,11 @@ export function AIT07ApprovalQueue() {
     queryFn: () => getApprovalQueue(filterStatus === "all" ? undefined : filterStatus),
   });
 
-  const updateApproval = useAction("admin", "approval.update", {
-    invalidateKeys: [["ai-workforce-approval-queue"]],
-  });
+  const qc = useQueryClient();
+  const updateApproval = async (id: string, updates: Record<string, unknown>) => {
+    await updateApprovalQueueItem(id, updates);
+    qc.invalidateQueries({ queryKey: ["ai-workforce-approval-queue"] });
+  };
 
   return (
     <div className="space-y-6 p-6 max-w-[1600px] mx-auto">
