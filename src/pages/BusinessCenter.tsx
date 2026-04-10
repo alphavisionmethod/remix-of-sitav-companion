@@ -20,6 +20,9 @@ import PlaybookBuilder from "./business/PlaybookBuilder";
 import RevenueForecast from "./business/RevenueForecast";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useOSOrchestration } from "@/hooks/useOSOrchestration";
+import { useExperienceSignature } from "@/hooks/useExperienceSignature";
+import { useOpportunitySignals } from "@/hooks/useCAIData";
 
 type SubPage = "overview" | "leads" | "customers" | "opportunities" | "quotes" | "invoices" | "communications" | "boardroom" | "proof" | "revenue-autopilot" | "collections" | "autopilot-hub" | "revenue-impact" | "playbook-builder" | "revenue-forecast";
 
@@ -64,6 +67,9 @@ const BusinessCenter = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const activePage = subpageFromPath(location.pathname);
+  const os = useOSOrchestration();
+  const signature = useExperienceSignature();
+  const { data: caiOpportunities } = useOpportunitySignals({ limit: 15 });
 
   const goTo = (key: string) => {
     if (key === "overview") navigate("/business");

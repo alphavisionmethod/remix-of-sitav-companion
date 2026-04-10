@@ -23,6 +23,7 @@ import ConciergeSettings from "./concierge/ConciergeSettings";
 import HouseholdCommandCenter from "./concierge/HouseholdCommandCenter";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { ConciergeDataProvider } from "@/contexts/ConciergeDataContext";
 
 type SubPage = "overview" | "calendar" | "tasks" | "household" | "school" | "grocery" | "appointments" | "travel" | "providers" | "events" | "workflows" | "proof" | "files" | "boardroom" | "settings";
 
@@ -114,17 +115,19 @@ const ConciergeCenter = () => {
         />
       </motion.div>
 
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={activePage}
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.25 }}
-        >
-          <PageComponent />
-        </motion.div>
-      </AnimatePresence>
+      <ConciergeDataProvider value={{ relationships: caiRelationships, obligations: caiObligations }}>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activePage}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.25 }}
+          >
+            <PageComponent />
+          </motion.div>
+        </AnimatePresence>
+      </ConciergeDataProvider>
     </div>
   );
 };

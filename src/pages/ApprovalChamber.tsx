@@ -6,7 +6,7 @@
 
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { ShieldCheck, Play, X, Eye, Fingerprint, FileText, AlertTriangle, CheckCircle, Clock, ChevronDown, ChevronRight, Loader2 } from "lucide-react";
+import { ShieldCheck, Play, X, Eye, Fingerprint, FileText, AlertTriangle, CheckCircle, Clock, ChevronDown, ChevronRight, Loader2, Shield } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -20,6 +20,7 @@ import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useApprovals } from "@/hooks/use-sita-data";
 import { useApprovalQueue } from "@/hooks/use-brain-core";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useOSOrchestration } from "@/hooks/useOSOrchestration";
 import { toast } from "sonner";
 
 // ── Types (re-use demo-data interface) ────────────────────────
@@ -295,6 +296,7 @@ const ApprovalChamber = () => {
   const { isDemoMode } = useDataMode();
   const { data: dbApprovals = [], isLoading } = useApprovals();
   const { approve, reject } = useApprovalQueue();
+  const os = useOSOrchestration();
   const [tab, setTab] = useState("pending");
 
   // Map DB approvals to ApprovalItem interface, fall back to mocks when empty
@@ -321,11 +323,17 @@ const ApprovalChamber = () => {
   })) : DEMO_APPROVAL_ITEMS;
 
   const handleAction = async (id: string, action: string) => {
+    // Trust-weighted evaluation before execution
+    const trustEval = os.evaluateAction(id, { deviceId: "browser", trustLevel: "verified", surface: "desktop" }, { sessionAge: 0, recentActions: 0, trustScore: 0.8 });
+    if (trustEval.riskTier === "critical" && action === "approve") {
+      toast.warning(`High risk action (${trustEval.trustClass}) — requires elevated approval`);
+    }
+
     if (dbApprovals.length > 0 && !isDemoMode) {
       try {
         if (action === "approve") approve(id);
         else if (action === "reject") reject(id);
-        toast.success(`Approval ${action}ed`);
+        toast.success(`Approval ${action}ed (trust: ${trustEval.trustClass})`);
       } catch (e: any) {
         toast.error(e.message || `Failed to ${action}`);
       }
