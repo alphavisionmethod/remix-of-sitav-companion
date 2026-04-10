@@ -1,70 +1,96 @@
 
 
-# Audit: Ultra-Efficient Intelligence Architecture — Full Check
+# Intelligence Architecture Enhancement Plan
 
-## Status: 95% Clean — 3 Issues Found
+## Audit Results
 
-### What's Fully Verified and Working
+**Fully implemented and verified (no changes needed):**
+- 12 strategic intelligence engines (A–L) in `src/lib/strategic-intelligence/` — all real logic, no stubs
+- 12 admin dashboards in `src/pages/admin/strategic/` — all wired to persistence hooks
+- All 12 routes registered in `AdminRoutes.tsx`
+- 4 dedicated persistence layers: intelligence-asset, quality-floor, operator-taste, compute-governance
+- Generic engine persistence adapter (`engine_state` + `engine_events` tables)
+- Barrel export with all types and functions
 
-**Backend Layers (10/10 + pipeline)**
-All 12 files in `src/lib/intelligence-architecture/` contain real logic, no stubs:
-- Signal Intake (13 sources, 6 routes, novelty scoring)
-- Asset Generation (11 sources, TTL, invalidation triggers)
-- Pattern Extraction (12 types, fingerprint similarity, privacy classification)
-- Differential Reasoning (delta detection, materiality scoring, 4 actions)
-- Domain Packet Compiler (9 domains, freshness, compression ratio)
-- Reuse Decision Engine (4 modes, stakes-aware, differential-integrated)
-- Escalation Engine (weighted scoring, 4 tiers)
-- Efficiency Scoring (10 metrics, weighted composite)
-- Outcome Economics Engine (14 categories, reasoning path analysis, value benchmarks)
-- Cross-Tenant Generalization (privacy gating, anonymization, eligibility checks)
-- Pipeline Orchestrator (wires all layers via `processSignal()`)
+**What's missing — the REST API layer (contracts A–J from spec):**
 
-**Compute Governance (7/7 files)**
-All in `src/lib/compute-governance/`: model routing (4 cost classes), budget policy (envelope system with forecasting), context compression (8 methods), margin protection (11 anomaly types), mission cost tracker, plan entitlements (5 tiers + 9 add-ons + fair use).
+The `admin-intelligence` edge function only has 3 endpoints (`anomalies`, `forecast`, `optimize`). None of the 10 API contract families specified in the prompt exist as server-side endpoints:
 
-**UI Screens (11/11)**
-All registered in `AdminRoutes.tsx` at routes a20–a30.
+| Contract | Endpoint Pattern | Status |
+|----------|-----------------|--------|
+| A. Asset Library | `GET/POST /assets`, `POST /assets/:id/reuse-evaluate` | Missing |
+| B. Differential Reasoning | `POST /differential-reasoning/evaluate` | Missing |
+| C. Intelligence Packets | `POST /packets/compile`, `GET /packets/:id` | Missing |
+| D. Efficiency Scores | `GET /efficiency/scores`, `GET /scores/:id/history` | Missing |
+| E. Outcome Economics | `GET /outcomes/economics`, `GET /high-value-categories` | Missing |
+| F. Escalation | `POST /escalations` | Missing |
+| G. Digests | `GET/POST /digests` | Missing |
+| H. Patterns | `GET/POST /patterns`, `POST /:id/generalize` | Missing |
+| I. Prompt Profiles | `GET/POST /prompt-profiles`, `POST /:id/evaluate` | Missing |
+| J. Overview | `GET /overview` (unified dashboard API) | Missing |
 
-**Wiring**
-- `budget-gate.ts` → `ai-capability-client.ts` → `check-ai-budget` edge function → `check_ai_budget_policies` DB function
-- Barrel exports in `index.ts` for both modules
-- Demo data in `admin-intelligence.ts` (185 lines)
+The dashboards currently work by querying Supabase directly via client-side persistence hooks. The API layer adds programmatic/server-to-server access and enables the intelligence pipeline to be called from edge functions and agents.
 
----
+## Implementation Plan
 
-## 3 Issues to Fix
+### 1. Build `intelligence-api` edge function (~400 lines)
+Single edge function with path-based routing covering all 10 contract families. Each handler:
+- Validates input with Zod
+- Uses service-role Supabase client for DB access
+- Calls the actual engine functions (imported logic patterns applied server-side)
+- Returns the exact response shapes from the spec
 
-### Issue 1: Duplicate Outcome Economics — Two Competing Implementations
+Endpoints implemented:
+- `GET /assets` — list with filters (domain, type, confidence, freshness, verification, page, limit)
+- `GET /assets/:id` — detail with usageStats
+- `POST /assets` — create new asset
+- `POST /assets/:id/reuse-evaluate` — evaluate reuse decision
+- `POST /differential-reasoning/evaluate` — run differential analysis
+- `GET /differential-reasoning/:id` — fetch prior result
+- `POST /packets/compile` — compile domain packet
+- `GET /packets/:id` — fetch packet
+- `GET /efficiency/scores` — list efficiency scores with scope filters
+- `GET /efficiency/scores/:id/history` — trend history
+- `GET /outcomes/economics` — value-per-dollar view
+- `GET /outcomes/high-value-categories` — high vs low value
+- `POST /escalations` — log/trigger escalation
+- `GET /digests` — list digests
+- `POST /digests/generate` — generate digest
+- `GET /patterns` — list patterns
+- `POST /patterns/extract` — extract pattern from sources
+- `POST /patterns/:id/generalize` — move to cross-tenant review
+- `GET /prompt-profiles` — list prompt profiles
+- `POST /prompt-profiles` — create profile
+- `POST /prompt-profiles/:id/evaluate` — evaluate prompt efficiency
+- `GET /overview` — unified operator dashboard snapshot
 
-**`efficiency-scoring.ts`** contains `OutcomeEconomicsReport` + `computeOutcomeEconomics()` + `OutcomeRecord` type.
-**`outcome-economics-engine.ts`** contains `OutcomeEconomicsResult` + `evaluateOutcomeEconomics()` + `OutcomeCategory` type.
+### 2. Wire the existing dashboards to use the API
+Update the 6 dashboards that currently rely on `useEngineEvents` (generic event-based) to optionally call the new API for richer, structured responses:
+- `CostToConfidenceDashboard` → `/efficiency/scores` + `/overview`
+- `ValueRiskDashboard` → enriched from `/overview`
+- `TimeToTruthDashboard` → `/efficiency/scores/:id/history`
+- `BenchmarkLabDashboard` → `/overview`
+- `IntelligenceInsuranceDashboard` → `/escalations` data
+- `ReasoningReplayDashboard` → `/differential-reasoning` data
 
-These are NOT duplicates — they serve different purposes (batch reporting vs single-outcome evaluation). However, the naming overlap is confusing and the `efficiency-scoring.ts` version is an older pattern that should be refactored to delegate to `outcome-economics-engine.ts`.
+The other 6 dashboards (Capital Index, Quality Floor, Decay Monitor, Intelligence Market, Portfolio Allocation, Operator Taste) already use dedicated persistence hooks and are correctly wired.
 
-**Fix**: Refactor `efficiency-scoring.ts` to import and use types/functions from `outcome-economics-engine.ts` for outcome economics, keeping only the efficiency scoring logic in that file. Update barrel export in `index.ts`.
+### 3. Connect pipeline to API persistence
+Ensure `processSignal()` in `intelligence-pipeline.ts` writes results to the persistence layer so dashboards show real pipeline output — append engine events for each pipeline stage completion.
 
-### Issue 2: Duplicate Intelligence Dashboard — `IntelligenceEfficiencyBoard` vs `AIEfficiencyScoreboard`
+### Technical Details
 
-`src/pages/admin/IntelligenceEfficiencyBoard.tsx` (558 lines, route `/admin/intelligence-efficiency`) overlaps heavily with `src/pages/admin/intelligence/AIEfficiencyScoreboard.tsx` (route `/admin/intelligence/efficiency`). Both show efficiency scores, outcome economics, and reuse metrics.
-
-**Fix**: Remove `IntelligenceEfficiencyBoard.tsx` (the older, monolithic page), update its route in `AdminRoutes.tsx` to redirect to `/admin/intelligence/efficiency`, and remove the lazy import. The newer `AIEfficiencyScoreboard` is more focused and properly organized within the intelligence screen family.
-
-### Issue 3: `AnonymizedPattern` in `efficiency-scoring.ts` Duplicates Cross-Tenant Types
-
-`efficiency-scoring.ts` defines `AnonymizedPattern` (lines 169-180) which overlaps with `GeneralizedPattern` in `cross-tenant-generalization.ts`. The barrel export exposes both.
-
-**Fix**: Remove `AnonymizedPattern` from `efficiency-scoring.ts` and update any references to use `GeneralizedPattern` from `cross-tenant-generalization.ts`. Update barrel export.
-
----
-
-## Changes Summary
+**File changes:**
 
 | File | Action |
 |------|--------|
-| `src/lib/intelligence-architecture/efficiency-scoring.ts` | Remove `OutcomeEconomicsReport`, `computeOutcomeEconomics()`, `OutcomeRecord`, and `AnonymizedPattern`. Keep only `EfficiencyScore`, `computeEfficiencyScore()`, and `OutcomeType`. |
-| `src/lib/intelligence-architecture/index.ts` | Update barrel exports — remove duplicate types, ensure clean single-source exports |
-| `src/pages/admin/IntelligenceEfficiencyBoard.tsx` | Delete file (duplicate of newer AIEfficiencyScoreboard) |
-| `src/routes/AdminRoutes.tsx` | Remove `IntelligenceEfficiencyBoard` import, redirect `/admin/intelligence-efficiency` → `/admin/intelligence/efficiency` |
-| Any files importing from the old `IntelligenceEfficiencyBoard` or removed types | Update imports |
+| `supabase/functions/intelligence-api/index.ts` | **New** — ~400 line edge function with all 10 API contract families |
+| `src/lib/hooks/useIntelligenceAPI.ts` | **New** — React hooks that call the edge function for structured data |
+| `src/pages/admin/strategic/CostToConfidenceDashboard.tsx` | Update to use API hook for richer data |
+| `src/pages/admin/strategic/ValueRiskDashboard.tsx` | Update to use API hook |
+| `src/pages/admin/strategic/TimeToTruthDashboard.tsx` | Update to use API hook |
+| `src/pages/admin/strategic/BenchmarkLabDashboard.tsx` | Update to use API hook |
+| `src/pages/admin/strategic/IntelligenceInsuranceDashboard.tsx` | Update to use API hook |
+| `src/pages/admin/strategic/ReasoningReplayDashboard.tsx` | Update to use API hook |
+| `src/lib/intelligence-architecture/intelligence-pipeline.ts` | Add persistence calls after each pipeline stage |
 
