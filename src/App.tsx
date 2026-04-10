@@ -351,6 +351,9 @@ const JVC11JourneyReplay = lazy(() => import("./pages/admin/verification/JVC11Jo
 const JVC13InteractionDriftRadar = lazy(() => import("./pages/admin/verification/JVC13InteractionDriftRadar"));
 const JVC04ButtonCTAHealth = lazy(() => import("./pages/admin/verification/JVC04ButtonCTAHealth"));
 const JVC06PageLoadIntegrity = lazy(() => import("./pages/admin/verification/JVC06PageLoadIntegrity"));
+const JVC01JourneyVerificationOverview = lazy(() => import("./pages/admin/verification/JVC01JourneyVerificationOverview"));
+const JVC10RuntimeProbeCenter = lazy(() => import("./pages/admin/verification/JVC10RuntimeProbeCenter"));
+const JVC14LaunchInteractionGate = lazy(() => import("./pages/admin/verification/JVC14LaunchInteractionGate"));
 
 // CJ — Customer Journey Proof System
 const CJ01ExecutiveReport = lazy(() => import("./pages/admin/customer-journey/CJ01ExecutiveReport"));
@@ -1057,6 +1060,9 @@ const App = () => (
                     <Route path="/admin/verification/drift" element={<JVC13InteractionDriftRadar />} />
                     <Route path="/admin/verification/buttons" element={<JVC04ButtonCTAHealth />} />
                     <Route path="/admin/verification/page-load" element={<JVC06PageLoadIntegrity />} />
+                    <Route path="/admin/verification/overview" element={<JVC01JourneyVerificationOverview />} />
+                    <Route path="/admin/verification/probes" element={<JVC10RuntimeProbeCenter />} />
+                    <Route path="/admin/verification/launch-gate" element={<JVC14LaunchInteractionGate />} />
 
                     {/* CJ — Customer Journey Proof System */}
                     <Route path="/admin/customer-journey/executive" element={<CJ01ExecutiveReport />} />

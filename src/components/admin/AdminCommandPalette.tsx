@@ -46,6 +46,9 @@ const NAV_ITEMS = [
   { label: "ITC: Feature Manifests", path: "/admin/implementation-truth/manifests", icon: Layers, group: "Navigation" },
   { label: "Button & CTA Health", path: "/admin/verification/buttons", icon: Target, group: "Navigation" },
   { label: "Page Load Integrity", path: "/admin/verification/page-load", icon: Globe, group: "Navigation" },
+  { label: "Journey Verification Overview", path: "/admin/verification/overview", icon: Activity, group: "Navigation" },
+  { label: "Runtime Probe Center", path: "/admin/verification/probes", icon: Zap, group: "Navigation" },
+  { label: "Launch Interaction Gate", path: "/admin/verification/launch-gate", icon: Target, group: "Navigation" },
 ];
 
 const ACTION_ITEMS = [
