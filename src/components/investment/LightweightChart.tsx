@@ -90,9 +90,9 @@ export default function LightweightChart({ symbol, basePrice, changePct, classNa
     chartRef.current = chart;
 
     const days = RANGE_DAYS[range];
-    const upColor = "hsl(142, 71%, 45%)";
-    const downColor = "hsl(0, 84%, 60%)";
-    const primaryColor = "hsl(221, 83%, 53%)";
+    const upColor = "#22c55e";
+    const downColor = "#ef4444";
+    const primaryColor = "#3b82f6";
 
     if (chartType === "candlestick") {
       const series = chart.addCandlestickSeries({
@@ -115,8 +115,8 @@ export default function LightweightChart({ symbol, basePrice, changePct, classNa
       seriesRef.current = series;
     } else {
       const series = chart.addAreaSeries({
-        topColor: "hsl(221, 83%, 53%, 0.3)",
-        bottomColor: "hsl(221, 83%, 53%, 0.02)",
+        topColor: "rgba(59, 130, 246, 0.3)",
+        bottomColor: "rgba(59, 130, 246, 0.02)",
         lineColor: primaryColor,
         lineWidth: 2,
       });
