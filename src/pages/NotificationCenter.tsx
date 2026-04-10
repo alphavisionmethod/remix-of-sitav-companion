@@ -13,7 +13,7 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { useAdaptiveInterface } from "@/hooks/useAdaptiveInterface";
 import { useOSOrchestration } from "@/hooks/useOSOrchestration";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import {
@@ -149,9 +149,9 @@ const NotificationCenter = () => {
   const [quietMode, setQuietMode] = useState(false);
 
   // Auto-activate quiet mode when cognitive load is high
-  useMemo(() => {
+  useEffect(() => {
     if (cogLoad > 0.8 && !quietMode) setQuietMode(true);
-  }, [cogLoad]);
+  }, [cogLoad, quietMode]);
 
   // Fetch notifications from queue
   const { data: notifications = [], isLoading } = useQuery({

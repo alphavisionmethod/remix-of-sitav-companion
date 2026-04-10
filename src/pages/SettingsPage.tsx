@@ -511,7 +511,7 @@ const SettingsPage = () => {
           </SitaCard>
         );
 
-
+      case "notifications":
         return (
           <SitaCard hover={false} className="p-5">
             <SitaCardTitle sub="Alert preferences and timing">

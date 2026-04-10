@@ -366,6 +366,24 @@ export function AppSidebar() {
             </button>
           </div>
         )}
+      {!collapsed && cogLoad > 0 && (
+        <div className="px-4 pb-2">
+          <div className="flex items-center justify-between text-[9px] text-muted-foreground mb-1">
+            <span>Cognitive Load</span>
+            <span className={cogLoad > 0.8 ? "text-destructive" : cogLoad > 0.5 ? "text-amber-500" : "text-emerald-500"}>
+              {Math.round(cogLoad * 100)}%
+            </span>
+          </div>
+          <div className="h-1 w-full rounded-full bg-secondary overflow-hidden">
+            <div
+              className={`h-full rounded-full transition-all duration-500 ${
+                cogLoad > 0.8 ? "bg-destructive" : cogLoad > 0.5 ? "bg-amber-500" : "bg-emerald-500"
+              }`}
+              style={{ width: `${Math.round(cogLoad * 100)}%` }}
+            />
+          </div>
+        </div>
+      )}
       </SidebarFooter>
     </Sidebar>
   );
