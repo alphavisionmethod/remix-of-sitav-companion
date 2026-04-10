@@ -282,14 +282,11 @@ export function useFairUseStatus(planTier: PlanTier = "pro") {
   return useQuery<FairUseEvaluation>({
     queryKey: ["fair-use-status", planTier, isDemoMode ? "demo" : "real"],
     queryFn: async (): Promise<FairUseEvaluation> => {
+      const plan = getPlanByTier(planTier);
+      if (!plan) return { healthy: true, pressureLevel: "none", activeAdaptations: [], reason: "No plan found" };
+
       if (isDemoMode) {
-        return evaluateFairUse(planTier, {
-          deepReasoningMinutesUsed: 35,
-          premiumEscalationsUsed: 4,
-          asyncHighComputeJobsUsed: 1,
-          dailyBurstCentsUsed: 80,
-          totalComputeCentsUsed: 8500,
-        });
+        return evaluateFairUse(plan, 35, 400, 2, 45);
       }
 
       const { data: { user } } = await supabase.auth.getUser();
@@ -303,13 +300,7 @@ export function useFairUseStatus(planTier: PlanTier = "pro") {
       const totalCents = Math.round((ledger || []).reduce((s: number, r: any) => s + (r.estimated_cost_usd || 0), 0) * 100);
       const premiumCount = (ledger || []).filter((r: any) => r.task_class === "premium_reasoning" || r.task_class === "deep_analysis").length;
 
-      return evaluateFairUse(planTier, {
-        deepReasoningMinutesUsed: Math.round(premiumCount * 3),
-        premiumEscalationsUsed: premiumCount,
-        asyncHighComputeJobsUsed: 0,
-        dailyBurstCentsUsed: 0,
-        totalComputeCentsUsed: totalCents,
-      });
+      return evaluateFairUse(plan, Math.round(premiumCount * 3), Math.round(totalCents * 0.2), premiumCount, 50);
     },
     staleTime: isDemoMode ? Infinity : 60_000,
   });

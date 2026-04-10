@@ -260,28 +260,28 @@ export default function MyPlanUsage() {
 
       {/* Fair Use Status */}
       {fairUse && (
-        <Card className={`border-border/50 ${fairUse.isWithinFairUse ? "bg-card/80" : "bg-destructive/5 border-destructive/20"}`}>
+        <Card className={`border-border/50 ${fairUse.healthy ? "bg-card/80" : "bg-destructive/5 border-destructive/20"}`}>
           <CardContent className="p-4 flex items-center justify-between">
             <div className="flex items-center gap-3">
-              {fairUse.isWithinFairUse ? (
+              {fairUse.healthy ? (
                 <CheckCircle2 className="h-5 w-5 text-emerald-400" />
               ) : (
                 <AlertTriangle className="h-5 w-5 text-amber-400" />
               )}
               <div>
                 <p className="text-sm font-semibold text-foreground">
-                  {fairUse.isWithinFairUse ? "Within Fair Use" : "Fair Use Actions Recommended"}
+                  {fairUse.healthy ? "Within Fair Use" : "Fair Use Actions Recommended"}
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  {fairUse.actions.length === 0
+                  {fairUse.activeAdaptations.length === 0
                     ? "All usage is within your plan's fair use policy"
-                    : `${fairUse.actions.length} action(s) recommended to optimize usage`}
+                    : `${fairUse.activeAdaptations.length} adaptation(s) active · ${fairUse.reason}`}
                 </p>
               </div>
             </div>
-            {!fairUse.isWithinFairUse && (
+            {!fairUse.healthy && (
               <Badge variant="destructive" className="text-[10px]">
-                {fairUse.actions.length} actions
+                {fairUse.pressureLevel} pressure
               </Badge>
             )}
           </CardContent>
