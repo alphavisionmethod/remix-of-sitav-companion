@@ -1,14 +1,13 @@
 import { useSitaOS } from "@/contexts/SitaOSContext";
 import { useExperienceSignature } from "@/hooks/useExperienceSignature";
 import { AdminPageHeader } from "@/components/sita/admin/AdminPageHeader";
-import { SitaCard, SitaCardHeader, SitaCardTitle, SitaMetric, SitaSectionHeader } from "@/components/sita/SitaCard";
+import { SitaCard, SitaCardHeader, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { Sparkles, Palette, MessageSquare, Eye } from "lucide-react";
 import type { SitaMode } from "@/lib/services/sita-modes/index";
 
 const ALL_MODES: SitaMode[] = [
-  "focus", "travel", "boardroom", "recovery", "execution",
-  "family", "founder", "investor_demo", "quiet", "strategic_planning",
-  "deep_work", "default"
+  "standard", "focus", "executive", "stealth", "family", "travel",
+  "emergency", "recovery", "execution", "founder", "investor_demo", "boardroom"
 ];
 
 export default function CAI15SignatureStudio() {
@@ -40,7 +39,7 @@ export default function CAI15SignatureStudio() {
             surface: "desktop",
             urgentItemCount: 0,
             timeOfDay: new Date().getHours(),
-            cognitiveLoad: 0.3,
+            cognitiveLoad: 30,
           });
           return (
             <SitaCard key={mode} selected={mode === currentMode}>
@@ -61,7 +60,7 @@ export default function CAI15SignatureStudio() {
         })}
       </div>
 
-      <SitaSectionHeader title="Signature Dimensions" subtitle="What the experience signature controls" />
+      <SitaSectionHeader title="Signature Dimensions" />
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {[
           { icon: MessageSquare, label: "Assistant Voice & Tone", desc: "How the AI speaks — warm, concise, formal, or casual" },

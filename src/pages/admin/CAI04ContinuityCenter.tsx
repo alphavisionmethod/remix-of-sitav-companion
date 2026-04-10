@@ -1,9 +1,7 @@
 import { useSitaOS } from "@/contexts/SitaOSContext";
 import { AdminPageHeader } from "@/components/sita/admin/AdminPageHeader";
 import { SitaCard, SitaCardHeader, SitaCardTitle, SitaMetric, SitaSectionHeader } from "@/components/sita/SitaCard";
-import { RefreshCw, Monitor, Smartphone, Watch } from "lucide-react";
-
-const surfaceIcons: Record<string, typeof Monitor> = { desktop: Monitor, mobile: Smartphone, watch: Watch };
+import { RefreshCw } from "lucide-react";
 
 export default function CAI04ContinuityCenter() {
   const { continuityEngine } = useSitaOS();
@@ -28,10 +26,10 @@ export default function CAI04ContinuityCenter() {
         {threads.slice(0, 10).map((t) => (
           <SitaCard key={t.id} lane="opportunity">
             <SitaCardHeader>
-              <SitaCardTitle sub={t.originSurface}>{t.intent}</SitaCardTitle>
-              <span className="text-xs text-muted-foreground">{t.state}</span>
+              <SitaCardTitle sub={t.domain}>{t.topic}</SitaCardTitle>
+              <span className="text-xs text-muted-foreground">{t.priority}</span>
             </SitaCardHeader>
-            <p className="text-xs text-muted-foreground">Priority: {t.priority} · Started: {t.startedAt}</p>
+            <p className="text-xs text-muted-foreground">Surfaces: {t.surfaces.join(", ")} · Last: {t.lastActivity}</p>
           </SitaCard>
         ))}
       </div>

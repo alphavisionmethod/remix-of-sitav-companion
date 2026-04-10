@@ -1,23 +1,23 @@
 import { useSitaOS } from "@/contexts/SitaOSContext";
 import { AdminPageHeader } from "@/components/sita/admin/AdminPageHeader";
 import { SitaCard, SitaCardHeader, SitaCardTitle, SitaMetric, SitaSectionHeader } from "@/components/sita/SitaCard";
-import { Heart, Clock, AlertCircle } from "lucide-react";
+import { Heart, Clock } from "lucide-react";
 
 export default function CAI08RelationshipCenter() {
   const { relationships } = useSitaOS();
 
   const overdue = relationships.getOverdueFollowUps();
-  const stats = relationships.getStats();
+  const network = relationships.getNetwork();
+  const contacts = Object.values(network);
 
   return (
     <div className="space-y-6 p-6">
       <AdminPageHeader icon={Heart} title="Relationship Memory Center" subtitle="Who matters, what's pending, interpersonal context — the human context engine" accent="accent" />
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <SitaCard><SitaMetric label="Total Contacts" value={stats.totalContacts} /></SitaCard>
-        <SitaCard><SitaMetric label="Active Follow-ups" value={stats.activeFollowUps} /></SitaCard>
-        <SitaCard><SitaMetric label="Overdue" value={overdue.length} trend={overdue.length > 0 ? "down" : "flat"} /></SitaCard>
-        <SitaCard><SitaMetric label="Avg Reciprocity" value={`${Math.round(stats.avgReciprocity * 100)}%`} trend={stats.avgReciprocity > 0.5 ? "up" : "flat"} /></SitaCard>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <SitaCard><SitaMetric label="Total Contacts" value={contacts.length} /></SitaCard>
+        <SitaCard><SitaMetric label="Overdue Follow-ups" value={overdue.length} trend={overdue.length > 0 ? "down" : "flat"} /></SitaCard>
+        <SitaCard><SitaMetric label="Tiers" value={new Set(contacts.map(c => c.tier)).size} /></SitaCard>
       </div>
 
       {overdue.length > 0 && (
@@ -37,17 +37,18 @@ export default function CAI08RelationshipCenter() {
         </>
       )}
 
-      <SitaSectionHeader title="Relationship Intelligence" subtitle="How the OS understands human context" />
-      <SitaCard>
-        <div className="grid gap-3 sm:grid-cols-2">
-          {Object.entries(stats.byTier ?? {}).map(([tier, count]) => (
-            <div key={tier} className="flex items-center justify-between rounded-lg bg-secondary/50 px-3 py-2">
-              <span className="text-sm text-foreground">{tier}</span>
-              <span className="text-sm font-medium text-primary">{count as number}</span>
-            </div>
-          ))}
-        </div>
-      </SitaCard>
+      <SitaSectionHeader title="Contact Network" subtitle="All tracked relationships by tier" />
+      <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+        {contacts.length === 0 && <SitaCard><p className="text-sm text-muted-foreground">No contacts tracked yet.</p></SitaCard>}
+        {contacts.slice(0, 12).map((c) => (
+          <SitaCard key={c.id}>
+            <SitaCardHeader>
+              <SitaCardTitle sub={c.relationship}>{c.name}</SitaCardTitle>
+            </SitaCardHeader>
+            <p className="text-xs text-muted-foreground">Tier: {c.tier} · Reciprocity: {Math.round(c.reciprocityScore * 100)}%</p>
+          </SitaCard>
+        ))}
+      </div>
     </div>
   );
 }

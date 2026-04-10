@@ -1,7 +1,7 @@
 import { useSitaOS } from "@/contexts/SitaOSContext";
 import { AdminPageHeader } from "@/components/sita/admin/AdminPageHeader";
 import { SitaCard, SitaCardHeader, SitaCardTitle, SitaMetric, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
-import { FileText, Sparkles, List } from "lucide-react";
+import { FileText, Sparkles } from "lucide-react";
 import { useState } from "react";
 import type { Digest, DigestType } from "@/lib/services/digest-engine/digest-engine";
 
@@ -51,15 +51,13 @@ export default function CAI09DigestConsole() {
             {preview.sections.map((section, i) => (
               <SitaCard key={i}>
                 <SitaCardHeader>
-                  <SitaCardTitle sub={section.source}>{section.title}</SitaCardTitle>
+                  <SitaCardTitle sub={section.domain}>{section.title}</SitaCardTitle>
                 </SitaCardHeader>
-                <p className="text-sm text-foreground">{section.content}</p>
+                <p className="text-sm text-foreground">{section.summary}</p>
                 {section.items.length > 0 && (
                   <ul className="mt-2 space-y-1">
-                    {section.items.slice(0, 5).map((item, j) => (
-                      <li key={j} className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                        <List className="h-3 w-3" /> {item}
-                      </li>
+                    {section.items.slice(0, 5).map((item) => (
+                      <li key={item.id} className="text-xs text-muted-foreground">• {item.title}: {item.description}</li>
                     ))}
                   </ul>
                 )}
@@ -77,22 +75,6 @@ export default function CAI09DigestConsole() {
           </SitaCard>
         ))}
       </div>
-
-      {history.length > 0 && (
-        <>
-          <SitaSectionHeader title="Recent History" subtitle="Previously generated digests" />
-          <div className="space-y-2">
-            {history.slice(0, 6).map((d) => (
-              <SitaCard key={d.id}>
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-foreground">{d.type.replace(/_/g, " ")}</span>
-                  <span className="text-xs text-muted-foreground">{d.generatedAt}</span>
-                </div>
-              </SitaCard>
-            ))}
-          </div>
-        </>
-      )}
     </div>
   );
 }

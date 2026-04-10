@@ -62,7 +62,7 @@ export default function CAI01PersonalGraphExplorer() {
                   <AlertTriangle className="h-3.5 w-3.5 text-urgency-medium" />
                   <span className="text-sm text-foreground">{item.label}</span>
                 </div>
-                <p className="mt-1 text-xs text-muted-foreground">{item.domain} · ignored {item.ignoreCount ?? 0} times</p>
+                <p className="mt-1 text-xs text-muted-foreground">{item.domain} · touched {item.touchCount} times</p>
               </SitaCard>
             ))}
           </div>

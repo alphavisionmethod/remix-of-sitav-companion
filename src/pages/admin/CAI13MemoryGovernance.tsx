@@ -35,8 +35,6 @@ export default function CAI13MemoryGovernance() {
         <div className="grid gap-3 sm:grid-cols-2">
           <div className="rounded-lg bg-secondary/50 px-3 py-2 text-sm"><span className="text-muted-foreground">Avg Freshness:</span> <span className="font-medium text-foreground">{Math.round(stats.avgFreshness * 100)}%</span></div>
           <div className="rounded-lg bg-secondary/50 px-3 py-2 text-sm"><span className="text-muted-foreground">Forget Requests:</span> <span className="font-medium text-foreground">{stats.forgetRequests}</span></div>
-          <div className="rounded-lg bg-secondary/50 px-3 py-2 text-sm"><span className="text-muted-foreground">Contradictions:</span> <span className="font-medium text-foreground">{stats.contradictions}</span></div>
-          <div className="rounded-lg bg-secondary/50 px-3 py-2 text-sm"><span className="text-muted-foreground">Corrections:</span> <span className="font-medium text-foreground">{stats.corrections}</span></div>
         </div>
       </SitaCard>
 
@@ -48,7 +46,7 @@ export default function CAI13MemoryGovernance() {
               <SitaCard key={c.id}>
                 <div className="flex items-center gap-2">
                   <RefreshCw className="h-3.5 w-3.5 text-primary" />
-                  <span className="text-sm text-foreground">{c.field}: {c.oldValue} → {c.newValue}</span>
+                  <span className="text-sm text-foreground">Memory {c.memoryId}</span>
                 </div>
                 <p className="mt-1 text-xs text-muted-foreground">{c.reason} · by {c.correctedBy}</p>
               </SitaCard>
@@ -59,7 +57,7 @@ export default function CAI13MemoryGovernance() {
 
       {auditLog.length > 0 && (
         <>
-          <SitaSectionHeader title="Audit Trail" subtitle="All memory governance actions" />
+          <SitaSectionHeader title="Audit Trail" />
           <div className="space-y-2">
             {auditLog.slice(0, 10).map((a) => (
               <SitaCard key={a.id}>

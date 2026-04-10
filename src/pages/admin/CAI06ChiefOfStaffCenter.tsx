@@ -21,7 +21,7 @@ export default function CAI06ChiefOfStaffCenter() {
 
   return (
     <div className="space-y-6 p-6">
-      <AdminPageHeader icon={Crown} title="Chief-of-Staff Control Center" subtitle="Your coordinated support team — personas, interventions, proactive triggers, and role orchestration" accent="accent" />
+      <AdminPageHeader icon={Crown} title="Chief-of-Staff Control Center" subtitle="Your coordinated support team — personas, interventions, and role orchestration" accent="accent" />
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <SitaCard><SitaMetric label="Active Personas" value={DEFAULT_PERSONAS.length} /></SitaCard>
@@ -31,37 +31,41 @@ export default function CAI06ChiefOfStaffCenter() {
 
       <SitaSectionHeader title="Support Team Personas" subtitle="Coordinated roles acting as one integrated staff" />
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {DEFAULT_PERSONAS.map((p) => {
-          const persona = chiefOfStaff.getPersona(p.id as any);
-          return (
-            <SitaCard key={p.id}>
-              <SitaCardHeader>
-                <SitaCardTitle sub={p.scope}>{p.name}</SitaCardTitle>
-                <Users className="h-4 w-4 text-muted-foreground" />
-              </SitaCardHeader>
-              <span className="text-xs font-medium text-trust-safe">Active</span>
-            </SitaCard>
-          );
-        })}
+        {DEFAULT_PERSONAS.map((p) => (
+          <SitaCard key={p.id}>
+            <SitaCardHeader>
+              <SitaCardTitle sub={p.scope}>{p.name}</SitaCardTitle>
+              <Users className="h-4 w-4 text-muted-foreground" />
+            </SitaCardHeader>
+            <span className="text-xs font-medium text-trust-safe">Active</span>
+          </SitaCard>
+        ))}
       </div>
 
       <SitaSectionHeader title="Active Interventions" subtitle="Proactive help from your support team" />
       <div className="space-y-2">
         {interventions.length === 0 && <SitaCard><p className="text-sm text-muted-foreground">No active interventions. Your team is standing by.</p></SitaCard>}
         {interventions.map((int) => (
-          <SitaCard key={int.id} lane="action" glow={int.priority === "high"}>
+          <SitaCard key={int.id} lane="action" glow={int.urgency === "critical"}>
             <SitaCardHeader>
-              <SitaCardTitle sub={int.role}>{int.message}</SitaCardTitle>
+              <SitaCardTitle sub={int.role}>{int.title}</SitaCardTitle>
               <SitaButton variant="ghost" size="sm" onClick={() => chiefOfStaff.acknowledgeIntervention(int.id)}>
                 <CheckCircle className="h-3.5 w-3.5" /> Acknowledge
               </SitaButton>
             </SitaCardHeader>
-            {int.recommendation && <p className="text-xs text-muted-foreground">{int.recommendation}</p>}
+            <p className="text-xs text-muted-foreground">{int.message}</p>
+            {int.suggestedActions.length > 0 && (
+              <div className="mt-1.5 flex flex-wrap gap-1">
+                {int.suggestedActions.map((a, j) => (
+                  <span key={j} className="rounded bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-primary">{a.label}</span>
+                ))}
+              </div>
+            )}
           </SitaCard>
         ))}
       </div>
 
-      <SitaSectionHeader title="Interventions by Role" subtitle="Distribution across support roles" />
+      <SitaSectionHeader title="Interventions by Role" />
       <div className="grid gap-2 sm:grid-cols-3">
         {Object.entries(stats.byRole).map(([role, count]) => (
           <SitaCard key={role}>
