@@ -14,9 +14,11 @@ interface EmptyStateCTAProps {
     icon?: LucideIcon;
   }>;
   tip?: string;
+  /** When provided, shows mode-aware messaging */
+  mode?: "demo" | "live";
 }
 
-export const EmptyStateCTA = ({ icon: Icon, title, description, actions, tip }: EmptyStateCTAProps) => {
+export const EmptyStateCTA = ({ icon: Icon, title, description, actions, tip, mode }: EmptyStateCTAProps) => {
   const navigate = useNavigate();
 
   return (
@@ -63,6 +65,19 @@ export const EmptyStateCTA = ({ icon: Icon, title, description, actions, tip }: 
           );
         })}
       </div>
+
+      {mode && (
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="mt-4 text-[11px] text-muted-foreground/70 bg-secondary/40 rounded-lg px-3 py-1.5"
+        >
+          {mode === "live"
+            ? "This surface activates when real data flows in."
+            : "You're viewing demo mode. Connect real data sources to see live results."}
+        </motion.p>
+      )}
 
       {tip && (
         <motion.p
