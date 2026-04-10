@@ -368,6 +368,13 @@ const PLT06FeatureCompliance = lazy(() => import("./pages/admin/platform-law/PLT
 const PLT08LaunchEnforcement = lazy(() => import("./pages/admin/platform-law/PLT08LaunchEnforcement"));
 const PLT10DriftRadar = lazy(() => import("./pages/admin/platform-law/PLT10DriftRadar"));
 
+// RA — Reality Audit & Classification System (upgraded versions)
+const RAClassificationMatrix = lazy(() => import("./pages/admin/reality-audit/RealityClassificationMatrix"));
+const RAMockReplacement = lazy(() => import("./pages/admin/reality-audit/MockReplacementProgram"));
+const RACoreServicePersistence = lazy(() => import("./pages/admin/reality-audit/CoreServicePersistence"));
+const RARuntimeTruthGate = lazy(() => import("./pages/admin/reality-audit/RuntimeTruthGate"));
+const RALaunchHonesty = lazy(() => import("./pages/admin/reality-audit/LaunchHonestyBoard"));
+
 // CJ — Customer Journey Proof System
 const CJ01ExecutiveReport = lazy(() => import("./pages/admin/customer-journey/CJ01ExecutiveReport"));
 const CJ02JourneyTruthMatrix = lazy(() => import("./pages/admin/customer-journey/CJ02JourneyTruthMatrix"));
@@ -1089,6 +1096,13 @@ const App = () => (
                      <Route path="/admin/platform-law/feature-compliance" element={<PLT06FeatureCompliance />} />
                      <Route path="/admin/platform-law/launch-enforcement" element={<PLT08LaunchEnforcement />} />
                      <Route path="/admin/platform-law/drift-radar" element={<PLT10DriftRadar />} />
+
+                     {/* RA — Reality Audit & Classification */}
+                     <Route path="/admin/reality-audit" element={<RAClassificationMatrix />} />
+                     <Route path="/admin/reality-audit/mock-replacement" element={<RAMockReplacement />} />
+                     <Route path="/admin/reality-audit/core-persistence" element={<RACoreServicePersistence />} />
+                     <Route path="/admin/reality-audit/runtime-truth" element={<RARuntimeTruthGate />} />
+                     <Route path="/admin/reality-audit/launch-honesty" element={<RALaunchHonesty />} />
 
                      {/* CJ — Customer Journey Proof System */}
                     <Route path="/admin/customer-journey/executive" element={<CJ01ExecutiveReport />} />
