@@ -25,7 +25,8 @@ const RCP07RouteHeatmap = () => {
   const heatmap = useMemo(() => getRouteHeatmapData(), []);
 
   return (
-    <div className="space-y-6 p-4 sm:p-6"> <RCPSubNav />
+    <div className="space-y-6 p-4 sm:p-6">
+      <RCPSubNav />
       <div className="flex items-center gap-3">
         <div className="p-2 rounded-lg bg-primary/10"><Map className="h-6 w-6 text-primary" /></div>
         <div>
