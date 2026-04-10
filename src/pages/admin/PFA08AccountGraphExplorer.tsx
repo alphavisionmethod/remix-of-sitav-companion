@@ -6,10 +6,9 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Network, User, Link2, CheckCircle, XCircle, Shield, ScrollText } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
+import PFASubNav from "@/components/admin/PFASubNav";
 
 import {
-import PFASubNav from "@/components/admin/PFASubNav";
   getAccountNodes,
   getAccountEdges,
   getUserIdentityLinks,

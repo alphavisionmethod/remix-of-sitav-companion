@@ -18,7 +18,7 @@ import {
   Zap, Bell, Workflow, Clock, AlertTriangle,
   MessageSquare, Hash, BookOpen, Layout, Globe,
   ShieldCheck, Lock, Send, Play, Pause, ExternalLink,
-  Loader2, Info, ArrowUpRight, Server, Route, Layers, Cpu,
+  Loader2, Info, ArrowUpRight, Server, Route, Layers, Cpu, Rocket,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
