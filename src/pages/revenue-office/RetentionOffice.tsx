@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Heart, AlertTriangle, TrendingDown, RefreshCw, Gift, Users, ArrowRight, BarChart3, Target, ThumbsUp, ThumbsDown, Minus } from "lucide-react";
+import { Heart, AlertTriangle, TrendingDown, RefreshCw, Gift, Users, ArrowRight, BarChart3, Target, ThumbsUp, ThumbsDown, Minus, Zap } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";

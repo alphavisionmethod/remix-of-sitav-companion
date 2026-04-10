@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Calendar, Clock, User, Video, MapPin, Plus, Check, X, AlertTriangle, TrendingUp, ArrowRight, CheckSquare, Phone } from "lucide-react";
+import { Calendar, Clock, User, Video, MapPin, Plus, Check, X, AlertTriangle, TrendingUp, ArrowRight, CheckSquare, Phone, Zap } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
