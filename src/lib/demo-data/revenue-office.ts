@@ -1477,3 +1477,108 @@ export const DEMO_DOMAIN_HEALTH = [
   { domain: "Offers/Upsells", icon: Package, healthScore: 45, successRate: 43, failures: 1, revenueImpact: "$5,600", automationCount: 1, triggersThisWeek: 14, status: "warning", trend: "declining" as const, topIssue: "Upsell after delivery has low conversion — needs timing/messaging redesign" },
   { domain: "Revenue Leak Repair", icon: AlertTriangle, healthScore: 35, successRate: 60, failures: 6, revenueImpact: "$14,000", automationCount: 1, triggersThisWeek: 15, status: "error", trend: "declining" as const, topIssue: "Lead assignment engine failing — 6 unassigned leads" },
 ];
+
+// ═══════════════════════════════════════════════════════════════
+// Automation Quality Scoring
+// ═══════════════════════════════════════════════════════════════
+
+export const DEMO_AUTOMATION_QUALITY_SCORES = [
+  { automation: "Stale Lead Recovery (48hr)", score: 94, dataCompleteness: 98, templateQuality: 92, consentReadiness: 100, edgeCoverage: 88, failureHistory: 96, advisorConfidence: 91, businessImpact: 95, safetyLevel: "Safe to automate" as const, trustLevel: "L3" },
+  { automation: "Welcome Onboarding Journey", score: 97, dataCompleteness: 100, templateQuality: 96, consentReadiness: 100, edgeCoverage: 95, failureHistory: 99, advisorConfidence: 96, businessImpact: 92, safetyLevel: "Safe to automate" as const, trustLevel: "L3" },
+  { automation: "Post-Service Review Request", score: 91, dataCompleteness: 95, templateQuality: 89, consentReadiness: 100, edgeCoverage: 82, failureHistory: 94, advisorConfidence: 88, businessImpact: 90, safetyLevel: "Safe to automate" as const, trustLevel: "L3" },
+  { automation: "No-Show Rescue + Rebook", score: 85, dataCompleteness: 90, templateQuality: 84, consentReadiness: 96, edgeCoverage: 78, failureHistory: 88, advisorConfidence: 82, businessImpact: 87, safetyLevel: "Review recommended" as const, trustLevel: "L2" },
+  { automation: "Churn Prevention Check-In", score: 62, dataCompleteness: 70, templateQuality: 68, consentReadiness: 90, edgeCoverage: 45, failureHistory: 50, advisorConfidence: 65, businessImpact: 80, safetyLevel: "Review recommended" as const, trustLevel: "L2" },
+  { automation: "Upsell After Delivery", score: 48, dataCompleteness: 60, templateQuality: 55, consentReadiness: 85, edgeCoverage: 30, failureHistory: 43, advisorConfidence: 52, businessImpact: 72, safetyLevel: "Needs redesign" as const, trustLevel: "L1" },
+  { automation: "VIP Client Retention Offer", score: 38, dataCompleteness: 45, templateQuality: 40, consentReadiness: 80, edgeCoverage: 20, failureHistory: 35, advisorConfidence: 40, businessImpact: 95, safetyLevel: "Human only" as const, trustLevel: "L1" },
+];
+
+// ═══════════════════════════════════════════════════════════════
+// Automation Shadow Board
+// ═══════════════════════════════════════════════════════════════
+
+export const DEMO_SHADOW_BOARD = [
+  { automation: "Stale Lead Recovery", period: "Last 7 days", autoWouldHaveDone: "Sent 12 recovery emails, created 8 callback tasks", humanActuallyDid: "Sent 10 recovery emails, made 6 direct calls", divergence: "Auto missed 2 leads, human skipped tasks for 2 low-value leads", betterOutcome: "human" as const, promotionRecommendation: "Keep at L3 — human override rate low (17%)" },
+  { automation: "Post-Call Follow-Up", period: "Last 7 days", autoWouldHaveDone: "Sent 15 follow-up emails within 2hrs, created 5 quote drafts", humanActuallyDid: "Sent 8 follow-ups (avg 18hr delay), created 2 quote drafts", betterOutcome: "automation" as const, divergence: "Automation would have been 9x faster, 87% more consistent", promotionRecommendation: "Promote to L3 — clear efficiency gain, low risk" },
+  { automation: "Quote Follow-Up Reminder", period: "Last 7 days", autoWouldHaveDone: "Sent 6 reminders at day 3/5/7, escalated 2 expired quotes", humanActuallyDid: "Sent 3 reminders (missed 3), no escalation on expired", betterOutcome: "automation" as const, divergence: "Automation caught 3 quotes human missed, $4,200 potential loss prevented", promotionRecommendation: "Promote to L3 — high ROI, human is dropping balls" },
+  { automation: "Churn Prevention Outreach", period: "Last 7 days", autoWouldHaveDone: "Sent 4 check-in messages, flagged 2 save-offer candidates", humanActuallyDid: "Called 3 at-risk clients personally, offered custom retention deal", betterOutcome: "human" as const, divergence: "Human saved $8,400 with personal touch — auto message too generic", promotionRecommendation: "Keep at L1 — human outperforms on high-value retention" },
+  { automation: "Review Request After Service", period: "Last 7 days", autoWouldHaveDone: "Sent 18 review requests at optimal timing (48hrs post-service)", humanActuallyDid: "Sent 11 review requests (avg 5 days delayed)", betterOutcome: "automation" as const, divergence: "Automation timing 3x better, predicted 40% more reviews collected", promotionRecommendation: "Already at L3 — maintain, review sentiment routing needs work" },
+];
+
+// ═══════════════════════════════════════════════════════════════
+// Commercial Constitution Rules
+// ═══════════════════════════════════════════════════════════════
+
+export const DEMO_COMMERCIAL_CONSTITUTION = [
+  { id: "cc-001", rule: "Never send more than 3 follow-ups per contact in any 7-day period", category: "Contact Frequency" as const, severity: "hard" as const, enforced: true, violations7d: 0, lastViolation: null },
+  { id: "cc-002", rule: "Never auto-quote without pricing review for amounts above $5,000", category: "Financial Controls" as const, severity: "hard" as const, enforced: true, violations7d: 0, lastViolation: null },
+  { id: "cc-003", rule: "Never move VIP leads (>$10K LTV) between pipeline stages automatically", category: "VIP Protection" as const, severity: "hard" as const, enforced: true, violations7d: 0, lastViolation: null },
+  { id: "cc-004", rule: "Always require human review for campaign copy before first send to any new segment", category: "Content Governance" as const, severity: "hard" as const, enforced: true, violations7d: 1, lastViolation: "Apr 7 — Reactivation campaign sent to new segment without review" },
+  { id: "cc-005", rule: "Never automate messaging to dissatisfied clients (NPS ≤ 6) without human review", category: "Sentiment Protection" as const, severity: "hard" as const, enforced: true, violations7d: 0, lastViolation: null },
+  { id: "cc-006", rule: "Require human review for churn rescue actions on top-tier clients (LTV > $15K)", category: "VIP Protection" as const, severity: "hard" as const, enforced: true, violations7d: 0, lastViolation: null },
+  { id: "cc-007", rule: "Never send automated calls or voicemail drops without explicit consent verification", category: "Compliance" as const, severity: "hard" as const, enforced: true, violations7d: 0, lastViolation: null },
+  { id: "cc-008", rule: "Pause all automations for a contact if they respond with negative sentiment", category: "Sentiment Protection" as const, severity: "hard" as const, enforced: true, violations7d: 2, lastViolation: "Apr 8 — Auto-paused for James Park (negative email reply)" },
+  { id: "cc-009", rule: "Maximum 1 upsell attempt per client per 30-day period", category: "Contact Frequency" as const, severity: "soft" as const, enforced: true, violations7d: 0, lastViolation: null },
+  { id: "cc-010", rule: "All automated quotes must include standard terms and expiry date", category: "Financial Controls" as const, severity: "hard" as const, enforced: true, violations7d: 0, lastViolation: null },
+];
+
+// ═══════════════════════════════════════════════════════════════
+// No-Guess Mode Settings
+// ═══════════════════════════════════════════════════════════════
+
+export const DEMO_NO_GUESS_RULES = [
+  { id: "ng-001", rule: "Never infer missing client contact details (phone, email)", enabled: true, category: "Data Integrity", blockedActions7d: 3 },
+  { id: "ng-002", rule: "Never send messages unless all personalization fields are verified", enabled: true, category: "Message Safety", blockedActions7d: 5 },
+  { id: "ng-003", rule: "Never generate a quote without confirmed pricing inputs from pricing rules", enabled: true, category: "Financial Safety", blockedActions7d: 1 },
+  { id: "ng-004", rule: "Never change lifecycle stage without supporting evidence (activity, response, booking)", enabled: true, category: "Pipeline Safety", blockedActions7d: 2 },
+  { id: "ng-005", rule: "Never auto-contact without verified consent/opt-in state", enabled: true, category: "Compliance", blockedActions7d: 0 },
+  { id: "ng-006", rule: "Never auto-assign owner without verifying team member availability", enabled: false, category: "Operations", blockedActions7d: 0 },
+  { id: "ng-007", rule: "Never create booking without verifying slot availability and service match", enabled: true, category: "Booking Safety", blockedActions7d: 1 },
+  { id: "ng-008", rule: "Never send review request unless service delivery is confirmed", enabled: true, category: "Reputation", blockedActions7d: 0 },
+];
+
+// ═══════════════════════════════════════════════════════════════
+// Promise Tracker
+// ═══════════════════════════════════════════════════════════════
+
+export const DEMO_PROMISES = [
+  { id: "p-001", contact: "Sarah Chen", company: "Chen Design Co", promise: "Follow-up email with portfolio options", promisedAt: "Apr 8, 2:30pm", deadline: "Apr 9, 5pm", status: "overdue" as const, daysOverdue: 1, automation: "Post-call follow-up", channel: "Email" },
+  { id: "p-002", contact: "Marcus Webb", company: "Webb Studios", promise: "Revised quote with 15% volume discount", promisedAt: "Apr 7, 11am", deadline: "Apr 9, 12pm", status: "due_today" as const, daysOverdue: 0, automation: "Quote generation", channel: "Email + PDF" },
+  { id: "p-003", contact: "Jennifer Liu", company: "Liu Marketing", promise: "Onboarding kickoff meeting scheduling", promisedAt: "Apr 6", deadline: "Apr 10", status: "on_track" as const, daysOverdue: 0, automation: "Onboarding journey", channel: "Booking link" },
+  { id: "p-004", contact: "Robert Kim", company: "KimTech Solutions", promise: "Callback to discuss enterprise pricing", promisedAt: "Apr 8, 4pm", deadline: "Apr 9, 10am", status: "overdue" as const, daysOverdue: 1, automation: null, channel: "Phone" },
+  { id: "p-005", contact: "Diana Costa", company: "Costa Wellness", promise: "Send case study and testimonial pack", promisedAt: "Apr 7", deadline: "Apr 11", status: "on_track" as const, daysOverdue: 0, automation: "Nurture sequence", channel: "Email" },
+  { id: "p-006", contact: "Thomas Baker", company: "Baker Legal", promise: "Follow-up after service delivery — satisfaction check", promisedAt: "Apr 5", deadline: "Apr 8", status: "completed" as const, daysOverdue: 0, automation: "Post-service follow-up", channel: "Email" },
+  { id: "p-007", contact: "Anna Petrova", company: "Petrova Design", promise: "Review request after completed project", promisedAt: "Apr 6", deadline: "Apr 9", status: "completed" as const, daysOverdue: 0, automation: "Review request flow", channel: "SMS" },
+];
+
+// ═══════════════════════════════════════════════════════════════
+// Human Handoff Detection Signals
+// ═══════════════════════════════════════════════════════════════
+
+export const DEMO_HANDOFF_SIGNALS = [
+  { contact: "James Park", company: "Park Industries", signal: "Negative sentiment detected in email reply", severity: "critical" as const, confidence: 92, detectedAt: "2hrs ago", currentAutomation: "Stale Lead Recovery", recommendedAction: "Route to account manager immediately", reason: "Client expressed frustration — automation tone mismatch" },
+  { contact: "Lisa Chang", company: "Chang Consulting", signal: "High-value opportunity (>$25K) identified", severity: "high" as const, confidence: 88, detectedAt: "4hrs ago", currentAutomation: "Quote Follow-Up", recommendedAction: "Personal call from senior sales", reason: "Enterprise deal — needs relationship selling, not automation" },
+  { contact: "David Osei", company: "Osei Group", signal: "Complex multi-service request beyond templates", severity: "high" as const, confidence: 85, detectedAt: "6hrs ago", currentAutomation: "Quote Generation", recommendedAction: "Route to solutions architect", reason: "Custom package request cannot be auto-quoted accurately" },
+  { contact: "Maria Santos", company: "Santos Media", signal: "Compliance sensitivity — GDPR data request", severity: "critical" as const, confidence: 95, detectedAt: "1hr ago", currentAutomation: "Nurture Sequence", recommendedAction: "Pause all automations, route to compliance", reason: "Data subject request requires human handling" },
+  { contact: "Alex Müller", company: "Müller & Co", signal: "Ambiguous intent — unclear if buying or comparing", severity: "medium" as const, confidence: 72, detectedAt: "Yesterday", currentAutomation: "Lead Recovery", recommendedAction: "Qualify via personal outreach first", reason: "Lead scoring inconclusive — automation may misfire" },
+];
+
+// ═══════════════════════════════════════════════════════════════
+// Pause/Rollback/Containment Center
+// ═══════════════════════════════════════════════════════════════
+
+export const DEMO_PAUSE_ROLLBACK = [
+  { automation: "Summer Reactivation Campaign", status: "paused" as const, pausedAt: "Apr 8, 3pm", pausedBy: "Admin", reason: "Open rate below 10% — testing new subject lines", affectedContacts: 340, pendingActions: 12, canResume: true, canRollback: false },
+  { automation: "Upsell After Delivery Q2", status: "quarantined" as const, pausedAt: "Apr 7, 11am", pausedBy: "System (auto-pause)", reason: "Failure rate exceeded 20% threshold — circuit breaker activated", affectedContacts: 45, pendingActions: 8, canResume: false, canRollback: true },
+  { automation: "Lead Assignment Engine v2", status: "rollback_available" as const, pausedAt: "Apr 8, 9am", pausedBy: "AI Advisor", reason: "6 leads unassigned — assignment logic failing on new team structure", affectedContacts: 6, pendingActions: 6, canResume: false, canRollback: true },
+  { automation: "Booking Reminder (24hr)", status: "segment_disabled" as const, pausedAt: "Apr 6", pausedBy: "Admin", reason: "Disabled for VIP segment — they prefer personal calls", affectedContacts: 12, pendingActions: 0, canResume: true, canRollback: false },
+];
+
+// ═══════════════════════════════════════════════════════════════
+// "Why This Was Sent" Transparency Records
+// ═══════════════════════════════════════════════════════════════
+
+export const DEMO_WHY_SENT = [
+  { id: "ws-001", action: "Recovery email sent to Sarah Chen", automation: "Stale Lead Recovery", triggeredBy: "lead.stale_48h event", basedOnFacts: ["Lead inactive 52hrs", "Last activity: viewed pricing page", "Warmth score: 68%", "No scheduled next step"], underWorkflow: "Stale Lead Recovery (48hr Advanced)", advisorRecommendation: "CRM Advisor: High recovery probability (78%)", templateVersion: "recovery-warm-v3", policyApplied: "L3 — Auto-run under rules", sentAt: "Apr 8, 10:22am" },
+  { id: "ws-002", action: "Review request SMS sent to Thomas Baker", automation: "Post-Service Review", triggeredBy: "service.delivered event", basedOnFacts: ["Service completed Apr 5", "CSAT score: 9/10", "Previous review: none", "Optimal timing: 48hr post-service"], underWorkflow: "Post-Service Review Request v2", advisorRecommendation: "Reputation Advisor: Promoter profile (92% likely to review)", templateVersion: "review-ask-sms-v2", policyApplied: "L3 — Auto-run under rules", sentAt: "Apr 7, 2:15pm" },
+  { id: "ws-003", action: "Quote draft prepared for Marcus Webb", automation: "Quote Generation", triggeredBy: "call.outcome_interested event", basedOnFacts: ["Call completed Apr 7", "Interest: Premium package", "Budget mentioned: $4,500", "Pricing rule: standard margin"], underWorkflow: "Post-Call Quote Generation", advisorRecommendation: "Offer Advisor: Suggest volume discount (3+ services)", templateVersion: "proposal-standard-v4", policyApplied: "L2 — Draft for review", sentAt: "Apr 7, 11:45am" },
+];

@@ -7,12 +7,12 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
   Receipt, CheckCircle, Users, Mail, Phone, FileText, Clock, Undo2,
   AlertTriangle, Shield, Eye, DollarSign, MessageSquare, Star, UserPlus,
-  Heart, Target, RefreshCw, Brain, ArrowRight, BarChart3, Filter
+  Heart, Target, RefreshCw, Brain, ArrowRight, BarChart3, Filter, Info
 } from "lucide-react";
 import { useState } from "react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-import { DEMO_receipts } from "@/lib/demo-data/revenue-office";
+import { DEMO_receipts, DEMO_WHY_SENT } from "@/lib/demo-data/revenue-office";
 
 const categoryIcons: Record<string, typeof Mail> = {
   "Lead Recovery": Users, Sales: FileText, Booking: Phone, Reputation: Star,
@@ -30,6 +30,7 @@ export default function AutomationReceipts() {
   const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("all");
   const [timeFilter, setTimeFilter] = useState("48h");
+  const [viewMode, setViewMode] = useState<"receipts" | "why">("receipts");
   const categories = ["all", ...Array.from(new Set(DEMO_receipts.map(r => r.category)))];
   const filtered = tab === "all" ? DEMO_receipts : DEMO_receipts.filter(r => r.category === tab);
 
@@ -71,56 +72,127 @@ export default function AutomationReceipts() {
         </CardContent>
       </Card>
 
-      {/* Category Tabs */}
-      <div className="flex flex-wrap gap-1.5">
-        {categories.map(cat => (
-          <button key={cat} onClick={() => setTab(cat)} className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors capitalize ${tab === cat ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground hover:bg-primary/10"}`}>{cat}</button>
-        ))}
+      {/* View Mode Toggle */}
+      <div className="flex items-center gap-2">
+        <Button variant={viewMode === "receipts" ? "default" : "outline"} size="sm" className="text-xs" onClick={() => setViewMode("receipts")}>
+          <Receipt className="h-3.5 w-3.5 mr-1" />Receipts
+        </Button>
+        <Button variant={viewMode === "why" ? "default" : "outline"} size="sm" className="text-xs" onClick={() => setViewMode("why")}>
+          <Info className="h-3.5 w-3.5 mr-1" />Why This Was Sent
+        </Button>
       </div>
 
-      <div className="space-y-3">
-        {filtered.map((r, i) => {
-          const CatIcon = categoryIcons[r.category] || Mail;
-          return (
-            <Card key={i} className="bg-card/50 border-border/50 hover:border-primary/20 transition-colors">
-              <CardContent className="p-4">
-                <div className="flex items-start justify-between mb-2">
-                  <div className="flex items-start gap-3">
-                    <div className="p-2 rounded-lg bg-primary/10"><CatIcon className="h-4 w-4 text-primary" /></div>
-                    <div>
-                      <div className="flex items-center gap-2 mb-0.5">
-                        <p className="text-sm font-medium text-foreground">{r.automation}</p>
-                        <Badge variant="secondary" className="text-[10px]">{r.category}</Badge>
+      {viewMode === "receipts" ? (
+        <>
+          {/* Category Tabs */}
+          <div className="flex flex-wrap gap-1.5">
+            {categories.map(cat => (
+              <button key={cat} onClick={() => setTab(cat)} className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors capitalize ${tab === cat ? "bg-primary text-primary-foreground" : "bg-secondary text-secondary-foreground hover:bg-primary/10"}`}>{cat}</button>
+            ))}
+          </div>
+
+          <div className="space-y-3">
+            {filtered.map((r, i) => {
+              const CatIcon = categoryIcons[r.category] || Mail;
+              return (
+                <Card key={i} className="bg-card/50 border-border/50 hover:border-primary/20 transition-colors">
+                  <CardContent className="p-4">
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex items-start gap-3">
+                        <div className="p-2 rounded-lg bg-primary/10"><CatIcon className="h-4 w-4 text-primary" /></div>
+                        <div>
+                          <div className="flex items-center gap-2 mb-0.5">
+                            <p className="text-sm font-medium text-foreground">{r.automation}</p>
+                            <Badge variant="secondary" className="text-[10px]">{r.category}</Badge>
+                          </div>
+                          <p className="text-xs text-foreground">{r.action}</p>
+                        </div>
                       </div>
-                      <p className="text-xs text-foreground">{r.action}</p>
+                      <div className="flex items-center gap-2 flex-shrink-0">
+                        <span className="text-[10px] text-muted-foreground">{r.time}</span>
+                        {r.rollback && (
+                          <Button variant="outline" size="sm" className="text-[10px] h-6 gap-1"><Undo2 className="h-3 w-3" />Rollback</Button>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-2 flex-shrink-0">
-                    <span className="text-[10px] text-muted-foreground">{r.time}</span>
-                    {r.rollback && (
-                      <Button variant="outline" size="sm" className="text-[10px] h-6 gap-1"><Undo2 className="h-3 w-3" />Rollback</Button>
-                    )}
-                  </div>
+
+                    <div className="grid md:grid-cols-2 gap-2 mt-2 pt-2 border-t border-border/20">
+                      <div className="space-y-1 text-[10px]">
+                        <p className="text-muted-foreground">Contacts: <span className="text-foreground font-medium">{r.contacts}</span></p>
+                        <p className="text-muted-foreground">Approved by: <span className={`font-medium ${r.approvedBy.includes("Awaiting") ? "text-amber-400" : "text-foreground"}`}>{r.approvedBy}</span></p>
+                        <p className="text-muted-foreground">Impact: <span className="text-emerald-400 font-medium">{r.impact}</span></p>
+                      </div>
+                      <div className="space-y-1 text-[10px]">
+                        <p className="text-muted-foreground">Outcome: <span className="text-foreground">{r.outcome}</span></p>
+                        {r.details.aiGenerated && <p className="text-purple-400">✦ AI-generated content</p>}
+                        {r.details.requiresApproval && <p className="text-amber-400">⏳ Requires your approval</p>}
+                        {r.details.decisionTheaterUsed && <p className="text-blue-400">🎭 Decision Theater reviewed</p>}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
+          </div>
+        </>
+      ) : (
+        /* WHY THIS WAS SENT — TRANSPARENCY VIEW */
+        <div className="space-y-4">
+          <Card className="bg-card/50 border-primary/20 border">
+            <CardContent className="p-4 flex items-start gap-3">
+              <Info className="h-5 w-5 text-primary mt-0.5" />
+              <div>
+                <p className="text-sm font-semibold text-foreground mb-1">"Why This Was Sent" Transparency</p>
+                <p className="text-xs text-muted-foreground">Every automated message, quote, task, or action includes a full explanation: what triggered it, which facts it used, which workflow and template, which advisor recommendation, and which policy applied.</p>
+              </div>
+            </CardContent>
+          </Card>
+
+          {DEMO_WHY_SENT.map((w) => (
+            <Card key={w.id} className="bg-card/50 border-border/50 hover:border-primary/20 transition-colors">
+              <CardContent className="p-4">
+                <div className="flex items-center justify-between mb-3">
+                  <p className="text-sm font-semibold text-foreground">{w.action}</p>
+                  <span className="text-[10px] text-muted-foreground">{w.sentAt}</span>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-2 mt-2 pt-2 border-t border-border/20">
-                  <div className="space-y-1 text-[10px]">
-                    <p className="text-muted-foreground">Contacts: <span className="text-foreground font-medium">{r.contacts}</span></p>
-                    <p className="text-muted-foreground">Approved by: <span className={`font-medium ${r.approvedBy.includes("Awaiting") ? "text-amber-400" : "text-foreground"}`}>{r.approvedBy}</span></p>
-                    <p className="text-muted-foreground">Impact: <span className="text-emerald-400 font-medium">{r.impact}</span></p>
+                <div className="grid md:grid-cols-2 gap-3">
+                  <div className="space-y-2">
+                    <div className="p-2 rounded bg-background/50 border border-border/20">
+                      <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide mb-1">Triggered by</p>
+                      <p className="text-xs text-foreground">{w.triggeredBy}</p>
+                    </div>
+                    <div className="p-2 rounded bg-background/50 border border-border/20">
+                      <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide mb-1">Based on verified facts</p>
+                      <ul className="space-y-0.5">
+                        {w.basedOnFacts.map((f, i) => (
+                          <li key={i} className="text-xs text-foreground flex items-start gap-1">
+                            <CheckCircle className="h-3 w-3 text-emerald-400 mt-0.5 flex-shrink-0" />{f}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
-                  <div className="space-y-1 text-[10px]">
-                    <p className="text-muted-foreground">Outcome: <span className="text-foreground">{r.outcome}</span></p>
-                    {r.details.aiGenerated && <p className="text-purple-400">✦ AI-generated content</p>}
-                    {r.details.requiresApproval && <p className="text-amber-400">⏳ Requires your approval</p>}
-                    {r.details.decisionTheaterUsed && <p className="text-blue-400">🎭 Decision Theater reviewed</p>}
+                  <div className="space-y-2">
+                    <div className="p-2 rounded bg-background/50 border border-border/20">
+                      <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide mb-1">Under workflow</p>
+                      <p className="text-xs text-foreground">{w.underWorkflow}</p>
+                    </div>
+                    <div className="p-2 rounded bg-primary/5 border border-primary/10">
+                      <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide mb-1">Advisor recommendation</p>
+                      <p className="text-xs text-foreground flex items-start gap-1"><Brain className="h-3 w-3 text-primary mt-0.5 flex-shrink-0" />{w.advisorRecommendation}</p>
+                    </div>
+                    <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
+                      <Badge variant="outline" className="text-[8px]">{w.templateVersion}</Badge>
+                      <Badge variant="outline" className="text-[8px]">{w.policyApplied}</Badge>
+                    </div>
                   </div>
                 </div>
               </CardContent>
             </Card>
-          );
-        })}
-      </div>
+          ))}
+        </div>
+      )}
     </motion.div>
   );
 }
