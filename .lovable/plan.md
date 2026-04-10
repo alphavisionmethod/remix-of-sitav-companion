@@ -1,75 +1,112 @@
 
 
-# Implementation Plan: Parts 3–7 Completion
+# SITA OS — App Store + Install System Enhancement Plan
 
-## Gaps Found
+## Current State (Already Implemented)
 
-### Part 3 — Branching Rules (4 gaps)
+The app platform is **extensively built** with 16 pages, 851 lines of reusable components, 35+ app catalog entries, 5 bundles, and 17 routes. All UI surfaces from the spec exist:
 
-**Gap 1: Quick path missing S14 + S26**
-`operating-context` (S14) and `first-connections` (S26) are gated by `setupStyleCondition(["guided", "advanced"])`, so the express/quick path skips them. Spec says quick path includes both.
+| Surface | Page | Status |
+|---------|------|--------|
+| App Store | `AppStorePage` | Done |
+| App Library | `AppLibraryPage` | Done |
+| App Detail | `AppDetailPage` | Done |
+| Install Sheet | `InstallSheet` component | Done |
+| Default Apps | `AppAssociationsPage` | Done |
+| Permissions Center | `AppPermissionsCenterPage` | Done |
+| Updates Center | `AppUpdatesPage` | Done |
+| Install from Web | `WebAppInstallPage` | Done |
+| External Installer | `ExternalInstallerPage` | Done |
+| Bundles | `BundleDetailPage` | Done |
+| Enterprise Catalog | `EnterpriseCatalogPage` | Done |
+| Dev Tools | `DevToolsCatalogPage` | Done |
+| Receipts | `AppReceiptsPage` | Done |
+| Open With | `OpenWithPage` | Done |
+| Compare | `AppComparePage` | Done |
+| First Launch | `FirstLaunchPage` | Done |
+| App Management | `AppManagePage` | Done |
 
-Fix: Change both to use OR-group: show when style is guided/advanced OR always on express (make them `required: true`, OR add `setupStyleCondition(["express", "guided", "advanced"])` which is effectively "always").
+Component library covers: `VerificationBadge`, `AppSourceLabel`, `WorksWithSitaBadge`, `AppIcon`, `AppCard`, `FeaturedAppCard`, `AppLane`, `BundleCard`, `CategoryStrip`, `InstallSheet`, `PermissionDomainCard`, `StoreHero`, `AppReceiptCard`, `SourceOriginLabel`, `PackageTypeLabel`, `TrustInstallBehavior`, `InstallScopeSelector`, `SandboxRecommendationCard`, `SandboxLevelBadge`, `DockPinPrompt`, `DefaultAppPrompt`, `WorkspaceAttachPrompt`, `RuntimeClassCard`, `SourceVerificationCard`, `UpdateSourceInfo`, `EnterpriseAppBadge`, `CapabilityPackCard`, `FileAssociationPrompt`.
 
-**Gap 2: Domain filtering inside DeepWorldModelingStep**
-The component shows ALL 6 domain chapters to everyone. On quick path, spec says "one most relevant domain screen." The component doesn't receive setupStyle or domain-relevance data to filter chapters.
+Types cover: `AppClass` (6 types), `AppTrustLevel` (6 levels), `AppInstallStatus` (8 states), `AppCategory` (14), `AppSourceOrigin` (8), `AppInstallScope` (4), `AppSandboxLevel` (5), `AppPackageType` (6), `AppUpdateMode` (5), plus `AppPermission`, `FileAssociation`, `ProtocolAssociation`, `AppLifecycleReceipt`, `AppDefinition`, `AppBundle`.
 
-Fix: Pass `setupStyle` and `enabledDomains`/`focusAreas` to `DeepWorldModelingStep`. When express, auto-expand only the most relevant chapter and collapse others with "Skip" affordance. When guided, show relevant domains. When advanced, show all.
+## What Needs Enhancement (5 Gaps)
 
-**Gap 3: Communications auto-includes when work is active**
-The `domain:communications` evaluator checks for comms-specific keywords but does NOT check if the work domain is active (spec: "Communications path if replies/follow-up/messages selected **or work path active**").
+### Gap 1: No Sidebar Entry for App Store
+The App Store has no sidebar link. `bottomNav` has "Pack Store" at `/store`, but nothing at `/app-store`. Users can only reach it via direct URL.
 
-Fix: Update `domain:communications` evaluator to also return true when `domain:work` evaluator passes.
+**Fix:** Add "App Store" to the `appsNav` group in `AppSidebar.tsx` with `Package` icon pointing to `/app-store`.
 
-**Gap 4: Tone context not passed to step components**
-`toneContext` is computed in `OSSetupExperience` and shows a calm-mode banner, but no step component receives it. Copy density, tone class, and first-win recommendation filtering based on overwhelm status are not implemented.
+### Gap 2: No Reactive Install State (All Actions Are No-Ops)
+Every install, uninstall, permission toggle, and dock pin is visual-only. `APP_CATALOG` is a frozen const array. The `InstallSheet.onInstall` callback does nothing in `AppStorePage`. Bundle install is disabled.
 
-Fix: Pass `toneContext` to step components that should adapt (QuickIdentityStep, StressSlippageStep, FirstWinSetupStep, EnvironmentSummaryStep). Add `toneClass` prop to these components and conditionally render shorter descriptions when `copyDensity === "light"`.
+**Fix:** Create a React context `AppPlatformContext` with a Zustand-like state manager that wraps the static catalog and tracks user-specific install state. This context will:
+- Track installed apps, permissions granted, dock pins, defaults
+- Provide `installApp()`, `uninstallApp()`, `togglePermission()`, `pinToDock()`, `setDefaultApp()` actions
+- Generate receipts on every lifecycle action
+- Persist to Supabase `installed_apps` table when user is authenticated
+- Fall back to localStorage for demo mode
 
-### Part 5 — Trust Initialization (1 gap)
+### Gap 3: No Database Tables for App Platform
+No `installed_apps` or `app_permissions` tables exist. `AppReceiptsPage` queries `proof_records` but there's no structured app lifecycle persistence.
 
-**Gap 5: Missing trust-derived data persistence**
-`finishSetup` saves `trust_calibration` but does NOT derive and persist:
-- `approval_pathways` (which domains need approval at which trust level)
-- `proof_expectations` (what proof is generated/required)
-- `automation_boundaries` (what SITA can do autonomously)
+**Fix:** Create migration with:
+- `installed_apps` — user's installed apps with status, scope, sandbox level, install source, permissions granted, dock pinned, installed_at
+- `app_default_associations` — user's default app choices per role (browser, email, etc.)
+- RLS policies for both tables
 
-Fix: Add a `computeTrustDerivedSettings()` function that derives these three objects from `trustCalibration` data and persist them as additional `user_memory` entries.
+### Gap 4: Bundle Install Flow Not Wired
+`BundleDetailPage` has selection UI but the "Install Selected" button doesn't trigger any install flow. Also has a stale `selectedApps` initialization bug (comment says "Can't set state during render").
 
-### Part 4 — Component Audit
+**Fix:** Wire the button to call `installApp()` for each selected app sequentially with a progress overlay. Fix the initialization with `useEffect`.
 
-Most "missing" component names from the spec are conceptual — they're embedded as sections within larger step components. This is acceptable architecture. No new standalone components needed.
+### Gap 5: Profile-Aware Recommendations Missing
+`getRecommendedApps()` exists but isn't used on the store home page. The store doesn't pull the user's onboarding profile to personalize "Recommended for you."
 
----
+**Fix:** Use `user_memory` data (from onboarding) to drive a "Recommended for Your Environment" lane on the store home page.
 
-## Files to Modify
+## Implementation Plan
 
-1. **`src/lib/engines/setup-phase-definitions.ts`**
-   - Change `operating-context` to use `setupStyleCondition(["express", "guided", "advanced"])` (always included)
-   - Change `first-connections` to use `setupStyleCondition(["express", "guided", "advanced"])`
+### 1. Database Migration
+Create `installed_apps` and `app_default_associations` tables with RLS.
 
-2. **`src/lib/engines/setup-orchestration-engine.ts`**
-   - Add `style:express,guided,advanced` evaluator (already registered — verify)
-   - Update `domain:communications` evaluator to also trigger when work domain is active
+### 2. `AppPlatformProvider` Context (`src/contexts/AppPlatformContext.tsx`)
+- Wraps `APP_CATALOG` with reactive user state
+- Methods: `installApp`, `uninstallApp`, `togglePermission`, `pinToDock`, `unpinFromDock`, `setDefaultApp`, `getInstallState`
+- Generates `AppLifecycleReceipt` on every action
+- Persists to Supabase when authenticated, localStorage for demo
+- Queries `installed_apps` on mount
 
-3. **`src/components/sita/onboarding/DeepWorldModelingStep.tsx`**
-   - Accept `setupStyle` and `relevantDomains` props
-   - Filter visible chapters: express → most relevant only, guided → relevant, advanced → all
-   - Add reduced copy mode for overwhelmed users
+### 3. Wire All Pages to Context
+- `AppStorePage`: Use context for install state display
+- `InstallSheet`: Call `context.installApp()` on install
+- `AppLibraryPage`: Filter by actual installed state
+- `AppManagePage`: Wire all toggles (pin, notifications, startup, permissions, uninstall)
+- `AppPermissionsCenterPage`: Wire permission toggles
+- `AppAssociationsPage`: Wire default app changes
+- `BundleDetailPage`: Fix selection init, wire batch install
+- `AppUpdatesPage`: Use context for update state
 
-4. **`src/components/sita/OSSetupExperience.tsx`**
-   - Pass `setupStyle` and computed `relevantDomains` to `DeepWorldModelingStep`
-   - Pass `toneContext` to `QuickIdentityStep`, `StressSlippageStep`, `FirstWinSetupStep`, `EnvironmentSummaryStep`
-   - Add `computeTrustDerivedSettings()` to `finishSetup` and persist 3 new user_memory entries
+### 4. Add Sidebar Entry
+Add `/app-store` to `appsNav` in `AppSidebar.tsx`.
 
-5. **`src/components/sita/onboarding/FirstWinSetupStep.tsx`**
-   - Accept optional `toneClass` prop
-   - When calm mode, prioritize restorative first-win recommendations
+### 5. Profile-Aware Store Recommendations
+Add "Recommended for Your Environment" lane using `user_memory` data.
 
-6. **`src/components/sita/onboarding/EnvironmentSummaryStep.tsx`**
-   - Accept optional `copyDensity` prop
-   - When light, show compact summary variant
+## Files Modified
+- `src/components/sita/AppSidebar.tsx` — add App Store nav entry
+- `src/contexts/AppPlatformContext.tsx` — new file, reactive state manager
+- `src/components/sita/app-platform/AppStoreComponents.tsx` — wire InstallSheet to context
+- `src/pages/app-platform/AppStorePage.tsx` — use context, add recommendations lane
+- `src/pages/app-platform/AppLibraryPage.tsx` — use context for real install state
+- `src/pages/app-platform/AppManagePage.tsx` — wire all management actions
+- `src/pages/app-platform/AppPermissionsCenterPage.tsx` — wire permission toggles
+- `src/pages/app-platform/AppAssociationsPage.tsx` — wire default app changes
+- `src/pages/app-platform/BundleDetailPage.tsx` — fix init bug, wire batch install
+- `src/pages/app-platform/AppUpdatesPage.tsx` — use context
+- `src/App.tsx` — wrap with AppPlatformProvider
+- New migration: `installed_apps` + `app_default_associations` tables
 
-## No Database Changes Needed
-All new data persists via existing `user_memory` table with new keys.
+## No New Pages Needed
+All 15+ surfaces already exist. This plan only enhances the existing implementation with real state management and backend persistence.
 
