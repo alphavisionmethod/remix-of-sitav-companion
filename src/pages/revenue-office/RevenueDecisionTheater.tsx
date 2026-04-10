@@ -64,7 +64,7 @@ export default function DecisionTheater() {
                     <CardTitle className="flex items-center gap-2"><Theater className="h-5 w-5 text-purple-400" />{d.title}</CardTitle>
                     <div className="flex items-center gap-2">
                       <Badge variant="secondary">{d.type}</Badge>
-                      <Badge variant="outline" className={stateColor(state)}>{state}</Badge>
+                      <Badge variant="outline" className={getStateColor(state)}>{state}</Badge>
                     </div>
                   </div>
                 </CardHeader>
@@ -198,7 +198,7 @@ export default function DecisionTheater() {
                           <td className="p-3 font-medium">{d.title}</td>
                           <td className="p-3 text-center"><Badge variant="outline" className="text-[10px]">{d.type}</Badge></td>
                           <td className="p-3 text-center">{d.advisors.length} reviewed</td>
-                          <td className="p-3 text-center"><Badge variant={state === "executed" ? "default" : "outline"} className={`text-[10px] ${stateColor(state)}`}>{state}</Badge></td>
+                          <td className="p-3 text-center"><Badge variant={state === "executed" ? "default" : "outline"} className={`text-[10px] ${getStateColor(state)}`}>{state}</Badge></td>
                           <td className="p-3 text-center">
                             {state === "executed" ? (
                               <span className="text-[hsl(var(--trust-safe))] flex items-center justify-center gap-1"><FileText className="w-3 h-3" />Receipt</span>
