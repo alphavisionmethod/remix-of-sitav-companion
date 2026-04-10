@@ -118,36 +118,43 @@ export default function GrowthAdvisorBoard() {
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
-        <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
-          <Sparkles className="w-6 h-6 text-primary" /> Growth Advisor Board
-        </h1>
-        <p className="text-sm text-muted-foreground">9-advisor council with debate engine, alignment mapping, interactive queries, and structured intelligence</p>
+      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
+            <Sparkles className="w-6 h-6 text-primary" /> Growth Advisor Board
+          </h1>
+          <p className="text-sm text-muted-foreground">{isBeginner ? "Your team of AI advisors helping grow your business" : "9-advisor council with debate engine, alignment mapping, interactive queries, and structured intelligence"}</p>
+        </div>
+        <RevenueOfficeModeToggle />
       </motion.div>
 
       {/* Board Stats */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className={`grid ${isBeginner ? "grid-cols-2" : "grid-cols-2 lg:grid-cols-4"} gap-4`}>
         <Card className="bg-card/50 border-border/50"><CardContent className="p-4 text-center">
-          <p className="text-2xl font-bold text-foreground">{advisors.length}</p><p className="text-xs text-muted-foreground">Active Advisors</p>
+          <p className="text-2xl font-bold text-foreground">{advisors.length}</p><p className="text-xs text-muted-foreground">{isBeginner ? "Advisors" : "Active Advisors"}</p>
         </CardContent></Card>
         <Card className="bg-card/50 border-border/50"><CardContent className="p-4 text-center">
-          <p className="text-2xl font-bold text-primary">{boardConfidence}%</p><p className="text-xs text-muted-foreground">Board Confidence</p>
+          <p className="text-2xl font-bold text-primary">{boardConfidence}%</p><p className="text-xs text-muted-foreground">{isBeginner ? "Agreement Level" : "Board Confidence"}</p>
         </CardContent></Card>
-        <Card className="bg-card/50 border-border/50"><CardContent className="p-4 text-center">
-          <p className="text-2xl font-bold text-amber-400">{debateCount}</p><p className="text-xs text-muted-foreground">Active Debates</p>
-        </CardContent></Card>
-        <Card className="bg-card/50 border-border/50"><CardContent className="p-4 text-center">
-          <p className="text-2xl font-bold text-red-400">{alertCount}</p><p className="text-xs text-muted-foreground">Alerts</p>
-        </CardContent></Card>
+        {!isBeginner && (
+          <>
+            <Card className="bg-card/50 border-border/50"><CardContent className="p-4 text-center">
+              <p className="text-2xl font-bold text-amber-400">{debateCount}</p><p className="text-xs text-muted-foreground">Active Debates</p>
+            </CardContent></Card>
+            <Card className="bg-card/50 border-border/50"><CardContent className="p-4 text-center">
+              <p className="text-2xl font-bold text-red-400">{alertCount}</p><p className="text-xs text-muted-foreground">Alerts</p>
+            </CardContent></Card>
+          </>
+        )}
       </div>
 
       <Tabs value={tab} onValueChange={setTab}>
         <TabsList className="bg-muted/30 border border-border/40 h-8 p-0.5 gap-0.5">
-          <TabsTrigger value="council" className="text-[10px] h-7 px-2.5 gap-1"><Users className="h-3 w-3" />Council</TabsTrigger>
-          <TabsTrigger value="debates" className="text-[10px] h-7 px-2.5 gap-1"><GitCompare className="h-3 w-3" />Debates</TabsTrigger>
-          <TabsTrigger value="alignment" className="text-[10px] h-7 px-2.5 gap-1"><Target className="h-3 w-3" />Alignment</TabsTrigger>
-          <TabsTrigger value="changes" className="text-[10px] h-7 px-2.5 gap-1"><Clock className="h-3 w-3" />What Changed</TabsTrigger>
-          <TabsTrigger value="synthesis" className="text-[10px] h-7 px-2.5 gap-1"><Sparkles className="h-3 w-3" />Synthesis</TabsTrigger>
+          <TabsTrigger value="council" className="text-[10px] h-7 px-2.5 gap-1"><Users className="h-3 w-3" />{isBeginner ? "Advisors" : "Council"}</TabsTrigger>
+          {!isBeginner && <TabsTrigger value="debates" className="text-[10px] h-7 px-2.5 gap-1"><GitCompare className="h-3 w-3" />Debates</TabsTrigger>}
+          {!isBeginner && <TabsTrigger value="alignment" className="text-[10px] h-7 px-2.5 gap-1"><Target className="h-3 w-3" />Alignment</TabsTrigger>}
+          {!isBeginner && <TabsTrigger value="changes" className="text-[10px] h-7 px-2.5 gap-1"><Clock className="h-3 w-3" />What Changed</TabsTrigger>}
+          <TabsTrigger value="synthesis" className="text-[10px] h-7 px-2.5 gap-1"><Sparkles className="h-3 w-3" />{isBeginner ? "Summary" : "Synthesis"}</TabsTrigger>
         </TabsList>
 
         <div className="mt-4">
