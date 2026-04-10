@@ -1,18 +1,15 @@
-import { useState } from "react";
 import {
   Brain, RefreshCw, Library, DollarSign, TrendingUp, TrendingDown,
   Activity, Shield, AlertTriangle, Layers, Sparkles, Target,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
-import { DEMO_ASSET_CLASSES, DEMO_CONFIDENCE_TREND, DEMO_DOMAIN_REUSE, DEMO_INVALIDATION_FEED, DEMO_REUSE_DATA } from "@/lib/demo-data/admin-intelligence";
+import { useReuseOverview } from "@/hooks/use-intelligence-screen-data";
 
 const HeroCard = ({ icon: Icon, label, value, sub, color }: { icon: typeof Brain; label: string; value: string; sub: string; color?: string }) => (
   <Card className="bg-card/80 border-border/50">
@@ -26,12 +23,14 @@ const HeroCard = ({ icon: Icon, label, value, sub, color }: { icon: typeof Brain
 );
 
 const IntelligenceReuseOverview = () => {
-  const { isAdmin, loading } = useRequireAdmin();
-  if (loading || !isAdmin) return null;
+  const { isAdmin, loading: authLoading } = useRequireAdmin();
+  const { stats, assetClasses, domainReuse, invalidationFeed, confidenceTrend, loading: dataLoading, isDemo } = useReuseOverview();
+
+  if (authLoading || !isAdmin) return null;
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      <DemoModeBadge />
+      {isDemo && <DemoModeBadge />}
       <SitaPageHeader
         icon={<RefreshCw className="h-6 w-6" />}
         title="Intelligence Reuse Overview"
@@ -42,13 +41,13 @@ const IntelligenceReuseOverview = () => {
 
       {/* Hero Metrics */}
       <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
-        <HeroCard icon={RefreshCw} label="Reuse Rate" value={`${(DEMO_REUSE_DATA.reuseRate * 100).toFixed(0)}%`} sub="of reasoning reused" color="text-emerald-400" />
-        <HeroCard icon={Layers} label="Direct Reuse" value={`${(DEMO_REUSE_DATA.directReuseRate * 100).toFixed(0)}%`} sub="no adaptation needed" />
-        <HeroCard icon={Sparkles} label="Adapted Reuse" value={`${(DEMO_REUSE_DATA.adaptedReuseRate * 100).toFixed(0)}%`} sub="with minor adaptation" />
-        <HeroCard icon={DollarSign} label="Cost Avoided" value={`$${(DEMO_REUSE_DATA.costAvoided / 100).toFixed(0)}`} sub="compute savings" color="text-emerald-400" />
-        <HeroCard icon={Library} label="Total Reuses" value={String(DEMO_REUSE_DATA.totalReuses)} sub="this period" />
-        <HeroCard icon={AlertTriangle} label="Invalidated" value={String(DEMO_REUSE_DATA.invalidatedAssets)} sub="assets expired" color="text-amber-400" />
-        <HeroCard icon={Shield} label="Avg Confidence" value={`${DEMO_REUSE_DATA.avgConfidence}%`} sub={DEMO_REUSE_DATA.confidenceTrend} />
+        <HeroCard icon={RefreshCw} label="Reuse Rate" value={`${(stats.reuseRate * 100).toFixed(0)}%`} sub="of reasoning reused" color="text-emerald-400" />
+        <HeroCard icon={Layers} label="Direct Reuse" value={`${(stats.directReuseRate * 100).toFixed(0)}%`} sub="no adaptation needed" />
+        <HeroCard icon={Sparkles} label="Adapted Reuse" value={`${(stats.adaptedReuseRate * 100).toFixed(0)}%`} sub="with minor adaptation" />
+        <HeroCard icon={DollarSign} label="Cost Avoided" value={`$${(stats.costAvoided / 100).toFixed(0)}`} sub="compute savings" color="text-emerald-400" />
+        <HeroCard icon={Library} label="Total Reuses" value={String(stats.totalReuses)} sub="this period" />
+        <HeroCard icon={AlertTriangle} label="Invalidated" value={String(stats.invalidatedAssets)} sub="assets expired" color="text-amber-400" />
+        <HeroCard icon={Shield} label="Avg Confidence" value={`${stats.avgConfidence}%`} sub={stats.confidenceTrend} />
       </div>
 
       <div className="grid lg:grid-cols-2 gap-4">
@@ -56,7 +55,7 @@ const IntelligenceReuseOverview = () => {
         <Card className="bg-card/80 border-border/50">
           <CardHeader className="pb-2"><CardTitle className="text-sm flex items-center gap-2"><Library className="h-4 w-4 text-primary" /> Asset Class Heatmap</CardTitle></CardHeader>
           <CardContent className="space-y-2">
-            {DEMO_ASSET_CLASSES.map(ac => (
+            {assetClasses.map(ac => (
               <div key={ac.type} className="flex items-center justify-between p-2 rounded-lg bg-secondary/20">
                 <div className="flex items-center gap-2 min-w-0">
                   <Badge variant="outline" className="text-[9px] shrink-0">{ac.type}</Badge>
@@ -88,7 +87,7 @@ const IntelligenceReuseOverview = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {DEMO_DOMAIN_REUSE.map(d => (
+                {domainReuse.map(d => (
                   <TableRow key={d.domain}>
                     <TableCell className="text-xs font-medium text-foreground">{d.domain}</TableCell>
                     <TableCell className="text-xs text-right">
@@ -112,7 +111,7 @@ const IntelligenceReuseOverview = () => {
       <Card className="bg-card/80 border-border/50">
         <CardHeader className="pb-2"><CardTitle className="text-sm flex items-center gap-2"><AlertTriangle className="h-4 w-4 text-amber-400" /> Invalidation Feed</CardTitle></CardHeader>
         <CardContent className="space-y-2">
-          {DEMO_INVALIDATION_FEED.map((inv, i) => (
+          {invalidationFeed.map((inv, i) => (
             <div key={i} className="flex items-center justify-between p-2 rounded-lg bg-secondary/20">
               <div className="flex items-center gap-2 min-w-0">
                 <AlertTriangle className="h-3 w-3 text-amber-400 shrink-0" />
@@ -134,7 +133,7 @@ const IntelligenceReuseOverview = () => {
         <CardHeader className="pb-2"><CardTitle className="text-sm">Confidence Trend</CardTitle></CardHeader>
         <CardContent>
           <div className="flex items-end gap-4 h-24">
-            {DEMO_CONFIDENCE_TREND.map(t => (
+            {confidenceTrend.map(t => (
               <div key={t.period} className="flex-1 flex flex-col items-center gap-1">
                 <div className="w-full bg-primary/20 rounded-t" style={{ height: `${t.avg}%` }}>
                   <div className="w-full bg-primary rounded-t h-full" />

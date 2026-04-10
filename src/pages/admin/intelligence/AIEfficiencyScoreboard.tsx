@@ -11,8 +11,7 @@ import { Progress } from "@/components/ui/progress";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
-import { DEMO_INTEL_AGENTS as DEMO_AGENTS, DEMO_PATHS, DEMO_WORKFLOWS } from "@/lib/demo-data/admin-intelligence";
+import { useEfficiencyScoreboard } from "@/hooks/use-intelligence-screen-data";
 
 const trendIcons = { improving: TrendingUp, stable: Activity, degrading: TrendingDown };
 const trendColors = { improving: "text-emerald-400", stable: "text-muted-foreground", degrading: "text-rose-400" };
@@ -22,27 +21,29 @@ const ScoreCell = ({ v, threshold = 80 }: { v: number; threshold?: number }) => 
 );
 
 const AIEfficiencyScoreboard = () => {
-  const { isAdmin, loading } = useRequireAdmin();
+  const { isAdmin, loading: authLoading } = useRequireAdmin();
   const [view, setView] = useState("agents");
-  if (loading || !isAdmin) return null;
+  const { agents, workflows, paths, loading: dataLoading, isDemo } = useEfficiencyScoreboard();
 
-  const topAgent = DEMO_AGENTS.sort((a, b) => b.composite - a.composite)[0];
-  const avgComposite = Math.round(DEMO_AGENTS.reduce((s, a) => s + a.composite, 0) / DEMO_AGENTS.length);
+  if (authLoading || !isAdmin) return null;
+
+  const sortedAgents = [...agents].sort((a, b) => b.composite - a.composite);
+  const topAgent = sortedAgents[0];
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      <DemoModeBadge />
+      {isDemo && <DemoModeBadge />}
       <SitaPageHeader
         icon={<Gauge className="h-6 w-6" />}
         title="AI Efficiency Scoreboard"
         subtitle="Compare agents, workflows, and reasoning paths on quality-per-dollar"
       >
-        <Badge variant="secondary" className="gap-1"><Award className="h-3 w-3" /> Top: {topAgent.name} ({topAgent.composite})</Badge>
+        {topAgent && <Badge variant="secondary" className="gap-1"><Award className="h-3 w-3" /> Top: {topAgent.name} ({topAgent.composite})</Badge>}
       </SitaPageHeader>
 
       {/* Composite Score Cards */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-        {DEMO_AGENTS.sort((a, b) => b.composite - a.composite).map(a => {
+        {sortedAgents.map(a => {
           const TrendIcon = trendIcons[a.trend as keyof typeof trendIcons] || Activity;
           return (
             <Card key={a.id} className="bg-card/80 border-border/50">
@@ -86,7 +87,7 @@ const AIEfficiencyScoreboard = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {DEMO_AGENTS.sort((a, b) => b.composite - a.composite).map(a => {
+                  {sortedAgents.map(a => {
                     const TrendIcon = trendIcons[a.trend as keyof typeof trendIcons] || Activity;
                     return (
                       <TableRow key={a.id}>
@@ -132,7 +133,7 @@ const AIEfficiencyScoreboard = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {DEMO_WORKFLOWS.sort((a, b) => b.composite - a.composite).map(w => {
+                  {[...workflows].sort((a, b) => b.composite - a.composite).map(w => {
                     const TrendIcon = trendIcons[w.trend as keyof typeof trendIcons] || Activity;
                     return (
                       <TableRow key={w.id}>
@@ -168,7 +169,7 @@ const AIEfficiencyScoreboard = () => {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {DEMO_PATHS.sort((a, b) => b.composite - a.composite).map(p => (
+                  {[...paths].sort((a, b) => b.composite - a.composite).map(p => (
                     <TableRow key={p.label}>
                       <TableCell className="text-xs font-medium text-foreground font-mono">{p.label}</TableCell>
                       <TableCell className="text-xs text-right"><ScoreCell v={p.composite} /></TableCell>
@@ -189,7 +190,7 @@ const AIEfficiencyScoreboard = () => {
       <Card className="bg-card/80 border-border/50">
         <CardHeader className="pb-2"><CardTitle className="text-sm">Efficiency Recommendations</CardTitle></CardHeader>
         <CardContent className="space-y-2">
-          {DEMO_AGENTS.filter(a => a.composite < 80).map(a => (
+          {agents.filter(a => a.composite < 80).map(a => (
             <div key={a.id} className="flex items-center gap-2 p-2 rounded-lg bg-secondary/20">
               <AlertTriangle className="h-3.5 w-3.5 text-amber-400 shrink-0" />
               <span className="text-xs text-foreground">
