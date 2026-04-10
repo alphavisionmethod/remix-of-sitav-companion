@@ -1,143 +1,97 @@
 
 
-# SITA OS — 15 Systems Verification & Gap Closure
+# SITA OS — Audit Results & Enhancement Plan
 
-## Verification Summary: All 15 Services Exist
+## What's Built and Working (Verified)
 
-| # | System | File | Lines | Status |
-|---|--------|------|-------|--------|
-| 1 | Personal Operating Graph | `personal-graph/personal-operating-graph.ts` | 335 | Built |
-| 2 | Intent Orchestrator | `intent-orchestrator/intent-orchestrator.ts` | 312 | Built |
-| 3 | Attention OS | `attention-os/attention-os.ts` | 265 | Built |
-| 4 | Continuity Engine | `continuity-engine/continuity-engine.ts` | 253 | Built |
-| 5 | Trust-Weighted Actions | `trust-actions/trust-weighted-actions.ts` | 279 | Built |
-| 6 | Chief-of-Staff | `chief-of-staff/chief-of-staff.ts` | 282 | Built |
-| 7 | Timing Intelligence | `timing-intelligence/timing-intelligence.ts` | 222 | Built |
-| 8 | Relationship Intelligence | `relationship-intelligence/index.ts` | 279 | Elevated |
-| 9 | Digest Engine | `digest-engine/digest-engine.ts` | 224 | Built |
-| 10 | SITA Modes | `sita-modes/index.ts` | 139 | Elevated |
-| 11 | Adaptive Interface | `adaptive-interface/adaptive-interface.ts` | 81 | Built |
-| 12 | Opportunity Engine | `opportunity-engine/index.ts` | 169 | Elevated |
-| 13 | Memory Governance | `memory-governance/memory-governance-engine.ts` | 287 | Built |
-| 14 | Boundary Engine | `boundary-engine/boundary-engine.ts` | 66 | Built |
-| 15 | Experience Signature | `experience-signature/experience-signature.ts` | 73 | Built |
+All 15 core services are **fully implemented** with advanced code (250–335 lines each):
 
-Barrel export wired: `os-orchestration/index.ts` → `services/index.ts` line 207.
+| # | Service | Lines | Cross-Wired | Hydrated |
+|---|---------|-------|-------------|----------|
+| 1 | Personal Operating Graph | 335 | via Context | Yes |
+| 2 | Intent Orchestrator | 312 | 3 middlewares | Yes |
+| 3 | Attention OS | 265 | via middlewares | Yes |
+| 4 | Continuity Engine | 253 | surface registration | Yes |
+| 5 | Trust-Weighted Actions | 279 | via Context | Yes |
+| 6 | Chief-of-Staff | 282 | proactive triggers | Yes |
+| 7 | Timing Intelligence | 222 | middleware gate | Yes |
+| 8 | Relationship Intelligence | 279 | digest provider | Yes |
+| 9 | Digest Engine | 224 | 7 data providers | Yes |
+| 10 | SITA Modes (12 modes) | 139 | auto-transition | Yes |
+| 11 | Adaptive Interface | 81 | CSS vars hook | Yes |
+| 12 | Opportunity Engine | 169 | digest + detection | Yes |
+| 13 | Memory Governance | 287 | decay on hydrate | Yes |
+| 14 | Boundary Engine | 66 | middleware check | Yes |
+| 15 | Experience Signature | 73 | signature hook | Yes |
 
-## Critical Gaps Found
+**Integration layer complete**: `SitaOSContext` cross-wires all 15 services, mounts in `App.tsx`, hydrates from persistence, registers surfaces, runs proactive checks. Three hooks exist (`useOSOrchestration`, `useAdaptiveInterface`, `useExperienceSignature`).
 
-### Gap 1: Zero Cross-Wiring Between Services
-All 15 services are **isolated**. None call each other. The plan said:
-- Intent Orchestrator should wire to AttentionOS, TrustWeightedActions, ChiefOfStaff
-- AttentionOS should read from SitaModes, TimingIntelligence, SurfaceDetection
-- ChiefOfStaff should wire to AttentionOS, PersonalGraph, RelationshipIntelligence
-- DigestEngine should consume OpportunityEngine, RelationshipIntelligence, CompoundLifeScore
-- PersonalGraph should federate from EntityGraph, HouseholdGraph, RelationshipIntelligence
+## What's Missing
 
-**None of this wiring exists.** Each service is a standalone class.
+**One critical gap: Zero operator/admin surfaces consume these services.**
 
-### Gap 2: No Context/Hook Layer — Services Are Unused
-Zero imports of any of these 15 services exist in `src/components/`, `src/contexts/`, `src/hooks/`, or `src/pages/`. The services are built but **nothing in the app uses them**.
+None of the 15 CAI admin pages (CAI01–CAI15) exist. The `useOSOrchestration`, `useAdaptiveInterface`, and `useExperienceSignature` hooks have zero imports in any page or component. The 15 systems are fully built but invisible to operators.
 
-Need: A `SitaOSContext` or `useOSOrchestration` hook that instantiates and coordinates all 15 services, then exposes them to the component tree.
+## Implementation Plan — 15 CAI Admin Pages
 
-### Gap 3: Intent Orchestrator Not Wired to Brain Core
-The plan explicitly said the Intent Orchestrator should be the canonical entry point wired into `callBrainCore`. Currently `callBrainCore` in `ai-gateway/callable.ts` still uses the old flow. The orchestrator should intercept/enhance intent classification before the edge function call.
+Create 15 operator console pages that make each system inspectable, operable, and tunable. Each page will import `useSitaOS()` and display live data from its service.
 
-### Gap 4: Digest Engine Has No Data Providers
-`DigestEngine.registerProvider()` exists but no providers are registered. The daily pulse, weekly boardroom, etc. all produce placeholder sections. Need to wire actual data providers from: finance-os, business-os, relationship-intelligence, opportunity-engine, compound-life-score, ambient-intelligence.
+### Pages to Create
 
-### Gap 5: Adaptive Interface Not Connected to UI
-The service computes interface state but nothing reads it. Need a `useAdaptiveInterface` hook that feeds density/animation/fontSize into the UI layer (CSS variables or a context).
+| Route | File | Service Used | Key Features |
+|-------|------|-------------|--------------|
+| `/admin/cai/graph` | `CAI01PersonalGraphExplorer.tsx` | PersonalOperatingGraph | Node/edge stats, cross-domain resolution, meeting context, ignored items |
+| `/admin/cai/intent` | `CAI02IntentTraceBoard.tsx` | IntentOrchestrator | Recent intents, by source/domain/classification, failed intents, stats |
+| `/admin/cai/attention` | `CAI03AttentionCenter.tsx` | AttentionOS | Priority stack, cognitive load, surface routing, bundled items |
+| `/admin/cai/continuity` | `CAI04ContinuityCenter.tsx` | ContinuityEngine | Active threads, surfaces, handoff log, continuity score |
+| `/admin/cai/trust-actions` | `CAI05TrustActionsBoard.tsx` | TrustWeightedActions | Registered actions, execution log, overrides, by-mode stats |
+| `/admin/cai/chief-of-staff` | `CAI06ChiefOfStaffCenter.tsx` | ChiefOfStaff | Personas, active interventions, proactive triggers, role coordination |
+| `/admin/cai/timing` | `CAI07TimingStudio.tsx` | TimingIntelligence | Preferences, learned patterns, interaction log, timing decisions |
+| `/admin/cai/relationships` | `CAI08RelationshipCenter.tsx` | RelationshipGraph | Network map, neglected contacts, overdue follow-ups, meeting prep, reciprocity |
+| `/admin/cai/digest` | `CAI09DigestConsole.tsx` | DigestEngine | Generate digests, history, read rates, registered providers |
+| `/admin/cai/modes` | `CAI10ModesCenter.tsx` | SitaModes | All 12 modes, current mode, transition rules, transition history |
+| `/admin/cai/interface` | `CAI11InterfaceProfiler.tsx` | AdaptiveInterface | Current state, density/animation/fontSize, surface simulation |
+| `/admin/cai/opportunities` | `CAI12OpportunityBoard.tsx` | OpportunityEngine | Active signals, patterns, cross-domain, total value |
+| `/admin/cai/memory` | `CAI13MemoryGovernance.tsx` | MemoryGovernance | Memories, contradictions, corrections, decay, forget requests, audit |
+| `/admin/cai/boundaries` | `CAI14BoundaryControl.tsx` | BoundaryEngine | Rules, cross-domain synthesis check, rule editor |
+| `/admin/cai/signature` | `CAI15SignatureStudio.tsx` | ExperienceSignature | Current signature, mode-aware preview, all mode signatures |
 
----
+### Wiring
 
-## Implementation Plan
+- Add 15 lazy imports + routes under `/admin/cai/*` in `App.tsx`
+- Each page uses `useSitaOS()` to access its service directly
+- Real-time data display with stats, lists, and action buttons
+- Consistent with existing admin page patterns (SitaPageHeader, SitaCard, motion animations)
 
-### Phase 1 — Cross-Service Orchestration Wiring (~40 min)
+### Files
 
-1. **Create `src/contexts/SitaOSContext.tsx`** — The OS kernel context that:
-   - Instantiates all 15 services as singletons
-   - Hydrates persisted state on mount
-   - Wires cross-service dependencies (e.g., IntentOrchestrator uses AttentionOS for routing, TrustWeightedActions for evaluation, ChiefOfStaff for role selection)
-   - Exposes services + convenience methods to the component tree
-   - Mounts inside the authenticated provider tree (alongside PlatformInit)
+**New files (15):**
+```
+src/pages/admin/CAI01PersonalGraphExplorer.tsx
+src/pages/admin/CAI02IntentTraceBoard.tsx
+src/pages/admin/CAI03AttentionCenter.tsx
+src/pages/admin/CAI04ContinuityCenter.tsx
+src/pages/admin/CAI05TrustActionsBoard.tsx
+src/pages/admin/CAI06ChiefOfStaffCenter.tsx
+src/pages/admin/CAI07TimingStudio.tsx
+src/pages/admin/CAI08RelationshipCenter.tsx
+src/pages/admin/CAI09DigestConsole.tsx
+src/pages/admin/CAI10ModesCenter.tsx
+src/pages/admin/CAI11InterfaceProfiler.tsx
+src/pages/admin/CAI12OpportunityBoard.tsx
+src/pages/admin/CAI13MemoryGovernance.tsx
+src/pages/admin/CAI14BoundaryControl.tsx
+src/pages/admin/CAI15SignatureStudio.tsx
+```
 
-2. **Wire IntentOrchestrator middlewares** — Add middleware that:
-   - Calls `attentionOS.addItem()` for each processed intent
-   - Calls `trustWeightedActions.evaluateAction()` for non-query intents
-   - Calls `chiefOfStaff.selectRole()` to determine which persona handles the response
-   - Calls `timingIntelligence.shouldActNow()` to defer non-urgent intents
-   - Calls `boundaryEngine.checkBoundary()` for cross-domain intents
+**Modified files (1):**
+```
+src/App.tsx — add 15 lazy imports + 15 routes
+```
 
-3. **Wire PersonalGraph federation** — Add a `federate()` method that pulls nodes from:
-   - `entityGraph` (existing service) → person/business/workspace nodes
-   - `relationshipIntelligence` → relationship nodes + edges
-   - `householdOrgGraph` (existing) → household nodes
-   - Device presence (existing) → device nodes
-
-### Phase 2 — Data Provider Wiring (~20 min)
-
-4. **Register DigestEngine providers** — Wire actual data providers:
-   - `priority_stack` → from AttentionOS.getAttentionStack()
-   - `financial_summary` → from finance-os overview
-   - `relationship_updates` → from RelationshipIntelligence
-   - `opportunities` → from OpportunityEngine.getNew()
-   - `health_readiness` → from CompoundLifeScore
-   - `pending_approvals` → from approval-engine
-   - `schedule_overview` → placeholder (no calendar service yet)
-
-5. **Wire ChiefOfStaff proactive triggers** — Connect proactive checks to real signals:
-   - `cognitiveLoad` from AttentionOS
-   - `neglectedContacts` from RelationshipIntelligence
-   - `unusualSpend` from finance-os
-   - Mode changes from SitaModes
-
-### Phase 3 — UI Integration Hooks (~15 min)
-
-6. **Create `src/hooks/useAdaptiveInterface.ts`** — Hook that:
-   - Reads current SitaMode, cognitive load, surface detection
-   - Calls AdaptiveInterfaceService.getInterfaceState()
-   - Sets CSS custom properties for density/animation/fontSize
-   - Returns state for conditional rendering
-
-7. **Create `src/hooks/useExperienceSignature.ts`** — Hook that:
-   - Returns current tone, verbosity, visual density
-   - Used by assistant UI, notifications, and summary components
-
-8. **Wire `useOSOrchestration` convenience hook** — Thin hook that:
-   - Pulls from SitaOSContext
-   - Exposes `processIntent()`, `getAttentionStack()`, `getMeetingPrep()`, `generateDigest()`, `getCurrentMode()`
-   - Used by CommandPalette, assistant, notification center
-
-### Phase 4 — Final Integration (~10 min)
-
-9. **Mount SitaOSContext in the app** — Add provider in `App.tsx` or the authenticated layout
-10. **Wire PlatformInit** — Add OS orchestration hydration to PlatformInit.tsx
-11. **Verify build** — `npx tsc --noEmit`
-
----
-
-## Technical Details
-
-### New Files
-- `src/contexts/SitaOSContext.tsx` (~250 lines)
-- `src/hooks/useAdaptiveInterface.ts` (~60 lines)
-- `src/hooks/useExperienceSignature.ts` (~30 lines)
-- `src/hooks/useOSOrchestration.ts` (~40 lines)
-
-### Files to Modify
-- `src/lib/services/intent-orchestrator/intent-orchestrator.ts` — add cross-service middleware registration method
-- `src/lib/services/personal-graph/personal-operating-graph.ts` — add `federate()` method
-- `src/lib/services/digest-engine/digest-engine.ts` — register real data providers
-- `src/lib/services/chief-of-staff/chief-of-staff.ts` — wire proactive triggers to real signals
-- `src/components/sita/PlatformInit.tsx` — add OS orchestration init
-- `src/App.tsx` (or auth layout) — mount SitaOSContext provider
-
-### Architecture Rules Maintained
-- No new domains (still 3)
-- No new edge functions
-- All wiring is client-side orchestration
-- Uses existing persistence patterns
-- No circular dependencies (context → services, services don't import context)
+### Architecture Rules
+- No new services or domains created
+- No duplicate code — pages consume existing services via `useSitaOS()`
+- Follows existing admin page conventions (lazy loading, SitaCard, DemoModeBadge)
+- ~150–200 lines per page, ~2,500 lines total new code
 
