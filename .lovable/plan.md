@@ -1,81 +1,78 @@
 
 
-# Digital Presence Office — Audit & Enhancement Plan
+# ATLAS Closure — Advanced Operational Enhancements Plan
 
 ## Audit Summary
 
-The Digital Presence Office is **extensively implemented** with 19 pages, 19 routes, ~4,000 LOC of page code, 473 LOC of demo data, full test coverage, data services, and capabilities. Every subspace from the spec exists and is functional.
+After thorough codebase inspection, the 10 ATLAS areas listed in the spec **already have substantial implementations**. However, several pages need deepening from "good overview" to "fully advanced operational product." Here's what's genuinely thin vs solid:
 
-## What Already Exists (All Working)
+### Already Solid (no changes needed)
+- **Admin Durability Board** (278 LOC) — mutation provenance, write-path registry, lineage gaps, projection impact, receipts
+- **Operations Command Center** (196 LOC) — service health, SLO burn rates, alert triage, incidents, queue lag, runbooks
+- **Proof Coverage Board** (259 LOC) — 29 capabilities, chain explorer, replay/rollback verification
+- **Connector Control Center** (200 LOC) — lifecycle FSM, health matrix, capability registry, audit timeline
+- **Mission Control** (1301 LOC) — system pulse, agent cards, incidents, connectors, workflows, costs, policies, releases, safe mode
+- **Owner Center** (2525 LOC) — pulse, approvals, AI team, timeline, service map, governance
+- **Release/Deployment Workspace** (228 LOC) — ring promotion with evidence, canary, rollback
 
-| # | Page | File | LOC | Status |
-|---|------|------|-----|--------|
-| 1 | Presence Gate (Hub) | PresenceGate.tsx | 88 | 17 workspace cards, health stats, quick actions |
-| 2 | Presence Boardroom | PresenceBoardroom.tsx | 114 | Metrics, top/weak pages, promotions, advisor signals |
-| 3 | Website Twin | WebsiteTwin.tsx | 88 | Page hierarchy tree, conversion paths, weak nodes |
-| 4 | Site Builder | SiteBuilder.tsx | 85 | 8 page types, AI generator, existing pages |
-| 5 | Brand Studio | BrandStudio.tsx | 122 | AI logo gen, colors, typography, assets, blocks |
-| 6 | Connected Sites | ConnectedSites.tsx | 99 | 6 platforms, audit findings, AI recommendations |
-| 7 | CRO Office | CROOffice.tsx | 111 | CTA analysis, trust gaps, funnel leaks, form friction, mobile |
-| 8 | Ecommerce Office | EcommerceOffice.tsx | 102 | Products, collections, cart diagnostics, merchandising AI |
-| 9 | Promotions Office | PromotionsOffice.tsx | 98 | Active promos, calendar, email/SMS sync |
-| 10 | AI Web Team | AIWebTeam.tsx | 497 | 10 agents, observations, synthesis, disagreements, ask team |
-| 11 | Error Radar | ErrorRadar.tsx | 62 | Issues + opportunities combined signal board |
-| 12 | Content Freshness | ContentFreshness.tsx | 112 | Stale pages, expired offers, outdated info, inconsistencies |
-| 13 | Launch War Room | LaunchWarRoom.tsx | 92 | Readiness checks, timeline, rollback plan |
-| 14 | Time Machine | PresenceTimeMachine.tsx | 78 | Change timeline, before/after, impact review |
-| 15 | Self-Healing Queue | SelfHealingQueue.tsx | 172 | Patches with approve/auto-apply/verify/rollback |
-| 16 | App Experience Studio | AppExperienceStudio.tsx | 128 | PWA, portals, mini-apps, device preview |
-| 17 | Presence Analytics | PresenceAnalytics.tsx | 149 | Traffic, source perf, page impact, promo perf, agent confidence |
-| 18 | Domain/Publish Manager | DomainPublishManager.tsx | 129 | Domains, environments, publish history, publishing rules |
-| 19 | DPO Onboarding | DPOOnboarding.tsx | 600 | 10-step formation ceremony with path branching |
+### Needs Enhancement (genuine gaps found)
 
-Supporting infrastructure: `digital-presence-data-service.ts` (CRUD for 7 tables), `use-digital-presence.ts` (6 hooks), `digital-presence-capabilities.ts` (5 capabilities), `digital-presence.ts` demo data (473 LOC), test file covering all 19 pages.
+| Area | Current | Gap |
+|------|---------|-----|
+| **DeploymentTruthCenter** (194 LOC) | Ring gates, environments, basic secrets | Missing: CI/CD pipeline integration, HA/DR checks detail, smoke/load gate evidence, secret rotation status, cert expiry monitoring |
+| **DataProtectionPosture** (169 LOC) | Encryption domains, secret integrity | Missing: at-rest encryption coverage detail, key rotation schedules, sensitive data classification matrix, compliance mapping |
+| **ProjectionControlCenter** (203 LOC) | 14 projections, freshness | Missing: rebuild/replay controls, fallback masking detail, materialization queue, honest staleness handling |
+| **ValidationCommandCenter** (171 LOC) | Test counts, readiness | Missing: cross-domain E2E flow coverage, operational/admin test matrix, test run history, failure pattern analysis |
+| **PlatformTruthRegistry** (178 LOC) | Manifest sync, claim verification | Missing: generated truth update workflows, manifest drift auto-detection, docs coverage scoring, architecture gate visibility |
+| **ConciergeCommandCenter** (183 LOC) | Task continuity, travel, receipts | Missing: household continuity depth, task/travel/grocery state persistence verification, service provider SLA tracking |
+| **AtlasHub** (77 LOC) | Simple nav grid | Missing: aggregate health score, cross-program dependency view, closure progress tracking |
+| **LT02CIPipelineCenter** (128 LOC) | Basic CI/CD | Missing: smoke/load gate evidence, deployment artifact validation, VMware evidence link |
 
-## Genuine Gaps Found
+## Plan
 
-### Gap 1: DemoModeBadge rendering bugs (3 files)
-`DemoModeBadge` is incorrectly placed inside reusable sub-components, causing it to render dozens of times per page:
-- `WebsiteTwin.tsx` line 14: inside `PageNode` — renders per tree node
-- `AIWebTeam.tsx` line 178: inside `ConfidenceBar` — renders per bar
-- `DPOOnboarding.tsx` line 96: inside `ToggleChip` — renders per chip
+### 1. Enhance DeploymentTruthCenter — add CI/CD truth, HA/DR, cert/secret monitoring
+Add tabs for: CI Pipeline Status (build/test/deploy stages with evidence), HA/DR Readiness (replica status, failover testing, backup verification), Secret & Cert Health (rotation schedule, expiry warnings, integrity checks), Smoke/Load Gates (gate results with pass/fail evidence).
 
-**Fix:** Remove `DemoModeBadge` from these sub-components. The parent page already renders it once.
+### 2. Enhance DataProtectionPosture — encryption at rest, key rotation, compliance
+Add: at-rest encryption coverage per table/bucket, key rotation schedule with staleness indicators, sensitive data classification matrix (PII/financial/health), compliance mapping (SOC2/GDPR checklist items).
 
-### Gap 2: No DPO sub-navigation bar
-Revenue Office has `AutomationSubNav` for persistent workspace navigation. DPO has nothing — users must navigate back to PresenceGate every time. This is a major UX gap for a 19-page workspace.
+### 3. Enhance ProjectionControlCenter — rebuild controls, fallback masking, materialization
+Add: rebuild/replay action buttons per projection, fallback masking audit (which projections serve fallback data), materialization queue with processing rates, staleness threshold configuration, honest degraded-state indicators per projection.
 
-**Fix:** Create `DPOSubNav.tsx` — a compact horizontal nav bar (similar to AutomationSubNav) with key workspace links. Add it to all 18 child pages.
+### 4. Enhance ValidationCommandCenter — E2E coverage, cross-domain, operational tests
+Add: cross-domain E2E flow matrix (investment→receipt, revenue→automation, etc.), operational/admin test coverage grid, test run history timeline, failure pattern clustering, architecture gate compliance summary.
 
-### Gap 3: No Revenue Office ↔ DPO cross-links
-The spec emphasizes deep integration: "if a promotion is created in Revenue Office, site updates can follow." Currently zero cross-module navigation exists.
+### 5. Enhance PlatformTruthRegistry — generated truth workflows, architecture gates
+Add: manifest-truth sync workflows with diff view, auto-detection of docs/code drift, architecture gate visibility (which gates passed/failed for current build), generated truth file freshness tracking, claim verification automation status.
 
-**Fix:** Add a "Revenue Office Sync" card to PresenceBoardroom showing connected modules (Funnel Studio, Campaign Office, Offers), and add a "Digital Presence" quick-link to RevenueGate.
+### 6. Enhance ConciergeCommandCenter — continuity depth, SLA tracking
+Add: task/travel/household state persistence verification, service provider SLA compliance tracking, grocery/appointment data continuity checks, cross-module integration health (calendar↔tasks↔travel).
 
-### Gap 4: Missing "Brand Evolution Engine" concept
-BrandStudio has static assets but no evolution/refresh concept. The spec calls for coherent seasonal/campaign-driven brand evolution.
+### 7. Enhance AtlasHub — aggregate health, closure tracking
+Add: aggregate closure health score (weighted from all 10 programs), cross-program dependency graph, per-program progress bars, quick-action buttons for common operator workflows, recent closure activity feed.
 
-**Fix:** Add a "Brand Evolution" section to BrandStudio with seasonal presets, campaign-driven style variations, and a timeline of brand changes.
-
-### Gap 5: Site Builder lacks "Experience Rewrite" mode
-The spec says users should ask "refresh homepage for this offer" and get strategy + copy + layout + variants. Current AI generator is just a one-line input.
-
-**Fix:** Add an "Experience Rewrite" card to SiteBuilder with a richer prompt area showing what SITA will produce (strategy, copy, layout, variants, publish plan).
+### 8. Add OperationalInfraMonitor — cert expiry, replica lag, DB exhaustion, pool health
+New page at `/atlas/infrastructure` covering: cert expiry countdown timers, database pool utilization and exhaustion warnings, replica lag monitoring, event bus lag, storage pressure, connection pool saturation. This is the missing "operational UX" layer.
 
 ## Files Changed
 
 | File | Change |
 |------|--------|
-| `DPOSubNav.tsx` (NEW) | Compact horizontal sub-nav for DPO workspace |
-| `WebsiteTwin.tsx` | Remove DemoModeBadge from PageNode |
-| `AIWebTeam.tsx` | Remove DemoModeBadge from ConfidenceBar |
-| `DPOOnboarding.tsx` | Remove DemoModeBadge from ToggleChip |
-| `PresenceBoardroom.tsx` | Add DPOSubNav + Revenue Office Sync card |
-| `BrandStudio.tsx` | Add Brand Evolution section |
-| `SiteBuilder.tsx` | Add Experience Rewrite card |
-| 15 other DPO pages | Add DPOSubNav import and render |
-| `PresenceGate.tsx` | Add DPOSubNav |
-| `RevenueGate.tsx` | Add Digital Presence quick-link |
+| `src/pages/atlas/DeploymentTruthCenter.tsx` | Add CI/CD, HA/DR, cert/secret, smoke/load tabs (~+200 LOC) |
+| `src/pages/atlas/DataProtectionPosture.tsx` | Add encryption-at-rest, key rotation, compliance (~+180 LOC) |
+| `src/pages/atlas/ProjectionControlCenter.tsx` | Add rebuild controls, fallback masking, materialization (~+160 LOC) |
+| `src/pages/atlas/ValidationCommandCenter.tsx` | Add E2E matrix, cross-domain, test history (~+180 LOC) |
+| `src/pages/atlas/PlatformTruthRegistry.tsx` | Add manifest workflows, arch gates, drift detection (~+170 LOC) |
+| `src/pages/atlas/ConciergeCommandCenter.tsx` | Add continuity depth, SLA tracking (~+120 LOC) |
+| `src/pages/atlas/AtlasHub.tsx` | Add health score, progress, dependency view (~+150 LOC) |
+| `src/pages/atlas/OperationalInfraMonitor.tsx` (NEW) | Cert expiry, replica lag, DB pools, storage pressure (~250 LOC) |
+| `src/lib/demo-data/atlas.ts` | Expand demo data for all new sections (~+200 LOC) |
+| `src/App.tsx` | Add route for `/atlas/infrastructure` |
 
-Total: ~1 new file, ~19 files touched, ~150 net LOC added.
+**Total: ~1 new file, ~9 files enhanced, ~1,600 net LOC added.**
+
+## Technical Approach
+- All enhancements use existing patterns: `DemoModeBadge`, `SitaPageHeader`, `DegradedStateBanner`, `StalenessIndicator`, `Tabs`, `Badge`, `Progress`, `Card`
+- Demo data expanded in `atlas.ts` — no stubs, all interactive
+- Every new section has actionable operator controls (rebuild, acknowledge, dismiss, drill-down)
 
