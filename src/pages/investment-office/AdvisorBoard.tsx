@@ -4,15 +4,16 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Brain, ChevronRight, ChevronDown, Eye, BarChart3, Shield, AlertTriangle,
   Lightbulb, Target, Clock, RefreshCw, HelpCircle, MessageSquare, ArrowRight,
-  Zap, X, Check, Minus, TrendingUp, TrendingDown, Globe
+  Zap, X, Check, Minus, TrendingUp, TrendingDown, Globe, FileText, Send
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import type { InvestmentAdvisor, AdvisorConfidenceLevel, AdvisorRecommendation } from "@/lib/investment-office/types";
 import { ADVISOR_SYNTHESIS, INVESTMENT_ADVISORS } from "@/hooks/useInvestmentOfficeData";
+import { ASK_ADVISOR_QUESTIONS, ASK_BOARD_QUESTIONS } from "@/lib/investment-office/mock-data";
 import { useInvestmentDecisions } from "@/hooks/use-investment-office";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-type ViewMode = "council" | "synthesis" | "debate" | "detail" | "compare";
+type ViewMode = "council" | "synthesis" | "debate" | "compare" | "ask-board";
 
 const CONFIDENCE_COLORS: Record<AdvisorConfidenceLevel, string> = {
   "high": "text-[hsl(var(--trust-safe))]",
@@ -66,9 +67,22 @@ function WatchStatusDot({ status }: { status: string }) {
   );
 }
 
-// ── Advisor Detail Panel ──
+// ── Advisor Detail Panel (with Ask + Memo tabs) ──
 function AdvisorDetailPanel({ advisor, onClose }: { advisor: InvestmentAdvisor; onClose: () => void }) {
-  const [tab, setTab] = useState<"overview" | "watches" | "horizons" | "history" | "beginner">("overview");
+  const [tab, setTab] = useState<"overview" | "watches" | "horizons" | "history" | "beginner" | "ask" | "memo">("overview");
+  const [activeQuestion, setActiveQuestion] = useState<string | null>(null);
+
+  const getQuestionResponse = (field: string): string | string[] => {
+    switch (field) {
+      case "currentInsight": return advisor.currentInsight;
+      case "keyUncertainty": return advisor.keyUncertainty;
+      case "beginnerExplanation": return advisor.beginnerExplanation;
+      case "whatWouldChangeMind": return advisor.whatWouldChangeMind;
+      case "portfolioAwareness": return advisor.portfolioAwareness;
+      case "advancedAnalysis": return advisor.advancedAnalysis;
+      default: return "";
+    }
+  };
 
   return (
     <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }}
@@ -85,19 +99,18 @@ function AdvisorDetailPanel({ advisor, onClose }: { advisor: InvestmentAdvisor; 
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 px-4 pt-3 pb-1">
-        {(["overview", "watches", "horizons", "history", "beginner"] as const).map(t => (
+      <div className="flex gap-1 px-4 pt-3 pb-1 flex-wrap">
+        {(["overview", "watches", "horizons", "history", "beginner", "ask", "memo"] as const).map(t => (
           <button key={t} onClick={() => setTab(t)}
             className={`rounded-lg px-3 py-1.5 text-[10px] font-medium capitalize transition-colors ${
               tab === t ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground hover:text-foreground"
-            }`}>{t}</button>
+            }`}>{t === "ask" ? "Ask" : t === "memo" ? "Memo" : t}</button>
         ))}
       </div>
 
       <div className="p-4 space-y-4">
         {tab === "overview" && (
           <>
-            {/* Current Insight */}
             <div className="rounded-xl border border-primary/15 bg-primary/5 p-4 space-y-2">
               <p className="text-[10px] font-semibold text-primary uppercase tracking-wider">Current Insight</p>
               <p className="text-sm text-foreground leading-relaxed">{advisor.currentInsight}</p>
@@ -106,53 +119,38 @@ function AdvisorDetailPanel({ advisor, onClose }: { advisor: InvestmentAdvisor; 
                 <RecommendationBadge rec={advisor.currentRecommendation} />
               </div>
             </div>
-
-            {/* Why It Cares */}
             <div className="rounded-xl border border-border bg-secondary/20 p-3 space-y-1">
               <p className="text-[9px] font-semibold text-muted-foreground uppercase tracking-wider">Why This Matters</p>
               <p className="text-xs text-foreground leading-relaxed">{advisor.whyItCares}</p>
             </div>
-
-            {/* What Changed */}
             <div className="space-y-1.5">
               <p className="text-[9px] font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1"><RefreshCw className="h-3 w-3" /> What Changed</p>
               {advisor.whatChanged.map((c, i) => (
                 <div key={i} className="flex items-start gap-2 text-[11px] text-foreground">
-                  <Zap className="h-3 w-3 text-accent shrink-0 mt-0.5" />
-                  <span>{c}</span>
+                  <Zap className="h-3 w-3 text-accent shrink-0 mt-0.5" /><span>{c}</span>
                 </div>
               ))}
             </div>
-
-            {/* Uncertainty */}
             <div className="rounded-xl border border-[hsl(var(--trust-warn))]/20 bg-[hsl(var(--trust-warn))]/5 p-3 space-y-1">
               <p className="text-[9px] font-semibold text-[hsl(var(--trust-warn))] uppercase tracking-wider">Key Uncertainty</p>
               <p className="text-xs text-foreground">{advisor.keyUncertainty}</p>
             </div>
-
-            {/* What Would Change Mind */}
             <div className="space-y-1.5">
               <p className="text-[9px] font-semibold text-muted-foreground uppercase tracking-wider">What Would Change My Mind</p>
               {advisor.whatWouldChangeMind.map((w, i) => (
                 <div key={i} className="flex items-start gap-2 text-[11px] text-foreground">
-                  <AlertTriangle className="h-3 w-3 text-[hsl(var(--trust-warn))] shrink-0 mt-0.5" />
-                  <span>{w}</span>
+                  <AlertTriangle className="h-3 w-3 text-[hsl(var(--trust-warn))] shrink-0 mt-0.5" /><span>{w}</span>
                 </div>
               ))}
             </div>
-
-            {/* Refuses to Conclude */}
             <div className="space-y-1.5">
               <p className="text-[9px] font-semibold text-muted-foreground uppercase tracking-wider">What I Refuse to Conclude</p>
               {advisor.refusesToConclude.map((r, i) => (
                 <div key={i} className="flex items-start gap-2 text-[11px] text-muted-foreground italic">
-                  <Minus className="h-3 w-3 shrink-0 mt-0.5" />
-                  <span>{r}</span>
+                  <Minus className="h-3 w-3 shrink-0 mt-0.5" /><span>{r}</span>
                 </div>
               ))}
             </div>
-
-            {/* Data Sources */}
             <div className="space-y-1">
               <p className="text-[9px] font-semibold text-muted-foreground uppercase tracking-wider">Data Sources</p>
               <div className="flex flex-wrap gap-1">
@@ -161,14 +159,10 @@ function AdvisorDetailPanel({ advisor, onClose }: { advisor: InvestmentAdvisor; 
                 ))}
               </div>
             </div>
-
-            {/* Portfolio Awareness */}
             <div className="rounded-xl border border-border bg-card p-3 space-y-1">
               <p className="text-[9px] font-semibold text-primary uppercase tracking-wider flex items-center gap-1"><Target className="h-3 w-3" /> Portfolio Awareness</p>
               <p className="text-xs text-foreground leading-relaxed">{advisor.portfolioAwareness}</p>
             </div>
-
-            {/* Advanced Analysis */}
             <div className="rounded-xl border border-border bg-secondary/20 p-3 space-y-1">
               <p className="text-[9px] font-semibold text-muted-foreground uppercase tracking-wider">Advanced Analysis</p>
               <p className="text-[11px] text-foreground leading-relaxed">{advisor.advancedAnalysis}</p>
@@ -226,14 +220,11 @@ function AdvisorDetailPanel({ advisor, onClose }: { advisor: InvestmentAdvisor; 
                 {pv.outcome && <p className="text-[10px] text-muted-foreground italic">Outcome: {pv.outcome}</p>}
               </div>
             ))}
-
-            {/* Invalidation Events */}
             <div className="pt-2 space-y-1.5">
               <p className="text-[9px] font-semibold text-muted-foreground uppercase tracking-wider">Invalidation Events</p>
               {advisor.invalidationEvents.map((e, i) => (
                 <div key={i} className="flex items-start gap-2 text-[11px] text-foreground">
-                  <AlertTriangle className="h-3 w-3 text-destructive shrink-0 mt-0.5" />
-                  <span>{e}</span>
+                  <AlertTriangle className="h-3 w-3 text-destructive shrink-0 mt-0.5" /><span>{e}</span>
                 </div>
               ))}
             </div>
@@ -260,6 +251,143 @@ function AdvisorDetailPanel({ advisor, onClose }: { advisor: InvestmentAdvisor; 
             </div>
           </div>
         )}
+
+        {/* ASK TAB — Interactive Q&A */}
+        {tab === "ask" && (
+          <div className="space-y-4">
+            <div className="rounded-xl border border-primary/15 bg-primary/5 p-3">
+              <p className="text-[10px] font-semibold text-primary uppercase tracking-wider flex items-center gap-1"><Send className="h-3 w-3" /> Ask {advisor.name}</p>
+              <p className="text-xs text-muted-foreground mt-1">Click a question to get {advisor.name}'s response from their current analysis.</p>
+            </div>
+
+            <div className="grid grid-cols-1 gap-2">
+              {ASK_ADVISOR_QUESTIONS.map(q => (
+                <button key={q.id} onClick={() => setActiveQuestion(activeQuestion === q.id ? null : q.id)}
+                  className={`rounded-xl border p-3 text-left transition-all ${
+                    activeQuestion === q.id ? "border-primary bg-primary/5" : "border-border bg-card hover:border-primary/20"
+                  }`}>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm">{q.icon}</span>
+                    <span className="text-xs font-medium text-foreground">{q.label}</span>
+                    <ChevronRight className={`h-3 w-3 text-muted-foreground ml-auto transition-transform ${activeQuestion === q.id ? "rotate-90" : ""}`} />
+                  </div>
+                </button>
+              ))}
+            </div>
+
+            {/* Response */}
+            <AnimatePresence mode="wait">
+              {activeQuestion && (
+                <motion.div key={activeQuestion} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
+                  className="rounded-xl border border-primary/20 bg-gradient-to-br from-primary/5 via-card to-card p-4 space-y-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-lg">{advisor.icon}</span>
+                    <p className="text-[10px] font-semibold text-primary uppercase tracking-wider">{advisor.name} responds</p>
+                  </div>
+                  {(() => {
+                    const q = ASK_ADVISOR_QUESTIONS.find(q => q.id === activeQuestion);
+                    if (!q) return null;
+                    const response = getQuestionResponse(q.field);
+                    if (Array.isArray(response)) {
+                      return (
+                        <div className="space-y-1.5">
+                          {response.map((r, i) => (
+                            <div key={i} className="flex items-start gap-2 text-xs text-foreground">
+                              <ArrowRight className="h-3 w-3 text-primary shrink-0 mt-0.5" /><span>{r}</span>
+                            </div>
+                          ))}
+                        </div>
+                      );
+                    }
+                    return <p className="text-sm text-foreground leading-relaxed">{response}</p>;
+                  })()}
+                  <div className="flex items-center gap-2 pt-1">
+                    <ConfidenceBadge level={advisor.confidenceLevel} />
+                    <span className="text-[9px] text-muted-foreground">Based on current analysis</span>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+        )}
+
+        {/* MEMO TAB — Dossier-style intelligence brief */}
+        {tab === "memo" && (
+          <div className="space-y-4">
+            <div className="rounded-xl border border-primary/15 bg-primary/5 p-3 flex items-center gap-2">
+              <FileText className="h-4 w-4 text-primary" />
+              <div>
+                <p className="text-xs font-bold text-foreground">{advisor.name} Intelligence Memo</p>
+                <p className="text-[10px] text-muted-foreground">Long-form analysis brief · Updated {new Date().toLocaleDateString()}</p>
+              </div>
+            </div>
+
+            {/* Memo body — flowing document style */}
+            <div className="rounded-2xl border border-border bg-card p-5 space-y-5 prose-sm">
+              <div>
+                <h4 className="text-xs font-bold text-foreground uppercase tracking-wider mb-2">Executive Summary</h4>
+                <p className="text-xs text-foreground leading-relaxed">{advisor.currentInsight}</p>
+                <p className="text-xs text-muted-foreground leading-relaxed mt-2">{advisor.whyItCares}</p>
+              </div>
+
+              <hr className="border-border" />
+
+              <div>
+                <h4 className="text-xs font-bold text-foreground uppercase tracking-wider mb-2">Detailed Analysis</h4>
+                <p className="text-xs text-foreground leading-relaxed">{advisor.advancedAnalysis}</p>
+              </div>
+
+              <hr className="border-border" />
+
+              <div>
+                <h4 className="text-xs font-bold text-foreground uppercase tracking-wider mb-2">Portfolio Impact Assessment</h4>
+                <p className="text-xs text-foreground leading-relaxed">{advisor.portfolioAwareness}</p>
+              </div>
+
+              <hr className="border-border" />
+
+              <div>
+                <h4 className="text-xs font-bold text-foreground uppercase tracking-wider mb-2">Time Horizon Views</h4>
+                {advisor.viewsByHorizon.map((v, i) => (
+                  <div key={i} className="mb-3">
+                    <p className="text-[10px] font-semibold text-primary capitalize">{v.horizon.replace("-", " ")} Outlook</p>
+                    <p className="text-xs text-foreground leading-relaxed">{v.view}</p>
+                    <p className="text-[10px] text-muted-foreground mt-0.5">Confidence: {v.confidence}</p>
+                  </div>
+                ))}
+              </div>
+
+              <hr className="border-border" />
+
+              <div>
+                <h4 className="text-xs font-bold text-foreground uppercase tracking-wider mb-2">Key Uncertainties & Risks</h4>
+                <p className="text-xs text-foreground leading-relaxed mb-2">{advisor.keyUncertainty}</p>
+                <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mt-3 mb-1">Invalidation Events</p>
+                {advisor.invalidationEvents.map((e, i) => (
+                  <p key={i} className="text-xs text-foreground leading-relaxed">• {e}</p>
+                ))}
+              </div>
+
+              <hr className="border-border" />
+
+              <div>
+                <h4 className="text-xs font-bold text-foreground uppercase tracking-wider mb-2">What I Refuse to Conclude</h4>
+                {advisor.refusesToConclude.map((r, i) => (
+                  <p key={i} className="text-xs text-muted-foreground italic leading-relaxed">• {r}</p>
+                ))}
+              </div>
+
+              <div className="rounded-xl bg-secondary/30 p-3 mt-4">
+                <p className="text-[9px] text-muted-foreground uppercase tracking-wider mb-1">Recommendation</p>
+                <div className="flex items-center gap-2">
+                  <RecommendationBadge rec={advisor.currentRecommendation} />
+                  <ConfidenceBadge level={advisor.confidenceLevel} />
+                  <span className="text-[10px] text-muted-foreground ml-auto">{advisor.confidence}% confidence</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </motion.div>
   );
@@ -270,7 +398,6 @@ function SynthesisPanel() {
   const s = ADVISOR_SYNTHESIS;
   return (
     <div className="space-y-4">
-      {/* Summary */}
       <div className="rounded-2xl border border-primary/15 bg-gradient-to-br from-primary/5 via-card to-card p-5 space-y-3">
         <div className="flex items-center gap-2">
           <Brain className="h-5 w-5 text-primary" />
@@ -285,52 +412,40 @@ function SynthesisPanel() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* Where Advisors Align */}
         <div className="rounded-2xl border border-border bg-card p-4 space-y-2">
           <p className="text-[10px] font-semibold text-[hsl(var(--trust-safe))] uppercase tracking-wider flex items-center gap-1"><Check className="h-3 w-3" /> Where Advisors Align</p>
           {s.alignmentAreas.map((a, i) => (
             <div key={i} className="flex items-start gap-2 text-[11px] text-foreground">
-              <Check className="h-3 w-3 text-[hsl(var(--trust-safe))] shrink-0 mt-0.5" />
-              <span>{a}</span>
+              <Check className="h-3 w-3 text-[hsl(var(--trust-safe))] shrink-0 mt-0.5" /><span>{a}</span>
             </div>
           ))}
         </div>
-
-        {/* Strongest Opportunities */}
         <div className="rounded-2xl border border-border bg-card p-4 space-y-2">
           <p className="text-[10px] font-semibold text-primary uppercase tracking-wider flex items-center gap-1"><Lightbulb className="h-3 w-3" /> Strongest Opportunities</p>
           {s.strongestOpportunities.map((o, i) => (
             <div key={i} className="flex items-start gap-2 text-[11px] text-foreground">
-              <TrendingUp className="h-3 w-3 text-primary shrink-0 mt-0.5" />
-              <span>{o}</span>
+              <TrendingUp className="h-3 w-3 text-primary shrink-0 mt-0.5" /><span>{o}</span>
             </div>
           ))}
         </div>
-
-        {/* Largest Risks */}
         <div className="rounded-2xl border border-border bg-card p-4 space-y-2">
           <p className="text-[10px] font-semibold text-destructive uppercase tracking-wider flex items-center gap-1"><AlertTriangle className="h-3 w-3" /> Largest Risks</p>
           {s.largestRisks.map((r, i) => (
             <div key={i} className="flex items-start gap-2 text-[11px] text-foreground">
-              <AlertTriangle className="h-3 w-3 text-destructive shrink-0 mt-0.5" />
-              <span>{r}</span>
+              <AlertTriangle className="h-3 w-3 text-destructive shrink-0 mt-0.5" /><span>{r}</span>
             </div>
           ))}
         </div>
-
-        {/* Review Next */}
         <div className="rounded-2xl border border-border bg-card p-4 space-y-2">
           <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1"><Clock className="h-3 w-3" /> Review Next</p>
           {s.reviewNext.map((r, i) => (
             <div key={i} className="flex items-start gap-2 text-[11px] text-foreground">
-              <ArrowRight className="h-3 w-3 text-muted-foreground shrink-0 mt-0.5" />
-              <span>{r}</span>
+              <ArrowRight className="h-3 w-3 text-muted-foreground shrink-0 mt-0.5" /><span>{r}</span>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Divergence / Debate Areas */}
       <div className="space-y-3">
         <p className="text-[10px] font-semibold text-[hsl(var(--trust-warn))] uppercase tracking-wider flex items-center gap-1"><MessageSquare className="h-3 w-3" /> Where Advisors Diverge</p>
         {s.divergenceAreas.map((d, i) => (
@@ -356,6 +471,108 @@ function SynthesisPanel() {
           </div>
         ))}
       </div>
+    </div>
+  );
+}
+
+// ── Ask the Board Panel ──
+function AskBoardPanel() {
+  const s = ADVISOR_SYNTHESIS;
+  const [activeQ, setActiveQ] = useState<string | null>(null);
+
+  return (
+    <div className="space-y-4">
+      <div className="rounded-2xl border border-primary/15 bg-gradient-to-br from-primary/5 via-card to-card p-5 space-y-2">
+        <div className="flex items-center gap-2">
+          <Brain className="h-5 w-5 text-primary" />
+          <h3 className="text-sm font-bold text-foreground">Ask the Board</h3>
+        </div>
+        <p className="text-xs text-muted-foreground">Click a question to see what the entire advisor council thinks.</p>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        {ASK_BOARD_QUESTIONS.map(q => (
+          <button key={q.id} onClick={() => setActiveQ(activeQ === q.id ? null : q.id)}
+            className={`rounded-xl border p-4 text-left transition-all ${
+              activeQ === q.id ? "border-primary bg-primary/5" : "border-border bg-card hover:border-primary/20"
+            }`}>
+            <div className="flex items-center gap-2">
+              <span className="text-lg">{q.icon}</span>
+              <span className="text-xs font-semibold text-foreground">{q.label}</span>
+              <ChevronRight className={`h-3 w-3 text-muted-foreground ml-auto transition-transform ${activeQ === q.id ? "rotate-90" : ""}`} />
+            </div>
+          </button>
+        ))}
+      </div>
+
+      <AnimatePresence mode="wait">
+        {activeQ && (
+          <motion.div key={activeQ} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
+            className="rounded-2xl border border-primary/20 bg-card p-5 space-y-4">
+            {activeQ === "bq1" && (
+              <>
+                <p className="text-[10px] font-semibold text-primary uppercase tracking-wider">Board Summary</p>
+                <p className="text-sm text-foreground leading-relaxed">{s.summary}</p>
+                <div className="flex gap-2">
+                  {s.waitingSmarter && <span className="rounded-full bg-[hsl(var(--trust-warn))]/10 px-2 py-0.5 text-[9px] text-[hsl(var(--trust-warn))]">Waiting is Smarter</span>}
+                  {s.actionJustified && <span className="rounded-full bg-[hsl(var(--trust-safe))]/10 px-2 py-0.5 text-[9px] text-[hsl(var(--trust-safe))]">Action Justified</span>}
+                </div>
+                <div className="space-y-2 pt-2">
+                  {INVESTMENT_ADVISORS.slice(0, 5).map(adv => (
+                    <div key={adv.id} className="flex items-start gap-2 rounded-xl bg-secondary/20 p-2.5">
+                      <span className="text-sm">{adv.icon}</span>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[10px] font-semibold text-foreground">{adv.name}</p>
+                        <p className="text-[10px] text-muted-foreground line-clamp-1">{adv.currentInsight}</p>
+                      </div>
+                      <ConfidenceBadge level={adv.confidenceLevel} />
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
+            {activeQ === "bq2" && (
+              <>
+                <p className="text-[10px] font-semibold text-[hsl(var(--trust-warn))] uppercase tracking-wider">Top Disagreements</p>
+                {s.divergenceAreas.map((d, i) => (
+                  <div key={i} className="rounded-xl border border-[hsl(var(--trust-warn))]/20 bg-secondary/10 p-3 space-y-2">
+                    <p className="text-xs font-semibold text-foreground">{d.topic}</p>
+                    {d.positions.map(pos => {
+                      const adv = INVESTMENT_ADVISORS.find(a => a.id === pos.advisorId);
+                      return (
+                        <div key={pos.advisorId} className="flex items-start gap-2 text-[10px]">
+                          <span>{adv?.icon}</span>
+                          <span className="text-foreground"><strong>{adv?.name}:</strong> {pos.position}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                ))}
+              </>
+            )}
+            {activeQ === "bq3" && (
+              <>
+                <p className="text-[10px] font-semibold text-[hsl(var(--trust-safe))] uppercase tracking-wider">Where Advisors Align</p>
+                {s.alignmentAreas.map((a, i) => (
+                  <div key={i} className="flex items-start gap-2 text-xs text-foreground">
+                    <Check className="h-3 w-3 text-[hsl(var(--trust-safe))] shrink-0 mt-0.5" /><span>{a}</span>
+                  </div>
+                ))}
+              </>
+            )}
+            {activeQ === "bq4" && (
+              <>
+                <p className="text-[10px] font-semibold text-destructive uppercase tracking-wider">Strongest Arguments Against Action</p>
+                {s.largestRisks.map((r, i) => (
+                  <div key={i} className="flex items-start gap-2 text-xs text-foreground">
+                    <AlertTriangle className="h-3 w-3 text-destructive shrink-0 mt-0.5" /><span>{r}</span>
+                  </div>
+                ))}
+              </>
+            )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
@@ -432,7 +649,6 @@ export default function AdvisorBoard() {
   return (
     <div className="mx-auto max-w-7xl space-y-5">
       <DemoModeBadge />
-      {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div>
           <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Brain className="h-6 w-6 text-primary" /> Investment Advisor Council</h1>
@@ -445,11 +661,12 @@ export default function AdvisorBoard() {
       </div>
 
       {/* View Switcher */}
-      <div className="flex gap-1.5">
+      <div className="flex gap-1.5 flex-wrap">
         {([
           { id: "council", label: "Council View", icon: Brain },
           { id: "synthesis", label: "Chief Synthesis", icon: Lightbulb },
           { id: "debate", label: "Debate View", icon: MessageSquare },
+          { id: "ask-board", label: "Ask the Board", icon: HelpCircle },
           { id: "compare", label: "Compare", icon: BarChart3 },
         ] as { id: ViewMode; label: string; icon: typeof Brain }[]).map(v => (
           <button key={v.id} onClick={() => setView(v.id)}
@@ -468,7 +685,6 @@ export default function AdvisorBoard() {
             <motion.div key={adv.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }}
               onClick={() => setSelectedAdvisor(adv)}
               className="rounded-2xl border border-border bg-card p-5 space-y-3 hover:border-primary/20 transition-all cursor-pointer group">
-              {/* Header */}
               <div className="flex items-start gap-3">
                 <span className="text-3xl">{adv.icon}</span>
                 <div className="flex-1 min-w-0">
@@ -484,13 +700,9 @@ export default function AdvisorBoard() {
                   <RecommendationBadge rec={adv.currentRecommendation} />
                 </div>
               </div>
-
-              {/* Current Insight */}
               <div className="rounded-xl border border-border bg-secondary/20 p-3">
                 <p className="text-xs text-foreground leading-relaxed">{adv.currentInsight}</p>
               </div>
-
-              {/* Watch Items */}
               <div className="flex flex-wrap gap-1.5">
                 {adv.watches.slice(0, 4).map(w => (
                   <span key={w.label} className="flex items-center gap-1 rounded-full bg-secondary px-2 py-0.5 text-[9px] text-muted-foreground">
@@ -499,24 +711,18 @@ export default function AdvisorBoard() {
                 ))}
                 {adv.watches.length > 4 && <span className="text-[9px] text-muted-foreground">+{adv.watches.length - 4} more</span>}
               </div>
-
-              {/* What Changed */}
               {adv.whatChanged.length > 0 && (
                 <div className="flex items-start gap-1.5 text-[10px] text-muted-foreground">
                   <RefreshCw className="h-3 w-3 shrink-0 mt-0.5" />
                   <span className="line-clamp-1">{adv.whatChanged[0]}</span>
                 </div>
               )}
-
-              {/* Footer */}
               <div className="flex items-center justify-between text-[10px] text-muted-foreground pt-1 border-t border-border">
                 <span className="capitalize">{adv.riskSensitivity} risk · {adv.timeHorizonFocus.replace("-", " ")}</span>
                 <span className="flex items-center gap-1 text-primary opacity-0 group-hover:opacity-100 transition-opacity">
                   Full analysis <ChevronRight className="h-3 w-3" />
                 </span>
               </div>
-
-              {/* Confidence bar */}
               <div className="h-1 rounded-full bg-secondary overflow-hidden">
                 <div className="h-full rounded-full transition-all" style={{ width: `${adv.confidence}%`, backgroundColor: adv.color }} />
               </div>
@@ -525,10 +731,10 @@ export default function AdvisorBoard() {
         </div>
       )}
 
-      {/* Synthesis View */}
       {view === "synthesis" && <SynthesisPanel />}
 
-      {/* Debate View */}
+      {view === "ask-board" && <AskBoardPanel />}
+
       {view === "debate" && (
         <div className="space-y-4">
           <div className="rounded-2xl border border-primary/15 bg-primary/5 p-4 space-y-2">
@@ -568,10 +774,8 @@ export default function AdvisorBoard() {
         </div>
       )}
 
-      {/* Compare View */}
       {view === "compare" && <ComparePanel advisors={INVESTMENT_ADVISORS} />}
 
-      {/* Detail Slide-Over */}
       <AnimatePresence>
         {selectedAdvisor && (
           <>

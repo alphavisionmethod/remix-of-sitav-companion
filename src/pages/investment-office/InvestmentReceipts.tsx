@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FileCheck, Download, Target, Shield, Brain, RefreshCw, ChevronDown, ChevronUp } from "lucide-react";
+import { FileCheck, Download, Target, Shield, Brain, RefreshCw, ChevronDown, ChevronUp, MessageSquare, CheckCircle, AlertTriangle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useAuth } from "@/contexts/AuthContext";
@@ -7,6 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { DEMO_RECEIPTS } from "@/lib/demo-data/investment";
+import { POST_TRADE_REVIEWS } from "@/lib/investment-office/mock-data";
 
 interface Receipt {
   id: string;
@@ -22,11 +23,13 @@ interface Receipt {
 const TYPE_ICONS: Record<string, typeof Target> = { trade: Target, approval: Shield, thesis: Brain, "risk-change": Shield, rebalance: RefreshCw, "advisor-snapshot": Brain };
 const TYPE_COLORS: Record<string, string> = { trade: "bg-primary/10 text-primary", approval: "bg-[hsl(var(--trust-safe))]/10 text-[hsl(var(--trust-safe))]", thesis: "bg-accent/10 text-accent", "risk-change": "bg-[hsl(var(--trust-warn))]/10 text-[hsl(var(--trust-warn))]", rebalance: "bg-secondary text-muted-foreground", "advisor-snapshot": "bg-primary/10 text-primary" };
 const STATUS_COLORS: Record<string, string> = { completed: "text-[hsl(var(--trust-safe))]", approved: "text-[hsl(var(--trust-safe))]", rejected: "text-destructive", pending: "text-[hsl(var(--trust-warn))]" };
+const VERDICT_COLORS: Record<string, string> = { "well-executed": "bg-[hsl(var(--trust-safe))]/10 text-[hsl(var(--trust-safe))]", acceptable: "bg-primary/10 text-primary", caution: "bg-[hsl(var(--trust-warn))]/10 text-[hsl(var(--trust-warn))]", "needs-action": "bg-destructive/10 text-destructive" };
 
 export default function InvestmentReceipts() {
   const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [showReview, setShowReview] = useState<string | null>(null);
 
   const { data: realReceipts } = useQuery({
     queryKey: ["investment-receipts", user?.id],
@@ -62,6 +65,69 @@ export default function InvestmentReceipts() {
         </button>
       </div>
 
+      {/* Post-Trade Reviews Section */}
+      <div className="rounded-2xl border border-primary/15 bg-card p-6 space-y-4">
+        <h3 className="text-sm font-semibold text-foreground flex items-center gap-2">
+          <MessageSquare className="h-4 w-4 text-primary" /> Post-Trade Reviews
+        </h3>
+        <p className="text-xs text-muted-foreground">Advisor commentary on completed trades — what was expected, what changed, and lessons learned.</p>
+        <div className="space-y-3">
+          {POST_TRADE_REVIEWS.map(review => (
+            <div key={review.id} className="rounded-xl border border-border bg-secondary/10 overflow-hidden">
+              <button onClick={() => setShowReview(showReview === review.id ? null : review.id)}
+                className="w-full p-4 text-left flex items-center gap-3">
+                <CheckCircle className="h-4 w-4 text-[hsl(var(--trust-safe))] shrink-0" />
+                <div className="flex-1">
+                  <p className="text-xs font-semibold text-foreground">{review.tradeTitle}</p>
+                  <p className="text-[10px] text-muted-foreground">{review.date}</p>
+                </div>
+                {showReview === review.id ? <ChevronUp className="h-4 w-4 text-muted-foreground" /> : <ChevronDown className="h-4 w-4 text-muted-foreground" />}
+              </button>
+
+              {showReview === review.id && (
+                <div className="border-t border-border p-4 space-y-4">
+                  {/* Advisor Comments */}
+                  <div className="space-y-2">
+                    <p className="text-[10px] font-semibold text-foreground uppercase tracking-wider">Advisor Commentary</p>
+                    {review.advisorComments.map(ac => (
+                      <div key={ac.advisorId} className="rounded-xl border border-border bg-card p-3 space-y-1.5">
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm">{ac.advisorIcon}</span>
+                          <span className="text-xs font-semibold text-foreground">{ac.advisorName}</span>
+                          <span className={`rounded-full px-2 py-0.5 text-[8px] font-bold uppercase tracking-wider ${VERDICT_COLORS[ac.verdict]}`}>
+                            {ac.verdict.replace("-", " ")}
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-foreground leading-relaxed">{ac.comment}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Thesis Accuracy */}
+                  <div className="rounded-xl border border-[hsl(var(--trust-safe))]/20 bg-[hsl(var(--trust-safe))]/5 p-3 space-y-1">
+                    <p className="text-[10px] font-semibold text-[hsl(var(--trust-safe))] uppercase tracking-wider">Thesis Accuracy</p>
+                    <p className="text-xs text-foreground leading-relaxed">{review.thesisAccuracy}</p>
+                  </div>
+
+                  {/* What Changed */}
+                  <div className="rounded-xl border border-border bg-secondary/20 p-3 space-y-1">
+                    <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">What Changed Since Entry</p>
+                    <p className="text-xs text-foreground leading-relaxed">{review.whatChanged}</p>
+                  </div>
+
+                  {/* Lessons */}
+                  <div className="rounded-xl border border-primary/15 bg-primary/5 p-3 space-y-1">
+                    <p className="text-[10px] font-semibold text-primary uppercase tracking-wider">Lessons Learned</p>
+                    <p className="text-xs text-foreground leading-relaxed">{review.lessonsLearned}</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Receipt List */}
       <div className="space-y-3">
         {receipts.map(receipt => {
           const Icon = TYPE_ICONS[receipt.type] || Target;
@@ -102,11 +168,9 @@ export default function InvestmentReceipts() {
                 </div>
               </div>
 
-              {/* Expanded Detail */}
               {isExpanded && (
                 <div className="border-t border-border bg-secondary/10 p-5 space-y-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {/* Proof Chain */}
                     <div className="space-y-2">
                       <p className="text-[10px] font-semibold text-foreground uppercase tracking-wider">Proof Chain</p>
                       <div className="space-y-1.5">
@@ -125,7 +189,6 @@ export default function InvestmentReceipts() {
                       </div>
                     </div>
 
-                    {/* Linked Context */}
                     <div className="space-y-2">
                       <p className="text-[10px] font-semibold text-foreground uppercase tracking-wider">Linked Context</p>
                       <div className="space-y-1.5 text-[10px]">

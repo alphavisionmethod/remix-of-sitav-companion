@@ -559,6 +559,93 @@ export const PLATFORM_PERMISSIONS: Record<string, string[]> = {
   "pc-meta": [],
 };
 
+// ── Advisor Event Alerts (for Boardroom) ──
+export const ADVISOR_EVENT_ALERTS = [
+  { id: "aea1", catalystId: "cc1", advisorId: "adv-macro", advisorName: "Atlas", advisorIcon: "🌍", title: "CPI Release — May 14", urgency: "high" as const, advisorNote: "This is the single most important data point for the Fed rate path. Expect volatility across rate-sensitive assets. If CPI comes in below 2.8%, June cut probability rises significantly.", actionSuggestion: "Review Fed rate cut position (FED-CUT-JUN) sizing before release" },
+  { id: "aea2", catalystId: "cc5", advisorId: "adv-equity", advisorName: "Maven", advisorIcon: "📈", title: "NVIDIA GTC Conference — Sep 15", urgency: "high" as const, advisorNote: "Next-gen Blackwell Ultra architecture expected. This is a thesis validation catalyst for NVDA position. Strong reveal could drive 10-15% move.", actionSuggestion: "Hold NVDA position through catalyst; consider adding below $130" },
+  { id: "aea3", catalystId: "cc4", advisorId: "adv-behavioral", advisorName: "Mirror", advisorIcon: "🪞", title: "Tesla Robotaxi Launch — Aug 8", urgency: "moderate" as const, advisorNote: "High narrative event with binary outcome risk. Your monitoring pattern suggests emotional attachment to TSLA thesis. Simulate scenarios before event.", actionSuggestion: "Run upside/downside simulation in Strategy Studio" },
+  { id: "aea4", catalystId: "cc6", advisorId: "adv-crypto", advisorName: "Cipher", advisorIcon: "🔐", title: "Bitcoin Halving Anniversary — Apr 20", urgency: "moderate" as const, advisorNote: "Supply dynamics post-halving historically play out over 12-18 months. We're approaching the window where prior cycles showed strongest returns.", actionSuggestion: "Review BTC thesis conviction and sizing" },
+  { id: "aea5", catalystId: "cc2", advisorId: "adv-macro", advisorName: "Atlas", advisorIcon: "🌍", title: "FOMC Meeting — Jun 18", urgency: "high" as const, advisorNote: "Updated dot plot and press conference are the event. Market currently pricing 62% cut — I think that's 10-15% too aggressive. Expect repricing regardless of outcome.", actionSuggestion: "Position sizing for event volatility; consider hedging" },
+];
+
+// ── Post-Trade Reviews (for Receipts) ──
+export const POST_TRADE_REVIEWS = [
+  {
+    id: "ptr1", receiptId: "rec-1", tradeTitle: "Buy NVDA × 200 shares", date: "2025-08-15",
+    advisorComments: [
+      { advisorId: "adv-equity", advisorName: "Maven", advisorIcon: "📈", comment: "Entry at $95.50 was excellent — below our $100 accumulation zone. Thesis on AI infrastructure supercycle intact and strengthening.", verdict: "well-executed" as const },
+      { advisorId: "adv-risk", advisorName: "Sentinel", advisorIcon: "🛡️", comment: "Position sized at 3.8% of portfolio at entry — within 8% single position policy. Now at 5.6% due to appreciation. Monitor for drift.", verdict: "acceptable" as const },
+      { advisorId: "adv-behavioral", advisorName: "Mirror", advisorIcon: "🪞", comment: "Entry was thesis-driven, not reactive. Good discipline. However, post-purchase monitoring frequency has increased 4x — set alerts and reduce manual checking.", verdict: "caution" as const },
+    ],
+    thesisAccuracy: "Thesis projected 12-18 month appreciation cycle. Currently 8 months in, +41.6% return. On track with original projection.",
+    whatChanged: "AI capex growing faster than expected. Export controls narrower than feared. Competition weaker than assumed.",
+    lessonsLearned: "Conviction sizing paid off. Should have been higher conviction earlier based on supply chain data.",
+  },
+  {
+    id: "ptr2", receiptId: "rec-2", tradeTitle: "Buy BTC × 1.5", date: "2025-11-01",
+    advisorComments: [
+      { advisorId: "adv-crypto", advisorName: "Cipher", advisorIcon: "🔐", comment: "Entry at $62,000 was good timing relative to halving cycle. ETF inflow thesis playing out as expected.", verdict: "well-executed" as const },
+      { advisorId: "adv-macro", advisorName: "Atlas", advisorIcon: "🌍", comment: "Macro backdrop was supportive at entry. Rate cut expectations provided tailwind. Risk is if macro turns hawkish.", verdict: "acceptable" as const },
+      { advisorId: "adv-risk", advisorName: "Sentinel", advisorIcon: "🛡️", comment: "Crypto allocation now at 28% vs 20% policy limit — the position itself was fine but the drift has created a policy breach. Needs trimming.", verdict: "needs-action" as const },
+    ],
+    thesisAccuracy: "Post-halving cycle thesis projected $100K-$125K target. Currently at $97,450 — approaching target. Thesis structurally intact.",
+    whatChanged: "Institutional adoption faster than expected. ETF inflows exceeded projections. Regulatory environment more favorable than assumed.",
+    lessonsLearned: "Should have set automatic rebalancing triggers when position exceeded policy limit.",
+  },
+];
+
+// ── Ask Advisor Questions ──
+export const ASK_ADVISOR_QUESTIONS = [
+  { id: "q1", label: "What matters most?", icon: "🎯", field: "currentInsight" as const },
+  { id: "q2", label: "Why are you cautious?", icon: "⚠️", field: "keyUncertainty" as const },
+  { id: "q3", label: "Explain simply", icon: "💡", field: "beginnerExplanation" as const },
+  { id: "q4", label: "What would change your mind?", icon: "🔄", field: "whatWouldChangeMind" as const },
+  { id: "q5", label: "How would you size this?", icon: "📐", field: "portfolioAwareness" as const },
+  { id: "q6", label: "What's the biggest hidden risk?", icon: "🕳️", field: "advancedAnalysis" as const },
+];
+
+// ── Ask the Board Questions ──
+export const ASK_BOARD_QUESTIONS = [
+  { id: "bq1", label: "What does the board think?", icon: "🧠", responseKey: "summary" as const },
+  { id: "bq2", label: "Top disagreements?", icon: "⚔️", responseKey: "divergenceAreas" as const },
+  { id: "bq3", label: "Where do you align?", icon: "🤝", responseKey: "alignmentAreas" as const },
+  { id: "bq4", label: "Strongest argument against?", icon: "🛑", responseKey: "largestRisks" as const },
+];
+
+// ── Strategy Advisor Comments ──
+export const STRATEGY_ADVISOR_COMMENTS: Record<string, { advisorId: string; advisorName: string; advisorIcon: string; stance: "supportive" | "cautious" | "opposed" | "conditional"; comment: string }[]> = {
+  st1: [
+    { advisorId: "adv-macro", advisorName: "Atlas", advisorIcon: "🌍", stance: "supportive", comment: "Conservative allocation fits late-cycle macro environment. 30% cash provides dry powder for opportunities." },
+    { advisorId: "adv-risk", advisorName: "Sentinel", advisorIcon: "🛡️", stance: "supportive", comment: "Max drawdown -12% is well within acceptable limits. Diversification across asset classes reduces correlation risk." },
+    { advisorId: "adv-behavioral", advisorName: "Mirror", advisorIcon: "🪞", stance: "cautious", comment: "Conservative strategies can lead to performance anxiety when markets rally. Ensure you're comfortable with underperformance in bull moves." },
+  ],
+  st2: [
+    { advisorId: "adv-equity", advisorName: "Maven", advisorIcon: "📈", stance: "supportive", comment: "Growth focus is appropriate if your thesis on AI capex cycle is correct. 50% equity weight captures the upside." },
+    { advisorId: "adv-risk", advisorName: "Sentinel", advisorIcon: "🛡️", stance: "cautious", comment: "Max drawdown -30% is significant. 15% crypto adds tail risk. Ensure position sizing respects drawdown tolerance." },
+    { advisorId: "adv-macro", advisorName: "Atlas", advisorIcon: "🌍", stance: "conditional", comment: "This works in risk-on regime. If macro shifts to risk-off, this portfolio is highly exposed. Monitor regime signals." },
+  ],
+  st3: [
+    { advisorId: "adv-crypto", advisorName: "Cipher", advisorIcon: "🔐", stance: "supportive", comment: "35% crypto allocation captures post-halving cycle. Diversified across BTC/ETH/SOL reduces single-token risk." },
+    { advisorId: "adv-risk", advisorName: "Sentinel", advisorIcon: "🛡️", stance: "opposed", comment: "Max drawdown -45% exceeds reasonable risk tolerance for most portfolios. Crypto correlation in stress events makes this dangerous." },
+    { advisorId: "adv-behavioral", advisorName: "Mirror", advisorIcon: "🪞", stance: "cautious", comment: "Crypto-heavy portfolios create strong emotional volatility. High monitoring frequency and impulsive trading often follow." },
+  ],
+  st4: [
+    { advisorId: "adv-events", advisorName: "Oracle", advisorIcon: "🎯", stance: "supportive", comment: "Event markets offer uncorrelated returns. 30% allocation with 35% cash reserves provides asymmetric payoff profile." },
+    { advisorId: "adv-risk", advisorName: "Sentinel", advisorIcon: "🛡️", stance: "conditional", comment: "Acceptable if event positions are individually small and time-bounded. Resolution risk must be managed per-contract." },
+    { advisorId: "adv-macro", advisorName: "Atlas", advisorIcon: "🌍", stance: "cautious", comment: "Event markets are thesis-dependent. Ensure each position has a clear catalyst calendar and exit condition." },
+  ],
+  st5: [
+    { advisorId: "adv-commodities", advisorName: "Forge", advisorIcon: "⛏️", stance: "supportive", comment: "Commodity hedge is prudent given geopolitical risk and potential inflation resurgence. 35% allocation provides real diversification." },
+    { advisorId: "adv-macro", advisorName: "Atlas", advisorIcon: "🌍", stance: "supportive", comment: "Commodities perform well in inflationary and geopolitical stress scenarios — natural hedge for the rest of the portfolio." },
+    { advisorId: "adv-equity", advisorName: "Maven", advisorIcon: "📈", stance: "cautious", comment: "25% equity weight may miss secular growth trends. Consider whether this is a permanent allocation or tactical hedge." },
+  ],
+  st6: [
+    { advisorId: "adv-income", advisorName: "Yield", advisorIcon: "💰", stance: "supportive", comment: "50% cash with income instruments provides stability. Expected 4-6% return with -8% max drawdown is excellent risk-adjusted." },
+    { advisorId: "adv-risk", advisorName: "Sentinel", advisorIcon: "🛡️", stance: "supportive", comment: "Lowest risk profile available. Appropriate for capital preservation or near-term liquidity needs." },
+    { advisorId: "adv-equity", advisorName: "Maven", advisorIcon: "📈", stance: "cautious", comment: "Zero crypto and minimal equity means missing the strongest return drivers. Only appropriate if capital preservation is the primary goal." },
+  ],
+};
+
 // ── Demo Source Classification ─────────────────────────────────
 export const __DEMO_SOURCE__ = true;
 export const __DATA_CLASSIFICATION__ = "demo-scenario" as const;
