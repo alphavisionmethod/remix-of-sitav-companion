@@ -1,69 +1,70 @@
 
 
-# Audit Results: Ultra-Efficient Intelligence Architecture
+# Audit: Ultra-Efficient Intelligence Architecture — Full Check
 
-## Verified as Complete and Wired (No Changes Needed)
+## Status: 95% Clean — 3 Issues Found
 
-### Backend Layers (3.2–3.11) — All 10 layers + pipeline orchestrator
-All implemented as pure logic in `src/lib/intelligence-architecture/`:
+### What's Fully Verified and Working
 
-| Layer | File | Key Functions | Lines |
-|-------|------|---------------|-------|
-| 3.2 Signal Intake | `signal-intake.ts` | `normalizeSignal()`, `batchNormalize()`, `filterByRoute()` — 13 sources, 6 routes | ~100 |
-| 3.3 Asset Generation | `asset-generation.ts` | `generateAsset()`, `shouldGenerateAsset()` — 11 sources, invalidation triggers, freshness TTL | ~142 |
-| 3.4 Pattern Extraction | `pattern-extraction.ts` | `extractPattern()`, `fingerprintSimilarity()`, `findMatchingPatterns()` — 12 types, privacy gating | ~159 |
-| 3.5 Differential Reasoning | `differential-reasoning-engine.ts` | `analyzeDifferential()` — delta detection, materiality scoring, 4 actions | ~105 |
-| 3.6 Packet Compiler | `domain-packet-compiler.ts` | `compileDomainPacket()` — 9 domains, freshness, recompile check | ~130 |
-| 3.7 Reuse Decision | `reuse-decision-engine.ts` | `decideReuse()` — 4 modes, stakes-aware, differential-integrated | ~140 |
-| 3.8 Escalation | `differential-reasoning-engine.ts` | `evaluateEscalation()` — weighted scoring, 4 tiers, cost estimation | ~55 |
-| 3.9 Efficiency Scoring | `efficiency-scoring.ts` | `computeEfficiencyScore()` — 10 metrics, weighted composite, trend | ~72 |
-| 3.10 Outcome Economics | `outcome-economics-engine.ts` | `evaluateOutcomeEconomics()`, `analyzeReasoningPaths()` — 14 categories, value benchmarks | ~140 |
-| 3.11 Cross-Tenant | `cross-tenant-generalization.ts` | `generalizePattern()`, `evaluateGeneralizationEligibility()`, `anonymizeFingerprint()` | ~105 |
-| Pipeline | `intelligence-pipeline.ts` | `processSignal()` — orchestrates all layers into one flow | ~208 |
+**Backend Layers (10/10 + pipeline)**
+All 12 files in `src/lib/intelligence-architecture/` contain real logic, no stubs:
+- Signal Intake (13 sources, 6 routes, novelty scoring)
+- Asset Generation (11 sources, TTL, invalidation triggers)
+- Pattern Extraction (12 types, fingerprint similarity, privacy classification)
+- Differential Reasoning (delta detection, materiality scoring, 4 actions)
+- Domain Packet Compiler (9 domains, freshness, compression ratio)
+- Reuse Decision Engine (4 modes, stakes-aware, differential-integrated)
+- Escalation Engine (weighted scoring, 4 tiers)
+- Efficiency Scoring (10 metrics, weighted composite)
+- Outcome Economics Engine (14 categories, reasoning path analysis, value benchmarks)
+- Cross-Tenant Generalization (privacy gating, anonymization, eligibility checks)
+- Pipeline Orchestrator (wires all layers via `processSignal()`)
 
-### UI Screens (UIE01–UIE11) — All 11 present with routes
-All registered in `AdminRoutes.tsx` (routes a20–a30):
+**Compute Governance (7/7 files)**
+All in `src/lib/compute-governance/`: model routing (4 cost classes), budget policy (envelope system with forecasting), context compression (8 methods), margin protection (11 anomaly types), mission cost tracker, plan entitlements (5 tiers + 9 add-ons + fair use).
 
-| Screen | File | Route | Components |
-|--------|------|-------|------------|
-| UIE01 Reuse Overview | `IntelligenceReuseOverview.tsx` (153 lines) | `/admin/intelligence/reuse` | Hero metrics, asset class table, domain reuse, invalidation feed, confidence trend |
-| UIE02 Asset Library | `IntelligenceAssetLibrary.tsx` (173 lines) | `/admin/intelligence/assets` | Search/filter, asset grid table, invalidation rules, type distribution |
-| UIE03 Differential Explorer | `DifferentialReasoningExplorer.tsx` (157 lines) | `/admin/intelligence/differential` | Summary cards, diff table, materiality gauge, reasoning mode, savings |
-| UIE04 Packet Inspector | `IntelligencePacketInspector.tsx` (122 lines) | `/admin/intelligence/packets` | Packet summary, content tabs, compression, freshness, compiler metadata |
-| UIE05 Efficiency Scoreboard | `AIEfficiencyScoreboard.tsx` (210 lines) | `/admin/intelligence/efficiency` | Tabs: agents/workflows/paths, ranking table, composite scores |
-| UIE06 Outcome Economics | `OutcomeEconomicsBoard.tsx` | `/admin/intelligence/outcomes` | Value hero, cost/outcome table, payback, high-value/waste panels, reasoning paths |
-| UIE07 Escalation Control | `EscalationControlCenter.tsx` (145 lines) | `/admin/intelligence/escalation` | Timeline, trigger breakdown, cost impact, approval-linked panel |
-| UIE08 Pattern Learning | `PatternLearningCenter.tsx` | `/admin/intelligence/patterns` | Pattern grid, fingerprint viewer, confidence, reusability, privacy |
-| UIE09 Zero-Waste Prompts | `ZeroWastePromptView.tsx` | `/admin/intelligence/prompts` | Profile table, redundancy, packet-driven usage, cost reduction, offenders |
-| UIE10 Smart Digest | `SmartDigestCenter.tsx` | `/admin/intelligence/digests` | Digest library, freshness, hit rate, avoided spend, stale warnings |
-| UIE11 Cross-Tenant Gov | `CrossTenantGovernance.tsx` | `/admin/intelligence/cross-tenant` | Approval table, privacy controls, eligibility, restrictions |
+**UI Screens (11/11)**
+All registered in `AdminRoutes.tsx` at routes a20–a30.
 
-### Wiring — Verified
-- Pipeline: `intelligence-pipeline.ts` → wires signal intake → asset generation → pattern extraction → differential reasoning → reuse decision → outcome economics
-- Budget gate: `budget-gate.ts` → called by `ai-capability-client.ts` before every AI invocation
-- Persistence: `intelligence-asset-persistence.ts` → full CRUD for `intelligence_assets_library` table
-- DB functions: `check_ai_budget_policies` (real-time budget enforcement), `aggregate_ai_daily_spend`
-- Demo data: `admin-intelligence.ts` — 185 lines of realistic data for all 11 screens
-- Barrel export: `intelligence-architecture/index.ts` — all types and functions exported
+**Wiring**
+- `budget-gate.ts` → `ai-capability-client.ts` → `check-ai-budget` edge function → `check_ai_budget_policies` DB function
+- Barrel exports in `index.ts` for both modules
+- Demo data in `admin-intelligence.ts` (185 lines)
 
 ---
 
-## One Bug Found — Fix Required
+## 3 Issues to Fix
 
-**File**: `src/pages/admin/intelligence/IntelligenceAssetLibrary.tsx`, line 18
+### Issue 1: Duplicate Outcome Economics — Two Competing Implementations
 
-**Problem**: State declaration outside component body — this is dead code that doesn't actually work as React state:
-```typescript
-const [selectedAsset, setSelectedAsset] = [null as typeof DEMO_ASSETS[0] | null, (_: typeof DEMO_ASSETS[0] | null) => {}];
-```
+**`efficiency-scoring.ts`** contains `OutcomeEconomicsReport` + `computeOutcomeEconomics()` + `OutcomeRecord` type.
+**`outcome-economics-engine.ts`** contains `OutcomeEconomicsResult` + `evaluateOutcomeEconomics()` + `OutcomeCategory` type.
 
-**Fix**: Move inside the component as proper `useState`, and add an asset detail drawer to complete the UIE02 spec (AssetDetailDrawer, ReuseHistoryPanel, FreshnessAndConfidenceStrip, InvalidationRulesCard are listed as required components but the drawer is not implemented).
+These are NOT duplicates — they serve different purposes (batch reporting vs single-outcome evaluation). However, the naming overlap is confusing and the `efficiency-scoring.ts` version is an older pattern that should be refactored to delegate to `outcome-economics-engine.ts`.
 
-### Changes
+**Fix**: Refactor `efficiency-scoring.ts` to import and use types/functions from `outcome-economics-engine.ts` for outcome economics, keeping only the efficiency scoring logic in that file. Update barrel export in `index.ts`.
+
+### Issue 2: Duplicate Intelligence Dashboard — `IntelligenceEfficiencyBoard` vs `AIEfficiencyScoreboard`
+
+`src/pages/admin/IntelligenceEfficiencyBoard.tsx` (558 lines, route `/admin/intelligence-efficiency`) overlaps heavily with `src/pages/admin/intelligence/AIEfficiencyScoreboard.tsx` (route `/admin/intelligence/efficiency`). Both show efficiency scores, outcome economics, and reuse metrics.
+
+**Fix**: Remove `IntelligenceEfficiencyBoard.tsx` (the older, monolithic page), update its route in `AdminRoutes.tsx` to redirect to `/admin/intelligence/efficiency`, and remove the lazy import. The newer `AIEfficiencyScoreboard` is more focused and properly organized within the intelligence screen family.
+
+### Issue 3: `AnonymizedPattern` in `efficiency-scoring.ts` Duplicates Cross-Tenant Types
+
+`efficiency-scoring.ts` defines `AnonymizedPattern` (lines 169-180) which overlaps with `GeneralizedPattern` in `cross-tenant-generalization.ts`. The barrel export exposes both.
+
+**Fix**: Remove `AnonymizedPattern` from `efficiency-scoring.ts` and update any references to use `GeneralizedPattern` from `cross-tenant-generalization.ts`. Update barrel export.
+
+---
+
+## Changes Summary
 
 | File | Action |
 |------|--------|
-| `src/pages/admin/intelligence/IntelligenceAssetLibrary.tsx` | Fix line 18 — move `selectedAsset` state inside component as `useState`, add an AssetDetailDrawer panel that shows when an asset row is clicked (detail view with freshness/confidence strip, reuse history, invalidation rules per spec) |
-
-This is the only change needed. Everything else — all 10 backend layers, the pipeline orchestrator, all 11 UI screens, all wiring, persistence, budget gate integration, demo data — is fully implemented with real logic, no stubs, no duplicates.
+| `src/lib/intelligence-architecture/efficiency-scoring.ts` | Remove `OutcomeEconomicsReport`, `computeOutcomeEconomics()`, `OutcomeRecord`, and `AnonymizedPattern`. Keep only `EfficiencyScore`, `computeEfficiencyScore()`, and `OutcomeType`. |
+| `src/lib/intelligence-architecture/index.ts` | Update barrel exports — remove duplicate types, ensure clean single-source exports |
+| `src/pages/admin/IntelligenceEfficiencyBoard.tsx` | Delete file (duplicate of newer AIEfficiencyScoreboard) |
+| `src/routes/AdminRoutes.tsx` | Remove `IntelligenceEfficiencyBoard` import, redirect `/admin/intelligence-efficiency` → `/admin/intelligence/efficiency` |
+| Any files importing from the old `IntelligenceEfficiencyBoard` or removed types | Update imports |
 
