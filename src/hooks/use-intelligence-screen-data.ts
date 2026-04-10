@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — useIntelligenceScreenData
 // Fetches real Supabase data for intelligence screens,
-// falls back to demo data when no real data exists
+// falls back to demo data when no real data exists.
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useEffect, useCallback, useMemo } from "react";

@@ -30,6 +30,7 @@ export interface PersistedActionLineage {
   linked_memory_ids: string[];
   linked_policy_ids: string[];
   linked_receipt_ids: string[];
+  linked_projection_ids: string[];
   initiating_surface: string | null;
   stuck_since: string | null;
   created_at: string;
@@ -200,6 +201,21 @@ export async function addProofToAction(actionId: string, proofId: string): Promi
   const ids = [...new Set([...(data.proof_ids ?? []), proofId])];
   const { error } = await fromDynamicTable("os_action_lineage")
     .update({ proof_ids: ids })
+    .eq("id", actionId);
+
+  return !error;
+}
+
+export async function linkProjectionToAction(actionId: string, projectionId: string): Promise<boolean> {
+  const { data } = await fromDynamicTable("os_action_lineage")
+    .select("linked_projection_ids")
+    .eq("id", actionId)
+    .maybeSingle();
+  if (!data) return false;
+
+  const ids = [...new Set([...(data.linked_projection_ids ?? []), projectionId])];
+  const { error } = await fromDynamicTable("os_action_lineage")
+    .update({ linked_projection_ids: ids })
     .eq("id", actionId);
 
   return !error;

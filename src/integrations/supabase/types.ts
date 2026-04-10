@@ -16708,6 +16708,7 @@ export type Database = {
           linked_event_ids: string[]
           linked_memory_ids: string[]
           linked_policy_ids: string[]
+          linked_projection_ids: string[] | null
           linked_receipt_ids: string[]
           proof_ids: string[]
           replayable: boolean
@@ -16733,6 +16734,7 @@ export type Database = {
           linked_event_ids?: string[]
           linked_memory_ids?: string[]
           linked_policy_ids?: string[]
+          linked_projection_ids?: string[] | null
           linked_receipt_ids?: string[]
           proof_ids?: string[]
           replayable?: boolean
@@ -16758,6 +16760,7 @@ export type Database = {
           linked_event_ids?: string[]
           linked_memory_ids?: string[]
           linked_policy_ids?: string[]
+          linked_projection_ids?: string[] | null
           linked_receipt_ids?: string[]
           proof_ids?: string[]
           replayable?: boolean
