@@ -756,6 +756,18 @@ export class SetupOrchestrationEngine {
     return this.definitions.get(phaseId)?.required ?? false;
   }
 
+  /** Compute tone context based on stress/overwhelm signals */
+  getToneContext(): { isOverwhelmed: boolean; copyDensity: "light" | "standard" | "rich"; toneClass: "calm" | "neutral" | "energetic" } {
+    const evaluator = this.branchEvaluators.get("tone:overwhelmed");
+    const isOverwhelmed = evaluator ? evaluator(this.session) : false;
+    const style = this.getSessionData<string>("setupStyle") ?? "guided";
+    return {
+      isOverwhelmed,
+      copyDensity: isOverwhelmed ? "light" : style === "advanced" ? "rich" : "standard",
+      toneClass: isOverwhelmed ? "calm" : "neutral",
+    };
+  }
+
   /** Cleanup all timers */
   destroy(): void {
     for (const [, handle] of this.timeoutHandles) clearTimeout(handle);
