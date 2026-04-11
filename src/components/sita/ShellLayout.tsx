@@ -47,6 +47,8 @@ const UpdateBanner = lazy(() => import("./UpdateBanner").then(m => ({ default: m
 const UniversalCommandSurface = lazy(() => import("./shell/UniversalCommandSurface").then(m => ({ default: m.UniversalCommandSurface })));
 const ShellAmbientBackground = lazy(() => import("./shell/ShellAmbientBackground").then(m => ({ default: m.ShellAmbientBackground })));
 const DesktopDock = lazy(() => import("./DesktopDock").then(m => ({ default: m.DesktopDock })));
+const CommandPalette = lazy(() => import("./CommandPalette").then(m => ({ default: m.CommandPalette })));
+const NotificationCenterPanel = lazy(() => import("./NotificationCenter").then(m => ({ default: m.NotificationCenter })));
 const AppRecentsStripLazy = lazy(() => import("./AppRecentsStrip").then(m => ({ default: m.AppRecentsStrip })));
 
 
