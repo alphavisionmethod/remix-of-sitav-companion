@@ -70,6 +70,10 @@ const pages: Record<SubPage, React.ComponentType> = {
   "revenue-impact": RevenueImpactDashboard,
   "playbook-builder": PlaybookBuilder,
   "revenue-forecast": RevenueForecast,
+  "website-builder": WebsiteBuilder,
+  proposals: ProposalsContracts,
+  "lead-recovery": LeadRecovery,
+  social: SocialCommand,
 };
 
 const BusinessCenter = () => {
