@@ -39,12 +39,17 @@ export { ImagePipeline, type ImageSource, type SpriteAtlas, type NineSliceInsets
 export { RenderDebugOverlay, type DebugSnapshot, type DebugOverlayConfig } from "./render-debug-overlay";
 
 // --- Display Server, Input, Scene Graph, Color, Cursor ---
-export { DisplayServer, type ManagedWindow, type WindowCreateOptions, type Monitor, type WindowEvent, type DisplayServerStats } from "./display-server";
+export { DisplayServer, type ManagedWindow, type WindowCreateOptions, type Monitor, type WindowEvent, type DisplayServerStats, type InputRouteResult } from "./display-server";
 export { CpuCompositor, type Framebuffer, type SurfaceBuffer, type DisplayOutput, type DisplayMode, type CpuCompositorStats, createFramebuffer, clearFramebuffer, clearRegion } from "./cpu-compositor";
 export { InputSystem, type InputEvent, type KeyboardEvent, type MouseEvent, type TouchEvent, type GestureEvent, type HotkeyBinding, type InputSystemStats } from "./input-system";
-export { SceneGraph, SceneNode, type SceneNodeProps, type DisplayListEntry, type HitTestResult, type Transform2D, type SceneGraphStats } from "./scene-graph";
+export { SceneGraph, SceneNode, type SceneNodeProps, type DisplayListEntry, type HitTestResult, type Transform2D, type SceneGraphStats, type SceneInputEvent, type SceneEventHandler } from "./scene-graph";
 export { ColorManagement, type ICCProfile, type RGBColor, type HSLColor, type LabColor, type ColorManagementStats } from "./color-management";
 export { CursorManager, type CursorImage, type CursorState, type CursorDamage, type SystemCursorShape, type CursorManagerStats } from "./cursor-manager";
+
+// --- Clipboard, Window Effects, Accessibility ---
+export { ClipboardManager, type ClipboardEntry, type ClipboardOffer, type ClipboardSelection, type ClipboardMimeType, type DragDropOffer, type DragDropResult, type ClipboardManagerStats } from "./clipboard-manager";
+export { WindowEffects, type SnapZone, type SnapConfig, type TileLayout, type TileRegion, type DPMSState, type ScreenLockState, type PowerConfig, type SnapPreview, type WindowEffectsStats } from "./window-effects";
+export { AccessibilityRenderer, type A11yRole, type A11yAnnotation, type A11yTreeNode, type FocusRingStyle, type ContrastMode, type AccessibilityConfig, type FocusRingOverlay, type ContrastPalette, type AccessibilityRendererStats } from "./accessibility-renderer";
 
 // --- Facade imports ---
 import { ProcessScheduler } from "./process-scheduler";
@@ -77,6 +82,9 @@ import { InputSystem } from "./input-system";
 import { SceneGraph } from "./scene-graph";
 import { ColorManagement } from "./color-management";
 import { CursorManager } from "./cursor-manager";
+import { ClipboardManager } from "./clipboard-manager";
+import { WindowEffects } from "./window-effects";
+import { AccessibilityRenderer } from "./accessibility-renderer";
 
 /**
  * KernelSubsystem — Facade aggregating all kernel architecture,
@@ -124,6 +132,11 @@ export class KernelSubsystem {
   readonly sceneGraph: SceneGraph;
   readonly colorManagement: ColorManagement;
   readonly cursor: CursorManager;
+
+  // Clipboard, Window Effects, Accessibility
+  readonly clipboard: ClipboardManager;
+  readonly windowEffects: WindowEffects;
+  readonly accessibility: AccessibilityRenderer;
 
   private _bootedAt: number;
 
@@ -176,8 +189,24 @@ export class KernelSubsystem {
     this.colorManagement = new ColorManagement();
     this.cursor = new CursorManager();
 
+    // Clipboard, Window Effects, Accessibility
+    this.clipboard = new ClipboardManager();
+    this.windowEffects = new WindowEffects();
+    this.accessibility = new AccessibilityRenderer();
+
+    // ── Wire subsystems together ────────────────────────────
     // Wire scene graph into render pipeline
     this.renderPipeline.setSceneGraph(this.sceneGraph);
+
+    // Wire cursor + effects into display server
+    this.displayServer.setCursorManager(this.cursor);
+    this.displayServer.setWindowEffects(this.windowEffects);
+
+    // Wire input system → display server routing
+    this.input.addHandler((event) => {
+      const result = this.displayServer.routeInputEvent(event);
+      return result.handled;
+    });
 
     this._bootedAt = Date.now();
 
@@ -237,6 +266,9 @@ export class KernelSubsystem {
       sceneGraph: this.sceneGraph.getStats(),
       colorManagement: this.colorManagement.getStats(),
       cursor: this.cursor.getStats(),
+      clipboard: this.clipboard.getStats(),
+      windowEffects: this.windowEffects.getStats(),
+      accessibility: this.accessibility.getStats(),
     };
   }
 
@@ -244,5 +276,6 @@ export class KernelSubsystem {
     this.initSystem.destroy();
     this.renderPipeline.destroy();
     this.cursor.destroy();
+    this.windowEffects.destroy();
   }
 }
