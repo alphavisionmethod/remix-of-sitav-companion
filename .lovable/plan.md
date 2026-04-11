@@ -1,80 +1,64 @@
 
 
-# Display Server Sections 5.2–5.5 — Missing Pieces
+# UI Toolkit (Section 5.6) + Animation System (Section 5.7) — Implementation Plan
 
-## What's Already Implemented
-- Surface model with `SurfaceBuffer` (buffer, bounds, dirty flag) ✅
-- CPU Compositor with framebuffer, double buffering, Z-order compositing, damage-aware blitting ✅
-- Alpha blending (source-over, multiply, screen, add, copy) with gamma-correct LUTs ✅
-- Tile-based multi-threaded rendering pipeline ✅
-- Scanline rasterizer with polygon fill, rect fill, anti-aliasing ✅
-- Vector renderer with paths, gradients, patterns, glyph cache ✅
-- Damage tracker with rect coalescing ✅
+## What Exists
+- **Scene graph** (`scene-graph.ts`): Retained node tree with transforms, opacity, hit testing, display list generation — but nodes are raw primitives (rect, path, text, image), not UI widgets
+- **UI renderer** (`ui-renderer.ts`): Draws individual views with background/borderRadius/shadow — but no view tree, no layout engine, no parent-child composition
+- **Animation engine** (`animation-engine.ts`): Timeline + spring animations on numeric properties, damage emission — but not wired to a view tree, and doesn't distinguish transform/opacity/position-only animations from full re-rasterization
 
 ## What's Missing
 
-### 1. Command Buffer / Software Pipeline API (Section 5.5 — "CPU Vulkan")
-The spec calls for a low-level rendering API with **command buffers** and **software pipelines** — a structured way to record draw calls and replay them. Currently, all drawing is direct/immediate with no command abstraction.
+### Section 5.6 — UI Toolkit (Vector-First)
+1. **View tree** — No `Widget`/`View` base class, no `Column`, `Row`, `Text`, `Button`, `Image` widget types. The spec requires a composable view hierarchy: `Window → Column → [Text, Button, Image]`
+2. **Layout engine** — No flex layout (`Column(spacing: 10)`) or constraint layout (`button.centerX = parent.centerX`). No measure/layout pass that resolves sizes and positions
+3. **Widget draw protocol** — No `draw(ctx)` method on each view. Currently, rendering is done externally via `UIRenderer.drawView()` rather than views drawing themselves
 
-### 2. Triangle Rasterization with Edge Functions + Fixed-Point Math (Section 5.5)
-`fillPolygon` uses scanline intersection, not the spec's **edge function** approach with **fixed-point math** (no floats). The spec explicitly calls for edge-function triangle rasterization optimized with fixed-point arithmetic.
+### Section 5.7 — Animation System (CPU-Optimized)
+4. **Transform-only animation optimization** — The spec says "only animate transforms, opacity, position" to avoid re-rasterizing. The engine animates arbitrary properties but doesn't distinguish between "cheap" animations (compositor-level) and "expensive" ones (require re-rasterization)
+5. **View-animation binding** — No way to bind an animation to a view node and have it automatically update transforms/opacity without re-layout
 
-### 3. High-Level UI Drawing API (Section 5.5)
-No API that lets you set `background`, `borderRadius`, `shadow` on a view and have it compile down to rect fills, gradients, and blurs. This is the "declarative UI rendering" layer.
-
-### 4. CPU Box Blur / Gaussian Blur (Section 5.5)
-The spec says shadows and blurs are "CPU optimized" but there's no blur implementation anywhere.
-
-### 5. Region System with Smart Merging (Section 5.3)
-Damage tracker does simple rect coalescing, but the spec describes a `Region` struct with an array of rects and explicit smart merging (small updates → merged large region). This is mostly present but should be formalized.
-
-## Plan — 2 New Files + 1 Edit
+## Plan — 2 New Files + 2 Edits
 
 ### New Files
 
 | File | Purpose |
 |------|---------|
-| `src/lib/core-services/kernel/command-buffer.ts` | **Command Buffer + Software Pipeline** — record/replay draw commands (drawTriangle, drawRect, drawPath, setBlendMode, setPipeline), command buffer pooling, software pipeline state (blend mode, clip rect, transform), triangle rasterization via edge functions with fixed-point math (16.16 format), 8-pixel-wide SIMD-modeled scanline fill |
-| `src/lib/core-services/kernel/ui-renderer.ts` | **High-Level UI Drawing API** — declarative view properties (background color/gradient, borderRadius with rounded-rect path generation, boxShadow with CPU blur, border, opacity), compiles to command buffer draw calls; includes CPU box blur (separable horizontal+vertical pass, O(1) sliding window) and rounded-rect clipping |
+| `src/lib/core-services/kernel/view-tree.ts` | **View Tree + Widget System** — Base `ViewNode` class with `draw(ctx)`, measure/layout lifecycle. Built-in widgets: `Column`, `Row`, `Stack`, `TextWidget`, `ButtonWidget`, `ImageWidget`, `Spacer`. Each is vector-first (draws via command buffer). Supports flex layout (main axis alignment, cross axis alignment, spacing, padding) and constraint layout (centerX/Y, edges, aspect ratio). Tree diffing for efficient dirty propagation. |
+| `src/lib/core-services/kernel/layout-engine.ts` | **Hybrid Layout Engine** — Two-pass measure+layout. Flex solver: intrinsic sizing → distribute remaining space by flex weight. Constraint solver: simple linear constraint resolution (anchors: left/right/top/bottom/centerX/centerY relative to parent or sibling). Outputs resolved `Rect` per node. Emits damage for nodes whose bounds changed. |
 
 ### Edits
 
 | File | Change |
 |------|--------|
-| `src/lib/core-services/kernel/index.ts` | Export `CommandBuffer`, `SoftwarePipeline`, `UIRenderer` and wire into `KernelSubsystem` facade |
+| `src/lib/core-services/kernel/animation-engine.ts` | Add `AnimationLayer` concept: `compositor` (transform/opacity/position — skip re-raster) vs `raster` (color/size changes — triggers re-rasterization). Add `bindToView(animId, viewNodeId)` for auto-applying computed values to view node transforms. |
+| `src/lib/core-services/kernel/index.ts` | Export `ViewTree`, `LayoutEngine`, new widget types. Wire layout engine into frame cycle (layout pass runs before rasterization). |
 
-## Technical Details
+### Technical Details
 
-### Command Buffer
-- `begin()` / `end()` lifecycle
-- Commands: `drawTriangle(v0,v1,v2,color)`, `drawRect(x,y,w,h,color)`, `drawPath(path,fill)`, `setClipRect(rect)`, `setTransform(matrix)`, `setBlendMode(mode)`, `clear(color)`
-- `execute(target: TileBuffer)` replays all recorded commands
-- Reusable: `reset()` clears commands without reallocation
-
-### Edge-Function Triangle Rasterizer
-- Edge function: `E(x,y) = (v1.y - v0.y) * x - (v1.x - v0.x) * y + v1.x * v0.y - v0.x * v1.y`
-- All math in 16.16 fixed-point (shift left 16, integer arithmetic only)
-- Point inside triangle when all three edge functions ≥ 0
-- Incremental evaluation: step by 1 in X adds `(v1.y - v0.y)` to edge value — no multiply per pixel
-- SIMD-modeled: evaluate 8 pixels per loop iteration
-
-### UI Renderer (High-Level API)
-```typescript
-uiRenderer.drawView(tile, {
-  x: 10, y: 10, width: 200, height: 40,
-  background: { type: "solid", r: 255, g: 255, b: 255, a: 255 },
-  borderRadius: 12,
-  shadow: { offsetX: 0, offsetY: 4, blur: 8, color: { r: 0, g: 0, b: 0, a: 80 } },
-  border: { width: 1, color: { r: 200, g: 200, b: 200, a: 255 } }
-});
+**View Node interface:**
+```text
+ViewNode {
+  id, type, parent, children[]
+  style: { width, height, flex, padding, margin, background, borderRadius, opacity, ... }
+  constraints?: { centerX?, left?, right?, ... }
+  draw(ctx: DrawContext): void  // each widget implements
+  measure(maxW, maxH): { width, height }
+  layout(x, y, w, h): void
+  dirty: boolean
+  resolvedBounds: Rect
+}
 ```
-Compiles to: shadow blur pass → rounded-rect clip → background fill → border stroke
 
-### CPU Blur
-- Separable box blur (horizontal pass, then vertical pass)
-- O(1) per pixel using sliding window sum
-- Multi-pass box blur (3 passes ≈ Gaussian approximation)
-- Operates on `TileBuffer` in-place or into a scratch buffer
+**Flex layout algorithm:**
+1. Measure children with intrinsic sizing
+2. Sum fixed sizes + spacing
+3. Distribute remaining space to flex children by weight
+4. Position children along main axis
+5. Cross-axis alignment (start/center/end/stretch)
 
-## Total: 2 new files + 1 edit
+**Compositor-layer animation:**
+When animation targets only `tx`, `ty`, `sx`, `sy`, `rotation`, `opacity` — compositor applies these as overlay transforms during compositing without re-rasterizing the tile. The view's cached rasterization is reused.
+
+## Total: 2 new files + 2 edits
 
