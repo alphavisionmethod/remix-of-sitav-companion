@@ -26,7 +26,7 @@ export const APP_CATALOG: AppDefinition[] = [
     worksWithSita: ["Dock integration", "Shell notifications", "Default browser support", "Protocol handling", "Deep link opening"],
     updateSource: "store-managed", startupBehavior: "none", notificationPermission: true,
     installStatus: "not-installed", pinnedToDock: false, featured: true, tags: ["browser", "web", "google"],
-    receipts: [],
+    receipts: [], externalUrl: "https://www.google.com",
   },
   {
     id: "firefox", name: "Mozilla Firefox", publisher: "Mozilla Foundation", icon: "🦊", iconBg: "from-orange-500 to-red-500",
@@ -40,7 +40,7 @@ export const APP_CATALOG: AppDefinition[] = [
     protocolAssociations: [{ protocol: "http", label: "Web pages", isDefault: false }, { protocol: "https", label: "Secure web pages", isDefault: false }],
     worksWithSita: ["Dock integration", "Shell notifications", "Default browser support"],
     updateSource: "store-managed", startupBehavior: "none", notificationPermission: true,
-    installStatus: "not-installed", pinnedToDock: false, tags: ["browser", "privacy", "mozilla"], receipts: [],
+    installStatus: "not-installed", pinnedToDock: false, tags: ["browser", "privacy", "mozilla"], receipts: [], externalUrl: "https://www.mozilla.org",
   },
 
   // ── Communication ──
@@ -54,7 +54,7 @@ export const APP_CATALOG: AppDefinition[] = [
     fileAssociations: [], protocolAssociations: [{ protocol: "whatsapp", label: "WhatsApp links", isDefault: true }],
     worksWithSita: ["Dock integration", "Shell notifications", "Dedicated app window", "Protocol handling"],
     updateSource: "store-managed", startupBehavior: "background", notificationPermission: true,
-    installStatus: "not-installed", pinnedToDock: false, featured: true, tags: ["messaging", "chat", "calls"], receipts: [],
+    installStatus: "not-installed", pinnedToDock: false, featured: true, tags: ["messaging", "chat", "calls"], receipts: [], externalUrl: "https://web.whatsapp.com",
   },
   {
     id: "slack", name: "Slack", publisher: "Salesforce", icon: "💼", iconBg: "from-purple-600 to-purple-400",
@@ -124,7 +124,7 @@ export const APP_CATALOG: AppDefinition[] = [
     fileAssociations: [], protocolAssociations: [],
     worksWithSita: ["Dock integration", "Shell notifications", "Dedicated app window"],
     updateSource: "publisher-managed", startupBehavior: "none", notificationPermission: true,
-    installStatus: "not-installed", pinnedToDock: false, tags: ["code", "collaboration", "git"], receipts: [],
+    installStatus: "not-installed", pinnedToDock: false, tags: ["code", "collaboration", "git"], receipts: [], externalUrl: "https://github.com",
   },
 
   // ── Productivity ──
@@ -256,7 +256,7 @@ export const APP_CATALOG: AppDefinition[] = [
     protocolAssociations: [{ protocol: "mailto", label: "Email links", isDefault: true }],
     worksWithSita: ["Dock integration", "Shell notifications", "Dedicated app window", "Default mail app", "Protocol handling"],
     updateSource: "publisher-managed", startupBehavior: "background", notificationPermission: true,
-    installStatus: "not-installed", pinnedToDock: false, featured: true, tags: ["email", "google", "communication"], receipts: [],
+    installStatus: "not-installed", pinnedToDock: false, featured: true, tags: ["email", "google", "communication"], receipts: [], externalUrl: "https://mail.google.com",
   },
   {
     id: "google-docs", name: "Google Docs", publisher: "Google LLC", icon: "📄", iconBg: "from-blue-400 to-blue-500",
@@ -269,7 +269,7 @@ export const APP_CATALOG: AppDefinition[] = [
     protocolAssociations: [],
     worksWithSita: ["Dock integration", "Dedicated app window", "File associations"],
     updateSource: "publisher-managed", startupBehavior: "none", notificationPermission: false,
-    installStatus: "not-installed", pinnedToDock: false, tags: ["documents", "writing", "collaboration"], receipts: [],
+    installStatus: "not-installed", pinnedToDock: false, tags: ["documents", "writing", "collaboration"], receipts: [], externalUrl: "https://docs.google.com",
   },
   {
     id: "docker-desktop", name: "Docker Desktop", publisher: "Docker, Inc.", icon: "🐳", iconBg: "from-blue-600 to-cyan-500",
@@ -378,7 +378,7 @@ export const APP_CATALOG: AppDefinition[] = [
     protocolAssociations: [{ protocol: "webcal", label: "Calendar subscriptions", isDefault: true }],
     worksWithSita: ["Dock integration", "Shell notifications", "Dedicated app window", "Calendar integration", "Default calendar app"],
     updateSource: "publisher-managed", startupBehavior: "none", notificationPermission: true,
-    installStatus: "not-installed", pinnedToDock: false, featured: true, tags: ["calendar", "scheduling", "google"], receipts: [],
+    installStatus: "not-installed", pinnedToDock: false, featured: true, tags: ["calendar", "scheduling", "google"], receipts: [], externalUrl: "https://calendar.google.com",
   },
 
   // QuickBooks
@@ -409,7 +409,7 @@ export const APP_CATALOG: AppDefinition[] = [
     protocolAssociations: [],
     worksWithSita: ["Dock integration", "Dedicated app window", "File associations"],
     updateSource: "publisher-managed", startupBehavior: "none", notificationPermission: false,
-    installStatus: "not-installed", pinnedToDock: false, tags: ["spreadsheets", "data", "google"], receipts: [],
+    installStatus: "not-installed", pinnedToDock: false, tags: ["spreadsheets", "data", "google"], receipts: [], externalUrl: "https://sheets.google.com",
   },
 
   // Bitwarden
@@ -717,7 +717,7 @@ export const APP_CATALOG: AppDefinition[] = [
     fileAssociations: [{ extension: ".docx", mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document", label: "Word documents", isDefault: true }, { extension: ".doc", mimeType: "application/msword", label: "Legacy Word docs", isDefault: true }],
     protocolAssociations: [], worksWithSita: ["Dock integration", "Shell notifications", "Dedicated app window", "File associations"],
     updateSource: "publisher-managed", startupBehavior: "none", notificationPermission: true,
-    installStatus: "not-installed", pinnedToDock: false, tags: ["office", "documents", "writing", "microsoft"], receipts: [],
+    installStatus: "not-installed", pinnedToDock: false, tags: ["office", "documents", "writing", "microsoft"], receipts: [], externalUrl: "https://www.office.com/launch/word",
   },
   {
     id: "ms-excel", name: "Microsoft Excel", publisher: "Microsoft", icon: "📊", iconBg: "from-green-700 to-green-500",
@@ -729,7 +729,7 @@ export const APP_CATALOG: AppDefinition[] = [
     fileAssociations: [{ extension: ".xlsx", mimeType: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", label: "Excel spreadsheets", isDefault: true }, { extension: ".csv", mimeType: "text/csv", label: "CSV files", isDefault: false }],
     protocolAssociations: [], worksWithSita: ["Dock integration", "Dedicated app window", "File associations"],
     updateSource: "publisher-managed", startupBehavior: "none", notificationPermission: false,
-    installStatus: "not-installed", pinnedToDock: false, tags: ["office", "spreadsheets", "data", "microsoft"], receipts: [],
+    installStatus: "not-installed", pinnedToDock: false, tags: ["office", "spreadsheets", "data", "microsoft"], receipts: [], externalUrl: "https://www.office.com/launch/excel",
   },
   {
     id: "ms-powerpoint", name: "Microsoft PowerPoint", publisher: "Microsoft", icon: "📽️", iconBg: "from-orange-600 to-red-500",
@@ -741,7 +741,7 @@ export const APP_CATALOG: AppDefinition[] = [
     fileAssociations: [{ extension: ".pptx", mimeType: "application/vnd.openxmlformats-officedocument.presentationml.presentation", label: "PowerPoint files", isDefault: true }],
     protocolAssociations: [], worksWithSita: ["Dock integration", "Dedicated app window", "File associations"],
     updateSource: "publisher-managed", startupBehavior: "none", notificationPermission: false,
-    installStatus: "not-installed", pinnedToDock: false, tags: ["office", "presentations", "slides", "microsoft"], receipts: [],
+    installStatus: "not-installed", pinnedToDock: false, tags: ["office", "presentations", "slides", "microsoft"], receipts: [], externalUrl: "https://www.office.com/launch/powerpoint",
   },
   {
     id: "ms-outlook", name: "Microsoft Outlook", publisher: "Microsoft", icon: "📬", iconBg: "from-blue-600 to-blue-400",
@@ -754,7 +754,7 @@ export const APP_CATALOG: AppDefinition[] = [
     protocolAssociations: [{ protocol: "mailto", label: "Email links", isDefault: false }],
     worksWithSita: ["Dock integration", "Shell notifications", "Dedicated app window", "Calendar integration"],
     updateSource: "publisher-managed", startupBehavior: "none", notificationPermission: true,
-    installStatus: "not-installed", pinnedToDock: false, tags: ["office", "email", "calendar", "microsoft"], receipts: [],
+    installStatus: "not-installed", pinnedToDock: false, tags: ["office", "email", "calendar", "microsoft"], receipts: [], externalUrl: "https://outlook.live.com",
   },
   {
     id: "ms-teams", name: "Microsoft Teams", publisher: "Microsoft", icon: "👥", iconBg: "from-purple-700 to-indigo-500",
@@ -766,7 +766,7 @@ export const APP_CATALOG: AppDefinition[] = [
     fileAssociations: [], protocolAssociations: [{ protocol: "msteams", label: "Teams links", isDefault: true }],
     worksWithSita: ["Dock integration", "Shell notifications", "Dedicated app window", "Protocol handling"],
     updateSource: "publisher-managed", startupBehavior: "none", notificationPermission: true,
-    installStatus: "not-installed", pinnedToDock: false, tags: ["office", "teams", "meetings", "microsoft"], receipts: [],
+    installStatus: "not-installed", pinnedToDock: false, tags: ["office", "teams", "meetings", "microsoft"], receipts: [], externalUrl: "https://teams.microsoft.com",
   },
   {
     id: "ms-onedrive", name: "OneDrive", publisher: "Microsoft", icon: "☁️", iconBg: "from-blue-500 to-sky-400",
@@ -778,7 +778,7 @@ export const APP_CATALOG: AppDefinition[] = [
     fileAssociations: [], protocolAssociations: [],
     worksWithSita: ["Dock integration", "Shell notifications", "Background sync", "Secure file handoff"],
     updateSource: "publisher-managed", startupBehavior: "background", notificationPermission: true,
-    installStatus: "not-installed", pinnedToDock: false, tags: ["cloud", "storage", "sync", "microsoft"], receipts: [],
+    installStatus: "not-installed", pinnedToDock: false, tags: ["cloud", "storage", "sync", "microsoft"], receipts: [], externalUrl: "https://onedrive.live.com",
   },
   {
     id: "youtube", name: "YouTube", publisher: "Google LLC", icon: "▶️", iconBg: "from-red-600 to-red-500",
@@ -790,7 +790,7 @@ export const APP_CATALOG: AppDefinition[] = [
     fileAssociations: [], protocolAssociations: [],
     worksWithSita: ["Dock integration", "Shell notifications", "Dedicated app window"],
     updateSource: "publisher-managed", startupBehavior: "none", notificationPermission: true,
-    installStatus: "not-installed", pinnedToDock: false, featured: true, tags: ["video", "streaming", "entertainment"], receipts: [],
+    installStatus: "not-installed", pinnedToDock: false, featured: true, tags: ["video", "streaming", "entertainment"], receipts: [], externalUrl: "https://www.youtube.com",
   },
   {
     id: "netflix", name: "Netflix", publisher: "Netflix Inc.", icon: "🎬", iconBg: "from-red-700 to-red-600",
@@ -802,7 +802,7 @@ export const APP_CATALOG: AppDefinition[] = [
     fileAssociations: [], protocolAssociations: [],
     worksWithSita: ["Dock integration", "Shell notifications", "Dedicated app window"],
     updateSource: "publisher-managed", startupBehavior: "none", notificationPermission: true,
-    installStatus: "not-installed", pinnedToDock: false, tags: ["movies", "tv", "streaming", "entertainment"], receipts: [],
+    installStatus: "not-installed", pinnedToDock: false, tags: ["movies", "tv", "streaming", "entertainment"], receipts: [], externalUrl: "https://www.netflix.com",
   },
   {
     id: "discord", name: "Discord", publisher: "Discord Inc.", icon: "🎮", iconBg: "from-indigo-600 to-indigo-500",
@@ -814,7 +814,7 @@ export const APP_CATALOG: AppDefinition[] = [
     fileAssociations: [], protocolAssociations: [{ protocol: "discord", label: "Discord links", isDefault: true }],
     worksWithSita: ["Dock integration", "Shell notifications", "Dedicated app window", "Protocol handling"],
     updateSource: "publisher-managed", startupBehavior: "none", notificationPermission: true,
-    installStatus: "not-installed", pinnedToDock: false, tags: ["chat", "voice", "gaming", "community"], receipts: [],
+    installStatus: "not-installed", pinnedToDock: false, tags: ["chat", "voice", "gaming", "community"], receipts: [], externalUrl: "https://discord.com/app",
   },
   {
     id: "telegram", name: "Telegram", publisher: "Telegram FZE", icon: "✈️", iconBg: "from-sky-500 to-blue-400",
@@ -826,7 +826,7 @@ export const APP_CATALOG: AppDefinition[] = [
     fileAssociations: [], protocolAssociations: [{ protocol: "tg", label: "Telegram links", isDefault: true }],
     worksWithSita: ["Dock integration", "Shell notifications", "Dedicated app window", "Protocol handling"],
     updateSource: "publisher-managed", startupBehavior: "none", notificationPermission: true,
-    installStatus: "not-installed", pinnedToDock: false, tags: ["messaging", "channels", "cloud"], receipts: [],
+    installStatus: "not-installed", pinnedToDock: false, tags: ["messaging", "channels", "cloud"], receipts: [], externalUrl: "https://web.telegram.org",
   },
   {
     id: "twitter-x", name: "X (Twitter)", publisher: "X Corp.", icon: "𝕏", iconBg: "from-gray-900 to-gray-800",
@@ -838,7 +838,7 @@ export const APP_CATALOG: AppDefinition[] = [
     fileAssociations: [], protocolAssociations: [],
     worksWithSita: ["Dock integration", "Shell notifications", "Dedicated app window"],
     updateSource: "publisher-managed", startupBehavior: "none", notificationPermission: true,
-    installStatus: "not-installed", pinnedToDock: false, tags: ["social", "news", "twitter"], receipts: [],
+    installStatus: "not-installed", pinnedToDock: false, tags: ["social", "news", "twitter"], receipts: [], externalUrl: "https://x.com",
   },
   {
     id: "linkedin", name: "LinkedIn", publisher: "Microsoft", icon: "💼", iconBg: "from-blue-700 to-blue-600",
@@ -850,7 +850,7 @@ export const APP_CATALOG: AppDefinition[] = [
     fileAssociations: [], protocolAssociations: [],
     worksWithSita: ["Dock integration", "Shell notifications", "Dedicated app window"],
     updateSource: "publisher-managed", startupBehavior: "none", notificationPermission: true,
-    installStatus: "not-installed", pinnedToDock: false, tags: ["professional", "networking", "jobs", "microsoft"], receipts: [],
+    installStatus: "not-installed", pinnedToDock: false, tags: ["professional", "networking", "jobs", "microsoft"], receipts: [], externalUrl: "https://www.linkedin.com",
   },
   {
     id: "chatgpt", name: "ChatGPT", publisher: "OpenAI", icon: "🧠", iconBg: "from-green-600 to-teal-500",
@@ -862,7 +862,7 @@ export const APP_CATALOG: AppDefinition[] = [
     fileAssociations: [], protocolAssociations: [],
     worksWithSita: ["Dock integration", "Shell notifications", "Dedicated app window"],
     updateSource: "publisher-managed", startupBehavior: "none", notificationPermission: true,
-    installStatus: "not-installed", pinnedToDock: false, featured: true, isNew: true, tags: ["ai", "chatbot", "writing", "coding"], receipts: [],
+    installStatus: "not-installed", pinnedToDock: false, featured: true, isNew: true, tags: ["ai", "chatbot", "writing", "coding"], receipts: [], externalUrl: "https://chat.openai.com",
   },
   {
     id: "claude", name: "Claude", publisher: "Anthropic", icon: "🤖", iconBg: "from-amber-600 to-orange-400",
@@ -874,7 +874,7 @@ export const APP_CATALOG: AppDefinition[] = [
     fileAssociations: [], protocolAssociations: [],
     worksWithSita: ["Dock integration", "Shell notifications", "Dedicated app window"],
     updateSource: "publisher-managed", startupBehavior: "none", notificationPermission: true,
-    installStatus: "not-installed", pinnedToDock: false, isNew: true, tags: ["ai", "chatbot", "writing", "research"], receipts: [],
+    installStatus: "not-installed", pinnedToDock: false, isNew: true, tags: ["ai", "chatbot", "writing", "research"], receipts: [], externalUrl: "https://claude.ai",
   },
 ];
 
