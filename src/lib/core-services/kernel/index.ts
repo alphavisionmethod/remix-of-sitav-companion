@@ -55,6 +55,10 @@ export { AccessibilityRenderer, type A11yRole, type A11yAnnotation, type A11yTre
 export { CommandBuffer, CommandBufferPool, SoftwarePipeline, type DrawCommand, type CommandBufferStats, type Vertex2D, type VertexColor, type Transform2DMatrix, type Fixed16, toFixed16, fromFixed16, fpMul, fpDiv, fpFloor, fpCeil, fpFrac, IDENTITY_TRANSFORM } from "./command-buffer";
 export { UIRenderer, CpuBlur, type UIViewProps, type UITextProps, type UIBackground, type UIColor, type UIGradientStop, type UIBoxShadow, type UIBorder, type UIBorderRadii, type BlurConfig, type UIRendererStats } from "./ui-renderer";
 
+// --- View Tree + Layout Engine (Section 5.6) ---
+export { ViewTree, ViewNode, ContainerNode, ColumnNode, RowNode, StackNode, TextWidget, ButtonWidget, ImageWidget, SpacerNode, type ViewStyle, type ConstraintDef, type DrawContext, type FlexOptions, type MainAxisAlign, type CrossAxisAlign, type ViewTreeStats } from "./view-tree";
+export { LayoutEngine, type LayoutConstraints, type LayoutEngineStats } from "./layout-engine";
+
 // --- Facade imports ---
 import { ProcessScheduler } from "./process-scheduler";
 import { MemoryManager } from "./memory-manager";
