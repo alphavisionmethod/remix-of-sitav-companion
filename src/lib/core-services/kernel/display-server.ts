@@ -6,6 +6,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import type { Rect } from "./damage-tracker";
+import { CpuCompositor, type SurfaceBuffer, type Framebuffer } from "./cpu-compositor";
 
 // ── Types ────────────────────────────────────────────────────
 
@@ -127,9 +128,23 @@ export class DisplayServer {
   private _nextZ = 1;
   private _listeners: WindowEventListener[] = [];
 
+  /** CPU Compositor — owns framebuffers and composites surfaces */
+  readonly compositor: CpuCompositor;
+
   constructor(monitors?: Monitor[]) {
     const mons = monitors && monitors.length > 0 ? monitors : [DEFAULT_MONITOR];
     for (const m of mons) this._monitors.set(m.id, { ...m });
+
+    // Initialize CPU compositor with one output per monitor
+    this.compositor = new CpuCompositor();
+    for (const m of this._monitors.values()) {
+      this.compositor.addOutput(m.id, "Virtual", {
+        width: m.bounds.width,
+        height: m.bounds.height,
+        refreshHz: m.refreshHz,
+        interlaced: false,
+      });
+    }
   }
 
   // ── Monitor management ─────────────────────────────────────
@@ -206,6 +221,9 @@ export class DisplayServer {
 
     if (win.modal) this._modalStack.push(id);
 
+    // Allocate compositor surface for this window
+    this.compositor.allocateSurface(id, contentBounds.width, contentBounds.height);
+
     this._emit({ type: "created", windowId: id });
     this.focusWindow(id);
     return win;
@@ -225,6 +243,7 @@ export class DisplayServer {
     }
 
     this._windows.delete(id);
+    this.compositor.freeSurface(id);
     this._emit({ type: "destroyed", windowId: id });
 
     // Refocus
@@ -302,6 +321,8 @@ export class DisplayServer {
     win.bounds.width = Math.max(win.minSize.width, Math.min(win.maxSize.width, width));
     win.bounds.height = Math.max(win.minSize.height, Math.min(win.maxSize.height, height));
     this._updateContentBounds(win);
+    // Reallocate surface for new size
+    this.compositor.allocateSurface(id, win.contentBounds.width, win.contentBounds.height);
     this._emit({ type: "resized", windowId: id, bounds: { ...win.bounds } });
     return true;
   }
@@ -423,6 +444,35 @@ export class DisplayServer {
       win.pendingDamage = [];
     }
     return rects;
+  }
+
+  // ── Surface access ─────────────────────────────────────────
+
+  /** Get a window's surface buffer for drawing into */
+  getSurface(windowId: string): SurfaceBuffer | undefined {
+    return this.compositor.getSurface(windowId);
+  }
+
+  /** Commit a window's surface (client signals it finished drawing) */
+  commitSurface(windowId: string, dirtyRegions?: Rect[]): boolean {
+    return this.compositor.commitSurface(windowId, dirtyRegions);
+  }
+
+  /**
+   * Full present cycle: collect damage, composite all windows, page flip.
+   * This is the main frame submission entry point.
+   */
+  present(): string[] {
+    const damage = this.collectDamage();
+    const zWindows = this.getZOrderedWindows()
+      .filter((w) => w.state !== "minimized" && w.state !== "hidden")
+      .map((w) => ({
+        id: w.id,
+        bounds: w.contentBounds,
+        opacity: w.opacity,
+        visible: true,
+      }));
+    return this.compositor.present(zWindows, damage);
   }
 
   // ── Events ─────────────────────────────────────────────────

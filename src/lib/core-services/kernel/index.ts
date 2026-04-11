@@ -40,6 +40,7 @@ export { RenderDebugOverlay, type DebugSnapshot, type DebugOverlayConfig } from 
 
 // --- Display Server, Input, Scene Graph, Color, Cursor ---
 export { DisplayServer, type ManagedWindow, type WindowCreateOptions, type Monitor, type WindowEvent, type DisplayServerStats } from "./display-server";
+export { CpuCompositor, type Framebuffer, type SurfaceBuffer, type DisplayOutput, type DisplayMode, type CpuCompositorStats, createFramebuffer, clearFramebuffer, clearRegion } from "./cpu-compositor";
 export { InputSystem, type InputEvent, type KeyboardEvent, type MouseEvent, type TouchEvent, type GestureEvent, type HotkeyBinding, type InputSystemStats } from "./input-system";
 export { SceneGraph, SceneNode, type SceneNodeProps, type DisplayListEntry, type HitTestResult, type Transform2D, type SceneGraphStats } from "./scene-graph";
 export { ColorManagement, type ICCProfile, type RGBColor, type HSLColor, type LabColor, type ColorManagementStats } from "./color-management";
