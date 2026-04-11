@@ -212,11 +212,19 @@ export class RenderPipeline {
 
     // Track stats
     const withinBudget = totalMs <= this._frameBudgetMs;
-    if (!withinBudget) this._budgetOverruns++;
-
-    this._frameHistory.push(totalMs);
-    if (this._frameHistory.length > FRAME_HISTORY_SIZE) {
-      this._frameHistory.shift();
+    if (!withinBudget) {
+      this._budgetOverruns++;
+      this._consecutiveOverruns++;
+      // Adaptive frame pacing: reduce FPS under sustained overruns
+      if (this._consecutiveOverruns >= 5 && this._adaptiveFps > 30) {
+        this._adaptiveFps = Math.max(30, this._adaptiveFps - 5);
+      }
+    } else {
+      this._consecutiveOverruns = 0;
+      // Recover FPS gradually
+      if (this._adaptiveFps < this._targetFps) {
+        this._adaptiveFps = Math.min(this._targetFps, this._adaptiveFps + 1);
+      }
     }
 
     const stats: FrameStats = {
@@ -245,11 +253,31 @@ export class RenderPipeline {
     if (this._running) return;
     this._running = true;
     this._onFrame = onFrame ?? null;
-    // Simulate VSync with setInterval
-    this._vsyncTimer = setInterval(() => {
-      if (!this._running) return;
-      this.renderFrame();
-    }, this._frameBudgetMs);
+    this._lastFrameTimestamp = performance.now();
+
+    // Adaptive frame pacing using requestAnimationFrame when available
+    if (this._vsyncEnabled && typeof requestAnimationFrame !== "undefined") {
+      const tick = () => {
+        if (!this._running) return;
+        const now = performance.now();
+        const elapsed = now - this._lastFrameTimestamp;
+        const adaptiveBudget = 1000 / this._adaptiveFps;
+
+        if (elapsed >= adaptiveBudget * 0.95) {
+          this.renderFrame();
+        } else {
+          this._framesSkipped++;
+        }
+        this._rafId = requestAnimationFrame(tick);
+      };
+      this._rafId = requestAnimationFrame(tick);
+    } else {
+      // Fallback to setInterval
+      this._vsyncTimer = setInterval(() => {
+        if (!this._running) return;
+        this.renderFrame();
+      }, this._frameBudgetMs);
+    }
   }
 
   stop(): void {
@@ -257,6 +285,10 @@ export class RenderPipeline {
     if (this._vsyncTimer) {
       clearInterval(this._vsyncTimer);
       this._vsyncTimer = null;
+    }
+    if (this._rafId !== null && typeof cancelAnimationFrame !== "undefined") {
+      cancelAnimationFrame(this._rafId);
+      this._rafId = null;
     }
   }
 
