@@ -9,6 +9,8 @@ import { KPITile, OpportunityCard, RiskCard, TimelineItem, ProofCard } from "@/c
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { EmptyStateCTA } from "@/components/sita/EmptyStateCTA";
 import { WidgetGrid } from "@/components/sita/WidgetGrid";
+import { AppRecentsStrip } from "@/components/sita/AppRecentsStrip";
+import { AppWelcomeHeader } from "@/components/sita/AppWelcomeHeader";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { StateBadge } from "@/components/sita/StateBadge";
 import { useNavigate } from "react-router-dom";

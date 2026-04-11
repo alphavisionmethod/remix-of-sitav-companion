@@ -1,3 +1,5 @@
+import { AppWelcomeHeader } from "@/components/sita/AppWelcomeHeader";
+import { InAppAdvisorStrip } from "@/components/sita/InAppAdvisorStrip";
 import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
 import { SitaTabs } from "@/components/sita/SitaComponents";
 import { useNavigate, useLocation, Navigate } from "react-router-dom";
@@ -247,6 +249,8 @@ const MoneyCenter = () => {
     <div className="mx-auto max-w-7xl space-y-4 sm:space-y-6 px-3 sm:px-0">
       <h1 className="sr-only">Money Center</h1>
       <DemoModeBadge />
+      <AppWelcomeHeader domain="finance" />
+      <InAppAdvisorStrip domain="finance" />
 
       {/* Tab Navigation — mobile dropdown, desktop scrollable tabs */}
       {isMobile ? (
