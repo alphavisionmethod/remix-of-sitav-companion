@@ -27,7 +27,7 @@ import { SectionSkeleton } from "./PageSkeleton";
 const AdvisorChat = lazy(() => import("./AdvisorChat").then(m => ({ default: m.AdvisorChat })));
 const AdvisorFAB = lazy(() => import("./AdvisorFAB").then(m => ({ default: m.AdvisorFAB })));
 const DesktopMenuBarLazy = lazy(() => import("./DesktopMenuBar").then(m => ({ default: m.DesktopMenuBar })));
-const NotificationPanel = lazy(() => import("./NotificationPanel").then(m => ({ default: m.NotificationPanel })));
+// NotificationPanel removed — using NotificationCenter instead
 const UniversalTimeline = lazy(() => import("./UniversalTimeline").then(m => ({ default: m.UniversalTimeline })));
 const InspectorPanel = lazy(() => import("./InspectorPanel").then(m => ({ default: m.InspectorPanel })));
 const ContextualRail = lazy(() => import("./ContextualRail").then(m => ({ default: m.ContextualRail })));
@@ -216,7 +216,6 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         </div>
 
         {/* Panels */}
-        <NotificationPanel isOpen={notifOpen} onClose={() => setNotifOpen(false)} />
         <UniversalTimeline isOpen={timelineOpen} onClose={() => setTimelineOpen(false)} />
         <AdvisorChat isOpen={chatOpen} onClose={() => setChatOpen(false)} />
 
