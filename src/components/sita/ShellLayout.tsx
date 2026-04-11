@@ -134,7 +134,10 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
 
         {/* Universal Command Surface */}
         <UniversalCommandSurface open={commandOpen} onClose={() => setCommandOpen(false)} />
-      </Suspense>
+        {/* Command Palette (Cmd+K) */}
+        <CommandPalette open={commandOpen} onClose={() => setCommandOpen(false)} />
+        {/* Notification Center */}
+        <NotificationCenterPanel open={notifOpen} onClose={() => setNotifOpen(false)} />
 
       <div className={cn("relative flex flex-col min-h-screen w-full bg-surface-0", isCalm && "calm-mode", isFocus && "focus-mode")}>
         {/* Ambient background — subtle, always present */}
