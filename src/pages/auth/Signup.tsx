@@ -66,7 +66,7 @@ const Signup = () => {
         <div className="relative z-10 flex flex-col justify-between p-12 w-full">
           <motion.div initial={{ opacity: 0, y: -12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
             <div className="flex items-center gap-3">
-              <img src={sitaLogo} alt="SITA OS" className="h-11 w-11 rounded-xl shadow-glow-purple object-cover" />
+              <img src={sitaLogo} alt="SITA OS" width={44} height={44} className="h-11 w-11 rounded-xl shadow-glow-purple object-cover" />
               <div>
                 <h1 className="font-display text-xl font-bold tracking-tight gradient-sita-text">SITA OS</h1>
                 <p className="text-[10px] tracking-[0.2em] uppercase text-muted-foreground font-medium">Sovereign Intelligence</p>
@@ -125,7 +125,7 @@ const Signup = () => {
           className="w-full max-w-sm space-y-8"
         >
           <div className="text-center lg:hidden space-y-4">
-            <img src={sitaLogo} alt="SITA OS" className="mx-auto h-16 w-16 rounded-2xl shadow-glow-purple object-cover" />
+            <img src={sitaLogo} alt="SITA OS" width={64} height={64} loading="lazy" className="mx-auto h-16 w-16 rounded-2xl shadow-glow-purple object-cover" />
             <div>
               <h1 className="font-display text-2xl font-bold gradient-sita-text">SITA OS</h1>
               <p className="text-[10px] tracking-[0.15em] uppercase text-muted-foreground">Sovereign Intelligence</p>

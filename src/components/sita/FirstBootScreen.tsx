@@ -485,7 +485,7 @@ export function FirstBootScreen({ onComplete }: FirstBootScreenProps) {
             transition={reducedMotion ? { duration: 0 } : { type: "spring", damping: 30, stiffness: 200, duration: 0.85 }}
             className="relative z-10"
           >
-            <img src={logo} alt="SITA" className="h-[88px] w-[88px] rounded-2xl"
+            <img src={logo} alt="SITA" width={88} height={88} loading="lazy" className="h-[88px] w-[88px] rounded-2xl"
               style={{ animation: !reducedMotion ? "sita-breathe 3.5s ease-in-out infinite" : "none" }}
             />
           </motion.div>

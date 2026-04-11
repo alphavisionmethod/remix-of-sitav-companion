@@ -153,7 +153,7 @@ const Onboarding = () => {
             {step === "welcome" && (
               <div className="text-center space-y-8">
                 <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ duration: 0.5, delay: 0.1 }}>
-                  <img src={logo} alt="SITA OS" className="mx-auto h-24 w-24 rounded-3xl shadow-glow-purple" />
+                  <img src={logo} loading="lazy" alt="SITA OS" className="mx-auto h-24 w-24 rounded-3xl shadow-glow-purple" />
                 </motion.div>
                 <div className="space-y-3">
                   <h1 className="font-display text-4xl font-bold tracking-tight gradient-sita-text">Welcome to SITA</h1>

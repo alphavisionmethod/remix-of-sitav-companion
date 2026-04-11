@@ -276,7 +276,7 @@ export const AppSidebar = memo(function AppSidebar() {
       <SidebarHeader className="p-4 pb-6">
         <div className="flex items-center gap-3">
           <div className="relative">
-            <img src={logo} alt="SITA OS" className="h-9 w-9 rounded-xl shadow-xs" />
+            <img src={logo} alt="SITA OS" width={36} height={36} className="h-9 w-9 rounded-xl shadow-xs" />
             <div className={`absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full border-2 border-sidebar ${isDemoMode ? "bg-amber-500" : "bg-emerald-500"}`} title={isDemoMode ? "Demo Mode" : "Live Mode"} />
           </div>
           {!collapsed && (

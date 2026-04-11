@@ -30,7 +30,7 @@ export function TrustCertificateStep({ displayName, trustLevel, enabledDomains, 
       {/* Seal */}
       <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ type: "spring", delay: 0.2 }}>
         <div className="relative mx-auto w-24 h-24">
-          <img src={logo} alt="SITA" className="h-24 w-24 rounded-3xl shadow-2xl shadow-primary/30" />
+          <img src={logo} loading="lazy" alt="SITA" className="h-24 w-24 rounded-3xl shadow-2xl shadow-primary/30" />
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}

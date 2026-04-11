@@ -39,7 +39,7 @@ const ForgotPassword = () => {
     <div className="min-h-screen flex items-center justify-center bg-background px-4">
       <div className="w-full max-w-sm space-y-8">
         <div className="text-center space-y-4">
-          <img src={sitaLogo} alt="SITA OS" className="mx-auto h-24 w-24 rounded-2xl" />
+          <img src={sitaLogo} loading="lazy" alt="SITA OS" className="mx-auto h-24 w-24 rounded-2xl" />
           <div>
             <h1 className="font-display text-3xl font-bold text-foreground tracking-tight">Reset password</h1>
             <p className="mt-2 text-sm text-muted-foreground">Enter your email and we'll send you a reset link</p>
