@@ -1176,6 +1176,37 @@ export const APP_BUNDLES: AppBundle[] = [
     icon: "🔷", iconBg: "from-blue-500 to-green-400", appIds: ["gmail", "google-docs", "google-sheets", "google-drive", "google-calendar", "google-meet"],
     recommendedFor: ["business", "education", "personal"], totalSize: "0 MB", featured: true,
   },
+  // ── NEW: Business Automation Bundles ──
+  {
+    id: "ecommerce-starter", name: "E-Commerce Starter", subtitle: "Launch and manage your online store",
+    description: "Shopify, Stripe Dashboard, Mailchimp, Google Sheets, and Canva — everything to start selling online.",
+    icon: "🛍️", iconBg: "from-green-500 to-emerald-400", appIds: ["shopify", "stripe-dashboard", "mailchimp", "google-sheets", "canva"],
+    recommendedFor: ["ecommerce", "retail", "entrepreneur"], totalSize: "0 MB", featured: true,
+  },
+  {
+    id: "lead-recovery-growth", name: "Lead Recovery & Growth", subtitle: "Win back lost leads and grow pipeline",
+    description: "SITA Lead Recovery, Mailchimp, HubSpot, Calendly, and LinkedIn — recover revenue and fill your pipeline.",
+    icon: "🔄", iconBg: "from-amber-500 to-orange-400", appIds: ["sita-lead-recovery", "mailchimp", "hubspot", "calendly", "linkedin"],
+    recommendedFor: ["sales", "marketing", "founders"], totalSize: "0 MB",
+  },
+  {
+    id: "website-marketing", name: "Website & Marketing", subtitle: "Build your web presence and market it",
+    description: "SITA Website Builder, Squarespace, Canva, Buffer, and Google Analytics — from building to promoting.",
+    icon: "🌐", iconBg: "from-cyan-500 to-blue-500", appIds: ["sita-website-builder", "squarespace", "canva", "buffer", "google-analytics"],
+    recommendedFor: ["marketing", "founders", "agencies"], totalSize: "0 MB",
+  },
+  {
+    id: "customer-success", name: "Customer Success", subtitle: "Delight and retain your customers",
+    description: "SITA CRM, Freshdesk, Intercom, Slack, and Calendly — everything for exceptional customer experience.",
+    icon: "🤝", iconBg: "from-blue-500 to-cyan-400", appIds: ["sita-crm", "freshdesk", "intercom", "slack", "calendly"],
+    recommendedFor: ["support", "customer-success", "saas"], totalSize: "0 MB",
+  },
+  {
+    id: "full-business-automation", name: "Full Business Automation", subtitle: "Automate your entire business",
+    description: "SITA Business Center, Zapier, Airtable, DocuSign, Mailchimp, and Slack — full business on autopilot.",
+    icon: "⚡", iconBg: "from-violet-500 to-purple-500", appIds: ["sita-business-center", "zapier", "airtable", "docusign", "mailchimp", "slack"],
+    recommendedFor: ["founders", "operators", "scaling"], totalSize: "0 MB", featured: true,
+  },
 ];
 
 // ── Helpers ──
