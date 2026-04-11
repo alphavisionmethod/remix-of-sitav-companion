@@ -1,0 +1,51 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-11T00:00:00.000Z",
+  "layer": "rendering",
+  "pipeline": {
+    "stages": ["layout", "damage", "tile-assign", "rasterize", "composite", "present"],
+    "frameBudgetMs": 16.6,
+    "targetFps": 60,
+    "vsync": true,
+    "skipPolicy": "drop"
+  },
+  "tileSystem": {
+    "tileSize": 64,
+    "fullRedrawThreshold": 0.6,
+    "cacheEvictionPolicy": "lru",
+    "tileStates": ["clean", "dirty", "rendering", "composited"]
+  },
+  "rasterizer": {
+    "pixelFormats": ["RGBA8888", "RGB565", "A8"],
+    "blendModes": ["source-over", "multiply", "screen", "add", "copy"],
+    "antiAliasing": "analytical-4x",
+    "gammaCorrection": true,
+    "subPixelText": true,
+    "simdLanes": 4,
+    "cacheLineAlignment": 64
+  },
+  "vectorEngine": {
+    "pathCommands": ["moveTo", "lineTo", "quadTo", "cubicTo", "arcTo", "close"],
+    "fillRules": ["even-odd", "winding"],
+    "lineCaps": ["butt", "round", "square"],
+    "lineJoins": ["miter", "round", "bevel"],
+    "gradientTypes": ["linear", "radial", "conic"],
+    "glyphCacheMax": 2048,
+    "bezierFlatness": 0.25
+  },
+  "threadPool": {
+    "defaultThreads": 4,
+    "maxThreads": 16,
+    "workStealing": true,
+    "priorityLanes": ["ui-critical", "normal", "background"],
+    "tileAffinity": true,
+    "frameDeadlineAware": true
+  },
+  "damageTracker": {
+    "coalesceGapThreshold": 8,
+    "fullRedrawCoverage": 0.6,
+    "scrollOptimization": true,
+    "debugVisualization": true,
+    "sources": ["widget", "scroll", "animation", "resize", "theme", "cursor", "external"]
+  }
+}
