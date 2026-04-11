@@ -168,3 +168,19 @@ Constraint-based layout replacing CSS:
 - Glyph cache (pre-rasterized font atlas)
 - Dirty rectangle tracking (skip clean regions)
 - Double buffering (render to back buffer, swap on vsync)
+
+---
+
+## Rendering Pipeline Manifest
+
+The full rendering pipeline configuration lives in `generated/rendering-pipeline-manifest.json`.
+
+This JSON manifest defines:
+- **Pipeline stages**: `layout → damage → tile-assign → rasterize → composite → present`
+- **Tile system**: 64×64 tiles with LRU cache eviction, 60% full-redraw threshold
+- **Rasterizer**: RGBA8888/RGB565/A8 pixel formats, analytical 4x anti-aliasing, gamma correction, subpixel text
+- **Vector engine**: Bézier path commands, fill rules, gradient types, glyph cache (2048 max)
+- **Thread pool**: Work-stealing with priority lanes (`ui-critical`, `normal`, `background`), tile affinity, frame-deadline awareness
+- **Damage tracker**: Coalescing with 8px gap threshold, scroll optimization, sources include widget/scroll/animation/resize/theme/cursor/external
+
+The manifest serves as the single source of truth for all rendering parameters. Any engine implementation (Phase 2+) should consume this manifest directly rather than hardcoding values.
