@@ -51,6 +51,10 @@ export { ClipboardManager, type ClipboardEntry, type ClipboardOffer, type Clipbo
 export { WindowEffects, type SnapZone, type SnapConfig, type TileLayout, type TileRegion, type DPMSState, type ScreenLockState, type PowerConfig, type SnapPreview, type WindowEffectsStats } from "./window-effects";
 export { AccessibilityRenderer, type A11yRole, type A11yAnnotation, type A11yTreeNode, type FocusRingStyle, type ContrastMode, type AccessibilityConfig, type FocusRingOverlay, type ContrastPalette, type AccessibilityRendererStats } from "./accessibility-renderer";
 
+// --- Command Buffer & UI Renderer (CPU Vulkan + High-Level API) ---
+export { CommandBuffer, CommandBufferPool, SoftwarePipeline, type DrawCommand, type CommandBufferStats, type Vertex2D, type VertexColor, type Transform2DMatrix, type Fixed16, toFixed16, fromFixed16, fpMul, fpDiv, fpFloor, fpCeil, fpFrac, IDENTITY_TRANSFORM } from "./command-buffer";
+export { UIRenderer, CpuBlur, type UIViewProps, type UITextProps, type UIBackground, type UIColor, type UIGradientStop, type UIBoxShadow, type UIBorder, type UIBorderRadii, type BlurConfig, type UIRendererStats } from "./ui-renderer";
+
 // --- Facade imports ---
 import { ProcessScheduler } from "./process-scheduler";
 import { MemoryManager } from "./memory-manager";
@@ -85,6 +89,8 @@ import { CursorManager } from "./cursor-manager";
 import { ClipboardManager } from "./clipboard-manager";
 import { WindowEffects } from "./window-effects";
 import { AccessibilityRenderer } from "./accessibility-renderer";
+import { CommandBufferPool } from "./command-buffer";
+import { UIRenderer } from "./ui-renderer";
 
 /**
  * KernelSubsystem — Facade aggregating all kernel architecture,
@@ -137,6 +143,10 @@ export class KernelSubsystem {
   readonly clipboard: ClipboardManager;
   readonly windowEffects: WindowEffects;
   readonly accessibility: AccessibilityRenderer;
+
+  // Command Buffer & UI Renderer
+  readonly commandBufferPool: CommandBufferPool;
+  readonly uiRenderer: UIRenderer;
 
   private _bootedAt: number;
 
@@ -193,6 +203,10 @@ export class KernelSubsystem {
     this.clipboard = new ClipboardManager();
     this.windowEffects = new WindowEffects();
     this.accessibility = new AccessibilityRenderer();
+
+    // Command Buffer & UI Renderer
+    this.commandBufferPool = new CommandBufferPool(16);
+    this.uiRenderer = new UIRenderer();
 
     // ── Wire subsystems together ────────────────────────────
     // Wire scene graph into render pipeline
@@ -269,6 +283,8 @@ export class KernelSubsystem {
       clipboard: this.clipboard.getStats(),
       windowEffects: this.windowEffects.getStats(),
       accessibility: this.accessibility.getStats(),
+      commandBufferPool: { pooledCount: this.commandBufferPool.pooledCount },
+      uiRenderer: this.uiRenderer.getStats(),
     };
   }
 
