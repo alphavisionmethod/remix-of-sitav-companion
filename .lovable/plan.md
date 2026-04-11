@@ -1,80 +1,57 @@
 
 
-# SITA OS — Full Deployment Readiness Audit
+# SITA OS — 7 Frontend Optimizations
 
-## Status: 95% Ready
+## 1. Resource Hints in `index.html`
+Add `preconnect` and `dns-prefetch` for Supabase and AI gateway in `<head>` before other tags:
+```html
+<link rel="preconnect" href="https://icrkipwlnuopqbsabngy.supabase.co" />
+<link rel="dns-prefetch" href="https://icrkipwlnuopqbsabngy.supabase.co" />
+<link rel="preconnect" href="https://ai.gateway.lovable.dev" />
+```
 
-Only 2 security findings remain from the scanner. Infrastructure, PWA, Docker, edge functions, and service worker are all in place.
+## 2. Delete Dead `App.css`
+`src/App.css` contains Vite boilerplate (logo-spin, `.read-the-docs`, `#root max-width: 1280px`). No file imports it. Delete the file entirely.
 
----
+## 3. React.memo on Shell Components
+Wrap `MobileBottomNav`, `SitaTopBar`, and `AppSidebar` exports with `React.memo` to prevent re-renders from unrelated context changes. Memoize callback props (`onNotifOpen`, etc.) with `useCallback` in `ShellLayout`.
 
-## Remaining Issues
+## 4. Route Prefetch on Hover
+Create `src/hooks/useRoutePrefetch.ts` — a small hook that calls the lazy `import()` for a route's chunk on `mouseenter`/`touchstart` of nav links. Integrate into `NavLink` component and `MobileBottomNav` so pages load before the user clicks.
 
-### 1. `customer_journey_status` RLS Too Permissive (Security, HIGH)
+## 5. Skeleton Fallbacks for Lazy Shell Features
+Replace `<Suspense fallback={null}>` in `ShellLayout.tsx` with lightweight skeleton placeholders for visible lazy elements (ContextualRail, CompanionBar, CopilotBar) to eliminate layout shift. Non-visible elements (modals, overlays) keep `fallback={null}`.
 
-The SELECT policy `"auth read status"` uses `USING (true)` — any authenticated user can read all rows, exposing internal product quality data like `recommended_fix` and `launch_impact`.
+## 6. Context Consolidation
+- Merge `ThemeContext` + `DisplayModeContext` → `AppearanceContext` (single provider, combined hook `useAppearance`)
+- Merge `DataModeContext` + `DemoModeProvider` → unified `DataModeContext` (demo surface registry moves into existing DataMode provider)
+- Update all imports across the codebase (search-and-replace)
 
-**Fix:** One migration to replace the blanket `true` policy with an admin-only or owner-scoped policy:
-```sql
-DROP POLICY "auth read status" ON public.customer_journey_status;
-CREATE POLICY "admin read status" ON public.customer_journey_status
-  FOR SELECT TO authenticated
-  USING (has_role(auth.uid(), 'admin'));
+## 7. Font Preloading
+Add `<link rel="preload">` for the primary Space Grotesk weight used on first paint. The Google Fonts import in `index.css` already uses `display=swap`, which is correct — the preload hint will warm the connection earlier.
+```html
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600&display=swap" as="style" />
 ```
 
 ---
-
-### 2. CSP Mismatch: `index.html` Missing `ai.gateway.lovable.dev` (Medium)
-
-`nginx/default.conf` includes `https://ai.gateway.lovable.dev` in `connect-src`, but `index.html` (the CSP the browser actually enforces for the SPA) does NOT. AI gateway calls will be blocked by the browser CSP.
-
-**Fix:** Add `https://ai.gateway.lovable.dev` to the `connect-src` in `index.html` line 15.
-
----
-
-### 3. Leaked Password Protection (Manual, MEDIUM)
-
-Still disabled. Not a code fix.
-
-**Action:** Supabase Dashboard → Auth → Settings → Enable "Leaked password protection"
-
----
-
-### 4. Canonical URL Placeholder (Low)
-
-`index.html` line 34 has `<link rel="canonical" href="/" />` with a comment "update to real domain before production." Should be set to the actual production domain once known, or removed if not publishing to a custom domain.
-
-**Fix:** Update to actual domain or leave as-is if using `*.lovable.app`.
-
----
-
-## What's Already Good (Confirmed)
-
-- All RLS policies on `public` role → fixed (30+ tables migrated in prior rounds)
-- PWA: manifest, icons (192+512), service worker with caching + push — all present
-- Docker: multi-stage Dockerfile, nginx config with security headers, compose file — all present
-- Edge functions: deployed and healthy
-- Security headers: HSTS, X-Frame-Options, CSP, Permissions-Policy — all in both nginx configs
-- Service worker: cache-first for assets, stale-while-revalidate for API, push handlers
-- `.env.production.example`: comprehensive with all required vars documented
-- OG/Twitter meta tags: present
-- robots.txt, sitemap.xml, favicon: present
-
----
-
-## Summary
-
-| Item | Priority | Type | Effort |
-|------|----------|------|--------|
-| `customer_journey_status` RLS tighten | HIGH | Security | 1 migration |
-| CSP add `ai.gateway.lovable.dev` to `index.html` | MEDIUM | Bug fix | 1 line |
-| Leaked password protection | MEDIUM | Manual | Dashboard toggle |
-| Canonical URL placeholder | LOW | Polish | 1 line |
 
 ## Files Changed
 
 | File | Change |
 |------|--------|
-| **New migration** | Drop/recreate `customer_journey_status` SELECT policy to admin-only |
-| `index.html` | Add `https://ai.gateway.lovable.dev` to CSP `connect-src` |
+| `index.html` | Add preconnect, dns-prefetch, font preload hints |
+| `src/App.css` | **Delete** |
+| `src/components/sita/MobileBottomNav.tsx` | Wrap with `React.memo` |
+| `src/components/sita/SitaTopBar.tsx` | Wrap with `React.memo` |
+| `src/components/sita/AppSidebar.tsx` | Wrap with `React.memo` |
+| `src/components/sita/ShellLayout.tsx` | `useCallback` for handlers, skeleton fallbacks for visible lazy components |
+| `src/hooks/useRoutePrefetch.ts` | **New** — prefetch route chunk on hover |
+| `src/components/NavLink.tsx` | Integrate prefetch on hover |
+| `src/contexts/AppearanceContext.tsx` | **New** — merged Theme + DisplayMode |
+| `src/contexts/ThemeContext.tsx` | **Delete** (merged) |
+| `src/contexts/DisplayModeContext.tsx` | **Delete** (merged) |
+| `src/contexts/DataModeContext.tsx` | Absorb DemoModeProvider surface registry |
+| `src/contexts/DemoModeProvider.tsx` | **Delete** (merged) |
+| `src/App.tsx` | Update provider tree (fewer nested providers), update imports |
+| ~20 consumer files | Update `useTheme`/`useDisplayMode` → `useAppearance`, `useDemoMode` → `useDataMode` |
 
