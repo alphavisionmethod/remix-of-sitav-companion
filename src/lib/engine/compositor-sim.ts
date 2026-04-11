@@ -264,10 +264,3 @@ export function applyInertia(
     done,
   };
 }
-  const ch = (shift: number) => {
-    const ca = (a >>> shift) & 0xff;
-    const cb = (b >>> shift) & 0xff;
-    return (ca + (cb - ca) * t) | 0;
-  };
-  return ((ch(24) << 24) | (ch(16) << 16) | (ch(8) << 8) | ch(0)) >>> 0;
-}
