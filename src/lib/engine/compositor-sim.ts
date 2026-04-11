@@ -233,3 +233,41 @@ export function lerpColor(a: number, b: number, t: number): number {
   };
   return ((ch(24) << 24) | (ch(16) << 16) | (ch(8) << 8) | ch(0)) >>> 0;
 }
+
+// ── Drag Physics (matches C++ DragState spec) ─────────
+
+export interface DragState {
+  active: boolean;
+  offsetX: number;
+  offsetY: number;
+  velocityX: number;
+  velocityY: number;
+}
+
+/** Lerp a single position value toward target. */
+export function lerpPosition(current: number, target: number, smoothing: number): number {
+  return current + (target - current) * smoothing;
+}
+
+/** Apply one frame of inertia decay. Returns true if still moving. */
+export function applyInertia(
+  state: DragState,
+  friction: number = 0.92,
+  threshold: number = 0.5
+): { x: number; y: number; done: boolean } {
+  state.velocityX *= friction;
+  state.velocityY *= friction;
+  const done = Math.abs(state.velocityX) < threshold && Math.abs(state.velocityY) < threshold;
+  return {
+    x: state.velocityX,
+    y: state.velocityY,
+    done,
+  };
+}
+  const ch = (shift: number) => {
+    const ca = (a >>> shift) & 0xff;
+    const cb = (b >>> shift) & 0xff;
+    return (ca + (cb - ca) * t) | 0;
+  };
+  return ((ch(24) << 24) | (ch(16) << 16) | (ch(8) << 8) | ch(0)) >>> 0;
+}

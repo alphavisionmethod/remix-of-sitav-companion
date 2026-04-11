@@ -1,13 +1,15 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Floating Window (NovaOS composited surface)
 // Draggable glassmorphic window with traffic-light controls + snap + resize
+// Mac-level smooth dragging with lerp interpolation + inertia
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useRef, useCallback, type ReactNode } from "react";
+import { useState, useRef, useCallback, useEffect, type ReactNode } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { DEPTH_LAYERS, TRAFFIC_LIGHTS, NOVA_MOTION, NOVA_SHADOWS } from "@/lib/design-system/nova-os";
 import { detectSnapZone, getSnapRect, SNAP_CONFIG, type SnapZone } from "@/lib/design-system/snap-zones";
+import { lerpPosition, type DragState } from "@/lib/engine/compositor-sim";
 
 interface FloatingWindowProps {
   title: string;
@@ -24,6 +26,9 @@ interface FloatingWindowProps {
 
 const MIN_WIDTH = 300;
 const MIN_HEIGHT = 200;
+const DRAG_SMOOTHING = 0.25;
+const INERTIA_FRICTION = 0.92;
+const INERTIA_THRESHOLD = 0.5;
 
 export function FloatingWindow({
   title,
@@ -45,32 +50,106 @@ export function FloatingWindow({
   const [snapZone, setSnapZone] = useState<SnapZone>(null);
   const [snappedTo, setSnappedTo] = useState<SnapZone>(null);
   const [preSnapState, setPreSnapState] = useState<{ x: number; y: number; width: number } | null>(null);
-  const dragStart = useRef({ x: 0, y: 0 });
-  const posStart = useRef({ x: 0, y: 0 });
+
+  const dragRef = useRef<DragState>({
+    active: false,
+    offsetX: 0,
+    offsetY: 0,
+    velocityX: 0,
+    velocityY: 0,
+  });
+  const targetPos = useRef({ x: 0, y: 0 });
+  const currentPos = useRef(initialPosition);
+  const lastPointer = useRef({ x: 0, y: 0 });
+  const rafId = useRef<number>(0);
   const resizeStart = useRef({ x: 0, y: 0, w: 0, h: 0 });
+
+  // Lerp animation loop during drag
+  useEffect(() => {
+    if (!isDragging) return;
+
+    const animate = () => {
+      const nx = lerpPosition(currentPos.current.x, targetPos.current.x, DRAG_SMOOTHING);
+      const ny = lerpPosition(currentPos.current.y, targetPos.current.y, DRAG_SMOOTHING);
+
+      // Track velocity as delta per frame
+      dragRef.current.velocityX = nx - currentPos.current.x;
+      dragRef.current.velocityY = ny - currentPos.current.y;
+
+      currentPos.current = { x: nx, y: ny };
+      setPos({ x: nx, y: ny });
+      rafId.current = requestAnimationFrame(animate);
+    };
+
+    rafId.current = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(rafId.current);
+  }, [isDragging]);
+
+  // Inertia animation after release
+  const runInertia = useCallback(() => {
+    const ds = dragRef.current;
+
+    const animate = () => {
+      ds.velocityX *= INERTIA_FRICTION;
+      ds.velocityY *= INERTIA_FRICTION;
+
+      if (Math.abs(ds.velocityX) < INERTIA_THRESHOLD && Math.abs(ds.velocityY) < INERTIA_THRESHOLD) {
+        return;
+      }
+
+      currentPos.current.x += ds.velocityX;
+      currentPos.current.y += ds.velocityY;
+
+      // Boundary clamp
+      currentPos.current.x = Math.max(0, Math.min(window.innerWidth - 100, currentPos.current.x));
+      currentPos.current.y = Math.max(0, Math.min(window.innerHeight - 50, currentPos.current.y));
+
+      setPos({ ...currentPos.current });
+      rafId.current = requestAnimationFrame(animate);
+    };
+
+    rafId.current = requestAnimationFrame(animate);
+  }, []);
 
   const handlePointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
     if ((e.target as HTMLElement).closest("button")) return;
     onFocus?.();
+    cancelAnimationFrame(rafId.current);
+
+    dragRef.current.active = true;
+    dragRef.current.offsetX = e.clientX - currentPos.current.x;
+    dragRef.current.offsetY = e.clientY - currentPos.current.y;
+    dragRef.current.velocityX = 0;
+    dragRef.current.velocityY = 0;
+
+    lastPointer.current = { x: e.clientX, y: e.clientY };
+    targetPos.current = { ...currentPos.current };
+
     setIsDragging(true);
-    dragStart.current = { x: e.clientX, y: e.clientY };
-    posStart.current = { ...pos };
     (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
 
     if (snappedTo) {
       setSnappedTo(null);
       if (preSnapState) {
-        posStart.current = { x: e.clientX - preSnapState.width / 2, y: e.clientY - 20 };
+        dragRef.current.offsetX = preSnapState.width / 2;
+        dragRef.current.offsetY = 20;
+        const newX = e.clientX - preSnapState.width / 2;
+        currentPos.current = { x: newX, y: e.clientY - 20 };
+        targetPos.current = { ...currentPos.current };
         setSize({ width: preSnapState.width, height: 0 });
       }
     }
-  }, [pos, onFocus, snappedTo, preSnapState]);
+  }, [onFocus, snappedTo, preSnapState]);
 
   const handlePointerMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
     if (!isDragging) return;
-    const dx = e.clientX - dragStart.current.x;
-    const dy = e.clientY - dragStart.current.y;
-    setPos({ x: posStart.current.x + dx, y: posStart.current.y + dy });
+
+    // Update target (lerp loop will smoothly follow)
+    targetPos.current = {
+      x: e.clientX - dragRef.current.offsetX,
+      y: e.clientY - dragRef.current.offsetY,
+    };
+    lastPointer.current = { x: e.clientX, y: e.clientY };
 
     const zone = detectSnapZone(e.clientX, e.clientY, window.innerWidth, window.innerHeight);
     setSnapZone(zone);
@@ -78,20 +157,27 @@ export function FloatingWindow({
 
   const handlePointerUp = useCallback(() => {
     setIsDragging(false);
+    dragRef.current.active = false;
+    cancelAnimationFrame(rafId.current);
 
     if (snapZone) {
-      setPreSnapState({ x: pos.x, y: pos.y, width: size.width });
+      setPreSnapState({ x: currentPos.current.x, y: currentPos.current.y, width: size.width });
       const rect = getSnapRect(snapZone, window.innerWidth, window.innerHeight);
+      currentPos.current = { x: rect.x, y: rect.y };
       setPos({ x: rect.x, y: rect.y });
       setSize({ width: rect.width, height: rect.height });
       setSnappedTo(snapZone);
+    } else {
+      // Apply inertia
+      runInertia();
     }
     setSnapZone(null);
-  }, [snapZone, pos, size.width]);
+  }, [snapZone, size.width, runInertia]);
 
   const handleDoubleClickTitle = useCallback(() => {
     if (snappedTo) {
       if (preSnapState) {
+        currentPos.current = { x: preSnapState.x, y: preSnapState.y };
         setPos({ x: preSnapState.x, y: preSnapState.y });
         setSize({ width: preSnapState.width, height: 0 });
       }
@@ -100,6 +186,7 @@ export function FloatingWindow({
     } else {
       const rect = getSnapRect("top", window.innerWidth, window.innerHeight);
       setPreSnapState({ x: pos.x, y: pos.y, width: size.width });
+      currentPos.current = { x: rect.x, y: rect.y };
       setPos({ x: rect.x, y: rect.y });
       setSize({ width: rect.width, height: rect.height });
       setSnappedTo("top");
