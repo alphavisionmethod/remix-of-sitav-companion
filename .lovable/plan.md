@@ -1,64 +1,60 @@
 
 
-# UI Toolkit (Section 5.6) + Animation System (Section 5.7) — Implementation Plan
+# Sections 5.6–5.12 — Remaining Gaps
 
-## What Exists
-- **Scene graph** (`scene-graph.ts`): Retained node tree with transforms, opacity, hit testing, display list generation — but nodes are raw primitives (rect, path, text, image), not UI widgets
-- **UI renderer** (`ui-renderer.ts`): Draws individual views with background/borderRadius/shadow — but no view tree, no layout engine, no parent-child composition
-- **Animation engine** (`animation-engine.ts`): Timeline + spring animations on numeric properties, damage emission — but not wired to a view tree, and doesn't distinguish transform/opacity/position-only animations from full re-rasterization
+## Already Implemented
+- **5.6 View tree** (Column, Row, Stack, Text, Button, Image, Spacer) ✅
+- **5.6 Layout engine** (flex + constraints) ✅
+- **5.6 draw(ctx)** protocol on every widget ✅
+- **5.7 Animation engine** with compositor vs raster layer classification ✅
+- **5.7 bindToView()** for transform/opacity/position animations ✅
+- **5.8 Glyph cache** with LRU (2048 max), sub-pixel coverage ✅
+- **5.8 Sub-pixel LCD rendering** (RGB stripe per-channel alpha) ✅
+- **5.8 Text layout** (greedy + Knuth-Plass line breaking, alignment, truncation, ellipsis, font fallback, RTL stub, bidi stub) ✅
+- **5.9 CPU blur** (3-pass separable box blur ≈ Gaussian, O(1) sliding window) ✅
+- **5.9 Shadows** (render mask → blur → offset + blend) ✅
+- **5.9 Gradients** (linear, radial, conic with lerp interpolation) ✅
+- **5.10 Dirty rectangles** (damage tracker with coalescing) ✅
+- **5.10 Tile rendering** (64×64 parallel tiles, thread pool) ✅
+- **5.10 Fixed-point math** (16.16 in triangle rasterizer) ✅
+- **5.10 Glyph caching + layout caching** ✅
+- **5.11 Frame lifecycle** (Input → Layout → Raster → Composite → Present) ✅
+- **5.11 Double buffering** (front/back with pageFlip) ✅
+- **5.11 Frame budget** (16.6ms, adaptive FPS, deadline-aware threads) ✅
 
 ## What's Missing
 
-### Section 5.6 — UI Toolkit (Vector-First)
-1. **View tree** — No `Widget`/`View` base class, no `Column`, `Row`, `Text`, `Button`, `Image` widget types. The spec requires a composable view hierarchy: `Window → Column → [Text, Button, Image]`
-2. **Layout engine** — No flex layout (`Column(spacing: 10)`) or constraint layout (`button.centerX = parent.centerX`). No measure/layout pass that resolves sizes and positions
-3. **Widget draw protocol** — No `draw(ctx)` method on each view. Currently, rendering is done externally via `UIRenderer.drawView()` rather than views drawing themselves
+### 1. Glyph Atlas (Section 5.8)
+The spec shows glyphs stored in a **bitmap atlas** grid (`[A][B][C][D] / [E][F][G][H]`). Currently glyphs are cached individually in a `Map<string, GlyphCacheEntry>`. No packed atlas texture for cache-efficient sequential blitting.
 
-### Section 5.7 — Animation System (CPU-Optimized)
-4. **Transform-only animation optimization** — The spec says "only animate transforms, opacity, position" to avoid re-rasterizing. The engine animates arbitrary properties but doesn't distinguish between "cheap" animations (compositor-level) and "expensive" ones (require re-rasterization)
-5. **View-animation binding** — No way to bind an animation to a view node and have it automatically update transforms/opacity without re-layout
+### 2. Kerning (Section 5.8)
+The spec lists "kerning + layout" as a feature. The text layout engine has letter/word spacing but no **kerning pairs** (e.g., "AV", "To" get tighter spacing).
 
-## Plan — 2 New Files + 2 Edits
+### 3. Animation Layer Caching (Section 5.7)
+The spec's optimization trick: `[Static UI] → cached bitmap / [Animated layer] → re-rendered`. No layer caching exists — every frame re-draws all visible content. Need per-ViewNode rasterization cache that persists across frames when only compositor-layer animations are active.
 
-### New Files
+### 4. Branch Minimization (Section 5.10)
+The spec calls for branchless pixel operations using mask operations instead of `if` statements. Current blend/fill code uses standard conditionals.
 
-| File | Purpose |
-|------|---------|
-| `src/lib/core-services/kernel/view-tree.ts` | **View Tree + Widget System** — Base `ViewNode` class with `draw(ctx)`, measure/layout lifecycle. Built-in widgets: `Column`, `Row`, `Stack`, `TextWidget`, `ButtonWidget`, `ImageWidget`, `Spacer`. Each is vector-first (draws via command buffer). Supports flex layout (main axis alignment, cross axis alignment, spacing, padding) and constraint layout (centerX/Y, edges, aspect ratio). Tree diffing for efficient dirty propagation. |
-| `src/lib/core-services/kernel/layout-engine.ts` | **Hybrid Layout Engine** — Two-pass measure+layout. Flex solver: intrinsic sizing → distribute remaining space by flex weight. Constraint solver: simple linear constraint resolution (anchors: left/right/top/bottom/centerX/centerY relative to parent or sibling). Outputs resolved `Rect` per node. Emits damage for nodes whose bounds changed. |
+## Plan — 2 Edits + 1 New Section in Existing File
 
-### Edits
+### Edit 1: `vector-renderer.ts` — Glyph Atlas + Kerning
+- Add `GlyphAtlas` class: packs glyphs into a single `Uint8Array` grid (e.g., 512×512), row-based bin packing, returns atlas coordinates per glyph
+- Add kerning table: `Map<string, number>` keyed by char-pair (e.g., `"AV"` → `-2`), applied during glyph positioning
+- Existing `getGlyph`/`cacheGlyph` methods delegate to atlas for storage
 
-| File | Change |
-|------|--------|
-| `src/lib/core-services/kernel/animation-engine.ts` | Add `AnimationLayer` concept: `compositor` (transform/opacity/position — skip re-raster) vs `raster` (color/size changes — triggers re-rasterization). Add `bindToView(animId, viewNodeId)` for auto-applying computed values to view node transforms. |
-| `src/lib/core-services/kernel/index.ts` | Export `ViewTree`, `LayoutEngine`, new widget types. Wire layout engine into frame cycle (layout pass runs before rasterization). |
+### Edit 2: `view-tree.ts` — Layer Bitmap Caching
+- Add `cachedRaster: TileBuffer | null` on `ViewNode`
+- On `draw()`: if node is not dirty and `cachedRaster` exists, blit cache instead of re-drawing
+- On dirty: invalidate `cachedRaster`, re-draw into fresh buffer, store as new cache
+- Compositor-layer animations skip cache invalidation (reuse cached raster, apply transform overlay)
 
-### Technical Details
+### Edit 3: `software-rasterizer.ts` — Branchless Blend
+- Add branchless alpha blend helper using arithmetic masks: `mask = -(alpha > 0)` pattern
+- Replace key blend inner loops with branchless variants
+- Add branchless `min`/`max`/`clamp` helpers using bitwise operations
 
-**View Node interface:**
-```text
-ViewNode {
-  id, type, parent, children[]
-  style: { width, height, flex, padding, margin, background, borderRadius, opacity, ... }
-  constraints?: { centerX?, left?, right?, ... }
-  draw(ctx: DrawContext): void  // each widget implements
-  measure(maxW, maxH): { width, height }
-  layout(x, y, w, h): void
-  dirty: boolean
-  resolvedBounds: Rect
-}
-```
+### Edit 4: `index.ts` — Export new types
 
-**Flex layout algorithm:**
-1. Measure children with intrinsic sizing
-2. Sum fixed sizes + spacing
-3. Distribute remaining space to flex children by weight
-4. Position children along main axis
-5. Cross-axis alignment (start/center/end/stretch)
-
-**Compositor-layer animation:**
-When animation targets only `tx`, `ty`, `sx`, `sy`, `rotation`, `opacity` — compositor applies these as overlay transforms during compositing without re-rasterizing the tile. The view's cached rasterization is reused.
-
-## Total: 2 new files + 2 edits
+## Total: 4 edits
 
