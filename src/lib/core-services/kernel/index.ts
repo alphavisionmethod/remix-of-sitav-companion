@@ -299,6 +299,8 @@ export class KernelSubsystem {
       accessibility: this.accessibility.getStats(),
       commandBufferPool: { pooledCount: this.commandBufferPool.pooledCount },
       uiRenderer: this.uiRenderer.getStats(),
+      viewTree: this.viewTree.getStats(),
+      layoutEngine: this.layoutEngine.getStats(),
     };
   }
 
