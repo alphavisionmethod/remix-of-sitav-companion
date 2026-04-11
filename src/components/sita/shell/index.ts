@@ -7,3 +7,5 @@ export { TrustPostureChip } from "./TrustPostureChip";
 export { ShellStatusBar } from "./ShellStatusBar";
 export { IntentRibbon } from "./IntentRibbon";
 export { WhyThisResult } from "./WhyThisResult";
+export { SystemMenuBar } from "./SystemMenuBar";
+export { FloatingWindow } from "./FloatingWindow";

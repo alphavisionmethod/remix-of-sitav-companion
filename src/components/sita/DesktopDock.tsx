@@ -51,7 +51,7 @@ export const DesktopDock = () => {
           initial={{ y: 80, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.3 }}
-          className="flex items-end gap-1 rounded-2xl border border-border/50 bg-card/80 backdrop-blur-xl px-3 py-2 shadow-2xl"
+          className="flex items-end gap-1 rounded-2xl border border-[hsl(0_0%_100%/0.30)] bg-[hsl(0_0%_100%/0.12)] backdrop-blur-2xl px-3 py-2 shadow-lg shadow-[hsl(0_0%_0%/0.2)]"
           onMouseLeave={() => { setHoveredIdx(null); setTooltip(null); }}
         >
           {pinnedApps.map((app, idx) => {
@@ -78,7 +78,7 @@ export const DesktopDock = () => {
                   className="relative w-11 h-11 rounded-xl flex items-center justify-center transition-shadow hover:shadow-lg"
                   aria-label={`Open ${app.name}`}
                 >
-                  <div className={cn("w-full h-full rounded-xl bg-gradient-to-br flex items-center justify-center text-lg", app.iconBg)}>
+                  <div className={cn("w-full h-full rounded-xl bg-gradient-to-br flex items-center justify-center text-lg shadow-md", app.iconBg)}>
                     {app.icon}
                   </div>
                   {/* Badge */}

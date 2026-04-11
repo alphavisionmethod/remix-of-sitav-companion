@@ -15,6 +15,7 @@ import {
 import { cn } from "@/lib/utils";
 import { ShellAmbientBackground, type AmbientMood } from "./ShellAmbientBackground";
 import type { TrustPosture, ContinuityContext, ShellNotificationDigest } from "./useShellState";
+import { DEPTH_LAYERS } from "@/lib/design-system/nova-os";
 
 // ── Types ────────────────────────────────────────────────────
 
@@ -107,8 +108,8 @@ function GlassWidget({ icon: Icon, label, value, accent, onClick, delay = 0 }: G
       onClick={onClick}
       className={cn(
         "group flex items-center gap-4 rounded-2xl px-6 py-5",
-        "bg-[hsl(0_0%_100%/0.08)] backdrop-blur-xl border border-[hsl(0_0%_100%/0.1)]",
-        "hover:bg-[hsl(0_0%_100%/0.14)] hover:border-[hsl(0_0%_100%/0.2)]",
+        "bg-[hsl(0_0%_100%/0.08)] backdrop-blur-2xl border border-[hsl(0_0%_100%/0.12)]",
+        "hover:bg-[hsl(0_0%_100%/0.14)] hover:border-[hsl(0_0%_100%/0.22)]",
         "transition-all duration-300 cursor-pointer shadow-lg shadow-black/10",
         "min-w-[200px]"
       )}
@@ -187,22 +188,22 @@ export function DesktopSurface({
       {/* Wallpaper overlay effect */}
       {wallpaper.overlay && (
         <div
-          className="absolute inset-0 z-[1] pointer-events-none"
-          style={{ background: wallpaper.overlay }}
+          className="absolute inset-0 pointer-events-none"
+          style={{ zIndex: DEPTH_LAYERS.orbs, background: wallpaper.overlay }}
         />
       )}
       {/* Ambient living background */}
-      <ShellAmbientBackground mood={mood} intensity="vivid" className="z-0" />
+      <ShellAmbientBackground mood={mood} intensity="vivid" className="" style={{ zIndex: DEPTH_LAYERS.desktop }} />
 
       {/* Extra decorative orbs for depth */}
-      <div className="absolute inset-0 z-[1] pointer-events-none overflow-hidden">
+      <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ zIndex: DEPTH_LAYERS.orbs }}>
         <div className="absolute top-[15%] left-[20%] w-[500px] h-[500px] rounded-full bg-[hsl(265_60%_50%/0.06)] blur-[120px]" />
         <div className="absolute bottom-[20%] right-[15%] w-[400px] h-[400px] rounded-full bg-[hsl(35_80%_50%/0.04)] blur-[100px]" />
         <div className="absolute top-[60%] left-[60%] w-[300px] h-[300px] rounded-full bg-[hsl(190_60%_50%/0.03)] blur-[80px]" />
       </div>
 
       {/* Main desktop content */}
-      <div className="relative z-10 flex flex-col items-center gap-12 px-4 pb-28 pt-10" onClick={e => e.stopPropagation()}>
+      <div className="relative flex flex-col items-center gap-12 px-4 pb-28 pt-10" style={{ zIndex: DEPTH_LAYERS.content }} onClick={e => e.stopPropagation()}>
         {/* Clock + Greeting */}
         <DesktopClock greeting={greeting} userName={userName || ""} />
 
@@ -247,7 +248,7 @@ export function DesktopSurface({
       </div>
 
       {/* Subtle vignette overlay */}
-      <div className="absolute inset-0 z-[2] pointer-events-none bg-[radial-gradient(ellipse_at_center,transparent_40%,hsl(0_0%_0%/0.3)_100%)]" />
+      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_center,transparent_40%,hsl(0_0%_0%/0.3)_100%)]" style={{ zIndex: DEPTH_LAYERS.vignette }} />
     </div>
   );
 }
