@@ -23,12 +23,13 @@ import { useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { SectionSkeleton } from "./PageSkeleton";
+import { FinderWindow } from "./shell/windows/FinderWindow";
+import { SettingsWindow } from "./shell/windows/SettingsWindow";
 
 // Lazy-load non-critical shell features (deferred until after first paint)
 const AdvisorChat = lazy(() => import("./AdvisorChat").then(m => ({ default: m.AdvisorChat })));
 const AdvisorFAB = lazy(() => import("./AdvisorFAB").then(m => ({ default: m.AdvisorFAB })));
-const DesktopMenuBarLazy = lazy(() => import("./DesktopMenuBar").then(m => ({ default: m.DesktopMenuBar })));
-// NotificationPanel removed — using NotificationCenter instead
+const SystemMenuBarLazy = lazy(() => import("./shell/SystemMenuBar").then(m => ({ default: m.SystemMenuBar })));
 const UniversalTimeline = lazy(() => import("./UniversalTimeline").then(m => ({ default: m.UniversalTimeline })));
 const InspectorPanel = lazy(() => import("./InspectorPanel").then(m => ({ default: m.InspectorPanel })));
 const ContextualRail = lazy(() => import("./ContextualRail").then(m => ({ default: m.ContextualRail })));
@@ -87,7 +88,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
   const [showEntryCeremony, setShowEntryCeremony] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
   const [missionControlOpen, setMissionControlOpen] = useState(false);
-  const { windows, visibleWindows, openWindow, closeWindow, focusWindow, minimizeWindow } = useWindowManager();
+  const wm = useWindowManager();
   const { isCalm, isFocus } = useDisplayMode();
   const { isOpen: railOpen } = useInspector();
   useAdaptiveInterface();
@@ -97,6 +98,25 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
   const handleNotifOpen = useCallback(() => setNotifOpen(true), []);
   const handleTimelineOpen = useCallback(() => setTimelineOpen(true), []);
   const handleCommandOpen = useCallback(() => setCommandOpen(true), []);
+
+  // Unified app launcher for dock + desktop surface
+  const handleLaunchApp = useCallback((appId: string) => {
+    if (appId === "finder") {
+      wm.openWindow("finder", {
+        title: "Finder",
+        component: <FinderWindow />,
+        position: { x: 120, y: 100 },
+        width: 460,
+      });
+    } else if (appId === "settings") {
+      wm.openWindow("settings", {
+        title: "Settings",
+        component: <SettingsWindow />,
+        position: { x: 300, y: 120 },
+        width: 520,
+      });
+    }
+  }, [wm.openWindow]);
 
   useEffect(() => {
     if (sessionStorage.getItem("sita-desktop-entry") === "true") {
@@ -151,8 +171,8 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         {/* Mission Control (F3) */}
         <MissionControlLazy
           isOpen={missionControlOpen}
-          windows={windows}
-          onSelectWindow={(id) => { focusWindow(id); setMissionControlOpen(false); }}
+          windows={wm.windows}
+          onSelectWindow={(id) => { wm.focusWindow(id); setMissionControlOpen(false); }}
           onClose={() => setMissionControlOpen(false)}
         />
       </Suspense>
@@ -172,7 +192,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         </Suspense>
         {isDesktopRoute ? (
           <Suspense fallback={null}>
-            <DesktopMenuBarLazy onSearchOpen={handleCommandOpen} onNotifOpen={handleNotifOpen} />
+            <SystemMenuBarLazy onSearchOpen={handleCommandOpen} onNotifOpen={handleNotifOpen} activeApp="Desktop" />
           </Suspense>
         ) : (
           <SitaTopBar
@@ -281,7 +301,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
 
       {/* Desktop Dock — floating app launcher */}
       <Suspense fallback={null}>
-        <DesktopDock />
+        <DesktopDock onLaunchApp={handleLaunchApp} windowManager={wm} />
       </Suspense>
 
       {/* Behavioral Interaction Tracker — invisible */}

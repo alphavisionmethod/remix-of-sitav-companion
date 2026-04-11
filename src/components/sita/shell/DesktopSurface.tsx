@@ -17,9 +17,7 @@ import { ShellAmbientBackground, type AmbientMood } from "./ShellAmbientBackgrou
 import type { TrustPosture, ContinuityContext, ShellNotificationDigest } from "./useShellState";
 import { DEPTH_LAYERS } from "@/lib/design-system/nova-os";
 import { FloatingWindow } from "./FloatingWindow";
-import { useWindowManager } from "@/hooks/useWindowManager";
-import { FinderWindow } from "./windows/FinderWindow";
-import { SettingsWindow } from "./windows/SettingsWindow";
+import type { useWindowManager } from "@/hooks/useWindowManager";
 
 // ── Types ────────────────────────────────────────────────────
 
@@ -30,6 +28,8 @@ interface DesktopSurfaceProps {
   continuity?: ContinuityContext;
   onOpenCommand?: () => void;
   onLaunchApp?: (appId: string) => void;
+  /** Unified window manager from ShellLayout */
+  windowManager?: ReturnType<typeof useWindowManager>;
 }
 
 // ── Desktop Notification Toasts ─────────────────────────────
@@ -203,6 +203,7 @@ export function DesktopSurface({
   continuity = { lastWorkspace: null, lastActivity: null, pendingDrafts: 0, unfinishedWorkflows: 0, whatChanged: [] },
   onOpenCommand,
   onLaunchApp,
+  windowManager,
 }: DesktopSurfaceProps) {
   const navigate = useNavigate();
   const reduced = useReducedMotion();
@@ -210,30 +211,15 @@ export function DesktopSurface({
   const wallpaper = useMemo(getWallpaperTheme, []);
   const isAuto = wallpaper.id === "auto";
   const activeGradient = isAuto ? timeGradient : wallpaper.gradient;
-  const { windows, visibleWindows, openWindow, closeWindow, focusWindow, minimizeWindow } = useWindowManager();
 
-  const handleLaunchApp = useCallback((appId: string) => {
-    if (appId === "finder") {
-      openWindow("finder", {
-        title: "Finder",
-        component: <FinderWindow />,
-        position: { x: 120, y: 100 },
-        width: 460,
-      });
-    } else if (appId === "settings") {
-      openWindow("settings", {
-        title: "Settings",
-        component: <SettingsWindow />,
-        position: { x: 300, y: 120 },
-        width: 520,
-      });
-    }
-    onLaunchApp?.(appId);
-  }, [openWindow, onLaunchApp]);
+  // Use unified window manager from ShellLayout if provided
+  const visibleWindows = windowManager?.visibleWindows ?? [];
+  const closeWindow = windowManager?.closeWindow;
+  const focusWindow = windowManager?.focusWindow;
+  const minimizeWindow = windowManager?.minimizeWindow;
 
   // Click on empty desktop background → open Spotlight
   const handleBackgroundClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    // Only fire if clicking the background itself, not a widget/button
     if (e.target === e.currentTarget && onOpenCommand) {
       onOpenCommand();
     }
@@ -267,7 +253,7 @@ export function DesktopSurface({
       </div>
 
       {/* Main desktop content */}
-      <div className="relative flex flex-col items-center gap-12 px-4 pb-28 pt-10" style={{ zIndex: DEPTH_LAYERS.content }} onClick={e => e.stopPropagation()}>
+      <div className="relative flex flex-col items-center gap-12 px-4 pb-28 pt-12" style={{ zIndex: DEPTH_LAYERS.content }} onClick={e => e.stopPropagation()}>
         {/* Clock + Greeting */}
         <DesktopClock greeting={greeting} userName={userName || ""} />
 
@@ -314,7 +300,7 @@ export function DesktopSurface({
       {/* Notification toasts */}
       <DesktopToasts notifications={notifications} />
 
-      {/* Floating windows */}
+      {/* Floating windows from unified window manager */}
       <AnimatePresence>
         {visibleWindows.map(w => (
           <FloatingWindow
@@ -322,9 +308,9 @@ export function DesktopSurface({
             title={w.title}
             initialPosition={w.position}
             width={w.width}
-            onClose={() => closeWindow(w.id)}
-            onMinimize={() => minimizeWindow(w.id)}
-            onFocus={() => focusWindow(w.id)}
+            onClose={() => closeWindow?.(w.id)}
+            onMinimize={() => minimizeWindow?.(w.id)}
+            onFocus={() => focusWindow?.(w.id)}
             className="cursor-default"
             style={{ zIndex: DEPTH_LAYERS.windows + w.zIndex }}
           >
@@ -333,8 +319,15 @@ export function DesktopSurface({
         ))}
       </AnimatePresence>
 
-      {/* Subtle vignette overlay */}
-      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_center,transparent_40%,hsl(0_0%_0%/0.3)_100%)]" style={{ zIndex: DEPTH_LAYERS.vignette }} />
+      {/* Subtle vignette overlay with inner shadow */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          zIndex: DEPTH_LAYERS.vignette,
+          background: "radial-gradient(ellipse at center, transparent 40%, hsl(0 0% 0% / 0.3) 100%)",
+          boxShadow: "inset 0 0 120px hsl(0 0% 0% / 0.15)",
+        }}
+      />
     </div>
   );
 }

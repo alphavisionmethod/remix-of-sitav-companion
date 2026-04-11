@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Floating Window (NovaOS composited surface)
-// Draggable glassmorphic window with traffic-light controls + snap
+// Draggable glassmorphic window with traffic-light controls + snap + resize
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useRef, useCallback, type ReactNode } from "react";
@@ -22,6 +22,9 @@ interface FloatingWindowProps {
   style?: React.CSSProperties;
 }
 
+const MIN_WIDTH = 300;
+const MIN_HEIGHT = 200;
+
 export function FloatingWindow({
   title,
   children,
@@ -35,14 +38,16 @@ export function FloatingWindow({
   style,
 }: FloatingWindowProps) {
   const [pos, setPos] = useState(initialPosition);
-  const [size, setSize] = useState({ width, height: 0 }); // height auto unless snapped
+  const [size, setSize] = useState({ width, height: 0 });
   const [isDragging, setIsDragging] = useState(false);
+  const [isResizing, setIsResizing] = useState(false);
   const [isHoveringControls, setIsHoveringControls] = useState(false);
   const [snapZone, setSnapZone] = useState<SnapZone>(null);
   const [snappedTo, setSnappedTo] = useState<SnapZone>(null);
   const [preSnapState, setPreSnapState] = useState<{ x: number; y: number; width: number } | null>(null);
   const dragStart = useRef({ x: 0, y: 0 });
   const posStart = useRef({ x: 0, y: 0 });
+  const resizeStart = useRef({ x: 0, y: 0, w: 0, h: 0 });
 
   const handlePointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
     if ((e.target as HTMLElement).closest("button")) return;
@@ -52,7 +57,6 @@ export function FloatingWindow({
     posStart.current = { ...pos };
     (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
 
-    // If snapped, unsnap on drag
     if (snappedTo) {
       setSnappedTo(null);
       if (preSnapState) {
@@ -68,7 +72,6 @@ export function FloatingWindow({
     const dy = e.clientY - dragStart.current.y;
     setPos({ x: posStart.current.x + dx, y: posStart.current.y + dy });
 
-    // Detect snap zones
     const zone = detectSnapZone(e.clientX, e.clientY, window.innerWidth, window.innerHeight);
     setSnapZone(zone);
   }, [isDragging]);
@@ -77,9 +80,7 @@ export function FloatingWindow({
     setIsDragging(false);
 
     if (snapZone) {
-      // Save pre-snap state for restore
       setPreSnapState({ x: pos.x, y: pos.y, width: size.width });
-
       const rect = getSnapRect(snapZone, window.innerWidth, window.innerHeight);
       setPos({ x: rect.x, y: rect.y });
       setSize({ width: rect.width, height: rect.height });
@@ -90,7 +91,6 @@ export function FloatingWindow({
 
   const handleDoubleClickTitle = useCallback(() => {
     if (snappedTo) {
-      // Restore
       if (preSnapState) {
         setPos({ x: preSnapState.x, y: preSnapState.y });
         setSize({ width: preSnapState.width, height: 0 });
@@ -98,7 +98,6 @@ export function FloatingWindow({
       setSnappedTo(null);
       setPreSnapState(null);
     } else {
-      // Maximize
       const rect = getSnapRect("top", window.innerWidth, window.innerHeight);
       setPreSnapState({ x: pos.x, y: pos.y, width: size.width });
       setPos({ x: rect.x, y: rect.y });
@@ -107,7 +106,30 @@ export function FloatingWindow({
     }
   }, [snappedTo, preSnapState, pos, size.width]);
 
-  // Compute snap preview rect
+  // Resize handlers
+  const handleResizeDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    onFocus?.();
+    setIsResizing(true);
+    const el = e.currentTarget.closest("[data-floating-window]") as HTMLElement;
+    resizeStart.current = { x: e.clientX, y: e.clientY, w: el?.offsetWidth ?? size.width, h: el?.offsetHeight ?? 300 };
+    e.currentTarget.setPointerCapture(e.pointerId);
+  }, [onFocus, size.width]);
+
+  const handleResizeMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
+    if (!isResizing) return;
+    const dw = e.clientX - resizeStart.current.x;
+    const dh = e.clientY - resizeStart.current.y;
+    setSize({
+      width: Math.max(MIN_WIDTH, resizeStart.current.w + dw),
+      height: Math.max(MIN_HEIGHT, resizeStart.current.h + dh),
+    });
+  }, [isResizing]);
+
+  const handleResizeUp = useCallback(() => {
+    setIsResizing(false);
+  }, []);
+
   const snapPreview = snapZone ? getSnapRect(snapZone, window.innerWidth, window.innerHeight) : null;
 
   return (
@@ -129,6 +151,7 @@ export function FloatingWindow({
       )}
 
       <motion.div
+        data-floating-window
         initial={NOVA_MOTION.window.enter.initial}
         animate={NOVA_MOTION.window.enter.animate}
         exit={NOVA_MOTION.window.exit.exit}
@@ -149,7 +172,7 @@ export function FloatingWindow({
           height: size.height || undefined,
           zIndex: DEPTH_LAYERS.windows,
           willChange: "transform",
-          transition: isDragging ? "none" : `left ${SNAP_CONFIG.animationDuration}s ease, top ${SNAP_CONFIG.animationDuration}s ease, width ${SNAP_CONFIG.animationDuration}s ease, height ${SNAP_CONFIG.animationDuration}s ease`,
+          transition: isDragging || isResizing ? "none" : `left ${SNAP_CONFIG.animationDuration}s ease, top ${SNAP_CONFIG.animationDuration}s ease, width ${SNAP_CONFIG.animationDuration}s ease, height ${SNAP_CONFIG.animationDuration}s ease`,
           ...style,
         }}
         onPointerDown={() => onFocus?.()}
@@ -222,6 +245,24 @@ export function FloatingWindow({
         {/* Content */}
         <div className="overflow-auto" style={{ maxHeight: size.height ? size.height - 40 : undefined }}>
           {children}
+        </div>
+
+        {/* Resize handle — bottom-right corner */}
+        <div
+          className="absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize group"
+          onPointerDown={handleResizeDown}
+          onPointerMove={handleResizeMove}
+          onPointerUp={handleResizeUp}
+        >
+          <svg
+            className="w-3 h-3 absolute bottom-0.5 right-0.5 text-[hsl(0_0%_50%/0.4)] group-hover:text-[hsl(0_0%_50%/0.7)] transition-colors"
+            viewBox="0 0 10 10"
+            fill="none"
+          >
+            <line x1="9" y1="1" x2="1" y2="9" stroke="currentColor" strokeWidth="1.2" />
+            <line x1="9" y1="4" x2="4" y2="9" stroke="currentColor" strokeWidth="1.2" />
+            <line x1="9" y1="7" x2="7" y2="9" stroke="currentColor" strokeWidth="1.2" />
+          </svg>
         </div>
       </motion.div>
     </>
