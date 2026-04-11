@@ -746,7 +746,7 @@ export class UIRenderer {
         pixels: new Uint8ClampedArray(w * h * 4),
         width: w,
         height: h,
-        format: "rgba8888",
+        format: "RGBA8888",
         cacheLineAligned: false,
       };
     }
