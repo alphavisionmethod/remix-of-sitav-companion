@@ -1,20 +1,32 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useState, useEffect, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import { useNavigate, useLocation } from "react-router-dom";
 import { TrustRibbon } from "@/components/sita/admin/TrustRibbon";
 import { RolloutStatusBanner } from "./RolloutStatusBanner";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
+  DragDropContext,
+  Droppable,
+  Draggable,
+  type DropResult,
+} from "@hello-pangea/dnd";
+import {
   Home, Activity, Heart, Shield, CheckCircle, Brain, DollarSign, AlertTriangle,
-  Rocket, ChevronLeft, ChevronRight, Settings,
+  Rocket, ChevronLeft, ChevronRight, Settings, GripVertical, RotateCcw,
 } from "lucide-react";
 
 interface OwnerWorkspaceShellProps {
   children: ReactNode;
 }
 
-const TABS = [
+interface TabDef {
+  id: string;
+  label: string;
+  icon: typeof Home;
+  path: string;
+}
+
+const DEFAULT_TABS: TabDef[] = [
   { id: "home", label: "Home", icon: Home, path: "/owner/home" },
   { id: "health", label: "Health", icon: Activity, path: "/owner/health" },
   { id: "pulse", label: "Pulse", icon: Heart, path: "/owner/pulse" },
@@ -24,14 +36,53 @@ const TABS = [
   { id: "revenue", label: "Revenue", icon: DollarSign, path: "/owner/billing" },
   { id: "risks", label: "Risks", icon: AlertTriangle, path: "/owner/governance" },
   { id: "launches", label: "Launches", icon: Rocket, path: "/owner/releases" },
-] as const;
+];
+
+const STORAGE_KEY = "owner-workspace-tab-order";
+
+function loadTabOrder(): TabDef[] {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (!stored) return [...DEFAULT_TABS];
+    const ids = JSON.parse(stored) as string[];
+    const tabMap = new Map(DEFAULT_TABS.map(t => [t.id, t]));
+    const ordered: TabDef[] = [];
+    for (const id of ids) {
+      const tab = tabMap.get(id);
+      if (tab) {
+        ordered.push(tab);
+        tabMap.delete(id);
+      }
+    }
+    // Append any new tabs not in stored order
+    for (const tab of tabMap.values()) ordered.push(tab);
+    return ordered;
+  } catch {
+    return [...DEFAULT_TABS];
+  }
+}
 
 export function OwnerWorkspaceShell({ children }: OwnerWorkspaceShellProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
+  const [tabs, setTabs] = useState<TabDef[]>(loadTabOrder);
 
-  const activeTab = TABS.find(t => location.pathname.startsWith(t.path))?.id || "home";
+  const activeTab = tabs.find(t => location.pathname.startsWith(t.path))?.id || "home";
+
+  const handleDragEnd = useCallback((result: DropResult) => {
+    if (!result.destination) return;
+    const reordered = Array.from(tabs);
+    const [moved] = reordered.splice(result.source.index, 1);
+    reordered.splice(result.destination.index, 0, moved);
+    setTabs(reordered);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(reordered.map(t => t.id)));
+  }, [tabs]);
+
+  const resetOrder = useCallback(() => {
+    setTabs([...DEFAULT_TABS]);
+    localStorage.removeItem(STORAGE_KEY);
+  }, []);
 
   return (
     <div className="min-h-screen bg-background flex">
@@ -47,29 +98,67 @@ export function OwnerWorkspaceShell({ children }: OwnerWorkspaceShellProps) {
           </button>
         </div>
 
-        <nav className="flex-1 py-2 space-y-0.5 px-2">
-          {TABS.map(tab => {
-            const Icon = tab.icon;
-            const isActive = activeTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                onClick={() => navigate(tab.path)}
-                className={cn(
-                  "w-full flex items-center gap-2.5 px-2.5 py-2 rounded-md text-xs transition-colors",
-                  isActive
-                    ? "bg-primary/10 text-primary font-medium"
-                    : "text-muted-foreground hover:text-foreground hover:bg-muted/30"
-                )}
+        <DragDropContext onDragEnd={handleDragEnd}>
+          <Droppable droppableId="sidebar-tabs">
+            {(provided) => (
+              <nav
+                className="flex-1 py-2 space-y-0.5 px-2"
+                ref={provided.innerRef}
+                {...provided.droppableProps}
               >
-                <Icon className="h-3.5 w-3.5 shrink-0" />
-                {!collapsed && <span>{tab.label}</span>}
-              </button>
-            );
-          })}
-        </nav>
+                {tabs.map((tab, index) => {
+                  const Icon = tab.icon;
+                  const isActive = activeTab === tab.id;
+                  return (
+                    <Draggable key={tab.id} draggableId={tab.id} index={index}>
+                      {(dragProvided, snapshot) => (
+                        <div
+                          ref={dragProvided.innerRef}
+                          {...dragProvided.draggableProps}
+                          className={cn(
+                            "w-full flex items-center gap-2.5 px-2.5 py-2 rounded-md text-xs transition-colors group",
+                            isActive
+                              ? "bg-primary/10 text-primary font-medium"
+                              : "text-muted-foreground hover:text-foreground hover:bg-muted/30",
+                            snapshot.isDragging && "shadow-md bg-card border border-border/50"
+                          )}
+                        >
+                          {!collapsed && (
+                            <span
+                              {...dragProvided.dragHandleProps}
+                              className="opacity-0 group-hover:opacity-60 hover:!opacity-100 cursor-grab active:cursor-grabbing shrink-0"
+                            >
+                              <GripVertical className="h-3 w-3" />
+                            </span>
+                          )}
+                          <button
+                            onClick={() => navigate(tab.path)}
+                            className="flex items-center gap-2.5 flex-1 min-w-0"
+                          >
+                            <Icon className="h-3.5 w-3.5 shrink-0" />
+                            {!collapsed && <span className="truncate">{tab.label}</span>}
+                          </button>
+                        </div>
+                      )}
+                    </Draggable>
+                  );
+                })}
+                {provided.placeholder}
+              </nav>
+            )}
+          </Droppable>
+        </DragDropContext>
 
-        <div className="p-2 border-t border-border/50">
+        <div className="p-2 border-t border-border/50 space-y-0.5">
+          {!collapsed && (
+            <button
+              onClick={resetOrder}
+              className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted/30"
+            >
+              <RotateCcw className="h-3.5 w-3.5 shrink-0" />
+              <span>Reset order</span>
+            </button>
+          )}
           <button
             onClick={() => navigate("/settings")}
             className="w-full flex items-center gap-2.5 px-2.5 py-2 rounded-md text-xs text-muted-foreground hover:text-foreground hover:bg-muted/30"
