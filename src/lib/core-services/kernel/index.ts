@@ -51,6 +51,13 @@ export { ClipboardManager, type ClipboardEntry, type ClipboardOffer, type Clipbo
 export { WindowEffects, type SnapZone, type SnapConfig, type TileLayout, type TileRegion, type DPMSState, type ScreenLockState, type PowerConfig, type SnapPreview, type WindowEffectsStats } from "./window-effects";
 export { AccessibilityRenderer, type A11yRole, type A11yAnnotation, type A11yTreeNode, type FocusRingStyle, type ContrastMode, type AccessibilityConfig, type FocusRingOverlay, type ContrastPalette, type AccessibilityRendererStats } from "./accessibility-renderer";
 
+// --- Networking Stack (Section 5) ---
+export { TCPIPStack, type NetworkInterface, type RoutingEntry, type ARPEntry, type TCPConnection, type UDPBinding, type TCPState, type CongestionAlgorithm, type NetworkStackStats } from "./tcp-ip-stack";
+export { SocketAPI, type SocketDescriptor, type SocketAddress, type SocketOptions, type SocketDomain, type SocketType, type SocketState, type SocketAPIStats } from "./socket-api";
+export { Firewall, type FirewallRule, type FirewallChain, type FirewallAction, type ConnTrackEntry, type RateLimitConfig, type FirewallStats } from "./firewall";
+export { VPNManager, type VPNTunnel, type VPNPeer, type SplitTunnelRule, type VPNProtocol, type TunnelState, type VPNStats } from "./vpn-manager";
+export { DNSResolver, type DNSRecord, type DNSQuery, type DNSCacheEntry, type DNSUpstream, type DNSOverride, type DNSResolverStats } from "./dns-resolver";
+
 // --- Command Buffer & UI Renderer (CPU Vulkan + High-Level API) ---
 export { CommandBuffer, CommandBufferPool, SoftwarePipeline, type DrawCommand, type CommandBufferStats, type Vertex2D, type VertexColor, type Transform2DMatrix, type Fixed16, toFixed16, fromFixed16, fpMul, fpDiv, fpFloor, fpCeil, fpFrac, IDENTITY_TRANSFORM } from "./command-buffer";
 export { UIRenderer, CpuBlur, type UIViewProps, type UITextProps, type UIBackground, type UIColor, type UIGradientStop, type UIBoxShadow, type UIBorder, type UIBorderRadii, type BlurConfig, type UIRendererStats } from "./ui-renderer";
