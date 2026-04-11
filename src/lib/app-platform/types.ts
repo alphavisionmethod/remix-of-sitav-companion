@@ -123,6 +123,7 @@ export interface AppDefinition {
   managedByPolicy?: boolean;
   supportUrl?: string;
   privacyUrl?: string;
+  routePath?: string;
 }
 
 export interface AppBundle {
