@@ -117,7 +117,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
 
   const workspaceKey = location.pathname.split("/").filter(Boolean)[0] || "home";
   const transition = getPageTransition(location.pathname);
-  const isDesktopRoute = location.pathname === "/" || location.pathname === "/home";
+  const isDesktopRoute = location.pathname === "/" || location.pathname === "/home" || location.pathname === "/desktop";
 
   return (
     <SidebarProvider>

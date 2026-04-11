@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useEffect, useCallback } from "react";
+import { useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Briefcase, DollarSign, Home, Brain, ShoppingCart, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -36,30 +37,35 @@ const MAX_VISIBLE = 3;
 const STAGGER_DELAY_MS = 3000;
 
 export function DesktopNotifications() {
+  const location = useLocation();
+  const isDesktop = location.pathname === "/" || location.pathname === "/home" || location.pathname === "/desktop";
   const [notifications, setNotifications] = useState<DesktopNotification[]>([]);
 
   // Stagger demo notifications
   useEffect(() => {
+    if (!isDesktop) return;
     const timers = DEMO_NOTIFICATIONS.map((notif, i) =>
       setTimeout(() => {
         setNotifications(prev => [notif, ...prev].slice(0, MAX_VISIBLE + 2));
       }, 2000 + i * STAGGER_DELAY_MS)
     );
     return () => timers.forEach(clearTimeout);
-  }, []);
+  }, [isDesktop]);
 
   // Auto-dismiss
   useEffect(() => {
-    if (notifications.length === 0) return;
+    if (!isDesktop || notifications.length === 0) return;
     const id = setTimeout(() => {
       setNotifications(prev => prev.slice(0, -1));
     }, AUTO_DISMISS_MS);
     return () => clearTimeout(id);
-  }, [notifications]);
+  }, [notifications, isDesktop]);
 
   const dismiss = useCallback((id: string) => {
     setNotifications(prev => prev.filter(n => n.id !== id));
   }, []);
+
+  if (!isDesktop) return null;
 
   return (
     <div className="fixed top-16 right-4 z-[200] flex flex-col gap-2 max-w-sm pointer-events-none">

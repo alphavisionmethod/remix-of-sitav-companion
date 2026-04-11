@@ -869,8 +869,10 @@ const App = () => (
                   <Routes>
                     {/* ── 3A: OS Home & Desktop ── */}
                     <Route path="/" element={<DesktopPage />} />
-                    <Route path="/home" element={<DailyPulse />} />
+                    <Route path="/home" element={<DesktopPage />} />
                     <Route path="/desktop" element={<DesktopPage />} />
+                    <Route path="/pulse" element={<DailyPulse />} />
+                    <Route path="/daily-pulse" element={<DailyPulse />} />
                     <Route path="/profile" element={<UserProfilePage />} />
                     <Route path="/life" element={<LifeDashboard />} />
                     <Route path="/life-simulator" element={<LifeSimulator />} />
