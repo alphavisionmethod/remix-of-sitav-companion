@@ -26,6 +26,7 @@ import { SectionSkeleton } from "./PageSkeleton";
 // Lazy-load non-critical shell features (deferred until after first paint)
 const AdvisorChat = lazy(() => import("./AdvisorChat").then(m => ({ default: m.AdvisorChat })));
 const AdvisorFAB = lazy(() => import("./AdvisorFAB").then(m => ({ default: m.AdvisorFAB })));
+const DesktopMenuBarLazy = lazy(() => import("./DesktopMenuBar").then(m => ({ default: m.DesktopMenuBar })));
 const NotificationPanel = lazy(() => import("./NotificationPanel").then(m => ({ default: m.NotificationPanel })));
 const UniversalTimeline = lazy(() => import("./UniversalTimeline").then(m => ({ default: m.UniversalTimeline })));
 const InspectorPanel = lazy(() => import("./InspectorPanel").then(m => ({ default: m.InspectorPanel })));
@@ -154,7 +155,11 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
           <UpdateBanner />
           <ContinuityBanner />
         </Suspense>
-        {!isDesktopRoute && (
+        {isDesktopRoute ? (
+          <Suspense fallback={null}>
+            <DesktopMenuBarLazy onSearchOpen={handleCommandOpen} onNotifOpen={handleNotifOpen} />
+          </Suspense>
+        ) : (
           <SitaTopBar
             onNotifOpen={handleNotifOpen}
             onTimelineOpen={handleTimelineOpen}
@@ -180,10 +185,10 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
                     <AnimatePresence mode="wait">
                       <motion.div
                         key={workspaceKey}
-                        initial={transition.initial}
-                        animate={transition.animate}
-                        exit={transition.exit}
-                        transition={transition.transition}
+                        initial={{ opacity: 0, scale: 0.97, filter: "blur(4px)" }}
+                        animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                        exit={{ opacity: 0, scale: 0.98, filter: "blur(2px)" }}
+                        transition={{ type: "spring", mass: 0.8, stiffness: 150, damping: 18 }}
                         className="p-3 sm:p-4 md:p-6"
                       >
                         {children}

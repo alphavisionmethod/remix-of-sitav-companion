@@ -105,11 +105,11 @@ function GlassWidget({ icon: Icon, label, value, accent, onClick, delay = 0 }: G
       transition={{ delay, duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
       onClick={onClick}
       className={cn(
-        "group flex items-center gap-3 rounded-2xl px-5 py-4",
+        "group flex items-center gap-4 rounded-2xl px-6 py-5",
         "bg-[hsl(0_0%_100%/0.08)] backdrop-blur-xl border border-[hsl(0_0%_100%/0.1)]",
         "hover:bg-[hsl(0_0%_100%/0.14)] hover:border-[hsl(0_0%_100%/0.2)]",
         "transition-all duration-300 cursor-pointer shadow-lg shadow-black/10",
-        "min-w-[180px]"
+        "min-w-[200px]"
       )}
     >
       <div className={cn("rounded-xl p-2.5", accent || "bg-[hsl(265_55%_58%/0.2)]")}>
@@ -180,7 +180,7 @@ export function DesktopSurface({
       </div>
 
       {/* Main desktop content */}
-      <div className="relative z-10 flex flex-col items-center gap-10 px-4 pb-24">
+      <div className="relative z-10 flex flex-col items-center gap-12 px-4 pb-28 pt-10">
         {/* Clock + Greeting */}
         <DesktopClock greeting={greeting} userName={userName || ""} />
 
