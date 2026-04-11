@@ -3,7 +3,7 @@
 // Clean OS desktop: wallpaper, clock, glass widgets, dock launcher
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { getWallpaperTheme } from "@/hooks/use-wallpaper";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
@@ -168,11 +168,22 @@ export function DesktopSurface({
   const isAuto = wallpaper.id === "auto";
   const activeGradient = isAuto ? timeGradient : wallpaper.gradient;
 
+  // Click on empty desktop background → open Spotlight
+  const handleBackgroundClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    // Only fire if clicking the background itself, not a widget/button
+    if (e.target === e.currentTarget && onOpenCommand) {
+      onOpenCommand();
+    }
+  }, [onOpenCommand]);
+
   return (
-    <div className={cn(
-      "fixed inset-0 flex flex-col items-center justify-center overflow-hidden bg-gradient-to-br",
-      activeGradient
-    )}>
+    <div
+      className={cn(
+        "fixed inset-0 flex flex-col items-center justify-center overflow-hidden bg-gradient-to-br cursor-default",
+        activeGradient
+      )}
+      onClick={handleBackgroundClick}
+    >
       {/* Wallpaper overlay effect */}
       {wallpaper.overlay && (
         <div
@@ -191,7 +202,7 @@ export function DesktopSurface({
       </div>
 
       {/* Main desktop content */}
-      <div className="relative z-10 flex flex-col items-center gap-12 px-4 pb-28 pt-10">
+      <div className="relative z-10 flex flex-col items-center gap-12 px-4 pb-28 pt-10" onClick={e => e.stopPropagation()}>
         {/* Clock + Greeting */}
         <DesktopClock greeting={greeting} userName={userName || ""} />
 
