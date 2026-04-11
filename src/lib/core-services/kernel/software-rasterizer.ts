@@ -359,7 +359,7 @@ export class SoftwareRasterizer {
           tile.pixels[dstOff + 3] = result.a;
           this._stats.pixelsBlended++;
         }
-        this._stats.pixelsCopied = (this._stats.pixelsCopied ?? 0) + 1;
+        this._stats.pixelsCopied++;
       }
     }
   }
