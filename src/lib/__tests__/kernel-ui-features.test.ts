@@ -697,6 +697,9 @@ describe("AnimationGroup Enhanced", () => {
     // Tick past first animation
     engine.tick(0, 60);
     expect(engine.get("a1")?.state).toBe("finished");
+    // a2 should now be running (started by onFinish callback)
+    // Need another tick to see it process
+    engine.tick(60, 1);
     expect(engine.get("a2")?.state).toBe("running");
   });
 
