@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { useDisplayMode } from "@/contexts/DisplayModeContext";
+import { useDisplayMode } from "@/contexts/AppearanceContext";
 import { Moon, Sun, Eye, Volume2, VolumeX, Minimize2, Maximize2 } from "lucide-react";
 
 const CalmFocusMode = () => {

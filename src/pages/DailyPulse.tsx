@@ -13,7 +13,7 @@ import { TrustBadge } from "@/components/sita/TrustBadge";
 import { StateBadge } from "@/components/sita/StateBadge";
 import { useNavigate } from "react-router-dom";
 import { useDataMode } from "@/contexts/DataModeContext";
-import { useDisplayMode } from "@/contexts/DisplayModeContext";
+import { useDisplayMode } from "@/contexts/AppearanceContext";
 import { useLeads, useInvoices, useBills, useCashFlow, useApprovals, useHouseholdTasks, useFamilyEvents, useTravel, useSubscriptions } from "@/hooks/use-sita-data";
 import { useCalendarEvents } from "@/hooks/use-calendar-data";
 import { useFinanceProjection } from "@/hooks/use-domain-projections";
