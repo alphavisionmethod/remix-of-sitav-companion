@@ -702,25 +702,75 @@ const SettingsPage = () => {
 
       case "appearance":
         return (
-          <SitaCard hover={false} className="p-5">
-            <SitaCardTitle sub="Theme, density, and display">
-              <div className="flex items-center gap-2"><Palette className="h-4 w-4 text-primary" /> Appearance</div>
-            </SitaCardTitle>
-            <div className="mt-4">
-              <ToggleSetting label="Large Font Mode" description="Increase body text for comfortable reading" enabled={largeFontMode} onChange={() => setLargeFontMode(!largeFontMode)} />
-              <div className="py-3">
-                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Keyboard Shortcuts</p>
-                <div className="space-y-1.5 text-[11px]">
-                  {[["Command Palette", "⌘K"], ["Focus Mode", "⌘."], ["Calm Mode", "⌘,"], ["Search", "⌘/"], ["Quick Capture", "⌘N"]].map(([label, shortcut]) => (
-                    <div key={label} className="flex justify-between">
-                      <span className="text-muted-foreground">{label}</span>
-                      <kbd className="rounded bg-secondary px-1.5 py-0.5 font-mono text-foreground">{shortcut}</kbd>
-                    </div>
-                  ))}
+          <div className="space-y-4">
+            <SitaCard hover={false} className="p-5">
+              <SitaCardTitle sub="Theme, density, and display">
+                <div className="flex items-center gap-2"><Palette className="h-4 w-4 text-primary" /> Appearance</div>
+              </SitaCardTitle>
+              <div className="mt-4">
+                <ToggleSetting label="Large Font Mode" description="Increase body text for comfortable reading" enabled={largeFontMode} onChange={() => setLargeFontMode(!largeFontMode)} />
+                <div className="py-3">
+                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Keyboard Shortcuts</p>
+                  <div className="space-y-1.5 text-[11px]">
+                    {[["Command Palette", "⌘K"], ["Focus Mode", "⌘."], ["Calm Mode", "⌘,"], ["Search", "⌘/"], ["Quick Capture", "⌘N"]].map(([label, shortcut]) => (
+                      <div key={label} className="flex justify-between">
+                        <span className="text-muted-foreground">{label}</span>
+                        <kbd className="rounded bg-secondary px-1.5 py-0.5 font-mono text-foreground">{shortcut}</kbd>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          </SitaCard>
+            </SitaCard>
+
+            {/* Desktop Wallpaper Picker */}
+            <SitaCard hover={false} className="p-5">
+              <SitaCardTitle sub="Choose a wallpaper for your desktop home screen">
+                <div className="flex items-center gap-2"><Monitor className="h-4 w-4 text-primary" /> Desktop Wallpaper</div>
+              </SitaCardTitle>
+              <div className="mt-4 space-y-5">
+                {wallpaperCategories.map(cat => {
+                  const catThemes = wallpaperThemes.filter(t => t.id === "auto" ? cat === "gradient" : t.category === cat);
+                  if (catThemes.length === 0) return null;
+                  return (
+                    <div key={cat}>
+                      <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-2 capitalize">{cat}</p>
+                      <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                        {catThemes.map(t => (
+                          <button
+                            key={t.id}
+                            onClick={() => { setWallpaper(t.id); toast.success(`Wallpaper set to ${t.name}`); }}
+                            className={cn(
+                              "group relative rounded-xl overflow-hidden aspect-[16/10] border-2 transition-all",
+                              wallpaperId === t.id
+                                ? "border-primary ring-2 ring-primary/30 scale-[1.02]"
+                                : "border-border/40 hover:border-primary/40"
+                            )}
+                          >
+                            <div
+                              className="absolute inset-0"
+                              style={{ background: t.preview }}
+                            />
+                            {t.overlay && (
+                              <div className="absolute inset-0" style={{ background: t.overlay }} />
+                            )}
+                            <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-1.5">
+                              <p className="text-[9px] font-medium text-white/90 truncate">{t.name}</p>
+                            </div>
+                            {wallpaperId === t.id && (
+                              <div className="absolute top-1 right-1 w-4 h-4 rounded-full bg-primary flex items-center justify-center">
+                                <Check className="h-2.5 w-2.5 text-primary-foreground" />
+                              </div>
+                            )}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </SitaCard>
+          </div>
         );
 
       case "devices":
