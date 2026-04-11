@@ -1,70 +1,76 @@
 
 
-# SITA OS — Remaining Fixes, Wiring & Connections
+# SITA OS — Production Readiness Audit
 
-## What's Left
+## Status: Nearly Complete
 
-Six items remain across security, routing, and component wiring. Nothing is a blocker, but all should be addressed for production quality.
-
----
-
-## 1. RLS Policies: `public` → `authenticated` (Security Hardening)
-
-Three tables have RLS policies applied to the `public` role instead of `authenticated`. While no data leaks (because `auth.uid()` returns NULL for anon), this violates least-privilege.
-
-**Tables:** `app_default_associations`, `calibration_checkpoints`, `installed_apps`
-
-**Fix:** One migration that runs `ALTER POLICY ... TO authenticated` on all policies for these 3 tables (~9-12 policy alterations).
+The codebase is in strong shape. Most prior issues (forwardRef wrappers, `/brain` redirect, hooks ordering) have been fixed. Here is what remains:
 
 ---
 
-## 2. Broken `/brain` Route (Navigation Dead Link)
+## 1. RLS Policy Hardening — 3 Tables (Security, HIGH priority)
 
-Two components navigate to `/brain` which does not exist as a route:
-- `CopilotBar.tsx` line 59: `navigate("/brain")`
-- `UniversalCommandSurface.tsx` line 740: `navigate("/brain")`
+11 RLS policies across `app_default_associations`, `calibration_checkpoints`, and `installed_apps` apply to `{public}` instead of `{authenticated}`. No data leaks today (auth.uid() returns NULL for anon), but this violates least-privilege.
 
-The actual route is `/personal-brain`. The sidebar already links correctly.
-
-**Fix:** Either add a redirect route `<Route path="/brain" element={<Navigate to="/personal-brain" replace />} />` in App.tsx, or change both `navigate` calls to `/personal-brain`.
+**Fix:** One migration with 11 `ALTER POLICY ... TO authenticated` statements.
 
 ---
 
-## 3. forwardRef Warnings (3 Components)
+## 2. Leaked Password Protection — Supabase Dashboard (Security, MEDIUM priority)
 
-Three function components trigger "Function components cannot be given refs" console warnings when rendered by React Router:
+Still disabled. This is a manual toggle, not a code fix.
 
-| Component | File | Fix |
-|-----------|------|-----|
-| `RuntimeTruthProbe` | `src/components/sita/RuntimeTruthProbe.tsx` | Wrap with `React.forwardRef` |
-| `AdminCommandPaletteWrapper` | `src/App.tsx` line 36 | Wrap with `React.forwardRef` |
-| `AdminKeyboardShortcutsWrapper` | `src/App.tsx` line 37 | Wrap with `React.forwardRef` |
+**Action:** Supabase Dashboard → Auth → Settings → Enable "Leaked password protection"
 
 ---
 
-## 4. Leaked Password Protection (Manual — Supabase Dashboard)
+## 3. `admin-intelligence` Wasteful Body Parse (Cosmetic, LOW priority)
 
-Still disabled. This is a dashboard toggle, not a code fix.
+Lines 43-53: parses `req.json()` for Zod validation, then discards the result. The body is re-parsed later in the switch cases. The parsed body should be passed through or the pre-validation removed.
 
-**Action:** Go to Supabase Dashboard → Auth → Providers → Email → Enable "Leaked password protection (HaveIBeenPwned)"
-
----
-
-## 5. `admin-intelligence` Wasteful Body Parse (Cosmetic)
-
-Line 46 in `supabase/functions/admin-intelligence/index.ts` parses `req.json()` for validation then discards the result. Not a bug, just wasteful. Optional cleanup.
+**Fix:** Store the parsed body in a variable and pass it to the handler logic, or remove the early parse block entirely since individual handlers parse separately.
 
 ---
 
-## Files Changed
+## 4. `as any` Type Casts in 13 Page Files (Code Quality, LOW priority)
+
+142 occurrences of `as any` across 13 files. Most are in admin panels and select elements. Not blocking but reduces type safety. Key files:
+- `CampaignOrchestrator.tsx` — 6 casts on inline data
+- `ITC04WiringGraph.tsx` — 6 casts on edge data
+- `PLT05ViolationTriage.tsx`, `PLT10DriftRadar.tsx` — select onChange casts
+- `AppLibraryPage.tsx` — sort select cast
+
+**Fix:** Define proper TypeScript interfaces for each data shape. Low urgency.
+
+---
+
+## 5. Console Logging in 8 Page Files (Code Quality, LOW priority)
+
+40 console.log/warn/error calls in page files. Most are appropriate error logging in catch blocks. One debug log in `CalmAssistantChat.tsx` line 48 should be removed for production.
+
+**Fix:** Remove the debug `console.log` in `CalmAssistantChat.tsx`. The rest are acceptable error-path logging.
+
+---
+
+## Summary
+
+| Item | Priority | Type | Effort |
+|------|----------|------|--------|
+| RLS `public` → `authenticated` migration | HIGH | Security | 1 migration, ~15 min |
+| Leaked password protection toggle | MEDIUM | Security | Manual, 1 min |
+| admin-intelligence body parse cleanup | LOW | Code quality | 5 min |
+| Remove `as any` casts (13 files) | LOW | Type safety | 1-2 hours |
+| Remove debug console.log | LOW | Cleanup | 2 min |
+
+## Recommendation
+
+Items 1 and 3 and 5 can be done in code right now. Item 2 requires you to toggle in the Supabase Dashboard. Item 4 is optional polish.
+
+## Files to Change
 
 | File | Change |
 |------|--------|
-| `src/App.tsx` | Add `/brain` → `/personal-brain` redirect route; wrap 2 wrapper components with `forwardRef` |
-| `src/components/sita/RuntimeTruthProbe.tsx` | Wrap with `React.forwardRef` |
-| **New migration** | `ALTER POLICY` for 3 tables to change role from `public` to `authenticated` |
-| `supabase/functions/admin-intelligence/index.ts` | Optional: remove wasteful body parse |
-| **Supabase Dashboard** | Enable leaked password protection (manual) |
-
-No new dependencies. No database schema changes. No breaking changes.
+| **New migration** | `ALTER POLICY` × 11 for 3 tables |
+| `supabase/functions/admin-intelligence/index.ts` | Remove or wire up the early body parse |
+| `src/pages/advisors/CalmAssistantChat.tsx` | Remove debug console.log on line 48 |
 
