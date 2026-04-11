@@ -26,6 +26,7 @@ import { SectionSkeleton } from "./PageSkeleton";
 // Lazy-load non-critical shell features (deferred until after first paint)
 const AdvisorChat = lazy(() => import("./AdvisorChat").then(m => ({ default: m.AdvisorChat })));
 const AdvisorFAB = lazy(() => import("./AdvisorFAB").then(m => ({ default: m.AdvisorFAB })));
+const DesktopMenuBarLazy = lazy(() => import("./DesktopMenuBar").then(m => ({ default: m.DesktopMenuBar })));
 const NotificationPanel = lazy(() => import("./NotificationPanel").then(m => ({ default: m.NotificationPanel })));
 const UniversalTimeline = lazy(() => import("./UniversalTimeline").then(m => ({ default: m.UniversalTimeline })));
 const InspectorPanel = lazy(() => import("./InspectorPanel").then(m => ({ default: m.InspectorPanel })));
