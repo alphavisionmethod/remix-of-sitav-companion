@@ -18,6 +18,8 @@
 
 ## CPU Rendering Pipeline
 
+> **Implementation spec**: The full C++ compositor, alpha blending, SIMD rasterizer, and box blur code live in [`COMPOSITOR_RASTERIZER_SPEC.md`](./COMPOSITOR_RASTERIZER_SPEC.md). That document is the build target for Phase 2 (Native Engine).
+
 ```
 App Logic (React state)
     ↓
