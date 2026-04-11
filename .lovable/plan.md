@@ -1,74 +1,55 @@
 
 
-# NovaOS Visual & Integration Polish — 100% Completion Pass
+# Integrate C++ Compositor & SIMD Rasterizer Specs into SITA OS
 
-## Current State Assessment
+## What We're Building
 
-After reviewing all files, the NovaOS design system is **structurally complete** but has these gaps preventing a "100% visually perfect" experience:
+Two additions based on the user's detailed C++ code:
 
-### Issues Found
+1. **Compositor & Rasterizer Reference Spec** — a new architecture doc (`infra/docs/COMPOSITOR_RASTERIZER_SPEC.md`) containing the exact C++ data structures, alpha blending, SIMD fill, box blur, gradient, and damage region code the user provided, organized as a buildable reference for the native engine phase.
 
-1. **Two competing menu bars**: `DesktopMenuBar.tsx` (old, used on desktop route) and `SystemMenuBar.tsx` (new NovaOS, with File/Edit/View menus) — the old one is what actually renders on desktop. The new `SystemMenuBar` is never mounted.
-
-2. **Dock not connected to window manager**: `DesktopDock.tsx` navigates via routes only — clicking Finder/Settings in the dock doesn't open FloatingWindows. The `handleLaunchApp` in `DesktopSurface` exists but the dock has no way to call it.
-
-3. **Window manager duplicated**: Both `ShellLayout` and `DesktopSurface` instantiate separate `useWindowManager()` hooks — they're two independent state machines, so Mission Control (in ShellLayout) can't see windows opened from DesktopSurface.
-
-4. **Rendering pipeline manifest not linked**: `generated/rendering-pipeline-manifest.json` exists but isn't referenced anywhere in the architecture docs or design system.
+2. **TypeScript Compositor Simulation** — a new module (`src/lib/engine/compositor-sim.ts`) that models the compositor concepts in TypeScript within the React prototype. This lets the prototype *simulate* the real pipeline: Surface objects, z-ordered window list, per-pixel alpha blending (on an OffscreenCanvas), damage rect tracking, and box blur approximation. This bridges the React UI to the native engine spec.
 
 ## Plan
 
-### 1. Replace DesktopMenuBar with SystemMenuBar on desktop route
-**Edit**: `src/components/sita/ShellLayout.tsx`
-- Replace `DesktopMenuBarLazy` import/usage with `SystemMenuBar` on desktop routes
-- Pass `onSearchOpen`, `onNotifOpen`, and `activeApp` props
+### 1. New doc: Compositor & Rasterizer Implementation Spec
+**New file**: `infra/docs/COMPOSITOR_RASTERIZER_SPEC.md`
 
-### 2. Unify window manager state
-**Edit**: `src/components/sita/ShellLayout.tsx` + `src/components/sita/shell/DesktopSurface.tsx`
-- Remove `useWindowManager()` from DesktopSurface
-- Pass window manager methods (`openWindow`, `closeWindow`, `focusWindow`, `minimizeWindow`, `visibleWindows`) from ShellLayout down to DesktopSurface as props
-- This ensures Mission Control (F3) sees the same windows as the desktop
+Contains (verbatim from user, organized into sections):
+- **Part 1 — Compositor**: `Color`, `Surface`, `Rect`, `Framebuffer` structs; alpha blend function; compositing loop; damage region optimization
+- **Part 2 — CPU Rasterizer**: scalar `fill_rect`, AVX2 SIMD `fill_rect_simd`, gradient `lerp`, box blur approximation
+- **Build notes**: which headers needed (`<immintrin.h>`), compile flags (`-mavx2`), integration with the tile system from `PERFORMANCE_RENDERING.md`
 
-### 3. Connect Dock to window manager
-**Edit**: `src/components/sita/DesktopDock.tsx`
-- Accept an optional `onLaunchApp?: (appId: string) => void` prop
-- For known OS apps (finder, settings), call `onLaunchApp` instead of navigating
-- Other apps continue using route navigation
+### 2. TypeScript compositor simulation module
+**New file**: `src/lib/engine/compositor-sim.ts`
 
-**Edit**: `src/components/sita/ShellLayout.tsx`
-- Pass a `handleLaunchApp` callback to DesktopDock that opens FloatingWindows via the unified window manager
+Exports:
+- `Surface` class (buffer as `Uint32Array`, position, opacity, visible)
+- `Framebuffer` class (pixel buffer, width, height)
+- `alphaBlend(fg, bg)` — exact port of the C++ blend function
+- `composite(fb, surfaces)` — z-order compositing loop
+- `DamageTracker` class — tracks dirty `Rect[]`, coalesces overlaps
+- `fillRect(buffer, stride, x, y, w, h, color)` — scalar fill
+- `boxBlur3x3(src, dst, w, h)` — 3x3 box blur approximation
 
-### 4. Add window resize handle to FloatingWindow
-**Edit**: `src/components/sita/shell/FloatingWindow.tsx`
-- Add a bottom-right corner resize grip (diagonal lines icon)
-- Pointer-based resize with min/max constraints
-- Consistent with the OS architecture spec
+This module is pure computation (no DOM), usable for testing or future Canvas-based rendering.
 
-### 5. Polish visual details
-**Edit**: `src/components/sita/shell/DesktopSurface.tsx`
-- Increase desktop content `pt` to clear menu bar (currently `pt-10`, needs `pt-12` for the 28px bar)
-- Add a subtle inner shadow on the vignette for more depth
-
-**Edit**: `src/components/sita/shell/windows/FinderWindow.tsx`
-- Add sidebar navigation (Favorites: Desktop, Documents, Downloads) like real Finder
-- Add breadcrumb path bar below title
-
-**Edit**: `src/components/sita/shell/windows/SettingsWindow.tsx`
-- Add toggle switches, sliders for Display brightness, proper form controls instead of text-only
-
-### 6. Link rendering pipeline manifest to architecture docs
+### 3. Link new spec from existing architecture docs
 **Edit**: `infra/docs/NOVA_OS_ARCHITECTURE.md`
-- Add reference to `generated/rendering-pipeline-manifest.json`
-- Include manifest schema explanation in the spec
+- Add cross-reference to `COMPOSITOR_RASTERIZER_SPEC.md` in the CPU Rendering Pipeline section
+- Note that the C++ implementation spec is the target for Phase 2 (Native Engine)
 
-## Files Changed
-- 5 edits (ShellLayout, DesktopSurface, DesktopDock, FloatingWindow, FinderWindow, SettingsWindow)
-- 1 edit (NOVA_OS_ARCHITECTURE.md)
-- 0 new files
+### 4. Update rendering pipeline manifest
+**Edit**: `generated/rendering-pipeline-manifest.json`
+- Add `compositor` section with blend mode formula reference and surface struct schema
+- Add `simd` section documenting AVX2/NEON acceleration targets
+
+## Files
+- 2 new files (spec doc + TS simulation module)
+- 2 edits (architecture doc cross-ref + manifest update)
 
 ## Technical Notes
-- Single window manager instance in ShellLayout guarantees Mission Control, dock, and desktop surface all share state
-- SystemMenuBar replaces DesktopMenuBar — no duplicate top bar code
-- All visual changes stay within transform/opacity animation budget
-- Resize handle uses pointer capture (same pattern as drag)
+- The TS simulation is a pure-logic module with zero React/DOM dependencies — it can run in a Web Worker or Node for testing
+- The C++ spec doc preserves the user's exact code with added context for compilation and integration
+- All specs reference the existing tile system (64x64) and damage tracker from `PERFORMANCE_RENDERING.md`
 
