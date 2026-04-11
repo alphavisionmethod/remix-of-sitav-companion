@@ -145,10 +145,10 @@ const NavItems = ({ items, collapsed }: { items: typeof primaryNav; collapsed: b
               <Collapsible defaultOpen={active || subActive}>
                 <CollapsibleTrigger className="w-full">
                   <div className={cn(
-                    "flex items-center gap-3 rounded-lg px-3 py-2 text-[13px] font-medium transition-all duration-200 w-full",
+                    "flex items-center gap-3 rounded-xl px-3 py-2 text-[13px] font-medium transition-all duration-200 w-full",
                     active || subActive
-                      ? "bg-primary/8 text-foreground shadow-xs border border-primary/10"
-                      : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                      ? "bg-primary/10 text-foreground border border-primary/12"
+                      : "text-sidebar-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground"
                   )}>
                     <item.icon className={cn("h-[18px] w-[18px] shrink-0", (active || subActive) && "text-primary")} strokeWidth={1.8} />
                     <span className="flex-1 text-left">{item.title}</span>
@@ -191,10 +191,10 @@ const NavItems = ({ items, collapsed }: { items: typeof primaryNav; collapsed: b
                 to={item.url}
                 end={item.url === "/"}
                 className={cn(
-                  "flex items-center gap-3 rounded-lg px-3 py-2 text-[13px] font-medium transition-all duration-200",
+                  "flex items-center gap-3 rounded-xl px-3 py-2 text-[13px] font-medium transition-all duration-200",
                   active
-                    ? "bg-primary/8 text-foreground shadow-xs border border-primary/10"
-                    : "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+                    ? "bg-primary/10 text-foreground border border-primary/12"
+                    : "text-sidebar-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground"
                 )}
                 activeClassName=""
               >
@@ -272,7 +272,7 @@ export const AppSidebar = memo(function AppSidebar() {
   });
 
   return (
-    <Sidebar collapsible="icon" className="border-r border-sidebar-border glass-panel" data-testid="sidebar-nav" aria-label="Main navigation sidebar">
+    <Sidebar collapsible="icon" className="border-r border-sidebar-border/40 transition-[width] duration-300 ease-[cubic-bezier(0.25,0.1,0.25,1)]" style={{ background: "hsl(var(--sidebar-background) / 0.85)", backdropFilter: "blur(32px) saturate(1.4)", WebkitBackdropFilter: "blur(32px) saturate(1.4)" }} data-testid="sidebar-nav" aria-label="Main navigation sidebar">
       <SidebarHeader className="p-4 pb-6">
         <div className="flex items-center gap-3">
           <div className="relative">
