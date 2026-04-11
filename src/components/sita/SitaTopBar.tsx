@@ -67,7 +67,7 @@ export const SitaTopBar = memo(({
       aria-label="SITA OS system bar"
       className="sita-top-bar sticky top-0 z-50 flex h-11 items-center justify-between border-b border-border/20 px-2 sm:px-3 select-none"
       style={{ paddingTop: "env(safe-area-inset-top, 0px)", background: "hsl(var(--surface-0) / 0.8)", backdropFilter: "blur(40px) saturate(1.6)", WebkitBackdropFilter: "blur(40px) saturate(1.6)" }}
-      style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
+      
     >
       {/* Left: Sidebar + Context + Command */}
       <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
