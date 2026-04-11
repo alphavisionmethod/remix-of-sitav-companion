@@ -245,6 +245,11 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         
       </Suspense>
 
+      {/* Desktop Dock — floating app launcher */}
+      <Suspense fallback={null}>
+        <DesktopDock />
+      </Suspense>
+
       {/* Behavioral Interaction Tracker — invisible */}
       <InteractionTracker />
 
