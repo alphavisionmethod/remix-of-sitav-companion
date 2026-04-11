@@ -124,6 +124,7 @@ export interface AppDefinition {
   supportUrl?: string;
   privacyUrl?: string;
   routePath?: string;
+  externalUrl?: string;
 }
 
 export interface AppBundle {

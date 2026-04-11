@@ -3,12 +3,13 @@
 // Installed app management with live state
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Search, Grid3X3, List, Pin, Globe, Monitor, Package, ArrowRight,
-  Check, Clock, Shield, Building, RefreshCw, Layers, Sparkles,
+  Check, Clock, Shield, Building, RefreshCw, Layers, Sparkles, ExternalLink,
 } from "lucide-react";
+import type { AppDefinition } from "@/lib/app-platform/types";
 import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { AppIcon, VerificationBadge, AppSourceLabel } from "@/components/sita/app-platform/AppStoreComponents";
@@ -25,6 +26,12 @@ const AppLibraryPage = () => {
   const [view, setView] = useState<LibView>("installed");
   const [layout, setLayout] = useState<"grid" | "list">("grid");
   const [sortBy, setSortBy] = useState<"name" | "recent" | "publisher">("name");
+
+  const launchApp = useCallback((app: AppDefinition) => {
+    if (app.routePath) navigate(app.routePath);
+    else if (app.externalUrl) window.open(app.externalUrl, '_blank', 'noopener');
+    else navigate(`/app-store/app/${app.id}`);
+  }, [navigate]);
 
   const filteredApps = useMemo(() => {
     let list: typeof apps;
@@ -134,9 +141,10 @@ const AppLibraryPage = () => {
                 <VerificationBadge level={app.trustLevel} />
                 <AppSourceLabel appClass={app.appClass} />
                 {app.installStatus === "installed" && (
-                  <span className="ml-auto text-[9px] text-[hsl(var(--trust-safe))] font-medium flex items-center gap-0.5">
-                    <Check className="h-2.5 w-2.5" /> Installed
-                  </span>
+                  <button onClick={(e) => { e.stopPropagation(); launchApp(app); }}
+                    className="ml-auto rounded-lg bg-primary/10 px-2.5 py-1 text-[10px] font-semibold text-primary hover:bg-primary/20 transition-colors flex items-center gap-1">
+                    {app.externalUrl ? <ExternalLink className="h-2.5 w-2.5" /> : <ArrowRight className="h-2.5 w-2.5" />} Open
+                  </button>
                 )}
               </div>
             </div>
@@ -158,7 +166,10 @@ const AppLibraryPage = () => {
               <VerificationBadge level={app.trustLevel} />
               <AppSourceLabel appClass={app.appClass} />
               {app.installStatus === "installed" ? (
-                <span className="text-[10px] text-[hsl(var(--trust-safe))] font-medium flex items-center gap-1"><Check className="h-3 w-3" />Installed</span>
+                <button onClick={(e) => { e.stopPropagation(); launchApp(app); }}
+                  className="rounded-lg bg-primary/10 px-2.5 py-1 text-[10px] font-semibold text-primary hover:bg-primary/20 transition-colors flex items-center gap-1">
+                  {app.externalUrl ? <ExternalLink className="h-3 w-3" /> : <ArrowRight className="h-3 w-3" />} Open
+                </button>
               ) : (
                 <span className="text-[10px] text-primary font-medium">Get</span>
               )}
