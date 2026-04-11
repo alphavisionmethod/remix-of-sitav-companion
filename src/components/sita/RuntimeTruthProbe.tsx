@@ -6,6 +6,7 @@
 import { useEffect, useState, forwardRef } from "react";
 import { useSitaOS } from "@/contexts/SitaOSContext";
 import { supabase } from "@/integrations/supabase/client";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { cn } from "@/lib/utils";
 import { Activity } from "lucide-react";
 
@@ -18,6 +19,7 @@ interface ProbeResult {
 
 export const RuntimeTruthProbe = forwardRef<HTMLDivElement, { compact?: boolean }>(({ compact = true }, ref) => {
   const kernel = useSitaOS();
+  const { isDemoMode } = useDataMode();
   const [probe, setProbe] = useState<ProbeResult>({
     osHydrated: false,
     gatewayReachable: null,
@@ -28,6 +30,12 @@ export const RuntimeTruthProbe = forwardRef<HTMLDivElement, { compact?: boolean 
   useEffect(() => {
     const check = async () => {
       const osHydrated = kernel.hydrated;
+
+      // Skip backend checks in demo mode
+      if (isDemoMode) {
+        setProbe({ osHydrated, gatewayReachable: null, caiAccessible: null, checkedAt: new Date().toISOString() });
+        return;
+      }
 
       // Check CAI table access (lightweight query)
       let caiAccessible: boolean | null = null;
