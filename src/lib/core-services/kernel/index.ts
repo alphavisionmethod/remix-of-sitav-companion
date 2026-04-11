@@ -327,6 +327,11 @@ export class KernelSubsystem {
       uiRenderer: this.uiRenderer.getStats(),
       viewTree: this.viewTree.getStats(),
       layoutEngine: this.layoutEngine.getStats(),
+      tcpip: this.tcpip.getStats(),
+      sockets: this.sockets.getStats(),
+      firewall: this.firewall.getStats(),
+      vpn: this.vpn.getStats(),
+      dns: this.dns.getStats(),
     };
   }
 
