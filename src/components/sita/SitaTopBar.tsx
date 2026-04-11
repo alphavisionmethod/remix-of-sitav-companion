@@ -8,7 +8,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useDisplayMode, useTheme } from "@/contexts/AppearanceContext";
 import { MISSION_MODES } from "@/lib/advisor-protocol";
-import { MISSION_MODES } from "@/lib/advisor-protocol";
 import { AISpendIndicator } from "./AISpendIndicator";
 import { useUnreadCount } from "./NotificationPanel";
 import { SidebarTrigger } from "@/components/ui/sidebar";
