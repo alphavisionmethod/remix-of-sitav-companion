@@ -1,5 +1,8 @@
+import { memo } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { Home, Briefcase, DollarSign, Headphones, MoreHorizontal } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { prefetchRoute } from "@/hooks/useRoutePrefetch";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -10,7 +13,7 @@ const navItems = [
   { icon: MoreHorizontal, label: "More", path: "/settings" },
 ];
 
-export const MobileBottomNav = () => {
+export const MobileBottomNav = memo(() => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -35,6 +38,7 @@ export const MobileBottomNav = () => {
               aria-label={item.label}
               aria-current={active ? "page" : undefined}
               className="relative flex flex-col items-center gap-0.5 px-2 py-1 min-w-0"
+              onTouchStart={() => prefetchRoute(item.path)}
             >
               <Icon
                 className={cn(
@@ -60,4 +64,5 @@ export const MobileBottomNav = () => {
       </div>
     </nav>
   );
-};
+});
+MobileBottomNav.displayName = "MobileBottomNav";
