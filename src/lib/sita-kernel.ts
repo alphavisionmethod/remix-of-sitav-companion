@@ -101,6 +101,9 @@ export class SitaKernel {
   readonly incidentManagement: IncidentManagementService;
   readonly emergencyHalt: EmergencyHaltService;
 
+  // ── Tier 5: Kernel Architecture & Security Model ──────────────
+  readonly kernelArch: KernelSubsystem;
+
   // ── Runtime State ─────────────────────────────────────────
   private _activeEntity: EntityProfile | null = null;
   private _bootedAt: number;
