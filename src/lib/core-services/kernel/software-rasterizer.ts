@@ -25,6 +25,7 @@ export interface TileBuffer {
 export interface RasterizerStats {
   pixelsFilled: number;
   pixelsBlended: number;
+  pixelsCopied: number;
   scanlinesProcesed: number;
   simdBatchOps: number;
   antiAliasedEdges: number;
