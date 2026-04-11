@@ -128,9 +128,23 @@ export class DisplayServer {
   private _nextZ = 1;
   private _listeners: WindowEventListener[] = [];
 
+  /** CPU Compositor — owns framebuffers and composites surfaces */
+  readonly compositor: CpuCompositor;
+
   constructor(monitors?: Monitor[]) {
     const mons = monitors && monitors.length > 0 ? monitors : [DEFAULT_MONITOR];
     for (const m of mons) this._monitors.set(m.id, { ...m });
+
+    // Initialize CPU compositor with one output per monitor
+    this.compositor = new CpuCompositor();
+    for (const m of this._monitors.values()) {
+      this.compositor.addOutput(m.id, "Virtual", {
+        width: m.bounds.width,
+        height: m.bounds.height,
+        refreshHz: m.refreshHz,
+        interlaced: false,
+      });
+    }
   }
 
   // ── Monitor management ─────────────────────────────────────
@@ -207,6 +221,9 @@ export class DisplayServer {
 
     if (win.modal) this._modalStack.push(id);
 
+    // Allocate compositor surface for this window
+    this.compositor.allocateSurface(id, contentBounds.width, contentBounds.height);
+
     this._emit({ type: "created", windowId: id });
     this.focusWindow(id);
     return win;
@@ -226,6 +243,7 @@ export class DisplayServer {
     }
 
     this._windows.delete(id);
+    this.compositor.freeSurface(id);
     this._emit({ type: "destroyed", windowId: id });
 
     // Refocus
