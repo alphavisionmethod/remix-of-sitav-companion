@@ -1,5 +1,6 @@
 import { ReactNode, useState, useEffect, lazy, Suspense, useCallback } from "react";
 import { useWindowManager } from "@/hooks/useWindowManager";
+import { WindowManagerContext } from "@/contexts/WindowManagerContext";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { SkipToContent } from "./SkipToContent";
 import { RouteAnnouncer } from "./RouteAnnouncer";
@@ -149,6 +150,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
   const isDesktopRoute = location.pathname === "/" || location.pathname === "/home" || location.pathname === "/desktop";
 
   return (
+    <WindowManagerContext.Provider value={wm}>
     <SidebarProvider>
       {/* WCAG: Skip to content link */}
       <SkipToContent />
