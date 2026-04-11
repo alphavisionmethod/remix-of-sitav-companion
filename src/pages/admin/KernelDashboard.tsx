@@ -94,6 +94,14 @@ const FILESYSTEM_MOUNTS = [
   { path: "/mnt/vault", fsType: "sitafs", device: "/dev/sdb1", size: "1 TB", used: "120 GB", usedPercent: 12, options: "rw,encrypt,integrity", status: "healthy" as const },
 ];
 
+const RING_DESCRIPTIONS: Record<number, string> = {
+  [TrustRing.KERNEL]: "Kernel-space: scheduler, VMM, interrupts",
+  [TrustRing.TRUSTED]: "Signed SITA services: executor, receipt, policy",
+  [TrustRing.VERIFIED]: "Third-party signed apps with full review",
+  [TrustRing.SANDBOXED]: "Third-party apps with restricted sandbox",
+  [TrustRing.UNTRUSTED]: "Unknown/unsigned code — maximum restriction",
+};
+
 const SECURITY_RINGS = [
   { ring: TrustRing.KERNEL, ...RING_CONFIG[TrustRing.KERNEL], processes: 4, violations: 0 },
   { ring: TrustRing.TRUSTED, ...RING_CONFIG[TrustRing.TRUSTED], processes: 18, violations: 0 },
