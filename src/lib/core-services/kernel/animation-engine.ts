@@ -199,6 +199,7 @@ export class AnimationEngine {
       startTime: 0,
       currentIteration: 0,
       computedValues: new Map(),
+      layer: def.layer ?? classifyAnimationLayer(def.tracks),
     };
     this._animations.set(def.id, instance);
     this._stats.totalAnimationsCreated++;
