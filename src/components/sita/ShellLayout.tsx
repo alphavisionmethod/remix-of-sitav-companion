@@ -111,6 +111,10 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         e.preventDefault();
         setCommandOpen(o => !o);
       }
+      if (e.key === "F3") {
+        e.preventDefault();
+        setMissionControlOpen(o => !o);
+      }
     };
     document.addEventListener("keydown", handler);
     return () => document.removeEventListener("keydown", handler);
