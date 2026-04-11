@@ -182,7 +182,6 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
             <Suspense fallback={<div className="hidden lg:block w-72 p-4"><SectionSkeleton lines={5} /></div>}>
               <ContextualRail />
             </Suspense>
-            </Suspense>
           </div>
         </div>
       </div>
