@@ -1,4 +1,4 @@
-import { AppWelcomeHeader } from "@/components/sita/AppWelcomeHeader";
+import { CenterPageShell, CenterSection } from "@/components/sita/CenterPageShell";
 import { InAppAdvisorStrip } from "@/components/sita/InAppAdvisorStrip";
 import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
 import { SitaTabs } from "@/components/sita/SitaComponents";
@@ -96,57 +96,62 @@ const BusinessCenter = () => {
   const PageComponent = pages[activePage];
 
   return (
-    <div className="mx-auto max-w-7xl space-y-6">
+    <CenterPageShell domain="business">
       <h1 className="sr-only">Business Center</h1>
       <DemoModeBadge />
-      <AppWelcomeHeader domain="business" />
-      <InAppAdvisorStrip domain="business" />
-      <motion.div
-        className="overflow-x-auto -mx-2 px-2"
-        initial={{ opacity: 0, y: -8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.25 }}
-      >
-        <SitaTabs
-          tabs={[
-            { key: "overview", label: "Overview" },
-            { key: "leads", label: "Leads", count: 3 },
-            { key: "customers", label: "Customers" },
-            { key: "opportunities", label: "Opportunities" },
-            { key: "quotes", label: "Quotes" },
-            { key: "invoices", label: "Invoices", count: 1 },
-            { key: "collections", label: "Collections" },
-            { key: "ecommerce", label: "🛒 E-Commerce", count: 2 },
-            { key: "website-builder", label: "🌐 Website" },
-            { key: "proposals", label: "📝 Proposals", count: 2 },
-            { key: "lead-recovery", label: "🔄 Lead Recovery", count: 5 },
-            { key: "social", label: "📱 Social", count: 4 },
-            { key: "revenue-autopilot", label: "Revenue Autopilot" },
-            { key: "autopilot-hub", label: "⚡ Autopilot Hub" },
-            { key: "revenue-impact", label: "📊 Revenue Impact" },
-            { key: "playbook-builder", label: "🔧 Builder" },
-            { key: "revenue-forecast", label: "🔮 Forecast" },
-            { key: "communications", label: "Comms" },
-            { key: "boardroom", label: "Boardroom" },
-            { key: "proof", label: "Proof" },
-          ]}
-          active={activePage}
-          onChange={goTo}
-        />
-      </motion.div>
-
-      <AnimatePresence mode="wait">
+      <CenterSection>
+        <InAppAdvisorStrip domain="business" />
+      </CenterSection>
+      <CenterSection>
         <motion.div
-          key={activePage}
-          initial={{ opacity: 0, y: 12 }}
+          className="overflow-x-auto -mx-2 px-2"
+          initial={{ opacity: 0, y: -8 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
           transition={{ duration: 0.25 }}
         >
-          <PageComponent />
+          <SitaTabs
+            tabs={[
+              { key: "overview", label: "Overview" },
+              { key: "leads", label: "Leads", count: 3 },
+              { key: "customers", label: "Customers" },
+              { key: "opportunities", label: "Opportunities" },
+              { key: "quotes", label: "Quotes" },
+              { key: "invoices", label: "Invoices", count: 1 },
+              { key: "collections", label: "Collections" },
+              { key: "ecommerce", label: "🛒 E-Commerce", count: 2 },
+              { key: "website-builder", label: "🌐 Website" },
+              { key: "proposals", label: "📝 Proposals", count: 2 },
+              { key: "lead-recovery", label: "🔄 Lead Recovery", count: 5 },
+              { key: "social", label: "📱 Social", count: 4 },
+              { key: "revenue-autopilot", label: "Revenue Autopilot" },
+              { key: "autopilot-hub", label: "⚡ Autopilot Hub" },
+              { key: "revenue-impact", label: "📊 Revenue Impact" },
+              { key: "playbook-builder", label: "🔧 Builder" },
+              { key: "revenue-forecast", label: "🔮 Forecast" },
+              { key: "communications", label: "Comms" },
+              { key: "boardroom", label: "Boardroom" },
+              { key: "proof", label: "Proof" },
+            ]}
+            active={activePage}
+            onChange={goTo}
+          />
         </motion.div>
-      </AnimatePresence>
-    </div>
+      </CenterSection>
+
+      <CenterSection>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activePage}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.25 }}
+          >
+            <PageComponent />
+          </motion.div>
+        </AnimatePresence>
+      </CenterSection>
+    </CenterPageShell>
   );
 };
 

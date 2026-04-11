@@ -1,4 +1,4 @@
-import { AppWelcomeHeader } from "@/components/sita/AppWelcomeHeader";
+import { CenterPageShell, CenterSection } from "@/components/sita/CenterPageShell";
 import { InAppAdvisorStrip } from "@/components/sita/InAppAdvisorStrip";
 import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
 import { SitaTabs } from "@/components/sita/SitaComponents";
@@ -246,38 +246,43 @@ const MoneyCenter = () => {
   const PageComponent = pages[activePage];
 
   return (
-    <div className="mx-auto max-w-7xl space-y-4 sm:space-y-6 px-3 sm:px-0">
+    <CenterPageShell domain="finance">
       <h1 className="sr-only">Money Center</h1>
       <DemoModeBadge />
-      <AppWelcomeHeader domain="finance" />
-      <InAppAdvisorStrip domain="finance" />
+      <CenterSection>
+        <InAppAdvisorStrip domain="finance" />
+      </CenterSection>
 
-      {/* Tab Navigation — mobile dropdown, desktop scrollable tabs */}
-      {isMobile ? (
-        <MobileTabSelector active={activePage} onChange={goTo} />
-      ) : (
-        <motion.div
-          className="overflow-x-auto -mx-2 px-2"
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.25 }}
-        >
-          <SitaTabs tabs={ALL_TABS} active={activePage} onChange={goTo} />
-        </motion.div>
-      )}
+      <CenterSection>
+        {/* Tab Navigation — mobile dropdown, desktop scrollable tabs */}
+        {isMobile ? (
+          <MobileTabSelector active={activePage} onChange={goTo} />
+        ) : (
+          <motion.div
+            className="overflow-x-auto -mx-2 px-2"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.25 }}
+          >
+            <SitaTabs tabs={ALL_TABS} active={activePage} onChange={goTo} />
+          </motion.div>
+        )}
+      </CenterSection>
 
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={activePage}
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.25 }}
-        >
-          <PageComponent />
-        </motion.div>
-      </AnimatePresence>
-    </div>
+      <CenterSection>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activePage}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.25 }}
+          >
+            <PageComponent />
+          </motion.div>
+        </AnimatePresence>
+      </CenterSection>
+    </CenterPageShell>
   );
 };
 
