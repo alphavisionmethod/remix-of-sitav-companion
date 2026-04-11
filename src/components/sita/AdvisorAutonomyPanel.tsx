@@ -84,7 +84,7 @@ export const AdvisorAutonomyPanel = ({ className }: { className?: string }) => {
                 onClick={() => setExpanded(isExpanded ? null : advisor.id)}
                 className="flex items-center gap-3 w-full"
               >
-                <AdvisorAvatar domain={advisor.domain} size="sm" />
+                <AdvisorAvatar domain={advisor.domain === "finance" ? "money" : advisor.domain} size="sm" />
                 <div className="flex-1 text-left">
                   <p className="text-xs font-semibold text-foreground">{advisor.name}</p>
                   <div className="flex items-center gap-1.5 mt-0.5">

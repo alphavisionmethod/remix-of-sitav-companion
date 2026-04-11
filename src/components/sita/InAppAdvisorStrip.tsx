@@ -98,7 +98,7 @@ export const InAppAdvisorStrip = ({ domain, className }: InAppAdvisorStripProps)
         )}
       >
         <div className="flex items-center gap-3">
-          <AdvisorAvatar domain={domain === "finance" ? "finance" : domain === "concierge" ? "concierge" : "business"} size="sm" />
+          <AdvisorAvatar domain={domain === "finance" ? "money" : domain === "concierge" ? "concierge" : "business"} size="sm" />
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-1.5">
               <Sparkles className="h-3 w-3 text-primary" />
