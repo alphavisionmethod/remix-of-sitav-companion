@@ -325,7 +325,6 @@ export function DesktopSurface({
             onClose={() => closeWindow(w.id)}
             onMinimize={() => closeWindow(w.id)}
             className="cursor-default"
-            style={{ zIndex: DEPTH_LAYERS.windows + w.zIndex }}
           >
             {w.component}
           </FloatingWindow>
