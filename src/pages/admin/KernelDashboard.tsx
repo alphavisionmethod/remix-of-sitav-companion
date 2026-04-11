@@ -511,7 +511,7 @@ const KernelDashboard = () => {
                     <span className="text-xs font-mono font-bold w-6">R{r.ring}</span>
                     <div className="flex-1 min-w-0">
                       <p className="text-xs font-medium">{r.label}</p>
-                      <p className="text-[10px] opacity-70">{r.description}</p>
+                      <p className="text-[10px] opacity-70">{RING_DESCRIPTIONS[r.ring]}</p>
                     </div>
                     <div className="text-right shrink-0">
                       <p className="text-xs font-semibold tabular-nums">{r.processes} procs</p>
