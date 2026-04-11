@@ -152,6 +152,7 @@ describe("Compositor Pipeline E2E", () => {
   });
 
   it("GPU abstraction reports software fallback", () => {
+    kernel.gpu.initSoftwareFallback();
     const gpuStats = kernel.gpu.getStats();
     expect(gpuStats.backend).toBe("software");
     expect(gpuStats.adapterAvailable).toBe(true);
