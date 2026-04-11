@@ -25,6 +25,7 @@ export interface TileBuffer {
 export interface RasterizerStats {
   pixelsFilled: number;
   pixelsBlended: number;
+  pixelsCopied: number;
   scanlinesProcesed: number;
   simdBatchOps: number;
   antiAliasedEdges: number;
@@ -48,6 +49,7 @@ export class SoftwareRasterizer {
   private _stats: RasterizerStats = {
     pixelsFilled: 0,
     pixelsBlended: 0,
+    pixelsCopied: 0,
     scanlinesProcesed: 0,
     simdBatchOps: 0,
     antiAliasedEdges: 0,
@@ -311,6 +313,55 @@ export class SoftwareRasterizer {
 
     this._stats.simdBatchOps += Math.ceil(len / 4);
     this._stats.pixelsFilled += len;
+  }
+
+  /** Blit image data into a tile buffer region */
+  blitImage(
+    tile: TileBuffer,
+    srcPixels: Uint8ClampedArray,
+    srcWidth: number,
+    srcX: number, srcY: number,
+    srcW: number, srcH: number,
+    dstX: number, dstY: number,
+    blend: BlendMode = "source-over"
+  ): void {
+    for (let y = 0; y < srcH; y++) {
+      const dy = dstY + y;
+      if (dy < 0 || dy >= tile.height) continue;
+      const sy = srcY + y;
+
+      for (let x = 0; x < srcW; x++) {
+        const dx = dstX + x;
+        if (dx < 0 || dx >= tile.width) continue;
+        const sx = srcX + x;
+
+        const srcOff = (sy * srcWidth + sx) * 4;
+        const dstOff = (dy * tile.width + dx) * 4;
+
+        if (blend === "copy") {
+          tile.pixels[dstOff] = srcPixels[srcOff];
+          tile.pixels[dstOff + 1] = srcPixels[srcOff + 1];
+          tile.pixels[dstOff + 2] = srcPixels[srcOff + 2];
+          tile.pixels[dstOff + 3] = srcPixels[srcOff + 3];
+        } else {
+          const dst: Color = {
+            r: tile.pixels[dstOff], g: tile.pixels[dstOff + 1],
+            b: tile.pixels[dstOff + 2], a: tile.pixels[dstOff + 3],
+          };
+          const src: Color = {
+            r: srcPixels[srcOff], g: srcPixels[srcOff + 1],
+            b: srcPixels[srcOff + 2], a: srcPixels[srcOff + 3],
+          };
+          const result = this._blend(dst, src, blend, 1);
+          tile.pixels[dstOff] = result.r;
+          tile.pixels[dstOff + 1] = result.g;
+          tile.pixels[dstOff + 2] = result.b;
+          tile.pixels[dstOff + 3] = result.a;
+          this._stats.pixelsBlended++;
+        }
+        this._stats.pixelsCopied++;
+      }
+    }
   }
 
   resetFrameStats(): void {

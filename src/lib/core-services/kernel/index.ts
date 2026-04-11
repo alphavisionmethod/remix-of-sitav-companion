@@ -29,8 +29,14 @@ export { RenderPipeline, type FrameStats, type PipelineStats, type LayoutNode } 
 export { SoftwareRasterizer, type TileBuffer, type Color, type BlendMode, type PixelFormat } from "./software-rasterizer";
 export { TileCompositor, type Tile, type TileState, type CompositorLayer, type CompositorStats } from "./tile-compositor";
 export { DamageTracker, type Rect, type DamageRegion, type DamageSource, type DamageStats } from "./damage-tracker";
-export { VectorRenderer, type VectorPath, type PathCommand, type GradientDef, type StrokeStyle, type GlyphCacheEntry } from "./vector-renderer";
+export { VectorRenderer, type VectorPath, type PathCommand, type GradientDef, type StrokeStyle, type GlyphCacheEntry, type PatternDef, type FillStyle } from "./vector-renderer";
 export { RenderThreadPool, type WorkItem, type WorkPriority, type RenderThread, type ThreadPoolStats } from "./render-thread-pool";
+
+// --- Rendering Extensions ---
+export { AnimationEngine, type AnimationDef, type AnimationInstance, type KeyframeTrack, type EasingDef } from "./animation-engine";
+export { TextLayoutEngine, type TextLayoutResult, type TextStyle, type TextLayoutBox, type PositionedGlyph } from "./text-layout-engine";
+export { ImagePipeline, type ImageSource, type SpriteAtlas, type NineSliceInsets, type ScaleFilter } from "./image-pipeline";
+export { RenderDebugOverlay, type DebugSnapshot, type DebugOverlayConfig } from "./render-debug-overlay";
 
 // --- Facade imports ---
 import { ProcessScheduler } from "./process-scheduler";
@@ -54,6 +60,10 @@ import { TileCompositor } from "./tile-compositor";
 import { DamageTracker } from "./damage-tracker";
 import { VectorRenderer } from "./vector-renderer";
 import { RenderThreadPool } from "./render-thread-pool";
+import { AnimationEngine } from "./animation-engine";
+import { TextLayoutEngine } from "./text-layout-engine";
+import { ImagePipeline } from "./image-pipeline";
+import { RenderDebugOverlay } from "./render-debug-overlay";
 
 /**
  * KernelSubsystem — Facade aggregating all kernel architecture,
@@ -89,6 +99,12 @@ export class KernelSubsystem {
   readonly vectorEngine: VectorRenderer;
   readonly renderThreads: RenderThreadPool;
 
+  // Rendering Extensions
+  readonly animations: AnimationEngine;
+  readonly textLayout: TextLayoutEngine;
+  readonly imagePipeline: ImagePipeline;
+  readonly renderDebug: RenderDebugOverlay;
+
   private _bootedAt: number;
 
   constructor(opts?: { tpmAvailable?: boolean; screenWidth?: number; screenHeight?: number; dpiScale?: number }) {
@@ -122,6 +138,12 @@ export class KernelSubsystem {
     this.vectorEngine = new VectorRenderer(opts?.dpiScale ?? 1);
     this.renderThreads = new RenderThreadPool();
     this.renderPipeline = new RenderPipeline({ screenWidth: sw, screenHeight: sh, dpiScale: opts?.dpiScale });
+
+    // Rendering Extensions
+    this.animations = new AnimationEngine();
+    this.textLayout = new TextLayoutEngine();
+    this.imagePipeline = new ImagePipeline();
+    this.renderDebug = new RenderDebugOverlay();
 
     this._bootedAt = Date.now();
 
@@ -172,6 +194,10 @@ export class KernelSubsystem {
       damageTracker: this.damageTracker.getStats(),
       vectorEngine: this.vectorEngine.getStats(),
       renderThreads: this.renderThreads.getStats(),
+      animations: this.animations.getStats(),
+      textLayout: this.textLayout.getStats(),
+      imagePipeline: this.imagePipeline.getStats(),
+      renderDebug: this.renderDebug.getStats(),
     };
   }
 

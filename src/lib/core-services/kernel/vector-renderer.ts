@@ -4,6 +4,8 @@
 // fill rules, strokes, gradients, glyph cache, DPI scaling
 // ═══════════════════════════════════════════════════════════════
 
+import type { TileBuffer } from "./software-rasterizer";
+
 export type PathCommand =
   | { type: "moveTo"; x: number; y: number }
   | { type: "lineTo"; x: number; y: number }
@@ -35,13 +37,21 @@ export interface GradientStop {
 export interface GradientDef {
   type: GradientType;
   stops: GradientStop[];
-  // linear: start/end points
   x0?: number; y0?: number; x1?: number; y1?: number;
-  // radial: center + radius
   cx?: number; cy?: number; r?: number;
-  // conic: center + start angle
   angle?: number;
 }
+
+export interface PatternDef {
+  image: TileBuffer;
+  repeat: "repeat" | "repeat-x" | "repeat-y" | "no-repeat";
+  offsetX?: number;
+  offsetY?: number;
+}
+
+export type FillStyle = { type: "solid"; r: number; g: number; b: number; a: number }
+  | { type: "gradient"; gradient: GradientDef }
+  | { type: "pattern"; pattern: PatternDef };
 
 export interface GlyphCacheEntry {
   key: string;
@@ -66,9 +76,12 @@ export interface VectorRendererStats {
   glyphCacheMisses: number;
   glyphCacheEvictions: number;
   gradientsFilled: number;
+  patternsFilled: number;
   bezierSegments: number;
   totalVertices: number;
   dpiScale: number;
+  clipPathsPushed: number;
+  dashExpansions: number;
 }
 
 const MAX_GLYPH_CACHE = 2048;
@@ -77,6 +90,7 @@ const BEZIER_FLATNESS = 0.25; // subdivision tolerance in pixels
 export class VectorRenderer {
   private _dpiScale: number;
   private _glyphCache: Map<string, GlyphCacheEntry> = new Map();
+  private _clipStack: VectorPath[] = [];
   private _frameCounter = 0;
   private _stats: VectorRendererStats = {
     pathsRasterized: 0,
@@ -85,14 +99,79 @@ export class VectorRenderer {
     glyphCacheMisses: 0,
     glyphCacheEvictions: 0,
     gradientsFilled: 0,
+    patternsFilled: 0,
     bezierSegments: 0,
     totalVertices: 0,
     dpiScale: 1,
+    clipPathsPushed: 0,
+    dashExpansions: 0,
   };
 
   constructor(dpiScale = 1) {
     this._dpiScale = dpiScale;
     this._stats.dpiScale = dpiScale;
+  }
+
+  // ── Clip Path Stack ────────────────────────────────────────
+
+  pushClipPath(path: VectorPath): void {
+    this._clipStack.push(path);
+    this._stats.clipPathsPushed++;
+  }
+
+  popClipPath(): VectorPath | undefined {
+    return this._clipStack.pop();
+  }
+
+  getClipStack(): ReadonlyArray<VectorPath> {
+    return this._clipStack;
+  }
+
+  clearClipStack(): void {
+    this._clipStack = [];
+  }
+
+  /** Test if a point is inside all active clip paths */
+  isPointInClip(x: number, y: number): boolean {
+    if (this._clipStack.length === 0) return true;
+    for (const clip of this._clipStack) {
+      if (!this._pointInPath(clip, x, y)) return false;
+    }
+    return true;
+  }
+
+  // ── Pattern Sampling ───────────────────────────────────────
+
+  samplePattern(pattern: PatternDef, px: number, py: number): { r: number; g: number; b: number; a: number } {
+    const img = pattern.image;
+    let sx = Math.floor(px - (pattern.offsetX ?? 0));
+    let sy = Math.floor(py - (pattern.offsetY ?? 0));
+
+    if (pattern.repeat === "no-repeat") {
+      if (sx < 0 || sx >= img.width || sy < 0 || sy >= img.height) {
+        return { r: 0, g: 0, b: 0, a: 0 };
+      }
+    } else {
+      if (pattern.repeat === "repeat" || pattern.repeat === "repeat-x") {
+        sx = ((sx % img.width) + img.width) % img.width;
+      } else if (sx < 0 || sx >= img.width) {
+        return { r: 0, g: 0, b: 0, a: 0 };
+      }
+      if (pattern.repeat === "repeat" || pattern.repeat === "repeat-y") {
+        sy = ((sy % img.height) + img.height) % img.height;
+      } else if (sy < 0 || sy >= img.height) {
+        return { r: 0, g: 0, b: 0, a: 0 };
+      }
+    }
+
+    const off = (sy * img.width + sx) * 4;
+    this._stats.patternsFilled++;
+    return {
+      r: img.pixels[off],
+      g: img.pixels[off + 1],
+      b: img.pixels[off + 2],
+      a: img.pixels[off + 3],
+    };
   }
 
   // ── Path Building ──────────────────────────────────────────
@@ -316,14 +395,20 @@ export class VectorRenderer {
 
   // ── Stroke Expansion ───────────────────────────────────────
 
-  /** Expand a stroke into a filled path (outline) */
+  /** Expand a stroke into a filled path, supporting dash arrays */
   expandStroke(path: VectorPath, style: StrokeStyle): VectorPath {
     const contours = this.flattenPath(path);
     const result = this.createPath();
     const hw = (style.width * this._dpiScale) / 2;
 
-    for (const contour of contours) {
+    for (let contour of contours) {
       if (contour.length < 2) continue;
+
+      // Apply dash array if specified
+      if (style.dashArray && style.dashArray.length > 0) {
+        contour = this._applyDashArray(contour, style.dashArray, style.dashOffset ?? 0);
+        this._stats.dashExpansions++;
+      }
 
       // Offset contour outward and inward
       const outer = this._offsetPolyline(contour, hw, style);
@@ -476,5 +561,95 @@ export class VectorRenderer {
       this._glyphCache.delete(oldest);
       this._stats.glyphCacheEvictions++;
     }
+  }
+
+  // ── Dash Array ─────────────────────────────────────────────
+
+  private _applyDashArray(
+    pts: Array<{ x: number; y: number }>,
+    dashArray: number[],
+    dashOffset: number
+  ): Array<{ x: number; y: number }> {
+    if (dashArray.length === 0) return pts;
+
+    // Normalize dash array (ensure even length)
+    const dashes = dashArray.length % 2 === 0 ? dashArray : [...dashArray, ...dashArray];
+    const result: Array<{ x: number; y: number }> = [];
+
+    let dashIndex = 0;
+    let dashRemaining = dashes[0];
+    let drawing = true;
+    let offset = dashOffset;
+
+    // Skip offset
+    while (offset > 0 && offset >= dashRemaining) {
+      offset -= dashRemaining;
+      dashIndex = (dashIndex + 1) % dashes.length;
+      dashRemaining = dashes[dashIndex];
+      drawing = !drawing;
+    }
+    if (offset > 0) {
+      dashRemaining -= offset;
+    }
+
+    for (let i = 0; i < pts.length - 1; i++) {
+      const dx = pts[i + 1].x - pts[i].x;
+      const dy = pts[i + 1].y - pts[i].y;
+      const segLen = Math.sqrt(dx * dx + dy * dy);
+      if (segLen === 0) continue;
+
+      let consumed = 0;
+      while (consumed < segLen) {
+        const available = segLen - consumed;
+        const take = Math.min(available, dashRemaining);
+        const t0 = consumed / segLen;
+        const t1 = (consumed + take) / segLen;
+
+        if (drawing) {
+          result.push({
+            x: pts[i].x + dx * t0,
+            y: pts[i].y + dy * t0,
+          });
+          result.push({
+            x: pts[i].x + dx * t1,
+            y: pts[i].y + dy * t1,
+          });
+        }
+
+        consumed += take;
+        dashRemaining -= take;
+        if (dashRemaining <= 0) {
+          dashIndex = (dashIndex + 1) % dashes.length;
+          dashRemaining = dashes[dashIndex];
+          drawing = !drawing;
+        }
+      }
+    }
+
+    return result;
+  }
+
+  // ── Point-in-Path (for clip testing) ───────────────────────
+
+  private _pointInPath(path: VectorPath, px: number, py: number): boolean {
+    const contours = this.flattenPath(path);
+    let totalCrossings = 0;
+
+    for (const contour of contours) {
+      if (contour.length < 3) continue;
+      for (let i = 0; i < contour.length - 1; i++) {
+        const v0 = contour[i];
+        const v1 = contour[i + 1];
+        if ((v0.y <= py && v1.y > py) || (v1.y <= py && v0.y > py)) {
+          const t = (py - v0.y) / (v1.y - v0.y);
+          if (px < v0.x + t * (v1.x - v0.x)) {
+            totalCrossings++;
+          }
+        }
+      }
+    }
+
+    if (path.fillRule === "even-odd") return (totalCrossings % 2) !== 0;
+    return totalCrossings > 0; // winding (simplified)
   }
 }
