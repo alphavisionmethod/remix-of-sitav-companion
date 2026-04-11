@@ -193,7 +193,9 @@ export function DesktopSurface({
         />
       )}
       {/* Ambient living background */}
-      <ShellAmbientBackground mood={mood} intensity="vivid" className="" style={{ zIndex: DEPTH_LAYERS.desktop }} />
+      <div style={{ zIndex: DEPTH_LAYERS.desktop }} className="absolute inset-0">
+        <ShellAmbientBackground mood={mood} intensity="vivid" className="" />
+      </div>
 
       {/* Extra decorative orbs for depth */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ zIndex: DEPTH_LAYERS.orbs }}>
