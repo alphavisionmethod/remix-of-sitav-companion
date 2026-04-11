@@ -1,4 +1,5 @@
 import { ReactNode, useState, useEffect, lazy, Suspense, useCallback } from "react";
+import { useWindowManager } from "@/hooks/useWindowManager";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { SkipToContent } from "./SkipToContent";
 import { RouteAnnouncer } from "./RouteAnnouncer";
@@ -51,6 +52,7 @@ const DesktopDock = lazy(() => import("./DesktopDock").then(m => ({ default: m.D
 const CommandPalette = lazy(() => import("./CommandPalette").then(m => ({ default: m.CommandPalette })));
 const NotificationCenterPanel = lazy(() => import("./NotificationCenter").then(m => ({ default: m.NotificationCenter })));
 const AppRecentsStripLazy = lazy(() => import("./AppRecentsStrip").then(m => ({ default: m.AppRecentsStrip })));
+const MissionControlLazy = lazy(() => import("./shell/MissionControl").then(m => ({ default: m.MissionControl })));
 
 
 // Route-aware page transitions
@@ -84,6 +86,8 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
   const [wizardType, setWizardType] = useState<"lead" | "invoice" | "budget" | null>(null);
   const [showEntryCeremony, setShowEntryCeremony] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
+  const [missionControlOpen, setMissionControlOpen] = useState(false);
+  const { windows, visibleWindows, openWindow, closeWindow, focusWindow, minimizeWindow } = useWindowManager();
   const { isCalm, isFocus } = useDisplayMode();
   const { isOpen: railOpen } = useInspector();
   useAdaptiveInterface();
@@ -106,6 +110,10 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
         setCommandOpen(o => !o);
+      }
+      if (e.key === "F3") {
+        e.preventDefault();
+        setMissionControlOpen(o => !o);
       }
     };
     document.addEventListener("keydown", handler);
@@ -140,6 +148,13 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         <CommandPalette open={commandOpen} onClose={() => setCommandOpen(false)} />
         {/* Notification Center */}
         <NotificationCenterPanel open={notifOpen} onClose={() => setNotifOpen(false)} />
+        {/* Mission Control (F3) */}
+        <MissionControlLazy
+          isOpen={missionControlOpen}
+          windows={windows}
+          onSelectWindow={(id) => { focusWindow(id); setMissionControlOpen(false); }}
+          onClose={() => setMissionControlOpen(false)}
+        />
       </Suspense>
 
       <div className={cn("relative flex flex-col min-h-screen w-full bg-surface-0", isCalm && "calm-mode", isFocus && "focus-mode")}>

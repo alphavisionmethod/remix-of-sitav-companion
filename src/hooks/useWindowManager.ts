@@ -11,6 +11,7 @@ export interface WindowConfig {
 interface WindowState extends WindowConfig {
   id: string;
   zIndex: number;
+  minimized: boolean;
 }
 
 export function useWindowManager() {
@@ -19,11 +20,12 @@ export function useWindowManager() {
 
   const openWindow = useCallback((id: string, config: WindowConfig) => {
     setWindows(prev => {
-      if (prev.find(w => w.id === id)) {
-        // Focus existing
-        return prev.map(w => w.id === id ? { ...w, zIndex: nextZ } : w);
+      const existing = prev.find(w => w.id === id);
+      if (existing) {
+        // Focus & restore if minimized
+        return prev.map(w => w.id === id ? { ...w, zIndex: nextZ, minimized: false } : w);
       }
-      return [...prev, { ...config, id, zIndex: nextZ }];
+      return [...prev, { ...config, id, zIndex: nextZ, minimized: false }];
     });
     setNextZ(z => z + 1);
   }, [nextZ]);
@@ -33,9 +35,21 @@ export function useWindowManager() {
   }, []);
 
   const focusWindow = useCallback((id: string) => {
-    setWindows(prev => prev.map(w => w.id === id ? { ...w, zIndex: nextZ } : w));
+    setWindows(prev => prev.map(w => w.id === id ? { ...w, zIndex: nextZ, minimized: false } : w));
     setNextZ(z => z + 1);
   }, [nextZ]);
 
-  return { windows, openWindow, closeWindow, focusWindow };
+  const minimizeWindow = useCallback((id: string) => {
+    setWindows(prev => prev.map(w => w.id === id ? { ...w, minimized: true } : w));
+  }, []);
+
+  const restoreWindow = useCallback((id: string) => {
+    setWindows(prev => prev.map(w => w.id === id ? { ...w, minimized: false, zIndex: nextZ } : w));
+    setNextZ(z => z + 1);
+  }, [nextZ]);
+
+  const visibleWindows = windows.filter(w => !w.minimized);
+  const minimizedWindows = windows.filter(w => w.minimized);
+
+  return { windows, visibleWindows, minimizedWindows, openWindow, closeWindow, focusWindow, minimizeWindow, restoreWindow };
 }
