@@ -24,7 +24,7 @@ import { ShellLayout } from "@/components/sita/ShellLayout";
 import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
 import { RouteErrorBoundary } from "@/components/sita/RouteErrorBoundary";
 import { createQueryClient } from "@/lib/query-config";
-import { Suspense, lazy, type ReactNode } from "react";
+import { Suspense, lazy, forwardRef, type ReactNode } from "react";
 import { PlatformInit } from "@/components/sita/PlatformInit";
 import { PublicLayout } from "@/layouts/PublicLayout";
 import { AdminCommandPalette } from "@/components/admin/AdminCommandPalette";
@@ -33,8 +33,10 @@ import { AdminShell } from "@/components/admin/shells/AdminShell";
 import { OwnerWorkspaceShell } from "@/components/admin/shells/OwnerWorkspaceShell";
 import { RevenueOfficeModeProvider } from "@/contexts/RevenueOfficeModeContext";
 
-const AdminCommandPaletteWrapper = () => <AdminCommandPalette />;
-const AdminKeyboardShortcutsWrapper = () => <AdminKeyboardShortcuts />;
+const AdminCommandPaletteWrapper = forwardRef<HTMLDivElement>((_, ref) => <div ref={ref}><AdminCommandPalette /></div>);
+AdminCommandPaletteWrapper.displayName = "AdminCommandPaletteWrapper";
+const AdminKeyboardShortcutsWrapper = forwardRef<HTMLDivElement>((_, ref) => <div ref={ref}><AdminKeyboardShortcuts /></div>);
+AdminKeyboardShortcutsWrapper.displayName = "AdminKeyboardShortcutsWrapper";
 const AdminShellLayout = () => <AdminShell><Outlet /></AdminShell>;
 const OwnerShellLayout = () => <OwnerWorkspaceShell><Outlet /></OwnerWorkspaceShell>;
 const RevenueOfficeModeLayout = () => <RevenueOfficeModeProvider><Outlet /></RevenueOfficeModeProvider>;
@@ -1771,6 +1773,7 @@ const App = () => (
                     </Route>
 
                      <Route path="/personal-brain" element={<PersonalBrain />} />
+                     <Route path="/brain" element={<Navigate to="/personal-brain" replace />} />
 
                     {/* ── 3C: OS Built-in Apps ── */}
                     <Route path="/apps/email" element={<EmailApp />} />
