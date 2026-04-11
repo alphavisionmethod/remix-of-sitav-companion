@@ -10,6 +10,7 @@ import { SoftwareRasterizer, type Color } from "./software-rasterizer";
 import { VectorRenderer } from "./vector-renderer";
 import { RenderThreadPool, type WorkItem } from "./render-thread-pool";
 import { AnimationEngine } from "./animation-engine";
+import { SceneGraph, type DisplayListEntry } from "./scene-graph";
 
 export type PipelineStage = "idle" | "layout" | "damage" | "tile-assign" | "rasterize" | "composite" | "present";
 export type FrameSkipPolicy = "drop" | "partial" | "force";
@@ -61,6 +62,12 @@ export class RenderPipeline {
   private _vectorEngine: VectorRenderer;
   private _threadPool: RenderThreadPool;
   private _animationEngine: AnimationEngine;
+  private _sceneGraph: SceneGraph | null = null;
+
+  // Display list cache: keyed by node ID, stores rasterized subtree hash
+  private _displayListCache = new Map<string, { hash: string; entry: DisplayListEntry }>();
+  private _displayListCacheHits = 0;
+  private _displayListCacheMisses = 0;
 
   private _stage: PipelineStage = "idle";
   private _targetFps: number;
@@ -113,6 +120,12 @@ export class RenderPipeline {
   get threadPool(): RenderThreadPool { return this._threadPool; }
   get animationEngine(): AnimationEngine { return this._animationEngine; }
 
+  // ── Scene Graph Integration ────────────────────────────────
+
+  /** Attach a retained-mode scene graph; when set, damage is derived from scene graph diffing */
+  setSceneGraph(sg: SceneGraph | null): void { this._sceneGraph = sg; }
+  get sceneGraph(): SceneGraph | null { return this._sceneGraph; }
+
   // ── Frame Rendering ────────────────────────────────────────
 
   /** Render a single frame synchronously */
@@ -129,10 +142,22 @@ export class RenderPipeline {
       this._damageTracker.invalidate(rect, "animation");
     }
 
-    // 1. Layout pass
+    // 1. Layout pass — scene graph or legacy LayoutNode
     this._stage = "layout";
     const layoutStart = performance.now();
-    const dirtyNodes = layoutRoot ? this._collectDirtyNodes(layoutRoot) : [];
+    let dirtyNodes: LayoutNode[] = [];
+    let sceneDisplayList: DisplayListEntry[] | null = null;
+
+    if (this._sceneGraph) {
+      // Retained mode: collect damage from scene graph dirty flags
+      const sgDamage = this._sceneGraph.collectDamage();
+      for (const rect of sgDamage) {
+        this._damageTracker.invalidate(rect, "widget");
+      }
+      sceneDisplayList = this._sceneGraph.getDisplayList();
+    } else if (layoutRoot) {
+      dirtyNodes = this._collectDirtyNodes(layoutRoot);
+    }
     const layoutMs = performance.now() - layoutStart;
 
     // 2. Damage collection
@@ -170,17 +195,46 @@ export class RenderPipeline {
             this._compositor.tileSize,
             this._compositor.tileSize
           );
-          // Rasterize nodes that intersect this tile
-          for (const node of dirtyNodes) {
-            if (this._tileIntersects(tile, node.bounds)) {
-              const localX = node.bounds.x - tile.x;
-              const localY = node.bounds.y - tile.y;
-              this._rasterizer.fillRect(
-                buf, localX, localY,
-                node.bounds.width, node.bounds.height,
-                node.color ?? { r: 200, g: 200, b: 200, a: 255 },
-                "source-over"
-              );
+
+          if (sceneDisplayList) {
+            // Scene graph retained mode: render display list entries
+            for (const entry of sceneDisplayList) {
+              // Check display list cache
+              const cacheKey = entry.nodeId;
+              const entryHash = `${entry.worldTransform.tx},${entry.worldTransform.ty},${entry.worldOpacity},${entry.width},${entry.height}`;
+              const cached = this._displayListCache.get(cacheKey);
+
+              if (cached && cached.hash === entryHash) {
+                this._displayListCacheHits++;
+              } else {
+                this._displayListCacheMisses++;
+                this._displayListCache.set(cacheKey, { hash: entryHash, entry });
+              }
+
+              if (this._tileIntersects(tile, entry.bounds)) {
+                const localX = entry.bounds.x - tile.x;
+                const localY = entry.bounds.y - tile.y;
+                const color = entry.fillColor ?? { r: 200, g: 200, b: 200, a: Math.round(entry.worldOpacity * 255) };
+                this._rasterizer.fillRect(
+                  buf, localX, localY,
+                  entry.width ?? entry.bounds.width, entry.height ?? entry.bounds.height,
+                  color, "source-over"
+                );
+              }
+            }
+          } else {
+            // Legacy immediate mode: render LayoutNodes
+            for (const node of dirtyNodes) {
+              if (this._tileIntersects(tile, node.bounds)) {
+                const localX = node.bounds.x - tile.x;
+                const localY = node.bounds.y - tile.y;
+                this._rasterizer.fillRect(
+                  buf, localX, localY,
+                  node.bounds.width, node.bounds.height,
+                  node.color ?? { r: 200, g: 200, b: 200, a: 255 },
+                  "source-over"
+                );
+              }
             }
           }
           this._compositor.completeTile(tile.id, buf);
