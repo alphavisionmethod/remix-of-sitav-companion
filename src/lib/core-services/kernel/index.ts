@@ -117,6 +117,13 @@ export class KernelSubsystem {
   readonly imagePipeline: ImagePipeline;
   readonly renderDebug: RenderDebugOverlay;
 
+  // Display Server, Input, Scene Graph, Color, Cursor
+  readonly displayServer: DisplayServer;
+  readonly input: InputSystem;
+  readonly sceneGraph: SceneGraph;
+  readonly colorManagement: ColorManagement;
+  readonly cursor: CursorManager;
+
   private _bootedAt: number;
 
   constructor(opts?: { tpmAvailable?: boolean; screenWidth?: number; screenHeight?: number; dpiScale?: number }) {
@@ -156,6 +163,20 @@ export class KernelSubsystem {
     this.textLayout = new TextLayoutEngine();
     this.imagePipeline = new ImagePipeline();
     this.renderDebug = new RenderDebugOverlay();
+
+    // Display Server, Input, Scene Graph, Color, Cursor
+    this.displayServer = new DisplayServer([{
+      id: "monitor-0", name: "Primary",
+      bounds: { x: 0, y: 0, width: sw, height: sh },
+      dpiScale: opts?.dpiScale ?? 1, primary: true, refreshHz: 60,
+    }]);
+    this.input = new InputSystem();
+    this.sceneGraph = new SceneGraph();
+    this.colorManagement = new ColorManagement();
+    this.cursor = new CursorManager();
+
+    // Wire scene graph into render pipeline
+    this.renderPipeline.setSceneGraph(this.sceneGraph);
 
     this._bootedAt = Date.now();
 
@@ -210,11 +231,17 @@ export class KernelSubsystem {
       textLayout: this.textLayout.getStats(),
       imagePipeline: this.imagePipeline.getStats(),
       renderDebug: this.renderDebug.getStats(),
+      displayServer: this.displayServer.getStats(),
+      input: this.input.getStats(),
+      sceneGraph: this.sceneGraph.getStats(),
+      colorManagement: this.colorManagement.getStats(),
+      cursor: this.cursor.getStats(),
     };
   }
 
   destroy(): void {
     this.initSystem.destroy();
     this.renderPipeline.destroy();
+    this.cursor.destroy();
   }
 }
