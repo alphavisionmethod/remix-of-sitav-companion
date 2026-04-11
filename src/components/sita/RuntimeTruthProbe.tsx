@@ -20,7 +20,6 @@ interface ProbeResult {
 export const RuntimeTruthProbe = forwardRef<HTMLDivElement, { compact?: boolean }>(({ compact = true }, ref) => {
   const kernel = useSitaOS();
   const { isDemoMode } = useDataMode();
-  const kernel = useSitaOS();
   const [probe, setProbe] = useState<ProbeResult>({
     osHydrated: false,
     gatewayReachable: null,
