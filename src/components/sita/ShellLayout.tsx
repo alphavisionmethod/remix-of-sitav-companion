@@ -120,22 +120,28 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
       <RouteAnnouncer />
 
       {/* Desktop Entry Ceremony */}
-      {showEntryCeremony && (
-        <DesktopEntryCeremony onComplete={() => setShowEntryCeremony(false)} />
-      )}
+      <Suspense fallback={null}>
+        {showEntryCeremony && (
+          <DesktopEntryCeremony onComplete={() => setShowEntryCeremony(false)} />
+        )}
 
-      {/* Universal Command Surface */}
-      <UniversalCommandSurface open={commandOpen} onClose={() => setCommandOpen(false)} />
+        {/* Universal Command Surface */}
+        <UniversalCommandSurface open={commandOpen} onClose={() => setCommandOpen(false)} />
+      </Suspense>
 
       <div className={cn("relative flex flex-col min-h-screen w-full bg-surface-0", isCalm && "calm-mode", isFocus && "focus-mode")}>
         {/* Ambient background — subtle, always present */}
-        <ShellAmbientBackground intensity="subtle" className="fixed" />
+        <Suspense fallback={null}>
+          <ShellAmbientBackground intensity="subtle" className="fixed" />
+        </Suspense>
 
         <DemoGovernanceBanner />
         <DemoStateBanner />
         <NetworkStatusBar />
-        <UpdateBanner />
-        <ContinuityBanner />
+        <Suspense fallback={null}>
+          <UpdateBanner />
+          <ContinuityBanner />
+        </Suspense>
         <SitaTopBar
           onNotifOpen={() => setNotifOpen(true)}
           onTimelineOpen={() => setTimelineOpen(true)}
@@ -170,67 +176,75 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
               </main>
             </div>
             {/* Persistent Contextual Rail — desktop only */}
-            <ContextualRail />
+            <Suspense fallback={null}>
+              <ContextualRail />
+            </Suspense>
           </div>
         </div>
       </div>
 
-      {/* Mobile overlay fallback for inspector */}
-      <div className="lg:hidden">
-        <InspectorPanel />
-      </div>
-
-      {/* Panels */}
-      <NotificationPanel isOpen={notifOpen} onClose={() => setNotifOpen(false)} />
-      <UniversalTimeline isOpen={timelineOpen} onClose={() => setTimelineOpen(false)} />
-      <AdvisorChat isOpen={chatOpen} onClose={() => setChatOpen(false)} />
-
-      {/* Phase 3: Welcome Tour */}
-      <WelcomeTour />
-      <InteractiveTutorial />
-
-      {/* Phase 3: Quick-Add Wizard */}
-      {wizardType && <QuickAddWizard type={wizardType} onClose={() => setWizardType(null)} />}
-
-      {/* Floating buttons */}
-      <QuickAddFAB onAdd={(type) => setWizardType(type)} />
-      <AdvisorFAB isOpen={chatOpen} onToggle={() => setChatOpen(!chatOpen)} />
-
-      {/* PWA Install Prompt */}
-      <PWAInstallPrompt />
-
-      {/* SITA Companion Bar — always present */}
-      <SitaCompanionBar />
-
-      {/* AI Copilot Bar — always-on assistant */}
-      <CopilotBar />
-
-      {/* Mobile Bottom Nav */}
-      <MobileBottomNav />
-
-      {/* Keyboard Shortcuts Overlay */}
-      <KeyboardShortcuts />
-
-      {/* Trust Transition Indicator */}
-      <TrustTransitionIndicator />
-
-      {/* Device Presence Indicator — status bar (visible on all screens) */}
-      <div className="fixed bottom-20 left-4 z-50 hidden sm:block">
-        <DevicePresenceIndicator />
-      </div>
-
-      {/* Mode Resolution Banner — reality mode info */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 px-4 pb-1 pointer-events-none">
-        <div className="max-w-md mx-auto pointer-events-auto">
-          <ModeResolutionBanner />
+      {/* Deferred shell features — loaded after first paint */}
+      <Suspense fallback={null}>
+        {/* Mobile overlay fallback for inspector */}
+        <div className="lg:hidden">
+          <InspectorPanel />
         </div>
-      </div>
 
-      {/* Success Celebration overlay — triggered via events */}
-      <SuccessCelebration show={false} />
+        {/* Panels */}
+        <NotificationPanel isOpen={notifOpen} onClose={() => setNotifOpen(false)} />
+        <UniversalTimeline isOpen={timelineOpen} onClose={() => setTimelineOpen(false)} />
+        <AdvisorChat isOpen={chatOpen} onClose={() => setChatOpen(false)} />
+
+        {/* Phase 3: Welcome Tour */}
+        <WelcomeTour />
+        <InteractiveTutorial />
+
+        {/* Phase 3: Quick-Add Wizard */}
+        {wizardType && <QuickAddWizard type={wizardType} onClose={() => setWizardType(null)} />}
+
+        {/* Floating buttons */}
+        <QuickAddFAB onAdd={(type) => setWizardType(type)} />
+        <AdvisorFAB isOpen={chatOpen} onToggle={() => setChatOpen(!chatOpen)} />
+
+        {/* PWA Install Prompt */}
+        <PWAInstallPrompt />
+
+        {/* SITA Companion Bar — always present */}
+        <SitaCompanionBar />
+
+        {/* AI Copilot Bar — always-on assistant */}
+        <CopilotBar />
+
+        {/* Keyboard Shortcuts Overlay */}
+        <KeyboardShortcuts />
+
+        {/* Trust Transition Indicator */}
+        <TrustTransitionIndicator />
+
+        {/* Device Presence Indicator — status bar (visible on all screens) */}
+        <div className="fixed bottom-20 left-4 z-50 hidden sm:block">
+          <DevicePresenceIndicator />
+        </div>
+
+        {/* Mode Resolution Banner — reality mode info */}
+        <div className="fixed bottom-0 left-0 right-0 z-40 px-4 pb-1 pointer-events-none">
+          <div className="max-w-md mx-auto pointer-events-auto">
+            <ModeResolutionBanner />
+          </div>
+        </div>
+
+        {/* Success Celebration overlay — triggered via events */}
+        <SuccessCelebration show={false} />
+
+        {/* AI Gate */}
+        <AIGate />
+      </Suspense>
 
       {/* Behavioral Interaction Tracker — invisible */}
       <InteractionTracker />
+
+      {/* Mobile Bottom Nav — critical for mobile, keep eager */}
+      <MobileBottomNav />
     </SidebarProvider>
   );
 };
