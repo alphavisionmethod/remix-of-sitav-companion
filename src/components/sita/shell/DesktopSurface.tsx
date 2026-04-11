@@ -29,6 +29,43 @@ interface DesktopSurfaceProps {
   notifications?: ShellNotificationDigest;
   continuity?: ContinuityContext;
   onOpenCommand?: () => void;
+  onLaunchApp?: (appId: string) => void;
+}
+
+// ── Desktop Notification Toasts ─────────────────────────────
+
+function DesktopToasts({ notifications }: { notifications: ShellNotificationDigest }) {
+  const [toasts, setToasts] = useState<{ id: number; text: string }[]>([]);
+
+  useEffect(() => {
+    const items: string[] = [];
+    if (notifications.approvals > 0) items.push(`${notifications.approvals} approval(s) waiting`);
+    if (notifications.urgent > 0) items.push(`${notifications.urgent} urgent notification(s)`);
+    if (items.length === 0) items.push("All clear — no pending items");
+    setToasts(items.map((text, i) => ({ id: i, text })));
+
+    const timer = setTimeout(() => setToasts([]), 6000);
+    return () => clearTimeout(timer);
+  }, [notifications.approvals, notifications.urgent]);
+
+  return (
+    <div className="absolute top-14 right-4 w-72 space-y-2 pointer-events-none" style={{ zIndex: DEPTH_LAYERS.windows + 5 }}>
+      <AnimatePresence>
+        {toasts.map(t => (
+          <motion.div
+            key={t.id}
+            initial={{ x: 100, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: 60, opacity: 0 }}
+            transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+            className="p-3 rounded-xl bg-[hsl(0_0%_100%/0.60)] dark:bg-[hsl(0_0%_0%/0.50)] backdrop-blur-lg shadow-lg border border-[hsl(0_0%_100%/0.20)] dark:border-[hsl(0_0%_100%/0.08)] pointer-events-auto"
+          >
+            <p className="text-xs text-[hsl(0_0%_20%)] dark:text-[hsl(0_0%_85%)]">{t.text}</p>
+          </motion.div>
+        ))}
+      </AnimatePresence>
+    </div>
+  );
 }
 
 // ── Time-of-day wallpaper gradients ──────────────────────────
