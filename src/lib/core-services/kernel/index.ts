@@ -95,6 +95,8 @@ import { WindowEffects } from "./window-effects";
 import { AccessibilityRenderer } from "./accessibility-renderer";
 import { CommandBufferPool } from "./command-buffer";
 import { UIRenderer } from "./ui-renderer";
+import { ViewTree } from "./view-tree";
+import { LayoutEngine } from "./layout-engine";
 
 /**
  * KernelSubsystem — Facade aggregating all kernel architecture,
@@ -151,6 +153,10 @@ export class KernelSubsystem {
   // Command Buffer & UI Renderer
   readonly commandBufferPool: CommandBufferPool;
   readonly uiRenderer: UIRenderer;
+
+  // View Tree & Layout Engine (Section 5.6)
+  readonly viewTree: ViewTree;
+  readonly layoutEngine: LayoutEngine;
 
   private _bootedAt: number;
 
