@@ -3,7 +3,7 @@
 // Validates OS hydration, AI gateway reachability, CAI table access
 // ═══════════════════════════════════════════════════════════════
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, forwardRef } from "react";
 import { useSitaOS } from "@/contexts/SitaOSContext";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
@@ -16,7 +16,7 @@ interface ProbeResult {
   checkedAt: string;
 }
 
-export const RuntimeTruthProbe = ({ compact = true }: { compact?: boolean }) => {
+export const RuntimeTruthProbe = forwardRef<HTMLDivElement, { compact?: boolean }>(({ compact = true }, ref) => {
   const kernel = useSitaOS();
   const [probe, setProbe] = useState<ProbeResult>({
     osHydrated: false,
@@ -74,7 +74,7 @@ export const RuntimeTruthProbe = ({ compact = true }: { compact?: boolean }) => 
 
   if (compact) {
     return (
-      <div
+      <div ref={ref}
         className={cn(
           "flex items-center gap-1.5 px-2 py-1 rounded-md text-[10px] font-mono",
           allGreen
@@ -92,7 +92,7 @@ export const RuntimeTruthProbe = ({ compact = true }: { compact?: boolean }) => 
   }
 
   return (
-    <div className="rounded-lg border border-border/50 bg-card p-4 space-y-2">
+    <div ref={ref} className="rounded-lg border border-border/50 bg-card p-4 space-y-2">
       <h4 className="text-xs font-semibold text-foreground flex items-center gap-2">
         <Activity className="h-3.5 w-3.5" /> Runtime Truth Probe
       </h4>
@@ -108,7 +108,8 @@ export const RuntimeTruthProbe = ({ compact = true }: { compact?: boolean }) => 
       )}
     </div>
   );
-};
+});
+RuntimeTruthProbe.displayName = "RuntimeTruthProbe";
 
 const ProbeItem = ({ label, ok }: { label: string; ok: boolean | null }) => (
   <div className="flex items-center gap-1.5">
