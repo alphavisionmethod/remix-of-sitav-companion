@@ -38,6 +38,13 @@ export { TextLayoutEngine, type TextLayoutResult, type TextStyle, type TextLayou
 export { ImagePipeline, type ImageSource, type SpriteAtlas, type NineSliceInsets, type ScaleFilter } from "./image-pipeline";
 export { RenderDebugOverlay, type DebugSnapshot, type DebugOverlayConfig } from "./render-debug-overlay";
 
+// --- Display Server, Input, Scene Graph, Color, Cursor ---
+export { DisplayServer, type ManagedWindow, type WindowCreateOptions, type Monitor, type WindowEvent, type DisplayServerStats } from "./display-server";
+export { InputSystem, type InputEvent, type KeyboardEvent, type MouseEvent, type TouchEvent, type GestureEvent, type HotkeyBinding, type InputSystemStats } from "./input-system";
+export { SceneGraph, SceneNode, type SceneNodeProps, type DisplayListEntry, type HitTestResult, type Transform2D, type SceneGraphStats } from "./scene-graph";
+export { ColorManagement, type ICCProfile, type RGBColor, type HSLColor, type LabColor, type ColorManagementStats } from "./color-management";
+export { CursorManager, type CursorImage, type CursorState, type CursorDamage, type SystemCursorShape, type CursorManagerStats } from "./cursor-manager";
+
 // --- Facade imports ---
 import { ProcessScheduler } from "./process-scheduler";
 import { MemoryManager } from "./memory-manager";
@@ -64,6 +71,11 @@ import { AnimationEngine } from "./animation-engine";
 import { TextLayoutEngine } from "./text-layout-engine";
 import { ImagePipeline } from "./image-pipeline";
 import { RenderDebugOverlay } from "./render-debug-overlay";
+import { DisplayServer } from "./display-server";
+import { InputSystem } from "./input-system";
+import { SceneGraph } from "./scene-graph";
+import { ColorManagement } from "./color-management";
+import { CursorManager } from "./cursor-manager";
 
 /**
  * KernelSubsystem — Facade aggregating all kernel architecture,
@@ -105,6 +117,13 @@ export class KernelSubsystem {
   readonly imagePipeline: ImagePipeline;
   readonly renderDebug: RenderDebugOverlay;
 
+  // Display Server, Input, Scene Graph, Color, Cursor
+  readonly displayServer: DisplayServer;
+  readonly input: InputSystem;
+  readonly sceneGraph: SceneGraph;
+  readonly colorManagement: ColorManagement;
+  readonly cursor: CursorManager;
+
   private _bootedAt: number;
 
   constructor(opts?: { tpmAvailable?: boolean; screenWidth?: number; screenHeight?: number; dpiScale?: number }) {
@@ -144,6 +163,20 @@ export class KernelSubsystem {
     this.textLayout = new TextLayoutEngine();
     this.imagePipeline = new ImagePipeline();
     this.renderDebug = new RenderDebugOverlay();
+
+    // Display Server, Input, Scene Graph, Color, Cursor
+    this.displayServer = new DisplayServer([{
+      id: "monitor-0", name: "Primary",
+      bounds: { x: 0, y: 0, width: sw, height: sh },
+      dpiScale: opts?.dpiScale ?? 1, primary: true, refreshHz: 60,
+    }]);
+    this.input = new InputSystem();
+    this.sceneGraph = new SceneGraph();
+    this.colorManagement = new ColorManagement();
+    this.cursor = new CursorManager();
+
+    // Wire scene graph into render pipeline
+    this.renderPipeline.setSceneGraph(this.sceneGraph);
 
     this._bootedAt = Date.now();
 
@@ -198,11 +231,17 @@ export class KernelSubsystem {
       textLayout: this.textLayout.getStats(),
       imagePipeline: this.imagePipeline.getStats(),
       renderDebug: this.renderDebug.getStats(),
+      displayServer: this.displayServer.getStats(),
+      input: this.input.getStats(),
+      sceneGraph: this.sceneGraph.getStats(),
+      colorManagement: this.colorManagement.getStats(),
+      cursor: this.cursor.getStats(),
     };
   }
 
   destroy(): void {
     this.initSystem.destroy();
     this.renderPipeline.destroy();
+    this.cursor.destroy();
   }
 }
