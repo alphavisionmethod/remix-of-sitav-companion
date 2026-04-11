@@ -247,10 +247,10 @@ export function FloatingWindow({
         transition={{ duration: NOVA_MOTION.duration.standard, ease: [0.25, 0.1, 0.25, 1] }}
         className={cn(
           "absolute rounded-2xl overflow-hidden",
-          "bg-[hsl(0_0%_100%/0.70)] dark:bg-[hsl(0_0%_0%/0.60)]",
-          "backdrop-blur-2xl",
-          "border border-[hsl(0_0%_100%/0.30)] dark:border-[hsl(0_0%_100%/0.10)]",
-          NOVA_SHADOWS.window,
+          "backdrop-blur-2xl transition-[opacity,box-shadow,border-color] duration-200",
+          isFocused
+            ? "bg-[hsl(0_0%_100%/0.70)] dark:bg-[hsl(0_0%_0%/0.60)] border border-[hsl(0_0%_100%/0.35)] dark:border-[hsl(0_0%_100%/0.15)] shadow-2xl shadow-[hsl(0_0%_0%/0.3)]"
+            : "bg-[hsl(0_0%_100%/0.60)] dark:bg-[hsl(0_0%_0%/0.50)] border border-[hsl(0_0%_100%/0.20)] dark:border-[hsl(0_0%_100%/0.08)] shadow-lg shadow-[hsl(0_0%_0%/0.15)] opacity-[0.85]",
           isDragging ? "cursor-grabbing" : "",
           className
         )}
