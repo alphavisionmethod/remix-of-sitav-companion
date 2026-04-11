@@ -781,8 +781,7 @@ const HomeRoute = () => {
 
 const AuthenticatedProviders = ({ children }: { children: ReactNode }) => (
   <DataModeProvider>
-  <DemoModeProvider>
-  <DisplayModeProvider>
+  <AppearanceProvider>
   <EntityContextProvider>
   <SitaKernelProvider>
   <SitaOSProvider>
@@ -797,8 +796,7 @@ const AuthenticatedProviders = ({ children }: { children: ReactNode }) => (
   </SitaOSProvider>
   </SitaKernelProvider>
   </EntityContextProvider>
-  </DisplayModeProvider>
-  </DemoModeProvider>
+  </AppearanceProvider>
   </DataModeProvider>
 );
 
