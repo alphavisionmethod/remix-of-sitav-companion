@@ -368,10 +368,63 @@ export class AnimationEngine {
     return { ...this._stats };
   }
 
+  // ── Convenience: State Transitions ──────────────────────────
+
+  /**
+   * Create a compositor-layer transition animation for widget state changes.
+   * Automatically targets compositor properties (transform/opacity/position)
+   * so the cached raster is reused without re-rasterization.
+   */
+  createTransition(
+    viewNodeId: string,
+    property: string,
+    fromValue: number,
+    toValue: number,
+    durationMs: number,
+    easing: EasingDef = "ease-out"
+  ): string {
+    const id = `transition-${viewNodeId}-${property}-${Date.now()}`;
+    this.create({
+      id,
+      tracks: [{
+        property,
+        keyframes: [
+          { offset: 0, value: fromValue },
+          { offset: 1, value: toValue, easing },
+        ],
+      }],
+      durationMs,
+      fillMode: "forwards",
+    });
+    this.bindToView(id, viewNodeId);
+    this.play(id);
+    return id;
+  }
+
+  // ── Animation Groups ──────────────────────────────────────
+
+  private _groups = new Map<string, AnimationGroup>();
+
+  /** Create a group of animations that play/pause/cancel together */
+  createGroup(groupId: string, animationIds: string[]): AnimationGroup {
+    const group = new AnimationGroup(groupId, animationIds, this);
+    this._groups.set(groupId, group);
+    return group;
+  }
+
+  getGroup(groupId: string): AnimationGroup | undefined {
+    return this._groups.get(groupId);
+  }
+
+  removeGroup(groupId: string): void {
+    this._groups.delete(groupId);
+  }
+
   destroy(): void {
     this._animations.clear();
     this._springs.clear();
     this._damageQueue = [];
+    this._groups.clear();
   }
 
   // ── Internal ────────────────────────────────────────────────
@@ -439,5 +492,62 @@ export class AnimationEngine {
       this._damageQueue.push({ ...inst.def.bounds });
       this._stats.totalDamageRectsEmitted++;
     }
+  }
+}
+
+// ── Animation Group ─────────────────────────────────────────
+
+/**
+ * AnimationGroup — manages synchronized playback of multiple animations.
+ * Play, pause, resume, or cancel all animations in the group together.
+ */
+export class AnimationGroup {
+  readonly id: string;
+  readonly animationIds: string[];
+  private _engine: AnimationEngine;
+
+  constructor(id: string, animationIds: string[], engine: AnimationEngine) {
+    this.id = id;
+    this.animationIds = [...animationIds];
+    this._engine = engine;
+  }
+
+  play(): void {
+    for (const id of this.animationIds) this._engine.play(id);
+  }
+
+  pause(): void {
+    for (const id of this.animationIds) this._engine.pause(id);
+  }
+
+  resume(): void {
+    for (const id of this.animationIds) this._engine.resume(id);
+  }
+
+  cancel(): void {
+    for (const id of this.animationIds) this._engine.cancel(id);
+  }
+
+  /** Add an animation to this group */
+  add(animId: string): void {
+    if (!this.animationIds.includes(animId)) {
+      this.animationIds.push(animId);
+    }
+  }
+
+  /** Check if all animations in group have finished */
+  get isFinished(): boolean {
+    return this.animationIds.every(id => {
+      const inst = this._engine.get(id);
+      return !inst || inst.state === "finished";
+    });
+  }
+
+  /** Check if any animation in group is running */
+  get isRunning(): boolean {
+    return this.animationIds.some(id => {
+      const inst = this._engine.get(id);
+      return inst?.state === "running";
+    });
   }
 }

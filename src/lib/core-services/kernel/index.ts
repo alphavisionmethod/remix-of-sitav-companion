@@ -29,11 +29,11 @@ export { RenderPipeline, type FrameStats, type PipelineStats, type LayoutNode } 
 export { SoftwareRasterizer, type TileBuffer, type Color, type BlendMode, type PixelFormat } from "./software-rasterizer";
 export { TileCompositor, type Tile, type TileState, type CompositorLayer, type CompositorStats } from "./tile-compositor";
 export { DamageTracker, type Rect, type DamageRegion, type DamageSource, type DamageStats } from "./damage-tracker";
-export { VectorRenderer, type VectorPath, type PathCommand, type GradientDef, type StrokeStyle, type GlyphCacheEntry, type PatternDef, type FillStyle } from "./vector-renderer";
+export { VectorRenderer, GlyphAtlas, KerningTable, type VectorPath, type PathCommand, type GradientDef, type StrokeStyle, type GlyphCacheEntry, type PatternDef, type FillStyle, type GlyphAtlasStats } from "./vector-renderer";
 export { RenderThreadPool, type WorkItem, type WorkPriority, type RenderThread, type ThreadPoolStats } from "./render-thread-pool";
 
 // --- Rendering Extensions ---
-export { AnimationEngine, classifyAnimationLayer, type AnimationDef, type AnimationInstance, type AnimationLayer, type KeyframeTrack, type EasingDef } from "./animation-engine";
+export { AnimationEngine, AnimationGroup, classifyAnimationLayer, type AnimationDef, type AnimationInstance, type AnimationLayer, type KeyframeTrack, type EasingDef } from "./animation-engine";
 export { TextLayoutEngine, type TextLayoutResult, type TextStyle, type TextLayoutBox, type PositionedGlyph } from "./text-layout-engine";
 export { ImagePipeline, type ImageSource, type SpriteAtlas, type NineSliceInsets, type ScaleFilter } from "./image-pipeline";
 export { RenderDebugOverlay, type DebugSnapshot, type DebugOverlayConfig } from "./render-debug-overlay";

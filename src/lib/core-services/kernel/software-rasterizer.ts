@@ -374,6 +374,86 @@ export class SoftwareRasterizer {
 
   // ── Internal ────────────────────────────────────────────────
 
+  // ── Branchless Helpers (Section 5.10 — Branch Minimization) ──
+  // These use arithmetic masks instead of if-statements to avoid
+  // branch mispredictions in tight pixel loops.
+
+  /** Branchless min: returns min(a, b) without branching */
+  static branchlessMin(a: number, b: number): number {
+    // Uses the sign bit: if (a - b) < 0, a is smaller
+    const diff = a - b;
+    return b + (diff & (diff >> 31));
+  }
+
+  /** Branchless max: returns max(a, b) without branching */
+  static branchlessMax(a: number, b: number): number {
+    const diff = a - b;
+    return a - (diff & (diff >> 31));
+  }
+
+  /** Branchless clamp: clamp value to [lo, hi] without branching */
+  static branchlessClamp(value: number, lo: number, hi: number): number {
+    return SoftwareRasterizer.branchlessMax(lo, SoftwareRasterizer.branchlessMin(value, hi));
+  }
+
+  /**
+   * Branchless alpha blend for a single pixel.
+   * Uses arithmetic mask `-(alpha > 0)` pattern to avoid branching
+   * on zero-alpha pixels (common in text rendering and AA edges).
+   */
+  static branchlessAlphaBlend(
+    dstR: number, dstG: number, dstB: number, dstA: number,
+    srcR: number, srcG: number, srcB: number, srcA: number
+  ): [number, number, number, number] {
+    // mask = 0xFFFFFFFF if srcA > 0, else 0x00000000
+    const mask = -(srcA > 0 ? 1 : 0);
+    // inv_alpha = 255 - srcA (masked to 0 if srcA == 0)
+    const invA = (255 - srcA) & mask;
+    // Blend: out = (src * srcA + dst * invA) / 255
+    // Using integer approximation: (x * 255 + 128) >> 8 ≈ x
+    const outR = ((srcR * srcA + dstR * invA + 128) >> 8) & mask | (dstR & ~mask);
+    const outG = ((srcG * srcA + dstG * invA + 128) >> 8) & mask | (dstG & ~mask);
+    const outB = ((srcB * srcA + dstB * invA + 128) >> 8) & mask | (dstB & ~mask);
+    const outA = ((srcA * 255 + dstA * invA + 128) >> 8) & mask | (dstA & ~mask);
+    return [
+      SoftwareRasterizer.branchlessClamp(outR, 0, 255),
+      SoftwareRasterizer.branchlessClamp(outG, 0, 255),
+      SoftwareRasterizer.branchlessClamp(outB, 0, 255),
+      SoftwareRasterizer.branchlessClamp(outA, 0, 255),
+    ];
+  }
+
+  /**
+   * Branchless span fill — fills a horizontal span using branchless alpha blending.
+   * Optimized for text rendering and anti-aliased edges where many pixels
+   * may have zero alpha (skip without branching).
+   */
+  branchlessSpanBlend(
+    tile: TileBuffer,
+    y: number,
+    x0: number, x1: number,
+    color: Color,
+    coverage: number
+  ): void {
+    if (y < 0 || y >= tile.height) return;
+    const startX = Math.max(0, x0);
+    const endX = Math.min(tile.width, x1);
+    const srcA = Math.round(color.a * coverage);
+
+    for (let x = startX; x < endX; x++) {
+      const off = (y * tile.width + x) * 4;
+      const [r, g, b, a] = SoftwareRasterizer.branchlessAlphaBlend(
+        tile.pixels[off], tile.pixels[off + 1], tile.pixels[off + 2], tile.pixels[off + 3],
+        color.r, color.g, color.b, srcA
+      );
+      tile.pixels[off] = r;
+      tile.pixels[off + 1] = g;
+      tile.pixels[off + 2] = b;
+      tile.pixels[off + 3] = a;
+    }
+    this._stats.pixelsBlended += endX - startX;
+  }
+
   private _fillSpan(
     tile: TileBuffer,
     y: number,
