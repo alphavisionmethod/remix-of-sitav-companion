@@ -1,6 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Desktop Dock
 // macOS-style floating dock with magnification + live badges + context menu
+// Connected to unified window manager for OS apps (Finder, Settings)
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useRef, useCallback } from "react";
@@ -10,8 +11,17 @@ import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { useAppBadges } from "@/hooks/useAppBadges";
 import type { AppDefinition } from "@/lib/app-platform/types";
+import type { useWindowManager } from "@/hooks/useWindowManager";
 
-export const DesktopDock = () => {
+// Known OS-level apps that open as floating windows instead of routes
+const OS_WINDOW_APPS = new Set(["finder", "settings"]);
+
+interface DesktopDockProps {
+  onLaunchApp?: (appId: string) => void;
+  windowManager?: ReturnType<typeof useWindowManager>;
+}
+
+export const DesktopDock = ({ onLaunchApp, windowManager }: DesktopDockProps) => {
   const navigate = useNavigate();
   const { apps } = useAppPlatform();
   const { getBadge } = useAppBadges();
@@ -23,9 +33,14 @@ export const DesktopDock = () => {
   const pinnedApps = apps.filter(a => a.pinnedToDock && a.installStatus === "installed");
 
   const launchApp = useCallback((app: AppDefinition) => {
+    // Check if this is an OS window app and we have a launcher
+    if (onLaunchApp && OS_WINDOW_APPS.has(app.id)) {
+      onLaunchApp(app.id);
+      return;
+    }
     if (app.routePath) navigate(app.routePath);
     else if (app.externalUrl) window.open(app.externalUrl, "_blank", "noopener");
-  }, [navigate]);
+  }, [navigate, onLaunchApp]);
 
   const handleContextMenu = useCallback((e: React.MouseEvent, app: AppDefinition) => {
     e.preventDefault();
@@ -43,6 +58,9 @@ export const DesktopDock = () => {
     return 1;
   };
 
+  // Check which apps have open windows
+  const openWindowIds = new Set(windowManager?.windows.map(w => w.id) ?? []);
+
   return (
     <>
       <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-[120] hidden md:flex">
@@ -57,6 +75,7 @@ export const DesktopDock = () => {
           {pinnedApps.map((app, idx) => {
             const badge = getBadge(app.id);
             const scale = getScale(idx);
+            const isRunning = openWindowIds.has(app.id);
             return (
               <div key={app.id} className="relative flex flex-col items-center">
                 {/* Tooltip */}
@@ -93,8 +112,11 @@ export const DesktopDock = () => {
                     </span>
                   )}
                 </motion.button>
-                {/* Active dot */}
-                <div className="w-1 h-1 rounded-full bg-primary/60 mt-0.5" />
+                {/* Active dot — brighter if window is actually open */}
+                <div className={cn(
+                  "w-1 h-1 rounded-full mt-0.5 transition-colors",
+                  isRunning ? "bg-[hsl(0_0%_100%/0.9)]" : "bg-primary/60"
+                )} />
               </div>
             );
           })}
