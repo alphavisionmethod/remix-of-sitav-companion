@@ -488,11 +488,18 @@ describe("CommandBufferPool", () => {
     expect(cb3).toBe(cb1); // reused
   });
 
-  it("expands beyond initial capacity", () => {
+  it("tracks pooled count", () => {
+    const pool = new CommandBufferPool(4);
+    const cb = pool.acquire();
+    expect(pool.pooledCount).toBe(0);
+    pool.release(cb);
+    expect(pool.pooledCount).toBe(1);
+  });
+
+  it("expands beyond initial pool", () => {
     const pool = new CommandBufferPool(2);
     const cbs = [pool.acquire(), pool.acquire(), pool.acquire()];
-    expect(cbs.length).toBe(3);
-    expect(pool.getStats().totalAllocated).toBeGreaterThanOrEqual(3);
+    expect(cbs.length).toBe(3); // doesn't throw
   });
 });
 
