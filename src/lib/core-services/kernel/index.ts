@@ -38,6 +38,13 @@ export { TextLayoutEngine, type TextLayoutResult, type TextStyle, type TextLayou
 export { ImagePipeline, type ImageSource, type SpriteAtlas, type NineSliceInsets, type ScaleFilter } from "./image-pipeline";
 export { RenderDebugOverlay, type DebugSnapshot, type DebugOverlayConfig } from "./render-debug-overlay";
 
+// --- Display Server, Input, Scene Graph, Color, Cursor ---
+export { DisplayServer, type ManagedWindow, type WindowCreateOptions, type Monitor, type WindowEvent, type DisplayServerStats } from "./display-server";
+export { InputSystem, type InputEvent, type KeyboardEvent, type MouseEvent, type TouchEvent, type GestureEvent, type HotkeyBinding, type InputSystemStats } from "./input-system";
+export { SceneGraph, SceneNode, type SceneNodeProps, type DisplayListEntry, type HitTestResult, type Transform2D, type SceneGraphStats } from "./scene-graph";
+export { ColorManagement, type ICCProfile, type RGBColor, type HSLColor, type LabColor, type ColorManagementStats } from "./color-management";
+export { CursorManager, type CursorImage, type CursorState, type CursorDamage, type SystemCursorShape, type CursorManagerStats } from "./cursor-manager";
+
 // --- Facade imports ---
 import { ProcessScheduler } from "./process-scheduler";
 import { MemoryManager } from "./memory-manager";
@@ -64,6 +71,11 @@ import { AnimationEngine } from "./animation-engine";
 import { TextLayoutEngine } from "./text-layout-engine";
 import { ImagePipeline } from "./image-pipeline";
 import { RenderDebugOverlay } from "./render-debug-overlay";
+import { DisplayServer } from "./display-server";
+import { InputSystem } from "./input-system";
+import { SceneGraph } from "./scene-graph";
+import { ColorManagement } from "./color-management";
+import { CursorManager } from "./cursor-manager";
 
 /**
  * KernelSubsystem — Facade aggregating all kernel architecture,
