@@ -1,77 +1,74 @@
 
 
-# NovaOS Advanced Features — Mission Control, Window Snapping, and OS Architecture Docs
+# NovaOS Visual & Integration Polish — 100% Completion Pass
 
-## What We're Building
+## Current State Assessment
 
-Three layers of advancement based on the user's roadmap:
+After reviewing all files, the NovaOS design system is **structurally complete** but has these gaps preventing a "100% visually perfect" experience:
 
-1. **Mission Control** — zoomed-out window overview triggered by a gesture/shortcut
-2. **Window Snapping Engine** — drag-to-edge snapping (left half, right half, maximize)
-3. **OS Architecture Documentation** — formal specs mapping the React prototype to the real CPU rendering pipeline
+### Issues Found
 
-## Current State
+1. **Two competing menu bars**: `DesktopMenuBar.tsx` (old, used on desktop route) and `SystemMenuBar.tsx` (new NovaOS, with File/Edit/View menus) — the old one is what actually renders on desktop. The new `SystemMenuBar` is never mounted.
 
-Already built and working:
-- SystemMenuBar (top bar with menus, clock, status)
-- FloatingWindow (draggable, traffic lights, glass material)
-- FinderWindow + SettingsWindow (demo content)
-- useWindowManager hook (open/close/focus/z-order)
-- CommandPalette (Spotlight-style ⌘K search)
-- DesktopDock (magnification, badges, gradients)
-- NovaOS design tokens (materials, depth layers, motion)
-- ShellAmbientBackground (mood orbs, depth layering)
+2. **Dock not connected to window manager**: `DesktopDock.tsx` navigates via routes only — clicking Finder/Settings in the dock doesn't open FloatingWindows. The `handleLaunchApp` in `DesktopSurface` exists but the dock has no way to call it.
+
+3. **Window manager duplicated**: Both `ShellLayout` and `DesktopSurface` instantiate separate `useWindowManager()` hooks — they're two independent state machines, so Mission Control (in ShellLayout) can't see windows opened from DesktopSurface.
+
+4. **Rendering pipeline manifest not linked**: `generated/rendering-pipeline-manifest.json` exists but isn't referenced anywhere in the architecture docs or design system.
 
 ## Plan
 
-### 1. Mission Control View
-**New file**: `src/components/sita/shell/MissionControl.tsx`
-- Full-screen overlay (z-index: `DEPTH_LAYERS.overlay`) with dark scrim
-- All open FloatingWindows shrink to thumbnail previews in a grid layout
-- Click a thumbnail to focus that window and exit Mission Control
-- Triggered via a keyboard shortcut (F3 or Ctrl+Up) registered in ShellLayout
-- Smooth `framer-motion` layoutId transitions for windows scaling down/up
-- Shows "No windows open" empty state
-
-### 2. Window Snapping Engine
-**Edit**: `src/components/sita/shell/FloatingWindow.tsx`
-- Add snap zone detection during drag: when pointer enters left/right 60px edge or top 40px edge, show a translucent blue preview rectangle
-- On drop in a snap zone: animate window to fill left-half, right-half, or full-screen
-- Add `isSnapped` state and a "restore" action (double-click title bar or drag away)
-- Snap preview overlay rendered as a sibling div with `DEPTH_LAYERS.windows - 1` z-index
-
-**New file**: `src/lib/design-system/snap-zones.ts`
-- Constants for snap zone geometry (edge thresholds, preview opacity, animation duration)
-- Helper function `detectSnapZone(pointerX, pointerY, viewportW, viewportH)` returning `"left" | "right" | "top" | null`
-
-### 3. Enhanced useWindowManager
-**Edit**: `src/hooks/useWindowManager.ts`
-- Add `minimizeWindow(id)` — removes from visible list but keeps in state (for Mission Control)
-- Add `getMinimized()` — returns minimized windows
-- Add `restoreWindow(id)` — un-minimize
-- Track window dimensions/position for snap state persistence
-
-### 4. Wire Mission Control into ShellLayout
+### 1. Replace DesktopMenuBar with SystemMenuBar on desktop route
 **Edit**: `src/components/sita/ShellLayout.tsx`
-- Add keyboard listener for Mission Control trigger (F3)
-- Render `MissionControl` overlay when active
-- Pass window manager state through
+- Replace `DesktopMenuBarLazy` import/usage with `SystemMenuBar` on desktop routes
+- Pass `onSearchOpen`, `onNotifOpen`, and `activeApp` props
 
-### 5. OS Architecture Spec Document
-**New file**: `infra/docs/NOVA_OS_ARCHITECTURE.md`
-- Formal mapping: React component → OS subsystem (Window → compositor surface, CommandPalette → Spotlight daemon, etc.)
-- CPU rendering pipeline spec (scanline rasterizer, tile system, damage tracking)
-- Event system architecture (hit testing, event bubbling, focus management)
-- Module breakdown: Display Server, Compositor, Rasterizer, UI Toolkit, Event System, Window Manager
-- Migration path: React prototype → native C++/Rust engine → framebuffer output
+### 2. Unify window manager state
+**Edit**: `src/components/sita/ShellLayout.tsx` + `src/components/sita/shell/DesktopSurface.tsx`
+- Remove `useWindowManager()` from DesktopSurface
+- Pass window manager methods (`openWindow`, `closeWindow`, `focusWindow`, `minimizeWindow`, `visibleWindows`) from ShellLayout down to DesktopSurface as props
+- This ensures Mission Control (F3) sees the same windows as the desktop
 
-## Files
-- 2 new files (MissionControl component, snap-zones constants)
-- 1 new doc (NOVA_OS_ARCHITECTURE.md)
-- 3 edits (FloatingWindow, useWindowManager, ShellLayout)
+### 3. Connect Dock to window manager
+**Edit**: `src/components/sita/DesktopDock.tsx`
+- Accept an optional `onLaunchApp?: (appId: string) => void` prop
+- For known OS apps (finder, settings), call `onLaunchApp` instead of navigating
+- Other apps continue using route navigation
 
-## Performance Notes
-- Mission Control uses CSS `transform: scale()` for thumbnails — no re-rasterization
-- Snap zone detection runs only during active drag (pointer move with capture)
-- All animations stay under 300ms, transform+opacity only
+**Edit**: `src/components/sita/ShellLayout.tsx`
+- Pass a `handleLaunchApp` callback to DesktopDock that opens FloatingWindows via the unified window manager
+
+### 4. Add window resize handle to FloatingWindow
+**Edit**: `src/components/sita/shell/FloatingWindow.tsx`
+- Add a bottom-right corner resize grip (diagonal lines icon)
+- Pointer-based resize with min/max constraints
+- Consistent with the OS architecture spec
+
+### 5. Polish visual details
+**Edit**: `src/components/sita/shell/DesktopSurface.tsx`
+- Increase desktop content `pt` to clear menu bar (currently `pt-10`, needs `pt-12` for the 28px bar)
+- Add a subtle inner shadow on the vignette for more depth
+
+**Edit**: `src/components/sita/shell/windows/FinderWindow.tsx`
+- Add sidebar navigation (Favorites: Desktop, Documents, Downloads) like real Finder
+- Add breadcrumb path bar below title
+
+**Edit**: `src/components/sita/shell/windows/SettingsWindow.tsx`
+- Add toggle switches, sliders for Display brightness, proper form controls instead of text-only
+
+### 6. Link rendering pipeline manifest to architecture docs
+**Edit**: `infra/docs/NOVA_OS_ARCHITECTURE.md`
+- Add reference to `generated/rendering-pipeline-manifest.json`
+- Include manifest schema explanation in the spec
+
+## Files Changed
+- 5 edits (ShellLayout, DesktopSurface, DesktopDock, FloatingWindow, FinderWindow, SettingsWindow)
+- 1 edit (NOVA_OS_ARCHITECTURE.md)
+- 0 new files
+
+## Technical Notes
+- Single window manager instance in ShellLayout guarantees Mission Control, dock, and desktop surface all share state
+- SystemMenuBar replaces DesktopMenuBar — no duplicate top bar code
+- All visual changes stay within transform/opacity animation budget
+- Resize handle uses pointer capture (same pattern as drag)
 
