@@ -1,55 +1,58 @@
 
 
-# Integrate C++ Compositor & SIMD Rasterizer Specs into SITA OS
+# Window Dragging with Mac-Level Smoothness + Bootable OS Spec
 
 ## What We're Building
 
-Two additions based on the user's detailed C++ code:
+Two additions from the user's Parts 3 and 4:
 
-1. **Compositor & Rasterizer Reference Spec** — a new architecture doc (`infra/docs/COMPOSITOR_RASTERIZER_SPEC.md`) containing the exact C++ data structures, alpha blending, SIMD fill, box blur, gradient, and damage region code the user provided, organized as a buildable reference for the native engine phase.
-
-2. **TypeScript Compositor Simulation** — a new module (`src/lib/engine/compositor-sim.ts`) that models the compositor concepts in TypeScript within the React prototype. This lets the prototype *simulate* the real pipeline: Surface objects, z-ordered window list, per-pixel alpha blending (on an OffscreenCanvas), damage rect tracking, and box blur approximation. This bridges the React UI to the native engine spec.
+1. **Smooth window dragging** — upgrade `FloatingWindow.tsx` with interpolated movement (lerp smoothing) and release inertia, matching the user's C++ `DragState` spec
+2. **Bootable OS prototype spec** — add kernel entry, bootloader config, and framebuffer access docs to the architecture, completing the full pipeline from React prototype to bare-metal boot
 
 ## Plan
 
-### 1. New doc: Compositor & Rasterizer Implementation Spec
-**New file**: `infra/docs/COMPOSITOR_RASTERIZER_SPEC.md`
+### 1. Upgrade FloatingWindow drag to use lerp smoothing + inertia
+**Edit**: `src/components/sita/shell/FloatingWindow.tsx`
 
-Contains (verbatim from user, organized into sections):
-- **Part 1 — Compositor**: `Color`, `Surface`, `Rect`, `Framebuffer` structs; alpha blend function; compositing loop; damage region optimization
-- **Part 2 — CPU Rasterizer**: scalar `fill_rect`, AVX2 SIMD `fill_rect_simd`, gradient `lerp`, box blur approximation
-- **Build notes**: which headers needed (`<immintrin.h>`), compile flags (`-mavx2`), integration with the tile system from `PERFORMANCE_RENDERING.md`
+Current drag is instant (set position = mouse delta). Replace with:
+- **Lerp smoothing**: `pos += (target - pos) * 0.2` via `requestAnimationFrame` loop during drag — window trails the cursor slightly for that fluid macOS feel
+- **Velocity tracking**: Store `dx/dy` per frame during drag
+- **Inertia on release**: After pointer up, apply decaying velocity (`*= 0.92`) over ~10-15 frames until near zero, with boundary clamping
+- Keep snap zone detection working (it reads pointer position, not window position, so unaffected)
 
-### 2. TypeScript compositor simulation module
-**New file**: `src/lib/engine/compositor-sim.ts`
+### 2. Add drag physics to compositor-sim.ts
+**Edit**: `src/lib/engine/compositor-sim.ts`
 
-Exports:
-- `Surface` class (buffer as `Uint32Array`, position, opacity, visible)
-- `Framebuffer` class (pixel buffer, width, height)
-- `alphaBlend(fg, bg)` — exact port of the C++ blend function
-- `composite(fb, surfaces)` — z-order compositing loop
-- `DamageTracker` class — tracks dirty `Rect[]`, coalesces overlaps
-- `fillRect(buffer, stride, x, y, w, h, color)` — scalar fill
-- `boxBlur3x3(src, dst, w, h)` — 3x3 box blur approximation
+Add exported types and helpers matching the C++ spec:
+- `DragState` interface (`active`, `offsetX/Y`, `velocityX/Y`)
+- `lerpPosition(current, target, smoothing)` — pure function
+- `applyInertia(state, friction)` — returns updated position + velocity
+- These are pure-logic helpers usable by both the React prototype and future native engine
 
-This module is pure computation (no DOM), usable for testing or future Canvas-based rendering.
+### 3. Bootable OS prototype spec document
+**New file**: `infra/docs/BOOTABLE_PROTOTYPE_SPEC.md`
 
-### 3. Link new spec from existing architecture docs
+Contains (from user's Part 4):
+- GRUB bootloader config (`grub.cfg` with multiboot entry)
+- Kernel entry point (`kernel_main` with framebuffer + compositor init)
+- Framebuffer memory-mapped access pattern
+- Simple draw test (blue screen fill)
+- Compositor integration with `Framebuffer` struct
+- Build system (cross-compiler + linker script)
+- QEMU run command
+- Full system pipeline diagram (Input → WM → UI Toolkit → Rasterizer → Compositor → Framebuffer → Display)
+
+### 4. Cross-link from architecture docs
 **Edit**: `infra/docs/NOVA_OS_ARCHITECTURE.md`
-- Add cross-reference to `COMPOSITOR_RASTERIZER_SPEC.md` in the CPU Rendering Pipeline section
-- Note that the C++ implementation spec is the target for Phase 2 (Native Engine)
-
-### 4. Update rendering pipeline manifest
-**Edit**: `generated/rendering-pipeline-manifest.json`
-- Add `compositor` section with blend mode formula reference and surface struct schema
-- Add `simd` section documenting AVX2/NEON acceleration targets
+- Add Phase 3 reference to `BOOTABLE_PROTOTYPE_SPEC.md`
+- Note the drag physics spec in the Window Manager section
 
 ## Files
-- 2 new files (spec doc + TS simulation module)
-- 2 edits (architecture doc cross-ref + manifest update)
+- 1 new file (`BOOTABLE_PROTOTYPE_SPEC.md`)
+- 3 edits (`FloatingWindow.tsx`, `compositor-sim.ts`, `NOVA_OS_ARCHITECTURE.md`)
 
 ## Technical Notes
-- The TS simulation is a pure-logic module with zero React/DOM dependencies — it can run in a Web Worker or Node for testing
-- The C++ spec doc preserves the user's exact code with added context for compilation and integration
-- All specs reference the existing tile system (64x64) and damage tracker from `PERFORMANCE_RENDERING.md`
+- Lerp drag uses `requestAnimationFrame` — no extra dependencies, stays within 16ms frame budget
+- Inertia decay runs max ~15 frames (300ms), self-cancels when velocity < 0.5px
+- All drag math is transform-only (no layout recalc)
 
