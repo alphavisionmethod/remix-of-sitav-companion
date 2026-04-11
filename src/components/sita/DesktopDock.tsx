@@ -77,7 +77,7 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene" }: Des
           initial={{ y: 80, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.3 }}
-          className="flex items-end gap-1 rounded-2xl border border-[hsl(0_0%_100%/0.30)] bg-[hsl(0_0%_100%/0.12)] backdrop-blur-2xl px-3 py-2 shadow-lg shadow-[hsl(0_0%_0%/0.2)]"
+          className={cn("flex items-end gap-1 rounded-2xl border border-[hsl(0_0%_100%/0.30)] backdrop-blur-2xl px-3 py-2 shadow-lg shadow-[hsl(0_0%_0%/0.2)] transition-colors duration-500", MOOD_TINTS[mood] || MOOD_TINTS.serene)}
           onMouseLeave={() => { setHoveredIdx(null); setTooltip(null); }}
         >
           {pinnedApps.map((app, idx) => {
