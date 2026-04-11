@@ -183,7 +183,7 @@ describe("Compositor Pipeline E2E", () => {
     expect(allStats.vfx.activeShadows).toBe(1);
     expect(allStats.vfx.activeTransparencies).toBe(1);
     // GPU stats
-    expect(allStats.gpu.backend).toBe("cpu-software");
+    expect(allStats.gpu.backend).toBe("software");
     // Surface allocator
     expect(allStats.surfaceAllocator).toBeDefined();
   });
