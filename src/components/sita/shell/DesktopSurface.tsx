@@ -1,6 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Living Desktop Surface
 // Clean OS desktop: wallpaper, clock, glass widgets, dock launcher
+// Boot ceremony + soft focus + zero-clutter + context menu
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useEffect, useMemo, useCallback } from "react";
@@ -10,7 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import {
   CheckCircle, DollarSign, Calendar, Brain,
-  TrendingUp, ArrowRight, X,
+  TrendingUp, ArrowRight,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ShellAmbientBackground, type AmbientMood } from "./ShellAmbientBackground";
@@ -18,6 +19,8 @@ import type { TrustPosture, ContinuityContext, ShellNotificationDigest } from ".
 import { DEPTH_LAYERS } from "@/lib/design-system/nova-os";
 import { FloatingWindow } from "./FloatingWindow";
 import { useWindowManagerContext } from "@/contexts/WindowManagerContext";
+import { DesktopIconGrid } from "./DesktopIconGrid";
+import { DesktopContextMenu } from "./DesktopContextMenu";
 
 // ── Types ────────────────────────────────────────────────────
 
@@ -30,7 +33,7 @@ interface DesktopSurfaceProps {
   onLaunchApp?: (appId: string) => void;
 }
 
-// ── Desktop Notification Toasts ─────────────────────────────
+// ── Desktop Notification Toasts (Calm — fade instead of slide) ─
 
 function DesktopToasts({ notifications }: { notifications: ShellNotificationDigest }) {
   const [toasts, setToasts] = useState<{ id: number; text: string }[]>([]);
@@ -52,9 +55,9 @@ function DesktopToasts({ notifications }: { notifications: ShellNotificationDige
         {toasts.map(t => (
           <motion.div
             key={t.id}
-            initial={{ x: 100, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: 60, opacity: 0 }}
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.96 }}
             transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
             className="p-3 rounded-xl bg-[hsl(0_0%_100%/0.60)] dark:bg-[hsl(0_0%_0%/0.50)] backdrop-blur-lg shadow-lg border border-[hsl(0_0%_100%/0.20)] dark:border-[hsl(0_0%_100%/0.08)] pointer-events-auto"
           >
@@ -97,7 +100,7 @@ function getTimeConfig(): { greeting: string; mood: AmbientMood; gradient: strin
 
 // ── Clock Widget ─────────────────────────────────────────────
 
-function DesktopClock({ greeting, userName }: { greeting: string; userName: string }) {
+function DesktopClock({ greeting, userName, bootReady }: { greeting: string; userName: string; bootReady: boolean }) {
   const [now, setNow] = useState(new Date());
   useEffect(() => {
     const id = setInterval(() => setNow(new Date()), 30_000);
@@ -108,11 +111,11 @@ function DesktopClock({ greeting, userName }: { greeting: string; userName: stri
   const date = now.toLocaleDateString([], { weekday: "long", month: "long", day: "numeric" });
 
   return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
-      className="text-center select-none"
+    <div
+      className={cn(
+        "text-center select-none transition-all duration-700 ease-out",
+        bootReady ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-3 scale-95"
+      )}
     >
       <p className="text-7xl md:text-8xl font-extralight tracking-tight text-[hsl(0_0%_100%/0.9)] tabular-nums drop-shadow-lg">
         {time}
@@ -123,7 +126,7 @@ function DesktopClock({ greeting, userName }: { greeting: string; userName: stri
       <p className="text-sm font-medium text-[hsl(0_0%_100%/0.45)] mt-4 tracking-wider uppercase">
         {greeting}{userName ? `, ${userName}` : ""}
       </p>
-    </motion.div>
+    </div>
   );
 }
 
@@ -136,22 +139,22 @@ interface GlassWidgetProps {
   accent?: string;
   onClick?: () => void;
   delay?: number;
+  bootReady?: boolean;
 }
 
-function GlassWidget({ icon: Icon, label, value, accent, onClick, delay = 0 }: GlassWidgetProps) {
+function GlassWidget({ icon: Icon, label, value, accent, onClick, delay = 0, bootReady = true }: GlassWidgetProps) {
   return (
-    <motion.button
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay, duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+    <button
       onClick={onClick}
       className={cn(
         "group flex items-center gap-4 rounded-2xl px-6 py-5",
         "bg-[hsl(0_0%_100%/0.08)] backdrop-blur-2xl border border-[hsl(0_0%_100%/0.12)]",
         "hover:bg-[hsl(0_0%_100%/0.14)] hover:border-[hsl(0_0%_100%/0.22)]",
-        "transition-all duration-300 cursor-pointer shadow-lg shadow-black/10",
-        "min-w-[200px]"
+        "transition-all duration-500 cursor-pointer shadow-lg shadow-black/10",
+        "min-w-[200px]",
+        bootReady ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
       )}
+      style={{ transitionDelay: bootReady ? `${delay}ms` : "0ms" }}
     >
       <div className={cn("rounded-xl p-2.5", accent || "bg-[hsl(265_55%_58%/0.2)]")}>
         <Icon className="h-5 w-5 text-[hsl(0_0%_100%/0.9)]" />
@@ -161,13 +164,13 @@ function GlassWidget({ icon: Icon, label, value, accent, onClick, delay = 0 }: G
         <p className="text-[11px] font-medium text-[hsl(0_0%_100%/0.5)] uppercase tracking-wider">{label}</p>
       </div>
       <ArrowRight className="h-3.5 w-3.5 text-[hsl(0_0%_100%/0.2)] group-hover:text-[hsl(0_0%_100%/0.5)] transition-colors ml-auto" />
-    </motion.button>
+    </button>
   );
 }
 
 // ── Advisor Insight Strip ────────────────────────────────────
 
-function AdvisorInsight({ delay }: { delay: number }) {
+function AdvisorInsight({ bootReady }: { bootReady: boolean }) {
   const insights = [
     "3 leads are cooling — re-engage before they go cold",
     "Insurance renewal due in 12 days — I've prepared options",
@@ -177,18 +180,18 @@ function AdvisorInsight({ delay }: { delay: number }) {
   const [idx] = useState(() => Math.floor(Math.random() * insights.length));
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay, duration: 0.5 }}
+    <div
       className={cn(
         "flex items-center gap-3 rounded-2xl px-5 py-3 max-w-lg mx-auto",
-        "bg-[hsl(0_0%_100%/0.06)] backdrop-blur-xl border border-[hsl(0_0%_100%/0.08)]"
+        "bg-[hsl(0_0%_100%/0.06)] backdrop-blur-xl border border-[hsl(0_0%_100%/0.08)]",
+        "transition-all duration-500",
+        bootReady ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"
       )}
+      style={{ transitionDelay: bootReady ? "200ms" : "0ms" }}
     >
       <Brain className="h-4 w-4 text-[hsl(265_55%_70%)] shrink-0" />
       <p className="text-xs text-[hsl(0_0%_100%/0.55)] leading-relaxed">{insights[idx]}</p>
-    </motion.div>
+    </div>
   );
 }
 
@@ -209,19 +212,43 @@ export function DesktopSurface({
   const isAuto = wallpaper.id === "auto";
   const activeGradient = isAuto ? timeGradient : wallpaper.gradient;
 
-  // Use unified window manager from context
+  // ── Boot Ceremony ──────────────────────────────────────────
+  const [bootPhase, setBootPhase] = useState(0);
+  useEffect(() => {
+    if (reduced) { setBootPhase(4); return; }
+    const timers = [
+      setTimeout(() => setBootPhase(1), 100),   // wallpaper
+      setTimeout(() => setBootPhase(2), 500),   // clock + widgets
+      setTimeout(() => setBootPhase(3), 900),   // icons
+      setTimeout(() => setBootPhase(4), 1200),  // settled
+    ];
+    return () => timers.forEach(clearTimeout);
+  }, [reduced]);
+
+  // ── Context Menu ───────────────────────────────────────────
+  const [ctxMenu, setCtxMenu] = useState<{ x: number; y: number } | null>(null);
+
+  // ── Window Manager ─────────────────────────────────────────
   const windowManager = useWindowManagerContext();
   const visibleWindows = windowManager?.visibleWindows ?? [];
   const closeWindow = windowManager?.closeWindow;
   const focusWindow = windowManager?.focusWindow;
   const minimizeWindow = windowManager?.minimizeWindow;
 
-  // Click on empty desktop background → open Spotlight
+  // ── Soft Focus Mode ────────────────────────────────────────
+  const hasWindows = visibleWindows.length > 0;
+  const maxZ = visibleWindows.reduce((max, w) => Math.max(max, w.zIndex), 0);
+
   const handleBackgroundClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget && onOpenCommand) {
       onOpenCommand();
     }
   }, [onOpenCommand]);
+
+  const handleContextMenu = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    setCtxMenu({ x: e.clientX, y: e.clientY });
+  }, []);
 
   return (
     <div
@@ -229,8 +256,19 @@ export function DesktopSurface({
         "fixed inset-0 flex flex-col items-center justify-center overflow-hidden bg-gradient-to-br cursor-default",
         activeGradient
       )}
-      onClick={handleBackgroundClick}
+      onClick={(e) => { handleBackgroundClick(e); setCtxMenu(null); }}
+      onContextMenu={handleContextMenu}
     >
+      {/* Boot black overlay — fades out in phase 1 */}
+      <div
+        className="absolute inset-0 bg-black pointer-events-none transition-opacity duration-500 ease-out"
+        style={{
+          zIndex: 100,
+          opacity: bootPhase >= 1 ? 0 : 1,
+          pointerEvents: bootPhase >= 1 ? "none" : "auto",
+        }}
+      />
+
       {/* Wallpaper overlay effect */}
       {wallpaper.overlay && (
         <div
@@ -243,19 +281,26 @@ export function DesktopSurface({
         <ShellAmbientBackground mood={mood} intensity="vivid" className="" />
       </div>
 
-      {/* Extra decorative orbs for depth */}
+      {/* Decorative orbs */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ zIndex: DEPTH_LAYERS.orbs }}>
         <div className="absolute top-[15%] left-[20%] w-[500px] h-[500px] rounded-full bg-[hsl(265_60%_50%/0.06)] blur-[120px]" />
         <div className="absolute bottom-[20%] right-[15%] w-[400px] h-[400px] rounded-full bg-[hsl(35_80%_50%/0.04)] blur-[100px]" />
         <div className="absolute top-[60%] left-[60%] w-[300px] h-[300px] rounded-full bg-[hsl(190_60%_50%/0.03)] blur-[80px]" />
       </div>
 
-      {/* Main desktop content */}
-      <div className="relative flex flex-col items-center gap-12 px-4 pb-28 pt-12" style={{ zIndex: DEPTH_LAYERS.content }} onClick={e => e.stopPropagation()}>
-        {/* Clock + Greeting */}
-        <DesktopClock greeting={greeting} userName={userName || ""} />
+      {/* Main desktop content — dims when windows are open (Soft Focus) */}
+      <div
+        className={cn(
+          "relative flex flex-col items-center gap-12 px-4 pb-28 pt-12 transition-opacity duration-300",
+          hasWindows ? "opacity-40" : "opacity-100"
+        )}
+        style={{ zIndex: DEPTH_LAYERS.content }}
+        onClick={e => e.stopPropagation()}
+      >
+        {/* Clock */}
+        <DesktopClock greeting={greeting} userName={userName || ""} bootReady={bootPhase >= 2} />
 
-        {/* At-a-Glance Widgets */}
+        {/* Widgets */}
         <div className="flex flex-wrap items-center justify-center gap-3">
           <GlassWidget
             icon={CheckCircle}
@@ -263,7 +308,8 @@ export function DesktopSurface({
             value={`${notifications.approvals || 3} waiting`}
             accent="bg-[hsl(265_55%_58%/0.2)]"
             onClick={() => navigate("/approvals")}
-            delay={0.3}
+            bootReady={bootPhase >= 2}
+            delay={0}
           />
           <GlassWidget
             icon={DollarSign}
@@ -271,7 +317,8 @@ export function DesktopSurface({
             value="$42K liquid"
             accent="bg-[hsl(140_50%_45%/0.2)]"
             onClick={() => navigate("/money")}
-            delay={0.4}
+            bootReady={bootPhase >= 2}
+            delay={80}
           />
           <GlassWidget
             icon={Calendar}
@@ -279,7 +326,8 @@ export function DesktopSurface({
             value="6 tasks · 2 meetings"
             accent="bg-[hsl(35_80%_55%/0.2)]"
             onClick={() => navigate("/concierge")}
-            delay={0.5}
+            bootReady={bootPhase >= 2}
+            delay={160}
           />
           <GlassWidget
             icon={TrendingUp}
@@ -287,18 +335,32 @@ export function DesktopSurface({
             value="+14% this week"
             accent="bg-[hsl(190_60%_50%/0.2)]"
             onClick={() => navigate("/business")}
-            delay={0.6}
+            bootReady={bootPhase >= 2}
+            delay={240}
           />
         </div>
 
         {/* Advisor Insight */}
-        <AdvisorInsight delay={0.8} />
+        <AdvisorInsight bootReady={bootPhase >= 2} />
+      </div>
+
+      {/* Desktop Icon Grid — dims with soft focus too */}
+      <div
+        className={cn(
+          "transition-opacity duration-300",
+          hasWindows ? "opacity-40" : "opacity-100"
+        )}
+      >
+        <DesktopIconGrid
+          visible={bootPhase >= 3}
+          onOpenFolder={(id) => onLaunchApp?.(id)}
+        />
       </div>
 
       {/* Notification toasts */}
       <DesktopToasts notifications={notifications} />
 
-      {/* Floating windows from unified window manager */}
+      {/* Floating windows with focus differentiation */}
       <AnimatePresence>
         {visibleWindows.map(w => (
           <FloatingWindow
@@ -309,6 +371,7 @@ export function DesktopSurface({
             onClose={() => closeWindow?.(w.id)}
             onMinimize={() => minimizeWindow?.(w.id)}
             onFocus={() => focusWindow?.(w.id)}
+            isFocused={w.zIndex === maxZ}
             className="cursor-default"
             style={{ zIndex: DEPTH_LAYERS.windows + w.zIndex }}
           >
@@ -317,7 +380,18 @@ export function DesktopSurface({
         ))}
       </AnimatePresence>
 
-      {/* Subtle vignette overlay with inner shadow */}
+      {/* Desktop Context Menu */}
+      <AnimatePresence>
+        {ctxMenu && (
+          <DesktopContextMenu
+            x={ctxMenu.x}
+            y={ctxMenu.y}
+            onClose={() => setCtxMenu(null)}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Vignette */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
