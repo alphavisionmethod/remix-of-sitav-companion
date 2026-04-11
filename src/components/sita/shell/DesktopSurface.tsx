@@ -202,7 +202,7 @@ export function DesktopSurface({
       </div>
 
       {/* Main desktop content */}
-      <div className="relative z-10 flex flex-col items-center gap-12 px-4 pb-28 pt-10">
+      <div className="relative z-10 flex flex-col items-center gap-12 px-4 pb-28 pt-10" onClick={e => e.stopPropagation()}>
         {/* Clock + Greeting */}
         <DesktopClock greeting={greeting} userName={userName || ""} />
 
