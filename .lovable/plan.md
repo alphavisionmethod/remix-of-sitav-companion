@@ -1,59 +1,51 @@
 
 
-# Implement Full Kernel Architecture & Security Model
+# Implement Userspace & System Services Layer
 
-## Status Check
-The `src/lib/core-services/kernel/` directory is **completely empty** — none of the kernel subsystems exist yet. All 18 files from the previous plan need to be created and wired into the `SitaKernel` class.
+## What's Missing
 
-## What Gets Built
+The kernel architecture (scheduler, VMM, filesystem, IPC, security) is fully implemented. But the **userspace layer** — the services that sit between the kernel and applications — does not exist yet. Specifically:
 
-### Kernel Architecture (10 files)
+- No **init system / service manager** (dependency-ordered service lifecycle)
+- No **system daemons** registry (health, watchdog, cron, network)
+- No **package management** system (install, verify, update, rollback)
+- No **logging/diagnostics infrastructure** at the OS level (journald-equivalent)
+- No **configuration management** (typed config store, validation, change tracking)
 
-| File | Purpose |
-|------|---------|
-| `src/lib/core-services/kernel/index.ts` | Barrel export + `KernelSubsystem` facade class |
-| `src/lib/core-services/kernel/process-scheduler.ts` | MLFQ scheduler with 5 priority bands (RT-Critical → Idle), ProcessControlBlock, preemption, priority inheritance |
-| `src/lib/core-services/kernel/memory-manager.ts` | Virtual memory manager: 4-level page tables, demand paging, CoW, SLAB/buddy allocators, OOM policy |
-| `src/lib/core-services/kernel/sita-filesystem.ts` | SitaFS: CoW B-tree filesystem with journaling, snapshots, checksums, compression + VFS mount layer |
-| `src/lib/core-services/kernel/driver-manager.ts` | User-space driver framework: device tree, hot-plug, capability sandboxing, driver signing enforcement |
-| `src/lib/core-services/kernel/ipc-system.ts` | Capability-based message passing, shared memory regions, POSIX signals, event channels |
-| `src/lib/core-services/kernel/syscall-table.ts` | ~120 syscall definitions across 7 categories (process, memory, fs, ipc, security, device, proof) with ABI spec |
-| `infra/docs/KERNEL_ARCHITECTURE.md` | Complete kernel architecture specification document |
-| `infra/docs/MEMORY_ARCHITECTURE.md` | Virtual memory system design document |
-| `infra/docs/FILESYSTEM_ARCHITECTURE.md` | SitaFS + VFS specification |
+Existing pieces to build on: `structured-logger.ts` (app-level), `support-diagnostics.ts` (app-level), `self-healing/` (fleet-level), systemd `.service` files (deploy scripts only), `system-updates/` (stub re-export).
 
-### Security Model (7 files)
+## Files to Create (8 new services + 1 doc + 1 manifest + 1 edit)
+
+### Core Userspace Services
 
 | File | Purpose |
 |------|---------|
-| `src/lib/core-services/kernel/sandbox-engine.ts` | 5-ring trust model, Seccomp-BPF syscall filtering, namespace isolation, Landlock LSM, capability enforcement |
-| `src/lib/core-services/kernel/code-verification.ts` | Ed25519/RSA-4096 binary signing, boot chain verification, CRL revocation, enforced/permissive modes |
-| `src/lib/core-services/kernel/capability-permission-system.ts` | Three-layer permissions: POSIX DAC + Linux capabilities + SITA capability tokens |
-| `src/lib/core-services/kernel/crypto-subsystem.ts` | LUKS2 FDE (AES-256-XTS), TPM 2.0 key sealing, key hierarchy (master → volume → file), rotation policy |
-| `src/lib/core-services/kernel/app-isolation.ts` | Per-app namespaces, cgroups v2 resource limits, private mounts, nftables firewall, crash isolation |
-| `infra/docs/SECURITY_ARCHITECTURE.md` | Full security model specification with runtime protections table |
-| `generated/security-model-manifest.json` | Machine-readable security controls inventory |
+| `src/lib/core-services/kernel/init-system.ts` | **Init System / Service Manager** — dependency graph, ordered boot, service lifecycle (starting → running → stopping → failed → restarting), watchdog timers, target groups (basic.target, network.target, sita-runtime.target) |
+| `src/lib/core-services/kernel/system-daemons.ts` | **System Daemon Registry** — canonical daemon definitions: sita-watchdog, sita-cron, sita-networkd, sita-resolved, sita-journald, sita-sessiond, sita-deviced. Each with health probe, restart policy, resource limits |
+| `src/lib/core-services/kernel/package-manager.ts` | **Package Management** — package manifest format, dependency resolution, signature verification (reuses code-verification), install/upgrade/rollback transactions, repository management, integrity checking |
+| `src/lib/core-services/kernel/journal-subsystem.ts` | **Logging & Diagnostics** — OS-level structured journal (ring buffer, persistent storage, priority filtering), kernel message capture, service log aggregation, log forwarding, crash dump collection, diagnostic snapshots |
+| `src/lib/core-services/kernel/config-manager.ts` | **Configuration Management** — typed key-value config store with namespaces, schema validation, change tracking with receipts, atomic updates, overlay hierarchy (default → system → user → runtime), config diffing |
 
-### Generated Manifests (2 files)
+### Documentation & Manifests
 
 | File | Purpose |
 |------|---------|
-| `generated/kernel-architecture-manifest.json` | Kernel config: model, scheduler, VMM, filesystem, IPC, drivers |
-| `generated/syscall-manifest.json` | Complete syscall catalog (~120 entries) with ABI conventions |
+| `infra/docs/USERSPACE_ARCHITECTURE.md` | Full specification: init system design, daemon catalog, package format, journal architecture, config model |
+| `generated/userspace-services-manifest.json` | Machine-readable catalog of all system daemons, boot targets, package repositories |
 
-### Wiring into SitaKernel (1 edit)
+### Wiring
 
 | File | Change |
 |------|--------|
-| `src/lib/sita-kernel.ts` | Import `KernelSubsystem` from barrel, add as `readonly kernelArch` property, instantiate in constructor, emit boot receipt |
+| `src/lib/core-services/kernel/index.ts` | Add exports for all 5 new services, wire into `KernelSubsystem` facade as `initSystem`, `daemons`, `packages`, `journal`, `config` |
 
-## Technical Approach
+## Design Decisions
 
-- Every TypeScript service follows the existing pattern: typed interfaces, event bus integration via `getSitaKernel()`, receipt emission for mutations
-- All services are simulation-grade — they model the real kernel subsystems with proper types, state machines, and event emission, runnable in the browser runtime
-- The `KernelSubsystem` facade aggregates all kernel modules behind a single entry point, keeping the `SitaKernel` constructor clean
-- Docs use the same format as existing `ARQ_PLAN_FINAL.md`
-- Manifests match the existing JSON schema patterns in `generated/`
+- **Init system** modeled after systemd: dependency DAG with parallel start, but simplified to ~20 service units relevant to SITA OS
+- **Package manager** uses the existing `CodeVerificationService` for signature checks — no duplicate crypto
+- **Journal** complements the app-level `structured-logger.ts` — journal captures kernel/daemon/boot logs, structured-logger captures application logs
+- **Config manager** emits receipts via event bus for audit trail on config changes (follows proof-chain rule)
+- All services follow existing pattern: typed interfaces, `getStats()`, event bus integration
 
-## Total: 20 new files + 1 edit
+## Total: 7 new files + 1 edit
 
