@@ -170,6 +170,13 @@ export class KernelSubsystem {
   readonly viewTree: ViewTree;
   readonly layoutEngine: LayoutEngine;
 
+  // Networking Stack (Section 5)
+  readonly tcpip: TCPIPStack;
+  readonly sockets: SocketAPI;
+  readonly firewall: Firewall;
+  readonly vpn: VPNManager;
+  readonly dns: DNSResolver;
+
   private _bootedAt: number;
 
   constructor(opts?: { tpmAvailable?: boolean; screenWidth?: number; screenHeight?: number; dpiScale?: number }) {
