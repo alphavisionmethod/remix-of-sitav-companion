@@ -19,9 +19,17 @@ const OS_WINDOW_APPS = new Set(["finder", "settings"]);
 interface DesktopDockProps {
   onLaunchApp?: (appId: string) => void;
   windowManager?: ReturnType<typeof useWindowManager>;
+  mood?: "warm" | "serene" | "night" | "focus";
 }
 
-export const DesktopDock = ({ onLaunchApp, windowManager }: DesktopDockProps) => {
+const MOOD_TINTS: Record<string, string> = {
+  warm: "bg-[hsl(35_60%_50%/0.08)]",
+  serene: "bg-[hsl(0_0%_100%/0.12)]",
+  night: "bg-[hsl(240_40%_30%/0.12)]",
+  focus: "bg-[hsl(265_50%_40%/0.10)]",
+};
+
+export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene" }: DesktopDockProps) => {
   const navigate = useNavigate();
   const { apps } = useAppPlatform();
   const { getBadge } = useAppBadges();
@@ -69,7 +77,7 @@ export const DesktopDock = ({ onLaunchApp, windowManager }: DesktopDockProps) =>
           initial={{ y: 80, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.3 }}
-          className="flex items-end gap-1 rounded-2xl border border-[hsl(0_0%_100%/0.30)] bg-[hsl(0_0%_100%/0.12)] backdrop-blur-2xl px-3 py-2 shadow-lg shadow-[hsl(0_0%_0%/0.2)]"
+          className={cn("flex items-end gap-1 rounded-2xl border border-[hsl(0_0%_100%/0.30)] backdrop-blur-2xl px-3 py-2 shadow-lg shadow-[hsl(0_0%_0%/0.2)] transition-colors duration-500", MOOD_TINTS[mood] || MOOD_TINTS.serene)}
           onMouseLeave={() => { setHoveredIdx(null); setTooltip(null); }}
         >
           {pinnedApps.map((app, idx) => {
