@@ -1,74 +1,66 @@
 
 
-# Three Features — Implementation Plan
+# NovaOS Design System Integration into SITA OS
 
-## 1. Connect Shopify to E-Commerce Manager
+## What We're Building
 
-**Approach**: Enable the Shopify integration, then replace the hardcoded `DEMO_PRODUCTS`, `DEMO_COLLECTIONS`, etc. in `EcommerceOffice.tsx` with live Shopify data via an edge function proxy.
+Upgrade SITA OS's desktop shell to adopt the NovaOS macOS-inspired design language: glassmorphism materials, a proper system menu bar, floating composited windows, dock magnification polish, depth layering, and gradient-rich iconography — all CPU-rendering friendly.
 
-**Steps**:
-- Enable Shopify integration (user chooses new or existing store)
-- Create edge function `shopify-sync` that fetches products, collections, and orders from Shopify Admin API
-- Create React hooks (`useShopifyProducts`, `useShopifyCollections`, `useShopifyOrders`) that call the edge function
-- Update `EcommerceOffice.tsx` to use live data when available, falling back to demo data in demo mode
-- Add inventory sync status indicator showing last sync time
+## Current State
 
-**Files**: 1 new edge function, 1 new hooks file, edit `EcommerceOffice.tsx`
+SITA OS already has many of these pieces partially built:
+- **DesktopSurface**: Clock, glass widgets, ambient background — but no top menu bar, no floating windows
+- **DesktopDock**: Magnification + badges — already macOS-like, needs material polish
+- **ShellAmbientBackground**: Mood-based orbs — good foundation for depth layers
+- **Design tokens**: Exist but don't encode the NovaOS material/depth system
 
----
+## Plan
 
-## 2. Drag-and-Drop Tab Reordering in Owner Workspace
+### 1. Create NovaOS Design System tokens file
+**New file**: `src/lib/design-system/nova-os.ts`
+- Material definitions: `glass`, `frostedGlass`, `solidSurface` with opacity/blur/border values
+- Depth layer enum: Desktop (0), Windows (1), Floating UI (2), Dock + MenuBar (3)
+- Gradient palette: icon gradients (blue→indigo, purple→pink, etc.), surface gradients
+- Shape constants: window radius (`rounded-2xl`), icon radius (`rounded-xl`), pill radius (`rounded-full`)
+- Motion philosophy constants: duration caps (150–300ms), transform-only preference
 
-**Approach**: Make the sidebar TABS array mutable state, persisted to `localStorage`. Use `@dnd-kit` (already common in React projects) or a simple pointer-event drag handler for reordering.
+### 2. Add System Menu Bar (Top Bar)
+**New file**: `src/components/sita/shell/SystemMenuBar.tsx`
+- Fixed top bar with `backdrop-blur-md bg-white/40` (light) / `bg-black/40` (dark)
+- Left: "SITA" brand + menu items (File, Edit, View — contextual per active app)
+- Right: status indicators (WiFi/connectivity, trust posture, battery/time)
+- Integrates existing `ShellStatusBar` indicators into the macOS-style layout
+- Height: 40px, z-index above windows but below overlays
 
-**Steps**:
-- Install `@hello-pangea/dnd` (lightweight, maintained fork of react-beautiful-dnd)
-- Convert `TABS` from `const` to state in `OwnerWorkspaceShell`, initialized from localStorage or default order
-- Wrap the nav in a `DragDropContext` + `Droppable` + `Draggable` for each tab
-- Add a drag handle icon (grip dots) visible on hover
-- Persist reordered tab list to `localStorage` keyed by user
-- Add a "Reset to default" option in the sidebar footer
+### 3. Floating Window Component
+**New file**: `src/components/sita/shell/FloatingWindow.tsx`
+- Reusable composited window surface with traffic-light controls (red/yellow/green dots)
+- Glass material: `bg-white/70 backdrop-blur-xl border border-white/30 rounded-2xl shadow-2xl`
+- Draggable via pointer events (no heavy library needed)
+- Props: `title`, `children`, `initialPosition`, `onClose`, `onMinimize`, `onMaximize`
+- Dark mode variant: `bg-black/60 border-white/10`
 
-**Files**: edit `OwnerWorkspaceShell.tsx`, add dependency
+### 4. Polish DesktopDock with NovaOS materials
+**Edit**: `src/components/sita/DesktopDock.tsx`
+- Update dock container material to match NovaOS: `bg-white/40 backdrop-blur-xl border-white/30 rounded-2xl shadow-lg`
+- Replace flat icon backgrounds with gradient icons: `bg-gradient-to-br from-purple-400 to-pink-500`
+- Add subtle dock reflection/glow effect beneath
 
----
+### 5. Update DesktopSurface to compose new pieces
+**Edit**: `src/components/sita/shell/DesktopSurface.tsx`
+- Remove the `fixed inset-0` layout — delegate to `ShellLayout`
+- Add `SystemMenuBar` at top
+- Update `GlassWidget` material to use NovaOS glass tokens
+- Adjust depth layering: background (z-0), orbs (z-1), content (z-10), menu bar (z-30)
 
-## 3. Dynamic Notification Badge Counts
+### 6. Update design tokens index
+**Edit**: `src/packages/design-tokens/index.ts`
+- Add `MATERIALS`, `DEPTH_LAYERS`, `ICON_GRADIENTS` exports that reference the nova-os tokens
 
-**Approach**: The `notifications` table already exists with `user_id`, `domain`, `read`, `urgency` columns and realtime enabled. Replace the hardcoded `DEMO_BADGES` with a Supabase query that counts unread notifications grouped by domain, with a realtime subscription for live updates.
+## Files Changed
+- 3 new files (nova-os tokens, SystemMenuBar, FloatingWindow)
+- 3 edited files (DesktopDock, DesktopSurface, design-tokens index)
 
-**Steps**:
-- Rewrite `useAppBadges` to query `notifications` table: `SELECT domain, urgency, COUNT(*) FROM notifications WHERE user_id = auth.uid() AND read = false GROUP BY domain, urgency`
-- Subscribe to realtime `INSERT`/`UPDATE` on `notifications` table to refresh counts automatically
-- Map `domain` values to `appId` using the existing `DOMAIN_APP_MAP`
-- Keep demo data as fallback when user is not authenticated
-- Update `DesktopDock.tsx` if any interface changes are needed (likely none — same `getBadge` API)
-
-**Files**: edit `useAppBadges.ts`
-
----
-
-## Technical Details
-
-### Shopify Edge Function
-```text
-POST /shopify-sync
-Body: { action: "products" | "collections" | "orders" | "inventory" }
-Returns: { data: [...] }
-Auth: JWT required, Shopify API key from connector
-```
-
-### Badge Query
-```sql
-SELECT domain, urgency, COUNT(*)::int as count
-FROM notifications
-WHERE user_id = auth.uid() AND read = false
-GROUP BY domain, urgency
-```
-Realtime subscription on `notifications` table (already in `supabase_realtime` publication) triggers re-fetch on changes.
-
-### Drag-and-Drop
-Uses `@hello-pangea/dnd` for accessible keyboard + pointer drag. Tab order stored as `owner-workspace-tab-order` in localStorage as JSON array of tab IDs.
-
-## Total: 1 new edge function, 1 new hooks file, 3 file edits, 1 dependency
+## Performance Note
+All effects use CSS `backdrop-filter` and `box-shadow` only — no canvas re-rasterization. Animations are transform/opacity only, staying within the 16ms frame budget. The floating window uses pointer-event drag (translate transform) with no layout recalculation.
 
