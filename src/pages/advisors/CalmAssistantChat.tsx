@@ -44,9 +44,7 @@ export default function CalmAssistantChat() {
   } = useAdvisorChat({
     capabilityKey: "advisor.chat.primary",
     systemPrompt: SYSTEM_PROMPT,
-    onResponse: (envelope) => {
-      console.log("[CalmAssistant] Response:", envelope.status, envelope.modelUsed);
-    },
+    onResponse: () => {},
   });
 
   useEffect(() => {
