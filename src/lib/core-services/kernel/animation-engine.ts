@@ -406,8 +406,8 @@ export class AnimationEngine {
   private _groups = new Map<string, AnimationGroup>();
 
   /** Create a group of animations that play/pause/cancel together */
-  createGroup(groupId: string, animationIds: string[]): AnimationGroup {
-    const group = new AnimationGroup(groupId, animationIds, this);
+  createGroup(groupId: string, animationIds: string[], config?: AnimationGroupConfig): AnimationGroup {
+    const group = new AnimationGroup(groupId, animationIds, this, config);
     this._groups.set(groupId, group);
     return group;
   }
@@ -497,35 +497,132 @@ export class AnimationEngine {
 
 // ── Animation Group ─────────────────────────────────────────
 
+export type GroupPlayMode = "parallel" | "sequence" | "stagger";
+
+export interface AnimationGroupConfig {
+  /** How animations in the group are coordinated */
+  playMode?: GroupPlayMode;
+  /** Delay between each animation in stagger mode (ms) */
+  staggerDelay?: number;
+  /** Called when ALL animations in the group finish */
+  onGroupFinish?: () => void;
+  /** Called when each individual animation finishes, with its id */
+  onAnimationFinish?: (animId: string) => void;
+  /** Number of times to repeat the whole group (Infinity for forever) */
+  iterations?: number;
+}
+
 /**
  * AnimationGroup — manages synchronized playback of multiple animations.
- * Play, pause, resume, or cancel all animations in the group together.
+ * Supports parallel, sequential, and staggered playback modes.
  */
 export class AnimationGroup {
   readonly id: string;
   readonly animationIds: string[];
   private _engine: AnimationEngine;
+  private _config: Required<AnimationGroupConfig>;
+  private _currentIteration = 0;
+  private _sequenceIndex = 0;
+  private _playing = false;
+  private _finishedSet = new Set<string>();
 
-  constructor(id: string, animationIds: string[], engine: AnimationEngine) {
+  constructor(id: string, animationIds: string[], engine: AnimationEngine, config?: AnimationGroupConfig) {
     this.id = id;
     this.animationIds = [...animationIds];
     this._engine = engine;
+    this._config = {
+      playMode: config?.playMode ?? "parallel",
+      staggerDelay: config?.staggerDelay ?? 100,
+      onGroupFinish: config?.onGroupFinish ?? (() => {}),
+      onAnimationFinish: config?.onAnimationFinish ?? (() => {}),
+      iterations: config?.iterations ?? 1,
+    };
   }
 
+  get playMode(): GroupPlayMode { return this._config.playMode; }
+  get isPlaying(): boolean { return this._playing; }
+
   play(): void {
-    for (const id of this.animationIds) this._engine.play(id);
+    this._playing = true;
+    this._finishedSet.clear();
+    this._currentIteration = 0;
+    this._sequenceIndex = 0;
+
+    // Wire finish callbacks
+    for (const animId of this.animationIds) {
+      this._engine.setOnFinish(animId, () => this._onAnimFinished(animId));
+    }
+
+    this._startCurrentBatch();
+  }
+
+  private _startCurrentBatch(): void {
+    switch (this._config.playMode) {
+      case "parallel":
+        for (const id of this.animationIds) this._engine.play(id);
+        break;
+
+      case "sequence":
+        if (this._sequenceIndex < this.animationIds.length) {
+          this._engine.play(this.animationIds[this._sequenceIndex]);
+        }
+        break;
+
+      case "stagger":
+        for (let i = 0; i < this.animationIds.length; i++) {
+          const id = this.animationIds[i];
+          const inst = this._engine.get(id);
+          if (inst) {
+            // Set delay based on stagger position
+            inst.def.delay = (inst.def.delay ?? 0) + i * this._config.staggerDelay;
+          }
+          this._engine.play(id);
+        }
+        break;
+    }
+  }
+
+  private _onAnimFinished(animId: string): void {
+    this._finishedSet.add(animId);
+    this._config.onAnimationFinish(animId);
+
+    if (this._config.playMode === "sequence") {
+      this._sequenceIndex++;
+      if (this._sequenceIndex < this.animationIds.length) {
+        this._engine.play(this.animationIds[this._sequenceIndex]);
+        return;
+      }
+    }
+
+    // Check if all finished
+    if (this._finishedSet.size >= this.animationIds.length) {
+      this._currentIteration++;
+      if (this._currentIteration < this._config.iterations) {
+        // Restart the group
+        this._finishedSet.clear();
+        this._sequenceIndex = 0;
+        this._startCurrentBatch();
+      } else {
+        this._playing = false;
+        this._config.onGroupFinish();
+      }
+    }
   }
 
   pause(): void {
     for (const id of this.animationIds) this._engine.pause(id);
+    this._playing = false;
   }
 
   resume(): void {
     for (const id of this.animationIds) this._engine.resume(id);
+    this._playing = true;
   }
 
   cancel(): void {
     for (const id of this.animationIds) this._engine.cancel(id);
+    this._playing = false;
+    this._finishedSet.clear();
   }
 
   /** Add an animation to this group */
@@ -533,6 +630,12 @@ export class AnimationGroup {
     if (!this.animationIds.includes(animId)) {
       this.animationIds.push(animId);
     }
+  }
+
+  /** Remove an animation from this group */
+  remove(animId: string): void {
+    const idx = this.animationIds.indexOf(animId);
+    if (idx >= 0) this.animationIds.splice(idx, 1);
   }
 
   /** Check if all animations in group have finished */
@@ -549,5 +652,11 @@ export class AnimationGroup {
       const inst = this._engine.get(id);
       return inst?.state === "running";
     });
+  }
+
+  /** Get progress (0-1) based on finished count */
+  get progress(): number {
+    if (this.animationIds.length === 0) return 1;
+    return this._finishedSet.size / this.animationIds.length;
   }
 }

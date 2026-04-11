@@ -33,7 +33,7 @@ export { VectorRenderer, GlyphAtlas, KerningTable, type VectorPath, type PathCom
 export { RenderThreadPool, type WorkItem, type WorkPriority, type RenderThread, type ThreadPoolStats } from "./render-thread-pool";
 
 // --- Rendering Extensions ---
-export { AnimationEngine, AnimationGroup, classifyAnimationLayer, type AnimationDef, type AnimationInstance, type AnimationLayer, type KeyframeTrack, type EasingDef } from "./animation-engine";
+export { AnimationEngine, AnimationGroup, classifyAnimationLayer, type AnimationDef, type AnimationInstance, type AnimationLayer, type KeyframeTrack, type EasingDef, type GroupPlayMode, type AnimationGroupConfig } from "./animation-engine";
 export { TextLayoutEngine, type TextLayoutResult, type TextStyle, type TextLayoutBox, type PositionedGlyph } from "./text-layout-engine";
 export { ImagePipeline, type ImageSource, type SpriteAtlas, type NineSliceInsets, type ScaleFilter } from "./image-pipeline";
 export { RenderDebugOverlay, type DebugSnapshot, type DebugOverlayConfig } from "./render-debug-overlay";
@@ -75,8 +75,14 @@ export { CommandBuffer, CommandBufferPool, SoftwarePipeline, type DrawCommand, t
 export { UIRenderer, CpuBlur, type UIViewProps, type UITextProps, type UIBackground, type UIColor, type UIGradientStop, type UIBoxShadow, type UIBorder, type UIBorderRadii, type BlurConfig, type UIRendererStats } from "./ui-renderer";
 
 // --- View Tree + Layout Engine (Section 5.6) ---
-export { ViewTree, ViewNode, ContainerNode, ColumnNode, RowNode, StackNode, TextWidget, ButtonWidget, ImageWidget, SpacerNode, type ViewStyle, type ConstraintDef, type DrawContext, type FlexOptions, type MainAxisAlign, type CrossAxisAlign, type ViewTreeStats } from "./view-tree";
+export { ViewTree, ViewNode, ContainerNode, ColumnNode, RowNode, StackNode, TextWidget, ButtonWidget, ImageWidget, SpacerNode, type ViewStyle, type ConstraintDef, type DrawContext, type FlexOptions, type MainAxisAlign, type CrossAxisAlign, type ViewTreeStats, type ViewHitTestResult } from "./view-tree";
 export { LayoutEngine, type LayoutConstraints, type LayoutEngineStats } from "./layout-engine";
+
+// --- Extended UI Widgets (Section 5.8) ---
+export { ScrollViewNode, ListViewNode, MultiLineTextNode, TextInputNode, CheckboxNode, SliderNode, ToggleNode, StatefulWidget, type WidgetState, type WidgetStateColors, type StatefulWidgetConfig, type ListItemFactory, type ListViewStats, type TextLine } from "./ui-widgets";
+
+// --- UI Theme System ---
+export { ThemeManager, LIGHT_THEME, DARK_THEME, type UITheme, type ThemeColors, type ThemeSpacing, type ThemeTypography, type ThemeRadii, type ThemeShadows, type ThemeShadowDef, type ThemeChangeListener } from "./ui-theme";
 
 // --- Facade imports ---
 import { ProcessScheduler } from "./process-scheduler";
@@ -126,6 +132,7 @@ import { WindowManager } from "./window-manager";
 import { DisplayProtocol } from "./display-protocol";
 import { SurfaceAllocator } from "./surface-allocator";
 import { VisualEffectsCompositor } from "./visual-effects-compositor";
+import { ThemeManager } from "./ui-theme";
 
 /**
  * KernelSubsystem — Facade aggregating all kernel architecture,
@@ -202,6 +209,9 @@ export class KernelSubsystem {
 
   // Visual Effects Compositor
   readonly vfx: VisualEffectsCompositor;
+
+  // Theme System
+  readonly themeManager: ThemeManager;
 
   private _bootedAt: number;
 
@@ -282,6 +292,9 @@ export class KernelSubsystem {
 
     // Visual Effects Compositor
     this.vfx = new VisualEffectsCompositor();
+
+    // Theme System
+    this.themeManager = new ThemeManager();
 
     // ── Wire subsystems together ────────────────────────────
     // Wire scene graph into render pipeline
