@@ -1,37 +1,16 @@
-import { ReactNode, useState, useEffect } from "react";
+import { ReactNode, useState, useEffect, lazy, Suspense } from "react";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { SkipToContent } from "./SkipToContent";
 import { RouteAnnouncer } from "./RouteAnnouncer";
 import { AppSidebar } from "./AppSidebar";
 import { SitaTopBar } from "./SitaTopBar";
-import { AdvisorChat } from "./AdvisorChat";
-import { AdvisorFAB } from "./AdvisorFAB";
-import { NotificationPanel } from "./NotificationPanel";
-import { UniversalTimeline } from "./UniversalTimeline";
-import { InspectorPanel } from "./InspectorPanel";
-import { ContextualRail } from "./ContextualRail";
 import { MobileBottomNav } from "./MobileBottomNav";
-import { SitaCompanionBar } from "./SitaCompanionBar";
-import { KeyboardShortcuts } from "./KeyboardShortcuts";
-import { WelcomeTour } from "./WelcomeTour";
-import { InteractiveTutorial } from "./InteractiveTutorial";
-import { QuickAddWizard, QuickAddFAB } from "./QuickAddWizard";
-import { CopilotBar } from "./CopilotBar";
 import { InteractionTracker } from "./InteractionTracker";
 import { ErrorBoundary } from "./ErrorBoundary";
-import { DevicePresenceIndicator } from "./DevicePresenceIndicator";
-import { SuccessCelebration } from "./SuccessCelebration";
 import { ModeResolutionBanner } from "@/components/reality/ModeResolutionBanner";
 import { DemoStateBanner } from "@/components/reality/DemoStateBanner";
 import { DemoGovernanceBanner } from "./DemoGovernanceBanner";
 import { RealityStateBadge } from "@/components/reality/RealityStateBadge";
-import { AIGate } from "./AIGate";
-import { DesktopEntryCeremony } from "./DesktopEntryCeremony";
-import { PWAInstallPrompt } from "./PWAInstallPrompt";
-import { ContinuityBanner } from "./ContinuityBanner";
-import { UpdateBanner } from "./UpdateBanner";
-import { UniversalCommandSurface } from "./shell/UniversalCommandSurface";
-import { ShellAmbientBackground } from "./shell/ShellAmbientBackground";
 import { NetworkStatusBar } from "./NetworkStatusBar";
 import { TrustTransitionIndicator } from "./TrustTransitionIndicator";
 import { useRealtimeNotifications } from "@/hooks/use-realtime-notifications";
@@ -42,6 +21,31 @@ import { useAdaptiveInterface } from "@/hooks/useAdaptiveInterface";
 import { useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
+
+// Lazy-load non-critical shell features (deferred until after first paint)
+const AdvisorChat = lazy(() => import("./AdvisorChat").then(m => ({ default: m.AdvisorChat })));
+const AdvisorFAB = lazy(() => import("./AdvisorFAB").then(m => ({ default: m.AdvisorFAB })));
+const NotificationPanel = lazy(() => import("./NotificationPanel").then(m => ({ default: m.NotificationPanel })));
+const UniversalTimeline = lazy(() => import("./UniversalTimeline").then(m => ({ default: m.UniversalTimeline })));
+const InspectorPanel = lazy(() => import("./InspectorPanel").then(m => ({ default: m.InspectorPanel })));
+const ContextualRail = lazy(() => import("./ContextualRail").then(m => ({ default: m.ContextualRail })));
+const SitaCompanionBar = lazy(() => import("./SitaCompanionBar").then(m => ({ default: m.SitaCompanionBar })));
+const KeyboardShortcuts = lazy(() => import("./KeyboardShortcuts").then(m => ({ default: m.KeyboardShortcuts })));
+const WelcomeTour = lazy(() => import("./WelcomeTour").then(m => ({ default: m.WelcomeTour })));
+const InteractiveTutorial = lazy(() => import("./InteractiveTutorial").then(m => ({ default: m.InteractiveTutorial })));
+const QuickAddWizard = lazy(() => import("./QuickAddWizard").then(m => ({ default: m.QuickAddWizard })));
+const QuickAddFAB = lazy(() => import("./QuickAddWizard").then(m => ({ default: m.QuickAddFAB })));
+const CopilotBar = lazy(() => import("./CopilotBar").then(m => ({ default: m.CopilotBar })));
+const DevicePresenceIndicator = lazy(() => import("./DevicePresenceIndicator").then(m => ({ default: m.DevicePresenceIndicator })));
+const SuccessCelebration = lazy(() => import("./SuccessCelebration").then(m => ({ default: m.SuccessCelebration })));
+const AIGate = lazy(() => import("./AIGate").then(m => ({ default: m.AIGate })));
+const DesktopEntryCeremony = lazy(() => import("./DesktopEntryCeremony").then(m => ({ default: m.DesktopEntryCeremony })));
+const PWAInstallPrompt = lazy(() => import("./PWAInstallPrompt").then(m => ({ default: m.PWAInstallPrompt })));
+const ContinuityBanner = lazy(() => import("./ContinuityBanner").then(m => ({ default: m.ContinuityBanner })));
+const UpdateBanner = lazy(() => import("./UpdateBanner").then(m => ({ default: m.UpdateBanner })));
+const UniversalCommandSurface = lazy(() => import("./shell/UniversalCommandSurface").then(m => ({ default: m.UniversalCommandSurface })));
+const ShellAmbientBackground = lazy(() => import("./shell/ShellAmbientBackground").then(m => ({ default: m.ShellAmbientBackground })));
+
 
 // Route-aware page transitions
 const drillDownSegments = ["mission", "owner", "business", "money", "concierge"];
@@ -116,22 +120,28 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
       <RouteAnnouncer />
 
       {/* Desktop Entry Ceremony */}
-      {showEntryCeremony && (
-        <DesktopEntryCeremony onComplete={() => setShowEntryCeremony(false)} />
-      )}
+      <Suspense fallback={null}>
+        {showEntryCeremony && (
+          <DesktopEntryCeremony onComplete={() => setShowEntryCeremony(false)} />
+        )}
 
-      {/* Universal Command Surface */}
-      <UniversalCommandSurface open={commandOpen} onClose={() => setCommandOpen(false)} />
+        {/* Universal Command Surface */}
+        <UniversalCommandSurface open={commandOpen} onClose={() => setCommandOpen(false)} />
+      </Suspense>
 
       <div className={cn("relative flex flex-col min-h-screen w-full bg-surface-0", isCalm && "calm-mode", isFocus && "focus-mode")}>
         {/* Ambient background — subtle, always present */}
-        <ShellAmbientBackground intensity="subtle" className="fixed" />
+        <Suspense fallback={null}>
+          <ShellAmbientBackground intensity="subtle" className="fixed" />
+        </Suspense>
 
         <DemoGovernanceBanner />
         <DemoStateBanner />
         <NetworkStatusBar />
-        <UpdateBanner />
-        <ContinuityBanner />
+        <Suspense fallback={null}>
+          <UpdateBanner />
+          <ContinuityBanner />
+        </Suspense>
         <SitaTopBar
           onNotifOpen={() => setNotifOpen(true)}
           onTimelineOpen={() => setTimelineOpen(true)}
@@ -166,67 +176,75 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
               </main>
             </div>
             {/* Persistent Contextual Rail — desktop only */}
-            <ContextualRail />
+            <Suspense fallback={null}>
+              <ContextualRail />
+            </Suspense>
           </div>
         </div>
       </div>
 
-      {/* Mobile overlay fallback for inspector */}
-      <div className="lg:hidden">
-        <InspectorPanel />
-      </div>
-
-      {/* Panels */}
-      <NotificationPanel isOpen={notifOpen} onClose={() => setNotifOpen(false)} />
-      <UniversalTimeline isOpen={timelineOpen} onClose={() => setTimelineOpen(false)} />
-      <AdvisorChat isOpen={chatOpen} onClose={() => setChatOpen(false)} />
-
-      {/* Phase 3: Welcome Tour */}
-      <WelcomeTour />
-      <InteractiveTutorial />
-
-      {/* Phase 3: Quick-Add Wizard */}
-      {wizardType && <QuickAddWizard type={wizardType} onClose={() => setWizardType(null)} />}
-
-      {/* Floating buttons */}
-      <QuickAddFAB onAdd={(type) => setWizardType(type)} />
-      <AdvisorFAB isOpen={chatOpen} onToggle={() => setChatOpen(!chatOpen)} />
-
-      {/* PWA Install Prompt */}
-      <PWAInstallPrompt />
-
-      {/* SITA Companion Bar — always present */}
-      <SitaCompanionBar />
-
-      {/* AI Copilot Bar — always-on assistant */}
-      <CopilotBar />
-
-      {/* Mobile Bottom Nav */}
-      <MobileBottomNav />
-
-      {/* Keyboard Shortcuts Overlay */}
-      <KeyboardShortcuts />
-
-      {/* Trust Transition Indicator */}
-      <TrustTransitionIndicator />
-
-      {/* Device Presence Indicator — status bar (visible on all screens) */}
-      <div className="fixed bottom-20 left-4 z-50 hidden sm:block">
-        <DevicePresenceIndicator />
-      </div>
-
-      {/* Mode Resolution Banner — reality mode info */}
-      <div className="fixed bottom-0 left-0 right-0 z-40 px-4 pb-1 pointer-events-none">
-        <div className="max-w-md mx-auto pointer-events-auto">
-          <ModeResolutionBanner />
+      {/* Deferred shell features — loaded after first paint */}
+      <Suspense fallback={null}>
+        {/* Mobile overlay fallback for inspector */}
+        <div className="lg:hidden">
+          <InspectorPanel />
         </div>
-      </div>
 
-      {/* Success Celebration overlay — triggered via events */}
-      <SuccessCelebration show={false} />
+        {/* Panels */}
+        <NotificationPanel isOpen={notifOpen} onClose={() => setNotifOpen(false)} />
+        <UniversalTimeline isOpen={timelineOpen} onClose={() => setTimelineOpen(false)} />
+        <AdvisorChat isOpen={chatOpen} onClose={() => setChatOpen(false)} />
+
+        {/* Phase 3: Welcome Tour */}
+        <WelcomeTour />
+        <InteractiveTutorial />
+
+        {/* Phase 3: Quick-Add Wizard */}
+        {wizardType && <QuickAddWizard type={wizardType} onClose={() => setWizardType(null)} />}
+
+        {/* Floating buttons */}
+        <QuickAddFAB onAdd={(type) => setWizardType(type)} />
+        <AdvisorFAB isOpen={chatOpen} onToggle={() => setChatOpen(!chatOpen)} />
+
+        {/* PWA Install Prompt */}
+        <PWAInstallPrompt />
+
+        {/* SITA Companion Bar — always present */}
+        <SitaCompanionBar />
+
+        {/* AI Copilot Bar — always-on assistant */}
+        <CopilotBar />
+
+        {/* Keyboard Shortcuts Overlay */}
+        <KeyboardShortcuts />
+
+        {/* Trust Transition Indicator */}
+        <TrustTransitionIndicator />
+
+        {/* Device Presence Indicator — status bar (visible on all screens) */}
+        <div className="fixed bottom-20 left-4 z-50 hidden sm:block">
+          <DevicePresenceIndicator />
+        </div>
+
+        {/* Mode Resolution Banner — reality mode info */}
+        <div className="fixed bottom-0 left-0 right-0 z-40 px-4 pb-1 pointer-events-none">
+          <div className="max-w-md mx-auto pointer-events-auto">
+            <ModeResolutionBanner />
+          </div>
+        </div>
+
+        {/* Success Celebration overlay — triggered via events */}
+        <SuccessCelebration show={false} />
+
+        {/* AI Gate */}
+        
+      </Suspense>
 
       {/* Behavioral Interaction Tracker — invisible */}
       <InteractionTracker />
+
+      {/* Mobile Bottom Nav — critical for mobile, keep eager */}
+      <MobileBottomNav />
     </SidebarProvider>
   );
 };

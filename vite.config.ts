@@ -42,15 +42,33 @@ export default defineConfig(({ mode }) => ({
     dedupe: ["react", "react-dom", "react/jsx-runtime", "react/jsx-dev-runtime", "@tanstack/react-query", "@tanstack/query-core"],
   },
   build: {
+    target: "es2020",
+    cssCodeSplit: true,
+    sourcemap: false,
     rollupOptions: {
       output: {
-        manualChunks: {
-          "vendor-react": ["react", "react-dom", "react-router-dom"],
-          "vendor-ui": ["@radix-ui/react-dialog", "@radix-ui/react-popover", "@radix-ui/react-select", "@radix-ui/react-tabs", "@radix-ui/react-tooltip", "@radix-ui/react-dropdown-menu"],
-          "vendor-charts": ["recharts"],
-          "vendor-motion": ["framer-motion"],
-          "vendor-query": ["@tanstack/react-query"],
-          "vendor-supabase": ["@supabase/supabase-js"],
+        manualChunks(id) {
+          // Core React
+          if (id.includes("node_modules/react-dom")) return "vendor-react";
+          if (id.includes("node_modules/react/") || id.includes("node_modules/react-router")) return "vendor-react";
+          // Radix UI
+          if (id.includes("node_modules/@radix-ui")) return "vendor-ui";
+          // Charts
+          if (id.includes("node_modules/recharts") || id.includes("node_modules/d3-") || id.includes("node_modules/victory")) return "vendor-charts";
+          // Motion
+          if (id.includes("node_modules/framer-motion")) return "vendor-motion";
+          // Query
+          if (id.includes("node_modules/@tanstack")) return "vendor-query";
+          // Supabase
+          if (id.includes("node_modules/@supabase")) return "vendor-supabase";
+          // i18n
+          if (id.includes("node_modules/i18next") || id.includes("node_modules/react-i18next")) return "vendor-i18n";
+          // Markdown
+          if (id.includes("node_modules/react-markdown") || id.includes("node_modules/remark") || id.includes("node_modules/rehype") || id.includes("node_modules/unified") || id.includes("node_modules/mdast") || id.includes("node_modules/hast") || id.includes("node_modules/micromark")) return "vendor-markdown";
+          // Date utils
+          if (id.includes("node_modules/date-fns")) return "vendor-date-fns";
+          // Form handling
+          if (id.includes("node_modules/react-hook-form") || id.includes("node_modules/@hookform") || id.includes("node_modules/zod")) return "vendor-forms";
         },
       },
     },
