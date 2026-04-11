@@ -19,7 +19,14 @@ interface OwnerWorkspaceShellProps {
   children: ReactNode;
 }
 
-const DEFAULT_TABS = [
+interface TabDef {
+  id: string;
+  label: string;
+  icon: typeof Home;
+  path: string;
+}
+
+const DEFAULT_TABS: TabDef[] = [
   { id: "home", label: "Home", icon: Home, path: "/owner/home" },
   { id: "health", label: "Health", icon: Activity, path: "/owner/health" },
   { id: "pulse", label: "Pulse", icon: Heart, path: "/owner/pulse" },
@@ -29,9 +36,7 @@ const DEFAULT_TABS = [
   { id: "revenue", label: "Revenue", icon: DollarSign, path: "/owner/billing" },
   { id: "risks", label: "Risks", icon: AlertTriangle, path: "/owner/governance" },
   { id: "launches", label: "Launches", icon: Rocket, path: "/owner/releases" },
-] as const;
-
-type TabDef = typeof DEFAULT_TABS[number];
+];
 
 const STORAGE_KEY = "owner-workspace-tab-order";
 
