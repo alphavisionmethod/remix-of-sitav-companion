@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useEffect, useCallback } from "react";
+import { useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Briefcase, DollarSign, Home, Brain, ShoppingCart, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -36,7 +37,12 @@ const MAX_VISIBLE = 3;
 const STAGGER_DELAY_MS = 3000;
 
 export function DesktopNotifications() {
+  const location = useLocation();
+  const isDesktop = location.pathname === "/" || location.pathname === "/home" || location.pathname === "/desktop";
   const [notifications, setNotifications] = useState<DesktopNotification[]>([]);
+
+  // Only show on desktop routes
+  if (!isDesktop) return null;
 
   // Stagger demo notifications
   useEffect(() => {
