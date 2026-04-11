@@ -88,6 +88,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
   const [commandOpen, setCommandOpen] = useState(false);
   const [missionControlOpen, setMissionControlOpen] = useState(false);
   const { windows, visibleWindows, openWindow, closeWindow, focusWindow, minimizeWindow } = useWindowManager();
+  const { isCalm, isFocus } = useDisplayMode();
   const { isOpen: railOpen } = useInspector();
   useAdaptiveInterface();
   const location = useLocation();
