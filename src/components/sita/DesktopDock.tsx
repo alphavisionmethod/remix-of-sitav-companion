@@ -19,7 +19,15 @@ const OS_WINDOW_APPS = new Set(["finder", "settings"]);
 interface DesktopDockProps {
   onLaunchApp?: (appId: string) => void;
   windowManager?: ReturnType<typeof useWindowManager>;
+  mood?: "warm" | "serene" | "night" | "focus";
 }
+
+const MOOD_TINTS: Record<string, string> = {
+  warm: "bg-[hsl(35_60%_50%/0.08)]",
+  serene: "bg-[hsl(0_0%_100%/0.12)]",
+  night: "bg-[hsl(240_40%_30%/0.12)]",
+  focus: "bg-[hsl(265_50%_40%/0.10)]",
+};
 
 export const DesktopDock = ({ onLaunchApp, windowManager }: DesktopDockProps) => {
   const navigate = useNavigate();
