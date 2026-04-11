@@ -29,7 +29,7 @@ const MOOD_TINTS: Record<string, string> = {
   focus: "bg-[hsl(265_50%_40%/0.10)]",
 };
 
-export const DesktopDock = ({ onLaunchApp, windowManager }: DesktopDockProps) => {
+export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene" }: DesktopDockProps) => {
   const navigate = useNavigate();
   const { apps } = useAppPlatform();
   const { getBadge } = useAppBadges();
