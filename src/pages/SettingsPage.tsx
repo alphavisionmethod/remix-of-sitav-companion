@@ -238,8 +238,9 @@ const SettingsPage = () => {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
+  const { activeId: wallpaperId, setWallpaper, themes: wallpaperThemes } = useWallpaper();
+  const wallpaperCategories = useMemo(() => ["gradient", "abstract", "nature", "minimal"] as const, []);
 
-  // Fetch profile
   const { data: profile } = useQuery({
     queryKey: ["profile", user?.id],
     enabled: !!user && !isDemoMode,
