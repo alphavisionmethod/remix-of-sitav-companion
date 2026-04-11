@@ -108,7 +108,6 @@ export function DesktopIconGrid({ visible = true, onOpenFolder }: DesktopIconGri
                 <PreviewIcon className="absolute bottom-1 right-1 w-2.5 h-2.5 text-[hsl(0_0%_100%/0.4)]" />
               )}
             </div>
-            </div>
             <span
               className={cn(
                 "text-[11px] font-medium text-[hsl(0_0%_100%/0.7)] truncate max-w-[76px] text-center leading-tight",
