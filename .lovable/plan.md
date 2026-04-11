@@ -1,84 +1,63 @@
 
 
-# SITA OS — Revenue-Generating App Upgrade
+# SITA OS — True Desktop Experience Redesign
 
 ## Problem
 
-The 4 newest business apps (Website Builder, Proposals & Contracts, Lead Recovery, Social Command) are static shells — ~100 lines each with hardcoded demo data, no interactivity, no revenue tracking, and no advisor automation. Compare this to mature pages like Collections Command Center (415 lines) or Revenue Autopilot (232 lines) which have KPI engines, advisor cards, action buttons, approval workflows, and real data hooks.
+The current "desktop" is a dashboard with cards (Boardroom, Today, Quick Actions, etc.) rendered inside the shell layout with sidebar visible. It looks like a web app, not an operating system. A real OS desktop should have:
 
-Every app in SITA OS should actively help the user make money — with revenue attribution, AI advisor suggestions, one-tap actions, and cross-domain intelligence.
+1. A beautiful wallpaper background visible as the primary surface
+2. Floating notification toasts that appear and dismiss
+3. A clean, empty desktop where apps are the focus — you open them to see dashboards
+4. Each app (Business, Money, Concierge) opens as its own full experience with its own brain/advisor
 
 ## What Changes
 
-### 1. Website Builder — Full Revenue Attribution Engine
-**Current**: 99 lines, 3 static sites, 4 templates, basic stats.
-**Upgrade to**:
-- **Revenue attribution per page** — show how many leads each landing page captured and their dollar value from CRM
-- **A/B test tracking** — variant performance with conversion rates
-- **AI copy advisor** — InAppAdvisorStrip suggestions like "Your CTA has 2.1% conversion — try this variant for 4x"
-- **SEO health scores** per page with keyword rankings
-- **Heatmap summary cards** — click zones, scroll depth, bounce rate
-- **Lead capture form builder** with field preview and thank-you page editor
-- **Quick actions**: Publish, Duplicate, A/B Test, View Analytics, Edit SEO
-- **Revenue KPI row**: Total leads captured, conversion rate, revenue attributed, cost per lead
+### 1. Desktop Page — Clean OS Desktop with Wallpaper
 
-### 2. Proposals & Contracts — Deal Closing Machine
-**Current**: 84 lines, 4 static proposals, basic status badges.
-**Upgrade to**:
-- **Proposal engagement timeline** — when client opened, which sections they read, time spent per section
-- **Smart follow-up advisor** — "Sarah viewed pricing 3x but hasn't signed — suggest a 5% discount?" with one-tap execution
-- **Template library** with industry-specific proposals (consulting, agency, SaaS, freelance)
-- **E-signature workflow** — signature slots, countersign status, legally binding timestamp
-- **Clause library** — payment terms, scope, SLA, termination, IP assignment with drag-drop
-- **Revenue pipeline integration** — proposals feed directly into revenue forecast
-- **Expiration alerts** with auto-extend or re-send actions
-- **Win/loss analysis** — why proposals were accepted vs rejected, advisor-generated insights
+Replace the current card-heavy DesktopSurface with a clean desktop that shows:
+- **Full-screen wallpaper background** — beautiful gradient mesh wallpaper with time-of-day shifts (morning gold, afternoon serene, evening deep purple, night dark). Uses CSS gradients + ambient orbs, no image files needed.
+- **Clock + date widget** — centered, large, elegant (like macOS/iPadOS lock screen but as desktop widget)
+- **Floating notification toasts** — slide in from top-right, auto-dismiss after 5s, show domain icon + message + action button. Stack up to 3 visible.
+- **Desktop widgets** (small, transparent glass cards) — a compact "At a Glance" strip showing: 3 approvals waiting, $42K cash, 6 tasks today. Clicking any widget opens the relevant app.
+- **No sidebar on desktop** — hide sidebar when on `/home` route, show it when inside any app
+- **The Dock remains** at bottom as the primary app launcher
 
-### 3. Lead Recovery — Automated Revenue Rescue
-**Current**: 102 lines, 4 campaigns, 3 cold leads, basic play/pause.
-**Upgrade to**:
-- **AI-powered re-engagement scoring** — which cold leads have the highest recovery probability
-- **Multi-channel sequence builder** — email + SMS + call + LinkedIn touch in a visual timeline
-- **Revenue recovered dashboard** — actual dollars brought back with before/after comparison
-- **Trigger-based automation** — "If lead opens email but doesn't reply within 48h, escalate to phone"
-- **Personalized message previews** — AI generates the actual email/SMS text based on lead history
-- **Advisor automation panel** — toggle auto-pilot per campaign (Watch/Suggest/Execute with approval gates)
-- **Integration with CRM** — recovered leads auto-update in Leads Inbox with a "Recovered" badge
-- **ROI calculator** — cost of campaign vs revenue recovered per sequence
+### 2. Floating Notification Toasts
 
-### 4. Social Command — Content-to-Revenue Pipeline
-**Current**: 100 lines, 4 platforms, 4 scheduled posts, engagement stats.
-**Upgrade to**:
-- **Content-to-lead attribution** — which posts generated profile visits → website clicks → leads → revenue
-- **AI content generator** — generate post drafts from blog posts, proposals, case studies
-- **Best time to post** optimizer with engagement prediction per platform
-- **Competitor monitoring cards** — track competitor posting frequency and engagement
-- **Hashtag performance analyzer** — which tags drive most reach and engagement
-- **Content calendar** with drag-drop scheduling and visual week/month views
-- **Comment management inbox** — reply to comments across all platforms from one place
-- **Revenue attribution row** — posts → clicks → leads → deals closed, with dollar values
+New `DesktopNotifications` component:
+- Renders in top-right corner, fixed position
+- Each toast: glass card with domain color accent, icon, title, message, time ago, dismiss button
+- Auto-dismiss after 5s with progress bar
+- Max 3 visible, older ones queue
+- Demo data: "Business Advisor: 3 leads cooling", "Money: Insurance renewal in 12 days", "Concierge: Grocery list ready"
 
-### 5. Cross-App Revenue Intelligence (shared upgrade)
-Add to ALL 4 apps plus existing Business Overview:
-- **Revenue Impact Badge** on every card/row showing the dollar impact of that item
-- **Advisor LiveCard** with domain-specific suggestions (already exists in mature pages, missing from new ones)
-- **Quick Action Toolbar** — contextual actions that change based on item status
-- **Proof Receipt integration** — every action generates a visible proof receipt
-- **Cross-app links** — "This lead came from your Landing Page → was nurtured by Lead Recovery → proposal sent via Proposals"
+### 3. App-as-Full-Experience Model
 
-### 6. Business Center Tab Integration
-Add the 4 new apps as proper tabs in BusinessCenter.tsx with sub-routes already wired (they exist but aren't in the tab bar).
+Each app already has its own page — this is about making the transition feel like "opening an app":
+- When navigating from desktop to an app, sidebar appears with smooth slide-in
+- Each app page already has `AppWelcomeHeader` + `InAppAdvisorStrip` — these become the app's "brain"
+- The desktop is the launcher; each app is the full workspace
+
+### 4. Desktop Widgets (At-a-Glance)
+
+Small transparent glass cards floating on the desktop:
+- **Approvals**: "3 waiting" with checkmark icon
+- **Cash Position**: "$42K liquid" with dollar icon  
+- **Today**: "6 tasks · 2 meetings" with calendar icon
+- **Advisor**: Latest insight preview
+- Clicking any widget navigates to the relevant app
 
 ## Files Changed
 
 | File | Change |
 |------|--------|
-| `src/pages/business/WebsiteBuilder.tsx` | Full rewrite: ~300 lines, revenue attribution, A/B testing, SEO scores, form builder, AI advisor |
-| `src/pages/business/ProposalsContracts.tsx` | Full rewrite: ~350 lines, engagement timeline, smart follow-ups, templates, e-sign workflow, clause library |
-| `src/pages/business/LeadRecovery.tsx` | Full rewrite: ~320 lines, AI re-engagement scoring, sequence builder, revenue recovered dashboard, triggers |
-| `src/pages/business/SocialCommand.tsx` | Full rewrite: ~300 lines, content attribution, AI generator, best-time optimizer, content calendar, comment inbox |
-| `src/pages/BusinessCenter.tsx` | Add Website Builder, Proposals, Lead Recovery, Social Command tabs |
+| `src/components/sita/shell/DesktopSurface.tsx` | Major rewrite: replace card dashboard with clean wallpaper desktop + clock widget + at-a-glance widgets |
+| `src/components/sita/DesktopNotifications.tsx` | **New** — floating notification toasts with auto-dismiss, domain colors, action buttons |
+| `src/pages/DesktopPage.tsx` | Mount DesktopNotifications |
+| `src/components/sita/ShellLayout.tsx` | Conditionally hide sidebar on `/home` route for clean desktop feel |
 
 ## Outcome
-Every app becomes a revenue engine — not just a viewer. Users see exactly how each tool makes them money, get AI advisor suggestions to increase conversion, and can take action with one tap. The entire business suite becomes a closed-loop system: capture leads (Website Builder) → nurture cold leads (Lead Recovery) → close deals (Proposals) → promote success stories (Social Command) → track revenue across all of them.
+
+The home screen transforms from a dashboard into a true OS desktop — beautiful wallpaper, floating clock, subtle glass widgets, notification toasts sliding in, and the Dock at the bottom to launch apps. Opening an app transitions you into a full workspace with sidebar, advisor, and domain intelligence. It feels like macOS meets a sovereign AI system.
 
