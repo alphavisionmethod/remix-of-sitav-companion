@@ -125,6 +125,8 @@ export interface AppDefinition {
   privacyUrl?: string;
   routePath?: string;
   externalUrl?: string;
+  badgeCount?: number;
+  lastUsedAt?: string;
 }
 
 export interface AppBundle {
