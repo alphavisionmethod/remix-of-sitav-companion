@@ -83,9 +83,19 @@ function resolveRadii(r?: number | [number, number, number, number]): [number, n
   return r;
 }
 
+// ── Hit Test Result ──────────────────────────────────────────
+
+export interface ViewHitTestResult {
+  nodeId: string;
+  localX: number;
+  localY: number;
+  depth: number;
+}
+
 // ── Base ViewNode ────────────────────────────────────────────
 
-export type ViewNodeType = "container" | "column" | "row" | "stack" | "text" | "button" | "image" | "spacer";
+export type ViewNodeType = "container" | "column" | "row" | "stack" | "text" | "button" | "image" | "spacer"
+  | "scroll-view" | "list-view" | "multiline-text" | "text-input" | "checkbox" | "slider" | "toggle";
 
 let _nextNodeId = 1;
 
@@ -201,6 +211,25 @@ export abstract class ViewNode {
     if (!this.boundsChanged()) return [];
     // Return both old and new bounds for proper damage
     return [{ ...this._previousBounds }, { ...this.resolvedBounds }];
+  }
+
+  // ── Hit Testing ─────────────────────────────────────────────
+
+  /** Test if a point in parent-space hits this node or its children.
+   *  Returns deepest hit (front-to-back child order). */
+  hitTest(x: number, y: number, depth = 0): ViewHitTestResult | null {
+    if (this.style.visible === false) return null;
+    const b = this.resolvedBounds;
+    if (x < b.x || x > b.x + b.width || y < b.y || y > b.y + b.height) return null;
+
+    // Children in reverse (front-to-back)
+    for (let i = this.children.length - 1; i >= 0; i--) {
+      const result = this.children[i].hitTest(x, y, depth + 1);
+      if (result) return result;
+    }
+
+    // Self (leaf nodes are interactive)
+    return { nodeId: this.id, localX: x - b.x, localY: y - b.y, depth };
   }
 
   // ── Abstract Protocol ──────────────────────────────────────
@@ -662,6 +691,7 @@ export class SpacerNode extends ViewNode {
 export class ViewTree {
   private _root: ViewNode | null = null;
   private _nodeMap = new Map<string, ViewNode>();
+  private _eventHandlers = new Map<string, Map<string, Array<(node: ViewNode) => void>>>();
   private _stats: ViewTreeStats = {
     totalNodes: 0,
     dirtyNodes: 0,
@@ -719,6 +749,57 @@ export class ViewTree {
     this._drawNode(this._root, ctx);
   }
 
+  // ── Hit Testing ──────────────────────────────────────────
+
+  /** Hit test the view tree at a point and return the deepest hit node */
+  hitTest(x: number, y: number): ViewHitTestResult | null {
+    if (!this._root) return null;
+    return this._root.hitTest(x, y);
+  }
+
+  /** Hit test and dispatch event to the hit node, bubbling up */
+  dispatchAtPoint(x: number, y: number, eventType: string): ViewNode | null {
+    const hit = this.hitTest(x, y);
+    if (!hit) return null;
+    this.dispatchEvent(hit.nodeId, eventType);
+    return this.findById(hit.nodeId);
+  }
+
+  // ── Event System ──────────────────────────────────────────
+
+  addEventListener(nodeId: string, eventType: string, handler: (node: ViewNode) => void): () => void {
+    if (!this._eventHandlers.has(nodeId)) {
+      this._eventHandlers.set(nodeId, new Map());
+    }
+    const nodeHandlers = this._eventHandlers.get(nodeId)!;
+    if (!nodeHandlers.has(eventType)) {
+      nodeHandlers.set(eventType, []);
+    }
+    nodeHandlers.get(eventType)!.push(handler);
+    return () => {
+      const handlers = nodeHandlers.get(eventType);
+      if (handlers) {
+        const idx = handlers.indexOf(handler);
+        if (idx >= 0) handlers.splice(idx, 1);
+      }
+    };
+  }
+
+  dispatchEvent(nodeId: string, eventType: string): void {
+    // Bubble from target to root
+    let current = this.findById(nodeId);
+    while (current) {
+      const nodeHandlers = this._eventHandlers.get(current.id);
+      if (nodeHandlers) {
+        const handlers = nodeHandlers.get(eventType);
+        if (handlers) {
+          for (const h of handlers) h(current);
+        }
+      }
+      current = current.parent;
+    }
+  }
+
   private _drawNode(node: ViewNode, ctx: DrawContext): void {
     if (node.style.visible === false) return;
 
@@ -730,13 +811,8 @@ export class ViewTree {
       ctx.setClipRect(node.resolvedBounds);
     }
 
-    // Layer bitmap cache optimization:
-    // If node has a valid cached raster and is not dirty,
-    // blit the cached version instead of re-drawing.
-    // Compositor-layer animations (transform/opacity) are applied
-    // as overlays without invalidating the cache.
+    // Layer bitmap cache optimization
     if (node.isCacheValid && node.cachedRaster) {
-      // Blit cached raster at resolved position (compositor reuses this)
       const b = node.resolvedBounds;
       const cached = node.cachedRaster;
       ctx.drawImage(
@@ -772,6 +848,7 @@ export class ViewTree {
   destroy(): void {
     this._root = null;
     this._nodeMap.clear();
+    this._eventHandlers.clear();
   }
 }
 
