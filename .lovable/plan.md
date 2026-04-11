@@ -1,57 +1,64 @@
 
 
-# SITA OS — Final Deployment Readiness Fixes
+# SITA OS — Full Deployment Readiness Audit
 
-## Current State
-The codebase is in very strong shape. Security scan shows only 2 remaining findings. All prior fixes (forwardRef, hooks ordering, `/brain` redirect, admin-intelligence cleanup, prior RLS hardening) are confirmed in place.
+## Status: 95% Ready
 
----
-
-## 1. RLS Policy Hardening — 3 More Tables (Security, HIGH)
-
-The security scan found 3 additional tables with RLS policies targeting `{public}` instead of `{authenticated}`:
-
-| Table | Policies to fix |
-|-------|----------------|
-| `implementation_spec_registry` | 4 (select, insert, update, delete) |
-| `implementation_wiring_edges` | 4 (select, insert, update, delete) |
-| `oauth_state_sessions` | 1 (manage own sessions) |
-
-**Fix:** One migration with 9 `ALTER POLICY ... TO authenticated` statements.
+Only 2 security findings remain from the scanner. Infrastructure, PWA, Docker, edge functions, and service worker are all in place.
 
 ---
 
-## 2. Leaked Password Protection (Manual — Supabase Dashboard)
+## Remaining Issues
 
-Still the only linter warning. Not a code fix.
+### 1. `customer_journey_status` RLS Too Permissive (Security, HIGH)
+
+The SELECT policy `"auth read status"` uses `USING (true)` — any authenticated user can read all rows, exposing internal product quality data like `recommended_fix` and `launch_impact`.
+
+**Fix:** One migration to replace the blanket `true` policy with an admin-only or owner-scoped policy:
+```sql
+DROP POLICY "auth read status" ON public.customer_journey_status;
+CREATE POLICY "admin read status" ON public.customer_journey_status
+  FOR SELECT TO authenticated
+  USING (has_role(auth.uid(), 'admin'));
+```
+
+---
+
+### 2. CSP Mismatch: `index.html` Missing `ai.gateway.lovable.dev` (Medium)
+
+`nginx/default.conf` includes `https://ai.gateway.lovable.dev` in `connect-src`, but `index.html` (the CSP the browser actually enforces for the SPA) does NOT. AI gateway calls will be blocked by the browser CSP.
+
+**Fix:** Add `https://ai.gateway.lovable.dev` to the `connect-src` in `index.html` line 15.
+
+---
+
+### 3. Leaked Password Protection (Manual, MEDIUM)
+
+Still disabled. Not a code fix.
 
 **Action:** Supabase Dashboard → Auth → Settings → Enable "Leaked password protection"
 
 ---
 
-## 3. CSP `connect-src` Missing `https://*.supabase.in` Domain
+### 4. Canonical URL Placeholder (Low)
 
-The `index.html` CSP `connect-src` includes `https://*.supabase.co` and `wss://*.supabase.co` but also includes `https://*.supabase.in`. The `nginx/default.conf` CSP does NOT include `*.supabase.in` — these should be consistent. Since `index.html` is the one that matters for the SPA (nginx serves static files, the meta tag is what the browser enforces), we should update `nginx/default.conf` to match.
+`index.html` line 34 has `<link rel="canonical" href="/" />` with a comment "update to real domain before production." Should be set to the actual production domain once known, or removed if not publishing to a custom domain.
 
-**Fix:** Add `https://*.supabase.in` to `connect-src` in `nginx/default.conf`.
-
----
-
-## 4. `deploy/nginx.conf` vs `nginx/default.conf` Divergence
-
-Two nginx configs exist:
-- `nginx/default.conf` — used by Dockerfile (production SPA)
-- `deploy/nginx.conf` — used by docker-compose (self-hosted with API proxy)
-
-`deploy/nginx.conf` is missing security headers present in `nginx/default.conf`: `Permissions-Policy`, `Strict-Transport-Security`. It should inherit these for parity.
-
-**Fix:** Add missing security headers to `deploy/nginx.conf`.
+**Fix:** Update to actual domain or leave as-is if using `*.lovable.app`.
 
 ---
 
-## 5. Mark Security Findings as Fixed
+## What's Already Good (Confirmed)
 
-After applying the migration, mark the `MISSING_RLS_PROTECTION` finding as fixed in the security scanner.
+- All RLS policies on `public` role → fixed (30+ tables migrated in prior rounds)
+- PWA: manifest, icons (192+512), service worker with caching + push — all present
+- Docker: multi-stage Dockerfile, nginx config with security headers, compose file — all present
+- Edge functions: deployed and healthy
+- Security headers: HSTS, X-Frame-Options, CSP, Permissions-Policy — all in both nginx configs
+- Service worker: cache-first for assets, stale-while-revalidate for API, push handlers
+- `.env.production.example`: comprehensive with all required vars documented
+- OG/Twitter meta tags: present
+- robots.txt, sitemap.xml, favicon: present
 
 ---
 
@@ -59,17 +66,15 @@ After applying the migration, mark the `MISSING_RLS_PROTECTION` finding as fixed
 
 | Item | Priority | Type | Effort |
 |------|----------|------|--------|
-| RLS `public` → `authenticated` (3 tables, 9 policies) | HIGH | Security | 1 migration |
+| `customer_journey_status` RLS tighten | HIGH | Security | 1 migration |
+| CSP add `ai.gateway.lovable.dev` to `index.html` | MEDIUM | Bug fix | 1 line |
 | Leaked password protection | MEDIUM | Manual | Dashboard toggle |
-| nginx config security header parity | LOW | Hardening | 2 min |
-| nginx CSP `connect-src` alignment | LOW | Hardening | 1 min |
+| Canonical URL placeholder | LOW | Polish | 1 line |
 
 ## Files Changed
 
 | File | Change |
 |------|--------|
-| **New migration** | `ALTER POLICY` × 9 for 3 tables |
-| `deploy/nginx.conf` | Add `Permissions-Policy`, `HSTS` headers |
-| `nginx/default.conf` | Add `*.supabase.in` to `connect-src` (if needed) |
-| **Security scanner** | Mark RLS finding as fixed after migration |
+| **New migration** | Drop/recreate `customer_journey_status` SELECT policy to admin-only |
+| `index.html` | Add `https://ai.gateway.lovable.dev` to CSP `connect-src` |
 
