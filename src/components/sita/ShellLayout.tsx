@@ -51,6 +51,7 @@ const DesktopDock = lazy(() => import("./DesktopDock").then(m => ({ default: m.D
 const CommandPalette = lazy(() => import("./CommandPalette").then(m => ({ default: m.CommandPalette })));
 const NotificationCenterPanel = lazy(() => import("./NotificationCenter").then(m => ({ default: m.NotificationCenter })));
 const AppRecentsStripLazy = lazy(() => import("./AppRecentsStrip").then(m => ({ default: m.AppRecentsStrip })));
+const MissionControlLazy = lazy(() => import("./shell/MissionControl").then(m => ({ default: m.MissionControl })));
 
 
 // Route-aware page transitions
