@@ -746,9 +746,8 @@ export class UIRenderer {
         pixels: new Uint8ClampedArray(w * h * 4),
         width: w,
         height: h,
-        tileX: 0,
-        tileY: 0,
-        dirty: true,
+        format: "rgba8888",
+        cacheLineAligned: false,
       };
     }
   }
