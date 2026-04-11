@@ -47,5 +47,19 @@
     "scrollOptimization": true,
     "debugVisualization": true,
     "sources": ["widget", "scroll", "animation", "resize", "theme", "cursor", "external"]
+  },
+  "compositor": {
+    "pixelLayout": "ARGB8888",
+    "blendFormula": "Cs·αs + Cd·αd·(1−αs)",
+    "backgroundDefault": "0xFF202020",
+    "surfaceFields": ["buffer", "width", "height", "stride", "x", "y", "opacity", "visible"],
+    "specDoc": "infra/docs/COMPOSITOR_RASTERIZER_SPEC.md"
+  },
+  "simd": {
+    "targets": {
+      "x86_64": { "isa": "AVX2", "lanesU32": 8, "compileFlag": "-mavx2" },
+      "aarch64": { "isa": "NEON", "lanesU32": 4, "compileFlag": "-mfpu=neon" }
+    },
+    "acceleratedOps": ["fill_rect", "alpha_blend", "box_blur", "gradient_lerp"]
   }
 }
