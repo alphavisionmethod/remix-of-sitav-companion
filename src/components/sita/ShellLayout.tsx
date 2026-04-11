@@ -1,4 +1,4 @@
-import { ReactNode, useState, useEffect, lazy, Suspense } from "react";
+import { ReactNode, useState, useEffect, lazy, Suspense, useCallback } from "react";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { SkipToContent } from "./SkipToContent";
 import { RouteAnnouncer } from "./RouteAnnouncer";
@@ -15,12 +15,13 @@ import { NetworkStatusBar } from "./NetworkStatusBar";
 import { TrustTransitionIndicator } from "./TrustTransitionIndicator";
 import { useRealtimeNotifications } from "@/hooks/use-realtime-notifications";
 import { useProactiveNotifications } from "@/hooks/use-proactive-notifications";
-import { useDisplayMode } from "@/contexts/DisplayModeContext";
+import { useDisplayMode } from "@/contexts/AppearanceContext";
 import { useInspector } from "@/contexts/InspectorContext";
 import { useAdaptiveInterface } from "@/hooks/useAdaptiveInterface";
 import { useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { SectionSkeleton } from "./PageSkeleton";
 
 // Lazy-load non-critical shell features (deferred until after first paint)
 const AdvisorChat = lazy(() => import("./AdvisorChat").then(m => ({ default: m.AdvisorChat })));
@@ -80,11 +81,14 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
   const [commandOpen, setCommandOpen] = useState(false);
   const { isCalm, isFocus } = useDisplayMode();
   const { isOpen: railOpen } = useInspector();
-  // Activate OS adaptive interface CSS variables globally
   useAdaptiveInterface();
   const location = useLocation();
 
-  // Check for desktop entry ceremony trigger
+  // Memoized callbacks for child components
+  const handleNotifOpen = useCallback(() => setNotifOpen(true), []);
+  const handleTimelineOpen = useCallback(() => setTimelineOpen(true), []);
+  const handleCommandOpen = useCallback(() => setCommandOpen(true), []);
+
   useEffect(() => {
     if (sessionStorage.getItem("sita-desktop-entry") === "true") {
       sessionStorage.removeItem("sita-desktop-entry");
@@ -92,7 +96,6 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
     }
   }, []);
 
-  // Global command shortcut
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
       if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
@@ -143,9 +146,9 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
           <ContinuityBanner />
         </Suspense>
         <SitaTopBar
-          onNotifOpen={() => setNotifOpen(true)}
-          onTimelineOpen={() => setTimelineOpen(true)}
-          onCommandOpen={() => setCommandOpen(true)}
+          onNotifOpen={handleNotifOpen}
+          onTimelineOpen={handleTimelineOpen}
+          onCommandOpen={handleCommandOpen}
         />
 
         <div className="relative z-10 flex flex-1 min-w-0">
@@ -176,8 +179,9 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
               </main>
             </div>
             {/* Persistent Contextual Rail — desktop only */}
-            <Suspense fallback={null}>
+            <Suspense fallback={<div className="hidden lg:block w-72 p-4"><SectionSkeleton lines={5} /></div>}>
               <ContextualRail />
+            </Suspense>
             </Suspense>
           </div>
         </div>

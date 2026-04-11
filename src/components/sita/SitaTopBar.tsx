@@ -3,11 +3,11 @@
 // Persistent system bar: command, trust, status, navigation
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDataMode } from "@/contexts/DataModeContext";
-import { useDisplayMode } from "@/contexts/DisplayModeContext";
-import { useTheme } from "@/contexts/ThemeContext";
+import { useDisplayMode, useTheme } from "@/contexts/AppearanceContext";
+import { MISSION_MODES } from "@/lib/advisor-protocol";
 import { MISSION_MODES } from "@/lib/advisor-protocol";
 import { AISpendIndicator } from "./AISpendIndicator";
 import { useUnreadCount } from "./NotificationPanel";
@@ -30,7 +30,7 @@ interface SitaTopBarProps {
   onCommandOpen?: () => void;
 }
 
-export const SitaTopBar = ({
+export const SitaTopBar = memo(({
   onNotifOpen,
   onTimelineOpen,
   onCommandOpen,
@@ -248,4 +248,5 @@ export const SitaTopBar = ({
       </div>
     </header>
   );
-};
+});
+SitaTopBar.displayName = "SitaTopBar";
