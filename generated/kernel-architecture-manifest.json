@@ -1,0 +1,44 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-11T00:00:00Z",
+  "model": "hybrid-microkernel",
+  "justification": "Minimal trusted core (scheduler, VMM, IPC, interrupt dispatch) with user-space service modules for drivers, filesystem, networking. Maximizes fault isolation and hot-swap capability.",
+  "kernelSpace": ["scheduler", "vmm", "ipc", "interrupt-dispatch", "capability-enforcement"],
+  "userSpace": ["drivers", "filesystem", "networking", "crypto-services", "runtime-services"],
+  "scheduler": {
+    "type": "MLFQ",
+    "bands": [
+      { "name": "RT-Critical", "range": [0, 15], "quantumMs": 1, "preemptible": false },
+      { "name": "RT-Normal", "range": [16, 31], "quantumMs": 5, "preemptible": true },
+      { "name": "Interactive", "range": [32, 63], "quantumMs": 10, "preemptible": true },
+      { "name": "Batch", "range": [64, 95], "quantumMs": 50, "preemptible": true },
+      { "name": "Idle", "range": [96, 127], "quantumMs": 100, "preemptible": true }
+    ],
+    "antiStarvation": "periodic-boost-every-1000-ticks",
+    "priorityInheritance": true
+  },
+  "vmm": {
+    "addressBits": 48,
+    "pageLevels": 4,
+    "pageSize": "4KB",
+    "hugePages": ["2MB", "1GB"],
+    "allocators": ["buddy", "slab"],
+    "features": ["demand-paging", "copy-on-write", "ASLR", "KASLR", "guard-pages", "NX-bit"]
+  },
+  "filesystem": {
+    "primary": "SitaFS",
+    "type": "CoW-B-tree",
+    "features": ["journaling", "snapshots", "sha256-checksums", "lz4-zstd-compression", "VFS-abstraction"],
+    "supportedTypes": ["sitafs", "ext4", "fat32", "tmpfs", "procfs", "sysfs", "devfs"]
+  },
+  "ipc": {
+    "primary": "capability-based-message-passing",
+    "mechanisms": ["message-ports", "shared-memory", "posix-signals", "event-channels"],
+    "features": ["capability-tokens", "priority-ordering", "async-by-default"]
+  },
+  "drivers": {
+    "defaultSpace": "user",
+    "kernelSpaceExceptions": ["interrupt-controller", "timer", "mmu"],
+    "features": ["hot-plug", "capability-sandboxing", "driver-signing", "fault-isolation"]
+  }
+}
