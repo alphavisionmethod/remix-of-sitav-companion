@@ -232,7 +232,7 @@ const MoneyCenter = () => {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
 
-  if (!isMoneyOnboardingComplete()) {
+  if (!isDemoMode && !isMoneyOnboardingComplete()) {
     return <Navigate to="/money/onboarding" replace />;
   }
 
