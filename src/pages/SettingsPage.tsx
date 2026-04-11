@@ -585,6 +585,11 @@ const SettingsPage = () => {
                 <Progress value={9} className="h-1.5" />
               </div>
             </div>
+            {/* Per-Advisor Autonomy Controls */}
+            <div className="mt-6">
+              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Per-Advisor Controls</p>
+              <AdvisorAutonomyPanel />
+            </div>
           </SitaCard>
         );
 
