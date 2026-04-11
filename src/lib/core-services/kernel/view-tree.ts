@@ -742,7 +742,7 @@ function drawBackground(ctx: DrawContext, node: ViewNode): void {
     } else {
       ctx.fillRect(b.x, b.y, b.width, b.height, color);
     }
-  } else if (bg.type === "linear-gradient" || bg.type === "radial-gradient") {
+  } else if (bg.type === "linearGradient" || bg.type === "radialGradient") {
     const stops = bg.stops.map(s => ({
       offset: s.offset,
       color: { r: s.r, g: s.g, b: s.b, a: s.a },
