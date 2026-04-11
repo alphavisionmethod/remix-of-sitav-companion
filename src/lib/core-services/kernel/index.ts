@@ -58,6 +58,12 @@ export { Firewall, type FirewallRule, type FirewallChain, type FirewallAction, t
 export { VPNManager, type VPNTunnel, type VPNPeer, type SplitTunnelRule, type VPNProtocol, type TunnelState, type VPNStats } from "./vpn-manager";
 export { DNSResolver, type DNSRecord, type DNSQuery, type DNSCacheEntry, type DNSUpstream, type DNSOverride, type DNSResolverStats } from "./dns-resolver";
 
+// --- Display Server & Window Manager (Section 6) ---
+export { GPUAbstraction, type GPUAdapterInfo, type GPUDeviceLimits, type GPUBufferHandle, type GPUTextureHandle, type GPUShaderModuleHandle, type GPURenderPipelineHandle, type GPUComputePipelineHandle, type GPUCommandEncoder, type GPUCommand, type GPUSubmission, type GPUDeviceLostInfo, type GPUBackendType, type GPUFeature, type GPUTextureFormat, type GPUAbstractionStats } from "./gpu-abstraction";
+export { WindowManager, type WMWindow, type WMWorkspace, type WMWindowState, type WMFocusPolicy, type WMStackingMode, type WMTilingStrategy, type TilingNode, type WindowManagerStats } from "./window-manager";
+export { DisplayProtocol, type ProtocolClient, type ProtocolSurface, type ProtocolBuffer, type SHMPool, type XDGToplevel, type XDGPopup, type ProtocolEvent, type SurfaceRole, type DisplayProtocolStats } from "./display-protocol";
+export { SurfaceAllocator, type SurfaceAllocation, type BufferPool, type FormatCapability, type SurfacePixelFormat, type SurfaceMemoryType, type BufferingMode, type SurfaceAllocatorStats } from "./surface-allocator";
+
 // --- Command Buffer & UI Renderer (CPU Vulkan + High-Level API) ---
 export { CommandBuffer, CommandBufferPool, SoftwarePipeline, type DrawCommand, type CommandBufferStats, type Vertex2D, type VertexColor, type Transform2DMatrix, type Fixed16, toFixed16, fromFixed16, fpMul, fpDiv, fpFloor, fpCeil, fpFrac, IDENTITY_TRANSFORM } from "./command-buffer";
 export { UIRenderer, CpuBlur, type UIViewProps, type UITextProps, type UIBackground, type UIColor, type UIGradientStop, type UIBoxShadow, type UIBorder, type UIBorderRadii, type BlurConfig, type UIRendererStats } from "./ui-renderer";
@@ -109,6 +115,10 @@ import { SocketAPI } from "./socket-api";
 import { Firewall } from "./firewall";
 import { VPNManager } from "./vpn-manager";
 import { DNSResolver } from "./dns-resolver";
+import { GPUAbstraction } from "./gpu-abstraction";
+import { WindowManager } from "./window-manager";
+import { DisplayProtocol } from "./display-protocol";
+import { SurfaceAllocator } from "./surface-allocator";
 
 /**
  * KernelSubsystem — Facade aggregating all kernel architecture,
@@ -176,6 +186,12 @@ export class KernelSubsystem {
   readonly firewall: Firewall;
   readonly vpn: VPNManager;
   readonly dns: DNSResolver;
+
+  // Display Server & Window Manager (Section 6)
+  readonly gpu: GPUAbstraction;
+  readonly windowManager: WindowManager;
+  readonly displayProtocol: DisplayProtocol;
+  readonly surfaceAllocator: SurfaceAllocator;
 
   private _bootedAt: number;
 
@@ -247,6 +263,12 @@ export class KernelSubsystem {
     this.firewall = new Firewall();
     this.vpn = new VPNManager();
     this.dns = new DNSResolver();
+
+    // Display Server & Window Manager (Section 6)
+    this.gpu = new GPUAbstraction();
+    this.windowManager = new WindowManager();
+    this.displayProtocol = new DisplayProtocol();
+    this.surfaceAllocator = new SurfaceAllocator();
 
     // ── Wire subsystems together ────────────────────────────
     // Wire scene graph into render pipeline
@@ -332,6 +354,10 @@ export class KernelSubsystem {
       firewall: this.firewall.getStats(),
       vpn: this.vpn.getStats(),
       dns: this.dns.getStats(),
+      gpu: this.gpu.getStats(),
+      windowManager: this.windowManager.getStats(),
+      displayProtocol: this.displayProtocol.getStats(),
+      surfaceAllocator: this.surfaceAllocator.getStats(),
     };
   }
 
