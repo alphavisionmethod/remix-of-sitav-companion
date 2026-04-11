@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { DEPTH_LAYERS, TRAFFIC_LIGHTS, NOVA_MOTION, NOVA_SHADOWS } from "@/lib/design-system/nova-os";
 import { detectSnapZone, getSnapRect, SNAP_CONFIG, type SnapZone } from "@/lib/design-system/snap-zones";
 import { lerpPosition, type DragState } from "@/lib/engine/compositor-sim";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface FloatingWindowProps {
   title: string;
@@ -30,6 +31,8 @@ const MIN_HEIGHT = 200;
 const DRAG_SMOOTHING = 0.25;
 const INERTIA_FRICTION = 0.92;
 const INERTIA_THRESHOLD = 0.5;
+const MAGNETIC_RANGE = 20;
+const MAGNETIC_STRENGTH = 0.15;
 
 export function FloatingWindow({
   title,
@@ -52,6 +55,13 @@ export function FloatingWindow({
   const [snapZone, setSnapZone] = useState<SnapZone>(null);
   const [snappedTo, setSnappedTo] = useState<SnapZone>(null);
   const [preSnapState, setPreSnapState] = useState<{ x: number; y: number; width: number } | null>(null);
+  const [showContent, setShowContent] = useState(false);
+
+  // Progressive content loading — show skeleton shimmer for 150ms
+  useEffect(() => {
+    const timer = setTimeout(() => setShowContent(true), 150);
+    return () => clearTimeout(timer);
+  }, []);
 
   const dragRef = useRef<DragState>({
     active: false,
@@ -146,16 +156,29 @@ export function FloatingWindow({
   const handlePointerMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
     if (!isDragging) return;
 
-    // Update target (lerp loop will smoothly follow)
-    targetPos.current = {
-      x: e.clientX - dragRef.current.offsetX,
-      y: e.clientY - dragRef.current.offsetY,
-    };
+    let tx = e.clientX - dragRef.current.offsetX;
+    let ty = e.clientY - dragRef.current.offsetY;
+
+    // Magnetic edge attraction
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const ww = size.width;
+
+    // Left edge
+    if (tx < MAGNETIC_RANGE) tx += (0 - tx) * MAGNETIC_STRENGTH;
+    // Right edge
+    if (tx + ww > vw - MAGNETIC_RANGE) tx += (vw - ww - tx) * MAGNETIC_STRENGTH;
+    // Top edge
+    if (ty < MAGNETIC_RANGE) ty += (0 - ty) * MAGNETIC_STRENGTH;
+    // Bottom edge
+    if (ty > vh - MAGNETIC_RANGE - 50) ty += (vh - 50 - ty) * MAGNETIC_STRENGTH;
+
+    targetPos.current = { x: tx, y: ty };
     lastPointer.current = { x: e.clientX, y: e.clientY };
 
-    const zone = detectSnapZone(e.clientX, e.clientY, window.innerWidth, window.innerHeight);
+    const zone = detectSnapZone(e.clientX, e.clientY, vw, vh);
     setSnapZone(zone);
-  }, [isDragging]);
+  }, [isDragging, size.width]);
 
   const handlePointerUp = useCallback(() => {
     setIsDragging(false);
@@ -249,8 +272,8 @@ export function FloatingWindow({
           "absolute rounded-2xl overflow-hidden",
           "backdrop-blur-2xl transition-[opacity,box-shadow,border-color] duration-200",
           isFocused
-            ? "bg-[hsl(0_0%_100%/0.70)] dark:bg-[hsl(0_0%_0%/0.60)] border border-[hsl(0_0%_100%/0.35)] dark:border-[hsl(0_0%_100%/0.15)] shadow-2xl shadow-[hsl(0_0%_0%/0.3)]"
-            : "bg-[hsl(0_0%_100%/0.60)] dark:bg-[hsl(0_0%_0%/0.50)] border border-[hsl(0_0%_100%/0.20)] dark:border-[hsl(0_0%_100%/0.08)] shadow-lg shadow-[hsl(0_0%_0%/0.15)] opacity-[0.85]",
+            ? cn("bg-[hsl(0_0%_100%/0.70)] dark:bg-[hsl(0_0%_0%/0.60)] border border-[hsl(0_0%_100%/0.35)] dark:border-[hsl(0_0%_100%/0.15)]", NOVA_SHADOWS.windowFocused)
+            : cn("bg-[hsl(0_0%_100%/0.60)] dark:bg-[hsl(0_0%_0%/0.50)] border border-[hsl(0_0%_100%/0.20)] dark:border-[hsl(0_0%_100%/0.08)] opacity-[0.85]", NOVA_SHADOWS.windowUnfocused),
           isDragging ? "cursor-grabbing" : "",
           className
         )}
@@ -331,9 +354,17 @@ export function FloatingWindow({
           <div className="w-[52px]" />
         </div>
 
-        {/* Content */}
+        {/* Content with progressive loading */}
         <div className="overflow-auto" style={{ maxHeight: size.height ? size.height - 40 : undefined }}>
-          {children}
+          {showContent ? (
+            children
+          ) : (
+            <div className="p-4 space-y-3">
+              <Skeleton className="h-4 w-3/4" />
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-1/2" />
+            </div>
+          )}
         </div>
 
         {/* Resize handle — bottom-right corner */}
