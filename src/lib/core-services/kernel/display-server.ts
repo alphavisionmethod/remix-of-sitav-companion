@@ -6,6 +6,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import type { Rect } from "./damage-tracker";
+import { CpuCompositor, type SurfaceBuffer, type Framebuffer } from "./cpu-compositor";
 
 // ── Types ────────────────────────────────────────────────────
 
