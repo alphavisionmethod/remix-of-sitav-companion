@@ -1,37 +1,82 @@
 
 
-# SITA OS — 7 Frontend Optimizations
+# SITA OS — Apple-Style Visual Overhaul
 
-## 1. Resource Hints in `index.html`
-Add `preconnect` and `dns-prefetch` for Supabase and AI gateway in `<head>` before other tags:
-```html
-<link rel="preconnect" href="https://icrkipwlnuopqbsabngy.supabase.co" />
-<link rel="dns-prefetch" href="https://icrkipwlnuopqbsabngy.supabase.co" />
-<link rel="preconnect" href="https://ai.gateway.lovable.dev" />
-```
+## Vision
+Transform SITA OS from a functional dark dashboard into a premium, Apple-inspired operating system with SF-quality typography, vibrancy effects, spatial depth, and refined micro-interactions. The goal: every surface feels like it belongs on a Retina display.
 
-## 2. Delete Dead `App.css`
-`src/App.css` contains Vite boilerplate (logo-spin, `.read-the-docs`, `#root max-width: 1280px`). No file imports it. Delete the file entirely.
+## Current State
+- Functional but utilitarian — dense sidebar, flat cards, minimal visual hierarchy
+- Good glass-panel foundation in CSS but underutilized
+- KPI tiles and cards lack spatial depth and tactile feel
+- Landing page is basic — no hero animation, no visual storytelling
+- Top bar is information-dense but lacks visual breathing room
+- Typography is solid (Space Grotesk + Inter) but not leveraged for visual drama
 
-## 3. React.memo on Shell Components
-Wrap `MobileBottomNav`, `SitaTopBar`, and `AppSidebar` exports with `React.memo` to prevent re-renders from unrelated context changes. Memoize callback props (`onNotifOpen`, etc.) with `useCallback` in `ShellLayout`.
+---
 
-## 4. Route Prefetch on Hover
-Create `src/hooks/useRoutePrefetch.ts` — a small hook that calls the lazy `import()` for a route's chunk on `mouseenter`/`touchstart` of nav links. Integrate into `NavLink` component and `MobileBottomNav` so pages load before the user clicks.
+## Plan: 8 Visual Upgrades
 
-## 5. Skeleton Fallbacks for Lazy Shell Features
-Replace `<Suspense fallback={null}>` in `ShellLayout.tsx` with lightweight skeleton placeholders for visible lazy elements (ContextualRail, CompanionBar, CopilotBar) to eliminate layout shift. Non-visible elements (modals, overlays) keep `fallback={null}`.
+### 1. Landing Page — Cinematic Hero Redesign
+Rewrite `LandingPage.tsx` with:
+- Large animated gradient orb behind hero text (CSS radial gradient, not canvas)
+- "AI Operating System" in gradient text with subtle shimmer animation
+- Feature cards with frosted glass + hover tilt (CSS perspective transform)
+- Animated trust badges that fade in staggered
+- Smooth scroll sections with intersection observer fade-ins
 
-## 6. Context Consolidation
-- Merge `ThemeContext` + `DisplayModeContext` → `AppearanceContext` (single provider, combined hook `useAppearance`)
-- Merge `DataModeContext` + `DemoModeProvider` → unified `DataModeContext` (demo surface registry moves into existing DataMode provider)
-- Update all imports across the codebase (search-and-replace)
+### 2. Typography System — Apple-Grade Refinement
+Update `index.css` with:
+- Tighter letter-spacing on headings (-0.025em for h1, -0.015em for h2)
+- Larger display sizes for hero contexts (clamp-based fluid type)
+- Add `.text-gradient` utility for primary-to-accent gradient text
+- SF-style thin/ultralight weights for large numbers (KPI values)
+- Add `font-feature-settings: "cv01", "cv02"` for Inter's alternate glyphs
 
-## 7. Font Preloading
-Add `<link rel="preload">` for the primary Space Grotesk weight used on first paint. The Google Fonts import in `index.css` already uses `display=swap`, which is correct — the preload hint will warm the connection earlier.
-```html
-<link rel="preload" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600&display=swap" as="style" />
-```
+### 3. Card System — Depth & Vibrancy
+Update `SitaCard.tsx` and `SitaComponents.tsx`:
+- Subtle inner glow on cards (inset box-shadow with primary/5)
+- Hover state: translate-y(-2px) + expanded shadow + border brightening
+- Active state: scale(0.98) with spring easing
+- KPI tiles: large light-weight numbers, accent-colored trend arrows with background pills
+- Add `.card-glass` variant with backdrop-blur for overlay contexts
+
+### 4. Sidebar — Spatial Navigation
+Update `AppSidebar.tsx`:
+- Active item: pill-shaped highlight with subtle primary glow (like macOS sidebar)
+- Section labels: lighter weight, more letter-spacing, smaller size
+- Hover: smooth background transition with rounded corners
+- Logo area: add subtle separator line with gradient fade
+- Collapse transition: smooth width animation
+
+### 5. Top Bar — Vibrancy Bar
+Update `SitaTopBar.tsx`:
+- Increase height slightly (44px — Apple standard)
+- Stronger backdrop-blur (blur-3xl + saturate)
+- Command pill: rounded-2xl with subtle inner shadow
+- Status indicators: softer colors, pill-shaped badges
+- Clock: lighter weight, slightly larger
+
+### 6. Mobile Bottom Nav — Dock Style
+Update `MobileBottomNav.tsx`:
+- Rounded floating dock (inset from edges, rounded-2xl)
+- Stronger glass effect with shadow
+- Active icon: filled variant feel via bg-primary/15 circle behind icon
+- Haptic-ready press animation (scale down on touch)
+
+### 7. Page Transitions & Motion
+Update `ShellLayout.tsx`:
+- Smoother page transition curves (Apple's spring: mass 1, stiffness 100, damping 15)
+- Add subtle blur during exit transitions
+- Content areas: stagger children fade-in on page mount
+
+### 8. Global CSS Polish
+Update `index.css`:
+- Add `.vibrancy-panel` utility: stronger blur + saturation + subtle tint
+- Add `.ring-glow` utility for focus states with colored glow
+- Refine scrollbar: thinner (3px), more transparent, rounded
+- Add selection color matching brand
+- Smoother body background transition
 
 ---
 
@@ -39,19 +84,12 @@ Add `<link rel="preload">` for the primary Space Grotesk weight used on first pa
 
 | File | Change |
 |------|--------|
-| `index.html` | Add preconnect, dns-prefetch, font preload hints |
-| `src/App.css` | **Delete** |
-| `src/components/sita/MobileBottomNav.tsx` | Wrap with `React.memo` |
-| `src/components/sita/SitaTopBar.tsx` | Wrap with `React.memo` |
-| `src/components/sita/AppSidebar.tsx` | Wrap with `React.memo` |
-| `src/components/sita/ShellLayout.tsx` | `useCallback` for handlers, skeleton fallbacks for visible lazy components |
-| `src/hooks/useRoutePrefetch.ts` | **New** — prefetch route chunk on hover |
-| `src/components/NavLink.tsx` | Integrate prefetch on hover |
-| `src/contexts/AppearanceContext.tsx` | **New** — merged Theme + DisplayMode |
-| `src/contexts/ThemeContext.tsx` | **Delete** (merged) |
-| `src/contexts/DisplayModeContext.tsx` | **Delete** (merged) |
-| `src/contexts/DataModeContext.tsx` | Absorb DemoModeProvider surface registry |
-| `src/contexts/DemoModeProvider.tsx` | **Delete** (merged) |
-| `src/App.tsx` | Update provider tree (fewer nested providers), update imports |
-| ~20 consumer files | Update `useTheme`/`useDisplayMode` → `useAppearance`, `useDemoMode` → `useDataMode` |
+| `src/pages/LandingPage.tsx` | Cinematic hero redesign with gradient orbs, staggered animations |
+| `src/index.css` | Typography refinements, new utilities, scrollbar polish, selection color |
+| `src/components/sita/SitaCard.tsx` | Depth hover effects, glass variant, spring animations |
+| `src/components/sita/SitaComponents.tsx` | KPI tile visual upgrade, card glass effects |
+| `src/components/sita/AppSidebar.tsx` | Pill-shaped active states, spatial hover effects |
+| `src/components/sita/SitaTopBar.tsx` | 44px height, stronger vibrancy, refined command pill |
+| `src/components/sita/MobileBottomNav.tsx` | Floating dock style, glass effect, active circle |
+| `src/components/sita/ShellLayout.tsx` | Apple-spring page transitions, stagger children |
 
