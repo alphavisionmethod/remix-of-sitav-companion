@@ -202,6 +202,7 @@ export function DesktopSurface({
   notifications = { total: 0, approvals: 0, urgent: 0, business: 0, finance: 0, household: 0, system: 0 },
   continuity = { lastWorkspace: null, lastActivity: null, pendingDrafts: 0, unfinishedWorkflows: 0, whatChanged: [] },
   onOpenCommand,
+  onLaunchApp,
 }: DesktopSurfaceProps) {
   const navigate = useNavigate();
   const reduced = useReducedMotion();
@@ -209,6 +210,26 @@ export function DesktopSurface({
   const wallpaper = useMemo(getWallpaperTheme, []);
   const isAuto = wallpaper.id === "auto";
   const activeGradient = isAuto ? timeGradient : wallpaper.gradient;
+  const { windows, openWindow, closeWindow, focusWindow } = useWindowManager();
+
+  const handleLaunchApp = useCallback((appId: string) => {
+    if (appId === "finder") {
+      openWindow("finder", {
+        title: "Finder",
+        component: <FinderWindow />,
+        position: { x: 120, y: 100 },
+        width: 460,
+      });
+    } else if (appId === "settings") {
+      openWindow("settings", {
+        title: "Settings",
+        component: <SettingsWindow />,
+        position: { x: 300, y: 120 },
+        width: 520,
+      });
+    }
+    onLaunchApp?.(appId);
+  }, [openWindow, onLaunchApp]);
 
   // Click on empty desktop background → open Spotlight
   const handleBackgroundClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
