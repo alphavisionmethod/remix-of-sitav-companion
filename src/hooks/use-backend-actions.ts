@@ -76,10 +76,11 @@ export interface CashflowForecastResult {
 
 export function useCashflowAnalysis() {
   const { user } = useAuth();
+  const { isDemoMode } = useDataMode();
   return useQuery<CashflowAnalyzeResult>({
     queryKey: ["cashflow-analysis", user?.id],
     queryFn: () => invokeEdge("cashflow-calculate", { action: "analyze" }),
-    enabled: !!user,
+    enabled: !!user && !isDemoMode,
     staleTime: 30000,
     retry: 1,
   });
@@ -87,10 +88,11 @@ export function useCashflowAnalysis() {
 
 export function useCashflowForecast(horizonDays = 90) {
   const { user } = useAuth();
+  const { isDemoMode } = useDataMode();
   return useQuery<CashflowForecastResult>({
     queryKey: ["cashflow-forecast", user?.id, horizonDays],
     queryFn: () => invokeEdge("cashflow-calculate", { action: "forecast", horizon_days: horizonDays }),
-    enabled: !!user,
+    enabled: !!user && !isDemoMode,
     staleTime: 60000,
     retry: 1,
   });
@@ -106,10 +108,11 @@ export interface SafeToSpendResult {
 
 export function useSafeToSpend(reserveTargetCents = 0) {
   const { user } = useAuth();
+  const { isDemoMode } = useDataMode();
   return useQuery<SafeToSpendResult>({
     queryKey: ["safe-to-spend", user?.id, reserveTargetCents],
     queryFn: () => invokeEdge<SafeToSpendResult>("cashflow-calculate", { action: "safe-to-spend", reserve_target_cents: reserveTargetCents }),
-    enabled: !!user,
+    enabled: !!user && !isDemoMode,
     staleTime: 30000,
   });
 }
@@ -124,10 +127,11 @@ export interface BurnRateResult {
 
 export function useBurnRate() {
   const { user } = useAuth();
+  const { isDemoMode } = useDataMode();
   return useQuery<BurnRateResult>({
     queryKey: ["burn-rate", user?.id],
     queryFn: () => invokeEdge<BurnRateResult>("cashflow-calculate", { action: "burn-rate" }),
-    enabled: !!user,
+    enabled: !!user && !isDemoMode,
     staleTime: 60000,
   });
 }

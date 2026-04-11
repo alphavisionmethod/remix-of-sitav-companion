@@ -6,6 +6,7 @@
 import { useEffect, useState, forwardRef } from "react";
 import { useSitaOS } from "@/contexts/SitaOSContext";
 import { supabase } from "@/integrations/supabase/client";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { cn } from "@/lib/utils";
 import { Activity } from "lucide-react";
 
@@ -17,6 +18,8 @@ interface ProbeResult {
 }
 
 export const RuntimeTruthProbe = forwardRef<HTMLDivElement, { compact?: boolean }>(({ compact = true }, ref) => {
+  const kernel = useSitaOS();
+  const { isDemoMode } = useDataMode();
   const kernel = useSitaOS();
   const [probe, setProbe] = useState<ProbeResult>({
     osHydrated: false,
