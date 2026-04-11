@@ -543,7 +543,7 @@ export const APP_CATALOG: AppDefinition[] = [
     worksWithSita: ["Dock integration", "System integration", "AI-powered insights"],
     updateSource: "store-managed", startupBehavior: "none", notificationPermission: true,
     installStatus: "installed", installedAt: "2026-01-01", pinnedToDock: true, tags: ["dashboard", "briefing", "daily"],
-    receipts: [], routePath: "/daily-pulse",
+    receipts: [], routePath: "/home",
   },
   {
     id: "sita-business-center", name: "SITA Business Center", publisher: "SITA OS", icon: "💼", iconBg: "from-blue-600 to-blue-400",
