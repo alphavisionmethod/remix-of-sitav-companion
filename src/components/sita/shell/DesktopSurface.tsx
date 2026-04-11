@@ -210,7 +210,7 @@ export function DesktopSurface({
   const wallpaper = useMemo(getWallpaperTheme, []);
   const isAuto = wallpaper.id === "auto";
   const activeGradient = isAuto ? timeGradient : wallpaper.gradient;
-  const { windows, openWindow, closeWindow, focusWindow } = useWindowManager();
+  const { windows, visibleWindows, openWindow, closeWindow, focusWindow, minimizeWindow } = useWindowManager();
 
   const handleLaunchApp = useCallback((appId: string) => {
     if (appId === "finder") {
@@ -316,15 +316,17 @@ export function DesktopSurface({
 
       {/* Floating windows */}
       <AnimatePresence>
-        {windows.map(w => (
+        {visibleWindows.map(w => (
           <FloatingWindow
             key={w.id}
             title={w.title}
             initialPosition={w.position}
             width={w.width}
             onClose={() => closeWindow(w.id)}
-            onMinimize={() => closeWindow(w.id)}
+            onMinimize={() => minimizeWindow(w.id)}
+            onFocus={() => focusWindow(w.id)}
             className="cursor-default"
+            style={{ zIndex: DEPTH_LAYERS.windows + w.zIndex }}
           >
             {w.component}
           </FloatingWindow>
