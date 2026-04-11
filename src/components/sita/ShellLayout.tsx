@@ -56,7 +56,7 @@ const DesktopDock = lazy(() => import("./DesktopDock").then(m => ({ default: m.D
 const CommandPalette = lazy(() => import("./CommandPalette").then(m => ({ default: m.CommandPalette })));
 const NotificationCenterPanel = lazy(() => import("./NotificationCenter").then(m => ({ default: m.NotificationCenter })));
 const AppRecentsStripLazy = lazy(() => import("./AppRecentsStrip").then(m => ({ default: m.AppRecentsStrip })));
-const MissionControlLazy = lazy(() => import("./shell/MissionControl").then(m => ({ default: m.MissionControl })));
+const FlowSpaceLazy = lazy(() => import("./shell/FlowSpace").then(m => ({ default: m.FlowSpace })));
 
 
 // Route-aware page transitions
@@ -134,7 +134,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         e.preventDefault();
         setCommandOpen(o => !o);
       }
-      if (e.key === "F3") {
+      if (e.key === "F3" || (e.key === " " && (e.metaKey || e.ctrlKey))) {
         e.preventDefault();
         setMissionControlOpen(o => !o);
       }
@@ -172,8 +172,8 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         <CommandPalette open={commandOpen} onClose={() => setCommandOpen(false)} />
         {/* Notification Center */}
         <NotificationCenterPanel open={notifOpen} onClose={() => setNotifOpen(false)} />
-        {/* Mission Control (F3) */}
-        <MissionControlLazy
+        {/* FlowSpace (F3 / Cmd+Space) */}
+        <FlowSpaceLazy
           isOpen={missionControlOpen}
           windows={wm.windows}
           onSelectWindow={(id) => { wm.focusWindow(id); setMissionControlOpen(false); }}
