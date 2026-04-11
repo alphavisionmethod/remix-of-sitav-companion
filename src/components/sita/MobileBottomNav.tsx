@@ -3,7 +3,6 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { Home, Briefcase, DollarSign, Headphones, MoreHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { prefetchRoute } from "@/hooks/useRoutePrefetch";
-import { cn } from "@/lib/utils";
 
 const navItems = [
   { icon: Home, label: "Home", path: "/" },
