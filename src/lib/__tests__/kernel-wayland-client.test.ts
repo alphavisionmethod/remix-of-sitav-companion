@@ -225,7 +225,7 @@ describe("Wayland Client Protocol", () => {
 
       const pool = client.createSHMPool(2 * 1024 * 768 * 4)!;
       const b1 = client.allocateBuffer(pool.id, "argb8888", 1024, 768)!;
-      const b2 = client.allocateBuffer(pool.id, "argb8888", 1024, 768, 1024 * 4, 1024 * 768 * 4)!;
+      const b2 = client.allocateBuffer(pool.id, "argb8888", 1024, 768, 1024 * 4)!;
 
       client.submitFrame(s1.id, b1.id);
       client.submitFrame(s2.id, b2.id);
