@@ -138,7 +138,7 @@ export const APP_CATALOG: AppDefinition[] = [
     fileAssociations: [], protocolAssociations: [{ protocol: "notion", label: "Notion links", isDefault: true }],
     worksWithSita: ["Dock integration", "Shell notifications", "Dedicated app window", "Deep link opening"],
     updateSource: "store-managed", startupBehavior: "none", notificationPermission: true,
-    installStatus: "not-installed", pinnedToDock: false, tags: ["notes", "wiki", "project-management"], receipts: [],
+    installStatus: "not-installed", pinnedToDock: false, tags: ["notes", "wiki", "project-management"], receipts: [], externalUrl: "https://www.notion.so",
   },
   {
     id: "figma", name: "Figma", publisher: "Figma, Inc.", icon: "🎨", iconBg: "from-purple-500 to-pink-500",
@@ -151,7 +151,7 @@ export const APP_CATALOG: AppDefinition[] = [
     protocolAssociations: [{ protocol: "figma", label: "Figma links", isDefault: true }],
     worksWithSita: ["Dock integration", "Dedicated app window", "File associations", "Protocol handling"],
     updateSource: "publisher-managed", startupBehavior: "none", notificationPermission: false,
-    installStatus: "not-installed", pinnedToDock: false, featured: true, tags: ["design", "ui", "collaboration"], receipts: [],
+    installStatus: "not-installed", pinnedToDock: false, featured: true, tags: ["design", "ui", "collaboration"], receipts: [], externalUrl: "https://www.figma.com",
   },
 
   // ── Business ──
@@ -165,7 +165,7 @@ export const APP_CATALOG: AppDefinition[] = [
     fileAssociations: [], protocolAssociations: [],
     worksWithSita: ["Dock integration", "Shell notifications", "Dedicated app window", "Trust-aware launches"],
     updateSource: "publisher-managed", startupBehavior: "none", notificationPermission: true,
-    installStatus: "not-installed", pinnedToDock: false, tags: ["payments", "business", "analytics"], receipts: [],
+    installStatus: "not-installed", pinnedToDock: false, tags: ["payments", "business", "analytics"], receipts: [], externalUrl: "https://dashboard.stripe.com",
   },
 
   // ── Finance ──
@@ -231,7 +231,7 @@ export const APP_CATALOG: AppDefinition[] = [
     fileAssociations: [], protocolAssociations: [{ protocol: "linear", label: "Linear links", isDefault: true }],
     worksWithSita: ["Dock integration", "Shell notifications", "Dedicated app window", "Deep link opening"],
     updateSource: "publisher-managed", startupBehavior: "none", notificationPermission: true,
-    installStatus: "not-installed", pinnedToDock: false, isNew: true, tags: ["project", "issues", "agile"], receipts: [],
+    installStatus: "not-installed", pinnedToDock: false, isNew: true, tags: ["project", "issues", "agile"], receipts: [], externalUrl: "https://linear.app",
   },
   {
     id: "canva", name: "Canva", publisher: "Canva Pty Ltd", icon: "🖌️", iconBg: "from-cyan-500 to-blue-500",
@@ -243,7 +243,7 @@ export const APP_CATALOG: AppDefinition[] = [
     fileAssociations: [], protocolAssociations: [],
     worksWithSita: ["Dock integration", "Dedicated app window", "Secure file handoff"],
     updateSource: "publisher-managed", startupBehavior: "none", notificationPermission: false,
-    installStatus: "not-installed", pinnedToDock: false, tags: ["design", "graphics", "presentations"], receipts: [],
+    installStatus: "not-installed", pinnedToDock: false, tags: ["design", "graphics", "presentations"], receipts: [], externalUrl: "https://www.canva.com",
   },
   {
     id: "gmail", name: "Gmail", publisher: "Google LLC", icon: "📧", iconBg: "from-red-500 to-red-400",
@@ -928,6 +928,12 @@ export const APP_BUNDLES: AppBundle[] = [
     description: "Word, Excel, PowerPoint, Outlook, Teams, and OneDrive — the industry-standard productivity stack, ready to use.",
     icon: "Ⓜ️", iconBg: "from-blue-600 to-blue-400", appIds: ["ms-word", "ms-excel", "ms-powerpoint", "ms-outlook", "ms-teams", "ms-onedrive"],
     recommendedFor: ["business", "enterprise", "productivity"], totalSize: "0 MB", featured: true,
+  },
+  {
+    id: "google-workspace", name: "Google Workspace", subtitle: "Google's productivity and collaboration suite",
+    description: "Gmail, Google Docs, Sheets, Drive, Calendar, and Meet — everything you need to collaborate and get work done.",
+    icon: "🔷", iconBg: "from-blue-500 to-green-400", appIds: ["gmail", "google-docs", "google-sheets", "google-drive", "google-calendar", "google-meet"],
+    recommendedFor: ["business", "education", "personal"], totalSize: "0 MB", featured: true,
   },
 ];
 
