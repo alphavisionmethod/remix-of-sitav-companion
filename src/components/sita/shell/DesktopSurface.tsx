@@ -5,17 +5,21 @@
 
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { getWallpaperTheme } from "@/hooks/use-wallpaper";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import {
   CheckCircle, DollarSign, Calendar, Brain,
-  TrendingUp, ArrowRight,
+  TrendingUp, ArrowRight, X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ShellAmbientBackground, type AmbientMood } from "./ShellAmbientBackground";
 import type { TrustPosture, ContinuityContext, ShellNotificationDigest } from "./useShellState";
 import { DEPTH_LAYERS } from "@/lib/design-system/nova-os";
+import { FloatingWindow } from "./FloatingWindow";
+import { useWindowManager } from "@/hooks/useWindowManager";
+import { FinderWindow } from "./windows/FinderWindow";
+import { SettingsWindow } from "./windows/SettingsWindow";
 
 // ── Types ────────────────────────────────────────────────────
 
