@@ -65,8 +65,9 @@ export const SitaTopBar = memo(({
     <header
       role="banner"
       aria-label="SITA OS system bar"
-      className="sita-top-bar sticky top-0 z-50 flex h-11 items-center justify-between border-b border-border/30 glass-panel px-2 sm:px-3 select-none"
-      style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
+      className="sita-top-bar sticky top-0 z-50 flex h-11 items-center justify-between border-b border-border/20 px-2 sm:px-3 select-none"
+      style={{ paddingTop: "env(safe-area-inset-top, 0px)", background: "hsl(var(--surface-0) / 0.8)", backdropFilter: "blur(40px) saturate(1.6)", WebkitBackdropFilter: "blur(40px) saturate(1.6)" }}
+      
     >
       {/* Left: Sidebar + Context + Command */}
       <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
@@ -80,7 +81,8 @@ export const SitaTopBar = memo(({
           {onCommandOpen ? (
             <button
               onClick={onCommandOpen}
-              className="flex items-center gap-2.5 rounded-xl border border-border/40 glass-panel px-3.5 py-2 text-xs text-muted-foreground transition-all duration-200 hover:bg-secondary/60 hover:text-foreground hover:border-border/60 w-72 group"
+              className="flex items-center gap-2.5 rounded-2xl border border-border/30 px-3.5 py-2 text-xs text-muted-foreground transition-all duration-200 hover:bg-secondary/60 hover:text-foreground hover:border-border/50 w-72 group"
+              style={{ background: "hsl(var(--surface-1) / 0.6)", boxShadow: "inset 0 1px 2px hsl(0 0% 0% / 0.1)" }}
             >
               <Search className="h-3.5 w-3.5 group-hover:text-primary transition-colors" />
               <span className="flex-1 text-left">Ask, search, or go anywhere…</span>

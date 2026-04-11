@@ -57,18 +57,18 @@ const getPageTransition = (pathname: string) => {
 
   if (depth > 1 && drillDownSegments.includes(segment)) {
     return {
-      initial: { opacity: 0, x: 24 },
-      animate: { opacity: 1, x: 0 },
-      exit: { opacity: 0, x: -12 },
-      transition: { duration: 0.25, ease: [0.25, 0.1, 0.25, 1] },
+      initial: { opacity: 0, x: 20, filter: "blur(4px)" },
+      animate: { opacity: 1, x: 0, filter: "blur(0px)" },
+      exit: { opacity: 0, x: -10, filter: "blur(2px)" },
+      transition: { type: "spring", mass: 1, stiffness: 120, damping: 16 },
     };
   }
 
   return {
-    initial: { opacity: 0, y: 6 },
-    animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: -4 },
-    transition: { duration: 0.22, ease: [0.25, 0.1, 0.25, 1] },
+    initial: { opacity: 0, y: 8, filter: "blur(3px)" },
+    animate: { opacity: 1, y: 0, filter: "blur(0px)" },
+    exit: { opacity: 0, y: -4, filter: "blur(2px)" },
+    transition: { type: "spring", mass: 1, stiffness: 100, damping: 15 },
   };
 };
 
