@@ -11,6 +11,7 @@ import { EnterpriseFlow } from "@/components/sita/EnterpriseFlow";
 import { RestoreFlow } from "@/components/sita/RestoreFlow";
 import { FirstWeekCalibration } from "@/components/sita/FirstWeekCalibration";
 import { ContextualWelcomeTour } from "@/components/sita/onboarding/ContextualWelcomeTour";
+import { DesktopNotifications } from "@/components/sita/DesktopNotifications";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ListChecks } from "lucide-react";
@@ -99,6 +100,7 @@ export default function DesktopPage() {
     <>
       <h1 className="sr-only">Desktop</h1>
       <FirstWeekCalibration />
+      <DesktopNotifications />
       <DesktopSurface
         userName={user?.user_metadata?.full_name || user?.email?.split("@")[0] || "User"}
         trustPosture={state.trustPosture}
