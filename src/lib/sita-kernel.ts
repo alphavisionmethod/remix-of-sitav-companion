@@ -40,6 +40,7 @@ import { ReceiptVerificationService } from "./services/verification-engine/recei
 import { ReplayVerificationService } from "./services/verification-engine/replay-verification.service";
 import { WebsiteManager } from "./services/business-os/website-management.service";
 import { CloudControlPlaneService } from "./services/cloud-control-plane-infra";
+import { KernelSubsystem } from "./core-services/kernel";
 import { EdgeDeviceRuntimeService } from "./services/edge-device-runtime";
 import { FleetOTAService } from "./services/fleet-ota";
 import { IncidentManagementService } from "./services/incident-management";
@@ -171,6 +172,9 @@ export class SitaKernel {
     this.incidentManagement = new IncidentManagementService();
     this.emergencyHalt = new EmergencyHaltService();
 
+    // ── Tier 5: Kernel Architecture & Security Model ────────
+    this.kernelArch = new KernelSubsystem({ tpmAvailable: true });
+
     // ── Admin/owner event subscriptions (same truth chain) ──
     this.eventBus.subscribe("*", () => { this._eventCount++; }, "kernel-counter");
 
@@ -195,11 +199,13 @@ export class SitaKernel {
         "transitionValidator", "verificationHooks",
         "receiptVerification", "replayVerification", "websiteManager",
         "cloudControlPlane", "edgeDeviceRuntime", "fleetOTA", "incidentManagement",
+        "kernelArch",
       ],
       tier1Count: 17,
       tier2Count: 3,
       tier3Count: 8,
       tier4Count: 4,
+      tier5Count: 1,
       isolatedCount: 1,
     }, { source: "sita-kernel" });
   }
