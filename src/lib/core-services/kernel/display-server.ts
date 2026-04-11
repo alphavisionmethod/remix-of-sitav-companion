@@ -321,6 +321,8 @@ export class DisplayServer {
     win.bounds.width = Math.max(win.minSize.width, Math.min(win.maxSize.width, width));
     win.bounds.height = Math.max(win.minSize.height, Math.min(win.maxSize.height, height));
     this._updateContentBounds(win);
+    // Reallocate surface for new size
+    this.compositor.allocateSurface(id, win.contentBounds.width, win.contentBounds.height);
     this._emit({ type: "resized", windowId: id, bounds: { ...win.bounds } });
     return true;
   }
@@ -442,6 +444,35 @@ export class DisplayServer {
       win.pendingDamage = [];
     }
     return rects;
+  }
+
+  // ── Surface access ─────────────────────────────────────────
+
+  /** Get a window's surface buffer for drawing into */
+  getSurface(windowId: string): SurfaceBuffer | undefined {
+    return this.compositor.getSurface(windowId);
+  }
+
+  /** Commit a window's surface (client signals it finished drawing) */
+  commitSurface(windowId: string, dirtyRegions?: Rect[]): boolean {
+    return this.compositor.commitSurface(windowId, dirtyRegions);
+  }
+
+  /**
+   * Full present cycle: collect damage, composite all windows, page flip.
+   * This is the main frame submission entry point.
+   */
+  present(): string[] {
+    const damage = this.collectDamage();
+    const zWindows = this.getZOrderedWindows()
+      .filter((w) => w.state !== "minimized" && w.state !== "hidden")
+      .map((w) => ({
+        id: w.id,
+        bounds: w.contentBounds,
+        opacity: w.opacity,
+        visible: true,
+      }));
+    return this.compositor.present(zWindows, damage);
   }
 
   // ── Events ─────────────────────────────────────────────────
