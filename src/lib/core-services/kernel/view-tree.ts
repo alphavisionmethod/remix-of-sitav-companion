@@ -111,6 +111,40 @@ export abstract class ViewNode {
   animRotation = 0;
   animOpacity = 1;
 
+  // ── Layer Bitmap Cache (Section 5.7 optimization) ──────────
+  // Caches the rasterized output of this node. When the node is not dirty
+  // and only compositor-layer animations are active (transform/opacity),
+  // the cached raster is reused — avoiding expensive re-rasterization.
+  cachedRaster: {
+    pixels: Uint8ClampedArray;
+    width: number;
+    height: number;
+    boundsSnapshot: Rect;
+  } | null = null;
+
+  /** Whether this node's cached raster is valid (not dirty, bounds unchanged) */
+  get isCacheValid(): boolean {
+    if (!this.cachedRaster || this.dirty) return false;
+    const b = this.resolvedBounds;
+    const s = this.cachedRaster.boundsSnapshot;
+    return b.width === s.width && b.height === s.height;
+  }
+
+  /** Invalidate cached raster (called on content/size changes, NOT on compositor animations) */
+  invalidateCache(): void {
+    this.cachedRaster = null;
+  }
+
+  /** Store a rasterized snapshot for this node */
+  setCachedRaster(pixels: Uint8ClampedArray, width: number, height: number): void {
+    this.cachedRaster = {
+      pixels,
+      width,
+      height,
+      boundsSnapshot: { ...this.resolvedBounds },
+    };
+  }
+
   constructor(id?: string) {
     this.id = id ?? `vnode-${_nextNodeId++}`;
   }
@@ -143,6 +177,8 @@ export abstract class ViewNode {
 
   markDirty(): void {
     this.dirty = true;
+    // Invalidate layer cache when content changes
+    this.invalidateCache();
     // Propagate up to root so parent containers know to re-layout
     if (this.parent && !this.parent.dirty) {
       this.parent.markDirty();
@@ -694,8 +730,27 @@ export class ViewTree {
       ctx.setClipRect(node.resolvedBounds);
     }
 
-    node.draw(ctx);
-    this._stats.drawCalls++;
+    // Layer bitmap cache optimization:
+    // If node has a valid cached raster and is not dirty,
+    // blit the cached version instead of re-drawing.
+    // Compositor-layer animations (transform/opacity) are applied
+    // as overlays without invalidating the cache.
+    if (node.isCacheValid && node.cachedRaster) {
+      // Blit cached raster at resolved position (compositor reuses this)
+      const b = node.resolvedBounds;
+      const cached = node.cachedRaster;
+      ctx.drawImage(
+        b.x + node.animTranslateX,
+        b.y + node.animTranslateY,
+        cached.width,
+        cached.height,
+        `__cached_${node.id}`
+      );
+      this._stats.drawCalls++;
+    } else {
+      node.draw(ctx);
+      this._stats.drawCalls++;
+    }
 
     if (node.style.overflow === "hidden") ctx.clearClip();
     if (opacity < 1) ctx.resetOpacity();

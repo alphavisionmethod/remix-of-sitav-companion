@@ -62,6 +62,229 @@ export interface GlyphCacheEntry {
   bearingY: number;
   advance: number;
   lastUsedFrame: number;
+  /** Atlas coordinates (set when packed into GlyphAtlas) */
+  atlasX?: number;
+  atlasY?: number;
+}
+
+// ── Glyph Atlas — packed bitmap grid for cache-efficient blitting ──
+
+export interface GlyphAtlasStats {
+  atlasWidth: number;
+  atlasHeight: number;
+  glyphsPacked: number;
+  occupiedPixels: number;
+  totalPixels: number;
+  occupancyPercent: number;
+}
+
+/**
+ * GlyphAtlas packs individual glyph bitmaps into a single Uint8Array grid
+ * using row-based bin packing. This improves cache locality when blitting
+ * sequential glyphs (e.g., text runs) since they reside in contiguous memory.
+ *
+ * Atlas layout (example 512×512):
+ *   [A][B][C][D][  ...free...  ]
+ *   [E][F][G][H][  ...free...  ]
+ *   [         free rows         ]
+ */
+export class GlyphAtlas {
+  readonly width: number;
+  readonly height: number;
+  /** Single-channel coverage buffer (atlas stores sub-pixel coverage w*3 per glyph) */
+  readonly buffer: Uint8Array;
+
+  private _cursorX = 0;
+  private _cursorY = 0;
+  private _rowHeight = 0; // tallest glyph in current row
+  private _glyphCount = 0;
+  private _occupiedPixels = 0;
+
+  constructor(width = 512, height = 512) {
+    this.width = width;
+    this.height = height;
+    // 3 channels per pixel for sub-pixel coverage (RGB)
+    this.buffer = new Uint8Array(width * height * 3);
+  }
+
+  /**
+   * Pack a glyph's coverage data into the atlas.
+   * Returns atlas (x, y) coordinates, or null if atlas is full.
+   * The glyph's coverage is copied into the atlas buffer and
+   * atlasX/atlasY are set on the entry.
+   */
+  pack(entry: GlyphCacheEntry): { x: number; y: number } | null {
+    const gw = entry.width;
+    const gh = entry.height;
+
+    // Check if glyph fits in current row
+    if (this._cursorX + gw > this.width) {
+      // Advance to next row
+      this._cursorX = 0;
+      this._cursorY += this._rowHeight;
+      this._rowHeight = 0;
+    }
+
+    // Check if glyph fits vertically
+    if (this._cursorY + gh > this.height) {
+      return null; // atlas full
+    }
+
+    const ax = this._cursorX;
+    const ay = this._cursorY;
+
+    // Copy coverage data into atlas buffer
+    // Coverage is stored as width*3 × height (sub-pixel RGB)
+    const srcStride = gw * 3;
+    const atlasStride = this.width * 3;
+    for (let row = 0; row < gh; row++) {
+      const srcOff = row * srcStride;
+      const dstOff = (ay + row) * atlasStride + ax * 3;
+      for (let col = 0; col < srcStride; col++) {
+        this.buffer[dstOff + col] = entry.coverage[srcOff + col];
+      }
+    }
+
+    // Update entry with atlas coordinates
+    entry.atlasX = ax;
+    entry.atlasY = ay;
+
+    // Advance cursor
+    this._cursorX += gw;
+    this._rowHeight = Math.max(this._rowHeight, gh);
+    this._glyphCount++;
+    this._occupiedPixels += gw * gh;
+
+    return { x: ax, y: ay };
+  }
+
+  /**
+   * Read glyph coverage from atlas at given coordinates.
+   * Returns a view into the atlas buffer for the glyph region.
+   */
+  readGlyph(atlasX: number, atlasY: number, glyphWidth: number, glyphHeight: number): Uint8Array {
+    const result = new Uint8Array(glyphWidth * glyphHeight * 3);
+    const srcStride = this.width * 3;
+    const dstStride = glyphWidth * 3;
+    for (let row = 0; row < glyphHeight; row++) {
+      const srcOff = (atlasY + row) * srcStride + atlasX * 3;
+      const dstOff = row * dstStride;
+      for (let col = 0; col < dstStride; col++) {
+        result[dstOff + col] = this.buffer[srcOff + col];
+      }
+    }
+    return result;
+  }
+
+  /** Reset atlas for re-packing (e.g., on DPI change) */
+  clear(): void {
+    this.buffer.fill(0);
+    this._cursorX = 0;
+    this._cursorY = 0;
+    this._rowHeight = 0;
+    this._glyphCount = 0;
+    this._occupiedPixels = 0;
+  }
+
+  getStats(): GlyphAtlasStats {
+    const total = this.width * this.height;
+    return {
+      atlasWidth: this.width,
+      atlasHeight: this.height,
+      glyphsPacked: this._glyphCount,
+      occupiedPixels: this._occupiedPixels,
+      totalPixels: total,
+      occupancyPercent: total > 0 ? (this._occupiedPixels / total) * 100 : 0,
+    };
+  }
+}
+
+// ── Kerning Table — character-pair spacing adjustments ────────
+
+/**
+ * KerningTable stores pair-wise spacing adjustments for character combinations.
+ * E.g., "AV" → -2, "To" → -1, "VA" → -1.5
+ * Applied during glyph positioning in text layout to produce visually
+ * even spacing (optical kerning).
+ */
+export class KerningTable {
+  private _pairs = new Map<string, number>();
+
+  /** Set kerning adjustment for a character pair (in font units) */
+  setPair(left: string, right: string, adjustment: number): void {
+    this._pairs.set(`${left}${right}`, adjustment);
+  }
+
+  /** Get kerning adjustment for a character pair (0 if no entry) */
+  getPair(left: string, right: string): number {
+    return this._pairs.get(`${left}${right}`) ?? 0;
+  }
+
+  /** Bulk-load kerning pairs */
+  loadPairs(pairs: Array<{ left: string; right: string; adjustment: number }>): void {
+    for (const p of pairs) {
+      this._pairs.set(`${p.left}${p.right}`, p.adjustment);
+    }
+  }
+
+  /** Load common Latin kerning pairs with default adjustments */
+  loadCommonPairs(): void {
+    const commonPairs: Array<{ left: string; right: string; adjustment: number }> = [
+      { left: "A", right: "V", adjustment: -2 },
+      { left: "A", right: "W", adjustment: -1.5 },
+      { left: "A", right: "Y", adjustment: -2 },
+      { left: "A", right: "T", adjustment: -1.5 },
+      { left: "T", right: "o", adjustment: -1 },
+      { left: "T", right: "a", adjustment: -1 },
+      { left: "T", right: "e", adjustment: -1 },
+      { left: "V", right: "A", adjustment: -2 },
+      { left: "V", right: "a", adjustment: -1 },
+      { left: "V", right: "e", adjustment: -1 },
+      { left: "V", right: "o", adjustment: -1 },
+      { left: "W", right: "A", adjustment: -1.5 },
+      { left: "W", right: "a", adjustment: -0.5 },
+      { left: "Y", right: "A", adjustment: -2 },
+      { left: "Y", right: "a", adjustment: -1.5 },
+      { left: "Y", right: "e", adjustment: -1.5 },
+      { left: "Y", right: "o", adjustment: -1.5 },
+      { left: "L", right: "T", adjustment: -1 },
+      { left: "L", right: "V", adjustment: -1 },
+      { left: "L", right: "W", adjustment: -0.5 },
+      { left: "L", right: "Y", adjustment: -1 },
+      { left: "P", right: "A", adjustment: -1 },
+      { left: "P", right: "a", adjustment: -0.5 },
+      { left: "r", right: ".", adjustment: -1 },
+      { left: "r", right: ",", adjustment: -1 },
+      { left: "f", right: ".", adjustment: -0.5 },
+      { left: "f", right: ",", adjustment: -0.5 },
+    ];
+    this.loadPairs(commonPairs);
+  }
+
+  /** Apply kerning to a positioned glyph array, adjusting x-advances */
+  applyToPositions(
+    text: string,
+    advances: number[],
+    fontSize: number
+  ): number[] {
+    const adjusted = [...advances];
+    const scale = fontSize / 14; // normalize to reference size
+    for (let i = 0; i < text.length - 1; i++) {
+      const kern = this.getPair(text[i], text[i + 1]);
+      if (kern !== 0) {
+        adjusted[i] += kern * scale;
+      }
+    }
+    return adjusted;
+  }
+
+  get pairCount(): number {
+    return this._pairs.size;
+  }
+
+  clear(): void {
+    this._pairs.clear();
+  }
 }
 
 export interface VectorPath {
@@ -86,12 +309,15 @@ export interface VectorRendererStats {
 
 const MAX_GLYPH_CACHE = 2048;
 const BEZIER_FLATNESS = 0.25; // subdivision tolerance in pixels
+const DEFAULT_ATLAS_SIZE = 512;
 
 export class VectorRenderer {
   private _dpiScale: number;
   private _glyphCache: Map<string, GlyphCacheEntry> = new Map();
   private _clipStack: VectorPath[] = [];
   private _frameCounter = 0;
+  private _glyphAtlas: GlyphAtlas;
+  private _kerningTable: KerningTable;
   private _stats: VectorRendererStats = {
     pathsRasterized: 0,
     glyphsCached: 0,
@@ -110,7 +336,15 @@ export class VectorRenderer {
   constructor(dpiScale = 1) {
     this._dpiScale = dpiScale;
     this._stats.dpiScale = dpiScale;
+    this._glyphAtlas = new GlyphAtlas(DEFAULT_ATLAS_SIZE, DEFAULT_ATLAS_SIZE);
+    this._kerningTable = new KerningTable();
+    this._kerningTable.loadCommonPairs();
   }
+
+  // ── Atlas & Kerning Accessors ──────────────────────────────
+
+  get glyphAtlas(): GlyphAtlas { return this._glyphAtlas; }
+  get kerningTable(): KerningTable { return this._kerningTable; }
 
   // ── Clip Path Stack ────────────────────────────────────────
 
@@ -375,7 +609,7 @@ export class VectorRenderer {
       this._evictOldestGlyph();
     }
 
-    this._glyphCache.set(key, {
+    const entry: GlyphCacheEntry = {
       key,
       coverage,
       width,
@@ -384,7 +618,12 @@ export class VectorRenderer {
       bearingY,
       advance,
       lastUsedFrame: this._frameCounter,
-    });
+    };
+
+    // Try to pack into atlas for cache-efficient blitting
+    this._glyphAtlas.pack(entry);
+
+    this._glyphCache.set(key, entry);
     this._stats.glyphsCached = this._glyphCache.size;
   }
 
@@ -435,8 +674,9 @@ export class VectorRenderer {
   setDpiScale(scale: number): void {
     this._dpiScale = Math.max(0.5, Math.min(4, scale));
     this._stats.dpiScale = this._dpiScale;
-    // Clear glyph cache on DPI change
+    // Clear glyph cache and atlas on DPI change
     this._glyphCache.clear();
+    this._glyphAtlas.clear();
     this._stats.glyphsCached = 0;
   }
 
@@ -444,8 +684,12 @@ export class VectorRenderer {
     return this._dpiScale;
   }
 
-  getStats(): VectorRendererStats {
-    return { ...this._stats };
+  getStats(): VectorRendererStats & { atlas: GlyphAtlasStats; kerningPairs: number } {
+    return {
+      ...this._stats,
+      atlas: this._glyphAtlas.getStats(),
+      kerningPairs: this._kerningTable.pairCount,
+    };
   }
 
   // ── Internal ────────────────────────────────────────────────
