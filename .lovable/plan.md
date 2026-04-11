@@ -1,60 +1,36 @@
 
 
-# SITA OS — E-Commerce App, Notification Badges & Proposal Verification
+# Redesign Sidebar to Feel Like macOS/Windows App Launcher
 
-## 1. E-Commerce Management App (New Tab in Business Center)
+## Problem
+The current sidebar is a standard text-based nav list with small icons. It doesn't feel like a native OS app menu — macOS Finder sidebar has large colorful icons, grouped sections with visual weight, and Windows has pinned app tiles.
 
-**What**: Add a full "E-Commerce" tab to the Business Center with Shopify-ready architecture, order tracking, inventory management, and revenue dashboards.
+## Design
 
-**Approach**: Create `src/pages/business/EcommerceManager.tsx` (~300 lines) as a new Business Center sub-page with 4 internal tabs:
+Transform the sidebar into a macOS Finder-style app launcher:
 
-- **Dashboard**: Revenue KPIs (today's sales, orders, AOV, conversion rate, refund rate), revenue trend mini-chart, top products by revenue
-- **Orders**: Order list with status (pending/fulfilled/shipped/delivered/refunded), search/filter, order detail expand with timeline
-- **Inventory**: Product grid with stock levels, low-stock alerts, reorder suggestions, variant management
-- **Storefront**: Shopify connection status card, sync controls, channel overview (online store, POS, social), AI merchandising advisor
+1. **App-style icon grid** — Each nav item gets a large (32-36px), colorful, rounded-square icon with a gradient background (like macOS app icons), with the label below/beside it
+2. **Pinned apps section** — Top area with user's pinned apps in a compact icon grid (like macOS Dock favorites in Finder sidebar)
+3. **Recents** — Recently visited apps shown with subtle styling
+4. **Category dividers** — Clean section labels like "Spaces", "Favorites", "System" with thin separators
+5. **Collapsed mode** — Shows only the colorful square icons in a centered column (like Windows 11 taskbar)
 
-All demo data initially. Wire up `shopify--enable` when user clicks "Connect Shopify" button — this triggers the Shopify integration flow.
+### Visual Details
+- Each app icon: rounded-xl square with domain-colored gradient background (blue for Business, green for Money, purple for Concierge, etc.)
+- White icon glyph inside the colored square (like real macOS app icons)
+- Active state: ring highlight + subtle scale-up
+- Hover: lift shadow + slight scale
+- Smooth transitions on all interactions
 
-**Files changed**:
+## Files Changed
+
 | File | Change |
 |------|--------|
-| `src/pages/business/EcommerceManager.tsx` | **New** — full e-commerce management page with 4 tabs |
-| `src/pages/BusinessCenter.tsx` | Add "ecommerce" sub-page + tab entry with 🛒 icon |
-
-## 2. Real-Time Notification Badges on Business Center Tabs
-
-**What**: Show badge counts on specific tabs — unreplied comments (Social), expiring proposals (Proposals), cold leads (Lead Recovery), overdue invoices (Invoices).
-
-**Approach**: `SitaTabs` already supports `count?: number`. Simply compute counts from existing demo data and pass them to the tab definitions in `BusinessCenter.tsx`.
-
-Demo badge values:
-- Leads: 3 (new leads)
-- Proposals: 2 (expiring in <3 days)
-- Lead Recovery: 5 (cold leads)
-- Social: 4 (unreplied comments)
-- Invoices: 1 (overdue)
-- E-Commerce: 2 (low-stock alerts)
-
-**Files changed**:
-| File | Change |
-|------|--------|
-| `src/pages/BusinessCenter.tsx` | Add `count` values to tab definitions |
-| `src/components/sita/SitaComponents.tsx` | Ensure badge renders with a colored dot/pill (verify existing implementation is visually prominent) |
-
-## 3. Proposal Engagement Timeline Verification
-
-**What**: The ProposalsContracts page already has expandable engagement timelines with follow-up actions. No code changes needed — this is a verification task.
-
-The existing implementation at lines 172-189 of `ProposalsContracts.tsx` shows:
-- Engagement data (first opened, time spent, sections read, pricing views, last viewed)
-- Follow-up action buttons (Send Follow-Up, Re-send Proposal, View Full Analytics, Request E-Sign)
-- Correctly conditional on `p.engagement` existing
-
-**Action**: Test by navigating to Business Center > Proposals tab, clicking on "Website Redesign — Bloom Studio" (P-001) to verify the engagement timeline expands with all 5 data points and 2 action buttons.
+| `src/components/sita/AppSidebar.tsx` | Complete redesign — large colorful app icons with gradient backgrounds, macOS-style layout, pinned/recents sections |
 
 ## Technical Notes
-
-- The existing `EcommerceOffice.tsx` in `/digital-presence/` is a separate merchandising view — the new Business Center e-commerce tab is the operational management hub (orders, inventory, Shopify sync)
-- Badge counts use demo data for now; ready for live data hooks when Supabase tables are connected
-- Shopify integration uses the `shopify--enable` tool flow — the "Connect Shopify" button will be wired to prompt the user
+- Reuses existing `Sidebar` component infrastructure — only changes the visual rendering of nav items
+- Icon color mapping per domain (Business=blue, Money=green, etc.)
+- No routing changes needed — same URLs, same `NavLink` usage
+- Collapsed mode shows centered icon squares without labels
 
