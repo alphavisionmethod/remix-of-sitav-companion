@@ -180,7 +180,7 @@ export function DesktopSurface({
       </div>
 
       {/* Main desktop content */}
-      <div className="relative z-10 flex flex-col items-center gap-10 px-4 pb-24">
+      <div className="relative z-10 flex flex-col items-center gap-12 px-4 pb-28 pt-10">
         {/* Clock + Greeting */}
         <DesktopClock greeting={greeting} userName={userName || ""} />
 
