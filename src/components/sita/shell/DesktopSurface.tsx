@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useEffect, useMemo } from "react";
+import { getWallpaperTheme } from "@/hooks/use-wallpaper";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
@@ -162,13 +163,23 @@ export function DesktopSurface({
 }: DesktopSurfaceProps) {
   const navigate = useNavigate();
   const reduced = useReducedMotion();
-  const { greeting, mood, gradient } = useMemo(getTimeConfig, []);
+  const { greeting, mood, gradient: timeGradient } = useMemo(getTimeConfig, []);
+  const wallpaper = useMemo(getWallpaperTheme, []);
+  const isAuto = wallpaper.id === "auto";
+  const activeGradient = isAuto ? timeGradient : wallpaper.gradient;
 
   return (
     <div className={cn(
       "fixed inset-0 flex flex-col items-center justify-center overflow-hidden bg-gradient-to-br",
-      gradient
+      activeGradient
     )}>
+      {/* Wallpaper overlay effect */}
+      {wallpaper.overlay && (
+        <div
+          className="absolute inset-0 z-[1] pointer-events-none"
+          style={{ background: wallpaper.overlay }}
+        />
+      )}
       {/* Ambient living background */}
       <ShellAmbientBackground mood={mood} intensity="vivid" className="z-0" />
 
