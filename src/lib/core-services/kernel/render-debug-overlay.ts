@@ -209,11 +209,12 @@ export class RenderDebugOverlay {
     const stageBreakdown = this._computeStageBreakdown();
 
     // Thread loads
+    const totalProcessed = threadStats.threads.reduce((s, t) => s + t.completedCount, 0);
     const threadLoads: ThreadLoadEntry[] = threadStats.threads.map(t => ({
-      threadId: t.id,
-      utilization: t.itemsProcessed / Math.max(1, threadStats.totalItemsProcessed / threadStats.threads.length),
-      tasksCompleted: t.itemsProcessed,
-      steals: t.steals,
+      threadId: t.index,
+      utilization: t.completedCount / Math.max(1, totalProcessed / threadStats.threads.length),
+      tasksCompleted: t.completedCount,
+      steals: t.stolenCount,
     }));
 
     // Tile heatmap
