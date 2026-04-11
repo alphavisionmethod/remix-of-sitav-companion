@@ -1,120 +1,94 @@
 
 
-# Display Server — CPU Compositor Core (Fully Advanced)
+# Display Server (CPU Compositor) — Missing Wiring & Features
 
-## Gap Analysis
+## What's Solid
+- CpuCompositor: framebuffer model, double buffering, page flip, surface management, Z-order compositing, overlays, KMS/DRM abstraction, multi-monitor, damage-aware blitting, background/wallpaper
+- DisplayServer: window lifecycle, focus, Z-stacking, modal stack, decorations, multi-monitor, surface allocation wired to compositor, `present()` orchestrates full frame cycle
+- InputSystem, SceneGraph, CursorManager, ColorManagement all exist
 
-The current `display-server.ts` manages window lifecycle, focus, and Z-stacking but has **no actual framebuffer, no window surface buffers, no pixel-level compositing, no double buffering, and no KMS/DRM scanout abstraction**. It's a window manager without a display backend. The user's spec demands a central compositor that owns the framebuffer and composites window surfaces into it.
+## What's Missing
 
-## Plan — 1 New File + 2 Edits
+### 1. No wiring between subsystems
+The services are instantiated side-by-side in `KernelSubsystem` but **never connected**:
+- **Input → DisplayServer**: mouse clicks should hit-test windows and route focus; keyboard events should dispatch to focused window
+- **DisplayServer → CursorManager**: cursor movement should emit damage and render the cursor overlay via compositor
+- **InputSystem → SceneGraph**: after display server routes to a window, the event should hit-test the scene graph for that window's node tree
+- **ColorManagement → Rasterizer**: ICC profiles and color space conversions never feed into the compositing blit loop
+- **AnimationEngine → DamageTracker**: animation ticks should emit damage rects (the engine produces them but nothing consumes them)
 
-### New File
+### 2. No clipboard / selection transfer
+No cut/copy/paste protocol between windows. Essential for any display server.
+
+### 3. No drag-and-drop between windows
+InputSystem detects drag gestures but there's no cross-window DnD protocol (offer/accept/drop).
+
+### 4. No window snapping / tiling
+No snap-to-edge, quarter-tiling, or keyboard-driven tiling layout manager.
+
+### 5. No screen lock / power management
+No screensaver, screen blank, DPMS states, or session lock.
+
+### 6. No accessibility rendering hooks
+No focus ring rendering, high-contrast mode toggle, or screen reader tree generation from scene graph.
+
+## Plan — 3 New Files + 3 Edits
+
+### New Files
 
 | File | Purpose |
 |------|---------|
-| `src/lib/core-services/kernel/cpu-compositor.ts` | **CPU Compositor Core** — the missing heart of the display server |
-
-Contents:
-- **Framebuffer model**: `Framebuffer` struct with `Uint8ClampedArray` pixels (RGBA), width, height, stride, double-buffered (front/back), page flip
-- **Window Surface Buffers**: each window gets a `SurfaceBuffer` (shared-memory model) — apps draw into their own buffer, compositor reads from it
-- **Surface allocation/deallocation** tied to window create/destroy lifecycle
-- **Compositing engine**: iterates Z-ordered windows, blits each window's surface buffer into the back framebuffer with opacity, clipping to window bounds, and damage-aware partial blit (only dirty regions per window)
-- **KMS/DRM abstraction**: `DisplayOutput` model with CRTC, connector, encoder, mode setting (resolution/refresh), scanout from front buffer
-- **Page flip / VSync**: double-buffer swap on present, tearing prevention, flip-complete callback
-- **Multi-monitor compositing**: per-monitor framebuffer, surfaces assigned to monitor regions
-- **Damage-driven compositing**: only re-composite regions marked dirty by `DisplayServer.collectDamage()`
-- **Background/wallpaper layer**: bottom-most surface for desktop background
-- **Overlay layer**: top-most for cursor, notifications, OSD
-- **Performance stats**: composite time, blit count, page flips, surface memory usage
+| `src/lib/core-services/kernel/clipboard-manager.ts` | **Clipboard & Selection Transfer** — MIME-typed clipboard with primary/clipboard selections, copy/paste/cut protocol, data offer/accept model, history ring (last N entries), inter-window transfer |
+| `src/lib/core-services/kernel/window-effects.ts` | **Window Snap/Tile + Power Management** — snap zones (half/quarter screen, edge magnetism), keyboard tiling shortcuts, DPMS power states (on/standby/suspend/off), screen lock, idle timeout, screensaver hook |
+| `src/lib/core-services/kernel/accessibility-renderer.ts` | **Accessibility Rendering** — focus ring overlay, high-contrast mode (recolor pipeline), reduced-motion flag, screen reader tree extraction from SceneGraph, ARIA-like role/label annotations on SceneNodes |
 
 ### Edits
 
 | File | Change |
 |------|--------|
-| `src/lib/core-services/kernel/display-server.ts` | Integrate `CpuCompositor` — window create/destroy allocates/frees surface buffers; add `getSurface(windowId)` for apps to draw into; `present()` method triggers compositor; connect damage flow |
-| `src/lib/core-services/kernel/index.ts` | Export `CpuCompositor` and add to `KernelSubsystem` facade, wire to display server |
+| `src/lib/core-services/kernel/index.ts` | Export 3 new services, add to facade, **wire all subsystems together** in constructor: input→display server routing, cursor→compositor overlay, animation→damage, color→rasterizer |
+| `src/lib/core-services/kernel/display-server.ts` | Add `routeInputEvent(event)` method that hit-tests windows, updates focus, dispatches to scene graph; add `renderCursorOverlay()` that syncs cursor manager to compositor overlay; add snap/tile helpers |
+| `src/lib/core-services/kernel/scene-graph.ts` | Add `dispatchEvent(nodeId, event)` for input event bubbling through the scene tree after display server routes to a window |
 
-## Technical Design
+## Technical Details
 
+### Subsystem Wiring (in KernelSubsystem constructor)
 ```text
-+----------------------+
-| Applications         |
-| (draw into buffers)  |
-+----------+-----------+
-           |
-           | SurfaceBuffer (shared memory)
-           v
-+----------+-----------+
-| Display Server       |
-| + CpuCompositor      |
-|   - Z-order walk     |
-|   - Per-window blit  |
-|   - Opacity blend    |
-|   - Clip to bounds   |
-|   - Damage-aware     |
-+----------+-----------+
-           |
-           | Page flip (double buffer)
-           v
-+----------+-----------+
-| Framebuffer (RAM)    |
-| front / back buffer  |
-+----------+-----------+
-           |
-           | KMS scanout
-           v
-+----------------------+
-| DisplayOutput (CRTC) |
-| → Monitor            |
-+----------------------+
+InputSystem.onEvent → DisplayServer.routeInputEvent
+  → hit-test windows (windowAtPoint)
+  → focus window
+  → SceneGraph.dispatchEvent (hit-test nodes)
+
+CursorManager.onMove → DisplayServer.compositor.setOverlayPosition("cursor", ...)
+                      → DamageTracker.addDamage("cursor", oldRect ∪ newRect)
+
+AnimationEngine.onTick → DamageTracker.addDamage("animation", dirtyRects)
+
+ColorManagement.activeProfile → CpuCompositor.setGammaRamp (per-output)
 ```
 
-### Key Types
+### Clipboard Protocol
+- `ClipboardManager.copy(mimeType, data)` — app writes to clipboard
+- `ClipboardManager.paste(mimeType)` — app reads from clipboard
+- MIME types: text/plain, text/html, image/png, application/json
+- History: ring buffer of last 25 entries
+- Primary selection (X11-style): auto-copy on text select, middle-click paste
 
-```typescript
-interface Framebuffer {
-  pixels: Uint8ClampedArray;  // RGBA
-  width: number;
-  height: number;
-  stride: number;             // bytes per row (cache-line aligned)
-}
+### Window Snapping
+- Snap zones: left-half, right-half, top-left quarter, top-right quarter, bottom-left quarter, bottom-right quarter
+- Edge magnetism: windows within 16px of screen edge snap to it
+- Keyboard: Meta+Arrow for half-snap, Meta+Shift+Arrow for quarter
 
-interface SurfaceBuffer {
-  windowId: string;
-  buffer: Framebuffer;
-  dirtyRegions: Rect[];
-  committed: boolean;         // client signals "ready to present"
-}
+### Power/DPMS States
+- On → Standby (dim, 5min idle) → Suspend (blank, 15min) → Off (DPMS off, 30min)
+- Screen lock: requires re-authentication, compositor shows lock surface on top of all windows
+- Wake: any input event transitions back to On
 
-interface DisplayOutput {
-  id: string;
-  crtcId: number;
-  connectorType: "HDMI" | "DP" | "eDP" | "VGA" | "Virtual";
-  currentMode: DisplayMode;
-  availableModes: DisplayMode[];
-  framebufferFront: Framebuffer;
-  framebufferBack: Framebuffer;
-  vblankCount: number;
-}
+### Accessibility
+- Focus ring: 3px colored outline rendered as compositor overlay on focused element
+- High-contrast: swap color palette in rasterizer gamma LUTs
+- Reduced motion: flag checked by AnimationEngine to skip/shorten animations
+- Screen reader tree: walk SceneGraph, extract role+label+value → flat accessible tree
 
-interface DisplayMode {
-  width: number;
-  height: number;
-  refreshHz: number;
-  interlaced: boolean;
-}
-```
-
-### Compositing Algorithm
-1. For each dirty region from damage tracker
-2. Walk Z-ordered windows bottom to top
-3. For each window intersecting the dirty region:
-   - Read from window's `SurfaceBuffer`
-   - Apply window opacity
-   - Clip to window bounds and dirty region intersection
-   - Blit into back framebuffer using rasterizer's blend function
-4. Render cursor overlay on top
-5. Page flip: swap front ↔ back
-
-## Total: 1 new file + 2 edits
+## Total: 3 new files + 3 edits
 
