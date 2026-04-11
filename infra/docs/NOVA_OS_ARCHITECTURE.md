@@ -133,10 +133,11 @@ struct View {
 ```
 
 ### 5. Window Manager
-- Drag/move (pointer capture + transform)
+- Drag/move (pointer capture + lerp smoothing + inertia decay)
 - Snap zones (edge detection + tiling)
 - Minimize/restore (hide surface, keep state)
 - Mission Control (scale all surfaces to thumbnails)
+- Drag physics: `DragState` struct with velocity tracking, lerp interpolation (`smoothing=0.25`), friction-based inertia (`friction=0.92`). See [`compositor-sim.ts`](../../src/lib/engine/compositor-sim.ts) for the TypeScript implementation.
 
 ### 6. Layout Engine
 Constraint-based layout replacing CSS:
@@ -163,6 +164,7 @@ Constraint-based layout replacing CSS:
 - Linux: `/dev/fb0` or DRM/KMS
 - Bare metal: memory-mapped framebuffer
 - Direct scanout, no X11/Wayland dependency
+- Full spec: [`BOOTABLE_PROTOTYPE_SPEC.md`](./BOOTABLE_PROTOTYPE_SPEC.md) — GRUB config, kernel entry, build system, QEMU setup
 
 ### Phase 4: Optimization
 - SIMD (AVX2/NEON) for blur, gradient, fill
