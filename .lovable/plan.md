@@ -1,72 +1,60 @@
 
 
-# SITA OS — macOS-Grade Experience Upgrade
+# SITA OS — E-Commerce App, Notification Badges & Proposal Verification
 
-## Current Problems
+## 1. E-Commerce Management App (New Tab in Business Center)
 
-1. **Sidebar has 60+ nav items** across 7 collapsible groups (Primary, Intelligence, Workspace, System, Control, Apps, AI Engineering). This is the opposite of intuitive — it's a wall of links that overwhelms newcomers.
-2. **No persistent menu bar on desktop** — when on the home/desktop route, the top bar disappears entirely. macOS always has its menu bar visible with status icons, clock, and system controls.
-3. **Spotlight/Command Palette exists but is hidden** — users need to know Cmd+K. No visual prompt or search icon on the desktop.
-4. **Notification Center exists but isn't discoverable** — no bell icon or gesture on the desktop surface.
-5. **No app-open animation** — clicking a dock icon or widget just navigates. No zoom/scale transition that feels like "opening an app."
-6. **Widgets are static** — they show hardcoded data and aren't rearrangeable or customizable.
+**What**: Add a full "E-Commerce" tab to the Business Center with Shopify-ready architecture, order tracking, inventory management, and revenue dashboards.
 
-## What Changes
+**Approach**: Create `src/pages/business/EcommerceManager.tsx` (~300 lines) as a new Business Center sub-page with 4 internal tabs:
 
-### 1. Desktop Menu Bar (always visible, even on desktop route)
-A thin, translucent menu bar at the top of the desktop with:
-- **Left**: SITA logo/icon, current app name (or "Desktop"), search icon (opens Spotlight)
-- **Right**: Trust posture chip, notification bell with unread count, clock, user avatar
-- Glass-morphism style matching the desktop aesthetic
-- Clicking the bell slides open the Notification Center from the right
-- Clicking search or pressing Cmd+K opens Spotlight
+- **Dashboard**: Revenue KPIs (today's sales, orders, AOV, conversion rate, refund rate), revenue trend mini-chart, top products by revenue
+- **Orders**: Order list with status (pending/fulfilled/shipped/delivered/refunded), search/filter, order detail expand with timeline
+- **Inventory**: Product grid with stock levels, low-stock alerts, reorder suggestions, variant management
+- **Storefront**: Shopify connection status card, sync controls, channel overview (online store, POS, social), AI merchandising advisor
 
-This replaces the current behavior of hiding the top bar entirely on desktop routes.
+All demo data initially. Wire up `shopify--enable` when user clicks "Connect Shopify" button — this triggers the Shopify integration flow.
 
-### 2. Radically Simplified Sidebar (when inside apps)
-Reduce from 60+ items to a clean, scannable structure:
-- **Primary** (6 items max): Desktop, Daily Pulse, Business, Money, Concierge, Files
-- **Favorites** (user-pinnable, starts with 3-4): Revenue Office, Boardroom, Calendar, Tasks
-- **Everything Else**: accessed via Spotlight search or "All Apps" link at bottom
-- Remove Intelligence, Workspace, System, Control, Apps, AI Engineering groups from default view
-- Add a single "More" or "All Apps" item that opens the full app grid
-
-### 3. Enhanced Spotlight Search
-Upgrade CommandPalette to be the primary navigation mechanism:
-- Larger, more beautiful overlay (centered, 500px wide, glass-morphism)
-- **Recent apps** section at top (no typing needed)
-- **Smart suggestions** based on time of day and pending items
-- Categories: Apps, Actions, People, Documents, Settings
-- Keyboard-first but also accessible via menu bar search icon and desktop click
-
-### 4. Notification Center Slide-Out
-Already exists but wire it to the desktop menu bar:
-- Bell icon in menu bar with unread badge
-- Slides in from right edge (already built)
-- Group by domain with dismiss/action buttons (already built)
-- Just needs to be accessible from the desktop route
-
-### 5. App Launch Animation
-When navigating from desktop into an app:
-- Scale-up + fade transition (app "zooms in" from the dock/widget position)
-- Sidebar slides in from left simultaneously
-- Creates the feeling of "opening" an app vs. just navigating
-
-### 6. Cleaner Desktop Widgets
-- Make widgets slightly larger with more breathing room
-- Add a subtle "Edit Widgets" mode (long-press or button) for future customization
-- Show real contextual data based on time: morning = today's agenda, evening = end-of-day summary
-
-## Files Changed
-
+**Files changed**:
 | File | Change |
 |------|--------|
-| `src/components/sita/shell/DesktopSurface.tsx` | Add DesktopMenuBar component at top; refine widget layout and spacing |
-| `src/components/sita/ShellLayout.tsx` | Remove the `!isDesktopRoute` guard on top bar — always show a menu bar (desktop version on home, full version elsewhere). Add app-launch scale transition. |
-| `src/components/sita/AppSidebar.tsx` | Reduce to 6 primary + favorites + "All Apps". Remove Intelligence/Workspace/System/Control/AI Engineering groups from default. |
-| `src/components/sita/CommandPalette.tsx` | Upgrade UI: larger overlay, recent apps section, smart suggestions, better visual hierarchy |
-| `src/components/sita/SitaTopBar.tsx` | Minor: ensure it renders cleanly as "DesktopMenuBar" variant when on desktop route |
+| `src/pages/business/EcommerceManager.tsx` | **New** — full e-commerce management page with 4 tabs |
+| `src/pages/BusinessCenter.tsx` | Add "ecommerce" sub-page + tab entry with 🛒 icon |
 
-## Outcome
-The experience becomes: beautiful desktop with translucent menu bar at top, dock at bottom, glass widgets in center. Click an app — it zooms in, sidebar appears, you're in a full workspace. Press Cmd+K or click search — Spotlight opens with smart suggestions. Click the bell — notifications slide in from the right. The sidebar has 6 items, not 60. Every interaction is fluid, discoverable, and intuitive — even for first-time users.
+## 2. Real-Time Notification Badges on Business Center Tabs
+
+**What**: Show badge counts on specific tabs — unreplied comments (Social), expiring proposals (Proposals), cold leads (Lead Recovery), overdue invoices (Invoices).
+
+**Approach**: `SitaTabs` already supports `count?: number`. Simply compute counts from existing demo data and pass them to the tab definitions in `BusinessCenter.tsx`.
+
+Demo badge values:
+- Leads: 3 (new leads)
+- Proposals: 2 (expiring in <3 days)
+- Lead Recovery: 5 (cold leads)
+- Social: 4 (unreplied comments)
+- Invoices: 1 (overdue)
+- E-Commerce: 2 (low-stock alerts)
+
+**Files changed**:
+| File | Change |
+|------|--------|
+| `src/pages/BusinessCenter.tsx` | Add `count` values to tab definitions |
+| `src/components/sita/SitaComponents.tsx` | Ensure badge renders with a colored dot/pill (verify existing implementation is visually prominent) |
+
+## 3. Proposal Engagement Timeline Verification
+
+**What**: The ProposalsContracts page already has expandable engagement timelines with follow-up actions. No code changes needed — this is a verification task.
+
+The existing implementation at lines 172-189 of `ProposalsContracts.tsx` shows:
+- Engagement data (first opened, time spent, sections read, pricing views, last viewed)
+- Follow-up action buttons (Send Follow-Up, Re-send Proposal, View Full Analytics, Request E-Sign)
+- Correctly conditional on `p.engagement` existing
+
+**Action**: Test by navigating to Business Center > Proposals tab, clicking on "Website Redesign — Bloom Studio" (P-001) to verify the engagement timeline expands with all 5 data points and 2 action buttons.
+
+## Technical Notes
+
+- The existing `EcommerceOffice.tsx` in `/digital-presence/` is a separate merchandising view — the new Business Center e-commerce tab is the operational management hub (orders, inventory, Shopify sync)
+- Badge counts use demo data for now; ready for live data hooks when Supabase tables are connected
+- Shopify integration uses the `shopify--enable` tool flow — the "Connect Shopify" button will be wired to prompt the user
 
