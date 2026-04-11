@@ -876,6 +876,34 @@ export const APP_CATALOG: AppDefinition[] = [
     updateSource: "publisher-managed", startupBehavior: "none", notificationPermission: true,
     installStatus: "not-installed", pinnedToDock: false, isNew: true, tags: ["ai", "chatbot", "writing", "research"], receipts: [], externalUrl: "https://claude.ai",
   },
+
+  // Google Drive
+  {
+    id: "google-drive", name: "Google Drive", publisher: "Google LLC", icon: "📁", iconBg: "from-yellow-400 to-green-400",
+    category: "utilities", appClass: "web-app", trustLevel: "sita-verified", version: "Web", size: "0 MB",
+    shortDescription: "Cloud file storage and sharing", fullDescription: "Store, share, and collaborate on files from anywhere. 15 GB free storage with deep integration into Google Workspace apps.",
+    screenshots: [], rating: 4.6, downloads: 7_000_000, lastUpdated: "2026-04-03",
+    releaseNotes: ["Improved search", "Offline mode", "New sharing controls"],
+    permissions: defaultPerms(["files", "notifications"]),
+    fileAssociations: [], protocolAssociations: [],
+    worksWithSita: ["Dock integration", "Shell notifications", "Dedicated app window", "Background sync"],
+    updateSource: "publisher-managed", startupBehavior: "none", notificationPermission: true,
+    installStatus: "not-installed", pinnedToDock: false, tags: ["cloud", "storage", "google"], receipts: [], externalUrl: "https://drive.google.com",
+  },
+
+  // Google Meet
+  {
+    id: "google-meet", name: "Google Meet", publisher: "Google LLC", icon: "📹", iconBg: "from-green-500 to-teal-400",
+    category: "communication", appClass: "web-app", trustLevel: "sita-verified", version: "Web", size: "0 MB",
+    shortDescription: "Video meetings by Google", fullDescription: "Secure, reliable video meetings for everyone. Join from a browser, no download required. Includes screen sharing, captions, and recording.",
+    screenshots: [], rating: 4.5, downloads: 5_000_000, lastUpdated: "2026-04-03",
+    releaseNotes: ["AI meeting notes", "Improved noise cancellation", "Adaptive layouts"],
+    permissions: defaultPerms(["notifications", "camera", "microphone"]),
+    fileAssociations: [], protocolAssociations: [],
+    worksWithSita: ["Dock integration", "Shell notifications", "Dedicated app window", "Calendar integration"],
+    updateSource: "publisher-managed", startupBehavior: "none", notificationPermission: true,
+    installStatus: "not-installed", pinnedToDock: false, tags: ["video", "meetings", "google"], receipts: [], externalUrl: "https://meet.google.com",
+  },
 ];
 
 // ── Bundles ──
