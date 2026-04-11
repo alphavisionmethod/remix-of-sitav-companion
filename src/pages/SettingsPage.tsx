@@ -34,6 +34,7 @@ import { useOSOrchestration } from "@/hooks/useOSOrchestration";
 import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
 import GoogleConnectedAccounts from "@/pages/settings/GoogleConnectedAccounts";
 import { AllProviderFamiliesStatus } from "@/components/sita/AllProviderFamiliesStatus";
+import { AdvisorAutonomyPanel } from "@/components/sita/AdvisorAutonomyPanel";
 
 // ── Consent & Permissions Section (Connected Accounts Center) ──
 function ConsentPermissionsSection() {
@@ -583,6 +584,11 @@ const SettingsPage = () => {
                 </div>
                 <Progress value={9} className="h-1.5" />
               </div>
+            </div>
+            {/* Per-Advisor Autonomy Controls */}
+            <div className="mt-6">
+              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">Per-Advisor Controls</p>
+              <AdvisorAutonomyPanel />
             </div>
           </SitaCard>
         );
