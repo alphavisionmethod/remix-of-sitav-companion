@@ -210,6 +210,9 @@ export class KernelSubsystem {
   // Visual Effects Compositor
   readonly vfx: VisualEffectsCompositor;
 
+  // Theme System
+  readonly themeManager: ThemeManager;
+
   private _bootedAt: number;
 
   constructor(opts?: { tpmAvailable?: boolean; screenWidth?: number; screenHeight?: number; dpiScale?: number }) {
@@ -289,6 +292,9 @@ export class KernelSubsystem {
 
     // Visual Effects Compositor
     this.vfx = new VisualEffectsCompositor();
+
+    // Theme System
+    this.themeManager = new ThemeManager();
 
     // ── Wire subsystems together ────────────────────────────
     // Wire scene graph into render pipeline
