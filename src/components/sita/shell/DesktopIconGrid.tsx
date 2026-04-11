@@ -8,19 +8,21 @@ import { cn } from "@/lib/utils";
 import { ICON_GRADIENTS } from "@/lib/design-system/nova-os";
 import {
   Folder, Download, FileText, StickyNote, Trash2,
+  Code2, FileDown, FileStack,
 } from "lucide-react";
 
 interface DesktopIcon {
   id: string;
   label: string;
   icon: React.ElementType;
+  previewIcon?: React.ElementType; // Smart preview alternative
   gradient: string;
 }
 
 const DESKTOP_ICONS: DesktopIcon[] = [
-  { id: "documents", label: "Documents", icon: FileText, gradient: ICON_GRADIENTS.blue },
-  { id: "downloads", label: "Downloads", icon: Download, gradient: ICON_GRADIENTS.green },
-  { id: "projects", label: "Projects", icon: Folder, gradient: ICON_GRADIENTS.purple },
+  { id: "documents", label: "Documents", icon: FileText, previewIcon: FileStack, gradient: ICON_GRADIENTS.blue },
+  { id: "downloads", label: "Downloads", icon: Download, previewIcon: FileDown, gradient: ICON_GRADIENTS.green },
+  { id: "projects", label: "Projects", icon: Folder, previewIcon: Code2, gradient: ICON_GRADIENTS.purple },
   { id: "notes", label: "Notes", icon: StickyNote, gradient: ICON_GRADIENTS.gold },
   { id: "trash", label: "Trash", icon: Trash2, gradient: ICON_GRADIENTS.orange },
 ];
@@ -75,6 +77,7 @@ export function DesktopIconGrid({ visible = true, onOpenFolder }: DesktopIconGri
     >
       {DESKTOP_ICONS.map((item, i) => {
         const Icon = item.icon;
+        const PreviewIcon = item.previewIcon;
         const isSelected = selectedId === item.id;
         return (
           <button
@@ -91,13 +94,19 @@ export function DesktopIconGrid({ visible = true, onOpenFolder }: DesktopIconGri
           >
             <div
               className={cn(
-                "w-12 h-12 rounded-xl bg-gradient-to-br flex items-center justify-center shadow-md transition-all duration-200",
+                "w-12 h-12 rounded-xl bg-gradient-to-br flex items-center justify-center shadow-md transition-all duration-200 relative overflow-hidden",
                 item.gradient,
                 isSelected && "ring-2 ring-[hsl(210_80%_60%/0.6)] shadow-[0_0_12px_hsl(210_80%_60%/0.3)]",
                 "group-hover:shadow-lg group-hover:scale-105"
               )}
             >
-              <Icon className="w-5 h-5 text-[hsl(0_0%_100%/0.9)]" />
+              {/* Inner glow on hover */}
+              <div className="absolute inset-0 rounded-xl bg-[hsl(0_0%_100%/0)] group-hover:bg-[hsl(0_0%_100%/0.08)] transition-colors duration-200" />
+              <Icon className="w-5 h-5 text-[hsl(0_0%_100%/0.9)] relative z-10" />
+              {/* Smart preview mini-icon */}
+              {PreviewIcon && (
+                <PreviewIcon className="absolute bottom-1 right-1 w-2.5 h-2.5 text-[hsl(0_0%_100%/0.4)]" />
+              )}
             </div>
             <span
               className={cn(

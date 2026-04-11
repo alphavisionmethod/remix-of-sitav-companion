@@ -26,6 +26,8 @@ import { cn } from "@/lib/utils";
 import { SectionSkeleton } from "./PageSkeleton";
 import { FinderWindow } from "./shell/windows/FinderWindow";
 import { SettingsWindow } from "./shell/windows/SettingsWindow";
+import { CommandLayer } from "./shell/CommandLayer";
+import { ClickRipple } from "./shell/ClickRipple";
 
 // Lazy-load non-critical shell features (deferred until after first paint)
 const AdvisorChat = lazy(() => import("./AdvisorChat").then(m => ({ default: m.AdvisorChat })));
@@ -305,6 +307,17 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
       <Suspense fallback={null}>
         <DesktopDock onLaunchApp={handleLaunchApp} windowManager={wm} />
       </Suspense>
+
+      {/* Command Layer — hold Meta key */}
+      <CommandLayer onAction={(actionId) => {
+        if (actionId === "search") setCommandOpen(true);
+        else if (actionId === "finder") handleLaunchApp("finder");
+        else if (actionId === "settings") handleLaunchApp("settings");
+        else if (actionId === "mission") setMissionControlOpen(true);
+      }} />
+
+      {/* Click Ripple — micro-detail */}
+      <ClickRipple />
 
       {/* Behavioral Interaction Tracker — invisible */}
       <InteractionTracker />

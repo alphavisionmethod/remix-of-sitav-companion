@@ -99,7 +99,10 @@ export const TRAFFIC_LIGHTS = {
 // ── Shadow Presets ───────────────────────────────────────────
 
 export const NOVA_SHADOWS = {
-  window: "shadow-2xl shadow-[hsl(0_0%_0%/0.25)]",
+  /** Stacked depth: near (sharp) + far (soft) */
+  window: "shadow-[0_2px_8px_hsl(0_0%_0%/0.15),0_16px_48px_hsl(0_0%_0%/0.20)]",
+  windowFocused: "shadow-[0_2px_10px_hsl(0_0%_0%/0.20),0_20px_60px_hsl(0_0%_0%/0.28)]",
+  windowUnfocused: "shadow-[0_2px_6px_hsl(0_0%_0%/0.10),0_12px_36px_hsl(0_0%_0%/0.12)]",
   dock: "shadow-lg shadow-[hsl(0_0%_0%/0.2)]",
   menuBar: "shadow-sm shadow-[hsl(0_0%_0%/0.1)]",
   widget: "shadow-lg shadow-[hsl(0_0%_0%/0.1)]",
