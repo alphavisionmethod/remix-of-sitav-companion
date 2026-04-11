@@ -34,6 +34,7 @@ import { useOSOrchestration } from "@/hooks/useOSOrchestration";
 import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
 import GoogleConnectedAccounts from "@/pages/settings/GoogleConnectedAccounts";
 import { AllProviderFamiliesStatus } from "@/components/sita/AllProviderFamiliesStatus";
+import { AdvisorAutonomyPanel } from "@/components/sita/AdvisorAutonomyPanel";
 
 // ── Consent & Permissions Section (Connected Accounts Center) ──
 function ConsentPermissionsSection() {
