@@ -1,66 +1,59 @@
 
 
-# NovaOS Design System Integration into SITA OS
+# Integrate NovaOS Reference UI into SITA OS Desktop
 
-## What We're Building
+## What's New
 
-Upgrade SITA OS's desktop shell to adopt the NovaOS macOS-inspired design language: glassmorphism materials, a proper system menu bar, floating composited windows, dock magnification polish, depth layering, and gradient-rich iconography — all CPU-rendering friendly.
+The reference adds three things the current desktop is missing:
 
-## Current State
-
-SITA OS already has many of these pieces partially built:
-- **DesktopSurface**: Clock, glass widgets, ambient background — but no top menu bar, no floating windows
-- **DesktopDock**: Magnification + badges — already macOS-like, needs material polish
-- **ShellAmbientBackground**: Mood-based orbs — good foundation for depth layers
-- **Design tokens**: Exist but don't encode the NovaOS material/depth system
+1. **Desktop notification toasts** — animated cards sliding in from the top-right of the desktop surface
+2. **Demo floating windows** — a Finder-style file manager and a Settings window with sidebar layout, rendered on the desktop to showcase the FloatingWindow component
+3. **Window manager state** — ability to open/close windows from the dock, tracking which windows are visible
 
 ## Plan
 
-### 1. Create NovaOS Design System tokens file
-**New file**: `src/lib/design-system/nova-os.ts`
-- Material definitions: `glass`, `frostedGlass`, `solidSurface` with opacity/blur/border values
-- Depth layer enum: Desktop (0), Windows (1), Floating UI (2), Dock + MenuBar (3)
-- Gradient palette: icon gradients (blue→indigo, purple→pink, etc.), surface gradients
-- Shape constants: window radius (`rounded-2xl`), icon radius (`rounded-xl`), pill radius (`rounded-full`)
-- Motion philosophy constants: duration caps (150–300ms), transform-only preference
-
-### 2. Add System Menu Bar (Top Bar)
-**New file**: `src/components/sita/shell/SystemMenuBar.tsx`
-- Fixed top bar with `backdrop-blur-md bg-white/40` (light) / `bg-black/40` (dark)
-- Left: "SITA" brand + menu items (File, Edit, View — contextual per active app)
-- Right: status indicators (WiFi/connectivity, trust posture, battery/time)
-- Integrates existing `ShellStatusBar` indicators into the macOS-style layout
-- Height: 40px, z-index above windows but below overlays
-
-### 3. Floating Window Component
-**New file**: `src/components/sita/shell/FloatingWindow.tsx`
-- Reusable composited window surface with traffic-light controls (red/yellow/green dots)
-- Glass material: `bg-white/70 backdrop-blur-xl border border-white/30 rounded-2xl shadow-2xl`
-- Draggable via pointer events (no heavy library needed)
-- Props: `title`, `children`, `initialPosition`, `onClose`, `onMinimize`, `onMaximize`
-- Dark mode variant: `bg-black/60 border-white/10`
-
-### 4. Polish DesktopDock with NovaOS materials
-**Edit**: `src/components/sita/DesktopDock.tsx`
-- Update dock container material to match NovaOS: `bg-white/40 backdrop-blur-xl border-white/30 rounded-2xl shadow-lg`
-- Replace flat icon backgrounds with gradient icons: `bg-gradient-to-br from-purple-400 to-pink-500`
-- Add subtle dock reflection/glow effect beneath
-
-### 5. Update DesktopSurface to compose new pieces
+### 1. Add desktop notification toasts to DesktopSurface
 **Edit**: `src/components/sita/shell/DesktopSurface.tsx`
-- Remove the `fixed inset-0` layout — delegate to `ShellLayout`
-- Add `SystemMenuBar` at top
-- Update `GlassWidget` material to use NovaOS glass tokens
-- Adjust depth layering: background (z-0), orbs (z-1), content (z-10), menu bar (z-30)
+- Add a `DesktopToast` component that renders notification cards in the top-right corner
+- Use `motion.div` with `initial={{ x: 100, opacity: 0 }}` / `animate={{ x: 0, opacity: 1 }}` slide-in
+- Style with NovaOS glass material: `bg-white/60 backdrop-blur-lg rounded-xl shadow`
+- Auto-dismiss after 5 seconds with exit animation
+- Show recent notifications from the `notifications` prop (approvals, urgent items)
 
-### 6. Update design tokens index
-**Edit**: `src/packages/design-tokens/index.ts`
-- Add `MATERIALS`, `DEPTH_LAYERS`, `ICON_GRADIENTS` exports that reference the nova-os tokens
+### 2. Add a simple window manager hook
+**New file**: `src/hooks/useWindowManager.ts`
+- Tracks open windows as `Map<string, { title, component, position, width }>`
+- Methods: `openWindow(id, config)`, `closeWindow(id)`, `focusWindow(id)`
+- Provides z-order management (focused window gets highest z-index within the windows layer)
 
-## Files Changed
-- 3 new files (nova-os tokens, SystemMenuBar, FloatingWindow)
-- 3 edited files (DesktopDock, DesktopSurface, design-tokens index)
+### 3. Create demo window content components
+**New file**: `src/components/sita/shell/windows/FinderWindow.tsx`
+- Grid of folder icons (Docs, Images, Music, Apps, Projects, Notes) using NovaOS `ICON_GRADIENTS`
+- Clicking folders is a no-op for now (visual demo)
 
-## Performance Note
-All effects use CSS `backdrop-filter` and `box-shadow` only — no canvas re-rasterization. Animations are transform/opacity only, staying within the 16ms frame budget. The floating window uses pointer-event drag (translate transform) with no layout recalculation.
+**New file**: `src/components/sita/shell/windows/SettingsWindow.tsx`
+- Left sidebar with General, Display, Sound, Network items
+- Right content area showing the selected section
+- Uses NovaOS glass materials for sidebar
+
+### 4. Wire windows into DesktopSurface
+**Edit**: `src/components/sita/shell/DesktopSurface.tsx`
+- Import `useWindowManager` and render open `FloatingWindow` instances on the desktop
+- Add a "double-click desktop to open Finder" interaction (or keep it dock-driven)
+
+### 5. Connect dock to window manager
+**Edit**: `src/components/sita/DesktopDock.tsx` (minor)
+- Pass an `onLaunchApp` callback that can open a FloatingWindow for known apps (Finder, Settings)
+- Other apps continue navigating to routes as they do now
+
+## Files
+- 1 new hook (`useWindowManager.ts`)
+- 2 new window content components (FinderWindow, SettingsWindow)
+- 2 edits (DesktopSurface, DesktopDock)
+
+## Technical Notes
+- All window animations use `NOVA_MOTION.window.enter/exit` tokens
+- Notification toasts use transform-only animations (no layout triggers)
+- Window z-ordering stays within `DEPTH_LAYERS.windows` range (20–29)
+- Demo windows are visual showcases; they don't replace existing route-based app navigation
 
