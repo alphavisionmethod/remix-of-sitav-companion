@@ -1,88 +1,103 @@
 
+# NovaOS Advanced Living Desktop — Full Implementation
 
-# NovaOS Premium Desktop — Production Implementation
-
-## Gap Analysis
-
-Comparing the 14-section spec against current code:
+## What Exists vs. What's Missing
 
 | Feature | Status | Action |
 |---------|--------|--------|
-| Boot ceremony (staggered entrance) | Missing | Build sequenced fade-in |
-| Desktop icon grid | Missing | New component |
-| Desktop context menu | Missing | New component |
-| Soft Focus Mode (dim bg on window focus) | Missing | Edit DesktopSurface |
-| Window focus differentiation | Missing | Edit FloatingWindow |
-| Adaptive dock tint | Missing | Edit DesktopDock |
-| Zero-clutter auto-hide icons | Missing | Part of icon grid |
-| Calm notifications (fade vs slide) | Partial — toasts slide from right | Soften to fade |
+| 1. Living Desktop (breathing wallpaper) | Partial — ambient orbs move but wallpaper gradient is static | Add slow gradient interpolation between time moods |
+| 2. Intent-Aware UI | Missing | Add suggestion overlay that detects idle + context |
+| 3. Zero-Friction Magnetic Dragging | Partial — lerp exists but no magnetic edge pull | Add edge magnetism to snap zones |
+| 4. Depth Without GPU | Partial — single shadow only | Add stacked shadow system (near+far) |
+| 5. Universal Search (everything) | Done — CommandPalette + UniversalCommandSurface | Skip |
+| 6. Smart File Previews | Missing | Add preview thumbnails to desktop icons + Finder |
+| 7. Instant Everything (progressive load) | Missing | Add skeleton shimmer to window content |
+| 8. Modular Panels (edge widgets) | Missing | Add slide-from-edge panel system |
+| 9. Focus Mode | Done — soft focus dims background | Skip |
+| 10. Calm Notifications | Done — fade instead of slide | Skip |
+| 11. Memory-Aware UI (restore positions) | Missing | Persist window positions to localStorage |
+| 12. Adaptive Color System | Partial — dock tint only | Add window accent adaptation |
+| 13. Micro-Details (hover delay, ripple) | Missing | Add click ripple, tuned hover timing |
+| 14. Signature Feature — "Command Layer" | Missing | Hold-key overlay showing all actions |
 
-Everything else (wallpaper gradients, vignette, menu bar, dock magnification, window drag/snap/resize, search, motion tokens) is already implemented.
+## Plan (8 deliverables)
 
-## Plan (6 deliverables)
-
-### 1. Desktop Boot Ceremony
+### 1. Living Wallpaper — slow gradient breathing
 **Edit**: `DesktopSurface.tsx`
 
-Add a `bootPhase` state (0-4) that increments via `setTimeout` chain on mount:
-- Phase 0 (0ms): everything hidden, black overlay at opacity 1
-- Phase 1 (300ms): wallpaper fades in (overlay opacity 0)
-- Phase 2 (600ms): clock + widgets fade in
-- Phase 3 (900ms): desktop icons appear (see step 2)
-- Phase 4 (1200ms): fully settled
+Add a `wallpaperPhase` that cycles every 30 seconds between two gradient variations of the current mood. Use CSS `transition: background 8s ease` on the root div. Alternate between the base gradient and a shifted version (hue +/- 5 degrees). No per-frame work — just a `setInterval` toggling a class.
 
-Each element reads `bootPhase` and applies conditional opacity/transform classes. All CSS transitions, no JS animation loops.
+### 2. Intent-Aware Suggestion Pill
+**New file**: `src/components/sita/shell/IntentSuggestion.tsx`
 
-### 2. Desktop Icon Grid
-**New file**: `src/components/sita/shell/DesktopIconGrid.tsx`
+A small floating pill that appears after 5 seconds of idle on desktop:
+- Context-based suggestions: "Open recent project?", "3 approvals waiting — review now?"
+- Positioned below the clock, fades in gently (300ms), disappears on any interaction
+- Reads from `continuity` state (pending drafts, unfinished workflows)
 
-Right-aligned column of desktop icons (Documents, Downloads, Projects, Notes, Trash):
-- 48px icons with 12px radius, gradient backgrounds from `ICON_GRADIENTS`
-- 80px cell spacing, CSS Grid with `grid-auto-flow: column`
-- Single click = select (blue glow ring), double click = open Finder via window manager
-- 11px labels, truncated with ellipsis
-- Staggered fade-in tied to boot phase
-- **Zero-clutter**: after 8s of no mouse movement, icons fade to `opacity: 0`. Mouse movement restores them.
-
-### 3. Desktop Context Menu
-**New file**: `src/components/sita/shell/DesktopContextMenu.tsx`
-
-Right-click on empty desktop opens a glassmorphic menu:
-- Items: New Folder, Sort By, Change Wallpaper, Show Desktop, Mission Control
-- Glass material (`bg-white/60 dark:bg-black/60 backdrop-blur-2xl`), rounded-xl, soft shadow
-- Scale 0.95 -> 1.0 + opacity entrance, 150ms ease-out
-- Wired into DesktopSurface via `onContextMenu` on the root div
-
-### 4. Soft Focus Mode
-**Edit**: `DesktopSurface.tsx`
-
-When any FloatingWindow is visible (from window manager context):
-- Desktop content (clock, widgets, icon grid) dims to `opacity: 0.4` via CSS transition (300ms)
-- Only the active window stays at full brightness
-- When all windows close, content returns to full opacity
-
-### 5. Window Focus Differentiation
+### 3. Magnetic Edge Attraction for Windows
 **Edit**: `FloatingWindow.tsx`
 
-Accept an `isFocused` prop (derived from comparing window zIndex to max zIndex in parent):
-- Focused: full opacity, `shadow-2xl`, brighter border `border-white/35`
-- Unfocused: `opacity-[0.85]`, `shadow-lg`, dimmer border `border-white/15`
+During drag, when window edge is within 20px of viewport edge or another window edge, apply a magnetic pull: `force = (snapEdge - windowEdge) * 0.15`. This modifies `targetPos` in the existing lerp loop. Subtle — just a gentle tug, not a hard snap.
 
-### 6. Adaptive Dock Tint + Calm Notifications
-**Edit**: `DesktopDock.tsx`
-- Accept optional `mood` prop from DesktopSurface
-- Shift dock glass background hue: warm = amber tint, night = indigo tint, serene = neutral
+### 4. Stacked Depth Shadows (Near + Far)
+**Edit**: `nova-os.ts`
 
-**Edit**: `DesktopSurface.tsx` (DesktopToasts)
-- Change notification entrance from `x: 100 -> 0` slide to `opacity: 0 -> 1, scale: 0.96 -> 1` fade — calmer
+Replace single `NOVA_SHADOWS.window` with a dual-shadow system:
+- Near: `0 2px 8px hsl(0 0% 0% / 0.15)` (sharp, close)
+- Far: `0 16px 48px hsl(0 0% 0% / 0.20)` (soft, distant)
+- Combined via `box-shadow` shorthand. Apply in `FloatingWindow.tsx`.
 
-## Files
-- 2 new: `DesktopIconGrid.tsx`, `DesktopContextMenu.tsx`
-- 3 edits: `DesktopSurface.tsx`, `FloatingWindow.tsx`, `DesktopDock.tsx`
+### 5. Smart File Preview Icons
+**Edit**: `DesktopIconGrid.tsx`
 
-## Technical Notes
-- Boot ceremony uses `setTimeout` chain + CSS `transition` classes — no RAF needed
-- Zero-clutter idle timer: single `mousemove` listener with 8s debounce
-- All animations stay within 150-300ms, transform+opacity only
-- No new dependencies
+For specific folder types, show a mini preview instead of generic icon:
+- Documents: tiny page icon with lines
+- Downloads: arrow with progress ring
+- Projects: code bracket icon
+- Each icon gets a subtle inner glow that pulses once on hover (200ms)
 
+### 6. Progressive Content Loading (Instant Everything)
+**Edit**: `FloatingWindow.tsx`
+
+Add a content shimmer: when window first opens, show a 3-line skeleton shimmer for 150ms before revealing children. Uses CSS animation only. Creates perception of instant response.
+
+### 7. Window Position Memory
+**Edit**: `useWindowManager.ts`
+
+On window close or position change, persist `{id, x, y, width}` to `localStorage("nova-window-memory")`. On `openWindow`, check for saved position and restore it. Clear entries older than 7 days.
+
+### 8. Command Layer (Signature Feature)
+**New file**: `src/components/sita/shell/CommandLayer.tsx`
+
+Hold `Meta` key for 500ms to reveal a full-screen overlay showing:
+- Grid of all available actions grouped by category (Files, Navigation, System)
+- Each action shows icon + keyboard shortcut
+- Glassmorphic overlay with 70% opacity background
+- Release key to dismiss
+- Click any action to execute + dismiss
+
+Wire into `ShellLayout.tsx` via `keydown`/`keyup` event listeners.
+
+### 9. Click Ripple + Micro-Details
+**New file**: `src/components/sita/shell/ClickRipple.tsx`
+
+A global click ripple effect:
+- On `mousedown` anywhere on desktop surface, create a 24px circle at click point
+- Expands to 48px over 300ms, fades from 0.15 to 0 opacity
+- Color matches the current mood accent
+- Pure CSS animation, removes self after completion
+
+Also tune hover timing: add `transition-delay: 80ms` to dock icon hover scale.
+
+## Files Changed
+- 2 new: `IntentSuggestion.tsx`, `CommandLayer.tsx`, `ClickRipple.tsx` (3 new)
+- 6 edits: `DesktopSurface.tsx`, `FloatingWindow.tsx`, `nova-os.ts`, `DesktopIconGrid.tsx`, `useWindowManager.ts`, `ShellLayout.tsx`
+
+## Technical Constraints
+- Living wallpaper uses `setInterval(30s)` + CSS transition — zero per-frame cost
+- Magnetic edge pull integrates into existing RAF drag loop — no extra loop
+- Stacked shadows are pure CSS, no runtime cost
+- Command Layer uses `keydown`/`keyup` with 500ms `setTimeout` — no polling
+- All animations stay within 150-300ms budget, transform+opacity only
+- Window memory uses debounced localStorage writes (500ms after last move)
