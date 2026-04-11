@@ -148,3 +148,15 @@ export const PROOF_STATES = {
   disputed: { color: "destructive", label: "Disputed" },
   archived: { color: "muted-foreground", label: "Archived" },
 } as const;
+
+// ── NovaOS Design System (re-export) ─────────────────────────
+
+export {
+  MATERIALS,
+  DEPTH_LAYERS,
+  ICON_GRADIENTS,
+  SHAPES,
+  NOVA_MOTION,
+  TRAFFIC_LIGHTS,
+  NOVA_SHADOWS,
+} from "@/lib/design-system/nova-os";
