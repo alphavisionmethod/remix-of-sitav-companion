@@ -17,7 +17,7 @@ import { ShellAmbientBackground, type AmbientMood } from "./ShellAmbientBackgrou
 import type { TrustPosture, ContinuityContext, ShellNotificationDigest } from "./useShellState";
 import { DEPTH_LAYERS } from "@/lib/design-system/nova-os";
 import { FloatingWindow } from "./FloatingWindow";
-import type { useWindowManager } from "@/hooks/useWindowManager";
+import { useWindowManagerContext } from "@/contexts/WindowManagerContext";
 
 // ── Types ────────────────────────────────────────────────────
 
@@ -28,8 +28,6 @@ interface DesktopSurfaceProps {
   continuity?: ContinuityContext;
   onOpenCommand?: () => void;
   onLaunchApp?: (appId: string) => void;
-  /** Unified window manager from ShellLayout */
-  windowManager?: ReturnType<typeof useWindowManager>;
 }
 
 // ── Desktop Notification Toasts ─────────────────────────────
@@ -203,7 +201,6 @@ export function DesktopSurface({
   continuity = { lastWorkspace: null, lastActivity: null, pendingDrafts: 0, unfinishedWorkflows: 0, whatChanged: [] },
   onOpenCommand,
   onLaunchApp,
-  windowManager,
 }: DesktopSurfaceProps) {
   const navigate = useNavigate();
   const reduced = useReducedMotion();
@@ -212,7 +209,8 @@ export function DesktopSurface({
   const isAuto = wallpaper.id === "auto";
   const activeGradient = isAuto ? timeGradient : wallpaper.gradient;
 
-  // Use unified window manager from ShellLayout if provided
+  // Use unified window manager from context
+  const windowManager = useWindowManagerContext();
   const visibleWindows = windowManager?.visibleWindows ?? [];
   const closeWindow = windowManager?.closeWindow;
   const focusWindow = windowManager?.focusWindow;
