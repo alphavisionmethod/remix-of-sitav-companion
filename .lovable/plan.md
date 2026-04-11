@@ -1,54 +1,72 @@
 
 
-# SITA OS — Fix Errors, Clean Desktop & Improve Navigation
+# SITA OS — macOS-Grade Experience Upgrade
 
-## Problems Found
+## Current Problems
 
-1. **Route mismatch**: `/home` renders `DailyPulse` (the old dense dashboard) instead of `DesktopPage`. The new OS desktop only works on `/desktop`. Meanwhile `isDesktopRoute` in ShellLayout checks for `/home` but doesn't check `/desktop`.
-2. **Sidebar/topbar still visible on `/desktop`**: The `isDesktopRoute` check misses `/desktop`.
-3. **DailyPulse is 870 lines of dense, overwhelming content**: KPIs, approvals, cross-domain intelligence, advisors, opportunities, proof cards, AI spend — all crammed into one scrollable page. User says "too much info packed in one place."
-4. **Floating notifications overlap with other UI elements** (bottom-right cash runway warning clashes with notification toasts).
-5. **Console warnings**: Toaster/TooltipProvider ref warnings (minor, non-breaking).
+1. **Sidebar has 60+ nav items** across 7 collapsible groups (Primary, Intelligence, Workspace, System, Control, Apps, AI Engineering). This is the opposite of intuitive — it's a wall of links that overwhelms newcomers.
+2. **No persistent menu bar on desktop** — when on the home/desktop route, the top bar disappears entirely. macOS always has its menu bar visible with status icons, clock, and system controls.
+3. **Spotlight/Command Palette exists but is hidden** — users need to know Cmd+K. No visual prompt or search icon on the desktop.
+4. **Notification Center exists but isn't discoverable** — no bell icon or gesture on the desktop surface.
+5. **No app-open animation** — clicking a dock icon or widget just navigates. No zoom/scale transition that feels like "opening an app."
+6. **Widgets are static** — they show hardcoded data and aren't rearrangeable or customizable.
 
-## Plan
+## What Changes
 
-### 1. Fix Routing — Make `/home` the OS Desktop
-- **`src/App.tsx`**: Change `/home` route from `DailyPulse` to `DesktopPage`. Move DailyPulse to `/daily-pulse` or `/pulse`.
-- **`src/components/sita/ShellLayout.tsx`**: Update `isDesktopRoute` to also match `/desktop`.
+### 1. Desktop Menu Bar (always visible, even on desktop route)
+A thin, translucent menu bar at the top of the desktop with:
+- **Left**: SITA logo/icon, current app name (or "Desktop"), search icon (opens Spotlight)
+- **Right**: Trust posture chip, notification bell with unread count, clock, user avatar
+- Glass-morphism style matching the desktop aesthetic
+- Clicking the bell slides open the Notification Center from the right
+- Clicking search or pressing Cmd+K opens Spotlight
 
-### 2. Simplify the Daily Pulse into a Clean Summary
-- **`src/pages/DailyPulse.tsx`**: Dramatically simplify — remove the dense 870-line layout. Keep it as a focused "Daily Briefing" page with:
-  - A clean greeting + summary strip (3-4 key metrics only)
-  - Advisor card (one actionable insight)
-  - Quick actions row (3-4 buttons max)
-  - Pending approvals (if any, collapsed by default)
-  - Remove: cross-domain intelligence section, opportunity cards, proof cards, AI spend tracker, widget grid, activity timeline, boardroom card — these belong in their dedicated apps
+This replaces the current behavior of hiding the top bar entirely on desktop routes.
 
-### 3. Fix Notification Overlap
-- **`src/components/sita/DesktopNotifications.tsx`**: Only render on the desktop route (pass a prop or check route). Ensure they don't clash with bottom-right system alerts.
+### 2. Radically Simplified Sidebar (when inside apps)
+Reduce from 60+ items to a clean, scannable structure:
+- **Primary** (6 items max): Desktop, Daily Pulse, Business, Money, Concierge, Files
+- **Favorites** (user-pinnable, starts with 3-4): Revenue Office, Boardroom, Calendar, Tasks
+- **Everything Else**: accessed via Spotlight search or "All Apps" link at bottom
+- Remove Intelligence, Workspace, System, Control, Apps, AI Engineering groups from default view
+- Add a single "More" or "All Apps" item that opens the full app grid
 
-### 4. Sidebar Navigation Cleanup
-- **`src/components/sita/ShellLayout.tsx`**: Ensure the sidebar has clear, simple navigation grouping:
-  - Primary: Desktop, Daily Pulse, Business, Money, Concierge
-  - Remove clutter from the main nav (Brain, Life Dashboard can be sub-items)
+### 3. Enhanced Spotlight Search
+Upgrade CommandPalette to be the primary navigation mechanism:
+- Larger, more beautiful overlay (centered, 500px wide, glass-morphism)
+- **Recent apps** section at top (no typing needed)
+- **Smart suggestions** based on time of day and pending items
+- Categories: Apps, Actions, People, Documents, Settings
+- Keyboard-first but also accessible via menu bar search icon and desktop click
 
-### 5. Fix Minor Console Errors
-- Toaster ref warning — wrap in `forwardRef` or suppress
+### 4. Notification Center Slide-Out
+Already exists but wire it to the desktop menu bar:
+- Bell icon in menu bar with unread badge
+- Slides in from right edge (already built)
+- Group by domain with dismiss/action buttons (already built)
+- Just needs to be accessible from the desktop route
+
+### 5. App Launch Animation
+When navigating from desktop into an app:
+- Scale-up + fade transition (app "zooms in" from the dock/widget position)
+- Sidebar slides in from left simultaneously
+- Creates the feeling of "opening" an app vs. just navigating
+
+### 6. Cleaner Desktop Widgets
+- Make widgets slightly larger with more breathing room
+- Add a subtle "Edit Widgets" mode (long-press or button) for future customization
+- Show real contextual data based on time: morning = today's agenda, evening = end-of-day summary
 
 ## Files Changed
 
 | File | Change |
 |------|--------|
-| `src/App.tsx` | `/home` → `DesktopPage`, add `/pulse` or `/daily-pulse` → `DailyPulse` |
-| `src/components/sita/ShellLayout.tsx` | `isDesktopRoute` includes `/desktop` |
-| `src/pages/DailyPulse.tsx` | Simplify to ~200 lines: clean briefing with key metrics, one advisor card, quick actions, collapsible approvals |
-| `src/components/sita/DesktopNotifications.tsx` | Guard rendering to desktop route only |
-| `src/pages/DesktopPage.tsx` | Minor cleanup |
+| `src/components/sita/shell/DesktopSurface.tsx` | Add DesktopMenuBar component at top; refine widget layout and spacing |
+| `src/components/sita/ShellLayout.tsx` | Remove the `!isDesktopRoute` guard on top bar — always show a menu bar (desktop version on home, full version elsewhere). Add app-launch scale transition. |
+| `src/components/sita/AppSidebar.tsx` | Reduce to 6 primary + favorites + "All Apps". Remove Intelligence/Workspace/System/Control/AI Engineering groups from default. |
+| `src/components/sita/CommandPalette.tsx` | Upgrade UI: larger overlay, recent apps section, smart suggestions, better visual hierarchy |
+| `src/components/sita/SitaTopBar.tsx` | Minor: ensure it renders cleanly as "DesktopMenuBar" variant when on desktop route |
 
 ## Outcome
-- `/home` shows the beautiful OS desktop (wallpaper, clock, glass widgets, dock)
-- `/pulse` shows a clean, scannable daily briefing (not the old 870-line wall of data)
-- Sidebar and topbar hidden on the desktop for true OS feel
-- Notifications don't overlap with system alerts
-- Navigation is simple: Desktop → open apps from dock or sidebar
+The experience becomes: beautiful desktop with translucent menu bar at top, dock at bottom, glass widgets in center. Click an app — it zooms in, sidebar appears, you're in a full workspace. Press Cmd+K or click search — Spotlight opens with smart suggestions. Click the bell — notifications slide in from the right. The sidebar has 6 items, not 60. Every interaction is fluid, discoverable, and intuitive — even for first-time users.
 
