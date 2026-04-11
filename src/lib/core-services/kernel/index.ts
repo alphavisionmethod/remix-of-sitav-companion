@@ -67,6 +67,9 @@ export { SurfaceAllocator, type SurfaceAllocation, type BufferPool, type FormatC
 // --- Visual Effects Compositor ---
 export { VisualEffectsCompositor, type BlurEffect, type BlurMethod, type BlurQuality, type BlurMask, type ShadowEffect, type ShadowType, type TransparencyEffect, type TransparencyMode, type WindowAnimation, type AnimationType, type EasingFunction, type AnimTransform, type DesktopTransition, type DesktopTransitionType, type ParticleEmitter, type ParticleShape, type CompositeLayer, type CompositeBlendMode, type EffectPreset, type VisualEffectsStats } from "./visual-effects-compositor";
 
+// --- Wayland Client Protocol Layer ---
+export { WaylandClientConnection, createWaylandClient, type WlGlobalName, type WlGlobal, type WlRegistryState, type FormatNegotiationResult, type BufferCapabilities, type FrameSubmission, type FrameState, type CompositorFeedback, type FeedbackKind, type PresentationFeedback, type PresentationFlag, type PresentResult, type ConnectionState, type ClientConnectionStats } from "./wayland-client";
+
 // --- Command Buffer & UI Renderer (CPU Vulkan + High-Level API) ---
 export { CommandBuffer, CommandBufferPool, SoftwarePipeline, type DrawCommand, type CommandBufferStats, type Vertex2D, type VertexColor, type Transform2DMatrix, type Fixed16, toFixed16, fromFixed16, fpMul, fpDiv, fpFloor, fpCeil, fpFrac, IDENTITY_TRANSFORM } from "./command-buffer";
 export { UIRenderer, CpuBlur, type UIViewProps, type UITextProps, type UIBackground, type UIColor, type UIGradientStop, type UIBoxShadow, type UIBorder, type UIBorderRadii, type BlurConfig, type UIRendererStats } from "./ui-renderer";
