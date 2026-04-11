@@ -1,36 +1,59 @@
 
 
-# Redesign Sidebar to Feel Like macOS/Windows App Launcher
+# Implement Full Kernel Architecture & Security Model
 
-## Problem
-The current sidebar is a standard text-based nav list with small icons. It doesn't feel like a native OS app menu — macOS Finder sidebar has large colorful icons, grouped sections with visual weight, and Windows has pinned app tiles.
+## Status Check
+The `src/lib/core-services/kernel/` directory is **completely empty** — none of the kernel subsystems exist yet. All 18 files from the previous plan need to be created and wired into the `SitaKernel` class.
 
-## Design
+## What Gets Built
 
-Transform the sidebar into a macOS Finder-style app launcher:
+### Kernel Architecture (10 files)
 
-1. **App-style icon grid** — Each nav item gets a large (32-36px), colorful, rounded-square icon with a gradient background (like macOS app icons), with the label below/beside it
-2. **Pinned apps section** — Top area with user's pinned apps in a compact icon grid (like macOS Dock favorites in Finder sidebar)
-3. **Recents** — Recently visited apps shown with subtle styling
-4. **Category dividers** — Clean section labels like "Spaces", "Favorites", "System" with thin separators
-5. **Collapsed mode** — Shows only the colorful square icons in a centered column (like Windows 11 taskbar)
+| File | Purpose |
+|------|---------|
+| `src/lib/core-services/kernel/index.ts` | Barrel export + `KernelSubsystem` facade class |
+| `src/lib/core-services/kernel/process-scheduler.ts` | MLFQ scheduler with 5 priority bands (RT-Critical → Idle), ProcessControlBlock, preemption, priority inheritance |
+| `src/lib/core-services/kernel/memory-manager.ts` | Virtual memory manager: 4-level page tables, demand paging, CoW, SLAB/buddy allocators, OOM policy |
+| `src/lib/core-services/kernel/sita-filesystem.ts` | SitaFS: CoW B-tree filesystem with journaling, snapshots, checksums, compression + VFS mount layer |
+| `src/lib/core-services/kernel/driver-manager.ts` | User-space driver framework: device tree, hot-plug, capability sandboxing, driver signing enforcement |
+| `src/lib/core-services/kernel/ipc-system.ts` | Capability-based message passing, shared memory regions, POSIX signals, event channels |
+| `src/lib/core-services/kernel/syscall-table.ts` | ~120 syscall definitions across 7 categories (process, memory, fs, ipc, security, device, proof) with ABI spec |
+| `infra/docs/KERNEL_ARCHITECTURE.md` | Complete kernel architecture specification document |
+| `infra/docs/MEMORY_ARCHITECTURE.md` | Virtual memory system design document |
+| `infra/docs/FILESYSTEM_ARCHITECTURE.md` | SitaFS + VFS specification |
 
-### Visual Details
-- Each app icon: rounded-xl square with domain-colored gradient background (blue for Business, green for Money, purple for Concierge, etc.)
-- White icon glyph inside the colored square (like real macOS app icons)
-- Active state: ring highlight + subtle scale-up
-- Hover: lift shadow + slight scale
-- Smooth transitions on all interactions
+### Security Model (7 files)
 
-## Files Changed
+| File | Purpose |
+|------|---------|
+| `src/lib/core-services/kernel/sandbox-engine.ts` | 5-ring trust model, Seccomp-BPF syscall filtering, namespace isolation, Landlock LSM, capability enforcement |
+| `src/lib/core-services/kernel/code-verification.ts` | Ed25519/RSA-4096 binary signing, boot chain verification, CRL revocation, enforced/permissive modes |
+| `src/lib/core-services/kernel/capability-permission-system.ts` | Three-layer permissions: POSIX DAC + Linux capabilities + SITA capability tokens |
+| `src/lib/core-services/kernel/crypto-subsystem.ts` | LUKS2 FDE (AES-256-XTS), TPM 2.0 key sealing, key hierarchy (master → volume → file), rotation policy |
+| `src/lib/core-services/kernel/app-isolation.ts` | Per-app namespaces, cgroups v2 resource limits, private mounts, nftables firewall, crash isolation |
+| `infra/docs/SECURITY_ARCHITECTURE.md` | Full security model specification with runtime protections table |
+| `generated/security-model-manifest.json` | Machine-readable security controls inventory |
+
+### Generated Manifests (2 files)
+
+| File | Purpose |
+|------|---------|
+| `generated/kernel-architecture-manifest.json` | Kernel config: model, scheduler, VMM, filesystem, IPC, drivers |
+| `generated/syscall-manifest.json` | Complete syscall catalog (~120 entries) with ABI conventions |
+
+### Wiring into SitaKernel (1 edit)
 
 | File | Change |
 |------|--------|
-| `src/components/sita/AppSidebar.tsx` | Complete redesign — large colorful app icons with gradient backgrounds, macOS-style layout, pinned/recents sections |
+| `src/lib/sita-kernel.ts` | Import `KernelSubsystem` from barrel, add as `readonly kernelArch` property, instantiate in constructor, emit boot receipt |
 
-## Technical Notes
-- Reuses existing `Sidebar` component infrastructure — only changes the visual rendering of nav items
-- Icon color mapping per domain (Business=blue, Money=green, etc.)
-- No routing changes needed — same URLs, same `NavLink` usage
-- Collapsed mode shows centered icon squares without labels
+## Technical Approach
+
+- Every TypeScript service follows the existing pattern: typed interfaces, event bus integration via `getSitaKernel()`, receipt emission for mutations
+- All services are simulation-grade — they model the real kernel subsystems with proper types, state machines, and event emission, runnable in the browser runtime
+- The `KernelSubsystem` facade aggregates all kernel modules behind a single entry point, keeping the `SitaKernel` constructor clean
+- Docs use the same format as existing `ARQ_PLAN_FINAL.md`
+- Manifests match the existing JSON schema patterns in `generated/`
+
+## Total: 20 new files + 1 edit
 
