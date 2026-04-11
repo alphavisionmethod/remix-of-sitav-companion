@@ -1,4 +1,4 @@
-import { AppWelcomeHeader } from "@/components/sita/AppWelcomeHeader";
+import { CenterPageShell, CenterSection } from "@/components/sita/CenterPageShell";
 import { InAppAdvisorStrip } from "@/components/sita/InAppAdvisorStrip";
 import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
 import { SitaTabs } from "@/components/sita/SitaComponents";
@@ -85,54 +85,59 @@ const ConciergeCenter = () => {
   const PageComponent = pages[activePage];
 
   return (
-    <div className="mx-auto max-w-7xl space-y-6">
+    <CenterPageShell domain="concierge">
       <h1 className="sr-only">Concierge Center</h1>
       <DemoModeBadge />
-      <AppWelcomeHeader domain="concierge" />
-      <InAppAdvisorStrip domain="concierge" />
-      <motion.div
-        className="overflow-x-auto -mx-2 px-2"
-        initial={{ opacity: 0, y: -8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.25 }}
-      >
-        <SitaTabs
-          tabs={[
-            { key: "overview", label: "Overview" },
-            { key: "calendar", label: "Calendar" },
-            { key: "tasks", label: "Tasks" },
-            { key: "household", label: "Household" },
-            { key: "school", label: "School" },
-            { key: "grocery", label: "Grocery" },
-            { key: "appointments", label: "Appointments" },
-            { key: "travel", label: "Travel" },
-            { key: "providers", label: "Providers" },
-            { key: "events", label: "Events" },
-            { key: "workflows", label: "Workflows" },
-            { key: "proof", label: "Proof" },
-            { key: "files", label: "Files" },
-            { key: "boardroom", label: "Boardroom" },
-            { key: "settings", label: "Settings" },
-          ]}
-          active={activePage}
-          onChange={goTo}
-        />
-      </motion.div>
+      <CenterSection>
+        <InAppAdvisorStrip domain="concierge" />
+      </CenterSection>
+      <CenterSection>
+        <motion.div
+          className="overflow-x-auto -mx-2 px-2"
+          initial={{ opacity: 0, y: -8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.25 }}
+        >
+          <SitaTabs
+            tabs={[
+              { key: "overview", label: "Overview" },
+              { key: "calendar", label: "Calendar" },
+              { key: "tasks", label: "Tasks" },
+              { key: "household", label: "Household" },
+              { key: "school", label: "School" },
+              { key: "grocery", label: "Grocery" },
+              { key: "appointments", label: "Appointments" },
+              { key: "travel", label: "Travel" },
+              { key: "providers", label: "Providers" },
+              { key: "events", label: "Events" },
+              { key: "workflows", label: "Workflows" },
+              { key: "proof", label: "Proof" },
+              { key: "files", label: "Files" },
+              { key: "boardroom", label: "Boardroom" },
+              { key: "settings", label: "Settings" },
+            ]}
+            active={activePage}
+            onChange={goTo}
+          />
+        </motion.div>
+      </CenterSection>
 
       <ConciergeDataProvider value={{ relationships: caiRelationships, obligations: caiObligations }}>
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activePage}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.25 }}
-          >
-            <PageComponent />
-          </motion.div>
-        </AnimatePresence>
+        <CenterSection>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activePage}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.25 }}
+            >
+              <PageComponent />
+            </motion.div>
+          </AnimatePresence>
+        </CenterSection>
       </ConciergeDataProvider>
-    </div>
+    </CenterPageShell>
   );
 };
 
