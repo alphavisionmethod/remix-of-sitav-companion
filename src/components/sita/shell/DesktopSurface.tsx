@@ -5,17 +5,21 @@
 
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { getWallpaperTheme } from "@/hooks/use-wallpaper";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import {
   CheckCircle, DollarSign, Calendar, Brain,
-  TrendingUp, ArrowRight,
+  TrendingUp, ArrowRight, X,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ShellAmbientBackground, type AmbientMood } from "./ShellAmbientBackground";
 import type { TrustPosture, ContinuityContext, ShellNotificationDigest } from "./useShellState";
 import { DEPTH_LAYERS } from "@/lib/design-system/nova-os";
+import { FloatingWindow } from "./FloatingWindow";
+import { useWindowManager } from "@/hooks/useWindowManager";
+import { FinderWindow } from "./windows/FinderWindow";
+import { SettingsWindow } from "./windows/SettingsWindow";
 
 // ── Types ────────────────────────────────────────────────────
 
@@ -25,6 +29,43 @@ interface DesktopSurfaceProps {
   notifications?: ShellNotificationDigest;
   continuity?: ContinuityContext;
   onOpenCommand?: () => void;
+  onLaunchApp?: (appId: string) => void;
+}
+
+// ── Desktop Notification Toasts ─────────────────────────────
+
+function DesktopToasts({ notifications }: { notifications: ShellNotificationDigest }) {
+  const [toasts, setToasts] = useState<{ id: number; text: string }[]>([]);
+
+  useEffect(() => {
+    const items: string[] = [];
+    if (notifications.approvals > 0) items.push(`${notifications.approvals} approval(s) waiting`);
+    if (notifications.urgent > 0) items.push(`${notifications.urgent} urgent notification(s)`);
+    if (items.length === 0) items.push("All clear — no pending items");
+    setToasts(items.map((text, i) => ({ id: i, text })));
+
+    const timer = setTimeout(() => setToasts([]), 6000);
+    return () => clearTimeout(timer);
+  }, [notifications.approvals, notifications.urgent]);
+
+  return (
+    <div className="absolute top-14 right-4 w-72 space-y-2 pointer-events-none" style={{ zIndex: DEPTH_LAYERS.windows + 5 }}>
+      <AnimatePresence>
+        {toasts.map(t => (
+          <motion.div
+            key={t.id}
+            initial={{ x: 100, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: 60, opacity: 0 }}
+            transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+            className="p-3 rounded-xl bg-[hsl(0_0%_100%/0.60)] dark:bg-[hsl(0_0%_0%/0.50)] backdrop-blur-lg shadow-lg border border-[hsl(0_0%_100%/0.20)] dark:border-[hsl(0_0%_100%/0.08)] pointer-events-auto"
+          >
+            <p className="text-xs text-[hsl(0_0%_20%)] dark:text-[hsl(0_0%_85%)]">{t.text}</p>
+          </motion.div>
+        ))}
+      </AnimatePresence>
+    </div>
+  );
 }
 
 // ── Time-of-day wallpaper gradients ──────────────────────────
@@ -161,6 +202,7 @@ export function DesktopSurface({
   notifications = { total: 0, approvals: 0, urgent: 0, business: 0, finance: 0, household: 0, system: 0 },
   continuity = { lastWorkspace: null, lastActivity: null, pendingDrafts: 0, unfinishedWorkflows: 0, whatChanged: [] },
   onOpenCommand,
+  onLaunchApp,
 }: DesktopSurfaceProps) {
   const navigate = useNavigate();
   const reduced = useReducedMotion();
@@ -168,6 +210,26 @@ export function DesktopSurface({
   const wallpaper = useMemo(getWallpaperTheme, []);
   const isAuto = wallpaper.id === "auto";
   const activeGradient = isAuto ? timeGradient : wallpaper.gradient;
+  const { windows, openWindow, closeWindow, focusWindow } = useWindowManager();
+
+  const handleLaunchApp = useCallback((appId: string) => {
+    if (appId === "finder") {
+      openWindow("finder", {
+        title: "Finder",
+        component: <FinderWindow />,
+        position: { x: 120, y: 100 },
+        width: 460,
+      });
+    } else if (appId === "settings") {
+      openWindow("settings", {
+        title: "Settings",
+        component: <SettingsWindow />,
+        position: { x: 300, y: 120 },
+        width: 520,
+      });
+    }
+    onLaunchApp?.(appId);
+  }, [openWindow, onLaunchApp]);
 
   // Click on empty desktop background → open Spotlight
   const handleBackgroundClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
@@ -248,6 +310,26 @@ export function DesktopSurface({
         {/* Advisor Insight */}
         <AdvisorInsight delay={0.8} />
       </div>
+
+      {/* Notification toasts */}
+      <DesktopToasts notifications={notifications} />
+
+      {/* Floating windows */}
+      <AnimatePresence>
+        {windows.map(w => (
+          <FloatingWindow
+            key={w.id}
+            title={w.title}
+            initialPosition={w.position}
+            width={w.width}
+            onClose={() => closeWindow(w.id)}
+            onMinimize={() => closeWindow(w.id)}
+            className="cursor-default"
+          >
+            {w.component}
+          </FloatingWindow>
+        ))}
+      </AnimatePresence>
 
       {/* Subtle vignette overlay */}
       <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_center,transparent_40%,hsl(0_0%_0%/0.3)_100%)]" style={{ zIndex: DEPTH_LAYERS.vignette }} />
