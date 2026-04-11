@@ -75,12 +75,10 @@ export default function AdminDashboard() {
   const [now, setNow] = useState(new Date());
   useEffect(() => { const t = setInterval(() => setNow(new Date()), 60000); return () => clearInterval(t); }, []);
 
-  if (adminLoading) return <PageSkeleton rows={3} />;
-  if (!isAdmin) return null;
-
-  // Real data queries
+  // All hooks must be called before any early returns
   const { data: tokenData } = useQuery({
     queryKey: ["admin-token-spend"],
+    enabled: isAdmin,
     queryFn: async () => {
       const today = new Date().toISOString().split("T")[0];
       const { data, error } = await supabase
@@ -95,6 +93,7 @@ export default function AdminDashboard() {
 
   const { data: pendingApprovals } = useQuery({
     queryKey: ["admin-pending-approvals"],
+    enabled: isAdmin,
     queryFn: async () => {
       const { count, error } = await supabase
         .from("approval_queue")
@@ -107,6 +106,7 @@ export default function AdminDashboard() {
 
   const { data: openIncidents } = useQuery({
     queryKey: ["admin-open-incidents"],
+    enabled: isAdmin,
     queryFn: async () => {
       const { count, error } = await supabase
         .from("incidents")
@@ -119,6 +119,7 @@ export default function AdminDashboard() {
 
   const { data: recentAuditLogs } = useQuery({
     queryKey: ["admin-recent-actions"],
+    enabled: isAdmin,
     queryFn: async () => {
       const { data, error } = await supabase
         .from("audit_logs")
@@ -132,6 +133,7 @@ export default function AdminDashboard() {
 
   const { data: advisorPerf } = useQuery({
     queryKey: ["admin-advisor-perf"],
+    enabled: isAdmin,
     queryFn: async () => {
       const { data, error } = await supabase
         .from("advisor_performance")
@@ -142,6 +144,9 @@ export default function AdminDashboard() {
       return data || [];
     },
   });
+
+  if (adminLoading) return <PageSkeleton rows={3} />;
+  if (!isAdmin) return null;
 
   const tokenSpend = tokenData ? `$${(tokenData.totalCents / 100).toFixed(2)}` : "$0.00";
   const totalAdvisorCalls = advisorPerf?.reduce((s, a) => s + (a.total_calls || 0), 0) || 0;
