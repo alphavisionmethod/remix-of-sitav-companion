@@ -216,7 +216,6 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         </div>
 
         {/* Panels */}
-        <NotificationPanel isOpen={notifOpen} onClose={() => setNotifOpen(false)} />
         <UniversalTimeline isOpen={timelineOpen} onClose={() => setTimelineOpen(false)} />
         <AdvisorChat isOpen={chatOpen} onClose={() => setChatOpen(false)} />
 
