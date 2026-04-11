@@ -20,6 +20,7 @@ interface FloatingWindowProps {
   onMinimize?: () => void;
   onMaximize?: () => void;
   onFocus?: () => void;
+  isFocused?: boolean;
   className?: string;
   style?: React.CSSProperties;
 }
