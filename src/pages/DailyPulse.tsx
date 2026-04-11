@@ -818,6 +818,9 @@ const DailyPulse = () => {
         </div>
       </div>
 
+      {/* App Recents — cross-app continuity */}
+      <AppRecentsStrip />
+
       {/* Widget Grid — customizable desktop widgets */}
       <WidgetGrid />
 
