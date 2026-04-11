@@ -237,7 +237,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         <SuccessCelebration show={false} />
 
         {/* AI Gate */}
-        <AIGate />
+        
       </Suspense>
 
       {/* Behavioral Interaction Tracker — invisible */}
