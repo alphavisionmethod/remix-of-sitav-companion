@@ -9,6 +9,7 @@ import { TileCompositor } from "./tile-compositor";
 import { SoftwareRasterizer, type Color } from "./software-rasterizer";
 import { VectorRenderer } from "./vector-renderer";
 import { RenderThreadPool, type WorkItem } from "./render-thread-pool";
+import { AnimationEngine } from "./animation-engine";
 
 export type PipelineStage = "idle" | "layout" | "damage" | "tile-assign" | "rasterize" | "composite" | "present";
 export type FrameSkipPolicy = "drop" | "partial" | "force";
@@ -59,6 +60,7 @@ export class RenderPipeline {
   private _rasterizer: SoftwareRasterizer;
   private _vectorEngine: VectorRenderer;
   private _threadPool: RenderThreadPool;
+  private _animationEngine: AnimationEngine;
 
   private _stage: PipelineStage = "idle";
   private _targetFps: number;
@@ -69,10 +71,14 @@ export class RenderPipeline {
   private _frameCounter = 0;
   private _framesSkipped = 0;
   private _budgetOverruns = 0;
-  private _frameHistory: number[] = []; // recent frame durations
+  private _consecutiveOverruns = 0;
+  private _adaptiveFps: number;
+  private _frameHistory: number[] = [];
   private _lastFrameStats: FrameStats | null = null;
+  private _lastFrameTimestamp = 0;
 
   private _vsyncTimer: ReturnType<typeof setInterval> | null = null;
+  private _rafId: number | null = null;
   private _running = false;
   private _onFrame: ((stats: FrameStats) => void) | null = null;
 
@@ -87,6 +93,7 @@ export class RenderPipeline {
     const w = opts?.screenWidth ?? 1920;
     const h = opts?.screenHeight ?? 1080;
     this._targetFps = opts?.targetFps ?? DEFAULT_FPS;
+    this._adaptiveFps = this._targetFps;
     this._frameBudgetMs = 1000 / this._targetFps;
 
     this._damageTracker = new DamageTracker(w, h);
@@ -94,6 +101,7 @@ export class RenderPipeline {
     this._rasterizer = new SoftwareRasterizer();
     this._vectorEngine = new VectorRenderer(opts?.dpiScale ?? 1);
     this._threadPool = new RenderThreadPool(opts?.threadCount ?? 4, this._frameBudgetMs * 1000);
+    this._animationEngine = new AnimationEngine();
   }
 
   // ── Accessors to sub-systems ───────────────────────────────
@@ -103,14 +111,23 @@ export class RenderPipeline {
   get rasterizer(): SoftwareRasterizer { return this._rasterizer; }
   get vectorEngine(): VectorRenderer { return this._vectorEngine; }
   get threadPool(): RenderThreadPool { return this._threadPool; }
+  get animationEngine(): AnimationEngine { return this._animationEngine; }
 
   // ── Frame Rendering ────────────────────────────────────────
 
   /** Render a single frame synchronously */
   renderFrame(layoutRoot?: LayoutNode): FrameStats {
     const frameStart = performance.now();
+    const dtMs = this._lastFrameTimestamp > 0 ? frameStart - this._lastFrameTimestamp : this._frameBudgetMs;
+    this._lastFrameTimestamp = frameStart;
     this._frameCounter++;
     const frameId = this._frameCounter;
+
+    // 0. Animation tick (before layout)
+    const animDamage = this._animationEngine.tick(frameStart, dtMs);
+    for (const rect of animDamage) {
+      this._damageTracker.invalidate(rect, "animation");
+    }
 
     // 1. Layout pass
     this._stage = "layout";
