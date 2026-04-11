@@ -895,6 +895,10 @@ const App = () => (
                     <Route path="/business/proof" element={<BusinessCenter />} />
                     <Route path="/business/files" element={<BusinessCenter />} />
                     <Route path="/business/settings" element={<BusinessCenter />} />
+                    <Route path="/business/website-builder" element={<WebsiteBuilderPage />} />
+                    <Route path="/business/proposals" element={<ProposalsContractsPage />} />
+                    <Route path="/business/lead-recovery" element={<LeadRecoveryPage />} />
+                    <Route path="/business/social" element={<SocialCommandPage />} />
                     <Route path="/business/customers/:id" element={<CustomerDetail />} />
                     <Route path="/business/customer-health" element={<CustomerHealthPage />} />
 
