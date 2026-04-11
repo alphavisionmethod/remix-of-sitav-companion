@@ -24,15 +24,17 @@ import WebsiteBuilder from "./business/WebsiteBuilder";
 import ProposalsContracts from "./business/ProposalsContracts";
 import LeadRecovery from "./business/LeadRecovery";
 import SocialCommand from "./business/SocialCommand";
+import EcommerceManager from "./business/EcommerceManager";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useOSOrchestration } from "@/hooks/useOSOrchestration";
 import { useExperienceSignature } from "@/hooks/useExperienceSignature";
 import { useOpportunitySignals } from "@/hooks/useCAIData";
 
-type SubPage = "overview" | "leads" | "customers" | "opportunities" | "quotes" | "invoices" | "communications" | "boardroom" | "proof" | "revenue-autopilot" | "collections" | "autopilot-hub" | "revenue-impact" | "playbook-builder" | "revenue-forecast" | "website-builder" | "proposals" | "lead-recovery" | "social";
+type SubPage = "overview" | "leads" | "customers" | "opportunities" | "quotes" | "invoices" | "communications" | "boardroom" | "proof" | "revenue-autopilot" | "collections" | "autopilot-hub" | "revenue-impact" | "playbook-builder" | "revenue-forecast" | "website-builder" | "proposals" | "lead-recovery" | "social" | "ecommerce";
 
 const subpageFromPath = (path: string): SubPage => {
+  if (path.includes("/ecommerce")) return "ecommerce";
   if (path.includes("/website-builder")) return "website-builder";
   if (path.includes("/proposals")) return "proposals";
   if (path.includes("/lead-recovery")) return "lead-recovery";
@@ -74,6 +76,7 @@ const pages: Record<SubPage, React.ComponentType> = {
   proposals: ProposalsContracts,
   "lead-recovery": LeadRecovery,
   social: SocialCommand,
+  ecommerce: EcommerceManager,
 };
 
 const BusinessCenter = () => {
@@ -107,16 +110,17 @@ const BusinessCenter = () => {
         <SitaTabs
           tabs={[
             { key: "overview", label: "Overview" },
-            { key: "leads", label: "Leads" },
+            { key: "leads", label: "Leads", count: 3 },
             { key: "customers", label: "Customers" },
             { key: "opportunities", label: "Opportunities" },
             { key: "quotes", label: "Quotes" },
-            { key: "invoices", label: "Invoices" },
+            { key: "invoices", label: "Invoices", count: 1 },
             { key: "collections", label: "Collections" },
+            { key: "ecommerce", label: "🛒 E-Commerce", count: 2 },
             { key: "website-builder", label: "🌐 Website" },
-            { key: "proposals", label: "📝 Proposals" },
-            { key: "lead-recovery", label: "🔄 Lead Recovery" },
-            { key: "social", label: "📱 Social" },
+            { key: "proposals", label: "📝 Proposals", count: 2 },
+            { key: "lead-recovery", label: "🔄 Lead Recovery", count: 5 },
+            { key: "social", label: "📱 Social", count: 4 },
             { key: "revenue-autopilot", label: "Revenue Autopilot" },
             { key: "autopilot-hub", label: "⚡ Autopilot Hub" },
             { key: "revenue-impact", label: "📊 Revenue Impact" },

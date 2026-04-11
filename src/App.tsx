@@ -219,6 +219,7 @@ const WebsiteBuilderPage = lazy(() => import("./pages/business/WebsiteBuilder"))
 const ProposalsContractsPage = lazy(() => import("./pages/business/ProposalsContracts"));
 const LeadRecoveryPage = lazy(() => import("./pages/business/LeadRecovery"));
 const SocialCommandPage = lazy(() => import("./pages/business/SocialCommand"));
+const EcommerceManagerPage = lazy(() => import("./pages/business/EcommerceManager"));
 
 // ── AI Engineering Board ──
 const AIEngineeringBoard = lazy(() => import("./pages/admin/AIEngineeringBoard"));
@@ -906,6 +907,7 @@ const App = () => (
                     <Route path="/business/proposals" element={<ProposalsContractsPage />} />
                     <Route path="/business/lead-recovery" element={<LeadRecoveryPage />} />
                     <Route path="/business/social" element={<SocialCommandPage />} />
+                    <Route path="/business/ecommerce" element={<EcommerceManagerPage />} />
                     <Route path="/business/customers/:id" element={<CustomerDetail />} />
                     <Route path="/business/customer-health" element={<CustomerHealthPage />} />
 
