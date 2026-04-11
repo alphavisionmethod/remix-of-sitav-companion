@@ -311,6 +311,27 @@ export function DesktopSurface({
         <AdvisorInsight delay={0.8} />
       </div>
 
+      {/* Notification toasts */}
+      <DesktopToasts notifications={notifications} />
+
+      {/* Floating windows */}
+      <AnimatePresence>
+        {windows.map(w => (
+          <FloatingWindow
+            key={w.id}
+            title={w.title}
+            initialPosition={w.position}
+            width={w.width}
+            onClose={() => closeWindow(w.id)}
+            onMinimize={() => closeWindow(w.id)}
+            className="cursor-default"
+            style={{ zIndex: DEPTH_LAYERS.windows + w.zIndex }}
+          >
+            {w.component}
+          </FloatingWindow>
+        ))}
+      </AnimatePresence>
+
       {/* Subtle vignette overlay */}
       <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_center,transparent_40%,hsl(0_0%_0%/0.3)_100%)]" style={{ zIndex: DEPTH_LAYERS.vignette }} />
     </div>
