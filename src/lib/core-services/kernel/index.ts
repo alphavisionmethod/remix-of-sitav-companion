@@ -33,7 +33,7 @@ export { VectorRenderer, type VectorPath, type PathCommand, type GradientDef, ty
 export { RenderThreadPool, type WorkItem, type WorkPriority, type RenderThread, type ThreadPoolStats } from "./render-thread-pool";
 
 // --- Rendering Extensions ---
-export { AnimationEngine, type AnimationDef, type AnimationInstance, type KeyframeTrack, type EasingDef } from "./animation-engine";
+export { AnimationEngine, classifyAnimationLayer, type AnimationDef, type AnimationInstance, type AnimationLayer, type KeyframeTrack, type EasingDef } from "./animation-engine";
 export { TextLayoutEngine, type TextLayoutResult, type TextStyle, type TextLayoutBox, type PositionedGlyph } from "./text-layout-engine";
 export { ImagePipeline, type ImageSource, type SpriteAtlas, type NineSliceInsets, type ScaleFilter } from "./image-pipeline";
 export { RenderDebugOverlay, type DebugSnapshot, type DebugOverlayConfig } from "./render-debug-overlay";
@@ -54,6 +54,10 @@ export { AccessibilityRenderer, type A11yRole, type A11yAnnotation, type A11yTre
 // --- Command Buffer & UI Renderer (CPU Vulkan + High-Level API) ---
 export { CommandBuffer, CommandBufferPool, SoftwarePipeline, type DrawCommand, type CommandBufferStats, type Vertex2D, type VertexColor, type Transform2DMatrix, type Fixed16, toFixed16, fromFixed16, fpMul, fpDiv, fpFloor, fpCeil, fpFrac, IDENTITY_TRANSFORM } from "./command-buffer";
 export { UIRenderer, CpuBlur, type UIViewProps, type UITextProps, type UIBackground, type UIColor, type UIGradientStop, type UIBoxShadow, type UIBorder, type UIBorderRadii, type BlurConfig, type UIRendererStats } from "./ui-renderer";
+
+// --- View Tree + Layout Engine (Section 5.6) ---
+export { ViewTree, ViewNode, ContainerNode, ColumnNode, RowNode, StackNode, TextWidget, ButtonWidget, ImageWidget, SpacerNode, type ViewStyle, type ConstraintDef, type DrawContext, type FlexOptions, type MainAxisAlign, type CrossAxisAlign, type ViewTreeStats } from "./view-tree";
+export { LayoutEngine, type LayoutConstraints, type LayoutEngineStats } from "./layout-engine";
 
 // --- Facade imports ---
 import { ProcessScheduler } from "./process-scheduler";
@@ -91,6 +95,8 @@ import { WindowEffects } from "./window-effects";
 import { AccessibilityRenderer } from "./accessibility-renderer";
 import { CommandBufferPool } from "./command-buffer";
 import { UIRenderer } from "./ui-renderer";
+import { ViewTree } from "./view-tree";
+import { LayoutEngine } from "./layout-engine";
 
 /**
  * KernelSubsystem — Facade aggregating all kernel architecture,
@@ -147,6 +153,10 @@ export class KernelSubsystem {
   // Command Buffer & UI Renderer
   readonly commandBufferPool: CommandBufferPool;
   readonly uiRenderer: UIRenderer;
+
+  // View Tree & Layout Engine (Section 5.6)
+  readonly viewTree: ViewTree;
+  readonly layoutEngine: LayoutEngine;
 
   private _bootedAt: number;
 
@@ -207,6 +217,10 @@ export class KernelSubsystem {
     // Command Buffer & UI Renderer
     this.commandBufferPool = new CommandBufferPool(16);
     this.uiRenderer = new UIRenderer();
+
+    // View Tree & Layout Engine
+    this.viewTree = new ViewTree();
+    this.layoutEngine = new LayoutEngine();
 
     // ── Wire subsystems together ────────────────────────────
     // Wire scene graph into render pipeline
@@ -285,6 +299,8 @@ export class KernelSubsystem {
       accessibility: this.accessibility.getStats(),
       commandBufferPool: { pooledCount: this.commandBufferPool.pooledCount },
       uiRenderer: this.uiRenderer.getStats(),
+      viewTree: this.viewTree.getStats(),
+      layoutEngine: this.layoutEngine.getStats(),
     };
   }
 
