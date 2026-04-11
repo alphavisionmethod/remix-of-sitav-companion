@@ -312,5 +312,6 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
       {/* Mobile Bottom Nav — critical for mobile, keep eager */}
       <MobileBottomNav />
     </SidebarProvider>
+    </WindowManagerContext.Provider>
   );
 };
