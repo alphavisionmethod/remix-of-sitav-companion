@@ -154,14 +154,16 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
           <UpdateBanner />
           <ContinuityBanner />
         </Suspense>
-        <SitaTopBar
-          onNotifOpen={handleNotifOpen}
-          onTimelineOpen={handleTimelineOpen}
-          onCommandOpen={handleCommandOpen}
-        />
+        {!isDesktopRoute && (
+          <SitaTopBar
+            onNotifOpen={handleNotifOpen}
+            onTimelineOpen={handleTimelineOpen}
+            onCommandOpen={handleCommandOpen}
+          />
+        )}
 
         <div className="relative z-10 flex flex-1 min-w-0">
-          <AppSidebar />
+          {!isDesktopRoute && <AppSidebar />}
           <div className="flex flex-1 min-w-0">
             <div className="flex flex-1 flex-col min-w-0">
               {/* Main content with bottom padding for mobile nav + companion bar */}
@@ -169,28 +171,34 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
                 id="main-content"
                 role="main"
                 aria-label="Page content"
-                className="flex-1 overflow-auto scrollbar-thin pb-28 md:pb-16"
+                className={cn("flex-1 overflow-auto scrollbar-thin", isDesktopRoute ? "" : "pb-28 md:pb-16")}
               >
                 <ErrorBoundary>
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={workspaceKey}
-                      initial={transition.initial}
-                      animate={transition.animate}
-                      exit={transition.exit}
-                      transition={transition.transition}
-                      className="p-3 sm:p-4 md:p-6"
-                    >
-                      {children}
-                    </motion.div>
-                  </AnimatePresence>
+                  {isDesktopRoute ? (
+                    children
+                  ) : (
+                    <AnimatePresence mode="wait">
+                      <motion.div
+                        key={workspaceKey}
+                        initial={transition.initial}
+                        animate={transition.animate}
+                        exit={transition.exit}
+                        transition={transition.transition}
+                        className="p-3 sm:p-4 md:p-6"
+                      >
+                        {children}
+                      </motion.div>
+                    </AnimatePresence>
+                  )}
                 </ErrorBoundary>
               </main>
             </div>
-            {/* Persistent Contextual Rail — desktop only */}
-            <Suspense fallback={<div className="hidden lg:block w-72 p-4"><SectionSkeleton lines={5} /></div>}>
-              <ContextualRail />
-            </Suspense>
+            {/* Persistent Contextual Rail — desktop only, not on home */}
+            {!isDesktopRoute && (
+              <Suspense fallback={<div className="hidden lg:block w-72 p-4"><SectionSkeleton lines={5} /></div>}>
+                <ContextualRail />
+              </Suspense>
+            )}
           </div>
         </div>
       </div>
