@@ -3,7 +3,7 @@
 // Clean OS desktop: wallpaper, clock, glass widgets, dock launcher
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { getWallpaperTheme } from "@/hooks/use-wallpaper";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
