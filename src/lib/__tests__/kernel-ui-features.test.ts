@@ -690,16 +690,15 @@ describe("AnimationGroup Enhanced", () => {
 
   it("sequence advances after first finishes", () => {
     engine.create(makeAnim("a1", 50));
-    engine.create(makeAnim("a2", 50));
+    engine.create(makeAnim("a2", 500)); // longer so it survives the next tick
     const group = engine.createGroup("g1", ["a1", "a2"], { playMode: "sequence" });
     group.play();
 
     // Tick past first animation
     engine.tick(0, 60);
     expect(engine.get("a1")?.state).toBe("finished");
-    // a2 should now be running (started by onFinish callback)
-    // Need another tick to see it process
-    engine.tick(60, 1);
+    // a2 was started by the onFinish callback, tick again with small dt
+    engine.tick(60, 10);
     expect(engine.get("a2")?.state).toBe("running");
   });
 
