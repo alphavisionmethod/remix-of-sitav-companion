@@ -33,7 +33,7 @@ export { VectorRenderer, type VectorPath, type PathCommand, type GradientDef, ty
 export { RenderThreadPool, type WorkItem, type WorkPriority, type RenderThread, type ThreadPoolStats } from "./render-thread-pool";
 
 // --- Rendering Extensions ---
-export { AnimationEngine, type AnimationDef, type AnimationInstance, type KeyframeTrack, type EasingDef } from "./animation-engine";
+export { AnimationEngine, classifyAnimationLayer, type AnimationDef, type AnimationInstance, type AnimationLayer, type KeyframeTrack, type EasingDef } from "./animation-engine";
 export { TextLayoutEngine, type TextLayoutResult, type TextStyle, type TextLayoutBox, type PositionedGlyph } from "./text-layout-engine";
 export { ImagePipeline, type ImageSource, type SpriteAtlas, type NineSliceInsets, type ScaleFilter } from "./image-pipeline";
 export { RenderDebugOverlay, type DebugSnapshot, type DebugOverlayConfig } from "./render-debug-overlay";

@@ -258,6 +258,27 @@ export class AnimationEngine {
     if (inst) inst.onFinish = cb;
   }
 
+  /**
+   * Bind an animation to a ViewNode by id.
+   * Compositor-layer animations auto-apply transform/opacity values
+   * to the ViewNode's anim* properties without triggering re-rasterization.
+   */
+  bindToView(animId: string, viewNodeId: string): void {
+    const inst = this._animations.get(animId);
+    if (inst) inst.boundViewId = viewNodeId;
+  }
+
+  /** Get the view node id bound to an animation */
+  getBoundViewId(animId: string): string | undefined {
+    return this._animations.get(animId)?.boundViewId;
+  }
+
+  /** Check if animation is compositor-only (no re-raster needed) */
+  isCompositorLayer(animId: string): boolean {
+    const inst = this._animations.get(animId);
+    return inst?.layer === "compositor";
+  }
+
   setOnFrame(id: string, cb: (values: Map<string, number>) => void): void {
     const inst = this._animations.get(id);
     if (inst) inst.onFrame = cb;
