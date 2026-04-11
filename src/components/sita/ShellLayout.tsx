@@ -1,4 +1,5 @@
 import { ReactNode, useState, useEffect, lazy, Suspense, useCallback } from "react";
+import { useWindowManager } from "@/hooks/useWindowManager";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { SkipToContent } from "./SkipToContent";
 import { RouteAnnouncer } from "./RouteAnnouncer";
@@ -85,7 +86,8 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
   const [wizardType, setWizardType] = useState<"lead" | "invoice" | "budget" | null>(null);
   const [showEntryCeremony, setShowEntryCeremony] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
-  const { isCalm, isFocus } = useDisplayMode();
+  const [missionControlOpen, setMissionControlOpen] = useState(false);
+  const { windows, visibleWindows, openWindow, closeWindow, focusWindow, minimizeWindow } = useWindowManager();
   const { isOpen: railOpen } = useInspector();
   useAdaptiveInterface();
   const location = useLocation();
