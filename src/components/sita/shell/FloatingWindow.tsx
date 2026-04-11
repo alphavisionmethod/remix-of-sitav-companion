@@ -40,6 +40,7 @@ export function FloatingWindow({
   onMinimize,
   onMaximize,
   onFocus,
+  isFocused = true,
   className,
   style,
 }: FloatingWindowProps) {
