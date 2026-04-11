@@ -58,6 +58,12 @@ export { Firewall, type FirewallRule, type FirewallChain, type FirewallAction, t
 export { VPNManager, type VPNTunnel, type VPNPeer, type SplitTunnelRule, type VPNProtocol, type TunnelState, type VPNStats } from "./vpn-manager";
 export { DNSResolver, type DNSRecord, type DNSQuery, type DNSCacheEntry, type DNSUpstream, type DNSOverride, type DNSResolverStats } from "./dns-resolver";
 
+// --- Display Server & Window Manager (Section 6) ---
+export { GPUAbstraction, type GPUAdapterInfo, type GPUDeviceLimits, type GPUBufferHandle, type GPUTextureHandle, type GPUShaderModuleHandle, type GPURenderPipelineHandle, type GPUComputePipelineHandle, type GPUCommandEncoder, type GPUCommand, type GPUSubmission, type GPUDeviceLostInfo, type GPUBackendType, type GPUFeature, type GPUTextureFormat, type GPUAbstractionStats } from "./gpu-abstraction";
+export { WindowManager, type WMWindow, type WMWorkspace, type WMWindowState, type WMFocusPolicy, type WMStackingMode, type WMTilingStrategy, type TilingNode, type WindowManagerStats } from "./window-manager";
+export { DisplayProtocol, type ProtocolClient, type ProtocolSurface, type ProtocolBuffer, type SHMPool, type XDGToplevel, type XDGPopup, type ProtocolEvent, type SurfaceRole, type DisplayProtocolStats } from "./display-protocol";
+export { SurfaceAllocator, type SurfaceAllocation, type BufferPool, type FormatCapability, type SurfacePixelFormat, type SurfaceMemoryType, type BufferingMode, type SurfaceAllocatorStats } from "./surface-allocator";
+
 // --- Command Buffer & UI Renderer (CPU Vulkan + High-Level API) ---
 export { CommandBuffer, CommandBufferPool, SoftwarePipeline, type DrawCommand, type CommandBufferStats, type Vertex2D, type VertexColor, type Transform2DMatrix, type Fixed16, toFixed16, fromFixed16, fpMul, fpDiv, fpFloor, fpCeil, fpFrac, IDENTITY_TRANSFORM } from "./command-buffer";
 export { UIRenderer, CpuBlur, type UIViewProps, type UITextProps, type UIBackground, type UIColor, type UIGradientStop, type UIBoxShadow, type UIBorder, type UIBorderRadii, type BlurConfig, type UIRendererStats } from "./ui-renderer";
