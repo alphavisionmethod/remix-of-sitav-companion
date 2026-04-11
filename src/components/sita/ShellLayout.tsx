@@ -148,6 +148,13 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         <CommandPalette open={commandOpen} onClose={() => setCommandOpen(false)} />
         {/* Notification Center */}
         <NotificationCenterPanel open={notifOpen} onClose={() => setNotifOpen(false)} />
+        {/* Mission Control (F3) */}
+        <MissionControlLazy
+          isOpen={missionControlOpen}
+          windows={windows}
+          onSelectWindow={(id) => { focusWindow(id); setMissionControlOpen(false); }}
+          onClose={() => setMissionControlOpen(false)}
+        />
       </Suspense>
 
       <div className={cn("relative flex flex-col min-h-screen w-full bg-surface-0", isCalm && "calm-mode", isFocus && "focus-mode")}>
