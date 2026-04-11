@@ -923,6 +923,12 @@ export const APP_BUNDLES: AppBundle[] = [
     icon: "🔐", iconBg: "from-gray-800 to-gray-600", appIds: ["1password", "bitwarden", "wireguard", "signal"],
     recommendedFor: ["privacy", "security", "enterprise"], totalSize: "502 MB",
   },
+  {
+    id: "microsoft-365", name: "Microsoft 365 Suite", subtitle: "The complete productivity suite",
+    description: "Word, Excel, PowerPoint, Outlook, Teams, and OneDrive — the industry-standard productivity stack, ready to use.",
+    icon: "Ⓜ️", iconBg: "from-blue-600 to-blue-400", appIds: ["ms-word", "ms-excel", "ms-powerpoint", "ms-outlook", "ms-teams", "ms-onedrive"],
+    recommendedFor: ["business", "enterprise", "productivity"], totalSize: "0 MB", featured: true,
+  },
 ];
 
 // ── Helpers ──
