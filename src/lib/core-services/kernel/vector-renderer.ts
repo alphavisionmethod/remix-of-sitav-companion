@@ -4,6 +4,8 @@
 // fill rules, strokes, gradients, glyph cache, DPI scaling
 // ═══════════════════════════════════════════════════════════════
 
+import type { TileBuffer } from "./software-rasterizer";
+
 export type PathCommand =
   | { type: "moveTo"; x: number; y: number }
   | { type: "lineTo"; x: number; y: number }
