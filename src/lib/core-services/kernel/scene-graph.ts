@@ -351,6 +351,20 @@ export class SceneNode {
   }
 }
 
+// ── Event types for scene graph dispatch ─────────────────────
+
+export interface SceneInputEvent {
+  type: string;
+  targetNodeId: string;
+  x?: number;
+  y?: number;
+  key?: string;
+  propagationStopped: boolean;
+  defaultPrevented: boolean;
+}
+
+export type SceneEventHandler = (event: SceneInputEvent, node: SceneNode) => void;
+
 // ═════════════════════════════════════════════════════════════
 
 export class SceneGraph {
@@ -359,6 +373,9 @@ export class SceneGraph {
   private _displayList: DisplayListEntry[] = [];
   private _displayListDirty = true;
   private _lastTraversalMs = 0;
+
+  /** Per-node event handlers */
+  private _eventHandlers = new Map<string, Map<string, SceneEventHandler[]>>();
 
   constructor() {
     this._root = new SceneNode({ type: "group", id: "root", width: 0, height: 0 });
@@ -389,6 +406,7 @@ export class SceneGraph {
     if (!node || id === "root") return;
     node.removeFromParent();
     this._unregisterSubtree(node);
+    this._eventHandlers.delete(id);
     this._displayListDirty = true;
   }
 
@@ -420,6 +438,83 @@ export class SceneGraph {
 
   hitTest(x: number, y: number): HitTestResult | null {
     return this._root.hitTest(x, y);
+  }
+
+  // ── Event dispatch ─────────────────────────────────────────
+
+  /**
+   * Register an event handler on a node.
+   */
+  addEventListener(nodeId: string, eventType: string, handler: SceneEventHandler): () => void {
+    if (!this._eventHandlers.has(nodeId)) {
+      this._eventHandlers.set(nodeId, new Map());
+    }
+    const nodeHandlers = this._eventHandlers.get(nodeId)!;
+    if (!nodeHandlers.has(eventType)) {
+      nodeHandlers.set(eventType, []);
+    }
+    nodeHandlers.get(eventType)!.push(handler);
+
+    return () => {
+      const handlers = nodeHandlers.get(eventType);
+      if (handlers) {
+        const idx = handlers.indexOf(handler);
+        if (idx >= 0) handlers.splice(idx, 1);
+      }
+    };
+  }
+
+  /**
+   * Dispatch an event to a target node with bubble-up propagation.
+   * The event starts at the target and bubbles up through ancestors
+   * until propagation is stopped or root is reached.
+   */
+  dispatchEvent(targetNodeId: string, eventType: string, eventData?: Partial<SceneInputEvent>): SceneInputEvent {
+    const event: SceneInputEvent = {
+      type: eventType,
+      targetNodeId,
+      propagationStopped: false,
+      defaultPrevented: false,
+      ...eventData,
+    };
+
+    const node = this._nodeMap.get(targetNodeId);
+    if (!node) return event;
+
+    // Build path from target to root
+    const path: SceneNode[] = [];
+    let current: SceneNode | null = node;
+    while (current) {
+      path.push(current);
+      current = current.parent;
+    }
+
+    // Dispatch through path (target → root, bubble phase)
+    for (const pathNode of path) {
+      if (event.propagationStopped) break;
+
+      const nodeHandlers = this._eventHandlers.get(pathNode.id);
+      if (nodeHandlers) {
+        const handlers = nodeHandlers.get(eventType);
+        if (handlers) {
+          for (const handler of handlers) {
+            handler(event, pathNode);
+            if (event.propagationStopped) break;
+          }
+        }
+      }
+    }
+
+    return event;
+  }
+
+  /**
+   * Dispatch event by hit-testing a point, then bubbling from the hit node.
+   */
+  dispatchEventAtPoint(x: number, y: number, eventType: string, eventData?: Partial<SceneInputEvent>): SceneInputEvent | null {
+    const hit = this.hitTest(x, y);
+    if (!hit) return null;
+    return this.dispatchEvent(hit.nodeId, eventType, { ...eventData, x: hit.localX, y: hit.localY });
   }
 
   // ── Stats ──────────────────────────────────────────────────
@@ -456,6 +551,7 @@ export class SceneGraph {
 
   private _unregisterSubtree(node: SceneNode): void {
     this._nodeMap.delete(node.id);
+    this._eventHandlers.delete(node.id);
     for (const child of node.children) this._unregisterSubtree(child);
   }
 }

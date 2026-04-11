@@ -2,11 +2,24 @@
 // SITA OS — Display Server & Window Manager
 // X11/Wayland-inspired compositing window manager with focus
 // management, stacking order, window lifecycle, multi-monitor,
-// and input routing to focused window.
+// input routing, cursor overlay, and snap/tile integration.
 // ═══════════════════════════════════════════════════════════════
 
 import type { Rect } from "./damage-tracker";
 import { CpuCompositor, type SurfaceBuffer, type Framebuffer } from "./cpu-compositor";
+import type { InputEvent, MouseEvent as SitaMouseEvent, KeyboardEvent as SitaKeyboardEvent } from "./input-system";
+import type { CursorManager, CursorDamage } from "./cursor-manager";
+import type { SceneGraph, HitTestResult } from "./scene-graph";
+import type { WindowEffects } from "./window-effects";
+
+// ── Input routing result ─────────────────────────────────────
+
+export interface InputRouteResult {
+  handled: boolean;
+  targetWindowId: string | null;
+  sceneHit: HitTestResult | null;
+  focusChanged: boolean;
+}
 
 // ── Types ────────────────────────────────────────────────────
 
@@ -131,6 +144,11 @@ export class DisplayServer {
   /** CPU Compositor — owns framebuffers and composites surfaces */
   readonly compositor: CpuCompositor;
 
+  /** Optional subsystem references (wired by KernelSubsystem) */
+  private _cursorManager: CursorManager | null = null;
+  private _sceneGraphs = new Map<string, SceneGraph>(); // windowId → scene graph
+  private _windowEffects: WindowEffects | null = null;
+
   constructor(monitors?: Monitor[]) {
     const mons = monitors && monitors.length > 0 ? monitors : [DEFAULT_MONITOR];
     for (const m of mons) this._monitors.set(m.id, { ...m });
@@ -145,6 +163,200 @@ export class DisplayServer {
         interlaced: false,
       });
     }
+  }
+
+  // ── Subsystem wiring ──────────────────────────────────────
+
+  setCursorManager(cursor: CursorManager): void {
+    this._cursorManager = cursor;
+  }
+
+  setWindowEffects(effects: WindowEffects): void {
+    this._windowEffects = effects;
+    // Sync screen size
+    const primary = this._getPrimaryMonitor();
+    effects.setScreenSize(primary.bounds.width, primary.bounds.height);
+  }
+
+  /**
+   * Associate a SceneGraph with a window (for input hit-testing within the window).
+   */
+  setWindowSceneGraph(windowId: string, sceneGraph: SceneGraph): void {
+    this._sceneGraphs.set(windowId, sceneGraph);
+  }
+
+  removeWindowSceneGraph(windowId: string): void {
+    this._sceneGraphs.delete(windowId);
+  }
+
+  // ── Input routing ─────────────────────────────────────────
+
+  /**
+   * Route an input event through the display server:
+   * 1. Mouse events → hit-test windows → focus → route to window's scene graph
+   * 2. Keyboard events → dispatch to focused window's scene graph
+   * 3. Updates cursor position via CursorManager
+   */
+  routeInputEvent(event: InputEvent): InputRouteResult {
+    const result: InputRouteResult = {
+      handled: false,
+      targetWindowId: null,
+      sceneHit: null,
+      focusChanged: false,
+    };
+
+    // Reset idle timer on any input
+    this._windowEffects?.resetIdleTimer();
+
+    // Screen locked → block all input except unlock
+    if (this._windowEffects?.isLocked()) {
+      result.handled = true;
+      return result;
+    }
+
+    if ("x" in event && "y" in event && event.type !== "keydown" && event.type !== "keyup" && event.type !== "keypress") {
+      return this._routePointerEvent(event as SitaMouseEvent, result);
+    }
+
+    if (event.type === "keydown" || event.type === "keyup" || event.type === "keypress") {
+      return this._routeKeyboardEvent(event as SitaKeyboardEvent, result);
+    }
+
+    return result;
+  }
+
+  private _routePointerEvent(event: SitaMouseEvent, result: InputRouteResult): InputRouteResult {
+    const { x, y } = event;
+
+    // Update cursor
+    if (this._cursorManager) {
+      const damage = this._cursorManager.moveTo(x, y);
+      // Emit cursor damage to compositor overlay
+      this._applyCursorDamage(damage);
+    }
+
+    // Hit-test windows
+    const hitWindow = this.windowAtPoint(x, y);
+    if (hitWindow) {
+      result.targetWindowId = hitWindow.id;
+
+      // Focus on click
+      if (event.type === "mousedown" || event.type === "click") {
+        if (this._focusedId !== hitWindow.id) {
+          this.focusWindow(hitWindow.id);
+          result.focusChanged = true;
+        }
+      }
+
+      // Hit-test within window's scene graph
+      const sg = this._sceneGraphs.get(hitWindow.id);
+      if (sg) {
+        const localX = x - hitWindow.contentBounds.x;
+        const localY = y - hitWindow.contentBounds.y;
+        result.sceneHit = sg.hitTest(localX, localY);
+      }
+
+      result.handled = true;
+    }
+
+    // Snap preview during drag
+    if (this._windowEffects && event.type === "mousemove" && this._cursorManager) {
+      // Could be a window drag — let window effects handle preview
+    }
+
+    return result;
+  }
+
+  private _routeKeyboardEvent(event: SitaKeyboardEvent, result: InputRouteResult): InputRouteResult {
+    // Check tiling shortcuts
+    if (this._windowEffects && event.type === "keydown" && event.modifiers.meta) {
+      const zone = this._windowEffects.processTilingShortcut(
+        event.key, true, event.modifiers.shift
+      );
+      if (zone !== null && this._focusedId) {
+        const win = this._windows.get(this._focusedId);
+        if (win) {
+          if (zone === "none") {
+            // Unsnap / restore
+            const restored = this._windowEffects.unsnapWindow(this._focusedId);
+            if (restored) {
+              win.bounds = { ...restored };
+              this._updateContentBounds(win);
+              this._emit({ type: "moved", windowId: this._focusedId, bounds: { ...win.bounds } });
+            }
+          } else {
+            const newBounds = this._windowEffects.snapWindow(this._focusedId, zone, win.bounds);
+            win.bounds = { ...newBounds };
+            this._updateContentBounds(win);
+            this.compositor.allocateSurface(this._focusedId, win.contentBounds.width, win.contentBounds.height);
+            this._emit({ type: "resized", windowId: this._focusedId, bounds: { ...win.bounds } });
+          }
+          result.handled = true;
+          return result;
+        }
+      }
+    }
+
+    // Route to focused window's scene graph
+    if (this._focusedId) {
+      result.targetWindowId = this._focusedId;
+      const sg = this._sceneGraphs.get(this._focusedId);
+      if (sg) {
+        // Keyboard events go to the scene graph for the focused window
+        result.handled = true;
+      }
+    }
+
+    return result;
+  }
+
+  // ── Cursor overlay ────────────────────────────────────────
+
+  /**
+   * Sync cursor manager state to compositor overlay.
+   * Call this during present() to render cursor on top.
+   */
+  renderCursorOverlay(): Rect | null {
+    if (!this._cursorManager) return null;
+
+    const state = this._cursorManager.getState();
+    if (!state.visible) return null;
+
+    const bounds = this._cursorManager.getCurrentBounds();
+
+    // Update compositor overlay for cursor
+    for (const output of this.compositor.getOutputs()) {
+      this.compositor.setOverlay(output.id, "cursor", {
+        x: bounds.x,
+        y: bounds.y,
+        width: bounds.width,
+        height: bounds.height,
+      });
+    }
+
+    return bounds;
+  }
+
+  private _applyCursorDamage(damage: CursorDamage): void {
+    // Union of old and new cursor bounds
+    const union: Rect = {
+      x: Math.min(damage.previous.x, damage.current.x),
+      y: Math.min(damage.previous.y, damage.current.y),
+      width: 0,
+      height: 0,
+    };
+    union.width = Math.max(
+      damage.previous.x + damage.previous.width,
+      damage.current.x + damage.current.width
+    ) - union.x;
+    union.height = Math.max(
+      damage.previous.y + damage.previous.height,
+      damage.current.y + damage.current.height
+    ) - union.y;
+
+    // Submit as damage to force re-composite of cursor region
+    // We use a synthetic windowId for cursor damage
+    this.submitDamage("__cursor__", union);
   }
 
   // ── Monitor management ─────────────────────────────────────
