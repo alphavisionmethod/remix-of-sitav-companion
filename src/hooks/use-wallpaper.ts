@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Desktop Wallpaper Themes
-// Persists selected wallpaper in localStorage, provides getter
+// macOS-inspired palettes with brand purple/gold accents
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useCallback } from "react";
@@ -10,9 +10,8 @@ export interface WallpaperTheme {
   name: string;
   category: "gradient" | "abstract" | "nature" | "minimal";
   gradient: string;
-  /** CSS for optional overlay effects */
   overlay?: string;
-  preview: string; // small CSS gradient for the picker thumbnail
+  preview: string;
 }
 
 const STORAGE_KEY = "sita-wallpaper";
@@ -23,117 +22,125 @@ export const WALLPAPER_THEMES: WallpaperTheme[] = [
     id: "auto",
     name: "Auto (Time of Day)",
     category: "gradient",
-    gradient: "", // handled dynamically
-    preview: "linear-gradient(135deg, hsl(35 80% 15%), hsl(265 30% 10%))",
+    gradient: "",
+    preview: "linear-gradient(135deg, hsl(265 55% 35%), hsl(38 85% 55%), hsl(265 40% 20%))",
   },
 
-  // ── Gradients ──
+  // ── Gradients — vibrant macOS-style ──
+  {
+    id: "sita-brand",
+    name: "SITA Brand",
+    category: "gradient",
+    gradient: "from-[hsl(265_55%_30%)] via-[hsl(280_50%_25%)] to-[hsl(38_70%_25%)]",
+    overlay: "radial-gradient(ellipse at 60% 40%, hsl(265 60% 45% / 0.3), transparent 60%)",
+    preview: "linear-gradient(135deg, hsl(265 55% 35%), hsl(280 50% 30%), hsl(38 70% 35%))",
+  },
   {
     id: "aurora",
     name: "Aurora Borealis",
     category: "gradient",
-    gradient: "from-[hsl(160_60%_8%)] via-[hsl(200_50%_12%)] to-[hsl(280_40%_10%)]",
-    preview: "linear-gradient(135deg, hsl(160 60% 8%), hsl(200 50% 12%), hsl(280 40% 10%))",
+    gradient: "from-[hsl(160_50%_18%)] via-[hsl(200_45%_22%)] to-[hsl(265_40%_20%)]",
+    preview: "linear-gradient(135deg, hsl(160 50% 22%), hsl(200 45% 26%), hsl(265 40% 25%))",
   },
   {
     id: "sunset-glow",
     name: "Sunset Glow",
     category: "gradient",
-    gradient: "from-[hsl(15_70%_14%)] via-[hsl(340_50%_12%)] to-[hsl(270_40%_8%)]",
-    preview: "linear-gradient(135deg, hsl(15 70% 14%), hsl(340 50% 12%), hsl(270 40% 8%))",
+    gradient: "from-[hsl(15_65%_28%)] via-[hsl(340_50%_25%)] to-[hsl(270_45%_20%)]",
+    preview: "linear-gradient(135deg, hsl(15 65% 32%), hsl(340 50% 28%), hsl(270 45% 24%))",
   },
   {
     id: "deep-ocean",
     name: "Deep Ocean",
     category: "gradient",
-    gradient: "from-[hsl(210_60%_6%)] via-[hsl(230_50%_10%)] to-[hsl(200_40%_14%)]",
-    preview: "linear-gradient(135deg, hsl(210 60% 6%), hsl(230 50% 10%), hsl(200 40% 14%))",
+    gradient: "from-[hsl(210_55%_16%)] via-[hsl(225_50%_22%)] to-[hsl(200_45%_26%)]",
+    preview: "linear-gradient(135deg, hsl(210 55% 20%), hsl(225 50% 26%), hsl(200 45% 30%))",
   },
   {
     id: "midnight-purple",
-    name: "Midnight Purple",
+    name: "Royal Purple",
     category: "gradient",
-    gradient: "from-[hsl(270_50%_8%)] via-[hsl(290_40%_12%)] to-[hsl(240_35%_6%)]",
-    preview: "linear-gradient(135deg, hsl(270 50% 8%), hsl(290 40% 12%), hsl(240 35% 6%))",
+    gradient: "from-[hsl(265_50%_18%)] via-[hsl(280_45%_24%)] to-[hsl(240_40%_16%)]",
+    preview: "linear-gradient(135deg, hsl(265 50% 22%), hsl(280 45% 28%), hsl(240 40% 20%))",
   },
 
-  // ── Abstract ──
+  // ── Abstract — richer, brighter ──
   {
     id: "ember-flow",
     name: "Ember Flow",
     category: "abstract",
-    gradient: "from-[hsl(0_50%_8%)] via-[hsl(30_60%_10%)] to-[hsl(350_40%_6%)]",
-    overlay: "radial-gradient(ellipse at 30% 40%, hsl(20 70% 15% / 0.4), transparent 60%)",
-    preview: "linear-gradient(135deg, hsl(0 50% 8%), hsl(30 60% 10%), hsl(350 40% 6%))",
+    gradient: "from-[hsl(0_50%_18%)] via-[hsl(30_60%_22%)] to-[hsl(350_45%_16%)]",
+    overlay: "radial-gradient(ellipse at 30% 40%, hsl(20 70% 30% / 0.4), transparent 60%)",
+    preview: "linear-gradient(135deg, hsl(0 50% 22%), hsl(30 60% 28%), hsl(350 45% 20%))",
   },
   {
     id: "nebula",
     name: "Nebula",
     category: "abstract",
-    gradient: "from-[hsl(260_50%_6%)] via-[hsl(300_35%_10%)] to-[hsl(220_40%_8%)]",
-    overlay: "radial-gradient(ellipse at 70% 30%, hsl(280 60% 20% / 0.3), transparent 50%), radial-gradient(ellipse at 20% 70%, hsl(220 50% 15% / 0.3), transparent 50%)",
-    preview: "linear-gradient(135deg, hsl(260 50% 6%), hsl(300 35% 10%), hsl(220 40% 8%))",
+    gradient: "from-[hsl(260_50%_16%)] via-[hsl(300_40%_22%)] to-[hsl(220_45%_18%)]",
+    overlay: "radial-gradient(ellipse at 70% 30%, hsl(280 60% 35% / 0.3), transparent 50%), radial-gradient(ellipse at 20% 70%, hsl(220 50% 30% / 0.3), transparent 50%)",
+    preview: "linear-gradient(135deg, hsl(260 50% 20%), hsl(300 40% 26%), hsl(220 45% 22%))",
   },
   {
     id: "liquid-silk",
     name: "Liquid Silk",
     category: "abstract",
-    gradient: "from-[hsl(240_30%_5%)] via-[hsl(260_20%_10%)] to-[hsl(280_25%_7%)]",
-    overlay: "radial-gradient(ellipse at 50% 50%, hsl(265 40% 14% / 0.35), transparent 60%)",
-    preview: "linear-gradient(135deg, hsl(240 30% 5%), hsl(260 20% 10%), hsl(280 25% 7%))",
+    gradient: "from-[hsl(240_30%_14%)] via-[hsl(260_25%_20%)] to-[hsl(280_30%_16%)]",
+    overlay: "radial-gradient(ellipse at 50% 50%, hsl(265 40% 28% / 0.35), transparent 60%)",
+    preview: "linear-gradient(135deg, hsl(240 30% 18%), hsl(260 25% 24%), hsl(280 30% 20%))",
   },
 
-  // ── Nature ──
+  // ── Nature — brighter, more vibrant ──
   {
     id: "forest-dusk",
     name: "Forest at Dusk",
     category: "nature",
-    gradient: "from-[hsl(140_40%_6%)] via-[hsl(160_30%_10%)] to-[hsl(180_25%_5%)]",
-    preview: "linear-gradient(135deg, hsl(140 40% 6%), hsl(160 30% 10%), hsl(180 25% 5%))",
+    gradient: "from-[hsl(140_40%_14%)] via-[hsl(160_35%_20%)] to-[hsl(180_30%_12%)]",
+    preview: "linear-gradient(135deg, hsl(140 40% 18%), hsl(160 35% 24%), hsl(180 30% 16%))",
   },
   {
     id: "desert-twilight",
     name: "Desert Twilight",
     category: "nature",
-    gradient: "from-[hsl(25_50%_10%)] via-[hsl(35_40%_14%)] to-[hsl(15_30%_8%)]",
-    preview: "linear-gradient(135deg, hsl(25 50% 10%), hsl(35 40% 14%), hsl(15 30% 8%))",
+    gradient: "from-[hsl(25_50%_20%)] via-[hsl(35_45%_26%)] to-[hsl(15_35%_16%)]",
+    preview: "linear-gradient(135deg, hsl(25 50% 24%), hsl(35 45% 30%), hsl(15 35% 20%))",
   },
   {
     id: "mountain-dawn",
     name: "Mountain Dawn",
     category: "nature",
-    gradient: "from-[hsl(200_30%_8%)] via-[hsl(30_40%_12%)] to-[hsl(220_25%_6%)]",
-    preview: "linear-gradient(135deg, hsl(200 30% 8%), hsl(30 40% 12%), hsl(220 25% 6%))",
+    gradient: "from-[hsl(200_35%_18%)] via-[hsl(30_45%_24%)] to-[hsl(220_30%_14%)]",
+    preview: "linear-gradient(135deg, hsl(200 35% 22%), hsl(30 45% 28%), hsl(220 30% 18%))",
   },
   {
     id: "arctic-glow",
     name: "Arctic Glow",
     category: "nature",
-    gradient: "from-[hsl(195_35%_8%)] via-[hsl(210_30%_12%)] to-[hsl(220_40%_6%)]",
-    preview: "linear-gradient(135deg, hsl(195 35% 8%), hsl(210 30% 12%), hsl(220 40% 6%))",
+    gradient: "from-[hsl(195_40%_18%)] via-[hsl(210_35%_24%)] to-[hsl(220_45%_16%)]",
+    preview: "linear-gradient(135deg, hsl(195 40% 22%), hsl(210 35% 28%), hsl(220 45% 20%))",
   },
 
-  // ── Minimal ──
+  // ── Minimal — dark but not pitch black ──
   {
     id: "pure-dark",
     name: "Pure Dark",
     category: "minimal",
-    gradient: "from-[hsl(0_0%_4%)] via-[hsl(0_0%_6%)] to-[hsl(0_0%_3%)]",
-    preview: "linear-gradient(135deg, hsl(0 0% 4%), hsl(0 0% 6%), hsl(0 0% 3%))",
+    gradient: "from-[hsl(240_10%_8%)] via-[hsl(240_8%_10%)] to-[hsl(240_10%_6%)]",
+    preview: "linear-gradient(135deg, hsl(240 10% 10%), hsl(240 8% 12%), hsl(240 10% 8%))",
   },
   {
     id: "charcoal",
     name: "Charcoal",
     category: "minimal",
-    gradient: "from-[hsl(220_10%_8%)] via-[hsl(220_8%_10%)] to-[hsl(220_12%_6%)]",
-    preview: "linear-gradient(135deg, hsl(220 10% 8%), hsl(220 8% 10%), hsl(220 12% 6%))",
+    gradient: "from-[hsl(220_12%_12%)] via-[hsl(220_10%_16%)] to-[hsl(220_14%_10%)]",
+    preview: "linear-gradient(135deg, hsl(220 12% 14%), hsl(220 10% 18%), hsl(220 14% 12%))",
   },
   {
     id: "slate-warmth",
     name: "Warm Slate",
     category: "minimal",
-    gradient: "from-[hsl(30_10%_7%)] via-[hsl(25_8%_9%)] to-[hsl(20_6%_5%)]",
-    preview: "linear-gradient(135deg, hsl(30 10% 7%), hsl(25 8% 9%), hsl(20 6% 5%))",
+    gradient: "from-[hsl(30_12%_12%)] via-[hsl(25_10%_16%)] to-[hsl(20_8%_10%)]",
+    preview: "linear-gradient(135deg, hsl(30 12% 14%), hsl(25 10% 18%), hsl(20 8% 12%))",
   },
 ];
 

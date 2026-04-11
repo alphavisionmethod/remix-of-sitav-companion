@@ -9,27 +9,27 @@ import { NavLink } from "@/components/NavLink";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDataMode } from "@/contexts/DataModeContext";
-import logo from "@/assets/logo.webp";
+import logo from "@/assets/sita-logo.jpeg";
 import {
   Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu,
   SidebarMenuButton, SidebarMenuItem, SidebarHeader, SidebarFooter, useSidebar,
 } from "@/components/ui/sidebar";
 
-// ── Domain color map for app-style icons ─────────────────────
+// ── Domain color map — vibrant macOS-style with brand purple/gold ─
 const domainColors: Record<string, { bg: string; ring: string }> = {
-  "/home":           { bg: "from-slate-500 to-slate-700",    ring: "ring-slate-400/40" },
-  "/pulse":          { bg: "from-orange-400 to-orange-600",  ring: "ring-orange-400/40" },
-  "/business":       { bg: "from-blue-500 to-blue-700",      ring: "ring-blue-400/40" },
-  "/money":          { bg: "from-emerald-500 to-emerald-700", ring: "ring-emerald-400/40" },
-  "/concierge":      { bg: "from-purple-500 to-purple-700",  ring: "ring-purple-400/40" },
-  "/files":          { bg: "from-sky-400 to-sky-600",        ring: "ring-sky-400/40" },
-  "/revenue-office": { bg: "from-amber-500 to-amber-700",   ring: "ring-amber-400/40" },
-  "/boardroom":      { bg: "from-indigo-500 to-indigo-700",  ring: "ring-indigo-400/40" },
-  "/calendar":       { bg: "from-rose-400 to-rose-600",     ring: "ring-rose-400/40" },
-  "/tasks":          { bg: "from-teal-500 to-teal-700",     ring: "ring-teal-400/40" },
-  "/settings":       { bg: "from-zinc-500 to-zinc-700",     ring: "ring-zinc-400/40" },
-  "/owner":          { bg: "from-red-500 to-red-700",       ring: "ring-red-400/40" },
-  "/app-store":      { bg: "from-violet-500 to-violet-700", ring: "ring-violet-400/40" },
+  "/home":           { bg: "from-violet-500 to-purple-600",   ring: "ring-violet-400/50" },
+  "/pulse":          { bg: "from-amber-400 to-orange-500",    ring: "ring-amber-400/50" },
+  "/business":       { bg: "from-blue-400 to-indigo-500",     ring: "ring-blue-400/50" },
+  "/money":          { bg: "from-emerald-400 to-green-500",   ring: "ring-emerald-400/50" },
+  "/concierge":      { bg: "from-purple-400 to-fuchsia-500",  ring: "ring-purple-400/50" },
+  "/files":          { bg: "from-sky-400 to-blue-500",        ring: "ring-sky-400/50" },
+  "/revenue-office": { bg: "from-yellow-400 to-amber-500",    ring: "ring-yellow-400/50" },
+  "/boardroom":      { bg: "from-indigo-400 to-violet-500",   ring: "ring-indigo-400/50" },
+  "/calendar":       { bg: "from-rose-400 to-pink-500",       ring: "ring-rose-400/50" },
+  "/tasks":          { bg: "from-teal-400 to-cyan-500",       ring: "ring-teal-400/50" },
+  "/settings":       { bg: "from-gray-400 to-slate-500",      ring: "ring-gray-400/50" },
+  "/owner":          { bg: "from-red-400 to-rose-500",        ring: "ring-red-400/50" },
+  "/app-store":      { bg: "from-violet-400 to-purple-500",   ring: "ring-violet-400/50" },
 };
 
 const getColors = (url: string) => domainColors[url] || { bg: "from-gray-500 to-gray-700", ring: "ring-gray-400/40" };

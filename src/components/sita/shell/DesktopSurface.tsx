@@ -34,24 +34,24 @@ function getTimeConfig(): { greeting: string; mood: AmbientMood; gradient: strin
     return {
       greeting: "Good morning",
       mood: "warm",
-      gradient: "from-[hsl(35_80%_15%)] via-[hsl(25_60%_12%)] to-[hsl(265_30%_10%)]",
+      gradient: "from-[hsl(35_70%_22%)] via-[hsl(265_40%_20%)] to-[hsl(280_35%_18%)]",
     };
   if (hour >= 12 && hour < 18)
     return {
       greeting: "Good afternoon",
       mood: "serene",
-      gradient: "from-[hsl(220_40%_12%)] via-[hsl(265_35%_14%)] to-[hsl(200_30%_10%)]",
+      gradient: "from-[hsl(220_40%_20%)] via-[hsl(265_40%_24%)] to-[hsl(200_35%_18%)]",
     };
   if (hour >= 18 && hour < 21)
     return {
       greeting: "Good evening",
       mood: "warm",
-      gradient: "from-[hsl(280_40%_12%)] via-[hsl(320_30%_10%)] to-[hsl(240_35%_8%)]",
+      gradient: "from-[hsl(280_45%_20%)] via-[hsl(320_35%_18%)] to-[hsl(38_50%_18%)]",
     };
   return {
     greeting: "Good night",
     mood: "night",
-    gradient: "from-[hsl(240_40%_6%)] via-[hsl(260_35%_8%)] to-[hsl(220_30%_5%)]",
+    gradient: "from-[hsl(240_40%_10%)] via-[hsl(265_38%_14%)] to-[hsl(220_35%_8%)]",
   };
 }
 
