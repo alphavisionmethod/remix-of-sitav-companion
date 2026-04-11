@@ -1,8 +1,8 @@
-import { memo, useState } from "react";
+import { memo } from "react";
 import {
   Home, Briefcase, DollarSign, Headphones, FolderOpen, Settings, Shield, LogOut,
-  LayoutDashboard, TrendingUp, Calendar, ListTodo, BarChart3, Brain,
-  ChevronRight, Sparkles, Grid3X3,
+  LayoutDashboard, TrendingUp, Calendar, ListTodo, BarChart3,
+  Grid3X3,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NavLink } from "@/components/NavLink";
@@ -15,73 +15,122 @@ import {
   SidebarMenuButton, SidebarMenuItem, SidebarHeader, SidebarFooter, useSidebar,
 } from "@/components/ui/sidebar";
 
-// ── Primary Navigation (6 items max) ─────────────────────────
+// ── Domain color map for app-style icons ─────────────────────
+const domainColors: Record<string, { bg: string; ring: string }> = {
+  "/home":           { bg: "from-slate-500 to-slate-700",    ring: "ring-slate-400/40" },
+  "/pulse":          { bg: "from-orange-400 to-orange-600",  ring: "ring-orange-400/40" },
+  "/business":       { bg: "from-blue-500 to-blue-700",      ring: "ring-blue-400/40" },
+  "/money":          { bg: "from-emerald-500 to-emerald-700", ring: "ring-emerald-400/40" },
+  "/concierge":      { bg: "from-purple-500 to-purple-700",  ring: "ring-purple-400/40" },
+  "/files":          { bg: "from-sky-400 to-sky-600",        ring: "ring-sky-400/40" },
+  "/revenue-office": { bg: "from-amber-500 to-amber-700",   ring: "ring-amber-400/40" },
+  "/boardroom":      { bg: "from-indigo-500 to-indigo-700",  ring: "ring-indigo-400/40" },
+  "/calendar":       { bg: "from-rose-400 to-rose-600",     ring: "ring-rose-400/40" },
+  "/tasks":          { bg: "from-teal-500 to-teal-700",     ring: "ring-teal-400/40" },
+  "/settings":       { bg: "from-zinc-500 to-zinc-700",     ring: "ring-zinc-400/40" },
+  "/owner":          { bg: "from-red-500 to-red-700",       ring: "ring-red-400/40" },
+  "/app-store":      { bg: "from-violet-500 to-violet-700", ring: "ring-violet-400/40" },
+};
+
+const getColors = (url: string) => domainColors[url] || { bg: "from-gray-500 to-gray-700", ring: "ring-gray-400/40" };
+
+// ── Navigation data ──────────────────────────────────────────
 const primaryNav = [
-  { title: "Desktop", url: "/home", icon: LayoutDashboard },
-  { title: "Daily Pulse", url: "/pulse", icon: Home },
-  { title: "Business", url: "/business", icon: Briefcase },
-  { title: "Money", url: "/money", icon: DollarSign },
+  { title: "Desktop",   url: "/home",      icon: LayoutDashboard },
+  { title: "Daily Pulse", url: "/pulse",   icon: Home },
+  { title: "Business",  url: "/business",  icon: Briefcase },
+  { title: "Money",     url: "/money",     icon: DollarSign },
   { title: "Concierge", url: "/concierge", icon: Headphones },
-  { title: "Files", url: "/files", icon: FolderOpen },
+  { title: "Files",     url: "/files",     icon: FolderOpen },
 ];
 
-// ── Favorites (user-pinnable defaults) ───────────────────────
 const favoritesNav = [
-  { title: "Revenue Office", url: "/revenue-office", icon: TrendingUp },
-  { title: "Boardroom", url: "/boardroom", icon: BarChart3 },
-  { title: "Calendar", url: "/calendar", icon: Calendar },
-  { title: "Tasks", url: "/tasks", icon: ListTodo },
+  { title: "Revenue",   url: "/revenue-office", icon: TrendingUp },
+  { title: "Boardroom", url: "/boardroom",      icon: BarChart3 },
+  { title: "Calendar",  url: "/calendar",       icon: Calendar },
+  { title: "Tasks",     url: "/tasks",          icon: ListTodo },
 ];
 
-// ── Bottom utilities ─────────────────────────────────────────
 const bottomNav = [
-  { title: "Settings", url: "/settings", icon: Settings },
-  { title: "Control Room", url: "/owner", icon: Shield },
+  { title: "Settings",     url: "/settings", icon: Settings },
+  { title: "Control Room", url: "/owner",    icon: Shield },
 ];
 
-const NavItems = ({ items, collapsed }: { items: typeof primaryNav; collapsed: boolean }) => {
+// ── App Icon Item ────────────────────────────────────────────
+function AppIconItem({ item, collapsed, active }: {
+  item: { title: string; url: string; icon: React.ElementType };
+  collapsed: boolean;
+  active: boolean;
+}) {
+  const colors = getColors(item.url);
+  const Icon = item.icon;
+
+  return (
+    <SidebarMenuItem>
+      <SidebarMenuButton asChild isActive={active} className="h-auto p-0 hover:bg-transparent active:bg-transparent">
+        <NavLink
+          to={item.url}
+          end={item.url === "/"}
+          className={cn(
+            "flex items-center gap-3 rounded-xl px-2 py-1.5 transition-all duration-200 group/app",
+            collapsed && "justify-center px-0 py-2",
+            active
+              ? "bg-white/[0.06]"
+              : "hover:bg-white/[0.04]"
+          )}
+          activeClassName=""
+        >
+          {/* App Icon Square */}
+          <div
+            className={cn(
+              "relative flex items-center justify-center rounded-xl bg-gradient-to-br shadow-lg transition-all duration-200",
+              colors.bg,
+              collapsed ? "h-9 w-9" : "h-8 w-8",
+              active && `ring-2 ${colors.ring} scale-105`,
+              "group-hover/app:scale-105 group-hover/app:shadow-xl"
+            )}
+          >
+            <Icon className="h-[18px] w-[18px] text-white drop-shadow-sm" strokeWidth={1.8} />
+          </div>
+
+          {/* Label */}
+          {!collapsed && (
+            <span className={cn(
+              "text-[13px] font-medium transition-colors",
+              active ? "text-foreground" : "text-sidebar-foreground/80 group-hover/app:text-foreground"
+            )}>
+              {item.title}
+            </span>
+          )}
+        </NavLink>
+      </SidebarMenuButton>
+    </SidebarMenuItem>
+  );
+}
+
+// ── Nav Group ────────────────────────────────────────────────
+function AppNavGroup({ items, collapsed }: { items: typeof primaryNav; collapsed: boolean }) {
   const location = useLocation();
   const isActive = (path: string) =>
     path === "/" ? location.pathname === "/" : location.pathname.startsWith(path);
 
   return (
-    <SidebarMenu>
-      {items.map((item) => {
-        const active = isActive(item.url);
-        return (
-          <SidebarMenuItem key={item.title}>
-            <SidebarMenuButton asChild isActive={active}>
-              <NavLink
-                to={item.url}
-                end={item.url === "/"}
-                className={cn(
-                  "flex items-center gap-3 rounded-xl px-3 py-2 text-[13px] font-medium transition-all duration-200",
-                  active
-                    ? "bg-primary/10 text-foreground border border-primary/12"
-                    : "text-sidebar-foreground hover:bg-sidebar-accent/60 hover:text-sidebar-accent-foreground"
-                )}
-                activeClassName=""
-              >
-                <item.icon
-                  className={cn("h-[18px] w-[18px] shrink-0", active && "text-primary")}
-                  strokeWidth={1.8}
-                />
-                {!collapsed && <span>{item.title}</span>}
-              </NavLink>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        );
-      })}
+    <SidebarMenu className={cn(collapsed ? "items-center gap-1" : "gap-0.5")}>
+      {items.map((item) => (
+        <AppIconItem key={item.url} item={item} collapsed={collapsed} active={isActive(item.url)} />
+      ))}
     </SidebarMenu>
   );
-};
+}
 
+// ── Main Sidebar ─────────────────────────────────────────────
 export const AppSidebar = memo(function AppSidebar() {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
   const { user, signOut } = useAuth();
   const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const displayName =
     user?.user_metadata?.full_name || user?.email?.split("@")[0] || "User";
@@ -104,7 +153,8 @@ export const AppSidebar = memo(function AppSidebar() {
       data-testid="sidebar-nav"
       aria-label="Main navigation sidebar"
     >
-      <SidebarHeader className="p-4 pb-6">
+      {/* Logo Header */}
+      <SidebarHeader className="p-4 pb-5">
         <div className="flex items-center gap-3">
           <div className="relative">
             <img src={logo} alt="SITA OS" width={36} height={36} className="h-9 w-9 rounded-xl shadow-xs" />
@@ -117,14 +167,8 @@ export const AppSidebar = memo(function AppSidebar() {
           </div>
           {!collapsed && (
             <div>
-              <h1 className="font-display text-[15px] font-bold tracking-tight gradient-sita-text">
-                SITA
-              </h1>
-              <p
-                className={`text-[9px] tracking-[0.2em] uppercase font-semibold ${
-                  isDemoMode ? "text-amber-500" : "text-emerald-500"
-                }`}
-              >
+              <h1 className="font-display text-[15px] font-bold tracking-tight gradient-sita-text">SITA</h1>
+              <p className={`text-[9px] tracking-[0.2em] uppercase font-semibold ${isDemoMode ? "text-amber-500" : "text-emerald-500"}`}>
                 {isDemoMode ? "Demo" : "Live"}
               </p>
             </div>
@@ -133,89 +177,85 @@ export const AppSidebar = memo(function AppSidebar() {
       </SidebarHeader>
 
       <SidebarContent className="px-2 scrollbar-thin">
-        {/* Primary */}
+        {/* Spaces */}
         <SidebarGroup>
           {!collapsed && (
-            <SidebarGroupLabel className="px-3 text-[10px] font-semibold uppercase tracking-[0.15em] text-muted-foreground/50 mt-1">
+            <SidebarGroupLabel className="px-3 text-[10px] font-semibold uppercase tracking-[0.15em] text-muted-foreground/50 mb-1">
               Spaces
             </SidebarGroupLabel>
           )}
           <SidebarGroupContent>
-            <NavItems items={primaryNav} collapsed={collapsed} />
+            <AppNavGroup items={primaryNav} collapsed={collapsed} />
           </SidebarGroupContent>
         </SidebarGroup>
 
         {/* Favorites */}
         <SidebarGroup>
           {!collapsed && (
-            <SidebarGroupLabel className="px-3 text-[10px] font-semibold uppercase tracking-[0.15em] text-muted-foreground/50 mt-2">
+            <SidebarGroupLabel className="px-3 text-[10px] font-semibold uppercase tracking-[0.15em] text-muted-foreground/50 mb-1 mt-1">
               Favorites
             </SidebarGroupLabel>
           )}
           <SidebarGroupContent>
-            <NavItems items={favoritesNav} collapsed={collapsed} />
+            <AppNavGroup items={favoritesNav} collapsed={collapsed} />
           </SidebarGroupContent>
         </SidebarGroup>
 
-        {/* All Apps link */}
+        {/* All Apps */}
         <SidebarGroup>
           <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild>
-                  <NavLink
-                    to="/app-store"
-                    className="flex items-center gap-3 rounded-xl px-3 py-2 text-[13px] font-medium text-muted-foreground/60 hover:text-foreground hover:bg-sidebar-accent/40 transition-all duration-200"
-                    activeClassName=""
-                  >
-                    <Grid3X3 className="h-[18px] w-[18px] shrink-0" strokeWidth={1.8} />
-                    {!collapsed && <span>All Apps</span>}
-                  </NavLink>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+            <SidebarMenu className={cn(collapsed ? "items-center" : "")}>
+              <AppIconItem
+                item={{ title: "All Apps", url: "/app-store", icon: Grid3X3 }}
+                collapsed={collapsed}
+                active={location.pathname.startsWith("/app-store")}
+              />
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="px-2 pb-4 border-t border-sidebar-border pt-2">
+      {/* Footer */}
+      <SidebarFooter className="px-2 pb-4 border-t border-sidebar-border/30 pt-2">
         <SidebarGroup>
           <SidebarGroupContent>
-            <NavItems items={bottomNav} collapsed={collapsed} />
+            <AppNavGroup items={bottomNav} collapsed={collapsed} />
           </SidebarGroupContent>
         </SidebarGroup>
 
         {user && (
-          <div className="mt-2 px-1 flex items-center gap-1">
+          <div className={cn("mt-2 px-1 flex items-center", collapsed ? "justify-center" : "gap-1")}>
             <button
               onClick={() => navigate("/profile")}
-              className="flex flex-1 items-center gap-3 rounded-lg px-3 py-2 text-[13px] font-medium text-muted-foreground transition-all duration-200 hover:bg-secondary/60 hover:text-foreground min-w-0"
+              className={cn(
+                "flex items-center rounded-lg transition-all duration-200 hover:bg-white/[0.06] min-w-0",
+                collapsed ? "h-9 w-9 justify-center" : "flex-1 gap-3 px-2 py-2"
+              )}
               title="My Profile"
             >
-              {collapsed ? (
-                <div className="flex h-[18px] w-[18px] items-center justify-center rounded-full bg-primary/10 text-[8px] font-bold text-primary shrink-0">
-                  {initials}
+              <div className={cn(
+                "flex items-center justify-center rounded-xl bg-gradient-to-br from-primary/80 to-primary text-white font-bold shrink-0 shadow-md",
+                collapsed ? "h-8 w-8 text-[10px]" : "h-8 w-8 text-[10px]"
+              )}>
+                {initials}
+              </div>
+              {!collapsed && (
+                <div className="flex-1 text-left min-w-0">
+                  <p className="text-xs font-medium text-foreground truncate">{displayName}</p>
+                  <p className="text-[10px] text-muted-foreground truncate">{user.email}</p>
                 </div>
-              ) : (
-                <>
-                  <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-[10px] font-bold text-primary shrink-0">
-                    {initials}
-                  </div>
-                  <div className="flex-1 text-left min-w-0">
-                    <p className="text-xs font-medium text-foreground truncate">{displayName}</p>
-                    <p className="text-[10px] text-muted-foreground truncate">{user.email}</p>
-                  </div>
-                </>
               )}
             </button>
-            <button
-              onClick={signOut}
-              data-testid="sign-out-btn"
-              className="flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors shrink-0"
-              title="Sign out"
-            >
-              <LogOut className="h-4 w-4" strokeWidth={1.8} />
-            </button>
+            {!collapsed && (
+              <button
+                onClick={signOut}
+                data-testid="sign-out-btn"
+                className="flex h-7 w-7 items-center justify-center rounded-lg text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors shrink-0"
+                title="Sign out"
+              >
+                <LogOut className="h-4 w-4" strokeWidth={1.8} />
+              </button>
+            )}
           </div>
         )}
       </SidebarFooter>
