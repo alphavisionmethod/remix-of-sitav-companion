@@ -3,7 +3,7 @@
 // The governing control center of the operating environment
 // ═══════════════════════════════════════════════════════════════
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
 import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
 import { KPITile } from "@/components/sita/SitaComponents";
@@ -35,6 +35,7 @@ import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
 import GoogleConnectedAccounts from "@/pages/settings/GoogleConnectedAccounts";
 import { AllProviderFamiliesStatus } from "@/components/sita/AllProviderFamiliesStatus";
 import { AdvisorAutonomyPanel } from "@/components/sita/AdvisorAutonomyPanel";
+import { useWallpaper, WALLPAPER_THEMES } from "@/hooks/use-wallpaper";
 
 // ── Consent & Permissions Section (Connected Accounts Center) ──
 function ConsentPermissionsSection() {
