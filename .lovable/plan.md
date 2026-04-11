@@ -1,63 +1,54 @@
 
 
-# SITA OS — True Desktop Experience Redesign
+# SITA OS — Fix Errors, Clean Desktop & Improve Navigation
 
-## Problem
+## Problems Found
 
-The current "desktop" is a dashboard with cards (Boardroom, Today, Quick Actions, etc.) rendered inside the shell layout with sidebar visible. It looks like a web app, not an operating system. A real OS desktop should have:
+1. **Route mismatch**: `/home` renders `DailyPulse` (the old dense dashboard) instead of `DesktopPage`. The new OS desktop only works on `/desktop`. Meanwhile `isDesktopRoute` in ShellLayout checks for `/home` but doesn't check `/desktop`.
+2. **Sidebar/topbar still visible on `/desktop`**: The `isDesktopRoute` check misses `/desktop`.
+3. **DailyPulse is 870 lines of dense, overwhelming content**: KPIs, approvals, cross-domain intelligence, advisors, opportunities, proof cards, AI spend — all crammed into one scrollable page. User says "too much info packed in one place."
+4. **Floating notifications overlap with other UI elements** (bottom-right cash runway warning clashes with notification toasts).
+5. **Console warnings**: Toaster/TooltipProvider ref warnings (minor, non-breaking).
 
-1. A beautiful wallpaper background visible as the primary surface
-2. Floating notification toasts that appear and dismiss
-3. A clean, empty desktop where apps are the focus — you open them to see dashboards
-4. Each app (Business, Money, Concierge) opens as its own full experience with its own brain/advisor
+## Plan
 
-## What Changes
+### 1. Fix Routing — Make `/home` the OS Desktop
+- **`src/App.tsx`**: Change `/home` route from `DailyPulse` to `DesktopPage`. Move DailyPulse to `/daily-pulse` or `/pulse`.
+- **`src/components/sita/ShellLayout.tsx`**: Update `isDesktopRoute` to also match `/desktop`.
 
-### 1. Desktop Page — Clean OS Desktop with Wallpaper
+### 2. Simplify the Daily Pulse into a Clean Summary
+- **`src/pages/DailyPulse.tsx`**: Dramatically simplify — remove the dense 870-line layout. Keep it as a focused "Daily Briefing" page with:
+  - A clean greeting + summary strip (3-4 key metrics only)
+  - Advisor card (one actionable insight)
+  - Quick actions row (3-4 buttons max)
+  - Pending approvals (if any, collapsed by default)
+  - Remove: cross-domain intelligence section, opportunity cards, proof cards, AI spend tracker, widget grid, activity timeline, boardroom card — these belong in their dedicated apps
 
-Replace the current card-heavy DesktopSurface with a clean desktop that shows:
-- **Full-screen wallpaper background** — beautiful gradient mesh wallpaper with time-of-day shifts (morning gold, afternoon serene, evening deep purple, night dark). Uses CSS gradients + ambient orbs, no image files needed.
-- **Clock + date widget** — centered, large, elegant (like macOS/iPadOS lock screen but as desktop widget)
-- **Floating notification toasts** — slide in from top-right, auto-dismiss after 5s, show domain icon + message + action button. Stack up to 3 visible.
-- **Desktop widgets** (small, transparent glass cards) — a compact "At a Glance" strip showing: 3 approvals waiting, $42K cash, 6 tasks today. Clicking any widget opens the relevant app.
-- **No sidebar on desktop** — hide sidebar when on `/home` route, show it when inside any app
-- **The Dock remains** at bottom as the primary app launcher
+### 3. Fix Notification Overlap
+- **`src/components/sita/DesktopNotifications.tsx`**: Only render on the desktop route (pass a prop or check route). Ensure they don't clash with bottom-right system alerts.
 
-### 2. Floating Notification Toasts
+### 4. Sidebar Navigation Cleanup
+- **`src/components/sita/ShellLayout.tsx`**: Ensure the sidebar has clear, simple navigation grouping:
+  - Primary: Desktop, Daily Pulse, Business, Money, Concierge
+  - Remove clutter from the main nav (Brain, Life Dashboard can be sub-items)
 
-New `DesktopNotifications` component:
-- Renders in top-right corner, fixed position
-- Each toast: glass card with domain color accent, icon, title, message, time ago, dismiss button
-- Auto-dismiss after 5s with progress bar
-- Max 3 visible, older ones queue
-- Demo data: "Business Advisor: 3 leads cooling", "Money: Insurance renewal in 12 days", "Concierge: Grocery list ready"
-
-### 3. App-as-Full-Experience Model
-
-Each app already has its own page — this is about making the transition feel like "opening an app":
-- When navigating from desktop to an app, sidebar appears with smooth slide-in
-- Each app page already has `AppWelcomeHeader` + `InAppAdvisorStrip` — these become the app's "brain"
-- The desktop is the launcher; each app is the full workspace
-
-### 4. Desktop Widgets (At-a-Glance)
-
-Small transparent glass cards floating on the desktop:
-- **Approvals**: "3 waiting" with checkmark icon
-- **Cash Position**: "$42K liquid" with dollar icon  
-- **Today**: "6 tasks · 2 meetings" with calendar icon
-- **Advisor**: Latest insight preview
-- Clicking any widget navigates to the relevant app
+### 5. Fix Minor Console Errors
+- Toaster ref warning — wrap in `forwardRef` or suppress
 
 ## Files Changed
 
 | File | Change |
 |------|--------|
-| `src/components/sita/shell/DesktopSurface.tsx` | Major rewrite: replace card dashboard with clean wallpaper desktop + clock widget + at-a-glance widgets |
-| `src/components/sita/DesktopNotifications.tsx` | **New** — floating notification toasts with auto-dismiss, domain colors, action buttons |
-| `src/pages/DesktopPage.tsx` | Mount DesktopNotifications |
-| `src/components/sita/ShellLayout.tsx` | Conditionally hide sidebar on `/home` route for clean desktop feel |
+| `src/App.tsx` | `/home` → `DesktopPage`, add `/pulse` or `/daily-pulse` → `DailyPulse` |
+| `src/components/sita/ShellLayout.tsx` | `isDesktopRoute` includes `/desktop` |
+| `src/pages/DailyPulse.tsx` | Simplify to ~200 lines: clean briefing with key metrics, one advisor card, quick actions, collapsible approvals |
+| `src/components/sita/DesktopNotifications.tsx` | Guard rendering to desktop route only |
+| `src/pages/DesktopPage.tsx` | Minor cleanup |
 
 ## Outcome
-
-The home screen transforms from a dashboard into a true OS desktop — beautiful wallpaper, floating clock, subtle glass widgets, notification toasts sliding in, and the Dock at the bottom to launch apps. Opening an app transitions you into a full workspace with sidebar, advisor, and domain intelligence. It feels like macOS meets a sovereign AI system.
+- `/home` shows the beautiful OS desktop (wallpaper, clock, glass widgets, dock)
+- `/pulse` shows a clean, scannable daily briefing (not the old 870-line wall of data)
+- Sidebar and topbar hidden on the desktop for true OS feel
+- Notifications don't overlap with system alerts
+- Navigation is simple: Desktop → open apps from dock or sidebar
 
