@@ -1,3 +1,5 @@
+import { AppWelcomeHeader } from "@/components/sita/AppWelcomeHeader";
+import { InAppAdvisorStrip } from "@/components/sita/InAppAdvisorStrip";
 import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
 import { SitaTabs } from "@/components/sita/SitaComponents";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -82,6 +84,8 @@ const BusinessCenter = () => {
     <div className="mx-auto max-w-7xl space-y-6">
       <h1 className="sr-only">Business Center</h1>
       <DemoModeBadge />
+      <AppWelcomeHeader domain="business" />
+      <InAppAdvisorStrip domain="business" />
       <motion.div
         className="overflow-x-auto -mx-2 px-2"
         initial={{ opacity: 0, y: -8 }}

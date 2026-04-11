@@ -46,6 +46,8 @@ const ContinuityBanner = lazy(() => import("./ContinuityBanner").then(m => ({ de
 const UpdateBanner = lazy(() => import("./UpdateBanner").then(m => ({ default: m.UpdateBanner })));
 const UniversalCommandSurface = lazy(() => import("./shell/UniversalCommandSurface").then(m => ({ default: m.UniversalCommandSurface })));
 const ShellAmbientBackground = lazy(() => import("./shell/ShellAmbientBackground").then(m => ({ default: m.ShellAmbientBackground })));
+const DesktopDock = lazy(() => import("./DesktopDock").then(m => ({ default: m.DesktopDock })));
+const AppRecentsStripLazy = lazy(() => import("./AppRecentsStrip").then(m => ({ default: m.AppRecentsStrip })));
 
 
 // Route-aware page transitions
@@ -241,6 +243,11 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
 
         {/* AI Gate */}
         
+      </Suspense>
+
+      {/* Desktop Dock — floating app launcher */}
+      <Suspense fallback={null}>
+        <DesktopDock />
       </Suspense>
 
       {/* Behavioral Interaction Tracker — invisible */}

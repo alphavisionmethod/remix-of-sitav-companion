@@ -1,0 +1,118 @@
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — Desktop Dock
+// macOS-style floating dock with magnification + live badges
+// ═══════════════════════════════════════════════════════════════
+
+import { useState, useRef, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
+import { useAppPlatform } from "@/contexts/AppPlatformContext";
+import { useAppBadges } from "@/hooks/useAppBadges";
+import { AppIcon } from "@/components/sita/app-platform/AppStoreComponents";
+import type { AppDefinition } from "@/lib/app-platform/types";
+
+export const DesktopDock = () => {
+  const navigate = useNavigate();
+  const { apps } = useAppPlatform();
+  const { getBadge } = useAppBadges();
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+  const [tooltip, setTooltip] = useState<string | null>(null);
+  const dockRef = useRef<HTMLDivElement>(null);
+
+  const pinnedApps = apps.filter(a => a.pinnedToDock && a.installStatus === "installed");
+
+  const launchApp = useCallback((app: AppDefinition) => {
+    if (app.routePath) navigate(app.routePath);
+    else if (app.externalUrl) window.open(app.externalUrl, "_blank", "noopener");
+  }, [navigate]);
+
+  if (pinnedApps.length === 0) return null;
+
+  const getScale = (idx: number) => {
+    if (hoveredIdx === null) return 1;
+    const dist = Math.abs(idx - hoveredIdx);
+    if (dist === 0) return 1.45;
+    if (dist === 1) return 1.2;
+    if (dist === 2) return 1.05;
+    return 1;
+  };
+
+  return (
+    <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-[120] hidden md:flex">
+      <motion.div
+        ref={dockRef}
+        initial={{ y: 80, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.3 }}
+        className="flex items-end gap-1 rounded-2xl border border-border/50 bg-card/80 backdrop-blur-xl px-3 py-2 shadow-2xl"
+        onMouseLeave={() => { setHoveredIdx(null); setTooltip(null); }}
+      >
+        {pinnedApps.map((app, idx) => {
+          const badge = getBadge(app.id);
+          const scale = getScale(idx);
+          return (
+            <div key={app.id} className="relative flex flex-col items-center">
+              {/* Tooltip */}
+              {tooltip === app.id && (
+                <motion.div
+                  initial={{ opacity: 0, y: 4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="absolute -top-8 whitespace-nowrap rounded-lg bg-popover px-2.5 py-1 text-[10px] font-medium text-popover-foreground shadow-lg border border-border/50"
+                >
+                  {app.name}
+                </motion.div>
+              )}
+              <motion.button
+                animate={{ scale, y: scale > 1 ? -(scale - 1) * 20 : 0 }}
+                transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                onMouseEnter={() => { setHoveredIdx(idx); setTooltip(app.id); }}
+                onClick={() => launchApp(app)}
+                className="relative w-11 h-11 rounded-xl flex items-center justify-center transition-shadow hover:shadow-lg"
+                aria-label={`Open ${app.name}`}
+              >
+                <div className={cn("w-full h-full rounded-xl bg-gradient-to-br flex items-center justify-center text-lg", app.iconBg)}>
+                  {app.icon}
+                </div>
+                {/* Badge */}
+                {badge && badge.count > 0 && (
+                  <span className={cn(
+                    "absolute -top-1 -right-1 min-w-[16px] h-4 rounded-full flex items-center justify-center text-[9px] font-bold px-1",
+                    badge.urgency === "critical" ? "bg-destructive text-destructive-foreground animate-pulse" :
+                    badge.urgency === "high" ? "bg-destructive text-destructive-foreground" :
+                    "bg-primary text-primary-foreground"
+                  )}>
+                    {badge.count > 99 ? "99+" : badge.count}
+                  </span>
+                )}
+              </motion.button>
+              {/* Active dot */}
+              <div className="w-1 h-1 rounded-full bg-primary/60 mt-0.5" />
+            </div>
+          );
+        })}
+
+        {/* Separator + App Store shortcut */}
+        <div className="w-px h-8 bg-border/30 mx-1" />
+        <motion.button
+          animate={{ scale: hoveredIdx !== null ? 1 : 1 }}
+          onClick={() => navigate("/app-store")}
+          className="w-11 h-11 rounded-xl bg-secondary/50 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
+          aria-label="App Store"
+          onMouseEnter={() => { setHoveredIdx(pinnedApps.length); setTooltip("store"); }}
+        >
+          {tooltip === "store" && (
+            <motion.div
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="absolute -top-8 whitespace-nowrap rounded-lg bg-popover px-2.5 py-1 text-[10px] font-medium text-popover-foreground shadow-lg border border-border/50"
+            >
+              App Store
+            </motion.div>
+          )}
+          <span className="text-lg">🏪</span>
+        </motion.button>
+      </motion.div>
+    </div>
+  );
+};

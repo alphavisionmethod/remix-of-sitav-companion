@@ -91,12 +91,43 @@ const CalendarWidget = () => {
   );
 };
 
+const ActivityFeedWidget = () => {
+  const items = [
+    { action: "Invoice #1042 sent", domain: "business", time: "2m ago", icon: "💼" },
+    { action: "Bill payment scheduled", domain: "finance", time: "15m ago", icon: "💰" },
+    { action: "Grocery delivery confirmed", domain: "concierge", time: "1h ago", icon: "🎯" },
+    { action: "Lead qualified: Acme Corp", domain: "business", time: "2h ago", icon: "📊" },
+    { action: "Subscription cancelled", domain: "finance", time: "3h ago", icon: "✂️" },
+  ];
+  const domainColors: Record<string, string> = {
+    business: "bg-primary/10 text-primary",
+    finance: "bg-[hsl(var(--sita-gold))]/10 text-[hsl(var(--sita-gold))]",
+    concierge: "bg-[hsl(var(--trust-safe))]/10 text-[hsl(var(--trust-safe))]",
+  };
+  return (
+    <div className="flex flex-col h-full gap-1.5 overflow-hidden">
+      <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Activity</p>
+      {items.slice(0, 4).map((item, i) => (
+        <div key={i} className="flex items-center gap-1.5">
+          <span className="text-[10px]">{item.icon}</span>
+          <span className="text-[10px] text-foreground truncate flex-1">{item.action}</span>
+          <span className={cn("rounded-full px-1.5 py-0.5 text-[8px] font-semibold", domainColors[item.domain] || "bg-secondary text-muted-foreground")}>
+            {item.domain}
+          </span>
+          <span className="text-[8px] text-muted-foreground shrink-0">{item.time}</span>
+        </div>
+      ))}
+    </div>
+  );
+};
+
 const WIDGET_REGISTRY: WidgetDef[] = [
   { id: "clock", label: "Clock", icon: Clock, minW: 1, component: ClockWidget },
   { id: "weather", label: "Weather", icon: Cloud, minW: 1, component: WeatherWidget },
   { id: "stats", label: "Quick Stats", icon: BarChart3, minW: 1, component: QuickStatsWidget },
   { id: "brain", label: "Brain", icon: Brain, minW: 1, component: MiniChatWidget },
   { id: "calendar", label: "Calendar", icon: CalendarDays, minW: 1, component: CalendarWidget },
+  { id: "activity", label: "Activity Feed", icon: BarChart3, minW: 1, component: ActivityFeedWidget },
 ];
 
 const DEFAULT_LAYOUT = ["clock", "weather", "stats", "calendar"];
