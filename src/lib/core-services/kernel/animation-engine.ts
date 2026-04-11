@@ -42,6 +42,27 @@ export type AnimationDirection = "normal" | "reverse" | "alternate" | "alternate
 export type AnimationFillMode = "none" | "forwards" | "backwards" | "both";
 export type AnimationState = "idle" | "running" | "paused" | "finished";
 
+/**
+ * AnimationLayer determines optimization strategy:
+ * - "compositor": only transforms/opacity/position — skip re-rasterization, reuse cached tiles
+ * - "raster": color/size/content changes — triggers full re-rasterization of affected region
+ */
+export type AnimationLayer = "compositor" | "raster";
+
+/** Properties that can be animated at compositor level without re-rasterization */
+const COMPOSITOR_PROPERTIES = new Set([
+  "x", "y", "tx", "ty", "translateX", "translateY",
+  "sx", "sy", "scaleX", "scaleY",
+  "rotation", "opacity",
+]);
+
+export function classifyAnimationLayer(tracks: KeyframeTrack[]): AnimationLayer {
+  for (const track of tracks) {
+    if (!COMPOSITOR_PROPERTIES.has(track.property)) return "raster";
+  }
+  return "compositor";
+}
+
 export interface AnimationDef {
   id: string;
   tracks: KeyframeTrack[];
@@ -53,6 +74,8 @@ export interface AnimationDef {
   playbackRate?: number;
   /** Bounds of the animated element — used for damage emission */
   bounds?: Rect;
+  /** Override layer classification (auto-detected if omitted) */
+  layer?: AnimationLayer;
 }
 
 export interface AnimationInstance {
@@ -62,6 +85,8 @@ export interface AnimationInstance {
   startTime: number;   // wall clock when started
   currentIteration: number;
   computedValues: Map<string, number>; // property → current value
+  layer: AnimationLayer; // resolved optimization layer
+  boundViewId?: string;  // linked ViewNode id for auto-apply
   onFinish?: () => void;
   onFrame?: (values: Map<string, number>) => void;
 }
