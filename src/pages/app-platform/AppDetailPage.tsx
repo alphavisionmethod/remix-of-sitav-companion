@@ -147,6 +147,68 @@ const AppDetailPage = () => {
         )}
       </div>
 
+      {/* Screenshots (demo) */}
+      <div className="rounded-2xl border border-border bg-card p-6 space-y-3">
+        <h3 className="text-sm font-semibold text-foreground">Screenshots</h3>
+        <div className="flex gap-3 overflow-x-auto scrollbar-thin pb-2">
+          {[1, 2, 3, 4].map(i => (
+            <div key={i} className="shrink-0 w-48 h-28 rounded-xl bg-gradient-to-br from-secondary/50 to-secondary/20 border border-border/30 flex items-center justify-center">
+              <span className="text-xs text-muted-foreground">Preview {i}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* User Reviews (demo) */}
+      <div className="rounded-2xl border border-border bg-card p-6 space-y-3">
+        <h3 className="text-sm font-semibold text-foreground">Ratings & Reviews</h3>
+        <div className="flex items-center gap-4 mb-3">
+          <div className="text-center">
+            <p className="text-3xl font-bold text-foreground">{app.rating}</p>
+            <div className="flex gap-0.5 mt-1">
+              {[1, 2, 3, 4, 5].map(s => (
+                <Star key={s} className={cn("h-3 w-3", s <= Math.round(app.rating) ? "text-accent fill-accent" : "text-muted-foreground/30")} />
+              ))}
+            </div>
+            <p className="text-[10px] text-muted-foreground mt-1">{(app.downloads / 1000).toFixed(0)}K ratings</p>
+          </div>
+          <div className="flex-1 space-y-1">
+            {[5, 4, 3, 2, 1].map(stars => {
+              const pct = stars === 5 ? 68 : stars === 4 ? 22 : stars === 3 ? 6 : stars === 2 ? 3 : 1;
+              return (
+                <div key={stars} className="flex items-center gap-2">
+                  <span className="text-[10px] text-muted-foreground w-2">{stars}</span>
+                  <div className="flex-1 h-1.5 rounded-full bg-secondary/50">
+                    <div className="h-full rounded-full bg-accent" style={{ width: `${pct}%` }} />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        {/* Demo reviews */}
+        {[
+          { name: "Alex K.", stars: 5, text: "Works perfectly with SITA OS. Love the deep integration!", time: "2 weeks ago" },
+          { name: "Maria L.", stars: 4, text: "Great app, smooth experience. Would love more customization options.", time: "1 month ago" },
+        ].map((review, i) => (
+          <div key={i} className="border-t border-border/30 pt-3">
+            <div className="flex items-center gap-2">
+              <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-[10px] font-bold text-primary">
+                {review.name[0]}
+              </div>
+              <span className="text-xs font-semibold text-foreground">{review.name}</span>
+              <div className="flex gap-0.5">
+                {[1, 2, 3, 4, 5].map(s => (
+                  <Star key={s} className={cn("h-2.5 w-2.5", s <= review.stars ? "text-accent fill-accent" : "text-muted-foreground/30")} />
+                ))}
+              </div>
+              <span className="text-[10px] text-muted-foreground ml-auto">{review.time}</span>
+            </div>
+            <p className="text-xs text-muted-foreground mt-1 ml-8">{review.text}</p>
+          </div>
+        ))}
+      </div>
+
       {/* Works with SITA */}
       {app.worksWithSita.length > 0 && (
         <div className="rounded-2xl border border-border bg-card p-6 space-y-3">
