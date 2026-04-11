@@ -218,6 +218,10 @@ export class KernelSubsystem {
     this.commandBufferPool = new CommandBufferPool(16);
     this.uiRenderer = new UIRenderer();
 
+    // View Tree & Layout Engine
+    this.viewTree = new ViewTree();
+    this.layoutEngine = new LayoutEngine();
+
     // ── Wire subsystems together ────────────────────────────
     // Wire scene graph into render pipeline
     this.renderPipeline.setSceneGraph(this.sceneGraph);
