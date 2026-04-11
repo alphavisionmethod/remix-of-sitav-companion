@@ -1,76 +1,62 @@
 
 
-# SITA OS — Internal Domain Apps + External App Expansion
+# SITA OS — App Launch + Google Workspace Bundle
 
 ## What This Does
 
-Two changes to make SITA OS feel like a real operating system:
+1. **Make internal SITA apps launchable** — clicking "Open" from App Library, App Detail, or Install Sheet navigates to the app's `routePath`. Currently the "Open" button is a dead element with no click handler.
 
-1. **Register all SITA domains as installable internal apps** — Business Center, Money Center, Concierge, Daily Pulse, Boardroom, AI Workforce, Vault, Health, Gallery, Email, and more become first-class apps in the catalog with icons, descriptions, and routes. They show as pre-installed in the App Library.
+2. **Make external web apps openable** — clicking "Open" on external apps (Chrome, YouTube, etc.) opens them in a new browser tab via `window.open()`.
 
-2. **Add popular external apps** — Microsoft 365 suite (Word, Excel, PowerPoint, Outlook, Teams, OneDrive), YouTube, Netflix, Discord, Telegram, Twitter/X, LinkedIn, ChatGPT, Claude, and more.
+3. **Add Google Workspace bundle** — Google Docs, Sheets, Drive, Calendar, Meet, Gmail grouped as a one-click bundle in the App Store.
 
-## Current State
+## Changes
 
-- **45 apps** in catalog, but only 4 are internal SITA apps (Calculator, Terminal, Files, Settings)
-- All SITA domain pages (Business, Money, Concierge, etc.) exist as routes but are NOT registered as apps
-- Missing major external apps: Microsoft Office, YouTube, Netflix, Discord, etc.
+### 1. `src/pages/app-platform/AppDetailPage.tsx`
+- Wire the "Open" button (line 99) to navigate to `app.routePath` for internal apps, or `window.open()` for web apps
+- Add an `externalUrl` check for web-app class apps
 
-## Plan
+### 2. `src/pages/app-platform/AppLibraryPage.tsx`
+- Add double-click or primary click behavior: internal apps with `routePath` navigate directly instead of going to the detail page
+- Add an "Open" quick-action button on each app card for installed apps
 
-### 1. Add ~15 SITA Internal Domain Apps to Catalog
+### 3. `src/components/sita/app-platform/AppStoreComponents.tsx`
+- Wire `InstallSheet`'s "Open" callback to actually launch the app (pass `routePath` or external URL to the `onOpen` callback)
 
-Each gets `appClass: "internal"`, `installStatus: "installed"`, `publisher: "SITA OS"`, and a route path.
+### 4. `src/pages/app-platform/AppStorePage.tsx`
+- Update `onOpen` callback in InstallSheet to navigate to app route
 
-| App | Icon | Category | Route |
-|-----|------|----------|-------|
-| SITA Daily Pulse | 📊 | productivity | /daily-pulse |
-| SITA Business Center | 💼 | business | /business |
-| SITA Money Center | 💰 | finance | /money |
-| SITA Concierge | 🏠 | household | /concierge |
-| SITA Boardroom | 🎯 | enterprise | /boardroom |
-| SITA AI Workforce | 🤖 | enterprise | /ai-workforce |
-| SITA Email | 📧 | communication | /app-platform/email |
-| SITA Vault | 🔐 | security | /app-platform/vault |
-| SITA Health | 🏥 | utilities | /app-platform/health |
-| SITA Gallery | 🖼️ | media | /app-platform/gallery |
-| SITA CRM | 👥 | business | /business/customers |
-| SITA Revenue Office | 📈 | business | /business/revenue-autopilot |
-| SITA Proof Center | ✅ | enterprise | /proof |
-| SITA Connectors | 🔌 | utilities | /app-platform/connectors |
-| SITA App Store | 🏪 | utilities | /app-store |
+### 5. `src/lib/app-platform/catalog.ts`
+- Add `externalUrl` field to external web apps (Google Docs → `https://docs.google.com`, etc.)
+- Add Google Workspace bundle: Gmail, Google Docs, Sheets, Drive, Calendar, Meet
+- Ensure all internal SITA apps have correct `routePath` values
 
-### 2. Add ~15 Popular External Apps
+### 6. `src/lib/app-platform/types.ts`
+- Add optional `externalUrl?: string` field to `AppDefinition` for web apps that open in browser
 
-| App | Publisher | Category |
-|-----|-----------|----------|
-| Microsoft Word | Microsoft | productivity |
-| Microsoft Excel | Microsoft | productivity |
-| Microsoft PowerPoint | Microsoft | productivity |
-| Microsoft Outlook | Microsoft | communication |
-| Microsoft Teams | Microsoft | communication |
-| OneDrive | Microsoft | utilities |
-| YouTube | Google LLC | entertainment |
-| Netflix | Netflix Inc. | entertainment |
-| Discord | Discord Inc. | communication |
-| Telegram | Telegram FZE | communication |
-| X (Twitter) | X Corp. | communication |
-| LinkedIn | Microsoft | business |
-| ChatGPT | OpenAI | productivity |
-| Claude | Anthropic | productivity |
+## Technical Detail
 
-### 3. Add Microsoft 365 Bundle
+App launch logic (shared helper):
+```typescript
+function launchApp(app: AppDefinition, navigate: NavigateFunction) {
+  if (app.routePath) {
+    navigate(app.routePath);
+  } else if (app.externalUrl) {
+    window.open(app.externalUrl, '_blank', 'noopener');
+  }
+}
+```
 
-A new bundle: "Microsoft 365 Suite" containing Word, Excel, PowerPoint, Outlook, Teams, OneDrive.
-
-### 4. Add `routePath` Field to AppDefinition Type
-
-Add an optional `routePath?: string` field to `AppDefinition` so internal apps can declare which route they open. This enables the shell to launch internal apps by navigating to their route.
+Internal apps use `routePath`, external web apps use `externalUrl`, and the App Library grid gets a visible "Open" button for installed apps alongside the existing detail-page navigation.
 
 ## Files Changed
 
 | File | Change |
 |------|--------|
-| `src/lib/app-platform/types.ts` | Add `routePath?: string` to `AppDefinition` |
-| `src/lib/app-platform/catalog.ts` | Add ~30 new app entries + 1 new bundle |
+| `src/lib/app-platform/types.ts` | Add `externalUrl?: string` to AppDefinition |
+| `src/lib/app-platform/catalog.ts` | Add `externalUrl` to web apps, add Google Workspace bundle |
+| `src/pages/app-platform/AppDetailPage.tsx` | Wire Open button with launch logic |
+| `src/pages/app-platform/AppLibraryPage.tsx` | Add Open button on installed app cards |
+| `src/pages/app-platform/AppStorePage.tsx` | Wire InstallSheet onOpen to launch app |
+| `src/components/sita/app-platform/AppStoreComponents.tsx` | Pass app data through onOpen callback |
 
