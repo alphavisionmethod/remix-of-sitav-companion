@@ -1,14 +1,15 @@
+import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
 import { Shield, Brain, Wallet, Briefcase, Sparkles, Receipt, Lock, Eye } from "lucide-react";
 
-const LandingPage = () => {
+const LandingPage = React.forwardRef<HTMLDivElement>((props, ref) => {
   const { signInAsDemo } = useAuth();
 
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-hidden">
+    <div ref={ref} className="min-h-screen bg-background text-foreground overflow-hidden">
       {/* Ambient background */}
       <div className="fixed inset-0 pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse" />
