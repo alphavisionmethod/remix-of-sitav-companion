@@ -276,7 +276,7 @@ export class GPUAbstraction {
     return true;
   }
 
-  async requestDevice(requiredFeatures: GPUFeature[] = {}, requiredLimits: Partial<GPUDeviceLimits> = {}): Promise<boolean> {
+  async requestDevice(requiredFeatures: GPUFeature[] = [], requiredLimits: Partial<GPUDeviceLimits> = {}): Promise<boolean> {
     if (!this.adapterInfo) return false;
 
     // Validate features
