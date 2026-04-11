@@ -241,6 +241,13 @@ export class KernelSubsystem {
     this.viewTree = new ViewTree();
     this.layoutEngine = new LayoutEngine();
 
+    // Networking Stack
+    this.tcpip = new TCPIPStack();
+    this.sockets = new SocketAPI();
+    this.firewall = new Firewall();
+    this.vpn = new VPNManager();
+    this.dns = new DNSResolver();
+
     // ── Wire subsystems together ────────────────────────────
     // Wire scene graph into render pipeline
     this.renderPipeline.setSceneGraph(this.sceneGraph);
