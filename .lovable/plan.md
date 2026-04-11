@@ -1,60 +1,74 @@
 
 
-# Sections 5.6–5.12 — Remaining Gaps
+# Three Features — Implementation Plan
 
-## Already Implemented
-- **5.6 View tree** (Column, Row, Stack, Text, Button, Image, Spacer) ✅
-- **5.6 Layout engine** (flex + constraints) ✅
-- **5.6 draw(ctx)** protocol on every widget ✅
-- **5.7 Animation engine** with compositor vs raster layer classification ✅
-- **5.7 bindToView()** for transform/opacity/position animations ✅
-- **5.8 Glyph cache** with LRU (2048 max), sub-pixel coverage ✅
-- **5.8 Sub-pixel LCD rendering** (RGB stripe per-channel alpha) ✅
-- **5.8 Text layout** (greedy + Knuth-Plass line breaking, alignment, truncation, ellipsis, font fallback, RTL stub, bidi stub) ✅
-- **5.9 CPU blur** (3-pass separable box blur ≈ Gaussian, O(1) sliding window) ✅
-- **5.9 Shadows** (render mask → blur → offset + blend) ✅
-- **5.9 Gradients** (linear, radial, conic with lerp interpolation) ✅
-- **5.10 Dirty rectangles** (damage tracker with coalescing) ✅
-- **5.10 Tile rendering** (64×64 parallel tiles, thread pool) ✅
-- **5.10 Fixed-point math** (16.16 in triangle rasterizer) ✅
-- **5.10 Glyph caching + layout caching** ✅
-- **5.11 Frame lifecycle** (Input → Layout → Raster → Composite → Present) ✅
-- **5.11 Double buffering** (front/back with pageFlip) ✅
-- **5.11 Frame budget** (16.6ms, adaptive FPS, deadline-aware threads) ✅
+## 1. Connect Shopify to E-Commerce Manager
 
-## What's Missing
+**Approach**: Enable the Shopify integration, then replace the hardcoded `DEMO_PRODUCTS`, `DEMO_COLLECTIONS`, etc. in `EcommerceOffice.tsx` with live Shopify data via an edge function proxy.
 
-### 1. Glyph Atlas (Section 5.8)
-The spec shows glyphs stored in a **bitmap atlas** grid (`[A][B][C][D] / [E][F][G][H]`). Currently glyphs are cached individually in a `Map<string, GlyphCacheEntry>`. No packed atlas texture for cache-efficient sequential blitting.
+**Steps**:
+- Enable Shopify integration (user chooses new or existing store)
+- Create edge function `shopify-sync` that fetches products, collections, and orders from Shopify Admin API
+- Create React hooks (`useShopifyProducts`, `useShopifyCollections`, `useShopifyOrders`) that call the edge function
+- Update `EcommerceOffice.tsx` to use live data when available, falling back to demo data in demo mode
+- Add inventory sync status indicator showing last sync time
 
-### 2. Kerning (Section 5.8)
-The spec lists "kerning + layout" as a feature. The text layout engine has letter/word spacing but no **kerning pairs** (e.g., "AV", "To" get tighter spacing).
+**Files**: 1 new edge function, 1 new hooks file, edit `EcommerceOffice.tsx`
 
-### 3. Animation Layer Caching (Section 5.7)
-The spec's optimization trick: `[Static UI] → cached bitmap / [Animated layer] → re-rendered`. No layer caching exists — every frame re-draws all visible content. Need per-ViewNode rasterization cache that persists across frames when only compositor-layer animations are active.
+---
 
-### 4. Branch Minimization (Section 5.10)
-The spec calls for branchless pixel operations using mask operations instead of `if` statements. Current blend/fill code uses standard conditionals.
+## 2. Drag-and-Drop Tab Reordering in Owner Workspace
 
-## Plan — 2 Edits + 1 New Section in Existing File
+**Approach**: Make the sidebar TABS array mutable state, persisted to `localStorage`. Use `@dnd-kit` (already common in React projects) or a simple pointer-event drag handler for reordering.
 
-### Edit 1: `vector-renderer.ts` — Glyph Atlas + Kerning
-- Add `GlyphAtlas` class: packs glyphs into a single `Uint8Array` grid (e.g., 512×512), row-based bin packing, returns atlas coordinates per glyph
-- Add kerning table: `Map<string, number>` keyed by char-pair (e.g., `"AV"` → `-2`), applied during glyph positioning
-- Existing `getGlyph`/`cacheGlyph` methods delegate to atlas for storage
+**Steps**:
+- Install `@hello-pangea/dnd` (lightweight, maintained fork of react-beautiful-dnd)
+- Convert `TABS` from `const` to state in `OwnerWorkspaceShell`, initialized from localStorage or default order
+- Wrap the nav in a `DragDropContext` + `Droppable` + `Draggable` for each tab
+- Add a drag handle icon (grip dots) visible on hover
+- Persist reordered tab list to `localStorage` keyed by user
+- Add a "Reset to default" option in the sidebar footer
 
-### Edit 2: `view-tree.ts` — Layer Bitmap Caching
-- Add `cachedRaster: TileBuffer | null` on `ViewNode`
-- On `draw()`: if node is not dirty and `cachedRaster` exists, blit cache instead of re-drawing
-- On dirty: invalidate `cachedRaster`, re-draw into fresh buffer, store as new cache
-- Compositor-layer animations skip cache invalidation (reuse cached raster, apply transform overlay)
+**Files**: edit `OwnerWorkspaceShell.tsx`, add dependency
 
-### Edit 3: `software-rasterizer.ts` — Branchless Blend
-- Add branchless alpha blend helper using arithmetic masks: `mask = -(alpha > 0)` pattern
-- Replace key blend inner loops with branchless variants
-- Add branchless `min`/`max`/`clamp` helpers using bitwise operations
+---
 
-### Edit 4: `index.ts` — Export new types
+## 3. Dynamic Notification Badge Counts
 
-## Total: 4 edits
+**Approach**: The `notifications` table already exists with `user_id`, `domain`, `read`, `urgency` columns and realtime enabled. Replace the hardcoded `DEMO_BADGES` with a Supabase query that counts unread notifications grouped by domain, with a realtime subscription for live updates.
+
+**Steps**:
+- Rewrite `useAppBadges` to query `notifications` table: `SELECT domain, urgency, COUNT(*) FROM notifications WHERE user_id = auth.uid() AND read = false GROUP BY domain, urgency`
+- Subscribe to realtime `INSERT`/`UPDATE` on `notifications` table to refresh counts automatically
+- Map `domain` values to `appId` using the existing `DOMAIN_APP_MAP`
+- Keep demo data as fallback when user is not authenticated
+- Update `DesktopDock.tsx` if any interface changes are needed (likely none — same `getBadge` API)
+
+**Files**: edit `useAppBadges.ts`
+
+---
+
+## Technical Details
+
+### Shopify Edge Function
+```text
+POST /shopify-sync
+Body: { action: "products" | "collections" | "orders" | "inventory" }
+Returns: { data: [...] }
+Auth: JWT required, Shopify API key from connector
+```
+
+### Badge Query
+```sql
+SELECT domain, urgency, COUNT(*)::int as count
+FROM notifications
+WHERE user_id = auth.uid() AND read = false
+GROUP BY domain, urgency
+```
+Realtime subscription on `notifications` table (already in `supabase_realtime` publication) triggers re-fetch on changes.
+
+### Drag-and-Drop
+Uses `@hello-pangea/dnd` for accessible keyboard + pointer drag. Tab order stored as `owner-workspace-tab-order` in localStorage as JSON array of tab IDs.
+
+## Total: 1 new edge function, 1 new hooks file, 3 file edits, 1 dependency
 
