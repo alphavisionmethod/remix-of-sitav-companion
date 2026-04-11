@@ -20,15 +20,23 @@ import CollectionsCommandCenter from "./business/CollectionsCommandCenter";
 import RevenueImpactDashboard from "./business/RevenueImpactDashboard";
 import PlaybookBuilder from "./business/PlaybookBuilder";
 import RevenueForecast from "./business/RevenueForecast";
+import WebsiteBuilder from "./business/WebsiteBuilder";
+import ProposalsContracts from "./business/ProposalsContracts";
+import LeadRecovery from "./business/LeadRecovery";
+import SocialCommand from "./business/SocialCommand";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useOSOrchestration } from "@/hooks/useOSOrchestration";
 import { useExperienceSignature } from "@/hooks/useExperienceSignature";
 import { useOpportunitySignals } from "@/hooks/useCAIData";
 
-type SubPage = "overview" | "leads" | "customers" | "opportunities" | "quotes" | "invoices" | "communications" | "boardroom" | "proof" | "revenue-autopilot" | "collections" | "autopilot-hub" | "revenue-impact" | "playbook-builder" | "revenue-forecast";
+type SubPage = "overview" | "leads" | "customers" | "opportunities" | "quotes" | "invoices" | "communications" | "boardroom" | "proof" | "revenue-autopilot" | "collections" | "autopilot-hub" | "revenue-impact" | "playbook-builder" | "revenue-forecast" | "website-builder" | "proposals" | "lead-recovery" | "social";
 
 const subpageFromPath = (path: string): SubPage => {
+  if (path.includes("/website-builder")) return "website-builder";
+  if (path.includes("/proposals")) return "proposals";
+  if (path.includes("/lead-recovery")) return "lead-recovery";
+  if (path.includes("/social")) return "social";
   if (path.includes("/revenue-forecast")) return "revenue-forecast";
   if (path.includes("/playbook-builder")) return "playbook-builder";
   if (path.includes("/revenue-impact")) return "revenue-impact";
@@ -62,6 +70,10 @@ const pages: Record<SubPage, React.ComponentType> = {
   "revenue-impact": RevenueImpactDashboard,
   "playbook-builder": PlaybookBuilder,
   "revenue-forecast": RevenueForecast,
+  "website-builder": WebsiteBuilder,
+  proposals: ProposalsContracts,
+  "lead-recovery": LeadRecovery,
+  social: SocialCommand,
 };
 
 const BusinessCenter = () => {
@@ -101,6 +113,10 @@ const BusinessCenter = () => {
             { key: "quotes", label: "Quotes" },
             { key: "invoices", label: "Invoices" },
             { key: "collections", label: "Collections" },
+            { key: "website-builder", label: "🌐 Website" },
+            { key: "proposals", label: "📝 Proposals" },
+            { key: "lead-recovery", label: "🔄 Lead Recovery" },
+            { key: "social", label: "📱 Social" },
             { key: "revenue-autopilot", label: "Revenue Autopilot" },
             { key: "autopilot-hub", label: "⚡ Autopilot Hub" },
             { key: "revenue-impact", label: "📊 Revenue Impact" },
