@@ -94,9 +94,12 @@ const AppDetailPage = () => {
               {app.sourceOrigin && <SourceOriginLabel origin={app.sourceOrigin} size="md" />}
             </div>
             <div className="flex items-center gap-4 mt-4">
-              {isInstalled ? (
+               {isInstalled ? (
                 <>
-                  <button className="rounded-xl bg-white/20 backdrop-blur-sm px-6 py-2.5 text-sm font-semibold text-white hover:bg-white/30 transition-colors flex items-center gap-2">
+                  <button onClick={() => {
+                    if (app.routePath) navigate(app.routePath);
+                    else if (app.externalUrl) window.open(app.externalUrl, '_blank', 'noopener');
+                  }} className="rounded-xl bg-white/20 backdrop-blur-sm px-6 py-2.5 text-sm font-semibold text-white hover:bg-white/30 transition-colors flex items-center gap-2">
                     <Check className="h-4 w-4" /> Open
                   </button>
                   <button onClick={() => navigate(`/app-store/manage/${app.id}`)}
@@ -348,7 +351,11 @@ const AppDetailPage = () => {
       {showInstall && (
         <InstallSheet app={app} onClose={() => setShowInstall(false)} onInstall={handleInstall}
           onPinToDock={(id) => { pinToDock(id); toast.success("Pinned to dock"); }}
-          onOpen={() => setShowInstall(false)} />
+          onOpen={() => {
+            setShowInstall(false);
+            if (app.routePath) navigate(app.routePath);
+            else if (app.externalUrl) window.open(app.externalUrl, '_blank', 'noopener');
+          }} />
       )}
     </div>
   );

@@ -273,7 +273,12 @@ const AppStorePage = () => {
         <InstallSheet app={installTarget} onClose={() => setInstallTarget(null)}
           onInstall={handleInstall}
           onPinToDock={(id) => { pinToDock(id); toast.success("Pinned to dock"); }}
-          onOpen={() => setInstallTarget(null)} />
+          onOpen={() => {
+            const target = installTarget;
+            setInstallTarget(null);
+            if (target?.routePath) navigate(target.routePath);
+            else if (target?.externalUrl) window.open(target.externalUrl, '_blank', 'noopener');
+          }} />
       )}
     </div>
   );
