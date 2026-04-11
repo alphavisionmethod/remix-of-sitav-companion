@@ -49,6 +49,7 @@ export class SoftwareRasterizer {
   private _stats: RasterizerStats = {
     pixelsFilled: 0,
     pixelsBlended: 0,
+    pixelsCopied: 0,
     scanlinesProcesed: 0,
     simdBatchOps: 0,
     antiAliasedEdges: 0,
