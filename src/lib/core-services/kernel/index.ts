@@ -51,6 +51,13 @@ export { ClipboardManager, type ClipboardEntry, type ClipboardOffer, type Clipbo
 export { WindowEffects, type SnapZone, type SnapConfig, type TileLayout, type TileRegion, type DPMSState, type ScreenLockState, type PowerConfig, type SnapPreview, type WindowEffectsStats } from "./window-effects";
 export { AccessibilityRenderer, type A11yRole, type A11yAnnotation, type A11yTreeNode, type FocusRingStyle, type ContrastMode, type AccessibilityConfig, type FocusRingOverlay, type ContrastPalette, type AccessibilityRendererStats } from "./accessibility-renderer";
 
+// --- Networking Stack (Section 5) ---
+export { TCPIPStack, type NetworkInterface, type RoutingEntry, type ARPEntry, type TCPConnection, type UDPBinding, type TCPState, type CongestionAlgorithm, type NetworkStackStats } from "./tcp-ip-stack";
+export { SocketAPI, type SocketDescriptor, type SocketAddress, type SocketOptions, type SocketDomain, type SocketType, type SocketState, type SocketAPIStats } from "./socket-api";
+export { Firewall, type FirewallRule, type FirewallChain, type FirewallAction, type ConnTrackEntry, type RateLimitConfig, type FirewallStats } from "./firewall";
+export { VPNManager, type VPNTunnel, type VPNPeer, type SplitTunnelRule, type VPNProtocol, type TunnelState, type VPNStats } from "./vpn-manager";
+export { DNSResolver, type DNSRecord, type DNSQuery, type DNSCacheEntry, type DNSUpstream, type DNSOverride, type DNSResolverStats } from "./dns-resolver";
+
 // --- Command Buffer & UI Renderer (CPU Vulkan + High-Level API) ---
 export { CommandBuffer, CommandBufferPool, SoftwarePipeline, type DrawCommand, type CommandBufferStats, type Vertex2D, type VertexColor, type Transform2DMatrix, type Fixed16, toFixed16, fromFixed16, fpMul, fpDiv, fpFloor, fpCeil, fpFrac, IDENTITY_TRANSFORM } from "./command-buffer";
 export { UIRenderer, CpuBlur, type UIViewProps, type UITextProps, type UIBackground, type UIColor, type UIGradientStop, type UIBoxShadow, type UIBorder, type UIBorderRadii, type BlurConfig, type UIRendererStats } from "./ui-renderer";
@@ -97,6 +104,11 @@ import { CommandBufferPool } from "./command-buffer";
 import { UIRenderer } from "./ui-renderer";
 import { ViewTree } from "./view-tree";
 import { LayoutEngine } from "./layout-engine";
+import { TCPIPStack } from "./tcp-ip-stack";
+import { SocketAPI } from "./socket-api";
+import { Firewall } from "./firewall";
+import { VPNManager } from "./vpn-manager";
+import { DNSResolver } from "./dns-resolver";
 
 /**
  * KernelSubsystem — Facade aggregating all kernel architecture,
@@ -157,6 +169,13 @@ export class KernelSubsystem {
   // View Tree & Layout Engine (Section 5.6)
   readonly viewTree: ViewTree;
   readonly layoutEngine: LayoutEngine;
+
+  // Networking Stack (Section 5)
+  readonly tcpip: TCPIPStack;
+  readonly sockets: SocketAPI;
+  readonly firewall: Firewall;
+  readonly vpn: VPNManager;
+  readonly dns: DNSResolver;
 
   private _bootedAt: number;
 
@@ -221,6 +240,13 @@ export class KernelSubsystem {
     // View Tree & Layout Engine
     this.viewTree = new ViewTree();
     this.layoutEngine = new LayoutEngine();
+
+    // Networking Stack
+    this.tcpip = new TCPIPStack();
+    this.sockets = new SocketAPI();
+    this.firewall = new Firewall();
+    this.vpn = new VPNManager();
+    this.dns = new DNSResolver();
 
     // ── Wire subsystems together ────────────────────────────
     // Wire scene graph into render pipeline
@@ -301,6 +327,11 @@ export class KernelSubsystem {
       uiRenderer: this.uiRenderer.getStats(),
       viewTree: this.viewTree.getStats(),
       layoutEngine: this.layoutEngine.getStats(),
+      tcpip: this.tcpip.getStats(),
+      sockets: this.sockets.getStats(),
+      firewall: this.firewall.getStats(),
+      vpn: this.vpn.getStats(),
+      dns: this.dns.getStats(),
     };
   }
 
