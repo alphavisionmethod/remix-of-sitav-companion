@@ -6,7 +6,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Lock, ArrowRight, Fingerprint, Shield, Eye, EyeOff, AlertCircle } from "lucide-react";
-import logo from "@/assets/logo.jpeg";
+import logo from "@/assets/logo.webp";
 import { cn } from "@/lib/utils";
 
 interface LockScreenProps {

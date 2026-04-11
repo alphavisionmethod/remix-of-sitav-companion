@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 import { Building2, Mail, ArrowRight, ChevronLeft, Shield, Globe, Users, Lock, AlertCircle, Check } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
-import logo from "@/assets/logo.jpeg";
+import logo from "@/assets/logo.webp";
 import { cn } from "@/lib/utils";
 
 interface EnterpriseFlowProps {

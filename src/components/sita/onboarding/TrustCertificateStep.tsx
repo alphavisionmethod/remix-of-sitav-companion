@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Shield, Brain, Globe, Lock, Check, ChevronRight } from "lucide-react";
-import logo from "@/assets/logo.jpeg";
+import logo from "@/assets/logo.webp";
 
 interface TrustCertificateStepProps {
   displayName: string;

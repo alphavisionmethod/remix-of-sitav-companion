@@ -1,5 +1,5 @@
 import { useState } from "react";
-import sitaLogo from "@/assets/logo.jpeg";
+import sitaLogo from "@/assets/logo.webp";
 import { useAuth } from "@/contexts/AuthContext";
 import { Link } from "react-router-dom";
 import { toast } from "sonner";

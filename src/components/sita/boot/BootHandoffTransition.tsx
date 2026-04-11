@@ -6,7 +6,7 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
-import logo from "@/assets/logo.jpeg";
+import logo from "@/assets/logo.webp";
 
 interface BootHandoffTransitionProps {
   onComplete: () => void;

@@ -6,7 +6,7 @@
 
 import { useReducer, useEffect, useCallback, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import logo from "@/assets/logo.jpeg";
+import logo from "@/assets/logo.webp";
 import {
   HardwareDetectionPanel,
   type HardwareCheck,

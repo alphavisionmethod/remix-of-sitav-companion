@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 import { useActionFn } from "@/hooks/use-action";
 import { toast } from "sonner";
-import logo from "@/assets/logo.jpeg";
+import logo from "@/assets/logo.webp";
 import {
   Briefcase, DollarSign, Headphones, ChevronRight, ChevronLeft, Check, User, Building,
   Shield, Brain, Zap, Clock, Mail, Calendar, FileText, Sparkles, CheckCircle, ArrowRight,

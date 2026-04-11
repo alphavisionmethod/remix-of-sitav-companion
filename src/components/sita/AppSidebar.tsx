@@ -8,7 +8,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useUserPreferences, showBusinessNav, showConciergeNav } from "@/hooks/use-user-preferences";
 import { useOSOrchestration } from "@/hooks/useOSOrchestration";
-import logo from "@/assets/logo.jpeg";
+import logo from "@/assets/logo.webp";
 import {
   Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu,
   SidebarMenuButton, SidebarMenuItem, SidebarHeader, SidebarFooter, useSidebar,
