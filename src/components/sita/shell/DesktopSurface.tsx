@@ -21,6 +21,7 @@ import { FloatingWindow } from "./FloatingWindow";
 import { useWindowManagerContext } from "@/contexts/WindowManagerContext";
 import { DesktopIconGrid } from "./DesktopIconGrid";
 import { DesktopContextMenu } from "./DesktopContextMenu";
+import { IntentSuggestion } from "./IntentSuggestion";
 
 // ── Types ────────────────────────────────────────────────────
 
@@ -69,32 +70,36 @@ function DesktopToasts({ notifications }: { notifications: ShellNotificationDige
   );
 }
 
-// ── Time-of-day wallpaper gradients ──────────────────────────
+// ── Time-of-day wallpaper gradients (with breathing variants) ─
 
-function getTimeConfig(): { greeting: string; mood: AmbientMood; gradient: string } {
+function getTimeConfig(): { greeting: string; mood: AmbientMood; gradient: string; gradientAlt: string } {
   const hour = new Date().getHours();
   if (hour >= 6 && hour < 12)
     return {
       greeting: "Good morning",
       mood: "warm",
       gradient: "from-[hsl(35_70%_22%)] via-[hsl(265_40%_20%)] to-[hsl(280_35%_18%)]",
+      gradientAlt: "from-[hsl(40_72%_24%)] via-[hsl(270_42%_22%)] to-[hsl(285_37%_20%)]",
     };
   if (hour >= 12 && hour < 18)
     return {
       greeting: "Good afternoon",
       mood: "serene",
       gradient: "from-[hsl(220_40%_20%)] via-[hsl(265_40%_24%)] to-[hsl(200_35%_18%)]",
+      gradientAlt: "from-[hsl(225_42%_22%)] via-[hsl(260_38%_22%)] to-[hsl(205_37%_20%)]",
     };
   if (hour >= 18 && hour < 21)
     return {
       greeting: "Good evening",
       mood: "warm",
       gradient: "from-[hsl(280_45%_20%)] via-[hsl(320_35%_18%)] to-[hsl(38_50%_18%)]",
+      gradientAlt: "from-[hsl(285_47%_22%)] via-[hsl(325_37%_20%)] to-[hsl(33_48%_16%)]",
     };
   return {
     greeting: "Good night",
     mood: "night",
     gradient: "from-[hsl(240_40%_10%)] via-[hsl(265_38%_14%)] to-[hsl(220_35%_8%)]",
+    gradientAlt: "from-[hsl(245_42%_12%)] via-[hsl(270_40%_16%)] to-[hsl(225_37%_10%)]",
   };
 }
 
@@ -207,10 +212,19 @@ export function DesktopSurface({
 }: DesktopSurfaceProps) {
   const navigate = useNavigate();
   const reduced = useReducedMotion();
-  const { greeting, mood, gradient: timeGradient } = useMemo(getTimeConfig, []);
+  const { greeting, mood, gradient: timeGradient, gradientAlt: timeGradientAlt } = useMemo(getTimeConfig, []);
   const wallpaper = useMemo(getWallpaperTheme, []);
   const isAuto = wallpaper.id === "auto";
   const activeGradient = isAuto ? timeGradient : wallpaper.gradient;
+  const activeGradientAlt = isAuto ? timeGradientAlt : wallpaper.gradient;
+
+  // ── Living Wallpaper — breathing gradient ──────────────────
+  const [wallpaperPhase, setWallpaperPhase] = useState(false);
+  useEffect(() => {
+    if (reduced) return;
+    const interval = setInterval(() => setWallpaperPhase(p => !p), 30_000);
+    return () => clearInterval(interval);
+  }, [reduced]);
 
   // ── Boot Ceremony ──────────────────────────────────────────
   const [bootPhase, setBootPhase] = useState(0);
@@ -254,8 +268,9 @@ export function DesktopSurface({
     <div
       className={cn(
         "fixed inset-0 flex flex-col items-center justify-center overflow-hidden bg-gradient-to-br cursor-default",
-        activeGradient
+        wallpaperPhase ? activeGradientAlt : activeGradient
       )}
+      style={{ transition: "background 8s ease" }}
       onClick={(e) => { handleBackgroundClick(e); setCtxMenu(null); }}
       onContextMenu={handleContextMenu}
     >
@@ -342,6 +357,19 @@ export function DesktopSurface({
 
         {/* Advisor Insight */}
         <AdvisorInsight bootReady={bootPhase >= 2} />
+
+        {/* Intent-Aware Suggestion */}
+        <IntentSuggestion
+          continuity={continuity}
+          notifications={notifications}
+          visible={bootPhase >= 4 && !hasWindows}
+          onAction={(action) => {
+            if (action === "approvals") navigate("/approvals");
+            else if (action === "agenda") navigate("/concierge");
+            else if (action === "summary") navigate("/mission");
+            else onOpenCommand?.();
+          }}
+        />
       </div>
 
       {/* Desktop Icon Grid — dims with soft focus too */}
