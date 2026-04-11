@@ -138,6 +138,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         <CommandPalette open={commandOpen} onClose={() => setCommandOpen(false)} />
         {/* Notification Center */}
         <NotificationCenterPanel open={notifOpen} onClose={() => setNotifOpen(false)} />
+      </Suspense>
 
       <div className={cn("relative flex flex-col min-h-screen w-full bg-surface-0", isCalm && "calm-mode", isFocus && "focus-mode")}>
         {/* Ambient background — subtle, always present */}
