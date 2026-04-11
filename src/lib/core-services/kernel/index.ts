@@ -109,6 +109,10 @@ import { SocketAPI } from "./socket-api";
 import { Firewall } from "./firewall";
 import { VPNManager } from "./vpn-manager";
 import { DNSResolver } from "./dns-resolver";
+import { GPUAbstraction } from "./gpu-abstraction";
+import { WindowManager } from "./window-manager";
+import { DisplayProtocol } from "./display-protocol";
+import { SurfaceAllocator } from "./surface-allocator";
 
 /**
  * KernelSubsystem — Facade aggregating all kernel architecture,
@@ -176,6 +180,12 @@ export class KernelSubsystem {
   readonly firewall: Firewall;
   readonly vpn: VPNManager;
   readonly dns: DNSResolver;
+
+  // Display Server & Window Manager (Section 6)
+  readonly gpu: GPUAbstraction;
+  readonly windowManager: WindowManager;
+  readonly displayProtocol: DisplayProtocol;
+  readonly surfaceAllocator: SurfaceAllocator;
 
   private _bootedAt: number;
 
@@ -247,6 +257,12 @@ export class KernelSubsystem {
     this.firewall = new Firewall();
     this.vpn = new VPNManager();
     this.dns = new DNSResolver();
+
+    // Display Server & Window Manager (Section 6)
+    this.gpu = new GPUAbstraction();
+    this.windowManager = new WindowManager();
+    this.displayProtocol = new DisplayProtocol();
+    this.surfaceAllocator = new SurfaceAllocator();
 
     // ── Wire subsystems together ────────────────────────────
     // Wire scene graph into render pipeline
@@ -332,6 +348,10 @@ export class KernelSubsystem {
       firewall: this.firewall.getStats(),
       vpn: this.vpn.getStats(),
       dns: this.dns.getStats(),
+      gpu: this.gpu.getStats(),
+      windowManager: this.windowManager.getStats(),
+      displayProtocol: this.displayProtocol.getStats(),
+      surfaceAllocator: this.surfaceAllocator.getStats(),
     };
   }
 
