@@ -1779,6 +1779,7 @@ const App = () => (
                      <Route path="/admin/architecture/god-tier-integration" element={<GodTierIntegrationBoard />} />
                      <Route path="/admin/architecture/god-tier-runtime" element={<GodTierRuntimeBoard />} />
                      <Route path="/admin/architecture/epistemic-firewall" element={<EpistemicFirewallBoard />} />
+                     <Route path="/admin/kernel" element={<KernelDashboard />} />
 
                     </Route>
 
