@@ -104,6 +104,11 @@ import { CommandBufferPool } from "./command-buffer";
 import { UIRenderer } from "./ui-renderer";
 import { ViewTree } from "./view-tree";
 import { LayoutEngine } from "./layout-engine";
+import { TCPIPStack } from "./tcp-ip-stack";
+import { SocketAPI } from "./socket-api";
+import { Firewall } from "./firewall";
+import { VPNManager } from "./vpn-manager";
+import { DNSResolver } from "./dns-resolver";
 
 /**
  * KernelSubsystem — Facade aggregating all kernel architecture,
