@@ -132,6 +132,7 @@ import { WindowManager } from "./window-manager";
 import { DisplayProtocol } from "./display-protocol";
 import { SurfaceAllocator } from "./surface-allocator";
 import { VisualEffectsCompositor } from "./visual-effects-compositor";
+import { ThemeManager } from "./ui-theme";
 
 /**
  * KernelSubsystem — Facade aggregating all kernel architecture,
