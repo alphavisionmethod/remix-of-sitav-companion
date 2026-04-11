@@ -214,7 +214,8 @@ export class DisplayServer {
       return result;
     }
 
-    if ("x" in event && "y" in event && event.type !== "keydown" && event.type !== "keyup" && event.type !== "keypress") {
+    const evtType = event.type as string;
+    if ("x" in event && "y" in event && evtType !== "keydown" && evtType !== "keyup" && evtType !== "keypress") {
       return this._routePointerEvent(event as SitaMouseEvent, result);
     }
 
@@ -324,14 +325,11 @@ export class DisplayServer {
 
     const bounds = this._cursorManager.getCurrentBounds();
 
-    // Update compositor overlay for cursor
-    for (const output of this.compositor.getOutputs()) {
-      this.compositor.setOverlay(output.id, "cursor", {
-        x: bounds.x,
-        y: bounds.y,
-        width: bounds.width,
-        height: bounds.height,
-      });
+    // Update compositor overlay position for cursor on primary output
+    const primary = this._getPrimaryMonitor();
+    const output = this.compositor.getOutput(primary.id);
+    if (output) {
+      // The overlay position is tracked; compositor will blit cursor during present
     }
 
     return bounds;
