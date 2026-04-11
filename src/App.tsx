@@ -215,6 +215,11 @@ const SpreadsheetWorkspace = lazy(() => import("./pages/SpreadsheetWorkspace"));
 const ClipboardHistory = lazy(() => import("./pages/ClipboardHistory"));
 const PrintScanCenter = lazy(() => import("./pages/PrintScanCenter"));
 
+const WebsiteBuilderPage = lazy(() => import("./pages/business/WebsiteBuilder"));
+const ProposalsContractsPage = lazy(() => import("./pages/business/ProposalsContracts"));
+const LeadRecoveryPage = lazy(() => import("./pages/business/LeadRecovery"));
+const SocialCommandPage = lazy(() => import("./pages/business/SocialCommand"));
+
 // ── AI Engineering Board ──
 const AIEngineeringBoard = lazy(() => import("./pages/admin/AIEngineeringBoard"));
 const AITeamRoster = lazy(() => import("./pages/admin/AITeamRoster"));
@@ -895,6 +900,10 @@ const App = () => (
                     <Route path="/business/proof" element={<BusinessCenter />} />
                     <Route path="/business/files" element={<BusinessCenter />} />
                     <Route path="/business/settings" element={<BusinessCenter />} />
+                    <Route path="/business/website-builder" element={<WebsiteBuilderPage />} />
+                    <Route path="/business/proposals" element={<ProposalsContractsPage />} />
+                    <Route path="/business/lead-recovery" element={<LeadRecoveryPage />} />
+                    <Route path="/business/social" element={<SocialCommandPage />} />
                     <Route path="/business/customers/:id" element={<CustomerDetail />} />
                     <Route path="/business/customer-health" element={<CustomerHealthPage />} />
 
