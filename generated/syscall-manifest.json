@@ -1,0 +1,29 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-04-11T00:00:00Z",
+  "abi": {
+    "convention": "x86_64-SystemV",
+    "instruction": "syscall",
+    "args": ["rdi", "rsi", "rdx", "r10", "r8", "r9"],
+    "return": "rax",
+    "errorConvention": "negative-errno"
+  },
+  "totalSyscalls": 126,
+  "categories": {
+    "process": { "range": [0, 17], "count": 18 },
+    "memory": { "range": [20, 28], "count": 9 },
+    "filesystem": { "range": [40, 65], "count": 26 },
+    "ipc": { "range": [70, 84], "count": 15 },
+    "security": { "range": [90, 104], "count": 15 },
+    "device": { "range": [110, 115], "count": 6 },
+    "proof": { "range": [120, 125], "count": 6 }
+  },
+  "riskBreakdown": {
+    "low": 42,
+    "medium": 38,
+    "high": 30,
+    "critical": 16
+  },
+  "auditedCount": 52,
+  "requiresCapabilityCount": 28
+}
