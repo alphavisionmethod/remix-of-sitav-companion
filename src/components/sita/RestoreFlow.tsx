@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
-import logo from "@/assets/logo.jpeg";
+import logo from "@/assets/logo.webp";
 import { cn } from "@/lib/utils";
 
 interface RestoreFlowProps {
@@ -94,7 +94,7 @@ export function RestoreFlow({ onBack, onComplete }: RestoreFlowProps) {
       <div className="fixed inset-0 z-[190] flex items-center justify-center" style={{ backgroundColor: "#0B0D10" }}>
         <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="text-center space-y-6">
           <div className="relative mx-auto w-20 h-20">
-            <img src={logo} alt="SITA" className="h-20 w-20 rounded-2xl" style={{ boxShadow: "0 0 40px rgba(139,92,246,0.15)" }} />
+            <img src={logo} loading="lazy" alt="SITA" className="h-20 w-20 rounded-2xl" style={{ boxShadow: "0 0 40px rgba(139,92,246,0.15)" }} />
             <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.3 }}
               className="absolute -bottom-1 -right-1 flex h-7 w-7 items-center justify-center rounded-full shadow-lg"
               style={{ background: "hsl(152 55% 48%)" }}>

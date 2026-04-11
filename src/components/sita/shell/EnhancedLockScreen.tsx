@@ -11,7 +11,7 @@ import {
   CheckCircle, Bell, Calendar, Clock, Wifi, WifiOff,
   Users, ChevronUp, Fingerprint,
 } from "lucide-react";
-import logo from "@/assets/logo.jpeg";
+import logo from "@/assets/logo.webp";
 import { cn } from "@/lib/utils";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { ShellAmbientBackground } from "./ShellAmbientBackground";
@@ -272,7 +272,7 @@ export function EnhancedLockScreen({
                       : {}
                   }
                 >
-                  <img src={logo} alt="SITA" className="h-12 w-12 rounded-xl opacity-80" />
+                  <img src={logo} loading="lazy" alt="SITA" className="h-12 w-12 rounded-xl opacity-80" />
                 </motion.div>
               )}
               {/* Status dot */}

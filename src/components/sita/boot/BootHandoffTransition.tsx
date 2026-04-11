@@ -6,7 +6,7 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
-import logo from "@/assets/logo.jpeg";
+import logo from "@/assets/logo.webp";
 
 interface BootHandoffTransitionProps {
   onComplete: () => void;
@@ -84,7 +84,7 @@ export function BootHandoffTransition({ onComplete, reducedMotion = false }: Boo
         }
         transition={{ duration: dur ?? 0.7, ease }}
       >
-        <img src={logo} alt="SITA" className="h-[88px] w-[88px] rounded-2xl" />
+        <img src={logo} alt="SITA" width={88} height={88} loading="lazy" className="h-[88px] w-[88px] rounded-2xl" />
       </motion.div>
 
       {/* ── Title — slides to left panel area ── */}

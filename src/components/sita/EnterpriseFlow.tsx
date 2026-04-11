@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 import { Building2, Mail, ArrowRight, ChevronLeft, Shield, Globe, Users, Lock, AlertCircle, Check } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
-import logo from "@/assets/logo.jpeg";
+import logo from "@/assets/logo.webp";
 import { cn } from "@/lib/utils";
 
 interface EnterpriseFlowProps {
@@ -76,7 +76,7 @@ export function EnterpriseFlow({ onBack, onComplete }: EnterpriseFlowProps) {
     return (
       <div className="fixed inset-0 z-[190] flex items-center justify-center" style={{ backgroundColor: "#0B0D10" }}>
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center space-y-6 max-w-sm">
-          <img src={logo} alt="SITA" className="h-16 w-16 rounded-2xl mx-auto" style={{ boxShadow: "0 0 40px rgba(139,92,246,0.12)" }} />
+          <img src={logo} loading="lazy" alt="SITA" className="h-16 w-16 rounded-2xl mx-auto" style={{ boxShadow: "0 0 40px rgba(139,92,246,0.12)" }} />
           <div>
             <h2 className="text-lg font-semibold text-foreground">Provisioning Enterprise</h2>
             <p className="text-sm text-muted-foreground mt-1">{orgName}</p>

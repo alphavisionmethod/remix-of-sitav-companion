@@ -6,7 +6,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Lock, ArrowRight, Fingerprint, Shield, Eye, EyeOff, AlertCircle } from "lucide-react";
-import logo from "@/assets/logo.jpeg";
+import logo from "@/assets/logo.webp";
 import { cn } from "@/lib/utils";
 
 interface LockScreenProps {
@@ -200,7 +200,7 @@ export function LockScreen({
                     backdropFilter: "blur(12px)",
                   }}
                 >
-                  <img src={logo} alt="SITA" className="h-12 w-12 rounded-xl opacity-80" />
+                  <img src={logo} loading="lazy" alt="SITA" className="h-12 w-12 rounded-xl opacity-80" />
                 </div>
               )}
               {/* Online indicator */}
