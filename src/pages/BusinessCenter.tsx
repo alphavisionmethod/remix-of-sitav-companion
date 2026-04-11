@@ -33,6 +33,10 @@ import { useOpportunitySignals } from "@/hooks/useCAIData";
 type SubPage = "overview" | "leads" | "customers" | "opportunities" | "quotes" | "invoices" | "communications" | "boardroom" | "proof" | "revenue-autopilot" | "collections" | "autopilot-hub" | "revenue-impact" | "playbook-builder" | "revenue-forecast" | "website-builder" | "proposals" | "lead-recovery" | "social";
 
 const subpageFromPath = (path: string): SubPage => {
+  if (path.includes("/website-builder")) return "website-builder";
+  if (path.includes("/proposals")) return "proposals";
+  if (path.includes("/lead-recovery")) return "lead-recovery";
+  if (path.includes("/social")) return "social";
   if (path.includes("/revenue-forecast")) return "revenue-forecast";
   if (path.includes("/playbook-builder")) return "playbook-builder";
   if (path.includes("/revenue-impact")) return "revenue-impact";
