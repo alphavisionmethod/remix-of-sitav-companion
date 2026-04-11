@@ -24,6 +24,7 @@ import WebsiteBuilder from "./business/WebsiteBuilder";
 import ProposalsContracts from "./business/ProposalsContracts";
 import LeadRecovery from "./business/LeadRecovery";
 import SocialCommand from "./business/SocialCommand";
+import EcommerceManager from "./business/EcommerceManager";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useOSOrchestration } from "@/hooks/useOSOrchestration";
