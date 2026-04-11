@@ -24,6 +24,14 @@ export { PackageManager, type PackageManifest, type InstalledPackage, type Repos
 export { JournalSubsystem, type JournalEntry, type JournalPriority, type CrashDump, type DiagnosticSnapshot } from "./journal-subsystem";
 export { ConfigManager, type ConfigEntry, type ConfigLayer, type ConfigSchema, type ConfigChangeRecord } from "./config-manager";
 
+// --- Rendering Pipeline ---
+export { RenderPipeline, type FrameStats, type PipelineStats, type LayoutNode } from "./render-pipeline";
+export { SoftwareRasterizer, type TileBuffer, type Color, type BlendMode, type PixelFormat } from "./software-rasterizer";
+export { TileCompositor, type Tile, type TileState, type CompositorLayer, type CompositorStats } from "./tile-compositor";
+export { DamageTracker, type Rect, type DamageRegion, type DamageSource, type DamageStats } from "./damage-tracker";
+export { VectorRenderer, type VectorPath, type PathCommand, type GradientDef, type StrokeStyle, type GlyphCacheEntry } from "./vector-renderer";
+export { RenderThreadPool, type WorkItem, type WorkPriority, type RenderThread, type ThreadPoolStats } from "./render-thread-pool";
+
 // --- Facade imports ---
 import { ProcessScheduler } from "./process-scheduler";
 import { MemoryManager } from "./memory-manager";
@@ -40,6 +48,12 @@ import { DaemonRegistry } from "./system-daemons";
 import { PackageManager } from "./package-manager";
 import { JournalSubsystem } from "./journal-subsystem";
 import { ConfigManager } from "./config-manager";
+import { RenderPipeline } from "./render-pipeline";
+import { SoftwareRasterizer } from "./software-rasterizer";
+import { TileCompositor } from "./tile-compositor";
+import { DamageTracker } from "./damage-tracker";
+import { VectorRenderer } from "./vector-renderer";
+import { RenderThreadPool } from "./render-thread-pool";
 
 /**
  * KernelSubsystem — Facade aggregating all kernel architecture,
@@ -67,9 +81,17 @@ export class KernelSubsystem {
   readonly journal: JournalSubsystem;
   readonly config: ConfigManager;
 
+  // Rendering Pipeline
+  readonly renderPipeline: RenderPipeline;
+  readonly rasterizer: SoftwareRasterizer;
+  readonly compositor: TileCompositor;
+  readonly damageTracker: DamageTracker;
+  readonly vectorEngine: VectorRenderer;
+  readonly renderThreads: RenderThreadPool;
+
   private _bootedAt: number;
 
-  constructor(opts?: { tpmAvailable?: boolean }) {
+  constructor(opts?: { tpmAvailable?: boolean; screenWidth?: number; screenHeight?: number; dpiScale?: number }) {
     // Kernel Architecture
     this.scheduler = new ProcessScheduler();
     this.vmm = new MemoryManager();
@@ -90,6 +112,16 @@ export class KernelSubsystem {
     this.packages = new PackageManager();
     this.journal = new JournalSubsystem();
     this.config = new ConfigManager();
+
+    // Rendering Pipeline
+    const sw = opts?.screenWidth ?? 1920;
+    const sh = opts?.screenHeight ?? 1080;
+    this.rasterizer = new SoftwareRasterizer();
+    this.damageTracker = new DamageTracker(sw, sh);
+    this.compositor = new TileCompositor(sw, sh);
+    this.vectorEngine = new VectorRenderer(opts?.dpiScale ?? 1);
+    this.renderThreads = new RenderThreadPool();
+    this.renderPipeline = new RenderPipeline({ screenWidth: sw, screenHeight: sh, dpiScale: opts?.dpiScale });
 
     this._bootedAt = Date.now();
 
@@ -112,7 +144,7 @@ export class KernelSubsystem {
     }
 
     // Log boot via journal
-    this.journal.kernelMsg("notice", "KernelSubsystem initialized — all modules loaded");
+    this.journal.kernelMsg("notice", "KernelSubsystem initialized — all modules loaded, rendering pipeline active");
   }
 
   getStats() {
@@ -134,10 +166,17 @@ export class KernelSubsystem {
       packages: this.packages.getStats(),
       journal: this.journal.getStats(),
       config: this.config.getStats(),
+      renderPipeline: this.renderPipeline.getStats(),
+      rasterizer: this.rasterizer.getStats(),
+      compositor: this.compositor.getStats(),
+      damageTracker: this.damageTracker.getStats(),
+      vectorEngine: this.vectorEngine.getStats(),
+      renderThreads: this.renderThreads.getStats(),
     };
   }
 
   destroy(): void {
     this.initSystem.destroy();
+    this.renderPipeline.destroy();
   }
 }
