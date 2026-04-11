@@ -64,6 +64,9 @@ export { WindowManager, type WMWindow, type WMWorkspace, type WMWindowState, typ
 export { DisplayProtocol, type ProtocolClient, type ProtocolSurface, type ProtocolBuffer, type SHMPool, type XDGToplevel, type XDGPopup, type ProtocolEvent, type SurfaceRole, type DisplayProtocolStats } from "./display-protocol";
 export { SurfaceAllocator, type SurfaceAllocation, type BufferPool, type FormatCapability, type SurfacePixelFormat, type SurfaceMemoryType, type BufferingMode, type SurfaceAllocatorStats } from "./surface-allocator";
 
+// --- Visual Effects Compositor ---
+export { VisualEffectsCompositor, type BlurEffect, type BlurMethod, type BlurQuality, type BlurMask, type ShadowEffect, type ShadowType, type TransparencyEffect, type TransparencyMode, type WindowAnimation, type AnimationType, type EasingFunction, type AnimTransform, type DesktopTransition, type DesktopTransitionType, type ParticleEmitter, type ParticleShape, type CompositeLayer, type CompositeBlendMode, type EffectPreset, type VisualEffectsStats } from "./visual-effects-compositor";
+
 // --- Command Buffer & UI Renderer (CPU Vulkan + High-Level API) ---
 export { CommandBuffer, CommandBufferPool, SoftwarePipeline, type DrawCommand, type CommandBufferStats, type Vertex2D, type VertexColor, type Transform2DMatrix, type Fixed16, toFixed16, fromFixed16, fpMul, fpDiv, fpFloor, fpCeil, fpFrac, IDENTITY_TRANSFORM } from "./command-buffer";
 export { UIRenderer, CpuBlur, type UIViewProps, type UITextProps, type UIBackground, type UIColor, type UIGradientStop, type UIBoxShadow, type UIBorder, type UIBorderRadii, type BlurConfig, type UIRendererStats } from "./ui-renderer";
@@ -119,6 +122,7 @@ import { GPUAbstraction } from "./gpu-abstraction";
 import { WindowManager } from "./window-manager";
 import { DisplayProtocol } from "./display-protocol";
 import { SurfaceAllocator } from "./surface-allocator";
+import { VisualEffectsCompositor } from "./visual-effects-compositor";
 
 /**
  * KernelSubsystem — Facade aggregating all kernel architecture,
@@ -192,6 +196,9 @@ export class KernelSubsystem {
   readonly windowManager: WindowManager;
   readonly displayProtocol: DisplayProtocol;
   readonly surfaceAllocator: SurfaceAllocator;
+
+  // Visual Effects Compositor
+  readonly vfx: VisualEffectsCompositor;
 
   private _bootedAt: number;
 
@@ -269,6 +276,9 @@ export class KernelSubsystem {
     this.windowManager = new WindowManager();
     this.displayProtocol = new DisplayProtocol();
     this.surfaceAllocator = new SurfaceAllocator();
+
+    // Visual Effects Compositor
+    this.vfx = new VisualEffectsCompositor();
 
     // ── Wire subsystems together ────────────────────────────
     // Wire scene graph into render pipeline
@@ -358,6 +368,7 @@ export class KernelSubsystem {
       windowManager: this.windowManager.getStats(),
       displayProtocol: this.displayProtocol.getStats(),
       surfaceAllocator: this.surfaceAllocator.getStats(),
+      vfx: this.vfx.getStats(),
     };
   }
 
@@ -366,5 +377,6 @@ export class KernelSubsystem {
     this.renderPipeline.destroy();
     this.cursor.destroy();
     this.windowEffects.destroy();
+    this.vfx.destroy();
   }
 }
