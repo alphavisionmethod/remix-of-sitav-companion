@@ -745,7 +745,7 @@ function drawBackground(ctx: DrawContext, node: ViewNode): void {
   } else if (bg.type === "linearGradient" || bg.type === "radialGradient") {
     const stops = bg.stops.map(s => ({
       offset: s.offset,
-      color: { r: s.r, g: s.g, b: s.b, a: s.a },
+      color: { r: s.color.r, g: s.color.g, b: s.color.b, a: s.color.a },
     }));
     ctx.fillGradient(b.x, b.y, b.width, b.height, stops);
   }
