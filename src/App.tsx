@@ -190,6 +190,7 @@ const SystemHealthDashboard = lazy(() => import("./pages/admin/SystemHealthDashb
 const BrainCoreDashboard = lazy(() => import("./pages/admin/BrainCoreDashboard"));
 const ConscienceGateDashboard = lazy(() => import("./pages/admin/ConscienceGateDashboard"));
 const KernelDashboard = lazy(() => import("./pages/admin/KernelDashboard"));
+const CompositorDebugPage = lazy(() => import("./pages/admin/CompositorDebugPage"));
 const IntegrationConciergePage = lazy(() => import("./pages/admin/IntegrationConciergePage"));
 const RevenueAutopilotMonitor = lazy(() => import("./pages/admin/RevenueAutopilotMonitor"));
 const InvestorProofLedger = lazy(() => import("./pages/admin/InvestorProofLedger"));
@@ -1781,6 +1782,7 @@ const App = () => (
                      <Route path="/admin/architecture/god-tier-runtime" element={<GodTierRuntimeBoard />} />
                      <Route path="/admin/architecture/epistemic-firewall" element={<EpistemicFirewallBoard />} />
                      <Route path="/admin/kernel" element={<KernelDashboard />} />
+                     <Route path="/admin/kernel/compositor-debug" element={<CompositorDebugPage />} />
 
                     </Route>
 
