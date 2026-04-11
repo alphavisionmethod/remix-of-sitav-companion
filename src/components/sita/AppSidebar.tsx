@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Home, Briefcase, DollarSign, Headphones, Workflow, Receipt, BarChart3, FolderOpen, Settings, Shield, LogOut, Map, Blocks,
   Brain, Sparkles, Inbox, Activity, Zap, Eye, Server, CheckCircle, Users, FileText, Table2, Presentation, Package, Heart, ChevronRight, Globe, Sliders, Key, ScrollText, CreditCard, Cpu, Gauge, RotateCcw, Target, GitBranch, MessageSquare, Bell, Mail, Lock, Image, Cloud, LayoutDashboard, TrendingUp, Landmark, Calendar, StickyNote, PieChart, ListTodo, Edit3, Bug, Rocket } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -247,7 +248,7 @@ const CollapsibleNavGroup = ({ items, label, collapsed, defaultOpen = false }: {
   );
 };
 
-export function AppSidebar() {
+export const AppSidebar = memo(function AppSidebar() {
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
   const { user, signOut } = useAuth();
@@ -393,4 +394,4 @@ export function AppSidebar() {
       </SidebarFooter>
     </Sidebar>
   );
-}
+});

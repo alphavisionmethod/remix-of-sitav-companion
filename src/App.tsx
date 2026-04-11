@@ -10,8 +10,7 @@ import { ConnectivityProvider } from "@/contexts/ConnectivityContext";
 import { OfflineBanner } from "@/components/sita/OfflineBanner";
 import { useUserPreferences } from "@/hooks/use-user-preferences";
 import { DataModeProvider } from "@/contexts/DataModeContext";
-import { DemoModeProvider } from "@/contexts/DemoModeProvider";
-import { DisplayModeProvider } from "@/contexts/DisplayModeContext";
+import { AppearanceProvider } from "@/contexts/AppearanceContext";
 import { InspectorProvider } from "@/contexts/InspectorContext";
 import { EntityContextProvider } from "@/contexts/EntityContext";
 import { SitaKernelProvider } from "@/contexts/SitaKernelContext";
@@ -19,7 +18,7 @@ import { SitaOSProvider } from "@/contexts/SitaOSContext";
 import { AppPlatformProvider } from "@/contexts/AppPlatformContext";
 import { OSRuntimeProvider } from "@/lib/hooks/useOSRuntime";
 import { RealityModeProvider } from "@/lib/dual-reality/reality-mode-context";
-import { ThemeProvider } from "@/contexts/ThemeContext";
+import { ThemeProvider } from "@/contexts/AppearanceContext";
 import { ShellLayout } from "@/components/sita/ShellLayout";
 import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
 import { RouteErrorBoundary } from "@/components/sita/RouteErrorBoundary";
@@ -782,8 +781,7 @@ const HomeRoute = () => {
 
 const AuthenticatedProviders = ({ children }: { children: ReactNode }) => (
   <DataModeProvider>
-  <DemoModeProvider>
-  <DisplayModeProvider>
+  <AppearanceProvider>
   <EntityContextProvider>
   <SitaKernelProvider>
   <SitaOSProvider>
@@ -798,8 +796,7 @@ const AuthenticatedProviders = ({ children }: { children: ReactNode }) => (
   </SitaOSProvider>
   </SitaKernelProvider>
   </EntityContextProvider>
-  </DisplayModeProvider>
-  </DemoModeProvider>
+  </AppearanceProvider>
   </DataModeProvider>
 );
 
