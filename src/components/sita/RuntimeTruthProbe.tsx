@@ -31,6 +31,12 @@ export const RuntimeTruthProbe = forwardRef<HTMLDivElement, { compact?: boolean 
     const check = async () => {
       const osHydrated = kernel.hydrated;
 
+      // Skip backend checks in demo mode
+      if (isDemoMode) {
+        setProbe({ osHydrated, gatewayReachable: null, caiAccessible: null, checkedAt: new Date().toISOString() });
+        return;
+      }
+
       // Check CAI table access (lightweight query)
       let caiAccessible: boolean | null = null;
       try {
