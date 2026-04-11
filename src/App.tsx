@@ -215,6 +215,11 @@ const SpreadsheetWorkspace = lazy(() => import("./pages/SpreadsheetWorkspace"));
 const ClipboardHistory = lazy(() => import("./pages/ClipboardHistory"));
 const PrintScanCenter = lazy(() => import("./pages/PrintScanCenter"));
 
+const WebsiteBuilderPage = lazy(() => import("./pages/business/WebsiteBuilder"));
+const ProposalsContractsPage = lazy(() => import("./pages/business/ProposalsContracts"));
+const LeadRecoveryPage = lazy(() => import("./pages/business/LeadRecovery"));
+const SocialCommandPage = lazy(() => import("./pages/business/SocialCommand"));
+
 // ── AI Engineering Board ──
 const AIEngineeringBoard = lazy(() => import("./pages/admin/AIEngineeringBoard"));
 const AITeamRoster = lazy(() => import("./pages/admin/AITeamRoster"));
