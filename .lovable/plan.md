@@ -1,58 +1,120 @@
 
 
-# Performance Rendering — Final Missing Pieces
+# Display Server — CPU Compositor Core (Fully Advanced)
 
-## What's Complete
-All 8 gaps from the previous plan are resolved: animation engine, text layout, image pipeline, debug overlay, dash arrays, pattern fills, clip paths, frame pacing, and blitImage. The core pipeline (6 stages), rasterizer, compositor, damage tracker, vector engine, and thread pool are solid.
+## Gap Analysis
 
-## What's Still Missing for "Fully Advanced"
+The current `display-server.ts` manages window lifecycle, focus, and Z-stacking but has **no actual framebuffer, no window surface buffers, no pixel-level compositing, no double buffering, and no KMS/DRM scanout abstraction**. It's a window manager without a display backend. The user's spec demands a central compositor that owns the framebuffer and composites window surfaces into it.
 
-### 1. No Display Server / Window Manager
-The rendering pipeline can rasterize tiles but has no concept of **windows**. No window creation, move, resize, minimize, maximize, focus, stacking order, or input dispatch to windows.
+## Plan — 1 New File + 2 Edits
 
-### 2. No Input System
-No keyboard, mouse, touch, or gesture event pipeline. The render pipeline responds to layout changes but cannot originate events from user input.
-
-### 3. No Scene Graph / Retained-Mode Tree
-The doc says "immediate + retained hybrid" but there's no retained scene graph. `LayoutNode` is a flat structure passed per-frame — no persistent scene tree with dirty propagation, transform inheritance, or hit testing.
-
-### 4. No Color Management
-No ICC profile support, no wide-gamut handling, no color space conversion beyond sRGB gamma LUTs. Modern rendering needs Display P3 / HDR awareness.
-
-### 5. No Render Cache / Display List Cache
-Tile cache exists but there's no **display list caching** — the vector engine re-flattens paths every frame. Complex UIs need cached rasterized layers for static content.
-
-### 6. No Accessibility Rendering Support
-No high-contrast mode, no focus ring rendering, no screen reader tree generation from the scene graph.
-
-### 7. No Cursor Rendering
-Damage tracker lists `"cursor"` as a source but there's no cursor subsystem (cursor shapes, hardware/software cursor, hotspot tracking).
-
-## Plan — 5 New Files + 2 Edits
-
-### New Files
+### New File
 
 | File | Purpose |
 |------|---------|
-| `src/lib/core-services/kernel/display-server.ts` | **Window Manager + Display Server** — window lifecycle (create/destroy/move/resize/minimize/maximize/fullscreen), focus management, stacking order (Z-order with always-on-top), window decorations model, multi-monitor layout, input routing to focused window |
-| `src/lib/core-services/kernel/input-system.ts` | **Input Event Pipeline** — keyboard (keydown/keyup/keypress with modifiers), mouse (move/click/scroll/drag), touch (start/move/end/cancel with multi-touch), gesture recognition (pinch/rotate/swipe), input focus chain, event bubbling, global hotkeys |
-| `src/lib/core-services/kernel/scene-graph.ts` | **Retained Scene Graph** — persistent node tree with transform inheritance (translate/rotate/scale matrix), dirty flag propagation up/down, hit testing (point-in-path), bounding box computation, opacity inheritance, visibility culling, display list generation |
-| `src/lib/core-services/kernel/color-management.ts` | **Color Management** — ICC profile simulation, color space conversion (sRGB, Display P3, linear RGB, HSL, Lab), wide-gamut awareness, tone mapping for HDR content, color blindness simulation filters |
-| `src/lib/core-services/kernel/cursor-manager.ts` | **Cursor Subsystem** — cursor shape catalog (arrow, pointer, text, crosshair, resize handles, wait, custom), hotspot tracking, software cursor rendering into tile buffer, cursor damage emission, cursor confinement/grab |
+| `src/lib/core-services/kernel/cpu-compositor.ts` | **CPU Compositor Core** — the missing heart of the display server |
+
+Contents:
+- **Framebuffer model**: `Framebuffer` struct with `Uint8ClampedArray` pixels (RGBA), width, height, stride, double-buffered (front/back), page flip
+- **Window Surface Buffers**: each window gets a `SurfaceBuffer` (shared-memory model) — apps draw into their own buffer, compositor reads from it
+- **Surface allocation/deallocation** tied to window create/destroy lifecycle
+- **Compositing engine**: iterates Z-ordered windows, blits each window's surface buffer into the back framebuffer with opacity, clipping to window bounds, and damage-aware partial blit (only dirty regions per window)
+- **KMS/DRM abstraction**: `DisplayOutput` model with CRTC, connector, encoder, mode setting (resolution/refresh), scanout from front buffer
+- **Page flip / VSync**: double-buffer swap on present, tearing prevention, flip-complete callback
+- **Multi-monitor compositing**: per-monitor framebuffer, surfaces assigned to monitor regions
+- **Damage-driven compositing**: only re-composite regions marked dirty by `DisplayServer.collectDamage()`
+- **Background/wallpaper layer**: bottom-most surface for desktop background
+- **Overlay layer**: top-most for cursor, notifications, OSD
+- **Performance stats**: composite time, blit count, page flips, surface memory usage
 
 ### Edits
 
 | File | Change |
 |------|--------|
-| `src/lib/core-services/kernel/render-pipeline.ts` | Integrate scene graph as optional retained-mode input (scene graph diffing produces damage instead of flat LayoutNode list), add display list caching for unchanged subtrees |
-| `src/lib/core-services/kernel/index.ts` | Export 5 new services, wire into `KernelSubsystem` facade |
+| `src/lib/core-services/kernel/display-server.ts` | Integrate `CpuCompositor` — window create/destroy allocates/frees surface buffers; add `getSurface(windowId)` for apps to draw into; `present()` method triggers compositor; connect damage flow |
+| `src/lib/core-services/kernel/index.ts` | Export `CpuCompositor` and add to `KernelSubsystem` facade, wire to display server |
 
-### Design Notes
-- **Display server** follows X11/Wayland hybrid model: server-side decorations optional, client can draw its own
-- **Scene graph** produces a display list that feeds into the existing tile rasterization pipeline — no architectural changes needed downstream
-- **Input system** dispatches to display server which routes to focused window's scene graph for hit testing
-- **Color management** integrates with the rasterizer's gamma LUTs, extending them to arbitrary ICC profiles
-- **Cursor manager** emits damage rects to `DamageTracker` on every cursor move, enabling efficient cursor redraw
+## Technical Design
 
-## Total: 5 new files + 2 edits
+```text
++----------------------+
+| Applications         |
+| (draw into buffers)  |
++----------+-----------+
+           |
+           | SurfaceBuffer (shared memory)
+           v
++----------+-----------+
+| Display Server       |
+| + CpuCompositor      |
+|   - Z-order walk     |
+|   - Per-window blit  |
+|   - Opacity blend    |
+|   - Clip to bounds   |
+|   - Damage-aware     |
++----------+-----------+
+           |
+           | Page flip (double buffer)
+           v
++----------+-----------+
+| Framebuffer (RAM)    |
+| front / back buffer  |
++----------+-----------+
+           |
+           | KMS scanout
+           v
++----------------------+
+| DisplayOutput (CRTC) |
+| → Monitor            |
++----------------------+
+```
+
+### Key Types
+
+```typescript
+interface Framebuffer {
+  pixels: Uint8ClampedArray;  // RGBA
+  width: number;
+  height: number;
+  stride: number;             // bytes per row (cache-line aligned)
+}
+
+interface SurfaceBuffer {
+  windowId: string;
+  buffer: Framebuffer;
+  dirtyRegions: Rect[];
+  committed: boolean;         // client signals "ready to present"
+}
+
+interface DisplayOutput {
+  id: string;
+  crtcId: number;
+  connectorType: "HDMI" | "DP" | "eDP" | "VGA" | "Virtual";
+  currentMode: DisplayMode;
+  availableModes: DisplayMode[];
+  framebufferFront: Framebuffer;
+  framebufferBack: Framebuffer;
+  vblankCount: number;
+}
+
+interface DisplayMode {
+  width: number;
+  height: number;
+  refreshHz: number;
+  interlaced: boolean;
+}
+```
+
+### Compositing Algorithm
+1. For each dirty region from damage tracker
+2. Walk Z-ordered windows bottom to top
+3. For each window intersecting the dirty region:
+   - Read from window's `SurfaceBuffer`
+   - Apply window opacity
+   - Clip to window bounds and dirty region intersection
+   - Blit into back framebuffer using rasterizer's blend function
+4. Render cursor overlay on top
+5. Page flip: swap front ↔ back
+
+## Total: 1 new file + 2 edits
 
