@@ -1,111 +1,86 @@
 
 
-# SITA OS — CPU-Only Performance Rendering Subsystem
+# Performance Rendering — Missing Pieces & Enhancements
 
-## What Gets Built
+## What's Already Solid (no changes needed)
+- 6-stage pipeline with frame budget tracking (p95/p99)
+- Scanline rasterizer with analytical AA, gamma-correct blending, all blend modes
+- SIMD-modeled batch ops, cache-line aligned tile buffers
+- Damage tracker with coalescing, scroll optimization
+- Tile compositor with LRU eviction, display list diffing, layer Z-order
+- Vector engine with bezier flattening, gradients, glyph cache, DPI scaling
+- Thread pool with work-stealing, tile affinity, priority lanes, deadline yielding
 
-A complete software rendering pipeline designed for zero GPU dependency, implementing all five core principles: hybrid immediate+retained rendering, damage-based redraw, tile-based rasterization, multi-threaded pipeline, and vector-first resolution independence.
+## Gaps Found
 
-## New Files (6 services + 2 docs + 1 manifest)
+### 1. No Animation System
+Damage tracker lists `"animation"` as a source but there's no animation framework. Need: easing functions, property interpolation, timeline management, per-frame dirty rect emission from animated properties.
 
-### Rendering Pipeline Services
+### 2. No Image/Bitmap Pipeline
+Only vector primitives and solid colors exist. Need: bitmap blitting, image decode simulation, image scaling (nearest/bilinear), image tiling/repeat, sprite sheet support.
 
-| File | Purpose |
-|------|---------|
-| `src/lib/core-services/kernel/render-pipeline.ts` | **Master rendering pipeline orchestrator** — frame lifecycle (layout → paint → composite → present), frame budget management (16.6ms target), pipeline statistics, VSync simulation, frame skip policy |
-| `src/lib/core-services/kernel/software-rasterizer.ts` | **CPU rasterizer engine** — scanline rasterization, anti-aliasing (4x MSAA equivalent via analytical coverage), sub-pixel rendering for text, SIMD-modeled batch operations, pixel format handling (RGBA8888, RGB565), blend modes (source-over, multiply, screen), gamma-correct blending |
-| `src/lib/core-services/kernel/tile-compositor.ts` | **Tile-based compositor** — screen divided into 64x64 tiles, per-tile damage tracking, dirty-tile-only redraw, tile merge for large updates, compositing order (z-index layer tree), opacity/clip/transform per layer, retained display list diffing |
-| `src/lib/core-services/kernel/damage-tracker.ts` | **Damage region system** — dirty rectangle accumulation, region coalescing (merge overlapping rects), partial invalidation API, scroll damage optimization, frame-to-frame diffing, damage visualization debug mode |
-| `src/lib/core-services/kernel/vector-renderer.ts` | **Resolution-independent vector engine** — path commands (moveTo, lineTo, cubicTo, arcTo, close), fill rules (even-odd, winding), stroke with caps/joins/miter, gradient fills (linear, radial, conic), pattern fills, text layout with glyph cache, DPI-aware coordinate transforms |
-| `src/lib/core-services/kernel/render-thread-pool.ts` | **Multi-threaded work distribution** — thread pool simulation (Web Worker model), tile-parallel rasterization, work stealing between threads, thread affinity for cache locality, priority lanes (UI-critical vs background), frame deadline awareness, load balancing metrics |
+### 3. No Text Layout Engine
+Glyph cache exists but no text shaping or layout. Need: line breaking, word wrapping, text alignment, paragraph layout, bidirectional text support, font fallback chain.
 
-### Documentation & Manifests
+### 4. No Clip Path Support
+Only axis-aligned clip rects. Need: arbitrary path clipping (intersect scanlines with clip path), nested clip stack.
 
-| File | Purpose |
-|------|---------|
-| `infra/docs/PERFORMANCE_RENDERING.md` | Full specification: pipeline architecture, rasterization algorithms, tile system, damage tracking, threading model, benchmarks |
-| `infra/docs/RENDERING_PIPELINE.md` | Visual diagrams: frame lifecycle, tile grid, damage flow, thread pool topology |
-| `generated/rendering-pipeline-manifest.json` | Machine-readable config: tile size, thread count, frame budget, rasterizer capabilities, blend modes |
+### 5. Stroke Dash Array Not Implemented
+`StrokeStyle` declares `dashArray` and `dashOffset` but `expandStroke()` ignores them.
 
-### Wiring
+### 6. No Pattern Fills
+Mentioned in vector-renderer description but not implemented.
+
+### 7. No Debug Overlay / Performance Profiler
+Manifest declares `debugVisualization: true` but no debug overlay for damage regions, tile grid, or frame timing exists.
+
+### 8. No Frame Pacing / Jitter Smoothing
+VSync loop uses raw `setInterval` — no compensation for frame jitter or adaptive frame skipping.
+
+## Plan — 4 New Files + 4 Edits
+
+### New Files
+
+| File | What |
+|------|------|
+| `src/lib/core-services/kernel/animation-engine.ts` | Animation system: timeline, keyframes, easing library (ease-in/out/cubic-bezier), property interpolation, springs, automatic damage emission per animated property per frame |
+| `src/lib/core-services/kernel/text-layout-engine.ts` | Text shaping & layout: line breaking (greedy + optimal), word wrap, alignment (left/center/right/justify), paragraph metrics, font metrics simulation, fallback chain, bidi stub |
+| `src/lib/core-services/kernel/image-pipeline.ts` | Bitmap operations: image decode simulation, bilinear/nearest scaling, blit to tile buffer, image repeat/tile, nine-slice, sprite atlas, pixel format conversion |
+| `src/lib/core-services/kernel/render-debug-overlay.ts` | Debug visualization: damage region outlines, tile grid, dirty tile heatmap, frame time graph, per-stage breakdown bars, thread load bars, glyph cache utilization |
+
+### Edits to Existing Files
 
 | File | Change |
 |------|--------|
-| `src/lib/core-services/kernel/index.ts` | Export all 6 rendering services, add to `KernelSubsystem` facade as `renderPipeline`, `rasterizer`, `compositor`, `damageTracker`, `vectorEngine`, `renderThreads` |
+| `vector-renderer.ts` | Implement dash array in `expandStroke()`, add pattern fill sampling, add clip path stack with scanline intersection |
+| `render-pipeline.ts` | Replace `setInterval` with adaptive frame pacer (timestamp delta compensation, frame skip with partial rendering), integrate animation tick before layout pass |
+| `software-rasterizer.ts` | Add `blitImage()` method for bitmap compositing into tile buffers |
+| `src/lib/core-services/kernel/index.ts` | Export 4 new services, wire into `KernelSubsystem` facade |
 
-## Technical Design
+## Technical Details
 
-### Frame Lifecycle
-```text
-Input Event / State Change
-        │
-        ▼
-  ┌─ Layout Pass ──────────────────┐
-  │  Flex/grid resolution          │
-  │  Constraint solving            │
-  │  Position computation          │
-  └────────────┬───────────────────┘
-               ▼
-  ┌─ Damage Collection ───────────┐
-  │  Compare old vs new layout    │
-  │  Mark dirty regions           │
-  │  Coalesce overlapping rects   │
-  └────────────┬──────────────────┘
-               ▼
-  ┌─ Tile Assignment ─────────────┐
-  │  Map dirty rects → tile IDs   │
-  │  Skip clean tiles entirely    │
-  │  Enqueue dirty tiles          │
-  └────────────┬──────────────────┘
-               ▼
-  ┌─ Parallel Rasterization ──────┐
-  │  Thread pool picks tiles      │
-  │  Vector → scanline → pixels   │
-  │  SIMD batch fill/blend        │
-  │  Glyph cache hit/render       │
-  └────────────┬──────────────────┘
-               ▼
-  ┌─ Compositing ─────────────────┐
-  │  Layer tree Z-order merge     │
-  │  Opacity / clip application   │
-  │  Final framebuffer assembly   │
-  └────────────┬──────────────────┘
-               ▼
-         Present (VSync)
-```
+### Animation Engine
+- Keyframe tracks with named properties (x, y, opacity, color, scale, rotation)
+- Easing: linear, ease-in, ease-out, ease-in-out, cubic-bezier(a,b,c,d), spring(stiffness, damping, mass)
+- Timeline: play/pause/reverse/seek, playback rate, auto-repeat, finish callbacks
+- Each tick emits dirty rects for changed property bounds → feeds into DamageTracker
 
-### Damage Tracking Strategy
-- Every widget mutation emits a dirty rect
-- Rects coalesced: overlapping rects merged, small gaps filled if merge is cheaper
-- Scroll: translate existing tiles + rasterize only newly exposed strip
-- Animation: per-frame damage from animated properties only
-- Full redraw only on resize or theme change
+### Text Layout
+- Font metrics: ascent, descent, line gap, advance widths (simulated lookup table)
+- Line breaking: greedy algorithm + Knuth-Plass optimal for justified text
+- Layout box: max width, max lines, overflow (clip/ellipsis), vertical alignment
+- Output: positioned glyph runs → fed to VectorRenderer glyph cache
 
-### Tile System
-- Screen partitioned into 64x64 pixel tiles (configurable)
-- Each tile has state: `clean`, `dirty`, `rendering`, `composited`
-- Tile cache: clean tiles retained across frames, evicted on memory pressure
-- Large updates (>60% dirty): fall back to full-frame rasterization
+### Image Pipeline
+- Simulated decode: accepts width/height/pixel data, outputs TileBuffer-compatible format
+- Scaling: nearest-neighbor (fast) and bilinear (quality) with configurable threshold
+- Nine-slice: define insets for resizable UI elements (buttons, panels)
 
-### SIMD-Modeled Operations
-- Batch pixel fill (4-wide RGBA operations)
-- Blend mode kernels (source-over as default, optimized fast paths)
-- Gradient interpolation (pre-multiplied alpha)
-- Cache-line-aligned tile buffers for spatial locality
+### Frame Pacer
+- Track actual frame timestamps via `performance.now()` delta
+- If frame arrives early: defer to next VSync boundary
+- If frame arrives late: skip damage collection and present last good frame
+- Adaptive: reduce target FPS temporarily under sustained budget overruns
 
-### Vector Engine Capabilities
-- Full SVG-like path model with cubic/quadratic beziers
-- Analytical anti-aliasing (coverage computation per scanline)
-- Sub-pixel text rendering with LCD filter
-- Glyph cache: LRU with size/font/DPI key
-- DPI scaling: all coordinates in logical pixels, rasterize at device pixels
-
-### Thread Pool Model
-- Default 4 render threads (adapts to core count)
-- Work-stealing deque per thread
-- Tile affinity: prefer same thread for same screen region (cache warmth)
-- Priority lanes: UI-interactive tiles get priority over background pre-render
-- Frame deadline: threads yield incomplete work if frame budget (<16.6ms) nearly exhausted
-
-## Total: 9 new files + 1 edit
+## Total: 4 new files + 4 edits
 
