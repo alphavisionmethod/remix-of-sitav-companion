@@ -1,6 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // Nova Kernel — Process Manager
-// PID table, CPU context, address space, memory budget, lifecycle
+// PID table, CPU context with CPL, dual stacks, address space,
+// memory budget, privilege levels, lifecycle
 // ═══════════════════════════════════════════════════════════════
 
 import type { AppManifest } from "../core/manifest";
@@ -11,37 +12,51 @@ export type PriorityBand = "RT-Critical" | "RT-Normal" | "Interactive" | "Batch"
 
 export type WaitReason = "io" | "sleep" | "ipc" | "mutex" | "syscall" | "none";
 
-// ── CPU Context (simulated register file) ────────────────────
+// ── CPU Context (simulated register file + privilege) ────────
 
 export interface CPUContext {
   rip: number;          // instruction pointer
   rsp: number;          // stack pointer
   rbp: number;          // base pointer
-  rflags: number;       // status flags
-  registers: number[];  // general-purpose registers (16)
+  rflags: number;       // status flags (includes IOPL bits 12-13)
+  registers: number[];  // general-purpose registers (16): RAX,RCX,RDX,RBX,RSP,RBP,RSI,RDI,R8-R15
   fsBase: number;       // TLS base
   gsBase: number;       // kernel GS base
+  // Privilege ring fields
+  cpl: 0 | 1 | 2 | 3;  // Current Privilege Level (from CS register RPL bits)
+  cs: number;           // Code Segment selector
+  ss: number;           // Stack Segment selector
 }
 
-function createCPUContext(entryPoint: number, stackTop: number): CPUContext {
+function createCPUContext(entryPoint: number, stackTop: number, ring: 0 | 3 = 3): CPUContext {
   return {
     rip: entryPoint,
     rsp: stackTop,
     rbp: stackTop,
-    rflags: 0x202, // IF=1, reserved bit 1
+    rflags: ring === 0 ? 0x3202 : 0x202, // Ring 0 gets IOPL=3, Ring 3 gets IOPL=0
     registers: new Array(16).fill(0),
     fsBase: 0,
-    gsBase: 0,
+    gsBase: ring === 0 ? 0xFFFF800000000000 : 0, // kernel GS base for Ring 0
+    cpl: ring,
+    cs: ring === 0 ? 0x08 : 0x2B,  // kernel CS vs user CS
+    ss: ring === 0 ? 0x10 : 0x23,  // kernel SS vs user SS
   };
 }
 
-// ── Address Space Reference ──────────────────────────────────
+// ── Address Space Reference (with dual stacks) ──────────────
 
 export interface AddressSpaceRef {
   pid: number;
   pageTableRoot: number;  // simulated CR3 value
   heapStart: number;
   heapEnd: number;
+  // Kernel-mode stack (used during syscalls/interrupts)
+  kernelStackTop: number;
+  kernelStackBottom: number;
+  // User-mode stack (used during normal execution in Ring 3)
+  userStackTop: number;
+  userStackBottom: number;
+  // Legacy aliases
   stackTop: number;
   stackBottom: number;
 }
@@ -53,40 +68,49 @@ export interface Process {
   appId: string;
   state: ProcessState;
   priority: PriorityBand;
-  originalPriority: PriorityBand; // for priority inheritance restoration
-  memoryBudget: number;       // bytes
-  memoryUsed: number;         // bytes
-  cpuTicks: number;           // total ticks consumed
-  quantumRemaining: number;   // ticks left in current quantum
-  quantumSize: number;        // total quantum allocated per schedule
+  originalPriority: PriorityBand;
+  memoryBudget: number;
+  memoryUsed: number;
+  cpuTicks: number;
+  quantumRemaining: number;
+  quantumSize: number;
   windowIds: string[];
   manifest: AppManifest;
-  createdAt: number;          // Date.now()
+  createdAt: number;
   exitCode: number | null;
   parentPid: number | null;
 
   // CPU context — saved/restored on context switch
   context: CPUContext;
 
-  // Address space
+  // Address space (with dual stacks)
   addressSpace: AddressSpaceRef | null;
+
+  // CPU Privilege Level — Ring 0 (kernel) or Ring 3 (user)
+  privilegeLevel: 0 | 3;
+
+  // Ring transition tracking
+  ringTransitions: number;
+  lastRingTransition: number;  // timestamp
 
   // Blocking
   waitReason: WaitReason;
-  wakeAt: number | null;      // timestamp for timed sleep
+  wakeAt: number | null;
   blockedSince: number | null;
 
   // Stats
   contextSwitches: number;
-  totalWaitTime: number;      // ms spent blocked
-  lastScheduled: number;      // timestamp
+  totalWaitTime: number;
+  lastScheduled: number;
 }
 
-const DEFAULT_MEMORY_BUDGET = 64 * 1024 * 1024; // 64MB
-const DEFAULT_ENTRY_POINT = 0x400000;  // conventional ELF entry
-const DEFAULT_STACK_TOP = 0x7FFFFFFFE000;
+const DEFAULT_MEMORY_BUDGET = 64 * 1024 * 1024;
+const DEFAULT_ENTRY_POINT = 0x400000;
+const DEFAULT_KERNEL_STACK_TOP = 0xFFFF80007FFE0000;
+const DEFAULT_KERNEL_STACK_BOTTOM = 0xFFFF80007FFC0000;
+const DEFAULT_USER_STACK_TOP = 0x7FFFFFFFE000;
+const DEFAULT_USER_STACK_BOTTOM = 0x7FFFFFFC0000;
 
-// Quantum sizes per band (in ticks)
 const QUANTUM_MAP: Record<PriorityBand, number> = {
   "RT-Critical": 1,
   "RT-Normal": 5,
@@ -101,19 +125,29 @@ class ProcessTableClass {
   private appToPid = new Map<string, number>();
 
   /** Spawn a new process from an app manifest */
-  spawn(manifest: AppManifest, opts?: { priority?: PriorityBand; memoryBudget?: number; parentPid?: number }): Process {
-    // Prevent duplicate processes for same app
+  spawn(
+    manifest: AppManifest,
+    opts?: {
+      priority?: PriorityBand;
+      memoryBudget?: number;
+      parentPid?: number;
+      kernelMode?: boolean; // true = Ring 0 (kernel process)
+    }
+  ): Process {
     const existing = this.appToPid.get(manifest.id);
     if (existing !== undefined) {
       const proc = this.processes.get(existing);
-      if (proc && proc.state !== "terminated") {
-        return proc; // already running
-      }
+      if (proc && proc.state !== "terminated") return proc;
     }
 
     const pid = this.nextPid++;
     const priority = opts?.priority ?? "Interactive";
     const quantum = QUANTUM_MAP[priority];
+    const isKernel = opts?.kernelMode ?? false;
+    const ring: 0 | 3 = isKernel ? 0 : 3;
+
+    // Select stack based on privilege level
+    const stackTop = isKernel ? DEFAULT_KERNEL_STACK_TOP : DEFAULT_USER_STACK_TOP;
 
     const process: Process = {
       pid,
@@ -131,8 +165,11 @@ class ProcessTableClass {
       createdAt: Date.now(),
       exitCode: null,
       parentPid: opts?.parentPid ?? null,
-      context: createCPUContext(DEFAULT_ENTRY_POINT, DEFAULT_STACK_TOP),
+      context: createCPUContext(DEFAULT_ENTRY_POINT, stackTop, ring),
       addressSpace: null,
+      privilegeLevel: ring,
+      ringTransitions: 0,
+      lastRingTransition: 0,
       waitReason: "none",
       wakeAt: null,
       blockedSince: null,
@@ -144,18 +181,34 @@ class ProcessTableClass {
     this.processes.set(pid, process);
     this.appToPid.set(manifest.id, pid);
 
-    console.log(`[Kernel:ProcessTable] Spawned PID ${pid} → "${manifest.name}" (${manifest.id}) quantum=${quantum}`);
+    console.log(`[Kernel:ProcessTable] Spawned PID ${pid} → "${manifest.name}" (${manifest.id}) ring=${ring} quantum=${quantum}`);
     return process;
   }
 
-  /** Attach address space to process */
-  attachAddressSpace(pid: number, as: AddressSpaceRef): void {
+  /** Attach address space to process (with dual stacks) */
+  attachAddressSpace(pid: number, as: Omit<AddressSpaceRef, 'kernelStackTop' | 'kernelStackBottom' | 'userStackTop' | 'userStackBottom'> & Partial<AddressSpaceRef>): void {
     const p = this.processes.get(pid);
-    if (p) {
-      p.addressSpace = as;
-      // Set stack pointer to address space stack top
-      p.context.rsp = as.stackTop;
-      p.context.rbp = as.stackTop;
+    if (!p) return;
+
+    const fullAs: AddressSpaceRef = {
+      ...as,
+      kernelStackTop: as.kernelStackTop ?? DEFAULT_KERNEL_STACK_TOP,
+      kernelStackBottom: as.kernelStackBottom ?? DEFAULT_KERNEL_STACK_BOTTOM,
+      userStackTop: as.userStackTop ?? as.stackTop ?? DEFAULT_USER_STACK_TOP,
+      userStackBottom: as.userStackBottom ?? as.stackBottom ?? DEFAULT_USER_STACK_BOTTOM,
+      stackTop: as.stackTop,
+      stackBottom: as.stackBottom,
+    };
+
+    p.addressSpace = fullAs;
+
+    // Set stack pointer based on current privilege level
+    if (p.privilegeLevel === 0) {
+      p.context.rsp = fullAs.kernelStackTop;
+      p.context.rbp = fullAs.kernelStackTop;
+    } else {
+      p.context.rsp = fullAs.userStackTop;
+      p.context.rbp = fullAs.userStackTop;
     }
   }
 
@@ -190,7 +243,6 @@ class ProcessTableClass {
     p.state = "blocked";
     p.waitReason = reason;
     p.blockedSince = Date.now();
-    console.log(`[Kernel:ProcessTable] Blocked PID ${pid} reason=${reason}`);
     return true;
   }
 
@@ -202,7 +254,6 @@ class ProcessTableClass {
     p.waitReason = "sleep";
     p.wakeAt = Date.now() + ms;
     p.blockedSince = Date.now();
-    console.log(`[Kernel:ProcessTable] PID ${pid} sleeping for ${ms}ms`);
     return true;
   }
 
@@ -231,7 +282,6 @@ class ProcessTableClass {
     const p = this.processes.get(pid);
     if (!p || p.state !== "running") return false;
     p.state = "suspended";
-    console.log(`[Kernel:ProcessTable] Suspended PID ${pid}`);
     return true;
   }
 
@@ -240,7 +290,6 @@ class ProcessTableClass {
     const p = this.processes.get(pid);
     if (!p || p.state !== "suspended") return false;
     p.state = "ready";
-    console.log(`[Kernel:ProcessTable] Resumed PID ${pid}`);
     return true;
   }
 
@@ -252,7 +301,6 @@ class ProcessTableClass {
     p.exitCode = exitCode;
     p.waitReason = "none";
     p.wakeAt = null;
-    console.log(`[Kernel:ProcessTable] Killed PID ${pid} (exit: ${exitCode})`);
     return true;
   }
 
@@ -271,68 +319,60 @@ class ProcessTableClass {
     return p ? { ...p.context, registers: [...p.context.registers] } : null;
   }
 
-  /** Add a window reference to a process */
-  addWindow(pid: number, windowId: string): void {
-    const p = this.processes.get(pid);
-    if (p && !p.windowIds.includes(windowId)) {
-      p.windowIds.push(windowId);
-    }
-  }
-
-  /** Remove a window reference */
-  removeWindow(pid: number, windowId: string): void {
+  /** Record a ring transition */
+  recordRingTransition(pid: number): void {
     const p = this.processes.get(pid);
     if (p) {
-      p.windowIds = p.windowIds.filter(id => id !== windowId);
+      p.ringTransitions++;
+      p.lastRingTransition = Date.now();
     }
   }
 
-  /** Record CPU tick consumption */
+  addWindow(pid: number, windowId: string): void {
+    const p = this.processes.get(pid);
+    if (p && !p.windowIds.includes(windowId)) p.windowIds.push(windowId);
+  }
+
+  removeWindow(pid: number, windowId: string): void {
+    const p = this.processes.get(pid);
+    if (p) p.windowIds = p.windowIds.filter(id => id !== windowId);
+  }
+
   addTicks(pid: number, ticks: number): void {
     const p = this.processes.get(pid);
     if (p) {
       p.cpuTicks += ticks;
       p.quantumRemaining = Math.max(0, p.quantumRemaining - ticks);
-      // Simulate instruction pointer advance
-      p.context.rip += ticks * 4; // 4 bytes per "instruction"
+      p.context.rip += ticks * 4;
     }
   }
 
-  /** Check if quantum expired */
   isQuantumExpired(pid: number): boolean {
     const p = this.processes.get(pid);
     return p ? p.quantumRemaining <= 0 : true;
   }
 
-  /** Reset quantum for rescheduling */
   resetQuantum(pid: number): void {
     const p = this.processes.get(pid);
     if (p) p.quantumRemaining = p.quantumSize;
   }
 
-  /** Update memory usage */
   setMemoryUsed(pid: number, bytes: number): boolean {
     const p = this.processes.get(pid);
     if (!p) return false;
-    if (bytes > p.memoryBudget) {
-      console.warn(`[Kernel:ProcessTable] PID ${pid} OOM: ${bytes} > budget ${p.memoryBudget}`);
-      return false;
-    }
+    if (bytes > p.memoryBudget) return false;
     p.memoryUsed = bytes;
     return true;
   }
 
-  /** Get all ready processes */
   listReady(): Process[] {
     return Array.from(this.processes.values()).filter(p => p.state === "ready");
   }
 
-  /** Get all blocked processes */
   listBlocked(): Process[] {
     return Array.from(this.processes.values()).filter(p => p.state === "blocked");
   }
 
-  /** Get the currently running process (should be at most 1 on single-core) */
   getRunning(): Process | null {
     for (const p of this.processes.values()) {
       if (p.state === "running") return p;
@@ -369,11 +409,13 @@ class ProcessTableClass {
       totalMemory: all.reduce((sum, p) => sum + p.memoryUsed, 0),
       totalTicks: all.reduce((sum, p) => sum + p.cpuTicks, 0),
       totalContextSwitches: all.reduce((sum, p) => sum + p.contextSwitches, 0),
+      totalRingTransitions: all.reduce((sum, p) => sum + p.ringTransitions, 0),
+      ring0Count: all.filter(p => p.state !== "terminated" && p.privilegeLevel === 0).length,
+      ring3Count: all.filter(p => p.state !== "terminated" && p.privilegeLevel === 3).length,
       nextPid: this.nextPid,
     };
   }
 
-  /** Reset entire process table (for kernel shutdown) */
   reset(): void {
     this.processes.clear();
     this.appToPid.clear();
