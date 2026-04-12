@@ -168,7 +168,21 @@ export const APP_CATALOG: AppDefinition[] = [
     installStatus: "not-installed", pinnedToDock: false, tags: ["payments", "business", "analytics"], receipts: [], externalUrl: "https://dashboard.stripe.com",
   },
 
-  // ── Finance ──
+  // ── Notes (Nova SDK Sample App) ──
+  {
+    id: "notes", name: "Notes", publisher: "SITA OS", icon: "📝", iconBg: "from-yellow-400 to-orange-400",
+    category: "productivity", appClass: "internal", trustLevel: "sita-verified", version: "1.0.0", size: "1 MB",
+    shortDescription: "Beautiful notes with Nova SDK", fullDescription: "A beautiful notes app built with the Nova SDK, demonstrating lifecycle hooks, filesystem API, and design enforcement.",
+    screenshots: [], rating: 4.8, downloads: 10_000, lastUpdated: "2026-04-10",
+    releaseNotes: ["Initial release — built with Nova SDK"],
+    permissions: [...defaultPerms(["files"]), { id: "system.notifications", domain: "system.notifications", label: "Notifications", description: "Show save confirmations", granted: false, required: false, riskLevel: "low" as const }],
+    fileAssociations: [{ extension: ".txt", mimeType: "text/plain", label: "Text files", isDefault: false }],
+    protocolAssociations: [],
+    worksWithSita: ["Dock integration", "Nova SDK", "NovaFS", "Notifications"],
+    updateSource: "store-managed", startupBehavior: "none", notificationPermission: true,
+    installStatus: "installed", installedAt: "2026-01-01", pinnedToDock: true, tags: ["notes", "writing", "sdk"], receipts: [],
+  },
+
   {
     id: "calculator", name: "SITA Calculator", publisher: "SITA OS", icon: "🔢", iconBg: "from-gray-600 to-gray-500",
     category: "finance", appClass: "internal", trustLevel: "sita-verified", version: "1.0.0", size: "2 MB",

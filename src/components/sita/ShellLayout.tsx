@@ -26,6 +26,8 @@ import { cn } from "@/lib/utils";
 import { SectionSkeleton } from "./PageSkeleton";
 import { FinderWindow } from "./shell/windows/FinderWindow";
 import { SettingsWindow } from "./shell/windows/SettingsWindow";
+import { NotesWindow } from "./shell/windows/NotesWindow";
+import { NovaSDKProvider } from "@/contexts/NovaSDKContext";
 import { CommandLayer } from "./shell/CommandLayer";
 import { ClickRipple } from "./shell/ClickRipple";
 import { AppPermissionGate, isPermissionGranted } from "./shell/AppPermissionGate";
@@ -124,6 +126,14 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         width: 520,
         originRect: origin,
       });
+    } else if (appId === "notes" || appId === "com.nova.notes") {
+      wm.openWindow("notes", {
+        title: "Notes",
+        component: <NotesWindow />,
+        position: { x: 200, y: 110 },
+        width: 520,
+        originRect: origin,
+      });
     }
   }, [wm.openWindow]);
 
@@ -169,6 +179,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
   const isDesktopRoute = location.pathname === "/" || location.pathname === "/home" || location.pathname === "/desktop";
 
   return (
+    <NovaSDKProvider>
     <WindowManagerContext.Provider value={wm}>
     <SidebarProvider>
       {/* WCAG: Skip to content link */}
@@ -361,5 +372,6 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
       <MobileBottomNav />
     </SidebarProvider>
     </WindowManagerContext.Provider>
+    </NovaSDKProvider>
   );
 };
