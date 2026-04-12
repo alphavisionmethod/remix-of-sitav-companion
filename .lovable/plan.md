@@ -1,109 +1,94 @@
 
 
-# Advanced App Platform Design System — Implementation Plan
+# Spec Compliance Audit — What's Done, What's Missing, What Would Add "Wow"
 
-## Summary
-Elevate the entire NovaOS app experience to feel like apps are true OS citizens: unified visual materials, strict spacing/typography, shared component library, app launch animations, permission gates, and polished window chrome. This makes everything feel cohesive, premium, and "wow."
+## FULLY IMPLEMENTED (21/27 items)
 
-## What Already Exists (Strong Foundation)
-- FloatingWindow with glassmorphism, traffic lights, snap zones, lerp drag, inertia, resize
-- DesktopDock with magnification, badges, tooltips, context menus
-- SystemMenuBar with translucent blur, contextual menus, status indicators
-- Finder + Settings window apps with sidebar/content layout
-- FlowSpace (Mission Control) with physics-based grid
-- Calm Engine (idle, attention, layers, micro-interactions)
-- App catalog with trust levels, permissions, install status
+| # | Requirement | Status | Where |
+|---|-------------|--------|-------|
+| 1.1 | App layout: Title Bar + Sidebar + Content | Done | FloatingWindow.tsx, FinderWindow, SettingsWindow |
+| 2.1 | Background: translucent material ~0.72 | Done | FloatingWindow line ~240: `hsl(0_0%_100%/0.72)` |
+| 2.2 | Borders: white 0.35 | Done | FloatingWindow: `hsl(0_0%_100%/0.35)` |
+| 2.3 | Corners: 16px | Done | `APP_CHROME.cornerRadius = 16` |
+| 3.1 | Dual shadows | Done | `APP_SHADOWS.focused` = 2px/6px + 20px/40px |
+| 3.2 | Layer opacity system | Done | `useLayerOpacity.ts` + CalmEngine |
+| 4.1 | Strict spacing scale 4/8/16/24/32 | Done | `SPACE` in `app-window-system.ts` |
+| 5.1 | Typography: 11/13/16/18 | Done | `APP_TYPE` in `app-window-system.ts` |
+| 6.1 | Shared Button/Input/List/Card components | Done | `APP_COMPONENTS` with base/primary/secondary/ghost |
+| 6.2 | Active scale(0.98) | Done | `active:scale-[0.98]` in button.base |
+| 7.1 | Opening animation scale+opacity | Done | FloatingWindow morph with spring physics |
+| 7.2 | Progressive content loading | Done | FloatingWindow shows Skeleton for 150ms then fades in |
+| 8.1 | App states: empty/loading/error | Done | `AppStateWrapper.tsx` with ShimmerSkeleton, EmptyState, ErrorState |
+| 9.1 | App accent colors + icons | Done | `APP_ACCENTS`, `appIcon` prop on FloatingWindow |
+| 10.1 | Permission model with declarations | Done | `AppPermission` type in app-platform/types |
+| 10.2 | Permission gate UI (Allow/Deny modal) | Done | `AppPermissionGate.tsx` — glassmorphic, centered, risk-colored |
+| 10.3 | Trust levels | Done | AppDefinition has `trustLevel: trusted/limited/blocked` |
+| 10.4 | App Store / Library | Done | Full pages: AppStorePage, AppLibraryPage, AppManagePage, AppComparePage |
+| 11.1 | Desktop: System Bar + Desktop + Dock | Done | SystemMenuBar + DesktopSurface + DesktopDock |
+| 11.2 | Dock: centered, floating, translucent, hover=scale, click=bounce, running=indicator | Done | DesktopDock with magnification, bounce animation, glowing bar |
+| 11.3 | Focus system: active brightens, others dim | Done | `useWindowAttention.ts` + FloatingWindow opacity/saturation |
+| 11.4 | FlowSpace (app switching) | Done | FlowSpace.tsx with physics grid + keyboard trigger |
+| 11.5 | Context menu with keyboard shortcuts | Done | DesktopContextMenu with right-aligned shortcut hints |
 
-## What's New (7 Enhancements)
+## NOT YET WIRED (6 gaps)
 
-### 1. App Window Design System Tokens
-Create `src/lib/design-system/app-window-system.ts` — strict spacing scale (4/8/16/24/32px), typography scale (11/13/16px), shared material tokens for app backgrounds/borders/shadows, component style presets (buttons, inputs, lists, cards). All app windows consume these instead of ad-hoc values.
+| # | Gap | Detail |
+|---|-----|--------|
+| G1 | **Permission gate not wired into launch flow** | `AppPermissionGate` exists but is never rendered. No component calls `isPermissionGranted()` before launching an app. The gate is dead code. |
+| G2 | **Origin morph not wired (icon-to-window)** | FloatingWindow accepts `originRect` but the dock never passes icon bounding rects. Windows appear with generic scale, not from the dock icon position. |
+| G3 | **File-to-app drag/drop** | Spec says "drag file → app = open." No drag-to-dock or drag-to-window-to-open behavior exists. |
+| G4 | **Dock auto-hide** | Plan mentioned dock auto-hide when windows are maximized. Not implemented. |
+| G5 | **Notification toasts missing app icon + accent edge** | Toasts render but lack per-app icon or colored left edge. |
+| G6 | **Widget inner glow pulse on hover** | Widgets have `hover:scale-[1.02]` but no inner glow pulse animation. |
 
-### 2. App Launch Animation (Icon-to-Window Morphing)
-Enhance FloatingWindow to accept an `originRect` prop (the dock icon's bounding box). On mount, the window scales from that rect position/size to its final position — creating the psychological "window emerges from icon" effect. The dock passes icon refs to enable this.
+## PLAN: Wire the 6 gaps + 5 "wow" additions
 
-### 3. Permission Gate Modal
-Create `src/components/sita/shell/AppPermissionGate.tsx` — a centered glassmorphic modal shown on first app launch. Displays app icon, name, requested permissions with risk-level coloring, and Allow/Deny buttons. Integrates with AppDefinition's permissions array. Uses localStorage to remember grants.
+### Fix G1: Wire permission gate into app launch
+- In `DesktopSurface.tsx` (or the window-opening logic in `useWindowManager`), before opening a window, check `isPermissionGranted(appId)`. If not granted, render `<AppPermissionGate>` with the app's permissions. On Allow → open window. On Deny → cancel.
 
-### 4. App State System (Empty/Loading/Error)
-Create `src/components/sita/shell/AppStateWrapper.tsx` — a wrapper component every window app uses. Handles three states: loading (skeleton shimmer with app accent), empty (centered illustration + message), error (soft error card with retry). Finder and Settings adopt this wrapper.
+### Fix G2: Pass originRect from dock to window
+- In `DesktopDock.tsx`, the `iconRefs` map already exists. On launch, read `iconRefs.current.get(appId)?.getBoundingClientRect()` and pass it through `onLaunchApp` callback. Update `useWindowManager` to store `originRect` on the window object. FloatingWindow already handles the rest.
 
-### 5. Enhanced Window Chrome
-Upgrade FloatingWindow:
-- Toolbar area below title bar for app-specific actions (search, view toggles)
-- App accent color strip along the top edge (2px gradient line matching app's iconBg)
-- Active window subtle inner glow, unfocused windows get slight grayscale
-- Double-shadow depth system: near sharp (2px/6px) + far soft (20px/40px)
-- Window title bar shows app icon (mini 14px version) next to the title
+### Fix G3: File-to-app drag support on dock
+- Add `onDragOver`/`onDrop` to dock icon buttons. When a file is dragged over a dock icon, show a highlight ring. On drop, trigger the app launch with a file reference payload.
 
-### 6. Dock Enhancements
-Upgrade DesktopDock:
-- App launch bounce animation (icon scales down 0.8 → springs back on click)
-- Running indicator dot becomes a subtle glowing bar for active windows
-- Dock separator between pinned apps and running-only apps
-- Dock auto-hide option when windows are maximized
+### Fix G4: Dock auto-hide
+- In `DesktopDock`, accept a `hasMaximizedWindow` prop. When true, dock slides down off-screen and only reappears on mouse hover near the bottom edge.
 
-### 7. Desktop Polish
-- Glassmorphic notification toasts get app icon + accent color on the left edge
-- Context menu items get keyboard shortcuts displayed (right-aligned hint text)
-- Widget hover micro-interactions: 80ms scale(1.02) + inner glow pulse
+### Fix G5: Toast app icon + accent edge
+- Update `DesktopToasts` to accept app metadata and render a 2px left accent bar + mini icon.
 
-## Technical Details
+### Fix G6: Widget inner glow pulse
+- Add a CSS keyframe `glow-pulse` (inner box-shadow oscillation) and apply on widget hover.
 
-### Spacing Scale Constants
-```text
-SPACE_MICRO = 4    // gap between icon elements
-SPACE_TIGHT = 8    // compact padding
-SPACE_NORMAL = 16  // standard padding
-SPACE_SECTION = 24 // between groups
-SPACE_LARGE = 32   // major sections
-```
+### WOW additions (5 enhancements)
 
-### Typography Scale
-```text
-LABEL = { size: 11, weight: 500, tracking: 'wider' }
-BODY = { size: 13, weight: 400 }
-TITLE = { size: 16, weight: 600 }
-HEADING = { size: 18, weight: 600 }
-```
+**W1: Live window previews in dock** — When hovering a running app's dock icon for 400ms, show a miniature live preview tooltip of the window content (CSS `transform: scale(0.2)` snapshot).
 
-### Launch Animation Sequence
-```text
-t=0ms:   Icon scales to 0.8, slight bounce
-t=80ms:  Window appears at icon position, scale 0.3, opacity 0
-t=120ms: Window morphs to final position, scale 0.96→1, opacity 1
-t=320ms: Settled — spring physics with stiffness 260, damping 22
-```
+**W2: Spatial sound feedback** — Add subtle Web Audio API click/hover tones (40ms sine wave pops) for dock interactions and window snap. Muted by default, togglable in Settings.
 
-### Permission Gate Data Flow
-```text
-User clicks app → check localStorage for grant
-  → if granted: launch normally
-  → if not: show PermissionGate modal
-    → user clicks Allow → persist grant → launch
-    → user clicks Deny → close, no launch
-```
+**W3: Desktop widget clock second-hand sweep** — The clock widget gets a smooth CSS-animated second hand with a subtle glow trail.
 
-## Files to Create
-1. `src/lib/design-system/app-window-system.ts` — tokens
-2. `src/components/sita/shell/AppPermissionGate.tsx` — permission modal
-3. `src/components/sita/shell/AppStateWrapper.tsx` — empty/loading/error states
+**W4: Window minimize genie effect** — When minimizing, window scales down and curves toward the dock icon position (CSS perspective transform), like the macOS genie effect.
 
-## Files to Modify
-1. `FloatingWindow.tsx` — accent strip, icon in title, origin morph, toolbar slot, enhanced shadows
-2. `DesktopDock.tsx` — bounce animation, glowing running indicator, icon ref forwarding
-3. `FinderWindow.tsx` — adopt AppStateWrapper, use spacing tokens
-4. `SettingsWindow.tsx` — adopt AppStateWrapper, use spacing tokens
-5. `DesktopSurface.tsx` — widget micro-interactions, toast accent colors
-6. `DesktopContextMenu.tsx` — keyboard shortcut hints
-7. `ShellLayout.tsx` — wire permission gate into app launch flow
+**W5: Ambient wallpaper parallax on mouse** — Desktop wallpaper shifts 2-3px based on mouse position, creating subtle depth perception without GPU cost.
 
-## Implementation Order
-1. App Window System tokens (foundation)
-2. Enhanced Window Chrome (visual upgrade)
-3. App State Wrapper (empty/loading/error)
-4. App Launch Animation (dock → window morph)
-5. Permission Gate Modal
-6. Dock enhancements (bounce, glow bar)
-7. Desktop polish (widgets, context menu, toasts)
+### Files to modify
+1. `DesktopSurface.tsx` — wire permission gate, toast accents
+2. `DesktopDock.tsx` — pass originRect, file drag/drop, auto-hide, live preview tooltip
+3. `useWindowManager.ts` — store originRect on window objects
+4. `FloatingWindow.tsx` — genie minimize animation
+5. `index.css` — glow-pulse keyframe, parallax helpers
+
+### Files to create
+1. `src/hooks/useSpatialAudio.ts` — optional audio feedback hook
+2. `src/components/sita/shell/DockWindowPreview.tsx` — live miniature preview
+
+### Implementation order
+1. Wire permission gate (G1)
+2. Wire originRect morph (G2)
+3. Dock auto-hide (G4)
+4. Toast + widget polish (G5, G6)
+5. File drag/drop (G3)
+6. Wow additions (W1-W5)
 
