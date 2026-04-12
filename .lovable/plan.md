@@ -1,114 +1,117 @@
 
 
-# Memory-Based OS + Micro-Interactions + Calm Mode + State Continuity + Intent Automation
+# God Tier Features 11-16: Adaptive Visuals + Hold-Key Command + Seamless Multitasking + Background Intelligence + Signature Micro-Details
 
-## What Exists vs What's Missing
+## Current State
 
-| Feature | Exists | Missing |
+| Feature | Exists | Gap |
 |---|---|---|
-| **Memory-Based OS** | Window position memory (localStorage, 7-day TTL). Context snapshots per page (scroll, form). | No full session restore on restart — windows don't reopen. No tab/open-app persistence. No "everything exactly where you left it." |
-| **Micro-Interactions** | `FloatingWindow` has magnetic snapping (20px range). Dock has bounce + magnification. `ClickRipple` exists. `sita-pressed` 120ms feedback. | Dock magnification is index-based not cursor-distance-based (not velocity-reactive). No "soft" button physics. Window snap has no preview overlay. No haptic-feel spring on button release. |
-| **Calm Mode** | CSS class `.calm-mode` exists — desaturates colors, kills animations. `CalmEngineContext` has idle detection + layer opacity. Mode toggle in AppearanceContext. | No auto-trigger on inactivity. No gradual transition (snap on/off). No progressive simplification (hide secondary UI first, then reduce contrast). No breathing/ambient animation in calm. |
-| **State Continuity** | `ambientContext.saveContext()` saves scroll + form per path. Window positions persisted. | No session-level app/window restoration. Closing browser = lose all windows. No "reopen where I left off." |
-| **Intent Automation** | Personalization engine tracks patterns. Auto-rules exist (evening calm). App surfacing tracks launch frequency. | No routine detection ("you always open X+Y+Z together"). No "Start your morning?" suggestion. No workspace presets from behavior. |
+| **11. Adaptive Visual System** | Wallpaper themes with time-of-day auto mode. `colorTemperature` in adaptive interface (warm/neutral/cool). | No wallpaper-to-UI color extraction. No dynamic accent colors from wallpaper. No time-based tone shift on surfaces (just wallpaper gradient changes). |
+| **12. Hold-Key Command Overlay** | `UniversalCommand` (Cmd+K) and `CommandLayer` exist. Full NL parser. | No "hold a key" instant overlay showing all available actions contextually. Must type Cmd+K first. No visual action map. |
+| **13. Seamless Multitasking** | FlowSpace + SpatialDesktop + View Transition API. Scroll restore. | Route transitions still feel like page switches. No crossfade between app content areas. No "morphing" between views. |
+| **14. Background Intelligence** | Predictive prefetch, session persistence, routine detection. Service worker registered. | No dedicated background task runner. No memory cleanup scheduler. No preload orchestrator. No file/entity organization. |
+| **15. Signature Micro-Details** | `MI_TIMINGS` (hover 80ms), `sita-pressed` spring-back, `SoundEngine` clicks, `ClickRipple`. | Sound not synced to spring-back. No "soft" window open (windows pop in). No cursor velocity awareness on buttons. No hover glow. |
+| **16. Signature Feature** | FlowSpace is the strongest candidate. | Not branded/polished as THE identity. No "wow" entry animation. No distinctive visual signature. |
 
 ## Plan
 
-### 1. Session Persistence Manager (`src/lib/services/session-persistence.ts`)
+### 1. Adaptive Visual System (`src/lib/services/adaptive-visual-system.ts` -- CREATE)
 
-Full session state serialization/restore for "everything exactly where you left it":
+Extract dominant colors from current wallpaper gradient and inject as CSS custom properties:
 
-- **Serialize on beforeunload**: open windows (ids, positions, sizes), current route, sidebar state, open panels, scroll positions, form data
-- **Restore on mount**: reopen all windows, navigate to last route, restore scroll positions
-- **Storage**: localStorage with `sita-session-state` key, 24hr TTL
-- **Partial restore**: if a window component fails to load, skip it gracefully
-- **API**: `persistSession()`, `restoreSession()`, `clearSession()`
+- Parse wallpaper HSL values from gradient string using regex
+- Derive `--adaptive-accent`, `--adaptive-surface`, `--adaptive-glow` from wallpaper dominant hue
+- Time-of-day tone modulation: morning = warm gold tint, afternoon = neutral, evening = warm amber, night = cool blue
+- Apply as CSS vars on `:root` — all surfaces subtly tint to match wallpaper
+- Update on wallpaper change and every 30 min for time shifts
+- Hook: `useAdaptiveVisuals()` wired into ShellLayout
 
-### 2. Session Restore Hook + UI (`src/hooks/use-session-restore.ts`)
+### 2. Hold-Key Command Overlay (`src/components/sita/shell/HoldKeyOverlay.tsx` -- CREATE)
 
-- Hook that checks for saved session on mount
-- If found, shows a toast: "Restore your last session?" with Accept/Dismiss
-- On accept: calls `restoreSession()` — reopens windows, navigates, scrolls
-- Wired into `ShellLayout.tsx`
+Hold `Alt`/`Option` for 300ms → instant translucent overlay showing all available actions:
 
-### 3. Dock Velocity-Reactive Magnification (`DesktopDock.tsx`)
+- Grid of contextual actions based on current page (navigate, window, system)
+- Each action shows its keyboard shortcut
+- Release key = dismiss. Click action = execute + dismiss
+- Visual: frosted glass fullscreen overlay, actions in a radial/grid layout
+- Actions sourced from UniversalCommand's route aliases + system commands
+- Page-aware: on `/money` shows finance actions, on `/business` shows business actions
 
-Upgrade from index-distance to cursor-distance magnification with velocity dampening:
+### 3. Seamless App Transitions (`src/components/sita/shell/AppTransitionLayer.tsx` -- CREATE)
 
-- Track `mousemove` on dock, compute pixel distance from each icon center
-- Scale = gaussian falloff based on pixel distance (not array index)
-- Track cursor velocity (dx/dt) — faster cursor = less magnification (user is passing through)
-- Slow cursor = full magnification (user is targeting)
-- Spring physics for scale transitions (not linear)
+Continuous morphing between route changes instead of hard page switches:
 
-### 4. Soft Button Physics (`src/index.css` + `use-zero-latency.ts`)
+- Wrap main content area in a transition container
+- On route change: crossfade old → new content (opacity 1→0 and 0→1, 200ms)
+- Shared elements (headers, sidebars) don't transition — only main content morphs
+- Use `startViewTransition` with `view-transition-name` on key elements
+- Add CSS `::view-transition-old/new` styles for slide + fade
+- Wire into ShellLayout's `<main>` wrapper
 
-- Upgrade `sita-pressed` from flat scale to spring curve: `scale(0.96)` → `scale(1.02)` → `scale(1.0)` with cubic-bezier
-- Add subtle `box-shadow` compression on press (shadow shrinks)
-- Add `will-change: transform` for GPU acceleration
-- Buttons feel like they have physical depth
+### 4. Background Intelligence Engine (`src/lib/services/background-intelligence.ts` -- CREATE)
 
-### 5. Window Snap Preview Overlay (`FloatingWindow.tsx`)
+Invisible maintenance that makes the OS feel smooth:
 
-- During drag near edge, show translucent preview rectangle where window will snap
-- Uses existing `detectSnapZone` + `getSnapRect` from `snap-zones.ts`
-- Animated overlay fades in/out with 150ms transition
-- Magnetic pull intensifies as cursor approaches edge
+- **Memory cleanup**: Every 5 min, prune stale localStorage entries (expired sessions, old nav transitions beyond 500)
+- **Prefetch orchestrator**: During idle, prefetch top 3 predicted routes + their data
+- **Entity organization**: Track entity access frequency, auto-sort recent files/contacts
+- **Health monitor**: Track JS heap size via `performance.memory`, warn if > 80% budget
+- **Stale cache eviction**: Clear cached responses older than 1 hour
+- Runs entirely via `requestIdleCallback` — zero impact on user interactions
+- Hook: `useBackgroundIntelligence()` in ShellLayout, starts on mount
 
-### 6. Advanced Calm Mode (`src/hooks/use-calm-mode.ts`)
+### 5. Signature Micro-Details (multiple files)
 
-Progressive calm mode with auto-trigger:
+**Window Open Animation** (`FloatingWindow.tsx`):
+- Replace instant appear with "soft" spring: scale 0.85→1.02→1.0, opacity 0→1, 300ms
+- Origin morph from dock icon position (already has `originRect` prop — wire it)
+- Subtle blur-in on content (blur 4px→0 during open)
 
-- **Auto-trigger**: after 3 minutes of inactivity (from `CalmEngineContext` idle detection), gradually enter calm
-- **3 calm levels**: Level 1 (reduce notification badges, mute sounds), Level 2 (desaturate non-essential UI, hide secondary nav items), Level 3 (full calm — current `.calm-mode` CSS)
-- **Gradual transitions**: each level fades in over 2s (not instant toggle)
-- **Breathing ambient**: subtle pulsing glow on primary surfaces in calm mode (slow 8s cycle)
-- **Exit on interaction**: any click/key instantly starts exit transition (500ms)
-- **Manual override**: `Cmd+,` toggles calm on/off
+**Hover Glow** (`index.css`):
+- Interactive elements get subtle radial gradient glow following cursor on hover
+- 80ms delay matching `MI_TIMINGS.hover`
+- Buttons: `box-shadow: 0 0 20px hsl(var(--primary) / 0.15)` on hover
 
-### 7. Intent-Driven Routine Detection (`src/lib/services/routine-detector.ts`)
+**Sound Sync** (`FloatingWindow.tsx` + `use-zero-latency.ts`):
+- Window open → `SoundEngine.click()` on mount
+- Button press (sita-pressed) → `SoundEngine.click()` synced to spring-back
+- Window snap → `SoundEngine.approve()` on snap detection
 
-Detect behavioral patterns and suggest workspace presets:
+**Cursor Velocity on Buttons** (`use-zero-latency.ts`):
+- Track pointer velocity globally
+- Fast click = smaller spring (scale 0.98), slow deliberate click = full spring (scale 0.94)
+- Makes buttons feel responsive to intent
 
-- Track app launch sequences with timestamps (from `useAppSurfacing`)
-- Detect co-launches: "User opens Business + Money + Pulse within 5 min" → routine
-- Time-of-day correlation: morning routines, evening wind-down
-- Minimum 3 occurrences before suggesting
-- Generate `RoutineSuggestion`: "Start your morning? Open Business Center, Money Center, Daily Pulse"
-- Feed suggestions into `AmbientSuggestionsBar` as `predicted_next` type
+### 6. FlowSpace Signature Polish (`FlowSpace.tsx` + `index.css`)
 
-### 8. Integration Wiring
+Brand FlowSpace as THE identity feature:
 
-**`ShellLayout.tsx`**: Mount `useSessionRestore()`, wire `beforeunload` for session persistence, pass calm level to UI
-
-**`useWindowManager.ts`**: Add `getWindowStates()` for serialization and `restoreWindows(states[])` for deserialization
-
-**`AmbientSuggestionsBar.tsx`**: Accept routine suggestions from detector
+- **Entry animation**: Zoom-out with parallax depth (windows fly back in Z-space, 400ms spring)
+- **Ambient particles**: Subtle floating dots connecting related windows with thin lines
+- **Signature glow**: Active window gets pulsing primary-color border glow
+- **Sound**: `SoundEngine.boot()` on FlowSpace open (shortened to 200ms)
+- **Exit**: Reverse zoom-in, selected window flies forward to fill screen
 
 ## Files
 
 | File | Action |
 |---|---|
-| `src/lib/services/session-persistence.ts` | **CREATE** — session serialization/restore |
-| `src/hooks/use-session-restore.ts` | **CREATE** — restore hook with toast UI |
-| `src/lib/services/routine-detector.ts` | **CREATE** — intent/routine detection engine |
-| `src/hooks/use-calm-mode.ts` | **CREATE** — progressive auto-calm with levels |
-| `src/components/sita/DesktopDock.tsx` | **MODIFY** — velocity-reactive magnification |
-| `src/components/sita/shell/FloatingWindow.tsx` | **MODIFY** — snap preview overlay during drag |
-| `src/hooks/useWindowManager.ts` | **MODIFY** — add serialization/restore methods |
-| `src/hooks/use-zero-latency.ts` | **MODIFY** — soft button spring physics |
-| `src/index.css` | **MODIFY** — enhanced pressed states, calm breathing, calm levels |
-| `src/components/sita/ShellLayout.tsx` | **MODIFY** — mount session restore, calm mode, routine detector |
-| `src/components/sita/AmbientSuggestionsBar.tsx` | **MODIFY** — accept routine suggestions |
+| `src/lib/services/adaptive-visual-system.ts` | **CREATE** — wallpaper color extraction + time-of-day toning |
+| `src/components/sita/shell/HoldKeyOverlay.tsx` | **CREATE** — hold-Alt instant action overlay |
+| `src/components/sita/shell/AppTransitionLayer.tsx` | **CREATE** — crossfade transition wrapper |
+| `src/lib/services/background-intelligence.ts` | **CREATE** — invisible maintenance engine |
+| `src/components/sita/shell/FloatingWindow.tsx` | **MODIFY** — soft open animation, sound sync |
+| `src/hooks/use-zero-latency.ts` | **MODIFY** — cursor velocity tracking, sound-synced press |
+| `src/index.css` | **MODIFY** — hover glow, view-transition CSS, FlowSpace signature styles |
+| `src/components/sita/shell/FlowSpace.tsx` | **MODIFY** — entry/exit zoom parallax, ambient particles, signature glow |
+| `src/components/sita/ShellLayout.tsx` | **MODIFY** — mount adaptive visuals, hold-key overlay, background intelligence, transition layer |
 
-## Implementation Order
+## Order
 
-1. Session Persistence Manager + Window Manager serialization
-2. Session Restore Hook + ShellLayout wiring
-3. Dock velocity-reactive magnification
-4. Soft button physics (CSS + zero-latency)
-5. Window snap preview overlay
-6. Progressive Calm Mode
-7. Routine Detection engine
-8. Integration + Ambient Suggestions wiring
+1. Adaptive Visual System (color extraction + CSS vars)
+2. Background Intelligence Engine (invisible maintenance)
+3. Signature Micro-Details (window open, hover glow, sound sync, velocity)
+4. Hold-Key Command Overlay
+5. Seamless App Transitions (crossfade layer)
+6. FlowSpace Signature Polish
 
