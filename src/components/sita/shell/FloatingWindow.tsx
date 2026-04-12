@@ -277,6 +277,7 @@ export function FloatingWindow({
     setIsDragging(false);
     dragRef.current.active = false;
     setMagnetSnapped(false);
+    setAlignGuides([]);
     cancelAnimationFrame(rafId.current);
 
     // Clear shake tracking
