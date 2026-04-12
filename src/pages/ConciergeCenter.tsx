@@ -166,6 +166,7 @@ const ConciergeCenter = () => {
   const { isDemoMode } = useDataMode();
   const location = useLocation();
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const signature = useExperienceSignature();
   const os = useOSOrchestration();
   const activePage = subpageFromPath(location.pathname);
