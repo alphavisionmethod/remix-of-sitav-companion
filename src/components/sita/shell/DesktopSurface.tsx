@@ -482,6 +482,7 @@ export function DesktopSurface({
   const closeWindow = windowManager?.closeWindow;
   const focusWindow = windowManager?.focusWindow;
   const minimizeWindow = windowManager?.minimizeWindow;
+  const updateWindowPosition = windowManager?.updateWindowPosition;
 
   // ── Calm Engine ─────────────────────────────────────────────
   const calm = useCalmEngine();
