@@ -7,7 +7,7 @@ import { useState, useEffect, useCallback, useMemo } from "react";
 import {
   Cpu, HardDrive, Activity, Layers, Zap, Timer,
   Shield, Clock, AlertTriangle, Monitor, Wifi, Battery,
-  WifiOff, BatteryCharging, Signal,
+  WifiOff, BatteryCharging, Signal, FlaskConical, Play, Square, X,
 } from "lucide-react";
 import {
   AppLayout,
@@ -51,13 +51,14 @@ const BAND_COLORS: Record<PriorityBand, NovaColor> = {
   "Idle":         COLORS.idle,
 };
 
-type Tab = "scheduler" | "memory" | "syscalls" | "drivers";
+type Tab = "scheduler" | "memory" | "syscalls" | "drivers" | "stress";
 
 const TABS: { id: Tab; label: string; icon: typeof Cpu }[] = [
   { id: "scheduler", label: "Scheduler", icon: Cpu },
   { id: "memory",    label: "Memory",    icon: HardDrive },
   { id: "syscalls",  label: "Syscalls",  icon: Zap },
   { id: "drivers",   label: "Drivers",   icon: Monitor },
+  { id: "stress",    label: "Stress Test", icon: FlaskConical },
 ];
 
 const MAX_HISTORY = 60;
