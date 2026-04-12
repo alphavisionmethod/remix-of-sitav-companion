@@ -69,7 +69,7 @@ export const SystemUpdateService = {
   },
 
   async registerDevice(hostname?: string): Promise<UpdateDevice | null> {
-    const { data: { user } } = await supabase.auth.getUser();
+    const { data: { user } } = await db.auth.getUser();
     if (!user) return null;
 
     const deviceId = getDeviceId();
@@ -107,7 +107,7 @@ export const SystemUpdateService = {
   },
 
   async logUpdate(toVersion: string, status: string, error?: string) {
-    const { data: { user } } = await supabase.auth.getUser();
+    const { data: { user } } = await db.auth.getUser();
     if (!user) return;
     await fromDynamicTable('system_update_log').insert({
       user_id: user.id,

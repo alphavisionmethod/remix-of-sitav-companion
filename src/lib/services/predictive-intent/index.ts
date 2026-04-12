@@ -100,7 +100,7 @@ class PredictiveIntentEngine {
   }
 
   async loadPatterns(userId: string): Promise<void> {
-    const { data } = await supabase
+    const { data } = await db
       .from('user_memory')
       .select('key, value')
       .eq('user_id', userId)

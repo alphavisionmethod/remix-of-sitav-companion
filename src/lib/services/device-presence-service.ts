@@ -47,7 +47,7 @@ export async function sendHeartbeat(): Promise<void> {
   const { browser, os, screenResolution } = getBrowserInfo();
 
   try {
-    await supabase.functions.invoke("device-telemetry", {
+    await db.functions.invoke("device-telemetry", {
       body: {
         device_id: deviceId,
         hostname: `${browser} on ${os}`,

@@ -116,7 +116,7 @@ class MultiAgentDebateEngine {
     debate.verdictReasoning = reasoning;
     debate.concludedAt = new Date();
 
-    await supabase
+    await db
       .from('council_decisions')
       .update({
         status: 'concluded',

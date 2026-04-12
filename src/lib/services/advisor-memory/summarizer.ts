@@ -39,7 +39,7 @@ export class ConversationSummarizer {
         .map(m => `${m.role === "user" ? "User" : "Advisor"}: ${m.content}`)
         .join("\n");
 
-      const { data, error } = await supabase.functions.invoke("chat-advisor", {
+      const { data, error } = await db.functions.invoke("chat-advisor", {
         body: {
           advisor: "general",
           messages: [

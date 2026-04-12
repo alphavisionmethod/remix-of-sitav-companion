@@ -57,7 +57,7 @@ export interface MemoryStats {
 
 class AIMemoryGraphService {
   async buildGraph(userId: string): Promise<MemoryGraph> {
-    const { data: memories } = await supabase
+    const { data: memories } = await db
       .from('user_memory')
       .select('*')
       .eq('user_id', userId)
@@ -107,7 +107,7 @@ class AIMemoryGraphService {
   }
 
   async deleteNode(userId: string, nodeId: string): Promise<boolean> {
-    const { error } = await supabase
+    const { error } = await db
       .from('user_memory')
       .delete()
       .eq('user_id', userId)
@@ -116,7 +116,7 @@ class AIMemoryGraphService {
   }
 
   async updateNode(userId: string, nodeId: string, newValue: string): Promise<boolean> {
-    const { error } = await supabase
+    const { error } = await db
       .from('user_memory')
       .update({ value: newValue as never })
       .eq('user_id', userId)

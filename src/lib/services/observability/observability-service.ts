@@ -66,7 +66,7 @@ export async function executeAndRecordProbes(): Promise<ProbeResult[]> {
   const results = await runAllProbes();
   
   try {
-    const { data: { user } } = await supabase.auth.getUser();
+    const { data: { user } } = await db.auth.getUser();
     if (!user) return results;
 
     // Record probe runs

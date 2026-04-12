@@ -86,7 +86,7 @@ class HabitStreakService {
   }
 
   async getHabits(userId: string): Promise<Habit[]> {
-    const { data } = await supabase
+    const { data } = await db
       .from('user_memory')
       .select('*')
       .eq('user_id', userId)

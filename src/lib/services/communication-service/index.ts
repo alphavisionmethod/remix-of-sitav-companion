@@ -99,7 +99,7 @@ export class CommunicationService {
     // Route push channel through DB → edge function pipeline
     if (request.channel === "push") {
       try {
-        const { data: { user } } = await supabase.auth.getUser();
+        const { data: { user } } = await db.auth.getUser();
         if (user) {
           await fromDynamicTable("notifications_queue").insert({
             user_id: user.id,

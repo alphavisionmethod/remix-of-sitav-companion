@@ -93,7 +93,7 @@ export class UnifiedEventService {
   startRealtimeBridge(): void {
     if (this.realtimeBridgeActive) return;
 
-    this.realtimeChannel = supabase
+    this.realtimeChannel = db
       .channel("sita-os-events")
       .on(
         "postgres_changes",

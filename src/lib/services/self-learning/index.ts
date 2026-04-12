@@ -178,7 +178,7 @@ export class SelfLearningService {
 
   private async persistSignal(signal: LearningSignal): Promise<void> {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
+      const { data: { user } } = await db.auth.getUser();
       if (!user) return;
 
       await fromDynamicTable("events").insert({

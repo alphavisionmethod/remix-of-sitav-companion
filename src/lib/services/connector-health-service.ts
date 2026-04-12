@@ -26,7 +26,7 @@ export async function fetchConnectorHealth(): Promise<ConnectorHealthResult> {
   if (cachedResult && now < cacheExpiry) return cachedResult;
 
   try {
-    const { data, error } = await supabase.functions.invoke("connector-health", {
+    const { data, error } = await db.functions.invoke("connector-health", {
       method: "GET",
     });
 

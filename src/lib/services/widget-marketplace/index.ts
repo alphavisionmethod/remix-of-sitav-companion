@@ -75,7 +75,7 @@ class WidgetMarketplaceService {
   }
 
   async loadLayout(userId: string, layoutId = 'default'): Promise<DashboardLayout | null> {
-    const { data } = await supabase
+    const { data } = await db
       .from('user_memory')
       .select('value')
       .eq('user_id', userId)

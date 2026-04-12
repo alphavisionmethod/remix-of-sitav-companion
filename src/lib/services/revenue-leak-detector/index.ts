@@ -66,7 +66,7 @@ class RevenueLeakDetector {
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
-    const { data } = await supabase
+    const { data } = await db
       .from('leads')
       .select('id, name, likely_value, last_contact_at, status')
       .eq('user_id', userId)
@@ -90,7 +90,7 @@ class RevenueLeakDetector {
   }
 
   private async detectOverdueInvoices(userId: string, leaks: RevenueLeak[]): Promise<void> {
-    const { data } = await supabase
+    const { data } = await db
       .from('invoices')
       .select('id, invoice_number, amount, due_date, aging_days')
       .eq('user_id', userId)
@@ -118,7 +118,7 @@ class RevenueLeakDetector {
   }
 
   private async detectExpiredQuotes(userId: string, leaks: RevenueLeak[]): Promise<void> {
-    const { data } = await supabase
+    const { data } = await db
       .from('opportunities')
       .select('id, title, value, stage, last_movement_at')
       .eq('user_id', userId)
@@ -146,7 +146,7 @@ class RevenueLeakDetector {
   }
 
   private async detectChurningClients(userId: string, leaks: RevenueLeak[]): Promise<void> {
-    const { data } = await supabase
+    const { data } = await db
       .from('customers')
       .select('id, name, health_score, lifetime_revenue, last_contact_at')
       .eq('user_id', userId)
@@ -170,7 +170,7 @@ class RevenueLeakDetector {
   }
 
   private async detectStalePipeline(userId: string, leaks: RevenueLeak[]): Promise<void> {
-    const { data } = await supabase
+    const { data } = await db
       .from('opportunities')
       .select('id, title, value, stage, stale_risk')
       .eq('user_id', userId)

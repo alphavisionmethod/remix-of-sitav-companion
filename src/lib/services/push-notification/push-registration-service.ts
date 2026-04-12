@@ -113,7 +113,7 @@ async function registerCapacitorPush(): Promise<string | null> {
 // ── Public API ───────────────────────────────────────────────
 
 export async function registerPushToken(vapidPublicKey?: string): Promise<PushTokenRecord | null> {
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data: { user } } = await db.auth.getUser();
   if (!user) return null;
 
   const platform = detectPlatform();
@@ -188,7 +188,7 @@ export async function unregisterPushToken(tokenId: string): Promise<boolean> {
 }
 
 export async function unregisterAllTokens(): Promise<boolean> {
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data: { user } } = await db.auth.getUser();
   if (!user) return false;
 
   const { error } = await db.from("device_push_tokens")
@@ -199,7 +199,7 @@ export async function unregisterAllTokens(): Promise<boolean> {
 }
 
 export async function getRegisteredTokens(): Promise<PushTokenRecord[]> {
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data: { user } } = await db.auth.getUser();
   if (!user) return [];
 
   const { data, error } = await db.from("device_push_tokens")
@@ -214,7 +214,7 @@ export async function getRegisteredTokens(): Promise<PushTokenRecord[]> {
 
 export async function refreshToken(): Promise<PushTokenRecord | null> {
   // Unregister current platform token, then re-register
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data: { user } } = await db.auth.getUser();
   if (!user) return null;
 
   const platform = detectPlatform();

@@ -42,7 +42,7 @@ export interface TimelineSummary {
 
 class AuditTrailTimelineService {
   async getTimeline(userId: string, filters?: TimelineFilter, page = 0, limit = 50): Promise<TimelineSummary> {
-    let query = supabase
+    let query = db
       .from('audit_logs')
       .select('*', { count: 'exact' })
       .eq('user_id', userId)
@@ -103,7 +103,7 @@ class AuditTrailTimelineService {
   }
 
   async undoAction(userId: string, eventId: string): Promise<{ success: boolean; reason?: string }> {
-    const { data: event } = await supabase
+    const { data: event } = await db
       .from('audit_logs')
       .select('*')
       .eq('id', eventId)

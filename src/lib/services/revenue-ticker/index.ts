@@ -59,7 +59,7 @@ class RevenueTickerService {
     const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
 
     // Fetch invoices
-    const { data: invoices } = await supabase
+    const { data: invoices } = await db
       .from('invoices')
       .select('amount, status, created_at, invoice_number')
       .eq('user_id', userId)
@@ -84,7 +84,7 @@ class RevenueTickerService {
     // Calculate trend vs yesterday
     const yesterdayStart = new Date(todayStart);
     yesterdayStart.setDate(yesterdayStart.getDate() - 1);
-    const { data: yesterdayInvoices } = await supabase
+    const { data: yesterdayInvoices } = await db
       .from('invoices')
       .select('amount')
       .eq('user_id', userId)
@@ -149,7 +149,7 @@ class RevenueTickerService {
   }
 
   startRealtimeSync(userId: string): void {
-    this.subscription = supabase
+    this.subscription = db
       .channel('revenue-ticker')
       .on('postgres_changes', {
         event: 'UPDATE',
