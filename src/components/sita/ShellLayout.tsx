@@ -27,6 +27,9 @@ import { SectionSkeleton } from "./PageSkeleton";
 import { FinderWindow } from "./shell/windows/FinderWindow";
 import { SettingsWindow } from "./shell/windows/SettingsWindow";
 import { NotesWindow } from "./shell/windows/NotesWindow";
+import { TerminalWindow } from "./shell/windows/TerminalWindow";
+import { CalendarWindow } from "./shell/windows/CalendarWindow";
+import { WeatherWindow } from "./shell/windows/WeatherWindow";
 import { NovaSDKProvider } from "@/contexts/NovaSDKContext";
 import { lifecycleManager } from "@/lib/nova-sdk/runtime/lifecycle";
 import { ProcessTable } from "@/lib/nova-sdk/kernel/process-manager";
@@ -174,8 +177,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
   useSessionRestore({
     onRestoreWindows: useCallback((windows) => {
       for (const w of windows) {
-        // Re-launch windows — only reopen known window types
-        if (w.id === "finder" || w.id === "settings" || w.id === "notes") {
+        if (["finder", "settings", "notes", "terminal", "calendar", "weather"].includes(w.id)) {
           doLaunchApp(w.id);
         }
       }
@@ -263,6 +265,30 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         width: 520,
         originRect: origin,
       }, { id: "notes", name: "Notes" });
+    } else if (appId === "terminal" || appId === "com.nova.terminal") {
+      launchWithKernel("terminal", {
+        title: "Terminal",
+        component: <TerminalWindow />,
+        position: { x: 160, y: 130 },
+        width: 560,
+        originRect: origin,
+      }, { id: "terminal", name: "Terminal" });
+    } else if (appId === "calendar" || appId === "com.nova.calendar") {
+      launchWithKernel("calendar", {
+        title: "Calendar",
+        component: <CalendarWindow />,
+        position: { x: 240, y: 90 },
+        width: 580,
+        originRect: origin,
+      }, { id: "calendar", name: "Calendar" });
+    } else if (appId === "weather" || appId === "com.nova.weather") {
+      launchWithKernel("weather", {
+        title: "Weather",
+        component: <WeatherWindow />,
+        position: { x: 340, y: 100 },
+        width: 420,
+        originRect: origin,
+      }, { id: "weather", name: "Weather" });
     }
   }, [wm.openWindow]);
 
