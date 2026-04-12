@@ -77,7 +77,7 @@ const EdgePanelsLazy = lazy(() => import("./shell/EdgePanels").then(m => ({ defa
 const UniversalCommandLazy = lazy(() => import("./UniversalCommand").then(m => ({ default: m.UniversalCommand })));
 const AmbientSuggestionsBarLazy = lazy(() => import("./AmbientSuggestionsBar").then(m => ({ default: m.AmbientSuggestionsBar })));
 const SpatialDesktopLazy = lazy(() => import("./shell/SpatialDesktop").then(m => ({ default: m.SpatialDesktop })));
-
+const HoldKeyOverlayLazy = lazy(() => import("./shell/HoldKeyOverlay").then(m => ({ default: m.HoldKeyOverlay })));
 
 // Route-aware page transitions
 const drillDownSegments = ["mission", "owner", "business", "money", "concierge"];
@@ -121,6 +121,9 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
   const { apps } = useAppPlatform();
   useAdaptiveInterface();
   useZeroLatency();
+  useAdaptiveVisuals();
+  useBackgroundIntelligence();
+  useAppTransitions();
   const { calmLevel } = useCalmMode();
   const location = useLocation();
 
