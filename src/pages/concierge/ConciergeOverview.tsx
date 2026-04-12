@@ -206,6 +206,29 @@ const ConciergeOverview = () => {
     ],
   }), []);
 
+  const commandSuggestions: CommandSuggestion[] = useMemo(() => [
+    { id: "c1", label: "What's slipping?" },
+    { id: "c2", label: "Group tomorrow's errands" },
+    { id: "c3", label: "Prep travel checklist" },
+    { id: "c4", label: "Show pending approvals" },
+    { id: "c5", label: "Weekly concierge review" },
+  ], []);
+
+  const upcomingNeeds: UpcomingNeed[] = useMemo(() => [
+    { id: "un1", title: "Permission slip — Alex", type: "obligation", when: "Tomorrow", handling: "needs-handling" },
+    { id: "un2", title: "Dentist checkup — Emma & Liam", type: "appointment", when: "Next Thursday", handling: "can-wait" },
+    { id: "un3", title: "Pet sitter booking", type: "errand", when: "This week", handling: "needs-handling" },
+    { id: "un4", title: "Spring Break — Cancún", type: "trip", when: "18 days", handling: "can-wait" },
+    { id: "un5", title: "HVAC maintenance", type: "appointment", when: "Apr 8", handling: "can-wait" },
+  ], []);
+
+  const boardroomData: BoardroomSummaryData = useMemo(() => ({
+    completionPercent: 67,
+    carryoverCount: 3,
+    topPriority: "Travel prep driving most of the load",
+    nextReviewDate: "This Sunday",
+  }), []);
+
   const hasLiveData = isDemoMode || tasks.length > 0 || events.length > 0;
 
   if (!hasLiveData) {
