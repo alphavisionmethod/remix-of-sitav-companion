@@ -28,7 +28,8 @@ const unwrap = async (fn: (...args: any[]) => Promise<{ data: any }>, ...args: a
 
 // Business
 export function useCustomers() {
-  const { mode } = useRealityProvider();
+  const { isDemoMode } = useDataMode();
+  const mode = isDemoMode ? "demo" : "real";
   return useQuery({ queryKey: ["customers", mode], queryFn: () => unwrap(fetchCustomers, mode) });
 }
 export function useCollectionsAccounts() { return useQuery({ queryKey: ["collections-accounts"], queryFn: () => unwrap(fetchCollections) }); }
