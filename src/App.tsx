@@ -569,6 +569,7 @@ const FE02DesignGovernance = lazy(() => import("./pages/admin/frontend/FE02Desig
 const GodTierIntegrationBoard = lazy(() => import("./pages/admin/architecture/GodTierIntegrationBoard"));
 const GodTierRuntimeBoard = lazy(() => import("./pages/admin/architecture/GodTierRuntimeBoard"));
 const EpistemicFirewallBoard = lazy(() => import("./pages/admin/architecture/EpistemicFirewallBoard"));
+const ArchitectureBoundaryBoard = lazy(() => import("./pages/admin/architecture/ArchitectureBoundaryBoard"));
 
 const EmailApp = lazy(() => import("./pages/apps/EmailApp"));
 const MessengerApp = lazy(() => import("./pages/apps/MessengerApp"));
