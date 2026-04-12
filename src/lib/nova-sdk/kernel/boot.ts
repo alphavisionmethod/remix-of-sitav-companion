@@ -10,6 +10,7 @@ import { Compositor } from "./compositor";
 import { PowerManager } from "./power-manager";
 import { PrivilegeEnforcement } from "./privilege";
 import { resetRateLimiter, resetMutexes, clearSyscallLog } from "./syscall";
+import { CrashResilience } from "./crash-resilience";
 import { WaylandServer } from "./wayland";
 import { DriverManager } from "./drivers";
 import { ServiceManager } from "../services/service-manager";
