@@ -764,3 +764,64 @@ button:hover, a:hover, [role="button"]:hover, [data-clickable]:hover {
   filter: none;
   transition: filter 0.5s ease;
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   FOCUS MODE — Deep work dimming + spotlight
+   ═══════════════════════════════════════════════════════════════ */
+
+.sita-focus-mode {
+  transition: all 0.8s ease;
+}
+
+.sita-focus-mode [data-sidebar],
+.sita-focus-mode .mobile-bottom-nav,
+.sita-focus-mode .sita-companion-bar {
+  opacity: 0.3 !important;
+  pointer-events: none;
+  transition: opacity 0.8s ease;
+}
+
+.sita-focus-mode .sita-focus-dim {
+  opacity: 0.4;
+  filter: blur(1px);
+  pointer-events: none;
+  transition: opacity 0.5s ease, filter 0.5s ease;
+}
+
+/* Focus mode notification suppression */
+[data-focus-mode="true"] [data-notification],
+[data-focus-mode="true"] [data-toast] {
+  display: none !important;
+}
+
+/* Focus mode progress ring glow */
+@keyframes focus-ring-pulse {
+  0%, 100% { box-shadow: 0 0 8px hsl(var(--primary) / 0.2); }
+  50% { box-shadow: 0 0 16px hsl(var(--primary) / 0.4); }
+}
+
+.focus-ring-active {
+  animation: focus-ring-pulse 2s ease-in-out infinite;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CONTEXTUAL CURSOR — trail and glow
+   ═══════════════════════════════════════════════════════════════ */
+
+@keyframes cursor-trail-fade {
+  from { opacity: 0.3; transform: scale(1); }
+  to { opacity: 0; transform: scale(0.5); }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LIVE ACTIVITY BAR — Dynamic Island animations
+   ═══════════════════════════════════════════════════════════════ */
+
+@keyframes island-breathe {
+  0%, 100% { box-shadow: 0 4px 20px hsl(0 0% 0% / 0.4); }
+  50% { box-shadow: 0 6px 30px hsl(0 0% 0% / 0.6); }
+}
+
+.live-activity-bar {
+  animation: island-breathe 3s ease-in-out infinite;
+}
