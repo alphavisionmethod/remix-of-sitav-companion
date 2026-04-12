@@ -5,6 +5,13 @@
 
 import type { SystemService, ServiceStatus } from "./service-manager";
 
+export interface FSVersion {
+  version: number;
+  content: string;
+  savedAt: number;
+  size: number;
+}
+
 export interface FSNode {
   path: string;
   name: string;
@@ -18,6 +25,8 @@ export interface FSNode {
   content?: string | ArrayBuffer;
   children?: Map<string, FSNode>;
   deleted?: boolean; // soft-delete (trash)
+  versions?: FSVersion[]; // file history (max 10)
+  tags?: Set<string>; // user-assignable labels
 }
 
 export interface FSPermissions {
@@ -149,6 +158,23 @@ class FileSystemServiceClass implements SystemService {
     const newSize = typeof content === "string" ? content.length : content.byteLength;
     if (mount && mount.quota > 0 && mount.used - oldSize + newSize > mount.quota) return false;
 
+    // ── Versioning: snapshot current content before overwriting ──
+    if (node.content !== undefined) {
+      if (!node.versions) node.versions = [];
+      const versionNum = node.versions.length + 1;
+      const currentContent = typeof node.content === "string" ? node.content : "[binary]";
+      node.versions.push({
+        version: versionNum,
+        content: currentContent,
+        savedAt: Date.now(),
+        size: oldSize,
+      });
+      // Keep only last 10 versions
+      if (node.versions.length > 10) {
+        node.versions = node.versions.slice(-10);
+      }
+    }
+
     node.content = content;
     node.size = newSize;
     node.modifiedAt = Date.now();
@@ -247,12 +273,26 @@ class FileSystemServiceClass implements SystemService {
   // ── Stats ──
 
   getStats() {
+    let totalVersions = 0;
+    let totalTags = 0;
+    const allTags = new Set<string>();
+    this.walkTree(this.root, (node) => {
+      if (node.versions) totalVersions += node.versions.length;
+      if (node.tags) {
+        totalTags += node.tags.size;
+        node.tags.forEach(t => allTags.add(t));
+      }
+    });
+
     return {
       totalFiles: this.totalFiles,
       totalDirs: this.totalDirs,
       mountCount: this.mounts.size,
       watcherCount: this.watchers.size,
       indexSize: this.searchIndex.size,
+      totalVersions,
+      totalTags,
+      uniqueTags: allTags.size,
     };
   }
 
@@ -266,6 +306,61 @@ class FileSystemServiceClass implements SystemService {
         usage: m.quota > 0 ? `${((m.used / m.quota) * 100).toFixed(1)}%` : "unlimited",
       })),
     };
+  }
+
+  // ── File Versioning ──
+
+  getFileHistory(path: string): FSVersion[] {
+    const node = this.resolve(path);
+    if (!node || node.type !== "file") return [];
+    return node.versions ? [...node.versions] : [];
+  }
+
+  restoreVersion(path: string, version: number): boolean {
+    const node = this.resolve(path);
+    if (!node || node.type !== "file" || !node.versions) return false;
+
+    const target = node.versions.find(v => v.version === version);
+    if (!target) return false;
+
+    // Save current as a new version before restoring
+    this.writeFile(path, target.content);
+    return true;
+  }
+
+  // ── File Tagging ──
+
+  addTag(path: string, tag: string): boolean {
+    const node = this.resolve(path);
+    if (!node) return false;
+    if (!node.tags) node.tags = new Set();
+    node.tags.add(tag);
+    node.modifiedAt = Date.now();
+    return true;
+  }
+
+  removeTag(path: string, tag: string): boolean {
+    const node = this.resolve(path);
+    if (!node || !node.tags) return false;
+    const removed = node.tags.delete(tag);
+    if (removed) node.modifiedAt = Date.now();
+    return removed;
+  }
+
+  getByTag(tag: string): FSNode[] {
+    const results: FSNode[] = [];
+    this.walkTree(this.root, (node) => {
+      if (!node.deleted && node.tags?.has(tag)) results.push(node);
+    });
+    return results;
+  }
+
+  getAllTags(): string[] {
+    const tags = new Set<string>();
+    this.walkTree(this.root, (node) => {
+      node.tags?.forEach(t => tags.add(t));
+    });
+    return [...tags].sort();
   }
 
   reset(): void {

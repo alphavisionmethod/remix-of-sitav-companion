@@ -19,3 +19,6 @@ export type { SystemNotification, NotificationAction, NotificationGroup, DNDConf
 
 export { SettingsService } from "./settings-service";
 export type { SettingsSchema, SettingsLayer } from "./settings-service";
+
+export { PermissionMonitor } from "./permission-monitor";
+export type { PermissionAccessEntry, AppPermissionSnapshot } from "./permission-monitor";

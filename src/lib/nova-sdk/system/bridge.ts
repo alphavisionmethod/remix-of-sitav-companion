@@ -49,6 +49,17 @@ class NovaBridgeClass {
   }
 
   send(channel: BridgeChannel, payload?: any): any {
+    const required = CHANNEL_PERMISSIONS[channel];
+    const granted = !required || this.grantedPermissions.has(required);
+
+    // Log to PermissionMonitor if available
+    try {
+      const { PermissionMonitor } = require("../services/permission-monitor");
+      if (PermissionMonitor && payload?.appId) {
+        PermissionMonitor.recordAccess(payload.appId, required || channel, channel, granted);
+      }
+    } catch {}
+
     this.checkPermission(channel);
     const handlers = this.handlers.get(channel);
     if (!handlers || handlers.size === 0) {
