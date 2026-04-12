@@ -1200,7 +1200,7 @@ const Boardroom = () => {
 
       {/* Entry Ceremony */}
       <AnimatePresence>
-        {showCeremony && <BoardroomEntryCeremony boardroomType={activeType} onComplete={() => setShowCeremony(false)} />}
+        {showCeremony && <WarRoomEntryCeremony boardroomType={activeType} onComplete={() => setShowCeremony(false)} />}
       </AnimatePresence>
 
       <AnimatePresence>
