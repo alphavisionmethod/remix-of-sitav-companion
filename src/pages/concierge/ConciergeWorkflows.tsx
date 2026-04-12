@@ -3,7 +3,8 @@ import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents"
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { StateBadge } from "@/components/sita/StateBadge";
 import { GlassCard } from "@/components/sita/PremiumPageComponents";
-import { HouseholdAdvisor } from "@/components/sita/HouseholdComponents";
+import { ConciergeAdvisorInsightCard, ConciergeAutomationRuleCard } from "@/components/concierge";
+import type { AutomationRule } from "@/components/concierge";
 import { useState } from "react";
 import { Workflow, ShoppingCart, Calendar, Wrench, GraduationCap, Plane, Gift, Bell, CheckCircle, Clock, AlertTriangle, Play, Pause, Sparkles, Shield, Eye, Zap } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
@@ -222,13 +223,12 @@ const ConciergeWorkflows = () => {
           </SitaCard>
 
           {/* Advisor */}
-          <HouseholdAdvisor
-            role="Automation Advisor"
-            icon={Sparkles}
-            confidence="high"
-            message="The grocery auto-order has been reliable for 8 weeks — consider upgrading to full auto-approve. The dentist reschedule conflict is blocking — resolve to unblock 2 downstream workflows."
-            linkedItems={["Grocery auto-order", "Dentist conflict", "Workflow queue"]}
-          />
+          <ConciergeAdvisorInsightCard insight={{
+            role: "Automation Advisor",
+            message: "The grocery auto-order has been reliable for 8 weeks — consider upgrading to full auto-approve. The dentist reschedule conflict is blocking — resolve to unblock 2 downstream workflows.",
+            linkedItems: ["Grocery auto-order", "Dentist conflict", "Workflow queue"],
+            confidence: "high",
+          }} />
         </div>
       </div>
     </div>

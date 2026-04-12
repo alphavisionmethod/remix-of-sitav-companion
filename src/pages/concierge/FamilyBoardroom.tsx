@@ -2,7 +2,8 @@ import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/co
 import { KPITile, SitaTabs, RiskCard } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { GlassCard } from "@/components/sita/PremiumPageComponents";
-import { BoardroomSection, OverloadCard, HouseholdAdvisor } from "@/components/sita/HouseholdComponents";
+import { BoardroomSection, OverloadCard } from "@/components/sita/HouseholdComponents";
+import { ConciergeAdvisorInsightCard } from "@/components/concierge";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import {
@@ -222,13 +223,12 @@ const FamilyBoardroom = () => {
           </SitaCard>
 
           {/* Boardroom Advisor */}
-          <HouseholdAdvisor
-            role="Household Operations Advisor"
-            icon={Sparkles}
-            confidence="high"
-            message="Your household is operating at 67% task completion rate — slightly below your 75% target. School logistics drove most of the overhead this week. Travel prep is adding forward pressure. Recommend a focused 30-minute family sync this Sunday to align on the passport renewal and birthday venue decision."
-            linkedItems={["Weekly review", "Task completion trend", "Travel prep"]}
-          />
+          <ConciergeAdvisorInsightCard insight={{
+            role: "Household Operations Advisor",
+            message: "Your household is operating at 67% task completion rate — slightly below your 75% target. School logistics drove most of the overhead this week. Travel prep is adding forward pressure. Recommend a focused 30-minute family sync this Sunday to align on the passport renewal and birthday venue decision.",
+            linkedItems: ["Weekly review", "Task completion trend", "Travel prep"],
+            confidence: "high",
+          }} />
 
           {/* Cross-Domain */}
           <SitaCard hover={false} lane="changed" className="p-4">

@@ -1,7 +1,7 @@
 import { SitaPageHeader, SitaCard, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs } from "@/components/sita/SitaComponents";
 import { GlassCard } from "@/components/sita/PremiumPageComponents";
-import { HouseholdAdvisor } from "@/components/sita/HouseholdComponents";
+import { ConciergeAdvisorInsightCard } from "@/components/concierge";
 import { UpcomingObligationsCard, SupportBurdenCard, ConciergeReviewQueue } from "@/components/concierge";
 import type { UpcomingObligation, ReviewItem } from "@/components/concierge";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
@@ -131,13 +131,12 @@ const UpcomingNeeds = () => {
           <ConciergeReviewQueue items={REVIEW_ITEMS} />
 
           {/* Advisor */}
-          <HouseholdAdvisor
-            role="Upcoming Advisor"
-            icon={Sparkles}
-            confidence="high"
-            message="Alex's dentist appointment today needs the insurance card — check your wallet. The plumber follow-up is 4 days overdue and may lose the estimate window. Permission slip can be handled during school drop-off tomorrow."
-            linkedItems={["Dentist prep", "Plumber follow-up", "Permission slip"]}
-          />
+          <ConciergeAdvisorInsightCard insight={{
+            role: "Upcoming Advisor",
+            message: "Alex's dentist appointment today needs the insurance card — check your wallet. The plumber follow-up is 4 days overdue and may lose the estimate window. Permission slip can be handled during school drop-off tomorrow.",
+            linkedItems: ["Dentist prep", "Plumber follow-up", "Permission slip"],
+            confidence: "high",
+          }} />
         </div>
       </div>
     </motion.div>

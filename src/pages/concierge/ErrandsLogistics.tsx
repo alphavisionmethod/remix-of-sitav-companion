@@ -1,7 +1,7 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs } from "@/components/sita/SitaComponents";
 import { GlassCard } from "@/components/sita/PremiumPageComponents";
-import { HouseholdAdvisor } from "@/components/sita/HouseholdComponents";
+import { ConciergeAdvisorInsightCard } from "@/components/concierge";
 import { ErrandBundleCard, LogisticsTimelineCard } from "@/components/concierge";
 import type { ErrandBundle, TimelineStop } from "@/components/concierge";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
@@ -155,13 +155,12 @@ const ErrandsLogistics = () => {
           </SitaCard>
 
           {/* Advisor */}
-          <HouseholdAdvisor
-            role="Logistics Advisor"
-            icon={Sparkles}
-            confidence="high"
-            message="The UPS drop-off and dry cleaning pickup are 2 blocks apart — handle together first. Birthday cake pickup has a narrow window (before noon). Grocery run can shift to tomorrow if today feels heavy."
-            linkedItems={["Downtown Loop", "Cake pickup", "Grocery flexibility"]}
-          />
+          <ConciergeAdvisorInsightCard insight={{
+            role: "Logistics Advisor",
+            message: "The UPS drop-off and dry cleaning pickup are 2 blocks apart — handle together first. Birthday cake pickup has a narrow window (before noon). Grocery run can shift to tomorrow if today feels heavy.",
+            linkedItems: ["Downtown Loop", "Cake pickup", "Grocery flexibility"],
+            confidence: "high",
+          }} />
         </div>
       </div>
     </motion.div>

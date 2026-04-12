@@ -1,7 +1,8 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
-import { GroceryContinuityCard, HouseholdAdvisor } from "@/components/sita/HouseholdComponents";
+import { GroceryContinuityCard } from "@/components/sita/HouseholdComponents";
+import { ConciergeAdvisorInsightCard } from "@/components/concierge";
 import { ShoppingCart, Plus, Check, Clock, DollarSign, Leaf, AlertCircle, RotateCcw, Sparkles, Store, CalendarCheck, Plane } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -235,13 +236,12 @@ const GroceryPlanning = () => {
           </SitaCard>
 
           {/* Grocery Advisor */}
-          <HouseholdAdvisor
-            role="Shopping Advisor"
-            icon={Sparkles}
-            confidence="high"
-            message="Laundry detergent is out of stock — add to your Target run. Based on this week's meal plan, you may also need ricotta cheese, fresh basil, and ground turkey. Olive oil is approaching restock cycle."
-            linkedItems={["Meal plan — this week", "Spring break prep"]}
-          />
+          <ConciergeAdvisorInsightCard insight={{
+            role: "Shopping Advisor",
+            message: "Laundry detergent is out of stock — add to your Target run. Based on this week's meal plan, you may also need ricotta cheese, fresh basil, and ground turkey. Olive oil is approaching restock cycle.",
+            linkedItems: ["Meal plan — this week", "Spring break prep"],
+            confidence: "high",
+          }} />
         </div>
       </div>
     </motion.div>
