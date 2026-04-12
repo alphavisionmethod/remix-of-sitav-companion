@@ -257,14 +257,14 @@ function EpistemicFirewallBoard() {
             <Card><CardHeader className="pb-2"><CardTitle className="text-sm">By Severity</CardTitle></CardHeader>
               <CardContent><div className="flex gap-2 flex-wrap">
                 {Object.entries(negReceiptStats.bySeverity).map(([sev, count]) => (
-                  <Badge key={sev} variant={sev === "critical" ? "destructive" : "secondary"}>{sev}: {count}</Badge>
+                  <Badge key={sev} variant={sev === "critical" ? "destructive" : "secondary"}>{sev}: {String(count)}</Badge>
                 ))}
                 {Object.keys(negReceiptStats.bySeverity).length === 0 && <span className="text-sm text-muted-foreground">No refusals yet</span>}
               </div></CardContent></Card>
             <Card><CardHeader className="pb-2"><CardTitle className="text-sm">By Gate Source</CardTitle></CardHeader>
               <CardContent><div className="flex gap-2 flex-wrap">
                 {Object.entries(negReceiptStats.byGateSource).map(([src, count]) => (
-                  <Badge key={src} variant="outline">{src}: {count}</Badge>
+                  <Badge key={src} variant="outline">{src}: {String(count)}</Badge>
                 ))}
                 {Object.keys(negReceiptStats.byGateSource).length === 0 && <span className="text-sm text-muted-foreground">No refusals yet</span>}
               </div></CardContent></Card>
