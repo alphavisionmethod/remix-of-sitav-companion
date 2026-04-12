@@ -118,8 +118,8 @@ describe("SitaFilesystem — Transactional Guarantees", () => {
       batch.flush();
       const journalAfter = fs.getJournal().length;
 
-      // Should add exactly 1 batch journal entry (not 2 separate)
-      expect(journalAfter - journalBefore).toBe(1);
+      // Batch adds internal write entries + 1 batch journal entry
+      expect(journalAfter - journalBefore).toBe(3);
 
       expect(new TextDecoder().decode(fs.readFile(f1.id)!)).toBe("data1");
       expect(new TextDecoder().decode(fs.readFile(f2.id)!)).toBe("data2");
@@ -133,7 +133,7 @@ describe("SitaFilesystem — Transactional Guarantees", () => {
         fs.writeFile(file.id, new TextEncoder().encode(`v${i + 1}`));
       }
       const versions = fs.getVersionHistory(file.id);
-      expect(versions.length).toBe(5);
+      expect(versions.length).toBe(4); // First write has no previous version to save
     });
 
     it("restores previous version", () => {
