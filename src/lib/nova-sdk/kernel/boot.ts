@@ -10,6 +10,12 @@ import { Compositor } from "./compositor";
 import { PowerManager } from "./power-manager";
 import { PrivilegeEnforcement } from "./privilege";
 import { WaylandServer } from "./wayland";
+import { ServiceManager } from "../services/service-manager";
+import { FileSystemService } from "../services/filesystem-service";
+import { WindowServer } from "../services/window-server";
+import { InputService } from "../services/input-service";
+import { NotificationService } from "../services/notification-service";
+import { SettingsService } from "../services/settings-service";
 
 export interface BootLogEntry {
   subsystem: string;
@@ -85,11 +91,41 @@ class NovaKernelClass {
       // Syscall module with ring transition support initialized
     });
 
-    const totalMs = (performance.now() - this.bootStartTime).toFixed(1);
-    console.log(`[Kernel] Boot complete in ${totalMs}ms — all subsystems operational`);
+    const kernelMs = (performance.now() - this.bootStartTime).toFixed(1);
+    console.log(`[Kernel] Phase 1 complete in ${kernelMs}ms — kernel subsystems operational`);
     console.log(`[Kernel] Privilege enforcement active: Ring 0 (kernel) / Ring 3 (user)`);
     console.log(`[Kernel] Syscall dispatcher: Ring 3→0→3 transitions enabled`);
     console.log(`[Kernel] Context switching: privilege-aware with CPL save/restore`);
+
+    // ── Phase 2: System Services ──
+    console.log("\n[Kernel] Phase 2 — Booting System Services...");
+    const phase2Start = performance.now();
+
+    ServiceManager.reset();
+    ServiceManager.register({ id: "SettingsService", factory: () => SettingsService, dependencies: [], priority: 0, restartPolicy: "always" });
+    ServiceManager.register({ id: "FileSystemService", factory: () => FileSystemService, dependencies: ["SettingsService"], priority: 1, restartPolicy: "always" });
+    ServiceManager.register({ id: "InputService", factory: () => InputService, dependencies: ["SettingsService"], priority: 2, restartPolicy: "on-failure" });
+    ServiceManager.register({ id: "WindowServer", factory: () => WindowServer, dependencies: ["InputService"], priority: 3, restartPolicy: "always" });
+    ServiceManager.register({ id: "NotificationService", factory: () => NotificationService, dependencies: ["SettingsService"], priority: 4, restartPolicy: "on-failure" });
+
+    // ServiceManager.boot() is async but we fire-and-forget during kernel boot
+    ServiceManager.boot().then(serviceLog => {
+      for (const entry of serviceLog) {
+        this.bootLog.push({
+          subsystem: entry.serviceId,
+          status: entry.status,
+          timestampMs: entry.timestampMs,
+          message: entry.message,
+        });
+      }
+      const phase2Ms = (performance.now() - phase2Start).toFixed(1);
+      console.log(`[Kernel] Phase 2 complete in ${phase2Ms}ms — system services operational`);
+    }).catch(e => {
+      console.error("[Kernel] Phase 2 service boot error:", e);
+    });
+
+    const totalMs = (performance.now() - this.bootStartTime).toFixed(1);
+    console.log(`[Kernel] Boot complete in ${totalMs}ms`);
 
     this.booted = true;
     return this.bootLog;
@@ -100,6 +136,7 @@ class NovaKernelClass {
     if (!this.booted) return;
 
     console.log("[Kernel] Shutdown initiated...");
+    ServiceManager.shutdown();
     WaylandServer.reset();
     PowerManager.stop();
     Scheduler.stop();
@@ -133,6 +170,7 @@ class NovaKernelClass {
       pressure: MemoryManager.checkPressure(),
       privilege: PrivilegeEnforcement.getStats(),
       wayland: WaylandServer.getStats(),
+      services: ServiceManager.getStats(),
     };
   }
 
