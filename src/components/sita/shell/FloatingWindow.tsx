@@ -92,8 +92,7 @@ export function FloatingWindow({
   const [snappedTo, setSnappedTo] = useState<SnapZone>(null);
   const [preSnapState, setPreSnapState] = useState<{ x: number; y: number; width: number } | null>(null);
   const [showContent, setShowContent] = useState(false);
-
-  const accentGradient = appAccent || (windowId ? APP_ACCENTS[windowId] : undefined) || APP_ACCENTS.default;
+  const [magnetSnapped, setMagnetSnapped] = useState(false);
 
   // Progressive content loading — show skeleton shimmer for 150ms + soft open sound
   useEffect(() => {
