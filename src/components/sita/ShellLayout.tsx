@@ -31,6 +31,7 @@ import { TerminalWindow } from "./shell/windows/TerminalWindow";
 import { CalendarWindow } from "./shell/windows/CalendarWindow";
 import { WeatherWindow } from "./shell/windows/WeatherWindow";
 import { NovaTerminal } from "./shell/windows/NovaTerminal";
+import { SystemMonitorWindow } from "./shell/windows/SystemMonitorWindow";
 import { NovaSDKProvider } from "@/contexts/NovaSDKContext";
 import { lifecycleManager } from "@/lib/nova-sdk/runtime/lifecycle";
 import { ProcessTable } from "@/lib/nova-sdk/kernel/process-manager";
