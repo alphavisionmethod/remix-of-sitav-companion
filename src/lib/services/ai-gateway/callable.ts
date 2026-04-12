@@ -1,12 +1,13 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — AI Gateway Callable Functions
 // Direct callers for brain-core and ai-gateway edge functions.
-// ConscienceGate pre-flight validation before edge function calls.
+// ConscienceGate pre-flight + Negative Receipts on block.
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
 const db = supabase as any;
 import { conscienceGate } from "@/lib/services/conscience-gate";
+import { createNegativeReceipt, type NegativeReceipt } from "@/lib/services/epistemic-firewall";
 
 export interface BrainCoreResponse {
   request_id: string;
@@ -20,6 +21,8 @@ export interface BrainCoreResponse {
   requiresApproval: boolean;
   model?: string;
   tokens?: number;
+  /** Structured refusal record if the request was blocked */
+  negativeReceipt?: NegativeReceipt;
 }
 
 export interface AIGatewayResponse {
@@ -32,32 +35,57 @@ export interface AIGatewayResponse {
 /**
  * Call brain-core for advisor intelligence.
  * Runs ConscienceGate pre-flight validation before the edge function call.
+ * Emits a structured NegativeReceipt on block/refuse.
  */
 export async function callBrainCore(
   advisor: string,
   intent: string,
   context?: Record<string, unknown>,
 ): Promise<BrainCoreResponse> {
+  const correlationId = crypto.randomUUID();
+
   // Pre-flight: ConscienceGate validation
   const gateVerdict = await conscienceGate.evaluate({
     taskType: `advisor.${advisor}`,
     userId: context?.userId as string || "anonymous",
     tenantId: context?.tenantId as string || "default",
     input: { intent, advisor, ...(context || {}) },
-    correlationId: crypto.randomUUID(),
+    correlationId,
   });
 
   if (gateVerdict.decision === "block" || gateVerdict.decision === "refuse") {
+    // Emit structured negative receipt instead of vague error
+    const negReceipt = createNegativeReceipt({
+      taskType: `advisor.${advisor}`,
+      domain: "platform",
+      riskTier: "elevated",
+      correlationId: gateVerdict.correlationId || correlationId,
+      userId: context?.userId as string,
+      blockedAction: `Advisor ${advisor}: ${intent}`,
+      blockedDescription: `ConscienceGate ${gateVerdict.decision}: ${gateVerdict.reasons.join("; ")}`,
+      refusalReasons: ["policy-blocked"],
+      policyTriggered: gateVerdict.reasons,
+      details: `The ConscienceGate blocked this advisor request. Risk class: ${gateVerdict.riskClass}. Reasons: ${gateVerdict.reasons.join("; ")}`,
+      missingRequirements: gateVerdict.reasons,
+      suggestedActions: [
+        { action: "Rephrase request", description: "Try a more specific or lower-risk request.", actionType: "retry" },
+        { action: "Request elevated access", description: "Contact admin for elevated permissions.", actionType: "escalate" },
+      ],
+      gateSource: "conscience-gate",
+      severity: gateVerdict.decision === "refuse" ? "critical" : "warning",
+    });
+
     return {
       request_id: crypto.randomUUID(),
-      correlation_id: gateVerdict.correlationId || crypto.randomUUID(),
+      correlation_id: gateVerdict.correlationId || correlationId,
       advisor,
-      recommendation: `Request blocked by ConscienceGate: ${gateVerdict.reasons.join("; ")}`,
+      recommendation: `Request blocked: ${gateVerdict.reasons.join("; ")}`,
       confidence: 0,
       reasoning: gateVerdict.reasons.join("; "),
       actions: [],
       source: "error",
       requiresApproval: false,
+      negativeReceipt: negReceipt,
     };
   }
 

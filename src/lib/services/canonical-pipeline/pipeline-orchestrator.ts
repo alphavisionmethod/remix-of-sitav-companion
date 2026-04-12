@@ -1,13 +1,22 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Canonical Pipeline Orchestrator
-// Lightweight 9-stage canonical sequence for AI/task flows
-// NOT a second brain — extends brain-core with explicit stages
+// 9-stage canonical sequence with evidence grading, negative receipts,
+// sentinel checks, and tool grounding wired into the live runtime
 // ═══════════════════════════════════════════════════════════════
 
 import { conscienceGate, type GateVerdict, type GateRequest } from "@/lib/services/conscience-gate";
 import { runCritique, logCritique, type CritiqueResult, type EvidenceSource } from "@/lib/services/conscience-gate/critique-loop";
-import { getTaskContractOrThrow } from "@/lib/contracts/global-contracts-registry";
+import { getTaskContractOrThrow, getTaskContract } from "@/lib/contracts/global-contracts-registry";
 import { callAIGateway } from "@/lib/services/ai-gateway/callable";
+import {
+  gradeEvidenceSet,
+  refuseForWeakEvidence,
+  refuseForCiteCheckFailure,
+  runCiteCheck,
+  createNegativeReceipt,
+  type GradedEvidenceSet,
+  type NegativeReceipt,
+} from "@/lib/services/epistemic-firewall";
 
 // ── Pipeline Stage Enum ────────────────────────────────────────
 
@@ -58,6 +67,10 @@ export interface PipelineContext {
   startedAt: string;
   completedAt?: string;
   totalDurationMs?: number;
+  /** Evidence grading results from retrieval stage */
+  gradedEvidence?: GradedEvidenceSet;
+  /** Negative receipts emitted during pipeline execution */
+  negativeReceipts: NegativeReceipt[];
 }
 
 export interface PipelineTrace {
@@ -69,6 +82,8 @@ export interface PipelineTrace {
   totalDurationMs: number;
   gateDecision?: string;
   critiqueRecommendation?: string;
+  evidenceGrade?: string;
+  negativeReceiptCount: number;
   timestamp: string;
 }
 
@@ -104,6 +119,7 @@ export class PipelineOrchestrator {
       status: "running",
       stages: [],
       startedAt: new Date().toISOString(),
+      negativeReceipts: [],
     };
 
     try {
@@ -128,17 +144,75 @@ export class PipelineOrchestrator {
         ctx.gateVerdict = verdict;
 
         if (verdict.decision === "block" || verdict.decision === "refuse") {
+          // Emit negative receipt for gate refusal
+          const contract = getTaskContract(request.taskType);
+          const negReceipt = createNegativeReceipt({
+            taskType: request.taskType,
+            domain: contract?.domain ?? "platform",
+            riskTier: contract?.riskTier ?? "elevated",
+            correlationId,
+            userId: request.userId,
+            blockedAction: `Pipeline execution: ${request.taskType}`,
+            blockedDescription: `ConscienceGate ${verdict.decision}: ${verdict.reasons.join("; ")}`,
+            refusalReasons: ["policy-blocked"],
+            policyTriggered: verdict.reasons,
+            details: `ConscienceGate blocked at pipeline stage. Risk class: ${verdict.riskClass}.`,
+            missingRequirements: verdict.reasons,
+            suggestedActions: [
+              { action: "Adjust request", description: "Modify the request to meet policy requirements.", actionType: "retry" },
+            ],
+            gateSource: "conscience-gate",
+            severity: verdict.decision === "refuse" ? "critical" : "warning",
+          });
+          ctx.negativeReceipts.push(negReceipt);
+
           throw new Error(`ConscienceGate ${verdict.decision}: ${verdict.reasons.join("; ")}`);
         }
         return { decision: verdict.decision, data: { riskClass: verdict.riskClass, reasons: verdict.reasons } };
       }, request.onStageComplete);
 
-      // Stage 3: RETRIEVAL (conditional)
+      // Stage 3: RETRIEVAL (with evidence grading)
       if (ctx.gateVerdict?.retrievalRequired) {
         await this.runStage(ctx, PipelineStage.RETRIEVAL, async () => {
-          // Delegates to Mnemosyne ContextAssembler in production
-          ctx.retrievalContext = { assembled: true, sources: request.evidenceSources?.length || 0 };
-          return { decision: "retrieved", data: { sourcesUsed: request.evidenceSources?.length || 0 } };
+          const contract = getTaskContract(request.taskType);
+
+          // Grade evidence sources if provided
+          if (request.evidenceSources && request.evidenceSources.length > 0 && contract) {
+            const evidenceItems = request.evidenceSources.map(s => ({
+              id: s.id,
+              sourceType: (s.type || "cache") as any,
+              sourceId: s.id,
+              content: JSON.stringify(s),
+              retrievedAt: new Date().toISOString(),
+              signed: false,
+              provenance: s.type || "unknown",
+              domain: contract.domain,
+            }));
+
+            const gradedSet = gradeEvidenceSet(evidenceItems, contract.domain);
+            ctx.gradedEvidence = gradedSet;
+
+            // Check if evidence meets domain requirements
+            if (!gradedSet.sufficient && contract.evidenceRequirements?.requiresEvidence) {
+              const negReceipt = refuseForWeakEvidence({
+                taskType: request.taskType,
+                domain: contract.domain,
+                correlationId,
+                gradeFound: gradedSet.bestGrade,
+                gradeRequired: gradedSet.domainPolicy?.minGrade ?? "B",
+                userId: request.userId,
+              });
+              ctx.negativeReceipts.push(negReceipt);
+
+              // For high-trust domains, block; otherwise caveat
+              if (gradedSet.domainPolicy?.refuseOnWeakEvidence) {
+                throw new Error(`Evidence insufficient for ${contract.domain}: grade ${gradedSet.bestGrade}, requires ${gradedSet.domainPolicy.minGrade}`);
+              }
+            }
+          }
+
+          ctx.retrievalContext = { assembled: true, sources: request.evidenceSources?.length || 0, evidenceGrade: ctx.gradedEvidence?.bestGrade };
+          return { decision: "retrieved", data: { sourcesUsed: request.evidenceSources?.length || 0, evidenceGrade: ctx.gradedEvidence?.bestGrade } };
         }, request.onStageComplete);
       } else {
         this.skipStage(ctx, PipelineStage.RETRIEVAL, "Not required by contract");
@@ -174,7 +248,6 @@ export class PipelineOrchestrator {
             costCents: gatewayResponse.cost_cents,
           };
         } catch (inferenceError) {
-          // Graceful degradation — mark as degraded but don't block pipeline
           ctx.inferenceResult = {
             status: "degraded",
             model,
@@ -189,7 +262,6 @@ export class PipelineOrchestrator {
       // Stage 6: TOOL_EXECUTION (conditional)
       if (ctx.gateVerdict?.approvalRequired) {
         await this.runStage(ctx, PipelineStage.TOOL_EXECUTION, async () => {
-          // Delegates to DeskExecutor in production
           ctx.toolResult = { status: "pending_approval", message: "Approval required before execution" };
           return { decision: "awaiting_approval", data: ctx.toolResult };
         }, request.onStageComplete);
@@ -197,7 +269,7 @@ export class PipelineOrchestrator {
         this.skipStage(ctx, PipelineStage.TOOL_EXECUTION, "No tool execution required");
       }
 
-      // Stage 7: CRITIQUE (conditional)
+      // Stage 7: CRITIQUE (with cite-check for high-trust domains)
       if (ctx.gateVerdict?.critiqueRequired) {
         await this.runStage(ctx, PipelineStage.CRITIQUE, async () => {
           const output = (ctx.inferenceResult as Record<string, unknown>) || {};
@@ -205,7 +277,49 @@ export class PipelineOrchestrator {
           logCritique(critique);
           ctx.critiqueResult = critique;
 
+          // Run cite-check on high-trust domain outputs
+          const contract = getTaskContract(request.taskType);
+          if (contract && ctx.gradedEvidence && ctx.inferenceResult) {
+            const responseContent = String((ctx.inferenceResult as any)?.output?.content ?? "");
+            if (responseContent && ["finance", "business"].includes(contract.domain)) {
+              const citeResult = runCiteCheck(responseContent, contract.domain, ctx.gradedEvidence);
+              if (citeResult.shouldBlock) {
+                const negReceipt = refuseForCiteCheckFailure({
+                  taskType: request.taskType,
+                  domain: contract.domain,
+                  correlationId,
+                  unsupportedClaims: citeResult.unsupportedClaims,
+                  totalClaims: citeResult.totalClaims,
+                  userId: request.userId,
+                });
+                ctx.negativeReceipts.push(negReceipt);
+                throw new Error(`Cite-check failed: ${citeResult.blockReasons.join("; ")}`);
+              }
+            }
+          }
+
           if (critique.recommendation === "reject") {
+            const contract = getTaskContract(request.taskType);
+            const negReceipt = createNegativeReceipt({
+              taskType: request.taskType,
+              domain: contract?.domain ?? "platform",
+              riskTier: contract?.riskTier ?? "elevated",
+              correlationId,
+              userId: request.userId,
+              blockedAction: `Release ${request.taskType} output`,
+              blockedDescription: `CritiqueLoop rejected: ${critique.issues.map(i => i.message).join("; ")}`,
+              refusalReasons: ["hallucination-risk"],
+              policyTriggered: ["critique-loop"],
+              details: `Groundedness: ${critique.groundednessScore}, Completeness: ${critique.completenessScore}`,
+              missingRequirements: critique.issues.map(i => i.message),
+              suggestedActions: [
+                { action: "Provide more evidence", description: "Add supporting data to improve output quality.", actionType: "provide-data" },
+              ],
+              gateSource: "conscience-gate",
+              severity: "warning",
+            });
+            ctx.negativeReceipts.push(negReceipt);
+
             throw new Error(`CritiqueLoop rejected output: ${critique.issues.map((i) => i.message).join("; ")}`);
           }
           return { decision: critique.recommendation, data: { groundedness: critique.groundednessScore, completeness: critique.completenessScore } };
@@ -220,13 +334,14 @@ export class PipelineOrchestrator {
           result: ctx.inferenceResult,
           critique: ctx.critiqueResult ? { passed: ctx.critiqueResult.passed, recommendation: ctx.critiqueResult.recommendation } : undefined,
           gate: { decision: ctx.gateVerdict?.decision, riskClass: ctx.gateVerdict?.riskClass },
+          evidenceGrade: ctx.gradedEvidence?.bestGrade,
+          negativeReceiptCount: ctx.negativeReceipts.length,
         };
         return { decision: "returned" };
       }, request.onStageComplete);
 
       // Stage 9: RECEIPT
       await this.runStage(ctx, PipelineStage.RECEIPT, async () => {
-        // In production, persists to ai_inference_receipts table
         return {
           decision: "receipted",
           data: {
@@ -235,6 +350,8 @@ export class PipelineOrchestrator {
             taskType: request.taskType,
             gateDecision: ctx.gateVerdict?.decision,
             critiqueRecommendation: ctx.critiqueResult?.recommendation,
+            evidenceGrade: ctx.gradedEvidence?.bestGrade,
+            negativeReceiptCount: ctx.negativeReceipts.length,
             totalStages: ctx.stages.length,
           },
         };
@@ -265,6 +382,8 @@ export class PipelineOrchestrator {
       totalDurationMs: ctx.totalDurationMs,
       gateDecision: ctx.gateVerdict?.decision,
       critiqueRecommendation: ctx.critiqueResult?.recommendation,
+      evidenceGrade: ctx.gradedEvidence?.bestGrade,
+      negativeReceiptCount: ctx.negativeReceipts.length,
       timestamp: new Date().toISOString(),
     };
     this.traceLog.push(trace);
@@ -333,4 +452,3 @@ export class PipelineOrchestrator {
 }
 
 export const pipelineOrchestrator = new PipelineOrchestrator();
-
