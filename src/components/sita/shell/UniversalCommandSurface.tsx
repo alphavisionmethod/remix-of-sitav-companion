@@ -85,6 +85,7 @@ const COMMAND_INDEX: CommandItem[] = [
   { id: "adv-concierge", label: "Concierge Advisor", sublabel: "Task help", icon: Headphones, path: "/advisors/concierge-advisor", category: "advisor", domain: "concierge", keywords: ["concierge", "advisor"] },
   { id: "adv-strategy", label: "Strategy Advisor", sublabel: "Cross-domain synthesis", icon: Brain, path: "/advisors/strategy-advisor", category: "advisor", keywords: ["strategy", "advisor"] },
   // System
+  { id: "sys-focus", label: "Focus Mode", sublabel: "Start 25-min deep work session", icon: Target, category: "system", keywords: ["focus", "mode", "deep", "work", "pomodoro", "timer", "concentrate"] },
   { id: "sys-agents", label: "Agent Control", sublabel: "Fleet management", icon: Shield, path: "/mission-control?tab=control-panel", category: "system", keywords: ["agents", "control"] },
   { id: "sys-audit", label: "Audit Log", sublabel: "Compliance trail", icon: FileText, path: "/mission-control?tab=audit-log", category: "system", keywords: ["audit", "log"] },
   { id: "sys-integrations", label: "Integrations", sublabel: "Connected services", icon: Globe, path: "/integrations", category: "system", keywords: ["integrations", "connected"] },
@@ -316,9 +317,10 @@ type CommandState = "ready" | "searching" | "interpreting" | "previewing" | "app
 interface UniversalCommandSurfaceProps {
   open: boolean;
   onClose: () => void;
+  onSystemCommand?: (cmd: string) => void;
 }
 
-export function UniversalCommandSurface({ open, onClose }: UniversalCommandSurfaceProps) {
+export function UniversalCommandSurface({ open, onClose, onSystemCommand }: UniversalCommandSurfaceProps) {
   const [query, setQuery] = useState("");
   const [selectedIdx, setSelectedIdx] = useState(0);
   const [commandState, setCommandState] = useState<CommandState>("ready");
@@ -470,6 +472,12 @@ export function UniversalCommandSurface({ open, onClose }: UniversalCommandSurfa
     if (item.riskLevel === "high") {
       setCommandState("approval_required");
       toast.info("This action requires approval", { description: "Opening approval flow..." });
+    }
+    // System commands without paths
+    if (item.id === "sys-focus") {
+      onSystemCommand?.("focus");
+      onClose();
+      return;
     }
     if (item.path) { navigate(item.path); onClose(); }
   };
