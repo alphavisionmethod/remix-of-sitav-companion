@@ -1,114 +1,114 @@
 
 
-# Upgrade: Ambient Intelligence + Spatial Desktop + Zero-Latency + Universal Command
+# Memory-Based OS + Micro-Interactions + Calm Mode + State Continuity + Intent Automation
 
-## Current Gaps
+## What Exists vs What's Missing
 
-| System | Gap |
-|---|---|
-| **Ambient Context** | Clipboard uses polling (requires permissions, often fails). No `copy`/`cut` event listeners. No form state tracking. No selection tracking. No `getActivitySummary()`. No `getRelatedFiles()`. |
-| **Spatial Desktop** | Only 4 workspaces with 2-3 routes each. App zoom level is empty placeholder. No arrow-key navigation. No activity badges. No search/filter. No 5th Intelligence workspace. |
-| **Zero-Latency** | Pressed feedback lasts 2 frames (invisible). No view transition API. No focus-intent prefetch (keyboard Tab). No transition progress bar. Only prefetches top 2 (should be 3). No `requestIdleCallback` prefetch. |
-| **Universal Command** | System commands (dark mode, lock, mute) just close palette — don't execute. Window commands don't execute. No unit conversion execution. Contextual commands are stubs. No ambient suggestions in empty state. No "what was I doing" command. No color preview. |
-| **Suggestions Bar** | No "SITA noticed" prefix. No thinking pulse. No confidence indicator. |
-| **InteractionTracker** | No `copy`/`cut` event delegation. No form input tracking. |
+| Feature | Exists | Missing |
+|---|---|---|
+| **Memory-Based OS** | Window position memory (localStorage, 7-day TTL). Context snapshots per page (scroll, form). | No full session restore on restart — windows don't reopen. No tab/open-app persistence. No "everything exactly where you left it." |
+| **Micro-Interactions** | `FloatingWindow` has magnetic snapping (20px range). Dock has bounce + magnification. `ClickRipple` exists. `sita-pressed` 120ms feedback. | Dock magnification is index-based not cursor-distance-based (not velocity-reactive). No "soft" button physics. Window snap has no preview overlay. No haptic-feel spring on button release. |
+| **Calm Mode** | CSS class `.calm-mode` exists — desaturates colors, kills animations. `CalmEngineContext` has idle detection + layer opacity. Mode toggle in AppearanceContext. | No auto-trigger on inactivity. No gradual transition (snap on/off). No progressive simplification (hide secondary UI first, then reduce contrast). No breathing/ambient animation in calm. |
+| **State Continuity** | `ambientContext.saveContext()` saves scroll + form per path. Window positions persisted. | No session-level app/window restoration. Closing browser = lose all windows. No "reopen where I left off." |
+| **Intent Automation** | Personalization engine tracks patterns. Auto-rules exist (evening calm). App surfacing tracks launch frequency. | No routine detection ("you always open X+Y+Z together"). No "Start your morning?" suggestion. No workspace presets from behavior. |
 
 ## Plan
 
-### 1. Ambient Context Engine — event-driven clipboard + form tracking + activity summary
+### 1. Session Persistence Manager (`src/lib/services/session-persistence.ts`)
 
-**File**: `src/lib/services/ambient-context-engine.ts`
+Full session state serialization/restore for "everything exactly where you left it":
 
-- Replace clipboard polling with `trackClipboardEvent(text, source)` method called from InteractionTracker's `copy`/`cut` listeners
-- Remove the `setInterval` clipboard monitor entirely
-- Add `trackFormField(path, fieldName, value)` — stores form state per page for context restoration
-- Add `trackSelection(path, selectedText)` — enables "search for selection" suggestions
-- Add `getActivitySummary()` — returns `{ currentFocus, durationMinutes, recentPages, topEntities }` for UI display
-- Add `getRelatedFiles(path)` — returns co-accessed pages for current path
+- **Serialize on beforeunload**: open windows (ids, positions, sizes), current route, sidebar state, open panels, scroll positions, form data
+- **Restore on mount**: reopen all windows, navigate to last route, restore scroll positions
+- **Storage**: localStorage with `sita-session-state` key, 24hr TTL
+- **Partial restore**: if a window component fails to load, skip it gracefully
+- **API**: `persistSession()`, `restoreSession()`, `clearSession()`
 
-### 2. Universal Command — wire real execution
+### 2. Session Restore Hook + UI (`src/hooks/use-session-restore.ts`)
 
-**File**: `src/components/sita/UniversalCommand.tsx`
+- Hook that checks for saved session on mount
+- If found, shows a toast: "Restore your last session?" with Accept/Dismiss
+- On accept: calls `restoreSession()` — reopens windows, navigates, scrolls
+- Wired into `ShellLayout.tsx`
 
-- Accept `onSystemCommand` prop: `(cmd: string, args?: Record<string,string>) => void`
-- Dark mode → `document.documentElement.classList.toggle('dark')`
-- Lock → call `onSystemCommand('lock')`
-- Mute → call `onSystemCommand('mute')`
-- Unit conversions: implement km↔mi, kg↔lb, C↔F, USD↔EUR with actual math
-- Add "what was I doing" command → calls `ambientContext.getActivitySummary()`
-- Show ambient suggestions in empty state (no query)
-- Wire contextual commands to actual `navigate()` calls
-- Add color preview: hex/rgb input shows color swatch inline
-- Add clipboard content display: "paste" shows what's in clipboard
+### 3. Dock Velocity-Reactive Magnification (`DesktopDock.tsx`)
 
-### 3. Spatial Desktop — 5 workspaces, more routes, arrow nav, activity
+Upgrade from index-distance to cursor-distance magnification with velocity dampening:
 
-**File**: `src/components/sita/shell/SpatialDesktop.tsx`
+- Track `mousemove` on dock, compute pixel distance from each icon center
+- Scale = gaussian falloff based on pixel distance (not array index)
+- Track cursor velocity (dx/dt) — faster cursor = less magnification (user is passing through)
+- Slow cursor = full magnification (user is targeting)
+- Spring physics for scale transitions (not linear)
 
-- Add 5th "Intelligence" workspace (Advisors, Boardroom, Brain, Proof Center)
-- Expand each workspace to 5-6 routes (Pulse, Revenue Office, Invoices, Cash Flow, Pipeline, etc.)
-- Replace empty App zoom level with list of recent activity + route preview cards
-- Add arrow-key navigation between workspace cards in overview
-- Add activity badges per workspace (last visit time, access count from ambient context)
-- Add search/filter bar at top of overview
-- Add animated connection lines between workspaces showing cross-domain navigation frequency
+### 4. Soft Button Physics (`src/index.css` + `use-zero-latency.ts`)
 
-### 4. Zero-Latency — real feedback + view transitions + idle prefetch
+- Upgrade `sita-pressed` from flat scale to spring curve: `scale(0.96)` → `scale(1.02)` → `scale(1.0)` with cubic-bezier
+- Add subtle `box-shadow` compression on press (shadow shrinks)
+- Add `will-change: transform` for GPU acceleration
+- Buttons feel like they have physical depth
 
-**File**: `src/hooks/use-zero-latency.ts`
+### 5. Window Snap Preview Overlay (`FloatingWindow.tsx`)
 
-- Extend pressed feedback to 120ms with CSS transition (scale 0.97 → 1.0 spring-back)
-- Add `startViewTransition` API usage for route changes (with fallback)
-- Add focus-intent preloading: Tab key on links triggers prefetch
-- Add thin progress bar at top during route transitions
+- During drag near edge, show translucent preview rectangle where window will snap
+- Uses existing `detectSnapZone` + `getSnapRect` from `snap-zones.ts`
+- Animated overlay fades in/out with 150ms transition
+- Magnetic pull intensifies as cursor approaches edge
 
-**File**: `src/lib/services/predictive-prefetch.ts`
+### 6. Advanced Calm Mode (`src/hooks/use-calm-mode.ts`)
 
-- Prefetch top 3 instead of 2
-- Add `prefetchOnIdle()` using `requestIdleCallback` for predicted routes during idle
+Progressive calm mode with auto-trigger:
 
-### 5. Ambient Suggestions Bar — polish
+- **Auto-trigger**: after 3 minutes of inactivity (from `CalmEngineContext` idle detection), gradually enter calm
+- **3 calm levels**: Level 1 (reduce notification badges, mute sounds), Level 2 (desaturate non-essential UI, hide secondary nav items), Level 3 (full calm — current `.calm-mode` CSS)
+- **Gradual transitions**: each level fades in over 2s (not instant toggle)
+- **Breathing ambient**: subtle pulsing glow on primary surfaces in calm mode (slow 8s cycle)
+- **Exit on interaction**: any click/key instantly starts exit transition (500ms)
+- **Manual override**: `Cmd+,` toggles calm on/off
 
-**File**: `src/components/sita/AmbientSuggestionsBar.tsx`
+### 7. Intent-Driven Routine Detection (`src/lib/services/routine-detector.ts`)
 
-- Add "SITA noticed..." prefix for proactive suggestions
-- Add animated thinking pulse when new suggestions arrive
-- Add subtle relevance confidence bar per suggestion
-- Replace emoji icons with Lucide icons matching suggestion type
+Detect behavioral patterns and suggest workspace presets:
 
-### 6. InteractionTracker — feed events
+- Track app launch sequences with timestamps (from `useAppSurfacing`)
+- Detect co-launches: "User opens Business + Money + Pulse within 5 min" → routine
+- Time-of-day correlation: morning routines, evening wind-down
+- Minimum 3 occurrences before suggesting
+- Generate `RoutineSuggestion`: "Start your morning? Open Business Center, Money Center, Daily Pulse"
+- Feed suggestions into `AmbientSuggestionsBar` as `predicted_next` type
 
-**File**: `src/components/sita/InteractionTracker.tsx`
+### 8. Integration Wiring
 
-- Add `copy`/`cut` event listeners via event delegation, feed to `ambientContext.trackClipboardEvent()`
-- Add `input`/`change` event delegation on form fields, feed to `ambientContext.trackFormField()`
+**`ShellLayout.tsx`**: Mount `useSessionRestore()`, wire `beforeunload` for session persistence, pass calm level to UI
 
-### 7. ShellLayout — wire system commands
+**`useWindowManager.ts`**: Add `getWindowStates()` for serialization and `restoreWindows(states[])` for deserialization
 
-**File**: `src/components/sita/ShellLayout.tsx`
+**`AmbientSuggestionsBar.tsx`**: Accept routine suggestions from detector
 
-- Pass `onSystemCommand` handler to `UniversalCommand` that dispatches lock/mute/theme/spatial commands to shell state
-
-## Files Modified
+## Files
 
 | File | Action |
 |---|---|
-| `src/lib/services/ambient-context-engine.ts` | Modify — event-driven clipboard, form tracking, activity summary, related files |
-| `src/components/sita/UniversalCommand.tsx` | Modify — real execution, unit conversion, color preview, ambient integration |
-| `src/components/sita/shell/SpatialDesktop.tsx` | Modify — 5 workspaces, more routes, arrow nav, activity badges, search |
-| `src/hooks/use-zero-latency.ts` | Modify — view transitions, better feedback, focus-intent, progress bar |
-| `src/lib/services/predictive-prefetch.ts` | Modify — top 3, idle prefetch |
-| `src/components/sita/AmbientSuggestionsBar.tsx` | Modify — SITA noticed prefix, pulse, confidence bar |
-| `src/components/sita/InteractionTracker.tsx` | Modify — copy/cut/form event delegation |
-| `src/components/sita/ShellLayout.tsx` | Modify — wire system command handler |
+| `src/lib/services/session-persistence.ts` | **CREATE** — session serialization/restore |
+| `src/hooks/use-session-restore.ts` | **CREATE** — restore hook with toast UI |
+| `src/lib/services/routine-detector.ts` | **CREATE** — intent/routine detection engine |
+| `src/hooks/use-calm-mode.ts` | **CREATE** — progressive auto-calm with levels |
+| `src/components/sita/DesktopDock.tsx` | **MODIFY** — velocity-reactive magnification |
+| `src/components/sita/shell/FloatingWindow.tsx` | **MODIFY** — snap preview overlay during drag |
+| `src/hooks/useWindowManager.ts` | **MODIFY** — add serialization/restore methods |
+| `src/hooks/use-zero-latency.ts` | **MODIFY** — soft button spring physics |
+| `src/index.css` | **MODIFY** — enhanced pressed states, calm breathing, calm levels |
+| `src/components/sita/ShellLayout.tsx` | **MODIFY** — mount session restore, calm mode, routine detector |
+| `src/components/sita/AmbientSuggestionsBar.tsx` | **MODIFY** — accept routine suggestions |
 
 ## Implementation Order
 
-1. Ambient Context Engine (foundation for everything else)
-2. InteractionTracker (feeds the engine)
-3. Universal Command (executes real actions)
-4. Spatial Desktop (5 workspaces, navigation)
-5. Zero-Latency (transitions, feedback)
-6. Ambient Suggestions Bar (polish)
-7. ShellLayout (wiring)
+1. Session Persistence Manager + Window Manager serialization
+2. Session Restore Hook + ShellLayout wiring
+3. Dock velocity-reactive magnification
+4. Soft button physics (CSS + zero-latency)
+5. Window snap preview overlay
+6. Progressive Calm Mode
+7. Routine Detection engine
+8. Integration + Ambient Suggestions wiring
 
