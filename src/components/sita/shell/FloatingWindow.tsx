@@ -219,23 +219,61 @@ export function FloatingWindow({
     const vw = window.innerWidth;
     const vh = window.innerHeight;
     const ww = size.width;
+    const wh = size.height || 300;
+    const wid = windowId || "unknown";
 
+    // ── Inter-window magnetic docking ──
+    const draggingPhysics: PhysicsWindow = { id: wid, x: tx, y: ty, width: ww, height: wh };
+    const others: PhysicsWindow[] = siblingWindows
+      .filter(sw => sw.id !== wid)
+      .map(sw => ({ id: sw.id, x: sw.x, y: sw.y, width: sw.width, height: sw.height }));
+
+    if (others.length > 0) {
+      const edges = findMagneticEdges(draggingPhysics, others);
+      if (edges.length > 0) {
+        const snapped = applyMagneticSnap({ x: tx, y: ty }, edges);
+        tx = snapped.x;
+        ty = snapped.y;
+        setMagnetSnapped(snapped.snapped);
+      } else {
+        setMagnetSnapped(false);
+      }
+    }
+
+    // ── Screen-edge magnetic pull (original behavior) ──
     if (tx < MAGNETIC_RANGE) tx += (0 - tx) * MAGNETIC_STRENGTH;
     if (tx + ww > vw - MAGNETIC_RANGE) tx += (vw - ww - tx) * MAGNETIC_STRENGTH;
     if (ty < MAGNETIC_RANGE) ty += (0 - ty) * MAGNETIC_STRENGTH;
     if (ty > vh - MAGNETIC_RANGE - 50) ty += (vh - 50 - ty) * MAGNETIC_STRENGTH;
+
+    // ── Shake-to-minimize detection ──
+    if (windowId) {
+      const shook = trackShake(windowId, e.clientX);
+      if (shook) {
+        setIsDragging(false);
+        dragRef.current.active = false;
+        cancelAnimationFrame(rafId.current);
+        SoundEngine.click();
+        onMinimize?.();
+        return;
+      }
+    }
 
     targetPos.current = { x: tx, y: ty };
     lastPointer.current = { x: e.clientX, y: e.clientY };
 
     const zone = detectSnapZone(e.clientX, e.clientY, vw, vh);
     setSnapZone(zone);
-  }, [isDragging, size.width]);
+  }, [isDragging, size.width, size.height, windowId, siblingWindows, onMinimize]);
 
   const handlePointerUp = useCallback(() => {
     setIsDragging(false);
     dragRef.current.active = false;
+    setMagnetSnapped(false);
     cancelAnimationFrame(rafId.current);
+
+    // Clear shake tracking
+    if (windowId) clearShakeState(windowId);
 
     if (snapZone) {
       setPreSnapState({ x: currentPos.current.x, y: currentPos.current.y, width: size.width });
@@ -244,12 +282,29 @@ export function FloatingWindow({
       setPos({ x: rect.x, y: rect.y });
       setSize({ width: rect.width, height: rect.height });
       setSnappedTo(snapZone);
-      SoundEngine.approve(); // Snap sound feedback
+      SoundEngine.approve();
     } else {
+      // ── Edge bounce on inertia release ──
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const bounce = applyEdgeBounce(
+        currentPos.current,
+        { vx: dragRef.current.velocityX, vy: dragRef.current.velocityY },
+        { width: size.width, height: size.height || 300 },
+        { width: vw, height: vh }
+      );
+
+      if (bounce.bounced) {
+        currentPos.current = { x: bounce.x, y: bounce.y };
+        dragRef.current.velocityX = bounce.vx;
+        dragRef.current.velocityY = bounce.vy;
+        setPos({ x: bounce.x, y: bounce.y });
+      }
+
       runInertia();
     }
     setSnapZone(null);
-  }, [snapZone, size.width, runInertia]);
+  }, [snapZone, size.width, size.height, runInertia, windowId]);
 
   const handleDoubleClickTitle = useCallback(() => {
     if (snappedTo) {
