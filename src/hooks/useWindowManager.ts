@@ -110,8 +110,27 @@ export function useWindowManager() {
     setNextZ(z => z + 1);
   }, [nextZ]);
 
+  // ── Session serialization ──────────────────────────────────
+  const getWindowStates = useCallback(() => {
+    return windows.map(w => ({
+      id: w.id,
+      title: w.title,
+      position: w.position,
+      width: w.width,
+      minimized: w.minimized,
+    }));
+  }, [windows]);
+
+  const updateWindowPosition = useCallback((id: string, position: { x: number; y: number }, width?: number) => {
+    setWindows(prev => {
+      const updated = prev.map(w => w.id === id ? { ...w, position, width: width ?? w.width } : w);
+      persistPositions(updated);
+      return updated;
+    });
+  }, [persistPositions]);
+
   const visibleWindows = windows.filter(w => !w.minimized);
   const minimizedWindows = windows.filter(w => w.minimized);
 
-  return { windows, visibleWindows, minimizedWindows, openWindow, closeWindow, focusWindow, minimizeWindow, restoreWindow };
+  return { windows, visibleWindows, minimizedWindows, openWindow, closeWindow, focusWindow, minimizeWindow, restoreWindow, getWindowStates, updateWindowPosition };
 }
