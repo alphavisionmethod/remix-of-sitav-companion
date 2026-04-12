@@ -18,6 +18,7 @@ import {
   NovaSectionLabel, NovaBadge,
 } from "@/lib/nova-sdk/ui/components";
 import { APP_COMPONENTS } from "@/lib/design-system/app-window-system";
+import { useWindowManagerContext } from "@/contexts/WindowManagerContext";
 import { cn } from "@/lib/utils";
 import { NovaCanvasChart, type ChartSeries } from "./NovaCanvasChart";
 import { NovaCanvasBars, type BarItem } from "./NovaCanvasBars";
