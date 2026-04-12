@@ -40,3 +40,16 @@ export type { AppBundle, LoadResult } from "./runtime/loader";
 
 // Hooks
 export { useNovaApp } from "./hooks/useNovaApp";
+
+// Kernel
+export { ProcessTable } from "./kernel/process-manager";
+export type { Process, ProcessState, PriorityBand } from "./kernel/process-manager";
+export { MemoryManager, PAGE_SIZE } from "./kernel/memory-manager";
+export type { MemoryRegion, MemoryFlags, MemoryStats } from "./kernel/memory-manager";
+export { Syscall, syscall, getSyscallLog, getSyscallStats, clearSyscallLog } from "./kernel/syscall";
+export type { SyscallLogEntry } from "./kernel/syscall";
+export { Compositor } from "./kernel/compositor";
+export type { CompositorSurface, SurfaceBounds } from "./kernel/compositor";
+export { Scheduler } from "./kernel/scheduler";
+export { NovaKernel } from "./kernel/boot";
+export type { BootLogEntry } from "./kernel/boot";
