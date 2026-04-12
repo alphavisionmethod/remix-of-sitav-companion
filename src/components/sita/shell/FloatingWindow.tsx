@@ -452,6 +452,16 @@ export function FloatingWindow({
         />
       )}
 
+      {/* Edge-to-viewport distance labels */}
+      {isDragging && (
+        <EdgeDistanceLabels
+          pos={pos}
+          size={{ width: size.width, height: size.height || 300 }}
+          vw={window.innerWidth}
+          vh={window.innerHeight}
+        />
+      )}
+
       {/* Magnetic alignment guides */}
       {isDragging && alignGuides.length > 0 && (
         <svg
