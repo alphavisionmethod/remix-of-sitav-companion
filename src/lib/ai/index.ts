@@ -7,6 +7,7 @@ export * from "./ai-state-types";
 
 // Canonical client
 export { invokeAICapability, invokeSynthesis, invokeUtility } from "./ai-capability-client";
+export type { TrustEnrichedResponse } from "./ai-capability-client";
 
 // Response normalization
 export { normalizeGatewayResponse } from "./ai-response-normalizer";
