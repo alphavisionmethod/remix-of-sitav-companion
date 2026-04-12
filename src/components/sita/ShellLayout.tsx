@@ -745,7 +745,6 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
       <Suspense fallback={null}>
         <IntentSuggestionsWidgetLazy onLaunchApp={(id) => handleLaunchApp(id)} />
       </Suspense>
-      </Suspense>
 
       {/* Mobile Bottom Nav — critical for mobile, keep eager */}
       <MobileBottomNav />
