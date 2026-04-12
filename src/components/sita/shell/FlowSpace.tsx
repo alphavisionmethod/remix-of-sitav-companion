@@ -41,6 +41,7 @@ interface FlowSpaceProps {
   windows: WindowInfo[];
   onSelectWindow: (id: string) => void;
   onClose: () => void;
+  onLaunchApp?: (appId: string) => void;
 }
 
 // ── Physics Constants ────────────────────────────────────────
