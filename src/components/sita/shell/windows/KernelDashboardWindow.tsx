@@ -3,7 +3,7 @@
 // Real-time visualization of scheduler, memory, and syscalls
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import {
   Cpu, HardDrive, Activity, Layers, Zap, Timer,
   Shield, Clock, AlertTriangle, Monitor, Wifi, Battery,
