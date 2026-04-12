@@ -1196,6 +1196,9 @@ const App = () => (
                     <Route path="/concierge/boardroom" element={<ConciergeCenter />} />
                     <Route path="/concierge/settings" element={<ConciergeCenter />} />
                     <Route path="/concierge/life-admin" element={<ConciergeCenter />} />
+                    <Route path="/concierge/errands" element={<ConciergeCenter />} />
+                    <Route path="/concierge/upcoming" element={<ConciergeCenter />} />
+                    <Route path="/concierge/recurring" element={<ConciergeCenter />} />
 
                     {/* Intelligence */}
                     <Route path="/inbox" element={<InboxCapture />} />
