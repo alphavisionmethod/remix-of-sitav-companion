@@ -419,6 +419,14 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         width: 640,
         originRect: origin,
       }, { id: "dev-tools", name: "Developer Tools" });
+    } else if (appId === "kernel-dashboard" || appId === "com.nova.kernel-dashboard") {
+      launchWithKernel("kernel-dashboard", {
+        title: "Kernel Dashboard",
+        component: <KernelDashboardWindow />,
+        position: { x: 100, y: 60 },
+        width: 680,
+        originRect: origin,
+      }, { id: "kernel-dashboard", name: "Kernel Dashboard" });
     }
 
     // Wire intent learning — every app launch teaches the engine
