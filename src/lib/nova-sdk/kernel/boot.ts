@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
 // Nova Kernel — Boot Sequence Orchestrator
-// Initializes all kernel subsystems in correct order
+// Initializes all kernel subsystems including privilege enforcement
 // ═══════════════════════════════════════════════════════════════
 
 import { MemoryManager } from "./memory-manager";
@@ -8,6 +8,7 @@ import { ProcessTable } from "./process-manager";
 import { Scheduler } from "./scheduler";
 import { Compositor } from "./compositor";
 import { PowerManager } from "./power-manager";
+import { PrivilegeEnforcement } from "./privilege";
 
 export interface BootLogEntry {
   subsystem: string;
@@ -33,50 +34,55 @@ class NovaKernelClass {
 
     console.log("╔════════════════════════════════════════╗");
     console.log("║     NOVA KERNEL — BOOT SEQUENCE       ║");
+    console.log("║   CPU Privilege Rings: Ring 0 / Ring 3 ║");
     console.log("╚════════════════════════════════════════╝");
 
-    // 1. Memory Manager + Address Space subsystem
+    // 1. Privilege Enforcement (must be first — other subsystems depend on it)
+    this.initSubsystem("PrivilegeEnforcement", () => {
+      PrivilegeEnforcement.reset();
+    });
+
+    // 2. Memory Manager + Address Space subsystem
     this.initSubsystem("MemoryManager", () => {
       MemoryManager.reset();
-      // Pre-allocate kernel memory (PID 0 = kernel)
+      // Pre-allocate kernel memory (PID 0 = kernel, Ring 0)
       MemoryManager.allocate(0, 256, { label: "kernel:heap", guardPages: true });
       MemoryManager.allocate(0, 64, { label: "kernel:stack", guardPages: true });
-      // Create kernel address space
       MemoryManager.createAddressSpace(0);
     });
 
-    // 2. Process Table
+    // 3. Process Table
     this.initSubsystem("ProcessTable", () => {
       ProcessTable.reset();
     });
 
-    // 3. Scheduler with ready queues + context switching
+    // 4. Scheduler with ready queues + privilege-aware context switching
     this.initSubsystem("Scheduler", () => {
       Scheduler.reset();
-      Scheduler.start(200); // 200ms tick interval for simulation
+      Scheduler.start(200);
     });
 
-    // 4. Compositor
+    // 5. Compositor
     this.initSubsystem("Compositor", () => {
       Compositor.reset();
     });
 
-    // 5. Power Management
+    // 6. Power Management
     this.initSubsystem("PowerManager", () => {
       PowerManager.reset();
-      PowerManager.start(1000); // 1s tick for power simulation
+      PowerManager.start(1000);
     });
 
-    // 6. Syscall table (stateless — just logging that it's ready)
+    // 7. Syscall table (stateless — just logging that it's ready)
     this.initSubsystem("SyscallDispatcher", () => {
-      // Syscall module is stateless, no init needed
+      // Syscall module with ring transition support initialized
     });
 
     const totalMs = (performance.now() - this.bootStartTime).toFixed(1);
-    const schedStats = Scheduler.getStats();
     console.log(`[Kernel] Boot complete in ${totalMs}ms — all subsystems operational`);
-    console.log(`[Kernel] Ready queues initialized (5 bands), context switching enabled`);
-    console.log(`[Kernel] Address space subsystem active, page table switching ready`);
+    console.log(`[Kernel] Privilege enforcement active: Ring 0 (kernel) / Ring 3 (user)`);
+    console.log(`[Kernel] Syscall dispatcher: Ring 3→0→3 transitions enabled`);
+    console.log(`[Kernel] Context switching: privilege-aware with CPL save/restore`);
 
     this.booted = true;
     return this.bootLog;
@@ -92,6 +98,7 @@ class NovaKernelClass {
     Compositor.reset();
     ProcessTable.reset();
     MemoryManager.reset();
+    PrivilegeEnforcement.reset();
 
     this.booted = false;
     this.bootLog = [];
@@ -116,6 +123,7 @@ class NovaKernelClass {
       compositor: Compositor.getStats(),
       power: PowerManager.getStats(),
       pressure: MemoryManager.checkPressure(),
+      privilege: PrivilegeEnforcement.getStats(),
     };
   }
 
