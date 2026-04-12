@@ -1,4 +1,5 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
+import { KPITile, RiskCard, EmptyState, SitaTabs } from "@/components/sita/SitaComponents";
 import { AmbientHeader, StaggerReveal, StaggerItem, MetricHighlight, GlassCard } from "@/components/sita/PremiumPageComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { PriorityCard, QuickActionBar, HouseholdAdvisor, OverloadCard, GroceryContinuityCard, PrepCard, ApprovalCard } from "@/components/sita/HouseholdComponents";
