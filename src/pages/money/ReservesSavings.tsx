@@ -8,6 +8,7 @@ import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { motion } from "framer-motion";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDataMode } from "@/contexts/DataModeContext";
@@ -36,8 +37,7 @@ const ReservesSavings = () => {
     queryFn: async () => {
       if (isDemoMode) return reservesData;
       if (!user) return [];
-      const { data, error } = await supabase
-        .from("reserves")
+      const { data, error } = await db.from("reserves")
         .select("*")
         .order("priority", { ascending: true });
       if (error) { console.error("[reserves]", error); return reservesData; }

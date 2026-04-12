@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Shield, CheckCircle, XCircle, Fingerprint, Key, Smartphone, Globe, Monitor } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
@@ -31,8 +32,7 @@ export default function ISA01IdentityProviderRegistryBoard() {
   const { data: families = [] } = useQuery({
     queryKey: ["isa01-families"],
     queryFn: async () => {
-      const { data } = await supabase
-        .from("provider_families")
+      const { data } = await db.from("provider_families")
         .select("*")
         .eq("identity_support", true)
         .order("name");
@@ -43,8 +43,7 @@ export default function ISA01IdentityProviderRegistryBoard() {
   const { data: identityLinks = [] } = useQuery({
     queryKey: ["isa01-identity-links"],
     queryFn: async () => {
-      const { data } = await supabase
-        .from("identity_provider_links")
+      const { data } = await db.from("identity_provider_links")
         .select("*, provider_families(name, provider_key)")
         .order("created_at", { ascending: false });
       return data || [];
@@ -54,8 +53,7 @@ export default function ISA01IdentityProviderRegistryBoard() {
   const { data: oauthClients = [] } = useQuery({
     queryKey: ["isa01-identity-clients"],
     queryFn: async () => {
-      const { data } = await supabase
-        .from("oauth_client_registry")
+      const { data } = await db.from("oauth_client_registry")
         .select("*, provider_families(name)")
         .in("client_purpose", ["identity_web", "identity_mobile_ios", "identity_mobile_android"])
         .order("created_at");

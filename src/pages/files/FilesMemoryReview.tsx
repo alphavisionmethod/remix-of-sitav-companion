@@ -8,6 +8,7 @@ import { useAllFiles } from "@/hooks/use-domain-data";
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
@@ -23,8 +24,7 @@ const FilesMemoryReview = () => {
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return [];
-      const { data, error } = await supabase
-        .from("advisor_memories")
+      const { data, error } = await db.from("advisor_memories")
         .select("*")
         .eq("user_id", user.id)
         .order("created_at", { ascending: false })

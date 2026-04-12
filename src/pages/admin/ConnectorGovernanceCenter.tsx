@@ -9,6 +9,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
@@ -62,8 +63,7 @@ export default function ConnectorGovernanceCenter() {
     enabled: !!user,
     refetchInterval: tab === "history" ? 5000 : false,
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("audit_logs")
+      const { data, error } = await db.from("audit_logs")
         .select("*")
         .or("category.eq.connector,action.ilike.sync%")
         .order("created_at", { ascending: false })

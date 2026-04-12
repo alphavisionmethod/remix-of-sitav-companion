@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ScrollText, Shield, Plug, ArrowUpCircle, XCircle, CheckCircle } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -27,8 +28,7 @@ export default function ISA04ConsentLedgerExplorer() {
   const { data: consents = [] } = useQuery({
     queryKey: ["isa04-consent-ledger"],
     queryFn: async () => {
-      const { data } = await supabase
-        .from("consent_ledger")
+      const { data } = await db.from("consent_ledger")
         .select("*, provider_families(name, provider_key), provider_capabilities(display_name)")
         .order("granted_at", { ascending: false })
         .limit(200);
@@ -39,8 +39,7 @@ export default function ISA04ConsentLedgerExplorer() {
   const { data: upgrades = [] } = useQuery({
     queryKey: ["isa04-consent-upgrades"],
     queryFn: async () => {
-      const { data } = await supabase
-        .from("consent_upgrades")
+      const { data } = await db.from("consent_upgrades")
         .select("*")
         .order("created_at", { ascending: false })
         .limit(100);
@@ -51,8 +50,7 @@ export default function ISA04ConsentLedgerExplorer() {
   const { data: revocations = [] } = useQuery({
     queryKey: ["isa04-consent-revocations"],
     queryFn: async () => {
-      const { data } = await supabase
-        .from("consent_revocations")
+      const { data } = await db.from("consent_revocations")
         .select("*")
         .order("revoked_at", { ascending: false })
         .limit(100);

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -36,8 +37,7 @@ const UserProfilePage = () => {
     if (!user) return;
     const load = async () => {
       setLoading(true);
-      const { data: p } = await supabase
-        .from("profiles")
+      const { data: p } = await db.from("profiles")
         .select("display_name, avatar_url, preferences")
         .eq("user_id", user.id)
         .maybeSingle();
@@ -53,8 +53,7 @@ const UserProfilePage = () => {
         });
       }
 
-      const { count } = await supabase
-        .from("trust_weighted_actions")
+      const { count } = await db.from("trust_weighted_actions")
         .select("id", { count: "exact", head: true });
 
       const created = new Date(user.created_at);

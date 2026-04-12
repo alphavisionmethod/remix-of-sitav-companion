@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import type {
   UnifiedAccountNode,
   UnifiedAccountEdge,
@@ -12,8 +13,7 @@ import type {
 
 // ── Nodes ──────────────────────────────────────────────────────
 export async function getAccountNodes(): Promise<UnifiedAccountNode[]> {
-  const { data, error } = await supabase
-    .from("unified_account_nodes")
+  const { data, error } = await db.from("unified_account_nodes")
     .select("*")
     .order("created_at");
   if (error) throw error;
@@ -22,8 +22,7 @@ export async function getAccountNodes(): Promise<UnifiedAccountNode[]> {
 
 // ── Edges ──────────────────────────────────────────────────────
 export async function getAccountEdges(): Promise<UnifiedAccountEdge[]> {
-  const { data, error } = await supabase
-    .from("unified_account_edges")
+  const { data, error } = await db.from("unified_account_edges")
     .select("*, provider_families(name)")
     .order("created_at");
   if (error) throw error;
@@ -32,8 +31,7 @@ export async function getAccountEdges(): Promise<UnifiedAccountEdge[]> {
 
 // ── Graph summary view ─────────────────────────────────────────
 export async function getAccountGraphSummary(): Promise<AccountGraphSummaryView[]> {
-  const { data, error } = await supabase
-    .from("v_account_graph_summary")
+  const { data, error } = await db.from("v_account_graph_summary")
     .select("*");
   if (error) throw error;
   return (data ?? []) as never as AccountGraphSummaryView[];
@@ -41,8 +39,7 @@ export async function getAccountGraphSummary(): Promise<AccountGraphSummaryView[
 
 // ── Separation audit ───────────────────────────────────────────
 export async function getSeparationAudits() {
-  const { data, error } = await supabase
-    .from("auth_connector_separation_audits")
+  const { data, error } = await db.from("auth_connector_separation_audits")
     .select("*")
     .order("created_at", { ascending: false })
     .limit(50);

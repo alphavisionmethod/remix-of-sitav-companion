@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Plug, CheckCircle, XCircle, AlertTriangle, RefreshCw, HardDrive, Mail, Calendar } from "lucide-react";
@@ -30,8 +31,7 @@ export default function ISA02ConnectorProviderRegistryBoard() {
   const { data: capabilities = [] } = useQuery({
     queryKey: ["isa02-capabilities"],
     queryFn: async () => {
-      const { data } = await supabase
-        .from("provider_capabilities")
+      const { data } = await db.from("provider_capabilities")
         .select("*, provider_families(name, provider_key)")
         .order("display_name");
       return data || [];
@@ -41,8 +41,7 @@ export default function ISA02ConnectorProviderRegistryBoard() {
   const { data: services = [] } = useQuery({
     queryKey: ["isa02-connected-services"],
     queryFn: async () => {
-      const { data } = await supabase
-        .from("connected_service_links")
+      const { data } = await db.from("connected_service_links")
         .select("*, provider_families(name), provider_capabilities(display_name, capability_key, category)")
         .order("created_at", { ascending: false });
       return data || [];

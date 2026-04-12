@@ -4,12 +4,12 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import type { AIInferenceReceipt, AITaskRequest, AIReceiptRecord, AIFallbackEvent } from "./types";
 
 // ── Inference Receipts (legacy) ────────────────────────────────
 export async function getInferenceReceipts(limit = 100): Promise<AIInferenceReceipt[]> {
-  const { data, error } = await supabase
-    .from("ai_inference_receipts")
+  const { data, error } = await db.from("ai_inference_receipts")
     .select("*")
     .order("created_at", { ascending: false })
     .limit(limit);
@@ -18,8 +18,7 @@ export async function getInferenceReceipts(limit = 100): Promise<AIInferenceRece
 }
 
 export async function getReceiptsByProvider(provider: string, limit = 50): Promise<AIInferenceReceipt[]> {
-  const { data, error } = await supabase
-    .from("ai_inference_receipts")
+  const { data, error } = await db.from("ai_inference_receipts")
     .select("*")
     .eq("provider", provider)
     .order("created_at", { ascending: false })
@@ -30,8 +29,7 @@ export async function getReceiptsByProvider(provider: string, limit = 50): Promi
 
 // ── Task Requests ──────────────────────────────────────────────
 export async function getTaskRequests(limit = 100): Promise<AITaskRequest[]> {
-  const { data, error } = await supabase
-    .from("ai_task_requests")
+  const { data, error } = await db.from("ai_task_requests")
     .select("*")
     .order("created_at", { ascending: false })
     .limit(limit);
@@ -40,8 +38,7 @@ export async function getTaskRequests(limit = 100): Promise<AITaskRequest[]> {
 }
 
 export async function getTaskRequestsByStatus(status: string, limit = 50): Promise<AITaskRequest[]> {
-  const { data, error } = await supabase
-    .from("ai_task_requests")
+  const { data, error } = await db.from("ai_task_requests")
     .select("*")
     .eq("status", status)
     .order("created_at", { ascending: false })
@@ -52,8 +49,7 @@ export async function getTaskRequestsByStatus(status: string, limit = 50): Promi
 
 // ── Canonical Receipt Records ──────────────────────────────────
 export async function getReceiptRecords(limit = 100): Promise<AIReceiptRecord[]> {
-  const { data, error } = await supabase
-    .from("ai_receipt_records")
+  const { data, error } = await db.from("ai_receipt_records")
     .select("*")
     .order("created_at", { ascending: false })
     .limit(limit);
@@ -63,8 +59,7 @@ export async function getReceiptRecords(limit = 100): Promise<AIReceiptRecord[]>
 
 // ── Fallback Events ────────────────────────────────────────────
 export async function getFallbackEvents(limit = 100): Promise<AIFallbackEvent[]> {
-  const { data, error } = await supabase
-    .from("ai_fallback_events")
+  const { data, error } = await db.from("ai_fallback_events")
     .select("*")
     .order("created_at", { ascending: false })
     .limit(limit);
@@ -80,8 +75,7 @@ export async function getReceiptStats(): Promise<{
   cacheHitRate: number;
   byProvider: Record<string, number>;
 }> {
-  const { data, error } = await supabase
-    .from("ai_inference_receipts")
+  const { data, error } = await db.from("ai_inference_receipts")
     .select("provider, cost_actual_cents, latency_ms, cache_hits");
   if (error) throw error;
 

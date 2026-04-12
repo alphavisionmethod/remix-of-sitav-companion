@@ -1,6 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Money Capability Module
-// Surface-neutral money/finance operations
 // ═══════════════════════════════════════════════════════════════
 
 import { registerCapability } from "./capability-registry";
@@ -13,7 +12,7 @@ registerCapability("money.accounts.list", async (_params, context): Promise<Capa
   const { data, error } = await db
     .from("financial_accounts")
     .select("*")
-    .eq("user_id", context.userId);
+    .eq("user_id", context.userId) as { data: any; error: any };
 
   if (error) return { success: false, error: error.message };
   return { success: true, data: data || [] };
@@ -28,7 +27,6 @@ registerCapability("money.transfer.initiate", async (params, context): Promise<C
     return { success: false, error: "Missing required transfer parameters" };
   }
 
-  // This capability requires approval — create approval request
   const { data, error } = await fromTable("approval_queue").insert({
     user_id: context.userId,
     action_type: "money.transfer",
@@ -50,7 +48,6 @@ registerCapability("investment.watchlist.add", async (params, context): Promise<
   const { assetId, symbol } = params as { assetId?: string; symbol?: string };
   if (!assetId && !symbol) return { success: false, error: "Asset ID or symbol required" };
 
-  // For now store as audit log action until watchlist table exists
   const { data, error } = await fromTable("audit_logs").insert({
     user_id: context.userId,
     action: "watchlist.add",

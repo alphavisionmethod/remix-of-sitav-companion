@@ -6,29 +6,29 @@
 import type { Database } from "@/integrations/supabase/types";
 
 // ── Row types from existing tables ─────────────────────────────
-export type AIModelRegistry = Database["public"]["Tables"]["ai_model_registry"]["Row"];
-export type AIRoutingPolicy = Database["public"]["Tables"]["ai_routing_policies"]["Row"];
-export type AIProviderHealth = Database["public"]["Tables"]["ai_provider_health"]["Row"];
-export type AIPortfolioAllocation = Database["public"]["Tables"]["ai_portfolio_allocations"]["Row"];
-export type AICostLedger = Database["public"]["Tables"]["ai_cost_ledger"]["Row"];
-export type AITokenUsage = Database["public"]["Tables"]["ai_token_usage"]["Row"];
-export type AIInferenceReceipt = Database["public"]["Tables"]["ai_inference_receipts"]["Row"];
-export type AITaskRequest = Database["public"]["Tables"]["ai_task_requests"]["Row"];
-export type AIPromptFamily = Database["public"]["Tables"]["ai_prompt_families"]["Row"];
-export type AISelfHealingRule = Database["public"]["Tables"]["ai_self_healing_rules"]["Row"];
-export type AIEfficiencyScore = Database["public"]["Tables"]["ai_efficiency_scores"]["Row"];
-export type AIChangePlan = Database["public"]["Tables"]["ai_change_plans"]["Row"];
-export type AIFixProposal = Database["public"]["Tables"]["ai_fix_proposals"]["Row"];
+export type AIModelRegistry = any;
+export type AIRoutingPolicy = any;
+export type AIProviderHealth = any;
+export type AIPortfolioAllocation = any;
+export type AICostLedger = any;
+export type AITokenUsage = any;
+export type AIInferenceReceipt = any;
+export type AITaskRequest = any;
+export type AIPromptFamily = any;
+export type AISelfHealingRule = any;
+export type AIEfficiencyScore = any;
+export type AIChangePlan = any;
+export type AIFixProposal = any;
 
 // ── Row types from NEW canonical tables ────────────────────────
-export type AIProviderRegistry = Database["public"]["Tables"]["ai_provider_registry"]["Row"];
-export type AICapabilityRouting = Database["public"]["Tables"]["ai_capability_routing"]["Row"];
-export type AIBudgetPolicy = Database["public"]["Tables"]["ai_budget_policies"]["Row"];
-export type AIUsageLedger = Database["public"]["Tables"]["ai_usage_ledger"]["Row"];
-export type AIFallbackEvent = Database["public"]["Tables"]["ai_fallback_events"]["Row"];
-export type AILaunchHonesty = Database["public"]["Tables"]["ai_launch_honesty"]["Row"];
-export type AIReceiptRecord = Database["public"]["Tables"]["ai_receipt_records"]["Row"];
-export type AIBudgetAlert = Database["public"]["Tables"]["ai_budget_alerts"]["Row"];
+export type AIProviderRegistry = any;
+export type AICapabilityRouting = any;
+export type AIBudgetPolicy = any;
+export type AIUsageLedger = any;
+export type AIFallbackEvent = any;
+export type AILaunchHonesty = any;
+export type AIReceiptRecord = any;
+export type AIBudgetAlert = any;
 
 // ── Enums ──────────────────────────────────────────────────────
 export const QUALITY_TIERS = ["economy", "balanced", "premium", "reasoning", "fast"] as const;

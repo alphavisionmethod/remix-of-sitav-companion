@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { motion } from "framer-motion";
@@ -64,8 +65,7 @@ const MemoryCenter = () => {
     queryKey: ["user_memory", user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("user_memory")
+      const { data, error } = await db.from("user_memory")
         .select("*")
         .order("updated_at", { ascending: false });
       if (error) throw error;

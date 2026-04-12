@@ -4,12 +4,12 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import type { AIModelRegistry, AIProviderHealth, AIProviderRegistry } from "./types";
 
 // ── Provider Registry (canonical) ──────────────────────────────
 export async function getProviderRegistry(): Promise<AIProviderRegistry[]> {
-  const { data, error } = await supabase
-    .from("ai_provider_registry")
+  const { data, error } = await db.from("ai_provider_registry")
     .select("*")
     .order("provider_key");
   if (error) throw error;
@@ -17,8 +17,7 @@ export async function getProviderRegistry(): Promise<AIProviderRegistry[]> {
 }
 
 export async function getActiveProviders(): Promise<AIProviderRegistry[]> {
-  const { data, error } = await supabase
-    .from("ai_provider_registry")
+  const { data, error } = await db.from("ai_provider_registry")
     .select("*")
     .eq("is_active", true)
     .order("provider_key");
@@ -28,8 +27,7 @@ export async function getActiveProviders(): Promise<AIProviderRegistry[]> {
 
 // ── Model Registry ─────────────────────────────────────────────
 export async function getAIModelRegistry(): Promise<AIModelRegistry[]> {
-  const { data, error } = await supabase
-    .from("ai_model_registry")
+  const { data, error } = await db.from("ai_model_registry")
     .select("*")
     .order("provider")
     .order("model_class");
@@ -38,8 +36,7 @@ export async function getAIModelRegistry(): Promise<AIModelRegistry[]> {
 }
 
 export async function getActiveModels(): Promise<AIModelRegistry[]> {
-  const { data, error } = await supabase
-    .from("ai_model_registry")
+  const { data, error } = await db.from("ai_model_registry")
     .select("*")
     .eq("deprecated", false)
     .order("provider");
@@ -48,8 +45,7 @@ export async function getActiveModels(): Promise<AIModelRegistry[]> {
 }
 
 export async function getModelsByProvider(provider: string): Promise<AIModelRegistry[]> {
-  const { data, error } = await supabase
-    .from("ai_model_registry")
+  const { data, error } = await db.from("ai_model_registry")
     .select("*")
     .eq("provider", provider)
     .eq("deprecated", false)
@@ -60,8 +56,7 @@ export async function getModelsByProvider(provider: string): Promise<AIModelRegi
 
 // ── Provider Health ────────────────────────────────────────────
 export async function getProviderHealth(): Promise<AIProviderHealth[]> {
-  const { data, error } = await supabase
-    .from("ai_provider_health")
+  const { data, error } = await db.from("ai_provider_health")
     .select("*")
     .order("provider");
   if (error) throw error;
@@ -69,8 +64,7 @@ export async function getProviderHealth(): Promise<AIProviderHealth[]> {
 }
 
 export async function getProviderHealthByProvider(provider: string): Promise<AIProviderHealth[]> {
-  const { data, error } = await supabase
-    .from("ai_provider_health")
+  const { data, error } = await db.from("ai_provider_health")
     .select("*")
     .eq("provider", provider)
     .order("updated_at", { ascending: false });
@@ -80,8 +74,7 @@ export async function getProviderHealthByProvider(provider: string): Promise<AIP
 
 // ── Unique providers from model registry ───────────────────────
 export async function getDistinctProviders(): Promise<string[]> {
-  const { data, error } = await supabase
-    .from("ai_model_registry")
+  const { data, error } = await db.from("ai_model_registry")
     .select("provider")
     .eq("deprecated", false);
   if (error) throw error;

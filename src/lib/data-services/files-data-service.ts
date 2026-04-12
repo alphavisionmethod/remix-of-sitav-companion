@@ -11,54 +11,23 @@ async function getUser() {
 export async function fetchFilesOverview() {
   const user = await getUser();
   if (!user) return MOCK_FILES_OVERVIEW;
-
-  const { data, error } = await db
-    .from("file_metadata")
-    .select("*")
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: false });
-
+  const { data, error } = await db.from("file_metadata").select("*").eq("user_id", user.id).order("created_at", { ascending: false }) as { data: any[]; error: any };
   if (error || !data || data.length === 0) return MOCK_FILES_OVERVIEW;
-
-  return data.map((f: any) => ({
-    name: f.filename,
-    mime: f.mime_type || "application/octet-stream",
-    text: f.extracted_data?.text || "",
-  }));
+  return data.map((f: any) => ({ name: f.filename, mime: f.mime_type || "application/octet-stream", text: f.extracted_data?.text || "" }));
 }
 
 export async function fetchFilesProcessing() {
   const user = await getUser();
   if (!user) return MOCK_FILES_PROCESSING;
-
-  const { data, error } = await db
-    .from("file_metadata")
-    .select("*")
-    .eq("user_id", user.id)
-    .eq("status", "processing")
-    .order("created_at", { ascending: false });
-
+  const { data, error } = await db.from("file_metadata").select("*").eq("user_id", user.id).eq("status", "processing").order("created_at", { ascending: false }) as { data: any[]; error: any };
   if (error || !data || data.length === 0) return MOCK_FILES_PROCESSING;
-
-  return data.map((f: any) => ({
-    filename: f.filename,
-    mimeType: f.mime_type,
-    sizeBytes: Number(f.size_bytes),
-    textContent: f.extracted_data?.text || "",
-    uploadedBy: "owner",
-  }));
+  return data.map((f: any) => ({ filename: f.filename, mimeType: f.mime_type, sizeBytes: Number(f.size_bytes), textContent: f.extracted_data?.text || "", uploadedBy: "owner" }));
 }
 
 export async function fetchAllFiles() {
   const user = await getUser();
   if (!user) return [];
-
-  const { data, error } = await db
-    .from("file_metadata")
-    .select("*")
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: false });
-
+  const { data, error } = await db.from("file_metadata").select("*").eq("user_id", user.id).order("created_at", { ascending: false }) as { data: any[]; error: any };
   if (error || !data) return [];
   return data;
 }
@@ -66,14 +35,7 @@ export async function fetchAllFiles() {
 export async function fetchFilesByStatus(status: string) {
   const user = await getUser();
   if (!user) return [];
-
-  const { data, error } = await db
-    .from("file_metadata")
-    .select("*")
-    .eq("user_id", user.id)
-    .eq("status", status)
-    .order("created_at", { ascending: false });
-
+  const { data, error } = await db.from("file_metadata").select("*").eq("user_id", user.id).eq("status", status).order("created_at", { ascending: false }) as { data: any[]; error: any };
   if (error || !data) return [];
   return data;
 }
@@ -81,14 +43,7 @@ export async function fetchFilesByStatus(status: string) {
 export async function fetchFilesBySensitivity(sensitivities: string[]) {
   const user = await getUser();
   if (!user) return [];
-
-  const { data, error } = await db
-    .from("file_metadata")
-    .select("*")
-    .eq("user_id", user.id)
-    .in("sensitivity", sensitivities)
-    .order("created_at", { ascending: false });
-
+  const { data, error } = await db.from("file_metadata").select("*").eq("user_id", user.id).in("sensitivity", sensitivities).order("created_at", { ascending: false }) as { data: any[]; error: any };
   if (error || !data) return [];
   return data;
 }
@@ -96,40 +51,21 @@ export async function fetchFilesBySensitivity(sensitivities: string[]) {
 export async function fetchFilesSearchIndex(): Promise<IndexableItem[]> {
   const user = await getUser();
   if (!user) return MOCK_FILES_SEARCH_INDEX;
-
-  const { data, error } = await db
-    .from("file_metadata")
-    .select("*")
-    .eq("user_id", user.id)
-    .order("created_at", { ascending: false });
-
+  const { data, error } = await db.from("file_metadata").select("*").eq("user_id", user.id).order("created_at", { ascending: false }) as { data: any[]; error: any };
   if (error || !data || data.length === 0) return MOCK_FILES_SEARCH_INDEX;
-
   return data.map((f: any, i: number) => ({
-    id: f.id,
-    type: f.classification || "document",
-    domain: classifyDomainFromFile(f) as SearchDomain,
-    title: f.filename,
-    body: f.extracted_data?.text || "",
+    id: f.id, type: f.classification || "document", domain: classifyDomainFromFile(f) as SearchDomain,
+    title: f.filename, body: f.extracted_data?.text || "",
     tags: [f.classification, f.sensitivity, f.mime_type?.split("/")[1]].filter(Boolean) as string[],
-    timestamp: new Date(f.created_at).getTime(),
-    metadata: { sizeBytes: f.size_bytes },
-    linkedEntities: [],
-    sensitivity: f.sensitivity || "internal",
-    actionUrl: "/files",
+    timestamp: new Date(f.created_at).getTime(), metadata: { sizeBytes: f.size_bytes },
+    linkedEntities: [], sensitivity: f.sensitivity || "internal", actionUrl: "/files",
   }));
 }
 
 export async function fetchFileSettings() {
   const user = await getUser();
   if (!user) return null;
-
-  const { data, error } = await db
-    .from("file_settings")
-    .select("*")
-    .eq("user_id", user.id)
-    .maybeSingle();
-
+  const { data, error } = await db.from("file_settings").select("*").eq("user_id", user.id).maybeSingle() as { data: any; error: any };
   if (error || !data) return null;
   return data;
 }
@@ -137,13 +73,7 @@ export async function fetchFileSettings() {
 export async function upsertFileSettings(settings: Record<string, any>) {
   const user = await getUser();
   if (!user) return null;
-
-  const { data, error } = await db
-    .from("file_settings")
-    .upsert({ user_id: user.id, ...settings }, { onConflict: "user_id" })
-    .select()
-    .single();
-
+  const { data, error } = await db.from("file_settings").upsert({ user_id: user.id, ...settings }, { onConflict: "user_id" }).select().single() as { data: any; error: any };
   if (error) throw error;
   return data;
 }

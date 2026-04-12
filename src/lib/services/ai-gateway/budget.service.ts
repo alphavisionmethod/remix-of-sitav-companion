@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import type {
   AICostLedger, AITokenUsage, AIPortfolioAllocation,
   AIBudgetSummary, AIBudgetPolicy, AIUsageLedger, AIBudgetAlert,
@@ -11,8 +12,7 @@ import type {
 
 // ── Budget Policies (canonical) ────────────────────────────────
 export async function getBudgetPolicies(): Promise<AIBudgetPolicy[]> {
-  const { data, error } = await supabase
-    .from("ai_budget_policies")
+  const { data, error } = await db.from("ai_budget_policies")
     .select("*")
     .order("scope_type");
   if (error) throw error;
@@ -20,8 +20,7 @@ export async function getBudgetPolicies(): Promise<AIBudgetPolicy[]> {
 }
 
 export async function getActiveBudgetPolicies(): Promise<AIBudgetPolicy[]> {
-  const { data, error } = await supabase
-    .from("ai_budget_policies")
+  const { data, error } = await db.from("ai_budget_policies")
     .select("*")
     .eq("is_active", true)
     .order("scope_type");
@@ -31,8 +30,7 @@ export async function getActiveBudgetPolicies(): Promise<AIBudgetPolicy[]> {
 
 // ── Budget Alerts ──────────────────────────────────────────────
 export async function getBudgetAlerts(): Promise<AIBudgetAlert[]> {
-  const { data, error } = await supabase
-    .from("ai_budget_alerts")
+  const { data, error } = await db.from("ai_budget_alerts")
     .select("*")
     .order("created_at", { ascending: false });
   if (error) throw error;
@@ -40,8 +38,7 @@ export async function getBudgetAlerts(): Promise<AIBudgetAlert[]> {
 }
 
 export async function getActiveAlerts(): Promise<AIBudgetAlert[]> {
-  const { data, error } = await supabase
-    .from("ai_budget_alerts")
+  const { data, error } = await db.from("ai_budget_alerts")
     .select("*")
     .in("alert_state", ["warning", "critical"])
     .order("created_at", { ascending: false });
@@ -51,8 +48,7 @@ export async function getActiveAlerts(): Promise<AIBudgetAlert[]> {
 
 // ── Usage Ledger (canonical) ───────────────────────────────────
 export async function getUsageLedger(limit = 100): Promise<AIUsageLedger[]> {
-  const { data, error } = await supabase
-    .from("ai_usage_ledger")
+  const { data, error } = await db.from("ai_usage_ledger")
     .select("*")
     .order("created_at", { ascending: false })
     .limit(limit);
@@ -62,8 +58,7 @@ export async function getUsageLedger(limit = 100): Promise<AIUsageLedger[]> {
 
 // ── Cost Ledger (legacy) ───────────────────────────────────────
 export async function getCostLedger(limit = 100): Promise<AICostLedger[]> {
-  const { data, error } = await supabase
-    .from("ai_cost_ledger")
+  const { data, error } = await db.from("ai_cost_ledger")
     .select("*")
     .order("created_at", { ascending: false })
     .limit(limit);
@@ -72,8 +67,7 @@ export async function getCostLedger(limit = 100): Promise<AICostLedger[]> {
 }
 
 export async function getCostByProvider(): Promise<Record<string, number>> {
-  const { data, error } = await supabase
-    .from("ai_cost_ledger")
+  const { data, error } = await db.from("ai_cost_ledger")
     .select("provider, cost_cents");
   if (error) throw error;
   const result: Record<string, number> = {};
@@ -86,8 +80,7 @@ export async function getCostByProvider(): Promise<Record<string, number>> {
 
 // ── Token Usage (legacy) ───────────────────────────────────────
 export async function getTokenUsage(limit = 100): Promise<AITokenUsage[]> {
-  const { data, error } = await supabase
-    .from("ai_token_usage")
+  const { data, error } = await db.from("ai_token_usage")
     .select("*")
     .order("created_at", { ascending: false })
     .limit(limit);
@@ -97,8 +90,7 @@ export async function getTokenUsage(limit = 100): Promise<AITokenUsage[]> {
 
 // ── Portfolio Allocations ──────────────────────────────────────
 export async function getPortfolioAllocations(): Promise<AIPortfolioAllocation[]> {
-  const { data, error } = await supabase
-    .from("ai_portfolio_allocations")
+  const { data, error } = await db.from("ai_portfolio_allocations")
     .select("*")
     .order("priority", { ascending: false });
   if (error) throw error;
@@ -122,8 +114,7 @@ export async function getUsageLedgerStats(): Promise<UsageLedgerStats> {
   const todayStart = new Date();
   todayStart.setHours(0, 0, 0, 0);
 
-  const { data, error } = await supabase
-    .from("ai_usage_ledger")
+  const { data, error } = await db.from("ai_usage_ledger")
     .select("capability_key, model_id, request_class, status, estimated_cost_usd")
     .gte("created_at", todayStart.toISOString());
   if (error) throw error;

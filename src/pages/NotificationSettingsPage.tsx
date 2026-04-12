@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { useAuth } from "@/contexts/AuthContext";
 import { useActionFn } from "@/hooks/use-action";
 
@@ -108,8 +109,7 @@ export default function NotificationSettingsPage() {
   useEffect(() => {
     if (!user) return;
     const load = async () => {
-      const { data } = await supabase
-        .from("profiles")
+      const { data } = await db.from("profiles")
         .select("preferences")
         .eq("user_id", user.id)
         .maybeSingle();
@@ -149,8 +149,7 @@ export default function NotificationSettingsPage() {
         urgency: c.urgency, channels: c.channels,
       }));
 
-      const { data: existing } = await supabase
-        .from("profiles")
+      const { data: existing } = await db.from("profiles")
         .select("preferences")
         .eq("user_id", user.id)
         .maybeSingle();

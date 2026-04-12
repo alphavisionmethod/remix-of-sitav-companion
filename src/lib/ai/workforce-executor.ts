@@ -1,8 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Workforce Executor
-// Bridges AI workforce roles → sovereign AI gateway
-// Budget-policy-aware with pre-flight checks, fallback routing,
-// and cost-saving strategies
 // ═══════════════════════════════════════════════════════════════
 
 import { invokeAICapability } from "./ai-capability-client";
@@ -17,7 +14,6 @@ import {
   type BudgetPreFlightResult,
 } from "@/lib/services/ai-workforce/admin-budget-routing-policy";
 
-// ── Role → Prompt mapping ──
 const ROLE_SYSTEM_PROMPTS: Record<string, string> = {
   chief_architect: `You are the Chief Architect for SITA OS. Analyze architecture decisions, identify structural risks, recommend design improvements, and produce synthesis-grade analysis. Be precise, evidence-aware, and actionable.`,
   runtime_truth_analyst: `You are the Runtime Truth Analyst for SITA OS. Identify gaps between claimed and actual runtime states. Detect mock/demo vs real contradictions. Produce structured truth assessments with severity ratings.`,
@@ -32,126 +28,76 @@ const ROLE_SYSTEM_PROMPTS: Record<string, string> = {
 };
 
 const TASK_TYPE_TO_INTENT: Record<string, string> = {
-  summarize: "summarize",
-  diagnose: "analyze",
-  classify: "classify",
-  audit: "analyze",
-  recommend: "recommend",
-  investigate: "analyze",
-  produce_remediation_plan: "draft",
-  generate_digest: "summarize",
-  compare: "analyze",
-  propose: "draft",
+  summarize: "summarize", diagnose: "analyze", classify: "classify", audit: "analyze",
+  recommend: "recommend", investigate: "analyze", produce_remediation_plan: "draft",
+  generate_digest: "summarize", compare: "analyze", propose: "draft",
 };
 
 export interface WorkforceExecutionRequest {
-  roleKey: string;
-  taskType: string;
-  inputSummary: string;
-  budgetClass?: string;
-  scope?: string;
+  roleKey: string; taskType: string; inputSummary: string; budgetClass?: string; scope?: string;
 }
 
 export interface WorkforceExecutionResult {
-  invocationId: string | null;
-  response: AIResponseEnvelope;
-  roleKey: string;
-  taskType: string;
-  costCents: number;
-  budgetCheck: BudgetPreFlightResult;
+  invocationId: string | null; response: AIResponseEnvelope; roleKey: string;
+  taskType: string; costCents: number; budgetCheck: BudgetPreFlightResult;
 }
 
-/**
- * Execute a workforce task with full budget policy enforcement.
- * 1. Fetches recent invocations for budget history
- * 2. Runs pre-flight budget check (may downgrade class)
- * 3. Routes through sovereign AI gateway with effective class
- * 4. Records invocation with budget metadata
- */
 export async function executeWorkforceTask(
   userId: string,
   request: WorkforceExecutionRequest,
 ): Promise<WorkforceExecutionResult> {
   const { roleKey, taskType, inputSummary, budgetClass = "economy_admin" } = request;
 
-  // ── Step 1: Gather recent invocation history for budget analysis ──
   const { data: recentInvs } = await db
     .from("ai_workforce_invocations")
     .select("role_key, task_type, cost_cents, budget_class, created_at, input_summary")
     .order("created_at", { ascending: false })
-    .limit(200);
+    .limit(200) as { data: any[] | null };
 
   const history = buildInvocationHistory(
-    (recentInvs ?? []) as never[],
+    (recentInvs ?? []) as any[],
     roleKey,
     taskType,
   );
 
-  // ── Step 2: Pre-flight budget check ──
-  const budgetCheck = checkBudgetPreFlight(
-    roleKey,
-    budgetClass as AdminBudgetClass,
-    taskType,
-    history,
-  );
+  const budgetCheck = checkBudgetPreFlight(roleKey, budgetClass as AdminBudgetClass, taskType, history);
 
-  // If blocked, return immediately without invoking AI
   if (!budgetCheck.allowed) {
     return {
       invocationId: null,
       response: {
         status: "error_budget_blocked",
         content: `Budget policy blocked this request: ${budgetCheck.warnings.join("; ")}`,
-        rawResponse: null,
-        providerUsed: null,
-        modelUsed: null,
-        fallbackOccurred: false,
-        receiptId: null,
-        usageSummary: null,
-        structuredOutput: null,
+        rawResponse: null, providerUsed: null, modelUsed: null,
+        fallbackOccurred: false, receiptId: null, usageSummary: null, structuredOutput: null,
       } as unknown as AIResponseEnvelope,
-      roleKey,
-      taskType,
-      costCents: 0,
-      budgetCheck,
+      roleKey, taskType, costCents: 0, budgetCheck,
     };
   }
 
-  // ── Step 3: Use effective (possibly downgraded) budget class ──
   const effectiveClass = budgetCheck.effectiveBudgetClass;
   const execParams = getBudgetExecutionParams(effectiveClass);
-
-  const systemPrompt = ROLE_SYSTEM_PROMPTS[roleKey]
-    ?? `You are an AI operations assistant for SITA OS performing a ${taskType} task.`;
-
+  const systemPrompt = ROLE_SYSTEM_PROMPTS[roleKey] ?? `You are an AI operations assistant for SITA OS performing a ${taskType} task.`;
   const capabilityKey = `admin.workforce.${roleKey}.${taskType}`;
   const intent = TASK_TYPE_TO_INTENT[taskType] ?? "analyze";
-
   const startMs = Date.now();
 
-  // Create DB invocation record
   let invocationId: string | null = null;
   try {
     const { data } = await db
       .from("ai_workforce_invocations")
       .insert({
-        user_id: userId,
-        role_key: roleKey,
-        task_type: taskType,
-        capability_key: capabilityKey,
-        input_summary: inputSummary.slice(0, 2000),
-        budget_class: effectiveClass,
-        mode: "real",
-        status: "running",
+        user_id: userId, role_key: roleKey, task_type: taskType,
+        capability_key: capabilityKey, input_summary: inputSummary.slice(0, 2000),
+        budget_class: effectiveClass, mode: "real", status: "running",
       })
       .select("id")
-      .single();
+      .single() as { data: any };
     invocationId = data?.id ?? null;
   } catch (e) {
     console.warn("[WorkforceExecutor] Could not create invocation record:", e);
   }
 
-  // ── Step 4: Route through sovereign AI gateway ──
   const response = await invokeAICapability({
     capabilityKey,
     messages: [
@@ -169,7 +115,6 @@ export async function executeWorkforceTask(
   const costCents = response.usageSummary?.costCents ?? 0;
   const tokensUsed = (response.usageSummary?.inputTokens ?? 0) + (response.usageSummary?.outputTokens ?? 0);
 
-  // Update invocation record with results + budget metadata
   if (invocationId) {
     try {
       await db
@@ -177,15 +122,11 @@ export async function executeWorkforceTask(
         .update({
           status: response.status.startsWith("success_") ? "completed" : "failed",
           output_summary: response.content?.slice(0, 2000) ?? null,
-          output_data: (response.structuredOutput as never) ?? null,
-          cost_cents: costCents,
-          tokens_used: tokensUsed,
-          latency_ms: latencyMs,
+          output_data: response.structuredOutput ?? null,
+          cost_cents: costCents, tokens_used: tokensUsed, latency_ms: latencyMs,
           fallback_occurred: response.fallbackOccurred,
-          provider_used: response.providerUsed ?? null,
-          model_used: response.modelUsed ?? null,
-          receipt_id: response.receiptId ?? null,
-          completed_at: new Date().toISOString(),
+          provider_used: response.providerUsed ?? null, model_used: response.modelUsed ?? null,
+          receipt_id: response.receiptId ?? null, completed_at: new Date().toISOString(),
         })
         .eq("id", invocationId);
     } catch (e) {
@@ -193,12 +134,5 @@ export async function executeWorkforceTask(
     }
   }
 
-  return {
-    invocationId,
-    response,
-    roleKey,
-    taskType,
-    costCents,
-    budgetCheck,
-  };
+  return { invocationId, response, roleKey, taskType, costCents, budgetCheck };
 }

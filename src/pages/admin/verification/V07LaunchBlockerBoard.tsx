@@ -6,6 +6,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ShieldAlert, CheckCircle2, XCircle, AlertTriangle } from "lucide-react";
@@ -19,8 +20,7 @@ export default function LaunchBlockerBoard() {
   const { data: runs } = useQuery({
     queryKey: ["v07-verification-runs"],
     queryFn: async () => {
-      const { data } = await supabase
-        .from("journey_verification_runs")
+      const { data } = await db.from("journey_verification_runs")
         .select("*")
         .order("completed_at", { ascending: false })
         .limit(100);
@@ -32,8 +32,7 @@ export default function LaunchBlockerBoard() {
   const { data: brokenJourneys } = useQuery({
     queryKey: ["v07-broken-journeys"],
     queryFn: async () => {
-      const { data } = await supabase
-        .from("customer_journey_status")
+      const { data } = await db.from("customer_journey_status")
         .select("*, customer_journey_registry!inner(journey_key, title, flagship_loop)")
         .in("current_status", ["broken", "degraded", "blocked"]);
       return data || [];

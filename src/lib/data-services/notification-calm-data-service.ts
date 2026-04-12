@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import {
   DEMO_ROUTING_MATRIX,
   DEMO_ASSISTANT_ROLES,
@@ -19,8 +20,7 @@ import {
 
 export async function fetchAttentionDecisions(isDemoMode: boolean) {
   if (isDemoMode) return DEMO_ROUTING_MATRIX;
-  const { data, error } = await supabase
-    .from("attention_decisions")
+  const { data, error } = await db.from("attention_decisions")
     .select("*")
     .order("created_at", { ascending: false })
     .limit(50);
@@ -30,8 +30,7 @@ export async function fetchAttentionDecisions(isDemoMode: boolean) {
 
 export async function fetchFatigueProfiles(isDemoMode: boolean) {
   if (isDemoMode) return DEMO_FATIGUE_SIGNALS;
-  const { data, error } = await supabase
-    .from("notification_fatigue_profiles")
+  const { data, error } = await db.from("notification_fatigue_profiles")
     .select("*")
     .order("last_updated_at", { ascending: false })
     .limit(20);
@@ -41,8 +40,7 @@ export async function fetchFatigueProfiles(isDemoMode: boolean) {
 
 export async function fetchAssistantRolePresences(isDemoMode: boolean) {
   if (isDemoMode) return DEMO_ASSISTANT_ROLES;
-  const { data, error } = await supabase
-    .from("assistant_role_presences")
+  const { data, error } = await db.from("assistant_role_presences")
     .select("*")
     .order("created_at", { ascending: false });
   if (error) throw error;
@@ -51,8 +49,7 @@ export async function fetchAssistantRolePresences(isDemoMode: boolean) {
 
 export async function fetchAssistantRoleStates(isDemoMode: boolean) {
   if (isDemoMode) return DEMO_ASSISTANT_ROLES;
-  const { data, error } = await supabase
-    .from("assistant_role_states")
+  const { data, error } = await db.from("assistant_role_states")
     .select("*")
     .order("last_active_at", { ascending: false });
   if (error) throw error;
@@ -61,8 +58,7 @@ export async function fetchAssistantRoleStates(isDemoMode: boolean) {
 
 export async function fetchInterruptionPolicies(isDemoMode: boolean) {
   if (isDemoMode) return DEMO_CATEGORY_ROUTING;
-  const { data, error } = await supabase
-    .from("interruption_policies")
+  const { data, error } = await db.from("interruption_policies")
     .select("*")
     .order("created_at", { ascending: false });
   if (error) throw error;
@@ -71,8 +67,7 @@ export async function fetchInterruptionPolicies(isDemoMode: boolean) {
 
 export async function fetchNrcLaunchReadiness(isDemoMode: boolean) {
   if (isDemoMode) return DEMO_NRC_SUBSYSTEMS;
-  const { data, error } = await supabase
-    .from("ecosystem_launch_readiness")
+  const { data, error } = await db.from("ecosystem_launch_readiness")
     .select("*")
     .like("target", "nrc_%")
     .order("last_assessed_at", { ascending: false });
@@ -100,8 +95,7 @@ export async function fetchDeliveryRules(isDemoMode: boolean) {
 export async function fetchCrossDeviceSurfaces(isDemoMode: boolean) {
   if (isDemoMode) return DEMO_CROSS_DEVICE_SURFACES;
   // Sourced from device_families when available
-  const { data, error } = await supabase
-    .from("device_families")
+  const { data, error } = await db.from("device_families")
     .select("*")
     .eq("active", true)
     .order("family_key");

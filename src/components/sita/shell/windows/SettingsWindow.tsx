@@ -1,8 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Settings Window (Full Nova SDK)
-// Uses: AppLayout, NovaSidebar, NovaList, NovaCard, NovaButton,
-//       NovaText, NovaToggle, NovaSlider, NovaBadge, NovaToolbar,
-//       VStack, HStack, Divider, NovaSectionLabel
+// Wired to SettingsService for persistent settings
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useCallback, useEffect, useRef } from "react";
@@ -25,6 +23,7 @@ import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
+import { useSettingsValue } from "@/hooks/use-settings-value";
 
 // ── Section definitions ────────────────────────────────────
 
@@ -350,18 +349,19 @@ function SecurityContent() {
   );
 }
 
-// ── Section content components ─────────────────────────────
+// ── Section content components (wired to SettingsService) ──
 
 function GeneralContent() {
-  const [darkMode, setDarkMode] = useState(document.documentElement.classList.contains("dark"));
-  const [notifications, setNotifications] = useState(true);
-  const [autoUpdate, setAutoUpdate] = useState(true);
-  const [reducedMotion, setReducedMotion] = useState(false);
+  const [theme, setTheme] = useSettingsValue("appearance.theme", "dark");
+  const darkMode = theme === "dark";
+  const [uiSounds, setUiSounds] = useSettingsValue("sound.uiSounds", true);
+  const [reducedMotion, setReducedMotion] = useSettingsValue("appearance.reduceMotion", false);
 
   const toggleDark = useCallback((v: boolean) => {
-    setDarkMode(v);
+    const newTheme = v ? "dark" : "light";
+    setTheme(newTheme as any);
     document.documentElement.classList.toggle("dark", v);
-  }, []);
+  }, [setTheme]);
 
   return (
     <VStack spacing="tight">
@@ -371,12 +371,8 @@ function GeneralContent() {
             <NovaToggle checked={darkMode} onChange={toggleDark} />
           </SettingRow>
           <Divider />
-          <SettingRow label="Notifications" description="Show system alerts" icon={<Bell className="h-3.5 w-3.5" />}>
-            <NovaToggle checked={notifications} onChange={setNotifications} />
-          </SettingRow>
-          <Divider />
-          <SettingRow label="Auto-Update" description="Keep apps up to date" icon={<Zap className="h-3.5 w-3.5" />}>
-            <NovaToggle checked={autoUpdate} onChange={setAutoUpdate} />
+          <SettingRow label="UI Sounds" description="Play interface sounds" icon={<Bell className="h-3.5 w-3.5" />}>
+            <NovaToggle checked={uiSounds} onChange={setUiSounds} />
           </SettingRow>
           <Divider />
           <SettingRow label="Reduced Motion" description="Minimize animations" icon={<Eye className="h-3.5 w-3.5" />}>
@@ -398,17 +394,16 @@ function GeneralContent() {
 }
 
 function AppearanceContent() {
-  const [accentColor, setAccentColor] = useState("purple");
+  const [accentColor, setAccentColor] = useSettingsValue("appearance.accentColor", "hsl(265, 55%, 58%)");
   const accents = [
-    { id: "purple", color: "hsl(265 55% 58%)" },
-    { id: "blue",   color: "hsl(210 80% 55%)" },
-    { id: "green",  color: "hsl(152 55% 48%)" },
-    { id: "orange", color: "hsl(38 85% 58%)" },
-    { id: "red",    color: "hsl(0 65% 50%)" },
-    { id: "pink",   color: "hsl(330 65% 55%)" },
+    { id: "hsl(265, 55%, 58%)", label: "purple", color: "hsl(265 55% 58%)" },
+    { id: "hsl(210, 80%, 55%)", label: "blue",   color: "hsl(210 80% 55%)" },
+    { id: "hsl(152, 55%, 48%)", label: "green",  color: "hsl(152 55% 48%)" },
+    { id: "hsl(38, 85%, 58%)",  label: "orange", color: "hsl(38 85% 58%)" },
+    { id: "hsl(0, 65%, 50%)",   label: "red",    color: "hsl(0 65% 50%)" },
+    { id: "hsl(330, 65%, 55%)", label: "pink",   color: "hsl(330 65% 55%)" },
   ];
-  const [wallpaperBlur, setWallpaperBlur] = useState(true);
-  const [transparency, setTransparency] = useState(true);
+  const [reduceTransparency, setReduceTransparency] = useSettingsValue("appearance.reduceTransparency", false);
 
   return (
     <VStack spacing="tight">
@@ -435,12 +430,8 @@ function AppearanceContent() {
 
       <NovaCard>
         <VStack spacing="tight">
-          <SettingRow label="Wallpaper Blur" description="Blur behind windows" icon={<Eye className="h-3.5 w-3.5" />}>
-            <NovaToggle checked={wallpaperBlur} onChange={setWallpaperBlur} />
-          </SettingRow>
-          <Divider />
-          <SettingRow label="Transparency" description="Translucent UI elements" icon={<Palette className="h-3.5 w-3.5" />}>
-            <NovaToggle checked={transparency} onChange={setTransparency} />
+          <SettingRow label="Reduce Transparency" description="Solid backgrounds" icon={<Palette className="h-3.5 w-3.5" />}>
+            <NovaToggle checked={reduceTransparency} onChange={setReduceTransparency} />
           </SettingRow>
         </VStack>
       </NovaCard>
@@ -449,22 +440,22 @@ function AppearanceContent() {
 }
 
 function DisplayContent() {
-  const [brightness, setBrightness] = useState(80);
-  const [nightShift, setNightShift] = useState(false);
-  const [trueTone, setTrueTone] = useState(true);
+  const [brightness, setBrightness] = useSettingsValue("display.brightness", 0.8);
+  const brightnessPercent = Math.round(brightness * 100);
+  const [nightShift, setNightShift] = useSettingsValue("display.nightShift", false);
 
   return (
     <VStack spacing="tight">
       <NovaCard>
         <VStack spacing="tight">
-          <NovaSlider value={brightness} onChange={setBrightness} label="Brightness" />
+          <NovaSlider
+            value={brightnessPercent}
+            onChange={(v) => setBrightness(v / 100 as any)}
+            label="Brightness"
+          />
           <Divider />
           <SettingRow label="Night Shift" description="Warm colors after sunset" icon={<Sun className="h-3.5 w-3.5" />}>
             <NovaToggle checked={nightShift} onChange={setNightShift} />
-          </SettingRow>
-          <Divider />
-          <SettingRow label="True Tone" description="Adapt to ambient lighting" icon={<Monitor className="h-3.5 w-3.5" />}>
-            <NovaToggle checked={trueTone} onChange={setTrueTone} />
           </SettingRow>
         </VStack>
       </NovaCard>
@@ -482,22 +473,22 @@ function DisplayContent() {
 }
 
 function SoundContent() {
-  const [volume, setVolume] = useState(65);
-  const [alertSounds, setAlertSounds] = useState(true);
-  const [hapticFeedback, setHapticFeedback] = useState(true);
+  const [volume, setVolume] = useSettingsValue("sound.volume", 0.7);
+  const volumePercent = Math.round(volume * 100);
+  const [uiSounds, setUiSounds] = useSettingsValue("sound.uiSounds", true);
 
   return (
     <VStack spacing="tight">
       <NovaCard>
         <VStack spacing="tight">
-          <NovaSlider value={volume} onChange={setVolume} label="Output Volume" />
+          <NovaSlider
+            value={volumePercent}
+            onChange={(v) => setVolume(v / 100 as any)}
+            label="Output Volume"
+          />
           <Divider />
-          <SettingRow label="Alert Sounds" description="Play sounds for alerts" icon={<Bell className="h-3.5 w-3.5" />}>
-            <NovaToggle checked={alertSounds} onChange={setAlertSounds} />
-          </SettingRow>
-          <Divider />
-          <SettingRow label="Haptic Feedback" description="Vibration on interactions" icon={<Zap className="h-3.5 w-3.5" />}>
-            <NovaToggle checked={hapticFeedback} onChange={setHapticFeedback} />
+          <SettingRow label="UI Sounds" description="Play sounds for interactions" icon={<Bell className="h-3.5 w-3.5" />}>
+            <NovaToggle checked={uiSounds} onChange={setUiSounds} />
           </SettingRow>
         </VStack>
       </NovaCard>
@@ -515,7 +506,7 @@ function SoundContent() {
 }
 
 function NetworkContent() {
-  const [wifiOn, setWifiOn] = useState(true);
+  const [wifiOn, setWifiOn] = useSettingsValue("network.wifi.autoJoin", true);
 
   return (
     <VStack spacing="tight">
@@ -588,7 +579,7 @@ function BluetoothContent() {
 function NotificationsContent() {
   const [doNotDisturb, setDoNotDisturb] = useState(false);
   const [showPreviews, setShowPreviews] = useState(true);
-  const [sounds, setSounds] = useState(true);
+  const [sounds, setSounds] = useSettingsValue("sound.uiSounds", true);
   const [badges, setBadges] = useState(true);
 
   return (
@@ -620,9 +611,9 @@ function NotificationsContent() {
 }
 
 function PrivacyContent() {
-  const [locationServices, setLocationServices] = useState(false);
-  const [analytics, setAnalytics] = useState(true);
-  const [crashReports, setCrashReports] = useState(true);
+  const [locationServices, setLocationServices] = useSettingsValue("privacy.locationServices", false);
+  const [analytics, setAnalytics] = useSettingsValue("privacy.analytics", false);
+  const [crashReports, setCrashReports] = useSettingsValue("privacy.crashReports", true);
 
   return (
     <VStack spacing="tight">
@@ -646,22 +637,21 @@ function PrivacyContent() {
 }
 
 function KeyboardContent() {
-  const [keyRepeatSpeed, setKeyRepeatSpeed] = useState(70);
+  const [keyRepeatRate, setKeyRepeatRate] = useSettingsValue("input.keyRepeatRate", 30);
   const [autocorrect, setAutocorrect] = useState(true);
-  const [capsLockDelay, setCapsLockDelay] = useState(false);
 
   return (
     <VStack spacing="tight">
       <NovaCard>
         <VStack spacing="tight">
-          <NovaSlider value={keyRepeatSpeed} onChange={setKeyRepeatSpeed} label="Key Repeat Speed" />
+          <NovaSlider
+            value={keyRepeatRate}
+            onChange={(v) => setKeyRepeatRate(v as any)}
+            label="Key Repeat Speed"
+          />
           <Divider />
           <SettingRow label="Autocorrect" icon={<Keyboard className="h-3.5 w-3.5" />}>
             <NovaToggle checked={autocorrect} onChange={setAutocorrect} />
-          </SettingRow>
-          <Divider />
-          <SettingRow label="Caps Lock Delay" description="Prevent accidental activation" icon={<Lock className="h-3.5 w-3.5" />}>
-            <NovaToggle checked={capsLockDelay} onChange={setCapsLockDelay} />
           </SettingRow>
         </VStack>
       </NovaCard>

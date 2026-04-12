@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import {
   DEMO_PLATFORMS,
   DEMO_CAPABILITIES,
@@ -12,8 +13,7 @@ import {
 
 export async function fetchNativeShellPlatforms(isDemoMode: boolean) {
   if (isDemoMode) return DEMO_PLATFORMS;
-  const { data, error } = await supabase
-    .from("device_families")
+  const { data, error } = await db.from("device_families")
     .select("*")
     .eq("active", true)
     .order("family_key");
@@ -23,8 +23,7 @@ export async function fetchNativeShellPlatforms(isDemoMode: boolean) {
 
 export async function fetchCapabilitySurfaceBindings(isDemoMode: boolean) {
   if (isDemoMode) return DEMO_CAPABILITIES;
-  const { data, error } = await supabase
-    .from("capability_surface_bindings")
+  const { data, error } = await db.from("capability_surface_bindings")
     .select("*")
     .order("capability_key");
   if (error) throw error;
@@ -33,8 +32,7 @@ export async function fetchCapabilitySurfaceBindings(isDemoMode: boolean) {
 
 export async function fetchNssLaunchReadiness(isDemoMode: boolean) {
   if (isDemoMode) return DEMO_NSS_TARGETS;
-  const { data, error } = await supabase
-    .from("ecosystem_launch_readiness")
+  const { data, error } = await db.from("ecosystem_launch_readiness")
     .select("*")
     .like("target", "nss_%")
     .order("last_assessed_at", { ascending: false });

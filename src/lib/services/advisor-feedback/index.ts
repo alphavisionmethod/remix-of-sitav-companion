@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 
 export interface FeedbackRecord {
@@ -56,8 +57,7 @@ export class AdvisorFeedbackService {
   }
 
   async getCorrections(advisorId: string, userId: string, limit = 10): Promise<FeedbackRecord[]> {
-    const { data } = await supabase
-      .from("advisor_feedback")
+    const { data } = await db.from("advisor_feedback")
       .select("*")
       .eq("advisor_id", advisorId)
       .eq("user_id", userId)
@@ -70,8 +70,7 @@ export class AdvisorFeedbackService {
 
   async getAdvisorScore(advisorId: string, userId: string): Promise<{ avgRating: number; totalRatings: number; correctionCount: number }> {
     const [ratings, corrections] = await Promise.all([
-      supabase
-        .from("advisor_feedback")
+      db.from("advisor_feedback")
         .select("rating")
         .eq("advisor_id", advisorId)
         .eq("user_id", userId)
@@ -79,8 +78,7 @@ export class AdvisorFeedbackService {
         .not("rating", "is", null)
         .order("created_at", { ascending: false })
         .limit(50),
-      supabase
-        .from("advisor_feedback")
+      db.from("advisor_feedback")
         .select("id", { count: "exact", head: true })
         .eq("advisor_id", advisorId)
         .eq("user_id", userId)

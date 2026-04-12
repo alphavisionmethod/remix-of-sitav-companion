@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 import type { LaunchHonestyLevel, AILaunchHonesty } from "./types";
 
@@ -24,8 +25,7 @@ export interface AICapabilityLaunchStatus {
 
 // ── Raw launch honesty records ─────────────────────────────────
 export async function getLaunchHonestyRecords(): Promise<AILaunchHonesty[]> {
-  const { data, error } = await supabase
-    .from("ai_launch_honesty")
+  const { data, error } = await db.from("ai_launch_honesty")
     .select("*")
     .order("capability_key");
   if (error) throw error;

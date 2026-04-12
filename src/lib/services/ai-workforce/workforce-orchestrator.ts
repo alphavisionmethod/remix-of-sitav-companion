@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 
 export interface WorkforceRole {
   id: string;
@@ -46,8 +47,7 @@ export interface WorkforceInvocation {
 
 // ── Role Registry ──
 export async function getWorkforceRoles(): Promise<WorkforceRole[]> {
-  const { data, error } = await supabase
-    .from("ai_workforce_roles")
+  const { data, error } = await db.from("ai_workforce_roles")
     .select("*")
     .order("role_key");
 
@@ -60,8 +60,7 @@ export async function getWorkforceRoles(): Promise<WorkforceRole[]> {
 
 // ── Invocations ──
 export async function getRecentInvocations(limit = 50): Promise<WorkforceInvocation[]> {
-  const { data, error } = await supabase
-    .from("ai_workforce_invocations")
+  const { data, error } = await db.from("ai_workforce_invocations")
     .select("*")
     .order("created_at", { ascending: false })
     .limit(limit);
@@ -77,8 +76,7 @@ export async function createInvocation(
   userId: string,
   req: WorkforceInvocationRequest
 ): Promise<string | null> {
-  const { data, error } = await supabase
-    .from("ai_workforce_invocations")
+  const { data, error } = await db.from("ai_workforce_invocations")
     .insert({
       user_id: userId,
       role_key: req.role_key,
@@ -101,8 +99,7 @@ export async function createInvocation(
 
 // ── Recommendations ──
 export async function getRecommendations(status?: string) {
-  let query = supabase
-    .from("ai_workforce_recommendations")
+  let query = db.from("ai_workforce_recommendations")
     .select("*")
     .order("created_at", { ascending: false })
     .limit(100);
@@ -119,8 +116,7 @@ export async function getRecommendations(status?: string) {
 
 // ── Approval Queue ──
 export async function getApprovalQueue(status = "pending") {
-  const { data, error } = await supabase
-    .from("ai_workforce_approval_queue")
+  const { data, error } = await db.from("ai_workforce_approval_queue")
     .select("*")
     .eq("status", status)
     .order("created_at", { ascending: false });
@@ -134,8 +130,7 @@ export async function getApprovalQueue(status = "pending") {
 
 // ── Cached Outputs ──
 export async function getCachedOutput(cacheKey: string) {
-  const { data, error } = await supabase
-    .from("ai_workforce_cached_outputs")
+  const { data, error } = await db.from("ai_workforce_cached_outputs")
     .select("*")
     .eq("cache_key", cacheKey)
     .gt("expires_at", new Date().toISOString())

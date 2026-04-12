@@ -18,6 +18,7 @@ import {
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { fromTable } from "@/lib/supabase-helpers";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
@@ -93,8 +94,7 @@ export default function TeamManagement() {
     queryKey: ["admin-advisor-tokens-today"],
     queryFn: async () => {
       const today = new Date().toISOString().split("T")[0];
-      const { data, error } = await supabase
-        .from("ai_token_usage")
+      const { data, error } = await db.from("ai_token_usage")
         .select("advisor_id, input_tokens, output_tokens, cost_cents")
         .gte("created_at", today);
       if (error) throw error;

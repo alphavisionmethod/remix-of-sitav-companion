@@ -13,6 +13,7 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import type { AuditEntry, ComplianceReport } from "@/packages/audit-contracts";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { PageSkeleton } from "@/components/sita/PageSkeleton";
@@ -81,8 +82,7 @@ export default function AdminDashboard() {
     enabled: isAdmin,
     queryFn: async () => {
       const today = new Date().toISOString().split("T")[0];
-      const { data, error } = await supabase
-        .from("ai_token_usage")
+      const { data, error } = await db.from("ai_token_usage")
         .select("cost_cents")
         .gte("created_at", today);
       if (error) throw error;
@@ -95,8 +95,7 @@ export default function AdminDashboard() {
     queryKey: ["admin-pending-approvals"],
     enabled: isAdmin,
     queryFn: async () => {
-      const { count, error } = await supabase
-        .from("approval_queue")
+      const { count, error } = await db.from("approval_queue")
         .select("*", { count: "exact", head: true })
         .eq("status", "pending");
       if (error) throw error;
@@ -108,8 +107,7 @@ export default function AdminDashboard() {
     queryKey: ["admin-open-incidents"],
     enabled: isAdmin,
     queryFn: async () => {
-      const { count, error } = await supabase
-        .from("incidents")
+      const { count, error } = await db.from("incidents")
         .select("*", { count: "exact", head: true })
         .eq("status", "open");
       if (error) throw error;
@@ -121,8 +119,7 @@ export default function AdminDashboard() {
     queryKey: ["admin-recent-actions"],
     enabled: isAdmin,
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("audit_logs")
+      const { data, error } = await db.from("audit_logs")
         .select("action, actor, created_at, category, severity")
         .order("created_at", { ascending: false })
         .limit(5);
@@ -135,8 +132,7 @@ export default function AdminDashboard() {
     queryKey: ["admin-advisor-perf"],
     enabled: isAdmin,
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("advisor_performance")
+      const { data, error } = await db.from("advisor_performance")
         .select("advisor_id, total_calls, avg_satisfaction, total_tokens")
         .order("total_calls", { ascending: false })
         .limit(10);

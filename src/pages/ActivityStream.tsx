@@ -10,6 +10,7 @@ import { StateBadge } from "@/components/sita/StateBadge";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { useAuth } from "@/contexts/AuthContext";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { motion, AnimatePresence } from "framer-motion";
@@ -275,8 +276,7 @@ const ActivityStream = () => {
     queryKey: ["timeline_feed", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("events")
+      const { data, error } = await db.from("events")
         .select("*")
         .order("created_at", { ascending: false })
         .limit(100);
@@ -290,8 +290,7 @@ const ActivityStream = () => {
     queryKey: ["timeline_approvals", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
-      const { data } = await supabase
-        .from("approval_queue")
+      const { data } = await db.from("approval_queue")
         .select("*")
         .order("created_at", { ascending: false })
         .limit(20);
@@ -310,8 +309,7 @@ const ActivityStream = () => {
     queryKey: ["timeline_proof", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
-      const { data } = await supabase
-        .from("proof_records")
+      const { data } = await db.from("proof_records")
         .select("*")
         .order("created_at", { ascending: false })
         .limit(20);

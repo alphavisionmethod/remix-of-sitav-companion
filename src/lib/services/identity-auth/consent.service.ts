@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import type {
   ConsentLedgerEntry,
   ConsentLedgerInsert,
@@ -12,8 +13,7 @@ import type {
 
 // ── Consent entries ────────────────────────────────────────────
 export async function getConsentHistory(limit = 100): Promise<ConsentLedgerEntry[]> {
-  const { data, error } = await supabase
-    .from("consent_ledger")
+  const { data, error } = await db.from("consent_ledger")
     .select("*, provider_families(name)")
     .order("created_at", { ascending: false })
     .limit(limit);
@@ -22,8 +22,7 @@ export async function getConsentHistory(limit = 100): Promise<ConsentLedgerEntry
 }
 
 export async function getActiveConsents(): Promise<ConsentLedgerEntry[]> {
-  const { data, error } = await supabase
-    .from("consent_ledger")
+  const { data, error } = await db.from("consent_ledger")
     .select("*, provider_families(name)")
     .or("revoked_at.is.null")
     .order("created_at", { ascending: false });
@@ -32,8 +31,7 @@ export async function getActiveConsents(): Promise<ConsentLedgerEntry[]> {
 }
 
 export async function recordConsent(entry: ConsentLedgerInsert): Promise<ConsentLedgerEntry> {
-  const { data, error } = await supabase
-    .from("consent_ledger")
+  const { data, error } = await db.from("consent_ledger")
     .insert(entry)
     .select()
     .single();
@@ -43,8 +41,7 @@ export async function recordConsent(entry: ConsentLedgerInsert): Promise<Consent
 
 // ── Consent history view ───────────────────────────────────────
 export async function getConsentHistoryView(): Promise<ConsentHistoryView[]> {
-  const { data, error } = await supabase
-    .from("v_consent_history")
+  const { data, error } = await db.from("v_consent_history")
     .select("*");
   if (error) throw error;
   return (data ?? []) as never as ConsentHistoryView[];

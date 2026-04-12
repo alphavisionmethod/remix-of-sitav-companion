@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Key, CheckCircle, XCircle, Filter, Shield, Plug } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -29,8 +30,7 @@ export default function ISA03OAuthClientRegistryConsole() {
   const { data: clients = [] } = useQuery({
     queryKey: ["isa03-oauth-clients"],
     queryFn: async () => {
-      const { data } = await supabase
-        .from("oauth_client_registry")
+      const { data } = await db.from("oauth_client_registry")
         .select("*, provider_families(name, provider_key)")
         .order("created_at");
       return data || [];

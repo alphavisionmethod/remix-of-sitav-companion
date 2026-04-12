@@ -57,17 +57,14 @@ function classify(ev: ReclassificationEvidence): { cls: HonestyClass; reason: st
   if (!ev.usageLedgerExists) gaps.push("No usage ledger entries");
   if (!ev.budgetPolicyExists) gaps.push("No budget policy");
 
-  // Unavailable: no secret or provider down
   if (!ev.secretPresent || (!ev.providerHealthy && !ev.runtimeVerified)) {
     return { cls: "unavailable", reason: "Missing configuration or provider unavailable", gaps, claimRisk: "Cannot claim any AI functionality" };
   }
 
-  // Planned: architecture exists but no runtime
   if (ev.invocationCount30d === 0 && !ev.runtimeVerified) {
     return { cls: "planned", reason: "Architecture exists but no runtime invocations recorded", gaps, claimRisk: "Must not claim as functional" };
   }
 
-  // Real: all conditions met
   if (ev.runtimeVerified && ev.receiptExists && ev.usageLedgerExists && ev.routingPolicyExists && ev.successRate30d >= 0.9 && ev.invocationCount30d >= 3) {
     if (ev.isAdminOnly) {
       return { cls: "internal_only", reason: "Runtime verified but admin/internal only", gaps, claimRisk: null };
@@ -75,12 +72,10 @@ function classify(ev: ReclassificationEvidence): { cls: HonestyClass; reason: st
     return { cls: "real", reason: "Fully verified: provider healthy, runtime proven, receipts exist, high success rate", gaps, claimRisk: null };
   }
 
-  // Internal only
   if (ev.isAdminOnly && ev.runtimeVerified) {
     return { cls: "internal_only", reason: "Works internally but not public-facing", gaps, claimRisk: null };
   }
 
-  // Partial: some runtime exists but incomplete
   if (ev.runtimeVerified || ev.invocationCount30d > 0) {
     const reason = ev.successRate30d < 0.9
       ? `Success rate ${(ev.successRate30d * 100).toFixed(0)}% below threshold`
@@ -91,58 +86,38 @@ function classify(ev: ReclassificationEvidence): { cls: HonestyClass; reason: st
   return { cls: "demo_governed", reason: "Polished but not backed by verified runtime", gaps, claimRisk: "UI may imply more than reality" };
 }
 
-/**
- * Run evidence-driven reclassification for all target AI capabilities.
- */
 export async function reclassifyAIFeatures(): Promise<ReclassificationResult[]> {
   const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
   const capKeys = TARGET_CAPABILITIES.map(c => c.key);
 
-  // Parallel data fetches
   const [usageRes, honestyRes, routingRes, providerHealthRes] = await Promise.all([
-    db
-      .from("ai_usage_ledger")
-      .select("capability_key, status, created_at, receipt_id")
-      .in("capability_key", capKeys)
-      .gte("created_at", thirtyDaysAgo)
-      .order("created_at", { ascending: false })
-      .limit(500),
-    db
-      .from("ai_launch_honesty")
-      .select("capability_key, launch_honesty_class")
-      .in("capability_key", capKeys),
-    db
-      .from("ai_capability_routing")
-      .select("capability_key, is_active, budget_class")
-      .in("capability_key", capKeys),
-    db
-      .from("ai_provider_health")
-      .select("provider, health_state")
-      .order("updated_at", { ascending: false })
-      .limit(20),
+    db.from("ai_usage_ledger").select("capability_key, status, created_at, receipt_id").in("capability_key", capKeys).gte("created_at", thirtyDaysAgo).order("created_at", { ascending: false }).limit(500),
+    db.from("ai_launch_honesty").select("capability_key, launch_honesty_class").in("capability_key", capKeys),
+    db.from("ai_capability_routing").select("capability_key, is_active, budget_class").in("capability_key", capKeys),
+    db.from("ai_provider_health").select("provider, health_state").order("updated_at", { ascending: false }).limit(20),
   ]);
 
-  const usageRows = usageRes.data ?? [];
-  const honestyRows = honestyRes.data ?? [];
-  const routingRows = routingRes.data ?? [];
-  const healthRows = providerHealthRes.data ?? [];
+  const usageRows: any[] = usageRes.data ?? [];
+  const honestyRows: any[] = honestyRes.data ?? [];
+  const routingRows: any[] = routingRes.data ?? [];
+  const healthRows: any[] = providerHealthRes.data ?? [];
 
-  const anyProviderHealthy = healthRows.some(h => h.health_state === "healthy" || h.health_state === "degraded");
+  const anyProviderHealthy = healthRows.some((h: any) => h.health_state === "healthy" || h.health_state === "degraded");
 
   const results: ReclassificationResult[] = [];
 
   for (const target of TARGET_CAPABILITIES) {
-    const rows = usageRows.filter(r => r.capability_key === target.key);
-    const successes = rows.filter(r => r.status === "success");
-    const failures = rows.filter(r => r.status !== "success");
-    const hasReceipt = rows.some(r => r.receipt_id);
-    const routing = routingRows.find(r => r.capability_key === target.key);
-    const honesty = honestyRows.find(r => r.capability_key === target.key);
+    const rows = usageRows.filter((r: any) => r.capability_key === target.key);
+    const successes = rows.filter((r: any) => r.status === "success");
+    const failures = rows.filter((r: any) => r.status !== "success");
+    const hasReceipt = rows.some((r: any) => r.receipt_id);
+    const routing = routingRows.find((r: any) => r.capability_key === target.key);
+    const honesty = honestyRows.find((r: any) => r.capability_key === target.key);
     const previousClass = (honesty?.launch_honesty_class as HonestyClass) ?? "planned";
 
     const evidence: ReclassificationEvidence = {
       providerHealthy: anyProviderHealthy,
-      secretPresent: true, // If we got this far, gateway has keys
+      secretPresent: true,
       routingPolicyExists: !!routing?.is_active,
       budgetPolicyExists: !!routing?.budget_class,
       runtimeVerified: successes.length > 0,

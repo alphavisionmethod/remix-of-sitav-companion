@@ -6,6 +6,7 @@ import { TrustBadge } from "@/components/sita/TrustBadge";
 import { StateBadge } from "@/components/sita/StateBadge";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { useState } from "react";
@@ -43,8 +44,7 @@ const RecoveryCenter = () => {
     queryKey: ["recovery_failed_runs", user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("workflow_runs")
+      const { data, error } = await db.from("workflow_runs")
         .select("*, workflows(name, trigger_event)")
         .in("status", ["failed", "running"])
         .order("created_at", { ascending: false });

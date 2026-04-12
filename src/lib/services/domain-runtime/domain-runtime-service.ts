@@ -5,6 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 
 export interface DomainRuntimeRecord {
   id: string;
@@ -193,8 +194,7 @@ interface DomainDefinition {
  * from the canonical domain definitions (which reflect actual project state).
  */
 export async function getDomainRuntimeStatuses(): Promise<DomainRuntimeRecord[]> {
-  const { data, error } = await supabase
-    .from("domain_runtime_status")
+  const { data, error } = await db.from("domain_runtime_status")
     .select("*")
     .order("domain_key");
 
@@ -239,8 +239,7 @@ export async function upsertDomainStatus(
   record: Omit<DomainRuntimeRecord, "id">
 ): Promise<void> {
   const truthScore = calculateTruthScore(record);
-  const { error } = await supabase
-    .from("domain_runtime_status")
+  const { error } = await db.from("domain_runtime_status")
     .upsert({
       user_id: userId,
       domain_key: record.domain_key,
