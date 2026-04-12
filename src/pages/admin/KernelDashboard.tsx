@@ -919,6 +919,166 @@ function PowerManagementPanel({ powerStats, onBack }: {
   );
 }
 
+// ── Drill-Down: Privilege Enforcement ────────────────────────
+
+function PrivilegePanel({ privilegeStats, violations, transitions, processes, onBack }: {
+  privilegeStats: ReturnType<typeof PrivilegeEnforcement.getStats>;
+  violations: readonly PrivilegeViolation[];
+  transitions: readonly RingTransition[];
+  processes: Process[];
+  onBack: () => void;
+}) {
+  const VIOLATION_COLORS: Record<string, string> = {
+    "ring3-kernel-pointer": "text-red-400",
+    "ring3-hardware-access": "text-red-400",
+    "ring3-privileged-instruction": "text-amber-400",
+    "ring3-write-readonly": "text-orange-400",
+    "ring3-execute-noexec": "text-orange-400",
+    "invalid-pointer-range": "text-amber-400",
+    "null-pointer": "text-red-400",
+    "stack-overflow": "text-red-400",
+    "segment-fault": "text-red-400",
+  };
+
+  const TRANSITION_COLORS: Record<string, string> = {
+    "user-to-kernel": "text-blue-400",
+    "kernel-to-user": "text-emerald-400",
+    "syscall-entry": "text-blue-400",
+    "syscall-exit": "text-emerald-400",
+    "interrupt": "text-amber-400",
+    "iret": "text-emerald-400",
+  };
+
+  return (
+    <motion.div {...slideIn}>
+      <Card className="border-border/40 bg-card/80 backdrop-blur-sm">
+        <CardHeader className="pb-2">
+          <div className="flex items-center gap-2">
+            <button onClick={onBack} className="rounded-lg p-1.5 hover:bg-muted/30 transition-colors"><ArrowLeft className="h-4 w-4 text-muted-foreground" /></button>
+            <CardTitle className="text-sm font-medium flex items-center gap-2">
+              <ShieldAlert className="h-4 w-4 text-red-400" />CPU Privilege Rings — Ring 0 / Ring 3
+            </CardTitle>
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-1" />
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {/* Ring Distribution */}
+          <div>
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">Process Privilege Distribution</p>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="rounded-lg bg-red-500/5 border border-red-500/20 p-3 text-center">
+                <Lock className="h-5 w-5 text-red-400 mx-auto mb-1" />
+                <p className="text-lg font-bold text-red-400 tabular-nums">{privilegeStats.ring0Processes}</p>
+                <p className="text-[10px] text-muted-foreground">Ring 0 (Kernel)</p>
+                <p className="text-[8px] text-muted-foreground/60">Full hardware access</p>
+              </div>
+              <div className="rounded-lg bg-blue-500/5 border border-blue-500/20 p-3 text-center">
+                <Shield className="h-5 w-5 text-blue-400 mx-auto mb-1" />
+                <p className="text-lg font-bold text-blue-400 tabular-nums">{privilegeStats.ring3Processes}</p>
+                <p className="text-[10px] text-muted-foreground">Ring 3 (User)</p>
+                <p className="text-[8px] text-muted-foreground/60">Sandboxed via syscalls</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Stats Grid */}
+          <div className="grid grid-cols-4 gap-2">
+            {[
+              { label: "Total Transitions", value: privilegeStats.totalTransitions, color: "text-blue-400" },
+              { label: "Violations", value: privilegeStats.totalViolations, color: privilegeStats.totalViolations > 0 ? "text-red-400" : "text-emerald-400" },
+              { label: "Avg Latency", value: `${privilegeStats.avgTransitionLatencyUs}μs`, color: "text-amber-400" },
+              { label: "Procs w/ Violations", value: privilegeStats.processesWithViolations, color: "text-orange-400" },
+            ].map(s => (
+              <div key={s.label} className="text-center py-2 rounded-lg bg-muted/20">
+                <p className={cn("text-sm font-semibold tabular-nums", s.color)}>{s.value}</p>
+                <p className="text-[9px] text-muted-foreground">{s.label}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Transition Breakdown */}
+          <div>
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">Transition Types</p>
+            <div className="grid grid-cols-3 gap-1.5">
+              {Object.entries(privilegeStats.transitionsByType).map(([type, count]) => (
+                <div key={type} className="flex items-center gap-1.5 px-2 py-1.5 rounded bg-muted/10 text-[10px]">
+                  <ArrowRightLeft className={cn("h-3 w-3", TRANSITION_COLORS[type] || "text-muted-foreground")} />
+                  <span className="text-muted-foreground flex-1 truncate">{type}</span>
+                  <span className="font-mono font-semibold text-foreground">{count}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Per-Process Privilege Levels */}
+          <div>
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">Process Privilege Levels</p>
+            <div className="space-y-1 max-h-32 overflow-y-auto">
+              {processes.filter(p => p.state !== "terminated").map(p => (
+                <div key={p.pid} className="flex items-center gap-2 px-2 py-1.5 rounded bg-muted/10 text-[10px]">
+                  <span className="font-mono font-bold text-foreground w-10">PID {p.pid}</span>
+                  <span className="text-muted-foreground flex-1 truncate">{p.appId}</span>
+                  <Badge variant="outline" className={cn("text-[8px] px-1.5 py-0",
+                    p.privilegeLevel === 0 ? "border-red-500/30 text-red-400" : "border-blue-500/30 text-blue-400"
+                  )}>Ring {p.privilegeLevel}</Badge>
+                  <span className="text-[8px] text-muted-foreground font-mono">CPL={p.context.cpl}</span>
+                  <span className="text-[8px] text-muted-foreground font-mono">CS=0x{p.context.cs.toString(16)}</span>
+                  <span className="text-[8px] text-muted-foreground font-mono">{p.ringTransitions}↔</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Recent Violations */}
+          <div>
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">
+              Security Violations ({violations.length})
+            </p>
+            <div className="space-y-0.5 max-h-36 overflow-y-auto">
+              {violations.length === 0 ? (
+                <div className="text-center py-3 text-[10px] text-emerald-400">
+                  <CheckCircle className="h-4 w-4 mx-auto mb-1" />No privilege violations detected
+                </div>
+              ) : (
+                [...violations].reverse().map((v, i) => (
+                  <div key={i} className="flex items-center gap-2 px-2 py-1 rounded hover:bg-muted/10 text-[9px]">
+                    <AlertTriangle className={cn("h-3 w-3 shrink-0", VIOLATION_COLORS[v.type] || "text-red-400")} />
+                    <span className={cn("font-semibold uppercase w-28 shrink-0 truncate", VIOLATION_COLORS[v.type])}>{v.type}</span>
+                    <span className="font-mono text-muted-foreground w-8 shrink-0">PID {v.pid}</span>
+                    <span className="text-foreground/70 flex-1 truncate">{v.detail}</span>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+
+          {/* Recent Ring Transitions */}
+          <div>
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">
+              Ring Transitions (Last {transitions.length})
+            </p>
+            <div className="space-y-0.5 max-h-36 overflow-y-auto">
+              {transitions.length === 0 ? (
+                <p className="text-[10px] text-muted-foreground text-center py-2">No ring transitions yet</p>
+              ) : (
+                [...transitions].reverse().slice(0, 15).map((t, i) => (
+                  <div key={i} className="flex items-center gap-2 px-2 py-1 rounded hover:bg-muted/10 text-[9px]">
+                    <ArrowRightLeft className={cn("h-3 w-3 shrink-0", TRANSITION_COLORS[t.type])} />
+                    <span className={cn("font-semibold w-20 shrink-0", TRANSITION_COLORS[t.type])}>{t.type}</span>
+                    <span className="font-mono text-muted-foreground w-8 shrink-0">PID {t.pid}</span>
+                    <span className="font-mono text-muted-foreground">Ring {t.fromRing}→{t.toRing}</span>
+                    <span className="font-mono text-muted-foreground ml-auto">{t.latencyUs}μs</span>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </motion.div>
+  );
+}
+
 // ── Main Dashboard ───────────────────────────────────────────
 
 type DrillDown =
@@ -928,10 +1088,11 @@ type DrillDown =
   | { type: "scheduler" }
   | { type: "display" }
   | { type: "power" }
+  | { type: "privilege" }
   | null;
 
 const KernelDashboard = () => {
-  const { processes, memStats, schedStats, compStats, powerStats, bandDistribution, schedulerEvents, currentContext, blockedProcesses, readyProcesses, compositorSurfaces } = useKernelMetrics();
+  const { processes, memStats, schedStats, compStats, powerStats, privilegeStats, privilegeViolations, ringTransitions, bandDistribution, schedulerEvents, currentContext, blockedProcesses, readyProcesses, compositorSurfaces } = useKernelMetrics();
   const [drillDown, setDrillDown] = useState<DrillDown>(null);
 
   const liveProcessCount = processes.length;
@@ -981,6 +1142,7 @@ const KernelDashboard = () => {
           {drillDown.type === "scheduler" && <SchedulerDetailPanel key="scheduler" schedStats={schedStats} events={schedulerEvents} currentContext={currentContext} blockedProcesses={blockedProcesses} onBack={() => setDrillDown(null)} />}
           {drillDown.type === "display" && <DisplayServerPanel key="display" compStats={compStats} surfaces={compositorSurfaces} onBack={() => setDrillDown(null)} />}
           {drillDown.type === "power" && <PowerManagementPanel key="power" powerStats={powerStats} onBack={() => setDrillDown(null)} />}
+          {drillDown.type === "privilege" && <PrivilegePanel key="privilege" privilegeStats={privilegeStats} violations={privilegeViolations} transitions={ringTransitions} processes={processes} onBack={() => setDrillDown(null)} />}
         </AnimatePresence>
       </div>
     );
