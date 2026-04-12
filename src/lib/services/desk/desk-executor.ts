@@ -1,11 +1,13 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Desk Executor
 // Unified facade over executor-service, recommendation-execution,
-// and connector-runners for controlled tool/action execution
+// and connector-runners for controlled tool/action execution.
+// Now emits structured NegativeReceipts on gate refusal.
 // ═══════════════════════════════════════════════════════════════
 
 import { conscienceGate, type GateRequest } from "@/lib/services/conscience-gate";
 import { getTaskContract } from "@/lib/contracts/global-contracts-registry";
+import { createNegativeReceipt, type NegativeReceipt } from "@/lib/services/epistemic-firewall";
 
 // ── Tool Plan Types ────────────────────────────────────────────
 
@@ -47,6 +49,8 @@ export interface ExecutionReceipt {
   durationMs: number;
   error?: string;
   rollbackPerformed: boolean;
+  /** Structured refusal if the step was blocked */
+  negativeReceipt?: NegativeReceipt;
 }
 
 // ── Desk Executor ──────────────────────────────────────────────
@@ -146,8 +150,30 @@ export class DeskExecutor {
     const verdict = await conscienceGate.evaluate(gateRequest);
 
     if (verdict.decision === "block" || verdict.decision === "refuse") {
+      // Emit structured negative receipt
+      const negReceipt = createNegativeReceipt({
+        taskType: plan.taskType,
+        domain: "platform",
+        riskTier: "elevated",
+        correlationId: plan.correlationId,
+        userId,
+        blockedAction: `Execute plan ${plan.planId} (${plan.taskType})`,
+        blockedDescription: `ConscienceGate ${verdict.decision}: ${verdict.reasons.join("; ")}`,
+        refusalReasons: ["policy-blocked"],
+        policyTriggered: verdict.reasons,
+        details: `Desk execution blocked at ConscienceGate. Risk class: ${verdict.riskClass}. ${verdict.reasons.join("; ")}`,
+        missingRequirements: verdict.reasons,
+        suggestedActions: [
+          { action: "Request approval", description: "Submit for operator review.", actionType: "request-approval" },
+          { action: "Modify plan", description: "Adjust the action to reduce risk.", actionType: "retry" },
+        ],
+        gateSource: "conscience-gate",
+        severity: verdict.decision === "refuse" ? "critical" : "warning",
+      });
+
       const receipt = this.createReceipt(plan.planId, plan.steps[0]?.stepId || "none", "failed", {
         error: `ConscienceGate ${verdict.decision}: ${verdict.reasons.join("; ")}`,
+        negativeReceipt: negReceipt,
       });
       receipts.push(receipt);
       return receipts;
@@ -232,7 +258,6 @@ export class DeskExecutor {
   }
 
   private async executeConnectorAction(step: ToolStep): Promise<Record<string, unknown>> {
-    // In production, delegates to connector-runners service
     return {
       connectorId: step.params.connectorId,
       action: step.action,
@@ -242,7 +267,6 @@ export class DeskExecutor {
   }
 
   private async executeRecommendation(step: ToolStep): Promise<Record<string, unknown>> {
-    // In production, delegates to recommendation-execution service
     return {
       recommendationId: crypto.randomUUID(),
       status: "generated",
@@ -252,7 +276,6 @@ export class DeskExecutor {
   }
 
   private async executeWorkflowStep(step: ToolStep): Promise<Record<string, unknown>> {
-    // In production, delegates to executor-service
     return {
       workflowId: step.params.workflowId,
       stepId: step.action,
@@ -318,4 +341,3 @@ export class DeskExecutor {
 }
 
 export const deskExecutor = new DeskExecutor();
-
