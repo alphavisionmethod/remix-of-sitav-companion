@@ -1046,7 +1046,8 @@ const App = () => (
                         TIER 4: ADMIN / BUILDER — Platform governance, /admin/* prefix
                         ~280 routes: AI Engineering, DRS, SAG, Automation, Launch, Security, etc.
                        ═══════════════════════════════════════════════════════════════ */}
-                    {/* AI Runtime */}
+                    {/* Admin — AI Runtime, DRS, Automation (wrapped in AdminShell) */}
+                    <Route element={<AdminShellLayout />}>
                     <Route path="/admin/ai-runtime" element={<AIRuntimeStatus />} />
                     <Route path="/admin/persistence-status" element={<PersistenceStatus />} />
                     <Route path="/admin/system-health" element={<SystemHealthDashboard />} />
@@ -1157,6 +1158,7 @@ const App = () => (
                     <Route path="/admin/customer-journey/remediation" element={<CJ07OwnerRemediationView />} />
                     <Route path="/admin/customer-journey/coverage" element={<CJ08RouteActionCoverage />} />
                     <Route path="/admin/customer-journey/recent-runs" element={<CJ09RecentVerificationRuns />} />
+                    </Route>
 
                     {/* ── 3B: OS Office — Digital Presence Office (19 routes) ── */}
                     <Route path="/digital-presence" element={<PresenceGate />} />
@@ -1564,11 +1566,8 @@ const App = () => (
                     <Route path="/admin/pfa/upgrades" element={<PFA06PermissionUpgradeCenter />} />
                     <Route path="/admin/pfa/health-drift" element={<PFA07ConnectorHealthDrift />} />
                     <Route path="/admin/pfa/account-graph" element={<PFA08AccountGraphExplorer />} />
-                     </Route>
-                     <Route path="/settings/connected-accounts" element={<PFA09ConnectedAccountsCenter />} />
-                     <Route path="/settings/google" element={<GoogleConnectedAccounts />} />
-                     <Route element={<AdminShellLayout />}>
                     <Route path="/admin/pfa/launch-honesty" element={<PFA10IntegrationLaunchHonesty />} />
+                    <Route path="/admin/pfa/google" element={<GoogleProviderFamilyDashboard />} />
                     <Route path="/admin/pfa/google" element={<GoogleProviderFamilyDashboard />} />
                     <Route path="/admin/isa/identity-providers" element={<ISA01IdentityProviderRegistryBoard />} />
                     <Route path="/admin/isa/connector-providers" element={<ISA02ConnectorProviderRegistryBoard />} />
@@ -1797,6 +1796,10 @@ const App = () => (
                      <Route path="/admin/kernel/compositor-debug" element={<CompositorDebugPage />} />
 
                     </Route>
+
+                     {/* Settings routes (App layer, outside AdminShell) */}
+                     <Route path="/settings/connected-accounts" element={<PFA09ConnectedAccountsCenter />} />
+                     <Route path="/settings/google" element={<GoogleConnectedAccounts />} />
 
                      <Route path="/personal-brain" element={<PersonalBrain />} />
                      <Route path="/brain" element={<Navigate to="/personal-brain" replace />} />

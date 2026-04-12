@@ -6,6 +6,8 @@
 
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useLocation } from "react-router-dom";
+import { resolveRouteLayer, resolveRouteDomain, type Layer } from "@/lib/architecture/layer-manifest";
 
 // ── Service Factories ────────────────────────────────────────────
 import { createPersonalOperatingGraph, type PersonalOperatingGraphService } from "@/lib/services/personal-graph/personal-operating-graph";
@@ -56,6 +58,10 @@ export interface SitaOSKernel {
 
   // Meta
   hydrated: boolean;
+
+  // Layer awareness
+  currentLayer: Layer;
+  currentDomain?: string;
 }
 
 const SitaOSContext = createContext<SitaOSKernel | null>(null);
@@ -261,6 +267,8 @@ function getOrCreateKernel(): SitaOSKernel {
     chiefOfStaff, timingIntelligence, relationships, digestEngine, sitaModes,
     adaptiveInterface, opportunityEngine, memoryGovernance, boundaryEngine, experienceSignature,
     hydrated: false,
+    currentLayer: "app" as Layer,
+    currentDomain: undefined,
   };
 
   return _kernel;
@@ -272,6 +280,25 @@ export const SitaOSProvider = ({ children }: { children: ReactNode }) => {
   const { user, loading: authLoading } = useAuth();
   const hydratedRef = useRef(false);
   const [kernel, setKernel] = useState<SitaOSKernel>(getOrCreateKernel);
+
+  // Layer awareness: track current route layer
+  let currentLayer: Layer = "app";
+  let currentDomain: string | undefined;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const location = useLocation();
+    currentLayer = resolveRouteLayer(location.pathname);
+    currentDomain = resolveRouteDomain(location.pathname);
+  } catch {
+    // Outside router context (e.g. tests)
+  }
+
+  // Sync layer into kernel on route change
+  useEffect(() => {
+    if (kernel.currentLayer !== currentLayer || kernel.currentDomain !== currentDomain) {
+      setKernel(prev => ({ ...prev, currentLayer, currentDomain }));
+    }
+  }, [currentLayer, currentDomain]);
 
   useEffect(() => {
     if (authLoading || !user || hydratedRef.current) return;

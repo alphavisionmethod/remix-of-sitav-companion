@@ -4,6 +4,8 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { createContext, useContext, useEffect, useMemo, useCallback, useState, useRef, type ReactNode } from "react";
+import { useLocation } from "react-router-dom";
+import { resolveRouteLayer, resolveRouteDomain, type Layer } from "@/lib/architecture/layer-manifest";
 import { SitaKernel, getSitaKernel } from "@/lib/sita-kernel";
 import { useEntityContext } from "@/contexts/EntityContext";
 import type { CanonicalChainResult } from "@/lib/core-services/index";
@@ -495,4 +497,19 @@ export function useEmergencyHalt() {
     getAllOrders: kernel.emergencyHalt.getAllOrders.bind(kernel.emergencyHalt),
     service: kernel.emergencyHalt,
   };
+}
+
+// ── Layer Awareness Hook ────────────────────────────────────
+
+export function useCurrentLayer(): { layer: Layer; domain?: string } {
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const location = useLocation();
+    return {
+      layer: resolveRouteLayer(location.pathname),
+      domain: resolveRouteDomain(location.pathname),
+    };
+  } catch {
+    return { layer: "app" as Layer };
+  }
 }
