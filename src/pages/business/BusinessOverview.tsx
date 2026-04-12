@@ -151,19 +151,33 @@ const BusinessOverview = () => {
   ], []);
 
   if (isLoading) {
+    return (
+      <motion.div className="space-y-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        <SitaPageHeader title="Business Center" subtitle="Your operating overview" />
+        <KPISkeleton count={8} />
+        <SectionSkeleton cards={2} columns={2} />
+      </motion.div>
+    );
+  }
 
-  const businessPrepared: PreparedAction[] = useMemo(() => [
-    { id: "bp1", title: "Follow-up draft for Emily Watson", description: "Gentle re-touch referencing original quote discussion", type: "draft", confidence: 0.88 },
-    { id: "bp2", title: "Invoice reminder for David Kim", description: "Payment reminder with 7-day overdue notice", type: "reminder", confidence: 0.92 },
-    { id: "bp3", title: "Re-engage Apex Corp", description: "Quote expiry notice with discount incentive", type: "suggestion", confidence: 0.74 },
-  ], []);
+  if (!hasLiveData) {
+    return (
+      <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
+        <SitaPageHeader title="Business Center" subtitle="Your operating overview — leads, revenue, and execution" />
+        <EmptyStateCTA
+          icon={Briefcase}
+          title="Welcome to Business Center"
+          description="Start by adding your first lead or customer."
+          actions={[
+            { label: "Add First Lead", icon: Target, to: "/business/leads" },
+            { label: "Import Customers", icon: Users, to: "/business/customers", variant: "secondary" },
+          ]}
+          tip="Your AI business advisor activates once you have data"
+        />
+      </motion.div>
+    );
+  }
 
-  const businessChanges: ChangeEvent[] = useMemo(() => [
-    { id: "bc1", icon: <DollarSign className="h-3 w-3 text-chart-2" />, title: "Invoice #1038 paid — $4,200", subtitle: "Marcus Johnson via Stripe", time: "2h ago" },
-    { id: "bc2", icon: <UserPlus className="h-3 w-3 text-primary" />, title: "New lead: Michael Park", subtitle: "Website form — web design inquiry", time: "4h ago" },
-    { id: "bc3", icon: <AlertTriangle className="h-3 w-3 text-destructive" />, title: "Invoice #1035 now 7 days overdue", subtitle: "David Kim — $1,800 outstanding", time: "Today" },
-    { id: "bc4", icon: <CheckCircle className="h-3 w-3 text-chart-2" />, title: "Callback completed: James Rodriguez", subtitle: "18 min call — discussed Q2 projects", time: "Yesterday" },
-  ], []);
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}>
