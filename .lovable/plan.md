@@ -1,119 +1,95 @@
 
+# Plan: Managed App Runtime, System App Ecosystem Audit, and Design System Lock-Down
 
-# Plan: Advanced Security System, Permission Monitor, and File System Enhancements
+## What Already Exists
 
-## Current State
+**Runtime (partial)**:
+- `lifecycle.ts` — State machine with hooks (launch/focus/blur/suspend/exit)
+- `loader.ts` — Manifest validation + code signing + sandbox + permission registration
+- `useNovaApp.ts` — Convenience hook for auto-registration
+- `registry.ts` — Central app registry with state tracking
+- NO managed event loop, NO memory safety helpers, NO app-scoped resource tracking, NO automatic cleanup/GC
 
-**What exists but is NOT wired:**
-- `CodeVerificationService` — full Ed25519/RSA signing, boot chain attestation, CRL, enforcement modes
-- `AppIsolationManager` — 5 isolation levels, namespace flags, cgroup limits, crash isolation
-- `CapabilityPermissionSystem` — POSIX DAC + Linux caps + SITA tokens
-- `SandboxEngine` — seccomp profiles, Landlock rules, 5-ring trust model
+**System Apps (mostly complete)**:
+- File Manager (Finder) ✓, Settings ✓, Terminal ✓, System Monitor ✓, Notes ✓, Calendar ✓, Calculator ✓, Weather ✓, Music ✓, Code Editor ✓, Mail ✓, Maps ✓, Photo Viewer ✓, Security Center ✓
+- App Library page exists at `/app-store/library` but is NOT a native desktop window — only a web route
+- Missing: App Library as a launchable OS window
 
-**What is completely missing:**
-- AppLoader does NOT call CodeVerification or AppIsolation — apps load without any security checks
-- No `PermissionMonitor` service tracking real-time permission usage
-- No Security Center UI for transparency
-- FileSystemService has no versioning or tagging
+**Design System (partial)**:
+- `app-window-system.ts` — spacing, typography, materials, shadows, chrome, components ✓
+- `nova-os.ts` — materials, depth layers, shapes, motion, shadows ✓
+- `enforcement.ts` — spacing/font/radius audit ✓
+- Missing: color token enforcement, motion rule enforcement, comprehensive design contract that apps MUST accept, dev-time violation reporting wired into the runtime
 
----
+## Implementation (3 work items)
 
-## Implementation (4 work items)
+### 1. Managed App Runtime Layer
 
-### 1. Wire Security into AppLoader
+Create `src/lib/nova-sdk/runtime/managed-runtime.ts` — a per-app runtime environment (like Cocoa's NSApplication / .NET's AppDomain):
 
-**File:** `src/lib/nova-sdk/runtime/loader.ts`
+**AppRuntime class** — instantiated per-app by AppLoader:
+- **Memory Safety**: `AppMemoryGuard` — per-app allocation tracking with soft/hard limits (configurable via manifest), automatic cleanup on terminate, leak detection (tracks allocated objects, intervals, listeners, subscriptions)
+- **Event Loop**: `AppEventLoop` — per-app message queue with `postMessage()`, `defer()`, `schedule()`, priority-based dispatch (immediate / normal / idle), tick-based processing wired to `requestAnimationFrame`, pause/resume for suspend state
+- **Resource Tracker**: `AppResourceTracker` — registers intervals, timeouts, event listeners, subscriptions created by an app; auto-cleans all on `terminate()`; prevents resource leaks
+- **Error Boundary**: `AppErrorBoundary` interface — uncaught error handler, crash count tracking, restart policy integration from ServiceManager pattern
 
-- Add `signature?: string` and `trustRing?: number` to `AppBundle`
-- During `load()`, after manifest validation:
-  - Call `CodeVerificationService.verify()` — block load if mode is "enforced" and result is not "valid"
-  - Call `AppIsolationManager.createSandbox()` with isolation level derived from trust ring (ring 2 → standard, ring 3 → strict, ring 4 → maximum)
-  - Log verification result and sandbox ID to console
-- On `unload()`, terminate the sandbox via `AppIsolationManager`
+**Changes to existing files**:
+- `loader.ts` — Create `AppRuntime` instance during `load()`, attach to `RegisteredApp`, destroy on `unload()`
+- `registry.ts` — Add `runtime?: AppRuntime` field to `RegisteredApp`
+- `lifecycle.ts` — Wire event loop pause/resume to suspend/resume transitions; trigger resource cleanup on terminate
+- `useNovaApp.ts` — Return `runtime` handle so apps can access their event loop and resource tracker
 
-### 2. Create PermissionMonitor Service
+**New hook**: `useAppRuntime()` — provides memory guard, event loop, and resource tracker for the current app context
 
-**New file:** `src/lib/nova-sdk/services/permission-monitor.ts`
+### 2. App Library Window (System App gap)
 
-A `SystemService` that tracks live permission usage across all running apps:
+Create `src/components/sita/shell/windows/AppLibraryWindow.tsx` — a native OS window showing all registered apps from the AppRegistry:
 
-```text
-PermissionMonitor
-├── activeGrants: Map<appId, Set<permissionId>>
-├── accessLog: { appId, permission, timestamp, granted }[]
-├── registerApp(appId, permissions[])
-├── recordAccess(appId, permission)
-├── revokeApp(appId)
-├── getActivePermissions(): Map snapshot
-├── getAccessLog(limit?): recent entries
-├── getDiagnostics(): total grants, denied count, per-permission stats
-```
+- Grid of app cards with icon, name, publisher, version, state badge (running/registered/terminated)
+- Category filter sidebar using manifest `category` field
+- Search bar filtering by name
+- Launch button that triggers `openAppWindow` from ShellLayout
+- Shows app permissions, sandbox isolation level, and code signing status per-app
+- Wire into ShellLayout + DesktopDock as `app-library`
 
-- Register in `ServiceManager` boot sequence as Phase 2
-- Wire into `NovaBridge.send()` to auto-log every permission-gated IPC call
-- Wire into AppLoader so `registerApp` is called on load, `revokeApp` on unload
-- Export from `services/index.ts`
+### 3. Design System Full Lock-Down
 
-### 3. Add File Versioning and Tagging to FileSystemService
+**Extend `enforcement.ts`** with comprehensive rules:
+- **Color enforcement**: `auditColor()` — validates against allowed HSL token set (brand colors, semantic colors); flags hardcoded hex/rgb
+- **Motion enforcement**: `auditMotion()` — validates duration and spring configs against `NOVA_MOTION` tokens
+- **Component enforcement**: `auditComponent()` — checks that custom buttons/inputs/cards use `APP_COMPONENTS` base classes
+- **Shadow enforcement**: `auditShadow()` — validates against `NOVA_SHADOWS` and `APP_SHADOWS` presets
 
-**File:** `src/lib/nova-sdk/services/filesystem-service.ts`
+**New: `DesignContract` interface** in `src/lib/nova-sdk/core/design-contract.ts`:
+- Apps must declare `designVersion: string` in manifest (e.g. "nova-1.0")
+- `validateDesignCompliance(manifest, component)` — runs all auditors at load-time
+- Non-compliant apps get a design violation warning in console + optional block in strict mode
 
-Extend `FSNode` with:
-- `versions?: { version: number; content: string; savedAt: number }[]` — auto-snapshot on `writeFile()`, keep last 10
-- `tags?: Set<string>` — user-assignable labels
+**Wire into AppLoader**:
+- After code signing, run `validateDesignCompliance()` 
+- Log violations to console with `[NovaSDK Design Audit]` prefix
+- In `strict` mode, block apps with error-severity violations
 
-New methods:
-- `getFileHistory(path)` — returns version list for a file
-- `restoreVersion(path, version)` — restores content from a specific version
-- `addTag(path, tag)` / `removeTag(path, tag)` — manage tags
-- `getByTag(tag)` — find all files with a given tag
-- `getAllTags()` — list all unique tags in the filesystem
+**New: `NovaThemeProvider`** component wrapping all app windows:
+- Injects CSS custom properties from design tokens
+- Prevents apps from overriding root CSS variables
+- Provides `useNovaTheme()` hook for apps to read (not write) theme values
 
-Update `writeFile()` to push current content into versions array before overwriting. Update `getDiagnostics()` to include version count and tag count.
-
-### 4. Build Security Center Window
-
-**New file:** `src/components/sita/shell/windows/SecurityCenterWindow.tsx`
-
-A full window with 4 tabs, following the same pattern as SettingsWindow:
-
-**Tab 1 — Sandbox Monitor:** Grid of cards for each active sandbox from `AppIsolationManager` — app name, isolation level badge (color-coded), namespace flags as dots, resource usage bars (CPU/memory/IO), crash count, state indicator.
-
-**Tab 2 — Code Signing:** Boot chain attestation timeline (UEFI → Shim → Kernel → Initramfs → Runtime), trusted key ring list, verification log table with result badges, enforcement mode selector.
-
-**Tab 3 — Permission Monitor:** Each running app as a row with per-permission indicators:
-```text
-┌─────────────────────────────────────────────┐
-│ Notes.app                                   │
-│ Camera: OFF  Files: ●ACTIVE  Network: OFF   │
-│ Clipboard: OFF  Location: OFF               │
-├─────────────────────────────────────────────┤
-│ Browser.app                                 │
-│ Camera: OFF  Files: OFF  Network: ●ACTIVE   │
-└─────────────────────────────────────────────┘
-```
-Plus an access log feed at the bottom showing recent permission checks with timestamps.
-
-**Tab 4 — File System:** Mount overview with quota bars, file/version/tag stats, and a simple tag browser.
-
-**Integration:**
-- Register as `com.sita.security-center` with manifest
-- Add to `ShellLayout.tsx` app launch map
-- Add to `DesktopDock.tsx` OS_WINDOW_APPS set
-- Add dock icon (Shield)
-
----
-
-## Files Changed/Created
+## Files Created/Changed
 
 | File | Action |
 |------|--------|
-| `src/lib/nova-sdk/runtime/loader.ts` | Wire CodeVerification + AppIsolation |
-| `src/lib/nova-sdk/services/permission-monitor.ts` | New service |
-| `src/lib/nova-sdk/services/filesystem-service.ts` | Add versioning + tagging |
-| `src/lib/nova-sdk/services/index.ts` | Export PermissionMonitor |
-| `src/lib/nova-sdk/system/bridge.ts` | Wire permission logging |
-| `src/components/sita/shell/windows/SecurityCenterWindow.tsx` | New UI |
-| `src/components/sita/ShellLayout.tsx` | Register security-center launch |
-| `src/components/sita/DesktopDock.tsx` | Add to OS_WINDOW_APPS |
-
+| `src/lib/nova-sdk/runtime/managed-runtime.ts` | New — AppRuntime, AppMemoryGuard, AppEventLoop, AppResourceTracker |
+| `src/lib/nova-sdk/runtime/loader.ts` | Wire AppRuntime creation/destruction |
+| `src/lib/nova-sdk/core/registry.ts` | Add runtime field to RegisteredApp |
+| `src/lib/nova-sdk/runtime/lifecycle.ts` | Wire event loop pause/resume to state transitions |
+| `src/lib/nova-sdk/hooks/useNovaApp.ts` | Return runtime handle |
+| `src/lib/nova-sdk/hooks/useAppRuntime.ts` | New — convenience hook for runtime access |
+| `src/components/sita/shell/windows/AppLibraryWindow.tsx` | New — native App Library window |
+| `src/components/sita/ShellLayout.tsx` | Register app-library launch |
+| `src/components/sita/DesktopDock.tsx` | Add app-library to OS_WINDOW_APPS |
+| `src/lib/nova-sdk/core/design-contract.ts` | New — DesignContract + full compliance validator |
+| `src/lib/nova-sdk/core/enforcement.ts` | Add color, motion, shadow, component auditors |
+| `src/lib/nova-sdk/ui/NovaThemeProvider.tsx` | New — theme injection + useNovaTheme hook |
+| `src/lib/nova-sdk/index.ts` | Export new modules |
+| `src/lib/nova-sdk/core/manifest.ts` | Add `designVersion` field |
