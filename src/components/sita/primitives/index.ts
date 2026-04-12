@@ -15,3 +15,8 @@ export { PrepPack } from "./PrepPack";
 export { ScenarioComparison } from "./ScenarioComparison";
 export { ConfidenceBand } from "./ConfidenceBand";
 export { ExecutionTracker } from "./ExecutionTracker";
+export { VotingCard } from "./VotingCard";
+export { EvidenceChain } from "./EvidenceChain";
+export { ScenarioFork } from "./ScenarioFork";
+export { DecisionSeal } from "./DecisionSeal";
+export { SentimentPulse } from "./SentimentPulse";
