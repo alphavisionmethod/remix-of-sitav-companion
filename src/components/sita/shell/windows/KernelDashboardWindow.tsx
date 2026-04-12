@@ -51,12 +51,13 @@ const BAND_COLORS: Record<PriorityBand, NovaColor> = {
   "Idle":         COLORS.idle,
 };
 
-type Tab = "scheduler" | "memory" | "syscalls";
+type Tab = "scheduler" | "memory" | "syscalls" | "drivers";
 
 const TABS: { id: Tab; label: string; icon: typeof Cpu }[] = [
   { id: "scheduler", label: "Scheduler", icon: Cpu },
   { id: "memory",    label: "Memory",    icon: HardDrive },
   { id: "syscalls",  label: "Syscalls",  icon: Zap },
+  { id: "drivers",   label: "Drivers",   icon: Monitor },
 ];
 
 const MAX_HISTORY = 60;
