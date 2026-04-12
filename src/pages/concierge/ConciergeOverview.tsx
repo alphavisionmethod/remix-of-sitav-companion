@@ -140,10 +140,29 @@ const pendingApproval = {
 const ConciergeOverview = () => {
   const [variant, setVariant] = useState<ViewVariant>("admin");
   const { isDemoMode } = useDataMode();
+  const navigate = useNavigate();
   const { data: tasks = [] } = useHouseholdTasks();
   const { data: events = [] } = useFamilyEvents();
   const kpiSummary = useMemo(() => deriveKPIs(tasks, events), [tasks, events]);
   const todaysPriorities = useMemo(() => derivePriorities(tasks, events), [tasks, events]);
+
+  const conciergeMatters: MatterItem[] = useMemo(() => [
+    { id: "cm1", title: "Permission slip due tomorrow", subtitle: "Alex — school field trip", urgency: "high" as const, action: "Handle" },
+    { id: "cm2", title: "Plumber follow-up overdue 4 days", subtitle: "Kitchen leak estimate pending", urgency: "high" as const, action: "Call" },
+    { id: "cm3", title: "Pet sitter booking needed", subtitle: "Spring break trip in 18 days", urgency: "medium" as const, action: "Book" },
+    { id: "cm4", title: "Passport renewal approaching", subtitle: "Expires Aug 2026 — start process", urgency: "low" as const, action: "Plan" },
+  ], []);
+
+  const conciergePrepared: PreparedAction[] = useMemo(() => [
+    { id: "cp1", title: "Travel prep checklist for spring break", description: "7-day trip checklist with pet sitter, packing, and reservations", type: "automation" as const, confidence: 0.91 },
+    { id: "cp2", title: "Plumber follow-up message draft", description: "Requesting estimate timeline for kitchen leak repair", type: "draft" as const, confidence: 0.85 },
+  ], []);
+
+  const conciergeChanges: ChangeEvent[] = useMemo(() => [
+    { id: "cc1", icon: <CheckSquare className="h-3 w-3 text-chart-2" />, title: "Soccer drop-off completed", subtitle: "Alex — on time", time: "8:30 AM" },
+    { id: "cc2", icon: <ShoppingCart className="h-3 w-3 text-primary" />, title: "Grocery order delivered", subtitle: "Weekly essentials — $87", time: "Yesterday" },
+    { id: "cc3", icon: <AlertCircle className="h-3 w-3 text-destructive" />, title: "HVAC maintenance overdue", subtitle: "Annual inspection — 4 days past due", time: "Yesterday" },
+  ], []);
 
   const driftingItems = useMemo(() => {
     const todayStr = new Date().toISOString().slice(0, 10);
