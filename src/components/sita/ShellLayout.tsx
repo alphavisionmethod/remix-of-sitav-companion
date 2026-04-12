@@ -29,6 +29,9 @@ import { SettingsWindow } from "./shell/windows/SettingsWindow";
 import { NotesWindow } from "./shell/windows/NotesWindow";
 import { NovaSDKProvider } from "@/contexts/NovaSDKContext";
 import { lifecycleManager } from "@/lib/nova-sdk/runtime/lifecycle";
+import { ProcessTable } from "@/lib/nova-sdk/kernel/process-manager";
+import { Compositor } from "@/lib/nova-sdk/kernel/compositor";
+import { MemoryManager } from "@/lib/nova-sdk/kernel/memory-manager";
 import { CommandLayer } from "./shell/CommandLayer";
 import { ClickRipple } from "./shell/ClickRipple";
 import { AppPermissionGate, isPermissionGranted } from "./shell/AppPermissionGate";
@@ -111,37 +114,66 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
 
   const doLaunchApp = useCallback((appId: string, originRect?: DOMRect) => {
     const origin = originRect ? { x: originRect.x, y: originRect.y, width: originRect.width, height: originRect.height } : undefined;
-    const launchWithLifecycle = (windowId: string, opts: Parameters<typeof wm.openWindow>[1]) => {
+
+    const launchWithKernel = (windowId: string, opts: Parameters<typeof wm.openWindow>[1], manifest: { id: string; name: string }) => {
+      // 1. Spawn process in kernel
+      const proc = ProcessTable.spawn({
+        id: manifest.id,
+        name: manifest.name,
+        version: "1.0.0",
+        permissions: [],
+        windowDefaults: { width: opts.width ?? 400, height: 500, resizable: true },
+      } as any);
+
+      // 2. Allocate memory for process
+      MemoryManager.allocate(proc.pid, 16, { label: `app:${manifest.id}:heap`, guardPages: true });
+      ProcessTable.setReady(proc.pid);
+      ProcessTable.setRunning(proc.pid);
+
+      // 3. Open window in window manager
       wm.openWindow(windowId, opts);
-      // Wire lifecycle: launching → running
+
+      // 4. Register compositor surface
+      Compositor.registerSurface(windowId, proc.pid, {
+        x: opts.position?.x ?? 120,
+        y: opts.position?.y ?? 100,
+        width: opts.width ?? 400,
+        height: 500,
+      }, opts.title);
+
+      // 5. Add window to process
+      ProcessTable.addWindow(proc.pid, windowId);
+
+      // 6. Lifecycle: launching → running
       lifecycleManager.transition(windowId, "launching").then(() => {
         lifecycleManager.transition(windowId, "running");
       });
     };
+
     if (appId === "finder" || appId === "files-app") {
-      launchWithLifecycle("finder", {
+      launchWithKernel("finder", {
         title: "Finder",
         component: <FinderWindow />,
         position: { x: 120, y: 100 },
         width: 460,
         originRect: origin,
-      });
+      }, { id: "finder", name: "Finder" });
     } else if (appId === "settings" || appId === "settings-app") {
-      launchWithLifecycle("settings", {
+      launchWithKernel("settings", {
         title: "Settings",
         component: <SettingsWindow />,
         position: { x: 300, y: 120 },
         width: 520,
         originRect: origin,
-      });
+      }, { id: "settings", name: "Settings" });
     } else if (appId === "notes" || appId === "com.nova.notes") {
-      launchWithLifecycle("notes", {
+      launchWithKernel("notes", {
         title: "Notes",
         component: <NotesWindow />,
         position: { x: 200, y: 110 },
         width: 520,
         originRect: origin,
-      });
+      }, { id: "notes", name: "Notes" });
     }
   }, [wm.openWindow]);
 
