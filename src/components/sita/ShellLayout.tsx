@@ -428,6 +428,14 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         width: 680,
         originRect: origin,
       }, { id: "kernel-dashboard", name: "Kernel Dashboard" });
+    } else if (appId === "extension-manager" || appId === "com.sita.extension-manager") {
+      launchWithKernel("extension-manager", {
+        title: "Extension Manager",
+        component: <ExtensionManagerWindow />,
+        position: { x: 160, y: 80 },
+        width: 520,
+        originRect: origin,
+      }, { id: "extension-manager", name: "Extension Manager" });
     }
 
     // Wire intent learning — every app launch teaches the engine
