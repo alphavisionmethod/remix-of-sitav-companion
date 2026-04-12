@@ -135,6 +135,10 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
   const [commandOpen, setCommandOpen] = useState(false);
   const [missionControlOpen, setMissionControlOpen] = useState(false);
   const [spatialOpen, setSpatialOpen] = useState(false);
+  const [controlCenterOpen, setControlCenterOpen] = useState(false);
+  const [notifDropdownOpen, setNotifDropdownOpen] = useState(false);
+  const [showBootSplash, setShowBootSplash] = useState(true);
+  const [pipWindows, setPipWindows] = useState<Array<{ id: string; title: string; type: "music" | "generic"; data?: any }>>([]);
   const [permGate, setPermGate] = useState<{ appId: string; originRect?: DOMRect } | null>(null);
   const wm = useWindowManager();
   const { isCalm, isFocus } = useDisplayMode();
