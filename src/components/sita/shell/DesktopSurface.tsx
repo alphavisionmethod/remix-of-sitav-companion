@@ -24,6 +24,9 @@ import { DesktopIconGrid } from "./DesktopIconGrid";
 import { DesktopContextMenu } from "./DesktopContextMenu";
 import { IntentSuggestion } from "./IntentSuggestion";
 import { useCalmEngine } from "@/contexts/CalmEngineContext";
+import { lifecycleManager } from "@/lib/nova-sdk/runtime/lifecycle";
+import { ProcessTable } from "@/lib/nova-sdk/kernel/process-manager";
+import { Compositor } from "@/lib/nova-sdk/kernel/compositor";
 
 // ── Types ────────────────────────────────────────────────────
 
@@ -428,13 +431,32 @@ export function DesktopSurface({
             key={w.id}
             windowId={w.id}
             title={w.title}
-            appIcon={w.id === "finder" ? "📁" : w.id === "settings" ? "⚙️" : undefined}
+            appIcon={w.id === "finder" ? "📁" : w.id === "settings" ? "⚙️" : w.id === "notes" ? "📝" : undefined}
             initialPosition={w.position}
             width={w.width}
             originRect={(w as any).originRect}
-            onClose={() => closeWindow?.(w.id)}
-            onMinimize={() => minimizeWindow?.(w.id)}
-            onFocus={() => focusWindow?.(w.id)}
+            onClose={() => {
+              // Kernel: lifecycle transition + process kill + compositor cleanup
+              lifecycleManager.transition(w.id, "terminated");
+              const proc = ProcessTable.getByAppId(w.id);
+              if (proc) ProcessTable.kill(proc.pid);
+              Compositor.removeSurface(w.id);
+              closeWindow?.(w.id);
+            }}
+            onMinimize={() => {
+              Compositor.setVisible(w.id, false);
+              minimizeWindow?.(w.id);
+            }}
+            onFocus={() => {
+              // Blur previously focused window
+              const prevFocused = visibleWindows.find(vw => vw.zIndex === maxZ && vw.id !== w.id);
+              if (prevFocused) {
+                lifecycleManager.transition(prevFocused.id, "blurred");
+              }
+              lifecycleManager.transition(w.id, "focused");
+              Compositor.bringToFront(w.id);
+              focusWindow?.(w.id);
+            }}
             isFocused={w.zIndex === maxZ}
             className="cursor-default"
             style={{ zIndex: DEPTH_LAYERS.windows + w.zIndex }}

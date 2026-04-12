@@ -1,6 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // Nova SDK — React Context Provider
 // Provides SDK access to all apps via useNovaSDK()
+// Boots kernel subsystems on mount
 // ═══════════════════════════════════════════════════════════════
 
 import { createContext, useContext, useMemo, useEffect, useRef } from "react";
@@ -12,6 +13,7 @@ import { AppLoader, type AppBundle } from "@/lib/nova-sdk/runtime/loader";
 import { NovaFS } from "@/lib/nova-sdk/system/filesystem";
 import { NovaNotify } from "@/lib/nova-sdk/system/notifications";
 import { SoundEngine } from "@/lib/sound-engine";
+import { NovaKernel } from "@/lib/nova-sdk/kernel/boot";
 
 interface NovaSDKContextType {
   registry: typeof AppRegistry;
@@ -32,6 +34,9 @@ export function NovaSDKProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (initialized.current) return;
     initialized.current = true;
+
+    // Boot kernel subsystems
+    NovaKernel.boot();
 
     // Wire sound effects into bridge
     NovaBridge.on("sound:play", (payload) => {
