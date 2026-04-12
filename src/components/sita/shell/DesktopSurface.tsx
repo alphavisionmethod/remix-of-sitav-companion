@@ -6,6 +6,7 @@
 
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { getWallpaperTheme } from "@/hooks/use-wallpaper";
+import { useWallpaperParallax } from "@/hooks/useWallpaperParallax";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
@@ -61,9 +62,14 @@ function DesktopToasts({ notifications }: { notifications: ShellNotificationDige
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.96 }}
             transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-            className="p-3 rounded-xl bg-[hsl(0_0%_100%/0.60)] dark:bg-[hsl(0_0%_0%/0.50)] backdrop-blur-lg shadow-lg border border-[hsl(0_0%_100%/0.20)] dark:border-[hsl(0_0%_100%/0.08)] pointer-events-auto"
+            className="flex overflow-hidden rounded-xl bg-[hsl(0_0%_100%/0.60)] dark:bg-[hsl(0_0%_0%/0.50)] backdrop-blur-lg shadow-lg border border-[hsl(0_0%_100%/0.20)] dark:border-[hsl(0_0%_100%/0.08)] pointer-events-auto"
           >
-            <p className="text-xs text-[hsl(0_0%_20%)] dark:text-[hsl(0_0%_85%)]">{t.text}</p>
+            {/* G5: Accent left edge */}
+            <div className="w-[3px] bg-gradient-to-b from-[hsl(265_55%_58%)] to-[hsl(280_50%_50%)] shrink-0" />
+            <div className="flex items-center gap-2.5 p-3">
+              <span className="text-sm">🔔</span>
+              <p className="text-xs text-[hsl(0_0%_20%)] dark:text-[hsl(0_0%_85%)]">{t.text}</p>
+            </div>
           </motion.div>
         ))}
       </AnimatePresence>
@@ -109,12 +115,13 @@ function getTimeConfig(): { greeting: string; mood: AmbientMood; gradient: strin
 function DesktopClock({ greeting, userName, bootReady }: { greeting: string; userName: string; bootReady: boolean }) {
   const [now, setNow] = useState(new Date());
   useEffect(() => {
-    const id = setInterval(() => setNow(new Date()), 30_000);
+    const id = setInterval(() => setNow(new Date()), 1_000);
     return () => clearInterval(id);
   }, []);
 
   const time = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: true });
   const date = now.toLocaleDateString([], { weekday: "long", month: "long", day: "numeric" });
+  const seconds = now.getSeconds();
 
   return (
     <div
@@ -123,9 +130,23 @@ function DesktopClock({ greeting, userName, bootReady }: { greeting: string; use
         bootReady ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-3 scale-95"
       )}
     >
-      <p className="text-7xl md:text-8xl font-extralight tracking-tight text-[hsl(0_0%_100%/0.9)] tabular-nums drop-shadow-lg">
-        {time}
-      </p>
+      <div className="relative inline-block">
+        <p className="text-7xl md:text-8xl font-extralight tracking-tight text-[hsl(0_0%_100%/0.9)] tabular-nums drop-shadow-lg">
+          {time}
+        </p>
+        {/* W3: Analog second-hand sweep */}
+        <div className="absolute -right-6 top-1/2 -translate-y-1/2 w-8 h-8">
+          <svg viewBox="0 0 32 32" className="w-full h-full">
+            <circle cx="16" cy="16" r="14" fill="none" stroke="hsl(0 0% 100% / 0.1)" strokeWidth="1" />
+            <line
+              x1="16" y1="16" x2="16" y2="4"
+              stroke="hsl(0 70% 55%)" strokeWidth="1" strokeLinecap="round"
+              style={{ transform: `rotate(${seconds * 6}deg)`, transformOrigin: "16px 16px", transition: "transform 0.2s linear" }}
+            />
+            <circle cx="16" cy="16" r="1.5" fill="hsl(0 70% 55%)" />
+          </svg>
+        </div>
+      </div>
       <p className="text-lg md:text-xl font-light text-[hsl(0_0%_100%/0.6)] mt-1 tracking-wide">
         {date}
       </p>
@@ -153,13 +174,13 @@ function GlassWidget({ icon: Icon, label, value, accent, onClick, delay = 0, boo
     <button
       onClick={onClick}
       className={cn(
-        "group flex items-center gap-4 rounded-2xl px-6 py-5",
+        "group widget-glow-hover flex items-center gap-4 rounded-2xl px-6 py-5",
         "bg-[hsl(0_0%_100%/0.08)] backdrop-blur-2xl border border-[hsl(0_0%_100%/0.12)]",
         "hover:bg-[hsl(0_0%_100%/0.14)] hover:border-[hsl(0_0%_100%/0.22)]",
         "hover:scale-[1.02] active:scale-[0.98]",
         "transition-all duration-[120ms] cursor-pointer",
         "shadow-[0_2px_8px_hsl(0_0%_0%/0.08),0_12px_28px_hsl(0_0%_0%/0.10)]",
-        "hover:shadow-[0_2px_8px_hsl(0_0%_0%/0.10),0_16px_36px_hsl(0_0%_0%/0.14)]",
+        "hover:shadow-[0_2px_8px_hsl(0_0%_0%/0.10),0_16px_36px_hsl(0_0%_0%/0.14),inset_0_1px_0_hsl(0_0%_100%/0.12)]",
         "min-w-[200px]",
         bootReady ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
       )}
@@ -218,6 +239,7 @@ export function DesktopSurface({
   const reduced = useReducedMotion();
   const { greeting, mood, gradient: timeGradient, gradientAlt: timeGradientAlt } = useMemo(getTimeConfig, []);
   const wallpaper = useMemo(getWallpaperTheme, []);
+  const parallax = useWallpaperParallax(3);
   const isAuto = wallpaper.id === "auto";
   const activeGradient = isAuto ? timeGradient : wallpaper.gradient;
   const activeGradientAlt = isAuto ? timeGradientAlt : wallpaper.gradient;
@@ -278,7 +300,7 @@ export function DesktopSurface({
         "fixed inset-0 flex flex-col items-center justify-center overflow-hidden bg-gradient-to-br cursor-default",
         wallpaperPhase ? activeGradientAlt : activeGradient
       )}
-      style={{ transition: "background 8s ease" }}
+      style={{ transition: "background 8s ease, transform 0.3s ease-out", transform: `translate(${parallax.x}px, ${parallax.y}px) scale(1.01)` }}
       onClick={(e) => { handleBackgroundClick(e); setCtxMenu(null); }}
       onContextMenu={handleContextMenu}
     >
@@ -409,6 +431,7 @@ export function DesktopSurface({
             appIcon={w.id === "finder" ? "📁" : w.id === "settings" ? "⚙️" : undefined}
             initialPosition={w.position}
             width={w.width}
+            originRect={(w as any).originRect}
             onClose={() => closeWindow?.(w.id)}
             onMinimize={() => minimizeWindow?.(w.id)}
             onFocus={() => focusWindow?.(w.id)}

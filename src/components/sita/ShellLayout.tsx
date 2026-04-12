@@ -28,6 +28,8 @@ import { FinderWindow } from "./shell/windows/FinderWindow";
 import { SettingsWindow } from "./shell/windows/SettingsWindow";
 import { CommandLayer } from "./shell/CommandLayer";
 import { ClickRipple } from "./shell/ClickRipple";
+import { AppPermissionGate, isPermissionGranted } from "./shell/AppPermissionGate";
+import { useAppPlatform } from "@/contexts/AppPlatformContext";
 
 // Lazy-load non-critical shell features (deferred until after first paint)
 const AdvisorChat = lazy(() => import("./AdvisorChat").then(m => ({ default: m.AdvisorChat })));
@@ -91,9 +93,11 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
   const [showEntryCeremony, setShowEntryCeremony] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
   const [missionControlOpen, setMissionControlOpen] = useState(false);
+  const [permGate, setPermGate] = useState<{ appId: string; originRect?: DOMRect } | null>(null);
   const wm = useWindowManager();
   const { isCalm, isFocus } = useDisplayMode();
   const { isOpen: railOpen } = useInspector();
+  const { apps } = useAppPlatform();
   useAdaptiveInterface();
   const location = useLocation();
 
@@ -102,14 +106,15 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
   const handleTimelineOpen = useCallback(() => setTimelineOpen(true), []);
   const handleCommandOpen = useCallback(() => setCommandOpen(true), []);
 
-  // Unified app launcher for dock + desktop surface
-  const handleLaunchApp = useCallback((appId: string) => {
+  const doLaunchApp = useCallback((appId: string, originRect?: DOMRect) => {
+    const origin = originRect ? { x: originRect.x, y: originRect.y, width: originRect.width, height: originRect.height } : undefined;
     if (appId === "finder") {
       wm.openWindow("finder", {
         title: "Finder",
         component: <FinderWindow />,
         position: { x: 120, y: 100 },
         width: 460,
+        originRect: origin,
       });
     } else if (appId === "settings") {
       wm.openWindow("settings", {
@@ -117,9 +122,21 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         component: <SettingsWindow />,
         position: { x: 300, y: 120 },
         width: 520,
+        originRect: origin,
       });
     }
   }, [wm.openWindow]);
+
+  // G1: Permission gate wired into launch flow
+  const handleLaunchApp = useCallback((appId: string, originRect?: DOMRect) => {
+    const appDef = apps.find(a => a.id === appId);
+    const hasPerms = appDef?.permissions && appDef.permissions.length > 0;
+    if (hasPerms && !isPermissionGranted(appId)) {
+      setPermGate({ appId, originRect });
+      return;
+    }
+    doLaunchApp(appId, originRect);
+  }, [apps, doLaunchApp]);
 
   useEffect(() => {
     if (sessionStorage.getItem("sita-desktop-entry") === "true") {
@@ -305,8 +322,26 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
 
       {/* Desktop Dock — floating app launcher */}
       <Suspense fallback={null}>
-        <DesktopDock onLaunchApp={handleLaunchApp} windowManager={wm} />
+        <DesktopDock onLaunchApp={handleLaunchApp} windowManager={wm} hasMaximizedWindow={wm.visibleWindows.some(w => w.position?.x === 0 && w.position?.y === 0)} />
       </Suspense>
+
+      {/* G1: Permission Gate Modal */}
+      {permGate && (() => {
+        const appDef = apps.find(a => a.id === permGate.appId);
+        if (!appDef) return null;
+        return (
+          <AppPermissionGate
+            appId={appDef.id}
+            appName={appDef.name}
+            appIcon={appDef.icon}
+            appIconBg={appDef.iconBg}
+            permissions={appDef.permissions}
+            open={true}
+            onAllow={() => { setPermGate(null); doLaunchApp(permGate.appId, permGate.originRect); }}
+            onDeny={() => setPermGate(null)}
+          />
+        );
+      })()}
 
       {/* Command Layer — hold Meta key */}
       <CommandLayer onAction={(actionId) => {

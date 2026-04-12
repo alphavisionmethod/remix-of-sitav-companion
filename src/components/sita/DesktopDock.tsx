@@ -4,7 +4,7 @@
 // Enhanced: bounce launch animation, glowing running bar, separator
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -12,13 +12,16 @@ import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { useAppBadges } from "@/hooks/useAppBadges";
 import type { AppDefinition } from "@/lib/app-platform/types";
 import type { useWindowManager } from "@/hooks/useWindowManager";
+import { DockWindowPreview } from "./shell/DockWindowPreview";
+import { SoundEngine } from "@/lib/sound-engine";
 
 const OS_WINDOW_APPS = new Set(["finder", "settings"]);
 
 interface DesktopDockProps {
-  onLaunchApp?: (appId: string) => void;
+  onLaunchApp?: (appId: string, originRect?: DOMRect) => void;
   windowManager?: ReturnType<typeof useWindowManager>;
   mood?: "warm" | "serene" | "night" | "focus";
+  hasMaximizedWindow?: boolean;
 }
 
 const MOOD_TINTS: Record<string, string> = {
@@ -28,7 +31,7 @@ const MOOD_TINTS: Record<string, string> = {
   focus: "bg-[hsl(265_50%_40%/0.10)]",
 };
 
-export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene" }: DesktopDockProps) => {
+export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMaximizedWindow = false }: DesktopDockProps) => {
   const navigate = useNavigate();
   const { apps } = useAppPlatform();
   const { getBadge } = useAppBadges();
@@ -36,18 +39,37 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene" }: Des
   const [tooltip, setTooltip] = useState<string | null>(null);
   const [contextMenu, setContextMenu] = useState<{ app: AppDefinition; x: number; y: number } | null>(null);
   const [bouncingApp, setBouncingApp] = useState<string | null>(null);
+  const [previewApp, setPreviewApp] = useState<{ id: string; x: number; y: number } | null>(null);
+  const [dragOverApp, setDragOverApp] = useState<string | null>(null);
+  const [dockVisible, setDockVisible] = useState(true);
   const dockRef = useRef<HTMLDivElement>(null);
   const iconRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
+  const previewTimer = useRef<ReturnType<typeof setTimeout>>();
 
   const pinnedApps = apps.filter(a => a.pinnedToDock && a.installStatus === "installed");
 
+  // G4: Dock auto-hide when windows are maximized
+  useEffect(() => {
+    if (!hasMaximizedWindow) { setDockVisible(true); return; }
+    setDockVisible(false);
+    const handleMouseMove = (e: MouseEvent) => {
+      setDockVisible(e.clientY > window.innerHeight - 20);
+    };
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, [hasMaximizedWindow]);
+
   const launchApp = useCallback((app: AppDefinition) => {
-    // Trigger bounce
+    // Trigger bounce + sound
     setBouncingApp(app.id);
+    SoundEngine.click();
     setTimeout(() => setBouncingApp(null), 500);
 
+    // G2: Pass originRect
+    const rect = iconRefs.current.get(app.id)?.getBoundingClientRect();
+
     if (onLaunchApp && OS_WINDOW_APPS.has(app.id)) {
-      onLaunchApp(app.id);
+      onLaunchApp(app.id, rect);
       return;
     }
     if (app.routePath) navigate(app.routePath);
@@ -74,7 +96,7 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene" }: Des
 
   return (
     <>
-      <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-[120] hidden md:flex">
+      <div className={cn("fixed bottom-4 left-1/2 -translate-x-1/2 z-[120] hidden md:flex transition-all duration-300", !dockVisible && "translate-y-24 opacity-0")}>
         <motion.div
           ref={dockRef}
           initial={{ y: 80, opacity: 0 }}
@@ -120,10 +142,31 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene" }: Des
                       ? { duration: 0.5, ease: "easeOut" }
                       : { type: "spring", stiffness: 300, damping: 20 }
                   }
-                  onMouseEnter={() => { setHoveredIdx(idx); setTooltip(app.id); }}
+                  onMouseEnter={() => {
+                    setHoveredIdx(idx);
+                    setTooltip(app.id);
+                    // W1: Live preview after 400ms for running apps
+                    if (isRunning) {
+                      previewTimer.current = setTimeout(() => {
+                        const rect = iconRefs.current.get(app.id)?.getBoundingClientRect();
+                        if (rect) setPreviewApp({ id: app.id, x: rect.left + rect.width / 2, y: window.innerHeight - rect.top });
+                      }, 400);
+                    }
+                  }}
+                  onMouseLeave={() => {
+                    clearTimeout(previewTimer.current);
+                    setPreviewApp(null);
+                  }}
                   onClick={() => launchApp(app)}
                   onContextMenu={(e) => handleContextMenu(e, app)}
-                  className="relative w-11 h-11 rounded-xl flex items-center justify-center transition-shadow duration-150 hover:shadow-xl"
+                  // G3: File drag/drop
+                  onDragOver={(e) => { e.preventDefault(); setDragOverApp(app.id); }}
+                  onDragLeave={() => setDragOverApp(null)}
+                  onDrop={(e) => { e.preventDefault(); setDragOverApp(null); launchApp(app); }}
+                  className={cn(
+                    "relative w-11 h-11 rounded-xl flex items-center justify-center transition-shadow duration-150 hover:shadow-xl",
+                    dragOverApp === app.id && "ring-2 ring-[hsl(210_80%_60%/0.6)] ring-offset-1"
+                  )}
                   aria-label={`Open ${app.name}`}
                 >
                   <div className={cn("w-full h-full rounded-xl bg-gradient-to-br flex items-center justify-center text-lg shadow-md", app.iconBg)}>
@@ -234,6 +277,22 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene" }: Des
             </motion.div>
           </>
         )}
+      </AnimatePresence>
+
+      {/* W1: Live window preview tooltip */}
+      <AnimatePresence>
+        {previewApp && (() => {
+          const win = windowManager?.windows.find(w => w.id === previewApp.id);
+          if (!win) return null;
+          return (
+            <DockWindowPreview
+              title={win.title}
+              appIcon={previewApp.id === "finder" ? "📁" : previewApp.id === "settings" ? "⚙️" : undefined}
+              x={previewApp.x}
+              y={previewApp.y}
+            />
+          );
+        })()}
       </AnimatePresence>
     </>
   );
