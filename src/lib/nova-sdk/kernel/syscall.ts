@@ -270,6 +270,18 @@ export function resetRateLimiter(): void {
   syscallRateCounters.clear();
 }
 
+export function getRateLimitStatus(): Array<{ pid: number; count: number; limit: number; windowMs: number }> {
+  const now = performance.now();
+  const result: Array<{ pid: number; count: number; limit: number; windowMs: number }> = [];
+  for (const [pid, counter] of syscallRateCounters) {
+    const elapsed = now - counter.windowStart;
+    if (elapsed < RATE_LIMIT_WINDOW_MS * 2) {
+      result.push({ pid, count: counter.count, limit: RATE_LIMIT_MAX_CALLS, windowMs: Math.round(elapsed) });
+    }
+  }
+  return result;
+}
+
 // ═══════════════════════════════════════════════════════════════
 // REENTRANCY MUTEX — Per-Resource Lock Simulation
 // Prevents global state corruption from concurrent syscalls.
@@ -307,6 +319,15 @@ export function releaseMutex(resource: string, pid: number): boolean {
 
 export function resetMutexes(): void {
   resourceMutexes.clear();
+}
+
+export function getMutexStatus(): Array<{ resource: string; pid: number; heldMs: number }> {
+  const now = performance.now();
+  return Array.from(resourceMutexes.entries()).map(([resource, m]) => ({
+    resource,
+    pid: m.pid,
+    heldMs: Math.round(now - m.acquiredAt),
+  }));
 }
 
 // ═══════════════════════════════════════════════════════════════

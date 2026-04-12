@@ -10,6 +10,7 @@ import { Compositor } from "./compositor";
 import { PowerManager } from "./power-manager";
 import { PrivilegeEnforcement } from "./privilege";
 import { resetRateLimiter, resetMutexes, clearSyscallLog } from "./syscall";
+import { IPCManager } from "./ipc";
 import { CrashResilience } from "./crash-resilience";
 import { WaylandServer } from "./wayland";
 import { DriverManager } from "./drivers";
@@ -34,6 +35,7 @@ class NovaKernelClass {
   private booted = false;
   private bootLog: BootLogEntry[] = [];
   private bootStartTime = 0;
+  private heartbeatInterval: ReturnType<typeof setInterval> | null = null;
 
   /** Boot all kernel subsystems in order */
   boot(): BootLogEntry[] {
@@ -108,20 +110,42 @@ class NovaKernelClass {
       clearSyscallLog();
     });
 
+    this.initSubsystem("IPCSubsystem", () => {
+      IPCManager.reset();
+      // Grant kernel IPC capabilities
+      IPCManager.grantAll(0);
+      // Create system event channels
+      IPCManager.createEventChannel(0, "system.lifecycle");
+      IPCManager.createEventChannel(0, "system.notifications");
+      IPCManager.createEventChannel(0, "system.theme");
+      IPCManager.createEventChannel(0, "system.power");
+    });
+
     this.initSubsystem("CrashResilience", () => {
       CrashResilience.reset();
       CrashResilience.start();
     });
 
-    // Run filesystem crash recovery
-    this.initSubsystem("FilesystemRecovery", () => {
-      // Recovery will run when FileSystemService boots in Phase 2
-      // Register kernel services with watchdog
-      CrashResilience.watchdog.registerComponent("scheduler", "service");
-      CrashResilience.watchdog.registerComponent("memory-manager", "service");
-      CrashResilience.watchdog.registerComponent("compositor", "ui");
-      CrashResilience.watchdog.registerComponent("wayland-server", "service");
-      CrashResilience.watchdog.registerComponent("power-manager", "background");
+    // Register kernel services with watchdog and start heartbeat pumps
+    this.initSubsystem("WatchdogHeartbeats", () => {
+      const watchedComponents: Array<{ id: string; cls: "ui" | "service" | "background" }> = [
+        { id: "scheduler", cls: "service" },
+        { id: "memory-manager", cls: "service" },
+        { id: "compositor", cls: "ui" },
+        { id: "wayland-server", cls: "service" },
+        { id: "power-manager", cls: "background" },
+      ];
+      for (const c of watchedComponents) {
+        CrashResilience.watchdog.registerComponent(c.id, c.cls);
+        // Immediately send first heartbeat so watchdog doesn't false-trigger
+        CrashResilience.watchdog.heartbeat(c.id);
+      }
+      // Pump heartbeats every 200ms for all kernel components
+      this.heartbeatInterval = setInterval(() => {
+        for (const c of watchedComponents) {
+          CrashResilience.watchdog.heartbeat(c.id);
+        }
+      }, 200);
     });
 
     const kernelMs = (performance.now() - this.bootStartTime).toFixed(1);
@@ -187,12 +211,18 @@ class NovaKernelClass {
   shutdown(): void {
     if (!this.booted) return;
 
+    if (this.heartbeatInterval) {
+      clearInterval(this.heartbeatInterval);
+      this.heartbeatInterval = null;
+    }
+
     CrashResilience.reset();
     console.log("[Kernel] Shutdown initiated...");
     PluginRegistry.reset();
     WidgetRegistry.reset();
     IntegrationRegistry.reset();
     ServiceManager.shutdown();
+    IPCManager.reset();
     WaylandServer.reset();
     PowerManager.stop();
     Scheduler.stop();
@@ -229,6 +259,7 @@ class NovaKernelClass {
       wayland: WaylandServer.getStats(),
       services: ServiceManager.getStats(),
       drivers: DriverManager.getStats(),
+      ipc: IPCManager.getStats(),
       extensions: {
         plugins: PluginRegistry.getStats(),
         widgets: WidgetRegistry.getStats(),
