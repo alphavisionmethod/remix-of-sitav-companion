@@ -41,6 +41,9 @@ import { useSessionRestore } from "@/hooks/use-session-restore";
 import { persistSession } from "@/lib/services/session-persistence";
 import { useCalmMode } from "@/hooks/use-calm-mode";
 import { routineDetector } from "@/lib/services/routine-detector";
+import { useAdaptiveVisuals } from "@/lib/services/adaptive-visual-system";
+import { useBackgroundIntelligence } from "@/lib/services/background-intelligence";
+import { useAppTransitions } from "@/components/sita/shell/AppTransitionLayer";
 
 // Lazy-load non-critical shell features (deferred until after first paint)
 const AdvisorChat = lazy(() => import("./AdvisorChat").then(m => ({ default: m.AdvisorChat })));

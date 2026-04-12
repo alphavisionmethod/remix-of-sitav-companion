@@ -412,6 +412,7 @@ export function FlowSpace({ isOpen, windows, onSelectWindow, onClose, onLaunchAp
                       isHovered
                         ? "border-[hsl(210_80%_60%/0.6)] shadow-[0_8px_40px_hsl(210_80%_60%/0.2),0_2px_8px_hsl(0_0%_0%/0.4)]"
                         : "border-[hsl(0_0%_100%/0.1)] shadow-[0_4px_24px_hsl(0_0%_0%/0.5),0_1px_4px_hsl(0_0%_0%/0.3)]",
+                      isRecent && "flowspace-active-glow",
                     )}
                     style={{
                       background: "hsl(0 0% 100% / 0.06)",
@@ -419,7 +420,7 @@ export function FlowSpace({ isOpen, windows, onSelectWindow, onClose, onLaunchAp
                       WebkitBackdropFilter: "blur(30px) saturate(1.5)",
                       border: isHovered
                         ? "1px solid hsl(210 80% 60% / 0.6)"
-                        : "1px solid hsl(0 0% 100% / 0.1)",
+                        : isRecent ? undefined : "1px solid hsl(0 0% 100% / 0.1)",
                     }}
                   >
                     {/* Most recent indicator */}
