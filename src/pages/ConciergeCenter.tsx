@@ -190,34 +190,18 @@ const ConciergeCenter = () => {
         <InAppAdvisorStrip domain="concierge" />
       </CenterSection>
       <CenterSection>
-        <motion.div
-          className="overflow-x-auto -mx-2 px-2"
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.25 }}
-        >
-          <SitaTabs
-            tabs={[
-              { key: "overview", label: "Overview" },
-              { key: "calendar", label: "Calendar" },
-              { key: "tasks", label: "Tasks" },
-              { key: "household", label: "Household" },
-              { key: "school", label: "School" },
-              { key: "grocery", label: "Grocery" },
-              { key: "appointments", label: "Appointments" },
-              { key: "travel", label: "Travel" },
-              { key: "providers", label: "Providers" },
-              { key: "events", label: "Events" },
-              { key: "workflows", label: "Workflows" },
-              { key: "proof", label: "Proof" },
-              { key: "files", label: "Files" },
-              { key: "boardroom", label: "Boardroom" },
-              { key: "settings", label: "Settings" },
-            ]}
-            active={activePage}
-            onChange={goTo}
-          />
-        </motion.div>
+        {isMobile ? (
+          <MobileTabSelector active={activePage} onChange={goTo} />
+        ) : (
+          <motion.div
+            className="overflow-x-auto -mx-2 px-2"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.25 }}
+          >
+            <SitaTabs tabs={ALL_TABS} active={activePage} onChange={goTo} />
+          </motion.div>
+        )}
       </CenterSection>
 
       <ConciergeDataProvider value={{ relationships: caiRelationships, obligations: caiObligations }}>
