@@ -1,107 +1,83 @@
 
 
-# Kernel Subsystem Implementation Plan
+# Advanced Multitasking Scheduler — Implementation Plan
 
-## Current State
+## What Exists Today
 
-The Nova SDK has a solid **userspace** layer — manifest validation, registry, lifecycle state machine, permission-gated bridge/FS/notifications, UI components, and layout system. However, the **kernel layer** described in the spec is completely missing:
+The current scheduler (`scheduler.ts`) and process manager (`process-manager.ts`) have basic MLFQ structure but are **missing the core mechanics of real multitasking**:
 
-| Spec Requirement | Status |
+| Spec Item | Status |
 |---|---|
-| Process Manager (PID, memory isolation, process table) | MISSING — no `kernel/` directory exists |
-| Memory Manager (per-app allocation, isolation) | MISSING |
-| Syscall Interface (typed enum, central dispatcher) | MISSING — Bridge exists but no formal syscall layer |
-| Compositor (surface tracking, z-order, hit-testing) | MISSING — DOM handles rendering directly |
-| Scheduler (MLFQ time-slicing, priority bands) | MISSING |
-| Lifecycle wired to close/focus/blur | MISSING — only launch fires transitions |
-| Input routing: Mouse → Kernel → Window → App | MISSING — DOM handles events directly |
-| Kernel boot loop (init → load → schedule → render) | MISSING |
+| CPU context (registers, RIP, RSP) per process | MISSING |
+| Context switching (save/restore state) | MISSING |
+| Ready queue data structure | MISSING — just filters the process list each tick |
+| Timer-driven preemption with proper quantum tracking | PARTIAL — ticks run but no quantum expiry tracking |
+| Blocked/waiting queue with wakeup | MISSING — state exists but no block/wake mechanism |
+| Round-robin within bands | PARTIAL — sorts by ticks, not true queue rotation |
+| Per-process address space abstraction | MISSING |
+| Scheduler event log (context switches, blocks, wakes) | MISSING |
 
-Launch flow currently: `User clicks → ShellLayout.doLaunchApp → openWindow + lifecycle("launching"→"running")`. Close/focus/blur do NOT fire lifecycle transitions.
+## Plan
 
-## Plan: Build 5 Kernel Modules + Wire Everything
+### 1. Enhance Process struct with CPU context and address space
 
-### 1. Process Manager (`src/lib/nova-sdk/kernel/process-manager.ts`)
-- `ProcessTable` singleton with `spawn(manifest)` returning a `Process` struct: `{ pid, appId, state, memoryBudget, memoryUsed, cpuTicks, priority, windowIds[], createdAt }`
-- Auto-incrementing PID counter
-- `kill(pid)`, `suspend(pid)`, `resume(pid)`, `getProcess(pid)`, `listProcesses()`
-- Memory budget enforcement (configurable per-app, default 64MB)
-- Links to AppRegistry state transitions
+Add to `process-manager.ts`:
+- `CPUContext` struct: `{ rip, rsp, registers[16], flags }` — simulated saved register state
+- `AddressSpace` reference: `{ pid, pageTableRoot, regions[] }` linking to MemoryManager
+- `quantum_remaining` field — tracks how much of current quantum is left
+- `waitReason` field — why a process is blocked (IO, sleep, IPC, mutex)
+- `wakeAt` field — for timed sleep/block
+- `block(pid, reason)` and `wake(pid)` methods on ProcessTable
 
-### 2. Memory Manager (`src/lib/nova-sdk/kernel/memory-manager.ts`)
-- Simulated page-based allocation: `allocate(pid, pages)`, `free(pid, pages)`, `getUsage(pid)`
-- 4KB page size matching kernel-architecture-manifest.json
-- Per-process memory accounting with budget limits
-- Guard page simulation (detect buffer overruns)
-- Global stats: total allocated, free, fragmentation ratio
+### 2. Rewrite Scheduler with proper ready queues and context switching
 
-### 3. Syscall Dispatcher (`src/lib/nova-sdk/kernel/syscall.ts`)
-- Typed enum: `SYS_CREATE_WINDOW`, `SYS_CLOSE_WINDOW`, `SYS_OPEN_FILE`, `SYS_WRITE_FILE`, `SYS_LIST_DIR`, `SYS_NOTIFY`, `SYS_GET_THEME`, `SYS_LAUNCH_APP`, `SYS_CLIPBOARD_READ`, `SYS_CLIPBOARD_WRITE`, `SYS_PLAY_SOUND`
-- Central `syscall(code, pid, ...args)` dispatcher that:
-  - Validates PID exists and is running
-  - Checks permissions via manifest
-  - Routes to Bridge/FS/WindowAPI/Notify
-  - Returns result or throws `PermissionDeniedError`
-  - Logs every call for audit trail
-- Syscall audit log (last 1000 calls) for diagnostics
+Rewrite `scheduler.ts`:
+- **Per-band ready queues**: `Map<PriorityBand, Process[]>` — actual FIFO queues per band
+- **Context switch simulation**: `switchTo(next)` saves current process context, loads next, logs the switch, emits event
+- **Quantum tracking**: each `tick()` decrements `quantum_remaining`; when exhausted, preempt and re-queue
+- **Timer interrupt simulation**: `timerInterrupt()` fires every tick, checks quantum expiry, triggers `schedule()` + `switchTo()`
+- **Blocking**: `blockProcess(pid, reason)` moves from running → blocked queue; `wakeProcess(pid)` moves back to ready queue
+- **Sleep support**: `sleepProcess(pid, ms)` sets `wakeAt`, checked each tick
+- **Round-robin within bands**: processes rotate through FIFO order within same band
+- **Scheduler event log**: last 200 events (context-switch, block, wake, preempt, boost) for diagnostics
+- **`currentProcess` pointer**: tracks which process is "on CPU" right now
 
-### 4. Compositor (`src/lib/nova-sdk/kernel/compositor.ts`)
-- `CompositorSurface` per window: `{ windowId, pid, zIndex, bounds, visible, opacity }`
-- `registerSurface()`, `removeSurface()`, `reorder()`, `findSurfaceAt(x, y)` for hit-testing
-- Tracks dirty regions (which windows need repaint)
-- Provides `getRenderOrder()` for DesktopSurface to consume
-- Integrates with z-index management from useWindowManager
+### 3. Add address space abstraction to Memory Manager
 
-### 5. Scheduler (`src/lib/nova-sdk/kernel/scheduler.ts`)
-- MLFQ with 5 priority bands from `kernel-architecture-manifest.json`: RT-Critical, RT-Normal, Interactive, Batch, Idle
-- Each process assigned a band based on app type (foreground=Interactive, background=Batch, system=RT-Normal)
-- `tick()` method simulates time-slice allocation
-- Priority boost every 1000 ticks (anti-starvation)
-- Priority inheritance on IPC calls
-- Exposes `getSchedulerStats()` for diagnostics
+Add to `memory-manager.ts`:
+- `AddressSpace` struct: `{ pid, pageTableRoot: number, mappings: VirtualMapping[] }`
+- `createAddressSpace(pid)` — creates isolated virtual address space
+- `switchAddressSpace(pid)` — simulated page table switch (logs it)
+- `destroyAddressSpace(pid)` — cleanup on process termination
 
-### 6. Kernel Boot Sequence (`src/lib/nova-sdk/kernel/boot.ts`)
-- `NovaKernel.boot()` initializes all subsystems in order: Memory → Process → Scheduler → Compositor → Syscall
-- Logs boot sequence with timestamps
-- Called from `NovaSDKContext.tsx` on provider mount
-- `NovaKernel.shutdown()` for cleanup
+### 4. Enhance boot sequence
 
-### 7. Wire Lifecycle into DesktopSurface
-- `onClose` → `lifecycleManager.transition(id, "terminated")` + `ProcessTable.kill(pid)`
-- `onFocus` → `lifecycleManager.transition(id, "focused")` + Scheduler boost
-- Blur (when another window focuses) → `lifecycleManager.transition(id, "blurred")`
+Update `boot.ts`:
+- Boot logs now include scheduler queue initialization
+- Scheduler starts with configurable quantum tick interval
+- Log context switch count after boot
 
-### 8. Wire Launch Flow Through Kernel
-Refactor `ShellLayout.doLaunchApp`:
-```
-User clicks → AppLoader.load(bundle) → ProcessTable.spawn(manifest) →
-  syscall(SYS_CREATE_WINDOW, pid, opts) → Compositor.registerSurface() →
-  lifecycleManager.transition("launching"→"running")
-```
+### 5. Update Kernel Dashboard with new scheduler detail
 
-## Files to Create
-```text
-src/lib/nova-sdk/kernel/
-  process-manager.ts    — Process table, PID, memory budget
-  memory-manager.ts     — Page-based allocation simulation
-  syscall.ts            — Typed syscall enum + dispatcher
-  compositor.ts         — Window surface tracking + hit-test
-  scheduler.ts          — MLFQ scheduler with 5 priority bands
-  boot.ts               — Kernel boot sequence orchestrator
-```
+Update `KernelDashboard.tsx`:
+- Show **current process on CPU** with live context (simulated RIP/RSP)
+- Show **ready queue depths** per band
+- Show **blocked queue** with wait reasons
+- Show **context switch counter** and **last 10 scheduler events** (preempt, wake, block)
+- Add a "Scheduler Timeline" mini-visualization showing recent context switches
 
 ## Files to Modify
-- `src/components/sita/shell/DesktopSurface.tsx` — wire close/focus/blur to lifecycle + kernel
-- `src/components/sita/ShellLayout.tsx` — route launch through ProcessTable + syscall
-- `src/contexts/NovaSDKContext.tsx` — call `NovaKernel.boot()` on mount
-- `src/lib/nova-sdk/index.ts` — export kernel modules
+
+- `src/lib/nova-sdk/kernel/process-manager.ts` — CPUContext, AddressSpace, block/wake, quantum
+- `src/lib/nova-sdk/kernel/scheduler.ts` — full rewrite with ready queues, context switching, event log
+- `src/lib/nova-sdk/kernel/memory-manager.ts` — AddressSpace abstraction
+- `src/lib/nova-sdk/kernel/boot.ts` — enhanced init
+- `src/pages/admin/KernelDashboard.tsx` — new scheduler detail panel
 
 ## Implementation Order
-1. Process Manager + Memory Manager (foundational)
-2. Syscall dispatcher (routes everything)
-3. Compositor + Scheduler (runtime simulation)
-4. Boot sequence (ties it all together)
-5. Wire lifecycle into DesktopSurface close/focus/blur
-6. Refactor launch flow through kernel pipeline
-7. Update barrel exports
+1. Process Manager enhancements (CPUContext, block/wake)
+2. Memory Manager address space
+3. Scheduler rewrite (queues, context switch, preemption, events)
+4. Boot sequence update
+5. Dashboard scheduler detail panel
 
