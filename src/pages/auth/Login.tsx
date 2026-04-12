@@ -5,6 +5,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { toast } from "sonner";
 import { Mail, Lock, ArrowRight, Eye, EyeOff, ShieldCheck, Zap, Brain, BarChart3, Receipt } from "lucide-react";
 import { GoogleSignInButton } from "@/components/auth/GoogleSignInButton";
+import { AppleSignInButton } from "@/components/auth/AppleSignInButton";
 import { AuthDivider } from "@/components/auth/AuthDivider";
 import { motion } from "framer-motion";
 import { EnhancedLockScreen as LockScreen } from "@/components/sita/shell/EnhancedLockScreen";
@@ -221,6 +222,7 @@ const Login = () => {
 
           <div className="space-y-2.5">
             <GoogleSignInButton />
+            <AppleSignInButton />
             <button
               onClick={handleDemoAccess}
               className="w-full flex items-center justify-center gap-2 rounded-xl border border-border bg-card py-2.5 text-sm font-medium text-foreground hover:bg-secondary/60 transition-all"

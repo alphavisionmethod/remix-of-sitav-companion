@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import { Mail, Lock, User, ArrowRight, Eye, EyeOff, ShieldCheck, Brain, Receipt, BarChart3, Zap, CheckCircle } from "lucide-react";
 import { GoogleSignInButton } from "@/components/auth/GoogleSignInButton";
+import { AppleSignInButton } from "@/components/auth/AppleSignInButton";
 import { AuthDivider } from "@/components/auth/AuthDivider";
 import { motion } from "framer-motion";
 
@@ -193,7 +194,10 @@ const Signup = () => {
           </form>
 
           <AuthDivider />
-          <GoogleSignInButton label="Sign up with Google" />
+          <div className="space-y-2.5">
+            <GoogleSignInButton label="Sign up with Google" />
+            <AppleSignInButton label="Sign up with Apple" />
+          </div>
 
           <p className="text-center text-xs text-muted-foreground">
             Already have an account? <Link to="/login" className="text-primary hover:underline font-medium">Sign in</Link>
