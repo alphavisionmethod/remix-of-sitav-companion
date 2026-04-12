@@ -1,94 +1,116 @@
 
 
-# Spec Compliance Audit — What's Done, What's Missing, What Would Add "Wow"
+# Nova OS App SDK — Full Implementation Plan
 
-## FULLY IMPLEMENTED (21/27 items)
+## Summary
+Build a complete in-browser App SDK framework that formalizes how apps are created, registered, launched, and governed within SITA OS. This translates the C++-style SDK spec into a TypeScript runtime that works within the existing React shell — giving every app a manifest, lifecycle hooks, window API, layout system, event bus, IPC bridge, and design enforcement layer.
 
-| # | Requirement | Status | Where |
-|---|-------------|--------|-------|
-| 1.1 | App layout: Title Bar + Sidebar + Content | Done | FloatingWindow.tsx, FinderWindow, SettingsWindow |
-| 2.1 | Background: translucent material ~0.72 | Done | FloatingWindow line ~240: `hsl(0_0%_100%/0.72)` |
-| 2.2 | Borders: white 0.35 | Done | FloatingWindow: `hsl(0_0%_100%/0.35)` |
-| 2.3 | Corners: 16px | Done | `APP_CHROME.cornerRadius = 16` |
-| 3.1 | Dual shadows | Done | `APP_SHADOWS.focused` = 2px/6px + 20px/40px |
-| 3.2 | Layer opacity system | Done | `useLayerOpacity.ts` + CalmEngine |
-| 4.1 | Strict spacing scale 4/8/16/24/32 | Done | `SPACE` in `app-window-system.ts` |
-| 5.1 | Typography: 11/13/16/18 | Done | `APP_TYPE` in `app-window-system.ts` |
-| 6.1 | Shared Button/Input/List/Card components | Done | `APP_COMPONENTS` with base/primary/secondary/ghost |
-| 6.2 | Active scale(0.98) | Done | `active:scale-[0.98]` in button.base |
-| 7.1 | Opening animation scale+opacity | Done | FloatingWindow morph with spring physics |
-| 7.2 | Progressive content loading | Done | FloatingWindow shows Skeleton for 150ms then fades in |
-| 8.1 | App states: empty/loading/error | Done | `AppStateWrapper.tsx` with ShimmerSkeleton, EmptyState, ErrorState |
-| 9.1 | App accent colors + icons | Done | `APP_ACCENTS`, `appIcon` prop on FloatingWindow |
-| 10.1 | Permission model with declarations | Done | `AppPermission` type in app-platform/types |
-| 10.2 | Permission gate UI (Allow/Deny modal) | Done | `AppPermissionGate.tsx` — glassmorphic, centered, risk-colored |
-| 10.3 | Trust levels | Done | AppDefinition has `trustLevel: trusted/limited/blocked` |
-| 10.4 | App Store / Library | Done | Full pages: AppStorePage, AppLibraryPage, AppManagePage, AppComparePage |
-| 11.1 | Desktop: System Bar + Desktop + Dock | Done | SystemMenuBar + DesktopSurface + DesktopDock |
-| 11.2 | Dock: centered, floating, translucent, hover=scale, click=bounce, running=indicator | Done | DesktopDock with magnification, bounce animation, glowing bar |
-| 11.3 | Focus system: active brightens, others dim | Done | `useWindowAttention.ts` + FloatingWindow opacity/saturation |
-| 11.4 | FlowSpace (app switching) | Done | FlowSpace.tsx with physics grid + keyboard trigger |
-| 11.5 | Context menu with keyboard shortcuts | Done | DesktopContextMenu with right-aligned shortcut hints |
+## What Already Exists
+- `AppDefinition` type with permissions, trust levels, lifecycle receipts
+- `AppPermissionGate` wired into launch flow via `ShellLayout`
+- `FloatingWindow` with morph animation, accent strips, traffic lights
+- `AppStateWrapper` (loading/empty/error states)
+- `useWindowManager` with position memory, z-ordering, minimize/restore
+- `SoundEngine` for spatial audio feedback
+- `APP_COMPONENTS` design tokens (buttons, inputs, cards, lists)
+- App catalog with 45+ apps
 
-## NOT YET WIRED (6 gaps)
+## What's New (13 SDK Modules)
 
-| # | Gap | Detail |
-|---|-----|--------|
-| G1 | **Permission gate not wired into launch flow** | `AppPermissionGate` exists but is never rendered. No component calls `isPermissionGranted()` before launching an app. The gate is dead code. |
-| G2 | **Origin morph not wired (icon-to-window)** | FloatingWindow accepts `originRect` but the dock never passes icon bounding rects. Windows appear with generic scale, not from the dock icon position. |
-| G3 | **File-to-app drag/drop** | Spec says "drag file → app = open." No drag-to-dock or drag-to-window-to-open behavior exists. |
-| G4 | **Dock auto-hide** | Plan mentioned dock auto-hide when windows are maximized. Not implemented. |
-| G5 | **Notification toasts missing app icon + accent edge** | Toasts render but lack per-app icon or colored left edge. |
-| G6 | **Widget inner glow pulse on hover** | Widgets have `hover:scale-[1.02]` but no inner glow pulse animation. |
+### 1. App Manifest System (`nova-sdk/core/manifest.ts`)
+Typed `AppManifest` interface mirroring `app.json`: id (`com.nova.notes`), name, version, entry component, permissions array, lifecycle hooks declaration, window defaults (size, resizable, transparent), required capabilities. Validation function `validateManifest()` that rejects malformed manifests.
 
-## PLAN: Wire the 6 gaps + 5 "wow" additions
+### 2. App Registry (`nova-sdk/core/registry.ts`)
+Central singleton registry where apps self-register via `NovaSDK.registerApp(manifest, AppComponent)`. Stores manifest + component + runtime state (running/suspended/terminated). Provides `getApp(id)`, `listApps()`, `isRunning(id)`. The registry replaces the ad-hoc if/else chain in `ShellLayout.doLaunchApp`.
 
-### Fix G1: Wire permission gate into app launch
-- In `DesktopSurface.tsx` (or the window-opening logic in `useWindowManager`), before opening a window, check `isPermissionGranted(appId)`. If not granted, render `<AppPermissionGate>` with the app's permissions. On Allow → open window. On Deny → cancel.
+### 3. App Lifecycle Manager (`nova-sdk/runtime/lifecycle.ts`)
+Formal state machine: `registered → launching → permission-check → running → focused → blurred → suspending → terminated`. Emits lifecycle events: `onLaunch`, `onFocus`, `onBlur`, `onSuspend`, `onResume`, `onExit`. Apps implement a `NovaAppLifecycle` interface. The lifecycle manager calls these hooks at the right transitions.
 
-### Fix G2: Pass originRect from dock to window
-- In `DesktopDock.tsx`, the `iconRefs` map already exists. On launch, read `iconRefs.current.get(appId)?.getBoundingClientRect()` and pass it through `onLaunchApp` callback. Update `useWindowManager` to store `originRect` on the window object. FloatingWindow already handles the rest.
+### 4. Window API (`nova-sdk/system/window-api.ts`)
+Apps request windows through `NovaWindow.create({ width, height, title, resizable, transparent })`. The API wraps `useWindowManager.openWindow` but enforces: min size, max size, title bar presence, system chrome. Apps cannot bypass the window system. Provides `setRootView()`, `setToolbar()`, `setTitle()`, `close()`, `minimize()`, `maximize()`.
 
-### Fix G3: File-to-app drag support on dock
-- Add `onDragOver`/`onDrop` to dock icon buttons. When a file is dragged over a dock icon, show a highlight ring. On drop, trigger the app launch with a file reference payload.
+### 5. UI Component Library (`nova-sdk/ui/components.tsx`)
+Pre-built SDK components that enforce the design system: `<NovaButton>`, `<NovaInput>`, `<NovaList>`, `<NovaCard>`, `<NovaModal>`, `<NovaText>`, `<NovaSidebar>`. All consume `APP_COMPONENTS` tokens. Apps importing these get consistent styling automatically. Variants: primary/secondary/ghost for buttons, body/label/title/heading for text.
 
-### Fix G4: Dock auto-hide
-- In `DesktopDock`, accept a `hasMaximizedWindow` prop. When true, dock slides down off-screen and only reappears on mouse hover near the bottom edge.
+### 6. Layout System (`nova-sdk/ui/layout.tsx`)
+Constraint-based layout primitives: `<VStack>`, `<HStack>`, `<Spacer>`, `<Divider>`, `<ScrollArea>`, `<SplitView>` (sidebar + content). All enforce the SPACE scale (4/8/16/24/32px). `<AppLayout>` enforces the mandatory Title Bar + optional Sidebar + Content structure. Apps that use `<AppLayout>` automatically get the correct window chrome.
 
-### Fix G5: Toast app icon + accent edge
-- Update `DesktopToasts` to accept app metadata and render a 2px left accent bar + mini icon.
+### 7. Graphics Context (`nova-sdk/graphics/context.ts`)
+A lightweight 2D drawing API wrapping Canvas: `NovaContext.fillRect()`, `drawText()`, `drawGradient()`, `drawRoundedRect()`, `drawCircle()`, `drawImage()`. Enforces system colors, radii, and typography. Provided to apps that need custom drawing (charts, visualizations) without breaking design rules.
 
-### Fix G6: Widget inner glow pulse
-- Add a CSS keyframe `glow-pulse` (inner box-shadow oscillation) and apply on widget hover.
+### 8. Event System (`nova-sdk/input/events.ts`)
+Typed event bus: `NovaEvents.on('mouse:down', handler)`, `NovaEvents.on('key:press', handler)`, `NovaEvents.on('focus:change', handler)`. Event flow: Input → Window → View Tree → Target → Bubble. Includes gesture recognition: tap, long-press, drag, pinch. Sound integration: auto-plays `SoundEngine.click()` on button interactions.
 
-### WOW additions (5 enhancements)
+### 9. System Bridge / IPC (`nova-sdk/system/bridge.ts`)
+Apps communicate with OS services through `NovaBridge.send(channel, payload)` and `NovaBridge.on(channel, handler)`. Channels: `file:open`, `file:save`, `notification:send`, `clipboard:read`, `clipboard:write`, `permission:request`, `theme:get`, `app:launch`. All calls are permission-gated — bridge checks manifest permissions before executing.
 
-**W1: Live window previews in dock** — When hovering a running app's dock icon for 400ms, show a miniature live preview tooltip of the window content (CSS `transform: scale(0.2)` snapshot).
+### 10. File System API (`nova-sdk/system/filesystem.ts`)
+Permission-controlled file operations: `NovaFS.readFile(path)`, `NovaFS.writeFile(path, data)`, `NovaFS.listDir(path)`, `NovaFS.exists(path)`. Uses IndexedDB/localStorage as backend. Every call checks `files.read` / `files.write` permissions from the manifest. Unauthorized calls throw `PermissionDeniedError`.
 
-**W2: Spatial sound feedback** — Add subtle Web Audio API click/hover tones (40ms sine wave pops) for dock interactions and window snap. Muted by default, togglable in Settings.
+### 11. Notification API (`nova-sdk/system/notifications.ts`)
+`NovaNotify.send({ title, body, icon, sound, urgency })`. Integrates with the existing toast system and notification center. Requires `system.notifications` permission. Supports actions (buttons in notifications), grouping, and auto-dismiss.
 
-**W3: Desktop widget clock second-hand sweep** — The clock widget gets a smooth CSS-animated second hand with a subtle glow trail.
+### 12. App Packaging & Loader (`nova-sdk/runtime/loader.ts`)
+`AppLoader.load(manifestPath)` → reads manifest → validates → checks permissions → registers → launches. Simulates the bundle format: manifest.json + component + assets. The loader enforces that apps cannot run without a valid manifest.
 
-**W4: Window minimize genie effect** — When minimizing, window scales down and curves toward the dock icon position (CSS perspective transform), like the macOS genie effect.
+### 13. Design Enforcement Layer (`nova-sdk/core/enforcement.ts`)
+Runtime checks that apps comply with design rules: spacing must use SPACE constants, typography must use TYPE scale, colors must come from system palette, corners must be 12-16px. `NovaEnforcement.audit(component)` returns violations. In dev mode, renders red outlines around non-compliant elements.
 
-**W5: Ambient wallpaper parallax on mouse** — Desktop wallpaper shifts 2-3px based on mouse position, creating subtle depth perception without GPU cost.
+## Context Provider & Hook
+Create `NovaSDKProvider` context that wraps the shell and provides SDK access to all apps via `useNovaSDK()`. Returns: `manifest`, `window`, `bridge`, `fs`, `notify`, `events`, `lifecycle`, `theme`.
 
-### Files to modify
-1. `DesktopSurface.tsx` — wire permission gate, toast accents
-2. `DesktopDock.tsx` — pass originRect, file drag/drop, auto-hide, live preview tooltip
-3. `useWindowManager.ts` — store originRect on window objects
-4. `FloatingWindow.tsx` — genie minimize animation
-5. `index.css` — glow-pulse keyframe, parallax helpers
+## Sample Apps Refactored
+Refactor `FinderWindow` and `SettingsWindow` to use the SDK: register via `NovaSDK.registerApp()`, use `<AppLayout>` + `<NovaSidebar>` + Nova components, implement lifecycle hooks.
 
-### Files to create
-1. `src/hooks/useSpatialAudio.ts` — optional audio feedback hook
-2. `src/components/sita/shell/DockWindowPreview.tsx` — live miniature preview
+## New Sample App: Notes
+Build a `Notes` app using the full SDK to demonstrate: manifest registration, lifecycle hooks, `<AppLayout>`, `<NovaList>` + `<NovaInput>`, `NovaFS.readFile/writeFile`, `NovaNotify.send()` on save.
 
-### Implementation order
-1. Wire permission gate (G1)
-2. Wire originRect morph (G2)
-3. Dock auto-hide (G4)
-4. Toast + widget polish (G5, G6)
-5. File drag/drop (G3)
-6. Wow additions (W1-W5)
+## Files to Create
+```text
+src/lib/nova-sdk/
+  core/
+    manifest.ts          — AppManifest type + validation
+    registry.ts          — App registry singleton
+    enforcement.ts       — Design compliance checker
+  ui/
+    components.tsx       — NovaButton, NovaInput, NovaList, NovaCard, NovaModal, NovaText
+    layout.tsx           — VStack, HStack, Spacer, SplitView, AppLayout
+  system/
+    window-api.ts        — Window creation/management API
+    bridge.ts            — IPC message bus
+    filesystem.ts        — Permission-gated file ops
+    notifications.ts     — Notification API
+  input/
+    events.ts            — Typed event system with gestures
+  graphics/
+    context.ts           — 2D drawing API
+  runtime/
+    lifecycle.ts         — State machine + hooks
+    loader.ts            — Manifest loader + validator
+  index.ts               — Barrel export + NovaSDKProvider
+
+src/contexts/NovaSDKContext.tsx    — React context for SDK access
+src/components/sita/shell/windows/NotesWindow.tsx  — Sample SDK app
+```
+
+## Files to Modify
+- `ShellLayout.tsx` — Replace if/else app launch with registry lookup, wrap in `NovaSDKProvider`
+- `useWindowManager.ts` — Add `updateWindow()` for SDK window API mutations
+- `FloatingWindow.tsx` — Accept toolbar/sidebar from SDK `AppLayout`
+- `FinderWindow.tsx` — Refactor to use Nova SDK components
+- `SettingsWindow.tsx` — Refactor to use Nova SDK components
+- `DesktopDock.tsx` — Add Notes app to dock items
+- `app-platform/catalog.ts` — Add Notes app definition
+
+## Implementation Order
+1. Core: manifest + registry + enforcement
+2. UI: components + layout
+3. System: window API + bridge + filesystem + notifications
+4. Input: event system
+5. Graphics: drawing context
+6. Runtime: lifecycle + loader
+7. Context: NovaSDKProvider + useNovaSDK hook
+8. Integration: wire into ShellLayout, refactor Finder/Settings
+9. Sample: build Notes app
+10. Polish: sound integration, design audit warnings
 
