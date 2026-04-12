@@ -187,6 +187,7 @@ class NovaKernelClass {
   shutdown(): void {
     if (!this.booted) return;
 
+    CrashResilience.reset();
     console.log("[Kernel] Shutdown initiated...");
     PluginRegistry.reset();
     WidgetRegistry.reset();
