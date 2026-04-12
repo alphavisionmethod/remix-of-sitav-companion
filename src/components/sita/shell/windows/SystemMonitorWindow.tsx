@@ -223,8 +223,9 @@ export function SystemMonitorWindow() {
       <NovaList
         items={SECTIONS.map(s => ({
           id: s.id, label: s.label, icon: s.icon,
-          active: section === s.id, onClick: () => setSection(s.id),
         }))}
+        activeId={section}
+        onSelect={(id) => setSection(id as MonitorSection)}
       />
       <Divider className="!my-2" />
 
