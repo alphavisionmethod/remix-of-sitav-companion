@@ -688,6 +688,7 @@ function BatteryBreakdown({ batteryLevel, charging }: { batteryLevel: number; ch
 }
 
 
+function DriversTab({
   drivers,
   batteryHistory,
   networkHistory,
