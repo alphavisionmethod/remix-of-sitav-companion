@@ -85,9 +85,9 @@ const SECTION_KEYS: Record<string, (keyof SettingsSchema)[]> = {
 function ResetSectionButton({ sectionId }: { sectionId: string }) {
   const [confirming, setConfirming] = useState(false);
   const keys = SECTION_KEYS[sectionId];
-  if (!keys) return null;
 
   const handleReset = useCallback(() => {
+    if (!keys) return;
     if (!confirming) {
       setConfirming(true);
       setTimeout(() => setConfirming(false), 3000);
