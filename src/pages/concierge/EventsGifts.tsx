@@ -1,6 +1,7 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
-import { TrustBadge } from "@/components/sita/TrustBadge";
+import { ConciergeAdvisorInsightCard, EventPrepCard } from "@/components/concierge";
+import type { EventPrep } from "@/components/concierge";
 import { useState } from "react";
 import { Gift, Heart, Calendar, PartyPopper, Star, Clock, CheckCircle, ShoppingBag, Mail } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
@@ -178,17 +179,31 @@ const EventsGifts = () => {
       </div>
       )}
 
-      <SitaCard hover={false}>
-        <div className="flex items-center gap-3 mb-3">
-          <Heart className="h-4 w-4 text-primary" />
-          <SitaCardTitle>Relationship Advisor</SitaCardTitle>
-          <TrustBadge level="verified" label="high" size="sm" />
+      {/* Event Prep Cards for planning board */}
+      {view === "board" && (
+        <div className="space-y-3 mt-4">
+          <SitaSectionHeader title="Event Prep Cards" subtitle="Detailed preparation view" />
+          {filtered.map(ev => (
+            <EventPrepCard key={ev.id} event={{
+              id: ev.id,
+              title: ev.title,
+              who: ev.who,
+              daysUntil: ev.daysUntil,
+              giftStatus: ev.giftStatus as "idea" | "purchased" | "wrapped" | "sent" | undefined,
+              giftIdea: ev.giftIdea,
+              outstandingItems: ev.prepItems,
+              linkedDocs: ev.category === "birthday" ? ["Gift receipt"] : [],
+            }} />
+          ))}
         </div>
-        <p className="text-sm text-foreground leading-relaxed">
-          You have an overdue thank-you to the Johnsons — a quick message today keeps the relationship warm. Mom's birthday is in 12 days;
-          order the photo book this week to ensure delivery. Start brainstorming anniversary ideas — your partner values experiences over gifts.
-        </p>
-      </SitaCard>
+      )}
+
+      <ConciergeAdvisorInsightCard insight={{
+        role: "Relationship Advisor",
+        message: "You have an overdue thank-you to the Johnsons — a quick message today keeps the relationship warm. Mom's birthday is in 12 days; order the photo book this week to ensure delivery. Start brainstorming anniversary ideas — your partner values experiences over gifts.",
+        linkedItems: ["Johnson thank-you", "Mom's photo book", "Anniversary planning"],
+        confidence: "high",
+      }} />
     </div>
   );
 };

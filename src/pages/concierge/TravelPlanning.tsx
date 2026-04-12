@@ -2,7 +2,8 @@ import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/co
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { TripCard, PrepCard } from "@/components/sita/HouseholdComponents";
-import { ConciergeAdvisorInsightCard } from "@/components/concierge";
+import { ConciergeAdvisorInsightCard, TravelReadinessCard, ReservationStatusCard } from "@/components/concierge";
+import type { TravelReadiness, Reservation } from "@/components/concierge";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import {
@@ -145,7 +146,28 @@ const TravelPlanning = () => {
           )}
         </div>
 
-        <div className="space-y-6">
+        <div className="space-y-4">
+          {/* Travel Readiness Cards */}
+          {trips.map(trip => (
+            <TravelReadinessCard key={trip.id} trip={{
+              id: trip.id,
+              destination: trip.destination.split("—")[0].trim(),
+              daysUntil: trip.daysUntil,
+              readinessPercent: Math.round((trip.completedTasks / trip.tasks) * 100),
+              totalItems: trip.tasks,
+              completedItems: trip.completedTasks,
+              missingItems: trip.id === "2" ? ["Car rental", "Airport shuttle", "Travel insurance"] : trip.id === "1" ? ["Ski rentals"] : [],
+            }} />
+          ))}
+
+          {/* Reservation Status */}
+          <ReservationStatusCard reservations={[
+            { id: "res1", title: "Hotel — Lake Tahoe Resort", date: "Feb 14–18", status: "confirmed", linkedTrip: "Lake Tahoe" },
+            { id: "res2", title: "Flight — SFO → CUN", date: "Apr 10", status: "confirmed", linkedTrip: "Cancún" },
+            { id: "res3", title: "Car rental — Cancún", date: "Apr 10–17", status: "missing", linkedTrip: "Cancún" },
+            { id: "res4", title: "Airport shuttle — return", date: "Apr 17", status: "pending", linkedTrip: "Cancún" },
+            { id: "res5", title: "Hotel — Cancún Beach Club", date: "Apr 10–17", status: "confirmed", linkedTrip: "Cancún" },
+          ]} />
           {/* Trip Summary */}
           <SitaCard className="p-4">
             <SitaCardTitle className="mb-3">Selected Trip</SitaCardTitle>
