@@ -326,22 +326,22 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
       </Suspense>
 
       {/* G1: Permission Gate Modal */}
-      {permGate && (() => {
-        const appDef = apps.find(a => a.id === permGate.appId);
-        if (!appDef) return null;
-        return (
-          <AppPermissionGate
-            appId={appDef.id}
-            appName={appDef.name}
-            appIcon={appDef.icon}
-            appIconBg={appDef.iconBg}
-            permissions={appDef.permissions}
-            open={true}
-            onAllow={() => { setPermGate(null); doLaunchApp(permGate.appId, permGate.originRect); }}
-            onDeny={() => setPermGate(null)}
-          />
-        );
-      })()}
+      <AppPermissionGate
+        appId={permGate?.appId ?? ""}
+        appName={apps.find(a => a.id === permGate?.appId)?.name ?? ""}
+        appIcon={apps.find(a => a.id === permGate?.appId)?.icon ?? ""}
+        appIconBg={apps.find(a => a.id === permGate?.appId)?.iconBg ?? ""}
+        permissions={apps.find(a => a.id === permGate?.appId)?.permissions ?? []}
+        open={!!permGate}
+        onAllow={() => {
+          if (permGate) {
+            const { appId, originRect } = permGate;
+            setPermGate(null);
+            doLaunchApp(appId, originRect);
+          }
+        }}
+        onDeny={() => setPermGate(null)}
+      />
 
       {/* Command Layer — hold Meta key */}
       <CommandLayer onAction={(actionId) => {
