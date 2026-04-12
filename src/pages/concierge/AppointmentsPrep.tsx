@@ -1,6 +1,8 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
+import { ConciergeAdvisorInsightCard, AppointmentPrepCard } from "@/components/concierge";
+import type { AppointmentPrep } from "@/components/concierge";
 import { useState } from "react";
 import { Stethoscope, Calendar, MapPin, Clock, FileText, User, CheckCircle, AlertCircle, Car, ClipboardCheck } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
@@ -151,17 +153,32 @@ const AppointmentsPrep = () => {
         })}
       </div>
 
-      <SitaCard hover={false}>
-        <div className="flex items-center gap-3 mb-3">
-          <Stethoscope className="h-4 w-4 text-primary" />
-          <SitaCardTitle>Appointment Advisor</SitaCardTitle>
-          <TrustBadge level="verified" label="high" size="sm" />
+      {/* Appointment Prep Cards for prep-needed view */}
+      {view === "prep" && (
+        <div className="space-y-3 mt-4">
+          <SitaSectionHeader title="Prep Checklist Summary" subtitle="All appointments requiring preparation" />
+          {filtered.map(apt => (
+            <AppointmentPrepCard key={apt.id} appointment={{
+              id: apt.id,
+              title: apt.title,
+              who: apt.who,
+              when: apt.when,
+              provider: apt.location,
+              prepChecklist: apt.prepItems.map((p, i) => ({ id: `${apt.id}-p${i}`, label: p, done: false })),
+              docsNeeded: apt.documentsNeeded,
+              transportTime: apt.transportTime,
+              status: apt.status as "confirmed" | "unconfirmed" | "prep-needed",
+            }} />
+          ))}
         </div>
-        <p className="text-sm text-foreground leading-relaxed">
-          Your annual physical requires fasting — set a reminder for 10 PM the night before. The vet appointment is unconfirmed;
-          I recommend calling Happy Paws today. HVAC visit needs someone home 2–4 PM on the 8th — confirm with your partner.
-        </p>
-      </SitaCard>
+      )}
+
+      <ConciergeAdvisorInsightCard insight={{
+        role: "Appointment Advisor",
+        message: "Your annual physical requires fasting — set a reminder for 10 PM the night before. The vet appointment is unconfirmed; I recommend calling Happy Paws today. HVAC visit needs someone home 2–4 PM on the 8th — confirm with your partner.",
+        linkedItems: ["Annual physical — fasting", "Vet confirmation", "HVAC coverage"],
+        confidence: "high",
+      }} />
     </div>
   );
 };

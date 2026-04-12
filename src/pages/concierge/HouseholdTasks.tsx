@@ -2,7 +2,8 @@ import { useAction } from "@/hooks/use-action";
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
-import { MemberAvatar, HouseholdAdvisor } from "@/components/sita/HouseholdComponents";
+import { MemberAvatar } from "@/components/sita/HouseholdComponents";
+import { ConciergeAdvisorInsightCard } from "@/components/concierge";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -255,19 +256,16 @@ const HouseholdTasks = () => {
           </SitaCard>
 
           {/* Task Advisor */}
-          <HouseholdAdvisor
-            role="Task Advisor"
-            icon={Sparkles}
-            confidence="high"
-            message={
-              overdueCount > 0
-                ? `You have ${overdueCount} overdue task${overdueCount > 1 ? "s" : ""}. Focus on high-priority items first. ${highCount > 0 ? `${highCount} high-priority tasks need attention.` : ""}`
-                : openCount > 0
-                ? `${openCount} open tasks across your household. ${todayCount > 0 ? `${todayCount} due today.` : "Nothing urgent today."} Keep momentum going!`
-                : "All tasks complete! Great job keeping your household organized."
-            }
-            linkedItems={tasks.filter(t => t.priority === "high" && t.status !== "done").slice(0, 3).map(t => t.title)}
-          />
+          <ConciergeAdvisorInsightCard insight={{
+            role: "Task Advisor",
+            message: overdueCount > 0
+              ? `You have ${overdueCount} overdue task${overdueCount > 1 ? "s" : ""}. Focus on high-priority items first. ${highCount > 0 ? `${highCount} high-priority tasks need attention.` : ""}`
+              : openCount > 0
+              ? `${openCount} open tasks across your household. ${todayCount > 0 ? `${todayCount} due today.` : "Nothing urgent today."} Keep momentum going!`
+              : "All tasks complete! Great job keeping your household organized.",
+            linkedItems: tasks.filter(t => t.priority === "high" && t.status !== "done").slice(0, 3).map(t => t.title),
+            confidence: "high",
+          }} />
         </motion.div>
       </div>
     </motion.div>

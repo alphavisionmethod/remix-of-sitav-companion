@@ -1,7 +1,8 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
-import { CalendarEventCard, ConflictCard, PrepCard, MemberAvatar, HouseholdAdvisor } from "@/components/sita/HouseholdComponents";
+import { CalendarEventCard, ConflictCard, PrepCard, MemberAvatar } from "@/components/sita/HouseholdComponents";
+import { ConciergeAdvisorInsightCard } from "@/components/concierge";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Calendar, Users, Clock, MapPin, AlertCircle, Heart, GraduationCap, Dumbbell, Stethoscope, Wrench, Car, Sparkles } from "lucide-react";
@@ -160,13 +161,12 @@ const FamilyCalendar = () => {
           </SitaCard>
 
           {/* Calendar Advisor */}
-          <HouseholdAdvisor
-            role="Calendar Advisor"
-            icon={Calendar}
-            confidence="high"
-            message="Saturday has a timing conflict between Emma's soccer match (2 PM) and family dinner (6 PM). The match ends ~3:30 PM — moving dinner to 7 PM resolves the pressure. Restaurant has availability. Tuesday is your busiest day with school conference at 9 AM."
-            linkedItems={["Soccer match — Saturday", "Family dinner — Saturday", "School conference — Tuesday"]}
-          />
+          <ConciergeAdvisorInsightCard insight={{
+            role: "Calendar Advisor",
+            message: "Saturday has a timing conflict between Emma's soccer match (2 PM) and family dinner (6 PM). The match ends ~3:30 PM — moving dinner to 7 PM resolves the pressure. Restaurant has availability. Tuesday is your busiest day with school conference at 9 AM.",
+            linkedItems: ["Soccer match — Saturday", "Family dinner — Saturday", "School conference — Tuesday"],
+            confidence: "high",
+          }} />
         </div>
       </div>
     </motion.div>

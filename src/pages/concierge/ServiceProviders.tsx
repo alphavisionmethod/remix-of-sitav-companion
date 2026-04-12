@@ -2,7 +2,8 @@ import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton 
 import { KPITile, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { DomainHeader } from "@/components/sita/primitives";
-import { ConciergeAdvisorInsightCard } from "@/components/concierge";
+import { ConciergeAdvisorInsightCard, ServiceFollowUpCard, VendorDetailPanel } from "@/components/concierge";
+import type { ServiceFollowUp, VendorDetail } from "@/components/concierge";
 import { Wrench, Star, Phone, Clock, DollarSign, MapPin, Shield, Plus, Search, Calendar, FileText, History, CheckCircle, AlertTriangle, ExternalLink, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -306,6 +307,13 @@ const ServiceProviders = () => {
       </div>
 
       {filtered.length === 0 && <EmptyState icon={Wrench} title="No providers found" description="Try a different search or add a new provider" />}
+
+      {/* Service Follow-ups */}
+      <ServiceFollowUpCard items={[
+        { id: "sf1", vendorName: "Mike's Plumbing", reason: "Kitchen leak estimate pending", daysWaiting: 4, urgency: "high", linkedTasks: ["Get repair quote", "Schedule follow-up"] },
+        { id: "sf2", vendorName: "CleanPro", reason: "Missed appointment — reschedule or replace", daysWaiting: 14, urgency: "medium", linkedTasks: ["Find alternative cleaner"] },
+        { id: "sf3", vendorName: "Elite Auto", reason: "Oil change overdue", daysWaiting: 7, urgency: "medium", linkedTasks: ["Schedule oil change"] },
+      ]} />
 
       {/* Provider Advisor */}
       <ConciergeAdvisorInsightCard insight={{

@@ -2,7 +2,8 @@ import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/co
 import { KPITile, SitaTabs } from "@/components/sita/SitaComponents";
 import { GlassCard } from "@/components/sita/PremiumPageComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
-import { HouseholdAdvisor } from "@/components/sita/HouseholdComponents";
+import { ConciergeAdvisorInsightCard, RecurringAdminList } from "@/components/concierge";
+import type { RecurringAdminItem } from "@/components/concierge";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -159,13 +160,12 @@ const RecurringObligations = () => {
           </SitaCard>
 
           {/* Advisor */}
-          <HouseholdAdvisor
-            role="Obligations Advisor"
-            icon={Sparkles}
-            confidence="high"
-            message="The HVAC filter and insurance review are both overdue — tackle the filter today (5 min) and schedule 30 min for the insurance review this weekend. 3 items can be automated to reduce recurring burden by ~25%."
-            linkedItems={["HVAC filter", "Insurance review", "Automation suggestions"]}
-          />
+          <ConciergeAdvisorInsightCard insight={{
+            role: "Obligations Advisor",
+            message: "The HVAC filter and insurance review are both overdue — tackle the filter today (5 min) and schedule 30 min for the insurance review this weekend. 3 items can be automated to reduce recurring burden by ~25%.",
+            linkedItems: ["HVAC filter", "Insurance review", "Automation suggestions"],
+            confidence: "high",
+          }} />
         </div>
       </div>
     </motion.div>

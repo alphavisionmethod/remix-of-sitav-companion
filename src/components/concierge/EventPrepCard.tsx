@@ -7,7 +7,8 @@ export interface EventPrep {
   title: string;
   who: string;
   daysUntil: number;
-  giftStatus: "idea" | "purchased" | "wrapped" | "sent" | "none";
+  giftStatus?: "idea" | "purchased" | "wrapped" | "sent" | "none";
+  giftIdea?: string;
   outstandingItems: string[];
   linkedDocs?: string[];
 }
@@ -33,10 +34,11 @@ export const EventPrepCard = ({ event, className }: { event: EventPrep; classNam
           {event.daysUntil}d
         </span>
       </div>
-      {event.giftStatus !== "none" && (
+      {event.giftStatus && event.giftStatus !== "none" && (
         <div className="flex items-center gap-1.5 mb-2">
           <Gift className="h-3 w-3 text-muted-foreground" />
           <span className={cn("text-[10px] font-medium capitalize", giftColors[event.giftStatus])}>{event.giftStatus}</span>
+          {event.giftIdea && <span className="text-[10px] text-muted-foreground ml-1">— {event.giftIdea}</span>}
         </div>
       )}
       {event.outstandingItems.length > 0 && (
