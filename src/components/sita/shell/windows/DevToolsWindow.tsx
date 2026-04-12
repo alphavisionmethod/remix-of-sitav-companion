@@ -136,7 +136,7 @@ function ProcessTab() {
               {processes.map(proc => (
                 <tr key={proc.pid} className="border-b border-[hsl(0_0%_100%/0.03)] hover:bg-[hsl(0_0%_100%/0.03)]">
                   <td className="py-1 pr-2 font-mono text-muted-foreground">{proc.pid}</td>
-                  <td className="py-1 pr-2 text-foreground/90">{proc.name}</td>
+                  <td className="py-1 pr-2 text-foreground/90">{proc.manifest?.name || proc.appId}</td>
                   <td className="py-1 pr-2">
                   <NovaBadge variant={proc.state === "running" ? "success" : proc.state === "ready" ? "info" : "warning"}>
                       {proc.state}
