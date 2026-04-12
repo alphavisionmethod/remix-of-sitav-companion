@@ -1,8 +1,9 @@
-import { memo } from "react";
+import { memo, useState, useEffect, useCallback } from "react";
 import {
   Home, Briefcase, DollarSign, Headphones, FolderOpen, Settings, Shield, LogOut,
   LayoutDashboard, TrendingUp, Calendar, ListTodo, BarChart3,
-  Grid3X3,
+  Grid3X3, ChevronRight, Clock, Users, FileText, Receipt, CreditCard, PiggyBank,
+  ShoppingCart, GraduationCap, Plane, Wrench, Target, Zap
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { NavLink } from "@/components/NavLink";
@@ -15,6 +16,7 @@ import {
   Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu,
   SidebarMenuButton, SidebarMenuItem, SidebarHeader, SidebarFooter, useSidebar,
 } from "@/components/ui/sidebar";
+import { motion, AnimatePresence } from "framer-motion";
 
 // ── Domain color map — vibrant macOS-style with brand purple/gold ─
 const domainColors: Record<string, { bg: string; ring: string }> = {
@@ -34,6 +36,40 @@ const domainColors: Record<string, { bg: string; ring: string }> = {
 };
 
 const getColors = (url: string) => domainColors[url] || { bg: "from-gray-500 to-gray-700", ring: "ring-gray-400/40" };
+
+// ── Sub-navigation routes ────────────────────────────────────
+interface SubRoute {
+  title: string;
+  url: string;
+  icon: React.ElementType;
+}
+
+const domainSubRoutes: Record<string, SubRoute[]> = {
+  "/business": [
+    { title: "Overview", url: "/business", icon: LayoutDashboard },
+    { title: "Leads", url: "/business/leads", icon: Target },
+    { title: "Customers", url: "/business/customers", icon: Users },
+    { title: "Invoices", url: "/business/invoices", icon: Receipt },
+    { title: "Revenue", url: "/business/revenue-autopilot", icon: TrendingUp },
+    { title: "Boardroom", url: "/business/boardroom", icon: BarChart3 },
+  ],
+  "/money": [
+    { title: "Overview", url: "/money", icon: LayoutDashboard },
+    { title: "Bills", url: "/money/bills", icon: FileText },
+    { title: "Subscriptions", url: "/money/subscriptions", icon: CreditCard },
+    { title: "Reserves", url: "/money/reserves", icon: PiggyBank },
+    { title: "Net Worth", url: "/money/net-worth", icon: TrendingUp },
+    { title: "Budgets", url: "/money/budgets", icon: Receipt },
+  ],
+  "/concierge": [
+    { title: "Overview", url: "/concierge", icon: LayoutDashboard },
+    { title: "Tasks", url: "/concierge/tasks", icon: ListTodo },
+    { title: "Calendar", url: "/concierge/calendar", icon: Calendar },
+    { title: "School", url: "/concierge/school", icon: GraduationCap },
+    { title: "Travel", url: "/concierge/travel", icon: Plane },
+    { title: "Providers", url: "/concierge/providers", icon: Wrench },
+  ],
+};
 
 // ── Navigation data ──────────────────────────────────────────
 const primaryNav = [
@@ -57,11 +93,34 @@ const bottomNav = [
   { title: "Control Room", url: "/owner",    icon: Shield },
 ];
 
+// ── Recents Tracker ──────────────────────────────────────────
+const MAX_RECENTS = 5;
+function useRecents() {
+  const [recents, setRecents] = useState<{ title: string; url: string }[]>([]);
+  const location = useLocation();
+
+  useEffect(() => {
+    const allItems = [...primaryNav, ...favoritesNav, ...bottomNav];
+    const match = allItems.find(i => location.pathname.startsWith(i.url) && i.url !== "/home");
+    if (match) {
+      setRecents(prev => {
+        const filtered = prev.filter(r => r.url !== match.url);
+        return [{ title: match.title, url: match.url }, ...filtered].slice(0, MAX_RECENTS);
+      });
+    }
+  }, [location.pathname]);
+
+  return recents;
+}
+
 // ── App Icon Item ────────────────────────────────────────────
-function AppIconItem({ item, collapsed, active }: {
+function AppIconItem({ item, collapsed, active, hasSubNav, expanded, onToggleExpand }: {
   item: { title: string; url: string; icon: React.ElementType };
   collapsed: boolean;
   active: boolean;
+  hasSubNav?: boolean;
+  expanded?: boolean;
+  onToggleExpand?: () => void;
 }) {
   const colors = getColors(item.url);
   const Icon = item.icon;
@@ -84,6 +143,15 @@ function AppIconItem({ item, collapsed, active }: {
           )}
           activeClassName=""
         >
+          {/* Animated active pill indicator */}
+          {active && !collapsed && (
+            <motion.div
+              layoutId="sidebar-active-pill"
+              className="absolute left-0 w-[3px] h-6 rounded-r-full bg-gradient-to-b from-[hsl(265_55%_60%)] to-[hsl(280_50%_50%)]"
+              transition={{ type: "spring", stiffness: 350, damping: 30 }}
+            />
+          )}
+
           {/* App Icon Square */}
           <div
             className={cn(
@@ -100,11 +168,23 @@ function AppIconItem({ item, collapsed, active }: {
           {/* Label */}
           {!collapsed && (
             <span className={cn(
-              "text-[13px] font-medium transition-colors",
+              "text-[13px] font-medium transition-colors flex-1",
               active ? "text-foreground" : "text-sidebar-foreground/80 group-hover/app:text-foreground"
             )}>
               {item.title}
             </span>
+          )}
+
+          {/* Expand chevron for domains with sub-nav */}
+          {hasSubNav && !collapsed && (
+            <button
+              onClick={(e) => { e.preventDefault(); e.stopPropagation(); onToggleExpand?.(); }}
+              className="p-0.5 rounded hover:bg-white/[0.08] transition-colors"
+            >
+              <motion.div animate={{ rotate: expanded ? 90 : 0 }} transition={{ duration: 0.15 }}>
+                <ChevronRight className="h-3 w-3 text-sidebar-foreground/40" />
+              </motion.div>
+            </button>
           )}
         </NavLink>
       </SidebarMenuButton>
@@ -112,17 +192,86 @@ function AppIconItem({ item, collapsed, active }: {
   );
 }
 
+// ── Sub-Nav Items ────────────────────────────────────────────
+function SubNavItems({ routes, collapsed }: { routes: SubRoute[]; collapsed: boolean }) {
+  const location = useLocation();
+  if (collapsed) return null;
+
+  return (
+    <motion.div
+      initial={{ height: 0, opacity: 0 }}
+      animate={{ height: "auto", opacity: 1 }}
+      exit={{ height: 0, opacity: 0 }}
+      transition={{ duration: 0.2, ease: "easeOut" }}
+      className="overflow-hidden ml-5 pl-3 border-l border-sidebar-border/20"
+    >
+      {routes.map(route => {
+        const isActive = location.pathname === route.url || 
+          (route.url !== "/business" && route.url !== "/money" && route.url !== "/concierge" && location.pathname.startsWith(route.url));
+        return (
+          <NavLink
+            key={route.url}
+            to={route.url}
+            className={cn(
+              "flex items-center gap-2 rounded-lg px-2 py-1 my-0.5 text-[11px] transition-all duration-150",
+              isActive
+                ? "text-foreground bg-white/[0.06] font-medium"
+                : "text-sidebar-foreground/50 hover:text-sidebar-foreground/80 hover:bg-white/[0.03]"
+            )}
+            activeClassName=""
+          >
+            <route.icon className="h-3 w-3" strokeWidth={1.5} />
+            <span>{route.title}</span>
+          </NavLink>
+        );
+      })}
+    </motion.div>
+  );
+}
+
 // ── Nav Group ────────────────────────────────────────────────
 function AppNavGroup({ items, collapsed }: { items: typeof primaryNav; collapsed: boolean }) {
   const location = useLocation();
+  const [expandedDomain, setExpandedDomain] = useState<string | null>(null);
+
   const isActive = (path: string) =>
     path === "/" ? location.pathname === "/" : location.pathname.startsWith(path);
 
+  // Auto-expand the active domain
+  useEffect(() => {
+    for (const item of items) {
+      if (domainSubRoutes[item.url] && location.pathname.startsWith(item.url)) {
+        setExpandedDomain(item.url);
+        return;
+      }
+    }
+  }, [location.pathname, items]);
+
   return (
     <SidebarMenu className={cn(collapsed ? "items-center gap-1" : "gap-0.5")}>
-      {items.map((item) => (
-        <AppIconItem key={item.url} item={item} collapsed={collapsed} active={isActive(item.url)} />
-      ))}
+      {items.map((item) => {
+        const hasSubNav = !!domainSubRoutes[item.url];
+        const isExpanded = expandedDomain === item.url;
+
+        return (
+          <div key={item.url}>
+            <AppIconItem
+              item={item}
+              collapsed={collapsed}
+              active={isActive(item.url)}
+              hasSubNav={hasSubNav}
+              expanded={isExpanded}
+              onToggleExpand={() => setExpandedDomain(isExpanded ? null : item.url)}
+            />
+            {/* Collapsible sub-navigation */}
+            <AnimatePresence>
+              {hasSubNav && isExpanded && (
+                <SubNavItems routes={domainSubRoutes[item.url]} collapsed={collapsed} />
+              )}
+            </AnimatePresence>
+          </div>
+        );
+      })}
     </SidebarMenu>
   );
 }
@@ -135,6 +284,7 @@ export const AppSidebar = memo(function AppSidebar() {
   const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   const location = useLocation();
+  const recents = useRecents();
 
   const displayName =
     user?.user_metadata?.full_name || user?.email?.split("@")[0] || "User";
@@ -204,6 +354,33 @@ export const AppSidebar = memo(function AppSidebar() {
             <AppNavGroup items={favoritesNav} collapsed={collapsed} />
           </SidebarGroupContent>
         </SidebarGroup>
+
+        {/* Recents */}
+        {!collapsed && recents.length > 0 && (
+          <SidebarGroup>
+            <SidebarGroupLabel className="px-3 text-[10px] font-semibold uppercase tracking-[0.15em] text-muted-foreground/50 mb-1 mt-1">
+              <Clock className="h-3 w-3 inline mr-1 -mt-px" />Recents
+            </SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu className="gap-0.5">
+                {recents.map(r => (
+                  <SidebarMenuItem key={r.url}>
+                    <SidebarMenuButton asChild className="h-auto p-0 hover:bg-transparent">
+                      <NavLink
+                        to={r.url}
+                        className="flex items-center gap-2 rounded-lg px-3 py-1 text-[11px] text-sidebar-foreground/50 hover:text-sidebar-foreground/80 hover:bg-white/[0.04] transition-all"
+                        activeClassName=""
+                      >
+                        <Clock className="h-3 w-3 text-sidebar-foreground/30" />
+                        <span>{r.title}</span>
+                      </NavLink>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
 
         {/* All Apps */}
         <SidebarGroup>
