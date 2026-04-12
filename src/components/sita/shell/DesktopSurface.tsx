@@ -240,6 +240,7 @@ export function DesktopSurface({
 }: DesktopSurfaceProps) {
   const navigate = useNavigate();
   const reduced = useReducedMotion();
+  useAccentSync();
   const { greeting, mood, gradient: timeGradient, gradientAlt: timeGradientAlt } = useMemo(getTimeConfig, []);
   const wallpaper = useMemo(getWallpaperTheme, []);
   const parallax = useWallpaperParallax(3);
