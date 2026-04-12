@@ -28,7 +28,7 @@ import { Compositor } from "@/lib/nova-sdk/kernel/compositor";
 import { PowerManager, type PowerStats, type CpuGovernor, type ThermalZoneState } from "@/lib/nova-sdk/kernel/power-manager";
 import { PrivilegeEnforcement, type PrivilegeViolation, type RingTransition } from "@/lib/nova-sdk/kernel/privilege";
 import { WaylandServer, type WaylandClient, type WaylandStats } from "@/lib/nova-sdk/kernel/wayland";
-import { ServiceManager, type ServiceStatus } from "@/lib/nova-sdk/services/service-manager";
+import { ServiceManager, type ServiceStatus, type ServiceLogEntry } from "@/lib/nova-sdk/services/service-manager";
 
 // ── Animation Variants ───────────────────────────────────────
 
