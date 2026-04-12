@@ -428,12 +428,15 @@ const WIDGET_REGISTRY: WidgetDef[] = [
   { id: "brain", label: "Brain", icon: Brain, minW: 1, component: MiniChatWidget },
   { id: "calendar", label: "Calendar", icon: CalendarDays, minW: 1, component: CalendarWidget },
   { id: "activity", label: "Activity Feed", icon: BarChart3, minW: 1, component: ActivityFeedWidget },
+  { id: "notifications", label: "System Alerts", icon: Bell, minW: 1, component: SystemNotificationsWidget },
+  { id: "finance", label: "Finance Pulse", icon: DollarSign, minW: 1, component: FinancePulseWidget },
 ];
 
 const DEFAULT_LAYOUT: WidgetState[] = [
   { id: "clock", size: "small" },
   { id: "weather", size: "medium" },
-  { id: "stats", size: "small" },
+  { id: "notifications", size: "medium" },
+  { id: "finance", size: "medium" },
   { id: "calendar", size: "small" },
 ];
 

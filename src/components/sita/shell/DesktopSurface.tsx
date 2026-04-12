@@ -28,6 +28,7 @@ import { useWindowManagerContext } from "@/contexts/WindowManagerContext";
 import { DesktopIconGrid } from "./DesktopIconGrid";
 import { DesktopContextMenu } from "./DesktopContextMenu";
 import { IntentSuggestion } from "./IntentSuggestion";
+import { WidgetGrid } from "@/components/sita/WidgetGrid";
 import { useCalmEngine } from "@/contexts/CalmEngineContext";
 import { lifecycleManager } from "@/lib/nova-sdk/runtime/lifecycle";
 import { ProcessTable } from "@/lib/nova-sdk/kernel/process-manager";
