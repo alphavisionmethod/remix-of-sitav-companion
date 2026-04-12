@@ -1,24 +1,30 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — useAdvisorChat Hook
 // Conversational AI surface hook for advisor chat
+// Now surfaces trust metadata (caveats, evidence, assumptions)
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useCallback } from "react";
-import { invokeAICapability } from "../ai-capability-client";
-import type { AIResponseEnvelope, AIState } from "../ai-state-types";
+import { invokeAICapability, type TrustEnrichedResponse } from "../ai-capability-client";
+import type { AIState } from "../ai-state-types";
 
 interface ChatMessage {
   id: string;
   role: "user" | "assistant" | "system";
   content: string;
   timestamp: string;
-  envelope?: AIResponseEnvelope;
+  envelope?: TrustEnrichedResponse;
+  /** Trust caveats surfaced from epistemic firewall */
+  caveats?: string[];
+  /** Whether the response was blocked by safety checks */
+  blocked?: boolean;
+  blockReason?: string;
 }
 
 interface UseAdvisorChatOptions {
   capabilityKey?: string;
   systemPrompt?: string;
-  onResponse?: (response: AIResponseEnvelope) => void;
+  onResponse?: (response: TrustEnrichedResponse) => void;
 }
 
 export function useAdvisorChat(options: UseAdvisorChatOptions = {}) {
@@ -29,9 +35,9 @@ export function useAdvisorChat(options: UseAdvisorChatOptions = {}) {
 
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [state, setState] = useState<AIState>("idle");
-  const [lastEnvelope, setLastEnvelope] = useState<AIResponseEnvelope | null>(null);
+  const [lastEnvelope, setLastEnvelope] = useState<TrustEnrichedResponse | null>(null);
 
-  const sendMessage = useCallback(async (content: string): Promise<AIResponseEnvelope> => {
+  const sendMessage = useCallback(async (content: string): Promise<TrustEnrichedResponse> => {
     const userMsg: ChatMessage = {
       id: crypto.randomUUID(),
       role: "user",
@@ -56,12 +62,23 @@ export function useAdvisorChat(options: UseAdvisorChatOptions = {}) {
       intent: "chat",
     });
 
+    // Surface trust metadata in the chat message
+    const trustMeta = result.trustMetadata;
+    const caveats = trustMeta?.caveats ?? [];
+    const blocked = !!trustMeta?.negativeReceipt;
+    const blockReason = trustMeta?.negativeReceipt?.blockedDescription;
+
     const assistantMsg: ChatMessage = {
       id: crypto.randomUUID(),
       role: "assistant",
-      content: result.content,
+      content: blocked
+        ? (result.userFacingMessage || blockReason || "This request was blocked by safety checks.")
+        : result.content,
       timestamp: result.timestamp,
       envelope: result,
+      caveats: caveats.length > 0 ? caveats : undefined,
+      blocked,
+      blockReason,
     };
 
     setMessages(prev => [...prev, assistantMsg]);

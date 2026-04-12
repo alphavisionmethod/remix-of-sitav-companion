@@ -1,39 +1,46 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — useAICapability Hook
 // Canonical hook for invoking any AI capability
+// Now surfaces trust metadata from epistemic firewall
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useCallback, useRef } from "react";
-import { invokeAICapability } from "../ai-capability-client";
-import type { AICapabilityRequest, AIResponseEnvelope, AIState } from "../ai-state-types";
+import { invokeAICapability, type TrustEnrichedResponse } from "../ai-capability-client";
+import type { AICapabilityRequest, AIState } from "../ai-state-types";
 
 interface UseAICapabilityOptions {
   /** Auto-retry on transient failure */
   retryOnFailure?: boolean;
   /** Callback on success */
-  onSuccess?: (response: AIResponseEnvelope) => void;
+  onSuccess?: (response: TrustEnrichedResponse) => void;
   /** Callback on error/degraded */
-  onError?: (response: AIResponseEnvelope) => void;
+  onError?: (response: TrustEnrichedResponse) => void;
 }
 
 interface UseAICapabilityReturn {
   state: AIState;
-  response: AIResponseEnvelope | null;
-  invoke: (request: AICapabilityRequest) => Promise<AIResponseEnvelope>;
-  retry: () => Promise<AIResponseEnvelope | null>;
+  response: TrustEnrichedResponse | null;
+  invoke: (request: AICapabilityRequest) => Promise<TrustEnrichedResponse>;
+  retry: () => Promise<TrustEnrichedResponse | null>;
   reset: () => void;
   isLoading: boolean;
   isSuccess: boolean;
   isDegraded: boolean;
   isError: boolean;
+  /** Trust metadata from the epistemic firewall */
+  trustMetadata: TrustEnrichedResponse["trustMetadata"] | null;
+  /** Whether the response has caveats */
+  hasCaveats: boolean;
+  /** Whether the response was blocked by safety checks */
+  wasBlocked: boolean;
 }
 
 export function useAICapability(options: UseAICapabilityOptions = {}): UseAICapabilityReturn {
   const [state, setState] = useState<AIState>("idle");
-  const [response, setResponse] = useState<AIResponseEnvelope | null>(null);
+  const [response, setResponse] = useState<TrustEnrichedResponse | null>(null);
   const lastRequestRef = useRef<AICapabilityRequest | null>(null);
 
-  const invoke = useCallback(async (request: AICapabilityRequest): Promise<AIResponseEnvelope> => {
+  const invoke = useCallback(async (request: AICapabilityRequest): Promise<TrustEnrichedResponse> => {
     lastRequestRef.current = request;
     setState("loading");
 
@@ -51,7 +58,7 @@ export function useAICapability(options: UseAICapabilityOptions = {}): UseAICapa
     return result;
   }, [options.onSuccess, options.onError]);
 
-  const retry = useCallback(async (): Promise<AIResponseEnvelope | null> => {
+  const retry = useCallback(async (): Promise<TrustEnrichedResponse | null> => {
     if (!lastRequestRef.current) return null;
     return invoke(lastRequestRef.current);
   }, [invoke]);
@@ -60,6 +67,8 @@ export function useAICapability(options: UseAICapabilityOptions = {}): UseAICapa
     setState("idle");
     setResponse(null);
   }, []);
+
+  const trustMetadata = response?.trustMetadata ?? null;
 
   return {
     state,
@@ -71,5 +80,8 @@ export function useAICapability(options: UseAICapabilityOptions = {}): UseAICapa
     isSuccess: state.startsWith("success_"),
     isDegraded: state.startsWith("degraded_") || state.startsWith("blocked_"),
     isError: state === "error" || state === "validation_failed" || state === "rate_limited" || state === "payment_required",
+    trustMetadata,
+    hasCaveats: (trustMetadata?.caveats?.length ?? 0) > 0,
+    wasBlocked: !!trustMetadata?.negativeReceipt,
   };
 }
