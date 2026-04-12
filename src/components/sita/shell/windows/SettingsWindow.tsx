@@ -396,14 +396,28 @@ function GeneralContent() {
 function AppearanceContent() {
   const [accentColor, setAccentColor] = useSettingsValue("appearance.accentColor", "hsl(265, 55%, 58%)");
   const accents = [
-    { id: "hsl(265, 55%, 58%)", label: "purple", color: "hsl(265 55% 58%)" },
-    { id: "hsl(210, 80%, 55%)", label: "blue",   color: "hsl(210 80% 55%)" },
-    { id: "hsl(152, 55%, 48%)", label: "green",  color: "hsl(152 55% 48%)" },
-    { id: "hsl(38, 85%, 58%)",  label: "orange", color: "hsl(38 85% 58%)" },
-    { id: "hsl(0, 65%, 50%)",   label: "red",    color: "hsl(0 65% 50%)" },
-    { id: "hsl(330, 65%, 55%)", label: "pink",   color: "hsl(330 65% 55%)" },
+    { id: "hsl(265, 55%, 58%)", label: "purple", color: "hsl(265 55% 58%)", hsl: "265 55% 58%" },
+    { id: "hsl(210, 80%, 55%)", label: "blue",   color: "hsl(210 80% 55%)", hsl: "210 80% 55%" },
+    { id: "hsl(152, 55%, 48%)", label: "green",  color: "hsl(152 55% 48%)", hsl: "152 55% 48%" },
+    { id: "hsl(38, 85%, 58%)",  label: "orange", color: "hsl(38 85% 58%)",  hsl: "38 85% 58%" },
+    { id: "hsl(0, 65%, 50%)",   label: "red",    color: "hsl(0 65% 50%)",   hsl: "0 65% 50%" },
+    { id: "hsl(330, 65%, 55%)", label: "pink",   color: "hsl(330 65% 55%)", hsl: "330 65% 55%" },
   ];
   const [reduceTransparency, setReduceTransparency] = useSettingsValue("appearance.reduceTransparency", false);
+
+  // Live-update CSS custom properties when accent changes
+  useEffect(() => {
+    const match = accents.find(a => a.id === accentColor);
+    if (!match) return;
+    const root = document.documentElement;
+    root.style.setProperty("--primary", match.hsl);
+    // Derive a complementary accent (shift hue +133°)
+    const hueMatch = match.hsl.match(/^(\d+)\s/);
+    if (hueMatch) {
+      const shifted = (parseInt(hueMatch[1]) + 133) % 360;
+      root.style.setProperty("--accent", `${shifted} 85% 58%`);
+    }
+  }, [accentColor]);
 
   return (
     <VStack spacing="tight">
