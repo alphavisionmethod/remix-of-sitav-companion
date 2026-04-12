@@ -738,6 +738,298 @@ function DriversTab({
   );
 }
 
+// ═══════════════════════════════════════════════════════════════
+// STRESS TEST TAB
+// ═══════════════════════════════════════════════════════════════
+
+interface StressMetrics {
+  windowCount: number;
+  openTimeMs: number;
+  avgOpenMs: number;
+  maxOpenMs: number;
+  memoryMB: number;
+  domNodes: number;
+  fps: number;
+  dragLatencyMs: number;
+  phase: "idle" | "opening" | "running" | "measuring" | "done";
+}
+
+const STRESS_WINDOW_NAMES = [
+  "Alpha", "Beta", "Gamma", "Delta", "Epsilon", "Zeta", "Eta", "Theta",
+  "Iota", "Kappa", "Lambda", "Mu", "Nu", "Xi", "Omicron", "Pi",
+  "Rho", "Sigma", "Tau", "Upsilon", "Phi", "Chi", "Psi", "Omega",
+  "Aleph", "Beth", "Gimel", "Daleth", "He", "Vav",
+];
+
+function StressWindowContent({ name, index }: { name: string; index: number }) {
+  const [counter, setCounter] = useState(0);
+  useEffect(() => {
+    const iv = setInterval(() => setCounter(c => c + 1), 1000);
+    return () => clearInterval(iv);
+  }, []);
+  const hue = (index * 37) % 360;
+  return (
+    <div className="flex flex-col items-center justify-center h-full gap-2 p-3" style={{ background: `hsl(${hue} 40% 12%)` }}>
+      <div className="text-2xl font-bold" style={{ color: `hsl(${hue} 70% 65%)` }}>
+        {name}
+      </div>
+      <div className="text-xs text-muted-foreground font-mono">
+        Window #{index + 1} · Tick {counter}
+      </div>
+      <div className="w-full h-2 rounded-full overflow-hidden bg-background/30 mt-2">
+        <div
+          className="h-full rounded-full transition-all duration-1000"
+          style={{
+            width: `${(counter % 20) * 5}%`,
+            background: `hsl(${hue} 70% 55%)`,
+          }}
+        />
+      </div>
+    </div>
+  );
+}
+
+function StressTestTab() {
+  const wm = useWindowManagerContext();
+  const [metrics, setMetrics] = useState<StressMetrics>({
+    windowCount: 0, openTimeMs: 0, avgOpenMs: 0, maxOpenMs: 0,
+    memoryMB: 0, domNodes: 0, fps: 0, dragLatencyMs: 0,
+    phase: "idle",
+  });
+  const [targetCount, setTargetCount] = useState(24);
+  const [log, setLog] = useState<string[]>([]);
+  const [fpsHistory, setFpsHistory] = useState<number[]>([]);
+  const stressIdsRef = useRef<string[]>([]);
+  const rafRef = useRef<number>(0);
+
+  const addLog = useCallback((msg: string) => {
+    setLog(prev => [`[${new Date().toLocaleTimeString()}] ${msg}`, ...prev].slice(0, 50));
+  }, []);
+
+  // FPS measurement
+  const measureFps = useCallback(() => {
+    let frames = 0;
+    let last = performance.now();
+    const tick = () => {
+      frames++;
+      const now = performance.now();
+      if (now - last >= 1000) {
+        const fps = Math.round((frames * 1000) / (now - last));
+        setMetrics(prev => ({ ...prev, fps }));
+        setFpsHistory(prev => pushHistory(prev, fps));
+        frames = 0;
+        last = now;
+      }
+      rafRef.current = requestAnimationFrame(tick);
+    };
+    rafRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, []);
+
+  // Start stress test
+  const runStressTest = useCallback(async () => {
+    if (!wm) return;
+    setMetrics(prev => ({ ...prev, phase: "opening", windowCount: 0 }));
+    setLog([]);
+    addLog(`Starting stress test: ${targetCount} windows`);
+
+    const ids: string[] = [];
+    const openTimes: number[] = [];
+    const totalStart = performance.now();
+
+    for (let i = 0; i < targetCount; i++) {
+      const id = `stress-${i}`;
+      const name = STRESS_WINDOW_NAMES[i] || `W${i}`;
+      const x = 60 + (i % 6) * 80;
+      const y = 40 + Math.floor(i / 6) * 70;
+
+      const t0 = performance.now();
+      wm.openWindow(id, {
+        title: `Stress: ${name}`,
+        component: <StressWindowContent name={name} index={i} />,
+        position: { x, y },
+        width: 280,
+      });
+      const t1 = performance.now();
+      openTimes.push(t1 - t0);
+      ids.push(id);
+
+      if (i % 5 === 4) {
+        addLog(`Opened ${i + 1}/${targetCount} windows (${(t1 - t0).toFixed(1)}ms last)`);
+      }
+      // Small yield to keep UI responsive during batch open
+      if (i % 3 === 2) await new Promise(r => setTimeout(r, 0));
+    }
+
+    const totalMs = performance.now() - totalStart;
+    const avgMs = openTimes.reduce((a, b) => a + b, 0) / openTimes.length;
+    const maxMs = Math.max(...openTimes);
+    stressIdsRef.current = ids;
+
+    addLog(`All ${targetCount} windows opened in ${totalMs.toFixed(0)}ms`);
+    addLog(`Avg open: ${avgMs.toFixed(2)}ms · Max: ${maxMs.toFixed(2)}ms`);
+
+    // Measure DOM + memory
+    const domNodes = document.querySelectorAll("*").length;
+    const memoryMB = (performance as any).memory
+      ? ((performance as any).memory.usedJSHeapSize / (1024 * 1024))
+      : 0;
+
+    setMetrics({
+      windowCount: targetCount,
+      openTimeMs: totalMs,
+      avgOpenMs: avgMs,
+      maxOpenMs: maxMs,
+      memoryMB,
+      domNodes,
+      fps: 0,
+      dragLatencyMs: 0,
+      phase: "running",
+    });
+
+    addLog(`DOM nodes: ${domNodes.toLocaleString()} · Heap: ${memoryMB.toFixed(1)}MB`);
+    addLog("Measuring FPS…");
+  }, [wm, targetCount, addLog]);
+
+  // Close all stress windows
+  const closeStressWindows = useCallback(() => {
+    if (!wm) return;
+    const t0 = performance.now();
+    for (const id of stressIdsRef.current) {
+      wm.closeWindow(id);
+    }
+    const t1 = performance.now();
+    addLog(`Closed ${stressIdsRef.current.length} windows in ${(t1 - t0).toFixed(0)}ms`);
+    stressIdsRef.current = [];
+    setMetrics(prev => ({ ...prev, phase: "done", windowCount: 0 }));
+    cancelAnimationFrame(rafRef.current);
+  }, [wm, addLog]);
+
+  // Start FPS measurement when running
+  useEffect(() => {
+    if (metrics.phase === "running") {
+      const cleanup = measureFps();
+      return cleanup;
+    }
+  }, [metrics.phase, measureFps]);
+
+  // Periodic DOM/memory update during run
+  useEffect(() => {
+    if (metrics.phase !== "running") return;
+    const iv = setInterval(() => {
+      const domNodes = document.querySelectorAll("*").length;
+      const memoryMB = (performance as any).memory
+        ? ((performance as any).memory.usedJSHeapSize / (1024 * 1024))
+        : 0;
+      setMetrics(prev => ({ ...prev, domNodes, memoryMB }));
+    }, 2000);
+    return () => clearInterval(iv);
+  }, [metrics.phase]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => cancelAnimationFrame(rafRef.current);
+  }, []);
+
+  const fpsSeries = useMemo((): ChartSeries[] => [
+    { key: "FPS", color: { h: 152, s: 55, l: 48 } as NovaColor, data: fpsHistory, fillOpacity: 0.2 },
+  ], [fpsHistory]);
+
+  const grade = metrics.fps >= 55 ? "Excellent" : metrics.fps >= 40 ? "Good" : metrics.fps >= 25 ? "Acceptable" : metrics.fps > 0 ? "Poor" : "—";
+  const gradeColor = metrics.fps >= 55 ? "text-[hsl(152_55%_48%)]" : metrics.fps >= 40 ? "text-[hsl(210_80%_55%)]" : metrics.fps >= 25 ? "text-[hsl(38_85%_58%)]" : metrics.fps > 0 ? "text-destructive" : "text-muted-foreground";
+
+  return (
+    <VStack spacing="tight">
+      {/* Controls */}
+      <NovaCard className="p-3">
+        <NovaSectionLabel>Window Stress Test</NovaSectionLabel>
+        <NovaText muted className="text-[10px] mb-2">
+          Opens multiple windows simultaneously to measure window manager performance, FPS stability, and memory impact.
+        </NovaText>
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] text-muted-foreground">Windows:</span>
+            {[12, 20, 24, 30].map(n => (
+              <button
+                key={n}
+                onClick={() => setTargetCount(n)}
+                className={cn(
+                  "px-2 py-0.5 rounded text-[10px] font-mono transition-colors",
+                  targetCount === n
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-muted/50 text-muted-foreground hover:bg-muted"
+                )}
+              >
+                {n}
+              </button>
+            ))}
+          </div>
+          <div className="flex-1" />
+          {metrics.phase === "idle" || metrics.phase === "done" ? (
+            <button
+              onClick={runStressTest}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-primary-foreground text-[11px] font-medium hover:bg-primary/90 transition-colors"
+            >
+              <Play size={12} /> Run Test
+            </button>
+          ) : (
+            <button
+              onClick={closeStressWindows}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-destructive text-destructive-foreground text-[11px] font-medium hover:bg-destructive/90 transition-colors"
+            >
+              <Square size={12} /> Stop & Close
+            </button>
+          )}
+        </div>
+      </NovaCard>
+
+      {/* KPI strip */}
+      <div className="grid grid-cols-4 gap-2">
+        <StatCard icon={Layers} label="Windows" value={`${metrics.windowCount}`} />
+        <StatCard icon={Timer} label="Total Open" value={`${metrics.openTimeMs.toFixed(0)}ms`} />
+        <StatCard icon={Activity} label="FPS" value={`${metrics.fps}`}
+          variant={metrics.fps > 0 && metrics.fps < 25 ? "danger" : metrics.fps > 0 && metrics.fps < 40 ? "warning" : "default"} />
+        <StatCard icon={HardDrive} label="Heap" value={metrics.memoryMB > 0 ? `${metrics.memoryMB.toFixed(0)}MB` : "—"} />
+      </div>
+
+      {/* Performance grade */}
+      {metrics.phase === "running" && (
+        <NovaCard className="p-2 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] text-muted-foreground">Performance Grade:</span>
+            <span className={cn("text-sm font-bold", gradeColor)}>{grade}</span>
+          </div>
+          <div className="flex items-center gap-4 text-[10px] font-mono text-muted-foreground">
+            <span>Avg open: {metrics.avgOpenMs.toFixed(2)}ms</span>
+            <span>Max open: {metrics.maxOpenMs.toFixed(2)}ms</span>
+            <span>DOM: {metrics.domNodes.toLocaleString()}</span>
+          </div>
+        </NovaCard>
+      )}
+
+      {/* FPS chart */}
+      {fpsHistory.length > 1 && (
+        <NovaCard className="p-2">
+          <NovaSectionLabel>FPS Over Time</NovaSectionLabel>
+          <NovaCanvasChart series={fpsSeries} height={100} maxY={65} yUnit=" fps" gridLines={3} />
+        </NovaCard>
+      )}
+
+      {/* Test log */}
+      <NovaCard className="p-2">
+        <NovaSectionLabel>Test Log</NovaSectionLabel>
+        <div className="max-h-[180px] overflow-y-auto space-y-0.5">
+          {log.map((entry, i) => (
+            <div key={i} className="text-[10px] font-mono text-muted-foreground py-0.5">
+              {entry}
+            </div>
+          ))}
+          {log.length === 0 && <NovaText muted className="text-[10px]">Press "Run Test" to begin</NovaText>}
+        </div>
+      </NovaCard>
+    </VStack>
+  );
+}
 
 
 function StatCard({
