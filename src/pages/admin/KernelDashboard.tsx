@@ -126,6 +126,9 @@ function useKernelMetrics(refreshMs = 2000) {
   const blockedProcesses = useMemo(() => ProcessTable.listBlocked(), [tick]);
   const readyProcesses = useMemo(() => ProcessTable.listReady(), [tick]);
   const compositorSurfaces = useMemo(() => Compositor.listSurfaces(), [tick]);
+  const waylandStats = useMemo(() => WaylandServer.getStats(), [tick]);
+  const waylandClients = useMemo(() => WaylandServer.listClients(), [tick]);
+  const waylandGlobals = useMemo(() => WaylandServer.listGlobals(), [tick]);
 
   const bandDistribution = useMemo(() => {
     const bands: Record<string, { count: number; cpuPercent: number }> = {};
@@ -144,7 +147,7 @@ function useKernelMetrics(refreshMs = 2000) {
     return bands;
   }, [processes]);
 
-  return { processes, memStats, schedStats, compStats, powerStats, privilegeStats, privilegeViolations, ringTransitions, bandDistribution, tick, schedulerEvents, currentContext, blockedProcesses, readyProcesses, compositorSurfaces };
+  return { processes, memStats, schedStats, compStats, powerStats, privilegeStats, privilegeViolations, ringTransitions, bandDistribution, tick, schedulerEvents, currentContext, blockedProcesses, readyProcesses, compositorSurfaces, waylandStats, waylandClients, waylandGlobals };
 }
 
 // ── Subcomponents ────────────────────────────────────────────
