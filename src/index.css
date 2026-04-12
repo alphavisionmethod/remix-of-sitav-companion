@@ -665,3 +665,10 @@
   animation: sweep-second 60s linear infinite;
   transform-origin: 50% 100%;
 }
+
+/* Zero-Latency: Instant press feedback */
+.sita-pressed {
+  transform: scale(0.97) !important;
+  opacity: 0.9 !important;
+  transition: transform 0.05s ease-out, opacity 0.05s ease-out !important;
+}

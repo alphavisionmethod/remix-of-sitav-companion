@@ -6,6 +6,7 @@
 import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { useAdaptivePersonalization } from "@/hooks/use-adaptive-personalization";
+import { ambientContext } from "@/lib/services/ambient-context-engine";
 
 export const InteractionTracker = () => {
   const location = useLocation();
@@ -26,6 +27,8 @@ export const InteractionTracker = () => {
         surface: prevPath.split("/").filter(Boolean)[0] || "home",
         metadata: { path: prevPath, dwellMs, scrollDepth: getScrollDepth() },
       });
+      // Feed dwell to ambient context engine
+      ambientContext.trackDwell(prevPath, dwellMs);
     }
 
     // Report navigation to new page
@@ -35,6 +38,9 @@ export const InteractionTracker = () => {
       surface,
       metadata: { path: location.pathname, from: prevPath },
     });
+
+    // Feed navigation to ambient context engine
+    ambientContext.trackPageVisit(location.pathname, surface);
 
     lastPath.current = location.pathname;
     enterTime.current = now;
