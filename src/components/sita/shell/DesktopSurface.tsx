@@ -15,6 +15,8 @@ import { useAccentSync } from "@/hooks/use-accent-sync";
 import {
   CheckCircle, DollarSign, Calendar, Brain,
   TrendingUp, ArrowRight, GripVertical,
+  CloudSun, ListTodo, Battery, StickyNote, Clock,
+  Briefcase, Heart, Plus, X, Settings2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { DragDropContext, Droppable, Draggable, type DropResult } from "@hello-pangea/dnd";
@@ -217,27 +219,28 @@ function Sparkline({ data, color = "hsl(265 55% 65%)", width = 64, height = 24 }
 function useSparklineData() {
   const [data, setData] = useState(() => generateSparklines());
   useEffect(() => {
-    // Refresh sparklines every 30 seconds with subtle drift
     const id = setInterval(() => {
-      setData(prev => ({
-        approvals: driftSeries(prev.approvals, 1, 8),
-        cash: driftSeries(prev.cash, 35000, 50000),
-        today: driftSeries(prev.today, 3, 12),
-        revenue: driftSeries(prev.revenue, -5, 25),
-      }));
+      setData(prev => {
+        const next: Record<string, number[]> = {};
+        for (const key of Object.keys(prev)) {
+          const cfg = ALL_WIDGET_CONFIGS[key];
+          if (cfg) next[key] = driftSeries(prev[key], cfg.sparkRange[0], cfg.sparkRange[1]);
+          else next[key] = prev[key];
+        }
+        return next;
+      });
     }, 30_000);
     return () => clearInterval(id);
   }, []);
   return data;
 }
 
-function generateSparklines() {
-  return {
-    approvals: generateSeries(7, 1, 8),
-    cash: generateSeries(7, 35000, 50000),
-    today: generateSeries(7, 3, 12),
-    revenue: generateSeries(7, -5, 25),
-  };
+function generateSparklines(): Record<string, number[]> {
+  const result: Record<string, number[]> = {};
+  for (const [id, cfg] of Object.entries(ALL_WIDGET_CONFIGS)) {
+    result[id] = generateSeries(7, cfg.sparkRange[0], cfg.sparkRange[1]);
+  }
+  return result;
 }
 
 function generateSeries(count: number, min: number, max: number): number[] {
@@ -331,10 +334,9 @@ function loadWidgetOrder(): string[] {
     const raw = localStorage.getItem(WIDGET_ORDER_KEY);
     if (!raw) return DEFAULT_WIDGET_ORDER;
     const parsed = JSON.parse(raw) as string[];
-    if (DEFAULT_WIDGET_ORDER.every(id => parsed.includes(id)) && parsed.length === DEFAULT_WIDGET_ORDER.length) {
-      return parsed;
-    }
-    return DEFAULT_WIDGET_ORDER;
+    // Validate all IDs exist in config
+    const valid = parsed.filter(id => id in ALL_WIDGET_CONFIGS);
+    return valid.length > 0 ? valid : DEFAULT_WIDGET_ORDER;
   } catch {
     return DEFAULT_WIDGET_ORDER;
   }
@@ -353,9 +355,11 @@ interface WidgetConfig {
   accent: string;
   route: string;
   sparkColor: string;
+  sparkRange: [number, number];
+  description: string;
 }
 
-const WIDGET_CONFIGS: Record<string, WidgetConfig> = {
+const ALL_WIDGET_CONFIGS: Record<string, WidgetConfig> = {
   approvals: {
     icon: CheckCircle,
     label: "Approvals",
@@ -363,6 +367,8 @@ const WIDGET_CONFIGS: Record<string, WidgetConfig> = {
     accent: "bg-[hsl(265_55%_58%/0.2)]",
     route: "/approvals",
     sparkColor: "hsl(265 55% 65%)",
+    sparkRange: [1, 8],
+    description: "Pending approvals & decisions",
   },
   cash: {
     icon: DollarSign,
@@ -371,6 +377,8 @@ const WIDGET_CONFIGS: Record<string, WidgetConfig> = {
     accent: "bg-[hsl(140_50%_45%/0.2)]",
     route: "/money",
     sparkColor: "hsl(140 50% 55%)",
+    sparkRange: [35000, 50000],
+    description: "Current cash & liquidity",
   },
   today: {
     icon: Calendar,
@@ -379,6 +387,8 @@ const WIDGET_CONFIGS: Record<string, WidgetConfig> = {
     accent: "bg-[hsl(35_80%_55%/0.2)]",
     route: "/concierge",
     sparkColor: "hsl(35 80% 60%)",
+    sparkRange: [3, 12],
+    description: "Today's agenda at a glance",
   },
   revenue: {
     icon: TrendingUp,
@@ -387,8 +397,161 @@ const WIDGET_CONFIGS: Record<string, WidgetConfig> = {
     accent: "bg-[hsl(190_60%_50%/0.2)]",
     route: "/business",
     sparkColor: "hsl(190 60% 55%)",
+    sparkRange: [-5, 25],
+    description: "Weekly revenue trend",
+  },
+  weather: {
+    icon: CloudSun,
+    label: "Weather",
+    getValue: () => "72°F · Sunny",
+    accent: "bg-[hsl(200_70%_50%/0.2)]",
+    route: "/concierge",
+    sparkColor: "hsl(200 70% 60%)",
+    sparkRange: [60, 85],
+    description: "Current weather conditions",
+  },
+  tasks: {
+    icon: ListTodo,
+    label: "Tasks",
+    getValue: () => "3 due today",
+    accent: "bg-[hsl(330_60%_50%/0.2)]",
+    route: "/concierge",
+    sparkColor: "hsl(330 60% 55%)",
+    sparkRange: [0, 10],
+    description: "Active task tracker",
+  },
+  calendar: {
+    icon: Clock,
+    label: "Calendar",
+    getValue: () => "Next: 2:30 PM",
+    accent: "bg-[hsl(25_75%_50%/0.2)]",
+    route: "/concierge",
+    sparkColor: "hsl(25 75% 55%)",
+    sparkRange: [1, 6],
+    description: "Upcoming events & meetings",
+  },
+  battery: {
+    icon: Battery,
+    label: "Battery",
+    getValue: () => "78% · 4h left",
+    accent: "bg-[hsl(142_60%_45%/0.2)]",
+    route: "/system-monitor",
+    sparkColor: "hsl(142 60% 50%)",
+    sparkRange: [20, 100],
+    description: "System battery status",
+  },
+  notes: {
+    icon: StickyNote,
+    label: "Quick Notes",
+    getValue: () => "2 pinned",
+    accent: "bg-[hsl(50_80%_50%/0.2)]",
+    route: "/concierge",
+    sparkColor: "hsl(50 80% 55%)",
+    sparkRange: [1, 8],
+    description: "Pinned notes & reminders",
+  },
+  focus: {
+    icon: Brain,
+    label: "Focus",
+    getValue: () => "2h 14m today",
+    accent: "bg-[hsl(280_50%_55%/0.2)]",
+    route: "/concierge",
+    sparkColor: "hsl(280 50% 60%)",
+    sparkRange: [0, 240],
+    description: "Daily focus time tracker",
+  },
+  pipeline: {
+    icon: Briefcase,
+    label: "Pipeline",
+    getValue: () => "12 active deals",
+    accent: "bg-[hsl(210_55%_50%/0.2)]",
+    route: "/business",
+    sparkColor: "hsl(210 55% 55%)",
+    sparkRange: [5, 20],
+    description: "Business pipeline overview",
+  },
+  wellness: {
+    icon: Heart,
+    label: "Wellness",
+    getValue: () => "Score: 82",
+    accent: "bg-[hsl(350_65%_55%/0.2)]",
+    route: "/concierge",
+    sparkColor: "hsl(350 65% 60%)",
+    sparkRange: [50, 100],
+    description: "Daily wellness & energy score",
   },
 };
+
+// ── Widget Picker ────────────────────────────────────────────
+
+function WidgetPicker({
+  activeIds,
+  onAdd,
+  onRemove,
+  onClose,
+}: {
+  activeIds: string[];
+  onAdd: (id: string) => void;
+  onRemove: (id: string) => void;
+  onClose: () => void;
+}) {
+  const allIds = Object.keys(ALL_WIDGET_CONFIGS);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95, y: -8 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.95, y: -8 }}
+      transition={{ duration: 0.2 }}
+      className={cn(
+        "absolute top-full mt-2 left-1/2 -translate-x-1/2 z-50",
+        "w-[380px] max-h-[360px] overflow-y-auto",
+        "rounded-2xl bg-[hsl(0_0%_0%/0.75)] backdrop-blur-2xl",
+        "border border-[hsl(0_0%_100%/0.12)] shadow-[0_16px_48px_hsl(0_0%_0%/0.4)]",
+        "p-4"
+      )}
+      onClick={e => e.stopPropagation()}
+    >
+      <div className="flex items-center justify-between mb-3">
+        <p className="text-sm font-semibold text-[hsl(0_0%_100%/0.85)]">Desktop Widgets</p>
+        <button onClick={onClose} className="rounded-lg p-1 hover:bg-[hsl(0_0%_100%/0.1)] transition-colors">
+          <X className="h-3.5 w-3.5 text-[hsl(0_0%_100%/0.5)]" />
+        </button>
+      </div>
+      <div className="grid grid-cols-2 gap-2">
+        {allIds.map(id => {
+          const cfg = ALL_WIDGET_CONFIGS[id];
+          const isActive = activeIds.includes(id);
+          return (
+            <button
+              key={id}
+              onClick={() => isActive ? onRemove(id) : onAdd(id)}
+              className={cn(
+                "flex items-center gap-2.5 rounded-xl p-2.5 text-left transition-all duration-150",
+                isActive
+                  ? "bg-[hsl(265_55%_58%/0.25)] border border-[hsl(265_55%_58%/0.4)]"
+                  : "bg-[hsl(0_0%_100%/0.04)] border border-transparent hover:bg-[hsl(0_0%_100%/0.08)]"
+              )}
+            >
+              <div className={cn("rounded-lg p-1.5 shrink-0", isActive ? "bg-[hsl(265_55%_58%/0.3)]" : "bg-[hsl(0_0%_100%/0.06)]")}>
+                <cfg.icon className={cn("h-3.5 w-3.5", isActive ? "text-[hsl(265_55%_70%)]" : "text-[hsl(0_0%_100%/0.5)]")} />
+              </div>
+              <div className="min-w-0">
+                <p className={cn("text-xs font-medium truncate", isActive ? "text-[hsl(0_0%_100%/0.9)]" : "text-[hsl(0_0%_100%/0.6)]")}>
+                  {cfg.label}
+                </p>
+                <p className="text-[9px] text-[hsl(0_0%_100%/0.35)] truncate">{cfg.description}</p>
+              </div>
+              {isActive && (
+                <CheckCircle className="h-3 w-3 text-[hsl(265_55%_70%)] ml-auto shrink-0" />
+              )}
+            </button>
+          );
+        })}
+      </div>
+    </motion.div>
+  );
+}
 
 function AdvisorInsight({ bootReady }: { bootReady: boolean }) {
   const insights = [
@@ -461,6 +624,7 @@ export function DesktopSurface({
 
   // ── Widget Order (drag-and-drop) ────────────────────────────
   const [widgetOrder, setWidgetOrder] = useState(loadWidgetOrder);
+  const [showWidgetPicker, setShowWidgetPicker] = useState(false);
 
   const handleWidgetDragEnd = useCallback((result: DropResult) => {
     if (!result.destination || result.source.index === result.destination.index) return;
@@ -563,48 +727,89 @@ export function DesktopSurface({
         {/* Clock */}
         <DesktopClock greeting={greeting} userName={userName || ""} bootReady={bootPhase >= 2} />
 
-        {/* Draggable Widgets */}
-        <DragDropContext onDragEnd={handleWidgetDragEnd}>
-          <Droppable droppableId="desktop-widgets" direction="horizontal">
-            {(provided) => (
-              <div
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-                className="flex flex-wrap items-center justify-center gap-3"
-              >
-                {widgetOrder.map((widgetId, index) => {
-                  const config = WIDGET_CONFIGS[widgetId];
-                  if (!config) return null;
-                  return (
-                    <Draggable key={widgetId} draggableId={widgetId} index={index}>
-                      {(dragProvided, dragSnapshot) => (
-                        <div
-                          ref={dragProvided.innerRef}
-                          {...dragProvided.draggableProps}
-                        >
-                          <GlassWidget
-                            icon={config.icon}
-                            label={config.label}
-                            value={config.getValue(notifications)}
-                            accent={config.accent}
-                            onClick={() => navigate(config.route)}
-                            bootReady={bootPhase >= 2}
-                            delay={index * 80}
-                            isDragging={dragSnapshot.isDragging}
-                            dragHandleProps={dragProvided.dragHandleProps ?? undefined}
-                            sparkData={sparklines[widgetId as keyof typeof sparklines]}
-                            sparkColor={config.sparkColor}
-                          />
-                        </div>
-                      )}
-                    </Draggable>
-                  );
-                })}
-                {provided.placeholder}
-              </div>
+        {/* Draggable Widgets + Picker */}
+        <div className="relative">
+          <DragDropContext onDragEnd={handleWidgetDragEnd}>
+            <Droppable droppableId="desktop-widgets" direction="horizontal">
+              {(provided) => (
+                <div
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  className="flex flex-wrap items-center justify-center gap-3"
+                >
+                  {widgetOrder.map((widgetId, index) => {
+                    const config = ALL_WIDGET_CONFIGS[widgetId];
+                    if (!config) return null;
+                    return (
+                      <Draggable key={widgetId} draggableId={widgetId} index={index}>
+                        {(dragProvided, dragSnapshot) => (
+                          <div
+                            ref={dragProvided.innerRef}
+                            {...dragProvided.draggableProps}
+                          >
+                            <GlassWidget
+                              icon={config.icon}
+                              label={config.label}
+                              value={config.getValue(notifications)}
+                              accent={config.accent}
+                              onClick={() => navigate(config.route)}
+                              bootReady={bootPhase >= 2}
+                              delay={index * 80}
+                              isDragging={dragSnapshot.isDragging}
+                              dragHandleProps={dragProvided.dragHandleProps ?? undefined}
+                              sparkData={sparklines[widgetId as keyof typeof sparklines]}
+                              sparkColor={config.sparkColor}
+                            />
+                          </div>
+                        )}
+                      </Draggable>
+                    );
+                  })}
+                  {provided.placeholder}
+                  {/* Add/Remove Widget Button */}
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setShowWidgetPicker(p => !p); }}
+                    className={cn(
+                      "flex items-center justify-center rounded-2xl w-12 h-[68px]",
+                      "bg-[hsl(0_0%_100%/0.06)] backdrop-blur-xl border border-dashed border-[hsl(0_0%_100%/0.15)]",
+                      "hover:bg-[hsl(0_0%_100%/0.12)] hover:border-[hsl(0_0%_100%/0.25)]",
+                      "transition-all duration-150 cursor-pointer",
+                      bootPhase >= 2 ? "opacity-100" : "opacity-0",
+                    )}
+                    title="Add or remove widgets"
+                  >
+                    <Settings2 className="h-4 w-4 text-[hsl(0_0%_100%/0.4)]" />
+                  </button>
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+
+          {/* Widget Picker Popover */}
+          <AnimatePresence>
+            {showWidgetPicker && (
+              <WidgetPicker
+                activeIds={widgetOrder}
+                onAdd={(id) => {
+                  setWidgetOrder(prev => {
+                    const next = [...prev, id];
+                    saveWidgetOrder(next);
+                    return next;
+                  });
+                }}
+                onRemove={(id) => {
+                  setWidgetOrder(prev => {
+                    const next = prev.filter(w => w !== id);
+                    if (next.length === 0) return prev;
+                    saveWidgetOrder(next);
+                    return next;
+                  });
+                }}
+                onClose={() => setShowWidgetPicker(false)}
+              />
             )}
-          </Droppable>
-        </DragDropContext>
+          </AnimatePresence>
+        </div>
 
         {/* Advisor Insight */}
         <AdvisorInsight bootReady={bootPhase >= 2} />
