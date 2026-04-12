@@ -34,6 +34,7 @@ class NovaKernelClass {
   private booted = false;
   private bootLog: BootLogEntry[] = [];
   private bootStartTime = 0;
+  private heartbeatInterval: ReturnType<typeof setInterval> | null = null;
 
   /** Boot all kernel subsystems in order */
   boot(): BootLogEntry[] {
