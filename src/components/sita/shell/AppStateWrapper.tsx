@@ -17,6 +17,7 @@ interface AppStateWrapperProps {
   emptyIcon?: React.ElementType;
   emptyTitle?: string;
   emptyMessage?: string;
+  emptyAction?: ReactNode;
   errorMessage?: string;
   onRetry?: () => void;
   loadingDelay?: number;
@@ -44,7 +45,7 @@ function ShimmerSkeleton({ accentGradient }: { accentGradient?: string }) {
   );
 }
 
-function EmptyState({ icon: Icon = Inbox, title, message }: { icon?: React.ElementType; title?: string; message?: string }) {
+function EmptyState({ icon: Icon = Inbox, title, message, action }: { icon?: React.ElementType; title?: string; message?: string; action?: ReactNode }) {
   return (
     <div className="flex flex-col items-center justify-center py-16 px-8 text-center">
       <div className="w-14 h-14 rounded-2xl bg-[hsl(0_0%_0%/0.04)] dark:bg-[hsl(0_0%_100%/0.06)] flex items-center justify-center mb-4">
@@ -56,6 +57,7 @@ function EmptyState({ icon: Icon = Inbox, title, message }: { icon?: React.Eleme
       <p className={cn(APP_TYPE.body, "text-[hsl(0_0%_0%/0.4)] dark:text-[hsl(0_0%_100%/0.4)] max-w-[240px]")}>
         {message || "Content will appear here when available."}
       </p>
+      {action && <div className="mt-4">{action}</div>}
     </div>
   );
 }
