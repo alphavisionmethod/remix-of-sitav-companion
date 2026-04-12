@@ -25,6 +25,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { useSettingsValue } from "@/hooks/use-settings-value";
+import { SettingsService } from "@/lib/nova-sdk/services/settings-service";
+import type { SettingsSchema } from "@/lib/nova-sdk/services/settings-service";
 
 // ── Section definitions ────────────────────────────────────
 
