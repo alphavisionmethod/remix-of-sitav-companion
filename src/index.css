@@ -613,3 +613,24 @@
     min-height: 44px;
   }
 }
+
+/* ═══ Calm UI Engine — Idle Phase Transitions ═══ */
+:root {
+  --layer-bg-opacity: 1;
+  --layer-content-opacity: 1;
+  --layer-interaction-opacity: 0;
+  --layer-awareness-opacity: 0;
+  --mi-hover: 80ms;
+  --mi-click: 120ms;
+  --mi-animate: 200ms;
+  --mi-spring: 300ms;
+  --mi-settle: 500ms;
+}
+
+[data-idle-phase="fading"] .desktop-fadeable {
+  transition: opacity 2s ease;
+}
+
+[data-idle-phase="idle"] .desktop-fadeable {
+  transition: opacity 2s ease;
+}
