@@ -96,7 +96,7 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMa
 
   return (
     <>
-      <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-[120] hidden md:flex">
+      <div className={cn("fixed bottom-4 left-1/2 -translate-x-1/2 z-[120] hidden md:flex transition-all duration-300", !dockVisible && "translate-y-24 opacity-0")}>
         <motion.div
           ref={dockRef}
           initial={{ y: 80, opacity: 0 }}
