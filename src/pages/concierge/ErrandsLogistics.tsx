@@ -4,77 +4,119 @@ import { KPITile, SitaTabs } from "@/components/sita/SitaComponents";
 import { GlassCard } from "@/components/sita/PremiumPageComponents";
 import { ConciergeAdvisorInsightCard } from "@/components/concierge";
 import { ErrandBundleCard, LogisticsTimelineCard } from "@/components/concierge";
-import type { ErrandBundle, TimelineStop } from "@/components/concierge";
+import type { ErrandBundle, ErrandItem, TimelineStop } from "@/components/concierge";
+import { AddErrandDialog } from "@/components/concierge/AddErrandDialog";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useState, useMemo } from "react";
-import { motion } from "framer-motion";
-import { MapPin, Clock, Zap, ShoppingCart, Car, CheckCircle, Sparkles, Route, Package } from "lucide-react";
-
-/* ── Demo Data ── */
-const BUNDLES: ErrandBundle[] = [
-  {
-    id: "b1", label: "Downtown Loop", area: "Downtown", totalMinutes: 55,
-    errands: [
-      { id: "e1", title: "Pick up dry cleaning", location: "Main St Cleaners", estimatedMinutes: 10, priority: "medium", combinable: true },
-      { id: "e2", title: "Drop off package at UPS", location: "UPS Store — 4th Ave", estimatedMinutes: 10, priority: "high" },
-      { id: "e3", title: "Return library books", location: "Central Library", estimatedMinutes: 15, priority: "low", combinable: true },
-      { id: "e4", title: "Pick up birthday cake order", location: "Sweet Treats Bakery", estimatedMinutes: 20, priority: "high" },
-    ],
-  },
-  {
-    id: "b2", label: "Suburban Run", area: "West Side", totalMinutes: 40,
-    errands: [
-      { id: "e5", title: "Grocery run — weekly staples", location: "Trader Joe's", estimatedMinutes: 25, priority: "medium" },
-      { id: "e6", title: "Pet food restock", location: "PetSmart", estimatedMinutes: 15, priority: "medium", combinable: true },
-    ],
-  },
-  {
-    id: "b3", label: "Quick Wins", area: "Home / Online", totalMinutes: 20,
-    errands: [
-      { id: "e7", title: "Schedule dentist appointment", priority: "high", estimatedMinutes: 5 },
-      { id: "e8", title: "Renew parking permit online", priority: "medium", estimatedMinutes: 10 },
-      { id: "e9", title: "Order replacement air filters", priority: "low", estimatedMinutes: 5, combinable: true },
-    ],
-  },
-];
-
-const TIMELINE: TimelineStop[] = [
-  { id: "t1", time: "9:00 AM", title: "Drop off package at UPS", location: "4th Ave", status: "done" },
-  { id: "t2", time: "9:20 AM", title: "Pick up dry cleaning", location: "Main St", status: "done" },
-  { id: "t3", time: "9:45 AM", title: "Return library books", location: "Central Library", status: "current" },
-  { id: "t4", time: "10:15 AM", title: "Pick up birthday cake", location: "Sweet Treats", status: "upcoming" },
-  { id: "t5", time: "11:00 AM", title: "Grocery run", location: "Trader Joe's", status: "upcoming" },
-  { id: "t6", time: "11:30 AM", title: "Pet food restock", location: "PetSmart", status: "upcoming" },
-];
-
-const ALL_ERRANDS = BUNDLES.flatMap((b) => b.errands);
+import { MapPin, Clock, Zap, Car, CheckCircle, Route, Package, Loader2 } from "lucide-react";
+import { useErrands, useUpdateErrand, useDeleteErrand } from "@/hooks/use-concierge-data";
+import { toast } from "sonner";
 
 type ErrandsView = "bundles" | "timeline" | "quick-wins" | "all";
 
 const ErrandsLogistics = () => {
   const [view, setView] = useState<ErrandsView>("bundles");
+  const { data: rawErrands, isLoading } = useErrands();
+  const updateErrand = useUpdateErrand();
+  const deleteErrand = useDeleteErrand();
 
-  const totalErrands = ALL_ERRANDS.length;
-  const highPriority = ALL_ERRANDS.filter((e) => e.priority === "high").length;
-  const combinable = ALL_ERRANDS.filter((e) => e.combinable).length;
-  const totalMinutes = BUNDLES.reduce((s, b) => s + b.totalMinutes, 0);
+  // Map DB rows to ErrandItem shape
+  const allErrands: ErrandItem[] = useMemo(() =>
+    (rawErrands ?? []).map((e: any) => ({
+      id: e.id,
+      title: e.title,
+      location: e.location ?? undefined,
+      estimatedMinutes: e.estimated_minutes ?? undefined,
+      priority: (e.priority ?? "medium") as "high" | "medium" | "low",
+      combinable: e.combinable ?? false,
+      bundleId: e.bundle_id ?? undefined,
+      status: e.status ?? "pending",
+      dueDate: e.due_date ?? undefined,
+    })),
+    [rawErrands],
+  );
+
+  // Derive bundles by grouping on bundle_id
+  const bundles: ErrandBundle[] = useMemo(() => {
+    const groups: Record<string, typeof allErrands> = {};
+    for (const e of allErrands) {
+      const key = (e as any).bundleId || "Unbundled";
+      (groups[key] ??= []).push(e);
+    }
+    return Object.entries(groups).map(([label, errands]) => ({
+      id: label,
+      label,
+      errands,
+      totalMinutes: errands.reduce((s, e) => s + (e.estimatedMinutes ?? 0), 0),
+      area: undefined,
+    }));
+  }, [allErrands]);
+
+  // Derive timeline from errands sorted by due_date
+  const timeline: TimelineStop[] = useMemo(() =>
+    [...allErrands]
+      .sort((a, b) => ((a as any).dueDate ?? "").localeCompare((b as any).dueDate ?? ""))
+      .map((e, i) => ({
+        id: e.id,
+        time: (e as any).dueDate
+          ? new Date((e as any).dueDate).toLocaleDateString(undefined, { month: "short", day: "numeric" })
+          : `#${i + 1}`,
+        title: e.title,
+        location: e.location,
+        status: ((e as any).status === "done" ? "done" : i === 0 ? "current" : "upcoming") as TimelineStop["status"],
+      })),
+    [allErrands],
+  );
+
+  const pendingErrands = allErrands.filter((e) => (e as any).status !== "done");
+  const totalErrands = pendingErrands.length;
+  const highPriority = pendingErrands.filter((e) => e.priority === "high").length;
+  const combinableCount = pendingErrands.filter((e) => e.combinable).length;
+  const totalMinutes = pendingErrands.reduce((s, e) => s + (e.estimatedMinutes ?? 0), 0);
+
+  const handleToggleDone = (errandId: string) => {
+    const errand = allErrands.find((e) => e.id === errandId);
+    if (!errand) return;
+    const newStatus = (errand as any).status === "done" ? "pending" : "done";
+    updateErrand.mutate({ id: errandId, status: newStatus }, {
+      onError: () => toast.error("Failed to update errand"),
+    });
+  };
+
+  const handleDelete = (errandId: string) => {
+    deleteErrand.mutate(errandId, {
+      onError: () => toast.error("Failed to delete errand"),
+    });
+  };
+
+  const quickWinErrands = allErrands.filter((e) => !e.location && (e as any).status !== "done");
+
+  if (isLoading) {
+    return (
+      <ConciergePageWrapper className="flex items-center justify-center min-h-[400px]">
+        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+      </ConciergePageWrapper>
+    );
+  }
 
   return (
     <ConciergePageWrapper className="space-y-6">
-      <DemoModeBadge />
-      <SitaPageHeader title="Errands & Logistics" subtitle="Intelligent sequencing — batch, combine, and reduce friction" />
+      <div className="flex items-center justify-between">
+        <SitaPageHeader title="Errands & Logistics" subtitle="Intelligent sequencing — batch, combine, and reduce friction" />
+        <AddErrandDialog />
+      </div>
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KPITile label="Open Errands" value={String(totalErrands)} icon={Package} />
         <KPITile label="High Priority" value={String(highPriority)} icon={Zap} sub="Handle first" />
-        <KPITile label="Combinable" value={String(combinable)} icon={Route} sub="Save time" />
+        <KPITile label="Combinable" value={String(combinableCount)} icon={Route} sub="Save time" />
         <KPITile label="Est. Time" value={`${totalMinutes}m`} icon={Clock} sub="Across all bundles" />
       </div>
 
       <SitaTabs
         tabs={[
           { key: "bundles", label: "Route Bundles" },
-          { key: "timeline", label: "Day Timeline" },
+          { key: "timeline", label: "Timeline" },
           { key: "quick-wins", label: "Quick Wins" },
           { key: "all", label: "All Errands" },
         ]}
@@ -84,14 +126,28 @@ const ErrandsLogistics = () => {
 
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2 space-y-4">
-          {view === "bundles" && BUNDLES.map((b) => <ErrandBundleCard key={b.id} bundle={b} />)}
+          {allErrands.length === 0 && (
+            <SitaCard className="p-8 text-center">
+              <Package className="h-10 w-10 mx-auto text-muted-foreground/40 mb-3" />
+              <p className="text-sm text-muted-foreground">No errands yet. Add your first errand to get started.</p>
+            </SitaCard>
+          )}
 
-          {view === "timeline" && <LogisticsTimelineCard stops={TIMELINE} label="Today's Route" />}
+          {view === "bundles" && bundles.map((b) => (
+            <ErrandBundleCard key={b.id} bundle={b} onToggleDone={handleToggleDone} onDelete={handleDelete} />
+          ))}
+
+          {view === "timeline" && allErrands.length > 0 && (
+            <LogisticsTimelineCard stops={timeline} label="Errand Timeline" />
+          )}
 
           {view === "quick-wins" && (
             <div className="space-y-3">
               <SitaSectionHeader title="Quick Wins" subtitle="Handle from home or online — low effort, high value" />
-              {BUNDLES.find((b) => b.label === "Quick Wins")?.errands.map((e) => (
+              {quickWinErrands.length === 0 && (
+                <p className="text-xs text-muted-foreground px-2">No quick wins right now.</p>
+              )}
+              {quickWinErrands.map((e) => (
                 <SitaCard key={e.id} className="p-4">
                   <div className="flex items-center gap-3">
                     <div className={`h-2 w-2 rounded-full shrink-0 ${e.priority === "high" ? "bg-destructive" : e.priority === "medium" ? "bg-amber-500" : "bg-chart-2"}`} />
@@ -99,25 +155,34 @@ const ErrandsLogistics = () => {
                       <p className="text-sm font-medium text-foreground">{e.title}</p>
                       {e.estimatedMinutes && <p className="text-xs text-muted-foreground">~{e.estimatedMinutes} minutes</p>}
                     </div>
-                    <button className="rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors">Do Now</button>
+                    <button
+                      onClick={() => handleToggleDone(e.id)}
+                      className="rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors"
+                    >
+                      Done
+                    </button>
                   </div>
                 </SitaCard>
               ))}
             </div>
           )}
 
-          {view === "all" && (
+          {view === "all" && allErrands.length > 0 && (
             <div className="space-y-2">
-              <SitaSectionHeader title="All Errands" subtitle={`${totalErrands} items across ${BUNDLES.length} bundles`} />
-              {ALL_ERRANDS.map((e) => (
+              <SitaSectionHeader title="All Errands" subtitle={`${allErrands.length} items across ${bundles.length} groups`} />
+              {allErrands.map((e) => (
                 <SitaCard key={e.id} className="p-3.5">
                   <div className="flex items-center gap-3">
+                    <button onClick={() => handleToggleDone(e.id)} className="shrink-0">
+                      <CheckCircle className={`h-4 w-4 ${(e as any).status === "done" ? "text-chart-2" : "text-muted-foreground/30"}`} />
+                    </button>
                     <div className={`h-2 w-2 rounded-full shrink-0 ${e.priority === "high" ? "bg-destructive" : e.priority === "medium" ? "bg-amber-500" : "bg-chart-2"}`} />
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-foreground truncate">{e.title}</p>
+                      <p className={`text-sm font-medium truncate ${(e as any).status === "done" ? "line-through text-muted-foreground" : "text-foreground"}`}>{e.title}</p>
                       <p className="text-xs text-muted-foreground">{e.location || "Home / Online"}{e.estimatedMinutes ? ` · ~${e.estimatedMinutes}m` : ""}</p>
                     </div>
                     {e.combinable && <span className="text-[9px] bg-accent/10 text-accent rounded-full px-1.5 py-0.5">combinable</span>}
+                    <button onClick={() => handleDelete(e.id)} className="shrink-0 text-muted-foreground/30 hover:text-destructive transition-colors text-xs">✕</button>
                   </div>
                 </SitaCard>
               ))}
@@ -126,27 +191,28 @@ const ErrandsLogistics = () => {
         </div>
 
         <div className="space-y-4">
-          {/* Route Suggestion */}
           <GlassCard glow="accent" intensity="subtle" className="p-4">
             <div className="flex items-center gap-2 mb-2">
               <Car className="h-4 w-4 text-accent" />
               <p className="text-xs font-semibold text-foreground">Route Suggestion</p>
             </div>
-            <p className="text-xs text-foreground mb-2">Combine the Downtown Loop and Suburban Run into a single 1h 35m outing. Saves ~20 min of travel overlap.</p>
-            <div className="flex items-center gap-2">
-              <button className="rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors">Accept Route</button>
-              <button className="rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-foreground hover:bg-secondary/60 transition-colors">Modify</button>
-            </div>
+            <p className="text-xs text-foreground mb-2">
+              {bundles.length >= 2
+                ? `Combine "${bundles[0]?.label}" and "${bundles[1]?.label}" into a single outing to save travel time.`
+                : "Add more errands with locations to get route optimization suggestions."}
+            </p>
           </GlassCard>
 
-          {/* Combinable Items */}
           <SitaCard className="p-4">
             <div className="flex items-center gap-2 mb-2">
               <Zap className="h-4 w-4 text-primary" />
               <SitaCardTitle>Can Be Combined</SitaCardTitle>
             </div>
             <div className="space-y-1.5">
-              {ALL_ERRANDS.filter((e) => e.combinable).map((e) => (
+              {allErrands.filter((e) => e.combinable).length === 0 && (
+                <p className="text-xs text-muted-foreground">No combinable errands yet.</p>
+              )}
+              {allErrands.filter((e) => e.combinable).map((e) => (
                 <div key={e.id} className="flex items-center gap-2 text-xs">
                   <CheckCircle className="h-3 w-3 text-chart-2" />
                   <span className="text-foreground">{e.title}</span>
@@ -155,12 +221,13 @@ const ErrandsLogistics = () => {
             </div>
           </SitaCard>
 
-          {/* Advisor */}
           <ConciergeAdvisorInsightCard insight={{
             role: "Logistics Advisor",
-            message: "The UPS drop-off and dry cleaning pickup are 2 blocks apart — handle together first. Birthday cake pickup has a narrow window (before noon). Grocery run can shift to tomorrow if today feels heavy.",
-            linkedItems: ["Downtown Loop", "Cake pickup", "Grocery flexibility"],
-            confidence: "high",
+            message: totalErrands > 0
+              ? `You have ${totalErrands} pending errands across ${bundles.length} group(s), estimated at ~${totalMinutes} minutes total. ${highPriority > 0 ? `${highPriority} high-priority items need attention first.` : "No urgent items right now."}`
+              : "Add errands to get intelligent logistics advice and route optimization.",
+            linkedItems: bundles.slice(0, 3).map((b) => b.label),
+            confidence: totalErrands > 3 ? "high" : "medium",
           }} />
         </div>
       </div>
