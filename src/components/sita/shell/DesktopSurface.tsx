@@ -354,6 +354,16 @@ interface GlassWidgetProps {
 }
 
 function GlassWidget({ icon: Icon, label, value, accent, onClick, delay = 0, bootReady = true, isDragging, dragHandleProps, sparkData, sparkColor }: GlassWidgetProps) {
+  // Compute trend from sparkline data
+  const trend = useMemo(() => {
+    if (!sparkData || sparkData.length < 2) return null;
+    const first = sparkData[0];
+    const last = sparkData[sparkData.length - 1];
+    if (first === 0) return null;
+    const pct = ((last - first) / Math.abs(first)) * 100;
+    return { pct: Math.abs(pct), up: pct >= 0 };
+  }, [sparkData]);
+
   return (
     <button
       onClick={onClick}
@@ -390,7 +400,21 @@ function GlassWidget({ icon: Icon, label, value, accent, onClick, delay = 0, boo
         <Icon className="h-5 w-5 text-[hsl(0_0%_100%/0.9)]" />
       </div>
       <div className="text-left relative z-10">
-        <p className="text-lg font-semibold text-[hsl(0_0%_100%/0.9)] leading-tight">{value}</p>
+        <div className="flex items-center gap-2">
+          <p className="text-lg font-semibold text-[hsl(0_0%_100%/0.9)] leading-tight">{value}</p>
+          {trend && (
+            <span
+              className={cn(
+                "inline-flex items-center gap-0.5 rounded-md px-1.5 py-0.5 text-[10px] font-semibold leading-none",
+                trend.up
+                  ? "bg-[hsl(142_60%_45%/0.2)] text-[hsl(142_70%_65%)]"
+                  : "bg-[hsl(0_60%_45%/0.2)] text-[hsl(0_70%_65%)]"
+              )}
+            >
+              {trend.up ? "↑" : "↓"}{trend.pct.toFixed(0)}%
+            </span>
+          )}
+        </div>
         <p className="text-[11px] font-medium text-[hsl(0_0%_100%/0.5)] uppercase tracking-wider">{label}</p>
       </div>
       <ArrowRight className="h-3.5 w-3.5 text-[hsl(0_0%_100%/0.2)] group-hover:text-[hsl(0_0%_100%/0.5)] transition-colors ml-auto relative z-10" />
