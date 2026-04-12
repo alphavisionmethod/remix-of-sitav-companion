@@ -11,7 +11,7 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { AdminPageHeader, TrustRibbon, StatusBadge } from "@/components/sita/admin";
 import { useGovernanceSimulator } from "@/contexts/SitaKernelContext";
-import type { SimulationResult } from "@/lib/core-services/governance-simulator";
+import type { SimulationResult } from "@/lib/services/governance-simulator";
 import {
   Shield, Play, AlertTriangle, CheckCircle, ChevronRight,
   DollarSign, Wifi, Users, Zap, Lock, Eye, RotateCcw, Package,

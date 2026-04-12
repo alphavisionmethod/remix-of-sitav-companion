@@ -18,7 +18,7 @@ import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
-import type { ConstitutionRule, ConstitutionRuleCategory } from "@/lib/core-services/constitution-compiler";
+import type { ConstitutionRule, ConstitutionRuleCategory } from "@/lib/services/constitution-compiler";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useAuth } from "@/contexts/AuthContext";

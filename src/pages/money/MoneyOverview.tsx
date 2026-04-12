@@ -20,7 +20,7 @@ import {
 import { motion } from "framer-motion";
 import { useMemo } from "react";
 import { useFraudSentinel } from "@/contexts/SitaKernelContext";
-import type { FraudSummary } from "@/lib/core-services/fraud-sentinel";
+import type { FraudSummary } from "@/lib/services/fraud-sentinel";
 import { BudgetAutomationPanel } from "@/components/sita/BudgetAutomationPanel";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
