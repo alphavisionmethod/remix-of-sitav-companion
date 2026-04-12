@@ -34,12 +34,14 @@ class NovaKernelClass {
     console.log("║     NOVA KERNEL — BOOT SEQUENCE       ║");
     console.log("╚════════════════════════════════════════╝");
 
-    // 1. Memory Manager
+    // 1. Memory Manager + Address Space subsystem
     this.initSubsystem("MemoryManager", () => {
       MemoryManager.reset();
       // Pre-allocate kernel memory (PID 0 = kernel)
       MemoryManager.allocate(0, 256, { label: "kernel:heap", guardPages: true });
       MemoryManager.allocate(0, 64, { label: "kernel:stack", guardPages: true });
+      // Create kernel address space
+      MemoryManager.createAddressSpace(0);
     });
 
     // 2. Process Table
@@ -47,7 +49,7 @@ class NovaKernelClass {
       ProcessTable.reset();
     });
 
-    // 3. Scheduler
+    // 3. Scheduler with ready queues + context switching
     this.initSubsystem("Scheduler", () => {
       Scheduler.reset();
       Scheduler.start(200); // 200ms tick interval for simulation
@@ -64,7 +66,10 @@ class NovaKernelClass {
     });
 
     const totalMs = (performance.now() - this.bootStartTime).toFixed(1);
+    const schedStats = Scheduler.getStats();
     console.log(`[Kernel] Boot complete in ${totalMs}ms — all subsystems operational`);
+    console.log(`[Kernel] Ready queues initialized (5 bands), context switching enabled`);
+    console.log(`[Kernel] Address space subsystem active, page table switching ready`);
 
     this.booted = true;
     return this.bootLog;
