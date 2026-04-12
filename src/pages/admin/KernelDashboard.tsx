@@ -694,7 +694,7 @@ type DrillDown =
   | null;
 
 const KernelDashboard = () => {
-  const { processes, memStats, schedStats, compStats, bandDistribution } = useKernelMetrics();
+  const { processes, memStats, schedStats, compStats, bandDistribution, schedulerEvents, currentContext, blockedProcesses, readyProcesses } = useKernelMetrics();
   const [drillDown, setDrillDown] = useState<DrillDown>(null);
 
   // Merge live + demo data for scheduler stats
