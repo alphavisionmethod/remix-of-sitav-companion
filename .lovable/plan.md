@@ -1,116 +1,111 @@
 
 
-# Nova OS App SDK — Full Implementation Plan
+# Nova SDK Audit + Enhancement Plan
 
-## Summary
-Build a complete in-browser App SDK framework that formalizes how apps are created, registered, launched, and governed within SITA OS. This translates the C++-style SDK spec into a TypeScript runtime that works within the existing React shell — giving every app a manifest, lifecycle hooks, window API, layout system, event bus, IPC bridge, and design enforcement layer.
+## Audit: All 15 Spec Items vs Implementation
 
-## What Already Exists
-- `AppDefinition` type with permissions, trust levels, lifecycle receipts
-- `AppPermissionGate` wired into launch flow via `ShellLayout`
-- `FloatingWindow` with morph animation, accent strips, traffic lights
-- `AppStateWrapper` (loading/empty/error states)
-- `useWindowManager` with position memory, z-ordering, minimize/restore
-- `SoundEngine` for spatial audio feedback
-- `APP_COMPONENTS` design tokens (buttons, inputs, cards, lists)
-- App catalog with 45+ apps
+| # | Spec Requirement | Status | Detail |
+|---|-----------------|--------|--------|
+| 1 | SDK folder: core/ui/system/graphics/input/runtime | DONE | All 6 directories exist with correct modules |
+| 2 | App Manifest with id, name, version, permissions | DONE | `manifest.ts` with typed interface + `validateManifest()` |
+| 3 | Lifecycle hooks: onLaunch/onFocus/onBlur/onExit | DONE | `lifecycle.ts` with full state machine + `onSuspend`/`onResume` |
+| 4 | Window API: create with size/title, setResizable | DONE | `window-api.ts` with min/max enforcement |
+| 5 | UI Component system (Button, Text, etc.) | DONE | 8 components in `components.tsx` |
+| 6 | Layout system (VStack, HStack, constraints) | DONE | `layout.tsx` with VStack/HStack/Spacer/SplitView/AppLayout |
+| 7 | Component system (Button with onClick, draw) | DONE | NovaButton with variants, icon slot, active:scale |
+| 8 | Graphics API (fillRect, drawText, drawGradient) | DONE | `context.ts` wrapping Canvas 2D |
+| 9 | Event system (mouse, keyboard, bubbling) | DONE | `events.ts` with on/once/emit + gesture detection |
+| 10 | System API (files, notifications, permission-gated) | DONE | NovaFS (IndexedDB) + NovaNotify (sonner) |
+| 11 | IPC Bridge (send/on channels, permission check) | DONE | `bridge.ts` with channel-to-permission mapping |
+| 12 | App packaging (bundle format) | DONE | `loader.ts` with AppBundle type |
+| 13 | Runtime (load manifest, check perms, start) | DONE | AppLoader.load() validates + registers + hooks |
+| 14 | Design enforcement (spacing, typography, components) | DONE | `enforcement.ts` with audit functions |
+| 15 | Sample app (Notes with full SDK usage) | DONE | NotesWindow using AppLayout, NovaFS, NovaNotify |
 
-## What's New (13 SDK Modules)
+## Gaps Found (Making It "Even Better")
 
-### 1. App Manifest System (`nova-sdk/core/manifest.ts`)
-Typed `AppManifest` interface mirroring `app.json`: id (`com.nova.notes`), name, version, entry component, permissions array, lifecycle hooks declaration, window defaults (size, resizable, transparent), required capabilities. Validation function `validateManifest()` that rejects malformed manifests.
+### G1: SettingsWindow not refactored to SDK
+Settings still uses raw `APP_TYPE`/`APP_COMPONENTS` tokens instead of Nova SDK components. It should use `AppLayout`, `NovaList`, `NovaSidebar`, `NovaText`, `NovaButton`.
 
-### 2. App Registry (`nova-sdk/core/registry.ts`)
-Central singleton registry where apps self-register via `NovaSDK.registerApp(manifest, AppComponent)`. Stores manifest + component + runtime state (running/suspended/terminated). Provides `getApp(id)`, `listApps()`, `isRunning(id)`. The registry replaces the ad-hoc if/else chain in `ShellLayout.doLaunchApp`.
+### G2: No `NovaToggle` / `NovaSlider` components
+The SDK lacks toggle switches and sliders — both needed by Settings and common in apps. The spec says "every app MUST use shared components."
 
-### 3. App Lifecycle Manager (`nova-sdk/runtime/lifecycle.ts`)
-Formal state machine: `registered → launching → permission-check → running → focused → blurred → suspending → terminated`. Emits lifecycle events: `onLaunch`, `onFocus`, `onBlur`, `onSuspend`, `onResume`, `onExit`. Apps implement a `NovaAppLifecycle` interface. The lifecycle manager calls these hooks at the right transitions.
+### G3: No `NovaToolbar` component
+AppLayout accepts a toolbar slot but there's no dedicated toolbar component with standard patterns (back button, title, actions).
 
-### 4. Window API (`nova-sdk/system/window-api.ts`)
-Apps request windows through `NovaWindow.create({ width, height, title, resizable, transparent })`. The API wraps `useWindowManager.openWindow` but enforces: min size, max size, title bar presence, system chrome. Apps cannot bypass the window system. Provides `setRootView()`, `setToolbar()`, `setTitle()`, `close()`, `minimize()`, `maximize()`.
+### G4: No `useNovaApp` convenience hook
+Apps must manually wire manifest + lifecycle + FS + notify. A single `useNovaApp(manifest)` hook would auto-register, create FS/notify instances, and provide lifecycle bindings.
 
-### 5. UI Component Library (`nova-sdk/ui/components.tsx`)
-Pre-built SDK components that enforce the design system: `<NovaButton>`, `<NovaInput>`, `<NovaList>`, `<NovaCard>`, `<NovaModal>`, `<NovaText>`, `<NovaSidebar>`. All consume `APP_COMPONENTS` tokens. Apps importing these get consistent styling automatically. Variants: primary/secondary/ghost for buttons, body/label/title/heading for text.
+### G5: Lifecycle not wired into window open/close
+When ShellLayout opens a window, it doesn't call `lifecycleManager.transition(appId, "running")`. When a window closes, no `terminated` transition fires. The lifecycle system is dead code.
 
-### 6. Layout System (`nova-sdk/ui/layout.tsx`)
-Constraint-based layout primitives: `<VStack>`, `<HStack>`, `<Spacer>`, `<Divider>`, `<ScrollArea>`, `<SplitView>` (sidebar + content). All enforce the SPACE scale (4/8/16/24/32px). `<AppLayout>` enforces the mandatory Title Bar + optional Sidebar + Content structure. Apps that use `<AppLayout>` automatically get the correct window chrome.
+### G6: No `NovaTextArea` component
+Notes uses raw `<textarea>`. SDK should provide a styled, design-enforced textarea.
 
-### 7. Graphics Context (`nova-sdk/graphics/context.ts`)
-A lightweight 2D drawing API wrapping Canvas: `NovaContext.fillRect()`, `drawText()`, `drawGradient()`, `drawRoundedRect()`, `drawCircle()`, `drawImage()`. Enforces system colors, radii, and typography. Provided to apps that need custom drawing (charts, visualizations) without breaking design rules.
+### G7: Bridge not connected to real OS services
+Bridge handlers for `file:open`, `notification:send`, `theme:get` are never registered. The bridge has no actual service backends wired in.
 
-### 8. Event System (`nova-sdk/input/events.ts`)
-Typed event bus: `NovaEvents.on('mouse:down', handler)`, `NovaEvents.on('key:press', handler)`, `NovaEvents.on('focus:change', handler)`. Event flow: Input → Window → View Tree → Target → Bubble. Includes gesture recognition: tap, long-press, drag, pinch. Sound integration: auto-plays `SoundEngine.click()` on button interactions.
+### G8: No SDK developer documentation/playground
+No way for developers to see available components or test them.
 
-### 9. System Bridge / IPC (`nova-sdk/system/bridge.ts`)
-Apps communicate with OS services through `NovaBridge.send(channel, payload)` and `NovaBridge.on(channel, handler)`. Channels: `file:open`, `file:save`, `notification:send`, `clipboard:read`, `clipboard:write`, `permission:request`, `theme:get`, `app:launch`. All calls are permission-gated — bridge checks manifest permissions before executing.
+## Plan: Fix All Gaps + Polish
 
-### 10. File System API (`nova-sdk/system/filesystem.ts`)
-Permission-controlled file operations: `NovaFS.readFile(path)`, `NovaFS.writeFile(path, data)`, `NovaFS.listDir(path)`, `NovaFS.exists(path)`. Uses IndexedDB/localStorage as backend. Every call checks `files.read` / `files.write` permissions from the manifest. Unauthorized calls throw `PermissionDeniedError`.
+### 1. Add missing SDK components
+Add to `nova-sdk/ui/components.tsx`:
+- `NovaToggle` — system-styled toggle switch (like SettingsWindow's Toggle but standardized)
+- `NovaSlider` — range input with SPACE-scale steps
+- `NovaTextArea` — styled, design-enforced textarea
+- `NovaToolbar` — standard toolbar with back/title/actions layout
+- `NovaBadge` — small status badge (count, label)
+- `NovaAvatar` — icon/emoji/image avatar with gradient background
 
-### 11. Notification API (`nova-sdk/system/notifications.ts`)
-`NovaNotify.send({ title, body, icon, sound, urgency })`. Integrates with the existing toast system and notification center. Requires `system.notifications` permission. Supports actions (buttons in notifications), grouping, and auto-dismiss.
+### 2. Create `useNovaApp` convenience hook
+New file `nova-sdk/hooks/useNovaApp.ts`:
+- Takes manifest + optional lifecycle hooks
+- Auto-registers via AppLoader on mount
+- Returns `{ fs, notify, bridge, lifecycle }` pre-configured with manifest permissions
+- Calls `onExit` on unmount
 
-### 12. App Packaging & Loader (`nova-sdk/runtime/loader.ts`)
-`AppLoader.load(manifestPath)` → reads manifest → validates → checks permissions → registers → launches. Simulates the bundle format: manifest.json + component + assets. The loader enforces that apps cannot run without a valid manifest.
+### 3. Wire lifecycle into ShellLayout
+In `doLaunchApp`: after `wm.openWindow()`, call `lifecycleManager.transition(appId, "running")`.
+In window close handler: call `lifecycleManager.transition(appId, "terminated")`.
+In window focus: call `lifecycleManager.transition(appId, "focused")`.
+In window blur: call `lifecycleManager.transition(appId, "blurred")`.
 
-### 13. Design Enforcement Layer (`nova-sdk/core/enforcement.ts`)
-Runtime checks that apps comply with design rules: spacing must use SPACE constants, typography must use TYPE scale, colors must come from system palette, corners must be 12-16px. `NovaEnforcement.audit(component)` returns violations. In dev mode, renders red outlines around non-compliant elements.
+### 4. Wire bridge service handlers in NovaSDKProvider
+Register default handlers for core channels:
+- `file:open` / `file:save` / `file:list` → delegate to NovaFS
+- `notification:send` → delegate to NovaNotify
+- `theme:get` → return current theme
+- `app:launch` → call doLaunchApp
+- `sound:play` → already done
 
-## Context Provider & Hook
-Create `NovaSDKProvider` context that wraps the shell and provides SDK access to all apps via `useNovaSDK()`. Returns: `manifest`, `window`, `bridge`, `fs`, `notify`, `events`, `lifecycle`, `theme`.
+### 5. Refactor SettingsWindow to full SDK
+Replace raw tokens with Nova SDK components: `AppLayout`, `NovaSidebar`, `NovaList`, `NovaText`, `NovaToggle`, `NovaSlider`.
 
-## Sample Apps Refactored
-Refactor `FinderWindow` and `SettingsWindow` to use the SDK: register via `NovaSDK.registerApp()`, use `<AppLayout>` + `<NovaSidebar>` + Nova components, implement lifecycle hooks.
+### 6. Add Notes app empty state action button
+Currently the `emptyAction` prop was removed. Add a "New Note" button to the empty state.
 
-## New Sample App: Notes
-Build a `Notes` app using the full SDK to demonstrate: manifest registration, lifecycle hooks, `<AppLayout>`, `<NovaList>` + `<NovaInput>`, `NovaFS.readFile/writeFile`, `NovaNotify.send()` on save.
+### 7. Export new components from barrel
+Update `nova-sdk/index.ts` with all new exports.
 
 ## Files to Create
-```text
-src/lib/nova-sdk/
-  core/
-    manifest.ts          — AppManifest type + validation
-    registry.ts          — App registry singleton
-    enforcement.ts       — Design compliance checker
-  ui/
-    components.tsx       — NovaButton, NovaInput, NovaList, NovaCard, NovaModal, NovaText
-    layout.tsx           — VStack, HStack, Spacer, SplitView, AppLayout
-  system/
-    window-api.ts        — Window creation/management API
-    bridge.ts            — IPC message bus
-    filesystem.ts        — Permission-gated file ops
-    notifications.ts     — Notification API
-  input/
-    events.ts            — Typed event system with gestures
-  graphics/
-    context.ts           — 2D drawing API
-  runtime/
-    lifecycle.ts         — State machine + hooks
-    loader.ts            — Manifest loader + validator
-  index.ts               — Barrel export + NovaSDKProvider
-
-src/contexts/NovaSDKContext.tsx    — React context for SDK access
-src/components/sita/shell/windows/NotesWindow.tsx  — Sample SDK app
-```
+- `src/lib/nova-sdk/hooks/useNovaApp.ts`
 
 ## Files to Modify
-- `ShellLayout.tsx` — Replace if/else app launch with registry lookup, wrap in `NovaSDKProvider`
-- `useWindowManager.ts` — Add `updateWindow()` for SDK window API mutations
-- `FloatingWindow.tsx` — Accept toolbar/sidebar from SDK `AppLayout`
-- `FinderWindow.tsx` — Refactor to use Nova SDK components
-- `SettingsWindow.tsx` — Refactor to use Nova SDK components
-- `DesktopDock.tsx` — Add Notes app to dock items
-- `app-platform/catalog.ts` — Add Notes app definition
+- `src/lib/nova-sdk/ui/components.tsx` — add NovaToggle, NovaSlider, NovaTextArea, NovaToolbar, NovaBadge, NovaAvatar
+- `src/lib/nova-sdk/index.ts` — export new components + hook
+- `src/contexts/NovaSDKContext.tsx` — register bridge service handlers
+- `src/components/sita/ShellLayout.tsx` — wire lifecycle transitions on window open/close/focus
+- `src/components/sita/shell/windows/SettingsWindow.tsx` — refactor to SDK components
+- `src/components/sita/shell/windows/NotesWindow.tsx` — restore empty state action
 
 ## Implementation Order
-1. Core: manifest + registry + enforcement
-2. UI: components + layout
-3. System: window API + bridge + filesystem + notifications
-4. Input: event system
-5. Graphics: drawing context
-6. Runtime: lifecycle + loader
-7. Context: NovaSDKProvider + useNovaSDK hook
-8. Integration: wire into ShellLayout, refactor Finder/Settings
-9. Sample: build Notes app
-10. Polish: sound integration, design audit warnings
+1. New SDK components (NovaToggle, NovaSlider, NovaTextArea, NovaToolbar, NovaBadge, NovaAvatar)
+2. useNovaApp hook
+3. Wire lifecycle into ShellLayout
+4. Wire bridge handlers in provider
+5. Refactor SettingsWindow
+6. Polish Notes empty state
+7. Update barrel exports
 
