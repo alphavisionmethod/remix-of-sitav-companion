@@ -18,7 +18,7 @@ import { cn } from "@/lib/utils";
 import { ShellAmbientBackground, type AmbientMood } from "./ShellAmbientBackground";
 import type { TrustPosture, ContinuityContext, ShellNotificationDigest } from "./useShellState";
 import { DEPTH_LAYERS } from "@/lib/design-system/nova-os";
-import { FloatingWindow } from "./FloatingWindow";
+import { FloatingWindow, type SiblingWindow } from "./FloatingWindow";
 import { useWindowManagerContext } from "@/contexts/WindowManagerContext";
 import { DesktopIconGrid } from "./DesktopIconGrid";
 import { DesktopContextMenu } from "./DesktopContextMenu";
@@ -426,44 +426,56 @@ export function DesktopSurface({
 
       {/* Floating windows with focus differentiation */}
       <AnimatePresence>
-        {visibleWindows.map(w => (
-          <FloatingWindow
-            key={w.id}
-            windowId={w.id}
-            title={w.title}
-            appIcon={w.id === "finder" ? "📁" : w.id === "settings" ? "⚙️" : w.id === "notes" ? "📝" : undefined}
-            initialPosition={w.position}
-            width={w.width}
-            originRect={(w as any).originRect}
-            onClose={() => {
-              // Kernel: lifecycle transition + process kill + compositor cleanup
-              lifecycleManager.transition(w.id, "terminated");
-              const proc = ProcessTable.getByAppId(w.id);
-              if (proc) ProcessTable.kill(proc.pid);
-              Compositor.removeSurface(w.id);
-              closeWindow?.(w.id);
-            }}
-            onMinimize={() => {
-              Compositor.setVisible(w.id, false);
-              minimizeWindow?.(w.id);
-            }}
-            onFocus={() => {
-              // Blur previously focused window
-              const prevFocused = visibleWindows.find(vw => vw.zIndex === maxZ && vw.id !== w.id);
-              if (prevFocused) {
-                lifecycleManager.transition(prevFocused.id, "blurred");
-              }
-              lifecycleManager.transition(w.id, "focused");
-              Compositor.bringToFront(w.id);
-              focusWindow?.(w.id);
-            }}
-            isFocused={w.zIndex === maxZ}
-            className="cursor-default"
-            style={{ zIndex: DEPTH_LAYERS.windows + w.zIndex }}
-          >
-            {w.component}
-          </FloatingWindow>
-        ))}
+        {visibleWindows.map(w => {
+          // Build sibling window list for physics engine
+          const siblings: SiblingWindow[] = visibleWindows
+            .filter(vw => vw.id !== w.id)
+            .map(vw => ({
+              id: vw.id,
+              x: vw.position.x,
+              y: vw.position.y,
+              width: vw.width || 500,
+              height: 400,
+            }));
+
+          return (
+            <FloatingWindow
+              key={w.id}
+              windowId={w.id}
+              title={w.title}
+              appIcon={w.id === "finder" ? "📁" : w.id === "settings" ? "⚙️" : w.id === "notes" ? "📝" : undefined}
+              initialPosition={w.position}
+              width={w.width}
+              originRect={(w as any).originRect}
+              siblingWindows={siblings}
+              onClose={() => {
+                lifecycleManager.transition(w.id, "terminated");
+                const proc = ProcessTable.getByAppId(w.id);
+                if (proc) ProcessTable.kill(proc.pid);
+                Compositor.removeSurface(w.id);
+                closeWindow?.(w.id);
+              }}
+              onMinimize={() => {
+                Compositor.setVisible(w.id, false);
+                minimizeWindow?.(w.id);
+              }}
+              onFocus={() => {
+                const prevFocused = visibleWindows.find(vw => vw.zIndex === maxZ && vw.id !== w.id);
+                if (prevFocused) {
+                  lifecycleManager.transition(prevFocused.id, "blurred");
+                }
+                lifecycleManager.transition(w.id, "focused");
+                Compositor.bringToFront(w.id);
+                focusWindow?.(w.id);
+              }}
+              isFocused={w.zIndex === maxZ}
+              className="cursor-default"
+              style={{ zIndex: DEPTH_LAYERS.windows + w.zIndex }}
+            >
+              {w.component}
+            </FloatingWindow>
+          );
+        })}
       </AnimatePresence>
 
       {/* Desktop Context Menu */}

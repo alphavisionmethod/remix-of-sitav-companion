@@ -14,6 +14,22 @@ import { detectSnapZone, getSnapRect, SNAP_CONFIG, type SnapZone } from "@/lib/d
 import { lerpPosition, type DragState } from "@/lib/engine/compositor-sim";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCalmEngine } from "@/contexts/CalmEngineContext";
+import {
+  findMagneticEdges,
+  applyMagneticSnap,
+  applyEdgeBounce,
+  trackShake,
+  clearShakeState,
+  type PhysicsWindow,
+} from "@/lib/services/window-physics";
+
+export interface SiblingWindow {
+  id: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
 
 interface FloatingWindowProps {
   title: string;
@@ -30,6 +46,7 @@ interface FloatingWindowProps {
   onMaximize?: () => void;
   onFocus?: () => void;
   isFocused?: boolean;
+  siblingWindows?: SiblingWindow[];
   className?: string;
   style?: React.CSSProperties;
 }
@@ -57,6 +74,7 @@ export function FloatingWindow({
   onMaximize,
   onFocus,
   isFocused = true,
+  siblingWindows = [],
   className,
   style,
 }: FloatingWindowProps) {
@@ -74,6 +92,7 @@ export function FloatingWindow({
   const [snappedTo, setSnappedTo] = useState<SnapZone>(null);
   const [preSnapState, setPreSnapState] = useState<{ x: number; y: number; width: number } | null>(null);
   const [showContent, setShowContent] = useState(false);
+  const [magnetSnapped, setMagnetSnapped] = useState(false);
 
   const accentGradient = appAccent || (windowId ? APP_ACCENTS[windowId] : undefined) || APP_ACCENTS.default;
 
@@ -200,23 +219,61 @@ export function FloatingWindow({
     const vw = window.innerWidth;
     const vh = window.innerHeight;
     const ww = size.width;
+    const wh = size.height || 300;
+    const wid = windowId || "unknown";
 
+    // ── Inter-window magnetic docking ──
+    const draggingPhysics: PhysicsWindow = { id: wid, x: tx, y: ty, width: ww, height: wh };
+    const others: PhysicsWindow[] = siblingWindows
+      .filter(sw => sw.id !== wid)
+      .map(sw => ({ id: sw.id, x: sw.x, y: sw.y, width: sw.width, height: sw.height }));
+
+    if (others.length > 0) {
+      const edges = findMagneticEdges(draggingPhysics, others);
+      if (edges.length > 0) {
+        const snapped = applyMagneticSnap({ x: tx, y: ty }, edges);
+        tx = snapped.x;
+        ty = snapped.y;
+        setMagnetSnapped(snapped.snapped);
+      } else {
+        setMagnetSnapped(false);
+      }
+    }
+
+    // ── Screen-edge magnetic pull (original behavior) ──
     if (tx < MAGNETIC_RANGE) tx += (0 - tx) * MAGNETIC_STRENGTH;
     if (tx + ww > vw - MAGNETIC_RANGE) tx += (vw - ww - tx) * MAGNETIC_STRENGTH;
     if (ty < MAGNETIC_RANGE) ty += (0 - ty) * MAGNETIC_STRENGTH;
     if (ty > vh - MAGNETIC_RANGE - 50) ty += (vh - 50 - ty) * MAGNETIC_STRENGTH;
+
+    // ── Shake-to-minimize detection ──
+    if (windowId) {
+      const shook = trackShake(windowId, e.clientX);
+      if (shook) {
+        setIsDragging(false);
+        dragRef.current.active = false;
+        cancelAnimationFrame(rafId.current);
+        SoundEngine.click();
+        onMinimize?.();
+        return;
+      }
+    }
 
     targetPos.current = { x: tx, y: ty };
     lastPointer.current = { x: e.clientX, y: e.clientY };
 
     const zone = detectSnapZone(e.clientX, e.clientY, vw, vh);
     setSnapZone(zone);
-  }, [isDragging, size.width]);
+  }, [isDragging, size.width, size.height, windowId, siblingWindows, onMinimize]);
 
   const handlePointerUp = useCallback(() => {
     setIsDragging(false);
     dragRef.current.active = false;
+    setMagnetSnapped(false);
     cancelAnimationFrame(rafId.current);
+
+    // Clear shake tracking
+    if (windowId) clearShakeState(windowId);
 
     if (snapZone) {
       setPreSnapState({ x: currentPos.current.x, y: currentPos.current.y, width: size.width });
@@ -225,12 +282,29 @@ export function FloatingWindow({
       setPos({ x: rect.x, y: rect.y });
       setSize({ width: rect.width, height: rect.height });
       setSnappedTo(snapZone);
-      SoundEngine.approve(); // Snap sound feedback
+      SoundEngine.approve();
     } else {
+      // ── Edge bounce on inertia release ──
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const bounce = applyEdgeBounce(
+        currentPos.current,
+        { vx: dragRef.current.velocityX, vy: dragRef.current.velocityY },
+        { width: size.width, height: size.height || 300 },
+        { width: vw, height: vh }
+      );
+
+      if (bounce.bounced) {
+        currentPos.current = { x: bounce.x, y: bounce.y };
+        dragRef.current.velocityX = bounce.vx;
+        dragRef.current.velocityY = bounce.vy;
+        setPos({ x: bounce.x, y: bounce.y });
+      }
+
       runInertia();
     }
     setSnapZone(null);
-  }, [snapZone, size.width, runInertia]);
+  }, [snapZone, size.width, size.height, runInertia, windowId]);
 
   const handleDoubleClickTitle = useCallback(() => {
     if (snappedTo) {
@@ -319,6 +393,7 @@ export function FloatingWindow({
                 "border border-[hsl(0_0%_100%/0.20)] dark:border-[hsl(0_0%_100%/0.08)]",
                 APP_SHADOWS.unfocused
               ),
+          magnetSnapped && "ring-2 ring-[hsl(210_80%_60%/0.4)]",
           isDragging ? "cursor-grabbing" : "",
           className
         )}
