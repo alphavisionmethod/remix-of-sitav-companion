@@ -231,15 +231,30 @@ const ConciergeOverview = () => {
 
   const hasLiveData = isDemoMode || tasks.length > 0 || events.length > 0;
 
+  // State-aware mode detection (§4.5)
+  const conciergeMode = useMemo(() => {
+    if (kpiSummary.travelItems > 1) return "travel-heavy" as const;
+    if (kpiSummary.overdueHousehold > 3) return "overloaded" as const;
+    if (kpiSummary.todayCommitments <= 2 && kpiSummary.overdueHousehold === 0) return "calm" as const;
+    return "active" as const;
+  }, [kpiSummary]);
+
+  const modeGreeting = {
+    "travel-heavy": { title: "Travel Mode Active", subtitle: "Trip logistics are driving most of your load right now" },
+    overloaded: { title: "You have a lot going on", subtitle: "Let's focus on what matters most — we'll help you triage" },
+    calm: { title: "All clear", subtitle: "Nothing urgent — enjoy your day" },
+    active: { title: "Family Command Center", subtitle: "Household operations, schedule coordination, and life logistics" },
+  }[conciergeMode];
+
   if (!hasLiveData) {
     return (
-      <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
+      <motion.div className="space-y-6" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35, ease: "easeOut" }}>
         <DemoModeBadge />
         <SitaPageHeader title="Concierge" subtitle="Household operations and life logistics" />
         <EmptyStateCTA
           icon={Headphones}
           title="Welcome to your personal concierge"
-          description="Add your first task or event."
+          description="Add your first task or event — we'll start learning your routines."
           actions={[
             { label: "Add Task", icon: CheckSquare, to: "/concierge/tasks" },
             { label: "Schedule Event", icon: Calendar, to: "/concierge/appointments", variant: "secondary" },
@@ -251,7 +266,7 @@ const ConciergeOverview = () => {
   }
 
   return (
-    <motion.div className="space-y-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}>
+    <motion.div className="space-y-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3, ease: "easeOut" }}>
       <DemoModeBadge />
 
       {/* ═══ CONCIERGE HOME SUMMARY — Relief-first opening ═══ */}
@@ -263,8 +278,8 @@ const ConciergeOverview = () => {
       />
 
       <AmbientHeader
-        title="Family Command Center"
-        subtitle="Household operations, schedule coordination, and life logistics"
+        title={modeGreeting.title}
+        subtitle={modeGreeting.subtitle}
         icon={<Heart className="h-5 w-5 text-accent" />}
         accentColor="hsl(var(--accent))"
         actions={

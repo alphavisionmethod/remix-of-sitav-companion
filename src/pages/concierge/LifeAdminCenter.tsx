@@ -155,10 +155,10 @@ const LifeAdminCenter = () => {
 
       <div className="space-y-2">
         {tabData.items.length === 0 ? (
-          <GlassCard glow="none" className="p-8 text-center">
-            <CheckCircle className="h-8 w-8 text-chart-2 mx-auto mb-2" />
-            <p className="text-sm font-medium text-foreground">All caught up</p>
-            <p className="text-xs text-muted-foreground">Nothing pending in this category</p>
+          <GlassCard glow="none" className="p-12 text-center">
+            <CheckCircle className="h-9 w-9 text-chart-2 mx-auto mb-3" />
+            <p className="text-base font-semibold text-foreground">All clear — no admin lurking</p>
+            <p className="text-sm text-muted-foreground mt-1">Enjoy the calm. We'll surface things when they come up.</p>
           </GlassCard>
         ) : (
           tabData.items.map(item => <AdminCard key={item.id} item={item} />)
