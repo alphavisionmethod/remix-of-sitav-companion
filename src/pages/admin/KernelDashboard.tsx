@@ -825,22 +825,23 @@ const KernelDashboard = () => {
         {/* Scheduler */}
         <motion.div variants={fadeUp}>
           <Card className="border-border/40 bg-card/80 backdrop-blur-sm">
-            <CardHeader className="pb-2">
+            <CardHeader className="pb-2 cursor-pointer hover:bg-muted/10 transition-colors rounded-t-lg" onClick={() => setDrillDown({ type: "scheduler" })}>
               <CardTitle className="text-sm font-medium flex items-center gap-2">
                 <Cpu className="h-4 w-4 text-primary" />
                 Process Scheduler (MLFQ)
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-1" />
+                <ChevronRight className="h-3.5 w-3.5 text-muted-foreground/40 ml-auto" />
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-1">
               <div className="grid grid-cols-3 gap-3 mb-3">
                 {[
                   { label: "Running", val: running, c: "text-emerald-400" },
-                  { label: "Ready", val: 34, c: "text-blue-400" },
-                  { label: "Blocked", val: 18 + liveBlocked, c: "text-amber-400" },
-                  { label: "Sleeping", val: 78, c: "text-muted-foreground" },
-                  { label: "Zombie", val: 3, c: "text-red-400" },
-                  { label: "Live Procs", val: liveProcessCount, c: "text-primary" },
+                  { label: "Ready", val: Math.max(readyProcesses.length, 34), c: "text-blue-400" },
+                  { label: "Blocked", val: blockedProcesses.length + 18, c: "text-amber-400" },
+                  { label: "Ctx Switches", val: schedStats.contextSwitchCount, c: "text-blue-300" },
+                  { label: "Preemptions", val: schedStats.preemptionCount, c: "text-amber-300" },
+                  { label: "On CPU", val: schedStats.currentPid ?? "idle", c: "text-primary" },
                 ].map(s => (
                   <div key={s.label} className="text-center py-2 rounded-lg bg-muted/20">
                     <p className={cn("text-sm font-semibold tabular-nums", s.c)}>{s.val}</p>
@@ -865,7 +866,8 @@ const KernelDashboard = () => {
               ))}
 
               <div className="pt-2 border-t border-border/30 mt-2 flex justify-between text-[10px] text-muted-foreground">
-                <span>Scheduler ticks: <span className="font-mono text-foreground">{schedStats.totalTicks}</span></span>
+                <span>Ticks: <span className="font-mono text-foreground">{schedStats.totalTicks}</span></span>
+                <span>Idle: <span className="font-mono text-foreground">{schedStats.idleTicks}</span></span>
                 <span>Boosts: <span className="font-mono text-foreground">{schedStats.boostCount}</span></span>
               </div>
             </CardContent>
