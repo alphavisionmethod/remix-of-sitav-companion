@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
-import { Clock, Cloud, BarChart3, Brain, CalendarDays, GripVertical, Plus, X, Settings, Droplets, Wind, Sun, Maximize2, Minimize2 } from "lucide-react";
+import { Clock, Cloud, BarChart3, Brain, CalendarDays, GripVertical, Plus, X, Settings, Droplets, Wind, Sun, Maximize2, Minimize2, Bell, AlertTriangle, Shield, Zap, DollarSign, CreditCard, TrendingUp, ArrowUpRight, ArrowDownRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 
@@ -236,6 +236,154 @@ const CalendarWidget: React.FC<{ size: WidgetSize }> = ({ size }) => {
           <span className={cn("text-foreground", size === "large" ? "text-xs" : "text-[11px]")}>{e.label}</span>
         </div>
       ))}
+    </div>
+  );
+};
+
+// ── System Notifications Widget ─────────────────────────────
+
+const SystemNotificationsWidget: React.FC<{ size: WidgetSize }> = ({ size }) => {
+  const [alerts] = useState(() => [
+    { id: 1, icon: "🔴", title: "High memory usage", detail: "87% — 3 processes consuming 4.2 GB", time: "2m ago", urgency: "critical" as const },
+    { id: 2, icon: "🟠", title: "Kernel watchdog triggered", detail: "Service 'compositor' heartbeat delayed 120ms", time: "8m ago", urgency: "high" as const },
+    { id: 3, icon: "🔵", title: "Scheduler rebalanced", detail: "MLFQ anti-starvation boost applied to 4 processes", time: "15m ago", urgency: "medium" as const },
+    { id: 4, icon: "✅", title: "Filesystem integrity OK", detail: "Journal replay completed — 0 errors", time: "1h ago", urgency: "low" as const },
+    { id: 5, icon: "🛡️", title: "Security ring audit passed", detail: "All syscalls within rate limits", time: "2h ago", urgency: "low" as const },
+  ]);
+
+  const urgencyColor = {
+    critical: "bg-destructive/15 border-destructive/30 text-destructive",
+    high: "bg-[hsl(35_80%_50%/0.12)] border-[hsl(35_80%_50%/0.25)] text-[hsl(35_80%_55%)]",
+    medium: "bg-primary/10 border-primary/20 text-primary",
+    low: "bg-[hsl(142_60%_45%/0.10)] border-[hsl(142_60%_45%/0.20)] text-[hsl(142_60%_50%)]",
+  };
+
+  const shown = size === "large" ? alerts : size === "medium" ? alerts.slice(0, 4) : alerts.slice(0, 3);
+  const criticalCount = alerts.filter(a => a.urgency === "critical" || a.urgency === "high").length;
+
+  return (
+    <div className="flex flex-col h-full gap-1.5 overflow-hidden">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-1.5">
+          <Bell className={cn("text-primary", size === "large" ? "h-4 w-4" : "h-3.5 w-3.5")} />
+          <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">System Alerts</p>
+        </div>
+        {criticalCount > 0 && (
+          <span className="flex items-center gap-1 rounded-full bg-destructive/15 px-2 py-0.5 text-[9px] font-bold text-destructive">
+            <AlertTriangle className="h-2.5 w-2.5" />{criticalCount}
+          </span>
+        )}
+      </div>
+      <div className="space-y-1 flex-1 overflow-y-auto">
+        {shown.map(alert => (
+          <div
+            key={alert.id}
+            className={cn(
+              "flex items-start gap-2 rounded-lg border px-2 py-1.5 transition-colors",
+              urgencyColor[alert.urgency]
+            )}
+          >
+            <span className="text-[10px] mt-0.5 shrink-0">{alert.icon}</span>
+            <div className="flex-1 min-w-0">
+              <p className={cn("font-medium truncate", size === "large" ? "text-[11px]" : "text-[10px]")}>{alert.title}</p>
+              {size !== "small" && (
+                <p className="text-[9px] text-muted-foreground truncate">{alert.detail}</p>
+              )}
+            </div>
+            <span className="text-[8px] text-muted-foreground shrink-0 mt-0.5">{alert.time}</span>
+          </div>
+        ))}
+      </div>
+      {size === "large" && (
+        <div className="flex items-center gap-3 pt-1 border-t border-border/30">
+          <div className="flex items-center gap-1 text-[9px] text-muted-foreground">
+            <Shield className="h-3 w-3" />
+            <span>All rings secure</span>
+          </div>
+          <div className="flex items-center gap-1 text-[9px] text-muted-foreground">
+            <Zap className="h-3 w-3" />
+            <span>CPU governor: performance</span>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+// ── Finance Pulse Widget ────────────────────────────────────
+
+const FinancePulseWidget: React.FC<{ size: WidgetSize }> = ({ size }) => {
+  const billsDue = [
+    { id: 1, name: "Electric Bill", amount: 142, due: "Today", status: "due" as const },
+    { id: 2, name: "Internet", amount: 89, due: "Today", status: "due" as const },
+    { id: 3, name: "Insurance", amount: 320, due: "Tomorrow", status: "upcoming" as const },
+    { id: 4, name: "Phone Plan", amount: 65, due: "In 3 days", status: "upcoming" as const },
+  ];
+  const totalDueToday = billsDue.filter(b => b.due === "Today").reduce((s, b) => s + b.amount, 0);
+  const cashIn = 4200;
+  const cashOut = 2930;
+  const netFlow = cashIn - cashOut;
+
+  const shown = size === "large" ? billsDue : size === "medium" ? billsDue.slice(0, 3) : billsDue.slice(0, 2);
+
+  return (
+    <div className="flex flex-col h-full gap-2 overflow-hidden">
+      {/* Summary header */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-1.5">
+          <DollarSign className={cn("text-[hsl(var(--sita-gold))]", size === "large" ? "h-4 w-4" : "h-3.5 w-3.5")} />
+          <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Finance Pulse</p>
+        </div>
+        <span className={cn(
+          "text-[10px] font-bold rounded-full px-2 py-0.5",
+          netFlow >= 0 ? "bg-[hsl(142_60%_45%/0.12)] text-[hsl(142_60%_50%)]" : "bg-destructive/12 text-destructive"
+        )}>
+          {netFlow >= 0 ? "+" : ""}{netFlow.toLocaleString()} net
+        </span>
+      </div>
+
+      {/* Cash flow mini-bar */}
+      {size !== "small" && (
+        <div className="flex gap-2 text-[10px]">
+          <div className="flex items-center gap-1 text-[hsl(142_60%_50%)]">
+            <ArrowUpRight className="h-3 w-3" />${cashIn.toLocaleString()} in
+          </div>
+          <div className="flex items-center gap-1 text-destructive">
+            <ArrowDownRight className="h-3 w-3" />${cashOut.toLocaleString()} out
+          </div>
+        </div>
+      )}
+
+      {/* Bills list */}
+      <div className="space-y-1 flex-1 overflow-y-auto">
+        {shown.map(bill => (
+          <div key={bill.id} className="flex items-center justify-between rounded-lg bg-secondary/30 px-2.5 py-1.5">
+            <div className="flex items-center gap-2 min-w-0">
+              <CreditCard className="h-3 w-3 text-muted-foreground shrink-0" />
+              <div className="min-w-0">
+                <p className={cn("font-medium truncate", size === "large" ? "text-[11px]" : "text-[10px]")}>{bill.name}</p>
+                <p className="text-[8px] text-muted-foreground">{bill.due}</p>
+              </div>
+            </div>
+            <span className={cn(
+              "text-[11px] font-semibold shrink-0",
+              bill.status === "due" ? "text-[hsl(var(--sita-gold))]" : "text-muted-foreground"
+            )}>
+              ${bill.amount}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      {/* Footer */}
+      <div className="flex items-center justify-between pt-1 border-t border-border/30 text-[9px]">
+        <span className="text-muted-foreground">Due today: <strong className="text-foreground">${totalDueToday}</strong></span>
+        {size === "large" && (
+          <span className="flex items-center gap-1 text-primary">
+            <TrendingUp className="h-3 w-3" />Spending on track
+          </span>
+        )}
+      </div>
     </div>
   );
 };
