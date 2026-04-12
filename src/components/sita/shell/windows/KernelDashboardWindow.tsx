@@ -163,6 +163,9 @@ export function KernelDashboardWindow() {
         {tab === "syscalls" && sysStats && (
           <SyscallTab stats={sysStats} log={sysLog} metrics={sysMetrics} />
         )}
+        {tab === "drivers" && (
+          <DriversTab drivers={driverDiags} batteryHistory={batteryHistory} networkHistory={networkHistory} />
+        )}
       </div>
     </AppLayout>
   );
