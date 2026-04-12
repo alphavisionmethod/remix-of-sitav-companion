@@ -40,7 +40,7 @@ const TravelPlanning = () => {
         <KPITile label="Active Trips" value={String(trips.filter(t => t.status !== "completed").length)} icon={Plane} />
         <KPITile label="Next Trip" value={`${trips[0].daysUntil}d`} icon={Calendar} sub="Lake Tahoe" />
         <KPITile label="Total Budget" value="$13.5K" icon={DollarSign} sub="Across 3 trips" />
-        <KPITile label="Open Prep" value={String(DEMO_preTripChecklist.reduce((s, c) => s + c.items.filter(i => !i.includes("✅")).length, 0))} icon={CheckCircle} />
+        <KPITile label="Readiness" value={`${Math.round((trips[0].completedTasks / trips[0].tasks) * 100)}%`} icon={CheckCircle} sub={trips[0].destination.split("—")[0]} trend="up" />
         <KPITile label="Documents" value={String(trips.reduce((s, t) => s + t.documents, 0))} icon={FileText} sub="Attached" />
       </div>
 
@@ -61,12 +61,25 @@ const TravelPlanning = () => {
           {view === "trips" && (
             <div className="space-y-3">
               <SitaSectionHeader title="Trips" subtitle={`${trips.length} planned`} />
-              {trips.map((trip) => (
-                <TripCard key={trip.id} destination={trip.destination} dates={trip.dates} travelers={trip.travelers}
-                  status={trip.status} budget={trip.budget} spent={trip.spent} tasksComplete={trip.completedTasks}
-                  tasksTotal={trip.tasks} daysUntil={trip.daysUntil} onClick={() => setSelectedTrip(trip)}
-                />
-              ))}
+              {trips.map((trip) => {
+                const readiness = Math.round((trip.completedTasks / trip.tasks) * 100);
+                return (
+                  <div key={trip.id} className="space-y-2">
+                    <TripCard destination={trip.destination} dates={trip.dates} travelers={trip.travelers}
+                      status={trip.status} budget={trip.budget} spent={trip.spent} tasksComplete={trip.completedTasks}
+                      tasksTotal={trip.tasks} daysUntil={trip.daysUntil} onClick={() => setSelectedTrip(trip)}
+                    />
+                    {/* Readiness Bar */}
+                    <div className="flex items-center gap-2 px-2">
+                      <span className="text-[10px] text-muted-foreground">Readiness</span>
+                      <div className="flex-1 h-1.5 rounded-full bg-secondary/40 overflow-hidden">
+                        <div className={`h-full rounded-full transition-all ${readiness >= 75 ? "bg-chart-2" : readiness >= 50 ? "bg-amber-500" : "bg-destructive"}`} style={{ width: `${readiness}%` }} />
+                      </div>
+                      <span className={`text-[10px] font-medium ${readiness >= 75 ? "text-chart-2" : readiness >= 50 ? "text-amber-500" : "text-destructive"}`}>{readiness}%</span>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           )}
 
@@ -149,9 +162,9 @@ const TravelPlanning = () => {
             <p className="text-[10px] text-primary mt-2">↗ Cross-referenced with Money Center</p>
           </SitaCard>
 
-          {/* Document Alerts */}
+          {/* Document Alerts with Missing Confirmations */}
           <SitaCard className="p-4">
-            <SitaCardTitle className="mb-2">Document Alerts</SitaCardTitle>
+            <SitaCardTitle className="mb-2">Document Status</SitaCardTitle>
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <AlertCircle className="h-3.5 w-3.5 text-destructive" />
@@ -169,6 +182,19 @@ const TravelPlanning = () => {
                 <CheckCircle className="h-3.5 w-3.5 text-chart-2" />
                 <span className="text-xs text-foreground">Flight booking confirmed</span>
               </div>
+            </div>
+            {/* Missing Confirmations */}
+            <div className="mt-3 pt-3 border-t border-border/20">
+              <p className="text-[10px] font-semibold text-destructive mb-1.5">Missing Confirmations</p>
+              <div className="space-y-1">
+                <p className="text-[10px] text-foreground">⚠ Car rental — Cancún (not yet booked)</p>
+                <p className="text-[10px] text-foreground">⚠ Airport shuttle — return leg</p>
+              </div>
+            </div>
+            {/* Calendar Conflicts */}
+            <div className="mt-3 pt-3 border-t border-border/20">
+              <p className="text-[10px] font-semibold text-amber-500 mb-1.5">Calendar Conflicts</p>
+              <p className="text-[10px] text-foreground">⚡ Tahoe trip overlaps with Alex's science fair (Feb 16)</p>
             </div>
           </SitaCard>
 
