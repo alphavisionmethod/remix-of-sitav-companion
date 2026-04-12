@@ -1,8 +1,10 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
+import { PersonalEssentialsPreviewPanel } from "@/components/concierge";
+import type { EssentialDoc } from "@/components/concierge";
 import { useState } from "react";
-import { FileText, Upload, FolderOpen, Shield, GraduationCap, Stethoscope, Home, Plane, Receipt, Calendar, Search } from "lucide-react";
+import { FileText, Upload, FolderOpen, Shield, GraduationCap, Stethoscope, Home, Plane, Receipt, Calendar, Search, Eye } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
@@ -106,10 +108,20 @@ const ConciergeFiles = () => {
                   {file.linkedTo && <p className="text-xs text-primary/70 mt-1">↗ {file.linkedTo}</p>}
                 </div>
               </div>
-            </SitaCard>
+          </SitaCard>
           );
         })}
       </div>
+
+      {/* Essential Documents Preview */}
+      <PersonalEssentialsPreviewPanel docs={files.slice(0, 4).map(f => ({
+        id: f.id,
+        name: f.name,
+        type: (f.type === "medical" || f.type === "travel" || f.type === "insurance" || f.type === "contract" || f.type === "form") ? f.type : "general" as const,
+        sensitivity: f.sensitivity,
+        expiryWarning: f.status === "expiring" ? `Expires ${f.expiryDate}` : undefined,
+        linkedContext: f.linkedTo,
+      }))} />
     </div>
   );
 };

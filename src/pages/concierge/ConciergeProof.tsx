@@ -1,6 +1,8 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs, ProofCard } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
+import { ConciergeProofChip, ConciergeReceiptViewer } from "@/components/concierge";
+import type { ReceiptRecord } from "@/components/concierge";
 import { useState } from "react";
 import { Shield, CheckCircle, Clock, FileText, ShoppingCart, Calendar, Wrench, GraduationCap, Plane, Gift } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
@@ -60,37 +62,18 @@ const ConciergeProof = () => {
         onChange={setView}
       />
 
-      <div className="space-y-3">
-        {filtered.map(proof => (
-          <SitaCard key={proof.id} className="p-4">
-            <div className="flex items-start gap-4">
-              <div className={`rounded-xl p-2.5 shrink-0 ${proof.verification === "verified" ? "bg-chart-2/10" : "bg-amber-500/10"}`}>
-                {proof.verification === "verified"
-                  ? <CheckCircle className="h-4 w-4 text-chart-2" />
-                  : <Clock className="h-4 w-4 text-amber-500" />
-                }
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between gap-2 flex-wrap">
-                  <p className="text-sm font-medium text-foreground">{proof.action}</p>
-                  <TrustBadge level={proof.verification === "verified" ? "verified" : "review"} label={proof.verification} size="sm" />
-                </div>
-                <div className="flex items-center gap-2 mt-1 text-xs text-muted-foreground flex-wrap">
-                  <span className="rounded-md bg-secondary px-1.5 py-px text-[10px]">{proof.category}</span>
-                  <span>·</span>
-                  <span>{proof.who}</span>
-                  <span>·</span>
-                  <span>{proof.timestamp}</span>
-                </div>
-                {proof.details && <p className="text-xs text-foreground/70 mt-1">{proof.details}</p>}
-                {proof.linkedItem && (
-                  <p className="text-xs text-primary/70 mt-1">↗ {proof.linkedItem}</p>
-                )}
-              </div>
-            </div>
-          </SitaCard>
-        ))}
-      </div>
+      {/* Receipt Viewer — expanded view */}
+      <ConciergeReceiptViewer records={filtered.map(p => ({
+        id: p.id,
+        action: p.action,
+        timestamp: p.timestamp,
+        result: p.result,
+        verification: p.verification === "verified" ? "verified" as const : p.verification === "pending" ? "pending" as const : "unverified" as const,
+        details: p.details,
+        who: p.who,
+        category: p.category,
+        linkedItem: p.linkedItem,
+      }))} />
     </div>
   );
 };

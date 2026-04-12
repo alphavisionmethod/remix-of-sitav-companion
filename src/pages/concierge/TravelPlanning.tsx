@@ -1,7 +1,8 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
-import { TripCard, PrepCard, HouseholdAdvisor } from "@/components/sita/HouseholdComponents";
+import { TripCard, PrepCard } from "@/components/sita/HouseholdComponents";
+import { ConciergeAdvisorInsightCard } from "@/components/concierge";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import {
@@ -199,14 +200,12 @@ const TravelPlanning = () => {
           </SitaCard>
 
           {/* Travel Advisor */}
-          <HouseholdAdvisor
-            role="Travel Advisor"
-            icon={Sparkles}
-            confidence="high"
-            message="Kids' passports expire before the Cancún trip — start renewal NOW (6–8 week processing). Book the pet sitter today — Sarah M. has only 2 slots left. Travel insurance quotes are ready for review. Consider adding a car rental for the Chichén Itzá day trip."
-            linkedItems={["Passport renewal", "Pet sitter booking", "Insurance quotes", "Car rental"]}
-            requiresApproval
-          />
+          <ConciergeAdvisorInsightCard insight={{
+            role: "Travel Advisor",
+            message: "Kids' passports expire before the Cancún trip — start renewal NOW (6–8 week processing). Book the pet sitter today — Sarah M. has only 2 slots left. Travel insurance quotes are ready for review. Consider adding a car rental for the Chichén Itzá day trip.",
+            linkedItems: ["Passport renewal", "Pet sitter booking", "Insurance quotes", "Car rental"],
+            confidence: "high",
+          }} />
 
           {/* Budget Cross-Reference */}
           <SitaCard hover={false} lane="changed" className="p-4">
