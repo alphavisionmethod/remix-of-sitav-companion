@@ -1169,8 +1169,8 @@ const KernelDashboard = () => {
         </div>
       </motion.div>
 
-      {/* Top-line stats — 6 cards */}
-      <motion.div variants={stagger} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
+      {/* Top-line stats — 7 cards */}
+      <motion.div variants={stagger} className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
         <StatCard icon={Cpu} label="Processes" value={totalProcesses} sub={`${running} running · ${liveProcessCount} live`} live />
         <StatCard icon={MemoryStick} label="Memory" value={`${memUsedPercent}%`} sub={`${memStats.freePages.toLocaleString()} pages free`} color="bg-blue-500/8" live />
         <StatCard icon={HardDrive} label="Mounts" value={FILESYSTEM_MOUNTS.length} sub={`${FILESYSTEM_MOUNTS.filter(m => m.status === "warning").length} warning`} color="bg-emerald-500/8" />
@@ -1178,6 +1178,8 @@ const KernelDashboard = () => {
         <StatCard icon={Monitor} label="Display" value={`${compStats.totalSurfaces} surfaces`} sub={`${compStats.visible} visible · z=${compStats.topZ}`} color="bg-blue-500/8" live onClick={() => setDrillDown({ type: "display" })} />
         <StatCard icon={powerStats.battery.charging ? BatteryCharging : Battery} label="Battery" value={`${powerStats.battery.level.toFixed(0)}%`}
           sub={`${powerStats.cpu.currentMHz}MHz · ${powerStats.powerState}`} color="bg-amber-500/8" live onClick={() => setDrillDown({ type: "power" })} />
+        <StatCard icon={ShieldAlert} label="Privilege" value={`${privilegeStats.totalTransitions} transitions`}
+          sub={`${privilegeStats.totalViolations} violations · R0:${privilegeStats.ring0Processes} R3:${privilegeStats.ring3Processes}`} color="bg-red-500/8" live onClick={() => setDrillDown({ type: "privilege" })} />
       </motion.div>
 
       {/* Scheduler + Memory row */}
