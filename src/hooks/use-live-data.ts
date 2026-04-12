@@ -1,8 +1,3 @@
-// ═══════════════════════════════════════════════════════════════
-// SITA OS — Live Data Hooks for All User-Facing Pages
-// Mode-aware: demo mode → mock data, live mode → Supabase queries
-// ═══════════════════════════════════════════════════════════════
-
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -17,7 +12,7 @@ export function useNotes() {
     queryKey: ["notes", user?.id, isDemoMode],
     enabled: !isDemoMode && !!user,
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("notes")
         .select("*")
         .eq("user_id", user!.id)
@@ -34,7 +29,7 @@ export function useCreateNote() {
   const { user } = useAuth();
   return useMutation({
     mutationFn: async (note: { title: string; content?: string; folder?: string; tags?: string[] }) => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("notes")
         .insert({ ...note, user_id: user!.id })
         .select()
@@ -55,7 +50,7 @@ export function useOutcomes() {
     queryKey: ["outcomes", user?.id, isDemoMode],
     enabled: !isDemoMode && !!user,
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("outcome_tracking")
         .select("*")
         .eq("user_id", user!.id)
@@ -76,7 +71,7 @@ export function useImportExportJobs() {
     queryKey: ["import-export-jobs", user?.id, isDemoMode],
     enabled: !isDemoMode && !!user,
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("import_export_jobs")
         .select("*")
         .eq("user_id", user!.id)
@@ -98,7 +93,7 @@ export function useCallingContacts() {
     queryKey: ["calling-contacts", user?.id, isDemoMode],
     enabled: !isDemoMode && !!user,
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("calling_contacts")
         .select("*")
         .eq("user_id", user!.id)
@@ -119,7 +114,7 @@ export function useCallLogs() {
     queryKey: ["call-logs", user?.id, isDemoMode],
     enabled: !isDemoMode && !!user,
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("call_logs")
         .select("*")
         .eq("user_id", user!.id)
@@ -141,7 +136,7 @@ export function usePackInstalls() {
     queryKey: ["pack-installs", user?.id, isDemoMode],
     enabled: !isDemoMode && !!user,
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("pack_installs")
         .select("*")
         .eq("user_id", user!.id);
@@ -157,7 +152,7 @@ export function useInstallPack() {
   const { user } = useAuth();
   return useMutation({
     mutationFn: async (pack: { pack_id: string; pack_name: string }) => {
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("pack_installs")
         .upsert({ ...pack, user_id: user!.id, status: "installed" }, { onConflict: "user_id,pack_id" })
         .select()
