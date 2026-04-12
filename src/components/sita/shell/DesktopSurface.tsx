@@ -162,6 +162,102 @@ function DesktopClock({ greeting, userName, bootReady }: { greeting: string; use
   );
 }
 
+// ── Sparkline SVG ────────────────────────────────────────────
+
+function Sparkline({ data, color = "hsl(265 55% 65%)", width = 64, height = 24 }: { data: number[]; color?: string; width?: number; height?: number }) {
+  if (data.length < 2) return null;
+  const min = Math.min(...data);
+  const max = Math.max(...data);
+  const range = max - min || 1;
+  const points = data.map((v, i) => {
+    const x = (i / (data.length - 1)) * width;
+    const y = height - ((v - min) / range) * (height - 4) - 2;
+    return `${x},${y}`;
+  }).join(" ");
+
+  const trend = data[data.length - 1] >= data[0];
+  const gradientId = `spark-${color.replace(/[^a-z0-9]/gi, "")}`;
+
+  return (
+    <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} className="shrink-0 overflow-visible">
+      <defs>
+        <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor={color} stopOpacity={0.3} />
+          <stop offset="100%" stopColor={color} stopOpacity={0.02} />
+        </linearGradient>
+      </defs>
+      {/* Fill area */}
+      <polygon
+        points={`0,${height} ${points} ${width},${height}`}
+        fill={`url(#${gradientId})`}
+      />
+      {/* Line */}
+      <polyline
+        points={points}
+        fill="none"
+        stroke={color}
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      {/* End dot */}
+      {(() => {
+        const lastX = width;
+        const lastY = height - ((data[data.length - 1] - min) / range) * (height - 4) - 2;
+        return <circle cx={lastX} cy={lastY} r="2" fill={color} />;
+      })()}
+    </svg>
+  );
+}
+
+// ── Simulated 7-day Sparkline Data ──────────────────────────
+
+function useSparklineData() {
+  const [data, setData] = useState(() => generateSparklines());
+  useEffect(() => {
+    // Refresh sparklines every 30 seconds with subtle drift
+    const id = setInterval(() => {
+      setData(prev => ({
+        approvals: driftSeries(prev.approvals, 1, 8),
+        cash: driftSeries(prev.cash, 35000, 50000),
+        today: driftSeries(prev.today, 3, 12),
+        revenue: driftSeries(prev.revenue, -5, 25),
+      }));
+    }, 30_000);
+    return () => clearInterval(id);
+  }, []);
+  return data;
+}
+
+function generateSparklines() {
+  return {
+    approvals: generateSeries(7, 1, 8),
+    cash: generateSeries(7, 35000, 50000),
+    today: generateSeries(7, 3, 12),
+    revenue: generateSeries(7, -5, 25),
+  };
+}
+
+function generateSeries(count: number, min: number, max: number): number[] {
+  const arr: number[] = [];
+  let val = min + Math.random() * (max - min);
+  for (let i = 0; i < count; i++) {
+    val += (Math.random() - 0.45) * (max - min) * 0.2;
+    val = Math.max(min, Math.min(max, val));
+    arr.push(val);
+  }
+  return arr;
+}
+
+function driftSeries(prev: number[], min: number, max: number): number[] {
+  const next = [...prev.slice(1)];
+  let last = next[next.length - 1];
+  last += (Math.random() - 0.45) * (max - min) * 0.15;
+  last = Math.max(min, Math.min(max, last));
+  next.push(last);
+  return next;
+}
+
 // ── Glass Widget ─────────────────────────────────────────────
 
 interface GlassWidgetProps {
@@ -174,14 +270,16 @@ interface GlassWidgetProps {
   bootReady?: boolean;
   isDragging?: boolean;
   dragHandleProps?: Record<string, any>;
+  sparkData?: number[];
+  sparkColor?: string;
 }
 
-function GlassWidget({ icon: Icon, label, value, accent, onClick, delay = 0, bootReady = true, isDragging, dragHandleProps }: GlassWidgetProps) {
+function GlassWidget({ icon: Icon, label, value, accent, onClick, delay = 0, bootReady = true, isDragging, dragHandleProps, sparkData, sparkColor }: GlassWidgetProps) {
   return (
     <button
       onClick={onClick}
       className={cn(
-        "group widget-glow-hover flex items-center gap-4 rounded-2xl px-6 py-5",
+        "group widget-glow-hover flex items-center gap-4 rounded-2xl px-6 py-5 relative overflow-hidden",
         "bg-[hsl(0_0%_100%/0.08)] backdrop-blur-2xl border border-[hsl(0_0%_100%/0.12)]",
         "hover:bg-[hsl(0_0%_100%/0.14)] hover:border-[hsl(0_0%_100%/0.22)]",
         "hover:scale-[1.02] active:scale-[0.98]",
@@ -194,6 +292,12 @@ function GlassWidget({ icon: Icon, label, value, accent, onClick, delay = 0, boo
       )}
       style={{ transitionDelay: bootReady ? `${delay}ms` : "0ms" }}
     >
+      {/* Background sparkline */}
+      {sparkData && sparkData.length >= 2 && (
+        <div className="absolute bottom-0 right-0 opacity-40 group-hover:opacity-70 transition-opacity pointer-events-none">
+          <Sparkline data={sparkData} color={sparkColor || "hsl(265 55% 65%)"} width={80} height={32} />
+        </div>
+      )}
       {dragHandleProps && (
         <div
           {...dragHandleProps}
@@ -206,11 +310,11 @@ function GlassWidget({ icon: Icon, label, value, accent, onClick, delay = 0, boo
       <div className={cn("rounded-xl p-2.5", accent || "bg-[hsl(265_55%_58%/0.2)]")}>
         <Icon className="h-5 w-5 text-[hsl(0_0%_100%/0.9)]" />
       </div>
-      <div className="text-left">
+      <div className="text-left relative z-10">
         <p className="text-lg font-semibold text-[hsl(0_0%_100%/0.9)] leading-tight">{value}</p>
         <p className="text-[11px] font-medium text-[hsl(0_0%_100%/0.5)] uppercase tracking-wider">{label}</p>
       </div>
-      <ArrowRight className="h-3.5 w-3.5 text-[hsl(0_0%_100%/0.2)] group-hover:text-[hsl(0_0%_100%/0.5)] transition-colors ml-auto" />
+      <ArrowRight className="h-3.5 w-3.5 text-[hsl(0_0%_100%/0.2)] group-hover:text-[hsl(0_0%_100%/0.5)] transition-colors ml-auto relative z-10" />
     </button>
   );
 }
@@ -246,6 +350,7 @@ interface WidgetConfig {
   getValue: (notifications: ShellNotificationDigest) => string;
   accent: string;
   route: string;
+  sparkColor: string;
 }
 
 const WIDGET_CONFIGS: Record<string, WidgetConfig> = {
@@ -255,6 +360,7 @@ const WIDGET_CONFIGS: Record<string, WidgetConfig> = {
     getValue: (n) => `${n.approvals || 3} waiting`,
     accent: "bg-[hsl(265_55%_58%/0.2)]",
     route: "/approvals",
+    sparkColor: "hsl(265 55% 65%)",
   },
   cash: {
     icon: DollarSign,
@@ -262,6 +368,7 @@ const WIDGET_CONFIGS: Record<string, WidgetConfig> = {
     getValue: () => "$42K liquid",
     accent: "bg-[hsl(140_50%_45%/0.2)]",
     route: "/money",
+    sparkColor: "hsl(140 50% 55%)",
   },
   today: {
     icon: Calendar,
@@ -269,6 +376,7 @@ const WIDGET_CONFIGS: Record<string, WidgetConfig> = {
     getValue: () => "6 tasks · 2 meetings",
     accent: "bg-[hsl(35_80%_55%/0.2)]",
     route: "/concierge",
+    sparkColor: "hsl(35 80% 60%)",
   },
   revenue: {
     icon: TrendingUp,
@@ -276,9 +384,9 @@ const WIDGET_CONFIGS: Record<string, WidgetConfig> = {
     getValue: () => "+14% this week",
     accent: "bg-[hsl(190_60%_50%/0.2)]",
     route: "/business",
+    sparkColor: "hsl(190 60% 55%)",
   },
 };
-
 
 function AdvisorInsight({ bootReady }: { bootReady: boolean }) {
   const insights = [
@@ -345,6 +453,9 @@ export function DesktopSurface({
     ];
     return () => timers.forEach(clearTimeout);
   }, [reduced]);
+
+  // ── Sparkline Data ──────────────────────────────────────────
+  const sparklines = useSparklineData();
 
   // ── Widget Order (drag-and-drop) ────────────────────────────
   const [widgetOrder, setWidgetOrder] = useState(loadWidgetOrder);
@@ -472,6 +583,8 @@ export function DesktopSurface({
                             delay={index * 80}
                             isDragging={dragSnapshot.isDragging}
                             dragHandleProps={dragProvided.dragHandleProps ?? undefined}
+                            sparkData={sparklines[widgetId as keyof typeof sparklines]}
+                            sparkColor={config.sparkColor}
                           />
                         </div>
                       )}
