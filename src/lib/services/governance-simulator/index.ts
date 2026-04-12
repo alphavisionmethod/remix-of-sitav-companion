@@ -1,4 +1,6 @@
 // SITA OS — Governance Simulator (merge: workflow-engine)
+// Re-export kernel types for app-layer consumption (boundary proxy)
+export type { SimulationResult as CoreSimulationResult } from "@/lib/core-services/governance-simulator";
 import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
 // @persistence: os_service_state — state survives refresh via universal adapter
 export interface SimulationScenario { id: string; name: string; domain: string; inputs: Record<string, unknown>; expectedOutcome: string; }
