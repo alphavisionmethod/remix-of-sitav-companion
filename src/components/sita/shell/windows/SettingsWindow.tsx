@@ -393,6 +393,22 @@ function GeneralContent() {
   );
 }
 
+// ── Wallpaper imports ────────────────────────────────────────
+import wallpaperNebula from "@/assets/wallpapers/nebula.jpg";
+import wallpaperAmber from "@/assets/wallpapers/amber.jpg";
+import wallpaperOcean from "@/assets/wallpapers/ocean.jpg";
+import wallpaperAurora from "@/assets/wallpapers/aurora.jpg";
+import wallpaperRose from "@/assets/wallpapers/rose.jpg";
+
+const WALLPAPERS = [
+  { id: "dynamic", label: "Dynamic", src: "", description: "Ambient gradients" },
+  { id: "nebula", label: "Nebula", src: wallpaperNebula, description: "Deep purple & blue" },
+  { id: "amber", label: "Amber", src: wallpaperAmber, description: "Warm golden tones" },
+  { id: "ocean", label: "Ocean", src: wallpaperOcean, description: "Deep blue waves" },
+  { id: "aurora", label: "Aurora", src: wallpaperAurora, description: "Northern lights" },
+  { id: "rose", label: "Rose", src: wallpaperRose, description: "Pink bokeh glow" },
+] as const;
+
 function AppearanceContent() {
   const [accentColor, setAccentColor] = useSettingsValue("appearance.accentColor", "hsl(265, 55%, 58%)");
   const accents = [
@@ -404,6 +420,7 @@ function AppearanceContent() {
     { id: "hsl(330, 65%, 55%)", label: "pink",   color: "hsl(330 65% 55%)", hsl: "330 65% 55%" },
   ];
   const [reduceTransparency, setReduceTransparency] = useSettingsValue("appearance.reduceTransparency", false);
+  const [wallpaperId, setWallpaperId] = useSettingsValue("appearance.wallpaper", "dynamic");
 
   // Live-update CSS custom properties when accent changes
   useEffect(() => {
@@ -419,8 +436,58 @@ function AppearanceContent() {
     }
   }, [accentColor]);
 
+  // Live-update wallpaper when selection changes
+  useEffect(() => {
+    const wp = WALLPAPERS.find(w => w.id === wallpaperId);
+    if (!wp) return;
+    // Dispatch a custom event that ShellAmbientBackground listens to
+    window.dispatchEvent(new CustomEvent("nova-wallpaper-change", { detail: { id: wp.id, src: wp.src } }));
+  }, [wallpaperId]);
+
   return (
     <VStack spacing="tight">
+      {/* Wallpaper Selection */}
+      <NovaCard>
+        <VStack spacing="tight">
+          <NovaSectionLabel className="!px-0">Wallpaper</NovaSectionLabel>
+          <div className="grid grid-cols-3 gap-2">
+            {WALLPAPERS.map(wp => (
+              <button
+                key={wp.id}
+                onClick={() => setWallpaperId(wp.id)}
+                className={cn(
+                  "relative rounded-xl overflow-hidden aspect-video transition-all duration-150 group",
+                  "border-2",
+                  wallpaperId === wp.id
+                    ? "border-[hsl(210_80%_55%)] shadow-[0_0_12px_hsl(210_80%_55%/0.3)]"
+                    : "border-[hsl(0_0%_100%/0.08)] hover:border-[hsl(0_0%_100%/0.2)]"
+                )}
+              >
+                {wp.src ? (
+                  <img src={wp.src} alt={wp.label} className="w-full h-full object-cover" loading="lazy" />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-[hsl(265_55%_20%)] via-[hsl(220_40%_15%)] to-[hsl(190_50%_12%)]">
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="w-6 h-6 rounded-full bg-[hsl(265_55%_58%/0.3)] blur-md animate-pulse" />
+                    </div>
+                  </div>
+                )}
+                {/* Selection check */}
+                {wallpaperId === wp.id && (
+                  <div className="absolute top-1 right-1 w-4 h-4 rounded-full bg-[hsl(210_80%_55%)] flex items-center justify-center">
+                    <Check className="w-2.5 h-2.5 text-[hsl(0_0%_100%)]" />
+                  </div>
+                )}
+                {/* Label overlay */}
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[hsl(0_0%_0%/0.7)] to-transparent px-1.5 py-1">
+                  <div className="text-[9px] font-medium text-[hsl(0_0%_90%)]">{wp.label}</div>
+                </div>
+              </button>
+            ))}
+          </div>
+        </VStack>
+      </NovaCard>
+
       <NovaCard>
         <VStack spacing="tight">
           <NovaSectionLabel className="!px-0">Accent Color</NovaSectionLabel>

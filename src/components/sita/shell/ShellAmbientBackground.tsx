@@ -1,13 +1,14 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Shell Ambient Background
 // Shared living background across Lock Screen, Desktop, Setup
-// Responds to time-of-day, trust state, and display mode
+// Responds to time-of-day, trust state, display mode, and wallpaper
 // ═══════════════════════════════════════════════════════════════
 
-import { useMemo } from "react";
-import { motion } from "framer-motion";
+import { useMemo, useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { cn } from "@/lib/utils";
+import { SettingsService } from "@/lib/nova-sdk/services/settings-service";
 
 export type AmbientMood = "serene" | "alert" | "warm" | "focus" | "night";
 
@@ -70,8 +71,45 @@ export function ShellAmbientBackground({
   const reduced = useReducedMotion();
   const activeMood = mood ?? getAutoMood();
   const palette = MOOD_PALETTES[activeMood];
-
   const intensityScale = intensity === "subtle" ? 0.6 : intensity === "vivid" ? 1.4 : 1;
+
+  // Wallpaper state — persisted via SettingsService
+  const [wallpaper, setWallpaper] = useState<{ id: string; src: string }>(() => {
+    // Read initial value from SettingsService
+    try {
+      const saved = SettingsService.get("appearance.wallpaper") as string | undefined;
+      if (saved && saved !== "dynamic") {
+        return { id: saved, src: "" }; // src will be set by the event
+      }
+    } catch {}
+    return { id: "dynamic", src: "" };
+  });
+
+  // Listen for wallpaper change events from Settings
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent).detail;
+      if (detail) {
+        setWallpaper({ id: detail.id, src: detail.src });
+      }
+    };
+    window.addEventListener("nova-wallpaper-change", handler);
+
+    // Also fire initial load from settings
+    try {
+      const saved = SettingsService.get("appearance.wallpaper") as string | undefined;
+      if (saved && saved !== "dynamic") {
+        // Import the wallpaper dynamically
+        import(`../../../assets/wallpapers/${saved}.jpg`)
+          .then(mod => setWallpaper({ id: saved, src: mod.default }))
+          .catch(() => {});
+      }
+    } catch {}
+
+    return () => window.removeEventListener("nova-wallpaper-change", handler);
+  }, []);
+
+  const showImage = wallpaper.id !== "dynamic" && wallpaper.src;
 
   const particles = useMemo(() => {
     if (reduced) return [];
@@ -91,8 +129,31 @@ export function ShellAmbientBackground({
       className={cn("absolute inset-0 overflow-hidden pointer-events-none select-none", className)}
       aria-hidden="true"
     >
-      {/* Gradient orbs */}
-      {palette.orbs.map((orb, i) => (
+      {/* Wallpaper image layer */}
+      <AnimatePresence mode="wait">
+        {showImage && (
+          <motion.div
+            key={wallpaper.id}
+            className="absolute inset-0"
+            initial={{ opacity: 0, scale: 1.05 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.98 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
+            <img
+              src={wallpaper.src}
+              alt=""
+              className="w-full h-full object-cover"
+              loading="eager"
+            />
+            {/* Subtle vignette on top of wallpaper */}
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,hsl(0_0%_0%/0.4)_100%)]" />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Gradient orbs — only shown for dynamic wallpaper or as subtle overlay */}
+      {(!showImage || wallpaper.id === "dynamic") && palette.orbs.map((orb, i) => (
         <motion.div
           key={`${activeMood}-${i}`}
           className="absolute rounded-full"
@@ -121,8 +182,8 @@ export function ShellAmbientBackground({
         />
       ))}
 
-      {/* Floating particles */}
-      {particles.map((p) => (
+      {/* Floating particles — only for dynamic */}
+      {!showImage && particles.map((p) => (
         <motion.div
           key={p.id}
           className="absolute rounded-full"
