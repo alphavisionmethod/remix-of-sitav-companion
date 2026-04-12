@@ -13,14 +13,14 @@ import {
   Cpu, MemoryStick, HardDrive, Shield, Activity, Layers,
   Zap, Clock, Lock, Server, Database, AlertTriangle, CheckCircle,
   RefreshCw, Terminal, ChevronRight, ArrowLeft, X, Eye,
-  FileText, Folder, Info
+  FileText, Folder, Info, Play, Pause, Timer, GitBranch
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PriorityBand as KernelPriorityBand, BAND_CONFIG } from "@/lib/core-services/kernel/process-scheduler";
 import { TrustRing, RING_CONFIG } from "@/lib/core-services/kernel/sandbox-engine";
 import { ProcessTable, type Process, type PriorityBand as NovaPriorityBand } from "@/lib/nova-sdk/kernel/process-manager";
 import { MemoryManager } from "@/lib/nova-sdk/kernel/memory-manager";
-import { Scheduler } from "@/lib/nova-sdk/kernel/scheduler";
+import { Scheduler, type SchedulerEvent } from "@/lib/nova-sdk/kernel/scheduler";
 import { Compositor } from "@/lib/nova-sdk/kernel/compositor";
 
 // ── Animation Variants ───────────────────────────────────────
