@@ -21,6 +21,7 @@ import { ConfidenceLadder } from "@/components/sita/AdvisorComponents";
 import { WarRoomEntryCeremony } from "@/components/sita/WarRoomEntryCeremony";
 import { WarRoomConfidenceRadar } from "@/components/sita/WarRoomConfidenceRadar";
 import { WarRoomDisagreementTheater } from "@/components/sita/WarRoomDisagreementTheater";
+import { WarRoomPresentation } from "@/components/sita/WarRoomPresentation";
 import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
 import { useOSOrchestration } from "@/hooks/useOSOrchestration";
 import { useExperienceSignature } from "@/hooks/useExperienceSignature";
@@ -1204,7 +1205,7 @@ const Boardroom = () => {
       </AnimatePresence>
 
       <AnimatePresence>
-        {isPresenting && <FullscreenPresentation type={activeType} onExit={() => setIsPresenting(false)} />}
+        {isPresenting && <WarRoomPresentation type={activeType} onExit={() => setIsPresenting(false)} />}
       </AnimatePresence>
     </>
   );
