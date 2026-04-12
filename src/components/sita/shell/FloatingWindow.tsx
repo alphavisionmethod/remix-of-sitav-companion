@@ -52,6 +52,7 @@ interface FloatingWindowProps {
   onMaximize?: () => void;
   onPiP?: () => void;
   onFocus?: () => void;
+  onPositionChange?: (pos: { x: number; y: number }, width: number) => void;
   isFocused?: boolean;
   isOccluded?: boolean;
   siblingWindows?: SiblingWindow[];
@@ -93,6 +94,7 @@ export function FloatingWindow({
   onMaximize,
   onPiP,
   onFocus,
+  onPositionChange,
   isFocused = true,
   isOccluded = false,
   siblingWindows = [],
