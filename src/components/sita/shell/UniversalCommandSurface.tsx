@@ -320,7 +320,7 @@ interface UniversalCommandSurfaceProps {
   onSystemCommand?: (cmd: string) => void;
 }
 
-export function UniversalCommandSurface({ open, onClose }: UniversalCommandSurfaceProps) {
+export function UniversalCommandSurface({ open, onClose, onSystemCommand }: UniversalCommandSurfaceProps) {
   const [query, setQuery] = useState("");
   const [selectedIdx, setSelectedIdx] = useState(0);
   const [commandState, setCommandState] = useState<CommandState>("ready");
