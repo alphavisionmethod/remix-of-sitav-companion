@@ -1,117 +1,146 @@
 
 
-# God Tier Features 11-16: Adaptive Visuals + Hold-Key Command + Seamless Multitasking + Background Intelligence + Signature Micro-Details
+# Mega Plan: Advanced Window Apps, Dashboard Layouts, and Wow Boardroom
 
-## Current State
+## Overview
 
-| Feature | Exists | Gap |
-|---|---|---|
-| **11. Adaptive Visual System** | Wallpaper themes with time-of-day auto mode. `colorTemperature` in adaptive interface (warm/neutral/cool). | No wallpaper-to-UI color extraction. No dynamic accent colors from wallpaper. No time-based tone shift on surfaces (just wallpaper gradient changes). |
-| **12. Hold-Key Command Overlay** | `UniversalCommand` (Cmd+K) and `CommandLayer` exist. Full NL parser. | No "hold a key" instant overlay showing all available actions contextually. Must type Cmd+K first. No visual action map. |
-| **13. Seamless Multitasking** | FlowSpace + SpatialDesktop + View Transition API. Scroll restore. | Route transitions still feel like page switches. No crossfade between app content areas. No "morphing" between views. |
-| **14. Background Intelligence** | Predictive prefetch, session persistence, routine detection. Service worker registered. | No dedicated background task runner. No memory cleanup scheduler. No preload orchestrator. No file/entity organization. |
-| **15. Signature Micro-Details** | `MI_TIMINGS` (hover 80ms), `sita-pressed` spring-back, `SoundEngine` clicks, `ClickRipple`. | Sound not synced to spring-back. No "soft" window open (windows pop in). No cursor velocity awareness on buttons. No hover glow. |
-| **16. Signature Feature** | FlowSpace is the strongest candidate. | Not branded/polished as THE identity. No "wow" entry animation. No distinctive visual signature. |
+This plan covers three major areas: (1) new advanced window apps for the OS shell, (2) layout and sidebar improvements across Business OS, Finance/Money OS, and Concierge OS dashboards, and (3) a dramatic redesign of the Advisor/Boardroom experience.
 
-## Plan
+---
 
-### 1. Adaptive Visual System (`src/lib/services/adaptive-visual-system.ts` -- CREATE)
+## Part 1: New Advanced Window Apps
 
-Extract dominant colors from current wallpaper gradient and inject as CSS custom properties:
+Currently the OS has: Terminal, Notes, Calendar, Weather, Settings, System Monitor, Finder. Here are the apps to add:
 
-- Parse wallpaper HSL values from gradient string using regex
-- Derive `--adaptive-accent`, `--adaptive-surface`, `--adaptive-glow` from wallpaper dominant hue
-- Time-of-day tone modulation: morning = warm gold tint, afternoon = neutral, evening = warm amber, night = cool blue
-- Apply as CSS vars on `:root` — all surfaces subtly tint to match wallpaper
-- Update on wallpaper change and every 30 min for time shifts
-- Hook: `useAdaptiveVisuals()` wired into ShellLayout
+### 1A. Music Player (`com.nova.music`)
+- Waveform/spectrum visualizer using canvas (NovaContext)
+- Album art with dominant-color extraction for adaptive UI
+- Playlist sidebar, shuffle/repeat, scrubber with time display
+- Mini-player mode (small floating bar) vs full window
+- Spatial audio panning tied to window position
 
-### 2. Hold-Key Command Overlay (`src/components/sita/shell/HoldKeyOverlay.tsx` -- CREATE)
+### 1B. Calculator (`com.nova.calc`)
+- Scientific mode with graphing capability (canvas-drawn function plots)
+- History tape sidebar showing past calculations
+- Unit/currency converter tab
+- Programmer mode (hex/bin/oct)
+- Glass material + spring-animated button presses
 
-Hold `Alt`/`Option` for 300ms → instant translucent overlay showing all available actions:
+### 1C. Photo Viewer (`com.nova.photos`)
+- Grid gallery with masonry layout
+- Full-screen lightbox with gesture zoom/pan
+- EXIF metadata inspector panel
+- Basic filters (brightness, contrast, saturation) with live preview
+- Slideshow mode with crossfade transitions
 
-- Grid of contextual actions based on current page (navigate, window, system)
-- Each action shows its keyboard shortcut
-- Release key = dismiss. Click action = execute + dismiss
-- Visual: frosted glass fullscreen overlay, actions in a radial/grid layout
-- Actions sourced from UniversalCommand's route aliases + system commands
-- Page-aware: on `/money` shows finance actions, on `/business` shows business actions
+### 1D. Code Editor (`com.nova.code`)
+- Syntax-highlighted editor (Monaco-lite or custom highlighter)
+- File tree sidebar, tab bar for multiple files
+- Minimap, line numbers, bracket matching
+- Theme selector (matches OS dark/light)
+- Integrated terminal pane at bottom
 
-### 3. Seamless App Transitions (`src/components/sita/shell/AppTransitionLayer.tsx` -- CREATE)
+### 1E. Mail Client (`com.nova.mail`)
+- Three-column layout: folders, message list, reading pane
+- Compose modal with rich text formatting
+- Inbox categories (Primary, Social, Updates)
+- Unread badges synced to dock
+- Thread view with collapsible messages
 
-Continuous morphing between route changes instead of hard page switches:
+### 1F. Maps (`com.nova.maps`)
+- Canvas-rendered stylized map with pan/zoom
+- Search bar with location autocomplete (mock data)
+- Points of interest with info cards
+- Directions panel with route visualization
+- Day/night map style toggle
 
-- Wrap main content area in a transition container
-- On route change: crossfade old → new content (opacity 1→0 and 0→1, 200ms)
-- Shared elements (headers, sidebars) don't transition — only main content morphs
-- Use `startViewTransition` with `view-transition-name` on key elements
-- Add CSS `::view-transition-old/new` styles for slide + fade
-- Wire into ShellLayout's `<main>` wrapper
+---
 
-### 4. Background Intelligence Engine (`src/lib/services/background-intelligence.ts` -- CREATE)
+## Part 2: Dashboard & Sidebar Layout Improvements
 
-Invisible maintenance that makes the OS feel smooth:
+### 2A. Global Sidebar Enhancement (`AppSidebar.tsx`)
+- Add collapsible sub-navigation: when you enter Business, Money, or Concierge, the sidebar expands to show domain-specific sub-routes (e.g., Business > Pipeline, Invoices, Revenue)
+- Add a "Recents" section showing last 5 visited pages
+- Mini-mode: show only colored domain icons with tooltip labels
+- Active route indicator: animated pill that slides between items (not just highlight)
+- Bottom section: user avatar with status dot, quick mode toggle
 
-- **Memory cleanup**: Every 5 min, prune stale localStorage entries (expired sessions, old nav transitions beyond 500)
-- **Prefetch orchestrator**: During idle, prefetch top 3 predicted routes + their data
-- **Entity organization**: Track entity access frequency, auto-sort recent files/contacts
-- **Health monitor**: Track JS heap size via `performance.memory`, warn if > 80% budget
-- **Stale cache eviction**: Clear cached responses older than 1 hour
-- Runs entirely via `requestIdleCallback` — zero impact on user interactions
-- Hook: `useBackgroundIntelligence()` in ShellLayout, starts on mount
+### 2B. Business OS Dashboard Layouts
+- **BusinessOverview**: Convert from single-column to a responsive bento grid (2x3 on desktop) with draggable card reordering
+- **Pipeline/Deals pages**: Add a kanban board view toggle alongside the existing list
+- **Revenue pages**: Split-pane with left metrics panel + right chart area, collapsible filters rail
+- **Customer Health**: Add a heatmap grid view (customers as cells, color = health score)
+- Consistent page shell: every business page uses `DomainHeader` with the blue Business accent
 
-### 5. Signature Micro-Details (multiple files)
+### 2C. Finance/Money OS Dashboard Layouts
+- **MoneyOverview**: Redesign as a "financial cockpit" — hero cash position card at top, then 3-column grid (Obligations, Receivables, Savings)
+- **Bills/Subscriptions**: Timeline view showing upcoming due dates on a horizontal calendar strip
+- **Net Worth**: Large area chart hero + breakdown cards below
+- **Budget Envelopes**: Visual envelope cards with fill-level indicators (like fuel gauges)
+- Add a persistent "Financial Health Score" bar at the top of all money pages
 
-**Window Open Animation** (`FloatingWindow.tsx`):
-- Replace instant appear with "soft" spring: scale 0.85→1.02→1.0, opacity 0→1, 300ms
-- Origin morph from dock icon position (already has `originRect` prop — wire it)
-- Subtle blur-in on content (blur 4px→0 during open)
+### 2D. Concierge OS Dashboard Layouts
+- **ConciergeOverview**: Family command center with member avatars across top, today's agenda timeline, task assignments
+- **Calendar**: Week view with drag-to-create events, color-coded by family member
+- **Household Tasks**: Kanban with assignee avatars and priority flags
+- Add a "Family Pulse" summary strip shared across all concierge pages
 
-**Hover Glow** (`index.css`):
-- Interactive elements get subtle radial gradient glow following cursor on hover
-- 80ms delay matching `MI_TIMINGS.hover`
-- Buttons: `box-shadow: 0 0 20px hsl(var(--primary) / 0.15)` on hover
+---
 
-**Sound Sync** (`FloatingWindow.tsx` + `use-zero-latency.ts`):
-- Window open → `SoundEngine.click()` on mount
-- Button press (sita-pressed) → `SoundEngine.click()` synced to spring-back
-- Window snap → `SoundEngine.approve()` on snap detection
+## Part 3: The WOW Boardroom & Advisor Experience
 
-**Cursor Velocity on Buttons** (`use-zero-latency.ts`):
-- Track pointer velocity globally
-- Fast click = smaller spring (scale 0.98), slow deliberate click = full spring (scale 0.94)
-- Makes buttons feel responsive to intent
+### 3A. Boardroom Redesign — "The War Room"
+- **Entry ceremony**: Full-screen animated transition when entering boardroom — lights dim, domain accent ring pulses, "Boardroom session starting..." text with typewriter effect
+- **Presentation mode**: Auto-advancing slides with cinematic transitions (fade, slide, zoom) — each section becomes a full-screen slide
+- **3D confidence visualization**: Radial chart showing all advisor confidence levels as an interactive radar/spider chart
+- **Live disagreement theater**: When advisors disagree, show a split-screen "debate" view with advisor avatars on opposite sides, their positions animated in, audience-poll style confidence bars
+- **Decision moment**: When approving, dramatic confirmation animation — ripple effect, seal stamp, receipt generation with satisfying sound
+- **Session timeline**: Horizontal scrollable timeline at bottom showing boardroom progression, clickable to jump to any section
+- **Ambient audio**: Subtle background hum that changes based on boardroom sentiment (calm for positive, tension for risks)
 
-### 6. FlowSpace Signature Polish (`FlowSpace.tsx` + `index.css`)
+### 3B. Advisor Council Workspace Redesign
+- **Advisor cards as 3D tiles**: Each advisor shown as a floating card with depth/parallax on hover, domain-colored glow, live status pulse
+- **Council formation view**: Circular arrangement of advisor avatars (like a round table) with connection lines showing active handoffs
+- **Live advisor activity feed**: Real-time scrolling feed of what each advisor is doing/thinking
+- **Advisor deep-dive**: Click an advisor to expand into full-screen workspace showing their reasoning chain, evidence sources, confidence history chart, and recent recommendations
+- **Model budget as fuel gauge**: Visual fuel tank showing remaining AI budget with projected exhaustion time
 
-Brand FlowSpace as THE identity feature:
+### 3C. Boardroom Widgets (New Primitives)
+- **VotingCard**: Multi-advisor vote visualization with stacked bar
+- **EvidenceChain**: Connected node graph showing how a conclusion was reached
+- **ScenarioFork**: Side-by-side scenario comparison with delta highlights
+- **DecisionSeal**: Animated approval stamp with receipt hash
+- **SentimentPulse**: Real-time sentiment indicator (green/amber/red wave)
 
-- **Entry animation**: Zoom-out with parallax depth (windows fly back in Z-space, 400ms spring)
-- **Ambient particles**: Subtle floating dots connecting related windows with thin lines
-- **Signature glow**: Active window gets pulsing primary-color border glow
-- **Sound**: `SoundEngine.boot()` on FlowSpace open (shortened to 200ms)
-- **Exit**: Reverse zoom-in, selected window flies forward to fill screen
+---
 
-## Files
+## Technical Approach
 
-| File | Action |
-|---|---|
-| `src/lib/services/adaptive-visual-system.ts` | **CREATE** — wallpaper color extraction + time-of-day toning |
-| `src/components/sita/shell/HoldKeyOverlay.tsx` | **CREATE** — hold-Alt instant action overlay |
-| `src/components/sita/shell/AppTransitionLayer.tsx` | **CREATE** — crossfade transition wrapper |
-| `src/lib/services/background-intelligence.ts` | **CREATE** — invisible maintenance engine |
-| `src/components/sita/shell/FloatingWindow.tsx` | **MODIFY** — soft open animation, sound sync |
-| `src/hooks/use-zero-latency.ts` | **MODIFY** — cursor velocity tracking, sound-synced press |
-| `src/index.css` | **MODIFY** — hover glow, view-transition CSS, FlowSpace signature styles |
-| `src/components/sita/shell/FlowSpace.tsx` | **MODIFY** — entry/exit zoom parallax, ambient particles, signature glow |
-| `src/components/sita/ShellLayout.tsx` | **MODIFY** — mount adaptive visuals, hold-key overlay, background intelligence, transition layer |
+- All new window apps follow Nova SDK patterns: manifest in catalog, lifecycle hooks via `useNovaApp`, AppLayout with title bar
+- Dashboard layouts use existing `SitaCard`, `GlassCard`, `KPITile` primitives with new grid compositions
+- Boardroom animations use Framer Motion orchestration (staggerChildren, AnimatePresence)
+- Canvas visualizations (music waveform, maps, confidence radar) use NovaContext from the SDK
+- All apps registered in `catalog.ts`, wired in `ShellLayout.tsx` and `DesktopDock.tsx`
 
-## Order
+## Implementation Order (suggested)
 
-1. Adaptive Visual System (color extraction + CSS vars)
-2. Background Intelligence Engine (invisible maintenance)
-3. Signature Micro-Details (window open, hover glow, sound sync, velocity)
-4. Hold-Key Command Overlay
-5. Seamless App Transitions (crossfade layer)
-6. FlowSpace Signature Polish
+1. Sidebar enhancement (foundation for all dashboards)
+2. Business + Money + Concierge layout upgrades (high visible impact)
+3. Boardroom war room redesign (the WOW factor)
+4. New window apps (Music, Calculator, Photos, Code Editor, Mail, Maps)
+5. Advisor council workspace redesign
+6. New boardroom primitives (VotingCard, EvidenceChain, etc.)
+
+---
+
+## File Impact Summary
+
+| Area | Files Created | Files Modified |
+|------|--------------|----------------|
+| Window Apps | 6 new components | catalog.ts, ShellLayout, DesktopDock, DesktopSurface |
+| Sidebar | 1 refactored | AppSidebar.tsx |
+| Business layouts | 3-5 modified | BusinessOverview, CustomerHealth, etc. |
+| Money layouts | 3-5 modified | MoneyOverview, BillsWorkspace, etc. |
+| Concierge layouts | 2-3 modified | ConciergeOverview, HouseholdTasks |
+| Boardroom | 2-3 new + 2 modified | Boardroom.tsx, AdvisorWorkspace, new primitives |
 
