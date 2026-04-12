@@ -6,7 +6,7 @@ import { PriorityCard, QuickActionBar as HouseholdQuickActions, OverloadCard, Gr
 import { EmptyStateCTA } from "@/components/sita/EmptyStateCTA";
 import { WhatMattersNow, WhatChangedFeed, PreparedActions } from "@/components/sita/domain-shared";
 import type { MatterItem, ChangeEvent, PreparedAction } from "@/components/sita/domain-shared";
-import { ConciergeHomeSummary, SupportBurdenCard, ConciergeContinuityCard, GroupedPrepBundleCard, ConciergeReviewQueue, ConciergeCommandActionPreview, ConciergeAdvisorInsightCard, UpcomingNeedsList, ConciergeBoardroomSummary } from "@/components/concierge";
+import { ConciergeHomeSummary, SupportBurdenCard, ConciergeContinuityCard, GroupedPrepBundleCard, ConciergeReviewQueue, ConciergeCommandActionPreview, ConciergeAdvisorInsightCard, UpcomingNeedsList, ConciergeBoardroomSummary, ConciergePageWrapper } from "@/components/concierge";
 import type { ContinuityItem, ReviewItem, PrepBundle, CommandSuggestion, UpcomingNeed, BoardroomSummaryData } from "@/components/concierge";
 import { useHouseholdTasks, useFamilyEvents } from "@/hooks/use-sita-data";
 import { useDataMode } from "@/contexts/DataModeContext";
@@ -266,7 +266,7 @@ const ConciergeOverview = () => {
   }
 
   return (
-    <motion.div className="space-y-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3, ease: "easeOut" }}>
+    <ConciergePageWrapper className="space-y-6">
       <DemoModeBadge />
 
       {/* ═══ CONCIERGE HOME SUMMARY — Relief-first opening ═══ */}
@@ -553,7 +553,7 @@ const ConciergeOverview = () => {
           <ConciergeBoardroomSummary data={boardroomData} onClick={() => navigate("/concierge/boardroom")} />
         </BentoCell>
       </div>
-    </motion.div>
+    </ConciergePageWrapper>
   );
 };
 

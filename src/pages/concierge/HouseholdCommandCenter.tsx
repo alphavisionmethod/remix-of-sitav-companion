@@ -1,4 +1,5 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
+import { ConciergePageWrapper } from "@/components/concierge";
 import { KPITile, EmptyState } from "@/components/sita/SitaComponents";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { useHouseholds, useHouseholdMembers, useCreateHousehold, useAddHouseholdMember, useDeleteHouseholdMember } from "@/hooks/use-household";
@@ -43,14 +44,14 @@ const HouseholdCommandCenter = () => {
 
   if (!households?.length && !showCreate) {
     return (
-      <motion.div className="mx-auto max-w-3xl space-y-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+      <ConciergePageWrapper className="mx-auto max-w-3xl space-y-6">
       <DemoModeBadge />
-        <SitaPageHeader title="Household Command Center" subtitle="Manage your household members, roles, and shared responsibilities" />
+        <SitaPageHeader title="Household Support Coordination" subtitle="Manage your household members, roles, and shared responsibilities" />
         <EmptyState icon={Home} title="No households yet" description="Create your first household to start managing family members, roles, and shared tasks." />
         <div className="flex justify-center">
           <SitaButton variant="primary" onClick={() => setShowCreate(true)}><Plus className="h-4 w-4" /> Create Household</SitaButton>
         </div>
-      </motion.div>
+      </ConciergePageWrapper>
     );
   }
 
