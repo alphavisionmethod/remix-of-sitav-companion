@@ -214,6 +214,14 @@ export function SystemMonitorWindow() {
       setThermalSpark(prev => [...prev.slice(-29), cpuTemp]);
       setFanRpm(Math.floor(1000 + cpuTemp * 15 + Math.random() * 200));
 
+      // Battery — pull from PowerManager
+      const pwrStats = PowerManager.getStats();
+      setBattLevelHistory(prev => [...prev.slice(-59), pwrStats.battery.level]);
+      const powerW = Math.abs(pwrStats.battery.current * pwrStats.battery.voltage) / 1_000_000;
+      setBattPowerHistory(prev => [...prev.slice(-59), powerW]);
+      setBattTempHistory(prev => [...prev.slice(-59), pwrStats.battery.temperature]);
+      setBattSpark(prev => [...prev.slice(-29), pwrStats.battery.level]);
+
       if (tickRef.current % 3 === 0) setProcesses(generateProcesses());
 
       // Refresh services every 2s
@@ -346,6 +354,20 @@ export function SystemMonitorWindow() {
             </NovaText>
           </HStack>
           <Sparkline data={thermalSpark} color="hsl(0, 70%, 55%)" />
+        </div>
+
+        <div className="rounded-lg bg-[hsl(0_0%_0%/0.03)] dark:bg-[hsl(0_0%_100%/0.03)] p-2">
+          <HStack spacing="micro" align="center" justify="between">
+            <NovaText variant="label" muted>Battery</NovaText>
+            <NovaText variant="label" className={cn(
+              battSpark[battSpark.length - 1] < 15 ? "!text-[hsl(0_70%_55%)]"
+              : battSpark[battSpark.length - 1] < 30 ? "!text-[hsl(45_80%_50%)]"
+              : "!text-[hsl(142_70%_50%)]"
+            )}>
+              {battSpark[battSpark.length - 1]?.toFixed(0) ?? "—"}%
+            </NovaText>
+          </HStack>
+          <Sparkline data={battSpark} color="hsl(142, 70%, 50%)" />
         </div>
       </VStack>
     </VStack>
