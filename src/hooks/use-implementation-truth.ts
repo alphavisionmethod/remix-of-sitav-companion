@@ -256,10 +256,10 @@ const DEMO_EDGES: WiringEdge[] = [
 // ── fromDynamicTable helper (matches project pattern) ──
 
 function fromSpecRegistry() {
-  return supabase.from("implementation_spec_registry" as any);
+  return ( supabase as any).from("implementation_spec_registry" as any);
 }
 function fromWiringEdges() {
-  return supabase.from("implementation_wiring_edges" as any);
+  return ( supabase as any).from("implementation_wiring_edges" as any);
 }
 
 // ── Hooks ──

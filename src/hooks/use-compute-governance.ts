@@ -150,7 +150,7 @@ export function useAISpendSummary() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Not authenticated");
 
-      const { data, error } = await supabase.rpc("aggregate_ai_daily_spend" as any, { p_user_id: user.id });
+      const { data, error } = await ( supabase as any).rpc("aggregate_ai_daily_spend" as any, { p_user_id: user.id });
       if (error) throw error;
       return (data || []) as AISpendRow[];
     },
