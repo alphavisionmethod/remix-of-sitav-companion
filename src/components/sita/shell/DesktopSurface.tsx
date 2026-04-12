@@ -238,7 +238,47 @@ function saveWidgetOrder(order: string[]) {
   try { localStorage.setItem(WIDGET_ORDER_KEY, JSON.stringify(order)); } catch {}
 }
 
-// ── Advisor Insight Strip ────────────────────────────────────
+// ── Widget Config Map ────────────────────────────────────────
+
+interface WidgetConfig {
+  icon: React.ElementType;
+  label: string;
+  getValue: (notifications: ShellNotificationDigest) => string;
+  accent: string;
+  route: string;
+}
+
+const WIDGET_CONFIGS: Record<string, WidgetConfig> = {
+  approvals: {
+    icon: CheckCircle,
+    label: "Approvals",
+    getValue: (n) => `${n.approvals || 3} waiting`,
+    accent: "bg-[hsl(265_55%_58%/0.2)]",
+    route: "/approvals",
+  },
+  cash: {
+    icon: DollarSign,
+    label: "Cash Position",
+    getValue: () => "$42K liquid",
+    accent: "bg-[hsl(140_50%_45%/0.2)]",
+    route: "/money",
+  },
+  today: {
+    icon: Calendar,
+    label: "Today",
+    getValue: () => "6 tasks · 2 meetings",
+    accent: "bg-[hsl(35_80%_55%/0.2)]",
+    route: "/concierge",
+  },
+  revenue: {
+    icon: TrendingUp,
+    label: "Revenue",
+    getValue: () => "+14% this week",
+    accent: "bg-[hsl(190_60%_50%/0.2)]",
+    route: "/business",
+  },
+};
+
 
 function AdvisorInsight({ bootReady }: { bootReady: boolean }) {
   const insights = [
