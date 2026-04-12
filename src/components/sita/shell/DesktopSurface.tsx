@@ -115,7 +115,7 @@ function getTimeConfig(): { greeting: string; mood: AmbientMood; gradient: strin
 function DesktopClock({ greeting, userName, bootReady }: { greeting: string; userName: string; bootReady: boolean }) {
   const [now, setNow] = useState(new Date());
   useEffect(() => {
-    const id = setInterval(() => setNow(new Date()), 30_000);
+    const id = setInterval(() => setNow(new Date()), 1_000);
     return () => clearInterval(id);
   }, []);
 
