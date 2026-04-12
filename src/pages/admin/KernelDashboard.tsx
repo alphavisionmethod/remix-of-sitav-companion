@@ -1685,6 +1685,7 @@ const KernelDashboard = () => {
                           status === "starting" ? "bg-amber-400 animate-pulse" :
                           "bg-muted-foreground/40"
                         )} />
+                        <ChevronRight className="h-3 w-3 text-muted-foreground/30" />
                       </div>
                       <div className="flex items-center justify-between">
                         <Badge variant="outline" className={cn(
