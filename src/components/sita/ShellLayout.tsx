@@ -290,6 +290,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         originRect: origin,
       }, { id: "weather", name: "Weather" });
     }
+  }, [wm.openWindow]);
 
   // G1: Permission gate wired into launch flow
   const handleLaunchApp = useCallback((appId: string, originRect?: DOMRect) => {
