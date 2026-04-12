@@ -20,7 +20,9 @@ import {
   applyEdgeBounce,
   trackShake,
   clearShakeState,
+  computeAlignmentGuides,
   type PhysicsWindow,
+  type AlignmentGuide,
 } from "@/lib/services/window-physics";
 
 export interface SiblingWindow {
@@ -93,6 +95,7 @@ export function FloatingWindow({
   const [preSnapState, setPreSnapState] = useState<{ x: number; y: number; width: number } | null>(null);
   const [showContent, setShowContent] = useState(false);
   const [magnetSnapped, setMagnetSnapped] = useState(false);
+  const [alignGuides, setAlignGuides] = useState<AlignmentGuide[]>([]);
 
   const accentGradient = appAccent || (windowId ? APP_ACCENTS[windowId] : undefined) || APP_ACCENTS.default;
 
@@ -235,8 +238,12 @@ export function FloatingWindow({
         tx = snapped.x;
         ty = snapped.y;
         setMagnetSnapped(snapped.snapped);
+        // Compute visual alignment guides
+        const snappedPhysics = { ...draggingPhysics, x: tx, y: ty };
+        setAlignGuides(snapped.snapped ? computeAlignmentGuides(snappedPhysics, others, edges) : []);
       } else {
         setMagnetSnapped(false);
+        setAlignGuides([]);
       }
     }
 
@@ -270,6 +277,7 @@ export function FloatingWindow({
     setIsDragging(false);
     dragRef.current.active = false;
     setMagnetSnapped(false);
+    setAlignGuides([]);
     cancelAnimationFrame(rafId.current);
 
     // Clear shake tracking
@@ -370,6 +378,42 @@ export function FloatingWindow({
             borderRadius: SNAP_CONFIG.previewRadius,
           }}
         />
+      )}
+
+      {/* Magnetic alignment guides — thin blue lines between snapping edges */}
+      {isDragging && alignGuides.length > 0 && (
+        <svg
+          className="fixed inset-0 pointer-events-none"
+          style={{ zIndex: DEPTH_LAYERS.windows + 1, width: "100vw", height: "100vh" }}
+        >
+          {alignGuides.map((g, i) =>
+            g.axis === "x" ? (
+              <line
+                key={`ag-${i}`}
+                x1={g.position} y1={g.start} x2={g.position} y2={g.end}
+                stroke="hsl(210, 80%, 60%)" strokeWidth="1" strokeDasharray="4 3" opacity="0.7"
+              />
+            ) : (
+              <line
+                key={`ag-${i}`}
+                x1={g.start} y1={g.position} x2={g.end} y2={g.position}
+                stroke="hsl(210, 80%, 60%)" strokeWidth="1" strokeDasharray="4 3" opacity="0.7"
+              />
+            )
+          )}
+          {alignGuides.map((g, i) => {
+            const pts = g.axis === "x"
+              ? [{ cx: g.position, cy: g.start }, { cx: g.position, cy: g.end }]
+              : [{ cx: g.start, cy: g.position }, { cx: g.end, cy: g.position }];
+            return pts.map((p, j) => (
+              <circle
+                key={`dot-${i}-${j}`}
+                cx={p.cx} cy={p.cy} r="2"
+                fill="hsl(210, 80%, 60%)" opacity="0.5"
+              />
+            ));
+          })}
+        </svg>
       )}
 
       <motion.div
