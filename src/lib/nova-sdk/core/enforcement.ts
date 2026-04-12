@@ -29,7 +29,7 @@ export function auditSpacing(value: number): DesignViolation | null {
 }
 
 export function auditFontSize(value: number): DesignViolation | null {
-  if (!VALID_FONT_SIZES.includes(value)) {
+  if (!(VALID_FONT_SIZES as readonly number[]).includes(value)) {
     return {
       element: "typography",
       rule: "type-scale",
