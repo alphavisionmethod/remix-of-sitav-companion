@@ -264,8 +264,8 @@ export function AIT06Recommendations() {
     return true;
   });
 
-  const domains = [...new Set(recs.map((r: Record<string, any>) => r.domain))];
-  const statuses = [...new Set(recs.map((r: Record<string, any>) => r.status))];
+  const domains = [...new Set(recs.map((r: Record<string, any>) => r.domain))] as string[];
+  const statuses = [...new Set(recs.map((r: Record<string, any>) => r.status))] as string[];
 
   return (
     <div className="space-y-6 p-6 max-w-[1600px] mx-auto">

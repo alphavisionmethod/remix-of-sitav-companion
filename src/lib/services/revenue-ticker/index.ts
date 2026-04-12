@@ -102,7 +102,7 @@ class RevenueTickerService {
     this.state.ticks = paidInvoices
       .filter((i) => new Date(i.created_at) >= todayStart)
       .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
-      .reduce<RevenueTick[]>((ticks, inv) => {
+      .reduce((ticks: RevenueTick[], inv: any) => {
         const prev = ticks.length > 0 ? ticks[ticks.length - 1].cumulative : 0;
         ticks.push({
           time: new Date(inv.created_at),

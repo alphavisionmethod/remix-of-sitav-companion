@@ -55,7 +55,7 @@ export default function ISA03OAuthClientRegistryConsole() {
   }, {} as Record<string, Set<string>>);
 
   const wellSeparated = Object.values(familyClientPurposes).every(
-    (purposes) => purposes.size <= 1 || (purposes.has("identity") && purposes.has("connector"))
+    (purposes: any) => purposes.size <= 1 || (purposes.has("identity") && purposes.has("connector"))
   );
 
   return (
