@@ -250,7 +250,24 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         {/* Universal Command Surface */}
         <UniversalCommandSurface open={commandOpen} onClose={() => setCommandOpen(false)} />
         {/* Universal Command Layer (Cmd+K) — replaces basic CommandPalette */}
-        <UniversalCommandLazy open={commandOpen} onClose={() => setCommandOpen(false)} />
+        <UniversalCommandLazy
+          open={commandOpen}
+          onClose={() => setCommandOpen(false)}
+          onSystemCommand={(cmd, args) => {
+            if (cmd === "lock") {
+              // Could wire to shell lock state
+            }
+            if (cmd === "mute") {
+              // Could wire to notification mute state
+            }
+            if (cmd === "focus") {
+              // Could wire to focus mode
+            }
+            if (cmd === "window_tile" || cmd === "window_minimize_all") {
+              // Window management commands
+            }
+          }}
+        />
         {/* Spatial Desktop (F4 / Cmd+Shift+G) */}
         <SpatialDesktopLazy isOpen={spatialOpen} onClose={() => setSpatialOpen(false)} />
         {/* Notification Center */}
