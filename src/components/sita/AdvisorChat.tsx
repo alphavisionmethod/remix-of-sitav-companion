@@ -254,6 +254,12 @@ export const AdvisorChat = ({ isOpen, onClose }: AdvisorChatProps) => {
                       )}
                     </div>
                   )}
+                  {/* Epistemic Trust Metadata */}
+                  {msg.role === "advisor" && msg.trustMetadata && (
+                    <div className="mb-2">
+                      <EpistemicTrustDisplay trustMetadata={msg.trustMetadata} compact />
+                    </div>
+                  )}
                   <div className="text-xs leading-relaxed prose prose-sm dark:prose-invert max-w-none">
                     <ReactMarkdown>{msg.content}</ReactMarkdown>
                   </div>
