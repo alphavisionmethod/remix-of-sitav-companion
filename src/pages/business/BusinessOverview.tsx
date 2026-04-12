@@ -6,6 +6,7 @@ import { TrustBadge } from "@/components/sita/TrustBadge";
 import { StateBadge } from "@/components/sita/StateBadge";
 import { RevenuePipelineChart, RevenueOverTimeChart } from "@/components/sita/SitaCharts";
 import { EmptyStateCTA } from "@/components/sita/EmptyStateCTA";
+import { AmbientHeader, StaggerReveal, StaggerItem, MetricHighlight, GlassCard, ChartContainer } from "@/components/sita/PremiumPageComponents";
 import { useNavigate } from "react-router-dom";
 import { useLeads, useCustomers, useInvoices } from "@/hooks/use-sita-data";
 import { useDataMode } from "@/contexts/DataModeContext";
