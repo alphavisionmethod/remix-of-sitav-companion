@@ -1,4 +1,26 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+
+vi.mock("@/integrations/supabase/client", () => ({
+  supabase: {
+    auth: {
+      onAuthStateChange: vi.fn(() => ({ data: { subscription: { unsubscribe: vi.fn() } } })),
+      getUser: vi.fn(() => Promise.resolve({ data: { user: { id: "u1" } } })),
+      getSession: vi.fn(() => Promise.resolve({ data: { session: null } })),
+    },
+    from: vi.fn(() => ({
+      select: vi.fn().mockReturnThis(), eq: vi.fn().mockReturnThis(),
+      order: vi.fn().mockReturnThis(), limit: vi.fn().mockReturnThis(),
+      single: vi.fn(() => Promise.resolve({ data: null })),
+      insert: vi.fn(() => Promise.resolve({ data: null })),
+    })),
+  },
+}));
+
+vi.mock("@/lib/supabase-helpers", () => ({
+  fromTable: vi.fn(() => ({ select: vi.fn().mockReturnThis(), eq: vi.fn().mockReturnThis(), order: vi.fn().mockReturnThis(), limit: vi.fn().mockReturnThis(), single: vi.fn(() => Promise.resolve({ data: null })), insert: vi.fn(() => Promise.resolve({ data: null })) })),
+  fromDynamicTable: vi.fn(() => ({ select: vi.fn().mockReturnThis(), eq: vi.fn().mockReturnThis(), order: vi.fn().mockReturnThis(), limit: vi.fn().mockReturnThis(), single: vi.fn(() => Promise.resolve({ data: null })), insert: vi.fn(() => Promise.resolve({ data: null })) })),
+}));
+
 import { CloudSyncManager } from "@/lib/core-services/cloud-sync-manager";
 
 describe("Integration: Settings → Cloud Sync", () => {
