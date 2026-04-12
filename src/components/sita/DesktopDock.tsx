@@ -4,7 +4,7 @@
 // Enhanced: bounce launch animation, glowing running bar, separator
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -12,13 +12,16 @@ import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { useAppBadges } from "@/hooks/useAppBadges";
 import type { AppDefinition } from "@/lib/app-platform/types";
 import type { useWindowManager } from "@/hooks/useWindowManager";
+import { DockWindowPreview } from "./shell/DockWindowPreview";
+import { SoundEngine } from "@/lib/sound-engine";
 
 const OS_WINDOW_APPS = new Set(["finder", "settings"]);
 
 interface DesktopDockProps {
-  onLaunchApp?: (appId: string) => void;
+  onLaunchApp?: (appId: string, originRect?: DOMRect) => void;
   windowManager?: ReturnType<typeof useWindowManager>;
   mood?: "warm" | "serene" | "night" | "focus";
+  hasMaximizedWindow?: boolean;
 }
 
 const MOOD_TINTS: Record<string, string> = {
@@ -28,7 +31,7 @@ const MOOD_TINTS: Record<string, string> = {
   focus: "bg-[hsl(265_50%_40%/0.10)]",
 };
 
-export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene" }: DesktopDockProps) => {
+export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMaximizedWindow = false }: DesktopDockProps) => {
   const navigate = useNavigate();
   const { apps } = useAppPlatform();
   const { getBadge } = useAppBadges();
@@ -36,18 +39,37 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene" }: Des
   const [tooltip, setTooltip] = useState<string | null>(null);
   const [contextMenu, setContextMenu] = useState<{ app: AppDefinition; x: number; y: number } | null>(null);
   const [bouncingApp, setBouncingApp] = useState<string | null>(null);
+  const [previewApp, setPreviewApp] = useState<{ id: string; x: number; y: number } | null>(null);
+  const [dragOverApp, setDragOverApp] = useState<string | null>(null);
+  const [dockVisible, setDockVisible] = useState(true);
   const dockRef = useRef<HTMLDivElement>(null);
   const iconRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
+  const previewTimer = useRef<ReturnType<typeof setTimeout>>();
 
   const pinnedApps = apps.filter(a => a.pinnedToDock && a.installStatus === "installed");
 
+  // G4: Dock auto-hide when windows are maximized
+  useEffect(() => {
+    if (!hasMaximizedWindow) { setDockVisible(true); return; }
+    setDockVisible(false);
+    const handleMouseMove = (e: MouseEvent) => {
+      setDockVisible(e.clientY > window.innerHeight - 20);
+    };
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, [hasMaximizedWindow]);
+
   const launchApp = useCallback((app: AppDefinition) => {
-    // Trigger bounce
+    // Trigger bounce + sound
     setBouncingApp(app.id);
+    SoundEngine.click();
     setTimeout(() => setBouncingApp(null), 500);
 
+    // G2: Pass originRect
+    const rect = iconRefs.current.get(app.id)?.getBoundingClientRect();
+
     if (onLaunchApp && OS_WINDOW_APPS.has(app.id)) {
-      onLaunchApp(app.id);
+      onLaunchApp(app.id, rect);
       return;
     }
     if (app.routePath) navigate(app.routePath);

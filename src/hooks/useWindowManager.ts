@@ -6,6 +6,7 @@ export interface WindowConfig {
   component: ReactNode;
   position: { x: number; y: number };
   width?: number;
+  originRect?: { x: number; y: number; width: number; height: number };
 }
 
 interface WindowState extends WindowConfig {
