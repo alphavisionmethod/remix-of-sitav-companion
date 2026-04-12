@@ -6,8 +6,8 @@ import { PriorityCard, QuickActionBar as HouseholdQuickActions, HouseholdAdvisor
 import { EmptyStateCTA } from "@/components/sita/EmptyStateCTA";
 import { WhatMattersNow, WhatChangedFeed, PreparedActions } from "@/components/sita/domain-shared";
 import type { MatterItem, ChangeEvent, PreparedAction } from "@/components/sita/domain-shared";
-import { ConciergeHomeSummary, SupportBurdenCard, ConciergeContinuityCard, GroupedPrepBundleCard, ConciergeReviewQueue } from "@/components/concierge";
-import type { ContinuityItem, ReviewItem, PrepBundle } from "@/components/concierge";
+import { ConciergeHomeSummary, SupportBurdenCard, ConciergeContinuityCard, GroupedPrepBundleCard, ConciergeReviewQueue, ConciergeCommandActionPreview, ConciergeAdvisorInsightCard, UpcomingNeedsList, ConciergeBoardroomSummary } from "@/components/concierge";
+import type { ContinuityItem, ReviewItem, PrepBundle, CommandSuggestion, UpcomingNeed, BoardroomSummaryData } from "@/components/concierge";
 import { useHouseholdTasks, useFamilyEvents } from "@/hooks/use-sita-data";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useState, useMemo } from "react";
@@ -273,6 +273,9 @@ const ConciergeOverview = () => {
         </div>
       </GlassCard>
 
+      {/* ═══ COMMAND ACTION PREVIEW ═══ */}
+      <ConciergeCommandActionPreview suggestions={commandSuggestions} />
+
       {/* ═══ WHAT MATTERS NOW ═══ */}
       <WhatMattersNow items={conciergeMatters} domain="concierge" />
       <PreparedActions actions={conciergePrepared} />
@@ -465,13 +468,17 @@ const ConciergeOverview = () => {
 
         {/* Concierge Advisor — 1×1 */}
         <BentoCell>
-          <HouseholdAdvisor
-            role="Concierge Advisor"
-            icon={Sparkles}
-            confidence="high"
-            message="Permission slip and plumber call are time-sensitive — handle first. Passport renewal approaching the danger window."
-            linkedItems={["Passport renewal", "Permission slip", "Plumber follow-up"]}
-          />
+          <ConciergeAdvisorInsightCard insight={{
+            role: "Concierge Advisor",
+            message: "Permission slip and plumber call are time-sensitive — handle first. Passport renewal approaching the danger window.",
+            linkedItems: ["Passport renewal", "Permission slip", "Plumber follow-up"],
+            confidence: "high",
+          }} />
+        </BentoCell>
+
+        {/* Upcoming Needs — 1×1 */}
+        <BentoCell>
+          <UpcomingNeedsList items={upcomingNeeds} />
         </BentoCell>
 
         {/* Support Burden — 2×1 */}
@@ -503,42 +510,9 @@ const ConciergeOverview = () => {
           <GroupedPrepBundleCard bundle={prepBundle} />
         </BentoCell>
 
-        {/* Family Boardroom — 2×1 */}
+        {/* Boardroom Summary — 2×1 */}
         <BentoCell span="col-span-1 md:col-span-2">
-          <GlassCard glow="accent" intensity="medium" className="p-5 h-full">
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2">
-                <BarChart3 className="h-4 w-4 text-accent" />
-                <SitaCardTitle>Family Boardroom</SitaCardTitle>
-              </div>
-              <ArrowRight className="h-3.5 w-3.5 text-muted-foreground" />
-            </div>
-            <div className="grid grid-cols-3 gap-4 mb-3">
-              <div className="text-center">
-                <p className="font-display text-xl font-bold text-foreground">67%</p>
-                <p className="text-[9px] text-muted-foreground">Last week done</p>
-              </div>
-              <div className="text-center">
-                <p className="font-display text-xl font-bold text-foreground">3</p>
-                <p className="text-[9px] text-muted-foreground">Carryover items</p>
-              </div>
-              <div className="text-center">
-                <p className="font-display text-xl font-bold text-accent">1</p>
-                <p className="text-[9px] text-muted-foreground">New priority</p>
-              </div>
-            </div>
-            <div className="h-1.5 rounded-full bg-secondary/40 overflow-hidden mb-2">
-              <motion.div className="h-full rounded-full bg-accent" initial={{ width: 0 }} animate={{ width: "67%" }} transition={{ duration: 0.8 }} />
-            </div>
-            <p className="text-[10px] text-muted-foreground">Monthly review recommended</p>
-
-            {variant === "founder" && (
-              <div className="mt-3 pt-3 border-t border-border/20">
-                <p className="text-xs text-foreground">2 school logistics may affect your Tuesday client meetings.</p>
-                <p className="text-[10px] text-primary mt-1">→ Consider rescheduling the 10 AM meeting</p>
-              </div>
-            )}
-          </GlassCard>
+          <ConciergeBoardroomSummary data={boardroomData} onClick={() => navigate("/concierge/boardroom")} />
         </BentoCell>
       </div>
     </motion.div>
