@@ -9,6 +9,7 @@ import { Scheduler } from "./scheduler";
 import { Compositor } from "./compositor";
 import { PowerManager } from "./power-manager";
 import { PrivilegeEnforcement } from "./privilege";
+import { resetRateLimiter, resetMutexes, clearSyscallLog } from "./syscall";
 import { WaylandServer } from "./wayland";
 import { DriverManager } from "./drivers";
 import { ServiceManager } from "../services/service-manager";
@@ -101,7 +102,10 @@ class NovaKernelClass {
     });
 
     this.initSubsystem("SyscallDispatcher", () => {
-      // Syscall module with ring transition support initialized
+      // Initialize syscall subsystem — clear rate limiters, mutexes, logs
+      resetRateLimiter();
+      resetMutexes();
+      clearSyscallLog();
     });
 
     const kernelMs = (performance.now() - this.bootStartTime).toFixed(1);
