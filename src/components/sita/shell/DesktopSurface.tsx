@@ -655,6 +655,7 @@ export function DesktopSurface({
               width={w.width}
               originRect={(w as any).originRect}
               siblingWindows={siblings}
+              isOccluded={Compositor.isFullyOccluded(w.id)}
               onClose={() => {
                 lifecycleManager.transition(w.id, "terminated");
                 const proc = ProcessTable.getByAppId(w.id);
@@ -673,6 +674,7 @@ export function DesktopSurface({
                 }
                 lifecycleManager.transition(w.id, "focused");
                 Compositor.bringToFront(w.id);
+                SoundEngine.click();
                 focusWindow?.(w.id);
               }}
               isFocused={w.zIndex === maxZ}
