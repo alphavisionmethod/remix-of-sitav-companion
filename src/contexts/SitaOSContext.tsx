@@ -281,6 +281,25 @@ export const SitaOSProvider = ({ children }: { children: ReactNode }) => {
   const hydratedRef = useRef(false);
   const [kernel, setKernel] = useState<SitaOSKernel>(getOrCreateKernel);
 
+  // Layer awareness: track current route layer
+  let currentLayer: Layer = "app";
+  let currentDomain: string | undefined;
+  try {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const location = useLocation();
+    currentLayer = resolveRouteLayer(location.pathname);
+    currentDomain = resolveRouteDomain(location.pathname);
+  } catch {
+    // Outside router context (e.g. tests)
+  }
+
+  // Sync layer into kernel on route change
+  useEffect(() => {
+    if (kernel.currentLayer !== currentLayer || kernel.currentDomain !== currentDomain) {
+      setKernel(prev => ({ ...prev, currentLayer, currentDomain }));
+    }
+  }, [currentLayer, currentDomain]);
+
   useEffect(() => {
     if (authLoading || !user || hydratedRef.current) return;
     hydratedRef.current = true;
