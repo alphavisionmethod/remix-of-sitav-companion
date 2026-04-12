@@ -447,6 +447,44 @@ export function FloatingWindow({
               </circle>
             ));
           })}
+          {/* Distance labels */}
+          {alignGuides.map((g, i) => {
+            const mid = g.axis === "x"
+              ? { x: g.position + 6, y: (g.start + g.end) / 2 }
+              : { x: (g.start + g.end) / 2, y: g.position - 6 };
+            const label = `${g.distance}px`;
+            return (
+              <g key={`dist-${i}`}>
+                {/* Background pill */}
+                <rect
+                  x={mid.x - label.length * 3.2 - 4}
+                  y={mid.y - 7}
+                  width={label.length * 6.4 + 8}
+                  height={14}
+                  rx="4"
+                  fill="hsl(210, 80%, 15%)"
+                  fillOpacity="0.85"
+                  stroke="hsl(210, 80%, 60%)"
+                  strokeWidth="0.5"
+                  strokeOpacity="0.4"
+                >
+                  <animate attributeName="fill-opacity" values="0;0.85" dur="0.2s" repeatCount="1" />
+                </rect>
+                <text
+                  x={mid.x}
+                  y={mid.y + 3.5}
+                  textAnchor="middle"
+                  fill="hsl(210, 80%, 70%)"
+                  fontSize="9"
+                  fontFamily="JetBrains Mono, monospace"
+                  fontWeight="500"
+                >
+                  {label}
+                  <animate attributeName="opacity" values="0;1" dur="0.2s" repeatCount="1" />
+                </text>
+              </g>
+            );
+          })}
         </svg>
       )}
 
