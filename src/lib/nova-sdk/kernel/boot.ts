@@ -110,6 +110,17 @@ class NovaKernelClass {
       clearSyscallLog();
     });
 
+    this.initSubsystem("IPCSubsystem", () => {
+      IPCManager.reset();
+      // Grant kernel IPC capabilities
+      IPCManager.grantAll(0);
+      // Create system event channels
+      IPCManager.createEventChannel(0, "system.lifecycle");
+      IPCManager.createEventChannel(0, "system.notifications");
+      IPCManager.createEventChannel(0, "system.theme");
+      IPCManager.createEventChannel(0, "system.power");
+    });
+
     this.initSubsystem("CrashResilience", () => {
       CrashResilience.reset();
       CrashResilience.start();
