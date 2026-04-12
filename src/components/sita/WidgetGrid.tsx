@@ -1,97 +1,246 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
-import { Clock, Cloud, BarChart3, Brain, CalendarDays, GripVertical, Plus, X, Settings } from "lucide-react";
+import { Clock, Cloud, BarChart3, Brain, CalendarDays, GripVertical, Plus, X, Settings, Droplets, Wind, Sun, Maximize2, Minimize2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-// ── Widget Registry ──────────────────────────────────────────
+
+// ── Types ────────────────────────────────────────────────────
+
+type WidgetSize = "small" | "medium" | "large";
 
 interface WidgetDef {
   id: string;
   label: string;
   icon: React.ElementType;
   minW: number;
-  component: React.FC;
+  component: React.FC<{ size: WidgetSize }>;
 }
 
-const ClockWidget = () => {
+interface WidgetState {
+  id: string;
+  size: WidgetSize;
+}
+
+// ── Weather Types & Hook ─────────────────────────────────────
+
+interface WeatherData {
+  temp: number;
+  feelsLike: number;
+  humidity: number;
+  windSpeed: number;
+  uvIndex: number;
+  condition: string;
+  icon: string;
+  unit: string;
+  hourly: { time: string; temp: number; icon: string }[];
+  fetchedAt: string;
+}
+
+function useWeather() {
+  const [data, setData] = useState<WeatherData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function fetchWeather(lat: number, lon: number) {
+      try {
+        const url = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/get-weather?lat=${lat}&lon=${lon}`;
+        const res = await fetch(url, {
+          headers: {
+            "apikey": import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const json = await res.json();
+        if (!cancelled) {
+          setData(json);
+          setError(null);
+        }
+      } catch (e) {
+        if (!cancelled) setError(e instanceof Error ? e.message : "Failed to fetch weather");
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    }
+
+    // Try geolocation, fallback to NYC
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => fetchWeather(pos.coords.latitude, pos.coords.longitude),
+        () => fetchWeather(40.7128, -74.006),
+        { timeout: 5000 }
+      );
+    } else {
+      fetchWeather(40.7128, -74.006);
+    }
+
+    // Refresh every 10 minutes
+    const iv = setInterval(() => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (pos) => fetchWeather(pos.coords.latitude, pos.coords.longitude),
+          () => fetchWeather(40.7128, -74.006),
+          { timeout: 5000 }
+        );
+      }
+    }, 600_000);
+
+    return () => { cancelled = true; clearInterval(iv); };
+  }, []);
+
+  return { data, loading, error };
+}
+
+// ── Widgets ──────────────────────────────────────────────────
+
+const ClockWidget: React.FC<{ size: WidgetSize }> = ({ size }) => {
   const [time, setTime] = useState(new Date());
   useEffect(() => { const t = setInterval(() => setTime(new Date()), 1000); return () => clearInterval(t); }, []);
   return (
     <div className="flex flex-col items-center justify-center h-full">
-      <p className="text-3xl font-light text-foreground tabular-nums">
+      <p className={cn("font-light text-foreground tabular-nums", size === "large" ? "text-5xl" : size === "medium" ? "text-4xl" : "text-3xl")}>
         {time.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
       </p>
-      <p className="text-xs text-muted-foreground mt-1">
+      <p className={cn("text-muted-foreground mt-1", size === "large" ? "text-sm" : "text-xs")}>
         {time.toLocaleDateString([], { weekday: "long", month: "short", day: "numeric" })}
       </p>
+      {size !== "small" && (
+        <p className="text-[10px] text-muted-foreground/50 mt-0.5">
+          {time.toLocaleTimeString([], { second: "2-digit" }).split(":").pop()}s
+        </p>
+      )}
     </div>
   );
 };
 
-const WeatherWidget = () => {
-  const [weather, setWeather] = useState({ temp: "22°", cond: "Partly Cloudy", loc: "Auto-detected" });
-  useEffect(() => {
-    // Simulated — would use a real weather API
-    const temps = ["18°", "22°", "25°", "28°", "15°"];
-    const conds = ["Sunny", "Partly Cloudy", "Overcast", "Light Rain", "Clear"];
-    const i = Math.floor(Math.random() * temps.length);
-    setWeather({ temp: temps[i], cond: conds[i], loc: Intl.DateTimeFormat().resolvedOptions().timeZone.split("/").pop()?.replace("_", " ") || "Local" });
-  }, []);
-  return (
-    <div className="flex flex-col items-center justify-center h-full gap-1">
-      <Cloud className="h-6 w-6 text-primary/60" />
-      <p className="text-2xl font-light text-foreground">{weather.temp}</p>
-      <p className="text-[11px] text-muted-foreground">{weather.cond}</p>
-      <p className="text-[10px] text-muted-foreground/50">{weather.loc}</p>
-    </div>
-  );
-};
+const WeatherWidget: React.FC<{ size: WidgetSize }> = ({ size }) => {
+  const { data, loading, error } = useWeather();
+  const loc = Intl.DateTimeFormat().resolvedOptions().timeZone.split("/").pop()?.replace("_", " ") || "Local";
 
-const QuickStatsWidget = () => (
-  <div className="flex flex-col justify-center h-full gap-2 px-1">
-    {[
-      { label: "Pipeline", value: "$48.2K", color: "text-primary" },
-      { label: "Due Today", value: "3 tasks", color: "text-foreground" },
-      { label: "Approvals", value: "2 pending", color: "text-[hsl(var(--sita-gold))]" },
-    ].map((s) => (
-      <div key={s.label} className="flex items-center justify-between">
-        <span className="text-[11px] text-muted-foreground">{s.label}</span>
-        <span className={cn("text-xs font-semibold", s.color)}>{s.value}</span>
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full gap-1">
+        <Cloud className="h-6 w-6 text-primary/40 animate-pulse" />
+        <p className="text-[11px] text-muted-foreground">Loading weather…</p>
       </div>
-    ))}
-  </div>
-);
+    );
+  }
 
-const MiniChatWidget = () => (
-  <div className="flex flex-col items-center justify-center h-full gap-2">
-    <Brain className="h-5 w-5 text-primary/60" />
-    <p className="text-[11px] text-muted-foreground text-center">Ask SITA Brain from the copilot bar below</p>
-  </div>
-);
+  if (error || !data) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full gap-1">
+        <Cloud className="h-6 w-6 text-destructive/60" />
+        <p className="text-[11px] text-muted-foreground">Weather unavailable</p>
+        <p className="text-[9px] text-muted-foreground/50">{error}</p>
+      </div>
+    );
+  }
 
-const CalendarWidget = () => {
-  const today = new Date();
-  const events = [
-    { time: "10:00", label: "Team standup" },
-    { time: "14:30", label: "Client review" },
-    { time: "16:00", label: "Strategy call" },
-  ];
   return (
-    <div className="flex flex-col h-full gap-1.5">
-      <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
-        {today.toLocaleDateString([], { weekday: "short", month: "short", day: "numeric" })}
-      </p>
-      {events.map((e) => (
-        <div key={e.time} className="flex items-center gap-2">
-          <span className="text-[10px] text-primary font-mono w-10">{e.time}</span>
-          <span className="text-[11px] text-foreground">{e.label}</span>
+    <div className="flex flex-col h-full gap-1">
+      {/* Main temp + condition */}
+      <div className="flex items-center justify-center gap-2 flex-1 min-h-0">
+        <span className={cn(size === "large" ? "text-4xl" : size === "medium" ? "text-3xl" : "text-2xl")}>{data.icon}</span>
+        <div className="flex flex-col items-start">
+          <p className={cn("font-light text-foreground leading-none", size === "large" ? "text-4xl" : size === "medium" ? "text-3xl" : "text-2xl")}>
+            {data.temp}{data.unit}
+          </p>
+          <p className={cn("text-muted-foreground", size === "large" ? "text-xs" : "text-[11px]")}>{data.condition}</p>
+        </div>
+      </div>
+
+      {/* Detail row — medium & large */}
+      {size !== "small" && (
+        <div className="flex items-center justify-center gap-3 text-[10px] text-muted-foreground">
+          <span className="flex items-center gap-0.5"><Droplets size={10} />{data.humidity}%</span>
+          <span className="flex items-center gap-0.5"><Wind size={10} />{data.windSpeed} km/h</span>
+          <span className="flex items-center gap-0.5"><Sun size={10} />UV {data.uvIndex}</span>
+          <span>Feels {data.feelsLike}{data.unit}</span>
+        </div>
+      )}
+
+      {/* Hourly forecast — large only */}
+      {size === "large" && data.hourly.length > 0 && (
+        <div className="flex gap-1 overflow-x-auto py-1 mt-1 border-t border-border/20">
+          {data.hourly.slice(0, 8).map((h, i) => (
+            <div key={i} className="flex flex-col items-center min-w-[36px] gap-0.5">
+              <span className="text-[9px] text-muted-foreground font-mono">
+                {new Date(h.time).getHours().toString().padStart(2, "0")}:00
+              </span>
+              <span className="text-sm">{h.icon}</span>
+              <span className="text-[10px] text-foreground font-medium">{Math.round(h.temp)}°</span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <p className="text-[9px] text-muted-foreground/40 text-center">{loc}</p>
+    </div>
+  );
+};
+
+const QuickStatsWidget: React.FC<{ size: WidgetSize }> = ({ size }) => {
+  const stats = [
+    { label: "Pipeline", value: "$48.2K", color: "text-primary" },
+    { label: "Due Today", value: "3 tasks", color: "text-foreground" },
+    { label: "Approvals", value: "2 pending", color: "text-[hsl(var(--sita-gold))]" },
+  ];
+  const extra = [
+    { label: "Revenue MTD", value: "$124K", color: "text-primary" },
+    { label: "Open Invoices", value: "7", color: "text-foreground" },
+  ];
+  const items = size === "large" ? [...stats, ...extra] : stats;
+
+  return (
+    <div className="flex flex-col justify-center h-full gap-2 px-1">
+      {items.map((s) => (
+        <div key={s.label} className="flex items-center justify-between">
+          <span className={cn("text-muted-foreground", size === "large" ? "text-xs" : "text-[11px]")}>{s.label}</span>
+          <span className={cn("font-semibold", s.color, size === "large" ? "text-sm" : "text-xs")}>{s.value}</span>
         </div>
       ))}
     </div>
   );
 };
 
-const ActivityFeedWidget = () => {
+const MiniChatWidget: React.FC<{ size: WidgetSize }> = ({ size }) => (
+  <div className="flex flex-col items-center justify-center h-full gap-2">
+    <Brain className={cn("text-primary/60", size === "large" ? "h-8 w-8" : "h-5 w-5")} />
+    <p className={cn("text-muted-foreground text-center", size === "large" ? "text-xs" : "text-[11px]")}>
+      Ask SITA Brain from the copilot bar below
+    </p>
+  </div>
+);
+
+const CalendarWidget: React.FC<{ size: WidgetSize }> = ({ size }) => {
+  const today = new Date();
+  const events = [
+    { time: "10:00", label: "Team standup" },
+    { time: "14:30", label: "Client review" },
+    { time: "16:00", label: "Strategy call" },
+    { time: "18:00", label: "Wrap-up sync" },
+  ];
+  const shown = size === "large" ? events : events.slice(0, 3);
+  return (
+    <div className="flex flex-col h-full gap-1.5">
+      <p className={cn("font-semibold text-muted-foreground uppercase tracking-wider", size === "large" ? "text-xs" : "text-[10px]")}>
+        {today.toLocaleDateString([], { weekday: "short", month: "short", day: "numeric" })}
+      </p>
+      {shown.map((e) => (
+        <div key={e.time} className="flex items-center gap-2">
+          <span className={cn("text-primary font-mono", size === "large" ? "text-xs w-12" : "text-[10px] w-10")}>{e.time}</span>
+          <span className={cn("text-foreground", size === "large" ? "text-xs" : "text-[11px]")}>{e.label}</span>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+const ActivityFeedWidget: React.FC<{ size: WidgetSize }> = ({ size }) => {
   const items = [
     { action: "Invoice #1042 sent", domain: "business", time: "2m ago", icon: "💼" },
     { action: "Bill payment scheduled", domain: "finance", time: "15m ago", icon: "💰" },
@@ -104,13 +253,14 @@ const ActivityFeedWidget = () => {
     finance: "bg-[hsl(var(--sita-gold))]/10 text-[hsl(var(--sita-gold))]",
     concierge: "bg-[hsl(var(--trust-safe))]/10 text-[hsl(var(--trust-safe))]",
   };
+  const shown = size === "large" ? items : items.slice(0, 4);
   return (
     <div className="flex flex-col h-full gap-1.5 overflow-hidden">
       <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Activity</p>
-      {items.slice(0, 4).map((item, i) => (
+      {shown.map((item, i) => (
         <div key={i} className="flex items-center gap-1.5">
           <span className="text-[10px]">{item.icon}</span>
-          <span className="text-[10px] text-foreground truncate flex-1">{item.action}</span>
+          <span className={cn("text-foreground truncate flex-1", size === "large" ? "text-[11px]" : "text-[10px]")}>{item.action}</span>
           <span className={cn("rounded-full px-1.5 py-0.5 text-[8px] font-semibold", domainColors[item.domain] || "bg-secondary text-muted-foreground")}>
             {item.domain}
           </span>
@@ -121,6 +271,8 @@ const ActivityFeedWidget = () => {
   );
 };
 
+// ── Registry ─────────────────────────────────────────────────
+
 const WIDGET_REGISTRY: WidgetDef[] = [
   { id: "clock", label: "Clock", icon: Clock, minW: 1, component: ClockWidget },
   { id: "weather", label: "Weather", icon: Cloud, minW: 1, component: WeatherWidget },
@@ -130,24 +282,52 @@ const WIDGET_REGISTRY: WidgetDef[] = [
   { id: "activity", label: "Activity Feed", icon: BarChart3, minW: 1, component: ActivityFeedWidget },
 ];
 
-const DEFAULT_LAYOUT = ["clock", "weather", "stats", "calendar"];
+const DEFAULT_LAYOUT: WidgetState[] = [
+  { id: "clock", size: "small" },
+  { id: "weather", size: "medium" },
+  { id: "stats", size: "small" },
+  { id: "calendar", size: "small" },
+];
+
+const SIZE_CLASSES: Record<WidgetSize, { grid: string; minH: string }> = {
+  small:  { grid: "col-span-1", minH: "min-h-[120px]" },
+  medium: { grid: "col-span-1 sm:col-span-2", minH: "min-h-[140px]" },
+  large:  { grid: "col-span-1 sm:col-span-2 lg:col-span-3", minH: "min-h-[180px]" },
+};
+
+const SIZE_OPTIONS: WidgetSize[] = ["small", "medium", "large"];
+const SIZE_ICONS: Record<WidgetSize, string> = { small: "S", medium: "M", large: "L" };
 
 // ── Widget Grid Component ───────────────────────────────────
 
 export const WidgetGrid = () => {
-  const [layout, setLayout] = useState<string[]>(() => {
-    try { return JSON.parse(localStorage.getItem("sita-widget-layout") || "null") || DEFAULT_LAYOUT; } catch { return DEFAULT_LAYOUT; }
+  const [layout, setLayout] = useState<WidgetState[]>(() => {
+    try {
+      const stored = JSON.parse(localStorage.getItem("sita-widget-layout-v2") || "null");
+      if (Array.isArray(stored) && stored.length > 0 && typeof stored[0] === "object" && "size" in stored[0]) return stored;
+      // Migrate from v1 (string[])
+      const v1 = JSON.parse(localStorage.getItem("sita-widget-layout") || "null");
+      if (Array.isArray(v1) && typeof v1[0] === "string") return v1.map((id: string) => ({ id, size: "small" as WidgetSize }));
+      return DEFAULT_LAYOUT;
+    } catch { return DEFAULT_LAYOUT; }
   });
   const [editing, setEditing] = useState(false);
   const [dragIdx, setDragIdx] = useState<number | null>(null);
 
-  const persist = useCallback((l: string[]) => {
+  const persist = useCallback((l: WidgetState[]) => {
     setLayout(l);
-    localStorage.setItem("sita-widget-layout", JSON.stringify(l));
+    localStorage.setItem("sita-widget-layout-v2", JSON.stringify(l));
   }, []);
 
-  const removeWidget = (id: string) => persist(layout.filter((w) => w !== id));
-  const addWidget = (id: string) => { if (!layout.includes(id)) persist([...layout, id]); };
+  const removeWidget = (id: string) => persist(layout.filter((w) => w.id !== id));
+  const addWidget = (id: string) => { if (!layout.find(w => w.id === id)) persist([...layout, { id, size: "small" }]); };
+  const cycleSize = (id: string) => {
+    persist(layout.map(w => {
+      if (w.id !== id) return w;
+      const idx = SIZE_OPTIONS.indexOf(w.size);
+      return { ...w, size: SIZE_OPTIONS[(idx + 1) % SIZE_OPTIONS.length] };
+    }));
+  };
 
   const handleDragStart = (idx: number) => setDragIdx(idx);
   const handleDragOver = (e: React.DragEvent, idx: number) => {
@@ -161,7 +341,7 @@ export const WidgetGrid = () => {
   };
   const handleDragEnd = () => setDragIdx(null);
 
-  const available = WIDGET_REGISTRY.filter((w) => !layout.includes(w.id));
+  const available = WIDGET_REGISTRY.filter((w) => !layout.find(l => l.id === w.id));
 
   return (
     <div className="space-y-3">
@@ -173,33 +353,53 @@ export const WidgetGrid = () => {
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-        {layout.map((wid, idx) => {
-          const def = WIDGET_REGISTRY.find((w) => w.id === wid);
+        {layout.map((ws, idx) => {
+          const def = WIDGET_REGISTRY.find((w) => w.id === ws.id);
           if (!def) return null;
           const W = def.component;
+          const sc = SIZE_CLASSES[ws.size];
           return (
             <motion.div
-              key={wid}
+              key={ws.id}
               layout
               draggable={editing}
               onDragStart={() => handleDragStart(idx)}
               onDragOver={(e) => handleDragOver(e as React.DragEvent, idx)}
               onDragEnd={handleDragEnd}
               className={cn(
-                "relative rounded-2xl border bg-card p-4 min-h-[120px] transition-all",
+                "relative rounded-2xl border bg-card p-4 transition-all",
+                sc.grid, sc.minH,
                 editing && "border-dashed border-primary/30 cursor-grab",
                 dragIdx === idx && "opacity-50"
               )}
             >
               {editing && (
-                <div className="absolute top-2 right-2 flex items-center gap-1">
+                <div className="absolute top-2 right-2 flex items-center gap-1 z-10">
+                  {/* Size toggle */}
+                  <button
+                    onClick={() => cycleSize(ws.id)}
+                    className="flex items-center gap-0.5 px-1.5 py-0.5 rounded-md bg-muted/50 hover:bg-muted transition-colors"
+                    title={`Size: ${ws.size} — click to cycle`}
+                  >
+                    {SIZE_OPTIONS.map(s => (
+                      <span
+                        key={s}
+                        className={cn(
+                          "text-[9px] font-bold w-3.5 h-3.5 flex items-center justify-center rounded-sm transition-colors",
+                          ws.size === s ? "bg-primary text-primary-foreground" : "text-muted-foreground"
+                        )}
+                      >
+                        {SIZE_ICONS[s]}
+                      </span>
+                    ))}
+                  </button>
                   <GripVertical className="h-3 w-3 text-muted-foreground" />
-                  <button onClick={() => removeWidget(wid)} className="p-0.5 rounded hover:bg-destructive/10 transition-colors">
+                  <button onClick={() => removeWidget(ws.id)} className="p-0.5 rounded hover:bg-destructive/10 transition-colors">
                     <X className="h-3 w-3 text-destructive" />
                   </button>
                 </div>
               )}
-              <W />
+              <W size={ws.size} />
             </motion.div>
           );
         })}
