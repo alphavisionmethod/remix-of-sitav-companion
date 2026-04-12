@@ -64,9 +64,10 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMa
   }, [hasMaximizedWindow]);
 
   const launchApp = useCallback((app: AppDefinition) => {
-    // Trigger bounce + sound
+    // Trigger bounce + spatial sound at icon position
     setBouncingApp(app.id);
-    SoundEngine.click();
+    const rect = iconRefs.current.get(app.id)?.getBoundingClientRect();
+    SoundEngine.click(rect ? rect.x + rect.width / 2 : undefined);
     setTimeout(() => setBouncingApp(null), 500);
 
     // G2: Pass originRect
