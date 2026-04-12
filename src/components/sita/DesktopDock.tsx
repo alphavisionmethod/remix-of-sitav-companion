@@ -85,14 +85,11 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMa
     setContextMenu({ app, x: e.clientX, y: e.clientY });
   }, []);
 
-  if (pinnedApps.length === 0) return null;
-
   // Velocity-reactive Gaussian magnification
   const getScale = useCallback((idx: number) => {
     if (cursorX === null) return 1;
     const el = iconRefs.current.get(pinnedApps[idx]?.id ?? "");
     if (!el) {
-      // Fallback to index-based
       if (hoveredIdx === null) return 1;
       const dist = Math.abs(idx - hoveredIdx);
       if (dist === 0) return 1.45;
@@ -103,14 +100,14 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMa
     const rect = el.getBoundingClientRect();
     const iconCenter = rect.left + rect.width / 2;
     const dist = Math.abs(cursorX - iconCenter);
-    // Gaussian falloff: sigma = 60px
     const sigma = 60;
     const gaussian = Math.exp(-(dist * dist) / (2 * sigma * sigma));
-    // Velocity dampening: faster → less magnification
     const velocityFactor = Math.max(0.3, 1 - Math.min(velocityRef.current / 3000, 0.7));
     const maxScale = 1.5;
     return 1 + (maxScale - 1) * gaussian * velocityFactor;
   }, [cursorX, hoveredIdx, pinnedApps]);
+
+  if (pinnedApps.length === 0) return null;
 
   const openWindowIds = new Set(windowManager?.windows.map(w => w.id) ?? []);
 
