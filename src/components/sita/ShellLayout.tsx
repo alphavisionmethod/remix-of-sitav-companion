@@ -246,6 +246,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
           windows={wm.windows}
           onSelectWindow={(id) => { wm.focusWindow(id); setMissionControlOpen(false); }}
           onClose={() => setMissionControlOpen(false)}
+          onLaunchApp={(appId) => { doLaunchApp(appId); setMissionControlOpen(false); }}
         />
       </Suspense>
 
