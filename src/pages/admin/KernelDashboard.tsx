@@ -770,6 +770,17 @@ const KernelDashboard = () => {
               onBack={() => setDrillDown(null)}
             />
           )}
+          {drillDown.type === "scheduler" && (
+            <SchedulerDetailPanel
+              key="scheduler"
+              schedStats={schedStats}
+              events={schedulerEvents}
+              currentContext={currentContext}
+              blockedProcesses={blockedProcesses}
+              readyProcesses={readyProcesses}
+              onBack={() => setDrillDown(null)}
+            />
+          )}
         </AnimatePresence>
       </div>
     );
