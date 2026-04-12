@@ -5,6 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useRef, useCallback, useEffect, type ReactNode } from "react";
+import { SoundEngine } from "@/lib/sound-engine";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { DEPTH_LAYERS, TRAFFIC_LIGHTS, NOVA_MOTION } from "@/lib/design-system/nova-os";
@@ -76,8 +77,9 @@ export function FloatingWindow({
 
   const accentGradient = appAccent || (windowId ? APP_ACCENTS[windowId] : undefined) || APP_ACCENTS.default;
 
-  // Progressive content loading — show skeleton shimmer for 150ms
+  // Progressive content loading — show skeleton shimmer for 150ms + soft open sound
   useEffect(() => {
+    SoundEngine.click();
     const timer = setTimeout(() => setShowContent(true), 150);
     return () => clearTimeout(timer);
   }, []);
@@ -95,23 +97,24 @@ export function FloatingWindow({
   const rafId = useRef<number>(0);
   const resizeStart = useRef({ x: 0, y: 0, w: 0, h: 0 });
 
-  // Origin morph — compute initial animation from dock icon position
+  // Origin morph — "soft open" spring with blur-in
   const morphInitial = originRect
     ? {
         x: originRect.x - initialPosition.x,
         y: originRect.y - initialPosition.y,
         scale: Math.max(originRect.width / width, 0.15),
         opacity: 0,
+        filter: "blur(8px)",
       }
-    : NOVA_MOTION.window.enter.initial;
+    : { ...NOVA_MOTION.window.enter.initial, scale: 0.85, opacity: 0, filter: "blur(6px)" };
 
   const morphAnimate = originRect
-    ? { x: 0, y: 0, scale: 1, opacity: 1 }
-    : NOVA_MOTION.window.enter.animate;
+    ? { x: 0, y: 0, scale: 1, opacity: 1, filter: "blur(0px)" }
+    : { ...NOVA_MOTION.window.enter.animate, scale: 1, opacity: 1, filter: "blur(0px)" };
 
   const morphTransition = originRect
-    ? { type: "spring" as const, stiffness: 260, damping: 22, mass: 0.8 }
-    : { duration: NOVA_MOTION.duration.standard, ease: [0.25, 0.1, 0.25, 1] as number[] };
+    ? { type: "spring" as const, stiffness: 220, damping: 20, mass: 0.7 }
+    : { type: "spring" as const, stiffness: 200, damping: 18, mass: 0.6 };
 
   // Lerp animation loop during drag
   useEffect(() => {
@@ -222,6 +225,7 @@ export function FloatingWindow({
       setPos({ x: rect.x, y: rect.y });
       setSize({ width: rect.width, height: rect.height });
       setSnappedTo(snapZone);
+      SoundEngine.approve(); // Snap sound feedback
     } else {
       runInertia();
     }
