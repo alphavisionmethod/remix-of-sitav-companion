@@ -148,7 +148,13 @@ function useKernelMetrics(refreshMs = 2000) {
     return bands;
   }, [processes]);
 
-  return { processes, memStats, schedStats, compStats, powerStats, privilegeStats, privilegeViolations, ringTransitions, bandDistribution, tick, schedulerEvents, currentContext, blockedProcesses, readyProcesses, compositorSurfaces, waylandStats, waylandClients, waylandGlobals };
+  const serviceManagerStats = useMemo(() => {
+    const diag = ServiceManager.getDiagnostics();
+    const bootLog = ServiceManager.getBootLog();
+    return { diagnostics: diag, bootLog, booted: ServiceManager.isBooted() };
+  }, [tick]);
+
+  return { processes, memStats, schedStats, compStats, powerStats, privilegeStats, privilegeViolations, ringTransitions, bandDistribution, tick, schedulerEvents, currentContext, blockedProcesses, readyProcesses, compositorSurfaces, waylandStats, waylandClients, waylandGlobals, serviceManagerStats };
 }
 
 // ── Subcomponents ────────────────────────────────────────────
