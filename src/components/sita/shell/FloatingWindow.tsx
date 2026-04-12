@@ -79,6 +79,101 @@ function ThrottledContent({ children, active }: { children: ReactNode; active: b
   );
 }
 
+// ── Edge-to-viewport distance labels (design-tool style) ─────
+const EDGE_THRESHOLD = 120;
+
+function EdgeDistanceLabels({
+  pos,
+  size,
+  vw,
+  vh,
+}: {
+  pos: { x: number; y: number };
+  size: { width: number; height: number };
+  vw: number;
+  vh: number;
+}) {
+  const distLeft = Math.round(pos.x);
+  const distRight = Math.round(vw - (pos.x + size.width));
+  const distTop = Math.round(pos.y);
+  const distBottom = Math.round(vh - (pos.y + size.height));
+
+  const edges: Array<{
+    dist: number;
+    x1: number; y1: number; x2: number; y2: number;
+    labelX: number; labelY: number;
+  }> = [];
+
+  // Left edge
+  if (distLeft >= 0 && distLeft < EDGE_THRESHOLD) {
+    const midY = pos.y + size.height / 2;
+    edges.push({ dist: distLeft, x1: 0, y1: midY, x2: pos.x, y2: midY, labelX: pos.x / 2, labelY: midY });
+  }
+  // Right edge
+  if (distRight >= 0 && distRight < EDGE_THRESHOLD) {
+    const midY = pos.y + size.height / 2;
+    const wx = pos.x + size.width;
+    edges.push({ dist: distRight, x1: wx, y1: midY, x2: vw, y2: midY, labelX: wx + distRight / 2, labelY: midY });
+  }
+  // Top edge
+  if (distTop >= 0 && distTop < EDGE_THRESHOLD) {
+    const midX = pos.x + size.width / 2;
+    edges.push({ dist: distTop, x1: midX, y1: 0, x2: midX, y2: pos.y, labelX: midX, labelY: pos.y / 2 });
+  }
+  // Bottom edge
+  if (distBottom >= 0 && distBottom < EDGE_THRESHOLD) {
+    const midX = pos.x + size.width / 2;
+    const wy = pos.y + size.height;
+    edges.push({ dist: distBottom, x1: midX, y1: wy, x2: midX, y2: vh, labelX: midX, labelY: wy + distBottom / 2 });
+  }
+
+  if (edges.length === 0) return null;
+
+  return (
+    <svg
+      className="fixed inset-0 pointer-events-none"
+      style={{ zIndex: DEPTH_LAYERS.windows + 2, width: "100vw", height: "100vh" }}
+    >
+      {edges.map((e, i) => {
+        const opacity = Math.max(0.2, 1 - e.dist / EDGE_THRESHOLD);
+        const label = `${e.dist}px`;
+        const labelW = label.length * 6.4 + 10;
+        return (
+          <g key={i} opacity={opacity}>
+            <line
+              x1={e.x1} y1={e.y1} x2={e.x2} y2={e.y2}
+              stroke="hsl(210, 80%, 60%)"
+              strokeWidth="1"
+              strokeDasharray="4 3"
+              opacity="0.6"
+            />
+            <rect
+              x={e.labelX - labelW / 2}
+              y={e.labelY - 8}
+              width={labelW}
+              height={16}
+              rx="4"
+              fill="hsl(0, 0%, 0%)"
+              fillOpacity="0.7"
+            />
+            <text
+              x={e.labelX}
+              y={e.labelY + 4}
+              textAnchor="middle"
+              fill="white"
+              fontSize="10"
+              fontFamily="JetBrains Mono, monospace"
+              fontWeight="500"
+            >
+              {label}
+            </text>
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+
 export function FloatingWindow({
   title,
   children,
