@@ -79,7 +79,7 @@ function timeLabel(i: number): string { return `${i % 60}s`; }
 
 // ── Sidebar Sections ─────────────────────────────────────────
 
-type MonitorSection = "cpu" | "memory" | "processes" | "network" | "gpu" | "services";
+type MonitorSection = "cpu" | "memory" | "processes" | "network" | "gpu" | "disk" | "services";
 
 const SECTIONS: { id: MonitorSection; label: string; icon: React.ReactNode }[] = [
   { id: "cpu", label: "CPU", icon: <Cpu className="w-3.5 h-3.5" /> },
@@ -87,6 +87,7 @@ const SECTIONS: { id: MonitorSection; label: string; icon: React.ReactNode }[] =
   { id: "processes", label: "Processes", icon: <Activity className="w-3.5 h-3.5" /> },
   { id: "network", label: "Network", icon: <Wifi className="w-3.5 h-3.5" /> },
   { id: "gpu", label: "GPU", icon: <Zap className="w-3.5 h-3.5" /> },
+  { id: "disk", label: "Disk", icon: <HardDrive className="w-3.5 h-3.5" /> },
   { id: "services", label: "Services", icon: <Server className="w-3.5 h-3.5" /> },
 ];
 
@@ -134,6 +135,8 @@ export function SystemMonitorWindow() {
   const [cpuSpark, setCpuSpark] = useState<number[]>(() => Array(30).fill(0));
   const [memSpark, setMemSpark] = useState<number[]>(() => Array(30).fill(0));
   const tickRef = useRef(0);
+  const [diskHistory, setDiskHistory] = useState<{ time: string; read: number; write: number }[]>([]);
+  const [diskSpark, setDiskSpark] = useState<number[]>(() => Array(30).fill(0));
 
   // Services state
   const [servicesDiag, setServicesDiag] = useState<Record<string, Record<string, unknown>>>({});
@@ -160,6 +163,11 @@ export function SystemMonitorWindow() {
       const up = 0.8 + Math.random() * 1.2;
       setNetHistory(prev => [...prev.slice(-59), { time: t, up, down }]);
 
+      const diskRead = 120 + Math.sin(tickRef.current * 0.08) * 80 + Math.random() * 40;
+      const diskWrite = 45 + Math.sin(tickRef.current * 0.12) * 30 + Math.random() * 25;
+      setDiskHistory(prev => [...prev.slice(-59), { time: t, read: diskRead, write: diskWrite }]);
+      setDiskSpark(prev => [...prev.slice(-29), diskRead + diskWrite]);
+
       if (tickRef.current % 3 === 0) setProcesses(generateProcesses());
 
       // Refresh services every 2s
@@ -179,6 +187,8 @@ export function SystemMonitorWindow() {
       setBootLog(ServiceManager.getBootLog());
     }
   }, [section]);
+
+  const latestDisk = diskHistory[diskHistory.length - 1];
 
   const latestCpu = cpuHistory[cpuHistory.length - 1];
   const latestMem = memHistory[memHistory.length - 1];
@@ -208,6 +218,11 @@ export function SystemMonitorWindow() {
     { key: "download", color: COLORS.netDown, fillOpacity: 0.3, data: netHistory.map(s => s.down) },
     { key: "upload", color: COLORS.netUp, fillOpacity: 0.25, data: netHistory.map(s => s.up) },
   ], [netHistory]);
+
+  const diskSeries: ChartSeries[] = useMemo(() => [
+    { key: "read", color: { h: 142, s: 70, l: 50 } as NovaColor, fillOpacity: 0.3, data: diskHistory.map(s => s.read) },
+    { key: "write", color: { h: 340, s: 75, l: 55 } as NovaColor, fillOpacity: 0.25, data: diskHistory.map(s => s.write) },
+  ], [diskHistory]);
 
   const coreBars: BarItem[] = useMemo(() => {
     return Array.from({ length: 8 }, (_, i) => {
