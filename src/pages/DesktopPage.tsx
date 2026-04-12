@@ -89,16 +89,7 @@ export default function DesktopPage() {
     return { enabledDomains: [], trustLevel: "balanced", painPoints: [], rituals: [], homeComposition: "" };
   })();
 
-  if (showEnterprise) {
-    return (
-      <EnterpriseFlow
-        onBack={() => setShowEnterprise(false)}
-        onComplete={() => setShowEnterprise(false)}
-      />
-    );
-  }
-
-  // ── Calm Engine wiring ─────────────────────────────────────
+  // ── Calm Engine wiring (before early returns) ──────────────
   const wm = useWindowManagerContext();
   const visibleWindows = wm?.visibleWindows ?? [];
   const maxZ = visibleWindows.reduce((max, w) => Math.max(max, w.zIndex), 0);
@@ -121,6 +112,15 @@ export default function DesktopPage() {
     hasNotification: (state.notifications?.urgent ?? 0) > 0,
     hasWindows: visibleWindows.length > 0,
   }), [visibleWindows.length, state.notifications?.urgent]);
+
+  if (showEnterprise) {
+    return (
+      <EnterpriseFlow
+        onBack={() => setShowEnterprise(false)}
+        onComplete={() => setShowEnterprise(false)}
+      />
+    );
+  }
 
   return (
     <CalmEngineProvider windows={calmWindows} layerState={calmLayerState}>
