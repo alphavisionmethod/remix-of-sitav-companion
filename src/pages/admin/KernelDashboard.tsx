@@ -1348,12 +1348,14 @@ const KernelDashboard = () => {
       </motion.div>
 
       {/* Top-line stats — 7 cards */}
-      <motion.div variants={stagger} className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
+      <motion.div variants={stagger} className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
         <StatCard icon={Cpu} label="Processes" value={totalProcesses} sub={`${running} running · ${liveProcessCount} live`} live />
         <StatCard icon={MemoryStick} label="Memory" value={`${memUsedPercent}%`} sub={`${memStats.freePages.toLocaleString()} pages free`} color="bg-blue-500/8" live />
         <StatCard icon={HardDrive} label="Mounts" value={FILESYSTEM_MOUNTS.length} sub={`${FILESYSTEM_MOUNTS.filter(m => m.status === "warning").length} warning`} color="bg-emerald-500/8" />
         <StatCard icon={Shield} label="Security" value={`${SECURITY_RINGS.reduce((s, r) => s + r.violations, 0)} violations`} sub="5 rings active" color="bg-amber-500/8" />
         <StatCard icon={Monitor} label="Display" value={`${compStats.totalSurfaces} surfaces`} sub={`${compStats.visible} visible · z=${compStats.topZ}`} color="bg-blue-500/8" live onClick={() => setDrillDown({ type: "display" })} />
+        <StatCard icon={Layers} label="Wayland" value={`${waylandStats.totalClients} clients`}
+          sub={`${waylandStats.totalSurfaces} srf · ${waylandStats.avgFrameRate.toFixed(0)}fps`} color="bg-purple-500/8" live onClick={() => setDrillDown({ type: "wayland" })} />
         <StatCard icon={powerStats.battery.charging ? BatteryCharging : Battery} label="Battery" value={`${powerStats.battery.level.toFixed(0)}%`}
           sub={`${powerStats.cpu.currentMHz}MHz · ${powerStats.powerState}`} color="bg-amber-500/8" live onClick={() => setDrillDown({ type: "power" })} />
         <StatCard icon={ShieldAlert} label="Privilege" value={`${privilegeStats.totalTransitions} transitions`}
