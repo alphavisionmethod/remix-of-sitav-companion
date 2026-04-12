@@ -87,6 +87,10 @@ export function KernelDashboardWindow() {
   const [sysLog, setSysLog] = useState<readonly SyscallLogEntry[]>([]);
   const [sysMetrics, setSysMetrics] = useState<SyscallTypeMetrics[]>([]);
 
+  const [driverDiags, setDriverDiags] = useState<{ driver: DeviceDriver; diag: Record<string, unknown> }[]>([]);
+  const [batteryHistory, setBatteryHistory] = useState<number[]>([]);
+  const [networkHistory, setNetworkHistory] = useState<number[]>([]);
+
   useEffect(() => {
     if (paused) return;
     const iv = setInterval(() => {
