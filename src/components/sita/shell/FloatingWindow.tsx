@@ -238,8 +238,12 @@ export function FloatingWindow({
         tx = snapped.x;
         ty = snapped.y;
         setMagnetSnapped(snapped.snapped);
+        // Compute visual alignment guides
+        const snappedPhysics = { ...draggingPhysics, x: tx, y: ty };
+        setAlignGuides(snapped.snapped ? computeAlignmentGuides(snappedPhysics, others, edges) : []);
       } else {
         setMagnetSnapped(false);
+        setAlignGuides([]);
       }
     }
 
