@@ -376,7 +376,11 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
               // Could wire to notification mute state
             }
             if (cmd === "focus") {
-              // Could wire to focus mode
+              if (focusMode.active) {
+                focusMode.stop();
+              } else {
+                focusMode.start(25);
+              }
             }
             if (cmd === "window_tile" || cmd === "window_minimize_all") {
               // Window management commands
