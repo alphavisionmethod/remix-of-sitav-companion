@@ -95,6 +95,7 @@ export function FloatingWindow({
   const [preSnapState, setPreSnapState] = useState<{ x: number; y: number; width: number } | null>(null);
   const [showContent, setShowContent] = useState(false);
   const [magnetSnapped, setMagnetSnapped] = useState(false);
+  const [alignGuides, setAlignGuides] = useState<AlignmentGuide[]>([]);
 
   const accentGradient = appAccent || (windowId ? APP_ACCENTS[windowId] : undefined) || APP_ACCENTS.default;
 
