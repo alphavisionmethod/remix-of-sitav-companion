@@ -37,6 +37,10 @@ import { ClickRipple } from "./shell/ClickRipple";
 import { AppPermissionGate, isPermissionGranted } from "./shell/AppPermissionGate";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { useZeroLatency } from "@/hooks/use-zero-latency";
+import { useSessionRestore } from "@/hooks/use-session-restore";
+import { persistSession } from "@/lib/services/session-persistence";
+import { useCalmMode } from "@/hooks/use-calm-mode";
+import { routineDetector } from "@/lib/services/routine-detector";
 
 // Lazy-load non-critical shell features (deferred until after first paint)
 const AdvisorChat = lazy(() => import("./AdvisorChat").then(m => ({ default: m.AdvisorChat })));
@@ -114,7 +118,34 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
   const { apps } = useAppPlatform();
   useAdaptiveInterface();
   useZeroLatency();
+  const { calmLevel } = useCalmMode();
   const location = useLocation();
+
+  // Session restore on mount
+  useSessionRestore({
+    onRestoreWindows: useCallback((windows) => {
+      for (const w of windows) {
+        // Re-launch windows — only reopen known window types
+        if (w.id === "finder" || w.id === "settings" || w.id === "notes") {
+          doLaunchApp(w.id);
+        }
+      }
+    }, []),
+  });
+
+  // Persist session on beforeunload
+  useEffect(() => {
+    const handler = () => {
+      persistSession({
+        windows: wm.getWindowStates(),
+        route: location.pathname,
+        scrollPositions: { [location.pathname]: window.scrollY },
+        sidebarOpen: true,
+      });
+    };
+    window.addEventListener("beforeunload", handler);
+    return () => window.removeEventListener("beforeunload", handler);
+  }, [wm, location.pathname]);
 
   // Memoized callbacks for child components
   const handleNotifOpen = useCallback(() => setNotifOpen(true), []);
