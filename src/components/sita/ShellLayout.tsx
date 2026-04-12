@@ -40,6 +40,9 @@ import { MailClientWindow } from "./shell/windows/MailClientWindow";
 import { MapsWindow } from "./shell/windows/MapsWindow";
 import { SecurityCenterWindow } from "./shell/windows/SecurityCenterWindow";
 import { AppLibraryWindow } from "./shell/windows/AppLibraryWindow";
+import { UpdateCenterWindow } from "./shell/windows/UpdateCenterWindow";
+import { CloudSyncWindow } from "./shell/windows/CloudSyncWindow";
+import { DevToolsWindow } from "./shell/windows/DevToolsWindow";
 import { NovaSDKProvider } from "@/contexts/NovaSDKContext";
 import { lifecycleManager } from "@/lib/nova-sdk/runtime/lifecycle";
 import { ProcessTable } from "@/lib/nova-sdk/kernel/process-manager";
@@ -54,6 +57,7 @@ import { useSessionRestore } from "@/hooks/use-session-restore";
 import { persistSession } from "@/lib/services/session-persistence";
 import { useCalmMode } from "@/hooks/use-calm-mode";
 import { routineDetector } from "@/lib/services/routine-detector";
+import { predictiveIntentEngine } from "@/lib/services/predictive-intent";
 import { useAdaptiveVisuals } from "@/lib/services/adaptive-visual-system";
 import { useBackgroundIntelligence } from "@/lib/services/background-intelligence";
 import { useAppTransitions } from "@/components/sita/shell/AppTransitionLayer";
@@ -101,6 +105,7 @@ const AppSwitcherLazy = lazy(() => import("./shell/AppSwitcher").then(m => ({ de
 const ControlCenterLazy = lazy(() => import("./shell/ControlCenter").then(m => ({ default: m.ControlCenter })));
 const NotificationDropdownLazy = lazy(() => import("./shell/NotificationDropdown").then(m => ({ default: m.NotificationDropdown })));
 const PictureInPictureLazy = lazy(() => import("./shell/PictureInPicture").then(m => ({ default: m.PictureInPicture })));
+const IntentSuggestionsWidgetLazy = lazy(() => import("./shell/IntentSuggestionsWidget").then(m => ({ default: m.IntentSuggestionsWidget })));
 
 // Route-aware page transitions
 const drillDownSegments = ["mission", "owner", "business", "money", "concierge"];
@@ -388,7 +393,35 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         width: 560,
         originRect: origin,
       }, { id: "app-library", name: "App Library" });
+    } else if (appId === "update-center" || appId === "com.sita.update-center") {
+      launchWithKernel("update-center", {
+        title: "Update Center",
+        component: <UpdateCenterWindow />,
+        position: { x: 220, y: 100 },
+        width: 480,
+        originRect: origin,
+      }, { id: "update-center", name: "Update Center" });
+    } else if (appId === "cloud-sync" || appId === "com.sita.cloud-sync") {
+      launchWithKernel("cloud-sync", {
+        title: "Cloud Sync",
+        component: <CloudSyncWindow />,
+        position: { x: 260, y: 110 },
+        width: 460,
+        originRect: origin,
+      }, { id: "cloud-sync", name: "Cloud Sync" });
+    } else if (appId === "dev-tools" || appId === "com.sita.dev-tools") {
+      launchWithKernel("dev-tools", {
+        title: "Developer Tools",
+        component: <DevToolsWindow />,
+        position: { x: 140, y: 70 },
+        width: 640,
+        originRect: origin,
+      }, { id: "dev-tools", name: "Developer Tools" });
     }
+
+    // Wire intent learning — every app launch teaches the engine
+    predictiveIntentEngine.learnFromAction("current-user", appId, "system");
+    routineDetector.recordLaunch(appId);
   }, [wm.openWindow]);
 
   // G1: Permission gate wired into launch flow
@@ -706,6 +739,11 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
       {/* Ambient Suggestions Bar — floating contextual intelligence */}
       <Suspense fallback={null}>
         <AmbientSuggestionsBarLazy />
+      </Suspense>
+
+      {/* Intent Suggestions Widget — predictive actions */}
+      <Suspense fallback={null}>
+        <IntentSuggestionsWidgetLazy onLaunchApp={(id) => handleLaunchApp(id)} />
       </Suspense>
 
       {/* Mobile Bottom Nav — critical for mobile, keep eager */}

@@ -119,6 +119,26 @@ export const SystemUpdateService = {
     });
   },
 
+  async rollbackUpdate(logId: string): Promise<void> {
+    const { data: { user } } = await db.auth.getUser();
+    if (!user) return;
+    await fromDynamicTable('system_update_log').insert({
+      user_id: user.id,
+      from_version: APP_VERSION,
+      to_version: 'rollback',
+      status: 'rolled-back',
+      completed_at: new Date().toISOString(),
+    });
+  },
+
+  getSystemInfo() {
+    return {
+      version: APP_VERSION,
+      buildNumber: '2024.04.12',
+      channel: 'stable',
+    };
+  },
+
   getAppVersion: () => APP_VERSION,
 };
 

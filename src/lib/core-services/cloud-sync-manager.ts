@@ -206,6 +206,20 @@ export class CloudSyncManager {
     return merged;
   }
 
+  // ── High-level sync methods ─────────────────────────────────
+
+  syncSettings(settings: Record<string, unknown>): void {
+    this.pushUpdate("cloud", "preference", settings);
+  }
+
+  syncSession(session: Record<string, unknown>): void {
+    this.pushUpdate("cloud", "manifest", session);
+  }
+
+  restoreFromCloud(): Record<string, unknown> {
+    return { ...this.state };
+  }
+
   // ── Queries ─────────────────────────────────────────────────
 
   getVersionVector(): VersionVector {

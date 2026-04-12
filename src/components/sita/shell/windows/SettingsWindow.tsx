@@ -8,6 +8,7 @@ import {
   Monitor, Volume2, Wifi, Settings, Moon, Sun, Shield, Palette,
   Bell, User, HardDrive, Globe, Keyboard, Lock, Eye, Bluetooth,
   Battery, Zap, Info, ChevronRight, Check, Camera, LogOut, Trash2, KeyRound,
+  Cloud, RefreshCw,
 } from "lucide-react";
 import {
   AppLayout,
@@ -39,6 +40,7 @@ const SECTIONS = [
   { id: "notifications", label: "Notifications", icon: <Bell className="h-3.5 w-3.5" />,group: "Preferences" },
   { id: "privacy",     label: "Privacy",     icon: <Shield className="h-3.5 w-3.5" />,   group: "Preferences" },
   { id: "keyboard",    label: "Keyboard",    icon: <Keyboard className="h-3.5 w-3.5" />, group: "Preferences" },
+  { id: "cloudsync",   label: "Cloud & Sync", icon: <Cloud className="h-3.5 w-3.5" />,   group: "Connectivity" },
   { id: "about",       label: "About",       icon: <Info className="h-3.5 w-3.5" />,     group: "Info" },
 ];
 
@@ -788,6 +790,55 @@ function AboutContent() {
   );
 }
 
+function CloudSyncContent() {
+  const [syncEnabled, setSyncEnabled] = useSettingsValue("cloud.syncEnabled", false);
+  const [lastSync] = useState(() => new Date().toLocaleTimeString());
+
+  const handleSyncNow = useCallback(() => {
+    toast.success("Sync started");
+  }, []);
+
+  return (
+    <VStack spacing="tight">
+      <NovaCard>
+        <VStack spacing="tight">
+          <SettingRow label="Cloud Sync" description="Sync data across devices" icon={<Cloud className="h-3.5 w-3.5" />}>
+            <NovaToggle checked={!!syncEnabled} onChange={setSyncEnabled} />
+          </SettingRow>
+          <Divider />
+          <SettingRow label="Last Sync" icon={<RefreshCw className="h-3.5 w-3.5" />}>
+            <NovaText variant="label" muted>{syncEnabled ? lastSync : "Disabled"}</NovaText>
+          </SettingRow>
+        </VStack>
+      </NovaCard>
+
+      {syncEnabled && (
+        <NovaCard>
+          <VStack spacing="tight">
+            <NovaSectionLabel className="!px-0">Sync Targets</NovaSectionLabel>
+            <SettingRow label="Settings" description="Preferences and config">
+              <NovaBadge variant="success">Active</NovaBadge>
+            </SettingRow>
+            <Divider />
+            <SettingRow label="Files" description="Documents and media">
+              <NovaBadge variant="success">Active</NovaBadge>
+            </SettingRow>
+            <Divider />
+            <NovaButton
+              variant="secondary"
+              onClick={handleSyncNow}
+              icon={<RefreshCw className="h-3.5 w-3.5" />}
+              className="w-full !text-[11px]"
+            >
+              Sync Now
+            </NovaButton>
+          </VStack>
+        </NovaCard>
+      )}
+    </VStack>
+  );
+}
+
 // ── Content map ────────────────────────────────────────────
 
 const CONTENT: Record<string, () => JSX.Element> = {
@@ -802,6 +853,7 @@ const CONTENT: Record<string, () => JSX.Element> = {
   notifications: NotificationsContent,
   privacy: PrivacyContent,
   keyboard: KeyboardContent,
+  cloudsync: CloudSyncContent,
   about: AboutContent,
 };
 
