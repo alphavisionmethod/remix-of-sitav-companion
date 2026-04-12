@@ -741,6 +741,12 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         <AmbientSuggestionsBarLazy />
       </Suspense>
 
+      {/* Intent Suggestions Widget — predictive actions */}
+      <Suspense fallback={null}>
+        <IntentSuggestionsWidgetLazy onLaunchApp={(id) => handleLaunchApp(id)} />
+      </Suspense>
+      </Suspense>
+
       {/* Mobile Bottom Nav — critical for mobile, keep eager */}
       <MobileBottomNav />
     </SidebarProvider>
