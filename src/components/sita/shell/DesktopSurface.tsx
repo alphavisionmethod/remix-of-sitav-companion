@@ -166,24 +166,44 @@ function DesktopClock({ greeting, userName, bootReady }: { greeting: string; use
   );
 }
 
-// ── Sparkline SVG ────────────────────────────────────────────
+// ── Sparkline SVG with Hover Tooltips ────────────────────────
 
 function Sparkline({ data, color = "hsl(265 55% 65%)", width = 64, height = 24 }: { data: number[]; color?: string; width?: number; height?: number }) {
+  const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   if (data.length < 2) return null;
   const min = Math.min(...data);
   const max = Math.max(...data);
   const range = max - min || 1;
-  const points = data.map((v, i) => {
-    const x = (i / (data.length - 1)) * width;
-    const y = height - ((v - min) / range) * (height - 4) - 2;
-    return `${x},${y}`;
-  }).join(" ");
 
-  const trend = data[data.length - 1] >= data[0];
+  const coords = data.map((v, i) => ({
+    x: (i / (data.length - 1)) * width,
+    y: height - ((v - min) / range) * (height - 4) - 2,
+    value: v,
+  }));
+
+  const polyPoints = coords.map(c => `${c.x},${c.y}`).join(" ");
   const gradientId = `spark-${color.replace(/[^a-z0-9]/gi, "")}`;
 
+  const dayLabels = (() => {
+    const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const today = new Date().getDay();
+    return data.map((_, i) => {
+      const offset = data.length - 1 - i;
+      const d = (today - offset + 7) % 7;
+      return days[d];
+    });
+  })();
+
+  const hitSlop = width / data.length;
+
   return (
-    <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} className="shrink-0 overflow-visible">
+    <svg
+      width={width}
+      height={height}
+      viewBox={`0 0 ${width} ${height}`}
+      className="shrink-0 overflow-visible"
+      onMouseLeave={() => setHoverIdx(null)}
+    >
       <defs>
         <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor={color} stopOpacity={0.3} />
@@ -192,12 +212,12 @@ function Sparkline({ data, color = "hsl(265 55% 65%)", width = 64, height = 24 }
       </defs>
       {/* Fill area */}
       <polygon
-        points={`0,${height} ${points} ${width},${height}`}
+        points={`0,${height} ${polyPoints} ${width},${height}`}
         fill={`url(#${gradientId})`}
       />
       {/* Line */}
       <polyline
-        points={points}
+        points={polyPoints}
         fill="none"
         stroke={color}
         strokeWidth="1.5"
@@ -205,11 +225,59 @@ function Sparkline({ data, color = "hsl(265 55% 65%)", width = 64, height = 24 }
         strokeLinejoin="round"
       />
       {/* End dot */}
-      {(() => {
-        const lastX = width;
-        const lastY = height - ((data[data.length - 1] - min) / range) * (height - 4) - 2;
-        return <circle cx={lastX} cy={lastY} r="2" fill={color} />;
-      })()}
+      <circle cx={coords[coords.length - 1].x} cy={coords[coords.length - 1].y} r="2" fill={color} />
+
+      {/* Invisible hit areas for each data point */}
+      {coords.map((c, i) => (
+        <rect
+          key={i}
+          x={c.x - hitSlop / 2}
+          y={0}
+          width={hitSlop}
+          height={height}
+          fill="transparent"
+          onMouseEnter={() => setHoverIdx(i)}
+        />
+      ))}
+
+      {/* Hover indicator */}
+      {hoverIdx !== null && coords[hoverIdx] && (
+        <>
+          {/* Vertical guide line */}
+          <line
+            x1={coords[hoverIdx].x} y1={0}
+            x2={coords[hoverIdx].x} y2={height}
+            stroke={color} strokeWidth="0.5" strokeDasharray="2 2" opacity={0.5}
+          />
+          {/* Hover dot */}
+          <circle cx={coords[hoverIdx].x} cy={coords[hoverIdx].y} r="3" fill={color} stroke="hsl(0 0% 0% / 0.4)" strokeWidth="1" />
+          {/* Tooltip background */}
+          <rect
+            x={Math.max(0, Math.min(coords[hoverIdx].x - 26, width - 52))}
+            y={coords[hoverIdx].y > height / 2 ? coords[hoverIdx].y - 30 : coords[hoverIdx].y + 6}
+            width="52" height="22" rx="4"
+            fill="hsl(0 0% 0% / 0.8)"
+          />
+          {/* Tooltip text — day label */}
+          <text
+            x={Math.max(4, Math.min(coords[hoverIdx].x - 22, width - 48))}
+            y={(coords[hoverIdx].y > height / 2 ? coords[hoverIdx].y - 30 : coords[hoverIdx].y + 6) + 9}
+            fill="hsl(0 0% 100% / 0.5)"
+            fontSize="7" fontFamily="system-ui"
+          >
+            {dayLabels[hoverIdx]}
+          </text>
+          {/* Tooltip text — value */}
+          <text
+            x={Math.max(4, Math.min(coords[hoverIdx].x - 22, width - 48))}
+            y={(coords[hoverIdx].y > height / 2 ? coords[hoverIdx].y - 30 : coords[hoverIdx].y + 6) + 18}
+            fill="hsl(0 0% 100% / 0.9)"
+            fontSize="8" fontWeight="600" fontFamily="system-ui"
+          >
+            {formatSparkValue(coords[hoverIdx].value)}
+          </text>
+        </>
+      )}
     </svg>
   );
 }
