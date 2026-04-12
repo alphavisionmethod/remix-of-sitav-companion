@@ -33,6 +33,7 @@ export const NOTES_MANIFEST = {
   windowDefaults: { width: 640, height: 480 },
   category: "productivity",
   description: "Premium note-taking with markdown and live preview",
+  designVersion: "nova-1.0",
 };
 
 // ── Types ──────────────────────────────────────────────────

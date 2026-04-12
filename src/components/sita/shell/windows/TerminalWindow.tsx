@@ -22,6 +22,7 @@ export const TERMINAL_MANIFEST = {
   windowDefaults: { width: 620, height: 460 },
   category: "utilities",
   description: "Premium GPU-accelerated terminal for SITA OS",
+  designVersion: "nova-1.0",
 };
 
 // ── Types ──────────────────────────────────────────────────

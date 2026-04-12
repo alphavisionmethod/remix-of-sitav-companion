@@ -28,6 +28,7 @@ export const CALENDAR_MANIFEST = {
   windowDefaults: { width: 640, height: 500 },
   category: "productivity",
   description: "Premium calendar with multi-view and smart scheduling",
+  designVersion: "nova-1.0",
 };
 
 // ── Types ──────────────────────────────────────────────────

@@ -27,6 +27,7 @@ export const NOVA_TERMINAL_MANIFEST = {
   windowDefaults: { width: 640, height: 440 },
   category: "utilities" as const,
   description: "GPU-canvas terminal rendered via NovaContext",
+  designVersion: "nova-1.0",
 };
 
 // ── Color palette (NovaColor HSL objects) ──────────────────

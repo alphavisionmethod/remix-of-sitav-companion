@@ -21,6 +21,7 @@ export const WEATHER_MANIFEST = {
   windowDefaults: { width: 420, height: 480 },
   category: "utilities",
   description: "Weather forecast for SITA OS",
+  designVersion: "nova-1.0",
 };
 
 type Condition = "sunny" | "partly-cloudy" | "cloudy" | "rainy" | "stormy" | "snowy";
