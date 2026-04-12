@@ -79,7 +79,7 @@ function timeLabel(i: number): string { return `${i % 60}s`; }
 
 // ── Sidebar Sections ─────────────────────────────────────────
 
-type MonitorSection = "cpu" | "memory" | "processes" | "network" | "gpu" | "services";
+type MonitorSection = "cpu" | "memory" | "processes" | "network" | "gpu" | "disk" | "services";
 
 const SECTIONS: { id: MonitorSection; label: string; icon: React.ReactNode }[] = [
   { id: "cpu", label: "CPU", icon: <Cpu className="w-3.5 h-3.5" /> },
@@ -87,6 +87,7 @@ const SECTIONS: { id: MonitorSection; label: string; icon: React.ReactNode }[] =
   { id: "processes", label: "Processes", icon: <Activity className="w-3.5 h-3.5" /> },
   { id: "network", label: "Network", icon: <Wifi className="w-3.5 h-3.5" /> },
   { id: "gpu", label: "GPU", icon: <Zap className="w-3.5 h-3.5" /> },
+  { id: "disk", label: "Disk", icon: <HardDrive className="w-3.5 h-3.5" /> },
   { id: "services", label: "Services", icon: <Server className="w-3.5 h-3.5" /> },
 ];
 
@@ -134,6 +135,8 @@ export function SystemMonitorWindow() {
   const [cpuSpark, setCpuSpark] = useState<number[]>(() => Array(30).fill(0));
   const [memSpark, setMemSpark] = useState<number[]>(() => Array(30).fill(0));
   const tickRef = useRef(0);
+  const [diskHistory, setDiskHistory] = useState<{ time: string; read: number; write: number }[]>([]);
+  const [diskSpark, setDiskSpark] = useState<number[]>(() => Array(30).fill(0));
 
   // Services state
   const [servicesDiag, setServicesDiag] = useState<Record<string, Record<string, unknown>>>({});
@@ -160,6 +163,11 @@ export function SystemMonitorWindow() {
       const up = 0.8 + Math.random() * 1.2;
       setNetHistory(prev => [...prev.slice(-59), { time: t, up, down }]);
 
+      const diskRead = 120 + Math.sin(tickRef.current * 0.08) * 80 + Math.random() * 40;
+      const diskWrite = 45 + Math.sin(tickRef.current * 0.12) * 30 + Math.random() * 25;
+      setDiskHistory(prev => [...prev.slice(-59), { time: t, read: diskRead, write: diskWrite }]);
+      setDiskSpark(prev => [...prev.slice(-29), diskRead + diskWrite]);
+
       if (tickRef.current % 3 === 0) setProcesses(generateProcesses());
 
       // Refresh services every 2s
@@ -179,6 +187,8 @@ export function SystemMonitorWindow() {
       setBootLog(ServiceManager.getBootLog());
     }
   }, [section]);
+
+  const latestDisk = diskHistory[diskHistory.length - 1];
 
   const latestCpu = cpuHistory[cpuHistory.length - 1];
   const latestMem = memHistory[memHistory.length - 1];
@@ -208,6 +218,11 @@ export function SystemMonitorWindow() {
     { key: "download", color: COLORS.netDown, fillOpacity: 0.3, data: netHistory.map(s => s.down) },
     { key: "upload", color: COLORS.netUp, fillOpacity: 0.25, data: netHistory.map(s => s.up) },
   ], [netHistory]);
+
+  const diskSeries: ChartSeries[] = useMemo(() => [
+    { key: "read", color: { h: 142, s: 70, l: 50 } as NovaColor, fillOpacity: 0.3, data: diskHistory.map(s => s.read) },
+    { key: "write", color: { h: 340, s: 75, l: 55 } as NovaColor, fillOpacity: 0.25, data: diskHistory.map(s => s.write) },
+  ], [diskHistory]);
 
   const coreBars: BarItem[] = useMemo(() => {
     return Array.from({ length: 8 }, (_, i) => {
@@ -662,6 +677,124 @@ export function SystemMonitorWindow() {
     );
   };
 
+  // ── Disk Activity Section ────────────────────────────────────
+  const MOUNTED_VOLUMES = [
+    { name: "/", type: "sitafs", total: 512, used: 287, label: "Root" },
+    { name: "/boot/efi", type: "fat32", total: 0.5, used: 0.1, label: "EFI" },
+    { name: "/home", type: "sitafs", total: 256, used: 142, label: "Home" },
+    { name: "/tmp", type: "tmpfs", total: 8, used: 1.2, label: "Temp" },
+    { name: "/var/data", type: "sitafs", total: 128, used: 68, label: "Data" },
+  ];
+
+  const STORAGE_BREAKDOWN = [
+    { label: "System", size: 48, color: { h: 210, s: 80, l: 55 } as NovaColor },
+    { label: "Applications", size: 92, color: { h: 265, s: 55, l: 58 } as NovaColor },
+    { label: "User Data", size: 142, color: { h: 142, s: 70, l: 50 } as NovaColor },
+    { label: "Logs & Cache", size: 34, color: { h: 45, s: 80, l: 55 } as NovaColor },
+    { label: "Proof Bundles", size: 18, color: { h: 340, s: 75, l: 55 } as NovaColor },
+  ];
+  const totalStorageUsed = STORAGE_BREAKDOWN.reduce((s, b) => s + b.size, 0);
+
+  const renderDisk = () => (
+    <VStack spacing="normal">
+      <HStack spacing="tight" justify="between" align="center">
+        <VStack spacing="micro">
+          <NovaText variant="heading">Disk Activity</NovaText>
+          <NovaText variant="label" muted>SitaFS — CoW journaled filesystem</NovaText>
+        </VStack>
+        <div className="text-right">
+          <NovaText variant="heading" className="!text-[hsl(142_70%_50%)]">
+            {latestDisk ? (latestDisk.read + latestDisk.write).toFixed(0) : "0"} MB/s
+          </NovaText>
+          <NovaText variant="label" muted>throughput</NovaText>
+        </div>
+      </HStack>
+
+      {/* R/W throughput chart */}
+      <NovaCard>
+        <NovaText variant="label" muted className="mb-2">Read / Write Throughput — 60s</NovaText>
+        <NovaCanvasChart series={diskSeries} stacked={false} maxY={400} height={180} yUnit=" MB/s" />
+        <HStack spacing="normal" className="mt-2">
+          <HStack spacing="micro" align="center">
+            <div className="w-2 h-2 rounded-full bg-[hsl(142_70%_50%)]" />
+            <NovaText variant="label" muted>Read {latestDisk ? `${latestDisk.read.toFixed(0)} MB/s` : ""}</NovaText>
+          </HStack>
+          <HStack spacing="micro" align="center">
+            <div className="w-2 h-2 rounded-full bg-[hsl(340_75%_55%)]" />
+            <NovaText variant="label" muted>Write {latestDisk ? `${latestDisk.write.toFixed(0)} MB/s` : ""}</NovaText>
+          </HStack>
+        </HStack>
+      </NovaCard>
+
+      {/* Storage usage breakdown */}
+      <NovaCard>
+        <NovaText variant="label" muted className="mb-2">Storage Usage Breakdown</NovaText>
+        <div className="h-4 rounded-full overflow-hidden flex bg-[hsl(0_0%_0%/0.06)] dark:bg-[hsl(0_0%_100%/0.06)]">
+          {STORAGE_BREAKDOWN.map(b => (
+            <div
+              key={b.label}
+              className="h-full"
+              style={{
+                width: `${(b.size / 512) * 100}%`,
+                backgroundColor: `hsl(${b.color.h}, ${b.color.s}%, ${b.color.l}%)`,
+              }}
+              title={`${b.label}: ${b.size} GB`}
+            />
+          ))}
+        </div>
+        <div className="grid grid-cols-3 gap-2 mt-3">
+          {STORAGE_BREAKDOWN.map(b => (
+            <HStack key={b.label} spacing="micro" align="center">
+              <div className="w-2 h-2 rounded-full" style={{ backgroundColor: `hsl(${b.color.h}, ${b.color.s}%, ${b.color.l}%)` }} />
+              <NovaText variant="label" muted className="!text-[10px]">{b.label}</NovaText>
+              <NovaText variant="label" className="!text-[10px] ml-auto">{b.size} GB</NovaText>
+            </HStack>
+          ))}
+        </div>
+        <HStack spacing="tight" justify="between" className="mt-2 pt-2 border-t border-border/30">
+          <NovaText variant="label" muted>Total Used</NovaText>
+          <NovaText variant="label">{totalStorageUsed} GB / 512 GB ({((totalStorageUsed / 512) * 100).toFixed(0)}%)</NovaText>
+        </HStack>
+      </NovaCard>
+
+      {/* Mounted volumes */}
+      <NovaCard>
+        <NovaText variant="label" muted className="mb-2">Mounted Volumes</NovaText>
+        <VStack spacing="tight">
+          {MOUNTED_VOLUMES.map(vol => {
+            const pct = (vol.used / vol.total) * 100;
+            return (
+              <div key={vol.name} className="p-2 rounded-lg border border-border/30">
+                <HStack spacing="tight" justify="between" align="center">
+                  <VStack spacing="micro">
+                    <HStack spacing="micro" align="center">
+                      <HardDrive className="w-3 h-3 text-muted-foreground" />
+                      <NovaText variant="body" className="!text-[11px] !font-medium">{vol.label}</NovaText>
+                      <NovaBadge variant="default" className="!text-[8px]">{vol.type}</NovaBadge>
+                    </HStack>
+                    <NovaText variant="label" muted className="!text-[10px]">{vol.name}</NovaText>
+                  </VStack>
+                  <NovaText variant="label" className={cn("!text-[11px]", pct > 80 ? "!text-[hsl(0_70%_55%)]" : "")}>
+                    {vol.used} / {vol.total} GB
+                  </NovaText>
+                </HStack>
+                <div className="h-1.5 rounded-full bg-[hsl(0_0%_0%/0.06)] dark:bg-[hsl(0_0%_100%/0.06)] mt-1.5 overflow-hidden">
+                  <div
+                    className="h-full rounded-full"
+                    style={{
+                      width: `${Math.min(100, pct)}%`,
+                      backgroundColor: pct > 80 ? "hsl(0, 70%, 55%)" : pct > 60 ? "hsl(45, 80%, 55%)" : "hsl(210, 80%, 55%)",
+                    }}
+                  />
+                </div>
+              </div>
+            );
+          })}
+        </VStack>
+      </NovaCard>
+    </VStack>
+  );
+
   // ── Render ─────────────────────────────────────────────────
   return (
     <AppLayout sidebar={sidebar} sidebarWidth={155} toolbar={toolbar} minHeight={420}>
@@ -670,6 +803,7 @@ export function SystemMonitorWindow() {
       {section === "processes" && renderProcesses()}
       {section === "network" && renderNetwork()}
       {section === "gpu" && renderGpu()}
+      {section === "disk" && renderDisk()}
       {section === "services" && renderServices()}
     </AppLayout>
   );
