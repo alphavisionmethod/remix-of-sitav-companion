@@ -95,44 +95,44 @@ class FileSystemServiceClass implements SystemService {
     this.mkdir("/home/Projects", 0);
 
     // Desktop
-    this.createFile("/home/Desktop/welcome.txt", 0, "text/plain",
+    this.createFile("/home/Desktop/welcome.txt", 0,
       "Welcome to NovaOS!\n\nThis is your Desktop. Drag files between folders to organize them.\n");
-    this.createFile("/home/Desktop/todo.md", 0, "text/markdown",
+    this.createFile("/home/Desktop/todo.md", 0,
       "# Today\n- [x] Boot NovaOS\n- [ ] Explore Finder\n- [ ] Try drag-and-drop\n- [ ] Check system settings\n");
 
     // Documents
-    this.createFile("/home/Documents/readme.txt", 0, "text/plain",
+    this.createFile("/home/Documents/readme.txt", 0,
       "NovaOS Documentation\n====================\nNovaOS is a spatial, intent-driven operating system.\nSee the Settings app for configuration options.\n");
-    this.createFile("/home/Documents/meeting-notes.md", 0, "text/markdown",
+    this.createFile("/home/Documents/meeting-notes.md", 0,
       "# Meeting Notes — Q2 Planning\n\n**Date:** 2026-04-10\n**Attendees:** Nova, Sita\n\n## Agenda\n1. Review Q1 results\n2. Set Q2 OKRs\n3. Budget allocation\n\n## Action Items\n- Finalize roadmap by Friday\n- Schedule design review\n");
-    this.createFile("/home/Documents/invoice-march.json", 0, "application/json",
+    this.createFile("/home/Documents/invoice-march.json", 0,
       JSON.stringify({ id: "INV-2026-031", client: "Acme Corp", amount: 4250, currency: "USD", status: "paid", date: "2026-03-28" }, null, 2));
-    this.createFile("/home/Documents/contacts.csv", 0, "text/plain",
+    this.createFile("/home/Documents/contacts.csv", 0,
       "Name,Email,Phone\nAlice Chen,alice@example.com,+1-555-0101\nBob Martinez,bob@example.com,+1-555-0202\nClara Davis,clara@example.com,+1-555-0303\n");
 
     // Downloads
-    this.createFile("/home/Downloads/report-q1.pdf", 0, "application/pdf", "[PDF binary placeholder — Q1 Financial Report]");
-    this.createFile("/home/Downloads/presentation.pdf", 0, "application/pdf", "[PDF binary placeholder — Product Launch Deck]");
-    this.createFile("/home/Downloads/archive.zip", 0, "application/zip", "[ZIP binary placeholder]");
+    this.createFile("/home/Downloads/report-q1.pdf", 0, "[PDF — Q1 Financial Report]");
+    this.createFile("/home/Downloads/presentation.pdf", 0, "[PDF — Product Launch Deck]");
+    this.createFile("/home/Downloads/archive.zip", 0, "[ZIP archive]");
 
     // Pictures
-    this.createFile("/home/Pictures/photo-beach.png", 0, "image/png", "[PNG image data — beach sunset]");
-    this.createFile("/home/Pictures/screenshot-app.png", 0, "image/png", "[PNG image data — app screenshot]");
-    this.createFile("/home/Pictures/avatar.jpg", 0, "image/jpeg", "[JPEG image data — profile avatar]");
-    this.createFile("/home/Pictures/diagram.svg", 0, "image/svg+xml",
+    this.createFile("/home/Pictures/photo-beach.png", 0, "[PNG — beach sunset]");
+    this.createFile("/home/Pictures/screenshot-app.png", 0, "[PNG — app screenshot]");
+    this.createFile("/home/Pictures/avatar.jpg", 0, "[JPEG — profile avatar]");
+    this.createFile("/home/Pictures/diagram.svg", 0,
       '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="100"><rect fill="#4A90D9" width="200" height="100" rx="12"/></svg>');
 
     // Music
-    this.createFile("/home/Music/ambient-focus.mp3", 0, "audio/mpeg", "[MP3 audio data — ambient focus track]");
-    this.createFile("/home/Music/lofi-beats.mp3", 0, "audio/mpeg", "[MP3 audio data — lo-fi beats]");
-    this.createFile("/home/Music/notification.wav", 0, "audio/wav", "[WAV audio data — notification chime]");
+    this.createFile("/home/Music/ambient-focus.mp3", 0, "[MP3 — ambient focus track]");
+    this.createFile("/home/Music/lofi-beats.mp3", 0, "[MP3 — lo-fi beats]");
+    this.createFile("/home/Music/notification.wav", 0, "[WAV — notification chime]");
 
     // Projects
-    this.createFile("/home/Projects/index.ts", 0, "application/typescript",
+    this.createFile("/home/Projects/index.ts", 0,
       'import { NovaSDK } from "@nova/sdk";\n\nconst app = NovaSDK.createApp("my-app");\napp.mount("#root");\nconsole.log("App started");\n');
-    this.createFile("/home/Projects/styles.css", 0, "text/css",
+    this.createFile("/home/Projects/styles.css", 0,
       ":root {\n  --primary: hsl(210 80% 60%);\n  --bg: hsl(220 15% 8%);\n}\n\nbody {\n  background: var(--bg);\n  color: white;\n  font-family: system-ui;\n}\n");
-    this.createFile("/home/Projects/package.json", 0, "application/json",
+    this.createFile("/home/Projects/package.json", 0,
       JSON.stringify({ name: "nova-app", version: "1.0.0", main: "index.ts", dependencies: { "@nova/sdk": "^2.0.0" } }, null, 2));
 
     this.status = "running";
