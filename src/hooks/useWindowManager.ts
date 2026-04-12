@@ -13,6 +13,7 @@ interface WindowState extends WindowConfig {
   id: string;
   zIndex: number;
   minimized: boolean;
+  originRect?: { x: number; y: number; width: number; height: number };
 }
 
 // ── Window Position Memory ──────────────────────────────────
