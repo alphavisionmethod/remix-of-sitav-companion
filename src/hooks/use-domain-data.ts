@@ -1,4 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useRealityProvider } from "@/lib/hooks/useRealityProvider";
 import { fetchCustomers, fetchCollections } from "@/lib/data-services/business-data-service";
 import { fetchFilesOverview, fetchFilesProcessing, fetchFilesSearchIndex, fetchAllFiles, fetchFilesByStatus, fetchFilesBySensitivity, fetchFileSettings } from "@/lib/data-services/files-data-service";
 import {
@@ -19,13 +20,16 @@ import { fetchRevenueLeakage } from "@/lib/data-services/revenue-data-service";
 import { fetchCapitalBuckets, fetchPositions, fetchTheses } from "@/lib/data-services/investment-data-service";
 
 // Helper: unwrap ModeAwareResult to just the data for backward compat
-const unwrap = async (fn: () => Promise<{ data: any }>): Promise<any> => {
-  const result = await fn();
+const unwrap = async (fn: (...args: any[]) => Promise<{ data: any }>, ...args: any[]): Promise<any> => {
+  const result = await fn(...args);
   return result.data;
 };
 
 // Business
-export function useCustomers() { return useQuery({ queryKey: ["customers"], queryFn: () => unwrap(fetchCustomers) }); }
+export function useCustomers() {
+  const { mode } = useRealityProvider();
+  return useQuery({ queryKey: ["customers", mode], queryFn: () => unwrap(fetchCustomers, mode) });
+}
 export function useCollectionsAccounts() { return useQuery({ queryKey: ["collections-accounts"], queryFn: () => unwrap(fetchCollections) }); }
 
 // Files
