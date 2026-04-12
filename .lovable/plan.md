@@ -1,57 +1,74 @@
 
 
-# Window System Spec Compliance — Final Fixes
+# Syscall System — Full Advanced Spec Compliance
 
-## Audit Results
+## Audit Summary
 
-After reading every line of FloatingWindow.tsx, snap-zones.ts, compositor.ts, window-perf.ts, WindowErrorBoundary.tsx, sound-engine.ts, app-window-system.ts, nova-os.ts, and window-physics.ts, the system is **90% complete**. Here are the remaining deviations from the spec:
+The existing `syscall.ts` + `privilege.ts` already cover ~70% of the spec: ring transitions, pointer validation, O(1) dispatch, audit logging, error codes, and hardware access control. Here are the gaps:
 
-## Issues Found
-
-| # | Spec Requirement | Current Value | Fix |
+| # | Spec Requirement | Status | Fix |
 |---|---|---|---|
-| 1 | Open scale: 0.96 → 1.0 | 0.85 → 1.0 | Too dramatic — update to 0.96 |
-| 2 | Close scale: 1.0 → 0.98 | 1.0 → 0.95 | Too dramatic — update to 0.98 |
-| 3 | Close duration: 120–160ms | Spring (unpredictable) | Switch to tween with 140ms |
-| 4 | Focus fade: 120ms | 200ms (`duration-200`) | Change to `duration-[120ms]` |
-| 5 | Drag uses `left/top` CSS | Triggers layout per frame | Switch to `transform: translate()` for GPU-composited movement |
-| 6 | `willChange` mismatch | Says "transform" but uses left/top | Align with transform-based positioning |
-| 7 | Frame tracking never started | `startFrameTracking()` not called | Auto-start on mount in DesktopSurface |
-| 8 | Drag position not persisted | `updateWindowPosition` never called on drag end | Call it in `handlePointerUp` via callback |
+| 1 | Copy-in / Copy-out memory safety | Missing | Add `copyFromUser()` / `copyToUser()` functions that validate + copy |
+| 2 | Rate limiting per process | Missing | Add per-PID syscall counter with configurable threshold |
+| 3 | Reentrancy protection | Missing | Add per-resource mutex simulation for concurrent syscall safety |
+| 4 | Blocking vs non-blocking classification | Missing | Tag each syscall as fast/slow; enforce non-blocking for UI syscalls |
+| 5 | Input sanitization (range/type checks) | Partial | Add explicit arg validation per syscall before dispatch |
+| 6 | Performance metrics per syscall type | Partial (only avg) | Add per-syscall-type latency tracking + p95/p99 |
+| 7 | Fuzz resistance | Implicit | Add explicit guard: any unexpected arg type returns error gracefully |
+| 8 | Syscall tests | Missing | Create `syscall.test.ts` covering safety, security, and stress |
+| 9 | Jump table dispatch | Using switch | Convert to Map-based O(1) handler table (true jump table pattern) |
 
-## Plan
+## Implementation Plan
 
-### 1. Fix animation values in FloatingWindow.tsx + nova-os.ts
-- `NOVA_MOTION.window.enter.initial.scale`: 0.95 → **0.96**
-- `NOVA_MOTION.window.exit.exit.scale`: 0.95 → **0.98**
-- FloatingWindow morphInitial fallback scale: 0.85 → **0.96**
-- Close exit: add `transition: { duration: 0.14, ease: "easeOut" }` for deterministic 140ms
+### 1. Enhance `syscall.ts` — Core hardening
 
-### 2. Fix focus transition timing in FloatingWindow.tsx
-- Change `transition-[box-shadow,border-color,filter] duration-200` to `duration-[120ms]`
+**Copy-in / Copy-out**:
+- Add `copyFromUser(pid, userPtr, size)` and `copyToUser(pid, userPtr, kernelData)` that call `PrivilegeEnforcement.validatePointer()` then simulate safe copy
+- Use these in SYS_READ, SYS_WRITE, SYS_WRITE_FILE, SYS_OPEN_FILE handlers
 
-### 3. Switch drag from left/top to transform: translate() in FloatingWindow.tsx
-- Position via `transform: translate3d(x, y, 0)` instead of `left`/`top`
-- Remove `left`/`top` from style during drag
-- Keep `left`/`top` for snapped/static positioning with CSS transitions
-- This eliminates layout thrashing — the single biggest perf win
+**Rate Limiting**:
+- Add `syscallCounters: Map<number, { count: number, windowStart: number }>` 
+- Check at dispatch entry: if PID exceeds 10000 syscalls/second, return `-EAGAIN` and log
 
-### 4. Start frame tracking in DesktopSurface.tsx
-- Call `WindowPerformanceMonitor.startFrameTracking()` on mount
-- Call `stopFrameTracking()` on unmount
+**Blocking Classification**:
+- Add `BLOCKING_SYSCALLS` and `NON_BLOCKING_SYSCALLS` sets
+- Fast (must not block): SYS_GETPID, SYS_GETPPID, SYS_GET_THEME, SYS_SCHED_YIELD, window ops
+- Slow (can block): SYS_OPEN_FILE, SYS_READ, SYS_WRITE_FILE
+- Add `isBlocking(code)` utility export
 
-### 5. Persist drag position on release
-- Add `onPositionChange` callback prop to FloatingWindow
-- Call it in `handlePointerUp` and snap completion
-- Wire in DesktopSurface to call `updateWindowPosition`
+**Input Sanitization**:
+- Add `validateArgs(code, args)` that checks arg count, types, and ranges per syscall
+- e.g., SYS_MMAP: args[1] must be positive number, SYS_KILL_PROCESS: args[0] must be valid PID
 
----
+**Jump Table Dispatch**:
+- Replace switch/case with `Map<Syscall, SyscallHandler>` for true O(1) dispatch
+- Each handler: `(pid: number, args: any[]) => SyscallResult`
 
-## Files Modified
+**Per-type Metrics**:
+- Track latency array per syscall type
+- Add `getSyscallMetrics()` returning per-type count, avgMs, p95Ms, p99Ms
 
-| File | Changes |
-|------|---------|
-| `src/lib/design-system/nova-os.ts` | Fix enter/exit scale values |
-| `src/components/sita/shell/FloatingWindow.tsx` | Transform-based drag, fix scales, fix timing, add position callback |
-| `src/components/sita/shell/DesktopSurface.tsx` | Start frame tracking, wire position persistence |
+**Fuzz Guard**:
+- Wrap entire dispatch in try/catch that returns `-EINVAL` on any unexpected error
+- Validate syscall code is a valid enum member before dispatch
+
+### 2. Create `syscall.test.ts` — Comprehensive test suite
+
+- **Safety tests**: invalid pointers, null pointers, buffer overflow attempts
+- **Security tests**: permission bypass, Ring 3 kernel pointer access, rate limit enforcement
+- **Performance tests**: measure dispatch latency, verify < 5ms simulated
+- **Stress tests**: rapid sequential syscalls, invalid IDs, random args (fuzz)
+- **Concurrency tests**: mutex acquisition during concurrent syscalls
+
+### 3. Update `boot.ts` — Initialize rate limiter on boot
+
+- Clear syscall rate counters during kernel init
+
+## Files
+
+| File | Action |
+|------|--------|
+| `src/lib/nova-sdk/kernel/syscall.ts` | Major expansion: copy-in/out, rate limiting, jump table, sanitization, metrics, fuzz guard |
+| `src/lib/nova-sdk/kernel/__tests__/syscall.test.ts` | Create: full test suite |
+| `src/lib/nova-sdk/kernel/boot.ts` | Minor: init rate limiter |
 
