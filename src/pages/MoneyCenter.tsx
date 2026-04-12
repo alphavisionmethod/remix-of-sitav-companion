@@ -39,6 +39,7 @@ import OpportunityCost from "./money/OpportunityCost";
 import MoneyRituals from "./money/MoneyRituals";
 import PeaceScore from "./money/PeaceScore";
 import FinancialBoundaryMonitor from "./money/FinancialBoundaryMonitor";
+import SpendingPulse from "./money/SpendingPulse";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
