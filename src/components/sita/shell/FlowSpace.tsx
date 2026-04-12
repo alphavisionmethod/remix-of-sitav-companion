@@ -105,7 +105,7 @@ function computeGrid(count: number, viewW: number, viewH: number, topOffset = 14
 
 // ── Component ────────────────────────────────────────────────
 
-export function FlowSpace({ isOpen, windows, onSelectWindow, onClose }: FlowSpaceProps) {
+export function FlowSpace({ isOpen, windows, onSelectWindow, onClose, onLaunchApp }: FlowSpaceProps) {
   const visibleWindows = useMemo(() => windows.filter(w => !w.minimized), [windows]);
   const minimizedWindows = useMemo(() => windows.filter(w => w.minimized), [windows]);
   const itemsRef = useRef<FlowItem[]>([]);
@@ -505,7 +505,7 @@ export function FlowSpace({ isOpen, windows, onSelectWindow, onClose }: FlowSpac
               {suggested.map(app => (
                 <button
                   key={app.id}
-                  onClick={(e) => { e.stopPropagation(); onClose(); }}
+                  onClick={(e) => { e.stopPropagation(); onLaunchApp?.(app.id); onClose(); }}
                   className={cn(
                     "flex items-center gap-2 px-3 py-2 rounded-lg transition-all duration-200",
                     "bg-[hsl(0_0%_100%/0.04)] border border-[hsl(0_0%_100%/0.08)]",

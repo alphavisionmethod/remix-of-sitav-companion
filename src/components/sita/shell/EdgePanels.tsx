@@ -292,7 +292,7 @@ function SystemMonitorPanel() {
         </span>
         <div className="flex gap-3 text-[10px] text-[hsl(0_0%_100%/0.4)]">
           <span>Ticks: <span className="text-[hsl(0_0%_100%/0.7)] font-mono">{schedStats.totalTicks}</span></span>
-          <span>Queued: <span className="text-[hsl(0_0%_100%/0.7)] font-mono">{schedStats.queuedProcesses}</span></span>
+          <span>Scheduled: <span className="text-[hsl(0_0%_100%/0.7)] font-mono">{schedStats.scheduledCount}</span></span>
         </div>
       </div>
     </div>
