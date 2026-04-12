@@ -28,6 +28,7 @@ import EcommerceManager from "./business/EcommerceManager";
 import FollowThroughCenter from "./business/FollowThroughCenter";
 import CustomerSupportCenter from "./business/CustomerSupportCenter";
 import AppointmentsScheduling from "./business/AppointmentsScheduling";
+import BusinessOperations from "./business/BusinessOperations";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useOSOrchestration } from "@/hooks/useOSOrchestration";
@@ -37,13 +38,13 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 
-type SubPage = "overview" | "leads" | "customers" | "follow-through" | "support" | "appointments" | "opportunities" | "quotes" | "invoices" | "communications" | "boardroom" | "proof" | "revenue-autopilot" | "collections" | "autopilot-hub" | "revenue-impact" | "playbook-builder" | "revenue-forecast" | "website-builder" | "proposals" | "lead-recovery" | "social" | "ecommerce";
+type SubPage = "overview" | "leads" | "customers" | "follow-through" | "support" | "appointments" | "operations" | "opportunities" | "quotes" | "invoices" | "communications" | "boardroom" | "proof" | "revenue-autopilot" | "collections" | "autopilot-hub" | "revenue-impact" | "playbook-builder" | "revenue-forecast" | "website-builder" | "proposals" | "lead-recovery" | "social" | "ecommerce";
 
 const subpageFromPath = (path: string): SubPage => {
+  if (path.includes("/operations")) return "operations";
   if (path.includes("/follow-through")) return "follow-through";
   if (path.includes("/support")) return "support";
   if (path.includes("/appointments")) return "appointments";
-  if (path.includes("/ecommerce")) return "ecommerce";
   if (path.includes("/website-builder")) return "website-builder";
   if (path.includes("/proposals")) return "proposals";
   if (path.includes("/lead-recovery")) return "lead-recovery";
@@ -75,6 +76,7 @@ const TAB_GROUPS = [
       { key: "follow-through", label: "Follow-Through", count: 8 },
       { key: "support", label: "Support", count: 2 },
       { key: "appointments", label: "Appointments" },
+      { key: "operations", label: "Operations", count: 3 },
       { key: "opportunities", label: "Opportunities" },
     ],
   },
@@ -192,6 +194,7 @@ const pages: Record<SubPage, React.ComponentType> = {
   ecommerce: EcommerceManager,
   support: CustomerSupportCenter,
   appointments: AppointmentsScheduling,
+  operations: BusinessOperations,
 };
 
 const BusinessCenter = () => {
