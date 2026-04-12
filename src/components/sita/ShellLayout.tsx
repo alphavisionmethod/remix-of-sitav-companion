@@ -650,6 +650,38 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         <ContextualCursorLazy />
       </Suspense>
 
+      {/* Boot Splash — cinematic boot sequence */}
+      <Suspense fallback={null}>
+        {showBootSplash && <BootSplashLazy onComplete={() => setShowBootSplash(false)} />}
+      </Suspense>
+
+      {/* App Switcher — Alt+Tab */}
+      <Suspense fallback={null}>
+        <AppSwitcherLazy />
+      </Suspense>
+
+      {/* Control Center — pull-down panel */}
+      <Suspense fallback={null}>
+        <ControlCenterLazy open={controlCenterOpen} onClose={() => setControlCenterOpen(false)} />
+      </Suspense>
+
+      {/* Notification Dropdown — slide-down panel */}
+      <Suspense fallback={null}>
+        <NotificationDropdownLazy open={notifDropdownOpen} onClose={() => setNotifDropdownOpen(false)} />
+      </Suspense>
+
+      {/* Picture-in-Picture */}
+      <Suspense fallback={null}>
+        <PictureInPictureLazy
+          windows={pipWindows}
+          onClose={(id) => setPipWindows(prev => prev.filter(p => p.id !== id))}
+          onExpand={(id) => {
+            setPipWindows(prev => prev.filter(p => p.id !== id));
+            wm.focusWindow(id);
+          }}
+        />
+      </Suspense>
+
       {/* Behavioral Interaction Tracker — invisible */}
       <InteractionTracker />
 
