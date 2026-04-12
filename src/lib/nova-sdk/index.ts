@@ -57,3 +57,7 @@ export type { BootLogEntry } from "./kernel/boot";
 // Privilege Enforcement
 export { PrivilegeEnforcement, RING_KERNEL, RING_USER } from "./kernel/privilege";
 export type { PrivilegeLevel, PrivilegeViolation, RingTransition, RingTransitionType, ViolationType } from "./kernel/privilege";
+
+// Wayland Protocol
+export { WaylandServer } from "./kernel/wayland";
+export type { WaylandClient, WaylandSurface, WaylandGlobal, WaylandBufferFormat, WaylandShmPool, WaylandFrameEvent, WaylandStats } from "./kernel/wayland";

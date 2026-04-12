@@ -9,6 +9,7 @@ import { Scheduler } from "./scheduler";
 import { Compositor } from "./compositor";
 import { PowerManager } from "./power-manager";
 import { PrivilegeEnforcement } from "./privilege";
+import { WaylandServer } from "./wayland";
 
 export interface BootLogEntry {
   subsystem: string;
@@ -73,7 +74,13 @@ class NovaKernelClass {
       PowerManager.start(1000);
     });
 
-    // 7. Syscall table (stateless — just logging that it's ready)
+    // 7. Wayland Protocol Server
+    this.initSubsystem("WaylandServer", () => {
+      WaylandServer.reset();
+      WaylandServer.boot();
+    });
+
+    // 8. Syscall table (stateless — just logging that it's ready)
     this.initSubsystem("SyscallDispatcher", () => {
       // Syscall module with ring transition support initialized
     });
@@ -93,6 +100,7 @@ class NovaKernelClass {
     if (!this.booted) return;
 
     console.log("[Kernel] Shutdown initiated...");
+    WaylandServer.reset();
     PowerManager.stop();
     Scheduler.stop();
     Compositor.reset();
@@ -124,6 +132,7 @@ class NovaKernelClass {
       power: PowerManager.getStats(),
       pressure: MemoryManager.checkPressure(),
       privilege: PrivilegeEnforcement.getStats(),
+      wayland: WaylandServer.getStats(),
     };
   }
 
