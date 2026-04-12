@@ -91,3 +91,53 @@ export function useAppointments() {
     },
   });
 }
+
+// ═══ New Concierge Hooks ═══
+
+export function useErrands() {
+  const uid = useUserId();
+  return useQuery({
+    queryKey: ["concierge-errands", uid],
+    enabled: !!uid,
+    queryFn: async () => {
+      const { data } = await fromTable("concierge_errands").select("*").eq("user_id", uid!).order("due_date");
+      return data ?? [];
+    },
+  });
+}
+
+export function useRecurringObligations() {
+  const uid = useUserId();
+  return useQuery({
+    queryKey: ["concierge-recurring-obligations", uid],
+    enabled: !!uid,
+    queryFn: async () => {
+      const { data } = await fromTable("concierge_recurring_obligations").select("*").eq("user_id", uid!).order("next_due");
+      return data ?? [];
+    },
+  });
+}
+
+export function useConciergeAutomations() {
+  const uid = useUserId();
+  return useQuery({
+    queryKey: ["concierge-automations", uid],
+    enabled: !!uid,
+    queryFn: async () => {
+      const { data } = await fromTable("concierge_automations").select("*").eq("user_id", uid!).order("created_at", { ascending: false });
+      return data ?? [];
+    },
+  });
+}
+
+export function useConciergeDocuments() {
+  const uid = useUserId();
+  return useQuery({
+    queryKey: ["concierge-documents", uid],
+    enabled: !!uid,
+    queryFn: async () => {
+      const { data } = await fromTable("concierge_documents").select("*").eq("user_id", uid!).order("created_at", { ascending: false });
+      return data ?? [];
+    },
+  });
+}
