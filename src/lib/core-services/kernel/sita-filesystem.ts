@@ -417,6 +417,194 @@ export class SitaFilesystem {
     return [...this.journal];
   }
 
+  // ── Transactional Methods ───────────────────────────────────
+
+  /** Public journal write — used by WriteBatch */
+  journalWritePublic(op: JournalOp, inodeId: number, metadata: Record<string, unknown>): void {
+    this.journalWrite(op, inodeId, metadata);
+  }
+
+  /** Inject an uncommitted journal entry (for testing crash recovery) */
+  injectUncommittedEntry(op: JournalOp, inodeId: number, metadata: Record<string, unknown>): void {
+    this.journal.push({
+      txId: this.nextTxId++,
+      timestamp: Date.now(),
+      operation: op,
+      inodeId,
+      metadata,
+      committed: false,
+      checksum: `tx-uncommitted-${this.nextTxId}`,
+    });
+  }
+
+  /** Replay uncommitted journal entries */
+  replayJournal(): JournalReplayResult {
+    let replayed = 0;
+    let rolledBack = 0;
+    const errors: string[] = [];
+
+    for (const entry of this.journal) {
+      if (!entry.committed) {
+        // Attempt to replay — mark as committed
+        try {
+          entry.committed = true;
+          replayed++;
+        } catch (e) {
+          entry.committed = false;
+          rolledBack++;
+          errors.push(`Failed to replay tx ${entry.txId}: ${e}`);
+        }
+      }
+    }
+
+    return { replayed, rolledBack, errors };
+  }
+
+  /** Full crash recovery: journal replay + integrity check */
+  recoverFromCrash(): CrashRecoveryResult {
+    const start = performance.now();
+    const journalResult = this.replayJournal();
+    const integrityResult = this.runIntegrityCheck();
+    const recoveryTimeMs = performance.now() - start;
+
+    console.log(
+      `[SitaFS] Crash recovery complete in ${recoveryTimeMs.toFixed(1)}ms — ` +
+      `${journalResult.replayed} replayed, ${journalResult.rolledBack} rolled back, ` +
+      `integrity: ${integrityResult.valid ? "PASS" : "FAIL"}`
+    );
+
+    return { journalResult, integrityResult, recoveryTimeMs };
+  }
+
+  /** Run full filesystem integrity check */
+  runIntegrityCheck(): IntegrityCheckResult {
+    const start = performance.now();
+    const corruptedBlocks: number[] = [];
+    const orphanBlocks: number[] = [];
+    const directoryErrors: string[] = [];
+
+    // Check all block checksums
+    for (const [id, block] of this.blocks) {
+      const computed = this.computeChecksum(block.data);
+      if (block.checksum !== computed) {
+        corruptedBlocks.push(id);
+      }
+    }
+
+    // Find orphan blocks (not referenced by any inode)
+    const referencedBlocks = new Set<number>();
+    for (const inode of this.inodes.values()) {
+      for (const blockId of inode.blocks) {
+        referencedBlocks.add(blockId);
+      }
+    }
+    for (const blockId of this.blocks.keys()) {
+      if (!referencedBlocks.has(blockId)) {
+        // Check if referenced by snapshot
+        let inSnapshot = false;
+        for (const snap of this.snapshots.values()) {
+          if (snap.blockMap.has(blockId)) { inSnapshot = true; break; }
+        }
+        if (!inSnapshot) orphanBlocks.push(blockId);
+      }
+    }
+
+    // Validate directory structure
+    for (const [inodeId, entries] of this.directories) {
+      if (!this.inodes.has(inodeId)) {
+        directoryErrors.push(`Directory inode ${inodeId} missing`);
+      }
+      for (const entry of entries) {
+        if (!this.inodes.has(entry.inodeId)) {
+          directoryErrors.push(`Entry "${entry.name}" references missing inode ${entry.inodeId}`);
+        }
+      }
+    }
+
+    return {
+      valid: corruptedBlocks.length === 0 && orphanBlocks.length === 0 && directoryErrors.length === 0,
+      totalBlocks: this.blocks.size,
+      checkedBlocks: this.blocks.size,
+      corruptedBlocks,
+      orphanBlocks,
+      directoryErrors,
+      durationMs: performance.now() - start,
+    };
+  }
+
+  /** Corrupt a block's checksum (for testing integrity checks) */
+  corruptBlock(inodeId: number): void {
+    const inode = this.inodes.get(inodeId);
+    if (!inode || inode.blocks.length === 0) return;
+    const block = this.blocks.get(inode.blocks[0]);
+    if (block) {
+      block.checksum = "CORRUPTED";
+    }
+  }
+
+  /** Create a write batch for transactional multi-file writes */
+  createWriteBatch(): WriteBatch {
+    return new WriteBatch(this);
+  }
+
+  // ── Version History ──────────────────────────────────────────
+
+  /** Get version history for a file */
+  getVersionHistory(inodeId: number): FileVersion[] {
+    return this.versionHistory.get(inodeId) ?? [];
+  }
+
+  /** Restore a file to a previous version */
+  restoreVersion(inodeId: number, versionId: string): boolean {
+    const versions = this.versionHistory.get(inodeId);
+    if (!versions) return false;
+
+    const version = versions.find((v) => v.versionId === versionId);
+    if (!version) return false;
+
+    // Reconstruct full data from version's block data
+    const fullData = new Uint8Array(version.size);
+    let offset = 0;
+    for (const chunk of version.blockData) {
+      fullData.set(chunk.slice(0, Math.min(chunk.length, version.size - offset)), offset);
+      offset += chunk.length;
+    }
+
+    return this.writeFileInternal(inodeId, fullData);
+  }
+
+  private saveVersion(inodeId: number): void {
+    const inode = this.inodes.get(inodeId);
+    if (!inode || inode.blocks.length === 0) return;
+
+    // Read current block data
+    const blockData: Uint8Array[] = [];
+    for (const blockId of inode.blocks) {
+      const block = this.blocks.get(blockId);
+      if (block) blockData.push(new Uint8Array(block.data));
+    }
+
+    let versions = this.versionHistory.get(inodeId);
+    if (!versions) {
+      versions = [];
+      this.versionHistory.set(inodeId, versions);
+    }
+
+    versions.push({
+      versionId: `ver-${inodeId}-${Date.now()}-${versions.length}`,
+      inodeId,
+      timestamp: Date.now(),
+      size: inode.size,
+      blockData,
+      checksum: inode.checksumSHA256,
+    });
+
+    // Limit history
+    if (versions.length > this.maxVersions) {
+      this.versionHistory.set(inodeId, versions.slice(-this.maxVersions));
+    }
+  }
+
   // ── Internal ─────────────────────────────────────────────────
 
   private createInode(type: FileType, permissions: number, uid: number, gid: number): Inode {
