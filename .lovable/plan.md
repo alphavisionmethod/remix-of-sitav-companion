@@ -1,88 +1,85 @@
 
 
-# SITA OS — Architecture Enhancement & Boundary Hardening Plan
+# SITA OS — Architecture Hardening & Deployment Readiness Enhancement
 
-## Current State After Last Round
+## Current State (Verified)
 
-**What's working:**
-- 6-layer manifest exists with typed constants, route→layer, service→layer maps
-- Boundary rules with import direction rules and forbidden patterns
-- Route registry with risk tiers and flagship loop tagging
-- Service ownership manifest with duplicate tracking and budget enforcement
-- CI boundary check script (passes clean)
-- Admin routes consolidated into 3 AdminShellLayout blocks (lines 1050, 1544, 1829)
-- Layer awareness wired into SitaOSContext and SitaKernelContext
+**What's already solid:**
+- 6-layer manifest with typed constants, route/service/component layer maps ✅
+- Boundary rules with import direction enforcement ✅  
+- Route registry with risk tiers and flagship loop tagging ✅
+- Service ownership manifest tracking 38 duplicates ✅
+- CI boundary check script with 6 rules ✅
+- All admin routes inside AdminShellLayout (3 blocks: lines 1051, 1545, 1830) ✅
+- No app-layer pages importing core-services directly (proxy re-exports working) ✅
+- Layer awareness in both SitaOSContext and SitaKernelContext ✅
+- Architecture Boundary Board at `/admin/architecture/boundaries` ✅
+- `docs/architecture/LAYER_SEPARATION.md` exists ✅
+- `src/lib/architecture/index.ts` barrel with 23 subsystems ✅
 
-**Critical issues found that need fixing:**
+**Issues Found:**
 
-### 1. Duplicate Route — `/admin/pfa/google` registered twice (line 1570-1571)
-A copy/paste artifact. Must remove the duplicate.
+### 1. Boundary Check Script Missing Owner/Mission Rules
+The script checks `src/pages/admin/` but not `src/pages/owner/` or `src/pages/mission/`. These are ADMIN_OPERATOR layer but not validated.
 
-### 2. 39 Duplicate Service Directories Between `services/` and `core-services/`
-The manifest only tracks 9 duplicates. The actual count is **39** shared directory names (brain-core, conscience-gate, ai-gateway, canonical-pipeline, capability-router, executor-service, approval-engine, epistemic-firewall, event-bus, finance-os, etc.). The manifest must be updated to reflect reality.
+### 2. Architecture Boundary Board Lacks Live Violation Scanning
+Currently shows static manifest data. No runtime import scanning or violation detection. The board should show actual detected violations.
 
-### 3. App Pages Importing Kernel Directly (Boundary Violation)
-6 non-admin pages import from `@/lib/core-services/` — violating the "App must not import OS Kernel" rule:
-- `LifeSimulator.tsx` → life-simulation
-- `PolicySimulatorHub.tsx` → governance-simulator
-- `SettingsPage.tsx` → governance-simulator
-- `FilesSearch.tsx` → search-fabric
-- `MoneyOverview.tsx` → fraud-sentinel
-- `GoogleConnectedAccounts.tsx` → google-provider-family
+### 3. No Hooks-Level Boundary Enforcement  
+`src/hooks/` files are not scanned by the boundary check. Hooks importing `core-services` would bypass the app→kernel rule silently.
 
-The boundary check script doesn't catch these because it only scans `src/pages/auth/` for web-layer violations, not all app pages for kernel imports.
+### 4. Service Ownership Manifest Missing Admin-Layer Services
+The `SERVICE_LAYER_MAP` in `layer-manifest.ts` only lists 31 services. Missing many that exist in practice (e.g., `incident-management`, `fleet-ota`, `edge-device-runtime`, `cloud-control-plane-infra`, `emergency-halt`, etc.).
 
-### 4. Boundary Check Script Too Narrow
-Only checks: auth pages importing kernel, admin importing app pages, services importing pages, contracts importing runtime, cross-domain imports. Missing:
-- All app-layer pages importing `core-services/` (the kernel layer)
-- Owner pages (treated as admin but not checked)
-- Hooks importing across boundaries
+### 5. No Architecture Sidebar Link in Admin Nav
+The Architecture Boundary Board has no link in the admin sidebar — operators can't find it.
 
-### 5. No Visual Admin Board for Layer Architecture
-The manifests and registries exist as data but have no UI for operators to see boundary health, layer distribution, violations, and service budget status in real-time.
+### 6. LAYER_SEPARATION.md Is Thin (93 lines)
+Missing: service directory audit checklist, advanced capability discipline verdicts, verification command examples, full structural maturity matrix.
 
-### 6. `useLocation()` with `eslint-disable` in SitaOSContext
-The `useLocation()` call is wrapped in try/catch with an eslint-disable for rules-of-hooks — it works but is fragile. Should use a proper pattern (child component or custom hook).
+### 7. Route Registry Missing Route Families
+Current `ROUTE_FAMILIES` has 16 entries but missing: `/connectors`, `/advisors`, `/policies`, `/governance`, `/enterprise`, `/workspace`, `/observability`, `/notifications`, `/search`, `/onboarding`, `/nova-desktop`.
 
 ---
 
 ## Enhancement Plan
 
-### Phase 1 — Fix Active Violations
+### Phase 1 — Harden Boundary Check Script
+**File: `scripts/architecture/check-layer-boundaries.ts`**
+- Add Rule 7: Scan `src/hooks/` for imports from `@/lib/core-services/` — flag as `HOOK_IMPORTS_KERNEL` warning
+- Add Rule 8: Scan `src/pages/owner/` and `src/pages/mission/` to confirm they only import allowed layers (same as admin — kernel allowed)
+- Add Rule 9: Verify no `src/lib/services/` file imports from `src/pages/` or `src/components/` (already Rule 3 but extend to catch `../pages/` relative imports)
 
-**A. Remove duplicate route** in `src/App.tsx` line 1571 (`/admin/pfa/google`).
+### Phase 2 — Enhance Architecture Boundary Board
+**File: `src/pages/admin/architecture/ArchitectureBoundaryBoard.tsx`**
+- Add **Separation Maturity Matrix** section: 6 layers x 5 dimensions (boundary_explicit, imports_enforced, routing_correct, ownership_declared, ci_checked) with visual health indicators
+- Add **Capability Discipline Verdicts** section: shows build_now/defer/partial for advanced capabilities (adaptive router, consensus verification, long-term memory, etc.)
+- Add **Missing Route Families** to ROUTE_FAMILIES data
+- Add **Advanced Implementation Discipline** card showing deferred capabilities and why
+- Add animated layer ring visualization (concentric circles) using CSS/SVG
 
-**B. Update boundary check script** (`scripts/architecture/check-layer-boundaries.ts`) — add Rule 6: scan ALL `src/pages/` (excluding `src/pages/admin/`) for imports from `@/lib/core-services/` and flag as `APP_IMPORTS_KERNEL` warnings.
+### Phase 3 — Expand Route Registry
+**File: `src/lib/architecture/route-registry.ts`**
+Add missing route families: `/connectors`, `/advisors`, `/policies`, `/governance`, `/enterprise`, `/workspace`, `/observability`, `/notifications`, `/search`, `/onboarding`, `/nova-desktop`
 
-**C. Update service ownership manifest** to include all 39 actual duplicates (not just 9). Add the missing 30: epistemic-firewall, event-bus, finance-os, flagship-loops, frontend, google-provider-family, handoff, identity-auth, inference-gateway, integration-hub, launch-readiness, life-simulation, memory-service, mnemosyne, model-router, policy-engine, projection-service, receipt-service, recommendation-execution, security, self-healing, service-registry, system-updates, trust-governor, truth-indices, verification-engine, workflow-engine, architecture, index.ts.
+### Phase 4 — Expand Service Layer Map  
+**File: `src/lib/architecture/layer-manifest.ts`**
+Add missing services to `SERVICE_LAYER_MAP`: `incident-management`, `fleet-ota`, `edge-device-runtime`, `cloud-control-plane-infra`, `emergency-halt`, `device-presence-service`, `support-diagnostics`, `analytics-service`, `agent-orchestrator`, `api-gateway`, `role-permission-engine`
 
-### Phase 2 — Fix `useLocation()` Pattern in Context
+### Phase 5 — Add Admin Sidebar Link
+**File: `src/components/admin/AdminSidebarConfig.ts` (or equivalent)**
+Add link to `/admin/architecture/boundaries` under the architecture section of admin nav.
 
-Replace the try/catch `useLocation()` hack in `SitaOSContext.tsx` with a proper `LayerAwareProvider` child component that uses `useLocation()` safely and passes layer info up via callback.
-
-### Phase 3 — Create Architecture Boundary Admin Board
-
-**New file: `src/pages/admin/architecture/ArchitectureBoundaryBoard.tsx`**
-
-A premium admin dashboard showing:
-- **Layer Ring Diagram**: Concentric rings showing the 6 layers with route counts per layer, animated with the brand color scheme
-- **Service Budget Gauge**: Visual showing 31/45 canonical services used, overage warnings
-- **Duplicate Service Tracker**: List of all 39 duplicate directories with canonical pointers, severity badges
-- **Boundary Violation Scanner**: Live violations list from the manifest rules, showing file, rule, severity
-- **Route Family Matrix**: Table of 16 route families with layer, status, flagship loop, risk tier
-- **Import Direction Diagram**: Visual of the allowed/forbidden import directions between layers
-
-**Route**: `/admin/architecture/boundaries` inside AdminShell.
-
-### Phase 4 — Add Proxy Re-exports for Kernel Imports
-
-For the 6 app pages that import `core-services/` directly, create thin re-export hooks/facades in `src/lib/services/` (OS Services layer) so app pages consume kernel through the proper layer:
-- `src/lib/services/life-simulation/index.ts` → re-exports types from core-services
-- `src/lib/services/governance-simulator/index.ts` → re-exports types
-- `src/lib/services/search-fabric/index.ts` → re-exports types
-- `src/lib/services/fraud-sentinel/index.ts` → re-exports types
-
-Then update the 6 pages to import from `@/lib/services/` instead of `@/lib/core-services/`.
+### Phase 6 — Expand LAYER_SEPARATION.md to Full Bible Part 2
+**File: `docs/architecture/LAYER_SEPARATION.md`**
+Expand to include:
+- Implementation Discipline section (build_now/defer verdicts for 14 advanced capabilities)
+- Full separation maturity matrix
+- Structural verification commands
+- File placement audit summary
+- Canonical ownership matrix for all 20 major systems
+- Boundary violation register template
+- "How to know it's built correctly" checklist (expanded to 25+ items)
 
 ---
 
@@ -90,20 +87,20 @@ Then update the 6 pages to import from `@/lib/services/` instead of `@/lib/core-
 
 | Action | File | Purpose |
 |--------|------|---------|
-| Modify | `src/App.tsx` | Remove duplicate `/admin/pfa/google` route (line 1571) |
-| Modify | `scripts/architecture/check-layer-boundaries.ts` | Add app→kernel import scanning |
-| Modify | `src/lib/architecture/service-ownership-manifest.ts` | Add all 39 duplicate entries |
-| Modify | `src/contexts/SitaOSContext.tsx` | Fix useLocation pattern |
-| Create | `src/pages/admin/architecture/ArchitectureBoundaryBoard.tsx` | Visual boundary dashboard |
-| Create | `src/lib/services/life-simulation/index.ts` | Proxy re-export for app layer |
-| Create | `src/lib/services/governance-simulator/index.ts` | Proxy re-export |
-| Create | `src/lib/services/search-fabric/index.ts` | Proxy re-export |
-| Create | `src/lib/services/fraud-sentinel/index.ts` | Proxy re-export |
-| Modify | 6 page files | Update imports to use services/ instead of core-services/ |
+| Modify | `scripts/architecture/check-layer-boundaries.ts` | Add rules 7-9 (hooks, owner, mission) |
+| Modify | `src/pages/admin/architecture/ArchitectureBoundaryBoard.tsx` | Add maturity matrix, discipline verdicts, layer rings |
+| Modify | `src/lib/architecture/route-registry.ts` | Add 11 missing route families |
+| Modify | `src/lib/architecture/layer-manifest.ts` | Add ~11 missing services to SERVICE_LAYER_MAP |
+| Modify | `docs/architecture/LAYER_SEPARATION.md` | Expand to full Bible Part 2 (~400 lines) |
+| Modify | Admin sidebar config | Add architecture boundaries link |
 
 ## What Does NOT Change
-- No new service directories beyond proxy re-exports of existing types
-- No route deletions
+- No new service directories
+- No route deletions or moves
 - No edge functions
-- Existing layer manifest, boundary rules, route registry stay as-is (already correct)
+- No database changes
+- Existing manifests, rules, proxy re-exports all stay
+
+## Anti-Sprawl Discipline
+This is enhancement-only work. Every change makes existing architecture enforcement deeper and more visible — no new abstractions, no new services, no speculative features.
 
