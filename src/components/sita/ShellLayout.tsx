@@ -65,6 +65,7 @@ const CommandPalette = lazy(() => import("./CommandPalette").then(m => ({ defaul
 const NotificationCenterPanel = lazy(() => import("./NotificationCenter").then(m => ({ default: m.NotificationCenter })));
 const AppRecentsStripLazy = lazy(() => import("./AppRecentsStrip").then(m => ({ default: m.AppRecentsStrip })));
 const FlowSpaceLazy = lazy(() => import("./shell/FlowSpace").then(m => ({ default: m.FlowSpace })));
+const EdgePanelsLazy = lazy(() => import("./shell/EdgePanels").then(m => ({ default: m.EdgePanels })));
 
 
 // Route-aware page transitions
@@ -246,10 +247,15 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
           windows={wm.windows}
           onSelectWindow={(id) => { wm.focusWindow(id); setMissionControlOpen(false); }}
           onClose={() => setMissionControlOpen(false)}
+          onLaunchApp={(appId) => { doLaunchApp(appId); setMissionControlOpen(false); }}
         />
       </Suspense>
 
       <div className={cn("relative flex flex-col min-h-screen w-full bg-surface-0", isCalm && "calm-mode", isFocus && "focus-mode")}>
+        {/* Edge Panels (Weather, Notes, System Monitor) */}
+        <Suspense fallback={null}>
+          <EdgePanelsLazy />
+        </Suspense>
         {/* Ambient background — subtle, always present */}
         <Suspense fallback={null}>
           <ShellAmbientBackground intensity="subtle" className="fixed" />
