@@ -13,9 +13,10 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { useAccentSync } from "@/hooks/use-accent-sync";
 import {
   CheckCircle, DollarSign, Calendar, Brain,
-  TrendingUp, ArrowRight,
+  TrendingUp, ArrowRight, GripVertical,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { DragDropContext, Droppable, Draggable, type DropResult } from "@hello-pangea/dnd";
 import { ShellAmbientBackground, type AmbientMood } from "./ShellAmbientBackground";
 import type { TrustPosture, ContinuityContext, ShellNotificationDigest } from "./useShellState";
 import { DEPTH_LAYERS } from "@/lib/design-system/nova-os";
@@ -171,9 +172,11 @@ interface GlassWidgetProps {
   onClick?: () => void;
   delay?: number;
   bootReady?: boolean;
+  isDragging?: boolean;
+  dragHandleProps?: Record<string, any>;
 }
 
-function GlassWidget({ icon: Icon, label, value, accent, onClick, delay = 0, bootReady = true }: GlassWidgetProps) {
+function GlassWidget({ icon: Icon, label, value, accent, onClick, delay = 0, bootReady = true, isDragging, dragHandleProps }: GlassWidgetProps) {
   return (
     <button
       onClick={onClick}
@@ -186,10 +189,20 @@ function GlassWidget({ icon: Icon, label, value, accent, onClick, delay = 0, boo
         "shadow-[0_2px_8px_hsl(0_0%_0%/0.08),0_12px_28px_hsl(0_0%_0%/0.10)]",
         "hover:shadow-[0_2px_8px_hsl(0_0%_0%/0.10),0_16px_36px_hsl(0_0%_0%/0.14),inset_0_1px_0_hsl(0_0%_100%/0.12)]",
         "min-w-[200px]",
-        bootReady ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+        bootReady ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4",
+        isDragging && "ring-2 ring-[hsl(265_55%_58%/0.6)] scale-105 shadow-[0_8px_32px_hsl(265_55%_58%/0.25)] z-50"
       )}
       style={{ transitionDelay: bootReady ? `${delay}ms` : "0ms" }}
     >
+      {dragHandleProps && (
+        <div
+          {...dragHandleProps}
+          className="flex items-center justify-center -ml-2 opacity-0 group-hover:opacity-60 transition-opacity cursor-grab active:cursor-grabbing"
+          onClick={e => e.stopPropagation()}
+        >
+          <GripVertical className="h-3.5 w-3.5 text-[hsl(0_0%_100%/0.5)]" />
+        </div>
+      )}
       <div className={cn("rounded-xl p-2.5", accent || "bg-[hsl(265_55%_58%/0.2)]")}>
         <Icon className="h-5 w-5 text-[hsl(0_0%_100%/0.9)]" />
       </div>
@@ -202,7 +215,70 @@ function GlassWidget({ icon: Icon, label, value, accent, onClick, delay = 0, boo
   );
 }
 
-// ── Advisor Insight Strip ────────────────────────────────────
+// ── Widget Order Persistence ─────────────────────────────────
+
+const WIDGET_ORDER_KEY = "sita-desktop-widget-order";
+const DEFAULT_WIDGET_ORDER = ["approvals", "cash", "today", "revenue"];
+
+function loadWidgetOrder(): string[] {
+  try {
+    const raw = localStorage.getItem(WIDGET_ORDER_KEY);
+    if (!raw) return DEFAULT_WIDGET_ORDER;
+    const parsed = JSON.parse(raw) as string[];
+    if (DEFAULT_WIDGET_ORDER.every(id => parsed.includes(id)) && parsed.length === DEFAULT_WIDGET_ORDER.length) {
+      return parsed;
+    }
+    return DEFAULT_WIDGET_ORDER;
+  } catch {
+    return DEFAULT_WIDGET_ORDER;
+  }
+}
+
+function saveWidgetOrder(order: string[]) {
+  try { localStorage.setItem(WIDGET_ORDER_KEY, JSON.stringify(order)); } catch {}
+}
+
+// ── Widget Config Map ────────────────────────────────────────
+
+interface WidgetConfig {
+  icon: React.ElementType;
+  label: string;
+  getValue: (notifications: ShellNotificationDigest) => string;
+  accent: string;
+  route: string;
+}
+
+const WIDGET_CONFIGS: Record<string, WidgetConfig> = {
+  approvals: {
+    icon: CheckCircle,
+    label: "Approvals",
+    getValue: (n) => `${n.approvals || 3} waiting`,
+    accent: "bg-[hsl(265_55%_58%/0.2)]",
+    route: "/approvals",
+  },
+  cash: {
+    icon: DollarSign,
+    label: "Cash Position",
+    getValue: () => "$42K liquid",
+    accent: "bg-[hsl(140_50%_45%/0.2)]",
+    route: "/money",
+  },
+  today: {
+    icon: Calendar,
+    label: "Today",
+    getValue: () => "6 tasks · 2 meetings",
+    accent: "bg-[hsl(35_80%_55%/0.2)]",
+    route: "/concierge",
+  },
+  revenue: {
+    icon: TrendingUp,
+    label: "Revenue",
+    getValue: () => "+14% this week",
+    accent: "bg-[hsl(190_60%_50%/0.2)]",
+    route: "/business",
+  },
+};
+
 
 function AdvisorInsight({ bootReady }: { bootReady: boolean }) {
   const insights = [
@@ -269,6 +345,20 @@ export function DesktopSurface({
     ];
     return () => timers.forEach(clearTimeout);
   }, [reduced]);
+
+  // ── Widget Order (drag-and-drop) ────────────────────────────
+  const [widgetOrder, setWidgetOrder] = useState(loadWidgetOrder);
+
+  const handleWidgetDragEnd = useCallback((result: DropResult) => {
+    if (!result.destination || result.source.index === result.destination.index) return;
+    setWidgetOrder(prev => {
+      const next = [...prev];
+      const [moved] = next.splice(result.source.index, 1);
+      next.splice(result.destination!.index, 0, moved);
+      saveWidgetOrder(next);
+      return next;
+    });
+  }, []);
 
   // ── Context Menu ───────────────────────────────────────────
   const [ctxMenu, setCtxMenu] = useState<{ x: number; y: number } | null>(null);
@@ -353,45 +443,46 @@ export function DesktopSurface({
         {/* Clock */}
         <DesktopClock greeting={greeting} userName={userName || ""} bootReady={bootPhase >= 2} />
 
-        {/* Widgets */}
-        <div className="flex flex-wrap items-center justify-center gap-3">
-          <GlassWidget
-            icon={CheckCircle}
-            label="Approvals"
-            value={`${notifications.approvals || 3} waiting`}
-            accent="bg-[hsl(265_55%_58%/0.2)]"
-            onClick={() => navigate("/approvals")}
-            bootReady={bootPhase >= 2}
-            delay={0}
-          />
-          <GlassWidget
-            icon={DollarSign}
-            label="Cash Position"
-            value="$42K liquid"
-            accent="bg-[hsl(140_50%_45%/0.2)]"
-            onClick={() => navigate("/money")}
-            bootReady={bootPhase >= 2}
-            delay={80}
-          />
-          <GlassWidget
-            icon={Calendar}
-            label="Today"
-            value="6 tasks · 2 meetings"
-            accent="bg-[hsl(35_80%_55%/0.2)]"
-            onClick={() => navigate("/concierge")}
-            bootReady={bootPhase >= 2}
-            delay={160}
-          />
-          <GlassWidget
-            icon={TrendingUp}
-            label="Revenue"
-            value="+14% this week"
-            accent="bg-[hsl(190_60%_50%/0.2)]"
-            onClick={() => navigate("/business")}
-            bootReady={bootPhase >= 2}
-            delay={240}
-          />
-        </div>
+        {/* Draggable Widgets */}
+        <DragDropContext onDragEnd={handleWidgetDragEnd}>
+          <Droppable droppableId="desktop-widgets" direction="horizontal">
+            {(provided) => (
+              <div
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                className="flex flex-wrap items-center justify-center gap-3"
+              >
+                {widgetOrder.map((widgetId, index) => {
+                  const config = WIDGET_CONFIGS[widgetId];
+                  if (!config) return null;
+                  return (
+                    <Draggable key={widgetId} draggableId={widgetId} index={index}>
+                      {(dragProvided, dragSnapshot) => (
+                        <div
+                          ref={dragProvided.innerRef}
+                          {...dragProvided.draggableProps}
+                        >
+                          <GlassWidget
+                            icon={config.icon}
+                            label={config.label}
+                            value={config.getValue(notifications)}
+                            accent={config.accent}
+                            onClick={() => navigate(config.route)}
+                            bootReady={bootPhase >= 2}
+                            delay={index * 80}
+                            isDragging={dragSnapshot.isDragging}
+                            dragHandleProps={dragProvided.dragHandleProps ?? undefined}
+                          />
+                        </div>
+                      )}
+                    </Draggable>
+                  );
+                })}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
 
         {/* Advisor Insight */}
         <AdvisorInsight bootReady={bootPhase >= 2} />
