@@ -624,6 +624,7 @@ export function DesktopSurface({
 
   // ── Widget Order (drag-and-drop) ────────────────────────────
   const [widgetOrder, setWidgetOrder] = useState(loadWidgetOrder);
+  const [showWidgetPicker, setShowWidgetPicker] = useState(false);
 
   const handleWidgetDragEnd = useCallback((result: DropResult) => {
     if (!result.destination || result.source.index === result.destination.index) return;
