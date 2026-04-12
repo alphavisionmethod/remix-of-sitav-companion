@@ -5,7 +5,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { AppLayout } from "@/lib/nova-sdk/ui/layout";
-import { NovaText, NovaButton, NovaList, NovaSectionLabel, NovaInput } from "@/lib/nova-sdk/ui/components";
+import { NovaText, NovaButton, NovaList, NovaSectionLabel, NovaInput, NovaTextArea } from "@/lib/nova-sdk/ui/components";
 import { NovaFS } from "@/lib/nova-sdk/system/filesystem";
 import { NovaNotify } from "@/lib/nova-sdk/system/notifications";
 import { AppStateWrapper } from "@/components/sita/shell/AppStateWrapper";
@@ -136,19 +136,17 @@ export function NotesWindow() {
       accentGradient="from-[hsl(45_85%_55%)] to-[hsl(25_80%_50%)]"
       emptyTitle="No Notes Yet"
       emptyMessage="Create your first note"
+      emptyAction={<NovaButton variant="primary" onClick={createNote} icon={<Plus className="h-3 w-3" />}>New Note</NovaButton>}
     >
       <AppLayout sidebar={sidebar} sidebarWidth={160} minHeight={300}>
         {activeId ? (
           <div className="flex flex-col gap-3 h-full">
             <div className="flex items-center gap-2">
-              <input
+              <NovaInput
                 value={title}
                 onChange={e => setTitle(e.target.value)}
                 placeholder="Note title..."
-                className={cn(
-                  APP_TYPE.title,
-                  "bg-transparent border-none outline-none flex-1 text-[hsl(0_0%_15%)] dark:text-[hsl(0_0%_85%)] placeholder:text-[hsl(0_0%_50%)]"
-                )}
+                className={cn(APP_TYPE.title, "flex-1 !border-none !bg-transparent !shadow-none !ring-0")}
               />
               <NovaButton variant="secondary" onClick={saveNote} icon={<Save className="h-3 w-3" />}>
                 Save
@@ -157,16 +155,11 @@ export function NotesWindow() {
                 <Trash2 className="h-3 w-3" />
               </NovaButton>
             </div>
-            <textarea
+            <NovaTextArea
               value={content}
               onChange={e => setContent(e.target.value)}
               placeholder="Start writing..."
-              className={cn(
-                APP_TYPE.body,
-                "flex-1 bg-transparent border-none outline-none resize-none",
-                "text-[hsl(0_0%_20%)] dark:text-[hsl(0_0%_80%)] placeholder:text-[hsl(0_0%_50%)]",
-                "min-h-[200px]"
-              )}
+              className="flex-1 min-h-[200px]"
             />
           </div>
         ) : (

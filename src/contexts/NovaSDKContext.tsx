@@ -37,6 +37,30 @@ export function NovaSDKProvider({ children }: { children: React.ReactNode }) {
     NovaBridge.on("sound:play", (payload) => {
       if (payload?.type === "click") SoundEngine.click();
     });
+
+    // Wire file service handlers
+    const defaultFS = new NovaFS(["files.read", "files.write"]);
+    NovaBridge.on("file:open", (payload) => {
+      if (payload?.path) return defaultFS.readFile(payload.path);
+    });
+    NovaBridge.on("file:save", (payload) => {
+      if (payload?.path && payload?.data) return defaultFS.writeFile(payload.path, payload.data);
+    });
+    NovaBridge.on("file:list", (payload) => {
+      if (payload?.path) return defaultFS.listDir(payload.path);
+    });
+
+    // Wire notification handler
+    const defaultNotify = new NovaNotify(["system.notifications"]);
+    NovaBridge.on("notification:send", (payload) => {
+      if (payload) defaultNotify.send(payload);
+    });
+
+    // Wire theme handler
+    NovaBridge.on("theme:get", () => {
+      const isDark = document.documentElement.classList.contains("dark");
+      return { theme: isDark ? "dark" : "light" };
+    });
   }, []);
 
   const value = useMemo<NovaSDKContextType>(() => ({

@@ -1,4 +1,4 @@
-import { ReactNode, useState, useEffect, lazy, Suspense, useCallback } from "react";
+import { ReactNode, useState, useEffect, lazy, Suspense, useCallback, useRef } from "react";
 import { useWindowManager } from "@/hooks/useWindowManager";
 import { WindowManagerContext } from "@/contexts/WindowManagerContext";
 import { SidebarProvider } from "@/components/ui/sidebar";
@@ -28,6 +28,7 @@ import { FinderWindow } from "./shell/windows/FinderWindow";
 import { SettingsWindow } from "./shell/windows/SettingsWindow";
 import { NotesWindow } from "./shell/windows/NotesWindow";
 import { NovaSDKProvider } from "@/contexts/NovaSDKContext";
+import { lifecycleManager } from "@/lib/nova-sdk/runtime/lifecycle";
 import { CommandLayer } from "./shell/CommandLayer";
 import { ClickRipple } from "./shell/ClickRipple";
 import { AppPermissionGate, isPermissionGranted } from "./shell/AppPermissionGate";
@@ -110,8 +111,15 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
 
   const doLaunchApp = useCallback((appId: string, originRect?: DOMRect) => {
     const origin = originRect ? { x: originRect.x, y: originRect.y, width: originRect.width, height: originRect.height } : undefined;
+    const launchWithLifecycle = (windowId: string, opts: Parameters<typeof wm.openWindow>[1]) => {
+      wm.openWindow(windowId, opts);
+      // Wire lifecycle: launching → running
+      lifecycleManager.transition(windowId, "launching").then(() => {
+        lifecycleManager.transition(windowId, "running");
+      });
+    };
     if (appId === "finder" || appId === "files-app") {
-      wm.openWindow("finder", {
+      launchWithLifecycle("finder", {
         title: "Finder",
         component: <FinderWindow />,
         position: { x: 120, y: 100 },
@@ -119,7 +127,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         originRect: origin,
       });
     } else if (appId === "settings" || appId === "settings-app") {
-      wm.openWindow("settings", {
+      launchWithLifecycle("settings", {
         title: "Settings",
         component: <SettingsWindow />,
         position: { x: 300, y: 120 },
@@ -127,7 +135,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         originRect: origin,
       });
     } else if (appId === "notes" || appId === "com.nova.notes") {
-      wm.openWindow("notes", {
+      launchWithLifecycle("notes", {
         title: "Notes",
         component: <NotesWindow />,
         position: { x: 200, y: 110 },
