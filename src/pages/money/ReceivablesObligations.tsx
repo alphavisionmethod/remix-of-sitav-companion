@@ -53,12 +53,17 @@ const ReceivablesObligations = () => {
   const receivables = useMemo(() => {
     const dbItems = invoices.filter((i: Record<string, any>) => i.status !== "paid").map((i: Record<string, any>) => {
       const now = new Date();
-      const due = new Date(i.due_date);
-      const daysOverdue = Math.ceil((now.getTime() - due.getTime()) / 86400000);
+      const dueDateStr = i.due_date || i.dueDate;
+      const due = dueDateStr ? new Date(dueDateStr) : now;
+      const daysOverdue = isNaN(due.getTime()) ? 0 : Math.ceil((now.getTime() - due.getTime()) / 86400000);
+      const rawAmount = i.amount;
+      const amount = typeof rawAmount === "string" ? Number(rawAmount.replace(/[^0-9.-]/g, "")) : (Number(rawAmount) || 0);
+      const clientName = i.client_name || i.client || "Unknown";
+      const invoiceNum = i.invoice_number || i.id || "—";
       return {
-        id: i.id, source: i.client_name || `Invoice #${i.invoice_number}`, initials: (i.client_name || "??").slice(0, 2).toUpperCase(),
-        amount: Number(i.amount), invoiceNum: `#${i.invoice_number}`, daysOverdue, status: (daysOverdue > 0 ? "overdue" : "expected") as "overdue" | "expected",
-        lastContact: "—", remindersSent: 0, contactName: i.client_name || "—", contactEmail: "", notes: "",
+        id: i.id, source: clientName, initials: clientName.slice(0, 2).toUpperCase(),
+        amount, invoiceNum: invoiceNum.startsWith("#") ? invoiceNum : `#${invoiceNum}`, daysOverdue, status: (daysOverdue > 0 ? "overdue" : "expected") as "overdue" | "expected",
+        lastContact: "—", remindersSent: 0, contactName: clientName, contactEmail: i.contactEmail || "", notes: i.notes || "",
       };
     });
     return dbItems.length > 0 ? dbItems : DEMO_RECEIVABLES;
