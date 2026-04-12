@@ -255,6 +255,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         {/* Edge Panels (Weather, Notes, System Monitor) */}
         <Suspense fallback={null}>
           <EdgePanelsLazy />
+        </Suspense>
         {/* Ambient background — subtle, always present */}
         <Suspense fallback={null}>
           <ShellAmbientBackground intensity="subtle" className="fixed" />
