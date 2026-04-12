@@ -10,6 +10,7 @@ import { Compositor } from "./compositor";
 import { PowerManager } from "./power-manager";
 import { PrivilegeEnforcement } from "./privilege";
 import { resetRateLimiter, resetMutexes, clearSyscallLog } from "./syscall";
+import { CrashResilience } from "./crash-resilience";
 import { WaylandServer } from "./wayland";
 import { DriverManager } from "./drivers";
 import { ServiceManager } from "../services/service-manager";
@@ -102,10 +103,25 @@ class NovaKernelClass {
     });
 
     this.initSubsystem("SyscallDispatcher", () => {
-      // Initialize syscall subsystem — clear rate limiters, mutexes, logs
       resetRateLimiter();
       resetMutexes();
       clearSyscallLog();
+    });
+
+    this.initSubsystem("CrashResilience", () => {
+      CrashResilience.reset();
+      CrashResilience.start();
+    });
+
+    // Run filesystem crash recovery
+    this.initSubsystem("FilesystemRecovery", () => {
+      // Recovery will run when FileSystemService boots in Phase 2
+      // Register kernel services with watchdog
+      CrashResilience.watchdog.registerComponent("scheduler", "service");
+      CrashResilience.watchdog.registerComponent("memory-manager", "service");
+      CrashResilience.watchdog.registerComponent("compositor", "ui");
+      CrashResilience.watchdog.registerComponent("wayland-server", "service");
+      CrashResilience.watchdog.registerComponent("power-manager", "background");
     });
 
     const kernelMs = (performance.now() - this.bootStartTime).toFixed(1);
@@ -171,6 +187,7 @@ class NovaKernelClass {
   shutdown(): void {
     if (!this.booted) return;
 
+    CrashResilience.reset();
     console.log("[Kernel] Shutdown initiated...");
     PluginRegistry.reset();
     WidgetRegistry.reset();

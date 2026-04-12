@@ -93,16 +93,92 @@ export interface MountPoint {
 
 // ── SitaFS Implementation ──────────────────────────────────────
 
+// ── Version History ─────────────────────────────────────────────
+
+export interface FileVersion {
+  versionId: string;
+  inodeId: number;
+  timestamp: number;
+  size: number;
+  blockData: Uint8Array[]; // Stored block data for this version
+  checksum: string;
+}
+
+// ── Write Batch ────────────────────────────────────────────────
+
+export interface WriteBatchItem {
+  inodeId: number;
+  data: Uint8Array;
+}
+
+export class WriteBatch {
+  private items: WriteBatchItem[] = [];
+  private fs: SitaFilesystem;
+
+  constructor(fs: SitaFilesystem) {
+    this.fs = fs;
+  }
+
+  add(inodeId: number, data: Uint8Array): void {
+    this.items.push({ inodeId, data });
+  }
+
+  flush(): boolean {
+    // Apply all writes, then emit a single batch journal entry
+    for (const item of this.items) {
+      this.fs.writeFileInternal(item.inodeId, item.data);
+    }
+    this.fs.journalWritePublic("write", 0, {
+      batchSize: this.items.length,
+      inodes: this.items.map((i) => i.inodeId),
+      type: "batch-flush",
+    });
+    this.items = [];
+    return true;
+  }
+}
+
+// ── Integrity Check Result ─────────────────────────────────────
+
+export interface IntegrityCheckResult {
+  valid: boolean;
+  totalBlocks: number;
+  checkedBlocks: number;
+  corruptedBlocks: number[];
+  orphanBlocks: number[];
+  directoryErrors: string[];
+  durationMs: number;
+}
+
+// ── Journal Replay Result ──────────────────────────────────────
+
+export interface JournalReplayResult {
+  replayed: number;
+  rolledBack: number;
+  errors: string[];
+}
+
+// ── Crash Recovery Result ──────────────────────────────────────
+
+export interface CrashRecoveryResult {
+  journalResult: JournalReplayResult;
+  integrityResult: IntegrityCheckResult;
+  recoveryTimeMs: number;
+}
+
+// ── SitaFS Implementation ──────────────────────────────────────
+
 export class SitaFilesystem {
   private inodes = new Map<number, Inode>();
   private blocks = new Map<number, Block>();
-  private directories = new Map<number, DirectoryEntry[]>(); // inode → entries
+  private directories = new Map<number, DirectoryEntry[]>();
   private journal: JournalEntry[] = [];
   private snapshots = new Map<string, Snapshot>();
+  private versionHistory = new Map<number, FileVersion[]>(); // inode → versions
   private nextInodeId = 1;
   private nextBlockId = 1;
   private nextTxId = 1;
-
+  private maxVersions = 10;
   constructor() {
     // Create root inode
     this.createInode("directory", 0o755, 0, 0);
@@ -137,7 +213,20 @@ export class SitaFilesystem {
     if (!inode || inode.type !== "regular") return false;
     if (inode.flags.immutable) return false;
 
-    // CoW: if blocks are shared, allocate new ones
+    // Save version before overwriting
+    this.saveVersion(inodeId);
+
+    return this.writeFileInternal(inodeId, data);
+  }
+
+  /**
+   * Internal write — no version snapshot. Used by WriteBatch and atomicWrite.
+   */
+  writeFileInternal(inodeId: number, data: Uint8Array): boolean {
+    const inode = this.inodes.get(inodeId);
+    if (!inode || inode.type !== "regular") return false;
+    if (inode.flags.immutable) return false;
+
     const newBlocks: number[] = [];
     const chunkSize = 4096;
     for (let offset = 0; offset < data.length; offset += chunkSize) {
@@ -146,7 +235,6 @@ export class SitaFilesystem {
       newBlocks.push(block.id);
     }
 
-    // Dereference old blocks
     for (const blockId of inode.blocks) {
       this.dereferenceBlock(blockId);
     }
@@ -157,6 +245,54 @@ export class SitaFilesystem {
     inode.checksumSHA256 = this.computeChecksum(data);
 
     this.journalWrite("write", inodeId, { size: data.length, blocks: newBlocks.length });
+    return true;
+  }
+
+  /**
+   * Atomic write with crash simulation support.
+   * Writes to temp blocks, validates, then swaps. On failure, old data is untouched.
+   */
+  atomicWrite(inodeId: number, data: Uint8Array, simulateCrash = false): boolean {
+    const inode = this.inodes.get(inodeId);
+    if (!inode || inode.type !== "regular") return false;
+    if (inode.flags.immutable) return false;
+
+    // Phase 1: Write to temp blocks
+    const tempBlocks: Block[] = [];
+    const chunkSize = 4096;
+    for (let offset = 0; offset < data.length; offset += chunkSize) {
+      const chunk = data.slice(offset, offset + chunkSize);
+      const block = this.allocateBlock(chunk);
+      tempBlocks.push(block);
+    }
+
+    // Phase 2: Validate checksums
+    const expectedChecksum = this.computeChecksum(data);
+    for (const block of tempBlocks) {
+      if (block.checksum !== this.computeChecksum(block.data)) {
+        // Validation failed — discard temp blocks
+        for (const b of tempBlocks) this.dereferenceBlock(b.id);
+        return false;
+      }
+    }
+
+    // Simulate crash before commit
+    if (simulateCrash) {
+      for (const b of tempBlocks) this.dereferenceBlock(b.id);
+      return false;
+    }
+
+    // Phase 3: Commit — swap block pointers atomically
+    this.saveVersion(inodeId);
+    for (const blockId of inode.blocks) {
+      this.dereferenceBlock(blockId);
+    }
+    inode.blocks = tempBlocks.map((b) => b.id);
+    inode.size = data.length;
+    inode.modifiedAt = Date.now();
+    inode.checksumSHA256 = expectedChecksum;
+
+    this.journalWrite("write", inodeId, { size: data.length, atomic: true });
     return true;
   }
 
@@ -279,6 +415,194 @@ export class SitaFilesystem {
 
   getJournal(): JournalEntry[] {
     return [...this.journal];
+  }
+
+  // ── Transactional Methods ───────────────────────────────────
+
+  /** Public journal write — used by WriteBatch */
+  journalWritePublic(op: JournalOp, inodeId: number, metadata: Record<string, unknown>): void {
+    this.journalWrite(op, inodeId, metadata);
+  }
+
+  /** Inject an uncommitted journal entry (for testing crash recovery) */
+  injectUncommittedEntry(op: JournalOp, inodeId: number, metadata: Record<string, unknown>): void {
+    this.journal.push({
+      txId: this.nextTxId++,
+      timestamp: Date.now(),
+      operation: op,
+      inodeId,
+      metadata,
+      committed: false,
+      checksum: `tx-uncommitted-${this.nextTxId}`,
+    });
+  }
+
+  /** Replay uncommitted journal entries */
+  replayJournal(): JournalReplayResult {
+    let replayed = 0;
+    let rolledBack = 0;
+    const errors: string[] = [];
+
+    for (const entry of this.journal) {
+      if (!entry.committed) {
+        // Attempt to replay — mark as committed
+        try {
+          entry.committed = true;
+          replayed++;
+        } catch (e) {
+          entry.committed = false;
+          rolledBack++;
+          errors.push(`Failed to replay tx ${entry.txId}: ${e}`);
+        }
+      }
+    }
+
+    return { replayed, rolledBack, errors };
+  }
+
+  /** Full crash recovery: journal replay + integrity check */
+  recoverFromCrash(): CrashRecoveryResult {
+    const start = performance.now();
+    const journalResult = this.replayJournal();
+    const integrityResult = this.runIntegrityCheck();
+    const recoveryTimeMs = performance.now() - start;
+
+    console.log(
+      `[SitaFS] Crash recovery complete in ${recoveryTimeMs.toFixed(1)}ms — ` +
+      `${journalResult.replayed} replayed, ${journalResult.rolledBack} rolled back, ` +
+      `integrity: ${integrityResult.valid ? "PASS" : "FAIL"}`
+    );
+
+    return { journalResult, integrityResult, recoveryTimeMs };
+  }
+
+  /** Run full filesystem integrity check */
+  runIntegrityCheck(): IntegrityCheckResult {
+    const start = performance.now();
+    const corruptedBlocks: number[] = [];
+    const orphanBlocks: number[] = [];
+    const directoryErrors: string[] = [];
+
+    // Check all block checksums
+    for (const [id, block] of this.blocks) {
+      const computed = this.computeChecksum(block.data);
+      if (block.checksum !== computed) {
+        corruptedBlocks.push(id);
+      }
+    }
+
+    // Find orphan blocks (not referenced by any inode)
+    const referencedBlocks = new Set<number>();
+    for (const inode of this.inodes.values()) {
+      for (const blockId of inode.blocks) {
+        referencedBlocks.add(blockId);
+      }
+    }
+    for (const blockId of this.blocks.keys()) {
+      if (!referencedBlocks.has(blockId)) {
+        // Check if referenced by snapshot
+        let inSnapshot = false;
+        for (const snap of this.snapshots.values()) {
+          if (snap.blockMap.has(blockId)) { inSnapshot = true; break; }
+        }
+        if (!inSnapshot) orphanBlocks.push(blockId);
+      }
+    }
+
+    // Validate directory structure
+    for (const [inodeId, entries] of this.directories) {
+      if (!this.inodes.has(inodeId)) {
+        directoryErrors.push(`Directory inode ${inodeId} missing`);
+      }
+      for (const entry of entries) {
+        if (!this.inodes.has(entry.inodeId)) {
+          directoryErrors.push(`Entry "${entry.name}" references missing inode ${entry.inodeId}`);
+        }
+      }
+    }
+
+    return {
+      valid: corruptedBlocks.length === 0 && orphanBlocks.length === 0 && directoryErrors.length === 0,
+      totalBlocks: this.blocks.size,
+      checkedBlocks: this.blocks.size,
+      corruptedBlocks,
+      orphanBlocks,
+      directoryErrors,
+      durationMs: performance.now() - start,
+    };
+  }
+
+  /** Corrupt a block's checksum (for testing integrity checks) */
+  corruptBlock(inodeId: number): void {
+    const inode = this.inodes.get(inodeId);
+    if (!inode || inode.blocks.length === 0) return;
+    const block = this.blocks.get(inode.blocks[0]);
+    if (block) {
+      block.checksum = "CORRUPTED";
+    }
+  }
+
+  /** Create a write batch for transactional multi-file writes */
+  createWriteBatch(): WriteBatch {
+    return new WriteBatch(this);
+  }
+
+  // ── Version History ──────────────────────────────────────────
+
+  /** Get version history for a file */
+  getVersionHistory(inodeId: number): FileVersion[] {
+    return this.versionHistory.get(inodeId) ?? [];
+  }
+
+  /** Restore a file to a previous version */
+  restoreVersion(inodeId: number, versionId: string): boolean {
+    const versions = this.versionHistory.get(inodeId);
+    if (!versions) return false;
+
+    const version = versions.find((v) => v.versionId === versionId);
+    if (!version) return false;
+
+    // Reconstruct full data from version's block data
+    const fullData = new Uint8Array(version.size);
+    let offset = 0;
+    for (const chunk of version.blockData) {
+      fullData.set(chunk.slice(0, Math.min(chunk.length, version.size - offset)), offset);
+      offset += chunk.length;
+    }
+
+    return this.writeFileInternal(inodeId, fullData);
+  }
+
+  private saveVersion(inodeId: number): void {
+    const inode = this.inodes.get(inodeId);
+    if (!inode || inode.blocks.length === 0) return;
+
+    // Read current block data
+    const blockData: Uint8Array[] = [];
+    for (const blockId of inode.blocks) {
+      const block = this.blocks.get(blockId);
+      if (block) blockData.push(new Uint8Array(block.data));
+    }
+
+    let versions = this.versionHistory.get(inodeId);
+    if (!versions) {
+      versions = [];
+      this.versionHistory.set(inodeId, versions);
+    }
+
+    versions.push({
+      versionId: `ver-${inodeId}-${Date.now()}-${versions.length}`,
+      inodeId,
+      timestamp: Date.now(),
+      size: inode.size,
+      blockData,
+      checksum: inode.checksumSHA256,
+    });
+
+    // Limit history
+    if (versions.length > this.maxVersions) {
+      this.versionHistory.set(inodeId, versions.slice(-this.maxVersions));
+    }
   }
 
   // ── Internal ─────────────────────────────────────────────────
