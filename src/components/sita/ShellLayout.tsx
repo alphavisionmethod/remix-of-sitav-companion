@@ -363,7 +363,9 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         )}
 
         {/* Universal Command Surface */}
-        <UniversalCommandSurface open={commandOpen} onClose={() => setCommandOpen(false)} />
+        <UniversalCommandSurface open={commandOpen} onClose={() => setCommandOpen(false)} onSystemCommand={(cmd) => {
+          if (cmd === "focus") { focusMode.active ? focusMode.stop() : focusMode.start(25); }
+        }} />
         {/* Universal Command Layer (Cmd+K) — replaces basic CommandPalette */}
         <UniversalCommandLazy
           open={commandOpen}
