@@ -100,7 +100,7 @@ export function AppPermissionGate({
             onClick={(e) => e.stopPropagation()}
             className={cn(
               "fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2",
-              "w-[380px] max-w-[90vw] rounded-2xl overflow-hidden",
+              "w-[380px] max-w-[90vw] max-h-[85vh] overflow-y-auto rounded-2xl",
               "bg-[hsl(0_0%_100%/0.80)] dark:bg-[hsl(0_0%_8%/0.85)]",
               "backdrop-blur-2xl",
               "border border-[hsl(0_0%_100%/0.30)] dark:border-[hsl(0_0%_100%/0.10)]",
