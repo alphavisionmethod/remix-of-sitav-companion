@@ -127,6 +127,17 @@ export const SystemMenuBar = memo(({ onSearchOpen, onNotifOpen, onControlCenterO
           </button>
         )}
 
+        {/* Control Center */}
+        {onControlCenterOpen && (
+          <button
+            onClick={onControlCenterOpen}
+            className="flex h-5 w-5 items-center justify-center rounded text-[hsl(0_0%_100%/0.5)] hover:text-[hsl(0_0%_100%/0.9)] transition-colors"
+            title="Control Center"
+          >
+            <SlidersHorizontal className="h-3 w-3" />
+          </button>
+        )}
+
         {/* Notifications */}
         {onNotifOpen && (
           <button
