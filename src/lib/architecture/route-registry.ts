@@ -78,6 +78,15 @@ export const ROUTE_FAMILIES: { family: string; prefix: string; layer: Layer; rou
   { family: "App Store", prefix: "/app-store", layer: LAYERS.APP, routeCount: "few", status: "correctly_placed" },
   { family: "Governance", prefix: "/governance", layer: LAYERS.APP, routeCount: "few", status: "correctly_placed" },
   { family: "Enterprise", prefix: "/enterprise", layer: LAYERS.APP, routeCount: "few", status: "correctly_placed" },
+  { family: "Connectors", prefix: "/connectors", layer: LAYERS.APP, routeCount: "few", status: "correctly_placed" },
+  { family: "Advisors", prefix: "/advisors", layer: LAYERS.APP, routeCount: "few", status: "correctly_placed" },
+  { family: "Policies", prefix: "/policies", layer: LAYERS.APP, routeCount: "few", status: "correctly_placed" },
+  { family: "Workspace", prefix: "/workspace", layer: LAYERS.APP, routeCount: "few", status: "correctly_placed" },
+  { family: "Observability", prefix: "/observability", layer: LAYERS.APP, routeCount: "few", status: "correctly_placed" },
+  { family: "Notifications", prefix: "/notifications", layer: LAYERS.APP, routeCount: "few", status: "correctly_placed" },
+  { family: "Search", prefix: "/search", layer: LAYERS.APP, routeCount: "few", status: "correctly_placed" },
+  { family: "Onboarding", prefix: "/onboarding", layer: LAYERS.APP, routeCount: "few", status: "correctly_placed" },
+  { family: "Nova Desktop", prefix: "/nova-desktop", layer: LAYERS.OS_KERNEL, routeCount: "few", status: "correctly_placed" },
 ];
 
 // ── Summary Stats ───────────────────────────────────────────────

@@ -45,6 +45,7 @@ const NAV_ITEMS = [
   { label: "ITC: Validation Pipeline", path: "/admin/implementation-truth/pipeline", icon: Activity, group: "Navigation" },
   { label: "ITC: Launch Truth Gate", path: "/admin/implementation-truth/launch-gate", icon: Target, group: "Navigation" },
   { label: "ITC: Feature Manifests", path: "/admin/implementation-truth/manifests", icon: Layers, group: "Navigation" },
+  { label: "Architecture Boundary Board", path: "/admin/architecture/boundaries", icon: Shield, group: "Navigation" },
   { label: "Button & CTA Health", path: "/admin/verification/buttons", icon: Target, group: "Navigation" },
   { label: "Page Load Integrity", path: "/admin/verification/page-load", icon: Globe, group: "Navigation" },
   { label: "Journey Verification Overview", path: "/admin/verification/overview", icon: Activity, group: "Navigation" },

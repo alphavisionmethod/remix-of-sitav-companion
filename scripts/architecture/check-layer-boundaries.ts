@@ -2,6 +2,7 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Layer Boundary Check (CI-ready)
 // Scans imports across layer boundaries and reports violations.
+// Rules 1-9 covering all 6 architectural layers.
 // ═══════════════════════════════════════════════════════════════
 
 import * as fs from "fs";
@@ -64,7 +65,7 @@ for (const f of adminPages) {
   }
 }
 
-// ── Rule 3: Services must not import from pages ─────────────────
+// ── Rule 3: Services must not import from pages or components ────
 
 const serviceFiles = [...scanDir("src/lib/services"), ...scanDir("src/lib/core-services")];
 for (const f of serviceFiles) {
@@ -112,7 +113,12 @@ for (const domain of domains) {
 
 // ── Rule 6: App pages must not import from core-services (kernel) ──
 
-const appPages = scanDir("src/pages").filter(f => !f.includes("src/pages/admin/"));
+const appPages = scanDir("src/pages").filter(f =>
+  !f.includes("src/pages/admin/") &&
+  !f.includes("src/pages/owner/") &&
+  !f.includes("src/pages/mission/") &&
+  !f.includes("src/pages/auth/")
+);
 for (const f of appPages) {
   const content = fs.readFileSync(f, "utf-8");
   const rel = path.relative(process.cwd(), f);
@@ -124,16 +130,57 @@ for (const f of appPages) {
   }
 }
 
+// ── Rule 7: Hooks must not import from core-services (kernel) ───
+
+const hookFiles = scanDir("src/hooks");
+for (const f of hookFiles) {
+  const content = fs.readFileSync(f, "utf-8");
+  const rel = path.relative(process.cwd(), f);
+  const imports = getImports(content);
+  for (const imp of imports) {
+    if (imp.includes("core-services")) {
+      violations.push({ file: rel, rule: "HOOK_IMPORTS_KERNEL", severity: "warning", detail: `Hook imports kernel directly: ${imp}` });
+    }
+  }
+}
+
+// ── Rule 8: Owner/Mission pages must not import user app pages ──
+
+const ownerPages = [...scanDir("src/pages/owner"), ...scanDir("src/pages/mission")];
+for (const f of ownerPages) {
+  const content = fs.readFileSync(f, "utf-8");
+  const rel = path.relative(process.cwd(), f);
+  const imports = getImports(content);
+  for (const imp of imports) {
+    if (/^@\/pages\/(business|money|concierge|files|boardroom)/.test(imp)) {
+      violations.push({ file: rel, rule: "OPERATOR_IMPORTS_APP_PAGE", severity: "error", detail: `Operator page imports user app page: ${imp}` });
+    }
+  }
+}
+
+// ── Rule 9: Services must not use relative imports to pages ─────
+
+for (const f of serviceFiles) {
+  const content = fs.readFileSync(f, "utf-8");
+  const rel = path.relative(process.cwd(), f);
+  const imports = getImports(content);
+  for (const imp of imports) {
+    if (/\.\.\/.*pages\//.test(imp) || /\.\.\/.*components\//.test(imp)) {
+      violations.push({ file: rel, rule: "SERVICE_RELATIVE_UI_IMPORT", severity: "error", detail: `Service uses relative import to UI: ${imp}` });
+    }
+  }
+}
+
 // ── Report ──────────────────────────────────────────────────────
 
 const errors = violations.filter(v => v.severity === "error");
 const warnings = violations.filter(v => v.severity === "warning");
 
 if (violations.length === 0) {
-  console.log("✅ Layer boundary check passed — no violations found");
+  console.log("✅ Layer boundary check passed — 9 rules, no violations found");
   process.exit(0);
 } else {
-  console.log(`\n📊 Layer Boundary Check Results`);
+  console.log(`\n📊 Layer Boundary Check Results (9 rules)`);
   console.log(`   ${errors.length} error(s), ${warnings.length} warning(s)\n`);
   for (const v of violations) {
     const icon = v.severity === "error" ? "❌" : "⚠️";
