@@ -142,10 +142,31 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMa
                       ? { duration: 0.5, ease: "easeOut" }
                       : { type: "spring", stiffness: 300, damping: 20 }
                   }
-                  onMouseEnter={() => { setHoveredIdx(idx); setTooltip(app.id); }}
+                  onMouseEnter={() => {
+                    setHoveredIdx(idx);
+                    setTooltip(app.id);
+                    // W1: Live preview after 400ms for running apps
+                    if (isRunning) {
+                      previewTimer.current = setTimeout(() => {
+                        const rect = iconRefs.current.get(app.id)?.getBoundingClientRect();
+                        if (rect) setPreviewApp({ id: app.id, x: rect.left + rect.width / 2, y: window.innerHeight - rect.top });
+                      }, 400);
+                    }
+                  }}
+                  onMouseLeave={() => {
+                    clearTimeout(previewTimer.current);
+                    setPreviewApp(null);
+                  }}
                   onClick={() => launchApp(app)}
                   onContextMenu={(e) => handleContextMenu(e, app)}
-                  className="relative w-11 h-11 rounded-xl flex items-center justify-center transition-shadow duration-150 hover:shadow-xl"
+                  // G3: File drag/drop
+                  onDragOver={(e) => { e.preventDefault(); setDragOverApp(app.id); }}
+                  onDragLeave={() => setDragOverApp(null)}
+                  onDrop={(e) => { e.preventDefault(); setDragOverApp(null); launchApp(app); }}
+                  className={cn(
+                    "relative w-11 h-11 rounded-xl flex items-center justify-center transition-shadow duration-150 hover:shadow-xl",
+                    dragOverApp === app.id && "ring-2 ring-[hsl(210_80%_60%/0.6)] ring-offset-1"
+                  )}
                   aria-label={`Open ${app.name}`}
                 >
                   <div className={cn("w-full h-full rounded-xl bg-gradient-to-br flex items-center justify-center text-lg shadow-md", app.iconBg)}>
