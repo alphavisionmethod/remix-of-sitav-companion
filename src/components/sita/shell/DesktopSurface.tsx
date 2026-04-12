@@ -443,7 +443,7 @@ export function DesktopSurface({
               key={w.id}
               windowId={w.id}
               title={w.title}
-              appIcon={w.id === "finder" ? "📁" : w.id === "settings" ? "⚙️" : w.id === "notes" ? "📝" : undefined}
+              appIcon={w.id === "finder" ? "📁" : w.id === "settings" ? "⚙️" : w.id === "notes" ? "📝" : w.id === "system-monitor" ? "📊" : undefined}
               initialPosition={w.position}
               width={w.width}
               originRect={(w as any).originRect}
