@@ -1,140 +1,57 @@
 
 
-# NovaOS Window System — Full Advanced Spec Audit & Implementation
+# Window System Spec Compliance — Final Fixes
 
-## Assessment: What Exists vs. What's Missing
+## Audit Results
 
-The window system is already quite advanced. Here's the gap analysis against the spec:
+After reading every line of FloatingWindow.tsx, snap-zones.ts, compositor.ts, window-perf.ts, WindowErrorBoundary.tsx, sound-engine.ts, app-window-system.ts, nova-os.ts, and window-physics.ts, the system is **90% complete**. Here are the remaining deviations from the spec:
 
-### Already Implemented (Confirmed)
-- **Window open animation**: Scale 0.85→1, opacity 0→1, blur 8→0, spring physics (FloatingWindow.tsx)
-- **Window close/exit animation**: Scale 1→0.95, opacity 1→0, via NOVA_MOTION + AnimatePresence
-- **Drag physics**: Lerp smoothing (0.25), inertia with friction (0.92), velocity tracking
-- **Magnetic docking**: Inter-window edge snapping with alignment guides
-- **Edge bounce**: Dampened bounce on screen edges
-- **Snap zones**: Left/right half + maximize with preview overlays
-- **Z-order system**: Click-to-front, compositor tracking, per-window zIndex
-- **Focus/active states**: Shadow differentiation, opacity/saturation dimming via CalmEngine
-- **Dual shadow model**: Near sharp + far soft shadows in APP_SHADOWS
-- **Resize handles**: Continuous resize with min width/height enforcement
-- **Shake-to-minimize**: Direction change detection
-- **Double-buffering**: Surface allocator with double/triple buffering modes
-- **Dirty region rendering**: DamageTracker with coalescing in compositor-sim.ts
-- **VSync loop**: RenderPipeline with requestAnimationFrame-based frame pacing
-- **Scene graph**: Retained mode with visibility culling, hit testing, display lists
-- **Error boundaries**: GlobalErrorBoundary and per-shell ErrorBoundary exist
-- **Microinteraction engine**: Complete with window/menu/dock/modal/toast variants
-- **Sound on open**: SoundEngine.click() on window creation
+## Issues Found
 
-### Gaps to Fill
+| # | Spec Requirement | Current Value | Fix |
+|---|---|---|---|
+| 1 | Open scale: 0.96 → 1.0 | 0.85 → 1.0 | Too dramatic — update to 0.96 |
+| 2 | Close scale: 1.0 → 0.98 | 1.0 → 0.95 | Too dramatic — update to 0.98 |
+| 3 | Close duration: 120–160ms | Spring (unpredictable) | Switch to tween with 140ms |
+| 4 | Focus fade: 120ms | 200ms (`duration-200`) | Change to `duration-[120ms]` |
+| 5 | Drag uses `left/top` CSS | Triggers layout per frame | Switch to `transform: translate()` for GPU-composited movement |
+| 6 | `willChange` mismatch | Says "transform" but uses left/top | Align with transform-based positioning |
+| 7 | Frame tracking never started | `startFrameTracking()` not called | Auto-start on mount in DesktopSurface |
+| 8 | Drag position not persisted | `updateWindowPosition` never called on drag end | Call it in `handlePointerUp` via callback |
 
-| # | Spec Requirement | Gap |
-|---|---|---|
-| 1 | **Per-window error boundary + crash fallback UI** | Children render raw inside FloatingWindow — no per-window crash isolation with "frozen" fallback |
-| 2 | **Window close sound** | Only open sound exists; no close/minimize/maximize/focus sounds wired |
-| 3 | **Minimize-to-dock curved path** | Minimize just hides — no visual "shrink toward dock" animation |
-| 4 | **Occlusion culling in React layer** | Compositor has the concept but FloatingWindow renders all content regardless of occlusion |
-| 5 | **Background window update throttling** | All windows update at same rate; unfocused windows should throttle re-renders |
-| 6 | **Shadow dynamic with elevation** | Shadows are static CSS classes; should shift intensity based on drag elevation |
-| 7 | **Progressive content fade-in** | Skeleton shows for 150ms then hard-swaps — should crossfade |
-| 8 | **Snap zone: bottom-left/bottom-right quadrants** | Only left/right/top snap zones exist |
-| 9 | **Modal z-order enforcement** | No modal-above-parent guarantee in compositor |
-| 10 | **System overlay always-on-top** | No overlay z-level enforcement |
-| 11 | **Performance timing instrumentation** | No actual measurement of window open time or drag latency |
+## Plan
 
----
+### 1. Fix animation values in FloatingWindow.tsx + nova-os.ts
+- `NOVA_MOTION.window.enter.initial.scale`: 0.95 → **0.96**
+- `NOVA_MOTION.window.exit.exit.scale`: 0.95 → **0.98**
+- FloatingWindow morphInitial fallback scale: 0.85 → **0.96**
+- Close exit: add `transition: { duration: 0.14, ease: "easeOut" }` for deterministic 140ms
 
-## Implementation Plan
+### 2. Fix focus transition timing in FloatingWindow.tsx
+- Change `transition-[box-shadow,border-color,filter] duration-200` to `duration-[120ms]`
 
-### 1. Per-Window Error Boundary with Crash Fallback
-**File**: `src/components/sita/shell/WindowErrorBoundary.tsx` (create)
-**File**: `src/components/sita/shell/FloatingWindow.tsx` (modify)
+### 3. Switch drag from left/top to transform: translate() in FloatingWindow.tsx
+- Position via `transform: translate3d(x, y, 0)` instead of `left`/`top`
+- Remove `left`/`top` from style during drag
+- Keep `left`/`top` for snapped/static positioning with CSS transitions
+- This eliminates layout thrashing — the single biggest perf win
 
-- Create `WindowErrorBoundary` React class component that catches errors in window content
-- On crash: render a frozen fallback UI showing "This window encountered an error" with a close button and restart option
-- Wrap `{children}` in FloatingWindow with this boundary
-- Wire into `AppErrorBoundary` from managed-runtime for crash counting
+### 4. Start frame tracking in DesktopSurface.tsx
+- Call `WindowPerformanceMonitor.startFrameTracking()` on mount
+- Call `stopFrameTracking()` on unmount
 
-### 2. Window Sound Hooks
-**File**: `src/components/sita/shell/DesktopSurface.tsx` (modify)
-**File**: `src/components/sita/shell/FloatingWindow.tsx` (modify)
-**File**: `src/lib/sound-engine.ts` (modify if needed)
-
-- Call `SoundEngine.windowClose()` in `onClose` handler
-- Call `SoundEngine.windowMinimize()` in `onMinimize` handler
-- Call `SoundEngine.click()` on focus change
-- Call `SoundEngine.snap()` on snap-to-zone (already exists)
-
-### 3. Minimize-to-Dock Curved Animation
-**File**: `src/components/sita/shell/FloatingWindow.tsx` (modify)
-
-- On minimize: compute dock icon position (center-bottom of screen)
-- Use framer-motion `animate` to scale down (1→0.3), translate toward dock position on a bezier curve, and fade opacity
-- Add `onMinimize` exit variant that includes `y: window.innerHeight - 80`, `scale: 0.2`, `opacity: 0`
-
-### 4. Occlusion-Aware Content Rendering
-**File**: `src/components/sita/shell/FloatingWindow.tsx` (modify)
-
-- Accept `isOccluded` prop (computed by parent from compositor data)
-- When fully occluded: render placeholder div instead of children (saves React reconciliation)
-- Parent (DesktopSurface) computes occlusion using `Compositor.findSurfaceAt()` bounding box checks
-
-### 5. Background Window Throttling
-**File**: `src/components/sita/shell/FloatingWindow.tsx` (modify)
-
-- When `isFocused === false`: wrap children in a `React.memo`-style container that skips re-renders
-- Use `useDeferredValue` or a throttled state update for unfocused window content
-- Add CSS `content-visibility: auto` on unfocused window content for browser-level optimization
-
-### 6. Dynamic Shadow Based on Drag Elevation
-**File**: `src/components/sita/shell/FloatingWindow.tsx` (modify)
-
-- During drag: increase shadow spread/blur proportionally to velocity magnitude
-- Compute `elevation = Math.min(1, velocity / 20)` and interpolate between `APP_SHADOWS.unfocused` and a deeper "lifted" shadow
-- Apply via inline style during drag state
-
-### 7. Progressive Content Crossfade
-**File**: `src/components/sita/shell/FloatingWindow.tsx` (modify)
-
-- Replace hard swap from skeleton→content with a crossfade:
-  - Skeleton fades out over 120ms
-  - Content fades in simultaneously
-- Use `AnimatePresence mode="wait"` with opacity transitions
-
-### 8. Quadrant Snap Zones
-**File**: `src/lib/design-system/snap-zones.ts` (modify)
-
-- Add `"bottom-left"`, `"bottom-right"`, `"top-left"`, `"top-right"` to `SnapZone` type
-- Detect corner zones when pointer is within both edge thresholds
-- Return quarter-screen rects for corner snaps
-
-### 9. Modal & Overlay Z-Order Enforcement
-**File**: `src/lib/nova-sdk/kernel/compositor.ts` (modify)
-
-- Add `layer` field to `CompositorSurface`: `"normal" | "modal" | "overlay"`
-- `getRenderOrder()` sorts by layer first, then zIndex within layer
-- Modals always render above normal windows; overlays above everything
-
-### 10. Performance Instrumentation
-**File**: `src/lib/nova-sdk/kernel/window-perf.ts` (create)
-
-- `WindowPerformanceMonitor` singleton tracking:
-  - Window open time (from request to first content render via `performance.now()`)
-  - Drag latency (pointer event timestamp vs frame render)
-  - Frame consistency (jank detection via frame time variance)
-- Expose via `getDiagnostics()` for Kernel Dashboard integration
+### 5. Persist drag position on release
+- Add `onPositionChange` callback prop to FloatingWindow
+- Call it in `handlePointerUp` and snap completion
+- Wire in DesktopSurface to call `updateWindowPosition`
 
 ---
 
-## Files Summary
+## Files Modified
 
-| File | Action |
-|------|--------|
-| `src/components/sita/shell/WindowErrorBoundary.tsx` | Create |
-| `src/lib/nova-sdk/kernel/window-perf.ts` | Create |
-| `src/components/sita/shell/FloatingWindow.tsx` | Modify (error boundary, sounds, minimize anim, occlusion, throttling, dynamic shadow, crossfade) |
-| `src/components/sita/shell/DesktopSurface.tsx` | Modify (sound hooks, occlusion computation, pass props) |
-| `src/lib/design-system/snap-zones.ts` | Modify (quadrant zones) |
-| `src/lib/nova-sdk/kernel/compositor.ts` | Modify (layer-based z-order) |
-| `src/lib/sound-engine.ts` | Verify/modify (ensure all window sound methods exist) |
+| File | Changes |
+|------|---------|
+| `src/lib/design-system/nova-os.ts` | Fix enter/exit scale values |
+| `src/components/sita/shell/FloatingWindow.tsx` | Transform-based drag, fix scales, fix timing, add position callback |
+| `src/components/sita/shell/DesktopSurface.tsx` | Start frame tracking, wire position persistence |
 
