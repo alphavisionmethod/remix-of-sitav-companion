@@ -22,6 +22,7 @@ import { useWindowManagerContext } from "@/contexts/WindowManagerContext";
 import { DesktopIconGrid } from "./DesktopIconGrid";
 import { DesktopContextMenu } from "./DesktopContextMenu";
 import { IntentSuggestion } from "./IntentSuggestion";
+import { useCalmEngine } from "@/contexts/CalmEngineContext";
 
 // ── Types ────────────────────────────────────────────────────
 
@@ -249,6 +250,10 @@ export function DesktopSurface({
   const focusWindow = windowManager?.focusWindow;
   const minimizeWindow = windowManager?.minimizeWindow;
 
+  // ── Calm Engine ─────────────────────────────────────────────
+  const calm = useCalmEngine();
+  const isIdle = calm.idlePhase !== "active";
+
   // ── Soft Focus Mode ────────────────────────────────────────
   const hasWindows = visibleWindows.length > 0;
   const maxZ = visibleWindows.reduce((max, w) => Math.max(max, w.zIndex), 0);
@@ -303,13 +308,16 @@ export function DesktopSurface({
         <div className="absolute top-[60%] left-[60%] w-[300px] h-[300px] rounded-full bg-[hsl(190_60%_50%/0.03)] blur-[80px]" />
       </div>
 
-      {/* Main desktop content — dims when windows are open (Soft Focus) */}
+      {/* Main desktop content — dims when windows are open (Soft Focus) + idle fade */}
       <div
         className={cn(
-          "relative flex flex-col items-center gap-12 px-4 pb-28 pt-12 transition-opacity duration-300",
+          "relative flex flex-col items-center gap-12 px-4 pb-28 pt-12 transition-all duration-[2000ms]",
           hasWindows ? "opacity-40" : "opacity-100"
         )}
-        style={{ zIndex: DEPTH_LAYERS.content }}
+        style={{
+          zIndex: DEPTH_LAYERS.content,
+          opacity: calm.idleOpacity(hasWindows ? 0.4 : 1),
+        }}
         onClick={e => e.stopPropagation()}
       >
         {/* Clock */}
@@ -372,12 +380,12 @@ export function DesktopSurface({
         />
       </div>
 
-      {/* Desktop Icon Grid — dims with soft focus too */}
+      {/* Desktop Icon Grid — dims with soft focus + idle fade */}
       <div
-        className={cn(
-          "transition-opacity duration-300",
-          hasWindows ? "opacity-40" : "opacity-100"
-        )}
+        className="transition-all duration-[2000ms]"
+        style={{
+          opacity: calm.idleOpacity(hasWindows ? 0.4 : 1),
+        }}
       >
         <DesktopIconGrid
           visible={bootPhase >= 3}
@@ -393,6 +401,7 @@ export function DesktopSurface({
         {visibleWindows.map(w => (
           <FloatingWindow
             key={w.id}
+            windowId={w.id}
             title={w.title}
             initialPosition={w.position}
             width={w.width}
