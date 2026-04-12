@@ -49,7 +49,7 @@ function SettingRow({ label, description, icon, children }: {
     <HStack spacing="normal" justify="between" align="center" className="min-h-[36px]">
       <HStack spacing="tight" align="center" className="flex-1 min-w-0">
         {icon && <span className="text-[hsl(0_0%_45%)] dark:text-[hsl(0_0%_55%)] flex-shrink-0">{icon}</span>}
-        <VStack spacing="none">
+        <VStack spacing="micro">
           <NovaText variant="body">{label}</NovaText>
           {description && <NovaText variant="label" muted className="!text-[10px]">{description}</NovaText>}
         </VStack>
@@ -272,7 +272,7 @@ function BluetoothContent() {
             <NovaSectionLabel className="!px-0">Nearby Devices</NovaSectionLabel>
             <HStack spacing="tight" align="center">
               <NovaAvatar icon="🎧" size={24} gradient="from-[hsl(210_80%_55%)] to-[hsl(265_55%_58%)]" />
-              <VStack spacing="none" className="flex-1">
+              <VStack spacing="micro" className="flex-1">
                 <NovaText variant="body">AirPods Pro</NovaText>
                 <NovaText variant="label" muted className="!text-[10px]">Available</NovaText>
               </VStack>
@@ -281,7 +281,7 @@ function BluetoothContent() {
             <Divider />
             <HStack spacing="tight" align="center">
               <NovaAvatar icon="⌨️" size={24} gradient="from-[hsl(0_0%_40%)] to-[hsl(0_0%_25%)]" />
-              <VStack spacing="none" className="flex-1">
+              <VStack spacing="micro" className="flex-1">
                 <NovaText variant="body">Magic Keyboard</NovaText>
                 <NovaText variant="label" muted className="!text-[10px]">Connected</NovaText>
               </VStack>
@@ -415,7 +415,7 @@ function AboutContent() {
 
       <NovaCard>
         <HStack spacing="tight" justify="between" align="center">
-          <VStack spacing="none">
+          <VStack spacing="micro">
             <NovaText variant="body">Software Update</NovaText>
             <NovaText variant="label" muted className="!text-[10px]">SITA OS is up to date</NovaText>
           </VStack>
