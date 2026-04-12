@@ -221,18 +221,11 @@ const ConciergeCenter = () => {
           <AnimatePresence mode="wait">
             <motion.div
               key={activePage}
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.3, ease: "easeOut" }}
-              className="relative"
+              exit={{ opacity: 0, y: -4 }}
+              transition={{ duration: 0.25, ease: "easeOut" }}
             >
-              {/* Ambient concierge glow */}
-              <div
-                aria-hidden
-                className="pointer-events-none absolute -top-16 -right-16 h-56 w-56 rounded-full opacity-[0.04] blur-3xl"
-                style={{ background: "radial-gradient(circle, hsl(var(--primary)), hsl(var(--accent)))" }}
-              />
               <PageComponent />
             </motion.div>
           </AnimatePresence>
