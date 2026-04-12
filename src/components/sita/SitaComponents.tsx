@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
 import { LucideIcon, ArrowRight, Sparkles, AlertTriangle, Clock, CheckCircle, FileText, Receipt, ShieldCheck } from "lucide-react";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { TrustBadge, TrustLevel } from "./TrustBadge";
@@ -300,18 +301,27 @@ export const SitaTabs = ({ tabs, active, onChange, className }: {
             data-active={active === t.key}
             onClick={() => onChange(t.key)}
             className={cn(
-              "rounded-lg px-3.5 py-2 text-xs font-medium transition-all duration-200 whitespace-nowrap snap-start shrink-0 min-h-[36px] touch-manipulation",
+              "relative rounded-lg px-3.5 py-2 text-xs font-medium whitespace-nowrap snap-start shrink-0 min-h-[36px] touch-manipulation transition-colors duration-200",
               active === t.key
-                ? "bg-card text-foreground shadow-xs border border-border/60"
+                ? "text-foreground"
                 : "text-muted-foreground hover:text-foreground hover:bg-surface-2"
             )}
           >
-            {t.label}
-            {t.count !== undefined && (
-              <span className={cn("ml-1.5 rounded-full px-1.5 py-px text-[10px]", active === t.key ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground")}>
-                {t.count}
-              </span>
+            {active === t.key && (
+              <motion.div
+                layoutId="sita-tab-pill"
+                className="absolute inset-0 rounded-lg bg-card shadow-xs border border-border/60"
+                transition={{ type: "spring", stiffness: 400, damping: 30 }}
+              />
             )}
+            <span className="relative z-10">
+              {t.label}
+              {t.count !== undefined && (
+                <span className={cn("ml-1.5 rounded-full px-1.5 py-px text-[10px]", active === t.key ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground")}>
+                  {t.count}
+                </span>
+              )}
+            </span>
           </button>
         ))}
       </div>
