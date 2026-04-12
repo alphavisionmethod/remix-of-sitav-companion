@@ -1,164 +1,95 @@
 
 
-# SITA OS — Full Concierge App Implementation Plan
+# Concierge App — Remaining Gaps & Implementation Plan
 
-## Current State Assessment
+## Audit Summary
 
-The Concierge app already has **16 sub-pages** wired into `ConciergeCenter.tsx` with tabbed navigation, mobile selector, CAI data context, error boundaries, and advisor strip. Existing pages:
+**Pages: 19/19 exist and are wired** — All primary concierge spaces from §3.1 are implemented with tabs, KPIs, views, advisor panels, and demo data.
 
-| Page | Status | Quality |
-|------|--------|---------|
-| ConciergeOverview | ✅ Full | WhatMattersNow, PreparedActions, WhatChanged, KPIs, family board, overload, bento grid |
-| HouseholdTasks | ✅ Full | DB-backed CRUD, filters, priority, assignment, advisor |
-| MonthGridCalendar | ✅ Exists | Calendar views |
-| LifeAdminCenter | ✅ Good | 5-tab admin (recurring, service, forms, upcoming, aging) |
-| TravelPlanning | ✅ Good | Trips, prep, itinerary, logistics, post-trip, advisor, budget cross-ref |
-| GroceryPlanning | ✅ Good | Shopping list, recurring, by-store, urgency, event-prep |
-| AppointmentsPrep | ✅ Good | Prep checklists, docs, transport, advisor |
-| ServiceProviders | ✅ Full | Search, filter, history, spend, inspector, proof, advisor |
-| EventsGifts | ✅ Good | Gift tracking, milestones, prep items, advisor |
-| SchoolActivities | ✅ Good | Forms, fees, meetings, transport, volunteers |
-| ConciergeWorkflows | ✅ Good | Approval gates, proof states, execution tracking |
-| ConciergeProof | ✅ Good | Verified/pending records |
-| ConciergeFiles | ✅ Good | Categories, sensitivity, expiry, upload |
-| FamilyBoardroom | ✅ Full | Weekly review, priorities, conflicts, next moves, wellness, cross-domain |
-| HouseholdCommandCenter | ✅ DB-backed | Household CRUD with members |
-| ConciergeSettings | ✅ Good | Roles, permissions, rules |
+**Reusable Components from §23: 8/24 extracted** — The following 16 are missing as standalone reusable components (some exist inline within pages but are not extracted):
 
-## Gap Analysis vs Full Spec
+| Missing Component | Where it would be used |
+|---|---|
+| LifeAdminQueueCard | Overview home, LifeAdmin page |
+| TravelReadinessCard | Overview, Travel page |
+| ReservationStatusCard | Travel, Upcoming |
+| AppointmentPrepCard | Appointments, Overview |
+| ServiceFollowUpCard | ServiceProviders, Overview |
+| ConciergeAdvisorInsightCard | All pages (replace raw HouseholdAdvisor) |
+| ConciergeProofChip | Inline proof badges across all pages |
+| ConciergeReceiptViewer | Proof page, Automations |
+| ConciergeBoardroomSummary | Boardroom, Overview |
+| ConciergeAutomationRuleCard | Automations page |
+| PersonalEssentialsPreviewPanel | Files page, Overview |
+| UpcomingNeedsList | Upcoming, Overview |
+| ConciergeCommandActionPreview | Overview (command bar integration) |
+| VendorDetailPanel | ServiceProviders (detail drawer) |
+| RecurringAdminList | Recurring, LifeAdmin |
+| EventPrepCard | Events, Overview |
 
-### Missing Pages (New)
-1. **Errands & Logistics** — No dedicated errands workspace (spec §8)
-2. **Recurring Personal Obligations** — Currently inside LifeAdmin as one tab, needs standalone depth (spec §12)
-3. **Upcoming & Needs Handling** — No unified "upcoming" surface across all entity types (spec §5)
-
-### Missing Components (spec §23)
-Most of these are inline today but not extracted as reusable components:
-- `ConciergeHomeSummary` — exists inline in Overview
-- `UpcomingObligationsCard` — partial
-- `ErrandBundleCard` — missing entirely
-- `LogisticsTimelineCard` — missing
-- `SupportBurdenCard` — missing
-- `GroupedPrepBundleCard` — missing
-- `ConciergeContinuityCard` — missing
-- `ConciergeReviewQueue` — missing
-
-### Depth Gaps in Existing Pages
-4. **ConciergeOverview** — Missing: support burden card, continuity items, "quiet support" notes, state variants (travel-heavy, overloaded, etc.), today summary pulse
-5. **TravelPlanning** — Missing: document bundle view, readiness checklist with scoring, missing confirmations detector, calendar conflict detection
-6. **LifeAdminCenter** — Missing: grouped admin sessions, "handle in one sitting" bundles, AI-powered detection
-7. **AppointmentsPrep** — Missing: recurring appointments, follow-up after appointment, grouped prep
-8. **EventsGifts** — Missing: planning board view, prep timeline, event detail panel
-9. **FamilyBoardroom** — Missing: daily pulse mode, travel-heavy review, overloaded-life-admin review, household-support review
-10. **ConciergeWorkflows → Automations** — Missing: simulation previews, suggested automations, automation library, safety boundaries display
-
-### Navigation Gap
-11. The spec calls for adaptive navigation (travel-heavy / household-heavy / admin-heavy modes). Currently static tab groups.
-
-### Emotional Design Gap
-12. The Overview opens with family members + KPIs. Spec wants it to open with "what needs handling" first, with a relieving emotional tone. Need softer gradients, support-oriented framing.
+**Page depth gaps still remaining:**
+- LifeAdminCenter: No "handle in one sitting" bundle view, no grouped admin sessions
+- AppointmentsPrep: No recurring appointments tab, no post-appointment follow-up
+- EventsGifts: No planning board view, no prep timeline
+- ConciergeFiles: No drag-drop, no annotation, no preview panel
+- Overview: No command action preview, no state-variant rendering (travel-heavy vs overloaded)
 
 ---
 
 ## Implementation Plan
 
-### Phase 1: New Pages + Components (Core Gaps)
+### Phase 1: Create 16 missing reusable components
 
-**Task 1: Create Errands & Logistics page** (`src/pages/concierge/ErrandsLogistics.tsx`)
-- Errand queue with location, date, dependencies
-- Grouped errands view (by geography, by day)
-- Route/day bundle cards
-- Quick wins section
-- "Can be combined" suggestions
-- AI grouping advisor
-- New components: `ErrandBundleCard`, `LogisticsTimelineCard`
+All in `src/components/concierge/`, exported from barrel `index.ts`:
 
-**Task 2: Create Upcoming & Needs Handling page** (`src/pages/concierge/UpcomingNeeds.tsx`)
-- Unified view across obligations, appointments, reservations, trips, errands, recurring needs
-- Views: today, next 3 days, this week, this month, grouped by type/location/burden
-- "Needs handling soon" vs "Can wait" split
-- Calm anticipatory design (no panic list)
-- New components: `UpcomingObligationsCard`, `SupportBurdenCard`
+1. **LifeAdminQueueCard** — Compact list of admin items with urgency dots, effort badges, "quick win" tags
+2. **TravelReadinessCard** — Trip name, readiness %, checklist progress bar, missing items count, days until departure
+3. **ReservationStatusCard** — Reservation title, confirmation status (confirmed/pending/missing), date, linked trip
+4. **AppointmentPrepCard** — Appointment with prep checklist, docs needed, transport time, confirmation status
+5. **ServiceFollowUpCard** — Vendor name, follow-up reason, days waiting, urgency, linked tasks
+6. **ConciergeAdvisorInsightCard** — Concierge-branded advisor (softer purple-rose gradient, relieving tone, linked items)
+7. **ConciergeProofChip** — Inline badge: verified/pending/unverified with icon + tooltip
+8. **ConciergeReceiptViewer** — Expandable receipt card: action, timestamp, result, verification, details
+9. **ConciergeBoardroomSummary** — Compact boardroom entry: completion %, carryover count, top priority, next review date
+10. **ConciergeAutomationRuleCard** — Rule card with trigger, conditions, safety boundary, trust level, recent runs count
+11. **PersonalEssentialsPreviewPanel** — Document preview card with type icon, sensitivity badge, expiry warning, linked context
+12. **UpcomingNeedsList** — Unified list rendering obligations across types with "needs handling" / "can wait" split
+13. **ConciergeCommandActionPreview** — Command suggestion chips: "what's slipping?", "group errands", "prep travel"
+14. **VendorDetailPanel** — Slide-out or inline detail: contact, history, linked tasks, next action, rating, spend
+15. **RecurringAdminList** — Grouped recurring items with rhythm visualization, automatable badges, simplification hints
+16. **EventPrepCard** — Event with gift status, prep timeline, days until, outstanding items, linked docs
 
-**Task 3: Create Recurring Obligations page** (`src/pages/concierge/RecurringObligations.tsx`)
-- All recurring items across categories
-- Due soon, monthly rhythm, review-needed views
-- Pattern detection messaging
-- Simplification suggestions
-- New component: `RecurringAdminList`
+### Phase 2: Enhance existing pages with new components
 
-### Phase 2: Deepen Existing Pages
+**LifeAdminCenter** — Add "One Sitting Bundle" tab using LifeAdminQueueCard, grouped admin sessions
+**AppointmentsPrep** — Add recurring appointments section, post-appointment follow-up tab using AppointmentPrepCard
+**EventsGifts** — Add planning board view and prep timeline using EventPrepCard
+**ConciergeOverview** — Add ConciergeCommandActionPreview strip, state-variant rendering (detect travel-heavy/overloaded from data), replace HouseholdAdvisor with ConciergeAdvisorInsightCard
+**ServiceProviders** — Add VendorDetailPanel as expandable inline detail
+**ConciergeProof** — Use ConciergeReceiptViewer and ConciergeProofChip
+**ConciergeFiles** — Add PersonalEssentialsPreviewPanel for document preview
 
-**Task 4: Enhance ConciergeOverview**
-- Add `ConciergeHomeSummary` top component (today summary, support pulse, trust indicator)
-- Add `SupportBurdenCard` showing aggregate load
-- Add `ConciergeContinuityCard` showing items from yesterday
-- Add state-aware rendering (travel-heavy, overloaded, quiet week)
-- Softer emotional design: gradient headers, relieving copy
-- Add `GroupedPrepBundleCard` for showing prep bundles
+### Phase 3: Emotional design refinements
 
-**Task 5: Enhance TravelPlanning**
-- Add readiness scoring per trip (% ready)
-- Missing confirmations detector with alerts
-- Document bundle view
-- Calendar conflict detection messaging
-
-**Task 6: Enhance FamilyBoardroom**
-- Add daily pulse mode (lighter, quick-glance)
-- Add travel-heavy review mode
-- Add overloaded-life-admin review mode
-- Contextual mode auto-detection
-
-**Task 7: Enhance ConciergeWorkflows → Automations**
-- Rename to "Automations" in nav
-- Add automation library (suggested automations)
-- Add simulation preview panel
-- Add safety boundaries display
-- Add paused/failed automation sections
-
-### Phase 3: Navigation & Polish
-
-**Task 8: Wire new pages into ConciergeCenter**
-- Add `errands`, `upcoming`, `recurring` to SubPage type
-- Add routes in App.tsx
-- Update TAB_GROUPS to reorganize:
-  - Home: Overview, Upcoming, Calendar
-  - Life: Life Admin, Errands, Appointments, Travel
-  - Support: Household, Grocery, School, Providers, Events, Recurring
-  - Office: Automations, Proof, Files, Boardroom, Settings
-
-**Task 9: Extract reusable components** (`src/components/concierge/`)
-- `ConciergeHomeSummary`
-- `UpcomingObligationsCard`
-- `ErrandBundleCard`
-- `LogisticsTimelineCard`
-- `SupportBurdenCard`
-- `GroupedPrepBundleCard`
-- `ConciergeContinuityCard`
-- `ConciergeReviewQueue`
-
-### Phase 4: Emotional Design Pass
-
-**Task 10: Premium visual refinement**
-- Softer accent gradients for concierge domain (purple-rose)
-- "Relief" animations (gentle fade-in, no aggressive bounces)
-- Support-oriented copy throughout (not task/productivity language)
-- Empty states that feel encouraging, not shame-inducing
-- Quiet luxury feel: translucent cards, subtle glows
+- Replace all `HouseholdAdvisor` usage across concierge pages with `ConciergeAdvisorInsightCard` (softer purple-rose gradient, concierge-specific language)
+- Add state-aware Overview: detect travel-heavy (active trips > 1), overloaded (overdue > 3), quiet week states and adjust layout/copy
+- Softer empty states with encouraging, non-shame copy
+- Gentle fade-in animations (no aggressive springs)
 
 ---
 
 ## Technical Details
 
-- All new pages follow existing pattern: demo data with `useDataMode()`, `DemoModeBadge`, motion animations, `SitaCard`/`GlassCard` primitives
-- Components extracted to `src/components/concierge/index.ts` barrel
-- Navigation wired through `ConciergeCenter.tsx` tab system + `App.tsx` routes
-- No database changes needed — demo data first, DB hooks already exist in `use-concierge-data.ts`
-- Follows existing architecture: domain-shared primitives (WhatMattersNow, PreparedActions, WhatChangedFeed) reused where appropriate
+- All 16 components follow existing patterns: GlassCard/SitaCard primitives, motion animations, Tailwind styling, TypeScript interfaces
+- Each component ~40-80 lines, self-contained with typed props
+- Barrel export in `src/components/concierge/index.ts` updated
+- Page enhancements add new tabs/sections using the extracted components
+- No database changes needed — demo data throughout
+- ConciergeAdvisorInsightCard replaces HouseholdAdvisor calls for concierge-specific branding
 
-## Estimated Scope
-- ~3 new page files (~200-300 lines each)
-- ~8 new component files (~50-100 lines each)  
-- ~5 existing files enhanced
-- ConciergeCenter.tsx + App.tsx route updates
+## Estimated scope
+- 16 new component files
+- 7 existing pages enhanced
+- ~1200 lines of new component code
+- ~300 lines of page enhancements
 
