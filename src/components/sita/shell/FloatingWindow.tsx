@@ -282,7 +282,7 @@ export function FloatingWindow({
       setPos({ x: rect.x, y: rect.y });
       setSize({ width: rect.width, height: rect.height });
       setSnappedTo(snapZone);
-      SoundEngine.approve();
+      SoundEngine.snap(rect.x + rect.width / 2);
     } else {
       // ── Edge bounce on inertia release ──
       const vw = window.innerWidth;
