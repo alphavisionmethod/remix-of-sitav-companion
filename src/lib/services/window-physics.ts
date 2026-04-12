@@ -18,6 +18,53 @@ export interface MagneticEdge {
   targetId: string;
 }
 
+/** Visual alignment guide line (absolute screen coordinates) */
+export interface AlignmentGuide {
+  axis: "x" | "y";
+  /** For x-axis: the x coordinate of the vertical line; for y-axis: the y coordinate */
+  position: number;
+  /** Start of the guide line (min coordinate on the perpendicular axis) */
+  start: number;
+  /** End of the guide line (max coordinate on the perpendicular axis) */
+  end: number;
+}
+
+/**
+ * Compute visual alignment guide lines from magnetic edges.
+ * Returns lines that span between the two windows sharing an edge.
+ */
+export function computeAlignmentGuides(
+  dragging: PhysicsWindow,
+  others: PhysicsWindow[],
+  edges: MagneticEdge[]
+): AlignmentGuide[] {
+  const guides: AlignmentGuide[] = [];
+  const seen = new Set<string>();
+
+  for (const edge of edges) {
+    const other = others.find(o => o.id === edge.targetId);
+    if (!other) continue;
+
+    const key = `${edge.axis}-${Math.round(edge.position)}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+
+    if (edge.axis === "x") {
+      // Vertical guide line at edge.position
+      const minY = Math.min(dragging.y, other.y);
+      const maxY = Math.max(dragging.y + dragging.height, other.y + other.height);
+      guides.push({ axis: "x", position: edge.position, start: minY - 8, end: maxY + 8 });
+    } else {
+      // Horizontal guide line at edge.position
+      const minX = Math.min(dragging.x, other.x);
+      const maxX = Math.max(dragging.x + dragging.width, other.x + other.width);
+      guides.push({ axis: "y", position: edge.position, start: minX - 8, end: maxX + 8 });
+    }
+  }
+
+  return guides;
+}
+
 const MAGNETIC_RANGE = 12; // px snap distance
 const MAGNETIC_STRENGTH = 0.6;
 const EDGE_BOUNCE_DAMPING = 0.4;
