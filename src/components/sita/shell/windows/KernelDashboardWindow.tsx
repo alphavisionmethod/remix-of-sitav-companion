@@ -6,14 +6,14 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import {
   Cpu, HardDrive, Activity, Layers, Zap, Timer,
-  Shield, BarChart3, Clock, AlertTriangle,
+  Shield, Clock, AlertTriangle,
 } from "lucide-react";
 import {
   AppLayout,
-  VStack, HStack, Divider,
+  VStack, HStack,
 } from "@/lib/nova-sdk/ui/layout";
 import {
-  NovaText, NovaButton, NovaCard, NovaList,
+  NovaText, NovaButton, NovaCard,
   NovaSectionLabel, NovaBadge,
 } from "@/lib/nova-sdk/ui/components";
 import { APP_COMPONENTS } from "@/lib/design-system/app-window-system";
@@ -36,12 +36,7 @@ const COLORS = {
   idle:       { h: 0, s: 0, l: 45 } as NovaColor,
   memUsed:    { h: 265, s: 65, l: 55 } as NovaColor,
   memFree:    { h: 152, s: 55, l: 48 } as NovaColor,
-  memGuard:   { h: 38, s: 85, l: 58 } as NovaColor,
-  syscallOk:  { h: 152, s: 55, l: 48 } as NovaColor,
   syscallErr: { h: 0, s: 75, l: 55 } as NovaColor,
-  syscallDenied: { h: 38, s: 85, l: 58 } as NovaColor,
-  ring0:      { h: 0, s: 75, l: 55 } as NovaColor,
-  ring3:      { h: 210, s: 80, l: 55 } as NovaColor,
   ticks:      { h: 265, s: 65, l: 55 } as NovaColor,
   switches:   { h: 38, s: 85, l: 58 } as NovaColor,
 };
@@ -62,8 +57,6 @@ const TABS: { id: Tab; label: string; icon: typeof Cpu }[] = [
   { id: "syscalls",  label: "Syscalls",  icon: Zap },
 ];
 
-// ── History buffers ──────────────────────────────────────────
-
 const MAX_HISTORY = 60;
 
 function pushHistory(arr: number[], val: number): number[] {
@@ -78,24 +71,19 @@ export function KernelDashboardWindow() {
   const [tab, setTab] = useState<Tab>("scheduler");
   const [paused, setPaused] = useState(false);
 
-  // Scheduler state
   const [schedStats, setSchedStats] = useState<SchedulerStats | null>(null);
   const [schedEvents, setSchedEvents] = useState<readonly SchedulerEvent[]>([]);
   const [processes, setProcesses] = useState<Process[]>([]);
   const [tickHistory, setTickHistory] = useState<number[]>([]);
   const [switchHistory, setSwitchHistory] = useState<number[]>([]);
-  const [preemptHistory, setPreemptHistory] = useState<number[]>([]);
 
-  // Memory state
   const [memStats, setMemStats] = useState<MemoryStats | null>(null);
   const [memHistory, setMemHistory] = useState<number[]>([]);
 
-  // Syscall state
   const [sysStats, setSysStats] = useState<ReturnType<typeof getSyscallStats> | null>(null);
   const [sysLog, setSysLog] = useState<readonly SyscallLogEntry[]>([]);
   const [sysMetrics, setSysMetrics] = useState<SyscallTypeMetrics[]>([]);
 
-  // Polling
   useEffect(() => {
     if (paused) return;
     const iv = setInterval(() => {
@@ -105,7 +93,6 @@ export function KernelDashboardWindow() {
       setProcesses(ProcessTable.listProcesses().filter(p => p.state !== "terminated"));
       setTickHistory(prev => pushHistory(prev, ss.totalTicks));
       setSwitchHistory(prev => pushHistory(prev, ss.contextSwitchCount));
-      setPreemptHistory(prev => pushHistory(prev, ss.preemptionCount));
 
       const ms = MemoryManager.getStats();
       setMemStats(ms);
@@ -121,24 +108,23 @@ export function KernelDashboardWindow() {
   return (
     <AppLayout
       toolbar={
-        <HStack gap={1} className="w-full items-center px-2">
-          <HStack gap={0} className="flex-1">
+        <HStack spacing="tight" className="w-full items-center px-2">
+          <HStack spacing="none" className="flex-1">
             {TABS.map(t => (
               <button
                 key={t.id}
                 onClick={() => setTab(t.id)}
                 className={cn(
-                  APP_COMPONENTS.toolbar.segmentedButton,
-                  tab === t.id && APP_COMPONENTS.toolbar.segmentedButtonActive,
+                  APP_COMPONENTS.button.base,
+                  tab === t.id ? APP_COMPONENTS.button.primary : APP_COMPONENTS.button.ghost,
                 )}
               >
-                <t.icon size={13} />
+                <t.icon size={13} className="inline mr-1" />
                 <span className="text-[11px]">{t.label}</span>
               </button>
             ))}
           </HStack>
           <NovaButton
-            size="xs"
             variant={paused ? "primary" : "ghost"}
             onClick={() => setPaused(p => !p)}
           >
@@ -155,7 +141,6 @@ export function KernelDashboardWindow() {
             processes={processes}
             tickHistory={tickHistory}
             switchHistory={switchHistory}
-            preemptHistory={preemptHistory}
           />
         )}
         {tab === "memory" && memStats && (
@@ -174,16 +159,14 @@ export function KernelDashboardWindow() {
 // ═══════════════════════════════════════════════════════════════
 
 function SchedulerTab({
-  stats, events, processes, tickHistory, switchHistory, preemptHistory,
+  stats, events, processes, tickHistory, switchHistory,
 }: {
   stats: SchedulerStats;
   events: readonly SchedulerEvent[];
   processes: Process[];
   tickHistory: number[];
   switchHistory: number[];
-  preemptHistory: number[];
 }) {
-  // Delta series for chart (show rate, not cumulative)
   const tickRateSeries = useMemo((): ChartSeries[] => {
     const deltas = tickHistory.map((v, i) => i > 0 ? v - tickHistory[i - 1] : 0);
     const switchDeltas = switchHistory.map((v, i) => i > 0 ? v - switchHistory[i - 1] : 0);
@@ -216,22 +199,19 @@ function SchedulerTab({
   }, [stats]);
 
   return (
-    <VStack gap={3}>
-      {/* Stats row */}
+    <VStack spacing="snug">
       <div className="grid grid-cols-4 gap-2">
         <StatCard icon={Timer} label="Ticks" value={stats.totalTicks.toLocaleString()} />
         <StatCard icon={Activity} label="Switches" value={stats.contextSwitchCount.toLocaleString()} />
         <StatCard icon={Zap} label="Preemptions" value={stats.preemptionCount.toLocaleString()} />
-        <StatCard icon={Shield} label="Ring Transitions" value={stats.ringTransitionCount.toLocaleString()} />
+        <StatCard icon={Shield} label="Ring Trans" value={stats.ringTransitionCount.toLocaleString()} />
       </div>
 
-      {/* Live tick rate chart */}
       <NovaCard className="p-2">
         <NovaSectionLabel>Tick Rate & Context Switches</NovaSectionLabel>
         <NovaCanvasChart series={tickRateSeries} height={120} yUnit="" gridLines={3} />
       </NovaCard>
 
-      {/* Band distribution + Ready queue depths */}
       <div className="grid grid-cols-2 gap-2">
         <NovaCard className="p-2">
           <NovaSectionLabel>Band Distribution</NovaSectionLabel>
@@ -243,7 +223,6 @@ function SchedulerTab({
         </NovaCard>
       </div>
 
-      {/* Current process + CPU context */}
       <NovaCard className="p-2">
         <NovaSectionLabel>Running Process</NovaSectionLabel>
         {stats.currentPid !== null ? (
@@ -255,9 +234,9 @@ function SchedulerTab({
                 <span className="text-muted-foreground">PID</span><span>{proc.pid}</span>
                 <span className="text-muted-foreground">App</span><span>{proc.appId}</span>
                 <span className="text-muted-foreground">Priority</span>
-                <NovaBadge variant="outline" size="xs">{proc.priority}</NovaBadge>
+                <NovaBadge>{proc.priority}</NovaBadge>
                 <span className="text-muted-foreground">Ring</span>
-                <NovaBadge variant={proc.privilegeLevel === 0 ? "destructive" : "default"} size="xs">
+                <NovaBadge variant={proc.privilegeLevel === 0 ? "danger" : "default"}>
                   Ring {proc.privilegeLevel}
                 </NovaBadge>
                 <span className="text-muted-foreground">RIP</span>
@@ -268,7 +247,7 @@ function SchedulerTab({
                 <span>0x{proc.context.rflags.toString(16).toUpperCase()}</span>
                 <span className="text-muted-foreground">CS</span>
                 <span>0x{proc.context.cs.toString(16)}</span>
-                <span className="text-muted-foreground">Quantum Left</span>
+                <span className="text-muted-foreground">Quantum</span>
                 <span>{proc.quantumRemaining}/{proc.quantumSize}</span>
               </div>
             );
@@ -278,7 +257,6 @@ function SchedulerTab({
         )}
       </NovaCard>
 
-      {/* Process table */}
       <NovaCard className="p-2">
         <NovaSectionLabel>Process Table ({processes.length})</NovaSectionLabel>
         <div className="max-h-[140px] overflow-y-auto">
@@ -304,9 +282,9 @@ function SchedulerTab({
                   <td className="py-0.5 px-1">
                     <span className={cn(
                       "inline-block w-1.5 h-1.5 rounded-full mr-1",
-                      p.state === "running" ? "bg-green-500" :
-                      p.state === "ready" ? "bg-blue-500" :
-                      p.state === "blocked" ? "bg-yellow-500" : "bg-muted-foreground/30"
+                      p.state === "running" ? "bg-[hsl(152_55%_48%)]" :
+                      p.state === "ready" ? "bg-[hsl(210_80%_55%)]" :
+                      p.state === "blocked" ? "bg-[hsl(38_85%_58%)]" : "bg-muted-foreground/30"
                     )} />
                     {p.state}
                   </td>
@@ -320,16 +298,13 @@ function SchedulerTab({
         </div>
       </NovaCard>
 
-      {/* Event log */}
       <NovaCard className="p-2">
         <NovaSectionLabel>Event Log (last 30)</NovaSectionLabel>
         <div className="max-h-[120px] overflow-y-auto space-y-0.5">
           {[...events].reverse().map((ev, i) => (
             <div key={i} className="flex items-start gap-2 text-[10px] font-mono py-0.5">
               <span className="text-muted-foreground shrink-0 w-[50px]">T{ev.tick}</span>
-              <NovaBadge variant="outline" size="xs" className="shrink-0 text-[9px]">
-                {ev.type}
-              </NovaBadge>
+              <NovaBadge className="shrink-0 text-[9px]">{ev.type}</NovaBadge>
               <span className="text-muted-foreground truncate">{ev.detail}</span>
             </div>
           ))}
@@ -368,7 +343,6 @@ function MemoryTab({ stats, history }: { stats: MemoryStats; history: number[] }
     },
   ], [stats]);
 
-  // Per-process memory
   const procMemory = useMemo(() => {
     return procs.map(p => {
       const usage = MemoryManager.getUsage(p.pid);
@@ -376,7 +350,6 @@ function MemoryTab({ stats, history }: { stats: MemoryStats; history: number[] }
     }).filter(m => m.pages > 0).sort((a, b) => b.pages - a.pages);
   }, [procs]);
 
-  // Address spaces
   const addressSpaces = useMemo(() => {
     return procs.map(p => {
       const as = MemoryManager.getAddressSpace(p.pid);
@@ -385,45 +358,40 @@ function MemoryTab({ stats, history }: { stats: MemoryStats; history: number[] }
   }, [procs]);
 
   return (
-    <VStack gap={3}>
-      {/* Stats */}
+    <VStack spacing="snug">
       <div className="grid grid-cols-4 gap-2">
         <StatCard icon={HardDrive} label="Total" value={`${((stats.totalPages * PAGE_SIZE) / (1024 * 1024)).toFixed(0)} MB`} />
         <StatCard icon={Layers} label="Allocated" value={`${stats.allocatedPages.toLocaleString()} pg`} />
-        <StatCard icon={Activity} label="Utilization" value={`${stats.utilizationPercent.toFixed(1)}%`}
-          variant={pressure === "critical" ? "destructive" : pressure === "warning" ? "warning" : "default"} />
+        <StatCard icon={Activity} label="Usage" value={`${stats.utilizationPercent.toFixed(1)}%`}
+          variant={pressure === "critical" ? "danger" : pressure === "warning" ? "warning" : "default"} />
         <StatCard icon={Shield} label="CR3 Switches" value={stats.pageTableSwitches.toLocaleString()} />
       </div>
 
-      {/* Pressure indicator */}
       {pressure !== "normal" && (
         <div className={cn(
           "flex items-center gap-2 px-3 py-1.5 rounded-lg text-[11px] font-medium",
-          pressure === "critical" ? "bg-destructive/15 text-destructive" : "bg-yellow-500/15 text-yellow-600"
+          pressure === "critical" ? "bg-destructive/15 text-destructive" : "bg-[hsl(38_85%_58%/0.15)] text-[hsl(38_85%_40%)]"
         )}>
           <AlertTriangle size={13} />
           Memory pressure: {pressure.toUpperCase()} — {stats.freePages.toLocaleString()} pages free
         </div>
       )}
 
-      {/* Utilization chart */}
       <NovaCard className="p-2">
         <NovaSectionLabel>Memory Utilization Over Time</NovaSectionLabel>
         <NovaCanvasChart series={utilizationSeries} height={120} maxY={100} yUnit="%" gridLines={4} />
       </NovaCard>
 
-      {/* Allocation bars */}
       <NovaCard className="p-2">
         <NovaSectionLabel>Allocation Overview</NovaSectionLabel>
         <NovaCanvasBars bars={memBars} barHeight={20} gap={6} />
         <div className="flex justify-between text-[10px] text-muted-foreground mt-1 font-mono">
           <span>{stats.regions} regions</span>
           <span>{stats.guardPages} guard pages</span>
-          <span>{stats.addressSpaces} address spaces</span>
+          <span>{stats.addressSpaces} addr spaces</span>
         </div>
       </NovaCard>
 
-      {/* Per-process memory */}
       <NovaCard className="p-2">
         <NovaSectionLabel>Per-Process Memory</NovaSectionLabel>
         <div className="max-h-[130px] overflow-y-auto">
@@ -453,7 +421,6 @@ function MemoryTab({ stats, history }: { stats: MemoryStats; history: number[] }
         </div>
       </NovaCard>
 
-      {/* Page tables / address spaces */}
       <NovaCard className="p-2">
         <NovaSectionLabel>Page Tables (Address Spaces)</NovaSectionLabel>
         <div className="max-h-[160px] overflow-y-auto space-y-2">
@@ -512,26 +479,23 @@ function SyscallTab({
   metrics: SyscallTypeMetrics[];
 }) {
   return (
-    <VStack gap={3}>
-      {/* Stats row */}
+    <VStack spacing="snug">
       <div className="grid grid-cols-4 gap-2">
         <StatCard icon={Zap} label="Total Calls" value={stats.total.toLocaleString()} />
         <StatCard icon={Shield} label="Denied" value={stats.denied.toLocaleString()}
           variant={stats.denied > 0 ? "warning" : "default"} />
         <StatCard icon={AlertTriangle} label="Errors" value={stats.errors.toLocaleString()}
-          variant={stats.errors > 0 ? "destructive" : "default"} />
+          variant={stats.errors > 0 ? "danger" : "default"} />
         <StatCard icon={Clock} label="Avg Latency" value={`${stats.avgMs}ms`} />
       </div>
 
-      {/* Secondary stats */}
       <div className="grid grid-cols-4 gap-2">
         <StatCard icon={Activity} label="Rate Limited" value={stats.rateLimited.toLocaleString()} />
         <StatCard icon={Shield} label="Violations" value={stats.violations.toLocaleString()} />
-        <StatCard icon={Layers} label="Mutex Blocked" value={stats.mutexBlocked.toLocaleString()} />
-        <StatCard icon={Zap} label="Ring Transitions" value={stats.ringTransitions.toLocaleString()} />
+        <StatCard icon={Layers} label="Mutex Block" value={stats.mutexBlocked.toLocaleString()} />
+        <StatCard icon={Zap} label="Ring Trans" value={stats.ringTransitions.toLocaleString()} />
       </div>
 
-      {/* Per-syscall metrics table */}
       <NovaCard className="p-2">
         <NovaSectionLabel>Per-Syscall Latency Metrics</NovaSectionLabel>
         <div className="max-h-[160px] overflow-y-auto">
@@ -555,11 +519,10 @@ function SyscallTab({
                   <td className="py-0.5 px-1 text-right">{m.p95Ms}ms</td>
                   <td className="py-0.5 px-1 text-right">{m.p99Ms}ms</td>
                   <td className="py-0.5 px-1 text-center">
-                    {m.blocking ? (
-                      <span className="inline-block w-1.5 h-1.5 rounded-full bg-yellow-500" />
-                    ) : (
-                      <span className="inline-block w-1.5 h-1.5 rounded-full bg-green-500" />
-                    )}
+                    <span className={cn(
+                      "inline-block w-1.5 h-1.5 rounded-full",
+                      m.blocking ? "bg-[hsl(38_85%_58%)]" : "bg-[hsl(152_55%_48%)]"
+                    )} />
                   </td>
                 </tr>
               ))}
@@ -571,7 +534,6 @@ function SyscallTab({
         </div>
       </NovaCard>
 
-      {/* Audit log */}
       <NovaCard className="p-2">
         <NovaSectionLabel>Audit Log (last 30)</NovaSectionLabel>
         <div className="max-h-[160px] overflow-y-auto space-y-0.5">
@@ -579,18 +541,18 @@ function SyscallTab({
             <div key={i} className="flex items-center gap-2 text-[10px] font-mono py-0.5">
               <span className={cn(
                 "shrink-0 w-1.5 h-1.5 rounded-full",
-                entry.result === "ok" ? "bg-green-500" :
-                entry.result === "denied" ? "bg-yellow-500" :
-                "bg-red-500"
+                entry.result === "ok" ? "bg-[hsl(152_55%_48%)]" :
+                entry.result === "denied" ? "bg-[hsl(38_85%_58%)]" :
+                "bg-destructive"
               )} />
               <span className="text-muted-foreground shrink-0 w-[28px]">P{entry.pid}</span>
-              <NovaBadge variant="outline" size="xs" className="shrink-0 text-[9px]">
-                {Intl.NumberFormat("en", { notation: "compact" }).format(entry.syscall)}
+              <NovaBadge className="shrink-0 text-[9px]">
+                {entry.syscall}
               </NovaBadge>
               <span className="text-muted-foreground">{entry.result}</span>
               <span className="text-muted-foreground/60">{entry.durationMs.toFixed(2)}ms</span>
               {entry.ringTransition && (
-                <NovaBadge variant="outline" size="xs" className="text-[8px]">Ring↕</NovaBadge>
+                <NovaBadge variant="info" className="text-[8px]">Ring↕</NovaBadge>
               )}
             </div>
           ))}
@@ -611,13 +573,13 @@ function StatCard({
   icon: typeof Cpu;
   label: string;
   value: string;
-  variant?: "default" | "warning" | "destructive";
+  variant?: "default" | "warning" | "danger";
 }) {
   return (
     <NovaCard className={cn(
       "p-2 flex flex-col items-center gap-0.5",
-      variant === "destructive" && "border-destructive/30 bg-destructive/5",
-      variant === "warning" && "border-yellow-500/30 bg-yellow-500/5",
+      variant === "danger" && "border-destructive/30 bg-destructive/5",
+      variant === "warning" && "border-[hsl(38_85%_58%/0.3)] bg-[hsl(38_85%_58%/0.05)]",
     )}>
       <Icon size={13} className="text-muted-foreground" />
       <span className="text-[13px] font-semibold tabular-nums">{value}</span>
