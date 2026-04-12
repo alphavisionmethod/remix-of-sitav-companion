@@ -27,6 +27,8 @@ export interface AlignmentGuide {
   start: number;
   /** End of the guide line (max coordinate on the perpendicular axis) */
   end: number;
+  /** Distance in px between the two snapping edges (0 when perfectly aligned) */
+  distance: number;
 }
 
 /**
@@ -53,12 +55,29 @@ export function computeAlignmentGuides(
       // Vertical guide line at edge.position
       const minY = Math.min(dragging.y, other.y);
       const maxY = Math.max(dragging.y + dragging.height, other.y + other.height);
-      guides.push({ axis: "x", position: edge.position, start: minY - 8, end: maxY + 8 });
+      // Compute horizontal gap between the two windows at this edge
+      const dragRight = dragging.x + dragging.width;
+      const otherRight = other.x + other.width;
+      const gap = Math.min(
+        Math.abs(dragging.x - otherRight),
+        Math.abs(dragRight - other.x),
+        Math.abs(dragging.x - other.x),
+        Math.abs(dragRight - otherRight)
+      );
+      guides.push({ axis: "x", position: edge.position, start: minY - 8, end: maxY + 8, distance: Math.round(gap) });
     } else {
       // Horizontal guide line at edge.position
       const minX = Math.min(dragging.x, other.x);
       const maxX = Math.max(dragging.x + dragging.width, other.x + other.width);
-      guides.push({ axis: "y", position: edge.position, start: minX - 8, end: maxX + 8 });
+      const dragBottom = dragging.y + dragging.height;
+      const otherBottom = other.y + other.height;
+      const gap = Math.min(
+        Math.abs(dragging.y - otherBottom),
+        Math.abs(dragBottom - other.y),
+        Math.abs(dragging.y - other.y),
+        Math.abs(dragBottom - otherBottom)
+      );
+      guides.push({ axis: "y", position: edge.position, start: minX - 8, end: maxX + 8, distance: Math.round(gap) });
     }
   }
 
