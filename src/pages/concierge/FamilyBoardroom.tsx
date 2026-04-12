@@ -1,6 +1,7 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs, RiskCard } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
+import { GlassCard } from "@/components/sita/PremiumPageComponents";
 import { BoardroomSection, OverloadCard, HouseholdAdvisor } from "@/components/sita/HouseholdComponents";
 import { useState } from "react";
 import { motion } from "framer-motion";
