@@ -483,12 +483,214 @@ const BandBar = ({ label, cpuPercent, processes, quantumMs, color, onClick }: {
   </div>
 );
 
+// ── Drill-Down: Scheduler Detail ─────────────────────────────
+
+const EVENT_TYPE_COLORS: Record<string, string> = {
+  "context-switch": "text-blue-400",
+  "preempt": "text-amber-400",
+  "block": "text-red-400",
+  "wake": "text-emerald-400",
+  "sleep": "text-purple-400",
+  "boost": "text-orange-400",
+  "quantum-expire": "text-amber-300",
+  "idle": "text-muted-foreground",
+  "spawn": "text-emerald-300",
+  "kill": "text-red-300",
+};
+
+const EVENT_TYPE_ICONS: Record<string, typeof Cpu> = {
+  "context-switch": GitBranch,
+  "preempt": Timer,
+  "block": Pause,
+  "wake": Play,
+  "sleep": Clock,
+  "boost": Zap,
+  "spawn": Play,
+  "kill": X,
+};
+
+function SchedulerDetailPanel({ schedStats, events, currentContext, blockedProcesses, readyProcesses, onBack }: {
+  schedStats: ReturnType<typeof Scheduler.getStats>;
+  events: readonly SchedulerEvent[];
+  currentContext: ReturnType<typeof Scheduler.getCurrentContext>;
+  blockedProcesses: Process[];
+  readyProcesses: Process[];
+  onBack: () => void;
+}) {
+  const currentProcess = schedStats.currentPid !== null ? ProcessTable.getProcess(schedStats.currentPid) : null;
+
+  return (
+    <motion.div {...slideIn}>
+      <Card className="border-border/40 bg-card/80 backdrop-blur-sm">
+        <CardHeader className="pb-2">
+          <div className="flex items-center gap-2">
+            <button onClick={onBack} className="rounded-lg p-1.5 hover:bg-muted/30 transition-colors">
+              <ArrowLeft className="h-4 w-4 text-muted-foreground" />
+            </button>
+            <CardTitle className="text-sm font-medium flex items-center gap-2">
+              <Cpu className="h-4 w-4 text-primary" />
+              Scheduler Detail — Context Switching & Queues
+            </CardTitle>
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-1" />
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {/* Current CPU State */}
+          <div>
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">Current Process on CPU</p>
+            {currentProcess ? (
+              <div className="rounded-lg bg-muted/15 p-3 space-y-2">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs font-mono font-bold text-foreground">PID {currentProcess.pid}</span>
+                    <Badge variant="outline" className="text-[9px]">{currentProcess.priority}</Badge>
+                    <span className="text-xs text-muted-foreground">{currentProcess.appId}</span>
+                  </div>
+                  <Badge className="bg-emerald-500/20 text-emerald-400 border-emerald-500/30 text-[9px]">RUNNING</Badge>
+                </div>
+                <div className="grid grid-cols-3 gap-2 text-[10px]">
+                  <div className="bg-muted/20 rounded px-2 py-1">
+                    <span className="text-muted-foreground">Quantum: </span>
+                    <span className="font-mono text-foreground">{currentProcess.quantumRemaining}/{currentProcess.quantumSize}</span>
+                  </div>
+                  <div className="bg-muted/20 rounded px-2 py-1">
+                    <span className="text-muted-foreground">Ticks: </span>
+                    <span className="font-mono text-foreground">{currentProcess.cpuTicks}</span>
+                  </div>
+                  <div className="bg-muted/20 rounded px-2 py-1">
+                    <span className="text-muted-foreground">Switches: </span>
+                    <span className="font-mono text-foreground">{currentProcess.contextSwitches}</span>
+                  </div>
+                </div>
+                {/* CPU Context (registers) */}
+                {currentContext && (
+                  <div className="bg-muted/10 rounded-lg p-2 mt-1">
+                    <p className="text-[9px] uppercase tracking-wider text-muted-foreground mb-1">CPU Registers</p>
+                    <div className="grid grid-cols-4 gap-1 text-[9px] font-mono">
+                      <span className="text-blue-400">RIP: 0x{currentContext.rip.toString(16).padStart(8, '0')}</span>
+                      <span className="text-emerald-400">RSP: 0x{currentContext.rsp.toString(16).padStart(8, '0')}</span>
+                      <span className="text-purple-400">RBP: 0x{currentContext.rbp.toString(16).padStart(8, '0')}</span>
+                      <span className="text-amber-400">RFLAGS: 0x{currentContext.rflags.toString(16)}</span>
+                    </div>
+                    <div className="grid grid-cols-8 gap-0.5 mt-1">
+                      {currentContext.registers.slice(0, 16).map((r, i) => (
+                        <span key={i} className="text-[8px] font-mono text-muted-foreground text-center bg-muted/15 rounded px-0.5">
+                          r{i}: {r}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="rounded-lg bg-muted/15 p-3 text-center text-xs text-muted-foreground">
+                <Clock className="h-4 w-4 mx-auto mb-1 opacity-40" />
+                CPU Idle — no process scheduled
+              </div>
+            )}
+          </div>
+
+          {/* Stats Grid */}
+          <div className="grid grid-cols-4 gap-2">
+            {[
+              { label: "Context Switches", value: schedStats.contextSwitchCount, color: "text-blue-400" },
+              { label: "Preemptions", value: schedStats.preemptionCount, color: "text-amber-400" },
+              { label: "Idle Ticks", value: schedStats.idleTicks, color: "text-muted-foreground" },
+              { label: "Boosts", value: schedStats.boostCount, color: "text-orange-400" },
+            ].map(s => (
+              <div key={s.label} className="text-center py-2 rounded-lg bg-muted/20">
+                <p className={cn("text-sm font-semibold tabular-nums", s.color)}>{s.value}</p>
+                <p className="text-[9px] text-muted-foreground">{s.label}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Ready Queue Depths */}
+          <div>
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">Ready Queue Depths</p>
+            <div className="flex gap-1.5">
+              {(["RT-Critical", "RT-Normal", "Interactive", "Batch", "Idle"] as NovaPriorityBand[]).map((band, i) => {
+                const depth = schedStats.readyQueueDepths[band];
+                return (
+                  <div key={band} className="flex-1 text-center">
+                    <div className="h-12 rounded bg-muted/15 relative overflow-hidden flex items-end justify-center">
+                      <motion.div
+                        initial={{ height: 0 }}
+                        animate={{ height: `${Math.min(depth * 20, 100)}%` }}
+                        className={cn("w-full rounded-t", BAND_COLORS[i])}
+                      />
+                      <span className="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-foreground">
+                        {depth}
+                      </span>
+                    </div>
+                    <p className="text-[8px] text-muted-foreground mt-0.5 truncate">{band.replace("RT-", "RT")}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Blocked Queue */}
+          <div>
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">
+              Blocked Processes ({schedStats.blockedCount})
+            </p>
+            {blockedProcesses.length === 0 ? (
+              <p className="text-[10px] text-muted-foreground text-center py-2">No blocked processes</p>
+            ) : (
+              <div className="space-y-1">
+                {blockedProcesses.slice(0, 8).map(p => (
+                  <div key={p.pid} className="flex items-center gap-2 px-2 py-1.5 rounded bg-muted/10 text-[10px]">
+                    <span className="font-mono font-bold text-foreground w-8">PID {p.pid}</span>
+                    <span className="text-muted-foreground flex-1 truncate">{p.appId}</span>
+                    <Badge variant="outline" className="text-[8px] px-1 py-0 border-amber-500/30 text-amber-400">{p.waitReason}</Badge>
+                    {p.wakeAt && (
+                      <span className="text-[8px] text-muted-foreground font-mono">
+                        wake: {Math.max(0, p.wakeAt - Date.now())}ms
+                      </span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Scheduler Event Timeline */}
+          <div>
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">
+              Scheduler Events (Last {events.length})
+            </p>
+            <div className="space-y-0.5 max-h-48 overflow-y-auto">
+              {events.length === 0 ? (
+                <p className="text-[10px] text-muted-foreground text-center py-2">No events yet</p>
+              ) : (
+                [...events].reverse().map((evt, i) => {
+                  const Icon = EVENT_TYPE_ICONS[evt.type] || Activity;
+                  return (
+                    <div key={i} className="flex items-center gap-2 px-2 py-1 rounded hover:bg-muted/10 text-[9px]">
+                      <Icon className={cn("h-3 w-3 shrink-0", EVENT_TYPE_COLORS[evt.type] || "text-muted-foreground")} />
+                      <span className={cn("font-semibold uppercase w-20 shrink-0", EVENT_TYPE_COLORS[evt.type])}>{evt.type}</span>
+                      <span className="text-muted-foreground font-mono w-12 shrink-0">t={evt.tick}</span>
+                      <span className="text-foreground/70 flex-1 truncate">{evt.detail}</span>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </motion.div>
+  );
+}
+
 // ── Main Dashboard ───────────────────────────────────────────
 
 type DrillDown =
   | { type: "band"; band: NovaPriorityBand }
   | { type: "mount"; mountPath: string }
   | { type: "ring"; ringIndex: number }
+  | { type: "scheduler" }
   | null;
 
 const KernelDashboard = () => {
