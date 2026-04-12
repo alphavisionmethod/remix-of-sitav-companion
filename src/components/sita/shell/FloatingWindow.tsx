@@ -343,6 +343,7 @@ export function FloatingWindow({
       setSize({ width: rect.width, height: rect.height });
       setSnappedTo(snapZone);
       SoundEngine.snap(rect.x + rect.width / 2);
+      onPositionChange?.({ x: rect.x, y: rect.y }, rect.width);
     } else {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
@@ -361,6 +362,7 @@ export function FloatingWindow({
       }
 
       runInertia();
+      onPositionChange?.(currentPos.current, size.width);
     }
     setSnapZone(null);
   }, [snapZone, size.width, size.height, runInertia, windowId]);
