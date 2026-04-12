@@ -2,15 +2,24 @@ import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { Stethoscope, FileText, Car, CheckCircle, Clock } from "lucide-react";
 
+export interface AppointmentPrepChecklistItem {
+  id: string;
+  label: string;
+  done: boolean;
+}
+
 export interface AppointmentPrep {
   id: string;
   title: string;
   who: string;
   when: string;
-  prepItems: string[];
+  provider?: string;
+  prepChecklist?: AppointmentPrepChecklistItem[];
+  prepItems?: string[];
   docsNeeded: string[];
   transportTime?: string;
-  confirmed: boolean;
+  confirmed?: boolean;
+  status?: "confirmed" | "unconfirmed" | "prep-needed";
 }
 
 export const AppointmentPrepCard = ({ appointment, className }: { appointment: AppointmentPrep; className?: string }) => {
