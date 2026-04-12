@@ -110,14 +110,14 @@ function DebateSide({ advisor, side, delay }: { advisor: AdvisorPosition; side: 
       {/* Position card */}
       <motion.div
         className="rounded-lg p-4 border-l-[3px]"
-        style={{
-          background: `${advisor.color}08`,
-          borderLeftColor: advisor.color,
-        }}
         initial={{ scaleY: 0 }}
         animate={{ scaleY: 1 }}
         transition={{ delay: delay + 0.3, duration: 0.3 }}
-        style={{ transformOrigin: "top" }}
+        style={{
+          background: `${advisor.color}08`,
+          borderLeftColor: advisor.color,
+          transformOrigin: "top",
+        }}
       >
         <p className="text-[12px] font-semibold text-[hsl(0_0%_85%)]">{advisor.position}</p>
         <p className="text-[11px] text-[hsl(0_0%_50%)] mt-2 leading-relaxed">{advisor.reasoning}</p>
