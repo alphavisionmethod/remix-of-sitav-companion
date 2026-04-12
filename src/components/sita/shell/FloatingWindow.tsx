@@ -155,7 +155,7 @@ export function FloatingWindow({
         opacity: 0,
         filter: "blur(8px)",
       }
-    : { ...NOVA_MOTION.window.enter.initial, scale: 0.85, opacity: 0, filter: "blur(6px)" };
+    : { ...NOVA_MOTION.window.enter.initial, scale: 0.96, opacity: 0, filter: "blur(6px)" };
 
   const morphAnimate = originRect
     ? { x: 0, y: 0, scale: 1, opacity: 1, filter: "blur(0px)" }
@@ -561,7 +561,7 @@ export function FloatingWindow({
         }}
         className={cn(
           "absolute overflow-hidden",
-          "backdrop-blur-2xl transition-[box-shadow,border-color,filter] duration-200",
+          "backdrop-blur-2xl transition-[box-shadow,border-color,filter] duration-[120ms]",
           isFocused
             ? cn(
                 "bg-[hsl(0_0%_100%/0.72)] dark:bg-[hsl(0_0%_0%/0.62)]",
