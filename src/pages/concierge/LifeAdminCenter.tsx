@@ -4,7 +4,7 @@ import { GlassCard } from "@/components/sita/PremiumPageComponents";
 import { SitaPageHeader } from "@/components/sita/SitaCard";
 import { SitaTabs } from "@/components/sita/SitaComponents";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { LifeAdminQueueCard, ConciergeAdvisorInsightCard } from "@/components/concierge";
+import { LifeAdminQueueCard, ConciergeAdvisorInsightCard, ConciergePageWrapper } from "@/components/concierge";
 import type { AdminQueueItem } from "@/components/concierge";
 import {
   FileText, Calendar, Wrench, RefreshCw, Clock, AlertCircle, CheckCircle,
