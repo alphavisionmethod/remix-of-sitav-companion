@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // Nova SDK — React Context Provider
 // Provides SDK access to all apps via useNovaSDK()
-// Boots kernel subsystems on mount
+// Boots kernel subsystems on mount, wires sound hooks
 // ═══════════════════════════════════════════════════════════════
 
 import { createContext, useContext, useMemo, useEffect, useRef } from "react";
@@ -35,13 +35,30 @@ export function NovaSDKProvider({ children }: { children: React.ReactNode }) {
     if (initialized.current) return;
     initialized.current = true;
 
-    // Boot kernel subsystems
+    // Boot kernel subsystems (now includes HAL + extensions)
     NovaKernel.boot();
 
     // Wire sound effects into bridge
     NovaBridge.on("sound:play", (payload) => {
       if (payload?.type === "click") SoundEngine.click();
     });
+
+    // Wire window sound hooks
+    NovaBridge.on("window:create", (payload) => {
+      SoundEngine.windowOpen(payload?.x);
+    });
+    NovaBridge.on("window:close", (payload) => {
+      SoundEngine.windowClose(payload?.x);
+    });
+
+    // Wire menu sound hooks
+    NovaBridge.on("sound:menuOpen", () => SoundEngine.menuOpen());
+    NovaBridge.on("sound:menuClose", () => SoundEngine.menuClose());
+    NovaBridge.on("sound:tabSwitch", (payload) => SoundEngine.tabSwitch(payload?.x));
+    NovaBridge.on("sound:toggle", (payload) => SoundEngine.toggle(payload?.x));
+    NovaBridge.on("sound:success", (payload) => SoundEngine.success(payload?.x));
+    NovaBridge.on("sound:warning", (payload) => SoundEngine.warning(payload?.x));
+    NovaBridge.on("sound:dragDrop", (payload) => SoundEngine.dragDrop(payload?.x));
 
     // Wire file service handlers
     const defaultFS = new NovaFS(["files.read", "files.write"]);
