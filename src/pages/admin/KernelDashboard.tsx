@@ -1273,6 +1273,7 @@ type DrillDown =
   | { type: "power" }
   | { type: "privilege" }
   | { type: "wayland" }
+  | { type: "service"; serviceId: string }
   | null;
 
 const KernelDashboard = () => {
