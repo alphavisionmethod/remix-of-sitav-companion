@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Kernel Dashboard (Interactive + Live Data)
 // Admin visualization with drill-downs into scheduler, memory,
-// filesystem & security rings — connected to real kernel instances
+// filesystem, security rings, display server & power management
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useMemo, useEffect, useCallback } from "react";
@@ -13,7 +13,9 @@ import {
   Cpu, MemoryStick, HardDrive, Shield, Activity, Layers,
   Zap, Clock, Lock, Server, Database, AlertTriangle, CheckCircle,
   RefreshCw, Terminal, ChevronRight, ArrowLeft, X, Eye,
-  FileText, Folder, Info, Play, Pause, Timer, GitBranch
+  FileText, Folder, Info, Play, Pause, Timer, GitBranch,
+  Monitor, Battery, BatteryCharging, Thermometer, Gauge,
+  Sun, Moon, Power, Wifi
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PriorityBand as KernelPriorityBand, BAND_CONFIG } from "@/lib/core-services/kernel/process-scheduler";
@@ -22,6 +24,7 @@ import { ProcessTable, type Process, type PriorityBand as NovaPriorityBand } fro
 import { MemoryManager } from "@/lib/nova-sdk/kernel/memory-manager";
 import { Scheduler, type SchedulerEvent } from "@/lib/nova-sdk/kernel/scheduler";
 import { Compositor } from "@/lib/nova-sdk/kernel/compositor";
+import { PowerManager, type PowerStats, type CpuGovernor, type ThermalZoneState } from "@/lib/nova-sdk/kernel/power-manager";
 
 // ── Animation Variants ───────────────────────────────────────
 
@@ -91,6 +94,13 @@ const fsStatusColor = {
   critical: "text-red-400",
 };
 
+const THERMAL_COLORS: Record<ThermalZoneState, string> = {
+  normal: "text-emerald-400",
+  warm: "text-amber-400",
+  hot: "text-orange-400",
+  critical: "text-red-400",
+};
+
 // ── Live data hook ───────────────────────────────────────────
 
 function useKernelMetrics(refreshMs = 2000) {
@@ -104,12 +114,13 @@ function useKernelMetrics(refreshMs = 2000) {
   const memStats = useMemo(() => MemoryManager.getStats(), [tick]);
   const schedStats = useMemo(() => Scheduler.getStats(), [tick]);
   const compStats = useMemo(() => Compositor.getStats(), [tick]);
+  const powerStats = useMemo(() => PowerManager.getStats(), [tick]);
   const schedulerEvents = useMemo(() => Scheduler.getEventLog(20), [tick]);
   const currentContext = useMemo(() => Scheduler.getCurrentContext(), [tick]);
   const blockedProcesses = useMemo(() => ProcessTable.listBlocked(), [tick]);
   const readyProcesses = useMemo(() => ProcessTable.listReady(), [tick]);
+  const compositorSurfaces = useMemo(() => Compositor.listSurfaces(), [tick]);
 
-  // Derive scheduler band distribution from real processes
   const bandDistribution = useMemo(() => {
     const bands: Record<string, { count: number; cpuPercent: number }> = {};
     const allBands: NovaPriorityBand[] = ["RT-Critical", "RT-Normal", "Interactive", "Batch", "Idle"];
@@ -127,7 +138,7 @@ function useKernelMetrics(refreshMs = 2000) {
     return bands;
   }, [processes]);
 
-  return { processes, memStats, schedStats, compStats, bandDistribution, tick, schedulerEvents, currentContext, blockedProcesses, readyProcesses };
+  return { processes, memStats, schedStats, compStats, powerStats, bandDistribution, tick, schedulerEvents, currentContext, blockedProcesses, readyProcesses, compositorSurfaces };
 }
 
 // ── Subcomponents ────────────────────────────────────────────
@@ -190,9 +201,7 @@ function BandDrillDown({ band, processes, onBack }: {
         </CardHeader>
         <CardContent>
           {filtered.length === 0 ? (
-            <div className="py-8 text-center text-sm text-muted-foreground">
-              No active processes in this band
-            </div>
+            <div className="py-8 text-center text-sm text-muted-foreground">No active processes in this band</div>
           ) : (
             <div className="space-y-1.5">
               {filtered.map(p => (
@@ -206,9 +215,7 @@ function BandDrillDown({ band, processes, onBack }: {
                       Windows: {p.windowIds.length} · Memory: {Math.round(p.memoryUsed / 1024)}KB · Ticks: {p.cpuTicks}
                     </p>
                   </div>
-                  <span className={cn("text-[10px] font-semibold uppercase", stateColors[p.state] || "text-muted-foreground")}>
-                    {p.state}
-                  </span>
+                  <span className={cn("text-[10px] font-semibold uppercase", stateColors[p.state] || "text-muted-foreground")}>{p.state}</span>
                   <div className="w-1.5 h-1.5 rounded-full" style={{
                     background: p.state === "running" ? "hsl(150 60% 45%)" : p.state === "ready" ? "hsl(210 80% 60%)" : "hsl(0 0% 40%)",
                   }} />
@@ -216,8 +223,6 @@ function BandDrillDown({ band, processes, onBack }: {
               ))}
             </div>
           )}
-
-          {/* Summary */}
           <div className="mt-4 pt-3 border-t border-border/30 grid grid-cols-3 gap-3">
             {[
               { label: "Total Memory", value: `${Math.round(filtered.reduce((s, p) => s + p.memoryUsed, 0) / 1024)}KB` },
@@ -244,7 +249,6 @@ function MountDrillDown({ mount, onBack }: {
 }) {
   const { inodes } = mount;
   const inodePercent = inodes.total > 0 ? Math.round((inodes.used / inodes.total) * 100) : 0;
-
   const inodeBreakdown = [
     { label: "Regular Files", value: inodes.files, icon: FileText, color: "text-blue-400" },
     { label: "Directories", value: inodes.dirs, icon: Folder, color: "text-emerald-400" },
@@ -264,13 +268,10 @@ function MountDrillDown({ mount, onBack }: {
               <HardDrive className="h-4 w-4 text-emerald-400" />
               <span className="font-mono">{mount.path}</span>
             </CardTitle>
-            <Badge variant="outline" className={cn("ml-auto", fsStatusColor[mount.status])}>
-              {mount.status}
-            </Badge>
+            <Badge variant="outline" className={cn("ml-auto", fsStatusColor[mount.status])}>{mount.status}</Badge>
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
-          {/* Mount info */}
           <div className="grid grid-cols-2 gap-3">
             {[
               { label: "Filesystem", value: mount.fsType },
@@ -284,26 +285,17 @@ function MountDrillDown({ mount, onBack }: {
               </div>
             ))}
           </div>
-
-          {/* Disk usage bar */}
           {mount.usedPercent > 0 && (
             <div>
               <div className="flex justify-between text-[10px] text-muted-foreground mb-1">
-                <span>Disk Usage</span>
-                <span className="font-mono">{mount.usedPercent}%</span>
+                <span>Disk Usage</span><span className="font-mono">{mount.usedPercent}%</span>
               </div>
               <div className="h-4 rounded-md bg-muted/30 overflow-hidden">
-                <motion.div
-                  initial={{ width: 0 }}
-                  animate={{ width: `${mount.usedPercent}%` }}
-                  transition={{ duration: 0.6 }}
-                  className={cn("h-full rounded-md", mount.usedPercent > 80 ? "bg-amber-500" : "bg-emerald-500/60")}
-                />
+                <motion.div initial={{ width: 0 }} animate={{ width: `${mount.usedPercent}%` }} transition={{ duration: 0.6 }}
+                  className={cn("h-full rounded-md", mount.usedPercent > 80 ? "bg-amber-500" : "bg-emerald-500/60")} />
               </div>
             </div>
           )}
-
-          {/* Inode stats */}
           {inodes.total > 0 && (
             <>
               <div>
@@ -313,7 +305,6 @@ function MountDrillDown({ mount, onBack }: {
                 </div>
                 <Progress value={inodePercent} className="h-2" />
               </div>
-
               <div>
                 <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">Inode Breakdown</p>
                 <div className="grid grid-cols-2 gap-2">
@@ -325,9 +316,7 @@ function MountDrillDown({ mount, onBack }: {
                         <p className="text-xs font-semibold text-foreground tabular-nums">{ib.value.toLocaleString()}</p>
                       </div>
                       {inodes.used > 0 && (
-                        <span className="text-[9px] text-muted-foreground font-mono">
-                          {Math.round((ib.value / inodes.used) * 100)}%
-                        </span>
+                        <span className="text-[9px] text-muted-foreground font-mono">{Math.round((ib.value / inodes.used) * 100)}%</span>
                       )}
                     </div>
                   ))}
@@ -335,15 +324,11 @@ function MountDrillDown({ mount, onBack }: {
               </div>
             </>
           )}
-
-          {/* Mount options */}
           <div>
             <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">Mount Options</p>
             <div className="flex flex-wrap gap-1.5">
               {mount.options.split(",").map(opt => (
-                <Badge key={opt} variant="outline" className="text-[9px] px-1.5 py-0 border-border/30 font-mono">
-                  {opt}
-                </Badge>
+                <Badge key={opt} variant="outline" className="text-[9px] px-1.5 py-0 border-border/30 font-mono">{opt}</Badge>
               ))}
             </div>
           </div>
@@ -360,7 +345,6 @@ function RingDrillDown({ ringData, ringIndex, onBack }: {
   ringIndex: number;
   onBack: () => void;
 }) {
-  // Simulate processes in this ring
   const ringProcesses = useMemo(() => {
     const names = [
       ["kernel-scheduler", "kernel-vmm", "kernel-irq", "kernel-compositor"],
@@ -370,8 +354,7 @@ function RingDrillDown({ ringData, ringIndex, onBack }: {
       ["untrusted-script", "temp-worker", "sandbox-eval"],
     ];
     return (names[ringIndex] || []).slice(0, ringData.processes).map((name, i) => ({
-      pid: 100 * (ringIndex + 1) + i,
-      name,
+      pid: 100 * (ringIndex + 1) + i, name,
       memory: Math.round(Math.random() * 128 + 16),
       syscalls: Math.round(Math.random() * 5000),
       violations: i < ringData.violations ? 1 : 0,
@@ -383,18 +366,14 @@ function RingDrillDown({ ringData, ringIndex, onBack }: {
       <Card className="border-border/40 bg-card/80 backdrop-blur-sm">
         <CardHeader className="pb-2">
           <div className="flex items-center gap-2">
-            <button onClick={onBack} className="rounded-lg p-1.5 hover:bg-muted/30 transition-colors">
-              <ArrowLeft className="h-4 w-4 text-muted-foreground" />
-            </button>
+            <button onClick={onBack} className="rounded-lg p-1.5 hover:bg-muted/30 transition-colors"><ArrowLeft className="h-4 w-4 text-muted-foreground" /></button>
             <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <Shield className="h-4 w-4 text-amber-400" />
-              Ring {ringData.ring} — {ringData.label}
+              <Shield className="h-4 w-4 text-amber-400" />Ring {ringData.ring} — {ringData.label}
             </CardTitle>
           </div>
         </CardHeader>
         <CardContent className="space-y-4">
           <p className="text-xs text-muted-foreground">{RING_DESCRIPTIONS[ringData.ring]}</p>
-
           <div className="grid grid-cols-3 gap-3">
             <div className="text-center py-2 rounded-lg bg-muted/20">
               <p className="text-sm font-semibold text-foreground">{ringData.processes}</p>
@@ -409,7 +388,6 @@ function RingDrillDown({ ringData, ringIndex, onBack }: {
               <p className="text-[9px] text-muted-foreground">Ring Level</p>
             </div>
           </div>
-
           <div>
             <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">Processes in Ring</p>
             <div className="space-y-1.5">
@@ -419,15 +397,11 @@ function RingDrillDown({ ringData, ringIndex, onBack }: {
                   <span className="text-xs font-medium text-foreground flex-1 truncate font-mono">{p.name}</span>
                   <span className="text-[10px] text-muted-foreground">{p.memory}MB</span>
                   <span className="text-[10px] text-muted-foreground">{p.syscalls.toLocaleString()} syscalls</span>
-                  {p.violations > 0 && (
-                    <AlertTriangle className="h-3 w-3 text-red-400 shrink-0" />
-                  )}
+                  {p.violations > 0 && <AlertTriangle className="h-3 w-3 text-red-400 shrink-0" />}
                 </div>
               ))}
             </div>
           </div>
-
-          {/* Allowed syscalls as capabilities */}
           <div>
             <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1.5">Permissions</p>
             <div className="flex flex-wrap gap-1.5">
@@ -439,9 +413,7 @@ function RingDrillDown({ ringData, ringIndex, onBack }: {
                 ringData.canSpawnProcesses && "spawn",
                 ringData.canAccessHardware && "hardware",
               ].filter(Boolean).map((cap) => (
-                <Badge key={String(cap)} variant="outline" className="text-[9px] px-1.5 py-0 border-border/30 font-mono">
-                  {String(cap)}
-                </Badge>
+                <Badge key={String(cap)} variant="outline" className="text-[9px] px-1.5 py-0 border-border/30 font-mono">{String(cap)}</Badge>
               ))}
             </div>
           </div>
@@ -456,10 +428,7 @@ function RingDrillDown({ ringData, ringIndex, onBack }: {
 const BandBar = ({ label, cpuPercent, processes, quantumMs, color, onClick }: {
   label: string; cpuPercent: number; processes: number; quantumMs: number; color: string; onClick?: () => void;
 }) => (
-  <div
-    className={cn("flex items-center gap-3 py-2 rounded-lg px-2 -mx-2 transition-colors", onClick && "cursor-pointer hover:bg-muted/15")}
-    onClick={onClick}
-  >
+  <div className={cn("flex items-center gap-3 py-2 rounded-lg px-2 -mx-2 transition-colors", onClick && "cursor-pointer hover:bg-muted/15")} onClick={onClick}>
     <div className="w-28 shrink-0">
       <p className="text-xs font-medium text-foreground flex items-center gap-1">
         {label}
@@ -469,15 +438,8 @@ const BandBar = ({ label, cpuPercent, processes, quantumMs, color, onClick }: {
     </div>
     <div className="flex-1">
       <div className="h-6 rounded-md bg-muted/30 overflow-hidden relative">
-        <motion.div
-          initial={{ width: 0 }}
-          animate={{ width: `${cpuPercent}%` }}
-          transition={{ delay: 0.3, duration: 0.6, ease: "easeOut" }}
-          className={cn("h-full rounded-md", color)}
-        />
-        <span className="absolute inset-0 flex items-center justify-end pr-2 text-[10px] font-mono text-foreground/70">
-          {cpuPercent.toFixed(1)}%
-        </span>
+        <motion.div initial={{ width: 0 }} animate={{ width: `${cpuPercent}%` }} transition={{ delay: 0.3, duration: 0.6, ease: "easeOut" }} className={cn("h-full rounded-md", color)} />
+        <span className="absolute inset-0 flex items-center justify-end pr-2 text-[10px] font-mono text-foreground/70">{cpuPercent.toFixed(1)}%</span>
       </div>
     </div>
   </div>
@@ -486,35 +448,20 @@ const BandBar = ({ label, cpuPercent, processes, quantumMs, color, onClick }: {
 // ── Drill-Down: Scheduler Detail ─────────────────────────────
 
 const EVENT_TYPE_COLORS: Record<string, string> = {
-  "context-switch": "text-blue-400",
-  "preempt": "text-amber-400",
-  "block": "text-red-400",
-  "wake": "text-emerald-400",
-  "sleep": "text-purple-400",
-  "boost": "text-orange-400",
-  "quantum-expire": "text-amber-300",
-  "idle": "text-muted-foreground",
-  "spawn": "text-emerald-300",
-  "kill": "text-red-300",
+  "context-switch": "text-blue-400", "preempt": "text-amber-400", "block": "text-red-400",
+  "wake": "text-emerald-400", "sleep": "text-purple-400", "boost": "text-orange-400",
+  "quantum-expire": "text-amber-300", "idle": "text-muted-foreground", "spawn": "text-emerald-300", "kill": "text-red-300",
 };
-
 const EVENT_TYPE_ICONS: Record<string, typeof Cpu> = {
-  "context-switch": GitBranch,
-  "preempt": Timer,
-  "block": Pause,
-  "wake": Play,
-  "sleep": Clock,
-  "boost": Zap,
-  "spawn": Play,
-  "kill": X,
+  "context-switch": GitBranch, "preempt": Timer, "block": Pause, "wake": Play,
+  "sleep": Clock, "boost": Zap, "spawn": Play, "kill": X,
 };
 
-function SchedulerDetailPanel({ schedStats, events, currentContext, blockedProcesses, readyProcesses, onBack }: {
+function SchedulerDetailPanel({ schedStats, events, currentContext, blockedProcesses, onBack }: {
   schedStats: ReturnType<typeof Scheduler.getStats>;
   events: readonly SchedulerEvent[];
   currentContext: ReturnType<typeof Scheduler.getCurrentContext>;
   blockedProcesses: Process[];
-  readyProcesses: Process[];
   onBack: () => void;
 }) {
   const currentProcess = schedStats.currentPid !== null ? ProcessTable.getProcess(schedStats.currentPid) : null;
@@ -524,12 +471,9 @@ function SchedulerDetailPanel({ schedStats, events, currentContext, blockedProce
       <Card className="border-border/40 bg-card/80 backdrop-blur-sm">
         <CardHeader className="pb-2">
           <div className="flex items-center gap-2">
-            <button onClick={onBack} className="rounded-lg p-1.5 hover:bg-muted/30 transition-colors">
-              <ArrowLeft className="h-4 w-4 text-muted-foreground" />
-            </button>
+            <button onClick={onBack} className="rounded-lg p-1.5 hover:bg-muted/30 transition-colors"><ArrowLeft className="h-4 w-4 text-muted-foreground" /></button>
             <CardTitle className="text-sm font-medium flex items-center gap-2">
-              <Cpu className="h-4 w-4 text-primary" />
-              Scheduler Detail — Context Switching & Queues
+              <Cpu className="h-4 w-4 text-primary" />Scheduler Detail — Context Switching & Queues
             </CardTitle>
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-1" />
           </div>
@@ -562,7 +506,6 @@ function SchedulerDetailPanel({ schedStats, events, currentContext, blockedProce
                     <span className="font-mono text-foreground">{currentProcess.contextSwitches}</span>
                   </div>
                 </div>
-                {/* CPU Context (registers) */}
                 {currentContext && (
                   <div className="bg-muted/10 rounded-lg p-2 mt-1">
                     <p className="text-[9px] uppercase tracking-wider text-muted-foreground mb-1">CPU Registers</p>
@@ -574,9 +517,7 @@ function SchedulerDetailPanel({ schedStats, events, currentContext, blockedProce
                     </div>
                     <div className="grid grid-cols-8 gap-0.5 mt-1">
                       {currentContext.registers.slice(0, 16).map((r, i) => (
-                        <span key={i} className="text-[8px] font-mono text-muted-foreground text-center bg-muted/15 rounded px-0.5">
-                          r{i}: {r}
-                        </span>
+                        <span key={i} className="text-[8px] font-mono text-muted-foreground text-center bg-muted/15 rounded px-0.5">r{i}: {r}</span>
                       ))}
                     </div>
                   </div>
@@ -584,8 +525,7 @@ function SchedulerDetailPanel({ schedStats, events, currentContext, blockedProce
               </div>
             ) : (
               <div className="rounded-lg bg-muted/15 p-3 text-center text-xs text-muted-foreground">
-                <Clock className="h-4 w-4 mx-auto mb-1 opacity-40" />
-                CPU Idle — no process scheduled
+                <Clock className="h-4 w-4 mx-auto mb-1 opacity-40" />CPU Idle — no process scheduled
               </div>
             )}
           </div>
@@ -614,14 +554,8 @@ function SchedulerDetailPanel({ schedStats, events, currentContext, blockedProce
                 return (
                   <div key={band} className="flex-1 text-center">
                     <div className="h-12 rounded bg-muted/15 relative overflow-hidden flex items-end justify-center">
-                      <motion.div
-                        initial={{ height: 0 }}
-                        animate={{ height: `${Math.min(depth * 20, 100)}%` }}
-                        className={cn("w-full rounded-t", BAND_COLORS[i])}
-                      />
-                      <span className="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-foreground">
-                        {depth}
-                      </span>
+                      <motion.div initial={{ height: 0 }} animate={{ height: `${Math.min(depth * 20, 100)}%` }} className={cn("w-full rounded-t", BAND_COLORS[i])} />
+                      <span className="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-foreground">{depth}</span>
                     </div>
                     <p className="text-[8px] text-muted-foreground mt-0.5 truncate">{band.replace("RT-", "RT")}</p>
                   </div>
@@ -632,9 +566,7 @@ function SchedulerDetailPanel({ schedStats, events, currentContext, blockedProce
 
           {/* Blocked Queue */}
           <div>
-            <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">
-              Blocked Processes ({schedStats.blockedCount})
-            </p>
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">Blocked Processes ({schedStats.blockedCount})</p>
             {blockedProcesses.length === 0 ? (
               <p className="text-[10px] text-muted-foreground text-center py-2">No blocked processes</p>
             ) : (
@@ -644,22 +576,16 @@ function SchedulerDetailPanel({ schedStats, events, currentContext, blockedProce
                     <span className="font-mono font-bold text-foreground w-8">PID {p.pid}</span>
                     <span className="text-muted-foreground flex-1 truncate">{p.appId}</span>
                     <Badge variant="outline" className="text-[8px] px-1 py-0 border-amber-500/30 text-amber-400">{p.waitReason}</Badge>
-                    {p.wakeAt && (
-                      <span className="text-[8px] text-muted-foreground font-mono">
-                        wake: {Math.max(0, p.wakeAt - Date.now())}ms
-                      </span>
-                    )}
+                    {p.wakeAt && <span className="text-[8px] text-muted-foreground font-mono">wake: {Math.max(0, p.wakeAt - Date.now())}ms</span>}
                   </div>
                 ))}
               </div>
             )}
           </div>
 
-          {/* Scheduler Event Timeline */}
+          {/* Event Timeline */}
           <div>
-            <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">
-              Scheduler Events (Last {events.length})
-            </p>
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">Scheduler Events (Last {events.length})</p>
             <div className="space-y-0.5 max-h-48 overflow-y-auto">
               {events.length === 0 ? (
                 <p className="text-[10px] text-muted-foreground text-center py-2">No events yet</p>
@@ -684,6 +610,310 @@ function SchedulerDetailPanel({ schedStats, events, currentContext, blockedProce
   );
 }
 
+// ── Drill-Down: Display Server ───────────────────────────────
+
+function DisplayServerPanel({ compStats, surfaces, onBack }: {
+  compStats: ReturnType<typeof Compositor.getStats>;
+  surfaces: ReturnType<typeof Compositor.listSurfaces>;
+  onBack: () => void;
+}) {
+  // Simulated GPU backend info
+  const gpuBackend = {
+    renderer: "Nova GPU (Software Rasterizer)",
+    api: "Vulkan 1.3 (simulated)",
+    driver: "nova-drm v2.4.1",
+    vram: { total: 8192, used: 2340, unit: "MB" },
+    refreshRate: 60,
+    resolution: "1920×1080",
+    vsync: true,
+    tripleBuffer: true,
+  };
+
+  const bufferPool = {
+    frontBuffers: compStats.visible,
+    backBuffers: compStats.visible,
+    dirtyBuffers: compStats.dirty,
+    totalAllocated: compStats.totalSurfaces * 2,
+    swapInterval: 1,
+  };
+
+  return (
+    <motion.div {...slideIn}>
+      <Card className="border-border/40 bg-card/80 backdrop-blur-sm">
+        <CardHeader className="pb-2">
+          <div className="flex items-center gap-2">
+            <button onClick={onBack} className="rounded-lg p-1.5 hover:bg-muted/30 transition-colors"><ArrowLeft className="h-4 w-4 text-muted-foreground" /></button>
+            <CardTitle className="text-sm font-medium flex items-center gap-2">
+              <Monitor className="h-4 w-4 text-blue-400" />Display Server — Compositor & GPU
+            </CardTitle>
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-1" />
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {/* GPU Backend */}
+          <div>
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">GPU Backend</p>
+            <div className="grid grid-cols-2 gap-2">
+              {[
+                { label: "Renderer", value: gpuBackend.renderer },
+                { label: "API", value: gpuBackend.api },
+                { label: "Driver", value: gpuBackend.driver },
+                { label: "Resolution", value: `${gpuBackend.resolution} @ ${gpuBackend.refreshRate}Hz` },
+              ].map(i => (
+                <div key={i.label} className="rounded-lg bg-muted/15 px-3 py-2">
+                  <p className="text-[10px] text-muted-foreground">{i.label}</p>
+                  <p className="text-xs font-semibold text-foreground">{i.value}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* VRAM Usage */}
+          <div>
+            <div className="flex justify-between text-[10px] text-muted-foreground mb-1">
+              <span>VRAM Usage</span>
+              <span className="font-mono">{gpuBackend.vram.used} / {gpuBackend.vram.total} MB ({Math.round((gpuBackend.vram.used / gpuBackend.vram.total) * 100)}%)</span>
+            </div>
+            <div className="h-4 rounded-md bg-muted/30 overflow-hidden">
+              <motion.div initial={{ width: 0 }} animate={{ width: `${(gpuBackend.vram.used / gpuBackend.vram.total) * 100}%` }}
+                transition={{ duration: 0.6 }} className="h-full bg-blue-500/60 rounded-md" />
+            </div>
+          </div>
+
+          {/* Window Manager State */}
+          <div>
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">Window Manager State</p>
+            <div className="grid grid-cols-4 gap-2">
+              {[
+                { label: "Total Surfaces", value: compStats.totalSurfaces, color: "text-blue-400" },
+                { label: "Visible", value: compStats.visible, color: "text-emerald-400" },
+                { label: "Dirty", value: compStats.dirty, color: "text-amber-400" },
+                { label: "Top Z-Index", value: compStats.topZ, color: "text-purple-400" },
+              ].map(s => (
+                <div key={s.label} className="text-center py-2 rounded-lg bg-muted/20">
+                  <p className={cn("text-sm font-semibold tabular-nums", s.color)}>{s.value}</p>
+                  <p className="text-[9px] text-muted-foreground">{s.label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Buffer Pool */}
+          <div>
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">Buffer Pool</p>
+            <div className="grid grid-cols-3 gap-2">
+              {[
+                { label: "Front Buffers", value: bufferPool.frontBuffers },
+                { label: "Back Buffers", value: bufferPool.backBuffers },
+                { label: "Dirty Buffers", value: bufferPool.dirtyBuffers },
+              ].map(s => (
+                <div key={s.label} className="text-center py-2 rounded-lg bg-muted/20">
+                  <p className="text-sm font-semibold text-foreground tabular-nums">{s.value}</p>
+                  <p className="text-[9px] text-muted-foreground">{s.label}</p>
+                </div>
+              ))}
+            </div>
+            <div className="flex gap-3 mt-2 text-[10px] text-muted-foreground">
+              <span>VSync: <span className={gpuBackend.vsync ? "text-emerald-400" : "text-red-400"}>{gpuBackend.vsync ? "ON" : "OFF"}</span></span>
+              <span>Triple Buffer: <span className={gpuBackend.tripleBuffer ? "text-emerald-400" : "text-red-400"}>{gpuBackend.tripleBuffer ? "ON" : "OFF"}</span></span>
+              <span>Swap Interval: <span className="font-mono text-foreground">{bufferPool.swapInterval}</span></span>
+            </div>
+          </div>
+
+          {/* Active Surfaces */}
+          <div>
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">Active Surfaces ({surfaces.length})</p>
+            {surfaces.length === 0 ? (
+              <p className="text-[10px] text-muted-foreground text-center py-3">No compositor surfaces registered</p>
+            ) : (
+              <div className="space-y-1 max-h-40 overflow-y-auto">
+                {surfaces.map(s => (
+                  <div key={s.windowId} className="flex items-center gap-2 px-2 py-1.5 rounded bg-muted/10 hover:bg-muted/15 text-[10px]">
+                    <div className={cn("w-2 h-2 rounded-full", s.visible ? "bg-emerald-400" : "bg-muted-foreground/40")} />
+                    <span className="font-mono text-foreground w-20 truncate">{s.windowId}</span>
+                    <span className="text-muted-foreground">PID {s.pid}</span>
+                    <span className="text-muted-foreground ml-auto font-mono">
+                      {s.bounds.width}×{s.bounds.height}
+                    </span>
+                    <span className="text-muted-foreground font-mono">z={s.zIndex}</span>
+                    {s.dirty && <Badge variant="outline" className="text-[8px] px-1 py-0 border-amber-500/30 text-amber-400">dirty</Badge>}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </CardContent>
+      </Card>
+    </motion.div>
+  );
+}
+
+// ── Drill-Down: Power Management ─────────────────────────────
+
+function PowerManagementPanel({ powerStats, onBack }: {
+  powerStats: PowerStats;
+  onBack: () => void;
+}) {
+  const { battery, cpu, thermalZones, events } = powerStats;
+
+  const batteryColor = battery.level > 50 ? "text-emerald-400" : battery.level > 20 ? "text-amber-400" : "text-red-400";
+  const BatteryIcon = battery.charging ? BatteryCharging : Battery;
+
+  return (
+    <motion.div {...slideIn}>
+      <Card className="border-border/40 bg-card/80 backdrop-blur-sm">
+        <CardHeader className="pb-2">
+          <div className="flex items-center gap-2">
+            <button onClick={onBack} className="rounded-lg p-1.5 hover:bg-muted/30 transition-colors"><ArrowLeft className="h-4 w-4 text-muted-foreground" /></button>
+            <CardTitle className="text-sm font-medium flex items-center gap-2">
+              <Zap className="h-4 w-4 text-amber-400" />Power Management — ACPI
+            </CardTitle>
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-1" />
+            <Badge variant="outline" className="ml-auto text-[9px]">{powerStats.powerState}</Badge>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {/* Battery */}
+          <div>
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">Battery</p>
+            <div className="rounded-lg bg-muted/15 p-3 space-y-2">
+              <div className="flex items-center gap-3">
+                <BatteryIcon className={cn("h-6 w-6", batteryColor)} />
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className={cn("text-lg font-bold tabular-nums", batteryColor)}>{battery.level.toFixed(1)}%</span>
+                    <span className="text-[10px] text-muted-foreground">
+                      {battery.charging ? "Charging" : "Discharging"} · {battery.acConnected ? "AC" : "Battery"}
+                    </span>
+                  </div>
+                  <div className="h-3 rounded-full bg-muted/30 overflow-hidden">
+                    <motion.div animate={{ width: `${battery.level}%` }} transition={{ duration: 0.5 }}
+                      className={cn("h-full rounded-full", battery.level > 50 ? "bg-emerald-500/60" : battery.level > 20 ? "bg-amber-500/60" : "bg-red-500/60")} />
+                  </div>
+                </div>
+              </div>
+              <div className="grid grid-cols-4 gap-2 text-[10px]">
+                {[
+                  { label: "Voltage", value: `${(battery.voltage / 1000).toFixed(1)}V` },
+                  { label: "Current", value: `${battery.current}mA` },
+                  { label: "Temp", value: `${battery.temperature.toFixed(1)}°C` },
+                  { label: "Health", value: `${battery.health}%` },
+                  { label: "Cycles", value: battery.cycleCount },
+                  { label: "Capacity", value: `${(battery.remainingCapacity / 1000).toFixed(1)}Wh` },
+                  { label: "Time Left", value: battery.timeToEmpty ? `${battery.timeToEmpty}min` : battery.timeToFull !== null ? `${battery.timeToFull}min to full` : "—" },
+                  { label: "Design", value: `${(battery.designCapacity / 1000).toFixed(0)}Wh` },
+                ].map(s => (
+                  <div key={s.label} className="bg-muted/20 rounded px-2 py-1">
+                    <span className="text-muted-foreground">{s.label}: </span>
+                    <span className="font-mono text-foreground">{s.value}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* CPU Frequency Scaling */}
+          <div>
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">CPU Frequency Scaling</p>
+            <div className="rounded-lg bg-muted/15 p-3 space-y-2">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Gauge className="h-4 w-4 text-blue-400" />
+                  <span className="text-sm font-bold text-foreground tabular-nums">{cpu.currentMHz} MHz</span>
+                  <span className="text-[10px] text-muted-foreground">/ {cpu.maxMHz} MHz</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Badge variant="outline" className="text-[9px]">{cpu.governor}</Badge>
+                  {cpu.throttled && <Badge className="bg-red-500/20 text-red-400 border-red-500/30 text-[8px]">THROTTLED</Badge>}
+                </div>
+              </div>
+              <div className="h-3 rounded-full bg-muted/30 overflow-hidden">
+                <motion.div animate={{ width: `${cpu.scalingPercent}%` }} transition={{ duration: 0.5 }}
+                  className={cn("h-full rounded-full", cpu.throttled ? "bg-red-500/60" : "bg-blue-500/60")} />
+              </div>
+              {/* Per-core */}
+              <div className="grid grid-cols-4 gap-1.5 mt-1">
+                {cpu.coreFreqs.map((freq, i) => (
+                  <div key={i} className="rounded bg-muted/10 px-2 py-1 text-center">
+                    <p className="text-[8px] text-muted-foreground">Core {i}</p>
+                    <p className="text-[10px] font-mono font-semibold text-foreground">{freq}MHz</p>
+                    <div className="h-1 rounded bg-muted/30 mt-0.5 overflow-hidden">
+                      <div className="h-full bg-blue-500/50 rounded" style={{ width: `${cpu.coreLoads[i]}%` }} />
+                    </div>
+                    <p className="text-[8px] text-muted-foreground mt-0.5">{cpu.coreLoads[i].toFixed(0)}%</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Thermal Zones */}
+          <div>
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">Thermal Zones</p>
+            <div className="space-y-1.5">
+              {thermalZones.map(zone => (
+                <div key={zone.name} className="flex items-center gap-3 px-3 py-2 rounded-lg bg-muted/10">
+                  <Thermometer className={cn("h-4 w-4", THERMAL_COLORS[zone.state])} />
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-medium text-foreground font-mono">{zone.name}</span>
+                      <span className={cn("text-xs font-bold tabular-nums", THERMAL_COLORS[zone.state])}>{zone.temperature.toFixed(1)}°C</span>
+                    </div>
+                    <div className="h-1.5 rounded bg-muted/30 mt-1 overflow-hidden">
+                      <motion.div animate={{ width: `${Math.min(100, (zone.temperature / zone.tripPoints.critical) * 100)}%` }}
+                        className={cn("h-full rounded", zone.state === "normal" ? "bg-emerald-500/50" : zone.state === "warm" ? "bg-amber-500/50" : zone.state === "hot" ? "bg-orange-500/60" : "bg-red-500/70")} />
+                    </div>
+                    <div className="flex gap-2 mt-0.5 text-[8px] text-muted-foreground">
+                      <span>Warm: {zone.tripPoints.warm}°</span>
+                      <span>Hot: {zone.tripPoints.hot}°</span>
+                      <span>Critical: {zone.tripPoints.critical}°</span>
+                      {zone.throttlePercent > 0 && <span className="text-amber-400">Throttle: {zone.throttlePercent}%</span>}
+                    </div>
+                  </div>
+                  <Badge variant="outline" className={cn("text-[8px] px-1.5 py-0", THERMAL_COLORS[zone.state])}>{zone.state}</Badge>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Power Stats */}
+          <div className="grid grid-cols-4 gap-2">
+            {[
+              { label: "Uptime", value: `${Math.round(powerStats.uptime / 1000)}s`, color: "text-emerald-400" },
+              { label: "Wake Count", value: powerStats.wakeCount, color: "text-blue-400" },
+              { label: "Sleep Count", value: powerStats.sleepCount, color: "text-purple-400" },
+              { label: "Throttle Time", value: `${Math.round(powerStats.totalThrottleTime / 1000)}s`, color: "text-amber-400" },
+            ].map(s => (
+              <div key={s.label} className="text-center py-2 rounded-lg bg-muted/20">
+                <p className={cn("text-sm font-semibold tabular-nums", s.color)}>{s.value}</p>
+                <p className="text-[9px] text-muted-foreground">{s.label}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Power Events */}
+          <div>
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">Power Events (Last {Math.min(events.length, 15)})</p>
+            <div className="space-y-0.5 max-h-36 overflow-y-auto">
+              {events.length === 0 ? (
+                <p className="text-[10px] text-muted-foreground text-center py-2">No power events yet</p>
+              ) : (
+                [...events].slice(-15).reverse().map((evt, i) => (
+                  <div key={i} className="flex items-center gap-2 px-2 py-1 rounded hover:bg-muted/10 text-[9px]">
+                    <Zap className="h-3 w-3 shrink-0 text-amber-400" />
+                    <span className="font-semibold uppercase w-16 shrink-0 text-amber-400">{evt.type}</span>
+                    <span className="text-foreground/70 flex-1 truncate">{evt.detail}</span>
+                  </div>
+                ))
+              )}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </motion.div>
+  );
+}
+
 // ── Main Dashboard ───────────────────────────────────────────
 
 type DrillDown =
@@ -691,28 +921,21 @@ type DrillDown =
   | { type: "mount"; mountPath: string }
   | { type: "ring"; ringIndex: number }
   | { type: "scheduler" }
+  | { type: "display" }
+  | { type: "power" }
   | null;
 
 const KernelDashboard = () => {
-  const { processes, memStats, schedStats, compStats, bandDistribution, schedulerEvents, currentContext, blockedProcesses, readyProcesses } = useKernelMetrics();
+  const { processes, memStats, schedStats, compStats, powerStats, bandDistribution, schedulerEvents, currentContext, blockedProcesses, readyProcesses, compositorSurfaces } = useKernelMetrics();
   const [drillDown, setDrillDown] = useState<DrillDown>(null);
 
-  // Merge live + demo data for scheduler stats
   const liveProcessCount = processes.length;
   const liveRunning = processes.filter(p => p.state === "running").length;
-  const liveBlocked = processes.filter(p => p.state === "blocked").length;
-  const liveSuspended = processes.filter(p => p.state === "suspended").length;
-
-  // Use real memory stats
   const memUsedPercent = memStats.totalPages > 0
-    ? Math.round((memStats.allocatedPages / Math.max(memStats.totalPages, memStats.allocatedPages + 256)) * 100)
-    : 5;
-
-  // Demo enhancement — blend live process count with demo baseline
+    ? Math.round((memStats.allocatedPages / Math.max(memStats.totalPages, memStats.allocatedPages + 256)) * 100) : 5;
   const totalProcesses = Math.max(liveProcessCount, 12) + 135;
   const running = Math.max(liveRunning, 1) + 11;
 
-  // Scheduler bands — merge live + demo fallback
   const BANDS_DATA = useMemo(() => {
     const allBands: { band: NovaPriorityBand; kernelBand: KernelPriorityBand }[] = [
       { band: "RT-Critical", kernelBand: KernelPriorityBand.RT_CRITICAL },
@@ -742,57 +965,24 @@ const KernelDashboard = () => {
     });
   }, [bandDistribution]);
 
-  // If drill-down active, show it
+  // Drill-down views
   if (drillDown) {
     return (
       <div className="mx-auto max-w-7xl p-4 sm:p-6">
         <AnimatePresence mode="wait">
-          {drillDown.type === "band" && (
-            <BandDrillDown
-              key="band"
-              band={drillDown.band}
-              processes={processes}
-              onBack={() => setDrillDown(null)}
-            />
-          )}
-          {drillDown.type === "mount" && (
-            <MountDrillDown
-              key="mount"
-              mount={FILESYSTEM_MOUNTS.find(m => m.path === drillDown.mountPath)!}
-              onBack={() => setDrillDown(null)}
-            />
-          )}
-          {drillDown.type === "ring" && (
-            <RingDrillDown
-              key="ring"
-              ringData={SECURITY_RINGS[drillDown.ringIndex]}
-              ringIndex={drillDown.ringIndex}
-              onBack={() => setDrillDown(null)}
-            />
-          )}
-          {drillDown.type === "scheduler" && (
-            <SchedulerDetailPanel
-              key="scheduler"
-              schedStats={schedStats}
-              events={schedulerEvents}
-              currentContext={currentContext}
-              blockedProcesses={blockedProcesses}
-              readyProcesses={readyProcesses}
-              onBack={() => setDrillDown(null)}
-            />
-          )}
+          {drillDown.type === "band" && <BandDrillDown key="band" band={drillDown.band} processes={processes} onBack={() => setDrillDown(null)} />}
+          {drillDown.type === "mount" && <MountDrillDown key="mount" mount={FILESYSTEM_MOUNTS.find(m => m.path === drillDown.mountPath)!} onBack={() => setDrillDown(null)} />}
+          {drillDown.type === "ring" && <RingDrillDown key="ring" ringData={SECURITY_RINGS[drillDown.ringIndex]} ringIndex={drillDown.ringIndex} onBack={() => setDrillDown(null)} />}
+          {drillDown.type === "scheduler" && <SchedulerDetailPanel key="scheduler" schedStats={schedStats} events={schedulerEvents} currentContext={currentContext} blockedProcesses={blockedProcesses} onBack={() => setDrillDown(null)} />}
+          {drillDown.type === "display" && <DisplayServerPanel key="display" compStats={compStats} surfaces={compositorSurfaces} onBack={() => setDrillDown(null)} />}
+          {drillDown.type === "power" && <PowerManagementPanel key="power" powerStats={powerStats} onBack={() => setDrillDown(null)} />}
         </AnimatePresence>
       </div>
     );
   }
 
   return (
-    <motion.div
-      variants={stagger}
-      initial="hidden"
-      animate="show"
-      className="mx-auto max-w-7xl space-y-6 p-4 sm:p-6"
-    >
+    <motion.div variants={stagger} initial="hidden" animate="show" className="mx-auto max-w-7xl space-y-6 p-4 sm:p-6">
       {/* Header */}
       <motion.div variants={fadeUp} className="flex items-center gap-4">
         <div className="rounded-2xl p-3 bg-primary/10 border border-primary/20">
@@ -812,12 +1002,15 @@ const KernelDashboard = () => {
         </div>
       </motion.div>
 
-      {/* Top-line stats */}
-      <motion.div variants={stagger} className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      {/* Top-line stats — 6 cards */}
+      <motion.div variants={stagger} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
         <StatCard icon={Cpu} label="Processes" value={totalProcesses} sub={`${running} running · ${liveProcessCount} live`} live />
-        <StatCard icon={MemoryStick} label="Memory" value={`${memUsedPercent}%`} sub={`${memStats.freePages.toLocaleString()} pages free · ${memStats.regions} regions`} color="bg-blue-500/8" live />
+        <StatCard icon={MemoryStick} label="Memory" value={`${memUsedPercent}%`} sub={`${memStats.freePages.toLocaleString()} pages free`} color="bg-blue-500/8" live />
         <StatCard icon={HardDrive} label="Mounts" value={FILESYSTEM_MOUNTS.length} sub={`${FILESYSTEM_MOUNTS.filter(m => m.status === "warning").length} warning`} color="bg-emerald-500/8" />
-        <StatCard icon={Shield} label="Compositor" value={`${compStats.totalSurfaces} surfaces`} sub={`${compStats.visible} visible · z=${compStats.topZ}`} color="bg-amber-500/8" live />
+        <StatCard icon={Shield} label="Security" value={`${SECURITY_RINGS.reduce((s, r) => s + r.violations, 0)} violations`} sub="5 rings active" color="bg-amber-500/8" />
+        <StatCard icon={Monitor} label="Display" value={`${compStats.totalSurfaces} surfaces`} sub={`${compStats.visible} visible · z=${compStats.topZ}`} color="bg-blue-500/8" live onClick={() => setDrillDown({ type: "display" })} />
+        <StatCard icon={powerStats.battery.charging ? BatteryCharging : Battery} label="Battery" value={`${powerStats.battery.level.toFixed(0)}%`}
+          sub={`${powerStats.cpu.currentMHz}MHz · ${powerStats.powerState}`} color="bg-amber-500/8" live onClick={() => setDrillDown({ type: "power" })} />
       </motion.div>
 
       {/* Scheduler + Memory row */}
@@ -827,8 +1020,7 @@ const KernelDashboard = () => {
           <Card className="border-border/40 bg-card/80 backdrop-blur-sm">
             <CardHeader className="pb-2 cursor-pointer hover:bg-muted/10 transition-colors rounded-t-lg" onClick={() => setDrillDown({ type: "scheduler" })}>
               <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <Cpu className="h-4 w-4 text-primary" />
-                Process Scheduler (MLFQ)
+                <Cpu className="h-4 w-4 text-primary" />Process Scheduler (MLFQ)
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-1" />
                 <ChevronRight className="h-3.5 w-3.5 text-muted-foreground/40 ml-auto" />
               </CardTitle>
@@ -849,22 +1041,13 @@ const KernelDashboard = () => {
                   </div>
                 ))}
               </div>
-
               <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1">
                 CPU by Priority Band <span className="text-[8px] ml-1">(click to drill down)</span>
               </p>
               {BANDS_DATA.map((b, i) => (
-                <BandBar
-                  key={b.band}
-                  label={b.label}
-                  cpuPercent={b.cpuPercent}
-                  processes={b.processes}
-                  quantumMs={b.quantumMs}
-                  color={BAND_COLORS[i]}
-                  onClick={() => setDrillDown({ type: "band", band: b.band })}
-                />
+                <BandBar key={b.band} label={b.label} cpuPercent={b.cpuPercent} processes={b.processes} quantumMs={b.quantumMs}
+                  color={BAND_COLORS[i]} onClick={() => setDrillDown({ type: "band", band: b.band })} />
               ))}
-
               <div className="pt-2 border-t border-border/30 mt-2 flex justify-between text-[10px] text-muted-foreground">
                 <span>Ticks: <span className="font-mono text-foreground">{schedStats.totalTicks}</span></span>
                 <span>Idle: <span className="font-mono text-foreground">{schedStats.idleTicks}</span></span>
@@ -879,29 +1062,20 @@ const KernelDashboard = () => {
           <Card className="border-border/40 bg-card/80 backdrop-blur-sm">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <MemoryStick className="h-4 w-4 text-blue-400" />
-                Virtual Memory Manager
+                <MemoryStick className="h-4 w-4 text-blue-400" />Virtual Memory Manager
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-1" />
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              {/* Physical memory bar — live */}
               <div>
                 <div className="flex justify-between text-[10px] text-muted-foreground mb-1">
                   <span>Allocated Pages (Live)</span>
                   <span className="font-mono">{memStats.allocatedPages.toLocaleString()} / {memStats.totalPages.toLocaleString()}</span>
                 </div>
                 <div className="h-5 rounded-md bg-muted/30 overflow-hidden">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: `${memUsedPercent}%` }}
-                    transition={{ delay: 0.3, duration: 0.5 }}
-                    className="h-full bg-blue-500/60 rounded-md"
-                  />
+                  <motion.div initial={{ width: 0 }} animate={{ width: `${memUsedPercent}%` }} transition={{ delay: 0.3, duration: 0.5 }} className="h-full bg-blue-500/60 rounded-md" />
                 </div>
               </div>
-
-              {/* Live stats grid */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-1">
                 {[
                   { label: "Regions", val: memStats.regions },
@@ -915,8 +1089,6 @@ const KernelDashboard = () => {
                   </div>
                 ))}
               </div>
-
-              {/* Per-process memory */}
               {processes.length > 0 && (
                 <div>
                   <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1.5">Per-Process Memory (Live)</p>
@@ -924,25 +1096,102 @@ const KernelDashboard = () => {
                     {processes.filter(p => p.state !== "terminated").map(p => (
                       <div key={p.pid} className="flex items-center gap-2">
                         <span className="text-[11px] font-mono text-foreground/80 w-20 truncate">{p.appId}</span>
-                        <div className="flex-1">
-                          <Progress value={p.memoryBudget > 0 ? (p.memoryUsed / p.memoryBudget) * 100 : 0} className="h-1.5" />
-                        </div>
-                        <span className="text-[10px] font-mono text-muted-foreground w-14 text-right">
-                          {Math.round(p.memoryUsed / 1024)}KB
-                        </span>
+                        <div className="flex-1"><Progress value={p.memoryBudget > 0 ? (p.memoryUsed / p.memoryBudget) * 100 : 0} className="h-1.5" /></div>
+                        <span className="text-[10px] font-mono text-muted-foreground w-14 text-right">{Math.round(p.memoryUsed / 1024)}KB</span>
                       </div>
                     ))}
                   </div>
                 </div>
               )}
-
-              {/* Compositor integration */}
               <div className="pt-2 border-t border-border/30">
                 <div className="flex justify-between text-[10px] text-muted-foreground">
-                  <span>Compositor surfaces: <span className="font-mono text-foreground">{compStats.totalSurfaces}</span></span>
-                  <span>Visible: <span className="font-mono text-foreground">{compStats.visible}</span></span>
-                  <span>Dirty: <span className="font-mono text-foreground">{compStats.dirty}</span></span>
+                  <span>Address Spaces: <span className="font-mono text-foreground">{memStats.addressSpaces}</span></span>
+                  <span>Page Table Switches: <span className="font-mono text-foreground">{memStats.pageTableSwitches}</span></span>
                 </div>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      </div>
+
+      {/* Display Server + Power row */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* Display Server */}
+        <motion.div variants={fadeUp}>
+          <Card className="border-border/40 bg-card/80 backdrop-blur-sm cursor-pointer hover:border-primary/20 transition-colors" onClick={() => setDrillDown({ type: "display" })}>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium flex items-center gap-2">
+                <Monitor className="h-4 w-4 text-blue-400" />Display Server
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-1" />
+                <ChevronRight className="h-3.5 w-3.5 text-muted-foreground/40 ml-auto" />
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="grid grid-cols-4 gap-2">
+                {[
+                  { label: "Surfaces", val: compStats.totalSurfaces, c: "text-blue-400" },
+                  { label: "Visible", val: compStats.visible, c: "text-emerald-400" },
+                  { label: "Dirty", val: compStats.dirty, c: "text-amber-400" },
+                  { label: "Top Z", val: compStats.topZ, c: "text-purple-400" },
+                ].map(s => (
+                  <div key={s.label} className="text-center py-2 rounded-lg bg-muted/20">
+                    <p className={cn("text-sm font-semibold tabular-nums", s.c)}>{s.val}</p>
+                    <p className="text-[9px] text-muted-foreground">{s.label}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="flex justify-between text-[10px] text-muted-foreground pt-1 border-t border-border/30">
+                <span>Backend: <span className="text-foreground">Nova GPU (Software)</span></span>
+                <span>VSync: <span className="text-emerald-400">ON</span></span>
+                <span>1920×1080 @60Hz</span>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+
+        {/* Power Management */}
+        <motion.div variants={fadeUp}>
+          <Card className="border-border/40 bg-card/80 backdrop-blur-sm cursor-pointer hover:border-primary/20 transition-colors" onClick={() => setDrillDown({ type: "power" })}>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-medium flex items-center gap-2">
+                <Zap className="h-4 w-4 text-amber-400" />Power Management
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-1" />
+                <ChevronRight className="h-3.5 w-3.5 text-muted-foreground/40 ml-auto" />
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <div className="flex items-center gap-4">
+                {/* Battery gauge */}
+                <div className="flex items-center gap-2">
+                  {powerStats.battery.charging ? <BatteryCharging className="h-5 w-5 text-emerald-400" /> : <Battery className="h-5 w-5 text-amber-400" />}
+                  <div>
+                    <p className={cn("text-lg font-bold tabular-nums", powerStats.battery.level > 50 ? "text-emerald-400" : powerStats.battery.level > 20 ? "text-amber-400" : "text-red-400")}>
+                      {powerStats.battery.level.toFixed(0)}%
+                    </p>
+                    <p className="text-[9px] text-muted-foreground">{powerStats.battery.charging ? "Charging" : "On Battery"}</p>
+                  </div>
+                </div>
+                {/* CPU freq */}
+                <div className="flex-1">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-[10px] text-muted-foreground">CPU: {powerStats.cpu.currentMHz}MHz</span>
+                    <Badge variant="outline" className="text-[8px]">{powerStats.cpu.governor}</Badge>
+                  </div>
+                  <div className="h-2 rounded bg-muted/30 overflow-hidden">
+                    <motion.div animate={{ width: `${powerStats.cpu.scalingPercent}%` }}
+                      className={cn("h-full rounded", powerStats.cpu.throttled ? "bg-red-500/60" : "bg-blue-500/50")} />
+                  </div>
+                </div>
+              </div>
+              {/* Thermal summary */}
+              <div className="flex gap-2 pt-1 border-t border-border/30">
+                {powerStats.thermalZones.map(z => (
+                  <div key={z.name} className="flex items-center gap-1 text-[10px]">
+                    <Thermometer className={cn("h-3 w-3", THERMAL_COLORS[z.state])} />
+                    <span className="text-muted-foreground">{z.name.split("-")[0]}:</span>
+                    <span className={cn("font-mono", THERMAL_COLORS[z.state])}>{z.temperature.toFixed(0)}°</span>
+                  </div>
+                ))}
               </div>
             </CardContent>
           </Card>
@@ -951,13 +1200,12 @@ const KernelDashboard = () => {
 
       {/* Filesystem + Security row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* Filesystem Mounts (clickable) */}
+        {/* Filesystem Mounts */}
         <motion.div variants={fadeUp}>
           <Card className="border-border/40 bg-card/80 backdrop-blur-sm">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <HardDrive className="h-4 w-4 text-emerald-400" />
-                Filesystem Mounts
+                <HardDrive className="h-4 w-4 text-emerald-400" />Filesystem Mounts
                 <span className="text-[8px] text-muted-foreground ml-1">(click row for inode stats)</span>
               </CardTitle>
             </CardHeader>
@@ -975,38 +1223,23 @@ const KernelDashboard = () => {
                   </thead>
                   <tbody>
                     {FILESYSTEM_MOUNTS.map(m => (
-                      <tr
-                        key={m.path}
-                        className="border-b border-border/10 hover:bg-muted/15 transition-colors cursor-pointer"
-                        onClick={() => setDrillDown({ type: "mount", mountPath: m.path })}
-                      >
+                      <tr key={m.path} className="border-b border-border/10 hover:bg-muted/15 transition-colors cursor-pointer"
+                        onClick={() => setDrillDown({ type: "mount", mountPath: m.path })}>
                         <td className="py-2 font-mono text-foreground flex items-center gap-1">
-                          {m.path}
-                          <Eye className="h-3 w-3 text-muted-foreground/30" />
+                          {m.path}<Eye className="h-3 w-3 text-muted-foreground/30" />
                         </td>
-                        <td className="py-2">
-                          <Badge variant="outline" className="text-[9px] px-1.5 py-0 border-border/30">
-                            {m.fsType}
-                          </Badge>
-                        </td>
+                        <td className="py-2"><Badge variant="outline" className="text-[9px] px-1.5 py-0 border-border/30">{m.fsType}</Badge></td>
                         <td className="py-2">
                           {m.usedPercent > 0 ? (
                             <div className="flex items-center gap-2">
                               <div className="w-16 h-1.5 rounded-full bg-muted/30 overflow-hidden">
-                                <div
-                                  className={cn("h-full rounded-full", m.usedPercent > 80 ? "bg-amber-500" : "bg-emerald-500/60")}
-                                  style={{ width: `${m.usedPercent}%` }}
-                                />
+                                <div className={cn("h-full rounded-full", m.usedPercent > 80 ? "bg-amber-500" : "bg-emerald-500/60")} style={{ width: `${m.usedPercent}%` }} />
                               </div>
                               <span className="text-muted-foreground font-mono">{m.used}</span>
                             </div>
-                          ) : (
-                            <span className="text-muted-foreground">—</span>
-                          )}
+                          ) : <span className="text-muted-foreground">—</span>}
                         </td>
-                        <td className="py-2 text-muted-foreground max-w-[140px] truncate" title={m.options}>
-                          {m.options}
-                        </td>
+                        <td className="py-2 text-muted-foreground max-w-[140px] truncate" title={m.options}>{m.options}</td>
                         <td className="py-2 text-right">
                           <span className={cn("font-medium", fsStatusColor[m.status])}>
                             {m.status === "healthy" ? "●" : "▲"} {m.status}
@@ -1021,17 +1254,15 @@ const KernelDashboard = () => {
           </Card>
         </motion.div>
 
-        {/* Security Rings (clickable) */}
+        {/* Security Rings */}
         <motion.div variants={fadeUp}>
           <Card className="border-border/40 bg-card/80 backdrop-blur-sm">
             <CardHeader className="pb-2">
               <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <Shield className="h-4 w-4 text-amber-400" />
-                Security Ring Distribution
+                <Shield className="h-4 w-4 text-amber-400" />Security Ring Distribution
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              {/* Concentric rings */}
               <div className="flex justify-center py-4">
                 <div className="relative w-56 h-56">
                   {SECURITY_RINGS.map((r, i) => {
@@ -1039,21 +1270,11 @@ const KernelDashboard = () => {
                     const borderColors = ["border-red-500/40", "border-orange-500/30", "border-blue-500/25", "border-emerald-500/20", "border-muted-foreground/15"];
                     const bgColors = ["bg-red-500/5", "bg-orange-500/4", "bg-blue-500/3", "bg-emerald-500/2", "bg-muted/2"];
                     return (
-                      <motion.div
-                        key={r.ring}
-                        initial={{ scale: 0, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
+                      <motion.div key={r.ring} initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
                         transition={{ delay: 0.2 + i * 0.1, duration: 0.4, ease: "easeOut" }}
-                        className={cn(
-                          "absolute rounded-full border-2 flex items-center justify-center cursor-pointer hover:border-primary/40 transition-colors",
-                          borderColors[i], bgColors[i]
-                        )}
-                        style={{
-                          width: `${size}%`, height: `${size}%`,
-                          top: `${(100 - size) / 2}%`, left: `${(100 - size) / 2}%`,
-                        }}
-                        onClick={() => setDrillDown({ type: "ring", ringIndex: i })}
-                      >
+                        className={cn("absolute rounded-full border-2 flex items-center justify-center cursor-pointer hover:border-primary/40 transition-colors", borderColors[i], bgColors[i])}
+                        style={{ width: `${size}%`, height: `${size}%`, top: `${(100 - size) / 2}%`, left: `${(100 - size) / 2}%` }}
+                        onClick={() => setDrillDown({ type: "ring", ringIndex: i })}>
                         {i === 0 && <Lock className="h-4 w-4 text-red-400/60" />}
                       </motion.div>
                     );
@@ -1074,15 +1295,10 @@ const KernelDashboard = () => {
                   })}
                 </div>
               </div>
-
-              {/* Ring details (clickable) */}
               <div className="space-y-2">
                 {SECURITY_RINGS.map((r, i) => (
-                  <div
-                    key={r.ring}
-                    className={cn("flex items-center gap-3 px-3 py-2 rounded-lg border cursor-pointer hover:opacity-80 transition-opacity", RING_COLORS[i])}
-                    onClick={() => setDrillDown({ type: "ring", ringIndex: i })}
-                  >
+                  <div key={r.ring} className={cn("flex items-center gap-3 px-3 py-2 rounded-lg border cursor-pointer hover:opacity-80 transition-opacity", RING_COLORS[i])}
+                    onClick={() => setDrillDown({ type: "ring", ringIndex: i })}>
                     <span className="text-xs font-mono font-bold w-6">R{r.ring}</span>
                     <div className="flex-1 min-w-0">
                       <p className="text-xs font-medium">{r.label}</p>
@@ -1098,12 +1314,9 @@ const KernelDashboard = () => {
                   </div>
                 ))}
               </div>
-
               <div className="pt-2 border-t border-border/30 flex justify-between text-[10px] text-muted-foreground">
                 <span>Total violations: {SECURITY_RINGS.reduce((s, r) => s + r.violations, 0)}</span>
-                <span className="flex items-center gap-1">
-                  <RefreshCw className="h-3 w-3" /> Last audit: 4m ago
-                </span>
+                <span className="flex items-center gap-1"><RefreshCw className="h-3 w-3" /> Last audit: 4m ago</span>
               </div>
             </CardContent>
           </Card>
