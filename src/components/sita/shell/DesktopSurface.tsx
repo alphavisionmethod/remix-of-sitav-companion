@@ -174,7 +174,7 @@ function GlassWidget({ icon: Icon, label, value, accent, onClick, delay = 0, boo
     <button
       onClick={onClick}
       className={cn(
-        "group flex items-center gap-4 rounded-2xl px-6 py-5",
+        "group widget-glow-hover flex items-center gap-4 rounded-2xl px-6 py-5",
         "bg-[hsl(0_0%_100%/0.08)] backdrop-blur-2xl border border-[hsl(0_0%_100%/0.12)]",
         "hover:bg-[hsl(0_0%_100%/0.14)] hover:border-[hsl(0_0%_100%/0.22)]",
         "hover:scale-[1.02] active:scale-[0.98]",
