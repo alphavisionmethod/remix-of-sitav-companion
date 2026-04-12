@@ -107,7 +107,7 @@ class PredictiveIntentEngine {
       .eq('category', 'predictive_intent');
 
     if (data) {
-      const patterns: TimePattern[] = data.map((row) => JSON.parse(row.value as string));
+      const patterns: TimePattern[] = (data ?? []).map((row) => JSON.parse(row.value as string));
       this.patterns.set(userId, patterns);
     }
   }
