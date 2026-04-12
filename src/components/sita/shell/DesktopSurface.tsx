@@ -224,6 +224,7 @@ export function DesktopSurface({
   const reduced = useReducedMotion();
   const { greeting, mood, gradient: timeGradient, gradientAlt: timeGradientAlt } = useMemo(getTimeConfig, []);
   const wallpaper = useMemo(getWallpaperTheme, []);
+  const parallax = useWallpaperParallax(3);
   const isAuto = wallpaper.id === "auto";
   const activeGradient = isAuto ? timeGradient : wallpaper.gradient;
   const activeGradientAlt = isAuto ? timeGradientAlt : wallpaper.gradient;
