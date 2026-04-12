@@ -454,6 +454,9 @@ export function DesktopSurface({
     return () => timers.forEach(clearTimeout);
   }, [reduced]);
 
+  // ── Sparkline Data ──────────────────────────────────────────
+  const sparklines = useSparklineData();
+
   // ── Widget Order (drag-and-drop) ────────────────────────────
   const [widgetOrder, setWidgetOrder] = useState(loadWidgetOrder);
 
