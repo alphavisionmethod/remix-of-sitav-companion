@@ -15,6 +15,8 @@ import { useAccentSync } from "@/hooks/use-accent-sync";
 import {
   CheckCircle, DollarSign, Calendar, Brain,
   TrendingUp, ArrowRight, GripVertical,
+  CloudSun, ListTodo, Battery, StickyNote, Clock,
+  Briefcase, Heart, Plus, X, Settings2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { DragDropContext, Droppable, Draggable, type DropResult } from "@hello-pangea/dnd";
