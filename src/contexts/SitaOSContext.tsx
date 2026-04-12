@@ -267,6 +267,8 @@ function getOrCreateKernel(): SitaOSKernel {
     chiefOfStaff, timingIntelligence, relationships, digestEngine, sitaModes,
     adaptiveInterface, opportunityEngine, memoryGovernance, boundaryEngine, experienceSignature,
     hydrated: false,
+    currentLayer: "app" as Layer,
+    currentDomain: undefined,
   };
 
   return _kernel;
