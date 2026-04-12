@@ -393,6 +393,7 @@ export function FloatingWindow({
                 "border border-[hsl(0_0%_100%/0.20)] dark:border-[hsl(0_0%_100%/0.08)]",
                 APP_SHADOWS.unfocused
               ),
+          magnetSnapped && "ring-2 ring-[hsl(210_80%_60%/0.4)]",
           isDragging ? "cursor-grabbing" : "",
           className
         )}
