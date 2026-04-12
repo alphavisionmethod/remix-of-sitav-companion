@@ -370,6 +370,17 @@ export const APP_CATALOG: AppDefinition[] = [
     updateSource: "store-managed", startupBehavior: "none", notificationPermission: true,
     installStatus: "installed", installedAt: "2026-01-01", pinnedToDock: true, tags: ["weather", "forecast"], receipts: [],
   },
+  {
+    id: "nova-terminal", name: "Nova Terminal", publisher: "SITA OS", icon: "▣", iconBg: "from-[hsl(265_55%_30%)] to-[hsl(265_55%_18%)]",
+    category: "utilities", appClass: "internal", trustLevel: "sita-verified", version: "1.0.0", size: "2 MB",
+    shortDescription: "Canvas-rendered terminal via NovaContext", fullDescription: "GPU-accelerated terminal rendered entirely on HTML Canvas via the Nova SDK NovaContext API. Uses NovaEvents for keyboard input and lifecycle hooks for focus management.",
+    screenshots: [], rating: 4.9, downloads: 30_000, lastUpdated: "2026-04-12",
+    releaseNotes: ["Initial release — canvas rendering, autocomplete, syntax highlighting"],
+    permissions: [], fileAssociations: [], protocolAssociations: [],
+    worksWithSita: ["Dock integration", "NovaContext canvas", "NovaEvents input", "Lifecycle hooks"],
+    updateSource: "store-managed", startupBehavior: "none", notificationPermission: false,
+    installStatus: "installed", installedAt: "2026-04-12", pinnedToDock: true, tags: ["terminal", "canvas", "nova-sdk"], receipts: [],
+  },
 
   // ── NEW APPS — Expanded Coverage ──
 
