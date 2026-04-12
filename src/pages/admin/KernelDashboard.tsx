@@ -104,6 +104,10 @@ function useKernelMetrics(refreshMs = 2000) {
   const memStats = useMemo(() => MemoryManager.getStats(), [tick]);
   const schedStats = useMemo(() => Scheduler.getStats(), [tick]);
   const compStats = useMemo(() => Compositor.getStats(), [tick]);
+  const schedulerEvents = useMemo(() => Scheduler.getEventLog(20), [tick]);
+  const currentContext = useMemo(() => Scheduler.getCurrentContext(), [tick]);
+  const blockedProcesses = useMemo(() => ProcessTable.listBlocked(), [tick]);
+  const readyProcesses = useMemo(() => ProcessTable.listReady(), [tick]);
 
   // Derive scheduler band distribution from real processes
   const bandDistribution = useMemo(() => {
@@ -116,7 +120,6 @@ function useKernelMetrics(refreshMs = 2000) {
         bands[p.priority].cpuPercent += p.cpuTicks;
       }
     }
-    // Normalize CPU to percentages
     const totalTicks = Object.values(bands).reduce((s, b) => s + b.cpuPercent, 0) || 1;
     for (const b of allBands) {
       bands[b].cpuPercent = Math.round((bands[b].cpuPercent / totalTicks) * 1000) / 10;
@@ -124,7 +127,7 @@ function useKernelMetrics(refreshMs = 2000) {
     return bands;
   }, [processes]);
 
-  return { processes, memStats, schedStats, compStats, bandDistribution, tick };
+  return { processes, memStats, schedStats, compStats, bandDistribution, tick, schedulerEvents, currentContext, blockedProcesses, readyProcesses };
 }
 
 // ── Subcomponents ────────────────────────────────────────────
