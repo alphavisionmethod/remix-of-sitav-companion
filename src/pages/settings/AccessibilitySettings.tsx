@@ -1,10 +1,22 @@
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Switch } from "@/components/ui/switch";
 import { Slider } from "@/components/ui/slider";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Eye, Keyboard, MousePointer, Volume2, ZoomIn, Contrast } from "lucide-react";
+import { Eye, Keyboard, MousePointer, Volume2 } from "lucide-react";
+import { useSettingsValue } from "@/hooks/use-settings-value";
 
 const AccessibilitySettings = () => {
+  const [highContrast, setHighContrast] = useSettingsValue("accessibility.highContrast", false);
+  const [textSize, setTextSize] = useSettingsValue("accessibility.textSize", 100);
+  const [reduceTransparency, setReduceTransparency] = useSettingsValue("appearance.reduceTransparency", false);
+  const [boldText, setBoldText] = useSettingsValue("accessibility.boldText", false);
+  const [reduceMotion, setReduceMotion] = useSettingsValue("appearance.reduceMotion", false);
+  const [reduceAutoPlay, setReduceAutoPlay] = useSettingsValue("accessibility.reduceAutoPlayEffects", false);
+  const [fullKeyboardNav, setFullKeyboardNav] = useSettingsValue("accessibility.fullKeyboardNav", true);
+  const [focusIndicators, setFocusIndicators] = useSettingsValue("accessibility.focusIndicators", true);
+  const [screenReader, setScreenReader] = useSettingsValue("accessibility.screenReaderOptimized", false);
+  const [verbosity, setVerbosity] = useSettingsValue("accessibility.announcementVerbosity", "standard");
+
   return (
     <div className="space-y-6 p-6 max-w-3xl mx-auto">
       <div>
@@ -17,20 +29,20 @@ const AccessibilitySettings = () => {
         <CardContent className="space-y-5">
           <div className="flex items-center justify-between">
             <div><p className="text-sm font-medium">High Contrast Mode</p><p className="text-xs text-muted-foreground">Increase contrast for all UI elements</p></div>
-            <Switch />
+            <Switch checked={highContrast} onCheckedChange={setHighContrast} />
           </div>
           <div className="space-y-2">
             <p className="text-sm font-medium">Text Size</p>
-            <Slider defaultValue={[100]} min={75} max={200} step={25} />
-            <p className="text-xs text-muted-foreground">100% — Default</p>
+            <Slider value={[textSize]} min={75} max={200} step={25} onValueChange={([v]) => setTextSize(v as any)} />
+            <p className="text-xs text-muted-foreground">{textSize}%{textSize === 100 ? " — Default" : ""}</p>
           </div>
           <div className="flex items-center justify-between">
             <div><p className="text-sm font-medium">Reduce Transparency</p><p className="text-xs text-muted-foreground">Make backgrounds more opaque</p></div>
-            <Switch />
+            <Switch checked={reduceTransparency} onCheckedChange={setReduceTransparency} />
           </div>
           <div className="flex items-center justify-between">
             <div><p className="text-sm font-medium">Bold Text</p><p className="text-xs text-muted-foreground">Use heavier font weight throughout</p></div>
-            <Switch />
+            <Switch checked={boldText} onCheckedChange={setBoldText} />
           </div>
         </CardContent>
       </Card>
@@ -40,11 +52,11 @@ const AccessibilitySettings = () => {
         <CardContent className="space-y-5">
           <div className="flex items-center justify-between">
             <div><p className="text-sm font-medium">Reduce Motion</p><p className="text-xs text-muted-foreground">Minimize animations and transitions</p></div>
-            <Switch />
+            <Switch checked={reduceMotion} onCheckedChange={setReduceMotion} />
           </div>
           <div className="flex items-center justify-between">
             <div><p className="text-sm font-medium">Reduce Auto-Playing Effects</p><p className="text-xs text-muted-foreground">Stop ambient animations</p></div>
-            <Switch />
+            <Switch checked={reduceAutoPlay} onCheckedChange={setReduceAutoPlay} />
           </div>
         </CardContent>
       </Card>
@@ -54,11 +66,11 @@ const AccessibilitySettings = () => {
         <CardContent className="space-y-5">
           <div className="flex items-center justify-between">
             <div><p className="text-sm font-medium">Full Keyboard Navigation</p><p className="text-xs text-muted-foreground">Navigate all surfaces with keyboard only</p></div>
-            <Switch defaultChecked />
+            <Switch checked={fullKeyboardNav} onCheckedChange={setFullKeyboardNav} />
           </div>
           <div className="flex items-center justify-between">
             <div><p className="text-sm font-medium">Focus Indicators</p><p className="text-xs text-muted-foreground">Show visible focus rings on all interactive elements</p></div>
-            <Switch defaultChecked />
+            <Switch checked={focusIndicators} onCheckedChange={setFocusIndicators} />
           </div>
         </CardContent>
       </Card>
@@ -68,11 +80,11 @@ const AccessibilitySettings = () => {
         <CardContent className="space-y-5">
           <div className="flex items-center justify-between">
             <div><p className="text-sm font-medium">Screen Reader Optimized</p><p className="text-xs text-muted-foreground">Enhance ARIA labels and semantic structure</p></div>
-            <Switch />
+            <Switch checked={screenReader} onCheckedChange={setScreenReader} />
           </div>
           <div className="space-y-2">
             <p className="text-sm font-medium">Announcement Verbosity</p>
-            <Select defaultValue="standard">
+            <Select value={verbosity} onValueChange={(v) => setVerbosity(v as any)}>
               <SelectTrigger><SelectValue /></SelectTrigger>
               <SelectContent>
                 <SelectItem value="minimal">Minimal</SelectItem>

@@ -552,7 +552,7 @@ function NetworkContent() {
 }
 
 function BluetoothContent() {
-  const [btOn, setBtOn] = useState(true);
+  const [btOn, setBtOn] = useSettingsValue("bluetooth.enabled", true);
 
   return (
     <VStack spacing="tight">
@@ -591,10 +591,10 @@ function BluetoothContent() {
 }
 
 function NotificationsContent() {
-  const [doNotDisturb, setDoNotDisturb] = useState(false);
-  const [showPreviews, setShowPreviews] = useState(true);
+  const [doNotDisturb, setDoNotDisturb] = useSettingsValue("notifications.doNotDisturb", false);
+  const [showPreviews, setShowPreviews] = useSettingsValue("notifications.showPreviews", true);
   const [sounds, setSounds] = useSettingsValue("sound.uiSounds", true);
-  const [badges, setBadges] = useState(true);
+  const [badges, setBadges] = useSettingsValue("notifications.badges", true);
 
   return (
     <VStack spacing="tight">
@@ -652,7 +652,7 @@ function PrivacyContent() {
 
 function KeyboardContent() {
   const [keyRepeatRate, setKeyRepeatRate] = useSettingsValue("input.keyRepeatRate", 30);
-  const [autocorrect, setAutocorrect] = useState(true);
+  const [autocorrect, setAutocorrect] = useSettingsValue("input.autocorrect", true);
 
   return (
     <VStack spacing="tight">
