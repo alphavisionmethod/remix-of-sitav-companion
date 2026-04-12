@@ -135,12 +135,12 @@ const BusinessOperations = () => {
 
       {/* KPI Strip */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-        <KPITile icon={Layers} label="Open Queues" value={DEMO_ITEMS.filter(i => i.category === "queue").length} trend="caution" />
-        <KPITile icon={ShieldAlert} label="Escalations" value={escalationCount} trend="negative" />
-        <KPITile icon={GitBranch} label="Bottlenecks" value={bottleneckCount} trend="negative" />
-        <KPITile icon={AlertTriangle} label="At-Risk Items" value={atRiskCount} trend="caution" />
-        <KPITile icon={Users} label="Customer Impact" value={totalCustomerImpact} trend="negative" />
-        <KPITile icon={Zap} label="Critical" value={criticalCount} trend={criticalCount > 0 ? "negative" : "positive"} />
+        <KPITile icon={Layers} label="Open Queues" value={DEMO_ITEMS.filter(i => i.category === "queue").length} trend="down" />
+        <KPITile icon={ShieldAlert} label="Escalations" value={escalationCount} trend="down" />
+        <KPITile icon={GitBranch} label="Bottlenecks" value={bottleneckCount} trend="down" />
+        <KPITile icon={AlertTriangle} label="At-Risk Items" value={atRiskCount} trend="down" />
+        <KPITile icon={Users} label="Customer Impact" value={totalCustomerImpact} trend="down" />
+        <KPITile icon={Zap} label="Critical" value={criticalCount} trend={criticalCount > 0 ? "down" : "up"} />
       </div>
 
       {/* Business Day Pulse */}
