@@ -334,12 +334,13 @@ export function syscall(code: Syscall, pid: number, ...args: any[]): any {
   }
 
   // 8. Set return value in RAX (registers[0])
-  if (process.state !== "terminated") {
-    process.context.registers[0] = typeof result === "number" ? result : (result ? 0 : -1);
+  const postProcess = ProcessTable.getProcess(pid);
+  if (postProcess && postProcess.state !== "terminated") {
+    postProcess.context.registers[0] = typeof result === "number" ? result : (result ? 0 : -1);
   }
 
   // 9. RING TRANSITION: Ring 0 → Ring 3 (syscall exit)
-  if (didRingTransition && process.state !== "terminated") {
+  if (didRingTransition && postProcess && postProcess.state !== "terminated") {
     PrivilegeEnforcement.syscallExit(pid);
     ProcessTable.recordRingTransition(pid);
   }
