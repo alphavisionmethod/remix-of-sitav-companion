@@ -41,6 +41,7 @@ export interface AppManifest {
   capabilities?: string[];
   category?: string;
   description?: string;
+  designVersion?: string;
 }
 
 export interface ManifestValidationError {

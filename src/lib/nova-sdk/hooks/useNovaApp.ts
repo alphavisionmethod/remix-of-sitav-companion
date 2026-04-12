@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useEffect, useRef, useMemo } from "react";
+import { AppRegistry } from "../core/registry";
 import type { AppManifest } from "../core/manifest";
 import { AppLoader } from "../runtime/loader";
 import { lifecycleManager, type NovaAppLifecycle } from "../runtime/lifecycle";
@@ -24,6 +25,7 @@ interface UseNovaAppResult {
   bridge: typeof NovaBridge;
   lifecycle: typeof lifecycleManager;
   appId: string;
+  runtime: import("../runtime/managed-runtime").AppRuntime | undefined;
 }
 
 export function useNovaApp({ manifest, component, lifecycle }: UseNovaAppOptions): UseNovaAppResult {
@@ -58,5 +60,6 @@ export function useNovaApp({ manifest, component, lifecycle }: UseNovaAppOptions
     bridge: NovaBridge,
     lifecycle: lifecycleManager,
     appId: manifest.id,
+    runtime: AppRegistry.getApp(manifest.id)?.runtime,
   };
 }

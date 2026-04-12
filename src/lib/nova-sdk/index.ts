@@ -46,9 +46,20 @@ export { lifecycleManager } from "./runtime/lifecycle";
 export type { NovaAppLifecycle } from "./runtime/lifecycle";
 export { AppLoader } from "./runtime/loader";
 export type { AppBundle, LoadResult } from "./runtime/loader";
+export { AppRuntime, AppEventLoop, AppMemoryGuard, AppResourceTracker, AppErrorBoundary } from "./runtime/managed-runtime";
+export type { AppRuntimeConfig, MemoryLimits, EventPriority, RestartPolicy as RuntimeRestartPolicy } from "./runtime/managed-runtime";
 
 // Hooks
 export { useNovaApp } from "./hooks/useNovaApp";
+export { useAppRuntime } from "./hooks/useAppRuntime";
+
+// Design Contract
+export { validateDesignCompliance, setDesignEnforcementMode, getDesignEnforcementMode, auditColor, auditMotion, auditShadow, auditComponent } from "./core/design-contract";
+export type { DesignVersion, DesignEnforcementMode, DesignComplianceResult, MotionConfig } from "./core/design-contract";
+
+// Theme Provider
+export { NovaThemeProvider, useNovaTheme } from "./ui/NovaThemeProvider";
+export type { NovaThemeTokens } from "./ui/NovaThemeProvider";
 
 // Kernel
 export { ProcessTable } from "./kernel/process-manager";
