@@ -58,22 +58,33 @@ export class LifecycleManager {
       switch (targetState) {
         case "running":
           await hooks?.onLaunch?.();
+          // Start runtime event loop
+          app.runtime?.start();
           break;
         case "focused":
           hooks?.onFocus?.();
+          app.runtime?.resume();
           break;
         case "blurred":
           hooks?.onBlur?.();
           break;
         case "suspending":
           hooks?.onSuspend?.();
+          // Pause runtime event loop during suspend
+          app.runtime?.pause();
           break;
         case "terminated":
           hooks?.onExit?.();
+          // Full runtime cleanup
+          app.runtime?.destroy();
           break;
       }
     } catch (e) {
       console.error(`[Lifecycle] Hook error during ${currentState}→${targetState} for "${appId}":`, e);
+      // Report to error boundary if available
+      if (e instanceof Error && app.runtime) {
+        app.runtime.errorBoundary.handleError(e);
+      }
     }
 
     AppRegistry.setState(appId, targetState);
