@@ -30,6 +30,7 @@ import { useCalmEngine } from "@/contexts/CalmEngineContext";
 import { lifecycleManager } from "@/lib/nova-sdk/runtime/lifecycle";
 import { ProcessTable } from "@/lib/nova-sdk/kernel/process-manager";
 import { Compositor } from "@/lib/nova-sdk/kernel/compositor";
+import { WindowPerformanceMonitor } from "@/lib/nova-sdk/kernel/window-perf";
 
 // ── Types ────────────────────────────────────────────────────
 
@@ -481,6 +482,7 @@ export function DesktopSurface({
   const closeWindow = windowManager?.closeWindow;
   const focusWindow = windowManager?.focusWindow;
   const minimizeWindow = windowManager?.minimizeWindow;
+  const updateWindowPosition = windowManager?.updateWindowPosition;
 
   // ── Calm Engine ─────────────────────────────────────────────
   const calm = useCalmEngine();
@@ -489,6 +491,12 @@ export function DesktopSurface({
   // ── Soft Focus Mode ────────────────────────────────────────
   const hasWindows = visibleWindows.length > 0;
   const maxZ = visibleWindows.reduce((max, w) => Math.max(max, w.zIndex), 0);
+
+  // ── Frame tracking for perf instrumentation ──────────────
+  useEffect(() => {
+    WindowPerformanceMonitor.startFrameTracking();
+    return () => WindowPerformanceMonitor.stopFrameTracking();
+  }, []);
 
   const handleBackgroundClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget && onOpenCommand) {
@@ -678,6 +686,7 @@ export function DesktopSurface({
                 focusWindow?.(w.id);
               }}
               isFocused={w.zIndex === maxZ}
+              onPositionChange={(pos, width) => updateWindowPosition?.(w.id, pos, width)}
               className="cursor-default"
               style={{ zIndex: DEPTH_LAYERS.windows + w.zIndex }}
             >

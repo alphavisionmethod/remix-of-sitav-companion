@@ -52,6 +52,7 @@ interface FloatingWindowProps {
   onMaximize?: () => void;
   onPiP?: () => void;
   onFocus?: () => void;
+  onPositionChange?: (pos: { x: number; y: number }, width: number) => void;
   isFocused?: boolean;
   isOccluded?: boolean;
   siblingWindows?: SiblingWindow[];
@@ -93,6 +94,7 @@ export function FloatingWindow({
   onMaximize,
   onPiP,
   onFocus,
+  onPositionChange,
   isFocused = true,
   isOccluded = false,
   siblingWindows = [],
@@ -155,7 +157,7 @@ export function FloatingWindow({
         opacity: 0,
         filter: "blur(8px)",
       }
-    : { ...NOVA_MOTION.window.enter.initial, scale: 0.85, opacity: 0, filter: "blur(6px)" };
+    : { ...NOVA_MOTION.window.enter.initial, scale: 0.96, opacity: 0, filter: "blur(6px)" };
 
   const morphAnimate = originRect
     ? { x: 0, y: 0, scale: 1, opacity: 1, filter: "blur(0px)" }
@@ -341,6 +343,7 @@ export function FloatingWindow({
       setSize({ width: rect.width, height: rect.height });
       setSnappedTo(snapZone);
       SoundEngine.snap(rect.x + rect.width / 2);
+      onPositionChange?.({ x: rect.x, y: rect.y }, rect.width);
     } else {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
@@ -359,6 +362,7 @@ export function FloatingWindow({
       }
 
       runInertia();
+      onPositionChange?.(currentPos.current, size.width);
     }
     setSnapZone(null);
   }, [snapZone, size.width, size.height, runInertia, windowId]);
@@ -561,7 +565,7 @@ export function FloatingWindow({
         }}
         className={cn(
           "absolute overflow-hidden",
-          "backdrop-blur-2xl transition-[box-shadow,border-color,filter] duration-200",
+          "backdrop-blur-2xl transition-[box-shadow,border-color,filter] duration-[120ms]",
           isFocused
             ? cn(
                 "bg-[hsl(0_0%_100%/0.72)] dark:bg-[hsl(0_0%_0%/0.62)]",
@@ -579,20 +583,22 @@ export function FloatingWindow({
           className
         )}
         style={{
-          left: pos.x,
-          top: pos.y,
+          // Transform-based positioning for GPU-composited drag (<16ms latency)
+          ...(isDragging
+            ? { left: 0, top: 0, transform: `translate3d(${pos.x}px, ${pos.y}px, 0)` }
+            : { left: pos.x, top: pos.y }),
           width: size.width,
           height: size.height || undefined,
           zIndex: DEPTH_LAYERS.windows,
-          willChange: isDragging ? "transform, left, top" : "transform",
+          willChange: isDragging ? "transform" : "auto",
           borderRadius: APP_CHROME.cornerRadius,
           opacity: attentionOpacity,
           filter: isFocused
             ? `saturate(${attentionSaturation})`
             : `saturate(${attentionSaturation * 0.85}) brightness(0.97)`,
           transition: isDragging || isResizing
-            ? "box-shadow 0.2s, filter 0.3s"
-            : `left ${SNAP_CONFIG.animationDuration}s ease, top ${SNAP_CONFIG.animationDuration}s ease, width ${SNAP_CONFIG.animationDuration}s ease, height ${SNAP_CONFIG.animationDuration}s ease, box-shadow 0.2s, filter 0.3s`,
+            ? "box-shadow 0.12s, filter 0.12s"
+            : `left ${SNAP_CONFIG.animationDuration}s ease, top ${SNAP_CONFIG.animationDuration}s ease, width ${SNAP_CONFIG.animationDuration}s ease, height ${SNAP_CONFIG.animationDuration}s ease, box-shadow 0.12s, filter 0.12s`,
           ...(dynamicShadow ? { boxShadow: dynamicShadow } : {}),
           ...style,
         }}

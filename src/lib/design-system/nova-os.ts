@@ -80,10 +80,10 @@ export const NOVA_MOTION = {
     snappy: { type: "spring" as const, stiffness: 300, damping: 25 },
     dock: { type: "spring" as const, stiffness: 300, damping: 20 },
   },
-  /** Window open / close */
+  /** Window open / close — spec: open 0.96→1, close 1→0.98 */
   window: {
-    enter: { initial: { scale: 0.95, opacity: 0 }, animate: { scale: 1, opacity: 1 } },
-    exit: { exit: { scale: 0.95, opacity: 0 } },
+    enter: { initial: { scale: 0.96, opacity: 0 }, animate: { scale: 1, opacity: 1 } },
+    exit: { exit: { scale: 0.98, opacity: 0, transition: { duration: 0.14, ease: "easeOut" } } },
   },
 } as const;
 
