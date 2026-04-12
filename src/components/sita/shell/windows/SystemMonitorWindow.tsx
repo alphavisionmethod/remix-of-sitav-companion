@@ -1,13 +1,12 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — System Monitor Window
-// Real-time CPU, memory, process list, network activity graphs
-// Uses Nova SDK canvas rendering via NovaContext
+// Real-time CPU, memory, process list, network, GPU, services
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import {
   Cpu, HardDrive, Activity, Wifi, Zap, BarChart3,
-  ArrowUp, ArrowDown, Pause, Play,
+  ArrowUp, ArrowDown, Pause, Play, Server,
 } from "lucide-react";
 import {
   AppLayout,
@@ -22,37 +21,18 @@ import { cn } from "@/lib/utils";
 import { NovaCanvasChart, type ChartSeries } from "./NovaCanvasChart";
 import { NovaCanvasBars, type BarItem } from "./NovaCanvasBars";
 import type { NovaColor } from "@/lib/nova-sdk/graphics/context";
+import { ServiceManager, type ServiceLogEntry } from "@/lib/nova-sdk/services/service-manager";
 
 // ── Types ────────────────────────────────────────────────────
 
 interface ProcessInfo {
-  pid: number;
-  name: string;
-  cpu: number;
-  mem: number;
-  status: "running" | "sleeping" | "idle";
-  threads: number;
+  pid: number; name: string; cpu: number; mem: number;
+  status: "running" | "sleeping" | "idle"; threads: number;
 }
 
-interface NetworkSample {
-  time: string;
-  up: number;
-  down: number;
-}
-
-interface CpuSample {
-  time: string;
-  user: number;
-  system: number;
-  idle: number;
-}
-
-interface MemSample {
-  time: string;
-  used: number;
-  cached: number;
-  free: number;
-}
+interface NetworkSample { time: string; up: number; down: number; }
+interface CpuSample { time: string; user: number; system: number; idle: number; }
+interface MemSample { time: string; used: number; cached: number; free: number; }
 
 // ── Colors ───────────────────────────────────────────────────
 
@@ -69,7 +49,7 @@ const COLORS = {
   gpuHigh:   { h: 0, s: 70, l: 55 } as NovaColor,
 };
 
-// ── Simulated Data Generators ────────────────────────────────
+// ── Simulated Data ────────────────────────────────────────────
 
 const PROCESS_NAMES = [
   "sita-shell", "nova-compositor", "sita-kernel", "watchdog",
@@ -81,8 +61,7 @@ const PROCESS_NAMES = [
 
 function generateProcesses(): ProcessInfo[] {
   return PROCESS_NAMES.map((name, i) => ({
-    pid: 1000 + i * 7,
-    name,
+    pid: 1000 + i * 7, name,
     cpu: name === "nova-compositor" ? 8 + Math.random() * 12
       : name === "sita-kernel" ? 3 + Math.random() * 5
       : name === "gpu-compositor" ? 5 + Math.random() * 8
@@ -96,14 +75,11 @@ function generateProcesses(): ProcessInfo[] {
   }));
 }
 
-function timeLabel(i: number): string {
-  const s = i % 60;
-  return `${s}s`;
-}
+function timeLabel(i: number): string { return `${i % 60}s`; }
 
 // ── Sidebar Sections ─────────────────────────────────────────
 
-type MonitorSection = "cpu" | "memory" | "processes" | "network" | "gpu";
+type MonitorSection = "cpu" | "memory" | "processes" | "network" | "gpu" | "services";
 
 const SECTIONS: { id: MonitorSection; label: string; icon: React.ReactNode }[] = [
   { id: "cpu", label: "CPU", icon: <Cpu className="w-3.5 h-3.5" /> },
@@ -111,9 +87,10 @@ const SECTIONS: { id: MonitorSection; label: string; icon: React.ReactNode }[] =
   { id: "processes", label: "Processes", icon: <Activity className="w-3.5 h-3.5" /> },
   { id: "network", label: "Network", icon: <Wifi className="w-3.5 h-3.5" /> },
   { id: "gpu", label: "GPU", icon: <Zap className="w-3.5 h-3.5" /> },
+  { id: "services", label: "Services", icon: <Server className="w-3.5 h-3.5" /> },
 ];
 
-// ── Sparkline Mini Component (canvas) ────────────────────────
+// ── Sparkline ────────────────────────────────────────────────
 
 function Sparkline({ data, color, height = 28 }: { data: number[]; color: string; height?: number }) {
   const max = Math.max(...data, 1);
@@ -137,14 +114,8 @@ function Sparkline({ data, color, height = 28 }: { data: number[]; color: string
   );
 }
 
-// ── Status Dot ───────────────────────────────────────────────
-
 function StatusDot({ status }: { status: ProcessInfo["status"] }) {
-  const colors = {
-    running: "bg-[hsl(142_70%_50%)]",
-    sleeping: "bg-[hsl(45_80%_55%)]",
-    idle: "bg-[hsl(0_0%_50%)]",
-  };
+  const colors = { running: "bg-[hsl(142_70%_50%)]", sleeping: "bg-[hsl(45_80%_55%)]", idle: "bg-[hsl(0_0%_50%)]" };
   return <div className={cn("w-1.5 h-1.5 rounded-full", colors[status])} />;
 }
 
@@ -164,7 +135,10 @@ export function SystemMonitorWindow() {
   const [memSpark, setMemSpark] = useState<number[]>(() => Array(30).fill(0));
   const tickRef = useRef(0);
 
-  // ── Real-time data simulation ──────────────────────────────
+  // Services state
+  const [servicesDiag, setServicesDiag] = useState<Record<string, Record<string, unknown>>>({});
+  const [bootLog, setBootLog] = useState<readonly ServiceLogEntry[]>([]);
+
   useEffect(() => {
     if (paused) return;
 
@@ -172,35 +146,40 @@ export function SystemMonitorWindow() {
       tickRef.current++;
       const t = timeLabel(tickRef.current);
 
-      // CPU
       const user = 15 + Math.sin(tickRef.current * 0.1) * 10 + Math.random() * 8;
       const system = 5 + Math.random() * 6;
-      const idle = 100 - user - system;
-      setCpuHistory(prev => [...prev.slice(-59), { time: t, user, system, idle }]);
+      setCpuHistory(prev => [...prev.slice(-59), { time: t, user, system, idle: 100 - user - system }]);
       setCpuSpark(prev => [...prev.slice(-29), user + system]);
 
-      // Memory
       const used = 4.2 + Math.sin(tickRef.current * 0.05) * 0.8 + Math.random() * 0.3;
       const cached = 1.8 + Math.random() * 0.4;
-      const free = 16 - used - cached;
-      setMemHistory(prev => [...prev.slice(-59), { time: t, used, cached, free }]);
+      setMemHistory(prev => [...prev.slice(-59), { time: t, used, cached, free: 16 - used - cached }]);
       setMemSpark(prev => [...prev.slice(-29), (used / 16) * 100]);
 
-      // Network
       const down = 2.5 + Math.sin(tickRef.current * 0.15) * 2 + Math.random() * 1.5;
       const up = 0.8 + Math.random() * 1.2;
       setNetHistory(prev => [...prev.slice(-59), { time: t, up, down }]);
 
-      // Processes (update every 3 ticks)
-      if (tickRef.current % 3 === 0) {
-        setProcesses(generateProcesses());
+      if (tickRef.current % 3 === 0) setProcesses(generateProcesses());
+
+      // Refresh services every 2s
+      if (tickRef.current % 2 === 0 && section === "services") {
+        setServicesDiag(ServiceManager.getDiagnostics());
+        setBootLog(ServiceManager.getBootLog());
       }
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [paused]);
+  }, [paused, section]);
 
-  // ── Derived stats ──────────────────────────────────────────
+  // Load services on first view
+  useEffect(() => {
+    if (section === "services") {
+      setServicesDiag(ServiceManager.getDiagnostics());
+      setBootLog(ServiceManager.getBootLog());
+    }
+  }, [section]);
+
   const latestCpu = cpuHistory[cpuHistory.length - 1];
   const latestMem = memHistory[memHistory.length - 1];
   const latestNet = netHistory[netHistory.length - 1];
@@ -215,7 +194,6 @@ export function SystemMonitorWindow() {
     return sorted;
   }, [processes, sortBy]);
 
-  // ── Chart series (memoized) ────────────────────────────────
   const cpuSeries: ChartSeries[] = useMemo(() => [
     { key: "system", color: COLORS.cpuSystem, fillOpacity: 0.3, data: cpuHistory.map(s => s.system) },
     { key: "user", color: COLORS.cpuUser, fillOpacity: 0.35, data: cpuHistory.map(s => s.user) },
@@ -231,17 +209,10 @@ export function SystemMonitorWindow() {
     { key: "upload", color: COLORS.netUp, fillOpacity: 0.25, data: netHistory.map(s => s.up) },
   ], [netHistory]);
 
-  // ── Core bars (memoized) ───────────────────────────────────
   const coreBars: BarItem[] = useMemo(() => {
     return Array.from({ length: 8 }, (_, i) => {
       const load = Math.max(5, totalCpu + (Math.random() - 0.5) * 30);
-      const clamped = Math.min(100, Math.max(0, load));
-      return {
-        label: `C${i}`,
-        value: clamped,
-        colorLow: COLORS.barLow,
-        colorHigh: COLORS.barHigh,
-      };
+      return { label: `C${i}`, value: Math.min(100, Math.max(0, load)), colorLow: COLORS.barLow, colorHigh: COLORS.barHigh };
     });
   }, [totalCpu]);
 
@@ -251,16 +222,12 @@ export function SystemMonitorWindow() {
       <NovaSectionLabel className="!px-0 !mb-1">Monitor</NovaSectionLabel>
       <NovaList
         items={SECTIONS.map(s => ({
-          id: s.id,
-          label: s.label,
-          icon: s.icon,
-          active: section === s.id,
-          onClick: () => setSection(s.id),
+          id: s.id, label: s.label, icon: s.icon,
+          active: section === s.id, onClick: () => setSection(s.id),
         }))}
       />
       <Divider className="!my-2" />
 
-      {/* Quick stats */}
       <VStack spacing="micro" className="px-1">
         <NovaSectionLabel className="!px-0 !mb-0.5">Quick Stats</NovaSectionLabel>
 
@@ -287,16 +254,13 @@ export function SystemMonitorWindow() {
         <div className="rounded-lg bg-[hsl(0_0%_0%/0.03)] dark:bg-[hsl(0_0%_100%/0.03)] p-2">
           <HStack spacing="micro" align="center" justify="between">
             <NovaText variant="label" muted>Net ↓</NovaText>
-            <NovaText variant="label">
-              {latestNet ? `${latestNet.down.toFixed(1)} MB/s` : "—"}
-            </NovaText>
+            <NovaText variant="label">{latestNet ? `${latestNet.down.toFixed(1)} MB/s` : "—"}</NovaText>
           </HStack>
         </div>
       </VStack>
     </VStack>
   );
 
-  // ── Toolbar ────────────────────────────────────────────────
   const toolbar = (
     <HStack spacing="tight" align="center" justify="between" className="w-full">
       <HStack spacing="micro" align="center">
@@ -332,23 +296,12 @@ export function SystemMonitorWindow() {
 
       <NovaCard>
         <NovaText variant="label" muted className="mb-2">CPU Load — 60s Window</NovaText>
-        <NovaCanvasChart
-          series={cpuSeries}
-          stacked
-          maxY={100}
-          height={180}
-          yUnit="%"
-        />
+        <NovaCanvasChart series={cpuSeries} stacked maxY={100} height={180} yUnit="%" />
       </NovaCard>
 
-      {/* Per-core bars via canvas */}
       <NovaCard>
         <NovaText variant="label" muted className="mb-2">Core Utilization</NovaText>
-        <NovaCanvasBars
-          bars={coreBars}
-          vertical
-          columns={4}
-        />
+        <NovaCanvasBars bars={coreBars} vertical columns={4} />
       </NovaCard>
     </VStack>
   );
@@ -369,7 +322,6 @@ export function SystemMonitorWindow() {
         </div>
       </HStack>
 
-      {/* Memory pressure bar via canvas */}
       <NovaCard>
         <NovaText variant="label" muted className="mb-2">Memory Pressure</NovaText>
         <NovaCanvasBars
@@ -377,8 +329,7 @@ export function SystemMonitorWindow() {
             { label: "Used", value: memPercent, colorLow: COLORS.memUsed, colorHigh: COLORS.barHigh, threshold: 80 },
             { label: "Cached", value: latestMem ? (latestMem.cached / 16) * 100 : 0, colorLow: COLORS.memCached, colorHigh: COLORS.memCached },
           ]}
-          barHeight={16}
-          gap={4}
+          barHeight={16} gap={4}
         />
         <HStack spacing="normal" className="mt-2">
           <HStack spacing="micro" align="center">
@@ -398,16 +349,9 @@ export function SystemMonitorWindow() {
 
       <NovaCard>
         <NovaText variant="label" muted className="mb-2">Memory Over Time — 60s</NovaText>
-        <NovaCanvasChart
-          series={memSeries}
-          stacked
-          maxY={16}
-          height={160}
-          yUnit=" GB"
-        />
+        <NovaCanvasChart series={memSeries} stacked maxY={16} height={160} yUnit=" GB" />
       </NovaCard>
 
-      {/* Top memory consumers */}
       <NovaCard>
         <NovaText variant="label" muted className="mb-2">Top Consumers</NovaText>
         <VStack spacing="micro">
@@ -442,8 +386,7 @@ export function SystemMonitorWindow() {
               key={key}
               onClick={() => setSortBy(key)}
               className={cn(
-                APP_COMPONENTS.button.base,
-                "!text-[10px] !px-2 !py-0.5",
+                APP_COMPONENTS.button.base, "!text-[10px] !px-2 !py-0.5",
                 sortBy === key ? APP_COMPONENTS.button.primary : APP_COMPONENTS.button.ghost,
               )}
             >
@@ -454,7 +397,6 @@ export function SystemMonitorWindow() {
       </HStack>
 
       <NovaCard className="!p-0 overflow-hidden">
-        {/* Header */}
         <div className="grid grid-cols-[1fr_auto_auto_auto_auto] gap-x-3 px-3 py-1.5 border-b border-[hsl(0_0%_0%/0.06)] dark:border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_0%/0.02)] dark:bg-[hsl(0_0%_100%/0.02)]">
           <NovaText variant="label" muted>Process</NovaText>
           <NovaText variant="label" muted className="w-10 text-right">PID</NovaText>
@@ -463,7 +405,6 @@ export function SystemMonitorWindow() {
           <NovaText variant="label" muted className="w-8 text-right">Thr</NovaText>
         </div>
 
-        {/* Rows */}
         <div className="max-h-[320px] overflow-y-auto">
           {sortedProcesses.map(p => (
             <div
@@ -480,10 +421,7 @@ export function SystemMonitorWindow() {
                 <NovaText variant="body" className="!text-[11px] truncate">{p.name}</NovaText>
               </HStack>
               <NovaText variant="label" muted className="w-10 text-right !text-[10px]">{p.pid}</NovaText>
-              <NovaText
-                variant="label"
-                className={cn("w-12 text-right !text-[10px]", p.cpu > 10 ? "!text-[hsl(0_70%_55%)]" : p.cpu > 5 ? "!text-[hsl(45_80%_50%)]" : "")}
-              >
+              <NovaText variant="label" className={cn("w-12 text-right !text-[10px]", p.cpu > 10 ? "!text-[hsl(0_70%_55%)]" : p.cpu > 5 ? "!text-[hsl(45_80%_50%)]" : "")}>
                 {p.cpu.toFixed(1)}%
               </NovaText>
               <NovaText variant="label" muted className="w-14 text-right !text-[10px]">{p.mem.toFixed(0)} MB</NovaText>
@@ -521,25 +459,15 @@ export function SystemMonitorWindow() {
 
       <NovaCard>
         <NovaText variant="label" muted className="mb-2">Throughput — 60s</NovaText>
-        <NovaCanvasChart
-          series={netSeries}
-          maxY={10}
-          height={180}
-          yUnit=" MB/s"
-        />
+        <NovaCanvasChart series={netSeries} maxY={10} height={180} yUnit=" MB/s" />
       </NovaCard>
 
-      {/* Connection details */}
       <NovaCard>
         <NovaText variant="label" muted className="mb-2">Connection Details</NovaText>
         <VStack spacing="micro">
           {[
-            ["Interface", "Wi-Fi (en0)"],
-            ["SSID", "SITA-5G"],
-            ["IP Address", "192.168.1.42"],
-            ["Gateway", "192.168.1.1"],
-            ["DNS", "1.1.1.1, 8.8.8.8"],
-            ["Link Speed", "866 Mbps"],
+            ["Interface", "Wi-Fi (en0)"], ["SSID", "SITA-5G"], ["IP Address", "192.168.1.42"],
+            ["Gateway", "192.168.1.1"], ["DNS", "1.1.1.1, 8.8.8.8"], ["Link Speed", "866 Mbps"],
             ["Signal", "-42 dBm (Excellent)"],
           ].map(([label, value]) => (
             <HStack key={label} spacing="tight" justify="between" align="center" className="px-1">
@@ -559,12 +487,7 @@ export function SystemMonitorWindow() {
 
     const gpuBars: BarItem[] = Array.from({ length: 10 }, (_, i) => {
       const coreLoad = Math.max(5, gpuLoad + (Math.random() - 0.5) * 40);
-      return {
-        label: `G${i}`,
-        value: Math.min(100, Math.max(0, coreLoad)),
-        colorLow: COLORS.gpuLow,
-        colorHigh: COLORS.gpuHigh,
-      };
+      return { label: `G${i}`, value: Math.min(100, Math.max(0, coreLoad)), colorLow: COLORS.gpuLow, colorHigh: COLORS.gpuHigh };
     });
 
     return (
@@ -575,30 +498,22 @@ export function SystemMonitorWindow() {
             <NovaText variant="label" muted>Integrated — 10-core GPU</NovaText>
           </VStack>
           <div className="text-right">
-            <NovaText variant="heading" className="!text-[hsl(45_80%_50%)]">
-              {gpuLoad.toFixed(0)}%
-            </NovaText>
+            <NovaText variant="heading" className="!text-[hsl(45_80%_50%)]">{gpuLoad.toFixed(0)}%</NovaText>
             <NovaText variant="label" muted>{gpuTemp.toFixed(0)}°C</NovaText>
           </div>
         </HStack>
 
         <NovaCard>
           <NovaText variant="label" muted className="mb-2">GPU Core Utilization</NovaText>
-          <NovaCanvasBars
-            bars={gpuBars}
-            vertical
-            columns={5}
-          />
+          <NovaCanvasBars bars={gpuBars} vertical columns={5} />
         </NovaCard>
 
         <NovaCard>
           <NovaText variant="label" muted className="mb-2">GPU Details</NovaText>
           <VStack spacing="micro">
             {[
-              ["Renderer", "Apple GPU (10-core)"],
-              ["VRAM", "Shared — 16 GB Unified"],
-              ["Metal Support", "Metal 3"],
-              ["Display", "2560 × 1600 @ 120Hz"],
+              ["Renderer", "Apple GPU (10-core)"], ["VRAM", "Shared — 16 GB Unified"],
+              ["Metal Support", "Metal 3"], ["Display", "2560 × 1600 @ 120Hz"],
               ["Power", gpuLoad > 50 ? "High Performance" : "Efficient"],
             ].map(([label, value]) => (
               <HStack key={label} spacing="tight" justify="between" align="center" className="px-1">
@@ -612,19 +527,149 @@ export function SystemMonitorWindow() {
     );
   };
 
+  // ── Services Section ───────────────────────────────────────
+  const renderServices = () => {
+    const serviceIds = Object.keys(servicesDiag);
+    const totalServices = serviceIds.length;
+    const runningCount = serviceIds.filter(id => servicesDiag[id]?.status === "running").length;
+    const failedCount = serviceIds.filter(id => servicesDiag[id]?.status === "failed").length;
+
+    const statusColor = (status: unknown) => {
+      switch (status) {
+        case "running": return "bg-[hsl(142_70%_50%)]";
+        case "starting": return "bg-[hsl(45_80%_55%)]";
+        case "failed": return "bg-[hsl(0_70%_55%)]";
+        case "stopped": return "bg-[hsl(0_0%_50%)]";
+        default: return "bg-[hsl(0_0%_40%)]";
+      }
+    };
+
+    const statusBadge = (status: unknown) => {
+      switch (status) {
+        case "running": return "success" as const;
+        case "starting": return "warning" as const;
+        case "failed": return "default" as const;
+        default: return "default" as const;
+      }
+    };
+
+    return (
+      <VStack spacing="normal">
+        <HStack spacing="tight" justify="between" align="center">
+          <VStack spacing="micro">
+            <NovaText variant="heading">System Services</NovaText>
+            <NovaText variant="label" muted>{totalServices} registered · {runningCount} running</NovaText>
+          </VStack>
+          <VStack spacing="micro" className="text-right">
+            {failedCount > 0 ? (
+              <NovaBadge variant="default" className="!text-[hsl(0_70%_55%)] !text-[9px]">
+                {failedCount} FAILED
+              </NovaBadge>
+            ) : (
+              <NovaBadge variant="success" className="!text-[9px]">ALL OK</NovaBadge>
+            )}
+          </VStack>
+        </HStack>
+
+        {/* Summary card */}
+        <NovaCard>
+          <HStack spacing="normal" justify="between">
+            <VStack spacing="micro" align="center" className="flex-1">
+              <NovaText variant="heading" className="!text-[hsl(142_70%_50%)]">{runningCount}</NovaText>
+              <NovaText variant="label" muted>Running</NovaText>
+            </VStack>
+            <VStack spacing="micro" align="center" className="flex-1">
+              <NovaText variant="heading" className={failedCount > 0 ? "!text-[hsl(0_70%_55%)]" : ""}>{failedCount}</NovaText>
+              <NovaText variant="label" muted>Failed</NovaText>
+            </VStack>
+            <VStack spacing="micro" align="center" className="flex-1">
+              <NovaText variant="heading">{totalServices}</NovaText>
+              <NovaText variant="label" muted>Total</NovaText>
+            </VStack>
+          </HStack>
+        </NovaCard>
+
+        {/* Service list */}
+        {serviceIds.length === 0 ? (
+          <NovaCard>
+            <VStack spacing="tight" align="center" className="py-4">
+              <Server className="w-6 h-6 text-[hsl(0_0%_50%)]" />
+              <NovaText variant="label" muted>No services registered</NovaText>
+              <NovaText variant="label" muted className="!text-[10px]">Services boot with the kernel</NovaText>
+            </VStack>
+          </NovaCard>
+        ) : (
+          serviceIds.map(id => {
+            const diag = servicesDiag[id] || {};
+            const status = String(diag.status || "unknown");
+
+            return (
+              <NovaCard key={id}>
+                <VStack spacing="tight">
+                  <HStack spacing="tight" justify="between" align="center">
+                    <HStack spacing="micro" align="center">
+                      <div className={cn("w-2 h-2 rounded-full", statusColor(status))} />
+                      <NovaText variant="body" className="!font-medium">{id}</NovaText>
+                    </HStack>
+                    <NovaBadge variant={statusBadge(status)} className="!text-[9px]">
+                      {status.toUpperCase()}
+                    </NovaBadge>
+                  </HStack>
+
+                  {/* Stats */}
+                  <div className="grid grid-cols-2 gap-x-4 gap-y-1 mt-1">
+                    {Object.entries(diag)
+                      .filter(([k]) => k !== "status" && k !== "userOverrides" && k !== "runtimeOverrides")
+                      .slice(0, 6)
+                      .map(([key, value]) => (
+                        <HStack key={key} spacing="micro" justify="between">
+                          <NovaText variant="label" muted className="!text-[10px] truncate">{key}</NovaText>
+                          <NovaText variant="label" className="!text-[10px]">
+                            {typeof value === "number" ? value.toFixed(value % 1 ? 1 : 0)
+                              : typeof value === "boolean" ? (value ? "✓" : "✗")
+                              : String(value ?? "—").slice(0, 20)}
+                          </NovaText>
+                        </HStack>
+                      ))}
+                  </div>
+                </VStack>
+              </NovaCard>
+            );
+          })
+        )}
+
+        {/* Boot log timeline */}
+        {bootLog.length > 0 && (
+          <NovaCard>
+            <NovaSectionLabel className="!px-0 !mb-1">Boot Timeline</NovaSectionLabel>
+            <VStack spacing="micro">
+              {bootLog.map((entry, i) => (
+                <HStack key={i} spacing="tight" align="center" justify="between" className="px-1">
+                  <HStack spacing="micro" align="center">
+                    <div className={cn("w-1.5 h-1.5 rounded-full", entry.status === "ok" ? "bg-[hsl(142_70%_50%)]" : "bg-[hsl(0_70%_55%)]")} />
+                    <NovaText variant="label" className="!text-[10px]">{entry.serviceId}</NovaText>
+                  </HStack>
+                  <NovaText variant="label" muted className="!text-[10px]">
+                    {entry.timestampMs.toFixed(1)}ms
+                  </NovaText>
+                </HStack>
+              ))}
+            </VStack>
+          </NovaCard>
+        )}
+      </VStack>
+    );
+  };
+
   // ── Render ─────────────────────────────────────────────────
   return (
-    <AppLayout
-      sidebar={sidebar}
-      sidebarWidth={155}
-      toolbar={toolbar}
-      minHeight={420}
-    >
+    <AppLayout sidebar={sidebar} sidebarWidth={155} toolbar={toolbar} minHeight={420}>
       {section === "cpu" && renderCpu()}
       {section === "memory" && renderMemory()}
       {section === "processes" && renderProcesses()}
       {section === "network" && renderNetwork()}
       {section === "gpu" && renderGpu()}
+      {section === "services" && renderServices()}
     </AppLayout>
   );
 }
