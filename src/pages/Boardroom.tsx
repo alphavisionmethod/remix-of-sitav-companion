@@ -18,9 +18,9 @@ import { KPITile, RiskCard, OpportunityCard, EmptyState, SitaTabs } from "@/comp
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { StateBadge, StateStep } from "@/components/sita/StateBadge";
 import { ConfidenceLadder } from "@/components/sita/AdvisorComponents";
-import { BoardroomEntryCeremony } from "@/components/sita/BoardroomEntryCeremony";
-import { ConfidenceRadar } from "@/components/sita/ConfidenceRadar";
-import { DisagreementTheater } from "@/components/sita/DisagreementTheater";
+import { WarRoomEntryCeremony } from "@/components/sita/WarRoomEntryCeremony";
+import { WarRoomConfidenceRadar } from "@/components/sita/WarRoomConfidenceRadar";
+import { WarRoomDisagreementTheater } from "@/components/sita/WarRoomDisagreementTheater";
 import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
 import { useOSOrchestration } from "@/hooks/useOSOrchestration";
 import { useExperienceSignature } from "@/hooks/useExperienceSignature";
@@ -739,7 +739,7 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
 
       {/* ── War Room: Confidence Radar ── */}
       {isDemoMode && (
-        <ConfidenceRadar
+        <WarRoomConfidenceRadar
           advisors={mockAdvisors.slice(0, 6).map(a => ({
             name: a.name,
             confidence: Math.round(a.confidence * 100),
@@ -751,7 +751,7 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
 
       {/* ── War Room: Disagreement Theater ── */}
       {isDemoMode && mockSynthesis.some(s => s.disagreements?.length) && (
-        <DisagreementTheater
+        <WarRoomDisagreementTheater
           topic="Growth vs. Cash Preservation Strategy"
           sideA={{
             name: "Business Advisor",
