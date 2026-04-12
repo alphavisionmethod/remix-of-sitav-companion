@@ -355,7 +355,7 @@ export function NovaTerminal() {
           parts[parts.length - 1] = sugs[selectedSugRef.current];
           inputRef.current = parts.join(" ") + " ";
           suggestionsRef.current = [];
-          NovaBridge.emit("sound:play", { type: "click" });
+          NovaBridge.send("sound:play", { type: "click" });
         }
         redraw();
         return;
@@ -476,7 +476,7 @@ export function NovaTerminal() {
     const trimmed = raw.trim();
     if (!trimmed) return;
 
-    NovaBridge.emit("sound:play", { type: "click" });
+    NovaBridge.send("sound:play", { type: "click" });
     linesRef.current = [...linesRef.current, { type: "input", text: `$ ${trimmed}` }];
     historyRef.current = [...historyRef.current, trimmed];
     historyIdxRef.current = -1;
