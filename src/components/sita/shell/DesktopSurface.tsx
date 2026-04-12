@@ -13,9 +13,10 @@ import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { useAccentSync } from "@/hooks/use-accent-sync";
 import {
   CheckCircle, DollarSign, Calendar, Brain,
-  TrendingUp, ArrowRight,
+  TrendingUp, ArrowRight, GripVertical,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { DragDropContext, Droppable, Draggable, type DropResult } from "@hello-pangea/dnd";
 import { ShellAmbientBackground, type AmbientMood } from "./ShellAmbientBackground";
 import type { TrustPosture, ContinuityContext, ShellNotificationDigest } from "./useShellState";
 import { DEPTH_LAYERS } from "@/lib/design-system/nova-os";
