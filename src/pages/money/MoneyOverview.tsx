@@ -1,5 +1,6 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
 import { KPITile, RiskCard, OpportunityCard, ProofCard, TimelineItem } from "@/components/sita/SitaComponents";
+import { AmbientHeader, StaggerReveal, StaggerItem, MetricHighlight, GlassCard } from "@/components/sita/PremiumPageComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
 import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
@@ -112,27 +113,41 @@ const MoneyOverview = () => {
   }
 
   return (
-    <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-      <DomainHeader title="Money Center" subtitle="Cash posture, obligations, and financial intelligence" icon={DollarSign} domain="money" />
+    <motion.div className="space-y-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}>
+      <AmbientHeader
+        title="Money Center"
+        subtitle="Cash posture, obligations, and financial intelligence"
+        icon={<DollarSign className="h-5 w-5 text-chart-2" />}
+        accentColor="hsl(150 60% 45%)"
+      />
 
-      {/* KPI Strip — from DB */}
-      <motion.div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-8"
-        variants={{ hidden: {}, show: { transition: { staggerChildren: 0.05 } } }} initial="hidden" animate="show">
+      {/* Premium Metric Highlights */}
+      <StaggerReveal className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {[
-          { label: "Total Balance", value: `$${k.totalBalance.toLocaleString()}`, trend: "up" as const, sub: `${accounts.length} accounts`, className: "gradient-sita-subtle" },
-          { label: "Safe to Spend", value: `$${k.safeToSpend.toLocaleString()}`, sub: "After obligations" },
+          { label: "Total Balance", value: `$${k.totalBalance.toLocaleString()}`, sub: `${accounts.length} accounts`, trend: "up" as const, glow: "emerald" as const, icon: <Wallet className="h-4 w-4 text-chart-2" /> },
+          { label: "Safe to Spend", value: `$${k.safeToSpend.toLocaleString()}`, sub: "After obligations", glow: "primary" as const, icon: <Shield className="h-4 w-4 text-primary" /> },
+          { label: "Monthly Burn", value: `$${k.monthlyBurn.toLocaleString()}`, sub: "Projected", trend: "down" as const, glow: "rose" as const, icon: <TrendingDown className="h-4 w-4 text-destructive" /> },
+          { label: "Receivables", value: `$${k.receivables.toLocaleString()}`, sub: `${k.receivableCount} expected`, trend: "up" as const, glow: "gold" as const, icon: <Receipt className="h-4 w-4 text-accent" /> },
+        ].map((m, i) => (
+          <StaggerItem key={i}>
+            <MetricHighlight {...m} />
+          </StaggerItem>
+        ))}
+      </StaggerReveal>
+
+      {/* Secondary KPIs */}
+      <StaggerReveal className="grid gap-2 grid-cols-4">
+        {[
           { label: "Bills Due (7d)", value: `$${k.billsDue7d.toLocaleString()}`, sub: `${k.billsDue7dCount} bills` },
           { label: "Reserve Health", value: `${k.reserveHealth}%`, trend: "up" as const, sub: "On target" },
           { label: "Subscriptions", value: `$${k.subscriptionMonthly}/mo`, sub: `${k.subscriptionCount} active` },
           { label: "Est. Waste", value: `$${k.estWaste}/mo`, sub: `${k.wasteCount} flagged` },
-          { label: "Receivables", value: `$${k.receivables.toLocaleString()}`, sub: `${k.receivableCount} expected` },
-          { label: "Monthly Burn", value: `$${k.monthlyBurn.toLocaleString()}`, trend: "down" as const, sub: "Projected" },
         ].map((kpi, i) => (
-          <motion.div key={i} variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } }}>
+          <StaggerItem key={i}>
             <KPITile {...kpi} />
-          </motion.div>
+          </StaggerItem>
         ))}
-      </motion.div>
+      </StaggerReveal>
 
       {/* Money Twin — Full Financial Reality Model */}
       <SitaCard hover={false} className="p-5">
