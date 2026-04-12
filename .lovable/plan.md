@@ -1,125 +1,109 @@
 
 
-# SITA OS — App vs OS vs Web Structural Separation Implementation
+# SITA OS — Architecture Enhancement & Boundary Hardening Plan
 
-## Current State Assessment
+## Current State After Last Round
 
-### What Already Works (Keep)
-The routing tiers in `App.tsx` already establish a 4-tier model:
-- **TIER 1 (Web)**: `PublicLayout` — 5 public routes (landing, login, signup, forgot/reset password). Clean and minimal.
-- **TIER 2 (Shell-less Auth)**: Onboarding, mobile surface, auth callback. Clean separation.
-- **TIER 3 (App + OS Shell)**: `ShellLayout` — ~380 routes covering user app, OS workspaces, built-in apps, offices.
-- **TIER 4 (Admin)**: `AdminShell` wrapping operator surfaces.
+**What's working:**
+- 6-layer manifest exists with typed constants, route→layer, service→layer maps
+- Boundary rules with import direction rules and forbidden patterns
+- Route registry with risk tiers and flagship loop tagging
+- Service ownership manifest with duplicate tracking and budget enforcement
+- CI boundary check script (passes clean)
+- Admin routes consolidated into 3 AdminShellLayout blocks (lines 1050, 1544, 1829)
+- Layer awareness wired into SitaOSContext and SitaKernelContext
 
-### Critical Problems Found
+**Critical issues found that need fixing:**
 
-**1. Admin routes outside AdminShell** (~20 routes)
-Lines 1049–1067 of App.tsx: DRS, mock-elimination, domain-reality, route-diagnostics, and all `/admin/automation/*` routes are rendered **outside** AdminShell — they appear inside the main ShellLayout with no admin wrapper. Same for `/admin/ai-runtime`, `/admin/persistence-status`, `/admin/system-health`, `/admin/brain-core`, `/admin/conscience-gate`.
+### 1. Duplicate Route — `/admin/pfa/google` registered twice (line 1570-1571)
+A copy/paste artifact. Must remove the duplicate.
 
-**2. Route grouping breaks mid-file**
-Line 1567: The AdminShell `</Route>` closes, then lines 1568-1569 place `/settings/connected-accounts` and `/settings/google` outside both admin and settings shells. Line 1570 opens a second AdminShell block. This is fragile and creates implicit boundary violations.
+### 2. 39 Duplicate Service Directories Between `services/` and `core-services/`
+The manifest only tracks 9 duplicates. The actual count is **39** shared directory names (brain-core, conscience-gate, ai-gateway, canonical-pipeline, capability-router, executor-service, approval-engine, epistemic-firewall, event-bus, finance-os, etc.). The manifest must be updated to reflect reality.
 
-**3. Massive service directory duplication**
-`src/lib/services/` has **~160 directories**. `src/lib/core-services/` has **~43 directories**. Many are duplicated between the two (brain-core, conscience-gate, model-router, policy-engine, receipt-service, executor-service, etc.). The rule says ~45 canonical services max — current count is ~200+.
+### 3. App Pages Importing Kernel Directly (Boundary Violation)
+6 non-admin pages import from `@/lib/core-services/` — violating the "App must not import OS Kernel" rule:
+- `LifeSimulator.tsx` → life-simulation
+- `PolicySimulatorHub.tsx` → governance-simulator
+- `SettingsPage.tsx` → governance-simulator
+- `FilesSearch.tsx` → search-fabric
+- `MoneyOverview.tsx` → fraud-sentinel
+- `GoogleConnectedAccounts.tsx` → google-provider-family
 
-**4. No explicit layer boundary declaration**
-Layers exist only by folder convention and layout wrapping — no typed manifest, no enforcement, no CI check. A new file can land anywhere without triggering a boundary violation.
+The boundary check script doesn't catch these because it only scans `src/pages/auth/` for web-layer violations, not all app pages for kernel imports.
 
-**5. Owner vs Admin boundary is implicit**
-`/owner/*` routes use `OwnerWorkspaceShell` but conceptually overlap with admin (both are operator/governance surfaces). No clear policy on what goes where.
+### 4. Boundary Check Script Too Narrow
+Only checks: auth pages importing kernel, admin importing app pages, services importing pages, contracts importing runtime, cross-domain imports. Missing:
+- All app-layer pages importing `core-services/` (the kernel layer)
+- Owner pages (treated as admin but not checked)
+- Hooks importing across boundaries
 
-**6. OS-level services consumed directly by pages**
-Pages import from `src/lib/services/*` and `src/lib/core-services/*` directly. No boundary layer enforces that app surfaces only consume OS services through hooks or capability invocations.
+### 5. No Visual Admin Board for Layer Architecture
+The manifests and registries exist as data but have no UI for operators to see boundary health, layer distribution, violations, and service budget status in real-time.
 
-## Implementation Plan
+### 6. `useLocation()` with `eslint-disable` in SitaOSContext
+The `useLocation()` call is wrapped in try/catch with an eslint-disable for rules-of-hooks — it works but is fragile. Should use a proper pattern (child component or custom hook).
 
-### Phase 1 — Layer Boundary Manifest (source of truth)
+---
 
-Create `src/lib/architecture/layer-manifest.ts`:
-- Define 6 canonical layers as typed constants: `WEB`, `APP`, `OS_KERNEL`, `OS_SERVICES`, `ADMIN_OPERATOR`, `DOMAIN_CAPABILITY`
-- Map every route prefix to its canonical layer
-- Map every service directory to its canonical layer
-- Export layer ownership rules as typed data
+## Enhancement Plan
 
-Create `src/lib/architecture/boundary-rules.ts`:
-- Define allowed import directions (App → OS_SERVICES ✓, App → OS_KERNEL ✗, ADMIN → OS_SERVICES ✓)
-- Define which layers can render which components
-- Export as consumable rules for CI and runtime checks
+### Phase 1 — Fix Active Violations
 
-### Phase 2 — Fix Route Boundary Violations in App.tsx
+**A. Remove duplicate route** in `src/App.tsx` line 1571 (`/admin/pfa/google`).
 
-Move the ~20 admin routes that are currently outside AdminShell into the AdminShell wrapper:
-- `/admin/ai-runtime`, `/admin/persistence-status`, `/admin/system-health`
-- `/admin/brain-core`, `/admin/conscience-gate`
-- All `/admin/drs/*` routes (lines 1055-1067)
-- All `/admin/automation/*` routes (lines 1070-1078)
-- Fix the broken AdminShell close/reopen at lines 1567-1570 by keeping settings routes outside admin and consolidating the admin block
+**B. Update boundary check script** (`scripts/architecture/check-layer-boundaries.ts`) — add Rule 6: scan ALL `src/pages/` (excluding `src/pages/admin/`) for imports from `@/lib/core-services/` and flag as `APP_IMPORTS_KERNEL` warnings.
 
-Consolidate all admin routes into a single `<Route element={<AdminShellLayout />}>` block to prevent future fragmentation.
+**C. Update service ownership manifest** to include all 39 actual duplicates (not just 9). Add the missing 30: epistemic-firewall, event-bus, finance-os, flagship-loops, frontend, google-provider-family, handoff, identity-auth, inference-gateway, integration-hub, launch-readiness, life-simulation, memory-service, mnemosyne, model-router, policy-engine, projection-service, receipt-service, recommendation-execution, security, self-healing, service-registry, system-updates, trust-governor, truth-indices, verification-engine, workflow-engine, architecture, index.ts.
 
-### Phase 3 — Create Route Registry with Layer Tags
+### Phase 2 — Fix `useLocation()` Pattern in Context
 
-Create `src/lib/architecture/route-registry.ts`:
-- Auto-generated registry mapping every route path to: layer, owner domain, flagship loop (if any), risk tier
-- Used by admin boards (ITC09 Route Inventory, Route Reality Heatmap) for live truth
-- Used by CI boundary check script
+Replace the try/catch `useLocation()` hack in `SitaOSContext.tsx` with a proper `LayerAwareProvider` child component that uses `useLocation()` safely and passes layer info up via callback.
 
-### Phase 4 — Service Layer Ownership Manifest
+### Phase 3 — Create Architecture Boundary Admin Board
 
-Create `src/lib/architecture/service-ownership-manifest.ts`:
-- Declare canonical ownership for each service directory
-- Flag which services in `src/lib/core-services/` are anti-sprawl shims vs real implementations
-- Flag duplicates between `services/` and `core-services/` with canonical pointer
-- Score: which services belong to kernel, OS, domain capability, or app layer
+**New file: `src/pages/admin/architecture/ArchitectureBoundaryBoard.tsx`**
 
-### Phase 5 — Add Boundary Check Script
+A premium admin dashboard showing:
+- **Layer Ring Diagram**: Concentric rings showing the 6 layers with route counts per layer, animated with the brand color scheme
+- **Service Budget Gauge**: Visual showing 31/45 canonical services used, overage warnings
+- **Duplicate Service Tracker**: List of all 39 duplicate directories with canonical pointers, severity badges
+- **Boundary Violation Scanner**: Live violations list from the manifest rules, showing file, rule, severity
+- **Route Family Matrix**: Table of 16 route families with layer, status, flagship loop, risk tier
+- **Import Direction Diagram**: Visual of the allowed/forbidden import directions between layers
 
-Create `scripts/architecture/check-layer-boundaries.ts`:
-- Scan imports in `src/pages/` — verify app-layer pages don't import kernel internals directly
-- Scan imports in `src/pages/admin/` — verify admin pages don't import user-app components
-- Scan that public routes (auth pages) import nothing from OS/kernel/admin
-- Verify no service in `src/lib/services/` imports from `src/pages/`
-- Report violations with file, current layer, violated layer, severity
+**Route**: `/admin/architecture/boundaries` inside AdminShell.
 
-### Phase 6 — OS Context Boundary Enhancement
+### Phase 4 — Add Proxy Re-exports for Kernel Imports
 
-Update `src/contexts/SitaOSContext.tsx` and `src/contexts/SitaKernelContext.tsx`:
-- Add layer awareness — expose `currentLayer` based on route path
-- Allow components to query which layer they're in
-- Used by admin boards for runtime boundary verification
+For the 6 app pages that import `core-services/` directly, create thin re-export hooks/facades in `src/lib/services/` (OS Services layer) so app pages consume kernel through the proper layer:
+- `src/lib/services/life-simulation/index.ts` → re-exports types from core-services
+- `src/lib/services/governance-simulator/index.ts` → re-exports types
+- `src/lib/services/search-fabric/index.ts` → re-exports types
+- `src/lib/services/fraud-sentinel/index.ts` → re-exports types
 
-### Phase 7 — Admin/Owner Separation Documentation & Route Audit
+Then update the 6 pages to import from `@/lib/services/` instead of `@/lib/core-services/`.
 
-Create `docs/architecture/LAYER_SEPARATION.md`:
-- Document the 6-layer model with exact boundaries
-- Route prefix → layer mapping table
-- Service directory → layer mapping table
-- Import rules
-- Verification checklist (the practical checklist from Section R of the spec)
+---
 
-## What Does NOT Change
-- No service directories are moved or renamed (anti-sprawl)
-- No routes are deleted
-- No new service directories created
-- No edge functions added
-- Existing ShellLayout, PublicLayout, AdminShell, OwnerWorkspaceShell stay as-is
-- The nova-sdk kernel stays where it is — it's correctly placed in its own SDK namespace
-
-## Files Created/Modified
+## Files Changed
 
 | Action | File | Purpose |
 |--------|------|---------|
-| Create | `src/lib/architecture/layer-manifest.ts` | Canonical layer definitions + route/service ownership map |
-| Create | `src/lib/architecture/boundary-rules.ts` | Import direction rules between layers |
-| Create | `src/lib/architecture/route-registry.ts` | Route → layer/domain/risk tagged registry |
-| Create | `src/lib/architecture/service-ownership-manifest.ts` | Service → layer ownership + duplicate tracking |
-| Create | `scripts/architecture/check-layer-boundaries.ts` | CI-ready boundary violation scanner |
-| Create | `docs/architecture/LAYER_SEPARATION.md` | Human-readable separation doc + checklist |
-| Modify | `src/App.tsx` | Fix ~20 admin routes outside AdminShell, consolidate admin blocks |
-| Modify | `src/contexts/SitaOSContext.tsx` | Add layer awareness |
-| Modify | `src/contexts/SitaKernelContext.tsx` | Add layer awareness |
+| Modify | `src/App.tsx` | Remove duplicate `/admin/pfa/google` route (line 1571) |
+| Modify | `scripts/architecture/check-layer-boundaries.ts` | Add app→kernel import scanning |
+| Modify | `src/lib/architecture/service-ownership-manifest.ts` | Add all 39 duplicate entries |
+| Modify | `src/contexts/SitaOSContext.tsx` | Fix useLocation pattern |
+| Create | `src/pages/admin/architecture/ArchitectureBoundaryBoard.tsx` | Visual boundary dashboard |
+| Create | `src/lib/services/life-simulation/index.ts` | Proxy re-export for app layer |
+| Create | `src/lib/services/governance-simulator/index.ts` | Proxy re-export |
+| Create | `src/lib/services/search-fabric/index.ts` | Proxy re-export |
+| Create | `src/lib/services/fraud-sentinel/index.ts` | Proxy re-export |
+| Modify | 6 page files | Update imports to use services/ instead of core-services/ |
 
-## Summary
-
-This is structural boundary enforcement work — no new features, no new services, no sprawl. It makes the implicit Web/App/OS/Admin separation explicit, fixes the route violations where admin routes bypass AdminShell, and creates enforceable manifests + CI checks so boundaries stay clean as the project grows.
+## What Does NOT Change
+- No new service directories beyond proxy re-exports of existing types
+- No route deletions
+- No edge functions
+- Existing layer manifest, boundary rules, route registry stay as-is (already correct)
 
