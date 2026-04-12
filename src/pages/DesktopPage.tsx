@@ -12,7 +12,9 @@ import { RestoreFlow } from "@/components/sita/RestoreFlow";
 import { FirstWeekCalibration } from "@/components/sita/FirstWeekCalibration";
 import { ContextualWelcomeTour } from "@/components/sita/onboarding/ContextualWelcomeTour";
 import { DesktopNotifications } from "@/components/sita/DesktopNotifications";
-import { useState, useEffect } from "react";
+import { CalmEngineProvider } from "@/contexts/CalmEngineContext";
+import { useWindowManagerContext } from "@/contexts/WindowManagerContext";
+import { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { ListChecks } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -96,8 +98,32 @@ export default function DesktopPage() {
     );
   }
 
+  // ── Calm Engine wiring ─────────────────────────────────────
+  const wm = useWindowManagerContext();
+  const visibleWindows = wm?.visibleWindows ?? [];
+  const maxZ = visibleWindows.reduce((max, w) => Math.max(max, w.zIndex), 0);
+
+  const calmWindows = useMemo(() =>
+    visibleWindows.map(w => ({
+      id: w.id,
+      x: w.position?.x ?? 120,
+      y: w.position?.y ?? 80,
+      width: w.width ?? 500,
+      height: 400,
+      isFocused: w.zIndex === maxZ,
+      lastInteraction: Date.now(),
+    })),
+    [visibleWindows, maxZ]
+  );
+
+  const calmLayerState = useMemo(() => ({
+    hasOverlay: false,
+    hasNotification: (state.notifications?.urgent ?? 0) > 0,
+    hasWindows: visibleWindows.length > 0,
+  }), [visibleWindows.length, state.notifications?.urgent]);
+
   return (
-    <>
+    <CalmEngineProvider windows={calmWindows} layerState={calmLayerState}>
       <h1 className="sr-only">Desktop</h1>
       <FirstWeekCalibration />
       <DesktopNotifications />
@@ -139,6 +165,6 @@ export default function DesktopPage() {
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </CalmEngineProvider>
   );
 }

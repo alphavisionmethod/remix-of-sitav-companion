@@ -11,12 +11,14 @@ import { DEPTH_LAYERS, TRAFFIC_LIGHTS, NOVA_MOTION, NOVA_SHADOWS } from "@/lib/d
 import { detectSnapZone, getSnapRect, SNAP_CONFIG, type SnapZone } from "@/lib/design-system/snap-zones";
 import { lerpPosition, type DragState } from "@/lib/engine/compositor-sim";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useCalmEngine } from "@/contexts/CalmEngineContext";
 
 interface FloatingWindowProps {
   title: string;
   children: ReactNode;
   initialPosition?: { x: number; y: number };
   width?: number;
+  windowId?: string;
   onClose?: () => void;
   onMinimize?: () => void;
   onMaximize?: () => void;
@@ -39,6 +41,7 @@ export function FloatingWindow({
   children,
   initialPosition = { x: 120, y: 80 },
   width = 500,
+  windowId,
   onClose,
   onMinimize,
   onMaximize,
@@ -47,6 +50,11 @@ export function FloatingWindow({
   className,
   style,
 }: FloatingWindowProps) {
+  // Calm Engine attention
+  const calm = useCalmEngine();
+  const attention = windowId ? calm.windowAttention.get(windowId) : undefined;
+  const attentionOpacity = attention?.opacity ?? (isFocused ? 1 : 0.85);
+  const attentionSaturation = attention?.saturation ?? (isFocused ? 1 : 0.8);
   const [pos, setPos] = useState(initialPosition);
   const [size, setSize] = useState({ width, height: 0 });
   const [isDragging, setIsDragging] = useState(false);
@@ -284,7 +292,11 @@ export function FloatingWindow({
           height: size.height || undefined,
           zIndex: DEPTH_LAYERS.windows,
           willChange: "transform",
-          transition: isDragging || isResizing ? "none" : `left ${SNAP_CONFIG.animationDuration}s ease, top ${SNAP_CONFIG.animationDuration}s ease, width ${SNAP_CONFIG.animationDuration}s ease, height ${SNAP_CONFIG.animationDuration}s ease`,
+          opacity: attentionOpacity,
+          filter: `saturate(${attentionSaturation})`,
+          transition: isDragging || isResizing
+            ? "opacity 0.3s, filter 0.3s"
+            : `left ${SNAP_CONFIG.animationDuration}s ease, top ${SNAP_CONFIG.animationDuration}s ease, width ${SNAP_CONFIG.animationDuration}s ease, height ${SNAP_CONFIG.animationDuration}s ease, opacity 0.3s, filter 0.3s`,
           ...style,
         }}
         onPointerDown={() => onFocus?.()}
