@@ -1093,10 +1093,11 @@ type DrillDown =
   | { type: "display" }
   | { type: "power" }
   | { type: "privilege" }
+  | { type: "wayland" }
   | null;
 
 const KernelDashboard = () => {
-  const { processes, memStats, schedStats, compStats, powerStats, privilegeStats, privilegeViolations, ringTransitions, bandDistribution, schedulerEvents, currentContext, blockedProcesses, readyProcesses, compositorSurfaces } = useKernelMetrics();
+  const { processes, memStats, schedStats, compStats, powerStats, privilegeStats, privilegeViolations, ringTransitions, bandDistribution, schedulerEvents, currentContext, blockedProcesses, readyProcesses, compositorSurfaces, waylandStats, waylandClients, waylandGlobals } = useKernelMetrics();
   const [drillDown, setDrillDown] = useState<DrillDown>(null);
 
   const liveProcessCount = processes.length;
