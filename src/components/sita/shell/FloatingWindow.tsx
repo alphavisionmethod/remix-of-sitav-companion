@@ -2,11 +2,13 @@
 // SITA OS — Floating Window (NovaOS composited surface)
 // Draggable glassmorphic window with traffic-light controls + snap + resize
 // Enhanced: accent strip, app icon, origin morph, toolbar slot, dual shadows
+// + error boundary, sounds, minimize-to-dock, occlusion, throttling,
+//   dynamic drag shadows, progressive crossfade, perf instrumentation
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useRef, useCallback, useEffect, type ReactNode } from "react";
+import { useState, useRef, useCallback, useEffect, useMemo, useDeferredValue, type ReactNode } from "react";
 import { SoundEngine } from "@/lib/sound-engine";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { DEPTH_LAYERS, TRAFFIC_LIGHTS, NOVA_MOTION } from "@/lib/design-system/nova-os";
 import { APP_SHADOWS, APP_ACCENTS, APP_CHROME, APP_TYPE } from "@/lib/design-system/app-window-system";
@@ -14,6 +16,8 @@ import { detectSnapZone, getSnapRect, SNAP_CONFIG, type SnapZone } from "@/lib/d
 import { lerpPosition, type DragState } from "@/lib/engine/compositor-sim";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCalmEngine } from "@/contexts/CalmEngineContext";
+import { WindowErrorBoundary } from "./WindowErrorBoundary";
+import { WindowPerformanceMonitor } from "@/lib/nova-sdk/kernel/window-perf";
 import {
   findMagneticEdges,
   applyMagneticSnap,
@@ -49,6 +53,7 @@ interface FloatingWindowProps {
   onPiP?: () => void;
   onFocus?: () => void;
   isFocused?: boolean;
+  isOccluded?: boolean;
   siblingWindows?: SiblingWindow[];
   className?: string;
   style?: React.CSSProperties;
@@ -61,6 +66,17 @@ const INERTIA_FRICTION = 0.92;
 const INERTIA_THRESHOLD = 0.5;
 const MAGNETIC_RANGE = 20;
 const MAGNETIC_STRENGTH = 0.15;
+
+// ── Throttled content wrapper for unfocused windows ──────────
+
+function ThrottledContent({ children, active }: { children: ReactNode; active: boolean }) {
+  const deferred = useDeferredValue(children);
+  return (
+    <div style={{ contentVisibility: active ? "visible" : "auto" }}>
+      {active ? children : deferred}
+    </div>
+  );
+}
 
 export function FloatingWindow({
   title,
@@ -78,6 +94,7 @@ export function FloatingWindow({
   onPiP,
   onFocus,
   isFocused = true,
+  isOccluded = false,
   siblingWindows = [],
   className,
   style,
@@ -98,15 +115,23 @@ export function FloatingWindow({
   const [showContent, setShowContent] = useState(false);
   const [magnetSnapped, setMagnetSnapped] = useState(false);
   const [alignGuides, setAlignGuides] = useState<AlignmentGuide[]>([]);
+  const [dragElevation, setDragElevation] = useState(0);
+  const [isMinimizing, setIsMinimizing] = useState(false);
 
   const accentGradient = appAccent || (windowId ? APP_ACCENTS[windowId] : undefined) || APP_ACCENTS.default;
 
-  // Progressive content loading — show skeleton shimmer for 150ms + soft open sound
+  // Progressive content loading — show skeleton shimmer for 150ms then crossfade + sound
   useEffect(() => {
-    SoundEngine.click();
-    const timer = setTimeout(() => setShowContent(true), 150);
+    if (windowId) {
+      WindowPerformanceMonitor.markWindowRequested(windowId);
+    }
+    SoundEngine.windowOpen();
+    const timer = setTimeout(() => {
+      setShowContent(true);
+      if (windowId) WindowPerformanceMonitor.markWindowFirstFrame(windowId);
+    }, 150);
     return () => clearTimeout(timer);
-  }, []);
+  }, [windowId]);
 
   const dragRef = useRef<DragState>({
     active: false,
@@ -140,6 +165,18 @@ export function FloatingWindow({
     ? { type: "spring" as const, stiffness: 220, damping: 20, mass: 0.7 }
     : { type: "spring" as const, stiffness: 200, damping: 18, mass: 0.6 };
 
+  // Minimize-to-dock exit variant
+  const minimizeExit = useMemo(() => ({
+    y: window.innerHeight - 80,
+    scale: 0.2,
+    opacity: 0,
+    transition: { duration: 0.22, ease: [0.4, 0, 0.2, 1] },
+  }), []);
+
+  const exitVariant = isMinimizing
+    ? minimizeExit
+    : NOVA_MOTION.window.exit.exit;
+
   // Lerp animation loop during drag
   useEffect(() => {
     if (!isDragging) return;
@@ -150,6 +187,12 @@ export function FloatingWindow({
 
       dragRef.current.velocityX = nx - currentPos.current.x;
       dragRef.current.velocityY = ny - currentPos.current.y;
+
+      // Dynamic elevation based on velocity
+      const speed = Math.sqrt(
+        dragRef.current.velocityX ** 2 + dragRef.current.velocityY ** 2
+      );
+      setDragElevation(Math.min(1, speed / 15));
 
       currentPos.current = { x: nx, y: ny };
       setPos({ x: nx, y: ny });
@@ -200,6 +243,7 @@ export function FloatingWindow({
     targetPos.current = { ...currentPos.current };
 
     setIsDragging(true);
+    setDragElevation(0);
     (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
 
     if (snappedTo) {
@@ -217,6 +261,9 @@ export function FloatingWindow({
 
   const handlePointerMove = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
     if (!isDragging) return;
+
+    // Perf instrumentation
+    WindowPerformanceMonitor.recordDragSample(e.timeStamp);
 
     let tx = e.clientX - dragRef.current.offsetX;
     let ty = e.clientY - dragRef.current.offsetY;
@@ -240,7 +287,6 @@ export function FloatingWindow({
         tx = snapped.x;
         ty = snapped.y;
         setMagnetSnapped(snapped.snapped);
-        // Compute visual alignment guides
         const snappedPhysics = { ...draggingPhysics, x: tx, y: ty };
         setAlignGuides(snapped.snapped ? computeAlignmentGuides(snappedPhysics, others, edges) : []);
       } else {
@@ -249,7 +295,7 @@ export function FloatingWindow({
       }
     }
 
-    // ── Screen-edge magnetic pull (original behavior) ──
+    // ── Screen-edge magnetic pull ──
     if (tx < MAGNETIC_RANGE) tx += (0 - tx) * MAGNETIC_STRENGTH;
     if (tx + ww > vw - MAGNETIC_RANGE) tx += (vw - ww - tx) * MAGNETIC_STRENGTH;
     if (ty < MAGNETIC_RANGE) ty += (0 - ty) * MAGNETIC_STRENGTH;
@@ -260,10 +306,12 @@ export function FloatingWindow({
       const shook = trackShake(windowId, e.clientX);
       if (shook) {
         setIsDragging(false);
+        setDragElevation(0);
         dragRef.current.active = false;
         cancelAnimationFrame(rafId.current);
-        SoundEngine.click(e.clientX);
-        onMinimize?.();
+        SoundEngine.windowMinimize(e.clientX);
+        setIsMinimizing(true);
+        setTimeout(() => onMinimize?.(), 220);
         return;
       }
     }
@@ -277,12 +325,12 @@ export function FloatingWindow({
 
   const handlePointerUp = useCallback(() => {
     setIsDragging(false);
+    setDragElevation(0);
     dragRef.current.active = false;
     setMagnetSnapped(false);
     setAlignGuides([]);
     cancelAnimationFrame(rafId.current);
 
-    // Clear shake tracking
     if (windowId) clearShakeState(windowId);
 
     if (snapZone) {
@@ -294,7 +342,6 @@ export function FloatingWindow({
       setSnappedTo(snapZone);
       SoundEngine.snap(rect.x + rect.width / 2);
     } else {
-      // ── Edge bounce on inertia release ──
       const vw = window.innerWidth;
       const vh = window.innerHeight;
       const bounce = applyEdgeBounce(
@@ -332,8 +379,22 @@ export function FloatingWindow({
       setPos({ x: rect.x, y: rect.y });
       setSize({ width: rect.width, height: rect.height });
       setSnappedTo("top");
+      SoundEngine.windowMaximize();
     }
   }, [snappedTo, preSnapState, pos, size.width]);
+
+  // Close with sound
+  const handleClose = useCallback(() => {
+    SoundEngine.windowClose();
+    onClose?.();
+  }, [onClose]);
+
+  // Minimize with sound + dock animation
+  const handleMinimize = useCallback(() => {
+    SoundEngine.windowMinimize();
+    setIsMinimizing(true);
+    setTimeout(() => onMinimize?.(), 220);
+  }, [onMinimize]);
 
   // Resize handlers
   const handleResizeDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
@@ -364,6 +425,11 @@ export function FloatingWindow({
   const titleBarHeight = APP_CHROME.titleBarHeight;
   const totalChromeH = titleBarHeight + (toolbar ? APP_CHROME.toolbarHeight : 0);
 
+  // Dynamic shadow during drag — interpolates between normal and elevated
+  const dynamicShadow = isDragging && dragElevation > 0.05
+    ? `0 ${2 + dragElevation * 8}px ${10 + dragElevation * 30}px hsl(0 0% 0% / ${0.15 + dragElevation * 0.12}), 0 ${16 + dragElevation * 20}px ${48 + dragElevation * 40}px hsl(0 0% 0% / ${0.20 + dragElevation * 0.15})`
+    : undefined;
+
   return (
     <>
       {/* Snap zone preview overlay */}
@@ -382,7 +448,7 @@ export function FloatingWindow({
         />
       )}
 
-      {/* Magnetic alignment guides — thin blue lines with haptic pulse on snap */}
+      {/* Magnetic alignment guides */}
       {isDragging && alignGuides.length > 0 && (
         <svg
           className="fixed inset-0 pointer-events-none"
@@ -400,13 +466,11 @@ export function FloatingWindow({
           {alignGuides.map((g, i) =>
             g.axis === "x" ? (
               <g key={`ag-${i}`}>
-                {/* Glow layer */}
                 <line
                   x1={g.position} y1={g.start} x2={g.position} y2={g.end}
                   stroke="hsl(210, 80%, 60%)" strokeWidth="3" opacity="0.15"
                   filter="url(#guide-glow)"
                 />
-                {/* Main line with pulse animation */}
                 <line
                   x1={g.position} y1={g.start} x2={g.position} y2={g.end}
                   stroke="hsl(210, 80%, 60%)" strokeWidth="1" strokeDasharray="4 3" opacity="0.7"
@@ -447,7 +511,6 @@ export function FloatingWindow({
               </circle>
             ));
           })}
-          {/* Distance labels */}
           {alignGuides.map((g, i) => {
             const mid = g.axis === "x"
               ? { x: g.position + 6, y: (g.start + g.end) / 2 }
@@ -455,7 +518,6 @@ export function FloatingWindow({
             const label = `${g.distance}px`;
             return (
               <g key={`dist-${i}`}>
-                {/* Background pill */}
                 <rect
                   x={mid.x - label.length * 3.2 - 4}
                   y={mid.y - 7}
@@ -492,8 +554,11 @@ export function FloatingWindow({
         data-floating-window
         initial={morphInitial}
         animate={morphAnimate}
-        exit={NOVA_MOTION.window.exit.exit}
+        exit={exitVariant}
         transition={morphTransition}
+        onAnimationComplete={() => {
+          if (windowId) WindowPerformanceMonitor.markWindowAnimComplete(windowId);
+        }}
         className={cn(
           "absolute overflow-hidden",
           "backdrop-blur-2xl transition-[box-shadow,border-color,filter] duration-200",
@@ -519,7 +584,7 @@ export function FloatingWindow({
           width: size.width,
           height: size.height || undefined,
           zIndex: DEPTH_LAYERS.windows,
-          willChange: "transform",
+          willChange: isDragging ? "transform, left, top" : "transform",
           borderRadius: APP_CHROME.cornerRadius,
           opacity: attentionOpacity,
           filter: isFocused
@@ -528,6 +593,7 @@ export function FloatingWindow({
           transition: isDragging || isResizing
             ? "box-shadow 0.2s, filter 0.3s"
             : `left ${SNAP_CONFIG.animationDuration}s ease, top ${SNAP_CONFIG.animationDuration}s ease, width ${SNAP_CONFIG.animationDuration}s ease, height ${SNAP_CONFIG.animationDuration}s ease, box-shadow 0.2s, filter 0.3s`,
+          ...(dynamicShadow ? { boxShadow: dynamicShadow } : {}),
           ...style,
         }}
         onPointerDown={() => onFocus?.()}
@@ -555,7 +621,7 @@ export function FloatingWindow({
             onMouseLeave={() => setIsHoveringControls(false)}
           >
             <button
-              onClick={onClose}
+              onClick={handleClose}
               className={cn(
                 "w-3 h-3 rounded-full transition-all duration-100 flex items-center justify-center",
                 isHoveringControls ? cn(TRAFFIC_LIGHTS.close, "scale-110") : TRAFFIC_LIGHTS.inactive
@@ -567,7 +633,7 @@ export function FloatingWindow({
               )}
             </button>
             <button
-              onClick={onMinimize}
+              onClick={handleMinimize}
               className={cn(
                 "w-3 h-3 rounded-full transition-all duration-100 flex items-center justify-center",
                 isHoveringControls ? cn(TRAFFIC_LIGHTS.minimize, "scale-110") : TRAFFIC_LIGHTS.inactive
@@ -630,18 +696,41 @@ export function FloatingWindow({
           </div>
         )}
 
-        {/* ── Content with progressive loading ── */}
+        {/* ── Content with progressive crossfade + error boundary + occlusion + throttling ── */}
         <div className="overflow-auto" style={{ maxHeight: size.height ? size.height - totalChromeH - APP_CHROME.accentStripHeight : undefined }}>
-          {showContent ? (
-            children
+          {isOccluded ? (
+            // Fully occluded — render minimal placeholder to save CPU
+            <div style={{ minHeight: 100 }} />
           ) : (
-            <div className="p-4 space-y-3">
-              <Skeleton className="h-4 w-3/4" />
-              <Skeleton className="h-4 w-full" />
-              <Skeleton className="h-4 w-1/2" />
-              {/* Accent-tinted skeleton bar */}
-              <div className={cn("h-1 w-1/4 rounded-full bg-gradient-to-r opacity-20 mt-2", accentGradient)} />
-            </div>
+            <WindowErrorBoundary windowId={windowId} title={title} onClose={onClose}>
+              <ThrottledContent active={isFocused}>
+                <AnimatePresence mode="wait">
+                  {showContent ? (
+                    <motion.div
+                      key="content"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.12 }}
+                    >
+                      {children}
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="skeleton"
+                      initial={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.12 }}
+                      className="p-4 space-y-3"
+                    >
+                      <Skeleton className="h-4 w-3/4" />
+                      <Skeleton className="h-4 w-full" />
+                      <Skeleton className="h-4 w-1/2" />
+                      <div className={cn("h-1 w-1/4 rounded-full bg-gradient-to-r opacity-20 mt-2", accentGradient)} />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </ThrottledContent>
+            </WindowErrorBoundary>
           )}
         </div>
 
