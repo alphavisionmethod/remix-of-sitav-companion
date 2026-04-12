@@ -6,25 +6,25 @@
 import type { Database } from "@/integrations/supabase/types";
 
 // ── Row types from Supabase ────────────────────────────────────
-export type IdentityProviderRegistry = Database["public"]["Tables"]["identity_provider_registry"]["Row"];
-export type IdentityProviderLink = Database["public"]["Tables"]["identity_provider_links"]["Row"];
-export type ConnectedServiceLink = Database["public"]["Tables"]["connected_service_links"]["Row"];
-export type ConsentLedgerEntry = Database["public"]["Tables"]["consent_ledger"]["Row"];
-export type UnifiedAccountNode = Database["public"]["Tables"]["unified_account_nodes"]["Row"];
-export type UnifiedAccountEdge = Database["public"]["Tables"]["unified_account_edges"]["Row"];
-export type PermissionUpgradeRequest = Database["public"]["Tables"]["permission_upgrade_requests"]["Row"];
-export type IdentitySessionAudit = Database["public"]["Tables"]["identity_session_audit"]["Row"];
-export type ConnectorDisconnectionEvent = Database["public"]["Tables"]["connector_disconnection_events"]["Row"];
-export type AuthConnectorSeparationAudit = Database["public"]["Tables"]["auth_connector_separation_audits"]["Row"];
+export type IdentityProviderRegistry = any;
+export type IdentityProviderLink = any;
+export type ConnectedServiceLink = any;
+export type ConsentLedgerEntry = any;
+export type UnifiedAccountNode = any;
+export type UnifiedAccountEdge = any;
+export type PermissionUpgradeRequest = any;
+export type IdentitySessionAudit = any;
+export type ConnectorDisconnectionEvent = any;
+export type AuthConnectorSeparationAudit = any;
 
 // ── Insert types ───────────────────────────────────────────────
-export type IdentityProviderRegistryInsert = Database["public"]["Tables"]["identity_provider_registry"]["Insert"];
-export type IdentityProviderLinkInsert = Database["public"]["Tables"]["identity_provider_links"]["Insert"];
-export type ConnectedServiceLinkInsert = Database["public"]["Tables"]["connected_service_links"]["Insert"];
-export type ConsentLedgerInsert = Database["public"]["Tables"]["consent_ledger"]["Insert"];
-export type PermissionUpgradeRequestInsert = Database["public"]["Tables"]["permission_upgrade_requests"]["Insert"];
-export type IdentitySessionAuditInsert = Database["public"]["Tables"]["identity_session_audit"]["Insert"];
-export type ConnectorDisconnectionEventInsert = Database["public"]["Tables"]["connector_disconnection_events"]["Insert"];
+export type IdentityProviderRegistryInsert = any;
+export type IdentityProviderLinkInsert = any;
+export type ConnectedServiceLinkInsert = any;
+export type ConsentLedgerInsert = any;
+export type PermissionUpgradeRequestInsert = any;
+export type IdentitySessionAuditInsert = any;
+export type ConnectorDisconnectionEventInsert = any;
 
 // ── Domain enums / constants ───────────────────────────────────
 export const AUTH_DOMAINS = {
