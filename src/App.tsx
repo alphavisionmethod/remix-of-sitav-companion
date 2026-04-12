@@ -1797,6 +1797,10 @@ const App = () => (
 
                     </Route>
 
+                     {/* Settings routes (App layer, outside AdminShell) */}
+                     <Route path="/settings/connected-accounts" element={<PFA09ConnectedAccountsCenter />} />
+                     <Route path="/settings/google" element={<GoogleConnectedAccounts />} />
+
                      <Route path="/personal-brain" element={<PersonalBrain />} />
                      <Route path="/brain" element={<Navigate to="/personal-brain" replace />} />
 
