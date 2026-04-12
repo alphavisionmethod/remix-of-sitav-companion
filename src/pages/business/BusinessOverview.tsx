@@ -6,6 +6,8 @@ import { TrustBadge } from "@/components/sita/TrustBadge";
 import { RevenuePipelineChart, RevenueOverTimeChart } from "@/components/sita/SitaCharts";
 import { EmptyStateCTA } from "@/components/sita/EmptyStateCTA";
 import { AmbientHeader, StaggerReveal, StaggerItem, MetricHighlight, GlassCard, ChartContainer } from "@/components/sita/PremiumPageComponents";
+import { WhatMattersNow, WhatChangedFeed, PreparedActions, QuickActionBar } from "@/components/sita/domain-shared";
+import type { MatterItem, ChangeEvent, PreparedAction } from "@/components/sita/domain-shared";
 import { useNavigate } from "react-router-dom";
 import { useLeads, useCustomers, useInvoices } from "@/hooks/use-sita-data";
 import { useDataMode } from "@/contexts/DataModeContext";
@@ -156,6 +158,26 @@ const BusinessOverview = () => {
     );
   }
 
+  const businessMatters: MatterItem[] = useMemo(() => [
+    { id: "bm1", title: "Emily Watson — 3 days no contact", subtitle: "Quote follow-up at risk · $1,800", urgency: "high", action: "Call", onAction: () => navigate("/business/follow-through") },
+    { id: "bm2", title: "Invoice #1035 now 7 days overdue", subtitle: "David Kim — $1,800 outstanding", urgency: "high", action: "Review" },
+    { id: "bm3", title: "Quote #1039 expiring tomorrow", subtitle: "Apex Corp — $3,200", urgency: "medium", action: "Follow up" },
+    { id: "bm4", title: "New lead: Michael Park", subtitle: "Website form — web design inquiry", urgency: "low", action: "Respond" },
+  ], [navigate]);
+
+  const businessPrepared: PreparedAction[] = useMemo(() => [
+    { id: "bp1", title: "Follow-up draft for Emily Watson", description: "Gentle re-touch referencing original quote discussion", type: "draft", confidence: 0.88 },
+    { id: "bp2", title: "Invoice reminder for David Kim", description: "Payment reminder with 7-day overdue notice", type: "reminder", confidence: 0.92 },
+    { id: "bp3", title: "Re-engage Apex Corp", description: "Quote expiry notice with discount incentive", type: "suggestion", confidence: 0.74 },
+  ], []);
+
+  const businessChanges: ChangeEvent[] = useMemo(() => [
+    { id: "bc1", icon: <DollarSign className="h-3 w-3 text-chart-2" />, title: "Invoice #1038 paid — $4,200", subtitle: "Marcus Johnson via Stripe", time: "2h ago" },
+    { id: "bc2", icon: <UserPlus className="h-3 w-3 text-primary" />, title: "New lead: Michael Park", subtitle: "Website form — web design inquiry", time: "4h ago" },
+    { id: "bc3", icon: <AlertTriangle className="h-3 w-3 text-destructive" />, title: "Invoice #1035 now 7 days overdue", subtitle: "David Kim — $1,800 outstanding", time: "Today" },
+    { id: "bc4", icon: <CheckCircle className="h-3 w-3 text-chart-2" />, title: "Callback completed: James Rodriguez", subtitle: "18 min call — discussed Q2 projects", time: "Yesterday" },
+  ], []);
+
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}>
       <DemoModeBadge />
@@ -175,6 +197,25 @@ const BusinessOverview = () => {
           </div>
         }
       />
+
+      {/* ═══ WHAT MATTERS NOW ═══ */}
+      <WhatMattersNow items={businessMatters} domain="business" />
+
+      {/* ═══ PREPARED ACTIONS ═══ */}
+      <PreparedActions actions={businessPrepared} />
+
+      {/* ═══ QUICK ACTIONS ═══ */}
+      <QuickActionBar
+        actions={[
+          { label: "New Lead", icon: UserPlus, onClick: () => navigate("/business/leads"), variant: "accent" },
+          { label: "Follow-Through", icon: Phone, onClick: () => navigate("/business/follow-through") },
+          { label: "Create Quote", icon: FileText, onClick: () => navigate("/business/quotes") },
+          { label: "Send Invoice", icon: Receipt, onClick: () => navigate("/business/invoices") },
+        ]}
+      />
+
+      {/* ═══ WHAT CHANGED ═══ */}
+      <WhatChangedFeed events={businessChanges} />
 
       {/* ═══ BENTO GRID ═══ */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 auto-rows-min">

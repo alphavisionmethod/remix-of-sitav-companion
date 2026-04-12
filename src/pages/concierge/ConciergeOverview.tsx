@@ -2,11 +2,14 @@ import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton 
 import { KPITile, RiskCard, SitaTabs } from "@/components/sita/SitaComponents";
 import { AmbientHeader, StaggerReveal, StaggerItem, GlassCard } from "@/components/sita/PremiumPageComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
-import { PriorityCard, QuickActionBar, HouseholdAdvisor, OverloadCard, GroceryContinuityCard, ApprovalCard } from "@/components/sita/HouseholdComponents";
+import { PriorityCard, QuickActionBar as HouseholdQuickActions, HouseholdAdvisor, OverloadCard, GroceryContinuityCard, ApprovalCard } from "@/components/sita/HouseholdComponents";
 import { EmptyStateCTA } from "@/components/sita/EmptyStateCTA";
+import { WhatMattersNow, WhatChangedFeed, PreparedActions, QuickActionBar } from "@/components/sita/domain-shared";
+import type { MatterItem, ChangeEvent, PreparedAction } from "@/components/sita/domain-shared";
 import { useHouseholdTasks, useFamilyEvents } from "@/hooks/use-sita-data";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useState, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   CheckSquare, Calendar, AlertCircle, Heart, Clock, ShoppingCart, Plane, Users, Wrench, ArrowRight,

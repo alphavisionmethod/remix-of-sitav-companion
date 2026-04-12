@@ -5,6 +5,8 @@ import { TrustBadge } from "@/components/sita/TrustBadge";
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { EmptyStateCTA } from "@/components/sita/EmptyStateCTA";
+import { WhatMattersNow, WhatChangedFeed, PreparedActions, QuickActionBar } from "@/components/sita/domain-shared";
+import type { MatterItem, ChangeEvent, PreparedAction } from "@/components/sita/domain-shared";
 import { useNavigate } from "react-router-dom";
 import { useBills, useSubscriptions, useInvoices } from "@/hooks/use-sita-data";
 import { useFinancialAccounts, useMoneyKPIs } from "@/hooks/use-domain-data";
@@ -173,6 +175,25 @@ const MoneyOverview = () => {
     );
   }
 
+  const financeMatters: MatterItem[] = useMemo(() => [
+    { id: "fm1", title: "3 bills due within 48 hours — $1,450", subtitle: "Bill collision detected. Review payment plan.", urgency: "high", action: "Review", onAction: () => navigate("/money/bills") },
+    { id: "fm2", title: "Emergency reserve at 60%", subtitle: "Below 3-month target. Consider allocation.", urgency: "medium", action: "Plan" },
+    { id: "fm3", title: "Subscription creep: +8% over 90 days", subtitle: "Monthly total increasing. Review waste.", urgency: "low", action: "Audit", onAction: () => navigate("/money/subscriptions") },
+  ], [navigate]);
+
+  const financePrepared: PreparedAction[] = useMemo(() => [
+    { id: "fp1", title: "Friday payment plan prepared", description: "Groups 3 bills due this week into one payment session", type: "automation", confidence: 0.94 },
+    { id: "fp2", title: "Waste subscription review", description: "2 subscriptions flagged for potential cancellation — $38/mo savings", type: "suggestion", confidence: 0.82 },
+    { id: "fp3", title: "Invoice follow-up for Apex Corp", description: "14-day overdue invoice — reminder draft ready", type: "draft", confidence: 0.87 },
+  ], []);
+
+  const financeChanges: ChangeEvent[] = useMemo(() => [
+    { id: "fc1", icon: <DollarSign className="h-3 w-3 text-chart-2" />, title: "Payroll deposit received — $4,800", subtitle: "Direct deposit from employer", time: "6h ago" },
+    { id: "fc2", icon: <CreditCard className="h-3 w-3 text-destructive" />, title: "Unusual charge: $120 pharmacy", subtitle: "Flagged as atypical — review recommended", time: "Yesterday" },
+    { id: "fc3", icon: <Receipt className="h-3 w-3 text-primary" />, title: "Auto-pay: Internet bill — $89", subtitle: "Recurring payment processed", time: "Yesterday" },
+    { id: "fc4", icon: <AlertTriangle className="h-3 w-3 text-amber-500" />, title: "Cloud storage plan increased to $12.99/mo", subtitle: "Previously $9.99/mo — auto-detected", time: "2d ago" },
+  ], []);
+
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}>
       <DemoModeBadge />
@@ -182,6 +203,25 @@ const MoneyOverview = () => {
         icon={<Gauge className="h-5 w-5 text-chart-2" />}
         accentColor="hsl(150 60% 45%)"
       />
+
+      {/* ═══ WHAT MATTERS NOW ═══ */}
+      <WhatMattersNow items={financeMatters} domain="finance" />
+
+      {/* ═══ PREPARED ACTIONS ═══ */}
+      <PreparedActions actions={financePrepared} />
+
+      {/* ═══ QUICK ACTIONS ═══ */}
+      <QuickActionBar
+        actions={[
+          { label: "Pay Bills", icon: Receipt, onClick: () => navigate("/money/bills"), variant: "accent" },
+          { label: "Spending Pulse", icon: Activity, onClick: () => navigate("/money/spending-pulse") },
+          { label: "Check Budget", icon: BarChart3, onClick: () => navigate("/money/budgets") },
+          { label: "Review Waste", icon: Zap, onClick: () => navigate("/money/subscriptions") },
+        ]}
+      />
+
+      {/* ═══ WHAT CHANGED ═══ */}
+      <WhatChangedFeed events={financeChanges} />
 
       {/* ═══ COCKPIT GAUGES ═══ */}
       <GlassCard glow="emerald" intensity="medium" className="p-5">
