@@ -238,6 +238,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         version: "1.0.0",
         permissions: [],
         windowDefaults: { width: opts.width ?? 400, height: 500, resizable: true },
+        designVersion: "nova-1.0",
       } as any);
 
       // 2. Allocate memory for process

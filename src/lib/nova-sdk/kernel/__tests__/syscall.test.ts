@@ -38,6 +38,7 @@ function spawnUserProcess(name = "test-app"): number {
     id: name, name, version: "1.0.0", publisher: "test",
     icon: "terminal", iconBg: "#000",
     permissions: [], windowDefaults: { width: 800, height: 600 },
+    designVersion: "nova-1.0",
   });
   MemoryManager.allocate(proc.pid, 16, { label: `${name}:heap` });
   MemoryManager.createAddressSpace(proc.pid);
