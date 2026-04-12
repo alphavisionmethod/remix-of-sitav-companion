@@ -7,7 +7,8 @@ export interface EventPrep {
   title: string;
   who: string;
   daysUntil: number;
-  giftStatus: "idea" | "purchased" | "wrapped" | "sent" | "none";
+  giftStatus?: "idea" | "purchased" | "wrapped" | "sent" | "none";
+  giftIdea?: string;
   outstandingItems: string[];
   linkedDocs?: string[];
 }

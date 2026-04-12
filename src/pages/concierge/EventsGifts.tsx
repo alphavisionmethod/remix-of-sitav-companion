@@ -2,6 +2,7 @@ import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/co
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { ConciergeAdvisorInsightCard, EventPrepCard } from "@/components/concierge";
 import type { EventPrep } from "@/components/concierge";
+import { TrustBadge } from "@/components/sita/TrustBadge";
 import { useState } from "react";
 import { Gift, Heart, Calendar, PartyPopper, Star, Clock, CheckCircle, ShoppingBag, Mail } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";

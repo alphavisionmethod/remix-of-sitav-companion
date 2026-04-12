@@ -35,10 +35,10 @@ export const AppointmentPrepCard = ({ appointment, className }: { appointment: A
           <p className="text-xs font-semibold text-foreground truncate">{appointment.title}</p>
           <p className="text-[10px] text-muted-foreground">{appointment.who} · {appointment.when}</p>
         </div>
-        {appointment.confirmed ? (
+        {(appointment.status === "confirmed" || appointment.confirmed) ? (
           <span className="flex items-center gap-1 text-[9px] font-medium text-chart-2"><CheckCircle className="h-3 w-3" />Confirmed</span>
         ) : (
-          <span className="flex items-center gap-1 text-[9px] font-medium text-amber-500"><Clock className="h-3 w-3" />Unconfirmed</span>
+          <span className="flex items-center gap-1 text-[9px] font-medium text-amber-500"><Clock className="h-3 w-3" />{appointment.status === "prep-needed" ? "Prep needed" : "Unconfirmed"}</span>
         )}
       </div>
       {appointment.transportTime && (
@@ -47,10 +47,16 @@ export const AppointmentPrepCard = ({ appointment, className }: { appointment: A
           <span className="text-[10px] text-muted-foreground">{appointment.transportTime}</span>
         </div>
       )}
-      {appointment.prepItems.length > 0 && (
+      {((appointment.prepChecklist && appointment.prepChecklist.length > 0) || (appointment.prepItems && appointment.prepItems.length > 0)) && (
         <div className="bg-secondary/20 rounded-lg p-2.5 mb-2 space-y-1">
           <p className="text-[9px] font-semibold text-muted-foreground uppercase tracking-wider">Prep</p>
-          {appointment.prepItems.map((p, i) => (
+          {(appointment.prepChecklist || []).map((p) => (
+            <div key={p.id} className="flex items-center gap-2">
+              <div className={`h-3 w-3 rounded border shrink-0 ${p.done ? "bg-primary border-primary" : "border-muted-foreground/30"}`} />
+              <span className={`text-[10px] ${p.done ? "text-muted-foreground line-through" : "text-foreground"}`}>{p.label}</span>
+            </div>
+          ))}
+          {(appointment.prepItems || []).map((p, i) => (
             <div key={i} className="flex items-center gap-2">
               <div className="h-3 w-3 rounded border border-muted-foreground/30 shrink-0" />
               <span className="text-[10px] text-foreground">{p}</span>
