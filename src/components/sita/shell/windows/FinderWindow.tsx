@@ -26,7 +26,7 @@ const DIR_ICON_MAP: Record<string, { icon: typeof Folder; gradient: string }> = 
   Projects:  { icon: Code,       gradient: ICON_GRADIENTS.orange },
   Apps:      { icon: AppWindow,   gradient: ICON_GRADIENTS.green },
   Notes:     { icon: StickyNote,  gradient: ICON_GRADIENTS.gold },
-  ".trash":  { icon: Folder,      gradient: ICON_GRADIENTS.red || ICON_GRADIENTS.orange },
+  ".trash":  { icon: Folder,      gradient: ICON_GRADIENTS.orange },
 };
 
 function iconForNode(node: FSNode) {
