@@ -299,6 +299,14 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         width: 640,
         originRect: origin,
       }, { id: "nova-terminal", name: "Nova Terminal" });
+    } else if (appId === "system-monitor" || appId === "com.sita.monitor") {
+      launchWithKernel("system-monitor", {
+        title: "System Monitor",
+        component: <SystemMonitorWindow />,
+        position: { x: 140, y: 80 },
+        width: 620,
+        originRect: origin,
+      }, { id: "system-monitor", name: "System Monitor" });
     }
   }, [wm.openWindow]);
 
