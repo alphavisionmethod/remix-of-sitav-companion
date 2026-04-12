@@ -42,9 +42,12 @@ import FinancialBoundaryMonitor from "./money/FinancialBoundaryMonitor";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 
-type SubPage = "overview" | "bills" | "subscriptions" | "reserves" | "cash-timing" | "receivables" | "investment-office" | "tax" | "approvals" | "boardroom" | "proof" | "files" | "settings" | "net-worth" | "debt-credit" | "budgets" | "transactions" | "household" | "health" | "advisors" | "scenarios" | "stress-radar" | "life-impact" | "modes" | "allocator" | "trust-graph" | "opportunity-cost" | "rituals" | "peace-score" | "boundaries";
+import SpendingPulse from "./money/SpendingPulse";
+
+type SubPage = "overview" | "spending-pulse" | "bills" | "subscriptions" | "reserves" | "cash-timing" | "receivables" | "investment-office" | "tax" | "approvals" | "boardroom" | "proof" | "files" | "settings" | "net-worth" | "debt-credit" | "budgets" | "transactions" | "household" | "health" | "advisors" | "scenarios" | "stress-radar" | "life-impact" | "modes" | "allocator" | "trust-graph" | "opportunity-cost" | "rituals" | "peace-score" | "boundaries";
 
 const subpageFromPath = (path: string): SubPage => {
+  if (path.includes("/spending-pulse")) return "spending-pulse";
   if (path.includes("/boundaries")) return "boundaries";
   if (path.includes("/stress-radar")) return "stress-radar";
   if (path.includes("/life-impact")) return "life-impact";
@@ -79,6 +82,7 @@ const subpageFromPath = (path: string): SubPage => {
 
 const pages: Record<SubPage, React.ComponentType> = {
   overview: MoneyOverview,
+  "spending-pulse": SpendingPulse,
   bills: BillsWorkspace,
   subscriptions: SubscriptionsWaste,
   reserves: ReservesSavings,
@@ -115,6 +119,7 @@ const TAB_GROUPS = [
     label: "Core",
     tabs: [
       { key: "overview", label: "Overview" },
+      { key: "spending-pulse", label: "Spending Pulse" },
       { key: "bills", label: "Bills" },
       { key: "subscriptions", label: "Subscriptions" },
       { key: "budgets", label: "Budgets" },
