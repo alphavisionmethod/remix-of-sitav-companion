@@ -1198,6 +1198,11 @@ const Boardroom = () => {
         </AnimatePresence>
       </motion.div>
 
+      {/* Entry Ceremony */}
+      <AnimatePresence>
+        {showCeremony && <BoardroomEntryCeremony boardroomType={activeType} onComplete={() => setShowCeremony(false)} />}
+      </AnimatePresence>
+
       <AnimatePresence>
         {isPresenting && <FullscreenPresentation type={activeType} onExit={() => setIsPresenting(false)} />}
       </AnimatePresence>
