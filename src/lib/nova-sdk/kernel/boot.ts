@@ -7,6 +7,7 @@ import { MemoryManager } from "./memory-manager";
 import { ProcessTable } from "./process-manager";
 import { Scheduler } from "./scheduler";
 import { Compositor } from "./compositor";
+import { PowerManager } from "./power-manager";
 
 export interface BootLogEntry {
   subsystem: string;
@@ -60,7 +61,13 @@ class NovaKernelClass {
       Compositor.reset();
     });
 
-    // 5. Syscall table (stateless — just logging that it's ready)
+    // 5. Power Management
+    this.initSubsystem("PowerManager", () => {
+      PowerManager.reset();
+      PowerManager.start(1000); // 1s tick for power simulation
+    });
+
+    // 6. Syscall table (stateless — just logging that it's ready)
     this.initSubsystem("SyscallDispatcher", () => {
       // Syscall module is stateless, no init needed
     });
@@ -80,6 +87,7 @@ class NovaKernelClass {
     if (!this.booted) return;
 
     console.log("[Kernel] Shutdown initiated...");
+    PowerManager.stop();
     Scheduler.stop();
     Compositor.reset();
     ProcessTable.reset();
@@ -106,6 +114,7 @@ class NovaKernelClass {
       processes: ProcessTable.getStats(),
       scheduler: Scheduler.getStats(),
       compositor: Compositor.getStats(),
+      power: PowerManager.getStats(),
       pressure: MemoryManager.checkPressure(),
     };
   }
