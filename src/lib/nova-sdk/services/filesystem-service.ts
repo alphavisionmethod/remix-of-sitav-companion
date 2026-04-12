@@ -96,19 +96,19 @@ class FileSystemServiceClass implements SystemService {
 
     // Desktop
     this.createFile("/home/Desktop/welcome.txt",
-      "Welcome to NovaOS!\n\nThis is your Desktop. Drag files between folders to organize them.\n");
+      "Welcome to NovaOS!\n\nThis is your Desktop. Drag files between folders to organize them.\n", 0);
     this.createFile("/home/Desktop/todo.md",
-      "# Today\n- [x] Boot NovaOS\n- [ ] Explore Finder\n- [ ] Try drag-and-drop\n- [ ] Check system settings\n");
+      "# Today\n- [x] Boot NovaOS\n- [ ] Explore Finder\n- [ ] Try drag-and-drop\n- [ ] Check system settings\n", 0);
 
     // Documents
     this.createFile("/home/Documents/readme.txt",
-      "NovaOS Documentation\n====================\nNovaOS is a spatial, intent-driven operating system.\nSee the Settings app for configuration options.\n");
+      "NovaOS Documentation\n====================\nNovaOS is a spatial, intent-driven operating system.\nSee the Settings app for configuration options.\n", 0);
     this.createFile("/home/Documents/meeting-notes.md",
-      "# Meeting Notes — Q2 Planning\n\n**Date:** 2026-04-10\n**Attendees:** Nova, Sita\n\n## Agenda\n1. Review Q1 results\n2. Set Q2 OKRs\n3. Budget allocation\n\n## Action Items\n- Finalize roadmap by Friday\n- Schedule design review\n");
+      "# Meeting Notes — Q2 Planning\n\n**Date:** 2026-04-10\n**Attendees:** Nova, Sita\n\n## Agenda\n1. Review Q1 results\n2. Set Q2 OKRs\n3. Budget allocation\n\n## Action Items\n- Finalize roadmap by Friday\n- Schedule design review\n", 0);
     this.createFile("/home/Documents/invoice-march.json",
-      JSON.stringify({ id: "INV-2026-031", client: "Acme Corp", amount: 4250, currency: "USD", status: "paid", date: "2026-03-28" }, null, 2));
+      JSON.stringify({ id: "INV-2026-031", client: "Acme Corp", amount: 4250, currency: "USD", status: "paid", date: "2026-03-28" }, null, 2), 0);
     this.createFile("/home/Documents/contacts.csv",
-      "Name,Email,Phone\nAlice Chen,alice@example.com,+1-555-0101\nBob Martinez,bob@example.com,+1-555-0202\nClara Davis,clara@example.com,+1-555-0303\n");
+      "Name,Email,Phone\nAlice Chen,alice@example.com,+1-555-0101\nBob Martinez,bob@example.com,+1-555-0202\nClara Davis,clara@example.com,+1-555-0303\n", 0);
 
     // Downloads
     this.createFile("/home/Downloads/report-q1.pdf", "[PDF — Q1 Financial Report]", 0);
@@ -120,7 +120,7 @@ class FileSystemServiceClass implements SystemService {
     this.createFile("/home/Pictures/screenshot-app.png", "[PNG — app screenshot]", 0);
     this.createFile("/home/Pictures/avatar.jpg", "[JPEG — profile avatar]", 0);
     this.createFile("/home/Pictures/diagram.svg",
-      '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="100"><rect fill="#4A90D9" width="200" height="100" rx="12"/></svg>');
+      '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="100"><rect fill="#4A90D9" width="200" height="100" rx="12"/></svg>', 0);
 
     // Music
     this.createFile("/home/Music/ambient-focus.mp3", "[MP3 — ambient focus track]", 0);
@@ -129,11 +129,11 @@ class FileSystemServiceClass implements SystemService {
 
     // Projects
     this.createFile("/home/Projects/index.ts",
-      'import { NovaSDK } from "@nova/sdk";\n\nconst app = NovaSDK.createApp("my-app");\napp.mount("#root");\nconsole.log("App started");\n');
+      'import { NovaSDK } from "@nova/sdk";\n\nconst app = NovaSDK.createApp("my-app");\napp.mount("#root");\nconsole.log("App started");\n', 0);
     this.createFile("/home/Projects/styles.css",
-      ":root {\n  --primary: hsl(210 80% 60%);\n  --bg: hsl(220 15% 8%);\n}\n\nbody {\n  background: var(--bg);\n  color: white;\n  font-family: system-ui;\n}\n");
+      ":root {\n  --primary: hsl(210 80% 60%);\n  --bg: hsl(220 15% 8%);\n}\n\nbody {\n  background: var(--bg);\n  color: white;\n  font-family: system-ui;\n}\n", 0);
     this.createFile("/home/Projects/package.json",
-      JSON.stringify({ name: "nova-app", version: "1.0.0", main: "index.ts", dependencies: { "@nova/sdk": "^2.0.0" } }, null, 2));
+      JSON.stringify({ name: "nova-app", version: "1.0.0", main: "index.ts", dependencies: { "@nova/sdk": "^2.0.0" } }, null, 2), 0);
 
     this.status = "running";
   }
