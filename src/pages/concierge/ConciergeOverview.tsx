@@ -184,27 +184,6 @@ const ConciergeOverview = () => {
       .map((e: any) => ({ event: e.title, time: e.event_date, who: e.participants?.join(", ") || "Family", icon: Calendar }));
   }, [events]);
 
-  const hasLiveData = isDemoMode || tasks.length > 0 || events.length > 0;
-
-  if (!hasLiveData) {
-    return (
-      <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
-        <DemoModeBadge />
-        <SitaPageHeader title="Concierge" subtitle="Household operations and life logistics" />
-        <EmptyStateCTA
-          icon={Headphones}
-          title="Welcome to your personal concierge"
-          description="Add your first task or event."
-          actions={[
-            { label: "Add Task", icon: CheckSquare, to: "/concierge/tasks" },
-            { label: "Schedule Event", icon: Calendar, to: "/concierge/appointments", variant: "secondary" },
-          ]}
-          tip="The concierge advisor learns your routines over time"
-        />
-      </motion.div>
-    );
-  }
-
   const continuityItems: ContinuityItem[] = useMemo(() => [
     { id: "ci1", title: "Plumber follow-up call", context: "Kitchen leak — waiting for estimate", daysSince: 4 },
     { id: "ci2", title: "Insurance review scheduling", context: "Annual policy review overdue", daysSince: 7 },
@@ -226,6 +205,27 @@ const ConciergeOverview = () => {
       { id: "pi5", title: "Pack list created", done: true },
     ],
   }), []);
+
+  const hasLiveData = isDemoMode || tasks.length > 0 || events.length > 0;
+
+  if (!hasLiveData) {
+    return (
+      <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
+        <DemoModeBadge />
+        <SitaPageHeader title="Concierge" subtitle="Household operations and life logistics" />
+        <EmptyStateCTA
+          icon={Headphones}
+          title="Welcome to your personal concierge"
+          description="Add your first task or event."
+          actions={[
+            { label: "Add Task", icon: CheckSquare, to: "/concierge/tasks" },
+            { label: "Schedule Event", icon: Calendar, to: "/concierge/appointments", variant: "secondary" },
+          ]}
+          tip="The concierge advisor learns your routines over time"
+        />
+      </motion.div>
+    );
+  }
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}>
