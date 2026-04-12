@@ -424,13 +424,20 @@ function RingDrillDown({ ringData, ringIndex, onBack }: {
             </div>
           </div>
 
-          {/* Capabilities */}
+          {/* Allowed syscalls as capabilities */}
           <div>
-            <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1.5">Ring Capabilities</p>
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-1.5">Permissions</p>
             <div className="flex flex-wrap gap-1.5">
-              {(ringData.capabilities || []).map((cap: string) => (
-                <Badge key={cap} variant="outline" className="text-[9px] px-1.5 py-0 border-border/30 font-mono">
-                  {cap}
+              {[
+                ringData.networkAccess !== "none" && `net:${ringData.networkAccess}`,
+                `fs:${ringData.filesystemScope}`,
+                `fds:${ringData.maxFileDescriptors}`,
+                `mem:${ringData.maxMemoryMB}MB`,
+                ringData.canSpawnProcesses && "spawn",
+                ringData.canAccessHardware && "hardware",
+              ].filter(Boolean).map((cap) => (
+                <Badge key={String(cap)} variant="outline" className="text-[9px] px-1.5 py-0 border-border/30 font-mono">
+                  {String(cap)}
                 </Badge>
               ))}
             </div>
