@@ -121,6 +121,7 @@ function DesktopClock({ greeting, userName, bootReady }: { greeting: string; use
 
   const time = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: true });
   const date = now.toLocaleDateString([], { weekday: "long", month: "long", day: "numeric" });
+  const seconds = now.getSeconds();
 
   return (
     <div
@@ -129,9 +130,23 @@ function DesktopClock({ greeting, userName, bootReady }: { greeting: string; use
         bootReady ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-3 scale-95"
       )}
     >
-      <p className="text-7xl md:text-8xl font-extralight tracking-tight text-[hsl(0_0%_100%/0.9)] tabular-nums drop-shadow-lg">
-        {time}
-      </p>
+      <div className="relative inline-block">
+        <p className="text-7xl md:text-8xl font-extralight tracking-tight text-[hsl(0_0%_100%/0.9)] tabular-nums drop-shadow-lg">
+          {time}
+        </p>
+        {/* W3: Analog second-hand sweep */}
+        <div className="absolute -right-6 top-1/2 -translate-y-1/2 w-8 h-8">
+          <svg viewBox="0 0 32 32" className="w-full h-full">
+            <circle cx="16" cy="16" r="14" fill="none" stroke="hsl(0 0% 100% / 0.1)" strokeWidth="1" />
+            <line
+              x1="16" y1="16" x2="16" y2="4"
+              stroke="hsl(0 70% 55%)" strokeWidth="1" strokeLinecap="round"
+              style={{ transform: `rotate(${seconds * 6}deg)`, transformOrigin: "16px 16px", transition: "transform 0.2s linear" }}
+            />
+            <circle cx="16" cy="16" r="1.5" fill="hsl(0 70% 55%)" />
+          </svg>
+        </div>
+      </div>
       <p className="text-lg md:text-xl font-light text-[hsl(0_0%_100%/0.6)] mt-1 tracking-wide">
         {date}
       </p>
@@ -416,6 +431,7 @@ export function DesktopSurface({
             appIcon={w.id === "finder" ? "📁" : w.id === "settings" ? "⚙️" : undefined}
             initialPosition={w.position}
             width={w.width}
+            originRect={(w as any).originRect}
             onClose={() => closeWindow?.(w.id)}
             onMinimize={() => minimizeWindow?.(w.id)}
             onFocus={() => focusWindow?.(w.id)}
