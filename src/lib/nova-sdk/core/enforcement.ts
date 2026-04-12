@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { SPACE, TYPE } from "@/lib/design-system/app-window-system";
+import { auditColor, auditMotion, auditShadow, auditComponent } from "./design-contract";
 
 export interface DesignViolation {
   element: string;
@@ -82,6 +83,24 @@ export class NovaEnforcement {
     spacing?.forEach(s => { const v = auditSpacing(s); if (v) violations.push(v); });
     fontSizes?.forEach(f => { const v = auditFontSize(f); if (v) violations.push(v); });
     radii?.forEach(r => { const v = auditBorderRadius(r); if (v) violations.push(v); });
+    return violations;
+  }
+
+  /** Full audit including color, motion, shadow, and component checks */
+  static fullAudit(options: {
+    spacing?: number[];
+    fontSizes?: number[];
+    radii?: number[];
+    colors?: string[];
+    motionConfigs?: Array<{ duration?: number; stiffness?: number; damping?: number }>;
+    shadows?: string[];
+    components?: Array<{ type: string; classes: string }>;
+  }): DesignViolation[] {
+    const violations = NovaEnforcement.audit(options.spacing, options.fontSizes, options.radii);
+    options.colors?.forEach(c => { const v = auditColor(c); if (v) violations.push(v); });
+    options.motionConfigs?.forEach(m => { const v = auditMotion(m); if (v) violations.push(v); });
+    options.shadows?.forEach(s => { const v = auditShadow(s); if (v) violations.push(v); });
+    options.components?.forEach(c => { const v = auditComponent(c.type as any, c.classes); if (v) violations.push(v); });
     return violations;
   }
 }
