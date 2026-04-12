@@ -111,21 +111,21 @@ class FileSystemServiceClass implements SystemService {
       "Name,Email,Phone\nAlice Chen,alice@example.com,+1-555-0101\nBob Martinez,bob@example.com,+1-555-0202\nClara Davis,clara@example.com,+1-555-0303\n");
 
     // Downloads
-    this.createFile("/home/Downloads/report-q1.pdf", "[PDF — Q1 Financial Report]");
-    this.createFile("/home/Downloads/presentation.pdf", "[PDF — Product Launch Deck]");
-    this.createFile("/home/Downloads/archive.zip", "[ZIP archive]");
+    this.createFile("/home/Downloads/report-q1.pdf", "[PDF — Q1 Financial Report]", 0);
+    this.createFile("/home/Downloads/presentation.pdf", "[PDF — Product Launch Deck]", 0);
+    this.createFile("/home/Downloads/archive.zip", "[ZIP archive]", 0);
 
     // Pictures
-    this.createFile("/home/Pictures/photo-beach.png", "[PNG — beach sunset]");
-    this.createFile("/home/Pictures/screenshot-app.png", "[PNG — app screenshot]");
-    this.createFile("/home/Pictures/avatar.jpg", "[JPEG — profile avatar]");
+    this.createFile("/home/Pictures/photo-beach.png", "[PNG — beach sunset]", 0);
+    this.createFile("/home/Pictures/screenshot-app.png", "[PNG — app screenshot]", 0);
+    this.createFile("/home/Pictures/avatar.jpg", "[JPEG — profile avatar]", 0);
     this.createFile("/home/Pictures/diagram.svg",
       '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="100"><rect fill="#4A90D9" width="200" height="100" rx="12"/></svg>');
 
     // Music
-    this.createFile("/home/Music/ambient-focus.mp3", "[MP3 — ambient focus track]");
-    this.createFile("/home/Music/lofi-beats.mp3", "[MP3 — lo-fi beats]");
-    this.createFile("/home/Music/notification.wav", "[WAV — notification chime]");
+    this.createFile("/home/Music/ambient-focus.mp3", "[MP3 — ambient focus track]", 0);
+    this.createFile("/home/Music/lofi-beats.mp3", "[MP3 — lo-fi beats]", 0);
+    this.createFile("/home/Music/notification.wav", "[WAV — notification chime]", 0);
 
     // Projects
     this.createFile("/home/Projects/index.ts",
