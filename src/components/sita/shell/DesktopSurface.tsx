@@ -401,6 +401,7 @@ export function DesktopSurface({
         {visibleWindows.map(w => (
           <FloatingWindow
             key={w.id}
+            windowId={w.id}
             title={w.title}
             initialPosition={w.position}
             width={w.width}
