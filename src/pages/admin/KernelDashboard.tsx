@@ -1276,7 +1276,7 @@ type DrillDown =
   | null;
 
 const KernelDashboard = () => {
-  const { processes, memStats, schedStats, compStats, powerStats, privilegeStats, privilegeViolations, ringTransitions, bandDistribution, schedulerEvents, currentContext, blockedProcesses, readyProcesses, compositorSurfaces, waylandStats, waylandClients, waylandGlobals } = useKernelMetrics();
+  const { processes, memStats, schedStats, compStats, powerStats, privilegeStats, privilegeViolations, ringTransitions, bandDistribution, schedulerEvents, currentContext, blockedProcesses, readyProcesses, compositorSurfaces, waylandStats, waylandClients, waylandGlobals, serviceManagerStats } = useKernelMetrics();
   const [drillDown, setDrillDown] = useState<DrillDown>(null);
 
   const liveProcessCount = processes.length;
