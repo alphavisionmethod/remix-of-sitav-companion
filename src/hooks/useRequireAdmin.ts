@@ -27,7 +27,7 @@ export function useRequireAdmin() {
 
     const checkRole = async () => {
       try {
-        const { data } = await supabase.rpc("has_role", { _user_id: user.id, _role: "admin" });
+        const { data } = await ( supabase as any).rpc("has_role" as any, { _user_id: user.id, _role: "admin" });
         if (!data) {
           navigate("/");
         } else {

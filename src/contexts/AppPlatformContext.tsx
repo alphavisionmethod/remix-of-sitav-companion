@@ -252,7 +252,7 @@ export function AppPlatformProvider({ children }: { children: ReactNode }) {
   const persistApp = useCallback(async (appId: string, state: AppUserState) => {
     if (!userId) return;
     try {
-      await supabase.from("installed_apps" as any).upsert({
+      await ( supabase as any).from("installed_apps" as any).upsert({
         user_id: userId,
         app_id: appId,
         install_status: state.installStatus,
@@ -275,7 +275,7 @@ export function AppPlatformProvider({ children }: { children: ReactNode }) {
   const removePersistedApp = useCallback(async (appId: string) => {
     if (!userId) return;
     try {
-      await supabase.from("installed_apps" as any)
+      await ( supabase as any).from("installed_apps" as any)
         .delete()
         .eq("user_id", userId)
         .eq("app_id", appId);
@@ -287,7 +287,7 @@ export function AppPlatformProvider({ children }: { children: ReactNode }) {
   const persistDefault = useCallback(async (role: string, appId: string) => {
     if (!userId) return;
     try {
-      await supabase.from("app_default_associations" as any).upsert({
+      await ( supabase as any).from("app_default_associations" as any).upsert({
         user_id: userId,
         role,
         app_id: appId,

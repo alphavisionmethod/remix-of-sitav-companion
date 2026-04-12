@@ -15,6 +15,15 @@ export type { DesignViolation } from "./core/enforcement";
 export { NovaText, NovaButton, NovaInput, NovaCard, NovaList, NovaModal, NovaSidebar, NovaSectionLabel, NovaToggle, NovaSlider, NovaTextArea, NovaToolbar, NovaBadge, NovaAvatar } from "./ui/components";
 export { VStack, HStack, Spacer, Divider, SplitView, AppLayout, NovaScrollArea } from "./ui/layout";
 
+// Services
+export { ServiceManager, FileSystemService, WindowServer, InputService, NotificationService, SettingsService } from "./services";
+export type { SystemService, ServiceDescriptor, ServiceLogEntry, ServiceStatus, RestartPolicy } from "./services";
+export type { FSNode, FSPermissions, MountPoint, FSWatchCallback } from "./services";
+export type { WindowState, WindowRule, SnapZone } from "./services";
+export type { ModifierState, HotkeyBinding, GestureState, InputRecording, AccessibilityConfig } from "./services";
+export type { SystemNotification, NotificationAction, NotificationGroup, DNDConfig, NotificationUrgencyLevel, NotificationStyle } from "./services";
+export type { SettingsSchema, SettingsLayer } from "./services";
+
 // System
 export { createWindowAPI } from "./system/window-api";
 export type { NovaWindowOptions, NovaWindowHandle } from "./system/window-api";

@@ -5,16 +5,15 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
-import type { Database } from "@/integrations/supabase/types";
-import type { PostgrestQueryBuilder } from "@supabase/postgrest-js";
-
-type TableName = keyof Database["public"]["Tables"];
 
 /**
- * Access a Supabase table by literal name with full type safety.
+ * Access a Supabase table by name.
+ * Uses `any` cast because the auto-generated types may not reflect
+ * runtime tables (empty schema in types.ts). Caller handles types.
  */
-export function fromTable<T extends TableName>(table: T) {
-  return supabase.from(table);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function fromTable(table: string): any {
+  return supabase.from(table as any);
 }
 
 /**
@@ -22,12 +21,6 @@ export function fromTable<T extends TableName>(table: T) {
  * Bypasses RejectExcessProperties entirely.
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type DynamicQueryBuilder = PostgrestQueryBuilder<any, any, any, any>;
-
-/**
- * Access a Supabase table by dynamic (runtime) name.
- * Bypasses RejectExcessProperties — caller is responsible for types.
- */
-export function fromDynamicTable(table: string): DynamicQueryBuilder {
-  return supabase.from(table as TableName) as unknown as DynamicQueryBuilder;
+export function fromDynamicTable(table: string): any {
+  return supabase.from(table as any);
 }

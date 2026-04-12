@@ -80,7 +80,7 @@ export async function registerCurrentDevice(userId: string): Promise<void> {
 
   try {
     // Upsert into connected_devices
-    await supabase.from("connected_devices" as any).upsert(
+    await ( supabase as any).from("connected_devices" as any).upsert(
       {
         id: deviceId,
         user_id: userId,
@@ -100,7 +100,7 @@ export async function registerCurrentDevice(userId: string): Promise<void> {
     );
 
     // Upsert into presence_states
-    await supabase.from("presence_states" as any).upsert(
+    await ( supabase as any).from("presence_states" as any).upsert(
       {
         device_id: deviceId,
         user_id: userId,

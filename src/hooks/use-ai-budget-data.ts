@@ -56,7 +56,7 @@ export function useDailyAggregation() {
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return [];
-      const { data, error } = await supabase.rpc("aggregate_ai_daily_spend", {
+      const { data, error } = await ( supabase as any).rpc("aggregate_ai_daily_spend" as any, {
         p_user_id: user.id,
       });
       if (error) throw error;
