@@ -179,7 +179,7 @@ const AppointmentsPrep = () => {
         linkedItems: ["Annual physical — fasting", "Vet confirmation", "HVAC coverage"],
         confidence: "high",
       }} />
-    </div>
+    </ConciergePageWrapper>
   );
 };
 

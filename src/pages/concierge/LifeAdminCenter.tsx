@@ -179,7 +179,7 @@ const LifeAdminCenter = () => {
         linkedItems: ["Tax documents", "Phone calls session", "School paperwork"],
         confidence: "high",
       }} />
-    </motion.div>
+    </ConciergePageWrapper>
   );
 };
 

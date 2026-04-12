@@ -169,7 +169,7 @@ const FamilyCalendar = () => {
           }} />
         </div>
       </div>
-    </motion.div>
+    </ConciergePageWrapper>
   );
 };
 

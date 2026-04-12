@@ -245,7 +245,7 @@ const FamilyBoardroom = () => {
           </SitaCard>
         </div>
       </div>
-    </motion.div>
+    </ConciergePageWrapper>
   );
 };
 

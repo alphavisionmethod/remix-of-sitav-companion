@@ -268,7 +268,7 @@ const HouseholdTasks = () => {
           }} />
         </motion.div>
       </div>
-    </motion.div>
+    </ConciergePageWrapper>
   );
 };
 

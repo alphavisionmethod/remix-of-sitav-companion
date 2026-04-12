@@ -239,7 +239,7 @@ const TravelPlanning = () => {
           </SitaCard>
         </div>
       </div>
-    </motion.div>
+    </ConciergePageWrapper>
   );
 };
 

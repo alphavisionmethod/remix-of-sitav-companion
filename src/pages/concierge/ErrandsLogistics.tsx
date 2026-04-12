@@ -163,7 +163,7 @@ const ErrandsLogistics = () => {
           }} />
         </div>
       </div>
-    </motion.div>
+    </ConciergePageWrapper>
   );
 };
 

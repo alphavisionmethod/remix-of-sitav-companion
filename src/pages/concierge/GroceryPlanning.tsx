@@ -244,7 +244,7 @@ const GroceryPlanning = () => {
           }} />
         </div>
       </div>
-    </motion.div>
+    </ConciergePageWrapper>
   );
 };
 

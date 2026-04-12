@@ -322,7 +322,7 @@ const ServiceProviders = () => {
         linkedItems: ["CleanPro reliability issue", "Oil change overdue — Elite Auto", "Dr. Patel checkup Thursday"],
         confidence: "high",
       }} />
-    </motion.div>
+    </ConciergePageWrapper>
   );
 };
 
