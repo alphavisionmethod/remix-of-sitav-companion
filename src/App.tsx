@@ -916,6 +916,7 @@ const App = () => (
                     <Route path="/business/support" element={<BusinessCenter />} />
                     <Route path="/business/appointments" element={<BusinessCenter />} />
                     <Route path="/business/operations" element={<BusinessCenter />} />
+                    <Route path="/business/documents" element={<BusinessCenter />} />
 
                     {/* ── 3B: OS Core Space — Money ── */}
                     <Route path="/money/onboarding" element={<MoneyOnboarding />} />
