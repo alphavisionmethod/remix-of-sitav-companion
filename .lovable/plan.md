@@ -1,93 +1,102 @@
 
 
-# CPU Privilege Rings + Syscall Security Model — Implementation Plan
+# Ambient Intelligence + Spatial Desktop + Zero-Latency + Universal Command Layer
 
 ## What Exists Today
 
-| Component | Status |
+| Feature | Current State |
 |---|---|
-| Trust ring enum (0-4) in `sandbox-engine.ts` | EXISTS — but only for sandbox policy, not wired into process lifecycle |
-| Syscall dispatcher in `syscall.ts` | EXISTS — validates PID and routes through bridge, but NO privilege level checks |
-| Process struct in `process-manager.ts` | EXISTS — has CPUContext but NO ring/privilege level field |
-| Memory Manager address spaces | EXISTS — CR3 switching works, but no ring-based access control |
-| Boot sequence | EXISTS — boots subsystems but no privilege transition simulation |
-
-**What's missing**: The entire CPU privilege model (Ring 0/3 transitions), syscall-as-ring-transition, pointer validation, permission enforcement per ring, and the enter-user-mode / return-to-kernel-mode flow.
+| Contextual awareness | `InteractionTracker` captures dwell/navigation/clicks. `use-adaptive-personalization` has behavioral learning engine. `ContextualRail` shows entity details. `ContinuityBanner` resumes handoffs. |
+| Spatial desktop | `useWindowManager` tracks window positions with localStorage memory. `CommandLayer` reveals system actions on Meta hold. No zoom levels or spatial navigation. |
+| Zero-latency perception | `ClickRipple` exists. `PageSkeleton`/`SectionSkeleton` for loading states. No predictive preloading or optimistic transitions. |
+| Universal command | `CommandPalette` (Cmd+K) searches apps/routes/actions. Time-based suggestions. No natural language commands, no system control, no automation. |
 
 ## Plan
 
-### 1. Add Privilege Ring to Process Model (`process-manager.ts`)
+### 1. Ambient Context Engine (`src/lib/services/ambient-context-engine.ts`)
 
-- Add `privilegeLevel: 0 | 3` field to `Process` interface (Ring 0 = kernel, Ring 3 = user)
-- Add `currentPrivilegeLevel` (CPL) to `CPUContext` — simulates the CS register's RPL bits
-- Add `kernelStack` and `userStack` to `AddressSpaceRef` — processes need separate stacks per ring
-- On `spawn()`: kernel processes start at Ring 0, app processes start at Ring 3
-- Add `enterUserMode(pid)` method that sets CPL=3, switches to user stack, sets RIP to entry point
-- Add `enterKernelMode(pid)` method that saves user context, sets CPL=0, switches to kernel stack
+Core intelligence service that observes all user activity and produces real-time contextual suggestions.
 
-### 2. Create Privilege Enforcement Module (`kernel/privilege.ts`)
+- **Activity graph**: Tracks current page, recent entities, clipboard contents, open windows, time patterns
+- **Relation inference**: When user opens a file/entity, queries for related items (same client, same project, recent co-accessed)
+- **Clipboard intelligence**: Monitors `navigator.clipboard` reads/writes, suggests paste targets, share actions, format conversions
+- **Context restoration**: On app switch, stores full scroll position + form state + selection; restores on return
+- **Proactive suggestions**: Emits `AmbientSuggestion[]` — typed recommendations (related files, next actions, relevant people) ranked by relevance score
 
-New file implementing the CPU privilege ring simulation:
+### 2. Ambient Suggestions Rail (`src/components/sita/AmbientSuggestionsBar.tsx`)
 
-- `PrivilegeLevel` type: `0 | 1 | 2 | 3` (only 0 and 3 used actively)
-- `validatePointer(pid, ptr, accessType)` — checks pointer is within process's address space, rejects kernel-space pointers from Ring 3
-- `checkHardwareAccess(pid)` — only Ring 0 processes can touch hardware (port I/O, MMIO)
-- `checkMemoryAccess(pid, region)` — validates NX bit, write permissions per ring
-- `enterUserMode(pid, entry, userStack)` — simulates `sysret`/`iretq`: saves kernel state, loads user registers, sets CPL=3
-- `returnToKernel(pid)` — simulates `syscall` instruction: saves user registers, loads kernel stack, sets CPL=0
-- `PrivilegeViolation` event type for audit logging
-- Integration with `SandboxEngine.TrustRing` — maps Trust Rings to privilege levels (Ring 0→CPL 0, Rings 1-4→CPL 3)
+Thin floating bar that appears contextually (not always visible).
 
-### 3. Enhance Syscall Dispatcher (`syscall.ts`)
+- Shows 2-3 top suggestions from the Ambient Context Engine
+- Types: "related entity", "clipboard action", "continue workflow", "predicted next"
+- Appears with subtle animation near the user's last interaction zone
+- Dismissible, learns from acceptance/dismissal patterns
+- Wired into `InteractionTracker` for feedback loop
 
-Rewrite the dispatcher to simulate real Ring 3→Ring 0→Ring 3 transitions:
+### 3. Spatial Desktop with Zoom Levels (`src/components/sita/shell/SpatialDesktop.tsx`)
 
-- On syscall entry: call `returnToKernel(pid)` — save user context, switch to kernel stack, CPL=0
-- Validate all pointer arguments with `validatePointer()` — reject invalid/kernel-space pointers from user processes
-- Check syscall permission against process's Trust Ring (wire in `SandboxEngine.checkSyscall()`)
-- After handling: call `enterUserMode(pid)` — restore user context, CPL=3
-- Add `SYS_MMAP`, `SYS_MUNMAP`, `SYS_BRK`, `SYS_IOCTL`, `SYS_SCHED_YIELD` syscalls
-- Track syscall latency per ring transition (entry→handler→exit timing)
-- Add `SyscallContext` struct tracking the ring transition state
+Transform the flat desktop into a navigable spatial environment.
 
-### 4. Wire into Process Lifecycle (`boot.ts` + `scheduler.ts`)
+- **3 zoom levels**: Overview (all workspaces as cards) → Workspace (apps arranged spatially) → App (focused single app)
+- Pinch/scroll zoom transitions between levels with smooth `framer-motion` animations
+- Apps remember their spatial position per workspace (extend `useWindowManager` memory)
+- Workspace groups: Business, Money, Concierge, System (mapped to domains)
+- Minimap in corner showing current viewport position
+- Keyboard: `Ctrl+-/+` for zoom, `Ctrl+arrow` for spatial navigation
 
-- Boot sequence: kernel process (PID 0) stays Ring 0, all spawned app processes enter Ring 3 via `enterUserMode()`
-- Scheduler `switchTo()`: on context switch, also switch privilege level (save/restore CPL)
-- Scheduler handles quantum interrupt: simulated hardware interrupt forces Ring 3→Ring 0 transition
-- Process spawn flow becomes: `spawn() → createAddressSpace() → allocateStacks() → setReady() → schedule() → enterUserMode()`
+### 4. Zero-Latency Perception System (`src/hooks/use-zero-latency.ts` + `src/lib/services/predictive-prefetch.ts`)
 
-### 5. Update Kernel Dashboard (`KernelDashboard.tsx`)
+Make everything feel instant through prediction and progressive rendering.
 
-- Add privilege level indicator to process listings (Ring 0 badge / Ring 3 badge)
-- Show ring transition count per process in scheduler drill-down
-- Show pointer validation failures in security panel
-- Add "Privilege Transitions" counter to top-line stats
-- Scheduler event log shows ring transitions alongside context switches
+- **Predictive prefetch**: Based on navigation patterns from `use-adaptive-personalization`, prefetch likely next routes via `<link rel="prefetch">`
+- **Optimistic page transitions**: Show destination page skeleton immediately on click (<16ms), fade in real content
+- **Hover intent preloading**: On sidebar/link hover for >100ms, begin data prefetch
+- **Click feedback**: Extend `ClickRipple` — every interactive element gets instant visual response (<16ms)
+- **Progressive data loading**: Critical data first (header/title), then details, then charts — each section animates in independently
+- **Route transition orchestrator**: Manages enter/exit animations with content-aware timing
 
-### 6. Export new modules (`index.ts`)
+### 5. Universal Command Layer Upgrade (`src/components/sita/UniversalCommand.tsx`)
 
-- Export `PrivilegeLevel`, `validatePointer`, `enterUserMode`, `returnToKernel` from barrel
+Rebuild the command palette as a true universal control interface.
 
-## Files to Create/Modify
+- **Natural language parsing**: "resize window left", "send file to John", "show last week's revenue" — parsed into structured intents
+- **System control commands**: "dark mode", "lock screen", "mute notifications", "set focus mode"
+- **Window management**: "tile windows", "close all", "minimize background", "snap left/right"
+- **Workflow automation**: "every Monday send pipeline report" — creates auto-rules via personalization engine
+- **Inline results**: Show calculations, unit conversions, date math directly in palette
+- **Command history**: Recent commands with frequency ranking
+- **Fuzzy matching + aliases**: "biz" → Business Center, "money" → Money Center
+- **Contextual commands**: Commands change based on current page (on Money page: "show cash flow", "add transaction")
+- Categories: Navigation, System, Window, Automation, Calculate, Search
 
-| File | Action |
+## Files to Create
+
+| File | Purpose |
 |---|---|
-| `src/lib/nova-sdk/kernel/privilege.ts` | **CREATE** — privilege ring enforcement, pointer validation, mode switching |
-| `src/lib/nova-sdk/kernel/process-manager.ts` | **MODIFY** — add CPL to CPUContext, dual stacks, privilege fields |
-| `src/lib/nova-sdk/kernel/syscall.ts` | **MODIFY** — ring transitions on entry/exit, pointer validation, new syscalls |
-| `src/lib/nova-sdk/kernel/scheduler.ts` | **MODIFY** — privilege-aware context switching |
-| `src/lib/nova-sdk/kernel/boot.ts` | **MODIFY** — kernel process at Ring 0, privilege subsystem init |
-| `src/pages/admin/KernelDashboard.tsx` | **MODIFY** — privilege indicators and transition metrics |
-| `src/lib/nova-sdk/index.ts` | **MODIFY** — export new privilege module |
+| `src/lib/services/ambient-context-engine.ts` | Activity graph, relation inference, clipboard monitoring, suggestion generation |
+| `src/components/sita/AmbientSuggestionsBar.tsx` | Floating contextual suggestions UI |
+| `src/components/sita/shell/SpatialDesktop.tsx` | Zoom-level spatial workspace navigator |
+| `src/hooks/use-zero-latency.ts` | Predictive prefetch, hover preload, optimistic transitions |
+| `src/lib/services/predictive-prefetch.ts` | Route prediction engine based on behavioral patterns |
+| `src/components/sita/UniversalCommand.tsx` | Rebuilt universal command palette with NL parsing |
+
+## Files to Modify
+
+| File | Changes |
+|---|---|
+| `src/components/sita/InteractionTracker.tsx` | Feed events to ambient context engine, clipboard monitoring |
+| `src/components/sita/ShellLayout.tsx` | Mount AmbientSuggestionsBar, SpatialDesktop, UniversalCommand, zero-latency hooks |
+| `src/components/sita/CommandPalette.tsx` | Delegate to UniversalCommand or replace |
+| `src/hooks/use-adaptive-personalization.ts` | Expose navigation patterns for predictive prefetch |
+| `src/components/sita/shell/useShellState.ts` | Add spatial zoom level state |
+| `src/components/sita/AppSidebar.tsx` | Add hover-intent preloading data attributes |
 
 ## Implementation Order
 
-1. `privilege.ts` (core enforcement module)
-2. `process-manager.ts` (CPL + dual stacks)
-3. `syscall.ts` (ring transitions + validation)
-4. `scheduler.ts` (privilege-aware switching)
-5. `boot.ts` (init privilege subsystem)
-6. `KernelDashboard.tsx` (visualize)
-7. `index.ts` (exports)
+1. Ambient Context Engine (core intelligence)
+2. Predictive Prefetch + Zero-Latency hooks
+3. Universal Command Layer
+4. Spatial Desktop
+5. Ambient Suggestions Bar
+6. Wire everything into ShellLayout + InteractionTracker
 
