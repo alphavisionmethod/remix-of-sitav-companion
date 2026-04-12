@@ -27,6 +27,7 @@ import { Scheduler, type SchedulerEvent } from "@/lib/nova-sdk/kernel/scheduler"
 import { Compositor } from "@/lib/nova-sdk/kernel/compositor";
 import { PowerManager, type PowerStats, type CpuGovernor, type ThermalZoneState } from "@/lib/nova-sdk/kernel/power-manager";
 import { PrivilegeEnforcement, type PrivilegeViolation, type RingTransition } from "@/lib/nova-sdk/kernel/privilege";
+import { WaylandServer, type WaylandClient, type WaylandStats } from "@/lib/nova-sdk/kernel/wayland";
 
 // ── Animation Variants ───────────────────────────────────────
 
