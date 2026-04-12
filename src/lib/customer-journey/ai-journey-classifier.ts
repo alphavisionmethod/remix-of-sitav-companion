@@ -5,6 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import type { JourneyStatus } from "./journey-registry";
 
 /** Maps AI capability keys to customer journey keys */
@@ -37,7 +38,7 @@ export async function classifyAIJourneys(): Promise<AIJourneyEvidence[]> {
 
   const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
 
-  const { data: usageRows } = await supabase
+  const { data: usageRows } = await db
     .from("ai_usage_ledger")
     .select("capability_key, status, created_at")
     .in("capability_key", capabilityKeys)

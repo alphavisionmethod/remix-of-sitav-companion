@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { MOCK_FILES_OVERVIEW, MOCK_FILES_PROCESSING, MOCK_FILES_SEARCH_INDEX } from "@/lib/mock-data/files";
 import type { IndexableItem, SearchDomain } from "@/lib/core-services/search-fabric";
 
@@ -11,7 +12,7 @@ export async function fetchFilesOverview() {
   const user = await getUser();
   if (!user) return MOCK_FILES_OVERVIEW;
 
-  const { data, error } = await supabase
+  const { data, error } = await db
     .from("file_metadata")
     .select("*")
     .eq("user_id", user.id)
@@ -30,7 +31,7 @@ export async function fetchFilesProcessing() {
   const user = await getUser();
   if (!user) return MOCK_FILES_PROCESSING;
 
-  const { data, error } = await supabase
+  const { data, error } = await db
     .from("file_metadata")
     .select("*")
     .eq("user_id", user.id)
@@ -52,7 +53,7 @@ export async function fetchAllFiles() {
   const user = await getUser();
   if (!user) return [];
 
-  const { data, error } = await supabase
+  const { data, error } = await db
     .from("file_metadata")
     .select("*")
     .eq("user_id", user.id)
@@ -66,7 +67,7 @@ export async function fetchFilesByStatus(status: string) {
   const user = await getUser();
   if (!user) return [];
 
-  const { data, error } = await supabase
+  const { data, error } = await db
     .from("file_metadata")
     .select("*")
     .eq("user_id", user.id)
@@ -81,7 +82,7 @@ export async function fetchFilesBySensitivity(sensitivities: string[]) {
   const user = await getUser();
   if (!user) return [];
 
-  const { data, error } = await supabase
+  const { data, error } = await db
     .from("file_metadata")
     .select("*")
     .eq("user_id", user.id)
@@ -96,7 +97,7 @@ export async function fetchFilesSearchIndex(): Promise<IndexableItem[]> {
   const user = await getUser();
   if (!user) return MOCK_FILES_SEARCH_INDEX;
 
-  const { data, error } = await supabase
+  const { data, error } = await db
     .from("file_metadata")
     .select("*")
     .eq("user_id", user.id)
@@ -123,7 +124,7 @@ export async function fetchFileSettings() {
   const user = await getUser();
   if (!user) return null;
 
-  const { data, error } = await supabase
+  const { data, error } = await db
     .from("file_settings")
     .select("*")
     .eq("user_id", user.id)
@@ -137,7 +138,7 @@ export async function upsertFileSettings(settings: Record<string, any>) {
   const user = await getUser();
   if (!user) return null;
 
-  const { data, error } = await supabase
+  const { data, error } = await db
     .from("file_settings")
     .upsert({ user_id: user.id, ...settings }, { onConflict: "user_id" })
     .select()

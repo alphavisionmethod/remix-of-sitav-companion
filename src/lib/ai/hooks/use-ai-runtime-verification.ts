@@ -6,6 +6,7 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { useAIHealth, type AIHealthStatus } from "@/hooks/use-ai-health";
 
 export interface CapabilityVerification {
@@ -40,7 +41,7 @@ export function useAIRuntimeVerification() {
   const capabilityMatrix = useQuery<CapabilityVerification[]>({
     queryKey: ["ai-runtime-verification-matrix"],
     queryFn: async () => {
-      const { data: ledgerRows } = await supabase
+      const { data: ledgerRows } = await db
         .from("ai_usage_ledger")
         .select("capability_key, created_at, provider_id, model_id, latency_ms, prompt_tokens, completion_tokens, estimated_cost_usd, status, error_summary, error_code, receipt_id, mode")
         .in("capability_key", TARGET_CAPABILITIES)
