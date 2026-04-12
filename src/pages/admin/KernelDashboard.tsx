@@ -1674,7 +1674,7 @@ const KernelDashboard = () => {
                   ).slice(0, 4);
 
                   return (
-                    <div key={id} className="rounded-xl border border-border/30 bg-muted/10 p-3 space-y-2">
+                    <div key={id} className="rounded-xl border border-border/30 bg-muted/10 p-3 space-y-2 cursor-pointer hover:border-primary/30 hover:bg-muted/20 transition-all" onClick={() => setDrillDown({ type: "service", serviceId: id })}>
                       <div className="flex items-center gap-2">
                         <Icon className={cn("h-4 w-4", meta.color)} />
                         <span className="text-xs font-medium text-foreground">{meta.label}</span>
