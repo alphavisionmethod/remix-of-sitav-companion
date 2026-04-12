@@ -105,6 +105,7 @@ const AppSwitcherLazy = lazy(() => import("./shell/AppSwitcher").then(m => ({ de
 const ControlCenterLazy = lazy(() => import("./shell/ControlCenter").then(m => ({ default: m.ControlCenter })));
 const NotificationDropdownLazy = lazy(() => import("./shell/NotificationDropdown").then(m => ({ default: m.NotificationDropdown })));
 const PictureInPictureLazy = lazy(() => import("./shell/PictureInPicture").then(m => ({ default: m.PictureInPicture })));
+const IntentSuggestionsWidgetLazy = lazy(() => import("./shell/IntentSuggestionsWidget").then(m => ({ default: m.IntentSuggestionsWidget })));
 
 // Route-aware page transitions
 const drillDownSegments = ["mission", "owner", "business", "money", "concierge"];
