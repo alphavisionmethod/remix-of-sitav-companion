@@ -109,7 +109,7 @@ export function KernelDashboardWindow() {
     <AppLayout
       toolbar={
         <HStack spacing="tight" className="w-full items-center px-2">
-          <HStack spacing="none" className="flex-1">
+          <HStack spacing="micro" className="flex-1">
             {TABS.map(t => (
               <button
                 key={t.id}
@@ -199,7 +199,7 @@ function SchedulerTab({
   }, [stats]);
 
   return (
-    <VStack spacing="snug">
+    <VStack spacing="tight">
       <div className="grid grid-cols-4 gap-2">
         <StatCard icon={Timer} label="Ticks" value={stats.totalTicks.toLocaleString()} />
         <StatCard icon={Activity} label="Switches" value={stats.contextSwitchCount.toLocaleString()} />
@@ -358,7 +358,7 @@ function MemoryTab({ stats, history }: { stats: MemoryStats; history: number[] }
   }, [procs]);
 
   return (
-    <VStack spacing="snug">
+    <VStack spacing="tight">
       <div className="grid grid-cols-4 gap-2">
         <StatCard icon={HardDrive} label="Total" value={`${((stats.totalPages * PAGE_SIZE) / (1024 * 1024)).toFixed(0)} MB`} />
         <StatCard icon={Layers} label="Allocated" value={`${stats.allocatedPages.toLocaleString()} pg`} />
@@ -479,7 +479,7 @@ function SyscallTab({
   metrics: SyscallTypeMetrics[];
 }) {
   return (
-    <VStack spacing="snug">
+    <VStack spacing="tight">
       <div className="grid grid-cols-4 gap-2">
         <StatCard icon={Zap} label="Total Calls" value={stats.total.toLocaleString()} />
         <StatCard icon={Shield} label="Denied" value={stats.denied.toLocaleString()}
