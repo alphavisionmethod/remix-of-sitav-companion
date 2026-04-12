@@ -2,7 +2,7 @@ import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton 
 import { KPITile, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { DomainHeader } from "@/components/sita/primitives";
-import { HouseholdAdvisor } from "@/components/sita/HouseholdComponents";
+import { ConciergeAdvisorInsightCard } from "@/components/concierge";
 import { Wrench, Star, Phone, Clock, DollarSign, MapPin, Shield, Plus, Search, Calendar, FileText, History, CheckCircle, AlertTriangle, ExternalLink, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -308,13 +308,12 @@ const ServiceProviders = () => {
       {filtered.length === 0 && <EmptyState icon={Wrench} title="No providers found" description="Try a different search or add a new provider" />}
 
       {/* Provider Advisor */}
-      <HouseholdAdvisor
-        role="Provider Advisor"
-        icon={Sparkles}
-        confidence="high"
-        message={`You have ${trustedCount} trusted providers across ${DEMO_categories.length} DEMO_categories. CleanPro has a reliability concern — consider finding an alternative. Elite Auto has an overdue oil change — recommend scheduling this week. Total service spend: $${(totalSpent / 1000).toFixed(1)}K all-time.`}
-        linkedItems={["CleanPro reliability issue", "Oil change overdue — Elite Auto", "Dr. Patel checkup Thursday"]}
-      />
+      <ConciergeAdvisorInsightCard insight={{
+        role: "Provider Advisor",
+        message: `You have ${trustedCount} trusted providers across ${DEMO_categories.length} categories. CleanPro has a reliability concern — consider finding an alternative. Elite Auto has an overdue oil change — recommend scheduling this week. Total service spend: $${(totalSpent / 1000).toFixed(1)}K all-time.`,
+        linkedItems: ["CleanPro reliability issue", "Oil change overdue — Elite Auto", "Dr. Patel checkup Thursday"],
+        confidence: "high",
+      }} />
     </motion.div>
   );
 };

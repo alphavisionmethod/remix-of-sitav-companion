@@ -71,6 +71,8 @@ const AppointmentsPrep = () => {
 
   const filtered = view === "prep" ? appointments.filter(a => a.prepItems.length > 0)
     : view === "unconfirmed" ? appointments.filter(a => a.status === "unconfirmed")
+    : view === "recurring" ? appointments.filter(a => a.category === "medical" || a.category === "pet")
+    : view === "followup" ? appointments.filter(a => a.status === "confirmed").slice(0, 2)
     : appointments;
 
   return (
@@ -90,6 +92,8 @@ const AppointmentsPrep = () => {
           { key: "upcoming", label: "All Upcoming" },
           { key: "prep", label: "Prep Needed" },
           { key: "unconfirmed", label: "Unconfirmed" },
+          { key: "recurring", label: "Recurring" },
+          { key: "followup", label: "Follow-up" },
         ]}
         active={view}
         onChange={setView}
