@@ -852,8 +852,18 @@ export const APP_CATALOG: AppDefinition[] = [
     installStatus: "installed", installedAt: "2026-01-01", pinnedToDock: true, tags: ["developer", "debugging", "inspector", "tools"],
     receipts: [],
   },
+  {
+    id: "kernel-dashboard", name: "Kernel Dashboard", publisher: "SITA OS", icon: "⚙️", iconBg: "from-red-500 to-purple-600",
+    category: "developer-tools", appClass: "internal", trustLevel: "sita-verified", version: "1.0.0", size: "0 MB",
+    shortDescription: "Real-time kernel subsystem visualizer", fullDescription: "Visualize the MLFQ scheduler, page table memory manager, and syscall dispatcher in real time. See live CPU registers, process tables, address spaces, and per-syscall latency metrics.",
+    screenshots: [], rating: 4.8, downloads: 25_000, lastUpdated: "2026-04-12",
+    releaseNotes: ["Initial release"], permissions: [], fileAssociations: [], protocolAssociations: [],
+    worksWithSita: ["System integration", "Process Manager", "Memory Manager"],
+    updateSource: "store-managed", startupBehavior: "none", notificationPermission: false,
+    installStatus: "installed", installedAt: "2026-01-01", pinnedToDock: true, tags: ["kernel", "scheduler", "memory", "syscall", "dashboard"],
+    receipts: [],
+  },
 
-  // ═══════════════════════════════════════════════════════════════
   // Popular External Apps
   // ═══════════════════════════════════════════════════════════════
 
