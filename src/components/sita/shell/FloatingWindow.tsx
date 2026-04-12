@@ -382,25 +382,54 @@ export function FloatingWindow({
         />
       )}
 
-      {/* Magnetic alignment guides — thin blue lines between snapping edges */}
+      {/* Magnetic alignment guides — thin blue lines with haptic pulse on snap */}
       {isDragging && alignGuides.length > 0 && (
         <svg
           className="fixed inset-0 pointer-events-none"
           style={{ zIndex: DEPTH_LAYERS.windows + 1, width: "100vw", height: "100vh" }}
         >
+          <defs>
+            <filter id="guide-glow">
+              <feGaussianBlur stdDeviation="2" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
           {alignGuides.map((g, i) =>
             g.axis === "x" ? (
-              <line
-                key={`ag-${i}`}
-                x1={g.position} y1={g.start} x2={g.position} y2={g.end}
-                stroke="hsl(210, 80%, 60%)" strokeWidth="1" strokeDasharray="4 3" opacity="0.7"
-              />
+              <g key={`ag-${i}`}>
+                {/* Glow layer */}
+                <line
+                  x1={g.position} y1={g.start} x2={g.position} y2={g.end}
+                  stroke="hsl(210, 80%, 60%)" strokeWidth="3" opacity="0.15"
+                  filter="url(#guide-glow)"
+                />
+                {/* Main line with pulse animation */}
+                <line
+                  x1={g.position} y1={g.start} x2={g.position} y2={g.end}
+                  stroke="hsl(210, 80%, 60%)" strokeWidth="1" strokeDasharray="4 3" opacity="0.7"
+                >
+                  <animate attributeName="opacity" values="0.3;0.9;0.7" dur="0.3s" repeatCount="1" />
+                  <animate attributeName="stroke-width" values="3;1;1" dur="0.3s" repeatCount="1" />
+                </line>
+              </g>
             ) : (
-              <line
-                key={`ag-${i}`}
-                x1={g.start} y1={g.position} x2={g.end} y2={g.position}
-                stroke="hsl(210, 80%, 60%)" strokeWidth="1" strokeDasharray="4 3" opacity="0.7"
-              />
+              <g key={`ag-${i}`}>
+                <line
+                  x1={g.start} y1={g.position} x2={g.end} y2={g.position}
+                  stroke="hsl(210, 80%, 60%)" strokeWidth="3" opacity="0.15"
+                  filter="url(#guide-glow)"
+                />
+                <line
+                  x1={g.start} y1={g.position} x2={g.end} y2={g.position}
+                  stroke="hsl(210, 80%, 60%)" strokeWidth="1" strokeDasharray="4 3" opacity="0.7"
+                >
+                  <animate attributeName="opacity" values="0.3;0.9;0.7" dur="0.3s" repeatCount="1" />
+                  <animate attributeName="stroke-width" values="3;1;1" dur="0.3s" repeatCount="1" />
+                </line>
+              </g>
             )
           )}
           {alignGuides.map((g, i) => {
@@ -412,7 +441,10 @@ export function FloatingWindow({
                 key={`dot-${i}-${j}`}
                 cx={p.cx} cy={p.cy} r="2"
                 fill="hsl(210, 80%, 60%)" opacity="0.5"
-              />
+              >
+                <animate attributeName="r" values="4;2;2" dur="0.3s" repeatCount="1" />
+                <animate attributeName="opacity" values="0.9;0.5;0.5" dur="0.3s" repeatCount="1" />
+              </circle>
             ));
           })}
         </svg>
