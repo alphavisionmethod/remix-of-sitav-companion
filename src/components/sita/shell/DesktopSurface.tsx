@@ -918,6 +918,19 @@ export function DesktopSurface({
         {/* Advisor Insight */}
         <AdvisorInsight bootReady={bootPhase >= 2} />
 
+        {/* Widget Grid Panel */}
+        <div
+          className={cn(
+            "w-full max-w-4xl mx-auto rounded-2xl p-5 transition-all duration-500",
+            "bg-[hsl(0_0%_0%/0.25)] backdrop-blur-xl border border-[hsl(0_0%_100%/0.08)]",
+            bootPhase >= 3 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+          )}
+          style={{ transitionDelay: bootPhase >= 3 ? "300ms" : "0ms" }}
+          onClick={e => e.stopPropagation()}
+        >
+          <WidgetGrid />
+        </div>
+
         {/* Intent-Aware Suggestion */}
         <IntentSuggestion
           continuity={continuity}
