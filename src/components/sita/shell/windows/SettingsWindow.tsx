@@ -8,6 +8,7 @@ import {
   Monitor, Volume2, Wifi, Settings, Moon, Sun, Shield, Palette,
   Bell, User, HardDrive, Globe, Keyboard, Lock, Eye, Bluetooth,
   Battery, Zap, Info, ChevronRight, Check, Camera, LogOut, Trash2, KeyRound,
+  Cloud, RefreshCw,
 } from "lucide-react";
 import {
   AppLayout,
@@ -39,6 +40,7 @@ const SECTIONS = [
   { id: "notifications", label: "Notifications", icon: <Bell className="h-3.5 w-3.5" />,group: "Preferences" },
   { id: "privacy",     label: "Privacy",     icon: <Shield className="h-3.5 w-3.5" />,   group: "Preferences" },
   { id: "keyboard",    label: "Keyboard",    icon: <Keyboard className="h-3.5 w-3.5" />, group: "Preferences" },
+  { id: "cloudsync",   label: "Cloud & Sync", icon: <Cloud className="h-3.5 w-3.5" />,   group: "Connectivity" },
   { id: "about",       label: "About",       icon: <Info className="h-3.5 w-3.5" />,     group: "Info" },
 ];
 
@@ -802,6 +804,7 @@ const CONTENT: Record<string, () => JSX.Element> = {
   notifications: NotificationsContent,
   privacy: PrivacyContent,
   keyboard: KeyboardContent,
+  cloudsync: CloudSyncContent,
   about: AboutContent,
 };
 
