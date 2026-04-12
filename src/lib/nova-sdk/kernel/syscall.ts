@@ -264,10 +264,10 @@ export function syscall(code: Syscall, pid: number, ...args: any[]): any {
           break;
         }
         case Syscall.SYS_MUNMAP: {
-          // args: [addr, length]
-          const ok = MemoryManager.free(pid, Math.floor((args[0] as number) / 4096));
-          result = ok ? 0 : -22; // -EINVAL
-          status = ok ? "ok" : "error";
+          // args: [addr, length] — free all regions for this PID at that address
+          const freed = MemoryManager.free(pid);
+          result = freed > 0 ? 0 : -22; // -EINVAL
+          status = freed > 0 ? "ok" : "error";
           break;
         }
         case Syscall.SYS_BRK: {
@@ -317,9 +317,9 @@ export function syscall(code: Syscall, pid: number, ...args: any[]): any {
           break;
         }
         case Syscall.SYS_FREE_MEMORY: {
-          const ok = MemoryManager.free(pid, Math.floor((args[0] as number) / 4096));
-          result = ok ? 0 : -22;
-          status = ok ? "ok" : "error";
+          const freed = MemoryManager.free(pid);
+          result = freed > 0 ? 0 : -22;
+          status = freed > 0 ? "ok" : "error";
           break;
         }
         default: {
