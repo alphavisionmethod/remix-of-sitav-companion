@@ -14,6 +14,22 @@ import { detectSnapZone, getSnapRect, SNAP_CONFIG, type SnapZone } from "@/lib/d
 import { lerpPosition, type DragState } from "@/lib/engine/compositor-sim";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCalmEngine } from "@/contexts/CalmEngineContext";
+import {
+  findMagneticEdges,
+  applyMagneticSnap,
+  applyEdgeBounce,
+  trackShake,
+  clearShakeState,
+  type PhysicsWindow,
+} from "@/lib/services/window-physics";
+
+export interface SiblingWindow {
+  id: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
 
 interface FloatingWindowProps {
   title: string;
