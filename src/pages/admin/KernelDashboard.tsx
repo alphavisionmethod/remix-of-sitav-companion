@@ -117,6 +117,9 @@ function useKernelMetrics(refreshMs = 2000) {
   const schedStats = useMemo(() => Scheduler.getStats(), [tick]);
   const compStats = useMemo(() => Compositor.getStats(), [tick]);
   const powerStats = useMemo(() => PowerManager.getStats(), [tick]);
+  const privilegeStats = useMemo(() => PrivilegeEnforcement.getStats(), [tick]);
+  const privilegeViolations = useMemo(() => PrivilegeEnforcement.getViolations(20), [tick]);
+  const ringTransitions = useMemo(() => PrivilegeEnforcement.getTransitions(20), [tick]);
   const schedulerEvents = useMemo(() => Scheduler.getEventLog(20), [tick]);
   const currentContext = useMemo(() => Scheduler.getCurrentContext(), [tick]);
   const blockedProcesses = useMemo(() => ProcessTable.listBlocked(), [tick]);
@@ -140,7 +143,7 @@ function useKernelMetrics(refreshMs = 2000) {
     return bands;
   }, [processes]);
 
-  return { processes, memStats, schedStats, compStats, powerStats, bandDistribution, tick, schedulerEvents, currentContext, blockedProcesses, readyProcesses, compositorSurfaces };
+  return { processes, memStats, schedStats, compStats, powerStats, privilegeStats, privilegeViolations, ringTransitions, bandDistribution, tick, schedulerEvents, currentContext, blockedProcesses, readyProcesses, compositorSurfaces };
 }
 
 // ── Subcomponents ────────────────────────────────────────────
