@@ -1,13 +1,14 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Floating Window (NovaOS composited surface)
 // Draggable glassmorphic window with traffic-light controls + snap + resize
-// Mac-level smooth dragging with lerp interpolation + inertia
+// Enhanced: accent strip, app icon, origin morph, toolbar slot, dual shadows
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useRef, useCallback, useEffect, type ReactNode } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { DEPTH_LAYERS, TRAFFIC_LIGHTS, NOVA_MOTION, NOVA_SHADOWS } from "@/lib/design-system/nova-os";
+import { DEPTH_LAYERS, TRAFFIC_LIGHTS, NOVA_MOTION } from "@/lib/design-system/nova-os";
+import { APP_SHADOWS, APP_ACCENTS, APP_CHROME, APP_TYPE } from "@/lib/design-system/app-window-system";
 import { detectSnapZone, getSnapRect, SNAP_CONFIG, type SnapZone } from "@/lib/design-system/snap-zones";
 import { lerpPosition, type DragState } from "@/lib/engine/compositor-sim";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -19,6 +20,10 @@ interface FloatingWindowProps {
   initialPosition?: { x: number; y: number };
   width?: number;
   windowId?: string;
+  appIcon?: string;
+  appAccent?: string;
+  toolbar?: ReactNode;
+  originRect?: { x: number; y: number; width: number; height: number };
   onClose?: () => void;
   onMinimize?: () => void;
   onMaximize?: () => void;
@@ -42,6 +47,10 @@ export function FloatingWindow({
   initialPosition = { x: 120, y: 80 },
   width = 500,
   windowId,
+  appIcon,
+  appAccent,
+  toolbar,
+  originRect,
   onClose,
   onMinimize,
   onMaximize,
@@ -65,6 +74,8 @@ export function FloatingWindow({
   const [preSnapState, setPreSnapState] = useState<{ x: number; y: number; width: number } | null>(null);
   const [showContent, setShowContent] = useState(false);
 
+  const accentGradient = appAccent || (windowId ? APP_ACCENTS[windowId] : undefined) || APP_ACCENTS.default;
+
   // Progressive content loading — show skeleton shimmer for 150ms
   useEffect(() => {
     const timer = setTimeout(() => setShowContent(true), 150);
@@ -84,6 +95,24 @@ export function FloatingWindow({
   const rafId = useRef<number>(0);
   const resizeStart = useRef({ x: 0, y: 0, w: 0, h: 0 });
 
+  // Origin morph — compute initial animation from dock icon position
+  const morphInitial = originRect
+    ? {
+        x: originRect.x - initialPosition.x,
+        y: originRect.y - initialPosition.y,
+        scale: Math.max(originRect.width / width, 0.15),
+        opacity: 0,
+      }
+    : NOVA_MOTION.window.enter.initial;
+
+  const morphAnimate = originRect
+    ? { x: 0, y: 0, scale: 1, opacity: 1 }
+    : NOVA_MOTION.window.enter.animate;
+
+  const morphTransition = originRect
+    ? { type: "spring" as const, stiffness: 260, damping: 22, mass: 0.8 }
+    : { duration: NOVA_MOTION.duration.standard, ease: [0.25, 0.1, 0.25, 1] as number[] };
+
   // Lerp animation loop during drag
   useEffect(() => {
     if (!isDragging) return;
@@ -92,7 +121,6 @@ export function FloatingWindow({
       const nx = lerpPosition(currentPos.current.x, targetPos.current.x, DRAG_SMOOTHING);
       const ny = lerpPosition(currentPos.current.y, targetPos.current.y, DRAG_SMOOTHING);
 
-      // Track velocity as delta per frame
       dragRef.current.velocityX = nx - currentPos.current.x;
       dragRef.current.velocityY = ny - currentPos.current.y;
 
@@ -120,7 +148,6 @@ export function FloatingWindow({
       currentPos.current.x += ds.velocityX;
       currentPos.current.y += ds.velocityY;
 
-      // Boundary clamp
       currentPos.current.x = Math.max(0, Math.min(window.innerWidth - 100, currentPos.current.x));
       currentPos.current.y = Math.max(0, Math.min(window.innerHeight - 50, currentPos.current.y));
 
@@ -167,18 +194,13 @@ export function FloatingWindow({
     let tx = e.clientX - dragRef.current.offsetX;
     let ty = e.clientY - dragRef.current.offsetY;
 
-    // Magnetic edge attraction
     const vw = window.innerWidth;
     const vh = window.innerHeight;
     const ww = size.width;
 
-    // Left edge
     if (tx < MAGNETIC_RANGE) tx += (0 - tx) * MAGNETIC_STRENGTH;
-    // Right edge
     if (tx + ww > vw - MAGNETIC_RANGE) tx += (vw - ww - tx) * MAGNETIC_STRENGTH;
-    // Top edge
     if (ty < MAGNETIC_RANGE) ty += (0 - ty) * MAGNETIC_STRENGTH;
-    // Bottom edge
     if (ty > vh - MAGNETIC_RANGE - 50) ty += (vh - 50 - ty) * MAGNETIC_STRENGTH;
 
     targetPos.current = { x: tx, y: ty };
@@ -201,7 +223,6 @@ export function FloatingWindow({
       setSize({ width: rect.width, height: rect.height });
       setSnappedTo(snapZone);
     } else {
-      // Apply inertia
       runInertia();
     }
     setSnapZone(null);
@@ -252,6 +273,9 @@ export function FloatingWindow({
 
   const snapPreview = snapZone ? getSnapRect(snapZone, window.innerWidth, window.innerHeight) : null;
 
+  const titleBarHeight = APP_CHROME.titleBarHeight;
+  const totalChromeH = titleBarHeight + (toolbar ? APP_CHROME.toolbarHeight : 0);
+
   return (
     <>
       {/* Snap zone preview overlay */}
@@ -272,16 +296,25 @@ export function FloatingWindow({
 
       <motion.div
         data-floating-window
-        initial={NOVA_MOTION.window.enter.initial}
-        animate={NOVA_MOTION.window.enter.animate}
+        initial={morphInitial}
+        animate={morphAnimate}
         exit={NOVA_MOTION.window.exit.exit}
-        transition={{ duration: NOVA_MOTION.duration.standard, ease: [0.25, 0.1, 0.25, 1] }}
+        transition={morphTransition}
         className={cn(
-          "absolute rounded-2xl overflow-hidden",
-          "backdrop-blur-2xl transition-[opacity,box-shadow,border-color] duration-200",
+          "absolute overflow-hidden",
+          "backdrop-blur-2xl transition-[box-shadow,border-color,filter] duration-200",
           isFocused
-            ? cn("bg-[hsl(0_0%_100%/0.70)] dark:bg-[hsl(0_0%_0%/0.60)] border border-[hsl(0_0%_100%/0.35)] dark:border-[hsl(0_0%_100%/0.15)]", NOVA_SHADOWS.windowFocused)
-            : cn("bg-[hsl(0_0%_100%/0.60)] dark:bg-[hsl(0_0%_0%/0.50)] border border-[hsl(0_0%_100%/0.20)] dark:border-[hsl(0_0%_100%/0.08)] opacity-[0.85]", NOVA_SHADOWS.windowUnfocused),
+            ? cn(
+                "bg-[hsl(0_0%_100%/0.72)] dark:bg-[hsl(0_0%_0%/0.62)]",
+                "border border-[hsl(0_0%_100%/0.35)] dark:border-[hsl(0_0%_100%/0.12)]",
+                APP_SHADOWS.focused,
+                APP_SHADOWS.innerGlow
+              )
+            : cn(
+                "bg-[hsl(0_0%_100%/0.60)] dark:bg-[hsl(0_0%_0%/0.50)]",
+                "border border-[hsl(0_0%_100%/0.20)] dark:border-[hsl(0_0%_100%/0.08)]",
+                APP_SHADOWS.unfocused
+              ),
           isDragging ? "cursor-grabbing" : "",
           className
         )}
@@ -292,22 +325,29 @@ export function FloatingWindow({
           height: size.height || undefined,
           zIndex: DEPTH_LAYERS.windows,
           willChange: "transform",
+          borderRadius: APP_CHROME.cornerRadius,
           opacity: attentionOpacity,
-          filter: `saturate(${attentionSaturation})`,
+          filter: isFocused
+            ? `saturate(${attentionSaturation})`
+            : `saturate(${attentionSaturation * 0.85}) brightness(0.97)`,
           transition: isDragging || isResizing
-            ? "opacity 0.3s, filter 0.3s"
-            : `left ${SNAP_CONFIG.animationDuration}s ease, top ${SNAP_CONFIG.animationDuration}s ease, width ${SNAP_CONFIG.animationDuration}s ease, height ${SNAP_CONFIG.animationDuration}s ease, opacity 0.3s, filter 0.3s`,
+            ? "box-shadow 0.2s, filter 0.3s"
+            : `left ${SNAP_CONFIG.animationDuration}s ease, top ${SNAP_CONFIG.animationDuration}s ease, width ${SNAP_CONFIG.animationDuration}s ease, height ${SNAP_CONFIG.animationDuration}s ease, box-shadow 0.2s, filter 0.3s`,
           ...style,
         }}
         onPointerDown={() => onFocus?.()}
       >
-        {/* Title bar — draggable */}
+        {/* ── Accent strip ── */}
+        <div className={cn("h-[2px] w-full bg-gradient-to-r", accentGradient)} />
+
+        {/* ── Title bar — draggable ── */}
         <div
           className={cn(
-            "h-10 flex items-center px-3 gap-2 select-none",
+            "flex items-center px-3 gap-2 select-none",
             "border-b border-[hsl(0_0%_0%/0.06)] dark:border-[hsl(0_0%_100%/0.06)]",
             isDragging ? "cursor-grabbing" : "cursor-grab"
           )}
+          style={{ height: titleBarHeight }}
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}
@@ -322,8 +362,8 @@ export function FloatingWindow({
             <button
               onClick={onClose}
               className={cn(
-                "w-3 h-3 rounded-full transition-colors flex items-center justify-center",
-                isHoveringControls ? TRAFFIC_LIGHTS.close : TRAFFIC_LIGHTS.inactive
+                "w-3 h-3 rounded-full transition-all duration-100 flex items-center justify-center",
+                isHoveringControls ? cn(TRAFFIC_LIGHTS.close, "scale-110") : TRAFFIC_LIGHTS.inactive
               )}
               aria-label="Close"
             >
@@ -334,8 +374,8 @@ export function FloatingWindow({
             <button
               onClick={onMinimize}
               className={cn(
-                "w-3 h-3 rounded-full transition-colors flex items-center justify-center",
-                isHoveringControls ? TRAFFIC_LIGHTS.minimize : TRAFFIC_LIGHTS.inactive
+                "w-3 h-3 rounded-full transition-all duration-100 flex items-center justify-center",
+                isHoveringControls ? cn(TRAFFIC_LIGHTS.minimize, "scale-110") : TRAFFIC_LIGHTS.inactive
               )}
               aria-label="Minimize"
             >
@@ -346,8 +386,8 @@ export function FloatingWindow({
             <button
               onClick={onMaximize}
               className={cn(
-                "w-3 h-3 rounded-full transition-colors flex items-center justify-center",
-                isHoveringControls ? TRAFFIC_LIGHTS.maximize : TRAFFIC_LIGHTS.inactive
+                "w-3 h-3 rounded-full transition-all duration-100 flex items-center justify-center",
+                isHoveringControls ? cn(TRAFFIC_LIGHTS.maximize, "scale-110") : TRAFFIC_LIGHTS.inactive
               )}
               aria-label="Maximize"
             >
@@ -357,17 +397,32 @@ export function FloatingWindow({
             </button>
           </div>
 
-          {/* Title */}
-          <span className="ml-2 text-[13px] font-medium text-[hsl(0_0%_20%)] dark:text-[hsl(0_0%_85%)] truncate flex-1 text-center">
-            {title}
-          </span>
+          {/* App icon + Title */}
+          <div className="flex items-center gap-1.5 ml-2 flex-1 justify-center">
+            {appIcon && (
+              <span className="text-[14px] leading-none">{appIcon}</span>
+            )}
+            <span className={cn(APP_TYPE.body, "font-medium text-[hsl(0_0%_20%)] dark:text-[hsl(0_0%_85%)] truncate")}>
+              {title}
+            </span>
+          </div>
 
           {/* Spacer for symmetry */}
           <div className="w-[52px]" />
         </div>
 
-        {/* Content with progressive loading */}
-        <div className="overflow-auto" style={{ maxHeight: size.height ? size.height - 40 : undefined }}>
+        {/* ── Toolbar slot ── */}
+        {toolbar && (
+          <div
+            className="flex items-center px-3 gap-2 border-b border-[hsl(0_0%_0%/0.04)] dark:border-[hsl(0_0%_100%/0.04)]"
+            style={{ height: APP_CHROME.toolbarHeight }}
+          >
+            {toolbar}
+          </div>
+        )}
+
+        {/* ── Content with progressive loading ── */}
+        <div className="overflow-auto" style={{ maxHeight: size.height ? size.height - totalChromeH - APP_CHROME.accentStripHeight : undefined }}>
           {showContent ? (
             children
           ) : (
@@ -375,19 +430,21 @@ export function FloatingWindow({
               <Skeleton className="h-4 w-3/4" />
               <Skeleton className="h-4 w-full" />
               <Skeleton className="h-4 w-1/2" />
+              {/* Accent-tinted skeleton bar */}
+              <div className={cn("h-1 w-1/4 rounded-full bg-gradient-to-r opacity-20 mt-2", accentGradient)} />
             </div>
           )}
         </div>
 
-        {/* Resize handle — bottom-right corner */}
+        {/* ── Resize handle ── */}
         <div
-          className="absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize group"
+          className="absolute bottom-0 right-0 w-5 h-5 cursor-nwse-resize group"
           onPointerDown={handleResizeDown}
           onPointerMove={handleResizeMove}
           onPointerUp={handleResizeUp}
         >
           <svg
-            className="w-3 h-3 absolute bottom-0.5 right-0.5 text-[hsl(0_0%_50%/0.4)] group-hover:text-[hsl(0_0%_50%/0.7)] transition-colors"
+            className="w-3 h-3 absolute bottom-1 right-1 text-[hsl(0_0%_50%/0.3)] group-hover:text-[hsl(0_0%_50%/0.6)] transition-colors duration-100"
             viewBox="0 0 10 10"
             fill="none"
           >
