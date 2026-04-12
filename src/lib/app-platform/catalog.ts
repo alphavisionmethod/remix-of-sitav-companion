@@ -863,6 +863,17 @@ export const APP_CATALOG: AppDefinition[] = [
     installStatus: "installed", installedAt: "2026-01-01", pinnedToDock: true, tags: ["kernel", "scheduler", "memory", "syscall", "dashboard"],
     receipts: [],
   },
+  {
+    id: "extension-manager", name: "Extension Manager", publisher: "SITA OS", icon: "🧩", iconBg: "from-violet-500 to-fuchsia-600",
+    category: "utilities", appClass: "internal", trustLevel: "sita-verified", version: "1.0.0", size: "0 MB",
+    shortDescription: "Manage plugins, widgets, and integrations", fullDescription: "Browse, enable, and configure system extensions. Manage plugins that add new capabilities, widgets for the desktop, and integrations with third-party services.",
+    screenshots: [], rating: 4.7, downloads: 40_000, lastUpdated: "2026-04-12",
+    releaseNotes: ["Initial release"], permissions: [], fileAssociations: [], protocolAssociations: [],
+    worksWithSita: ["System integration", "Plugin system", "Widget system"],
+    updateSource: "store-managed", startupBehavior: "none", notificationPermission: false,
+    installStatus: "installed", installedAt: "2026-01-01", pinnedToDock: true, tags: ["extensions", "plugins", "widgets", "integrations"],
+    receipts: [],
+  },
 
   // Popular External Apps
   // ═══════════════════════════════════════════════════════════════

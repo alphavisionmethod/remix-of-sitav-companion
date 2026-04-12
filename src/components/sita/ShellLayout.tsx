@@ -43,6 +43,7 @@ import { AppLibraryWindow } from "./shell/windows/AppLibraryWindow";
 import { UpdateCenterWindow } from "./shell/windows/UpdateCenterWindow";
 import { CloudSyncWindow } from "./shell/windows/CloudSyncWindow";
 import { DevToolsWindow } from "./shell/windows/DevToolsWindow";
+import { ExtensionManagerWindow } from "./shell/windows/ExtensionManagerWindow";
 import { KernelDashboardWindow } from "./shell/windows/KernelDashboardWindow";
 import { NovaSDKProvider } from "@/contexts/NovaSDKContext";
 import { lifecycleManager } from "@/lib/nova-sdk/runtime/lifecycle";
@@ -427,6 +428,14 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         width: 680,
         originRect: origin,
       }, { id: "kernel-dashboard", name: "Kernel Dashboard" });
+    } else if (appId === "extension-manager" || appId === "com.sita.extension-manager") {
+      launchWithKernel("extension-manager", {
+        title: "Extension Manager",
+        component: <ExtensionManagerWindow />,
+        position: { x: 160, y: 80 },
+        width: 520,
+        originRect: origin,
+      }, { id: "extension-manager", name: "Extension Manager" });
     }
 
     // Wire intent learning — every app launch teaches the engine
