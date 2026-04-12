@@ -12,7 +12,17 @@ import { toast } from "sonner";
 
 // ── Helpers ──────────────────────────────────────────────────────
 
+function isDemoSession(): boolean {
+  return localStorage.getItem("sita-demo-session") === "true";
+}
+
 async function invokeEdge<T = unknown>(name: string, body: Record<string, unknown>): Promise<T> {
+  // In demo mode there's no real auth token — return empty mock data
+  if (isDemoSession()) {
+    console.log(`[demo] Skipping edge call: ${name}`);
+    return {} as T;
+  }
+
   const { data, error } = await supabase.functions.invoke(name, { body });
   if (error) {
     const status = (error as Record<string, unknown>)?.status;
