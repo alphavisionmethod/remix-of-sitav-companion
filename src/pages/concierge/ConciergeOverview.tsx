@@ -202,10 +202,12 @@ const ConciergeOverview = () => {
   }
 
   return (
-    <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-      <SitaPageHeader
+    <motion.div className="space-y-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}>
+      <AmbientHeader
         title="Concierge"
         subtitle="Household operations, family schedule, and life logistics command center"
+        icon={<Heart className="h-5 w-5 text-accent" />}
+        accentColor="hsl(var(--accent))"
         actions={
           <div className="flex items-center gap-2">
             <SitaTabs
@@ -222,8 +224,8 @@ const ConciergeOverview = () => {
         }
       />
 
-      {/* Summary Strip */}
-      <div className="grid gap-2 grid-cols-4 lg:grid-cols-8">
+      {/* Summary Strip — Premium staggered */}
+      <StaggerReveal className="grid gap-2 grid-cols-4 lg:grid-cols-8">
         {[
           { label: "Today", value: kpiSummary.todayCommitments, icon: Calendar },
           { label: "Tomorrow Prep", value: kpiSummary.tomorrowPrep, icon: Clock },
@@ -234,13 +236,15 @@ const ConciergeOverview = () => {
           { label: "Travel", value: kpiSummary.travelItems, icon: Plane },
           { label: "Approvals", value: kpiSummary.urgentApprovals, icon: Shield },
         ].map((kpi) => (
-          <div key={kpi.label} className="rounded-xl border border-border bg-card p-3 text-center transition-all hover:shadow-card-hover">
-            <kpi.icon className="h-3.5 w-3.5 text-muted-foreground mx-auto mb-1" />
-            <p className="font-display text-lg font-bold text-foreground">{kpi.value}</p>
-            <p className="text-[10px] text-muted-foreground">{kpi.label}</p>
-          </div>
+          <StaggerItem key={kpi.label}>
+            <GlassCard glow="accent" intensity="subtle" className="p-3 text-center">
+              <kpi.icon className="h-3.5 w-3.5 text-muted-foreground mx-auto mb-1" />
+              <p className="font-display text-lg font-bold text-foreground">{kpi.value}</p>
+              <p className="text-[10px] text-muted-foreground">{kpi.label}</p>
+            </GlassCard>
+          </StaggerItem>
         ))}
-      </div>
+      </StaggerReveal>
 
       {/* Overload Assessment */}
       <OverloadCard
