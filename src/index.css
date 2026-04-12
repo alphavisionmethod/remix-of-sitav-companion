@@ -634,3 +634,34 @@
 [data-idle-phase="idle"] .desktop-fadeable {
   transition: opacity 2s ease;
 }
+
+/* G6: Widget inner glow pulse on hover */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: inset 0 1px 0 hsl(0 0% 100% / 0.08); }
+  50% { box-shadow: inset 0 1px 12px hsl(0 0% 100% / 0.12); }
+}
+
+.widget-glow-hover:hover {
+  animation: glow-pulse 1.5s ease-in-out infinite;
+}
+
+/* W4: Genie minimize effect */
+@keyframes genie-minimize {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(0.15) translateY(60vh) perspective(600px) rotateX(20deg); opacity: 0; }
+}
+
+.animate-genie-minimize {
+  animation: genie-minimize 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* W3: Clock second-hand sweep */
+@keyframes sweep-second {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.clock-second-hand {
+  animation: sweep-second 60s linear infinite;
+  transform-origin: 50% 100%;
+}
