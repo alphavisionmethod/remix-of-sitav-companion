@@ -443,7 +443,7 @@ export function DesktopSurface({
               key={w.id}
               windowId={w.id}
               title={w.title}
-              appIcon={w.id === "finder" ? "📁" : w.id === "settings" ? "⚙️" : w.id === "notes" ? "📝" : w.id === "system-monitor" ? "📊" : undefined}
+              appIcon={w.id === "finder" ? "📁" : w.id === "settings" ? "⚙️" : w.id === "notes" ? "📝" : w.id === "system-monitor" ? "📊" : w.id === "music-player" ? "🎵" : w.id === "calculator" ? "🔢" : w.id === "photo-viewer" ? "📷" : w.id === "code-editor" ? "👨‍💻" : w.id === "mail-client" ? "✉️" : w.id === "maps-app" ? "🗺️" : undefined}
               initialPosition={w.position}
               width={w.width}
               originRect={(w as any).originRect}

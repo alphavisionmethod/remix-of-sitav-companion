@@ -32,6 +32,12 @@ import { CalendarWindow } from "./shell/windows/CalendarWindow";
 import { WeatherWindow } from "./shell/windows/WeatherWindow";
 import { NovaTerminal } from "./shell/windows/NovaTerminal";
 import { SystemMonitorWindow } from "./shell/windows/SystemMonitorWindow";
+import { MusicPlayerWindow } from "./shell/windows/MusicPlayerWindow";
+import { CalculatorWindow } from "./shell/windows/CalculatorWindow";
+import { PhotoViewerWindow } from "./shell/windows/PhotoViewerWindow";
+import { CodeEditorWindow } from "./shell/windows/CodeEditorWindow";
+import { MailClientWindow } from "./shell/windows/MailClientWindow";
+import { MapsWindow } from "./shell/windows/MapsWindow";
 import { NovaSDKProvider } from "@/contexts/NovaSDKContext";
 import { lifecycleManager } from "@/lib/nova-sdk/runtime/lifecycle";
 import { ProcessTable } from "@/lib/nova-sdk/kernel/process-manager";
@@ -307,6 +313,54 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         width: 620,
         originRect: origin,
       }, { id: "system-monitor", name: "System Monitor" });
+    } else if (appId === "music-player") {
+      launchWithKernel("music-player", {
+        title: "Music",
+        component: <MusicPlayerWindow />,
+        position: { x: 180, y: 100 },
+        width: 520,
+        originRect: origin,
+      }, { id: "music-player", name: "Music" });
+    } else if (appId === "calculator") {
+      launchWithKernel("calculator", {
+        title: "Calculator",
+        component: <CalculatorWindow />,
+        position: { x: 360, y: 120 },
+        width: 380,
+        originRect: origin,
+      }, { id: "calculator", name: "Calculator" });
+    } else if (appId === "photo-viewer") {
+      launchWithKernel("photo-viewer", {
+        title: "Photos",
+        component: <PhotoViewerWindow />,
+        position: { x: 200, y: 90 },
+        width: 560,
+        originRect: origin,
+      }, { id: "photo-viewer", name: "Photos" });
+    } else if (appId === "code-editor") {
+      launchWithKernel("code-editor", {
+        title: "Code Editor",
+        component: <CodeEditorWindow />,
+        position: { x: 120, y: 80 },
+        width: 700,
+        originRect: origin,
+      }, { id: "code-editor", name: "Code Editor" });
+    } else if (appId === "mail-client") {
+      launchWithKernel("mail-client", {
+        title: "Mail",
+        component: <MailClientWindow />,
+        position: { x: 160, y: 90 },
+        width: 640,
+        originRect: origin,
+      }, { id: "mail-client", name: "Mail" });
+    } else if (appId === "maps-app") {
+      launchWithKernel("maps-app", {
+        title: "Maps",
+        component: <MapsWindow />,
+        position: { x: 200, y: 100 },
+        width: 560,
+        originRect: origin,
+      }, { id: "maps-app", name: "Maps" });
     }
   }, [wm.openWindow]);
 
