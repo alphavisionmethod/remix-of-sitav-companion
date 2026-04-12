@@ -33,7 +33,7 @@ export function useFocusMode() {
     setActive(true);
     setBreakSuggested(false);
     startTimeRef.current = Date.now();
-    SoundEngine.approve();
+    SoundEngine.breathIn();
 
     // Apply focus CSS
     document.documentElement.classList.add("sita-focus-mode");
