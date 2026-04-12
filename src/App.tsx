@@ -954,6 +954,8 @@ const App = () => (
                     <Route path="/money/peace-score" element={<MoneyCenter />} />
                     <Route path="/money/boundaries" element={<MoneyCenter />} />
                     <Route path="/money/spending-pulse" element={<MoneyCenter />} />
+                    <Route path="/money/reconciliation" element={<MoneyCenter />} />
+                    <Route path="/money/automations" element={<MoneyCenter />} />
 
                     {/* ── 3B: OS Office — Investment Office (38 routes) ── */}
                     <Route path="/investments" element={<InvestmentGate />} />
