@@ -285,7 +285,7 @@ export function DesktopSurface({
         "fixed inset-0 flex flex-col items-center justify-center overflow-hidden bg-gradient-to-br cursor-default",
         wallpaperPhase ? activeGradientAlt : activeGradient
       )}
-      style={{ transition: "background 8s ease" }}
+      style={{ transition: "background 8s ease, transform 0.3s ease-out", transform: `translate(${parallax.x}px, ${parallax.y}px) scale(1.01)` }}
       onClick={(e) => { handleBackgroundClick(e); setCtxMenu(null); }}
       onContextMenu={handleContextMenu}
     >
