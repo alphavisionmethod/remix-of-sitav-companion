@@ -1,90 +1,48 @@
 
 
-# SITA OS — Wire Trust Architecture Into Live Runtime: Enhancement Plan
+# Connect Errands & Logistics to Database with CRUD
 
-## Current State (Verified)
+## Current State
+- **Database**: `concierge_errands` table exists with columns: `id`, `user_id`, `title`, `location`, `priority`, `status`, `estimated_minutes`, `combinable`, `bundle_id`, `due_date`, `notes`, `created_at`, `updated_at`. RLS is active.
+- **Read hook**: `useErrands()` in `use-concierge-data.ts` already fetches from DB.
+- **Page**: `ErrandsLogistics.tsx` uses hardcoded `BUNDLES` and `TIMELINE` arrays — zero DB connection.
 
-**Backend (fully wired and working):**
-- `ai-capability-client.ts`: Routes through `PipelineOrchestrator` when contract exists, direct gateway otherwise. Post-hoc grounding checks on finance/business. Sentinel checks on pipeline completion. Negative receipts on block. ✅
-- `pipeline-orchestrator.ts`: 9-stage pipeline with evidence grading, cite-check, negative receipts, ConscienceGate, CritiqueLoop. ✅
-- `callable.ts`: ConscienceGate pre-flight + negative receipts on block. ✅
-- `desk-executor.ts`: ConscienceGate + negative receipts on block. ✅
-- `ai-gateway` edge function: Auth, routing, budget, Lovable AI call, receipt logging. ✅
-- All 8 epistemic firewall modules: Substantive code with full exports. ✅
-- Global contracts registry: 15+ contracts with evidence requirements, risk tiers, routing. ✅
+## Plan
 
-**What is NOT wired (the gap):**
-1. **No UI surfaces trust metadata** — `hasCaveats`, `wasBlocked`, `trustMetadata` are exposed from hooks but **zero components** read them. The advisor chat, boardroom, files AI — none display caveats, evidence grades, assumptions, or negative receipt details.
-2. **No TrustMetadataBadge component** — The existing `TrustBadge` handles confidence levels but doesn't show epistemic firewall output (evidence grades, grounding status, assumption disclosures, caveat lists, negative receipt details).
-3. **Cortex Loop not wired to any flow** — `runCortexLoop` has 0 callers. Boardroom and finance planning don't use it.
-4. **EpistemicFirewallBoard shows live stats** but lacks drill-down into individual pipeline traces and negative receipts.
+### 1. Add mutation hooks for errands CRUD
+**File: `src/hooks/use-concierge-data.ts`** — Add 3 new exports:
+- `useCreateErrand()` — inserts into `concierge_errands`, invalidates `["concierge-errands"]`
+- `useUpdateErrand()` — updates by id (status, priority, title, bundle_id, etc.)
+- `useDeleteErrand()` — deletes by id
 
-## Implementation Plan
+All mutations use `fromTable("concierge_errands")` and require authenticated `user_id`.
 
-### 1. Create `EpistemicTrustDisplay` component
-A reusable component that renders trust metadata from AI responses:
-- Evidence grade badge (A-F with color coding)
-- Grounding status indicator
-- Caveat list (collapsible)
-- Assumption disclosures
-- Negative receipt details (when blocked)
-- Sentinel health indicator
+### 2. Create Add Errand dialog component
+**New file: `src/components/concierge/AddErrandDialog.tsx`**
+- Form with fields: title (required), location, priority (high/medium/low), estimated_minutes, combinable toggle, due_date, bundle_id (optional text), notes
+- Uses `useCreateErrand()` on submit
+- Triggered by a "+" button on the page header
 
-**File:** `src/components/sita/EpistemicTrustDisplay.tsx`
+### 3. Rewrite ErrandsLogistics.tsx to use live data
+**File: `src/pages/concierge/ErrandsLogistics.tsx`**
+- Replace hardcoded `BUNDLES` / `ALL_ERRANDS` / `TIMELINE` with `useErrands()` data
+- Derive bundles by grouping errands on `bundle_id` (errands without a bundle_id go into an "Unbundled" group)
+- Derive timeline from errands sorted by `due_date` with status mapping (`done`/`current`/`upcoming` based on errand `status`)
+- KPIs computed from live data
+- Add inline status toggle (mark done) via `useUpdateErrand()`
+- Add delete button per errand via `useDeleteErrand()`
+- Add "Add Errand" button in header opening the dialog
+- Keep demo data as fallback only when in demo mode (use `useRealityProvider()`)
+- Show `ConciergeEmptyState` domain="errands" when no errands exist in real mode
 
-### 2. Wire trust metadata into AdvisorChat
-**File:** `src/components/sita/AdvisorChat.tsx`
-- Import `EpistemicTrustDisplay`
-- When `useAdvisorChat` returns messages with `envelope.trustMetadata`, render the trust display beneath assistant messages
-- Show caveats inline, negative receipt details on blocked messages
+### 4. Enhance ErrandBundleCard with action callbacks
+**File: `src/components/concierge/ErrandBundleCard.tsx`**
+- Add optional `onToggleDone` and `onDelete` callback props per errand item
+- Render a checkbox and delete icon when callbacks are provided
 
-### 3. Wire trust metadata into boardroom surfaces
-**Files:** Boardroom summary components that use `useBoardroomSummary`
-- Display evidence grade and assumptions on boardroom synthesis outputs
-- Show caveat warnings on finance/business summaries
-
-### 4. Wire trust metadata into Files AI assist
-**Files:** Files AI assist components
-- Show evidence grade on AI-generated file analysis
-- Display grounding status for financial document analysis
-
-### 5. Wire Cortex Loop into boardroom planning
-**File:** `src/lib/ai/hooks/use-boardroom-summary.ts` (enhance)
-- Wrap boardroom synthesis in a cortex loop: Sense (gather data) → Plan (generate summary options) → Approve (user confirms) → Execute (run synthesis) → Prove (receipt)
-- Only for `premium_synthesis` task class
-
-### 6. Enhance EpistemicFirewallBoard with drill-down
-**File:** `src/pages/admin/architecture/EpistemicFirewallBoard.tsx`
-- Add clickable pipeline trace rows showing full stage-by-stage execution
-- Add negative receipt detail view with refusal reasons, suggested actions
-- Add evidence grade distribution chart
-
-### 7. Wire assumption registry into finance hooks
-**Files:** Finance/money hooks and components
-- When finance AI produces assumptions (income stable, expenses constant), register them via `createAssumption` and display them to the user
-- Allow user to invalidate assumptions
-
-## What Is NOT Needed
-- No new services, edge functions, or directories
-- No changes to `ai-gateway` edge function
-- No changes to epistemic firewall modules (they're complete)
-- No changes to pipeline orchestrator (it's complete)
-- No changes to contracts registry
-
-## What Is Deferred
-- Kafka/NATS event bus
-- Autonomous Cortex Loop across all domains
-- Local model infrastructure
-- Multi-model consensus
-- Automated source ingestion
-- Model distillation
-- Hyper-personalization
-
-## Anti-Sprawl
-- All changes are UI wiring or hook enhancement — no new service directories
-- Reuse existing `TrustBadge` patterns, add `EpistemicTrustDisplay` as the single new component
-- No duplicate gateways or parallel stacks
-
-## Summary
-~6 files modified, 1 new component created. This completes the front-end wiring so users and admins actually see the trust architecture that's already running in the backend.
+### Summary
+- 1 new component (AddErrandDialog)
+- 3 files modified (use-concierge-data.ts, ErrandsLogistics.tsx, ErrandBundleCard.tsx)
+- No new tables or edge functions needed
+- No schema changes — existing `concierge_errands` table covers all fields
 
