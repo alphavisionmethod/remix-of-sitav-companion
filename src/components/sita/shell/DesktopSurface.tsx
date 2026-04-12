@@ -18,7 +18,7 @@ import { cn } from "@/lib/utils";
 import { ShellAmbientBackground, type AmbientMood } from "./ShellAmbientBackground";
 import type { TrustPosture, ContinuityContext, ShellNotificationDigest } from "./useShellState";
 import { DEPTH_LAYERS } from "@/lib/design-system/nova-os";
-import { FloatingWindow } from "./FloatingWindow";
+import { FloatingWindow, type SiblingWindow } from "./FloatingWindow";
 import { useWindowManagerContext } from "@/contexts/WindowManagerContext";
 import { DesktopIconGrid } from "./DesktopIconGrid";
 import { DesktopContextMenu } from "./DesktopContextMenu";
