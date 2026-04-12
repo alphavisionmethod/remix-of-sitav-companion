@@ -47,9 +47,13 @@ export type { Process, ProcessState, PriorityBand } from "./kernel/process-manag
 export { MemoryManager, PAGE_SIZE } from "./kernel/memory-manager";
 export type { MemoryRegion, MemoryFlags, MemoryStats } from "./kernel/memory-manager";
 export { Syscall, syscall, getSyscallLog, getSyscallStats, clearSyscallLog } from "./kernel/syscall";
-export type { SyscallLogEntry } from "./kernel/syscall";
+export type { SyscallLogEntry, SyscallContext } from "./kernel/syscall";
 export { Compositor } from "./kernel/compositor";
 export type { CompositorSurface, SurfaceBounds } from "./kernel/compositor";
 export { Scheduler } from "./kernel/scheduler";
 export { NovaKernel } from "./kernel/boot";
 export type { BootLogEntry } from "./kernel/boot";
+
+// Privilege Enforcement
+export { PrivilegeEnforcement, RING_KERNEL, RING_USER } from "./kernel/privilege";
+export type { PrivilegeLevel, PrivilegeViolation, RingTransition, RingTransitionType, ViolationType } from "./kernel/privilege";

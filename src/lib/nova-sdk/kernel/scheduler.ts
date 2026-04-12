@@ -1,11 +1,12 @@
 // ═══════════════════════════════════════════════════════════════
 // Nova Kernel — Advanced Multitasking Scheduler
-// MLFQ with FIFO ready queues, context switching, preemption,
-// blocking/waking, sleep timers, and full event logging
+// MLFQ with FIFO ready queues, privilege-aware context switching,
+// preemption with ring transitions, blocking/waking, sleep timers
 // ═══════════════════════════════════════════════════════════════
 
 import { ProcessTable, type Process, type PriorityBand, type CPUContext } from "./process-manager";
 import { MemoryManager } from "./memory-manager";
+import { PrivilegeEnforcement } from "./privilege";
 
 // ── Band Configuration ───────────────────────────────────────
 
@@ -38,7 +39,8 @@ export type SchedulerEventType =
   | "quantum-expire"
   | "idle"
   | "spawn"
-  | "kill";
+  | "kill"
+  | "ring-switch";
 
 export interface SchedulerEvent {
   type: SchedulerEventType;
@@ -58,6 +60,7 @@ export interface SchedulerStats {
   boostCount: number;
   contextSwitchCount: number;
   preemptionCount: number;
+  ringTransitionCount: number;
   currentPid: number | null;
   idleTicks: number;
   bandDistribution: Record<PriorityBand, number>;
@@ -68,12 +71,10 @@ export interface SchedulerStats {
 // ── Ready Queue (FIFO per band) ──────────────────────────────
 
 class ReadyQueue {
-  private queues = new Map<PriorityBand, number[]>(); // band → PID list (FIFO)
+  private queues = new Map<PriorityBand, number[]>();
 
   constructor() {
-    for (const band of BAND_ORDER) {
-      this.queues.set(band, []);
-    }
+    for (const band of BAND_ORDER) this.queues.set(band, []);
   }
 
   enqueue(pid: number, band: PriorityBand): void {
@@ -99,13 +100,10 @@ class ReadyQueue {
 
   depths(): Record<PriorityBand, number> {
     const result = {} as Record<PriorityBand, number>;
-    for (const band of BAND_ORDER) {
-      result[band] = this.depth(band);
-    }
+    for (const band of BAND_ORDER) result[band] = this.depth(band);
     return result;
   }
 
-  /** Get the highest-priority non-empty band */
   highestNonEmpty(): PriorityBand | null {
     for (const band of BAND_ORDER) {
       if (this.depth(band) > 0) return band;
@@ -128,7 +126,6 @@ class ReadyQueue {
 
 class BlockedQueue {
   private pids = new Set<number>();
-
   add(pid: number): void { this.pids.add(pid); }
   remove(pid: number): void { this.pids.delete(pid); }
   has(pid: number): boolean { return this.pids.has(pid); }
@@ -149,21 +146,19 @@ class SchedulerClass {
   private boostCount = 0;
   private contextSwitchCount = 0;
   private preemptionCount = 0;
+  private ringTransitionCount = 0;
   private idleTicks = 0;
   private tickTimer: ReturnType<typeof setInterval> | null = null;
 
-  // Core data structures
   private readyQueue = new ReadyQueue();
   private blockedQueue = new BlockedQueue();
   private currentPid: number | null = null;
   private savedContext: CPUContext | null = null;
 
-  // Event log (circular buffer)
   private eventLog: SchedulerEvent[] = [];
 
   // ── Public API ──────────────────────────────────────────
 
-  /** Get quantum for a priority band */
   getQuantum(band: PriorityBand): number {
     return BANDS.find(b => b.name === band)?.quantumTicks ?? 10;
   }
@@ -172,16 +167,14 @@ class SchedulerClass {
     return BANDS.find(b => b.name === band);
   }
 
-  /** Add a process to the ready queue */
   admit(pid: number): void {
     const p = ProcessTable.getProcess(pid);
     if (!p) return;
     ProcessTable.setReady(pid);
     this.readyQueue.enqueue(pid, p.priority);
-    this.logEvent("spawn", null, pid, `PID ${pid} admitted to ${p.priority} queue`);
+    this.logEvent("spawn", null, pid, `PID ${pid} admitted to ${p.priority} queue (Ring ${p.privilegeLevel})`);
   }
 
-  /** Remove a process entirely (killed) */
   evict(pid: number): void {
     this.readyQueue.remove(pid);
     this.blockedQueue.remove(pid);
@@ -192,10 +185,8 @@ class SchedulerClass {
     this.logEvent("kill", pid, null, `PID ${pid} evicted from scheduler`);
   }
 
-  /** Block the running process */
   blockProcess(pid: number, reason: "io" | "ipc" | "mutex" | "syscall"): void {
     if (pid === this.currentPid) {
-      // Save context before blocking
       this.saveCurrentContext();
       this.currentPid = null;
     }
@@ -205,7 +196,6 @@ class SchedulerClass {
     this.logEvent("block", pid, null, `PID ${pid} blocked (${reason})`);
   }
 
-  /** Wake a blocked process → ready queue */
   wakeProcess(pid: number): void {
     if (!this.blockedQueue.has(pid)) return;
     this.blockedQueue.remove(pid);
@@ -216,7 +206,6 @@ class SchedulerClass {
     this.logEvent("wake", null, pid, `PID ${pid} woken → ${p.priority} queue`);
   }
 
-  /** Sleep a process for ms milliseconds */
   sleepProcess(pid: number, ms: number): void {
     if (pid === this.currentPid) {
       this.saveCurrentContext();
@@ -230,7 +219,6 @@ class SchedulerClass {
 
   // ── Timer Interrupt (Preemption) ──────────────────────────
 
-  /** Simulated timer interrupt — called every tick interval */
   timerInterrupt(): void {
     this.totalTicks++;
     this.ticksSinceBoost++;
@@ -259,12 +247,10 @@ class SchedulerClass {
         ProcessTable.addTicks(this.currentPid, 1);
 
         if (ProcessTable.isQuantumExpired(this.currentPid)) {
-          // Preempt! Quantum exhausted
           this.preempt();
           return;
         }
       } else {
-        // Process gone
         this.currentPid = null;
       }
     }
@@ -279,7 +265,6 @@ class SchedulerClass {
   private schedule(): void {
     const band = this.readyQueue.highestNonEmpty();
     if (!band) {
-      // Idle — no ready processes
       this.idleTicks++;
       if (this.totalTicks % 100 === 0) {
         this.logEvent("idle", null, null, "CPU idle");
@@ -302,6 +287,14 @@ class SchedulerClass {
     if (!p) return;
 
     this.preemptionCount++;
+
+    // If process is in Ring 3, simulate interrupt entry (Ring 3 → Ring 0)
+    if (p.privilegeLevel === 3) {
+      PrivilegeEnforcement.interruptEntry(pid);
+      this.ringTransitionCount++;
+      this.logEvent("ring-switch", pid, null, `PID ${pid} Ring 3→0 (timer interrupt)`);
+    }
+
     this.logEvent("preempt", pid, null, `PID ${pid} preempted (quantum expired)`);
 
     // Save context, move to ready
@@ -309,13 +302,20 @@ class SchedulerClass {
     p.state = "ready";
     ProcessTable.resetQuantum(pid);
     this.readyQueue.enqueue(pid, p.priority);
+
+    // Return to user mode after interrupt handling (IRET)
+    if (p.context.cpl === 0 && p.privilegeLevel !== 0) {
+      PrivilegeEnforcement.iret(pid);
+      this.ringTransitionCount++;
+    }
+
     this.currentPid = null;
 
     // Schedule next
     this.schedule();
   }
 
-  /** Context switch to a new process */
+  /** Privilege-aware context switch to a new process */
   private switchTo(nextPid: number): void {
     const next = ProcessTable.getProcess(nextPid);
     if (!next) return;
@@ -332,7 +332,7 @@ class SchedulerClass {
       }
     }
 
-    // Load next process context
+    // Load next process context (includes CPL, CS, SS)
     this.currentPid = nextPid;
     this.savedContext = ProcessTable.loadContext(nextPid);
     ProcessTable.setRunning(nextPid);
@@ -343,14 +343,22 @@ class SchedulerClass {
     this.contextSwitchCount++;
     this.scheduledCount++;
 
+    // Log with privilege info
+    const prevProc = prevPid ? ProcessTable.getProcess(prevPid) : null;
     this.logEvent("context-switch", prevPid, nextPid,
-      `Switch PID ${prevPid ?? "idle"} → PID ${nextPid} (${next.priority})`);
+      `Switch PID ${prevPid ?? "idle"} → PID ${nextPid} (${next.priority}, Ring ${next.privilegeLevel})`);
+
+    // If switching between different privilege levels, log ring transition
+    if (prevProc && prevProc.privilegeLevel !== next.privilegeLevel) {
+      this.ringTransitionCount++;
+      this.logEvent("ring-switch", prevPid, nextPid,
+        `Ring ${prevProc.privilegeLevel} → Ring ${next.privilegeLevel}`);
+    }
   }
 
   /** Save the current process's CPU context */
   private saveCurrentContext(): void {
     if (this.currentPid !== null && this.savedContext) {
-      // Simulate updating context with current execution state
       const ctx: CPUContext = {
         ...this.savedContext,
         registers: [...this.savedContext.registers],
@@ -363,8 +371,6 @@ class SchedulerClass {
   private antiStarvationBoost(): void {
     let boosted = 0;
     for (const band of ["Batch", "Idle"] as PriorityBand[]) {
-      const depths = this.readyQueue.depths();
-      // Move all processes from low bands to Interactive
       while (this.readyQueue.depth(band) > 0) {
         const pid = this.readyQueue.dequeue(band);
         if (pid !== null) {
@@ -376,22 +382,17 @@ class SchedulerClass {
     if (boosted > 0) {
       this.boostCount++;
       this.logEvent("boost", null, null, `Anti-starvation: ${boosted} processes boosted to Interactive`);
-      console.log(`[Kernel:Scheduler] Anti-starvation boost: ${boosted} processes`);
     }
   }
 
-  /** IO completion boost — move process to front of its band */
   ioBoost(pid: number): void {
     const p = ProcessTable.getProcess(pid);
     if (p && (p.priority === "Interactive" || p.priority === "Batch")) {
       this.readyQueue.remove(pid);
-      // Re-enqueue at front by temporarily removing and re-adding
       this.readyQueue.enqueue(pid, p.priority);
-      console.log(`[Kernel:Scheduler] IO boost for PID ${pid}`);
     }
   }
 
-  /** Priority inheritance */
   inheritPriority(holderPid: number, requesterBand: PriorityBand): PriorityBand | null {
     const holder = ProcessTable.getProcess(holderPid);
     if (!holder) return null;
@@ -402,34 +403,28 @@ class SchedulerClass {
     if (requesterIdx < holderIdx) {
       const oldBand = holder.priority;
       holder.priority = requesterBand;
-      // Move in ready queue
       this.readyQueue.remove(holderPid);
       if (holder.state === "ready") {
         this.readyQueue.enqueue(holderPid, requesterBand);
       }
-      console.log(`[Kernel:Scheduler] Priority inheritance: PID ${holderPid} ${oldBand} → ${requesterBand}`);
       return oldBand;
     }
     return null;
   }
 
-  /** Start automatic tick timer */
   start(intervalMs = 100): void {
     if (this.tickTimer) return;
     this.tickTimer = setInterval(() => this.timerInterrupt(), intervalMs);
     console.log(`[Kernel:Scheduler] Started (${intervalMs}ms tick interval)`);
   }
 
-  /** Stop scheduler */
   stop(): void {
     if (this.tickTimer) {
       clearInterval(this.tickTimer);
       this.tickTimer = null;
-      console.log("[Kernel:Scheduler] Stopped");
     }
   }
 
-  /** Legacy tick() for compatibility — delegates to timerInterrupt */
   tick(): Process | null {
     this.timerInterrupt();
     return this.currentPid !== null ? ProcessTable.getProcess(this.currentPid) ?? null : null;
@@ -446,7 +441,6 @@ class SchedulerClass {
       toPid,
       detail,
     });
-    // Keep circular buffer bounded
     if (this.eventLog.length > MAX_EVENT_LOG) {
       this.eventLog = this.eventLog.slice(-MAX_EVENT_LOG);
     }
@@ -481,6 +475,7 @@ class SchedulerClass {
       boostCount: this.boostCount,
       contextSwitchCount: this.contextSwitchCount,
       preemptionCount: this.preemptionCount,
+      ringTransitionCount: this.ringTransitionCount,
       currentPid: this.currentPid,
       idleTicks: this.idleTicks,
       bandDistribution: dist,
@@ -489,7 +484,6 @@ class SchedulerClass {
     };
   }
 
-  /** Reset scheduler (kernel shutdown) */
   reset(): void {
     this.stop();
     this.totalTicks = 0;
@@ -498,6 +492,7 @@ class SchedulerClass {
     this.boostCount = 0;
     this.contextSwitchCount = 0;
     this.preemptionCount = 0;
+    this.ringTransitionCount = 0;
     this.idleTicks = 0;
     this.currentPid = null;
     this.savedContext = null;
