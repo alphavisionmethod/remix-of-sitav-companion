@@ -49,6 +49,7 @@ interface FloatingWindowProps {
   siblingWindows?: SiblingWindow[];
   className?: string;
   style?: React.CSSProperties;
+}
 
 const MIN_WIDTH = 300;
 const MIN_HEIGHT = 200;
