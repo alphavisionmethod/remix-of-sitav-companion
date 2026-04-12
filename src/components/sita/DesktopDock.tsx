@@ -278,6 +278,22 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMa
           </>
         )}
       </AnimatePresence>
+
+      {/* W1: Live window preview tooltip */}
+      <AnimatePresence>
+        {previewApp && (() => {
+          const win = windowManager?.windows.find(w => w.id === previewApp.id);
+          if (!win) return null;
+          return (
+            <DockWindowPreview
+              title={win.title}
+              appIcon={previewApp.id === "finder" ? "📁" : previewApp.id === "settings" ? "⚙️" : undefined}
+              x={previewApp.x}
+              y={previewApp.y}
+            />
+          );
+        })()}
+      </AnimatePresence>
     </>
   );
 };
