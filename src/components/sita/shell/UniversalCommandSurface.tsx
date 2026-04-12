@@ -317,6 +317,7 @@ type CommandState = "ready" | "searching" | "interpreting" | "previewing" | "app
 interface UniversalCommandSurfaceProps {
   open: boolean;
   onClose: () => void;
+  onSystemCommand?: (cmd: string) => void;
 }
 
 export function UniversalCommandSurface({ open, onClose }: UniversalCommandSurfaceProps) {
