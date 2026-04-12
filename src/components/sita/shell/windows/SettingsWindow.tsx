@@ -8,7 +8,7 @@ import {
   Monitor, Volume2, Wifi, Settings, Moon, Sun, Shield, Palette,
   Bell, User, HardDrive, Globe, Keyboard, Lock, Eye, Bluetooth,
   Battery, Zap, Info, ChevronRight, Check, Camera, LogOut, Trash2, KeyRound,
-  Cloud, RefreshCw,
+  Cloud, RefreshCw, RotateCcw,
 } from "lucide-react";
 import {
   AppLayout,
