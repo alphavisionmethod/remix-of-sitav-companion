@@ -25,15 +25,20 @@ import ProposalsContracts from "./business/ProposalsContracts";
 import LeadRecovery from "./business/LeadRecovery";
 import SocialCommand from "./business/SocialCommand";
 import EcommerceManager from "./business/EcommerceManager";
+import FollowThroughCenter from "./business/FollowThroughCenter";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useOSOrchestration } from "@/hooks/useOSOrchestration";
 import { useExperienceSignature } from "@/hooks/useExperienceSignature";
 import { useOpportunitySignals } from "@/hooks/useCAIData";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { useState } from "react";
+import { ChevronDown } from "lucide-react";
 
-type SubPage = "overview" | "leads" | "customers" | "opportunities" | "quotes" | "invoices" | "communications" | "boardroom" | "proof" | "revenue-autopilot" | "collections" | "autopilot-hub" | "revenue-impact" | "playbook-builder" | "revenue-forecast" | "website-builder" | "proposals" | "lead-recovery" | "social" | "ecommerce";
+type SubPage = "overview" | "leads" | "customers" | "follow-through" | "opportunities" | "quotes" | "invoices" | "communications" | "boardroom" | "proof" | "revenue-autopilot" | "collections" | "autopilot-hub" | "revenue-impact" | "playbook-builder" | "revenue-forecast" | "website-builder" | "proposals" | "lead-recovery" | "social" | "ecommerce";
 
 const subpageFromPath = (path: string): SubPage => {
+  if (path.includes("/follow-through")) return "follow-through";
   if (path.includes("/ecommerce")) return "ecommerce";
   if (path.includes("/website-builder")) return "website-builder";
   if (path.includes("/proposals")) return "proposals";
@@ -56,10 +61,112 @@ const subpageFromPath = (path: string): SubPage => {
   return "overview";
 };
 
+const TAB_GROUPS = [
+  {
+    label: "Core",
+    tabs: [
+      { key: "overview", label: "Overview" },
+      { key: "leads", label: "Leads", count: 3 },
+      { key: "customers", label: "Customers" },
+      { key: "follow-through", label: "Follow-Through", count: 8 },
+      { key: "opportunities", label: "Opportunities" },
+    ],
+  },
+  {
+    label: "Sales",
+    tabs: [
+      { key: "quotes", label: "Quotes" },
+      { key: "invoices", label: "Invoices", count: 1 },
+      { key: "collections", label: "Collections" },
+      { key: "proposals", label: "Proposals", count: 2 },
+    ],
+  },
+  {
+    label: "Growth",
+    tabs: [
+      { key: "revenue-autopilot", label: "Revenue Autopilot" },
+      { key: "autopilot-hub", label: "Autopilot Hub" },
+      { key: "lead-recovery", label: "Lead Recovery", count: 5 },
+      { key: "social", label: "Social", count: 4 },
+      { key: "ecommerce", label: "E-Commerce", count: 2 },
+      { key: "website-builder", label: "Website" },
+    ],
+  },
+  {
+    label: "Intelligence",
+    tabs: [
+      { key: "revenue-impact", label: "Revenue Impact" },
+      { key: "playbook-builder", label: "Builder" },
+      { key: "revenue-forecast", label: "Forecast" },
+    ],
+  },
+  {
+    label: "Office",
+    tabs: [
+      { key: "communications", label: "Comms" },
+      { key: "boardroom", label: "Boardroom" },
+      { key: "proof", label: "Proof" },
+    ],
+  },
+];
+
+const ALL_TABS = TAB_GROUPS.flatMap((g) => g.tabs);
+
+const MobileTabSelector = ({
+  active,
+  onChange,
+}: {
+  active: SubPage;
+  onChange: (key: string) => void;
+}) => {
+  const [open, setOpen] = useState(false);
+  const activeLabel = ALL_TABS.find((t) => t.key === active)?.label ?? "Overview";
+
+  return (
+    <div className="relative">
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex w-full items-center justify-between gap-2 rounded-xl border border-border bg-card px-4 py-3 text-sm font-medium text-foreground touch-manipulation"
+      >
+        <span>{activeLabel}</span>
+        <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+      {open && (
+        <>
+          <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
+          <div className="absolute left-0 right-0 top-full z-50 mt-1 max-h-[70vh] overflow-y-auto rounded-xl border border-border bg-card shadow-lg">
+            {TAB_GROUPS.map((group) => (
+              <div key={group.label}>
+                <div className="sticky top-0 bg-muted/80 backdrop-blur-sm px-4 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                  {group.label}
+                </div>
+                {group.tabs.map((t) => (
+                  <button
+                    key={t.key}
+                    onClick={() => { onChange(t.key); setOpen(false); }}
+                    className={`w-full px-4 py-3 text-left text-sm transition-colors touch-manipulation ${
+                      active === t.key
+                        ? "bg-primary/10 text-primary font-medium"
+                        : "text-foreground hover:bg-muted/50"
+                    }`}
+                  >
+                    {t.label}
+                  </button>
+                ))}
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
+
 const pages: Record<SubPage, React.ComponentType> = {
   overview: BusinessOverview,
   leads: LeadsInbox,
   customers: CustomersPage,
+  "follow-through": FollowThroughCenter,
   opportunities: OpportunitiesCenter,
   quotes: QuotesWorkspace,
   invoices: InvoicesCollections,
@@ -84,6 +191,7 @@ const BusinessCenter = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const activePage = subpageFromPath(location.pathname);
+  const isMobile = useIsMobile();
   const os = useOSOrchestration();
   const signature = useExperienceSignature();
   const { data: caiOpportunities } = useOpportunitySignals({ limit: 15 });
@@ -103,39 +211,18 @@ const BusinessCenter = () => {
         <InAppAdvisorStrip domain="business" />
       </CenterSection>
       <CenterSection>
-        <motion.div
-          className="overflow-x-auto -mx-2 px-2"
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.25 }}
-        >
-          <SitaTabs
-            tabs={[
-              { key: "overview", label: "Overview" },
-              { key: "leads", label: "Leads", count: 3 },
-              { key: "customers", label: "Customers" },
-              { key: "opportunities", label: "Opportunities" },
-              { key: "quotes", label: "Quotes" },
-              { key: "invoices", label: "Invoices", count: 1 },
-              { key: "collections", label: "Collections" },
-              { key: "ecommerce", label: "🛒 E-Commerce", count: 2 },
-              { key: "website-builder", label: "🌐 Website" },
-              { key: "proposals", label: "📝 Proposals", count: 2 },
-              { key: "lead-recovery", label: "🔄 Lead Recovery", count: 5 },
-              { key: "social", label: "📱 Social", count: 4 },
-              { key: "revenue-autopilot", label: "Revenue Autopilot" },
-              { key: "autopilot-hub", label: "⚡ Autopilot Hub" },
-              { key: "revenue-impact", label: "📊 Revenue Impact" },
-              { key: "playbook-builder", label: "🔧 Builder" },
-              { key: "revenue-forecast", label: "🔮 Forecast" },
-              { key: "communications", label: "Comms" },
-              { key: "boardroom", label: "Boardroom" },
-              { key: "proof", label: "Proof" },
-            ]}
-            active={activePage}
-            onChange={goTo}
-          />
-        </motion.div>
+        {isMobile ? (
+          <MobileTabSelector active={activePage} onChange={goTo} />
+        ) : (
+          <motion.div
+            className="overflow-x-auto -mx-2 px-2"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.25 }}
+          >
+            <SitaTabs tabs={ALL_TABS} active={activePage} onChange={goTo} />
+          </motion.div>
+        )}
       </CenterSection>
 
       <CenterSection>

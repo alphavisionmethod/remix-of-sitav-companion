@@ -7,6 +7,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useExperienceSignature } from "@/hooks/useExperienceSignature";
 import { useOSOrchestration } from "@/hooks/useOSOrchestration";
 import { useRelationshipContexts, useHumanObligations } from "@/hooks/useCAIData";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { useState } from "react";
+import { ChevronDown } from "lucide-react";
 
 import ConciergeOverview from "./concierge/ConciergeOverview";
 import HouseholdTasks from "./concierge/HouseholdTasks";
@@ -23,13 +26,15 @@ import ConciergeFiles from "./concierge/ConciergeFiles";
 import FamilyBoardroom from "./concierge/FamilyBoardroom";
 import ConciergeSettings from "./concierge/ConciergeSettings";
 import HouseholdCommandCenter from "./concierge/HouseholdCommandCenter";
+import LifeAdminCenter from "./concierge/LifeAdminCenter";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { ConciergeDataProvider } from "@/contexts/ConciergeDataContext";
 
-type SubPage = "overview" | "calendar" | "tasks" | "household" | "school" | "grocery" | "appointments" | "travel" | "providers" | "events" | "workflows" | "proof" | "files" | "boardroom" | "settings";
+type SubPage = "overview" | "calendar" | "tasks" | "life-admin" | "household" | "school" | "grocery" | "appointments" | "travel" | "providers" | "events" | "workflows" | "proof" | "files" | "boardroom" | "settings";
 
 const subpageFromPath = (path: string): SubPage => {
+  if (path.includes("/life-admin")) return "life-admin";
   if (path.includes("/calendar")) return "calendar";
   if (path.includes("/tasks")) return "tasks";
   if (path.includes("/household")) return "household";
@@ -47,10 +52,102 @@ const subpageFromPath = (path: string): SubPage => {
   return "overview";
 };
 
+const TAB_GROUPS = [
+  {
+    label: "Home",
+    tabs: [
+      { key: "overview", label: "Overview" },
+      { key: "calendar", label: "Calendar" },
+      { key: "tasks", label: "Tasks" },
+      { key: "life-admin", label: "Life Admin" },
+    ],
+  },
+  {
+    label: "Life",
+    tabs: [
+      { key: "household", label: "Household" },
+      { key: "appointments", label: "Appointments" },
+      { key: "travel", label: "Travel" },
+    ],
+  },
+  {
+    label: "Support",
+    tabs: [
+      { key: "grocery", label: "Grocery" },
+      { key: "school", label: "School" },
+      { key: "providers", label: "Providers" },
+      { key: "events", label: "Events" },
+    ],
+  },
+  {
+    label: "Office",
+    tabs: [
+      { key: "workflows", label: "Workflows" },
+      { key: "proof", label: "Proof" },
+      { key: "files", label: "Files" },
+      { key: "boardroom", label: "Boardroom" },
+      { key: "settings", label: "Settings" },
+    ],
+  },
+];
+
+const ALL_TABS = TAB_GROUPS.flatMap((g) => g.tabs);
+
+const MobileTabSelector = ({
+  active,
+  onChange,
+}: {
+  active: SubPage;
+  onChange: (key: string) => void;
+}) => {
+  const [open, setOpen] = useState(false);
+  const activeLabel = ALL_TABS.find((t) => t.key === active)?.label ?? "Overview";
+
+  return (
+    <div className="relative">
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex w-full items-center justify-between gap-2 rounded-xl border border-border bg-card px-4 py-3 text-sm font-medium text-foreground touch-manipulation"
+      >
+        <span>{activeLabel}</span>
+        <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+      {open && (
+        <>
+          <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
+          <div className="absolute left-0 right-0 top-full z-50 mt-1 max-h-[70vh] overflow-y-auto rounded-xl border border-border bg-card shadow-lg">
+            {TAB_GROUPS.map((group) => (
+              <div key={group.label}>
+                <div className="sticky top-0 bg-muted/80 backdrop-blur-sm px-4 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+                  {group.label}
+                </div>
+                {group.tabs.map((t) => (
+                  <button
+                    key={t.key}
+                    onClick={() => { onChange(t.key); setOpen(false); }}
+                    className={`w-full px-4 py-3 text-left text-sm transition-colors touch-manipulation ${
+                      active === t.key
+                        ? "bg-primary/10 text-primary font-medium"
+                        : "text-foreground hover:bg-muted/50"
+                    }`}
+                  >
+                    {t.label}
+                  </button>
+                ))}
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
+
 const pages: Record<SubPage, React.ComponentType> = {
   overview: ConciergeOverview,
   calendar: FamilyCalendar,
   tasks: HouseholdTasks,
+  "life-admin": LifeAdminCenter,
   household: HouseholdCommandCenter,
   school: SchoolActivities,
   grocery: GroceryPlanning,
@@ -69,6 +166,7 @@ const ConciergeCenter = () => {
   const { isDemoMode } = useDataMode();
   const location = useLocation();
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
   const signature = useExperienceSignature();
   const os = useOSOrchestration();
   const activePage = subpageFromPath(location.pathname);
@@ -92,34 +190,18 @@ const ConciergeCenter = () => {
         <InAppAdvisorStrip domain="concierge" />
       </CenterSection>
       <CenterSection>
-        <motion.div
-          className="overflow-x-auto -mx-2 px-2"
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.25 }}
-        >
-          <SitaTabs
-            tabs={[
-              { key: "overview", label: "Overview" },
-              { key: "calendar", label: "Calendar" },
-              { key: "tasks", label: "Tasks" },
-              { key: "household", label: "Household" },
-              { key: "school", label: "School" },
-              { key: "grocery", label: "Grocery" },
-              { key: "appointments", label: "Appointments" },
-              { key: "travel", label: "Travel" },
-              { key: "providers", label: "Providers" },
-              { key: "events", label: "Events" },
-              { key: "workflows", label: "Workflows" },
-              { key: "proof", label: "Proof" },
-              { key: "files", label: "Files" },
-              { key: "boardroom", label: "Boardroom" },
-              { key: "settings", label: "Settings" },
-            ]}
-            active={activePage}
-            onChange={goTo}
-          />
-        </motion.div>
+        {isMobile ? (
+          <MobileTabSelector active={activePage} onChange={goTo} />
+        ) : (
+          <motion.div
+            className="overflow-x-auto -mx-2 px-2"
+            initial={{ opacity: 0, y: -8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.25 }}
+          >
+            <SitaTabs tabs={ALL_TABS} active={activePage} onChange={goTo} />
+          </motion.div>
+        )}
       </CenterSection>
 
       <ConciergeDataProvider value={{ relationships: caiRelationships, obligations: caiObligations }}>
