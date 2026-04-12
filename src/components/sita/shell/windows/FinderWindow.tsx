@@ -1,8 +1,9 @@
 // ═══════════════════════════════════════════════════════════════
 // Finder Window — Wired to FileSystemService VFS
+// Drag-and-drop file moving between folders
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useEffect, useCallback, useMemo } from "react";
+import { useState, useEffect, useCallback, useMemo, useRef } from "react";
 import { ICON_GRADIENTS } from "@/lib/design-system/nova-os";
 import {
   Folder, Image, Music, AppWindow, Code, StickyNote, ChevronRight,
@@ -14,6 +15,7 @@ import { AppLayout } from "@/lib/nova-sdk/ui/layout";
 import { NovaList, NovaSectionLabel, NovaText, NovaCard, NovaToolbar, NovaBadge } from "@/lib/nova-sdk/ui/components";
 import { VStack, HStack, Divider } from "@/lib/nova-sdk/ui/layout";
 import { FileSystemService, type FSNode, type MountPoint } from "@/lib/nova-sdk/services/filesystem-service";
+import { toast } from "sonner";
 
 // ── Icon helpers ─────────────────────────────────────────────
 
@@ -37,7 +39,6 @@ function iconForNode(node: FSNode) {
       gradient: mapped?.gradient || ICON_GRADIENTS.blue,
     };
   }
-  // Files — pick icon by MIME
   if (node.mime.startsWith("image/")) return { Icon: Image, gradient: ICON_GRADIENTS.purple };
   if (node.mime.startsWith("audio/")) return { Icon: Music, gradient: ICON_GRADIENTS.pink };
   if (node.mime.startsWith("text/")) return { Icon: FileText, gradient: ICON_GRADIENTS.blue };
@@ -53,7 +54,7 @@ function formatSize(bytes: number): string {
   return `${(bytes / 1048576).toFixed(1)} MB`;
 }
 
-// ── Sidebar Favorites (derived from VFS) ─────────────────────
+// ── Sidebar Favorites ────────────────────────────────────────
 
 const FAVORITE_PATHS = [
   { path: "/home/Desktop",   label: "Desktop",   icon: <Monitor className="h-3.5 w-3.5" /> },
@@ -69,11 +70,11 @@ export function FinderWindow() {
   const [currentPath, setCurrentPath] = useState("/home");
   const [entries, setEntries] = useState<FSNode[]>([]);
   const [mounts, setMounts] = useState<MountPoint[]>([]);
+  const [draggedPath, setDraggedPath] = useState<string | null>(null);
+  const [dropTargetPath, setDropTargetPath] = useState<string | null>(null);
 
-  // Read directory from VFS
   const refreshDir = useCallback((path: string) => {
     const items = FileSystemService.listDir(path);
-    // Sort: dirs first, then alphabetical
     items.sort((a, b) => {
       if (a.type !== b.type) return a.type === "directory" ? -1 : 1;
       return a.name.localeCompare(b.name);
@@ -81,27 +82,69 @@ export function FinderWindow() {
     setEntries(items);
   }, []);
 
-  // Load mounts once
   useEffect(() => {
     setMounts(FileSystemService.getMounts());
   }, []);
 
-  // Refresh on path change + watch for changes
   useEffect(() => {
     refreshDir(currentPath);
     const unwatch = FileSystemService.watch(currentPath, () => refreshDir(currentPath));
     return unwatch;
   }, [currentPath, refreshDir]);
 
-  const navigateTo = useCallback((path: string) => {
-    setCurrentPath(path);
-  }, []);
+  const navigateTo = useCallback((path: string) => setCurrentPath(path), []);
 
   const goUp = useCallback(() => {
     if (currentPath === "/") return;
     const parent = currentPath.substring(0, currentPath.lastIndexOf("/")) || "/";
     setCurrentPath(parent);
   }, [currentPath]);
+
+  // ── Drag & Drop handlers ──
+
+  const handleDragStart = useCallback((e: React.DragEvent, node: FSNode) => {
+    e.dataTransfer.effectAllowed = "move";
+    e.dataTransfer.setData("text/plain", node.path);
+    setDraggedPath(node.path);
+  }, []);
+
+  const handleDragEnd = useCallback(() => {
+    setDraggedPath(null);
+    setDropTargetPath(null);
+  }, []);
+
+  const handleDragOver = useCallback((e: React.DragEvent, targetPath: string) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = "move";
+    setDropTargetPath(targetPath);
+  }, []);
+
+  const handleDragLeave = useCallback(() => {
+    setDropTargetPath(null);
+  }, []);
+
+  const handleDrop = useCallback((e: React.DragEvent, destDir: string) => {
+    e.preventDefault();
+    const srcPath = e.dataTransfer.getData("text/plain");
+    setDraggedPath(null);
+    setDropTargetPath(null);
+    if (!srcPath || srcPath === destDir) return;
+
+    const srcName = srcPath.substring(srcPath.lastIndexOf("/") + 1);
+    const destName = destDir.substring(destDir.lastIndexOf("/") + 1) || destDir;
+
+    const ok = FileSystemService.move(srcPath, destDir);
+    if (ok) {
+      toast.success(`Moved "${srcName}" → ${destName}`);
+    } else {
+      toast.error(`Cannot move "${srcName}" there`);
+    }
+  }, []);
+
+  // Also allow drop on sidebar favorites
+  const handleSidebarDrop = useCallback((e: React.DragEvent, destPath: string) => {
+    handleDrop(e, destPath);
+  }, [handleDrop]);
 
   // Breadcrumb segments
   const pathSegments = useMemo(() => {
@@ -116,7 +159,6 @@ export function FinderWindow() {
     ];
   }, [currentPath]);
 
-  // Active favorite
   const activeFav = FAVORITE_PATHS.find(f => f.path === currentPath)?.path || "";
 
   // ── Sidebar ──
@@ -124,11 +166,27 @@ export function FinderWindow() {
   const sidebar = (
     <VStack spacing="tight" className="h-full">
       <NovaSectionLabel>Favorites</NovaSectionLabel>
-      <NovaList
-        items={FAVORITE_PATHS.map(f => ({ id: f.path, label: f.label, icon: f.icon }))}
-        activeId={activeFav}
-        onSelect={(id) => navigateTo(id)}
-      />
+      <div className="flex flex-col gap-0.5">
+        {FAVORITE_PATHS.map(f => (
+          <button
+            key={f.path}
+            onClick={() => navigateTo(f.path)}
+            onDragOver={(e) => handleDragOver(e, f.path)}
+            onDragLeave={handleDragLeave}
+            onDrop={(e) => handleSidebarDrop(e, f.path)}
+            className={cn(
+              "flex items-center gap-2 px-2 py-1 rounded-md text-[11px] font-medium transition-all duration-100 text-left",
+              activeFav === f.path
+                ? "bg-[hsl(var(--primary)/0.12)] text-[hsl(var(--primary))]"
+                : "text-muted-foreground hover:bg-[hsl(0_0%_50%/0.08)]",
+              dropTargetPath === f.path && draggedPath && "ring-2 ring-[hsl(var(--primary))] bg-[hsl(var(--primary)/0.08)]"
+            )}
+          >
+            {f.icon}
+            {f.label}
+          </button>
+        ))}
+      </div>
 
       <NovaSectionLabel className="mt-3">Volumes</NovaSectionLabel>
       <NovaList
@@ -198,36 +256,59 @@ export function FinderWindow() {
           <div className="grid grid-cols-3 gap-2">
             {entries.map((node) => {
               const { Icon, gradient } = iconForNode(node);
+              const isDragged = draggedPath === node.path;
+              const isDropTarget = dropTargetPath === node.path && node.type === "directory";
+
               return (
-                <NovaCard
+                <div
                   key={node.path}
-                  hoverable
-                  onClick={() => {
-                    if (node.type === "directory") navigateTo(node.path);
+                  draggable
+                  onDragStart={(e) => handleDragStart(e, node)}
+                  onDragEnd={handleDragEnd}
+                  onDragOver={(e) => {
+                    if (node.type === "directory" && draggedPath && draggedPath !== node.path) {
+                      handleDragOver(e, node.path);
+                    }
+                  }}
+                  onDragLeave={handleDragLeave}
+                  onDrop={(e) => {
+                    if (node.type === "directory") handleDrop(e, node.path);
                   }}
                   className={cn(
-                    "cursor-default active:scale-[0.97] transition-all duration-[80ms]",
-                    node.type === "directory" && "cursor-pointer"
+                    "transition-all duration-150",
+                    isDragged && "opacity-40 scale-95",
                   )}
                 >
-                  <VStack align="center" spacing="micro" className="py-2">
-                    <div className={cn(
-                      "w-12 h-12 rounded-xl bg-gradient-to-br flex items-center justify-center",
-                      "shadow-[0_2px_8px_hsl(0_0%_0%/0.12)]",
-                      gradient
-                    )}>
-                      <Icon className="h-5 w-5 text-[hsl(0_0%_100%/0.9)]" />
-                    </div>
-                    <NovaText variant="label" className="truncate max-w-full text-center">
-                      {node.name}
-                    </NovaText>
-                    {node.type === "file" && (
-                      <NovaText variant="label" muted className="!text-[9px]">
-                        {formatSize(node.size)}
-                      </NovaText>
+                  <NovaCard
+                    hoverable
+                    onClick={() => {
+                      if (node.type === "directory") navigateTo(node.path);
+                    }}
+                    className={cn(
+                      "cursor-default active:scale-[0.97] transition-all duration-[80ms]",
+                      node.type === "directory" && "cursor-pointer",
+                      isDropTarget && "ring-2 ring-[hsl(var(--primary))] bg-[hsl(var(--primary)/0.06)] scale-105",
                     )}
-                  </VStack>
-                </NovaCard>
+                  >
+                    <VStack align="center" spacing="micro" className="py-2">
+                      <div className={cn(
+                        "w-12 h-12 rounded-xl bg-gradient-to-br flex items-center justify-center",
+                        "shadow-[0_2px_8px_hsl(0_0%_0%/0.12)]",
+                        gradient
+                      )}>
+                        <Icon className="h-5 w-5 text-[hsl(0_0%_100%/0.9)]" />
+                      </div>
+                      <NovaText variant="label" className="truncate max-w-full text-center">
+                        {node.name}
+                      </NovaText>
+                      {node.type === "file" && (
+                        <NovaText variant="label" muted className="!text-[9px]">
+                          {formatSize(node.size)}
+                        </NovaText>
+                      )}
+                    </VStack>
+                  </NovaCard>
+                </div>
               );
             })}
           </div>

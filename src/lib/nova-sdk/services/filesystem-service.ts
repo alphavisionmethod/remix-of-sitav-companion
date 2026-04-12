@@ -233,6 +233,48 @@ class FileSystemServiceClass implements SystemService {
     return () => this.watchers.get(path)?.delete(callback);
   }
 
+  // ── Move / Rename ──
+
+  move(srcPath: string, destDir: string): boolean {
+    const srcNode = this.resolve(srcPath);
+    if (!srcNode) return false;
+    const destParent = this.resolve(destDir);
+    if (!destParent || destParent.type !== "directory") return false;
+    // Don't move into self or a subdirectory of self
+    if (destDir === srcPath || destDir.startsWith(srcPath + "/")) return false;
+
+    const srcParentPath = srcPath.substring(0, srcPath.lastIndexOf("/")) || "/";
+    if (srcParentPath === destDir) return false; // already in target
+    const srcParent = this.resolve(srcParentPath);
+    if (!srcParent?.children) return false;
+
+    const name = srcNode.name;
+    // Remove from old parent
+    srcParent.children.delete(name);
+    // Update paths recursively
+    const newPath = `${destDir === "/" ? "" : destDir}/${name}`;
+    this.updatePaths(srcNode, newPath);
+    // Insert into new parent
+    if (!destParent.children) destParent.children = new Map();
+    destParent.children.set(name, srcNode);
+    srcNode.modifiedAt = Date.now();
+
+    this.notifyWatchers("rename", srcPath);
+    this.notifyWatchers("create", newPath);
+    this.notifyWatchers("modify", srcParentPath);
+    this.notifyWatchers("modify", destDir);
+    return true;
+  }
+
+  private updatePaths(node: FSNode, newPath: string): void {
+    node.path = newPath;
+    if (node.children) {
+      for (const [childName, child] of node.children) {
+        this.updatePaths(child, `${newPath}/${childName}`);
+      }
+    }
+  }
+
   // ── Trash ──
 
   moveToTrash(path: string): boolean {
