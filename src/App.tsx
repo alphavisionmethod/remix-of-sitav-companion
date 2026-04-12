@@ -912,6 +912,7 @@ const App = () => (
                     <Route path="/business/ecommerce" element={<EcommerceManagerPage />} />
                     <Route path="/business/customers/:id" element={<CustomerDetail />} />
                     <Route path="/business/customer-health" element={<CustomerHealthPage />} />
+                    <Route path="/business/follow-through" element={<BusinessCenter />} />
 
                     {/* ── 3B: OS Core Space — Money ── */}
                     <Route path="/money/onboarding" element={<MoneyOnboarding />} />
@@ -948,6 +949,7 @@ const App = () => (
                     <Route path="/money/rituals" element={<MoneyCenter />} />
                     <Route path="/money/peace-score" element={<MoneyCenter />} />
                     <Route path="/money/boundaries" element={<MoneyCenter />} />
+                    <Route path="/money/spending-pulse" element={<MoneyCenter />} />
 
                     {/* ── 3B: OS Office — Investment Office (38 routes) ── */}
                     <Route path="/investments" element={<InvestmentGate />} />
@@ -1187,6 +1189,7 @@ const App = () => (
                     <Route path="/concierge/files" element={<ConciergeCenter />} />
                     <Route path="/concierge/boardroom" element={<ConciergeCenter />} />
                     <Route path="/concierge/settings" element={<ConciergeCenter />} />
+                    <Route path="/concierge/life-admin" element={<ConciergeCenter />} />
 
                     {/* Intelligence */}
                     <Route path="/inbox" element={<InboxCapture />} />

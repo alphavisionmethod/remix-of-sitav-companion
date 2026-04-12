@@ -156,25 +156,6 @@ const MoneyOverview = () => {
     safeToSpend: cfAnalysis?.net_position_cents ? Math.round(cfAnalysis.net_position_cents / 100) : kBase.safeToSpend,
   };
 
-  if (!hasLiveData) {
-    return (
-      <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
-        <DemoModeBadge />
-        <SitaPageHeader title="Money Center" subtitle="Cash posture, obligations, and financial intelligence" />
-        <EmptyStateCTA
-          icon={DollarSign}
-          title="Set up your financial command center"
-          description="Add your first bill, subscription, or budget to unlock AI-powered cash flow intelligence."
-          actions={[
-            { label: "Add a Bill", icon: Receipt, to: "/money/bills" },
-            { label: "Track Subscription", icon: CreditCard, to: "/money/subscriptions", variant: "secondary" },
-          ]}
-          tip="The money advisor detects waste and protects your runway automatically"
-        />
-      </motion.div>
-    );
-  }
-
   const financeMatters: MatterItem[] = useMemo(() => [
     { id: "fm1", title: "3 bills due within 48 hours — $1,450", subtitle: "Bill collision detected. Review payment plan.", urgency: "high", action: "Review", onAction: () => navigate("/money/bills") },
     { id: "fm2", title: "Emergency reserve at 60%", subtitle: "Below 3-month target. Consider allocation.", urgency: "medium", action: "Plan" },
@@ -193,6 +174,25 @@ const MoneyOverview = () => {
     { id: "fc3", icon: <Receipt className="h-3 w-3 text-primary" />, title: "Auto-pay: Internet bill — $89", subtitle: "Recurring payment processed", time: "Yesterday" },
     { id: "fc4", icon: <AlertTriangle className="h-3 w-3 text-amber-500" />, title: "Cloud storage plan increased to $12.99/mo", subtitle: "Previously $9.99/mo — auto-detected", time: "2d ago" },
   ], []);
+
+  if (!hasLiveData) {
+    return (
+      <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
+        <DemoModeBadge />
+        <SitaPageHeader title="Money Center" subtitle="Cash posture, obligations, and financial intelligence" />
+        <EmptyStateCTA
+          icon={DollarSign}
+          title="Set up your financial command center"
+          description="Add your first bill, subscription, or budget to unlock AI-powered cash flow intelligence."
+          actions={[
+            { label: "Add a Bill", icon: Receipt, to: "/money/bills" },
+            { label: "Track Subscription", icon: CreditCard, to: "/money/subscriptions", variant: "secondary" },
+          ]}
+          tip="The money advisor detects waste and protects your runway automatically"
+        />
+      </motion.div>
+    );
+  }
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}>
