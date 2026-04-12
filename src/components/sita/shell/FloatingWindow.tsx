@@ -74,6 +74,7 @@ export function FloatingWindow({
   onMaximize,
   onFocus,
   isFocused = true,
+  siblingWindows = [],
   className,
   style,
 }: FloatingWindowProps) {
