@@ -48,6 +48,17 @@ export interface SettingsSchema {
   "network.dns": string;
   "network.proxy": string;
 
+  // Notifications
+  "notifications.doNotDisturb": boolean;
+  "notifications.showPreviews": boolean;
+  "notifications.badges": boolean;
+
+  // Bluetooth
+  "bluetooth.enabled": boolean;
+
+  // Input (extra)
+  "input.autocorrect": boolean;
+
   // Accessibility
   "accessibility.voiceOver": boolean;
   "accessibility.zoom": boolean;
@@ -55,6 +66,13 @@ export interface SettingsSchema {
   "accessibility.stickyKeys": boolean;
   "accessibility.highContrast": boolean;
   "accessibility.cursorSize": "normal" | "large" | "xlarge";
+  "accessibility.boldText": boolean;
+  "accessibility.reduceAutoPlayEffects": boolean;
+  "accessibility.fullKeyboardNav": boolean;
+  "accessibility.focusIndicators": boolean;
+  "accessibility.screenReaderOptimized": boolean;
+  "accessibility.announcementVerbosity": "minimal" | "standard" | "verbose";
+  "accessibility.textSize": number;
 
   // Dynamic app keys
   [key: `apps.${string}`]: unknown;
@@ -264,6 +282,14 @@ class SettingsServiceClass implements SystemService {
     d.set("network.wifi.autoJoin", true);
     d.set("network.dns", "auto");
     d.set("network.proxy", "none");
+    // Notifications
+    d.set("notifications.doNotDisturb", false);
+    d.set("notifications.showPreviews", true);
+    d.set("notifications.badges", true);
+    // Bluetooth
+    d.set("bluetooth.enabled", true);
+    // Input (extra)
+    d.set("input.autocorrect", true);
     // Accessibility
     d.set("accessibility.voiceOver", false);
     d.set("accessibility.zoom", false);
@@ -271,6 +297,13 @@ class SettingsServiceClass implements SystemService {
     d.set("accessibility.stickyKeys", false);
     d.set("accessibility.highContrast", false);
     d.set("accessibility.cursorSize", "normal");
+    d.set("accessibility.boldText", false);
+    d.set("accessibility.reduceAutoPlayEffects", false);
+    d.set("accessibility.fullKeyboardNav", true);
+    d.set("accessibility.focusIndicators", true);
+    d.set("accessibility.screenReaderOptimized", false);
+    d.set("accessibility.announcementVerbosity", "standard");
+    d.set("accessibility.textSize", 100);
   }
 
   private initConstraints(): void {
@@ -286,6 +319,8 @@ class SettingsServiceClass implements SystemService {
     this.constraints.set("appearance.theme", { enum: ["light", "dark", "auto"] });
     this.constraints.set("appearance.fontSize", { enum: ["small", "medium", "large"] });
     this.constraints.set("accessibility.cursorSize", { enum: ["normal", "large", "xlarge"] });
+    this.constraints.set("accessibility.textSize", { min: 75, max: 200 });
+    this.constraints.set("accessibility.announcementVerbosity", { enum: ["minimal", "standard", "verbose"] });
     // Dependency: reduce motion → disable spring animations
     this.constraints.set("appearance.reduceMotion", {
       dependsOn: { key: "appearance.reduceMotion", value: true, effect: {} },
