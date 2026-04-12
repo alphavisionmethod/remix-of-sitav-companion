@@ -56,6 +56,10 @@ export interface SettingsSchema {
   // Bluetooth
   "bluetooth.enabled": boolean;
 
+  // Cloud
+  "cloud.syncEnabled": boolean;
+  "cloud.lastSyncAt": string;
+
   // Input (extra)
   "input.autocorrect": boolean;
 
