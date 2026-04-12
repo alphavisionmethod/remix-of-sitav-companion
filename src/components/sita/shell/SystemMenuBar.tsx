@@ -5,7 +5,7 @@
 
 import { useState, useEffect, memo } from "react";
 import { useNavigate } from "react-router-dom";
-import { Search, Bell, Wifi, WifiOff, BatteryFull, BatteryLow } from "lucide-react";
+import { Search, Bell, Wifi, WifiOff, SlidersHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import { useUnreadCount } from "../NotificationPanel";
@@ -17,13 +17,14 @@ import logo from "@/assets/logo.webp";
 interface SystemMenuBarProps {
   onSearchOpen?: () => void;
   onNotifOpen?: () => void;
+  onControlCenterOpen?: () => void;
   /** Currently active app name for contextual menus */
   activeApp?: string;
 }
 
 const MENU_ITEMS = ["File", "Edit", "View", "Window", "Help"];
 
-export const SystemMenuBar = memo(({ onSearchOpen, onNotifOpen, activeApp }: SystemMenuBarProps) => {
+export const SystemMenuBar = memo(({ onSearchOpen, onNotifOpen, onControlCenterOpen, activeApp }: SystemMenuBarProps) => {
   const [clock, setClock] = useState("");
   const { user } = useAuth();
   const unreadCount = useUnreadCount();

@@ -9,3 +9,8 @@ export { IntentRibbon } from "./IntentRibbon";
 export { WhyThisResult } from "./WhyThisResult";
 export { SystemMenuBar } from "./SystemMenuBar";
 export { FloatingWindow } from "./FloatingWindow";
+export { NotificationDropdown } from "./NotificationDropdown";
+export { AppSwitcher } from "./AppSwitcher";
+export { PictureInPicture } from "./PictureInPicture";
+export { BootSplash } from "./BootSplash";
+export { ControlCenter } from "./ControlCenter";
