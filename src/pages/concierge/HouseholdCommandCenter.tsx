@@ -56,9 +56,9 @@ const HouseholdCommandCenter = () => {
   }
 
   return (
-    <motion.div className="mx-auto max-w-5xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
+    <ConciergePageWrapper className="mx-auto max-w-5xl space-y-6">
       <SitaPageHeader
-        title="Household Command Center"
+        title="Household Support Coordination"
         subtitle="Members, roles, and shared responsibilities"
         actions={<SitaButton variant="primary" onClick={() => setShowCreate(true)}><Plus className="h-4 w-4" /> New Household</SitaButton>}
       />
@@ -159,7 +159,7 @@ const HouseholdCommandCenter = () => {
           )}
         </div>
       </div>
-    </motion.div>
+    </ConciergePageWrapper>
   );
 };
 
