@@ -5,6 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useEffect, useMemo, useCallback } from "react";
+import { SoundEngine } from "@/lib/sound-engine";
 import { getWallpaperTheme } from "@/hooks/use-wallpaper";
 import { useWallpaperParallax } from "@/hooks/useWallpaperParallax";
 import { motion, AnimatePresence } from "framer-motion";
