@@ -166,6 +166,12 @@ function DesktopClock({ greeting, userName, bootReady }: { greeting: string; use
   );
 }
 
+function formatSparkValue(v: number): string {
+  if (Math.abs(v) >= 1000) return `${(v / 1000).toFixed(1)}K`;
+  if (Number.isInteger(v)) return String(v);
+  return v.toFixed(1);
+}
+
 // ── Sparkline SVG with Hover Tooltips ────────────────────────
 
 function Sparkline({ data, color = "hsl(265 55% 65%)", width = 64, height = 24 }: { data: number[]; color?: string; width?: number; height?: number }) {
