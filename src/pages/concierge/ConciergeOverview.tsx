@@ -241,6 +241,11 @@ const ConciergeOverview = () => {
         </div>
       </GlassCard>
 
+      {/* ═══ WHAT MATTERS NOW ═══ */}
+      <WhatMattersNow items={conciergeMatters} domain="concierge" />
+      <PreparedActions actions={conciergePrepared} />
+      <WhatChangedFeed events={conciergeChanges} />
+
       {/* ═══ OVERLOAD ASSESSMENT ═══ */}
       <OverloadCard
         level={kpiSummary.overdueHousehold > 3 ? "high" : kpiSummary.todayCommitments > 5 ? "moderate" : "low"}
