@@ -50,28 +50,28 @@ export default function AIG04BudgetCenter() {
   const { data: providerCount = 0 } = useQuery({
     queryKey: ["ai-providers-healthy-count"],
     queryFn: async () => {
-      const { count } = await supabase.from("ai_provider_registry").select("*", { count: "exact", head: true }).eq("is_active", true);
+      const { count } = await supabase.from("ai_provider_registry" as any).select("*", { count: "exact", head: true }).eq("is_active", true);
       return count ?? 0;
     },
   });
   const { data: modelCount = 0 } = useQuery({
     queryKey: ["ai-models-active-count"],
     queryFn: async () => {
-      const { count } = await supabase.from("ai_model_registry").select("*", { count: "exact", head: true }).eq("is_active", true);
+      const { count } = await supabase.from("ai_model_registry" as any).select("*", { count: "exact", head: true }).eq("is_active", true);
       return count ?? 0;
     },
   });
   const { data: capabilityCount = 0 } = useQuery({
     queryKey: ["ai-capabilities-routed-count"],
     queryFn: async () => {
-      const { count } = await supabase.from("ai_capability_routing").select("*", { count: "exact", head: true }).eq("is_active", true);
+      const { count } = await supabase.from("ai_capability_routing" as any).select("*", { count: "exact", head: true }).eq("is_active", true);
       return count ?? 0;
     },
   });
   const { data: publicSafeCount = 0 } = useQuery({
     queryKey: ["ai-public-safe-count"],
     queryFn: async () => {
-      const { count } = await supabase.from("ai_launch_honesty").select("*", { count: "exact", head: true }).eq("public_claim_allowed", true);
+      const { count } = await supabase.from("ai_launch_honesty" as any).select("*", { count: "exact", head: true }).eq("public_claim_allowed", true);
       return count ?? 0;
     },
   });
