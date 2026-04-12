@@ -306,6 +306,20 @@ export function DesktopSurface({
     return () => timers.forEach(clearTimeout);
   }, [reduced]);
 
+  // ── Widget Order (drag-and-drop) ────────────────────────────
+  const [widgetOrder, setWidgetOrder] = useState(loadWidgetOrder);
+
+  const handleWidgetDragEnd = useCallback((result: DropResult) => {
+    if (!result.destination || result.source.index === result.destination.index) return;
+    setWidgetOrder(prev => {
+      const next = [...prev];
+      const [moved] = next.splice(result.source.index, 1);
+      next.splice(result.destination!.index, 0, moved);
+      saveWidgetOrder(next);
+      return next;
+    });
+  }, []);
+
   // ── Context Menu ───────────────────────────────────────────
   const [ctxMenu, setCtxMenu] = useState<{ x: number; y: number } | null>(null);
 
