@@ -113,15 +113,26 @@ class NovaKernelClass {
       CrashResilience.start();
     });
 
-    // Run filesystem crash recovery
-    this.initSubsystem("FilesystemRecovery", () => {
-      // Recovery will run when FileSystemService boots in Phase 2
-      // Register kernel services with watchdog
-      CrashResilience.watchdog.registerComponent("scheduler", "service");
-      CrashResilience.watchdog.registerComponent("memory-manager", "service");
-      CrashResilience.watchdog.registerComponent("compositor", "ui");
-      CrashResilience.watchdog.registerComponent("wayland-server", "service");
-      CrashResilience.watchdog.registerComponent("power-manager", "background");
+    // Register kernel services with watchdog and start heartbeat pumps
+    this.initSubsystem("WatchdogHeartbeats", () => {
+      const watchedComponents: Array<{ id: string; cls: "ui" | "service" | "background" }> = [
+        { id: "scheduler", cls: "service" },
+        { id: "memory-manager", cls: "service" },
+        { id: "compositor", cls: "ui" },
+        { id: "wayland-server", cls: "service" },
+        { id: "power-manager", cls: "background" },
+      ];
+      for (const c of watchedComponents) {
+        CrashResilience.watchdog.registerComponent(c.id, c.cls);
+        // Immediately send first heartbeat so watchdog doesn't false-trigger
+        CrashResilience.watchdog.heartbeat(c.id);
+      }
+      // Pump heartbeats every 200ms for all kernel components
+      this.heartbeatInterval = setInterval(() => {
+        for (const c of watchedComponents) {
+          CrashResilience.watchdog.heartbeat(c.id);
+        }
+      }, 200);
     });
 
     const kernelMs = (performance.now() - this.bootStartTime).toFixed(1);
