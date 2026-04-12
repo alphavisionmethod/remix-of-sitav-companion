@@ -473,6 +473,12 @@ export function UniversalCommandSurface({ open, onClose, onSystemCommand }: Univ
       setCommandState("approval_required");
       toast.info("This action requires approval", { description: "Opening approval flow..." });
     }
+    // System commands without paths
+    if (item.id === "sys-focus") {
+      onSystemCommand?.("focus");
+      onClose();
+      return;
+    }
     if (item.path) { navigate(item.path); onClose(); }
   };
 
