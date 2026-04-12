@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 
 export interface ConnectorHealthStatus {
@@ -25,7 +26,7 @@ export async function fetchConnectorHealth(): Promise<ConnectorHealthResult> {
   if (cachedResult && now < cacheExpiry) return cachedResult;
 
   try {
-    const { data, error } = await supabase.functions.invoke("connector-health", {
+    const { data, error } = await db.functions.invoke("connector-health", {
       method: "GET",
     });
 
@@ -40,8 +41,8 @@ export async function fetchConnectorHealth(): Promise<ConnectorHealthResult> {
       error: c.error,
     }));
 
-    const downCount = connectors.filter(c => c.status === "down").length;
-    const degradedCount = connectors.filter(c => c.status === "degraded").length;
+    const downCount = connectors.filter((c: any) => c.status === "down").length;
+    const degradedCount = connectors.filter((c: any) => c.status === "degraded").length;
     const overallHealth = downCount > 0 ? "critical" : degradedCount > 0 ? "degraded" : "healthy";
 
     cachedResult = { connectors, overallHealth, checkedAt: new Date().toISOString() };
@@ -57,8 +58,8 @@ export async function fetchConnectorHealth(): Promise<ConnectorHealthResult> {
       lastChecked: c.last_sync_at || new Date().toISOString(),
     }));
 
-    const downCount = connectors.filter(c => c.status === "down").length;
-    const degradedCount = connectors.filter(c => c.status === "degraded").length;
+    const downCount = connectors.filter((c: any) => c.status === "down").length;
+    const degradedCount = connectors.filter((c: any) => c.status === "degraded").length;
     const overallHealth = downCount > 0 ? "critical" : degradedCount > 0 ? "degraded" : "healthy";
 
     cachedResult = { connectors, overallHealth, checkedAt: new Date().toISOString() };

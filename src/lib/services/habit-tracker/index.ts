@@ -6,6 +6,7 @@ import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 
 import { supabase } from '@/integrations/supabase/client';
 
+const db = supabase as any;
 export interface Habit {
   id: string;
   title: string;
@@ -85,7 +86,7 @@ class HabitStreakService {
   }
 
   async getHabits(userId: string): Promise<Habit[]> {
-    const { data } = await supabase
+    const { data } = await db
       .from('user_memory')
       .select('*')
       .eq('user_id', userId)

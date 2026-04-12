@@ -6,6 +6,7 @@ import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 
 import { supabase } from '@/integrations/supabase/client';
 
+const db = supabase as any;
 export type VaultItemType = 'password' | 'document' | 'instruction' | 'account' | 'insurance' | 'medical' | 'legal' | 'note';
 
 export interface VaultItem {
@@ -112,7 +113,7 @@ class DigitalLegacyVaultService {
   }
 
   async getItems(userId: string): Promise<VaultItem[]> {
-    const { data } = await supabase
+    const { data } = await db
       .from('encrypted_secrets')
       .select('*')
       .eq('user_id', userId)
@@ -130,7 +131,7 @@ class DigitalLegacyVaultService {
   }
 
   async deleteItem(userId: string, itemId: string): Promise<boolean> {
-    const { error } = await supabase
+    const { error } = await db
       .from('encrypted_secrets')
       .delete()
       .eq('user_id', userId)
@@ -148,7 +149,7 @@ class DigitalLegacyVaultService {
   }
 
   async getLastCheckin(userId: string): Promise<Date | null> {
-    const { data } = await supabase
+    const { data } = await db
       .from('user_memory')
       .select('value')
       .eq('user_id', userId)

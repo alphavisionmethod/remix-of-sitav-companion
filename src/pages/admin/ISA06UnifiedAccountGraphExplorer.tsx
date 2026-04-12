@@ -95,7 +95,7 @@ export default function ISA06UnifiedAccountGraphExplorer() {
       </div>
 
       {/* Graph Nodes by Type */}
-      {Object.entries(byType).map(([type, typeNodes]) => {
+      {Object.entries(byType).map(([type, typeNodes]: [string, any[]]) => {
         const config = nodeTypeConfig[type] || { color: "bg-muted text-muted-foreground border-border", icon: null, label: type };
         return (
           <Card key={type} className="bg-card border-border">

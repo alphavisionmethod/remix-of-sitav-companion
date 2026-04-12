@@ -5,6 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { conscienceGate } from "@/lib/services/conscience-gate";
 
 export interface BrainCoreResponse {
@@ -60,7 +61,7 @@ export async function callBrainCore(
     };
   }
 
-  const { data, error } = await supabase.functions.invoke("brain-core", {
+  const { data, error } = await db.functions.invoke("brain-core", {
     body: {
       intent,
       advisor,
@@ -82,7 +83,7 @@ export async function callAIGateway(
   messages: Array<{ role: string; content: string }>,
   options?: { taskClass?: string; maxTokens?: number; temperature?: number },
 ): Promise<AIGatewayResponse> {
-  const { data, error } = await supabase.functions.invoke("ai-gateway", {
+  const { data, error } = await db.functions.invoke("ai-gateway", {
     body: {
       messages,
       taskClass: options?.taskClass ?? "balanced_assistant",

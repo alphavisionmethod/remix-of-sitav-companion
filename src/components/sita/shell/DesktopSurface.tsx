@@ -10,6 +10,7 @@ import { useWallpaperParallax } from "@/hooks/useWallpaperParallax";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { useAccentSync } from "@/hooks/use-accent-sync";
 import {
   CheckCircle, DollarSign, Calendar, Brain,
   TrendingUp, ArrowRight,
@@ -240,6 +241,7 @@ export function DesktopSurface({
 }: DesktopSurfaceProps) {
   const navigate = useNavigate();
   const reduced = useReducedMotion();
+  useAccentSync();
   const { greeting, mood, gradient: timeGradient, gradientAlt: timeGradientAlt } = useMemo(getTimeConfig, []);
   const wallpaper = useMemo(getWallpaperTheme, []);
   const parallax = useWallpaperParallax(3);

@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 
 export type QueryStatus = "idle" | "loading" | "success" | "error";
@@ -142,8 +143,8 @@ export class DatabaseService {
     const errors = queries.filter(q => !q.success).length;
     const avgLatency = total > 0 ? Math.round(queries.reduce((s, q) => s + q.durationMs, 0) / total) : 0;
     const oneMinuteAgo = Date.now() - 60_000;
-    const recentCount = queries.filter(q => q.timestamp > oneMinuteAgo).length;
-    const slowQueries = queries.filter(q => q.durationMs > 1000).length;
+    const recentCount = queries.filter((q: any) => q.timestamp > oneMinuteAgo).length;
+    const slowQueries = queries.filter((q: any) => q.durationMs > 1000).length;
 
     return {
       totalQueries: total,

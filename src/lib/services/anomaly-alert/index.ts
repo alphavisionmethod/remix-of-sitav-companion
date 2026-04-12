@@ -6,6 +6,7 @@ import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 
 import { supabase } from '@/integrations/supabase/client';
 
+const db = supabase as any;
 export type AnomalyType = 'login_location' | 'spending_spike' | 'schedule_deviation' | 'data_access' | 'approval_pattern' | 'api_abuse';
 
 export interface Anomaly {
@@ -74,7 +75,7 @@ class AnomalyAlertSystem {
     const thirtyDaysAgo = new Date();
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
-    const { data: invoices } = await supabase
+    const { data: invoices } = await db
       .from('invoices')
       .select('amount, created_at')
       .eq('user_id', userId)
@@ -109,7 +110,7 @@ class AnomalyAlertSystem {
     const today = new Date();
     const todayStart = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
-    const { count } = await supabase
+    const { count } = await db
       .from('approval_queue')
       .select('id', { count: 'exact', head: true })
       .eq('user_id', userId)
@@ -131,7 +132,7 @@ class AnomalyAlertSystem {
   }
 
   private async checkDataAccessAnomalies(userId: string, anomalies: Anomaly[]): Promise<void> {
-    const { count } = await supabase
+    const { count } = await db
       .from('audit_logs')
       .select('id', { count: 'exact', head: true })
       .eq('user_id', userId)

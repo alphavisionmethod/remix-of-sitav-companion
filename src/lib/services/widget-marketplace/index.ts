@@ -6,6 +6,7 @@ import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 
 import { supabase } from '@/integrations/supabase/client';
 
+const db = supabase as any;
 export interface Widget {
   id: string;
   type: string;
@@ -74,7 +75,7 @@ class WidgetMarketplaceService {
   }
 
   async loadLayout(userId: string, layoutId = 'default'): Promise<DashboardLayout | null> {
-    const { data } = await supabase
+    const { data } = await db
       .from('user_memory')
       .select('value')
       .eq('user_id', userId)

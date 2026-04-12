@@ -13,7 +13,7 @@ import { supabase } from "@/integrations/supabase/client";
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function fromTable(table: string): any {
-  return supabase.from(table as any);
+  return (supabase as any).from(table);
 }
 
 /**
@@ -22,5 +22,5 @@ export function fromTable(table: string): any {
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function fromDynamicTable(table: string): any {
-  return supabase.from(table as any);
+  return (supabase as any).from(table);
 }

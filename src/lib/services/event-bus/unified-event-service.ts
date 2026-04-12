@@ -8,6 +8,7 @@ import { createEventEnvelope, type EventEnvelope } from "./event-envelope";
 import { publish as rawPublish, getEventLog as getRawEventLog } from "./publish-event.service";
 import type { DomainId } from "@/packages/contracts/_contract-scaffold";
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import type { RealtimeChannel } from "@supabase/supabase-js";
 
 // ── Unified Types ──────────────────────────────────────────────
@@ -92,7 +93,7 @@ export class UnifiedEventService {
   startRealtimeBridge(): void {
     if (this.realtimeBridgeActive) return;
 
-    this.realtimeChannel = supabase
+    this.realtimeChannel = db
       .channel("sita-os-events")
       .on(
         "postgres_changes",
@@ -146,7 +147,7 @@ export class UnifiedEventService {
    */
   stopRealtimeBridge(): void {
     if (this.realtimeChannel) {
-      supabase.removeChannel(this.realtimeChannel);
+      db.removeChannel(this.realtimeChannel);
       this.realtimeChannel = null;
       this.realtimeBridgeActive = false;
     }

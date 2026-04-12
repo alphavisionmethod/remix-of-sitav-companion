@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 import { getDomainRuntimeStatuses, getRuntimeTruthIndex } from "../domain-runtime/domain-runtime-service";
 import { getLaunchGates, getLaunchHonestyIndex } from "../launch-gate/launch-gate-service";
@@ -63,12 +64,12 @@ export async function computeTruthIndices(): Promise<TruthIndexSummary> {
     runtimeTruth: {
       score: runtimeScore,
       label: getLabel(runtimeScore),
-      detail: `${domains.length} domains tracked, ${domains.filter(d => d.runtime_class === "real").length} real`,
+      detail: `${domains.length} domains tracked, ${domains.filter((d: any) => d.runtime_class === "real").length} real`,
     },
     launchHonesty: {
       score: launchScore,
       label: getLabel(launchScore),
-      detail: `${gates.length} features gated, ${gates.filter(g => g.status === "live").length} live`,
+      detail: `${gates.length} features gated, ${gates.filter((g: any) => g.status === "live").length} live`,
     },
     aiTruth: {
       score: aiScore,
@@ -83,7 +84,7 @@ export async function computeTruthIndices(): Promise<TruthIndexSummary> {
     demoGovernance: {
       score: demoScore,
       label: getLabel(demoScore),
-      detail: `${demoStatuses.filter(s => s.hasDemoProvider).length}/${demoStatuses.length} domains have demo providers`,
+      detail: `${demoStatuses.filter((s: any) => s.hasDemoProvider).length}/${demoStatuses.length} domains have demo providers`,
     },
     surfacePortability: {
       score: surfaceScore,

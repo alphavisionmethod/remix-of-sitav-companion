@@ -5,6 +5,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 
+const db = supabase as any;
 export interface ProposalSection {
   title: string;
   content: string;
@@ -38,7 +39,7 @@ export interface Proposal {
 
 class AutoProposalGenerator {
   async generate(userId: string, leadId: string): Promise<Proposal> {
-    const { data: lead } = await supabase
+    const { data: lead } = await db
       .from('leads')
       .select('*')
       .eq('id', leadId)
@@ -48,7 +49,7 @@ class AutoProposalGenerator {
     if (!lead) throw new Error('Lead not found');
 
     // Analyze past deals for pricing intelligence
-    const { data: deals } = await supabase
+    const { data: deals } = await db
       .from('deals')
       .select('value, stage')
       .eq('user_id', userId)

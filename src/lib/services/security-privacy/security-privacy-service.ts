@@ -6,6 +6,7 @@
 
 import { supabase } from "@/integrations/supabase/client";
 
+const db = supabase as any;
 export interface SecurityCheckResult {
   key: string;
   label: string;
@@ -116,7 +117,7 @@ export async function computeSecurityPrivacyIndex(): Promise<{
   ];
 
   const score = checks.reduce((sum, c) => sum + (c.passed ? c.weight : 0), 0);
-  const passedCount = checks.filter(c => c.passed).length;
+  const passedCount = checks.filter((c: any) => c.passed).length;
 
   return {
     score: Math.min(score, 100),

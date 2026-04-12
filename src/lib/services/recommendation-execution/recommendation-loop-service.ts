@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 
 const VALID_TRANSITIONS: Record<string, string[]> = {
@@ -73,7 +74,7 @@ export async function verifyOutcome(
     verifier_notes?: string;
   }
 ) {
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data: { user } } = await db.auth.getUser();
   if (!user) throw new Error("Not authenticated");
 
   const { data, error } = await fromDynamicTable("outcome_verifications")
@@ -112,7 +113,7 @@ export async function createExecutionBinding(binding: {
   due_at?: string;
   notes?: string;
 }) {
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data: { user } } = await db.auth.getUser();
   if (!user) throw new Error("Not authenticated");
 
   const { data, error } = await fromDynamicTable("recommendation_execution_bindings")
@@ -150,7 +151,7 @@ export async function logExecutionEvent(event: {
   summary: string;
   details?: Record<string, unknown>;
 }) {
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data: { user } } = await db.auth.getUser();
   if (!user) throw new Error("Not authenticated");
 
   const { error } = await fromDynamicTable("recommendation_execution_events")
@@ -176,7 +177,7 @@ export async function recordLearningSignal(signal: {
   signal_source: string;
   notes?: string;
 }) {
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data: { user } } = await db.auth.getUser();
   if (!user) throw new Error("Not authenticated");
 
   const { error } = await fromDynamicTable("recommendation_learning_signals")
@@ -205,7 +206,7 @@ export async function createOutcomeVerification(verification: {
   launch_truth_delta?: string;
   notes?: string;
 }) {
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data: { user } } = await db.auth.getUser();
   if (!user) throw new Error("Not authenticated");
 
   const { data, error } = await fromDynamicTable("recommendation_outcome_verifications")
@@ -249,7 +250,7 @@ export async function createRemediationTask(task: {
   related_service_key?: string;
   related_flagship_loop_key?: string;
 }) {
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data: { user } } = await db.auth.getUser();
   if (!user) throw new Error("Not authenticated");
 
   const { data, error } = await fromDynamicTable("remediation_tasks")
@@ -290,7 +291,7 @@ export async function createRemediationProgram(program: {
   owner_team?: string;
   launch_impact_class?: string;
 }) {
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data: { user } } = await db.auth.getUser();
   if (!user) throw new Error("Not authenticated");
 
   const { data, error } = await fromDynamicTable("remediation_programs")

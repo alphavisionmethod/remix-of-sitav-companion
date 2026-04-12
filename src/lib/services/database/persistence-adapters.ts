@@ -5,12 +5,13 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 
 // ── Helpers ────────────────────────────────────────────────────
 
 async function getUserId(): Promise<string | null> {
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data: { user } } = await db.auth.getUser();
   return user?.id ?? null;
 }
 

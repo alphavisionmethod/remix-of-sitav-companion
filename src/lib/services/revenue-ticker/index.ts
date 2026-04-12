@@ -5,6 +5,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 
+const db = supabase as any;
 export interface RevenueEvent {
   id: string;
   type: 'invoice_paid' | 'invoice_sent' | 'lead_converted' | 'deal_closed' | 'subscription' | 'refund';
@@ -58,7 +59,7 @@ class RevenueTickerService {
     const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
 
     // Fetch invoices
-    const { data: invoices } = await supabase
+    const { data: invoices } = await db
       .from('invoices')
       .select('amount, status, created_at, invoice_number')
       .eq('user_id', userId)
@@ -83,7 +84,7 @@ class RevenueTickerService {
     // Calculate trend vs yesterday
     const yesterdayStart = new Date(todayStart);
     yesterdayStart.setDate(yesterdayStart.getDate() - 1);
-    const { data: yesterdayInvoices } = await supabase
+    const { data: yesterdayInvoices } = await db
       .from('invoices')
       .select('amount')
       .eq('user_id', userId)
@@ -101,7 +102,7 @@ class RevenueTickerService {
     this.state.ticks = paidInvoices
       .filter((i) => new Date(i.created_at) >= todayStart)
       .sort((a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime())
-      .reduce<RevenueTick[]>((ticks, inv) => {
+      .reduce((ticks: RevenueTick[], inv: any) => {
         const prev = ticks.length > 0 ? ticks[ticks.length - 1].cumulative : 0;
         ticks.push({
           time: new Date(inv.created_at),
@@ -148,7 +149,7 @@ class RevenueTickerService {
   }
 
   startRealtimeSync(userId: string): void {
-    this.subscription = supabase
+    this.subscription = db
       .channel('revenue-ticker')
       .on('postgres_changes', {
         event: 'UPDATE',

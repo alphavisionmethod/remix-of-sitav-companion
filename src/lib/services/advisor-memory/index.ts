@@ -31,7 +31,7 @@ export class AdvisorMemoryService {
   async saveUserFact(advisorId: string, userId: string, fact: string, metadata?: Record<string, unknown>): Promise<void> {
     // Check for duplicate facts
     const existing = await this.getUserFacts(advisorId, userId);
-    const isDuplicate = existing.some(m => m.content.toLowerCase() === fact.toLowerCase());
+    const isDuplicate = existing.some((m: any) => m.content.toLowerCase() === fact.toLowerCase());
     if (isDuplicate) return;
 
     await fromDynamicTable("advisor_memories").insert({

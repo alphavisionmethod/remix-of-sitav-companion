@@ -85,7 +85,7 @@ export class AdvisorFeedbackService {
         .eq("feedback_type", "correction"),
     ]);
 
-    const ratingValues = ((ratings.data as unknown as { rating: number }[]) ?? []).map(r => r.rating);
+    const ratingValues = ((ratings.data as unknown as { rating: number }[]) ?? []).map((r: any) => r.rating);
     const avg = ratingValues.length > 0 ? ratingValues.reduce((a, b) => a + b, 0) / ratingValues.length : 0;
 
     return {

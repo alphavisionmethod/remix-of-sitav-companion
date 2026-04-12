@@ -51,7 +51,7 @@ export class AdvisorKnowledgeService {
 
   async getRelevantKnowledge(advisorId: string, userId: string, query: string, limit = 10): Promise<KnowledgeArticle[]> {
     // Keyword-based relevance: extract words, match against tags and title
-    const keywords = query.toLowerCase().split(/\s+/).filter(w => w.length > 2);
+    const keywords = query.toLowerCase().split(/\s+/).filter((w: any) => w.length > 2);
 
     const { data, error } = await db.from("advisor_knowledge")
       .select("*")
@@ -79,10 +79,10 @@ export class AdvisorKnowledgeService {
     });
 
     return scored
-      .filter(s => s.score > 0)
+      .filter((s: any) => s.score > 0)
       .sort((a, b) => b.score - a.score)
       .slice(0, limit)
-      .map(s => s.article);
+      .map((s: any) => s.article);
   }
 
   async getAllKnowledge(advisorId: string, userId: string): Promise<KnowledgeArticle[]> {

@@ -6,6 +6,7 @@
 import { supabase } from '@/integrations/supabase/client';
 
 
+const db = supabase as any;
 export type SentimentLevel = 'very_positive' | 'positive' | 'neutral' | 'negative' | 'very_negative';
 export type SentimentTrend = 'improving' | 'stable' | 'declining' | 'volatile';
 
@@ -75,14 +76,14 @@ class ClientSentimentService {
   }
 
   async analyzeClient(userId: string, clientId: string): Promise<ClientSentiment> {
-    const { data: customer } = await supabase
+    const { data: customer } = await db
       .from('customers')
       .select('name')
       .eq('id', clientId)
       .eq('user_id', userId)
       .single();
 
-    const { data: comms } = await supabase
+    const { data: comms } = await db
       .from('communications')
       .select('body, subject, created_at, type')
       .eq('user_id', userId)
@@ -153,7 +154,7 @@ class ClientSentimentService {
   }
 
   async analyzeAllClients(userId: string): Promise<ClientSentiment[]> {
-    const { data: customers } = await supabase
+    const { data: customers } = await db
       .from('customers')
       .select('id')
       .eq('user_id', userId)

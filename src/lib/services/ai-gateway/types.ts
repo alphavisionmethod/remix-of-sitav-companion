@@ -3,7 +3,6 @@
 // Provider registry, model registry, routing, budget, receipts
 // ═══════════════════════════════════════════════════════════════
 
-import type { Database } from "@/integrations/supabase/types";
 
 // ── Row types from existing tables ─────────────────────────────
 export type AIModelRegistry = any;

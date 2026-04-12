@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { advisorMemoryService } from "./index";
 
 export interface ConversationMessage {
@@ -38,7 +39,7 @@ export class ConversationSummarizer {
         .map(m => `${m.role === "user" ? "User" : "Advisor"}: ${m.content}`)
         .join("\n");
 
-      const { data, error } = await supabase.functions.invoke("chat-advisor", {
+      const { data, error } = await db.functions.invoke("chat-advisor", {
         body: {
           advisor: "general",
           messages: [
@@ -78,16 +79,16 @@ ${transcript}`,
   }
 
   private localExtract(messages: ConversationMessage[]): ConversationSummary {
-    const userMessages = messages.filter(m => m.role === "user").map(m => m.content);
-    const assistantMessages = messages.filter(m => m.role === "assistant").map(m => m.content);
+    const userMessages = messages.filter((m: any) => m.role === "user").map((m: any) => m.content);
+    const assistantMessages = messages.filter((m: any) => m.role === "assistant").map((m: any) => m.content);
 
     // Extract potential facts (sentences with "I have", "I am", "my", numbers)
     const factPatterns = /\b(i have|i am|i'm|my |we have|our |i prefer|i like|i need|i want)\b/i;
     const facts = userMessages
       .flatMap(m => m.split(/[.!?]+/))
       .filter(s => factPatterns.test(s))
-      .map(s => s.trim())
-      .filter(s => s.length > 10 && s.length < 200)
+      .map((s: any) => s.trim())
+      .filter((s: any) => s.length > 10 && s.length < 200)
       .slice(0, 5);
 
     // Extract action items (sentences with "should", "will", "need to", "let's")
@@ -95,20 +96,20 @@ ${transcript}`,
     const actionItems = [...userMessages, ...assistantMessages]
       .flatMap(m => m.split(/[.!?]+/))
       .filter(s => actionPatterns.test(s))
-      .map(s => s.trim())
-      .filter(s => s.length > 10 && s.length < 200)
+      .map((s: any) => s.trim())
+      .filter((s: any) => s.length > 10 && s.length < 200)
       .slice(0, 5);
 
     // Extract questions
     const questions = userMessages
       .flatMap(m => m.split(/[.!]+/))
-      .filter(s => s.includes("?"))
-      .map(s => s.trim())
-      .filter(s => s.length > 10)
+      .filter((s: any) => s.includes("?"))
+      .map((s: any) => s.trim())
+      .filter((s: any) => s.length > 10)
       .slice(0, 3);
 
     return {
-      summary: `Conversation with ${messages.length} messages covering: ${userMessages.slice(0, 2).map(m => m.slice(0, 60)).join("; ")}`,
+      summary: `Conversation with ${messages.length} messages covering: ${userMessages.slice(0, 2).map((m: any) => m.slice(0, 60)).join("; ")}`,
       decisions: [],
       facts,
       actionItems,

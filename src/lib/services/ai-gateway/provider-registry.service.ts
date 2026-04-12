@@ -78,7 +78,7 @@ export async function getDistinctProviders(): Promise<string[]> {
     .select("provider")
     .eq("deprecated", false);
   if (error) throw error;
-  const unique = [...new Set((data ?? []).map(d => d.provider))];
+  const unique = [...new Set((data ?? []).map((d: any) => d.provider))] as string[];
   return unique.sort();
 }
 

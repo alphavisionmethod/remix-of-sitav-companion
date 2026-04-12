@@ -7,6 +7,7 @@ import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 import { supabase } from '@/integrations/supabase/client';
 
 
+const db = supabase as any;
 export interface Competitor {
   id: string;
   name: string;
@@ -65,7 +66,7 @@ class CompetitiveIntelligenceService {
   }
 
   async loadCompetitors(userId: string): Promise<Competitor[]> {
-    const { data } = await supabase
+    const { data } = await db
       .from('user_memory')
       .select('value')
       .eq('user_id', userId)
@@ -79,7 +80,7 @@ class CompetitiveIntelligenceService {
 
   async removeCompetitor(userId: string, competitorId: string): Promise<void> {
     this.competitors.delete(competitorId);
-    await supabase
+    await db
       .from('user_memory')
       .delete()
       .eq('user_id', userId)

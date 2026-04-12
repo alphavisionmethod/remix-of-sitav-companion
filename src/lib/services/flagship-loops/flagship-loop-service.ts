@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 
 export interface FlagshipLoopSeed {
@@ -213,7 +214,7 @@ export const FLAGSHIP_LOOP_SEEDS: FlagshipLoopSeed[] = [
 ];
 
 export async function seedFlagshipLoops() {
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data: { user } } = await db.auth.getUser();
   if (!user) throw new Error("Not authenticated");
 
   const results: Array<{ loop_key: string; status: string }> = [];

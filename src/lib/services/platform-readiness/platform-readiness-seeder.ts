@@ -5,6 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 
 const SEED_KEY = "sita-platform-readiness-seeded";
@@ -18,7 +19,7 @@ async function needsSeeding(userId: string): Promise<boolean> {
 }
 
 export async function seedPlatformReadiness(): Promise<void> {
-  const { data: { user } } = await supabase.auth.getUser();
+  const { data: { user } } = await db.auth.getUser();
   if (!user) return;
   if (!(await needsSeeding(user.id))) {
     sessionStorage.setItem(SEED_KEY, "true");

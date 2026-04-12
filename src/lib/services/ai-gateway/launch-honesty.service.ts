@@ -53,9 +53,9 @@ export async function getAILaunchHonestyBoard(): Promise<AICapabilityLaunchStatu
   });
 
   const allIds = new Set([
-    ...(honesty ?? []).map(h => h.capability_key),
-    ...(policies ?? []).map(p => p.capability_id),
-    ...(requests ?? []).filter(r => r.capability_id).map(r => r.capability_id!),
+    ...(honesty ?? []).map((h: any) => h.capability_key),
+    ...(policies ?? []).map((p: any) => p.capability_id),
+    ...(requests ?? []).filter((r: any) => r.capability_id).map((r: any) => r.capability_id!),
   ]);
 
   const results: AICapabilityLaunchStatus[] = [];
