@@ -8,7 +8,7 @@ import {
   Monitor, Volume2, Wifi, Settings, Moon, Sun, Shield, Palette,
   Bell, User, HardDrive, Globe, Keyboard, Lock, Eye, Bluetooth,
   Battery, Zap, Info, ChevronRight, Check, Camera, LogOut, Trash2, KeyRound,
-  Cloud, RefreshCw,
+  Cloud, RefreshCw, RotateCcw,
 } from "lucide-react";
 import {
   AppLayout,
@@ -25,6 +25,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { useSettingsValue } from "@/hooks/use-settings-value";
+import { SettingsService } from "@/lib/nova-sdk/services/settings-service";
+import type { SettingsSchema } from "@/lib/nova-sdk/services/settings-service";
 
 // ── Section definitions ────────────────────────────────────
 
@@ -62,6 +64,66 @@ function SettingRow({ label, description, icon, children }: {
       </HStack>
       <div className="flex-shrink-0">{children}</div>
     </HStack>
+  );
+}
+
+// ── Reset to Defaults Button ───────────────────────────────
+
+const SECTION_KEYS: Record<string, (keyof SettingsSchema)[]> = {
+  general: ["appearance.theme", "sound.uiSounds", "appearance.reduceMotion"],
+  appearance: ["appearance.accentColor", "appearance.reduceTransparency", "appearance.wallpaper"],
+  display: ["display.brightness", "display.nightShift", "display.resolution", "display.scaling", "display.nightShiftIntensity"],
+  sound: ["sound.volume", "sound.mute", "sound.alertVolume", "sound.alertSound", "sound.uiSounds"],
+  network: ["network.wifi.autoJoin", "network.dns", "network.proxy"],
+  bluetooth: ["bluetooth.enabled"],
+  notifications: ["notifications.doNotDisturb", "notifications.showPreviews", "notifications.badges"],
+  privacy: ["privacy.analytics", "privacy.crashReports", "privacy.locationServices"],
+  keyboard: ["input.keyRepeatRate", "input.keyRepeatDelay", "input.autocorrect"],
+  cloudsync: ["cloud.syncEnabled", "cloud.lastSyncAt"],
+};
+
+function ResetSectionButton({ sectionId }: { sectionId: string }) {
+  const [confirming, setConfirming] = useState(false);
+  const keys = SECTION_KEYS[sectionId];
+
+  const handleReset = useCallback(() => {
+    if (!keys) return;
+    if (!confirming) {
+      setConfirming(true);
+      setTimeout(() => setConfirming(false), 3000);
+      return;
+    }
+    for (const key of keys) {
+      SettingsService.delete(key, "user");
+    }
+    toast.success("Settings reset to defaults");
+    setConfirming(false);
+    // Force re-render by dispatching settings event
+    window.dispatchEvent(new CustomEvent("nova-settings-reset", { detail: { section: sectionId } }));
+  }, [confirming, keys, sectionId]);
+
+  if (!keys) return null;
+
+  return (
+    <NovaCard>
+      <HStack spacing="tight" justify="between" align="center">
+        <VStack spacing="micro">
+          <NovaText variant="body">Reset to Defaults</NovaText>
+          <NovaText variant="label" muted className="!text-[10px]">Clear all custom overrides in this section</NovaText>
+        </VStack>
+        <NovaButton
+          variant={confirming ? "primary" : "secondary"}
+          onClick={handleReset}
+          icon={<RotateCcw className="h-3.5 w-3.5" />}
+          className={cn(
+            "!text-[10px] !py-1 !px-3 transition-colors",
+            confirming && "!bg-[hsl(0_65%_50%)] hover:!bg-[hsl(0_65%_45%)]"
+          )}
+        >
+          {confirming ? "Confirm Reset" : "Reset"}
+        </NovaButton>
+      </HStack>
+    </NovaCard>
   );
 }
 
@@ -391,6 +453,7 @@ function GeneralContent() {
           </HStack>
         </SettingRow>
       </NovaCard>
+      <ResetSectionButton sectionId="general" />
     </VStack>
   );
 }
@@ -518,6 +581,7 @@ function AppearanceContent() {
           </SettingRow>
         </VStack>
       </NovaCard>
+      <ResetSectionButton sectionId="appearance" />
     </VStack>
   );
 }
@@ -551,6 +615,7 @@ function DisplayContent() {
           </HStack>
         </SettingRow>
       </NovaCard>
+      <ResetSectionButton sectionId="display" />
     </VStack>
   );
 }
@@ -584,6 +649,7 @@ function SoundContent() {
           </HStack>
         </SettingRow>
       </NovaCard>
+      <ResetSectionButton sectionId="sound" />
     </VStack>
   );
 }
@@ -616,6 +682,7 @@ function NetworkContent() {
           <NovaBadge variant="default">Not Connected</NovaBadge>
         </SettingRow>
       </NovaCard>
+      <ResetSectionButton sectionId="network" />
     </VStack>
   );
 }
@@ -655,6 +722,7 @@ function BluetoothContent() {
           </VStack>
         </NovaCard>
       )}
+      <ResetSectionButton sectionId="bluetooth" />
     </VStack>
   );
 }
@@ -689,6 +757,7 @@ function NotificationsContent() {
           </SettingRow>
         </VStack>
       </NovaCard>
+      <ResetSectionButton sectionId="notifications" />
     </VStack>
   );
 }
@@ -715,6 +784,7 @@ function PrivacyContent() {
           </SettingRow>
         </VStack>
       </NovaCard>
+      <ResetSectionButton sectionId="privacy" />
     </VStack>
   );
 }
@@ -738,6 +808,7 @@ function KeyboardContent() {
           </SettingRow>
         </VStack>
       </NovaCard>
+      <ResetSectionButton sectionId="keyboard" />
     </VStack>
   );
 }
@@ -835,6 +906,7 @@ function CloudSyncContent() {
           </VStack>
         </NovaCard>
       )}
+      <ResetSectionButton sectionId="cloudsync" />
     </VStack>
   );
 }
