@@ -2,7 +2,7 @@ import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton 
 import { KPITile, RiskCard, SitaTabs } from "@/components/sita/SitaComponents";
 import { AmbientHeader, StaggerReveal, StaggerItem, GlassCard } from "@/components/sita/PremiumPageComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
-import { PriorityCard, QuickActionBar as HouseholdQuickActions, HouseholdAdvisor, OverloadCard, GroceryContinuityCard, ApprovalCard } from "@/components/sita/HouseholdComponents";
+import { PriorityCard, QuickActionBar as HouseholdQuickActions, OverloadCard, GroceryContinuityCard, ApprovalCard } from "@/components/sita/HouseholdComponents";
 import { EmptyStateCTA } from "@/components/sita/EmptyStateCTA";
 import { WhatMattersNow, WhatChangedFeed, PreparedActions } from "@/components/sita/domain-shared";
 import type { MatterItem, ChangeEvent, PreparedAction } from "@/components/sita/domain-shared";
@@ -27,9 +27,9 @@ const BentoCell = ({ children, className = "", span = "col-span-1", row = "" }: 
 }) => (
   <motion.div
     className={`${span} ${row} ${className}`}
-    initial={{ opacity: 0, y: 20, scale: 0.97 }}
-    animate={{ opacity: 1, y: 0, scale: 1 }}
-    transition={{ type: "spring", stiffness: 100, damping: 20 }}
+    initial={{ opacity: 0, y: 12 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.35, ease: "easeOut" }}
   >
     {children}
   </motion.div>
