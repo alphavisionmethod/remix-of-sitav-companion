@@ -737,7 +737,115 @@ const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; pers
       {/* Metrics & data sections */}
       {limitedSections.filter(s => s.type !== "narrative").map(s => <RenderSection key={s.id} section={s} />)}
 
-      {/* Confidence ladder for this boardroom — gated behind demo */}
+      {/* ── War Room: Confidence Radar ── */}
+      {isDemoMode && (
+        <ConfidenceRadar
+          advisors={mockAdvisors.slice(0, 6).map(a => ({
+            name: a.name,
+            confidence: Math.round(a.confidence * 100),
+            domain: a.domain,
+            color: a.domain === "business" ? "hsl(210, 60%, 55%)" : a.domain === "money" || a.domain === "treasury" ? "hsl(152, 55%, 48%)" : a.domain === "concierge" || a.domain === "family" ? "hsl(280, 50%, 55%)" : "hsl(265, 55%, 58%)",
+          }))}
+        />
+      )}
+
+      {/* ── War Room: Disagreement Theater ── */}
+      {isDemoMode && mockSynthesis.some(s => s.disagreements?.length) && (
+        <DisagreementTheater
+          topic="Growth vs. Cash Preservation Strategy"
+          sideA={{
+            name: "Business Advisor",
+            domain: "Revenue Growth",
+            color: "hsl(210, 60%, 55%)",
+            position: "Push aggressive outbound — pipeline is healthy enough",
+            reasoning: "Current conversion rate of 34% supports expansion. Three qualified leads are warming up.",
+            confidence: 72,
+            evidence: ["34% conversion rate trending up", "3 warm leads in pipeline", "Competitor just lost key accounts"],
+          }}
+          sideB={{
+            name: "Money Advisor",
+            domain: "Cash Safety",
+            color: "hsl(152, 55%, 48%)",
+            position: "Preserve cash — $5,400 overdue receivables create risk",
+            reasoning: "With $5,400 overdue and 2 invoices at risk, expanding spend is premature until collections improve.",
+            confidence: 85,
+            evidence: ["$5,400 overdue receivables", "Reserve target at 78%", "Monthly burn exceeds comfortable threshold"],
+          }}
+          resolution="Balanced approach recommended: focus collections on overdue invoices while maintaining moderate outbound."
+        />
+      )}
+
+      {/* ── War Room: Voting Card ── */}
+      {isDemoMode && (
+        <VotingCard
+          question="Should we hire a contractor for the Q3 expansion project?"
+          votes={[
+            { advisorName: "Business", domain: "business", position: "for", confidence: 82, reasoning: "Revenue opportunity justifies cost" },
+            { advisorName: "Money", domain: "finance", position: "against", confidence: 78, reasoning: "Cash runway too thin for new commitment" },
+            { advisorName: "Strategy", domain: "strategy", position: "for", confidence: 71, reasoning: "Market window closing — act now" },
+            { advisorName: "Risk", domain: "legal", position: "abstain", confidence: 60, reasoning: "Need more data on contractor terms" },
+            { advisorName: "Concierge", domain: "concierge", position: "for", confidence: 65, reasoning: "Frees up owner time for family priorities" },
+          ]}
+        />
+      )}
+
+      {/* ── War Room: Sentiment Pulse ── */}
+      {isDemoMode && (
+        <SentimentPulse
+          overallScore={0.42}
+          sentiments={[
+            { label: "Revenue Outlook", score: 0.65, source: "Pipeline analysis" },
+            { label: "Cash Health", score: -0.15, source: "Cash flow model" },
+            { label: "Client Sentiment", score: 0.55, source: "Communication analysis" },
+            { label: "Operational Load", score: -0.35, source: "Task backlog" },
+            { label: "Growth Momentum", score: 0.72, source: "Trend engine" },
+          ]}
+        />
+      )}
+
+      {/* ── War Room: Evidence Chain ── */}
+      {isDemoMode && (
+        <EvidenceChain
+          title="Revenue Growth Conclusion Chain"
+          nodes={[
+            { id: "1", label: "Stripe payment data — Q2 transactions", type: "source", confidence: 98, detail: "847 transactions, $12,450 total" },
+            { id: "2", label: "CRM pipeline analysis", type: "source", confidence: 92, detail: "14 active opportunities, $42K total value" },
+            { id: "3", label: "Revenue trend computed (+18% vs Q1)", type: "inference", confidence: 85, detail: "Based on Stripe + CRM cross-reference" },
+            { id: "4", label: "Conversion rate validated against historical", type: "verification", confidence: 88 },
+            { id: "5", label: "Owner confirmed $2.5K deal closed", type: "user-confirmed", confidence: 100, detail: "Manual confirmation on April 8" },
+            { id: "6", label: "Balanced growth strategy recommended", type: "conclusion", confidence: 84, detail: "High confidence supported by verified data" },
+          ]}
+        />
+      )}
+
+      {/* ── War Room: Scenario Fork ── */}
+      {isDemoMode && (
+        <ScenarioFork
+          titleA="Maintain Current Course"
+          titleB="Accelerate Growth"
+          recommendedScenario="A"
+          metrics={[
+            { label: "Monthly Revenue", valueA: "$8,420", valueB: "$12,400", delta: "+47%", direction: "up" },
+            { label: "Cash Runway", valueA: "4.8 months", valueB: "3.2 months", delta: "-33%", direction: "down" },
+            { label: "Team Bandwidth", valueA: "85%", valueB: "110%", delta: "+25%", direction: "down" },
+            { label: "Customer Satisfaction", valueA: "94%", valueB: "87%", delta: "-7%", direction: "down" },
+            { label: "Risk Score", valueA: "Low", valueB: "High", delta: "↑", direction: "down" },
+          ]}
+        />
+      )}
+
+      {/* ── War Room: Decision Seal ── */}
+      {isDemoMode && (
+        <DecisionSeal
+          decision="Adopt balanced execution strategy for Q2"
+          decidedBy="Owner (recommended by Business + Money Advisors)"
+          timestamp={new Date().toLocaleString()}
+          receiptHash="0x7a3f...e8b2c1d4"
+          status="sealed"
+        />
+      )}
+
+      {/* Confidence ladder */}
       {isDemoMode && (
         <div className="space-y-3">
           <SitaSectionHeader title="Confidence Ladder" subtitle="Advisor certainty levels for this review" />
