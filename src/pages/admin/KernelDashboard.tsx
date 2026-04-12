@@ -1148,6 +1148,7 @@ const KernelDashboard = () => {
           {drillDown.type === "display" && <DisplayServerPanel key="display" compStats={compStats} surfaces={compositorSurfaces} onBack={() => setDrillDown(null)} />}
           {drillDown.type === "power" && <PowerManagementPanel key="power" powerStats={powerStats} onBack={() => setDrillDown(null)} />}
           {drillDown.type === "privilege" && <PrivilegePanel key="privilege" privilegeStats={privilegeStats} violations={privilegeViolations} transitions={ringTransitions} processes={processes} onBack={() => setDrillDown(null)} />}
+          {drillDown.type === "wayland" && <WaylandProtocolPanel key="wayland" stats={waylandStats} clients={waylandClients} globals={waylandGlobals} onBack={() => setDrillDown(null)} />}
         </AnimatePresence>
       </div>
     );
