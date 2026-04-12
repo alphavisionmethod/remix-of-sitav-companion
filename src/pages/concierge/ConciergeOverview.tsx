@@ -383,7 +383,7 @@ const ConciergeOverview = () => {
         {/* Quick Actions — 2×1 */}
         <BentoCell span="col-span-1 md:col-span-2">
           <GlassCard glow="none" className="p-4 h-full">
-            <QuickActionBar actions={[
+            <HouseholdQuickActions actions={[
               { label: "Add Task", icon: CheckSquare },
               { label: "Schedule Event", icon: Calendar },
               { label: "Grocery List", icon: ShoppingCart },
