@@ -258,30 +258,35 @@ function Sparkline({ data, color = "hsl(265 55% 65%)", width = 64, height = 24 }
           {/* Hover dot */}
           <circle cx={coords[hoverIdx].x} cy={coords[hoverIdx].y} r="3" fill={color} stroke="hsl(0 0% 0% / 0.4)" strokeWidth="1" />
           {/* Tooltip background */}
-          <rect
-            x={Math.max(0, Math.min(coords[hoverIdx].x - 26, width - 52))}
-            y={coords[hoverIdx].y > height / 2 ? coords[hoverIdx].y - 30 : coords[hoverIdx].y + 6}
-            width="52" height="22" rx="4"
-            fill="hsl(0 0% 0% / 0.8)"
-          />
-          {/* Tooltip text — day label */}
-          <text
-            x={Math.max(4, Math.min(coords[hoverIdx].x - 22, width - 48))}
-            y={(coords[hoverIdx].y > height / 2 ? coords[hoverIdx].y - 30 : coords[hoverIdx].y + 6) + 9}
-            fill="hsl(0 0% 100% / 0.5)"
-            fontSize="7" fontFamily="system-ui"
-          >
-            {dayLabels[hoverIdx]}
-          </text>
-          {/* Tooltip text — value */}
-          <text
-            x={Math.max(4, Math.min(coords[hoverIdx].x - 22, width - 48))}
-            y={(coords[hoverIdx].y > height / 2 ? coords[hoverIdx].y - 30 : coords[hoverIdx].y + 6) + 18}
-            fill="hsl(0 0% 100% / 0.9)"
-            fontSize="8" fontWeight="600" fontFamily="system-ui"
-          >
-            {formatSparkValue(coords[hoverIdx].value)}
-          </text>
+          {(() => {
+            const prevVal = hoverIdx > 0 ? coords[hoverIdx - 1].value : null;
+            const curVal = coords[hoverIdx].value;
+            const diff = prevVal !== null ? curVal - prevVal : 0;
+            const arrow = prevVal === null ? "" : diff > 0 ? " ↑" : diff < 0 ? " ↓" : " →";
+            const arrowColor = diff > 0 ? "hsl(142 60% 55%)" : diff < 0 ? "hsl(0 70% 60%)" : "hsl(0 0% 60%)";
+            const tooltipX = Math.max(0, Math.min(coords[hoverIdx].x - 30, width - 60));
+            const tooltipY = coords[hoverIdx].y > height / 2 ? coords[hoverIdx].y - 30 : coords[hoverIdx].y + 6;
+            const textX = tooltipX + 4;
+            return (
+              <>
+                <rect
+                  x={tooltipX}
+                  y={tooltipY}
+                  width="60" height="22" rx="4"
+                  fill="hsl(0 0% 0% / 0.85)"
+                />
+                {/* Day label */}
+                <text x={textX} y={tooltipY + 9} fill="hsl(0 0% 100% / 0.5)" fontSize="7" fontFamily="system-ui">
+                  {dayLabels[hoverIdx]}
+                </text>
+                {/* Value + trend arrow */}
+                <text x={textX} y={tooltipY + 18} fontSize="8" fontWeight="600" fontFamily="system-ui">
+                  <tspan fill="hsl(0 0% 100% / 0.9)">{formatSparkValue(curVal)}</tspan>
+                  <tspan fill={arrowColor}>{arrow}</tspan>
+                </text>
+              </>
+            );
+          })()}
         </>
       )}
     </svg>
