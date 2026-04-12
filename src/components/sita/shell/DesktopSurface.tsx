@@ -165,7 +165,7 @@ function GlassWidget({ icon: Icon, label, value, accent, onClick, delay = 0, boo
         "hover:scale-[1.02] active:scale-[0.98]",
         "transition-all duration-[120ms] cursor-pointer",
         "shadow-[0_2px_8px_hsl(0_0%_0%/0.08),0_12px_28px_hsl(0_0%_0%/0.10)]",
-        "hover:shadow-[0_2px_8px_hsl(0_0%_0%/0.10),0_16px_36px_hsl(0_0%_0%/0.14)]",
+        "hover:shadow-[0_2px_8px_hsl(0_0%_0%/0.10),0_16px_36px_hsl(0_0%_0%/0.14),inset_0_1px_0_hsl(0_0%_100%/0.12)]",
         "min-w-[200px]",
         bootReady ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
       )}
