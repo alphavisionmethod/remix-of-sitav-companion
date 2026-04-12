@@ -168,7 +168,7 @@ const RecurringObligations = () => {
           }} />
         </div>
       </div>
-    </motion.div>
+    </ConciergePageWrapper>
   );
 };
 
