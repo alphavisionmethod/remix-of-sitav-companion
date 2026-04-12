@@ -11,7 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import {
-  Cpu, MemoryStick, HardDrive, Shield, Activity, Layers,
+  Cpu, MemoryStick, HardDrive, Shield, Activity, Layers, Bell,
   Zap, Clock, Lock, Server, Database, AlertTriangle, CheckCircle,
   RefreshCw, Terminal, ChevronRight, ArrowLeft, X, Eye,
   FileText, Folder, Info, Play, Pause, Timer, GitBranch,
@@ -28,6 +28,7 @@ import { Compositor } from "@/lib/nova-sdk/kernel/compositor";
 import { PowerManager, type PowerStats, type CpuGovernor, type ThermalZoneState } from "@/lib/nova-sdk/kernel/power-manager";
 import { PrivilegeEnforcement, type PrivilegeViolation, type RingTransition } from "@/lib/nova-sdk/kernel/privilege";
 import { WaylandServer, type WaylandClient, type WaylandStats } from "@/lib/nova-sdk/kernel/wayland";
+import { ServiceManager, type ServiceStatus } from "@/lib/nova-sdk/services/service-manager";
 
 // ── Animation Variants ───────────────────────────────────────
 
@@ -147,7 +148,13 @@ function useKernelMetrics(refreshMs = 2000) {
     return bands;
   }, [processes]);
 
-  return { processes, memStats, schedStats, compStats, powerStats, privilegeStats, privilegeViolations, ringTransitions, bandDistribution, tick, schedulerEvents, currentContext, blockedProcesses, readyProcesses, compositorSurfaces, waylandStats, waylandClients, waylandGlobals };
+  const serviceManagerStats = useMemo(() => {
+    const diag = ServiceManager.getDiagnostics();
+    const bootLog = ServiceManager.getBootLog();
+    return { diagnostics: diag, bootLog, booted: ServiceManager.isBooted() };
+  }, [tick]);
+
+  return { processes, memStats, schedStats, compStats, powerStats, privilegeStats, privilegeViolations, ringTransitions, bandDistribution, tick, schedulerEvents, currentContext, blockedProcesses, readyProcesses, compositorSurfaces, waylandStats, waylandClients, waylandGlobals, serviceManagerStats };
 }
 
 // ── Subcomponents ────────────────────────────────────────────
@@ -1269,7 +1276,7 @@ type DrillDown =
   | null;
 
 const KernelDashboard = () => {
-  const { processes, memStats, schedStats, compStats, powerStats, privilegeStats, privilegeViolations, ringTransitions, bandDistribution, schedulerEvents, currentContext, blockedProcesses, readyProcesses, compositorSurfaces, waylandStats, waylandClients, waylandGlobals } = useKernelMetrics();
+  const { processes, memStats, schedStats, compStats, powerStats, privilegeStats, privilegeViolations, ringTransitions, bandDistribution, schedulerEvents, currentContext, blockedProcesses, readyProcesses, compositorSurfaces, waylandStats, waylandClients, waylandGlobals, serviceManagerStats } = useKernelMetrics();
   const [drillDown, setDrillDown] = useState<DrillDown>(null);
 
   const liveProcessCount = processes.length;
@@ -1360,6 +1367,119 @@ const KernelDashboard = () => {
           sub={`${powerStats.cpu.currentMHz}MHz · ${powerStats.powerState}`} color="bg-amber-500/8" live onClick={() => setDrillDown({ type: "power" })} />
         <StatCard icon={ShieldAlert} label="Privilege" value={`${privilegeStats.totalTransitions} transitions`}
           sub={`${privilegeStats.totalViolations} violations · R0:${privilegeStats.ring0Processes} R3:${privilegeStats.ring3Processes}`} color="bg-red-500/8" live onClick={() => setDrillDown({ type: "privilege" })} />
+      </motion.div>
+
+      {/* System Services Panel */}
+      <motion.div variants={fadeUp}>
+        <Card className="border-border/40 bg-card/80 backdrop-blur-sm">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium flex items-center gap-2">
+              <Server className="h-4 w-4 text-primary" />System Services
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-1" />
+              <Badge variant="outline" className="ml-auto text-[9px] border-border/30">
+                {serviceManagerStats.booted ? `${Object.keys(serviceManagerStats.diagnostics).length} services` : "Not booted"}
+              </Badge>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+              {(() => {
+                const SERVICE_META: Record<string, { icon: typeof Cpu; color: string; label: string }> = {
+                  SettingsService: { icon: RefreshCw, color: "text-blue-400", label: "Settings" },
+                  FileSystemService: { icon: HardDrive, color: "text-emerald-400", label: "Filesystem" },
+                  InputService: { icon: Terminal, color: "text-amber-400", label: "Input" },
+                  WindowServer: { icon: Monitor, color: "text-purple-400", label: "Window Server" },
+                  NotificationService: { icon: Bell, color: "text-pink-400", label: "Notifications" },
+                };
+                const entries = Object.entries(serviceManagerStats.diagnostics);
+                if (entries.length === 0) {
+                  return (
+                    <div className="col-span-full text-center py-6 text-muted-foreground text-sm">
+                      Services not yet booted
+                    </div>
+                  );
+                }
+                return entries.map(([id, diag]) => {
+                  const meta = SERVICE_META[id] || { icon: Server, color: "text-muted-foreground", label: id };
+                  const Icon = meta.icon;
+                  const status = (diag as any).status as ServiceStatus;
+                  const bootEntry = serviceManagerStats.bootLog.find(e => e.serviceId === id);
+                  const stats = { ...diag } as Record<string, unknown>;
+                  delete stats.status;
+
+                  // Pick the 3 most interesting stat keys to display
+                  const statEntries = Object.entries(stats).filter(([k]) =>
+                    !["userOverrides", "runtimeOverrides", "mounts", "hotkeys", "windows", "visible"].includes(k)
+                  ).slice(0, 4);
+
+                  return (
+                    <div key={id} className="rounded-xl border border-border/30 bg-muted/10 p-3 space-y-2">
+                      <div className="flex items-center gap-2">
+                        <Icon className={cn("h-4 w-4", meta.color)} />
+                        <span className="text-xs font-medium text-foreground">{meta.label}</span>
+                        <span className={cn(
+                          "ml-auto w-2 h-2 rounded-full",
+                          status === "running" ? "bg-emerald-400" :
+                          status === "failed" ? "bg-red-400" :
+                          status === "starting" ? "bg-amber-400 animate-pulse" :
+                          "bg-muted-foreground/40"
+                        )} />
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <Badge variant="outline" className={cn(
+                          "text-[8px] px-1.5 py-0",
+                          status === "running" ? "border-emerald-500/30 text-emerald-400" :
+                          status === "failed" ? "border-red-500/30 text-red-400" :
+                          "border-border/30"
+                        )}>
+                          {status}
+                        </Badge>
+                        {bootEntry && (
+                          <span className="text-[9px] text-muted-foreground font-mono">
+                            {bootEntry.timestampMs.toFixed(1)}ms
+                          </span>
+                        )}
+                      </div>
+                      <div className="space-y-1 pt-1 border-t border-border/20">
+                        {statEntries.map(([key, val]) => (
+                          <div key={key} className="flex justify-between text-[10px]">
+                            <span className="text-muted-foreground truncate mr-2">{key.replace(/([A-Z])/g, " $1").trim()}</span>
+                            <span className="font-mono text-foreground shrink-0">
+                              {typeof val === "number" ? val.toLocaleString() : String(val)}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                });
+              })()}
+            </div>
+            {/* Boot timeline */}
+            {serviceManagerStats.bootLog.length > 0 && (
+              <div className="mt-3 pt-3 border-t border-border/30">
+                <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">Boot Sequence</p>
+                <div className="flex items-center gap-1">
+                  {serviceManagerStats.bootLog.map((entry, i) => {
+                    const maxMs = Math.max(...serviceManagerStats.bootLog.map(e => e.timestampMs), 1);
+                    const widthPercent = Math.max((entry.timestampMs / maxMs) * 100, 8);
+                    return (
+                      <div key={entry.serviceId} className="flex-1 min-w-0" title={`${entry.serviceId}: ${entry.timestampMs.toFixed(1)}ms`}>
+                        <div className={cn(
+                          "h-2 rounded-full",
+                          entry.status === "ok" ? "bg-emerald-500/50" : "bg-red-500/50"
+                        )} style={{ width: `${widthPercent}%` }} />
+                        <p className="text-[8px] text-muted-foreground mt-0.5 truncate">
+                          {entry.serviceId.replace("Service", "").replace("Server", "")}
+                        </p>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </motion.div>
 
       {/* Scheduler + Memory row */}
