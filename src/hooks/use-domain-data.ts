@@ -1,5 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRealityProvider } from "@/lib/hooks/useRealityProvider";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { fetchCustomers, fetchCollections } from "@/lib/data-services/business-data-service";
 import { fetchFilesOverview, fetchFilesProcessing, fetchFilesSearchIndex, fetchAllFiles, fetchFilesByStatus, fetchFilesBySensitivity, fetchFileSettings } from "@/lib/data-services/files-data-service";
 import {
