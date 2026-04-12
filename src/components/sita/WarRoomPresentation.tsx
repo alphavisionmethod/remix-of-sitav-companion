@@ -176,8 +176,49 @@ function PresentationSection({ section }: { section: BoardroomContentSection }) 
         </div>
       );
     }
+    case "table": {
+      const data = section.data as TableData;
+      return (
+        <div className="space-y-4">
+          <h2 className="text-xl font-bold text-[hsl(0_0%_90%)] font-display">{section.title}</h2>
+          <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_6%)] overflow-hidden">
+            <Table>
+              <TableHeader>
+                <TableRow className="border-[hsl(0_0%_100%/0.06)]">
+                  {data.columns.map(col => (
+                    <TableHead key={col.key} className="text-[10px] font-mono text-[hsl(0_0%_45%)] uppercase tracking-wider">{col.label}</TableHead>
+                  ))}
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {data.rows.slice(0, 8).map((row, i) => (
+                  <motion.tr
+                    key={i}
+                    initial={{ opacity: 0, x: -8 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.05 }}
+                    className="border-[hsl(0_0%_100%/0.04)]"
+                  >
+                    {data.columns.map(col => (
+                      <TableCell key={col.key} className="text-[12px] text-[hsl(0_0%_70%)]">
+                        {String(row[col.key] ?? "—")}
+                      </TableCell>
+                    ))}
+                  </motion.tr>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+          <p className="text-[9px] font-mono text-[hsl(0_0%_30%)]">SOURCE: {data.source}</p>
+        </div>
+      );
+    }
     default:
-      return <p className="text-[hsl(0_0%_45%)] text-center">{section.title}</p>;
+      return (
+        <div className="flex items-center justify-center h-64">
+          <p className="text-[14px] text-[hsl(0_0%_45%)] font-mono">{section.title}</p>
+        </div>
+      );
   }
 }
 
