@@ -1,13 +1,13 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — System Monitor Window
 // Real-time CPU, memory, process list, network activity graphs
-// Uses Nova SDK design system, AppLayout, recharts
+// Uses Nova SDK canvas rendering via NovaContext
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import {
   Cpu, HardDrive, Activity, Wifi, Zap, BarChart3,
-  ArrowUp, ArrowDown, Pause, Play, X, ChevronRight,
+  ArrowUp, ArrowDown, Pause, Play,
 } from "lucide-react";
 import {
   AppLayout,
@@ -19,10 +19,9 @@ import {
 } from "@/lib/nova-sdk/ui/components";
 import { APP_COMPONENTS } from "@/lib/design-system/app-window-system";
 import { cn } from "@/lib/utils";
-import {
-  AreaChart, Area, XAxis, YAxis, ResponsiveContainer, Tooltip,
-  BarChart, Bar,
-} from "recharts";
+import { NovaCanvasChart, type ChartSeries } from "./NovaCanvasChart";
+import { NovaCanvasBars, type BarItem } from "./NovaCanvasBars";
+import type { NovaColor } from "@/lib/nova-sdk/graphics/context";
 
 // ── Types ────────────────────────────────────────────────────
 
@@ -54,6 +53,21 @@ interface MemSample {
   cached: number;
   free: number;
 }
+
+// ── Colors ───────────────────────────────────────────────────
+
+const COLORS = {
+  cpuUser:   { h: 210, s: 80, l: 55 } as NovaColor,
+  cpuSystem: { h: 265, s: 55, l: 58 } as NovaColor,
+  memUsed:   { h: 265, s: 55, l: 58 } as NovaColor,
+  memCached: { h: 210, s: 80, l: 55 } as NovaColor,
+  netDown:   { h: 210, s: 80, l: 55 } as NovaColor,
+  netUp:     { h: 142, s: 70, l: 50 } as NovaColor,
+  barLow:    { h: 210, s: 80, l: 55 } as NovaColor,
+  barHigh:   { h: 0, s: 70, l: 55 } as NovaColor,
+  gpuLow:    { h: 45, s: 80, l: 55 } as NovaColor,
+  gpuHigh:   { h: 0, s: 70, l: 55 } as NovaColor,
+};
 
 // ── Simulated Data Generators ────────────────────────────────
 
@@ -99,7 +113,7 @@ const SECTIONS: { id: MonitorSection; label: string; icon: React.ReactNode }[] =
   { id: "gpu", label: "GPU", icon: <Zap className="w-3.5 h-3.5" /> },
 ];
 
-// ── Sparkline Mini Component ─────────────────────────────────
+// ── Sparkline Mini Component (canvas) ────────────────────────
 
 function Sparkline({ data, color, height = 28 }: { data: number[]; color: string; height?: number }) {
   const max = Math.max(...data, 1);
@@ -112,13 +126,13 @@ function Sparkline({ data, color, height = 28 }: { data: number[]; color: string
   return (
     <svg viewBox={`0 0 100 ${height}`} className="w-full" style={{ height }} preserveAspectRatio="none">
       <defs>
-        <linearGradient id={`spark-${color}`} x1="0" y1="0" x2="0" y2="1">
+        <linearGradient id={`spark-${color.replace(/[^a-z0-9]/gi, "")}`} x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor={color} stopOpacity="0.3" />
           <stop offset="100%" stopColor={color} stopOpacity="0.02" />
         </linearGradient>
       </defs>
       <polyline points={points} fill="none" stroke={color} strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
-      <polygon points={`0,${height} ${points} 100,${height}`} fill={`url(#spark-${color})`} />
+      <polygon points={`0,${height} ${points} 100,${height}`} fill={`url(#spark-${color.replace(/[^a-z0-9]/gi, "")})`} />
     </svg>
   );
 }
@@ -200,6 +214,36 @@ export function SystemMonitorWindow() {
     else sorted.sort((a, b) => a.name.localeCompare(b.name));
     return sorted;
   }, [processes, sortBy]);
+
+  // ── Chart series (memoized) ────────────────────────────────
+  const cpuSeries: ChartSeries[] = useMemo(() => [
+    { key: "system", color: COLORS.cpuSystem, fillOpacity: 0.3, data: cpuHistory.map(s => s.system) },
+    { key: "user", color: COLORS.cpuUser, fillOpacity: 0.35, data: cpuHistory.map(s => s.user) },
+  ], [cpuHistory]);
+
+  const memSeries: ChartSeries[] = useMemo(() => [
+    { key: "cached", color: COLORS.memCached, fillOpacity: 0.15, data: memHistory.map(s => s.cached) },
+    { key: "used", color: COLORS.memUsed, fillOpacity: 0.35, data: memHistory.map(s => s.used) },
+  ], [memHistory]);
+
+  const netSeries: ChartSeries[] = useMemo(() => [
+    { key: "download", color: COLORS.netDown, fillOpacity: 0.3, data: netHistory.map(s => s.down) },
+    { key: "upload", color: COLORS.netUp, fillOpacity: 0.25, data: netHistory.map(s => s.up) },
+  ], [netHistory]);
+
+  // ── Core bars (memoized) ───────────────────────────────────
+  const coreBars: BarItem[] = useMemo(() => {
+    return Array.from({ length: 8 }, (_, i) => {
+      const load = Math.max(5, totalCpu + (Math.random() - 0.5) * 30);
+      const clamped = Math.min(100, Math.max(0, load));
+      return {
+        label: `C${i}`,
+        value: clamped,
+        colorLow: COLORS.barLow,
+        colorHigh: COLORS.barHigh,
+      };
+    });
+  }, [totalCpu]);
 
   // ── Sidebar ────────────────────────────────────────────────
   const sidebar = (
@@ -288,57 +332,23 @@ export function SystemMonitorWindow() {
 
       <NovaCard>
         <NovaText variant="label" muted className="mb-2">CPU Load — 60s Window</NovaText>
-        <div style={{ height: 180 }}>
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={cpuHistory} margin={{ top: 4, right: 4, bottom: 0, left: -20 }}>
-              <defs>
-                <linearGradient id="cpuUser" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="hsl(210, 80%, 55%)" stopOpacity={0.4} />
-                  <stop offset="100%" stopColor="hsl(210, 80%, 55%)" stopOpacity={0.05} />
-                </linearGradient>
-                <linearGradient id="cpuSystem" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="hsl(265, 55%, 58%)" stopOpacity={0.4} />
-                  <stop offset="100%" stopColor="hsl(265, 55%, 58%)" stopOpacity={0.05} />
-                </linearGradient>
-              </defs>
-              <XAxis dataKey="time" tick={{ fontSize: 9, fill: "hsl(0 0% 50%)" }} interval={9} axisLine={false} tickLine={false} />
-              <YAxis domain={[0, 100]} tick={{ fontSize: 9, fill: "hsl(0 0% 50%)" }} axisLine={false} tickLine={false} />
-              <Tooltip
-                contentStyle={{ background: "hsl(0 0% 10% / 0.9)", border: "none", borderRadius: 8, fontSize: 11, color: "#fff" }}
-                formatter={(v: number, name: string) => [`${v.toFixed(1)}%`, name]}
-              />
-              <Area type="monotone" dataKey="system" stackId="1" stroke="hsl(265, 55%, 58%)" fill="url(#cpuSystem)" strokeWidth={1.5} />
-              <Area type="monotone" dataKey="user" stackId="1" stroke="hsl(210, 80%, 55%)" fill="url(#cpuUser)" strokeWidth={1.5} />
-            </AreaChart>
-          </ResponsiveContainer>
-        </div>
+        <NovaCanvasChart
+          series={cpuSeries}
+          stacked
+          maxY={100}
+          height={180}
+          yUnit="%"
+        />
       </NovaCard>
 
-      {/* Per-core mini bars */}
+      {/* Per-core bars via canvas */}
       <NovaCard>
         <NovaText variant="label" muted className="mb-2">Core Utilization</NovaText>
-        <div className="grid grid-cols-4 gap-2">
-          {Array.from({ length: 8 }, (_, i) => {
-            const load = Math.max(5, totalCpu + (Math.random() - 0.5) * 30);
-            const clamped = Math.min(100, Math.max(0, load));
-            return (
-              <div key={i} className="flex flex-col items-center gap-1">
-                <div className="w-full h-[40px] rounded bg-[hsl(0_0%_0%/0.04)] dark:bg-[hsl(0_0%_100%/0.04)] relative overflow-hidden">
-                  <div
-                    className="absolute bottom-0 left-0 right-0 rounded-b transition-all duration-500"
-                    style={{
-                      height: `${clamped}%`,
-                      background: clamped > 70
-                        ? "linear-gradient(to top, hsl(0, 70%, 55%), hsl(30, 80%, 55%))"
-                        : "linear-gradient(to top, hsl(210, 80%, 55%), hsl(210, 80%, 65%))",
-                    }}
-                  />
-                </div>
-                <NovaText variant="label" muted className="!text-[9px]">C{i}</NovaText>
-              </div>
-            );
-          })}
-        </div>
+        <NovaCanvasBars
+          bars={coreBars}
+          vertical
+          columns={4}
+        />
       </NovaCard>
     </VStack>
   );
@@ -359,19 +369,17 @@ export function SystemMonitorWindow() {
         </div>
       </HStack>
 
-      {/* Memory pressure bar */}
+      {/* Memory pressure bar via canvas */}
       <NovaCard>
         <NovaText variant="label" muted className="mb-2">Memory Pressure</NovaText>
-        <div className="h-4 w-full rounded-full bg-[hsl(0_0%_0%/0.06)] dark:bg-[hsl(0_0%_100%/0.06)] overflow-hidden flex">
-          <div
-            className="h-full transition-all duration-500 rounded-l-full"
-            style={{ width: `${memPercent}%`, background: "hsl(265, 55%, 58%)" }}
-          />
-          <div
-            className="h-full transition-all duration-500"
-            style={{ width: `${latestMem ? (latestMem.cached / 16) * 100 : 0}%`, background: "hsl(210, 80%, 55%, 0.4)" }}
-          />
-        </div>
+        <NovaCanvasBars
+          bars={[
+            { label: "Used", value: memPercent, colorLow: COLORS.memUsed, colorHigh: COLORS.barHigh, threshold: 80 },
+            { label: "Cached", value: latestMem ? (latestMem.cached / 16) * 100 : 0, colorLow: COLORS.memCached, colorHigh: COLORS.memCached },
+          ]}
+          barHeight={16}
+          gap={4}
+        />
         <HStack spacing="normal" className="mt-2">
           <HStack spacing="micro" align="center">
             <div className="w-2 h-2 rounded-full bg-[hsl(265_55%_58%)]" />
@@ -390,26 +398,13 @@ export function SystemMonitorWindow() {
 
       <NovaCard>
         <NovaText variant="label" muted className="mb-2">Memory Over Time — 60s</NovaText>
-        <div style={{ height: 160 }}>
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={memHistory} margin={{ top: 4, right: 4, bottom: 0, left: -20 }}>
-              <defs>
-                <linearGradient id="memUsed" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="hsl(265, 55%, 58%)" stopOpacity={0.4} />
-                  <stop offset="100%" stopColor="hsl(265, 55%, 58%)" stopOpacity={0.05} />
-                </linearGradient>
-              </defs>
-              <XAxis dataKey="time" tick={{ fontSize: 9, fill: "hsl(0 0% 50%)" }} interval={9} axisLine={false} tickLine={false} />
-              <YAxis domain={[0, 16]} tick={{ fontSize: 9, fill: "hsl(0 0% 50%)" }} axisLine={false} tickLine={false} unit=" GB" />
-              <Tooltip
-                contentStyle={{ background: "hsl(0 0% 10% / 0.9)", border: "none", borderRadius: 8, fontSize: 11, color: "#fff" }}
-                formatter={(v: number, name: string) => [`${v.toFixed(2)} GB`, name]}
-              />
-              <Area type="monotone" dataKey="cached" stackId="1" stroke="hsl(210, 80%, 55%)" fill="hsl(210, 80%, 55%, 0.15)" strokeWidth={1} />
-              <Area type="monotone" dataKey="used" stackId="1" stroke="hsl(265, 55%, 58%)" fill="url(#memUsed)" strokeWidth={1.5} />
-            </AreaChart>
-          </ResponsiveContainer>
-        </div>
+        <NovaCanvasChart
+          series={memSeries}
+          stacked
+          maxY={16}
+          height={160}
+          yUnit=" GB"
+        />
       </NovaCard>
 
       {/* Top memory consumers */}
@@ -526,30 +521,12 @@ export function SystemMonitorWindow() {
 
       <NovaCard>
         <NovaText variant="label" muted className="mb-2">Throughput — 60s</NovaText>
-        <div style={{ height: 180 }}>
-          <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={netHistory} margin={{ top: 4, right: 4, bottom: 0, left: -20 }}>
-              <defs>
-                <linearGradient id="netDown" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="hsl(210, 80%, 55%)" stopOpacity={0.35} />
-                  <stop offset="100%" stopColor="hsl(210, 80%, 55%)" stopOpacity={0.02} />
-                </linearGradient>
-                <linearGradient id="netUp" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="hsl(142, 70%, 50%)" stopOpacity={0.35} />
-                  <stop offset="100%" stopColor="hsl(142, 70%, 50%)" stopOpacity={0.02} />
-                </linearGradient>
-              </defs>
-              <XAxis dataKey="time" tick={{ fontSize: 9, fill: "hsl(0 0% 50%)" }} interval={9} axisLine={false} tickLine={false} />
-              <YAxis tick={{ fontSize: 9, fill: "hsl(0 0% 50%)" }} axisLine={false} tickLine={false} unit=" MB/s" />
-              <Tooltip
-                contentStyle={{ background: "hsl(0 0% 10% / 0.9)", border: "none", borderRadius: 8, fontSize: 11, color: "#fff" }}
-                formatter={(v: number, name: string) => [`${v.toFixed(2)} MB/s`, name === "down" ? "Download" : "Upload"]}
-              />
-              <Area type="monotone" dataKey="down" stroke="hsl(210, 80%, 55%)" fill="url(#netDown)" strokeWidth={1.5} />
-              <Area type="monotone" dataKey="up" stroke="hsl(142, 70%, 50%)" fill="url(#netUp)" strokeWidth={1.5} />
-            </AreaChart>
-          </ResponsiveContainer>
-        </div>
+        <NovaCanvasChart
+          series={netSeries}
+          maxY={10}
+          height={180}
+          yUnit=" MB/s"
+        />
       </NovaCard>
 
       {/* Connection details */}
@@ -580,6 +557,16 @@ export function SystemMonitorWindow() {
     const gpuLoad = 25 + Math.sin(tickRef.current * 0.08) * 15 + Math.random() * 10;
     const gpuTemp = 45 + gpuLoad * 0.3;
 
+    const gpuBars: BarItem[] = Array.from({ length: 10 }, (_, i) => {
+      const coreLoad = Math.max(5, gpuLoad + (Math.random() - 0.5) * 40);
+      return {
+        label: `G${i}`,
+        value: Math.min(100, Math.max(0, coreLoad)),
+        colorLow: COLORS.gpuLow,
+        colorHigh: COLORS.gpuHigh,
+      };
+    });
+
     return (
       <VStack spacing="normal">
         <HStack spacing="tight" justify="between" align="center">
@@ -597,28 +584,11 @@ export function SystemMonitorWindow() {
 
         <NovaCard>
           <NovaText variant="label" muted className="mb-2">GPU Core Utilization</NovaText>
-          <div className="grid grid-cols-5 gap-1.5">
-            {Array.from({ length: 10 }, (_, i) => {
-              const coreLoad = Math.max(5, gpuLoad + (Math.random() - 0.5) * 40);
-              const clamped = Math.min(100, Math.max(0, coreLoad));
-              return (
-                <div key={i} className="flex flex-col items-center gap-0.5">
-                  <div className="w-full h-[32px] rounded bg-[hsl(0_0%_0%/0.04)] dark:bg-[hsl(0_0%_100%/0.04)] relative overflow-hidden">
-                    <div
-                      className="absolute bottom-0 left-0 right-0 rounded-b transition-all duration-700"
-                      style={{
-                        height: `${clamped}%`,
-                        background: clamped > 70
-                          ? "linear-gradient(to top, hsl(0, 70%, 55%), hsl(45, 80%, 55%))"
-                          : "linear-gradient(to top, hsl(45, 80%, 55%), hsl(45, 80%, 65%))",
-                      }}
-                    />
-                  </div>
-                  <NovaText variant="label" muted className="!text-[8px]">G{i}</NovaText>
-                </div>
-              );
-            })}
-          </div>
+          <NovaCanvasBars
+            bars={gpuBars}
+            vertical
+            columns={5}
+          />
         </NovaCard>
 
         <NovaCard>
