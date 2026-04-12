@@ -20,7 +20,9 @@ import {
   applyEdgeBounce,
   trackShake,
   clearShakeState,
+  computeAlignmentGuides,
   type PhysicsWindow,
+  type AlignmentGuide,
 } from "@/lib/services/window-physics";
 
 export interface SiblingWindow {
