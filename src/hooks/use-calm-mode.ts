@@ -5,6 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useEffect, useCallback, useRef } from "react";
+import { SoundEngine } from "@/lib/sound-engine";
 
 export type CalmLevel = 0 | 1 | 2 | 3;
 
