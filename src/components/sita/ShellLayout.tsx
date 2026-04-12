@@ -393,7 +393,35 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         width: 560,
         originRect: origin,
       }, { id: "app-library", name: "App Library" });
+    } else if (appId === "update-center" || appId === "com.sita.update-center") {
+      launchWithKernel("update-center", {
+        title: "Update Center",
+        component: <UpdateCenterWindow />,
+        position: { x: 220, y: 100 },
+        width: 480,
+        originRect: origin,
+      }, { id: "update-center", name: "Update Center" });
+    } else if (appId === "cloud-sync" || appId === "com.sita.cloud-sync") {
+      launchWithKernel("cloud-sync", {
+        title: "Cloud Sync",
+        component: <CloudSyncWindow />,
+        position: { x: 260, y: 110 },
+        width: 460,
+        originRect: origin,
+      }, { id: "cloud-sync", name: "Cloud Sync" });
+    } else if (appId === "dev-tools" || appId === "com.sita.dev-tools") {
+      launchWithKernel("dev-tools", {
+        title: "Developer Tools",
+        component: <DevToolsWindow />,
+        position: { x: 140, y: 70 },
+        width: 640,
+        originRect: origin,
+      }, { id: "dev-tools", name: "Developer Tools" });
     }
+
+    // Wire intent learning — every app launch teaches the engine
+    predictiveIntentEngine.learnFromAction("current-user", appId, "system");
+    routineDetector.recordLaunch(appId);
   }, [wm.openWindow]);
 
   // G1: Permission gate wired into launch flow
