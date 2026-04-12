@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeAll } from "vitest";
 import { render } from "@testing-library/react";
 import { DevToolsWindow } from "../DevToolsWindow";
 
@@ -8,6 +8,10 @@ vi.mock("../NovaCanvasChart", () => ({
 vi.mock("../NovaCanvasBars", () => ({
   NovaCanvasBars: () => <div data-testid="mock-bars" />,
 }));
+
+beforeAll(() => {
+  Element.prototype.scrollTo = vi.fn();
+});
 
 describe("DevToolsWindow", () => {
   it("renders without crashing", () => {
