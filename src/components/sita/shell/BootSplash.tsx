@@ -33,7 +33,7 @@ export function BootSplash({ onComplete }: BootSplashProps) {
     const logoTimer = setTimeout(() => {
       setPhase("waterfall");
       // Get boot log
-      const logs = ServiceManager.getBootLog?.() ?? [];
+      const logs = [...(ServiceManager.getBootLog?.() ?? [])];
       bootLogs.current = logs.length > 0 ? logs : [
         { serviceId: "FileSystemService", status: "ok", timestampMs: 12, message: "FileSystemService ready" },
         { serviceId: "WindowServer", status: "ok", timestampMs: 8, message: "WindowServer ready" },
