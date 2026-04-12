@@ -108,7 +108,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
 
   const doLaunchApp = useCallback((appId: string, originRect?: DOMRect) => {
     const origin = originRect ? { x: originRect.x, y: originRect.y, width: originRect.width, height: originRect.height } : undefined;
-    if (appId === "finder") {
+    if (appId === "finder" || appId === "files-app") {
       wm.openWindow("finder", {
         title: "Finder",
         component: <FinderWindow />,
@@ -116,7 +116,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         width: 460,
         originRect: origin,
       });
-    } else if (appId === "settings") {
+    } else if (appId === "settings" || appId === "settings-app") {
       wm.openWindow("settings", {
         title: "Settings",
         component: <SettingsWindow />,
