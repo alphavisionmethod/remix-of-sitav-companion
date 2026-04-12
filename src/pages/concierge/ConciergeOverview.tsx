@@ -4,7 +4,8 @@ import { AmbientHeader, StaggerReveal, StaggerItem, GlassCard } from "@/componen
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { PriorityCard, QuickActionBar as HouseholdQuickActions, HouseholdAdvisor, OverloadCard, GroceryContinuityCard, ApprovalCard } from "@/components/sita/HouseholdComponents";
 import { EmptyStateCTA } from "@/components/sita/EmptyStateCTA";
-import { WhatMattersNow, WhatChangedFeed, PreparedActions, QuickActionBar } from "@/components/sita/domain-shared";
+import { WhatMattersNow, WhatChangedFeed, PreparedActions } from "@/components/sita/domain-shared";
+import { QuickActionBar as DomainQuickActionBar } from "@/components/sita/domain-shared";
 import type { MatterItem, ChangeEvent, PreparedAction } from "@/components/sita/domain-shared";
 import { useHouseholdTasks, useFamilyEvents } from "@/hooks/use-sita-data";
 import { useDataMode } from "@/contexts/DataModeContext";
