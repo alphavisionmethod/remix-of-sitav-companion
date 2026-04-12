@@ -1,6 +1,7 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs, RiskCard } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
+import { GlassCard } from "@/components/sita/PremiumPageComponents";
 import { BoardroomSection, OverloadCard, HouseholdAdvisor } from "@/components/sita/HouseholdComponents";
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -23,10 +24,10 @@ const familyWellness = {
   screenTime: "Within limits", exerciseGoals: "On track", familyDinners: "5 of 7 days",
 };
 
-type BoardroomView = "weekly" | "school" | "shopping" | "travel" | "monthly";
+type BoardroomView = "daily" | "weekly" | "school" | "shopping" | "travel" | "monthly";
 
 const FamilyBoardroom = () => {
-  const [view, setView] = useState<BoardroomView>("weekly");
+  const [view, setView] = useState<BoardroomView>("daily");
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
@@ -35,15 +36,53 @@ const FamilyBoardroom = () => {
 
       <SitaTabs
         tabs={[
+          { key: "daily", label: "Daily Pulse" },
           { key: "weekly", label: "Weekly Review" },
-          { key: "school", label: "School Review" },
-          { key: "shopping", label: "Shopping Review" },
-          { key: "travel", label: "Travel Review" },
-          { key: "monthly", label: "Monthly Review" },
+          { key: "school", label: "School" },
+          { key: "shopping", label: "Shopping" },
+          { key: "travel", label: "Travel" },
+          { key: "monthly", label: "Monthly" },
         ]}
         active={view}
         onChange={(k) => setView(k as BoardroomView)}
       />
+
+      {/* ═══ DAILY PULSE MODE ═══ */}
+      {view === "daily" && (
+        <GlassCard glow="accent" intensity="medium" className="p-5">
+          <div className="flex items-center gap-2 mb-4">
+            <Heart className="h-4 w-4 text-accent" />
+            <p className="text-sm font-semibold text-foreground">Today's Pulse</p>
+            <span className="ml-auto text-[10px] bg-accent/10 text-accent rounded-full px-2 py-0.5 font-medium">Quick Glance</span>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-3 mb-4">
+            <div className="text-center p-3 rounded-xl bg-secondary/20">
+              <p className="font-display text-2xl font-bold text-foreground">{weeklyStats.tasksCompleted}</p>
+              <p className="text-[10px] text-muted-foreground">Tasks done today</p>
+            </div>
+            <div className="text-center p-3 rounded-xl bg-secondary/20">
+              <p className="font-display text-2xl font-bold text-foreground">3</p>
+              <p className="text-[10px] text-muted-foreground">Need handling</p>
+            </div>
+            <div className="text-center p-3 rounded-xl bg-secondary/20">
+              <p className="font-display text-2xl font-bold text-accent">2</p>
+              <p className="text-[10px] text-muted-foreground">Prepared for you</p>
+            </div>
+          </div>
+          <div className="space-y-2">
+            <p className="text-xs font-medium text-foreground">🔑 Top 3 for Today</p>
+            {DEMO_priorities.slice(0, 3).map((p, i) => (
+              <div key={i} className="flex items-center gap-2 rounded-lg bg-secondary/30 px-3 py-2">
+                <span className="text-xs font-bold text-primary">{i + 1}</span>
+                <span className="text-xs text-foreground">{p.item}</span>
+              </div>
+            ))}
+          </div>
+          <p className="text-[10px] text-muted-foreground mt-3 pt-3 border-t border-border/20">
+            💡 Overall feel: {weeklyStats.tasksCompleted > 10 ? "Productive day — keep momentum" : "Light day — good time to tackle deferred items"}
+          </p>
+        </GlassCard>
+      )}
 
       {/* Performance Strip */}
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">

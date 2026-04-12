@@ -27,11 +27,14 @@ import FamilyBoardroom from "./concierge/FamilyBoardroom";
 import ConciergeSettings from "./concierge/ConciergeSettings";
 import HouseholdCommandCenter from "./concierge/HouseholdCommandCenter";
 import LifeAdminCenter from "./concierge/LifeAdminCenter";
+import ErrandsLogistics from "./concierge/ErrandsLogistics";
+import UpcomingNeeds from "./concierge/UpcomingNeeds";
+import RecurringObligations from "./concierge/RecurringObligations";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { ConciergeDataProvider } from "@/contexts/ConciergeDataContext";
 
-type SubPage = "overview" | "calendar" | "tasks" | "life-admin" | "household" | "school" | "grocery" | "appointments" | "travel" | "providers" | "events" | "workflows" | "proof" | "files" | "boardroom" | "settings";
+type SubPage = "overview" | "calendar" | "tasks" | "life-admin" | "household" | "school" | "grocery" | "appointments" | "travel" | "providers" | "events" | "workflows" | "proof" | "files" | "boardroom" | "settings" | "errands" | "upcoming" | "recurring";
 
 const subpageFromPath = (path: string): SubPage => {
   if (path.includes("/life-admin")) return "life-admin";
@@ -44,6 +47,9 @@ const subpageFromPath = (path: string): SubPage => {
   if (path.includes("/travel")) return "travel";
   if (path.includes("/providers")) return "providers";
   if (path.includes("/events")) return "events";
+  if (path.includes("/errands")) return "errands";
+  if (path.includes("/upcoming")) return "upcoming";
+  if (path.includes("/recurring")) return "recurring";
   if (path.includes("/workflows")) return "workflows";
   if (path.includes("/proof")) return "proof";
   if (path.includes("/files")) return "files";
@@ -57,15 +63,15 @@ const TAB_GROUPS = [
     label: "Home",
     tabs: [
       { key: "overview", label: "Overview" },
+      { key: "upcoming", label: "Upcoming" },
       { key: "calendar", label: "Calendar" },
-      { key: "tasks", label: "Tasks" },
-      { key: "life-admin", label: "Life Admin" },
     ],
   },
   {
     label: "Life",
     tabs: [
-      { key: "household", label: "Household" },
+      { key: "life-admin", label: "Life Admin" },
+      { key: "errands", label: "Errands" },
       { key: "appointments", label: "Appointments" },
       { key: "travel", label: "Travel" },
     ],
@@ -73,16 +79,19 @@ const TAB_GROUPS = [
   {
     label: "Support",
     tabs: [
+      { key: "household", label: "Household" },
+      { key: "tasks", label: "Tasks" },
       { key: "grocery", label: "Grocery" },
       { key: "school", label: "School" },
       { key: "providers", label: "Providers" },
       { key: "events", label: "Events" },
+      { key: "recurring", label: "Recurring" },
     ],
   },
   {
     label: "Office",
     tabs: [
-      { key: "workflows", label: "Workflows" },
+      { key: "workflows", label: "Automations" },
       { key: "proof", label: "Proof" },
       { key: "files", label: "Files" },
       { key: "boardroom", label: "Boardroom" },
@@ -145,9 +154,11 @@ const MobileTabSelector = ({
 
 const pages: Record<SubPage, React.ComponentType> = {
   overview: ConciergeOverview,
+  upcoming: UpcomingNeeds,
   calendar: FamilyCalendar,
   tasks: HouseholdTasks,
   "life-admin": LifeAdminCenter,
+  errands: ErrandsLogistics,
   household: HouseholdCommandCenter,
   school: SchoolActivities,
   grocery: GroceryPlanning,
@@ -155,6 +166,7 @@ const pages: Record<SubPage, React.ComponentType> = {
   travel: TravelPlanning,
   providers: ServiceProviders,
   events: EventsGifts,
+  recurring: RecurringObligations,
   workflows: ConciergeWorkflows,
   proof: ConciergeProof,
   files: ConciergeFiles,
