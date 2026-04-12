@@ -213,7 +213,20 @@ export class SitaFilesystem {
     if (!inode || inode.type !== "regular") return false;
     if (inode.flags.immutable) return false;
 
-    // CoW: if blocks are shared, allocate new ones
+    // Save version before overwriting
+    this.saveVersion(inodeId);
+
+    return this.writeFileInternal(inodeId, data);
+  }
+
+  /**
+   * Internal write — no version snapshot. Used by WriteBatch and atomicWrite.
+   */
+  writeFileInternal(inodeId: number, data: Uint8Array): boolean {
+    const inode = this.inodes.get(inodeId);
+    if (!inode || inode.type !== "regular") return false;
+    if (inode.flags.immutable) return false;
+
     const newBlocks: number[] = [];
     const chunkSize = 4096;
     for (let offset = 0; offset < data.length; offset += chunkSize) {
@@ -222,7 +235,6 @@ export class SitaFilesystem {
       newBlocks.push(block.id);
     }
 
-    // Dereference old blocks
     for (const blockId of inode.blocks) {
       this.dereferenceBlock(blockId);
     }
@@ -233,6 +245,54 @@ export class SitaFilesystem {
     inode.checksumSHA256 = this.computeChecksum(data);
 
     this.journalWrite("write", inodeId, { size: data.length, blocks: newBlocks.length });
+    return true;
+  }
+
+  /**
+   * Atomic write with crash simulation support.
+   * Writes to temp blocks, validates, then swaps. On failure, old data is untouched.
+   */
+  atomicWrite(inodeId: number, data: Uint8Array, simulateCrash = false): boolean {
+    const inode = this.inodes.get(inodeId);
+    if (!inode || inode.type !== "regular") return false;
+    if (inode.flags.immutable) return false;
+
+    // Phase 1: Write to temp blocks
+    const tempBlocks: Block[] = [];
+    const chunkSize = 4096;
+    for (let offset = 0; offset < data.length; offset += chunkSize) {
+      const chunk = data.slice(offset, offset + chunkSize);
+      const block = this.allocateBlock(chunk);
+      tempBlocks.push(block);
+    }
+
+    // Phase 2: Validate checksums
+    const expectedChecksum = this.computeChecksum(data);
+    for (const block of tempBlocks) {
+      if (block.checksum !== this.computeChecksum(block.data)) {
+        // Validation failed — discard temp blocks
+        for (const b of tempBlocks) this.dereferenceBlock(b.id);
+        return false;
+      }
+    }
+
+    // Simulate crash before commit
+    if (simulateCrash) {
+      for (const b of tempBlocks) this.dereferenceBlock(b.id);
+      return false;
+    }
+
+    // Phase 3: Commit — swap block pointers atomically
+    this.saveVersion(inodeId);
+    for (const blockId of inode.blocks) {
+      this.dereferenceBlock(blockId);
+    }
+    inode.blocks = tempBlocks.map((b) => b.id);
+    inode.size = data.length;
+    inode.modifiedAt = Date.now();
+    inode.checksumSHA256 = expectedChecksum;
+
+    this.journalWrite("write", inodeId, { size: data.length, atomic: true });
     return true;
   }
 
