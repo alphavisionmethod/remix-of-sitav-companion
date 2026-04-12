@@ -457,9 +457,9 @@ export function useSeedSpecs() {
     mutationFn: async () => {
       if (!user) throw new Error("Auth required");
       const rows = CANONICAL_SPECS.map(s => ({ ...s, user_id: user.id }));
-      const { error } = await supabase
-        .from("implementation_spec_registry" as any)
-        .upsert(rows as any, { onConflict: "user_id,spec_id" });
+      const { error } = await (supabase as any)
+        .from("implementation_spec_registry")
+        .upsert(rows, { onConflict: "user_id,spec_id" });
       if (error) throw error;
       return rows.length;
     },

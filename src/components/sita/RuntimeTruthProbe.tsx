@@ -40,7 +40,7 @@ export const RuntimeTruthProbe = forwardRef<HTMLDivElement, { compact?: boolean 
       // Check CAI table access (lightweight query)
       let caiAccessible: boolean | null = null;
       try {
-        const { error } = await supabase
+        const { error } = await (supabase as any)
           .from("operating_modes")
           .select("id")
           .limit(1);

@@ -5,6 +5,7 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { fromTable } from "@/lib/supabase-helpers";
 import { CUSTOMER_JOURNEY_REGISTRY } from "./journey-registry";
 
@@ -14,7 +15,7 @@ export function useCustomerJourneys() {
   return useQuery({
     queryKey: ["customer-journeys"],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from("customer_journeys")
         .select("*")
         .order("domain", { ascending: true });
@@ -28,7 +29,7 @@ export function useCustomerJourneyRuns(journeyKey?: string) {
   return useQuery({
     queryKey: ["customer-journey-runs", journeyKey],
     queryFn: async () => {
-      let q = supabase
+      let q = db
         .from("customer_journey_runs")
         .select("*")
         .order("created_at", { ascending: false });
@@ -45,7 +46,7 @@ export function useCustomerJourneySteps(runId?: string) {
     queryKey: ["customer-journey-steps", runId],
     queryFn: async () => {
       if (!runId) return [];
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from("customer_journey_steps")
         .select("*")
         .eq("run_id", runId)
@@ -61,7 +62,7 @@ export function useCustomerJourneyBlockers() {
   return useQuery({
     queryKey: ["customer-journey-blockers"],
     queryFn: async () => {
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from("customer_journey_blockers")
         .select("*")
         .order("created_at", { ascending: false });
@@ -96,7 +97,7 @@ export function useSeedJourneys() {
         current_status: "unverified",
       }));
 
-      const { error } = await supabase
+      const { error } = await db
         .from("customer_journeys")
         .upsert(rows, { onConflict: "user_id,journey_key" });
       if (error) throw error;
@@ -132,7 +133,7 @@ export function useRecordJourneyRun() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Not authenticated");
 
-      const { data, error } = await supabase
+      const { data, error } = await db
         .from("customer_journey_runs")
         .insert({ ...run, user_id: user.id, completed_at: new Date().toISOString() })
         .select()
@@ -140,7 +141,7 @@ export function useRecordJourneyRun() {
       if (error) throw error;
 
       // Update journey status
-      await supabase
+      await db
         .from("customer_journeys")
         .update({
           current_status: run.status,

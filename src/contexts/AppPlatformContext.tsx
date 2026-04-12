@@ -194,8 +194,8 @@ export function AppPlatformProvider({ children }: { children: ReactNode }) {
       setIsLoading(true);
       try {
         // Load installed apps
-        const { data: rows } = await supabase
-          .from("installed_apps" as any)
+        const { data: rows } = await (supabase as any)
+          .from("installed_apps")
           .select("*")
           .eq("user_id", userId);
 
@@ -220,8 +220,8 @@ export function AppPlatformProvider({ children }: { children: ReactNode }) {
         }
 
         // Load default associations
-        const { data: assocRows } = await supabase
-          .from("app_default_associations" as any)
+        const { data: assocRows } = await (supabase as any)
+          .from("app_default_associations")
           .select("*")
           .eq("user_id", userId);
 

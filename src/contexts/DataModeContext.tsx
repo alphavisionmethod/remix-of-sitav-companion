@@ -84,8 +84,8 @@ export function DataModeProvider({ children }: { children: React.ReactNode }) {
     } else {
       // Query real connector_configs from Supabase
       try {
-        const { data, error } = await supabase
-          .from("connector_configs" as any)
+        const { data, error } = await (supabase as any)
+          .from("connector_configs")
           .select("id, connector_type, display_name, status, health_score, last_health_check")
           .order("created_at", { ascending: false });
         

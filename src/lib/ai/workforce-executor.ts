@@ -8,6 +8,7 @@
 import { invokeAICapability } from "./ai-capability-client";
 import type { AIResponseEnvelope, AITaskClass } from "./ai-state-types";
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import {
   checkBudgetPreFlight,
   buildInvocationHistory,
@@ -74,7 +75,7 @@ export async function executeWorkforceTask(
   const { roleKey, taskType, inputSummary, budgetClass = "economy_admin" } = request;
 
   // ── Step 1: Gather recent invocation history for budget analysis ──
-  const { data: recentInvs } = await supabase
+  const { data: recentInvs } = await db
     .from("ai_workforce_invocations")
     .select("role_key, task_type, cost_cents, budget_class, created_at, input_summary")
     .order("created_at", { ascending: false })
@@ -131,7 +132,7 @@ export async function executeWorkforceTask(
   // Create DB invocation record
   let invocationId: string | null = null;
   try {
-    const { data } = await supabase
+    const { data } = await db
       .from("ai_workforce_invocations")
       .insert({
         user_id: userId,
@@ -171,7 +172,7 @@ export async function executeWorkforceTask(
   // Update invocation record with results + budget metadata
   if (invocationId) {
     try {
-      await supabase
+      await db
         .from("ai_workforce_invocations")
         .update({
           status: response.status.startsWith("success_") ? "completed" : "failed",

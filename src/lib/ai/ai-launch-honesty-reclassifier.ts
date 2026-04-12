@@ -5,6 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 
 export type HonestyClass = "real" | "partial" | "demo_governed" | "internal_only" | "unavailable" | "planned";
 
@@ -99,22 +100,22 @@ export async function reclassifyAIFeatures(): Promise<ReclassificationResult[]> 
 
   // Parallel data fetches
   const [usageRes, honestyRes, routingRes, providerHealthRes] = await Promise.all([
-    supabase
+    db
       .from("ai_usage_ledger")
       .select("capability_key, status, created_at, receipt_id")
       .in("capability_key", capKeys)
       .gte("created_at", thirtyDaysAgo)
       .order("created_at", { ascending: false })
       .limit(500),
-    supabase
+    db
       .from("ai_launch_honesty")
       .select("capability_key, launch_honesty_class")
       .in("capability_key", capKeys),
-    supabase
+    db
       .from("ai_capability_routing")
       .select("capability_key, is_active, budget_class")
       .in("capability_key", capKeys),
-    supabase
+    db
       .from("ai_provider_health")
       .select("provider, health_state")
       .order("updated_at", { ascending: false })

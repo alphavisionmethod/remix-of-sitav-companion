@@ -24,7 +24,7 @@ export function useApproveApprovalItem() {
   return useMutation({
     mutationFn: async ({ id, reason }: { id: string; reason?: string }) => {
       const { data: { user } } = await supabase.auth.getUser();
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from("approval_queue")
         .update({ status: "approved", reviewed_by: user?.id, decision_reason: reason || null, decided_at: new Date().toISOString() })
         .eq("id", id);
@@ -45,7 +45,7 @@ export function useRejectApprovalItem() {
   return useMutation({
     mutationFn: async ({ id, reason }: { id: string; reason?: string }) => {
       const { data: { user } } = await supabase.auth.getUser();
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from("approval_queue")
         .update({ status: "rejected", reviewed_by: user?.id, decision_reason: reason || null, decided_at: new Date().toISOString() })
         .eq("id", id);
@@ -65,7 +65,7 @@ export function useDismissApprovalItem() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (id: string) => {
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from("approval_queue")
         .update({ status: "dismissed", decided_at: new Date().toISOString() })
         .eq("id", id);

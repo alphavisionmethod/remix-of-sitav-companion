@@ -360,7 +360,7 @@ export function useApprovals() {
     queryFn: async () => {
       if (isDemoMode) return mockApprovals;
       if (!user) return [];
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("approval_queue")
         .select("*")
         .eq("user_id", user.id)
@@ -390,7 +390,7 @@ export function useProofRecords() {
     queryFn: async () => {
       if (isDemoMode) return mockProof;
       if (!user) return [];
-      const { data, error } = await supabase
+      const { data, error } = await (supabase as any)
         .from("proof_records")
         .select("*")
         .eq("user_id", user.id)

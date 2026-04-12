@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 import { getTaskContract } from "@/lib/contracts/global-contracts-registry";
 
@@ -135,7 +136,7 @@ export class ContextAssembler {
 
   private async getUserProfile(userId: string): Promise<ContextSource | null> {
     try {
-      const { data: profile } = await supabase
+      const { data: profile } = await db
         .from("profiles")
         .select("display_name, onboarding_completed, preferences")
         .eq("user_id", userId)
@@ -201,7 +202,7 @@ export class ContextAssembler {
 
     try {
       // Pull from advisor knowledge base as evidence
-      const { data: knowledge } = await supabase
+      const { data: knowledge } = await db
         .from("advisor_knowledge")
         .select("id, title, content, confidence, updated_at")
         .eq("user_id", userId)

@@ -5,11 +5,12 @@
 
 import { registerCapability } from "./capability-registry";
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { fromTable } from "@/lib/supabase-helpers";
 import type { CapabilityResult } from "@/packages/contracts/msa/capability-contract";
 
 registerCapability("money.accounts.list", async (_params, context): Promise<CapabilityResult> => {
-  const { data, error } = await supabase
+  const { data, error } = await db
     .from("financial_accounts")
     .select("*")
     .eq("user_id", context.userId);
