@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
@@ -103,6 +103,52 @@ export function useErrands() {
       const { data } = await fromTable("concierge_errands").select("*").eq("user_id", uid!).order("due_date");
       return data ?? [];
     },
+  });
+}
+
+export function useCreateErrand() {
+  const uid = useUserId();
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (errand: {
+      title: string;
+      location?: string;
+      priority?: string;
+      estimated_minutes?: number;
+      combinable?: boolean;
+      due_date?: string;
+      bundle_id?: string;
+      notes?: string;
+      status?: string;
+    }) => {
+      const { data, error } = await fromTable("concierge_errands").insert({ ...errand, user_id: uid! }).select().single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["concierge-errands"] }),
+  });
+}
+
+export function useUpdateErrand() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, ...updates }: { id: string; [key: string]: any }) => {
+      const { data, error } = await fromTable("concierge_errands").update(updates).eq("id", id).select().single();
+      if (error) throw error;
+      return data;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["concierge-errands"] }),
+  });
+}
+
+export function useDeleteErrand() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await fromTable("concierge_errands").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["concierge-errands"] }),
   });
 }
 

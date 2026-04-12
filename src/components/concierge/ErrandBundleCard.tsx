@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { GlassCard } from "@/components/sita/PremiumPageComponents";
-import { MapPin, Clock, Zap } from "lucide-react";
+import { MapPin, Clock, Zap, CheckCircle2, Trash2 } from "lucide-react";
 
 export interface ErrandItem {
   id: string;
@@ -21,7 +21,13 @@ export interface ErrandBundle {
 
 const priorityDot = { high: "bg-destructive", medium: "bg-amber-500", low: "bg-chart-2" };
 
-export function ErrandBundleCard({ bundle }: { bundle: ErrandBundle }) {
+interface ErrandBundleCardProps {
+  bundle: ErrandBundle;
+  onToggleDone?: (errandId: string) => void;
+  onDelete?: (errandId: string) => void;
+}
+
+export function ErrandBundleCard({ bundle, onToggleDone, onDelete }: ErrandBundleCardProps) {
   return (
     <GlassCard glow="none" className="p-4">
       <div className="flex items-center gap-2 mb-3">
@@ -41,6 +47,11 @@ export function ErrandBundleCard({ bundle }: { bundle: ErrandBundle }) {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.04 }}
           >
+            {onToggleDone && (
+              <button onClick={() => onToggleDone(e.id)} className="shrink-0 hover:scale-110 transition-transform">
+                <CheckCircle2 className="h-4 w-4 text-muted-foreground/40 hover:text-chart-2 transition-colors" />
+              </button>
+            )}
             <div className={`h-2 w-2 rounded-full shrink-0 ${priorityDot[e.priority]}`} />
             <div className="flex-1 min-w-0">
               <p className="text-[11px] font-medium text-foreground truncate">{e.title}</p>
@@ -53,6 +64,11 @@ export function ErrandBundleCard({ bundle }: { bundle: ErrandBundle }) {
             )}
             {e.estimatedMinutes && (
               <span className="text-[9px] text-muted-foreground shrink-0">{e.estimatedMinutes}m</span>
+            )}
+            {onDelete && (
+              <button onClick={() => onDelete(e.id)} className="shrink-0 text-muted-foreground/40 hover:text-destructive transition-colors">
+                <Trash2 className="h-3.5 w-3.5" />
+              </button>
             )}
           </motion.div>
         ))}
