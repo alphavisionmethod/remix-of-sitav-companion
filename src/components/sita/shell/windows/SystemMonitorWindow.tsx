@@ -1065,6 +1065,194 @@ export function SystemMonitorWindow() {
     </VStack>
   );
 
+  // ── Battery Health & Power Section ───────────────────────────
+  const pwrStats = PowerManager.getStats();
+  const batt = pwrStats.battery;
+
+  const battLevelSeries: ChartSeries[] = useMemo(() => [
+    { key: "level", color: COLORS.battLevel, fillOpacity: 0.3, data: battLevelHistory },
+  ], [battLevelHistory]);
+
+  const battPowerSeries: ChartSeries[] = useMemo(() => [
+    { key: "power", color: COLORS.battPower, fillOpacity: 0.25, data: battPowerHistory },
+  ], [battPowerHistory]);
+
+  const battTempSeries: ChartSeries[] = useMemo(() => [
+    { key: "temp", color: COLORS.battTemp, fillOpacity: 0.2, data: battTempHistory },
+  ], [battTempHistory]);
+
+  const battHealthColor = batt.health > 80 ? "hsl(142, 70%, 50%)" : batt.health > 50 ? "hsl(45, 80%, 55%)" : "hsl(0, 70%, 55%)";
+  const battLevelColor = batt.level > 30 ? "hsl(142, 70%, 50%)" : batt.level > 15 ? "hsl(45, 80%, 55%)" : "hsl(0, 70%, 55%)";
+
+  const renderBattery = () => (
+    <VStack spacing="normal">
+      <HStack spacing="tight" justify="between" align="center">
+        <VStack spacing="micro">
+          <NovaText variant="heading">Battery Health & Power</NovaText>
+          <NovaText variant="label" muted>
+            {batt.charging ? "Charging" : "On Battery"} · {batt.cycleCount} charge cycles
+          </NovaText>
+        </VStack>
+        <HStack spacing="micro" align="center">
+          {batt.acConnected ? (
+            <PlugZap className="w-4 h-4 text-[hsl(142_70%_50%)]" />
+          ) : batt.charging ? (
+            <BatteryCharging className="w-4 h-4 text-[hsl(45_80%_55%)]" />
+          ) : (
+            <Battery className="w-4 h-4 text-muted-foreground" />
+          )}
+          <NovaText variant="heading" className="!text-lg" style={{ color: battLevelColor }}>
+            {batt.level.toFixed(0)}%
+          </NovaText>
+        </HStack>
+      </HStack>
+
+      {/* Key metrics row */}
+      <div className="grid grid-cols-4 gap-2">
+        {[
+          { label: "Health", value: `${batt.health}%`, color: battHealthColor },
+          { label: "Cycles", value: `${batt.cycleCount}`, color: undefined },
+          { label: "Voltage", value: `${(batt.voltage / 1000).toFixed(1)}V`, color: undefined },
+          { label: "Current", value: `${batt.current > 0 ? "+" : ""}${batt.current}mA`, color: batt.charging ? "hsl(142, 70%, 50%)" : "hsl(0, 70%, 55%)" },
+        ].map(m => (
+          <NovaCard key={m.label} className="!p-2.5 text-center">
+            <NovaText variant="label" muted className="!text-[9px] uppercase tracking-wider">{m.label}</NovaText>
+            <NovaText variant="body" className="!text-[14px] !font-semibold" style={m.color ? { color: m.color } : undefined}>
+              {m.value}
+            </NovaText>
+          </NovaCard>
+        ))}
+      </div>
+
+      {/* Capacity & health bar */}
+      <NovaCard>
+        <HStack spacing="tight" justify="between" align="center" className="mb-2">
+          <NovaText variant="label" muted>Battery Capacity</NovaText>
+          <NovaText variant="label" muted className="!text-[10px]">
+            {(batt.remainingCapacity / 1000).toFixed(1)} / {(batt.fullCapacity / 1000).toFixed(1)} Wh
+          </NovaText>
+        </HStack>
+        {/* Level bar */}
+        <div className="space-y-1.5">
+          <div>
+            <HStack spacing="micro" justify="between" className="mb-0.5">
+              <NovaText variant="label" muted className="!text-[9px]">Charge Level</NovaText>
+              <NovaText variant="label" className="!text-[9px]" style={{ color: battLevelColor }}>{batt.level.toFixed(1)}%</NovaText>
+            </HStack>
+            <div className="h-2 rounded-full bg-[hsl(0_0%_0%/0.06)] dark:bg-[hsl(0_0%_100%/0.06)] overflow-hidden">
+              <div className="h-full rounded-full transition-all duration-500" style={{ width: `${batt.level}%`, backgroundColor: battLevelColor }} />
+            </div>
+          </div>
+          {/* Health bar */}
+          <div>
+            <HStack spacing="micro" justify="between" className="mb-0.5">
+              <NovaText variant="label" muted className="!text-[9px]">Battery Health</NovaText>
+              <NovaText variant="label" className="!text-[9px]" style={{ color: battHealthColor }}>{batt.health}%</NovaText>
+            </HStack>
+            <div className="h-2 rounded-full bg-[hsl(0_0%_0%/0.06)] dark:bg-[hsl(0_0%_100%/0.06)] overflow-hidden">
+              <div className="h-full rounded-full transition-all duration-500" style={{ width: `${batt.health}%`, backgroundColor: battHealthColor }} />
+            </div>
+          </div>
+        </div>
+        {/* Design vs actual capacity */}
+        <HStack spacing="tight" justify="between" className="mt-2">
+          <NovaText variant="label" muted className="!text-[9px]">Design: {(batt.designCapacity / 1000).toFixed(1)} Wh</NovaText>
+          <NovaText variant="label" muted className="!text-[9px]">Actual: {(batt.fullCapacity / 1000).toFixed(1)} Wh ({((batt.fullCapacity / batt.designCapacity) * 100).toFixed(0)}%)</NovaText>
+        </HStack>
+      </NovaCard>
+
+      {/* Charge level history */}
+      <NovaCard>
+        <NovaText variant="label" muted className="mb-2">Charge Level — 60s Window</NovaText>
+        <NovaCanvasChart series={battLevelSeries} maxY={100} height={140} yUnit="%" gridLines={4} />
+      </NovaCard>
+
+      {/* Power consumption */}
+      <NovaCard>
+        <NovaText variant="label" muted className="mb-2">Power Consumption — 60s Window</NovaText>
+        <NovaCanvasChart series={battPowerSeries} height={120} yUnit="W" gridLines={3} />
+        <HStack spacing="tight" justify="between" className="mt-1">
+          <NovaText variant="label" muted className="!text-[9px]">
+            {batt.charging ? "Charging at" : "Discharging at"} ~{battPowerHistory[battPowerHistory.length - 1]?.toFixed(1) ?? 0}W
+          </NovaText>
+          <NovaText variant="label" muted className="!text-[9px]">
+            {batt.timeToEmpty != null ? `${batt.timeToEmpty} min remaining` : batt.timeToFull != null ? `${batt.timeToFull} min to full` : "Calculating…"}
+          </NovaText>
+        </HStack>
+      </NovaCard>
+
+      {/* Battery temperature */}
+      <NovaCard>
+        <HStack spacing="tight" justify="between" align="center" className="mb-2">
+          <NovaText variant="label" muted>Battery Temperature</NovaText>
+          <NovaText variant="label" className="!text-[11px] !font-semibold" style={{
+            color: batt.temperature > 45 ? "hsl(0, 70%, 55%)" : batt.temperature > 38 ? "hsl(45, 80%, 55%)" : "hsl(142, 70%, 50%)",
+          }}>
+            {batt.temperature.toFixed(1)}°C
+          </NovaText>
+        </HStack>
+        <NovaCanvasChart series={battTempSeries} height={100} yUnit="°C" gridLines={3} />
+      </NovaCard>
+
+      {/* Charge cycle tracking */}
+      <NovaCard>
+        <NovaText variant="label" muted className="mb-2">Charge Cycle Tracking</NovaText>
+        <div className="grid grid-cols-3 gap-3">
+          <VStack spacing="micro" className="text-center">
+            <NovaText variant="heading" className="!text-xl">{batt.cycleCount}</NovaText>
+            <NovaText variant="label" muted className="!text-[9px]">Total Cycles</NovaText>
+          </VStack>
+          <VStack spacing="micro" className="text-center">
+            <NovaText variant="heading" className="!text-xl" style={{ color: battHealthColor }}>
+              {batt.health}%
+            </NovaText>
+            <NovaText variant="label" muted className="!text-[9px]">Capacity Retained</NovaText>
+          </VStack>
+          <VStack spacing="micro" className="text-center">
+            <NovaText variant="heading" className="!text-xl">
+              {Math.max(0, Math.round(1000 - batt.cycleCount))}
+            </NovaText>
+            <NovaText variant="label" muted className="!text-[9px]">Cycles Remaining</NovaText>
+          </VStack>
+        </div>
+        {/* Cycle progress bar to 1000 */}
+        <div className="mt-3">
+          <HStack spacing="micro" justify="between" className="mb-0.5">
+            <NovaText variant="label" muted className="!text-[9px]">Cycle Life Progress</NovaText>
+            <NovaText variant="label" muted className="!text-[9px]">{batt.cycleCount} / 1000</NovaText>
+          </HStack>
+          <div className="h-2 rounded-full bg-[hsl(0_0%_0%/0.06)] dark:bg-[hsl(0_0%_100%/0.06)] overflow-hidden">
+            <div
+              className="h-full rounded-full transition-all duration-500"
+              style={{
+                width: `${Math.min(100, (batt.cycleCount / 1000) * 100)}%`,
+                backgroundColor: batt.cycleCount > 800 ? "hsl(0, 70%, 55%)" : batt.cycleCount > 500 ? "hsl(45, 80%, 55%)" : "hsl(142, 70%, 50%)",
+              }}
+            />
+          </div>
+        </div>
+      </NovaCard>
+
+      {/* AC / Power source info */}
+      <NovaCard>
+        <HStack spacing="tight" justify="between" align="center">
+          <HStack spacing="micro" align="center">
+            <PlugZap className={cn("w-4 h-4", batt.acConnected ? "text-[hsl(142_70%_50%)]" : "text-muted-foreground")} />
+            <VStack spacing="micro">
+              <NovaText variant="body" className="!font-medium">Power Source</NovaText>
+              <NovaText variant="label" muted className="!text-[10px]">
+                {batt.acConnected ? "AC Adapter Connected" : "Battery (Discharging)"}
+              </NovaText>
+            </VStack>
+          </HStack>
+          <NovaBadge variant={batt.acConnected ? "success" : "warning"} className="!text-[9px]">
+            {batt.acConnected ? "AC" : "BATT"}
+          </NovaBadge>
+        </HStack>
+      </NovaCard>
+    </VStack>
+  );
+
   // ── Render ─────────────────────────────────────────────────
   return (
     <AppLayout sidebar={sidebar} sidebarWidth={155} toolbar={toolbar} minHeight={420}>
@@ -1075,6 +1263,7 @@ export function SystemMonitorWindow() {
       {section === "gpu" && renderGpu()}
       {section === "disk" && renderDisk()}
       {section === "thermal" && renderThermal()}
+      {section === "battery" && renderBattery()}
       {section === "services" && renderServices()}
     </AppLayout>
   );
