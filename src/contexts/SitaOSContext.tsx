@@ -394,6 +394,7 @@ export const SitaOSProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <SitaOSContext.Provider value={kernel}>
+      <LayerSyncEffect onLayerChange={handleLayerChange} />
       {children}
     </SitaOSContext.Provider>
   );
