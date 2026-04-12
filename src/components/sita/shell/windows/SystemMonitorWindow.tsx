@@ -261,6 +261,17 @@ export function SystemMonitorWindow() {
     { key: "write", color: { h: 340, s: 75, l: 55 } as NovaColor, fillOpacity: 0.25, data: diskHistory.map(s => s.write) },
   ], [diskHistory]);
 
+  const iopsSeries: ChartSeries[] = useMemo(() => [
+    { key: "readIOPS", color: COLORS.iopsRead, fillOpacity: 0.25, data: iopsHistory.map(s => s.read) },
+    { key: "writeIOPS", color: COLORS.iopsWrite, fillOpacity: 0.2, data: iopsHistory.map(s => s.write) },
+  ], [iopsHistory]);
+
+  const thermalSeries: ChartSeries[] = useMemo(() => [
+    { key: "cpu", color: COLORS.thermalCpu, fillOpacity: 0.2, data: thermalHistory.map(s => s.cpu) },
+    { key: "gpu", color: COLORS.thermalGpu, fillOpacity: 0.15, data: thermalHistory.map(s => s.gpu) },
+    { key: "ssd", color: COLORS.thermalSsd, fillOpacity: 0.15, data: thermalHistory.map(s => s.ssd) },
+  ], [thermalHistory]);
+
   const coreBars: BarItem[] = useMemo(() => {
     return Array.from({ length: 8 }, (_, i) => {
       const load = Math.max(5, totalCpu + (Math.random() - 0.5) * 30);
@@ -309,6 +320,20 @@ export function SystemMonitorWindow() {
             <NovaText variant="label" muted>Net ↓</NovaText>
             <NovaText variant="label">{latestNet ? `${latestNet.down.toFixed(1)} MB/s` : "—"}</NovaText>
           </HStack>
+        </div>
+
+        <div className="rounded-lg bg-[hsl(0_0%_0%/0.03)] dark:bg-[hsl(0_0%_100%/0.03)] p-2">
+          <HStack spacing="micro" align="center" justify="between">
+            <NovaText variant="label" muted>Temp</NovaText>
+            <NovaText variant="label" className={cn(
+              latestThermal && latestThermal.cpu > 75 ? "!text-[hsl(0_70%_55%)]"
+              : latestThermal && latestThermal.cpu > 60 ? "!text-[hsl(45_80%_50%)]"
+              : "!text-[hsl(142_70%_50%)]"
+            )}>
+              {latestThermal ? `${latestThermal.cpu.toFixed(0)}°C` : "—"}
+            </NovaText>
+          </HStack>
+          <Sparkline data={thermalSpark} color="hsl(0, 70%, 55%)" />
         </div>
       </VStack>
     </VStack>
