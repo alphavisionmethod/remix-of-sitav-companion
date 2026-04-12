@@ -5,6 +5,7 @@ import { useBrainCore, AdvisorResponse } from "@/hooks/use-brain-core";
 import { useStreamingChat } from "@/hooks/use-streaming-chat";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { TrustBadge } from "./TrustBadge";
+import { EpistemicTrustDisplay } from "./EpistemicTrustDisplay";
 import { getAdvisorContract, getOutputClassLabel } from "@/lib/no-hallucination/advisor-contract";
 import {
   Brain, X, Send, Sparkles, DollarSign, Briefcase, Headphones, Users, TrendingUp,
@@ -12,6 +13,7 @@ import {
   AlertTriangle, Coins, StopCircle
 } from "lucide-react";
 import { AIDegradedState } from "@/components/ai/AIDegradedState";
+import type { TrustEnrichedResponse } from "@/lib/ai/ai-capability-client";
 
 type AdvisorDomain = "money" | "business" | "concierge" | "family" | "growth" | "general";
 type ChatMode = "single" | "council";
@@ -22,6 +24,7 @@ interface ChatMessage {
   content: string;
   advisor?: AdvisorDomain;
   response?: AdvisorResponse;
+  trustMetadata?: TrustEnrichedResponse["trustMetadata"];
   timestamp: Date;
 }
 
@@ -249,6 +252,12 @@ export const AdvisorChat = ({ isOpen, onClose }: AdvisorChatProps) => {
                           <ShieldAlert className="h-2.5 w-2.5" /> Low confidence — verify
                         </span>
                       )}
+                    </div>
+                  )}
+                  {/* Epistemic Trust Metadata */}
+                  {msg.role === "advisor" && msg.trustMetadata && (
+                    <div className="mb-2">
+                      <EpistemicTrustDisplay trustMetadata={msg.trustMetadata} compact />
                     </div>
                   )}
                   <div className="text-xs leading-relaxed prose prose-sm dark:prose-invert max-w-none">
