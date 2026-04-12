@@ -1,4 +1,4 @@
-import { ReactNode, useState, useEffect, lazy, Suspense, useCallback } from "react";
+import { ReactNode, useState, useEffect, lazy, Suspense, useCallback, useRef } from "react";
 import { useWindowManager } from "@/hooks/useWindowManager";
 import { WindowManagerContext } from "@/contexts/WindowManagerContext";
 import { SidebarProvider } from "@/components/ui/sidebar";
@@ -28,6 +28,7 @@ import { FinderWindow } from "./shell/windows/FinderWindow";
 import { SettingsWindow } from "./shell/windows/SettingsWindow";
 import { NotesWindow } from "./shell/windows/NotesWindow";
 import { NovaSDKProvider } from "@/contexts/NovaSDKContext";
+import { lifecycleManager } from "@/lib/nova-sdk/runtime/lifecycle";
 import { CommandLayer } from "./shell/CommandLayer";
 import { ClickRipple } from "./shell/ClickRipple";
 import { AppPermissionGate, isPermissionGranted } from "./shell/AppPermissionGate";

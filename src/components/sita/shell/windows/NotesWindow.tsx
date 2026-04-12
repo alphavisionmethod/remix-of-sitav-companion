@@ -5,7 +5,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { AppLayout } from "@/lib/nova-sdk/ui/layout";
-import { NovaText, NovaButton, NovaList, NovaSectionLabel, NovaInput } from "@/lib/nova-sdk/ui/components";
+import { NovaText, NovaButton, NovaList, NovaSectionLabel, NovaInput, NovaTextArea } from "@/lib/nova-sdk/ui/components";
 import { NovaFS } from "@/lib/nova-sdk/system/filesystem";
 import { NovaNotify } from "@/lib/nova-sdk/system/notifications";
 import { AppStateWrapper } from "@/components/sita/shell/AppStateWrapper";

@@ -12,7 +12,7 @@ export { NovaEnforcement, auditSpacing, auditFontSize, auditBorderRadius } from 
 export type { DesignViolation } from "./core/enforcement";
 
 // UI
-export { NovaText, NovaButton, NovaInput, NovaCard, NovaList, NovaModal, NovaSidebar, NovaSectionLabel } from "./ui/components";
+export { NovaText, NovaButton, NovaInput, NovaCard, NovaList, NovaModal, NovaSidebar, NovaSectionLabel, NovaToggle, NovaSlider, NovaTextArea, NovaToolbar, NovaBadge, NovaAvatar } from "./ui/components";
 export { VStack, HStack, Spacer, Divider, SplitView, AppLayout, NovaScrollArea } from "./ui/layout";
 
 // System
@@ -37,3 +37,6 @@ export { lifecycleManager } from "./runtime/lifecycle";
 export type { NovaAppLifecycle } from "./runtime/lifecycle";
 export { AppLoader } from "./runtime/loader";
 export type { AppBundle, LoadResult } from "./runtime/loader";
+
+// Hooks
+export { useNovaApp } from "./hooks/useNovaApp";
