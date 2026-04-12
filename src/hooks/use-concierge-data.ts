@@ -150,6 +150,7 @@ export function useDeleteErrand() {
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["concierge-errands"] }),
   });
+}
 
 export function useRecurringObligations() {
   const uid = useUserId();
