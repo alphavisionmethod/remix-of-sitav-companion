@@ -10,6 +10,7 @@ import { useWallpaperParallax } from "@/hooks/useWallpaperParallax";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
+import { useAccentSync } from "@/hooks/use-accent-sync";
 import {
   CheckCircle, DollarSign, Calendar, Brain,
   TrendingUp, ArrowRight,
