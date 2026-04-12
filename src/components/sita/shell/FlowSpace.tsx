@@ -9,6 +9,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { DEPTH_LAYERS } from "@/lib/design-system/nova-os";
 import { cn } from "@/lib/utils";
 import { Layers, Mail, FolderOpen, FileText, Monitor, Plus, Minus } from "lucide-react";
+import { SoundEngine } from "@/lib/sound-engine";
 import type { ReactNode } from "react";
 
 // ── Types ────────────────────────────────────────────────────
@@ -119,12 +120,16 @@ export function FlowSpace({ isOpen, windows, onSelectWindow, onClose, onLaunchAp
   // Drag state
   const dragRef = useRef<{ id: string; offsetX: number; offsetY: number; moved: boolean } | null>(null);
 
-  // Initialize items when opening
+  // Initialize items when opening — with signature parallax zoom-out
   useEffect(() => {
     if (!isOpen) {
       setShow(false);
       return;
     }
+    
+    // Play signature boot sound on FlowSpace entry
+    SoundEngine.boot();
+    
     const t = setTimeout(() => setShow(true), 30);
 
     const vw = window.innerWidth;
@@ -132,6 +137,7 @@ export function FlowSpace({ isOpen, windows, onSelectWindow, onClose, onLaunchAp
     const sorted = [...visibleWindows].sort((a, b) => b.zIndex - a.zIndex);
     const targets = computeGrid(sorted.length, vw, vh);
 
+    // Parallax zoom-out: windows start at their real positions and fly to grid
     itemsRef.current = sorted.map((w, i) => ({
       id: w.id,
       x: w.position.x + (w.width ?? 400) / 2 - CARD_W / 2,
@@ -140,7 +146,7 @@ export function FlowSpace({ isOpen, windows, onSelectWindow, onClose, onLaunchAp
       vy: 0,
       targetX: targets[i]?.x ?? vw / 2,
       targetY: targets[i]?.y ?? vh / 2,
-      scale: 0.4,
+      scale: 0.3, // Start smaller for zoom-out effect
       targetScale: 1,
       vs: 0,
     }));
