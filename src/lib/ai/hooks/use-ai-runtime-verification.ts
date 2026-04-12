@@ -1,7 +1,5 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — AI Runtime Verification Hook
-// Queries ai_usage_ledger + ai_receipt_records for per-capability
-// last invocation status, plus triggers ai-health smoke tests
 // ═══════════════════════════════════════════════════════════════
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -46,12 +44,12 @@ export function useAIRuntimeVerification() {
         .select("capability_key, created_at, provider_id, model_id, latency_ms, prompt_tokens, completion_tokens, estimated_cost_usd, status, error_summary, error_code, receipt_id, mode")
         .in("capability_key", TARGET_CAPABILITIES)
         .order("created_at", { ascending: false })
-        .limit(100);
+        .limit(100) as { data: any[] | null };
 
       const capMap = new Map<string, CapabilityVerification>();
 
       for (const cap of TARGET_CAPABILITIES) {
-        const lastRow = ledgerRows?.find((r) => r.capability_key === cap);
+        const lastRow = (ledgerRows ?? []).find((r: any) => r.capability_key === cap);
 
         const status: CapabilityVerification["last_status"] = !lastRow
           ? "never"
