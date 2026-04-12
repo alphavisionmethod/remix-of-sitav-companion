@@ -199,6 +199,11 @@ class NovaKernelClass {
   shutdown(): void {
     if (!this.booted) return;
 
+    if (this.heartbeatInterval) {
+      clearInterval(this.heartbeatInterval);
+      this.heartbeatInterval = null;
+    }
+
     CrashResilience.reset();
     console.log("[Kernel] Shutdown initiated...");
     PluginRegistry.reset();
