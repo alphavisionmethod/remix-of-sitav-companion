@@ -69,7 +69,8 @@ export type { MemoryRegion, MemoryFlags, MemoryStats } from "./kernel/memory-man
 export { Syscall, syscall, getSyscallLog, getSyscallStats, clearSyscallLog } from "./kernel/syscall";
 export type { SyscallLogEntry, SyscallContext } from "./kernel/syscall";
 export { Compositor } from "./kernel/compositor";
-export type { CompositorSurface, SurfaceBounds } from "./kernel/compositor";
+export type { CompositorSurface, SurfaceBounds, SurfaceLayer } from "./kernel/compositor";
+export { WindowPerformanceMonitor } from "./kernel/window-perf";
 export { Scheduler } from "./kernel/scheduler";
 export { NovaKernel } from "./kernel/boot";
 export type { BootLogEntry } from "./kernel/boot";
