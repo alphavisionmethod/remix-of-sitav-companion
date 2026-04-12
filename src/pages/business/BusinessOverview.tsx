@@ -174,11 +174,19 @@ const BusinessOverview = () => {
         ))}
       </StaggerReveal>
 
-      {/* Charts */}
-      <div className="grid gap-6 lg:grid-cols-2">
-        <RevenuePipelineChart />
-        <RevenueOverTimeChart />
-      </div>
+      {/* Charts — Glassmorphic containers */}
+      <StaggerReveal className="grid gap-6 lg:grid-cols-2">
+        <StaggerItem>
+          <ChartContainer title="Revenue Pipeline">
+            <RevenuePipelineChart />
+          </ChartContainer>
+        </StaggerItem>
+        <StaggerItem>
+          <ChartContainer title="Revenue Over Time">
+            <RevenueOverTimeChart />
+          </ChartContainer>
+        </StaggerItem>
+      </StaggerReveal>
 
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Column 1 — Priorities & Callbacks */}
