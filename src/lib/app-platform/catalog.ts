@@ -195,6 +195,18 @@ export const APP_CATALOG: AppDefinition[] = [
     installStatus: "installed", installedAt: "2026-01-01", pinnedToDock: false, tags: ["calculator", "utility"], receipts: [],
   },
 
+  {
+    id: "system-monitor", name: "System Monitor", publisher: "SITA OS", icon: "📊", iconBg: "from-cyan-500 to-blue-600",
+    category: "utilities" as AppCategory, appClass: "internal", trustLevel: "sita-verified", version: "1.0.0", size: "3 MB",
+    shortDescription: "Real-time system performance monitor", fullDescription: "Monitor CPU, memory, GPU, network, and processes in real time with beautiful live charts and per-core utilization views.",
+    screenshots: [], rating: 4.9, downloads: 25_000, lastUpdated: "2026-04-12",
+    releaseNotes: ["Initial release — CPU, Memory, GPU, Network, Process views"],
+    permissions: [], fileAssociations: [], protocolAssociations: [],
+    worksWithSita: ["Dock integration", "Nova SDK", "Live charts"],
+    updateSource: "store-managed", startupBehavior: "none", notificationPermission: false,
+    installStatus: "installed", installedAt: "2026-01-01", pinnedToDock: true, tags: ["monitor", "system", "performance", "cpu", "memory"], receipts: [],
+  },
+
   // ── Media ──
   {
     id: "spotify", name: "Spotify", publisher: "Spotify AB", icon: "🎵", iconBg: "from-green-500 to-green-700",

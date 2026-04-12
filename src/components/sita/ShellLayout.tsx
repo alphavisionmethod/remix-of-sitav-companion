@@ -31,6 +31,7 @@ import { TerminalWindow } from "./shell/windows/TerminalWindow";
 import { CalendarWindow } from "./shell/windows/CalendarWindow";
 import { WeatherWindow } from "./shell/windows/WeatherWindow";
 import { NovaTerminal } from "./shell/windows/NovaTerminal";
+import { SystemMonitorWindow } from "./shell/windows/SystemMonitorWindow";
 import { NovaSDKProvider } from "@/contexts/NovaSDKContext";
 import { lifecycleManager } from "@/lib/nova-sdk/runtime/lifecycle";
 import { ProcessTable } from "@/lib/nova-sdk/kernel/process-manager";
@@ -298,6 +299,14 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         width: 640,
         originRect: origin,
       }, { id: "nova-terminal", name: "Nova Terminal" });
+    } else if (appId === "system-monitor" || appId === "com.sita.monitor") {
+      launchWithKernel("system-monitor", {
+        title: "System Monitor",
+        component: <SystemMonitorWindow />,
+        position: { x: 140, y: 80 },
+        width: 620,
+        originRect: origin,
+      }, { id: "system-monitor", name: "System Monitor" });
     }
   }, [wm.openWindow]);
 
