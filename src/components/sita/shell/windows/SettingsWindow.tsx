@@ -906,6 +906,7 @@ function CloudSyncContent() {
           </VStack>
         </NovaCard>
       )}
+      <ResetSectionButton sectionId="cloudsync" />
     </VStack>
   );
 }
