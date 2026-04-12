@@ -124,10 +124,37 @@ export const SERVICE_LAYER_MAP: Record<string, { layer: Layer; canonical: boolea
   "admin-service": { layer: LAYERS.ADMIN_OPERATOR, canonical: true },
   "self-healing": { layer: LAYERS.ADMIN_OPERATOR, canonical: true },
   "connector-health-service": { layer: LAYERS.ADMIN_OPERATOR, canonical: true },
+  "incident-management": { layer: LAYERS.ADMIN_OPERATOR, canonical: true },
+  "support-diagnostics": { layer: LAYERS.ADMIN_OPERATOR, canonical: true },
+  "analytics-service": { layer: LAYERS.ADMIN_OPERATOR, canonical: true },
+
+  // OS KERNEL — additional execution/infrastructure primitives
+  "inference-gateway": { layer: LAYERS.OS_KERNEL, canonical: true },
+  "epistemic-firewall": { layer: LAYERS.OS_KERNEL, canonical: true },
+  "mnemosyne": { layer: LAYERS.OS_KERNEL, canonical: true },
+  "memory-service": { layer: LAYERS.OS_KERNEL, canonical: true },
+  "trust-governor": { layer: LAYERS.OS_KERNEL, canonical: true },
+  "verification-engine": { layer: LAYERS.OS_KERNEL, canonical: true },
+  "workflow-engine": { layer: LAYERS.OS_KERNEL, canonical: true },
+  "identity-auth": { layer: LAYERS.OS_KERNEL, canonical: true },
+  "integration-hub": { layer: LAYERS.OS_KERNEL, canonical: true },
+  "launch-readiness": { layer: LAYERS.OS_KERNEL, canonical: true },
+  "service-registry": { layer: LAYERS.OS_KERNEL, canonical: true },
+
+  // OS SERVICES — additional orchestration
+  "recommendation-execution": { layer: LAYERS.OS_SERVICES, canonical: true },
+  "handoff": { layer: LAYERS.OS_SERVICES, canonical: true },
+  "projection-service": { layer: LAYERS.OS_SERVICES, canonical: true },
+  "flagship-loops": { layer: LAYERS.OS_SERVICES, canonical: true },
 
   // APP — user-facing service helpers
   "auth": { layer: LAYERS.APP, canonical: true },
   "notification-service": { layer: LAYERS.APP, canonical: true },
+  "google-provider-family": { layer: LAYERS.APP, canonical: true },
+  "life-simulation": { layer: LAYERS.APP, canonical: true },
+  "search-fabric": { layer: LAYERS.OS_SERVICES, canonical: true },
+  "fraud-sentinel": { layer: LAYERS.OS_SERVICES, canonical: true },
+  "governance-simulator": { layer: LAYERS.OS_SERVICES, canonical: true },
 };
 
 // ── Layout → Layer Mapping ──────────────────────────────────────
