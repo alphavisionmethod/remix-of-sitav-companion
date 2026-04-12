@@ -4,12 +4,14 @@ import { GlassCard } from "@/components/sita/PremiumPageComponents";
 import { SitaPageHeader } from "@/components/sita/SitaCard";
 import { SitaTabs } from "@/components/sita/SitaComponents";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { LifeAdminQueueCard, ConciergeAdvisorInsightCard } from "@/components/concierge";
+import type { AdminQueueItem } from "@/components/concierge";
 import {
   FileText, Calendar, Wrench, RefreshCw, Clock, AlertCircle, CheckCircle,
-  Shield, Phone, Mail, ArrowRight, Timer
+  Shield, Phone, Mail, ArrowRight, Timer, Zap, Package
 } from "lucide-react";
 
-type AdminTab = "recurring" | "service" | "forms" | "upcoming" | "aging";
+type AdminTab = "recurring" | "service" | "forms" | "upcoming" | "aging" | "bundles";
 
 interface AdminItem {
   id: string;
@@ -52,12 +54,19 @@ const DEMO_AGING: AdminItem[] = [
   { id: "la15", title: "Update emergency contacts at school", category: "School", daysOverdue: 8, urgency: "low" },
 ];
 
+const DEMO_BUNDLES: AdminItem[] = [
+  { id: "lb1", title: "Phone calls session — plumber, vet, insurance", category: "Calls", daysOverdue: 0, urgency: "medium" },
+  { id: "lb2", title: "School paperwork batch — permission slip, health forms, emergency contacts", category: "School", daysOverdue: 0, urgency: "high" },
+  { id: "lb3", title: "Online admin — insurance claim, vehicle registration, tax docs upload", category: "Digital", daysOverdue: 2, urgency: "medium" },
+];
+
 const TAB_DATA: Record<AdminTab, { items: AdminItem[]; label: string; icon: typeof FileText }> = {
   recurring: { items: DEMO_RECURRING, label: "Recurring", icon: RefreshCw },
   service: { items: DEMO_SERVICE, label: "Service Follow-ups", icon: Phone },
   forms: { items: DEMO_FORMS, label: "Forms & Docs", icon: FileText },
   upcoming: { items: DEMO_UPCOMING, label: "Upcoming Linked", icon: Calendar },
   aging: { items: DEMO_AGING, label: "Aging Items", icon: Timer },
+  bundles: { items: DEMO_BUNDLES, label: "One Sitting", icon: Package },
 };
 
 const urgencyDot = { high: "bg-destructive", medium: "bg-amber-500", low: "bg-chart-2" };
@@ -155,6 +164,21 @@ const LifeAdminCenter = () => {
           tabData.items.map(item => <AdminCard key={item.id} item={item} />)
         )}
       </div>
+
+      {/* Quick Win Admin Queue */}
+      <LifeAdminQueueCard items={[
+        { id: "qw1", title: "Update school emergency contacts", category: "School", urgency: "low", effort: "quick" },
+        { id: "qw2", title: "Submit insurance claim photo", category: "Insurance", urgency: "medium", effort: "quick" },
+        { id: "qw3", title: "Set up autopay for lawn service", category: "Home", urgency: "low", effort: "quick" },
+      ]} />
+
+      {/* Advisor */}
+      <ConciergeAdvisorInsightCard insight={{
+        role: "Life Admin Advisor",
+        message: "You have 3 items that have been postponed more than a week. The phone calls session could knock out 3 follow-ups in 15 minutes. Tax documents are the highest-impact item to resolve this week.",
+        linkedItems: ["Tax documents", "Phone calls session", "School paperwork"],
+        confidence: "high",
+      }} />
     </motion.div>
   );
 };

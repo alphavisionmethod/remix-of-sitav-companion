@@ -51,6 +51,8 @@ const EventsGifts = () => {
   const filtered = view === "prep" ? events.filter(e => e.status === "prep-needed" || e.status === "overdue")
     : view === "gifts" ? events.filter(e => e.giftStatus && e.giftStatus !== "none")
     : view === "milestones" ? events.filter(e => e.category === "birthday" || e.category === "anniversary" || e.category === "holiday")
+    : view === "timeline" ? [...events].sort((a, b) => a.daysUntil - b.daysUntil)
+    : view === "board" ? events.filter(e => e.prepItems.length > 0)
     : events;
 
   return (
@@ -71,6 +73,8 @@ const EventsGifts = () => {
           { key: "prep", label: "Needs Prep" },
           { key: "gifts", label: "Gift Tracker" },
           { key: "milestones", label: "Milestones" },
+          { key: "timeline", label: "Prep Timeline" },
+          { key: "board", label: "Planning Board" },
         ]}
         active={view}
         onChange={setView}
@@ -114,6 +118,65 @@ const EventsGifts = () => {
           );
         })}
       </div>
+
+      {view === "timeline" && (
+        <div className="relative pl-6 space-y-3">
+          <div className="absolute left-3 top-0 bottom-0 w-px bg-border/30" />
+          {filtered.map(ev => (
+            <div key={ev.id} className="relative">
+              <div className={`absolute -left-3 top-2 h-3 w-3 rounded-full border-2 border-card ${ev.daysUntil <= 0 ? "bg-destructive" : ev.daysUntil <= 7 ? "bg-amber-500" : "bg-chart-2"}`} />
+              <div className="rounded-xl bg-secondary/15 px-4 py-3">
+                <div className="flex items-center justify-between">
+                  <p className="text-xs font-semibold text-foreground">{ev.title}</p>
+                  <span className="text-[10px] text-muted-foreground">{ev.date}</span>
+                </div>
+                <p className="text-[10px] text-muted-foreground mt-0.5">{ev.who} · {ev.prepItems.length} prep items</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {(view !== "timeline") && (
+      <div className="space-y-3">
+        {filtered.map(ev => {
+          const Icon = catIcon(ev.category);
+          return (
+            <SitaCard key={ev.id} className="p-4">
+              <div className="flex items-start gap-4">
+                <div className="rounded-xl bg-primary/8 p-2.5 shrink-0">
+                  <Icon className="h-4 w-4 text-primary" />
+                </div>
+                <div className="flex-1 min-w-0 space-y-1.5">
+                  <div className="flex items-center justify-between gap-2 flex-wrap">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <p className="text-sm font-medium text-foreground">{ev.title}</p>
+                      <span className="rounded-md bg-secondary px-1.5 py-px text-[10px] text-muted-foreground">{ev.who}</span>
+                    </div>
+                    <TrustBadge level={ev.status === "overdue" ? "high-impact" : ev.status === "handled" ? "verified" : "review"} label={ev.daysUntil < 0 ? "overdue" : `${ev.daysUntil}d`} size="sm" />
+                  </div>
+                  <div className="flex items-center gap-3 text-xs text-muted-foreground flex-wrap">
+                    <span>{ev.date}</span>
+                    {ev.budget && <span>Budget: ${ev.budget}</span>}
+                    {giftLabel(ev.giftStatus)}
+                  </div>
+                  {ev.giftIdea && <p className="text-xs text-foreground/80">💡 {ev.giftIdea}</p>}
+                  {ev.prepItems.length > 0 && (
+                    <div className="flex items-center gap-2 flex-wrap mt-1">
+                      {ev.prepItems.map((p, i) => (
+                        <span key={i} className="flex items-center gap-1 text-[10px] text-muted-foreground">
+                          <div className="h-1.5 w-1.5 rounded-full bg-muted-foreground/30" />{p}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </SitaCard>
+          );
+        })}
+      </div>
+      )}
 
       <SitaCard hover={false}>
         <div className="flex items-center gap-3 mb-3">
