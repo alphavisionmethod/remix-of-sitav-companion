@@ -127,9 +127,8 @@ export function useRouteTransitionOrchestrator() {
       if ("startViewTransition" in document) {
         try {
           (document as any).startViewTransition(() => {
-            // The transition is the route change itself
             return new Promise<void>(resolve => {
-              requestAnimationFrame(resolve);
+              requestAnimationFrame(() => resolve());
             });
           });
         } catch {
