@@ -665,7 +665,12 @@ function DriversTab({
         <NovaCanvasChart series={battSeries} height={90} maxY={100} yUnit="%" gridLines={4} />
       </NovaCard>
 
-      {/* Network live chart */}
+      {/* Per-app battery usage breakdown */}
+      <NovaCard className="p-2">
+        <NovaSectionLabel>Per-App Power Consumption</NovaSectionLabel>
+        <BatteryBreakdown batteryLevel={(batteryDrv?.diag as any)?.level ?? 100} charging={(batteryDrv?.diag as any)?.charging ?? false} />
+      </NovaCard>
+
       <NovaCard className="p-2">
         <NovaSectionLabel>Network Speed Over Time</NovaSectionLabel>
         <div className="flex items-center gap-2 mb-1 text-[10px]">
