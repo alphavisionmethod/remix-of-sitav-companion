@@ -43,6 +43,7 @@ import { AppLibraryWindow } from "./shell/windows/AppLibraryWindow";
 import { UpdateCenterWindow } from "./shell/windows/UpdateCenterWindow";
 import { CloudSyncWindow } from "./shell/windows/CloudSyncWindow";
 import { DevToolsWindow } from "./shell/windows/DevToolsWindow";
+import { KernelDashboardWindow } from "./shell/windows/KernelDashboardWindow";
 import { NovaSDKProvider } from "@/contexts/NovaSDKContext";
 import { lifecycleManager } from "@/lib/nova-sdk/runtime/lifecycle";
 import { ProcessTable } from "@/lib/nova-sdk/kernel/process-manager";
