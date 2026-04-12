@@ -8,6 +8,7 @@ import { useEffect, useRef, useCallback } from "react";
 import { useLocation } from "react-router-dom";
 import { predictivePrefetch } from "@/lib/services/predictive-prefetch";
 import { ambientContext } from "@/lib/services/ambient-context-engine";
+import { SoundEngine } from "@/lib/sound-engine";
 
 // ── Transition State ──────────────────────────────────────────
 
@@ -54,26 +55,61 @@ export function useProgressiveRender() {
   return { isReady };
 }
 
-// ── Instant Click Feedback (120ms spring-back) ────────────────
+// ── Cursor Velocity Tracker ───────────────────────────────────
+
+let cursorVelocity = 0;
+let lastCursorX = 0;
+let lastCursorY = 0;
+let lastCursorTime = 0;
+
+function trackCursorVelocity(e: MouseEvent) {
+  const now = performance.now();
+  const dt = now - lastCursorTime;
+  if (dt > 0 && lastCursorTime > 0) {
+    const dx = e.clientX - lastCursorX;
+    const dy = e.clientY - lastCursorY;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    cursorVelocity = dist / dt; // px/ms
+  }
+  lastCursorX = e.clientX;
+  lastCursorY = e.clientY;
+  lastCursorTime = now;
+}
+
+// ── Instant Click Feedback (velocity-aware spring-back) ───────
 
 export function useInstantFeedback() {
   useEffect(() => {
+    // Track cursor velocity globally
+    document.addEventListener("mousemove", trackCursorVelocity, { passive: true });
+
     const handler = (e: PointerEvent) => {
       const target = e.target as HTMLElement;
       const interactive = target.closest("button, a, [role='button'], [data-clickable]") as HTMLElement | null;
       if (!interactive) return;
 
-      // Add pressed state with 120ms spring-back
+      // Velocity-aware spring: fast click = subtle, slow = full spring
+      const isFast = cursorVelocity > 1.5; // px/ms threshold
+      const scale = isFast ? 0.98 : 0.94;
+      interactive.style.setProperty("--press-scale", `${scale}`);
+
+      // Add pressed state with spring-back
       interactive.classList.add("sita-pressed");
+
+      // Sync sound to spring-back
+      SoundEngine.click();
+
       const cleanup = () => {
         interactive.classList.remove("sita-pressed");
       };
-      // Remove after 120ms for visible spring-back
       setTimeout(cleanup, 120);
     };
 
     document.addEventListener("pointerdown", handler, { passive: true });
-    return () => document.removeEventListener("pointerdown", handler);
+    return () => {
+      document.removeEventListener("pointerdown", handler);
+      document.removeEventListener("mousemove", trackCursorVelocity);
+    };
   }, []);
 }
 
