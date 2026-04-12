@@ -6,7 +6,7 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import {
   Cpu, HardDrive, Activity, Wifi, Zap, BarChart3,
-  ArrowUp, ArrowDown, Pause, Play, Server,
+  ArrowUp, ArrowDown, Pause, Play, Server, Thermometer, Fan,
 } from "lucide-react";
 import {
   AppLayout,
@@ -47,6 +47,11 @@ const COLORS = {
   barHigh:   { h: 0, s: 70, l: 55 } as NovaColor,
   gpuLow:    { h: 45, s: 80, l: 55 } as NovaColor,
   gpuHigh:   { h: 0, s: 70, l: 55 } as NovaColor,
+  iopsRead:  { h: 210, s: 80, l: 55 } as NovaColor,
+  iopsWrite: { h: 340, s: 75, l: 55 } as NovaColor,
+  thermalCpu: { h: 0, s: 70, l: 55 } as NovaColor,
+  thermalGpu: { h: 45, s: 80, l: 55 } as NovaColor,
+  thermalSsd: { h: 210, s: 80, l: 55 } as NovaColor,
 };
 
 // ── Simulated Data ────────────────────────────────────────────
@@ -79,7 +84,7 @@ function timeLabel(i: number): string { return `${i % 60}s`; }
 
 // ── Sidebar Sections ─────────────────────────────────────────
 
-type MonitorSection = "cpu" | "memory" | "processes" | "network" | "gpu" | "disk" | "services";
+type MonitorSection = "cpu" | "memory" | "processes" | "network" | "gpu" | "disk" | "thermal" | "services";
 
 const SECTIONS: { id: MonitorSection; label: string; icon: React.ReactNode }[] = [
   { id: "cpu", label: "CPU", icon: <Cpu className="w-3.5 h-3.5" /> },
@@ -88,6 +93,7 @@ const SECTIONS: { id: MonitorSection; label: string; icon: React.ReactNode }[] =
   { id: "network", label: "Network", icon: <Wifi className="w-3.5 h-3.5" /> },
   { id: "gpu", label: "GPU", icon: <Zap className="w-3.5 h-3.5" /> },
   { id: "disk", label: "Disk", icon: <HardDrive className="w-3.5 h-3.5" /> },
+  { id: "thermal", label: "Thermal", icon: <Thermometer className="w-3.5 h-3.5" /> },
   { id: "services", label: "Services", icon: <Server className="w-3.5 h-3.5" /> },
 ];
 
@@ -137,6 +143,12 @@ export function SystemMonitorWindow() {
   const tickRef = useRef(0);
   const [diskHistory, setDiskHistory] = useState<{ time: string; read: number; write: number }[]>([]);
   const [diskSpark, setDiskSpark] = useState<number[]>(() => Array(30).fill(0));
+  const [iopsHistory, setIopsHistory] = useState<{ time: string; read: number; write: number }[]>([]);
+  const [latencyHistory, setLatencyHistory] = useState<{ time: string; read: number; write: number }[]>([]);
+  const [thermalHistory, setThermalHistory] = useState<{ time: string; cpu: number; gpu: number; ssd: number; ambient: number }[]>([]);
+  const [thermalSpark, setThermalSpark] = useState<number[]>(() => Array(30).fill(0));
+  const [fanRpm, setFanRpm] = useState(1200);
+  const [queueDepth, setQueueDepth] = useState(4);
 
   // Services state
   const [servicesDiag, setServicesDiag] = useState<Record<string, Record<string, unknown>>>({});
@@ -167,6 +179,28 @@ export function SystemMonitorWindow() {
       const diskWrite = 45 + Math.sin(tickRef.current * 0.12) * 30 + Math.random() * 25;
       setDiskHistory(prev => [...prev.slice(-59), { time: t, read: diskRead, write: diskWrite }]);
       setDiskSpark(prev => [...prev.slice(-29), diskRead + diskWrite]);
+
+      // IOPS
+      const iopsRead = 8000 + Math.sin(tickRef.current * 0.1) * 3000 + Math.random() * 2000;
+      const iopsWrite = 3000 + Math.sin(tickRef.current * 0.13) * 2000 + Math.random() * 1500;
+      setIopsHistory(prev => [...prev.slice(-59), { time: t, read: iopsRead, write: iopsWrite }]);
+
+      // Latency
+      const latRead = 0.2 + Math.random() * 0.6;
+      const latWrite = 0.5 + Math.random() * 1.0;
+      setLatencyHistory(prev => [...prev.slice(-59), { time: t, read: latRead, write: latWrite }]);
+
+      // Queue depth
+      setQueueDepth(Math.floor(1 + Math.random() * 16 + (diskRead > 180 ? 8 : 0)));
+
+      // Thermal sensors
+      const cpuTemp = 45 + (user / 100) * 30 + Math.random() * 3;
+      const gpuTemp2 = 40 + Math.sin(tickRef.current * 0.08) * 10 + Math.random() * 5;
+      const ssdTemp = 38 + Math.sin(tickRef.current * 0.04) * 7 + Math.random() * 3;
+      const ambientTemp = 28 + Math.sin(tickRef.current * 0.02) * 3 + Math.random() * 2;
+      setThermalHistory(prev => [...prev.slice(-59), { time: t, cpu: cpuTemp, gpu: gpuTemp2, ssd: ssdTemp, ambient: ambientTemp }]);
+      setThermalSpark(prev => [...prev.slice(-29), cpuTemp]);
+      setFanRpm(Math.floor(1000 + cpuTemp * 15 + Math.random() * 200));
 
       if (tickRef.current % 3 === 0) setProcesses(generateProcesses());
 
