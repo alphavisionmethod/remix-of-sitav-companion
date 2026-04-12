@@ -45,6 +45,10 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMa
   const dockRef = useRef<HTMLDivElement>(null);
   const iconRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
   const previewTimer = useRef<ReturnType<typeof setTimeout>>();
+  const [cursorX, setCursorX] = useState<number | null>(null);
+  const velocityRef = useRef(0);
+  const lastCursorX = useRef(0);
+  const lastCursorTime = useRef(0);
 
   const pinnedApps = apps.filter(a => a.pinnedToDock && a.installStatus === "installed");
 
@@ -83,14 +87,30 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMa
 
   if (pinnedApps.length === 0) return null;
 
-  const getScale = (idx: number) => {
-    if (hoveredIdx === null) return 1;
-    const dist = Math.abs(idx - hoveredIdx);
-    if (dist === 0) return 1.45;
-    if (dist === 1) return 1.2;
-    if (dist === 2) return 1.05;
-    return 1;
-  };
+  // Velocity-reactive Gaussian magnification
+  const getScale = useCallback((idx: number) => {
+    if (cursorX === null) return 1;
+    const el = iconRefs.current.get(pinnedApps[idx]?.id ?? "");
+    if (!el) {
+      // Fallback to index-based
+      if (hoveredIdx === null) return 1;
+      const dist = Math.abs(idx - hoveredIdx);
+      if (dist === 0) return 1.45;
+      if (dist === 1) return 1.2;
+      if (dist === 2) return 1.05;
+      return 1;
+    }
+    const rect = el.getBoundingClientRect();
+    const iconCenter = rect.left + rect.width / 2;
+    const dist = Math.abs(cursorX - iconCenter);
+    // Gaussian falloff: sigma = 60px
+    const sigma = 60;
+    const gaussian = Math.exp(-(dist * dist) / (2 * sigma * sigma));
+    // Velocity dampening: faster → less magnification
+    const velocityFactor = Math.max(0.3, 1 - Math.min(velocityRef.current / 3000, 0.7));
+    const maxScale = 1.5;
+    return 1 + (maxScale - 1) * gaussian * velocityFactor;
+  }, [cursorX, hoveredIdx, pinnedApps]);
 
   const openWindowIds = new Set(windowManager?.windows.map(w => w.id) ?? []);
 
@@ -108,7 +128,16 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMa
             "transition-colors duration-500",
             MOOD_TINTS[mood] || MOOD_TINTS.serene
           )}
-          onMouseLeave={() => { setHoveredIdx(null); setTooltip(null); }}
+          onMouseLeave={() => { setHoveredIdx(null); setTooltip(null); setCursorX(null); }}
+          onMouseMove={(e) => {
+            const now = performance.now();
+            const dx = Math.abs(e.clientX - lastCursorX.current);
+            const dt = now - lastCursorTime.current;
+            if (dt > 0) velocityRef.current = (dx / dt) * 1000; // px/s
+            lastCursorX.current = e.clientX;
+            lastCursorTime.current = now;
+            setCursorX(e.clientX);
+          }}
         >
           {pinnedApps.map((app, idx) => {
             const badge = getBadge(app.id);
