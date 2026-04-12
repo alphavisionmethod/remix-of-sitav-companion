@@ -156,7 +156,10 @@ function GlassWidget({ icon: Icon, label, value, accent, onClick, delay = 0, boo
         "group flex items-center gap-4 rounded-2xl px-6 py-5",
         "bg-[hsl(0_0%_100%/0.08)] backdrop-blur-2xl border border-[hsl(0_0%_100%/0.12)]",
         "hover:bg-[hsl(0_0%_100%/0.14)] hover:border-[hsl(0_0%_100%/0.22)]",
-        "transition-all duration-500 cursor-pointer shadow-lg shadow-black/10",
+        "hover:scale-[1.02] active:scale-[0.98]",
+        "transition-all duration-[120ms] cursor-pointer",
+        "shadow-[0_2px_8px_hsl(0_0%_0%/0.08),0_12px_28px_hsl(0_0%_0%/0.10)]",
+        "hover:shadow-[0_2px_8px_hsl(0_0%_0%/0.10),0_16px_36px_hsl(0_0%_0%/0.14)]",
         "min-w-[200px]",
         bootReady ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
       )}
@@ -403,6 +406,7 @@ export function DesktopSurface({
             key={w.id}
             windowId={w.id}
             title={w.title}
+            appIcon={w.id === "finder" ? "📁" : w.id === "settings" ? "⚙️" : undefined}
             initialPosition={w.position}
             width={w.width}
             onClose={() => closeWindow?.(w.id)}
