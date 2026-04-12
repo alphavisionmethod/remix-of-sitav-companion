@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Clock, Cloud, BarChart3, Brain, CalendarDays, GripVertical, Plus, X, Settings, Droplets, Wind, Sun, Maximize2, Minimize2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { supabase } from "@/integrations/supabase/client";
+
 
 // ── Types ────────────────────────────────────────────────────
 
