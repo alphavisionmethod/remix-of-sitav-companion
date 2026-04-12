@@ -579,20 +579,22 @@ export function FloatingWindow({
           className
         )}
         style={{
-          left: pos.x,
-          top: pos.y,
+          // Transform-based positioning for GPU-composited drag (<16ms latency)
+          ...(isDragging
+            ? { left: 0, top: 0, transform: `translate3d(${pos.x}px, ${pos.y}px, 0)` }
+            : { left: pos.x, top: pos.y }),
           width: size.width,
           height: size.height || undefined,
           zIndex: DEPTH_LAYERS.windows,
-          willChange: isDragging ? "transform, left, top" : "transform",
+          willChange: isDragging ? "transform" : "auto",
           borderRadius: APP_CHROME.cornerRadius,
           opacity: attentionOpacity,
           filter: isFocused
             ? `saturate(${attentionSaturation})`
             : `saturate(${attentionSaturation * 0.85}) brightness(0.97)`,
           transition: isDragging || isResizing
-            ? "box-shadow 0.2s, filter 0.3s"
-            : `left ${SNAP_CONFIG.animationDuration}s ease, top ${SNAP_CONFIG.animationDuration}s ease, width ${SNAP_CONFIG.animationDuration}s ease, height ${SNAP_CONFIG.animationDuration}s ease, box-shadow 0.2s, filter 0.3s`,
+            ? "box-shadow 0.12s, filter 0.12s"
+            : `left ${SNAP_CONFIG.animationDuration}s ease, top ${SNAP_CONFIG.animationDuration}s ease, width ${SNAP_CONFIG.animationDuration}s ease, height ${SNAP_CONFIG.animationDuration}s ease, box-shadow 0.12s, filter 0.12s`,
           ...(dynamicShadow ? { boxShadow: dynamicShadow } : {}),
           ...style,
         }}
