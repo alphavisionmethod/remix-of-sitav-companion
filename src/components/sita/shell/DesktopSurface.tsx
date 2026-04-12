@@ -726,48 +726,89 @@ export function DesktopSurface({
         {/* Clock */}
         <DesktopClock greeting={greeting} userName={userName || ""} bootReady={bootPhase >= 2} />
 
-        {/* Draggable Widgets */}
-        <DragDropContext onDragEnd={handleWidgetDragEnd}>
-          <Droppable droppableId="desktop-widgets" direction="horizontal">
-            {(provided) => (
-              <div
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-                className="flex flex-wrap items-center justify-center gap-3"
-              >
-                {widgetOrder.map((widgetId, index) => {
-                  const config = WIDGET_CONFIGS[widgetId];
-                  if (!config) return null;
-                  return (
-                    <Draggable key={widgetId} draggableId={widgetId} index={index}>
-                      {(dragProvided, dragSnapshot) => (
-                        <div
-                          ref={dragProvided.innerRef}
-                          {...dragProvided.draggableProps}
-                        >
-                          <GlassWidget
-                            icon={config.icon}
-                            label={config.label}
-                            value={config.getValue(notifications)}
-                            accent={config.accent}
-                            onClick={() => navigate(config.route)}
-                            bootReady={bootPhase >= 2}
-                            delay={index * 80}
-                            isDragging={dragSnapshot.isDragging}
-                            dragHandleProps={dragProvided.dragHandleProps ?? undefined}
-                            sparkData={sparklines[widgetId as keyof typeof sparklines]}
-                            sparkColor={config.sparkColor}
-                          />
-                        </div>
-                      )}
-                    </Draggable>
-                  );
-                })}
-                {provided.placeholder}
-              </div>
+        {/* Draggable Widgets + Picker */}
+        <div className="relative">
+          <DragDropContext onDragEnd={handleWidgetDragEnd}>
+            <Droppable droppableId="desktop-widgets" direction="horizontal">
+              {(provided) => (
+                <div
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  className="flex flex-wrap items-center justify-center gap-3"
+                >
+                  {widgetOrder.map((widgetId, index) => {
+                    const config = ALL_WIDGET_CONFIGS[widgetId];
+                    if (!config) return null;
+                    return (
+                      <Draggable key={widgetId} draggableId={widgetId} index={index}>
+                        {(dragProvided, dragSnapshot) => (
+                          <div
+                            ref={dragProvided.innerRef}
+                            {...dragProvided.draggableProps}
+                          >
+                            <GlassWidget
+                              icon={config.icon}
+                              label={config.label}
+                              value={config.getValue(notifications)}
+                              accent={config.accent}
+                              onClick={() => navigate(config.route)}
+                              bootReady={bootPhase >= 2}
+                              delay={index * 80}
+                              isDragging={dragSnapshot.isDragging}
+                              dragHandleProps={dragProvided.dragHandleProps ?? undefined}
+                              sparkData={sparklines[widgetId as keyof typeof sparklines]}
+                              sparkColor={config.sparkColor}
+                            />
+                          </div>
+                        )}
+                      </Draggable>
+                    );
+                  })}
+                  {provided.placeholder}
+                  {/* Add/Remove Widget Button */}
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setShowWidgetPicker(p => !p); }}
+                    className={cn(
+                      "flex items-center justify-center rounded-2xl w-12 h-[68px]",
+                      "bg-[hsl(0_0%_100%/0.06)] backdrop-blur-xl border border-dashed border-[hsl(0_0%_100%/0.15)]",
+                      "hover:bg-[hsl(0_0%_100%/0.12)] hover:border-[hsl(0_0%_100%/0.25)]",
+                      "transition-all duration-150 cursor-pointer",
+                      bootPhase >= 2 ? "opacity-100" : "opacity-0",
+                    )}
+                    title="Add or remove widgets"
+                  >
+                    <Settings2 className="h-4 w-4 text-[hsl(0_0%_100%/0.4)]" />
+                  </button>
+                </div>
+              )}
+            </Droppable>
+          </DragDropContext>
+
+          {/* Widget Picker Popover */}
+          <AnimatePresence>
+            {showWidgetPicker && (
+              <WidgetPicker
+                activeIds={widgetOrder}
+                onAdd={(id) => {
+                  setWidgetOrder(prev => {
+                    const next = [...prev, id];
+                    saveWidgetOrder(next);
+                    return next;
+                  });
+                }}
+                onRemove={(id) => {
+                  setWidgetOrder(prev => {
+                    const next = prev.filter(w => w !== id);
+                    if (next.length === 0) return prev;
+                    saveWidgetOrder(next);
+                    return next;
+                  });
+                }}
+                onClose={() => setShowWidgetPicker(false)}
+              />
             )}
-          </Droppable>
-        </DragDropContext>
+          </AnimatePresence>
+        </div>
 
         {/* Advisor Insight */}
         <AdvisorInsight bootReady={bootPhase >= 2} />
