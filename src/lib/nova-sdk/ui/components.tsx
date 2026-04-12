@@ -197,3 +197,169 @@ export const NovaSectionLabel: React.FC<{ children: React.ReactNode; className?:
     {children}
   </p>
 );
+
+// ── NovaToggle ───────────────────────────────────────────────
+
+interface NovaToggleProps {
+  checked: boolean;
+  onChange: (checked: boolean) => void;
+  disabled?: boolean;
+  className?: string;
+}
+
+export const NovaToggle: React.FC<NovaToggleProps> = ({ checked, onChange, disabled, className }) => (
+  <button
+    type="button"
+    role="switch"
+    aria-checked={checked}
+    disabled={disabled}
+    onClick={() => !disabled && onChange(!checked)}
+    className={cn(
+      "relative w-9 h-5 rounded-full transition-all duration-150 outline-none focus-visible:ring-2 focus-visible:ring-[hsl(210_80%_55%/0.5)]",
+      checked
+        ? "bg-[hsl(210_80%_55%)] shadow-[0_0_8px_hsl(210_80%_55%/0.3)]"
+        : "bg-[hsl(0_0%_75%)] dark:bg-[hsl(0_0%_30%)]",
+      disabled && "opacity-40 cursor-not-allowed",
+      !disabled && "cursor-pointer",
+      className
+    )}
+  >
+    <div className={cn(
+      "absolute top-0.5 w-4 h-4 rounded-full bg-[hsl(0_0%_100%)] shadow-sm transition-transform duration-150",
+      checked ? "left-[18px]" : "left-0.5"
+    )} />
+  </button>
+);
+
+// ── NovaSlider ───────────────────────────────────────────────
+
+interface NovaSliderProps {
+  value: number;
+  onChange: (value: number) => void;
+  min?: number;
+  max?: number;
+  step?: number;
+  label?: string;
+  showValue?: boolean;
+  disabled?: boolean;
+  className?: string;
+}
+
+export const NovaSlider: React.FC<NovaSliderProps> = ({
+  value, onChange, min = 0, max = 100, step = 1, label, showValue = true, disabled, className
+}) => (
+  <div className={cn("space-y-1", className)} style={{ marginBottom: SPACE.tight }}>
+    {(label || showValue) && (
+      <div className="flex items-center justify-between">
+        {label && <span className={cn(APP_TYPE.label, "text-[hsl(0_0%_35%)] dark:text-[hsl(0_0%_65%)]")}>{label}</span>}
+        {showValue && <span className={cn(APP_TYPE.label, "font-semibold text-[hsl(0_0%_20%)] dark:text-[hsl(0_0%_80%)]")}>{value}{max === 100 ? "%" : ""}</span>}
+      </div>
+    )}
+    <input
+      type="range"
+      min={min}
+      max={max}
+      step={step}
+      value={value}
+      disabled={disabled}
+      onChange={e => onChange(Number(e.target.value))}
+      className={cn(
+        "w-full h-1 rounded-full appearance-none cursor-pointer",
+        "bg-[hsl(0_0%_80%)] dark:bg-[hsl(0_0%_25%)] accent-[hsl(210_80%_55%)]",
+        disabled && "opacity-40 cursor-not-allowed"
+      )}
+    />
+  </div>
+);
+
+// ── NovaTextArea ─────────────────────────────────────────────
+
+interface NovaTextAreaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
+
+export const NovaTextArea = React.forwardRef<HTMLTextAreaElement, NovaTextAreaProps>(
+  ({ className, ...props }, ref) => (
+    <textarea
+      ref={ref}
+      className={cn(
+        APP_TYPE.body,
+        "w-full bg-transparent border-none outline-none resize-none",
+        "text-[hsl(0_0%_20%)] dark:text-[hsl(0_0%_80%)] placeholder:text-[hsl(0_0%_50%)]",
+        "focus:ring-0",
+        className
+      )}
+      {...props}
+    />
+  )
+);
+NovaTextArea.displayName = "NovaTextArea";
+
+// ── NovaToolbar ──────────────────────────────────────────────
+
+interface NovaToolbarProps {
+  title?: string;
+  leading?: React.ReactNode;
+  trailing?: React.ReactNode;
+  className?: string;
+}
+
+export const NovaToolbar: React.FC<NovaToolbarProps> = ({ title, leading, trailing, className }) => (
+  <div className={cn("flex items-center justify-between w-full", className)}>
+    <div className="flex items-center gap-2">
+      {leading}
+      {title && <NovaText variant="label" className="font-semibold">{title}</NovaText>}
+    </div>
+    {trailing && <div className="flex items-center gap-1">{trailing}</div>}
+  </div>
+);
+
+// ── NovaBadge ────────────────────────────────────────────────
+
+interface NovaBadgeProps {
+  children: React.ReactNode;
+  variant?: "default" | "success" | "warning" | "danger" | "info";
+  className?: string;
+}
+
+const BADGE_COLORS = {
+  default: "bg-[hsl(0_0%_0%/0.06)] dark:bg-[hsl(0_0%_100%/0.08)] text-[hsl(0_0%_35%)] dark:text-[hsl(0_0%_65%)]",
+  success: "bg-[hsl(152_55%_48%/0.12)] text-[hsl(152_55%_35%)] dark:text-[hsl(152_55%_60%)]",
+  warning: "bg-[hsl(38_85%_58%/0.12)] text-[hsl(38_85%_40%)] dark:text-[hsl(38_85%_60%)]",
+  danger: "bg-[hsl(0_65%_50%/0.12)] text-[hsl(0_65%_40%)] dark:text-[hsl(0_65%_60%)]",
+  info: "bg-[hsl(210_80%_55%/0.12)] text-[hsl(210_80%_40%)] dark:text-[hsl(210_80%_60%)]",
+};
+
+export const NovaBadge: React.FC<NovaBadgeProps> = ({ children, variant = "default", className }) => (
+  <span className={cn(
+    "inline-flex items-center rounded-full px-2 py-0.5",
+    APP_TYPE.label,
+    BADGE_COLORS[variant],
+    className
+  )}>
+    {children}
+  </span>
+);
+
+// ── NovaAvatar ───────────────────────────────────────────────
+
+interface NovaAvatarProps {
+  icon?: string;
+  image?: string;
+  size?: number;
+  gradient?: string;
+  className?: string;
+}
+
+export const NovaAvatar: React.FC<NovaAvatarProps> = ({
+  icon, image, size = 32, gradient = "from-[hsl(265_55%_58%)] to-[hsl(210_80%_55%)]", className
+}) => (
+  <div
+    className={cn(
+      "flex items-center justify-center rounded-full bg-gradient-to-br text-[hsl(0_0%_100%)] font-semibold shrink-0 overflow-hidden",
+      gradient,
+      className
+    )}
+    style={{ width: size, height: size, fontSize: size * 0.4 }}
+  >
+    {image ? <img src={image} alt="" className="w-full h-full object-cover" /> : icon || "?"}
+  </div>
+);
