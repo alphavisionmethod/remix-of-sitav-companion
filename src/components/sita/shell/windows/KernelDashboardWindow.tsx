@@ -606,6 +606,88 @@ const STATUS_COLOR: Record<string, string> = {
   unloaded: "bg-muted-foreground/20",
 };
 
+const APP_POWER_PROFILES = [
+  { name: "Compositor",     base: 18, icon: Monitor,  category: "system" },
+  { name: "Scheduler",      base: 8,  icon: Cpu,      category: "system" },
+  { name: "File System",    base: 5,  icon: HardDrive,category: "system" },
+  { name: "Networking",     base: 12, icon: Wifi,     category: "system" },
+  { name: "Browser",        base: 22, icon: Activity, category: "app" },
+  { name: "Code Editor",    base: 15, icon: Layers,   category: "app" },
+  { name: "Music Player",   base: 6,  icon: Zap,      category: "app" },
+  { name: "Terminal",       base: 4,  icon: Shield,   category: "app" },
+  { name: "Background Sync",base: 3,  icon: Clock,    category: "background" },
+  { name: "Notifications",  base: 2,  icon: AlertTriangle, category: "background" },
+];
+
+function BatteryBreakdown({ batteryLevel, charging }: { batteryLevel: number; charging: boolean }) {
+  const apps = useMemo(() => {
+    const drain = 100 - batteryLevel;
+    const jitter = () => 0.7 + Math.random() * 0.6;
+    const raw = APP_POWER_PROFILES.map(a => ({ ...a, mW: Math.round(a.base * jitter() * (drain > 5 ? 1 + drain / 200 : 0.5)) }));
+    const totalMW = raw.reduce((s, a) => s + a.mW, 0) || 1;
+    return raw
+      .map(a => ({ ...a, pct: Math.round((a.mW / totalMW) * 100) }))
+      .sort((a, b) => b.mW - a.mW);
+  }, [batteryLevel]);
+
+  const totalMW = apps.reduce((s, a) => s + a.mW, 0);
+  const estHoursLeft = charging ? null : batteryLevel > 0 ? ((batteryLevel / 100) * 40000 / (totalMW || 1)).toFixed(1) : "0";
+
+  const catColors: Record<string, string> = {
+    system: "bg-[hsl(265_65%_55%)]",
+    app: "bg-[hsl(210_80%_55%)]",
+    background: "bg-[hsl(152_55%_48%)]",
+  };
+
+  return (
+    <div className="space-y-2">
+      <div className="flex items-center justify-between text-[10px] text-muted-foreground">
+        <span>Total draw: ~{totalMW} mW</span>
+        {estHoursLeft && <span>Est. remaining: ~{estHoursLeft}h</span>}
+        {charging && <span className="text-[hsl(152_55%_48%)]">Charging — draw offset</span>}
+      </div>
+
+      {/* Stacked bar */}
+      <div className="w-full h-3 rounded-full bg-muted/30 flex overflow-hidden">
+        {apps.map(a => (
+          <div
+            key={a.name}
+            className={cn("h-full first:rounded-l-full last:rounded-r-full", catColors[a.category])}
+            style={{ width: `${Math.max(a.pct, 1)}%`, opacity: 0.6 + (a.pct / 100) * 0.4 }}
+            title={`${a.name}: ${a.mW}mW (${a.pct}%)`}
+          />
+        ))}
+      </div>
+
+      {/* Legend */}
+      <div className="flex gap-3 text-[9px] text-muted-foreground">
+        <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-sm bg-[hsl(265_65%_55%)]" />System</span>
+        <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-sm bg-[hsl(210_80%_55%)]" />Apps</span>
+        <span className="flex items-center gap-1"><span className="w-2 h-2 rounded-sm bg-[hsl(152_55%_48%)]" />Background</span>
+      </div>
+
+      {/* Per-app list */}
+      <div className="space-y-1 max-h-[160px] overflow-y-auto">
+        {apps.map(a => {
+          const Icon = a.icon;
+          return (
+            <div key={a.name} className="flex items-center gap-2 p-1.5 rounded-lg bg-background/50 border border-border/20">
+              <Icon size={12} className="text-muted-foreground shrink-0" />
+              <span className="text-[10px] font-medium flex-1 truncate">{a.name}</span>
+              <span className="text-[10px] font-mono text-muted-foreground">{a.mW} mW</span>
+              <div className="w-16 h-1.5 rounded-full bg-muted/30 overflow-hidden">
+                <div className={cn("h-full rounded-full", catColors[a.category])} style={{ width: `${a.pct}%` }} />
+              </div>
+              <span className="text-[9px] font-mono text-muted-foreground w-7 text-right">{a.pct}%</span>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+
 function DriversTab({
   drivers,
   batteryHistory,
@@ -665,7 +747,12 @@ function DriversTab({
         <NovaCanvasChart series={battSeries} height={90} maxY={100} yUnit="%" gridLines={4} />
       </NovaCard>
 
-      {/* Network live chart */}
+      {/* Per-app battery usage breakdown */}
+      <NovaCard className="p-2">
+        <NovaSectionLabel>Per-App Power Consumption</NovaSectionLabel>
+        <BatteryBreakdown batteryLevel={(batteryDrv?.diag as any)?.level ?? 100} charging={(batteryDrv?.diag as any)?.charging ?? false} />
+      </NovaCard>
+
       <NovaCard className="p-2">
         <NovaSectionLabel>Network Speed Over Time</NovaSectionLabel>
         <div className="flex items-center gap-2 mb-1 text-[10px]">
