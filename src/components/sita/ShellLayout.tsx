@@ -30,6 +30,7 @@ import { NotesWindow } from "./shell/windows/NotesWindow";
 import { TerminalWindow } from "./shell/windows/TerminalWindow";
 import { CalendarWindow } from "./shell/windows/CalendarWindow";
 import { WeatherWindow } from "./shell/windows/WeatherWindow";
+import { NovaTerminal } from "./shell/windows/NovaTerminal";
 import { NovaSDKProvider } from "@/contexts/NovaSDKContext";
 import { lifecycleManager } from "@/lib/nova-sdk/runtime/lifecycle";
 import { ProcessTable } from "@/lib/nova-sdk/kernel/process-manager";
@@ -177,7 +178,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
   useSessionRestore({
     onRestoreWindows: useCallback((windows) => {
       for (const w of windows) {
-        if (["finder", "settings", "notes", "terminal", "calendar", "weather"].includes(w.id)) {
+        if (["finder", "settings", "notes", "terminal", "calendar", "weather", "nova-terminal"].includes(w.id)) {
           doLaunchApp(w.id);
         }
       }
@@ -289,6 +290,14 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         width: 420,
         originRect: origin,
       }, { id: "weather", name: "Weather" });
+    } else if (appId === "nova-terminal" || appId === "com.nova.canvas-terminal") {
+      launchWithKernel("nova-terminal", {
+        title: "Nova Terminal",
+        component: <NovaTerminal />,
+        position: { x: 180, y: 110 },
+        width: 640,
+        originRect: origin,
+      }, { id: "nova-terminal", name: "Nova Terminal" });
     }
   }, [wm.openWindow]);
 
