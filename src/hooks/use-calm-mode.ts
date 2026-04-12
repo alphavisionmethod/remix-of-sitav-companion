@@ -53,20 +53,27 @@ export function useCalmMode() {
     return () => clearInterval(interval);
   }, [level, manualOverride]);
 
-  // Apply calm CSS classes
+  // Apply calm CSS classes + ambient audio
   useEffect(() => {
     const root = document.documentElement;
     root.dataset.calmLevel = String(level);
 
-    // Progressive class application
     root.classList.toggle("calm-level-1", level >= 1);
     root.classList.toggle("calm-level-2", level >= 2);
     root.classList.toggle("calm-level-3", level >= 3);
     root.classList.toggle("calm-breathing", level >= 2);
 
+    // Start/stop ambient chimes based on calm level
+    if (level >= 2) {
+      SoundEngine.startCalm();
+    } else {
+      SoundEngine.stopCalm();
+    }
+
     return () => {
       root.classList.remove("calm-level-1", "calm-level-2", "calm-level-3", "calm-breathing");
       delete root.dataset.calmLevel;
+      SoundEngine.stopCalm();
     };
   }, [level]);
 
