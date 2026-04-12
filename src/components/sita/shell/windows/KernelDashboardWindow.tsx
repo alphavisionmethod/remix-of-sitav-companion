@@ -108,6 +108,13 @@ export function KernelDashboardWindow() {
       setSysStats(getSyscallStats());
       setSysLog(getSyscallLog().slice(-30));
       setSysMetrics(getSyscallMetrics());
+
+      const allDrivers = DriverManager.getAllDrivers();
+      setDriverDiags(allDrivers.map(d => ({ driver: d, diag: d.getDiagnostics() })));
+      const battDiag = DriverManager.getDriver("drv-battery")?.getDiagnostics();
+      if (battDiag) setBatteryHistory(prev => pushHistory(prev, (battDiag as any).level ?? 0));
+      const netDiag = DriverManager.getDriver("drv-network")?.getDiagnostics();
+      if (netDiag) setNetworkHistory(prev => pushHistory(prev, (netDiag as any).downlinkMbps ?? 0));
     }, 500);
     return () => clearInterval(iv);
   }, [paused]);
