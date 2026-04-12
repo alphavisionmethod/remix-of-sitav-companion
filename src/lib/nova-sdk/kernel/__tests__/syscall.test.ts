@@ -34,10 +34,10 @@ function setupKernel() {
 }
 
 function spawnUserProcess(name = "test-app"): number {
-  const pid = ProcessTable.spawn(name, 3, 0);
-  MemoryManager.allocate(pid, 16, { label: `${name}:heap` });
-  MemoryManager.createAddressSpace(pid);
-  return pid;
+  const proc = ProcessTable.spawn({ id: name, name, icon: "terminal" });
+  MemoryManager.allocate(proc.pid, 16, { label: `${name}:heap` });
+  MemoryManager.createAddressSpace(proc.pid);
+  return proc.pid;
 }
 
 // ═══════════════════════════════════════════════════════════════
