@@ -6,7 +6,8 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import {
   Cpu, HardDrive, Activity, Layers, Zap, Timer,
-  Shield, Clock, AlertTriangle,
+  Shield, Clock, AlertTriangle, Monitor, Wifi, Battery,
+  WifiOff, BatteryCharging, Signal,
 } from "lucide-react";
 import {
   AppLayout,
@@ -25,6 +26,7 @@ import { Scheduler, type SchedulerStats, type SchedulerEvent } from "@/lib/nova-
 import { MemoryManager, type MemoryStats, PAGE_SIZE } from "@/lib/nova-sdk/kernel/memory-manager";
 import { ProcessTable, type Process, type PriorityBand } from "@/lib/nova-sdk/kernel/process-manager";
 import { getSyscallStats, getSyscallLog, getSyscallMetrics, type SyscallLogEntry, type SyscallTypeMetrics } from "@/lib/nova-sdk/kernel/syscall";
+import { DriverManager, type DeviceDriver } from "@/lib/nova-sdk/kernel/drivers";
 
 // ── Colors ───────────────────────────────────────────────────
 
