@@ -1,139 +1,140 @@
 
 
-# Extensibility System + Polish Layer + Full OS Stack
+# NovaOS Window System — Full Advanced Spec Audit & Implementation
 
-## What We're Building
+## Assessment: What Exists vs. What's Missing
 
-Two major systems that complete the NovaOS architecture: (1) a formal **Extensibility System** enabling plugins, widgets, and integrations to extend the OS, and (2) a comprehensive **Polish Layer** delivering premium micro-interactions, sound design consistency, and animation timing across the entire shell. Plus a **Hardware Abstraction Layer (HAL)** to complete the kernel stack (Apps → SDK → Services → Kernel → Drivers → Hardware).
+The window system is already quite advanced. Here's the gap analysis against the spec:
 
----
+### Already Implemented (Confirmed)
+- **Window open animation**: Scale 0.85→1, opacity 0→1, blur 8→0, spring physics (FloatingWindow.tsx)
+- **Window close/exit animation**: Scale 1→0.95, opacity 1→0, via NOVA_MOTION + AnimatePresence
+- **Drag physics**: Lerp smoothing (0.25), inertia with friction (0.92), velocity tracking
+- **Magnetic docking**: Inter-window edge snapping with alignment guides
+- **Edge bounce**: Dampened bounce on screen edges
+- **Snap zones**: Left/right half + maximize with preview overlays
+- **Z-order system**: Click-to-front, compositor tracking, per-window zIndex
+- **Focus/active states**: Shadow differentiation, opacity/saturation dimming via CalmEngine
+- **Dual shadow model**: Near sharp + far soft shadows in APP_SHADOWS
+- **Resize handles**: Continuous resize with min width/height enforcement
+- **Shake-to-minimize**: Direction change detection
+- **Double-buffering**: Surface allocator with double/triple buffering modes
+- **Dirty region rendering**: DamageTracker with coalescing in compositor-sim.ts
+- **VSync loop**: RenderPipeline with requestAnimationFrame-based frame pacing
+- **Scene graph**: Retained mode with visibility culling, hit testing, display lists
+- **Error boundaries**: GlobalErrorBoundary and per-shell ErrorBoundary exist
+- **Microinteraction engine**: Complete with window/menu/dock/modal/toast variants
+- **Sound on open**: SoundEngine.click() on window creation
 
-## Part 1: Extensibility System
+### Gaps to Fill
 
-### 1A. Plugin System (`src/lib/nova-sdk/extensions/plugin-registry.ts`)
-- **PluginManifest** type: `id`, `name`, `version`, `targetApp` (or `"system"`), `extensionPoints` (array of hook IDs), `permissions`, `trustLevel`
-- **ExtensionPoint** type: defines named hooks that apps/OS expose (e.g., `"menubar.items"`, `"settings.sections"`, `"finder.contextmenu"`, `"statusbar.widgets"`)
-- **PluginRegistry** singleton class:
-  - `registerPlugin(manifest, handlers)` — validates and stores
-  - `registerExtensionPoint(pointId, schema)` — apps declare where plugins can hook in
-  - `getExtensions(pointId)` — returns all registered handlers for a hook
-  - `enablePlugin(id)` / `disablePlugin(id)` — runtime toggle
-  - `getInstalledPlugins()` — list with status
-  - Lifecycle: `onInstall`, `onActivate`, `onDeactivate`, `onUninstall` hooks
-  - Permission gating via existing `PermissionMonitor`
-
-### 1B. Widget System (`src/lib/nova-sdk/extensions/widget-registry.ts`)
-- **WidgetManifest**: `id`, `name`, `size` (`"small" | "medium" | "large"`), `refreshInterval`, `component` (React ComponentType), `permissions`, `category`
-- **WidgetRegistry** singleton:
-  - `registerWidget(manifest)` — validates size/permissions
-  - `getWidgets(category?)` — list available widgets
-  - `getActiveWidgets()` — currently placed widgets
-  - `placeWidget(id, position)` / `removeWidget(id)` — dashboard management
-  - Widgets render inside sandboxed containers with error boundaries
-
-### 1C. Integration System (`src/lib/nova-sdk/extensions/integration-registry.ts`)
-- **IntegrationManifest**: `id`, `name`, `provider`, `type` (`"oauth" | "api-key" | "webhook" | "native"`), `capabilities`, `status`, `configSchema`
-- **IntegrationRegistry** singleton:
-  - `registerIntegration(manifest)` — register a connector
-  - `connect(id, config)` / `disconnect(id)` — manage connections
-  - `getIntegrations()` — list with status
-  - `invoke(id, action, params)` — call integration capabilities
-  - Hooks into existing `NovaBridge` for IPC
-
-### 1D. Extension Manager UI (`src/components/sita/shell/windows/ExtensionManagerWindow.tsx`)
-- Tabbed window: **Plugins** | **Widgets** | **Integrations**
-- Each tab: list of installed items with enable/disable toggles, permission badges, trust indicators
-- Install/uninstall buttons with confirmation dialogs
-- Search/filter by category
-
-### 1E. Barrel exports
-- New `src/lib/nova-sdk/extensions/index.ts` exporting all registries
-- Update `src/lib/nova-sdk/index.ts` with extension exports
+| # | Spec Requirement | Gap |
+|---|---|---|
+| 1 | **Per-window error boundary + crash fallback UI** | Children render raw inside FloatingWindow — no per-window crash isolation with "frozen" fallback |
+| 2 | **Window close sound** | Only open sound exists; no close/minimize/maximize/focus sounds wired |
+| 3 | **Minimize-to-dock curved path** | Minimize just hides — no visual "shrink toward dock" animation |
+| 4 | **Occlusion culling in React layer** | Compositor has the concept but FloatingWindow renders all content regardless of occlusion |
+| 5 | **Background window update throttling** | All windows update at same rate; unfocused windows should throttle re-renders |
+| 6 | **Shadow dynamic with elevation** | Shadows are static CSS classes; should shift intensity based on drag elevation |
+| 7 | **Progressive content fade-in** | Skeleton shows for 150ms then hard-swaps — should crossfade |
+| 8 | **Snap zone: bottom-left/bottom-right quadrants** | Only left/right/top snap zones exist |
+| 9 | **Modal z-order enforcement** | No modal-above-parent guarantee in compositor |
+| 10 | **System overlay always-on-top** | No overlay z-level enforcement |
+| 11 | **Performance timing instrumentation** | No actual measurement of window open time or drag latency |
 
 ---
 
-## Part 2: Polish Layer
+## Implementation Plan
 
-### 2A. Enhanced Microinteraction Engine (`src/packages/microinteraction-engine/index.ts`)
-Expand the existing file with:
-- **Window animations**: `windowOpen`, `windowClose`, `windowMinimize`, `windowMaximize` — spring-based with scale + opacity + blur
-- **Menu animations**: `menuOpen`, `menuClose`, `menuItemHover` — cascading reveals
-- **Dock animations**: `dockBounce`, `dockMagnify`, `dockLaunch` — physics-based
-- **Modal animations**: `modalPresent`, `modalDismiss` — depth-aware scale + backdrop
-- **Toast animations**: `toastEnter`, `toastExit` — slide + spring
-- **State transitions**: `successPulse`, `errorShake`, `loadingBreath`
-- **Gesture feedback**: `dragPickup`, `dragDrop`, `snapFeedback`
-- **Timing constants**: `TIMING.instant` (50ms), `TIMING.fast` (150ms), `TIMING.normal` (250ms), `TIMING.slow` (400ms), `TIMING.dramatic` (600ms)
-- **Easing presets**: `EASING.smooth`, `EASING.snappy`, `EASING.bounce`, `EASING.decelerate`
+### 1. Per-Window Error Boundary with Crash Fallback
+**File**: `src/components/sita/shell/WindowErrorBoundary.tsx` (create)
+**File**: `src/components/sita/shell/FloatingWindow.tsx` (modify)
 
-### 2B. Sound Design Expansion (`src/lib/sound-engine.ts`)
-Add to existing SoundEngine:
-- `windowOpen(x?)` — ascending two-tone chord
-- `windowClose(x?)` — soft descending note
-- `windowMinimize(x?)` — quick pitch-down
-- `windowMaximize(x?)` — expansive chord
-- `menuOpen()` — subtle pop
-- `menuClose()` — soft click
-- `tabSwitch(x?)` — light tick
-- `dragDrop(x?)` — satisfying thud
-- `success(x?)` — bright ascending triad
-- `warning(x?)` — two-tone alert
-- `toggle(x?)` — on/off distinct tones
-- `typing()` — very subtle keystroke
-- `focusMode()` — breath-like transition
-- `volumeChange()` — feedback tone at current frequency
+- Create `WindowErrorBoundary` React class component that catches errors in window content
+- On crash: render a frozen fallback UI showing "This window encountered an error" with a close button and restart option
+- Wrap `{children}` in FloatingWindow with this boundary
+- Wire into `AppErrorBoundary` from managed-runtime for crash counting
 
-### 2C. Consistency System (`src/lib/nova-sdk/extensions/polish-audit.ts`)
-- `auditAnimationConsistency()` — scans registered components for animation timing violations
-- `auditSoundCoverage()` — checks all interactive elements have sound mappings
-- `auditInteractionFeedback()` — verifies hover/press/focus states exist
-- `getPolishScore()` — returns 0-100 score with breakdown
+### 2. Window Sound Hooks
+**File**: `src/components/sita/shell/DesktopSurface.tsx` (modify)
+**File**: `src/components/sita/shell/FloatingWindow.tsx` (modify)
+**File**: `src/lib/sound-engine.ts` (modify if needed)
+
+- Call `SoundEngine.windowClose()` in `onClose` handler
+- Call `SoundEngine.windowMinimize()` in `onMinimize` handler
+- Call `SoundEngine.click()` on focus change
+- Call `SoundEngine.snap()` on snap-to-zone (already exists)
+
+### 3. Minimize-to-Dock Curved Animation
+**File**: `src/components/sita/shell/FloatingWindow.tsx` (modify)
+
+- On minimize: compute dock icon position (center-bottom of screen)
+- Use framer-motion `animate` to scale down (1→0.3), translate toward dock position on a bezier curve, and fade opacity
+- Add `onMinimize` exit variant that includes `y: window.innerHeight - 80`, `scale: 0.2`, `opacity: 0`
+
+### 4. Occlusion-Aware Content Rendering
+**File**: `src/components/sita/shell/FloatingWindow.tsx` (modify)
+
+- Accept `isOccluded` prop (computed by parent from compositor data)
+- When fully occluded: render placeholder div instead of children (saves React reconciliation)
+- Parent (DesktopSurface) computes occlusion using `Compositor.findSurfaceAt()` bounding box checks
+
+### 5. Background Window Throttling
+**File**: `src/components/sita/shell/FloatingWindow.tsx` (modify)
+
+- When `isFocused === false`: wrap children in a `React.memo`-style container that skips re-renders
+- Use `useDeferredValue` or a throttled state update for unfocused window content
+- Add CSS `content-visibility: auto` on unfocused window content for browser-level optimization
+
+### 6. Dynamic Shadow Based on Drag Elevation
+**File**: `src/components/sita/shell/FloatingWindow.tsx` (modify)
+
+- During drag: increase shadow spread/blur proportionally to velocity magnitude
+- Compute `elevation = Math.min(1, velocity / 20)` and interpolate between `APP_SHADOWS.unfocused` and a deeper "lifted" shadow
+- Apply via inline style during drag state
+
+### 7. Progressive Content Crossfade
+**File**: `src/components/sita/shell/FloatingWindow.tsx` (modify)
+
+- Replace hard swap from skeleton→content with a crossfade:
+  - Skeleton fades out over 120ms
+  - Content fades in simultaneously
+- Use `AnimatePresence mode="wait"` with opacity transitions
+
+### 8. Quadrant Snap Zones
+**File**: `src/lib/design-system/snap-zones.ts` (modify)
+
+- Add `"bottom-left"`, `"bottom-right"`, `"top-left"`, `"top-right"` to `SnapZone` type
+- Detect corner zones when pointer is within both edge thresholds
+- Return quarter-screen rects for corner snaps
+
+### 9. Modal & Overlay Z-Order Enforcement
+**File**: `src/lib/nova-sdk/kernel/compositor.ts` (modify)
+
+- Add `layer` field to `CompositorSurface`: `"normal" | "modal" | "overlay"`
+- `getRenderOrder()` sorts by layer first, then zIndex within layer
+- Modals always render above normal windows; overlays above everything
+
+### 10. Performance Instrumentation
+**File**: `src/lib/nova-sdk/kernel/window-perf.ts` (create)
+
+- `WindowPerformanceMonitor` singleton tracking:
+  - Window open time (from request to first content render via `performance.now()`)
+  - Drag latency (pointer event timestamp vs frame render)
+  - Frame consistency (jank detection via frame time variance)
+- Expose via `getDiagnostics()` for Kernel Dashboard integration
 
 ---
 
-## Part 3: Hardware Abstraction Layer (HAL)
-
-### 3A. Device Drivers (`src/lib/nova-sdk/kernel/drivers.ts`)
-Simulated driver model to complete the kernel stack:
-- **DeviceDriver** interface: `id`, `name`, `type` (`"display" | "input" | "audio" | "storage" | "network" | "battery"`), `status`, `init()`, `shutdown()`, `getDiagnostics()`
-- **DriverManager** singleton:
-  - `registerDriver(driver)` — add to driver table
-  - `initAll()` — boot all drivers in priority order
-  - `getDriver(id)` — lookup
-  - `getStats()` — aggregate diagnostics
-- **Built-in simulated drivers**: `DisplayDriver` (resolution, refresh rate, color depth), `InputDriver` (keyboard, mouse, touch capabilities), `AudioDriver` (sample rate, channels, latency), `StorageDriver` (IndexedDB capacity, quota), `NetworkDriver` (connection type, bandwidth), `BatteryDriver` (level, charging state via Battery API)
-
-### 3B. HAL Integration
-- Wire `DriverManager.initAll()` into `NovaKernel.boot()` as Phase 0 (before privilege enforcement)
-- Add driver diagnostics to `NovaKernel.getDiagnostics()`
-- Export from `src/lib/nova-sdk/index.ts`
-
----
-
-## Wiring & Integration
-
-1. **Boot sequence update**: `boot.ts` gains Phase 0 (HAL/Drivers) before Phase 1 (Kernel)
-2. **Extension registries** initialized during Phase 2 (Services) in `boot.ts`
-3. **Polish layer** wired into shell components — window open/close animations updated in `DesktopShell`, dock interactions in `Dock`, notifications in `NotificationDropdown`
-4. **Extension Manager** registered as a system app in the window registry
-5. **Sound hooks** wired into existing `NovaBridge` event handlers in `NovaSDKContext.tsx`
-
----
-
-## Files Created/Modified
+## Files Summary
 
 | File | Action |
 |------|--------|
-| `src/lib/nova-sdk/extensions/plugin-registry.ts` | Create |
-| `src/lib/nova-sdk/extensions/widget-registry.ts` | Create |
-| `src/lib/nova-sdk/extensions/integration-registry.ts` | Create |
-| `src/lib/nova-sdk/extensions/polish-audit.ts` | Create |
-| `src/lib/nova-sdk/extensions/index.ts` | Create |
-| `src/lib/nova-sdk/kernel/drivers.ts` | Create |
-| `src/components/sita/shell/windows/ExtensionManagerWindow.tsx` | Create |
-| `src/packages/microinteraction-engine/index.ts` | Expand |
-| `src/lib/sound-engine.ts` | Expand |
-| `src/lib/nova-sdk/kernel/boot.ts` | Modify (add Phase 0 + extension init) |
-| `src/lib/nova-sdk/index.ts` | Modify (add exports) |
-| `src/contexts/NovaSDKContext.tsx` | Modify (wire sound hooks) |
+| `src/components/sita/shell/WindowErrorBoundary.tsx` | Create |
+| `src/lib/nova-sdk/kernel/window-perf.ts` | Create |
+| `src/components/sita/shell/FloatingWindow.tsx` | Modify (error boundary, sounds, minimize anim, occlusion, throttling, dynamic shadow, crossfade) |
+| `src/components/sita/shell/DesktopSurface.tsx` | Modify (sound hooks, occlusion computation, pass props) |
+| `src/lib/design-system/snap-zones.ts` | Modify (quadrant zones) |
+| `src/lib/nova-sdk/kernel/compositor.ts` | Modify (layer-based z-order) |
+| `src/lib/sound-engine.ts` | Verify/modify (ensure all window sound methods exist) |
 
