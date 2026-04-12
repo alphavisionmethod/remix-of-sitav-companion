@@ -31,9 +31,9 @@ const FamilyBoardroom = () => {
   const [view, setView] = useState<BoardroomView>("daily");
 
   return (
-    <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+    <ConciergePageWrapper className="space-y-6">
       <DemoModeBadge />
-      <SitaPageHeader title="Family Boardroom" subtitle="Weekly review — DEMO_priorities, performance, and recommended next moves" />
+      <SitaPageHeader title="Concierge Boardroom" subtitle="Calm periodic review — what changed, what's slipping, and what reduces friction most" />
 
       <SitaTabs
         tabs={[

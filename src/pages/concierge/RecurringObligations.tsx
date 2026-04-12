@@ -74,7 +74,7 @@ const RecurringObligations = () => {
   const categories = [...new Set(ITEMS.map((i) => i.category))];
 
   return (
-    <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+    <ConciergePageWrapper className="space-y-6">
       <DemoModeBadge />
       <SitaPageHeader title="Recurring Obligations" subtitle="Life's rhythms made visible — never lose track of what repeats" />
 

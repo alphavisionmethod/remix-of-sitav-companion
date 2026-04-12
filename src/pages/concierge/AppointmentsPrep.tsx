@@ -78,7 +78,7 @@ const AppointmentsPrep = () => {
     : appointments;
 
   return (
-    <div className="space-y-6">
+    <ConciergePageWrapper className="space-y-6">
       <DemoModeBadge />
       <SitaPageHeader title="Appointments & Prep" subtitle="Upcoming appointments with preparation checklists and logistics" />
 

@@ -121,7 +121,7 @@ const LifeAdminCenter = () => {
   const totalAging = useMemo(() => Object.values(TAB_DATA).flatMap(t => t.items).filter(i => i.daysOverdue > 0).length, []);
 
   return (
-    <motion.div className="space-y-5" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+    <ConciergePageWrapper className="space-y-5">
       <DemoModeBadge />
       <SitaPageHeader
         title="Life Admin Center"
