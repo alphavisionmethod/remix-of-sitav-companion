@@ -253,7 +253,7 @@ export function FloatingWindow({
         setIsDragging(false);
         dragRef.current.active = false;
         cancelAnimationFrame(rafId.current);
-        SoundEngine.click();
+        SoundEngine.click(e.clientX);
         onMinimize?.();
         return;
       }
