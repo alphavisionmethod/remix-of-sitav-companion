@@ -1,5 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
 
+const db = supabase as any;
 export interface DevicePresence {
   deviceId: string;
   deviceName: string;

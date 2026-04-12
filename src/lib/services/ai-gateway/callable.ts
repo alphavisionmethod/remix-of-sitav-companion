@@ -5,6 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { conscienceGate } from "@/lib/services/conscience-gate";
 
 export interface BrainCoreResponse {

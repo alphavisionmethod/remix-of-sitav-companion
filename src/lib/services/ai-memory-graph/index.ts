@@ -6,6 +6,7 @@
 import { supabase } from '@/integrations/supabase/client';
 
 
+const db = supabase as any;
 export interface MemoryNode {
   id: string;
   label: string;

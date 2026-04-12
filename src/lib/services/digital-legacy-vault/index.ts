@@ -6,6 +6,7 @@ import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 
 import { supabase } from '@/integrations/supabase/client';
 
+const db = supabase as any;
 export type VaultItemType = 'password' | 'document' | 'instruction' | 'account' | 'insurance' | 'medical' | 'legal' | 'note';
 
 export interface VaultItem {

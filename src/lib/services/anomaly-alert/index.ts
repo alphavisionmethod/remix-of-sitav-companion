@@ -6,6 +6,7 @@ import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 
 import { supabase } from '@/integrations/supabase/client';
 
+const db = supabase as any;
 export type AnomalyType = 'login_location' | 'spending_spike' | 'schedule_deviation' | 'data_access' | 'approval_pattern' | 'api_abuse';
 
 export interface Anomaly {

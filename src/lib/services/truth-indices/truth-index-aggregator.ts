@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 import { getDomainRuntimeStatuses, getRuntimeTruthIndex } from "../domain-runtime/domain-runtime-service";
 import { getLaunchGates, getLaunchHonestyIndex } from "../launch-gate/launch-gate-service";

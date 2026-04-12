@@ -6,6 +6,7 @@
 
 import { supabase } from "@/integrations/supabase/client";
 
+const db = supabase as any;
 export interface SecurityCheckResult {
   key: string;
   label: string;

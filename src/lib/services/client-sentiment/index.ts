@@ -6,6 +6,7 @@
 import { supabase } from '@/integrations/supabase/client';
 
 
+const db = supabase as any;
 export type SentimentLevel = 'very_positive' | 'positive' | 'neutral' | 'negative' | 'very_negative';
 export type SentimentTrend = 'improving' | 'stable' | 'declining' | 'volatile';
 

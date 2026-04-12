@@ -5,6 +5,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 
+const db = supabase as any;
 export interface ProposalSection {
   title: string;
   content: string;

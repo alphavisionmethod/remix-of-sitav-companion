@@ -5,6 +5,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 
+const db = supabase as any;
 export type LeakType = 'unbilled_work' | 'expired_quote' | 'stale_lead' | 'overdue_invoice' | 'missed_followup' | 'underpriced_deal' | 'churning_client';
 
 export interface RevenueLeak {

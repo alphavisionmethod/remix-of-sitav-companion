@@ -5,6 +5,7 @@
 
 import { supabase } from '@/integrations/supabase/client';
 
+const db = supabase as any;
 export interface RevenueEvent {
   id: string;
   type: 'invoice_paid' | 'invoice_sent' | 'lead_converted' | 'deal_closed' | 'subscription' | 'refund';
