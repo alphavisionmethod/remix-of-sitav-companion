@@ -1158,6 +1158,7 @@ const App = () => (
                     <Route path="/admin/customer-journey/remediation" element={<CJ07OwnerRemediationView />} />
                     <Route path="/admin/customer-journey/coverage" element={<CJ08RouteActionCoverage />} />
                     <Route path="/admin/customer-journey/recent-runs" element={<CJ09RecentVerificationRuns />} />
+                    </Route>
 
                     {/* ── 3B: OS Office — Digital Presence Office (19 routes) ── */}
                     <Route path="/digital-presence" element={<PresenceGate />} />
