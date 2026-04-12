@@ -96,7 +96,7 @@ function SystemUpdatesTab() {
                   {latest.is_critical ? "Critical Update" : "Available"}
                 </NovaText>
               </VStack>
-              {latest.is_critical && <NovaBadge variant="destructive">Critical</NovaBadge>}
+              {latest.is_critical && <NovaBadge variant="danger">Critical</NovaBadge>}
             </HStack>
             {latest.release_notes && (
               <NovaText variant="label" muted className="!text-[10px] whitespace-pre-wrap">{latest.release_notes}</NovaText>
@@ -243,7 +243,7 @@ function RollbackTab() {
                     </VStack>
                   </HStack>
                   <HStack spacing="tight" align="center">
-                    <NovaBadge variant={entry.status === "success" ? "success" : entry.status === "failed" ? "destructive" : "default"}>
+                    <NovaBadge variant={entry.status === "success" ? "success" : entry.status === "failed" ? "danger" : "default"}>
                       {entry.status}
                     </NovaBadge>
                     {entry.status === "success" && (

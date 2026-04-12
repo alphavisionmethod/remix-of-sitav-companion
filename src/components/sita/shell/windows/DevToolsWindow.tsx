@@ -108,10 +108,10 @@ function ConsoleTab() {
 // ── Process Tab ──────────────────────────────────────────────
 
 function ProcessTab() {
-  const [processes, setProcesses] = useState<ReturnType<typeof ProcessTable.listAll>>([]);
+  const [processes, setProcesses] = useState<ReturnType<typeof ProcessTable.listProcesses>>([]);
 
   useEffect(() => {
-    const refresh = () => setProcesses(ProcessTable.listAll());
+    const refresh = () => setProcesses(ProcessTable.listProcesses());
     refresh();
     const iv = setInterval(refresh, 2000);
     return () => clearInterval(iv);
@@ -138,7 +138,7 @@ function ProcessTab() {
                   <td className="py-1 pr-2 font-mono text-muted-foreground">{proc.pid}</td>
                   <td className="py-1 pr-2 text-foreground/90">{proc.name}</td>
                   <td className="py-1 pr-2">
-                    <NovaBadge variant={proc.state === "running" ? "success" : proc.state === "ready" ? "info" : "default"}>
+                  <NovaBadge variant={proc.state === "running" ? "success" : proc.state === "ready" ? "info" : "warning"}>
                       {proc.state}
                     </NovaBadge>
                   </td>
@@ -170,7 +170,7 @@ function MemoryTab() {
     const refresh = () => {
       try {
         const s = MemoryManager.getStats();
-        setStats({ totalPages: s.totalPages, usedPages: s.usedPages, freePages: s.freePages });
+        setStats({ totalPages: s.totalPages, usedPages: s.allocatedPages, freePages: s.freePages });
       } catch {
         setStats({ totalPages: 1024, usedPages: 128, freePages: 896 });
       }
@@ -260,7 +260,7 @@ function CrashesTab() {
                     <NovaText variant="body">{c.appId}</NovaText>
                     <NovaText variant="label" muted className="!text-[9px]">{c.count} crashes</NovaText>
                   </VStack>
-                  <NovaBadge variant="destructive">{new Date(c.lastCrash).toLocaleTimeString()}</NovaBadge>
+                  <NovaBadge variant="danger">{new Date(c.lastCrash).toLocaleTimeString()}</NovaBadge>
                 </HStack>
                 {c.stack && (
                   <pre className="mt-1 text-[9px] font-mono text-destructive/80 bg-destructive/5 rounded p-1.5 overflow-auto max-h-20">
@@ -319,7 +319,7 @@ function PerformanceTab() {
           <HStack spacing="tight" justify="between" align="center">
             <NovaText variant="body">FPS</NovaText>
             <HStack spacing="tight" align="center">
-              <NovaBadge variant={fps >= 55 ? "success" : fps >= 30 ? "default" : "destructive"}>{fps}</NovaBadge>
+              <NovaBadge variant={fps >= 55 ? "success" : fps >= 30 ? "default" : "danger"}>{fps}</NovaBadge>
             </HStack>
           </HStack>
           <Divider />
