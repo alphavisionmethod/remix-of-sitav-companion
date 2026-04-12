@@ -803,7 +803,7 @@ function CloudSyncContent() {
       <NovaCard>
         <VStack spacing="tight">
           <SettingRow label="Cloud Sync" description="Sync data across devices" icon={<Cloud className="h-3.5 w-3.5" />}>
-            <NovaToggle checked={syncEnabled} onChange={setSyncEnabled} />
+            <NovaToggle checked={!!syncEnabled} onChange={setSyncEnabled} />
           </SettingRow>
           <Divider />
           <SettingRow label="Last Sync" icon={<RefreshCw className="h-3.5 w-3.5" />}>
