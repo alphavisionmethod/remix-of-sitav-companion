@@ -6,6 +6,8 @@ import { PriorityCard, QuickActionBar as HouseholdQuickActions, HouseholdAdvisor
 import { EmptyStateCTA } from "@/components/sita/EmptyStateCTA";
 import { WhatMattersNow, WhatChangedFeed, PreparedActions } from "@/components/sita/domain-shared";
 import type { MatterItem, ChangeEvent, PreparedAction } from "@/components/sita/domain-shared";
+import { ConciergeHomeSummary, SupportBurdenCard, ConciergeContinuityCard, GroupedPrepBundleCard, ConciergeReviewQueue } from "@/components/concierge";
+import type { ContinuityItem, ReviewItem, PrepBundle } from "@/components/concierge";
 import { useHouseholdTasks, useFamilyEvents } from "@/hooks/use-sita-data";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useState, useMemo } from "react";
@@ -203,9 +205,40 @@ const ConciergeOverview = () => {
     );
   }
 
+  const continuityItems: ContinuityItem[] = useMemo(() => [
+    { id: "ci1", title: "Plumber follow-up call", context: "Kitchen leak — waiting for estimate", daysSince: 4 },
+    { id: "ci2", title: "Insurance review scheduling", context: "Annual policy review overdue", daysSince: 7 },
+  ], []);
+
+  const reviewItems: ReviewItem[] = useMemo(() => [
+    { id: "rv1", title: "Weekly grocery auto-order", reason: "New items added — review before submit", urgency: "medium" as const },
+    { id: "rv2", title: "Pet sitter booking — $280", reason: "Spending over $200 policy", urgency: "high" as const },
+  ], []);
+
+  const prepBundle: PrepBundle = useMemo(() => ({
+    id: "pb1", label: "Spring Break Trip Prep", context: "Cancún — departs in 18 days",
+    dueLabel: "Apr 10",
+    items: [
+      { id: "pi1", title: "Confirm pet sitter", done: false },
+      { id: "pi2", title: "Renew passports", done: false },
+      { id: "pi3", title: "Book airport parking", done: true },
+      { id: "pi4", title: "Travel insurance review", done: false },
+      { id: "pi5", title: "Pack list created", done: true },
+    ],
+  }), []);
+
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}>
       <DemoModeBadge />
+
+      {/* ═══ CONCIERGE HOME SUMMARY — Relief-first opening ═══ */}
+      <ConciergeHomeSummary
+        todayCount={kpiSummary.todayCommitments}
+        preparedCount={conciergePrepared.length}
+        slippingCount={kpiSummary.overdueHousehold}
+        automationMode="active"
+      />
+
       <AmbientHeader
         title="Family Command Center"
         subtitle="Household operations, schedule coordination, and life logistics"
@@ -439,6 +472,35 @@ const ConciergeOverview = () => {
             message="Permission slip and plumber call are time-sensitive — handle first. Passport renewal approaching the danger window."
             linkedItems={["Passport renewal", "Permission slip", "Plumber follow-up"]}
           />
+        </BentoCell>
+
+        {/* Support Burden — 2×1 */}
+        <BentoCell span="col-span-1 md:col-span-2">
+          <SupportBurdenCard
+            overall={kpiSummary.overdueHousehold > 3 ? 72 : 45}
+            categories={[
+              { label: "Appointments", load: 40, trend: "flat" as const },
+              { label: "Errands", load: 65, trend: "up" as const },
+              { label: "Travel prep", load: 75, trend: "up" as const },
+              { label: "Life admin", load: 50, trend: "down" as const },
+            ]}
+            recommendation="Travel prep is driving most of the load right now. Handle 2 quick errands to lighten the day."
+          />
+        </BentoCell>
+
+        {/* Continuity — 1×1 */}
+        <BentoCell>
+          <ConciergeContinuityCard items={continuityItems} />
+        </BentoCell>
+
+        {/* Review Queue — 1×1 */}
+        <BentoCell>
+          <ConciergeReviewQueue items={reviewItems} />
+        </BentoCell>
+
+        {/* Prep Bundle — 1×1 */}
+        <BentoCell>
+          <GroupedPrepBundleCard bundle={prepBundle} />
         </BentoCell>
 
         {/* Family Boardroom — 2×1 */}
