@@ -56,7 +56,7 @@ const connectors: Connector[] = [
 
 const ConciergeSettings = () => {
   return (
-    <div className="space-y-6">
+    <ConciergePageWrapper className="space-y-6">
       <DemoModeBadge />
       <SitaPageHeader title="Concierge Settings" subtitle="Household members, automation rules, and integrations" />
 

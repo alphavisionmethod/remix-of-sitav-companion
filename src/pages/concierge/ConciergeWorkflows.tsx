@@ -3,7 +3,7 @@ import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents"
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { StateBadge } from "@/components/sita/StateBadge";
 import { GlassCard } from "@/components/sita/PremiumPageComponents";
-import { ConciergeAdvisorInsightCard, ConciergeAutomationRuleCard } from "@/components/concierge";
+import { ConciergeAdvisorInsightCard, ConciergeAutomationRuleCard, ConciergePageWrapper } from "@/components/concierge";
 import type { AutomationRule } from "@/components/concierge";
 import { useState } from "react";
 import { Workflow, ShoppingCart, Calendar, Wrench, GraduationCap, Plane, Gift, Bell, CheckCircle, Clock, AlertTriangle, Play, Pause, Sparkles, Shield, Eye, Zap } from "lucide-react";
@@ -62,7 +62,7 @@ const ConciergeWorkflows = () => {
     : workflows;
 
   return (
-    <div className="space-y-6">
+    <ConciergePageWrapper className="space-y-6">
       <DemoModeBadge />
       <SitaPageHeader title="Automation Center" subtitle="Intelligent routines, approval gates, simulation previews, and safety boundaries" />
 
@@ -231,7 +231,7 @@ const ConciergeWorkflows = () => {
           }} />
         </div>
       </div>
-    </div>
+    </ConciergePageWrapper>
   );
 };
 
