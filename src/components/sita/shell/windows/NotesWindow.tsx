@@ -136,7 +136,6 @@ export function NotesWindow() {
       accentGradient="from-[hsl(45_85%_55%)] to-[hsl(25_80%_50%)]"
       emptyTitle="No Notes Yet"
       emptyMessage="Create your first note"
-      emptyAction={{ label: "New Note", onClick: createNote }}
     >
       <AppLayout sidebar={sidebar} sidebarWidth={160} minHeight={300}>
         {activeId ? (
