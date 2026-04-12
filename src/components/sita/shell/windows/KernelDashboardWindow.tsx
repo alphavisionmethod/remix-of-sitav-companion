@@ -168,6 +168,9 @@ export function KernelDashboardWindow() {
         {tab === "drivers" && (
           <DriversTab drivers={driverDiags} batteryHistory={batteryHistory} networkHistory={networkHistory} />
         )}
+        {tab === "stress" && (
+          <StressTestTab />
+        )}
       </div>
     </AppLayout>
   );
