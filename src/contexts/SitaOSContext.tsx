@@ -6,6 +6,9 @@
 
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useLocation } from "react-router-dom";
+import { resolveRouteLayer, resolveRouteDomain, type Layer } from "@/lib/architecture/layer-manifest";
+import { useAuth } from "@/contexts/AuthContext";
 
 // ── Service Factories ────────────────────────────────────────────
 import { createPersonalOperatingGraph, type PersonalOperatingGraphService } from "@/lib/services/personal-graph/personal-operating-graph";
@@ -56,6 +59,10 @@ export interface SitaOSKernel {
 
   // Meta
   hydrated: boolean;
+
+  // Layer awareness
+  currentLayer: Layer;
+  currentDomain?: string;
 }
 
 const SitaOSContext = createContext<SitaOSKernel | null>(null);
