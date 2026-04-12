@@ -83,14 +83,14 @@ function ProfileContent() {
       return;
     }
     (async () => {
-      const { data } = await supabase
-        .from("profiles" as any)
+      const { data } = await (supabase as any)
+        .from("profiles")
         .select("display_name, avatar_url")
         .eq("user_id", user.id)
         .single();
       if (data) {
-        setDisplayName((data as any).display_name || "");
-        setAvatarUrl((data as any).avatar_url || null);
+        setDisplayName(data.display_name || "");
+        setAvatarUrl(data.avatar_url || null);
       }
       setLoading(false);
     })();
@@ -99,9 +99,9 @@ function ProfileContent() {
   const handleSaveName = useCallback(async () => {
     if (!user || isDemo) { toast.info("Sign in to save changes"); return; }
     setSaving(true);
-    const { error } = await supabase
-      .from("profiles" as any)
-      .update({ display_name: displayName } as any)
+    const { error } = await (supabase as any)
+      .from("profiles")
+      .update({ display_name: displayName })
       .eq("user_id", user.id);
     setSaving(false);
     if (error) toast.error("Failed to update name");
@@ -128,9 +128,9 @@ function ProfileContent() {
 
     const publicUrl = urlData.publicUrl + "?t=" + Date.now();
 
-    await supabase
-      .from("profiles" as any)
-      .update({ avatar_url: publicUrl } as any)
+    await (supabase as any)
+      .from("profiles")
+      .update({ avatar_url: publicUrl })
       .eq("user_id", user.id);
 
     setAvatarUrl(publicUrl);
@@ -323,6 +323,7 @@ function SecurityContent() {
 
       {showDeleteModal && (
         <NovaModal
+          open={showDeleteModal}
           title="Delete Account"
           onClose={() => setShowDeleteModal(false)}
         >
