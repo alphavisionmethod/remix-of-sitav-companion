@@ -102,6 +102,8 @@ function ResetSectionButton({ sectionId }: { sectionId: string }) {
     window.dispatchEvent(new CustomEvent("nova-settings-reset", { detail: { section: sectionId } }));
   }, [confirming, keys, sectionId]);
 
+  if (!keys) return null;
+
   return (
     <NovaCard>
       <HStack spacing="tight" justify="between" align="center">
