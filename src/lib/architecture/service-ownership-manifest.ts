@@ -19,6 +19,7 @@ export interface ServiceOwnership {
 // ── Known Duplicates Between services/ and core-services/ ───────
 
 export const DUPLICATE_SERVICES: { serviceId: string; inServices: boolean; inCoreServices: boolean; canonicalLocation: "services" | "core-services" }[] = [
+  // ── Original 9 ──
   { serviceId: "brain-core", inServices: true, inCoreServices: true, canonicalLocation: "core-services" },
   { serviceId: "conscience-gate", inServices: true, inCoreServices: true, canonicalLocation: "core-services" },
   { serviceId: "ai-gateway", inServices: true, inCoreServices: true, canonicalLocation: "core-services" },
@@ -28,6 +29,38 @@ export const DUPLICATE_SERVICES: { serviceId: string; inServices: boolean; inCor
   { serviceId: "approval-engine", inServices: true, inCoreServices: true, canonicalLocation: "core-services" },
   { serviceId: "biometric-auth", inServices: true, inCoreServices: true, canonicalLocation: "core-services" },
   { serviceId: "ai-workforce", inServices: true, inCoreServices: true, canonicalLocation: "core-services" },
+  // ── Additional 30 discovered duplicates ──
+  { serviceId: "epistemic-firewall", inServices: true, inCoreServices: true, canonicalLocation: "core-services" },
+  { serviceId: "event-bus", inServices: true, inCoreServices: true, canonicalLocation: "core-services" },
+  { serviceId: "finance-os", inServices: true, inCoreServices: true, canonicalLocation: "services" },
+  { serviceId: "flagship-loops", inServices: true, inCoreServices: true, canonicalLocation: "services" },
+  { serviceId: "frontend", inServices: true, inCoreServices: true, canonicalLocation: "services" },
+  { serviceId: "google-provider-family", inServices: true, inCoreServices: true, canonicalLocation: "services" },
+  { serviceId: "handoff", inServices: true, inCoreServices: true, canonicalLocation: "core-services" },
+  { serviceId: "identity-auth", inServices: true, inCoreServices: true, canonicalLocation: "core-services" },
+  { serviceId: "inference-gateway", inServices: true, inCoreServices: true, canonicalLocation: "core-services" },
+  { serviceId: "integration-hub", inServices: true, inCoreServices: true, canonicalLocation: "core-services" },
+  { serviceId: "launch-readiness", inServices: true, inCoreServices: true, canonicalLocation: "core-services" },
+  { serviceId: "life-simulation", inServices: true, inCoreServices: true, canonicalLocation: "services" },
+  { serviceId: "memory-service", inServices: true, inCoreServices: true, canonicalLocation: "core-services" },
+  { serviceId: "mnemosyne", inServices: true, inCoreServices: true, canonicalLocation: "core-services" },
+  { serviceId: "model-router", inServices: true, inCoreServices: true, canonicalLocation: "core-services" },
+  { serviceId: "policy-engine", inServices: true, inCoreServices: true, canonicalLocation: "core-services" },
+  { serviceId: "projection-service", inServices: true, inCoreServices: true, canonicalLocation: "core-services" },
+  { serviceId: "receipt-service", inServices: true, inCoreServices: true, canonicalLocation: "core-services" },
+  { serviceId: "recommendation-execution", inServices: true, inCoreServices: true, canonicalLocation: "core-services" },
+  { serviceId: "security", inServices: true, inCoreServices: true, canonicalLocation: "core-services" },
+  { serviceId: "self-healing", inServices: true, inCoreServices: true, canonicalLocation: "core-services" },
+  { serviceId: "service-registry", inServices: true, inCoreServices: true, canonicalLocation: "core-services" },
+  { serviceId: "system-updates", inServices: true, inCoreServices: true, canonicalLocation: "core-services" },
+  { serviceId: "trust-governor", inServices: true, inCoreServices: true, canonicalLocation: "core-services" },
+  { serviceId: "truth-indices", inServices: true, inCoreServices: true, canonicalLocation: "core-services" },
+  { serviceId: "verification-engine", inServices: true, inCoreServices: true, canonicalLocation: "core-services" },
+  { serviceId: "workflow-engine", inServices: true, inCoreServices: true, canonicalLocation: "core-services" },
+  { serviceId: "architecture", inServices: true, inCoreServices: true, canonicalLocation: "services" },
+  { serviceId: "governance-simulator", inServices: true, inCoreServices: true, canonicalLocation: "services" },
+  { serviceId: "search-fabric", inServices: true, inCoreServices: true, canonicalLocation: "services" },
+  { serviceId: "fraud-sentinel", inServices: true, inCoreServices: true, canonicalLocation: "services" },
 ];
 
 // ── Kernel-Layer Services (must live in core-services/) ─────────

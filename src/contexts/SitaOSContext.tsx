@@ -274,6 +274,20 @@ function getOrCreateKernel(): SitaOSKernel {
   return _kernel;
 }
 
+// ── Layer-aware child that safely uses useLocation ──────────────
+
+function LayerSyncEffect({ onLayerChange }: { onLayerChange: (layer: Layer, domain?: string) => void }) {
+  const location = useLocation();
+  const layer = resolveRouteLayer(location.pathname);
+  const domain = resolveRouteDomain(location.pathname);
+
+  useEffect(() => {
+    onLayerChange(layer, domain);
+  }, [layer, domain, onLayerChange]);
+
+  return null;
+}
+
 // ── Provider ─────────────────────────────────────────────────────
 
 export const SitaOSProvider = ({ children }: { children: ReactNode }) => {
@@ -281,24 +295,12 @@ export const SitaOSProvider = ({ children }: { children: ReactNode }) => {
   const hydratedRef = useRef(false);
   const [kernel, setKernel] = useState<SitaOSKernel>(getOrCreateKernel);
 
-  // Layer awareness: track current route layer
-  let currentLayer: Layer = "app";
-  let currentDomain: string | undefined;
-  try {
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const location = useLocation();
-    currentLayer = resolveRouteLayer(location.pathname);
-    currentDomain = resolveRouteDomain(location.pathname);
-  } catch {
-    // Outside router context (e.g. tests)
-  }
-
-  // Sync layer into kernel on route change
-  useEffect(() => {
-    if (kernel.currentLayer !== currentLayer || kernel.currentDomain !== currentDomain) {
-      setKernel(prev => ({ ...prev, currentLayer, currentDomain }));
-    }
-  }, [currentLayer, currentDomain]);
+  const handleLayerChange = React.useCallback((layer: Layer, domain?: string) => {
+    setKernel(prev => {
+      if (prev.currentLayer === layer && prev.currentDomain === domain) return prev;
+      return { ...prev, currentLayer: layer, currentDomain: domain };
+    });
+  }, []);
 
   useEffect(() => {
     if (authLoading || !user || hydratedRef.current) return;
