@@ -25,7 +25,7 @@ export function useAppTransitions() {
           return new Promise<void>(resolve => {
             // Resolve on next frame to let React render
             requestAnimationFrame(() => {
-              requestAnimationFrame(resolve);
+              requestAnimationFrame(() => resolve());
             });
           });
         });
