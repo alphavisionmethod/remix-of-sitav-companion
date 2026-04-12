@@ -150,17 +150,6 @@ export function useDeleteErrand() {
     },
     onSuccess: () => qc.invalidateQueries({ queryKey: ["concierge-errands"] }),
   });
-}
-  const uid = useUserId();
-  return useQuery({
-    queryKey: ["concierge-errands", uid],
-    enabled: !!uid,
-    queryFn: async () => {
-      const { data } = await fromTable("concierge_errands").select("*").eq("user_id", uid!).order("due_date");
-      return data ?? [];
-    },
-  });
-}
 
 export function useRecurringObligations() {
   const uid = useUserId();
