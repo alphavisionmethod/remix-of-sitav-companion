@@ -1129,6 +1129,7 @@ const Boardroom = () => {
   const [activeType, setActiveType] = useState<BoardroomType>("morning-briefing");
   const [isPresenting, setIsPresenting] = useState(false);
   const [perspective, setPerspective] = useState<PerspectiveLevel>("owner");
+  const [showCeremony, setShowCeremony] = useState(true);
 
   const tabs: { key: string; label: string }[] = [
     { key: "morning-briefing", label: "Morning Briefing" },
