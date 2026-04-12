@@ -6,7 +6,8 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import {
   Cpu, HardDrive, Activity, Layers, Zap, Timer,
-  Shield, Clock, AlertTriangle,
+  Shield, Clock, AlertTriangle, Monitor, Wifi, Battery,
+  WifiOff, BatteryCharging, Signal,
 } from "lucide-react";
 import {
   AppLayout,
@@ -25,6 +26,7 @@ import { Scheduler, type SchedulerStats, type SchedulerEvent } from "@/lib/nova-
 import { MemoryManager, type MemoryStats, PAGE_SIZE } from "@/lib/nova-sdk/kernel/memory-manager";
 import { ProcessTable, type Process, type PriorityBand } from "@/lib/nova-sdk/kernel/process-manager";
 import { getSyscallStats, getSyscallLog, getSyscallMetrics, type SyscallLogEntry, type SyscallTypeMetrics } from "@/lib/nova-sdk/kernel/syscall";
+import { DriverManager, type DeviceDriver } from "@/lib/nova-sdk/kernel/drivers";
 
 // ── Colors ───────────────────────────────────────────────────
 
@@ -49,12 +51,13 @@ const BAND_COLORS: Record<PriorityBand, NovaColor> = {
   "Idle":         COLORS.idle,
 };
 
-type Tab = "scheduler" | "memory" | "syscalls";
+type Tab = "scheduler" | "memory" | "syscalls" | "drivers";
 
 const TABS: { id: Tab; label: string; icon: typeof Cpu }[] = [
   { id: "scheduler", label: "Scheduler", icon: Cpu },
   { id: "memory",    label: "Memory",    icon: HardDrive },
   { id: "syscalls",  label: "Syscalls",  icon: Zap },
+  { id: "drivers",   label: "Drivers",   icon: Monitor },
 ];
 
 const MAX_HISTORY = 60;
@@ -84,6 +87,10 @@ export function KernelDashboardWindow() {
   const [sysLog, setSysLog] = useState<readonly SyscallLogEntry[]>([]);
   const [sysMetrics, setSysMetrics] = useState<SyscallTypeMetrics[]>([]);
 
+  const [driverDiags, setDriverDiags] = useState<{ driver: DeviceDriver; diag: Record<string, unknown> }[]>([]);
+  const [batteryHistory, setBatteryHistory] = useState<number[]>([]);
+  const [networkHistory, setNetworkHistory] = useState<number[]>([]);
+
   useEffect(() => {
     if (paused) return;
     const iv = setInterval(() => {
@@ -101,6 +108,13 @@ export function KernelDashboardWindow() {
       setSysStats(getSyscallStats());
       setSysLog(getSyscallLog().slice(-30));
       setSysMetrics(getSyscallMetrics());
+
+      const allDrivers = DriverManager.getAllDrivers();
+      setDriverDiags(allDrivers.map(d => ({ driver: d, diag: d.getDiagnostics() })));
+      const battDiag = DriverManager.getDriver("drv-battery")?.getDiagnostics();
+      if (battDiag) setBatteryHistory(prev => pushHistory(prev, (battDiag as any).level ?? 0));
+      const netDiag = DriverManager.getDriver("drv-network")?.getDiagnostics();
+      if (netDiag) setNetworkHistory(prev => pushHistory(prev, (netDiag as any).downlinkMbps ?? 0));
     }, 500);
     return () => clearInterval(iv);
   }, [paused]);
@@ -148,6 +162,9 @@ export function KernelDashboardWindow() {
         )}
         {tab === "syscalls" && sysStats && (
           <SyscallTab stats={sysStats} log={sysLog} metrics={sysMetrics} />
+        )}
+        {tab === "drivers" && (
+          <DriversTab drivers={driverDiags} batteryHistory={batteryHistory} networkHistory={networkHistory} />
         )}
       </div>
     </AppLayout>
@@ -564,8 +581,159 @@ function SyscallTab({
 }
 
 // ═══════════════════════════════════════════════════════════════
-// STAT CARD
+// DRIVERS TAB
 // ═══════════════════════════════════════════════════════════════
+
+const DRIVER_ICONS: Record<string, typeof Cpu> = {
+  "drv-display": Monitor,
+  "drv-input": Cpu,
+  "drv-audio": Activity,
+  "drv-storage": HardDrive,
+  "drv-network": Wifi,
+  "drv-battery": Battery,
+};
+
+const STATUS_COLOR: Record<string, string> = {
+  ready: "bg-[hsl(152_55%_48%)]",
+  loading: "bg-[hsl(38_85%_58%)]",
+  error: "bg-destructive",
+  shutdown: "bg-muted-foreground/30",
+  unloaded: "bg-muted-foreground/20",
+};
+
+function DriversTab({
+  drivers,
+  batteryHistory,
+  networkHistory,
+}: {
+  drivers: { driver: DeviceDriver; diag: Record<string, unknown> }[];
+  batteryHistory: number[];
+  networkHistory: number[];
+}) {
+  const batteryDrv = drivers.find(d => d.driver.id === "drv-battery");
+  const networkDrv = drivers.find(d => d.driver.id === "drv-network");
+  const displayDrv = drivers.find(d => d.driver.id === "drv-display");
+
+  const readyCount = drivers.filter(d => d.driver.status === "ready").length;
+  const errorCount = drivers.filter(d => d.driver.status === "error").length;
+
+  const battSeries = useMemo((): ChartSeries[] => [
+    { key: "Battery %", color: { h: 152, s: 55, l: 48 } as NovaColor, data: batteryHistory, fillOpacity: 0.25 },
+  ], [batteryHistory]);
+
+  const netSeries = useMemo((): ChartSeries[] => [
+    { key: "Downlink Mbps", color: { h: 210, s: 80, l: 55 } as NovaColor, data: networkHistory, fillOpacity: 0.2 },
+  ], [networkHistory]);
+
+  return (
+    <VStack spacing="tight">
+      {/* KPI strip */}
+      <div className="grid grid-cols-4 gap-2">
+        <StatCard icon={Monitor} label="Drivers" value={`${drivers.length}`} />
+        <StatCard icon={Shield} label="Ready" value={`${readyCount}`} />
+        <StatCard icon={AlertTriangle} label="Errors" value={`${errorCount}`} variant={errorCount > 0 ? "danger" : "default"} />
+        <StatCard
+          icon={Battery}
+          label="Battery"
+          value={`${(batteryDrv?.diag as any)?.level ?? "—"}%`}
+          variant={(batteryDrv?.diag as any)?.level < 20 ? "warning" : "default"}
+        />
+      </div>
+
+      {/* Battery live chart */}
+      <NovaCard className="p-2">
+        <NovaSectionLabel>Battery Level Over Time</NovaSectionLabel>
+        <div className="flex items-center gap-2 mb-1">
+          {(batteryDrv?.diag as any)?.charging ? (
+            <div className="flex items-center gap-1 text-[10px] text-[hsl(152_55%_48%)]">
+              <BatteryCharging size={12} /> Charging
+            </div>
+          ) : (
+            <div className="flex items-center gap-1 text-[10px] text-muted-foreground">
+              <Battery size={12} /> On Battery
+            </div>
+          )}
+          <span className="text-[10px] text-muted-foreground ml-auto">
+            API: {(batteryDrv?.diag as any)?.apiSupported ? "Supported" : "Unavailable"}
+          </span>
+        </div>
+        <NovaCanvasChart series={battSeries} height={90} maxY={100} yUnit="%" gridLines={4} />
+      </NovaCard>
+
+      {/* Network live chart */}
+      <NovaCard className="p-2">
+        <NovaSectionLabel>Network Speed Over Time</NovaSectionLabel>
+        <div className="flex items-center gap-2 mb-1 text-[10px]">
+          {(networkDrv?.diag as any)?.online ? (
+            <div className="flex items-center gap-1 text-[hsl(152_55%_48%)]">
+              <Signal size={12} /> Online
+            </div>
+          ) : (
+            <div className="flex items-center gap-1 text-destructive">
+              <WifiOff size={12} /> Offline
+            </div>
+          )}
+          <span className="text-muted-foreground">
+            Type: {(networkDrv?.diag as any)?.type ?? "—"}
+          </span>
+          <span className="text-muted-foreground ml-auto">
+            RTT: {(networkDrv?.diag as any)?.rttMs ?? "—"}ms
+          </span>
+        </div>
+        <NovaCanvasChart series={netSeries} height={90} yUnit=" Mbps" gridLines={3} />
+      </NovaCard>
+
+      {/* Display info */}
+      <NovaCard className="p-2">
+        <NovaSectionLabel>Display Information</NovaSectionLabel>
+        <div className="grid grid-cols-2 gap-x-6 gap-y-1.5 text-[11px] font-mono">
+          <span className="text-muted-foreground">Resolution</span>
+          <span>{(displayDrv?.diag as any)?.resolution ?? "—"}</span>
+          <span className="text-muted-foreground">Color Depth</span>
+          <span>{(displayDrv?.diag as any)?.colorDepth ?? "—"}-bit</span>
+          <span className="text-muted-foreground">Pixel Ratio</span>
+          <span>{(displayDrv?.diag as any)?.pixelRatio ?? "—"}x</span>
+          <span className="text-muted-foreground">Refresh Rate</span>
+          <span>{(displayDrv?.diag as any)?.refreshRate ?? "—"} Hz</span>
+          <span className="text-muted-foreground">HDR</span>
+          <span>{(displayDrv?.diag as any)?.hdr ? "Yes" : "No"}</span>
+        </div>
+      </NovaCard>
+
+      {/* All drivers table */}
+      <NovaCard className="p-2">
+        <NovaSectionLabel>All Device Drivers ({drivers.length})</NovaSectionLabel>
+        <div className="space-y-1.5">
+          {drivers.map(({ driver, diag }) => {
+            const Icon = DRIVER_ICONS[driver.id] ?? Cpu;
+            return (
+              <div key={driver.id} className="flex items-start gap-2 p-2 rounded-lg bg-background/50 border border-border/30">
+                <Icon size={14} className="text-muted-foreground mt-0.5 shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[11px] font-medium">{driver.name}</span>
+                    <span className={cn("w-1.5 h-1.5 rounded-full shrink-0", STATUS_COLOR[driver.status])} />
+                    <span className="text-[9px] text-muted-foreground uppercase">{driver.status}</span>
+                    <NovaBadge className="ml-auto text-[8px]">{driver.type}</NovaBadge>
+                  </div>
+                  <div className="flex flex-wrap gap-x-3 gap-y-0.5 mt-1">
+                    {Object.entries(diag).map(([k, v]) => (
+                      <span key={k} className="text-[9px] text-muted-foreground font-mono">
+                        {k}: <span className="text-foreground/80">{String(v)}</span>
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </NovaCard>
+    </VStack>
+  );
+}
+
+
 
 function StatCard({
   icon: Icon, label, value, variant = "default",
