@@ -95,10 +95,10 @@ const MoneyBoardroom = () => {
           <SitaCard hover={false}>
             <SitaCardTitle sub="Prepared by your finance advisor">Quick Actions</SitaCardTitle>
             <div className="mt-4 space-y-2">
-              <SitaButton variant="outline" size="sm" className="w-full justify-start"><Eye className="h-3.5 w-3.5" /> Review upcoming bills</SitaButton>
-              <SitaButton variant="outline" size="sm" className="w-full justify-start"><ArrowDownLeft className="h-3.5 w-3.5" /> Check overdue receivables</SitaButton>
-              <SitaButton variant="outline" size="sm" className="w-full justify-start"><PiggyBank className="h-3.5 w-3.5" /> Review reserve progress</SitaButton>
-              <SitaButton variant="outline" size="sm" className="w-full justify-start"><Repeat className="h-3.5 w-3.5" /> Scan subscription changes</SitaButton>
+              <SitaButton variant="secondary" size="sm" className="w-full justify-start"><Eye className="h-3.5 w-3.5" /> Review upcoming bills</SitaButton>
+              <SitaButton variant="secondary" size="sm" className="w-full justify-start"><ArrowDownLeft className="h-3.5 w-3.5" /> Check overdue receivables</SitaButton>
+              <SitaButton variant="secondary" size="sm" className="w-full justify-start"><PiggyBank className="h-3.5 w-3.5" /> Review reserve progress</SitaButton>
+              <SitaButton variant="secondary" size="sm" className="w-full justify-start"><Repeat className="h-3.5 w-3.5" /> Scan subscription changes</SitaButton>
             </div>
           </SitaCard>
         </div>

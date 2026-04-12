@@ -236,7 +236,7 @@ const ReceivablesObligations = () => {
                   </div>
                   <div className="mt-3 flex gap-2">
                     <SitaButton variant="accent" size="sm"><Send className="h-3 w-3" /> Approve & Send</SitaButton>
-                    <SitaButton variant="outline" size="sm"><Mail className="h-3 w-3" /> Edit Draft</SitaButton>
+                    <SitaButton variant="secondary" size="sm"><Mail className="h-3 w-3" /> Edit Draft</SitaButton>
                     <SitaButton variant="ghost" size="sm"><Phone className="h-3 w-3" /> Call Instead</SitaButton>
                   </div>
                 </SitaCard>
@@ -404,7 +404,7 @@ const ReceivablesObligations = () => {
                 {selected.status === "overdue" && (
                   <div className="flex gap-2 flex-wrap">
                     <SitaButton variant="accent" size="sm"><Send className="h-3 w-3" /> Send Reminder</SitaButton>
-                    <SitaButton variant="outline" size="sm"><Phone className="h-3 w-3" /> Call</SitaButton>
+                    <SitaButton variant="secondary" size="sm"><Phone className="h-3 w-3" /> Call</SitaButton>
                     <SitaButton variant="ghost" size="sm"><FileText className="h-3 w-3" /> View Invoice</SitaButton>
                   </div>
                 )}

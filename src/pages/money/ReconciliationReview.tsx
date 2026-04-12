@@ -174,7 +174,7 @@ const ReconciliationReview = () => {
                 {selected.status !== "resolved" && (
                   <div className="flex gap-2">
                     <SitaButton variant="accent" size="sm"><CheckCircle2 className="h-3 w-3" /> Resolve</SitaButton>
-                    <SitaButton variant="outline" size="sm"><Eye className="h-3 w-3" /> Investigate</SitaButton>
+                    <SitaButton variant="secondary" size="sm"><Eye className="h-3 w-3" /> Investigate</SitaButton>
                     <SitaButton variant="ghost" size="sm"><Clock className="h-3 w-3" /> Defer</SitaButton>
                   </div>
                 )}

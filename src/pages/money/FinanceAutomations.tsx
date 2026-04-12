@@ -201,7 +201,7 @@ const FinanceAutomations = () => {
                 </div>
 
                 <div className="flex gap-2">
-                  {selected.status === "active" && <SitaButton variant="outline" size="sm"><Pause className="h-3 w-3" /> Pause</SitaButton>}
+                  {selected.status === "active" && <SitaButton variant="secondary" size="sm"><Pause className="h-3 w-3" /> Pause</SitaButton>}
                   {selected.status === "paused" && <SitaButton variant="accent" size="sm"><Play className="h-3 w-3" /> Resume</SitaButton>}
                   {selected.status === "suggested" && <SitaButton variant="accent" size="sm"><Play className="h-3 w-3" /> Enable</SitaButton>}
                   {selected.status === "failed" && <SitaButton variant="accent" size="sm"><RefreshCw className="h-3 w-3" /> Retry</SitaButton>}
