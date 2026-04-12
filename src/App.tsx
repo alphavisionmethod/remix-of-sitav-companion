@@ -1046,7 +1046,8 @@ const App = () => (
                         TIER 4: ADMIN / BUILDER — Platform governance, /admin/* prefix
                         ~280 routes: AI Engineering, DRS, SAG, Automation, Launch, Security, etc.
                        ═══════════════════════════════════════════════════════════════ */}
-                    {/* AI Runtime */}
+                    {/* Admin — AI Runtime, DRS, Automation (wrapped in AdminShell) */}
+                    <Route element={<AdminShellLayout />}>
                     <Route path="/admin/ai-runtime" element={<AIRuntimeStatus />} />
                     <Route path="/admin/persistence-status" element={<PersistenceStatus />} />
                     <Route path="/admin/system-health" element={<SystemHealthDashboard />} />
