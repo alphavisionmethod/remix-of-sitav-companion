@@ -222,6 +222,7 @@ class NovaKernelClass {
     WidgetRegistry.reset();
     IntegrationRegistry.reset();
     ServiceManager.shutdown();
+    IPCManager.reset();
     WaylandServer.reset();
     PowerManager.stop();
     Scheduler.stop();
@@ -258,6 +259,7 @@ class NovaKernelClass {
       wayland: WaylandServer.getStats(),
       services: ServiceManager.getStats(),
       drivers: DriverManager.getStats(),
+      ipc: IPCManager.getStats(),
       extensions: {
         plugins: PluginRegistry.getStats(),
         widgets: WidgetRegistry.getStats(),
