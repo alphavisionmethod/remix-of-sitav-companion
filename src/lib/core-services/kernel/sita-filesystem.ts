@@ -93,16 +93,92 @@ export interface MountPoint {
 
 // ── SitaFS Implementation ──────────────────────────────────────
 
+// ── Version History ─────────────────────────────────────────────
+
+export interface FileVersion {
+  versionId: string;
+  inodeId: number;
+  timestamp: number;
+  size: number;
+  blockData: Uint8Array[]; // Stored block data for this version
+  checksum: string;
+}
+
+// ── Write Batch ────────────────────────────────────────────────
+
+export interface WriteBatchItem {
+  inodeId: number;
+  data: Uint8Array;
+}
+
+export class WriteBatch {
+  private items: WriteBatchItem[] = [];
+  private fs: SitaFilesystem;
+
+  constructor(fs: SitaFilesystem) {
+    this.fs = fs;
+  }
+
+  add(inodeId: number, data: Uint8Array): void {
+    this.items.push({ inodeId, data });
+  }
+
+  flush(): boolean {
+    // Apply all writes, then emit a single batch journal entry
+    for (const item of this.items) {
+      this.fs.writeFileInternal(item.inodeId, item.data);
+    }
+    this.fs.journalWritePublic("write", 0, {
+      batchSize: this.items.length,
+      inodes: this.items.map((i) => i.inodeId),
+      type: "batch-flush",
+    });
+    this.items = [];
+    return true;
+  }
+}
+
+// ── Integrity Check Result ─────────────────────────────────────
+
+export interface IntegrityCheckResult {
+  valid: boolean;
+  totalBlocks: number;
+  checkedBlocks: number;
+  corruptedBlocks: number[];
+  orphanBlocks: number[];
+  directoryErrors: string[];
+  durationMs: number;
+}
+
+// ── Journal Replay Result ──────────────────────────────────────
+
+export interface JournalReplayResult {
+  replayed: number;
+  rolledBack: number;
+  errors: string[];
+}
+
+// ── Crash Recovery Result ──────────────────────────────────────
+
+export interface CrashRecoveryResult {
+  journalResult: JournalReplayResult;
+  integrityResult: IntegrityCheckResult;
+  recoveryTimeMs: number;
+}
+
+// ── SitaFS Implementation ──────────────────────────────────────
+
 export class SitaFilesystem {
   private inodes = new Map<number, Inode>();
   private blocks = new Map<number, Block>();
-  private directories = new Map<number, DirectoryEntry[]>(); // inode → entries
+  private directories = new Map<number, DirectoryEntry[]>();
   private journal: JournalEntry[] = [];
   private snapshots = new Map<string, Snapshot>();
+  private versionHistory = new Map<number, FileVersion[]>(); // inode → versions
   private nextInodeId = 1;
   private nextBlockId = 1;
   private nextTxId = 1;
-
+  private maxVersions = 10;
   constructor() {
     // Create root inode
     this.createInode("directory", 0o755, 0, 0);
