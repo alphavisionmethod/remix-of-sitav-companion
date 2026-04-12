@@ -15,7 +15,7 @@ import type { useWindowManager } from "@/hooks/useWindowManager";
 import { DockWindowPreview } from "./shell/DockWindowPreview";
 import { SoundEngine } from "@/lib/sound-engine";
 
-const OS_WINDOW_APPS = new Set(["finder", "settings", "files-app", "settings-app"]);
+const OS_WINDOW_APPS = new Set(["finder", "settings", "files-app", "settings-app", "notes", "com.nova.notes"]);
 
 interface DesktopDockProps {
   onLaunchApp?: (appId: string, originRect?: DOMRect) => void;
