@@ -94,6 +94,7 @@ export function AppStateWrapper({
   emptyIcon,
   emptyTitle,
   emptyMessage,
+  emptyAction,
   errorMessage,
   onRetry,
   loadingDelay = 300,
@@ -130,7 +131,7 @@ export function AppStateWrapper({
       {/* Empty state */}
       {state === "empty" && (
         <div className="absolute inset-0 flex items-center justify-center">
-          <EmptyState icon={emptyIcon} title={emptyTitle} message={emptyMessage} />
+          <EmptyState icon={emptyIcon} title={emptyTitle} message={emptyMessage} action={emptyAction} />
         </div>
       )}
 
