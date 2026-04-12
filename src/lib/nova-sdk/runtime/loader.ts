@@ -14,10 +14,15 @@ import type { CodeSignature } from "@/lib/core-services/kernel/code-verification
 import { AppIsolationManager } from "@/lib/core-services/kernel/app-isolation";
 import type { IsolationLevel } from "@/lib/core-services/kernel/app-isolation";
 import { PermissionMonitor } from "../services/permission-monitor";
+import { AppRuntime } from "./managed-runtime";
+import type { AppRuntimeConfig } from "./managed-runtime";
+import { validateDesignCompliance, getDesignEnforcementMode } from "../core/design-contract";
 
 // Singleton instances for the security subsystem
 const codeVerifier = new CodeVerificationService();
 const isolationManager = new AppIsolationManager();
+// Store runtimes keyed by appId
+const appRuntimes = new Map<string, AppRuntime>();
 
 // Map trust rings to isolation levels
 const RING_TO_ISOLATION: Record<number, IsolationLevel> = {
@@ -34,6 +39,7 @@ export interface AppBundle {
   lifecycle?: NovaAppLifecycle;
   signature?: CodeSignature | null;
   trustRing?: number; // 0-4 from security architecture
+  runtimeConfig?: AppRuntimeConfig;
 }
 
 export interface LoadResult {
@@ -90,19 +96,45 @@ export class AppLoader {
     const permissions = manifest.permissions?.map(p => typeof p === "string" ? p : p) ?? [];
     PermissionMonitor.registerApp(manifest.id, permissions);
 
-    // Step 6: Register in AppRegistry
+    // Step 6: Design Contract Compliance
+    const designResult = validateDesignCompliance(manifest);
+    if (getDesignEnforcementMode() === "strict" && !designResult.compliant) {
+      console.error(`[AppLoader] ✗ Design contract BLOCKED "${manifest.name}" — ${designResult.violations.length} violation(s)`);
+      return {
+        success: false,
+        appId: manifest.id,
+        errors: designResult.violations.map(v => `${v.element}: ${v.suggestion}`),
+      };
+    }
+
+    // Step 7: Register in AppRegistry
     AppRegistry.register(manifest, component);
 
-    // Step 7: Register lifecycle hooks
+    // Step 8: Create Managed Runtime
+    const runtime = new AppRuntime(manifest.id, bundle.runtimeConfig);
+    runtime.start();
+    appRuntimes.set(manifest.id, runtime);
+    // Attach to registered app
+    const registeredApp = AppRegistry.getApp(manifest.id);
+    if (registeredApp) registeredApp.runtime = runtime;
+
+    // Step 9: Register lifecycle hooks
     if (lifecycle) {
       lifecycleManager.registerHooks(manifest.id, lifecycle);
     }
 
-    console.log(`[AppLoader] ✓ Loaded "${manifest.name}" (${manifest.id}) v${manifest.version} [ring:${trustRing}, isolation:${isolationLevel}, verified:${verifyResult.result}]`);
+    console.log(`[AppLoader] ✓ Loaded "${manifest.name}" (${manifest.id}) v${manifest.version} [ring:${trustRing}, isolation:${isolationLevel}, verified:${verifyResult.result}, design:${designResult.compliant ? "✓" : "⚠"}]`);
     return { success: true, appId: manifest.id };
   }
 
   static unload(appId: string): void {
+    // Destroy managed runtime
+    const runtime = appRuntimes.get(appId);
+    if (runtime) {
+      runtime.destroy();
+      appRuntimes.delete(appId);
+    }
+
     // Revoke permissions
     PermissionMonitor.revokeApp(appId);
 
@@ -110,7 +142,7 @@ export class AppLoader {
     lifecycleManager.transition(appId, "terminated");
     lifecycleManager.unregisterHooks(appId);
     AppRegistry.unregister(appId);
-    console.log(`[AppLoader] Unloaded "${appId}" — sandbox terminated, permissions revoked`);
+    console.log(`[AppLoader] Unloaded "${appId}" — runtime destroyed, sandbox terminated, permissions revoked`);
   }
 
   /** Expose security subsystem for UI queries */

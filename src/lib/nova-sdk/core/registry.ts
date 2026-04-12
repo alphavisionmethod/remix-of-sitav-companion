@@ -6,6 +6,7 @@
 import type { ComponentType } from "react";
 import type { AppManifest } from "./manifest";
 import { validateManifest } from "./manifest";
+import type { AppRuntime } from "../runtime/managed-runtime";
 
 export type AppRuntimeState = "registered" | "launching" | "permission-check" | "running" | "focused" | "blurred" | "suspending" | "terminated";
 
@@ -15,6 +16,7 @@ export interface RegisteredApp {
   state: AppRuntimeState;
   launchedAt?: number;
   focusedAt?: number;
+  runtime?: AppRuntime;
 }
 
 class AppRegistryClass {
