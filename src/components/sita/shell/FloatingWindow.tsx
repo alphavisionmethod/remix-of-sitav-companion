@@ -46,6 +46,7 @@ interface FloatingWindowProps {
   onClose?: () => void;
   onMinimize?: () => void;
   onMaximize?: () => void;
+  onPiP?: () => void;
   onFocus?: () => void;
   isFocused?: boolean;
   siblingWindows?: SiblingWindow[];
@@ -74,6 +75,7 @@ export function FloatingWindow({
   onClose,
   onMinimize,
   onMaximize,
+  onPiP,
   onFocus,
   isFocused = true,
   siblingWindows = [],
