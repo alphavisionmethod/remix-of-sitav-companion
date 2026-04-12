@@ -110,6 +110,20 @@ for (const domain of domains) {
   }
 }
 
+// ── Rule 6: App pages must not import from core-services (kernel) ──
+
+const appPages = scanDir("src/pages").filter(f => !f.includes("src/pages/admin/"));
+for (const f of appPages) {
+  const content = fs.readFileSync(f, "utf-8");
+  const rel = path.relative(process.cwd(), f);
+  const imports = getImports(content);
+  for (const imp of imports) {
+    if (imp.includes("core-services")) {
+      violations.push({ file: rel, rule: "APP_IMPORTS_KERNEL", severity: "warning", detail: `App page imports kernel: ${imp}` });
+    }
+  }
+}
+
 // ── Report ──────────────────────────────────────────────────────
 
 const errors = violations.filter(v => v.severity === "error");

@@ -569,6 +569,7 @@ const FE02DesignGovernance = lazy(() => import("./pages/admin/frontend/FE02Desig
 const GodTierIntegrationBoard = lazy(() => import("./pages/admin/architecture/GodTierIntegrationBoard"));
 const GodTierRuntimeBoard = lazy(() => import("./pages/admin/architecture/GodTierRuntimeBoard"));
 const EpistemicFirewallBoard = lazy(() => import("./pages/admin/architecture/EpistemicFirewallBoard"));
+const ArchitectureBoundaryBoard = lazy(() => import("./pages/admin/architecture/ArchitectureBoundaryBoard"));
 
 const EmailApp = lazy(() => import("./pages/apps/EmailApp"));
 const MessengerApp = lazy(() => import("./pages/apps/MessengerApp"));
@@ -1568,7 +1569,6 @@ const App = () => (
                     <Route path="/admin/pfa/account-graph" element={<PFA08AccountGraphExplorer />} />
                     <Route path="/admin/pfa/launch-honesty" element={<PFA10IntegrationLaunchHonesty />} />
                     <Route path="/admin/pfa/google" element={<GoogleProviderFamilyDashboard />} />
-                    <Route path="/admin/pfa/google" element={<GoogleProviderFamilyDashboard />} />
                     <Route path="/admin/isa/identity-providers" element={<ISA01IdentityProviderRegistryBoard />} />
                     <Route path="/admin/isa/connector-providers" element={<ISA02ConnectorProviderRegistryBoard />} />
                     <Route path="/admin/isa/oauth-clients" element={<ISA03OAuthClientRegistryConsole />} />
@@ -1791,7 +1791,8 @@ const App = () => (
                      {/* Architecture */}
                      <Route path="/admin/architecture/god-tier-integration" element={<GodTierIntegrationBoard />} />
                      <Route path="/admin/architecture/god-tier-runtime" element={<GodTierRuntimeBoard />} />
-                     <Route path="/admin/architecture/epistemic-firewall" element={<EpistemicFirewallBoard />} />
+                    <Route path="/admin/architecture/epistemic-firewall" element={<EpistemicFirewallBoard />} />
+                    <Route path="/admin/architecture/boundaries" element={<ArchitectureBoundaryBoard />} />
                      <Route path="/admin/kernel" element={<KernelDashboard />} />
                      <Route path="/admin/kernel/compositor-debug" element={<CompositorDebugPage />} />
 

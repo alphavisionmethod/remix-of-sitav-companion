@@ -27,7 +27,7 @@ import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useGovernanceSimulator } from "@/contexts/SitaKernelContext";
-import type { SimulationResult } from "@/lib/core-services/governance-simulator";
+import type { SimulationResult } from "@/lib/services/governance-simulator";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useConfirmation } from "@/hooks/use-confirmation";
 import { useOSOrchestration } from "@/hooks/useOSOrchestration";

@@ -1,4 +1,6 @@
 // SITA OS — Fraud Sentinel
+// Re-export kernel types for app-layer consumption (boundary proxy)
+export type { FraudSummary } from "@/lib/core-services/fraud-sentinel";
 import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
 // @persistence: os_service_state — state survives refresh via universal adapter
 export interface FraudSignal { id: string; type: string; severity: 'low' | 'medium' | 'high' | 'critical'; score: number; source: string; details: Record<string, unknown>; detectedAt: string; resolved: boolean; }

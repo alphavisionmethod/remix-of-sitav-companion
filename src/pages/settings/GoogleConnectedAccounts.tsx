@@ -14,7 +14,7 @@ import { useGoogleProviderFamily } from "@/hooks/use-google-provider-family";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { PermissionUpgradeDialog } from "@/components/sita/PermissionUpgradeDialog";
-import type { GoogleConnectorState } from "@/lib/core-services/google-provider-family/types";
+import type { GoogleConnectorState } from "@/lib/services/google-provider-family/types";
 import type { GenericScopeTier } from "@/lib/services/provider-family/types";
 
 const CAPABILITY_ICONS: Record<string, React.ReactNode> = {

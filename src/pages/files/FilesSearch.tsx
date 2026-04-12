@@ -4,7 +4,7 @@ import { useState, useMemo } from "react";
 import { Search, FileText, Brain, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import { useSearchFabric } from "@/contexts/SitaKernelContext";
-import type { SearchResponse } from "@/lib/core-services/search-fabric";
+import type { SearchResponse } from "@/lib/services/search-fabric";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { useFilesSearchIndex } from "@/hooks/use-domain-data";
