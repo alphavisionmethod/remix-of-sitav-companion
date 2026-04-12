@@ -1262,6 +1262,265 @@ function WaylandProtocolPanel({ stats, clients, globals, onBack }: {
   );
 }
 
+// ── Service Drill-Down Panel ─────────────────────────────────
+
+const SERVICE_DESCRIPTIONS: Record<string, string> = {
+  SettingsService: "Manages user preferences, theme, and system configuration. Provides reactive settings with user/runtime/default layers and persistence via localStorage.",
+  FileSystemService: "Virtual filesystem with mount points, MIME detection, versioning, trash, tagging, quota enforcement, and file watch API.",
+  InputService: "Handles keyboard shortcuts, hotkey registration, and input event routing across the OS shell and applications.",
+  WindowServer: "Window lifecycle management, z-ordering, focus tracking, tiling, minimize/maximize, and multi-window orchestration.",
+  NotificationService: "Notification dispatch, queuing, grouping, and delivery. Supports toast, banner, and persistent notification types.",
+};
+
+const SERVICE_HEALTH_CHECKS: Record<string, { check: string; description: string }[]> = {
+  SettingsService: [
+    { check: "Schema validation", description: "All settings keys match the typed schema" },
+    { check: "Persistence layer", description: "localStorage read/write operational" },
+    { check: "Reactive listeners", description: "Change events firing correctly" },
+    { check: "Default fallbacks", description: "All keys have valid defaults" },
+  ],
+  FileSystemService: [
+    { check: "Mount integrity", description: "All mount points accessible and consistent" },
+    { check: "Quota enforcement", description: "No mount exceeds allocated quota" },
+    { check: "Watch API", description: "File watchers dispatching events" },
+    { check: "Trash subsystem", description: "Soft-delete and restore operational" },
+    { check: "MIME detection", description: "File extension → MIME mapping functional" },
+  ],
+  InputService: [
+    { check: "Event listeners", description: "Keyboard/mouse event handlers attached" },
+    { check: "Hotkey registry", description: "All registered shortcuts conflict-free" },
+    { check: "Focus routing", description: "Input events route to focused window" },
+  ],
+  WindowServer: [
+    { check: "Z-index consistency", description: "No z-order conflicts detected" },
+    { check: "Focus tracking", description: "Active window receives input" },
+    { check: "Window lifecycle", description: "Create/destroy/minimize cycles clean" },
+    { check: "Bounds validation", description: "All windows within viewport bounds" },
+  ],
+  NotificationService: [
+    { check: "Queue processing", description: "Notification queue draining normally" },
+    { check: "Delivery pipeline", description: "Toast and banner rendering functional" },
+    { check: "Grouping engine", description: "Duplicate notifications grouped correctly" },
+  ],
+};
+
+function ServiceDrillDown({ serviceId, diagnostics, bootLog, onBack }: {
+  serviceId: string;
+  diagnostics: Record<string, Record<string, unknown>>;
+  bootLog: readonly ServiceLogEntry[];
+  onBack: () => void;
+}) {
+  const diag = diagnostics[serviceId] || {};
+  const status = (diag.status as ServiceStatus) || "stopped";
+  const bootEntry = bootLog.find(e => e.serviceId === serviceId);
+  const description = SERVICE_DESCRIPTIONS[serviceId] || "System service providing core OS functionality.";
+  const healthChecks = SERVICE_HEALTH_CHECKS[serviceId] || [];
+
+  const SERVICE_META: Record<string, { icon: typeof Cpu; color: string; label: string }> = {
+    SettingsService: { icon: RefreshCw, color: "text-blue-400", label: "Settings Service" },
+    FileSystemService: { icon: HardDrive, color: "text-emerald-400", label: "Filesystem Service" },
+    InputService: { icon: Terminal, color: "text-amber-400", label: "Input Service" },
+    WindowServer: { icon: Monitor, color: "text-purple-400", label: "Window Server" },
+    NotificationService: { icon: Bell, color: "text-pink-400", label: "Notification Service" },
+  };
+
+  const meta = SERVICE_META[serviceId] || { icon: Server, color: "text-muted-foreground", label: serviceId };
+  const Icon = meta.icon;
+
+  // Build all diagnostics entries for display
+  const allStats = Object.entries(diag).filter(([k]) => k !== "status");
+
+  // Group stats into categories
+  const categorizeStats = (entries: [string, unknown][]) => {
+    const categories: Record<string, [string, unknown][]> = { General: [] };
+    for (const [key, val] of entries) {
+      if (typeof val === "object" && val !== null && !Array.isArray(val)) {
+        const catName = key.replace(/([A-Z])/g, " $1").trim();
+        categories[catName] = Object.entries(val as Record<string, unknown>);
+      } else {
+        categories.General.push([key, val]);
+      }
+    }
+    return categories;
+  };
+
+  const statCategories = categorizeStats(allStats);
+
+  return (
+    <motion.div {...slideIn} className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center gap-4">
+        <button onClick={onBack} className="rounded-lg p-2 hover:bg-muted/30 transition-colors">
+          <ArrowLeft className="h-5 w-5 text-muted-foreground" />
+        </button>
+        <div className={cn("rounded-2xl p-3 bg-muted/20 border border-border/30")}>
+          <Icon className={cn("h-7 w-7", meta.color)} />
+        </div>
+        <div className="flex-1">
+          <h2 className="text-lg font-semibold text-foreground">{meta.label}</h2>
+          <p className="text-sm text-muted-foreground">{description}</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className={cn(
+            "w-2.5 h-2.5 rounded-full",
+            status === "running" ? "bg-emerald-400 animate-pulse" :
+            status === "failed" ? "bg-red-400" :
+            status === "starting" ? "bg-amber-400 animate-pulse" :
+            "bg-muted-foreground/40"
+          )} />
+          <Badge variant="outline" className={cn(
+            "text-xs",
+            status === "running" ? "border-emerald-500/30 text-emerald-400" :
+            status === "failed" ? "border-red-500/30 text-red-400" :
+            "border-border/30"
+          )}>
+            {status.toUpperCase()}
+          </Badge>
+        </div>
+      </div>
+
+      {/* Overview Row */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <Card className="border-border/40 bg-card/80">
+          <CardContent className="p-4 text-center">
+            <p className="text-2xl font-bold text-foreground tabular-nums">{bootEntry ? `${bootEntry.timestampMs.toFixed(1)}ms` : "—"}</p>
+            <p className="text-[10px] text-muted-foreground uppercase tracking-wider mt-1">Boot Time</p>
+          </CardContent>
+        </Card>
+        <Card className="border-border/40 bg-card/80">
+          <CardContent className="p-4 text-center">
+            <p className="text-2xl font-bold text-foreground tabular-nums">{allStats.length}</p>
+            <p className="text-[10px] text-muted-foreground uppercase tracking-wider mt-1">Diagnostic Keys</p>
+          </CardContent>
+        </Card>
+        <Card className="border-border/40 bg-card/80">
+          <CardContent className="p-4 text-center">
+            <p className="text-2xl font-bold text-emerald-400 tabular-nums">{healthChecks.length}</p>
+            <p className="text-[10px] text-muted-foreground uppercase tracking-wider mt-1">Health Checks</p>
+          </CardContent>
+        </Card>
+        <Card className="border-border/40 bg-card/80">
+          <CardContent className="p-4 text-center">
+            <p className="text-2xl font-bold text-foreground tabular-nums">{bootEntry?.status === "ok" ? "PASS" : bootEntry?.status === "error" ? "FAIL" : "—"}</p>
+            <p className="text-[10px] text-muted-foreground uppercase tracking-wider mt-1">Boot Result</p>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Health Checks */}
+      {healthChecks.length > 0 && (
+        <Card className="border-border/40 bg-card/80 backdrop-blur-sm">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium flex items-center gap-2">
+              <CheckCircle className="h-4 w-4 text-emerald-400" />
+              Health Checks
+              <Badge variant="outline" className="ml-auto text-[9px] border-emerald-500/30 text-emerald-400">
+                {healthChecks.length}/{healthChecks.length} passing
+              </Badge>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              {healthChecks.map((hc, i) => (
+                <div key={i} className="flex items-center gap-3 py-2 px-3 rounded-lg bg-muted/10 border border-border/20">
+                  <CheckCircle className="h-4 w-4 text-emerald-400 shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs font-medium text-foreground">{hc.check}</p>
+                    <p className="text-[10px] text-muted-foreground">{hc.description}</p>
+                  </div>
+                  <Badge variant="outline" className="text-[8px] border-emerald-500/20 text-emerald-400 shrink-0">OK</Badge>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Full Diagnostics */}
+      <Card className="border-border/40 bg-card/80 backdrop-blur-sm">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-sm font-medium flex items-center gap-2">
+            <Activity className="h-4 w-4 text-primary" />
+            Full Diagnostics
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse ml-1" />
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {Object.entries(statCategories).map(([category, entries]) => {
+              if (entries.length === 0) return null;
+              return (
+                <div key={category} className="rounded-xl border border-border/30 bg-muted/5 p-3">
+                  <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2 flex items-center gap-1.5">
+                    <Database className="h-3 w-3" />
+                    {category}
+                  </p>
+                  <div className="space-y-1.5">
+                    {entries.map(([key, val]) => {
+                      const displayVal = typeof val === "object" && val !== null
+                        ? JSON.stringify(val)
+                        : typeof val === "boolean"
+                        ? val ? "✓ Enabled" : "✗ Disabled"
+                        : typeof val === "number"
+                        ? val.toLocaleString()
+                        : String(val ?? "—");
+
+                      return (
+                        <div key={key} className="flex justify-between items-center gap-2 py-1 px-2 rounded-md hover:bg-muted/10 transition-colors">
+                          <span className="text-[11px] text-muted-foreground truncate">
+                            {key.replace(/([A-Z])/g, " $1").trim()}
+                          </span>
+                          <span className="text-[11px] font-mono text-foreground shrink-0 max-w-[200px] truncate" title={displayVal}>
+                            {displayVal}
+                          </span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </CardContent>
+      </Card>
+
+      {/* Boot Entry Details */}
+      {bootEntry && (
+        <Card className="border-border/40 bg-card/80 backdrop-blur-sm">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-sm font-medium flex items-center gap-2">
+              <Clock className="h-4 w-4 text-blue-400" />
+              Boot Record
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+              <div className="py-2 px-3 rounded-lg bg-muted/10">
+                <p className="text-[10px] text-muted-foreground">Service ID</p>
+                <p className="text-xs font-mono text-foreground mt-0.5">{bootEntry.serviceId}</p>
+              </div>
+              <div className="py-2 px-3 rounded-lg bg-muted/10">
+                <p className="text-[10px] text-muted-foreground">Status</p>
+                <p className={cn("text-xs font-semibold mt-0.5", bootEntry.status === "ok" ? "text-emerald-400" : "text-red-400")}>
+                  {bootEntry.status.toUpperCase()}
+                </p>
+              </div>
+              <div className="py-2 px-3 rounded-lg bg-muted/10">
+                <p className="text-[10px] text-muted-foreground">Duration</p>
+                <p className="text-xs font-mono text-foreground mt-0.5">{bootEntry.timestampMs.toFixed(2)}ms</p>
+              </div>
+              <div className="py-2 px-3 rounded-lg bg-muted/10">
+                <p className="text-[10px] text-muted-foreground">Message</p>
+                <p className="text-xs text-foreground mt-0.5 truncate">{bootEntry.message}</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      )}
+    </motion.div>
+  );
+}
+
 // ── Main Dashboard ───────────────────────────────────────────
 
 type DrillDown =
