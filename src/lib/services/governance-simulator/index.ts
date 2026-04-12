@@ -1,18 +1,18 @@
 // SITA OS — Governance Simulator (merge: workflow-engine)
 // Re-export kernel types for app-layer consumption (boundary proxy)
-export type { SimulationResult as CoreSimulationResult } from "@/lib/core-services/governance-simulator";
+export type { SimulationResult, SimulationScenario as CoreSimulationScenario } from "@/lib/core-services/governance-simulator";
 import { loadServiceState, debouncedSaveServiceState } from "@/lib/persistence/universal-service-persistence";
 // @persistence: os_service_state — state survives refresh via universal adapter
-export interface SimulationScenario { id: string; name: string; domain: string; inputs: Record<string, unknown>; expectedOutcome: string; }
-export interface SimulationResult { scenarioId: string; outcome: string; passed: boolean; details: Record<string, unknown>; duration: number; simulatedAt: string; }
+export interface LocalSimulationScenario { id: string; name: string; domain: string; inputs: Record<string, unknown>; expectedOutcome: string; }
+export interface LocalSimulationResult { scenarioId: string; outcome: string; passed: boolean; details: Record<string, unknown>; duration: number; simulatedAt: string; }
 export class GovernanceSimulatorService {
-  private scenarios: Map<string, SimulationScenario> = new Map();
-  private results: SimulationResult[] = [];
-  registerScenario(scenario: SimulationScenario): void { this.scenarios.set(scenario.id, scenario); }
-  simulate(scenarioId: string): SimulationResult { const s = this.scenarios.get(scenarioId); const result: SimulationResult = { scenarioId, outcome: s?.expectedOutcome ?? 'unknown', passed: !!s, details: { inputs: s?.inputs }, duration: Math.random() * 100, simulatedAt: new Date().toISOString() }; this.results.push(result); return result; }
-  simulateAll(): SimulationResult[] { return [...this.scenarios.keys()].map(id => this.simulate(id)); }
-  getResults(): SimulationResult[] { return [...this.results]; }
-  listScenarios(): SimulationScenario[] { return [...this.scenarios.values()]; }
+  private scenarios: Map<string, LocalSimulationScenario> = new Map();
+  private results: LocalSimulationResult[] = [];
+  registerScenario(scenario: LocalSimulationScenario): void { this.scenarios.set(scenario.id, scenario); }
+  simulate(scenarioId: string): LocalSimulationResult { const s = this.scenarios.get(scenarioId); const result: LocalSimulationResult = { scenarioId, outcome: s?.expectedOutcome ?? 'unknown', passed: !!s, details: { inputs: s?.inputs }, duration: Math.random() * 100, simulatedAt: new Date().toISOString() }; this.results.push(result); return result; }
+  simulateAll(): LocalSimulationResult[] { return [...this.scenarios.keys()].map(id => this.simulate(id)); }
+  getResults(): LocalSimulationResult[] { return [...this.results]; }
+  listScenarios(): LocalSimulationScenario[] { return [...this.scenarios.values()]; }
 
   // ── Persistence ──────────────────────────────────────────
   private _persist = () => debouncedSaveServiceState("governance-simulator", this.serialize());
@@ -36,4 +36,3 @@ export class GovernanceSimulatorService {
   }
 }
 export const createGovernanceSimulator = () => new GovernanceSimulatorService();
-
