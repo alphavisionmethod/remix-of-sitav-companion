@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { useAuth } from "@/contexts/AuthContext";
 import { useFilesProcessing } from "@/hooks/use-domain-data";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
@@ -38,8 +39,7 @@ const FilesProcessing = () => {
     queryKey: ["file-processing-queue", user?.id],
     enabled: !!user,
     queryFn: async () => {
-      const { data } = await supabase
-        .from("file_metadata")
+      const { data } = await db.from("file_metadata")
         .select("*")
         .eq("user_id", user!.id)
         .order("created_at", { ascending: false });

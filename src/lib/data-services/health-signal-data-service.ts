@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import {
   DEMO_SIGNAL_PROVIDERS,
   DEMO_SIGNAL_SUBSYSTEMS,
@@ -11,8 +12,7 @@ import {
 
 export async function fetchWearableProviders(isDemoMode: boolean) {
   if (isDemoMode) return DEMO_SIGNAL_PROVIDERS;
-  const { data, error } = await supabase
-    .from("wearable_providers")
+  const { data, error } = await db.from("wearable_providers")
     .select("*")
     .order("created_at", { ascending: false });
   if (error) throw error;
@@ -21,8 +21,7 @@ export async function fetchWearableProviders(isDemoMode: boolean) {
 
 export async function fetchHealthSignalConsents(isDemoMode: boolean) {
   if (isDemoMode) return [];
-  const { data, error } = await supabase
-    .from("health_signal_consents")
+  const { data, error } = await db.from("health_signal_consents")
     .select("*")
     .order("created_at", { ascending: false });
   if (error) throw error;
@@ -31,8 +30,7 @@ export async function fetchHealthSignalConsents(isDemoMode: boolean) {
 
 export async function fetchWearableSignals(isDemoMode: boolean, limit = 50) {
   if (isDemoMode) return [];
-  const { data, error } = await supabase
-    .from("wearable_signals")
+  const { data, error } = await db.from("wearable_signals")
     .select("*")
     .order("recorded_at", { ascending: false })
     .limit(limit);
@@ -42,8 +40,7 @@ export async function fetchWearableSignals(isDemoMode: boolean, limit = 50) {
 
 export async function fetchReadinessStates(isDemoMode: boolean, limit = 20) {
   if (isDemoMode) return [];
-  const { data, error } = await supabase
-    .from("readiness_states")
+  const { data, error } = await db.from("readiness_states")
     .select("*")
     .order("assessed_at", { ascending: false })
     .limit(limit);
@@ -53,8 +50,7 @@ export async function fetchReadinessStates(isDemoMode: boolean, limit = 20) {
 
 export async function fetchInterruptionPosture(isDemoMode: boolean) {
   if (isDemoMode) return [];
-  const { data, error } = await supabase
-    .from("interruption_policies")
+  const { data, error } = await db.from("interruption_policies")
     .select("*")
     .order("created_at", { ascending: false });
   if (error) throw error;
@@ -63,8 +59,7 @@ export async function fetchInterruptionPosture(isDemoMode: boolean) {
 
 export async function fetchVisibilityPolicies(isDemoMode: boolean) {
   if (isDemoMode) return [];
-  const { data, error } = await supabase
-    .from("readiness_states")
+  const { data, error } = await db.from("readiness_states")
     .select("*")
     .order("assessed_at", { ascending: false })
     .limit(30);
@@ -74,8 +69,7 @@ export async function fetchVisibilityPolicies(isDemoMode: boolean) {
 
 export async function fetchSignalSubsystemReadiness(isDemoMode: boolean) {
   if (isDemoMode) return DEMO_SIGNAL_SUBSYSTEMS;
-  const { data, error } = await supabase
-    .from("ecosystem_launch_readiness")
+  const { data, error } = await db.from("ecosystem_launch_readiness")
     .select("*")
     .like("target", "hrs_%")
     .order("last_assessed_at", { ascending: false });

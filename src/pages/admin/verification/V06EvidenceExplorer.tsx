@@ -6,6 +6,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -21,8 +22,7 @@ export default function VerificationEvidenceExplorer() {
   const { data: runs } = useQuery({
     queryKey: ["v06-verification-runs"],
     queryFn: async () => {
-      const { data } = await supabase
-        .from("journey_verification_runs")
+      const { data } = await db.from("journey_verification_runs")
         .select("*")
         .order("completed_at", { ascending: false })
         .limit(50);
@@ -34,8 +34,7 @@ export default function VerificationEvidenceExplorer() {
     queryKey: ["v06-run-steps", selectedRunId],
     queryFn: async () => {
       if (!selectedRunId) return [];
-      const { data } = await supabase
-        .from("journey_step_results")
+      const { data } = await db.from("journey_step_results")
         .select("*")
         .eq("verification_run_id", selectedRunId)
         .order("step_order", { ascending: true });

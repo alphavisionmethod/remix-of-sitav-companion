@@ -4,6 +4,7 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { fromTable } from "@/lib/supabase-helpers";
 import { toast } from "sonner";
 import { SURFACE_REGISTRY, type SurfaceEntry } from "./surface-registry";
@@ -14,8 +15,7 @@ export function useVerificationSurfaces() {
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return [];
-      const { data, error } = await supabase
-        .from("verification_surfaces")
+      const { data, error } = await db.from("verification_surfaces")
         .select("*")
         .eq("user_id", user.id)
         .order("test_priority", { ascending: true });
@@ -32,8 +32,7 @@ export function useVerificationRuns(surfaceId?: string) {
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return [];
-      let q = supabase
-        .from("verification_runs")
+      let q = db.from("verification_runs")
         .select("*")
         .eq("user_id", user.id)
         .order("created_at", { ascending: false })
@@ -53,8 +52,7 @@ export function useVerificationBlockers() {
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return [];
-      const { data, error } = await supabase
-        .from("verification_blockers")
+      const { data, error } = await db.from("verification_blockers")
         .select("*")
         .eq("user_id", user.id)
         .eq("resolved", false)
@@ -72,8 +70,7 @@ export function useVerificationEvidence(runId?: string) {
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return [];
-      let q = supabase
-        .from("verification_evidence")
+      let q = db.from("verification_evidence")
         .select("*")
         .eq("user_id", user.id)
         .order("created_at", { ascending: false })
@@ -96,8 +93,7 @@ export function useSeedSurfaces() {
       if (!user) throw new Error("Not authenticated");
 
       // Check existing surfaces
-      const { data: existing } = await supabase
-        .from("verification_surfaces")
+      const { data: existing } = await db.from("verification_surfaces")
         .select("route_key")
         .eq("user_id", user.id);
       const existingKeys = new Set((existing || []).map((e: any) => e.route_key));
@@ -126,8 +122,7 @@ export function useSeedSurfaces() {
         }));
 
       if (toInsert.length > 0) {
-        const { error } = await supabase
-          .from("verification_surfaces")
+        const { error } = await db.from("verification_surfaces")
           .insert(toInsert);
         if (error) throw error;
       }
@@ -160,8 +155,7 @@ export function useRecordVerificationRun() {
       });
       if (error) throw error;
       // Update surface verification status
-      await supabase
-        .from("verification_surfaces")
+      await db.from("verification_surfaces")
         .update({ verification_status: input.passed ? "pass" : "fail" })
         .eq("id", input.surface_id);
     },
@@ -176,8 +170,7 @@ export function useResolveBlocker() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (blockerId: string) => {
-      const { error } = await supabase
-        .from("verification_blockers")
+      const { error } = await db.from("verification_blockers")
         .update({ resolved: true, resolved_at: new Date().toISOString() })
         .eq("id", blockerId);
       if (error) throw error;

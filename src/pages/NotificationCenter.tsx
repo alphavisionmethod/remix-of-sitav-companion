@@ -8,6 +8,7 @@ import { KPITile, EmptyState } from "@/components/sita/SitaComponents";
 import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { useAuth } from "@/contexts/AuthContext";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useAdaptiveInterface } from "@/hooks/useAdaptiveInterface";
@@ -158,8 +159,7 @@ const NotificationCenter = () => {
     queryKey: ["notification_center", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("notifications_queue")
+      const { data, error } = await db.from("notifications_queue")
         .select("*")
         .order("created_at", { ascending: false })
         .limit(100);
@@ -173,8 +173,7 @@ const NotificationCenter = () => {
     queryKey: ["notifications_legacy", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
-      const { data } = await supabase
-        .from("notifications")
+      const { data } = await db.from("notifications")
         .select("*")
         .order("created_at", { ascending: false })
         .limit(50);

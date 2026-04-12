@@ -10,6 +10,7 @@ import {
 } from "@/lib/core-services/flagship-loops/flagship-loop-service";
 import { getDomainsByFlagshipLoop } from "@/lib/core-services/service-registry/service-ownership-registry";
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -93,8 +94,7 @@ export default function FL01FlagshipLoopsExecutive() {
   const { data: verificationRuns } = useQuery({
     queryKey: ["fl01-verification-runs"],
     queryFn: async () => {
-      const { data } = await supabase
-        .from("journey_verification_runs")
+      const { data } = await db.from("journey_verification_runs")
         .select("*")
         .order("completed_at", { ascending: false })
         .limit(50);

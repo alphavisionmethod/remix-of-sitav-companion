@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 
 export const SCOPE_LEVELS = ["route", "page", "feature", "component_group", "service", "domain", "workspace", "office"] as const;
@@ -49,8 +50,7 @@ export const PROGRESSION_REQUIREMENTS: Record<string, string[]> = {
 };
 
 export async function fetchRealityClassifications(): Promise<RealityClassification[]> {
-  const { data, error } = await supabase
-    .from("reality_classifications")
+  const { data, error } = await db.from("reality_classifications")
     .select("*")
     .order("domain", { ascending: true });
   if (error) throw error;
@@ -63,8 +63,7 @@ export async function upsertRealityClassification(
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) throw new Error("Not authenticated");
 
-  const { data, error } = await supabase
-    .from("reality_classifications")
+  const { data, error } = await db.from("reality_classifications")
     .upsert({ ...record, user_id: user.id }, { onConflict: "user_id,route_path" })
     .select()
     .single();

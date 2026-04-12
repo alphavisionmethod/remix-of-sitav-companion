@@ -5,6 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import type {
   ConnectedServiceLink,
   ConnectedAccountView,
@@ -16,8 +17,7 @@ import type {
 
 // ── Connected services ─────────────────────────────────────────
 export async function getConnectedServices(): Promise<ConnectedServiceLink[]> {
-  const { data, error } = await supabase
-    .from("connected_service_links")
+  const { data, error } = await db.from("connected_service_links")
     .select("*, provider_families(name), provider_capabilities(display_name, capability_key)")
     .order("created_at");
   if (error) throw error;
@@ -25,8 +25,7 @@ export async function getConnectedServices(): Promise<ConnectedServiceLink[]> {
 }
 
 export async function getConnectedServicesByStatus(status: string): Promise<ConnectedServiceLink[]> {
-  const { data, error } = await supabase
-    .from("connected_service_links")
+  const { data, error } = await db.from("connected_service_links")
     .select("*, provider_families(name), provider_capabilities(display_name, capability_key)")
     .eq("connection_status", status)
     .order("created_at");
@@ -36,8 +35,7 @@ export async function getConnectedServicesByStatus(status: string): Promise<Conn
 
 // ── Connected accounts center view ─────────────────────────────
 export async function getConnectedAccountsCenter(): Promise<ConnectedAccountView[]> {
-  const { data, error } = await supabase
-    .from("v_connected_accounts_center")
+  const { data, error } = await db.from("v_connected_accounts_center")
     .select("*");
   if (error) throw error;
   return (data ?? []) as never as ConnectedAccountView[];
@@ -45,15 +43,13 @@ export async function getConnectedAccountsCenter(): Promise<ConnectedAccountView
 
 // ── Disconnection events ───────────────────────────────────────
 export async function logDisconnection(event: ConnectorDisconnectionEventInsert): Promise<void> {
-  const { error } = await supabase
-    .from("connector_disconnection_events")
+  const { error } = await db.from("connector_disconnection_events")
     .insert(event);
   if (error) throw error;
 }
 
 export async function getDisconnectionHistory(limit = 50): Promise<ConnectorDisconnectionEvent[]> {
-  const { data, error } = await supabase
-    .from("connector_disconnection_events")
+  const { data, error } = await db.from("connector_disconnection_events")
     .select("*, provider_families(name)")
     .order("disconnected_at", { ascending: false })
     .limit(limit);
@@ -65,8 +61,7 @@ export async function getDisconnectionHistory(limit = 50): Promise<ConnectorDisc
 export async function requestPermissionUpgrade(
   request: PermissionUpgradeRequestInsert
 ): Promise<PermissionUpgradeRequest> {
-  const { data, error } = await supabase
-    .from("permission_upgrade_requests")
+  const { data, error } = await db.from("permission_upgrade_requests")
     .insert(request)
     .select()
     .single();
@@ -75,8 +70,7 @@ export async function requestPermissionUpgrade(
 }
 
 export async function getPendingUpgradeRequests(): Promise<PermissionUpgradeRequest[]> {
-  const { data, error } = await supabase
-    .from("permission_upgrade_requests")
+  const { data, error } = await db.from("permission_upgrade_requests")
     .select("*, connected_service_links(provider_families(name))")
     .eq("status", "pending")
     .order("created_at", { ascending: false });

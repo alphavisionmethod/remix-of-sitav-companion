@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import type {
   GoogleProviderFamilyState,
   GoogleIdentityState,
@@ -49,8 +50,7 @@ export async function getGoogleProviderFamilyState(
 ): Promise<GoogleProviderFamilyState> {
   try {
     // 1. Get the Google provider family
-    const { data: family } = await supabase
-      .from("provider_families")
+    const { data: family } = await db.from("provider_families")
       .select("id, provider_key, name, launch_stage, active")
       .eq("provider_key", "google")
       .maybeSingle();
@@ -89,8 +89,7 @@ export async function getGoogleProviderFamilyState(
 // ── Identity ─────────────────────────────────────────────────
 
 async function fetchGoogleIdentity(familyId: string): Promise<GoogleIdentityState> {
-  const { data: link } = await supabase
-    .from("identity_provider_links")
+  const { data: link } = await db.from("identity_provider_links")
     .select("id, email, primary_identity, active, auth_method")
     .eq("provider_family_id", familyId)
     .maybeSingle();
@@ -113,8 +112,7 @@ async function fetchGoogleConnectors(
   familyId: string,
   mode: GoogleRealityMode
 ): Promise<GoogleConnectorState[]> {
-  const { data: capabilities } = await supabase
-    .from("provider_capabilities")
+  const { data: capabilities } = await db.from("provider_capabilities")
     .select("id, capability_key, display_name, category, launch_stage, sync_support, health_support, upgrade_path_support")
     .eq("provider_family_id", familyId)
     .neq("category", "identity")
@@ -124,8 +122,7 @@ async function fetchGoogleConnectors(
 
   // Get connected service links for these capabilities
   const capIds = capabilities.map((c: Record<string, unknown>) => c.id as string);
-  const { data: services } = await supabase
-    .from("connected_service_links")
+  const { data: services } = await db.from("connected_service_links")
     .select("*")
     .in("provider_capability_id", capIds);
 
@@ -154,8 +151,7 @@ async function fetchGoogleConnectors(
 // ── OAuth Clients ────────────────────────────────────────────
 
 async function fetchGoogleOAuthClients(familyId: string): Promise<GoogleOAuthClientInfo[]> {
-  const { data: clients } = await supabase
-    .from("oauth_client_registry")
+  const { data: clients } = await db.from("oauth_client_registry")
     .select("id, client_name, client_purpose, allowed_capabilities, environment, launch_stage, active")
     .eq("provider_family_id", familyId)
     .order("client_name");
@@ -174,8 +170,7 @@ async function fetchGoogleOAuthClients(familyId: string): Promise<GoogleOAuthCli
 // ── Scope Policies ───────────────────────────────────────────
 
 async function fetchGoogleScopePolicies(familyId: string): Promise<GoogleScopePolicyEntry[]> {
-  const { data: policies } = await supabase
-    .from("scope_policy_matrix")
+  const { data: policies } = await db.from("scope_policy_matrix")
     .select("*, provider_capabilities(capability_key, display_name)")
     .order("created_at");
 
@@ -200,8 +195,7 @@ async function fetchGoogleScopePolicies(familyId: string): Promise<GoogleScopePo
 // ── Launch Honesty ───────────────────────────────────────────
 
 async function fetchGoogleLaunchHonesty(familyId: string): Promise<GoogleLaunchHonestyEntry[]> {
-  const { data: entries } = await supabase
-    .from("integration_launch_honesty")
+  const { data: entries } = await db.from("integration_launch_honesty")
     .select("*, provider_capabilities(capability_key, display_name)")
     .eq("provider_family_id", familyId);
 
@@ -219,8 +213,7 @@ async function fetchGoogleLaunchHonesty(familyId: string): Promise<GoogleLaunchH
 // ── Consent Ledger ───────────────────────────────────────────
 
 export async function getGoogleConsentHistory(): Promise<Array<Record<string, unknown>>> {
-  const { data } = await supabase
-    .from("consent_ledger")
+  const { data } = await db.from("consent_ledger")
     .select("*, provider_families(name, provider_key)")
     .order("created_at", { ascending: false })
     .limit(50);

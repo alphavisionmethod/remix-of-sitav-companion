@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 
 export interface SurfacePortabilityRecord {
   id: string;
@@ -83,8 +84,7 @@ const CANONICAL_CAPABILITIES: Omit<SurfacePortabilityRecord, "id">[] = [
 ];
 
 export async function getSurfacePortability(): Promise<SurfacePortabilityRecord[]> {
-  const { data, error } = await supabase
-    .from("surface_portability_registry")
+  const { data, error } = await db.from("surface_portability_registry")
     .select("*")
     .order("capability_key");
 
@@ -106,8 +106,7 @@ export async function upsertSurfacePortability(
   record: Omit<SurfacePortabilityRecord, "id">
 ): Promise<void> {
   const score = calculatePortabilityScore(record);
-  const { error } = await supabase
-    .from("surface_portability_registry")
+  const { error } = await db.from("surface_portability_registry")
     .upsert({
       user_id: userId,
       capability_key: record.capability_key,

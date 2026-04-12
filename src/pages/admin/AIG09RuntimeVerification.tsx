@@ -9,6 +9,7 @@ import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { useAIRuntimeVerification, type CapabilityVerification } from "@/lib/ai/hooks/use-ai-runtime-verification";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { reclassifyAIFeatures, type ReclassificationResult } from "@/lib/ai/ai-launch-honesty-reclassifier";
 import { seedAIRoutingActivation } from "@/lib/ai/ai-routing-seed-service";
 import { getAIStatusMessage } from "@/hooks/use-ai-health";
@@ -100,18 +101,15 @@ function AIR02ProviderHealth() {
   const { data: providers = [] } = useQuery({
     queryKey: ["air-provider-health"],
     queryFn: async () => {
-      const { data } = await supabase
-        .from("ai_provider_registry")
+      const { data } = await db.from("ai_provider_registry")
         .select("provider_key, display_name, is_active, launch_stage, secret_env_name, mode")
         .order("display_name");
-      const { data: health } = await supabase
-        .from("ai_provider_health")
+      const { data: health } = await db.from("ai_provider_health")
         .select("provider, health_state, last_success_at, last_failure_at, avg_latency_ms, error_rate")
         .order("updated_at", { ascending: false })
         .limit(20);
       // Latest receipt per provider from ai_inference_receipts
-      const { data: receipts } = await supabase
-        .from("ai_inference_receipts")
+      const { data: receipts } = await db.from("ai_inference_receipts")
         .select("provider, latency_ms, cost_actual_cents, created_at")
         .order("created_at", { ascending: false })
         .limit(50);
@@ -183,8 +181,7 @@ function AIR03ModelReadiness() {
   const { data: models = [] } = useQuery({
     queryKey: ["air-model-readiness"],
     queryFn: async () => {
-      const { data } = await supabase
-        .from("ai_model_registry")
+      const { data } = await db.from("ai_model_registry")
         .select("model_id, provider, display_name, model_class, cost_tier, latency_tier, is_active, structured_output_support, tool_calling_support")
         .order("provider")
         .limit(50);
@@ -271,8 +268,7 @@ function AIR05RecentVerificationFeed() {
   const { data: recent = [] } = useQuery({
     queryKey: ["air-recent-verifications"],
     queryFn: async () => {
-      const { data } = await supabase
-        .from("ai_usage_ledger")
+      const { data } = await db.from("ai_usage_ledger")
         .select("capability_key, provider_id, model_id, status, latency_ms, receipt_id, mode, created_at, error_summary")
         .order("created_at", { ascending: false })
         .limit(20);
@@ -323,8 +319,7 @@ function AIR06ReceiptUsageTruth() {
     queryKey: ["air-receipt-usage-stats"],
     queryFn: async () => {
       const today = new Date().toISOString().split("T")[0];
-      const { data: ledger } = await supabase
-        .from("ai_usage_ledger")
+      const { data: ledger } = await db.from("ai_usage_ledger")
         .select("status, receipt_id, estimated_cost_usd, latency_ms, capability_key")
         .gte("created_at", today)
         .limit(500);
@@ -345,8 +340,7 @@ function AIR06ReceiptUsageTruth() {
   const { data: latestReceipt } = useQuery({
     queryKey: ["air-latest-receipt"],
     queryFn: async () => {
-      const { data } = await supabase
-        .from("ai_receipt_records")
+      const { data } = await db.from("ai_receipt_records")
         .select("id, capability_key, decision_class, mode, created_at, provider_id, model_id")
         .order("created_at", { ascending: false })
         .limit(1)

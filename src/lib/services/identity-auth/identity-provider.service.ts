@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import type {
   IdentityProviderRegistry,
   IdentityProviderLink,
@@ -14,8 +15,7 @@ import type {
 
 // ── Registry: which identity providers are available ───────────
 export async function getIdentityProviderRegistry(): Promise<IdentityProviderRegistry[]> {
-  const { data, error } = await supabase
-    .from("identity_provider_registry")
+  const { data, error } = await db.from("identity_provider_registry")
     .select("*")
     .eq("is_active", true)
     .order("display_name");
@@ -24,8 +24,7 @@ export async function getIdentityProviderRegistry(): Promise<IdentityProviderReg
 }
 
 export async function getIdentityProviderByKey(key: string): Promise<IdentityProviderRegistry | null> {
-  const { data, error } = await supabase
-    .from("identity_provider_registry")
+  const { data, error } = await db.from("identity_provider_registry")
     .select("*")
     .eq("identity_key", key)
     .maybeSingle();
@@ -35,8 +34,7 @@ export async function getIdentityProviderByKey(key: string): Promise<IdentityPro
 
 // ── Links: which identity providers a user has linked ──────────
 export async function getUserIdentityLinks(): Promise<IdentityProviderLink[]> {
-  const { data, error } = await supabase
-    .from("identity_provider_links")
+  const { data, error } = await db.from("identity_provider_links")
     .select("*, provider_families(name, provider_key)")
     .order("created_at");
   if (error) throw error;
@@ -44,8 +42,7 @@ export async function getUserIdentityLinks(): Promise<IdentityProviderLink[]> {
 }
 
 export async function getPrimaryIdentity(): Promise<IdentityProviderLink | null> {
-  const { data, error } = await supabase
-    .from("identity_provider_links")
+  const { data, error } = await db.from("identity_provider_links")
     .select("*, provider_families(name, provider_key)")
     .eq("primary_identity", true)
     .maybeSingle();
@@ -55,8 +52,7 @@ export async function getPrimaryIdentity(): Promise<IdentityProviderLink | null>
 
 // ── Identity methods view ──────────────────────────────────────
 export async function getIdentityMethods(): Promise<IdentityMethodView[]> {
-  const { data, error } = await supabase
-    .from("v_identity_methods")
+  const { data, error } = await db.from("v_identity_methods")
     .select("*");
   if (error) throw error;
   return (data ?? []) as never as IdentityMethodView[];
@@ -64,15 +60,13 @@ export async function getIdentityMethods(): Promise<IdentityMethodView[]> {
 
 // ── Session audit ──────────────────────────────────────────────
 export async function logSessionEvent(event: IdentitySessionAuditInsert): Promise<void> {
-  const { error } = await supabase
-    .from("identity_session_audit")
+  const { error } = await db.from("identity_session_audit")
     .insert(event);
   if (error) throw error;
 }
 
 export async function getSessionAuditLog(limit = 50): Promise<IdentitySessionAudit[]> {
-  const { data, error } = await supabase
-    .from("identity_session_audit")
+  const { data, error } = await db.from("identity_session_audit")
     .select("*")
     .order("created_at", { ascending: false })
     .limit(limit);

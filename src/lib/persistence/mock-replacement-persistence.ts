@@ -1,4 +1,5 @@
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 
 export interface MockReplacement {
@@ -25,8 +26,7 @@ export interface MockReplacement {
 }
 
 export async function fetchMockReplacements(): Promise<MockReplacement[]> {
-  const { data, error } = await supabase
-    .from("mock_replacements")
+  const { data, error } = await db.from("mock_replacements")
     .select("*")
     .order("sequence_order", { ascending: true });
   if (error) throw error;
@@ -40,8 +40,7 @@ export async function upsertMockReplacement(
   if (!user) throw new Error("Not authenticated");
 
   const payload = { ...record, user_id: user.id };
-  const { data, error } = await supabase
-    .from("mock_replacements")
+  const { data, error } = await db.from("mock_replacements")
     .upsert(payload)
     .select()
     .single();

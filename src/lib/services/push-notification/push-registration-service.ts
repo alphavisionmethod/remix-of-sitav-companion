@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 
 export type PushPlatform = "web" | "ios" | "android" | "electron";
 
@@ -152,8 +153,7 @@ export async function registerPushToken(vapidPublicKey?: string): Promise<PushTo
   }
 
   // Upsert token
-  const { data, error } = await supabase
-    .from("device_push_tokens")
+  const { data, error } = await db.from("device_push_tokens")
     .upsert(
       {
         user_id: user.id,
@@ -180,8 +180,7 @@ export async function registerPushToken(vapidPublicKey?: string): Promise<PushTo
 }
 
 export async function unregisterPushToken(tokenId: string): Promise<boolean> {
-  const { error } = await supabase
-    .from("device_push_tokens")
+  const { error } = await db.from("device_push_tokens")
     .update({ active: false })
     .eq("id", tokenId);
 
@@ -192,8 +191,7 @@ export async function unregisterAllTokens(): Promise<boolean> {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return false;
 
-  const { error } = await supabase
-    .from("device_push_tokens")
+  const { error } = await db.from("device_push_tokens")
     .update({ active: false })
     .eq("user_id", user.id);
 
@@ -204,8 +202,7 @@ export async function getRegisteredTokens(): Promise<PushTokenRecord[]> {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return [];
 
-  const { data, error } = await supabase
-    .from("device_push_tokens")
+  const { data, error } = await db.from("device_push_tokens")
     .select("*")
     .eq("user_id", user.id)
     .eq("active", true)
@@ -223,8 +220,7 @@ export async function refreshToken(): Promise<PushTokenRecord | null> {
   const platform = detectPlatform();
 
   // Deactivate existing tokens for this platform
-  await supabase
-    .from("device_push_tokens")
+  await db.from("device_push_tokens")
     .update({ active: false })
     .eq("user_id", user.id)
     .eq("platform", platform);

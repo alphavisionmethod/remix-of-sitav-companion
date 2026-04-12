@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 
 export type LaunchStatus = "live" | "beta" | "demo_only" | "scaffold" | "unavailable";
 export type HonestyClass = "truthful" | "demo_backed" | "scaffold" | "unavailable";
@@ -40,8 +41,7 @@ export interface GateCheckRecord {
 }
 
 export async function getLaunchGates(): Promise<LaunchGateRecord[]> {
-  const { data, error } = await supabase
-    .from("launch_gates")
+  const { data, error } = await db.from("launch_gates")
     .select("*")
     .order("domain");
 
@@ -71,8 +71,7 @@ export async function getLaunchGates(): Promise<LaunchGateRecord[]> {
 }
 
 export async function getGateChecks(gateId: string): Promise<GateCheckRecord[]> {
-  const { data, error } = await supabase
-    .from("launch_gate_checks")
+  const { data, error } = await db.from("launch_gate_checks")
     .select("*")
     .eq("gate_id", gateId)
     .order("checked_at", { ascending: false });

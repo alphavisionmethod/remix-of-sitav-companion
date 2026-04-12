@@ -5,6 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 import { getTaskContract } from "@/lib/contracts/global-contracts-registry";
 import { aiMemoryGraphService, type MemoryNode } from "@/lib/services/ai-memory-graph";
@@ -144,8 +145,7 @@ export class ContextAssembler {
 
   private async getUserProfile(userId: string): Promise<ContextSource | null> {
     try {
-      const { data: profile } = await supabase
-        .from("profiles")
+      const { data: profile } = await db.from("profiles")
         .select("display_name, onboarding_completed, preferences")
         .eq("user_id", userId)
         .maybeSingle();
@@ -175,8 +175,7 @@ export class ContextAssembler {
       // Enrich with adaptive interface profile
       let interfaceProfile: Record<string, unknown> | null = null;
       try {
-        const { data: aip } = await supabase
-          .from("adaptive_interface_profiles")
+        const { data: aip } = await db.from("adaptive_interface_profiles")
           .select("cognitive_load_class, density_preference, summary_depth, current_mode")
           .eq("user_id", userId)
           .maybeSingle();
@@ -210,8 +209,7 @@ export class ContextAssembler {
 
   private async getPersistedConversation(userId: string, maxTokens: number): Promise<ContextSource | null> {
     try {
-      const { data: memories } = await supabase
-        .from("advisor_memories")
+      const { data: memories } = await db.from("advisor_memories")
         .select("content, memory_type, created_at")
         .eq("user_id", userId)
         .eq("memory_type", "conversation")
@@ -281,8 +279,7 @@ export class ContextAssembler {
     const sources: ContextSource[] = [];
 
     try {
-      const { data: knowledge } = await supabase
-        .from("advisor_knowledge")
+      const { data: knowledge } = await db.from("advisor_knowledge")
         .select("id, title, content, confidence, updated_at")
         .eq("user_id", userId)
         .eq("status", "verified")

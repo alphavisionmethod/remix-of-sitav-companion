@@ -14,6 +14,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Progress } from "@/components/ui/progress";
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { fromTable } from "@/lib/supabase-helpers";
 import { toast } from "sonner";
 import {
@@ -377,8 +378,7 @@ function HQ03DecisionHistory() {
   const { data: resolved = [] } = useQuery({
     queryKey: ["hq-resolved"],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from("ai_workforce_approval_queue")
+      const { data, error } = await db.from("ai_workforce_approval_queue")
         .select("*")
         .in("status", ["approved", "rejected", "deferred", "executed", "expired"])
         .order("resolved_at", { ascending: false })

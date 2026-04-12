@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { Network, Shield, Plug, Smartphone, Users, ArrowRight, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
@@ -28,8 +29,7 @@ export default function ISA06UnifiedAccountGraphExplorer() {
   const { data: nodes = [] } = useQuery({
     queryKey: ["isa06-graph-nodes"],
     queryFn: async () => {
-      const { data } = await supabase
-        .from("unified_account_nodes")
+      const { data } = await db.from("unified_account_nodes")
         .select("*")
         .order("node_type")
         .order("display_name");
@@ -40,8 +40,7 @@ export default function ISA06UnifiedAccountGraphExplorer() {
   const { data: edges = [] } = useQuery({
     queryKey: ["isa06-graph-edges"],
     queryFn: async () => {
-      const { data } = await supabase
-        .from("unified_account_edges")
+      const { data } = await db.from("unified_account_edges")
         .select("*")
         .order("created_at", { ascending: false });
       return data || [];

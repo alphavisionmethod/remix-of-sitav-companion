@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 
 export interface OAuthFlowRecord {
   id: string;
@@ -39,8 +40,7 @@ export interface SyncJobRecord {
 }
 
 export async function getOAuthFlows(): Promise<OAuthFlowRecord[]> {
-  const { data, error } = await supabase
-    .from("connector_oauth_flows")
+  const { data, error } = await db.from("connector_oauth_flows")
     .select("*")
     .order("created_at", { ascending: false });
 
@@ -52,8 +52,7 @@ export async function getOAuthFlows(): Promise<OAuthFlowRecord[]> {
 }
 
 export async function getSyncJobs(): Promise<SyncJobRecord[]> {
-  const { data, error } = await supabase
-    .from("connector_sync_jobs")
+  const { data, error } = await db.from("connector_sync_jobs")
     .select("*")
     .order("created_at", { ascending: false });
 
@@ -70,8 +69,7 @@ export async function createOAuthFlow(
   providerName: string,
   scopesRequested: string[]
 ): Promise<string | null> {
-  const { data, error } = await supabase
-    .from("connector_oauth_flows")
+  const { data, error } = await db.from("connector_oauth_flows")
     .insert({
       user_id: userId,
       connector_key: connectorKey,
@@ -94,8 +92,7 @@ export async function createSyncJob(
   connectorKey: string,
   syncType: string = "full"
 ): Promise<string | null> {
-  const { data, error } = await supabase
-    .from("connector_sync_jobs")
+  const { data, error } = await db.from("connector_sync_jobs")
     .insert({
       user_id: userId,
       connector_key: connectorKey,

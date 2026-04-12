@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Grid3X3, Shield, Lock, AlertTriangle, CheckCircle, XCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
@@ -31,8 +32,7 @@ export default function ISA05ScopePolicyMatrixBoard() {
   const { data: scopes = [] } = useQuery({
     queryKey: ["isa05-scope-policy"],
     queryFn: async () => {
-      const { data } = await supabase
-        .from("scope_policy_matrix")
+      const { data } = await db.from("scope_policy_matrix")
         .select("*, provider_families(name, provider_key), provider_capabilities(display_name)")
         .order("provider_family_id")
         .order("category");

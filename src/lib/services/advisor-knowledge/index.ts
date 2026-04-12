@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 
 export interface KnowledgeArticle {
@@ -30,8 +31,7 @@ export interface AddKnowledgeInput {
 
 export class AdvisorKnowledgeService {
   async addKnowledge(advisorId: string, userId: string, input: AddKnowledgeInput): Promise<KnowledgeArticle | null> {
-    const { data, error } = await supabase
-      .from("advisor_knowledge")
+    const { data, error } = await db.from("advisor_knowledge")
       .insert({
         advisor_id: advisorId,
         user_id: userId,
@@ -53,8 +53,7 @@ export class AdvisorKnowledgeService {
     // Keyword-based relevance: extract words, match against tags and title
     const keywords = query.toLowerCase().split(/\s+/).filter(w => w.length > 2);
 
-    const { data, error } = await supabase
-      .from("advisor_knowledge")
+    const { data, error } = await db.from("advisor_knowledge")
       .select("*")
       .eq("advisor_id", advisorId)
       .eq("user_id", userId)
@@ -87,8 +86,7 @@ export class AdvisorKnowledgeService {
   }
 
   async getAllKnowledge(advisorId: string, userId: string): Promise<KnowledgeArticle[]> {
-    const { data } = await supabase
-      .from("advisor_knowledge")
+    const { data } = await db.from("advisor_knowledge")
       .select("*")
       .eq("advisor_id", advisorId)
       .eq("user_id", userId)

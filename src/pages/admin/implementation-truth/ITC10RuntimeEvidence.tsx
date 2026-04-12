@@ -6,6 +6,7 @@
 import { useSpecRegistry, type SpecRegistryEntry } from "@/hooks/use-implementation-truth";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -31,8 +32,7 @@ function useRuntimeEvidence() {
 
       // Event log counts by domain
       try {
-        const { data: events } = await supabase
-          .from("os_event_log")
+        const { data: events } = await db.from("os_event_log")
           .select("event_domain")
           .limit(1000);
         (events || []).forEach((e: any) => { ensure(e.event_domain || "unknown").eventCount++; });
@@ -40,8 +40,7 @@ function useRuntimeEvidence() {
 
       // Receipt counts by domain
       try {
-        const { data: receipts } = await supabase
-          .from("sita_receipts")
+        const { data: receipts } = await db.from("sita_receipts")
           .select("domain")
           .limit(1000);
         (receipts || []).forEach((r: any) => { ensure(r.domain || "unknown").receiptCount++; });
@@ -49,8 +48,7 @@ function useRuntimeEvidence() {
 
       // Action lineage counts by domain
       try {
-        const { data: actions } = await supabase
-          .from("os_action_lineage")
+        const { data: actions } = await db.from("os_action_lineage")
           .select("domain")
           .limit(1000);
         (actions || []).forEach((a: any) => { ensure(a.domain || "unknown").actionCount++; });
@@ -58,8 +56,7 @@ function useRuntimeEvidence() {
 
       // Memory counts by scope
       try {
-        const { data: memories } = await supabase
-          .from("os_memory_scoped")
+        const { data: memories } = await db.from("os_memory_scoped")
           .select("scope")
           .limit(1000);
         (memories || []).forEach((m: any) => { ensure(m.scope || "unknown").memoryCount++; });

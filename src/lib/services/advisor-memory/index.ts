@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { supabase } from "@/integrations/supabase/client";
+const db = supabase as any;
 import { fromTable, fromDynamicTable} from "@/lib/supabase-helpers";
 
 export interface AdvisorMemory {
@@ -53,8 +54,7 @@ export class AdvisorMemoryService {
   }
 
   async getRecentMemories(advisorId: string, userId: string, limit = 5): Promise<AdvisorMemory[]> {
-    const { data } = await supabase
-      .from("advisor_memories")
+    const { data } = await db.from("advisor_memories")
       .select("*")
       .eq("advisor_id", advisorId)
       .eq("user_id", userId)
@@ -66,8 +66,7 @@ export class AdvisorMemoryService {
   }
 
   async getUserFacts(advisorId: string, userId: string): Promise<AdvisorMemory[]> {
-    const { data } = await supabase
-      .from("advisor_memories")
+    const { data } = await db.from("advisor_memories")
       .select("*")
       .eq("advisor_id", advisorId)
       .eq("user_id", userId)
@@ -79,8 +78,7 @@ export class AdvisorMemoryService {
   }
 
   async getUserPreferences(advisorId: string, userId: string): Promise<AdvisorMemory[]> {
-    const { data } = await supabase
-      .from("advisor_memories")
+    const { data } = await db.from("advisor_memories")
       .select("*")
       .eq("advisor_id", advisorId)
       .eq("user_id", userId)
@@ -92,8 +90,7 @@ export class AdvisorMemoryService {
   }
 
   async getCrossAdvisorFacts(userId: string, excludeAdvisorId: string): Promise<AdvisorMemory[]> {
-    const { data } = await supabase
-      .from("advisor_memories")
+    const { data } = await db.from("advisor_memories")
       .select("*")
       .eq("user_id", userId)
       .eq("memory_type", "fact")
