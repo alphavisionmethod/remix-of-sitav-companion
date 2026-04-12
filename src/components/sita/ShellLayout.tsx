@@ -215,8 +215,8 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
     return () => window.removeEventListener("beforeunload", handler);
   }, [wm, location.pathname]);
 
-  // Memoized callbacks for child components
-  const handleNotifOpen = useCallback(() => setNotifOpen(true), []);
+  const handleNotifOpen = useCallback(() => setNotifDropdownOpen(o => !o), []);
+  const handleControlCenterOpen = useCallback(() => setControlCenterOpen(o => !o), []);
   const handleTimelineOpen = useCallback(() => setTimelineOpen(true), []);
   const handleCommandOpen = useCallback(() => setCommandOpen(true), []);
 
@@ -494,7 +494,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         </Suspense>
         {isDesktopRoute ? (
           <Suspense fallback={null}>
-            <SystemMenuBarLazy onSearchOpen={handleCommandOpen} onNotifOpen={handleNotifOpen} activeApp="Desktop" />
+            <SystemMenuBarLazy onSearchOpen={handleCommandOpen} onNotifOpen={handleNotifOpen} onControlCenterOpen={handleControlCenterOpen} activeApp="Desktop" />
           </Suspense>
         ) : (
           <SitaTopBar
