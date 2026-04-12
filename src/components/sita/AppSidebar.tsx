@@ -7,6 +7,7 @@ import {
 import { cn } from "@/lib/utils";
 import { NavLink } from "@/components/NavLink";
 import { useLocation, useNavigate } from "react-router-dom";
+import { predictivePrefetch } from "@/lib/services/predictive-prefetch";
 import { useAuth } from "@/contexts/AuthContext";
 import { useDataMode } from "@/contexts/DataModeContext";
 import logo from "@/assets/sita-logo.jpeg";
@@ -71,6 +72,9 @@ function AppIconItem({ item, collapsed, active }: {
         <NavLink
           to={item.url}
           end={item.url === "/"}
+          data-prefetch-path={item.url}
+          onMouseEnter={() => predictivePrefetch.onHoverStart(item.url)}
+          onMouseLeave={() => predictivePrefetch.onHoverEnd(item.url)}
           className={cn(
             "flex items-center gap-3 rounded-xl px-2 py-1.5 transition-all duration-200 group/app",
             collapsed && "justify-center px-0 py-2",

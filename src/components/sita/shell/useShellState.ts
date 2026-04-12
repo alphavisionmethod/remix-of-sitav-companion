@@ -46,6 +46,8 @@ export interface ContinuityContext {
   whatChanged: string[];
 }
 
+export type SpatialZoom = "overview" | "workspace" | "app";
+
 export interface ShellState {
   surface: ShellSurface;
   trustPosture: TrustPosture;
@@ -55,6 +57,7 @@ export interface ShellState {
   continuity: ContinuityContext;
   isCommandOpen: boolean;
   isOnline: boolean;
+  spatialZoom: SpatialZoom;
 }
 
 const DEFAULT_NOTIFICATIONS: ShellNotificationDigest = {
@@ -81,6 +84,7 @@ export function useShellState() {
   const [privacyMode, setPrivacyMode] = useState<PrivacyMode>("personal");
   const [isCommandOpen, setIsCommandOpen] = useState(false);
   const [isOnline, setIsOnline] = useState(navigator.onLine);
+  const [spatialZoom, setSpatialZoom] = useState<SpatialZoom>("overview");
   const [notifications, setNotifications] = useState<ShellNotificationDigest>(DEFAULT_NOTIFICATIONS);
   const [continuity, setContinuity] = useState<ContinuityContext>(DEFAULT_CONTINUITY);
 
@@ -139,7 +143,8 @@ export function useShellState() {
     continuity,
     isCommandOpen,
     isOnline,
-  }), [surface, trustPosture, privacyMode, desktopState, notifications, continuity, isCommandOpen, isOnline]);
+    spatialZoom,
+  }), [surface, trustPosture, privacyMode, desktopState, notifications, continuity, isCommandOpen, isOnline, spatialZoom]);
 
   return {
     state,
@@ -153,5 +158,6 @@ export function useShellState() {
     updateNotifications,
     updateContinuity,
     setSurface,
+    setSpatialZoom,
   };
 }

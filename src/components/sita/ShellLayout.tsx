@@ -36,6 +36,7 @@ import { CommandLayer } from "./shell/CommandLayer";
 import { ClickRipple } from "./shell/ClickRipple";
 import { AppPermissionGate, isPermissionGranted } from "./shell/AppPermissionGate";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
+import { useZeroLatency } from "@/hooks/use-zero-latency";
 
 // Lazy-load non-critical shell features (deferred until after first paint)
 const AdvisorChat = lazy(() => import("./AdvisorChat").then(m => ({ default: m.AdvisorChat })));
@@ -66,6 +67,9 @@ const NotificationCenterPanel = lazy(() => import("./NotificationCenter").then(m
 const AppRecentsStripLazy = lazy(() => import("./AppRecentsStrip").then(m => ({ default: m.AppRecentsStrip })));
 const FlowSpaceLazy = lazy(() => import("./shell/FlowSpace").then(m => ({ default: m.FlowSpace })));
 const EdgePanelsLazy = lazy(() => import("./shell/EdgePanels").then(m => ({ default: m.EdgePanels })));
+const UniversalCommandLazy = lazy(() => import("./UniversalCommand").then(m => ({ default: m.UniversalCommand })));
+const AmbientSuggestionsBarLazy = lazy(() => import("./AmbientSuggestionsBar").then(m => ({ default: m.AmbientSuggestionsBar })));
+const SpatialDesktopLazy = lazy(() => import("./shell/SpatialDesktop").then(m => ({ default: m.SpatialDesktop })));
 
 
 // Route-aware page transitions
@@ -102,12 +106,14 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
   const [showEntryCeremony, setShowEntryCeremony] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
   const [missionControlOpen, setMissionControlOpen] = useState(false);
+  const [spatialOpen, setSpatialOpen] = useState(false);
   const [permGate, setPermGate] = useState<{ appId: string; originRect?: DOMRect } | null>(null);
   const wm = useWindowManager();
   const { isCalm, isFocus } = useDisplayMode();
   const { isOpen: railOpen } = useInspector();
   const { apps } = useAppPlatform();
   useAdaptiveInterface();
+  useZeroLatency();
   const location = useLocation();
 
   // Memoized callbacks for child components
@@ -208,6 +214,10 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         e.preventDefault();
         setMissionControlOpen(o => !o);
       }
+      if (e.key === "F4" || (e.key === "g" && (e.metaKey || e.ctrlKey) && e.shiftKey)) {
+        e.preventDefault();
+        setSpatialOpen(o => !o);
+      }
     };
     document.addEventListener("keydown", handler);
     return () => document.removeEventListener("keydown", handler);
@@ -239,8 +249,10 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
 
         {/* Universal Command Surface */}
         <UniversalCommandSurface open={commandOpen} onClose={() => setCommandOpen(false)} />
-        {/* Command Palette (Cmd+K) */}
-        <CommandPalette open={commandOpen} onClose={() => setCommandOpen(false)} />
+        {/* Universal Command Layer (Cmd+K) — replaces basic CommandPalette */}
+        <UniversalCommandLazy open={commandOpen} onClose={() => setCommandOpen(false)} />
+        {/* Spatial Desktop (F4 / Cmd+Shift+G) */}
+        <SpatialDesktopLazy isOpen={spatialOpen} onClose={() => setSpatialOpen(false)} />
         {/* Notification Center */}
         <NotificationCenterPanel open={notifOpen} onClose={() => setNotifOpen(false)} />
         {/* FlowSpace (F3 / Cmd+Space) */}
@@ -415,6 +427,11 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
 
       {/* Behavioral Interaction Tracker — invisible */}
       <InteractionTracker />
+
+      {/* Ambient Suggestions Bar — floating contextual intelligence */}
+      <Suspense fallback={null}>
+        <AmbientSuggestionsBarLazy />
+      </Suspense>
 
       {/* Mobile Bottom Nav — critical for mobile, keep eager */}
       <MobileBottomNav />
