@@ -27,6 +27,7 @@ import { Scheduler, type SchedulerEvent } from "@/lib/nova-sdk/kernel/scheduler"
 import { Compositor } from "@/lib/nova-sdk/kernel/compositor";
 import { PowerManager, type PowerStats, type CpuGovernor, type ThermalZoneState } from "@/lib/nova-sdk/kernel/power-manager";
 import { PrivilegeEnforcement, type PrivilegeViolation, type RingTransition } from "@/lib/nova-sdk/kernel/privilege";
+import { WaylandServer, type WaylandClient, type WaylandStats } from "@/lib/nova-sdk/kernel/wayland";
 
 // ── Animation Variants ───────────────────────────────────────
 
@@ -125,6 +126,9 @@ function useKernelMetrics(refreshMs = 2000) {
   const blockedProcesses = useMemo(() => ProcessTable.listBlocked(), [tick]);
   const readyProcesses = useMemo(() => ProcessTable.listReady(), [tick]);
   const compositorSurfaces = useMemo(() => Compositor.listSurfaces(), [tick]);
+  const waylandStats = useMemo(() => WaylandServer.getStats(), [tick]);
+  const waylandClients = useMemo(() => WaylandServer.listClients(), [tick]);
+  const waylandGlobals = useMemo(() => WaylandServer.listGlobals(), [tick]);
 
   const bandDistribution = useMemo(() => {
     const bands: Record<string, { count: number; cpuPercent: number }> = {};
@@ -143,7 +147,7 @@ function useKernelMetrics(refreshMs = 2000) {
     return bands;
   }, [processes]);
 
-  return { processes, memStats, schedStats, compStats, powerStats, privilegeStats, privilegeViolations, ringTransitions, bandDistribution, tick, schedulerEvents, currentContext, blockedProcesses, readyProcesses, compositorSurfaces };
+  return { processes, memStats, schedStats, compStats, powerStats, privilegeStats, privilegeViolations, ringTransitions, bandDistribution, tick, schedulerEvents, currentContext, blockedProcesses, readyProcesses, compositorSurfaces, waylandStats, waylandClients, waylandGlobals };
 }
 
 // ── Subcomponents ────────────────────────────────────────────
@@ -1079,6 +1083,178 @@ function PrivilegePanel({ privilegeStats, violations, transitions, processes, on
   );
 }
 
+// ── Drill-Down: Wayland Protocol ─────────────────────────────
+
+function WaylandProtocolPanel({ stats, clients, globals, onBack }: {
+  stats: WaylandStats;
+  clients: WaylandClient[];
+  globals: ReturnType<typeof WaylandServer.listGlobals>;
+  onBack: () => void;
+}) {
+  const formatBytes = (b: number) => {
+    if (b >= 1e9) return `${(b / 1e9).toFixed(1)} GB`;
+    if (b >= 1e6) return `${(b / 1e6).toFixed(1)} MB`;
+    if (b >= 1e3) return `${(b / 1e3).toFixed(0)} KB`;
+    return `${b} B`;
+  };
+
+  return (
+    <motion.div {...slideIn}>
+      <Card className="border-border/40 bg-card/80 backdrop-blur-sm">
+        <CardHeader className="pb-3">
+          <div className="flex items-center gap-2">
+            <button onClick={onBack} className="rounded-lg p-1.5 hover:bg-muted/30 transition-colors">
+              <ArrowLeft className="h-4 w-4 text-muted-foreground" />
+            </button>
+            <CardTitle className="text-sm font-medium flex items-center gap-2">
+              <Layers className="h-4 w-4 text-blue-400" />
+              Wayland Protocol Server
+              <Badge variant="outline" className="text-[8px] ml-1">{stats.protocolVersion}</Badge>
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+            </CardTitle>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-5">
+          {/* Top-line stats */}
+          <div className="grid grid-cols-4 sm:grid-cols-8 gap-2">
+            {[
+              { label: "Clients", val: stats.totalClients, c: "text-blue-400" },
+              { label: "Surfaces", val: stats.totalSurfaces, c: "text-emerald-400" },
+              { label: "Globals", val: stats.totalGlobals, c: "text-purple-400" },
+              { label: "Binds", val: stats.globalBinds, c: "text-amber-400" },
+              { label: "Frames", val: stats.totalFramesSubmitted.toLocaleString(), c: "text-blue-300" },
+              { label: "Dropped", val: stats.totalFramesDropped, c: "text-red-400" },
+              { label: "Avg FPS", val: stats.avgFrameRate.toFixed(1), c: "text-emerald-300" },
+              { label: "SHM Pools", val: stats.totalShmPools, c: "text-amber-300" },
+            ].map(s => (
+              <div key={s.label} className="text-center py-2 rounded-lg bg-muted/20">
+                <p className={cn("text-sm font-semibold tabular-nums", s.c)}>{s.val}</p>
+                <p className="text-[9px] text-muted-foreground">{s.label}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Connected Clients */}
+          <div>
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">Connected Clients</p>
+            <div className="overflow-x-auto">
+              <table className="w-full text-[11px]">
+                <thead>
+                  <tr className="text-muted-foreground border-b border-border/30">
+                    <th className="text-left py-1.5 font-medium">Client</th>
+                    <th className="text-left py-1.5 font-medium">PID</th>
+                    <th className="text-left py-1.5 font-medium">Protocol</th>
+                    <th className="text-right py-1.5 font-medium">Surfaces</th>
+                    <th className="text-right py-1.5 font-medium">Objects</th>
+                    <th className="text-right py-1.5 font-medium">Frames</th>
+                    <th className="text-right py-1.5 font-medium">FPS</th>
+                    <th className="text-right py-1.5 font-medium">Dropped</th>
+                    <th className="text-right py-1.5 font-medium">Transferred</th>
+                    <th className="text-left py-1.5 font-medium">Formats</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {clients.map(c => (
+                    <tr key={c.clientId} className="border-b border-border/10 hover:bg-muted/15 transition-colors">
+                      <td className="py-1.5 font-mono text-foreground">{c.appId}</td>
+                      <td className="py-1.5 font-mono text-muted-foreground">{c.pid}</td>
+                      <td className="py-1.5">
+                        <Badge variant="outline" className="text-[8px] px-1.5 py-0">{c.protocol}</Badge>
+                      </td>
+                      <td className="py-1.5 text-right font-mono text-blue-400">{c.surfaces.length}</td>
+                      <td className="py-1.5 text-right font-mono text-muted-foreground">{c.objectCount}</td>
+                      <td className="py-1.5 text-right font-mono text-foreground">{c.framesSubmitted.toLocaleString()}</td>
+                      <td className="py-1.5 text-right font-mono">
+                        <span className={cn(c.frameRate >= 55 ? "text-emerald-400" : c.frameRate >= 30 ? "text-amber-400" : "text-red-400")}>
+                          {c.frameRate.toFixed(1)}
+                        </span>
+                      </td>
+                      <td className="py-1.5 text-right font-mono">
+                        <span className={cn(c.framesDropped === 0 ? "text-muted-foreground" : "text-red-400")}>
+                          {c.framesDropped}
+                        </span>
+                      </td>
+                      <td className="py-1.5 text-right font-mono text-muted-foreground">{formatBytes(c.bytesTransferred)}</td>
+                      <td className="py-1.5">
+                        <div className="flex flex-wrap gap-0.5">
+                          {c.negotiatedFormats.slice(0, 3).map(f => (
+                            <span key={f} className="text-[8px] px-1 py-0.5 rounded bg-muted/30 text-muted-foreground">{f}</span>
+                          ))}
+                          {c.negotiatedFormats.length > 3 && (
+                            <span className="text-[8px] text-muted-foreground">+{c.negotiatedFormats.length - 3}</span>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Bound Globals */}
+          <div>
+            <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">
+              Registered Globals ({globals.length})
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-1">
+              {globals.map(g => (
+                <div key={g.name} className="flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-muted/10 transition-colors">
+                  <span className="text-[10px] font-mono text-muted-foreground w-5 shrink-0">#{g.name}</span>
+                  <div className="flex-1 min-w-0">
+                    <span className="text-[11px] font-mono text-foreground">{g.interface}</span>
+                    <span className="text-[9px] text-muted-foreground ml-1">v{g.version}</span>
+                  </div>
+                  <Badge variant="outline" className={cn("text-[8px] px-1 py-0", g.bindCount > 0 ? "border-emerald-500/30 text-emerald-400" : "border-border/30 text-muted-foreground")}>
+                    {g.bindCount} binds
+                  </Badge>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Buffer Formats + SHM summary */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">Negotiated Formats</p>
+              <div className="flex flex-wrap gap-1">
+                {stats.activeFormats.map(f => (
+                  <Badge key={f} variant="outline" className="text-[9px] px-2 py-0.5 border-blue-500/20 text-blue-400">{f}</Badge>
+                ))}
+              </div>
+            </div>
+            <div>
+              <p className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2">Shared Memory</p>
+              <div className="space-y-1.5">
+                {clients.flatMap(c => c.shmPools.map(p => (
+                  <div key={`${c.clientId}-${p.poolId}`} className="flex items-center gap-2">
+                    <span className="text-[10px] font-mono text-muted-foreground w-24 truncate">{c.appId}</span>
+                    <div className="flex-1 h-1.5 rounded bg-muted/30 overflow-hidden">
+                      <div className="h-full bg-purple-500/50 rounded" style={{ width: `${(p.usedBytes / p.size) * 100}%` }} />
+                    </div>
+                    <span className="text-[9px] font-mono text-muted-foreground">{formatBytes(p.usedBytes)}/{formatBytes(p.size)}</span>
+                  </div>
+                )))}
+                <div className="pt-1 text-[9px] text-muted-foreground">
+                  Total SHM: {formatBytes(stats.totalShmBytes)} across {stats.totalShmPools} pools
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Footer */}
+          <div className="pt-2 border-t border-border/30 flex justify-between text-[10px] text-muted-foreground">
+            <span>Compositor: <span className="text-foreground font-mono">{stats.compositorName}</span></span>
+            <span>Drop rate: <span className={cn("font-mono", stats.totalFramesDropped === 0 ? "text-emerald-400" : "text-amber-400")}>
+              {stats.totalFramesSubmitted > 0 ? ((stats.totalFramesDropped / stats.totalFramesSubmitted) * 100).toFixed(2) : 0}%
+            </span></span>
+          </div>
+        </CardContent>
+      </Card>
+    </motion.div>
+  );
+}
+
 // ── Main Dashboard ───────────────────────────────────────────
 
 type DrillDown =
@@ -1089,10 +1265,11 @@ type DrillDown =
   | { type: "display" }
   | { type: "power" }
   | { type: "privilege" }
+  | { type: "wayland" }
   | null;
 
 const KernelDashboard = () => {
-  const { processes, memStats, schedStats, compStats, powerStats, privilegeStats, privilegeViolations, ringTransitions, bandDistribution, schedulerEvents, currentContext, blockedProcesses, readyProcesses, compositorSurfaces } = useKernelMetrics();
+  const { processes, memStats, schedStats, compStats, powerStats, privilegeStats, privilegeViolations, ringTransitions, bandDistribution, schedulerEvents, currentContext, blockedProcesses, readyProcesses, compositorSurfaces, waylandStats, waylandClients, waylandGlobals } = useKernelMetrics();
   const [drillDown, setDrillDown] = useState<DrillDown>(null);
 
   const liveProcessCount = processes.length;
@@ -1143,6 +1320,7 @@ const KernelDashboard = () => {
           {drillDown.type === "display" && <DisplayServerPanel key="display" compStats={compStats} surfaces={compositorSurfaces} onBack={() => setDrillDown(null)} />}
           {drillDown.type === "power" && <PowerManagementPanel key="power" powerStats={powerStats} onBack={() => setDrillDown(null)} />}
           {drillDown.type === "privilege" && <PrivilegePanel key="privilege" privilegeStats={privilegeStats} violations={privilegeViolations} transitions={ringTransitions} processes={processes} onBack={() => setDrillDown(null)} />}
+          {drillDown.type === "wayland" && <WaylandProtocolPanel key="wayland" stats={waylandStats} clients={waylandClients} globals={waylandGlobals} onBack={() => setDrillDown(null)} />}
         </AnimatePresence>
       </div>
     );
@@ -1170,12 +1348,14 @@ const KernelDashboard = () => {
       </motion.div>
 
       {/* Top-line stats — 7 cards */}
-      <motion.div variants={stagger} className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
+      <motion.div variants={stagger} className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
         <StatCard icon={Cpu} label="Processes" value={totalProcesses} sub={`${running} running · ${liveProcessCount} live`} live />
         <StatCard icon={MemoryStick} label="Memory" value={`${memUsedPercent}%`} sub={`${memStats.freePages.toLocaleString()} pages free`} color="bg-blue-500/8" live />
         <StatCard icon={HardDrive} label="Mounts" value={FILESYSTEM_MOUNTS.length} sub={`${FILESYSTEM_MOUNTS.filter(m => m.status === "warning").length} warning`} color="bg-emerald-500/8" />
         <StatCard icon={Shield} label="Security" value={`${SECURITY_RINGS.reduce((s, r) => s + r.violations, 0)} violations`} sub="5 rings active" color="bg-amber-500/8" />
         <StatCard icon={Monitor} label="Display" value={`${compStats.totalSurfaces} surfaces`} sub={`${compStats.visible} visible · z=${compStats.topZ}`} color="bg-blue-500/8" live onClick={() => setDrillDown({ type: "display" })} />
+        <StatCard icon={Layers} label="Wayland" value={`${waylandStats.totalClients} clients`}
+          sub={`${waylandStats.totalSurfaces} srf · ${waylandStats.avgFrameRate.toFixed(0)}fps`} color="bg-purple-500/8" live onClick={() => setDrillDown({ type: "wayland" })} />
         <StatCard icon={powerStats.battery.charging ? BatteryCharging : Battery} label="Battery" value={`${powerStats.battery.level.toFixed(0)}%`}
           sub={`${powerStats.cpu.currentMHz}MHz · ${powerStats.powerState}`} color="bg-amber-500/8" live onClick={() => setDrillDown({ type: "power" })} />
         <StatCard icon={ShieldAlert} label="Privilege" value={`${privilegeStats.totalTransitions} transitions`}
