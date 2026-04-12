@@ -117,13 +117,13 @@ export function getConnectorTruthIndex(
 
   let score = 0;
   const connectors = new Set([
-    ...oauthFlows.map(f => f.connector_key),
-    ...syncJobs.map(j => j.connector_key),
+    ...oauthFlows.map((f: any) => f.connector_key),
+    ...syncJobs.map((j: any) => j.connector_key),
   ]);
 
   for (const key of connectors) {
-    const flows = oauthFlows.filter(f => f.connector_key === key);
-    const jobs = syncJobs.filter(j => j.connector_key === key);
+    const flows = oauthFlows.filter((f: any) => f.connector_key === key);
+    const jobs = syncJobs.filter((j: any) => j.connector_key === key);
 
     let connScore = 0;
     if (flows.length > 0) connScore += 25; // has oauth flow architecture

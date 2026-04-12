@@ -40,8 +40,8 @@ export async function fetchConnectorHealth(): Promise<ConnectorHealthResult> {
       error: c.error,
     }));
 
-    const downCount = connectors.filter(c => c.status === "down").length;
-    const degradedCount = connectors.filter(c => c.status === "degraded").length;
+    const downCount = connectors.filter((c: any) => c.status === "down").length;
+    const degradedCount = connectors.filter((c: any) => c.status === "degraded").length;
     const overallHealth = downCount > 0 ? "critical" : degradedCount > 0 ? "degraded" : "healthy";
 
     cachedResult = { connectors, overallHealth, checkedAt: new Date().toISOString() };
@@ -57,8 +57,8 @@ export async function fetchConnectorHealth(): Promise<ConnectorHealthResult> {
       lastChecked: c.last_sync_at || new Date().toISOString(),
     }));
 
-    const downCount = connectors.filter(c => c.status === "down").length;
-    const degradedCount = connectors.filter(c => c.status === "degraded").length;
+    const downCount = connectors.filter((c: any) => c.status === "down").length;
+    const degradedCount = connectors.filter((c: any) => c.status === "degraded").length;
     const overallHealth = downCount > 0 ? "critical" : degradedCount > 0 ? "degraded" : "healthy";
 
     cachedResult = { connectors, overallHealth, checkedAt: new Date().toISOString() };

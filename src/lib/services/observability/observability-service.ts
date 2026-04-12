@@ -123,7 +123,7 @@ export async function computeObservabilityIndex(): Promise<number> {
   if (probes.length === 0 && snapshots.length === 0) {
     try {
       const liveResults = await runAllProbes();
-      const healthyCount = liveResults.filter(r => r.status === "healthy").length;
+      const healthyCount = liveResults.filter((r: any) => r.status === "healthy").length;
       // Probe coverage: 40pts, freshness: 30pts (just ran = fresh), health: 30pts
       const probeCoverage = liveResults.length >= 8 ? 40 : Math.round((liveResults.length / 8) * 40);
       const freshness = 30; // just ran
@@ -139,7 +139,7 @@ export async function computeObservabilityIndex(): Promise<number> {
   let maxScore = 0;
 
   // Probe coverage: 40 points
-  const enabledProbes = probes.filter(p => p.enabled);
+  const enabledProbes = probes.filter((p: any) => p.enabled);
   const probeCoverage = enabledProbes.length >= 8 ? 40 : Math.round((enabledProbes.length / 8) * 40);
   score += probeCoverage;
   maxScore += 40;

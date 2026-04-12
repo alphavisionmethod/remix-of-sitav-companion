@@ -83,7 +83,7 @@ export class SelfLearningService {
 
   getAdvisorPatterns(advisorId: string): LearningSignal[] {
     this.applyDecay(advisorId);
-    return (this.signals.get(advisorId) ?? []).filter(s => s.confidence * s.decayFactor >= 0.3);
+    return (this.signals.get(advisorId) ?? []).filter((s: any) => s.confidence * s.decayFactor >= 0.3);
   }
 
   getPositivePatterns(advisorId: string): LearningSignal[] {
@@ -100,13 +100,13 @@ export class SelfLearningService {
 
   getProfile(advisorId: string): LearningProfile {
     const signals = this.getAdvisorPatterns(advisorId);
-    const positive = signals.filter(s => s.outcome === "positive").length;
+    const positive = signals.filter((s: any) => s.outcome === "positive").length;
     const avgConf = signals.length > 0
       ? signals.reduce((a, s) => a + s.confidence, 0) / signals.length
       : 0;
 
     // Calibration: if predictions are often wrong, offset confidence down
-    const negative = signals.filter(s => s.outcome === "negative").length;
+    const negative = signals.filter((s: any) => s.outcome === "negative").length;
     const calibrationOffset = signals.length >= 10
       ? (positive - negative) / signals.length * 0.1
       : 0;

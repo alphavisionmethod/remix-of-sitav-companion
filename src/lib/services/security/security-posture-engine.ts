@@ -433,9 +433,9 @@ export const DEPLOYABILITY_MATRIX: DeployabilityEntry[] = [
 
 export function computeSecurityScore(): SecurityScore {
   const totalFunctions = EDGE_FUNCTION_AUDIT.length;
-  const fullyHardened = EDGE_FUNCTION_AUDIT.filter(f => f.missingHardening.length === 0).length;
-  const threatsMitigated = THREAT_MODEL.filter(t => t.status === 'secure_verified').length;
-  const secretsSafe = SECRET_INVENTORY.filter(s => s.exposureRisk === 'none').length;
+  const fullyHardened = EDGE_FUNCTION_AUDIT.filter((f: any) => f.missingHardening.length === 0).length;
+  const threatsMitigated = THREAT_MODEL.filter((t: any) => t.status === 'secure_verified').length;
+  const secretsSafe = SECRET_INVENTORY.filter((s: any) => s.exposureRisk === 'none').length;
   const totalSecrets = SECRET_INVENTORY.length;
 
   const auth = 85;
@@ -462,14 +462,14 @@ export function computeSecurityScore(): SecurityScore {
 // ── Summary Helpers ─────────────────────────────────────────
 
 export function getPublicLaunchBlockers() {
-  return MISSING_TO_SECURE_LAUNCH.filter(g => g.blocksPublicLaunch);
+  return MISSING_TO_SECURE_LAUNCH.filter((g: any) => g.blocksPublicLaunch);
 }
 
 export function getThreatsByStatus(status: SecurityLevel) {
-  return THREAT_MODEL.filter(t => t.status === status);
+  return THREAT_MODEL.filter((t: any) => t.status === status);
 }
 
 export function getHighRiskFunctions() {
-  return EDGE_FUNCTION_AUDIT.filter(f => f.classification === 'high_risk' || f.missingHardening.length >= 2);
+  return EDGE_FUNCTION_AUDIT.filter((f: any) => f.classification === 'high_risk' || f.missingHardening.length >= 2);
 }
 

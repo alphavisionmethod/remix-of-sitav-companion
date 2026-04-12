@@ -166,9 +166,9 @@ const MODE_LABELS: Record<LaunchMode, { label: string; description: string }> = 
 };
 
 function deriveNarrative(capabilities: CapabilityClassification[], mode: LaunchMode): LaunchNarrative {
-  const safe = capabilities.filter(c => c.claimSafety === "safe");
-  const qualify = capabilities.filter(c => c.claimSafety === "qualify");
-  const unsafe = capabilities.filter(c => c.claimSafety === "unsafe");
+  const safe = capabilities.filter((c: any) => c.claimSafety === "safe");
+  const qualify = capabilities.filter((c: any) => c.claimSafety === "qualify");
+  const unsafe = capabilities.filter((c: any) => c.claimSafety === "unsafe");
 
   return {
     safeToClaim: safe.map(c => `${c.name}: ${c.notes}`),
@@ -217,9 +217,9 @@ export function computeLaunchReadiness(truthIndices: TruthIndexSummary | null): 
   }));
 
   const blockers = deriveBlockers();
-  const hardBlockerCount = blockers.filter(b => b.severity === "critical").length;
-  const softBlockerCount = blockers.filter(b => b.severity === "high").length;
-  const claimRiskCount = capabilities.filter(c => c.claimSafety === "unsafe").length;
+  const hardBlockerCount = blockers.filter((b: any) => b.severity === "critical").length;
+  const softBlockerCount = blockers.filter((b: any) => b.severity === "high").length;
+  const claimRiskCount = capabilities.filter((c: any) => c.claimSafety === "unsafe").length;
 
   const flagshipLoopReadiness = deriveFlagshipLoopReadiness();
   const flagshipAvg = flagshipLoopReadiness.length > 0
@@ -227,7 +227,7 @@ export function computeLaunchReadiness(truthIndices: TruthIndexSummary | null): 
     : 0;
 
   const claimSafePct = capabilities.length > 0
-    ? Math.round((capabilities.filter(c => c.claimSafety === "safe").length / capabilities.length) * 100)
+    ? Math.round((capabilities.filter((c: any) => c.claimSafety === "safe").length / capabilities.length) * 100)
     : 0;
 
   const truthOverall = truthIndices?.overallScore ?? 50;

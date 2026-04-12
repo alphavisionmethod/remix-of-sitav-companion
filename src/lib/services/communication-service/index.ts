@@ -149,7 +149,7 @@ export class CommunicationService {
 
   getMessageHistory(recipientId: string, limit: number = 50): Message[] {
     return Array.from(this.messages.values())
-      .filter(m => m.recipientId === recipientId)
+      .filter((m: any) => m.recipientId === recipientId)
       .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
       .slice(0, limit);
   }
@@ -158,9 +158,9 @@ export class CommunicationService {
     const reports = this.deliveryReports;
     return {
       total: reports.length,
-      delivered: reports.filter(r => r.status === "delivered").length,
-      failed: reports.filter(r => r.status === "failed").length,
-      bounced: reports.filter(r => r.status === "bounced").length,
+      delivered: reports.filter((r: any) => r.status === "delivered").length,
+      failed: reports.filter((r: any) => r.status === "failed").length,
+      bounced: reports.filter((r: any) => r.status === "bounced").length,
       avgLatency: reports.length > 0 ? reports.reduce((s, r) => s + r.latencyMs, 0) / reports.length : 0,
     };
   }

@@ -3,7 +3,6 @@
 // Strict separation: sign-in identity ≠ external service access
 // ═══════════════════════════════════════════════════════════════
 
-import type { Database } from "@/integrations/supabase/types";
 
 // ── Row types from Supabase ────────────────────────────────────
 export type IdentityProviderRegistry = any;

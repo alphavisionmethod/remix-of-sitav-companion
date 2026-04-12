@@ -147,12 +147,12 @@ export async function getWorkforceStats() {
     getRecentInvocations(500),
   ]);
 
-  const activeRoles = roles.filter(r => r.is_active).length;
+  const activeRoles = roles.filter((r: any) => r.is_active).length;
   const totalCost = invocations.reduce((s, i) => s + (i.cost_cents ?? 0), 0);
   const totalTokens = invocations.reduce((s, i) => s + (i.tokens_used ?? 0), 0);
-  const completedCount = invocations.filter(i => i.status === "completed").length;
-  const pendingCount = invocations.filter(i => i.status === "pending").length;
-  const failedCount = invocations.filter(i => i.status === "failed").length;
+  const completedCount = invocations.filter((i: any) => i.status === "completed").length;
+  const pendingCount = invocations.filter((i: any) => i.status === "pending").length;
+  const failedCount = invocations.filter((i: any) => i.status === "failed").length;
 
   return {
     totalRoles: roles.length,

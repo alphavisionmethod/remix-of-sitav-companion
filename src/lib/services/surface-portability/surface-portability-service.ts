@@ -145,13 +145,13 @@ export function getSurfacePortabilityIndex(records: SurfacePortabilityRecord[]):
 
 /** Get adapter count and surface type count */
 export function getSurfaceAdapterSummary() {
-  const active = CANONICAL_SURFACE_ADAPTERS.filter(a => a.status === "active").length;
-  const planned = CANONICAL_SURFACE_ADAPTERS.filter(a => a.status === "planned").length;
+  const active = CANONICAL_SURFACE_ADAPTERS.filter((a: any) => a.status === "active").length;
+  const planned = CANONICAL_SURFACE_ADAPTERS.filter((a: any) => a.status === "planned").length;
   return {
     totalAdapters: CANONICAL_SURFACE_ADAPTERS.length,
     activeAdapters: active,
     plannedAdapters: planned,
-    surfaceClasses: [...new Set(CANONICAL_SURFACE_ADAPTERS.map(a => a.surfaceClass))],
+    surfaceClasses: [...new Set(CANONICAL_SURFACE_ADAPTERS.map((a: any) => a.surfaceClass))],
   };
 }
 
