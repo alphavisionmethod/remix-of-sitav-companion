@@ -583,6 +583,10 @@ function AppearanceContent() {
       </NovaCard>
       <ResetSectionButton sectionId="appearance" />
     </VStack>
+  );
+}
+
+function DisplayContent() {
   const [brightness, setBrightness] = useSettingsValue("display.brightness", 0.8);
   const brightnessPercent = Math.round(brightness * 100);
   const [nightShift, setNightShift] = useSettingsValue("display.nightShift", false);
