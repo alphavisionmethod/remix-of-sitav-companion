@@ -94,6 +94,11 @@ const SpatialDesktopLazy = lazy(() => import("./shell/SpatialDesktop").then(m =>
 const HoldKeyOverlayLazy = lazy(() => import("./shell/HoldKeyOverlay").then(m => ({ default: m.HoldKeyOverlay })));
 const LiveActivityBarLazy = lazy(() => import("./shell/LiveActivityBar").then(m => ({ default: m.LiveActivityBar })));
 const ContextualCursorLazy = lazy(() => import("./shell/ContextualCursor").then(m => ({ default: m.ContextualCursor })));
+const BootSplashLazy = lazy(() => import("./shell/BootSplash").then(m => ({ default: m.BootSplash })));
+const AppSwitcherLazy = lazy(() => import("./shell/AppSwitcher").then(m => ({ default: m.AppSwitcher })));
+const ControlCenterLazy = lazy(() => import("./shell/ControlCenter").then(m => ({ default: m.ControlCenter })));
+const NotificationDropdownLazy = lazy(() => import("./shell/NotificationDropdown").then(m => ({ default: m.NotificationDropdown })));
+const PictureInPictureLazy = lazy(() => import("./shell/PictureInPicture").then(m => ({ default: m.PictureInPicture })));
 
 // Route-aware page transitions
 const drillDownSegments = ["mission", "owner", "business", "money", "concierge"];
