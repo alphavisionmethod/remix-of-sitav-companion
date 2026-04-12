@@ -686,6 +686,7 @@ export function DesktopSurface({
                 focusWindow?.(w.id);
               }}
               isFocused={w.zIndex === maxZ}
+              onPositionChange={(pos, width) => updateWindowPosition?.(w.id, pos, width)}
               className="cursor-default"
               style={{ zIndex: DEPTH_LAYERS.windows + w.zIndex }}
             >
