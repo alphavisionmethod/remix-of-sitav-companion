@@ -615,11 +615,8 @@ function DisplayContent() {
           </HStack>
         </SettingRow>
       </NovaCard>
+      <ResetSectionButton sectionId="display" />
     </VStack>
-  );
-}
-
-function SoundContent() {
   const [volume, setVolume] = useSettingsValue("sound.volume", 0.7);
   const volumePercent = Math.round(volume * 100);
   const [uiSounds, setUiSounds] = useSettingsValue("sound.uiSounds", true);
@@ -648,11 +645,8 @@ function SoundContent() {
           </HStack>
         </SettingRow>
       </NovaCard>
+      <ResetSectionButton sectionId="sound" />
     </VStack>
-  );
-}
-
-function NetworkContent() {
   const [wifiOn, setWifiOn] = useSettingsValue("network.wifi.autoJoin", true);
 
   return (
@@ -680,11 +674,8 @@ function NetworkContent() {
           <NovaBadge variant="default">Not Connected</NovaBadge>
         </SettingRow>
       </NovaCard>
+      <ResetSectionButton sectionId="network" />
     </VStack>
-  );
-}
-
-function BluetoothContent() {
   const [btOn, setBtOn] = useSettingsValue("bluetooth.enabled", true);
 
   return (
@@ -719,11 +710,8 @@ function BluetoothContent() {
           </VStack>
         </NovaCard>
       )}
+      <ResetSectionButton sectionId="bluetooth" />
     </VStack>
-  );
-}
-
-function NotificationsContent() {
   const [doNotDisturb, setDoNotDisturb] = useSettingsValue("notifications.doNotDisturb", false);
   const [showPreviews, setShowPreviews] = useSettingsValue("notifications.showPreviews", true);
   const [sounds, setSounds] = useSettingsValue("sound.uiSounds", true);
@@ -753,11 +741,8 @@ function NotificationsContent() {
           </SettingRow>
         </VStack>
       </NovaCard>
+      <ResetSectionButton sectionId="notifications" />
     </VStack>
-  );
-}
-
-function PrivacyContent() {
   const [locationServices, setLocationServices] = useSettingsValue("privacy.locationServices", false);
   const [analytics, setAnalytics] = useSettingsValue("privacy.analytics", false);
   const [crashReports, setCrashReports] = useSettingsValue("privacy.crashReports", true);
@@ -779,11 +764,8 @@ function PrivacyContent() {
           </SettingRow>
         </VStack>
       </NovaCard>
+      <ResetSectionButton sectionId="privacy" />
     </VStack>
-  );
-}
-
-function KeyboardContent() {
   const [keyRepeatRate, setKeyRepeatRate] = useSettingsValue("input.keyRepeatRate", 30);
   const [autocorrect, setAutocorrect] = useSettingsValue("input.autocorrect", true);
 
@@ -802,11 +784,8 @@ function KeyboardContent() {
           </SettingRow>
         </VStack>
       </NovaCard>
+      <ResetSectionButton sectionId="keyboard" />
     </VStack>
-  );
-}
-
-function AboutContent() {
   return (
     <VStack spacing="tight">
       <NovaCard>
