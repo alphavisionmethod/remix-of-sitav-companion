@@ -583,6 +583,8 @@ export function DesktopSurface({
                             delay={index * 80}
                             isDragging={dragSnapshot.isDragging}
                             dragHandleProps={dragProvided.dragHandleProps ?? undefined}
+                            sparkData={sparklines[widgetId as keyof typeof sparklines]}
+                            sparkColor={config.sparkColor}
                           />
                         </div>
                       )}
