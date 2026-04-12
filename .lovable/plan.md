@@ -1,79 +1,45 @@
 
 
-# Plan: Wire SettingsService to UI + Add Services Dashboard
+# Plan: 5 "Wow" Features That Leverage Your Full Stack
 
-## Summary
-Three deliverables: (1) fix remaining TypeScript build errors, (2) wire the `SettingsService` into the Settings window so toggles/sliders read from and write to the service layer with persistence, (3) add a "Services" tab to the System Monitor showing real-time status of all 5 system services.
+## What We'll Build
 
-## 1. Fix TypeScript Build Errors
+### 1. Notification Center as a Slide-Down Panel (macOS-grade)
+Replace the current notification center with a translucent slide-down panel from the menu bar — grouped by app, with inline actions (approve/dismiss/snooze), rich previews, and a "Clear All" with satisfying cascade animation. Wired to the NotificationService so notifications flow from the real service layer.
 
-The build errors reference files that already have `const db = supabase as any` — the errors are likely from a stale build cache or the `as any` cast not fully propagating through chained methods. The fix is to ensure every `.from()`, `.insert()`, `.update()`, `.select()` chain is properly typed with intermediate `as any` casts where TypeScript still infers `never`.
+### 2. Spotlight-Grade App Switcher (Alt+Tab)
+A floating horizontal strip with live window thumbnails, glass blur background, keyboard navigation (arrow keys + Enter), and the window title/icon below each preview. Pressing Alt+Tab cycles through open windows ordered by recency. Releases on key-up to switch.
 
-**Files to touch (~8 files):** Add explicit type annotations or broader `any` casts on the return values (e.g., `const { data } = await db.from(...).select(...) as any`) in:
-- `src/lib/ai/ai-launch-honesty-reclassifier.ts`
-- `src/lib/ai/hooks/use-ai-runtime-verification.ts`
-- `src/lib/ai/workforce-executor.ts`
-- `src/lib/capabilities/money-capability.ts`
-- `src/lib/core-services/mnemosyne/context-assembler.ts`
-- `src/lib/customer-journey/ai-journey-classifier.ts`
-- `src/lib/customer-journey/journey-hooks.ts`
-- `src/lib/data-services/files-data-service.ts`
+### 3. Picture-in-Picture Mini Player
+Any window can be collapsed into a small always-on-top floating mini-view (like macOS PiP). Starts with the Music Player — shows album art, track name, play/pause. Draggable to any corner, snaps to edges. Other apps (Maps, Weather) can also PiP. Wired through the WindowServer service.
 
-## 2. Wire SettingsService into Settings Window
+### 4. Boot Splash with Kernel Log Waterfall
+A cinematic boot sequence: SITA logo fades in, then a translucent terminal waterfall scrolls real boot log entries from `ServiceManager.getBootLog()` — each service lighting up green as it comes online. Progress bar fills as services complete. Ends with a desktop fade-in. Plays once per session.
 
-Replace all local `useState` calls in the Settings window content components with reads/writes through the `SettingsService` singleton. This makes every toggle, slider, and color picker persist to IndexedDB automatically.
-
-**Approach:** Create a `useSettingsValue(key)` React hook that:
-- Reads initial value from `SettingsService.get(key)`
-- Subscribes to changes via `SettingsService.subscribe(key, ...)`
-- Returns `[value, setValue]` where `setValue` calls `SettingsService.set(key, value)`
-- Cleans up subscription on unmount
-
-**Settings window components to rewire:**
-
-| Component | Settings Keys |
-|-----------|--------------|
-| `GeneralContent` | `appearance.theme`, `sound.uiSounds`, `appearance.reduceMotion` |
-| `AppearanceContent` | `appearance.accentColor`, `appearance.reduceTransparency` |
-| `DisplayContent` | `display.brightness`, `display.nightShift` |
-| `SoundContent` | `sound.volume`, `sound.uiSounds` |
-| `NotificationsContent` | DND flag, preview/sound/badge toggles |
-| `PrivacyContent` | `privacy.locationServices`, `privacy.analytics`, `privacy.crashReports` |
-| `KeyboardContent` | `input.keyRepeatRate` |
-
-**New file:** `src/hooks/use-settings-value.ts` — the `useSettingsValue<K>` hook.
-
-**Modified file:** `src/components/sita/shell/windows/SettingsWindow.tsx` — replace `useState` with `useSettingsValue` in each content component. Dark mode toggle also calls `document.documentElement.classList.toggle` as a side effect.
-
-## 3. Add Services Dashboard to System Monitor
-
-Add a 6th tab "Services" to the existing System Monitor window sidebar (currently: CPU, Memory, Processes, Network, GPU).
-
-**New section renders:**
-- Service list showing all 5 services with live status badges (running/stopped/failed) using `ServiceManager.getDiagnostics()`
-- Per-service expandable cards showing `getStats()` output
-- Boot log timeline from `ServiceManager.getBootLog()` with timing per service
-- Health indicator dots (green/red/yellow)
-- Combined stats summary card (total services, uptime, restart count)
-
-**Modified file:** `src/components/sita/shell/windows/SystemMonitorWindow.tsx`
-- Add `"services"` to the sidebar sections list
-- Add `renderServices()` function
-- Import `ServiceManager` from nova-sdk services
+### 5. Control Center Pull-Down (macOS/iOS style)
+Click the toggles icon in the menu bar → a rounded glass panel drops with quick-access tiles: Wi-Fi, Bluetooth, Dark Mode, Do Not Disturb, Volume slider, Brightness slider, AirDrop, Screen Mirroring, Focus Mode. Each tile is a toggle with an icon and label. Volume and Brightness are inline sliders. All wired to SettingsService for persistence.
 
 ## Files
 
 | Action | File |
 |--------|------|
-| Create | `src/hooks/use-settings-value.ts` |
-| Modify | `src/components/sita/shell/windows/SettingsWindow.tsx` |
-| Modify | `src/components/sita/shell/windows/SystemMonitorWindow.tsx` |
-| Modify | 8 files with TypeScript build error fixes |
+| Create | `src/components/sita/shell/NotificationDropdown.tsx` |
+| Create | `src/components/sita/shell/AppSwitcher.tsx` |
+| Create | `src/components/sita/shell/PictureInPicture.tsx` |
+| Create | `src/components/sita/shell/BootSplash.tsx` |
+| Create | `src/components/sita/shell/ControlCenter.tsx` |
+| Modify | `src/components/sita/ShellLayout.tsx` — mount all 5 new components, add keyboard listeners for Alt+Tab |
+| Modify | `src/components/sita/shell/SystemMenuBar.tsx` — add Control Center + Notification dropdown triggers |
+| Modify | `src/components/sita/shell/FloatingWindow.tsx` — add PiP minimize button in title bar |
+| Modify | `src/components/sita/shell/index.ts` — barrel exports |
 
 ## Technical Details
-- `useSettingsValue` uses `useState` + `useEffect` with `SettingsService.subscribe()` for reactivity
-- Settings persist automatically through SettingsService's localStorage backend
-- The dark mode toggle will additionally call `document.documentElement.classList.toggle("dark", value === "dark")` as a DOM side-effect
-- Services dashboard polls `ServiceManager.getStats()` on a 2-second interval for live updates
-- All UI uses existing Nova SDK components (NovaCard, NovaBadge, VStack/HStack, etc.)
+- NotificationDropdown subscribes to `NotificationService` events via NovaEvents for live updates
+- AppSwitcher uses `useWindowManagerContext()` to get open windows and their thumbnails (compositor surfaces)
+- BootSplash reads `ServiceManager.getBootLog()` and animates entries with staggered `framer-motion` transitions
+- ControlCenter uses `useSettingsValue` hook for all toggles (dark mode, DND, volume, brightness)
+- PiP windows render as a portal with `position: fixed`, `z-index` above all other windows, drag via pointer events
+- All animations use `framer-motion` with spring physics matching existing OS feel
+- Keyboard listener for Alt+Tab uses `keydown`/`keyup` on `window` with `event.altKey` detection
+- Estimated ~1800 lines across 5 new files + ~150 lines of modifications
 
