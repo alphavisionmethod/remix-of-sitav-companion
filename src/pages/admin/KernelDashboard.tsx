@@ -1588,6 +1588,7 @@ const KernelDashboard = () => {
           {drillDown.type === "power" && <PowerManagementPanel key="power" powerStats={powerStats} onBack={() => setDrillDown(null)} />}
           {drillDown.type === "privilege" && <PrivilegePanel key="privilege" privilegeStats={privilegeStats} violations={privilegeViolations} transitions={ringTransitions} processes={processes} onBack={() => setDrillDown(null)} />}
           {drillDown.type === "wayland" && <WaylandProtocolPanel key="wayland" stats={waylandStats} clients={waylandClients} globals={waylandGlobals} onBack={() => setDrillDown(null)} />}
+          {drillDown.type === "service" && <ServiceDrillDown key="service" serviceId={drillDown.serviceId} diagnostics={serviceManagerStats.diagnostics} bootLog={serviceManagerStats.bootLog} onBack={() => setDrillDown(null)} />}
         </AnimatePresence>
       </div>
     );
