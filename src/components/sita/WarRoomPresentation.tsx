@@ -275,7 +275,7 @@ export function WarRoomPresentation({ type, onExit }: WarRoomPresentationProps) 
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="fixed inset-0 z-[60] flex flex-col items-center justify-center bg-[hsl(0_0%_3%)]"
+        className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[hsl(0_0%_3%)]"
       >
         <Crosshair className="h-8 w-8 text-[hsl(265_55%_58%)] mb-4" />
         <motion.p
@@ -294,7 +294,7 @@ export function WarRoomPresentation({ type, onExit }: WarRoomPresentationProps) 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 z-[60] flex flex-col bg-[hsl(0_0%_3%)]"
+      className="fixed inset-0 z-[9999] flex flex-col bg-[hsl(0_0%_3%)]"
     >
       {/* Ambient background */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
