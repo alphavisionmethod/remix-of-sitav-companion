@@ -4,7 +4,7 @@
 // services as a unified operating system kernel.
 // ═══════════════════════════════════════════════════════════════
 
-import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
+import React, { createContext, useContext, useEffect, useRef, useState, type ReactNode } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useLocation } from "react-router-dom";
 import { resolveRouteLayer, resolveRouteDomain, type Layer } from "@/lib/architecture/layer-manifest";
