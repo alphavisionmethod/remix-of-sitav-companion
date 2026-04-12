@@ -21,6 +21,7 @@ import { toast } from "sonner";
 import CustomerAutopilotPanel from "@/components/autopilot/CustomerAutopilotPanel";
 import { useInspector } from "@/contexts/InspectorContext";
 import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
+import { RelationshipGraphPanel } from "@/components/business/RelationshipGraphPanel";
 
 import { useCustomers } from "@/hooks/use-domain-data";
 import type { MockCustomer } from "@/lib/data-services/business-data-service";
@@ -296,6 +297,9 @@ const CustomersPage = () => {
                   <p className="mt-2 text-sm text-foreground leading-relaxed">{selected.notes}</p>
                 </SitaCard>
               )}
+
+              {/* Relationship Graph */}
+              <RelationshipGraphPanel customerName={selected.name} customerId={selected.id} />
             </>
           ) : (
             <EmptyState icon={Users} title="Select a customer" description="Click on a customer to see relationship details, health score, and revenue history" />
