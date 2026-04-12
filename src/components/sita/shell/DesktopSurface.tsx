@@ -403,45 +403,46 @@ export function DesktopSurface({
         {/* Clock */}
         <DesktopClock greeting={greeting} userName={userName || ""} bootReady={bootPhase >= 2} />
 
-        {/* Widgets */}
-        <div className="flex flex-wrap items-center justify-center gap-3">
-          <GlassWidget
-            icon={CheckCircle}
-            label="Approvals"
-            value={`${notifications.approvals || 3} waiting`}
-            accent="bg-[hsl(265_55%_58%/0.2)]"
-            onClick={() => navigate("/approvals")}
-            bootReady={bootPhase >= 2}
-            delay={0}
-          />
-          <GlassWidget
-            icon={DollarSign}
-            label="Cash Position"
-            value="$42K liquid"
-            accent="bg-[hsl(140_50%_45%/0.2)]"
-            onClick={() => navigate("/money")}
-            bootReady={bootPhase >= 2}
-            delay={80}
-          />
-          <GlassWidget
-            icon={Calendar}
-            label="Today"
-            value="6 tasks · 2 meetings"
-            accent="bg-[hsl(35_80%_55%/0.2)]"
-            onClick={() => navigate("/concierge")}
-            bootReady={bootPhase >= 2}
-            delay={160}
-          />
-          <GlassWidget
-            icon={TrendingUp}
-            label="Revenue"
-            value="+14% this week"
-            accent="bg-[hsl(190_60%_50%/0.2)]"
-            onClick={() => navigate("/business")}
-            bootReady={bootPhase >= 2}
-            delay={240}
-          />
-        </div>
+        {/* Draggable Widgets */}
+        <DragDropContext onDragEnd={handleWidgetDragEnd}>
+          <Droppable droppableId="desktop-widgets" direction="horizontal">
+            {(provided) => (
+              <div
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                className="flex flex-wrap items-center justify-center gap-3"
+              >
+                {widgetOrder.map((widgetId, index) => {
+                  const config = WIDGET_CONFIGS[widgetId];
+                  if (!config) return null;
+                  return (
+                    <Draggable key={widgetId} draggableId={widgetId} index={index}>
+                      {(dragProvided, dragSnapshot) => (
+                        <div
+                          ref={dragProvided.innerRef}
+                          {...dragProvided.draggableProps}
+                        >
+                          <GlassWidget
+                            icon={config.icon}
+                            label={config.label}
+                            value={config.getValue(notifications)}
+                            accent={config.accent}
+                            onClick={() => navigate(config.route)}
+                            bootReady={bootPhase >= 2}
+                            delay={index * 80}
+                            isDragging={dragSnapshot.isDragging}
+                            dragHandleProps={dragProvided.dragHandleProps ?? undefined}
+                          />
+                        </div>
+                      )}
+                    </Draggable>
+                  );
+                })}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
 
         {/* Advisor Insight */}
         <AdvisorInsight bootReady={bootPhase >= 2} />
