@@ -479,6 +479,11 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
       {/* Click Ripple — micro-detail */}
       <ClickRipple />
 
+      {/* Hold-Key Command Overlay — Alt hold for action map */}
+      <Suspense fallback={null}>
+        <HoldKeyOverlayLazy />
+      </Suspense>
+
       {/* Behavioral Interaction Tracker — invisible */}
       <InteractionTracker />
 
