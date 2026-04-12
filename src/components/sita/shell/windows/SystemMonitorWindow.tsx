@@ -7,6 +7,7 @@ import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import {
   Cpu, HardDrive, Activity, Wifi, Zap, BarChart3,
   ArrowUp, ArrowDown, Pause, Play, Server, Thermometer, Fan,
+  Battery, BatteryCharging, PlugZap,
 } from "lucide-react";
 import {
   AppLayout,
@@ -22,6 +23,7 @@ import { NovaCanvasChart, type ChartSeries } from "./NovaCanvasChart";
 import { NovaCanvasBars, type BarItem } from "./NovaCanvasBars";
 import type { NovaColor } from "@/lib/nova-sdk/graphics/context";
 import { ServiceManager, type ServiceLogEntry } from "@/lib/nova-sdk/services/service-manager";
+import { PowerManager } from "@/lib/nova-sdk/kernel/power-manager";
 
 // ── Types ────────────────────────────────────────────────────
 
@@ -52,6 +54,9 @@ const COLORS = {
   thermalCpu: { h: 0, s: 70, l: 55 } as NovaColor,
   thermalGpu: { h: 45, s: 80, l: 55 } as NovaColor,
   thermalSsd: { h: 210, s: 80, l: 55 } as NovaColor,
+  battLevel:  { h: 142, s: 70, l: 50 } as NovaColor,
+  battPower:  { h: 265, s: 55, l: 58 } as NovaColor,
+  battTemp:   { h: 38, s: 85, l: 58 } as NovaColor,
 };
 
 // ── Simulated Data ────────────────────────────────────────────
@@ -84,7 +89,7 @@ function timeLabel(i: number): string { return `${i % 60}s`; }
 
 // ── Sidebar Sections ─────────────────────────────────────────
 
-type MonitorSection = "cpu" | "memory" | "processes" | "network" | "gpu" | "disk" | "thermal" | "services";
+type MonitorSection = "cpu" | "memory" | "processes" | "network" | "gpu" | "disk" | "thermal" | "battery" | "services";
 
 const SECTIONS: { id: MonitorSection; label: string; icon: React.ReactNode }[] = [
   { id: "cpu", label: "CPU", icon: <Cpu className="w-3.5 h-3.5" /> },
@@ -94,6 +99,7 @@ const SECTIONS: { id: MonitorSection; label: string; icon: React.ReactNode }[] =
   { id: "gpu", label: "GPU", icon: <Zap className="w-3.5 h-3.5" /> },
   { id: "disk", label: "Disk", icon: <HardDrive className="w-3.5 h-3.5" /> },
   { id: "thermal", label: "Thermal", icon: <Thermometer className="w-3.5 h-3.5" /> },
+  { id: "battery", label: "Battery", icon: <Battery className="w-3.5 h-3.5" /> },
   { id: "services", label: "Services", icon: <Server className="w-3.5 h-3.5" /> },
 ];
 
