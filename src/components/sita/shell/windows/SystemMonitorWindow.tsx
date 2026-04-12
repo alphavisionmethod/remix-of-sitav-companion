@@ -156,6 +156,12 @@ export function SystemMonitorWindow() {
   const [fanRpm, setFanRpm] = useState(1200);
   const [queueDepth, setQueueDepth] = useState(4);
 
+  // Battery state
+  const [battLevelHistory, setBattLevelHistory] = useState<number[]>(() => Array(60).fill(78));
+  const [battPowerHistory, setBattPowerHistory] = useState<number[]>(() => Array(60).fill(14));
+  const [battTempHistory, setBattTempHistory] = useState<number[]>(() => Array(60).fill(34));
+  const [battSpark, setBattSpark] = useState<number[]>(() => Array(30).fill(78));
+
   // Services state
   const [servicesDiag, setServicesDiag] = useState<Record<string, Record<string, unknown>>>({});
   const [bootLog, setBootLog] = useState<readonly ServiceLogEntry[]>([]);
