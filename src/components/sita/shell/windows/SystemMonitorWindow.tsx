@@ -6,7 +6,7 @@
 import { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import {
   Cpu, HardDrive, Activity, Wifi, Zap, BarChart3,
-  ArrowUp, ArrowDown, Pause, Play, Server,
+  ArrowUp, ArrowDown, Pause, Play, Server, Thermometer, Fan,
 } from "lucide-react";
 import {
   AppLayout,
@@ -47,6 +47,11 @@ const COLORS = {
   barHigh:   { h: 0, s: 70, l: 55 } as NovaColor,
   gpuLow:    { h: 45, s: 80, l: 55 } as NovaColor,
   gpuHigh:   { h: 0, s: 70, l: 55 } as NovaColor,
+  iopsRead:  { h: 210, s: 80, l: 55 } as NovaColor,
+  iopsWrite: { h: 340, s: 75, l: 55 } as NovaColor,
+  thermalCpu: { h: 0, s: 70, l: 55 } as NovaColor,
+  thermalGpu: { h: 45, s: 80, l: 55 } as NovaColor,
+  thermalSsd: { h: 210, s: 80, l: 55 } as NovaColor,
 };
 
 // ── Simulated Data ────────────────────────────────────────────
@@ -79,7 +84,7 @@ function timeLabel(i: number): string { return `${i % 60}s`; }
 
 // ── Sidebar Sections ─────────────────────────────────────────
 
-type MonitorSection = "cpu" | "memory" | "processes" | "network" | "gpu" | "disk" | "services";
+type MonitorSection = "cpu" | "memory" | "processes" | "network" | "gpu" | "disk" | "thermal" | "services";
 
 const SECTIONS: { id: MonitorSection; label: string; icon: React.ReactNode }[] = [
   { id: "cpu", label: "CPU", icon: <Cpu className="w-3.5 h-3.5" /> },
@@ -88,6 +93,7 @@ const SECTIONS: { id: MonitorSection; label: string; icon: React.ReactNode }[] =
   { id: "network", label: "Network", icon: <Wifi className="w-3.5 h-3.5" /> },
   { id: "gpu", label: "GPU", icon: <Zap className="w-3.5 h-3.5" /> },
   { id: "disk", label: "Disk", icon: <HardDrive className="w-3.5 h-3.5" /> },
+  { id: "thermal", label: "Thermal", icon: <Thermometer className="w-3.5 h-3.5" /> },
   { id: "services", label: "Services", icon: <Server className="w-3.5 h-3.5" /> },
 ];
 
@@ -137,6 +143,12 @@ export function SystemMonitorWindow() {
   const tickRef = useRef(0);
   const [diskHistory, setDiskHistory] = useState<{ time: string; read: number; write: number }[]>([]);
   const [diskSpark, setDiskSpark] = useState<number[]>(() => Array(30).fill(0));
+  const [iopsHistory, setIopsHistory] = useState<{ time: string; read: number; write: number }[]>([]);
+  const [latencyHistory, setLatencyHistory] = useState<{ time: string; read: number; write: number }[]>([]);
+  const [thermalHistory, setThermalHistory] = useState<{ time: string; cpu: number; gpu: number; ssd: number; ambient: number }[]>([]);
+  const [thermalSpark, setThermalSpark] = useState<number[]>(() => Array(30).fill(0));
+  const [fanRpm, setFanRpm] = useState(1200);
+  const [queueDepth, setQueueDepth] = useState(4);
 
   // Services state
   const [servicesDiag, setServicesDiag] = useState<Record<string, Record<string, unknown>>>({});
@@ -168,6 +180,28 @@ export function SystemMonitorWindow() {
       setDiskHistory(prev => [...prev.slice(-59), { time: t, read: diskRead, write: diskWrite }]);
       setDiskSpark(prev => [...prev.slice(-29), diskRead + diskWrite]);
 
+      // IOPS
+      const iopsRead = 8000 + Math.sin(tickRef.current * 0.1) * 3000 + Math.random() * 2000;
+      const iopsWrite = 3000 + Math.sin(tickRef.current * 0.13) * 2000 + Math.random() * 1500;
+      setIopsHistory(prev => [...prev.slice(-59), { time: t, read: iopsRead, write: iopsWrite }]);
+
+      // Latency
+      const latRead = 0.2 + Math.random() * 0.6;
+      const latWrite = 0.5 + Math.random() * 1.0;
+      setLatencyHistory(prev => [...prev.slice(-59), { time: t, read: latRead, write: latWrite }]);
+
+      // Queue depth
+      setQueueDepth(Math.floor(1 + Math.random() * 16 + (diskRead > 180 ? 8 : 0)));
+
+      // Thermal sensors
+      const cpuTemp = 45 + (user / 100) * 30 + Math.random() * 3;
+      const gpuTemp2 = 40 + Math.sin(tickRef.current * 0.08) * 10 + Math.random() * 5;
+      const ssdTemp = 38 + Math.sin(tickRef.current * 0.04) * 7 + Math.random() * 3;
+      const ambientTemp = 28 + Math.sin(tickRef.current * 0.02) * 3 + Math.random() * 2;
+      setThermalHistory(prev => [...prev.slice(-59), { time: t, cpu: cpuTemp, gpu: gpuTemp2, ssd: ssdTemp, ambient: ambientTemp }]);
+      setThermalSpark(prev => [...prev.slice(-29), cpuTemp]);
+      setFanRpm(Math.floor(1000 + cpuTemp * 15 + Math.random() * 200));
+
       if (tickRef.current % 3 === 0) setProcesses(generateProcesses());
 
       // Refresh services every 2s
@@ -189,6 +223,9 @@ export function SystemMonitorWindow() {
   }, [section]);
 
   const latestDisk = diskHistory[diskHistory.length - 1];
+  const latestIops = iopsHistory[iopsHistory.length - 1];
+  const latestLatency = latencyHistory[latencyHistory.length - 1];
+  const latestThermal = thermalHistory[thermalHistory.length - 1];
 
   const latestCpu = cpuHistory[cpuHistory.length - 1];
   const latestMem = memHistory[memHistory.length - 1];
@@ -223,6 +260,17 @@ export function SystemMonitorWindow() {
     { key: "read", color: { h: 142, s: 70, l: 50 } as NovaColor, fillOpacity: 0.3, data: diskHistory.map(s => s.read) },
     { key: "write", color: { h: 340, s: 75, l: 55 } as NovaColor, fillOpacity: 0.25, data: diskHistory.map(s => s.write) },
   ], [diskHistory]);
+
+  const iopsSeries: ChartSeries[] = useMemo(() => [
+    { key: "readIOPS", color: COLORS.iopsRead, fillOpacity: 0.25, data: iopsHistory.map(s => s.read) },
+    { key: "writeIOPS", color: COLORS.iopsWrite, fillOpacity: 0.2, data: iopsHistory.map(s => s.write) },
+  ], [iopsHistory]);
+
+  const thermalSeries: ChartSeries[] = useMemo(() => [
+    { key: "cpu", color: COLORS.thermalCpu, fillOpacity: 0.2, data: thermalHistory.map(s => s.cpu) },
+    { key: "gpu", color: COLORS.thermalGpu, fillOpacity: 0.15, data: thermalHistory.map(s => s.gpu) },
+    { key: "ssd", color: COLORS.thermalSsd, fillOpacity: 0.15, data: thermalHistory.map(s => s.ssd) },
+  ], [thermalHistory]);
 
   const coreBars: BarItem[] = useMemo(() => {
     return Array.from({ length: 8 }, (_, i) => {
@@ -272,6 +320,20 @@ export function SystemMonitorWindow() {
             <NovaText variant="label" muted>Net ↓</NovaText>
             <NovaText variant="label">{latestNet ? `${latestNet.down.toFixed(1)} MB/s` : "—"}</NovaText>
           </HStack>
+        </div>
+
+        <div className="rounded-lg bg-[hsl(0_0%_0%/0.03)] dark:bg-[hsl(0_0%_100%/0.03)] p-2">
+          <HStack spacing="micro" align="center" justify="between">
+            <NovaText variant="label" muted>Temp</NovaText>
+            <NovaText variant="label" className={cn(
+              latestThermal && latestThermal.cpu > 75 ? "!text-[hsl(0_70%_55%)]"
+              : latestThermal && latestThermal.cpu > 60 ? "!text-[hsl(45_80%_50%)]"
+              : "!text-[hsl(142_70%_50%)]"
+            )}>
+              {latestThermal ? `${latestThermal.cpu.toFixed(0)}°C` : "—"}
+            </NovaText>
+          </HStack>
+          <Sparkline data={thermalSpark} color="hsl(0, 70%, 55%)" />
         </div>
       </VStack>
     </VStack>
@@ -726,6 +788,69 @@ export function SystemMonitorWindow() {
         </HStack>
       </NovaCard>
 
+      {/* IOPS Chart */}
+      <NovaCard>
+        <NovaText variant="label" muted className="mb-2">Disk IOPS — 60s</NovaText>
+        <NovaCanvasChart series={iopsSeries} stacked={false} maxY={20000} height={140} yUnit=" ops" />
+        <HStack spacing="normal" className="mt-2">
+          <HStack spacing="micro" align="center">
+            <div className="w-2 h-2 rounded-full bg-[hsl(210_80%_55%)]" />
+            <NovaText variant="label" muted>Read {latestIops ? `${(latestIops.read / 1000).toFixed(1)}K` : ""}</NovaText>
+          </HStack>
+          <HStack spacing="micro" align="center">
+            <div className="w-2 h-2 rounded-full bg-[hsl(340_75%_55%)]" />
+            <NovaText variant="label" muted>Write {latestIops ? `${(latestIops.write / 1000).toFixed(1)}K` : ""}</NovaText>
+          </HStack>
+        </HStack>
+      </NovaCard>
+
+      {/* Latency & Queue Depth */}
+      <div className="grid grid-cols-2 gap-3">
+        <NovaCard>
+          <NovaText variant="label" muted className="mb-1">Read Latency</NovaText>
+          <NovaText variant="heading" className={cn(
+            "!text-lg",
+            latestLatency && latestLatency.read > 3 ? "!text-[hsl(0_70%_55%)]"
+            : latestLatency && latestLatency.read > 1 ? "!text-[hsl(45_80%_50%)]"
+            : "!text-[hsl(142_70%_50%)]"
+          )}>
+            {latestLatency ? `${latestLatency.read.toFixed(2)}ms` : "—"}
+          </NovaText>
+          <Sparkline data={latencyHistory.map(l => l.read)} color="hsl(142, 70%, 50%)" height={24} />
+        </NovaCard>
+        <NovaCard>
+          <NovaText variant="label" muted className="mb-1">Write Latency</NovaText>
+          <NovaText variant="heading" className={cn(
+            "!text-lg",
+            latestLatency && latestLatency.write > 3 ? "!text-[hsl(0_70%_55%)]"
+            : latestLatency && latestLatency.write > 1 ? "!text-[hsl(45_80%_50%)]"
+            : "!text-[hsl(142_70%_50%)]"
+          )}>
+            {latestLatency ? `${latestLatency.write.toFixed(2)}ms` : "—"}
+          </NovaText>
+          <Sparkline data={latencyHistory.map(l => l.write)} color="hsl(45, 80%, 55%)" height={24} />
+        </NovaCard>
+      </div>
+
+      {/* Queue Depth */}
+      <NovaCard>
+        <HStack spacing="tight" justify="between" align="center" className="mb-2">
+          <NovaText variant="label" muted>I/O Queue Depth</NovaText>
+          <NovaText variant="label" className={cn(queueDepth > 24 ? "!text-[hsl(0_70%_55%)]" : queueDepth > 12 ? "!text-[hsl(45_80%_50%)]" : "")}>
+            {queueDepth}
+          </NovaText>
+        </HStack>
+        <div className="h-3 rounded-full bg-[hsl(0_0%_0%/0.06)] dark:bg-[hsl(0_0%_100%/0.06)] overflow-hidden">
+          <div
+            className="h-full rounded-full transition-all duration-300"
+            style={{
+              width: `${Math.min(100, (queueDepth / 32) * 100)}%`,
+              backgroundColor: queueDepth > 24 ? "hsl(0, 70%, 55%)" : queueDepth > 12 ? "hsl(45, 80%, 55%)" : "hsl(210, 80%, 55%)",
+            }}
+          />
+        </div>
+      </NovaCard>
+
       {/* Storage usage breakdown */}
       <NovaCard>
         <NovaText variant="label" muted className="mb-2">Storage Usage Breakdown</NovaText>
@@ -795,6 +920,117 @@ export function SystemMonitorWindow() {
     </VStack>
   );
 
+  // ── Thermal Sensors Section ──────────────────────────────────
+  const THERMAL_SENSORS = useMemo(() => {
+    if (!latestThermal) return [];
+    const cpuBase = latestThermal.cpu;
+    return [
+      { name: "CPU Package", temp: cpuBase, min: 35, max: 95 },
+      { name: "CPU Core 0", temp: cpuBase + (Math.random() - 0.5) * 4, min: 35, max: 95 },
+      { name: "CPU Core 1", temp: cpuBase - 1 + (Math.random() - 0.5) * 3, min: 35, max: 95 },
+      { name: "CPU Core 2", temp: cpuBase + 1 + (Math.random() - 0.5) * 3, min: 35, max: 95 },
+      { name: "CPU Core 3", temp: cpuBase - 2 + (Math.random() - 0.5) * 4, min: 35, max: 95 },
+      { name: "GPU Die", temp: latestThermal.gpu, min: 30, max: 90 },
+      { name: "SSD Controller", temp: latestThermal.ssd, min: 25, max: 70 },
+      { name: "Ambient", temp: latestThermal.ambient, min: 20, max: 50 },
+    ];
+  }, [latestThermal]);
+
+  const thermalStatus = useMemo(() => {
+    if (!latestThermal) return "normal";
+    if (latestThermal.cpu > 80 || latestThermal.gpu > 80) return "critical";
+    if (latestThermal.cpu > 65 || latestThermal.gpu > 65) return "warning";
+    return "normal";
+  }, [latestThermal]);
+
+  const renderThermal = () => (
+    <VStack spacing="normal">
+      <HStack spacing="tight" justify="between" align="center">
+        <VStack spacing="micro">
+          <NovaText variant="heading">Thermal Sensors</NovaText>
+          <NovaText variant="label" muted>8 sensors · Real-time monitoring</NovaText>
+        </VStack>
+        <NovaBadge variant={thermalStatus === "critical" ? "default" : thermalStatus === "warning" ? "warning" : "success"} className={cn("!text-[9px]", thermalStatus === "critical" && "!text-[hsl(0_70%_55%)]")}>
+          {thermalStatus.toUpperCase()}
+        </NovaBadge>
+      </HStack>
+
+      {/* Sensor Grid */}
+      <div className="grid grid-cols-2 gap-2">
+        {THERMAL_SENSORS.map(sensor => {
+          const pct = ((sensor.temp - sensor.min) / (sensor.max - sensor.min)) * 100;
+          const color = sensor.temp > 80 ? "hsl(0, 70%, 55%)" : sensor.temp > 60 ? "hsl(45, 80%, 55%)" : "hsl(142, 70%, 50%)";
+          return (
+            <NovaCard key={sensor.name} className="!p-2.5">
+              <HStack spacing="micro" justify="between" align="center">
+                <NovaText variant="label" muted className="!text-[10px] truncate">{sensor.name}</NovaText>
+                <NovaText variant="body" className="!text-[12px] !font-semibold" style={{ color }}>
+                  {sensor.temp.toFixed(0)}°C
+                </NovaText>
+              </HStack>
+              <div className="h-1.5 rounded-full bg-[hsl(0_0%_0%/0.06)] dark:bg-[hsl(0_0%_100%/0.06)] mt-1.5 overflow-hidden">
+                <div
+                  className="h-full rounded-full transition-all duration-300"
+                  style={{ width: `${Math.min(100, Math.max(0, pct))}%`, backgroundColor: color }}
+                />
+              </div>
+              <HStack spacing="micro" justify="between" className="mt-0.5">
+                <NovaText variant="label" muted className="!text-[8px]">{sensor.min}°</NovaText>
+                <NovaText variant="label" muted className="!text-[8px]">{sensor.max}°</NovaText>
+              </HStack>
+            </NovaCard>
+          );
+        })}
+      </div>
+
+      {/* Temperature History Chart */}
+      <NovaCard>
+        <NovaText variant="label" muted className="mb-2">Temperature History — 60s</NovaText>
+        <NovaCanvasChart series={thermalSeries} stacked={false} maxY={100} height={160} yUnit="°C" />
+        <HStack spacing="normal" className="mt-2">
+          <HStack spacing="micro" align="center">
+            <div className="w-2 h-2 rounded-full bg-[hsl(0_70%_55%)]" />
+            <NovaText variant="label" muted>CPU</NovaText>
+          </HStack>
+          <HStack spacing="micro" align="center">
+            <div className="w-2 h-2 rounded-full bg-[hsl(45_80%_55%)]" />
+            <NovaText variant="label" muted>GPU</NovaText>
+          </HStack>
+          <HStack spacing="micro" align="center">
+            <div className="w-2 h-2 rounded-full bg-[hsl(210_80%_55%)]" />
+            <NovaText variant="label" muted>SSD</NovaText>
+          </HStack>
+        </HStack>
+      </NovaCard>
+
+      {/* Fan Speed */}
+      <NovaCard>
+        <HStack spacing="tight" justify="between" align="center">
+          <HStack spacing="micro" align="center">
+            <Fan className="w-4 h-4 text-muted-foreground animate-spin" style={{ animationDuration: `${Math.max(0.3, 3 - fanRpm / 1000)}s` }} />
+            <VStack spacing="micro">
+              <NovaText variant="body" className="!font-medium">System Fan</NovaText>
+              <NovaText variant="label" muted className="!text-[10px]">Target: {Math.floor(fanRpm * 0.95)} RPM</NovaText>
+            </VStack>
+          </HStack>
+          <VStack spacing="micro" className="text-right">
+            <NovaText variant="heading" className="!text-lg">{fanRpm}</NovaText>
+            <NovaText variant="label" muted>RPM</NovaText>
+          </VStack>
+        </HStack>
+        <div className="h-2 rounded-full bg-[hsl(0_0%_0%/0.06)] dark:bg-[hsl(0_0%_100%/0.06)] mt-2 overflow-hidden">
+          <div
+            className="h-full rounded-full transition-all duration-500"
+            style={{
+              width: `${Math.min(100, (fanRpm / 3000) * 100)}%`,
+              backgroundColor: fanRpm > 2200 ? "hsl(0, 70%, 55%)" : fanRpm > 1500 ? "hsl(45, 80%, 55%)" : "hsl(210, 80%, 55%)",
+            }}
+          />
+        </div>
+      </NovaCard>
+    </VStack>
+  );
+
   // ── Render ─────────────────────────────────────────────────
   return (
     <AppLayout sidebar={sidebar} sidebarWidth={155} toolbar={toolbar} minHeight={420}>
@@ -804,6 +1040,7 @@ export function SystemMonitorWindow() {
       {section === "network" && renderNetwork()}
       {section === "gpu" && renderGpu()}
       {section === "disk" && renderDisk()}
+      {section === "thermal" && renderThermal()}
       {section === "services" && renderServices()}
     </AppLayout>
   );
