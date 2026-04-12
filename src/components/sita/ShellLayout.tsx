@@ -38,6 +38,7 @@ import { PhotoViewerWindow } from "./shell/windows/PhotoViewerWindow";
 import { CodeEditorWindow } from "./shell/windows/CodeEditorWindow";
 import { MailClientWindow } from "./shell/windows/MailClientWindow";
 import { MapsWindow } from "./shell/windows/MapsWindow";
+import { SecurityCenterWindow } from "./shell/windows/SecurityCenterWindow";
 import { NovaSDKProvider } from "@/contexts/NovaSDKContext";
 import { lifecycleManager } from "@/lib/nova-sdk/runtime/lifecycle";
 import { ProcessTable } from "@/lib/nova-sdk/kernel/process-manager";
@@ -370,6 +371,14 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         width: 560,
         originRect: origin,
       }, { id: "maps-app", name: "Maps" });
+    } else if (appId === "security-center" || appId === "com.sita.security-center") {
+      launchWithKernel("security-center", {
+        title: "Security Center",
+        component: <SecurityCenterWindow />,
+        position: { x: 180, y: 80 },
+        width: 540,
+        originRect: origin,
+      }, { id: "security-center", name: "Security Center" });
     }
   }, [wm.openWindow]);
 
