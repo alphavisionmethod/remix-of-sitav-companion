@@ -1,7 +1,7 @@
 import { SitaPageHeader, SitaCard, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs } from "@/components/sita/SitaComponents";
 import { GlassCard } from "@/components/sita/PremiumPageComponents";
-import { ConciergeAdvisorInsightCard } from "@/components/concierge";
+import { ConciergeAdvisorInsightCard, ConciergePageWrapper } from "@/components/concierge";
 import { UpcomingObligationsCard, SupportBurdenCard, ConciergeReviewQueue } from "@/components/concierge";
 import type { UpcomingObligation, ReviewItem } from "@/components/concierge";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
@@ -63,7 +63,7 @@ const UpcomingNeeds = () => {
   };
 
   return (
-    <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+    <ConciergePageWrapper className="space-y-6">
       <DemoModeBadge />
       <SitaPageHeader title="Upcoming & Needs Handling" subtitle="One calm surface for everything that needs your attention" />
 
@@ -139,7 +139,7 @@ const UpcomingNeeds = () => {
           }} />
         </div>
       </div>
-    </motion.div>
+    </ConciergePageWrapper>
   );
 };
 
