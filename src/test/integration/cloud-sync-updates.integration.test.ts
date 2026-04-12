@@ -1,13 +1,20 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
-vi.mock("@/integrations/supabase/client", () => ({
-  supabase: {
-    auth: {
-      onAuthStateChange: vi.fn(() => ({ data: { subscription: { unsubscribe: vi.fn() } } })),
-      getUser: vi.fn(() => Promise.resolve({ data: { user: { id: "u1" } } })),
-      getSession: vi.fn(() => Promise.resolve({ data: { session: null } })),
+vi.mock("@/integrations/supabase/client", () => {
+  const fn = vi.fn;
+  const chainable = () => ({ select: fn().mockReturnThis(), eq: fn().mockReturnThis(), order: fn().mockReturnThis(), limit: fn().mockReturnThis(), single: fn(() => Promise.resolve({ data: null })), insert: fn(() => Promise.resolve({ data: null })), upsert: fn(() => ({ select: fn(() => Promise.resolve({ data: [] })) })) });
+  return {
+    supabase: {
+      auth: {
+        onAuthStateChange: fn(() => ({ data: { subscription: { unsubscribe: fn() } } })),
+        getUser: fn(() => Promise.resolve({ data: { user: { id: "u1" } } })),
+        getSession: fn(() => Promise.resolve({ data: { session: null } })),
+      },
+      from: fn(chainable),
+      functions: { invoke: fn(() => Promise.resolve({ data: null })) },
     },
-    from: vi.fn(() => ({
+  };
+});
       select: vi.fn().mockReturnThis(), eq: vi.fn().mockReturnThis(),
       order: vi.fn().mockReturnThis(), limit: vi.fn().mockReturnThis(),
       single: vi.fn(() => Promise.resolve({ data: null })),
