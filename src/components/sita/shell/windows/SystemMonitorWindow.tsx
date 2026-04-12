@@ -223,6 +223,9 @@ export function SystemMonitorWindow() {
   }, [section]);
 
   const latestDisk = diskHistory[diskHistory.length - 1];
+  const latestIops = iopsHistory[iopsHistory.length - 1];
+  const latestLatency = latencyHistory[latencyHistory.length - 1];
+  const latestThermal = thermalHistory[thermalHistory.length - 1];
 
   const latestCpu = cpuHistory[cpuHistory.length - 1];
   const latestMem = memHistory[memHistory.length - 1];
