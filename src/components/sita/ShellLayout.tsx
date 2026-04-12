@@ -44,6 +44,7 @@ import { UpdateCenterWindow } from "./shell/windows/UpdateCenterWindow";
 import { CloudSyncWindow } from "./shell/windows/CloudSyncWindow";
 import { DevToolsWindow } from "./shell/windows/DevToolsWindow";
 import { ExtensionManagerWindow } from "./shell/windows/ExtensionManagerWindow";
+import { SyscallDashboardWindow } from "./shell/windows/SyscallDashboardWindow";
 import { KernelDashboardWindow } from "./shell/windows/KernelDashboardWindow";
 import { NovaSDKProvider } from "@/contexts/NovaSDKContext";
 import { lifecycleManager } from "@/lib/nova-sdk/runtime/lifecycle";
