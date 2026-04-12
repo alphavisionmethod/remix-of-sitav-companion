@@ -1,111 +1,107 @@
 
 
-# Nova SDK Audit + Enhancement Plan
+# Kernel Subsystem Implementation Plan
 
-## Audit: All 15 Spec Items vs Implementation
+## Current State
 
-| # | Spec Requirement | Status | Detail |
-|---|-----------------|--------|--------|
-| 1 | SDK folder: core/ui/system/graphics/input/runtime | DONE | All 6 directories exist with correct modules |
-| 2 | App Manifest with id, name, version, permissions | DONE | `manifest.ts` with typed interface + `validateManifest()` |
-| 3 | Lifecycle hooks: onLaunch/onFocus/onBlur/onExit | DONE | `lifecycle.ts` with full state machine + `onSuspend`/`onResume` |
-| 4 | Window API: create with size/title, setResizable | DONE | `window-api.ts` with min/max enforcement |
-| 5 | UI Component system (Button, Text, etc.) | DONE | 8 components in `components.tsx` |
-| 6 | Layout system (VStack, HStack, constraints) | DONE | `layout.tsx` with VStack/HStack/Spacer/SplitView/AppLayout |
-| 7 | Component system (Button with onClick, draw) | DONE | NovaButton with variants, icon slot, active:scale |
-| 8 | Graphics API (fillRect, drawText, drawGradient) | DONE | `context.ts` wrapping Canvas 2D |
-| 9 | Event system (mouse, keyboard, bubbling) | DONE | `events.ts` with on/once/emit + gesture detection |
-| 10 | System API (files, notifications, permission-gated) | DONE | NovaFS (IndexedDB) + NovaNotify (sonner) |
-| 11 | IPC Bridge (send/on channels, permission check) | DONE | `bridge.ts` with channel-to-permission mapping |
-| 12 | App packaging (bundle format) | DONE | `loader.ts` with AppBundle type |
-| 13 | Runtime (load manifest, check perms, start) | DONE | AppLoader.load() validates + registers + hooks |
-| 14 | Design enforcement (spacing, typography, components) | DONE | `enforcement.ts` with audit functions |
-| 15 | Sample app (Notes with full SDK usage) | DONE | NotesWindow using AppLayout, NovaFS, NovaNotify |
+The Nova SDK has a solid **userspace** layer — manifest validation, registry, lifecycle state machine, permission-gated bridge/FS/notifications, UI components, and layout system. However, the **kernel layer** described in the spec is completely missing:
 
-## Gaps Found (Making It "Even Better")
+| Spec Requirement | Status |
+|---|---|
+| Process Manager (PID, memory isolation, process table) | MISSING — no `kernel/` directory exists |
+| Memory Manager (per-app allocation, isolation) | MISSING |
+| Syscall Interface (typed enum, central dispatcher) | MISSING — Bridge exists but no formal syscall layer |
+| Compositor (surface tracking, z-order, hit-testing) | MISSING — DOM handles rendering directly |
+| Scheduler (MLFQ time-slicing, priority bands) | MISSING |
+| Lifecycle wired to close/focus/blur | MISSING — only launch fires transitions |
+| Input routing: Mouse → Kernel → Window → App | MISSING — DOM handles events directly |
+| Kernel boot loop (init → load → schedule → render) | MISSING |
 
-### G1: SettingsWindow not refactored to SDK
-Settings still uses raw `APP_TYPE`/`APP_COMPONENTS` tokens instead of Nova SDK components. It should use `AppLayout`, `NovaList`, `NovaSidebar`, `NovaText`, `NovaButton`.
+Launch flow currently: `User clicks → ShellLayout.doLaunchApp → openWindow + lifecycle("launching"→"running")`. Close/focus/blur do NOT fire lifecycle transitions.
 
-### G2: No `NovaToggle` / `NovaSlider` components
-The SDK lacks toggle switches and sliders — both needed by Settings and common in apps. The spec says "every app MUST use shared components."
+## Plan: Build 5 Kernel Modules + Wire Everything
 
-### G3: No `NovaToolbar` component
-AppLayout accepts a toolbar slot but there's no dedicated toolbar component with standard patterns (back button, title, actions).
+### 1. Process Manager (`src/lib/nova-sdk/kernel/process-manager.ts`)
+- `ProcessTable` singleton with `spawn(manifest)` returning a `Process` struct: `{ pid, appId, state, memoryBudget, memoryUsed, cpuTicks, priority, windowIds[], createdAt }`
+- Auto-incrementing PID counter
+- `kill(pid)`, `suspend(pid)`, `resume(pid)`, `getProcess(pid)`, `listProcesses()`
+- Memory budget enforcement (configurable per-app, default 64MB)
+- Links to AppRegistry state transitions
 
-### G4: No `useNovaApp` convenience hook
-Apps must manually wire manifest + lifecycle + FS + notify. A single `useNovaApp(manifest)` hook would auto-register, create FS/notify instances, and provide lifecycle bindings.
+### 2. Memory Manager (`src/lib/nova-sdk/kernel/memory-manager.ts`)
+- Simulated page-based allocation: `allocate(pid, pages)`, `free(pid, pages)`, `getUsage(pid)`
+- 4KB page size matching kernel-architecture-manifest.json
+- Per-process memory accounting with budget limits
+- Guard page simulation (detect buffer overruns)
+- Global stats: total allocated, free, fragmentation ratio
 
-### G5: Lifecycle not wired into window open/close
-When ShellLayout opens a window, it doesn't call `lifecycleManager.transition(appId, "running")`. When a window closes, no `terminated` transition fires. The lifecycle system is dead code.
+### 3. Syscall Dispatcher (`src/lib/nova-sdk/kernel/syscall.ts`)
+- Typed enum: `SYS_CREATE_WINDOW`, `SYS_CLOSE_WINDOW`, `SYS_OPEN_FILE`, `SYS_WRITE_FILE`, `SYS_LIST_DIR`, `SYS_NOTIFY`, `SYS_GET_THEME`, `SYS_LAUNCH_APP`, `SYS_CLIPBOARD_READ`, `SYS_CLIPBOARD_WRITE`, `SYS_PLAY_SOUND`
+- Central `syscall(code, pid, ...args)` dispatcher that:
+  - Validates PID exists and is running
+  - Checks permissions via manifest
+  - Routes to Bridge/FS/WindowAPI/Notify
+  - Returns result or throws `PermissionDeniedError`
+  - Logs every call for audit trail
+- Syscall audit log (last 1000 calls) for diagnostics
 
-### G6: No `NovaTextArea` component
-Notes uses raw `<textarea>`. SDK should provide a styled, design-enforced textarea.
+### 4. Compositor (`src/lib/nova-sdk/kernel/compositor.ts`)
+- `CompositorSurface` per window: `{ windowId, pid, zIndex, bounds, visible, opacity }`
+- `registerSurface()`, `removeSurface()`, `reorder()`, `findSurfaceAt(x, y)` for hit-testing
+- Tracks dirty regions (which windows need repaint)
+- Provides `getRenderOrder()` for DesktopSurface to consume
+- Integrates with z-index management from useWindowManager
 
-### G7: Bridge not connected to real OS services
-Bridge handlers for `file:open`, `notification:send`, `theme:get` are never registered. The bridge has no actual service backends wired in.
+### 5. Scheduler (`src/lib/nova-sdk/kernel/scheduler.ts`)
+- MLFQ with 5 priority bands from `kernel-architecture-manifest.json`: RT-Critical, RT-Normal, Interactive, Batch, Idle
+- Each process assigned a band based on app type (foreground=Interactive, background=Batch, system=RT-Normal)
+- `tick()` method simulates time-slice allocation
+- Priority boost every 1000 ticks (anti-starvation)
+- Priority inheritance on IPC calls
+- Exposes `getSchedulerStats()` for diagnostics
 
-### G8: No SDK developer documentation/playground
-No way for developers to see available components or test them.
+### 6. Kernel Boot Sequence (`src/lib/nova-sdk/kernel/boot.ts`)
+- `NovaKernel.boot()` initializes all subsystems in order: Memory → Process → Scheduler → Compositor → Syscall
+- Logs boot sequence with timestamps
+- Called from `NovaSDKContext.tsx` on provider mount
+- `NovaKernel.shutdown()` for cleanup
 
-## Plan: Fix All Gaps + Polish
+### 7. Wire Lifecycle into DesktopSurface
+- `onClose` → `lifecycleManager.transition(id, "terminated")` + `ProcessTable.kill(pid)`
+- `onFocus` → `lifecycleManager.transition(id, "focused")` + Scheduler boost
+- Blur (when another window focuses) → `lifecycleManager.transition(id, "blurred")`
 
-### 1. Add missing SDK components
-Add to `nova-sdk/ui/components.tsx`:
-- `NovaToggle` — system-styled toggle switch (like SettingsWindow's Toggle but standardized)
-- `NovaSlider` — range input with SPACE-scale steps
-- `NovaTextArea` — styled, design-enforced textarea
-- `NovaToolbar` — standard toolbar with back/title/actions layout
-- `NovaBadge` — small status badge (count, label)
-- `NovaAvatar` — icon/emoji/image avatar with gradient background
-
-### 2. Create `useNovaApp` convenience hook
-New file `nova-sdk/hooks/useNovaApp.ts`:
-- Takes manifest + optional lifecycle hooks
-- Auto-registers via AppLoader on mount
-- Returns `{ fs, notify, bridge, lifecycle }` pre-configured with manifest permissions
-- Calls `onExit` on unmount
-
-### 3. Wire lifecycle into ShellLayout
-In `doLaunchApp`: after `wm.openWindow()`, call `lifecycleManager.transition(appId, "running")`.
-In window close handler: call `lifecycleManager.transition(appId, "terminated")`.
-In window focus: call `lifecycleManager.transition(appId, "focused")`.
-In window blur: call `lifecycleManager.transition(appId, "blurred")`.
-
-### 4. Wire bridge service handlers in NovaSDKProvider
-Register default handlers for core channels:
-- `file:open` / `file:save` / `file:list` → delegate to NovaFS
-- `notification:send` → delegate to NovaNotify
-- `theme:get` → return current theme
-- `app:launch` → call doLaunchApp
-- `sound:play` → already done
-
-### 5. Refactor SettingsWindow to full SDK
-Replace raw tokens with Nova SDK components: `AppLayout`, `NovaSidebar`, `NovaList`, `NovaText`, `NovaToggle`, `NovaSlider`.
-
-### 6. Add Notes app empty state action button
-Currently the `emptyAction` prop was removed. Add a "New Note" button to the empty state.
-
-### 7. Export new components from barrel
-Update `nova-sdk/index.ts` with all new exports.
+### 8. Wire Launch Flow Through Kernel
+Refactor `ShellLayout.doLaunchApp`:
+```
+User clicks → AppLoader.load(bundle) → ProcessTable.spawn(manifest) →
+  syscall(SYS_CREATE_WINDOW, pid, opts) → Compositor.registerSurface() →
+  lifecycleManager.transition("launching"→"running")
+```
 
 ## Files to Create
-- `src/lib/nova-sdk/hooks/useNovaApp.ts`
+```text
+src/lib/nova-sdk/kernel/
+  process-manager.ts    — Process table, PID, memory budget
+  memory-manager.ts     — Page-based allocation simulation
+  syscall.ts            — Typed syscall enum + dispatcher
+  compositor.ts         — Window surface tracking + hit-test
+  scheduler.ts          — MLFQ scheduler with 5 priority bands
+  boot.ts               — Kernel boot sequence orchestrator
+```
 
 ## Files to Modify
-- `src/lib/nova-sdk/ui/components.tsx` — add NovaToggle, NovaSlider, NovaTextArea, NovaToolbar, NovaBadge, NovaAvatar
-- `src/lib/nova-sdk/index.ts` — export new components + hook
-- `src/contexts/NovaSDKContext.tsx` — register bridge service handlers
-- `src/components/sita/ShellLayout.tsx` — wire lifecycle transitions on window open/close/focus
-- `src/components/sita/shell/windows/SettingsWindow.tsx` — refactor to SDK components
-- `src/components/sita/shell/windows/NotesWindow.tsx` — restore empty state action
+- `src/components/sita/shell/DesktopSurface.tsx` — wire close/focus/blur to lifecycle + kernel
+- `src/components/sita/ShellLayout.tsx` — route launch through ProcessTable + syscall
+- `src/contexts/NovaSDKContext.tsx` — call `NovaKernel.boot()` on mount
+- `src/lib/nova-sdk/index.ts` — export kernel modules
 
 ## Implementation Order
-1. New SDK components (NovaToggle, NovaSlider, NovaTextArea, NovaToolbar, NovaBadge, NovaAvatar)
-2. useNovaApp hook
-3. Wire lifecycle into ShellLayout
-4. Wire bridge handlers in provider
-5. Refactor SettingsWindow
-6. Polish Notes empty state
+1. Process Manager + Memory Manager (foundational)
+2. Syscall dispatcher (routes everything)
+3. Compositor + Scheduler (runtime simulation)
+4. Boot sequence (ties it all together)
+5. Wire lifecycle into DesktopSurface close/focus/blur
+6. Refactor launch flow through kernel pipeline
 7. Update barrel exports
 
