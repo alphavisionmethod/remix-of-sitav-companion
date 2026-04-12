@@ -788,6 +788,69 @@ export function SystemMonitorWindow() {
         </HStack>
       </NovaCard>
 
+      {/* IOPS Chart */}
+      <NovaCard>
+        <NovaText variant="label" muted className="mb-2">Disk IOPS — 60s</NovaText>
+        <NovaCanvasChart series={iopsSeries} stacked={false} maxY={20000} height={140} yUnit=" ops" />
+        <HStack spacing="normal" className="mt-2">
+          <HStack spacing="micro" align="center">
+            <div className="w-2 h-2 rounded-full bg-[hsl(210_80%_55%)]" />
+            <NovaText variant="label" muted>Read {latestIops ? `${(latestIops.read / 1000).toFixed(1)}K` : ""}</NovaText>
+          </HStack>
+          <HStack spacing="micro" align="center">
+            <div className="w-2 h-2 rounded-full bg-[hsl(340_75%_55%)]" />
+            <NovaText variant="label" muted>Write {latestIops ? `${(latestIops.write / 1000).toFixed(1)}K` : ""}</NovaText>
+          </HStack>
+        </HStack>
+      </NovaCard>
+
+      {/* Latency & Queue Depth */}
+      <div className="grid grid-cols-2 gap-3">
+        <NovaCard>
+          <NovaText variant="label" muted className="mb-1">Read Latency</NovaText>
+          <NovaText variant="heading" className={cn(
+            "!text-lg",
+            latestLatency && latestLatency.read > 3 ? "!text-[hsl(0_70%_55%)]"
+            : latestLatency && latestLatency.read > 1 ? "!text-[hsl(45_80%_50%)]"
+            : "!text-[hsl(142_70%_50%)]"
+          )}>
+            {latestLatency ? `${latestLatency.read.toFixed(2)}ms` : "—"}
+          </NovaText>
+          <Sparkline data={latencyHistory.map(l => l.read)} color="hsl(142, 70%, 50%)" height={24} />
+        </NovaCard>
+        <NovaCard>
+          <NovaText variant="label" muted className="mb-1">Write Latency</NovaText>
+          <NovaText variant="heading" className={cn(
+            "!text-lg",
+            latestLatency && latestLatency.write > 3 ? "!text-[hsl(0_70%_55%)]"
+            : latestLatency && latestLatency.write > 1 ? "!text-[hsl(45_80%_50%)]"
+            : "!text-[hsl(142_70%_50%)]"
+          )}>
+            {latestLatency ? `${latestLatency.write.toFixed(2)}ms` : "—"}
+          </NovaText>
+          <Sparkline data={latencyHistory.map(l => l.write)} color="hsl(45, 80%, 55%)" height={24} />
+        </NovaCard>
+      </div>
+
+      {/* Queue Depth */}
+      <NovaCard>
+        <HStack spacing="tight" justify="between" align="center" className="mb-2">
+          <NovaText variant="label" muted>I/O Queue Depth</NovaText>
+          <NovaText variant="label" className={cn(queueDepth > 24 ? "!text-[hsl(0_70%_55%)]" : queueDepth > 12 ? "!text-[hsl(45_80%_50%)]" : "")}>
+            {queueDepth}
+          </NovaText>
+        </HStack>
+        <div className="h-3 rounded-full bg-[hsl(0_0%_0%/0.06)] dark:bg-[hsl(0_0%_100%/0.06)] overflow-hidden">
+          <div
+            className="h-full rounded-full transition-all duration-300"
+            style={{
+              width: `${Math.min(100, (queueDepth / 32) * 100)}%`,
+              backgroundColor: queueDepth > 24 ? "hsl(0, 70%, 55%)" : queueDepth > 12 ? "hsl(45, 80%, 55%)" : "hsl(210, 80%, 55%)",
+            }}
+          />
+        </div>
+      </NovaCard>
+
       {/* Storage usage breakdown */}
       <NovaCard>
         <NovaText variant="label" muted className="mb-2">Storage Usage Breakdown</NovaText>
@@ -857,6 +920,117 @@ export function SystemMonitorWindow() {
     </VStack>
   );
 
+  // ── Thermal Sensors Section ──────────────────────────────────
+  const THERMAL_SENSORS = useMemo(() => {
+    if (!latestThermal) return [];
+    const cpuBase = latestThermal.cpu;
+    return [
+      { name: "CPU Package", temp: cpuBase, min: 35, max: 95 },
+      { name: "CPU Core 0", temp: cpuBase + (Math.random() - 0.5) * 4, min: 35, max: 95 },
+      { name: "CPU Core 1", temp: cpuBase - 1 + (Math.random() - 0.5) * 3, min: 35, max: 95 },
+      { name: "CPU Core 2", temp: cpuBase + 1 + (Math.random() - 0.5) * 3, min: 35, max: 95 },
+      { name: "CPU Core 3", temp: cpuBase - 2 + (Math.random() - 0.5) * 4, min: 35, max: 95 },
+      { name: "GPU Die", temp: latestThermal.gpu, min: 30, max: 90 },
+      { name: "SSD Controller", temp: latestThermal.ssd, min: 25, max: 70 },
+      { name: "Ambient", temp: latestThermal.ambient, min: 20, max: 50 },
+    ];
+  }, [latestThermal]);
+
+  const thermalStatus = useMemo(() => {
+    if (!latestThermal) return "normal";
+    if (latestThermal.cpu > 80 || latestThermal.gpu > 80) return "critical";
+    if (latestThermal.cpu > 65 || latestThermal.gpu > 65) return "warning";
+    return "normal";
+  }, [latestThermal]);
+
+  const renderThermal = () => (
+    <VStack spacing="normal">
+      <HStack spacing="tight" justify="between" align="center">
+        <VStack spacing="micro">
+          <NovaText variant="heading">Thermal Sensors</NovaText>
+          <NovaText variant="label" muted>8 sensors · Real-time monitoring</NovaText>
+        </VStack>
+        <NovaBadge variant={thermalStatus === "critical" ? "default" : thermalStatus === "warning" ? "warning" : "success"} className={cn("!text-[9px]", thermalStatus === "critical" && "!text-[hsl(0_70%_55%)]")}>
+          {thermalStatus.toUpperCase()}
+        </NovaBadge>
+      </HStack>
+
+      {/* Sensor Grid */}
+      <div className="grid grid-cols-2 gap-2">
+        {THERMAL_SENSORS.map(sensor => {
+          const pct = ((sensor.temp - sensor.min) / (sensor.max - sensor.min)) * 100;
+          const color = sensor.temp > 80 ? "hsl(0, 70%, 55%)" : sensor.temp > 60 ? "hsl(45, 80%, 55%)" : "hsl(142, 70%, 50%)";
+          return (
+            <NovaCard key={sensor.name} className="!p-2.5">
+              <HStack spacing="micro" justify="between" align="center">
+                <NovaText variant="label" muted className="!text-[10px] truncate">{sensor.name}</NovaText>
+                <NovaText variant="body" className="!text-[12px] !font-semibold" style={{ color }}>
+                  {sensor.temp.toFixed(0)}°C
+                </NovaText>
+              </HStack>
+              <div className="h-1.5 rounded-full bg-[hsl(0_0%_0%/0.06)] dark:bg-[hsl(0_0%_100%/0.06)] mt-1.5 overflow-hidden">
+                <div
+                  className="h-full rounded-full transition-all duration-300"
+                  style={{ width: `${Math.min(100, Math.max(0, pct))}%`, backgroundColor: color }}
+                />
+              </div>
+              <HStack spacing="micro" justify="between" className="mt-0.5">
+                <NovaText variant="label" muted className="!text-[8px]">{sensor.min}°</NovaText>
+                <NovaText variant="label" muted className="!text-[8px]">{sensor.max}°</NovaText>
+              </HStack>
+            </NovaCard>
+          );
+        })}
+      </div>
+
+      {/* Temperature History Chart */}
+      <NovaCard>
+        <NovaText variant="label" muted className="mb-2">Temperature History — 60s</NovaText>
+        <NovaCanvasChart series={thermalSeries} stacked={false} maxY={100} height={160} yUnit="°C" />
+        <HStack spacing="normal" className="mt-2">
+          <HStack spacing="micro" align="center">
+            <div className="w-2 h-2 rounded-full bg-[hsl(0_70%_55%)]" />
+            <NovaText variant="label" muted>CPU</NovaText>
+          </HStack>
+          <HStack spacing="micro" align="center">
+            <div className="w-2 h-2 rounded-full bg-[hsl(45_80%_55%)]" />
+            <NovaText variant="label" muted>GPU</NovaText>
+          </HStack>
+          <HStack spacing="micro" align="center">
+            <div className="w-2 h-2 rounded-full bg-[hsl(210_80%_55%)]" />
+            <NovaText variant="label" muted>SSD</NovaText>
+          </HStack>
+        </HStack>
+      </NovaCard>
+
+      {/* Fan Speed */}
+      <NovaCard>
+        <HStack spacing="tight" justify="between" align="center">
+          <HStack spacing="micro" align="center">
+            <Fan className="w-4 h-4 text-muted-foreground animate-spin" style={{ animationDuration: `${Math.max(0.3, 3 - fanRpm / 1000)}s` }} />
+            <VStack spacing="micro">
+              <NovaText variant="body" className="!font-medium">System Fan</NovaText>
+              <NovaText variant="label" muted className="!text-[10px]">Target: {Math.floor(fanRpm * 0.95)} RPM</NovaText>
+            </VStack>
+          </HStack>
+          <VStack spacing="micro" className="text-right">
+            <NovaText variant="heading" className="!text-lg">{fanRpm}</NovaText>
+            <NovaText variant="label" muted>RPM</NovaText>
+          </VStack>
+        </HStack>
+        <div className="h-2 rounded-full bg-[hsl(0_0%_0%/0.06)] dark:bg-[hsl(0_0%_100%/0.06)] mt-2 overflow-hidden">
+          <div
+            className="h-full rounded-full transition-all duration-500"
+            style={{
+              width: `${Math.min(100, (fanRpm / 3000) * 100)}%`,
+              backgroundColor: fanRpm > 2200 ? "hsl(0, 70%, 55%)" : fanRpm > 1500 ? "hsl(45, 80%, 55%)" : "hsl(210, 80%, 55%)",
+            }}
+          />
+        </div>
+      </NovaCard>
+    </VStack>
+  );
+
   // ── Render ─────────────────────────────────────────────────
   return (
     <AppLayout sidebar={sidebar} sidebarWidth={155} toolbar={toolbar} minHeight={420}>
@@ -866,6 +1040,7 @@ export function SystemMonitorWindow() {
       {section === "network" && renderNetwork()}
       {section === "gpu" && renderGpu()}
       {section === "disk" && renderDisk()}
+      {section === "thermal" && renderThermal()}
       {section === "services" && renderServices()}
     </AppLayout>
   );
