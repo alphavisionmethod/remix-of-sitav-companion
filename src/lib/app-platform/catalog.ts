@@ -347,6 +347,29 @@ export const APP_CATALOG: AppDefinition[] = [
     updateSource: "store-managed", startupBehavior: "none", notificationPermission: false,
     installStatus: "installed", installedAt: "2026-01-01", pinnedToDock: false, tags: ["settings", "preferences"], receipts: [],
   },
+  {
+    id: "calendar", name: "SITA Calendar", publisher: "SITA OS", icon: "📅", iconBg: "from-red-500 to-orange-500",
+    category: "productivity", appClass: "internal", trustLevel: "sita-verified", version: "1.0.0", size: "4 MB",
+    shortDescription: "Calendar and scheduling", fullDescription: "A beautiful calendar with monthly view, events, and scheduling. Keeps your schedule organized with color-coded events.",
+    screenshots: [], rating: 4.8, downloads: 60_000, lastUpdated: "2026-03-01",
+    releaseNotes: ["Initial release"],
+    permissions: [], fileAssociations: [{ extension: ".ics", mimeType: "text/calendar", label: "Calendar events", isDefault: true }],
+    protocolAssociations: [{ protocol: "webcal", label: "Calendar subscriptions", isDefault: true }],
+    worksWithSita: ["Dock integration", "Shell notifications", "Calendar integration"],
+    updateSource: "store-managed", startupBehavior: "none", notificationPermission: true,
+    installStatus: "installed", installedAt: "2026-01-01", pinnedToDock: true, tags: ["calendar", "schedule", "events"], receipts: [],
+  },
+  {
+    id: "weather", name: "SITA Weather", publisher: "SITA OS", icon: "🌤️", iconBg: "from-sky-400 to-blue-500",
+    category: "utilities", appClass: "internal", trustLevel: "sita-verified", version: "1.0.0", size: "3 MB",
+    shortDescription: "Weather forecast and conditions", fullDescription: "Beautiful weather app with current conditions, hourly breakdown, and 7-day forecast. Ambient UI adapts to weather conditions.",
+    screenshots: [], rating: 4.7, downloads: 55_000, lastUpdated: "2026-03-01",
+    releaseNotes: ["Initial release"],
+    permissions: [], fileAssociations: [], protocolAssociations: [],
+    worksWithSita: ["Dock integration", "Weather widget", "Ambient UI adaptation"],
+    updateSource: "store-managed", startupBehavior: "none", notificationPermission: true,
+    installStatus: "installed", installedAt: "2026-01-01", pinnedToDock: true, tags: ["weather", "forecast"], receipts: [],
+  },
 
   // ── NEW APPS — Expanded Coverage ──
 
