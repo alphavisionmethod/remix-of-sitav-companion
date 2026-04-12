@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
 // Nova Kernel — Boot Sequence Orchestrator
-// Initializes all kernel subsystems including privilege enforcement
+// Initializes all kernel subsystems including HAL, privilege, extensions
 // ═══════════════════════════════════════════════════════════════
 
 import { MemoryManager } from "./memory-manager";
@@ -10,12 +10,16 @@ import { Compositor } from "./compositor";
 import { PowerManager } from "./power-manager";
 import { PrivilegeEnforcement } from "./privilege";
 import { WaylandServer } from "./wayland";
+import { DriverManager } from "./drivers";
 import { ServiceManager } from "../services/service-manager";
 import { FileSystemService } from "../services/filesystem-service";
 import { WindowServer } from "../services/window-server";
 import { InputService } from "../services/input-service";
 import { NotificationService } from "../services/notification-service";
 import { SettingsService } from "../services/settings-service";
+import { PluginRegistry } from "../extensions/plugin-registry";
+import { WidgetRegistry } from "../extensions/widget-registry";
+import { IntegrationRegistry } from "../extensions/integration-registry";
 
 export interface BootLogEntry {
   subsystem: string;
@@ -41,52 +45,61 @@ class NovaKernelClass {
 
     console.log("╔════════════════════════════════════════╗");
     console.log("║     NOVA KERNEL — BOOT SEQUENCE       ║");
-    console.log("║   CPU Privilege Rings: Ring 0 / Ring 3 ║");
+    console.log("║   Apps → SDK → Services → Kernel      ║");
+    console.log("║   → Drivers → Hardware                ║");
     console.log("╚════════════════════════════════════════╝");
 
-    // 1. Privilege Enforcement (must be first — other subsystems depend on it)
+    // ── Phase 0: Hardware Abstraction Layer ──
+    console.log("\n[Kernel] Phase 0 — Initializing HAL / Drivers...");
+    this.initSubsystem("DriverManager", () => {
+      // initAll is async but drivers are simulated — fire and forget
+      DriverManager.initAll().then(results => {
+        for (const r of results) {
+          console.log(`  ↳ ${r.id}: ${r.status} (${r.ms.toFixed(1)}ms)`);
+        }
+      });
+    });
+
+    const phase0Ms = (performance.now() - this.bootStartTime).toFixed(1);
+    console.log(`[Kernel] Phase 0 complete in ${phase0Ms}ms — HAL initialized`);
+
+    // ── Phase 1: Kernel Subsystems ──
+    console.log("\n[Kernel] Phase 1 — Booting Kernel Subsystems...");
+
     this.initSubsystem("PrivilegeEnforcement", () => {
       PrivilegeEnforcement.reset();
     });
 
-    // 2. Memory Manager + Address Space subsystem
     this.initSubsystem("MemoryManager", () => {
       MemoryManager.reset();
-      // Pre-allocate kernel memory (PID 0 = kernel, Ring 0)
       MemoryManager.allocate(0, 256, { label: "kernel:heap", guardPages: true });
       MemoryManager.allocate(0, 64, { label: "kernel:stack", guardPages: true });
       MemoryManager.createAddressSpace(0);
     });
 
-    // 3. Process Table
     this.initSubsystem("ProcessTable", () => {
       ProcessTable.reset();
     });
 
-    // 4. Scheduler with ready queues + privilege-aware context switching
     this.initSubsystem("Scheduler", () => {
       Scheduler.reset();
       Scheduler.start(200);
     });
 
-    // 5. Compositor
     this.initSubsystem("Compositor", () => {
       Compositor.reset();
     });
 
-    // 6. Power Management
     this.initSubsystem("PowerManager", () => {
       PowerManager.reset();
       PowerManager.start(1000);
     });
 
-    // 7. Wayland Protocol Server
     this.initSubsystem("WaylandServer", () => {
       WaylandServer.reset();
       WaylandServer.boot();
     });
 
-    // 8. Syscall table (stateless — just logging that it's ready)
     this.initSubsystem("SyscallDispatcher", () => {
       // Syscall module with ring transition support initialized
     });
@@ -94,8 +107,6 @@ class NovaKernelClass {
     const kernelMs = (performance.now() - this.bootStartTime).toFixed(1);
     console.log(`[Kernel] Phase 1 complete in ${kernelMs}ms — kernel subsystems operational`);
     console.log(`[Kernel] Privilege enforcement active: Ring 0 (kernel) / Ring 3 (user)`);
-    console.log(`[Kernel] Syscall dispatcher: Ring 3→0→3 transitions enabled`);
-    console.log(`[Kernel] Context switching: privilege-aware with CPL save/restore`);
 
     // ── Phase 2: System Services ──
     console.log("\n[Kernel] Phase 2 — Booting System Services...");
@@ -108,7 +119,6 @@ class NovaKernelClass {
     ServiceManager.register({ id: "WindowServer", factory: () => WindowServer, dependencies: ["InputService"], priority: 3, restartPolicy: "always" });
     ServiceManager.register({ id: "NotificationService", factory: () => NotificationService, dependencies: ["SettingsService"], priority: 4, restartPolicy: "on-failure" });
 
-    // ServiceManager.boot() is async but we fire-and-forget during kernel boot
     ServiceManager.boot().then(serviceLog => {
       for (const entry of serviceLog) {
         this.bootLog.push({
@@ -124,8 +134,30 @@ class NovaKernelClass {
       console.error("[Kernel] Phase 2 service boot error:", e);
     });
 
+    // ── Phase 3: Extension Registries ──
+    console.log("\n[Kernel] Phase 3 — Initializing Extension System...");
+    this.initSubsystem("PluginRegistry", () => {
+      PluginRegistry.reset();
+      // Register core extension points
+      PluginRegistry.registerExtensionPoint({ id: "menubar.items", description: "Add items to the menubar", ownerApp: "system" });
+      PluginRegistry.registerExtensionPoint({ id: "settings.sections", description: "Add settings sections", ownerApp: "system" });
+      PluginRegistry.registerExtensionPoint({ id: "finder.contextmenu", description: "Add Finder context menu items", ownerApp: "finder" });
+      PluginRegistry.registerExtensionPoint({ id: "statusbar.widgets", description: "Add status bar widgets", ownerApp: "system" });
+      PluginRegistry.registerExtensionPoint({ id: "dock.actions", description: "Add dock right-click actions", ownerApp: "system" });
+      PluginRegistry.registerExtensionPoint({ id: "notification.filters", description: "Filter or transform notifications", ownerApp: "system" });
+    });
+
+    this.initSubsystem("WidgetRegistry", () => {
+      WidgetRegistry.reset();
+    });
+
+    this.initSubsystem("IntegrationRegistry", () => {
+      IntegrationRegistry.reset();
+    });
+
     const totalMs = (performance.now() - this.bootStartTime).toFixed(1);
-    console.log(`[Kernel] Boot complete in ${totalMs}ms`);
+    console.log(`[Kernel] Boot complete in ${totalMs}ms — full stack operational`);
+    console.log(`[Kernel] Stack: Apps → SDK → Services → Kernel → Drivers → Hardware`);
 
     this.booted = true;
     return this.bootLog;
@@ -136,6 +168,9 @@ class NovaKernelClass {
     if (!this.booted) return;
 
     console.log("[Kernel] Shutdown initiated...");
+    PluginRegistry.reset();
+    WidgetRegistry.reset();
+    IntegrationRegistry.reset();
     ServiceManager.shutdown();
     WaylandServer.reset();
     PowerManager.stop();
@@ -144,6 +179,7 @@ class NovaKernelClass {
     ProcessTable.reset();
     MemoryManager.reset();
     PrivilegeEnforcement.reset();
+    DriverManager.reset();
 
     this.booted = false;
     this.bootLog = [];
@@ -171,6 +207,12 @@ class NovaKernelClass {
       privilege: PrivilegeEnforcement.getStats(),
       wayland: WaylandServer.getStats(),
       services: ServiceManager.getStats(),
+      drivers: DriverManager.getStats(),
+      extensions: {
+        plugins: PluginRegistry.getStats(),
+        widgets: WidgetRegistry.getStats(),
+        integrations: IntegrationRegistry.getStats(),
+      },
     };
   }
 

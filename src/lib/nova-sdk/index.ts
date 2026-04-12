@@ -81,3 +81,19 @@ export type { PrivilegeLevel, PrivilegeViolation, RingTransition, RingTransition
 // Wayland Protocol
 export { WaylandServer } from "./kernel/wayland";
 export type { WaylandClient, WaylandSurface, WaylandGlobal, WaylandBufferFormat, WaylandShmPool, WaylandFrameEvent, WaylandStats } from "./kernel/wayland";
+
+// Hardware Abstraction Layer
+export { DriverManager } from "./kernel/drivers";
+export type { DeviceDriver, DriverType, DriverStatus } from "./kernel/drivers";
+
+// Extensibility System
+export { PluginRegistry } from "./extensions/plugin-registry";
+export type { PluginManifest, ExtensionPoint, InstalledPlugin, TrustLevel } from "./extensions/plugin-registry";
+export { WidgetRegistry } from "./extensions/widget-registry";
+export type { WidgetManifest, WidgetProps, WidgetPlacement, WidgetSize, WidgetCategory } from "./extensions/widget-registry";
+export { IntegrationRegistry } from "./extensions/integration-registry";
+export type { IntegrationManifest, IntegrationInstance, IntegrationType, IntegrationStatus } from "./extensions/integration-registry";
+
+// Polish Audit
+export { auditAnimationConsistency, auditSoundCoverage, auditInteractionFeedback, getPolishScore } from "./extensions/polish-audit";
+export type { AuditResult, PolishScore } from "./extensions/polish-audit";

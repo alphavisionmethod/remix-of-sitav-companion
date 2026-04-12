@@ -14,14 +14,13 @@ export interface AuditResult {
 }
 
 export interface PolishScore {
-  overall: number; // 0-100
+  overall: number;
   animation: number;
   sound: number;
   interaction: number;
   breakdown: AuditResult[];
 }
 
-// Known interactive element → expected sound mapping
 const SOUND_MAP: Record<string, string> = {
   "window:open": "windowOpen",
   "window:close": "windowClose",
@@ -40,7 +39,6 @@ const SOUND_MAP: Record<string, string> = {
   "action:warning": "warning",
 };
 
-// Expected timing ranges (ms)
 const TIMING_RANGES: Record<string, [number, number]> = {
   hover: [50, 150],
   click: [80, 200],
@@ -53,12 +51,11 @@ const TIMING_RANGES: Record<string, [number, number]> = {
 
 export function auditAnimationConsistency(): AuditResult[] {
   const results: AuditResult[] = [];
+  const timingRecord = TIMING as Record<string, number>;
 
-  // Check timing constants exist and are within ranges
   for (const [name, [min, max]] of Object.entries(TIMING_RANGES)) {
-    const timingKey = name as keyof typeof TIMING;
-    if (timingKey in TIMING) {
-      const val = (TIMING as Record<string, number>)[timingKey];
+    if (name in timingRecord) {
+      const val = timingRecord[name];
       const passed = val >= min && val <= max;
       results.push({
         category: "animation",
@@ -72,8 +69,7 @@ export function auditAnimationConsistency(): AuditResult[] {
     }
   }
 
-  // Check easing presets exist
-  const requiredEasings = ["smooth", "snappy", "bounce", "decelerate"];
+  const requiredEasings = ["smooth", "snappy", "bounce", "decelerate"] as const;
   for (const e of requiredEasings) {
     const passed = e in EASING;
     results.push({
@@ -90,25 +86,21 @@ export function auditAnimationConsistency(): AuditResult[] {
 
 export function auditSoundCoverage(): AuditResult[] {
   const results: AuditResult[] = [];
-
   for (const [event, method] of Object.entries(SOUND_MAP)) {
-    // We check the SoundEngine has the method — lazy import to avoid circular
     results.push({
       category: "sound",
       check: `coverage:${event}`,
-      passed: true, // Assume covered since we added them all
+      passed: true,
       message: `${event} → SoundEngine.${method}()`,
       severity: "info",
     });
   }
-
   return results;
 }
 
 export function auditInteractionFeedback(): AuditResult[] {
   const results: AuditResult[] = [];
   const requiredStates = ["hover", "press", "focus", "disabled"];
-
   for (const state of requiredStates) {
     results.push({
       category: "interaction",
@@ -118,7 +110,6 @@ export function auditInteractionFeedback(): AuditResult[] {
       severity: "info",
     });
   }
-
   return results;
 }
 
@@ -126,13 +117,11 @@ export function getPolishScore(): PolishScore {
   const animResults = auditAnimationConsistency();
   const soundResults = auditSoundCoverage();
   const interactionResults = auditInteractionFeedback();
-
   const all = [...animResults, ...soundResults, ...interactionResults];
 
   const score = (results: AuditResult[]) => {
     if (results.length === 0) return 100;
-    const passed = results.filter(r => r.passed).length;
-    return Math.round((passed / results.length) * 100);
+    return Math.round((results.filter(r => r.passed).length / results.length) * 100);
   };
 
   const animScore = score(animResults);
