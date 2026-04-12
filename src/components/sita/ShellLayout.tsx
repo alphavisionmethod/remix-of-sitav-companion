@@ -44,6 +44,9 @@ import { routineDetector } from "@/lib/services/routine-detector";
 import { useAdaptiveVisuals } from "@/lib/services/adaptive-visual-system";
 import { useBackgroundIntelligence } from "@/lib/services/background-intelligence";
 import { useAppTransitions } from "@/components/sita/shell/AppTransitionLayer";
+import { useGestureEngine } from "@/hooks/use-gesture-engine";
+import { useFocusMode } from "@/hooks/use-focus-mode";
+import { registerActivity, removeActivity, updateActivity } from "@/components/sita/shell/LiveActivityBar";
 
 // Lazy-load non-critical shell features (deferred until after first paint)
 const AdvisorChat = lazy(() => import("./AdvisorChat").then(m => ({ default: m.AdvisorChat })));
@@ -78,6 +81,8 @@ const UniversalCommandLazy = lazy(() => import("./UniversalCommand").then(m => (
 const AmbientSuggestionsBarLazy = lazy(() => import("./AmbientSuggestionsBar").then(m => ({ default: m.AmbientSuggestionsBar })));
 const SpatialDesktopLazy = lazy(() => import("./shell/SpatialDesktop").then(m => ({ default: m.SpatialDesktop })));
 const HoldKeyOverlayLazy = lazy(() => import("./shell/HoldKeyOverlay").then(m => ({ default: m.HoldKeyOverlay })));
+const LiveActivityBarLazy = lazy(() => import("./shell/LiveActivityBar").then(m => ({ default: m.LiveActivityBar })));
+const ContextualCursorLazy = lazy(() => import("./shell/ContextualCursor").then(m => ({ default: m.ContextualCursor })));
 
 // Route-aware page transitions
 const drillDownSegments = ["mission", "owner", "business", "money", "concierge"];
@@ -125,7 +130,45 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
   useBackgroundIntelligence();
   useAppTransitions();
   const { calmLevel } = useCalmMode();
+  const focusMode = useFocusMode();
   const location = useLocation();
+
+  // Gesture engine — workspace switching & FlowSpace
+  useGestureEngine(useCallback((gesture) => {
+    if (gesture.type === "swipe-up" || gesture.type === "pinch-out") {
+      setMissionControlOpen(true);
+    } else if (gesture.type === "swipe-down" || gesture.type === "pinch-in") {
+      setMissionControlOpen(false);
+    } else if (gesture.type === "edge-swipe-right") {
+      // Could wire to sidebar toggle
+    }
+  }, []));
+
+  // Focus mode → Live Activity integration
+  useEffect(() => {
+    if (focusMode.active) {
+      registerActivity({
+        id: "focus-timer",
+        type: "focus",
+        label: `Focus ${focusMode.formatRemaining()}`,
+        sublabel: "Deep work session",
+        progress: focusMode.progress,
+        onDismiss: () => focusMode.stop(),
+      });
+    } else {
+      removeActivity("focus-timer");
+    }
+  }, [focusMode.active, focusMode.remaining]);
+
+  // Update focus activity progress
+  useEffect(() => {
+    if (focusMode.active) {
+      updateActivity("focus-timer", {
+        label: `Focus ${focusMode.formatRemaining()}`,
+        progress: focusMode.progress,
+      });
+    }
+  }, [focusMode.remaining]);
 
   // Session restore on mount
   useSessionRestore({
@@ -482,6 +525,16 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
       {/* Hold-Key Command Overlay — Alt hold for action map */}
       <Suspense fallback={null}>
         <HoldKeyOverlayLazy />
+      </Suspense>
+
+      {/* Live Activity Bar — Dynamic Island */}
+      <Suspense fallback={null}>
+        <LiveActivityBarLazy />
+      </Suspense>
+
+      {/* Contextual Cursor — intelligent cursor with trail */}
+      <Suspense fallback={null}>
+        <ContextualCursorLazy />
       </Suspense>
 
       {/* Behavioral Interaction Tracker — invisible */}
