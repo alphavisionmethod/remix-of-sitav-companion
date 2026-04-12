@@ -46,13 +46,6 @@ function useWeather() {
 
     async function fetchWeather(lat: number, lon: number) {
       try {
-        const { data: resp, error: fnErr } = await supabase.functions.invoke("get-weather", {
-          body: null,
-          headers: { "Content-Type": "application/json" },
-          method: "GET",
-        });
-
-        // supabase.functions.invoke doesn't support query params easily, use fetch directly
         const url = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/get-weather?lat=${lat}&lon=${lon}`;
         const res = await fetch(url, {
           headers: {
