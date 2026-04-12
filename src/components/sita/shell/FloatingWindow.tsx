@@ -46,6 +46,7 @@ interface FloatingWindowProps {
   onClose?: () => void;
   onMinimize?: () => void;
   onMaximize?: () => void;
+  onPiP?: () => void;
   onFocus?: () => void;
   isFocused?: boolean;
   siblingWindows?: SiblingWindow[];
@@ -74,6 +75,7 @@ export function FloatingWindow({
   onClose,
   onMinimize,
   onMaximize,
+  onPiP,
   onFocus,
   isFocused = true,
   siblingWindows = [],
@@ -530,8 +532,22 @@ export function FloatingWindow({
             </span>
           </div>
 
-          {/* Spacer for symmetry */}
-          <div className="w-[52px]" />
+          {/* PiP button + Spacer for symmetry */}
+          <div className="w-[52px] flex items-center justify-end gap-1">
+            {onPiP && (
+              <button
+                onClick={onPiP}
+                className="w-4 h-4 rounded flex items-center justify-center text-[hsl(0_0%_50%/0.4)] hover:text-[hsl(0_0%_50%/0.8)] transition-colors"
+                aria-label="Picture in Picture"
+                title="Picture in Picture"
+              >
+                <svg viewBox="0 0 14 14" className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth="1.3">
+                  <rect x="1" y="1" width="12" height="10" rx="1.5" />
+                  <rect x="7" y="5" width="5" height="4" rx="1" fill="currentColor" opacity="0.3" />
+                </svg>
+              </button>
+            )}
+          </div>
         </div>
 
         {/* ── Toolbar slot ── */}

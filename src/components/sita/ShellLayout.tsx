@@ -94,6 +94,11 @@ const SpatialDesktopLazy = lazy(() => import("./shell/SpatialDesktop").then(m =>
 const HoldKeyOverlayLazy = lazy(() => import("./shell/HoldKeyOverlay").then(m => ({ default: m.HoldKeyOverlay })));
 const LiveActivityBarLazy = lazy(() => import("./shell/LiveActivityBar").then(m => ({ default: m.LiveActivityBar })));
 const ContextualCursorLazy = lazy(() => import("./shell/ContextualCursor").then(m => ({ default: m.ContextualCursor })));
+const BootSplashLazy = lazy(() => import("./shell/BootSplash").then(m => ({ default: m.BootSplash })));
+const AppSwitcherLazy = lazy(() => import("./shell/AppSwitcher").then(m => ({ default: m.AppSwitcher })));
+const ControlCenterLazy = lazy(() => import("./shell/ControlCenter").then(m => ({ default: m.ControlCenter })));
+const NotificationDropdownLazy = lazy(() => import("./shell/NotificationDropdown").then(m => ({ default: m.NotificationDropdown })));
+const PictureInPictureLazy = lazy(() => import("./shell/PictureInPicture").then(m => ({ default: m.PictureInPicture })));
 
 // Route-aware page transitions
 const drillDownSegments = ["mission", "owner", "business", "money", "concierge"];
@@ -130,6 +135,10 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
   const [commandOpen, setCommandOpen] = useState(false);
   const [missionControlOpen, setMissionControlOpen] = useState(false);
   const [spatialOpen, setSpatialOpen] = useState(false);
+  const [controlCenterOpen, setControlCenterOpen] = useState(false);
+  const [notifDropdownOpen, setNotifDropdownOpen] = useState(false);
+  const [showBootSplash, setShowBootSplash] = useState(true);
+  const [pipWindows, setPipWindows] = useState<Array<{ id: string; title: string; type: "music" | "generic"; data?: any }>>([]);
   const [permGate, setPermGate] = useState<{ appId: string; originRect?: DOMRect } | null>(null);
   const wm = useWindowManager();
   const { isCalm, isFocus } = useDisplayMode();
@@ -206,8 +215,8 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
     return () => window.removeEventListener("beforeunload", handler);
   }, [wm, location.pathname]);
 
-  // Memoized callbacks for child components
-  const handleNotifOpen = useCallback(() => setNotifOpen(true), []);
+  const handleNotifOpen = useCallback(() => setNotifDropdownOpen(o => !o), []);
+  const handleControlCenterOpen = useCallback(() => setControlCenterOpen(o => !o), []);
   const handleTimelineOpen = useCallback(() => setTimelineOpen(true), []);
   const handleCommandOpen = useCallback(() => setCommandOpen(true), []);
 
@@ -485,7 +494,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         </Suspense>
         {isDesktopRoute ? (
           <Suspense fallback={null}>
-            <SystemMenuBarLazy onSearchOpen={handleCommandOpen} onNotifOpen={handleNotifOpen} activeApp="Desktop" />
+            <SystemMenuBarLazy onSearchOpen={handleCommandOpen} onNotifOpen={handleNotifOpen} onControlCenterOpen={handleControlCenterOpen} activeApp="Desktop" />
           </Suspense>
         ) : (
           <SitaTopBar
@@ -639,6 +648,38 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
       {/* Contextual Cursor — intelligent cursor with trail */}
       <Suspense fallback={null}>
         <ContextualCursorLazy />
+      </Suspense>
+
+      {/* Boot Splash — cinematic boot sequence */}
+      <Suspense fallback={null}>
+        {showBootSplash && <BootSplashLazy onComplete={() => setShowBootSplash(false)} />}
+      </Suspense>
+
+      {/* App Switcher — Alt+Tab */}
+      <Suspense fallback={null}>
+        <AppSwitcherLazy />
+      </Suspense>
+
+      {/* Control Center — pull-down panel */}
+      <Suspense fallback={null}>
+        <ControlCenterLazy open={controlCenterOpen} onClose={() => setControlCenterOpen(false)} />
+      </Suspense>
+
+      {/* Notification Dropdown — slide-down panel */}
+      <Suspense fallback={null}>
+        <NotificationDropdownLazy open={notifDropdownOpen} onClose={() => setNotifDropdownOpen(false)} />
+      </Suspense>
+
+      {/* Picture-in-Picture */}
+      <Suspense fallback={null}>
+        <PictureInPictureLazy
+          windows={pipWindows}
+          onClose={(id) => setPipWindows(prev => prev.filter(p => p.id !== id))}
+          onExpand={(id) => {
+            setPipWindows(prev => prev.filter(p => p.id !== id));
+            wm.focusWindow(id);
+          }}
+        />
       </Suspense>
 
       {/* Behavioral Interaction Tracker — invisible */}
