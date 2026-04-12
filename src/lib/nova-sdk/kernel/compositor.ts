@@ -1,6 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // Nova Kernel — Compositor
 // Window surface tracking, z-order, hit-testing, dirty regions
+// Now with layer-based z-order (normal < modal < overlay)
 // ═══════════════════════════════════════════════════════════════
 
 export interface SurfaceBounds {
@@ -10,10 +11,19 @@ export interface SurfaceBounds {
   height: number;
 }
 
+export type SurfaceLayer = "normal" | "modal" | "overlay";
+
+const LAYER_BASE: Record<SurfaceLayer, number> = {
+  normal: 0,
+  modal: 10000,
+  overlay: 20000,
+};
+
 export interface CompositorSurface {
   windowId: string;
   pid: number;
   zIndex: number;
+  layer: SurfaceLayer;
   bounds: SurfaceBounds;
   visible: boolean;
   opacity: number;
@@ -26,11 +36,12 @@ class CompositorClass {
   private nextZ = 1;
 
   /** Register a new window surface */
-  registerSurface(windowId: string, pid: number, bounds: SurfaceBounds, title = ""): CompositorSurface {
+  registerSurface(windowId: string, pid: number, bounds: SurfaceBounds, title = "", layer: SurfaceLayer = "normal"): CompositorSurface {
     const surface: CompositorSurface = {
       windowId,
       pid,
       zIndex: this.nextZ++,
+      layer,
       bounds,
       visible: true,
       opacity: 1,
@@ -38,7 +49,7 @@ class CompositorClass {
       title,
     };
     this.surfaces.set(windowId, surface);
-    console.log(`[Kernel:Compositor] Registered surface "${windowId}" (PID ${pid}) at z=${surface.zIndex}`);
+    console.log(`[Kernel:Compositor] Registered surface "${windowId}" (PID ${pid}) layer=${layer} z=${surface.zIndex}`);
     return surface;
   }
 
@@ -51,11 +62,20 @@ class CompositorClass {
     return removed;
   }
 
-  /** Bring a surface to front */
+  /** Bring a surface to front within its layer */
   bringToFront(windowId: string): void {
     const surface = this.surfaces.get(windowId);
     if (surface) {
       surface.zIndex = this.nextZ++;
+      surface.dirty = true;
+    }
+  }
+
+  /** Change surface layer (e.g., promote to modal) */
+  setLayer(windowId: string, layer: SurfaceLayer): void {
+    const surface = this.surfaces.get(windowId);
+    if (surface) {
+      surface.layer = layer;
       surface.dirty = true;
     }
   }
@@ -78,10 +98,35 @@ class CompositorClass {
     }
   }
 
+  /** Check if a surface is fully occluded by higher surfaces */
+  isFullyOccluded(windowId: string): boolean {
+    const target = this.surfaces.get(windowId);
+    if (!target || !target.visible) return true;
+
+    const effectiveZ = LAYER_BASE[target.layer] + target.zIndex;
+    const tb = target.bounds;
+
+    for (const s of this.surfaces.values()) {
+      if (s.windowId === windowId || !s.visible) continue;
+      const sz = LAYER_BASE[s.layer] + s.zIndex;
+      if (sz <= effectiveZ) continue;
+
+      // Check if s fully covers target
+      if (
+        s.bounds.x <= tb.x &&
+        s.bounds.y <= tb.y &&
+        s.bounds.x + s.bounds.width >= tb.x + tb.width &&
+        s.bounds.y + s.bounds.height >= tb.y + tb.height
+      ) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   /** Hit-test: find topmost visible surface at (x, y) */
   findSurfaceAt(x: number, y: number): CompositorSurface | null {
     const ordered = this.getRenderOrder();
-    // Traverse back-to-front (highest z last), return last match
     for (let i = ordered.length - 1; i >= 0; i--) {
       const s = ordered[i];
       if (!s.visible) continue;
@@ -94,11 +139,15 @@ class CompositorClass {
     return null;
   }
 
-  /** Get surfaces in render order (lowest z first) */
+  /** Get surfaces in render order — sorted by layer first, then zIndex */
   getRenderOrder(): CompositorSurface[] {
     return Array.from(this.surfaces.values())
       .filter(s => s.visible)
-      .sort((a, b) => a.zIndex - b.zIndex);
+      .sort((a, b) => {
+        const aEff = LAYER_BASE[a.layer] + a.zIndex;
+        const bEff = LAYER_BASE[b.layer] + b.zIndex;
+        return aEff - bEff;
+      });
   }
 
   /** Mark all surfaces clean after render */
@@ -126,6 +175,11 @@ class CompositorClass {
       visible: all.filter(s => s.visible).length,
       dirty: all.filter(s => s.dirty).length,
       topZ: this.nextZ - 1,
+      layers: {
+        normal: all.filter(s => s.layer === "normal").length,
+        modal: all.filter(s => s.layer === "modal").length,
+        overlay: all.filter(s => s.layer === "overlay").length,
+      },
     };
   }
 
