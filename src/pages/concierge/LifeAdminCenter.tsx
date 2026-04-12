@@ -4,7 +4,7 @@ import { GlassCard } from "@/components/sita/PremiumPageComponents";
 import { SitaPageHeader } from "@/components/sita/SitaCard";
 import { SitaTabs } from "@/components/sita/SitaComponents";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { LifeAdminQueueCard, ConciergeAdvisorInsightCard } from "@/components/concierge";
+import { LifeAdminQueueCard, ConciergeAdvisorInsightCard, ConciergePageWrapper } from "@/components/concierge";
 import type { AdminQueueItem } from "@/components/concierge";
 import {
   FileText, Calendar, Wrench, RefreshCw, Clock, AlertCircle, CheckCircle,
@@ -121,7 +121,7 @@ const LifeAdminCenter = () => {
   const totalAging = useMemo(() => Object.values(TAB_DATA).flatMap(t => t.items).filter(i => i.daysOverdue > 0).length, []);
 
   return (
-    <motion.div className="space-y-5" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+    <ConciergePageWrapper className="space-y-5">
       <DemoModeBadge />
       <SitaPageHeader
         title="Life Admin Center"
@@ -179,7 +179,7 @@ const LifeAdminCenter = () => {
         linkedItems: ["Tax documents", "Phone calls session", "School paperwork"],
         confidence: "high",
       }} />
-    </motion.div>
+    </ConciergePageWrapper>
   );
 };
 

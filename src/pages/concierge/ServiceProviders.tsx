@@ -2,7 +2,7 @@ import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton 
 import { KPITile, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { DomainHeader } from "@/components/sita/primitives";
-import { ConciergeAdvisorInsightCard, ServiceFollowUpCard, VendorDetailPanel } from "@/components/concierge";
+import { ConciergeAdvisorInsightCard, ServiceFollowUpCard, VendorDetailPanel, ConciergePageWrapper } from "@/components/concierge";
 import type { ServiceFollowUp, VendorDetail } from "@/components/concierge";
 import { Wrench, Star, Phone, Clock, DollarSign, MapPin, Shield, Plus, Search, Calendar, FileText, History, CheckCircle, AlertTriangle, ExternalLink, Sparkles } from "lucide-react";
 import { useState } from "react";
@@ -157,7 +157,7 @@ const ServiceProviders = () => {
   };
 
   return (
-    <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+    <ConciergePageWrapper className="space-y-6">
       <DemoModeBadge />
       <DomainHeader title="Service Providers" subtitle="Your trusted network — with full service history, spend tracking, and reliability scores" domain="concierge" />
 
@@ -322,7 +322,7 @@ const ServiceProviders = () => {
         linkedItems: ["CleanPro reliability issue", "Oil change overdue — Elite Auto", "Dr. Patel checkup Thursday"],
         confidence: "high",
       }} />
-    </motion.div>
+    </ConciergePageWrapper>
   );
 };
 

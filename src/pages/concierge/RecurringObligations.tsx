@@ -2,7 +2,7 @@ import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/co
 import { KPITile, SitaTabs } from "@/components/sita/SitaComponents";
 import { GlassCard } from "@/components/sita/PremiumPageComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
-import { ConciergeAdvisorInsightCard, RecurringAdminList } from "@/components/concierge";
+import { ConciergeAdvisorInsightCard, RecurringAdminList, ConciergePageWrapper } from "@/components/concierge";
 import type { RecurringAdminItem } from "@/components/concierge";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useState } from "react";
@@ -74,7 +74,7 @@ const RecurringObligations = () => {
   const categories = [...new Set(ITEMS.map((i) => i.category))];
 
   return (
-    <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+    <ConciergePageWrapper className="space-y-6">
       <DemoModeBadge />
       <SitaPageHeader title="Recurring Obligations" subtitle="Life's rhythms made visible — never lose track of what repeats" />
 
@@ -168,7 +168,7 @@ const RecurringObligations = () => {
           }} />
         </div>
       </div>
-    </motion.div>
+    </ConciergePageWrapper>
   );
 };
 

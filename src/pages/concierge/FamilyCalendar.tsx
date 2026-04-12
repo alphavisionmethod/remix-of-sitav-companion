@@ -2,7 +2,7 @@ import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/co
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { CalendarEventCard, ConflictCard, PrepCard, MemberAvatar } from "@/components/sita/HouseholdComponents";
-import { ConciergeAdvisorInsightCard } from "@/components/concierge";
+import { ConciergeAdvisorInsightCard, ConciergePageWrapper } from "@/components/concierge";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Calendar, Users, Clock, MapPin, AlertCircle, Heart, GraduationCap, Dumbbell, Stethoscope, Wrench, Car, Sparkles } from "lucide-react";
@@ -19,7 +19,7 @@ const FamilyCalendar = () => {
   const [view, setView] = useState<CalendarView>("week");
 
   return (
-    <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+    <ConciergePageWrapper className="space-y-6">
       <DemoModeBadge />
       <SitaPageHeader title="Family Calendar" subtitle="Reconciled schedules — conflict-aware, prep-ready, ownership-clear" />
 
@@ -169,7 +169,7 @@ const FamilyCalendar = () => {
           }} />
         </div>
       </div>
-    </motion.div>
+    </ConciergePageWrapper>
   );
 };
 

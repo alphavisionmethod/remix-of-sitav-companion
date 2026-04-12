@@ -1,4 +1,5 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
+import { ConciergePageWrapper } from "@/components/concierge";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { Users, Bell, Shield, Calendar, ShoppingCart, Plane, Wrench, Gift, Settings, Link, CheckCircle, AlertCircle } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
@@ -56,7 +57,7 @@ const connectors: Connector[] = [
 
 const ConciergeSettings = () => {
   return (
-    <div className="space-y-6">
+    <ConciergePageWrapper className="space-y-6">
       <DemoModeBadge />
       <SitaPageHeader title="Concierge Settings" subtitle="Household members, automation rules, and integrations" />
 
@@ -140,7 +141,7 @@ const ConciergeSettings = () => {
           ))}
         </div>
       </div>
-    </div>
+    </ConciergePageWrapper>
   );
 };
 

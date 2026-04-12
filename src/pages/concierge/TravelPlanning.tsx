@@ -2,7 +2,7 @@ import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/co
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { TripCard, PrepCard } from "@/components/sita/HouseholdComponents";
-import { ConciergeAdvisorInsightCard, TravelReadinessCard, ReservationStatusCard } from "@/components/concierge";
+import { ConciergeAdvisorInsightCard, TravelReadinessCard, ReservationStatusCard, ConciergePageWrapper } from "@/components/concierge";
 import type { TravelReadiness, Reservation } from "@/components/concierge";
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -34,7 +34,7 @@ const TravelPlanning = () => {
   const [selectedTrip, setSelectedTrip] = useState(trips[1]); // Cancún
 
   return (
-    <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+    <ConciergePageWrapper className="space-y-6">
       <DemoModeBadge />
       <SitaPageHeader title="Travel Planning" subtitle="Premium trip management — prep, logistics, household spillover, and continuity" />
 
@@ -239,7 +239,7 @@ const TravelPlanning = () => {
           </SitaCard>
         </div>
       </div>
-    </motion.div>
+    </ConciergePageWrapper>
   );
 };
 

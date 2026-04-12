@@ -1,4 +1,5 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
+import { ConciergePageWrapper } from "@/components/concierge";
 import { KPITile, SitaTabs } from "@/components/sita/SitaComponents";
 import { GlassCard } from "@/components/sita/PremiumPageComponents";
 import { ConciergeAdvisorInsightCard } from "@/components/concierge";
@@ -59,7 +60,7 @@ const ErrandsLogistics = () => {
   const totalMinutes = BUNDLES.reduce((s, b) => s + b.totalMinutes, 0);
 
   return (
-    <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+    <ConciergePageWrapper className="space-y-6">
       <DemoModeBadge />
       <SitaPageHeader title="Errands & Logistics" subtitle="Intelligent sequencing — batch, combine, and reduce friction" />
 
@@ -163,7 +164,7 @@ const ErrandsLogistics = () => {
           }} />
         </div>
       </div>
-    </motion.div>
+    </ConciergePageWrapper>
   );
 };
 

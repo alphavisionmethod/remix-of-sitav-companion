@@ -1,6 +1,6 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
-import { ConciergeAdvisorInsightCard, EventPrepCard } from "@/components/concierge";
+import { ConciergeAdvisorInsightCard, EventPrepCard, ConciergePageWrapper } from "@/components/concierge";
 import type { EventPrep } from "@/components/concierge";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { useState } from "react";
@@ -58,7 +58,7 @@ const EventsGifts = () => {
     : events;
 
   return (
-    <div className="space-y-6">
+    <ConciergePageWrapper className="space-y-6">
       <DemoModeBadge />
       <SitaPageHeader title="Events & Gifts" subtitle="Birthdays, milestones, relationship continuity, and thoughtful follow-ups" />
 
@@ -205,7 +205,7 @@ const EventsGifts = () => {
         linkedItems: ["Johnson thank-you", "Mom's photo book", "Anniversary planning"],
         confidence: "high",
       }} />
-    </div>
+    </ConciergePageWrapper>
   );
 };
 

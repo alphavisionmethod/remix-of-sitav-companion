@@ -1,5 +1,6 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs, EmptyState, RiskCard } from "@/components/sita/SitaComponents";
+import { ConciergePageWrapper } from "@/components/concierge";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { useState } from "react";
 import { GraduationCap, Calendar, FileText, DollarSign, Bus, Users, AlertTriangle, CheckCircle, Clock, ClipboardList } from "lucide-react";
@@ -55,7 +56,7 @@ const SchoolActivities = () => {
     : schoolItems;
 
   return (
-    <div className="space-y-6">
+    <ConciergePageWrapper className="space-y-6">
       <DemoModeBadge />
       <SitaPageHeader title="School & Activities" subtitle="Forms, fees, meetings, prep, and logistics for every child" />
 
@@ -124,7 +125,7 @@ const SchoolActivities = () => {
           I recommend handling both today. Spring tuition can be scheduled for auto-pay if you'd like.
         </p>
       </SitaCard>
-    </div>
+    </ConciergePageWrapper>
   );
 };
 

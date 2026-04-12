@@ -1,7 +1,7 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
-import { PersonalEssentialsPreviewPanel } from "@/components/concierge";
+import { PersonalEssentialsPreviewPanel, ConciergePageWrapper } from "@/components/concierge";
 import type { EssentialDoc } from "@/components/concierge";
 import { useState } from "react";
 import { FileText, Upload, FolderOpen, Shield, GraduationCap, Stethoscope, Home, Plane, Receipt, Calendar, Search, Eye } from "lucide-react";
@@ -47,9 +47,9 @@ const ConciergeFiles = () => {
     : files;
 
   return (
-    <div className="space-y-6">
+    <ConciergePageWrapper className="space-y-6">
       <DemoModeBadge />
-      <SitaPageHeader title="Household Files" subtitle="Forms, contracts, medical records, warranties, and important documents" />
+      <SitaPageHeader title="Personal Documents & Essentials" subtitle="Confirmations, forms, records, and support-aware file management" />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KPITile label="Total Files" value={String(files.length)} icon={FolderOpen} />
@@ -122,7 +122,7 @@ const ConciergeFiles = () => {
         expiryWarning: f.status === "expiring" ? `Expires ${f.expiryDate}` : undefined,
         linkedContext: f.linkedTo,
       }))} />
-    </div>
+    </ConciergePageWrapper>
   );
 };
 

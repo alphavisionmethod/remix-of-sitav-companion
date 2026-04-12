@@ -1,7 +1,7 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs, ProofCard } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
-import { ConciergeProofChip, ConciergeReceiptViewer } from "@/components/concierge";
+import { ConciergeProofChip, ConciergeReceiptViewer, ConciergePageWrapper } from "@/components/concierge";
 import type { ReceiptRecord } from "@/components/concierge";
 import { useState } from "react";
 import { Shield, CheckCircle, Clock, FileText, ShoppingCart, Calendar, Wrench, GraduationCap, Plane, Gift } from "lucide-react";
@@ -41,9 +41,9 @@ const ConciergeProof = () => {
     : proofRecords;
 
   return (
-    <div className="space-y-6">
+    <ConciergePageWrapper className="space-y-6">
       <DemoModeBadge />
-      <SitaPageHeader title="Household Proof" subtitle="Verifiable record of completed actions, confirmations, and receipts" />
+      <SitaPageHeader title="Concierge Proof" subtitle="Verifiable record of completed actions, confirmations, and receipts" />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KPITile label="Total Records" value={String(proofRecords.length)} icon={Shield} />
@@ -74,7 +74,7 @@ const ConciergeProof = () => {
         category: p.category,
         linkedItem: p.linkedItem,
       }))} />
-    </div>
+    </ConciergePageWrapper>
   );
 };
 

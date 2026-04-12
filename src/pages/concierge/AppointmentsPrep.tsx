@@ -1,7 +1,7 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
-import { ConciergeAdvisorInsightCard, AppointmentPrepCard } from "@/components/concierge";
+import { ConciergeAdvisorInsightCard, AppointmentPrepCard, ConciergePageWrapper } from "@/components/concierge";
 import type { AppointmentPrep } from "@/components/concierge";
 import { useState } from "react";
 import { Stethoscope, Calendar, MapPin, Clock, FileText, User, CheckCircle, AlertCircle, Car, ClipboardCheck } from "lucide-react";
@@ -78,7 +78,7 @@ const AppointmentsPrep = () => {
     : appointments;
 
   return (
-    <div className="space-y-6">
+    <ConciergePageWrapper className="space-y-6">
       <DemoModeBadge />
       <SitaPageHeader title="Appointments & Prep" subtitle="Upcoming appointments with preparation checklists and logistics" />
 
@@ -179,7 +179,7 @@ const AppointmentsPrep = () => {
         linkedItems: ["Annual physical — fasting", "Vet confirmation", "HVAC coverage"],
         confidence: "high",
       }} />
-    </div>
+    </ConciergePageWrapper>
   );
 };
 
