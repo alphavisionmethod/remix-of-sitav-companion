@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Ambient Context Engine
-// Real-time activity graph, relation inference, clipboard intelligence,
-// context restoration, and proactive suggestion generation
+// SITA OS — Ambient Context Engine v2
+// Event-driven clipboard, form tracking, selection tracking,
+// activity summary, related files, proactive intelligence
 // ═══════════════════════════════════════════════════════════════
 
 export type SuggestionType =
@@ -11,7 +11,8 @@ export type SuggestionType =
   | "predicted_next"
   | "recent_coaccessed"
   | "time_pattern"
-  | "context_restore";
+  | "context_restore"
+  | "selection_action";
 
 export interface AmbientSuggestion {
   id: string;
@@ -20,7 +21,7 @@ export interface AmbientSuggestion {
   subtitle?: string;
   icon: string;
   relevance: number; // 0-1
-  action: string; // serializable action identifier
+  action: string;
   metadata?: Record<string, unknown>;
   createdAt: number;
   expiresAt?: number;
@@ -34,14 +35,14 @@ export interface ActivityNode {
   lastAccessed: number;
   accessCount: number;
   dwellMs: number;
-  coAccessedWith: string[]; // IDs of other nodes accessed in same session
+  coAccessedWith: string[];
 }
 
 export interface ClipboardEntry {
   content: string;
   type: "text" | "url" | "email" | "number" | "json" | "unknown";
   timestamp: number;
-  source?: string; // page where copied
+  source?: string;
 }
 
 export interface ContextSnapshot {
@@ -51,6 +52,14 @@ export interface ContextSnapshot {
   selection?: string;
   timestamp: number;
   windowId?: string;
+}
+
+export interface ActivitySummary {
+  currentFocus: string;
+  durationMinutes: number;
+  recentPages: { label: string; path: string; dwellMs: number }[];
+  topEntities: { label: string; accessCount: number }[];
+  sessionDepth: number;
 }
 
 // ── Clipboard Content Classifier ─────────────────────────────
@@ -134,7 +143,6 @@ function detectTimePatterns(nodes: ActivityNode[]): TimePattern[] {
   const hour = now.getHours();
   const dayOfWeek = now.getDay();
 
-  // Group nodes by typical access time (simplified — in production, use full time series)
   const recentNodes = nodes
     .filter(n => n.type === "page" && n.accessCount >= 2)
     .sort((a, b) => b.accessCount - a.accessCount)
@@ -158,13 +166,11 @@ function inferRelations(
   const current = nodes.get(currentNodeId);
   if (!current) return [];
 
-  // Find co-accessed nodes
   const related = new Map<string, number>();
   for (const coId of current.coAccessedWith) {
     related.set(coId, (related.get(coId) || 0) + 1);
   }
 
-  // Also find nodes that list current as co-accessed
   for (const [id, node] of nodes) {
     if (id === currentNodeId) continue;
     if (node.coAccessedWith.includes(currentNodeId)) {
@@ -184,15 +190,18 @@ function inferRelations(
 const STORAGE_KEY = "sita-ambient-context";
 const MAX_NODES = 200;
 const MAX_SUGGESTIONS = 8;
-const SESSION_WINDOW_MS = 30 * 60 * 1000; // 30 min session window
+const SESSION_WINDOW_MS = 30 * 60 * 1000;
 
 class AmbientContextEngine {
   private nodes: Map<string, ActivityNode> = new Map();
   private clipboard: ClipboardEntry[] = [];
   private contextSnapshots: Map<string, ContextSnapshot> = new Map();
+  private formStates: Map<string, Record<string, string>> = new Map();
+  private lastSelection: { path: string; text: string; timestamp: number } | null = null;
   private suggestions: AmbientSuggestion[] = [];
   private listeners: Set<(suggestions: AmbientSuggestion[]) => void> = new Set();
-  private sessionNodes: string[] = []; // nodes accessed in current session
+  private sessionNodes: string[] = [];
+  private sessionStartTime = Date.now();
   private initialized = false;
 
   // ── Init ──────────────────────────────────────────────────
@@ -200,8 +209,9 @@ class AmbientContextEngine {
   init() {
     if (this.initialized) return;
     this.initialized = true;
+    this.sessionStartTime = Date.now();
     this.loadFromStorage();
-    this.startClipboardMonitor();
+    // No more clipboard polling — we use event-driven trackClipboardEvent()
   }
 
   private loadFromStorage() {
@@ -214,12 +224,10 @@ class AmbientContextEngine {
           this.nodes.set(id, node as ActivityNode);
         }
       }
-      // Prune old nodes
-      const cutoff = Date.now() - 30 * 24 * 60 * 60 * 1000; // 30 days
+      const cutoff = Date.now() - 30 * 24 * 60 * 60 * 1000;
       for (const [id, node] of this.nodes) {
         if (node.lastAccessed < cutoff) this.nodes.delete(id);
       }
-      // Enforce max
       if (this.nodes.size > MAX_NODES) {
         const sorted = [...this.nodes.entries()].sort((a, b) => a[1].lastAccessed - b[1].lastAccessed);
         for (let i = 0; i < sorted.length - MAX_NODES; i++) {
@@ -237,41 +245,113 @@ class AmbientContextEngine {
     } catch { }
   }
 
-  // ── Clipboard Monitor ─────────────────────────────────────
-
-  private clipboardInterval: ReturnType<typeof setInterval> | null = null;
-  private lastClipboardText = "";
-
-  private startClipboardMonitor() {
-    // Poll clipboard every 2s (requires focus + permissions)
-    this.clipboardInterval = setInterval(async () => {
-      try {
-        if (!document.hasFocus()) return;
-        const text = await navigator.clipboard.readText();
-        if (text && text !== this.lastClipboardText && text.length < 2000) {
-          this.lastClipboardText = text;
-          const entry: ClipboardEntry = {
-            content: text,
-            type: classifyClipboard(text),
-            timestamp: Date.now(),
-            source: window.location.pathname,
-          };
-          this.clipboard.unshift(entry);
-          if (this.clipboard.length > 20) this.clipboard.pop();
-
-          // Generate clipboard suggestions
-          const clipSuggestions = clipboardSuggestions(entry);
-          this.addSuggestions(clipSuggestions);
-        }
-      } catch {
-        // Clipboard API not available or permission denied — silent
-      }
-    }, 2000);
+  destroy() {
+    this.saveToStorage();
   }
 
-  destroy() {
-    if (this.clipboardInterval) clearInterval(this.clipboardInterval);
-    this.saveToStorage();
+  // ── Event-Driven Clipboard ─────────────────────────────────
+
+  trackClipboardEvent(text: string, source?: string) {
+    if (!text || text.length === 0 || text.length > 2000) return;
+    const entry: ClipboardEntry = {
+      content: text,
+      type: classifyClipboard(text),
+      timestamp: Date.now(),
+      source: source || window.location.pathname,
+    };
+    this.clipboard.unshift(entry);
+    if (this.clipboard.length > 20) this.clipboard.pop();
+
+    const clipSuggestions = clipboardSuggestions(entry);
+    this.addSuggestions(clipSuggestions);
+  }
+
+  getLastClipboard(): ClipboardEntry | null {
+    return this.clipboard[0] || null;
+  }
+
+  // ── Form State Tracking ────────────────────────────────────
+
+  trackFormField(path: string, fieldName: string, value: string) {
+    const existing = this.formStates.get(path) || {};
+    existing[fieldName] = value;
+    this.formStates.set(path, existing);
+
+    // Also update context snapshot
+    const snap = this.contextSnapshots.get(path);
+    if (snap) {
+      snap.formData = existing;
+    }
+  }
+
+  getFormState(path: string): Record<string, string> | null {
+    return this.formStates.get(path) || null;
+  }
+
+  // ── Selection Tracking ─────────────────────────────────────
+
+  trackSelection(path: string, selectedText: string) {
+    if (!selectedText || selectedText.length < 3) return;
+    this.lastSelection = { path, text: selectedText, timestamp: Date.now() };
+
+    // Generate search suggestion for selection
+    if (selectedText.length >= 5 && selectedText.length < 200) {
+      this.addSuggestions([{
+        id: `sel-search-${Date.now()}`,
+        type: "selection_action",
+        title: `Search for "${selectedText.slice(0, 40)}"`,
+        subtitle: "Search selected text",
+        icon: "🔍",
+        relevance: 0.7,
+        action: `search:${selectedText}`,
+        createdAt: Date.now(),
+        expiresAt: Date.now() + 30_000,
+      }]);
+    }
+  }
+
+  // ── Activity Summary ───────────────────────────────────────
+
+  getActivitySummary(): ActivitySummary {
+    const now = Date.now();
+    const durationMinutes = Math.round((now - this.sessionStartTime) / 60_000);
+
+    // Current focus = most recent page
+    const currentPageId = this.sessionNodes[this.sessionNodes.length - 1] || "";
+    const currentNode = this.nodes.get(currentPageId);
+    const currentFocus = currentNode?.label || "Desktop";
+
+    // Recent pages sorted by last access
+    const recentPages = [...this.nodes.values()]
+      .filter(n => n.type === "page")
+      .sort((a, b) => b.lastAccessed - a.lastAccessed)
+      .slice(0, 5)
+      .map(n => ({ label: n.label, path: n.path || "", dwellMs: n.dwellMs }));
+
+    // Top entities
+    const topEntities = [...this.nodes.values()]
+      .filter(n => n.type === "entity")
+      .sort((a, b) => b.accessCount - a.accessCount)
+      .slice(0, 5)
+      .map(n => ({ label: n.label, accessCount: n.accessCount }));
+
+    return {
+      currentFocus,
+      durationMinutes,
+      recentPages,
+      topEntities,
+      sessionDepth: this.sessionNodes.length,
+    };
+  }
+
+  // ── Related Files / Co-Accessed Pages ──────────────────────
+
+  getRelatedFiles(path: string): { label: string; path: string; accessCount: number }[] {
+    const nodeId = `page:${path}`;
+    const related = inferRelations(nodeId, this.nodes);
+    return related
+      .filter(n => n.type === "page" && n.path)
+      .map(n => ({ label: n.label, path: n.path!, accessCount: n.accessCount }));
   }
 
   // ── Activity Tracking ──────────────────────────────────────
@@ -293,7 +373,6 @@ class AmbientContextEngine {
       });
     }
 
-    // Update co-access within session
     for (const prevId of this.sessionNodes.slice(-5)) {
       if (prevId === id) continue;
       const prevNode = this.nodes.get(prevId);
@@ -339,7 +418,6 @@ class AmbientContextEngine {
       });
     }
 
-    // Co-access with current page
     const currentPage = this.sessionNodes[this.sessionNodes.length - 1];
     if (currentPage && currentPage !== id) {
       const pageNode = this.nodes.get(currentPage);
@@ -358,13 +436,19 @@ class AmbientContextEngine {
   // ── Context Snapshot / Restore ─────────────────────────────
 
   saveContext(path: string, snapshot: Omit<ContextSnapshot, "path" | "timestamp">) {
-    this.contextSnapshots.set(path, { ...snapshot, path, timestamp: Date.now() });
+    const formData = this.formStates.get(path);
+    this.contextSnapshots.set(path, {
+      ...snapshot,
+      path,
+      timestamp: Date.now(),
+      formData: formData || snapshot.formData,
+      selection: this.lastSelection?.path === path ? this.lastSelection.text : snapshot.selection,
+    });
   }
 
   getContext(path: string): ContextSnapshot | null {
     const snap = this.contextSnapshots.get(path);
     if (!snap) return null;
-    // Only restore if recent (< 30 min)
     if (Date.now() - snap.timestamp > SESSION_WINDOW_MS) {
       this.contextSnapshots.delete(path);
       return null;
@@ -400,11 +484,12 @@ class AmbientContextEngine {
       if (now - snap.timestamp > SESSION_WINDOW_MS) continue;
       const pageNode = this.nodes.get(`page:${path}`);
       if (pageNode && pageNode.dwellMs > 10_000) {
+        const hasFormData = snap.formData && Object.keys(snap.formData).length > 0;
         newSuggestions.push({
           id: `restore-${path}`, type: "context_restore",
           title: `Continue: ${pageNode.label}`,
-          subtitle: "Resume where you left off",
-          icon: "🔄", relevance: 0.85,
+          subtitle: hasFormData ? "Resume with unsaved form data" : "Resume where you left off",
+          icon: "🔄", relevance: hasFormData ? 0.95 : 0.85,
           action: `restore:${path}`,
           createdAt: now, expiresAt: now + SESSION_WINDOW_MS,
         });
@@ -428,7 +513,7 @@ class AmbientContextEngine {
       }
     }
 
-    // 4. Predicted next (based on most common transition from current page)
+    // 4. Predicted next
     if (currentNodeId) {
       const current = this.nodes.get(currentNodeId);
       if (current) {
@@ -454,13 +539,13 @@ class AmbientContextEngine {
       }
     }
 
-    // Keep clipboard suggestions that haven't expired
-    const existingClip = this.suggestions.filter(
-      s => s.type === "clipboard_action" && (!s.expiresAt || s.expiresAt > now)
+    // Keep clipboard + selection suggestions that haven't expired
+    const existingEphemeral = this.suggestions.filter(
+      s => (s.type === "clipboard_action" || s.type === "selection_action") &&
+           (!s.expiresAt || s.expiresAt > now)
     );
-    newSuggestions.push(...existingClip);
+    newSuggestions.push(...existingEphemeral);
 
-    // Sort by relevance, limit
     this.suggestions = newSuggestions
       .sort((a, b) => b.relevance - a.relevance)
       .slice(0, MAX_SUGGESTIONS);
@@ -469,7 +554,6 @@ class AmbientContextEngine {
   }
 
   private addSuggestions(items: AmbientSuggestion[]) {
-    // Merge new suggestions, replace existing with same id
     const map = new Map(this.suggestions.map(s => [s.id, s]));
     for (const item of items) map.set(item.id, item);
 
@@ -486,7 +570,7 @@ class AmbientContextEngine {
 
   subscribe(listener: (suggestions: AmbientSuggestion[]) => void) {
     this.listeners.add(listener);
-    listener(this.suggestions); // immediate emit
+    listener(this.suggestions);
     return () => { this.listeners.delete(listener); };
   }
 
@@ -506,7 +590,6 @@ class AmbientContextEngine {
   acceptSuggestion(id: string) {
     const suggestion = this.suggestions.find(s => s.id === id);
     if (suggestion) {
-      // Boost relevance of the underlying node
       const nodeId = suggestion.action.split(":").slice(1).join(":");
       const node = this.nodes.get(nodeId) || this.nodes.get(`page:${nodeId}`);
       if (node) node.accessCount += 2;
@@ -524,6 +607,7 @@ class AmbientContextEngine {
       clipboardEntries: this.clipboard.length,
       contextSnapshots: this.contextSnapshots.size,
       sessionDepth: this.sessionNodes.length,
+      formStates: this.formStates.size,
     };
   }
 }

@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Universal Command Layer
-// NL parsing, system control, window mgmt, inline results,
-// contextual commands, fuzzy matching, automation rules
+// SITA OS — Universal Command Layer v2
+// Real execution, unit conversions, color preview, ambient integration,
+// "what was I doing" command, clipboard display
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useMemo, useCallback, useEffect, useRef } from "react";
@@ -10,9 +10,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Search, ArrowRight, Sparkles, Clock, Zap, Terminal, Calculator,
   Monitor, Moon, Sun, Lock, BellOff, Maximize, Minimize, Layout,
-  Command as CommandIcon, ChevronRight,
+  Command as CommandIcon, ChevronRight, Palette, Brain, Clipboard,
+  Timer, Activity,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ambientContext } from "@/lib/services/ambient-context-engine";
 
 // ── Intent Types ──────────────────────────────────────────────
 
@@ -32,9 +34,10 @@ interface UniversalCommandItem {
   label: string;
   sublabel?: string;
   icon: React.ReactNode;
-  category: IntentCategory | "recent" | "suggestion" | "inline_result";
+  category: IntentCategory | "recent" | "suggestion" | "inline_result" | "ambient";
   action: () => void;
   keywords?: string[];
+  colorPreview?: string;
 }
 
 // ── Route Aliases ─────────────────────────────────────────────
@@ -60,6 +63,10 @@ const ROUTE_ALIASES: Record<string, { path: string; label: string; icon: string 
   "profile": { path: "/profile", label: "Profile", icon: "👤" },
   "admin": { path: "/admin/kernel", label: "Kernel Dashboard", icon: "🔧" },
   "kernel": { path: "/admin/kernel", label: "Kernel Dashboard", icon: "🔧" },
+  "invoices": { path: "/money/invoices", label: "Invoices", icon: "📄" },
+  "pipeline": { path: "/business/pipeline", label: "Pipeline", icon: "📊" },
+  "leads": { path: "/business/leads", label: "Leads", icon: "👥" },
+  "proof": { path: "/proof-center", label: "Proof Center", icon: "🔒" },
 };
 
 // ── NL Intent Parser ──────────────────────────────────────────
@@ -68,7 +75,12 @@ function parseIntent(input: string): ParsedIntent | null {
   const q = input.toLowerCase().trim();
   if (!q) return null;
 
-  // Navigation: "go to X", "open X", "show X"
+  // "what was I doing" / "what am I working on"
+  if (/^what\s+(was\s+i|am\s+i)\s+(doing|working\s+on)/.test(q)) {
+    return { category: "action", action: "activity_summary", args: {}, confidence: 0.95 };
+  }
+
+  // Navigation
   const navMatch = q.match(/^(?:go\s+to|open|show|navigate\s+to|switch\s+to)\s+(.+)/);
   if (navMatch) {
     const target = navMatch[1].trim();
@@ -76,7 +88,6 @@ function parseIntent(input: string): ParsedIntent | null {
     if (alias) {
       return { category: "navigate", action: "goto", args: { path: alias.path, label: alias.label }, confidence: 0.95 };
     }
-    // Fuzzy match
     for (const [key, val] of Object.entries(ROUTE_ALIASES)) {
       if (key.includes(target) || val.label.toLowerCase().includes(target)) {
         return { category: "navigate", action: "goto", args: { path: val.path, label: val.label }, confidence: 0.8 };
@@ -112,15 +123,14 @@ function parseIntent(input: string): ParsedIntent | null {
   if (calcMatch) {
     return { category: "calculate", action: "eval", args: { expr: calcMatch[1] }, confidence: 0.9 };
   }
-  // Direct math expression
   if (/^[\d\s+\-*/().,%]+$/.test(q) && q.length > 1) {
     return { category: "calculate", action: "eval", args: { expr: q }, confidence: 0.85 };
   }
 
   // Unit conversion
-  const unitMatch = q.match(/^(\d+(?:\.\d+)?)\s*(km|mi|kg|lb|c|f|usd|eur|gbp)\s+(?:to|in)\s+(\w+)/i);
+  const unitMatch = q.match(/^(\d+(?:\.\d+)?)\s*(km|mi|kg|lb|lbs|c|f|usd|eur|gbp|cm|in|inch|inches|m|ft|feet|oz|g|grams?|l|gal|gallons?)\s+(?:to|in)\s+(\w+)/i);
   if (unitMatch) {
-    return { category: "calculate", action: "convert", args: { value: unitMatch[1], from: unitMatch[2], to: unitMatch[3] }, confidence: 0.9 };
+    return { category: "calculate", action: "convert", args: { value: unitMatch[1], from: unitMatch[2].toLowerCase(), to: unitMatch[3].toLowerCase() }, confidence: 0.9 };
   }
 
   // Date math
@@ -129,7 +139,11 @@ function parseIntent(input: string): ParsedIntent | null {
     return { category: "calculate", action: "date", args: { query: q }, confidence: 0.8 };
   }
 
-  // Search fallback
+  // Color preview
+  if (/^#[0-9a-f]{3,8}$/i.test(q) || /^rgb\(/i.test(q) || /^hsl\(/i.test(q)) {
+    return { category: "calculate", action: "color", args: { color: q }, confidence: 0.9 };
+  }
+
   return { category: "search", action: "search", args: { query: q }, confidence: 0.3 };
 }
 
@@ -137,16 +151,47 @@ function parseIntent(input: string): ParsedIntent | null {
 
 function safeEval(expr: string): string | null {
   try {
-    // Only allow safe math operations
     const sanitized = expr.replace(/[^0-9+\-*/().%\s]/g, "");
     if (!sanitized.trim()) return null;
-    // Use Function constructor for safe eval
     const result = new Function(`return (${sanitized})`)();
     if (typeof result === "number" && isFinite(result)) {
       return result.toLocaleString(undefined, { maximumFractionDigits: 8 });
     }
     return null;
   } catch { return null; }
+}
+
+// ── Unit Conversion ───────────────────────────────────────────
+
+function convertUnit(value: number, from: string, to: string): string | null {
+  const conversions: Record<string, Record<string, (v: number) => number>> = {
+    km: { mi: v => v * 0.621371, m: v => v * 1000, ft: v => v * 3280.84 },
+    mi: { km: v => v * 1.60934, m: v => v * 1609.34, ft: v => v * 5280 },
+    kg: { lb: v => v * 2.20462, lbs: v => v * 2.20462, oz: v => v * 35.274, g: v => v * 1000, grams: v => v * 1000 },
+    lb: { kg: v => v * 0.453592, oz: v => v * 16, g: v => v * 453.592 },
+    lbs: { kg: v => v * 0.453592, oz: v => v * 16 },
+    c: { f: v => v * 9/5 + 32 },
+    f: { c: v => (v - 32) * 5/9 },
+    cm: { in: v => v / 2.54, inch: v => v / 2.54, inches: v => v / 2.54, m: v => v / 100, ft: v => v / 30.48 },
+    in: { cm: v => v * 2.54, m: v => v * 0.0254, ft: v => v / 12 },
+    inch: { cm: v => v * 2.54 },
+    inches: { cm: v => v * 2.54 },
+    m: { ft: v => v * 3.28084, feet: v => v * 3.28084, cm: v => v * 100, km: v => v / 1000, in: v => v * 39.3701 },
+    ft: { m: v => v * 0.3048, cm: v => v * 30.48, in: v => v * 12 },
+    feet: { m: v => v * 0.3048 },
+    oz: { g: v => v * 28.3495, grams: v => v * 28.3495, kg: v => v * 0.0283495, lb: v => v / 16 },
+    l: { gal: v => v * 0.264172, gallons: v => v * 0.264172 },
+    gal: { l: v => v * 3.78541 },
+    gallons: { l: v => v * 3.78541 },
+    usd: { eur: v => v * 0.92, gbp: v => v * 0.79 },
+    eur: { usd: v => v * 1.09, gbp: v => v * 0.86 },
+    gbp: { usd: v => v * 1.27, eur: v => v * 1.16 },
+  };
+
+  const fn = conversions[from]?.[to];
+  if (!fn) return null;
+  const result = fn(value);
+  return result.toLocaleString(undefined, { maximumFractionDigits: 4 });
 }
 
 function solveDateQuery(query: string): string | null {
@@ -177,19 +222,13 @@ function addToHistory(query: string) {
   try {
     const history = getCommandHistory();
     const existing = history.find(h => h.query === query);
-    if (existing) {
-      existing.count++;
-      existing.lastUsed = Date.now();
-    } else {
-      history.unshift({ query, count: 1, lastUsed: Date.now() });
-    }
+    if (existing) { existing.count++; existing.lastUsed = Date.now(); }
+    else { history.unshift({ query, count: 1, lastUsed: Date.now() }); }
     history.sort((a, b) => b.lastUsed - a.lastUsed);
     if (history.length > MAX_HISTORY) history.length = MAX_HISTORY;
     localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
   } catch {}
 }
-
-// ── Recent Apps ───────────────────────────────────────────────
 
 function getRecentApps(): string[] {
   try { return JSON.parse(localStorage.getItem("sita-recent-apps") || "[]").slice(0, 4); } catch { return []; }
@@ -205,10 +244,8 @@ function addRecentApp(path: string) {
 
 // ── Contextual Commands ───────────────────────────────────────
 
-function getContextualCommands(pathname: string): UniversalCommandItem[] {
+function getContextualCommands(pathname: string): { label: string; sublabel: string; icon: string; path: string }[] {
   const segment = pathname.split("/").filter(Boolean)[0] || "home";
-  const contextual: UniversalCommandItem[] = [];
-
   const contextCmds: Record<string, { label: string; sublabel: string; icon: string; path: string }[]> = {
     money: [
       { label: "Show cash flow", sublabel: "View cash position", icon: "💵", path: "/money/cash-flow" },
@@ -225,19 +262,7 @@ function getContextualCommands(pathname: string): UniversalCommandItem[] {
       { label: "Errands", sublabel: "Pending errands", icon: "🏃", path: "/concierge/errands" },
     ],
   };
-
-  const cmds = contextCmds[segment];
-  if (cmds) {
-    for (const cmd of cmds) {
-      contextual.push({
-        id: `ctx-${cmd.path}`, label: cmd.label, sublabel: cmd.sublabel,
-        icon: <span>{cmd.icon}</span>, category: "action",
-        action: () => {}, // Will be set in component
-        keywords: [cmd.label.toLowerCase()],
-      });
-    }
-  }
-  return contextual;
+  return contextCmds[segment] || [];
 }
 
 // ── Smart Time Suggestions ────────────────────────────────────
@@ -267,9 +292,10 @@ function getTimeSuggestions(): { label: string; icon: string; sublabel: string; 
 interface UniversalCommandProps {
   open: boolean;
   onClose: () => void;
+  onSystemCommand?: (cmd: string, args?: Record<string, string>) => void;
 }
 
-export const UniversalCommand = ({ open, onClose }: UniversalCommandProps) => {
+export const UniversalCommand = ({ open, onClose, onSystemCommand }: UniversalCommandProps) => {
   const [query, setQuery] = useState("");
   const [selectedIdx, setSelectedIdx] = useState(0);
   const navigate = useNavigate();
@@ -284,14 +310,37 @@ export const UniversalCommand = ({ open, onClose }: UniversalCommandProps) => {
     }
   }, [open]);
 
+  // Execute system commands for real
+  const executeSystemCommand = useCallback((action: string, args: Record<string, string> = {}) => {
+    switch (action) {
+      case "theme": {
+        const html = document.documentElement;
+        if (args.theme === "dark") {
+          html.classList.add("dark");
+          localStorage.setItem("theme", "dark");
+        } else {
+          html.classList.remove("dark");
+          localStorage.setItem("theme", "light");
+        }
+        break;
+      }
+      case "lock":
+      case "mute":
+      case "focus":
+      case "quiet":
+        onSystemCommand?.(action, args);
+        break;
+    }
+  }, [onSystemCommand]);
+
   const items = useMemo<UniversalCommandItem[]>(() => {
     const q = query.trim();
     const results: UniversalCommandItem[] = [];
     const seen = new Set<string>();
 
     const addUnique = (item: UniversalCommandItem) => {
-      if (seen.has(item.label)) return;
-      seen.add(item.label);
+      if (seen.has(item.id)) return;
+      seen.add(item.id);
       results.push(item);
     };
 
@@ -310,26 +359,88 @@ export const UniversalCommand = ({ open, onClose }: UniversalCommandProps) => {
             break;
           case "system":
             addUnique({
-              id: `intent-sys-${intent.action}`, label: `System: ${intent.action}`,
-              sublabel: `Execute system command`,
-              icon: <Monitor className="h-4 w-4" />,
+              id: `intent-sys-${intent.action}`,
+              label: intent.action === "theme"
+                ? `Switch to ${intent.args.theme} mode`
+                : `System: ${intent.action}`,
+              sublabel: "Execute system command",
+              icon: intent.action === "theme" && intent.args.theme === "dark"
+                ? <Moon className="h-4 w-4" />
+                : intent.action === "theme"
+                ? <Sun className="h-4 w-4" />
+                : <Monitor className="h-4 w-4" />,
               category: "system",
-              action: () => { addToHistory(q); onClose(); },
+              action: () => {
+                executeSystemCommand(intent.action, intent.args);
+                addToHistory(q);
+                onClose();
+              },
             });
             break;
           case "window":
             addUnique({
-              id: `intent-win-${intent.action}`, label: `Window: ${intent.action} ${intent.args.direction || ""}`,
+              id: `intent-win-${intent.action}`,
+              label: `Window: ${intent.action} ${intent.args.direction || ""}`,
               sublabel: "Window management",
               icon: <Layout className="h-4 w-4" />,
               category: "window",
-              action: () => { addToHistory(q); onClose(); },
+              action: () => {
+                onSystemCommand?.(`window_${intent.action}`, intent.args);
+                addToHistory(q);
+                onClose();
+              },
             });
+            break;
+          case "action":
+            if (intent.action === "activity_summary") {
+              const summary = ambientContext.getActivitySummary();
+              addUnique({
+                id: "activity-summary",
+                label: `Working on: ${summary.currentFocus}`,
+                sublabel: `${summary.durationMinutes}min session · ${summary.sessionDepth} pages visited`,
+                icon: <Activity className="h-4 w-4" />,
+                category: "inline_result",
+                action: () => {},
+              });
+              for (const page of summary.recentPages.slice(0, 3)) {
+                addUnique({
+                  id: `summary-page-${page.path}`,
+                  label: page.label,
+                  sublabel: `${Math.round(page.dwellMs / 1000)}s spent`,
+                  icon: <ArrowRight className="h-4 w-4" />,
+                  category: "navigate",
+                  action: () => { navigate(page.path); onClose(); },
+                });
+              }
+            }
             break;
           case "calculate": {
             let result: string | null = null;
-            if (intent.action === "eval") result = safeEval(intent.args.expr);
-            else if (intent.action === "date") result = solveDateQuery(intent.args.query || q);
+            if (intent.action === "eval") {
+              result = safeEval(intent.args.expr);
+            } else if (intent.action === "convert") {
+              result = convertUnit(
+                parseFloat(intent.args.value),
+                intent.args.from,
+                intent.args.to
+              );
+              if (result) result = `${result} ${intent.args.to}`;
+            } else if (intent.action === "date") {
+              result = solveDateQuery(intent.args.query || q);
+            } else if (intent.action === "color") {
+              addUnique({
+                id: "color-preview",
+                label: intent.args.color,
+                sublabel: "Color preview",
+                icon: <Palette className="h-4 w-4" />,
+                category: "inline_result",
+                colorPreview: intent.args.color,
+                action: () => {
+                  navigator.clipboard.writeText(intent.args.color).catch(() => {});
+                  onClose();
+                },
+              });
+            }
 
             if (result) {
               addUnique({
@@ -350,8 +461,28 @@ export const UniversalCommand = ({ open, onClose }: UniversalCommandProps) => {
       }
     }
 
-    // 2. No query — show history + time suggestions + contextual
+    // 2. No query — show ambient suggestions + history + time + contextual
     if (!q) {
+      // Ambient suggestions from context engine
+      const ambient = ambientContext.getSuggestions().slice(0, 3);
+      for (const s of ambient) {
+        addUnique({
+          id: `amb-${s.id}`,
+          label: `SITA noticed: ${s.title}`,
+          sublabel: s.subtitle,
+          icon: <Sparkles className="h-4 w-4" />,
+          category: "ambient",
+          action: () => {
+            ambientContext.acceptSuggestion(s.id);
+            const [actionType, ...rest] = s.action.split(":");
+            const target = rest.join(":");
+            if (actionType === "navigate" || actionType === "restore") navigate(target);
+            else if (actionType === "search") navigate(`/search?q=${encodeURIComponent(target)}`);
+            onClose();
+          },
+        });
+      }
+
       // Recent history
       const history = getCommandHistory().slice(0, 3);
       for (const h of history) {
@@ -362,7 +493,17 @@ export const UniversalCommand = ({ open, onClose }: UniversalCommandProps) => {
         });
       }
 
-      // Time-based suggestions
+      // "What was I doing?" shortcut
+      addUnique({
+        id: "what-was-i-doing",
+        label: "What was I doing?",
+        sublabel: "See your activity summary",
+        icon: <Brain className="h-4 w-4" />,
+        category: "suggestion",
+        action: () => { setQuery("what was I doing"); },
+      });
+
+      // Time-based
       for (const s of getTimeSuggestions()) {
         addUnique({
           id: `time-${s.path}`, label: s.label, sublabel: s.sublabel,
@@ -371,15 +512,12 @@ export const UniversalCommand = ({ open, onClose }: UniversalCommandProps) => {
         });
       }
 
-      // Contextual commands
+      // Contextual commands — wired to actual navigation
       for (const cmd of getContextualCommands(location.pathname)) {
         addUnique({
-          ...cmd,
-          action: () => {
-            const path = (cmd as any).keywords?.[0];
-            // contextual items have paths baked in metadata; for now navigate
-            onClose();
-          },
+          id: `ctx-${cmd.path}`, label: cmd.label, sublabel: cmd.sublabel,
+          icon: <span>{cmd.icon}</span>, category: "action",
+          action: () => { navigate(cmd.path); addRecentApp(cmd.path); onClose(); },
         });
       }
     }
@@ -399,29 +537,53 @@ export const UniversalCommand = ({ open, onClose }: UniversalCommandProps) => {
       }
     }
 
-    // 4. System control commands (always available on search)
+    // 4. System control commands — wired to real execution
     if (ql) {
       const sysCmds = [
-        { id: "sys-dark", label: "Dark Mode", sublabel: "Switch to dark theme", icon: <Moon className="h-4 w-4" />, kw: ["dark", "theme"] },
-        { id: "sys-light", label: "Light Mode", sublabel: "Switch to light theme", icon: <Sun className="h-4 w-4" />, kw: ["light", "theme"] },
-        { id: "sys-lock", label: "Lock Screen", sublabel: "Lock the OS", icon: <Lock className="h-4 w-4" />, kw: ["lock"] },
-        { id: "sys-mute", label: "Mute Notifications", sublabel: "Silence all alerts", icon: <BellOff className="h-4 w-4" />, kw: ["mute", "quiet", "silent"] },
-        { id: "sys-focus", label: "Focus Mode", sublabel: "Minimize distractions", icon: <Maximize className="h-4 w-4" />, kw: ["focus", "zen"] },
-        { id: "sys-tile", label: "Tile Windows", sublabel: "Arrange all windows", icon: <Layout className="h-4 w-4" />, kw: ["tile", "arrange", "snap"] },
-        { id: "sys-minimize", label: "Minimize All", sublabel: "Clear the desktop", icon: <Minimize className="h-4 w-4" />, kw: ["minimize", "hide"] },
+        { id: "sys-dark", label: "Dark Mode", sublabel: "Switch to dark theme", icon: <Moon className="h-4 w-4" />, kw: ["dark", "theme"], sysAction: "theme", sysArgs: { theme: "dark" } },
+        { id: "sys-light", label: "Light Mode", sublabel: "Switch to light theme", icon: <Sun className="h-4 w-4" />, kw: ["light", "theme"], sysAction: "theme", sysArgs: { theme: "light" } },
+        { id: "sys-lock", label: "Lock Screen", sublabel: "Lock the OS", icon: <Lock className="h-4 w-4" />, kw: ["lock"], sysAction: "lock", sysArgs: {} },
+        { id: "sys-mute", label: "Mute Notifications", sublabel: "Silence all alerts", icon: <BellOff className="h-4 w-4" />, kw: ["mute", "quiet", "silent"], sysAction: "mute", sysArgs: {} },
+        { id: "sys-focus", label: "Focus Mode", sublabel: "Minimize distractions", icon: <Maximize className="h-4 w-4" />, kw: ["focus", "zen"], sysAction: "focus", sysArgs: {} },
+        { id: "sys-tile", label: "Tile Windows", sublabel: "Arrange all windows", icon: <Layout className="h-4 w-4" />, kw: ["tile", "arrange", "snap"], sysAction: "window_tile", sysArgs: {} },
+        { id: "sys-minimize", label: "Minimize All", sublabel: "Clear the desktop", icon: <Minimize className="h-4 w-4" />, kw: ["minimize", "hide"], sysAction: "window_minimize_all", sysArgs: {} },
       ];
       for (const cmd of sysCmds) {
         if (cmd.kw.some(k => ql.includes(k)) || cmd.label.toLowerCase().includes(ql)) {
           addUnique({
-            ...cmd, category: "system",
-            action: () => { addToHistory(q); onClose(); },
+            id: cmd.id, label: cmd.label, sublabel: cmd.sublabel,
+            icon: cmd.icon, category: "system",
+            action: () => {
+              if (cmd.sysAction.startsWith("window_")) {
+                onSystemCommand?.(cmd.sysAction, cmd.sysArgs);
+              } else {
+                executeSystemCommand(cmd.sysAction, cmd.sysArgs);
+              }
+              addToHistory(q);
+              onClose();
+            },
+          });
+        }
+      }
+
+      // Clipboard display
+      if (ql.includes("paste") || ql.includes("clipboard")) {
+        const lastClip = ambientContext.getLastClipboard();
+        if (lastClip) {
+          addUnique({
+            id: "clipboard-content",
+            label: `Clipboard: ${lastClip.content.slice(0, 50)}`,
+            sublabel: `${lastClip.type} · copied ${Math.round((Date.now() - lastClip.timestamp) / 1000)}s ago`,
+            icon: <Clipboard className="h-4 w-4" />,
+            category: "inline_result",
+            action: () => {},
           });
         }
       }
     }
 
     return results.slice(0, 16);
-  }, [query, navigate, onClose, location.pathname]);
+  }, [query, navigate, onClose, location.pathname, executeSystemCommand, onSystemCommand]);
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key === "ArrowDown") { e.preventDefault(); setSelectedIdx(i => Math.min(i + 1, items.length - 1)); }
@@ -436,6 +598,7 @@ export const UniversalCommand = ({ open, onClose }: UniversalCommandProps) => {
       recent: "Recent", suggestion: "Suggested", navigate: "Navigate",
       system: "System", window: "Window", calculate: "Calculate",
       action: "Action", search: "Search", inline_result: "Result",
+      ambient: "SITA Intelligence",
     };
     return labels[c] || c;
   };
@@ -446,6 +609,7 @@ export const UniversalCommand = ({ open, onClose }: UniversalCommandProps) => {
       case "suggestion": return <Zap className="h-2.5 w-2.5" />;
       case "system": return <Monitor className="h-2.5 w-2.5" />;
       case "inline_result": return <Calculator className="h-2.5 w-2.5" />;
+      case "ambient": return <Sparkles className="h-2.5 w-2.5" />;
       default: return null;
     }
   };
@@ -510,7 +674,7 @@ export const UniversalCommand = ({ open, onClose }: UniversalCommandProps) => {
               <div className="py-12 text-center">
                 <Sparkles className="h-6 w-6 mx-auto mb-3 text-muted-foreground/30" />
                 <p className="text-sm text-muted-foreground/60">No results for "{query}"</p>
-                <p className="text-xs text-muted-foreground/40 mt-1">Try "go to business" or "2+2"</p>
+                <p className="text-xs text-muted-foreground/40 mt-1">Try "go to business", "2+2", "10 km to mi", or "#ff5500"</p>
               </div>
             )}
 
@@ -534,9 +698,17 @@ export const UniversalCommand = ({ open, onClose }: UniversalCommandProps) => {
                         : "text-muted-foreground hover:bg-muted/30"
                     )}
                   >
-                    <span className="shrink-0 w-7 text-center flex items-center justify-center text-lg">
-                      {typeof item.icon === "string" ? item.icon : item.icon}
-                    </span>
+                    {/* Color preview swatch */}
+                    {item.colorPreview ? (
+                      <span
+                        className="shrink-0 w-7 h-7 rounded-lg border border-border/30"
+                        style={{ background: item.colorPreview }}
+                      />
+                    ) : (
+                      <span className="shrink-0 w-7 text-center flex items-center justify-center text-lg">
+                        {typeof item.icon === "string" ? item.icon : item.icon}
+                      </span>
+                    )}
                     <div className="flex-1 min-w-0">
                       <p className={cn(
                         "text-sm font-medium truncate",

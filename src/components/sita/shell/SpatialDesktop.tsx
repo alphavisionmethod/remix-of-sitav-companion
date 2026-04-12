@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Spatial Desktop
-// 3-level zoomable environment: Overview → Workspace → App
-// Workspaces arranged spatially with smooth transitions
+// SITA OS — Spatial Desktop v2
+// 5 workspaces, expanded routes, arrow-key nav, activity badges,
+// search/filter, app-level route previews
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useCallback, useEffect, useMemo, useRef } from "react";
@@ -10,9 +10,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Briefcase, DollarSign, Headphones, Settings, BarChart3,
   FolderOpen, Calendar, ListTodo, LayoutDashboard, Minus, Plus,
-  Maximize2, Grid3X3,
+  Maximize2, Grid3X3, Brain, Shield, Users, FileText, CreditCard,
+  TrendingUp, Receipt, PieChart, Zap, Search, Clock, Activity,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ambientContext } from "@/lib/services/ambient-context-engine";
 
 // ── Zoom Levels ───────────────────────────────────────────────
 
@@ -25,7 +27,7 @@ interface WorkspaceConfig {
   color: string;
   gradient: string;
   routes: { path: string; label: string; icon: React.ElementType }[];
-  position: { x: number; y: number }; // spatial position in overview
+  position: { x: number; y: number };
 }
 
 const WORKSPACES: WorkspaceConfig[] = [
@@ -37,8 +39,11 @@ const WORKSPACES: WorkspaceConfig[] = [
     gradient: "from-blue-500/20 to-indigo-500/20",
     routes: [
       { path: "/business", label: "Dashboard", icon: LayoutDashboard },
-      { path: "/business/leads", label: "Leads", icon: Briefcase },
-      { path: "/revenue-office", label: "Revenue", icon: BarChart3 },
+      { path: "/business/leads", label: "Leads", icon: Users },
+      { path: "/business/pipeline", label: "Pipeline", icon: TrendingUp },
+      { path: "/business/clients", label: "Clients", icon: Users },
+      { path: "/revenue-office", label: "Revenue Office", icon: BarChart3 },
+      { path: "/pulse", label: "Daily Pulse", icon: Zap },
     ],
     position: { x: 0, y: 0 },
   },
@@ -50,7 +55,10 @@ const WORKSPACES: WorkspaceConfig[] = [
     gradient: "from-emerald-500/20 to-green-500/20",
     routes: [
       { path: "/money", label: "Dashboard", icon: LayoutDashboard },
-      { path: "/money/transactions", label: "Transactions", icon: DollarSign },
+      { path: "/money/transactions", label: "Transactions", icon: CreditCard },
+      { path: "/money/invoices", label: "Invoices", icon: Receipt },
+      { path: "/money/cash-flow", label: "Cash Flow", icon: TrendingUp },
+      { path: "/money/budgets", label: "Budgets", icon: PieChart },
     ],
     position: { x: 1, y: 0 },
   },
@@ -64,8 +72,24 @@ const WORKSPACES: WorkspaceConfig[] = [
       { path: "/concierge", label: "Dashboard", icon: LayoutDashboard },
       { path: "/tasks", label: "Tasks", icon: ListTodo },
       { path: "/calendar", label: "Calendar", icon: Calendar },
+      { path: "/concierge/errands", label: "Errands", icon: Activity },
+      { path: "/concierge/delegation", label: "Delegation", icon: Users },
     ],
     position: { x: 0, y: 1 },
+  },
+  {
+    id: "intelligence",
+    label: "Intelligence",
+    icon: Brain,
+    color: "hsl(38 85% 58%)",
+    gradient: "from-amber-500/20 to-yellow-500/20",
+    routes: [
+      { path: "/advisors", label: "Advisors", icon: Brain },
+      { path: "/boardroom", label: "Boardroom", icon: Users },
+      { path: "/proof-center", label: "Proof Center", icon: Shield },
+      { path: "/admin/kernel", label: "Kernel", icon: Settings },
+    ],
+    position: { x: 1, y: 1 },
   },
   {
     id: "system",
@@ -77,8 +101,9 @@ const WORKSPACES: WorkspaceConfig[] = [
       { path: "/settings", label: "Settings", icon: Settings },
       { path: "/files", label: "Files", icon: FolderOpen },
       { path: "/app-store", label: "Apps", icon: Grid3X3 },
+      { path: "/profile", label: "Profile", icon: Users },
     ],
-    position: { x: 1, y: 1 },
+    position: { x: 2, y: 0 },
   },
 ];
 
@@ -93,9 +118,12 @@ interface SpatialDesktopProps {
 export function SpatialDesktop({ isOpen, onClose, onNavigate }: SpatialDesktopProps) {
   const [zoomLevel, setZoomLevel] = useState<ZoomLevel>("overview");
   const [selectedWorkspace, setSelectedWorkspace] = useState<string | null>(null);
+  const [focusedIdx, setFocusedIdx] = useState(0);
+  const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
   const containerRef = useRef<HTMLDivElement>(null);
+  const searchRef = useRef<HTMLInputElement>(null);
 
   // Determine active workspace from current route
   const activeWorkspaceId = useMemo(() => {
@@ -106,12 +134,42 @@ export function SpatialDesktop({ isOpen, onClose, onNavigate }: SpatialDesktopPr
     return match?.id || null;
   }, [location.pathname]);
 
+  // Activity badges from ambient context
+  const activityBadges = useMemo(() => {
+    const stats: Record<string, { lastVisit: number; visits: number }> = {};
+    const summary = ambientContext.getActivitySummary();
+    for (const ws of WORKSPACES) {
+      let visits = 0;
+      let lastVisit = 0;
+      for (const route of ws.routes) {
+        const related = summary.recentPages.find(p => p.path === route.path);
+        if (related) {
+          visits++;
+          lastVisit = Math.max(lastVisit, Date.now());
+        }
+      }
+      stats[ws.id] = { lastVisit, visits };
+    }
+    return stats;
+  }, [isOpen]);
+
+  // Filtered workspaces for search
+  const filteredWorkspaces = useMemo(() => {
+    if (!searchQuery) return WORKSPACES;
+    const q = searchQuery.toLowerCase();
+    return WORKSPACES.filter(ws =>
+      ws.label.toLowerCase().includes(q) ||
+      ws.routes.some(r => r.label.toLowerCase().includes(q))
+    );
+  }, [searchQuery]);
+
   // Keyboard shortcuts
   useEffect(() => {
     if (!isOpen) return;
 
     const handler = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
+        if (searchQuery) { setSearchQuery(""); return; }
         if (zoomLevel === "app") setZoomLevel("workspace");
         else if (zoomLevel === "workspace") setZoomLevel("overview");
         else onClose();
@@ -126,26 +184,63 @@ export function SpatialDesktop({ isOpen, onClose, onNavigate }: SpatialDesktopPr
         if (zoomLevel === "overview" && selectedWorkspace) setZoomLevel("workspace");
         else if (zoomLevel === "workspace") setZoomLevel("app");
       }
+
+      // Arrow-key spatial navigation
+      if (zoomLevel === "overview" && !searchQuery) {
+        const cols = 3;
+        const total = filteredWorkspaces.length;
+        if (e.key === "ArrowRight") {
+          e.preventDefault();
+          setFocusedIdx(i => Math.min(i + 1, total - 1));
+        }
+        if (e.key === "ArrowLeft") {
+          e.preventDefault();
+          setFocusedIdx(i => Math.max(i - 1, 0));
+        }
+        if (e.key === "ArrowDown") {
+          e.preventDefault();
+          setFocusedIdx(i => Math.min(i + cols, total - 1));
+        }
+        if (e.key === "ArrowUp") {
+          e.preventDefault();
+          setFocusedIdx(i => Math.max(i - cols, 0));
+        }
+        if (e.key === "Enter") {
+          e.preventDefault();
+          const ws = filteredWorkspaces[focusedIdx];
+          if (ws) handleWorkspaceClick(ws.id);
+        }
+      }
+
+      // Focus search on "/"
+      if (e.key === "/" && zoomLevel === "overview" && !searchQuery) {
+        e.preventDefault();
+        searchRef.current?.focus();
+      }
     };
 
     document.addEventListener("keydown", handler);
     return () => document.removeEventListener("keydown", handler);
-  }, [isOpen, zoomLevel, selectedWorkspace, onClose]);
+  }, [isOpen, zoomLevel, selectedWorkspace, onClose, focusedIdx, filteredWorkspaces, searchQuery]);
 
-  // Handle workspace click
+  useEffect(() => {
+    if (isOpen) {
+      setSearchQuery("");
+      setFocusedIdx(0);
+    }
+  }, [isOpen]);
+
   const handleWorkspaceClick = useCallback((wsId: string) => {
     setSelectedWorkspace(wsId);
     setZoomLevel("workspace");
   }, []);
 
-  // Handle route click
   const handleRouteClick = useCallback((path: string) => {
     navigate(path);
     onNavigate?.(path);
     onClose();
   }, [navigate, onNavigate, onClose]);
 
-  // Zoom controls
   const zoomIn = useCallback(() => {
     if (zoomLevel === "overview" && selectedWorkspace) setZoomLevel("workspace");
     else if (zoomLevel === "workspace") setZoomLevel("app");
@@ -215,10 +310,26 @@ export function SpatialDesktop({ isOpen, onClose, onNavigate }: SpatialDesktopPr
           </div>
         </div>
 
+        {/* Search Bar (overview only) */}
+        {zoomLevel === "overview" && (
+          <div className="px-6 pb-4">
+            <div className="relative max-w-md mx-auto">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground/40" />
+              <input
+                ref={searchRef}
+                value={searchQuery}
+                onChange={e => { setSearchQuery(e.target.value); setFocusedIdx(0); }}
+                placeholder="Search workspaces & apps… (press /)"
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-muted/20 border border-border/20 text-sm text-foreground placeholder:text-muted-foreground/40 outline-none focus:border-primary/40 transition-colors"
+              />
+            </div>
+          </div>
+        )}
+
         {/* Content Area */}
         <div ref={containerRef} className="flex-1 flex items-center justify-center p-8 overflow-hidden">
           <AnimatePresence mode="wait">
-            {/* OVERVIEW: All workspaces as cards in grid */}
+            {/* OVERVIEW */}
             {zoomLevel === "overview" && (
               <motion.div
                 key="overview"
@@ -226,11 +337,13 @@ export function SpatialDesktop({ isOpen, onClose, onNavigate }: SpatialDesktopPr
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 1.1 }}
                 transition={{ type: "spring", stiffness: 200, damping: 25 }}
-                className="grid grid-cols-2 gap-6 max-w-2xl w-full"
+                className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6 max-w-3xl w-full"
               >
-                {WORKSPACES.map((ws) => {
+                {filteredWorkspaces.map((ws, idx) => {
                   const Icon = ws.icon;
                   const isActive = ws.id === activeWorkspaceId;
+                  const isFocused = idx === focusedIdx;
+                  const badge = activityBadges[ws.id];
                   return (
                     <motion.button
                       key={ws.id}
@@ -238,27 +351,38 @@ export function SpatialDesktop({ isOpen, onClose, onNavigate }: SpatialDesktopPr
                       whileTap={{ scale: 0.98 }}
                       onClick={() => handleWorkspaceClick(ws.id)}
                       className={cn(
-                        "relative flex flex-col items-center gap-4 p-8 rounded-2xl border transition-all duration-300",
+                        "relative flex flex-col items-center gap-3 p-6 sm:p-8 rounded-2xl border transition-all duration-300",
                         "bg-gradient-to-br",
                         ws.gradient,
                         isActive
                           ? "border-primary/40 ring-2 ring-primary/20"
+                          : isFocused
+                          ? "border-primary/30 ring-1 ring-primary/10"
                           : "border-border/20 hover:border-border/40"
                       )}
                       style={{ boxShadow: `0 8px 40px -12px ${ws.color}33` }}
                     >
                       <div
-                        className="flex items-center justify-center h-16 w-16 rounded-2xl shadow-lg"
+                        className="flex items-center justify-center h-14 w-14 sm:h-16 sm:w-16 rounded-2xl shadow-lg"
                         style={{ background: ws.color }}
                       >
-                        <Icon className="h-8 w-8 text-white" />
+                        <Icon className="h-7 w-7 sm:h-8 sm:w-8 text-white" />
                       </div>
                       <div className="text-center">
-                        <p className="text-base font-semibold text-foreground">{ws.label}</p>
+                        <p className="text-sm sm:text-base font-semibold text-foreground">{ws.label}</p>
                         <p className="text-xs text-muted-foreground mt-1">
                           {ws.routes.length} apps
                         </p>
                       </div>
+
+                      {/* Activity badge */}
+                      {badge && badge.visits > 0 && (
+                        <div className="absolute top-3 left-3 flex items-center gap-1 bg-primary/15 px-2 py-0.5 rounded-full">
+                          <Activity className="h-2.5 w-2.5 text-primary/70" />
+                          <span className="text-[9px] font-medium text-primary/70">{badge.visits}</span>
+                        </div>
+                      )}
+
                       {isActive && (
                         <div className="absolute top-3 right-3 h-2.5 w-2.5 rounded-full bg-primary animate-pulse" />
                       )}
@@ -268,7 +392,7 @@ export function SpatialDesktop({ isOpen, onClose, onNavigate }: SpatialDesktopPr
               </motion.div>
             )}
 
-            {/* WORKSPACE: Selected workspace with app cards */}
+            {/* WORKSPACE */}
             {zoomLevel === "workspace" && currentWorkspace && (
               <motion.div
                 key={`workspace-${currentWorkspace.id}`}
@@ -278,7 +402,6 @@ export function SpatialDesktop({ isOpen, onClose, onNavigate }: SpatialDesktopPr
                 transition={{ type: "spring", stiffness: 200, damping: 25 }}
                 className="flex flex-col items-center gap-8 max-w-3xl w-full"
               >
-                {/* Workspace header */}
                 <div className="flex items-center gap-4">
                   <div
                     className="flex items-center justify-center h-12 w-12 rounded-xl shadow-lg"
@@ -292,8 +415,7 @@ export function SpatialDesktop({ isOpen, onClose, onNavigate }: SpatialDesktopPr
                   </div>
                 </div>
 
-                {/* App cards */}
-                <div className="grid grid-cols-3 gap-4 w-full">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 w-full">
                   {currentWorkspace.routes.map((route, idx) => {
                     const RouteIcon = route.icon;
                     const isActive = location.pathname === route.path || location.pathname.startsWith(route.path + "/");
@@ -307,7 +429,7 @@ export function SpatialDesktop({ isOpen, onClose, onNavigate }: SpatialDesktopPr
                         whileTap={{ scale: 0.97 }}
                         onClick={() => handleRouteClick(route.path)}
                         className={cn(
-                          "flex flex-col items-center gap-3 p-6 rounded-xl border transition-all duration-200",
+                          "flex flex-col items-center gap-3 p-5 sm:p-6 rounded-xl border transition-all duration-200",
                           isActive
                             ? "border-primary/40 bg-primary/10"
                             : "border-border/20 bg-card/50 hover:bg-card/80 hover:border-border/40"
@@ -330,7 +452,6 @@ export function SpatialDesktop({ isOpen, onClose, onNavigate }: SpatialDesktopPr
                   })}
                 </div>
 
-                {/* Back button */}
                 <button
                   onClick={() => setZoomLevel("overview")}
                   className="text-xs text-muted-foreground hover:text-foreground transition-colors"
@@ -340,21 +461,59 @@ export function SpatialDesktop({ isOpen, onClose, onNavigate }: SpatialDesktopPr
               </motion.div>
             )}
 
-            {/* APP: Focused view placeholder */}
-            {zoomLevel === "app" && (
+            {/* APP: Route preview cards */}
+            {zoomLevel === "app" && currentWorkspace && (
               <motion.div
                 key="app-view"
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="flex flex-col items-center gap-4 text-center"
+                className="flex flex-col items-center gap-6 max-w-2xl w-full"
               >
                 <p className="text-lg font-semibold text-foreground">
-                  {currentWorkspace?.label || "App"} — Focused View
+                  {currentWorkspace.label} — Recent Activity
                 </p>
-                <p className="text-sm text-muted-foreground max-w-md">
-                  Navigate to an app to see it in focused view. Use Ctrl+- to zoom back out.
-                </p>
+
+                {/* Recent activity from ambient context */}
+                <div className="w-full space-y-2">
+                  {currentWorkspace.routes.map((route) => {
+                    const RouteIcon = route.icon;
+                    const isActive = location.pathname === route.path;
+                    const related = ambientContext.getRelatedFiles(route.path);
+                    return (
+                      <motion.button
+                        key={route.path}
+                        whileHover={{ x: 4 }}
+                        onClick={() => handleRouteClick(route.path)}
+                        className={cn(
+                          "w-full flex items-center gap-4 p-4 rounded-xl border text-left transition-all",
+                          isActive
+                            ? "border-primary/40 bg-primary/10"
+                            : "border-border/15 bg-card/40 hover:bg-card/60 hover:border-border/30"
+                        )}
+                      >
+                        <div className={cn(
+                          "flex items-center justify-center h-10 w-10 rounded-lg shrink-0",
+                          isActive ? "bg-primary/20" : "bg-muted/20"
+                        )}>
+                          <RouteIcon className={cn("h-5 w-5", isActive ? "text-primary" : "text-foreground/60")} />
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-foreground">{route.label}</p>
+                          <p className="text-[11px] text-muted-foreground/60">
+                            {related.length > 0
+                              ? `Related: ${related.slice(0, 2).map(r => r.label).join(", ")}`
+                              : route.path}
+                          </p>
+                        </div>
+                        {isActive && (
+                          <div className="h-2 w-2 rounded-full bg-primary shrink-0" />
+                        )}
+                      </motion.button>
+                    );
+                  })}
+                </div>
+
                 <button
                   onClick={() => setZoomLevel("workspace")}
                   className="text-xs text-primary hover:underline"
@@ -367,25 +526,30 @@ export function SpatialDesktop({ isOpen, onClose, onNavigate }: SpatialDesktopPr
         </div>
 
         {/* Minimap */}
-        <div className="fixed bottom-6 right-6 w-32 h-32 rounded-xl border border-border/20 bg-card/30 backdrop-blur-xl p-2 hidden lg:block">
+        <div className="fixed bottom-6 right-6 w-36 h-28 rounded-xl border border-border/20 bg-card/30 backdrop-blur-xl p-2 hidden lg:block">
           <div className="relative w-full h-full">
             {WORKSPACES.map((ws) => {
               const isSelected = ws.id === selectedWorkspace && zoomLevel !== "overview";
+              const cols = 3;
+              const row = Math.floor(WORKSPACES.indexOf(ws) / cols);
+              const col = WORKSPACES.indexOf(ws) % cols;
               return (
                 <div
                   key={ws.id}
                   className={cn(
-                    "absolute w-[45%] h-[45%] rounded-md transition-all duration-300",
-                    isSelected ? "ring-2 ring-primary/60 scale-105" : "opacity-60"
+                    "absolute rounded-md transition-all duration-300",
+                    isSelected ? "ring-2 ring-primary/60 scale-110" : "opacity-60"
                   )}
                   style={{
-                    left: `${ws.position.x * 52}%`,
-                    top: `${ws.position.y * 52}%`,
+                    left: `${col * 35}%`,
+                    top: `${row * 52}%`,
+                    width: "30%",
+                    height: "42%",
                     background: ws.color + "33",
                     border: `1px solid ${ws.color}44`,
                   }}
                 >
-                  <span className="text-[8px] text-foreground/50 p-1 block truncate">{ws.label}</span>
+                  <span className="text-[7px] text-foreground/50 p-1 block truncate">{ws.label}</span>
                 </div>
               );
             })}

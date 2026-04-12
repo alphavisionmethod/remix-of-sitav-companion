@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Predictive Prefetch Engine
-// Learns navigation patterns and prefetches likely next routes
+// SITA OS — Predictive Prefetch Engine v2
+// Top 3 predictions, idle prefetch, enhanced stats
 // ═══════════════════════════════════════════════════════════════
 
 import { prefetchRoute } from "@/hooks/useRoutePrefetch";
@@ -41,7 +41,6 @@ class PredictivePrefetchEngine {
   private save() {
     try {
       const arr = [...this.transitions.values()];
-      // Prune oldest if over limit
       if (arr.length > MAX_TRANSITIONS) {
         arr.sort((a, b) => b.lastAt - a.lastAt);
         arr.length = MAX_TRANSITIONS;
@@ -49,8 +48,6 @@ class PredictivePrefetchEngine {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
     } catch {}
   }
-
-  // ── Record Navigation ──────────────────────────────────────
 
   recordNavigation(to: string) {
     if (this.currentPath && this.currentPath !== to) {
@@ -71,24 +68,35 @@ class PredictivePrefetchEngine {
     }
     this.currentPath = to;
     this.prefetchPredicted();
+    this.prefetchOnIdle();
   }
-
-  // ── Predict & Prefetch ─────────────────────────────────────
 
   private prefetchPredicted() {
     if (this.prefetchedForPath === this.currentPath) return;
     this.prefetchedForPath = this.currentPath;
 
     const predictions = this.getPredictions(this.currentPath);
-    // Prefetch top 2 predicted routes
-    for (const pred of predictions.slice(0, 2)) {
-      if (pred.probability >= 0.2) {
+    // Prefetch top 3 predicted routes
+    for (const pred of predictions.slice(0, 3)) {
+      if (pred.probability >= 0.15) {
         prefetchRoute(pred.path);
       }
     }
   }
 
-  // ── Get Predictions for a Path ─────────────────────────────
+  // Idle-time prefetch using requestIdleCallback
+  private prefetchOnIdle() {
+    const idleCb = typeof requestIdleCallback !== "undefined" ? requestIdleCallback : (fn: () => void) => setTimeout(fn, 50);
+    idleCb(() => {
+      const predictions = this.getPredictions(this.currentPath);
+      // Prefetch remaining predictions during idle
+      for (const pred of predictions.slice(3, 5)) {
+        if (pred.probability >= 0.1) {
+          prefetchRoute(pred.path);
+        }
+      }
+    });
+  }
 
   getPredictions(fromPath: string): { path: string; probability: number }[] {
     const candidates: { path: string; count: number }[] = [];
@@ -118,7 +126,7 @@ class PredictivePrefetchEngine {
     const timer = setTimeout(() => {
       prefetchRoute(path);
       this.hoverTimers.delete(path);
-    }, 100); // 100ms hover intent threshold
+    }, 100);
     this.hoverTimers.set(path, timer);
   }
 
@@ -129,8 +137,6 @@ class PredictivePrefetchEngine {
       this.hoverTimers.delete(path);
     }
   }
-
-  // ── Stats ─────────────────────────────────────────────────
 
   getStats() {
     return {
