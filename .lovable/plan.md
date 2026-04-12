@@ -1,49 +1,26 @@
 
 
-# Edge-to-Viewport Distance Labels During Window Drag
+# Add Update Center, Cloud Sync & Dev Tools to App Platform Catalog
 
-## What We're Building
+## Problem
+These three apps have full window implementations and launch logic in `ShellLayout.tsx`, but are missing from `APP_CATALOG` in `src/lib/app-platform/catalog.ts`. This means they don't appear in the dock or app listings.
 
-When dragging a window near any screen edge, show floating distance labels (in pixels) between the window edge and the viewport boundary — like design tool ruler measurements. Labels appear/disappear smoothly and only show when the window is within a threshold (~120px) of an edge.
+## Change
 
-## Design
+**Single file**: `src/lib/app-platform/catalog.ts`
 
-```text
-         ┌──── 24px ────┐
-         │               │
-    12px─┤  ┌─────────┐  │
-         │  │  Window  │  │
-         │  │          │  │
-         │  └─────────┘  │
-         │       │        │
-         │    38px        │
-         └────────────────┘
-```
+Add 3 new `AppDefinition` entries to the `APP_CATALOG` array, after the existing SITA internal apps block (around line 821, after "sita-app-store"):
 
-Each label: small pill with `"12px"` text, positioned midway along the relevant gap, with a thin dashed line connecting window edge to viewport edge. Fade in/out with opacity transition.
+| App | ID | Icon | Category | Pinned to Dock |
+|-----|----|------|----------|----------------|
+| Update Center | `update-center` | 🔄 | `utilities` | Yes |
+| Cloud Sync | `cloud-sync` | ☁️ | `utilities` | Yes |
+| Dev Tools | `dev-tools` | 🛠️ | `developer-tools` | Yes |
 
-## Implementation
+Each entry follows the exact same pattern as existing internal apps (e.g. "sita-app-store"):
+- `appClass: "internal"`, `trustLevel: "sita-verified"`, `installStatus: "installed"`, `pinnedToDock: true`
+- IDs match what `ShellLayout.tsx` already checks in its launch logic (`"update-center"`, `"cloud-sync"`, `"dev-tools"`)
+- Appropriate `iconBg` gradients, descriptions, and tags
 
-### Single file change: `src/components/sita/shell/FloatingWindow.tsx`
-
-1. **Compute distances** during drag (already have `pos`, `size`, `vw`, `vh`):
-   - `distLeft = pos.x`
-   - `distRight = vw - (pos.x + size.width)`
-   - `distTop = pos.y`
-   - `distBottom = vh - (pos.y + (size.height || 300))`
-
-2. **Add state** for edge distances (computed in the lerp animation loop or from `pos` directly — no extra state needed, derive from `pos` + `size`).
-
-3. **Render distance labels** as a new block inside the `<>` fragment, after the snap preview overlay. Only render during `isDragging` and when distance < 120px. Each label:
-   - A thin dashed SVG line from window edge to viewport edge
-   - A small floating pill (`bg-black/70 text-white text-[10px] px-1.5 py-0.5 rounded`) centered on that line
-   - Shows `"Npx"` value
-   - `pointer-events-none`, z-index above windows
-
-4. **Component**: `EdgeDistanceLabels` — a small inline component that takes `pos`, `size`, `vw`, `vh`, threshold, and renders the 4 edge measurements.
-
-### Visual Style
-- Dashed line: `stroke-dasharray="4 3"`, `stroke="hsl(210 80% 60%)"`, opacity 0.5
-- Pill: dark glass with white text, 10px font, centered on the dashed line
-- Threshold: 120px — labels fade in when closer, invisible when far
+No other files need changes — the dock already reads from `getInstalledApps()` + `pinnedToDock`, and `ShellLayout` already has the launch handlers for these IDs.
 
