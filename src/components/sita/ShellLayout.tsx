@@ -75,20 +75,22 @@ const getPageTransition = (pathname: string) => {
   const segment = pathname.split("/").filter(Boolean)[0] || "home";
   const depth = pathname.split("/").filter(Boolean).length;
 
+  // Drill-down sub-page: slide in from right
   if (depth > 1 && drillDownSegments.includes(segment)) {
     return {
-      initial: { opacity: 0, x: 20, filter: "blur(4px)" },
-      animate: { opacity: 1, x: 0, filter: "blur(0px)" },
-      exit: { opacity: 0, x: -10, filter: "blur(2px)" },
-      transition: { type: "spring", mass: 1, stiffness: 120, damping: 16 },
+      initial: { opacity: 0, x: 24, scale: 0.98, filter: "blur(6px)" },
+      animate: { opacity: 1, x: 0, scale: 1, filter: "blur(0px)" },
+      exit: { opacity: 0, x: -16, scale: 0.99, filter: "blur(3px)" },
+      transition: { type: "spring", mass: 0.6, stiffness: 140, damping: 18 },
     };
   }
 
+  // Top-level center switch: premium entrance with scale + blur
   return {
-    initial: { opacity: 0, y: 8, filter: "blur(3px)" },
-    animate: { opacity: 1, y: 0, filter: "blur(0px)" },
-    exit: { opacity: 0, y: -4, filter: "blur(2px)" },
-    transition: { type: "spring", mass: 1, stiffness: 100, damping: 15 },
+    initial: { opacity: 0, y: 12, scale: 0.97, filter: "blur(8px)" },
+    animate: { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" },
+    exit: { opacity: 0, y: -6, scale: 0.99, filter: "blur(4px)" },
+    transition: { type: "spring", mass: 0.5, stiffness: 130, damping: 17 },
   };
 };
 

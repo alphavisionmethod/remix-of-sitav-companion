@@ -127,10 +127,12 @@ const BusinessOverview = () => {
   }
 
   return (
-    <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-      <SitaPageHeader
+    <motion.div className="space-y-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}>
+      <AmbientHeader
         title="Business Center"
         subtitle="Your operating overview — leads, revenue, and execution"
+        icon={<Briefcase className="h-5 w-5 text-primary" />}
+        accentColor="hsl(var(--primary))"
         actions={
           <div className="flex items-center gap-3">
             {crmHealth && (
@@ -143,24 +145,33 @@ const BusinessOverview = () => {
         }
       />
 
-      {/* KPI Strip */}
-      <motion.div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-8"
-        variants={{ hidden: {}, show: { transition: { staggerChildren: 0.05 } } }} initial="hidden" animate="show">
+      {/* Premium KPI Strip */}
+      <StaggerReveal className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        {[
+          { label: "Pipeline Value", value: "$42K", sub: "+12% this month", trend: "up" as const, glow: "primary" as const, icon: <TrendingUp className="h-4 w-4 text-primary" /> },
+          { label: "Conversion Rate", value: "34%", sub: "+4pts", trend: "up" as const, glow: "emerald" as const, icon: <Target className="h-4 w-4 text-chart-2" /> },
+          { label: "Overdue Revenue", value: "$5,400", sub: "2 invoices at risk", trend: "down" as const, glow: "rose" as const, icon: <AlertTriangle className="h-4 w-4 text-destructive" /> },
+          { label: "Recovered", value: "$4,200", sub: "This week", trend: "up" as const, glow: "gold" as const, icon: <DollarSign className="h-4 w-4 text-accent" /> },
+        ].map((m, i) => (
+          <StaggerItem key={i}>
+            <MetricHighlight {...m} />
+          </StaggerItem>
+        ))}
+      </StaggerReveal>
+
+      {/* Secondary KPIs */}
+      <StaggerReveal className="grid gap-2 grid-cols-4">
         {[
           { label: "New Leads", value: "5", trend: "up" as const, sub: "2 today" },
           { label: "Stale Leads", value: "3", sub: "Needs attention" },
           { label: "Callbacks Due", value: "3", sub: "1 overdue" },
           { label: "Active Quotes", value: "4", sub: "$11,200 total" },
-          { label: "Overdue Invoices", value: "2", sub: "$5,400 at risk" },
-          { label: "Recovered This Week", value: "$4,200", trend: "up" as const },
-          { label: "Pipeline Value", value: "$42K", trend: "up" as const },
-          { label: "Conversion Rate", value: "34%", trend: "up" as const, sub: "+4pts" },
         ].map((kpi, i) => (
-          <motion.div key={i} variants={{ hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } }}>
+          <StaggerItem key={i}>
             <KPITile {...kpi} />
-          </motion.div>
+          </StaggerItem>
         ))}
-      </motion.div>
+      </StaggerReveal>
 
       {/* Charts */}
       <div className="grid gap-6 lg:grid-cols-2">
