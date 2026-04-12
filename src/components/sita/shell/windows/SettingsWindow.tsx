@@ -5,11 +5,11 @@
 //       VStack, HStack, Divider, NovaSectionLabel
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import {
   Monitor, Volume2, Wifi, Settings, Moon, Sun, Shield, Palette,
   Bell, User, HardDrive, Globe, Keyboard, Lock, Eye, Bluetooth,
-  Battery, Zap, Info, ChevronRight, Check,
+  Battery, Zap, Info, ChevronRight, Check, Camera, LogOut, Trash2, KeyRound,
 } from "lucide-react";
 import {
   AppLayout,
@@ -18,14 +18,19 @@ import {
 import {
   NovaText, NovaButton, NovaCard, NovaList,
   NovaSectionLabel, NovaToggle, NovaSlider,
-  NovaBadge, NovaToolbar, NovaAvatar,
+  NovaBadge, NovaToolbar, NovaAvatar, NovaInput, NovaModal,
 } from "@/lib/nova-sdk/ui/components";
 import { AppStateWrapper } from "@/components/sita/shell/AppStateWrapper";
 import { cn } from "@/lib/utils";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "sonner";
 
 // ── Section definitions ────────────────────────────────────
 
 const SECTIONS = [
+  { id: "profile",     label: "Profile",     icon: <User className="h-3.5 w-3.5" />,    group: "Account" },
+  { id: "security",    label: "Security",    icon: <Shield className="h-3.5 w-3.5" />,   group: "Account" },
   { id: "general",     label: "General",     icon: <Settings className="h-3.5 w-3.5" />, group: "System" },
   { id: "appearance",  label: "Appearance",  icon: <Palette className="h-3.5 w-3.5" />,  group: "System" },
   { id: "display",     label: "Display",     icon: <Monitor className="h-3.5 w-3.5" />,  group: "System" },
@@ -38,7 +43,7 @@ const SECTIONS = [
   { id: "about",       label: "About",       icon: <Info className="h-3.5 w-3.5" />,     group: "Info" },
 ];
 
-const GROUPS = ["System", "Connectivity", "Preferences", "Info"];
+const GROUPS = ["Account", "System", "Connectivity", "Preferences", "Info"];
 
 // ── Setting row helper ─────────────────────────────────────
 
@@ -56,6 +61,291 @@ function SettingRow({ label, description, icon, children }: {
       </HStack>
       <div className="flex-shrink-0">{children}</div>
     </HStack>
+  );
+}
+
+// ── Profile Content ────────────────────────────────────────
+
+function ProfileContent() {
+  const { user, isDemo } = useAuth();
+  const [displayName, setDisplayName] = useState("");
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (!user || isDemo) {
+      setDisplayName("Demo User");
+      setAvatarUrl(null);
+      setLoading(false);
+      return;
+    }
+    (async () => {
+      const { data } = await supabase
+        .from("profiles" as any)
+        .select("display_name, avatar_url")
+        .eq("user_id", user.id)
+        .single();
+      if (data) {
+        setDisplayName((data as any).display_name || "");
+        setAvatarUrl((data as any).avatar_url || null);
+      }
+      setLoading(false);
+    })();
+  }, [user, isDemo]);
+
+  const handleSaveName = useCallback(async () => {
+    if (!user || isDemo) { toast.info("Sign in to save changes"); return; }
+    setSaving(true);
+    const { error } = await supabase
+      .from("profiles" as any)
+      .update({ display_name: displayName } as any)
+      .eq("user_id", user.id);
+    setSaving(false);
+    if (error) toast.error("Failed to update name");
+    else toast.success("Name updated");
+  }, [user, isDemo, displayName]);
+
+  const handleAvatarUpload = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !user || isDemo) return;
+    if (file.size > 2 * 1024 * 1024) { toast.error("Max 2MB"); return; }
+    setUploading(true);
+    const ext = file.name.split(".").pop();
+    const filePath = `${user.id}/avatar.${ext}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from("avatars")
+      .upload(filePath, file, { upsert: true });
+
+    if (uploadError) { toast.error("Upload failed"); setUploading(false); return; }
+
+    const { data: urlData } = supabase.storage
+      .from("avatars")
+      .getPublicUrl(filePath);
+
+    const publicUrl = urlData.publicUrl + "?t=" + Date.now();
+
+    await supabase
+      .from("profiles" as any)
+      .update({ avatar_url: publicUrl } as any)
+      .eq("user_id", user.id);
+
+    setAvatarUrl(publicUrl);
+    setUploading(false);
+    toast.success("Avatar updated");
+  }, [user, isDemo]);
+
+  if (loading) {
+    return (
+      <VStack spacing="tight" align="center" className="py-8">
+        <NovaText variant="label" muted>Loading profile…</NovaText>
+      </VStack>
+    );
+  }
+
+  return (
+    <VStack spacing="tight">
+      <NovaCard>
+        <VStack spacing="normal" align="center" className="py-4">
+          <div className="relative group">
+            {avatarUrl ? (
+              <img
+                src={avatarUrl}
+                alt="Avatar"
+                className="w-16 h-16 rounded-full object-cover ring-2 ring-[hsl(0_0%_0%/0.06)] dark:ring-[hsl(0_0%_100%/0.06)]"
+              />
+            ) : (
+              <NovaAvatar
+                icon={displayName?.charAt(0)?.toUpperCase() || "?"}
+                size={64}
+                gradient="from-[hsl(265_55%_58%)] to-[hsl(210_80%_55%)]"
+              />
+            )}
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploading || isDemo}
+              className={cn(
+                "absolute inset-0 rounded-full flex items-center justify-center",
+                "bg-[hsl(0_0%_0%/0.5)] opacity-0 group-hover:opacity-100 transition-opacity",
+                uploading && "opacity-100"
+              )}
+            >
+              <Camera className="h-5 w-5 text-[hsl(0_0%_100%)]" />
+            </button>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/png,image/jpeg,image/webp"
+              className="hidden"
+              onChange={handleAvatarUpload}
+            />
+          </div>
+          <NovaText variant="title">{displayName || "User"}</NovaText>
+          <NovaText variant="label" muted>{user?.email || "demo@sita.os"}</NovaText>
+        </VStack>
+      </NovaCard>
+
+      <NovaCard>
+        <VStack spacing="tight">
+          <NovaSectionLabel className="!px-0">Display Name</NovaSectionLabel>
+          <HStack spacing="tight">
+            <NovaInput
+              value={displayName}
+              onChange={(e) => setDisplayName(e.target.value)}
+              placeholder="Your name"
+              className="flex-1"
+            />
+            <NovaButton
+              variant="primary"
+              onClick={handleSaveName}
+              disabled={saving || isDemo}
+              className="!text-[10px] !py-1 !px-3"
+            >
+              {saving ? "Saving…" : "Save"}
+            </NovaButton>
+          </HStack>
+        </VStack>
+      </NovaCard>
+
+      <NovaCard>
+        <VStack spacing="tight">
+          <SettingRow label="Email" description="Cannot be changed" icon={<Globe className="h-3.5 w-3.5" />}>
+            <NovaText variant="label" muted>{user?.email || "demo@sita.os"}</NovaText>
+          </SettingRow>
+          <Divider />
+          <SettingRow label="Member Since" icon={<Info className="h-3.5 w-3.5" />}>
+            <NovaText variant="label" muted>
+              {user?.created_at ? new Date(user.created_at).toLocaleDateString() : "—"}
+            </NovaText>
+          </SettingRow>
+        </VStack>
+      </NovaCard>
+    </VStack>
+  );
+}
+
+// ── Security Content ───────────────────────────────────────
+
+function SecurityContent() {
+  const { user, isDemo, signOut, updatePassword } = useAuth();
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [changingPw, setChangingPw] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  const handleChangePassword = useCallback(async () => {
+    if (!newPassword || newPassword.length < 6) {
+      toast.error("Password must be at least 6 characters");
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      toast.error("Passwords don't match");
+      return;
+    }
+    setChangingPw(true);
+    const { error } = await updatePassword(newPassword);
+    setChangingPw(false);
+    if (error) toast.error(error.message || "Failed to update password");
+    else {
+      toast.success("Password updated");
+      setNewPassword("");
+      setConfirmPassword("");
+    }
+  }, [newPassword, confirmPassword, updatePassword]);
+
+  const handleSignOut = useCallback(async () => {
+    await signOut();
+    toast.success("Signed out");
+  }, [signOut]);
+
+  return (
+    <VStack spacing="tight">
+      <NovaCard>
+        <VStack spacing="tight">
+          <NovaSectionLabel className="!px-0">Change Password</NovaSectionLabel>
+          <NovaInput
+            type="password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            placeholder="New password"
+          />
+          <NovaInput
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            placeholder="Confirm new password"
+          />
+          <NovaButton
+            variant="primary"
+            onClick={handleChangePassword}
+            disabled={changingPw || isDemo || !newPassword}
+            icon={<KeyRound className="h-3.5 w-3.5" />}
+            className="!text-[11px]"
+          >
+            {changingPw ? "Updating…" : "Update Password"}
+          </NovaButton>
+        </VStack>
+      </NovaCard>
+
+      <NovaCard>
+        <VStack spacing="tight">
+          <SettingRow label="Two-Factor Auth" description="Not yet available" icon={<Lock className="h-3.5 w-3.5" />}>
+            <NovaBadge>Coming Soon</NovaBadge>
+          </SettingRow>
+        </VStack>
+      </NovaCard>
+
+      <NovaCard>
+        <VStack spacing="tight">
+          <NovaButton
+            variant="secondary"
+            onClick={handleSignOut}
+            icon={<LogOut className="h-3.5 w-3.5" />}
+            className="w-full !text-[11px]"
+          >
+            Sign Out
+          </NovaButton>
+          <Divider />
+          <NovaButton
+            variant="ghost"
+            onClick={() => setShowDeleteModal(true)}
+            disabled={isDemo}
+            icon={<Trash2 className="h-3.5 w-3.5" />}
+            className="w-full !text-[11px] !text-[hsl(0_65%_50%)] hover:!bg-[hsl(0_65%_50%/0.08)]"
+          >
+            Delete Account
+          </NovaButton>
+        </VStack>
+      </NovaCard>
+
+      {showDeleteModal && (
+        <NovaModal
+          title="Delete Account"
+          onClose={() => setShowDeleteModal(false)}
+        >
+          <VStack spacing="normal">
+            <NovaText variant="body">
+              This action is irreversible. All your data will be permanently deleted.
+            </NovaText>
+            <HStack spacing="tight" justify="end">
+              <NovaButton variant="secondary" onClick={() => setShowDeleteModal(false)}>
+                Cancel
+              </NovaButton>
+              <NovaButton
+                variant="primary"
+                className="!bg-[hsl(0_65%_50%)] hover:!bg-[hsl(0_65%_45%)]"
+                onClick={() => { toast.info("Contact support to delete your account"); setShowDeleteModal(false); }}
+              >
+                Delete Account
+              </NovaButton>
+            </HStack>
+          </VStack>
+        </NovaModal>
+      )}
+    </VStack>
   );
 }
 
@@ -429,6 +719,8 @@ function AboutContent() {
 // ── Content map ────────────────────────────────────────────
 
 const CONTENT: Record<string, () => JSX.Element> = {
+  profile: ProfileContent,
+  security: SecurityContent,
   general: GeneralContent,
   appearance: AppearanceContent,
   display: DisplayContent,
@@ -444,8 +736,8 @@ const CONTENT: Record<string, () => JSX.Element> = {
 // ── Main component ─────────────────────────────────────────
 
 export function SettingsWindow() {
-  const [active, setActive] = useState("general");
-  const Content = CONTENT[active] || GeneralContent;
+  const [active, setActive] = useState("profile");
+  const Content = CONTENT[active] || ProfileContent;
   const activeSection = SECTIONS.find(s => s.id === active);
 
   const sidebar = (
