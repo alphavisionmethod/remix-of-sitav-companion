@@ -172,9 +172,11 @@ interface GlassWidgetProps {
   onClick?: () => void;
   delay?: number;
   bootReady?: boolean;
+  isDragging?: boolean;
+  dragHandleProps?: Record<string, any>;
 }
 
-function GlassWidget({ icon: Icon, label, value, accent, onClick, delay = 0, bootReady = true }: GlassWidgetProps) {
+function GlassWidget({ icon: Icon, label, value, accent, onClick, delay = 0, bootReady = true, isDragging, dragHandleProps }: GlassWidgetProps) {
   return (
     <button
       onClick={onClick}
@@ -187,10 +189,20 @@ function GlassWidget({ icon: Icon, label, value, accent, onClick, delay = 0, boo
         "shadow-[0_2px_8px_hsl(0_0%_0%/0.08),0_12px_28px_hsl(0_0%_0%/0.10)]",
         "hover:shadow-[0_2px_8px_hsl(0_0%_0%/0.10),0_16px_36px_hsl(0_0%_0%/0.14),inset_0_1px_0_hsl(0_0%_100%/0.12)]",
         "min-w-[200px]",
-        bootReady ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+        bootReady ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4",
+        isDragging && "ring-2 ring-[hsl(265_55%_58%/0.6)] scale-105 shadow-[0_8px_32px_hsl(265_55%_58%/0.25)] z-50"
       )}
       style={{ transitionDelay: bootReady ? `${delay}ms` : "0ms" }}
     >
+      {dragHandleProps && (
+        <div
+          {...dragHandleProps}
+          className="flex items-center justify-center -ml-2 opacity-0 group-hover:opacity-60 transition-opacity cursor-grab active:cursor-grabbing"
+          onClick={e => e.stopPropagation()}
+        >
+          <GripVertical className="h-3.5 w-3.5 text-[hsl(0_0%_100%/0.5)]" />
+        </div>
+      )}
       <div className={cn("rounded-xl p-2.5", accent || "bg-[hsl(265_55%_58%/0.2)]")}>
         <Icon className="h-5 w-5 text-[hsl(0_0%_100%/0.9)]" />
       </div>
@@ -201,6 +213,29 @@ function GlassWidget({ icon: Icon, label, value, accent, onClick, delay = 0, boo
       <ArrowRight className="h-3.5 w-3.5 text-[hsl(0_0%_100%/0.2)] group-hover:text-[hsl(0_0%_100%/0.5)] transition-colors ml-auto" />
     </button>
   );
+}
+
+// ── Widget Order Persistence ─────────────────────────────────
+
+const WIDGET_ORDER_KEY = "sita-desktop-widget-order";
+const DEFAULT_WIDGET_ORDER = ["approvals", "cash", "today", "revenue"];
+
+function loadWidgetOrder(): string[] {
+  try {
+    const raw = localStorage.getItem(WIDGET_ORDER_KEY);
+    if (!raw) return DEFAULT_WIDGET_ORDER;
+    const parsed = JSON.parse(raw) as string[];
+    if (DEFAULT_WIDGET_ORDER.every(id => parsed.includes(id)) && parsed.length === DEFAULT_WIDGET_ORDER.length) {
+      return parsed;
+    }
+    return DEFAULT_WIDGET_ORDER;
+  } catch {
+    return DEFAULT_WIDGET_ORDER;
+  }
+}
+
+function saveWidgetOrder(order: string[]) {
+  try { localStorage.setItem(WIDGET_ORDER_KEY, JSON.stringify(order)); } catch {}
 }
 
 // ── Advisor Insight Strip ────────────────────────────────────
