@@ -1,7 +1,8 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Kernel Dashboard (Interactive + Live Data)
 // Admin visualization with drill-downs into scheduler, memory,
-// filesystem, security rings, display server & power management
+// filesystem, security rings, display server, power management,
+// and CPU privilege ring enforcement
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useMemo, useEffect, useCallback } from "react";
@@ -15,7 +16,7 @@ import {
   RefreshCw, Terminal, ChevronRight, ArrowLeft, X, Eye,
   FileText, Folder, Info, Play, Pause, Timer, GitBranch,
   Monitor, Battery, BatteryCharging, Thermometer, Gauge,
-  Sun, Moon, Power, Wifi
+  Sun, Moon, Power, Wifi, ShieldAlert, ArrowRightLeft
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { PriorityBand as KernelPriorityBand, BAND_CONFIG } from "@/lib/core-services/kernel/process-scheduler";
@@ -25,6 +26,7 @@ import { MemoryManager } from "@/lib/nova-sdk/kernel/memory-manager";
 import { Scheduler, type SchedulerEvent } from "@/lib/nova-sdk/kernel/scheduler";
 import { Compositor } from "@/lib/nova-sdk/kernel/compositor";
 import { PowerManager, type PowerStats, type CpuGovernor, type ThermalZoneState } from "@/lib/nova-sdk/kernel/power-manager";
+import { PrivilegeEnforcement, type PrivilegeViolation, type RingTransition } from "@/lib/nova-sdk/kernel/privilege";
 
 // ── Animation Variants ───────────────────────────────────────
 
