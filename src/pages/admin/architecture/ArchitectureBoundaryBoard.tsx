@@ -5,6 +5,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useMemo } from "react";
+import { RuntimeViolationScanner } from "@/components/admin/architecture/RuntimeViolationScanner";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -341,6 +342,9 @@ export default function ArchitectureBoundaryBoard() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Runtime Violation Scanner */}
+      <RuntimeViolationScanner />
 
       {/* Import Direction Rules */}
       <Card className="border-border/50 bg-card/80">

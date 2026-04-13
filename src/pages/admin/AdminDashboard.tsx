@@ -20,6 +20,7 @@ import { PageSkeleton } from "@/components/sita/PageSkeleton";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { NotificationInbox } from "@/components/notifications/NotificationInbox";
+import { ArchitectureHealthBadge } from "@/components/admin/panels/ArchitectureHealthBadge";
 
 const fadeUp = { hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.4 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.06 } } };
@@ -306,6 +307,11 @@ export default function AdminDashboard() {
             </div>
           </CardContent>
         </Card>
+      </div>
+
+      {/* Architecture Health */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <ArchitectureHealthBadge />
       </div>
 
       {/* Bottom alerts */}
