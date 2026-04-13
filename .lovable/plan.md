@@ -1,54 +1,44 @@
 
 
-# Talking Avatars — Animated Speaking Visuals
+# Talking Avatars — Cinematic "Wow" Upgrade
 
-## What We're Building
+## Current State
+The TalkingAvatar has a basic mouth ellipse, 12 waveform bars, subtle breathing, and a bottom glow. It works but feels like a simple animated circle — not cinematic or "wow."
 
-Visually animated "talking" advisor avatars that simulate speech through mouth/lip animation, audio waveform overlays, and breathing body movement. No actual AI voice — purely visual animation that makes advisors look alive and speaking.
+## What Changes
 
-## Changes
+### 1. `TalkingAvatar.tsx` — Major visual overhaul
 
-### 1. `TalkingAvatar.tsx` (new)
+**Double-ring pulsing aura**: Replace the single waveform ring with two concentric glowing rings that pulse outward like sonar/radar when speaking — one fast, one slow, both using the advisor's accentColor with radial gradient fade.
 
-A reusable animated avatar component with:
-- **Mouth animation**: An SVG overlay on the portrait that simulates mouth opening/closing at randomized intervals (like lip-sync to imaginary speech). Small arc shape that morphs between open/closed states using framer-motion.
-- **Waveform ring**: Animated audio waveform ring around the avatar — segments that pulse at different heights/speeds when speaking, like a circular audio visualizer.
-- **Breathing idle**: Subtle scale oscillation (1.0 → 1.02 → 1.0) on a 4-second cycle so avatars never feel static.
-- **Head micro-movement**: Very slight x/y drift (±2px) while speaking to simulate natural head movement.
-- Props: `speaking: boolean`, `avatarUrl`, `accentColor`, `size`, `name`
+**Eye blink animation**: Add two small white-highlight dots (eyes) that periodically "blink" (scale to 0 and back) every 3-4 seconds — makes the avatar feel alive even when idle.
 
-### 2. `BoardroomAdvisorCouncil.tsx` (modify)
+**Holographic shimmer overlay**: A rotating gradient overlay (conic-gradient) that slowly sweeps across the portrait like a holographic card effect — very subtle, adds premium depth.
 
-- Replace static portrait `<img>` / emoji fallback with `<TalkingAvatar>` component
-- The `speakingId` advisor gets `speaking={true}`, all others get `speaking={false}` (idle breathing only)
-- Add a "Play Discussion" button that auto-cycles `speakingId` through advisors every 4-5 seconds, simulating a live round-table conversation
+**Enhanced mouth**: Replace the plain dark ellipse with a gradient mouth that has inner shadow and slight blur, making it look more natural against real photos.
 
-### 3. `BoardroomDiscussionThread.tsx` (modify)
+**Ripple burst on speak start**: When transitioning from idle to speaking, fire a single expanding ring that fades out — like a "ping" activation effect.
 
-- Replace the 52px avatar in each discussion entry with `<TalkingAvatar>`
-- The last entry (currently speaking) gets `speaking={true}` with full mouth + waveform animation
-- Add a "Play" button at the top that auto-scrolls through entries one by one with a typing delay, making each advisor "speak" in sequence — the text appears with a typewriter effect while the avatar animates
+**Ambient particle field**: 4-5 tiny floating dots that orbit slowly around the avatar when speaking, like ambient energy particles — each at a different radius and speed.
 
-### 4. `AdvisorProfileCard.tsx` (modify)
+**Dynamic border glow**: The avatar's circular border itself becomes a rotating gradient (like a loading spinner but smooth and continuous) when speaking, using the accentColor.
 
-- Integrate `<TalkingAvatar>` replacing the current static portrait
-- When `status === "speaking"`, avatar shows full talking animation
+**Idle state upgrade**: Even when not speaking, add a very subtle "alive" indicator — a faint breathing glow ring that pulses at resting heart rate (~1Hz).
 
-## Visual Details
+### 2. `BoardroomAdvisorCouncil.tsx` — Enhance council presentation
 
-- **Mouth overlay**: Small semi-transparent dark ellipse at bottom-third of avatar face, morphing height between 2px (closed) and 8px (open) at ~3-4Hz with slight randomization
-- **Circular waveform**: 12 bars arranged in a circle around the avatar, each pulsing independently with staggered sine-wave timing — only visible when speaking
-- **Color**: All animation elements use the advisor's `accentColor` for consistency
-- **Auto-play**: A "▶ Watch Discussion" button triggers sequential playback — each advisor speaks for ~4 seconds with their text appearing progressively
+**Name text glow**: The speaking advisor's name gets a subtle text-shadow glow matching their accentColor.
+
+**"LIVE" badge**: Add a small pulsing red dot + "LIVE" text next to the speaking advisor's nameplate.
+
+**Sound wave mini-bars**: Add 3 tiny animated bars (like a music equalizer) next to the mic icon for the speaking advisor.
 
 ## Files
 
-| File | Action |
+| File | Change |
 |------|--------|
-| `src/components/sita/apps/boardroom/TalkingAvatar.tsx` | **New** — Animated speaking avatar with mouth, waveform, breathing |
-| `src/components/sita/apps/boardroom/BoardroomAdvisorCouncil.tsx` | Use TalkingAvatar, add auto-cycle playback |
-| `src/components/sita/apps/boardroom/BoardroomDiscussionThread.tsx` | Use TalkingAvatar, add sequential play mode |
-| `src/components/sita/apps/boardroom/AdvisorProfileCard.tsx` | Use TalkingAvatar for speaking status |
+| `TalkingAvatar.tsx` | Double-ring aura, eye blinks, holographic shimmer, particle orbit, rotating border glow, ripple burst, enhanced mouth |
+| `BoardroomAdvisorCouncil.tsx` | Name glow, LIVE badge, equalizer bars on speaking advisor |
 
-4 files. No database changes.
+2 files. No database changes.
 
