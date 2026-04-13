@@ -1,6 +1,7 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
 import { SectionSkeleton, KPISkeleton } from "@/components/sita/SectionSkeleton";
-import { KPITile, CustomerRow, EmptyState, SitaTabs, AdvisorCard, TimelineItem, OpportunityCard } from "@/components/sita/SitaComponents";
+import { KPITile, CustomerRow, SitaTabs, AdvisorCard, TimelineItem, OpportunityCard } from "@/components/sita/SitaComponents";
+import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
 import { TrustBadge, TrustLevel } from "@/components/sita/TrustBadge";
 import { StateBadge, ExecutionState } from "@/components/sita/StateBadge";
 import { useState } from "react";
