@@ -19,6 +19,8 @@ import {
   SidebarMenuButton, SidebarMenuItem, SidebarHeader, SidebarFooter, useSidebar,
 } from "@/components/ui/sidebar";
 import { motion, AnimatePresence } from "framer-motion";
+import { SidebarContextMenu } from "./shell/SidebarContextMenu";
+
 
 // ── Domain color map — vibrant macOS-style with brand purple/gold ─
 const domainColors: Record<string, { bg: string; ring: string }> = {
@@ -124,13 +126,14 @@ const DOMAIN_MAP: Record<string, string> = {
   "/files": "files",
 };
 
-function AppIconItem({ item, collapsed, active, hasSubNav, expanded, onToggleExpand }: {
+function AppIconItem({ item, collapsed, active, hasSubNav, expanded, onToggleExpand, onContextMenu }: {
   item: { title: string; url: string; icon: React.ElementType };
   collapsed: boolean;
   active: boolean;
   hasSubNav?: boolean;
   expanded?: boolean;
   onToggleExpand?: () => void;
+  onContextMenu?: (e: React.MouseEvent) => void;
 }) {
   const colors = getColors(item.url);
   const Icon = item.icon;
@@ -148,6 +151,7 @@ function AppIconItem({ item, collapsed, active, hasSubNav, expanded, onToggleExp
           data-prefetch-path={item.url}
           onMouseEnter={() => predictivePrefetch.onHoverStart(item.url)}
           onMouseLeave={() => predictivePrefetch.onHoverEnd(item.url)}
+          onContextMenu={onContextMenu}
           className={cn(
             "flex items-center gap-3 rounded-xl px-2 py-1.5 transition-all duration-200 group/app",
             collapsed && "justify-center px-0 py-2",
@@ -258,7 +262,7 @@ function SubNavItems({ routes, collapsed }: { routes: SubRoute[]; collapsed: boo
 }
 
 // ── Nav Group ────────────────────────────────────────────────
-function AppNavGroup({ items, collapsed }: { items: typeof primaryNav; collapsed: boolean }) {
+function AppNavGroup({ items, collapsed, onSidebarContextMenu }: { items: typeof primaryNav; collapsed: boolean; onSidebarContextMenu?: (e: React.MouseEvent, item: { title: string; url: string }) => void }) {
   const location = useLocation();
   const [expandedDomain, setExpandedDomain] = useState<string | null>(null);
 
@@ -290,6 +294,7 @@ function AppNavGroup({ items, collapsed }: { items: typeof primaryNav; collapsed
               hasSubNav={hasSubNav}
               expanded={isExpanded}
               onToggleExpand={() => setExpandedDomain(isExpanded ? null : item.url)}
+              onContextMenu={onSidebarContextMenu ? (e) => { e.preventDefault(); onSidebarContextMenu(e, item); } : undefined}
             />
             {/* Collapsible sub-navigation */}
             <AnimatePresence>
@@ -314,6 +319,11 @@ export const AppSidebar = memo(function AppSidebar() {
   const navigate = useNavigate();
   const location = useLocation();
   const recents = useRecents();
+  const [ctxMenu, setCtxMenu] = useState<{ x: number; y: number; title: string; url: string } | null>(null);
+
+  const handleSidebarContextMenu = useCallback((e: React.MouseEvent, item: { title: string; url: string }) => {
+    setCtxMenu({ x: e.clientX, y: e.clientY, title: item.title, url: item.url });
+  }, []);
 
   // Filter bottom nav: only show Control Room to admins
   const visibleBottomNav = isAdmin
@@ -373,7 +383,7 @@ export const AppSidebar = memo(function AppSidebar() {
             </SidebarGroupLabel>
           )}
           <SidebarGroupContent>
-            <AppNavGroup items={primaryNav} collapsed={collapsed} />
+            <AppNavGroup items={primaryNav} collapsed={collapsed} onSidebarContextMenu={handleSidebarContextMenu} />
           </SidebarGroupContent>
         </SidebarGroup>
 
@@ -385,7 +395,7 @@ export const AppSidebar = memo(function AppSidebar() {
             </SidebarGroupLabel>
           )}
           <SidebarGroupContent>
-            <AppNavGroup items={favoritesNav} collapsed={collapsed} />
+            <AppNavGroup items={favoritesNav} collapsed={collapsed} onSidebarContextMenu={handleSidebarContextMenu} />
           </SidebarGroupContent>
         </SidebarGroup>
 
@@ -474,6 +484,23 @@ export const AppSidebar = memo(function AppSidebar() {
           </div>
         )}
       </SidebarFooter>
+
+      {/* Context Menu */}
+      <AnimatePresence>
+        {ctxMenu && (
+          <SidebarContextMenu
+            x={ctxMenu.x}
+            y={ctxMenu.y}
+            itemTitle={ctxMenu.title}
+            itemUrl={ctxMenu.url}
+            onClose={() => setCtxMenu(null)}
+            onClearState={() => {
+              try { const store = JSON.parse(sessionStorage.getItem("sita-app-state") || "{}"); const domainMap: Record<string, string> = { "/business": "business", "/money": "finance", "/concierge": "concierge", "/files": "files" }; const key = domainMap[ctxMenu.url]; if (key) { delete store[key]; sessionStorage.setItem("sita-app-state", JSON.stringify(store)); } } catch {}
+            }}
+            onOpenInNew={() => window.open(ctxMenu.url, "_blank")}
+          />
+        )}
+      </AnimatePresence>
     </Sidebar>
   );
 });

@@ -1,412 +1,315 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Collections Command Center
+// SITA OS — Collections Command Center (Migrated to OS-native cards)
 // Escalation ladders, aging buckets, automated chase sequences
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useMemo } from "react";
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
-import { SitaTabs, KPITile } from "@/components/sita/SitaComponents";
-import { TrustBadge } from "@/components/sita/TrustBadge";
-import { StateBadge } from "@/components/sita/StateBadge";
 import { motion } from "framer-motion";
 import {
   DollarSign, AlertTriangle, Clock, CheckCircle, ArrowRight, Zap,
-  Send, Phone, Mail, MessageSquare, Shield, TrendingUp, TrendingDown,
-  BarChart3, Users, FileText, ChevronRight, Timer, Ban, Scale, ArrowUpRight
+  Send, Phone, Mail, MessageSquare, Shield, FileText, Scale
 } from "lucide-react";
 import { useCollectionsAccounts } from "@/hooks/use-domain-data";
 import type { CollectionsAccount } from "@/lib/mock-data/collections";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 
-// ── Types ───────────────────────────────────────────────────────
+import { HeroCard, QueueCard, StatusCard, ActionCard, SummaryCard, TimelineCard } from "@/components/sita/cards";
+import { ExecutionBadge, UrgencyBadge } from "@/components/sita/badges";
+import { SplitWorkspace } from "@/components/sita/surfaces/SplitWorkspace";
+import { AppSurface } from "@/components/sita/surfaces/AppSurface";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { SitaTabs } from "@/components/sita/SitaComponents";
+import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
+import { ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransitions";
+import { cn } from "@/lib/utils";
 
+// ── Chase Sequence ──────────────────────────────────────────────
 
 interface ChaseStep {
   step: number;
   dayAfterDue: number;
   action: string;
   channel: "email" | "phone" | "sms" | "letter" | "legal";
-  template: string;
   icon: typeof Mail;
   escalationLevel: 0 | 1 | 2 | 3 | 4;
   autoExecute: boolean;
   requiresApproval: boolean;
 }
 
-// ── Chase Sequence Definition ───────────────────────────────────
-
 const CHASE_SEQUENCE: ChaseStep[] = [
-  { step: 1, dayAfterDue: 1, action: "Friendly reminder email", channel: "email", template: "friendly-reminder", icon: Mail, escalationLevel: 0, autoExecute: true, requiresApproval: false },
-  { step: 2, dayAfterDue: 7, action: "Second reminder with invoice attached", channel: "email", template: "second-reminder", icon: Mail, escalationLevel: 0, autoExecute: true, requiresApproval: false },
-  { step: 3, dayAfterDue: 14, action: "Phone call follow-up", channel: "phone", template: "phone-script-friendly", icon: Phone, escalationLevel: 1, autoExecute: false, requiresApproval: false },
-  { step: 4, dayAfterDue: 21, action: "Urgent payment request", channel: "email", template: "urgent-request", icon: Mail, escalationLevel: 1, autoExecute: true, requiresApproval: true },
-  { step: 5, dayAfterDue: 30, action: "Final notice before escalation", channel: "email", template: "final-notice", icon: AlertTriangle, escalationLevel: 2, autoExecute: false, requiresApproval: true },
-  { step: 6, dayAfterDue: 45, action: "Executive escalation call", channel: "phone", template: "executive-call", icon: Phone, escalationLevel: 2, autoExecute: false, requiresApproval: true },
-  { step: 7, dayAfterDue: 60, action: "Payment plan offer", channel: "email", template: "payment-plan-offer", icon: DollarSign, escalationLevel: 3, autoExecute: false, requiresApproval: true },
-  { step: 8, dayAfterDue: 75, action: "Formal demand letter", channel: "letter", template: "demand-letter", icon: FileText, escalationLevel: 3, autoExecute: false, requiresApproval: true },
-  { step: 9, dayAfterDue: 90, action: "Collections agency referral review", channel: "legal", template: "agency-referral", icon: Scale, escalationLevel: 4, autoExecute: false, requiresApproval: true },
+  { step: 1, dayAfterDue: 1, action: "Friendly reminder email", channel: "email", icon: Mail, escalationLevel: 0, autoExecute: true, requiresApproval: false },
+  { step: 2, dayAfterDue: 7, action: "Second reminder with invoice", channel: "email", icon: Mail, escalationLevel: 0, autoExecute: true, requiresApproval: false },
+  { step: 3, dayAfterDue: 14, action: "Phone call follow-up", channel: "phone", icon: Phone, escalationLevel: 1, autoExecute: false, requiresApproval: false },
+  { step: 4, dayAfterDue: 21, action: "Urgent payment request", channel: "email", icon: Mail, escalationLevel: 1, autoExecute: true, requiresApproval: true },
+  { step: 5, dayAfterDue: 30, action: "Final notice before escalation", channel: "email", icon: AlertTriangle, escalationLevel: 2, autoExecute: false, requiresApproval: true },
+  { step: 6, dayAfterDue: 45, action: "Executive escalation call", channel: "phone", icon: Phone, escalationLevel: 2, autoExecute: false, requiresApproval: true },
+  { step: 7, dayAfterDue: 60, action: "Payment plan offer", channel: "email", icon: DollarSign, escalationLevel: 3, autoExecute: false, requiresApproval: true },
+  { step: 8, dayAfterDue: 75, action: "Formal demand letter", channel: "letter", icon: FileText, escalationLevel: 3, autoExecute: false, requiresApproval: true },
+  { step: 9, dayAfterDue: 90, action: "Collections agency referral", channel: "legal", icon: Scale, escalationLevel: 4, autoExecute: false, requiresApproval: true },
 ];
-
-// ── Mock Data ───────────────────────────────────────────────────
-
-
-// ── Helpers ──────────────────────────────────────────────────────
 
 const formatCents = (cents: number) => `$${(cents / 100).toLocaleString("en-US", { minimumFractionDigits: 0 })}`;
 
-const bucketColor: Record<string, string> = {
-  "current": "bg-trust-safe/10 text-trust-safe",
-  "1-30": "bg-accent/10 text-accent",
-  "31-60": "bg-urgency-high/10 text-urgency-high",
-  "61-90": "bg-destructive/10 text-destructive",
-  "90+": "bg-destructive/15 text-destructive",
-};
+const escalationLabel = ["Friendly", "Firm", "Urgent", "Formal", "Legal"];
 
-const statusColor: Record<string, string> = {
-  "active": "bg-primary/10 text-primary",
-  "promised": "bg-trust-safe/10 text-trust-safe",
-  "disputed": "bg-accent/10 text-accent",
-  "escalated": "bg-destructive/10 text-destructive",
-  "recovered": "bg-trust-verified/10 text-trust-verified",
-  "written-off": "bg-muted text-muted-foreground",
-};
+const riskColor = (score: number) =>
+  score >= 80 ? "hsl(0 70% 55%)" : score >= 50 ? "hsl(38 85% 58%)" : score >= 25 ? "hsl(265 55% 58%)" : "hsl(152 55% 48%)";
 
-const escalationLabel = ["Level 0 — Friendly", "Level 1 — Firm", "Level 2 — Urgent", "Level 3 — Formal", "Level 4 — Legal"];
-
-// ── Sub-Views ───────────────────────────────────────────────────
-
-const AgingBuckets = ({ accounts }: { accounts: CollectionsAccount[] }) => {
-  const buckets = useMemo(() => {
-    const b = { "current": [] as CollectionsAccount[], "1-30": [] as CollectionsAccount[], "31-60": [] as CollectionsAccount[], "61-90": [] as CollectionsAccount[], "90+": [] as CollectionsAccount[] };
-    accounts.forEach(a => b[a.agingBucket]?.push(a));
-    return b;
-  }, [accounts]);
-
-  const bucketTotals = Object.entries(buckets).map(([key, accs]) => ({
-    bucket: key,
-    count: accs.length,
-    totalCents: accs.reduce((s, a) => s + a.amountCents, 0),
-  }));
-
-  return (
-    <div className="space-y-5">
-      {/* Aging bar visualization */}
-      <div className="rounded-xl border border-border bg-card p-5">
-        <h3 className="text-sm font-semibold text-foreground mb-4">Aging Distribution</h3>
-        <div className="flex gap-1 h-10 rounded-lg overflow-hidden">
-          {bucketTotals.map((b) => {
-            const totalAll = bucketTotals.reduce((s, x) => s + x.totalCents, 0);
-            const pct = totalAll > 0 ? (b.totalCents / totalAll) * 100 : 0;
-            if (pct === 0) return null;
-            const colors: Record<string, string> = { "current": "bg-trust-safe", "1-30": "bg-accent", "31-60": "bg-urgency-high", "61-90": "bg-destructive/80", "90+": "bg-destructive" };
-            return (
-              <div key={b.bucket} className={`${colors[b.bucket]} flex items-center justify-center transition-all`} style={{ width: `${Math.max(pct, 5)}%` }}>
-                <span className="text-[9px] font-bold text-white drop-shadow-sm">{b.bucket}</span>
-              </div>
-            );
-          })}
-        </div>
-        <div className="grid grid-cols-5 gap-2 mt-3">
-          {bucketTotals.map((b) => (
-            <div key={b.bucket} className="text-center">
-              <p className="text-xs font-medium text-foreground">{formatCents(b.totalCents)}</p>
-              <p className="text-[10px] text-muted-foreground">{b.bucket} days · {b.count}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Account list by aging */}
-      {Object.entries(buckets).filter(([, accs]) => accs.length > 0).map(([bucket, accs]) => (
-        <div key={bucket} className="space-y-2">
-          <div className="flex items-center gap-2">
-            <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold ${bucketColor[bucket]}`}>{bucket} days</span>
-            <span className="text-xs text-muted-foreground">{accs.length} accounts · {formatCents(accs.reduce((s, a) => s + a.amountCents, 0))}</span>
-          </div>
-          {accs.map((acc, i) => (
-            <motion.div key={acc.id} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
-              <AccountRow account={acc} />
-            </motion.div>
-          ))}
-        </div>
-      ))}
-    </div>
-  );
-};
-
-const AccountRow = ({ account }: { account: CollectionsAccount }) => (
-  <SitaCard className="p-4" hover>
-    <div className="flex items-center gap-4">
-      {/* Risk indicator */}
-      <div className={`h-10 w-10 rounded-xl flex items-center justify-center text-sm font-bold shrink-0 ${
-        account.riskScore >= 80 ? "bg-destructive/10 text-destructive" :
-        account.riskScore >= 50 ? "bg-urgency-high/10 text-urgency-high" :
-        account.riskScore >= 25 ? "bg-accent/10 text-accent" :
-        "bg-trust-safe/10 text-trust-safe"
-      }`}>
-        {account.riskScore}
-      </div>
-
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2 flex-wrap">
-          <p className="text-sm font-semibold text-foreground">{account.customerName}</p>
-          <span className="text-[10px] font-mono text-muted-foreground">{account.invoiceNumber}</span>
-          <span className={`rounded-full px-2 py-0.5 text-[9px] font-semibold capitalize ${statusColor[account.status]}`}>{account.status}</span>
-        </div>
-        <div className="flex items-center gap-3 mt-1 text-[11px] text-muted-foreground">
-          <span className="flex items-center gap-1"><Clock className="h-3 w-3" /> {account.agingDays}d overdue</span>
-          <span className="flex items-center gap-1"><Send className="h-3 w-3" /> Step {account.currentStep}/{account.totalSteps}</span>
-          {account.promisedPayDate && <span className="flex items-center gap-1 text-trust-safe"><CheckCircle className="h-3 w-3" /> Promised {account.promisedPayDate}</span>}
-        </div>
-      </div>
-
-      <div className="text-right shrink-0">
-        <p className="text-sm font-bold text-foreground">{formatCents(account.amountCents)}</p>
-        <p className="text-[10px] text-muted-foreground">{escalationLabel[account.escalationLevel]?.split("—")[0]}</p>
-      </div>
-    </div>
-  </SitaCard>
-);
-
-const EscalationLadder = () => (
-  <div className="space-y-5">
-    <div className="rounded-xl border border-border bg-card p-5">
-      <h3 className="text-sm font-semibold text-foreground mb-1">Chase Sequence — 9-Step Escalation Ladder</h3>
-      <p className="text-xs text-muted-foreground mb-5">Automated progression with approval gates at critical steps</p>
-
-      <div className="relative">
-        {/* Vertical line */}
-        <div className="absolute left-5 top-0 bottom-0 w-px bg-border" />
-
-        <div className="space-y-1">
-          {CHASE_SEQUENCE.map((step, i) => {
-            const StepIcon = step.icon;
-            const levelColors = ["bg-trust-safe/10 text-trust-safe", "bg-accent/10 text-accent", "bg-urgency-high/10 text-urgency-high", "bg-destructive/10 text-destructive", "bg-destructive/15 text-destructive"];
-            const channelIcons: Record<string, typeof Mail> = { email: Mail, phone: Phone, sms: MessageSquare, letter: FileText, legal: Scale };
-            const ChannelIcon = channelIcons[step.channel] || Mail;
-
-            return (
-              <motion.div key={step.step} initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.05 }}
-                className="relative flex items-start gap-4 pl-1"
-              >
-                <div className={`relative z-10 flex h-10 w-10 items-center justify-center rounded-xl shrink-0 ${levelColors[step.escalationLevel]}`}>
-                  <StepIcon className="h-4 w-4" />
-                </div>
-                <div className="flex-1 rounded-xl border border-border bg-card p-3.5 hover:shadow-card-hover transition-all">
-                  <div className="flex items-center justify-between gap-2 flex-wrap">
-                    <div className="flex items-center gap-2">
-                      <span className="text-[10px] font-bold text-muted-foreground">STEP {step.step}</span>
-                      <span className="text-[10px] text-muted-foreground">Day +{step.dayAfterDue}</span>
-                    </div>
-                    <div className="flex items-center gap-1.5">
-                      {step.autoExecute && <span className="rounded-full bg-trust-safe/10 px-2 py-0.5 text-[9px] font-medium text-trust-safe flex items-center gap-1"><Zap className="h-2.5 w-2.5" /> Auto</span>}
-                      {step.requiresApproval && <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[9px] font-medium text-primary flex items-center gap-1"><Shield className="h-2.5 w-2.5" /> Approval</span>}
-                      <span className="rounded-full bg-secondary px-2 py-0.5 text-[9px] font-medium text-muted-foreground flex items-center gap-1"><ChannelIcon className="h-2.5 w-2.5" /> {step.channel}</span>
-                    </div>
-                  </div>
-                  <p className="text-sm font-medium text-foreground mt-1.5">{step.action}</p>
-                  <p className="text-[10px] text-muted-foreground mt-0.5">{escalationLabel[step.escalationLevel]}</p>
-                </div>
-              </motion.div>
-            );
-          })}
-        </div>
-      </div>
-    </div>
-  </div>
-);
-
-const ActiveChases = ({ accounts }: { accounts: CollectionsAccount[] }) => {
-  const activeAccounts = accounts.filter(a => a.chaseSequenceActive);
-
-  return (
-    <div className="space-y-4">
-      <div className="grid gap-3 sm:grid-cols-3">
-        <KPITile label="Active Sequences" value={String(activeAccounts.length)} sub={`${accounts.filter(a => !a.chaseSequenceActive).length} paused`} icon={Send} />
-        <KPITile label="Awaiting Approval" value={String(activeAccounts.filter(a => CHASE_SEQUENCE[a.currentStep - 1]?.requiresApproval).length)} sub="Steps needing your OK" icon={Shield} />
-        <KPITile label="Next Actions Today" value={String(activeAccounts.filter(a => a.currentStep <= 3).length)} sub="Auto-executing soon" icon={Zap} />
-      </div>
-
-      <div className="space-y-2">
-        {activeAccounts.sort((a, b) => b.riskScore - a.riskScore).map((acc, i) => {
-          const currentChaseStep = CHASE_SEQUENCE[acc.currentStep - 1];
-          const nextStep = CHASE_SEQUENCE[acc.currentStep];
-          return (
-            <motion.div key={acc.id} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
-              <SitaCard className="p-4" hover>
-                <div className="flex items-start gap-4">
-                  <div className={`h-10 w-10 rounded-xl flex items-center justify-center text-sm font-bold shrink-0 ${
-                    acc.riskScore >= 80 ? "bg-destructive/10 text-destructive" :
-                    acc.riskScore >= 50 ? "bg-urgency-high/10 text-urgency-high" :
-                    "bg-accent/10 text-accent"
-                  }`}>
-                    {acc.riskScore}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <p className="text-sm font-semibold text-foreground">{acc.customerName}</p>
-                      <span className="text-[10px] font-mono text-muted-foreground">{acc.invoiceNumber}</span>
-                      <span className="text-sm font-bold text-foreground">{formatCents(acc.amountCents)}</span>
-                    </div>
-
-                    {/* Progress bar */}
-                    <div className="mt-2 flex items-center gap-2">
-                      <div className="flex-1 h-1.5 rounded-full bg-secondary overflow-hidden">
-                        <div className="h-full rounded-full transition-all" style={{
-                          width: `${(acc.currentStep / acc.totalSteps) * 100}%`,
-                          background: acc.riskScore >= 80 ? "hsl(var(--destructive))" : acc.riskScore >= 50 ? "hsl(var(--urgency-high))" : "hsl(var(--accent))",
-                        }} />
-                      </div>
-                      <span className="text-[10px] text-muted-foreground shrink-0">Step {acc.currentStep}/{acc.totalSteps}</span>
-                    </div>
-
-                    {/* Current & next step */}
-                    <div className="mt-2 flex items-center gap-4 text-[11px]">
-                      {currentChaseStep && (
-                        <span className="flex items-center gap-1 text-foreground">
-                          <CheckCircle className="h-3 w-3 text-trust-safe" /> Last: {currentChaseStep.action}
-                        </span>
-                      )}
-                    </div>
-                    {nextStep && (
-                      <div className="mt-1 flex items-center gap-1 text-[11px]">
-                        <ArrowRight className="h-3 w-3 text-primary" />
-                        <span className="text-primary font-medium">Next: {nextStep.action}</span>
-                        {nextStep.requiresApproval && <span className="rounded-full bg-primary/10 px-1.5 py-px text-[9px] text-primary">Needs approval</span>}
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="flex flex-col gap-1.5 shrink-0">
-                    {nextStep?.requiresApproval ? (
-                      <button className="rounded-lg gradient-sita px-3 py-1.5 text-[10px] font-semibold text-primary-foreground hover:opacity-90 transition-opacity">
-                        Approve Next
-                      </button>
-                    ) : (
-                      <button className="rounded-lg bg-primary/10 px-3 py-1.5 text-[10px] font-semibold text-primary hover:bg-primary/20 transition-colors">
-                        View Details
-                      </button>
-                    )}
-                    <button className="rounded-lg bg-secondary px-3 py-1.5 text-[10px] font-medium text-muted-foreground hover:bg-secondary/80 transition-colors">
-                      Pause
-                    </button>
-                  </div>
-                </div>
-              </SitaCard>
-            </motion.div>
-          );
-        })}
-      </div>
-    </div>
-  );
-};
-
-const CollectionsInsights = ({ accounts }: { accounts: CollectionsAccount[] }) => {
-  const totalOutstanding = accounts.reduce((s, a) => s + a.amountCents, 0);
-  const avgAging = accounts.length > 0 ? Math.round(accounts.reduce((s, a) => s + a.agingDays, 0) / accounts.length) : 0;
-  const atRisk = accounts.filter(a => a.riskScore >= 70);
-  const promised = accounts.filter(a => a.status === "promised");
-
-  return (
-    <div className="space-y-4">
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <KPITile label="Total Outstanding" value={formatCents(totalOutstanding)} sub={`${accounts.length} invoices`} icon={DollarSign} trend="down" />
-        <KPITile label="Avg Aging" value={`${avgAging}d`} sub="Days past due" icon={Clock} />
-        <KPITile label="At Risk" value={String(atRisk.length)} sub={formatCents(atRisk.reduce((s, a) => s + a.amountCents, 0))} icon={AlertTriangle} trend="down" />
-        <KPITile label="Promised" value={String(promised.length)} sub={formatCents(promised.reduce((s, a) => s + a.amountCents, 0))} icon={CheckCircle} trend="up" />
-      </div>
-
-      {/* Risk heatmap */}
-      <div className="rounded-xl border border-border bg-card p-5">
-        <h3 className="text-sm font-semibold text-foreground mb-3">Risk Heatmap</h3>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-          {[
-            { label: "Low Risk (0-25)", accounts: accounts.filter(a => a.riskScore < 25), color: "border-trust-safe/30 bg-trust-safe/5" },
-            { label: "Medium (25-50)", accounts: accounts.filter(a => a.riskScore >= 25 && a.riskScore < 50), color: "border-accent/30 bg-accent/5" },
-            { label: "High (50-75)", accounts: accounts.filter(a => a.riskScore >= 50 && a.riskScore < 75), color: "border-urgency-high/30 bg-urgency-high/5" },
-            { label: "Critical (75+)", accounts: accounts.filter(a => a.riskScore >= 75), color: "border-destructive/30 bg-destructive/5" },
-          ].map((group) => (
-            <div key={group.label} className={`rounded-xl border ${group.color} p-3`}>
-              <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">{group.label}</p>
-              <p className="text-lg font-bold text-foreground mt-1">{group.accounts.length}</p>
-              <p className="text-[10px] text-muted-foreground">{formatCents(group.accounts.reduce((s, a) => s + a.amountCents, 0))}</p>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Recommendations */}
-      <div className="rounded-xl border border-border bg-card p-5">
-        <h3 className="text-sm font-semibold text-foreground mb-3">AI Recommendations</h3>
-        <div className="space-y-2">
-          {[
-            { icon: AlertTriangle, color: "text-destructive", title: "Escalate NovaTech to collections agency", desc: "$22,000 outstanding for 83 days. Payment plan rejected." },
-            { icon: Phone, color: "text-urgency-high", title: "Call TechVentures today", desc: "No response to final notice. Executive call needed before formal demand." },
-            { icon: CheckCircle, color: "text-trust-safe", title: "Sarah Chen likely to pay on time", desc: "Promised payment by Apr 10. History suggests reliability." },
-            { icon: DollarSign, color: "text-accent", title: "Offer Premier Digital a 5% early-pay discount", desc: "24 days overdue but low risk. Discount could accelerate payment." },
-          ].map((rec, i) => (
-            <div key={i} className="flex items-start gap-3 p-3 rounded-lg hover:bg-secondary/40 transition-colors">
-              <rec.icon className={`h-4 w-4 ${rec.color} mt-0.5 shrink-0`} />
-              <div>
-                <p className="text-sm font-medium text-foreground">{rec.title}</p>
-                <p className="text-[11px] text-muted-foreground">{rec.desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-};
+const riskUrgency = (score: number): "critical" | "high" | "normal" | "low" =>
+  score >= 80 ? "critical" : score >= 50 ? "high" : score >= 25 ? "normal" : "low";
 
 // ── Main Component ──────────────────────────────────────────────
 
 const CollectionsCommandCenter = () => {
   const { isDemoMode } = useDataMode();
-  const { data: collectionsData = [] } = useCollectionsAccounts();
+  const { data: accounts = [] } = useCollectionsAccounts();
+  const [tab, setTab] = useState("overview");
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
-  const [activeTab, setActiveTab] = useState("overview");
+  const totalOutstanding = useMemo(() => accounts.reduce((s, a) => s + a.amountCents, 0), [accounts]);
+  const atRisk = useMemo(() => accounts.filter(a => a.riskScore >= 70), [accounts]);
+  const avgAging = useMemo(() => accounts.length > 0 ? Math.round(accounts.reduce((s, a) => s + a.agingDays, 0) / accounts.length) : 0, [accounts]);
+  const promised = useMemo(() => accounts.filter(a => a.status === "promised"), [accounts]);
+  const selected = accounts.find(a => a.id === selectedId) || null;
 
-  const tabs = [
-    { key: "overview", label: "Overview" },
-    { key: "aging", label: "Aging Buckets" },
-    { key: "escalation", label: "Escalation Ladder" },
-    { key: "chases", label: "Active Chases" },
-  ];
+  // Queue items sorted by risk
+  const queueItems = useMemo(() =>
+    [...accounts].sort((a, b) => b.riskScore - a.riskScore).map(a => ({
+      id: a.id,
+      label: `${a.customerName} — ${formatCents(a.amountCents)}`,
+      meta: `${a.agingDays}d · Risk ${a.riskScore}`,
+      urgency: riskUrgency(a.riskScore),
+      badge: <ExecutionBadge state={a.status === "recovered" ? "complete" : a.status === "escalated" ? "failed" : a.chaseSequenceActive ? "executing" : "drafted"} />,
+    })),
+    [accounts]
+  );
 
-   return (
-    <div className="space-y-6">
-      <DemoModeBadge />
-      <SitaPageHeader
-        title="Collections Command Center"
-        subtitle="Track overdue receivables, manage escalation sequences, and recover revenue automatically"
-        actions={
-          <div className="flex items-center gap-2">
-            <span className="rounded-full bg-destructive/10 px-3 py-1 text-[10px] font-semibold text-destructive flex items-center gap-1">
-              <AlertTriangle className="h-3 w-3" /> {collectionsData.filter(a => a.riskScore >= 70).length} Critical
-            </span>
-            <span className="rounded-full bg-primary/10 px-3 py-1 text-[10px] font-semibold text-primary flex items-center gap-1">
-              <Send className="h-3 w-3" /> {collectionsData.filter(a => a.chaseSequenceActive).length} Active Chases
-            </span>
-          </div>
-        }
+  // Escalation timeline
+  const escalationTimeline = CHASE_SEQUENCE.map(step => ({
+    id: `step-${step.step}`,
+    title: `Step ${step.step}: ${step.action}`,
+    timestamp: `Day +${step.dayAfterDue}`,
+    detail: `${step.channel.toUpperCase()} · ${escalationLabel[step.escalationLevel]}${step.requiresApproval ? " · Approval" : ""}${step.autoExecute ? " · Auto" : ""}`,
+    accentColor: step.escalationLevel >= 3 ? "hsl(0 70% 55%)" : step.escalationLevel >= 2 ? "hsl(38 85% 58%)" : "hsl(265 55% 58%)",
+  }));
+
+  // ── List Pane ──────────────────────────────────────────────
+  const listPane = (
+    <div className="p-3 space-y-3">
+      <PageTruthBanner truthState={isDemoMode ? "demo" : "live"} />
+
+      {/* KPI Strip */}
+      <div className="grid grid-cols-2 gap-2">
+        <StatusCard label="Outstanding" status={totalOutstanding > 300000 ? "degraded" : "healthy"} lastChecked={formatCents(totalOutstanding)} icon={<DollarSign className="h-3.5 w-3.5" />} />
+        <StatusCard label="Avg Aging" status={avgAging > 45 ? "down" : avgAging > 20 ? "degraded" : "healthy"} lastChecked={`${avgAging} days`} icon={<Clock className="h-3.5 w-3.5" />} />
+        <StatusCard label="At Risk" status={atRisk.length > 2 ? "down" : atRisk.length > 0 ? "degraded" : "healthy"} lastChecked={`${atRisk.length} accounts`} icon={<AlertTriangle className="h-3.5 w-3.5" />} />
+        <StatusCard label="Promised" status="healthy" lastChecked={`${promised.length} payments`} icon={<CheckCircle className="h-3.5 w-3.5" />} />
+      </div>
+
+      <SitaTabs
+        tabs={[
+          { key: "overview", label: "Queue", count: accounts.length },
+          { key: "escalation", label: "Ladder" },
+          { key: "chases", label: "Active", count: accounts.filter(a => a.chaseSequenceActive).length },
+        ]}
+        active={tab}
+        onChange={setTab}
       />
-      <SitaTabs tabs={tabs} active={activeTab} onChange={setActiveTab} />
-      {activeTab === "overview" && <CollectionsInsights accounts={collectionsData} />}
-      {activeTab === "aging" && <AgingBuckets accounts={collectionsData} />}
-      {activeTab === "escalation" && <EscalationLadder />}
-      {activeTab === "chases" && <ActiveChases accounts={collectionsData} />}
 
-      <LiveAdvisorCard
-        advisor="business"
-        intent="escalation_strategy"
-        demoName="Escalation Intelligence"
-        demoRole="Collections Advisor"
-        demoConfidence="High"
-        demoRecommendation="NovaTech ($22K, 83d overdue) has rejected payment plans — consider collections agency referral. Sarah Chen promised payment by Apr 10 — set a verification reminder."
-        demoReasoning="Based on escalation ladder progression, payment promise tracking, and risk score analysis."
+      {tab === "overview" && (
+        <QueueCard
+          title="COLLECTIONS QUEUE"
+          items={queueItems}
+          maxVisible={10}
+          onItemClick={(id) => setSelectedId(id)}
+        />
+      )}
+
+      {tab === "escalation" && (
+        <TimelineCard title="9-Step Escalation Ladder" events={escalationTimeline} maxVisible={9} />
+      )}
+
+      {tab === "chases" && (
+        <div className="space-y-2">
+          <ListReveal>
+            {accounts.filter(a => a.chaseSequenceActive).sort((a, b) => b.riskScore - a.riskScore).map((acc) => {
+              const nextStep = CHASE_SEQUENCE[acc.currentStep];
+              return (
+                <ListRevealItem key={acc.id}>
+                  <button
+                    onClick={() => setSelectedId(acc.id)}
+                    className={cn(
+                      "w-full text-left rounded-xl p-3 border transition-colors micro-hover-lift",
+                      selectedId === acc.id
+                        ? "border-[hsl(265_55%_58%/0.3)] bg-[hsl(265_55%_58%/0.06)]"
+                        : "border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] hover:bg-[hsl(0_0%_100%/0.04)]"
+                    )}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-lg flex items-center justify-center text-[11px] font-bold shrink-0" style={{ background: `${riskColor(acc.riskScore)} / 0.12`, color: riskColor(acc.riskScore) }}>
+                        {acc.riskScore}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[11px] font-semibold text-[hsl(0_0%_85%)] truncate">{acc.customerName}</p>
+                        <p className="text-[9px] text-[hsl(0_0%_45%)]">Step {acc.currentStep}/{acc.totalSteps} · {formatCents(acc.amountCents)}</p>
+                      </div>
+                      {nextStep?.requiresApproval && (
+                        <span className="text-[8px] font-semibold px-1.5 py-0.5 rounded-full bg-[hsl(265_55%_58%/0.12)] text-[hsl(265_55%_68%)]">APPROVE</span>
+                      )}
+                    </div>
+                    {nextStep && (
+                      <p className="text-[9px] text-[hsl(0_0%_50%)] mt-1.5 flex items-center gap-1">
+                        <ArrowRight className="h-2.5 w-2.5" /> Next: {nextStep.action}
+                      </p>
+                    )}
+                  </button>
+                </ListRevealItem>
+              );
+            })}
+          </ListReveal>
+        </div>
+      )}
+
+      {/* Aging Distribution Bar */}
+      <AppSurface level={1} className="p-3">
+        <p className="text-[10px] font-semibold text-[hsl(0_0%_50%)] uppercase tracking-wider mb-2">Aging Distribution</p>
+        <div className="flex gap-0.5 h-6 rounded-lg overflow-hidden">
+          {(["1-30", "31-60", "61-90", "90+"] as const).map(bucket => {
+            const bucketAccounts = accounts.filter(a => a.agingBucket === bucket);
+            const total = accounts.reduce((s, a) => s + a.amountCents, 0);
+            const pct = total > 0 ? (bucketAccounts.reduce((s, a) => s + a.amountCents, 0) / total) * 100 : 0;
+            if (pct < 1) return null;
+            const colors: Record<string, string> = { "1-30": "bg-[hsl(152_55%_48%)]", "31-60": "bg-[hsl(38_85%_58%)]", "61-90": "bg-[hsl(0_70%_55%/0.8)]", "90+": "bg-[hsl(0_70%_55%)]" };
+            return (
+              <div key={bucket} className={`${colors[bucket]} flex items-center justify-center transition-all`} style={{ width: `${Math.max(pct, 8)}%` }}>
+                <span className="text-[8px] font-bold text-white/90">{bucket}</span>
+              </div>
+            );
+          })}
+        </div>
+      </AppSurface>
+    </div>
+  );
+
+  // ── Detail Pane ────────────────────────────────────────────
+  const detailPane = selected ? (
+    <div className="p-4 space-y-4">
+      <HeroCard
+        title={selected.customerName}
+        metric={formatCents(selected.amountCents)}
+        subtitle={`${selected.invoiceNumber} · ${selected.agingDays} days overdue`}
+        accentFrom={riskColor(selected.riskScore)}
+        accentTo="hsl(265 55% 58%)"
+      >
+        <div className="flex items-center gap-2">
+          <UrgencyBadge urgency={riskUrgency(selected.riskScore)} />
+          <ExecutionBadge state={selected.status === "recovered" ? "complete" : selected.status === "escalated" ? "failed" : "executing"} />
+        </div>
+      </HeroCard>
+
+      <AppSurface level={2} className="p-4 space-y-2.5">
+        <div className="flex justify-between text-[12px]">
+          <span className="text-[hsl(0_0%_50%)]">Status</span>
+          <span className="text-[hsl(0_0%_85%)] capitalize font-medium">{selected.status}</span>
+        </div>
+        <div className="flex justify-between text-[12px]">
+          <span className="text-[hsl(0_0%_50%)]">Risk Score</span>
+          <span className="font-bold" style={{ color: riskColor(selected.riskScore) }}>{selected.riskScore}</span>
+        </div>
+        <div className="flex justify-between text-[12px]">
+          <span className="text-[hsl(0_0%_50%)]">Escalation</span>
+          <span className="text-[hsl(0_0%_85%)]">Level {selected.escalationLevel} — {escalationLabel[selected.escalationLevel]}</span>
+        </div>
+        <div className="flex justify-between text-[12px]">
+          <span className="text-[hsl(0_0%_50%)]">Chase Progress</span>
+          <span className="text-[hsl(0_0%_85%)]">{selected.currentStep}/{selected.totalSteps}</span>
+        </div>
+        <div className="flex justify-between text-[12px]">
+          <span className="text-[hsl(0_0%_50%)]">Last Contact</span>
+          <span className="text-[hsl(0_0%_85%)]">{selected.lastContactAt} via {selected.lastContactMethod}</span>
+        </div>
+        {selected.promisedPayDate && (
+          <div className="flex justify-between text-[12px]">
+            <span className="text-[hsl(0_0%_50%)]">Promised Pay</span>
+            <span className="text-[hsl(152_55%_48%)] font-medium">{selected.promisedPayDate}</span>
+          </div>
+        )}
+        {selected.notes && (
+          <div className="pt-2 border-t border-[hsl(0_0%_100%/0.06)]">
+            <p className="text-[10px] text-[hsl(0_0%_45%)] mb-1">Notes</p>
+            <p className="text-[11px] text-[hsl(0_0%_70%)]">{selected.notes}</p>
+          </div>
+        )}
+      </AppSurface>
+
+      {/* Chase progress bar */}
+      <AppSurface level={1} className="p-3">
+        <p className="text-[10px] font-semibold text-[hsl(0_0%_50%)] uppercase tracking-wider mb-2">Chase Sequence</p>
+        <div className="h-1.5 rounded-full bg-[hsl(0_0%_100%/0.06)] overflow-hidden">
+          <div
+            className="h-full rounded-full transition-all"
+            style={{
+              width: `${(selected.currentStep / selected.totalSteps) * 100}%`,
+              background: `linear-gradient(90deg, ${riskColor(selected.riskScore)}, hsl(265 55% 58%))`,
+            }}
+          />
+        </div>
+        <div className="flex justify-between mt-1">
+          <span className="text-[9px] text-[hsl(0_0%_45%)]">Step {selected.currentStep}</span>
+          <span className="text-[9px] text-[hsl(0_0%_45%)]">of {selected.totalSteps}</span>
+        </div>
+      </AppSurface>
+
+      {/* Actions */}
+      <div className="space-y-2">
+        {CHASE_SEQUENCE[selected.currentStep]?.requiresApproval && (
+          <ActionCard
+            title="Approve Next Step"
+            description={CHASE_SEQUENCE[selected.currentStep]?.action || "Proceed to next escalation"}
+            accentColor="hsl(265 55% 58%)"
+            onApprove={() => {}}
+          />
+        )}
+        <div className="flex gap-2">
+          <button className="flex-1 px-3 py-2 rounded-lg bg-[hsl(0_0%_100%/0.06)] hover:bg-[hsl(0_0%_100%/0.10)] text-[hsl(0_0%_80%)] text-[11px] font-medium transition-colors micro-press">
+            <Phone className="h-3 w-3 inline mr-1" /> Log Call
+          </button>
+          <button className="flex-1 px-3 py-2 rounded-lg bg-[hsl(0_0%_100%/0.06)] hover:bg-[hsl(0_0%_100%/0.10)] text-[hsl(0_0%_80%)] text-[11px] font-medium transition-colors micro-press">
+            <Mail className="h-3 w-3 inline mr-1" /> Send Reminder
+          </button>
+        </div>
+      </div>
+
+      <ModuleAdvisorInsight
+        advisorName="Collections Advisor"
+        domain="business"
+        insight={
+          selected.riskScore >= 80
+            ? `${selected.customerName} is high-risk at ${selected.agingDays}d overdue. Consider escalating to formal demand or collections agency.`
+            : selected.promisedPayDate
+            ? `Payment promised by ${selected.promisedPayDate}. Set a verification reminder for that date.`
+            : `Follow up with a direct call — phone contact has 3x higher recovery rate at this aging stage.`
+        }
+        confidence={selected.riskScore >= 80 ? 92 : 78}
+        actions={[{ label: "View History", onClick: () => {} }]}
+      />
+    </div>
+  ) : (
+    <div className="flex items-center justify-center h-full">
+      <div className="text-center space-y-2">
+        <DollarSign className="h-8 w-8 mx-auto text-[hsl(0_0%_30%)]" />
+        <p className="text-[13px] text-[hsl(0_0%_50%)]">Select an account to view details</p>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="h-[calc(100vh-200px)] -m-4">
+      <SplitWorkspace
+        list={listPane}
+        detail={detailPane}
+        hasSelection={!!selected}
+        defaultSplit={45}
       />
     </div>
   );
