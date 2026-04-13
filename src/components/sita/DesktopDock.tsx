@@ -257,6 +257,14 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMa
             <div className="w-1 h-1 rounded-full mt-0.5 bg-transparent" />
           </div>
         </motion.div>
+        {/* Dock reflection / surface glow */}
+        <div
+          className="absolute -bottom-3 left-4 right-4 h-4 rounded-b-2xl pointer-events-none"
+          style={{
+            background: "linear-gradient(180deg, hsl(0 0% 100% / 0.04) 0%, transparent 100%)",
+            filter: "blur(6px)",
+          }}
+        />
       </div>
 
       {/* Context Menu */}
