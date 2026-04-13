@@ -3,7 +3,7 @@ import { ConciergePageWrapper } from "@/components/concierge";
 import { KPITile, SitaTabs } from "@/components/sita/SitaComponents";
 import { GlassCard } from "@/components/sita/PremiumPageComponents";
 import { ConciergeAdvisorInsightCard } from "@/components/concierge";
-import { ErrandBundleCard, LogisticsTimelineCard } from "@/components/concierge";
+import { ErrandBundleCard, LogisticsTimelineCard, ConciergeEmptyState } from "@/components/concierge";
 import type { ErrandBundle, ErrandItem, TimelineStop } from "@/components/concierge";
 import { AddErrandDialog } from "@/components/concierge/AddErrandDialog";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
