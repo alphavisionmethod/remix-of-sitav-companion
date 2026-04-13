@@ -22,10 +22,9 @@ async function requireAuth(req: Request) {
   const client = createClient(SUPABASE_URL, ANON_KEY, {
     global: { headers: { Authorization: authHeader } },
   });
-  const token = authHeader.replace("Bearer ", "");
-  const { data, error } = await client.auth.getClaims(token);
-  if (error || !data?.claims) return null;
-  return { id: data.claims.sub as string, email: data.claims.email as string };
+  const { data: { user }, error } = await client.auth.getUser();
+  if (error || !user) return null;
+  return { id: user.id, email: user.email ?? "" };
 }
 
 // ── AI helper — calls Lovable AI Gateway ────────────────────
