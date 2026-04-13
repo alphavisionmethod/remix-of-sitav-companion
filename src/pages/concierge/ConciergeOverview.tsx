@@ -1,24 +1,21 @@
 // ═══════════════════════════════════════════════════════════════
 // Concierge OS — Invisible Support Home
-// Relief-first: what's handled → what needs you → advisor
+// Soft, warm, relieving — gentlest motion + most breathing room
 // ═══════════════════════════════════════════════════════════════
 
-import { OperatingStateHero, WhatMattersNow, PreparedActions, WhatChangedFeed, PriorityQueue } from "@/components/sita/domain-shared";
-import { DomainAdvisorCard } from "@/components/advisors/DomainAdvisorCard";
-import type { MatterItem, ChangeEvent, PreparedAction, HeroMetric, PriorityItem } from "@/components/sita/domain-shared";
-import { ConciergeHomeSummary, ConciergePageWrapper, ConciergeCommandActionPreview } from "@/components/concierge";
-import type { CommandSuggestion } from "@/components/concierge";
-import { GlassCard } from "@/components/sita/PremiumPageComponents";
-import { EmptyStateCTA } from "@/components/sita/EmptyStateCTA";
+import { HeroCard, QueueCard, ActionCard, TimelineCard, AdvisorCard, StatusCard } from "@/components/sita/cards";
+import { UrgencyBadge, FreshnessBadge } from "@/components/sita/badges";
+import { ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransitions";
+import { AppSurface } from "@/components/sita/surfaces/AppSurface";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
 import { useNavigate } from "react-router-dom";
 import { useHouseholdTasks, useFamilyEvents } from "@/hooks/use-sita-data";
 import { useDataMode } from "@/contexts/DataModeContext";
-import { motion } from "framer-motion";
 import { useMemo } from "react";
 import {
   CheckSquare, Calendar, AlertCircle, Heart, Clock, ShoppingCart,
-  Plane, Users, Headphones, ArrowRight, Home, Stethoscope, Gift, FileText
+  Plane, Headphones, ArrowRight, Home, Stethoscope, FileText
 } from "lucide-react";
 
 const ConciergeOverview = () => {
@@ -42,133 +39,139 @@ const ConciergeOverview = () => {
     };
   }, [tasks, events]);
 
-  const heroMetrics: HeroMetric[] = useMemo(() => [
-    { label: "Today", value: `${kpi.todayCount || 4}`, icon: Calendar },
-    { label: "Overdue", value: `${kpi.overdueCount || 2}`, change: kpi.overdueCount > 0 ? "Needs attention" : "Clear", changeDirection: kpi.overdueCount > 0 ? "down" as const : "up" as const, icon: Clock },
-    { label: "This Week", value: `${kpi.upcomingEvents || 7}`, icon: CheckSquare },
-  ], [kpi]);
-
-  const priorities: PriorityItem[] = useMemo(() => [
-    { id: "cp1", title: "Permission slip due tomorrow", subtitle: "Alex — school field trip", urgency: "high" as const, icon: FileText, actionLabel: "Handle", onAction: () => navigate("/concierge/tasks") },
-    { id: "cp2", title: "Plumber follow-up overdue 4 days", subtitle: "Kitchen leak estimate pending", urgency: "high" as const, icon: Home, actionLabel: "Call" },
-    { id: "cp3", title: "Pet sitter booking needed", subtitle: "Spring break trip in 18 days", urgency: "medium" as const, icon: Heart, actionLabel: "Book" },
-    { id: "cp4", title: "Passport renewal approaching", subtitle: "Expires Aug 2026 — start process", urgency: "low" as const, icon: FileText, actionLabel: "Plan" },
-  ], [navigate]);
-
-  const prepared: PreparedAction[] = useMemo(() => [
-    { id: "cp1", title: "Travel prep checklist for spring break", description: "7-day trip checklist with pet sitter, packing, reservations", type: "automation" as const, confidence: 0.91 },
-    { id: "cp2", title: "Plumber follow-up message draft", description: "Requesting estimate timeline for kitchen leak repair", type: "draft" as const, confidence: 0.85 },
+  const queueItems = useMemo(() => [
+    { id: "cp1", label: "Permission slip due tomorrow", meta: "Alex — school", urgency: "high" as const, badge: <UrgencyBadge level="high" /> },
+    { id: "cp2", label: "Plumber follow-up overdue 4 days", meta: "Kitchen leak", urgency: "high" as const, badge: <FreshnessBadge age="4 days overdue" /> },
+    { id: "cp3", label: "Pet sitter booking needed", meta: "18 days", urgency: "normal" as const },
+    { id: "cp4", label: "Passport renewal approaching", meta: "Aug 2026", urgency: "low" as const },
   ], []);
 
-  const changes: ChangeEvent[] = useMemo(() => [
-    { id: "cc1", icon: <CheckSquare className="h-3 w-3 text-[hsl(152_55%_48%)]" />, title: "Soccer drop-off completed", subtitle: "Alex — on time", time: "8:30 AM" },
-    { id: "cc2", icon: <ShoppingCart className="h-3 w-3 text-primary" />, title: "Grocery order delivered", subtitle: "Weekly essentials — $87", time: "Yesterday" },
-    { id: "cc3", icon: <AlertCircle className="h-3 w-3 text-destructive" />, title: "HVAC maintenance overdue", subtitle: "Annual inspection — 4 days past due", time: "Yesterday" },
+  const timelineEvents = useMemo(() => [
+    { id: "cc1", title: "Soccer drop-off completed", timestamp: "8:30 AM", icon: <CheckSquare className="h-3 w-3 text-[hsl(152_55%_48%)]" />, accentColor: "hsl(152 55% 48%)" },
+    { id: "cc2", title: "Grocery order delivered — $87", timestamp: "Yesterday", icon: <ShoppingCart className="h-3 w-3 text-[hsl(285_55%_55%)]" />, accentColor: "hsl(285 55% 55%)" },
+    { id: "cc3", title: "HVAC maintenance overdue", timestamp: "Yesterday", detail: "Annual inspection — 4 days past due", icon: <AlertCircle className="h-3 w-3 text-[hsl(0_70%_55%)]" />, accentColor: "hsl(0 70% 55%)" },
   ], []);
 
-  const commandSuggestions: CommandSuggestion[] = useMemo(() => [
-    { id: "c1", label: "What's slipping?" },
-    { id: "c2", label: "Group tomorrow's errands" },
-    { id: "c3", label: "Prep travel checklist" },
-    { id: "c4", label: "Show pending approvals" },
-  ], []);
-
-  const advisorInsights = useMemo(() => [
-    { id: "ca1", text: "Spring break trip in 18 days — 3 of 5 prep items still open", confidence: 88, action: "Review", onAction: () => navigate("/concierge/travel") },
-    { id: "ca2", text: "2 overdue household tasks can be grouped into one errand run", confidence: 79 },
-  ], [navigate]);
-
-  // What's been handled (relief-oriented)
   const handledItems = useMemo(() => [
-    { title: "Grocery delivery confirmed", time: "Today" },
-    { title: "Soccer practice drop-off done", time: "This morning" },
-    { title: "Auto-pay: Internet bill processed", time: "Yesterday" },
+    { label: "Grocery delivery confirmed", meta: "Today" },
+    { label: "Soccer practice drop-off done", meta: "This morning" },
+    { label: "Auto-pay: Internet bill processed", meta: "Yesterday" },
   ], []);
 
   if (!hasLiveData) {
     return (
-      <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
-        <EmptyStateCTA
-          icon={Headphones}
-          title="Welcome to your personal concierge"
-          description="Add your first task or event to start."
-          actions={[
-            { label: "Add Task", icon: CheckSquare, to: "/concierge/tasks" },
-            { label: "Schedule Event", icon: Calendar, to: "/concierge/appointments", variant: "secondary" },
-          ]}
-          tip="The concierge advisor learns your routines over time"
-        />
-      </motion.div>
+      <PremiumEmptyState
+        variant="first-use"
+        icon={Headphones}
+        title="Welcome to your personal concierge"
+        description="Add your first task or event to start."
+        actions={[
+          { label: "Add Task", icon: CheckSquare, onClick: () => navigate("/concierge/tasks") },
+          { label: "Schedule Event", icon: Calendar, onClick: () => navigate("/concierge/appointments"), variant: "secondary" as const },
+        ]}
+        tip="The concierge advisor learns your routines over time"
+        domain="concierge"
+      />
     );
   }
 
   return (
-    <ConciergePageWrapper className="space-y-4">
+    <AppSurface level={0} className="space-y-6 p-0 border-0 rounded-none bg-transparent">
       <DemoModeBadge />
 
-      {/* Relief-first summary */}
-      <ConciergeHomeSummary
-        todayCount={kpi.todayCount || 4}
-        preparedCount={prepared.length}
-        slippingCount={kpi.overdueCount || 2}
-        automationMode="active"
-      />
+      <ListReveal className="space-y-6" domain="concierge">
+        {/* Hero — Today's summary */}
+        <ListRevealItem>
+          <HeroCard
+            title="Your Day"
+            metric={`${kpi.todayCount || 4} items`}
+            subtitle={`${kpi.overdueCount || 2} overdue · ${kpi.upcomingEvents || 7} this week · Support is active`}
+            accentFrom="hsl(285 55% 55%)"
+            accentTo="hsl(310 50% 48%)"
+            icon={<Heart className="h-4 w-4 text-[hsl(285_55%_55%)]" />}
+          />
+        </ListRevealItem>
 
-      {/* Operating state */}
-      <OperatingStateHero
-        metrics={heroMetrics}
-        accentFrom="hsl(285 55% 55%)"
-        accentTo="hsl(310 50% 48%)"
-      />
+        {/* What's handled — relief-oriented */}
+        <ListRevealItem>
+          <StatusCard
+            label={`${handledItems.length} things handled today`}
+            status="healthy"
+            icon={<CheckSquare className="h-4 w-4" />}
+            lastChecked="Just now"
+          />
+        </ListRevealItem>
 
-      {/* What's handled — relief */}
-      <GlassCard glow="none" className="p-4">
-        <div className="flex items-center gap-2 mb-3">
-          <CheckSquare className="h-4 w-4 text-[hsl(152_55%_48%)]" />
-          <p className="text-xs font-semibold text-foreground">What's Handled</p>
-        </div>
-        <div className="space-y-1.5">
-          {handledItems.map((item, i) => (
-            <div key={i} className="flex items-center gap-2 py-1">
-              <div className="h-1.5 w-1.5 rounded-full bg-[hsl(152_55%_48%)]" />
-              <span className="text-[11px] text-muted-foreground flex-1">{item.title}</span>
-              <span className="text-[9px] text-muted-foreground">{item.time}</span>
-            </div>
-          ))}
-        </div>
-      </GlassCard>
+        {/* Two-column: Queue + Timeline */}
+        <ListRevealItem>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            <QueueCard
+              title="What Needs You"
+              items={queueItems}
+              onItemClick={(id) => {
+                if (id === "cp1") navigate("/concierge/tasks");
+              }}
+            />
+            <TimelineCard title="What Changed" events={timelineEvents} />
+          </div>
+        </ListRevealItem>
 
-      {/* Command suggestions */}
-      <ConciergeCommandActionPreview suggestions={commandSuggestions} />
+        {/* Prepared Actions */}
+        <ListRevealItem>
+          <div className="space-y-2">
+            <ActionCard
+              title="Travel prep checklist for spring break"
+              description="7-day trip checklist with pet sitter, packing, reservations"
+              accentColor="hsl(285 55% 55%)"
+              onApprove={() => {}}
+              onDismiss={() => {}}
+              badge={<FreshnessBadge age="91% ready" />}
+            />
+            <ActionCard
+              title="Plumber follow-up message draft"
+              description="Requesting estimate timeline for kitchen leak repair"
+              accentColor="hsl(285 55% 55%)"
+              onApprove={() => {}}
+              onDismiss={() => {}}
+            />
+          </div>
+        </ListRevealItem>
 
-      {/* Two-column */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <PriorityQueue items={priorities} title="What Needs You" accentColor="hsl(285 55% 55%)" />
-        <WhatChangedFeed events={changes} />
-      </div>
+        {/* Advisor */}
+        <ListRevealItem>
+          <AdvisorCard
+            advisorName="Concierge Advisor"
+            insight="Spring break trip in 18 days — 3 of 5 prep items still open. 2 overdue household tasks can be grouped into one errand run."
+            confidence={88}
+            domain="Concierge"
+            accentColor="hsl(285 55% 55%)"
+            action={{ label: "Review Travel Prep", onClick: () => navigate("/concierge/travel") }}
+          />
+        </ListRevealItem>
 
-      <PreparedActions actions={prepared} />
-
-      <DomainAdvisorCard domain="concierge" insights={advisorInsights} />
-
-      {/* Navigation tiles */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-        {[
-          { label: "Life Admin", count: "3 items", icon: FileText, path: "/concierge/life-admin" },
-          { label: "Errands", count: "2 pending", icon: ShoppingCart, path: "/concierge/errands" },
-          { label: "Travel", count: "1 trip", icon: Plane, path: "/concierge/travel" },
-          { label: "Appointments", count: "Next Thu", icon: Stethoscope, path: "/concierge/appointments" },
-        ].map(tile => (
-          <button key={tile.label} onClick={() => navigate(tile.path)}
-            className="group rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] p-3 text-left hover:bg-[hsl(0_0%_100%/0.05)] transition-colors">
-            <tile.icon className="h-4 w-4 text-[hsl(285_55%_55%)] mb-2" />
-            <p className="text-[12px] font-semibold text-foreground">{tile.label}</p>
-            <p className="text-[10px] text-muted-foreground">{tile.count}</p>
-            <ArrowRight className="h-3 w-3 text-muted-foreground mt-1 opacity-0 group-hover:opacity-100 transition-opacity" />
-          </button>
-        ))}
-      </div>
-    </ConciergePageWrapper>
+        {/* Quick nav tiles */}
+        <ListRevealItem>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            {[
+              { label: "Life Admin", count: "3 items", icon: FileText, path: "/concierge/life-admin" },
+              { label: "Errands", count: "2 pending", icon: ShoppingCart, path: "/concierge/errands" },
+              { label: "Travel", count: "1 trip", icon: Plane, path: "/concierge/travel" },
+              { label: "Appointments", count: "Next Thu", icon: Stethoscope, path: "/concierge/appointments" },
+            ].map(tile => (
+              <button key={tile.label} onClick={() => navigate(tile.path)}
+                className="group border border-[hsl(0_0%_100%/0.05)] bg-[hsl(0_0%_100%/0.02)] p-4 text-left hover:bg-[hsl(0_0%_100%/0.05)] transition-colors"
+                style={{ borderRadius: "var(--domain-card-radius, 20px)" }}
+              >
+                <tile.icon className="h-4 w-4 text-[hsl(285_55%_55%)] mb-2" />
+                <p className="text-[12px] font-semibold text-foreground">{tile.label}</p>
+                <p className="text-[10px] text-muted-foreground">{tile.count}</p>
+                <ArrowRight className="h-3 w-3 text-muted-foreground mt-1.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </button>
+            ))}
+          </div>
+        </ListRevealItem>
+      </ListReveal>
+    </AppSurface>
   );
 };
 
