@@ -1,7 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Shell Ambient Background
-// Shared living background across Lock Screen, Desktop, Setup
-// Responds to time-of-day, trust state, display mode, and wallpaper
+// Shared living background with constellation overlay
 // ═══════════════════════════════════════════════════════════════
 
 import { useMemo, useState, useEffect } from "react";
@@ -68,6 +67,83 @@ function getAutoMood(): AmbientMood {
   return "night";
 }
 
+// ── Constellation Layer ──────────────────────────────────────
+interface Star { id: number; x: number; y: number; size: number; opacity: number; pulse: number; }
+
+function ConstellationOverlay() {
+  const reduced = useReducedMotion();
+  const stars = useMemo<Star[]>(() => {
+    return Array.from({ length: 14 }, (_, i) => ({
+      id: i,
+      x: 8 + Math.random() * 84,
+      y: 8 + Math.random() * 84,
+      size: 1.5 + Math.random() * 2,
+      opacity: 0.1 + Math.random() * 0.15,
+      pulse: 6 + Math.random() * 8,
+    }));
+  }, []);
+
+  // Pre-compute connections (stars within 30% distance)
+  const connections = useMemo(() => {
+    const conns: { from: number; to: number; opacity: number }[] = [];
+    for (let i = 0; i < stars.length; i++) {
+      for (let j = i + 1; j < stars.length; j++) {
+        const dx = stars[i].x - stars[j].x;
+        const dy = stars[i].y - stars[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 30) {
+          conns.push({ from: i, to: j, opacity: (1 - dist / 30) * 0.06 });
+        }
+      }
+    }
+    return conns;
+  }, [stars]);
+
+  return (
+    <div className="absolute inset-0 pointer-events-none">
+      {/* Connection lines */}
+      <svg className="absolute inset-0 w-full h-full">
+        {connections.map((c, i) => (
+          <line
+            key={i}
+            x1={`${stars[c.from].x}%`}
+            y1={`${stars[c.from].y}%`}
+            x2={`${stars[c.to].x}%`}
+            y2={`${stars[c.to].y}%`}
+            stroke="white"
+            strokeWidth="0.5"
+            opacity={c.opacity}
+          />
+        ))}
+      </svg>
+      {/* Glowing dots */}
+      {stars.map((s) => (
+        <motion.div
+          key={s.id}
+          className="absolute rounded-full"
+          style={{
+            width: s.size,
+            height: s.size,
+            left: `${s.x}%`,
+            top: `${s.y}%`,
+            background: `radial-gradient(circle, rgba(255,255,255,${s.opacity}) 0%, transparent 70%)`,
+            boxShadow: `0 0 ${s.size * 3}px rgba(180,160,255,${s.opacity * 0.5})`,
+          }}
+          animate={reduced ? {} : {
+            opacity: [s.opacity * 0.5, s.opacity, s.opacity * 0.5],
+            scale: [0.8, 1.2, 0.8],
+          }}
+          transition={{
+            duration: s.pulse,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
+    </div>
+  );
+}
+
 export function ShellAmbientBackground({
   mood,
   intensity = "normal",
@@ -78,39 +154,29 @@ export function ShellAmbientBackground({
   const palette = MOOD_PALETTES[activeMood];
   const intensityScale = intensity === "subtle" ? 0.6 : intensity === "vivid" ? 1.4 : 1;
 
-  // Wallpaper state — persisted via SettingsService
+  // Wallpaper state
   const [wallpaper, setWallpaper] = useState<{ id: string; src: string }>(() => {
-    // Read initial value from SettingsService
     try {
       const saved = SettingsService.get("appearance.wallpaper") as string | undefined;
-      if (saved && saved !== "dynamic") {
-        return { id: saved, src: "" }; // src will be set by the event
-      }
+      if (saved && saved !== "dynamic") return { id: saved, src: "" };
     } catch {}
     return { id: "dynamic", src: "" };
   });
 
-  // Listen for wallpaper change events from Settings
   useEffect(() => {
     const handler = (e: Event) => {
       const detail = (e as CustomEvent).detail;
-      if (detail) {
-        setWallpaper({ id: detail.id, src: detail.src });
-      }
+      if (detail) setWallpaper({ id: detail.id, src: detail.src });
     };
     window.addEventListener("nova-wallpaper-change", handler);
-
-    // Also fire initial load from settings
     try {
       const saved = SettingsService.get("appearance.wallpaper") as string | undefined;
       if (saved && saved !== "dynamic") {
-        // Import the wallpaper dynamically
         import(`../../../assets/wallpapers/${saved}.jpg`)
           .then(mod => setWallpaper({ id: saved, src: mod.default }))
           .catch(() => {});
       }
     } catch {}
-
     return () => window.removeEventListener("nova-wallpaper-change", handler);
   }, []);
 
@@ -145,19 +211,13 @@ export function ShellAmbientBackground({
             exit={{ opacity: 0, scale: 0.98 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
-            <img
-              src={wallpaper.src}
-              alt=""
-              className="w-full h-full object-cover"
-              loading="eager"
-            />
-            {/* Subtle vignette on top of wallpaper */}
+            <img src={wallpaper.src} alt="" className="w-full h-full object-cover" loading="eager" />
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,hsl(0_0%_0%/0.4)_100%)]" />
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Gradient orbs — only shown for dynamic wallpaper or as subtle overlay */}
+      {/* Gradient orbs */}
       {(!showImage || wallpaper.id === "dynamic") && palette.orbs.map((orb, i) => (
         <motion.div
           key={`${activeMood}-${i}`}
@@ -171,23 +231,18 @@ export function ShellAmbientBackground({
             background: `radial-gradient(circle, ${orb.color} 0%, transparent 70%)`,
             filter: `blur(${60 + i * 20}px)`,
           }}
-          animate={
-            reduced
-              ? {}
-              : {
-                  x: [0, 15 * (i % 2 === 0 ? 1 : -1), 0],
-                  y: [0, 10 * (i % 2 === 0 ? -1 : 1), 0],
-                }
-          }
-          transition={{
-            duration: 20 + i * 5,
-            repeat: Infinity,
-            ease: "easeInOut",
+          animate={reduced ? {} : {
+            x: [0, 15 * (i % 2 === 0 ? 1 : -1), 0],
+            y: [0, 10 * (i % 2 === 0 ? -1 : 1), 0],
           }}
+          transition={{ duration: 20 + i * 5, repeat: Infinity, ease: "easeInOut" }}
         />
       ))}
 
-      {/* Floating particles — only for dynamic */}
+      {/* Constellation overlay — vivid + dynamic only */}
+      {!showImage && intensity === "vivid" && <ConstellationOverlay />}
+
+      {/* Floating particles */}
       {!showImage && particles.map((p) => (
         <motion.div
           key={p.id}
@@ -199,20 +254,24 @@ export function ShellAmbientBackground({
             top: `${p.y}%`,
             background: `hsl(265 55% 58% / ${p.opacity})`,
           }}
-          animate={{
-            y: [0, -25, 0],
-            opacity: [p.opacity * 0.5, p.opacity, p.opacity * 0.5],
-          }}
-          transition={{
-            duration: p.duration,
-            repeat: Infinity,
-            delay: p.delay,
-            ease: "easeInOut",
-          }}
+          animate={{ y: [0, -25, 0], opacity: [p.opacity * 0.5, p.opacity, p.opacity * 0.5] }}
+          transition={{ duration: p.duration, repeat: Infinity, delay: p.delay, ease: "easeInOut" }}
         />
       ))}
 
-      {/* Subtle noise overlay for texture */}
+      {/* Dot-grid texture overlay */}
+      <div
+        className="absolute inset-0 opacity-[0.04]"
+        style={{
+          backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.3) 1px, transparent 1px)",
+          backgroundSize: "24px 24px",
+        }}
+      />
+
+      {/* Edge gradient for depth */}
+      <div className="absolute inset-0 bg-gradient-to-b from-white/[0.03] via-transparent to-white/[0.02]" />
+
+      {/* Noise texture */}
       <div
         className="absolute inset-0 opacity-[0.025]"
         style={{
