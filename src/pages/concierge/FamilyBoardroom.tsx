@@ -1,4 +1,5 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
+import { SurfaceTrustStrip } from "@/components/sita/SurfaceTrustStrip";
 import { ConciergePageWrapper } from "@/components/concierge";
 import { KPITile, SitaTabs, RiskCard } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
