@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { Brain, Sparkles, Mic } from "lucide-react";
+import { Brain, Sparkles, Mic, Play, Pause } from "lucide-react";
 import { getAdvisorRoster, type AdvisorRole } from "@/lib/advisor-topology";
+import { TalkingAvatar } from "./TalkingAvatar";
 
 interface Props {
   scope: "global" | "business" | "finance" | "concierge";
@@ -25,7 +26,8 @@ const TOPIC_MAP: Record<string, string> = {
 
 export function BoardroomAdvisorCouncil({ scope, onSelectAdvisor, compact = false }: Props) {
   const [hoveredAdvisor, setHoveredAdvisor] = useState<string | null>(null);
-  const [imgErrors, setImgErrors] = useState<Set<string>>(new Set());
+  const [autoPlay, setAutoPlay] = useState(false);
+  const [autoPlayIndex, setAutoPlayIndex] = useState(0);
 
   const domains = scope === "global" ? ["business", "finance", "concierge"] : [scope];
   const allAdvisors: AdvisorRole[] = [];
@@ -34,22 +36,29 @@ export function BoardroomAdvisorCouncil({ scope, onSelectAdvisor, compact = fals
     allAdvisors.push(...roster.advisors);
   });
 
-  const speakingId = scope === "global" ? "biz-revenue" : SPEAKING_ADVISOR_MAP[scope] || allAdvisors[0]?.id;
-  const topic = TOPIC_MAP[scope] || TOPIC_MAP.global;
   const displayAdvisors = compact ? allAdvisors.slice(0, 4) : allAdvisors;
+  const topic = TOPIC_MAP[scope] || TOPIC_MAP.global;
+
+  // Auto-play cycling
+  React.useEffect(() => {
+    if (!autoPlay || displayAdvisors.length === 0) return;
+    const interval = setInterval(() => {
+      setAutoPlayIndex(prev => (prev + 1) % displayAdvisors.length);
+    }, 4500);
+    return () => clearInterval(interval);
+  }, [autoPlay, displayAdvisors.length]);
+
+  const speakingId = autoPlay
+    ? displayAdvisors[autoPlayIndex]?.id
+    : scope === "global" ? "biz-revenue" : SPEAKING_ADVISOR_MAP[scope] || allAdvisors[0]?.id;
 
   const avatarSize = compact ? 56 : 96;
   const ringSize = compact ? 64 : 108;
-
-  function handleImgError(id: string) {
-    setImgErrors(prev => new Set(prev).add(id));
-  }
 
   function renderSeat(adv: AdvisorRole, i: number, fromBottom = false) {
     const isSpeaking = adv.id === speakingId;
     const isHovered = hoveredAdvisor === adv.id;
     const isIdle = !isSpeaking && !isHovered;
-    const hasImgError = imgErrors.has(adv.id);
 
     return (
       <motion.button
@@ -126,27 +135,15 @@ export function BoardroomAdvisorCouncil({ scope, onSelectAdvisor, compact = fals
                 : `0 0 8px ${adv.accentColor}12`,
             }}
           >
-            {/* Portrait */}
-            <div
-              className="rounded-full overflow-hidden bg-[hsl(220_18%_6%)]"
-              style={{ width: avatarSize, height: avatarSize }}
-            >
-              {!hasImgError && adv.avatarUrl ? (
-                <img
-                  src={adv.avatarUrl}
-                  alt={adv.name}
-                  className="w-full h-full object-cover"
-                  onError={() => handleImgError(adv.id)}
-                />
-              ) : (
-                <div
-                  className="w-full h-full flex items-center justify-center text-white font-bold"
-                  style={{ background: `linear-gradient(135deg, ${adv.accentColor}, ${adv.accentColor}88)` }}
-                >
-                  <span className={compact ? "text-2xl" : "text-4xl"}>{adv.emoji}</span>
-                </div>
-              )}
-            </div>
+            {/* Talking Avatar Portrait */}
+            <TalkingAvatar
+              speaking={isSpeaking}
+              avatarUrl={adv.avatarUrl}
+              accentColor={adv.accentColor}
+              size={avatarSize}
+              name={adv.name}
+              emoji={adv.emoji}
+            />
           </div>
 
           {/* Speaking double-pulse rings */}
@@ -242,6 +239,13 @@ export function BoardroomAdvisorCouncil({ scope, onSelectAdvisor, compact = fals
               <p className="text-[13px] font-bold text-[hsl(0_0%_100%/0.92)]">The Advisory Council</p>
               <p className="text-[9px] text-[hsl(0_0%_100%/0.35)]">{allAdvisors.length} advisors in session · Live deliberation</p>
             </div>
+            <button
+              onClick={() => { setAutoPlay(p => !p); setAutoPlayIndex(0); }}
+              className="ml-auto flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[hsl(280_50%_55%/0.3)] bg-[hsl(280_40%_50%/0.1)] hover:bg-[hsl(280_40%_50%/0.2)] transition-colors text-[10px] font-bold text-[hsl(280_50%_75%)]"
+            >
+              {autoPlay ? <Pause size={11} /> : <Play size={11} />}
+              {autoPlay ? "Pause" : "▶ Watch Discussion"}
+            </button>
           </div>
         )}
 

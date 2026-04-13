@@ -1,9 +1,9 @@
-import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { MessageCircle, FileCheck } from "lucide-react";
 import { ConfidenceBar } from "@/components/sita/primitives";
 import type { AdvisorRole } from "@/lib/advisor-topology";
+import { TalkingAvatar } from "./TalkingAvatar";
 
 interface AdvisorProfileCardProps {
   advisor: AdvisorRole;
@@ -45,9 +45,7 @@ export function AdvisorProfileCard({
   size = "md",
   className,
 }: AdvisorProfileCardProps) {
-  const [imgError, setImgError] = useState(false);
-
-  const avatarSizes = { sm: "w-14 h-14", md: "w-20 h-20", lg: "w-24 h-24" };
+  const avatarPx = { sm: 56, md: 80, lg: 96 };
   const ringSizes = { sm: "w-16 h-16", md: "w-[88px] h-[88px]", lg: "w-[104px] h-[104px]" };
 
   const isSpeaking = status === "speaking";
@@ -101,26 +99,15 @@ export function AdvisorProfileCard({
                 : `0 0 10px ${advisor.accentColor}18`,
             }}
           >
-            {/* Avatar image or fallback */}
-            <div className={cn("rounded-full overflow-hidden bg-[hsl(220_18%_8%)]", avatarSizes[size])}>
-              {!imgError && advisor.avatarUrl ? (
-                <img
-                  src={advisor.avatarUrl}
-                  alt={advisor.name}
-                  className="w-full h-full object-cover"
-                  onError={() => setImgError(true)}
-                />
-              ) : (
-                <div
-                  className="w-full h-full flex items-center justify-center text-white font-bold"
-                  style={{ background: `linear-gradient(135deg, ${advisor.accentColor}, ${advisor.accentColor}88)` }}
-                >
-                  <span className={size === "lg" ? "text-3xl" : size === "md" ? "text-2xl" : "text-xl"}>
-                    {advisor.emoji}
-                  </span>
-                </div>
-              )}
-            </div>
+            {/* Talking Avatar */}
+            <TalkingAvatar
+              speaking={isSpeaking}
+              avatarUrl={advisor.avatarUrl}
+              accentColor={advisor.accentColor}
+              size={avatarPx[size]}
+              name={advisor.name}
+              emoji={advisor.emoji}
+            />
           </div>
 
           {/* Speaking pulse ring */}
