@@ -1,60 +1,63 @@
 
 
-# Advisor Visual Upgrade — Portrait-Style Avatars + Premium Card Layout
+# Advisor Visual Upgrade — Photorealistic Portraits + Cinematic Movie-Like Experience
 
 ## The Problem
 
-The reference images show large, photographic-quality circular advisor portraits with names and roles beneath — like a real boardroom of people. Currently, advisors are rendered as small emoji icons inside gradient circles. This looks generic, not premium.
+Right now, advisor avatars are colored circles with initials from `ui-avatars.com`. The reference images show **real human portraits** — photographic, diverse, professional headshots that make the advisors feel like actual people sitting in a room. The current look is generic and "app-like," not cinematic.
 
-## What We'll Build
+## What Changes
 
-### 1. Add `avatarUrl` field to advisor topology + use DiceBear/UI Avatars for generated portraits
+### 1. Photorealistic Avatars via Pravatar / RandomUser
 
-Add an `avatarUrl` field to `AdvisorRole` in `advisor-topology.ts` using [UI Avatars](https://ui-avatars.com/) or DiceBear API to generate unique, professional-looking avatar images per advisor. Each advisor gets a deterministic portrait based on their name and accent color.
+Replace `ui-avatars.com` (initials on colored circles) with **pravatar.cc** — a service that returns consistent, realistic human photos based on a numeric seed. Each advisor gets a deterministic portrait that looks like a real person.
 
-Example: `https://ui-avatars.com/api/?name=Revenue+Advisor&background=7c3aed&color=fff&size=128&bold=true&format=svg`
+**`advisor-topology.ts`** — Replace `avatarUrl()` function:
+```
+https://i.pravatar.cc/128?img=12  // deterministic real photo per advisor
+```
 
-### 2. Redesign `BoardroomAdvisorCouncil.tsx` — Premium portrait cards
+Each of the 18 advisors gets a unique seed number mapped to a professional-looking portrait.
 
-Replace the emoji-in-gradient-circle with:
-- **Large circular portrait images** (80px+) with glowing ring borders using each advisor's `accentColor`
-- **Glass card beneath** each portrait: name (bold), role title (accent color), 1-line specialty
-- Subtle shadow and ring glow on hover
-- Speaking advisor gets animated pulse ring + spotlight cone
-- Layout: horizontal scrollable row on mobile, flex-wrap arc on desktop
+### 2. Cinematic Council — Larger Portraits with Dramatic Lighting
 
-### 3. Redesign `BoardroomDiscussionThread.tsx` — Chat-style advisor discussion
+**`BoardroomAdvisorCouncil.tsx`** — Major visual upgrade:
+- Increase avatar size from 72px to **96px** (full council) and 56px (compact)
+- Add a **dramatic ambient shadow/glow** beneath each advisor that pulses subtly
+- Add a **frosted glass name plate** beneath each portrait (like a real boardroom nameplate)
+- Speaking advisor gets a **cinematic spotlight cone** from above with particle-like sparkle
+- Idle advisors appear slightly dimmed (opacity 0.7) to focus attention on the active speaker
+- Add a subtle **vignette** around the entire council area for theatrical depth
 
-Upgrade discussion entries to feel like advisors "talking":
-- Larger portrait avatar (48px) with speaking pulse animation on the active entry
-- Chat-bubble-style layout (avatar left, glass card right) with a small speech triangle
-- "Thinking..." animated state before each entry appears (typewriter-style stagger)
-- Reasoning chain styled as indented thought process with connecting vertical line
-- Each entry card has the advisor's accent color as a top gradient strip
+### 3. Discussion Thread — Typewriter + Thinking Animation
 
-### 4. Create `AdvisorProfileCard.tsx` — Standalone premium advisor card
+**`BoardroomDiscussionThread.tsx`** — Make it feel like watching advisors think in real-time:
+- Add a **"typing indicator"** (animated dots) that appears briefly before each new entry staggers in
+- The currently speaking advisor's entry has a subtle **breathing glow** on the left border
+- Increase avatar size in thread to **52px** for more portrait visibility
+- Add a **"Currently Speaking"** live indicator badge on the active entry
+- Reasoning chain steps appear with a slight **typewriter stagger** (each step fades in sequentially with a 200ms delay per step)
 
-A reusable card component (used in Council, Synthesis, Pulse) showing:
-- Large circular avatar (portrait image or gradient+initials fallback)
-- Name, role, specialty
-- Status dot (active/thinking/idle)
-- Confidence bar
-- Clickable — opens detail panel
-- Glass background with accent color border glow
+### 4. AdvisorProfileCard — Premium Hover States
 
-### 5. Update `BoardroomSynthesisView.tsx` — Use new profile cards
+**`AdvisorProfileCard.tsx`** — Enhance the reusable card:
+- Use the new photorealistic avatars
+- Add a **shimmer/reflection** effect on the glass card on hover
+- "Speaking" status shows animated sound wave bars next to the name (3 small bars pulsing at different heights)
 
-Replace the current advisor stance cards with `AdvisorProfileCard` for a more premium, portrait-forward layout.
+### 5. Synthesis View — Portrait Gallery Layout
+
+**`BoardroomSynthesisView.tsx`** — Update advisor stance section to use larger portraits in a premium gallery-style horizontal layout instead of a grid.
 
 ## Files
 
-| File | Action |
+| File | Change |
 |------|--------|
-| `src/lib/advisor-topology.ts` | Add `avatarUrl` field with generated URLs per advisor |
-| `src/components/sita/apps/boardroom/AdvisorProfileCard.tsx` | **New** — Reusable premium portrait card |
-| `src/components/sita/apps/boardroom/BoardroomAdvisorCouncil.tsx` | Redesign with large portrait images + glass cards |
-| `src/components/sita/apps/boardroom/BoardroomDiscussionThread.tsx` | Chat-bubble style with larger avatars + typing animation |
-| `src/components/sita/apps/boardroom/BoardroomSynthesisView.tsx` | Use AdvisorProfileCard for stance cards |
+| `advisor-topology.ts` | Replace avatarUrl with pravatar.cc photorealistic portraits |
+| `BoardroomAdvisorCouncil.tsx` | Larger portraits (96px), cinematic spotlight, frosted nameplates, vignette, dimmed idle state |
+| `BoardroomDiscussionThread.tsx` | Typing indicator, breathing glow, larger avatars, typewriter reasoning |
+| `AdvisorProfileCard.tsx` | Photorealistic avatars, shimmer hover, sound wave speaking indicator |
+| `BoardroomSynthesisView.tsx` | Gallery-style portrait layout for stances |
 
-5 files. No database changes.
+5 files modified. No new files. No database changes.
 
