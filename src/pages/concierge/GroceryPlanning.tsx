@@ -101,7 +101,7 @@ const GroceryPlanning = () => {
                     </div>
                     <div className="space-y-1.5">
                       {storeItems.map((item) => (
-                        <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift p-3" key={item.id} >
+                        <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-3 micro-hover-lift" key={item.id} >
                           <div className="flex items-center gap-3">
                             <button onClick={() => toggleItem(item.id)} className="h-5 w-5 rounded-md border-2 border-muted-foreground/30 hover:border-primary shrink-0 flex items-center justify-center transition-all" />
                             <span className="text-sm font-medium text-foreground flex-1">{item.name}</span>
@@ -166,7 +166,7 @@ const GroceryPlanning = () => {
                 </div>
                 <div className="space-y-1.5">
                   {catItems.map((item) => (
-                    <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift" key={item.id} className={`p-3 transition-opacity ${item.checked ? "opacity-50" : ""}`}>
+                    <div key={item.id} className={`rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-3 micro-hover-lift transition-opacity ${item.checked ? "opacity-50" : ""}`}>
                       <div className="flex items-center gap-3">
                         <button onClick={() => toggleItem(item.id)} className={`h-5 w-5 rounded-md border-2 shrink-0 flex items-center justify-center transition-all ${item.checked ? "bg-primary border-primary" : "border-muted-foreground/30 hover:border-primary"}`}>
                           {item.checked && <Check className="h-3 w-3 text-primary-foreground" />}
@@ -196,7 +196,7 @@ const GroceryPlanning = () => {
         <div className="space-y-6">
           {/* Quick Add */}
           <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift">
-            <SitaCardTitle className="mb-3">Quick Add</SitaCardTitle>
+            <h4 className="text-[13px] font-semibold text-[hsl(0_0%_85%)] mb-3">Quick Add</h4>
             <div className="flex gap-2">
               <input type="text" value={newItem} onChange={(e) => setNewItem(e.target.value)} placeholder="Add item..." className="flex-1 rounded-lg border border-border/50 bg-secondary/20 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/30" />
               <button className="rounded-lg bg-primary px-3 py-2 text-primary-foreground hover:bg-primary/90 transition-colors"><Plus className="h-4 w-4" /></button>
@@ -205,7 +205,7 @@ const GroceryPlanning = () => {
 
           {/* Budget Summary */}
           <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift">
-            <SitaCardTitle className="mb-3">Budget Summary</SitaCardTitle>
+            <h4 className="text-[13px] font-semibold text-[hsl(0_0%_85%)] mb-3">Budget Summary</h4>
             <div className="space-y-2.5">
               <div className="flex justify-between"><span className="text-xs text-muted-foreground">Estimated total</span><span className="text-sm font-semibold text-foreground">${totalEstimate.toFixed(2)}</span></div>
               <div className="flex justify-between"><span className="text-xs text-muted-foreground">Checked off</span><span className="text-sm text-muted-foreground">${(totalEstimate - remainingEstimate).toFixed(2)}</span></div>
@@ -219,7 +219,7 @@ const GroceryPlanning = () => {
 
           {/* Store Route */}
           <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift">
-            <SitaCardTitle className="mb-3">Optimized Store Route</SitaCardTitle>
+            <h4 className="text-[13px] font-semibold text-[hsl(0_0%_85%)] mb-3">Optimized Store Route</h4>
             <div className="space-y-2">
               {DEMO_stores.map((store, i) => {
                 const count = items.filter(it => it.store === store && !it.checked).length;

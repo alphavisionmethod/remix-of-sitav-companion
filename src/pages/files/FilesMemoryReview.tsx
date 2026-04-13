@@ -1,7 +1,9 @@
-import { SitaPageHeader, SitaSectionHeader, SitaCard } from "@/components/sita/SitaCard";
-import { KPITile, EmptyState } from "@/components/sita/SitaComponents";
+import { KPITile } from "@/components/sita/SitaComponents";
 import { MemoryReviewCard } from "@/components/sita/FilesComponents";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
+import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
 import { Brain, Eye, RotateCcw, Trash2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useAllFiles } from "@/hooks/use-domain-data";
@@ -9,16 +11,12 @@ import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 const db = supabase as any;
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-
 
 const FilesMemoryReview = () => {
   const { isDemoMode } = useDataMode();
   const { data: files = [], isLoading: loadingFiles } = useAllFiles();
 
-  // Fetch advisor memories derived from files
   const { data: memories = [], isLoading: loadingMemories } = useQuery({
     queryKey: ["advisor-memories-files"],
     queryFn: async () => {
@@ -34,9 +32,7 @@ const FilesMemoryReview = () => {
     },
   });
 
-  // Build memory items from files that have extracted data
   const memoryItems = useMemo(() => {
-    // First use real advisor memories
     const fromMemories = memories.map((m: Record<string, any>) => ({
       learned: m.content,
       source: m.metadata?.source_file || "System learned",
@@ -45,7 +41,6 @@ const FilesMemoryReview = () => {
       canForget: true,
     }));
 
-    // Then augment with file-derived knowledge
     const fromFiles = files
       .filter((f: Record<string, any>) => f.extracted_data?.text && f.status === "complete")
       .slice(0, 10)
@@ -63,12 +58,10 @@ const FilesMemoryReview = () => {
     return fromMemories.length > 0 ? fromMemories : fromFiles;
   }, [memories, files]);
 
-  // Build entity graph from files
   const graphLinks = useMemo(() => {
     const entityMap: Record<string, string[]> = {};
     files.forEach((f: Record<string, any>) => {
       const text = `${f.filename} ${f.extracted_data?.text || ""}`;
-      // Simple entity extraction
       const entities = extractEntities(text);
       entities.forEach(entity => {
         if (!entityMap[entity]) entityMap[entity] = [];
@@ -89,8 +82,7 @@ const FilesMemoryReview = () => {
 
   return (
     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }} className="space-y-6">
-      <DemoModeBadge />
-      <SitaPageHeader title="Memory Review" subtitle="What the system learned from your files — review, correct, or forget" />
+      <PageTruthBanner />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KPITile label="Memory Items" value={memoryItems.length} icon={Brain} sub="From files & advisors" />
@@ -103,42 +95,48 @@ const FilesMemoryReview = () => {
         <SectionSkeleton cards={3} columns={1} />
       ) : (
         <>
-          <SitaSectionHeader title="What the System Learned" subtitle="Each item shows source, destination, and your control options" />
-          {memoryItems.length > 0 ? (
-            <div className="space-y-3">
-              {memoryItems.map((item, i) => <MemoryReviewCard key={i} {...item} />)}
-            </div>
-          ) : (
-            <EmptyState icon={Brain} title="No memory items yet" description="Upload and process files to build system memory" />
-          )}
+          <div className="space-y-3">
+            <h3 className="text-[10px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">What the System Learned</h3>
+            {memoryItems.length > 0 ? (
+              memoryItems.map((item, i) => <MemoryReviewCard key={i} {...item} />)
+            ) : (
+              <PremiumEmptyState variant="no-data" icon={Brain} title="No memory items yet" description="Upload and process files to build system memory. Each extracted fact becomes a reviewable memory item." />
+            )}
+          </div>
 
-          <SitaSectionHeader title="Entity Graph Links" subtitle="How files created cross-domain connections" />
-          {graphLinks.length > 0 ? (
-            <div className="grid gap-3 sm:grid-cols-2">
-              {graphLinks.map((g, i) => (
-                <SitaCard key={i} className="p-4">
-                  <div className="flex items-center gap-3 mb-3">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/8 font-display text-xs font-semibold text-primary">
-                      {g.entity.split(" ").map(w => w[0]).join("").slice(0, 2)}
+          <div className="space-y-3">
+            <h3 className="text-[10px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">Entity Graph Links</h3>
+            {graphLinks.length > 0 ? (
+              <div className="grid gap-3 sm:grid-cols-2">
+                {graphLinks.map((g, i) => (
+                  <div key={i} className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift">
+                    <div className="flex items-center gap-3 mb-3">
+                      <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary/8 font-display text-xs font-semibold text-primary">
+                        {g.entity.split(" ").map(w => w[0]).join("").slice(0, 2)}
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-foreground">{g.entity}</p>
+                        <p className="text-[10px] text-muted-foreground">{g.linkCount} connection{g.linkCount !== 1 ? "s" : ""}</p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-sm font-medium text-foreground">{g.entity}</p>
-                      <p className="text-[10px] text-muted-foreground">{g.linkCount} connection{g.linkCount !== 1 ? "s" : ""}</p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {g.linkedItems.map((item, j) => (
+                        <span key={j} className="text-[10px] bg-secondary px-2 py-0.5 rounded-full text-muted-foreground truncate max-w-[200px]">{item}</span>
+                      ))}
                     </div>
                   </div>
-                  <div className="flex flex-wrap gap-1.5">
-                    {g.linkedItems.map((item, j) => (
-                      <span key={j} className="text-[10px] bg-secondary px-2 py-0.5 rounded-full text-muted-foreground truncate max-w-[200px]">{item}</span>
-                    ))}
-                  </div>
-                </SitaCard>
-              ))}
-            </div>
-          ) : (
-            <EmptyState icon={Eye} title="No graph links yet" description="Process more files to build entity connections" />
-          )}
+                ))}
+              </div>
+            ) : (
+              <PremiumEmptyState variant="no-data" icon={Eye} title="No graph links yet" description="Process more files to build entity connections across domains." />
+            )}
+          </div>
         </>
       )}
+
+      <ModuleAdvisorInsight advisorName="Memory & Knowledge Advisor" domain="business" insight={memoryItems.length > 0
+            ? `${memoryItems.length} memory items from ${files.filter((f: Record<string, any>) => f.extracted_data?.text).length} source files. ${graphLinks.length} entity graph clusters detected. You can correct or forget any item.`
+            : "No memory items yet. Upload and process files to build your knowledge graph."} linkedItems={["Entity graph", "Memory corrections", "Source files"]} />
     </motion.div>
   );
 };
@@ -153,7 +151,6 @@ function classifyMemoryDomain(f: Record<string, any>): string {
 
 function extractEntities(text: string): string[] {
   const entities: string[] = [];
-  // Simple proper noun extraction (capitalized words)
   const matches = text.match(/[A-Z][a-z]+(?:\s+[A-Z][a-z]+)*/g);
   if (matches) {
     matches
