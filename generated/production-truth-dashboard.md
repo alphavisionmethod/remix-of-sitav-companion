@@ -61,7 +61,7 @@ Source: Live database query + codebase scan (no hallucinated numbers)
 | Check | Result |
 |-------|--------|
 | RLS enabled on all tables | ✅ 35/35 |
-| RLS policy audit | ⚠️ Most tables use `public` role — recommend migrating to `authenticated` |
+| RLS policy role | ✅ All 35 tables now use `authenticated` role (migrated 2026-04-13) |
 | Notifications table | ✅ Uses `authenticated` role with per-operation policies |
 | Profiles table | ✅ Uses `authenticated` role for mutations, public SELECT |
 | Edge functions auth | ✅ JWT validation in code (advisor-agent-loop, brain-core, etc.) |
