@@ -8,13 +8,14 @@ import { useState, useCallback } from "react";
 export interface WallpaperTheme {
   id: string;
   name: string;
-  category: "gradient" | "abstract" | "nature" | "minimal";
+  category: "gradient" | "abstract" | "nature" | "minimal" | "custom";
   gradient: string;
   overlay?: string;
   preview: string;
 }
 
 const STORAGE_KEY = "sita-wallpaper";
+const CUSTOM_URL_KEY = "sita-custom-wallpaper-url";
 
 export const WALLPAPER_THEMES: WallpaperTheme[] = [
   // ── SITA Hero (default first boot) ──
@@ -74,6 +75,56 @@ export const WALLPAPER_THEMES: WallpaperTheme[] = [
     preview: "linear-gradient(135deg, hsl(265 50% 22%), hsl(280 45% 28%), hsl(240 40% 20%))",
   },
 
+  // ── NEW Premium Gradients ──
+  {
+    id: "cosmic-drift",
+    name: "Cosmic Drift",
+    category: "gradient",
+    gradient: "from-[hsl(270_60%_12%)] via-[hsl(310_50%_18%)] to-[hsl(230_55%_14%)]",
+    overlay: "radial-gradient(ellipse at 30% 50%, hsl(290 70% 40% / 0.25), transparent 55%), radial-gradient(ellipse at 75% 35%, hsl(220 60% 35% / 0.2), transparent 50%)",
+    preview: "linear-gradient(135deg, hsl(270 60% 16%), hsl(310 50% 22%), hsl(230 55% 18%))",
+  },
+  {
+    id: "emerald-night",
+    name: "Emerald Night",
+    category: "gradient",
+    gradient: "from-[hsl(155_55%_10%)] via-[hsl(170_50%_16%)] to-[hsl(195_45%_12%)]",
+    overlay: "radial-gradient(ellipse at 50% 40%, hsl(165 60% 28% / 0.3), transparent 55%)",
+    preview: "linear-gradient(135deg, hsl(155 55% 14%), hsl(170 50% 20%), hsl(195 45% 16%))",
+  },
+  {
+    id: "solar-flare",
+    name: "Solar Flare",
+    category: "gradient",
+    gradient: "from-[hsl(30_70%_18%)] via-[hsl(15_75%_22%)] to-[hsl(350_60%_16%)]",
+    overlay: "radial-gradient(ellipse at 40% 45%, hsl(25 80% 40% / 0.3), transparent 55%)",
+    preview: "linear-gradient(135deg, hsl(30 70% 22%), hsl(15 75% 28%), hsl(350 60% 20%))",
+  },
+  {
+    id: "midnight-city",
+    name: "Midnight City",
+    category: "gradient",
+    gradient: "from-[hsl(220_30%_8%)] via-[hsl(235_25%_14%)] to-[hsl(250_20%_10%)]",
+    overlay: "radial-gradient(ellipse at 55% 60%, hsl(230 35% 22% / 0.35), transparent 50%)",
+    preview: "linear-gradient(135deg, hsl(220 30% 12%), hsl(235 25% 18%), hsl(250 20% 14%))",
+  },
+  {
+    id: "lavender-haze",
+    name: "Lavender Haze",
+    category: "gradient",
+    gradient: "from-[hsl(280_40%_16%)] via-[hsl(300_35%_20%)] to-[hsl(260_45%_14%)]",
+    overlay: "radial-gradient(ellipse at 60% 40%, hsl(290 50% 35% / 0.25), transparent 55%)",
+    preview: "linear-gradient(135deg, hsl(280 40% 20%), hsl(300 35% 26%), hsl(260 45% 18%))",
+  },
+  {
+    id: "carbon-fiber",
+    name: "Carbon Fiber",
+    category: "minimal",
+    gradient: "from-[hsl(0_0%_6%)] via-[hsl(0_0%_9%)] to-[hsl(0_0%_5%)]",
+    overlay: "radial-gradient(ellipse at 50% 50%, hsl(0 0% 15% / 0.2), transparent 60%)",
+    preview: "linear-gradient(135deg, hsl(0 0% 8%), hsl(0 0% 12%), hsl(0 0% 6%))",
+  },
+
   // ── Abstract — richer, brighter ──
   {
     id: "ember-flow",
@@ -100,7 +151,7 @@ export const WALLPAPER_THEMES: WallpaperTheme[] = [
     preview: "linear-gradient(135deg, hsl(240 30% 18%), hsl(260 25% 24%), hsl(280 30% 20%))",
   },
 
-  // ── Nature — brighter, more vibrant ──
+  // ── Nature ──
   {
     id: "forest-dusk",
     name: "Forest at Dusk",
@@ -130,7 +181,7 @@ export const WALLPAPER_THEMES: WallpaperTheme[] = [
     preview: "linear-gradient(135deg, hsl(195 40% 22%), hsl(210 35% 28%), hsl(220 45% 20%))",
   },
 
-  // ── Minimal — dark but not pitch black ──
+  // ── Minimal ──
   {
     id: "pure-dark",
     name: "Pure Dark",
@@ -154,6 +205,20 @@ export const WALLPAPER_THEMES: WallpaperTheme[] = [
   },
 ];
 
+export function getCustomWallpaperUrl(): string {
+  try {
+    return localStorage.getItem(CUSTOM_URL_KEY) || "";
+  } catch {
+    return "";
+  }
+}
+
+export function setCustomWallpaperUrl(url: string) {
+  try {
+    localStorage.setItem(CUSTOM_URL_KEY, url);
+  } catch {}
+}
+
 export function getWallpaperId(): string {
   try {
     return localStorage.getItem(STORAGE_KEY) || "sita-hero";
@@ -169,13 +234,19 @@ export function getWallpaperTheme(): WallpaperTheme {
 
 export function useWallpaper() {
   const [activeId, setActiveId] = useState(getWallpaperId);
+  const [customUrl, setCustomUrlState] = useState(getCustomWallpaperUrl);
 
   const setWallpaper = useCallback((id: string) => {
     localStorage.setItem(STORAGE_KEY, id);
     setActiveId(id);
   }, []);
 
+  const setCustomUrl = useCallback((url: string) => {
+    setCustomWallpaperUrl(url);
+    setCustomUrlState(url);
+  }, []);
+
   const theme = WALLPAPER_THEMES.find(t => t.id === activeId) ?? WALLPAPER_THEMES[0];
 
-  return { activeId, theme, setWallpaper, themes: WALLPAPER_THEMES };
+  return { activeId, theme, setWallpaper, themes: WALLPAPER_THEMES, customUrl, setCustomUrl };
 }
