@@ -1,80 +1,80 @@
 
 
-# SITA OS Architecture — Final Integrity Verification
+# SITA OS — Recommendation-to-Execution Closure + Service Unification + Flagship Discipline
 
-## Verdict: FULLY IMPLEMENTED, DEPLOYMENT-READY
+## Current State (Verified)
 
-After a thorough audit of all architecture files, the system is structurally complete. No remaining violations or gaps that require code changes.
+**Already fully implemented:**
+- `recommendation-loop-service.ts` (332 lines): Full lifecycle state machine (11 states), execution bindings, remediation programs/tasks, outcome verifications, learning signals, pipeline summary views
+- **REX01-05** pages all exist and are routed in App.tsx:
+  - `/admin/rex/intelligence` — Recommendation volume, quality scores, domain breakdown
+  - `/admin/rex/approval-queue` — Pending approvals, aging, evidence gaps
+  - `/admin/rex/execution` — Per-recommendation status, binding, outcomes
+  - `/admin/rex/programs` — Remediation programs with linked recommendations
+  - `/admin/rex/outcomes` — Post-execution verification, journey/score deltas
+- **SERV01-06** pages all exist and are routed:
+  - `/admin/services/ownership` — 12 domain service ownership with budget gauge
+  - `/admin/services/domains` — Domain ownership detail
+  - `/admin/services/route-trace` — Route-to-service traceability
+  - `/admin/services/duplication` — Duplicate/shadow service audit
+  - `/admin/services/canonical-actions` — Canonical action entry points
+  - `/admin/services/flagship-trace` — Flagship loop traceability
+- **FL01-02** pages routed: Executive board + detail view with truth rings, seed data, 4-dimension scoring
+- **Flagship Loop Service** (318 lines): 5 loops seeded with truth scoring
+- **Route-to-Service Inventory** (734 lines): Full action-level mapping
+- **Service Ownership Registry**: 12 domains with anti-sprawl rules
+- **LAUNCH02 Flagship Readiness**: Linked from launch section
 
-### What's Confirmed Working
+## What's Missing
 
-**6-Layer Manifest** (`src/lib/architecture/layer-manifest.ts`)
-- All 6 layers defined as typed constants
-- 27 route prefixes mapped to layers (Web: 6, App: 19, Admin: 3, Kernel: 1)
-- 53 services mapped to layers with canonical flags
-- Layout + component directory layer maps complete
+### 1. FL03 — Flagship Loop Prioritization Board (page doesn't exist)
+The prompt requires 3 flagship boards. FL03 should show all work mapped to flagship loop impact, breadth-vs-flagship prioritization, and where engineering attention should go.
 
-**Boundary Rules** (`src/lib/architecture/boundary-rules.ts`)
-- Import direction matrix: 6x6 fully specified
-- 4 forbidden patterns defined
-- `isImportAllowed()` function exported
-- Valid shells per layer declared
+### 2. AdminCommandPalette missing all REX/SERV/FL entries
+None of the 13 boards (REX01-05, SERV01-06, FL01-02) are discoverable via Cmd+K. Operators can't find them.
 
-**Route Registry** (`src/lib/architecture/route-registry.ts`)
-- 25 route families tagged with layer, risk tier (R0-R5), flagship loop
-- Auto-generated route entries with `buildRouteEntry()`
-- 0 misplaced, 0 mixed-boundary families
+### 3. No grouped SubNav for REX, SERV, FL
+Other board families (AIG, AIT, CN, DRS, etc.) have dedicated SubNav components. REX/SERV/FL have none.
 
-**Service Ownership Manifest** (`src/lib/architecture/service-ownership-manifest.ts`)
-- 40 duplicate services tracked between `services/` and `core-services/`
-- Budget: 31/45 canonical services (within budget)
-- Kernel (12), OS Services (16), Domain (3) breakdown
+## Implementation Plan
 
-**CI Boundary Script** (`scripts/architecture/check-layer-boundaries.ts`)
-- 9 rules active and enforcing:
-  1. WEB_IMPORTS_KERNEL
-  2. ADMIN_IMPORTS_APP_PAGE
-  3. SERVICE_IMPORTS_UI
-  4. CONTRACT_IMPORTS_RUNTIME
-  5. CROSS_DOMAIN_IMPORT
-  6. APP_IMPORTS_KERNEL
-  7. HOOK_IMPORTS_KERNEL
-  8. OPERATOR_IMPORTS_APP_PAGE
-  9. SERVICE_RELATIVE_UI_IMPORT
+### Step 1 — Create FL03 Flagship Prioritization Board
+**New file: `src/pages/admin/FL03FlagshipPrioritization.tsx`**
+Shows:
+- Per-flagship-loop work item count (linked recommendations, remediation tasks, blockers)
+- Breadth vs flagship-critical work ratio
+- Engineering attention allocation recommendation
+- Loop-impact scoring for active recommendations
+Uses existing data from flagship-loop-service and recommendation-loop-service.
 
-**App→Kernel Boundary** — ZERO violations found. `grep` across all non-admin, non-owner, non-auth pages returns no `core-services` imports. Proxy re-exports working for search-fabric, fraud-sentinel, governance-simulator, constitution-compiler, lease-manager.
+### Step 2 — Wire FL03 into App.tsx
+Add lazy import and route `/admin/flagship/prioritization` inside AdminShell block.
 
-**Architecture Boundary Board** (`/admin/architecture/boundaries`)
-- Route registered in App.tsx inside AdminShell
-- Listed in AdminCommandPalette for operator discovery
-- 486 lines — includes: layer rings, maturity matrix, capability verdicts, import rules, service breakdown, duplicate tracker, route families
+### Step 3 — Add REX/SERV/FL entries to AdminCommandPalette
+Add all 14 entries (REX01-05, SERV01-06, FL01-03) to the NAV_ITEMS array with proper groups: "Recommendation Closure", "Service Architecture", "Flagship Loops".
 
-**LayerSyncEffect** in SitaOSContext — proper child component pattern, no eslint-disable hacks
+### Step 4 — Create REXSubNav, SERVSubNav, FLSubNav components
+Following the pattern of existing SubNav components (AIGSubNav, CNSubNav, etc.), create navigation helpers for each board family.
 
-**Documentation** — `docs/architecture/LAYER_SEPARATION.md` (214 lines) covers: 6-layer model, route→layer table, import rules, CI rules, service mapping, ownership matrix, maturity matrix, capability verdicts, 25-item verification checklist
+---
 
-**Barrel Export** — `src/lib/architecture/index.ts` exports all 23 subsystems cleanly
+## Files Changed
 
-### No Issues Found
+| Action | File | Purpose |
+|--------|------|---------|
+| Create | `src/pages/admin/FL03FlagshipPrioritization.tsx` | Prioritization board |
+| Modify | `src/App.tsx` | Add FL03 lazy import + route |
+| Modify | `src/components/admin/AdminCommandPalette.tsx` | Add 14 REX/SERV/FL entries |
+| Create | `src/components/admin/REXSubNav.tsx` | REX board navigation |
+| Create | `src/components/admin/SERVSubNav.tsx` | SERV board navigation |
+| Create | `src/components/admin/FLSubNav.tsx` | FL board navigation |
 
-| Check | Result |
-|-------|--------|
-| App pages importing core-services | 0 violations |
-| Admin routes outside AdminShell | None — all in AdminShell blocks |
-| Duplicate routes | None found |
-| Missing route families | All covered |
-| Sidebar link to Architecture Board | Present in AdminCommandPalette |
-| useLocation hack in context | Fixed with LayerSyncEffect |
-| Service budget | 31/45 — within limit |
-| Layer manifest completeness | All 6 layers, 53 services, 27 route prefixes |
-
-### Conclusion
-
-The architecture is **fully implemented and structurally correct**. All boundaries are:
-- Explicitly declared in typed manifests
-- Enforced by 9 CI rules
-- Visible to operators via the Architecture Boundary Board
-- Documented in LAYER_SEPARATION.md
-
-No code changes are needed. The system is deployment-ready from an architectural boundary perspective.
+## What Does NOT Change
+- All existing REX01-05, SERV01-06, FL01-02 pages stay as-is (already fully advanced)
+- recommendation-loop-service.ts stays as-is (complete)
+- flagship-loop-service.ts stays as-is (5 loops seeded with scoring)
+- route-to-service-inventory.ts stays as-is (734 lines, comprehensive)
+- service-ownership-registry.ts stays as-is (12 domains, anti-sprawl rules)
+- No database changes needed
+- No new services
 
