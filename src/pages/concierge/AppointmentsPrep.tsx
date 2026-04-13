@@ -152,7 +152,7 @@ const AppointmentsPrep = () => {
               </div>
             </SitaCard>
           );
-        })}
+        )}
       </div>
 
       {/* Appointment Prep Cards for prep-needed view */}
