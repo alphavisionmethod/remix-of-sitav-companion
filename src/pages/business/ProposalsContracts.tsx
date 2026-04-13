@@ -1,5 +1,4 @@
-import { AppWelcomeHeader } from "@/components/sita/AppWelcomeHeader";
-import { InAppAdvisorStrip } from "@/components/sita/InAppAdvisorStrip";
+import { DomainAdvisorCard } from "@/components/advisors/DomainAdvisorCard";
 import { motion } from "framer-motion";
 import { FileSignature, Clock, CheckCircle, AlertCircle, Plus, Eye, Send, DollarSign, TrendingUp, Zap, Users, BarChart3, FileText, PenTool, BookOpen, ChevronRight, Timer, MousePointer } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -82,8 +81,10 @@ const ProposalsContracts = () => {
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
-      <AppWelcomeHeader domain="business" />
-      <InAppAdvisorStrip domain="business" />
+      <DomainAdvisorCard domain="business" insights={[
+        { id: "prop-1", text: "Alex Kim viewed pricing 6 times — high intent signal. Consider offering 5% early-bird discount", confidence: 88, action: "Offer Discount" },
+        { id: "prop-2", text: "Proposals with case studies have 23% higher win rate", confidence: 82 },
+      ]} />
 
       <div className="flex items-center justify-between">
         <div>

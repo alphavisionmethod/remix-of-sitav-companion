@@ -1,5 +1,4 @@
-import { AppWelcomeHeader } from "@/components/sita/AppWelcomeHeader";
-import { InAppAdvisorStrip } from "@/components/sita/InAppAdvisorStrip";
+import { DomainAdvisorCard } from "@/components/advisors/DomainAdvisorCard";
 import { motion } from "framer-motion";
 import { Globe, Layout, FileText, BarChart3, Zap, Eye, Plus, ExternalLink, TrendingUp, Search, MousePointer, Users, DollarSign, Copy, FlaskConical, Settings, ArrowUpRight, ChevronRight, Target, Layers } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -59,8 +58,10 @@ const WebsiteBuilder = () => {
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
-      <AppWelcomeHeader domain="business" />
-      <InAppAdvisorStrip domain="business" />
+      <DomainAdvisorCard domain="business" insights={[
+        { id: "web-1", text: "Lead Capture page has 45% bounce at phone field — removing it could recover ~$3.2K/mo", confidence: 91, action: "Remove Field" },
+        { id: "web-2", text: "A/B test on Product Landing proved +62% lift — apply winning CTA to Main Site", confidence: 85, action: "Apply" },
+      ]} />
 
       <div className="flex items-center justify-between">
         <div>

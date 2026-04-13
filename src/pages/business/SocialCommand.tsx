@@ -1,5 +1,4 @@
-import { AppWelcomeHeader } from "@/components/sita/AppWelcomeHeader";
-import { InAppAdvisorStrip } from "@/components/sita/InAppAdvisorStrip";
+import { DomainAdvisorCard } from "@/components/advisors/DomainAdvisorCard";
 import { motion } from "framer-motion";
 import { Share2, TrendingUp, Calendar, MessageCircle, Heart, Eye, Plus, DollarSign, Zap, Clock, Target, BarChart3, Hash, Users, ArrowUpRight, Bot, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -65,8 +64,10 @@ const SocialCommand = () => {
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
-      <AppWelcomeHeader domain="business" />
-      <InAppAdvisorStrip domain="business" />
+      <DomainAdvisorCard domain="business" insights={[
+        { id: "soc-1", text: "LinkedIn posts generate 3.4x more leads than Instagram — focus case study content there", confidence: 87, action: "Draft Post" },
+        { id: "soc-2", text: "2 unreplied comments show purchase intent — respond to convert", confidence: 79, action: "Reply" },
+      ]} />
 
       <div className="flex items-center justify-between">
         <div>
