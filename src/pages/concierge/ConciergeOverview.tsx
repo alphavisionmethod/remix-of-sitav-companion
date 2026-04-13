@@ -40,8 +40,8 @@ const ConciergeOverview = () => {
   }, [tasks, events]);
 
   const queueItems = useMemo(() => [
-    { id: "cp1", label: "Permission slip due tomorrow", meta: "Alex — school", urgency: "high" as const, badge: <UrgencyBadge level="high" /> },
-    { id: "cp2", label: "Plumber follow-up overdue 4 days", meta: "Kitchen leak", urgency: "high" as const, badge: <FreshnessBadge age="4 days overdue" /> },
+    { id: "cp1", label: "Permission slip due tomorrow", meta: "Alex — school", urgency: "high" as const, badge: <UrgencyBadge urgency="high" /> },
+    { id: "cp2", label: "Plumber follow-up overdue 4 days", meta: "Kitchen leak", urgency: "high" as const, badge: <FreshnessBadge freshness="expired" label="4 days overdue" /> },
     { id: "cp3", label: "Pet sitter booking needed", meta: "18 days", urgency: "normal" as const },
     { id: "cp4", label: "Passport renewal approaching", meta: "Aug 2026", urgency: "low" as const },
   ], []);
@@ -125,7 +125,7 @@ const ConciergeOverview = () => {
               accentColor="hsl(285 55% 55%)"
               onApprove={() => {}}
               onDismiss={() => {}}
-              badge={<FreshnessBadge age="91% ready" />}
+              badge={<FreshnessBadge freshness="fresh" label="91% ready" />}
             />
             <ActionCard
               title="Plumber follow-up message draft"

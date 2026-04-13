@@ -41,8 +41,8 @@ const MoneyOverview = () => {
   const reserveHealth = kpis?.reserveHealth || 60;
 
   const queueItems = useMemo(() => [
-    { id: "fp1", label: "3 bills due within 48 hours — $1,450", meta: "Review plan", urgency: "high" as const, badge: <UrgencyBadge level="high" /> },
-    { id: "fp2", label: "Emergency reserve at 60%", meta: "Below target", urgency: "normal" as const, badge: <FreshnessBadge age="Below 3mo target" /> },
+    { id: "fp1", label: "3 bills due within 48 hours — $1,450", meta: "Review plan", urgency: "high" as const, badge: <UrgencyBadge urgency="high" /> },
+    { id: "fp2", label: "Emergency reserve at 60%", meta: "Below target", urgency: "normal" as const, badge: <FreshnessBadge freshness="stale" label="Below 3mo target" /> },
     { id: "fp3", label: "Subscription creep: +8% over 90 days", meta: "$38/mo", urgency: "low" as const },
   ], []);
 
@@ -121,7 +121,7 @@ const MoneyOverview = () => {
               accentColor="hsl(152 55% 48%)"
               onApprove={() => {}}
               onDismiss={() => {}}
-              badge={<TrustBadge level="verified" size="sm" />}
+              badge={<TrustBadge level="verified" />}
             />
             <ActionCard
               title="Waste subscription review"

@@ -28,9 +28,9 @@ const BusinessOverview = () => {
   const hasLiveData = isDemoMode || leads.length > 0 || customers.length > 0 || invoices.length > 0;
 
   const queueItems = useMemo(() => [
-    { id: "p1", label: "Emily Watson — 3 days no contact", meta: "$1,800", urgency: "critical" as const, badge: <UrgencyBadge level="critical" /> },
-    { id: "p2", label: "Invoice #1035 — 7 days overdue", meta: "$1,800", urgency: "high" as const, badge: <UrgencyBadge level="high" /> },
-    { id: "p3", label: "Quote #1039 expiring tomorrow", meta: "$3,200", urgency: "high" as const, badge: <FreshnessBadge age="expiring" /> },
+    { id: "p1", label: "Emily Watson — 3 days no contact", meta: "$1,800", urgency: "critical" as const, badge: <UrgencyBadge urgency="critical" /> },
+    { id: "p2", label: "Invoice #1035 — 7 days overdue", meta: "$1,800", urgency: "high" as const, badge: <UrgencyBadge urgency="high" /> },
+    { id: "p3", label: "Quote #1039 expiring tomorrow", meta: "$3,200", urgency: "high" as const, badge: <FreshnessBadge freshness="stale" label="Expiring" /> },
     { id: "p4", label: "New lead: Michael Park", meta: "Web inquiry", urgency: "normal" as const },
   ], []);
 
@@ -112,7 +112,7 @@ const BusinessOverview = () => {
               accentColor="hsl(265 55% 58%)"
               onApprove={() => {}}
               onDismiss={() => {}}
-              badge={<FreshnessBadge age="88% confidence" />}
+              badge={<FreshnessBadge freshness="fresh" label="88% confidence" />}
             />
             <ActionCard
               title="Invoice reminder for David Kim"
@@ -120,7 +120,7 @@ const BusinessOverview = () => {
               accentColor="hsl(265 55% 58%)"
               onApprove={() => {}}
               onDismiss={() => {}}
-              badge={<FreshnessBadge age="92% confidence" />}
+              badge={<FreshnessBadge freshness="fresh" label="92% confidence" />}
             />
           </div>
         </ListRevealItem>
