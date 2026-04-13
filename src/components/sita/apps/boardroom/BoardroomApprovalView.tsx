@@ -1,11 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { CheckCircle, AlertOctagon, Shield, Clock, Hash, Sparkles } from "lucide-react";
 import {
   ApprovalGate, DecisionSeal, ProofReceipt,
   ExecutionChainTimeline, buildDefaultChain,
 } from "@/components/sita/primitives";
 import { useBoardroomData } from "@/hooks/use-boardroom-data";
+
+interface Props {
+  scope: "global" | "business" | "finance" | "concierge";
+  onNavigate: (module: string) => void;
+}
+
+const BLOCKERS = [
+  { id: "b1", title: "CRM relationship review for TechCorp", status: "resolved" as const, domain: "business" },
+  { id: "b2", title: "Reserve buffer must be above 60%", status: "resolved" as const, domain: "finance" },
+  { id: "b3", title: "Advisor consensus above 65%", status: "pending" as const, domain: "system" },
+];
 
 const MOCK_APPROVALS = [
   { id: "ap1", title: "Initiate phased collections outreach", description: "Send segmented recovery messages to 3 overdue accounts. TechCorp gets personal outreach, others get standard follow-up.", riskLevel: "medium" as const },
@@ -54,8 +66,14 @@ const MOCK_RECEIPTS = [
 
 const executionChain = buildDefaultChain("approval");
 
-export function BoardroomApprovalView() {
+export function BoardroomApprovalView({ scope, onNavigate }: Props) {
   const { pendingApprovals } = useBoardroomData();
+  const [generatedReceipt, setGeneratedReceipt] = useState<null | { title: string; hash: string; time: string }>(null);
+
+  const handleApprove = (title: string) => {
+    const hash = `0x${Math.random().toString(16).slice(2, 6)}…${Math.random().toString(16).slice(2, 6)}`;
+    setGeneratedReceipt({ title, hash, time: new Date().toLocaleString() });
+  };
 
   return (
     <div className="p-6 space-y-6">
@@ -68,6 +86,90 @@ export function BoardroomApprovalView() {
           <ExecutionChainTimeline steps={executionChain} compact />
         </div>
       </div>
+
+      {/* Requirements & Blockers */}
+      <div>
+        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[hsl(280_50%_65%/0.5)] mb-3 flex items-center gap-1.5">
+          <Shield size={11} /> Requirements & Blockers
+        </p>
+        <div className="space-y-1.5">
+          {BLOCKERS.map((b, i) => (
+            <motion.div
+              key={b.id}
+              initial={{ opacity: 0, x: -6 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: i * 0.04 }}
+              className={cn(
+                "rounded-lg border p-3 flex items-center gap-3",
+                b.status === "resolved"
+                  ? "border-[hsl(var(--trust-safe))]/15 bg-[hsl(var(--trust-safe))]/5"
+                  : "border-[hsl(var(--sita-gold))]/15 bg-[hsl(var(--sita-gold))]/5",
+              )}
+            >
+              {b.status === "resolved"
+                ? <CheckCircle size={14} className="text-[hsl(var(--trust-safe))] shrink-0" />
+                : <AlertOctagon size={14} className="text-[hsl(var(--sita-gold))] shrink-0" />
+              }
+              <p className="text-[12px] text-[hsl(0_0%_100%/0.7)] flex-1">{b.title}</p>
+              <span className={cn(
+                "text-[9px] font-semibold px-2 py-0.5 rounded-full",
+                b.status === "resolved"
+                  ? "bg-[hsl(var(--trust-safe))]/10 text-[hsl(var(--trust-safe))]"
+                  : "bg-[hsl(var(--sita-gold))]/10 text-[hsl(var(--sita-gold))]",
+              )}>
+                {b.status === "resolved" ? "Clear" : "Pending"}
+              </span>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* Generated Receipt */}
+      <AnimatePresence>
+        {generatedReceipt && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95, y: -10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="rounded-2xl border-2 border-[hsl(var(--trust-safe))]/30 bg-[hsl(var(--trust-safe))]/5 p-5"
+          >
+            <div className="flex items-center gap-2 mb-3">
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ type: "spring", stiffness: 400, damping: 15, delay: 0.2 }}
+              >
+                <Sparkles size={18} className="text-[hsl(var(--trust-safe))]" />
+              </motion.div>
+              <p className="text-sm font-bold text-[hsl(var(--trust-safe))]">Decision Receipt Generated</p>
+            </div>
+            <div className="space-y-2 text-[12px]">
+              <div className="flex items-center gap-2 text-[hsl(0_0%_100%/0.7)]">
+                <span className="text-[hsl(0_0%_100%/0.4)] w-16 shrink-0">Action:</span>
+                {generatedReceipt.title}
+              </div>
+              <div className="flex items-center gap-2 text-[hsl(0_0%_100%/0.7)]">
+                <span className="text-[hsl(0_0%_100%/0.4)] w-16 shrink-0">Hash:</span>
+                <span className="font-mono flex items-center gap-1"><Hash size={10} />{generatedReceipt.hash}</span>
+              </div>
+              <div className="flex items-center gap-2 text-[hsl(0_0%_100%/0.7)]">
+                <span className="text-[hsl(0_0%_100%/0.4)] w-16 shrink-0">Time:</span>
+                <span className="flex items-center gap-1"><Clock size={10} />{generatedReceipt.time}</span>
+              </div>
+              <div className="flex items-center gap-2 text-[hsl(0_0%_100%/0.7)]">
+                <span className="text-[hsl(0_0%_100%/0.4)] w-16 shrink-0">Status:</span>
+                <span className="text-[hsl(var(--trust-safe))] font-semibold">Sealed & Recorded</span>
+              </div>
+            </div>
+            <button
+              onClick={() => setGeneratedReceipt(null)}
+              className="mt-3 text-[10px] text-[hsl(0_0%_100%/0.3)] hover:text-[hsl(0_0%_100%/0.6)] transition-colors"
+            >
+              Dismiss
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Pending Approvals */}
       <div>
@@ -86,9 +188,9 @@ export function BoardroomApprovalView() {
                 title={ap.title}
                 description={ap.description}
                 riskLevel={ap.riskLevel}
-                onApprove={() => {}}
+                onApprove={() => handleApprove(ap.title)}
                 onReject={() => {}}
-                onSimulate={() => {}}
+                onSimulate={() => onNavigate("simulation")}
               />
             </motion.div>
           ))}

@@ -24,20 +24,23 @@ const MODULES = [
 
 type SessionScope = "global" | "business" | "finance" | "concierge";
 
-const VIEW_MAP: Record<string, React.FC> = {
-  executive: BoardroomExecutiveView,
-  pulse: BoardroomPulseView,
-  synthesis: BoardroomSynthesisView,
-  simulation: BoardroomSimulationView,
-  approvals: BoardroomApprovalView,
-  memory: BoardroomDecisionMemory,
-};
-
 export function BoardroomAppShell() {
   const [activeModule, setActiveModule] = useState("executive");
   const [scope, setScope] = useState<SessionScope>("global");
 
-  const ActiveView = VIEW_MAP[activeModule] || BoardroomExecutiveView;
+  const viewProps = { scope, onNavigate: setActiveModule };
+
+  const renderView = () => {
+    switch (activeModule) {
+      case "executive": return <BoardroomExecutiveView {...viewProps} />;
+      case "pulse": return <BoardroomPulseView {...viewProps} />;
+      case "synthesis": return <BoardroomSynthesisView {...viewProps} />;
+      case "simulation": return <BoardroomSimulationView {...viewProps} />;
+      case "approvals": return <BoardroomApprovalView {...viewProps} />;
+      case "memory": return <BoardroomDecisionMemory />;
+      default: return <BoardroomExecutiveView {...viewProps} />;
+    }
+  };
 
   return (
     <motion.div
@@ -88,7 +91,7 @@ export function BoardroomAppShell() {
       <div className="flex-1 flex flex-col min-w-0 z-10">
         <BoardroomHeader scope={scope} onScopeChange={setScope} />
         <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-[hsl(0_0%_100%/0.06)] scrollbar-track-transparent">
-          <ActiveView />
+          {renderView()}
         </div>
       </div>
     </motion.div>
