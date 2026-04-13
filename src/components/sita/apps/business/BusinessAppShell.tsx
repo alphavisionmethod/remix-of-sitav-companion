@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { Users, FileText, Briefcase, TrendingUp, Brain, ArrowUpRight, CheckCircle, Clock, AlertTriangle } from "lucide-react";
+import { Users, FileText, Briefcase, TrendingUp, Brain, ArrowUpRight, CheckCircle, Clock, AlertTriangle, Activity, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { DomainAdvisorBoard } from "@/components/sita/domain-shared/DomainAdvisorBoard";
 import { useBoardroomBridge } from "@/hooks/useBoardroomBridge";
+import { getAdvisorOutputs } from "@/lib/services/orchestration-pipeline/module-advisor-consumer";
+import { getStateLabel, type IssueLifecycleState } from "@/lib/services/orchestration-pipeline/issue-lifecycle";
 
 const MODULES = [
   { id: "crm", label: "CRM", icon: Users },
@@ -12,6 +14,7 @@ const MODULES = [
   { id: "operations", label: "Operations", icon: Briefcase },
   { id: "advisors", label: "Advisors", icon: Brain },
   { id: "boardroom", label: "Boardroom", icon: ArrowUpRight },
+  { id: "pipeline", label: "Pipeline Health", icon: Activity },
 ];
 
 const severityColors: Record<string, string> = {
@@ -21,8 +24,8 @@ const severityColors: Record<string, string> = {
   critical: "text-[hsl(var(--destructive))]",
 };
 
-function BoardroomStatusStrip({ pendingCount, decisionCount }: { pendingCount: number; decisionCount: number }) {
-  if (pendingCount === 0 && decisionCount === 0) return null;
+function BoardroomStatusStrip({ pendingCount, decisionCount, synthesisScore }: { pendingCount: number; decisionCount: number; synthesisScore?: number }) {
+  if (pendingCount === 0 && decisionCount === 0 && !synthesisScore) return null;
   return (
     <motion.div
       initial={{ opacity: 0, y: -4 }}
@@ -41,16 +44,48 @@ function BoardroomStatusStrip({ pendingCount, decisionCount }: { pendingCount: n
             {decisionCount} decision{decisionCount > 1 ? "s" : ""} awaiting action
           </span>
         )}
+        {synthesisScore != null && synthesisScore > 0 && (
+          <span className="text-[hsl(280_50%_70%)]">
+            Pipeline: {Math.round(synthesisScore * 100)}% Boardroom relevance
+          </span>
+        )}
       </div>
     </motion.div>
   );
 }
 
 function DomainBoardroomView({ domain }: { domain: "business" | "finance" | "concierge" }) {
-  const { escalations, decisions, escalate, isDemoMode } = useBoardroomBridge(domain);
+  const { escalations, decisions, escalate, isDemoMode, synthesis, emitSignal } = useBoardroomBridge(domain);
 
   return (
     <div className="space-y-4 p-4">
+      {/* Synthesis summary */}
+      {synthesis && (
+        <motion.div
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="rounded-xl border border-[hsl(280_50%_50%/0.15)] bg-[hsl(280_40%_50%/0.04)] p-4"
+        >
+          <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[hsl(280_50%_65%/0.5)] mb-2 flex items-center gap-1.5">
+            <Zap size={10} /> Board Synthesis
+          </p>
+          <p className="text-[12px] text-[hsl(0_0%_100%/0.7)] mb-2">{synthesis.issue_summary}</p>
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="text-[9px] px-2 py-0.5 rounded-full bg-[hsl(280_50%_50%/0.1)] text-[hsl(280_50%_70%)]">
+              {synthesis.module_advisor_positions.length} advisor(s)
+            </span>
+            <span className="text-[9px] px-2 py-0.5 rounded-full bg-[hsl(280_50%_50%/0.1)] text-[hsl(280_50%_70%)]">
+              Worthiness: {Math.round(synthesis.boardroom_worthiness_score * 100)}%
+            </span>
+            {synthesis.missing_data_flags.length > 0 && (
+              <span className="text-[9px] px-2 py-0.5 rounded-full bg-[hsl(var(--sita-gold))]/10 text-[hsl(var(--sita-gold))]">
+                {synthesis.missing_data_flags.length} data gap(s)
+              </span>
+            )}
+          </div>
+        </motion.div>
+      )}
+
       {/* Escalate button */}
       <button
         onClick={() => escalate({
@@ -73,10 +108,7 @@ function DomainBoardroomView({ domain }: { domain: "business" | "finance" | "con
         </p>
         <div className="space-y-1.5">
           {escalations.map((item: any) => (
-            <div
-              key={item.id}
-              className="rounded-lg border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] p-3"
-            >
+            <div key={item.id} className="rounded-lg border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] p-3">
               <div className="flex items-center gap-2 mb-1">
                 <AlertTriangle size={11} className={severityColors[item.severity] || "text-[hsl(0_0%_100%/0.4)]"} />
                 <span className="text-[9px] font-bold uppercase text-[hsl(0_0%_100%/0.35)]">{item.severity}</span>
@@ -95,15 +127,10 @@ function DomainBoardroomView({ domain }: { domain: "business" | "finance" | "con
 
       {/* Decisions from Boardroom */}
       <div>
-        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[hsl(0_0%_100%/0.35)] mb-2">
-          Decisions from Boardroom
-        </p>
+        <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[hsl(0_0%_100%/0.35)] mb-2">Decisions from Boardroom</p>
         <div className="space-y-1.5">
           {decisions.map((dec: any) => (
-            <div
-              key={dec.id}
-              className="rounded-lg border border-[hsl(var(--trust-safe))]/15 bg-[hsl(var(--trust-safe))]/5 p-3"
-            >
+            <div key={dec.id} className="rounded-lg border border-[hsl(var(--trust-safe))]/15 bg-[hsl(var(--trust-safe))]/5 p-3">
               <div className="flex items-center gap-2 mb-1">
                 <CheckCircle size={11} className="text-[hsl(var(--trust-safe))]" />
                 <span className="text-[9px] font-bold text-[hsl(var(--trust-safe))]">APPROVED</span>
@@ -123,9 +150,66 @@ function DomainBoardroomView({ domain }: { domain: "business" | "finance" | "con
   );
 }
 
+function PipelineHealthView({ domain }: { domain: "business" | "finance" | "concierge" }) {
+  const outputs = getAdvisorOutputs(domain);
+  const { synthesis } = useBoardroomBridge(domain);
+
+  return (
+    <div className="space-y-4 p-4">
+      <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[hsl(280_50%_65%/0.5)] mb-2 flex items-center gap-1.5">
+        <Activity size={10} /> Pipeline Health — {domain}
+      </p>
+
+      {/* Advisor outputs */}
+      <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] p-4">
+        <p className="text-[11px] font-semibold text-[hsl(0_0%_100%/0.6)] mb-2">Advisor Outputs ({outputs.length})</p>
+        <div className="space-y-1.5 max-h-[200px] overflow-y-auto">
+          {outputs.slice(-10).map((o) => (
+            <div key={o.packet_id} className="rounded-lg bg-[hsl(0_0%_100%/0.03)] p-2">
+              <div className="flex items-center gap-2">
+                <span className="text-[9px] font-bold text-[hsl(280_50%_70%)]">{o.advisor_name}</span>
+                <span className="text-[9px] text-[hsl(0_0%_100%/0.3)] ml-auto">
+                  Relevance: {Math.round(o.boardroom_relevance_score * 100)}%
+                </span>
+              </div>
+              <p className="text-[10px] text-[hsl(0_0%_100%/0.5)] mt-1 truncate">{o.recommendation}</p>
+            </div>
+          ))}
+          {outputs.length === 0 && (
+            <p className="text-[10px] text-[hsl(0_0%_100%/0.25)] text-center py-3">No advisor outputs yet — escalate an issue to trigger the pipeline</p>
+          )}
+        </div>
+      </div>
+
+      {/* Synthesis */}
+      {synthesis && (
+        <div className="rounded-xl border border-[hsl(280_50%_50%/0.15)] bg-[hsl(280_40%_50%/0.04)] p-4">
+          <p className="text-[11px] font-semibold text-[hsl(0_0%_100%/0.6)] mb-2">Board Synthesis</p>
+          <p className="text-[11px] text-[hsl(0_0%_100%/0.5)]">{synthesis.recommendation}</p>
+          <div className="mt-2 flex items-center gap-2 flex-wrap">
+            <span className="text-[9px] px-2 py-0.5 rounded-full bg-[hsl(0_0%_100%/0.05)]">
+              Trust: {synthesis.trust_state}
+            </span>
+            <span className="text-[9px] px-2 py-0.5 rounded-full bg-[hsl(0_0%_100%/0.05)]">
+              Modules: {synthesis.affected_modules.join(", ")}
+            </span>
+          </div>
+          {synthesis.disagreement_areas.length > 0 && (
+            <div className="mt-2 space-y-1">
+              {synthesis.disagreement_areas.map((d, i) => (
+                <p key={i} className="text-[9px] text-[hsl(var(--sita-gold))]">⚠ {d}</p>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export function BusinessAppShell() {
   const [activeModule, setActiveModule] = useState("crm");
-  const { pendingCount, decisionCount } = useBoardroomBridge("business");
+  const { pendingCount, decisionCount, synthesis } = useBoardroomBridge("business");
 
   return (
     <div className="flex h-full w-full bg-[hsl(220_15%_6%)]">
@@ -165,7 +249,7 @@ export function BusinessAppShell() {
           </span>
         </div>
 
-        <BoardroomStatusStrip pendingCount={pendingCount} decisionCount={decisionCount} />
+        <BoardroomStatusStrip pendingCount={pendingCount} decisionCount={decisionCount} synthesisScore={synthesis?.boardroom_worthiness_score} />
 
         <div className="flex-1 overflow-y-auto">
           <AnimatePresence mode="wait">
@@ -176,6 +260,10 @@ export function BusinessAppShell() {
             ) : activeModule === "boardroom" ? (
               <motion.div key="boardroom" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
                 <DomainBoardroomView domain="business" />
+              </motion.div>
+            ) : activeModule === "pipeline" ? (
+              <motion.div key="pipeline" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                <PipelineHealthView domain="business" />
               </motion.div>
             ) : (
               <motion.div key={activeModule} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex-1 flex items-center justify-center p-6 min-h-[300px]">
