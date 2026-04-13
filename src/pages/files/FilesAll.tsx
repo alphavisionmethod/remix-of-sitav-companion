@@ -123,7 +123,6 @@ const FilesAll = () => {
             <PremiumEmptyState variant="no-data" icon={FolderOpen}
               title={searchQuery ? "No files match your search" : "No files yet"}
               description={searchQuery ? "Try adjusting your search terms or filters" : "Upload files to get started — they'll be automatically classified and linked."}
-              actionLabel={searchQuery ? "Clear Search" : "Upload Files"}
             />
           ) : (
             filtered.map((file: Record<string, any>) => (
