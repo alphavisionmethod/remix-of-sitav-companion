@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/sidebar";
 import { motion, AnimatePresence } from "framer-motion";
 import { SidebarContextMenu } from "./shell/SidebarContextMenu";
-import { clearAppState } from "@/hooks/useAppStatePersistence";
+
 
 // ── Domain color map — vibrant macOS-style with brand purple/gold ─
 const domainColors: Record<string, { bg: string; ring: string }> = {
