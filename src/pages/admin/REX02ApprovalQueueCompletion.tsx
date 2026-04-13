@@ -63,6 +63,7 @@ export default function REX02ApprovalQueueCompletion() {
         <h1 className="text-2xl font-bold text-foreground">REX02 — Approval Queue Completion</h1>
         <p className="text-muted-foreground">Queue health, aging, bottlenecks, and decision latency.</p>
       </div>
+      <REXSubNav />
 
       <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
         {cards.map((card) => (

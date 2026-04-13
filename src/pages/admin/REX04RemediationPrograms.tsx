@@ -34,6 +34,7 @@ export default function REX04RemediationPrograms() {
         <h1 className="text-2xl font-bold text-foreground">REX04 — Remediation Programs</h1>
         <p className="text-muted-foreground">Strategic work programs grouping recommendations into focused execution.</p>
       </div>
+      <REXSubNav />
 
       <div className="grid grid-cols-3 gap-4">
         {[

@@ -72,6 +72,7 @@ export default function REX01RecommendationIntelligence() {
         <h1 className="text-2xl font-bold text-foreground">REX01 — Recommendation Intelligence</h1>
         <p className="text-muted-foreground">Volume, quality, acceptance rates, and execution binding across all recommendations.</p>
       </div>
+      <REXSubNav />
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
         {statusCards.map((card) => (

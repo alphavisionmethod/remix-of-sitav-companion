@@ -44,6 +44,7 @@ export default function REX03RecommendationExecution() {
         <h1 className="text-2xl font-bold text-foreground">REX03 — Recommendation → Execution</h1>
         <p className="text-muted-foreground">Per-recommendation lifecycle: status, approval, execution binding, outcome.</p>
       </div>
+      <REXSubNav />
 
       <Card className="bg-card border-border">
         <CardHeader><CardTitle className="text-foreground">Recommendations ({recs?.length || 0})</CardTitle></CardHeader>
