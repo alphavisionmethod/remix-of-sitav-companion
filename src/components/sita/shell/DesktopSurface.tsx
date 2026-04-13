@@ -3,7 +3,7 @@
 // Branded wallpaper + free-form widget canvas
 // ═══════════════════════════════════════════════════════════════
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
@@ -22,9 +22,9 @@ import {
   DesktopNotificationsWidget,
   DesktopQuickActionsWidget,
   DesktopSystemWidget,
+  DesktopWhatMattersWidget,
 } from "./desktop";
 import type { ContinuityContext, DesktopState } from "./useShellState";
-import { useEffect } from "react";
 
 interface DesktopSurfaceProps {
   onOpenCommand?: () => void;
@@ -142,6 +142,12 @@ function renderWidget(type: string, onOpenCommand?: () => void, continuity?: Con
       );
     case "continuity":
       return <ContinuityCard continuity={continuity ?? DEFAULT_CONTINUITY} />;
+    case "what-matters":
+      return (
+        <div className="w-[340px]">
+          <DesktopWhatMattersWidget />
+        </div>
+      );
     default:
       return null;
   }
@@ -154,7 +160,7 @@ export function DesktopSurface({
 }: DesktopSurfaceProps) {
   const navigate = useNavigate();
   const { activeId: wallpaperId } = useWallpaper();
-  const { widgets, hiddenWidgets, moveWidget, removeWidget, addWidget, resetWidgets, allTypes } = useDesktopWidgets();
+  const { widgets, hiddenWidgets, allWidgets, moveWidget, removeWidget, addWidget, resizeWidget, resetWidgets, allTypes } = useDesktopWidgets();
   const [pickerOpen, setPickerOpen] = useState(false);
 
   // Legacy window manager
@@ -166,7 +172,7 @@ export function DesktopSurface({
   const { openWindows } = useOSWindowContext();
   const hasAnyWindows = visibleWindows.length > 0 || openWindows.some(w => !w.isMinimized);
 
-  // Wallpaper base gradient (for non-sita-hero themed wallpapers)
+  // Wallpaper base gradient
   const wallpaperTheme = useWallpaper().theme;
   const baseGradient = wallpaperId === "sita-hero"
     ? "from-[hsl(230,60%,18%)] via-[hsl(260,50%,22%)] to-[hsl(280,45%,16%)]"
@@ -174,8 +180,14 @@ export function DesktopSurface({
       ? "from-[hsl(265,45%,12%)] via-[hsl(280,35%,8%)] to-[hsl(220,40%,6%)]"
       : wallpaperTheme.gradient || "from-[hsl(265,45%,12%)] via-[hsl(280,35%,8%)] to-[hsl(220,40%,6%)]";
 
+  // Right-click context menu handler
+  const handleContextMenu = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setPickerOpen(true);
+  };
+
   return (
-    <div className="fixed inset-0" onDoubleClick={() => onOpenCommand?.()}>
+    <div className="fixed inset-0" onDoubleClick={() => onOpenCommand?.()} onContextMenu={handleContextMenu}>
       {/* Layer 0: Deep gradient base */}
       <div className={cn("absolute inset-0 z-0 bg-gradient-to-br", baseGradient)} />
 
@@ -215,20 +227,22 @@ export function DesktopSurface({
             transition={{ delay: 1 }}
             onClick={() => setPickerOpen(true)}
             className="fixed bottom-24 left-6 z-20 flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.1] bg-white/[0.05] backdrop-blur-xl text-white/40 hover:text-white/80 hover:bg-white/[0.1] transition-all shadow-lg"
-            title="Add Widget"
+            title="Edit Widgets"
           >
             <Plus className="h-5 w-5" />
           </motion.button>
         )}
       </div>
 
-      {/* Widget Picker */}
+      {/* Widget Gallery */}
       <WidgetPicker
         open={pickerOpen}
         onClose={() => setPickerOpen(false)}
         hiddenWidgets={hiddenWidgets}
+        allWidgets={allWidgets}
         allTypes={allTypes}
-        onAdd={(type) => { addWidget(type); }}
+        onAdd={(type) => addWidget(type)}
+        onRemove={(id) => removeWidget(id)}
         onReset={() => { resetWidgets(); setPickerOpen(false); }}
       />
 

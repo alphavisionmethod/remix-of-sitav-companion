@@ -4,6 +4,7 @@ export interface WidgetInstance {
   id: string;
   type: string;
   label: string;
+  description: string;
   position: { x: number; y: number };
   visible: boolean;
   size: "sm" | "md" | "lg";
@@ -12,18 +13,26 @@ export interface WidgetInstance {
 const STORAGE_KEY = "sita-desktop-widgets";
 
 const DEFAULT_WIDGETS: WidgetInstance[] = [
-  { id: "clock", type: "clock", label: "Clock", position: { x: 48, y: 560 }, visible: true, size: "lg" },
-  { id: "quick-actions", type: "quick-actions", label: "Quick Actions", position: { x: 940, y: 40 }, visible: true, size: "md" },
-  { id: "system", type: "system", label: "System Toggles", position: { x: 940, y: 220 }, visible: true, size: "md" },
-  { id: "calendar", type: "calendar", label: "Calendar", position: { x: 940, y: 380 }, visible: true, size: "md" },
-  { id: "notifications", type: "notifications", label: "Notifications", position: { x: 940, y: 600 }, visible: true, size: "md" },
-  { id: "continuity", type: "continuity", label: "Continuity", position: { x: 600, y: 600 }, visible: true, size: "md" },
+  { id: "clock", type: "clock", label: "Clock", description: "Large time display with date", position: { x: 48, y: 560 }, visible: true, size: "lg" },
+  { id: "quick-actions", type: "quick-actions", label: "Quick Actions", description: "Shortcut grid to open apps and tools", position: { x: 940, y: 40 }, visible: true, size: "md" },
+  { id: "system", type: "system", label: "System Toggles", description: "WiFi, Bluetooth, display and sound controls", position: { x: 940, y: 220 }, visible: true, size: "md" },
+  { id: "calendar", type: "calendar", label: "Calendar", description: "Date card with upcoming schedule", position: { x: 940, y: 380 }, visible: true, size: "md" },
+  { id: "notifications", type: "notifications", label: "Notifications", description: "Recent alerts and notification feed", position: { x: 940, y: 600 }, visible: true, size: "md" },
+  { id: "continuity", type: "continuity", label: "Continuity", description: "Resume your last workspace session", position: { x: 600, y: 600 }, visible: true, size: "md" },
+  { id: "what-matters", type: "what-matters", label: "What Matters", description: "Priority items across business, finance and concierge", position: { x: 400, y: 300 }, visible: false, size: "md" },
 ];
 
 function loadWidgets(): WidgetInstance[] {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) return JSON.parse(saved);
+    if (saved) {
+      const parsed = JSON.parse(saved) as WidgetInstance[];
+      // Migrate old data without description field
+      return parsed.map(w => {
+        const def = DEFAULT_WIDGETS.find(d => d.type === w.type);
+        return { ...w, description: w.description || def?.description || "" };
+      });
+    }
   } catch {}
   return DEFAULT_WIDGETS;
 }
@@ -69,6 +78,14 @@ export function useDesktopWidgets() {
     });
   }, []);
 
+  const resizeWidget = useCallback((id: string, size: "sm" | "md" | "lg") => {
+    setWidgets(prev => {
+      const next = prev.map(w => w.id === id ? { ...w, size } : w);
+      saveWidgets(next);
+      return next;
+    });
+  }, []);
+
   const resetWidgets = useCallback(() => {
     saveWidgets(DEFAULT_WIDGETS);
     setWidgets(DEFAULT_WIDGETS);
@@ -77,5 +94,5 @@ export function useDesktopWidgets() {
   const visibleWidgets = widgets.filter(w => w.visible);
   const hiddenWidgets = widgets.filter(w => !w.visible);
 
-  return { widgets: visibleWidgets, hiddenWidgets, moveWidget, removeWidget, addWidget, resetWidgets, allTypes: DEFAULT_WIDGETS };
+  return { widgets: visibleWidgets, hiddenWidgets, allWidgets: widgets, moveWidget, removeWidget, addWidget, resizeWidget, resetWidgets, allTypes: DEFAULT_WIDGETS };
 }
