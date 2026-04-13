@@ -1,4 +1,3 @@
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { CalendarEventCard, ConflictCard, PrepCard, MemberAvatar } from "@/components/sita/HouseholdComponents";
@@ -6,7 +5,8 @@ import { ConciergeAdvisorInsightCard, ConciergePageWrapper } from "@/components/
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Calendar, Users, Clock, MapPin, AlertCircle, Heart, GraduationCap, Dumbbell, Stethoscope, Wrench, Car, Sparkles } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_conflicts, DEMO_events, DEMO_familyMembers, DEMO_prepItems, DEMO_transportDuties } from "@/lib/demo-data/concierge";
 
@@ -20,8 +20,7 @@ const FamilyCalendar = () => {
 
   return (
     <ConciergePageWrapper className="space-y-6">
-      <DemoModeBadge />
-      <SitaPageHeader title="Family Calendar" subtitle="Reconciled schedules — conflict-aware, prep-ready, ownership-clear" />
+      <PageTruthBanner />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
         <KPITile label="Events This Week" value={String(DEMO_events.length)} icon={Calendar} />
@@ -47,7 +46,7 @@ const FamilyCalendar = () => {
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2 space-y-6">
           {/* Week Strip */}
-          <SitaCard className="p-4">
+          <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift">
             <SitaCardTitle className="mb-3">This Week</SitaCardTitle>
             <div className="grid grid-cols-7 gap-1">
               {weekDays.map((day, i) => {
@@ -65,12 +64,12 @@ const FamilyCalendar = () => {
                 );
               })}
             </div>
-          </SitaCard>
+          </div>
 
           {/* Conflicts */}
           {(view === "week" || view === "conflicts") && DEMO_conflicts.length > 0 && (
             <div className="space-y-3">
-              <SitaSectionHeader title="Schedule Conflicts" subtitle="Overlapping or impossible schedules detected" />
+              <h3 className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[hsl(0_0%_50%)]">Schedule Conflicts</h3>
               {DEMO_conflicts.map((c, i) => (
                 <ConflictCard key={i} events={c.DEMO_events} resolution={c.resolution} />
               ))}
@@ -80,7 +79,7 @@ const FamilyCalendar = () => {
           {/* Events or Prep or Transport */}
           {(view === "week" || view === "day" || view === "family") && (
             <div className="space-y-3">
-              <SitaSectionHeader title="Upcoming Events" subtitle={`${DEMO_events.length} scheduled — with prep and ownership`} />
+              <h3 className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[hsl(0_0%_50%)]">Upcoming Events</h3>
               {DEMO_events.map((e) => (
                 <CalendarEventCard
                   key={e.id} title={e.title} time={e.time} who={e.who} location={e.location}
@@ -93,7 +92,7 @@ const FamilyCalendar = () => {
 
           {view === "prep" && (
             <div className="space-y-3">
-              <SitaSectionHeader title="Preparation Checklists" subtitle="What needs to be done before each event" />
+              <h3 className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[hsl(0_0%_50%)]">Preparation Checklists</h3>
               {DEMO_prepItems.map((p, i) => (
                 <PrepCard key={i} title={p.title} linkedEvent={p.linkedEvent} items={p.items} owner={p.owner} dueIn={p.dueIn} />
               ))}
@@ -102,9 +101,9 @@ const FamilyCalendar = () => {
 
           {view === "transport" && (
             <div className="space-y-3">
-              <SitaSectionHeader title="Transport & Carpool Duties" subtitle="Who drives where and when" />
+              <h3 className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[hsl(0_0%_50%)]">Transport & Carpool Duties</h3>
               {DEMO_transportDuties.map((t, i) => (
-                <SitaCard key={i} className="p-4">
+                <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift p-4" key={i} >
                   <div className="flex items-start gap-3">
                     <div className="rounded-xl bg-primary/8 p-2 shrink-0"><Car className="h-4 w-4 text-primary" /></div>
                     <div className="flex-1">
@@ -114,7 +113,7 @@ const FamilyCalendar = () => {
                       <p className="text-[10px] text-muted-foreground mt-0.5">Est. {t.duration}</p>
                     </div>
                   </div>
-                </SitaCard>
+                </div>
               ))}
             </div>
           )}
@@ -123,7 +122,7 @@ const FamilyCalendar = () => {
         {/* Right Column */}
         <div className="space-y-6">
           {/* Family Grid */}
-          <SitaCard className="p-4">
+          <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift">
             <SitaCardTitle className="mb-3">Family Members</SitaCardTitle>
             {DEMO_familyMembers.map((m) => (
               <div key={m.name} className="flex items-center gap-3 py-2.5 border-b border-border/30 last:border-0">
@@ -135,10 +134,10 @@ const FamilyCalendar = () => {
                 </div>
               </div>
             ))}
-          </SitaCard>
+          </div>
 
           {/* Schedule Pressure */}
-          <SitaCard hover={false} className="p-4">
+          <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift p-4" >
             <SitaCardTitle className="mb-3">Schedule Pressure</SitaCardTitle>
             <div className="space-y-2.5">
               {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map((day, i) => {
@@ -158,7 +157,7 @@ const FamilyCalendar = () => {
                 );
               })}
             </div>
-          </SitaCard>
+          </div>
 
           {/* Calendar Advisor */}
           <ConciergeAdvisorInsightCard insight={{

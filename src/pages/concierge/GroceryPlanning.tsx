@@ -1,4 +1,3 @@
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { GroceryContinuityCard } from "@/components/sita/HouseholdComponents";
@@ -6,7 +5,8 @@ import { ConciergeAdvisorInsightCard, ConciergePageWrapper, ConciergeEmptyState 
 import { ShoppingCart, Plus, Check, Clock, DollarSign, Leaf, AlertCircle, RotateCcw, Sparkles, Store, CalendarCheck, Plane } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useGroceryLists } from "@/hooks/use-concierge-data";
 import { DEMO_CONC_categories as DEMO_categories, DEMO_recurringSupplies, DEMO_stores } from "@/lib/demo-data/concierge";
@@ -54,8 +54,7 @@ const GroceryPlanning = () => {
 
   return (
     <ConciergePageWrapper className="space-y-6">
-      <DemoModeBadge />
-      <SitaPageHeader title="Grocery & Supplies" subtitle="Continuity engine — smart lists, recurring supply tracking, and errand optimization" />
+      <PageTruthBanner />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
         <KPITile label="Items" value={String(items.length)} icon={ShoppingCart} sub={`${checkedCount} checked`} />
@@ -81,7 +80,7 @@ const GroceryPlanning = () => {
         <div className="lg:col-span-2 space-y-4">
           {view === "recurring" && (
             <div className="space-y-3">
-              <SitaSectionHeader title="Recurring Supply Status" subtitle="Automatic tracking of household consumables" />
+              <h3 className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[hsl(0_0%_50%)]">Recurring Supply Status</h3>
               {DEMO_recurringSupplies.map((s, i) => (
                 <GroceryContinuityCard key={i} item={s.item} lastPurchased={s.lastPurchased} cycle={s.cycle} status={s.status} />
               ))}
@@ -102,14 +101,14 @@ const GroceryPlanning = () => {
                     </div>
                     <div className="space-y-1.5">
                       {storeItems.map((item) => (
-                        <SitaCard key={item.id} className="p-3">
+                        <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift p-3" key={item.id} >
                           <div className="flex items-center gap-3">
                             <button onClick={() => toggleItem(item.id)} className="h-5 w-5 rounded-md border-2 border-muted-foreground/30 hover:border-primary shrink-0 flex items-center justify-center transition-all" />
                             <span className="text-sm font-medium text-foreground flex-1">{item.name}</span>
                             <span className="text-xs text-muted-foreground">{item.quantity}</span>
                             <span className="text-xs font-medium text-foreground w-14 text-right">{item.estimated}</span>
                           </div>
-                        </SitaCard>
+                        </div>
                       ))}
                     </div>
                   </div>
@@ -120,8 +119,8 @@ const GroceryPlanning = () => {
 
           {view === "event-prep" && (
             <div className="space-y-3">
-              <SitaSectionHeader title="Event & Trip Shopping" subtitle="Items needed for upcoming events and travel" />
-              <SitaCard className="p-4">
+              <h3 className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[hsl(0_0%_50%)]">Event & Trip Shopping</h3>
+              <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift">
                 <div className="flex items-center gap-2 mb-2">
                   <Plane className="h-4 w-4 text-primary" />
                   <p className="text-sm font-semibold text-foreground">Spring Break Trip — Apr 10</p>
@@ -134,8 +133,8 @@ const GroceryPlanning = () => {
                     </div>
                   ))}
                 </div>
-              </SitaCard>
-              <SitaCard className="p-4">
+              </div>
+              <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift">
                 <div className="flex items-center gap-2 mb-2">
                   <CalendarCheck className="h-4 w-4 text-primary" />
                   <p className="text-sm font-semibold text-foreground">Mom's Birthday — Apr 14</p>
@@ -148,7 +147,7 @@ const GroceryPlanning = () => {
                     </div>
                   ))}
                 </div>
-              </SitaCard>
+              </div>
             </div>
           )}
 
@@ -167,7 +166,7 @@ const GroceryPlanning = () => {
                 </div>
                 <div className="space-y-1.5">
                   {catItems.map((item) => (
-                    <SitaCard key={item.id} className={`p-3 transition-opacity ${item.checked ? "opacity-50" : ""}`}>
+                    <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift" key={item.id} className={`p-3 transition-opacity ${item.checked ? "opacity-50" : ""}`}>
                       <div className="flex items-center gap-3">
                         <button onClick={() => toggleItem(item.id)} className={`h-5 w-5 rounded-md border-2 shrink-0 flex items-center justify-center transition-all ${item.checked ? "bg-primary border-primary" : "border-muted-foreground/30 hover:border-primary"}`}>
                           {item.checked && <Check className="h-3 w-3 text-primary-foreground" />}
@@ -186,7 +185,7 @@ const GroceryPlanning = () => {
                         <span className="text-xs text-muted-foreground shrink-0">{item.quantity}</span>
                         <span className="text-xs font-medium text-foreground shrink-0 w-14 text-right">{item.estimated}</span>
                       </div>
-                    </SitaCard>
+                    </div>
                   ))}
                 </div>
               </div>
@@ -196,16 +195,16 @@ const GroceryPlanning = () => {
 
         <div className="space-y-6">
           {/* Quick Add */}
-          <SitaCard className="p-4">
+          <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift">
             <SitaCardTitle className="mb-3">Quick Add</SitaCardTitle>
             <div className="flex gap-2">
               <input type="text" value={newItem} onChange={(e) => setNewItem(e.target.value)} placeholder="Add item..." className="flex-1 rounded-lg border border-border/50 bg-secondary/20 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/30" />
               <button className="rounded-lg bg-primary px-3 py-2 text-primary-foreground hover:bg-primary/90 transition-colors"><Plus className="h-4 w-4" /></button>
             </div>
-          </SitaCard>
+          </div>
 
           {/* Budget Summary */}
-          <SitaCard className="p-4">
+          <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift">
             <SitaCardTitle className="mb-3">Budget Summary</SitaCardTitle>
             <div className="space-y-2.5">
               <div className="flex justify-between"><span className="text-xs text-muted-foreground">Estimated total</span><span className="text-sm font-semibold text-foreground">${totalEstimate.toFixed(2)}</span></div>
@@ -216,10 +215,10 @@ const GroceryPlanning = () => {
               <p className="text-[10px] text-muted-foreground">Weekly average: $142 · This list is {Math.round(((totalEstimate - 142) / 142) * 100)}% {totalEstimate > 142 ? "over" : "under"} average</p>
               <p className="text-[10px] text-primary mt-1">↗ Cross-referenced with Money Center</p>
             </div>
-          </SitaCard>
+          </div>
 
           {/* Store Route */}
-          <SitaCard className="p-4">
+          <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift">
             <SitaCardTitle className="mb-3">Optimized Store Route</SitaCardTitle>
             <div className="space-y-2">
               {DEMO_stores.map((store, i) => {
@@ -236,7 +235,7 @@ const GroceryPlanning = () => {
                 );
               })}
             </div>
-          </SitaCard>
+          </div>
 
           {/* Grocery Advisor */}
           <ConciergeAdvisorInsightCard insight={{

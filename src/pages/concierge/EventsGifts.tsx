@@ -1,11 +1,11 @@
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { ConciergeAdvisorInsightCard, EventPrepCard, ConciergePageWrapper, ConciergeEmptyState } from "@/components/concierge";
 import type { EventPrep } from "@/components/concierge";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { useState } from "react";
 import { Gift, Heart, Calendar, PartyPopper, Star, Clock, CheckCircle, ShoppingBag, Mail } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useServiceProvidersList } from "@/hooks/use-concierge-data";
 
@@ -59,8 +59,7 @@ const EventsGifts = () => {
 
   return (
     <ConciergePageWrapper className="space-y-6">
-      <DemoModeBadge />
-      <SitaPageHeader title="Events & Gifts" subtitle="Birthdays, milestones, relationship continuity, and thoughtful follow-ups" />
+      <PageTruthBanner />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KPITile label="Next 30 Days" value={String(upcoming30)} icon={Calendar} />
@@ -89,7 +88,7 @@ const EventsGifts = () => {
         {filtered.map(ev => {
           const Icon = catIcon(ev.category);
           return (
-            <SitaCard key={ev.id} className="p-4">
+            <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift p-4" key={ev.id} >
               <div className="flex items-start gap-4">
                 <div className="rounded-xl bg-primary/8 p-2.5 shrink-0">
                   <Icon className="h-4 w-4 text-primary" />
@@ -119,7 +118,7 @@ const EventsGifts = () => {
                   )}
                 </div>
               </div>
-            </SitaCard>
+            </div>
           );
         })}
       </div>
@@ -147,7 +146,7 @@ const EventsGifts = () => {
         {filtered.map(ev => {
           const Icon = catIcon(ev.category);
           return (
-            <SitaCard key={ev.id} className="p-4">
+            <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift p-4" key={ev.id} >
               <div className="flex items-start gap-4">
                 <div className="rounded-xl bg-primary/8 p-2.5 shrink-0">
                   <Icon className="h-4 w-4 text-primary" />
@@ -177,7 +176,7 @@ const EventsGifts = () => {
                   )}
                 </div>
               </div>
-            </SitaCard>
+            </div>
           );
         })}
       </div>
@@ -186,7 +185,7 @@ const EventsGifts = () => {
       {/* Event Prep Cards for planning board */}
       {view === "board" && (
         <div className="space-y-3 mt-4">
-          <SitaSectionHeader title="Event Prep Cards" subtitle="Detailed preparation view" />
+          <h3 className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[hsl(0_0%_50%)]">Event Prep Cards</h3>
           {filtered.map(ev => (
             <EventPrepCard key={ev.id} event={{
               id: ev.id,

@@ -1,5 +1,4 @@
 import { useAction } from "@/hooks/use-action";
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { MemberAvatar } from "@/components/sita/HouseholdComponents";
@@ -15,7 +14,8 @@ import {
   CheckSquare, Clock, AlertTriangle, Home, Wrench, ShoppingCart, Car, FileText, Plus,
   Users, GraduationCap, Stethoscope, ArrowUpRight, RotateCcw, Sparkles, Shield, X, Trash2, Check
 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 type ViewFilter = "all" | "today" | "this-week" | "overdue" | "by-person" | "high-priority";
@@ -107,24 +107,21 @@ const HouseholdTasks = () => {
 
   return (
     <ConciergePageWrapper className="space-y-6">
-      <DemoModeBadge />
-      <SitaPageHeader
-        title="Household Tasks"
-        subtitle="Organized, prioritized, delegated — with proof and escalation"
-        actions={
-          <button onClick={() => setShowAdd(true)} className="flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90 transition-colors">
-            <Plus className="h-3.5 w-3.5" /> Add Task
-          </button>
-        }
-      />
+      <PageTruthBanner />
+      <div className="flex items-center justify-between">
+        <div />
+        <button onClick={() => setShowAdd(true)} className="micro-press flex items-center gap-1.5 rounded-lg bg-[hsl(265_55%_58%)] px-3 py-1.5 text-xs font-medium text-white hover:bg-[hsl(265_55%_52%)] transition-colors">
+          <Plus className="h-3.5 w-3.5" /> Add Task
+        </button>
+      </div>
 
       {/* Add Task Panel */}
       <AnimatePresence>
         {showAdd && (
           <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.2 }}>
-            <SitaCard className="p-5">
+            <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-5 micro-hover-lift">
               <div className="flex items-center justify-between mb-4">
-                <SitaCardTitle>New Task</SitaCardTitle>
+                <h4 className="text-[13px] font-semibold text-[hsl(0_0%_85%)]">New Task</h4>
                 <button onClick={() => setShowAdd(false)} className="text-muted-foreground hover:text-foreground"><X className="h-4 w-4" /></button>
               </div>
               <div className="grid gap-3 sm:grid-cols-2">
@@ -146,7 +143,7 @@ const HouseholdTasks = () => {
                   {addTask.isPending ? "Adding..." : "Add Task"}
                 </button>
               </div>
-            </SitaCard>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -192,7 +189,7 @@ const HouseholdTasks = () => {
                 const overdue = isOverdue(t.due_date) && t.status !== "done";
                 return (
                   <motion.div key={t.id} variants={fadeUp} layout>
-                    <SitaCard lane={overdue ? "action" : undefined} className="p-4">
+                    <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift p-4" lane={overdue ? "action" : undefined} >
                       <div className="flex items-start gap-3">
                         <button
                           onClick={() => updateStatus.mutate({ id: t.id, status: t.status === "done" ? "todo" : "done" })}
@@ -229,7 +226,7 @@ const HouseholdTasks = () => {
                           </div>
                         </div>
                       </div>
-                    </SitaCard>
+                    </div>
                   </motion.div>
                 );
               })}
@@ -239,7 +236,7 @@ const HouseholdTasks = () => {
 
         <motion.div className="space-y-6" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2, duration: 0.3 }}>
           {/* By Category Summary */}
-          <SitaCard className="p-4">
+          <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift">
             <SitaCardTitle className="mb-3">By Category</SitaCardTitle>
             <div className="space-y-2">
               {["Errands", "Home Maintenance", "School", "Health", "Admin", "Events", "Shopping", "Vehicle", "General"].map((cat) => {
@@ -253,7 +250,7 @@ const HouseholdTasks = () => {
                 );
               })}
             </div>
-          </SitaCard>
+          </div>
 
           {/* Task Advisor */}
           <ConciergeAdvisorInsightCard insight={{

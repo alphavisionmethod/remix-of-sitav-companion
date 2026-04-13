@@ -1,5 +1,5 @@
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { ConciergePageWrapper } from "@/components/concierge";
+import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
 import { KPITile, SitaTabs } from "@/components/sita/SitaComponents";
 import { GlassCard } from "@/components/sita/PremiumPageComponents";
 import { ConciergeAdvisorInsightCard } from "@/components/concierge";
@@ -102,7 +102,6 @@ const ErrandsLogistics = () => {
   return (
     <ConciergePageWrapper className="space-y-6">
       <div className="flex items-center justify-between">
-        <SitaPageHeader title="Errands & Logistics" subtitle="Intelligent sequencing — batch, combine, and reduce friction" />
         <AddErrandDialog />
       </div>
 
@@ -140,12 +139,12 @@ const ErrandsLogistics = () => {
 
           {view === "quick-wins" && (
             <div className="space-y-3">
-              <SitaSectionHeader title="Quick Wins" subtitle="Handle from home or online — low effort, high value" />
+              <h3 className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[hsl(0_0%_50%)]">Quick Wins</h3>
               {quickWinErrands.length === 0 && (
                 <p className="text-xs text-muted-foreground px-2">No quick wins right now.</p>
               )}
               {quickWinErrands.map((e) => (
-                <SitaCard key={e.id} className="p-4">
+                <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift p-4" key={e.id} >
                   <div className="flex items-center gap-3">
                     <div className={`h-2 w-2 rounded-full shrink-0 ${e.priority === "high" ? "bg-destructive" : e.priority === "medium" ? "bg-amber-500" : "bg-chart-2"}`} />
                     <div className="flex-1">
@@ -159,16 +158,16 @@ const ErrandsLogistics = () => {
                       Done
                     </button>
                   </div>
-                </SitaCard>
+                </div>
               ))}
             </div>
           )}
 
           {view === "all" && allErrands.length > 0 && (
             <div className="space-y-2">
-              <SitaSectionHeader title="All Errands" subtitle={`${allErrands.length} items across ${bundles.length} groups`} />
+              <h3 className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[hsl(0_0%_50%)]">All Errands</h3>
               {allErrands.map((e) => (
-                <SitaCard key={e.id} className="p-3.5">
+                <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift p-3.5" key={e.id} >
                   <div className="flex items-center gap-3">
                     <button onClick={() => handleToggleDone(e.id)} className="shrink-0">
                       <CheckCircle className={`h-4 w-4 ${(e as any).status === "done" ? "text-chart-2" : "text-muted-foreground/30"}`} />
@@ -181,14 +180,14 @@ const ErrandsLogistics = () => {
                     {e.combinable && <span className="text-[9px] bg-accent/10 text-accent rounded-full px-1.5 py-0.5">combinable</span>}
                     <button onClick={() => handleDelete(e.id)} className="shrink-0 text-muted-foreground/30 hover:text-destructive transition-colors text-xs">✕</button>
                   </div>
-                </SitaCard>
+                </div>
               ))}
             </div>
           )}
         </div>
 
         <div className="space-y-4">
-          <GlassCard glow="accent" intensity="subtle" className="p-4">
+          <GlassCard="accent" intensity="subtle" className="p-4">
             <div className="flex items-center gap-2 mb-2">
               <Car className="h-4 w-4 text-accent" />
               <p className="text-xs font-semibold text-foreground">Route Suggestion</p>
@@ -200,10 +199,10 @@ const ErrandsLogistics = () => {
             </p>
           </GlassCard>
 
-          <SitaCard className="p-4">
+          <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift">
             <div className="flex items-center gap-2 mb-2">
               <Zap className="h-4 w-4 text-primary" />
-              <SitaCardTitle>Can Be Combined</SitaCardTitle>
+              <h4 className="text-[13px] font-semibold text-[hsl(0_0%_85%)]">Can Be Combined</h4>
             </div>
             <div className="space-y-1.5">
               {allErrands.filter((e) => e.combinable).length === 0 && (
@@ -216,7 +215,7 @@ const ErrandsLogistics = () => {
                 </div>
               ))}
             </div>
-          </SitaCard>
+          </div>
 
           <ConciergeAdvisorInsightCard insight={{
             role: "Logistics Advisor",

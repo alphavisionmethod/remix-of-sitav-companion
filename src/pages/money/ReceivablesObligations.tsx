@@ -1,9 +1,10 @@
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
-import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
+import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
+import { QueueCard } from "@/components/sita/cards";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useState, useMemo } from "react";
 import {
@@ -14,7 +15,6 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { useInvoices, useBills } from "@/hooks/use-sita-data";
 
-/* ── Demo augmentation for aging + collection data ── */
 const DEMO_RECEIVABLES = [
   { id: "DR01", source: "Acme Corp", initials: "AC", amount: 4200, invoiceNum: "INV-1042", daysOverdue: 45, status: "overdue" as const, lastContact: "Mar 28", remindersSent: 2, contactName: "Sarah Chen", contactEmail: "sarah@acme.co", notes: "Promised payment by Apr 15" },
   { id: "DR02", source: "TechStart Inc", initials: "TS", amount: 1850, invoiceNum: "INV-1038", daysOverdue: 62, status: "overdue" as const, lastContact: "Mar 15", remindersSent: 3, contactName: "Mike Rodriguez", contactEmail: "mike@techstart.io", notes: "Disputing line item #3" },
@@ -37,10 +37,7 @@ const getAgingBucket = (daysOverdue: number): AgingBucket => {
 };
 
 const BUCKET_COLORS: Record<AgingBucket, string> = {
-  current: "bg-trust-verified",
-  "30": "bg-trust-review",
-  "60": "bg-urgency-medium",
-  "90+": "bg-urgency-high",
+  current: "bg-[hsl(152_55%_48%)]", "30": "bg-[hsl(38_85%_58%)]", "60": "bg-[hsl(25_80%_50%)]", "90+": "bg-[hsl(0_70%_55%)]",
 };
 
 const ReceivablesObligations = () => {
@@ -49,7 +46,6 @@ const ReceivablesObligations = () => {
   const { data: invoices = [], isLoading: invLoading } = useInvoices();
   const { data: bills = [], isLoading: billsLoading } = useBills();
 
-  /* Merge demo data with DB data */
   const receivables = useMemo(() => {
     const dbItems = invoices.filter((i: Record<string, any>) => i.status !== "paid").map((i: Record<string, any>) => {
       const now = new Date();
@@ -89,30 +85,17 @@ const ReceivablesObligations = () => {
   const overdueItems = receivables.filter(r => r.status === "overdue");
   const collectionsItems = receivables.filter(r => r.daysOverdue >= 60);
 
-  /* Aging buckets */
   const agingData = useMemo(() => {
     const buckets: Record<AgingBucket, typeof receivables> = { current: [], "30": [], "60": [], "90+": [] };
     receivables.forEach(r => buckets[getAgingBucket(r.daysOverdue)].push(r));
     return buckets;
   }, [receivables]);
 
-  /* Expected cash timeline */
-  const timelineWeeks = useMemo(() => {
-    const weeks = [
-      { label: "This Week", items: receivables.filter(r => r.daysOverdue <= 0 && r.daysOverdue > -7) },
-      { label: "Next Week", items: receivables.filter(r => r.daysOverdue <= -7 && r.daysOverdue > -14) },
-      { label: "2-4 Weeks", items: receivables.filter(r => r.daysOverdue <= -14 && r.daysOverdue > -28) },
-      { label: "Overdue (action needed)", items: overdueItems },
-    ];
-    return weeks;
-  }, [receivables, overdueItems]);
-
   if (invLoading || billsLoading) return <SectionSkeleton cards={4} columns={1} />;
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
       <PageTruthBanner />
-      <SitaPageHeader title="Receivables & Obligations" subtitle="Cash recovery, aging analysis, and obligation tracking" />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KPITile label="Total Receivable" value={`$${(totalReceivable / 1000).toFixed(1)}K`} icon={ArrowDownLeft} sub={`${receivables.length} invoices`} />
@@ -128,51 +111,39 @@ const ReceivablesObligations = () => {
           { key: "reminders", label: "Reminders", count: overdueItems.length },
           { key: "collections", label: "Collections", count: collectionsItems.length },
           { key: "obligations", label: "Obligations", count: obligations.length },
-          { key: "timeline", label: "Cash Timeline" },
         ]}
         active={tab}
         onChange={(t) => { setTab(t as ViewTab); setSelectedId(null); }}
       />
 
       <div className="grid gap-6 lg:grid-cols-5">
-        {/* ── Main content area ── */}
         <div className={`space-y-3 ${selected ? "lg:col-span-3" : "lg:col-span-5"}`}>
 
-          {/* Receivables list */}
-          {tab === "receivables" && receivables.map((r) => (
-            <SitaCard key={r.id} lane={r.status === "overdue" ? "action" : "opportunity"}
-              className={`p-4 cursor-pointer ${selectedId === r.id ? "ring-2 ring-primary/40" : ""}`}
-              onClick={() => setSelectedId(r.id)}
-            >
-              <div className="flex items-center justify-between gap-3">
-                <div className="flex items-center gap-3 flex-1 min-w-0">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-trust-verified/8 font-display text-sm font-semibold text-trust-verified shrink-0">{r.initials}</div>
-                  <div className="min-w-0">
-                    <p className="text-sm font-medium text-foreground">{r.source}</p>
-                    <p className="text-xs text-muted-foreground">{r.invoiceNum} · {r.status === "overdue" ? `${r.daysOverdue}d overdue` : `Due in ${Math.abs(r.daysOverdue)}d`} · {r.remindersSent} reminders</p>
-                  </div>
-                </div>
-                <div className="text-right shrink-0">
-                  <p className="font-display text-sm font-bold text-foreground">${r.amount.toLocaleString()}</p>
-                  <TrustBadge level={r.status === "overdue" ? (r.daysOverdue >= 60 ? "blocked" : "degraded") : "review"} label={r.status === "overdue" ? `${r.daysOverdue}d late` : "Expected"} size="sm" />
-                </div>
-              </div>
-            </SitaCard>
-          ))}
+          {tab === "receivables" && (
+            <QueueCard
+              title="Receivables"
+              items={receivables.map(r => ({
+                id: r.id,
+                label: `${r.source} — ${r.invoiceNum}`,
+                meta: `$${r.amount.toLocaleString()} · ${r.status === "overdue" ? `${r.daysOverdue}d overdue` : `Due in ${Math.abs(r.daysOverdue)}d`}`,
+                urgency: r.daysOverdue >= 60 ? "critical" as const : r.daysOverdue > 0 ? "high" as const : "normal" as const,
+              }))}
+              maxVisible={15}
+              onItemClick={(id) => setSelectedId(id)}
+            />
+          )}
 
-          {/* Aging view */}
           {tab === "aging" && (
             <div className="space-y-4">
-              {/* Aging bar */}
-              <SitaCard hover={false} className="p-5">
-                <SitaCardTitle>Aging Summary</SitaCardTitle>
-                <div className="mt-4 flex h-8 rounded-lg overflow-hidden">
+              <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-5">
+                <h4 className={SITA_TYPE.cardTitle + " text-[hsl(0_0%_85%)] mb-4"}>Aging Summary</h4>
+                <div className="flex h-8 rounded-lg overflow-hidden">
                   {(["current", "30", "60", "90+"] as AgingBucket[]).map(bucket => {
                     const total = agingData[bucket].reduce((s, r) => s + r.amount, 0);
                     const pct = totalReceivable > 0 ? (total / totalReceivable) * 100 : 0;
                     if (pct === 0) return null;
                     return (
-                      <div key={bucket} className={`${BUCKET_COLORS[bucket]} flex items-center justify-center text-[10px] font-bold text-primary-foreground`} style={{ width: `${pct}%` }}>
+                      <div key={bucket} className={`${BUCKET_COLORS[bucket]} flex items-center justify-center text-[10px] font-bold text-white`} style={{ width: `${pct}%` }}>
                         {pct > 10 && `${bucket === "current" ? "Current" : bucket + "d"}`}
                       </div>
                     );
@@ -181,252 +152,148 @@ const ReceivablesObligations = () => {
                 <div className="mt-3 grid grid-cols-4 gap-2 text-center">
                   {(["current", "30", "60", "90+"] as AgingBucket[]).map(bucket => (
                     <div key={bucket}>
-                      <p className="text-[10px] text-muted-foreground uppercase">{bucket === "current" ? "Current" : `${bucket} Days`}</p>
-                      <p className="font-display text-sm font-bold">${agingData[bucket].reduce((s, r) => s + r.amount, 0).toLocaleString()}</p>
-                      <p className="text-[10px] text-muted-foreground">{agingData[bucket].length} items</p>
+                      <p className="text-[10px] text-[hsl(0_0%_50%)] uppercase">{bucket === "current" ? "Current" : `${bucket} Days`}</p>
+                      <p className="text-sm font-bold text-[hsl(0_0%_85%)]">${agingData[bucket].reduce((s, r) => s + r.amount, 0).toLocaleString()}</p>
+                      <p className="text-[10px] text-[hsl(0_0%_45%)]">{agingData[bucket].length} items</p>
                     </div>
                   ))}
                 </div>
-              </SitaCard>
+              </div>
 
               {(["90+", "60", "30", "current"] as AgingBucket[]).map(bucket => agingData[bucket].length > 0 && (
-                <div key={bucket}>
-                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">{bucket === "current" ? "Current" : `${bucket} Days Overdue`} — ${agingData[bucket].reduce((s, r) => s + r.amount, 0).toLocaleString()}</p>
-                  {agingData[bucket].map(r => (
-                    <SitaCard key={r.id} lane={bucket === "90+" ? "action" : bucket === "60" ? "action" : undefined} className="p-3 mb-2 cursor-pointer" onClick={() => { setSelectedId(r.id); }}>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <div className={`h-2 w-2 rounded-full ${BUCKET_COLORS[bucket]}`} />
-                          <span className="text-sm font-medium">{r.source}</span>
-                          <span className="text-xs text-muted-foreground">{r.invoiceNum}</span>
-                        </div>
-                        <span className="font-display text-sm font-bold">${r.amount.toLocaleString()}</span>
-                      </div>
-                    </SitaCard>
-                  ))}
-                </div>
+                <QueueCard
+                  key={bucket}
+                  title={`${bucket === "current" ? "Current" : `${bucket} Days Overdue`} — $${agingData[bucket].reduce((s, r) => s + r.amount, 0).toLocaleString()}`}
+                  items={agingData[bucket].map(r => ({
+                    id: r.id, label: r.source, meta: `$${r.amount.toLocaleString()}`,
+                    urgency: bucket === "90+" ? "critical" as const : bucket === "60" ? "high" as const : "normal" as const,
+                  }))}
+                  onItemClick={(id) => setSelectedId(id)}
+                />
               ))}
             </div>
           )}
 
-          {/* Reminders tab — draft preparation */}
           {tab === "reminders" && (
             <div className="space-y-3">
               {overdueItems.length === 0 ? (
                 <EmptyState icon={Mail} title="No reminders needed" description="All invoices are current" />
               ) : overdueItems.map(r => (
-                <SitaCard key={r.id} lane="action" className="p-4">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <p className="text-sm font-medium">{r.source}</p>
-                        <TrustBadge level={r.daysOverdue >= 60 ? "blocked" : "degraded"} label={`${r.daysOverdue}d overdue`} size="sm" />
-                      </div>
-                      <p className="text-xs text-muted-foreground mt-1">{r.invoiceNum} · ${r.amount.toLocaleString()} · {r.remindersSent} reminders sent · Last: {r.lastContact}</p>
-                      {r.notes && <p className="text-xs text-accent mt-1">Note: {r.notes}</p>}
-
-                      <div className="mt-3 rounded-xl bg-secondary/30 p-3">
-                        <div className="flex items-start gap-2">
-                          <Sparkles className="h-3.5 w-3.5 text-accent mt-0.5 shrink-0" />
-                          <div>
-                            <p className="text-[10px] font-medium text-foreground uppercase tracking-wider">Draft Reminder</p>
-                            <p className="text-xs text-muted-foreground mt-1">
-                              Hi {r.contactName.split(" ")[0]}, this is a friendly reminder that {r.invoiceNum} for ${r.amount.toLocaleString()} is now {r.daysOverdue} days past due.
-                              {r.daysOverdue >= 60 ? " We'd appreciate your prompt attention to this matter." : " Please let us know if you have any questions."}
-                            </p>
-                          </div>
-                        </div>
-                      </div>
+                <div key={r.id} className="rounded-xl border border-[hsl(0_70%_55%/0.15)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift">
+                  <div className="flex items-center gap-2 mb-2">
+                    <p className={SITA_TYPE.cardTitle + " text-[hsl(0_0%_85%)]"}>{r.source}</p>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-[hsl(0_70%_55%/0.12)] text-[hsl(0_70%_55%)]">{r.daysOverdue}d overdue</span>
+                  </div>
+                  <p className={SITA_TYPE.timelineMeta}>{r.invoiceNum} · ${r.amount.toLocaleString()} · {r.remindersSent} reminders sent</p>
+                  <div className="mt-3 rounded-lg bg-[hsl(0_0%_100%/0.04)] p-3">
+                    <div className="flex items-start gap-2">
+                      <Sparkles className="h-3.5 w-3.5 text-[hsl(265_55%_58%)] mt-0.5 shrink-0" />
+                      <p className="text-xs text-[hsl(0_0%_60%)]">
+                        Hi {r.contactName.split(" ")[0]}, this is a friendly reminder that {r.invoiceNum} for ${r.amount.toLocaleString()} is now {r.daysOverdue} days past due.
+                      </p>
                     </div>
                   </div>
                   <div className="mt-3 flex gap-2">
-                    <SitaButton variant="accent" size="sm"><Send className="h-3 w-3" /> Approve & Send</SitaButton>
-                    <SitaButton variant="secondary" size="sm"><Mail className="h-3 w-3" /> Edit Draft</SitaButton>
-                    <SitaButton variant="ghost" size="sm"><Phone className="h-3 w-3" /> Call Instead</SitaButton>
+                    <button className="micro-press flex items-center gap-1 rounded-lg bg-[hsl(152_55%_48%/0.12)] px-3 py-1.5 text-xs text-[hsl(152_55%_48%)] hover:bg-[hsl(152_55%_48%/0.20)] transition-colors"><Send className="h-3 w-3" /> Send</button>
+                    <button className="micro-press flex items-center gap-1 rounded-lg bg-[hsl(0_0%_100%/0.04)] px-3 py-1.5 text-xs text-[hsl(0_0%_60%)] hover:bg-[hsl(0_0%_100%/0.08)] transition-colors"><Mail className="h-3 w-3" /> Edit</button>
+                    <button className="micro-press flex items-center gap-1 rounded-lg bg-[hsl(0_0%_100%/0.04)] px-3 py-1.5 text-xs text-[hsl(0_0%_60%)] hover:bg-[hsl(0_0%_100%/0.08)] transition-colors"><Phone className="h-3 w-3" /> Call</button>
                   </div>
-                </SitaCard>
+                </div>
               ))}
             </div>
           )}
 
-          {/* Collections tab */}
           {tab === "collections" && (
             <div className="space-y-3">
               {collectionsItems.length === 0 ? (
                 <EmptyState icon={Shield} title="No collections needed" description="No invoices are 60+ days overdue" />
               ) : (
-                <>
-                  <SitaCard hover={false} className="p-4 gradient-sita-subtle">
-                    <div className="flex items-center gap-3">
-                      <Shield className="h-5 w-5 text-urgency-high" />
-                      <div>
-                        <p className="text-sm font-semibold text-foreground">Collections Queue — ${collectionsItems.reduce((s, r) => s + r.amount, 0).toLocaleString()} at risk</p>
-                        <p className="text-xs text-muted-foreground">{collectionsItems.length} accounts past 60 days. Escalation recommended.</p>
-                      </div>
-                    </div>
-                  </SitaCard>
-                  {collectionsItems.sort((a, b) => b.daysOverdue - a.daysOverdue).map(r => (
-                    <SitaCard key={r.id} lane="action" className="p-4 cursor-pointer" onClick={() => setSelectedId(r.id)}>
-                      <div className="flex items-center justify-between gap-3">
-                        <div className="flex items-center gap-3 flex-1">
-                          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-urgency-high/10 font-display text-sm font-semibold text-urgency-high shrink-0">{r.initials}</div>
-                          <div>
-                            <p className="text-sm font-medium">{r.source}</p>
-                            <p className="text-xs text-muted-foreground">{r.invoiceNum} · {r.daysOverdue} days overdue · {r.remindersSent} reminders</p>
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          <p className="font-display text-sm font-bold">${r.amount.toLocaleString()}</p>
-                          <p className="text-[10px] text-urgency-high font-medium">{r.daysOverdue >= 90 ? "ESCALATE" : "FOLLOW UP"}</p>
-                        </div>
-                      </div>
-                      {/* Escalation ladder */}
-                      <div className="mt-3 flex items-center gap-1 text-[10px]">
-                        {["Reminder", "Follow-up", "Final Notice", "Collections"].map((step, i) => {
-                          const activeStep = r.daysOverdue >= 90 ? 3 : r.daysOverdue >= 60 ? 2 : r.daysOverdue >= 30 ? 1 : 0;
-                          return (
-                            <div key={step} className="flex items-center gap-1">
-                              <div className={`px-2 py-0.5 rounded-full ${i <= activeStep ? "bg-urgency-high/20 text-urgency-high font-medium" : "bg-secondary text-muted-foreground"}`}>{step}</div>
-                              {i < 3 && <ChevronRight className="h-3 w-3 text-muted-foreground" />}
-                            </div>
-                          );
-                        })}
-                      </div>
-                    </SitaCard>
-                  ))}
-                </>
+                <QueueCard
+                  title={`Collections Queue — $${collectionsItems.reduce((s, r) => s + r.amount, 0).toLocaleString()} at risk`}
+                  items={collectionsItems.sort((a, b) => b.daysOverdue - a.daysOverdue).map(r => ({
+                    id: r.id, label: `${r.source} — ${r.invoiceNum}`,
+                    meta: `$${r.amount.toLocaleString()} · ${r.daysOverdue}d overdue`,
+                    urgency: r.daysOverdue >= 90 ? "critical" as const : "high" as const,
+                  }))}
+                  onItemClick={(id) => setSelectedId(id)}
+                />
               )}
             </div>
           )}
 
-          {/* Obligations */}
           {tab === "obligations" && (
             <div className="space-y-2">
               {obligations.length === 0 ? (
                 <EmptyState icon={ArrowUpRight} title="No pending obligations" description="All bills are paid" />
-              ) : obligations.map((o) => (
-                <SitaCard key={o.id} lane={o.status === "due" ? "action" : undefined} className="p-4">
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-foreground">{o.payee}</p>
-                      <p className="text-xs text-muted-foreground">{o.type} · {o.recurring ? "Recurring" : "One-time"} · Due {o.due}</p>
-                    </div>
-                    <div className="text-right shrink-0">
-                      <p className="font-display text-sm font-bold text-foreground">${o.amount.toLocaleString()}</p>
-                      <TrustBadge level={o.status === "due" ? "degraded" : o.status === "overdue" ? "blocked" : "review"} label={o.status} size="sm" />
-                    </div>
-                  </div>
-                </SitaCard>
-              ))}
-            </div>
-          )}
-
-          {/* Expected cash timeline */}
-          {tab === "timeline" && (
-            <div className="space-y-4">
-              <SitaCard hover={false} className="p-5">
-                <SitaCardTitle>Expected Cash Inflow Timeline</SitaCardTitle>
-                <p className="text-xs text-muted-foreground mt-1">Projected receivables by collection window</p>
-                <div className="mt-4 flex h-6 rounded-lg overflow-hidden">
-                  {timelineWeeks.map((w, i) => {
-                    const total = w.items.reduce((s, r) => s + r.amount, 0);
-                    const pct = totalReceivable > 0 ? (total / totalReceivable) * 100 : 0;
-                    if (pct === 0) return null;
-                    const colors = ["bg-trust-verified", "bg-trust-review", "bg-accent", "bg-urgency-high"];
-                    return <div key={i} className={`${colors[i]} flex items-center justify-center text-[9px] font-bold text-primary-foreground`} style={{ width: `${pct}%` }} />;
-                  })}
-                </div>
-              </SitaCard>
-              {timelineWeeks.map((w, i) => w.items.length > 0 && (
-                <div key={i}>
-                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">{w.label} — ${w.items.reduce((s, r) => s + r.amount, 0).toLocaleString()}</p>
-                  {w.items.map(r => (
-                    <SitaCard key={r.id} className="p-3 mb-2 cursor-pointer" onClick={() => setSelectedId(r.id)}>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium">{r.source}</span>
-                        <span className="font-display text-sm font-bold">${r.amount.toLocaleString()}</span>
-                      </div>
-                    </SitaCard>
-                  ))}
-                </div>
-              ))}
+              ) : (
+                <QueueCard
+                  title="Obligations"
+                  items={obligations.map(o => ({
+                    id: o.id, label: o.payee,
+                    meta: `$${o.amount.toLocaleString()} · Due ${o.due}`,
+                    urgency: o.status === "overdue" ? "critical" as const : o.status === "due" ? "high" as const : "normal" as const,
+                  }))}
+                />
+              )}
             </div>
           )}
         </div>
 
-        {/* ── Detail sidebar ── */}
         <AnimatePresence>
           {selected && (
             <motion.div className="lg:col-span-2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }}>
-              <SitaCard hover={false} className="p-5 sticky top-4 space-y-4">
+              <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_12%)] p-5 sticky top-4 space-y-4">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-display text-base font-bold">{selected.source}</h3>
-                  <button onClick={() => setSelectedId(null)} className="text-xs text-muted-foreground hover:text-foreground">✕</button>
+                  <h3 className={SITA_TYPE.cardTitle + " text-[hsl(0_0%_90%)]"}>{selected.source}</h3>
+                  <button onClick={() => setSelectedId(null)} className="text-xs text-[hsl(0_0%_50%)] hover:text-[hsl(0_0%_80%)]">✕</button>
                 </div>
 
                 <div className="grid grid-cols-2 gap-3 text-sm">
-                  <div><span className="text-muted-foreground text-xs">Invoice</span><p className="font-semibold">{selected.invoiceNum}</p></div>
-                  <div><span className="text-muted-foreground text-xs">Amount</span><p className="font-semibold">${selected.amount.toLocaleString()}</p></div>
-                  <div><span className="text-muted-foreground text-xs">Status</span>
-                    <TrustBadge level={selected.status === "overdue" ? "degraded" : "review"} label={selected.status === "overdue" ? `${selected.daysOverdue}d overdue` : "Expected"} size="sm" />
+                  <div><span className="text-[hsl(0_0%_45%)] text-xs">Invoice</span><p className="font-semibold text-[hsl(0_0%_90%)]">{selected.invoiceNum}</p></div>
+                  <div><span className="text-[hsl(0_0%_45%)] text-xs">Amount</span><p className="font-semibold text-[hsl(0_0%_90%)]">${selected.amount.toLocaleString()}</p></div>
+                  <div><span className="text-[hsl(0_0%_45%)] text-xs">Status</span>
+                    <span className={`text-[10px] px-2 py-0.5 rounded-full ${selected.status === "overdue" ? "bg-[hsl(0_70%_55%/0.12)] text-[hsl(0_70%_55%)]" : "bg-[hsl(38_85%_58%/0.12)] text-[hsl(38_85%_58%)]"}`}>
+                      {selected.status === "overdue" ? `${selected.daysOverdue}d overdue` : "Expected"}
+                    </span>
                   </div>
-                  <div><span className="text-muted-foreground text-xs">Reminders Sent</span><p className="font-semibold">{selected.remindersSent}</p></div>
+                  <div><span className="text-[hsl(0_0%_45%)] text-xs">Reminders Sent</span><p className="font-semibold text-[hsl(0_0%_90%)]">{selected.remindersSent}</p></div>
                 </div>
 
-                <div className="border-t border-border pt-3">
-                  <p className="text-xs font-medium mb-2">Contact</p>
+                <div className="border-t border-[hsl(0_0%_100%/0.06)] pt-3">
+                  <p className="text-xs font-medium text-[hsl(0_0%_70%)] mb-2">Contact</p>
                   <div className="flex items-center gap-3">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 font-display text-xs font-semibold text-primary">{selected.initials}</div>
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[hsl(265_55%_58%/0.12)] text-xs font-semibold text-[hsl(265_55%_58%)]">{selected.initials}</div>
                     <div>
-                      <p className="text-sm font-medium">{selected.contactName}</p>
-                      {selected.contactEmail && <p className="text-xs text-muted-foreground">{selected.contactEmail}</p>}
+                      <p className="text-sm font-medium text-[hsl(0_0%_85%)]">{selected.contactName}</p>
+                      {selected.contactEmail && <p className="text-xs text-[hsl(0_0%_50%)]">{selected.contactEmail}</p>}
                     </div>
                   </div>
                 </div>
 
                 {selected.notes && (
-                  <div className="rounded-xl bg-accent/10 p-3">
-                    <p className="text-xs text-muted-foreground">{selected.notes}</p>
+                  <div className="rounded-lg bg-[hsl(265_55%_58%/0.08)] p-3">
+                    <p className="text-xs text-[hsl(0_0%_70%)]">{selected.notes}</p>
                   </div>
                 )}
-
-                <div className="border-t border-border pt-3">
-                  <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-2">Activity</p>
-                  <div className="space-y-1.5">
-                    {selected.remindersSent > 0 && (
-                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                        <div className="h-1.5 w-1.5 rounded-full bg-trust-review" />
-                        Last contacted {selected.lastContact}
-                      </div>
-                    )}
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <div className="h-1.5 w-1.5 rounded-full bg-accent" />
-                      Invoice sent · {selected.invoiceNum}
-                    </div>
-                  </div>
-                </div>
 
                 {selected.status === "overdue" && (
                   <div className="flex gap-2 flex-wrap">
-                    <SitaButton variant="accent" size="sm"><Send className="h-3 w-3" /> Send Reminder</SitaButton>
-                    <SitaButton variant="secondary" size="sm"><Phone className="h-3 w-3" /> Call</SitaButton>
-                    <SitaButton variant="ghost" size="sm"><FileText className="h-3 w-3" /> View Invoice</SitaButton>
+                    <button className="micro-press flex items-center gap-1 rounded-lg bg-[hsl(152_55%_48%/0.12)] px-3 py-1.5 text-xs text-[hsl(152_55%_48%)] hover:bg-[hsl(152_55%_48%/0.20)] transition-colors"><Send className="h-3 w-3" /> Send Reminder</button>
+                    <button className="micro-press flex items-center gap-1 rounded-lg bg-[hsl(0_0%_100%/0.04)] px-3 py-1.5 text-xs text-[hsl(0_0%_60%)] hover:bg-[hsl(0_0%_100%/0.08)] transition-colors"><Phone className="h-3 w-3" /> Call</button>
+                    <button className="micro-press flex items-center gap-1 rounded-lg bg-[hsl(0_0%_100%/0.04)] px-3 py-1.5 text-xs text-[hsl(0_0%_60%)] hover:bg-[hsl(0_0%_100%/0.08)] transition-colors"><FileText className="h-3 w-3" /> View Invoice</button>
                   </div>
                 )}
-              </SitaCard>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
       </div>
 
-      <LiveAdvisorCard
-        advisor="money"
-        intent="receivables_review"
-        demoName="Receivables Advisor"
-        demoRole="Cash Recovery Intelligence"
-        demoConfidence="High"
-        demoRecommendation={`${overdueItems.length} overdue invoices totaling $${overdueItems.reduce((s, r) => s + r.amount, 0).toLocaleString()}. ${collectionsItems.length} accounts need escalation.`}
-        demoReasoning="Analyzing payment patterns, contact history, and aging data to prioritize recovery actions and draft appropriate reminders."
+      <ModuleAdvisorInsight
+        advisorName="Receivables Advisor"
+        domain="finance"
+        insight={`${overdueItems.length} overdue invoices totaling $${overdueItems.reduce((s, r) => s + r.amount, 0).toLocaleString()}. ${collectionsItems.length} accounts need escalation.`}
+        confidence={85}
       />
     </motion.div>
   );

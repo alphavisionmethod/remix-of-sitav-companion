@@ -8,7 +8,8 @@ import { DomainCard } from "@/components/sita/cards/DomainCard";
 import { UrgencyBadge, FreshnessBadge } from "@/components/sita/badges";
 import { ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransitions";
 import { AppSurface } from "@/components/sita/surfaces/AppSurface";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
 import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
 import { useNavigate } from "react-router-dom";
 import { useHouseholdTasks, useFamilyEvents } from "@/hooks/use-sita-data";
@@ -78,7 +79,7 @@ const ConciergeOverview = () => {
 
   return (
     <AppSurface level={0} className="space-y-6 p-0 border-0 rounded-none bg-transparent">
-      <DemoModeBadge />
+      <PageTruthBanner />
 
       <ListReveal className="space-y-6" domain="concierge">
         {/* Hero — Today's summary */}

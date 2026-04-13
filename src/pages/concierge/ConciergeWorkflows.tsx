@@ -1,4 +1,3 @@
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { StateBadge } from "@/components/sita/StateBadge";
@@ -7,7 +6,8 @@ import { ConciergeAdvisorInsightCard, ConciergeAutomationRuleCard, ConciergePage
 import type { AutomationRule } from "@/components/concierge";
 import { useState } from "react";
 import { Workflow, ShoppingCart, Calendar, Wrench, GraduationCap, Plane, Gift, Bell, CheckCircle, Clock, AlertTriangle, Play, Pause, Sparkles, Shield, Eye, Zap } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 interface HouseholdWorkflow {
@@ -63,8 +63,7 @@ const ConciergeWorkflows = () => {
 
   return (
     <ConciergePageWrapper className="space-y-6">
-      <DemoModeBadge />
-      <SitaPageHeader title="Automation Center" subtitle="Intelligent routines, approval gates, simulation previews, and safety boundaries" />
+      <PageTruthBanner />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
         <KPITile label="Active" value={String(active)} icon={Workflow} />
@@ -91,9 +90,9 @@ const ConciergeWorkflows = () => {
         <div className="lg:col-span-2 space-y-4">
           {view === "suggested" ? (
             <div className="space-y-3">
-              <SitaSectionHeader title="Suggested Automations" subtitle="AI-recommended routines based on your patterns" />
+              <h3 className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[hsl(0_0%_50%)]">Suggested Automations</h3>
               {suggestedAutomations.map((sa) => (
-                <GlassCard key={sa.id} glow="accent" intensity="subtle" className="p-4">
+                <GlassCard key={sa.id}="accent" intensity="subtle" className="p-4">
                   <div className="flex items-start gap-3">
                     <Sparkles className="h-4 w-4 text-accent mt-0.5 shrink-0" />
                     <div className="flex-1 space-y-1.5">
@@ -131,7 +130,7 @@ const ConciergeWorkflows = () => {
               {filtered.map(wf => {
                 const Icon = catIcon(wf.category);
                 return (
-                  <SitaCard key={wf.id} className="p-5">
+                  <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift p-5" key={wf.id} >
                     <div className="flex items-start gap-4">
                       <div className="rounded-xl bg-primary/8 p-2.5 shrink-0">
                         <Icon className="h-4 w-4 text-primary" />
@@ -170,7 +169,7 @@ const ConciergeWorkflows = () => {
                         )}
                       </div>
                     </div>
-                  </SitaCard>
+                  </div>
                 );
               })}
             </div>
@@ -179,7 +178,7 @@ const ConciergeWorkflows = () => {
 
         <div className="space-y-4">
           {/* Safety Boundaries */}
-          <GlassCard glow="none" className="p-4">
+          <GlassCard="none" className="p-4">
             <div className="flex items-center gap-2 mb-3">
               <Shield className="h-4 w-4 text-chart-2" />
               <p className="text-xs font-semibold text-foreground">Safety Boundaries</p>
@@ -205,10 +204,10 @@ const ConciergeWorkflows = () => {
           </GlassCard>
 
           {/* Paused Automations */}
-          <SitaCard className="p-4">
+          <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift">
             <div className="flex items-center gap-2 mb-2">
               <Pause className="h-4 w-4 text-amber-500" />
-              <SitaCardTitle>Paused</SitaCardTitle>
+              <h4 className="text-[13px] font-semibold text-[hsl(0_0%_85%)]">Paused</h4>
             </div>
             <div className="space-y-1.5 text-xs">
               <div className="flex items-center gap-2">
@@ -220,7 +219,7 @@ const ConciergeWorkflows = () => {
                 <span className="text-foreground">Pool maintenance reminders — seasonal pause</span>
               </div>
             </div>
-          </SitaCard>
+          </div>
 
           {/* Advisor */}
           <ConciergeAdvisorInsightCard insight={{

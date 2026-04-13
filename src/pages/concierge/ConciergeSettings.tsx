@@ -1,8 +1,8 @@
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { ConciergePageWrapper } from "@/components/concierge";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { Users, Bell, Shield, Calendar, ShoppingCart, Plane, Wrench, Gift, Settings, Link, CheckCircle, AlertCircle } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { AdvisorKnowledgePanel } from "@/components/advisors/AdvisorKnowledgePanel";
 
@@ -59,15 +59,14 @@ const connectors: Connector[] = [
 const ConciergeSettings = () => {
   return (
     <ConciergePageWrapper className="space-y-6">
-      <DemoModeBadge />
-      <SitaPageHeader title="Concierge Settings" subtitle="Household members, automation rules, and integrations" />
+      <PageTruthBanner />
 
       {/* Household Members */}
       <div className="space-y-3">
-        <SitaSectionHeader title="Household Members" subtitle="People in your household and their roles" />
+        <h3 className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[hsl(0_0%_50%)]">Household Members</h3>
         <div className="grid gap-3 sm:grid-cols-2">
           {members.map((m, i) => (
-            <SitaCard key={i} className="p-4">
+            <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift p-4" key={i} >
               <div className="flex items-start gap-3">
                 <div className="text-2xl">{m.avatar}</div>
                 <div className="flex-1 min-w-0">
@@ -82,16 +81,16 @@ const ConciergeSettings = () => {
                   </div>
                 </div>
               </div>
-            </SitaCard>
+            </div>
           ))}
         </div>
       </div>
 
       {/* Automation Rules */}
       <div className="space-y-3">
-        <SitaSectionHeader title="Automation Rules" subtitle="Policies that govern household workflows and alerts" />
+        <h3 className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[hsl(0_0%_50%)]">Automation Rules</h3>
         {rules.map(rule => (
-          <SitaCard key={rule.id} className="p-4">
+          <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift p-4" key={rule.id} >
             <div className="flex items-center gap-4">
               <div className="rounded-xl bg-primary/8 p-2 shrink-0">
                 <rule.icon className="h-4 w-4 text-primary" />
@@ -107,16 +106,16 @@ const ConciergeSettings = () => {
                 <div className={`h-4 w-4 rounded-full bg-background shadow-sm transition-transform mt-0.5 ${rule.enabled ? "translate-x-4.5 ml-0.5" : "translate-x-0.5"}`} />
               </div>
             </div>
-          </SitaCard>
+          </div>
         ))}
       </div>
 
       {/* Connectors */}
       <div className="space-y-3">
-        <SitaSectionHeader title="Connected Services" subtitle="Integrations that power household automation" />
+        <h3 className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[hsl(0_0%_50%)]">Connected Services</h3>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {connectors.map((c, i) => (
-            <SitaCard key={i} className="p-4">
+            <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift p-4" key={i} >
               <div className="flex items-center gap-3">
                 <div className={`rounded-xl p-2 shrink-0 ${c.status === "connected" ? "bg-chart-2/10" : "bg-secondary"}`}>
                   <c.icon className={`h-4 w-4 ${c.status === "connected" ? "text-chart-2" : "text-muted-foreground"}`} />
@@ -138,7 +137,7 @@ const ConciergeSettings = () => {
                   )}
                 </div>
               </div>
-            </SitaCard>
+            </div>
           ))}
         </div>
       </div>
