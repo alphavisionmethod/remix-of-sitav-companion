@@ -166,7 +166,7 @@ const GroceryPlanning = () => {
                 </div>
                 <div className="space-y-1.5">
                   {catItems.map((item) => (
-                    <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift" key={item.id} className={`p-3 transition-opacity ${item.checked ? "opacity-50" : ""}`}>
+                    <div key={item.id} className={`rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-3 micro-hover-lift transition-opacity ${item.checked ? "opacity-50" : ""}`}>
                       <div className="flex items-center gap-3">
                         <button onClick={() => toggleItem(item.id)} className={`h-5 w-5 rounded-md border-2 shrink-0 flex items-center justify-center transition-all ${item.checked ? "bg-primary border-primary" : "border-muted-foreground/30 hover:border-primary"}`}>
                           {item.checked && <Check className="h-3 w-3 text-primary-foreground" />}
