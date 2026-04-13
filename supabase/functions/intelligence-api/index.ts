@@ -598,11 +598,23 @@ Deno.serve(async (req) => {
             ? (effRes.data || []).reduce((s: number, e: Record<string, unknown>) => s + (Number(e.composite_efficiency_score) || 0), 0) / (effRes.data || []).length
             : 0,
         },
-        recommendations: [
-          staleCount > 5 ? "Review and refresh stale intelligence assets" : null,
-          avgFreshness < 50 ? "Overall freshness declining — schedule bulk review" : null,
-          totalReuses < 10 ? "Low reuse rate — check asset discovery and matching" : null,
-        ].filter(Boolean),
+        recommendations: await (async () => {
+          const fallback = [
+            staleCount > 5 ? "Review and refresh stale intelligence assets" : null,
+            avgFreshness < 50 ? "Overall freshness declining — schedule bulk review" : null,
+            totalReuses < 10 ? "Low reuse rate — check asset discovery and matching" : null,
+          ].filter(Boolean);
+
+          const aiRecs = await callAI(
+            "You are an intelligence operations advisor. Given metrics about an AI intelligence asset library, provide 2-3 concise actionable recommendations. Return ONLY a JSON array of strings.",
+            `Total assets: ${assets.length}, Total reuses: ${totalReuses}, Cost avoided: $${(totalAvoided / 100).toFixed(2)}, Avg freshness: ${Math.round(avgFreshness)}%, Stale assets: ${staleCount}`
+          );
+          try {
+            const parsed = JSON.parse(aiRecs);
+            if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+          } catch { /* use fallback */ }
+          return fallback;
+        })(),
       };
 
       await db.from("engine_events").insert({
