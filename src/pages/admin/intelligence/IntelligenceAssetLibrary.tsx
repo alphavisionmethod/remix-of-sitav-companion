@@ -232,8 +232,7 @@ const IntelligenceAssetLibrary = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      {isDemo &&
-}
+      
       <SitaPageHeader
         icon={<Library className="h-6 w-6" />}
         title="Intelligence Asset Library"

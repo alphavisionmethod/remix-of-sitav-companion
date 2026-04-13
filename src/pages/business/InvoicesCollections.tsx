@@ -9,6 +9,7 @@ import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
 import { useInvoiceGenerate, useInvoiceSend } from "@/hooks/use-backend-actions";
 import { InvoiceDetailPane } from "@/components/business/InvoiceDetailPane";
 import { cn } from "@/lib/utils";
+import { CrossAppAction } from "@/components/sita/CrossAppAction";
 
 // New design system
 import { HeroCard, QueueCard, StatusCard } from "@/components/sita/cards";
@@ -93,6 +94,12 @@ const InvoicesCollections = () => {
         >
           <Plus className="h-3 w-3" /> New Invoice
         </button>
+      </div>
+
+      {/* Cross-app links */}
+      <div className="flex items-center gap-2 flex-wrap">
+        <CrossAppAction to="/money/receivables" label="View in Finance" context={{ entityType: "invoice", entityId: "all", entityLabel: "Receivables" }} />
+        <CrossAppAction to="/business/collections" label="Collections Center" context={{ entityType: "invoice", entityId: "overdue", entityLabel: "Overdue invoices" }} />
       </div>
 
       {/* KPI row */}

@@ -16,13 +16,16 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
-import {
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import {
   Bell, BellOff, Shield, Clock, CheckCircle, AlertTriangle, DollarSign,
   Briefcase, Home, Zap, Eye, Filter, Trash2, RotateCcw, ChevronRight,
   ArrowRight, Volume2, VolumeX, Pin, XCircle, AlertCircle, Sparkles,
   MessageSquare, Calendar, Settings, Activity
 } from "lucide-react";
+
+const isDemoMode = true; // TODO: wire to reality mode context
+
 
 
 

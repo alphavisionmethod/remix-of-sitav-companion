@@ -11,11 +11,10 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
-import {
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import {
   FileText, Bold, Italic, Underline, List, ListOrdered, Link, Image as ImageIcon,
   Code, AlignLeft, AlignCenter, AlignRight, Heading1, Heading2, Heading3,
   Save, Download, Eye, Edit3, MessageSquare, History, Paperclip,
@@ -50,8 +49,7 @@ const TOOLBAR_GROUPS = [
 ];
 
 const DocumentEditor = () => {
-  const { isDemoMode } = useDataMode();
-  const [mode, setMode] = useState<"edit" | "preview" | "review">("edit");
+const [mode, setMode] = useState<"edit" | "preview" | "review">("edit");
   const [title, setTitle] = useState("Untitled Document");
   const [content, setContent] = useState("Start writing your document here.\n\nThis editor supports headings, bold, italic, lists, links, images, code blocks, and more.\n\nSwitch between Edit, Preview, and Review modes.");
   const [wordCount, setWordCount] = useState(0);

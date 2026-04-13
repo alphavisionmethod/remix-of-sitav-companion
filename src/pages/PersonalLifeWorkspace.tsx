@@ -16,8 +16,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
-import {
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import {
   Heart, Sun, Moon, Target, RotateCcw, ListChecks, BookOpen,
   Calendar, Flame, CheckCircle2, Clock, AlertTriangle, Sparkles,
   TrendingUp, Battery, BatteryLow, BatteryMedium, Play, Pause,

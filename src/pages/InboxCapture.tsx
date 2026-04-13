@@ -18,6 +18,9 @@ import {
 import { DEMO_INBOX_ITEMS } from "@/lib/demo-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
+const isDemoMode = true; // TODO: wire to reality mode context
+
+
 const typeIcons: Record<string, typeof FileText> = {
   note: StickyNote, receipt: Receipt, screenshot: Camera, voice: Mic,
   email: Mail, idea: Sparkles, reminder: Clock, bill: DollarSign,

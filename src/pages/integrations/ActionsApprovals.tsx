@@ -11,6 +11,9 @@ import { DEMO_ACTION_REQUESTS } from "@/lib/demo-data/integrations";
 import type { DemoActionRequest } from "@/lib/demo-data/integrations";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
+const isDemoMode = true; // TODO: wire to reality mode context
+
+
 const statusConfig: Record<string, { color: string; icon: any; label: string }> = {
   proposed: { color: "text-blue-400", icon: Clock, label: "Pending Approval" },
   approved: { color: "text-green-400", icon: CheckCircle, label: "Approved" },

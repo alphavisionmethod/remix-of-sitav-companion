@@ -81,8 +81,7 @@ export default function MobileEmergencyActions() {
 
   return (
     <MobileShell title="Emergency Actions">
-      {isDemoMode &&
-}
+      
 
       {/* Warning Banner */}
       <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-4 mb-4">

@@ -1,4 +1,5 @@
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
+import { CrossAppAction } from "@/components/sita/CrossAppAction";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
@@ -94,7 +95,11 @@ const ReceivablesObligations = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-      <PageTruthBanner />
+      <div className="flex items-center gap-3 flex-wrap">
+        <PageTruthBanner />
+        <CrossAppAction to="/business/invoices" label="Invoices Hub" context={{ entityType: "invoice", entityId: "all" }} />
+        <CrossAppAction to="/business/collections" label="Collections" context={{ entityType: "collection", entityId: "all" }} />
+      </div>
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KPITile label="Total Receivable" value={`$${(totalReceivable / 1000).toFixed(1)}K`} icon={ArrowDownLeft} sub={`${receivables.length} invoices`} />

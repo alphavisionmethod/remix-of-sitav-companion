@@ -12,9 +12,13 @@ import { SplitWorkspace } from "@/components/sita/surfaces/SplitWorkspace";
 import { AppSurface } from "@/components/sita/surfaces/AppSurface";
 import { SitaTabs } from "@/components/sita/SitaComponents";
 import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
+import { CrossAppAction } from "@/components/sita/CrossAppAction";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAction } from "@/hooks/use-action";
+
+const isDemoMode = true; // TODO: wire to reality mode context
+
 
 const QuotesWorkspace = () => {
   const { user } = useAuth();
@@ -59,6 +63,7 @@ const QuotesWorkspace = () => {
   const listPane = (
     <div className="p-3 space-y-3">
       <PageTruthBanner truthState={isDemoMode ? "demo" : "live"} />
+      <CrossAppAction to="/business/invoices" label="Convert to Invoice" variant="chip" context={{ entityType: "quote", entityId: selectedId || "all" }} />
 
       <div className="flex items-center justify-between px-1">
         <h3 className="text-[13px] font-semibold text-[hsl(0_0%_85%)]">Quotes & Proposals</h3>

@@ -10,7 +10,6 @@ import { cn } from "@/lib/utils";
 import { useState, useMemo } from "react";
 import { BarChart3, AlertTriangle, Target, Sparkles, Clock, ArrowRight, CheckCircle } from "lucide-react";
 import { motion } from "framer-motion";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useLeads, useCustomers, useInvoices, useOpportunities } from "@/hooks/use-sita-data";
 
 const businessAdvisors: AdvisorConfig[] = [
@@ -21,8 +20,7 @@ const businessAdvisors: AdvisorConfig[] = [
 ];
 
 const BusinessBoardroom = () => {
-  const { isDemoMode } = useDataMode();
-  const [mode, setMode] = useState("weekly");
+const [mode, setMode] = useState("weekly");
   const { data: leads = [] } = useLeads();
   const { data: customers = [] } = useCustomers();
   const { data: invoices = [] } = useInvoices();

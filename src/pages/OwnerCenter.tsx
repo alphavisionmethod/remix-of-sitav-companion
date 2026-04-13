@@ -11,7 +11,6 @@ import { useKernelEventStream } from "@/hooks/use-kernel-events";
 import { useKernelStatus } from "@/contexts/SitaKernelContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -63,8 +62,8 @@ import { validateLaunchReadiness, getCouncilSummary, getAllCouncilSummaries, ACT
 import type { InternalAgentCouncil, InternalAgentDefinition } from "@/lib/internal-agents/types";
 
 
-import {
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import {
   Shield, Activity, Wifi, CheckCircle, AlertTriangle, Clock, Eye, Lock, Cpu, Zap, BarChart3,
   Globe, Key, History, Users, RotateCcw, DollarSign, FileText, Server, Database, RefreshCw,
   Pause, Play, XCircle, Brain, Settings, AlertOctagon, Sparkles, ArrowRight, Search,
@@ -214,9 +213,7 @@ const OwnerCenter = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const activePage = subpageFromPath(location.pathname);
-  const { isDemoMode, toggleMode, connectors, refreshConnectors } = useDataMode();
-
-  // Data hooks
+// Data hooks
   const { data: incidentData } = useAdminIncidents();
   const { data: policyData } = useAdminPolicies();
   const { data: auditData } = useAdminAuditLogs();

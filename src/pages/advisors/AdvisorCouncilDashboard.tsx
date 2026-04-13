@@ -25,6 +25,9 @@ import { toast } from "sonner";
 import { DEMO_ADVISOR_SCORECARDS, DEMO_ESCALATION_LOG, DEMO_HANDOFF_LOG } from "@/lib/demo-data/core-pages";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
+const isDemoMode = true; // TODO: wire to reality mode context
+
+
 // ── Demo Data ────────────────────────────────────────────────
 
 const MODEL_BUDGET = {

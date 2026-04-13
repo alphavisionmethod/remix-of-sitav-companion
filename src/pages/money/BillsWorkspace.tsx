@@ -23,6 +23,8 @@ import { AppSurface } from "@/components/sita/surfaces/AppSurface";
 import { ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransitions";
 import { cn } from "@/lib/utils";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { CrossAppAction } from "@/components/sita/CrossAppAction";
+import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
 
 interface BillForm {
   payee: string;
@@ -138,7 +140,10 @@ const BillsWorkspace = () => {
   const listPane = (
     <div className="p-3 space-y-3">
       <div className="flex items-center justify-between px-1">
-        <h3 className="text-[13px] font-semibold text-[hsl(0_0%_85%)]">Bills & Obligations</h3>
+        <div className="flex items-center gap-2">
+          <h3 className="text-[13px] font-semibold text-[hsl(0_0%_85%)]">Bills & Obligations</h3>
+          <CrossAppAction to="/money/approvals" label="Approvals" variant="chip" context={{ entityType: "bill", entityId: "pending" }} />
+        </div>
         <button
           onClick={() => { setForm(emptyForm); setEditId(null); setShowForm(true); }}
           className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[hsl(152_55%_48%/0.12)] hover:bg-[hsl(152_55%_48%/0.18)] text-[hsl(152_55%_48%)] text-[11px] font-medium transition-colors"
@@ -279,14 +284,11 @@ const BillsWorkspace = () => {
         </button>
       </div>
 
-      <LiveAdvisorCard
-        advisor="money"
-        intent="bill_optimization"
-        demoName="Payment Intelligence"
-        demoRole="Bills Advisor"
-        demoConfidence="Medium"
-        demoRecommendation="2 bills could save $180/yr with early-pay discounts."
-        demoReasoning="Based on payment timing analysis and vendor discount opportunities."
+      <ModuleAdvisorInsight
+        advisorName="Payment Intelligence"
+        domain="finance"
+        insight="2 bills could save $180/yr with early-pay discounts."
+        confidence={72}
       />
     </div>
   ) : (

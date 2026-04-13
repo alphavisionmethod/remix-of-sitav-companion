@@ -8,7 +8,6 @@ import { Brain, Send, Lightbulb, GraduationCap, Hammer, Palette, Loader2 } from 
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import ReactMarkdown from "react-markdown";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useOSOrchestration } from "@/hooks/useOSOrchestration";
 import { useExperienceSignature } from "@/hooks/useExperienceSignature";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
@@ -199,8 +198,7 @@ function PersonalBrainInner() {
 }
 
 export default function PersonalBrain() {
-  const { isDemoMode } = useDataMode();
-  return (
+return (
     <GlobalErrorBoundary>
       <PersonalBrainInner />
     </GlobalErrorBoundary>

@@ -19,14 +19,12 @@ import { executeWorkforceTask, type WorkforceExecutionResult } from "@/lib/ai/wo
 import { AIWorkforceInvocationPanel } from "@/components/ai/AIWorkforceInvocationPanel";
 import { Terminal, Play, Loader2, DollarSign, AlertTriangle, Clock, Save, History, Copy } from "lucide-react";
 import { toast } from "sonner";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { supabase } from "@/integrations/supabase/client";
 import { DEMO_BUDGET_POSTURES, DEMO_SCOPE_DOMAINS, DEMO_TASK_TYPES } from "@/lib/demo-data/admin-platform";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function AIT03TaskInvocation() {
-  const { isDemoMode } = useDataMode();
-  const [selectedRole, setSelectedRole] = useState("");
+const [selectedRole, setSelectedRole] = useState("");
   const [selectedTask, setSelectedTask] = useState("");
   const [budgetPosture, setBudgetPosture] = useState("economy_admin");
   const [urgency, setUrgency] = useState("normal");

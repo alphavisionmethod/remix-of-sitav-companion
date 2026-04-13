@@ -13,8 +13,8 @@ import {
   BookOpen, ShieldOff, Pause, Undo2, Ban, HandMetal
 } from "lucide-react";
 import AutomationSubNav from "./AutomationSubNav";
-import {
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import {
   DEMO_humanVsAI, DEMO_policies, DEMO_trustLevels,
   DEMO_COMMERCIAL_CONSTITUTION, DEMO_NO_GUESS_RULES,
   DEMO_PAUSE_ROLLBACK, DEMO_HANDOFF_SIGNALS

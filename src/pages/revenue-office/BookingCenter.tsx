@@ -9,8 +9,8 @@ import { Progress } from "@/components/ui/progress";
 import { useBookings } from "@/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/sita/EmptyState";
-import {
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import {
   DEMO_REV_SERVICES as DEMO_SERVICES,
   DEMO_REV_STATS as DEMO_STATS,
   DEMO_UPCOMING,
@@ -18,6 +18,9 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
   DEMO_NOSHOW_RECOVERY,
   DEMO_PREP_CHECKLISTS,
 } from "@/lib/demo-data/revenue-office";
+
+const isDemoMode = true; // TODO: wire to reality mode context
+
 
 export default function BookingCenter() {
   const { data: liveBookings, isLoading } = useBookings();

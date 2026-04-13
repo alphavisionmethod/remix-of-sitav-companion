@@ -9,6 +9,9 @@ import { DEMO_CONNECTIONS } from "@/lib/demo-data/integrations";
 import { getProviderById } from "@/lib/demo-data/integrations";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
+const isDemoMode = true; // TODO: wire to reality mode context
+
+
 export default function ConnectionDetail() {
   const { connectionId } = useParams();
   const navigate = useNavigate();

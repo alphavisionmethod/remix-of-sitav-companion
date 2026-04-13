@@ -17,13 +17,16 @@ import { motion, AnimatePresence } from "framer-motion";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
-import {
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import {
   FileText, Search, Plus, Tag, Star, Folder, Link, Clock, Edit3,
   CheckSquare, Mic, Brain, ChevronRight, Hash, Bookmark, Archive,
   ListTodo, Users, Briefcase, Workflow, FileBox, Sparkles,
   MessageSquare, Calendar,
 } from "lucide-react";
+
+const isDemoMode = true; // TODO: wire to reality mode context
+
 
 const TYPE_ICONS: Record<string, React.ElementType> = { note: FileText, meeting: Brain, checklist: CheckSquare, voice: Mic, knowledge: Bookmark };
 const fadeUp = { hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.25 } } };

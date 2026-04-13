@@ -26,7 +26,6 @@ import {
   PermissionsCard,
 } from "@/components/sita/MissionControlComponents";
 import { mockAdvisors, mockRecommendations, mockInternalAgents, mockIncidents, mockConnectorHealth, mockStuckWorkflows, mockCostAnomalies, mockPolicyAnomalies, mockReleaseSafety, mockApprovals, mockSafeMode, type SafeModeState } from "@/hooks/useAdvisorMissionControl";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { cn } from "@/lib/utils";
 import { useFraudSentinel, useGovernanceSimulator } from "@/contexts/SitaKernelContext";
 import type { TrustState, ExecutionEnvelope, WorkflowState, DiagnosticBundle } from "@/packages/contracts";
@@ -47,8 +46,8 @@ import PlatformTruthDashboard from "./PlatformTruthDashboard";
 import { useTokenUsages } from "@/hooks/use-domain-data";
 
 
-import {
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import {
   Server, Shield, Activity, Wifi, AlertTriangle, DollarSign, Rocket,
   Lock, RotateCcw, Clock, Eye, CheckCircle, Cpu, Zap, FileText,
   ShieldAlert, Users, GitBranch, Database, RefreshCw, Loader2,
@@ -1183,8 +1182,7 @@ function ModeToggle({ mode, setMode }: { mode: "owner" | "advanced"; setMode: (m
 // ── Main Page ───────────────────────────────────────────────────────────────
 
 export default function MissionControlPage() {
-  const { isDemoMode } = useDataMode();
-  const [activeTab, setActiveTab] = useState("home");
+const [activeTab, setActiveTab] = useState("home");
   const { mode, setMode, isOwner } = useControlMode();
   const navigate = useNavigate();
   const runtime = useOSRuntime();

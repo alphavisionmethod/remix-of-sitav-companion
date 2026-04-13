@@ -1,6 +1,7 @@
 import { HeroCard, QueueCard, TimelineCard, StatusCard, AdvisorCard } from "@/components/sita/cards";
 import { FreshnessBadge } from "@/components/sita/badges";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { CrossAppAction } from "@/components/sita/CrossAppAction";
 import { SitaTabs, SectionHeader } from "@/components/sita/SitaComponents";
 import { TripCard, PrepCard } from "@/components/sita/HouseholdComponents";
 import { ConciergePageWrapper, ConciergeEmptyState, TravelReadinessCard, ReservationStatusCard, ConciergeAdvisorInsightCard } from "@/components/concierge";
@@ -10,6 +11,9 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Plane, Calendar, DollarSign, FileText, CheckCircle, AlertCircle, Clock, Home, CreditCard } from "lucide-react";
 import { DEMO_householdSpillover, DEMO_itinerary, DEMO_postTripTasks, DEMO_preTripChecklist } from "@/lib/demo-data/concierge";
+
+const isDemoMode = true; // TODO: wire to reality mode context
+
 
 interface Trip {
   id: string; destination: string; dates: string; status: "planning" | "booked" | "upcoming" | "active" | "completed";
@@ -48,7 +52,10 @@ const TravelPlanning = () => {
 
   return (
     <ConciergePageWrapper className="space-y-5">
-      <PageTruthBanner truthState={isDemoMode ? "demo" : "live"} />
+      <div className="flex items-center gap-2 flex-wrap">
+        <PageTruthBanner truthState={isDemoMode ? "demo" : "live"} />
+        <CrossAppAction to="/files/search" label="Travel Documents" variant="chip" context={{ entityType: "file", entityId: "travel", entityLabel: "Travel docs" }} />
+      </div>
 
       <HeroCard
         title="Travel Planning"

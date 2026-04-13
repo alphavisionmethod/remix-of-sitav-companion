@@ -19,6 +19,9 @@ import {
   Plane, Headphones, ArrowRight, Home, Stethoscope, FileText
 } from "lucide-react";
 
+const isDemoMode = true; // TODO: wire to reality mode context
+
+
 const ConciergeOverview = () => {
   const navigate = useNavigate();
   const { data: tasks = [] } = useHouseholdTasks();

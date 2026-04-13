@@ -9,6 +9,9 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { DEMO_EXPERIMENTS } from "@/lib/demo-data/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
+const isDemoMode = true; // TODO: wire to reality mode context
+
+
 const FUNNEL_BENCHMARKS = [
   { stage: "Landing Page → Form Start", current: 42, benchmark: 45, status: "near" as const },
   { stage: "Form Start → Form Complete", current: 68, benchmark: 75, status: "below" as const },

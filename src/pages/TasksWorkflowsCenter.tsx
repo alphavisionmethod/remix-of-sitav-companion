@@ -18,12 +18,15 @@ import { useQuery } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import {
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import {
   ListTodo, Plus, Search, Calendar, CheckCircle2, Clock, AlertTriangle,
   ArrowRight, Users, RotateCcw, Filter, Workflow, ChevronRight, Eye,
   GitBranch, Kanban, ListOrdered, Target, Flame, Pause, Play,
 } from "lucide-react";
+
+const isDemoMode = true; // TODO: wire to reality mode context
+
 
 // ── Demo Data ──────────────────────────────────────────────────
 type TaskPriority = "critical" | "high" | "medium" | "low";

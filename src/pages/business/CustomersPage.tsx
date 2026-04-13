@@ -29,6 +29,7 @@ import { RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { CrossAppAction } from "@/components/sita/CrossAppAction";
 
 type Customer = MockCustomer;
 type Tab = "all" | "active" | "at-risk" | "new" | "inactive";
@@ -139,8 +140,12 @@ const CustomersPage = () => {
     <div className="p-3 space-y-2">
       {/* Actions bar */}
       <div className="flex items-center gap-2 mb-2">
-        <SitaButton variant="primary" size="sm" onClick={() => setShowAdd(true)}><Plus className="h-3.5 w-3.5" /> Add</SitaButton>
-        <SitaButton variant="ghost" size="sm" onClick={() => navigate("/business/integrations")}><Plug className="h-3.5 w-3.5" /></SitaButton>
+        <div className="flex items-center gap-2">
+          <SitaButton variant="primary" size="sm" onClick={() => setShowAdd(true)}><Plus className="h-3.5 w-3.5" /> Add</SitaButton>
+          <SitaButton variant="ghost" size="sm" onClick={() => navigate("/business/integrations")}><Plug className="h-3.5 w-3.5" /></SitaButton>
+          <CrossAppAction to="/concierge/appointments" label="Appointments" variant="chip" context={{ entityType: "customer", entityId: selectedId || "all" }} />
+          <CrossAppAction to="/business/quotes" label="Quotes" variant="chip" context={{ entityType: "customer", entityId: selectedId || "all" }} />
+        </div>
       </div>
 
       {/* Add form */}

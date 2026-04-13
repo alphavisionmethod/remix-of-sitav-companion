@@ -10,6 +10,7 @@ import { ArrowRight, DollarSign, TrendingDown, Target, PiggyBank, CreditCard } f
 import { motion } from "framer-motion";
 import type { OpportunityCostEntry } from "@/packages/finance-contracts/advanced-intelligence";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
 
 const demoEntries: OpportunityCostEntry[] = [
   { category: "Dining & Delivery", spentCents: 42000, preventedReserveGrowthCents: 42000, delayedDebtPayoffDays: 8, delayedGoalProgressPct: 2.1, alternativeUse: "Emergency fund +$420" },
@@ -81,11 +82,11 @@ const OpportunityCost = () => {
         ))}
       </div>
 
-      <LiveAdvisorCard
-        advisor="money" intent="opportunity_cost_review"
-        demoName="Opportunity Cost Advisor" demoRole="Behavioral Finance Intelligence" demoConfidence="High"
-        demoRecommendation={`$${(totalSpent / 100).toLocaleString()} in discretionary spending delayed debt payoff by ${totalDelayDays} days and goal progress by ${totalGoalDelay.toFixed(1)}%. Dining & delivery is the largest trade-off at $${(demoEntries[0].spentCents / 100).toLocaleString()}.`}
-        demoReasoning="Counterfactual analysis across every discretionary category comparing to reserve, debt, and goal allocations."
+      <ModuleAdvisorInsight
+        advisorName="Opportunity Cost Advisor"
+        domain="finance"
+        insight={`$${(totalSpent / 100).toLocaleString()} in discretionary spending delayed debt payoff by ${totalDelayDays} days and goal progress by ${totalGoalDelay.toFixed(1)}%.`}
+        confidence={88}
       />
     </motion.div>
   );

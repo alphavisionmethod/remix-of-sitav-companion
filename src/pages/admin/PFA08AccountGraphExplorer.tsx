@@ -6,8 +6,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Network, User, Link2, CheckCircle, XCircle, Shield, ScrollText } from "lucide-react";
 import PFASubNav from "@/components/admin/PFASubNav";
 
-import {
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import {
   getAccountNodes,
   getAccountEdges,
   getUserIdentityLinks,

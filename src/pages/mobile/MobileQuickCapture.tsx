@@ -70,8 +70,7 @@ export default function MobileQuickCapture() {
 
   return (
     <MobileShell title="Quick Capture">
-      {isDemoMode &&
-}
+      
       <input ref={fileInputRef} type="file" className="hidden" onChange={() => toast.success("File queued for upload")} />
 
       {/* Capture Mode Selector */}
