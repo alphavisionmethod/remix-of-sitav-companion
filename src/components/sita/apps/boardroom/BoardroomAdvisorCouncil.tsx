@@ -106,7 +106,6 @@ export function BoardroomAdvisorCouncil({ scope, onSelectAdvisor, compact = fals
                       )}
                       style={{
                         background: `linear-gradient(135deg, ${adv.accentColor}, ${adv.accentColor}88)`,
-                        ringColor: isSpeaking ? adv.accentColor : undefined,
                         boxShadow: isSpeaking
                           ? `0 0 24px ${adv.accentColor}40, 0 0 48px ${adv.accentColor}15`
                           : isHovered
