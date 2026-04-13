@@ -1,7 +1,7 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs, ProofCard } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
-import { ConciergeProofChip, ConciergeReceiptViewer, ConciergePageWrapper } from "@/components/concierge";
+import { ConciergeProofChip, ConciergeReceiptViewer, ConciergePageWrapper, ConciergeEmptyState } from "@/components/concierge";
 import type { ReceiptRecord } from "@/components/concierge";
 import { useState } from "react";
 import { Shield, CheckCircle, Clock, FileText, ShoppingCart, Calendar, Wrench, GraduationCap, Plane, Gift } from "lucide-react";
@@ -33,7 +33,9 @@ const proofRecords: ProofRecord[] = [
 
 const ConciergeProof = () => {
   const [view, setView] = useState("all");
+  const { isDemoMode } = useDataMode();
   const verified = proofRecords.filter(p => p.verification === "verified").length;
+  const pending = proofRecords.filter(p => p.verification === "pending").length;
   const pending = proofRecords.filter(p => p.verification === "pending").length;
 
   const filtered = view === "verified" ? proofRecords.filter(p => p.verification === "verified")
@@ -45,7 +47,9 @@ const ConciergeProof = () => {
       <DemoModeBadge />
       <SitaPageHeader title="Concierge Proof" subtitle="Verifiable record of completed actions, confirmations, and receipts" />
 
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      {!isDemoMode ? (
+        <ConciergeEmptyState domain="generic" title="No proof records yet" description="As you complete tasks and confirmations, verified records will appear here — giving you a clear audit trail of everything handled." />
+      ) : (<>
         <KPITile label="Total Records" value={String(proofRecords.length)} icon={Shield} />
         <KPITile label="Verified" value={String(verified)} icon={CheckCircle} sub="Confirmed actions" />
         <KPITile label="Pending" value={String(pending)} icon={Clock} sub="Awaiting verification" />
@@ -74,7 +78,7 @@ const ConciergeProof = () => {
         category: p.category,
         linkedItem: p.linkedItem,
       }))} />
-    </ConciergePageWrapper>
+    </>)}
   );
 };
 
