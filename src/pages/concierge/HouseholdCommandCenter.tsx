@@ -44,7 +44,7 @@ const HouseholdCommandCenter = () => {
   if (!households?.length && !showCreate) {
     return (
       <ConciergePageWrapper className="mx-auto max-w-3xl space-y-6">
-      <DemoModeBadge />
+      <PageTruthBanner />
         <SitaPageHeader title="Household Support Coordination" subtitle="Manage your household members, roles, and shared responsibilities" />
         <EmptyState icon={Home} title="No households yet" description="Create your first household to start managing family members, roles, and shared tasks." />
         <div className="flex justify-center">

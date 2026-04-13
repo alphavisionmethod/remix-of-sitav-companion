@@ -72,7 +72,7 @@ const ReceiptDetailPanel = ({ item, onClose }: { item: any; onClose: () => void 
       exit={{ opacity: 0, x: 20 }}
       className="rounded-xl border border-primary/15 bg-card p-5 space-y-5"
     >
-      <DemoModeBadge />
+      <PageTruthBanner />
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>

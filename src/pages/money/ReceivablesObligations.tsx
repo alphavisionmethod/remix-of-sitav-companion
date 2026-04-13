@@ -111,7 +111,7 @@ const ReceivablesObligations = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-      <DemoModeBadge />
+      <PageTruthBanner />
       <SitaPageHeader title="Receivables & Obligations" subtitle="Cash recovery, aging analysis, and obligation tracking" />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
