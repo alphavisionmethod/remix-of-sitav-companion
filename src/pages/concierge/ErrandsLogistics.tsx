@@ -127,10 +127,7 @@ const ErrandsLogistics = () => {
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2 space-y-4">
           {allErrands.length === 0 && (
-            <SitaCard className="p-8 text-center">
-              <Package className="h-10 w-10 mx-auto text-muted-foreground/40 mb-3" />
-              <p className="text-sm text-muted-foreground">No errands yet. Add your first errand to get started.</p>
-            </SitaCard>
+            <ConciergeEmptyState domain="errands" icon={Package} />
           )}
 
           {view === "bundles" && bundles.map((b) => (
