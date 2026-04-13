@@ -232,6 +232,7 @@ const { isLoading, toggleDemoMode } = useDemoMode();
   const [trustMode, setTrustMode] = useState("balanced");
   const [searchQuery, setSearchQuery] = useState("");
   const [auditResult, setAuditResult] = useState<SimulationResult | null>(null);
+  const isDemoMode = true;
   const [displayName, setDisplayName] = useState(user?.user_metadata?.full_name || "");
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [uploadingAvatar, setUploadingAvatar] = useState(false);

@@ -26,3 +26,5 @@ export { ModuleEmptyState } from "./ModuleEmptyState";
 
 export { DomainCommandPalette } from "./DomainCommandPalette";
 export type { CommandItem } from "./DomainCommandPalette";
+
+export { ModuleAdvisorInsight } from "./ModuleAdvisorInsight";
