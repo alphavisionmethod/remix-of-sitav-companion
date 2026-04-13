@@ -1,24 +1,20 @@
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
-import { KPITile, SitaTabs, EmptyState, RiskCard } from "@/components/sita/SitaComponents";
-import { ConciergePageWrapper, ConciergeEmptyState } from "@/components/concierge";
-import { TrustBadge } from "@/components/sita/TrustBadge";
+import { HeroCard, QueueCard, StatusCard } from "@/components/sita/cards";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { SitaTabs } from "@/components/sita/SitaComponents";
+import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
+import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
+import { SlidePanel } from "@/components/sita/surfaces/SlidePanel";
+import { AppSurface } from "@/components/sita/surfaces/AppSurface";
+import { ConciergePageWrapper } from "@/components/concierge";
+import { cn } from "@/lib/utils";
 import { useState } from "react";
-import { GraduationCap, Calendar, FileText, DollarSign, Bus, Users, AlertTriangle, CheckCircle, Clock, ClipboardList } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
-import { useSchoolActivities } from "@/hooks/use-concierge-data";
+import { GraduationCap, Calendar, FileText, DollarSign, Bus, Users, AlertTriangle, Clock, ClipboardList } from "lucide-react";
 
 interface SchoolItem {
-  id: string;
-  title: string;
-  child: string;
-  school: string;
+  id: string; title: string; child: string; school: string;
   category: "deadline" | "form" | "meeting" | "fee" | "volunteer" | "prep" | "transport";
-  due: string;
-  status: "pending" | "submitted" | "overdue" | "confirmed" | "upcoming";
-  priority: "high" | "medium" | "low";
-  notes?: string;
-  amount?: number;
+  due: string; status: "pending" | "submitted" | "overdue" | "confirmed" | "upcoming";
+  priority: "high" | "medium" | "low"; notes?: string; amount?: number;
 }
 
 const schoolItems: SchoolItem[] = [
@@ -32,20 +28,15 @@ const schoolItems: SchoolItem[] = [
   { id: "8", title: "Annual health form", child: "Emma", school: "Lincoln Elementary", category: "form", due: "Apr 20", status: "upcoming", priority: "low", notes: "Needs updated immunization record" },
 ];
 
-const categoryIcon = (cat: SchoolItem["category"]) => {
-  const map = { deadline: Calendar, form: FileText, meeting: Users, fee: DollarSign, volunteer: Users, prep: ClipboardList, transport: Bus };
-  return map[cat] || Calendar;
-};
-
-const statusColor = (s: SchoolItem["status"]) => {
-  if (s === "overdue") return "text-destructive";
-  if (s === "pending") return "text-amber-500";
-  if (s === "confirmed" || s === "submitted") return "text-chart-2";
-  return "text-muted-foreground";
+const urgencyMap: Record<string, "critical" | "high" | "normal" | "low"> = {
+  high: "critical", medium: "high", low: "normal",
 };
 
 const SchoolActivities = () => {
   const [view, setView] = useState("this-week");
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [panelOpen, setPanelOpen] = useState(false);
+
   const overdue = schoolItems.filter(i => i.status === "overdue").length;
   const pending = schoolItems.filter(i => i.status === "pending").length;
   const totalFees = schoolItems.filter(i => i.amount).reduce((s, i) => s + (i.amount || 0), 0);
@@ -55,26 +46,40 @@ const SchoolActivities = () => {
     : view === "fees" ? schoolItems.filter(i => i.category === "fee" || i.amount)
     : schoolItems;
 
+  const selected = schoolItems.find(i => i.id === selectedId);
+  const handleSelect = (id: string) => { setSelectedId(id); setPanelOpen(true); };
+
+  const queueItems = filtered.map(item => ({
+    id: item.id,
+    label: `${item.title} — ${item.child}`,
+    meta: item.due,
+    urgency: urgencyMap[item.priority] || "normal" as const,
+  }));
+
   return (
-    <ConciergePageWrapper className="space-y-6">
-      <DemoModeBadge />
-      <SitaPageHeader title="School & Activities" subtitle="Forms, fees, meetings, prep, and logistics for every child" />
+    <ConciergePageWrapper className="space-y-5">
+      <PageTruthBanner truthState="demo" />
 
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <KPITile label="Items This Week" value={String(schoolItems.length)} icon={GraduationCap} />
-        <KPITile label="Overdue" value={String(overdue)} icon={AlertTriangle} sub={overdue > 0 ? "Needs attention" : "All clear"} />
-        <KPITile label="Pending Action" value={String(pending)} icon={Clock} />
-        <KPITile label="Fees Due" value={`$${totalFees.toLocaleString()}`} icon={DollarSign} sub="Next 30 days" />
+      <HeroCard
+        title="School & Activities"
+        metric={`${schoolItems.length} items`}
+        subtitle="Forms, fees, meetings, prep, and logistics for every child"
+        accentFrom="hsl(285 55% 55%)"
+        accentTo="hsl(310 50% 48%)"
+        icon={<GraduationCap className="h-5 w-5 text-[hsl(285_55%_65%)]" />}
+      />
+
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+        <StatusCard label="This Week" status="healthy" lastChecked={`${schoolItems.length}`} icon={<GraduationCap className="h-3.5 w-3.5" />} />
+        <StatusCard label="Overdue" status={overdue > 0 ? "down" : "healthy"} lastChecked={`${overdue}`} icon={<AlertTriangle className="h-3.5 w-3.5" />} />
+        <StatusCard label="Pending" status={pending > 0 ? "degraded" : "healthy"} lastChecked={`${pending}`} icon={<Clock className="h-3.5 w-3.5" />} />
+        <StatusCard label="Fees Due" status="healthy" lastChecked={`$${totalFees.toLocaleString()}`} icon={<DollarSign className="h-3.5 w-3.5" />} />
       </div>
-
-      {overdue > 0 && (
-        <RiskCard title={`${overdue} overdue school item${overdue > 1 ? "s" : ""} — bus pass renewal needs immediate action`} severity="high" />
-      )}
 
       <SitaTabs
         tabs={[
           { key: "this-week", label: "This Week" },
-          { key: "overdue", label: "Urgent" },
+          { key: "overdue", label: "Urgent", count: overdue },
           { key: "by-child", label: "By Child" },
           { key: "fees", label: "Fees & Costs" },
         ]}
@@ -82,52 +87,42 @@ const SchoolActivities = () => {
         onChange={setView}
       />
 
-      <div className="space-y-3">
-        {filtered.length === 0 && (
-          <ConciergeEmptyState domain="school" icon={GraduationCap} />
-        )}
-        {filtered.map(item => {
-          const Icon = categoryIcon(item.category);
-          return (
-            <SitaCard key={item.id} className="p-4">
-              <div className="flex items-start gap-4">
-                <div className="rounded-xl bg-primary/8 p-2.5 shrink-0">
-                  <Icon className="h-4 w-4 text-primary" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <p className="text-sm font-medium text-foreground">{item.title}</p>
-                    <span className="rounded-md bg-secondary px-1.5 py-px text-[10px] text-muted-foreground">{item.child}</span>
-                  </div>
-                  <div className="flex items-center gap-2 mt-1 text-xs text-muted-foreground flex-wrap">
-                    <span>{item.school}</span>
-                    <span>·</span>
-                    <span className={statusColor(item.status)}>{item.due}</span>
-                    {item.amount && <span>· ${item.amount.toLocaleString()}</span>}
-                  </div>
-                  {item.notes && <p className="text-xs text-muted-foreground/70 mt-1">{item.notes}</p>}
-                </div>
-                <div className="flex items-center gap-2 shrink-0">
-                  <TrustBadge level={item.status === "overdue" ? "high-impact" : item.status === "confirmed" || item.status === "submitted" ? "verified" : "review"} label={item.status} size="sm" />
-                </div>
-              </div>
-            </SitaCard>
-          );
-        })}
-      </div>
+      {filtered.length === 0 ? (
+        <PremiumEmptyState icon={GraduationCap} title="No school items" description="Nothing in this category" variant="no-results" domain="concierge" />
+      ) : (
+        <QueueCard title="SCHOOL QUEUE" items={queueItems} maxVisible={10} onItemClick={handleSelect} />
+      )}
 
-      {/* Advisor */}
-      <SitaCard hover={false}>
-        <div className="flex items-center gap-3 mb-3">
-          <GraduationCap className="h-4 w-4 text-primary" />
-          <SitaCardTitle>School Advisor</SitaCardTitle>
-          <TrustBadge level="verified" label="high" size="sm" />
-        </div>
-        <p className="text-sm text-foreground leading-relaxed">
-          Liam's bus pass is overdue — renew today to avoid transport disruption. Emma's field trip permission slip is due tomorrow.
-          I recommend handling both today. Spring tuition can be scheduled for auto-pay if you'd like.
-        </p>
-      </SitaCard>
+      <ModuleAdvisorInsight
+        advisorName="School Advisor"
+        domain="concierge"
+        confidence={92}
+        insight="Liam's bus pass is overdue — renew today to avoid transport disruption. Emma's field trip permission slip is due tomorrow. Spring tuition can be scheduled for auto-pay."
+        linkedItems={["Bus pass renewal", "Permission slip", "Spring tuition"]}
+      />
+
+      <SlidePanel open={panelOpen} onClose={() => setPanelOpen(false)} title={selected?.title || "School Item"} width={380}>
+        {selected && (
+          <div className="space-y-4">
+            <AppSurface level={2} className="p-3 space-y-2">
+              <div className="flex justify-between text-[11px]"><span className="text-[hsl(0_0%_50%)]">Child</span><span className="text-[hsl(0_0%_85%)]">{selected.child}</span></div>
+              <div className="flex justify-between text-[11px]"><span className="text-[hsl(0_0%_50%)]">School</span><span className="text-[hsl(0_0%_85%)]">{selected.school}</span></div>
+              <div className="flex justify-between text-[11px]"><span className="text-[hsl(0_0%_50%)]">Due</span><span className={cn(selected.status === "overdue" ? "text-[hsl(0_70%_55%)]" : "text-[hsl(0_0%_85%)]")}>{selected.due}</span></div>
+              <div className="flex justify-between text-[11px]"><span className="text-[hsl(0_0%_50%)]">Status</span><span className="text-[hsl(0_0%_85%)] capitalize">{selected.status}</span></div>
+              {selected.amount && <div className="flex justify-between text-[11px]"><span className="text-[hsl(0_0%_50%)]">Cost</span><span className="text-[hsl(0_0%_85%)]">${selected.amount.toLocaleString()}</span></div>}
+            </AppSurface>
+            {selected.notes && (
+              <AppSurface level={2} className="p-3">
+                <p className="text-[10px] font-semibold text-[hsl(0_0%_50%)] uppercase tracking-wider mb-1">Notes</p>
+                <p className="text-[11px] text-[hsl(0_0%_65%)]">{selected.notes}</p>
+              </AppSurface>
+            )}
+            <button className="w-full px-3 py-2 rounded-lg bg-[hsl(285_55%_55%)] text-white text-[11px] font-medium hover:bg-[hsl(285_55%_48%)] transition-colors micro-press">
+              Mark Complete
+            </button>
+          </div>
+        )}
+      </SlidePanel>
     </ConciergePageWrapper>
   );
 };
