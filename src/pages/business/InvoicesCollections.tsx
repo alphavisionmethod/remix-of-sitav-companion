@@ -1,10 +1,5 @@
-import { SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
-import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
-import { ModuleWorkspace } from "@/components/sita/domain-shared/ModuleWorkspace";
-import { DomainAdvisorCard } from "@/components/advisors/DomainAdvisorCard";
-import { InvoiceDetailPane } from "@/components/business/InvoiceDetailPane";
 import { useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAction } from "@/lib/hooks/useAction";
@@ -13,25 +8,28 @@ import { DollarSign, Clock, AlertTriangle, CheckCircle, Plus, X, FileText } from
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useInvoiceGenerate, useInvoiceSend } from "@/hooks/use-backend-actions";
+import { InvoiceDetailPane } from "@/components/business/InvoiceDetailPane";
+import { cn } from "@/lib/utils";
 
-const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.04 } } };
-const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.25 } } };
+// New design system
+import { HeroCard, QueueCard, StatusCard } from "@/components/sita/cards";
+import { ExecutionBadge, FreshnessBadge } from "@/components/sita/badges";
+import { SplitWorkspace } from "@/components/sita/surfaces/SplitWorkspace";
+import { DetailDrawer } from "@/components/sita/surfaces/DetailDrawer";
+import { AppSurface } from "@/components/sita/surfaces/AppSurface";
+import { ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransitions";
 
-const statusConfig: Record<string, { label: string; color: string }> = {
-  draft: { label: "Draft", color: "bg-muted text-muted-foreground border-border" },
-  sent: { label: "Sent", color: "bg-primary/10 text-primary border-primary/20" },
-  paid: { label: "Paid", color: "bg-trust-verified/10 text-trust-verified border-trust-verified/20" },
-  overdue: { label: "Overdue", color: "bg-urgency-high/10 text-urgency-high border-urgency-high/20" },
-  partial: { label: "Partial", color: "bg-accent/10 text-accent border-accent/20" },
-  disputed: { label: "Disputed", color: "bg-urgency-critical/10 text-urgency-critical border-urgency-critical/20" },
+const executionState = (status: string): "drafted" | "approved" | "executing" | "complete" | "failed" => {
+  if (status === "paid") return "complete";
+  if (status === "sent") return "approved";
+  if (status === "overdue") return "failed";
+  if (status === "partial") return "executing";
+  return "drafted";
 };
-
-const initials = (name: string) => name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase();
 
 const InvoicesCollections = () => {
   const { isDemoMode } = useDataMode();
   const { user } = useAuth();
-  const [tab, setTab] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showAdd, setShowAdd] = useState(false);
   const [form, setForm] = useState({ invoice_number: "", amount: "", due_date: "", notes: "" });
@@ -73,135 +71,129 @@ const InvoicesCollections = () => {
   });
 
   const selected = invoices.find((i: any) => i.id === selectedId);
-  const filtered = tab === "all" ? invoices
-    : tab === "due" ? invoices.filter((i: any) => i.computedStatus === "overdue" || i.computedStatus === "sent")
-    : tab === "overdue" ? invoices.filter((i: any) => i.computedStatus === "overdue")
-    : invoices.filter((i: any) => i.computedStatus === "paid");
-
   const outstanding = invoices.filter((i: any) => !["paid", "draft"].includes(i.computedStatus)).reduce((s: number, i: any) => s + Number(i.amount), 0);
   const overdue = invoices.filter((i: any) => i.computedStatus === "overdue").reduce((s: number, i: any) => s + Number(i.amount), 0);
-  const paidThisMonth = invoices.filter((i: any) => i.status === "paid" && new Date(i.updated_at).getMonth() === new Date().getMonth()).reduce((s: number, i: any) => s + Number(i.amount), 0);
 
-  const listContent = (
-    <div className="space-y-2">
-      <AnimatePresence>
-        {showAdd && (
-          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }}>
-            <SitaCard className="p-5">
-              <div className="flex items-center justify-between mb-4"><SitaCardTitle>New Invoice</SitaCardTitle><button onClick={() => setShowAdd(false)}><X className="h-4 w-4 text-muted-foreground" /></button></div>
-              <div className="grid gap-3 sm:grid-cols-2">
-                <input value={form.invoice_number} onChange={e => setForm({ ...form, invoice_number: e.target.value })} placeholder="Invoice # *" className="rounded-lg border border-border/50 bg-secondary/20 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/30" />
-                <input type="number" value={form.amount} onChange={e => setForm({ ...form, amount: e.target.value })} placeholder="Amount ($) *" className="rounded-lg border border-border/50 bg-secondary/20 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/30" />
-                <input type="date" value={form.due_date} onChange={e => setForm({ ...form, due_date: e.target.value })} className="rounded-lg border border-border/50 bg-secondary/20 px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-1 focus:ring-primary/30" />
-                <input value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} placeholder="Notes" className="rounded-lg border border-border/50 bg-secondary/20 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/30" />
-              </div>
-              <div className="flex justify-end mt-4">
-                <SitaButton variant="primary" onClick={() => addInvoice.mutate({ invoice_number: form.invoice_number.trim(), amount: parseFloat(form.amount), due_date: form.due_date, notes: form.notes || null, status: "draft" })} disabled={addInvoice.isPending || !form.invoice_number.trim() || !form.amount || !form.due_date}>{addInvoice.isPending ? "Creating..." : "Create Invoice"}</SitaButton>
-              </div>
-            </SitaCard>
-          </motion.div>
-        )}
-      </AnimatePresence>
+  const queueItems = invoices
+    .filter((i: any) => i.computedStatus !== "paid")
+    .map((inv: any) => ({
+      id: inv.id,
+      label: `#${inv.invoice_number} — ${inv.customers?.name || "Unknown"}`,
+      meta: `$${Number(inv.amount).toLocaleString()}`,
+      urgency: (inv.computedStatus === "overdue" ? "critical" : inv.computedStatus === "sent" ? "normal" : "low") as "critical" | "normal" | "low",
+      badge: <ExecutionBadge state={executionState(inv.computedStatus)} />,
+    }));
+
+  const listPane = (
+    <div className="p-3 space-y-3">
+      <div className="flex items-center justify-between px-1">
+        <h3 className="text-[13px] font-semibold text-[hsl(0_0%_85%)]">Invoices & Collections</h3>
+        <button
+          onClick={() => setShowAdd(true)}
+          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[hsl(265_55%_58%/0.12)] hover:bg-[hsl(265_55%_58%/0.18)] text-[hsl(265_55%_70%)] text-[11px] font-medium transition-colors"
+        >
+          <Plus className="h-3 w-3" /> New Invoice
+        </button>
+      </div>
+
+      {/* KPI row */}
+      <div className="grid grid-cols-3 gap-2">
+        <StatusCard label="Outstanding" status={outstanding > 5000 ? "degraded" : "healthy"} lastChecked={outstanding > 0 ? `$${(outstanding / 1000).toFixed(1)}K` : "$0"} />
+        <StatusCard label="Overdue" status={overdue > 0 ? "down" : "healthy"} lastChecked={overdue > 0 ? `$${(overdue / 1000).toFixed(1)}K` : "$0"} />
+        <StatusCard label="Total" status="healthy" lastChecked={`${invoices.length}`} />
+      </div>
 
       {/* Aging Buckets */}
-      <div className="grid gap-2 sm:grid-cols-4">
+      <div className="grid grid-cols-4 gap-1.5">
         {[
-          { label: "Current", count: invoices.filter((i: any) => i.daysOverdue === 0 && !["paid", "draft"].includes(i.status)).length, color: "border-l-trust-verified" },
-          { label: "1–14d Late", count: invoices.filter((i: any) => i.daysOverdue > 0 && i.daysOverdue <= 14).length, color: "border-l-trust-review" },
-          { label: "15–30d Late", count: invoices.filter((i: any) => i.daysOverdue > 14 && i.daysOverdue <= 30).length, color: "border-l-urgency-high" },
-          { label: "30+ Late", count: invoices.filter((i: any) => i.daysOverdue > 30).length, color: "border-l-urgency-critical" },
+          { label: "Current", count: invoices.filter((i: any) => i.daysOverdue === 0 && !["paid", "draft"].includes(i.status)).length, color: "hsl(152 55% 48%)" },
+          { label: "1–14d", count: invoices.filter((i: any) => i.daysOverdue > 0 && i.daysOverdue <= 14).length, color: "hsl(210 60% 50%)" },
+          { label: "15–30d", count: invoices.filter((i: any) => i.daysOverdue > 14 && i.daysOverdue <= 30).length, color: "hsl(38 85% 58%)" },
+          { label: "30+", count: invoices.filter((i: any) => i.daysOverdue > 30).length, color: "hsl(0 70% 55%)" },
         ].map(b => (
-          <div key={b.label} className={`rounded-xl border border-border bg-card p-3 border-l-4 ${b.color}`}>
-            <p className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">{b.label}</p>
-            <p className="mt-1 font-display text-lg font-bold text-foreground">{b.count}</p>
-          </div>
+          <AppSurface key={b.label} level={1} className="p-2 text-center border-t-2" style={{ borderTopColor: b.color }}>
+            <p className="text-[16px] font-bold text-[hsl(0_0%_90%)] tabular-nums">{b.count}</p>
+            <p className="text-[9px] text-[hsl(0_0%_50%)] uppercase tracking-wider">{b.label}</p>
+          </AppSurface>
         ))}
       </div>
 
-      <SitaTabs tabs={[
-        { key: "all", label: "All", count: invoices.length },
-        { key: "due", label: "Action Needed", count: invoices.filter((i: any) => ["overdue", "sent"].includes(i.computedStatus)).length },
-        { key: "overdue", label: "Overdue", count: invoices.filter((i: any) => i.computedStatus === "overdue").length },
-        { key: "paid", label: "Paid", count: invoices.filter((i: any) => i.computedStatus === "paid").length },
-      ]} active={tab} onChange={setTab} />
+      {/* Queue */}
+      <QueueCard
+        title="ACTIVE INVOICES"
+        items={queueItems}
+        maxVisible={12}
+        onItemClick={(id) => setSelectedId(id)}
+      />
+    </div>
+  );
 
-      {isLoading ? <div className="space-y-2">{[1,2,3].map(i => <div key={i} className="h-20 rounded-xl bg-muted/30 animate-pulse" />)}</div>
-      : filtered.length === 0 ? <EmptyState icon={DollarSign} title="No invoices" description={invoices.length === 0 ? "Create your first invoice" : "Try a different filter"} />
-      : (
-        <motion.div className="space-y-2" variants={stagger} initial="hidden" animate="show">
-          {filtered.map((inv: any) => {
-            const st = statusConfig[inv.computedStatus] || statusConfig.draft;
-            const customerName = inv.customers?.name;
-            return (
-              <motion.div key={inv.id} variants={fadeUp} layout>
-                <SitaCard onClick={() => setSelectedId(inv.id)} selected={selectedId === inv.id} lane={inv.computedStatus === "overdue" ? "action" : undefined} className="p-4">
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="flex items-center gap-3 flex-1 min-w-0">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/8 font-display text-sm font-semibold text-primary shrink-0">{initials(customerName || inv.invoice_number)}</div>
-                      <div className="min-w-0">
-                        <p className="text-sm font-medium text-foreground">Invoice #{inv.invoice_number}</p>
-                        <p className="text-xs text-muted-foreground">{customerName || "No customer"} · Due {new Date(inv.due_date).toLocaleDateString()}</p>
-                      </div>
-                    </div>
-                    <div className="text-right shrink-0">
-                      <p className="font-display text-sm font-semibold text-foreground">${Number(inv.amount).toLocaleString()}</p>
-                      <span className={`inline-flex items-center rounded-md border px-1.5 py-px text-[10px] font-medium mt-1 ${st.color}`}>{st.label}</span>
-                    </div>
-                  </div>
-                  {inv.daysOverdue > 0 && inv.status !== "paid" && (
-                    <div className="mt-2 flex items-center gap-2 text-xs text-urgency-high"><Clock className="h-3 w-3" /> {inv.daysOverdue} days overdue</div>
-                  )}
-                </SitaCard>
-              </motion.div>
-            );
-          })}
-        </motion.div>
-      )}
+  const detailPane = selected ? (
+    <div className="p-4">
+      <InvoiceDetailPane
+        invoice={selected}
+        onMarkSent={() => updateStatus.mutate({ id: selected.id, status: "sent" })}
+        onMarkPaid={() => updateStatus.mutate({ id: selected.id, status: "paid" })}
+        onSendInvoice={() => sendInvoice.mutate({ action: "send", invoice_id: selected.id })}
+        onGeneratePdf={() => generatePdf.mutate({ action: "generate", invoice_id: selected.id, format: "pdf" })}
+        onDelete={() => deleteInvoice.mutate(selected.id)}
+        sendPending={sendInvoice.isPending}
+        pdfPending={generatePdf.isPending}
+      />
+    </div>
+  ) : (
+    <div className="flex items-center justify-center h-full">
+      <div className="text-center space-y-2">
+        <FileText className="h-8 w-8 mx-auto text-[hsl(0_0%_30%)]" />
+        <p className="text-[13px] text-[hsl(0_0%_50%)]">Select an invoice to view details</p>
+      </div>
     </div>
   );
 
   return (
-    <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+    <div className="h-[calc(100vh-200px)] -m-4">
       <DemoModeBadge />
-      <ModuleWorkspace
-        domain="business"
-        title="Invoices & Collections"
-        icon={FileText}
-        actions={<SitaButton variant="primary" size="sm" onClick={() => setShowAdd(true)}><Plus className="h-3.5 w-3.5" /> New Invoice</SitaButton>}
-        kpiStrip={
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            <KPITile label="Outstanding" value={outstanding > 0 ? `$${(outstanding / 1000).toFixed(1)}K` : "$0"} icon={DollarSign} />
-            <KPITile label="Overdue" value={overdue > 0 ? `$${(overdue / 1000).toFixed(1)}K` : "$0"} icon={AlertTriangle} />
-            <KPITile label="Paid This Month" value={paidThisMonth > 0 ? `$${paidThisMonth.toLocaleString()}` : "$0"} icon={CheckCircle} />
-            <KPITile label="Total Invoices" value={String(invoices.length)} icon={Clock} />
-          </div>
-        }
-        list={listContent}
-        detail={selected ? (
-          <InvoiceDetailPane
-            invoice={selected}
-            onMarkSent={() => updateStatus.mutate({ id: selected.id, status: "sent" })}
-            onMarkPaid={() => updateStatus.mutate({ id: selected.id, status: "paid" })}
-            onSendInvoice={() => sendInvoice.mutate({ action: "send", invoice_id: selected.id })}
-            onGeneratePdf={() => generatePdf.mutate({ action: "generate", invoice_id: selected.id, format: "pdf" })}
-            onDelete={() => deleteInvoice.mutate(selected.id)}
-            sendPending={sendInvoice.isPending}
-            pdfPending={generatePdf.isPending}
-          />
-        ) : undefined}
-        detailActive={!!selected}
-        onCloseDetail={() => setSelectedId(null)}
-        advisor={
-          <DomainAdvisorCard
-            domain="business"
-            insights={[
-              { id: "inv-1", text: overdue > 0 ? `$${(overdue / 1000).toFixed(1)}K overdue — immediate attention needed` : "No overdue invoices — collections are healthy", confidence: overdue > 0 ? 92 : 85 },
-              { id: "inv-2", text: "Clients pay within 3 days of second reminder on average", confidence: 78, action: "Review timing", onAction: () => {} },
-            ]}
-          />
-        }
+      <SplitWorkspace
+        list={listPane}
+        detail={detailPane}
+        hasSelection={!!selected}
+        defaultSplit={42}
       />
-    </motion.div>
+
+      {/* Add Invoice Drawer */}
+      <DetailDrawer
+        isOpen={showAdd}
+        onClose={() => setShowAdd(false)}
+        title="New Invoice"
+        domain="business"
+      >
+        <div className="space-y-4">
+          <div>
+            <label className="text-[11px] font-medium text-[hsl(0_0%_50%)]">Invoice # *</label>
+            <input value={form.invoice_number} onChange={e => setForm({ ...form, invoice_number: e.target.value })} className="mt-1 w-full rounded-lg border border-[hsl(0_0%_100%/0.08)] bg-[hsl(0_0%_100%/0.04)] px-3 py-2.5 text-sm text-[hsl(0_0%_90%)] focus:outline-none focus:ring-2 focus:ring-[hsl(265_55%_58%/0.2)]" />
+          </div>
+          <div>
+            <label className="text-[11px] font-medium text-[hsl(0_0%_50%)]">Amount *</label>
+            <input type="number" value={form.amount} onChange={e => setForm({ ...form, amount: e.target.value })} className="mt-1 w-full rounded-lg border border-[hsl(0_0%_100%/0.08)] bg-[hsl(0_0%_100%/0.04)] px-3 py-2.5 text-sm text-[hsl(0_0%_90%)] focus:outline-none" />
+          </div>
+          <div>
+            <label className="text-[11px] font-medium text-[hsl(0_0%_50%)]">Due Date *</label>
+            <input type="date" value={form.due_date} onChange={e => setForm({ ...form, due_date: e.target.value })} className="mt-1 w-full rounded-lg border border-[hsl(0_0%_100%/0.08)] bg-[hsl(0_0%_100%/0.04)] px-3 py-2.5 text-sm text-[hsl(0_0%_90%)] focus:outline-none" />
+          </div>
+          <div>
+            <label className="text-[11px] font-medium text-[hsl(0_0%_50%)]">Notes</label>
+            <input value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} className="mt-1 w-full rounded-lg border border-[hsl(0_0%_100%/0.08)] bg-[hsl(0_0%_100%/0.04)] px-3 py-2.5 text-sm text-[hsl(0_0%_90%)]" />
+          </div>
+          <button
+            onClick={() => addInvoice.mutate({ invoice_number: form.invoice_number.trim(), amount: parseFloat(form.amount), due_date: form.due_date, notes: form.notes || null, status: "draft" })}
+            disabled={addInvoice.isPending || !form.invoice_number.trim() || !form.amount || !form.due_date}
+            className="w-full px-4 py-2.5 rounded-lg bg-[hsl(265_55%_58%)] hover:bg-[hsl(265_55%_52%)] disabled:opacity-50 text-white text-[13px] font-medium transition-colors"
+          >
+            {addInvoice.isPending ? "Creating..." : "Create Invoice"}
+          </button>
+        </div>
+      </DetailDrawer>
+    </div>
   );
 };
 
