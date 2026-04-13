@@ -8,7 +8,7 @@ import { Wrench, Star, Phone, Clock, DollarSign, MapPin, Shield, Plus, Search, C
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useInspector } from "@/contexts/InspectorContext";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useServiceProvidersList } from "@/hooks/use-concierge-data";
 import { DEMO_CONC_categories_SERVICE_PROVIDERS as DEMO_categories } from "@/lib/demo-data/concierge";
@@ -158,7 +158,7 @@ const ServiceProviders = () => {
 
   return (
     <ConciergePageWrapper className="space-y-6">
-      <DemoModeBadge />
+      <PageTruthBanner />
       <DomainHeader title="Service Providers" subtitle="Your trusted network — with full service history, spend tracking, and reliability scores" domain="concierge" />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
