@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
-import { Brain, ChevronDown, ChevronRight, FileCheck, MessageCircle, AlertTriangle, Mic, Volume2 } from "lucide-react";
+import { Brain, ChevronDown, ChevronRight, FileCheck, MessageCircle, AlertTriangle, Mic, Volume2, Play, Pause } from "lucide-react";
 import { ConfidenceBar } from "@/components/sita/primitives";
 import { ADVISOR_ROSTERS, type AdvisorRole } from "@/lib/advisor-topology";
+import { TalkingAvatar } from "./TalkingAvatar";
 
 interface Props {
   scope: "global" | "business" | "finance" | "concierge";
@@ -250,10 +251,22 @@ function TypingIndicator({ color }: { color: string }) {
 
 export function BoardroomDiscussionThread({ scope }: Props) {
   const [expandedReasoning, setExpandedReasoning] = useState<number | null>(null);
-  const [imgErrors, setImgErrors] = useState<Set<string>>(new Set());
+  const [playMode, setPlayMode] = useState(false);
+  const [playIndex, setPlayIndex] = useState(0);
 
   const domain = scope === "global" ? "business" : scope;
   const entries = MOCK_DISCUSSIONS[domain] || MOCK_DISCUSSIONS.business;
+
+  // Auto-play sequential mode
+  React.useEffect(() => {
+    if (!playMode) return;
+    if (playIndex >= entries.length) { setPlayMode(false); return; }
+    const timer = setTimeout(() => setPlayIndex(prev => prev + 1), 4000);
+    return () => clearTimeout(timer);
+  }, [playMode, playIndex, entries.length]);
+
+  const visibleEntries = playMode ? entries.slice(0, playIndex + 1) : entries;
+  const currentSpeakingIndex = playMode ? playIndex : entries.length - 1;
 
   return (
     <div className="space-y-4">
@@ -263,15 +276,21 @@ export function BoardroomDiscussionThread({ scope }: Props) {
         </div>
         <p className="text-[13px] font-bold text-[hsl(0_0%_100%/0.92)]">Live Deliberation</p>
         <span className="text-[9px] text-[hsl(0_0%_100%/0.3)] bg-[hsl(0_0%_100%/0.04)] px-2 py-0.5 rounded-full">{entries.length} contributions</span>
+        <button
+          onClick={() => { setPlayMode(p => !p); if (!playMode) setPlayIndex(0); }}
+          className="ml-auto flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-[hsl(280_50%_55%/0.3)] bg-[hsl(280_40%_50%/0.1)] hover:bg-[hsl(280_40%_50%/0.2)] transition-colors text-[9px] font-bold text-[hsl(280_50%_75%)]"
+        >
+          {playMode ? <Pause size={10} /> : <Play size={10} />}
+          {playMode ? "Pause" : "▶ Play"}
+        </button>
       </div>
 
       <div className="space-y-1">
-        {entries.map((entry, i) => {
+        {visibleEntries.map((entry, i) => {
           const adv = getAdvisorInfo(entry.advisorId);
           const stance = stanceConfig[entry.stance];
           const isExpanded = expandedReasoning === i;
-          const isLast = i === entries.length - 1;
-          const hasImgError = imgErrors.has(adv.id);
+          const isSpeakingNow = i === currentSpeakingIndex;
 
           return (
             <motion.div
@@ -285,32 +304,25 @@ export function BoardroomDiscussionThread({ scope }: Props) {
               <div className="flex flex-col items-center shrink-0">
                 <div className="relative">
                   <div
-                    className="w-[52px] h-[52px] rounded-full overflow-hidden border-2 shadow-lg"
+                    className="rounded-full border-2 shadow-lg"
                     style={{
                       borderColor: adv.accentColor,
-                      boxShadow: isLast
+                      boxShadow: isSpeakingNow
                         ? `0 0 24px ${adv.accentColor}35, 0 0 48px ${adv.accentColor}12`
                         : `0 0 8px ${adv.accentColor}18`,
                     }}
                   >
-                    {!hasImgError && adv.avatarUrl ? (
-                      <img
-                        src={adv.avatarUrl}
-                        alt={adv.name}
-                        className="w-full h-full object-cover"
-                        onError={() => setImgErrors(prev => new Set(prev).add(adv.id))}
-                      />
-                    ) : (
-                      <div
-                        className="w-full h-full flex items-center justify-center text-white"
-                        style={{ background: `linear-gradient(135deg, ${adv.accentColor}, ${adv.accentColor}88)` }}
-                      >
-                        <span className="text-xl">{adv.emoji}</span>
-                      </div>
-                    )}
+                    <TalkingAvatar
+                      speaking={isSpeakingNow}
+                      avatarUrl={adv.avatarUrl}
+                      accentColor={adv.accentColor}
+                      size={52}
+                      name={adv.name}
+                      emoji={adv.emoji}
+                    />
                   </div>
                   {/* Speaking mic badge */}
-                  {isLast && (
+                  {isSpeakingNow && (
                     <motion.div
                       className="absolute -bottom-0.5 -right-0.5 w-5 h-5 rounded-full flex items-center justify-center border-2 border-[hsl(220_18%_6%)]"
                       style={{ background: adv.accentColor }}
@@ -322,7 +334,7 @@ export function BoardroomDiscussionThread({ scope }: Props) {
                   )}
                 </div>
                 {/* Connecting line */}
-                {!isLast && (
+                {i < visibleEntries.length - 1 && (
                   <div className="w-px h-full min-h-[16px] bg-[hsl(0_0%_100%/0.06)] mt-1" />
                 )}
               </div>
@@ -342,7 +354,7 @@ export function BoardroomDiscussionThread({ scope }: Props) {
                     borderColor: stance.borderColor,
                     background: stance.bgColor,
                     // Breathing glow on the currently speaking entry
-                    boxShadow: isLast ? `inset 3px 0 0 ${adv.accentColor}50` : undefined,
+                    boxShadow: isSpeakingNow ? `inset 3px 0 0 ${adv.accentColor}50` : undefined,
                   }}
                 >
                   {/* Speech triangle */}
@@ -355,7 +367,7 @@ export function BoardroomDiscussionThread({ scope }: Props) {
                   />
 
                   {/* Currently Speaking badge */}
-                  {isLast && (
+                  {isSpeakingNow && (
                     <motion.div
                       className="absolute -top-2.5 right-3 px-2 py-0.5 rounded-full flex items-center gap-1.5 border"
                       style={{
