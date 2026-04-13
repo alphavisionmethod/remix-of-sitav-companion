@@ -753,6 +753,7 @@ const UpdateCenterPage = lazy(() => import("./pages/UpdateCenter"));
 const WealthCommandCenter = lazy(() => import("./pages/WealthCommandCenter"));
 const TimeMachinePage = lazy(() => import("./pages/TimeMachinePage"));
 const AchievementsPage = lazy(() => import("./pages/AchievementsPage"));
+const SimulationEnginePage = lazy(() => import("./pages/SimulationEnginePage"));
 
 const queryClient = createQueryClient();
 
