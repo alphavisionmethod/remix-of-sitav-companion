@@ -16,6 +16,7 @@ import {
   Upload, Plug
 } from "lucide-react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
@@ -68,6 +69,7 @@ const timeAgo = (dt: string | null) => {
 type Tab = "all" | "urgent" | "new" | "warm" | "stale" | "qualified";
 
 const LeadsInbox = () => {
+  const navigate = useNavigate();
   const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const queryClient = useQueryClient();
