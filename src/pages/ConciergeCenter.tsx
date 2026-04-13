@@ -2,14 +2,13 @@ import { CenterPageShell, CenterSection } from "@/components/sita/CenterPageShel
 import { InAppAdvisorStrip } from "@/components/sita/InAppAdvisorStrip";
 import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
 import { SitaTabs } from "@/components/sita/SitaComponents";
+import { MobileTabSelector } from "@/components/sita/MobileTabSelector";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useExperienceSignature } from "@/hooks/useExperienceSignature";
 import { useOSOrchestration } from "@/hooks/useOSOrchestration";
 import { useRelationshipContexts, useHumanObligations } from "@/hooks/useCAIData";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useState } from "react";
-import { ChevronDown } from "lucide-react";
 
 import ConciergeOverview from "./concierge/ConciergeOverview";
 import HouseholdTasks from "./concierge/HouseholdTasks";
