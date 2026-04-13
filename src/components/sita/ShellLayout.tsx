@@ -23,6 +23,7 @@ import { useAdaptiveInterface } from "@/hooks/useAdaptiveInterface";
 import { useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { PageTransition } from "./PageTransition";
 import { SectionSkeleton } from "./PageSkeleton";
 import { FinderWindow } from "./shell/windows/FinderWindow";
 import { SettingsWindow } from "./shell/windows/SettingsWindow";
@@ -590,18 +591,9 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
                   {isDesktopRoute ? (
                     children
                   ) : (
-                    <AnimatePresence mode="wait">
-                      <motion.div
-                        key={workspaceKey}
-                        initial={{ opacity: 0, scale: 0.97, filter: "blur(4px)" }}
-                        animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                        exit={{ opacity: 0, scale: 0.98, filter: "blur(2px)" }}
-                        transition={{ type: "spring", mass: 0.8, stiffness: 150, damping: 18 }}
-                        className="p-3 sm:p-4 md:p-6"
-                      >
-                        {children}
-                      </motion.div>
-                    </AnimatePresence>
+                    <PageTransition>
+                      {children}
+                    </PageTransition>
                   )}
                 </ErrorBoundary>
               </main>
