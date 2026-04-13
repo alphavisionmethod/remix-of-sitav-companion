@@ -283,9 +283,15 @@ export const AppSidebar = memo(function AppSidebar() {
   const collapsed = state === "collapsed";
   const { user, signOut } = useAuth();
   const { isDemoMode } = useDataMode();
+  const isAdmin = useIsAdmin();
   const navigate = useNavigate();
   const location = useLocation();
   const recents = useRecents();
+
+  // Filter bottom nav: only show Control Room to admins
+  const visibleBottomNav = isAdmin
+    ? [...bottomNav, { title: "Mission Control", url: "/admin", icon: Shield }]
+    : [bottomNav[0]]; // Settings only
 
   const displayName =
     user?.user_metadata?.full_name || user?.email?.split("@")[0] || "User";
