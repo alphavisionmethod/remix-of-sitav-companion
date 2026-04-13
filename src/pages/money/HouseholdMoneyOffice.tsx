@@ -2,23 +2,15 @@
 // SITA OS — Money Office: Household / Shared Money Office
 // ═══════════════════════════════════════════════════════════════
 
-import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
-import { KPITile } from "@/components/sita/SitaComponents";
-import { TrustBadge } from "@/components/sita/TrustBadge";
-import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
-import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
-import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
-import { Users, DollarSign, PiggyBank, Target, Heart, Home, Shield, BarChart3, ArrowRight } from "lucide-react";
+import { HeroCard, StatusCard, SummaryCard } from "@/components/sita/cards";
+import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { Users, DollarSign, PiggyBank, Target, Home, BarChart3 } from "lucide-react";
 import { motion } from "framer-motion";
-import type { HouseholdFinanceSummary, SharedGoal, MemberFinanceSummary } from "@/packages/finance-contracts";
+import type { HouseholdFinanceSummary } from "@/packages/finance-contracts";
 
 const DEMO_HOUSEHOLD: HouseholdFinanceSummary = {
-  householdId: "hh-1",
-  memberCount: 2,
-  totalIncomeCents: 1700000,
-  totalExpensesCents: 1150000,
+  householdId: "hh-1", memberCount: 2, totalIncomeCents: 1700000, totalExpensesCents: 1150000,
   sharedGoals: [
     { id: "g1", name: "Emergency Fund", targetCents: 3000000, currentCents: 1800000, contributors: [{ memberId: "m1", contributedCents: 1000000 }, { memberId: "m2", contributedCents: 800000 }], projectedCompletionDate: "2026-09-15" },
     { id: "g2", name: "Vacation Fund", targetCents: 500000, currentCents: 220000, contributors: [{ memberId: "m1", contributedCents: 120000 }, { memberId: "m2", contributedCents: 100000 }], projectedCompletionDate: "2026-07-01" },
@@ -32,29 +24,36 @@ const DEMO_HOUSEHOLD: HouseholdFinanceSummary = {
 };
 
 const HouseholdMoneyOffice = () => {
-  const { isDemoMode } = useDataMode();
   const hh = DEMO_HOUSEHOLD;
   const fmt = (c: number) => `$${(Math.abs(c) / 100).toLocaleString()}`;
   const surplus = hh.totalIncomeCents - hh.totalExpensesCents;
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
-      <DomainHeader domain="money" title="Household Money Office" subtitle="Shared finances, family goals, partner visibility" />
-      <DemoModeBadge />
+      <PageTruthBanner />
 
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
-        <KPITile label="Household Income" value={fmt(hh.totalIncomeCents)} icon={DollarSign} />
-        <KPITile label="Shared Expenses" value={fmt(hh.totalExpensesCents)} icon={Home} />
-        <KPITile label="Monthly Surplus" value={fmt(surplus)} icon={PiggyBank} sub={`${((surplus / hh.totalIncomeCents) * 100).toFixed(0)}% savings rate`} />
-        <KPITile label="Budget Health" value={`${hh.sharedBudgetHealth}%`} icon={BarChart3} sub={hh.sharedBudgetHealth >= 80 ? "On track" : "Needs attention"} />
+      <HeroCard
+        title="HOUSEHOLD MONEY OFFICE"
+        metric={fmt(surplus)}
+        subtitle={`Monthly surplus · ${((surplus / hh.totalIncomeCents) * 100).toFixed(0)}% savings rate`}
+        accentFrom="hsl(265 55% 58%)"
+        accentTo="hsl(152 55% 48%)"
+        icon={<Home className="h-5 w-5 text-[hsl(265_55%_58%)]" />}
+      />
+
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <StatusCard label="Household Income" status="healthy" lastChecked={fmt(hh.totalIncomeCents)} icon={<DollarSign className="h-3.5 w-3.5" />} />
+        <StatusCard label="Shared Expenses" status="healthy" lastChecked={fmt(hh.totalExpensesCents)} icon={<Home className="h-3.5 w-3.5" />} />
+        <StatusCard label="Monthly Surplus" status="healthy" lastChecked={fmt(surplus)} icon={<PiggyBank className="h-3.5 w-3.5" />} />
+        <StatusCard label="Budget Health" status={hh.sharedBudgetHealth >= 80 ? "healthy" : "degraded"} lastChecked={`${hh.sharedBudgetHealth}%`} icon={<BarChart3 className="h-3.5 w-3.5" />} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Member Breakdown */}
-        <div className="space-y-4">
-          <SitaSectionHeader title="Members" />
+        {/* Members */}
+        <div className="space-y-3">
+          <h3 className="text-[11px] font-semibold uppercase tracking-wider text-[hsl(0_0%_50%)]">Members</h3>
           {hh.memberBreakdown.map(m => (
-            <SitaCard key={m.memberId} hover className="p-4">
+            <div key={m.memberId} className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift">
               <div className="flex items-center gap-3 mb-3">
                 <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
                   <Users className="h-5 w-5 text-primary" />
@@ -66,21 +65,21 @@ const HouseholdMoneyOffice = () => {
               </div>
               <div className="grid grid-cols-2 gap-2 text-xs">
                 <div><p className="text-muted-foreground">Expenses</p><p className="font-semibold">{fmt(m.expensesCents)}</p></div>
-                <div><p className="text-muted-foreground">Personal Savings</p><p className="font-semibold text-trust-verified">{fmt(m.personalSavingsCents)}</p></div>
-                <div><p className="text-muted-foreground">Shared Contribution</p><p className="font-semibold text-primary">{fmt(m.sharedContributionCents)}</p></div>
-                <div><p className="text-muted-foreground">Savings Rate</p><p className="font-semibold">{((m.personalSavingsCents + m.sharedContributionCents) / m.incomeCents * 100).toFixed(0)}%</p></div>
+                <div><p className="text-muted-foreground">Savings</p><p className="font-semibold text-[hsl(152_55%_48%)]">{fmt(m.personalSavingsCents)}</p></div>
+                <div><p className="text-muted-foreground">Shared</p><p className="font-semibold text-primary">{fmt(m.sharedContributionCents)}</p></div>
+                <div><p className="text-muted-foreground">Rate</p><p className="font-semibold">{((m.personalSavingsCents + m.sharedContributionCents) / m.incomeCents * 100).toFixed(0)}%</p></div>
               </div>
-            </SitaCard>
+            </div>
           ))}
         </div>
 
         {/* Shared Goals */}
-        <div className="space-y-4">
-          <SitaSectionHeader title="Shared Goals" />
+        <div className="space-y-3">
+          <h3 className="text-[11px] font-semibold uppercase tracking-wider text-[hsl(0_0%_50%)]">Shared Goals</h3>
           {hh.sharedGoals.map(g => {
             const pct = g.targetCents > 0 ? (g.currentCents / g.targetCents) * 100 : 0;
             return (
-              <SitaCard key={g.id} hover className="p-4">
+              <div key={g.id} className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift">
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
                     <Target className="h-4 w-4 text-primary" />
@@ -88,42 +87,26 @@ const HouseholdMoneyOffice = () => {
                   </div>
                   <p className="text-xs text-muted-foreground">{pct.toFixed(0)}%</p>
                 </div>
-                <div className="h-2 bg-muted rounded-full overflow-hidden mb-2">
+                <div className="h-2 bg-[hsl(0_0%_100%/0.06)] rounded-full overflow-hidden mb-2">
                   <div className="h-full bg-primary rounded-full" style={{ width: `${Math.min(100, pct)}%` }} />
                 </div>
                 <div className="flex justify-between text-xs text-muted-foreground">
                   <span>{fmt(g.currentCents)} of {fmt(g.targetCents)}</span>
                   <span>Est. {new Date(g.projectedCompletionDate).toLocaleDateString(undefined, { month: "short", year: "numeric" })}</span>
                 </div>
-                <div className="flex gap-2 mt-2">
-                  {g.contributors.map(c => {
-                    const member = hh.memberBreakdown.find(m => m.memberId === c.memberId);
-                    return (
-                      <span key={c.memberId} className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full">
-                        {member?.name}: {fmt(c.contributedCents)}
-                      </span>
-                    );
-                  })}
-                </div>
-              </SitaCard>
+              </div>
             );
           })}
         </div>
 
         {/* Advisor */}
         <div className="space-y-4">
-          <LiveAdvisorCard
-            advisor="money"
-            intent="household_finance"
-            context={{ income: hh.totalIncomeCents / 100, expenses: hh.totalExpensesCents / 100, members: hh.memberCount, goals: hh.sharedGoals.length }}
-            demoName="Household Advisor"
-            demoRole="Shared Finance Intelligence"
-            demoConfidence="High"
-            demoRecommendation={`Household savings rate is ${((surplus / hh.totalIncomeCents) * 100).toFixed(0)}%. Emergency fund at ${((hh.sharedGoals[0]?.currentCents ?? 0) / (hh.sharedGoals[0]?.targetCents || 1) * 100).toFixed(0)}% — on track.`}
-            demoReasoning="Combined income/expense analysis with goal pacing projections."
+          <ModuleAdvisorInsight
+            advisorName="Household Advisor"
+            domain="finance"
+            insight={`Household savings rate is ${((surplus / hh.totalIncomeCents) * 100).toFixed(0)}%. Emergency fund at ${((hh.sharedGoals[0]?.currentCents ?? 0) / (hh.sharedGoals[0]?.targetCents || 1) * 100).toFixed(0)}% — on track.`}
+            confidence={88}
           />
-          <ConfidenceBar value={Math.round(0.88 * 100)} label="Data completeness" />
-          <TrustBadge level="verified" />
         </div>
       </div>
     </motion.div>

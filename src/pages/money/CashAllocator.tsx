@@ -2,12 +2,9 @@
 // SITA OS — Money Office: Cash Allocation AI
 // ═══════════════════════════════════════════════════════════════
 
-import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
-import { KPITile } from "@/components/sita/SitaComponents";
-import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
-import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { TrustBadge } from "@/components/sita/TrustBadge";
+import { HeroCard, StatusCard } from "@/components/sita/cards";
+import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { DollarSign, PieChart, Shield, Zap, TrendingUp } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState, useMemo } from "react";
@@ -21,11 +18,11 @@ const strategyMeta: Record<AllocationStrategy, { label: string; description: str
 };
 
 const bucketColors: Record<string, string> = {
-  bills: "bg-urgency-high", "tax-reserve": "bg-[hsl(var(--sita-gold))]",
+  bills: "bg-[hsl(0_70%_55%)]", "tax-reserve": "bg-[hsl(38_85%_58%)]",
   "emergency-reserve": "bg-primary", "debt-payoff": "bg-destructive",
-  "sinking-funds": "bg-trust-verified", "payroll-reserve": "bg-accent",
-  discretionary: "bg-[hsl(var(--trust-safe))]", investments: "bg-[hsl(var(--primary))]",
-  "expansion-reserve": "bg-[hsl(var(--sita-gold))]",
+  "sinking-funds": "bg-[hsl(152_55%_48%)]", "payroll-reserve": "bg-accent",
+  discretionary: "bg-[hsl(152_55%_48%)]", investments: "bg-primary",
+  "expansion-reserve": "bg-[hsl(38_85%_58%)]",
 };
 
 const CashAllocator = () => {
@@ -42,29 +39,36 @@ const CashAllocator = () => {
 
   const plan = plans[strategy];
   const meta = strategyMeta[strategy];
-  const StrategyIcon = meta.icon;
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
-      <DomainHeader domain="money" title="Cash Allocation AI" subtitle="Intelligent cash distribution across your financial priorities" />
-      <DemoModeBadge />
+      <PageTruthBanner />
 
+      <HeroCard
+        title="CASH ALLOCATION AI"
+        metric={`$${(plan.totalAllocatedCents / 100).toLocaleString()}`}
+        subtitle={`${meta.label} — distributed across ${plan.allocations.length} buckets`}
+        accentFrom="hsl(265 55% 58%)"
+        accentTo="hsl(152 55% 48%)"
+        icon={<PieChart className="h-5 w-5 text-[hsl(265_55%_58%)]" />}
+      />
+
+      {/* KPIs */}
       <div className="grid gap-3 sm:grid-cols-3">
-        <KPITile label="Available Cash" value={`$${(plan.availableCashCents / 100).toLocaleString()}`} icon={DollarSign} />
-        <KPITile label="Allocated" value={`$${(plan.totalAllocatedCents / 100).toLocaleString()}`} icon={PieChart} />
-        <KPITile label="Unallocated" value={`$${(plan.unallocatedCents / 100).toLocaleString()}`} icon={Zap} />
+        <StatusCard label="Available Cash" status="healthy" lastChecked={`$${(plan.availableCashCents / 100).toLocaleString()}`} icon={<DollarSign className="h-3.5 w-3.5" />} />
+        <StatusCard label="Allocated" status="healthy" lastChecked={`$${(plan.totalAllocatedCents / 100).toLocaleString()}`} icon={<PieChart className="h-3.5 w-3.5" />} />
+        <StatusCard label="Unallocated" status={plan.unallocatedCents > 0 ? "degraded" : "healthy"} lastChecked={`$${(plan.unallocatedCents / 100).toLocaleString()}`} icon={<Zap className="h-3.5 w-3.5" />} />
       </div>
 
       {/* Strategy Selector */}
-      <SitaSectionHeader title="Allocation Strategy" />
       <div className="grid gap-3 sm:grid-cols-3">
         {(Object.keys(strategyMeta) as AllocationStrategy[]).map(s => {
           const m = strategyMeta[s];
           const Icon = m.icon;
           const isActive = strategy === s;
           return (
-            <SitaCard key={s} hover onClick={() => setStrategy(s)}
-              className={`p-4 cursor-pointer transition-all ${isActive ? "ring-2 ring-primary bg-primary/5" : ""}`}>
+            <button key={s} onClick={() => setStrategy(s)}
+              className={`rounded-xl border p-4 text-left transition-all micro-press ${isActive ? "border-primary bg-primary/5 ring-1 ring-primary/30" : "border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] hover:bg-[hsl(0_0%_100%/0.03)]"}`}>
               <div className="flex items-center gap-3">
                 <Icon className={`h-5 w-5 ${isActive ? "text-primary" : "text-muted-foreground"}`} />
                 <div>
@@ -72,21 +76,13 @@ const CashAllocator = () => {
                   <p className="text-[10px] text-muted-foreground">{m.description}</p>
                 </div>
               </div>
-            </SitaCard>
+            </button>
           );
         })}
       </div>
 
       {/* Allocation Breakdown */}
-      <SitaCard hover={false} className="p-5">
-        <div className="flex items-center gap-2 mb-4">
-          <StrategyIcon className="h-4 w-4 text-primary" />
-          <SitaCardTitle sub={`$${(plan.availableCashCents / 100).toLocaleString()} distributed across ${plan.allocations.length} buckets`}>
-            {meta.label} Allocation
-          </SitaCardTitle>
-          <TrustBadge level="verified" label="Deterministic" size="sm" className="ml-auto" />
-        </div>
-
+      <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-5">
         {/* Stacked Bar */}
         <div className="flex h-6 rounded-full overflow-hidden mb-4">
           {plan.allocations.filter(a => a.amountCents > 0).map(a => (
@@ -97,7 +93,7 @@ const CashAllocator = () => {
 
         <div className="space-y-2">
           {plan.allocations.filter(a => a.amountCents > 0).map(a => (
-            <div key={a.bucket} className="flex items-center gap-3 rounded-lg bg-secondary/30 px-3 py-2.5">
+            <div key={a.bucket} className="flex items-center gap-3 rounded-lg bg-[hsl(0_0%_100%/0.02)] px-3 py-2.5 micro-hover-lift">
               <div className={`h-3 w-3 rounded-full ${bucketColors[a.bucket] || "bg-muted"}`} />
               <div className="flex-1 min-w-0">
                 <p className="text-xs font-medium text-foreground">{a.label}</p>
@@ -110,13 +106,13 @@ const CashAllocator = () => {
             </div>
           ))}
         </div>
-      </SitaCard>
+      </div>
 
-      <LiveAdvisorCard
-        advisor="money" intent="cash_allocation"
-        demoName="Cash Allocator Advisor" demoRole="Distribution Intelligence" demoConfidence="High"
-        demoRecommendation={`${meta.label} plan allocates $${(plan.totalAllocatedCents / 100).toLocaleString()} across ${plan.allocations.length} buckets. Bills ($${(plan.allocations[0]?.amountCents / 100 || 0).toLocaleString()}) covered first.`}
-        demoReasoning="Priority-weighted allocation: obligations → protection → growth. All numbers are deterministic."
+      <ModuleAdvisorInsight
+        advisorName="Cash Allocator Advisor"
+        domain="finance"
+        insight={`${meta.label} plan allocates $${(plan.totalAllocatedCents / 100).toLocaleString()} across ${plan.allocations.length} buckets. Bills covered first.`}
+        confidence={95}
       />
     </motion.div>
   );
