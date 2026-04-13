@@ -1,6 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Boardroom Bridge Hook
 // React wrapper for domain ↔ boardroom communication
+// Now integrated with orchestration pipeline
 // ═══════════════════════════════════════════════════════════════
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
@@ -14,6 +15,10 @@ import {
   type EscalationPayload,
   type DecisionPush,
 } from "@/lib/services/boardroom-bridge";
+import { createDomainSignal, emitDomainSignal } from "@/lib/services/orchestration-pipeline/signal-emitter";
+import { getSynthesisForDomain } from "@/lib/services/orchestration-pipeline/app-board-synthesizer";
+import type { AppBoardSynthesis, Domain } from "@/lib/services/orchestration-pipeline/types";
+import { useCallback, useMemo } from "react";
 
 // Demo fallback data
 const DEMO_ESCALATIONS: Record<string, any[]> = {
@@ -36,7 +41,7 @@ const DEMO_DECISIONS: Record<string, any[]> = {
   concierge: [],
 };
 
-export function useBoardroomBridge(domain: "business" | "finance" | "concierge") {
+export function useBoardroomBridge(domain: Domain) {
   const { isDemoMode } = useDataMode();
   const qc = useQueryClient();
 
@@ -60,6 +65,17 @@ export function useBoardroomBridge(domain: "business" | "finance" | "concierge")
 
   const escalateMutation = useMutation({
     mutationFn: async (payload: EscalationPayload) => {
+      // Emit a domain signal through the pipeline
+      const signal = createDomainSignal({
+        module: domain,
+        domain: payload.domain,
+        severity: payload.severity,
+        summary: payload.title,
+        source: `${domain}-app-shell`,
+        trigger_type: "immediate",
+      });
+      emitDomainSignal(signal);
+
       if (isDemoMode) {
         toast.success(`Escalated to Boardroom: ${payload.title}`);
         return { success: true };
@@ -94,6 +110,17 @@ export function useBoardroomBridge(domain: "business" | "finance" | "concierge")
     },
   });
 
+  // Pipeline synthesis for this domain
+  const synthesis: AppBoardSynthesis | null = useMemo(() => {
+    return getSynthesisForDomain(domain);
+  }, [domain]);
+
+  // Emit a domain signal without full escalation
+  const emitSignal = useCallback((module: string, severity: "low" | "medium" | "high" | "critical", summary: string) => {
+    const signal = createDomainSignal({ module, domain, severity, summary, source: `${domain}-manual` });
+    emitDomainSignal(signal);
+  }, [domain]);
+
   return {
     escalations: escalationsQuery.data || [],
     decisions: decisionsQuery.data || [],
@@ -103,5 +130,8 @@ export function useBoardroomBridge(domain: "business" | "finance" | "concierge")
     pushDecision: pushDecisionMutation.mutate,
     isLoading: escalationsQuery.isLoading || decisionsQuery.isLoading,
     isDemoMode,
+    // Pipeline additions
+    synthesis,
+    emitSignal,
   };
 }
