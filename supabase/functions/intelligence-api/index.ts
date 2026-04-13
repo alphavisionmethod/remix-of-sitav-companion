@@ -181,27 +181,130 @@ Deno.serve(async (req) => {
 
       if (!asset) return corsError("Asset not found", 404);
 
-      const freshnessScore = asset.freshness_score || 50;
-      const confidence = asset.confidence || 50;
-      const applicability = Math.min(100, (freshnessScore * 0.4 + confidence * 0.6));
-      const invalidated = asset.invalidated;
-      const triggers = (asset.content as Record<string, unknown>)?.invalidationTriggers || [];
+      const taskContext = body.taskDescription || "General reuse evaluation";
+      const taskDomain = body.taskDomain || asset.domain || "general";
+      const stakes = body.stakes || "medium";
 
-      const decision = invalidated ? "skip" :
-        applicability > 80 ? "direct_reuse" :
-        applicability > 60 ? "adapted_reuse" : "fresh_reasoning";
+      // If no AI key, fall back to deterministic logic
+      if (!LOVABLE_API_KEY) {
+        const freshnessScore = asset.freshness_score || 50;
+        const confidence = asset.confidence || 50;
+        const applicability = Math.min(100, (freshnessScore * 0.4 + confidence * 0.6));
+        const invalidated = asset.invalidated;
+        const decision = invalidated ? "skip" :
+          applicability > 80 ? "direct_reuse" :
+          applicability > 60 ? "adapted_reuse" : "fresh_reasoning";
+        return corsResponse({
+          decision,
+          reuseConfidence: applicability / 100,
+          applicabilityScore: applicability / 100,
+          expectedCostAvoided: decision === "direct_reuse" ? 4.12 : decision === "adapted_reuse" ? 2.50 : 0,
+          expectedQualityImpact: decision === "direct_reuse" ? "positive" : decision === "adapted_reuse" ? "neutral" : "unknown",
+          reasoning: "Deterministic fallback — no AI key available",
+          aiPowered: false,
+        });
+      }
 
-      const expectedCostAvoided = decision === "skip" ? 0 :
-        decision === "direct_reuse" ? 4.12 :
-        decision === "adapted_reuse" ? 2.50 : 0;
+      // Build AI prompt with asset context
+      const assetSummary = typeof asset.content === "object" && asset.content !== null
+        ? JSON.stringify(asset.content).slice(0, 1500)
+        : String(asset.content || "").slice(0, 1500);
 
+      const aiPrompt = `You are an intelligence reuse analyst for a decision-support system.
+
+Evaluate whether this prior intelligence asset should be reused for the current task.
+
+PRIOR ASSET:
+- Domain: ${asset.domain || "unknown"}
+- Type: ${asset.asset_type || "unknown"}
+- Confidence: ${asset.confidence ?? "unknown"}%
+- Freshness: ${asset.freshness_score ?? "unknown"}%
+- Invalidated: ${asset.invalidated ? "YES" : "no"}
+- Created: ${asset.created_at}
+- Content preview: ${assetSummary}
+
+CURRENT TASK:
+- Description: ${taskContext}
+- Domain: ${taskDomain}
+- Stakes: ${stakes}
+
+Respond with your analysis.`;
+
+      const aiResponse = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${LOVABLE_API_KEY}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "google/gemini-3-flash-preview",
+          messages: [
+            { role: "system", content: "You are an intelligence reuse analyst. Always respond via the tool call." },
+            { role: "user", content: aiPrompt },
+          ],
+          tools: [{
+            type: "function",
+            function: {
+              name: "reuse_decision",
+              description: "Return the reuse evaluation decision",
+              parameters: {
+                type: "object",
+                properties: {
+                  decision: { type: "string", enum: ["direct_reuse", "adapted_reuse", "reference_only", "fresh_reasoning", "skip"] },
+                  reuseConfidence: { type: "number", description: "0-1 confidence that reuse is appropriate" },
+                  applicabilityScore: { type: "number", description: "0-1 how applicable the asset is to the current task" },
+                  expectedCostAvoided: { type: "number", description: "Estimated cost savings in cents" },
+                  expectedQualityImpact: { type: "string", enum: ["positive", "neutral", "negative", "unknown"] },
+                  adaptationsNeeded: { type: "array", items: { type: "string" }, description: "List of adaptations if adapted_reuse" },
+                  qualityRisk: { type: "string", enum: ["none", "low", "medium", "high"] },
+                  reasoning: { type: "string", description: "1-3 sentence explanation of the decision" },
+                },
+                required: ["decision", "reuseConfidence", "applicabilityScore", "expectedQualityImpact", "reasoning"],
+                additionalProperties: false,
+              },
+            },
+          }],
+          tool_choice: { type: "function", function: { name: "reuse_decision" } },
+        }),
+      });
+
+      if (!aiResponse.ok) {
+        const status = aiResponse.status;
+        await aiResponse.text();
+        if (status === 429) return corsError("AI rate limited — try again shortly", 429);
+        if (status === 402) return corsError("AI credits exhausted", 402);
+        // Fallback to deterministic
+        const freshnessScore = asset.freshness_score || 50;
+        const confidence = asset.confidence || 50;
+        const applicability = Math.min(100, (freshnessScore * 0.4 + confidence * 0.6));
+        const invalidated = asset.invalidated;
+        const decision = invalidated ? "skip" :
+          applicability > 80 ? "direct_reuse" :
+          applicability > 60 ? "adapted_reuse" : "fresh_reasoning";
+        return corsResponse({
+          decision,
+          reuseConfidence: applicability / 100,
+          applicabilityScore: applicability / 100,
+          expectedCostAvoided: decision === "direct_reuse" ? 4.12 : decision === "adapted_reuse" ? 2.50 : 0,
+          expectedQualityImpact: decision === "direct_reuse" ? "positive" : "unknown",
+          reasoning: "Deterministic fallback — AI unavailable",
+          aiPowered: false,
+        });
+      }
+
+      const aiData = await aiResponse.json();
+      const toolCall = aiData.choices?.[0]?.message?.tool_calls?.[0];
+      if (!toolCall?.function?.arguments) {
+        return corsError("AI returned unexpected format", 500);
+      }
+
+      const result = JSON.parse(toolCall.function.arguments);
       return corsResponse({
-        decision,
-        reuseConfidence: applicability / 100,
-        applicabilityScore: applicability / 100,
-        expectedCostAvoided,
-        expectedQualityImpact: decision === "direct_reuse" ? "positive" : decision === "adapted_reuse" ? "neutral" : "unknown",
-        invalidationsChecked: (triggers as string[]).map((t: string) => ({ trigger: t, triggered: invalidated })),
+        ...result,
+        expectedCostAvoided: result.expectedCostAvoided ?? 0,
+        adaptationsNeeded: result.adaptationsNeeded ?? [],
+        qualityRisk: result.qualityRisk ?? "low",
+        aiPowered: true,
       });
     }
 
