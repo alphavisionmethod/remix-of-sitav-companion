@@ -1,15 +1,16 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Autopilot Hub Page
+// SITA OS — Autopilot Hub Page (Migrated)
 // Wizard → Command Center flow
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useCallback } from "react";
-import { SitaPageHeader } from "@/components/sita/SitaCard";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
 import AutopilotWizard from "@/components/autopilot/AutopilotWizard";
 import AutopilotCommandCenter from "@/components/autopilot/AutopilotCommandCenter";
 import { getDefaultConfig, type AutopilotConfig } from "@/lib/domain-engines/autopilot-engine";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
 
 const STORAGE_KEY = "sita-autopilot-config";
 
@@ -57,17 +58,28 @@ const AutopilotHubPage = () => {
   if (showWizard) {
     return (
       <div className="mx-auto max-w-7xl space-y-6">
-      <DemoModeBadge />
-        <SitaPageHeader
-          title="Autopilot Setup"
-          subtitle="Configure your revenue automation in under 2 minutes"
-        />
+        <PageTruthBanner />
+        <div>
+          <h2 className={SITA_TYPE.pageTitle}>Autopilot Setup</h2>
+          <p className="text-sm text-muted-foreground mt-1">Configure your revenue automation in under 2 minutes</p>
+        </div>
         <AutopilotWizard onComplete={handleComplete} onSkip={handleSkip} />
       </div>
     );
   }
 
-  return <AutopilotCommandCenter config={config} onConfigUpdate={handleConfigUpdate} onOpenWizard={handleOpenWizard} />;
+  return (
+    <div className="space-y-4">
+      <PageTruthBanner />
+      <AutopilotCommandCenter config={config} onConfigUpdate={handleConfigUpdate} onOpenWizard={handleOpenWizard} />
+      <ModuleAdvisorInsight
+        advisorName="Automation Advisor"
+        domain="business"
+        insight={`${config.activePlaybooks?.length || 0} playbooks active. Autopilot is ${config.isOnboarded ? "running" : "awaiting setup"} — review trust boundaries and approval gates.`}
+        confidence={88}
+      />
+    </div>
+  );
 };
 
 export default AutopilotHubPage;

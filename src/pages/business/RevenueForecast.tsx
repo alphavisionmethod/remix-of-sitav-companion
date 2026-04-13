@@ -9,7 +9,9 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { motion } from "framer-motion";
-import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
+import { SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
 import { KPITile } from "@/components/sita/SitaComponents";
 import {
   AreaChart, Area, XAxis, YAxis, CartesianGrid,
@@ -315,11 +317,7 @@ const RevenueForecast = () => {
 
   return (
     <div className="space-y-6">
-      <DemoModeBadge />
-      <SitaPageHeader
-        title="Revenue Forecast"
-        subtitle="AI-driven 30/60/90 day projections from digital twin health scores and playbook performance"
-      />
+      <PageTruthBanner />
 
       {/* ── KPI Row ────────────────────────────────── */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">

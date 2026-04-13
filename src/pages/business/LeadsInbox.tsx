@@ -1,6 +1,8 @@
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
+import { SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
 import { SectionSkeleton, KPISkeleton } from "@/components/sita/SectionSkeleton";
 import { KPITile, CustomerRow, SitaTabs, AdvisorCard, TimelineItem, OpportunityCard } from "@/components/sita/SitaComponents";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
 import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
 import { TrustBadge, TrustLevel } from "@/components/sita/TrustBadge";
 import { StateBadge, ExecutionState } from "@/components/sita/StateBadge";
@@ -174,9 +176,8 @@ const LeadsInbox = () => {
   if (isLoading) {
     return (
       <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-      <DemoModeBadge />
+      <PageTruthBanner />
       <ConfirmationDialog state={confirmation} />
-        <SitaPageHeader title="Leads Inbox" subtitle="Capture, qualify, and convert" />
         <KPISkeleton count={4} />
         <SectionSkeleton cards={4} columns={2} />
       </motion.div>
@@ -185,11 +186,13 @@ const LeadsInbox = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-      <SitaPageHeader
-        title="Leads Inbox"
-        subtitle="Capture, qualify, and convert"
-        actions={<div className="flex items-center gap-3"><DataFreshnessBadge {...freshness} /><SitaButton variant="ghost" size="sm" onClick={() => navigate("/business/integrations")}><Plug className="h-3.5 w-3.5" /> Import</SitaButton><SitaButton variant="secondary" size="sm" onClick={() => { if (leads.length > 0) crmSync.syncLeads.mutate(leads.map(l => ({ name: l.name, email: l.email || undefined, phone: l.phone || undefined, source: l.source || undefined, status: l.status }))); }} disabled={crmSync.syncLeads.isPending || leads.length === 0}><RefreshCw className={`h-3.5 w-3.5 ${crmSync.syncLeads.isPending ? "animate-spin" : ""}`} /> Sync</SitaButton><SitaButton variant="primary" onClick={() => { resetForm(); setShowAdd(true); }}><Plus className="h-4 w-4" /> Add Lead</SitaButton></div>}
-      />
+      <PageTruthBanner />
+      <div className="flex items-center gap-3 flex-wrap">
+        <DataFreshnessBadge {...freshness} />
+        <SitaButton variant="ghost" size="sm" onClick={() => navigate("/business/integrations")}><Plug className="h-3.5 w-3.5" /> Import</SitaButton>
+        <SitaButton variant="secondary" size="sm" onClick={() => { if (leads.length > 0) crmSync.syncLeads.mutate(leads.map(l => ({ name: l.name, email: l.email || undefined, phone: l.phone || undefined, source: l.source || undefined, status: l.status }))); }} disabled={crmSync.syncLeads.isPending || leads.length === 0}><RefreshCw className={`h-3.5 w-3.5 ${crmSync.syncLeads.isPending ? "animate-spin" : ""}`} /> Sync</SitaButton>
+        <SitaButton variant="primary" onClick={() => { resetForm(); setShowAdd(true); }}><Plus className="h-4 w-4" /> Add Lead</SitaButton>
+      </div>
 
       {/* Add/Edit Modal */}
       {showAdd && (
@@ -416,14 +419,11 @@ const LeadsInbox = () => {
           )}
         </div>
       </div>
-      <LiveAdvisorCard
-        advisor="business"
-        intent="lead_management"
-        demoName="Lead Intelligence"
-        demoRole="Pipeline Advisor"
-        demoConfidence="High"
-        demoRecommendation="3 leads are going stale — prioritize callbacks for Sarah Chen and David Torres. Cold leads over 14 days lose 60% conversion probability."
-        demoReasoning="Based on lead aging analysis, opportunity scores, and historical conversion data."
+      <ModuleAdvisorInsight
+        advisorName="Pipeline Advisor"
+        domain="business"
+        insight="3 leads are going stale — prioritize callbacks for Sarah Chen and David Torres. Cold leads over 14 days lose 60% conversion probability."
+        confidence={88}
       />
     </motion.div>
   );

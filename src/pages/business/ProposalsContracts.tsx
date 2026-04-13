@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import { FileSignature, Clock, CheckCircle, AlertCircle, Plus, Eye, Send, DollarSign, TrendingUp, Zap, Users, BarChart3, FileText, PenTool, BookOpen, ChevronRight, Timer, MousePointer } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
 
 const proposals = [
   {
@@ -81,6 +83,7 @@ const ProposalsContracts = () => {
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
+      <PageTruthBanner />
       <DomainAdvisorCard domain="business" insights={[
         { id: "prop-1", text: "Alex Kim viewed pricing 6 times — high intent signal. Consider offering 5% early-bird discount", confidence: 88, action: "Offer Discount" },
         { id: "prop-2", text: "Proposals with case studies have 23% higher win rate", confidence: 82 },
@@ -270,6 +273,12 @@ const ProposalsContracts = () => {
           </motion.div>
         </div>
       )}
+      <ModuleAdvisorInsight
+        advisorName="Proposal Advisor"
+        domain="business"
+        insight="Alex Kim viewed pricing 6 times — high intent signal. Proposals with case studies have 23% higher win rate."
+        confidence={88}
+      />
     </div>
   );
 };

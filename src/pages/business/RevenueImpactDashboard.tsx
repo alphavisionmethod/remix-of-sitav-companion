@@ -6,7 +6,9 @@
 
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
+import { SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
 import { KPITile } from "@/components/sita/SitaComponents";
 import {
   AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid,
@@ -169,16 +171,12 @@ const RevenueImpactDashboard = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-      <DemoModeBadge />
-      <SitaPageHeader
-        title="Revenue Impact"
-        subtitle="Aggregated recovered and generated revenue across all autopilot playbooks"
-        actions={
-          <span className="rounded-full bg-trust-safe/10 px-3 py-1 text-[10px] font-semibold text-trust-safe flex items-center gap-1">
-            <TrendingUp className="h-3 w-3" /> +{Math.round(((totals.total) / 100000) * 100)}% vs target
-          </span>
-        }
-      />
+      <PageTruthBanner />
+      <div className="flex items-center justify-end">
+        <span className="rounded-full bg-trust-safe/10 px-3 py-1 text-[10px] font-semibold text-trust-safe flex items-center gap-1">
+          <TrendingUp className="h-3 w-3" /> +{Math.round(((totals.total) / 100000) * 100)}% vs target
+        </span>
+      </div>
 
       {/* KPI Row */}
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
