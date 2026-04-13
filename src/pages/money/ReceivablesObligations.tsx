@@ -75,7 +75,7 @@ const ReceivablesObligations = () => {
       const due = new Date(b.due_date);
       const daysOut = Math.ceil((due.getTime() - now.getTime()) / 86400000);
       return {
-        id: b.id, payee: b.name || b.payee, amount: Number(b.amount),
+        id: b.id, payee: b.name || b.payee, amount: (typeof b.amount === "string" ? Number(b.amount.replace(/[^0-9.-]/g, "")) : Number(b.amount)) || 0,
         due: due.toLocaleDateString("en", { month: "short", day: "numeric" }),
         type: b.category || "bill", status: daysOut < 0 ? "overdue" : daysOut <= 1 ? "due" : "upcoming",
         recurring: b.is_recurring || false,
