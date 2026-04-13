@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import {
   Presentation, Briefcase, TrendingUp, Users,
-  Brain, CheckSquare, FlaskConical, History,
+  Brain, CheckSquare, FlaskConical, History, Crown,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { BoardroomHeader } from "./BoardroomHeader";
@@ -12,11 +12,14 @@ import { BoardroomSynthesisView } from "./BoardroomSynthesisView";
 import { BoardroomSimulationView } from "./BoardroomSimulationView";
 import { BoardroomApprovalView } from "./BoardroomApprovalView";
 import { BoardroomDecisionMemory } from "./BoardroomDecisionMemory";
+import { BoardroomAdvisorCouncil } from "./BoardroomAdvisorCouncil";
+import { BoardroomDiscussionThread } from "./BoardroomDiscussionThread";
 
 const MODULES = [
   { id: "executive", label: "Executive Review", icon: Presentation },
   { id: "pulse", label: "Domain Pulse", icon: Briefcase },
   { id: "synthesis", label: "Advisor Synthesis", icon: Brain },
+  { id: "council", label: "Advisor Council", icon: Crown },
   { id: "simulation", label: "Simulation", icon: FlaskConical },
   { id: "approvals", label: "Approvals & Seals", icon: CheckSquare },
   { id: "memory", label: "Decision Memory", icon: History },
@@ -30,6 +33,7 @@ const MODULE_SESSION_MODE: Record<string, SessionMode> = {
   executive: "review",
   pulse: "review",
   synthesis: "review",
+  council: "review",
   simulation: "simulation",
   approvals: "approval",
   memory: "review",
@@ -47,6 +51,12 @@ export function BoardroomAppShell() {
       case "executive": return <BoardroomExecutiveView {...viewProps} />;
       case "pulse": return <BoardroomPulseView {...viewProps} />;
       case "synthesis": return <BoardroomSynthesisView {...viewProps} />;
+      case "council": return (
+        <div className="p-6 space-y-6">
+          <BoardroomAdvisorCouncil scope={scope} onSelectAdvisor={() => setActiveModule("synthesis")} />
+          <BoardroomDiscussionThread scope={scope} />
+        </div>
+      );
       case "simulation": return <BoardroomSimulationView {...viewProps} />;
       case "approvals": return <BoardroomApprovalView {...viewProps} />;
       case "memory": return <BoardroomDecisionMemory />;

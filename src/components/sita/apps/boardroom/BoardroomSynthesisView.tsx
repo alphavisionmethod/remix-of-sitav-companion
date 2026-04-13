@@ -5,6 +5,8 @@ import { AlertTriangle, CheckCircle, Scale, ChevronDown, ChevronRight, MessageCi
 import { ConfidenceBar, AdvisorAvatar } from "@/components/sita/primitives";
 import { EvidenceChain, type EvidenceNode } from "@/components/sita/primitives/EvidenceChain";
 import { getAdvisorRoster, ADVISOR_ROSTERS, type AdvisorRole } from "@/lib/advisor-topology";
+import { BoardroomAdvisorCouncil } from "./BoardroomAdvisorCouncil";
+import { BoardroomDiscussionThread } from "./BoardroomDiscussionThread";
 import { DomainAdvisorBoard } from "@/components/sita/domain-shared/DomainAdvisorBoard";
 
 interface Props {
@@ -106,6 +108,12 @@ export function BoardroomSynthesisView({ scope, onNavigate }: Props) {
 
   return (
     <div className="p-6 space-y-6">
+      {/* The Council — Cinematic Arc */}
+      <BoardroomAdvisorCouncil scope={scope} onSelectAdvisor={(id) => setSelectedAdvisor(id)} />
+
+      {/* Live Discussion Thread */}
+      <BoardroomDiscussionThread scope={scope} />
+
       {/* Consensus Meter */}
       <motion.div
         initial={{ opacity: 0, y: 8 }}
