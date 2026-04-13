@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   CheckCircle, AlertOctagon, Shield, Clock, Hash, Sparkles, Timer,
-  ChevronDown, ChevronRight, ArrowRight, RotateCcw, Eye, AlertTriangle,
+  ChevronDown, ChevronRight, ArrowRight, RotateCcw, Eye, AlertTriangle, Send,
 } from "lucide-react";
 import {
   ApprovalGate, DecisionSeal, ProofReceipt,
@@ -11,6 +11,8 @@ import {
 } from "@/components/sita/primitives";
 import { useBoardroomData } from "@/hooks/use-boardroom-data";
 import { useBoardroomLiveData } from "@/hooks/useBoardroomLiveData";
+import { pushDecisionToApp } from "@/lib/services/boardroom-bridge";
+import { toast } from "sonner";
 
 interface Props {
   scope: "global" | "business" | "finance" | "concierge";
@@ -252,11 +254,15 @@ export function BoardroomApprovalView({ scope, onNavigate }: Props) {
   const [showSealStamp, setShowSealStamp] = useState(false);
 
   const handleApprove = (title: string) => {
+    // Find which domain this approval belongs to
+    const approval = MOCK_APPROVALS.find(a => a.title === title);
+    const targetDomain = scope === "global" ? "business" : scope;
+
     setShowSignature(true);
     setTimeout(() => {
       setShowSignature(false);
       setShowSealStamp(true);
-      setTimeout(() => {
+      setTimeout(async () => {
         setShowSealStamp(false);
         const hash = `0x${Math.random().toString(16).slice(2, 6)}…${Math.random().toString(16).slice(2, 6)}`;
         setGeneratedReceipt({ title, hash, time: new Date().toLocaleString() });
@@ -271,10 +277,26 @@ export function BoardroomApprovalView({ scope, onNavigate }: Props) {
         // Create follow-through action item
         createActionItem.mutate({
           summary: `Follow-through: ${title}`,
-          domain: scope === "global" ? "general" : scope,
+          domain: targetDomain === "global" ? "general" : targetDomain,
           advisor_id: "boardroom-system",
           confidence: 0.85,
         });
+
+        // Push decision back to the originating domain app
+        if (!isDemoMode) {
+          const result = await pushDecisionToApp({
+            receiptId: hash,
+            approvedMotion: title,
+            domain: targetDomain,
+            summary: title,
+            confidence: (approval?.advisorConfidence || 75) / 100,
+          });
+          if (result.success) {
+            toast.success(`Decision sent to ${targetDomain} app`);
+          }
+        } else {
+          toast.success(`Decision sent to ${targetDomain} app`);
+        }
       }, 2000);
     }, 1300);
   };
