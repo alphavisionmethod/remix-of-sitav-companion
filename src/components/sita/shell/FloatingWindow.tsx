@@ -55,6 +55,7 @@ interface FloatingWindowProps {
   onPositionChange?: (pos: { x: number; y: number }, width: number) => void;
   isFocused?: boolean;
   isOccluded?: boolean;
+  isMaximized?: boolean;
   siblingWindows?: SiblingWindow[];
   className?: string;
   style?: React.CSSProperties;
@@ -192,6 +193,7 @@ export function FloatingWindow({
   onPositionChange,
   isFocused = true,
   isOccluded = false,
+  isMaximized = false,
   siblingWindows = [],
   className,
   style,
