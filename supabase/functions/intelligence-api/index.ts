@@ -10,6 +10,7 @@ import { z } from "https://esm.sh/zod@3.23.8";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL")!;
 const SERVICE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
 const ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY")!;
+const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
 
 function getServiceClient() {
   return createClient(SUPABASE_URL, SERVICE_KEY);
@@ -17,13 +18,43 @@ function getServiceClient() {
 
 async function requireAuth(req: Request) {
   const authHeader = req.headers.get("Authorization");
-  if (!authHeader) return null;
+  if (!authHeader?.startsWith("Bearer ")) return null;
   const client = createClient(SUPABASE_URL, ANON_KEY, {
     global: { headers: { Authorization: authHeader } },
   });
-  const { data: { user }, error } = await client.auth.getUser();
-  if (error || !user) return null;
-  return user;
+  const token = authHeader.replace("Bearer ", "");
+  const { data, error } = await client.auth.getClaims(token);
+  if (error || !data?.claims) return null;
+  return { id: data.claims.sub as string, email: data.claims.email as string };
+}
+
+// ── AI helper — calls Lovable AI Gateway ────────────────────
+async function callAI(systemPrompt: string, userPrompt: string): Promise<string> {
+  if (!LOVABLE_API_KEY) {
+    console.warn("[intelligence-api] LOVABLE_API_KEY not set, returning fallback");
+    return "";
+  }
+  const resp = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${LOVABLE_API_KEY}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      model: "google/gemini-3-flash-preview",
+      messages: [
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userPrompt },
+      ],
+    }),
+  });
+  if (!resp.ok) {
+    const t = await resp.text();
+    console.error("[intelligence-api] AI gateway error:", resp.status, t);
+    return "";
+  }
+  const json = await resp.json();
+  return json.choices?.[0]?.message?.content ?? "";
 }
 
 // ── Route parser ────────────────────────────────────────────
@@ -211,7 +242,16 @@ Deno.serve(async (req) => {
         }
       }
 
-      const materialityScore = 0.6 + Math.random() * 0.35;
+      // Use AI to assess materiality of state changes
+      let materialityScore = 0.5;
+      const aiResult = await callAI(
+        "You are an intelligence analyst. Given a state change between two references, assess how material the change is on a 0-1 scale. Respond with ONLY a JSON object: {\"materiality\": <number>}",
+        `Previous state ref: ${d.previousStateRef}\nCurrent state ref: ${d.currentStateRef}\nDomain: ${d.domain}`
+      );
+      try {
+        const parsed = JSON.parse(aiResult);
+        if (typeof parsed.materiality === "number") materialityScore = Math.max(0, Math.min(1, parsed.materiality));
+      } catch { /* keep default */ }
       const mode = materialityScore > 0.85 ? "full" : materialityScore > 0.5 ? "partial" : "reuse_only";
 
       // Log the event
@@ -558,11 +598,23 @@ Deno.serve(async (req) => {
             ? (effRes.data || []).reduce((s: number, e: Record<string, unknown>) => s + (Number(e.composite_efficiency_score) || 0), 0) / (effRes.data || []).length
             : 0,
         },
-        recommendations: [
-          staleCount > 5 ? "Review and refresh stale intelligence assets" : null,
-          avgFreshness < 50 ? "Overall freshness declining — schedule bulk review" : null,
-          totalReuses < 10 ? "Low reuse rate — check asset discovery and matching" : null,
-        ].filter(Boolean),
+        recommendations: await (async () => {
+          const fallback = [
+            staleCount > 5 ? "Review and refresh stale intelligence assets" : null,
+            avgFreshness < 50 ? "Overall freshness declining — schedule bulk review" : null,
+            totalReuses < 10 ? "Low reuse rate — check asset discovery and matching" : null,
+          ].filter(Boolean);
+
+          const aiRecs = await callAI(
+            "You are an intelligence operations advisor. Given metrics about an AI intelligence asset library, provide 2-3 concise actionable recommendations. Return ONLY a JSON array of strings.",
+            `Total assets: ${assets.length}, Total reuses: ${totalReuses}, Cost avoided: $${(totalAvoided / 100).toFixed(2)}, Avg freshness: ${Math.round(avgFreshness)}%, Stale assets: ${staleCount}`
+          );
+          try {
+            const parsed = JSON.parse(aiRecs);
+            if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+          } catch { /* use fallback */ }
+          return fallback;
+        })(),
       };
 
       await db.from("engine_events").insert({
