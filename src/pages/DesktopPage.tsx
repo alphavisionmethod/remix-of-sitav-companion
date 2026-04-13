@@ -124,7 +124,7 @@ export default function DesktopPage() {
     <CalmEngineProvider windows={calmWindows} layerState={calmLayerState}>
       <h1 className="sr-only">Desktop</h1>
       <FirstWeekCalibration />
-      <DesktopNotifications />
+      {/* Notifications now integrated in desktop widget column */}
       <DesktopSurface
         onOpenCommand={openCommand}
         desktopState={state.desktopState}
