@@ -37,6 +37,12 @@ export interface SimulationResult extends SimulationProgress {
   clusters: { label: string; percentage: number; range: [number, number] }[];
   sensitivity: { variable: string; impact: number }[];
   tailRisk: { threshold: number; probability: number; label: string }[];
+  var95: number;
+  var99: number;
+  cvar95: number;
+  cvar99: number;
+  converged: boolean;
+  convergenceHistory: number[]; // rolling mean snapshots
 }
 
 // Box-Muller transform for normal distribution
@@ -113,6 +119,7 @@ export function runSimulationBatch(
   let completed = 0;
   let cancelled = false;
   const startTime = performance.now();
+  const convergenceHistory: number[] = [];
 
   const baselineVars: Record<string, number> = {};
   variables.forEach(v => { baselineVars[v.id] = v.mean; });
@@ -133,6 +140,11 @@ export function runSimulationBatch(
     const mean = results.reduce((s, v) => s + v, 0) / results.length;
     const variance = results.reduce((s, v) => s + (v - mean) ** 2, 0) / results.length;
     const elapsed = (performance.now() - startTime) / 1000;
+
+    // Track convergence every 10K iterations
+    if (completed % 10000 < batchSize) {
+      convergenceHistory.push(mean);
+    }
 
     const progress: SimulationProgress = {
       completed,
@@ -163,12 +175,36 @@ export function runSimulationBatch(
         label: `Severe downside (below ${(p10 * 0.5).toFixed(0)})`,
       }];
 
+      // VaR & CVaR
+      const n = sorted.length;
+      const var95Idx = Math.floor(0.05 * n);
+      const var99Idx = Math.floor(0.01 * n);
+      const var95 = sorted[var95Idx] ?? sorted[0];
+      const var99 = sorted[var99Idx] ?? sorted[0];
+      const cvar95 = var95Idx > 0 ? sorted.slice(0, var95Idx).reduce((a, b) => a + b, 0) / var95Idx : var95;
+      const cvar99 = var99Idx > 0 ? sorted.slice(0, var99Idx).reduce((a, b) => a + b, 0) / var99Idx : var99;
+
+      // Convergence check: mean stable within 0.1% over last 5 snapshots
+      let converged = false;
+      if (convergenceHistory.length >= 5) {
+        const last5 = convergenceHistory.slice(-5);
+        const avgLast5 = last5.reduce((a, b) => a + b, 0) / 5;
+        const maxDev = Math.max(...last5.map(v => Math.abs(v - avgLast5)));
+        converged = avgLast5 !== 0 ? (maxDev / Math.abs(avgLast5)) < 0.001 : maxDev < 0.01;
+      }
+
       onComplete({
         ...progress,
         histogram: buildHistogram(sorted),
         clusters: identifyClusters(sorted),
         sensitivity,
         tailRisk,
+        var95,
+        var99,
+        cvar95,
+        cvar99,
+        converged,
+        convergenceHistory,
       });
     } else {
       requestAnimationFrame(tick);
