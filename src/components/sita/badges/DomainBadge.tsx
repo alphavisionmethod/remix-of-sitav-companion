@@ -15,7 +15,7 @@ export function DomainBadge({ domain, className }: { domain: DomainId; className
   const atm = DOMAIN_ATMOSPHERE[domain];
   const Icon = ICONS[domain];
   return (
-    <BadgeBase bg={`${atm.accentFrom.replace(")", " / 0.12)")}` ?? "hsl(265 55% 58% / 0.12)"} text={atm.accentFrom} className={className}>
+    <BadgeBase bg={`${atm.accentFrom.replace(")", " / 0.12)")}`} text={atm.accentFrom} className={className}>
       <Icon className="h-2.5 w-2.5" />
       {atm.label}
     </BadgeBase>
