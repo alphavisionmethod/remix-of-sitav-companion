@@ -1,98 +1,129 @@
 
 
-# SITA OS — Remaining Implementation Gaps (Full Audit)
+# SITA OS Part 3 — Full Advanced Integration Plan
 
-## Summary
+## Current Reality (Hard Numbers)
 
-The design system primitives (cards, badges, surfaces, motion) are built and integrated into **4 pages**. But **199 files** still import old primitives (`SitaCard`, `GlassCard`, `ModuleWorkspace`, `EmptyStateCTA`). Beyond the migration debt, several major spec areas remain unimplemented.
+| Metric | Count |
+|--------|-------|
+| Pages using new design system | 9 |
+| Pages still on legacy SitaCard | 193 |
+| ComparisonCard usage | 0 pages |
+| BoardroomCinematic usage | 0 pages |
+| App.tsx lines / routes | 1,899 / 856 |
+| ShellLayout lines | 750 |
+| Admin pages | 381 |
+| Contexts | 23 |
+| Command components | 6+ overlapping |
+| Empty state components | 6 overlapping |
+
+## Implementation Plan (5 Phases, Prioritized by Impact)
+
+### Phase 1: Route Decomposition + Shell Split
+
+**App.tsx decomposition** — Split 1,899-line monolith into route family files:
+
+| File | Content |
+|------|---------|
+| `src/routes/os-routes.tsx` | Desktop, DailyPulse, Settings, Profile, MissionControl |
+| `src/routes/business-routes.tsx` | All `/business/*` routes |
+| `src/routes/money-routes.tsx` | All `/money/*` routes |
+| `src/routes/concierge-routes.tsx` | All `/concierge/*` routes |
+| `src/routes/files-routes.tsx` | All `/files/*` routes |
+| `src/routes/boardroom-routes.tsx` | Boardroom, replays, history |
+| `src/routes/trust-routes.tsx` | Trust, proof routes |
+| `src/routes/advisor-routes.tsx` | All `/advisors/*` routes |
+| `src/routes/experimental-routes.tsx` | Investment office, app platform, speculative |
+
+App.tsx becomes a thin orchestrator (~200 lines) importing these families.
+
+**ShellLayout decomposition** — Extract from 750-line monolith:
+
+| Extract | Purpose |
+|---------|---------|
+| `ShellWindowLayer.tsx` | All 20 window imports + render logic |
+| `ShellAccessoryLayer.tsx` | AdvisorChat, Timeline, Inspector, CompanionBar, ContextualRail |
+| `ShellLiveLayer.tsx` | LiveActivityBar, ClickRipple, CommandLayer |
+
+ShellLayout becomes ~250 lines: frame + sidebar + topbar + lazy children.
+
+### Phase 2: Migrate 12 High-Impact Module Pages
+
+Replace `SitaCard`/`GlassCard`/`SitaPageHeader` with new card family, badges, `ListReveal`, and `SplitWorkspace` in:
+
+**Business (4 pages):**
+- `FollowThroughCenter.tsx` — `QueueCard` for callback/no-touch/waiting queues, `UrgencyBadge`, `ExecutionBadge`
+- `CommunicationsCenter.tsx` — `TimelineCard` for comms feed, `ActionCard` for drafts
+- `QuotesWorkspace.tsx` (ProposalsContracts) — `SplitWorkspace`, `ActionCard` for proposals, `ExecutionBadge`
+- `BusinessBoardroom.tsx` — `ComparisonCard` for scenario reviews, `BoardroomCinematic` entry, `AdvisorCard`, `ProofCard`
+
+**Money (4 pages):**
+- `ReservesSavings.tsx` — `HeroCard` for reserve health, `StatusCard` confidence, `TrustBadge`
+- `SubscriptionsWaste.tsx` — `QueueCard` for waste items, `FreshnessBadge`, `ActionCard` cancel/downgrade
+- `MoneyBoardroom.tsx` — `ComparisonCard`, `BoardroomCinematic`, `ProofCard` for financial evidence
+- `FinancialHealthPulse.tsx` — `HeroCard` peace score, `StatusCard` stress radar
+
+**Concierge (2 pages):**
+- `TravelPlanning.tsx` — `QueueCard` for prep tasks, `TimelineCard` for itinerary, `FreshnessBadge`
+- `LifeAdminCenter.tsx` — `QueueCard` for admin bundles, `ActionCard` for grouped tasks
+
+**Files + Trust (2 pages):**
+- `FilesOverview.tsx` — `StatusCard` for processing state, `HeroCard` for file intelligence summary, `SplitWorkspace`
+- `TrustCenter.tsx` — `ProofCard` for evidence chain, `TrustBadge`, `StatusCard` for posture, replace `SitaCard`
+
+### Phase 3: Boardroom Ceremonies + ComparisonCard + ProofCard Integration
+
+**Wire `BoardroomCinematic`** into all 4 boardroom pages:
+- `BusinessBoardroom.tsx` — sharp cut entry
+- `MoneyBoardroom.tsx` / `FinanceBoardroom.tsx` — calm dissolve entry
+- `ConciergeBoardroom.tsx` — soft bloom entry
+
+**Integrate `ComparisonCard`** into all boardrooms for scenario A/B review.
+
+**Integrate `ProofCard`** into:
+- `BusinessProof.tsx`
+- `MoneyProof.tsx`
+- `ConciergeProof.tsx`
+- `ProofCenter.tsx`
+- `TrustCenter.tsx`
+
+### Phase 4: Design System Consolidation
+
+**Unify empty states** — Make `PremiumEmptyState` the single canonical empty state. Create a shim so `EmptyState`, `EmptyStateCTA`, `EmptyStateCard`, `ContextualEmptyState`, and `ConciergeEmptyState` all re-export from `PremiumEmptyState` with mapped props.
+
+**Unify command system** — Keep 3 canonical command surfaces:
+1. `CommandPalette.tsx` — global OS-level (Cmd+K from shell)
+2. `DomainCommandPalette.tsx` — domain-scoped (Cmd+K inside app)
+3. `AdminCommandPalette.tsx` — admin-only
+
+Mark `UniversalCommand.tsx`, `UniversalCommandSurface.tsx`, `AutopilotCommandCenter.tsx` as deprecated re-exports.
+
+**Consolidate mode/reality contexts** — Merge `DataModeContext`, `DemoModeProvider`, and `RealityModeProvider` into one `RealityModeProvider` that exposes: `mode`, `isDemo`, `isReal`, `source`, `freshness`. Old hooks become shim re-exports.
+
+### Phase 5: Runtime Truth + Premium States
+
+**Per-page truth declaration** — Add a `<PageTruthBanner>` component that reads reality mode and shows elegant inline indicators: "Demo Data", "Live", "Partial", "Connecting...". Apply to all 21 migrated pages.
+
+**Connect-to-activate states** — For pages requiring connectors (CRM, email, calendar, accounting), show `PremiumEmptyState` variant `connect-to-activate` instead of demo data when in live mode with no connector.
+
+**Degraded mode design** — `PremiumEmptyState` variant `degraded` for stale data, failed AI, or disconnected services. Show last-known-good with freshness badge.
 
 ---
 
-## Gap 1: BillsWorkspace Rewrite (planned but never done)
+## Files Summary
 
-`src/pages/money/BillsWorkspace.tsx` still uses `SitaCard`, `SitaPageHeader`, `ModuleWorkspace` — the old stack. The plan called for `SplitWorkspace`, `QueueCard`, `ExecutionBadge`, `FreshnessBadge`. This was approved but skipped.
+| Action | File(s) | Phase |
+|--------|---------|-------|
+| Create | 9 route family files in `src/routes/` | 1 |
+| Rewrite | `src/App.tsx` → thin orchestrator | 1 |
+| Create | `ShellWindowLayer.tsx`, `ShellAccessoryLayer.tsx`, `ShellLiveLayer.tsx` | 1 |
+| Rewrite | `src/components/sita/ShellLayout.tsx` → ~250 lines | 1 |
+| Rewrite | 12 module pages (listed above) | 2 |
+| Edit | 4 boardroom pages + 5 proof pages | 3 |
+| Edit | 5 empty state files → shim re-exports | 4 |
+| Edit | 3 command files → deprecation shims | 4 |
+| Create | `src/components/sita/PageTruthBanner.tsx` | 5 |
+| Edit | 21 pages to add truth banner | 5 |
 
-**Action:** Rewrite BillsWorkspace with new design system primitives.
-
----
-
-## Gap 2: DesktopSurface State System (skipped)
-
-`DesktopSurface.tsx` was planned to get visual state differentiation (idle/active/degraded/heavy-review) and use `StatusCard` for widgets. This was explicitly skipped to "avoid visual regression." The desktop still has no state-aware visual logic.
-
-**Action:** Add desktop state system with ambient intensity shifts per state.
-
----
-
-## Gap 3: DomainAppShell Atmosphere Injection (incomplete)
-
-`DomainAppShell.tsx` has `DomainMotionProvider` but does NOT inject domain atmosphere CSS variables (`--domain-card-radius`, `--domain-contrast`, `--domain-warmth`) and does NOT wrap content in `AppSurface level={0}`. Child pages cannot inherit domain feel automatically.
-
-**Action:** Add CSS variable injection and `AppSurface` wrapper to DomainAppShell content area.
-
----
-
-## Gap 4: High-Impact Module Pages (75+ pages untouched)
-
-Only 4 of ~80 module pages use the new design system. The highest-impact remaining pages that users encounter frequently:
-
-| Domain | Page | Current State |
-|--------|------|--------------|
-| Business | LeadRecovery, InvoicesCollections, QuotesWorkspace | Old SitaCard |
-| Business | FollowThroughCenter, CommunicationsCenter | Old SitaCard |
-| Money | SpendingPulse, MoneyApprovals, ReceivablesObligations | Old SitaCard |
-| Money | ReservesSavings, SubscriptionsWaste, TaxEstimator | Old SitaCard |
-| Concierge | TravelPlanning, LifeAdminCenter, ServiceProviders | Old SitaCard |
-| Concierge | ErrandsLogistics, HouseholdCommandCenter | Old SitaCard |
-| Files | FilesOverview, FilesSensitive | Old SitaCard |
-| Trust | TrustCenter, ProofCenter | Old SitaCard |
-
-**Action:** Migrate the next 10 highest-traffic module pages to use HeroCard/QueueCard/ActionCard/SplitWorkspace/badges/ListReveal with domain-specific atmosphere.
-
----
-
-## Gap 5: `DetailDrawer` Never Used in Pages
-
-The `DetailDrawer` component exists in `src/components/sita/surfaces/` but zero pages import it. All detail views are either inline or use old `ContextDrawer`.
-
-**Action:** Replace `ContextDrawer` usage in key pages (BillsWorkspace, InvoicesCollections, QuotesWorkspace) with the new `DetailDrawer`.
-
----
-
-## Gap 6: `AppOpenCeremony` Never Triggered
-
-The cinematic app launch animation exists but is never called when entering a domain app from the desktop or dock. Entering Business/Finance/Concierge feels like a page navigation, not launching software.
-
-**Action:** Wire `AppOpenCeremony` into `DomainAppShell` on first mount (using sessionStorage to fire once per domain session).
-
----
-
-## Gap 7: Boardroom Pages Don't Use Domain Ceremonies
-
-`BusinessBoardroom`, `FinanceBoardroom`, `MoneyBoardroom`, `ConciergeBoardroom` exist but don't use `BoardroomCinematic` for domain-specific entry. They use the old generic `BoardroomEntryCeremony`.
-
-**Action:** Replace generic ceremony with domain-paced `BoardroomCinematic` in each boardroom page.
-
----
-
-## Gap 8: No `ComparisonCard` or `ProofCard` Usage
-
-These two card types were built but zero pages use them. `ComparisonCard` is needed for boardroom scenario reviews and `ProofCard` for trust/proof pages.
-
-**Action:** Integrate `ComparisonCard` into boardroom pages and `ProofCard` into TrustCenter/ProofCenter/MoneyProof/BusinessProof.
-
----
-
-## Recommended Implementation Order
-
-| Phase | Work | Files |
-|-------|------|-------|
-| **A** | DomainAppShell atmosphere + AppSurface + AppOpenCeremony | `DomainAppShell.tsx` |
-| **B** | BillsWorkspace rewrite (planned, never done) | `BillsWorkspace.tsx` |
-| **C** | Desktop state system | `DesktopSurface.tsx` |
-| **D** | Migrate 10 key module pages to new primitives | 10 page files |
-| **E** | DetailDrawer integration in 3 pages | InvoicesCollections, QuotesWorkspace, BillsWorkspace |
-| **F** | Boardroom domain ceremonies + ComparisonCard/ProofCard | 4 boardroom + 4 proof pages |
-
-This covers the most impactful remaining gaps. After Phase A-F, ~18 pages use the new system (vs 4 today), the shell automatically applies domain atmosphere to all children, and the desktop/boardroom feel cinematically distinct.
+After this phase: **21 pages** on new design system (vs 9 today), App.tsx drops from 1,899 to ~200 lines, ShellLayout from 750 to ~250, boardrooms have cinematic entries, and runtime truth is visible everywhere.
 
