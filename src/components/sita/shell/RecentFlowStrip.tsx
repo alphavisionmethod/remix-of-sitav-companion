@@ -1,6 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Recent Flow Strip
-// Subtle workflow chain above dock: Chrome → Docs → Notes
+// SITA OS — Recent Flow Strip v2
+// Workflow chain above dock with time-ago labels
 // ═══════════════════════════════════════════════════════════════
 
 import { motion, AnimatePresence } from "framer-motion";
@@ -20,15 +20,25 @@ interface RecentFlowStripProps {
   onAppClick: (appId: string) => void;
 }
 
+function timeAgo(ts: number): string {
+  const diff = Math.max(0, Date.now() - ts);
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return "now";
+  if (mins < 60) return `${mins}m`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs}h`;
+  return `${Math.floor(hrs / 24)}d`;
+}
+
 export function RecentFlowStrip({ flow, apps, visible, onAppClick }: RecentFlowStripProps) {
   if (flow.length < 2) return null;
 
-  const flowApps = flow
+  const flowItems = flow
     .slice(0, 4)
-    .map(f => apps.find(a => a.id === f.appId))
-    .filter(Boolean) as AppDefinition[];
+    .map(f => ({ app: apps.find(a => a.id === f.appId), timestamp: f.timestamp }))
+    .filter((f): f is { app: AppDefinition; timestamp: number } => f.app != null);
 
-  if (flowApps.length < 2) return null;
+  if (flowItems.length < 2) return null;
 
   return (
     <AnimatePresence>
@@ -41,20 +51,27 @@ export function RecentFlowStrip({ flow, apps, visible, onAppClick }: RecentFlowS
           className="flex items-center gap-1 rounded-full px-3 py-1.5 backdrop-blur-xl border border-[hsl(0_0%_100%/0.12)] bg-[hsl(0_0%_0%/0.25)]"
         >
           <span className="text-[9px] font-medium text-[hsl(0_0%_100%/0.4)] mr-1 uppercase tracking-wider">Flow</span>
-          {flowApps.map((app, i) => (
-            <div key={app.id} className="flex items-center">
+          {flowItems.map((item, i) => (
+            <div key={item.app.id} className="flex items-center">
               <motion.button
                 whileHover={{ scale: 1.15 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => onAppClick(app.id)}
-                className="w-6 h-6 rounded-lg flex items-center justify-center text-xs hover:ring-1 hover:ring-[hsl(0_0%_100%/0.2)] transition-all"
-                style={{ background: "hsl(0 0% 100% / 0.08)" }}
-                title={app.name}
+                onClick={() => onAppClick(item.app.id)}
+                className="flex flex-col items-center gap-0.5"
+                title={`${item.app.name} · ${timeAgo(item.timestamp)} ago`}
               >
-                {app.icon}
+                <div
+                  className="w-6 h-6 rounded-lg flex items-center justify-center text-xs hover:ring-1 hover:ring-[hsl(0_0%_100%/0.2)] transition-all"
+                  style={{ background: "hsl(0 0% 100% / 0.08)" }}
+                >
+                  {item.app.icon}
+                </div>
+                <span className="text-[7px] text-[hsl(0_0%_100%/0.30)] leading-none">
+                  {timeAgo(item.timestamp)}
+                </span>
               </motion.button>
-              {i < flowApps.length - 1 && (
-                <ChevronRight className="w-2.5 h-2.5 text-[hsl(0_0%_100%/0.25)] mx-0.5 flex-shrink-0" />
+              {i < flowItems.length - 1 && (
+                <ChevronRight className="w-2.5 h-2.5 text-[hsl(0_0%_100%/0.20)] mx-0.5 flex-shrink-0" />
               )}
             </div>
           ))}
