@@ -200,7 +200,7 @@ const CustomersPage = () => {
           </div>
         }
         list={listContent}
-        detail={selected ? <CustomerDetailPane customer={selected} onDelete={(id) => deleteCustomer.mutate(id)} /> : undefined}
+        detail={selected ? <CustomerDetailPane customer={selected} onDelete={(id) => deleteCustomer.mutate({ id } as any)} /> : undefined}
         detailActive={!!selected}
         onCloseDetail={() => setSelectedId(null)}
         advisor={
