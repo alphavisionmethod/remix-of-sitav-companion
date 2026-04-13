@@ -125,6 +125,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
   const [spatialOpen, setSpatialOpen] = useState(false);
   const [controlCenterOpen, setControlCenterOpen] = useState(false);
   const [notifDropdownOpen, setNotifDropdownOpen] = useState(false);
+  const [launcherOpen, setLauncherOpen] = useState(false);
   const [showBootSplash, setShowBootSplash] = useState(true);
   const [pipWindows, setPipWindows] = useState<Array<{ id: string; title: string; type: "music" | "generic"; data?: any }>>([]);
   const [permGate, setPermGate] = useState<{ appId: string; originRect?: DOMRect } | null>(null);
