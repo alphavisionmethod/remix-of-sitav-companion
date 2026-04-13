@@ -7,3 +7,5 @@ export { DesktopQuickActionsWidget } from "./DesktopQuickActionsWidget";
 export { DesktopSystemWidget } from "./DesktopSystemWidget";
 export { DesktopLeftRail } from "./DesktopLeftRail";
 export { DesktopNotificationCenter } from "./DesktopNotificationCenter";
+export { DraggableWidget } from "./DraggableWidget";
+export { WidgetPicker } from "./WidgetPicker";
