@@ -36,7 +36,6 @@ const ConciergeProof = () => {
   const { isDemoMode } = useDataMode();
   const verified = proofRecords.filter(p => p.verification === "verified").length;
   const pending = proofRecords.filter(p => p.verification === "pending").length;
-  const pending = proofRecords.filter(p => p.verification === "pending").length;
 
   const filtered = view === "verified" ? proofRecords.filter(p => p.verification === "verified")
     : view === "pending" ? proofRecords.filter(p => p.verification === "pending")
