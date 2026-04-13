@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle, AlertOctagon, Shield, Clock, Hash, Sparkles, Timer } from "lucide-react";
+import {
+  CheckCircle, AlertOctagon, Shield, Clock, Hash, Sparkles, Timer,
+  ChevronDown, ChevronRight, ArrowRight, RotateCcw, Eye, AlertTriangle,
+} from "lucide-react";
 import {
   ApprovalGate, DecisionSeal, ProofReceipt,
   ExecutionChainTimeline, buildDefaultChain,
@@ -26,47 +29,25 @@ const MOCK_APPROVALS = [
 ];
 
 const MOCK_SEALED = [
-  {
-    decision: "Auto-pay AWS hosting approved",
-    decidedBy: "Owner",
-    timestamp: "Apr 2, 2026 — 10:14 AM",
-    receiptHash: "0x8f3a…c7d2",
-    status: "sealed" as const,
-  },
-  {
-    decision: "Follow-up email to Sarah Chen approved",
-    decidedBy: "Owner",
-    timestamp: "Apr 2, 2026 — 09:30 AM",
-    receiptHash: "0x2b1f…a9e5",
-    status: "sealed" as const,
-  },
+  { decision: "Auto-pay AWS hosting approved", decidedBy: "Owner", timestamp: "Apr 2, 2026 — 10:14 AM", receiptHash: "0x8f3a…c7d2", status: "sealed" as const },
+  { decision: "Follow-up email to Sarah Chen approved", decidedBy: "Owner", timestamp: "Apr 2, 2026 — 09:30 AM", receiptHash: "0x2b1f…a9e5", status: "sealed" as const },
 ];
 
 const MOCK_RECEIPTS = [
   {
-    title: "Payment received — Invoice #1038",
-    hash: "0xa3f2…d8b1",
-    verification: "verified" as const,
-    timestamp: "Apr 2, 2026 — 08:00 AM",
-    actor: "System",
+    title: "Payment received — Invoice #1038", hash: "0xa3f2…d8b1", verification: "verified" as const,
+    timestamp: "Apr 2, 2026 — 08:00 AM", actor: "System",
     steps: [
       { label: "Invoice sent", status: "completed" as const, timestamp: "Mar 28" },
       { label: "Payment received", status: "completed" as const, timestamp: "Apr 2" },
       { label: "Verified against bank", status: "completed" as const, timestamp: "Apr 2" },
     ],
   },
-  {
-    title: "Email sent — Quote #1042",
-    hash: "0x7c4e…f1a3",
-    verification: "verified" as const,
-    timestamp: "Apr 2, 2026 — 06:00 AM",
-    actor: "Email Advisor",
-  },
+  { title: "Email sent — Quote #1042", hash: "0x7c4e…f1a3", verification: "verified" as const, timestamp: "Apr 2, 2026 — 06:00 AM", actor: "Email Advisor" },
 ];
 
 const executionChain = buildDefaultChain("approval");
 
-// Signature line animation component
 function SignatureAnimation({ show }: { show: boolean }) {
   if (!show) return null;
   return (
@@ -87,7 +68,6 @@ function SignatureAnimation({ show }: { show: boolean }) {
   );
 }
 
-// Gold particle seal stamp
 function SealStampCeremony({ show }: { show: boolean }) {
   if (!show) return null;
   const particles = Array.from({ length: 12 }, (_, i) => ({
@@ -103,12 +83,7 @@ function SealStampCeremony({ show }: { show: boolean }) {
       animate={{ opacity: 0 }}
       transition={{ delay: 1.5, duration: 0.5 }}
     >
-      {/* Camera shake */}
-      <motion.div
-        animate={{ x: [0, -3, 3, -2, 0], y: [0, 2, -2, 1, 0] }}
-        transition={{ duration: 0.3 }}
-      >
-        {/* Seal stamp */}
+      <motion.div animate={{ x: [0, -3, 3, -2, 0], y: [0, 2, -2, 1, 0] }} transition={{ duration: 0.3 }}>
         <motion.div
           className="w-16 h-16 rounded-full border-2 border-[hsl(var(--sita-gold))] flex items-center justify-center"
           style={{ backgroundColor: "hsl(var(--sita-gold) / 0.15)" }}
@@ -119,25 +94,151 @@ function SealStampCeremony({ show }: { show: boolean }) {
           <CheckCircle size={24} className="text-[hsl(var(--sita-gold))]" />
         </motion.div>
       </motion.div>
-      {/* Gold particles */}
       {particles.map((p, i) => (
         <motion.div
           key={i}
           className="absolute rounded-full"
-          style={{
-            width: p.size,
-            height: p.size,
-            backgroundColor: "hsl(var(--sita-gold))",
-          }}
+          style={{ width: p.size, height: p.size, backgroundColor: "hsl(var(--sita-gold))" }}
           initial={{ x: 0, y: 0, opacity: 1 }}
-          animate={{
-            x: Math.cos(p.angle) * p.distance,
-            y: Math.sin(p.angle) * p.distance,
-            opacity: 0,
-          }}
+          animate={{ x: Math.cos(p.angle) * p.distance, y: Math.sin(p.angle) * p.distance, opacity: 0 }}
           transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
         />
       ))}
+    </motion.div>
+  );
+}
+
+// Pre-approval checklist
+function PreApprovalChecklist({ approval, onNavigateToSim }: { approval: typeof MOCK_APPROVALS[0]; onNavigateToSim: () => void }) {
+  const [expanded, setExpanded] = useState(false);
+
+  const checklistItems = [
+    { label: "Final Recommendation", value: approval.title, checked: true },
+    { label: "Confidence Level", value: `${approval.advisorConfidence}%`, checked: approval.advisorConfidence >= 60 },
+    { label: "Risks if Approved", value: approval.riskLevel === "high" ? "Price lock expires — cost may increase" : "Minimal risk identified", checked: true },
+    { label: "Risks if Deferred", value: approval.riskLevel === "high" ? "Price increases $120/day" : "No material impact from deferral", checked: true },
+    { label: "Conditions", value: "No blocking conditions active", checked: true },
+    { label: "Action Scope", value: approval.description.split(".")[0], checked: true },
+    { label: "Follow-up Timing", value: "Auto-review in 7 days", checked: true },
+    { label: "Rollback Path", value: approval.riskLevel === "low" ? "Resume subscription anytime" : "Cancellation window: 24h", checked: true },
+  ];
+
+  return (
+    <div className="rounded-lg border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] mb-2">
+      <button
+        onClick={() => setExpanded(!expanded)}
+        className="flex items-center justify-between w-full px-3 py-2"
+      >
+        <div className="flex items-center gap-2">
+          <Shield size={11} className="text-[hsl(280_50%_65%)]" />
+          <span className="text-[10px] font-semibold text-[hsl(0_0%_100%/0.5)]">Pre-Approval Checklist</span>
+          <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-[hsl(var(--trust-safe))]/10 text-[hsl(var(--trust-safe))] font-bold">
+            {checklistItems.filter(c => c.checked).length}/{checklistItems.length} clear
+          </span>
+        </div>
+        {expanded ? <ChevronDown size={12} className="text-[hsl(0_0%_100%/0.3)]" /> : <ChevronRight size={12} className="text-[hsl(0_0%_100%/0.3)]" />}
+      </button>
+      <AnimatePresence>
+        {expanded && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="overflow-hidden border-t border-[hsl(0_0%_100%/0.04)]"
+          >
+            <div className="p-3 space-y-1.5">
+              {checklistItems.map((item, i) => (
+                <div key={i} className="flex items-start gap-2">
+                  {item.checked
+                    ? <CheckCircle size={11} className="text-[hsl(var(--trust-safe))] shrink-0 mt-0.5" />
+                    : <AlertTriangle size={11} className="text-[hsl(var(--sita-gold))] shrink-0 mt-0.5" />
+                  }
+                  <div className="flex-1">
+                    <span className="text-[9px] font-bold text-[hsl(0_0%_100%/0.4)]">{item.label}:</span>
+                    <span className="text-[10px] text-[hsl(0_0%_100%/0.6)] ml-1">{item.value}</span>
+                  </div>
+                </div>
+              ))}
+              <div className="flex items-center gap-2 pt-2 border-t border-[hsl(0_0%_100%/0.04)]">
+                <button
+                  onClick={onNavigateToSim}
+                  className="flex items-center gap-1 text-[9px] font-semibold text-[hsl(280_50%_65%/0.6)] hover:text-[hsl(280_50%_75%)] transition-colors"
+                >
+                  <Eye size={10} /> View Simulation
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+// Enhanced post-approval closure card
+function PostApprovalClosure({ receipt, onDismiss }: { receipt: { title: string; hash: string; time: string }; onDismiss: () => void }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95, y: -10 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      className="rounded-2xl border-2 border-[hsl(var(--trust-safe))]/30 bg-[hsl(var(--trust-safe))]/5 p-5 relative overflow-hidden"
+    >
+      {/* Subtle radial glow */}
+      <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse 80% 60% at 50% 0%, hsl(var(--trust-safe) / 0.08), transparent 70%)" }} />
+
+      <div className="flex items-center gap-2 mb-4 relative z-10">
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ type: "spring", stiffness: 400, damping: 15, delay: 0.2 }}
+        >
+          <Sparkles size={18} className="text-[hsl(var(--trust-safe))]" />
+        </motion.div>
+        <p className="text-sm font-bold text-[hsl(var(--trust-safe))]">Decision Sealed & Recorded</p>
+      </div>
+
+      <div className="space-y-2 text-[12px] relative z-10">
+        <div className="flex items-center gap-2 text-[hsl(0_0%_100%/0.7)]">
+          <span className="text-[hsl(0_0%_100%/0.4)] w-20 shrink-0">Approved:</span>
+          <span className="font-medium">{receipt.title}</span>
+        </div>
+        <div className="flex items-center gap-2 text-[hsl(0_0%_100%/0.7)]">
+          <span className="text-[hsl(0_0%_100%/0.4)] w-20 shrink-0">Receipt:</span>
+          <span className="font-mono flex items-center gap-1"><Hash size={10} />{receipt.hash}</span>
+        </div>
+        <div className="flex items-center gap-2 text-[hsl(0_0%_100%/0.7)]">
+          <span className="text-[hsl(0_0%_100%/0.4)] w-20 shrink-0">Sealed at:</span>
+          <span className="flex items-center gap-1"><Clock size={10} />{receipt.time}</span>
+        </div>
+        <div className="flex items-center gap-2 text-[hsl(0_0%_100%/0.7)]">
+          <span className="text-[hsl(0_0%_100%/0.4)] w-20 shrink-0">Status:</span>
+          <span className="text-[hsl(var(--trust-safe))] font-semibold">Sealed & Recorded</span>
+        </div>
+      </div>
+
+      {/* What happens next */}
+      <div className="mt-4 pt-3 border-t border-[hsl(var(--trust-safe))]/15 relative z-10">
+        <p className="text-[9px] font-bold uppercase tracking-[0.15em] text-[hsl(var(--trust-safe))]/60 mb-2">What Happens Next</p>
+        <div className="space-y-1">
+          <p className="text-[10px] text-[hsl(0_0%_100%/0.5)] flex items-center gap-1.5">
+            <ArrowRight size={9} className="text-[hsl(var(--trust-safe))]" /> Execution begins automatically
+          </p>
+          <p className="text-[10px] text-[hsl(0_0%_100%/0.5)] flex items-center gap-1.5">
+            <ArrowRight size={9} className="text-[hsl(var(--trust-safe))]" /> Follow-up review scheduled in 7 days
+          </p>
+          <p className="text-[10px] text-[hsl(0_0%_100%/0.5)] flex items-center gap-1.5">
+            <RotateCcw size={9} className="text-[hsl(0_0%_100%/0.3)]" /> Rollback window: 24 hours
+          </p>
+        </div>
+      </div>
+
+      <button
+        onClick={onDismiss}
+        className="mt-3 text-[10px] text-[hsl(0_0%_100%/0.3)] hover:text-[hsl(0_0%_100%/0.6)] transition-colors relative z-10"
+      >
+        Dismiss
+      </button>
     </motion.div>
   );
 }
@@ -213,54 +314,14 @@ export function BoardroomApprovalView({ scope, onNavigate }: Props) {
         </div>
       </div>
 
-      {/* Generated Receipt */}
+      {/* Post-Approval Closure */}
       <AnimatePresence>
         {generatedReceipt && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: -10 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            className="rounded-2xl border-2 border-[hsl(var(--trust-safe))]/30 bg-[hsl(var(--trust-safe))]/5 p-5"
-          >
-            <div className="flex items-center gap-2 mb-3">
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ type: "spring", stiffness: 400, damping: 15, delay: 0.2 }}
-              >
-                <Sparkles size={18} className="text-[hsl(var(--trust-safe))]" />
-              </motion.div>
-              <p className="text-sm font-bold text-[hsl(var(--trust-safe))]">Decision Receipt Generated</p>
-            </div>
-            <div className="space-y-2 text-[12px]">
-              <div className="flex items-center gap-2 text-[hsl(0_0%_100%/0.7)]">
-                <span className="text-[hsl(0_0%_100%/0.4)] w-16 shrink-0">Action:</span>
-                {generatedReceipt.title}
-              </div>
-              <div className="flex items-center gap-2 text-[hsl(0_0%_100%/0.7)]">
-                <span className="text-[hsl(0_0%_100%/0.4)] w-16 shrink-0">Hash:</span>
-                <span className="font-mono flex items-center gap-1"><Hash size={10} />{generatedReceipt.hash}</span>
-              </div>
-              <div className="flex items-center gap-2 text-[hsl(0_0%_100%/0.7)]">
-                <span className="text-[hsl(0_0%_100%/0.4)] w-16 shrink-0">Time:</span>
-                <span className="flex items-center gap-1"><Clock size={10} />{generatedReceipt.time}</span>
-              </div>
-              <div className="flex items-center gap-2 text-[hsl(0_0%_100%/0.7)]">
-                <span className="text-[hsl(0_0%_100%/0.4)] w-16 shrink-0">Status:</span>
-                <span className="text-[hsl(var(--trust-safe))] font-semibold">Sealed & Recorded</span>
-              </div>
-            </div>
-            <button
-              onClick={() => setGeneratedReceipt(null)}
-              className="mt-3 text-[10px] text-[hsl(0_0%_100%/0.3)] hover:text-[hsl(0_0%_100%/0.6)] transition-colors"
-            >
-              Dismiss
-            </button>
-          </motion.div>
+          <PostApprovalClosure receipt={generatedReceipt} onDismiss={() => setGeneratedReceipt(null)} />
         )}
       </AnimatePresence>
 
-      {/* Pending Approvals with Before/After + Countdown */}
+      {/* Pending Approvals with Pre-Approval Checklist */}
       <div>
         <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[hsl(280_50%_65%/0.5)] mb-3">
           Pending Approvals
@@ -282,12 +343,14 @@ export function BoardroomApprovalView({ scope, onNavigate }: Props) {
                     {ap.advisorConfidence}% confident
                   </span>
                 </div>
-                {/* Countdown urgency */}
                 <div className="flex items-center gap-1 text-[9px] px-2 py-0.5 rounded-full bg-[hsl(var(--sita-gold))]/10 text-[hsl(var(--sita-gold))]">
                   <Timer size={9} />
                   <span className="font-semibold">{ap.urgencyHours}h window</span>
                 </div>
               </div>
+
+              {/* Pre-Approval Checklist */}
+              <PreApprovalChecklist approval={ap} onNavigateToSim={() => onNavigate("simulation")} />
 
               {/* Before/After preview */}
               <div className="grid grid-cols-2 gap-2 mb-2 px-1">

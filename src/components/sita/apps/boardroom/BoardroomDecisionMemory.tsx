@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, ChevronRight, Hash, CheckCircle, AlertTriangle, Minus, TrendingUp, Award } from "lucide-react";
+import { ChevronDown, ChevronRight, Hash, CheckCircle, AlertTriangle, Minus, TrendingUp, Award, PlayCircle, Rewind } from "lucide-react";
 import { AnimatedProgressRing } from "@/components/sita/AnimatedProgressRing";
 
 interface Decision {
@@ -13,7 +13,14 @@ interface Decision {
   recommendation: string;
   advisorPositions: string[];
   actualOutcome: string;
-  outcomeScore: number; // 0-100 how well it matched prediction
+  outcomeScore: number;
+  sessionSnapshot?: {
+    scope: string;
+    advisorsPresent: number;
+    simulationsRun: number;
+    evidenceSources: number;
+    sessionDuration: string;
+  };
 }
 
 const DECISIONS: Decision[] = [
@@ -24,6 +31,7 @@ const DECISIONS: Decision[] = [
     advisorPositions: ["Revenue: Immediate outreach preferred", "CRM: Phased approach for top clients"],
     actualOutcome: "Recovered $22,400 (94%) within 18 days. No client relationships damaged.",
     outcomeScore: 94,
+    sessionSnapshot: { scope: "Business", advisorsPresent: 6, simulationsRun: 3, evidenceSources: 8, sessionDuration: "12m 34s" },
   },
   {
     id: "dec2", title: "Deferred subscription audit by 2 weeks",
@@ -32,6 +40,7 @@ const DECISIONS: Decision[] = [
     advisorPositions: ["Obligations: Immediate review needed", "Reserve: Can wait if no emergency"],
     actualOutcome: "Audit completed Mar 22. Found $127/mo in savings. No material impact from delay.",
     outcomeScore: 65,
+    sessionSnapshot: { scope: "Finance", advisorsPresent: 4, simulationsRun: 1, evidenceSources: 5, sessionDuration: "6m 12s" },
   },
   {
     id: "dec3", title: "Rejected aggressive lead recovery campaign",
@@ -40,6 +49,7 @@ const DECISIONS: Decision[] = [
     advisorPositions: ["Growth: High volume approach", "CRM: Quality over quantity — only warm leads"],
     actualOutcome: "Chose targeted warm approach instead. 3 conversions from 12 contacts. Better ROI than projected mass approach.",
     outcomeScore: 88,
+    sessionSnapshot: { scope: "Business", advisorsPresent: 5, simulationsRun: 2, evidenceSources: 6, sessionDuration: "8m 45s" },
   },
   {
     id: "dec4", title: "Approved emergency reserve draw — $1,200",
@@ -48,6 +58,7 @@ const DECISIONS: Decision[] = [
     advisorPositions: ["Reserve: Approve — within emergency threshold", "Obligations: Flag — reserve below 60% after draw"],
     actualOutcome: "Payment resolved issue but reserves dropped to $5,800. Took 6 weeks to recover buffer.",
     outcomeScore: 35,
+    sessionSnapshot: { scope: "Finance", advisorsPresent: 4, simulationsRun: 1, evidenceSources: 3, sessionDuration: "4m 20s" },
   },
   {
     id: "dec5", title: "Approved travel package — London client visit",
@@ -56,6 +67,7 @@ const DECISIONS: Decision[] = [
     advisorPositions: ["Travel: All systems green", "Revenue: High ROI potential — £45K deal"],
     actualOutcome: "Deal closed at £48K. Client upgraded to annual retainer. Travel investment fully justified.",
     outcomeScore: 96,
+    sessionSnapshot: { scope: "Global", advisorsPresent: 8, simulationsRun: 2, evidenceSources: 7, sessionDuration: "15m 08s" },
   },
 ];
 
@@ -65,12 +77,10 @@ const outcomeConfig = {
   negative: { icon: AlertTriangle, color: "text-[hsl(var(--destructive))]", bg: "bg-[hsl(var(--destructive))]/10", label: "Negative", ringColor: "hsl(var(--destructive))" },
 };
 
-// Pattern detection stats
 const positiveCount = DECISIONS.filter(d => d.outcome === "positive").length;
 const totalCount = DECISIONS.length;
 const avgScore = Math.round(DECISIONS.reduce((a, d) => a + d.outcomeScore, 0) / totalCount);
 
-// Advisor accuracy mock
 const ADVISOR_ACCURACY = [
   { name: "CRM Advisor", accuracy: 92, decisions: 4, emoji: "🤝" },
   { name: "Travel Advisor", accuracy: 96, decisions: 2, emoji: "✈️" },
@@ -78,8 +88,16 @@ const ADVISOR_ACCURACY = [
   { name: "Reserve Advisor", accuracy: 60, decisions: 3, emoji: "🏦" },
 ];
 
+// Domain quality breakdown
+const DOMAIN_QUALITY = [
+  { domain: "Concierge", rate: 100, decisions: 2, color: "hsl(var(--trust-safe))" },
+  { domain: "Business", rate: 85, decisions: 3, color: "hsl(280 50% 65%)" },
+  { domain: "Finance", rate: 60, decisions: 2, color: "hsl(var(--sita-gold))" },
+];
+
 export function BoardroomDecisionMemory() {
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [replayingSession, setReplayingSession] = useState<string | null>(null);
 
   return (
     <div className="p-6 space-y-6">
@@ -108,6 +126,17 @@ export function BoardroomDecisionMemory() {
               Average outcome alignment is <span className="font-bold text-[hsl(0_0%_100%/0.9)]">{avgScore}%</span>.
               {positiveCount >= 3 && " Strong decision-making pattern detected."}
             </p>
+            {/* Domain quality breakdown */}
+            <div className="flex items-center gap-4 mt-3">
+              {DOMAIN_QUALITY.map(dq => (
+                <div key={dq.domain} className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full" style={{ backgroundColor: dq.color }} />
+                  <span className="text-[9px] text-[hsl(0_0%_100%/0.5)]">
+                    {dq.domain}: <span className="font-bold" style={{ color: dq.color }}>{dq.rate}%</span>
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </motion.div>
@@ -148,7 +177,7 @@ export function BoardroomDecisionMemory() {
         </div>
       </div>
 
-      {/* Decision Archive Header */}
+      {/* Decision Archive */}
       <div className="flex items-center justify-between">
         <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[hsl(280_50%_65%/0.5)]">
           Decision Archive
@@ -156,13 +185,13 @@ export function BoardroomDecisionMemory() {
         <span className="text-[10px] text-[hsl(0_0%_100%/0.3)]">{DECISIONS.length} decisions recorded</span>
       </div>
 
-      {/* Timeline with Outcome Arcs */}
       <div className="space-y-0">
         {DECISIONS.map((dec, i) => {
           const cfg = outcomeConfig[dec.outcome];
           const Icon = cfg.icon;
           const isOpen = expanded === dec.id;
           const isLast = i === DECISIONS.length - 1;
+          const isReplaying = replayingSession === dec.id;
 
           return (
             <motion.div
@@ -172,7 +201,6 @@ export function BoardroomDecisionMemory() {
               transition={{ delay: i * 0.06 }}
               className="flex gap-4"
             >
-              {/* Timeline connector */}
               <div className="flex flex-col items-center">
                 <div className={cn("w-8 h-8 rounded-full flex items-center justify-center shrink-0", cfg.bg)}>
                   <Icon size={14} className={cfg.color} />
@@ -180,7 +208,6 @@ export function BoardroomDecisionMemory() {
                 {!isLast && <div className="w-px flex-1 min-h-[16px] bg-[hsl(0_0%_100%/0.06)]" />}
               </div>
 
-              {/* Content */}
               <div className={cn("flex-1 min-w-0 pb-4", isLast && "pb-0")}>
                 <button
                   onClick={() => setExpanded(isOpen ? null : dec.id)}
@@ -200,7 +227,6 @@ export function BoardroomDecisionMemory() {
                       </div>
                     </div>
                     <div className="flex items-center gap-2 shrink-0">
-                      {/* Outcome score arc */}
                       <AnimatedProgressRing
                         value={dec.outcomeScore}
                         size={36}
@@ -218,6 +244,7 @@ export function BoardroomDecisionMemory() {
                         animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
                         className="mt-4 space-y-3 overflow-hidden"
+                        onClick={(e) => e.stopPropagation()}
                       >
                         <div className="rounded-lg bg-[hsl(0_0%_100%/0.02)] border border-[hsl(0_0%_100%/0.05)] p-3">
                           <p className="text-[9px] font-semibold uppercase text-[hsl(0_0%_100%/0.35)] mb-1">Original Recommendation</p>
@@ -233,6 +260,72 @@ export function BoardroomDecisionMemory() {
                           <p className="text-[9px] font-semibold uppercase text-[hsl(0_0%_100%/0.35)] mb-1">Actual Outcome</p>
                           <p className="text-[12px] text-[hsl(0_0%_100%/0.7)]">{dec.actualOutcome}</p>
                         </div>
+
+                        {/* Session Replay Card */}
+                        {dec.sessionSnapshot && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 4 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            className="rounded-lg border border-[hsl(280_50%_50%/0.15)] bg-[hsl(280_40%_50%/0.04)] p-3"
+                          >
+                            <div className="flex items-center justify-between mb-2">
+                              <div className="flex items-center gap-1.5">
+                                <Rewind size={10} className="text-[hsl(280_50%_65%)]" />
+                                <span className="text-[9px] font-bold uppercase tracking-[0.15em] text-[hsl(280_50%_65%/0.6)]">Session Snapshot</span>
+                              </div>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setReplayingSession(isReplaying ? null : dec.id);
+                                }}
+                                className="flex items-center gap-1 px-2 py-1 rounded-md text-[8px] font-bold bg-[hsl(280_50%_50%/0.1)] border border-[hsl(280_50%_50%/0.2)] text-[hsl(280_50%_75%)] hover:bg-[hsl(280_50%_50%/0.2)] transition-colors"
+                              >
+                                <PlayCircle size={9} />
+                                {isReplaying ? "Close Replay" : "Replay Session"}
+                              </button>
+                            </div>
+                            <div className="grid grid-cols-4 gap-3">
+                              {[
+                                { label: "Scope", value: dec.sessionSnapshot.scope },
+                                { label: "Advisors", value: `${dec.sessionSnapshot.advisorsPresent} present` },
+                                { label: "Simulations", value: `${dec.sessionSnapshot.simulationsRun} run` },
+                                { label: "Duration", value: dec.sessionSnapshot.sessionDuration },
+                              ].map(stat => (
+                                <div key={stat.label}>
+                                  <p className="text-[8px] text-[hsl(0_0%_100%/0.25)]">{stat.label}</p>
+                                  <p className="text-[10px] font-semibold text-[hsl(0_0%_100%/0.6)]">{stat.value}</p>
+                                </div>
+                              ))}
+                            </div>
+
+                            {/* Replay expanded view */}
+                            <AnimatePresence>
+                              {isReplaying && (
+                                <motion.div
+                                  initial={{ opacity: 0, height: 0 }}
+                                  animate={{ opacity: 1, height: "auto" }}
+                                  exit={{ opacity: 0, height: 0 }}
+                                  className="mt-3 pt-3 border-t border-[hsl(280_50%_50%/0.1)] overflow-hidden space-y-2"
+                                >
+                                  <p className="text-[9px] text-[hsl(0_0%_100%/0.35)] italic">
+                                    Session replay shows the state at decision time — {dec.sessionSnapshot.evidenceSources} evidence sources were consulted.
+                                  </p>
+                                  <div className="flex items-center gap-2">
+                                    {["Evidence reviewed", "Scenarios compared", "Consensus checked", "Decision sealed"].map((step, si) => (
+                                      <React.Fragment key={step}>
+                                        <div className="flex items-center gap-1">
+                                          <CheckCircle size={9} className="text-[hsl(var(--trust-safe))]" />
+                                          <span className="text-[8px] text-[hsl(0_0%_100%/0.4)]">{step}</span>
+                                        </div>
+                                        {si < 3 && <span className="text-[hsl(0_0%_100%/0.1)]">→</span>}
+                                      </React.Fragment>
+                                    ))}
+                                  </div>
+                                </motion.div>
+                              )}
+                            </AnimatePresence>
+                          </motion.div>
+                        )}
                       </motion.div>
                     )}
                   </AnimatePresence>
