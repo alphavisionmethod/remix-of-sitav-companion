@@ -18,9 +18,7 @@ export function DesktopContinuityPanel({ continuity, desktopState }: Props) {
   return (
     <DesktopWidgetCard
       title="Continuity"
-      accent="from-violet-500/25 via-white/[0.05] to-cyan-400/10"
       className="min-h-[280px]"
-      delay={0}
     >
       {/* Ambient breathing glow */}
       <div className="absolute -inset-4 rounded-[32px] bg-[radial-gradient(ellipse_at_center,rgba(114,92,255,0.2),transparent_60%)] animate-[pulse_4s_ease-in-out_infinite] pointer-events-none" />
