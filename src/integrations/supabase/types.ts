@@ -152,6 +152,129 @@ export type Database = {
         }
         Relationships: []
       }
+      advisor_feedback: {
+        Row: {
+          advisor_id: string
+          comment: string | null
+          created_at: string
+          domain: string
+          feedback_type: string
+          id: string
+          rating: number | null
+          request_ref: string | null
+          user_id: string
+        }
+        Insert: {
+          advisor_id: string
+          comment?: string | null
+          created_at?: string
+          domain?: string
+          feedback_type?: string
+          id?: string
+          rating?: number | null
+          request_ref?: string | null
+          user_id: string
+        }
+        Update: {
+          advisor_id?: string
+          comment?: string | null
+          created_at?: string
+          domain?: string
+          feedback_type?: string
+          id?: string
+          rating?: number | null
+          request_ref?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      advisor_knowledge: {
+        Row: {
+          advisor_id: string
+          confidence: number
+          content: string
+          created_at: string
+          domain: string
+          id: string
+          source: string
+          status: string
+          tags: string[]
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          advisor_id: string
+          confidence?: number
+          content?: string
+          created_at?: string
+          domain?: string
+          id?: string
+          source?: string
+          status?: string
+          tags?: string[]
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          advisor_id?: string
+          confidence?: number
+          content?: string
+          created_at?: string
+          domain?: string
+          id?: string
+          source?: string
+          status?: string
+          tags?: string[]
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      advisor_memories: {
+        Row: {
+          advisor_id: string
+          content: string
+          context_ref: string | null
+          created_at: string
+          domain: string
+          id: string
+          importance: number
+          memory_type: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          advisor_id: string
+          content?: string
+          context_ref?: string | null
+          created_at?: string
+          domain?: string
+          id?: string
+          importance?: number
+          memory_type?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          advisor_id?: string
+          content?: string
+          context_ref?: string | null
+          created_at?: string
+          domain?: string
+          id?: string
+          importance?: number
+          memory_type?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       ai_inference_receipts: {
         Row: {
           capability_id: string | null
