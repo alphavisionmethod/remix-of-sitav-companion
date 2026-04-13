@@ -5,12 +5,19 @@
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
-import { TrendingUp, TrendingDown, AlertTriangle, BarChart3, Target, Shield, Lightbulb } from "lucide-react";
+import {
+  TrendingUp, TrendingDown, AlertTriangle, BarChart3, Target, Shield,
+  Lightbulb, CheckCircle2, XCircle, Activity,
+} from "lucide-react";
 import type { SimulationResult } from "@/lib/simulation/monte-carlo-engine";
+import { SimulationAdvisor } from "./SimulationAdvisor";
 
 interface SimulationResultsProps {
   result: SimulationResult | null;
   isComplete: boolean;
+  scenarioLabel?: string;
+  groundedVarIds?: Set<string>;
+  totalVars?: number;
 }
 
 function formatNum(n: number): string {
@@ -19,7 +26,7 @@ function formatNum(n: number): string {
   return n.toFixed(0);
 }
 
-export function SimulationResults({ result, isComplete }: SimulationResultsProps) {
+export function SimulationResults({ result, isComplete, scenarioLabel, groundedVarIds, totalVars }: SimulationResultsProps) {
   if (!result) {
     return (
       <div className="flex flex-col items-center justify-center h-full p-6 text-center">
@@ -32,9 +39,42 @@ export function SimulationResults({ result, isComplete }: SimulationResultsProps
 
   const isPositive = result.mean > 0;
   const confidence = Math.min(100, Math.max(0, 50 + (isPositive ? 1 : -1) * Math.min(50, Math.abs(result.mean) / (result.stdDev || 1) * 15)));
+  const hasGrounding = groundedVarIds && groundedVarIds.size > 0;
 
   return (
     <div className="flex flex-col h-full p-4 space-y-4 overflow-y-auto">
+      {/* Grounding Badge */}
+      {totalVars && totalVars > 0 && (
+        <div className={cn(
+          "flex items-center gap-2 rounded-xl px-3 py-2 text-[10px] font-medium border",
+          hasGrounding
+            ? "border-[hsl(var(--trust-safe))]/20 bg-[hsl(var(--trust-safe))]/5 text-[hsl(var(--trust-safe))]"
+            : "border-border/30 bg-card/20 text-muted-foreground"
+        )}>
+          {hasGrounding ? (
+            <><CheckCircle2 className="h-3 w-3" /> {groundedVarIds.size}/{totalVars} variables grounded in real data</>
+          ) : (
+            <><AlertTriangle className="h-3 w-3" /> Based on user assumptions</>
+          )}
+        </div>
+      )}
+
+      {/* Convergence */}
+      {isComplete && (
+        <div className={cn(
+          "flex items-center gap-2 rounded-xl px-3 py-1.5 text-[10px] font-medium border",
+          result.converged
+            ? "border-[hsl(var(--trust-safe))]/20 text-[hsl(var(--trust-safe))]"
+            : "border-[hsl(var(--sita-gold))]/20 text-[hsl(var(--sita-gold))]"
+        )}>
+          {result.converged ? (
+            <><CheckCircle2 className="h-3 w-3" /> Converged — results stable</>
+          ) : (
+            <><Activity className="h-3 w-3" /> Not fully converged — consider more iterations</>
+          )}
+        </div>
+      )}
+
       {/* Verdict */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
@@ -95,6 +135,34 @@ export function SimulationResults({ result, isComplete }: SimulationResultsProps
           </div>
         </div>
       </div>
+
+      {/* VaR & CVaR */}
+      {isComplete && (
+        <div>
+          <div className="flex items-center gap-1.5 mb-2">
+            <Shield className="h-3.5 w-3.5 text-[hsl(var(--destructive))]" />
+            <span className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">Risk Metrics</span>
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            <div className="rounded-xl border border-[hsl(var(--destructive))]/20 bg-[hsl(var(--destructive))]/5 p-2.5">
+              <div className="text-[9px] text-muted-foreground">VaR (95%)</div>
+              <div className="text-sm font-bold text-[hsl(var(--destructive))]">${formatNum(result.var95)}</div>
+            </div>
+            <div className="rounded-xl border border-[hsl(var(--destructive))]/20 bg-[hsl(var(--destructive))]/5 p-2.5">
+              <div className="text-[9px] text-muted-foreground">CVaR (95%)</div>
+              <div className="text-sm font-bold text-[hsl(var(--destructive))]">${formatNum(result.cvar95)}</div>
+            </div>
+            <div className="rounded-xl border border-border/40 bg-card/30 p-2.5">
+              <div className="text-[9px] text-muted-foreground">VaR (99%)</div>
+              <div className="text-sm font-bold text-foreground">${formatNum(result.var99)}</div>
+            </div>
+            <div className="rounded-xl border border-border/40 bg-card/30 p-2.5">
+              <div className="text-[9px] text-muted-foreground">CVaR (99%)</div>
+              <div className="text-sm font-bold text-foreground">${formatNum(result.cvar99)}</div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Outcome Clusters */}
       {result.clusters.length > 0 && (
@@ -181,6 +249,15 @@ export function SimulationResults({ result, isComplete }: SimulationResultsProps
           ))}
         </div>
       )}
+
+      {/* AI Advisor */}
+      <SimulationAdvisor
+        result={result}
+        scenarioLabel={scenarioLabel || "Simulation"}
+        isComplete={isComplete}
+        var95={result.var95}
+        cvar95={result.cvar95}
+      />
     </div>
   );
 }
