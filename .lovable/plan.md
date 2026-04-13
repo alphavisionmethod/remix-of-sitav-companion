@@ -1,161 +1,124 @@
 
 
-# SITA OS — Master App-in-OS Experience Implementation Plan
+# SITA OS Master Prompt — Remaining Gaps Analysis & Implementation Plan
 
-## Current State (What Already Exists)
+## What's Already Done (Confirmed Working)
 
-| Asset | Status |
-|-------|--------|
-| `DomainAppShell` | Built — traffic lights, accent strip, sidebar nav, app-open ceremony, domain command palette |
-| `AppOpenCeremony` | Built — fires once per domain per session via sessionStorage |
-| `AppSidebarNav` + `AppToolbar` | Built — grouped tabs with counts/severity |
-| `DesktopDock` | Built — 584 lines, magnification, badges, drag reorder, sections |
-| `AppSidebar` | Built — macOS-style icon grid with domain colors and sub-route expansion |
-| Domain Centers | Built — Business (204L), Money (252L), Concierge (189L) all wrapped in DomainAppShell |
-| Session persistence | Built — `useSessionRestore` and `persistSession` on beforeunload |
-| Shell decomposed | Done — App.tsx ~253 lines, ShellLayout ~224 lines |
+| Requirement | Status |
+|---|---|
+| DomainAppShell (traffic lights, accent strip, sidebar nav, ceremony) | Done — all 5 domains use it |
+| App state persistence (sub-page + scroll restore) | Done — `useAppStatePersistence.ts` |
+| Sidebar running indicators + last-page tooltip | Done — `AppSidebar.tsx` with green dot |
+| Dock domain integration | Done — `DesktopDock.tsx` wired |
+| Per-app CSS atmosphere (ambient gradients, edge glow) | Done — `domain-atmospheres.ts` + CSS classes |
+| Micro-interactions (hover-lift, press, focus-glow) | Done — 3 overview pages use them |
+| DomainCard (reads CSS vars for per-app styling) | Done — used in 3 overviews |
+| DomainAdvisorBoard (5 modes: roundtable, ask-one, synthesis, debate, evidence) | Done — in all 4 boardrooms + global |
+| BoardroomCinematic in all boardrooms | Done |
+| PremiumEmptyState in key pages | Done — 6 pages |
+| PageTruthBanner | Done — 22 pages |
+| Command palette with cross-app actions + smart suggestions | Done |
+| Live Activity domain data hook | Done |
+| Lock screen + boot splash | Done — already premium |
+| App open transitions | Done — `AppOpenTransition` + `AppOpenCeremony` |
 
-## What's Missing (6 Critical Gaps)
+## What's NOT Done (8 Gaps)
 
-1. **No app-state persistence** — switching Business CRM → Money → back to Business loses sub-page position
-2. **Sidebar is still route navigation** — no "running app" indicators, no launch feel
-3. **Dock ignores domain apps** — doesn't show Business/Money/Concierge as running with badges
-4. **Per-app atmosphere not consumed** — CSS variables exist in DomainAppShell but child components don't read them
-5. **FilesCenter has no DomainAppShell wrapper** — it's the only core app still flat
-6. **Advisor topology is flat** — no per-domain advisor boards, no roundtable/debate modes
-7. **Global Boardroom not cinematic** — missing BoardroomCinematic, ComparisonCard, cross-domain synthesis
+### Gap 1: ~200+ Legacy Sub-Tool Pages Still Use Old Components
+234 files still import `SitaCard`/`SitaSectionHeader`/`SitaPageHeader`. The master prompt requires every module to "feel like a real tool, not a menu item." The 3 overviews use DomainCard + micro-interactions, but the actual sub-tools (CRM detail, Lead Recovery, Bills, Spending Pulse, Travel, Errands, Operations, etc.) still look like old dashboard pages.
 
----
+**Priority pages (highest traffic, most visible):**
+- Business: `BusinessOperations.tsx`, `CommunicationsCenter.tsx`, `CustomerSupportCenter.tsx`, `CollectionsCommandCenter.tsx`, `QuotesWorkspace.tsx`
+- Money: `BillsWorkspace.tsx`, `SpendingPulse.tsx`, `PeaceScore.tsx`, `StressRadar.tsx`, `MoneyApprovals.tsx`
+- Concierge: `TravelPlanning.tsx`, `LifeAdminCenter.tsx`, `AppointmentsPrep.tsx`, `SchoolActivities.tsx`, `UpcomingNeeds.tsx`
 
-## Phase 1: App State Persistence Engine
+**Action:** Migrate top 15 sub-tool pages to new card family (HeroCard, QueueCard, ActionCard, DomainCard) + PageTruthBanner + micro-interactions + PremiumEmptyState.
 
-Make switching apps preserve exact sub-page, scroll position, and context.
+### Gap 2: No Progressive Disclosure / Detail Panes
+The master prompt (Part 22) explicitly requires "side panels, drill-downs, layered views." Currently zero pages use slide-out detail panes. Everything is full-page renders.
 
-**Create** `src/hooks/useAppStatePersistence.ts`
-- sessionStorage-backed hook storing per-domain: `{ activePage, scrollY, filters, selectedRecord }`
-- `save(domain, state)` and `restore(domain)` functions
-- Auto-save on sub-page change and component unmount
+**Action:** Create a reusable `SlidePanel` component (right-side drawer, 400px, animated). Wire into CRM (customer detail), Leads (lead detail), Invoices (invoice detail), Bills (bill detail) as the canonical progressive disclosure pattern.
 
-**Edit** `BusinessCenter.tsx`, `MoneyCenter.tsx`, `ConciergeCenter.tsx`
-- On mount: restore last sub-page from persistence instead of defaulting to "overview"
-- On sub-page change: persist new sub-page
-- On unmount: persist scroll position
+### Gap 3: No Module-Level Advisor Boards
+Part 14.3 requires module-level specialized advisors (CRM advisor board, Collections board, Travel prep board, etc.). Currently only domain-level boards exist.
 
-**Edit** `DomainAppShell.tsx`
-- Capture scroll position of content area on unmount
-- Restore scroll position on re-mount
-- Register domain as "running" in sessionStorage
+**Action:** Create `ModuleAdvisorInsight` — a compact, inline advisor card that can be dropped into any sub-tool page with module-specific context (e.g., "CRM Advisor suggests: Follow up with Sarah Chen — relationship cooling").
 
-**Result:** Business CRM → Money Bills → back to Business = CRM exactly where you left it.
+### Gap 4: Micro-Interactions Only in 3 Pages
+`micro-hover-lift`, `micro-press`, `micro-focus-glow` exist but are only used in the 3 overview pages. The master prompt (Part 21) requires them "everywhere they matter."
 
----
+**Action:** Apply micro-interaction classes to all interactive cards/buttons across the 15 migrated pages in Gap 1.
 
-## Phase 2: Sidebar as App Launcher + Running Indicators
+### Gap 5: No Right-Click Context Menu on Sidebar
+Part 4 requires "right-click options" on sidebar items (Pin to Dock, Quit App, etc.).
 
-Transform sidebar from route links into an app launcher surface.
+**Action:** Add a lightweight context menu to `AppSidebar.tsx` for domain items with: Pin to Dock, Open in New Window (future), Clear App State.
 
-**Edit** `src/components/sita/AppSidebar.tsx`
-- Add "running" dot indicator below app icons for domains visited this session
-- Add subtle scale pulse animation on click (launch feel vs instant swap)
-- Show last-visited sub-page in hover tooltip ("Last: CRM")
-- Track running apps via sessionStorage set by DomainAppShell
-- Add right-click context menu: "Pin to Dock", "Quit App" (clears session state)
+### Gap 6: No Hover Preview on Dock
+Part 5 mentions "hover preview if elegant" for dock items.
 
-**Behavior:** Clicking "Business" triggers a brief 180ms scale animation. A green dot below the icon shows it's running. Hovering shows "Business OS — Last: CRM".
+**Action:** Add a tooltip-style hover card to dock domain items showing: domain name, current sub-page, key metric (e.g., "3 bills due").
 
----
+### Gap 7: Concierge Sub-Tools Still Feel Like Lists
+`SchoolActivities.tsx`, `GroceryPlanning.tsx`, `RecurringObligations.tsx` all use raw `SitaCard` grids. The master prompt says these must feel like "beautiful admin relief software" not "reminder dashboards."
 
-## Phase 3: Dock Domain-App Integration
+**Action:** Included in Gap 1 migration — apply warm Concierge atmosphere + softer card radius + supportive empty states.
 
-Make the dock show domain apps as first-class running applications.
+### Gap 8: Money Sub-Tools Missing Emotional Design
+`PeaceScore.tsx` and `StressRadar.tsx` are supposed to be "signature emotional-finance intelligence surfaces." Currently they use standard cards.
 
-**Edit** `src/components/sita/DesktopDock.tsx`
-- Add Business, Money, Concierge, Files as pinnable dock items with domain accent colors
-- Show running indicator (bottom dot) when app has been opened this session
-- Show badge counts (Business: 8 follow-throughs, Money: 3 bills due)
-- Clicking dock icon navigates to app restoring last sub-page via Phase 1
-- Integrate hover preview showing current sub-page name
+**Action:** Included in Gap 1 — these two specifically need HeroCard with large emotional typography, gradient backgrounds, and confidence visualization.
 
 ---
 
-## Phase 4: Per-App Visual Atmosphere System
+## Implementation Plan (4 Phases)
 
-Make each domain feel visually distinct through spacing, radius, contrast, and motion.
+### Phase A: SlidePanel + Progressive Disclosure (Foundation)
+Create reusable `SlidePanel` component. This unlocks the "drill-down" pattern for all sub-tools.
 
-**Create** `src/lib/design-system/domain-atmospheres.ts`
-- Canonical atmosphere per domain:
+| File | Action |
+|------|--------|
+| `src/components/sita/surfaces/SlidePanel.tsx` | Create — animated right drawer, 400px, overlay, close on escape |
 
-```text
-Business:  sharp, operational — 12px radius, 0.875rem density, 150ms motion, higher contrast
-Finance:   calm, precise      — 16px radius, 1rem density, 250ms motion, standard contrast  
-Concierge: soft, warm         — 20px radius, 1.125rem density, 300ms motion, lower contrast
-Files:     minimal, neutral   — 10px radius, 0.875rem density, 180ms motion, standard contrast
-```
+### Phase B: Migrate 15 High-Impact Sub-Tool Pages
+Rewrite imports from `SitaCard`/`SitaPageHeader` to new card family. Add micro-interactions, PremiumEmptyState, PageTruthBanner, and SlidePanel where appropriate.
 
-**Create** `src/components/sita/cards/DomainCard.tsx`
-- Card that reads `--domain-card-radius`, `--domain-density`, `--domain-motion-speed` CSS variables
-- Adapts padding, border-radius, shadow depth, hover lift per domain automatically
+| Page | Key Changes |
+|------|------------|
+| `BusinessOperations.tsx` | HeroCard + QueueCard + micro-interactions + PageTruthBanner |
+| `CommunicationsCenter.tsx` | Already partially migrated — add DomainCard tiles + PremiumEmptyState |
+| `CustomerSupportCenter.tsx` | QueueCard for tickets + SlidePanel for detail |
+| `CollectionsCommandCenter.tsx` | HeroCard (total outstanding) + QueueCard + urgency-driven layout |
+| `QuotesWorkspace.tsx` | ActionCard for quote actions + SlidePanel for quote detail |
+| `BillsWorkspace.tsx` | QueueCard for due/overdue + calm Finance atmosphere |
+| `SpendingPulse.tsx` | StatusCard for patterns + AdvisorCard + emotional design |
+| `PeaceScore.tsx` | Full HeroCard with large score + gradient + confidence bar |
+| `StressRadar.tsx` | HeroCard with stress visualization + emotional typography |
+| `MoneyApprovals.tsx` | ActionCard for approve/reject + ProofCard for evidence |
+| `TravelPlanning.tsx` | HeroCard for upcoming trip + warm Concierge atmosphere |
+| `LifeAdminCenter.tsx` | QueueCard for admin tasks + soft supportive empty states |
+| `AppointmentsPrep.tsx` | TimelineCard for prep steps + AdvisorCard |
+| `SchoolActivities.tsx` | DomainCard tiles + Concierge atmosphere + PremiumEmptyState |
+| `UpcomingNeeds.tsx` | QueueCard for upcoming + TimelineCard for timeline |
 
-**Edit** `DomainAppShell.tsx`
-- Import atmosphere definitions and apply as CSS variables (replaces current inline object)
+### Phase C: Module Advisor Insight + Sidebar Context Menu + Dock Hover
+| File | Action |
+|------|--------|
+| `src/components/sita/domain-shared/ModuleAdvisorInsight.tsx` | Create — compact inline advisor for sub-tools |
+| `src/components/sita/AppSidebar.tsx` | Add right-click context menu |
+| `src/components/sita/DesktopDock.tsx` | Add hover preview card for domain items |
 
-**Edit** `BusinessOverview.tsx`, `MoneyOverview.tsx`, `ConciergeOverview.tsx`
-- Replace generic cards with `DomainCard` to demonstrate per-domain atmosphere
-
----
-
-## Phase 5: FilesCenter Full App + Global Boardroom Cinematic
-
-**Create/Rewrite** `src/pages/FilesCenter.tsx`
-- Full `DomainAppShell` wrapper with domain config: `id: "files"`, graphite atmosphere
-- Sub-pages: Overview, All Files, Smart Search, Sensitive, Processing, Document Intelligence, Proof/History, Settings
-- Tab groups matching Files specification
-- Wire existing file sub-pages into the shell
-
-**Edit** `src/pages/GlobalBoardroom.tsx`
-- Add `BoardroomCinematic` entry animation
-- Add cross-domain `ComparisonCard` (Business vs Finance vs Concierge health)
-- Add `AdvisorCard` for global advisor synthesis
-- Add `ProofCard` for cross-domain evidence chain
-- Add `PageTruthBanner`
-
----
-
-## Phase 6: Advisor Topology + Domain Advisor Boards
-
-**Create** `src/lib/advisor-topology.ts`
-- Canonical advisor roster per domain:
-  - Business: Revenue, Relationship, Follow-Through, Support, Collections, Operations
-  - Finance: Obligations, Spending, Planning, Reserve, Approvals, Receivables
-  - Concierge: Life Admin, Travel, Logistics, Support Load, Prep, Household
-
-**Create** `src/components/sita/domain-shared/DomainAdvisorBoard.tsx`
-- Reusable advisor board with 3 modes:
-  - **Roundtable** — all advisors visible, sequential synthesis
-  - **Ask One** — focus on single advisor with deep response
-  - **Synthesis** — combined recommendation from all advisors
-- Domain-aware: reads advisor roster from topology, applies domain accent
-
-**Edit** `BusinessBoardroom.tsx`, `MoneyBoardroom.tsx`, `ConciergeBoardroom.tsx`
-- Integrate `DomainAdvisorBoard` with domain-specific advisor roster
-- Wire into existing boardroom layout alongside ComparisonCard and ProofCard
+### Phase D: Wire Module Advisors Into Migrated Pages
+Drop `ModuleAdvisorInsight` into all 15 migrated pages with module-specific context strings.
 
 ---
 
-## Files Summary
-
-| Phase | Action | Files |
-|-------|--------|-------|
-| 1 | Create | `useAppStatePersistence.ts` |
-| 1 | Edit | `BusinessCenter`, `MoneyCenter`, `ConciergeCenter`, `DomainAppShell` |
-| 2 | Edit | `AppSidebar.tsx`, `DomainAppShell.tsx` |
-| 3 | Edit | `DesktopDock.tsx` |
-| 4 | Create | `domain-atmospheres.ts`, `DomainCard.tsx` |
-| 4 | Edit | `DomainAppShell`, 3 overview pages |
-| 5 | Create | `FilesCenter.tsx` (rewrite) |
-| 5 | Edit | `GlobalBoardroom.tsx` |
-| 6 | Create | `advisor-topology.ts`, `DomainAdvisorBoard.tsx` |
-| 6 | Edit | 3 boardroom pages |
-
-**After all 6 phases:** Apps persist state across switches, sidebar feels like a launcher with running indicators, dock shows domain apps, each domain has distinct visual atmosphere, Files is a full app, boardrooms are cinematic with advisor boards, and the system feels like a true OS containing independent software products.
+## Result After All Phases
+- 15 more sub-tool pages feel like "real tools" with premium cards, micro-interactions, and progressive disclosure
+- SlidePanel enables drill-down pattern across the system
+- Module-level advisors appear inline in sub-tools
+- Sidebar has right-click context menu
+- Dock has hover previews
+- PeaceScore and StressRadar become signature emotional surfaces
+- ~50% of old `SitaCard` usage eliminated from high-traffic pages
 
