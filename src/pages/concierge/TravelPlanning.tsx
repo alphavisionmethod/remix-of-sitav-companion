@@ -49,7 +49,10 @@ const TravelPlanning = () => {
 
   return (
     <ConciergePageWrapper className="space-y-5">
-      <PageTruthBanner truthState={isDemoMode ? "demo" : "live"} />
+      <div className="flex items-center gap-2 flex-wrap">
+        <PageTruthBanner truthState={isDemoMode ? "demo" : "live"} />
+        <CrossAppAction to="/files/search" label="Travel Documents" variant="chip" context={{ entityType: "file", entityId: "travel", entityLabel: "Travel docs" }} />
+      </div>
 
       <HeroCard
         title="Travel Planning"
