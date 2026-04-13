@@ -36,8 +36,7 @@ import { useOSOrchestration } from "@/hooks/useOSOrchestration";
 import { useExperienceSignature } from "@/hooks/useExperienceSignature";
 import { useOpportunitySignals } from "@/hooks/useCAIData";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { MobileTabSelector } from "@/components/sita/MobileTabSelector";
 
 type SubPage = "overview" | "leads" | "customers" | "follow-through" | "support" | "appointments" | "operations" | "documents" | "opportunities" | "quotes" | "invoices" | "communications" | "boardroom" | "proof" | "revenue-autopilot" | "collections" | "autopilot-hub" | "revenue-impact" | "playbook-builder" | "revenue-forecast" | "website-builder" | "proposals" | "lead-recovery" | "social" | "ecommerce";
 
