@@ -273,6 +273,12 @@ const ProposalsContracts = () => {
           </motion.div>
         </div>
       )}
+      <ModuleAdvisorInsight
+        advisorName="Proposal Advisor"
+        domain="business"
+        insight="Alex Kim viewed pricing 6 times — high intent signal. Proposals with case studies have 23% higher win rate."
+        confidence={88}
+      />
     </div>
   );
 };
