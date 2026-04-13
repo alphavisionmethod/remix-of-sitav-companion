@@ -1,49 +1,68 @@
 
 
-# Fix C-005: Profile Auto-Creation Trigger
+# SITA OS — 100/100 Deployment Fix Plan
 
-## Problem
-When new users sign up, no `profiles` row is created automatically. This means queries against `profiles` return nothing until the user manually creates one, breaking any UI that depends on profile data.
+## Issues Found (3 actionable)
 
-## Solution
-Create a database trigger function that fires `AFTER INSERT ON auth.users` and automatically inserts a row into `public.profiles` with the new user's ID and metadata.
+### 1. SECURITY: Profiles table publicly readable (ERROR)
+The `profiles` SELECT policy uses `true` for the `public` role, exposing all user data to unauthenticated requests.
 
-## Technical Details
+**Fix**: Drop the public SELECT policy, replace with authenticated-only scoped to `auth.uid() = user_id`.
 
-**Single migration** that creates:
+### 2. BUG: `intelligence-api` uses `getClaims()` — non-existent method
+Line 26 calls `client.auth.getClaims(token)` which does not exist in supabase-js v2. Every other edge function uses `getUser()`. This will throw at runtime.
 
-1. **Function** `public.handle_new_user()` — a `SECURITY DEFINER` function (owned by postgres, bypasses RLS) that inserts into `profiles`:
-   - `user_id` ← `NEW.id`
-   - `display_name` ← `NEW.raw_user_metadata->>'full_name'` (falls back to email prefix)
-   - `avatar_url` ← `NEW.raw_user_metadata->>'avatar_url'` (for OAuth)
+**Fix**: Replace with `client.auth.getUser()` pattern, then redeploy.
 
-2. **Trigger** `on_auth_user_created` on `auth.users` — fires `AFTER INSERT FOR EACH ROW`, calling the function above.
+### 3. MISSING: `public/health.json` for local dev
+The Dockerfile and Vite plugin generate it at build time, but local dev/preview has no health endpoint.
 
-**Important**: The function uses `SECURITY DEFINER` with `search_path = public` so it can insert into `profiles` despite RLS policies requiring `auth.uid() = user_id` (since there's no active session during the trigger execution).
+**Fix**: Add a static `public/health.json` placeholder.
 
+## Already Passing
+- TypeScript: 0 errors
+- DB linter: 0 issues  
+- DB triggers: `on_auth_user_created` present and correct
+- Realtime: `notifications` published (channel-level auth is a Supabase platform limitation — row-level RLS already filters by `user_id`)
+- All edge functions have CORS via shared module
+- PWA manifest and icons present
+
+## Implementation Steps
+
+### Step 1: DB Migration — Fix profiles RLS
 ```sql
-CREATE OR REPLACE FUNCTION public.handle_new_user()
-RETURNS trigger
-LANGUAGE plpgsql
-SECURITY DEFINER
-SET search_path = public
-AS $$
-BEGIN
-  INSERT INTO public.profiles (user_id, display_name, avatar_url)
-  VALUES (
-    NEW.id,
-    COALESCE(NEW.raw_user_metadata->>'full_name', split_part(NEW.email, '@', 1)),
-    NEW.raw_user_metadata->>'avatar_url'
-  );
-  RETURN NEW;
-END;
-$$;
-
-CREATE TRIGGER on_auth_user_created
-  AFTER INSERT ON auth.users
-  FOR EACH ROW
-  EXECUTE FUNCTION public.handle_new_user();
+DROP POLICY "Profiles are viewable by everyone" ON public.profiles;
+CREATE POLICY "Authenticated users can view own profile"
+  ON public.profiles FOR SELECT
+  TO authenticated
+  USING (auth.uid() = user_id);
 ```
 
-No code file changes needed — this is a single DB migration.
+### Step 2: Fix `intelligence-api` auth
+Replace lines 19-28 in `supabase/functions/intelligence-api/index.ts`:
+```typescript
+async function requireAuth(req: Request) {
+  const authHeader = req.headers.get("Authorization");
+  if (!authHeader?.startsWith("Bearer ")) return null;
+  const client = createClient(SUPABASE_URL, ANON_KEY, {
+    global: { headers: { Authorization: authHeader } },
+  });
+  const { data: { user }, error } = await client.auth.getUser();
+  if (error || !user) return null;
+  return { id: user.id, email: user.email ?? "" };
+}
+```
+Then redeploy the `intelligence-api` function.
+
+### Step 3: Add `public/health.json`
+```json
+{
+  "service": "sita-os",
+  "version": "dev",
+  "status": "healthy"
+}
+```
+
+### Step 4: Acknowledge Realtime finding
+The Realtime channel authorization finding is a known Supabase platform limitation. Row-level RLS on `notifications` already filters data by `user_id`. Mark as acknowledged via security tool.
 
