@@ -68,6 +68,7 @@ export function BoardroomAppShell() {
   const [activeModule, setActiveModule] = useState("executive");
   const [scope, setScope] = useState<SessionScope>("global");
   const [evidenceOpen, setEvidenceOpen] = useState(false);
+  const [entered, setEntered] = useState(false);
 
   const {
     session, elapsed, stageIndex, stages,
@@ -77,6 +78,12 @@ export function BoardroomAppShell() {
   const sessionMode = MODULE_SESSION_MODE[activeModule] || "review";
   const viewProps = { scope, onNavigate: setActiveModule };
   const ambientColor = MODULE_AMBIENT[activeModule] || MODULE_AMBIENT.executive;
+
+  // Entry ceremony trigger
+  React.useEffect(() => {
+    const timer = setTimeout(() => setEntered(true), 300);
+    return () => clearTimeout(timer);
+  }, []);
 
   const renderView = () => {
     switch (activeModule) {
@@ -101,11 +108,47 @@ export function BoardroomAppShell() {
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.98 }}
+      initial={{ opacity: 0, scale: 0.96 }}
       animate={{ opacity: 1, scale: 1 }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       className="flex h-full w-full bg-[hsl(220_18%_4%)] relative overflow-hidden"
     >
+      {/* Entry ceremony overlay — "the room settles in" */}
+      <AnimatePresence>
+        {!entered && (
+          <motion.div
+            className="absolute inset-0 z-50 pointer-events-none flex items-center justify-center"
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
+            <motion.div
+              className="absolute inset-0"
+              style={{ background: "radial-gradient(ellipse 50% 40% at 50% 50%, hsl(280 50% 15% / 0.9), hsl(220 18% 4%))" }}
+              exit={{ opacity: 0 }}
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 1.05, y: -10 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="relative z-10 text-center"
+            >
+              <motion.div
+                className="w-12 h-12 rounded-xl bg-gradient-to-br from-[hsl(280_50%_55%)] to-[hsl(280_60%_35%)] flex items-center justify-center mx-auto mb-3 shadow-2xl"
+                animate={{ boxShadow: ["0 0 20px hsl(280 50% 55% / 0.3)", "0 0 40px hsl(280 50% 55% / 0.5)", "0 0 20px hsl(280 50% 55% / 0.3)"] }}
+                transition={{ duration: 1.5, repeat: Infinity }}
+              >
+                <Brain size={20} className="text-white" />
+              </motion.div>
+              <p className="text-[11px] font-bold text-[hsl(0_0%_100%/0.6)] tracking-[0.3em] uppercase">
+                Boardroom Assembling
+              </p>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Dynamic ambient spotlight */}
       <motion.div
         className="pointer-events-none absolute inset-0 z-0"
@@ -116,16 +159,24 @@ export function BoardroomAppShell() {
       />
 
       {/* Sidebar */}
-      <div className="w-[180px] shrink-0 border-r border-[hsl(0_0%_100%/0.05)] bg-[hsl(220_18%_3%/0.9)] flex flex-col py-4 px-2 gap-1 z-10 backdrop-blur-xl overflow-y-auto scrollbar-thin scrollbar-thumb-[hsl(0_0%_100%/0.06)]">
+      <motion.div
+        initial={{ x: -20, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ delay: 0.3, duration: 0.5, ease: "easeOut" }}
+        className="w-[180px] shrink-0 border-r border-[hsl(0_0%_100%/0.05)] bg-[hsl(220_18%_3%/0.9)] flex flex-col py-4 px-2 gap-1 z-10 backdrop-blur-xl overflow-y-auto scrollbar-thin scrollbar-thumb-[hsl(0_0%_100%/0.06)]"
+      >
         <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[hsl(280_60%_60%/0.5)] px-3 mb-4">
           Boardroom
         </p>
-        {MODULES.map((item) => {
+        {MODULES.map((item, i) => {
           const isActive = activeModule === item.id;
           return (
-            <button
+            <motion.button
               key={item.id}
               type="button"
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.4 + i * 0.04 }}
               onClick={() => setActiveModule(item.id)}
               className={cn(
                 "flex items-center gap-3 px-3 py-2.5 rounded-xl text-[12px] font-medium transition-all duration-200 outline-none text-left relative",
@@ -151,7 +202,7 @@ export function BoardroomAppShell() {
                   />
                 </>
               )}
-            </button>
+            </motion.button>
           );
         })}
 
@@ -164,7 +215,7 @@ export function BoardroomAppShell() {
             <Eye size={15} /> Show Evidence
           </button>
         </div>
-      </div>
+      </motion.div>
 
       {/* Main content */}
       <div className="flex-1 flex flex-col min-w-0 z-10">
@@ -186,10 +237,10 @@ export function BoardroomAppShell() {
           <AnimatePresence mode="wait">
             <motion.div
               key={activeModule}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.25, ease: "easeOut" }}
+              initial={{ opacity: 0, y: 12, scale: 0.99 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -8, scale: 0.99 }}
+              transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             >
               {renderView()}
             </motion.div>
