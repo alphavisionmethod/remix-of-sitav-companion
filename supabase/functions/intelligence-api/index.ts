@@ -242,7 +242,16 @@ Deno.serve(async (req) => {
         }
       }
 
-      const materialityScore = 0.6 + Math.random() * 0.35;
+      // Use AI to assess materiality of state changes
+      let materialityScore = 0.5;
+      const aiResult = await callAI(
+        "You are an intelligence analyst. Given a state change between two references, assess how material the change is on a 0-1 scale. Respond with ONLY a JSON object: {\"materiality\": <number>}",
+        `Previous state ref: ${d.previousStateRef}\nCurrent state ref: ${d.currentStateRef}\nDomain: ${d.domain}`
+      );
+      try {
+        const parsed = JSON.parse(aiResult);
+        if (typeof parsed.materiality === "number") materialityScore = Math.max(0, Math.min(1, parsed.materiality));
+      } catch { /* keep default */ }
       const mode = materialityScore > 0.85 ? "full" : materialityScore > 0.5 ? "partial" : "reuse_only";
 
       // Log the event
