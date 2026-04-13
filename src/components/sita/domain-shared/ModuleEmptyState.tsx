@@ -21,6 +21,8 @@ const domainGradient: Record<DomainId, { from: string; to: string }> = {
   business: { from: "hsl(265 55% 58%)", to: "hsl(285 50% 48%)" },
   finance: { from: "hsl(152 55% 48%)", to: "hsl(165 50% 42%)" },
   concierge: { from: "hsl(285 55% 55%)", to: "hsl(310 50% 48%)" },
+  files: { from: "hsl(220 15% 55%)", to: "hsl(230 15% 45%)" },
+  trust: { from: "hsl(35 75% 55%)", to: "hsl(25 70% 48%)" },
 };
 
 export function ModuleEmptyState({ domain, icon: Icon, title, description, action, className }: ModuleEmptyStateProps) {
