@@ -1,13 +1,11 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { RotateCcw, TrendingUp, TrendingDown, Brain, Check, AlertTriangle, ArrowRight } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { usePortfolioPositionsMemory, useExecutionRecords, useThesisRecords } from "@/hooks/use-investment-memory";
 import { DEMO_ACTIVE_POSITIONS } from "@/lib/demo-data/investment";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function PostTradeLoop() {
-  const { isDemoMode } = useDataMode();
   const { data: livePositions } = usePortfolioPositionsMemory();
   const { data: liveExecutions } = useExecutionRecords();
   const { data: liveTheses } = useThesisRecords();
@@ -17,8 +15,7 @@ export default function PostTradeLoop() {
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><RotateCcw className="h-6 w-6 text-primary" /> Post-Trade Intelligence Loop</h1>
         <p className="text-sm text-muted-foreground mt-0.5">Continuous review — did the thesis strengthen or weaken? Should you hold, trim, expand, or exit?</p>
       </div>

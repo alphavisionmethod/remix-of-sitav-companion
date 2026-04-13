@@ -5,12 +5,11 @@
 import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile } from "@/components/sita/SitaComponents";
 import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
-import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { Home, Baby, Briefcase, Users, Building, CreditCard, RefreshCw, Rocket, Sun, Heart, Plane, ArrowRight, AlertTriangle, TrendingDown, TrendingUp, DollarSign } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState, useMemo } from "react";
 import type { LifeEventType, LifeMoneyImpact } from "@/packages/finance-contracts/advanced-intelligence";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 interface LifeEventDef {
   type: LifeEventType;
@@ -135,9 +134,7 @@ const LifeMoneyEngine = () => {
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
       <DomainHeader domain="money" title="Life-to-Money Impact Engine" subtitle="See how life changes affect your financial system" />
-      <DemoModeBadge />
-
-      <SitaSectionHeader title="Select a Life Event" />
+<SitaSectionHeader title="Select a Life Event" />
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {LIFE_EVENTS.map(evt => {
           const Icon = evt.icon;

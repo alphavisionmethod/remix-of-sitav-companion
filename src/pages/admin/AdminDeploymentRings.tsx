@@ -7,9 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_ADMIN_ENVIRONMENTS_ADMIN_DEPLOYMENT_RINGS as DEMO_ENVIRONMENTS, DEMO_PROMOTION_GATES, DEMO_RINGS } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 type GateStatus = "passed" | "failed" | "pending" | "skipped" | "blocked";
 type RingStatus = "deployed" | "canary" | "staging" | "blocked" | "pending";
@@ -50,7 +49,6 @@ const RING_COLORS: Record<RingStatus, string> = {
 };
 
 export default function DeploymentTruthCenter() {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("rings");
 
   const passedGates = DEMO_PROMOTION_GATES.filter(g => g.status === "passed").length;
@@ -60,8 +58,7 @@ export default function DeploymentTruthCenter() {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-foreground">Deployment Truth Center</h1>

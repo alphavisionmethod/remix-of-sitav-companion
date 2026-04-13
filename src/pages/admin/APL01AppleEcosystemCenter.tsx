@@ -8,8 +8,6 @@ import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Apple, Smartphone, Watch, Shield, Heart, Wifi, Monitor, ChevronRight, CheckCircle2, AlertTriangle, Clock, Zap, Activity, RefreshCw, Loader2, Database, Radio, Bell, Plus, Trash2 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 
 import {
@@ -21,6 +19,7 @@ import {
 } from "@/hooks/useEcosystemDevices";
 import { DEMO_ADMIN_PROVIDER_CAPS_A_P_L01_APPLE_ECOSYSTEM_CENTER as DEMO_PROVIDER_CAPS } from "@/lib/demo-data/admin-platform";
 import APLSubNav from "@/components/admin/APLSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const SURFACE_META: Record<string, { title: string; icon: any; desc: string; tech: string[]; capabilities: string[] }> = {
   iphone: { title: "iPhone Shell", icon: Smartphone, desc: "Primary mobile — task, approval, advisor", tech: ["Swift/SwiftUI", "WebView hybrid"], capabilities: ["push", "biometric", "camera", "haptic"] },
@@ -31,7 +30,6 @@ const SURFACE_META: Record<string, { title: string; icon: any; desc: string; tec
 };
 
 const APL01AppleEcosystemCenter = () => {
-  const { isDemoMode } = useDataMode();
   const [showDependencies, setShowDependencies] = useState(false);
   const [showAddDevice, setShowAddDevice] = useState(false);
   const [newDevice, setNewDevice] = useState({ surface: "iphone", device_model: "", os_version: "" });
@@ -63,8 +61,7 @@ const APL01AppleEcosystemCenter = () => {
 
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">
-      <DemoModeBadge />
-      <APLSubNav />
+<APLSubNav />
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-lg bg-primary/10"><Apple className="h-8 w-8 text-primary" /></div>

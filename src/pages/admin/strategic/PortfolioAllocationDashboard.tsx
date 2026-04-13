@@ -5,12 +5,10 @@ import { Progress } from "@/components/ui/progress";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { useComputeSnapshots } from "@/lib/hooks/useIntelligencePersistence";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_DEFAULT_CATEGORIES } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const PortfolioAllocationDashboard = () => {
-  const { isDemoMode } = useDataMode();
   const { isAdmin, loading: authLoading } = useRequireAdmin();
   const { snapshots, latest, loading: dataLoading } = useComputeSnapshots({ limit: 30 });
 
@@ -30,8 +28,7 @@ const PortfolioAllocationDashboard = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      <DemoModeBadge />
-      <SitaPageHeader icon={<PieChart className="h-6 w-6" />} title="AI Portfolio Allocation" subtitle="Treat AI spend like an investment portfolio — defensive, growth, strategic, experimental" />
+<SitaPageHeader icon={<PieChart className="h-6 w-6" />} title="AI Portfolio Allocation" subtitle="Treat AI spend like an investment portfolio — defensive, growth, strategic, experimental" />
 
       {dataLoading ? (
         <div className="text-center text-muted-foreground py-12">Loading compute snapshots…</div>

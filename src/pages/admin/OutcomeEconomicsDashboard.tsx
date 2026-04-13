@@ -9,9 +9,9 @@ import { Progress } from "@/components/ui/progress";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { cn } from "@/lib/utils";
 import type { OutcomeCategory } from "@/lib/intelligence-architecture/outcome-economics-engine";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 /* ── Demo Data ─────────────────────────────────────────────── */
 
@@ -120,8 +120,7 @@ const OutcomeEconomicsDashboard = () => {
 
   return (
     <div className="space-y-6">
-      <DemoModeBadge />
-      <div className="flex items-start justify-between">
+<div className="flex items-start justify-between">
         <SitaPageHeader
           title="Outcome Economics"
           subtitle="ROI per outcome type · reasoning path analysis · cost-per-saved-incident · value benchmarks"

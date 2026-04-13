@@ -7,9 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_ESCALATIONS } from "@/lib/demo-data/admin-intelligence";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const triggerColors: Record<string, string> = {
   low_confidence: "text-amber-400 bg-amber-500/10",
@@ -45,8 +44,7 @@ const EscalationControlCenter = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      <DemoModeBadge />
-      <SitaPageHeader
+<SitaPageHeader
         icon={<Zap className="h-6 w-6" />}
         title="Escalation Control Center"
         subtitle="Inspect and govern deep reasoning escalation — every tier jump justified"

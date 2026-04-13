@@ -8,12 +8,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Bell, Mail, MessageSquare, Shield, DollarSign, Calendar, AlertTriangle, Zap, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { supabase } from "@/integrations/supabase/client";
 const db = supabase as any;
 import { useAuth } from "@/contexts/AuthContext";
 import { useActionFn } from "@/hooks/use-action";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 interface NotificationChannel {
   id: string;
@@ -95,7 +94,6 @@ const URGENCY_COLORS: Record<string, string> = {
 };
 
 export default function NotificationSettingsPage() {
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const [categories, setCategories] = useState(DEFAULT_CATEGORIES);
   const [quietHoursEnabled, setQuietHoursEnabled] = useState(false);
@@ -175,8 +173,7 @@ export default function NotificationSettingsPage() {
 
   return (
     <div className="space-y-6 p-6 max-w-3xl" data-testid="notification-settings-page">
-      <DemoModeBadge />
-      <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
             <Bell className="h-6 w-6 text-primary" /> Notification Settings

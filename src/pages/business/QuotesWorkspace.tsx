@@ -14,11 +14,9 @@ import { SitaTabs } from "@/components/sita/SitaComponents";
 import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useAction } from "@/hooks/use-action";
 
 const QuotesWorkspace = () => {
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const [tab, setTab] = useState("all");

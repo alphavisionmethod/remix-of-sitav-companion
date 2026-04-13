@@ -6,7 +6,6 @@ import { useState } from "react";
 import { Gift, Heart, Calendar, PartyPopper, Star, Clock, CheckCircle, ShoppingBag, Mail } from "lucide-react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useServiceProvidersList } from "@/hooks/use-concierge-data";
 
 interface EventItem {

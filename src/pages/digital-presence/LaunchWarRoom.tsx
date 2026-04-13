@@ -3,20 +3,17 @@ import { Rocket, CheckCircle, AlertTriangle, Clock, Layout, FileText, Eye, Shopp
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_DPO_READINESS_CHECKS as DEMO_READINESS_CHECKS, DEMO_LAUNCH_TIMELINE } from "@/lib/demo-data/digital-presence";
 import DPOSubNav from "./DPOSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const overallScore = Math.round(DEMO_READINESS_CHECKS.reduce((sum, c) => sum + c.score, 0) / DEMO_READINESS_CHECKS.length);
 
 export default function LaunchWarRoom() {
-  const { isDemoMode } = useDataMode();
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <DPOSubNav />
-      <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">Launch War Room</h1>
         <p className="text-sm text-muted-foreground">Launch readiness, checklist, timeline & rollback planning</p>
       </motion.div>

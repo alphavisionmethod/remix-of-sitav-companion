@@ -16,13 +16,11 @@ import {
   ShieldAlert, RotateCcw, AlertTriangle, CheckCircle, Clock, XCircle,
   ChevronRight, Eye, Play, Pause, Activity
 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
 const RecoveryCenter = () => {
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
@@ -89,8 +87,7 @@ const RecoveryCenter = () => {
 
   return (
     <motion.div className="mx-auto max-w-6xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
-      <DemoModeBadge />
-      <SitaPageHeader
+<SitaPageHeader
         title="Recovery Center"
         subtitle="Exception handling, failed workflows, stuck processes, and incident management"
       />

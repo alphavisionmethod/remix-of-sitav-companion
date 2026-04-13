@@ -8,8 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { getMaturityGrade, getMaturityLabel } from "@/lib/delivery-methodology/maturity-model";
 import { CANONICAL_DOMAIN_PACKS } from "@/lib/delivery-methodology/domain-packs";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -55,8 +54,7 @@ const PlatformMaturityDashboard = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center gap-3 mb-2">
           <Award className="h-8 w-8 text-primary" />
           <h1 className="text-3xl font-bold">Platform Maturity Dashboard</h1>

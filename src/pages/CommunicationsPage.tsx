@@ -13,15 +13,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { MessageSquare, Mail, Phone, Send, Clock, CheckCircle2, AlertCircle, Star, Search, Filter, Archive, Edit3, AlertTriangle, Users, ChevronRight, Inbox, FileText, ArrowRight, RotateCcw, Eye } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { DEMO_COMMUNICATIONS, type DemoCommunicationEntry as CommunicationEntry, type ChannelType, type MessageStatus } from "@/lib/demo-data/communications";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const CHANNEL_ICONS: Record<ChannelType, typeof Mail> = { email: Mail, sms: MessageSquare, call: Phone, chat: Send };
 const STATUS_STYLES: Record<MessageStatus, { color: string; icon: typeof CheckCircle2 }> = {
@@ -57,7 +56,6 @@ export default function CommunicationsPage() {
   const [channelFilter, setChannelFilter] = useState("all");
   const [search, setSearch] = useState("");
   const [selectedComm, setSelectedComm] = useState<CommunicationEntry | null>(null);
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
 
   const { data: realComms } = useQuery({
@@ -94,8 +92,7 @@ export default function CommunicationsPage() {
 
   return (
     <div className="space-y-6 p-6 max-w-7xl mx-auto">
-      <DemoModeBadge />
-      <SitaPageHeader
+<SitaPageHeader
         icon={<MessageSquare className="h-6 w-6" />}
         title="Communications"
         subtitle="Unified signal-over-noise communications center"

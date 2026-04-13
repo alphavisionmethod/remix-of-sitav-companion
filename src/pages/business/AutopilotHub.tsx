@@ -9,7 +9,6 @@ import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvi
 import AutopilotWizard from "@/components/autopilot/AutopilotWizard";
 import AutopilotCommandCenter from "@/components/autopilot/AutopilotCommandCenter";
 import { getDefaultConfig, type AutopilotConfig } from "@/lib/domain-engines/autopilot-engine";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
 
 const STORAGE_KEY = "sita-autopilot-config";
@@ -27,7 +26,6 @@ function saveConfig(config: AutopilotConfig) {
 }
 
 const AutopilotHubPage = () => {
-  const { isDemoMode } = useDataMode();
   const [config, setConfig] = useState<AutopilotConfig>(loadConfig);
   const [showWizard, setShowWizard] = useState(!config.isOnboarded);
 

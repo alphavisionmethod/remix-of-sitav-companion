@@ -19,7 +19,6 @@ import { Progress } from "@/components/ui/progress";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { DEMO_ENGINE_COSTS } from "@/lib/demo-data/core-pages";
 // Demo simulation helper (inline — no mock-data import)
 interface SimPolicyResult {
@@ -65,6 +64,7 @@ import type { InternalAgentCouncil, InternalAgentDefinition } from "@/lib/intern
 
 
 import {
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
   Shield, Activity, Wifi, CheckCircle, AlertTriangle, Clock, Eye, Lock, Cpu, Zap, BarChart3,
   Globe, Key, History, Users, RotateCcw, DollarSign, FileText, Server, Database, RefreshCw,
   Pause, Play, XCircle, Brain, Settings, AlertOctagon, Sparkles, ArrowRight, Search,
@@ -330,8 +330,7 @@ const OwnerCenter = () => {
 
   return (
     <motion.div className="mx-auto max-w-6xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-      <DemoModeBadge />
-      <SitaPageHeader
+<SitaPageHeader
         title="Owner Control Center"
         subtitle="Full admin control — incidents, intelligence, policies, fleet, council, and governance"
         actions={

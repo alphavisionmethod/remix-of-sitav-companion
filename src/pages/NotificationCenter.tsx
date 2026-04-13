@@ -10,7 +10,6 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 const db = supabase as any;
 import { useAuth } from "@/contexts/AuthContext";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useAdaptiveInterface } from "@/hooks/useAdaptiveInterface";
 import { useOSOrchestration } from "@/hooks/useOSOrchestration";
 import { motion, AnimatePresence } from "framer-motion";
@@ -18,12 +17,12 @@ import { useState, useEffect, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import {
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
   Bell, BellOff, Shield, Clock, CheckCircle, AlertTriangle, DollarSign,
   Briefcase, Home, Zap, Eye, Filter, Trash2, RotateCcw, ChevronRight,
   ArrowRight, Volume2, VolumeX, Pin, XCircle, AlertCircle, Sparkles,
   MessageSquare, Calendar, Settings, Activity
 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 
 
@@ -65,8 +64,7 @@ const NotificationCard = ({ notif, onMarkRead, onDismiss, onAction }: {
         !isRead && "hover:shadow-card-hover"
       )}
     >
-      <DemoModeBadge />
-      <div className="p-4">
+<div className="p-4">
         <div className="flex items-start gap-3">
           {/* Urgency indicator + Icon */}
           <div className={cn(
@@ -141,7 +139,6 @@ const NotificationCard = ({ notif, onMarkRead, onDismiss, onAction }: {
 // ── Main Component ───────────────────────────────────────────
 const NotificationCenter = () => {
   const { user } = useAuth();
-  const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
   const interfaceState = useAdaptiveInterface();
   const os = useOSOrchestration();

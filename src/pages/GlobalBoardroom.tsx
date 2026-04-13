@@ -16,7 +16,6 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { BoardroomCinematic } from "@/components/sita/motion/AppTransitions";
 import { SitaTabs } from "@/components/sita/SitaComponents";
 import { DomainAdvisorBoard } from "@/components/sita/domain-shared/DomainAdvisorBoard";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useLeads, useCustomers, useInvoices } from "@/hooks/use-sita-data";
 import { useMoneyKPIs } from "@/hooks/use-domain-data";
 
@@ -25,7 +24,6 @@ type BoardroomView = "synthesis" | "priorities" | "risks" | "advisors";
 const GlobalBoardroom = () => {
   const [view, setView] = useState<BoardroomView>("synthesis");
   const navigate = useNavigate();
-  const { isDemoMode } = useDataMode();
   const { data: leads = [] } = useLeads();
   const { data: customers = [] } = useCustomers();
   const { data: invoices = [] } = useInvoices();

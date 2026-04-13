@@ -14,9 +14,8 @@ import { KPITile, SectionHeader } from "@/components/sita/SitaComponents";
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
 import { AutonomyLadder } from "@/components/sita/primitives/AutonomyLadder";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_ACTIVE_SPILLOVERS, DEMO_CORE_DOMAINS as DEMO_DOMAINS, DEMO_TOP_INTERVENTIONS } from "@/lib/demo-data/core-pages";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // ── Spillover data ───────────────────────────────────────────
 
@@ -64,14 +63,12 @@ const SpilloverGraph = () => (
 );
 
 export default function SpilloverDashboard() {
-  const { isDemoMode } = useDataMode();
   const highCount = DEMO_ACTIVE_SPILLOVERS.filter(s => s.impact === "high").length;
   const medCount = DEMO_ACTIVE_SPILLOVERS.filter(s => s.impact === "medium").length;
 
   return (
     <div className="space-y-8 p-6 max-w-7xl mx-auto">
-      <DemoModeBadge />
-      {/* Header */}
+{/* Header */}
       <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[hsl(var(--trust-review)/0.1)]">

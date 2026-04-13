@@ -7,8 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 interface Template { id: string; title: string; description: string; category: string; domain: string; usageCount: number; starred: boolean; }
 
@@ -27,7 +26,6 @@ const DOMAIN_COLORS: Record<string, string> = { business: "text-primary", financ
 const DOMAIN_ICONS: Record<string, React.ElementType> = { business: Briefcase, finance: DollarSign, personal: Users, household: Home };
 
 const TemplateCenter = () => {
-  const { isDemoMode } = useDataMode();
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
   const categories = [...new Set(TEMPLATES.map(t => t.category))];
@@ -40,8 +38,7 @@ const TemplateCenter = () => {
 
   return (
     <div className="min-h-screen pb-12">
-      <DemoModeBadge />
-      <SitaPageHeader title="Template Center" subtitle="Reusable structures for documents, workflows, and communications" actions={
+<SitaPageHeader title="Template Center" subtitle="Reusable structures for documents, workflows, and communications" actions={
         <Button size="sm" variant="outline" className="gap-1.5 text-xs border-border/50"><Plus className="w-3.5 h-3.5" /> Create Template</Button>
       } />
 

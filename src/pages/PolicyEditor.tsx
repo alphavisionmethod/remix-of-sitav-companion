@@ -11,12 +11,10 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { Shield, Plus, Edit, Trash2, ToggleLeft, ToggleRight, ChevronRight, Play, AlertTriangle, FileText, Lock } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_CORE_CATEGORIES_POLICY_EDITOR as DEMO_CATEGORIES } from "@/lib/demo-data/core-pages";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const PolicyEditor = () => {
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const qc = useQueryClient();
   const [category, setCategory] = useState("all");
@@ -52,8 +50,7 @@ const PolicyEditor = () => {
 
   return (
     <motion.div className="mx-auto max-w-6xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
-      <DemoModeBadge />
-      <SitaPageHeader
+<SitaPageHeader
         title="Policy Engine"
         subtitle="Define rules, conditions, and approval gates for SITA's actions"
         actions={<SitaButton variant="primary" onClick={() => setShowCreate(true)}><Plus className="h-4 w-4" /> New Policy</SitaButton>}

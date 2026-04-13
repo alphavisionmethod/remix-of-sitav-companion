@@ -4,13 +4,11 @@ import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Receipt, BarChart3, ArrowDownUp } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { getInferenceReceipts, getReceiptStats, getReceiptRecords, getFallbackEvents } from "@/lib/core-services/ai-gateway";
 import AIGSubNav from "@/components/admin/AIGSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function AIG05ReceiptsExplorer() {
-  const { isDemoMode } = useDataMode();
   const { data: receipts = [] } = useQuery({
     queryKey: ["ai-inference-receipts"],
     queryFn: () => getInferenceReceipts(100),
@@ -33,8 +31,7 @@ export default function AIG05ReceiptsExplorer() {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <AIGSubNav />
+<AIGSubNav />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Receipt className="h-6 w-6" /> AIG06 — AI Receipts / Trace Explorer</h1>
         <p className="text-sm text-muted-foreground mt-1">Every AI invocation: provider, model, latency, cost, validation, fallbacks</p>

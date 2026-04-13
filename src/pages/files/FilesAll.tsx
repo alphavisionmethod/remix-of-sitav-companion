@@ -11,7 +11,6 @@ import { motion } from "framer-motion";
 import { useAllFiles } from "@/hooks/use-domain-data";
 import { FileUploader } from "@/components/sita/FileUploader";
 import { format } from "date-fns";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 type FileCategory = "all" | "business" | "money" | "household" | "travel" | "legal" | "sensitive";
 
@@ -47,7 +46,6 @@ function formatSize(bytes: number | null): string {
 }
 
 const FilesAll = () => {
-  const { isDemoMode } = useDataMode();
   const { data: rawFiles = [], isLoading } = useAllFiles();
   const [category, setCategory] = useState<FileCategory>("all");
   const [searchQuery, setSearchQuery] = useState("");

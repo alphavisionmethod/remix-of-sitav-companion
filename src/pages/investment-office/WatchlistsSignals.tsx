@@ -1,15 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Eye, Plus, Bell, Brain, TrendingUp, TrendingDown, ChevronRight, Star, Zap, Shield } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { SparklineChart } from "@/components/sita/SparklineChart";
 import { INSTRUMENTS, PORTFOLIO, WATCHLISTS } from "@/hooks/useInvestmentOfficeData";
 import { SPARKLINE_DATA } from "@/lib/investment-office/mock-data";
 import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function WatchlistsSignals() {
-  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useMarketWatchlistItems();
   const navigate = useNavigate();
   const [activeList, setActiveList] = useState(WATCHLISTS[0].id);
@@ -43,8 +41,7 @@ export default function WatchlistsSignals() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <DemoModeBadge />
-      <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Eye className="h-6 w-6 text-primary" /> Watchlists & Signals</h1>
           <p className="text-sm text-muted-foreground mt-1">Track assets, themes, catalysts, and advisor-driven signals</p>

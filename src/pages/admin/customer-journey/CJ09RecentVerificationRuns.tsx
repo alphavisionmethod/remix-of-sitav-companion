@@ -9,7 +9,6 @@ import { useCustomerJourneyRuns } from "@/lib/customer-journey/journey-hooks";
 import { useRecentFailures } from "@/lib/customer-journey/journey-ingestion-hooks";
 import { JOURNEY_STATUS_CONFIG } from "@/lib/customer-journey/journey-registry";
 import { History, Loader2, AlertTriangle, CheckCircle2, Image, GitBranch } from "lucide-react";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
@@ -21,7 +20,6 @@ const PROOF_BADGES: Record<string, { label: string; color: string }> = {
 };
 
 export default function CJ09RecentVerificationRuns() {
-  const { isDemoMode } = useDataMode();
   const { data: runs, isLoading } = useCustomerJourneyRuns();
   const { data: recentFailures } = useRecentFailures();
 

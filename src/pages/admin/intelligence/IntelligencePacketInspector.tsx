@@ -10,9 +10,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_INTEL_PACKETS as DEMO_PACKETS } from "@/lib/demo-data/admin-intelligence";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const IntelligencePacketInspector = () => {
   const { isAdmin, loading } = useRequireAdmin();
@@ -27,8 +26,7 @@ const IntelligencePacketInspector = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      <DemoModeBadge />
-      <SitaPageHeader
+<SitaPageHeader
         icon={<Package className="h-6 w-6" />}
         title="Intelligence Packet Inspector"
         subtitle="Inspect domain-specific intelligence packets — compression, freshness, and contents"

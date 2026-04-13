@@ -9,7 +9,6 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Plane, Calendar, DollarSign, FileText, CheckCircle, AlertCircle, Clock, Home, CreditCard } from "lucide-react";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_householdSpillover, DEMO_itinerary, DEMO_postTripTasks, DEMO_preTripChecklist } from "@/lib/demo-data/concierge";
 
 interface Trip {
@@ -29,7 +28,6 @@ type TravelView = "trips" | "prep" | "itinerary" | "logistics" | "post-trip";
 const TravelPlanning = () => {
   const [view, setView] = useState<TravelView>("trips");
   const [selectedTrip, setSelectedTrip] = useState(trips[1]);
-  const { isDemoMode } = useDataMode();
 
   const prepQueueItems = DEMO_preTripChecklist.flatMap((section, si) =>
     section.items.map((item, ii) => ({

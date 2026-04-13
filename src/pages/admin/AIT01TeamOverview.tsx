@@ -12,14 +12,12 @@ import { getWorkforceRoles, getRecentInvocations, getWorkforceStats, getRecommen
 import { computeTruthIndices } from "@/lib/core-services/truth-indices/truth-index-aggregator";
 import { Bot, DollarSign, Zap, Clock, Shield, Activity, AlertTriangle, CheckCircle2, Lightbulb, TrendingUp, ArrowRight, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import AITSubNav from "@/components/admin/AITSubNav";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
 export default function AIT01TeamOverview() {
-  const { isDemoMode } = useDataMode();
   const { data: stats, isLoading } = useQuery({ queryKey: ["ai-workforce-stats"], queryFn: getWorkforceStats });
   const { data: roles = [] } = useQuery({ queryKey: ["ai-workforce-roles"], queryFn: getWorkforceRoles });
   const { data: invocations = [] } = useQuery({ queryKey: ["ai-workforce-invocations"], queryFn: () => getRecentInvocations(50) });
@@ -54,8 +52,7 @@ export default function AIT01TeamOverview() {
   return (
     <div className="space-y-6 p-6 max-w-[1600px] mx-auto">
       <AITSubNav />
-      <DemoModeBadge />
-      <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2">
             <Bot className="h-6 w-6 text-primary" /> AI Engineering Team — Mission Control

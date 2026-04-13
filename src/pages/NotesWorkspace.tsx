@@ -11,8 +11,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useNotes } from "@/hooks/use-live-data";
 import { DEMO_NOTES, type DemoNote as Note } from "@/lib/demo-data/notes";
 import { motion, AnimatePresence } from "framer-motion";
@@ -20,6 +18,7 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import {
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
   FileText, Search, Plus, Tag, Star, Folder, Link, Clock, Edit3,
   CheckSquare, Mic, Brain, ChevronRight, Hash, Bookmark, Archive,
   ListTodo, Users, Briefcase, Workflow, FileBox, Sparkles,
@@ -57,7 +56,6 @@ const DEMO_LINKED_ENTITIES = [
 ];
 
 const NotesWorkspace = () => {
-  const { isDemoMode } = useDataMode();
   const { data: liveNotes } = useNotes();
 
   const notes: Note[] = useMemo(() => {
@@ -105,8 +103,7 @@ const NotesWorkspace = () => {
 
   return (
     <div className="space-y-6 p-6 max-w-7xl mx-auto">
-      <DemoModeBadge />
-      <SitaPageHeader
+<SitaPageHeader
         icon={<FileText className="h-6 w-6" />}
         title="Notes & Knowledge"
         subtitle="Capture, organize, and connect your thinking"

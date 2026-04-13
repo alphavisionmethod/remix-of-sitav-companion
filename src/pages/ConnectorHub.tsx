@@ -11,16 +11,14 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Plug, Wifi, WifiOff, RefreshCw, Clock, ChevronRight, Activity, Database, Shield, Circle, AlertTriangle, ExternalLink, Unplug, Search } from "lucide-react";
 import { ConnectorSyncDashboard } from "@/components/sita/ConnectorSyncDashboard";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { fetchConnectorHealth, type ConnectorHealthResult } from "@/lib/demo-data/connectors";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
 const ConnectorHub = () => {
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const [filter, setFilter] = useState("all");
@@ -121,8 +119,7 @@ const ConnectorHub = () => {
 
   return (
     <motion.div className="mx-auto max-w-6xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
-      <DemoModeBadge />
-      <SitaPageHeader title="Connector Hub" subtitle="Manage integrations, health status, and sync history" />
+<SitaPageHeader title="Connector Hub" subtitle="Manage integrations, health status, and sync history" />
 
       {/* Sync Health Dashboard */}
       <ConnectorSyncDashboard />

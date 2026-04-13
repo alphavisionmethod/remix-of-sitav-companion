@@ -9,13 +9,11 @@ import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { AppIcon } from "@/components/sita/app-platform/AppStoreComponents";
 import type { AppLifecycleReceipt } from "@/lib/app-platform/types";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const AppReceiptsPage = () => {
   const navigate = useNavigate();
   const { appId } = useParams<{ appId: string }>();
-  const { isDemoMode } = useDataMode();
   const { receipts, getApp } = useAppPlatform();
 
   const filteredReceipts = useMemo(() => {
@@ -38,8 +36,7 @@ const AppReceiptsPage = () => {
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
-      <DemoModeBadge />
-      <button onClick={() => navigate(appId ? `/app-store/manage/${appId}` : "/app-store")}
+<button onClick={() => navigate(appId ? `/app-store/manage/${appId}` : "/app-store")}
         className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
         <ArrowLeft className="h-4 w-4" /> Back
       </button>

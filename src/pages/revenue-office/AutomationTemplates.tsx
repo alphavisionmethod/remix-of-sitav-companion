@@ -11,10 +11,9 @@ import {
   Clock, CheckCircle, Brain, Package, DollarSign, AlertTriangle, Workflow,
   Eye, Search, TrendingUp, BarChart3
 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import AutomationSubNav from "./AutomationSubNav";
 import { DEMO_REV_categories as DEMO_categories, DEMO_templates } from "@/lib/demo-data/revenue-office";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const RECENTLY_USED = [
   { name: "Stale Lead Recovery", lastUsed: "3 days ago", timesUsed: 12, avgImpact: "$1,200/use" },
@@ -29,15 +28,13 @@ const TEMPLATE_COMBOS = [
 ];
 
 export default function AutomationTemplates() {
-  const { isDemoMode } = useDataMode();
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [tab, setTab] = useState("gallery");
   const filtered = selectedCategory === "All" ? DEMO_templates : DEMO_templates.filter(t => t.category === selectedCategory);
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
-      <DemoModeBadge />
-      <AutomationSubNav />
+<AutomationSubNav />
       <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
           <Layout className="h-6 w-6 text-primary" />Automation Template Gallery

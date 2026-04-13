@@ -4,9 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { RefreshCw, CheckCircle2, XCircle, AlertTriangle, Loader2, Activity, Zap, Shield, DollarSign, Clock, Server } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_AI_FEATURES } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const statusColors = {
   healthy: "bg-green-500/20 text-green-400 border-green-500/30",
@@ -25,8 +24,7 @@ const statusIcons = {
 function CheckRow({ label, ok, detail }: { label: string; ok: boolean | null; detail?: string }) {
   return (
     <div className="flex items-center justify-between py-2 border-b border-border/50 last:border-0">
-      <DemoModeBadge />
-      <span className="text-sm text-muted-foreground">{label}</span>
+<span className="text-sm text-muted-foreground">{label}</span>
       <div className="flex items-center gap-2">
         {detail && <span className="text-xs text-muted-foreground">{detail}</span>}
         {ok === null ? (
@@ -42,7 +40,6 @@ function CheckRow({ label, ok, detail }: { label: string; ok: boolean | null; de
 }
 
 export default function AIRuntimeStatus() {
-  const { isDemoMode } = useDataMode();
   const { data: health, isLoading, refetch, isFetching } = useAIHealth();
 
   const status = health?.status || "unknown";

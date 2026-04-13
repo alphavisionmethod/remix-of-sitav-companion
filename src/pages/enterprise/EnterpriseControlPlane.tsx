@@ -19,13 +19,12 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { DEMO_COMPLIANCE_ITEMS, DEMO_DEPLOYMENTS, DEMO_ENT_CAPABILITIES as DEMO_CAPABILITIES, DEMO_ROLES, DEMO_SLA_METRICS, DEMO_TEAM_MEMBERS } from "@/lib/demo-data/enterprise";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -40,7 +39,6 @@ const EnterpriseControlPlane = () => {
   const [activeTab, setActiveTab] = useState("organization");
   const [permissions, setPermissions] = useState(ROLE_PERMISSIONS);
   const [inviteEmail, setInviteEmail] = useState("");
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
 
   // Real data queries
@@ -92,8 +90,7 @@ const EnterpriseControlPlane = () => {
 
   return (
     <motion.div className="mx-auto max-w-6xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
-      <DemoModeBadge />
-      <SitaPageHeader
+<SitaPageHeader
         title="Enterprise Control Plane"
         subtitle="Organization management, roles, compliance, SLA, and deployment health"
         actions={<Badge variant="outline" className="text-xs gap-1"><Globe className="h-3 w-3" /> Enterprise</Badge>}

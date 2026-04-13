@@ -6,8 +6,7 @@ import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { useEngineEvents } from "@/lib/hooks/useEngineEventsData";
 import { useIntelligenceAssets } from "@/lib/hooks/useIntelligencePersistence";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const IntelligenceMarketDashboard = () => {
   const { isAdmin, loading: authLoading } = useRequireAdmin();
@@ -31,8 +30,7 @@ const IntelligenceMarketDashboard = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      <DemoModeBadge />
-      <SitaPageHeader icon={<BarChart3 className="h-6 w-6" />} title="Intelligence Market" subtitle="Capital allocation view — where AI compute yields the most value" />
+<SitaPageHeader icon={<BarChart3 className="h-6 w-6" />} title="Intelligence Market" subtitle="Capital allocation view — where AI compute yields the most value" />
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
           { l: "Domains", v: String(domains.length) },

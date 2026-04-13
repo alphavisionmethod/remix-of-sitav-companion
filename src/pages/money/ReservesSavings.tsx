@@ -10,7 +10,6 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 const db = supabase as any;
 import { useAuth } from "@/contexts/AuthContext";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useAction } from "@/lib/hooks/useAction";
 import { useReservesSavings } from "@/hooks/use-domain-data";
 import { useConfirmation } from "@/hooks/use-confirmation";
@@ -20,7 +19,6 @@ import { useQueryFreshness } from "@/hooks/use-query-freshness";
 const ReservesSavings = () => {
   const { data: reservesData = [] } = useReservesSavings();
   const { user } = useAuth();
-  const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
   const { confirmation, confirm } = useConfirmation();
 

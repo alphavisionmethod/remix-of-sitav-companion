@@ -6,7 +6,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Clock, AlertTriangle, CheckCircle2, ShieldAlert, Timer } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
@@ -47,7 +46,6 @@ function useApprovalQueueStats() {
 }
 
 export default function REX02ApprovalQueueCompletion() {
-  const { isDemoMode } = useDataMode();
   const { data: stats, isLoading } = useApprovalQueueStats();
 
   const cards = [

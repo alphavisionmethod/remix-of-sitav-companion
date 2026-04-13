@@ -9,13 +9,11 @@ import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaC
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Heart, CheckCircle, XCircle, Clock, AlertTriangle } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import ARSubNav from "@/components/admin/ARSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 export default function AR03SelfHealingBoard() {
-  const { isDemoMode } = useDataMode();
   const { data: rules = [] } = useQuery({
     queryKey: ["self-healing-rules"],
     queryFn: async () => {
@@ -45,8 +43,7 @@ export default function AR03SelfHealingBoard() {
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
-      <DemoModeBadge />
-      <ARSubNav />
+<ARSubNav />
       <SitaPageHeader
         title="Self-Healing Execution Board"
         subtitle="Inspect actual self-healing behavior — rules, schedules, and execution results"

@@ -6,8 +6,6 @@ import { useAction } from "@/lib/hooks/useAction";
 import { motion, AnimatePresence } from "framer-motion";
 import { DollarSign, Clock, AlertTriangle, CheckCircle, Plus, X, FileText, Target } from "lucide-react";
 import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useInvoiceGenerate, useInvoiceSend } from "@/hooks/use-backend-actions";
 import { InvoiceDetailPane } from "@/components/business/InvoiceDetailPane";
 import { cn } from "@/lib/utils";
@@ -19,6 +17,7 @@ import { SplitWorkspace } from "@/components/sita/surfaces/SplitWorkspace";
 import { DetailDrawer } from "@/components/sita/surfaces/DetailDrawer";
 import { AppSurface } from "@/components/sita/surfaces/AppSurface";
 import { ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransitions";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const executionState = (status: string): "drafted" | "approved" | "executing" | "complete" | "failed" => {
   if (status === "paid") return "complete";
@@ -29,7 +28,6 @@ const executionState = (status: string): "drafted" | "approved" | "executing" | 
 };
 
 const InvoicesCollections = () => {
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showAdd, setShowAdd] = useState(false);
@@ -154,8 +152,7 @@ const InvoicesCollections = () => {
 
   return (
     <div className="h-[calc(100vh-200px)] -m-4">
-      <DemoModeBadge />
-      <SplitWorkspace
+<SplitWorkspace
         list={listPane}
         detail={detailPane}
         hasSelection={!!selected}

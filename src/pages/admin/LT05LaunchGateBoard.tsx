@@ -5,10 +5,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Rocket, CheckCircle, XCircle, AlertTriangle, Shield } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { CILaunchGateWidget } from "@/components/sita/CILaunchGateWidget";
 import LTSubNav from "@/components/admin/LTSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const LT05LaunchGateBoard = () => {
   const { data: gates } = useQuery({
@@ -54,8 +53,7 @@ const LT05LaunchGateBoard = () => {
   return (
     <div className="space-y-6 p-6">
       <LTSubNav />
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold">Launch Gate Board</h1>
         <p className="text-sm text-muted-foreground">Central launch-readiness truth surface</p>
       </div>

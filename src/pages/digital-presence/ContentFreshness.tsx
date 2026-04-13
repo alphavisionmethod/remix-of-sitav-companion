@@ -3,18 +3,15 @@ import { Clock, FileText, Tag, MapPin, Phone, AlertTriangle, CheckCircle, Sparkl
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_EXPIRED_OFFERS, DEMO_INCONSISTENCIES, DEMO_STALE_INFO, DEMO_STALE_PAGES } from "@/lib/demo-data/digital-presence";
 import DPOSubNav from "./DPOSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function ContentFreshness() {
-  const { isDemoMode } = useDataMode();
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <DPOSubNav />
-      <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">Content Freshness Center</h1>
         <p className="text-sm text-muted-foreground">Outdated pages, expired offers, stale info & messaging inconsistencies</p>
       </motion.div>

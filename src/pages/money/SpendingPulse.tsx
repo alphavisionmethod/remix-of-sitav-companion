@@ -1,7 +1,6 @@
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { SpendingCategoryPane } from "@/components/money/SpendingCategoryPane";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import {
   DollarSign, TrendingUp, TrendingDown, AlertTriangle, CheckCircle, ShoppingCart,
   CreditCard, Home, Car, Utensils, Wifi, Heart, Zap, ArrowUpRight, ArrowDownRight
@@ -14,6 +13,7 @@ import { FreshnessBadge, UrgencyBadge } from "@/components/sita/badges";
 import { SplitWorkspace } from "@/components/sita/surfaces/SplitWorkspace";
 import { AppSurface } from "@/components/sita/surfaces/AppSurface";
 import { ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransitions";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 type PulseState = "all-normal" | "review-needed" | "attention";
 
@@ -57,9 +57,7 @@ const SpendingPulse = () => {
 
   const listPane = (
     <div className="p-3 space-y-3">
-      <DemoModeBadge />
-
-      {/* Pulse State */}
+{/* Pulse State */}
       <StatusCard
         label={pulseState === "all-normal" ? "All Normal" : pulseState === "review-needed" ? "Review Needed" : "Attention Required"}
         status={pulseState === "all-normal" ? "healthy" : pulseState === "review-needed" ? "degraded" : "down"}

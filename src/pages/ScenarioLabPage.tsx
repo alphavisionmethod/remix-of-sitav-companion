@@ -17,8 +17,7 @@ import { cn } from "@/lib/utils";
 import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
 import type { ScenarioTemplate, ScenarioSimulation, ScenarioOutcome } from "@/packages/contracts";
 import type { RealityLane, ConfidenceScore, SimulationResult } from "@/packages/reality-contracts";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // ── Template Card ──────────────────────────────────────────────
 function TemplateCard({ template, onRun }: { template: ScenarioTemplate; onRun: () => void }) {
@@ -38,8 +37,7 @@ function TemplateCard({ template, onRun }: { template: ScenarioTemplate; onRun: 
       className="rounded-2xl border border-border/50 bg-card/80 p-5 cursor-pointer hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all"
       onClick={onRun}
     >
-      <DemoModeBadge />
-      <div className="flex items-center gap-3 mb-3">
+<div className="flex items-center gap-3 mb-3">
         <div className={cn("flex h-9 w-9 items-center justify-center rounded-xl bg-secondary/30", typeColors[template.type])}>
           <Icon className="h-4 w-4" />
         </div>
@@ -224,7 +222,6 @@ function SimulationRunner({ template, onClose }: { template: ScenarioTemplate; o
 
 // ── Main Page ──────────────────────────────────────────────────
 export default function ScenarioLabPage() {
-  const { isDemoMode } = useDataMode();
   const { engines } = useOSRuntime();
   const [activeTemplate, setActiveTemplate] = useState<ScenarioTemplate | null>(null);
   const templates = engines.scenarios.getTemplates();

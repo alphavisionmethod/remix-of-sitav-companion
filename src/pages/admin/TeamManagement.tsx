@@ -20,12 +20,11 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 const db = supabase as any;
 import { fromTable } from "@/lib/supabase-helpers";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useConfirmation } from "@/hooks/use-confirmation";
 import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
 import { toast } from "sonner";
 import { DEMO_ADVISOR_TYPE_OPTIONS, DEMO_DOMAIN_OPTIONS } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.04 } } };
@@ -60,7 +59,6 @@ const EMPTY_FORM: AdvisorFormData = {
 };
 
 export default function TeamManagement() {
-  const { isDemoMode } = useDataMode();
   const [search, setSearch] = useState("");
   const [selectedAdvisor, setSelectedAdvisor] = useState<string | null>(null);
   const [formDialog, setFormDialog] = useState<{ open: boolean; mode: "create" | "edit"; data: AdvisorFormData; editId?: string }>({
@@ -228,8 +226,7 @@ export default function TeamManagement() {
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
-      <DemoModeBadge />
-      <ConfirmationDialog state={confirmation} />
+<ConfirmationDialog state={confirmation} />
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">

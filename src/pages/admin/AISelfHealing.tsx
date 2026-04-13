@@ -4,9 +4,9 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { Sparkles, CheckCircle2, AlertTriangle, Shield, TrendingUp, Clock, RotateCcw, Eye, Settings } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_ADMIN_PATTERNS_A_I_SELF_HEALING as DEMO_PATTERNS, DEMO_ADMIN_RULES as DEMO_RULES, DEMO_BLOCKED, DEMO_HEALED } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const AISelfHealing = () => {
   const { data: patterns, isDemo } = useAIEngDomain("learningPatterns", DEMO_PATTERNS);
@@ -14,8 +14,7 @@ const AISelfHealing = () => {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <AdminPageHeader icon={Sparkles} title="Self-Healing Center" subtitle="Autonomous maintenance — detect, patch, verify, learn" accent="trust" />
+<AdminPageHeader icon={Sparkles} title="Self-Healing Center" subtitle="Autonomous maintenance — detect, patch, verify, learn" accent="trust" />
 
       <div className="grid grid-cols-4 gap-3">
         {[

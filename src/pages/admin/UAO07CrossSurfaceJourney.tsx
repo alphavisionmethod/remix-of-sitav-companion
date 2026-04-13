@@ -7,8 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Route, ArrowRight, CheckCircle, XCircle } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -16,7 +15,6 @@ const qualityColors: Record<string, string> = { seamless: "bg-green-500/20 text-
 const statusColors: Record<string, string> = { completed: "bg-green-500/20 text-green-400", initiated: "bg-blue-500/20 text-blue-400", failed: "bg-red-500/20 text-red-400", abandoned: "bg-muted text-muted-foreground" };
 
 export default function UAO07CrossSurfaceJourney() {
-  const { isDemoMode } = useDataMode();
   const { data: handoffs = [] } = useQuery({
     queryKey: ["handoff-sessions-journey"],
     queryFn: async () => { const { data } = await fromTable("handoff_sessions").select("*").order("created_at", { ascending: false }).limit(50); return data || []; },
@@ -39,8 +37,7 @@ export default function UAO07CrossSurfaceJourney() {
   return (
     <div className="space-y-6 p-6">
       <UAOSubNav />
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Route className="h-6 w-6" /> Cross-Surface Journey Board</h1>
         <p className="text-sm text-muted-foreground mt-1">Handoff quality, continuity success, friction points</p>
       </div>

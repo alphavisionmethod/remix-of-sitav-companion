@@ -6,7 +6,6 @@ import { Progress } from "@/components/ui/progress";
 import { Gavel, CheckCircle, XCircle, Clock } from "lucide-react";
 import { computeLaunchReadiness, getGoNoGoConditions, type LaunchReadinessResult, type GoNoGoCondition, type LaunchMode } from "@/lib/core-services/launch-readiness/launch-readiness-engine";
 import { cn } from "@/lib/utils";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_MODE_ORDER } from "@/lib/demo-data/admin-platform";
 
 const MODE_LABELS: Record<LaunchMode, string> = {
@@ -19,7 +18,6 @@ const MODE_LABELS: Record<LaunchMode, string> = {
 };
 
 export default function LAUNCH07GoNoGo() {
-  const { isDemoMode } = useDataMode();
   const [result, setResult] = useState<LaunchReadinessResult | null>(null);
   const [conditions, setConditions] = useState<GoNoGoCondition[]>([]);
 

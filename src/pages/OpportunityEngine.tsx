@@ -10,11 +10,9 @@ import {
   Sparkles, DollarSign, Users, Clock, Briefcase, TrendingUp,
   ArrowRight, AlertTriangle, CreditCard, Home, Headphones
 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const OpportunityEngine = () => {
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
 
   const { data: opportunities = [] } = useQuery({
@@ -99,8 +97,7 @@ const OpportunityEngine = () => {
 
   return (
     <motion.div className="mx-auto max-w-5xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-      <DemoModeBadge />
-      <SitaPageHeader
+<SitaPageHeader
         title="Opportunity Engine"
         subtitle="Cross-domain intelligence — what you're missing, what you could gain"
         actions={<SitaButton variant="accent"><Sparkles className="h-4 w-4" /> Scan Now</SitaButton>}

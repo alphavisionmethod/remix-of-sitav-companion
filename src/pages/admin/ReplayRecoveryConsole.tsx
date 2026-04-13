@@ -14,14 +14,12 @@ import {
   fetchActionLineage, fetchPolicyEvaluations, getActionExplanation,
 } from "@/lib/persistence";
 import { toast } from "sonner";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { getSitaKernel } from "@/lib/sita-kernel";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const fade = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } };
 
 export default function ReplayRecoveryConsole() {
-  const { isDemoMode } = useDataMode();
   const [replayScope, setReplayScope] = useState<string>("topic");
   const [scopeValue, setScopeValue] = useState("");
   const [dryRun, setDryRun] = useState(true);
@@ -130,8 +128,7 @@ export default function ReplayRecoveryConsole() {
   return (
     <div className="space-y-6 p-6 max-w-7xl mx-auto">
       <CPSSubNav />
-      <DemoModeBadge />
-      <motion.div initial="hidden" animate="show" variants={{ show: { transition: { staggerChildren: 0.04 } } }} className="space-y-4">
+<motion.div initial="hidden" animate="show" variants={{ show: { transition: { staggerChildren: 0.04 } } }} className="space-y-4">
         <motion.div variants={fade} className="flex items-center gap-3">
           <RotateCcw className="h-6 w-6 text-primary" />
           <h1 className="text-2xl font-bold text-foreground">Replay & Recovery Console</h1>

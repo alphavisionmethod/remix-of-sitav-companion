@@ -7,9 +7,9 @@ import {
   FileText, Download, CheckCircle2, AlertTriangle, Shield, Code,
   FileJson, BookOpen, GitBranch, Users, Sparkles, RotateCcw, Eye
 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_BUNDLE_ITEMS, DEMO_EXPORT_MODES } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 type ExportMode = "json" | "markdown" | "approval" | "pr-ready" | "investor";
 
@@ -36,8 +36,7 @@ const AIEvidenceBundleComposer = () => {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <AdminPageHeader icon={FileText} title="Evidence Bundle Composer" subtitle="Export machine-readable and human-readable proof of missions, fixes, and releases" accent="primary" />
+<AdminPageHeader icon={FileText} title="Evidence Bundle Composer" subtitle="Export machine-readable and human-readable proof of missions, fixes, and releases" accent="primary" />
 
       <div className="grid grid-cols-4 gap-3">
         {[

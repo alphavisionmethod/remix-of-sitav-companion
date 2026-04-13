@@ -19,10 +19,10 @@ import { executeWorkforceTask, type WorkforceExecutionResult } from "@/lib/ai/wo
 import { AIWorkforceInvocationPanel } from "@/components/ai/AIWorkforceInvocationPanel";
 import { Terminal, Play, Loader2, DollarSign, AlertTriangle, Clock, Save, History, Copy } from "lucide-react";
 import { toast } from "sonner";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { supabase } from "@/integrations/supabase/client";
 import { DEMO_BUDGET_POSTURES, DEMO_SCOPE_DOMAINS, DEMO_TASK_TYPES } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function AIT03TaskInvocation() {
   const { isDemoMode } = useDataMode();
@@ -82,8 +82,7 @@ export default function AIT03TaskInvocation() {
   return (
     <div className="space-y-6 p-6 max-w-[1600px] mx-auto">
       <AITSubNav />
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <Terminal className="h-6 w-6 text-primary" /> AIT03 — Task Invocation Console
         </h1>

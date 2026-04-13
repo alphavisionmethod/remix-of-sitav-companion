@@ -6,17 +6,15 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Checkbox } from "@/components/ui/checkbox";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { DEMO_EXPORTABLE_TABLES, DEMO_PAST_EXPORTS } from "@/lib/demo-data/core-pages";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
 export default function SovereignExportPage() {
-  const { isDemoMode } = useDataMode();
   const { user, isDemo } = useAuth();
   const [selectedTables, setSelectedTables] = useState<string[]>(DEMO_EXPORTABLE_TABLES.map(t => t.name));
   const [exporting, setExporting] = useState(false);
@@ -95,8 +93,7 @@ export default function SovereignExportPage() {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><FileArchive className="h-6 w-6 text-primary" /> Sovereign Data Export</h1>
         <p className="text-muted-foreground text-sm mt-1">Your data belongs to you. Export everything, anytime. GDPR compliant.</p>
       </motion.div>

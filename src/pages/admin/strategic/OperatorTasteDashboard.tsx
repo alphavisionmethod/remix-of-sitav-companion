@@ -5,8 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { useOperatorTaste } from "@/lib/hooks/useIntelligencePersistence";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const OperatorTasteDashboard = () => {
   const { isAdmin, loading: authLoading } = useRequireAdmin();
@@ -21,8 +20,7 @@ const OperatorTasteDashboard = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      <DemoModeBadge />
-      <SitaPageHeader icon={<Heart className="h-6 w-6" />} title="Operator Taste Memory" subtitle="Learned preferences — summary depth, explanation style, confidence thresholds, approval patterns" />
+<SitaPageHeader icon={<Heart className="h-6 w-6" />} title="Operator Taste Memory" subtitle="Learned preferences — summary depth, explanation style, confidence thresholds, approval patterns" />
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
           { l: "Learned Preferences", v: String(profiles.length) },

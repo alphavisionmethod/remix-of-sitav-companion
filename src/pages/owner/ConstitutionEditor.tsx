@@ -19,14 +19,13 @@ import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import type { ConstitutionRule, ConstitutionRuleCategory } from "@/lib/services/constitution-compiler";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useActionFn } from "@/hooks/use-action";
 import { PlainEnglishPolicyEditor } from "@/components/sita/PlainEnglishPolicyEditor";
 import { DEMO_EXAMPLE_RULES } from "@/lib/demo-data/core-pages";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -54,8 +53,7 @@ function CategoryBadge({ category }: { category: string }) {
   const Icon = config.icon;
   return (
     <span className={cn("inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[9px] font-semibold", config.color)}>
-      <DemoModeBadge />
-      <Icon className="h-3 w-3" />
+<Icon className="h-3 w-3" />
       {config.label}
     </span>
   );
@@ -271,7 +269,6 @@ function RuleComposer({ onCompile }: { onCompile: (text: string) => void }) {
 // ── Main Page ───────────────────────────────────────────────────
 
 export default function ConstitutionEditor() {
-  const { isDemoMode } = useDataMode();
   const { user, isDemo } = useAuth();
   const { compiler, compileRule, toggleRule, deleteRule } = useConstitution();
   const [tab, setTab] = useState("all");

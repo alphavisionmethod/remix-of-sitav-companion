@@ -17,13 +17,11 @@ import {
   PermissionDomainCard, InstallSheet, SourceOriginLabel, PackageTypeLabel,
   SandboxLevelBadge, UpdateSourceInfo, TrustInstallBehavior,
 } from "@/components/sita/app-platform/AppStoreComponents";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { toast } from "sonner";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const AppDetailPage = () => {
-  const { isDemoMode } = useDataMode();
   const { appId } = useParams<{ appId: string }>();
   const navigate = useNavigate();
   const {
@@ -39,8 +37,7 @@ const AppDetailPage = () => {
   if (!app) {
     return (
       <div className="mx-auto max-w-4xl">
-      <DemoModeBadge />
-        <button onClick={() => navigate("/app-store")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
+<button onClick={() => navigate("/app-store")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
           <ArrowLeft className="h-4 w-4" /> Back to App Store
         </button>
         <div className="text-center py-20">

@@ -2,22 +2,19 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Map, TrendingUp, Zap, Eye, AlertTriangle, ChevronRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { INSTRUMENTS } from "@/hooks/useInvestmentOfficeData";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
 import { DEMO_THEMES } from "@/lib/demo-data/investment";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function OpportunityMap() {
-  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useMarketWatchlistItems();
   const navigate = useNavigate();
   const [selectedTheme, setSelectedTheme] = useState(DEMO_THEMES[0]);
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Map className="h-6 w-6 text-primary" /> Opportunity Map</h1>
         <p className="text-sm text-muted-foreground mt-0.5">Visual intelligence field of themes, narratives, and linked assets with crowding and uncertainty overlays</p>
       </div>

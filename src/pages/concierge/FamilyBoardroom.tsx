@@ -13,7 +13,6 @@ import {
 } from "lucide-react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_carryover, DEMO_nextMoves, DEMO_priorities, DEMO_proofSummary, DEMO_scheduleConflicts } from "@/lib/demo-data/concierge";
 
 const weeklyStats = {
@@ -31,7 +30,6 @@ type BoardroomView = "daily" | "weekly" | "school" | "shopping" | "travel" | "mo
 
 const FamilyBoardroom = () => {
   const [view, setView] = useState<BoardroomView>("daily");
-  const { isDemoMode } = useDataMode();
 
   return (
     <ConciergePageWrapper className="space-y-6">

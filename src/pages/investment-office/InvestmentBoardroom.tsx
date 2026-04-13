@@ -6,13 +6,12 @@ import {
   ArrowRight, BarChart3, Briefcase, AlertTriangle, Clock, Brain, ChevronRight,
   RefreshCw, Zap, Info, Bell, Network, Activity, Siren
 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { SparklineChart } from "@/components/sita/SparklineChart";
 import { INSTRUMENTS, INVESTMENT_ADVISORS, PORTFOLIO, SAMPLE_ORDERS, SAMPLE_THESES, WATCHLISTS } from "@/hooks/useInvestmentOfficeData";
 import { SPARKLINE_DATA, WHAT_CHANGED, ADVISOR_EVENT_ALERTS } from "@/lib/investment-office/mock-data";
 import { useInvestmentDecisions } from "@/hooks/use-investment-office";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { PortfolioGlobe } from "@/components/investment/PortfolioGlobe";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const fmt = (n: number) => n >= 1e9 ? `$${(n / 1e9).toFixed(1)}B` : n >= 1e6 ? `$${(n / 1e6).toFixed(1)}M` : n >= 1e3 ? `$${(n / 1e3).toFixed(1)}K` : `$${n.toFixed(2)}`;
 const pctFmt = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
@@ -102,7 +101,6 @@ function WhatChangedCard() {
 }
 
 export default function InvestmentBoardroom() {
-  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useInvestmentDecisions();
   const navigate = useNavigate();
   const p = PORTFOLIO;
@@ -110,8 +108,7 @@ export default function InvestmentBoardroom() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <DemoModeBadge />
-      {/* Header */}
+{/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">

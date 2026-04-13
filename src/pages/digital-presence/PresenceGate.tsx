@@ -4,20 +4,17 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_HEALTH_STATS, DEMO_WORKSPACES } from "@/lib/demo-data/digital-presence";
 import DPOSubNav from "./DPOSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function PresenceGate() {
-  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-8">
       <DPOSubNav />
-      <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center gap-3 mb-1">
           <Globe className="w-7 h-7 text-primary" />
           <h1 className="text-2xl font-bold text-foreground">Digital Presence Office</h1>

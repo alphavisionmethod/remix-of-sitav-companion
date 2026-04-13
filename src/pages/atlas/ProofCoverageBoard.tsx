@@ -8,8 +8,7 @@ import { SitaPageHeader } from "@/components/sita/SitaCard";
 import { Shield, CheckCircle, XCircle, AlertTriangle, GitBranch, RotateCcw, Eye, FileCheck, Link2, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const proofDomains = [
   { domain: "approvals", capabilities: [
@@ -73,13 +72,11 @@ const chainEntries = [
 ];
 
 export default function ProofCoverageBoard() {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("matrix");
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mx-auto max-w-7xl space-y-6 p-6">
-      <DemoModeBadge />
-      <SitaPageHeader title="Proof Coverage Board" subtitle="Canonical proof matrix, chain exploration, replay/rollback verification, and capability traceability" />
+<SitaPageHeader title="Proof Coverage Board" subtitle="Canonical proof matrix, chain exploration, replay/rollback verification, and capability traceability" />
 
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
         {[

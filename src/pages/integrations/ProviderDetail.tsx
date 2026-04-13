@@ -9,15 +9,13 @@ import { Progress } from "@/components/ui/progress";
 import { ArrowLeft, CheckCircle, Shield, Zap, Globe, ExternalLink, BookOpen, AlertTriangle, ArrowRight } from "lucide-react";
 import { getProviderById } from "@/lib/demo-data/integrations";
 import { DEMO_CONNECTIONS } from "@/lib/demo-data/integrations";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function ProviderDetail() {
   const { providerId } = useParams();
   const navigate = useNavigate();
   const [wizardStep, setWizardStep] = useState(0);
   const [connecting, setConnecting] = useState(false);
-  const { isDemoMode } = useDataMode();
 
   const provider = getProviderById(providerId || "");
   if (!provider) return <div className="p-6 text-muted-foreground">Provider not found</div>;
@@ -40,8 +38,7 @@ export default function ProviderDetail() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
-      <DemoModeBadge />
-      <Button variant="ghost" size="sm" className="gap-1.5 text-muted-foreground" onClick={() => navigate("/integrations")}>
+<Button variant="ghost" size="sm" className="gap-1.5 text-muted-foreground" onClick={() => navigate("/integrations")}>
         <ArrowLeft className="w-3.5 h-3.5" /> Back to Catalog
       </Button>
 

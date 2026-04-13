@@ -9,19 +9,17 @@ import { SitaPageHeader, SitaSectionHeader, SitaCard } from "@/components/sita/S
 import { KPITile } from "@/components/sita/SitaComponents";
 import { TrustDebtPanel, ExecutionDebtHeatmap, DragIndexRadar, ReadinessGauge, DelegationRegistryTable } from "@/components/governance";
 import { useGovernanceSummary } from "@/hooks/use-admin-durable-state";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { Scale, Shield, AlertTriangle, CheckCircle, Clock, Eye } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { ReadinessInput } from "@/lib/engines/readiness-engine";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
 import { useMemo } from "react";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const DEFAULT_SCOPE = { ownerId: "current-user", visibility: "private" as const };
 
 export default function GovernanceDashboard() {
   const { data: gov, isLoading } = useGovernanceSummary();
-  const { isDemoMode } = useDataMode();
   const { engines } = useOSRuntime();
 
   // Invisible labor stats from engine
@@ -45,8 +43,7 @@ export default function GovernanceDashboard() {
 
   return (
     <div className="space-y-6 pb-8">
-      <DemoModeBadge />
-      <SitaPageHeader
+<SitaPageHeader
         title="Governance Dashboard"
         subtitle="Meta-governance health across trust, execution, drag, readiness, and delegation"
       />

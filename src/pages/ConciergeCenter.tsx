@@ -33,11 +33,10 @@ import LifeAdminCenter from "./concierge/LifeAdminCenter";
 import ErrandsLogistics from "./concierge/ErrandsLogistics";
 import UpcomingNeeds from "./concierge/UpcomingNeeds";
 import RecurringObligations from "./concierge/RecurringObligations";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { ConciergeDataProvider } from "@/contexts/ConciergeDataContext";
 import { useAppStatePersistence, restoreAppState } from "@/hooks/useAppStatePersistence";
 import React from "react";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const DOMAIN_CONFIG: DomainConfig = {
   id: "concierge",
@@ -138,7 +137,6 @@ const pages: Record<SubPage, React.ComponentType> = {
 };
 
 const ConciergeCenter = () => {
-  const { isDemoMode } = useDataMode();
   const location = useLocation();
   const navigate = useNavigate();
   const signature = useExperienceSignature();

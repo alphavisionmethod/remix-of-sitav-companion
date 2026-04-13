@@ -3,8 +3,7 @@ import { useParams } from "react-router-dom";
 import { CheckCircle2, Clock, ArrowRight, AlertTriangle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useMobileWorkflowSteps } from "@/hooks/use-domain-data";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const statusIcon = {
   completed: <CheckCircle2 className="h-4 w-4 text-[hsl(var(--trust-safe))]" />,
@@ -14,14 +13,12 @@ const statusIcon = {
 };
 
 const MobileWorkflowDetail = () => {
-  const { isDemoMode } = useDataMode();
   const { id } = useParams();
   const { data: steps = [] } = useMobileWorkflowSteps();
 
   return (
     <MobileShell title={`Workflow ${id?.slice(0, 8) || ""}`}>
-      <DemoModeBadge />
-      <div className="rounded-xl border border-border/40 bg-card p-4 mb-4">
+<div className="rounded-xl border border-border/40 bg-card p-4 mb-4">
         <h2 className="text-sm font-semibold mb-1">Collections escalation — Invoice #892</h2>
         <p className="text-xs text-muted-foreground">Automated workflow triggered by overdue detection engine</p>
         <div className="flex gap-2 mt-2">

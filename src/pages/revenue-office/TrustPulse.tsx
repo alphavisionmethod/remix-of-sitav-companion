@@ -5,9 +5,8 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_CLIENTS, DEMO_REV_ALERTS as DEMO_ALERTS, DEMO_TRUST_DIMENSIONS, DEMO_SENTIMENT_TREND } from "@/lib/demo-data/revenue-office";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const ti = (t: string) => t === "up" ? <TrendingUp className="h-3.5 w-3.5 text-[hsl(var(--trust-safe))]" /> : t === "down" ? <TrendingDown className="h-3.5 w-3.5 text-destructive" /> : <span className="text-muted-foreground">—</span>;
 
@@ -19,8 +18,7 @@ const TrustPulse = () => {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <SitaPageHeader icon={<ShieldCheck className="h-5 w-5" />} title="Trust & Reputation Pulse" subtitle="Multi-dimensional trust health — reviews, responsiveness, delivery, satisfaction, proof" />
+<SitaPageHeader icon={<ShieldCheck className="h-5 w-5" />} title="Trust & Reputation Pulse" subtitle="Multi-dimensional trust health — reviews, responsiveness, delivery, satisfaction, proof" />
 
       {/* Summary */}
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">

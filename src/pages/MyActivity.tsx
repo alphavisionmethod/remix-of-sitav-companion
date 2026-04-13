@@ -5,9 +5,8 @@ import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_DAY_LABELS, DEMO_FEATURES } from "@/lib/demo-data/core-pages";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -51,8 +50,7 @@ const HeatmapGrid = ({ data }: { data: Record<string, number> }) => {
 
   return (
     <div className="flex gap-1">
-      <DemoModeBadge />
-      {/* Day labels */}
+{/* Day labels */}
       <div className="flex flex-col gap-[3px] mr-1 pt-5">
         {DEMO_DAY_LABELS.map((l, i) => (
           <span key={i} className="text-[8px] text-muted-foreground h-[14px] flex items-center">{l}</span>
@@ -83,7 +81,6 @@ const HeatmapGrid = ({ data }: { data: Record<string, number> }) => {
 // ── Feature Usage Stats ─────────────────────────────────────
 
 const MyActivity = () => {
-  const { isDemoMode } = useDataMode();
   const { user, isDemo } = useAuth();
   const [heatmapData, setHeatmapData] = useState<Record<string, number>>({});
   const [featureUsage, setFeatureUsage] = useState<Record<string, number>>({});

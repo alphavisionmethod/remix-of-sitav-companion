@@ -3,9 +3,9 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
 import { Eye, CheckCircle2, ArrowRight, Palette, Layout, Accessibility, Moon, Type, Move } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_ADMIN_DIFFS as DEMO_DIFFS } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const AIDesignDiffTheater = () => {
   const { data: diffs, isDemo } = useAIEngDomain("designDiffs", DEMO_DIFFS);
@@ -13,8 +13,7 @@ const AIDesignDiffTheater = () => {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <AdminPageHeader icon={Eye} title="Design Diff Theater" subtitle="Before/after design improvements with rationale, confidence, and token compliance" accent="accent" />
+<AdminPageHeader icon={Eye} title="Design Diff Theater" subtitle="Before/after design improvements with rationale, confidence, and token compliance" accent="accent" />
 
       <div className="grid grid-cols-3 gap-3">
         {[

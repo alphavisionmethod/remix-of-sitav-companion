@@ -14,12 +14,11 @@ import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_CALENDAR_EVENTS, type CalWorkspaceEvent as CalEvent } from "@/lib/demo-data/calendar-workspace";
 import { useRealityProvider } from "@/lib/hooks/useRealityProvider";
 import { useCreateCalendarEvent, useUpdateCalendarEvent, useDeleteCalendarEvent } from "@/hooks/use-calendar-mutations";
 import { useBookingList, useBookingCreate, useBookingCancel } from "@/hooks/use-backend-actions";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -47,7 +46,6 @@ const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
 const HOURS = Array.from({ length: 14 }, (_, i) => i + 7); // 7am-8pm
 
 const CalendarWorkspace = () => {
-  const { isDemoMode } = useDataMode();
   const [view, setView] = useState<CalView>("week");
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [domainFilter, setDomainFilter] = useState<string>("all");
@@ -101,8 +99,7 @@ const CalendarWorkspace = () => {
 
   return (
     <div className="min-h-screen pb-12">
-      <DemoModeBadge />
-      <SitaPageHeader title="Calendar" subtitle="Your time across life, business, and household" actions={
+<SitaPageHeader title="Calendar" subtitle="Your time across life, business, and household" actions={
         <div className="flex gap-2">
           <Button size="sm" variant="outline" className="gap-1.5 border-border/50 text-muted-foreground hover:bg-accent/50" onClick={() => {
             setEventForm({ title: "", event_date: format(selectedDate, "yyyy-MM-dd"), start_time: "", end_time: "", domain: "personal", event_type: "meeting", location: "" });

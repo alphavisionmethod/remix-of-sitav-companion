@@ -10,9 +10,8 @@ import {
   Wrench, CheckCircle, ArrowRight, Brain, TrendingDown, XCircle, Shield,
   Eye, BarChart3, RefreshCw, Package, Mail, Phone, Star, Heart
 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_riskAreas, DEMO_ADVISOR_INVALIDATION } from "@/lib/demo-data/revenue-office";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const FRAGILITY_MATRIX = [
   { system: "Lead Capture → Nurture", fragility: 32, bottleneck: "Form abandonment at 41%", resilience: "Backup: SMS opt-in added", status: "moderate" as const },
@@ -49,7 +48,6 @@ const DEPENDENCY_RISKS = [
 ];
 
 export default function WhatBreaksGrowth() {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("fragility");
   const riskAreas = isDemoMode ? DEMO_riskAreas : DEMO_riskAreas;
   const totalRisks = riskAreas.reduce((a, r) => a + r.risks.length, 0);
@@ -58,8 +56,7 @@ export default function WhatBreaksGrowth() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><ShieldAlert className="w-6 h-6 text-amber-400" /> What Breaks Growth?</h1>
         <p className="text-muted-foreground">Reverse-analysis of weak assumptions, delivery risks, fragility points, stress tests, and dependency mapping</p>
       </div>

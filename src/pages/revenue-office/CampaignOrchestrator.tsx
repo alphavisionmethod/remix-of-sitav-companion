@@ -6,12 +6,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useCampaigns } from "@/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/sita/EmptyState";
 import {
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
   DEMO_REV_CAMPAIGNS as DEMO_CAMPAIGNS,
   DEMO_REV_SEGMENTS as DEMO_SEGMENTS,
   DEMO_CAMPAIGN_ATTRIBUTION,
@@ -20,7 +19,6 @@ import {
 } from "@/lib/demo-data/revenue-office";
 
 export default function CampaignOrchestrator() {
-  const { isDemoMode } = useDataMode();
   const { data: liveCampaigns, isLoading } = useCampaigns();
   const [tab, setTab] = useState("campaigns");
 
@@ -33,8 +31,7 @@ export default function CampaignOrchestrator() {
   if (!isDemoMode && isLoading) {
     return (
       <div className="min-h-screen bg-background p-6 space-y-6">
-        <DemoModeBadge />
-        <Skeleton className="h-8 w-64" />
+<Skeleton className="h-8 w-64" />
         <div className="flex gap-3">{[1,2,3].map(i => <Skeleton key={i} className="h-16 w-36 rounded-xl" />)}</div>
         <Skeleton className="h-32 rounded-xl" />
       </div>
@@ -44,8 +41,7 @@ export default function CampaignOrchestrator() {
   if (!isDemoMode && CAMPAIGNS.length === 0) {
     return (
       <div className="min-h-screen bg-background p-6 space-y-6">
-        <DemoModeBadge />
-        <h1 className="text-2xl font-bold text-foreground">Campaign Orchestrator</h1>
+<h1 className="text-2xl font-bold text-foreground">Campaign Orchestrator</h1>
         <EmptyState icon={Zap} title="No campaigns yet" description="Create your first campaign to start automating growth." />
       </div>
     );
@@ -53,8 +49,7 @@ export default function CampaignOrchestrator() {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-foreground">Campaign Orchestrator</h1>

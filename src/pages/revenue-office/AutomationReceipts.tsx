@@ -10,10 +10,9 @@ import {
   Heart, Target, RefreshCw, Brain, ArrowRight, BarChart3, Filter, Info
 } from "lucide-react";
 import { useState } from "react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import AutomationSubNav from "./AutomationSubNav";
 import { DEMO_receipts, DEMO_WHY_SENT } from "@/lib/demo-data/revenue-office";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const categoryIcons: Record<string, typeof Mail> = {
   "Lead Recovery": Users, Sales: FileText, Booking: Phone, Reputation: Star,
@@ -28,7 +27,6 @@ const IMPACT_SUMMARY = [
 ];
 
 export default function AutomationReceipts() {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("all");
   const [timeFilter, setTimeFilter] = useState("48h");
   const [viewMode, setViewMode] = useState<"receipts" | "why">("receipts");
@@ -37,8 +35,7 @@ export default function AutomationReceipts() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
-      <DemoModeBadge />
-      <AutomationSubNav />
+<AutomationSubNav />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Receipt className="h-6 w-6 text-blue-400" />Automation Receipts & History</h1>

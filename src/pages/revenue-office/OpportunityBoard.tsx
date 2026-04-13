@@ -4,10 +4,9 @@ import { Badge } from "@/components/ui/badge";
 import { Lightbulb, TrendingUp, UserPlus, Star, RefreshCw, DollarSign, ArrowRight, Layers, AlertTriangle, Clock } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_opportunities, DEMO_OPPORTUNITY_THEMES } from "@/lib/demo-data/revenue-office";
 import { useState } from "react";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const categoryColors: Record<string, string> = {
   Conversion: "bg-blue-500/10 text-blue-400",
@@ -21,7 +20,6 @@ const categoryColors: Record<string, string> = {
 const effortScore = (e: string) => e === "Low" ? 1 : e === "Medium" ? 2 : 3;
 
 export default function OpportunityBoard() {
-  const { isDemoMode } = useDataMode();
   const opportunities = isDemoMode ? DEMO_opportunities : DEMO_opportunities;
   const [tab, setTab] = useState("ranked");
   const [watchlist, setWatchlist] = useState<Set<number>>(new Set());
@@ -43,8 +41,7 @@ export default function OpportunityBoard() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Lightbulb className="h-6 w-6 text-amber-400" /> Opportunity Board</h1>
         <p className="text-muted-foreground">Ranked growth opportunities with priority scoring and theme clustering</p>
       </div>

@@ -6,7 +6,7 @@ import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { useEngineEvents } from "@/lib/hooks/useEngineEventsData";
 import { useIntelligenceOverview } from "@/lib/hooks/useIntelligenceAPI";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const ValueRiskDashboard = () => {
   const { isAdmin, loading: authLoading } = useRequireAdmin();
@@ -33,8 +33,7 @@ const ValueRiskDashboard = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      <DemoModeBadge />
-      <SitaPageHeader icon={<Grid3x3 className="h-6 w-6" />} title="Value-Risk Matrix" subtitle="Expected value vs cost, confidence, blast radius, and reversibility for major tasks" />
+<SitaPageHeader icon={<Grid3x3 className="h-6 w-6" />} title="Value-Risk Matrix" subtitle="Expected value vs cost, confidence, blast radius, and reversibility for major tasks" />
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[

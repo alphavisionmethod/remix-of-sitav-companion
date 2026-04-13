@@ -4,15 +4,13 @@ import {
   Briefcase, TrendingUp, Shield, Brain, Link2, ChevronRight, Compass,
   GraduationCap, BarChart3, Eye, DollarSign, Zap, Globe
 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { INVESTMENT_ADVISORS, PLATFORM_CONNECTIONS, PORTFOLIO, WATCHLISTS } from "@/hooks/useInvestmentOfficeData";
 import { useInvestmentDecisions } from "@/hooks/use-investment-office";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const fmt = (n: number) => n >= 1e6 ? `$${(n / 1e6).toFixed(2)}M` : n >= 1e3 ? `$${(n / 1e3).toFixed(1)}K` : `$${n.toFixed(2)}`;
 
 export default function InvestmentGate() {
-  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useInvestmentDecisions();
   const navigate = useNavigate();
   const p = PORTFOLIO;
@@ -22,8 +20,7 @@ export default function InvestmentGate() {
 
   return (
     <div className="mx-auto max-w-6xl space-y-8 pb-12">
-      <DemoModeBadge />
-      {/* Hero — Cinematic Entry */}
+{/* Hero — Cinematic Entry */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: "easeOut" }}
         className="relative rounded-3xl border border-border bg-gradient-to-br from-card via-card to-primary/5 p-8 overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/4" />

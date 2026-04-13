@@ -8,9 +8,8 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
 import { CheckCircle, XCircle, AlertTriangle, Shield, Rocket } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import ARSubNav from "@/components/admin/ARSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 interface GateCheck {
@@ -21,7 +20,6 @@ interface GateCheck {
 }
 
 export default function AR09AutomationLaunchGate() {
-  const { isDemoMode } = useDataMode();
   const { data: jobs = [] } = useQuery({
     queryKey: ["scheduled-jobs"],
     queryFn: async () => {
@@ -104,8 +102,7 @@ export default function AR09AutomationLaunchGate() {
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
-      <DemoModeBadge />
-      <ARSubNav />
+<ARSubNav />
       <SitaPageHeader
         title="Automation Launch Gate"
         subtitle="Use automation truth as a launch readiness signal"

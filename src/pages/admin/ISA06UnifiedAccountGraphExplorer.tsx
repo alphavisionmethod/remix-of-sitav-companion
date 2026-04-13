@@ -5,8 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 const db = supabase as any;
 import { Network, Shield, Plug, Smartphone, Users, ArrowRight, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -25,7 +24,6 @@ const statusIcons: Record<string, React.ReactNode> = {
 };
 
 export default function ISA06UnifiedAccountGraphExplorer() {
-  const { isDemoMode } = useDataMode();
   const { data: nodes = [] } = useQuery({
     queryKey: ["isa06-graph-nodes"],
     queryFn: async () => {
@@ -60,8 +58,7 @@ export default function ISA06UnifiedAccountGraphExplorer() {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <Network className="h-6 w-6 text-primary" /> Unified Account Graph
         </h1>

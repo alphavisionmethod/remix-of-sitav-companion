@@ -4,12 +4,11 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Shield, FileText, Download, Search, Filter, ChevronRight, CheckCircle, AlertTriangle, Clock, User, Workflow, Link2, Eye } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 type AuditCategory = "all" | "operator" | "system" | "trust" | "data" | "auth";
 
@@ -56,7 +55,6 @@ const ACTOR_ICONS = {
 };
 
 export default function AuditComplianceWorkspace() {
-  const { isDemoMode } = useDataMode();
   const [category, setCategory] = useState<AuditCategory>("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -78,7 +76,8 @@ export default function AuditComplianceWorkspace() {
           <Download className="h-4 w-4" /> Export Audit Log
         </button>
       </SitaPageHeader>
-      {isDemoMode && <DemoModeBadge />}
+      {isDemoMode &&
+}
 
       {/* Filters */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">

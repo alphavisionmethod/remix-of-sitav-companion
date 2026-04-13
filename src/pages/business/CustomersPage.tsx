@@ -11,11 +11,9 @@ import { ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransiti
 import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
 import { CustomerDetailPane } from "@/components/business/CustomerDetailPane";
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { SitaButton } from "@/components/sita/SitaCard";
 import { SectionSkeleton, KPISkeleton } from "@/components/sita/SectionSkeleton";
 import { useState, useMemo } from "react";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAction } from "@/lib/hooks/useAction";
 import { useNavigate } from "react-router-dom";
@@ -30,6 +28,7 @@ import { useCRMSync } from "@/hooks/use-backend-actions";
 import { RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 type Customer = MockCustomer;
 type Tab = "all" | "active" | "at-risk" | "new" | "inactive";
@@ -72,7 +71,6 @@ const TABS: { key: Tab; label: string }[] = [
 const CustomersPage = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { isDemoMode } = useDataMode();
   const crmSync = useCRMSync();
   const [tab, setTab] = useState<Tab>("all");
   const [search, setSearch] = useState("");
@@ -115,8 +113,7 @@ const CustomersPage = () => {
   if (isLoading) {
     return (
       <motion.div className="space-y-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-        <DemoModeBadge />
-        <KPISkeleton count={4} />
+<KPISkeleton count={4} />
         <SectionSkeleton cards={3} columns={1} />
       </motion.div>
     );
@@ -261,8 +258,7 @@ const CustomersPage = () => {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="h-full">
-      <DemoModeBadge />
-      <SplitWorkspace
+<SplitWorkspace
         list={listPane}
         detail={detailPane}
         hasSelection={!!selected}

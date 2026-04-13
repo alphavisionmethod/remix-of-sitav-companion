@@ -4,12 +4,11 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Terminal, Search, Play, Clock, ArrowRight, Trash2, Filter } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 interface CommandRecord {
   id: string;
@@ -39,7 +38,6 @@ const MODE_STYLES = {
 };
 
 export default function CommandHistory() {
-  const { isDemoMode } = useDataMode();
   const [filter, setFilter] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -60,7 +58,8 @@ export default function CommandHistory() {
           <Trash2 className="h-4 w-4" /> Clear History
         </button>
       </SitaPageHeader>
-      {isDemoMode && <DemoModeBadge />}
+      {isDemoMode &&
+}
 
       {/* Filters */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">

@@ -7,16 +7,14 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useCustomers } from "@/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/sita/EmptyState";
 import { DEMO_CONTACTS, DEMO_LIFECYCLE_STAGES, DEMO_NEXT_BEST_ACTIONS, DEMO_CONVERSATION_HISTORY, DEMO_RELATIONSHIP_GRAPH } from "@/lib/demo-data/revenue-office";
 import { clientSentimentService } from "@/lib/services/client-sentiment";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function RelationshipCenter() {
-  const { isDemoMode } = useDataMode();
   const { data: liveContacts, isLoading } = useCustomers();
   const [tab, setTab] = useState("contacts");
 
@@ -30,8 +28,7 @@ export default function RelationshipCenter() {
   if (!isDemoMode && isLoading) {
     return (
       <div className="min-h-screen bg-background p-6 space-y-6">
-        <DemoModeBadge />
-        <Skeleton className="h-8 w-48" />
+<Skeleton className="h-8 w-48" />
         <div className="flex gap-2">{[1,2,3,4].map(i => <Skeleton key={i} className="h-16 w-36 rounded-xl" />)}</div>
         <Skeleton className="h-32 rounded-xl" />
       </div>
@@ -41,8 +38,7 @@ export default function RelationshipCenter() {
   if (!isDemoMode && CONTACTS.length === 0) {
     return (
       <div className="min-h-screen bg-background p-6 space-y-6">
-        <DemoModeBadge />
-        <h1 className="text-2xl font-bold text-foreground">Relationship Center</h1>
+<h1 className="text-2xl font-bold text-foreground">Relationship Center</h1>
         <EmptyState icon={Users} title="No contacts yet" description="Add your first contact to start managing relationships." />
       </div>
     );
@@ -50,8 +46,7 @@ export default function RelationshipCenter() {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">Relationship Center</h1>
         <p className="text-sm text-muted-foreground">Lifecycle-aware CRM with relationship intelligence, scoring, and next-best-action</p>
       </motion.div>

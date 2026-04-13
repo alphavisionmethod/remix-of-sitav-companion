@@ -16,8 +16,7 @@ import {
   Zap, Search, CheckCircle, AlertTriangle, Eye, Layers, Globe,
   Settings, Activity, Lock,
 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 interface RegistryItem {
   id: string;
@@ -87,13 +86,11 @@ const tabConfig = [
 const statusDot = (s: string) => s === "active" ? "bg-trust-safe" : s === "degraded" ? "bg-accent" : s === "deprecated" ? "bg-muted-foreground" : "bg-muted-foreground";
 
 export default function MissionRegistryPage() {
-  const { isDemoMode } = useDataMode();
   const [search, setSearch] = useState("");
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
-      <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+<motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
         className="rounded-2xl border border-primary/15 bg-gradient-to-br from-primary/5 via-card to-card p-6"
       >
         <div className="flex items-center gap-4">

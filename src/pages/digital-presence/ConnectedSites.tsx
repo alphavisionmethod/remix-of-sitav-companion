@@ -3,20 +3,17 @@ import { Globe, Link2, RefreshCw, Shield, AlertTriangle, CheckCircle, Plus, Sett
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useSites } from "@/hooks/use-digital-presence";
 import { DEMO_AI_RECOMMENDATIONS, DEMO_AUDIT_FINDINGS, DEMO_DPO_PLATFORMS as DEMO_PLATFORMS } from "@/lib/demo-data/digital-presence";
 import DPOSubNav from "./DPOSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function ConnectedSites() {
-  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useSites();
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <DPOSubNav />
-      <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">Connected Website Manager</h1>
         <p className="text-sm text-muted-foreground">Connect, audit, monitor and optimize your web platforms</p>
       </motion.div>

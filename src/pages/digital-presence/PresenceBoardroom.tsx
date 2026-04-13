@@ -5,19 +5,16 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_DPO_ADVISOR_SIGNALS as DEMO_ADVISOR_SIGNALS, DEMO_DPO_METRICS as DEMO_METRICS, DEMO_LIVE_PROMOTIONS, DEMO_TOP_PAGES, DEMO_WEAK_PAGES } from "@/lib/demo-data/digital-presence";
 import DPOSubNav from "./DPOSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function PresenceBoardroom() {
-  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <DPOSubNav />
-      <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">Presence Boardroom</h1>
         <p className="text-sm text-muted-foreground">Website health, traffic, conversions & advisor intelligence</p>
       </motion.div>

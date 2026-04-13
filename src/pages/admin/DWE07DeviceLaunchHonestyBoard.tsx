@@ -4,14 +4,12 @@ import { Badge } from "@/components/ui/badge";
 import { Rocket, CheckCircle, XCircle, Beaker } from "lucide-react";
 import { fromTable } from "@/lib/supabase-helpers";
 import { DEVICE_ROADMAP } from "@/packages/contracts/msa/device-family-contract";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import type { AmbientLaunchReadinessRow } from "@/lib/types/dwe-types";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function DWE07DeviceLaunchHonestyBoard() {
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
 
   const { data: readiness = [] } = useQuery<AmbientLaunchReadinessRow[]>({
@@ -39,8 +37,7 @@ export default function DWE07DeviceLaunchHonestyBoard() {
   return (
     <div className="space-y-6 p-6">
       <DWESubNav />
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold text-foreground">DWE07 — Device & Wearable Launch Honesty Board</h1>
         <p className="text-muted-foreground">Truthful device readiness: real, demo, pilot, internal, unsupported.</p>
       </div>

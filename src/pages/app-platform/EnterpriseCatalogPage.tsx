@@ -7,10 +7,9 @@ import { ArrowLeft, Building, Shield, Lock, Check, Users, AlertTriangle, Downloa
 import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { AppIcon, VerificationBadge } from "@/components/sita/app-platform/AppStoreComponents";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_ENTERPRISE_APPS } from "@/lib/demo-data/core-pages";
 import { toast } from "sonner";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const statusConfig: Record<string, { label: string; color: string; icon: typeof Check }> = {
   available: { label: "Install", color: "bg-primary text-primary-foreground hover:bg-primary/90", icon: Download },
@@ -20,7 +19,6 @@ const statusConfig: Record<string, { label: string; color: string; icon: typeof 
 };
 
 const EnterpriseCatalogPage = () => {
-  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   const { installApp } = useAppPlatform();
 
@@ -31,8 +29,7 @@ const EnterpriseCatalogPage = () => {
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
-      <DemoModeBadge />
-      <button onClick={() => navigate("/app-store")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+<button onClick={() => navigate("/app-store")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
         <ArrowLeft className="h-4 w-4" /> Back to App Store
       </button>
 

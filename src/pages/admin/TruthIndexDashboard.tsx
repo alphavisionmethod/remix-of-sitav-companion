@@ -10,9 +10,8 @@ import { Progress } from "@/components/ui/progress";
 import { computeTruthIndices, type TruthIndexSummary } from "@/lib/core-services/truth-indices/truth-index-aggregator";
 import { Shield, Brain, Plug, Monitor, Eye, Layers, RefreshCw, Activity, Smartphone, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_INDEX_CONFIG } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 function getScoreColor(score: number): string {
   if (score >= 90) return "text-emerald-400";
@@ -29,7 +28,6 @@ function getScoreBadgeVariant(score: number): "default" | "secondary" | "destruc
 }
 
 export default function TruthIndexDashboard() {
-  const { isDemoMode } = useDataMode();
   const { data: indices, isLoading, refetch } = useQuery({
     queryKey: ["truth-indices"],
     queryFn: computeTruthIndices,
@@ -38,8 +36,7 @@ export default function TruthIndexDashboard() {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">SITA OS — Truth Index Dashboard</h1>
           <p className="text-muted-foreground mt-1">

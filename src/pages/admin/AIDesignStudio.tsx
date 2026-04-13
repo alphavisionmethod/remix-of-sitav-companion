@@ -3,9 +3,9 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
 import { Palette, Eye, CheckCircle2, ArrowRight, Sparkles, Sun, Moon, Accessibility, Layout, Type, Move } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_IMPROVEMENTS } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const typeIcons: Record<string, typeof Layout> = {
   layout: Layout,
@@ -22,8 +22,7 @@ const AIDesignStudio = () => {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <AdminPageHeader icon={Palette} title="Design Studio" subtitle="AI design team improvements — before/after, rationale, confidence, and consistency checks" accent="accent" />
+<AdminPageHeader icon={Palette} title="Design Studio" subtitle="AI design team improvements — before/after, rationale, confidence, and consistency checks" accent="accent" />
 
       <div className="grid grid-cols-4 gap-3">
         {[

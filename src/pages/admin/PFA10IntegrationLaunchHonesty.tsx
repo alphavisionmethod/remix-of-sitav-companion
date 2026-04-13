@@ -6,9 +6,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Flag, CheckCircle, AlertTriangle } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import PFASubNav from "@/components/admin/PFASubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -22,7 +21,6 @@ const labelColors: Record<string, string> = {
 };
 
 export default function PFA10IntegrationLaunchHonesty() {
-  const { isDemoMode } = useDataMode();
   const { data: honesty = [] } = useQuery({
     queryKey: ["integration-launch-honesty"],
     queryFn: async () => { const { data } = await fromTable("integration_launch_honesty").select("*, provider_families(name, provider_key), provider_capabilities(display_name, capability_key)").order("created_at"); return data || []; },
@@ -34,8 +32,7 @@ export default function PFA10IntegrationLaunchHonesty() {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <PFASubNav />
+<PFASubNav />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Flag className="h-6 w-6" /> Integration Launch Honesty</h1>
         <p className="text-sm text-muted-foreground mt-1">Truthful production/demo/internal launch state per integration</p>

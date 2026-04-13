@@ -15,7 +15,6 @@ import {
   ArrowUpRight, Settings, Search, Zap, CheckCircle2, XCircle, Clock,
   Scale, BookOpen
 } from "lucide-react";
-import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import {
   buildCapitalMap, analyzePortfolioRisk, detectRegime, runStressScenarios,
   evaluateThesis, calculatePositionSize,
@@ -28,8 +27,7 @@ import {
 import { useCapitalBuckets, usePositions, useTheses } from "@/hooks/use-investment-data";
 import { MOCK_CAPITAL_BUCKETS, MOCK_POSITIONS as FALLBACK_POSITIONS, MOCK_THESES as FALLBACK_THESES } from "@/lib/mock-data/investment";
 import { INVESTMENT_POLICY_RULES } from "@/lib/demo-data/investment";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // ── Derived Data (computed from hook data in main component, passed via context) ──
 // Module-level fallback for sub-components that render before hooks resolve
@@ -480,8 +478,7 @@ const InvestmentOffice = () => {
 
   return (
     <div className="space-y-6">
-      <DemoModeBadge />
-      <SitaPageHeader
+<SitaPageHeader
         title="Investment Office"
         subtitle="Capital protection, regime-aware intelligence, thesis discipline — not a trading app"
         actions={
@@ -502,17 +499,7 @@ const InvestmentOffice = () => {
       {activeTab === "execution" && <ExecutionReviewView />}
       {activeTab === "proof" && <ProofView />}
       {activeTab === "settings" && <SettingsView />}
-
-      <LiveAdvisorCard
-        advisor="money"
-        intent="portfolio_intelligence"
-        demoName="Portfolio Intelligence"
-        demoRole="Investment Advisor"
-        demoConfidence="Medium"
-        demoRecommendation="Current regime is risk-on with compressed volatility — supportive for measured position-taking. TLT thesis showing regime conflict — monitor for rate pivot signals before adding duration."
-        demoReasoning="Based on regime detection, thesis evaluation, stress scenarios, and risk budget utilization."
-      />
-    </div>
+</div>
   );
 };
 

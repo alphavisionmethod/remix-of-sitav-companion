@@ -6,14 +6,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { BookOpen } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import PFASubNav from "@/components/admin/PFASubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
 export default function PFA04ConsentLedgerExplorer() {
-  const { isDemoMode } = useDataMode();
   const { data: consents = [] } = useQuery({
     queryKey: ["consent-ledger"],
     queryFn: async () => { const { data } = await fromTable("consent_ledger").select("*, provider_families(name), provider_capabilities(display_name)").order("created_at", { ascending: false }).limit(100); return data || []; },
@@ -33,8 +31,7 @@ export default function PFA04ConsentLedgerExplorer() {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <PFASubNav />
+<PFASubNav />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2"><BookOpen className="h-6 w-6" /> Consent Ledger Explorer</h1>
         <p className="text-sm text-muted-foreground mt-1">Grants, upgrades, revocations, and permission histories</p>

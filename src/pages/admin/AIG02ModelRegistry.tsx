@@ -4,13 +4,11 @@ import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Cpu, CheckCircle, XCircle } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { getAIModelRegistry } from "@/lib/core-services/ai-gateway";
 import AIGSubNav from "@/components/admin/AIGSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function AIG02ModelRegistry() {
-  const { isDemoMode } = useDataMode();
   const { data: models = [] } = useQuery({
     queryKey: ["ai-model-registry"],
     queryFn: getAIModelRegistry,
@@ -20,8 +18,7 @@ export default function AIG02ModelRegistry() {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <AIGSubNav />
+<AIGSubNav />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Cpu className="h-6 w-6" /> AIG02 — AI Model Registry</h1>
         <p className="text-sm text-muted-foreground mt-1">All registered models, tiers, costs, and capabilities</p>

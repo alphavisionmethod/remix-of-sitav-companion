@@ -11,8 +11,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useOSOrchestration } from "@/hooks/useOSOrchestration";
 import { useAdaptiveInterface } from "@/hooks/useAdaptiveInterface";
@@ -21,6 +19,7 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import {
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
   ListTodo, Plus, Search, Calendar, CheckCircle2, Clock, AlertTriangle,
   ArrowRight, Users, RotateCcw, Filter, Workflow, ChevronRight, Eye,
   GitBranch, Kanban, ListOrdered, Target, Flame, Pause, Play,
@@ -88,7 +87,6 @@ const DOMAIN_COLORS: Record<TaskDomain, string> = {
 };
 
 export default function TasksWorkflowsCenter() {
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const os = useOSOrchestration();
   const interfaceState = useAdaptiveInterface();
@@ -128,8 +126,7 @@ export default function TasksWorkflowsCenter() {
 
   return (
     <div className="space-y-6 p-6 max-w-7xl mx-auto">
-      <DemoModeBadge />
-      <SitaPageHeader
+<SitaPageHeader
         icon={<ListTodo className="h-6 w-6" />}
         title="Tasks & Workflows"
         subtitle="Your action engine — tasks, queues, dependencies, and workflows"

@@ -10,8 +10,7 @@ import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Globe, Smartphone, Monitor, Glasses, Mic, RefreshCw, CheckCircle, XCircle, Layers, AlertTriangle, Shield } from "lucide-react";
 import { toast } from "sonner";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -28,7 +27,6 @@ const stageColors: Record<string, string> = {
 };
 
 export default function MSA01MultiSurfaceOverview() {
-  const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
 
   const { data: surfaces = [] } = useQuery({
@@ -103,8 +101,7 @@ export default function MSA01MultiSurfaceOverview() {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2"><Layers className="h-6 w-6" /> Multi-Surface Architecture</h1>
           <p className="text-sm text-muted-foreground mt-1">One sovereign runtime, many shells — web, mobile, desktop, spatial, voice</p>

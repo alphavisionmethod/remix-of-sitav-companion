@@ -4,11 +4,10 @@ import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Eye, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { getAILaunchHonestyBoard, getLaunchHonestyRecords } from "@/lib/core-services/ai-gateway";
 import type { LaunchHonestyLevel } from "@/lib/core-services/ai-gateway";
 import AIGSubNav from "@/components/admin/AIGSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const LEVEL_COLORS: Record<LaunchHonestyLevel, string> = {
   real: "default",
@@ -29,7 +28,6 @@ const LEVEL_ICONS: Record<LaunchHonestyLevel, React.ReactNode> = {
 };
 
 export default function AIG06LaunchTruth() {
-  const { isDemoMode } = useDataMode();
   const { data: capabilities = [] } = useQuery({
     queryKey: ["ai-launch-honesty"],
     queryFn: getAILaunchHonestyBoard,
@@ -47,8 +45,7 @@ export default function AIG06LaunchTruth() {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <AIGSubNav />
+<AIGSubNav />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Eye className="h-6 w-6" /> AIG07 — AI Launch Truth Board</h1>
         <p className="text-sm text-muted-foreground mt-1">Which AI features are real, demo, partial, blocked, or planned — with canonical honesty records</p>

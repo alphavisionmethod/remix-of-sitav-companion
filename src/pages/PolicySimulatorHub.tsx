@@ -16,8 +16,7 @@ import {
   Shield, Play, AlertTriangle, CheckCircle, ChevronRight,
   DollarSign, Wifi, Users, Zap, Lock, Eye, RotateCcw, Package,
 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 interface PresetScenario {
   id: string;
@@ -56,8 +55,7 @@ export default function PolicySimulatorHub() {
 
   return (
     <div className="max-w-[1200px] mx-auto space-y-5">
-      <DemoModeBadge />
-      <AdminPageHeader icon={Shield} title="Policy Simulator" subtitle='Test "what if" scenarios to understand how policies protect your system'>
+<AdminPageHeader icon={Shield} title="Policy Simulator" subtitle='Test "what if" scenarios to understand how policies protect your system'>
         <button onClick={() => navigate("/mission/policies/simulate")}
           className="flex items-center gap-2 rounded-xl border border-border bg-card/60 px-4 py-2 text-xs text-muted-foreground hover:text-foreground hover:bg-secondary transition-all"
         >

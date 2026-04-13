@@ -5,11 +5,9 @@ import { Progress } from "@/components/ui/progress";
 import { useRealityClassifications, useClassificationStats } from "@/hooks/useRealityClassifications";
 import { useMockReplacements, useMockReplacementStats } from "@/hooks/useMockReplacements";
 import { TrendingUp, CheckCircle2, ArrowRight, Clock, Target } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function RealityProgressTimeline() {
-  const { isDemoMode } = useDataMode();
   const { data: classifications = [] } = useRealityClassifications();
   const { data: mockReplacements = [] } = useMockReplacements();
   const cStats = useClassificationStats(classifications);
@@ -39,8 +37,7 @@ export default function RealityProgressTimeline() {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold">Reality Progress Timeline</h1>
         <p className="text-sm text-muted-foreground">Track conversion progress over time — RCP11</p>
       </div>

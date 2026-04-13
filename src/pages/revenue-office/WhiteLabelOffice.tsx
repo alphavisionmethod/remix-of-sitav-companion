@@ -5,9 +5,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_BRANDS, DEMO_PARTNERS, DEMO_SPLITS } from "@/lib/demo-data/revenue-office";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const CLIENT_HEALTH_BY_PARTNER = [
   { partner: "Apex Growth", clients: [{ name: "TechFlow", health: 92, trend: "up", revenue: "$4,200/mo" }, { name: "HealthFirst", health: 78, trend: "stable", revenue: "$3,100/mo" }] },
@@ -28,8 +27,7 @@ const WhiteLabelOffice = () => {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <SitaPageHeader icon={<Building2 className="h-5 w-5" />} title="White Label Office" subtitle="Multi-client intelligence — partner health, reputation trends, and delegated operations" />
+<SitaPageHeader icon={<Building2 className="h-5 w-5" />} title="White Label Office" subtitle="Multi-client intelligence — partner health, reputation trends, and delegated operations" />
 
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
         {[

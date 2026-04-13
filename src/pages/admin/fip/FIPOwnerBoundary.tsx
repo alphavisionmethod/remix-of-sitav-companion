@@ -4,8 +4,7 @@ import { Users, AlertTriangle, CheckCircle2, Shield, GitBranch } from "lucide-re
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useOwnerDecisions } from "@/hooks/use-fip-data";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -23,8 +22,7 @@ const FIPOwnerBoundary = () => {
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
       <FIPSubNav />
-      <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Users className="h-6 w-6 text-primary" /> FIP03 — Owner Boundary Console</h1>
         <p className="text-muted-foreground mt-1">Enforce owner correctness and smallest-correct-owner rule</p>
       </motion.div>

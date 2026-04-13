@@ -12,14 +12,12 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Shield, AlertTriangle, Zap, Bot, Heart, Wrench } from "lucide-react";
 import { toast } from "sonner";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_ADMIN_SCOPES as DEMO_SCOPES } from "@/lib/demo-data/admin-platform";
 import ARSubNav from "@/components/admin/ARSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 export default function AR08KillSwitchCenter() {
-  const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
   const { data: switches = [] } = useQuery({
     queryKey: ["kill-switches"],
@@ -39,8 +37,7 @@ export default function AR08KillSwitchCenter() {
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
-      <DemoModeBadge />
-      <ARSubNav />
+<ARSubNav />
       <SitaPageHeader
         title="Kill Switch & Safety Center"
         subtitle="Control automation safety — disable recurring execution globally or by domain"

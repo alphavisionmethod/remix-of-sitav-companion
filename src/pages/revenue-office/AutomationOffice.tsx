@@ -12,8 +12,6 @@ import {
   MessageSquare, UserPlus, Heart, Package, ArrowUpRight, Layers, Globe, Calendar,
   GitBranch, Send, Award, Glasses, HandMetal
 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import {
   DEMO_activeAutomations, DEMO_advisorRecommendations, DEMO_atRiskAutomations,
   DEMO_automationStats, DEMO_leakRepairOpportunities,
@@ -21,6 +19,7 @@ import {
   DEMO_AUTOMATION_QUALITY_SCORES, DEMO_SHADOW_BOARD, DEMO_PROMISES
 } from "@/lib/demo-data/revenue-office";
 import AutomationSubNav from "./AutomationSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const levelColors: Record<string, string> = {
   "Auto-run (L3)": "bg-emerald-500/10 text-emerald-400",
@@ -65,14 +64,12 @@ const promiseStatusColors: Record<string, string> = {
 };
 
 export default function AutomationOffice() {
-  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   const [selectedTab, setSelectedTab] = useState("overview");
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
-      <DemoModeBadge />
-      <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
             <Workflow className="h-6 w-6 text-primary" />

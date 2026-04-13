@@ -2,11 +2,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Theater, Shield, AlertTriangle, Check, X, Brain, Target, Zap, Clock, FileText, Volume2 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { INVESTMENT_ADVISORS, SAMPLE_ORDERS, SAMPLE_SCENARIOS } from "@/hooks/useInvestmentOfficeData";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useInvestmentDecisions } from "@/hooks/use-investment-office";
 import { DEMO_READINESS_DIMENSIONS } from "@/lib/demo-data/investment";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Advisor votes for the cinematic voting panel
 const ADVISOR_VOTES: Record<string, "approve" | "reject" | "abstain"> = {
@@ -199,7 +198,6 @@ function AudioWaveIndicator() {
 }
 
 export default function DecisionTheater() {
-  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useInvestmentDecisions();
   const navigate = useNavigate();
   const [spotlightActive, setSpotlightActive] = useState(false);
@@ -210,9 +208,7 @@ export default function DecisionTheater() {
   return (
     <div className="mx-auto max-w-5xl space-y-6 relative">
       <SpotlightOverlay active={spotlightActive} />
-      <DemoModeBadge />
-
-      <div className="text-center space-y-2 pt-4">
+<div className="text-center space-y-2 pt-4">
         <h1 className="text-3xl font-bold text-foreground flex items-center justify-center gap-3">
           <Theater className="h-7 w-7 text-primary" /> Decision Theater
         </h1>

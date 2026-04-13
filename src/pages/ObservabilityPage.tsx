@@ -25,8 +25,6 @@ import {
 } from "lucide-react";
 import type { ServiceReliabilityView } from "@/packages/contracts";
 import type { DriftDetection, VerificationOutcome } from "@/packages/reality-contracts";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DegradedStatePanel } from "@/components/reality/DegradedStatePanel";
 import { DiagnosticsContextBar } from "@/components/admin-os/DiagnosticsContextBar";
 import { LaunchHonestyBadge } from "@/components/reality/LaunchHonestyBadge";
@@ -34,14 +32,14 @@ import { RealityStateBadge } from "@/components/reality/RealityStateBadge";
 import { LaunchTruthIndicator } from "@/components/admin-os/LaunchTruthIndicator";
 import { RealityModeIndicator } from "@/components/admin-os/RealityModeIndicator";
 import { SystemStatusBar } from "@/components/admin-os/SystemStatusBar";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 /* Count-up KPI tile for observability */
 const ObsKPITile = ({ label, value, ok, icon: Icon }: { label: string; value: string; ok: boolean; icon: React.ElementType }) => {
   const animated = useCountUpFormatted(value);
   return (
     <div className={cn("rounded-xl border px-3 py-2.5 text-center", ok ? "border-border bg-card/50" : "border-accent/20 bg-accent/5")}>
-      <DemoModeBadge />
-      <Icon className={cn("h-4 w-4 mx-auto mb-1", ok ? "text-muted-foreground" : "text-accent")} />
+<Icon className={cn("h-4 w-4 mx-auto mb-1", ok ? "text-muted-foreground" : "text-accent")} />
       <p className={cn("font-display text-sm font-bold tabular-nums", ok ? "text-foreground" : "text-accent")}>{animated}</p>
       <p className="text-[9px] text-muted-foreground">{label}</p>
     </div>
@@ -49,7 +47,6 @@ const ObsKPITile = ({ label, value, ok, icon: Icon }: { label: string; value: st
 };
 
 export default function ObservabilityPage() {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("overview");
   const { engines } = useOSRuntime();
   const summary = useMissionControlSummary();

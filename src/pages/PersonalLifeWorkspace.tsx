@@ -12,13 +12,12 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Textarea } from "@/components/ui/textarea";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import {
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
   Heart, Sun, Moon, Target, RotateCcw, ListChecks, BookOpen,
   Calendar, Flame, CheckCircle2, Clock, AlertTriangle, Sparkles,
   TrendingUp, Battery, BatteryLow, BatteryMedium, Play, Pause,
@@ -61,7 +60,6 @@ const ENERGY_ICONS = { high: Battery, medium: BatteryMedium, low: BatteryLow };
 const ENERGY_COLORS = { high: "text-emerald-400", medium: "text-amber-400", low: "text-destructive" };
 
 export default function PersonalLifeWorkspace() {
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState("daily");
   const [energyLevel, setEnergyLevel] = useState<"high" | "medium" | "low">("medium");
@@ -88,8 +86,7 @@ export default function PersonalLifeWorkspace() {
 
   return (
     <div className="space-y-6 p-6 max-w-7xl mx-auto">
-      <DemoModeBadge />
-      <SitaPageHeader
+<SitaPageHeader
         icon={<Heart className="h-6 w-6" />}
         title="Personal Life"
         subtitle="Your routines, goals, habits, and personal wellbeing"

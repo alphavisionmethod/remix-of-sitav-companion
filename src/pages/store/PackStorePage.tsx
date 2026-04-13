@@ -16,13 +16,11 @@ import {
   MOCK_INSTALL_STATES, type StoreCategory, type PackManifest,
 } from "@/lib/pack-store";
 import { ArrowRight, Package, RefreshCw, Sparkles, TrendingUp } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { usePackInstalls } from "@/hooks/use-live-data";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const PackStorePage = () => {
   const navigate = useNavigate();
-  const { isDemoMode } = useDataMode();
   const { data: liveInstalls } = usePackInstalls();
   const [activeCategory, setActiveCategory] = useState<string>("all");
 
@@ -39,8 +37,7 @@ const PackStorePage = () => {
 
   return (
     <div className="mx-auto max-w-6xl space-y-8">
-      <DemoModeBadge />
-      <h1 className="sr-only">Pack Store</h1>
+<h1 className="sr-only">Pack Store</h1>
       {/* Hero */}
       <StoreHero
         installedCount={installed.length}

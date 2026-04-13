@@ -6,9 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { BarChart3, TrendingUp, DollarSign, RefreshCw, Zap, Target, CheckCircle, AlertTriangle, Clock, Shield, Activity, Heart } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_AUTOPILOT_ACTIONS, DEMO_WINBACKS } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -41,15 +40,13 @@ const DEMO_HEALTH = {
 };
 
 const RevenueAutopilotMonitor = () => {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("overview");
   const totalRecovered = DEMO_RECOVERED.reduce((s, r) => s + r.value, 0);
   const totalSaved = DEMO_SAVED_COSTS.reduce((s, c) => s + c.savedUsd, 0);
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      <DemoModeBadge />
-      <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground tracking-tight flex items-center gap-2">
             <BarChart3 className="h-6 w-6 text-primary" /> Revenue Autopilot

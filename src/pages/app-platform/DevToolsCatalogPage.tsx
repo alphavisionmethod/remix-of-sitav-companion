@@ -10,12 +10,10 @@ import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { APP_BUNDLES } from "@/lib/app-platform";
 import { AppCard, BundleCard, AppIcon } from "@/components/sita/app-platform/AppStoreComponents";
 import type { AppDefinition } from "@/lib/app-platform/types";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_DEV_CATEGORIES } from "@/lib/demo-data/core-pages";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const DevToolsCatalogPage = () => {
-  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   const { apps } = useAppPlatform();
   const [activeCat, setActiveCat] = useState("all");
@@ -37,8 +35,7 @@ const DevToolsCatalogPage = () => {
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
-      <DemoModeBadge />
-      <button onClick={() => navigate("/app-store")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+<button onClick={() => navigate("/app-store")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
         <ArrowLeft className="h-4 w-4" /> Back to App Store
       </button>
 

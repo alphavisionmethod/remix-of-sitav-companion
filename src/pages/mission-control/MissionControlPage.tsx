@@ -26,7 +26,6 @@ import {
   PermissionsCard,
 } from "@/components/sita/MissionControlComponents";
 import { mockAdvisors, mockRecommendations, mockInternalAgents, mockIncidents, mockConnectorHealth, mockStuckWorkflows, mockCostAnomalies, mockPolicyAnomalies, mockReleaseSafety, mockApprovals, mockSafeMode, type SafeModeState } from "@/hooks/useAdvisorMissionControl";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { cn } from "@/lib/utils";
 import { useFraudSentinel, useGovernanceSimulator } from "@/contexts/SitaKernelContext";
@@ -49,6 +48,7 @@ import { useTokenUsages } from "@/hooks/use-domain-data";
 
 
 import {
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
   Server, Shield, Activity, Wifi, AlertTriangle, DollarSign, Rocket,
   Lock, RotateCcw, Clock, Eye, CheckCircle, Cpu, Zap, FileText,
   ShieldAlert, Users, GitBranch, Database, RefreshCw, Loader2,
@@ -1238,8 +1238,7 @@ export default function MissionControlPage() {
   return (
     <MCAdminCtx.Provider value={mcAdminData}>
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-5">
-      <DemoModeBadge />
-      <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
         <ModeToggle mode={mode} setMode={setMode} />
         {isOwner && (
           <div className="flex gap-2">

@@ -13,8 +13,7 @@ import { getCostSummary, type CostSummary } from "@/lib/observability/cost-gover
 import { getLogBuffer, type LogEntry } from "@/lib/observability/structured-logger";
 import { serviceHeartbeat, type HeartbeatSummary } from "@/lib/services/service-registry/heartbeat";
 import { createServiceRegistry } from "@/lib/services/service-registry";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const statusColor = (s: string) => {
   switch (s) {
@@ -27,7 +26,6 @@ const statusColor = (s: string) => {
 };
 
 export default function SystemHealthDashboard() {
-  const { isDemoMode } = useDataMode();
   const [probes, setProbes] = useState<ProbeResult[]>([]);
   const [overallHealth, setOverallHealth] = useState<string>("unknown");
   const [costSummary, setCostSummary] = useState<CostSummary | null>(null);
@@ -63,8 +61,7 @@ export default function SystemHealthDashboard() {
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
-      <DemoModeBadge />
-      <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">System Health</h1>
           <p className="text-muted-foreground text-sm">Real-time observability dashboard</p>

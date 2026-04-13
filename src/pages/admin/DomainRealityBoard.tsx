@@ -13,9 +13,8 @@ import {
   Database, Shield, CheckCircle, XCircle, AlertTriangle,
   FileText, PenSquare, Eye, Layers
 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_ADMIN_DOMAINS as DEMO_DOMAINS } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 interface FeatureReality {
   feature: string;
@@ -40,14 +39,12 @@ const pathColor = (p: string) => {
 };
 
 export default function DomainRealityBoard() {
-  const { isDemoMode } = useDataMode();
   const [selectedDomain, setSelectedDomain] = useState(0);
   const domain = DEMO_DOMAINS[selectedDomain];
 
   return (
     <div className="mx-auto max-w-7xl space-y-6 p-6">
-      <DemoModeBadge />
-      <SitaPageHeader title="Domain Reality Conversion Board" subtitle="Feature-level real vs demo readiness across every flagship domain" />
+<SitaPageHeader title="Domain Reality Conversion Board" subtitle="Feature-level real vs demo readiness across every flagship domain" />
 
       <SitaTabs
         tabs={DEMO_DOMAINS.map(d => ({ key: d.domain, label: d.domain }))}

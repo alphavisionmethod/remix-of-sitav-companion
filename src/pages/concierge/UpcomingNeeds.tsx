@@ -10,7 +10,6 @@ import { UpcomingObligationsCard } from "@/components/concierge";
 import { AppSurface } from "@/components/sita/surfaces/AppSurface";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { motion } from "framer-motion";
 import { Calendar, Clock, AlertCircle, Zap, Eye } from "lucide-react";
 
@@ -39,7 +38,6 @@ type UpcomingView = "today" | "3-day" | "week" | "burden";
 
 const UpcomingNeeds = () => {
   const [view, setView] = useState<UpcomingView>("today");
-  const { isDemoMode } = useDataMode();
 
   const todayItems = OBLIGATIONS.filter(o => o.dueLabel.startsWith("Today") || o.dueLabel.startsWith("Overdue"));
   const threeDayItems = OBLIGATIONS.filter(o => !o.dueLabel.includes("week") && !o.dueLabel.includes("10") && !o.dueLabel.includes("12") && !o.dueLabel.includes("16"));

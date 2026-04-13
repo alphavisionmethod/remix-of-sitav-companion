@@ -7,7 +7,6 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useGroceryLists } from "@/hooks/use-concierge-data";
 import { DEMO_CONC_categories as DEMO_categories, DEMO_recurringSupplies, DEMO_stores } from "@/lib/demo-data/concierge";
 

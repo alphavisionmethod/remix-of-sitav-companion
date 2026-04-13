@@ -3,11 +3,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Smartphone, Watch, Laptop, Monitor, Wifi, WifiOff, Shield, Activity } from "lucide-react";
 import { fromTable } from "@/lib/supabase-helpers";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import type { ConnectedDeviceRow, DeviceFamilyRow } from "@/lib/types/dwe-types";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const iconMap: Record<string, React.ReactNode> = {
   phone: <Smartphone className="h-5 w-5" />,
@@ -20,7 +19,6 @@ const iconMap: Record<string, React.ReactNode> = {
 };
 
 export default function DWE01ConnectedDevicesCenter() {
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
 
   const { data: devices = [] } = useQuery<ConnectedDeviceRow[]>({
@@ -44,8 +42,7 @@ export default function DWE01ConnectedDevicesCenter() {
   return (
     <div className="space-y-6 p-6">
       <DWESubNav />
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold text-foreground">DWE01 — Connected Devices Center</h1>
         <p className="text-muted-foreground">All phones, watches, desktops, wearables, and their trust/connection state.</p>
       </div>

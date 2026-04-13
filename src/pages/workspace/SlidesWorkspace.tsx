@@ -7,12 +7,11 @@
 import { useState } from "react";
 import { useDecks } from "@/hooks/use-domain-data";
 import type { MockDeck, MockSlide } from "@/lib/mock-data/workspace";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
 import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import {
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
   Presentation, Plus, Clock, Users, Play, Download, MoreVertical,
   BarChart3, Shield, ChevronLeft, ChevronRight, Maximize2, Minimize2,
   Edit3, Copy, Trash2, Image, Type, LayoutTemplate, Save, X,
@@ -31,7 +30,6 @@ const typeColors: Record<string, string> = {
 };
 
 const SlidesWorkspace = () => {
-  const { isDemoMode } = useDataMode();
   const { data: decksData = [] } = useDecks();
 
   const [selectedDeck, setSelectedDeck] = useState<MockDeck | null>(null);
@@ -258,8 +256,7 @@ const SlidesWorkspace = () => {
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
-      <DemoModeBadge />
-      <SitaPageHeader
+<SitaPageHeader
         title="Slides"
         subtitle="Boardroom decks, proposals, and presentation packets — generated from your data"
         actions={

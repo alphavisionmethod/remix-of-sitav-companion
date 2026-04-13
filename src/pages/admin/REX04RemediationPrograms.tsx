@@ -4,7 +4,6 @@ import { fetchRemediationPrograms } from "@/lib/core-services/recommendation-exe
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Layers, CheckCircle2, Clock, Target } from "lucide-react";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
@@ -16,7 +15,6 @@ const statusBadge: Record<string, string> = {
 };
 
 export default function REX04RemediationPrograms() {
-  const { isDemoMode } = useDataMode();
   const { data: programs, isLoading } = useQuery({
     queryKey: ["rex04-remediation-programs"],
     queryFn: fetchRemediationPrograms,

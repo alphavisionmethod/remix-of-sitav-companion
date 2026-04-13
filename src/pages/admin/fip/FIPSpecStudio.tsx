@@ -11,14 +11,12 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useFeatureSpecs, useCreateSpec } from "@/hooks/use-fip-data";
 import { COMPLIANCE_SECTIONS } from "@/lib/fip/types";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_SPEC_SECTIONS } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
 const FIPSpecStudio = () => {
-  const { isDemoMode } = useDataMode();
   const { data: specs = [], isLoading } = useFeatureSpecs();
   const createSpec = useCreateSpec();
   const [showForm, setShowForm] = useState(false);
@@ -35,8 +33,7 @@ const FIPSpecStudio = () => {
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
       <FIPSubNav />
-      <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold flex items-center gap-2"><FileText className="h-6 w-6 text-primary" /> FIP02 — Feature Spec Studio</h1>

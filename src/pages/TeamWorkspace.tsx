@@ -6,8 +6,7 @@ import { Users, UserPlus, ArrowRightLeft, CheckCircle2, Clock, AlertTriangle, Ba
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 interface TeamMember { id: string; name: string; role: string; activeTasks: number; completedThisWeek: number; overdue: number; load: "light" | "normal" | "heavy" | "overloaded"; avatar: string; }
 interface Delegation { id: string; task: string; from: string; to: string; status: "pending" | "accepted" | "in-progress" | "completed"; dueDate: string; priority: string; }
@@ -30,13 +29,11 @@ const STATUS_COLORS = { pending: "bg-amber-500/15 text-amber-300", accepted: "bg
 const fadeUp = { hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.25 } } };
 
 const TeamWorkspace = () => {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("workload");
 
   return (
     <div className="min-h-screen pb-12">
-      <DemoModeBadge />
-      <SitaPageHeader title="Team & Delegation" subtitle="Assign, track, and balance workload" actions={
+<SitaPageHeader title="Team & Delegation" subtitle="Assign, track, and balance workload" actions={
         <div className="flex gap-2">
           <Button size="sm" variant="outline" className="gap-1.5 border-border/50"><ArrowRightLeft className="w-3.5 h-3.5" /> Delegate Task</Button>
           <Button size="sm" variant="outline" className="gap-1.5 border-border/50"><UserPlus className="w-3.5 h-3.5" /> Invite</Button>

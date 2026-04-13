@@ -9,8 +9,7 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Radar, RefreshCw, AlertTriangle, CheckCircle, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -27,7 +26,6 @@ const heatCell = (status: string) => {
 };
 
 export default function MSA05CompatibilityRadar() {
-  const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
 
   const { data: consistency = [] } = useQuery({
@@ -79,8 +77,7 @@ export default function MSA05CompatibilityRadar() {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2"><Radar className="h-6 w-6" /> Future Surface Compatibility Radar</h1>
           <p className="text-sm text-muted-foreground mt-1">Detect web-trapped logic, cross-surface drift, and portability blockers</p>

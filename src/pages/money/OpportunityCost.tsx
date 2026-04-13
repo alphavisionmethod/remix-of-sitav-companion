@@ -5,12 +5,11 @@
 import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile } from "@/components/sita/SitaComponents";
 import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
-import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { ArrowRight, DollarSign, TrendingDown, Target, PiggyBank, CreditCard } from "lucide-react";
 import { motion } from "framer-motion";
 import type { OpportunityCostEntry } from "@/packages/finance-contracts/advanced-intelligence";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const demoEntries: OpportunityCostEntry[] = [
   { category: "Dining & Delivery", spentCents: 42000, preventedReserveGrowthCents: 42000, delayedDebtPayoffDays: 8, delayedGoalProgressPct: 2.1, alternativeUse: "Emergency fund +$420" },
@@ -29,9 +28,7 @@ const OpportunityCost = () => {
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
       <DomainHeader domain="money" title="Opportunity Cost Dashboard" subtitle="See what your spending prevented — not just what it cost" />
-      <DemoModeBadge />
-
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+<div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KPITile label="Discretionary Spent" value={`$${(totalSpent / 100).toLocaleString()}`} icon={DollarSign} sub="This month" />
         <KPITile label="Reserve Growth Delayed" value={`$${(totalSpent / 100).toLocaleString()}`} icon={PiggyBank} sub="Could have been reserves" />
         <KPITile label="Debt Payoff Delayed" value={`${totalDelayDays} days`} icon={CreditCard} sub="Extra interest accruing" />

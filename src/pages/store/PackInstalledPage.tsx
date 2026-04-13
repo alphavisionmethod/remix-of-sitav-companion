@@ -8,19 +8,16 @@ import { PackStatusBadge, TierBadge, resolveIcon } from "@/components/sita/PackS
 import { getInstalledPacks, getPacksWithUpdates } from "@/lib/pack-store";
 import { ArrowLeft, Settings, RefreshCw, Pause, Trash2, Shield, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const PackInstalledPage = () => {
-  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   const installed = getInstalledPacks();
   const withUpdates = getPacksWithUpdates();
 
   return (
     <div className="mx-auto max-w-4xl space-y-8">
-      <DemoModeBadge />
-      <button onClick={() => navigate("/store")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+<button onClick={() => navigate("/store")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
         <ArrowLeft className="h-4 w-4" /> Back to Store
       </button>
 

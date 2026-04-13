@@ -6,9 +6,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ShieldAlert, CheckCircle, XCircle, AlertTriangle, Shield, Plug, Eye, Zap } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { getRelation, parseProviderFamilyRef } from "@/lib/types/relation-parsers";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -27,7 +26,6 @@ const auditTypeIcons: Record<string, React.ReactNode> = {
 };
 
 export default function ISA07AuthConnectorTruthBoard() {
-  const { isDemoMode } = useDataMode();
   // Run separation audit checks
   const { data: families = [] } = useQuery({
     queryKey: ["isa07-families"],
@@ -172,8 +170,7 @@ export default function ISA07AuthConnectorTruthBoard() {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <ShieldAlert className="h-6 w-6 text-primary" /> Auth vs Connector Truth Board
         </h1>

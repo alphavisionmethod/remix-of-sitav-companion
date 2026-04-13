@@ -3,16 +3,14 @@ import {
   BarChart3, Brain, TrendingUp, TrendingDown, Shield, PieChart, Target, Eye,
   Zap, Globe, DollarSign, AlertTriangle, ChevronRight, Calendar
 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { INSTRUMENTS, INVESTMENT_ADVISORS, PORTFOLIO, SAMPLE_ORDERS, SAMPLE_SCENARIOS, SAMPLE_THESES } from "@/hooks/useInvestmentOfficeData";
 import { useInvestmentStrategyRecords } from "@/hooks/use-investment-office";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const fmt = (n: number) => n >= 1e9 ? `$${(n / 1e9).toFixed(1)}B` : n >= 1e6 ? `$${(n / 1e6).toFixed(2)}M` : n >= 1e3 ? `$${(n / 1e3).toFixed(1)}K` : `$${n.toFixed(2)}`;
 const pctFmt = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
 
 export default function AdvancedMode() {
-  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useInvestmentStrategyRecords();
   const navigate = useNavigate();
   const p = PORTFOLIO;
@@ -22,8 +20,7 @@ export default function AdvancedMode() {
 
   return (
     <div className="mx-auto max-w-[90rem] space-y-4">
-      <DemoModeBadge />
-      {/* Compact Header */}
+{/* Compact Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <BarChart3 className="h-5 w-5 text-primary" />

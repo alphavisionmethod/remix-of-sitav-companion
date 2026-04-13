@@ -5,15 +5,13 @@ import { Theater, AlertTriangle, CheckCircle, Users, TrendingUp, Shield, Zap, Ar
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_pendingDecisions, DEMO_SCENARIO_CARDS } from "@/lib/demo-data/revenue-office";
 import { useState } from "react";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 type DecisionState = "draft" | "review" | "approved" | "executed";
 
 export default function DecisionTheater() {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("decisions");
   const [decisionStates, setDecisionStates] = useState<Record<number, DecisionState>>({});
   const [scenarioStates, setScenarioStates] = useState<Record<number, "pending" | "approved" | "rejected">>({});
@@ -25,8 +23,7 @@ export default function DecisionTheater() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Theater className="h-6 w-6 text-purple-400" /> Business Decision Theater</h1>
         <p className="text-muted-foreground">Pre-launch review — impact simulation, advisor debate, risk analysis, and authorization</p>
       </div>

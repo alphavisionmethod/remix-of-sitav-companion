@@ -6,14 +6,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ArrowUpCircle, CheckCircle, XCircle } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import PFASubNav from "@/components/admin/PFASubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
 export default function PFA06PermissionUpgradeCenter() {
-  const { isDemoMode } = useDataMode();
   const { data: levels = [] } = useQuery({
     queryKey: ["permission-levels"],
     queryFn: async () => { const { data } = await fromTable("permission_levels").select("*, provider_capabilities(capability_key, display_name)").order("created_at"); return data || []; },
@@ -31,8 +29,7 @@ export default function PFA06PermissionUpgradeCenter() {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <PFASubNav />
+<PFASubNav />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2"><ArrowUpCircle className="h-6 w-6" /> Permission Upgrade Center</h1>
         <p className="text-sm text-muted-foreground mt-1">Upgradeable connectors and permission ladders</p>

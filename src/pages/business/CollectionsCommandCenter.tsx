@@ -11,7 +11,6 @@ import {
 } from "lucide-react";
 import { useCollectionsAccounts } from "@/hooks/use-domain-data";
 import type { CollectionsAccount } from "@/lib/mock-data/collections";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 import { HeroCard, QueueCard, StatusCard, ActionCard, SummaryCard, TimelineCard } from "@/components/sita/cards";
 import { ExecutionBadge, UrgencyBadge } from "@/components/sita/badges";
@@ -62,7 +61,6 @@ const riskUrgency = (score: number): "critical" | "high" | "normal" | "low" =>
 // ── Main Component ──────────────────────────────────────────────
 
 const CollectionsCommandCenter = () => {
-  const { isDemoMode } = useDataMode();
   const { data: accounts = [] } = useCollectionsAccounts();
   const [tab, setTab] = useState("overview");
   const [selectedId, setSelectedId] = useState<string | null>(null);

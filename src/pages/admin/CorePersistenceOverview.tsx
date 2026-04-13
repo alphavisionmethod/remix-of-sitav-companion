@@ -13,8 +13,7 @@ import {
   fetchIntelligenceAssets, getAssetStats,
 } from "@/lib/persistence";
 import { PageSkeleton } from "@/components/sita/PageSkeleton";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const fade = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -23,8 +22,7 @@ function HealthCard({ title, icon: Icon, status, detail, count }: { title: strin
   const colors = { healthy: "text-emerald-400 border-emerald-500/30 bg-emerald-500/5", warning: "text-amber-400 border-amber-500/30 bg-amber-500/5", error: "text-red-400 border-red-500/30 bg-red-500/5" };
   return (
     <motion.div variants={fade}>
-      <DemoModeBadge />
-      <Card className={`border ${colors[status]}`}>
+<Card className={`border ${colors[status]}`}>
         <CardContent className="p-4">
           <div className="flex items-start justify-between mb-2">
             <Icon className={`h-5 w-5 ${status === "healthy" ? "text-emerald-400" : status === "warning" ? "text-amber-400" : "text-red-400"}`} />
@@ -40,7 +38,6 @@ function HealthCard({ title, icon: Icon, status, detail, count }: { title: strin
 }
 
 export default function CorePersistenceOverview() {
-  const { isDemoMode } = useDataMode();
   const { data: events } = useQuery({ queryKey: ["cps-events"], queryFn: () => fetchPersistedEvents({ limit: 500 }), staleTime: 30000 });
   const { data: deadLetters } = useQuery({ queryKey: ["cps-dl"], queryFn: () => fetchDeadLetters(100), staleTime: 30000 });
   const { data: memStats } = useQuery({ queryKey: ["cps-mem"], queryFn: getScopedMemoryStats, staleTime: 30000 });

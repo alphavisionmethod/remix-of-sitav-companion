@@ -9,14 +9,12 @@ import { Search, Plug, Shield, Zap, Globe, ArrowRight, CheckCircle, AlertTriangl
 import { INTEGRATION_PROVIDERS, PROVIDER_CATEGORIES } from "@/lib/demo-data/integrations";
 import { DEMO_CONNECTIONS } from "@/lib/demo-data/integrations";
 import { useNavigate } from "react-router-dom";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function IntegrationsCatalog() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
   const navigate = useNavigate();
-  const { isDemoMode } = useDataMode();
 
   const filtered = INTEGRATION_PROVIDERS.filter(p => {
     const matchSearch = !search || p.displayName.toLowerCase().includes(search.toLowerCase()) || p.description.toLowerCase().includes(search.toLowerCase());
@@ -30,8 +28,7 @@ export default function IntegrationsCatalog() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
-      <DemoModeBadge />
-      <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground">Integration Hub</h1>
           <p className="text-muted-foreground">Connect your tools — CRMs, ad platforms, accounting, payments, and more</p>

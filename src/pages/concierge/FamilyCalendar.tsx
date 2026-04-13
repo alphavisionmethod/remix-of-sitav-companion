@@ -7,7 +7,6 @@ import { motion } from "framer-motion";
 import { Calendar, Users, Clock, MapPin, AlertCircle, Heart, GraduationCap, Dumbbell, Stethoscope, Wrench, Car, Sparkles } from "lucide-react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_conflicts, DEMO_events, DEMO_familyMembers, DEMO_prepItems, DEMO_transportDuties } from "@/lib/demo-data/concierge";
 
 const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];

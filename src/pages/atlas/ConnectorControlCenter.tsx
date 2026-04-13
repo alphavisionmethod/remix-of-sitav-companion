@@ -14,9 +14,8 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_auditTimeline, DEMO_connectors } from "@/lib/demo-data/atlas";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const now = new Date();
 const h = (hours: number) => new Date(now.getTime() - hours * 3600000).toISOString();
@@ -24,14 +23,12 @@ const h = (hours: number) => new Date(now.getTime() - hours * 3600000).toISOStri
 const lifecycleStates = ["registered", "configured", "active", "paused", "error", "disabled", "decommissioned"];
 
 export default function ConnectorControlCenter() {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("overview");
   const healthy = DEMO_connectors.filter(c => c.status === "active").length;
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mx-auto max-w-7xl space-y-6 p-6">
-      <DemoModeBadge />
-      <SitaPageHeader title="Connector Control Center" subtitle="Connector lifecycle, health matrix, capability registry, audit lineage, and failure recovery" />
+<SitaPageHeader title="Connector Control Center" subtitle="Connector lifecycle, health matrix, capability registry, audit lineage, and failure recovery" />
 
       {DEMO_connectors.some(c => c.status === "error") && (
         <DegradedStateBanner severity="warning" reason={`${DEMO_connectors.filter(c => c.status === "error").length} connector(s) in error state`} impact="Data sync affected for failed connectors" affectedCapabilities={DEMO_connectors.filter(c => c.status === "error").flatMap(c => c.capabilities)} dismissible />

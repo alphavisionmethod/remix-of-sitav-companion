@@ -9,9 +9,8 @@ import {
   UserPlus, Heart, Target, Eye, Play, Pause, RefreshCw, Brain, ShieldCheck,
   Package, Send, ArrowRight, Layers, DollarSign, ChevronDown, Activity, Calendar
 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import AutomationSubNav from "./AutomationSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const sampleNodes = [
   { id: 1, type: "trigger", label: "Lead enters 'Stale' status (>48hrs no contact)", icon: Zap, color: "bg-amber-500/10 border-amber-500/30 text-amber-400" },
@@ -76,14 +75,12 @@ const GENERATE_TEMPLATES = [
 ];
 
 export default function AutomationBuilder() {
-  const { isDemoMode } = useDataMode();
   const [trustLevel, setTrustLevel] = useState("draft_review");
   const [showGenerate, setShowGenerate] = useState(false);
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
-      <DemoModeBadge />
-      <AutomationSubNav />
+<AutomationSubNav />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">

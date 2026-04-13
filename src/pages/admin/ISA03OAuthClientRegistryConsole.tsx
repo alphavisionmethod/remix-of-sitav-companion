@@ -7,9 +7,8 @@ const db = supabase as any;
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Key, CheckCircle, XCircle, Filter, Shield, Plug } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { getRelation, parseProviderFamilyRef } from "@/lib/types/relation-parsers";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -24,7 +23,6 @@ const purposeLabels: Record<string, { label: string; color: string; icon: React.
 };
 
 export default function ISA03OAuthClientRegistryConsole() {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("all");
 
   const { data: clients = [] } = useQuery({
@@ -60,8 +58,7 @@ export default function ISA03OAuthClientRegistryConsole() {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <Key className="h-6 w-6 text-primary" /> OAuth Client Registry Console
         </h1>

@@ -3,7 +3,6 @@ import { TrustBadge } from "@/components/sita/TrustBadge";
 import { Users, Bell, Shield, Calendar, ShoppingCart, Plane, Wrench, Gift, Settings, Link, CheckCircle, AlertCircle } from "lucide-react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { AdvisorKnowledgePanel } from "@/components/advisors/AdvisorKnowledgePanel";
 
 interface HouseholdMember {

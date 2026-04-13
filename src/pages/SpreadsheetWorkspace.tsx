@@ -2,8 +2,6 @@ import { useState, useMemo } from "react";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { SitaTabs } from "@/components/sita/SitaComponents";
 import { SitaCard } from "@/components/sita/SitaCard";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { Grid3X3, Download, Upload, Plus, Filter, ArrowUpDown, Search, Trash2, Copy, Edit3, MoreHorizontal, FileSpreadsheet } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 interface DataRow {
   id: string;
@@ -32,7 +31,6 @@ const demoData: DataRow[] = [
 ];
 
 const SpreadsheetWorkspace = () => {
-  const { isDemoMode } = useDataMode();
   const [data, setData] = useState<DataRow[]>(demoData);
   const [searchQuery, setSearchQuery] = useState("");
   const [sortCol, setSortCol] = useState<string | null>(null);
@@ -85,8 +83,7 @@ const SpreadsheetWorkspace = () => {
 
   return (
     <div className="mx-auto max-w-7xl space-y-4">
-      <DemoModeBadge />
-      <SitaPageHeader icon={<Grid3X3 className="h-6 w-6" />} title="Data Grid" subtitle="View, edit, filter, and export structured data with full audit trail">
+<SitaPageHeader icon={<Grid3X3 className="h-6 w-6" />} title="Data Grid" subtitle="View, edit, filter, and export structured data with full audit trail">
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm"><Upload className="h-4 w-4 mr-1" /> Import CSV</Button>
           <Button variant="outline" size="sm"><Download className="h-4 w-4 mr-1" /> Export</Button>

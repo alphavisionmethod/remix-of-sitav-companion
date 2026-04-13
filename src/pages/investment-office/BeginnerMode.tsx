@@ -2,11 +2,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { GraduationCap, Shield, Brain, TrendingUp, Eye, Target, ChevronRight, HelpCircle, Lightbulb, DollarSign, CheckCircle2, BarChart3, Wallet } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { PORTFOLIO } from "@/hooks/useInvestmentOfficeData";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useInvestmentStrategyRecords } from "@/hooks/use-investment-office";
 import { DEMO_LEARN_TOPICS } from "@/lib/demo-data/investment";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const fmt = (n: number) => n >= 1e6 ? `$${(n / 1e6).toFixed(1)}M` : n >= 1e3 ? `$${(n / 1e3).toFixed(1)}K` : `$${n.toFixed(2)}`;
 
@@ -18,7 +17,6 @@ const WIZARD_STEPS = [
 ];
 
 export default function BeginnerMode() {
-  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useInvestmentStrategyRecords();
   const navigate = useNavigate();
   const p = PORTFOLIO;
@@ -26,8 +24,7 @@ export default function BeginnerMode() {
 
   return (
     <div className="mx-auto max-w-5xl space-y-8 pb-12">
-      <DemoModeBadge />
-      {/* Hero */}
+{/* Hero */}
       <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
         className="rounded-3xl border border-primary/15 bg-gradient-to-br from-primary/5 via-card to-card p-8 space-y-4">
         <div className="flex items-center gap-3">

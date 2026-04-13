@@ -2,10 +2,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MonitorSmartphone, Smartphone, Watch, Monitor, CheckCircle2, ArrowRight } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useCrossDeviceSurfaces, useDeliveryRules, useHandoffFlows } from "@/hooks/use-notification-calm-data";
 import NRCSubNav from "@/components/admin/NRCSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -17,8 +16,7 @@ const NRC05CrossDeviceDelivery = () => {
 
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">
-      <DemoModeBadge />
-      <NRCSubNav />
+<NRCSubNav />
       <div className="flex items-center gap-3">
         <div className="p-2 rounded-lg bg-primary/10"><MonitorSmartphone className="h-8 w-8 text-primary" /></div>
         <div>

@@ -1,13 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { Brain, Target, AlertTriangle, TrendingUp, TrendingDown, Plus, ChevronRight, Calendar, Heart, Activity } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { SAMPLE_THESES, getInstrument } from "@/hooks/useInvestmentOfficeData";
 import { useInvestmentThesisEntries } from "@/hooks/use-investment-office";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_JOURNAL_ENTRIES } from "@/lib/demo-data/investment.tsx";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function ThesisJournal() {
-  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useInvestmentThesisEntries();
   const navigate = useNavigate();
 
@@ -19,8 +17,7 @@ export default function ThesisJournal() {
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
-      <DemoModeBadge />
-      <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Brain className="h-6 w-6 text-primary" /> Thesis & Journal</h1>
           <p className="text-sm text-muted-foreground mt-1">Investment ideas, rationale, reviews, and emotional discipline</p>

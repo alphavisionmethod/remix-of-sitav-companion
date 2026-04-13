@@ -5,9 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Image, Upload, Search, Grid3X3, LayoutList, Calendar, Tag, FolderOpen, X, Heart, Share2, Download, MoreHorizontal } from "lucide-react";
 import { useState } from "react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_PHOTOS, DEMO_albums, DEMO_placeholderColors } from "@/lib/demo-data/apps";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 interface Photo {
   id: string;
@@ -20,7 +19,6 @@ interface Photo {
 }
 
 export default function GalleryApp() {
-  const { isDemoMode } = useDataMode();
   const [search, setSearch] = useState("");
   const [selectedPhoto, setSelectedPhoto] = useState<Photo | null>(null);
   const [album, setAlbum] = useState("All");
@@ -33,8 +31,7 @@ export default function GalleryApp() {
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-4">
-      <DemoModeBadge />
-      <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Image className="h-6 w-6 text-primary" />
           <h1 className="text-xl font-bold text-foreground">Gallery</h1>

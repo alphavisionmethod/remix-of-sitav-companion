@@ -22,9 +22,8 @@ import {
   ChevronDown, ChevronUp, Filter, History, LayoutDashboard, FileText,
   DollarSign, Zap, RotateCcw, MessageSquare,
 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_ADMIN_DOMAINS_H_Q_APPROVAL_QUEUE as DEMO_DOMAINS, DEMO_ADMIN_STATUSES as DEMO_STATUSES, DEMO_RECOMMENDATION_TYPES, DEMO_RISK_TIERS } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -81,13 +80,11 @@ const severityColor = (sev: string) =>
 // Main Page
 // ════════════════════════════════════════════════════════════════
 export default function HQApprovalQueue() {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("overview");
 
   return (
     <div className="space-y-6 p-6 max-w-[1600px] mx-auto">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <Shield className="h-6 w-6 text-primary" /> Human Approval & Recommendation Queue
         </h1>

@@ -3,9 +3,9 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
 import { MessageSquare, Code, Palette, Shield, Gauge, AlertTriangle, CheckCircle2, ArrowRight } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_DEBATES } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const stanceColors: Record<string, string> = {
   for: "text-[hsl(var(--trust-safe))]",
@@ -20,8 +20,7 @@ const AIAgentDebate = () => {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <AdminPageHeader icon={MessageSquare} title="Agent Debate" subtitle="When AI agents disagree — positions, evidence, consensus, and resolution" accent="primary" />
+<AdminPageHeader icon={MessageSquare} title="Agent Debate" subtitle="When AI agents disagree — positions, evidence, consensus, and resolution" accent="primary" />
 
       <div className="grid grid-cols-3 gap-3">
         {[

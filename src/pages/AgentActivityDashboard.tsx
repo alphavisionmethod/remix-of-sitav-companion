@@ -22,11 +22,10 @@ import {
   TrendingUp, DollarSign, Zap, CheckCircle, XCircle,
   Clock, Gauge, BarChart3, RefreshCw, Heart,
 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { AIEmbeddedRecommendation } from "@/components/ai/AIEmbeddedRecommendation";
 import { AIResponsePanel } from "@/components/ai/AIResponsePanel";
 import { DataLoadingWrapper } from "@/components/sita/DataLoadingWrapper";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // ── Fleet Overview Hero ─────────────────────────────────────────
 
@@ -44,8 +43,7 @@ function FleetHero() {
     <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
       className="relative overflow-hidden rounded-2xl border border-primary/15 bg-gradient-to-br from-primary/8 via-card to-card p-6"
     >
-      <DemoModeBadge />
-      <div className="flex items-start justify-between mb-5">
+<div className="flex items-start justify-between mb-5">
         <div className="flex items-center gap-4">
           <div className="relative">
             <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-primary/70 shadow-lg shadow-primary/20">
@@ -254,7 +252,6 @@ function AlertSummaryPanel() {
 // ── Main Dashboard Page ─────────────────────────────────────────
 
 export default function AgentActivityDashboard() {
-  const { isDemoMode } = useDataMode();
   // Wire fleet live data + CAI graph for agent orchestration
   const fleetLive = useAgentFleetLive();
   const graphNodes = useGraphNodes();

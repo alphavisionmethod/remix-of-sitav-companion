@@ -16,9 +16,8 @@ import { useRealityClassifications, useUpsertClassification, useDeleteClassifica
 import { Shield, Eye, Cpu, CheckCircle2, Plus, Trash2, Search, BarChart3, Pencil, Rocket, AlertTriangle, Info, ArrowRight, Layers, Target } from "lucide-react";
 import type { RealityClassification } from "@/lib/persistence/reality-classification-persistence";
 import { SCOPE_LEVELS, EVIDENCE_SIGNALS, PROGRESSION_REQUIREMENTS, type ScopeLevel, type LaunchImpact } from "@/lib/persistence/reality-classification-persistence";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_CONTRACT_STATUSES } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const CLASSIFICATION_CONFIG = {
   presentational: { label: "Presentational", color: "bg-muted text-muted-foreground", icon: Eye, description: "UI shell — no backing logic or data truth" },
@@ -371,7 +370,6 @@ function ProgressionCard({ data }: { data: RealityClassification[] }) {
 }
 
 export default function RealityClassificationMatrix() {
-  const { isDemoMode } = useDataMode();
   const { data, isLoading } = useRealityClassifications();
   const upsert = useUpsertClassification();
   const remove = useDeleteClassification();
@@ -393,8 +391,7 @@ export default function RealityClassificationMatrix() {
 
   return (
     <div className="p-6 space-y-6">
-      <DemoModeBadge />
-      <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground">Reality Classification Matrix</h1>
           <p className="text-sm text-muted-foreground">Multi-scope, evidence-based implementation state — the canonical honesty index</p>

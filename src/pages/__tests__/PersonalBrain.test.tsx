@@ -4,7 +4,6 @@ import { MemoryRouter } from "react-router-dom";
 import React from "react";
 import { DataModeProvider } from "@/contexts/DataModeContext";
 import { DemoModeProvider } from "@/contexts/DemoModeProvider";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 Element.prototype.scrollIntoView = vi.fn();
 

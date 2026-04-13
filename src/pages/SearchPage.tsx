@@ -20,8 +20,6 @@ import { useGlobalSearch, type SearchResult } from "@/hooks/use-global-search";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { toast } from "sonner";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 // ── Icon & Color Maps ────────────────────────────────────────
 
@@ -102,9 +100,9 @@ const RESULT_ACTIONS: Record<string, { label: string; icon: React.ElementType; a
 };
 
 import { DATE_RANGES } from "@/lib/constants/ui-config";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const SearchPage = () => {
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -154,8 +152,7 @@ const SearchPage = () => {
 
   return (
     <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="mx-auto max-w-6xl space-y-4">
-      <DemoModeBadge />
-      <SitaPageHeader
+<SitaPageHeader
         title="Global Search"
         subtitle="Find anything across business, finance, concierge, files, workflows, and trust"
       />

@@ -9,9 +9,8 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Activity, RefreshCw, AlertTriangle, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import PFASubNav from "@/components/admin/PFASubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -19,7 +18,6 @@ const sevColors: Record<string, string> = { critical: "bg-red-500/20 text-red-40
 const healthColors: Record<string, string> = { healthy: "bg-green-500/20 text-green-400", degraded: "bg-yellow-500/20 text-yellow-400", error: "bg-red-500/20 text-red-400", unknown: "bg-muted text-muted-foreground" };
 
 export default function PFA07ConnectorHealthDrift() {
-  const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
 
   const { data: drifts = [] } = useQuery({
@@ -38,8 +36,7 @@ export default function PFA07ConnectorHealthDrift() {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <PFASubNav />
+<PFASubNav />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2"><Activity className="h-6 w-6" /> Connector Health & Drift</h1>

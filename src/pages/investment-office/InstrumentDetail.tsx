@@ -4,11 +4,10 @@ import {
   Target, AlertTriangle, ChevronRight, Calendar, Eye, Plus, Info, Activity, Link2
 } from "lucide-react";
 import LightweightChart from "@/components/investment/LightweightChart";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { INVESTMENT_ADVISORS, PORTFOLIO, SAMPLE_THESES, PLATFORM_CONNECTIONS, getInstrument } from "@/hooks/useInvestmentOfficeData";
 import { SAMPLE_SCENARIOS } from "@/lib/investment-office/mock-data";
 import { usePortfolioPositions } from "@/hooks/use-investment-office";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const pctFmt = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
 const fmt = (n: number) => n >= 1e12 ? `$${(n / 1e12).toFixed(2)}T` : n >= 1e9 ? `$${(n / 1e9).toFixed(1)}B` : n >= 1e6 ? `$${(n / 1e6).toFixed(1)}M` : `$${n.toLocaleString()}`;
@@ -24,7 +23,6 @@ const ASSET_EXPLAINERS: Record<string, string> = {
 };
 
 export default function InstrumentDetail() {
-  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = usePortfolioPositions();
   const { instrumentId } = useParams();
   const navigate = useNavigate();
@@ -52,8 +50,7 @@ export default function InstrumentDetail() {
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
-      <DemoModeBadge />
-      <button onClick={() => navigate(-1)} className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
+<button onClick={() => navigate(-1)} className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors">
         <ArrowLeft className="h-3.5 w-3.5" /> Back
       </button>
 

@@ -13,12 +13,10 @@ import {
 import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { AppIcon, VerificationBadge, AppSourceLabel, PermissionDomainCard } from "@/components/sita/app-platform/AppStoreComponents";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { toast } from "sonner";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const AppManagePage = () => {
-  const { isDemoMode } = useDataMode();
   const { appId } = useParams<{ appId: string }>();
   const navigate = useNavigate();
   const {
@@ -32,8 +30,7 @@ const AppManagePage = () => {
   const app = getApp(appId || "");
   if (!app) return (
     <div className="mx-auto max-w-4xl">
-      <DemoModeBadge />
-      <button onClick={() => navigate("/app-store/library")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
+<button onClick={() => navigate("/app-store/library")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
         <ArrowLeft className="h-4 w-4" /> Back
       </button>
       <p className="text-center py-20 text-foreground font-medium">App not found</p>

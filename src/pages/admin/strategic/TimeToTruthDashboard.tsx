@@ -5,7 +5,7 @@ import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { useEngineEvents } from "@/lib/hooks/useEngineEventsData";
 import { useIntelligenceOverview } from "@/lib/hooks/useIntelligenceAPI";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const TimeToTruthDashboard = () => {
   const { isAdmin, loading: authLoading } = useRequireAdmin();
@@ -30,8 +30,7 @@ const TimeToTruthDashboard = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      <DemoModeBadge />
-      <SitaPageHeader icon={<Clock className="h-6 w-6" />} title="Time-to-Truth Optimizer" subtitle="Track time to usable, confident, verified, and approved answers" />
+<SitaPageHeader icon={<Clock className="h-6 w-6" />} title="Time-to-Truth Optimizer" subtitle="Track time to usable, confident, verified, and approved answers" />
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[

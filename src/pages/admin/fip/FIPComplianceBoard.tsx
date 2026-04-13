@@ -6,8 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useComplianceRecords } from "@/hooks/use-fip-data";
 import { COMPLIANCE_SECTIONS, READINESS_STAGES } from "@/lib/fip/types";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -20,8 +19,7 @@ const FIPComplianceBoard = () => {
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
       <FIPSubNav />
-      <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold flex items-center gap-2"><ClipboardCheck className="h-6 w-6 text-primary" /> FIP05 — Feature Integration Compliance Board</h1>
         <p className="text-muted-foreground mt-1">Protocol compliance verification for every feature</p>
       </motion.div>

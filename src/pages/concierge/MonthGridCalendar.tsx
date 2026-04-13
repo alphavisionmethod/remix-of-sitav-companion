@@ -6,7 +6,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useQuery } from "@tanstack/react-query";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { generateCalendarDemoEvents } from "@/lib/mock-data/calendar";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
@@ -25,7 +24,6 @@ interface CalendarEvent {
 
 function useCalendarData(year: number, month: number) {
   const { user } = useAuth();
-  const { isDemoMode } = useDataMode();
 
   return useQuery({
     queryKey: ["calendar-data", user?.id, year, month, isDemoMode],

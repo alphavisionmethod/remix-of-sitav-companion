@@ -14,8 +14,7 @@ import {
   ArrowLeft, AlertTriangle, Shield, Clock, CheckCircle, XCircle,
   RotateCcw, Users, GitBranch, Wifi, Activity, Eye, Loader2,
 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const severityColor: Record<string, string> = {
   critical: "bg-destructive/10 text-destructive border-destructive/20",
@@ -29,7 +28,6 @@ const statusIcon: Record<string, React.ElementType> = {
 };
 
 export default function IncidentDetailPage() {
-  const { isDemoMode } = useDataMode();
   const { incidentId } = useParams<{ incidentId: string }>();
   const navigate = useNavigate();
   const detail = useIncidentDetail(incidentId || "");
@@ -37,8 +35,7 @@ export default function IncidentDetailPage() {
   if (!detail) {
     return (
       <div className="p-6 max-w-[1200px] mx-auto">
-      <DemoModeBadge />
-        <button onClick={() => navigate("/mission-control")} className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground mb-6">
+<button onClick={() => navigate("/mission-control")} className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground mb-6">
           <ArrowLeft className="h-3.5 w-3.5" /> Back to Mission Control
         </button>
         <div className="rounded-2xl border border-dashed border-border p-16 text-center">

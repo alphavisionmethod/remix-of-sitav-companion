@@ -8,17 +8,15 @@ import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Gauge, DollarSign, Cpu, TrendingUp, Users, Zap, Plus, Trash2, Shield, Loader2 } from "lucide-react";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 
 import {
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
   useBudgetPolicies, useBudgetSummary, useUsageLedger, useDailyAggregation,
   useCreateBudgetPolicy, useUpdateBudgetPolicy, useDeleteBudgetPolicy,
 } from "@/hooks/use-ai-budget-data";
 
 export default function AITokenDashboard() {
-  const { isDemoMode } = useDataMode();
   const { isAdmin, loading: adminLoading } = useRequireAdmin();
   const { data: policies } = useBudgetPolicies();
   const { data: summary } = useBudgetSummary();
@@ -57,8 +55,7 @@ export default function AITokenDashboard() {
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
           <Gauge className="h-6 w-6 text-primary" /> AI Token Dashboard
         </h1>

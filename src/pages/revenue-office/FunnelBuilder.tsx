@@ -6,9 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_FUNNELS, DEMO_FUNNEL_STEP_ANALYTICS, DEMO_FUNNEL_TRIGGERS } from "@/lib/demo-data/revenue-office";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const STEP_TYPES = [
   { type: "page", label: "Landing Page", icon: Eye },
@@ -20,14 +19,12 @@ const STEP_TYPES = [
 ];
 
 export default function FunnelBuilder() {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("funnels");
   const [selectedFunnel, setSelectedFunnel] = useState(0);
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-foreground">Funnel & Journey Studio</h1>

@@ -4,9 +4,9 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { Rocket, CheckCircle2, AlertTriangle, Shield, Clock, ArrowRight, RotateCcw, Activity, GitBranch, Eye, TrendingUp } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_ADMIN_ENVIRONMENTS_A_I_RELEASES_CENTER as DEMO_ENVIRONMENTS, DEMO_ADMIN_RELEASE_GATES_A_I_RELEASES_CENTER as DEMO_RELEASE_GATES, DEMO_PROMOTION_EVIDENCE, DEMO_ROLLBACK_OPTIONS, DEMO_ROLLOUT_HISTORY } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const AIReleasesCenter = () => {
   const { isDemo } = useAIEngDomain("efficiencyScores", DEMO_RELEASE_GATES);
@@ -17,8 +17,7 @@ const AIReleasesCenter = () => {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <AdminPageHeader icon={Rocket} title="Release Center" subtitle="Readiness gates, rollout history, promotion evidence, rollback options" accent="trust" />
+<AdminPageHeader icon={Rocket} title="Release Center" subtitle="Readiness gates, rollout history, promotion evidence, rollback options" accent="trust" />
 
       <div className="grid grid-cols-4 gap-3">
         {[

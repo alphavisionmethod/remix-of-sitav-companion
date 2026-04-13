@@ -16,7 +16,6 @@ import {
 } from "lucide-react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 type ViewFilter = "all" | "today" | "this-week" | "overdue" | "by-person" | "high-priority";
 

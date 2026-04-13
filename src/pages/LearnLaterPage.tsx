@@ -1,13 +1,11 @@
 import { useState, useEffect } from "react";
 import { SitaPageHeader } from "@/components/sita/SitaCard";
 import { LearnLaterHub } from "@/components/sita/onboarding/LearnLaterHub";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { motion } from "framer-motion";
 import { BookOpen } from "lucide-react";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function LearnLaterPage() {
-  const { isDemoMode } = useDataMode();
   const [deferredConnections, setDeferredConnections] = useState<string[]>([]);
   const [skippedPhases, setSkippedPhases] = useState<string[]>([]);
 
@@ -30,8 +28,7 @@ export default function LearnLaterPage() {
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
     >
-      <DemoModeBadge />
-      <SitaPageHeader
+<SitaPageHeader
         title="Learn Later"
         subtitle={
           totalDeferred > 0

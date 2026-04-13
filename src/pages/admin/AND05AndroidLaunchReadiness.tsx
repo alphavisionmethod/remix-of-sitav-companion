@@ -3,19 +3,16 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Rocket, CheckCircle2, XCircle, AlertTriangle, ArrowRight, Clock } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_ADMIN_TARGETS as DEMO_TARGETS } from "@/lib/demo-data/admin-platform";
 import ANDSubNav from "@/components/admin/ANDSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const AND05AndroidLaunchReadiness = () => {
-  const { isDemoMode } = useDataMode();
   const overall = Math.round(DEMO_TARGETS.reduce((s, t) => s + t.readiness, 0) / DEMO_TARGETS.length);
 
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">
-      <DemoModeBadge />
-      <ANDSubNav />
+<ANDSubNav />
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-lg bg-primary/10"><Rocket className="h-8 w-8 text-primary" /></div>

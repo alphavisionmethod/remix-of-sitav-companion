@@ -5,10 +5,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_DPO_STATS as DEMO_STATS } from "@/lib/demo-data/digital-presence";
 import DPOSubNav from "./DPOSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 type PatchStatus = "pending" | "approved" | "applied" | "rejected" | "verified";
 
@@ -38,7 +37,6 @@ const INITIAL_PATCHES: Patch[] = [
 ];
 
 export default function SelfHealingQueue() {
-  const { isDemoMode } = useDataMode();
   const [patches, setPatches] = useState(INITIAL_PATCHES);
 
   const updateStatus = (id: string, status: PatchStatus) => {
@@ -54,8 +52,7 @@ export default function SelfHealingQueue() {
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <DPOSubNav />
-      <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">Self-Healing Queue / Patch Center</h1>
         <p className="text-sm text-muted-foreground">Manage safe automatic or drafted fixes with preview, approval & verification</p>
       </motion.div>

@@ -5,10 +5,9 @@ import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ListFilter, Activity, AlertTriangle, Zap, ShieldOff, Ban, Clock } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { getUsageLedger } from "@/lib/core-services/ai-gateway";
 import AIGSubNav from "@/components/admin/AIGSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 type FilterType = "all" | "failures" | "fallbacks" | "demo" | "premium" | "blocked";
 
@@ -29,7 +28,6 @@ function statusBadge(status: string) {
 }
 
 export default function AIG05UsageLedgerExplorer() {
-  const { isDemoMode } = useDataMode();
   const [filter, setFilter] = useState<FilterType>("all");
 
   const { data: ledger = [], isLoading } = useQuery({
@@ -60,8 +58,7 @@ export default function AIG05UsageLedgerExplorer() {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <AIGSubNav />
+<AIGSubNav />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <ListFilter className="h-6 w-6" /> AIG05 — AI Usage Ledger Explorer

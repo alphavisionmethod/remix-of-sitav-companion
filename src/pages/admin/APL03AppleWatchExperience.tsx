@@ -4,19 +4,16 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Watch, Vibrate, CheckCircle, ArrowRight, Clock, Zap, Eye, AlertTriangle, Smartphone, Bell } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_GLANCE_CARDS, DEMO_HAPTIC_PATTERNS, DEMO_MICRO_CONSTRAINTS } from "@/lib/demo-data/admin-platform";
 import APLSubNav from "@/components/admin/APLSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const APL03AppleWatchExperience = () => {
-  const { isDemoMode } = useDataMode();
   const [selectedCard, setSelectedCard] = useState<string | null>(null);
 
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">
-      <DemoModeBadge />
-      <APLSubNav />
+<APLSubNav />
       <div className="flex items-center gap-3">
         <div className="p-2 rounded-lg bg-primary/10"><Watch className="h-8 w-8 text-primary" /></div>
         <div>

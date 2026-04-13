@@ -19,8 +19,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // ── Slide data auto-generated from weekly reviews ────────────
 
@@ -252,7 +251,6 @@ const SlideInsight = ({ title, text, confidence, isRisk }: { title: string; text
 // ── Replay Controller ─────────────────────────────────────────
 
 export default function BoardroomReplay() {
-  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   const { user } = useAuth();
   const [slides] = useState(generateWeeklySlides);

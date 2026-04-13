@@ -1,10 +1,9 @@
 import { motion } from "framer-motion";
 import { History, TrendingUp, TrendingDown, AlertTriangle, Brain, RefreshCw, Zap, Shield, FileText, Globe } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useMarketMemoryEvents, useAdvisorObservations, useCatalystEvents, useBehavioralSignals, usePortfolioPositionsMemory } from "@/hooks/use-investment-memory";
 import { computeWhatChanged } from "@/lib/services/finance-os/investment-memory.service";
 import { DEMO_MEMORY_EVENTS } from "@/lib/demo-data/investment";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const SEVERITY_STYLES: Record<string, string> = {
   alert: "border-destructive/20 bg-destructive/5",
@@ -14,7 +13,6 @@ const SEVERITY_STYLES: Record<string, string> = {
 };
 
 export default function MarketMemoryFeed() {
-  const { isDemoMode } = useDataMode();
   const { data: liveMemoryEvents } = useMarketMemoryEvents();
   const { data: liveObservations } = useAdvisorObservations();
   const { data: liveCatalysts } = useCatalystEvents();
@@ -26,8 +24,7 @@ export default function MarketMemoryFeed() {
   );
   return (
     <div className="mx-auto max-w-4xl space-y-6">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><History className="h-6 w-6 text-primary" /> Market Memory Feed</h1>
         <p className="text-sm text-muted-foreground mt-0.5">A living stream of everything that changed in your investment world</p>
       </div>

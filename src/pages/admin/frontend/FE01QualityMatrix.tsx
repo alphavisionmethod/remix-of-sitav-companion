@@ -2,7 +2,6 @@ import { BarChart3, Star, AlertTriangle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { useDataMode } from "@/contexts/DataModeContext";
 import {
   ROUTE_FAMILY_QUALITY,
   FLAGSHIP_LOOP_READINESS,
@@ -22,7 +21,6 @@ const tierBadge = (tier: string) => {
 };
 
 export default function FE01QualityMatrix() {
-  const { isDemoMode } = useDataMode();
   const score = computeFrontendQualityScore();
 
   return (

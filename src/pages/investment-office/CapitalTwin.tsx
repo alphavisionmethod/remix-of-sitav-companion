@@ -2,14 +2,12 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Layers, Shield, TrendingUp, Zap, DollarSign, Target, AlertTriangle, ChevronRight } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { PORTFOLIO } from "@/hooks/useInvestmentOfficeData";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useCapitalPurposeBuckets } from "@/hooks/use-investment-office";
 import { DEMO_INV_PURPOSES_CAPITAL_TWIN as DEMO_PURPOSES, DEMO_SHOCK_ZONES } from "@/lib/demo-data/investment";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function CapitalTwin() {
-  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useCapitalPurposeBuckets();
   const navigate = useNavigate();
   const [view, setView] = useState<"purpose" | "exposure" | "readiness">("purpose");
@@ -19,8 +17,7 @@ export default function CapitalTwin() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Layers className="h-6 w-6 text-primary" /> Capital Twin</h1>
         <p className="text-sm text-muted-foreground mt-0.5">A living digital twin of your capital world — by purpose, exposure, and readiness</p>
       </div>

@@ -6,7 +6,7 @@ import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { useEngineEvents } from "@/lib/hooks/useEngineEventsData";
 import { useIntelligenceOverview } from "@/lib/hooks/useIntelligenceAPI";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const ReasoningReplayDashboard = () => {
   const { isAdmin, loading: authLoading } = useRequireAdmin();
@@ -34,8 +34,7 @@ const ReasoningReplayDashboard = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      <DemoModeBadge />
-      <SitaPageHeader icon={<FileSearch className="h-6 w-6" />} title="Reasoning Insurance Replay" subtitle="Meta-reasoning traces — what was considered, skipped, reused, and why" />
+<SitaPageHeader icon={<FileSearch className="h-6 w-6" />} title="Reasoning Insurance Replay" subtitle="Meta-reasoning traces — what was considered, skipped, reused, and why" />
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[

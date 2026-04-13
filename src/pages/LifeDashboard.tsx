@@ -16,8 +16,7 @@ import {
   PieChart, Pie, Cell, RadarChart, PolarGrid, PolarAngleAxis,
   PolarRadiusAxis, Radar as RechartsRadar, AreaChart, Area
 } from "recharts";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // ── Animation Variants ──────────────────────────────────────────
 
@@ -59,7 +58,6 @@ const STATUS_STYLES: Record<string, { bg: string; text: string }> = {
 // ── Page Component ──────────────────────────────────────────────
 
 const LifeDashboard = () => {
-  const { isDemoMode } = useDataMode();
   const { lifeContext, dailyBriefing, obligations } = useCompanion();
   const { business, money, household, timing } = lifeContext;
 
@@ -124,8 +122,7 @@ const LifeDashboard = () => {
 
   return (
     <motion.div variants={stagger} initial="hidden" animate="show" className="space-y-6 max-w-[1600px] mx-auto">
-      <DemoModeBadge />
-      {/* Header */}
+{/* Header */}
       <motion.div variants={fadeUp}>
         <SitaPageHeader
           title="Life Dashboard"

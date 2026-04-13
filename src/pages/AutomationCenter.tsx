@@ -7,7 +7,6 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useAction } from "@/lib/hooks/useAction";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
@@ -18,14 +17,13 @@ import {
   Plus, ToggleLeft, ToggleRight, Trash2
 } from "lucide-react";
 import { DEMO_AUTOMATION_RULES, DEMO_DELEGATIONS } from "@/lib/demo-data";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 const AutomationCenter = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { isDemoMode } = useDataMode();
   const qc = useQueryClient();
   const { data: MOCK_AUTOMATION_RULES = [] } = useAutomationRules();
   const { data: MOCK_DELEGATIONS = [] } = useDelegations();
@@ -83,8 +81,7 @@ const AutomationCenter = () => {
 
   return (
     <motion.div className="mx-auto max-w-5xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-      <DemoModeBadge />
-      <SitaPageHeader
+<SitaPageHeader
         title="Automation Center"
         subtitle="What SITA handles automatically — thresholds, rules, and delegation"
         actions={<SitaButton variant="primary"><Zap className="h-4 w-4" /> New Rule</SitaButton>}

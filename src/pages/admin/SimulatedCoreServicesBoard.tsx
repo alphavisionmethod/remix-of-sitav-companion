@@ -2,9 +2,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Server, AlertTriangle, Database, Cpu } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_ADMIN_CORE_SERVICES_SIMULATED_CORE_SERVICES_BOARD as DEMO_CORE_SERVICES } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 interface CoreService {
   name: string;
@@ -21,11 +20,9 @@ const BACKING_ICONS: Record<string, typeof Server> = { "memory-only": Cpu, local
 const STATUS_COLORS: Record<string, string> = { not_started: "bg-muted text-muted-foreground", planned: "bg-blue-500/20 text-blue-400", in_progress: "bg-yellow-500/20 text-yellow-400", completed: "bg-emerald-500/20 text-emerald-400" };
 
 export default function SimulatedCoreServicesBoard() {
-  const { isDemoMode } = useDataMode();
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold">Simulated Core Services</h1>
         <p className="text-sm text-muted-foreground">In-memory foundational services needing persistence — RCP06</p>
       </div>

@@ -4,9 +4,8 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Radar, Clock, Shield, Zap } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import LTSubNav from "@/components/admin/LTSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const LT04RuntimeProbeCenter = () => {
   const { data: probes } = useQuery({
@@ -43,8 +42,7 @@ const LT04RuntimeProbeCenter = () => {
   return (
     <div className="space-y-6 p-6">
       <LTSubNav />
-      <DemoModeBadge />
-      <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">Runtime Probe Center</h1>
           <p className="text-sm text-muted-foreground">Inspect probe health, latency, and launch impact</p>

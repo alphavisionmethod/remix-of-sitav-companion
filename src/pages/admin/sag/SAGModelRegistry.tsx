@@ -10,9 +10,8 @@ import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useModelRegistry, useCreateModel } from "@/hooks/use-sag-data";
 import { MODEL_CLASSES, PROVIDERS } from "@/lib/sovereign-ai-gateway/types";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import SAGSubNav from "@/components/admin/SAGSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -32,8 +31,7 @@ const SAGModelRegistry = () => {
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
-      <DemoModeBadge />
-      <SAGSubNav />
+<SAGSubNav />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center justify-between">
           <div>

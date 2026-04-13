@@ -14,8 +14,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const now = new Date();
 const h = (hours: number) => new Date(now.getTime() - hours * 3600000).toISOString();
@@ -103,13 +102,11 @@ const certHealth = [
 ];
 
 export default function DeploymentTruthCenter() {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("rings");
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mx-auto max-w-7xl space-y-6 p-6">
-      <DemoModeBadge />
-      <SitaPageHeader title="Deployment Truth Center" subtitle="CI/CD pipeline truth, ring promotion, HA/DR evidence, secret/cert health, and smoke/load gate verification" />
+<SitaPageHeader title="Deployment Truth Center" subtitle="CI/CD pipeline truth, ring promotion, HA/DR evidence, secret/cert health, and smoke/load gate verification" />
 
       <div className="grid grid-cols-2 lg:grid-cols-6 gap-3">
         {[

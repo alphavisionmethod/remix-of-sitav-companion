@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Brain, TrendingUp, TrendingDown, BarChart3, Target, AlertTriangle, ChevronRight, Play, Sliders, Layers, Sparkles, MessageSquare } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { PORTFOLIO, SAMPLE_SCENARIOS, SAMPLE_THESES } from "@/hooks/useInvestmentOfficeData";
 import { STRATEGY_TEMPLATES, STRATEGY_ADVISOR_COMMENTS } from "@/lib/investment-office/mock-data";
 import { useInvestmentStrategyRecords } from "@/hooks/use-investment-office";
-import { useDataMode } from "@/contexts/DataModeContext";
 import AllocationRebalancer from "@/components/investment/AllocationRebalancer";
 import { toast } from "sonner";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const pctFmt = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(1)}%`;
 const ALLOC_COLORS: Record<string, string> = {
@@ -22,7 +21,6 @@ const STANCE_COLORS: Record<string, string> = {
 };
 
 export default function StrategyStudio() {
-  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useInvestmentStrategyRecords();
   const navigate = useNavigate();
   const [activeScenario, setActiveScenario] = useState(SAMPLE_SCENARIOS[0].id);
@@ -33,8 +31,7 @@ export default function StrategyStudio() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Sliders className="h-6 w-6 text-primary" /> Strategy Studio</h1>
         <p className="text-sm text-muted-foreground mt-1">Scenario analysis, what-if simulations, and allocation planning</p>
       </div>

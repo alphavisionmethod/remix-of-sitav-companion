@@ -1,6 +1,5 @@
 import { SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton, SitaPageHeader } from "@/components/sita/SitaCard";
 import { KPITile, TimelineItem, ProofCard, OpportunityCard, RiskCard, SitaTabs } from "@/components/sita/SitaComponents";
-import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { StateBadge } from "@/components/sita/StateBadge";
 import { useNavigate, useParams } from "react-router-dom";
@@ -9,13 +8,11 @@ import {
   ArrowLeft, Phone, Mail, Clock, MapPin, Globe, Building, DollarSign, FileText, CheckCircle,
   AlertTriangle, Briefcase, MessageSquare, Calendar, Receipt, BarChart3, Sparkles, Star, TrendingUp, TrendingDown, Shield
 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_ACTIONS, DEMO_CORE_TIMELINE as DEMO_TIMELINE, DEMO_CUSTOMERS_DATA, DEMO_DOCUMENTS } from "@/lib/demo-data/core-pages";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Mock customer data keyed by ID
 const CustomerDetail = () => {
-  const { isDemoMode } = useDataMode();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [tab, setTab] = useState("overview");
@@ -26,8 +23,7 @@ const CustomerDetail = () => {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <DemoModeBadge />
-      {/* Back + Header */}
+{/* Back + Header */}
       <div>
         <button onClick={() => navigate("/business")} className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
           <ArrowLeft className="h-4 w-4" /> Back to Business Center
@@ -117,17 +113,7 @@ const CustomerDetail = () => {
             {/* Advisor */}
             <div className="space-y-3">
               <SitaSectionHeader title="Advisor Insight" />
-              <LiveAdvisorCard
-                advisor="business"
-                intent="customer_insight"
-                context={{ customer_name: customer.name, lifetime_revenue: customer.totalRevenue }}
-                demoName="Business Advisor"
-                demoRole="Relationship Intelligence"
-                demoConfidence="High"
-                demoRecommendation={`${customer.name} has been consistently paying on time and expanding scope. Consider offering a retainer package to lock in recurring revenue.`}
-                demoReasoning="Payment history shows 4-day avg, 89% on-time rate, and 3 scope expansion conversations in 6 months."
-              />
-            </div>
+</div>
 
             {/* Recent Timeline */}
             <div className="space-y-3">

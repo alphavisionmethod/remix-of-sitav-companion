@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { FileSearch, Brain, TrendingUp, TrendingDown, AlertTriangle, Calendar, Globe, Shield, Layers } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { INSTRUMENTS, INVESTMENT_ADVISORS } from "@/hooks/useInvestmentOfficeData";
 import { useInvestmentThesisEntries } from "@/hooks/use-investment-office";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { EXPLAINABILITY_LAYERS, type ExplainabilityDepth } from "@/lib/investment-office/mock-data";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const DEPTH_OPTIONS: { value: ExplainabilityDepth; label: string; description: string }[] = [
   { value: "simple", label: "Simple", description: "Plain language" },
@@ -16,7 +15,6 @@ const DEPTH_OPTIONS: { value: ExplainabilityDepth; label: string; description: s
 ];
 
 export default function IntelligenceDossier() {
-  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useInvestmentThesisEntries();
   const [selectedId, setSelectedId] = useState("nvda");
   const [explainDepth, setExplainDepth] = useState<ExplainabilityDepth>("simple");
@@ -34,8 +32,7 @@ export default function IntelligenceDossier() {
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><FileSearch className="h-6 w-6 text-primary" /> Public Intelligence Dossier</h1>
         <p className="text-sm text-muted-foreground mt-0.5">Institutional-quality intelligence packets generated from public information</p>
       </div>

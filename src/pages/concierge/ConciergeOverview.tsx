@@ -13,7 +13,6 @@ import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
 import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
 import { useNavigate } from "react-router-dom";
 import { useHouseholdTasks, useFamilyEvents } from "@/hooks/use-sita-data";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useMemo } from "react";
 import {
   CheckSquare, Calendar, AlertCircle, Heart, Clock, ShoppingCart,
@@ -22,7 +21,6 @@ import {
 
 const ConciergeOverview = () => {
   const navigate = useNavigate();
-  const { isDemoMode } = useDataMode();
   const { data: tasks = [] } = useHouseholdTasks();
   const { data: events = [] } = useFamilyEvents();
 

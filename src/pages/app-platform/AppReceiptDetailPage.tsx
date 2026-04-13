@@ -13,14 +13,12 @@ import {
 import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { AppIcon, VerificationBadge, AppSourceLabel } from "@/components/sita/app-platform/AppStoreComponents";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { exportToJSON } from "@/lib/export-engine";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const AppReceiptDetailPage = () => {
   const navigate = useNavigate();
   const { receiptId } = useParams<{ receiptId: string }>();
-  const { isDemoMode } = useDataMode();
   const { receipts, getApp } = useAppPlatform();
 
   const receipt = useMemo(() => receipts.find(r => r.receiptId === receiptId), [receipts, receiptId]);
@@ -41,8 +39,7 @@ const AppReceiptDetailPage = () => {
   if (!receipt) {
     return (
       <div className="mx-auto max-w-3xl">
-        <DemoModeBadge />
-        <button onClick={() => navigate("/app-store/receipts")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
+<button onClick={() => navigate("/app-store/receipts")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
           <ArrowLeft className="h-4 w-4" /> Back to Receipts
         </button>
         <div className="rounded-2xl border border-border bg-card p-12 text-center">
@@ -69,8 +66,7 @@ const AppReceiptDetailPage = () => {
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
-      <DemoModeBadge />
-      <button onClick={() => navigate(app ? `/app-store/receipts/${app.id}` : "/app-store/receipts")}
+<button onClick={() => navigate(app ? `/app-store/receipts/${app.id}` : "/app-store/receipts")}
         className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
         <ArrowLeft className="h-4 w-4" /> Back to Receipts
       </button>

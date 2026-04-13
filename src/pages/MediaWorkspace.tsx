@@ -10,8 +10,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -25,9 +23,9 @@ import {
   Plus, FileText, X, ZoomIn, ChevronLeft, ChevronRight, Edit3,
 } from "lucide-react";
 import { DEMO_MEDIA, type DemoMediaItem as MediaItem } from "@/lib/demo-data/media";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const MediaWorkspace = () => {
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const [search, setSearch] = useState("");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
@@ -97,8 +95,7 @@ const MediaWorkspace = () => {
       onDragLeave={() => setIsDragOver(false)}
       onDrop={handleDrop}
     >
-      <DemoModeBadge />
-      <SitaPageHeader
+<SitaPageHeader
         icon={<ImageIcon className="h-6 w-6" />}
         title="Media & Images"
         subtitle="Screenshots, photos, scans, and visual assets"

@@ -11,7 +11,6 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { useFilesSearchIndex } from "@/hooks/use-domain-data";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useAIInsight } from "@/hooks/use-backend-actions";
 import { toast } from "sonner";
 
@@ -27,7 +26,6 @@ const domainFilterMap: Record<FilterType, string[] | undefined> = {
 };
 
 const FilesSearch = () => {
-  const { isDemoMode } = useDataMode();
   const { data: searchData = [], isLoading } = useFilesSearchIndex();
 
   const [query, setQuery] = useState("");

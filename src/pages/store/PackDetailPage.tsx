@@ -17,11 +17,9 @@ import {
   Clock, Play, AlertTriangle, ChevronRight, Lock
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const PackDetailPage = () => {
-  const { isDemoMode } = useDataMode();
   const { packId } = useParams<{ packId: string }>();
   const navigate = useNavigate();
   const [installing, setInstalling] = useState(false);
@@ -31,8 +29,7 @@ const PackDetailPage = () => {
   if (!pack) {
     return (
       <div className="mx-auto max-w-4xl">
-      <DemoModeBadge />
-        <button onClick={() => navigate("/store")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
+<button onClick={() => navigate("/store")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
           <ArrowLeft className="h-4 w-4" /> Back to Store
         </button>
         <div className="text-center py-20">

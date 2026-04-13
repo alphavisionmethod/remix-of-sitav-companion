@@ -1,9 +1,9 @@
 import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { AlertTriangle, Shield, TrendingUp, Zap, Clock, Send, Brain, ChevronRight } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { INVESTMENT_ADVISORS, SAMPLE_SCENARIOS, SAMPLE_ORDERS } from "@/hooks/useInvestmentOfficeData";
 import { useStreamingChat } from "@/hooks/use-streaming-chat";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Demo crisis events
 const CRISIS_EVENTS = [
@@ -220,9 +220,7 @@ function ActionPanel() {
 export default function WarRoom() {
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <DemoModeBadge />
-
-      {/* Header with urgency styling */}
+{/* Header with urgency styling */}
       <motion.div
         className="rounded-2xl border border-destructive/30 bg-gradient-to-r from-destructive/10 via-card to-[hsl(var(--trust-warn))]/10 p-6"
         initial={{ opacity: 0 }}

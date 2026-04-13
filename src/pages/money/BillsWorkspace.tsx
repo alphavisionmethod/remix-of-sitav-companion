@@ -10,8 +10,6 @@ import { toast } from "sonner";
 import { format, differenceInDays, parseISO } from "date-fns";
 import { motion } from "framer-motion";
 import { simulatePayment } from "@/lib/utils/payment-simulation";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useConfirmation } from "@/hooks/use-confirmation";
 import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
 import { useQueryFreshness } from "@/hooks/use-query-freshness";
@@ -23,8 +21,8 @@ import { SplitWorkspace } from "@/components/sita/surfaces/SplitWorkspace";
 import { DetailDrawer } from "@/components/sita/surfaces/DetailDrawer";
 import { AppSurface } from "@/components/sita/surfaces/AppSurface";
 import { ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransitions";
-import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { cn } from "@/lib/utils";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 interface BillForm {
   payee: string;
@@ -302,8 +300,7 @@ const BillsWorkspace = () => {
 
   return (
     <div className="h-[calc(100vh-200px)] -m-4">
-      <DemoModeBadge />
-      <ConfirmationDialog state={confirmation} />
+<ConfirmationDialog state={confirmation} />
       <SplitWorkspace
         list={listPane}
         detail={detailPane}

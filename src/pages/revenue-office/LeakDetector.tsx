@@ -5,17 +5,15 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useRevenueOfficeMode } from "@/contexts/RevenueOfficeModeContext";
 import { RevenueOfficeModeToggle } from "@/components/revenue-office/RevenueOfficeModeToggle";
 import { useRevenueLeakItems } from "@/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DEMO_REV_LEAKS_LEAK_DETECTOR as DEMO_LEAKS, DEMO_LEAK_REPAIR_TRACKING, DEMO_LEAK_TRENDS } from "@/lib/demo-data/revenue-office";
 import { useState } from "react";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function LeakDetector() {
-  const { isDemoMode } = useDataMode();
   const { isBeginner } = useRevenueOfficeMode();
   const { data: liveLeaks, isLoading } = useRevenueLeakItems();
   const [tab, setTab] = useState("active");
@@ -29,13 +27,13 @@ export default function LeakDetector() {
   const trendDelta = prevTrend ? Math.round(((prevTrend.net - latestTrend.net) / prevTrend.net) * 100) : 0;
 
   if (!isDemoMode && isLoading) {
-    return <div className="min-h-screen bg-background p-6 space-y-6"><DemoModeBadge /><Skeleton className="h-8 w-48" /><Skeleton className="h-32 rounded-xl" /><Skeleton className="h-48 rounded-xl" /></div>;
+    return <div className="min-h-screen bg-background p-6 space-y-6">
+<Skeleton className="h-8 w-48" /><Skeleton className="h-32 rounded-xl" /><Skeleton className="h-48 rounded-xl" /></div>;
   }
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-start justify-between">
+<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
             <AlertTriangle className="w-6 h-6 text-yellow-400" /> {isBeginner ? "Money You're Losing" : "Revenue Leakage Map"}

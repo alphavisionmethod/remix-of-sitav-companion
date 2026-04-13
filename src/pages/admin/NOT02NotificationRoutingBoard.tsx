@@ -10,13 +10,11 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { ArrowRight, Filter, Bell, BellOff, Shield, Clock } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { cn } from "@/lib/utils";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 export default function NOT02NotificationRoutingBoard() {
-  const { isDemoMode } = useDataMode();
   const { data: queue = [] } = useQuery({
     queryKey: ["not02-queue"],
     queryFn: async () => {
@@ -70,8 +68,7 @@ export default function NOT02NotificationRoutingBoard() {
 
   return (
     <div className="p-6 space-y-6 max-w-6xl" data-testid="not02-routing-board">
-      <DemoModeBadge />
-      <div className="flex items-center gap-3">
+<div className="flex items-center gap-3">
         <div className="p-2 rounded-lg bg-primary/10"><Filter className="h-5 w-5 text-primary" /></div>
         <div>
           <h1 className="text-xl font-bold">NOT02 — Notification Routing Board</h1>

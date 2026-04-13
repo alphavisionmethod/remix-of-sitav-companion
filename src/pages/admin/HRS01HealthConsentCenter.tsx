@@ -4,20 +4,18 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { ShieldCheck, Heart, Lock, Eye, AlertTriangle, CheckCircle2, Trash2, Clock, FileText, Loader2 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useHealthSignalConsents } from "@/hooks/use-health-signal-data";
 import { useToggleSignalConsent } from "@/hooks/use-health-signal-mutations";
 import { DEMO_CONSENT_CATEGORIES, DEMO_REVOCATION_ACTIONS } from "@/lib/demo-data/health-signals";
 import { DEMO_PRINCIPLES } from "@/lib/demo-data/admin-platform";
 import HRSSubNav from "@/components/admin/HRSSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
 const ICON_MAP: Record<string, any> = { ingestion: Eye, routing: ShieldCheck, boardroom: FileText, assistant: Heart };
 
 const HRS01HealthConsentCenter = () => {
-  const { isDemoMode } = useDataMode();
   const [enabledCats, setEnabledCats] = useState<Record<string, boolean>>(
     Object.fromEntries(DEMO_CONSENT_CATEGORIES.map(c => [c.key, false]))
   );
@@ -38,8 +36,7 @@ const HRS01HealthConsentCenter = () => {
 
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">
-      <DemoModeBadge />
-      <HRSSubNav />
+<HRSSubNav />
       <div className="flex items-center gap-3">
         <div className="p-2 rounded-lg bg-primary/10"><ShieldCheck className="h-8 w-8 text-primary" /></div>
         <div>

@@ -9,15 +9,12 @@ import { getRoutesByFlagshipLoop } from "@/lib/core-services/service-registry/ro
 import { getDomainsByFlagshipLoop, SERVICE_OWNERSHIP_REGISTRY } from "@/lib/core-services/service-registry/service-ownership-registry";
 import { FLAGSHIP_LOOP_SEEDS } from "@/lib/core-services/flagship-loops/flagship-loop-service";
 import { Layers, Route, Database, AlertTriangle, CheckCircle } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function SERV06FlagshipTraceability() {
-  const { isDemoMode } = useDataMode();
   return (
     <div className="space-y-6 p-6" data-testid="serv06-board">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <Layers className="h-6 w-6 text-primary" />
           SERV06 — Flagship Loop Traceability

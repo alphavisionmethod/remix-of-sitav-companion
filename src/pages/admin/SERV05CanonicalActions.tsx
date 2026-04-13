@@ -7,19 +7,16 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { getAllActions } from "@/lib/core-services/service-registry/route-to-service-inventory";
 import { Crosshair, CheckCircle, AlertTriangle } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function SERV05CanonicalActions() {
-  const { isDemoMode } = useDataMode();
   const allActions = getAllActions();
   const canonicalActions = allActions.filter((a) => a.isCanonical);
   const nonCanonicalActions = allActions.filter((a) => !a.isCanonical);
 
   return (
     <div className="space-y-6 p-6" data-testid="serv05-board">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <Crosshair className="h-6 w-6 text-primary" />
           SERV05 — Canonical Action Entry Points

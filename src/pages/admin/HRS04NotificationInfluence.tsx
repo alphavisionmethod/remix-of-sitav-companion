@@ -2,11 +2,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Bell, BellOff, Clock, AlertTriangle, Shield } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useInterruptionPosture } from "@/hooks/use-health-signal-data";
 import { DEMO_SUPPRESSION_RULES, DEMO_TIMING_RULES, DEMO_OVERRIDE_MATRIX } from "@/lib/demo-data/notification-calm";
 import HRSSubNav from "@/components/admin/HRSSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -18,8 +17,7 @@ const HRS04NotificationInfluence = () => {
 
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">
-      <DemoModeBadge />
-      <HRSSubNav />
+<HRSSubNav />
       <div className="flex items-center gap-3">
         <div className="p-2 rounded-lg bg-primary/10"><Bell className="h-8 w-8 text-primary" /></div>
         <div>

@@ -3,14 +3,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Bell, Route, Volume2, VolumeX, Smartphone, Watch, Laptop } from "lucide-react";
 import { fromTable } from "@/lib/supabase-helpers";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import type { AmbientNotificationRouteRow, NotificationFatigueProfileRow, InterruptionPolicyRow } from "@/lib/types/dwe-types";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function DWE04NotificationRoutingStudio() {
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
 
   const { data: routes = [] } = useQuery<AmbientNotificationRouteRow[]>({
@@ -49,8 +47,7 @@ export default function DWE04NotificationRoutingStudio() {
   return (
     <div className="space-y-6 p-6">
       <DWESubNav />
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold text-foreground">DWE04 — Notification Routing Studio</h1>
         <p className="text-muted-foreground">What goes where, why it was routed, urgency policy, fatigue suppression.</p>
       </div>

@@ -7,9 +7,8 @@ const db = supabase as any;
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ScrollText, Shield, Plug, ArrowUpCircle, XCircle, CheckCircle } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { getRelation, parseProviderFamilyRef, parseProviderCapabilityRef } from "@/lib/types/relation-parsers";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -22,7 +21,6 @@ const typeColors: Record<string, string> = {
 };
 
 export default function ISA04ConsentLedgerExplorer() {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("all");
 
   const { data: consents = [] } = useQuery({
@@ -65,8 +63,7 @@ export default function ISA04ConsentLedgerExplorer() {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <ScrollText className="h-6 w-6 text-primary" /> Consent Ledger Explorer
         </h1>

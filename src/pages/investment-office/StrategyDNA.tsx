@@ -1,15 +1,13 @@
 import { motion } from "framer-motion";
 import { Dna, Info } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useStrategyDnaProfile, useDecisionRecords, useThesisRecords, useBehavioralSignals, usePortfolioPositionsMemory } from "@/hooks/use-investment-memory";
 import { inferStrategyDNA } from "@/lib/services/finance-os/investment-memory.service";
 import { DEMO_DNA_DIMENSIONS, DEMO_SUGGESTIONS } from "@/lib/demo-data/investment";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const STRATEGY_SUMMARY = "Your portfolio reveals a growth-oriented, thesis-disciplined investor with moderate macro awareness. You show strong patience but occasionally drift toward speculation. Event markets are underweight relative to your macro interest.";
 
 export default function StrategyDNA() {
-  const { isDemoMode } = useDataMode();
   const { data: dnaProfile } = useStrategyDnaProfile();
   const { data: decisions } = useDecisionRecords();
   const { data: theses } = useThesisRecords();
@@ -18,8 +16,7 @@ export default function StrategyDNA() {
   const liveInference = inferStrategyDNA(decisions ?? [], theses ?? [], behavioralSignals ?? [], positions ?? []);
   return (
     <div className="mx-auto max-w-5xl space-y-6">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Dna className="h-6 w-6 text-primary" /> Strategy DNA</h1>
         <p className="text-sm text-muted-foreground mt-0.5">An inferred strategy fingerprint based on your portfolio, behavior, and decision history</p>
       </div>

@@ -7,15 +7,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Bell, CheckCircle, XCircle } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
 const urgencyColors: Record<string, string> = { critical: "bg-red-500/20 text-red-400", high: "bg-orange-500/20 text-orange-400", normal: "bg-blue-500/20 text-blue-400", low: "bg-muted text-muted-foreground" };
 
 export default function UAO04NotificationRouter() {
-  const { isDemoMode } = useDataMode();
   const { data: routes = [] } = useQuery({
     queryKey: ["notification-routes"],
     queryFn: async () => { const { data } = await fromTable("ambient_notification_routes").select("*").order("priority"); return data || []; },
@@ -36,8 +34,7 @@ export default function UAO04NotificationRouter() {
   return (
     <div className="space-y-6 p-6">
       <UAOSubNav />
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Bell className="h-6 w-6" /> Notification & Escalation Router</h1>
         <p className="text-sm text-muted-foreground mt-1">Routing rules, urgency ladders, quiet hours, fatigue control</p>
       </div>

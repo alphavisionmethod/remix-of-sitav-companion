@@ -11,8 +11,7 @@ import {
   Bell, Calendar, Briefcase, DollarSign, Home, Sparkles, Check, Edit, Save,
   ChevronRight, RotateCcw, Power, X, CheckCircle2
 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 type SubPage = "profile" | "preferences" | "memory" | "automation" | "boardroom";
 
@@ -27,7 +26,6 @@ const subpageFromPath = (path: string): SubPage => {
 // ─── Profile Section ───────────────────────────────────────
 
 const ProfileSection = () => {
-  const { isDemoMode } = useDataMode();
   const { preferences, patterns, setPreference, confirmPattern, dismissPattern, getLayer } = useAdaptivePersonalization();
   const [editing, setEditing] = useState(false);
 
@@ -55,8 +53,7 @@ const ProfileSection = () => {
 
   return (
     <div className="space-y-6">
-      <DemoModeBadge />
-      <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
         <SitaSectionHeader title="Your Operating Profile" subtitle="How SITA understands and communicates with you" />
         <SitaButton variant={editing ? "primary" : "secondary"} size="sm" onClick={() => editing ? handleSave() : setEditing(true)}>
           {editing ? <><Save className="h-3.5 w-3.5" /> Save</> : <><Edit className="h-3.5 w-3.5" /> Edit</>}

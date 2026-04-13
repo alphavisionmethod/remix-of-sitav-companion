@@ -2,14 +2,13 @@ import { useState } from "react";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { SitaTabs } from "@/components/sita/SitaComponents";
 import { SitaCard } from "@/components/sita/SitaCard";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { FileText, ZoomIn, ZoomOut, ChevronLeft, ChevronRight, Search, Download, Printer, MessageSquare, Highlighter, Bookmark, RotateCw, Maximize2, Layers, PenTool } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Slider } from "@/components/ui/slider";
 import { motion } from "framer-motion";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 type AnnotationType = "highlight" | "comment" | "signature" | "bookmark";
 
@@ -36,7 +35,6 @@ const demoPages = Array.from({ length: 12 }, (_, i) => ({
 }));
 
 const PDFViewerWorkspace = () => {
-  const { isDemoMode } = useDataMode();
   const [currentPage, setCurrentPage] = useState(1);
   const [zoom, setZoom] = useState([100]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -58,8 +56,7 @@ const PDFViewerWorkspace = () => {
 
   return (
     <div className="mx-auto max-w-7xl space-y-4">
-      <DemoModeBadge />
-      <SitaPageHeader icon={<FileText className="h-6 w-6" />} title="PDF Viewer" subtitle="View, annotate, highlight, and sign documents">
+<SitaPageHeader icon={<FileText className="h-6 w-6" />} title="PDF Viewer" subtitle="View, annotate, highlight, and sign documents">
         <div className="flex items-center gap-2">
           <Button variant="outline" size="sm"><Download className="h-4 w-4 mr-1" /> Download</Button>
           <Button variant="outline" size="sm"><Printer className="h-4 w-4 mr-1" /> Print</Button>

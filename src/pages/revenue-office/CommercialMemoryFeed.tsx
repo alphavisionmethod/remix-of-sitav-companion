@@ -5,15 +5,13 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Activity, TrendingUp, TrendingDown, Users, Star, Zap, Calendar, Package, AlertTriangle, CheckCircle, Pin, ListChecks, Filter } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_memoryEvents, DEMO_MEMORY_PINNED } from "@/lib/demo-data/revenue-office";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const typeLabels: Record<string, string> = { campaign: "Campaign", reputation: "Reputation", crm: "CRM", booking: "Booking", advisor: "Advisor", funnel: "Funnel", membership: "Membership", offer: "Offer" };
 const allDomains = Object.keys(typeLabels);
 
 export default function CommercialMemoryFeed() {
-  const { isDemoMode } = useDataMode();
   const memoryEvents = isDemoMode ? DEMO_memoryEvents : DEMO_memoryEvents;
   const pinnedItems = DEMO_MEMORY_PINNED;
   const [activeDomain, setActiveDomain] = useState<string>("all");
@@ -23,8 +21,7 @@ export default function CommercialMemoryFeed() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Activity className="w-6 h-6 text-primary" /> Commercial Memory Feed</h1>
         <p className="text-muted-foreground">A living stream with acknowledgment, pinning, task conversion, and domain filtering</p>
       </div>

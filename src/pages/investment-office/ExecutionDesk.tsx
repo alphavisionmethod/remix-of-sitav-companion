@@ -1,11 +1,10 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Target, Shield, DollarSign, AlertTriangle, Check, ChevronRight, ArrowRight, Loader2, CheckCircle2, Brain, FileText, Clock } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import type { TradeAction, Instrument } from "@/lib/investment-office/types";
 import { INSTRUMENTS, INVESTMENT_ADVISORS, PLATFORM_CONNECTIONS, SAMPLE_ORDERS, SAMPLE_THESES } from "@/hooks/useInvestmentOfficeData";
 import { useTradeOrders } from "@/hooks/use-investment-office";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // ── Trade Prep Receipt ──
 function TradePrepReceipt({ instrument, action, quantity, orderType, limitPrice, estCost }: {
@@ -107,7 +106,6 @@ function TradePrepReceipt({ instrument, action, quantity, orderType, limitPrice,
 }
 
 export default function ExecutionDesk() {
-  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useTradeOrders();
   const navigate = useNavigate();
   const [selectedInstrument, setSelectedInstrument] = useState<Instrument | null>(INSTRUMENTS[2]);
@@ -126,8 +124,7 @@ export default function ExecutionDesk() {
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Target className="h-6 w-6 text-primary" /> Execution Desk</h1>
         <p className="text-sm text-muted-foreground mt-1">Prepare, review, and execute trades</p>
       </div>

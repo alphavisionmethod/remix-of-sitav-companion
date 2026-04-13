@@ -9,8 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Shield, CheckCircle, XCircle, AlertTriangle, Clock, ArrowRight, Zap, Eye, Play, Ban } from "lucide-react";
 import { DEMO_ACTION_REQUESTS } from "@/lib/demo-data/integrations";
 import type { DemoActionRequest } from "@/lib/demo-data/integrations";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const statusConfig: Record<string, { color: string; icon: any; label: string }> = {
   proposed: { color: "text-blue-400", icon: Clock, label: "Pending Approval" },
@@ -28,8 +27,7 @@ function ActionCard({ action, onApprove, onReject }: { action: DemoActionRequest
 
   return (
     <Card className={`bg-card/50 border-border/50 ${action.riskLevel === "high" ? "border-l-2 border-l-red-500" : action.riskLevel === "medium" ? "border-l-2 border-l-amber-500" : ""}`}>
-      <DemoModeBadge />
-      <CardContent className="p-4 space-y-3">
+<CardContent className="p-4 space-y-3">
         <div className="flex items-start justify-between">
           <div className="flex items-start gap-3">
             <StatusIcon className={`w-4 h-4 mt-0.5 ${config.color}`} />
@@ -124,7 +122,6 @@ function ActionCard({ action, onApprove, onReject }: { action: DemoActionRequest
 export default function ActionsApprovals() {
   const [filter, setFilter] = useState("all");
   const navigate = useNavigate();
-  const { isDemoMode } = useDataMode();
 
   const actionRequests = isDemoMode ? DEMO_ACTION_REQUESTS : [];
   const filtered = filter === "all" ? actionRequests : actionRequests.filter(a => a.status === filter);

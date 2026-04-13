@@ -1,13 +1,11 @@
 import { useState } from "react";
 import { BookOpen, Search, Calendar, Tag, Brain, Zap } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { INSTRUMENTS, SAMPLE_RESEARCH } from "@/hooks/useInvestmentOfficeData";
 import { ADVISOR_MEMOS, CATALYST_CALENDAR } from "@/lib/investment-office/mock-data";
 import { useInvestmentThesisEntries } from "@/hooks/use-investment-office";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function ResearchLibrary() {
-  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useInvestmentThesisEntries();
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<string>("all");
@@ -20,8 +18,7 @@ export default function ResearchLibrary() {
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><BookOpen className="h-6 w-6 text-primary" /> Research Library</h1>
         <p className="text-sm text-muted-foreground mt-1">Public information synthesis, macro updates, and saved memos</p>
       </div>

@@ -5,10 +5,9 @@ import { Input } from "@/components/ui/input";
 import { Lock, Plus, Search, Eye, EyeOff, Copy, Shield, AlertTriangle, Key, Globe, CreditCard, Server, Smartphone } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useVaultItems } from "@/hooks/use-apps-data";
 import { DEMO_ENTRIES } from "@/lib/demo-data/apps";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 interface VaultEntry {
   id: string;
@@ -25,7 +24,6 @@ const categoryIcons: Record<string, React.ElementType> = { login: Globe, card: C
 const strengthColors: Record<string, string> = { strong: "text-emerald-500", medium: "text-amber-500", weak: "text-red-500" };
 
 export default function VaultApp() {
-  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useVaultItems();
   const [search, setSearch] = useState("");
   const [showPasswords, setShowPasswords] = useState<Record<string, boolean>>({});
@@ -43,8 +41,7 @@ export default function VaultApp() {
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-4">
-      <DemoModeBadge />
-      <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Lock className="h-6 w-6 text-primary" />
           <h1 className="text-xl font-bold text-foreground">Password Vault</h1>

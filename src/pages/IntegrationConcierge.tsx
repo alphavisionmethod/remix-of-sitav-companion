@@ -16,9 +16,8 @@ import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
 import type { ConnectorUseCase } from "@/lib/engines/connector-concierge";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_CORE_BUNDLES as DEMO_BUNDLES, DEMO_CORE_CATEGORIES as DEMO_CATEGORIES } from "@/lib/demo-data/core-pages";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // ── Category Config ────────────────────────────────────────────
 // ── Use Case Card ──────────────────────────────────────────────
@@ -33,8 +32,7 @@ function UseCaseCard({ useCase, onSelect }: { useCase: ConnectorUseCase; onSelec
       className="group rounded-2xl border border-border/50 bg-card/80 backdrop-blur-sm p-5 cursor-pointer hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all"
       onClick={onSelect}
     >
-      <DemoModeBadge />
-      <div className="flex items-start justify-between mb-3">
+<div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-2">
           {useCase.connectors.map(c => (
             <span key={c.connectorId} className="text-lg">{c.icon}</span>
@@ -292,7 +290,6 @@ function ConnectedPanel() {
 
 // ── Main Page ──────────────────────────────────────────────────
 export default function IntegrationConcierge() {
-  const { isDemoMode } = useDataMode();
   const { engines } = useOSRuntime();
   const [category, setCategory] = useState("all");
   const [activeUseCase, setActiveUseCase] = useState<ConnectorUseCase | null>(null);

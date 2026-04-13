@@ -8,12 +8,10 @@ import { ArrowLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { AppIcon } from "@/components/sita/app-platform/AppStoreComponents";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_PERMISSION_DOMAINS } from "@/lib/demo-data/core-pages";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const AppPermissionsCenterPage = () => {
-  const { isDemoMode } = useDataMode();
   const { apps, togglePermission } = useAppPlatform();
   const navigate = useNavigate();
   const [activeDomain, setActiveDomain] = useState("files");
@@ -26,8 +24,7 @@ const AppPermissionsCenterPage = () => {
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
-      <DemoModeBadge />
-      <button onClick={() => navigate("/app-store")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+<button onClick={() => navigate("/app-store")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
         <ArrowLeft className="h-4 w-4" /> Back to App Store
       </button>
 

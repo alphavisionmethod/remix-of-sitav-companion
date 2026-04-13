@@ -40,8 +40,6 @@ import {
 import { useBoardroomPacket } from "@/hooks/use-boardroom";
 import type { BoardroomSession, BoardroomDecision, StrategicInsight } from "@/packages/boardroom-contracts";
 import { mockAdvisors, mockRecommendations, mockSynthesis, mockApprovals, mockProofHistory } from "@/hooks/useAdvisorMissionControl";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import type {
   BoardroomType, BoardroomPacket, BoardroomContentSection, MetricCardData,
   TableData, NarrativeData, AlertData, ActionItemData, ChartData, BOARDROOM_META
@@ -56,6 +54,7 @@ import type { AdvisorConfig } from "@/packages/advisor-config";
 import { cn } from "@/lib/utils";
 import { useBoardroomData } from "@/hooks/use-boardroom-data";
 import { useOpportunitySignals, usePriorityStacks, useDigestCompilations } from "@/hooks/useCAIData";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 // ── Section Renderers (preserved from original) ───────────────
@@ -211,7 +210,6 @@ const ConfidencePill = ({ value }: { value: number }) => {
 // ── NEW: Advisor Voice Track ──────────────────────────────────
 
 const AdvisorVoiceTrack = ({ type }: { type: BoardroomType }) => {
-  const { isDemoMode } = useDataMode();
   
   if (!isDemoMode) {
     return (
@@ -278,7 +276,6 @@ const AdvisorVoiceTrack = ({ type }: { type: BoardroomType }) => {
 // ── NEW: Disagreement Card ────────────────────────────────────
 
 const DisagreementCards = () => {
-  const { isDemoMode } = useDataMode();
   if (!isDemoMode) return null;
   
   const disagreements = mockSynthesis.filter(s => s.disagreements && s.disagreements.length > 0);
@@ -313,7 +310,6 @@ const DisagreementCards = () => {
 // ── NEW: Decision Memory Strip ────────────────────────────────
 
 const DecisionMemoryStrip = () => {
-  const { isDemoMode } = useDataMode();
   if (!isDemoMode) return null;
   
   const decisions = mockProofHistory.filter(p => p.type === "approval" || p.type === "execution").slice(0, 5);
@@ -380,7 +376,6 @@ const CarryoverPanel = () => {
 // ── NEW: Proof Summary Board ──────────────────────────────────
 
 const ProofSummaryBoard = () => {
-  const { isDemoMode } = useDataMode();
   if (!isDemoMode) return null;
   
   const verified = mockProofHistory.filter(p => p.outcome === "verified").length;
@@ -603,7 +598,6 @@ const RenderSection = ({ section }: { section: BoardroomContentSection }) => {
 const PacketView = ({ type, perspective = "owner" }: { type: BoardroomType; perspective?: PerspectiveLevel }) => {
   const { packet, isLoading, regenerate } = useBoardroomPacket(type);
   const config = getPerspectiveConfig(perspective);
-  const { isDemoMode } = useDataMode();
   const { pendingApprovals, activeGoals, overdueTasks, recentProofs } = useBoardroomData();
 
   if (isLoading || !packet) return <div className="p-8 text-center text-muted-foreground">Generating boardroom packet…</div>;
@@ -1146,8 +1140,7 @@ const Boardroom = () => {
   return (
     <>
       <motion.div className="mx-auto max-w-7xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-        <DemoModeBadge />
-        <SitaPageHeader
+<SitaPageHeader
           title="Boardroom"
           subtitle="Where advisor voices become one governed plan — not a dashboard, a deliberation artifact"
           actions={

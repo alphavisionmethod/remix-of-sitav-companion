@@ -5,7 +5,6 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
 import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
 import { QueueCard } from "@/components/sita/cards";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useState, useMemo } from "react";
 import {
   DollarSign, ArrowDownLeft, ArrowUpRight, Clock, AlertTriangle, CheckCircle,

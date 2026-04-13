@@ -2,15 +2,13 @@ import { motion } from "framer-motion";
 import { Store, Package, ShoppingCart, TrendingDown, Star, Layers, Tag, AlertTriangle, Sparkles, Loader2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useSites } from "@/hooks/use-digital-presence";
 import { DEMO_CART_DIAGNOSTICS, DEMO_COLLECTIONS, DEMO_DPO_PRODUCTS as DEMO_PRODUCTS, DEMO_MERCHANDISING_OPS } from "@/lib/demo-data/digital-presence";
 import { useShopifyProducts, useShopifyCollections } from "@/hooks/useShopifyData";
 import DPOSubNav from "./DPOSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function EcommerceOffice() {
-  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useSites();
   const { data: shopifyProducts, isLoading: productsLoading } = useShopifyProducts(20);
   const { data: shopifyCollections, isLoading: collectionsLoading } = useShopifyCollections(10);
@@ -21,8 +19,7 @@ export default function EcommerceOffice() {
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <DPOSubNav />
-      <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">Ecommerce / Merchandising Office</h1>
         <p className="text-sm text-muted-foreground">Products, collections, cart recovery, merchandising & promotion planning</p>
       </motion.div>

@@ -9,8 +9,7 @@ import {
   Activity, Zap, AlertTriangle, Lock, ArrowRight
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // ── Service Module Definitions ─────────────────────────────────
 
@@ -152,7 +151,6 @@ const RISK_BADGE = {
 // ── Component ──────────────────────────────────────────────────
 
 export default function ServiceArchitectureDashboard() {
-  const { isDemoMode } = useDataMode();
   const [selectedModule, setSelectedModule] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("overview");
 
@@ -172,8 +170,7 @@ export default function ServiceArchitectureDashboard() {
 
   return (
     <div className="min-h-screen p-6 space-y-6">
-      <DemoModeBadge />
-      {/* Header */}
+{/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Service Architecture</h1>

@@ -11,12 +11,11 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAction } from "@/lib/hooks/useAction";
 import { Workflow, CheckCircle2, Clock, AlertTriangle, ChevronRight, Eye, RotateCcw, Shield, Plus, Trash2 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useConfirmation } from "@/hooks/use-confirmation";
 import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
 import { DataFreshnessBadge } from "@/components/sita/DataFreshnessBadge";
 import { useQueryFreshness } from "@/hooks/use-query-freshness";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const statusToState = (status: string): ExecutionState => {
   const map: Record<string, ExecutionState> = {
@@ -30,7 +29,6 @@ const statusToState = (status: string): ExecutionState => {
 };
 
 const WorkflowsCenter = () => {
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const { confirmation, confirm } = useConfirmation();
@@ -97,8 +95,7 @@ const WorkflowsCenter = () => {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <DemoModeBadge />
-      <ConfirmationDialog state={confirmation} />
+<ConfirmationDialog state={confirmation} />
       <SitaPageHeader title="Workflows" subtitle="Actions, approvals, and execution tracking — live from workflow engine"
         actions={<div className="flex items-center gap-3"><DataFreshnessBadge {...freshness} /><SitaButton variant="primary" onClick={() => setShowCreate(true)}><Plus className="h-4 w-4" /> New Workflow</SitaButton></div>}
       />

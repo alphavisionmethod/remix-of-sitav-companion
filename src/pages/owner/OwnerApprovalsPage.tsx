@@ -16,8 +16,7 @@ import {
 
 import { useOwnerApprovals } from "@/hooks/use-domain-data";
 import type { OwnerApprovalItem as ApprovalItem } from "@/lib/mock-data/owner";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const riskStyles: Record<string, string> = {
   critical: "bg-destructive/10 text-destructive",
@@ -81,7 +80,6 @@ function ApprovalList({ items }: { items: ApprovalItem[] }) {
 }
 
 export default function OwnerApprovalsPage() {
-  const { isDemoMode } = useDataMode();
   const { data: approvalsData = [] } = useOwnerApprovals();
 
   const pending = approvalsData.filter(a => a.status === "pending");
@@ -91,8 +89,7 @@ export default function OwnerApprovalsPage() {
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
-      <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+<motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
         className="rounded-2xl border border-primary/15 bg-gradient-to-br from-primary/5 via-card to-card p-6"
       >
         <div className="flex items-center gap-4">

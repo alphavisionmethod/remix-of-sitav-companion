@@ -11,10 +11,8 @@ import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 const db = supabase as any;
-import { useDataMode } from "@/contexts/DataModeContext";
 
 const FilesMemoryReview = () => {
-  const { isDemoMode } = useDataMode();
   const { data: files = [], isLoading: loadingFiles } = useAllFiles();
 
   const { data: memories = [], isLoading: loadingMemories } = useQuery({

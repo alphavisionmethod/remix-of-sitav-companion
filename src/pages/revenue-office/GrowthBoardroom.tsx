@@ -5,8 +5,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useRevenueOfficeMode } from "@/contexts/RevenueOfficeModeContext";
 import { RevenueOfficeModeToggle } from "@/components/revenue-office/RevenueOfficeModeToggle";
 import { useDeals } from "@/hooks/use-revenue-office";
@@ -16,6 +14,7 @@ import { DEMO_REV_ADVISOR_SIGNALS as DEMO_ADVISOR_SIGNALS, DEMO_REV_LEAKS as DEM
 import { competitiveIntelligenceService, type CompetitivePosition } from "@/lib/services/competitive-intelligence";
 import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
 import { useRevenueWhatChanged } from "@/hooks/use-revenue-memory";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const CAMPAIGN_HEALTH = [
   { name: "Summer Accelerator", status: "active", performance: 78, leads: 42, spend: "$2,400" },
@@ -28,7 +27,6 @@ const REPUTATION_PULSE = { rating: 4.8, reviews: 127, responseRate: 96, nps: 72 
 const OPERATING_MODE = "Growth";
 
 export default function GrowthBoardroom() {
-  const { isDemoMode } = useDataMode();
   const { isBeginner } = useRevenueOfficeMode();
   const { data: liveDeals, isLoading } = useDeals();
   const navigate = useNavigate();
@@ -43,13 +41,13 @@ export default function GrowthBoardroom() {
   const ADVISOR_SIGNALS = isDemoMode ? DEMO_ADVISOR_SIGNALS : DEMO_ADVISOR_SIGNALS;
 
   if (!isDemoMode && isLoading) {
-    return <div className="min-h-screen bg-background p-6 space-y-6"><DemoModeBadge /><Skeleton className="h-8 w-48" /><div className="grid grid-cols-2 lg:grid-cols-4 gap-4">{[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-24 rounded-xl" />)}</div></div>;
+    return <div className="min-h-screen bg-background p-6 space-y-6">
+<Skeleton className="h-8 w-48" /><div className="grid grid-cols-2 lg:grid-cols-4 gap-4">{[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-24 rounded-xl" />)}</div></div>;
   }
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-foreground">Growth Boardroom</h1>

@@ -25,7 +25,6 @@ import {
   BoardroomAdvisorCard, UncertaintyCard,
 } from "@/components/sita/AdvisorComponents";
 import { mockAdvisors, mockRecommendations, mockSimulations, mockApprovals, mockProofHistory, mockMemoryItems, mockSynthesis } from "@/hooks/useAdvisorMissionControl";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useStreamingChat } from "@/hooks/use-streaming-chat";
 import {
   Brain, Users, GitCompare, Play, CheckCircle, FileText, Eye,
@@ -40,6 +39,7 @@ import type { ApprovalRequest, ExecutionEnvelope, Receipt, TrustState, Opportuni
 import type { AdvisorConfig, AdvisorId } from "@/packages/advisor-config";
 import type { ProofPack, TypedReceipt } from "@/packages/proof-model";
 import type { RefusalState, ContradictionReport } from "@/packages/policy-contracts";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -919,8 +919,7 @@ export default function AdvisorWorkspace() {
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
-      <DemoModeBadge />
-      <MainGuideHeader mode={mode} onModeChange={setMode} />
+<MainGuideHeader mode={mode} onModeChange={setMode} />
 
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="bg-muted/30 border border-border/40 h-9 p-0.5 gap-0.5 flex-wrap">

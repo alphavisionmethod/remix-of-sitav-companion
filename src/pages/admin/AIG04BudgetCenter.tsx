@@ -8,8 +8,6 @@ import {
   DollarSign, TrendingUp, AlertTriangle, ShieldAlert, Server,
   Database, GitBranch, Zap, Ban, ShieldCheck, Activity
 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import {
   getBudgetSummary, getPortfolioAllocations, getCostLedger,
   getBudgetPolicies, getBudgetAlerts, getUsageLedgerStats,
@@ -17,9 +15,9 @@ import {
 } from "@/lib/core-services/ai-gateway";
 import AIGSubNav from "@/components/admin/AIGSubNav";
 import { supabase } from "@/integrations/supabase/client";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function AIG04BudgetCenter() {
-  const { isDemoMode } = useDataMode();
 
   const { data: summary } = useQuery({
     queryKey: ["ai-budget-summary"],
@@ -82,8 +80,7 @@ export default function AIG04BudgetCenter() {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <AIGSubNav />
+<AIGSubNav />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <DollarSign className="h-6 w-6" /> AIG04 — AI Budget & Spend Center

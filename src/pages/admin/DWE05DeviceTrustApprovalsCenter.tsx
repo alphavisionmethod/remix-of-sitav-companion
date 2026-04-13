@@ -3,14 +3,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Shield, Fingerprint, ShieldCheck, ShieldAlert, KeyRound } from "lucide-react";
 import { fromTable } from "@/lib/supabase-helpers";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import type { DeviceTrustRecordRow, MicroApprovalPolicyRow, DeviceApprovalReceiptRow } from "@/lib/types/dwe-types";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function DWE05DeviceTrustApprovalsCenter() {
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
 
   const { data: trustRecords = [] } = useQuery<DeviceTrustRecordRow[]>({
@@ -49,8 +47,7 @@ export default function DWE05DeviceTrustApprovalsCenter() {
   return (
     <div className="space-y-6 p-6">
       <DWESubNav />
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold text-foreground">DWE05 — Device Trust & Approvals Center</h1>
         <p className="text-muted-foreground">Trusted devices, device-bound approvals, biometric escalation, security posture.</p>
       </div>

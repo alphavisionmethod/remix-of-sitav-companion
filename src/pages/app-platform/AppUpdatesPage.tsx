@@ -6,12 +6,10 @@ import { useNavigate } from "react-router-dom";
 import { Check, Clock, Download, ArrowLeft } from "lucide-react";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { AppIcon, VerificationBadge } from "@/components/sita/app-platform/AppStoreComponents";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { toast } from "sonner";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const AppUpdatesPage = () => {
-  const { isDemoMode } = useDataMode();
   const { apps, updatableApps, installedApps, updateApp } = useAppPlatform();
   const navigate = useNavigate();
 
@@ -24,8 +22,7 @@ const AppUpdatesPage = () => {
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
-      <DemoModeBadge />
-      <button onClick={() => navigate("/app-store")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+<button onClick={() => navigate("/app-store")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
         <ArrowLeft className="h-4 w-4" /> Back to App Store
       </button>
 

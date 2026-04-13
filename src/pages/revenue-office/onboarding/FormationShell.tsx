@@ -26,7 +26,7 @@ import AutomationScreen from "./screens/AutomationScreen";
 import AdvisorActivationScreen from "./screens/AdvisorActivationScreen";
 import FirstWinScreen from "./screens/FirstWinScreen";
 import RevealScreen from "./screens/RevealScreen";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const screenMap: Record<StageId, React.ComponentType<any>> = {
   ceremony: CeremonyScreen,
@@ -105,9 +105,7 @@ export default function FormationShell() {
   return (
     <div className="min-h-screen bg-background relative">
       <h1 className="sr-only">Business Formation</h1>
-      <DemoModeBadge />
-
-      {/* Ambient background */}
+{/* Ambient background */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
         <div className="absolute top-1/4 left-1/4 h-96 w-96 rounded-full blur-[160px] transition-opacity duration-1000"
           style={{ background: "hsl(var(--primary) / 0.03)", opacity: stage > 0 ? 1 : 0.5 }} />

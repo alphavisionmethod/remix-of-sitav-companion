@@ -8,12 +8,10 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CANONICAL_DOMAIN_PACKS } from "@/lib/delivery-methodology/domain-packs";
 import { LIFECYCLE_STAGES, getStageLabel } from "@/lib/delivery-methodology/feature-lifecycle";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_ARCHETYPE_DOCS } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const BuilderKnowledgeBase = () => {
-  const { isDemoMode } = useDataMode();
   const { data: archetypes } = useQuery({
     queryKey: ["kb-archetypes"],
     queryFn: async () => {
@@ -24,8 +22,7 @@ const BuilderKnowledgeBase = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center gap-3 mb-2">
           <BookMarked className="h-8 w-8 text-primary" />
           <h1 className="text-3xl font-bold">AI Builder Knowledge Base</h1>

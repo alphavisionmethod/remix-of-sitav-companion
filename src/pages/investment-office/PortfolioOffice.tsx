@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { DollarSign, TrendingUp, TrendingDown, PieChart, Shield, RefreshCw, AlertTriangle, Wallet } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { SparklineChart } from "@/components/sita/SparklineChart";
 import { PLATFORM_CONNECTIONS, PORTFOLIO, SAMPLE_THESES } from "@/hooks/useInvestmentOfficeData";
 import { SPARKLINE_DATA, PERFORMANCE_TIMELINE } from "@/lib/investment-office/mock-data";
 import { usePortfolioPositions } from "@/hooks/use-investment-office";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const fmt = (n: number) => n >= 1e6 ? `$${(n / 1e6).toFixed(2)}M` : n >= 1e3 ? `$${(n / 1e3).toFixed(1)}K` : `$${n.toFixed(2)}`;
 const pctFmt = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
@@ -19,7 +18,6 @@ function getConvictionBadge(instrumentId: string) {
 type AllocView = "class" | "sector" | "theme";
 
 export default function PortfolioOffice() {
-  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = usePortfolioPositions();
   const navigate = useNavigate();
   const [allocView, setAllocView] = useState<AllocView>("class");
@@ -43,8 +41,7 @@ export default function PortfolioOffice() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <DemoModeBadge />
-      <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><PieChart className="h-6 w-6 text-primary" /> Portfolio Office</h1>
           <p className="text-sm text-muted-foreground mt-1">All holdings across platforms</p>

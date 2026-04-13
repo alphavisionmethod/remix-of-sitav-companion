@@ -1,20 +1,17 @@
 import { motion } from "framer-motion";
 import { Landmark, Shield, TrendingUp, Wallet, Zap, Calendar, Target, Coins } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useCapitalPurposeBuckets } from "@/hooks/use-investment-office";
 import { DEMO_INV_PURPOSES as DEMO_PURPOSES, DEMO_INV_RULES as DEMO_RULES } from "@/lib/demo-data/investment";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const TOTAL = DEMO_PURPOSES.reduce((s, p) => s + p.allocated, 0);
 const fmt = (n: number) => n >= 1e6 ? `$${(n / 1e6).toFixed(2)}M` : `$${(n / 1e3).toFixed(1)}K`;
 
 export default function CapitalPurpose() {
-  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useCapitalPurposeBuckets();
   return (
     <div className="mx-auto max-w-5xl space-y-6">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Landmark className="h-6 w-6 text-primary" /> Capital Purpose Layer</h1>
         <p className="text-sm text-muted-foreground mt-0.5">Allocate capital by purpose, not just by ticker — this drives risk rules, advisor recommendations, and execution review</p>
       </div>

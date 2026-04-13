@@ -23,7 +23,6 @@ import {
   Server, Cpu, FileCheck, DollarSign, AlertOctagon, Receipt, Eye, Loader2, Database,
 } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
-import { useDataMode } from "@/contexts/DataModeContext";
 import AIGSubNav from "@/components/admin/AIGSubNav";
 
 const STATUS_CONFIG: Record<CapabilityVerification["last_status"], { icon: React.ReactNode; label: string; variant: "default" | "secondary" | "destructive" | "outline" }> = {
@@ -495,7 +494,6 @@ function AIR08SeedActivation() {
 
 // ─── Main Board ─────────────────────────────────────────────
 export default function AIG09RuntimeVerification() {
-  const { isDemoMode } = useDataMode();
   const { isAdmin, loading: adminLoading } = useRequireAdmin();
   const { health, healthLoading, capabilities, capabilitiesLoading, runSmokeTest } = useAIRuntimeVerification();
 

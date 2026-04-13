@@ -18,8 +18,7 @@ import { useNavigate } from "react-router-dom";
 import type { GovernanceBoardroomSection } from "@/packages/contracts";
 import type { BoardroomSession, AdvisorCouncilState } from "@/packages/boardroom-contracts";
 import type { ReadinessInput } from "@/lib/engines/readiness-engine";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const DEFAULT_READINESS_INPUT: ReadinessInput = {
   proofCompleteness: { rate: 0.85, evidence: ["proof-chain audit"] },
@@ -40,8 +39,7 @@ const SectionCard = ({ section }: { section: GovernanceBoardroomSection }) => {
   const navigate = useNavigate();
   return (
     <motion.div initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}>
-      <DemoModeBadge />
-      <SitaCard
+<SitaCard
         onClick={() => navigate(section.drilldownRoute)}
         className={cn(
           "space-y-3",
@@ -95,7 +93,6 @@ const SectionCard = ({ section }: { section: GovernanceBoardroomSection }) => {
 };
 
 export default function PrincipalWorkspace() {
-  const { isDemoMode } = useDataMode();
   const { filter, pendingHandoffs, activeEscalations, isAuthorized } = useWorkspaceView("principal");
   const boardroomSections = useMetaGovernanceBoardroom(DEFAULT_SCOPE);
 

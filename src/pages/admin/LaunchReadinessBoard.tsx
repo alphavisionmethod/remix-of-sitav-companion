@@ -7,9 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_ADMIN_READINESS_CHECKS as DEMO_READINESS_CHECKS, DEMO_BLOCKERS } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 type BlockerSeverity = "critical" | "high" | "medium" | "low";
 type BlockerStatus = "open" | "in-progress" | "resolved" | "accepted-risk";
@@ -55,7 +54,6 @@ const CHECK_ICON: Record<string, { icon: typeof CheckCircle; color: string }> = 
 };
 
 export default function LaunchReadinessBoard() {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("blockers");
 
   const openBlockers = DEMO_BLOCKERS.filter(b => b.status === "open").length;
@@ -66,8 +64,7 @@ export default function LaunchReadinessBoard() {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-foreground">Launch Readiness Board</h1>

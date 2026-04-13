@@ -8,8 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { SERVICE_OWNERSHIP_REGISTRY } from "@/lib/core-services/service-registry/service-ownership-registry";
 import { ROUTE_SERVICE_INVENTORY } from "@/lib/core-services/service-registry/route-to-service-inventory";
 import { Shield, AlertTriangle, Layers } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 function getRiskBadge(risk: string) {
   if (risk === "high") return <Badge variant="destructive">{risk}</Badge>;
@@ -18,7 +17,6 @@ function getRiskBadge(risk: string) {
 }
 
 export default function SERV02DomainOwnership() {
-  const { isDemoMode } = useDataMode();
   const domainRouteCount = (domain: string) =>
     ROUTE_SERVICE_INVENTORY.filter((r) => r.domainFamily === domain).length;
 
@@ -28,8 +26,7 @@ export default function SERV02DomainOwnership() {
 
   return (
     <div className="space-y-6 p-6" data-testid="serv02-board">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <Shield className="h-6 w-6 text-primary" />
           SERV02 — Domain Service Ownership

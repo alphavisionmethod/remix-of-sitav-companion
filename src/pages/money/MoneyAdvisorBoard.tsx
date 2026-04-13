@@ -1,12 +1,11 @@
 import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { SitaCard } from "@/components/sita/SitaCard";
 import { AdvisorCouncilShell, type AdvisorConfig } from "@/components/advisors/AdvisorCouncilShell";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { Zap } from "lucide-react";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 type MoneyMode = "stable" | "tighten" | "recovery" | "growth" | "expansion" | "debt-attack" | "tax-protection" | "founder-conservation" | "household-protection" | "launch";
 
@@ -47,9 +46,7 @@ const MoneyAdvisorBoard = () => {
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
       <DomainHeader domain="money" title="Money Advisor Board" subtitle="8 specialized advisors with adaptive personality" />
-      <DemoModeBadge />
-
-      {/* Mode Personality Switcher */}
+{/* Mode Personality Switcher */}
       <SitaCard hover={false} className="p-4">
         <div className="flex items-center gap-3 mb-3">
           <Zap className="h-4 w-4 text-primary" />
