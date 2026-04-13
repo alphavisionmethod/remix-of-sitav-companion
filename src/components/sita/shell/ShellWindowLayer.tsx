@@ -31,6 +31,8 @@ import { KernelDashboardWindow } from "./windows/KernelDashboardWindow";
 import { FinanceAppShell } from "../apps/finance/FinanceAppShell";
 import { BusinessAppShell } from "../apps/business/BusinessAppShell";
 import { ConciergeAppShell } from "../apps/concierge/ConciergeAppShell";
+import { InvestmentAppShell } from "../apps/investment/InvestmentAppShell";
+import { BoardroomAppShell } from "../apps/boardroom/BoardroomAppShell";
 import { lifecycleManager } from "@/lib/nova-sdk/runtime/lifecycle";
 import { ProcessTable } from "@/lib/nova-sdk/kernel/process-manager";
 import { Compositor } from "@/lib/nova-sdk/kernel/compositor";
@@ -90,6 +92,8 @@ const APP_REGISTRY: Record<string, Omit<AppLaunchConfig, "id">> = {
   money: { name: "Finance OS", component: <FinanceAppShell />, width: 1200, position: { x: 80, y: 50 } },
   business: { name: "Business OS", component: <BusinessAppShell />, width: 1200, position: { x: 120, y: 90 } },
   concierge: { name: "Concierge", component: <ConciergeAppShell />, width: 1200, position: { x: 160, y: 130 } },
+  investment: { name: "Investment Office", component: <InvestmentAppShell />, width: 1200, position: { x: 100, y: 70 } },
+  boardroom: { name: "Boardroom", component: <BoardroomAppShell />, width: 1200, position: { x: 140, y: 110 } },
 };
 
 export function useWindowLauncher(wm: WindowManager) {
