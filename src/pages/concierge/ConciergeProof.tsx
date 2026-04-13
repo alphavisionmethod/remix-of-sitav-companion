@@ -1,11 +1,11 @@
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs, ProofCard } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { ConciergeProofChip, ConciergeReceiptViewer, ConciergePageWrapper, ConciergeEmptyState } from "@/components/concierge";
 import type { ReceiptRecord } from "@/components/concierge";
 import { useState } from "react";
 import { Shield, CheckCircle, Clock, FileText, ShoppingCart, Calendar, Wrench, GraduationCap, Plane, Gift } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 interface ProofRecord {
@@ -43,8 +43,7 @@ const ConciergeProof = () => {
 
   return (
     <ConciergePageWrapper className="space-y-6">
-      <DemoModeBadge />
-      <SitaPageHeader title="Concierge Proof" subtitle="Verifiable record of completed actions, confirmations, and receipts" />
+      <PageTruthBanner />
 
       {!isDemoMode ? (
         <ConciergeEmptyState domain="generic" title="No proof records yet" description="As you complete tasks and confirmations, verified records will appear here — giving you a clear audit trail of everything handled." />

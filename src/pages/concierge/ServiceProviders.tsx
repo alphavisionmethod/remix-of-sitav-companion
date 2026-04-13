@@ -1,5 +1,5 @@
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
 import { KPITile, EmptyState } from "@/components/sita/SitaComponents";
+import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { DomainHeader } from "@/components/sita/primitives";
 import { ConciergeAdvisorInsightCard, ServiceFollowUpCard, VendorDetailPanel, ConciergePageWrapper, ConciergeEmptyState } from "@/components/concierge";
@@ -201,7 +201,7 @@ const ServiceProviders = () => {
           const expanded = expandedId === p.id;
           return (
             <motion.div key={p.id} layout>
-              <SitaCard className="p-5">
+              <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-5 micro-hover-lift">
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
@@ -303,7 +303,7 @@ const ServiceProviders = () => {
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </SitaCard>
+              </div>
             </motion.div>
           );
         })}

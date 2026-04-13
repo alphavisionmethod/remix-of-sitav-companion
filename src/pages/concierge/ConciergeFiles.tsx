@@ -1,11 +1,11 @@
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { PersonalEssentialsPreviewPanel, ConciergePageWrapper, ConciergeEmptyState } from "@/components/concierge";
 import type { EssentialDoc } from "@/components/concierge";
 import { useState } from "react";
 import { FileText, Upload, FolderOpen, Shield, GraduationCap, Stethoscope, Home, Plane, Receipt, Calendar, Search, Eye } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
 import { useDataMode } from "@/contexts/DataModeContext";
 
 interface HouseholdFile {
@@ -48,8 +48,7 @@ const ConciergeFiles = () => {
 
   return (
     <ConciergePageWrapper className="space-y-6">
-      <DemoModeBadge />
-      <SitaPageHeader title="Personal Documents & Essentials" subtitle="Confirmations, forms, records, and support-aware file management" />
+      <PageTruthBanner />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KPITile label="Total Files" value={String(files.length)} icon={FolderOpen} />
@@ -59,13 +58,13 @@ const ConciergeFiles = () => {
       </div>
 
       {/* Upload area */}
-      <SitaCard className="p-6 border-dashed border-2 border-border/50 bg-secondary/10 hover:bg-secondary/20 transition-colors cursor-pointer">
+      <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-6 border-dashed border-2 border-border/50 bg-secondary/10 hover:bg-secondary/20 transition-colors cursor-pointer micro-hover-lift">
         <div className="flex flex-col items-center gap-2 text-center">
           <Upload className="h-6 w-6 text-muted-foreground" />
           <p className="text-sm font-medium text-foreground">Upload household documents</p>
           <p className="text-xs text-muted-foreground">Drop files here or click to browse · PDF, images, documents</p>
         </div>
-      </SitaCard>
+      </div>
 
       <SitaTabs
         tabs={[
@@ -85,7 +84,7 @@ const ConciergeFiles = () => {
         {filtered.map(file => {
           const Icon = typeIcon(file.type);
           return (
-            <SitaCard key={file.id} className="p-4">
+            <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift" key={file.id} className="p-4">
               <div className="flex items-start gap-4">
                 <div className="rounded-xl bg-primary/8 p-2.5 shrink-0">
                   <Icon className="h-4 w-4 text-primary" />
@@ -111,7 +110,7 @@ const ConciergeFiles = () => {
                   {file.linkedTo && <p className="text-xs text-primary/70 mt-1">↗ {file.linkedTo}</p>}
                 </div>
               </div>
-          </SitaCard>
+          </div>
           );
         })}
       </div>

@@ -1,10 +1,10 @@
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs } from "@/components/sita/SitaComponents";
 import { GlassCard } from "@/components/sita/PremiumPageComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { ConciergeAdvisorInsightCard, RecurringAdminList, ConciergePageWrapper, ConciergeEmptyState } from "@/components/concierge";
 import type { RecurringAdminItem } from "@/components/concierge";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { RotateCcw, Calendar, Clock, AlertCircle, CheckCircle, Sparkles, TrendingDown, Zap, Shield, FileText } from "lucide-react";
@@ -75,8 +75,7 @@ const RecurringObligations = () => {
 
   return (
     <ConciergePageWrapper className="space-y-6">
-      <DemoModeBadge />
-      <SitaPageHeader title="Recurring Obligations" subtitle="Life's rhythms made visible — never lose track of what repeats" />
+      <PageTruthBanner />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
         <KPITile label="Total Recurring" value={String(ITEMS.length)} icon={RotateCcw} />
@@ -105,7 +104,7 @@ const RecurringObligations = () => {
               const items = ITEMS.filter((i) => i.category === cat);
               return (
                 <div key={cat} className="space-y-2">
-                  <SitaSectionHeader title={cat.charAt(0).toUpperCase() + cat.slice(1)} subtitle={`${items.length} items`} />
+                  <h3 className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[hsl(0_0%_50%)]"></h3>
                   {items.map((item) => <RecurringItemCard key={item.id} item={item} />)}
                 </div>
               );
@@ -140,10 +139,10 @@ const RecurringObligations = () => {
           </GlassCard>
 
           {/* Simplification */}
-          <SitaCard className="p-4">
+          <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift">
             <div className="flex items-center gap-2 mb-2">
               <TrendingDown className="h-4 w-4 text-chart-2" />
-              <SitaCardTitle>Simplification Opportunities</SitaCardTitle>
+              <h4 className="text-[13px] font-semibold text-[hsl(0_0%_85%)]">Simplification Opportunities</h4>
             </div>
             <div className="space-y-2 text-xs">
               <div className="flex items-start gap-2">
@@ -159,7 +158,7 @@ const RecurringObligations = () => {
                 <p className="text-foreground"><strong>School lunch balance</strong> — enable auto-refill above $20 threshold</p>
               </div>
             </div>
-          </SitaCard>
+          </div>
 
           {/* Advisor */}
           <ConciergeAdvisorInsightCard insight={{
@@ -203,7 +202,7 @@ function RecurringItemCard({ item }: { item: RecurringItem }) {
           )}
         </div>
       </div>
-    </SitaCard>
+    </div>
   );
 }
 

@@ -1,6 +1,5 @@
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile } from "@/components/sita/SitaComponents";
 import { ConciergeEmptyState } from "@/components/concierge/ConciergeEmptyState";
 import { useAuth } from "@/contexts/AuthContext";
@@ -9,7 +8,8 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { useQuery } from "@tanstack/react-query";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { generateCalendarDemoEvents } from "@/lib/mock-data/calendar";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
 import {
   Calendar, ChevronLeft, ChevronRight, Plus, Clock, Users, MapPin, CheckSquare
 } from "lucide-react";
@@ -106,7 +106,6 @@ const MonthGridCalendar = () => {
   if (events.length === 0 && !isLoading) {
     return (
       <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
-        <SitaPageHeader title="Family Calendar" subtitle="Month view with bookings and tasks" />
         <ConciergeEmptyState
           domain="appointments"
           title="Your calendar is clear"
@@ -118,8 +117,7 @@ const MonthGridCalendar = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-      <DemoModeBadge />
-      <SitaPageHeader title="Family Calendar" subtitle="Month view — bookings, tasks, and schedule at a glance" />
+      <PageTruthBanner />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KPITile label="Bookings" value={String(totalBookings)} icon={Calendar} />
@@ -130,7 +128,7 @@ const MonthGridCalendar = () => {
 
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Calendar Grid */}
-        <SitaCard className="lg:col-span-2 p-4">
+        <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] lg:col-span-2 p-4 micro-hover-lift">
           <div className="flex items-center justify-between mb-4">
             <button onClick={prevMonth} className="rounded-lg p-2 hover:bg-secondary transition-colors">
               <ChevronLeft className="h-4 w-4 text-muted-foreground" />
@@ -205,11 +203,11 @@ const MonthGridCalendar = () => {
               <span className="text-[10px] text-muted-foreground">Task</span>
             </div>
           </div>
-        </SitaCard>
+        </div>
 
         {/* Selected Day Detail */}
         <div className="space-y-4">
-          <SitaCard className="p-4">
+          <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift">
             <SitaCardTitle className="mb-3">
               {selectedDate
                 ? new Date(selectedDate + "T12:00:00").toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric" })
@@ -247,10 +245,10 @@ const MonthGridCalendar = () => {
             {!selectedDate && (
               <p className="text-sm text-muted-foreground py-6 text-center">Click a day to see details</p>
             )}
-          </SitaCard>
+          </div>
 
           {/* Quick stats */}
-          <SitaCard className="p-4">
+          <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift">
             <SitaCardTitle className="mb-3">Month Summary</SitaCardTitle>
             <div className="space-y-2">
               {[
@@ -269,7 +267,7 @@ const MonthGridCalendar = () => {
                 </div>
               ))}
             </div>
-          </SitaCard>
+          </div>
         </div>
       </div>
     </motion.div>

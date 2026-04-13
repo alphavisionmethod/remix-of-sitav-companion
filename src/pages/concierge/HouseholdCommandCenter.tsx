@@ -1,5 +1,5 @@
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
 import { ConciergePageWrapper } from "@/components/concierge";
+import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
 import { KPITile, EmptyState } from "@/components/sita/SitaComponents";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
@@ -45,10 +45,9 @@ const HouseholdCommandCenter = () => {
     return (
       <ConciergePageWrapper className="mx-auto max-w-3xl space-y-6">
       <PageTruthBanner />
-        <SitaPageHeader title="Household Support Coordination" subtitle="Manage your household members, roles, and shared responsibilities" />
         <EmptyState icon={Home} title="No households yet" description="Create your first household to start managing family members, roles, and shared tasks." />
         <div className="flex justify-center">
-          <SitaButton variant="primary" onClick={() => setShowCreate(true)}><Plus className="h-4 w-4" /> Create Household</SitaButton>
+          <button className="micro-press flex items-center gap-1.5 rounded-lg bg-[hsl(0_0%_100%/0.06)] px-3 py-1.5 text-xs text-[hsl(0_0%_70%)] hover:bg-[hsl(0_0%_100%/0.10)] transition-colors" onClick={() => setShowCreate(true)}><Plus className="h-4 w-4" /> Create Household</button>
         </div>
       </ConciergePageWrapper>
     );
@@ -56,10 +55,7 @@ const HouseholdCommandCenter = () => {
 
   return (
     <ConciergePageWrapper className="mx-auto max-w-5xl space-y-6">
-      <SitaPageHeader
-        title="Household Support Coordination"
-        subtitle="Members, roles, and shared responsibilities"
-        actions={<SitaButton variant="primary" onClick={() => setShowCreate(true)}><Plus className="h-4 w-4" /> New Household</SitaButton>}
+ New Household</button>}
       />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -70,8 +66,8 @@ const HouseholdCommandCenter = () => {
       </div>
 
       {showCreate && (
-        <SitaCard hover={false} glow className="p-5">
-          <SitaCardTitle>Create Household</SitaCardTitle>
+        <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift" hover={false} glow className="p-5">
+          <h4 className="text-[13px] font-semibold text-[hsl(0_0%_85%)]">Create Household</h4>
           <div className="mt-3 space-y-3">
             <input className="w-full rounded-xl border border-border bg-secondary/40 px-4 py-2.5 text-sm text-foreground" placeholder="Household name" value={newName} onChange={e => setNewName(e.target.value)} />
             <select className="w-full rounded-xl border border-border bg-secondary/40 px-4 py-2.5 text-sm text-foreground" value={newType} onChange={e => setNewType(e.target.value)}>
@@ -80,17 +76,17 @@ const HouseholdCommandCenter = () => {
               <option value="mixed">Mixed</option>
             </select>
             <div className="flex gap-2">
-              <SitaButton variant="primary" onClick={handleCreate}>Create</SitaButton>
-              <SitaButton variant="secondary" onClick={() => setShowCreate(false)}>Cancel</SitaButton>
+              <button className="micro-press flex items-center gap-1.5 rounded-lg bg-[hsl(0_0%_100%/0.06)] px-3 py-1.5 text-xs text-[hsl(0_0%_70%)] hover:bg-[hsl(0_0%_100%/0.10)] transition-colors" onClick={handleCreate}>Create</button>
+              <button className="micro-press flex items-center gap-1.5 rounded-lg bg-[hsl(0_0%_100%/0.06)] px-3 py-1.5 text-xs text-[hsl(0_0%_70%)] hover:bg-[hsl(0_0%_100%/0.10)] transition-colors" onClick={() => setShowCreate(false)}>Cancel</button>
             </div>
           </div>
-        </SitaCard>
+        </div>
       )}
 
       <div className="grid gap-6 lg:grid-cols-5">
         <div className="lg:col-span-2 space-y-2">
           {households?.map(h => (
-            <SitaCard key={h.id} selected={selectedId === h.id} onClick={() => setSelectedId(h.id)} className="p-4">
+            <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift" key={h.id} selected={selectedId === h.id} onClick={() => setSelectedId(h.id)} className="p-4">
               <div className="flex items-center gap-3">
                 <div className="rounded-lg bg-primary/10 p-2"><Home className="h-4 w-4 text-primary" /></div>
                 <div>
@@ -98,22 +94,22 @@ const HouseholdCommandCenter = () => {
                   <p className="text-xs text-muted-foreground capitalize">{h.type}</p>
                 </div>
               </div>
-            </SitaCard>
+            </div>
           ))}
         </div>
 
         <div className="lg:col-span-3 space-y-4">
           {active ? (
             <>
-              <SitaCard hover={false} glow className="p-5">
+              <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift" hover={false} glow className="p-5">
                 <div className="flex items-center justify-between">
                   <SitaCardTitle sub={`Type: ${active.type}`}>{active.name}</SitaCardTitle>
-                  <SitaButton variant="secondary" size="sm" onClick={() => setShowAddMember(true)}><UserPlus className="h-3.5 w-3.5" /> Add Member</SitaButton>
+                  <button className="micro-press flex items-center gap-1.5 rounded-lg bg-[hsl(0_0%_100%/0.06)] px-3 py-1.5 text-xs text-[hsl(0_0%_70%)] hover:bg-[hsl(0_0%_100%/0.10)] transition-colors" onClick={() => setShowAddMember(true)}><UserPlus className="h-3.5 w-3.5" /> Add Member</button>
                 </div>
-              </SitaCard>
+              </div>
 
               {showAddMember && (
-                <SitaCard hover={false} className="p-4">
+                <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift" hover={false} className="p-4">
                   <div className="space-y-3">
                     <input className="w-full rounded-xl border border-border bg-secondary/40 px-4 py-2.5 text-sm text-foreground" placeholder="Member name" value={memberName} onChange={e => setMemberName(e.target.value)} />
                     <select className="w-full rounded-xl border border-border bg-secondary/40 px-4 py-2.5 text-sm text-foreground" value={memberRole} onChange={e => setMemberRole(e.target.value)}>
@@ -124,16 +120,16 @@ const HouseholdCommandCenter = () => {
                       <option value="caregiver">Caregiver</option>
                     </select>
                     <div className="flex gap-2">
-                      <SitaButton variant="primary" onClick={handleAddMember}>Add</SitaButton>
-                      <SitaButton variant="secondary" onClick={() => setShowAddMember(false)}>Cancel</SitaButton>
+                      <button className="micro-press flex items-center gap-1.5 rounded-lg bg-[hsl(0_0%_100%/0.06)] px-3 py-1.5 text-xs text-[hsl(0_0%_70%)] hover:bg-[hsl(0_0%_100%/0.10)] transition-colors" onClick={handleAddMember}>Add</button>
+                      <button className="micro-press flex items-center gap-1.5 rounded-lg bg-[hsl(0_0%_100%/0.06)] px-3 py-1.5 text-xs text-[hsl(0_0%_70%)] hover:bg-[hsl(0_0%_100%/0.10)] transition-colors" onClick={() => setShowAddMember(false)}>Cancel</button>
                     </div>
                   </div>
-                </SitaCard>
+                </div>
               )}
 
               <div className="space-y-2">
                 {members?.map(m => (
-                  <SitaCard key={m.id} hover={false} className="p-4">
+                  <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift" key={m.id} hover={false} className="p-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent/10 text-accent text-xs font-bold">{m.display_name.charAt(0)}</div>
@@ -146,7 +142,7 @@ const HouseholdCommandCenter = () => {
                         <Trash2 className="h-3.5 w-3.5" />
                       </button>
                     </div>
-                  </SitaCard>
+                  </div>
                 ))}
                 {(!members || members.length === 0) && (
                   <EmptyState icon={Users} title="No members yet" description="Add family members to this household" />
