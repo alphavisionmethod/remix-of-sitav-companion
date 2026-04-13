@@ -91,8 +91,8 @@ const FollowThroughCenter = () => {
         icon={<Phone className="h-5 w-5 text-[hsl(265_55%_68%)]" />}
       >
         <div className="flex items-center gap-2">
-          <UrgencyBadge level="critical" label={`${TAB_DATA.overdue.items.length + TAB_DATA["no-touch"].items.length} overdue`} />
-          <ExecutionBadge state="in-progress" />
+          <UrgencyBadge urgency="critical" />
+          <ExecutionBadge state="executing" />
         </div>
       </HeroCard>
 
