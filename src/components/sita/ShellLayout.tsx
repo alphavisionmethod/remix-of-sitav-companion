@@ -463,7 +463,6 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
   useProactiveNotifications();
 
   const isDesktopRoute = location.pathname === "/" || location.pathname === "/home" || location.pathname === "/desktop";
-  const isDesktopRoute = location.pathname === "/" || location.pathname === "/home" || location.pathname === "/desktop";
 
   return (
     <NovaSDKProvider>
