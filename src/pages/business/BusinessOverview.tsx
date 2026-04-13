@@ -180,24 +180,21 @@ const BusinessOverview = () => {
 
 
   return (
-    <motion.div className="space-y-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}>
+    <motion.div className="space-y-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.2 }}>
       <DemoModeBadge />
-      <AmbientHeader
-        title="Business Center"
-        subtitle="Revenue intelligence, pipeline, and execution command"
-        icon={<Briefcase className="h-5 w-5 text-primary" />}
-        accentColor="hsl(var(--primary))"
-        actions={
-          <div className="flex items-center gap-3">
-            {crmHealth && (
-              <span className="text-[10px] text-muted-foreground">
-                CRM: {String((crmHealth as Record<string, Record<string, unknown>>)?.leads?.count ?? 0)} leads
-              </span>
-            )}
-            <SitaButton variant="primary" onClick={() => navigate("/business/leads")}><UserPlus className="h-4 w-4" /> New Lead</SitaButton>
-          </div>
-        }
-      />
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-[13px] font-medium text-muted-foreground">Revenue intelligence, pipeline & execution</p>
+        </div>
+        <div className="flex items-center gap-3">
+          {crmHealth && (
+            <span className="text-[10px] text-muted-foreground">
+              CRM: {String((crmHealth as Record<string, Record<string, unknown>>)?.leads?.count ?? 0)} leads
+            </span>
+          )}
+          <SitaButton variant="primary" onClick={() => navigate("/business/leads")}><UserPlus className="h-4 w-4" /> New Lead</SitaButton>
+        </div>
+      </div>
 
       {/* ═══ WHAT MATTERS NOW ═══ */}
       <WhatMattersNow items={businessMatters} domain="business" />
