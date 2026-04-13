@@ -1,79 +1,56 @@
 
 
-# Wow-Factor Frontend Polish + Admin/User Separation + Multi-Tenancy
+# Inject Pre-Knowledge into All AI Advisors
 
-## Current State
+## Problem
 
-- **Business OS** just got the app-window shell treatment. Money Center and Concierge Center still use the old `CenterPageShell` + flat `SitaTabs` pattern -- visually inconsistent.
-- **Admin routes** (~280 routes under `/admin/*`) are wrapped in `AdminShellLayout` which renders `AdminShell` (trust ribbon, rollout banner, density toggle). But there is **no role gate** -- any authenticated user can navigate to `/admin/*` and see everything. The `useRequireAdmin` hook exists but is not used in `AdminShellLayout` or the route wrapper.
-- **Sidebar** (`AppSidebar`) shows "Control Room" (`/owner`) to every user. No admin-only items are hidden.
-- **Multi-tenancy** is not wired -- `user_roles` and `has_role()` exist in the DB, but no `tenant_id` / `organization_id` column exists on any table.
+The `chat-advisor` edge function already has code to query `advisor_knowledge`, `advisor_memories`, and `advisor_feedback` tables and inject them into prompts — but **none of these tables exist in the database**. Every query silently fails and returns empty arrays. The `brain-core` edge function uses only static hardcoded prompts with no knowledge injection at all.
 
 ## Plan
 
-### Part 1: Admin/User Separation (Critical)
+### Step 1: Create the three missing tables via migration
 
-**Step 1: Create `AdminRoute` guard component**
-Create `src/components/auth/AdminRoute.tsx` that wraps children with `useRequireAdmin`. If the user is not an admin, redirect to `/home`. Show a loading spinner while checking. Use this instead of bare `AdminShellLayout` in `App.tsx`.
+Create `advisor_knowledge`, `advisor_memories`, and `advisor_feedback` tables with RLS policies. The `advisor_knowledge` table will support both system-level entries (sentinel UUID `00000000-0000-0000-0000-000000000000`) and user-specific entries. RLS will allow authenticated users to read system entries AND their own entries, but only write their own.
 
-**Step 2: Gate all admin routes**
-In `App.tsx`, wrap the three `<Route element={<AdminShellLayout />}>` blocks inside `<AdminRoute>` so non-admin users cannot access any `/admin/*` route.
+### Step 2: Seed ~58 deep knowledge entries across 7 advisors
 
-**Step 3: Conditionally show admin sidebar items**
-In `AppSidebar.tsx`, add a `useIsAdmin` check (lightweight version of `useRequireAdmin` without redirect). Hide "Control Room" (`/owner`) from non-admin users. Add a new "Mission Control" (`/admin`) link visible only to admins.
+Insert system-level knowledge using the sentinel UUID so all users benefit from pre-loaded expertise:
 
-**Step 4: Hide admin command palette for non-admins**
-The `AdminCommandPaletteWrapper` and `AdminKeyboardShortcutsWrapper` in `ShellLayout.tsx` should only render for admin users.
+- **Money** (12 entries): Cash flow waterfall, 50/30/20 founder adaptation, subscription audit framework, reserve adequacy formula, bill triage protocol, invoice aging brackets, tax quarterly calendar, debt prioritization, emergency fund sizing, spending anomaly detection, net worth cadence, financial boundaries
+- **Business** (10): BANT lead scoring, pipeline velocity benchmarks, customer health scoring, deal stage exit criteria, follow-up cadence matrix, weighted pipeline forecasting, churn early warnings, proposal-to-close benchmarks, competitive displacement, account expansion triggers
+- **Concierge** (8): Eisenhower matrix, errand batching, booking checklist, obligation calendar, household maintenance, meal planning, travel checklist, vendor evaluation
+- **Family** (8): Family pulse framework, school calendar patterns, responsibility matrix, family meeting template, milestone tracking, medical coordination, extracurricular balance, communication preferences
+- **Growth** (8): Growth loop identification, experiment design template, CAC/LTV benchmarks, pricing frameworks, market sizing, competitive moat, channel prioritization, growth stage indicators
+- **General/SITA** (6): Cross-domain correlation, daily briefing structure, priority scoring, escalation criteria, domain handoff, executive summary format
+- **Strategy** (6): MECE framework, scenario modeling, strategic drift, resource allocation, decision journal, opportunity cost
 
-### Part 2: Multi-Tenancy Foundation
+### Step 3: Upgrade `brain-core` to inject knowledge
 
-**Step 5: Add `organizations` and `org_members` tables**
-Database migration to create:
-- `organizations` (id, name, slug, owner_id, created_at)
-- `org_members` (id, org_id, user_id, role, invited_at, joined_at)
-- RLS: members can read their own org, owners can manage members
-- Add `org_id` column to key tables (profiles, leads, customers, invoices, opportunities) with nullable default for backward compat
+Update `brain-core/index.ts` to query `advisor_knowledge` (both system-level and user-specific entries) and append domain knowledge to the system prompt before LLM calls — matching what `chat-advisor` already does.
 
-**Step 6: Create `useCurrentOrg` hook**
-`src/hooks/useCurrentOrg.ts` — reads the user's active organization from `org_members`, stores selection in localStorage. All data queries will eventually filter by `org_id`.
+### Step 4: Create knowledge management edge function
 
-### Part 3: Wow-Factor Visual Upgrades
+Create `supabase/functions/advisor-knowledge-manage/index.ts`:
+- `GET` — list knowledge for an advisor (merges system + user entries)
+- `POST` — add user-specific knowledge
+- `DELETE` — remove user-specific knowledge only (system entries are read-only)
 
-**Step 7: Give Money Center the app-window shell treatment**
-Create `src/components/money/MoneyAppShell.tsx` — same pattern as `BusinessAppShell` but with emerald/green accent (`from-[hsl(152_55%_48%)] to-[hsl(165_50%_42%)]`). Replace `CenterPageShell` + `SitaTabs` in `MoneyCenter.tsx` with the new shell. Add "Money OS" to `DesktopIconGrid`.
+### Step 5: Add Knowledge Management UI panel
 
-**Step 8: Give Concierge Center the app-window shell treatment**
-Create `src/components/concierge/ConciergeAppShell.tsx` — purple/fuchsia accent (`from-[hsl(285_55%_55%)] to-[hsl(310_50%_48%)]`). Replace `CenterPageShell` + `SitaTabs` in `ConciergeCenter.tsx`. Add "Concierge" to `DesktopIconGrid`.
+Create `src/components/advisors/AdvisorKnowledgePanel.tsx` — a reusable panel showing system knowledge (locked icon, read-only) and user-added knowledge (editable). Wire it into Money, Business, and Concierge settings pages.
 
-**Step 9: Unified app-open animation**
-Create `src/components/sita/shell/AppOpenTransition.tsx` — a shared scale+fade animation wrapper that plays when navigating to any domain app (Business, Money, Concierge). Uses the same spring curve as FloatingWindow open.
+## Files
 
-**Step 10: Enhanced desktop widget glassmorphism**
-Polish `DesktopSurface` widgets with:
-- Stronger inner glow borders (`inset 0 0.5px 0 rgba(255,255,255,0.12)`)
-- Hover state with accent-colored radial glow
-- Micro-interaction: subtle scale(1.02) on hover with 200ms spring
+- **Migration**: Create `advisor_knowledge`, `advisor_memories`, `advisor_feedback` tables + seed ~58 entries
+- **Edit**: `supabase/functions/brain-core/index.ts` (add knowledge query to prompt building)
+- **Create**: `supabase/functions/advisor-knowledge-manage/index.ts`
+- **Create**: `src/components/advisors/AdvisorKnowledgePanel.tsx`
+- **Edit**: Settings pages for Money, Business, Concierge (add knowledge panel tab)
 
-## Files Changed
+## Technical Details
 
-- **Create**: `src/components/auth/AdminRoute.tsx` (~30 lines)
-- **Create**: `src/hooks/useIsAdmin.ts` (~25 lines)
-- **Create**: `src/components/money/MoneyAppShell.tsx` (~180 lines)
-- **Create**: `src/components/concierge/ConciergeAppShell.tsx` (~180 lines)
-- **Create**: `src/components/sita/shell/AppOpenTransition.tsx` (~40 lines)
-- **Create**: `src/hooks/useCurrentOrg.ts` (~40 lines)
-- **Edit**: `src/App.tsx` (wrap admin routes with AdminRoute guard)
-- **Edit**: `src/components/sita/AppSidebar.tsx` (conditional admin nav items)
-- **Edit**: `src/components/sita/ShellLayout.tsx` (conditional admin palette)
-- **Edit**: `src/pages/MoneyCenter.tsx` (use MoneyAppShell)
-- **Edit**: `src/pages/ConciergeCenter.tsx` (use ConciergeAppShell)
-- **Edit**: `src/components/sita/shell/DesktopIconGrid.tsx` (add Money OS + Concierge icons)
-- **Edit**: `src/lib/design-system/app-window-system.ts` (add money-os + concierge accents)
-- **Migration**: `organizations` + `org_members` tables with RLS
-
-## Execution Order
-
-1. Admin/User separation (Steps 1-4) — security first
-2. Multi-tenancy tables (Steps 5-6) — foundation
-3. Visual upgrades (Steps 7-10) — wow factor
+- System knowledge uses sentinel UUID `00000000-0000-0000-0000-000000000000` — RLS updated to allow reading these entries for all authenticated users
+- Knowledge entries include `tags`, `confidence` (0.85-0.95 for system), `status: 'active'`
+- `brain-core` knowledge injection mirrors the `buildPrompt` pattern from `chat-advisor`
+- Each advisor only sees its own domain entries plus general cross-domain entries
 
