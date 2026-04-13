@@ -883,8 +883,7 @@ const App = () => (
             <Route path="*" element={
               <ProtectedRoute>
                 <ShellLayout>
-                  <AdminCommandPaletteWrapper />
-                  <AdminKeyboardShortcutsWrapper />
+                  <ConditionalAdminTools />
                   <RouteErrorBoundary>
                   <Suspense fallback={<PageLoader />}>
                   <Routes>
