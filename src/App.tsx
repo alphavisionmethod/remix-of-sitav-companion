@@ -2,7 +2,6 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes, Navigate, Outlet } from "react-router-dom";
 import { AdminRoute } from "@/components/auth/AdminRoute";
 import { getAdminRoutes } from "@/routes/AdminRoutes";
-import { getAdminRoutes } from "@/routes/AdminRoutes";
 
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
