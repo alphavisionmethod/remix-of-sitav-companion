@@ -184,7 +184,13 @@ export function DomainAppShell({ domain, children, activePage, onNavigate, tabGr
               onNavigate={onNavigate}
             />
           )}
-          <AppSurface level={0} className="flex-1 overflow-y-auto p-4" style={{
+          <AppSurface level={0} className={cn(
+            "flex-1 overflow-y-auto p-4 relative domain-edge-glow",
+            domain.id === "business" && "domain-ambient-business",
+            domain.id === "finance" && "domain-ambient-finance",
+            domain.id === "concierge" && "domain-ambient-concierge",
+            domain.id === "files" && "domain-ambient-files",
+          )} style={{
             ...atmosphereToCSSVars(domain.id),
           } as React.CSSProperties}>
             {children}

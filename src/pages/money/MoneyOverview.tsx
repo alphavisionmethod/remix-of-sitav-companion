@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { HeroCard, QueueCard, ActionCard, TimelineCard, AdvisorCard, StatusCard } from "@/components/sita/cards";
+import { DomainCard } from "@/components/sita/cards/DomainCard";
 import { UrgencyBadge, FreshnessBadge, TrustBadge } from "@/components/sita/badges";
 import { ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransitions";
 import { AppSurface } from "@/components/sita/surfaces/AppSurface";
@@ -154,15 +155,14 @@ const MoneyOverview = () => {
               { label: "Budgets", count: "Review", icon: BarChart3, path: "/money/budgets" },
               { label: "Reserves", count: `${reserveHealth}%`, icon: PiggyBank, path: "/money/reserves" },
             ].map(tile => (
-              <button key={tile.label} onClick={() => navigate(tile.path)}
-                className="group rounded-2xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] p-3 text-left hover:bg-[hsl(0_0%_100%/0.05)] transition-colors"
-                style={{ borderRadius: "var(--domain-card-radius, 16px)" }}
+              <DomainCard key={tile.label} onClick={() => navigate(tile.path)}
+                className="group text-left micro-hover-lift micro-focus-glow micro-press"
               >
                 <tile.icon className="h-4 w-4 text-[hsl(152_55%_48%)] mb-2" />
                 <p className="text-[12px] font-semibold text-foreground">{tile.label}</p>
                 <p className="text-[10px] text-muted-foreground">{tile.count}</p>
                 <ArrowRight className="h-3 w-3 text-muted-foreground mt-1 opacity-0 group-hover:opacity-100 transition-opacity" />
-              </button>
+              </DomainCard>
             ))}
           </div>
         </ListRevealItem>
