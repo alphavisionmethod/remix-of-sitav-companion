@@ -29,8 +29,7 @@ export default function SimulationEnginePage() {
   const cancelRef = useRef<(() => void) | null>(null);
 
   const handleStart = useCallback(
-    (config: { variables: SimulationVariable[]; iterations: number; presetId: string }) => {
-      // Reset
+    (config: { variables: SimulationVariable[]; iterations: number; presetId: string; formula?: (v: Record<string, number>) => number }) => {
       setProgress(null);
       setResult(null);
       setIsComplete(false);
@@ -38,12 +37,13 @@ export default function SimulationEnginePage() {
       if (cancelRef.current) cancelRef.current();
 
       const preset = SIMULATION_PRESETS.find((p) => p.id === config.presetId) || SIMULATION_PRESETS[0];
+      const formulaToUse = config.formula ?? preset.formula;
 
       const { cancel } = runSimulationBatch(
         {
           variables: config.variables,
           iterations: config.iterations,
-          outputFormula: preset.formula,
+          outputFormula: formulaToUse,
         },
         (p) => setProgress(p),
         (r) => {
