@@ -283,14 +283,11 @@ const BillsWorkspace = () => {
         </button>
       </div>
 
-      <LiveAdvisorCard
-        advisor="money"
-        intent="bill_optimization"
-        demoName="Payment Intelligence"
-        demoRole="Bills Advisor"
-        demoConfidence="Medium"
-        demoRecommendation="2 bills could save $180/yr with early-pay discounts."
-        demoReasoning="Based on payment timing analysis and vendor discount opportunities."
+      <ModuleAdvisorInsight
+        advisorName="Payment Intelligence"
+        domain="finance"
+        insight="2 bills could save $180/yr with early-pay discounts."
+        confidence={72}
       />
     </div>
   ) : (

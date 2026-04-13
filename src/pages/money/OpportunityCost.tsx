@@ -81,11 +81,11 @@ const OpportunityCost = () => {
         ))}
       </div>
 
-      <LiveAdvisorCard
-        advisor="money" intent="opportunity_cost_review"
-        demoName="Opportunity Cost Advisor" demoRole="Behavioral Finance Intelligence" demoConfidence="High"
-        demoRecommendation={`$${(totalSpent / 100).toLocaleString()} in discretionary spending delayed debt payoff by ${totalDelayDays} days and goal progress by ${totalGoalDelay.toFixed(1)}%. Dining & delivery is the largest trade-off at $${(demoEntries[0].spentCents / 100).toLocaleString()}.`}
-        demoReasoning="Counterfactual analysis across every discretionary category comparing to reserve, debt, and goal allocations."
+      <ModuleAdvisorInsight
+        advisorName="Opportunity Cost Advisor"
+        domain="finance"
+        insight={`$${(totalSpent / 100).toLocaleString()} in discretionary spending delayed debt payoff by ${totalDelayDays} days and goal progress by ${totalGoalDelay.toFixed(1)}%.`}
+        confidence={88}
       />
     </motion.div>
   );

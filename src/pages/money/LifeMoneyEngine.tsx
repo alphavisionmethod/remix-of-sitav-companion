@@ -212,12 +212,11 @@ const LifeMoneyEngine = () => {
                 </div>
               </SitaCard>
 
-              <LiveAdvisorCard
-                advisor="money" intent="life_event_impact"
-                context={{ event: selectedEvent }}
-                demoName="Life Impact Advisor" demoRole="Financial Scenario Intelligence" demoConfidence="High"
-                demoRecommendation={`${selectedDef.label} will impact cashflow by $${Math.abs(impact.cashflowImpactCents / 100).toLocaleString()} and reduce safe-to-spend by ${Math.abs(impact.safeToSpendChange)}%. Build $${(impact.reserveNeedsCents / 100).toLocaleString()} in reserves first.`}
-                demoReasoning="Deterministic simulation across income, obligations, reserves, and debt exposure with life event overlays."
+              <ModuleAdvisorInsight
+                advisorName="Life Impact Advisor"
+                domain="finance"
+                insight={`${selectedDef.label} will impact cashflow by $${Math.abs(impact.cashflowImpactCents / 100).toLocaleString()} and reduce safe-to-spend by ${Math.abs(impact.safeToSpendChange)}%.`}
+                confidence={85}
               />
             </div>
           </div>

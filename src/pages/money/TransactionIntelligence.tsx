@@ -129,15 +129,11 @@ const TransactionIntelligence = () => {
         ))}
       </div>
 
-      <LiveAdvisorCard
-        advisor="money"
-        intent="transaction_review"
-        context={{ total_txs: stats.total, flagged: stats.flagged, avg_confidence: stats.avgConfidence }}
-        demoName="Transaction Advisor"
-        demoRole="Categorization & Anomaly Intelligence"
-        demoConfidence="High"
-        demoRecommendation={`${stats.flagged} transaction(s) flagged for review. ${stats.aiCategorized} auto-categorized by AI with ${(stats.avgConfidence * 100).toFixed(0)}% avg confidence.`}
-        demoReasoning="Pattern analysis across merchant history, recurring detection, and business/personal classification."
+      <ModuleAdvisorInsight
+        advisorName="Transaction Advisor"
+        domain="finance"
+        insight={`${stats.flagged} transaction(s) flagged for review. ${stats.aiCategorized} auto-categorized with ${(stats.avgConfidence * 100).toFixed(0)}% avg confidence.`}
+        confidence={90}
       />
     </motion.div>
   );

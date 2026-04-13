@@ -210,15 +210,11 @@ const NetWorthOffice = () => {
             <TrustBadge level="verified" className="mt-3" />
           </SitaCard>
 
-          <LiveAdvisorCard
-            advisor="money"
-            intent="net_worth_review"
-            context={{ net_worth: analysis.netWorth / 100, assets: analysis.totalAssets / 100, liabilities: analysis.totalLiabilities / 100 }}
-            demoName="Wealth Advisor"
-            demoRole="Net Worth Intelligence"
-            demoConfidence="High"
-            demoRecommendation="Net worth growing steadily. Focus on reducing high-interest liabilities to accelerate growth."
-            demoReasoning="Asset growth of 3.2% this month vs 1.1% liability reduction — positive momentum."
+          <ModuleAdvisorInsight
+            advisorName="Wealth Advisor"
+            domain="finance"
+            insight="Net worth growing steadily. Focus on reducing high-interest liabilities to accelerate growth."
+            confidence={92}
           />
 
           <ConfidenceBar value={Math.round(0.92 * 100)} label="Balance accuracy" />
