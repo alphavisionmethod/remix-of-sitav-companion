@@ -2,7 +2,7 @@ import { KPITile } from "@/components/sita/SitaComponents";
 import { ProcessingCard, type ProcessingStage } from "@/components/sita/FilesComponents";
 import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { ModuleAdvisorInsight } from "@/components/sita/ModuleAdvisorInsight";
+import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
 import { Loader2, CheckCircle, AlertTriangle, Clock, Cpu } from "lucide-react";
 import { motion } from "framer-motion";
 import { useMemo } from "react";

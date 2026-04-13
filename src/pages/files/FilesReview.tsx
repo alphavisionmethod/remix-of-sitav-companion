@@ -3,7 +3,7 @@ import { ClassificationCard, ExtractionReviewCard } from "@/components/sita/File
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { ModuleAdvisorInsight } from "@/components/sita/ModuleAdvisorInsight";
+import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
 import { useState, useMemo } from "react";
 import { Eye, CheckCircle, AlertTriangle, FileText } from "lucide-react";
 import { motion } from "framer-motion";

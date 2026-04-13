@@ -4,7 +4,7 @@ import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { ModuleAdvisorInsight } from "@/components/sita/ModuleAdvisorInsight";
+import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
 import { Shield, Lock, Eye, AlertTriangle, ShieldCheck } from "lucide-react";
 import { motion } from "framer-motion";
 import { useFilesBySensitivity } from "@/hooks/use-domain-data";

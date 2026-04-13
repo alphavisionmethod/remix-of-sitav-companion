@@ -4,7 +4,7 @@ import { TrustBadge, TrustLevel } from "@/components/sita/TrustBadge";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { ModuleAdvisorInsight } from "@/components/sita/ModuleAdvisorInsight";
+import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
 import { useState, useMemo } from "react";
 import { FolderOpen, Search, Eye, Link2, Shield, Upload } from "lucide-react";
 import { motion } from "framer-motion";

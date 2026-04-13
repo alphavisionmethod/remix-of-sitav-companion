@@ -3,7 +3,7 @@ import { MemoryReviewCard } from "@/components/sita/FilesComponents";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { ModuleAdvisorInsight } from "@/components/sita/ModuleAdvisorInsight";
+import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
 import { Brain, Eye, RotateCcw, Trash2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { useAllFiles } from "@/hooks/use-domain-data";
