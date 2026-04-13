@@ -108,4 +108,6 @@ export const APP_ACCENTS: Record<string, string> = {
   mail: "from-[hsl(210_80%_55%)] to-[hsl(200_70%_50%)]",
   default: "from-[hsl(265_55%_58%)] to-[hsl(280_50%_50%)]",
   "business-os": "from-[hsl(265_55%_58%)] to-[hsl(285_50%_48%)]",
+  "money-os": "from-[hsl(152_55%_48%)] to-[hsl(165_50%_42%)]",
+  concierge: "from-[hsl(285_55%_55%)] to-[hsl(310_50%_48%)]",
 } as const;
