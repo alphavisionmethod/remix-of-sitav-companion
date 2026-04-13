@@ -12,3 +12,9 @@ export type { QuickAction } from "./QuickActionBar";
 
 export { AutomationCenter } from "./AutomationCenter";
 export type { AutomationRule, AutomationExecution } from "./AutomationCenter";
+
+export { OperatingStateHero } from "./OperatingStateHero";
+export type { HeroMetric } from "./OperatingStateHero";
+
+export { PriorityQueue } from "./PriorityQueue";
+export type { PriorityItem } from "./PriorityQueue";
