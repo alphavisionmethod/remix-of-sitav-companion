@@ -1,7 +1,8 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Universal Command Layer v2
-// Real execution, unit conversions, color preview, ambient integration,
-// "what was I doing" command, clipboard display
+// @deprecated — Use UniversalCommandSurface (canonical OS-level command)
+// or DomainCommandPalette (app-scoped). This component is retained
+// for backward compatibility via ShellLiveLayer lazy import.
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useMemo, useCallback, useEffect, useRef } from "react";

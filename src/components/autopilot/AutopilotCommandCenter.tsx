@@ -1,7 +1,8 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Autopilot Command Center
-// Unified dashboard: playbooks, live metrics, activity feed,
-// next-best-actions, digital twins
+// @canonical — Business domain autopilot dashboard.
+// Not a command palette — this is a domain-specific admin surface.
+// Consumer: AutopilotHub page only.
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useMemo } from "react";
