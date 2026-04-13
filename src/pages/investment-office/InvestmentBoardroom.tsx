@@ -119,7 +119,7 @@ export default function InvestmentBoardroom() {
           </h1>
           <p className="text-sm text-muted-foreground mt-1">Your capital command center</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-wrap">
           {[
             { label: "Markets", path: "/investments/markets" },
             { label: "Portfolio", path: "/investments/portfolio" },
@@ -127,6 +127,8 @@ export default function InvestmentBoardroom() {
             { label: "Execute", path: "/investments/execute" },
             { label: "Research", path: "/investments/research" },
             { label: "Risk", path: "/investments/risk" },
+            { label: "Trading Floor", path: "/investments/trading-floor", icon: Activity },
+            { label: "War Room", path: "/investments/war-room", icon: Siren },
             { label: "Knowledge Graph", path: "/investments/knowledge-graph", icon: Network },
           ].map(l => (
             <button key={l.path} onClick={() => navigate(l.path)}
@@ -137,6 +139,18 @@ export default function InvestmentBoardroom() {
           ))}
         </div>
       </div>
+
+      {/* Portfolio Globe Hero */}
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="rounded-2xl border border-primary/15 bg-gradient-to-br from-primary/5 via-card to-card p-6"
+      >
+        <h3 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+          <Briefcase className="h-4 w-4 text-primary" /> Portfolio Globe
+        </h3>
+        <PortfolioGlobe />
+      </motion.div>
 
       {/* Ticker Ribbon */}
       <TickerRibbon />
