@@ -7,21 +7,28 @@ import { motion, useInView } from "framer-motion";
 
 const spring = { type: "spring", mass: 1, stiffness: 100, damping: 15 };
 
-const FadeInSection = ({ children, className, delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) => {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-60px" });
-  return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 32 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ ...spring, delay }}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-};
+const FadeInSection = React.forwardRef<HTMLDivElement, { children: React.ReactNode; className?: string; delay?: number }>(
+  ({ children, className, delay = 0 }, forwardedRef) => {
+    const localRef = useRef<HTMLDivElement>(null);
+    const inView = useInView(localRef, { once: true, margin: "-60px" });
+    return (
+      <motion.div
+        ref={(node) => {
+          (localRef as React.MutableRefObject<HTMLDivElement | null>).current = node;
+          if (typeof forwardedRef === "function") forwardedRef(node);
+          else if (forwardedRef) forwardedRef.current = node;
+        }}
+        initial={{ opacity: 0, y: 32 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ ...spring, delay }}
+        className={className}
+      >
+        {children}
+      </motion.div>
+    );
+  }
+);
+FadeInSection.displayName = "FadeInSection";
 
 const LandingPage = React.forwardRef<HTMLDivElement>((props, ref) => {
   const { signInAsDemo } = useAuth();
