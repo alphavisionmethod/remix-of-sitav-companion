@@ -49,7 +49,7 @@ interface DesktopSurfaceProps {
 }
 
 function deriveDesktopState(notifications: ShellNotificationDigest, trustPosture: TrustPosture): DesktopVisualState {
-  if (trustPosture === "degraded" || trustPosture === "compromised") return "degraded";
+  if (trustPosture === "offline") return "degraded";
   if (notifications.approvals > 5 || notifications.urgent > 3) return "heavy-review";
   if (notifications.total > 0 || notifications.approvals > 0) return "active";
   return "idle";
