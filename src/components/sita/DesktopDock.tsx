@@ -9,7 +9,7 @@ import { useState, useRef, useCallback, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence, Reorder } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { Plus } from "lucide-react";
+import { LayoutGrid } from "lucide-react";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { useAppBadges } from "@/hooks/useAppBadges";
 import { useAppSurfacing } from "@/hooks/useAppSurfacing";
