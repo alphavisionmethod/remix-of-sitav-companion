@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
-import { Brain, ChevronDown, ChevronRight, FileCheck, MessageCircle, AlertTriangle, Mic } from "lucide-react";
+import { Brain, ChevronDown, ChevronRight, FileCheck, MessageCircle, AlertTriangle, Mic, Volume2 } from "lucide-react";
 import { ConfidenceBar } from "@/components/sita/primitives";
 import { ADVISOR_ROSTERS, type AdvisorRole } from "@/lib/advisor-topology";
 
@@ -214,6 +214,40 @@ function getAdvisorInfo(id: string): AdvisorRole {
   return { id, name: id, role: "Advisor", specialty: "", accentColor: "hsl(280 50% 55%)", emoji: "🤖", avatarUrl: "" };
 }
 
+// Sound wave bars component for speaking indicator
+function SoundWaveBars({ color }: { color: string }) {
+  return (
+    <div className="flex items-end gap-[2px] h-3">
+      {[0.6, 1, 0.4].map((maxScale, i) => (
+        <motion.div
+          key={i}
+          className="w-[3px] rounded-full"
+          style={{ background: color }}
+          animate={{ height: [4, 12 * maxScale, 4] }}
+          transition={{ repeat: Infinity, duration: 0.8, delay: i * 0.15, ease: "easeInOut" }}
+        />
+      ))}
+    </div>
+  );
+}
+
+// Typing indicator dots
+function TypingIndicator({ color }: { color: string }) {
+  return (
+    <div className="flex items-center gap-1 px-3 py-2">
+      {[0, 1, 2].map(i => (
+        <motion.div
+          key={i}
+          className="w-2 h-2 rounded-full"
+          style={{ background: `${color}80` }}
+          animate={{ y: [0, -6, 0], opacity: [0.4, 1, 0.4] }}
+          transition={{ repeat: Infinity, duration: 1.2, delay: i * 0.2, ease: "easeInOut" }}
+        />
+      ))}
+    </div>
+  );
+}
+
 export function BoardroomDiscussionThread({ scope }: Props) {
   const [expandedReasoning, setExpandedReasoning] = useState<number | null>(null);
   const [imgErrors, setImgErrors] = useState<Set<string>>(new Set());
@@ -224,10 +258,10 @@ export function BoardroomDiscussionThread({ scope }: Props) {
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-2">
-        <div className="w-6 h-6 rounded-md bg-gradient-to-br from-[hsl(280_50%_55%)] to-[hsl(280_60%_40%)] flex items-center justify-center">
-          <MessageCircle size={12} className="text-white" />
+        <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-[hsl(280_50%_55%)] to-[hsl(280_60%_40%)] flex items-center justify-center shadow-md">
+          <MessageCircle size={13} className="text-white" />
         </div>
-        <p className="text-[12px] font-bold text-[hsl(0_0%_100%/0.9)]">Live Deliberation</p>
+        <p className="text-[13px] font-bold text-[hsl(0_0%_100%/0.92)]">Live Deliberation</p>
         <span className="text-[9px] text-[hsl(0_0%_100%/0.3)] bg-[hsl(0_0%_100%/0.04)] px-2 py-0.5 rounded-full">{entries.length} contributions</span>
       </div>
 
@@ -242,20 +276,21 @@ export function BoardroomDiscussionThread({ scope }: Props) {
           return (
             <motion.div
               key={`${entry.advisorId}-${i}`}
-              initial={{ opacity: 0, x: -12 }}
+              initial={{ opacity: 0, x: -16 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: i * 0.1, type: "spring", stiffness: 200 }}
+              transition={{ delay: i * 0.12, type: "spring", stiffness: 180, damping: 18 }}
               className="flex items-start gap-3 group"
             >
               {/* Avatar column with connecting line */}
               <div className="flex flex-col items-center shrink-0">
-                {/* Avatar */}
                 <div className="relative">
                   <div
-                    className="w-11 h-11 rounded-full overflow-hidden border-2 shadow-md"
+                    className="w-[52px] h-[52px] rounded-full overflow-hidden border-2 shadow-lg"
                     style={{
                       borderColor: adv.accentColor,
-                      boxShadow: isLast ? `0 0 16px ${adv.accentColor}30` : `0 0 6px ${adv.accentColor}15`,
+                      boxShadow: isLast
+                        ? `0 0 24px ${adv.accentColor}35, 0 0 48px ${adv.accentColor}12`
+                        : `0 0 8px ${adv.accentColor}18`,
                     }}
                   >
                     {!hasImgError && adv.avatarUrl ? (
@@ -270,18 +305,19 @@ export function BoardroomDiscussionThread({ scope }: Props) {
                         className="w-full h-full flex items-center justify-center text-white"
                         style={{ background: `linear-gradient(135deg, ${adv.accentColor}, ${adv.accentColor}88)` }}
                       >
-                        <span className="text-lg">{adv.emoji}</span>
+                        <span className="text-xl">{adv.emoji}</span>
                       </div>
                     )}
                   </div>
+                  {/* Speaking mic badge */}
                   {isLast && (
                     <motion.div
-                      className="absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full flex items-center justify-center border-2 border-[hsl(220_18%_6%)]"
+                      className="absolute -bottom-0.5 -right-0.5 w-5 h-5 rounded-full flex items-center justify-center border-2 border-[hsl(220_18%_6%)]"
                       style={{ background: adv.accentColor }}
                       animate={{ scale: [1, 1.15, 1] }}
                       transition={{ repeat: Infinity, duration: 1.5 }}
                     >
-                      <Mic size={8} className="text-white" />
+                      <Mic size={9} className="text-white" />
                     </motion.div>
                   )}
                 </div>
@@ -299,10 +335,14 @@ export function BoardroomDiscussionThread({ scope }: Props) {
                   style={{ background: `linear-gradient(90deg, ${adv.accentColor}, transparent)` }}
                 />
                 <div
-                  className="rounded-b-xl rounded-tr-xl border p-4 backdrop-blur-sm relative"
+                  className={cn(
+                    "rounded-b-xl rounded-tr-xl border p-4 backdrop-blur-sm relative transition-all duration-500",
+                  )}
                   style={{
                     borderColor: stance.borderColor,
                     background: stance.bgColor,
+                    // Breathing glow on the currently speaking entry
+                    boxShadow: isLast ? `inset 3px 0 0 ${adv.accentColor}50` : undefined,
                   }}
                 >
                   {/* Speech triangle */}
@@ -313,6 +353,24 @@ export function BoardroomDiscussionThread({ scope }: Props) {
                       background: stance.bgColor,
                     }}
                   />
+
+                  {/* Currently Speaking badge */}
+                  {isLast && (
+                    <motion.div
+                      className="absolute -top-2.5 right-3 px-2 py-0.5 rounded-full flex items-center gap-1.5 border"
+                      style={{
+                        background: `${adv.accentColor}15`,
+                        borderColor: `${adv.accentColor}40`,
+                      }}
+                      animate={{ opacity: [0.7, 1, 0.7] }}
+                      transition={{ repeat: Infinity, duration: 2 }}
+                    >
+                      <SoundWaveBars color={adv.accentColor} />
+                      <span className="text-[8px] font-bold uppercase tracking-wider" style={{ color: adv.accentColor }}>
+                        Speaking
+                      </span>
+                    </motion.div>
+                  )}
 
                   {/* Header */}
                   <div className="flex items-center gap-2 mb-2 flex-wrap">
@@ -356,9 +414,9 @@ export function BoardroomDiscussionThread({ scope }: Props) {
                           {entry.reasoning.map((step, si) => (
                             <motion.div
                               key={si}
-                              initial={{ opacity: 0, x: -6 }}
+                              initial={{ opacity: 0, x: -8 }}
                               animate={{ opacity: 1, x: 0 }}
-                              transition={{ delay: si * 0.12 }}
+                              transition={{ delay: si * 0.2 }}
                               className="flex items-start gap-2.5 relative"
                             >
                               <div className="w-5 h-5 rounded-full bg-[hsl(280_50%_50%/0.15)] flex items-center justify-center shrink-0 mt-0.5 z-10">
@@ -386,6 +444,24 @@ export function BoardroomDiscussionThread({ scope }: Props) {
             </motion.div>
           );
         })}
+
+        {/* Typing indicator at the bottom — next advisor thinking */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: entries.length * 0.12 + 0.5 }}
+          className="flex items-center gap-3 pl-1"
+        >
+          <div className="w-[52px] flex justify-center">
+            <div className="w-8 h-8 rounded-full bg-[hsl(0_0%_100%/0.04)] border border-[hsl(0_0%_100%/0.08)] flex items-center justify-center">
+              <Brain size={14} className="text-[hsl(280_50%_55%/0.4)]" />
+            </div>
+          </div>
+          <div className="rounded-xl bg-[hsl(0_0%_100%/0.03)] border border-[hsl(0_0%_100%/0.06)] px-1">
+            <TypingIndicator color="hsl(280 50% 55%)" />
+          </div>
+          <span className="text-[9px] text-[hsl(0_0%_100%/0.2)] italic">Another advisor is thinking…</span>
+        </motion.div>
       </div>
     </div>
   );
