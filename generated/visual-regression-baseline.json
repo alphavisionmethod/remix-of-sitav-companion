@@ -1,32 +1,10 @@
 {
-  "version": "1.0.0",
-  "generatedAt": "2026-04-04T19:58:59.324Z",
-  "totalBaselines": 20,
+  "version": "1.1.0",
+  "generatedAt": "2026-04-13T09:02:17.252Z",
+  "totalBaselines": 30,
   "captured": 0,
-  "pending": 20,
+  "pending": 30,
   "baselines": [
-    {
-      "route": "/reset-password",
-      "component": "ResetPassword",
-      "viewport": {
-        "width": 1440,
-        "height": 900
-      },
-      "baselineHash": null,
-      "lastCaptured": null,
-      "status": "pending"
-    },
-    {
-      "route": "/onboarding",
-      "component": "Onboarding",
-      "viewport": {
-        "width": 1440,
-        "height": 900
-      },
-      "baselineHash": null,
-      "lastCaptured": null,
-      "status": "pending"
-    },
     {
       "route": "/auth/callback",
       "component": "EmailVerificationHandler",
@@ -36,10 +14,43 @@
       },
       "baselineHash": null,
       "lastCaptured": null,
-      "status": "pending"
+      "status": "no-baseline-captured"
     },
     {
       "route": "/",
+      "component": "DesktopPage",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/home",
+      "component": "DesktopPage",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/desktop",
+      "component": "DesktopPage",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/pulse",
       "component": "DailyPulse",
       "viewport": {
         "width": 1440,
@@ -47,7 +58,29 @@
       },
       "baselineHash": null,
       "lastCaptured": null,
-      "status": "pending"
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/daily-pulse",
+      "component": "DailyPulse",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/profile",
+      "component": "UserProfilePage",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
     },
     {
       "route": "/life",
@@ -58,7 +91,84 @@
       },
       "baselineHash": null,
       "lastCaptured": null,
-      "status": "pending"
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/life-simulator",
+      "component": "LifeSimulator",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/personal-life",
+      "component": "PersonalLifeWorkspace",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/downloads",
+      "component": "DownloadsCenter",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/storage",
+      "component": "StorageManager",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/network",
+      "component": "NetworkUtility",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/planning-canvas",
+      "component": "PlanningCanvas",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
+    },
+    {
+      "route": "/my-activity",
+      "component": "MyActivity",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "baselineHash": null,
+      "lastCaptured": null,
+      "status": "no-baseline-captured"
     },
     {
       "route": "/business",
@@ -69,7 +179,7 @@
       },
       "baselineHash": null,
       "lastCaptured": null,
-      "status": "pending"
+      "status": "no-baseline-captured"
     },
     {
       "route": "/business/overview",
@@ -80,7 +190,7 @@
       },
       "baselineHash": null,
       "lastCaptured": null,
-      "status": "pending"
+      "status": "no-baseline-captured"
     },
     {
       "route": "/business/leads",
@@ -91,7 +201,7 @@
       },
       "baselineHash": null,
       "lastCaptured": null,
-      "status": "pending"
+      "status": "no-baseline-captured"
     },
     {
       "route": "/business/customers",
@@ -102,7 +212,7 @@
       },
       "baselineHash": null,
       "lastCaptured": null,
-      "status": "pending"
+      "status": "no-baseline-captured"
     },
     {
       "route": "/business/opportunities",
@@ -113,7 +223,7 @@
       },
       "baselineHash": null,
       "lastCaptured": null,
-      "status": "pending"
+      "status": "no-baseline-captured"
     },
     {
       "route": "/business/quotes",
@@ -124,7 +234,7 @@
       },
       "baselineHash": null,
       "lastCaptured": null,
-      "status": "pending"
+      "status": "no-baseline-captured"
     },
     {
       "route": "/business/invoices",
@@ -135,7 +245,7 @@
       },
       "baselineHash": null,
       "lastCaptured": null,
-      "status": "pending"
+      "status": "no-baseline-captured"
     },
     {
       "route": "/business/collections",
@@ -146,7 +256,7 @@
       },
       "baselineHash": null,
       "lastCaptured": null,
-      "status": "pending"
+      "status": "no-baseline-captured"
     },
     {
       "route": "/business/revenue-autopilot",
@@ -157,7 +267,7 @@
       },
       "baselineHash": null,
       "lastCaptured": null,
-      "status": "pending"
+      "status": "no-baseline-captured"
     },
     {
       "route": "/business/autopilot-hub",
@@ -168,7 +278,7 @@
       },
       "baselineHash": null,
       "lastCaptured": null,
-      "status": "pending"
+      "status": "no-baseline-captured"
     },
     {
       "route": "/business/revenue-impact",
@@ -179,7 +289,7 @@
       },
       "baselineHash": null,
       "lastCaptured": null,
-      "status": "pending"
+      "status": "no-baseline-captured"
     },
     {
       "route": "/business/playbook-builder",
@@ -190,7 +300,7 @@
       },
       "baselineHash": null,
       "lastCaptured": null,
-      "status": "pending"
+      "status": "no-baseline-captured"
     },
     {
       "route": "/business/revenue-forecast",
@@ -201,7 +311,7 @@
       },
       "baselineHash": null,
       "lastCaptured": null,
-      "status": "pending"
+      "status": "no-baseline-captured"
     },
     {
       "route": "/business/communications",
@@ -212,7 +322,7 @@
       },
       "baselineHash": null,
       "lastCaptured": null,
-      "status": "pending"
+      "status": "no-baseline-captured"
     },
     {
       "route": "/business/boardroom",
@@ -223,7 +333,7 @@
       },
       "baselineHash": null,
       "lastCaptured": null,
-      "status": "pending"
+      "status": "no-baseline-captured"
     }
   ]
 }

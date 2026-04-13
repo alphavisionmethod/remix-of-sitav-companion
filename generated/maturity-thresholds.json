@@ -1,9 +1,10 @@
 {
-  "version": "1.0.0",
-  "generatedAt": "2026-04-04T19:58:47.594Z",
-  "totalServices": 131,
+  "version": "1.1.0",
+  "generatedAt": "2026-04-13T09:02:07.292Z",
+  "totalServices": 235,
   "levelDistribution": {
-    "scaffold": 131
+    "alpha": 234,
+    "beta": 1
   },
   "maturityLevels": [
     {
@@ -75,1313 +76,3528 @@
   ],
   "serviceMaturity": [
     {
-      "serviceName": "agent-governance",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
+      "serviceId": "predictive-intent.test",
+      "serviceName": "predictive-intent.test",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
       "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
       ]
     },
     {
-      "serviceName": "approval-history",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
+      "serviceId": "system-updates.test",
+      "serviceName": "system-updates.test",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
       "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
       ]
     },
     {
-      "serviceName": "approval-requests",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
+      "serviceId": "window-physics.test",
+      "serviceName": "window-physics.test",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
       "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
       ]
     },
     {
-      "serviceName": "approval-routing",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
+      "serviceId": "adaptive-interface",
+      "serviceName": "adaptive-interface",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
       "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
       ]
     },
     {
-      "serviceName": "escalation-rules",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
+      "serviceId": "agent-control",
+      "serviceName": "agent-control",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
       "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
       ]
     },
     {
-      "serviceName": "advisor-track-composer",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
+      "serviceId": "summarizer",
+      "serviceName": "summarizer",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
       "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
       ]
     },
     {
-      "serviceName": "carryover",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
+      "serviceId": "cost-circuit-breaker",
+      "serviceName": "cost-circuit-breaker",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
       "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
       ]
     },
     {
-      "serviceName": "decision-memory",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
+      "serviceId": "budget",
+      "serviceName": "budget",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
       "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
       ]
     },
     {
-      "serviceName": "build-approval-package",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
+      "serviceId": "callable",
+      "serviceName": "callable",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
       "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
       ]
     },
     {
-      "serviceName": "build-boardroom-request",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
+      "serviceId": "diagnostics",
+      "serviceName": "diagnostics",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
       "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
       ]
     },
     {
-      "serviceName": "build-explanation",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
+      "serviceId": "launch-honesty",
+      "serviceName": "launch-honesty",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
       "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
       ]
     },
     {
-      "serviceName": "build-simulation-request",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
+      "serviceId": "provider-registry",
+      "serviceName": "provider-registry",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
       "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
       ]
     },
     {
-      "serviceName": "choose-advisors",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "choose-execution-mode",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "councils",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "model-router",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "orchestrate-intent",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "accounts",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "business-boardroom-inputs",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "callback-queue",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "collections-command",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "collections",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "contacts",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "customer-dashboard",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "customer-health",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "customer-timeline",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "follow-up",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "invoice-linking",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "lead-intake",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "lead-scoring",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "leakage-engine",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "no-show-recovery",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "opportunity-engine",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "opportunity-ranking",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "proposals",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "quotes",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "reactivation",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "recovered-value-ledger",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "recovery-engine",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "revenue-autopilot",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "stale-lead-detector",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "website-management",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "capability-registry",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "pack-enablement",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "shell-space-routing",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "activity-prep",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "conflict-detector",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "event-continuity",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "gift-reminders",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "grocery-continuity",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "home-admin",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "household-boardroom-inputs",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "household-ops",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "household-overview",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "load-balance",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "prep-checklist",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "prep-derivation",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "provider-memory",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "reconciliation",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "recurring-supplies",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "reservation-ingest",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "responsibilities",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "school-items",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "travel-continuity",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "trip-overview",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "connector-auth",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "connector-fake-mode",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "connector-health",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "council-automation",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "persistence-adapters",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "event-envelope",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "publish-event",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "subscribe-event",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "execute-action",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "execute-connector-action",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "execute-workflow-step",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "account-summary",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "balance-sync",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "bill-calendar",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "capital-map",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "committee-boardroom-inputs",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "crypto-exposure",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "due-soon-alerts",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "entity-capital",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "execution-review",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "family-office-review",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "finance-boardroom-inputs",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "fx-watchlist",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "investment-office",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "liquidity",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "overview",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "portfolio-risk",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "receivables",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "recurring-obligation",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "regime-engine",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "renewal-risk",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "reserve-engine",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "safe-to-spend",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "sinking-fund",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "subscription-detector",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "subscription-waste",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "thesis-vault",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "transaction-categorizer",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "waste-detector",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "boardroom-memory",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "correction",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "preference-memory",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "profile-memory",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "trust-memory",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "workflow-memory",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "collector",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "persistence",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "approval-requirements",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "outbound-comm-policy",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "sensitive-doc-policy",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "truth-boundaries",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "approval-receipts",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "execution-receipts",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
-      "serviceName": "proof-bundles",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
-      "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
-      ]
-    },
-    {
+      "serviceId": "receipts",
       "serviceName": "receipts",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
       "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
       ]
     },
     {
-      "serviceName": "boardroom-packets",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
+      "serviceId": "routing",
+      "serviceName": "routing",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
       "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
       ]
     },
     {
-      "serviceName": "support-diagnostics",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
+      "serviceId": "types",
+      "serviceName": "types",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
       "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
       ]
     },
     {
+      "serviceId": "admin-budget-routing-policy",
+      "serviceName": "admin-budget-routing-policy",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "agent-governance",
+      "serviceName": "agent-governance",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "agent-health-monitor",
+      "serviceName": "agent-health-monitor",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "workforce-orchestrator",
+      "serviceName": "workforce-orchestrator",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "workforce-service",
+      "serviceName": "workforce-service",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "approval-history",
+      "serviceName": "approval-history",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "approval-requests",
+      "serviceName": "approval-requests",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "approval-routing",
+      "serviceName": "approval-routing",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "escalation-rules",
+      "serviceName": "escalation-rules",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "god-tier-integration-engine",
+      "serviceName": "god-tier-integration-engine",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "attention-os",
+      "serviceName": "attention-os",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "advisor-track-composer",
+      "serviceName": "advisor-track-composer",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "carryover",
+      "serviceName": "carryover",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "decision-memory",
+      "serviceName": "decision-memory",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "boundary-engine",
+      "serviceName": "boundary-engine",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "build-approval-package",
+      "serviceName": "build-approval-package",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "build-boardroom-request",
+      "serviceName": "build-boardroom-request",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "build-explanation",
+      "serviceName": "build-explanation",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "build-simulation-request",
+      "serviceName": "build-simulation-request",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "choose-advisors",
+      "serviceName": "choose-advisors",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "choose-execution-mode",
+      "serviceName": "choose-execution-mode",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "councils",
+      "serviceName": "councils",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "model-router",
+      "serviceName": "model-router",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "orchestrate-intent",
+      "serviceName": "orchestrate-intent",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "accounts",
+      "serviceName": "accounts",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "business-boardroom-inputs",
+      "serviceName": "business-boardroom-inputs",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "callback-queue",
+      "serviceName": "callback-queue",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "collections-command",
+      "serviceName": "collections-command",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "collections",
+      "serviceName": "collections",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "contacts",
+      "serviceName": "contacts",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "customer-dashboard",
+      "serviceName": "customer-dashboard",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "customer-health",
+      "serviceName": "customer-health",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "customer-timeline",
+      "serviceName": "customer-timeline",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "follow-up",
+      "serviceName": "follow-up",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "invoice-linking",
+      "serviceName": "invoice-linking",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "lead-intake",
+      "serviceName": "lead-intake",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "lead-scoring",
+      "serviceName": "lead-scoring",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "leakage-engine",
+      "serviceName": "leakage-engine",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "no-show-recovery",
+      "serviceName": "no-show-recovery",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "opportunity-engine",
+      "serviceName": "opportunity-engine",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "opportunity-ranking",
+      "serviceName": "opportunity-ranking",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "proposals",
+      "serviceName": "proposals",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "quotes",
+      "serviceName": "quotes",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "reactivation",
+      "serviceName": "reactivation",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "recovered-value-ledger",
+      "serviceName": "recovered-value-ledger",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "recovery-engine",
+      "serviceName": "recovery-engine",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "revenue-autopilot",
+      "serviceName": "revenue-autopilot",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "stale-lead-detector",
+      "serviceName": "stale-lead-detector",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "website-management",
+      "serviceName": "website-management",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "pipeline-orchestrator",
+      "serviceName": "pipeline-orchestrator",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "capability-registry",
+      "serviceName": "capability-registry",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "pack-enablement",
+      "serviceName": "pack-enablement",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "shell-space-routing",
+      "serviceName": "shell-space-routing",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "chief-of-staff",
+      "serviceName": "chief-of-staff",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "activity-prep",
+      "serviceName": "activity-prep",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "conflict-detector",
+      "serviceName": "conflict-detector",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "event-continuity",
+      "serviceName": "event-continuity",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "gift-reminders",
+      "serviceName": "gift-reminders",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "grocery-continuity",
+      "serviceName": "grocery-continuity",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "home-admin",
+      "serviceName": "home-admin",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "household-boardroom-inputs",
+      "serviceName": "household-boardroom-inputs",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "household-ops",
+      "serviceName": "household-ops",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "household-overview",
+      "serviceName": "household-overview",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "load-balance",
+      "serviceName": "load-balance",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "prep-checklist",
+      "serviceName": "prep-checklist",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "prep-derivation",
+      "serviceName": "prep-derivation",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "provider-memory",
+      "serviceName": "provider-memory",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "reconciliation",
+      "serviceName": "reconciliation",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "recurring-supplies",
+      "serviceName": "recurring-supplies",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "reservation-ingest",
+      "serviceName": "reservation-ingest",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "responsibilities",
+      "serviceName": "responsibilities",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "school-items",
+      "serviceName": "school-items",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "travel-continuity",
+      "serviceName": "travel-continuity",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "trip-overview",
+      "serviceName": "trip-overview",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "connector-auth",
+      "serviceName": "connector-auth",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "connector-fake-mode",
+      "serviceName": "connector-fake-mode",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "connector-health",
+      "serviceName": "connector-health",
+      "currentLevel": "beta",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": true,
+      "nextLevel": "ga",
+      "blockers": [
+        "Enable RLS policies",
+        "Pass security review",
+        "Add performance budgets",
+        "Documentation complete"
+      ]
+    },
+    {
+      "serviceId": "connector-truth-service",
+      "serviceName": "connector-truth-service",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "conscience-gate",
+      "serviceName": "conscience-gate",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "critique-loop",
+      "serviceName": "critique-loop",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "continuity-engine",
+      "serviceName": "continuity-engine",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "council-automation",
+      "serviceName": "council-automation",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "persistence-adapters",
+      "serviceName": "persistence-adapters",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "demo-governance-service",
+      "serviceName": "demo-governance-service",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "desk-executor",
+      "serviceName": "desk-executor",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "digest-engine",
+      "serviceName": "digest-engine",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "domain-runtime-service",
+      "serviceName": "domain-runtime-service",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "assumption-registry",
+      "serviceName": "assumption-registry",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "cite-checker",
+      "serviceName": "cite-checker",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "cortex-loop",
+      "serviceName": "cortex-loop",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "evidence-grader",
+      "serviceName": "evidence-grader",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "negative-receipt",
+      "serviceName": "negative-receipt",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "sentinel-engine",
+      "serviceName": "sentinel-engine",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "tool-grounding",
+      "serviceName": "tool-grounding",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "event-envelope",
+      "serviceName": "event-envelope",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "publish-event",
+      "serviceName": "publish-event",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "subscribe-event",
+      "serviceName": "subscribe-event",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "unified-event-service",
+      "serviceName": "unified-event-service",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "execute-action",
+      "serviceName": "execute-action",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "execute-connector-action",
+      "serviceName": "execute-connector-action",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "execute-workflow-step",
+      "serviceName": "execute-workflow-step",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "experience-signature",
+      "serviceName": "experience-signature",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "account-summary",
+      "serviceName": "account-summary",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "balance-sync",
+      "serviceName": "balance-sync",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "bill-calendar",
+      "serviceName": "bill-calendar",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "capital-map",
+      "serviceName": "capital-map",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "cash-allocator",
+      "serviceName": "cash-allocator",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "committee-boardroom-inputs",
+      "serviceName": "committee-boardroom-inputs",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "crypto-exposure",
+      "serviceName": "crypto-exposure",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "debt-analyzer",
+      "serviceName": "debt-analyzer",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "due-soon-alerts",
+      "serviceName": "due-soon-alerts",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "entity-capital",
+      "serviceName": "entity-capital",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "envelope-budget",
+      "serviceName": "envelope-budget",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "execution-review",
+      "serviceName": "execution-review",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "family-office-review",
+      "serviceName": "family-office-review",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "finance-boardroom-inputs",
+      "serviceName": "finance-boardroom-inputs",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "financial-health",
+      "serviceName": "financial-health",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "fx-watchlist",
+      "serviceName": "fx-watchlist",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "income-quality",
+      "serviceName": "income-quality",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "investment-memory",
+      "serviceName": "investment-memory",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "investment-office-runtime",
+      "serviceName": "investment-office-runtime",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "investment-office",
+      "serviceName": "investment-office",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "liquidity",
+      "serviceName": "liquidity",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "overview",
+      "serviceName": "overview",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "peace-score",
+      "serviceName": "peace-score",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "portfolio-risk",
+      "serviceName": "portfolio-risk",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "receivables",
+      "serviceName": "receivables",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "recurring-obligation",
+      "serviceName": "recurring-obligation",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "regime-engine",
+      "serviceName": "regime-engine",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "renewal-risk",
+      "serviceName": "renewal-risk",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "reserve-engine",
+      "serviceName": "reserve-engine",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "revenue-memory",
+      "serviceName": "revenue-memory",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "safe-to-spend",
+      "serviceName": "safe-to-spend",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "scenario-engine",
+      "serviceName": "scenario-engine",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "sinking-fund",
+      "serviceName": "sinking-fund",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "stress-radar",
+      "serviceName": "stress-radar",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "subscription-detector",
+      "serviceName": "subscription-detector",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "subscription-waste",
+      "serviceName": "subscription-waste",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "thesis-vault",
+      "serviceName": "thesis-vault",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "transaction-categorizer",
+      "serviceName": "transaction-categorizer",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "waste-detector",
+      "serviceName": "waste-detector",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "flagship-loop-service",
+      "serviceName": "flagship-loop-service",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "frontend-quality-engine",
+      "serviceName": "frontend-quality-engine",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "google-demo-provider",
+      "serviceName": "google-demo-provider",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "google-provider-family",
+      "serviceName": "google-provider-family",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "types",
+      "serviceName": "types",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "account-graph",
+      "serviceName": "account-graph",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "connector-access",
+      "serviceName": "connector-access",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "consent",
+      "serviceName": "consent",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "identity-provider",
+      "serviceName": "identity-provider",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "types",
+      "serviceName": "types",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "connector-sdk",
+      "serviceName": "connector-sdk",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "demo-connections",
+      "serviceName": "demo-connections",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "providers",
+      "serviceName": "providers",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "intent-orchestrator",
+      "serviceName": "intent-orchestrator",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "launch-gate-service",
+      "serviceName": "launch-gate-service",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "launch-readiness-engine",
+      "serviceName": "launch-readiness-engine",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "financial-literacy-engine",
+      "serviceName": "financial-literacy-engine",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "household-coaching-engine",
+      "serviceName": "household-coaching-engine",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "life-goal-tracker",
+      "serviceName": "life-goal-tracker",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "skill-monetization-advisor",
+      "serviceName": "skill-monetization-advisor",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "wealth-building-engine",
+      "serviceName": "wealth-building-engine",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "life-shock-simulator",
+      "serviceName": "life-shock-simulator",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "memory-governance-engine",
+      "serviceName": "memory-governance-engine",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "boardroom-memory",
+      "serviceName": "boardroom-memory",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "correction",
+      "serviceName": "correction",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "preference-memory",
+      "serviceName": "preference-memory",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "profile-memory",
+      "serviceName": "profile-memory",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "trust-memory",
+      "serviceName": "trust-memory",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "workflow-memory",
+      "serviceName": "workflow-memory",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "collector",
+      "serviceName": "collector",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "context-assembler",
+      "serviceName": "context-assembler",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "health-aggregator",
+      "serviceName": "health-aggregator",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "observability-service",
+      "serviceName": "observability-service",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "persistence",
+      "serviceName": "persistence",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "ambient-intelligence",
+      "serviceName": "ambient-intelligence",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "personal-operating-graph",
+      "serviceName": "personal-operating-graph",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "auto-rules",
+      "serviceName": "auto-rules",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "behavioral-learning",
+      "serviceName": "behavioral-learning",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "platform-readiness-seeder",
+      "serviceName": "platform-readiness-seeder",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "approval-requirements",
+      "serviceName": "approval-requirements",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "outbound-comm-policy",
+      "serviceName": "outbound-comm-policy",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "sensitive-doc-policy",
+      "serviceName": "sensitive-doc-policy",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "truth-boundaries",
+      "serviceName": "truth-boundaries",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "types",
+      "serviceName": "types",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "push-registration-service",
+      "serviceName": "push-registration-service",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "approval-receipts",
+      "serviceName": "approval-receipts",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "execution-receipts",
+      "serviceName": "execution-receipts",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "proof-bundles",
+      "serviceName": "proof-bundles",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "receipts",
+      "serviceName": "receipts",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "recommendation-loop-service",
+      "serviceName": "recommendation-loop-service",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "business-model-advisor",
+      "serviceName": "business-model-advisor",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "income-discovery-engine",
+      "serviceName": "income-discovery-engine",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "market-intelligence",
+      "serviceName": "market-intelligence",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "security-posture-engine",
+      "serviceName": "security-posture-engine",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "security-privacy-service",
+      "serviceName": "security-privacy-service",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "heartbeat",
+      "serviceName": "heartbeat",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "route-to-service-inventory",
+      "serviceName": "route-to-service-inventory",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "service-ownership-registry",
+      "serviceName": "service-ownership-registry",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "advisor-recommendation-engine",
+      "serviceName": "advisor-recommendation-engine",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "connection-recommendation-engine",
+      "serviceName": "connection-recommendation-engine",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "first-win-recommendation-engine",
+      "serviceName": "first-win-recommendation-engine",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "hardware-capability-service",
+      "serviceName": "hardware-capability-service",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "setup-summary-builder",
+      "serviceName": "setup-summary-builder",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "trust-calibration-service",
+      "serviceName": "trust-calibration-service",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "world-model-service",
+      "serviceName": "world-model-service",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "diagnostic-bundle",
       "serviceName": "diagnostic-bundle",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
       "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
       ]
     },
     {
+      "serviceId": "incident-classification",
       "serviceName": "incident-classification",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
       "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
       ]
     },
     {
+      "serviceId": "replay-metadata",
       "serviceName": "replay-metadata",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
       "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
       ]
     },
     {
+      "serviceId": "support-summary",
       "serviceName": "support-summary",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
       "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
       ]
     },
     {
+      "serviceId": "surface-adapter-registry",
+      "serviceName": "surface-adapter-registry",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "surface-portability-service",
+      "serviceName": "surface-portability-service",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "timing-intelligence",
+      "serviceName": "timing-intelligence",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "trust-weighted-actions",
+      "serviceName": "trust-weighted-actions",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "truth-index-aggregator",
+      "serviceName": "truth-index-aggregator",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
+      "blockers": [
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
+      ]
+    },
+    {
+      "serviceId": "postcondition-checks",
       "serviceName": "postcondition-checks",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
       "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
       ]
     },
     {
+      "serviceId": "receipt-verification",
       "serviceName": "receipt-verification",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
       "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
       ]
     },
     {
+      "serviceId": "replay-verification",
       "serviceName": "replay-verification",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
       "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
       ]
     },
     {
+      "serviceId": "rollback-signals",
       "serviceName": "rollback-signals",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
       "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
       ]
     },
     {
+      "serviceId": "verification",
       "serviceName": "verification",
-      "currentLevel": "scaffold",
-      "nextLevel": "alpha",
+      "currentLevel": "alpha",
+      "hasImplementation": true,
+      "hasTests": true,
+      "hasEdgeFunction": false,
+      "nextLevel": "beta",
       "blockers": [
-        "Implement core business logic",
-        "Add factory function",
-        "Wire into kernel context"
+        "Add unit tests (>80% coverage)",
+        "Deploy edge function",
+        "Add error handling",
+        "Add telemetry"
       ]
     }
   ]

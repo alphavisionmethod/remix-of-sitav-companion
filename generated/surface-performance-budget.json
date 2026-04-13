@@ -1,32 +1,8 @@
 {
   "version": "1.0.0",
-  "generatedAt": "2026-04-04T19:58:52.136Z",
-  "totalRoutes": 261,
+  "generatedAt": "2026-04-13T09:02:11.156Z",
+  "totalRoutes": 811,
   "budgets": [
-    {
-      "path": "/reset-password",
-      "component": "ResetPassword",
-      "section": "unknown",
-      "budget": {
-        "lcpMs": 2000,
-        "fcpMs": 1000,
-        "bundleKb": 250,
-        "ttiMs": 3000
-      },
-      "priority": "standard"
-    },
-    {
-      "path": "/onboarding",
-      "component": "Onboarding",
-      "section": "unknown",
-      "budget": {
-        "lcpMs": 2000,
-        "fcpMs": 1000,
-        "bundleKb": 200,
-        "ttiMs": 2500
-      },
-      "priority": "standard"
-    },
     {
       "path": "/auth/callback",
       "component": "EmailVerificationHandler",
@@ -41,7 +17,7 @@
     },
     {
       "path": "/",
-      "component": "DailyPulse",
+      "component": "DesktopPage",
       "section": "unknown",
       "budget": {
         "lcpMs": 1500,
@@ -52,8 +28,152 @@
       "priority": "critical"
     },
     {
+      "path": "/home",
+      "component": "DesktopPage",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/desktop",
+      "component": "DesktopPage",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/pulse",
+      "component": "DailyPulse",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/daily-pulse",
+      "component": "DailyPulse",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/profile",
+      "component": "UserProfilePage",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
       "path": "/life",
       "component": "LifeDashboard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/life-simulator",
+      "component": "LifeSimulator",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/personal-life",
+      "component": "PersonalLifeWorkspace",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/downloads",
+      "component": "DownloadsCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/storage",
+      "component": "StorageManager",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/network",
+      "component": "NetworkUtility",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/planning-canvas",
+      "component": "PlanningCanvas",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/my-activity",
+      "component": "MyActivity",
       "section": "unknown",
       "budget": {
         "lcpMs": 2000,
@@ -280,6 +400,66 @@
       "priority": "standard"
     },
     {
+      "path": "/business/website-builder",
+      "component": "WebsiteBuilderPage",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/business/proposals",
+      "component": "ProposalsContractsPage",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/business/lead-recovery",
+      "component": "LeadRecoveryPage",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/business/social",
+      "component": "SocialCommandPage",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/business/ecommerce",
+      "component": "EcommerceManagerPage",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
       "path": "/business/customers/:id",
       "component": "CustomerDetail",
       "section": "unknown",
@@ -300,6 +480,78 @@
         "fcpMs": 1000,
         "bundleKb": 250,
         "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/business/follow-through",
+      "component": "BusinessCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/business/support",
+      "component": "BusinessCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/business/appointments",
+      "component": "BusinessCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/business/operations",
+      "component": "BusinessCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/business/documents",
+      "component": "BusinessCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/money/onboarding",
+      "component": "MoneyOnboarding",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 200,
+        "ttiMs": 2500
       },
       "priority": "standard"
     },
@@ -400,6 +652,18 @@
       "priority": "standard"
     },
     {
+      "path": "/money/tax",
+      "component": "MoneyCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
       "path": "/money/family-office",
       "component": "MoneyCenter",
       "section": "unknown",
@@ -480,6 +744,2598 @@
         "fcpMs": 1000,
         "bundleKb": 250,
         "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/money/net-worth",
+      "component": "MoneyCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/money/debt-credit",
+      "component": "MoneyCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/money/budgets",
+      "component": "MoneyCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/money/transactions",
+      "component": "MoneyCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/money/household",
+      "component": "MoneyCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/money/health",
+      "component": "MoneyCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/money/advisors",
+      "component": "MoneyCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/money/scenarios",
+      "component": "MoneyCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/money/stress-radar",
+      "component": "MoneyCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/money/life-impact",
+      "component": "MoneyCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/money/modes",
+      "component": "MoneyCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/money/allocator",
+      "component": "MoneyCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/money/trust-graph",
+      "component": "MoneyCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/money/opportunity-cost",
+      "component": "MoneyCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/money/rituals",
+      "component": "MoneyCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/money/peace-score",
+      "component": "MoneyCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/money/boundaries",
+      "component": "MoneyCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/money/spending-pulse",
+      "component": "MoneyCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/money/reconciliation",
+      "component": "MoneyCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/money/automations",
+      "component": "MoneyCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments",
+      "component": "InvestmentGate",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments/boardroom",
+      "component": "InvestmentBoardroom",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2500,
+        "fcpMs": 1200,
+        "bundleKb": 350,
+        "ttiMs": 3500
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments/markets",
+      "component": "MarketExplorer",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments/instrument/:instrumentId",
+      "component": "InstrumentDetail",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments/portfolio",
+      "component": "PortfolioOffice",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments/strategy",
+      "component": "StrategyStudio",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments/execute",
+      "component": "ExecutionDesk",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments/research",
+      "component": "ResearchLibrary",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments/journal",
+      "component": "ThesisJournal",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments/risk",
+      "component": "RiskOffice",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments/advisors",
+      "component": "InvestmentAdvisorBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments/platforms",
+      "component": "PlatformConnections",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments/events",
+      "component": "EventMarketsWorkspace",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments/watchlists",
+      "component": "WatchlistsSignals",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments/receipts",
+      "component": "InvestmentReceipts",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments/beginner",
+      "component": "BeginnerMode",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments/advanced",
+      "component": "AdvancedMode",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments/capital-twin",
+      "component": "CapitalTwin",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments/decision-theater",
+      "component": "DecisionTheater",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments/time-machine",
+      "component": "TimeMachineReview",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments/catalysts",
+      "component": "CatalystWarRoom",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments/opportunity-map",
+      "component": "OpportunityMap",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments/constitution",
+      "component": "InvestmentConstitution",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments/behavioral",
+      "component": "BehavioralFirewall",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments/memory",
+      "component": "MarketMemoryFeed",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments/dossier",
+      "component": "IntelligenceDossier",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments/probability-lab",
+      "component": "EventProbabilityLab",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments/strategy-dna",
+      "component": "StrategyDNA",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments/post-trade",
+      "component": "PostTradeLoop",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments/cross-asset",
+      "component": "CrossAssetStoryEngine",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments/conviction",
+      "component": "ConvictionEngine",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments/sizing",
+      "component": "PositionSizingCoach",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments/modes",
+      "component": "OperatingModes",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments/readiness",
+      "component": "DecisionReadiness",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments/capital-purpose",
+      "component": "CapitalPurpose",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments/what-would-break",
+      "component": "WhatWouldBreak",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments/disagreements",
+      "component": "DisagreementEngine",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments/family-office",
+      "component": "FamilyOffice",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/investments/knowledge-graph",
+      "component": "KnowledgeGraph",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/money/investments",
+      "component": "InvestmentGate",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office",
+      "component": "RevenueGate",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office/boardroom",
+      "component": "GrowthBoardroom",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2500,
+        "fcpMs": 1200,
+        "bundleKb": 350,
+        "ttiMs": 3500
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office/relationships",
+      "component": "RelationshipCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office/pipeline",
+      "component": "PipelineStudio",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office/funnels",
+      "component": "FunnelBuilder",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office/campaigns",
+      "component": "CampaignOrchestrator",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office/bookings",
+      "component": "BookingCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office/offers",
+      "component": "OffersWorkspace",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office/reputation",
+      "component": "ReputationEngine",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office/intelligence",
+      "component": "RevenueIntelligence",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office/retention",
+      "component": "RetentionOffice",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office/advisors",
+      "component": "GrowthAdvisorBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office/journey-twin",
+      "component": "JourneyTwin",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office/leaks",
+      "component": "LeakDetector",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office/conversion-lab",
+      "component": "ConversionLab",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office/memberships",
+      "component": "MembershipCourseOffice",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office/opportunities",
+      "component": "OpportunityBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office/trust-pulse",
+      "component": "TrustPulse",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office/white-label",
+      "component": "WhiteLabelOffice",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office/time-machine",
+      "component": "BusinessTimeMachine",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office/decision-theater",
+      "component": "RevenueDecisionTheater",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office/what-breaks",
+      "component": "WhatBreaksGrowth",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office/growth-dna",
+      "component": "GrowthDNA",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office/operating-modes",
+      "component": "GrowthOperatingModes",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office/synthesis",
+      "component": "ChiefRevenueSynthesis",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office/memory-feed",
+      "component": "CommercialMemoryFeed",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office/forms",
+      "component": "FormsBuilder",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office/segmentation",
+      "component": "SegmentationEngine",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office/client-onboarding",
+      "component": "ClientOnboarding",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office/automation",
+      "component": "AutomationOffice",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office/automation/builder",
+      "component": "AutomationBuilder",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office/automation/templates",
+      "component": "AutomationTemplates",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office/automation/simulation",
+      "component": "AutomationSimLab",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office/automation/health",
+      "component": "AutomationHealth",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office/automation/receipts",
+      "component": "AutomationReceipts",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office/automation/policy",
+      "component": "AutomationPolicy",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office/quotes",
+      "component": "QuoteStudio",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office/calls",
+      "component": "CallDesk",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/revenue-office/onboarding",
+      "component": "BusinessOnboarding",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 200,
+        "ttiMs": 2500
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/admin",
+      "component": "AdminDashboard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/dashboard",
+      "component": "AdminDashboard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/ai-runtime",
+      "component": "AIRuntimeStatus",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/persistence-status",
+      "component": "PersistenceStatus",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/system-health",
+      "component": "SystemHealthDashboard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/brain-core",
+      "component": "BrainCoreDashboard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/conscience-gate",
+      "component": "ConscienceGateDashboard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/drs/overview",
+      "component": "DRS01RealityModeOverview",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/drs/registry",
+      "component": "DRS02ModeRegistryConsole",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/drs/scenarios",
+      "component": "DRS03ScenarioLibrary",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/drs/entities",
+      "component": "DRS04ScenarioEntityGraph",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/drs/providers",
+      "component": "DRS05ProviderConsole",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/drs/safety",
+      "component": "DRS06DemoPolicySafety",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/drs/ai-control",
+      "component": "DRS07DemoAIControl",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/drs/analytics",
+      "component": "DRS08AnalyticsSegregation",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/drs/truth",
+      "component": "DRS09TruthLabeling",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/drs/launch-gate",
+      "component": "DRS10DualRealityLaunchGate",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/mock-elimination",
+      "component": "MockEliminationCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/domain-reality",
+      "component": "DomainRealityBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/route-diagnostics",
+      "component": "RouteSourceDiagnostics",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/automation/overview",
+      "component": "AR01AutomationOverview",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/automation/jobs",
+      "component": "AR02ScheduledJobRegistry",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/automation/self-healing",
+      "component": "AR03SelfHealingBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/automation/agent-scheduler",
+      "component": "AR04AgentScheduler",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/automation/maintenance",
+      "component": "AR05SystemMaintenanceBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/automation/traces",
+      "component": "AR06ExecutionTraceExplorer",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/automation/failures",
+      "component": "AR07RetryFailureCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/automation/kill-switches",
+      "component": "AR08KillSwitchCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/automation/launch-gate",
+      "component": "AR09AutomationLaunchGate",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/sag/overview",
+      "component": "SAGOverview",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/sag/models",
+      "component": "SAGModelRegistry",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/sag/routing",
+      "component": "SAGRoutingPolicy",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/sag/health",
+      "component": "SAGProviderHealth",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/sag/prompts",
+      "component": "SAGPromptRegistry",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/sag/economics",
+      "component": "SAGEconomicsBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/sag/cost-confidence",
+      "component": "SAGCostConfidenceLab",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/sag/multi-stage",
+      "component": "SAGMultiStageExplorer",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/sag/receipts",
+      "component": "SAGReceiptExplorer",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/sag/fallback",
+      "component": "SAGFallbackCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/sag/builder",
+      "component": "SAGBuilderConsole",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/sag/compliance",
+      "component": "SAGComplianceGate",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/truth/behavioral",
+      "component": "LT01BehavioralTruthOverview",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/truth/ci-pipeline",
+      "component": "LT02CIPipelineCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/truth/e2e-journeys",
+      "component": "LT03E2EJourneyBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/truth/runtime-probes",
+      "component": "LT04RuntimeProbeCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/truth/launch-gate",
+      "component": "LT05LaunchGateBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/truth/route-interaction",
+      "component": "LT06RouteInteractionTruth",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/truth/regression-radar",
+      "component": "LT07TruthRegressionRadar",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/verification/surfaces",
+      "component": "V01SurfaceInventoryBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/verification/coverage",
+      "component": "V02InteractionCoverageBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/verification/p0-journeys",
+      "component": "V03P0JourneyBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/verification/modes",
+      "component": "V04ModeVerificationBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/verification/failures",
+      "component": "V05FailureTriageBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/verification/evidence",
+      "component": "V06EvidenceExplorer",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/verification/blockers",
+      "component": "V07LaunchBlockerBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/verification/redirects",
+      "component": "JVC05RedirectIntegrityMap",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/verification/forms",
+      "component": "JVC07FormVerificationCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/verification/modals",
+      "component": "JVC08ModalDrawerBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/verification/keyboard",
+      "component": "JVC09KeyboardCommandBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/verification/replay",
+      "component": "JVC11JourneyReplay",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/verification/drift",
+      "component": "JVC13InteractionDriftRadar",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/verification/buttons",
+      "component": "JVC04ButtonCTAHealth",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/verification/page-load",
+      "component": "JVC06PageLoadIntegrity",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/verification/overview",
+      "component": "JVC01JourneyVerificationOverview",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/verification/probes",
+      "component": "JVC10RuntimeProbeCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/verification/launch-gate",
+      "component": "JVC14LaunchInteractionGate",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/platform-law",
+      "component": "PLE01Overview",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/platform-law/laws",
+      "component": "PLE02LawRegistry",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/platform-law/scaffolds",
+      "component": "PLE03ScaffoldRegistry",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/platform-law/ci-gates",
+      "component": "PLE04CIGateMonitor",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/platform-law/manifests",
+      "component": "PLE05ManifestEnforcer",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/platform-law/ownership",
+      "component": "PLE06OwnershipBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/platform-law/compliance",
+      "component": "PLE07ComplianceDashboard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/platform-law/violations",
+      "component": "PLT05ViolationTriage",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/platform-law/feature-compliance",
+      "component": "PLT06FeatureCompliance",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/platform-law/launch-enforcement",
+      "component": "PLT08LaunchEnforcement",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/platform-law/drift-radar",
+      "component": "PLT10DriftRadar",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/reality-audit/overview",
+      "component": "RAOverview",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/reality-audit",
+      "component": "RAClassificationMatrix",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/reality-audit/feature/:featureId",
+      "component": "RAFeatureDetail",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/reality-audit/mock-replacement",
+      "component": "RAMockReplacement",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/reality-audit/mock-sources",
+      "component": "RAMockSourceInventory",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/reality-audit/core-persistence",
+      "component": "RACoreServicePersistence",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/reality-audit/route-heatmap",
+      "component": "RARouteHeatmap",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/reality-audit/contract-readiness",
+      "component": "RAContractReadiness",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/reality-audit/launch-honesty",
+      "component": "RALaunchHonesty",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/reality-audit/wave-planner",
+      "component": "RAWavePlanner",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/reality-audit/progress",
+      "component": "RAProgressTimeline",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/reality-audit/runtime-truth",
+      "component": "RARuntimeTruthGate",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/customer-journey/executive",
+      "component": "CJ01ExecutiveReport",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/customer-journey/matrix",
+      "component": "CJ02JourneyTruthMatrix",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/customer-journey/detail",
+      "component": "CJ03JourneyDetailView",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/customer-journey/blockers",
+      "component": "CJ04LaunchBlockerView",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/customer-journey/demo-vs-real",
+      "component": "CJ05DemoVsRealComparison",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/customer-journey/broken-clicks",
+      "component": "CJ06BrokenClicksExplorer",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/customer-journey/remediation",
+      "component": "CJ07OwnerRemediationView",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/customer-journey/coverage",
+      "component": "CJ08RouteActionCoverage",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/customer-journey/recent-runs",
+      "component": "CJ09RecentVerificationRuns",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/digital-presence",
+      "component": "PresenceGate",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/digital-presence/boardroom",
+      "component": "PresenceBoardroom",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2500,
+        "fcpMs": 1200,
+        "bundleKb": 350,
+        "ttiMs": 3500
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/digital-presence/website-twin",
+      "component": "WebsiteTwin",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/digital-presence/builder",
+      "component": "SiteBuilder",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/digital-presence/brand-studio",
+      "component": "BrandStudio",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/digital-presence/connected-sites",
+      "component": "ConnectedSites",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/digital-presence/cro",
+      "component": "CROOffice",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/digital-presence/ecommerce",
+      "component": "EcommerceOffice",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/digital-presence/promotions",
+      "component": "PromotionsOffice",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/digital-presence/ai-team",
+      "component": "AIWebTeam",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/digital-presence/radar",
+      "component": "ErrorRadar",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/digital-presence/content-freshness",
+      "component": "ContentFreshness",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/digital-presence/launch",
+      "component": "LaunchWarRoom",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/digital-presence/time-machine",
+      "component": "PresenceTimeMachine",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/digital-presence/self-healing",
+      "component": "SelfHealingQueue",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/digital-presence/app-studio",
+      "component": "AppExperienceStudio",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/digital-presence/analytics",
+      "component": "PresenceAnalytics",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/digital-presence/domains",
+      "component": "DomainPublishManager",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/digital-presence/onboarding",
+      "component": "DPOOnboarding",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 200,
+        "ttiMs": 2500
       },
       "priority": "standard"
     },
@@ -664,6 +3520,54 @@
       "priority": "standard"
     },
     {
+      "path": "/concierge/life-admin",
+      "component": "ConciergeCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/concierge/errands",
+      "component": "ConciergeCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/concierge/upcoming",
+      "component": "ConciergeCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/concierge/recurring",
+      "component": "ConciergeCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
       "path": "/inbox",
       "component": "InboxCapture",
       "section": "unknown",
@@ -820,6 +3724,30 @@
       "priority": "standard"
     },
     {
+      "path": "/settings/notifications",
+      "component": "NotificationPreferences",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/notifications",
+      "component": "NotificationCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
       "path": "/approvals",
       "component": "ApprovalsCenter",
       "section": "unknown",
@@ -882,6 +3810,18 @@
     {
       "path": "/advisors",
       "component": "AdvisorWorkspace",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/advisors/chat",
+      "component": "CalmAssistantChat",
       "section": "unknown",
       "budget": {
         "lcpMs": 2000,
@@ -1133,7 +4073,7 @@
     },
     {
       "path": "/store/apps/:appId",
-      "component": "AppDetailPage",
+      "component": "OldAppDetailPage",
       "section": "unknown",
       "budget": {
         "lcpMs": 2000,
@@ -1206,6 +4146,222 @@
     {
       "path": "/store/:segment",
       "component": "StoreCategoryPage",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/app-store",
+      "component": "AppStorePage",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/app-store/app/:appId",
+      "component": "AppPlatformDetailPage",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/app-store/bundle/:bundleId",
+      "component": "BundleDetailPage",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/app-store/library",
+      "component": "AppLibraryPage",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/app-store/updates",
+      "component": "AppUpdatesPage",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/app-store/permissions",
+      "component": "AppPermissionsCenterPage",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/app-store/associations",
+      "component": "AppAssociationsPage",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/app-store/compare",
+      "component": "AppComparePage",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/app-store/manage/:appId",
+      "component": "AppManagePage",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/app-store/web-install",
+      "component": "WebAppInstallPage",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/app-store/external-install",
+      "component": "ExternalInstallerPage",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/app-store/receipts",
+      "component": "AppReceiptsPage",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/app-store/receipts/:appId",
+      "component": "AppReceiptsPage",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/app-store/receipt/:receiptId",
+      "component": "AppReceiptDetailPage",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/app-store/enterprise",
+      "component": "EnterpriseCatalogPage",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/app-store/dev-tools",
+      "component": "DevToolsCatalogPage",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/app-store/open-with",
+      "component": "OpenWithPage",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/app-store/first-launch/:appId",
+      "component": "FirstLaunchPage",
       "section": "unknown",
       "budget": {
         "lcpMs": 2000,
@@ -1384,6 +4540,18 @@
       "priority": "standard"
     },
     {
+      "path": "/boardroom/history",
+      "component": "BoardroomHistory",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2500,
+        "fcpMs": 1200,
+        "bundleKb": 350,
+        "ttiMs": 3500
+      },
+      "priority": "standard"
+    },
+    {
       "path": "/workflows",
       "component": "WorkflowsCenter",
       "section": "unknown",
@@ -1542,6 +4710,66 @@
     {
       "path": "/files/settings",
       "component": "FilesCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/files/pdf-viewer",
+      "component": "PDFViewerWorkspace",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/workspace/data-grid",
+      "component": "SpreadsheetWorkspace",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/clipboard-history",
+      "component": "ClipboardHistory",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/print-scan",
+      "component": "PrintScanCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/recovery",
+      "component": "RecoveryCenter",
       "section": "unknown",
       "budget": {
         "lcpMs": 2000,
@@ -1901,7 +5129,55 @@
     },
     {
       "path": "/integrations",
-      "component": "IntegrationConcierge",
+      "component": "IntegrationsCatalog",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/integrations/provider/:providerId",
+      "component": "ProviderDetail",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/integrations/connections",
+      "component": "ConnectionsList",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/integrations/connections/:connectionId",
+      "component": "ConnectionDetail",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/integrations/actions",
+      "component": "ActionsApprovals",
       "section": "unknown",
       "budget": {
         "lcpMs": 2000,
@@ -2068,18 +5344,6 @@
       "priority": "standard"
     },
     {
-      "path": "/settings/notifications",
-      "component": "SettingsPage",
-      "section": "unknown",
-      "budget": {
-        "lcpMs": 2000,
-        "fcpMs": 1000,
-        "bundleKb": 250,
-        "ttiMs": 3000
-      },
-      "priority": "standard"
-    },
-    {
       "path": "/settings/privacy",
       "component": "SettingsPage",
       "section": "unknown",
@@ -2102,6 +5366,150 @@
         "ttiMs": 3000
       },
       "priority": "standard"
+    },
+    {
+      "path": "/settings/plan-usage",
+      "component": "MyPlanUsage",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/settings/accessibility",
+      "component": "AccessibilitySettings",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/settings/device",
+      "component": "DeviceSettingsPage",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/settings/trusted-devices",
+      "component": "TrustedDeviceManager",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/display-modes",
+      "component": "CalmFocusMode",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/boardroom/weekly-review",
+      "component": "WeeklyBoardroom",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2500,
+        "fcpMs": 1200,
+        "bundleKb": 350,
+        "ttiMs": 3500
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/communication-inbox",
+      "component": "CommunicationInbox",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/command-history",
+      "component": "CommandHistory",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/environment-switcher",
+      "component": "EnvironmentSwitcherPage",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/update-center",
+      "component": "UpdateCenterPage",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/admin/environment-appliance",
+      "component": "EnvironmentAppliancePage",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/audit-compliance",
+      "component": "AuditComplianceWorkspace",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
     },
     {
       "path": "/mission-control",
@@ -2224,6 +5632,18 @@
       "priority": "standard"
     },
     {
+      "path": "/mission-control/platform-truth",
+      "component": "MissionControl",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
       "path": "/mission/overview",
       "component": "MissionOverview",
       "section": "unknown",
@@ -2334,6 +5754,174 @@
     {
       "path": "/mission/error",
       "component": "MissionError",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/mission/policy-simulator",
+      "component": "PolicySimulatorHub",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/mission/workflow-replay",
+      "component": "WorkflowReplayHub",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/atlas",
+      "component": "AtlasHub",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/atlas/admin",
+      "component": "AdminDurabilityBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/atlas/projections",
+      "component": "ProjectionControlCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/atlas/proof",
+      "component": "ProofCoverageBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/atlas/deployment",
+      "component": "DeploymentTruthCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/atlas/operations",
+      "component": "OperationsCommandCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/atlas/connectors",
+      "component": "ConnectorControlCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/atlas/concierge",
+      "component": "ConciergeCommandCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/atlas/truth-registry",
+      "component": "PlatformTruthRegistry",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/atlas/data-protection",
+      "component": "DataProtectionPosture",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/atlas/validation",
+      "component": "ValidationCommandCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/atlas/infrastructure",
+      "component": "OperationalInfraMonitor",
       "section": "unknown",
       "budget": {
         "lcpMs": 2000,
@@ -2957,7 +6545,19 @@
     },
     {
       "path": "/service-architecture",
-      "component": "Navigate",
+      "component": "ServiceArchitectureDashboard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/permissions",
+      "component": "PermissionsCenter",
       "section": "unknown",
       "budget": {
         "lcpMs": 2000,
@@ -3114,6 +6714,3006 @@
     {
       "path": "/search",
       "component": "SearchPage",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/admin/incidents",
+      "component": "IncidentCommandCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/deployment",
+      "component": "AdminDeploymentTruthCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/proof-matrix",
+      "component": "ProofMatrixExplorer",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/connectors",
+      "component": "ConnectorGovernanceCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/connectors/overview",
+      "component": "CN01ConnectorRealityOverview",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/connectors/registry",
+      "component": "CN02ConnectorRegistryConsole",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/connectors/accounts",
+      "component": "CN03AccountLinkageBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/connectors/sync",
+      "component": "CN04SyncTruthCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/connectors/health",
+      "component": "CN05ConnectorHealthBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/connectors/demo",
+      "component": "CN06ConnectorDemoReview",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/connectors/launch-gate",
+      "component": "CN07ConnectorLaunchGate",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/msa/overview",
+      "component": "MSA01MultiSurfaceOverview",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/msa/boundary",
+      "component": "MSA02CoreSurfaceBoundary",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/msa/capabilities",
+      "component": "MSA03CapabilityPortability",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/msa/adapters",
+      "component": "MSA04SurfaceAdapterRegistry",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/msa/compatibility",
+      "component": "MSA05CompatibilityRadar",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/pfa/families",
+      "component": "PFA01ProviderFamilyRegistry",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/pfa/capabilities",
+      "component": "PFA02ProviderCapabilityMatrix",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/pfa/oauth-clients",
+      "component": "PFA03OAuthClientRegistry",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/pfa/consent",
+      "component": "PFA04ConsentLedgerExplorer",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/pfa/scope-policy",
+      "component": "PFA05ScopePolicyMatrix",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/pfa/upgrades",
+      "component": "PFA06PermissionUpgradeCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/pfa/health-drift",
+      "component": "PFA07ConnectorHealthDrift",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/pfa/account-graph",
+      "component": "PFA08AccountGraphExplorer",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/pfa/launch-honesty",
+      "component": "PFA10IntegrationLaunchHonesty",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/pfa/google",
+      "component": "GoogleProviderFamilyDashboard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/isa/identity-providers",
+      "component": "ISA01IdentityProviderRegistryBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/isa/connector-providers",
+      "component": "ISA02ConnectorProviderRegistryBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/isa/oauth-clients",
+      "component": "ISA03OAuthClientRegistryConsole",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/isa/consent-ledger",
+      "component": "ISA04ConsentLedgerExplorer",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/isa/scope-policy",
+      "component": "ISA05ScopePolicyMatrixBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/isa/account-graph",
+      "component": "ISA06UnifiedAccountGraphExplorer",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/isa/truth-board",
+      "component": "ISA07AuthConnectorTruthBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/aig/providers",
+      "component": "AIG01ProviderRegistry",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/aig/models",
+      "component": "AIG02ModelRegistry",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/aig/routing",
+      "component": "AIG03RoutingMatrix",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/aig/budget",
+      "component": "AIG04BudgetCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/aig/usage-ledger",
+      "component": "AIG05UsageLedgerExplorer",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/aig/receipts",
+      "component": "AIG05ReceiptsExplorer",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/aig/launch-truth",
+      "component": "AIG06LaunchTruth",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/aig/launch-truth-detail",
+      "component": "AIG07LaunchTruth",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/aig/degraded",
+      "component": "AIG08DegradedDiagnostics",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/aig/runtime-verification",
+      "component": "AIG09RuntimeVerification",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/uao/presence",
+      "component": "UAO01PresenceContinuity",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/uao/devices",
+      "component": "UAO02ConnectedDevices",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/uao/team",
+      "component": "UAO03AmbientTeamControl",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/uao/notifications",
+      "component": "UAO04NotificationRouter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/uao/health",
+      "component": "UAO05HealthReadiness",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/uao/trust",
+      "component": "UAO06DeviceTrust",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/uao/journeys",
+      "component": "UAO07CrossSurfaceJourney",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/uao/launch",
+      "component": "UAO08AmbientLaunchReadiness",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/dwe/devices",
+      "component": "DWE01ConnectedDevicesCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/dwe/presence",
+      "component": "DWE02PresenceContinuityCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/dwe/wearables",
+      "component": "DWE03WearableSignalsCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/dwe/notifications",
+      "component": "DWE04NotificationRoutingStudio",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/dwe/trust",
+      "component": "DWE05DeviceTrustApprovalsCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/dwe/assistant",
+      "component": "DWE06AmbientAssistantCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/dwe/launch-honesty",
+      "component": "DWE07DeviceLaunchHonestyBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/apl/ecosystem",
+      "component": "APL01AppleEcosystemCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/apl/devices-trust",
+      "component": "APL02AppleDevicesTrust",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/apl/watch",
+      "component": "APL03AppleWatchExperience",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/apl/identity",
+      "component": "APL04AppleIdentityAccounts",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/apl/health-consent",
+      "component": "APL05AppleHealthConsent",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/apl/launch-readiness",
+      "component": "APL06AppleLaunchReadiness",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/and/ecosystem",
+      "component": "AND01AndroidEcosystemCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/and/wearos",
+      "component": "AND02WearOSExperience",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/and/trust",
+      "component": "AND03AndroidTrustApprovals",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/and/health-consent",
+      "component": "AND04AndroidHealthConsent",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/and/launch-readiness",
+      "component": "AND05AndroidLaunchReadiness",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/hrs/consent",
+      "component": "HRS01HealthConsentCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/hrs/sources",
+      "component": "HRS02SignalSourcesBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/hrs/readiness",
+      "component": "HRS03ReadinessExplanation",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/hrs/notification-influence",
+      "component": "HRS04NotificationInfluence",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/hrs/assistant-timing",
+      "component": "HRS05AssistantTimingBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/hrs/launch-honesty",
+      "component": "HRS06SignalLaunchHonesty",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/nrc/routing",
+      "component": "NRC01RoutingStudio",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/nrc/calmness",
+      "component": "NRC02CalmnessCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/nrc/fatigue",
+      "component": "NRC03FatigueBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/nrc/queue-matrix",
+      "component": "NRC04QueueInterruptMatrix",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/nrc/cross-device",
+      "component": "NRC05CrossDeviceDelivery",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/nrc/launch-honesty",
+      "component": "NRC06NotificationLaunchHonesty",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/nrc/delivery-receipts",
+      "component": "NOT03DeliveryReceiptsExplorer",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/nrc/runtime-verification",
+      "component": "NOT01NotificationRuntimeVerification",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/nrc/routing-board",
+      "component": "NOT02NotificationRoutingBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/nrc/calm-policy",
+      "component": "NOT04CalmPolicyBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/nrc/notification-preferences",
+      "component": "NOT05NotificationPreferencesBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/nss/strategy",
+      "component": "NSS01StrategyBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/nss/capability-matrix",
+      "component": "NSS02CapabilityMatrix",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/nss/trust-continuity",
+      "component": "NSS03TrustContinuity",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/nss/launch-honesty",
+      "component": "NSS04MobileLaunchHonesty",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/launch-readiness",
+      "component": "LaunchReadinessBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/mission-control",
+      "component": "MissionControlHome",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/durability",
+      "component": "AdminDurabilityBoardPage",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/projections",
+      "component": "AdminProjectionControl",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/operations",
+      "component": "AdminOperationsCommand",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/security-posture",
+      "component": "SecurityPostureBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/truth-registry",
+      "component": "AdminTruthRegistry",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/concierge-runtime",
+      "component": "ConciergeRuntimeBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/alert-triage",
+      "component": "AlertTriageBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/policy-simulator",
+      "component": "AdminPolicySimulator",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/workflow-replay",
+      "component": "WorkflowReplayAudit",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/intelligence",
+      "component": "IntelligenceDashboard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/founder-council",
+      "component": "FounderCouncilBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/chain-explorer",
+      "component": "CanonicalChainExplorer",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/release-ring",
+      "component": "ReleaseRingCommandBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/compute-governance",
+      "component": "ComputeGovernanceBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/integration-concierge",
+      "component": "IntegrationConciergePage",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/revenue-autopilot",
+      "component": "RevenueAutopilotMonitor",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/proof-ledger",
+      "component": "InvestorProofLedger",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/outcome-economics",
+      "component": "OutcomeEconomicsDashboard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/reality-matrix",
+      "component": "RealityClassificationMatrix",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/mock-replacement",
+      "component": "MockReplacementProgram",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/reality-overview",
+      "component": "RealityConversionOverview",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/feature-reality",
+      "component": "FeatureRealityDetail",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/mock-sources",
+      "component": "MockSourceInventory",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/core-services",
+      "component": "SimulatedCoreServicesBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/route-heatmap",
+      "component": "RouteRealityHeatmap",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/backend-readiness",
+      "component": "ContractBackendReadiness",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/launch-honesty",
+      "component": "LaunchHonestyBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/wave-planner",
+      "component": "MigrationWavePlanner",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/reality-progress",
+      "component": "RealityProgressTimeline",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/runtime-validation",
+      "component": "RuntimeRealityValidation",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/core-persistence",
+      "component": "CorePersistenceOverview",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/event-stream",
+      "component": "EventStreamExplorer",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/memory-continuity",
+      "component": "MemoryContinuityCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/policy-ledger",
+      "component": "PolicyDecisionLedger",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/intelligence-library",
+      "component": "IntelligenceArtifactLibrary",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/intelligence-assets",
+      "component": "IntelligenceAssetLibrary",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/action-lineage",
+      "component": "ActionLineageExplorer",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/replay-console",
+      "component": "ReplayRecoveryConsole",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/service-migration",
+      "component": "CoreServiceMigrationBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/persistence-drift",
+      "component": "PersistenceDriftRadar",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/runtime-continuity",
+      "component": "RuntimeContinuityBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/implementation-truth",
+      "component": "ITC01Overview",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/implementation-truth/specs",
+      "component": "ITC02SpecRegistry",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/implementation-truth/contracts",
+      "component": "ITC03ContractVerification",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/implementation-truth/wiring",
+      "component": "ITC04WiringGraph",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/implementation-truth/readiness",
+      "component": "ITC05ReadinessScoreboard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/implementation-truth/drift",
+      "component": "ITC06DriftRadar",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/implementation-truth/map",
+      "component": "ITC07ImplementationMap",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/implementation-truth/architecture",
+      "component": "ITC08ArchitectureCompliance",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/implementation-truth/routes",
+      "component": "ITC09RouteInventory",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/implementation-truth/runtime",
+      "component": "ITC10RuntimeEvidence",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/implementation-truth/prompts",
+      "component": "ITC11PromptTraceability",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/implementation-truth/pipeline",
+      "component": "ITC12ValidationPipeline",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/implementation-truth/launch-gate",
+      "component": "ITC13LaunchTruthGate",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/implementation-truth/manifests",
+      "component": "ITC14ManifestExplorer",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/trust-state",
+      "component": "TrustStateRegistry",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/action-state",
+      "component": "ActionStateDriftViewer",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/cross-domain-memory",
+      "component": "CrossDomainMemoryExplorer",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/feature-intake",
+      "component": "FeatureIntakeDesk",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/feature-lifecycle",
+      "component": "FeatureLifecycleBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/feature-factory",
+      "component": "FeatureFactoryConsole",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/domain-packs",
+      "component": "DomainMethodologyPacks",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/dependency-map",
+      "component": "DependencyMapViewer",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/change-impact",
+      "component": "ChangeImpactAnalyzer",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/delivery-readiness",
+      "component": "DeliveryReadinessBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/platform-maturity",
+      "component": "PlatformMaturityDashboard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/builder-knowledge",
+      "component": "BuilderKnowledgeBase",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/delivery-waves",
+      "component": "DeliveryWavePlanner",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/fip/intake",
+      "component": "FIPIntakeDesk",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/fip/spec-studio",
+      "component": "FIPSpecStudio",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/fip/owner-boundary",
+      "component": "FIPOwnerBoundary",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/fip/capability-registry",
+      "component": "FIPCapabilityRegistry",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/fip/compliance",
+      "component": "FIPComplianceBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/fip/execution-paths",
+      "component": "FIPExecutionExplorer",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/fip/policy-trust",
+      "component": "FIPPolicyTrustBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/fip/memory-graph",
+      "component": "FIPMemoryGraphStudio",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/fip/observability",
+      "component": "FIPObservabilityCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/fip/rollout",
+      "component": "FIPRolloutPlanner",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/fip/generated-truth",
+      "component": "FIPGeneratedTruthBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/fip/readiness",
+      "component": "FIPReadinessGateReview",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/fip/deprecation",
+      "component": "FIPDeprecationManager",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/fip/builder",
+      "component": "FIPBuilderConsole",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/ai-engineering",
+      "component": "AIEngineeringBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/ai-team-roster",
+      "component": "AITeamRoster",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/ai-missions",
+      "component": "AIMissionCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/ai-fix-center",
+      "component": "AIFixCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/ai-self-healing",
+      "component": "AISelfHealing",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/ai-design-studio",
+      "component": "AIDesignStudio",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/ai-learning",
+      "component": "AILearningCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/ai-approvals",
+      "component": "AIApprovalDesk",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/ai-releases",
+      "component": "AIReleasesCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/ai-root-cause",
+      "component": "AIRootCauseGraph",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/ai-team",
+      "component": "AIT01TeamOverview",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/ai-team/truth",
+      "component": "AIT08LaunchTruthPage",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/ai-team/setup",
+      "component": "AITSetupChecklist",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 200,
+        "ttiMs": 2500
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/ai-design-diffs",
+      "component": "AIDesignDiffTheater",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/ai-time-machine",
+      "component": "AITimeMachine",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/advisor-agents",
+      "component": "AdvisorAgentDashboard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/ai-agent-debate",
+      "component": "AIAgentDebate",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/ai-self-learning",
+      "component": "AISelfLearningLedger",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/ai-change-plans",
+      "component": "AIChangePlanViewer",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/ai-boundary-controls",
+      "component": "AIHumanBoundaryControls",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/ai-evidence-bundles",
+      "component": "AIEvidenceBundleComposer",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/rex/intelligence",
+      "component": "REX01RecommendationIntelligence",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/rex/approval-queue",
+      "component": "REX02ApprovalQueueCompletion",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/rex/execution",
+      "component": "REX03RecommendationExecution",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/rex/programs",
+      "component": "REX04RemediationPrograms",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/rex/outcomes",
+      "component": "REX05OutcomeVerification",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/flagship/executive",
+      "component": "FL01FlagshipLoopsExecutive",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/flagship/detail",
+      "component": "FL02FlagshipLoopDetail",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/flagship/prioritization",
+      "component": "FL03FlagshipPrioritization",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/services/ownership",
+      "component": "SERV01ServiceOwnership",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/services/domains",
+      "component": "SERV02DomainOwnership",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/services/route-trace",
+      "component": "SERV03RouteServiceTrace",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/services/duplication",
+      "component": "SERV04ServiceDuplication",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/services/canonical-actions",
+      "component": "SERV05CanonicalActions",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/services/flagship-trace",
+      "component": "SERV06FlagshipTraceability",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/launch/readiness",
+      "component": "LAUNCH01ReadinessExecutive",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/launch/flagship-loops",
+      "component": "LAUNCH02FlagshipReadiness",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/launch/claim-safety",
+      "component": "LAUNCH03ClaimSafetyMatrix",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/launch/blockers",
+      "component": "LAUNCH04BlockerCommand",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/launch/narrative",
+      "component": "LAUNCH06NarrativeGuide",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/launch/go-no-go",
+      "component": "LAUNCH07GoNoGo",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/security/posture",
+      "component": "SEC01PostureExecutive",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/security/privileged-actions",
+      "component": "SEC02PrivilegedActions",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/security/sensitive-assets",
+      "component": "SEC03SensitiveAssets",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/security/edge-functions",
+      "component": "SEC04EdgeFunctionAudit",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/security/claim-safety",
+      "component": "SEC05ClaimSafety",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/security/incident-recovery",
+      "component": "SEC06IncidentRecovery",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/frontend/quality-matrix",
+      "component": "FE01QualityMatrix",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/frontend/design-governance",
+      "component": "FE02DesignGovernance",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/architecture/god-tier-integration",
+      "component": "GodTierIntegrationBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/architecture/god-tier-runtime",
+      "component": "GodTierRuntimeBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/architecture/epistemic-firewall",
+      "component": "EpistemicFirewallBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/architecture/boundaries",
+      "component": "ArchitectureBoundaryBoard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/kernel",
+      "component": "KernelDashboard",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/admin/kernel/compositor-debug",
+      "component": "CompositorDebugPage",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 3000,
+        "fcpMs": 1500,
+        "bundleKb": 400,
+        "ttiMs": 4000
+      },
+      "priority": "low"
+    },
+    {
+      "path": "/settings/connected-accounts",
+      "component": "PFA09ConnectedAccountsCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/settings/google",
+      "component": "GoogleConnectedAccounts",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/personal-brain",
+      "component": "PersonalBrain",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/brain",
+      "component": "Navigate",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/apps/email",
+      "component": "EmailApp",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/apps/messenger",
+      "component": "MessengerApp",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/apps/vault",
+      "component": "VaultApp",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/apps/health",
+      "component": "HealthApp",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/apps/gallery",
+      "component": "GalleryApp",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/apps/weather-news",
+      "component": "WeatherNewsApp",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/calendar",
+      "component": "CalendarWorkspace",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/tasks",
+      "component": "TasksWorkflowsCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/notes",
+      "component": "NotesWorkspace",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/people",
+      "component": "PeopleWorkspace",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/team",
+      "component": "TeamWorkspace",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/editor",
+      "component": "DocumentEditor",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/reporting",
+      "component": "ReportingWorkspace",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/trust",
+      "component": "TrustCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/media",
+      "component": "MediaWorkspace",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/templates",
+      "component": "TemplateCenter",
+      "section": "unknown",
+      "budget": {
+        "lcpMs": 2000,
+        "fcpMs": 1000,
+        "bundleKb": 250,
+        "ttiMs": 3000
+      },
+      "priority": "standard"
+    },
+    {
+      "path": "/import-export",
+      "component": "ImportExportCenter",
       "section": "unknown",
       "budget": {
         "lcpMs": 2000,
