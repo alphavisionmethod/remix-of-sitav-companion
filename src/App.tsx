@@ -314,6 +314,7 @@ const FIPDeprecationManager = lazy(() => import("./pages/admin/fip/FIPDeprecatio
 const FIPBuilderConsole = lazy(() => import("./pages/admin/fip/FIPBuilderConsole"));
 
 // SAG — Sovereign AI Gateway
+const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
 const AIRuntimeStatus = lazy(() => import("./pages/admin/AIRuntimeStatus"));
 const PersistenceStatus = lazy(() => import("./pages/admin/PersistenceStatus"));
 const DRS01RealityModeOverview = lazy(() => import("./pages/admin/DRS01RealityModeOverview"));
@@ -1050,7 +1051,9 @@ const App = () => (
                        ═══════════════════════════════════════════════════════════════ */}
                     {/* Admin — AI Runtime, DRS, Automation (wrapped in AdminShell) */}
                     <Route element={<AdminShellLayout />}>
-                    <Route path="/admin/ai-runtime" element={<AIRuntimeStatus />} />
+                   <Route path="/admin" element={<AdminDashboard />} />
+                   <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                   <Route path="/admin/ai-runtime" element={<AIRuntimeStatus />} />
                     <Route path="/admin/persistence-status" element={<PersistenceStatus />} />
                     <Route path="/admin/system-health" element={<SystemHealthDashboard />} />
                     <Route path="/admin/brain-core" element={<BrainCoreDashboard />} />
