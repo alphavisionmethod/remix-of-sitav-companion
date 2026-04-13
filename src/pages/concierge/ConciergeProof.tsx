@@ -79,7 +79,8 @@ const ConciergeProof = () => {
         category: p.category,
         linkedItem: p.linkedItem,
       }))} />
-    </>)}
+      </>)}
+    </ConciergePageWrapper>
   );
 };
 
