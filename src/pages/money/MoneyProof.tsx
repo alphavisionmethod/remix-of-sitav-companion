@@ -1,12 +1,11 @@
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
-import { KPITile, SitaTabs, EmptyState, ProofCard } from "@/components/sita/SitaComponents";
+import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
 import { useState, useMemo } from "react";
 import { Shield, CheckCircle, Clock, FileText, DollarSign, Receipt, AlertTriangle, Eye } from "lucide-react";
 import { motion } from "framer-motion";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useMoneyProofItems } from "@/hooks/use-domain-data";
 import { formatDistanceToNow } from "date-fns";
 

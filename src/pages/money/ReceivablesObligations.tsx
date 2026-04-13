@@ -1,9 +1,9 @@
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
-import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
+import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useState, useMemo } from "react";
 import {

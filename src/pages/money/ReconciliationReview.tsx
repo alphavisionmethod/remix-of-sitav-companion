@@ -1,8 +1,8 @@
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
-import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
+import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
 import { useState } from "react";
 import {
   Search, AlertTriangle, HelpCircle, RefreshCw, CheckCircle2, ArrowRight,
