@@ -59,7 +59,6 @@ export function BoardroomAdvisorCouncil({ scope, onSelectAdvisor, compact = fals
     const isSpeaking = adv.id === speakingId;
     const isHovered = hoveredAdvisor === adv.id;
     const isIdle = !isSpeaking && !isHovered;
-    const hasImgError = imgErrors.has(adv.id);
 
     return (
       <motion.button
