@@ -12,9 +12,11 @@ import { useAction } from "@/lib/hooks/useAction";
 import { toast } from "sonner";
 import {
   Search, Plus, Phone, Mail, Clock, User, Filter, Sparkles, CheckCircle, FileText, Calendar,
-  MessageSquare, Archive, Star, ArrowRight, LayoutList, Columns, Target, AlertTriangle, X, Trash2
+  MessageSquare, Archive, Star, ArrowRight, LayoutList, Columns, Target, AlertTriangle, X, Trash2,
+  Upload, Plug
 } from "lucide-react";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
@@ -67,6 +69,7 @@ const timeAgo = (dt: string | null) => {
 type Tab = "all" | "urgent" | "new" | "warm" | "stale" | "qualified";
 
 const LeadsInbox = () => {
+  const navigate = useNavigate();
   const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const queryClient = useQueryClient();
@@ -184,7 +187,7 @@ const LeadsInbox = () => {
       <SitaPageHeader
         title="Leads Inbox"
         subtitle="Capture, qualify, and convert"
-        actions={<div className="flex items-center gap-3"><DataFreshnessBadge {...freshness} /><SitaButton variant="secondary" size="sm" onClick={() => { if (leads.length > 0) crmSync.syncLeads.mutate(leads.map(l => ({ name: l.name, email: l.email || undefined, phone: l.phone || undefined, source: l.source || undefined, status: l.status }))); }} disabled={crmSync.syncLeads.isPending || leads.length === 0}><RefreshCw className={`h-3.5 w-3.5 ${crmSync.syncLeads.isPending ? "animate-spin" : ""}`} /> Sync</SitaButton><SitaButton variant="primary" onClick={() => { resetForm(); setShowAdd(true); }}><Plus className="h-4 w-4" /> Add Lead</SitaButton></div>}
+        actions={<div className="flex items-center gap-3"><DataFreshnessBadge {...freshness} /><SitaButton variant="ghost" size="sm" onClick={() => navigate("/business/integrations")}><Plug className="h-3.5 w-3.5" /> Import</SitaButton><SitaButton variant="secondary" size="sm" onClick={() => { if (leads.length > 0) crmSync.syncLeads.mutate(leads.map(l => ({ name: l.name, email: l.email || undefined, phone: l.phone || undefined, source: l.source || undefined, status: l.status }))); }} disabled={crmSync.syncLeads.isPending || leads.length === 0}><RefreshCw className={`h-3.5 w-3.5 ${crmSync.syncLeads.isPending ? "animate-spin" : ""}`} /> Sync</SitaButton><SitaButton variant="primary" onClick={() => { resetForm(); setShowAdd(true); }}><Plus className="h-4 w-4" /> Add Lead</SitaButton></div>}
       />
 
       {/* Add/Edit Modal */}

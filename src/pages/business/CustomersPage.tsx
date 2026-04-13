@@ -14,7 +14,8 @@ import { useAction } from "@/lib/hooks/useAction";
 import { useNavigate } from "react-router-dom";
 import {
   Users, Search, DollarSign, Heart, AlertTriangle, TrendingUp, Star, Phone, Mail,
-  Building, Clock, CheckCircle, Plus, ArrowRight, Sparkles, FileText, MessageSquare, Receipt, X, Trash2
+  Building, Clock, CheckCircle, Plus, ArrowRight, Sparkles, FileText, MessageSquare, Receipt, X, Trash2,
+  Upload, Plug
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
@@ -150,6 +151,7 @@ const CustomersPage = () => {
           domain="business"
         />
         <div className="flex gap-2">
+          <SitaButton variant="ghost" size="sm" onClick={() => navigate("/business/integrations")}><Plug className="h-3.5 w-3.5" /> Integrations</SitaButton>
           <SitaButton variant="secondary" size="sm" onClick={() => { if (customers.length > 0) crmSync.syncCustomers.mutate(customers.map(c => ({ name: c.name, email: c.email || "unknown@example.com", phone: c.phone || undefined, company: c.company || undefined }))); }} disabled={crmSync.syncCustomers.isPending || customers.length === 0}><RefreshCw className={`h-3.5 w-3.5 ${crmSync.syncCustomers.isPending ? "animate-spin" : ""}`} /> Sync</SitaButton>
           <SitaButton variant="primary" size="sm" onClick={() => setShowAdd(true)}><Plus className="h-3.5 w-3.5" /> Add Customer</SitaButton>
         </div>
