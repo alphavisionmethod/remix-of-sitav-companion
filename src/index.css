@@ -284,6 +284,58 @@
     background: linear-gradient(90deg, hsl(var(--domain-accent, var(--primary)) / 0.3), transparent 80%);
   }
 
+  /* ── Domain Ambient Atmosphere ── */
+  /* Ambient glow behind domain content — per-domain color personality */
+  .domain-ambient-business {
+    background: radial-gradient(ellipse 80% 60% at 20% 10%, hsl(265 55% 58% / 0.06) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 40% at 80% 80%, hsl(285 50% 48% / 0.04) 0%, transparent 60%);
+  }
+  .domain-ambient-finance {
+    background: radial-gradient(ellipse 80% 60% at 20% 10%, hsl(152 55% 48% / 0.05) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 40% at 80% 80%, hsl(165 50% 42% / 0.03) 0%, transparent 60%);
+  }
+  .domain-ambient-concierge {
+    background: radial-gradient(ellipse 80% 60% at 20% 10%, hsl(285 55% 55% / 0.05) 0%, transparent 70%),
+                radial-gradient(ellipse 50% 40% at 80% 80%, hsl(310 50% 48% / 0.03) 0%, transparent 60%);
+  }
+  .domain-ambient-files {
+    background: radial-gradient(ellipse 80% 60% at 20% 10%, hsl(220 15% 55% / 0.04) 0%, transparent 70%);
+  }
+
+  /* Domain edge lighting — subtle top edge glow */
+  .domain-edge-glow {
+    box-shadow: inset 0 1px 0 0 hsl(var(--domain-accent, var(--primary)) / 0.08),
+                inset 0 0 24px hsl(var(--domain-accent, var(--primary)) / 0.03);
+  }
+
+  /* Micro-interaction primitives */
+  .micro-hover-lift {
+    transition: transform var(--domain-motion-speed, 200ms) cubic-bezier(0.25, 0.1, 0.25, 1),
+                box-shadow var(--domain-motion-speed, 200ms) cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+  .micro-hover-lift:hover {
+    transform: translateY(var(--domain-hover-lift, -2px));
+    box-shadow: var(--domain-shadow, 0 4px 12px hsl(0 0% 0% / 0.12)),
+                0 0 0 1px hsl(var(--domain-accent, var(--primary)) / 0.06);
+  }
+  .micro-hover-lift:active {
+    transform: translateY(0) scale(0.98);
+    transition-duration: 80ms;
+  }
+
+  .micro-focus-glow:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 2px hsl(var(--domain-accent, var(--primary)) / 0.3),
+                0 0 12px hsl(var(--domain-accent, var(--primary)) / 0.15);
+  }
+
+  .micro-press {
+    transition: transform 100ms cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+  .micro-press:active {
+    transform: scale(0.96);
+  }
+
   /* Dot indicators */
   .dot-pulse {
     @apply relative;
