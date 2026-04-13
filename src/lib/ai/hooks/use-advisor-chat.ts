@@ -6,6 +6,8 @@
 
 import { useState, useCallback } from "react";
 import { invokeAICapability, type TrustEnrichedResponse } from "../ai-capability-client";
+import { fromTable } from "@/lib/supabase-helpers";
+import { supabase } from "@/integrations/supabase/client";
 import type { AIState } from "../ai-state-types";
 
 interface ChatMessage {
@@ -85,6 +87,22 @@ export function useAdvisorChat(options: UseAdvisorChatOptions = {}) {
     setState(result.status);
     setLastEnvelope(result);
     options.onResponse?.(result);
+
+    // Log workforce invocation (fire-and-forget)
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      if (user) {
+        fromTable("ai_workforce_invocations").insert({
+          user_id: user.id,
+          role_key: "advisor",
+          task_key: capabilityKey,
+          status: "completed",
+          model_used: result.mode ?? "unknown",
+          mode: "standard",
+          budget_posture: "normal",
+          scope_payload: {},
+        }).then(() => {});
+      }
+    });
 
     return result;
   }, [capabilityKey, systemPrompt, messages, options.onResponse]);

@@ -76,3 +76,6 @@ export {
   type AIGatewayResponse,
 } from "./callable";
 
+// Convenience invoke wrapper with workforce tracking
+export { invokeAI, type InvokeAIParams, type InvokeAIResponse } from "./invoke";
+
