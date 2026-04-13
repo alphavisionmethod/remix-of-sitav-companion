@@ -62,10 +62,10 @@ export function AdvisorActionQueue({ actions, onApprove, onReject }: Props) {
               </div>
               {action.status === "proposed" && (
                 <div className="flex gap-1 shrink-0">
-                  <Button size="icon" variant="ghost" className="h-7 w-7 text-emerald-400 hover:text-emerald-300" onClick={() => onApprove(action.id)}>
+                  <Button size="icon" variant="ghost" className="h-7 w-7 text-primary hover:text-primary/80" onClick={() => onApprove(action.id)}>
                     <Check className="h-4 w-4" />
                   </Button>
-                  <Button size="icon" variant="ghost" className="h-7 w-7 text-red-400 hover:text-red-300" onClick={() => onReject(action.id)}>
+                  <Button size="icon" variant="ghost" className="h-7 w-7 text-destructive hover:text-destructive/80" onClick={() => onReject(action.id)}>
                     <X className="h-4 w-4" />
                   </Button>
                 </div>
