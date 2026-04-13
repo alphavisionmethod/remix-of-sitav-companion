@@ -2,16 +2,16 @@ import { motion } from "framer-motion";
 import { LucideIcon, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export type ConciergeDomain = "travel" | "errands" | "admin" | "appointments" | "services" | "generic";
+export type ConciergeDomain = "travel" | "errands" | "admin" | "appointments" | "services" | "files" | "generic";
 
 const DOMAIN_COPY: Record<ConciergeDomain, { title: string; description: string }> = {
   travel: {
     title: "No trips planned yet",
-    description: "When you're ready, we'll help you prepare beautifully.",
+    description: "When you're ready, we'll help you prepare beautifully — packing lists, logistics, household coverage, and all the details you'd rather not forget.",
   },
   errands: {
     title: "Nothing queued",
-    description: "Enjoy the calm — we'll bundle things when they come up.",
+    description: "Enjoy the calm — when errands come up, we'll bundle them by location and priority so you spend less time on the road.",
   },
   admin: {
     title: "All clear",
@@ -19,11 +19,15 @@ const DOMAIN_COPY: Record<ConciergeDomain, { title: string; description: string 
   },
   appointments: {
     title: "No upcoming appointments",
-    description: "Your schedule is open — we'll help you prepare when something comes up.",
+    description: "Your schedule is open. When something comes up, we'll prepare checklists, documents, and logistics so you arrive ready.",
   },
   services: {
-    title: "No coordination needed",
-    description: "Your vendor network is quiet right now.",
+    title: "No service providers yet",
+    description: "Add your trusted vendors and contractors — we'll track service history, costs, and upcoming needs in one place.",
+  },
+  files: {
+    title: "No documents uploaded yet",
+    description: "Store household essentials here — insurance policies, contracts, medical records, and school forms — all linked to the things that need them.",
   },
   generic: {
     title: "Nothing urgent",

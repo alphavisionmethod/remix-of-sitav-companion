@@ -2,7 +2,7 @@ import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton 
 import { KPITile, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { DomainHeader } from "@/components/sita/primitives";
-import { ConciergeAdvisorInsightCard, ServiceFollowUpCard, VendorDetailPanel, ConciergePageWrapper } from "@/components/concierge";
+import { ConciergeAdvisorInsightCard, ServiceFollowUpCard, VendorDetailPanel, ConciergePageWrapper, ConciergeEmptyState } from "@/components/concierge";
 import type { ServiceFollowUp, VendorDetail } from "@/components/concierge";
 import { Wrench, Star, Phone, Clock, DollarSign, MapPin, Shield, Plus, Search, Calendar, FileText, History, CheckCircle, AlertTriangle, ExternalLink, Sparkles } from "lucide-react";
 import { useState } from "react";
@@ -193,6 +193,9 @@ const ServiceProviders = () => {
       </div>
 
       {/* Provider Cards */}
+      {filtered.length === 0 ? (
+        <ConciergeEmptyState domain="services" icon={Wrench} />
+      ) : (
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.map((p) => {
           const expanded = expandedId === p.id;
@@ -305,8 +308,8 @@ const ServiceProviders = () => {
           );
         })}
       </div>
+      )}
 
-      {filtered.length === 0 && <EmptyState icon={Wrench} title="No providers found" description="Try a different search or add a new provider" />}
 
       {/* Service Follow-ups */}
       <ServiceFollowUpCard items={[

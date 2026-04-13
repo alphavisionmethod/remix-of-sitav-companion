@@ -1,7 +1,7 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
-import { PersonalEssentialsPreviewPanel, ConciergePageWrapper } from "@/components/concierge";
+import { PersonalEssentialsPreviewPanel, ConciergePageWrapper, ConciergeEmptyState } from "@/components/concierge";
 import type { EssentialDoc } from "@/components/concierge";
 import { useState } from "react";
 import { FileText, Upload, FolderOpen, Shield, GraduationCap, Stethoscope, Home, Plane, Receipt, Calendar, Search, Eye } from "lucide-react";
@@ -78,6 +78,9 @@ const ConciergeFiles = () => {
         onChange={setView}
       />
 
+      {filtered.length === 0 ? (
+        <ConciergeEmptyState domain="files" icon={FolderOpen} />
+      ) : (
       <div className="space-y-3">
         {filtered.map(file => {
           const Icon = typeIcon(file.type);
@@ -112,6 +115,7 @@ const ConciergeFiles = () => {
           );
         })}
       </div>
+      )}
 
       {/* Essential Documents Preview */}
       <PersonalEssentialsPreviewPanel docs={files.slice(0, 4).map(f => ({
