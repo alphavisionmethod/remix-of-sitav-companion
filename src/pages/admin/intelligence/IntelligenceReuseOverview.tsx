@@ -30,8 +30,7 @@ const IntelligenceReuseOverview = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      {isDemo &&
-}
+      {isDemo && <PageTruthBanner truthState="demo" />}
       <SitaPageHeader
         icon={<RefreshCw className="h-6 w-6" />}
         title="Intelligence Reuse Overview"
