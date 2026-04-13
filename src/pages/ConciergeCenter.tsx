@@ -1,14 +1,12 @@
-import { CenterPageShell, CenterSection } from "@/components/sita/CenterPageShell";
+import { ConciergeAppShell } from "@/components/concierge/ConciergeAppShell";
 import { InAppAdvisorStrip } from "@/components/sita/InAppAdvisorStrip";
 import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
-import { SitaTabs } from "@/components/sita/SitaComponents";
-import { MobileTabSelector } from "@/components/sita/MobileTabSelector";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useExperienceSignature } from "@/hooks/useExperienceSignature";
 import { useOSOrchestration } from "@/hooks/useOSOrchestration";
 import { useRelationshipContexts, useHumanObligations } from "@/hooks/useCAIData";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { AppOpenTransition } from "@/components/sita/shell/AppOpenTransition";
 
 import ConciergeOverview from "./concierge/ConciergeOverview";
 import HouseholdTasks from "./concierge/HouseholdTasks";
@@ -99,8 +97,6 @@ const TAB_GROUPS = [
   },
 ];
 
-const ALL_TABS = TAB_GROUPS.flatMap((g) => g.tabs);
-
 const pages: Record<SubPage, React.ComponentType> = {
   overview: ConciergeOverview,
   upcoming: UpcomingNeeds,
@@ -127,12 +123,10 @@ const ConciergeCenter = () => {
   const { isDemoMode } = useDataMode();
   const location = useLocation();
   const navigate = useNavigate();
-  const isMobile = useIsMobile();
   const signature = useExperienceSignature();
   const os = useOSOrchestration();
   const activePage = subpageFromPath(location.pathname);
 
-  // Wire CAI relationship + obligation data for real persistence
   const { data: caiRelationships } = useRelationshipContexts({ limit: 20 });
   const { data: caiObligations } = useHumanObligations({ limit: 20 });
 
@@ -144,29 +138,12 @@ const ConciergeCenter = () => {
   const PageComponent = pages[activePage];
 
   return (
-    <CenterPageShell domain="concierge">
-      <h1 className="sr-only">Concierge Center</h1>
-      <DemoModeBadge />
-      <CenterSection>
+    <AppOpenTransition>
+      <ConciergeAppShell activePage={activePage} onNavigate={goTo} tabGroups={TAB_GROUPS}>
+        <h1 className="sr-only">Concierge Center</h1>
+        <DemoModeBadge />
         <InAppAdvisorStrip domain="concierge" />
-      </CenterSection>
-      <CenterSection>
-        {isMobile ? (
-          <MobileTabSelector active={activePage} onChange={goTo} tabGroups={TAB_GROUPS} />
-        ) : (
-          <motion.div
-            className="overflow-x-auto -mx-2 px-2"
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.25 }}
-          >
-            <SitaTabs tabs={ALL_TABS} active={activePage} onChange={goTo} />
-          </motion.div>
-        )}
-      </CenterSection>
-
-      <ConciergeDataProvider value={{ relationships: caiRelationships, obligations: caiObligations }}>
-        <CenterSection>
+        <ConciergeDataProvider value={{ relationships: caiRelationships, obligations: caiObligations }}>
           <AnimatePresence mode="wait">
             <motion.div
               key={activePage}
@@ -174,13 +151,14 @@ const ConciergeCenter = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -4 }}
               transition={{ duration: 0.25, ease: "easeOut" }}
+              className="mt-3"
             >
               <PageComponent />
             </motion.div>
           </AnimatePresence>
-        </CenterSection>
-      </ConciergeDataProvider>
-    </CenterPageShell>
+        </ConciergeDataProvider>
+      </ConciergeAppShell>
+    </AppOpenTransition>
   );
 };
 

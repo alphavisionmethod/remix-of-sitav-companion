@@ -1,5 +1,6 @@
 import { QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes, Navigate, Outlet } from "react-router-dom";
+import { AdminRoute } from "@/components/auth/AdminRoute";
 import { getAdminRoutes } from "@/routes/AdminRoutes";
 
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -22,7 +23,8 @@ import { ShellLayout } from "@/components/sita/ShellLayout";
 import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
 import { RouteErrorBoundary } from "@/components/sita/RouteErrorBoundary";
 import { createQueryClient } from "@/lib/query-config";
-import { Suspense, lazy, forwardRef, type ReactNode } from "react";
+import { Suspense, lazy, forwardRef, useState, useEffect, type ReactNode } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import { PlatformInit } from "@/components/sita/PlatformInit";
 import { PublicLayout } from "@/layouts/PublicLayout";
 import { AdminCommandPalette } from "@/components/admin/AdminCommandPalette";
@@ -35,6 +37,21 @@ const AdminCommandPaletteWrapper = forwardRef<HTMLDivElement>((_, ref) => <div r
 AdminCommandPaletteWrapper.displayName = "AdminCommandPaletteWrapper";
 const AdminKeyboardShortcutsWrapper = forwardRef<HTMLDivElement>((_, ref) => <div ref={ref}><AdminKeyboardShortcuts /></div>);
 AdminKeyboardShortcutsWrapper.displayName = "AdminKeyboardShortcutsWrapper";
+
+// Conditional admin tools — only render for admin users
+const ConditionalAdminTools = () => {
+  const { user, isDemo } = useAuth();
+  const [isAdmin, setIsAdmin] = useState(false);
+  useEffect(() => {
+    if (isDemo) { setIsAdmin(true); return; }
+    if (!user) return;
+    (supabase as any).rpc("has_role", { _user_id: user.id, _role: "admin" })
+      .then(({ data }: any) => setIsAdmin(!!data))
+      .catch(() => {});
+  }, [user, isDemo]);
+  if (!isAdmin) return null;
+  return <><AdminCommandPaletteWrapper /><AdminKeyboardShortcutsWrapper /></>;
+};
 const AdminShellLayout = () => <AdminShell><Outlet /></AdminShell>;
 const OwnerShellLayout = () => <OwnerWorkspaceShell><Outlet /></OwnerWorkspaceShell>;
 const RevenueOfficeModeLayout = () => <RevenueOfficeModeProvider><Outlet /></RevenueOfficeModeProvider>;
@@ -866,8 +883,7 @@ const App = () => (
             <Route path="*" element={
               <ProtectedRoute>
                 <ShellLayout>
-                  <AdminCommandPaletteWrapper />
-                  <AdminKeyboardShortcutsWrapper />
+                  <ConditionalAdminTools />
                   <RouteErrorBoundary>
                   <Suspense fallback={<PageLoader />}>
                   <Routes>
@@ -1046,9 +1062,9 @@ const App = () => (
                     {/* ═══════════════════════════════════════════════════════════════
                         TIER 4: ADMIN / BUILDER — Platform governance, /admin/* prefix
                         ~280 routes: AI Engineering, DRS, SAG, Automation, Launch, Security, etc.
-                       ═══════════════════════════════════════════════════════════════ */}
-                    {/* Admin — AI Runtime, DRS, Automation (wrapped in AdminShell) */}
-                    <Route element={<AdminShellLayout />}>
+                     ═══════════════════════════════════════════════════════════════ */}
+                    {/* Admin — AI Runtime, DRS, Automation (wrapped in AdminShell + AdminRoute) */}
+                    <Route element={<AdminRoute><AdminShellLayout /></AdminRoute>}>
                    <Route path="/admin" element={<AdminDashboard />} />
                    <Route path="/admin/dashboard" element={<AdminDashboard />} />
                    <Route path="/admin/ai-runtime" element={<AIRuntimeStatus />} />
@@ -1543,8 +1559,8 @@ const App = () => (
                     {/* Global Search */}
                     <Route path="/search" element={<SearchPage />} />
 
-                    {/* Admin — wrapped in AdminShell */}
-                    <Route element={<AdminShellLayout />}>
+                    {/* Admin — wrapped in AdminShell + AdminRoute */}
+                    <Route element={<AdminRoute><AdminShellLayout /></AdminRoute>}>
                     <Route path="/admin/incidents" element={<IncidentCommandCenter />} />
                     <Route path="/admin/deployment" element={<AdminDeploymentTruthCenter />} />
                     <Route path="/admin/proof-matrix" element={<ProofMatrixExplorer />} />
@@ -1831,7 +1847,7 @@ const App = () => (
                     <Route path="/import-export" element={<ImportExportCenter />} />
 
                     {/* ── Supplementary Admin Routes ── */}
-                    <Route element={<AdminShellLayout />}>
+                    <Route element={<AdminRoute><AdminShellLayout /></AdminRoute>}>
                       {getAdminRoutes()}
                     </Route>
 

@@ -1,12 +1,10 @@
-import { CenterPageShell, CenterSection } from "@/components/sita/CenterPageShell";
+import { MoneyAppShell } from "@/components/money/MoneyAppShell";
 import { InAppAdvisorStrip } from "@/components/sita/InAppAdvisorStrip";
 import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
-import { SitaTabs } from "@/components/sita/SitaComponents";
 import { useNavigate, useLocation, Navigate } from "react-router-dom";
 import { isMoneyOnboardingComplete } from "@/components/sita/money-onboarding";
 import { motion, AnimatePresence } from "framer-motion";
-import { useIsMobile } from "@/hooks/use-mobile";
-import { MobileTabSelector } from "@/components/sita/MobileTabSelector";
+import { AppOpenTransition } from "@/components/sita/shell/AppOpenTransition";
 
 import MoneyOverview from "./money/MoneyOverview";
 import BillsWorkspace from "./money/BillsWorkspace";
@@ -43,7 +41,6 @@ import ReconciliationReview from "./money/ReconciliationReview";
 import FinanceAutomations from "./money/FinanceAutomations";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
 
 type SubPage = "overview" | "spending-pulse" | "bills" | "subscriptions" | "reserves" | "cash-timing" | "receivables" | "investment-office" | "tax" | "approvals" | "boardroom" | "proof" | "files" | "settings" | "net-worth" | "debt-credit" | "budgets" | "transactions" | "household" | "health" | "advisors" | "scenarios" | "stress-radar" | "life-impact" | "modes" | "allocator" | "trust-graph" | "opportunity-cost" | "rituals" | "peace-score" | "boundaries" | "reconciliation" | "automations";
 
@@ -185,14 +182,10 @@ const TAB_GROUPS = [
   },
 ];
 
-const ALL_TABS = TAB_GROUPS.flatMap((g) => g.tabs);
-
-
 const MoneyCenter = () => {
   const { isDemoMode } = useDataMode();
   const location = useLocation();
   const navigate = useNavigate();
-  const isMobile = useIsMobile();
 
   if (!isDemoMode && !isMoneyOnboardingComplete()) {
     return <Navigate to="/money/onboarding" replace />;
@@ -208,30 +201,11 @@ const MoneyCenter = () => {
   const PageComponent = pages[activePage];
 
   return (
-    <CenterPageShell domain="finance">
-      <h1 className="sr-only">Money Center</h1>
-      <DemoModeBadge />
-      <CenterSection>
+    <AppOpenTransition>
+      <MoneyAppShell activePage={activePage} onNavigate={goTo} tabGroups={TAB_GROUPS}>
+        <h1 className="sr-only">Money Center</h1>
+        <DemoModeBadge />
         <InAppAdvisorStrip domain="finance" />
-      </CenterSection>
-
-      <CenterSection>
-        {/* Tab Navigation — mobile dropdown, desktop scrollable tabs */}
-        {isMobile ? (
-          <MobileTabSelector active={activePage} onChange={goTo} tabGroups={TAB_GROUPS} />
-        ) : (
-          <motion.div
-            className="overflow-x-auto -mx-2 px-2"
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.25 }}
-          >
-            <SitaTabs tabs={ALL_TABS} active={activePage} onChange={goTo} />
-          </motion.div>
-        )}
-      </CenterSection>
-
-      <CenterSection>
         <AnimatePresence mode="wait">
           <motion.div
             key={activePage}
@@ -239,12 +213,13 @@ const MoneyCenter = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.25 }}
+            className="mt-3"
           >
             <PageComponent />
           </motion.div>
         </AnimatePresence>
-      </CenterSection>
-    </CenterPageShell>
+      </MoneyAppShell>
+    </AppOpenTransition>
   );
 };
 
