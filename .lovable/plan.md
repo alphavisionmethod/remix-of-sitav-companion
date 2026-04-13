@@ -1,75 +1,57 @@
 
 
-# Advanced Simulation Engine — "Run a Million Futures"
-
-## What Exists Today
-
-- **ScenarioLabPage**: Basic scenario templates with 3 hardcoded outcomes (best/worst/likely)
-- **Monte Carlo in RevenueForecast**: 1,000-iteration revenue simulation with histogram
-- **GovernanceSimulatorService**: Policy-based what-if testing
-- **LifeSimulator**: Life-shock stress testing
-
-None of these deliver the cinematic "run millions of scenarios" experience. They're scattered, small-scale, and not visually immersive.
+# Simulation Engine — More Presets + User-Created Scenarios
 
 ## What We're Building
 
-A dedicated **Simulation Engine** page (`/simulation-engine`) — a cinematic, full-screen command center where users configure any decision, hit "Simulate", and watch millions of scenarios run in real-time with live-updating probability distributions, convergence animations, and outcome intelligence.
+Expand the simulation engine with 10+ built-in scenario presets across all domains, plus a "Create Custom Scenario" builder so users can define their own variables, formulas, and save them for reuse.
 
-### Core Experience
+## Current State
 
-**1. Decision Input Panel** (left sidebar)
-- Natural language decision input: "Should I hire 3 engineers?" / "What if I raise prices 20%?"
-- OR structured parameter sliders: revenue range, cost factors, time horizon, risk tolerance
-- Domain selector: Business, Finance, Investment, Life
-- Variable injection: drag in real data from Digital Twins, portfolio, cash flow
-- Iteration count selector: 10K / 100K / 1M (with estimated run time)
+- 3 hardcoded presets: Hire Engineers, Raise Prices, Enter New Market
+- All in Business/Finance/Investment domains — nothing for "Life"
+- No way for users to add their own scenarios
+- Variables are editable but structure is fixed to the preset
 
-**2. Live Simulation Viewport** (center — the wow)
-- **Particle Storm**: Thousands of animated dots streaming across the screen, each representing a scenario outcome — they settle into a probability distribution curve in real-time
-- **Convergence Animation**: Watch the mean/median/percentiles stabilize as iterations increase — a live-updating histogram that fills in like a waterfall
-- **Heat Map Grid**: 2D grid showing outcome combinations (e.g., revenue × risk) with cells lighting up as scenarios hit them
-- **Running Counter**: Large cinematic ticker showing iterations completed (e.g., "847,293 of 1,000,000") with scenarios/second speed indicator
+## Plan
 
-**3. Results Intelligence Panel** (right sidebar)
-- **Probability Distribution**: Final histogram with P10/P25/P50/P75/P90 markers
-- **Outcome Clusters**: AI-identified clusters of scenarios ("In 34% of futures, you hit $1M+ revenue")
-- **Risk Radar**: Spider chart showing risk dimensions across all scenarios
-- **Sensitivity Analysis**: Which input variables had the most impact on outcomes
-- **Decision Recommendation**: AI-synthesized verdict with confidence score
-- **Tail Risk Alerts**: "In 3% of scenarios, cash reserves hit zero — here's why"
+### Step 1: Add 10+ new presets to `monte-carlo-engine.ts`
 
-**4. Comparison Mode**
-- Run two decisions side-by-side and overlay their distributions
-- "Hire 3 engineers" vs "Hire 1 + outsource" — see which has better risk-adjusted outcomes
-- Animated merge/split of distribution curves
+New presets across all domains:
 
-**5. Simulation History**
-- Every run saved with full parameters and results
-- Replay any past simulation with one click
-- Compare historical runs
+**Business:** Launch New Product, Pivot Business Model, Open Second Location
+**Finance:** Refinance Mortgage, Emergency Fund Strategy, Debt Payoff vs Invest
+**Investment:** Real Estate Purchase, Crypto Allocation, Diversify Portfolio
+**Life:** Career Change, Relocate to New City, Start a Family, Early Retirement
 
-### Technical Approach
+Each with 3-5 variables and a meaningful formula.
 
-- **Monte Carlo Engine**: Pure JS, runs in `requestAnimationFrame` batches (1000 iterations per frame) to keep UI responsive while animating
-- **Canvas Renderer**: HTML5 Canvas for the particle storm and convergence animation — no WebGL needed
-- **Web Worker** (optional enhancement): Offload heavy iterations to a worker thread for 1M+ runs
-- **Framer Motion**: For panel transitions, result reveals, and comparison overlays
-- **AI Integration**: Uses existing `chat-advisor` edge function to generate natural-language decision recommendations from simulation results
+### Step 2: Add Custom Scenario Builder to `SimulationControls.tsx`
+
+A "Create Your Own" button at the bottom of the presets list that opens an inline builder:
+
+- **Name & question** fields
+- **Add Variable** button: user types label, sets min/max/mean, picks distribution
+- **Formula builder**: Simple dropdown combining variables with operations (sum, multiply, subtract) — no code writing needed. E.g., "Variable A × Variable B − Variable C"
+- **Save** button stores custom scenarios in localStorage (and optionally to the database for persistence across devices)
+- Custom scenarios appear alongside built-in presets, tagged with a "Custom" badge
+- Edit/delete actions on custom scenarios
+
+### Step 3: Minor UX improvements
+
+- Search/filter bar above presets when list gets long
+- "Popular" badge on the most-used presets
+- Domain filter now properly shows "Life" presets
 
 ## Files
 
-- **Create**: `src/pages/SimulationEnginePage.tsx` (~500 lines — full page with all panels)
-- **Create**: `src/components/simulation/SimulationCanvas.tsx` (~200 lines — particle storm + convergence canvas)
-- **Create**: `src/components/simulation/SimulationControls.tsx` (~150 lines — input panel with sliders and NLP input)
-- **Create**: `src/components/simulation/SimulationResults.tsx` (~200 lines — results intelligence panel)
-- **Create**: `src/lib/simulation/monte-carlo-engine.ts` (~150 lines — configurable multi-variable Monte Carlo with batched execution)
-- **Edit**: `src/App.tsx` (add `/simulation-engine` route)
+- **Edit**: `src/lib/simulation/monte-carlo-engine.ts` — add 10+ new presets
+- **Edit**: `src/components/simulation/SimulationControls.tsx` — add custom scenario builder UI, search, localStorage save/load
+- **Create**: `src/components/simulation/CustomScenarioBuilder.tsx` (~180 lines — the inline builder form)
 
-## Visual Design
+## Technical Details
 
-- Dark cinematic background with subtle grid lines
-- Primary accent: electric blue particles transitioning to purple/gold based on outcome quality
-- Running counter uses monospace font with digit-flip animation
-- Distribution curve glows and pulses as it stabilizes
-- "Simulation Complete" moment: brief flash + particle burst + results slide in
+- Custom scenarios stored in `localStorage` under key `sita-custom-simulations`
+- Formula builder uses a simple AST: `{ type: "multiply"|"add"|"subtract", operands: [varId, varId] }` compiled to a JS function at runtime
+- No database migration needed — localStorage is sufficient for MVP, can be upgraded to cloud persistence later
 
