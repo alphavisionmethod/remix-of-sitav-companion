@@ -1,57 +1,53 @@
 
 
-# Architectural Upgrade Phase 7: Functional OS Mechanics & Visual Polish
+# Phase 8: True App Isolation & Native Window Shells
 
-## Step 1: Remove Legacy Clutter
+## Problem
+Launching apps currently navigates via React Router, destroying the desktop and showing the global sidebar. Apps must instead open as self-contained windows within the OS compositor, with working close/minimize/maximize controls.
 
-**ShellAccessoryLayer.tsx** — Remove these components entirely (return null or delete the JSX):
-- `<SitaCompanionBar />` (line 89)
-- `<CopilotBar />` (line 92)
-- `<QuickAddFAB />` (line 82)
-- `<DevicePresenceIndicator />` wrapper (lines 98-100)
+## Changes
 
-**ShellLiveLayer.tsx** — Remove:
-- `<EdgePanelsLazy />` (lines 94-97)
+### 1. Create standalone app shell components (3 new files)
 
-**DesktopSurface.tsx** — The center is already clean (no "SITA OS" logo/text div exists in the current code). No change needed here for Step 1.
+**`src/components/sita/apps/finance/FinanceAppShell.tsx`**
+Self-contained Finance OS with internal `useState`-based navigation. Sidebar with modules: Overview, Spending Pulse, Bills & Subs, Approvals. Each module renders a styled placeholder canvas. Uses emerald accent color scheme. No React Router.
 
-## Step 2: Enhance Glassmorphism
+**`src/components/sita/apps/business/BusinessAppShell.tsx`**
+Self-contained Business OS with internal navigation. Modules: CRM, Leads Pipeline, Quotes, Operations. Uses blue accent color scheme. Matches the reference screenshot layout (stat cards, money flow chart, recent activity). No React Router.
 
-Currently there is no `GlassControlCenter` component in `DesktopSurface.tsx` — the desktop uses the draggable widget system with `DesktopWidgetCard` wrappers. The glassmorphism upgrade will be applied to `DesktopWidgetCard.tsx` (the shared wrapper used by all desktop widgets) to give every widget the premium frosted glass treatment:
+**`src/components/sita/apps/concierge/ConciergeAppShell.tsx`**
+Self-contained Concierge with internal navigation. Modules: Overview, Calendar, Tasks, Errands. Uses purple accent color scheme. No React Router.
 
-- Change background to `bg-white/[0.03] backdrop-blur-[40px] border border-white/[0.08] shadow-[0_8px_32px_rgba(0,0,0,0.3)]`
+Each shell follows this structure:
+- Left sidebar (~200px) with module list, active state highlight with accent inset border
+- Top toolbar showing current module name
+- Main content area with placeholder canvas
+- Full height, fills the window body
 
-Also update `ContinuityCard` in `DesktopSurface.tsx` to match.
+### 2. Register apps in the window launcher (`ShellWindowLayer.tsx`)
 
-## Step 3: Make Widgets Freely Draggable
+Add imports for all 3 shells and register them in `APP_REGISTRY`:
+- `"finance"` / `"money"` → FinanceAppShell, 1200px wide
+- `"business"` → BusinessAppShell, 1200px wide  
+- `"concierge"` → ConciergeAppShell, 1200px wide
 
-Widgets are **already freely draggable** via the `DraggableWidget` wrapper using framer-motion `drag`. The current implementation uses absolute positioning with no constraints, which means they can already be dragged anywhere.
+This ensures clicking dock icons spawns windowed apps instead of navigating.
 
-Enhancement: Add a visible grab handle that appears on hover (the subtle pill at top), and add the `whileDrag` scale effect for polish:
+### 3. Prevent dock from routing (`DesktopDock.tsx`)
 
-- Update `DraggableWidget.tsx` to include:
-  - `whileDrag={{ scale: 1.02, zIndex: 50 }}` 
-  - A hover-visible grab handle pill at the top
-  - `cursor-grab` / `active:cursor-grabbing` (already present)
+Update click handlers for business/finance/concierge dock items to call `onLaunchApp` with `e.preventDefault()` and `e.stopPropagation()` instead of `navigate()`. Ensure buttons use `type="button"`.
 
-- Add `desktopRef` constraints in `DesktopSurface.tsx` and pass to `DraggableWidget` so widgets stay within screen bounds.
+### 4. Dock auto-hide behavior (`DesktopDock.tsx`)
 
-## Step 4: Wire App Launchers (Dock & App Grid)
+Add auto-hide mode: dock slides down off-screen after 3s of inactivity, reappears on mouse hover near bottom edge. Store preference in localStorage. Add a small settings toggle in the dock for "Always show" vs "Auto-hide".
 
-The Dock already receives `onLaunchApp` via `ShellLiveLayer`. The missing piece is passing `doLaunchApp` into `DesktopSurface` so widgets and any embedded app grid can launch apps.
+## Files
 
-- **ShellLayout.tsx**: Pass `doLaunchApp` as `onLaunchApp` prop to the desktop route's children (DesktopSurface gets it via page props or context)
-- **DesktopSurface.tsx**: Add `onLaunchApp` prop, add a core apps grid to the Quick Actions widget or as a standalone launcher widget
-- **ShellWindowLayer.tsx**: Add fallback in `doLaunchApp` for unregistered app IDs (business, money, concierge, files, boardroom, settings) that opens a placeholder window with the app name
-
-```text
-Files to modify:
-├── src/components/sita/shell/ShellAccessoryLayer.tsx  — Remove 4 legacy components
-├── src/components/sita/shell/ShellLiveLayer.tsx       — Remove EdgePanels
-├── src/components/sita/shell/desktop/DesktopWidgetCard.tsx — Glassmorphism upgrade
-├── src/components/sita/shell/desktop/DraggableWidget.tsx   — Grab handle + whileDrag polish + constraints
-├── src/components/sita/shell/DesktopSurface.tsx       — Add desktopRef, onLaunchApp prop, ContinuityCard glass
-├── src/components/sita/ShellLayout.tsx                — Pass doLaunchApp to desktop children
-├── src/components/sita/shell/ShellWindowLayer.tsx     — Fallback for unregistered apps
-```
+| File | Action |
+|------|--------|
+| `src/components/sita/apps/finance/FinanceAppShell.tsx` | **New** |
+| `src/components/sita/apps/business/BusinessAppShell.tsx` | **New** |
+| `src/components/sita/apps/concierge/ConciergeAppShell.tsx` | **New** |
+| `src/components/sita/shell/ShellWindowLayer.tsx` | Add 3 app registrations |
+| `src/components/sita/DesktopDock.tsx` | Prevent routing for core apps, add auto-hide |
 
