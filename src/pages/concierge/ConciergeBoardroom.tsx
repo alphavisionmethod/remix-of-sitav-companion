@@ -5,7 +5,7 @@
 import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs } from "@/components/sita/SitaComponents";
 import { SurfaceTrustStrip } from "@/components/sita/SurfaceTrustStrip";
-import { DomainAdvisorCard } from "@/components/sita/domain-shared/DomainAdvisorCard";
+import { DomainAdvisorCard } from "@/components/advisors/DomainAdvisorCard";
 import { ListStagger, ListStaggerItem } from "@/components/sita/motion/AppTransitions";
 import { ConciergePageWrapper } from "@/components/concierge";
 import { useState } from "react";

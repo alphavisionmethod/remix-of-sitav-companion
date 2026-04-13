@@ -26,7 +26,7 @@ import { KPITile, EmptyState } from "@/components/sita/SitaComponents";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
-import { DomainAdvisorCard } from "@/components/sita/domain-shared/DomainAdvisorCard";
+import { DomainAdvisorCard } from "@/components/advisors/DomainAdvisorCard";
 
 const DOMAIN_CONFIG: DomainConfig = {
   id: "trust" as any,

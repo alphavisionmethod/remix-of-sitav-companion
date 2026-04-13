@@ -6,7 +6,7 @@ import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
 import { SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
 import { KPITile, RiskCard, OpportunityCard, SitaTabs } from "@/components/sita/SitaComponents";
 import { SurfaceTrustStrip } from "@/components/sita/SurfaceTrustStrip";
-import { DomainAdvisorCard } from "@/components/sita/domain-shared/DomainAdvisorCard";
+import { DomainAdvisorCard } from "@/components/advisors/DomainAdvisorCard";
 import { ListStagger, ListStaggerItem } from "@/components/sita/motion/AppTransitions";
 import { useState, useMemo } from "react";
 import { BarChart3, CheckCircle, AlertTriangle, Users, TrendingUp, Calendar, FileText, Target, ArrowRight, Clock, Sparkles } from "lucide-react";
