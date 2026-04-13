@@ -1,13 +1,21 @@
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
-import { KPITile, SitaTabs, EmptyState, ProofCard } from "@/components/sita/SitaComponents";
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — Business Proof & Receipts (Migrated)
+// Every action has a verifiable trail
+// ═══════════════════════════════════════════════════════════════
+
+import { SplitWorkspace } from "@/components/sita/surfaces/SplitWorkspace";
+import { HeroCard, QueueCard, ProofCard, StatusCard } from "@/components/sita/cards";
+import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
 import { TrustBadge } from "@/components/sita/TrustBadge";
-import { StateBadge, ExecutionState } from "@/components/sita/StateBadge";
+import { StateBadge, type ExecutionState } from "@/components/sita/StateBadge";
 import { useState } from "react";
-import { Receipt, Shield, CheckCircle, FileText, Clock, Eye, Search } from "lucide-react";
+import { Receipt, Shield, CheckCircle, Clock, Eye, Search } from "lucide-react";
 import { motion } from "framer-motion";
-import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { cn } from "@/lib/utils";
+import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
 
 interface ProofItem {
   id: number; action: string; customer: string; workflow: string; policy: string;
@@ -37,102 +45,107 @@ const BusinessProof = () => {
     : tab === "pending" ? proofItems.filter(p => ["drafted", "completed"].includes(p.state))
     : proofItems.filter(p => p.approvalNeeded);
 
-  return (
-    <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-      <DemoModeBadge />
-      <SitaPageHeader title="Business Proof & Receipts" subtitle="Every action has a verifiable trail" />
+  const tabs = [
+    { key: "all", label: `All (${proofItems.length})` },
+    { key: "verified", label: `Verified (${proofItems.filter(p => p.trust === "verified").length})` },
+    { key: "pending", label: `Pending (${proofItems.filter(p => ["drafted", "completed"].includes(p.state)).length})` },
+    { key: "approvals", label: `Approvals (${proofItems.filter(p => p.approvalNeeded).length})` },
+  ];
 
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <KPITile label="Total Proofs" value={proofItems.length} icon={Receipt} />
-        <KPITile label="Verified" value={proofItems.filter(p => p.trust === "verified").length} icon={CheckCircle} />
-        <KPITile label="Pending Review" value={proofItems.filter(p => p.trust === "review").length} icon={Eye} />
-        <KPITile label="This Week" value={proofItems.filter(p => p.time.includes("h ago") || p.time === "Today" || p.time === "Yesterday").length} icon={Clock} />
+  const listPane = (
+    <div className="p-3 space-y-3">
+      <PageTruthBanner />
+      
+      {/* Summary strip */}
+      <div className="grid grid-cols-4 gap-2">
+        {[
+          { label: "Total", value: proofItems.length, icon: <Receipt className="h-3 w-3" /> },
+          { label: "Verified", value: proofItems.filter(p => p.trust === "verified").length, icon: <CheckCircle className="h-3 w-3" /> },
+          { label: "Pending", value: proofItems.filter(p => p.trust === "review").length, icon: <Eye className="h-3 w-3" /> },
+          { label: "This Week", value: proofItems.filter(p => p.time.includes("h ago") || p.time === "Today" || p.time === "Yesterday").length, icon: <Clock className="h-3 w-3" /> },
+        ].map(kpi => (
+          <StatusCard key={kpi.label} label={kpi.label} status="healthy" icon={kpi.icon} confidence={100} />
+        ))}
       </div>
 
-      <SitaTabs
-        tabs={[
-          { key: "all", label: "All", count: proofItems.length },
-          { key: "verified", label: "Verified", count: proofItems.filter(p => p.trust === "verified").length },
-          { key: "pending", label: "Pending", count: proofItems.filter(p => ["drafted", "completed"].includes(p.state)).length },
-          { key: "approvals", label: "With Approvals", count: proofItems.filter(p => p.approvalNeeded).length },
+      {/* Tabs */}
+      <div className="flex gap-1 overflow-x-auto">
+        {tabs.map(t => (
+          <button key={t.key} onClick={() => setTab(t.key)}
+            className={cn(
+              "px-2.5 py-1 rounded-lg text-[11px] font-medium transition-colors whitespace-nowrap micro-press",
+              tab === t.key ? "bg-[hsl(0_0%_100%/0.08)] text-foreground" : "text-[hsl(0_0%_50%)] hover:text-[hsl(0_0%_70%)]"
+            )}>
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      {/* Search */}
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[hsl(0_0%_40%)]" />
+        <input className="w-full rounded-lg border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_6%)] py-2 pl-9 pr-3 text-[12px] text-foreground placeholder:text-[hsl(0_0%_40%)] focus:border-[hsl(265_55%_58%/0.4)] focus:outline-none transition-colors" placeholder="Search proof records..." />
+      </div>
+
+      {/* Proof list */}
+      {filtered.length === 0 ? (
+        <PremiumEmptyState variant="no-results" icon={Receipt} title="No matching proofs" description="Try adjusting your filter" domain="business" />
+      ) : (
+        <QueueCard
+          title="Proof Records"
+          items={filtered.map(p => ({
+            id: String(p.id),
+            label: p.action,
+            meta: `${p.customer} · ${p.workflow} · ${p.time}`,
+            urgency: p.trust === "degraded" ? "critical" as const : p.trust === "review" ? "high" as const : "normal" as const,
+          }))}
+          maxVisible={20}
+          onItemClick={(id) => setSelectedId(Number(id))}
+        />
+      )}
+    </div>
+  );
+
+  const detailPane = selected ? (
+    <div className="p-4 space-y-4">
+      <ProofCard
+        title={`${selected.customer} — ${selected.workflow}`}
+        status={selected.trust === "verified" ? "verified" : selected.trust === "review" ? "pending" : "failed"}
+        chain={[
+          { label: "Action Triggered", timestamp: selected.time, verified: true },
+          { label: selected.action, verified: selected.trust === "verified" },
+          { label: `Policy: ${selected.policy}`, verified: true },
+          { label: selected.artifact, verified: selected.trust === "verified" },
+          { label: `Verification: ${selected.verificationResult}`, verified: selected.trust === "verified" },
         ]}
-        active={tab}
-        onChange={setTab}
       />
-
-      <div className="grid gap-6 lg:grid-cols-5">
-        <div className="lg:col-span-3 space-y-2">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <input className="w-full rounded-xl border border-border bg-secondary/40 py-2.5 pl-10 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Search proof records..." />
-          </div>
-          {filtered.map((p) => (
-            <SitaCard key={p.id} onClick={() => setSelectedId(p.id)} selected={selectedId === p.id} className="p-4">
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex items-start gap-3 flex-1 min-w-0">
-                  <div className="rounded-lg bg-primary/8 p-2 mt-0.5"><Receipt className="h-4 w-4 text-primary" /></div>
-                  <div className="min-w-0">
-                    <p className="text-sm font-medium text-foreground">{p.action}</p>
-                    <p className="mt-0.5 text-xs text-muted-foreground">{p.customer} · {p.workflow}</p>
-                    <p className="mt-0.5 text-xs text-muted-foreground truncate">{p.artifact}</p>
-                  </div>
-                </div>
-                <div className="flex flex-col items-end gap-1.5 shrink-0">
-                  <StateBadge state={p.state} size="sm" />
-                  <TrustBadge level={p.trust} size="sm" />
-                  <span className="text-[10px] text-muted-foreground">{p.time}</span>
-                </div>
-              </div>
-            </SitaCard>
-          ))}
-        </div>
-
-        <div className="lg:col-span-2 space-y-4">
-          {selected ? (
-            <>
-              <SitaCard hover={false} glow className="p-5">
-                <SitaCardTitle sub={`${selected.customer} · ${selected.workflow}`}>Proof Record</SitaCardTitle>
-                <div className="mt-4 space-y-3">
-                  <div className="flex justify-between text-sm"><span className="text-muted-foreground">Action</span><span className="text-foreground text-right max-w-[60%]">{selected.action}</span></div>
-                  <div className="flex justify-between text-sm"><span className="text-muted-foreground">State</span><StateBadge state={selected.state} size="sm" /></div>
-                  <div className="flex justify-between text-sm"><span className="text-muted-foreground">Trust</span><TrustBadge level={selected.trust} size="sm" /></div>
-                  <div className="flex justify-between text-sm"><span className="text-muted-foreground">Time</span><span className="text-foreground">{selected.time}</span></div>
-                  <div className="flex justify-between text-sm"><span className="text-muted-foreground">Approval</span><span className="text-foreground">{selected.approvalNeeded ? "Required" : "Not required"}</span></div>
-                </div>
-              </SitaCard>
-              <SitaCard hover={false}>
-                <SitaCardTitle>Artifact</SitaCardTitle>
-                <div className="mt-3 rounded-xl bg-secondary/30 p-4">
-                  <p className="text-sm text-foreground">{selected.artifact}</p>
-                </div>
-              </SitaCard>
-              <SitaCard hover={false}>
-                <SitaCardTitle>Policy Applied</SitaCardTitle>
-                <div className="mt-3 rounded-xl bg-secondary/30 p-4">
-                  <p className="text-sm text-foreground">{selected.policy}</p>
-                </div>
-              </SitaCard>
-              <SitaCard hover={false}>
-                <SitaCardTitle>Verification Result</SitaCardTitle>
-                <div className="mt-3 rounded-xl bg-secondary/30 p-4 flex items-start gap-2">
-                  <Shield className="h-4 w-4 text-primary shrink-0 mt-0.5" />
-                  <p className="text-sm text-foreground">{selected.verificationResult}</p>
-                </div>
-              </SitaCard>
-            </>
-          ) : (
-            <EmptyState icon={Receipt} title="Select a proof record" description="Click on any action to see the full proof trail, policy applied, and verification result" />
-          )}
-        </div>
+      
+      <div className="flex items-center gap-2">
+        <StateBadge state={selected.state} size="sm" />
+        <TrustBadge level={selected.trust} size="sm" />
+        {selected.approvalNeeded && (
+          <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[hsl(38_85%_58%/0.12)] text-[hsl(38_85%_58%)]">Approval Required</span>
+        )}
       </div>
-      <LiveAdvisorCard
-        advisor="business"
-        intent="audit_readiness"
-        demoName="Audit Intelligence"
-        demoRole="Compliance Advisor"
-        demoConfidence="High"
-        demoRecommendation="8 proof records verified this week. 1 escalation still pending approval — resolve Green Valley LLC collections proof to maintain 100% audit coverage."
-        demoReasoning="Based on proof coverage analysis, policy compliance checks, and verification status across all workflows."
+    </div>
+  ) : (
+    <PremiumEmptyState variant="no-data" icon={Receipt} title="Select a proof record" description="Click on any action to see the full proof trail, policy applied, and verification result" domain="business" />
+  );
+
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="h-full space-y-4">
+      <SplitWorkspace
+        list={listPane}
+        detail={detailPane}
+        hasSelection={!!selected}
+        defaultSplit={45}
+        className="h-[calc(100vh-200px)] rounded-xl border border-[hsl(0_0%_100%/0.06)] overflow-hidden"
+      />
+      <ModuleAdvisorInsight
+        advisorName="Compliance Advisor"
+        domain="business"
+        insight={`${proofItems.filter(p => p.trust === "verified").length} proof records verified this week. ${proofItems.filter(p => p.trust !== "verified").length > 0 ? `${proofItems.filter(p => p.trust !== "verified").length} item(s) still pending — resolve to maintain 100% audit coverage.` : "100% audit coverage achieved."}`}
+        confidence={92}
       />
     </motion.div>
   );
