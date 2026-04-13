@@ -1,106 +1,65 @@
 
 
-# Integrate Provided Desktop Shell as Foundation
+# Desktop Shell Audit + Wow Upgrades
 
-## Summary
-Take the provided `SitaDesktopShell` monolithic component and decompose it into ~8 clean components, then wire them into `DesktopSurface.tsx` as the new desktop content layer. The existing shell infrastructure (SystemMenuBar, DesktopDock, ShellLiveLayer, WindowCompositor, ambient background) stays untouched — the new code replaces only the center content area of the desktop.
+## Audit Result: Implementation Status
 
-## What Changes
+All 10 components are correctly implemented and wired:
+- **DesktopWidgetCard** — glassmorphic container with accent gradients, radial highlight
+- **DesktopContinuityPanel** — hero card with resume, pending items, trust posture
+- **DesktopClockWidget** — live clock + calendar events
+- **DesktopNotificationsWidget** — 3 notifications with priority badges
+- **DesktopWhatMattersWidget** — per-domain summaries
+- **DesktopQuickActionsWidget** — 4 action buttons wired to real navigation
+- **DesktopSystemWidget** — calm mode + open apps (static data)
+- **DesktopLeftRail** — 6-app vertical switcher
+- **DesktopNotificationCenter** — slide-out drawer
+- **DesktopSurface** — 4-layer composition with dual compositor
 
-### 1. Create Widget Components (`src/components/sita/shell/desktop/`)
+**Issues Found:**
+1. `DesktopSystemWidget` uses hardcoded `openApps` array instead of reading from `useOSWindowContext`
+2. `DesktopLeftRail` has local-only `activeApp` state — not connected to navigation or app launcher
+3. No entrance animations on widget cards (they just appear)
+4. No hover micro-interactions on widget cards (only buttons have hover)
+5. `ContinuitySurface.tsx` exists but is NOT used — it was superseded by `DesktopContinuityPanel` but never deleted
+6. Top bar duplicates the existing `SystemMenuBar` — potential double-bar issue
 
-| File | Purpose |
-|------|---------|
-| `DesktopWidgetCard.tsx` | Reusable glassmorphic card wrapper (the `WidgetCard` from provided code) — 24px radius, `bg-white/8`, `backdrop-blur-2xl`, gradient accent overlay, radial highlight |
-| `DesktopContinuityPanel.tsx` | Hero "Resume Business Collections" card — shows last workspace, pending actions, trust posture summary, "Continue" + "Ask advisors" buttons. Reads from `ContinuityContext` + shell state |
-| `DesktopClockWidget.tsx` | Large time display + calendar events list. Uses existing `useClock` pattern |
-| `DesktopNotificationsWidget.tsx` | Top 3 notifications with priority badges. Wires to existing notification model (`useUnreadCount`) |
-| `DesktopWhatMattersWidget.tsx` | Per-domain summary cards (Business, Finance, Concierge) with status text |
-| `DesktopQuickActionsWidget.tsx` | 2×2 grid of action buttons (Open Boardroom, Review approvals, Search files, System settings). Buttons trigger real navigation/commands |
-| `DesktopSystemWidget.tsx` | Calm mode status + open apps list. Reads from `useDisplayMode` and window manager |
-| `DesktopLeftRail.tsx` | Vertical app switcher rail (visible on `lg+`) — 6 app icons with active state glow. Bridges to existing `onLaunchApp` |
-| `DesktopNotificationCenter.tsx` | Right-side slide-out notification drawer (visible on `xl+`), toggled from top bar bell icon |
+## Wow Upgrade Plan
 
-### 2. Rewrite `DesktopSurface.tsx` (~200 lines)
+### 1. Animated Widget Entrances (staggered fade-up)
+Wrap each widget in `motion.div` with stagger delay so the desktop "breathes in" on load — cards cascade up one by one over 600ms total.
 
-Replace the current minimal clock-only layout with the provided design's full composition:
+### 2. Widget Card Hover Glow Effect
+Add a subtle border-glow and slight lift (`translateY(-2px)`) on hover to every `DesktopWidgetCard`. The glow color matches the card's accent gradient.
 
-```text
-┌──────────────────────────────────────────────┐
-│ SystemMenuBar (existing, untouched)          │
-├────┬─────────────────────────────┬───────────┤
-│Left│  Desktop Content Grid       │ Notif     │
-│Rail│  ┌─────────┬───────┬──────┐ │ Center    │
-│    │  │Continue │Clock  │Notifs│ │ (xl only) │
-│    │  ├─────────┼───────┼──────┤ │           │
-│    │  │Matters  │Quick  │System│ │           │
-│    │  └─────────┴───────┴──────┘ │           │
-├────┴─────────────────────────────┴───────────┤
-│ DesktopDock (existing, untouched)            │
-│ WindowCompositor (existing, untouched)       │
-└──────────────────────────────────────────────┘
-```
+### 3. Live System Widget
+Wire `DesktopSystemWidget` to read actual open windows from `useOSWindowContext()` instead of a hardcoded array.
 
-- Layer 1: `ShellAmbientBackground` (existing) — plus the provided code's dot-grid overlay and edge gradient for extra depth
-- Layer 2: Desktop content (greeting header, widget grid, left rail, notification center) — fades/blurs when windows are open
-- Layer 3: Legacy `FloatingWindow` compositor (existing)
-- Layer 4: OS `WindowCompositor` (existing)
+### 4. Left Rail → Real Navigation
+Connect `DesktopLeftRail` clicks to `useNavigate()` so tapping Business goes to `/business`, Finance to `/finance`, etc. Remove the local `activeApp` state.
 
-The greeting header shows time-aware greeting ("Good morning.") + context summary + "Open Boardroom" / "What Matters Now" buttons.
+### 5. Ambient Pulse on Continuity Panel
+Add a slow breathing glow animation behind the Continuity hero card — a radial gradient that pulses opacity between 0.15 and 0.25 every 4 seconds, creating a "living" feel.
 
-### 3. Wire Real Data
+### 6. Clock Colon Blink
+Make the colon in the large clock blink (opacity toggle every second) — a classic OS touch that signals the system is alive.
 
-- **Continuity panel**: Read `continuity` prop (already passed from `DesktopPage`)
-- **Clock widget**: Real `Date` with 1s interval (already exists)
-- **Notifications widget**: Wire to `useUnreadCount` from existing `NotificationPanel`
-- **Quick actions**: "Open Boardroom" → `navigate('/boardroom')`, "Review approvals" → `navigate('/approvals')`, "Search files" → trigger `onOpenCommand`, "System settings" → `navigate('/settings')`
-- **Left rail**: Call `onLaunchApp` prop (bridges to existing `handleLaunchApp` in ShellLayout)
-- **System widget**: Read `useDisplayMode().isCalm` and `openWindows` from `useOSWindowContext()`
+### 7. Notification Priority Dot Animation
+High-priority notifications get a slow pulse animation on their badge, drawing subtle attention without being aggressive.
 
-### 4. Preserve Premium Feel
-
-All provided visual qualities are preserved:
-- `backdrop-blur-2xl` on all widget cards
-- `shadow-[0_20px_80px_rgba(0,0,0,0.28)]` depth shadows
-- `bg-white/8` semi-transparent materials
-- `border-white/10` subtle borders
-- `rounded-[24px]` large radii
-- Gradient accent overlays with `opacity-60`
-- Radial highlight: `radial-gradient(circle_at_top_left,rgba(255,255,255,0.12),transparent_35%)`
-- Dot-grid texture overlay at `opacity-[0.06]`
-- `tracking-[0.22em]` uppercase labels
-
-### 5. No Existing Shell Breakage
-
-Files NOT modified:
-- `ShellLayout.tsx` — no changes
-- `DesktopDock.tsx` — no changes  
-- `SystemMenuBar.tsx` — no changes
-- `ShellLiveLayer.tsx` — no changes
-- `WindowCompositor.tsx` — no changes
-- `DesktopPage.tsx` — minor: pass `onLaunchApp` if needed
-
-### 6. Minor `DesktopPage.tsx` Update
-
-Pass any additional props `DesktopSurface` needs (e.g. `onLaunchApp` callback if the left rail needs it).
+### 8. Remove Unused ContinuitySurface.tsx
+Delete the superseded file to keep the codebase clean.
 
 ## Files Changed
 
 | File | Action |
 |------|--------|
-| `src/components/sita/shell/desktop/DesktopWidgetCard.tsx` | Create |
-| `src/components/sita/shell/desktop/DesktopContinuityPanel.tsx` | Create |
-| `src/components/sita/shell/desktop/DesktopClockWidget.tsx` | Create |
-| `src/components/sita/shell/desktop/DesktopNotificationsWidget.tsx` | Create |
-| `src/components/sita/shell/desktop/DesktopWhatMattersWidget.tsx` | Create |
-| `src/components/sita/shell/desktop/DesktopQuickActionsWidget.tsx` | Create |
-| `src/components/sita/shell/desktop/DesktopSystemWidget.tsx` | Create |
-| `src/components/sita/shell/desktop/DesktopLeftRail.tsx` | Create |
-| `src/components/sita/shell/desktop/DesktopNotificationCenter.tsx` | Create |
-| `src/components/sita/shell/desktop/index.ts` | Create (barrel export) |
-| `src/components/sita/shell/DesktopSurface.tsx` | Rewrite (~200 lines) |
-| `src/pages/DesktopPage.tsx` | Minor update |
-
-## Build Verification
-`tsc --noEmit` after all changes.
+| `src/components/sita/shell/desktop/DesktopWidgetCard.tsx` | Add hover glow + lift transition |
+| `src/components/sita/shell/desktop/DesktopClockWidget.tsx` | Add colon blink animation |
+| `src/components/sita/shell/desktop/DesktopSystemWidget.tsx` | Wire to useOSWindowContext |
+| `src/components/sita/shell/desktop/DesktopLeftRail.tsx` | Wire to useNavigate |
+| `src/components/sita/shell/desktop/DesktopNotificationsWidget.tsx` | Add pulse on high-priority badge |
+| `src/components/sita/shell/desktop/DesktopContinuityPanel.tsx` | Add ambient pulse glow |
+| `src/components/sita/shell/DesktopSurface.tsx` | Add staggered entrance animations to widget grid |
+| `src/components/sita/shell/ContinuitySurface.tsx` | Delete (superseded) |
 
