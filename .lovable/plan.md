@@ -1,78 +1,84 @@
 
 
-# Investment Office Wow Upgrade — War Room, Live Trading Floor, and Advisor Integration
+# Crypto Wallets, Exchanges & Forex — Platform Connections Expansion
+
+## What We're Building
+
+Expand the Investment Office **Platform Connections** page and the **connector registry** to support major crypto wallets, crypto trading platforms, and forex/international trading platforms — giving users a comprehensive, one-click connection experience.
 
 ## Current State
 
-The Investment Office has 39 pages — the richest domain in SITA OS. However:
-- The **AdvisorBoard** (791 lines) is a standalone implementation with its own view modes, NOT using the new `AdvisorCouncilShell` with Meeting Room, Voice, and Personality features
-- Pages like **Decision Theater**, **Capital Twin**, and **Boardroom** are functional but visually flat — standard cards and grids without the premium animations used elsewhere
-- There is no **live trading floor** visual experience or **War Room** for crisis/opportunity moments
+- `PlatformConnections.tsx` already supports 4 types: `brokerage`, `exchange`, `event-market`, `wallet`
+- Demo connected: Interactive Brokers, Schwab, Coinbase, Polymarket, MetaMask (disconnected)
+- Demo available: Robinhood, Binance, Kraken, Kalshi, Manifold, Fidelity, Ledger Live
+- Missing: Most major crypto wallets, CEXs, DEX aggregators, forex platforms, and international brokers
 
 ## Plan
 
-### Step 1: Upgrade Investment AdvisorBoard to use AdvisorCouncilShell
+### Step 1: Expand platform types and demo data
 
-Replace the 791-line custom implementation with the shared `AdvisorCouncilShell`, giving Investment advisors instant access to: Meeting Room (with voice synthesis), Debate View, Ask Chat, Timeline, Detail Drawer with Personality Editor — all the features Money and Business already have.
+Add new platform types: `dex`, `forex`, `international-broker`. Update `PLATFORM_CONNECTIONS` and `DEMO_AVAILABLE_PLATFORMS` with:
 
-Map the 5 existing investment advisors (`INVESTMENT_ADVISORS`) into `AdvisorConfig` format. Keep the existing Council and Compare views as custom tabs within the shell.
+**Crypto Wallets**: MetaMask (already exists), Phantom, Trust Wallet, Coinbase Wallet, Ledger Live (exists), Trezor Suite, Rainbow, Rabby
 
-### Step 2: Create a Live Trading Floor visualization
+**Crypto Exchanges (CEX)**: Coinbase (exists), Binance (exists), Kraken (exists), Bybit, OKX, KuCoin, Gemini, Crypto.com, Bitfinex
 
-Create `src/pages/investment-office/TradingFloor.tsx` — an immersive real-time market visualization:
-- **Heatmap grid**: Asset classes as colored blocks (green/red intensity by performance), inspired by finviz treemaps
-- **Live ticker ribbon** (reuse existing `TickerRibbon` component)
-- **Sector rotation radar**: Animated radar chart showing capital flow between sectors
-- **Volume pulse**: Subtle background pulse animation synced to simulated market activity
-- **Quick-action hotspots**: Click any asset block to jump to its instrument detail or initiate a trade review
+**DEX / DeFi**: Uniswap, Jupiter (Solana), 1inch, Aave, dYdX
 
-### Step 3: Create an Investment War Room
+**Forex / International**: Interactive Brokers (exists — supports forex), OANDA, Forex.com, IG Markets, Saxo Bank, eToro, Trading 212, IBKR GlobalTrader
 
-Create `src/pages/investment-office/WarRoom.tsx` — activates when high-conviction events occur:
-- **Threat/Opportunity dashboard**: Split-screen with red (risks) and green (opportunities) panels
-- **Advisor rapid-response**: Shows all 5 advisors' instant takes on the event, streaming in real-time via `chat-advisor`
-- **Impact simulation**: Visual showing portfolio impact (before/after bars) of the event
-- **Action panel**: Pre-drafted trades with behavioral firewall status, ready for one-click review
-- **Crisis timeline**: Horizontal timeline of cascading events with severity indicators
-- Premium dark UI with amber/red accent lighting for urgency
+### Step 2: Upgrade PlatformConnections UI
 
-### Step 4: Create a Portfolio Globe / 3D Asset Map
+Redesign the "Available to Connect" section:
+- **Category tabs**: Wallets | Exchanges | DeFi | Forex & International | Brokerages | Event Markets
+- **Search/filter** bar to find platforms quickly
+- **Chain badges** for wallets (Ethereum, Solana, Multi-chain)
+- **Region flags** for forex/international platforms
+- **"Popular" tag** on high-demand platforms
+- Each card shows supported capabilities (e.g., "Read-only", "Trade execution", "DeFi positions")
 
-Create `src/components/investment/PortfolioGlobe.tsx` — a visual "globe" of your portfolio:
-- CSS-based 3D rotating ring of asset cards arranged in a circle
-- Each card shows symbol, allocation %, and a sparkline
-- Size of each card proportional to position size
-- Hover expands the card with full details
-- Center shows total portfolio value with animated count-up
-- Embed this as a hero section in the Investment Boardroom dashboard
+### Step 3: Add connection flow modal
 
-### Step 5: Upgrade Decision Theater with cinematic mode
+Create `ConnectPlatformModal.tsx` — a step-by-step connection wizard:
+1. Select platform → shows required permissions and data access scope
+2. Auth method selection (API key, OAuth, WalletConnect, browser extension)
+3. For wallets: WalletConnect-style QR code placeholder / "Connect Extension" button
+4. For exchanges: API key + secret input with instructions link
+5. For forex: Account credentials with broker-specific guidance
+6. Confirmation screen showing what data will sync
+7. Saves to `connector_configs` table via edge function
 
-Enhance `DecisionTheater.tsx`:
-- **Spotlight animation**: When reviewing a trade, dim everything except the active decision card (theatrical spotlight effect)
-- **Advisor voting panel**: Each advisor casts a vote (approve/reject/abstain) with animated card flip reveal
-- **Countdown timer**: Optional decision deadline with a dramatic countdown ring
-- **Sound design hooks**: Visual "audio wave" indicators (no actual sound unless voice is enabled)
+### Step 4: Update connector registry
 
-### Step 6: Add routes and navigation
+Add all new platforms to `connectors.yaml` under new categories: `crypto-wallet`, `crypto-exchange`, `defi`, `forex`. Add corresponding `VALUE_UNLOCKED` entries per type.
 
-Register `TradingFloor` and `WarRoom` in the router. Add navigation entries in the Investment Office sidebar/menu.
+### Step 5: Add wallet-specific features to the connected view
+
+For connected wallets, show:
+- **Chain breakdown**: ETH, SOL, BNB balances per chain
+- **Token list**: Top holdings with USD values
+- **DeFi positions**: Staked/LP positions summary
+- **NFT count** (optional badge)
+
+For connected forex platforms:
+- **Open positions**: Currency pairs with P&L
+- **Account leverage** and margin status
 
 ## Files
 
-- **Edit**: `src/pages/investment-office/AdvisorBoard.tsx` (replace with AdvisorCouncilShell)
-- **Create**: `src/pages/investment-office/TradingFloor.tsx` (~250 lines)
-- **Create**: `src/pages/investment-office/WarRoom.tsx` (~300 lines)
-- **Create**: `src/components/investment/PortfolioGlobe.tsx` (~150 lines)
-- **Edit**: `src/pages/investment-office/DecisionTheater.tsx` (cinematic upgrades)
-- **Edit**: `src/pages/investment-office/InvestmentBoardroom.tsx` (add PortfolioGlobe hero)
-- **Edit**: Router config (add new routes)
+- **Edit**: `src/lib/investment-office/mock-data.ts` (expand PLATFORM_CONNECTIONS, add types)
+- **Edit**: `src/lib/demo-data/investment.tsx` (expand DEMO_AVAILABLE_PLATFORMS with all new platforms)
+- **Edit**: `src/pages/investment-office/PlatformConnections.tsx` (category tabs, search, enhanced cards)
+- **Create**: `src/components/investment/ConnectPlatformModal.tsx` (~200 lines — connection wizard)
+- **Edit**: `src/components/sita/money-onboarding/types.ts` (add `crypto_wallet`, `exchange`, `forex` to ConnectedAccountStub types)
+- **Edit**: `src/components/sita/money-onboarding/ConnectAccountsStep.tsx` (add crypto/forex tiles)
+- **Edit**: `docs/architecture/registry/connectors.yaml` (new categories)
 
 ## Technical Details
 
-- Investment advisors mapped to `AdvisorConfig`: Macro Strategist, Risk Sentinel, Thesis Analyst, Behavioral Coach, Execution Specialist
-- Trading Floor heatmap uses CSS Grid with `background-color` interpolated from performance data
-- Portfolio Globe uses CSS `transform: rotateY()` with `perspective` for 3D ring, animated via Framer Motion
-- War Room streams advisor responses via staggered `chat-advisor` calls (same pattern as Meeting Room)
-- Decision Theater spotlight uses `box-shadow` with large spread + dark overlay
+- New `PlatformType` union: `"brokerage" | "exchange" | "event-market" | "wallet" | "dex" | "forex" | "international-broker"`
+- Category tabs use a simple state toggle filtering `DEMO_AVAILABLE_PLATFORMS` by type
+- Connection modal stores config via upsert to `connector_configs` (existing table pattern)
+- Wallet connection uses placeholder UI for WalletConnect/extension detection (actual Web3 integration is future work — this builds the UX flow)
+- All new platforms get demo data entries so the UI is rich immediately
 
