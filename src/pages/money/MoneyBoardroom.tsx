@@ -5,6 +5,7 @@ import { SitaTabs } from "@/components/sita/SitaComponents";
 import { SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
 import { TrustBadge } from "@/components/sita/badges";
 import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
+import { DomainAdvisorBoard } from "@/components/sita/domain-shared/DomainAdvisorBoard";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { BarChart3, Sun, AlertTriangle, CheckCircle, Clock, PiggyBank, CreditCard, DollarSign, Shield, TrendingUp, Eye, ArrowDownLeft, Repeat, Sparkles } from "lucide-react";
@@ -129,6 +130,8 @@ const MoneyBoardroom = () => {
             { label: "Reserve goals verified", verified: reserves.length > 0 },
           ]}
         />
+
+        <DomainAdvisorBoard domain="finance" />
 
         <AdvisorCard
           advisorName="Finance Strategist"

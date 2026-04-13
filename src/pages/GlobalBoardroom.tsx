@@ -44,7 +44,7 @@ const GlobalBoardroom = () => {
   ].filter(Boolean) as Array<{ id: string; label: string; urgency: "critical" | "high" | "normal" | "low" }>;
 
   return (
-    <BoardroomCinematic domain="boardroom">
+    <BoardroomCinematic domain="business">
       <motion.div className="mx-auto max-w-6xl space-y-6 p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         <PageTruthBanner truthState={isDemoMode ? "demo" : "live"} />
 

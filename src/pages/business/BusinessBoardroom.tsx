@@ -4,6 +4,7 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { BoardroomCinematic } from "@/components/sita/motion/AppTransitions";
 import { SitaTabs } from "@/components/sita/SitaComponents";
 import { AdvisorCouncilShell, type AdvisorConfig } from "@/components/advisors/AdvisorCouncilShell";
+import { DomainAdvisorBoard } from "@/components/sita/domain-shared/DomainAdvisorBoard";
 import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
 import { cn } from "@/lib/utils";
 import { useState, useMemo } from "react";
@@ -77,7 +78,10 @@ const BusinessBoardroom = () => {
         />
 
         {mode === "council" ? (
-          <AdvisorCouncilShell advisors={businessAdvisors} domainLabel="Business" />
+          <div className="space-y-6">
+            <AdvisorCouncilShell advisors={businessAdvisors} domainLabel="Business" />
+            <DomainAdvisorBoard domain="business" />
+          </div>
         ) : (
           <>
             <HeroCard
