@@ -47,7 +47,7 @@ import { DevToolsWindow } from "./shell/windows/DevToolsWindow";
 import { ExtensionManagerWindow } from "./shell/windows/ExtensionManagerWindow";
 import { SyscallDashboardWindow } from "./shell/windows/SyscallDashboardWindow";
 import { KernelDashboardWindow } from "./shell/windows/KernelDashboardWindow";
-import { NovaSDKProvider } from "@/contexts/NovaSDKContext";
+// NovaSDKProvider moved to RuntimeProvider (contexts/RuntimeProvider.tsx)
 import { lifecycleManager } from "@/lib/nova-sdk/runtime/lifecycle";
 import { ProcessTable } from "@/lib/nova-sdk/kernel/process-manager";
 import { Compositor } from "@/lib/nova-sdk/kernel/compositor";
@@ -465,7 +465,6 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
   const isDesktopRoute = location.pathname === "/" || location.pathname === "/home" || location.pathname === "/desktop";
 
   return (
-    <NovaSDKProvider>
     <WindowManagerContext.Provider value={wm}>
     <SidebarProvider>
       {/* WCAG: Skip to content link */}
@@ -736,6 +735,5 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
       <MobileBottomNav />
     </SidebarProvider>
     </WindowManagerContext.Provider>
-    </NovaSDKProvider>
   );
 };
