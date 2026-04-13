@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Landmark, CreditCard, Building2, Users, FileSpreadsheet, Link2, ShieldCheck, Activity } from "lucide-react";
+import { Landmark, CreditCard, Building2, Users, FileSpreadsheet, Link2, ShieldCheck, Activity, Wallet, Globe, Coins } from "lucide-react";
 import { SetupStageHeader } from "@/components/sita/setup/SetupStageHeader";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { cn } from "@/lib/utils";
@@ -14,6 +14,10 @@ const ACCOUNT_TYPES: { type: ConnectedAccountStub["type"]; icon: typeof Landmark
   { type: "csv", icon: FileSpreadsheet, label: "CSV / Manual Import", desc: "Upload transaction files" },
   { type: "accounting", icon: Link2, label: "Accounting / Payment", desc: "QuickBooks, Stripe, PayPal…" },
   { type: "credit_monitor", icon: Activity, label: "Credit Monitoring", desc: "Score tracking sources" },
+  { type: "crypto_wallet", icon: Wallet, label: "Crypto Wallets", desc: "MetaMask, Phantom, Ledger…" },
+  { type: "crypto_exchange", icon: Coins, label: "Crypto Exchanges", desc: "Coinbase, Binance, Kraken…" },
+  { type: "defi", icon: Link2, label: "DeFi Protocols", desc: "Uniswap, Aave, dYdX…" },
+  { type: "forex", icon: Globe, label: "Forex / Intl Trading", desc: "OANDA, IG, eToro…" },
 ];
 
 interface Props {

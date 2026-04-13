@@ -26,7 +26,7 @@ export type OperatingMode =
   | "launch";
 
 export interface ConnectedAccountStub {
-  type: "bank" | "card" | "loan" | "business" | "household" | "csv" | "accounting" | "credit_monitor";
+  type: "bank" | "card" | "loan" | "business" | "household" | "csv" | "accounting" | "credit_monitor" | "crypto_wallet" | "crypto_exchange" | "defi" | "forex";
   label: string;
   connected: boolean;
 }
