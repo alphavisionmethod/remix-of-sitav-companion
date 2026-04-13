@@ -5,9 +5,8 @@ import { SitaTabs } from "@/components/sita/SitaComponents";
 import { useNavigate, useLocation, Navigate } from "react-router-dom";
 import { isMoneyOnboardingComplete } from "@/components/sita/money-onboarding";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { ChevronDown } from "lucide-react";
+import { MobileTabSelector } from "@/components/sita/MobileTabSelector";
 
 import MoneyOverview from "./money/MoneyOverview";
 import BillsWorkspace from "./money/BillsWorkspace";
@@ -188,56 +187,6 @@ const TAB_GROUPS = [
 
 const ALL_TABS = TAB_GROUPS.flatMap((g) => g.tabs);
 
-/* ─── Mobile Tab Selector (grouped dropdown) ─── */
-const MobileTabSelector = ({
-  active,
-  onChange,
-}: {
-  active: SubPage;
-  onChange: (key: string) => void;
-}) => {
-  const [open, setOpen] = useState(false);
-  const activeLabel = ALL_TABS.find((t) => t.key === active)?.label ?? "Overview";
-
-  return (
-    <div className="relative">
-      <button
-        onClick={() => setOpen(!open)}
-        className="flex w-full items-center justify-between gap-2 rounded-xl border border-border bg-card px-4 py-3 text-sm font-medium text-foreground touch-manipulation"
-      >
-        <span>{activeLabel}</span>
-        <ChevronDown className={`h-4 w-4 text-muted-foreground transition-transform ${open ? "rotate-180" : ""}`} />
-      </button>
-      {open && (
-        <>
-          <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
-          <div className="absolute left-0 right-0 top-full z-50 mt-1 max-h-[70vh] overflow-y-auto rounded-xl border border-border bg-card shadow-lg">
-            {TAB_GROUPS.map((group) => (
-              <div key={group.label}>
-                <div className="sticky top-0 bg-muted/80 backdrop-blur-sm px-4 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
-                  {group.label}
-                </div>
-                {group.tabs.map((t) => (
-                  <button
-                    key={t.key}
-                    onClick={() => { onChange(t.key); setOpen(false); }}
-                    className={`w-full px-4 py-3 text-left text-sm transition-colors touch-manipulation ${
-                      active === t.key
-                        ? "bg-primary/10 text-primary font-medium"
-                        : "text-foreground hover:bg-muted/50"
-                    }`}
-                  >
-                    {t.label}
-                  </button>
-                ))}
-              </div>
-            ))}
-          </div>
-        </>
-      )}
-    </div>
-  );
-};
 
 const MoneyCenter = () => {
   const { isDemoMode } = useDataMode();
@@ -269,7 +218,7 @@ const MoneyCenter = () => {
       <CenterSection>
         {/* Tab Navigation — mobile dropdown, desktop scrollable tabs */}
         {isMobile ? (
-          <MobileTabSelector active={activePage} onChange={goTo} />
+          <MobileTabSelector active={activePage} onChange={goTo} tabGroups={TAB_GROUPS} />
         ) : (
           <motion.div
             className="overflow-x-auto -mx-2 px-2"
