@@ -1,3 +1,4 @@
+import REXSubNav from "@/components/admin/REXSubNav";
 import { useQuery } from "@tanstack/react-query";
 import { fetchOutcomeVerifications } from "@/lib/core-services/recommendation-execution/recommendation-loop-service";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -28,6 +29,7 @@ export default function REX05OutcomeVerification() {
         <h1 className="text-2xl font-bold text-foreground">REX05 — Outcome Verification</h1>
         <p className="text-muted-foreground">Post-execution truth: expected vs actual improvement, journey delta, score adjustments.</p>
       </div>
+      <REXSubNav />
 
       <div className="grid grid-cols-3 gap-4">
         <Card className="bg-card border-border">
