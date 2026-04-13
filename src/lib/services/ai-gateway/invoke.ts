@@ -43,7 +43,7 @@ export async function invokeAI(params: InvokeAIParams): Promise<InvokeAIResponse
     },
   });
 
-  if (error) throw new Error((error as Error)?.message ?? String(error) || "AI Gateway error");
+  if (error) throw new Error((error as Error)?.message ?? (String(error) || "AI Gateway error"));
 
   const result = data as InvokeAIResponse;
   const durationMs = Date.now() - startMs;
