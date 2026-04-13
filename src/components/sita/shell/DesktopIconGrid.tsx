@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { ICON_GRADIENTS } from "@/lib/design-system/nova-os";
 import {
@@ -15,8 +16,9 @@ interface DesktopIcon {
   id: string;
   label: string;
   icon: React.ElementType;
-  previewIcon?: React.ElementType; // Smart preview alternative
+  previewIcon?: React.ElementType;
   gradient: string;
+  route?: string; // If set, navigate instead of launching app
 }
 
 const DESKTOP_ICONS: DesktopIcon[] = [
