@@ -1,100 +1,109 @@
 
 
-# SITA OS — Remaining Gaps & Next Phase Implementation
+# Focus Dock + Intelligent Access Layer — Full Implementation
 
-## What's Done
+## Current State
 
-| Area | Status |
+The existing `DesktopDock.tsx` (338 lines) renders all `pinnedToDock` apps in a flat row with Gaussian magnification, bounce launch, badge counts, context menu, and auto-hide. It uses `AppPlatformContext` for the app list and `useAppBadges` for badge data. There's an `useAppSurfacing` hook that tracks launch frequency but is **not connected** to the dock. No app launcher panel exists. No smart suggestions, no app stacks, no recent flow strip, no context-aware adaptation.
+
+## What We're Building
+
+### 1. Intelligent Focus Dock (rewrite `DesktopDock.tsx`)
+
+**Structure**: `[ Core Pinned ] | [ Active/Running ] | [ Smart Suggestions ] | [ + ]`
+
+- **Core Pinned**: User-pinned apps (max 5), always visible
+- **Active Apps**: Currently running windows from `windowManager`, auto-added/removed
+- **Smart Suggestions**: 2-3 apps from `useAppSurfacing` based on launch frequency + time-of-day context, with a subtle purple accent to distinguish
+- **+ Button**: Opens the App Launcher overlay
+- **Glowing separators** between each section
+- **Max 12 items** enforced — smart suggestions shrink to fit
+
+**Magnetic interaction upgrade**: Icons respond to cursor proximity with velocity-reactive Gaussian magnification (already exists but will be refined with stronger parameters and smooth origin transforms)
+
+### 2. App Launcher Panel (`src/components/sita/shell/AppLauncherPanel.tsx`)
+
+A centered floating glass panel (Spotlight + Launchpad hybrid):
+
+```text
+┌─────────────────────────────────────────────┐
+│  🔍 Search apps, files, actions...          │
+├─────────────────────────────────────────────┤
+│  🧠 SUGGESTIONS                            │
+│  "Continue where you left off"              │
+│  [Recent App 1] [Recent App 2] [Recent App 3]│
+├─────────────────────────────────────────────┤
+│  📂 APPS (categorized grid)                │
+│  [Browser] [Notes] [Terminal] [Calendar]    │
+│  [Files]   [Mail]  [Music]   [Calculator]  │
+├─────────────────────────────────────────────┤
+│  ⚙️ SYSTEM ACTIONS                          │
+│  Settings · Lock · Dark Mode · Sleep        │
+└─────────────────────────────────────────────┘
+```
+
+- **Open**: Click `+` on dock or `Cmd+Space` shortcut
+- **Animation**: Background blur increases, panel scales from 0.96→1 with 150ms spring
+- **Search**: Instant fuzzy filter across all apps + system actions
+- **AI Suggestions**: Top 3 from `useAppSurfacing` + time-of-day context
+- **Categories**: Auto-grouped from `AppCategory` type
+- **Keyboard**: Arrow keys navigate, Enter launches, Escape closes
+
+### 3. Recent Flow Strip (`src/components/sita/shell/RecentFlowStrip.tsx`)
+
+Subtle strip above the dock showing last 4 app transitions as a workflow chain:
+
+```text
+         Chrome → Docs → Notes → Terminal
+```
+
+- Tracks last 8 app launches via `useAppSurfacing`
+- Shows as small pill icons connected by thin arrows
+- Fades in on hover near dock area, auto-hides after 3s idle
+- Click any pill to jump back to that app
+
+### 4. Context-Aware Dock Adaptation
+
+New hook `src/hooks/useDockContext.ts`:
+
+- Detects current "mode" from route + recent activity:
+  - `/business/*` → Business mode (surfaces business-related apps)
+  - `/money/*` → Finance mode
+  - `/concierge/*` → Concierge mode
+  - Default → General mode
+- Feeds into Smart Suggestions section of dock
+- Uses `useAppSurfacing` frequency data weighted by current context
+
+### 5. App Stacks (in App Launcher)
+
+In the launcher grid, apps with the same category get visual grouping with expandable stack interaction — click a stack header to expand/collapse that category with smooth height animation.
+
+## Files
+
+### Create (3 files)
+| File | Lines | Purpose |
+|------|-------|---------|
+| `src/components/sita/shell/AppLauncherPanel.tsx` | ~280 | Spotlight-hybrid launcher with search, suggestions, categories, keyboard nav |
+| `src/components/sita/shell/RecentFlowStrip.tsx` | ~100 | Workflow chain strip above dock |
+| `src/hooks/useDockContext.ts` | ~60 | Context-aware mode detection + suggestion weighting |
+
+### Rewrite (1 file)
+| File | Lines | Purpose |
+|------|-------|---------|
+| `src/components/sita/DesktopDock.tsx` | ~450 | Focus Dock with sections (pinned/active/smart/+), launcher trigger, flow strip integration |
+
+### Edit (2 files)
+| File | Change |
 |------|--------|
-| DomainAppShell (Business, Finance, Concierge) | Done — unified shell with toolbar, icon sidebar, accent system, atmosphere tokens |
-| Overview Home Pages (3 domains) | Done — Operating Room, Financial Calm, Invisible Support |
-| ModuleWorkspace list→detail→action | Done — 5 modules upgraded (Customers, Invoices, LeadRecovery, SpendingPulse, LifeAdmin) |
-| DomainAdvisorCard | Done — domain-aware, contextual |
-| GlobalBoardroom | Done — synthesis page |
-| DomainCommandPalette | Done — Cmd+K with nav commands |
-| Old patterns removed | Done — AppWelcomeHeader/InAppAdvisorStrip eliminated from 3 pages |
+| `src/components/sita/ShellLayout.tsx` | Add `Cmd+Space` listener for launcher, pass launcher state to dock |
+| `src/hooks/useAppSurfacing.ts` | Add `getRecentFlow()` method returning last N launches in order, add `getContextualSuggestions(context)` method |
 
-## What's Still Missing (mapped to original prompt Parts)
+## Key Design Decisions
 
-### 1. Files & Trust/Proof Are Not App-in-OS (Parts 3, 11)
-`FilesCenter` and `TrustCenter` still use the old flat tab layout — no DomainAppShell, no icon sidebar, no atmosphere tokens. The prompt explicitly requires Files and Trust/Proof to feel like independent software products.
-
-### 2. Domain-Specific Boardrooms Are Shallow (Part 9)
-`BusinessBoardroom` exists but still uses old `LiveAdvisorCard` and generic layout. No Finance Boardroom or Concierge Boardroom as dedicated review environments. The prompt demands rich, synthesized boardrooms per domain.
-
-### 3. Remaining ~30+ Module Pages Not Upgraded (Part 12)
-Only 5 modules use ModuleWorkspace. Pages like CommunicationsCenter, Operations, Support, Quotes/Proposals, Bills, Subscriptions, Travel, Errands, Events, etc. are still flat dashboard pages.
-
-### 4. No App-Launch Transitions or WOW Moments (Part 13)
-No app-open animations, no skeleton→content transitions, no stagger animations on lists, no card hover elevation system. The prompt demands premium motion at every level.
-
-### 5. Module-Specific Commands Missing (Part 14)
-DomainCommandPalette only has navigation commands. No contextual commands like "show overdue invoices" or "leads aging > 7 days."
-
-### 6. Global Advisor Council Missing (Part 8.1)
-No OS-level advisor overlay that synthesizes across all domains. Only per-domain advisors exist.
-
----
-
-## Next Phase: Files/Trust Upgrade + Boardroom Depth + WOW Layer
-
-### A. Upgrade Files & Trust to DomainAppShell (6 files)
-
-**FilesCenter.tsx** — Rewrite to use DomainAppShell with:
-- Accent: `slate → zinc` (quiet, precise)
-- Icon sidebar with groups: Browse (Overview, All Files, Search), Intelligence (Processing, Memory, Review), Security (Sensitive, Settings)
-- Files-specific toolbar with search and view toggles
-
-**TrustCenter.tsx** — Rewrite to use DomainAppShell with:
-- Accent: `amber → orange` (serious, inspectable)
-- Icon sidebar with groups: Overview, Sessions, Devices, Permissions, Proof Log, Audit Trail, Settings
-- Trust-specific status bar showing trust score
-
-### B. Upgrade 3 Domain Boardrooms (3 files)
-
-**BusinessBoardroom.tsx** — Rewrite with ModuleWorkspace pattern:
-- Replace `LiveAdvisorCard` with `DomainAdvisorCard`
-- Add revenue pressure, lead recovery, customer health sections with real data synthesis
-- Add "What Changed This Week" feed
-- Add prepared next moves queue
-
-**Create `src/pages/money/FinanceBoardroom.tsx`**:
-- Obligations due, reserve confidence, approvals waiting, unusual spending, receivables pressure
-- Finance-specific advisor council
-- Calm, confidence-oriented tone
-
-**Create `src/pages/concierge/ConciergeBoardroom.tsx`**:
-- Upcoming obligations, logistics pressure, travel/admin prep, service coordination
-- Softer tone, burden reduction focus
-
-### C. WOW Motion Layer (2 files)
-
-**Create `src/components/sita/motion/AppTransitions.tsx`**:
-- `AppLaunchTransition` — scale-up fade when entering a domain app
-- `ModuleTransition` — slide-fade between modules
-- `ListStagger` — staggered entry for list items
-- `CardHoverElevation` — lift + shadow on hover
-- `SkeletonReveal` — skeleton→content crossfade
-
-**Edit `DomainAppShell.tsx`** — Wrap content area in `AppLaunchTransition`
-
-### D. Module-Specific Commands (1 file edit)
-
-**Edit `DomainAppShell.tsx`** — Accept `moduleCommands` prop from each page, merge into command palette. Add default contextual commands per domain.
-
----
-
-## File Summary
-
-| Action | File | Lines |
-|--------|------|-------|
-| Rewrite | `src/pages/FilesCenter.tsx` | ~120 |
-| Rewrite | `src/pages/TrustCenter.tsx` | ~180 |
-| Rewrite | `src/pages/business/BusinessBoardroom.tsx` | ~200 |
-| Create | `src/pages/money/FinanceBoardroom.tsx` | ~180 |
-| Create | `src/pages/concierge/ConciergeBoardroom.tsx` | ~160 |
-| Create | `src/components/sita/motion/AppTransitions.tsx` | ~120 |
-| Edit | `src/components/sita/shell/DomainAppShell.tsx` | Add launch transition + moduleCommands prop |
-| Edit | `src/pages/MoneyCenter.tsx` | Add Finance Boardroom to nav |
-| Edit | `src/pages/ConciergeCenter.tsx` | Add Concierge Boardroom to nav |
+- **12-item cap** is hard — core(5) + active(variable) + suggestions(fills remaining to 12) + launcher button
+- **Smart suggestions** have a subtle pulsing dot indicator to distinguish from pinned apps
+- **Launcher** uses the same glass material as the dock but larger (80% viewport width, max 640px)
+- **All animations** use framer-motion springs matching existing dock physics (stiffness 200-300, damping 18-22)
+- **Sound**: `SoundEngine.click()` on launch, subtle ambient sound on launcher open/close
+- **Accessibility**: Full keyboard navigation, ARIA labels, focus trapping in launcher
 
