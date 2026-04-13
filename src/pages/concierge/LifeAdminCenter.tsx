@@ -1,15 +1,16 @@
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { GlassCard } from "@/components/sita/PremiumPageComponents";
-import { SitaPageHeader } from "@/components/sita/SitaCard";
+import { ModuleWorkspace } from "@/components/sita/domain-shared/ModuleWorkspace";
+import { DomainAdvisorCard } from "@/components/advisors/DomainAdvisorCard";
+import { LifeAdminDetailPane } from "@/components/concierge/LifeAdminDetailPane";
 import { SitaTabs } from "@/components/sita/SitaComponents";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { LifeAdminQueueCard, ConciergeAdvisorInsightCard, ConciergePageWrapper, ConciergeEmptyState } from "@/components/concierge";
-import type { AdminQueueItem } from "@/components/concierge";
+import { LifeAdminQueueCard } from "@/components/concierge";
 import {
-  FileText, Calendar, Wrench, RefreshCw, Clock, AlertCircle, CheckCircle,
-  Shield, Phone, Mail, ArrowRight, Timer, Zap, Package
+  FileText, Calendar, Wrench, RefreshCw, Clock, CheckCircle,
+  Shield, Phone, Timer, Zap, Package, ClipboardList
 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 type AdminTab = "recurring" | "service" | "forms" | "upcoming" | "aging" | "bundles";
 
@@ -62,11 +63,11 @@ const DEMO_BUNDLES: AdminItem[] = [
 
 const TAB_DATA: Record<AdminTab, { items: AdminItem[]; label: string; icon: typeof FileText }> = {
   recurring: { items: DEMO_RECURRING, label: "Recurring", icon: RefreshCw },
-  service: { items: DEMO_SERVICE, label: "Service Follow-ups", icon: Phone },
-  forms: { items: DEMO_FORMS, label: "Forms & Docs", icon: FileText },
-  upcoming: { items: DEMO_UPCOMING, label: "Upcoming Linked", icon: Calendar },
-  aging: { items: DEMO_AGING, label: "Aging Items", icon: Timer },
-  bundles: { items: DEMO_BUNDLES, label: "One Sitting", icon: Package },
+  service: { items: DEMO_SERVICE, label: "Follow-ups", icon: Phone },
+  forms: { items: DEMO_FORMS, label: "Forms", icon: FileText },
+  upcoming: { items: DEMO_UPCOMING, label: "Upcoming", icon: Calendar },
+  aging: { items: DEMO_AGING, label: "Aging", icon: Timer },
+  bundles: { items: DEMO_BUNDLES, label: "Bundles", icon: Package },
 };
 
 const urgencyDot = { high: "bg-destructive", medium: "bg-amber-500", low: "bg-chart-2" };
@@ -75,107 +76,100 @@ const categoryIcon: Record<string, typeof FileText> = {
   Landscaping: Wrench, "Pet Care": Wrench, School: FileText, Health: FileText, Tax: FileText,
 };
 
-const AdminCard = ({ item }: { item: AdminItem }) => {
-  const Icon = categoryIcon[item.category] || FileText;
-  return (
-    <motion.div
-      className="flex items-center gap-3 rounded-xl border border-border/20 bg-secondary/15 px-4 py-3 hover:bg-secondary/30 transition-colors"
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
-    >
-      <div className={`h-2.5 w-2.5 rounded-full shrink-0 ${urgencyDot[item.urgency]}`} />
-      <div className="rounded-xl bg-accent/10 p-2 shrink-0">
-        <Icon className="h-4 w-4 text-accent" />
-      </div>
-      <div className="flex-1 min-w-0">
-        <p className="text-[12px] font-semibold text-foreground truncate">{item.title}</p>
-        <div className="flex items-center gap-3 mt-0.5">
-          <span className="text-[10px] text-muted-foreground">{item.category}</span>
-          {item.frequency && (
-            <span className="text-[9px] text-primary font-medium">{item.frequency}</span>
-          )}
-          {item.linkedTo && (
-            <span className="text-[9px] text-accent font-medium">→ {item.linkedTo}</span>
-          )}
-        </div>
-        {item.daysOverdue > 0 && (
-          <span className={`text-[9px] font-medium ${item.daysOverdue >= 7 ? "text-destructive" : "text-amber-500"}`}>
-            {item.daysOverdue}d overdue
-          </span>
-        )}
-        {item.dueDate && item.daysOverdue === 0 && (
-          <span className="text-[9px] text-muted-foreground">Due {item.dueDate}</span>
-        )}
-      </div>
-      <button className="shrink-0 rounded-lg p-2 hover:bg-primary/10 transition-colors">
-        <CheckCircle className="h-4 w-4 text-muted-foreground hover:text-chart-2" />
-      </button>
-    </motion.div>
-  );
-};
-
 const LifeAdminCenter = () => {
   const [activeTab, setActiveTab] = useState<AdminTab>("aging");
+  const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const tabData = TAB_DATA[activeTab];
-  const totalAging = useMemo(() => Object.values(TAB_DATA).flatMap(t => t.items).filter(i => i.daysOverdue > 0).length, []);
+  const allItems = useMemo(() => Object.values(TAB_DATA).flatMap(t => t.items), []);
+  const totalAging = useMemo(() => allItems.filter(i => i.daysOverdue > 0).length, [allItems]);
+  const selectedItem = allItems.find(i => i.id === selectedId) || null;
 
-  return (
-    <ConciergePageWrapper className="space-y-5">
-      <DemoModeBadge />
-      <SitaPageHeader
-        title="Life Admin Center"
-        subtitle="The things that usually get postponed — tracked and surfaced"
-      />
-
-      {/* Summary */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+  const listContent = (
+    <div className="space-y-2">
+      {/* Summary Stats */}
+      <div className="grid grid-cols-4 gap-2">
         {[
-          { label: "Total Items", value: Object.values(TAB_DATA).flatMap(t => t.items).length, color: "text-accent" },
+          { label: "Total", value: allItems.length, color: "text-accent" },
           { label: "Overdue", value: totalAging, color: "text-destructive" },
-          { label: "Due This Week", value: 3, color: "text-amber-500" },
-          { label: "Recurring Active", value: DEMO_RECURRING.length, color: "text-primary" },
+          { label: "This Week", value: 3, color: "text-amber-500" },
+          { label: "Recurring", value: DEMO_RECURRING.length, color: "text-primary" },
         ].map(s => (
-          <GlassCard key={s.label} glow="none" className="p-3 text-center">
-            <p className="text-[10px] text-muted-foreground">{s.label}</p>
-            <p className={`font-display text-xl font-bold ${s.color}`}>{s.value}</p>
-          </GlassCard>
+          <div key={s.label} className="rounded-lg bg-secondary/20 p-2 text-center">
+            <p className={cn("font-display text-lg font-bold", s.color)}>{s.value}</p>
+            <p className="text-[9px] text-muted-foreground">{s.label}</p>
+          </div>
         ))}
       </div>
 
       <SitaTabs
-        tabs={Object.entries(TAB_DATA).map(([key, data]) => ({
-          key,
-          label: data.label,
-          count: data.items.length,
-        }))}
+        tabs={Object.entries(TAB_DATA).map(([key, data]) => ({ key, label: data.label, count: data.items.length }))}
         active={activeTab}
-        onChange={(k) => setActiveTab(k as AdminTab)}
+        onChange={(k) => { setActiveTab(k as AdminTab); setSelectedId(null); }}
       />
 
-      <div className="space-y-2">
-        {tabData.items.length === 0 ? (
-          <ConciergeEmptyState domain="admin" />
-        ) : (
-          tabData.items.map(item => <AdminCard key={item.id} item={item} />)
-        )}
+      {tabData.items.map((item) => {
+        const Icon = categoryIcon[item.category] || FileText;
+        return (
+          <motion.div key={item.id}
+            onClick={() => setSelectedId(item.id)}
+            className={cn("flex items-center gap-3 rounded-xl border px-4 py-3 transition-colors cursor-pointer",
+              selectedId === item.id ? "border-accent/30 bg-accent/5" : "border-border/20 bg-secondary/15 hover:bg-secondary/30"
+            )}
+            initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
+            <div className={cn("h-2.5 w-2.5 rounded-full shrink-0", urgencyDot[item.urgency])} />
+            <div className="rounded-xl bg-accent/10 p-2 shrink-0"><Icon className="h-4 w-4 text-accent" /></div>
+            <div className="flex-1 min-w-0">
+              <p className="text-[12px] font-semibold text-foreground truncate">{item.title}</p>
+              <div className="flex items-center gap-2 mt-0.5">
+                <span className="text-[10px] text-muted-foreground">{item.category}</span>
+                {item.frequency && <span className="text-[9px] text-primary font-medium">{item.frequency}</span>}
+                {item.linkedTo && <span className="text-[9px] text-accent font-medium">→ {item.linkedTo}</span>}
+              </div>
+              {item.daysOverdue > 0 && (
+                <span className={cn("text-[9px] font-medium", item.daysOverdue >= 7 ? "text-destructive" : "text-amber-500")}>{item.daysOverdue}d overdue</span>
+              )}
+            </div>
+            <button className="shrink-0 rounded-lg p-2 hover:bg-primary/10 transition-colors" onClick={e => e.stopPropagation()}>
+              <CheckCircle className="h-4 w-4 text-muted-foreground hover:text-chart-2" />
+            </button>
+          </motion.div>
+        );
+      })}
+
+      {/* Quick Win Queue */}
+      <div className="mt-2">
+        <LifeAdminQueueCard items={[
+          { id: "qw1", title: "Update school emergency contacts", category: "School", urgency: "low", effort: "quick" },
+          { id: "qw2", title: "Submit insurance claim photo", category: "Insurance", urgency: "medium", effort: "quick" },
+          { id: "qw3", title: "Set up autopay for lawn service", category: "Home", urgency: "low", effort: "quick" },
+        ]} />
       </div>
+    </div>
+  );
 
-      {/* Quick Win Admin Queue */}
-      <LifeAdminQueueCard items={[
-        { id: "qw1", title: "Update school emergency contacts", category: "School", urgency: "low", effort: "quick" },
-        { id: "qw2", title: "Submit insurance claim photo", category: "Insurance", urgency: "medium", effort: "quick" },
-        { id: "qw3", title: "Set up autopay for lawn service", category: "Home", urgency: "low", effort: "quick" },
-      ]} />
-
-      {/* Advisor */}
-      <ConciergeAdvisorInsightCard insight={{
-        role: "Life Admin Advisor",
-        message: "You have 3 items that have been postponed more than a week. The phone calls session could knock out 3 follow-ups in 15 minutes. Tax documents are the highest-impact item to resolve this week.",
-        linkedItems: ["Tax documents", "Phone calls session", "School paperwork"],
-        confidence: "high",
-      }} />
-    </ConciergePageWrapper>
+  return (
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+      <DemoModeBadge />
+      <ModuleWorkspace
+        domain="concierge"
+        title="Life Admin Center"
+        icon={ClipboardList}
+        list={listContent}
+        detail={<LifeAdminDetailPane item={selectedItem} />}
+        detailActive={!!selectedId}
+        onCloseDetail={() => setSelectedId(null)}
+        advisor={
+          <DomainAdvisorCard
+            domain="concierge"
+            insights={[
+              { id: "la-1", text: "3 items postponed more than a week — phone calls session could clear 3 follow-ups in 15 min", confidence: 85, action: "Start Calls", onAction: () => setSelectedId("lb1") },
+              { id: "la-2", text: "Tax documents are the highest-impact item to resolve this week", confidence: 90, action: "View", onAction: () => setSelectedId("la13") },
+            ]}
+          />
+        }
+      />
+    </motion.div>
   );
 };
 
