@@ -44,10 +44,12 @@ const HouseholdCommandCenter = () => {
   if (!households?.length && !showCreate) {
     return (
       <ConciergePageWrapper className="mx-auto max-w-3xl space-y-6">
-      <PageTruthBanner />
+        <PageTruthBanner />
         <EmptyState icon={Home} title="No households yet" description="Create your first household to start managing family members, roles, and shared tasks." />
         <div className="flex justify-center">
-          <button className="micro-press flex items-center gap-1.5 rounded-lg bg-[hsl(0_0%_100%/0.06)] px-3 py-1.5 text-xs text-[hsl(0_0%_70%)] hover:bg-[hsl(0_0%_100%/0.10)] transition-colors" onClick={() => setShowCreate(true)}><Plus className="h-4 w-4" /> Create Household</button>
+          <button className="micro-press flex items-center gap-1.5 rounded-lg bg-[hsl(265_55%_58%/0.12)] px-3 py-1.5 text-xs text-[hsl(265_55%_58%)] hover:bg-[hsl(265_55%_58%/0.20)] transition-colors" onClick={() => setShowCreate(true)}>
+            <Plus className="h-4 w-4" /> Create Household
+          </button>
         </div>
       </ConciergePageWrapper>
     );
@@ -55,8 +57,12 @@ const HouseholdCommandCenter = () => {
 
   return (
     <ConciergePageWrapper className="mx-auto max-w-5xl space-y-6">
- New Household</button>}
-      />
+      <PageTruthBanner />
+      <div className="flex items-center justify-end">
+        <button className="micro-press flex items-center gap-1.5 rounded-lg bg-[hsl(265_55%_58%)] px-3 py-1.5 text-xs font-medium text-white hover:bg-[hsl(265_55%_52%)] transition-colors" onClick={() => setShowCreate(true)}>
+          <Plus className="h-4 w-4" /> New Household
+        </button>
+      </div>
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KPITile label="Households" value={households?.length || 0} icon={Home} />
@@ -66,18 +72,18 @@ const HouseholdCommandCenter = () => {
       </div>
 
       {showCreate && (
-        <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift" hover={false} glow className="p-5">
+        <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-5">
           <h4 className="text-[13px] font-semibold text-[hsl(0_0%_85%)]">Create Household</h4>
           <div className="mt-3 space-y-3">
-            <input className="w-full rounded-xl border border-border bg-secondary/40 px-4 py-2.5 text-sm text-foreground" placeholder="Household name" value={newName} onChange={e => setNewName(e.target.value)} />
-            <select className="w-full rounded-xl border border-border bg-secondary/40 px-4 py-2.5 text-sm text-foreground" value={newType} onChange={e => setNewType(e.target.value)}>
+            <input className="w-full rounded-lg border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_7%)] px-4 py-2.5 text-sm text-[hsl(0_0%_85%)]" placeholder="Household name" value={newName} onChange={e => setNewName(e.target.value)} />
+            <select className="w-full rounded-lg border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_7%)] px-4 py-2.5 text-sm text-[hsl(0_0%_85%)]" value={newType} onChange={e => setNewType(e.target.value)}>
               <option value="family">Family</option>
               <option value="business">Business</option>
               <option value="mixed">Mixed</option>
             </select>
             <div className="flex gap-2">
-              <button className="micro-press flex items-center gap-1.5 rounded-lg bg-[hsl(0_0%_100%/0.06)] px-3 py-1.5 text-xs text-[hsl(0_0%_70%)] hover:bg-[hsl(0_0%_100%/0.10)] transition-colors" onClick={handleCreate}>Create</button>
-              <button className="micro-press flex items-center gap-1.5 rounded-lg bg-[hsl(0_0%_100%/0.06)] px-3 py-1.5 text-xs text-[hsl(0_0%_70%)] hover:bg-[hsl(0_0%_100%/0.10)] transition-colors" onClick={() => setShowCreate(false)}>Cancel</button>
+              <button className="micro-press rounded-lg bg-[hsl(152_55%_48%/0.12)] px-3 py-1.5 text-xs text-[hsl(152_55%_48%)] hover:bg-[hsl(152_55%_48%/0.20)] transition-colors" onClick={handleCreate}>Create</button>
+              <button className="micro-press rounded-lg bg-[hsl(0_0%_100%/0.06)] px-3 py-1.5 text-xs text-[hsl(0_0%_60%)] hover:bg-[hsl(0_0%_100%/0.10)] transition-colors" onClick={() => setShowCreate(false)}>Cancel</button>
             </div>
           </div>
         </div>
@@ -86,33 +92,42 @@ const HouseholdCommandCenter = () => {
       <div className="grid gap-6 lg:grid-cols-5">
         <div className="lg:col-span-2 space-y-2">
           {households?.map(h => (
-            <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift" key={h.id} selected={selectedId === h.id} onClick={() => setSelectedId(h.id)} className="p-4">
+            <button
+              key={h.id}
+              onClick={() => setSelectedId(h.id)}
+              className={`micro-hover-lift w-full text-left rounded-xl border p-4 transition-all ${selectedId === h.id ? "border-[hsl(265_55%_58%/0.4)] bg-[hsl(0_0%_12%)]" : "border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)]"}`}
+            >
               <div className="flex items-center gap-3">
-                <div className="rounded-lg bg-primary/10 p-2"><Home className="h-4 w-4 text-primary" /></div>
+                <div className="rounded-lg bg-[hsl(265_55%_58%/0.12)] p-2"><Home className="h-4 w-4 text-[hsl(265_55%_58%)]" /></div>
                 <div>
-                  <p className="text-sm font-medium text-foreground">{h.name}</p>
-                  <p className="text-xs text-muted-foreground capitalize">{h.type}</p>
+                  <p className="text-sm font-medium text-[hsl(0_0%_85%)]">{h.name}</p>
+                  <p className="text-xs text-[hsl(0_0%_50%)] capitalize">{h.type}</p>
                 </div>
               </div>
-            </div>
+            </button>
           ))}
         </div>
 
         <div className="lg:col-span-3 space-y-4">
           {active ? (
             <>
-              <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift" hover={false} glow className="p-5">
+              <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_12%)] p-5">
                 <div className="flex items-center justify-between">
-                  <SitaCardTitle sub={`Type: ${active.type}`}>{active.name}</SitaCardTitle>
-                  <button className="micro-press flex items-center gap-1.5 rounded-lg bg-[hsl(0_0%_100%/0.06)] px-3 py-1.5 text-xs text-[hsl(0_0%_70%)] hover:bg-[hsl(0_0%_100%/0.10)] transition-colors" onClick={() => setShowAddMember(true)}><UserPlus className="h-3.5 w-3.5" /> Add Member</button>
+                  <div>
+                    <h4 className="text-[13px] font-semibold text-[hsl(0_0%_85%)]">{active.name}</h4>
+                    <p className="text-xs text-[hsl(0_0%_50%)]">Type: {active.type}</p>
+                  </div>
+                  <button className="micro-press flex items-center gap-1.5 rounded-lg bg-[hsl(265_55%_58%/0.12)] px-3 py-1.5 text-xs text-[hsl(265_55%_58%)] hover:bg-[hsl(265_55%_58%/0.20)] transition-colors" onClick={() => setShowAddMember(true)}>
+                    <UserPlus className="h-3.5 w-3.5" /> Add Member
+                  </button>
                 </div>
               </div>
 
               {showAddMember && (
-                <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift" hover={false} className="p-4">
+                <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4">
                   <div className="space-y-3">
-                    <input className="w-full rounded-xl border border-border bg-secondary/40 px-4 py-2.5 text-sm text-foreground" placeholder="Member name" value={memberName} onChange={e => setMemberName(e.target.value)} />
-                    <select className="w-full rounded-xl border border-border bg-secondary/40 px-4 py-2.5 text-sm text-foreground" value={memberRole} onChange={e => setMemberRole(e.target.value)}>
+                    <input className="w-full rounded-lg border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_7%)] px-4 py-2.5 text-sm text-[hsl(0_0%_85%)]" placeholder="Member name" value={memberName} onChange={e => setMemberName(e.target.value)} />
+                    <select className="w-full rounded-lg border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_7%)] px-4 py-2.5 text-sm text-[hsl(0_0%_85%)]" value={memberRole} onChange={e => setMemberRole(e.target.value)}>
                       <option value="member">Member</option>
                       <option value="parent">Parent</option>
                       <option value="child">Child</option>
@@ -120,8 +135,8 @@ const HouseholdCommandCenter = () => {
                       <option value="caregiver">Caregiver</option>
                     </select>
                     <div className="flex gap-2">
-                      <button className="micro-press flex items-center gap-1.5 rounded-lg bg-[hsl(0_0%_100%/0.06)] px-3 py-1.5 text-xs text-[hsl(0_0%_70%)] hover:bg-[hsl(0_0%_100%/0.10)] transition-colors" onClick={handleAddMember}>Add</button>
-                      <button className="micro-press flex items-center gap-1.5 rounded-lg bg-[hsl(0_0%_100%/0.06)] px-3 py-1.5 text-xs text-[hsl(0_0%_70%)] hover:bg-[hsl(0_0%_100%/0.10)] transition-colors" onClick={() => setShowAddMember(false)}>Cancel</button>
+                      <button className="micro-press rounded-lg bg-[hsl(152_55%_48%/0.12)] px-3 py-1.5 text-xs text-[hsl(152_55%_48%)]" onClick={handleAddMember}>Add</button>
+                      <button className="micro-press rounded-lg bg-[hsl(0_0%_100%/0.06)] px-3 py-1.5 text-xs text-[hsl(0_0%_60%)]" onClick={() => setShowAddMember(false)}>Cancel</button>
                     </div>
                   </div>
                 </div>
@@ -129,16 +144,16 @@ const HouseholdCommandCenter = () => {
 
               <div className="space-y-2">
                 {members?.map(m => (
-                  <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift" key={m.id} hover={false} className="p-4">
+                  <div key={m.id} className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent/10 text-accent text-xs font-bold">{m.display_name.charAt(0)}</div>
+                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[hsl(265_55%_58%/0.12)] text-[hsl(265_55%_58%)] text-xs font-bold">{m.display_name.charAt(0)}</div>
                         <div>
-                          <p className="text-sm font-medium text-foreground">{m.display_name}</p>
-                          <p className="text-xs text-muted-foreground capitalize">{m.role}</p>
+                          <p className="text-sm font-medium text-[hsl(0_0%_85%)]">{m.display_name}</p>
+                          <p className="text-xs text-[hsl(0_0%_50%)] capitalize">{m.role}</p>
                         </div>
                       </div>
-                      <button onClick={() => deleteMember.mutate(m.id)} className="rounded-md p-1.5 text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors">
+                      <button onClick={() => deleteMember.mutate(m.id)} className="rounded-md p-1.5 text-[hsl(0_0%_50%)] hover:text-[hsl(0_70%_55%)] hover:bg-[hsl(0_70%_55%/0.10)] transition-colors">
                         <Trash2 className="h-3.5 w-3.5" />
                       </button>
                     </div>
