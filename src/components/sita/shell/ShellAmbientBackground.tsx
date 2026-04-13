@@ -147,13 +147,19 @@ function ConstellationOverlay() {
 function SitaHeroWallpaper() {
   return (
     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-      {/* Background gradient for sita-hero */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[hsl(230,60%,18%)] via-[hsl(260,50%,22%)] to-[hsl(280,45%,16%)]" />
+      {/* Premium abstract background image */}
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: "url('/wallpapers/sita-hero.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      />
       
-      {/* Radial glow behind logo */}
-      <div className="absolute inset-0" style={{
-        background: "radial-gradient(ellipse at 50% 45%, hsl(265 60% 40% / 0.35), transparent 55%)"
-      }} />
+      {/* Subtle dark overlay for readability */}
+      <div className="absolute inset-0 bg-black/20" />
 
       {/* Glass circle + logo */}
       <motion.div
