@@ -1,0 +1,159 @@
+import { useState } from "react";
+import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
+import { MessageCircle, FileCheck } from "lucide-react";
+import { ConfidenceBar } from "@/components/sita/primitives";
+import type { AdvisorRole } from "@/lib/advisor-topology";
+
+interface AdvisorProfileCardProps {
+  advisor: AdvisorRole;
+  recommendation?: string;
+  confidence?: number;
+  evidenceCount?: number;
+  status?: "active" | "thinking" | "idle" | "speaking";
+  selected?: boolean;
+  onClick?: () => void;
+  size?: "sm" | "md" | "lg";
+  className?: string;
+}
+
+export function AdvisorProfileCard({
+  advisor,
+  recommendation,
+  confidence = 50,
+  evidenceCount = 0,
+  status = "active",
+  selected = false,
+  onClick,
+  size = "md",
+  className,
+}: AdvisorProfileCardProps) {
+  const [imgError, setImgError] = useState(false);
+
+  const avatarSizes = { sm: "w-12 h-12", md: "w-16 h-16", lg: "w-20 h-20" };
+  const ringSizes = { sm: "w-14 h-14", md: "w-[72px] h-[72px]", lg: "w-[88px] h-[88px]" };
+
+  const isSpeaking = status === "speaking";
+
+  return (
+    <motion.button
+      type="button"
+      onClick={onClick}
+      whileHover={{ scale: 1.02, y: -2 }}
+      whileTap={{ scale: 0.98 }}
+      className={cn(
+        "rounded-2xl border p-4 text-left transition-all duration-300 relative group backdrop-blur-sm",
+        selected
+          ? "border-[hsl(280_50%_55%/0.35)] bg-[hsl(280_40%_50%/0.1)] shadow-[0_0_30px_hsl(280_50%_50%/0.1)]"
+          : "border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] hover:bg-[hsl(0_0%_100%/0.04)] hover:border-[hsl(0_0%_100%/0.12)]",
+        className,
+      )}
+    >
+      {/* Ambient glow behind card on hover */}
+      <div
+        className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10"
+        style={{
+          background: `radial-gradient(ellipse at center, ${advisor.accentColor}10, transparent 70%)`,
+        }}
+      />
+
+      {/* Avatar with glowing ring */}
+      <div className="flex flex-col items-center mb-3">
+        <div className="relative">
+          {/* Glowing ring */}
+          <div
+            className={cn(
+              "rounded-full flex items-center justify-center transition-all duration-300",
+              ringSizes[size],
+            )}
+            style={{
+              background: `linear-gradient(135deg, ${advisor.accentColor}, ${advisor.accentColor}66)`,
+              padding: "3px",
+              boxShadow: isSpeaking || selected
+                ? `0 0 20px ${advisor.accentColor}40, 0 0 40px ${advisor.accentColor}15`
+                : `0 0 8px ${advisor.accentColor}15`,
+            }}
+          >
+            {/* Avatar image or fallback */}
+            <div className={cn("rounded-full overflow-hidden bg-[hsl(220_18%_8%)]", avatarSizes[size])}>
+              {!imgError && advisor.avatarUrl ? (
+                <img
+                  src={advisor.avatarUrl}
+                  alt={advisor.name}
+                  className="w-full h-full object-cover"
+                  onError={() => setImgError(true)}
+                />
+              ) : (
+                <div
+                  className="w-full h-full flex items-center justify-center text-white font-bold"
+                  style={{ background: `linear-gradient(135deg, ${advisor.accentColor}, ${advisor.accentColor}88)` }}
+                >
+                  <span className={size === "lg" ? "text-2xl" : size === "md" ? "text-xl" : "text-lg"}>
+                    {advisor.emoji}
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Speaking pulse ring */}
+          {isSpeaking && (
+            <motion.div
+              className="absolute inset-[-4px] rounded-full border-2 pointer-events-none"
+              style={{ borderColor: `${advisor.accentColor}60` }}
+              animate={{ scale: [1, 1.15, 1], opacity: [0.6, 1, 0.6] }}
+              transition={{ repeat: Infinity, duration: 1.8, ease: "easeInOut" }}
+            />
+          )}
+
+          {/* Status dot */}
+          <div
+            className={cn(
+              "absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-[hsl(220_18%_8%)]",
+              status === "active" && "bg-[hsl(152_55%_48%)]",
+              status === "speaking" && "bg-[hsl(152_55%_48%)]",
+              status === "thinking" && "bg-[hsl(280_50%_55%)] animate-pulse",
+              status === "idle" && "bg-[hsl(0_0%_100%/0.25)]",
+            )}
+          />
+        </div>
+      </div>
+
+      {/* Name and role */}
+      <div className="text-center mb-2">
+        <p className="text-[12px] font-bold text-[hsl(0_0%_100%/0.88)] leading-tight truncate">
+          {advisor.name}
+        </p>
+        <p className="text-[10px] font-semibold mt-0.5 truncate" style={{ color: advisor.accentColor }}>
+          {advisor.role}
+        </p>
+        <p className="text-[9px] text-[hsl(0_0%_100%/0.3)] mt-0.5 line-clamp-1">
+          {advisor.specialty}
+        </p>
+      </div>
+
+      {/* Recommendation bubble */}
+      {recommendation && (
+        <div className="relative rounded-lg bg-[hsl(0_0%_100%/0.03)] border border-[hsl(0_0%_100%/0.06)] p-2.5 mb-2.5">
+          <div className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-3 h-3 rotate-45 bg-[hsl(0_0%_100%/0.03)] border-l border-t border-[hsl(0_0%_100%/0.06)]" />
+          <div className="flex items-start gap-1.5">
+            <MessageCircle size={9} className="text-[hsl(280_50%_60%/0.5)] mt-0.5 shrink-0" />
+            <p className="text-[10px] text-[hsl(0_0%_100%/0.6)] leading-relaxed italic line-clamp-3">
+              "{recommendation}"
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Confidence + evidence */}
+      <div className="space-y-1.5">
+        <ConfidenceBar value={confidence} size="sm" />
+        {evidenceCount > 0 && (
+          <div className="flex items-center justify-center gap-1 text-[9px] text-[hsl(0_0%_100%/0.25)]">
+            <FileCheck size={8} /> {evidenceCount} sources cited
+          </div>
+        )}
+      </div>
+    </motion.button>
+  );
+}

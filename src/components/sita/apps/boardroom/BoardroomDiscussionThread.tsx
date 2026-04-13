@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
-import { Brain, ChevronDown, ChevronRight, FileCheck, MessageCircle, AlertTriangle } from "lucide-react";
+import { Brain, ChevronDown, ChevronRight, FileCheck, MessageCircle, AlertTriangle, Mic } from "lucide-react";
 import { ConfidenceBar } from "@/components/sita/primitives";
-import { getAdvisorRoster, ADVISOR_ROSTERS, type AdvisorRole } from "@/lib/advisor-topology";
+import { ADVISOR_ROSTERS, type AdvisorRole } from "@/lib/advisor-topology";
 
 interface Props {
   scope: "global" | "business" | "finance" | "concierge";
@@ -39,7 +39,7 @@ const MOCK_DISCUSSIONS: Record<string, DiscussionEntry[]> = {
     {
       advisorId: "biz-relationship",
       stance: "concern",
-      statement: "I agree collections are needed, but I'm concerned about the approach. TechCorp is a top-5 client — aggressive outreach could damage the relationship. I recommend a personal touch first.",
+      statement: "I agree collections are needed, but I'm concerned about the approach. TechCorp is a top-5 client — aggressive outreach could damage the relationship.",
       reasoning: [
         "Reviewing CRM engagement score — TechCorp has 92/100 relationship health",
         "Historical data shows personal outreach yields 91% recovery vs 76% for automated",
@@ -52,7 +52,7 @@ const MOCK_DISCUSSIONS: Record<string, DiscussionEntry[]> = {
     {
       advisorId: "biz-collections",
       stance: "agreement",
-      statement: "I support phased approach with personal touch for TechCorp. For the other two accounts ($4,200 and $1,800), standard automated outreach is appropriate given their lower relationship scores.",
+      statement: "I support phased approach with personal touch for TechCorp. For the other two accounts ($4,200 and $1,800), standard automated outreach is appropriate.",
       reasoning: [
         "Segmenting accounts by relationship value and overdue amount",
         "David Kim ($4,200) has mid-tier relationship — standard sequence appropriate",
@@ -65,7 +65,7 @@ const MOCK_DISCUSSIONS: Record<string, DiscussionEntry[]> = {
     {
       advisorId: "biz-operations",
       stance: "question",
-      statement: "Before we proceed, has anyone verified the support ticket status for these accounts? If there are open issues, collection outreach could backfire. I'm seeing 2 unresolved tickets for TechCorp.",
+      statement: "Before we proceed, has anyone verified the support ticket status for these accounts? I'm seeing 2 unresolved tickets for TechCorp.",
       reasoning: [
         "Cross-referencing support queue with overdue accounts",
         "Found 2 open tickets for TechCorp — one is a billing dispute from March",
@@ -78,7 +78,7 @@ const MOCK_DISCUSSIONS: Record<string, DiscussionEntry[]> = {
     {
       advisorId: "biz-support",
       stance: "dissent",
-      statement: "I need to flag that TechCorp has an active billing dispute. Collections outreach before resolving the dispute would violate our own policy. We should resolve the dispute first, then collect.",
+      statement: "I need to flag that TechCorp has an active billing dispute. Collections outreach before resolving the dispute would violate our own policy.",
       reasoning: [
         "Ticket #4521: TechCorp disputes $3,200 of the $12,500 invoice",
         "Our policy requires dispute resolution before collection escalation",
@@ -91,7 +91,7 @@ const MOCK_DISCUSSIONS: Record<string, DiscussionEntry[]> = {
     {
       advisorId: "biz-followthrough",
       stance: "agreement",
-      statement: "Updated recommendation: resolve TechCorp dispute first (target: 48 hours), then proceed with personal collection outreach. Meanwhile, initiate standard sequences for David Kim and Sarah Chen immediately.",
+      statement: "Updated recommendation: resolve TechCorp dispute first (target: 48 hours), then proceed with personal collection outreach. Meanwhile, start smaller collections immediately.",
       reasoning: [
         "Revised timeline accounts for dispute resolution window",
         "Parallel execution: start smaller collections while resolving TechCorp",
@@ -119,7 +119,7 @@ const MOCK_DISCUSSIONS: Record<string, DiscussionEntry[]> = {
     {
       advisorId: "fin-spending",
       stance: "dissent",
-      statement: "I detected an AWS billing spike of $480 above baseline. This needs investigation before we blame subscriptions. The spike alone could explain half the shortfall.",
+      statement: "I detected an AWS billing spike of $480 above baseline. This needs investigation before we blame subscriptions.",
       reasoning: [
         "AWS costs jumped from $320/mo baseline to $800 last billing cycle",
         "Spike correlates with a development environment left running",
@@ -132,7 +132,7 @@ const MOCK_DISCUSSIONS: Record<string, DiscussionEntry[]> = {
     {
       advisorId: "fin-reserve",
       stance: "agreement",
-      statement: "Both approaches should run in parallel. Defer subscriptions AND fix the AWS spike. Combined savings of $582/month restores buffer in under 5 weeks.",
+      statement: "Both approaches should run in parallel. Combined savings of $582/month restores buffer in under 5 weeks.",
       reasoning: [
         "Combined approach accelerates recovery by 40% vs either alone",
         "Reserve target achievable by May 20 with dual action",
@@ -145,7 +145,7 @@ const MOCK_DISCUSSIONS: Record<string, DiscussionEntry[]> = {
     {
       advisorId: "fin-receivables",
       stance: "agreement",
-      statement: "Adding a third lever: 3 receivables are aging past 30 days. Accelerating collection on these ($8,400 total) would fully resolve the shortfall and create a surplus.",
+      statement: "Adding a third lever: 3 receivables aging past 30 days. Accelerating collection on $8,400 total would fully resolve the shortfall.",
       reasoning: [
         "Receivable aging: Invoice #1042 ($4,200), #1038 ($2,800), #1051 ($1,400)",
         "Historical pattern: these clients pay within 5 days of follow-up",
@@ -160,9 +160,9 @@ const MOCK_DISCUSSIONS: Record<string, DiscussionEntry[]> = {
     {
       advisorId: "con-travel",
       stance: "agreement",
-      statement: "NYC trip logistics are fully prepared. Flights, hotel, and restaurant reservations are confirmed. All documents are current. I recommend approving the travel package.",
+      statement: "NYC trip logistics are fully prepared. Flights, hotel, and restaurant reservations are confirmed. I recommend approving the travel package.",
       reasoning: [
-        "Flight: JFK departing Apr 22, 7:15 AM — confirmed and checked in window opens Apr 21",
+        "Flight: JFK departing Apr 22, 7:15 AM — confirmed",
         "Hotel: Midtown East, 2 nights — confirmed, late checkout arranged",
         "Client dinner reservation: Apr 22, 7:30 PM — confirmed for 4 guests",
       ],
@@ -173,7 +173,7 @@ const MOCK_DISCUSSIONS: Record<string, DiscussionEntry[]> = {
     {
       advisorId: "con-prep",
       stance: "agreement",
-      statement: "All prep items cleared. Client briefing doc is ready, presentation deck reviewed, business cards ordered. No outstanding prep requirements.",
+      statement: "All prep items cleared. Client briefing doc is ready, presentation deck reviewed, business cards ordered.",
       reasoning: [
         "Checklist: 8/8 items completed as of this morning",
         "Briefing includes latest revenue data and proposal for Q3 engagement",
@@ -186,7 +186,7 @@ const MOCK_DISCUSSIONS: Record<string, DiscussionEntry[]> = {
     {
       advisorId: "con-logistics",
       stance: "concern",
-      statement: "One flag: airport transfer isn't booked yet. Given the early departure time, I recommend pre-booking a car service rather than relying on ride-share availability at 5 AM.",
+      statement: "One flag: airport transfer isn't booked yet. I recommend pre-booking a car service rather than relying on ride-share at 5 AM.",
       reasoning: [
         "Flight departs 7:15 AM — need airport arrival by 5:45 AM",
         "Historical ride-share wait time at 5 AM: 12-18 minutes with 30% surge",
@@ -199,11 +199,11 @@ const MOCK_DISCUSSIONS: Record<string, DiscussionEntry[]> = {
   ],
 };
 
-const stanceStyles: Record<Stance, { border: string; accent: string; label: string; icon: typeof MessageCircle }> = {
-  agreement: { border: "border-[hsl(152_55%_48%/0.2)]", accent: "text-[hsl(152_55%_48%)]", label: "Agrees", icon: MessageCircle },
-  concern: { border: "border-[hsl(38_85%_58%/0.2)]", accent: "text-[hsl(38_85%_58%)]", label: "Concern", icon: AlertTriangle },
-  dissent: { border: "border-[hsl(0_70%_55%/0.2)]", accent: "text-[hsl(0_70%_55%)]", label: "Dissents", icon: AlertTriangle },
-  question: { border: "border-[hsl(210_70%_55%/0.2)]", accent: "text-[hsl(210_70%_55%)]", label: "Questions", icon: MessageCircle },
+const stanceConfig: Record<Stance, { borderColor: string; accentColor: string; bgColor: string; label: string; icon: typeof MessageCircle }> = {
+  agreement: { borderColor: "hsl(152 55% 48% / 0.25)", accentColor: "hsl(152 55% 48%)", bgColor: "hsl(152 55% 48% / 0.06)", label: "Agrees", icon: MessageCircle },
+  concern: { borderColor: "hsl(38 85% 58% / 0.25)", accentColor: "hsl(38 85% 58%)", bgColor: "hsl(38 85% 58% / 0.06)", label: "Concern", icon: AlertTriangle },
+  dissent: { borderColor: "hsl(0 70% 55% / 0.25)", accentColor: "hsl(0 70% 55%)", bgColor: "hsl(0 70% 55% / 0.06)", label: "Dissents", icon: AlertTriangle },
+  question: { borderColor: "hsl(210 70% 55% / 0.25)", accentColor: "hsl(210 70% 55%)", bgColor: "hsl(210 70% 55% / 0.06)", label: "Questions", icon: MessageCircle },
 };
 
 function getAdvisorInfo(id: string): AdvisorRole {
@@ -211,11 +211,12 @@ function getAdvisorInfo(id: string): AdvisorRole {
     const found = roster.advisors.find(a => a.id === id);
     if (found) return found;
   }
-  return { id, name: id, role: "Advisor", specialty: "", accentColor: "hsl(280 50% 55%)", emoji: "🤖" };
+  return { id, name: id, role: "Advisor", specialty: "", accentColor: "hsl(280 50% 55%)", emoji: "🤖", avatarUrl: "" };
 }
 
 export function BoardroomDiscussionThread({ scope }: Props) {
   const [expandedReasoning, setExpandedReasoning] = useState<number | null>(null);
+  const [imgErrors, setImgErrors] = useState<Set<string>>(new Set());
 
   const domain = scope === "global" ? "business" : scope;
   const entries = MOCK_DISCUSSIONS[domain] || MOCK_DISCUSSIONS.business;
@@ -223,67 +224,122 @@ export function BoardroomDiscussionThread({ scope }: Props) {
   return (
     <div className="space-y-4">
       <div className="flex items-center gap-2">
-        <MessageCircle size={14} className="text-[hsl(280_50%_65%)]" />
-        <p className="text-[11px] font-bold text-[hsl(0_0%_100%/0.85)]">Live Discussion</p>
-        <span className="text-[9px] text-[hsl(0_0%_100%/0.3)]">{entries.length} contributions</span>
+        <div className="w-6 h-6 rounded-md bg-gradient-to-br from-[hsl(280_50%_55%)] to-[hsl(280_60%_40%)] flex items-center justify-center">
+          <MessageCircle size={12} className="text-white" />
+        </div>
+        <p className="text-[12px] font-bold text-[hsl(0_0%_100%/0.9)]">Live Deliberation</p>
+        <span className="text-[9px] text-[hsl(0_0%_100%/0.3)] bg-[hsl(0_0%_100%/0.04)] px-2 py-0.5 rounded-full">{entries.length} contributions</span>
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-1">
         {entries.map((entry, i) => {
           const adv = getAdvisorInfo(entry.advisorId);
-          const style = stanceStyles[entry.stance];
+          const stance = stanceConfig[entry.stance];
           const isExpanded = expandedReasoning === i;
+          const isLast = i === entries.length - 1;
+          const hasImgError = imgErrors.has(adv.id);
 
           return (
             <motion.div
               key={`${entry.advisorId}-${i}`}
-              initial={{ opacity: 0, x: -8 }}
+              initial={{ opacity: 0, x: -12 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: i * 0.08 }}
-              className={cn(
-                "rounded-xl border bg-[hsl(0_0%_100%/0.02)] p-4 relative",
-                style.border,
-              )}
+              transition={{ delay: i * 0.1, type: "spring", stiffness: 200 }}
+              className="flex items-start gap-3 group"
             >
-              {/* Left accent border */}
-              <div
-                className="absolute left-0 top-3 bottom-3 w-[3px] rounded-full"
-                style={{ background: adv.accentColor }}
-              />
+              {/* Avatar column with connecting line */}
+              <div className="flex flex-col items-center shrink-0">
+                {/* Avatar */}
+                <div className="relative">
+                  <div
+                    className="w-11 h-11 rounded-full overflow-hidden border-2 shadow-md"
+                    style={{
+                      borderColor: adv.accentColor,
+                      boxShadow: isLast ? `0 0 16px ${adv.accentColor}30` : `0 0 6px ${adv.accentColor}15`,
+                    }}
+                  >
+                    {!hasImgError && adv.avatarUrl ? (
+                      <img
+                        src={adv.avatarUrl}
+                        alt={adv.name}
+                        className="w-full h-full object-cover"
+                        onError={() => setImgErrors(prev => new Set(prev).add(adv.id))}
+                      />
+                    ) : (
+                      <div
+                        className="w-full h-full flex items-center justify-center text-white"
+                        style={{ background: `linear-gradient(135deg, ${adv.accentColor}, ${adv.accentColor}88)` }}
+                      >
+                        <span className="text-lg">{adv.emoji}</span>
+                      </div>
+                    )}
+                  </div>
+                  {isLast && (
+                    <motion.div
+                      className="absolute -bottom-0.5 -right-0.5 w-4 h-4 rounded-full flex items-center justify-center border-2 border-[hsl(220_18%_6%)]"
+                      style={{ background: adv.accentColor }}
+                      animate={{ scale: [1, 1.15, 1] }}
+                      transition={{ repeat: Infinity, duration: 1.5 }}
+                    >
+                      <Mic size={8} className="text-white" />
+                    </motion.div>
+                  )}
+                </div>
+                {/* Connecting line */}
+                {!isLast && (
+                  <div className="w-px h-full min-h-[16px] bg-[hsl(0_0%_100%/0.06)] mt-1" />
+                )}
+              </div>
 
-              {/* Header */}
-              <div className="flex items-start gap-3 ml-2">
+              {/* Chat bubble */}
+              <div className="flex-1 min-w-0 pb-3">
+                {/* Gradient top strip */}
                 <div
-                  className="w-10 h-10 rounded-full flex items-center justify-center text-lg shrink-0 shadow-md"
+                  className="rounded-t-xl h-[3px] -mb-px"
+                  style={{ background: `linear-gradient(90deg, ${adv.accentColor}, transparent)` }}
+                />
+                <div
+                  className="rounded-b-xl rounded-tr-xl border p-4 backdrop-blur-sm relative"
                   style={{
-                    background: `linear-gradient(135deg, ${adv.accentColor}, ${adv.accentColor}88)`,
+                    borderColor: stance.borderColor,
+                    background: stance.bgColor,
                   }}
                 >
-                  {adv.emoji}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="text-[11px] font-bold text-[hsl(0_0%_100%/0.85)]">{adv.name}</span>
-                    <span className="text-[9px] font-medium" style={{ color: adv.accentColor }}>{adv.role}</span>
-                    <span className={cn("text-[8px] font-bold uppercase px-1.5 py-0.5 rounded-full border", style.border, style.accent)}>
-                      {style.label}
+                  {/* Speech triangle */}
+                  <div
+                    className="absolute -left-1.5 top-4 w-3 h-3 rotate-45 border-l border-b"
+                    style={{
+                      borderColor: stance.borderColor,
+                      background: stance.bgColor,
+                    }}
+                  />
+
+                  {/* Header */}
+                  <div className="flex items-center gap-2 mb-2 flex-wrap">
+                    <span className="text-[11px] font-bold text-[hsl(0_0%_100%/0.88)]">{adv.name}</span>
+                    <span className="text-[9px] font-semibold" style={{ color: adv.accentColor }}>{adv.role}</span>
+                    <span
+                      className="text-[8px] font-bold uppercase px-1.5 py-0.5 rounded-full border"
+                      style={{ color: stance.accentColor, borderColor: stance.borderColor }}
+                    >
+                      {stance.label}
                     </span>
                     <span className="text-[8px] text-[hsl(0_0%_100%/0.2)] ml-auto shrink-0">{entry.timestamp}</span>
                   </div>
 
                   {/* Statement */}
-                  <p className="text-[12px] text-[hsl(0_0%_100%/0.7)] leading-relaxed mb-3">
+                  <p className="text-[12px] text-[hsl(0_0%_100%/0.72)] leading-relaxed mb-3">
                     {entry.statement}
                   </p>
 
                   {/* Reasoning chain toggle */}
                   <button
                     onClick={() => setExpandedReasoning(isExpanded ? null : i)}
-                    className="flex items-center gap-1.5 text-[10px] font-semibold text-[hsl(280_50%_65%/0.6)] hover:text-[hsl(280_50%_75%)] transition-colors mb-2"
+                    className="flex items-center gap-1.5 text-[10px] font-semibold text-[hsl(280_50%_65%/0.7)] hover:text-[hsl(280_50%_80%)] transition-colors mb-2"
                   >
                     <Brain size={11} />
                     {isExpanded ? <ChevronDown size={10} /> : <ChevronRight size={10} />}
-                    Reasoning Chain
+                    Thinking Process
                   </button>
 
                   <AnimatePresence>
@@ -294,17 +350,19 @@ export function BoardroomDiscussionThread({ scope }: Props) {
                         exit={{ opacity: 0, height: 0 }}
                         className="overflow-hidden"
                       >
-                        <div className="rounded-lg bg-[hsl(280_40%_50%/0.04)] border border-[hsl(280_50%_50%/0.1)] p-3 space-y-2 mb-3">
+                        <div className="rounded-lg bg-[hsl(280_40%_50%/0.06)] border border-[hsl(280_50%_50%/0.12)] p-3 space-y-2 mb-3 relative">
+                          {/* Vertical connecting line */}
+                          <div className="absolute left-[19px] top-3 bottom-3 w-px bg-[hsl(280_50%_50%/0.15)]" />
                           {entry.reasoning.map((step, si) => (
                             <motion.div
                               key={si}
-                              initial={{ opacity: 0, x: -4 }}
+                              initial={{ opacity: 0, x: -6 }}
                               animate={{ opacity: 1, x: 0 }}
-                              transition={{ delay: si * 0.1 }}
-                              className="flex items-start gap-2"
+                              transition={{ delay: si * 0.12 }}
+                              className="flex items-start gap-2.5 relative"
                             >
-                              <div className="w-4 h-4 rounded-full bg-[hsl(280_50%_50%/0.1)] flex items-center justify-center shrink-0 mt-0.5">
-                                <span className="text-[8px] font-bold text-[hsl(280_50%_65%)]">{si + 1}</span>
+                              <div className="w-5 h-5 rounded-full bg-[hsl(280_50%_50%/0.15)] flex items-center justify-center shrink-0 mt-0.5 z-10">
+                                <span className="text-[8px] font-bold text-[hsl(280_50%_70%)]">{si + 1}</span>
                               </div>
                               <p className="text-[10px] text-[hsl(0_0%_100%/0.5)] leading-relaxed italic">
                                 {step}
@@ -319,7 +377,7 @@ export function BoardroomDiscussionThread({ scope }: Props) {
                   {/* Footer metrics */}
                   <div className="flex items-center gap-4">
                     <ConfidenceBar value={entry.confidence} size="sm" className="w-24" />
-                    <span className="text-[9px] text-[hsl(0_0%_100%/0.3)] flex items-center gap-1">
+                    <span className="text-[9px] text-[hsl(0_0%_100%/0.25)] flex items-center gap-1">
                       <FileCheck size={9} /> {entry.evidenceCited} sources
                     </span>
                   </div>
