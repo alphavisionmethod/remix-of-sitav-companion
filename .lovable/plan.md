@@ -1,67 +1,87 @@
 
 
-# Business OS — Premium Dark Dashboard Redesign
+# Finance OS — MudraBank-Style Premium Dashboard Redesign
 
 ## Design Direction
 
-Inspired by the two reference images:
-- **Image 1 (MudraBank)**: Dark dashboard with card-based layout, credit card widget, money flow chart, quick transfer section, recent transactions list, colored stat cards (Total Balance, Income, Expenses) with gradients
-- **Image 2 (Analytics)**: Deep dark UI with glowing green/teal accents, circular progress indicators, bar charts with glow effects, grid-based card layout with subtle borders
+Transform the Finance OS overview from its current card-family layout into a premium dark banking dashboard matching the MudraBank reference: credit card widget, money flow chart, quick transfer section, recent transactions, and colorful stat cards.
 
-## The SITA Business OS Mix
+## Layout
 
-Transform `BusinessOverview` from the current card-family layout into a **premium dark financial dashboard** with:
+```text
+┌────────────────────┬──────────────────────┬──────────────────┐
+│   My Card          │   Money Flow Chart   │ Open New Account │
+│   (credit card     │   (area chart with   │                  │
+│    widget)         │    week toggle)      │ Total Balance    │
+│                    │                      │ $24,800 +5.27%   │
+├────────────────────┤                      ├────────┬─────────┤
+│   Quick Transfer   │                      │ Income │Expenses │
+│   Account selector │                      │ $4,800 │ $1,450  │
+│   Amount input     ├──────────────────────┤        │         │
+│   Send button      │ Recent Transactions  ├────────┴─────────┤
+│                    │ (list with status)   │ Safe to Spend    │
+│                    │                      │ $3,200           │
+└────────────────────┴──────────────────────┴──────────────────┘
+```
 
-1. **Top row**: 4 stat cards with colored gradients (Pipeline Value, Revenue This Month, Active Customers, Conversion Rate) — like MudraBank's Total Balance/Income/Expenses cards
-2. **Middle row**: Money Flow chart (line/area chart showing weekly revenue) + Recent Activity list (transactions-style with colored icons and status badges)
-3. **Bottom row**: Quick Actions panel (like Quick Transfer) + Pipeline breakdown mini-cards + Advisor insight card
-4. **Design tokens**: Deep dark backgrounds (`bg-[#0a0a12]`), cards with `bg-[#12121e]` and subtle `border-[#1a1a2e]`, glowing accent numbers (green for positive, red for negative), teal/green sparkline accents
+## New Components
+
+### 1. `FinanceCreditCard.tsx`
+- Dark gradient card with card number (masked), holder name, expiry
+- Subtle chip icon, contactless icon, Visa/Mastercard logo area
+- Carousel dots below (decorative)
+
+### 2. `FinanceMoneyFlow.tsx`
+- SVG area chart (reuse pattern from BusinessMoneyFlow)
+- "Savings" label, Current/Previous Week toggle
+- Emerald/teal line with gradient fill, day labels, hover tooltip showing value
+- Deep dark card (`bg-[#12121e]`, `border-[#1a1a2e]`)
+
+### 3. `FinanceQuickTransfer.tsx`
+- Account type selector (Debit/Credit dropdown)
+- Balance display
+- Amount input with currency symbol
+- Avatar row for recent recipients
+- Send button
+
+### 4. `FinanceRecentTransactions.tsx`
+- Transaction rows: colored icon + name/category + date + amount + status badge
+- Status: Success (green), Pending (yellow), Failed (red)
+- "View all" link
+
+### 5. `FinanceStatCards.tsx`
+- Three gradient cards stacked on right column:
+  - **Total Balance**: Red/coral gradient, large number, percentage change with arrow
+  - **Income**: Green gradient, monthly income
+  - **Expenses**: Purple/violet gradient, monthly expenses
+- Plus a "Safe to Spend" mini card
+- "Open New Account +" button at top
+
+### 6. Rewrite `MoneyOverview.tsx`
+- Replace all HeroCard/QueueCard/ActionCard usage with the new MudraBank-style components
+- Three-column grid layout on desktop, stacks on mobile
+- Deep dark background (`bg-[#0a0a12]`)
+- Keep existing data hooks (useBills, useSubscriptions, useMoneyKPIs)
 
 ## Files Changed
 
 | File | Change |
 |------|--------|
-| `src/pages/business/BusinessOverview.tsx` | Full rewrite — premium dashboard grid with stat cards, chart area, transactions list, quick actions |
-| `src/components/business/BusinessStatCard.tsx` | New — gradient stat card component (value, label, trend arrow, percentage change) |
-| `src/components/business/BusinessMoneyFlow.tsx` | New — SVG area chart showing weekly revenue with glowing data points |
-| `src/components/business/BusinessRecentActivity.tsx` | New — transactions-style list with colored category icons, amounts, status badges |
-| `src/components/business/BusinessQuickActions.tsx` | New — quick action buttons (Send Invoice, Add Lead, Schedule Call, Create Quote) with glass styling |
+| `src/pages/money/MoneyOverview.tsx` | Full rewrite — MudraBank dashboard layout |
+| `src/components/finance/FinanceCreditCard.tsx` | New — dark gradient credit card widget |
+| `src/components/finance/FinanceMoneyFlow.tsx` | New — SVG area chart with week toggle |
+| `src/components/finance/FinanceQuickTransfer.tsx` | New — quick transfer panel with amount input |
+| `src/components/finance/FinanceRecentTransactions.tsx` | New — transaction list with status badges |
+| `src/components/finance/FinanceStatCards.tsx` | New — gradient stat cards (Balance, Income, Expenses) |
 
-## Technical Details
+## Design Tokens
 
-### Stat Cards (`BusinessStatCard`)
-- Gradient backgrounds: Pipeline=violet-to-purple, Revenue=emerald-to-teal, Customers=amber-to-orange, Conversion=cyan-to-blue
-- Large number (`text-3xl font-bold text-white`), small label, trend arrow with percentage
-- Subtle inner glow matching gradient color
-- `rounded-2xl` with no visible border
-
-### Money Flow Chart (`BusinessMoneyFlow`)
-- Pure SVG area chart (no external lib) with gradient fill under the line
-- 7 data points (Mon–Sun), glowing dots on hover
-- Teal/green line color with `filter: drop-shadow(0 0 6px rgba(16,185,129,0.5))`
-- Toggle buttons: "Current Week" / "Previous Week" like MudraBank
-
-### Recent Activity (`BusinessRecentActivity`)
-- List rows: colored icon circle + description + date + amount + status badge (Success/Pending/Overdue)
-- Status badges: green for paid, yellow for pending, red for overdue
-- "View all" link at top right
-- Subtle hover highlight on rows
-
-### Quick Actions (`BusinessQuickActions`)
-- 2x2 grid of action buttons with icons
-- Glass material (`bg-white/[0.04] backdrop-blur-xl`)
-- Each button: icon + label, hover scales slightly
-
-### Layout Grid
-```text
-┌─────────┬─────────┬─────────┬─────────┐
-│ Pipeline │ Revenue │ Custom. │ Conver. │  ← stat cards
-├─────────────────────┬─────────────────┤
-│   Money Flow Chart  │ Recent Activity │  ← main content
-├──────────┬──────────┴─────────────────┤
-│ Actions  │  Advisor + Pipeline Cards  │  ← bottom
-└──────────┴────────────────────────────┘
-```
-
-All existing card imports (HeroCard, QueueCard, etc.) will be replaced with the new purpose-built components. The `DomainAppShell` wrapper stays unchanged — only the content inside changes.
+- Background: `bg-[#0a0a12]`
+- Cards: `bg-[#12121e]` with `border-[#1a1a2e]`
+- Credit card: gradient from `hsl(260 40% 25%)` to `hsl(280 35% 18%)`
+- Total Balance card: coral/red gradient
+- Income card: emerald gradient
+- Expenses card: violet gradient
+- Chart accent: `rgb(16,185,129)` with glow
+- Text: white/90 primary, white/50 secondary, white/30 tertiary
 
