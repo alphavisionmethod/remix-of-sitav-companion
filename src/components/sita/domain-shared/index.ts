@@ -18,3 +18,11 @@ export type { HeroMetric } from "./OperatingStateHero";
 
 export { PriorityQueue } from "./PriorityQueue";
 export type { PriorityItem } from "./PriorityQueue";
+
+export { ModuleWorkspace, ModuleBreadcrumb } from "./ModuleWorkspace";
+export type { ModuleBreadcrumbItem } from "./ModuleWorkspace";
+
+export { ModuleEmptyState } from "./ModuleEmptyState";
+
+export { DomainCommandPalette } from "./DomainCommandPalette";
+export type { CommandItem } from "./DomainCommandPalette";
