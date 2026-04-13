@@ -36,6 +36,7 @@ import { useAppTransitions } from "@/components/sita/shell/AppTransitionLayer";
 import { useGestureEngine } from "@/hooks/use-gesture-engine";
 import { useFocusMode } from "@/hooks/use-focus-mode";
 import { registerActivity, removeActivity, updateActivity } from "@/components/sita/shell/LiveActivityBar";
+import { useLiveActivityDomainData } from "@/hooks/useLiveActivityDomainData";
 import { lazy } from "react";
 
 // Sub-layers
@@ -71,6 +72,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
   const { calmLevel } = useCalmMode();
   const focusMode = useFocusMode();
   const location = useLocation();
+  useLiveActivityDomainData();
 
   // Gesture engine
   useGestureEngine(useCallback((gesture) => {

@@ -4,7 +4,8 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAction } from "@/lib/hooks/useAction";
 import { motion, AnimatePresence } from "framer-motion";
-import { DollarSign, Clock, AlertTriangle, CheckCircle, Plus, X, FileText } from "lucide-react";
+import { DollarSign, Clock, AlertTriangle, CheckCircle, Plus, X, FileText, Target } from "lucide-react";
+import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useInvoiceGenerate, useInvoiceSend } from "@/hooks/use-backend-actions";
@@ -142,12 +143,13 @@ const InvoicesCollections = () => {
       />
     </div>
   ) : (
-    <div className="flex items-center justify-center h-full">
-      <div className="text-center space-y-2">
-        <FileText className="h-8 w-8 mx-auto text-[hsl(0_0%_30%)]" />
-        <p className="text-[13px] text-[hsl(0_0%_50%)]">Select an invoice to view details</p>
-      </div>
-    </div>
+    <PremiumEmptyState
+      variant="no-data"
+      icon={FileText}
+      domain="business"
+      title="Select an invoice"
+      description="Click on an invoice to view details, send reminders, or mark as paid."
+    />
   );
 
   return (
