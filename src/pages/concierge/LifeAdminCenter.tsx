@@ -4,7 +4,7 @@ import { GlassCard } from "@/components/sita/PremiumPageComponents";
 import { SitaPageHeader } from "@/components/sita/SitaCard";
 import { SitaTabs } from "@/components/sita/SitaComponents";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { LifeAdminQueueCard, ConciergeAdvisorInsightCard, ConciergePageWrapper } from "@/components/concierge";
+import { LifeAdminQueueCard, ConciergeAdvisorInsightCard, ConciergePageWrapper, ConciergeEmptyState } from "@/components/concierge";
 import type { AdminQueueItem } from "@/components/concierge";
 import {
   FileText, Calendar, Wrench, RefreshCw, Clock, AlertCircle, CheckCircle,
@@ -155,11 +155,7 @@ const LifeAdminCenter = () => {
 
       <div className="space-y-2">
         {tabData.items.length === 0 ? (
-          <GlassCard glow="none" className="p-12 text-center">
-            <CheckCircle className="h-9 w-9 text-chart-2 mx-auto mb-3" />
-            <p className="text-base font-semibold text-foreground">All clear — no admin lurking</p>
-            <p className="text-sm text-muted-foreground mt-1">Enjoy the calm. We'll surface things when they come up.</p>
-          </GlassCard>
+          <ConciergeEmptyState domain="admin" />
         ) : (
           tabData.items.map(item => <AdminCard key={item.id} item={item} />)
         )}

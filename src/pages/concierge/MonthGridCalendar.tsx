@@ -2,7 +2,7 @@ import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile } from "@/components/sita/SitaComponents";
-import { EmptyStateCTA } from "@/components/sita/EmptyStateCTA";
+import { ConciergeEmptyState } from "@/components/concierge/ConciergeEmptyState";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
@@ -107,15 +107,10 @@ const MonthGridCalendar = () => {
     return (
       <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
         <SitaPageHeader title="Family Calendar" subtitle="Month view with bookings and tasks" />
-        <EmptyStateCTA
-          icon={Calendar}
+        <ConciergeEmptyState
+          domain="appointments"
           title="Your calendar is clear"
           description="No bookings or tasks this month. Add your first event to start organizing your schedule."
-          actions={[
-            { label: "Add Booking", to: "/concierge/appointments" },
-            { label: "Add Task", to: "/concierge/tasks", variant: "secondary" },
-          ]}
-          tip="Bookings and tasks will appear here automatically"
         />
       </motion.div>
     );
