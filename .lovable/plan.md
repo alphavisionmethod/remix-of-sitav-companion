@@ -1,48 +1,98 @@
 
 
-# Fix C-003: No Live OAuth Connector Flow
+# Elevate Business OS to a Launched Application Aesthetic
 
-## Problem
+## Current State
 
-The `connector-oauth` edge function is fully implemented (initiate, callback, disconnect, token exchange, consent logging). However, the flow is dead because:
+The Business Center renders as a full-page route (`/business/*`) wrapped in `CenterPageShell` — a page-within-a-sidebar layout. It looks like a dashboard, not like software launched inside an OS. The OS already has a complete window manager (`FloatingWindow`, `DesktopSurface`, dock physics, traffic-light controls, snap zones, app accents) — but Business Center doesn't use any of it.
 
-1. **Missing secrets**: `GOOGLE_CONNECTOR_CLIENT_ID` and `GOOGLE_CONNECTOR_CLIENT_SECRET` are not configured
-2. **No redirect handling**: When `system.connector.connect` calls the edge function and gets back `{ authorization_url: "..." }`, nothing redirects the user to Google's consent screen
-3. **No callback route**: After Google redirects back, there's no client-side page to capture the `code` and `state` query params and call the `callback` action
+## Goal
 
-## Fix Plan
+Make Business OS feel like a **native application launched within SITA OS**: window chrome, app-level sidebar navigation, a title bar, and visual cohesion with the existing NovaOS window system — while keeping the existing route-based navigation functional.
 
-### Step 1: Request Google OAuth secrets
-Use `add_secret` to prompt the user to provide `GOOGLE_CONNECTOR_CLIENT_ID` and `GOOGLE_CONNECTOR_CLIENT_SECRET`. These come from the Google Cloud Console (APIs & Services → Credentials → OAuth 2.0 Client IDs). The redirect URI to configure in Google Console is: `{SUPABASE_URL}/functions/v1/connector-oauth`.
+## Plan
 
-### Step 2: Update `system.connector.connect` capability to handle redirect
-In `src/lib/capabilities/system-capabilities.ts`, after receiving the `authorization_url` from the edge function, open it via `window.location.href` to redirect the user to Google's consent screen.
+### Step 1: Create `BusinessAppShell` — app-level window chrome wrapper
 
-### Step 3: Create OAuth callback page
-Create `src/pages/OAuthCallback.tsx` — a small page mounted at `/oauth/callback` that:
-- Reads `code` and `state` from URL query params
-- Calls `supabase.functions.invoke("connector-oauth", { body: { action: "callback", code, state } })`
-- Shows success/error and redirects to Connector Hub
+Create `src/components/business/BusinessAppShell.tsx`:
+- **Title bar** with traffic-light-style dots (close/minimize/maximize), app icon (briefcase), and title "Business OS"
+- **App-level sidebar** (left, ~200px) with grouped navigation: Core, Sales, Growth, Intelligence, Office — replacing the current flat horizontal tab strip
+- Sidebar items use active states matching the `APP_COMPONENTS.listItem` design system tokens
+- **Content area** with subtle inner shadow and glassmorphic material background
+- Uses `APP_MATERIALS`, `APP_SHADOWS`, `APP_CHROME`, `APP_TYPE` from the existing `app-window-system.ts`
+- Accent strip at top: 2px purple gradient bar (`APP_CHROME.accentStripHeight`)
+- Window border radius: 16px (`APP_CHROME.cornerRadius`)
 
-### Step 4: Add callback route
-Register `/oauth/callback` in the router (likely `App.tsx` or wherever routes are defined).
+### Step 2: Register Business OS accent in `app-window-system.ts`
 
-### Step 5: Update edge function callback to support GET redirect
-Update `connector-oauth/index.ts` to also handle GET requests at the callback (since Google redirects via GET with `?code=...&state=...`). Add a GET handler that exchanges the token and redirects the user back to the app with a success/error status parameter.
+Add `"business-os"` to `APP_ACCENTS`:
+```
+"business-os": "from-[hsl(265_55%_58%)] to-[hsl(285_50%_48%)]"
+```
 
-### Step 6: Update ConnectorHub connect button
-In `ConnectorHub.tsx`, update the connect button's `onClick` to properly handle the `authorization_url` response — either by using `window.open()` or redirecting directly.
+### Step 3: Refactor `BusinessCenter.tsx` to use `BusinessAppShell`
 
-### Step 7: Deploy edge function
-Deploy the updated `connector-oauth` edge function.
+Replace the current `CenterPageShell` + `SitaTabs` structure:
+- Wrap everything in `BusinessAppShell` instead of `CenterPageShell`
+- Move tab navigation into the sidebar
+- Keep `AnimatePresence` page transitions for content
+- Remove the hero header (the title bar replaces it)
+- Keep `InAppAdvisorStrip` but move it into the app's toolbar area
+
+### Step 4: Polish the Overview page for in-app feel
+
+Update `BusinessOverview.tsx`:
+- Remove the duplicate `AmbientHeader` (the app shell provides identity)
+- Tighten padding to use `SPACE.normal` (16px) instead of generous page margins
+- Add a compact "status bar" at the bottom of the window showing CRM health, sync status, and advisor state
+
+### Step 5: Add app-launch entry point from Desktop
+
+Add "Business OS" to the `DesktopIconGrid` as a launchable app icon, so double-clicking it navigates to `/business` with a window-open animation.
 
 ## Files Changed
-- **Create**: `src/pages/OAuthCallback.tsx` (~60 lines)
-- **Edit**: `src/lib/capabilities/system-capabilities.ts` (handle redirect in connect capability)
-- **Edit**: `supabase/functions/connector-oauth/index.ts` (add GET callback handler)
-- **Edit**: Router file (add `/oauth/callback` route)
-- **Edit**: `src/pages/ConnectorHub.tsx` (handle authorization_url in connect response)
 
-## Important Note
-You will need to provide Google OAuth client credentials. These are created in the Google Cloud Console under APIs & Services → Credentials. The authorized redirect URI should be set to your edge function URL.
+- **Create**: `src/components/business/BusinessAppShell.tsx` (~180 lines)
+- **Edit**: `src/lib/design-system/app-window-system.ts` (add accent)
+- **Edit**: `src/pages/BusinessCenter.tsx` (swap shell, move tabs to sidebar)
+- **Edit**: `src/pages/business/BusinessOverview.tsx` (remove duplicate header, tighten spacing)
+- **Edit**: `src/components/sita/shell/DesktopIconGrid.tsx` (add Business OS icon)
+
+## Visual Result
+
+```text
+┌──────────────────────────────────────────────────────┐
+│ ● ● ●   💼 Business OS                    ─ □ ✕    │
+│══════════════════════════════════════════════════════│
+│ ┌──────────┐ ┌──────────────────────────────────────┐│
+│ │ CORE     │ │                                      ││
+│ │ Overview │ │  Pipeline Value    $42,800            ││
+│ │ Leads    │ │  ┌───────┐ ┌────────┐ ┌──────────┐  ││
+│ │ Customers│ │  │ Won   │ │ Negot. │ │ At Risk  │  ││
+│ │ Follow-up│ │  │$18.2K │ │$14.6K  │ │ $5.4K    │  ││
+│ │ Support  │ │  └───────┘ └────────┘ └──────────┘  ││
+│ │──────────│ │                                      ││
+│ │ SALES    │ │  [Revenue Chart]  [Funnel]           ││
+│ │ Quotes   │ │                                      ││
+│ │ Invoices │ │  What Matters Now                    ││
+│ │ Proposals│ │  ▸ Emily Watson — 3 days...          ││
+│ │──────────│ │  ▸ Invoice #1035 overdue             ││
+│ │ GROWTH   │ │                                      ││
+│ │ Autopilot│ │  [Advisor Strip]                     ││
+│ │ Recovery │ └──────────────────────────────────────┘│
+│ └──────────┘                                        │
+│ ────────────────────────────────────── CRM ● Synced │
+└──────────────────────────────────────────────────────┘
+```
+
+## Technical Details
+
+- The sidebar uses `APP_MATERIALS.sidebarBg` and `APP_MATERIALS.sidebarBorder`
+- Active nav items use `APP_COMPONENTS.listItem.active` 
+- Title bar height: `APP_CHROME.titleBarHeight` (40px)
+- Window background: `APP_MATERIALS.windowBg.dark`
+- Corner radius: `APP_CHROME.cornerRadius` (16px)
+- Focused shadow: `APP_SHADOWS.focused`
+- Inner glow: `APP_SHADOWS.innerGlow`
+- All transitions use existing Framer Motion patterns from `CenterPageShell`
 
