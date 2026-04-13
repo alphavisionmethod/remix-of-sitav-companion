@@ -1,18 +1,22 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Stunning Desktop Surface
-// Centered logo + bottom-left clock + right widget panel
-// Inspired by KDE, Deepin, Garuda aesthetics
+// SITA OS — Desktop Surface with Draggable Widgets
+// Branded wallpaper + free-form widget canvas
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useMemo, useEffect } from "react";
+import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
+import { Plus } from "lucide-react";
 import { useWindowManagerContext } from "@/contexts/WindowManagerContext";
 import { FloatingWindow } from "./FloatingWindow";
 import { ShellAmbientBackground } from "./ShellAmbientBackground";
 import { WindowCompositor } from "@/components/sita/os/WindowCompositor";
 import { useOSWindowContext } from "@/components/sita/os/WindowContext";
+import { useDesktopWidgets } from "@/hooks/useDesktopWidgets";
+import { useWallpaper } from "@/hooks/use-wallpaper";
+import { DraggableWidget } from "./desktop/DraggableWidget";
+import { WidgetPicker } from "./desktop/WidgetPicker";
 import {
   DesktopClockWidget,
   DesktopNotificationsWidget,
@@ -20,7 +24,7 @@ import {
   DesktopSystemWidget,
 } from "./desktop";
 import type { ContinuityContext, DesktopState } from "./useShellState";
-import logo from "@/assets/logo.webp";
+import { useEffect } from "react";
 
 interface DesktopSurfaceProps {
   onOpenCommand?: () => void;
@@ -82,13 +86,13 @@ function DesktopBigClock() {
 }
 
 // ── Compact Continuity Card ──────────────────────────────────
-function ContinuityCard({ continuity, desktopState }: { continuity: ContinuityContext; desktopState: DesktopState }) {
+function ContinuityCard({ continuity }: { continuity: ContinuityContext }) {
   const navigate = useNavigate();
   const pending = continuity.pendingDrafts + continuity.unfinishedWorkflows;
   const resumeLabel = continuity.lastWorkspace ? `Resume ${continuity.lastWorkspace}` : "Workspace ready";
 
   return (
-    <div className="rounded-3xl border border-white/[0.04] bg-white/[0.03] backdrop-blur-3xl overflow-hidden">
+    <div className="rounded-3xl border border-white/[0.04] bg-white/[0.03] backdrop-blur-3xl overflow-hidden w-[300px]">
       <div className="h-px bg-gradient-to-r from-violet-500/30 via-fuchsia-500/20 to-transparent" />
       <div className="p-4">
         <div className="text-[10px] font-medium uppercase tracking-[0.2em] text-white/25 mb-2">Continuity</div>
@@ -107,12 +111,51 @@ function ContinuityCard({ continuity, desktopState }: { continuity: ContinuityCo
   );
 }
 
+// ── Widget Renderer ──────────────────────────────────────────
+function renderWidget(type: string, onOpenCommand?: () => void, continuity?: ContinuityContext) {
+  switch (type) {
+    case "clock":
+      return <DesktopBigClock />;
+    case "quick-actions":
+      return (
+        <div className="w-[320px]">
+          <DesktopQuickActionsWidget onOpenCommand={onOpenCommand} />
+        </div>
+      );
+    case "system":
+      return (
+        <div className="w-[320px]">
+          <DesktopSystemWidget />
+        </div>
+      );
+    case "calendar":
+      return (
+        <div className="w-[320px]">
+          <DesktopClockWidget />
+        </div>
+      );
+    case "notifications":
+      return (
+        <div className="w-[320px]">
+          <DesktopNotificationsWidget />
+        </div>
+      );
+    case "continuity":
+      return <ContinuityCard continuity={continuity ?? DEFAULT_CONTINUITY} />;
+    default:
+      return null;
+  }
+}
+
 export function DesktopSurface({
   onOpenCommand,
   desktopState = "quiet",
   continuity = DEFAULT_CONTINUITY,
 }: DesktopSurfaceProps) {
   const navigate = useNavigate();
+  const { activeId: wallpaperId } = useWallpaper();
+  const { widgets, hiddenWidgets, moveWidget, removeWidget, addWidget, resetWidgets, allTypes } = useDesktopWidgets();
+  const [pickerOpen, setPickerOpen] = useState(false);
 
   // Legacy window manager
   const windowManager = useWindowManagerContext();
@@ -123,110 +166,71 @@ export function DesktopSurface({
   const { openWindows } = useOSWindowContext();
   const hasAnyWindows = visibleWindows.length > 0 || openWindows.some(w => !w.isMinimized);
 
+  // Wallpaper base gradient (for non-sita-hero themed wallpapers)
+  const wallpaperTheme = useWallpaper().theme;
+  const baseGradient = wallpaperId === "sita-hero"
+    ? "from-[hsl(230,60%,18%)] via-[hsl(260,50%,22%)] to-[hsl(280,45%,16%)]"
+    : wallpaperId === "auto"
+      ? "from-[hsl(265,45%,12%)] via-[hsl(280,35%,8%)] to-[hsl(220,40%,6%)]"
+      : wallpaperTheme.gradient || "from-[hsl(265,45%,12%)] via-[hsl(280,35%,8%)] to-[hsl(220,40%,6%)]";
+
   return (
     <div className="fixed inset-0" onDoubleClick={() => onOpenCommand?.()}>
       {/* Layer 0: Deep gradient base */}
-      <div className="absolute inset-0 z-0 bg-gradient-to-br from-[hsl(265,45%,12%)] via-[hsl(280,35%,8%)] to-[hsl(220,40%,6%)]" />
+      <div className={cn("absolute inset-0 z-0 bg-gradient-to-br", baseGradient)} />
+
+      {/* Layer 0.5: Wallpaper overlay */}
+      {wallpaperTheme.overlay && wallpaperId !== "sita-hero" && (
+        <div className="absolute inset-0 z-[0]" style={{ background: wallpaperTheme.overlay }} />
+      )}
 
       {/* Layer 1: Ambient Wallpaper */}
       <div className="absolute inset-0 z-[1]">
-        <ShellAmbientBackground intensity="vivid" className="fixed" />
+        <ShellAmbientBackground intensity="vivid" className="fixed" wallpaperId={wallpaperId} />
       </div>
 
-      {/* Layer 2: Desktop Content */}
+      {/* Layer 2: Desktop Content — Draggable Widgets */}
       <div className={cn(
         "absolute inset-0 z-10 transition-all duration-700",
         hasAnyWindows && "opacity-30 blur-sm pointer-events-none"
       )}>
-        {/* ── Center Logo + Tagline ── */}
-        <motion.div
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1.2, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center pointer-events-none select-none z-10"
-        >
-          {/* Logo with halo glow */}
-          <div className="relative">
-            <div className="absolute inset-0 rounded-2xl bg-violet-500/20 blur-[40px] scale-150" />
-            <img
-              src={logo}
-              alt="SITA"
-              className="relative h-20 w-20 rounded-2xl shadow-2xl drop-shadow-[0_0_40px_rgba(114,92,255,0.4)]"
-            />
-          </div>
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="mt-5 text-center"
+        {/* Draggable widgets */}
+        {widgets.map((w) => (
+          <DraggableWidget
+            key={w.id}
+            id={w.id}
+            position={w.position}
+            onMove={moveWidget}
+            onRemove={removeWidget}
           >
-            <div className="text-lg tracking-[0.2em] uppercase font-light text-white/45">
-              SITA OS
-            </div>
-            <div className="mt-1 text-sm tracking-[0.12em] text-white/25">
-              Your sovereign operating environment
-            </div>
-          </motion.div>
-        </motion.div>
+            {renderWidget(w.type, onOpenCommand, continuity)}
+          </DraggableWidget>
+        ))}
 
-        {/* ── Bottom-Left Large Clock ── */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
-          className="absolute left-12 bottom-24 z-10 pointer-events-none hidden lg:block"
-        >
-          <DesktopBigClock />
-        </motion.div>
-
-        {/* ── Right Widget Panel ── */}
-        <div className="absolute top-6 right-5 bottom-20 z-10 flex flex-col gap-4 w-[320px] overflow-y-auto scrollbar-none pointer-events-auto rounded-3xl bg-white/[0.01] backdrop-blur-xl p-2">
-          {/* App Grid */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
+        {/* Add Widget FAB */}
+        {!hasAnyWindows && (
+          <motion.button
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1 }}
+            onClick={() => setPickerOpen(true)}
+            className="fixed bottom-24 left-6 z-20 flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.1] bg-white/[0.05] backdrop-blur-xl text-white/40 hover:text-white/80 hover:bg-white/[0.1] transition-all shadow-lg"
+            title="Add Widget"
           >
-            <DesktopQuickActionsWidget onOpenCommand={onOpenCommand} />
-          </motion.div>
-
-          {/* System Toggles */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <DesktopSystemWidget />
-          </motion.div>
-
-          {/* Calendar */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <DesktopClockWidget />
-          </motion.div>
-
-          {/* Business Pulse */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <DesktopNotificationsWidget />
-          </motion.div>
-
-          {/* Continuity */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <ContinuityCard continuity={continuity} desktopState={desktopState} />
-          </motion.div>
-        </div>
+            <Plus className="h-5 w-5" />
+          </motion.button>
+        )}
       </div>
+
+      {/* Widget Picker */}
+      <WidgetPicker
+        open={pickerOpen}
+        onClose={() => setPickerOpen(false)}
+        hiddenWidgets={hiddenWidgets}
+        allTypes={allTypes}
+        onAdd={(type) => { addWidget(type); }}
+        onReset={() => { resetWidgets(); setPickerOpen(false); }}
+      />
 
       {/* Layer 3: Legacy Window Compositor */}
       <div className="absolute inset-0 z-20">
