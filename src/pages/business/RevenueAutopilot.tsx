@@ -202,30 +202,23 @@ const RevenueAutopilot = () => {
 
    return (
     <div className="space-y-6">
-      <DemoModeBadge />
-      <SitaPageHeader
-        title="Revenue Autopilot"
-        subtitle="Continuously find and recover value leaks across leads, quotes, invoices, renewals, and capacity"
-        actions={
-          <span className="rounded-full bg-primary/10 px-3 py-1 text-[10px] font-semibold text-primary flex items-center gap-1">
-            <Zap className="h-3 w-3" /> Autopilot Active
-          </span>
-        }
-      />
+      <PageTruthBanner />
+      <div className="flex items-center justify-between">
+        <span className="rounded-full bg-primary/10 px-3 py-1 text-[10px] font-semibold text-primary flex items-center gap-1">
+          <Zap className="h-3 w-3" /> Autopilot Active
+        </span>
+      </div>
       <SitaTabs tabs={tabs} active={activeTab} onChange={setActiveTab} />
       {activeTab === "leakage" && <LeakageRadar />}
       {activeTab === "recovery" && <RecoveryEngine />}
       {activeTab === "opportunities" && <OpportunitiesRanked />}
       {activeTab === "recovered" && <RecoveredValueLedger />}
 
-      <LiveAdvisorCard
-        advisor="business"
-        intent="revenue_recovery"
-        demoName="Revenue Recovery AI"
-        demoRole="Autopilot Intelligence"
-        demoConfidence="High"
-        demoRecommendation="$23,500 in detectable leakage across stale leads, aging quotes, and overdue invoices. Top recovery priority: TechVentures $15K overdue — escalate with collections ladder."
-        demoReasoning="Based on real-time leakage radar, recovery probability models, and opportunity ranking."
+      <ModuleAdvisorInsight
+        advisorName="Revenue Recovery AI"
+        domain="business"
+        insight="$23,500 in detectable leakage across stale leads, aging quotes, and overdue invoices. Top recovery priority: TechVentures $15K overdue."
+        confidence={90}
       />
     </div>
   );

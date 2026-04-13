@@ -317,11 +317,7 @@ const RevenueForecast = () => {
 
   return (
     <div className="space-y-6">
-      <DemoModeBadge />
-      <SitaPageHeader
-        title="Revenue Forecast"
-        subtitle="AI-driven 30/60/90 day projections from digital twin health scores and playbook performance"
-      />
+      <PageTruthBanner />
 
       {/* ── KPI Row ────────────────────────────────── */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
