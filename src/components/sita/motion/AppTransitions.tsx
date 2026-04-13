@@ -311,9 +311,9 @@ export function BoardroomCinematic({ children, domain }: { children: ReactNode; 
 
   return (
     <motion.div
-      initial={v.initial}
-      animate={v.animate}
-      transition={v.transition}
+      initial={v.initial as any}
+      animate={v.animate as any}
+      transition={v.transition as any}
       className="w-full h-full"
     >
       {children}
