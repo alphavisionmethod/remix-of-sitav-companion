@@ -23,6 +23,7 @@ import { useAdaptiveInterface } from "@/hooks/useAdaptiveInterface";
 import { useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { PageTransition } from "./PageTransition";
 import { SectionSkeleton } from "./PageSkeleton";
 import { FinderWindow } from "./shell/windows/FinderWindow";
 import { SettingsWindow } from "./shell/windows/SettingsWindow";
@@ -110,31 +111,7 @@ const NotificationDropdownLazy = lazy(() => import("./shell/NotificationDropdown
 const PictureInPictureLazy = lazy(() => import("./shell/PictureInPicture").then(m => ({ default: m.PictureInPicture })));
 const IntentSuggestionsWidgetLazy = lazy(() => import("./shell/IntentSuggestionsWidget").then(m => ({ default: m.IntentSuggestionsWidget })));
 
-// Route-aware page transitions
-const drillDownSegments = ["mission", "owner", "business", "money", "concierge"];
-
-const getPageTransition = (pathname: string) => {
-  const segment = pathname.split("/").filter(Boolean)[0] || "home";
-  const depth = pathname.split("/").filter(Boolean).length;
-
-  // Drill-down sub-page: slide in from right
-  if (depth > 1 && drillDownSegments.includes(segment)) {
-    return {
-      initial: { opacity: 0, x: 24, scale: 0.98, filter: "blur(6px)" },
-      animate: { opacity: 1, x: 0, scale: 1, filter: "blur(0px)" },
-      exit: { opacity: 0, x: -16, scale: 0.99, filter: "blur(3px)" },
-      transition: { type: "spring", mass: 0.6, stiffness: 140, damping: 18 },
-    };
-  }
-
-  // Top-level center switch: premium entrance with scale + blur
-  return {
-    initial: { opacity: 0, y: 12, scale: 0.97, filter: "blur(8px)" },
-    animate: { opacity: 1, y: 0, scale: 1, filter: "blur(0px)" },
-    exit: { opacity: 0, y: -6, scale: 0.99, filter: "blur(4px)" },
-    transition: { type: "spring", mass: 0.5, stiffness: 130, damping: 17 },
-  };
-};
+// Route-aware page transitions are now in PageTransition.tsx
 
 export const ShellLayout = ({ children }: { children: ReactNode }) => {
   const [chatOpen, setChatOpen] = useState(false);
@@ -485,8 +462,6 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
   useRealtimeNotifications();
   useProactiveNotifications();
 
-  const workspaceKey = location.pathname.split("/").filter(Boolean)[0] || "home";
-  const transition = getPageTransition(location.pathname);
   const isDesktopRoute = location.pathname === "/" || location.pathname === "/home" || location.pathname === "/desktop";
 
   return (
@@ -590,18 +565,9 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
                   {isDesktopRoute ? (
                     children
                   ) : (
-                    <AnimatePresence mode="wait">
-                      <motion.div
-                        key={workspaceKey}
-                        initial={{ opacity: 0, scale: 0.97, filter: "blur(4px)" }}
-                        animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                        exit={{ opacity: 0, scale: 0.98, filter: "blur(2px)" }}
-                        transition={{ type: "spring", mass: 0.8, stiffness: 150, damping: 18 }}
-                        className="p-3 sm:p-4 md:p-6"
-                      >
-                        {children}
-                      </motion.div>
-                    </AnimatePresence>
+                    <PageTransition>
+                      {children}
+                    </PageTransition>
                   )}
                 </ErrorBoundary>
               </main>
