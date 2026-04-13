@@ -21,36 +21,41 @@ interface ShellAmbientBackgroundProps {
 const MOOD_PALETTES: Record<AmbientMood, { orbs: { color: string; x: string; y: string; size: number }[] }> = {
   serene: {
     orbs: [
-      { color: "hsl(265 55% 58% / 0.05)", x: "25%", y: "20%", size: 600 },
-      { color: "hsl(190 60% 50% / 0.03)", x: "70%", y: "65%", size: 500 },
-      { color: "hsl(38 85% 58% / 0.02)", x: "50%", y: "85%", size: 400 },
+      { color: "hsl(265 55% 58% / 0.09)", x: "25%", y: "20%", size: 650 },
+      { color: "hsl(190 60% 50% / 0.06)", x: "70%", y: "65%", size: 550 },
+      { color: "hsl(38 85% 58% / 0.04)", x: "50%", y: "85%", size: 450 },
+      { color: "hsl(330 50% 55% / 0.03)", x: "85%", y: "25%", size: 350 },
     ],
   },
   alert: {
     orbs: [
-      { color: "hsl(25 90% 55% / 0.05)", x: "30%", y: "25%", size: 550 },
-      { color: "hsl(265 55% 58% / 0.04)", x: "65%", y: "60%", size: 480 },
-      { color: "hsl(0 65% 52% / 0.02)", x: "80%", y: "20%", size: 350 },
+      { color: "hsl(25 90% 55% / 0.09)", x: "30%", y: "25%", size: 600 },
+      { color: "hsl(265 55% 58% / 0.07)", x: "65%", y: "60%", size: 520 },
+      { color: "hsl(0 65% 52% / 0.04)", x: "80%", y: "20%", size: 380 },
+      { color: "hsl(45 80% 55% / 0.03)", x: "15%", y: "75%", size: 320 },
     ],
   },
   warm: {
     orbs: [
-      { color: "hsl(38 85% 58% / 0.05)", x: "35%", y: "30%", size: 580 },
-      { color: "hsl(25 90% 55% / 0.03)", x: "60%", y: "70%", size: 450 },
-      { color: "hsl(265 55% 58% / 0.02)", x: "20%", y: "80%", size: 380 },
+      { color: "hsl(38 85% 58% / 0.09)", x: "35%", y: "30%", size: 630 },
+      { color: "hsl(25 90% 55% / 0.06)", x: "60%", y: "70%", size: 500 },
+      { color: "hsl(265 55% 58% / 0.04)", x: "20%", y: "80%", size: 420 },
+      { color: "hsl(15 80% 50% / 0.03)", x: "80%", y: "40%", size: 350 },
     ],
   },
   focus: {
     orbs: [
-      { color: "hsl(265 55% 58% / 0.03)", x: "50%", y: "40%", size: 700 },
-      { color: "hsl(220 30% 50% / 0.02)", x: "30%", y: "70%", size: 400 },
+      { color: "hsl(265 55% 58% / 0.06)", x: "50%", y: "40%", size: 750 },
+      { color: "hsl(220 30% 50% / 0.04)", x: "30%", y: "70%", size: 450 },
+      { color: "hsl(200 50% 45% / 0.03)", x: "75%", y: "25%", size: 350 },
     ],
   },
   night: {
     orbs: [
-      { color: "hsl(240 40% 35% / 0.04)", x: "40%", y: "30%", size: 650 },
-      { color: "hsl(265 55% 58% / 0.03)", x: "70%", y: "60%", size: 500 },
-      { color: "hsl(220 50% 20% / 0.03)", x: "20%", y: "75%", size: 400 },
+      { color: "hsl(240 40% 35% / 0.07)", x: "40%", y: "30%", size: 700 },
+      { color: "hsl(265 55% 58% / 0.05)", x: "70%", y: "60%", size: 550 },
+      { color: "hsl(220 50% 20% / 0.05)", x: "20%", y: "75%", size: 450 },
+      { color: "hsl(280 40% 40% / 0.03)", x: "60%", y: "15%", size: 380 },
     ],
   },
 };
@@ -209,7 +214,7 @@ export function ShellAmbientBackground({
 
       {/* Subtle noise overlay for texture */}
       <div
-        className="absolute inset-0 opacity-[0.015]"
+        className="absolute inset-0 opacity-[0.025]"
         style={{
           backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
           backgroundRepeat: "repeat",
