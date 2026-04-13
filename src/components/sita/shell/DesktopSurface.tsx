@@ -1,6 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Living Desktop Surface
 // Clean macOS-style desktop: wallpaper, clock, window compositor
+// Dual compositor: legacy FloatingWindow + new OS Window Engine
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useEffect } from "react";
@@ -9,6 +10,8 @@ import { cn } from "@/lib/utils";
 import { useWindowManagerContext } from "@/contexts/WindowManagerContext";
 import { FloatingWindow } from "./FloatingWindow";
 import { ShellAmbientBackground } from "./ShellAmbientBackground";
+import { WindowCompositor } from "@/components/sita/os/WindowCompositor";
+import { useOSWindowContext } from "@/components/sita/os/WindowContext";
 
 function DesktopClock() {
   const [now, setNow] = useState(new Date());
@@ -35,8 +38,11 @@ function DesktopClock() {
 export function DesktopSurface({ onOpenCommand }: { onOpenCommand?: () => void }) {
   const windowManager = useWindowManagerContext();
   const visibleWindows = windowManager?.visibleWindows ?? [];
-  const hasWindows = visibleWindows.length > 0;
   const maxZ = visibleWindows.reduce((max, w) => Math.max(max, w.zIndex), 0);
+
+  // New OS Window Engine
+  const { openWindows } = useOSWindowContext();
+  const hasAnyWindows = visibleWindows.length > 0 || openWindows.some(w => !w.isMinimized);
 
   return (
     <div
@@ -51,12 +57,12 @@ export function DesktopSurface({ onOpenCommand }: { onOpenCommand?: () => void }
       {/* 2. Desktop Elements (Fades and blurs when Apps are open) */}
       <div className={cn(
         "absolute inset-0 z-10 flex items-center justify-center transition-all duration-700",
-        hasWindows && "opacity-30 blur-sm"
+        hasAnyWindows && "opacity-30 blur-sm"
       )}>
         <DesktopClock />
       </div>
 
-      {/* 3. Window Compositor Layer */}
+      {/* 3. Legacy Window Compositor Layer (FloatingWindow) */}
       <div className="absolute inset-0 z-20">
         <AnimatePresence>
           {visibleWindows.map((w, index) => {
@@ -83,6 +89,9 @@ export function DesktopSurface({ onOpenCommand }: { onOpenCommand?: () => void }
           })}
         </AnimatePresence>
       </div>
+
+      {/* 4. New OS Window Engine Compositor */}
+      <WindowCompositor />
     </div>
   );
 }
