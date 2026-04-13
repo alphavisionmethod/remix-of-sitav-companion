@@ -17,7 +17,17 @@ export interface WallpaperTheme {
 const STORAGE_KEY = "sita-wallpaper";
 
 export const WALLPAPER_THEMES: WallpaperTheme[] = [
-  // ── Auto (time-based, default) ──
+  // ── SITA Hero (default first boot) ──
+  {
+    id: "sita-hero",
+    name: "SITA Hero",
+    category: "gradient",
+    gradient: "from-[hsl(230_60%_18%)] via-[hsl(260_50%_22%)] to-[hsl(280_45%_16%)]",
+    overlay: "radial-gradient(ellipse at 50% 45%, hsl(265 60% 40% / 0.35), transparent 55%)",
+    preview: "linear-gradient(135deg, hsl(230 60% 22%), hsl(260 50% 28%), hsl(280 45% 20%))",
+  },
+
+  // ── Auto (time-based) ──
   {
     id: "auto",
     name: "Auto (Time of Day)",
@@ -146,9 +156,9 @@ export const WALLPAPER_THEMES: WallpaperTheme[] = [
 
 export function getWallpaperId(): string {
   try {
-    return localStorage.getItem(STORAGE_KEY) || "auto";
+    return localStorage.getItem(STORAGE_KEY) || "sita-hero";
   } catch {
-    return "auto";
+    return "sita-hero";
   }
 }
 

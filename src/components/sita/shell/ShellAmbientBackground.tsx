@@ -1,13 +1,14 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Shell Ambient Background
-// Shared living background with constellation overlay
+// Shared living background with wallpaper theme support
 // ═══════════════════════════════════════════════════════════════
 
-import { useMemo, useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useMemo } from "react";
+import { motion } from "framer-motion";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { cn } from "@/lib/utils";
-import { SettingsService } from "@/lib/nova-sdk/services/settings-service";
+import { getWallpaperTheme } from "@/hooks/use-wallpaper";
+import logo from "@/assets/logo.webp";
 
 export type AmbientMood = "serene" | "alert" | "warm" | "focus" | "night";
 
@@ -15,6 +16,7 @@ interface ShellAmbientBackgroundProps {
   mood?: AmbientMood;
   intensity?: "subtle" | "normal" | "vivid";
   className?: string;
+  wallpaperId?: string;
 }
 
 const MOOD_PALETTES: Record<AmbientMood, { orbs: { color: string; x: string; y: string; size: number }[] }> = {
@@ -83,7 +85,6 @@ function ConstellationOverlay() {
     }));
   }, []);
 
-  // Pre-compute connections (stars within 30% distance)
   const connections = useMemo(() => {
     const conns: { from: number; to: number; opacity: number }[] = [];
     for (let i = 0; i < stars.length; i++) {
@@ -101,7 +102,6 @@ function ConstellationOverlay() {
 
   return (
     <div className="absolute inset-0 pointer-events-none">
-      {/* Connection lines */}
       <svg className="absolute inset-0 w-full h-full">
         {connections.map((c, i) => (
           <line
@@ -116,7 +116,6 @@ function ConstellationOverlay() {
           />
         ))}
       </svg>
-      {/* Glowing dots */}
       {stars.map((s) => (
         <motion.div
           key={s.id}
@@ -144,43 +143,70 @@ function ConstellationOverlay() {
   );
 }
 
+// ── SITA Hero Wallpaper — large glassmorphic logo ────────────
+function SitaHeroWallpaper() {
+  return (
+    <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+      {/* Background gradient for sita-hero */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[hsl(230,60%,18%)] via-[hsl(260,50%,22%)] to-[hsl(280,45%,16%)]" />
+      
+      {/* Radial glow behind logo */}
+      <div className="absolute inset-0" style={{
+        background: "radial-gradient(ellipse at 50% 45%, hsl(265 60% 40% / 0.35), transparent 55%)"
+      }} />
+
+      {/* Glass circle + logo */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.7 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1.5, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+        className="relative flex items-center justify-center"
+      >
+        {/* Outer glow ring */}
+        <div className="absolute w-[280px] h-[280px] rounded-full bg-[hsl(265,55%,50%,0.08)] blur-[60px]" />
+        
+        {/* Glass circle */}
+        <div className="relative w-[200px] h-[200px] rounded-full border border-white/[0.12] bg-white/[0.04] backdrop-blur-xl flex items-center justify-center shadow-[0_0_80px_rgba(114,92,255,0.15),inset_0_1px_0_rgba(255,255,255,0.1)]">
+          <img
+            src={logo}
+            alt="SITA"
+            className="h-24 w-24 rounded-2xl drop-shadow-[0_0_40px_rgba(114,92,255,0.5)]"
+          />
+        </div>
+      </motion.div>
+
+      {/* Tagline below logo */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.8 }}
+        className="absolute top-[calc(50%+130px)] text-center"
+      >
+        <div className="text-lg tracking-[0.25em] uppercase font-light text-white/40">
+          SITA OS
+        </div>
+        <div className="mt-1.5 text-sm tracking-[0.12em] text-white/20">
+          Your sovereign operating environment
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
 export function ShellAmbientBackground({
   mood,
   intensity = "normal",
   className,
+  wallpaperId,
 }: ShellAmbientBackgroundProps) {
   const reduced = useReducedMotion();
   const activeMood = mood ?? getAutoMood();
   const palette = MOOD_PALETTES[activeMood];
   const intensityScale = intensity === "subtle" ? 0.6 : intensity === "vivid" ? 1.4 : 1;
 
-  // Wallpaper state
-  const [wallpaper, setWallpaper] = useState<{ id: string; src: string }>(() => {
-    try {
-      const saved = SettingsService.get("appearance.wallpaper") as string | undefined;
-      if (saved && saved !== "dynamic") return { id: saved, src: "" };
-    } catch {}
-    return { id: "dynamic", src: "" };
-  });
-
-  useEffect(() => {
-    const handler = (e: Event) => {
-      const detail = (e as CustomEvent).detail;
-      if (detail) setWallpaper({ id: detail.id, src: detail.src });
-    };
-    window.addEventListener("nova-wallpaper-change", handler);
-    try {
-      const saved = SettingsService.get("appearance.wallpaper") as string | undefined;
-      if (saved && saved !== "dynamic") {
-        import(`../../../assets/wallpapers/${saved}.jpg`)
-          .then(mod => setWallpaper({ id: saved, src: mod.default }))
-          .catch(() => {});
-      }
-    } catch {}
-    return () => window.removeEventListener("nova-wallpaper-change", handler);
-  }, []);
-
-  const showImage = wallpaper.id !== "dynamic" && wallpaper.src;
+  const currentWallpaper = wallpaperId ?? getWallpaperTheme().id;
+  const isSitaHero = currentWallpaper === "sita-hero";
+  const isThemed = currentWallpaper !== "auto" && currentWallpaper !== "sita-hero";
 
   const particles = useMemo(() => {
     if (reduced) return [];
@@ -200,25 +226,11 @@ export function ShellAmbientBackground({
       className={cn("absolute inset-0 overflow-hidden pointer-events-none select-none", className)}
       aria-hidden="true"
     >
-      {/* Wallpaper image layer */}
-      <AnimatePresence mode="wait">
-        {showImage && (
-          <motion.div
-            key={wallpaper.id}
-            className="absolute inset-0"
-            initial={{ opacity: 0, scale: 1.05 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.98 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            <img src={wallpaper.src} alt="" className="w-full h-full object-cover" loading="eager" />
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,hsl(0_0%_0%/0.4)_100%)]" />
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* SITA Hero branded wallpaper */}
+      {isSitaHero && <SitaHeroWallpaper />}
 
-      {/* Gradient orbs */}
-      {(!showImage || wallpaper.id === "dynamic") && palette.orbs.map((orb, i) => (
+      {/* Gradient orbs (for auto mode or layered on themed wallpapers) */}
+      {!isSitaHero && palette.orbs.map((orb, i) => (
         <motion.div
           key={`${activeMood}-${i}`}
           className="absolute rounded-full"
@@ -239,11 +251,11 @@ export function ShellAmbientBackground({
         />
       ))}
 
-      {/* Constellation overlay — vivid + dynamic only */}
-      {!showImage && intensity === "vivid" && <ConstellationOverlay />}
+      {/* Constellation overlay — vivid mode */}
+      {intensity === "vivid" && !isSitaHero && <ConstellationOverlay />}
 
       {/* Floating particles */}
-      {!showImage && particles.map((p) => (
+      {!isSitaHero && particles.map((p) => (
         <motion.div
           key={p.id}
           className="absolute rounded-full"
@@ -268,7 +280,7 @@ export function ShellAmbientBackground({
         }}
       />
 
-      {/* Edge gradient for depth */}
+      {/* Edge gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-white/[0.03] via-transparent to-white/[0.02]" />
 
       {/* Noise texture */}
