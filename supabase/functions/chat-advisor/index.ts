@@ -137,11 +137,11 @@ async function buildPrompt(
     supabaseClient
       .from("advisor_knowledge")
       .select("title, content, tags, confidence")
-      .eq("advisor_id", advisorId)
-      .eq("user_id", userId)
+      .or(`user_id.eq.${userId},user_id.eq.00000000-0000-0000-0000-000000000000`)
+      .in("advisor_id", [advisorId, "sita-advisor"])
       .eq("status", "active")
       .order("confidence", { ascending: false })
-      .limit(10),
+      .limit(15),
     supabaseClient
       .from("advisor_memories")
       .select("content, metadata, created_at")
