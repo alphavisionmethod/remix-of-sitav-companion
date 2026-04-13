@@ -8,8 +8,6 @@ import { lazy, Suspense, useState, useCallback, useEffect } from "react";
 import { useWindowManager } from "@/hooks/useWindowManager";
 type WindowManager = ReturnType<typeof useWindowManager>;
 import { useFocusMode } from "@/hooks/use-focus-mode";
-import { CommandLayer } from "./CommandLayer";
-import { ClickRipple } from "./ClickRipple";
 
 const UniversalCommandSurface = lazy(() => import("./UniversalCommandSurface").then(m => ({ default: m.UniversalCommandSurface })));
 const ShellAmbientBackground = lazy(() => import("./ShellAmbientBackground").then(m => ({ default: m.ShellAmbientBackground })));
@@ -113,16 +111,6 @@ export function ShellLiveLayer({
         <AppLauncherPanelLazy open={launcherOpen} onClose={() => setLauncherOpen(false)} onLaunchApp={(id) => { handleLaunchApp(id); setLauncherOpen(false); }} />
       </Suspense>
 
-      {/* Command Layer */}
-      <CommandLayer onAction={(actionId) => {
-        if (actionId === "search") setCommandOpen(true);
-        else if (actionId === "finder") handleLaunchApp("finder");
-        else if (actionId === "settings") handleLaunchApp("settings");
-        else if (actionId === "mission") setMissionControlOpen(true);
-      }} />
-
-      {/* Click Ripple */}
-      <ClickRipple />
 
       {/* Hold-Key Command Overlay */}
       <Suspense fallback={null}>
@@ -134,10 +122,6 @@ export function ShellLiveLayer({
         <LiveActivityBarLazy />
       </Suspense>
 
-      {/* Contextual Cursor */}
-      <Suspense fallback={null}>
-        <ContextualCursorLazy />
-      </Suspense>
 
       {/* Boot Splash */}
       <Suspense fallback={null}>
@@ -171,15 +155,6 @@ export function ShellLiveLayer({
         />
       </Suspense>
 
-      {/* Ambient Suggestions Bar */}
-      <Suspense fallback={null}>
-        <AmbientSuggestionsBarLazy />
-      </Suspense>
-
-      {/* Intent Suggestions Widget */}
-      <Suspense fallback={null}>
-        <IntentSuggestionsWidgetLazy onLaunchApp={(id) => handleLaunchApp(id)} />
-      </Suspense>
     </>
   );
 }

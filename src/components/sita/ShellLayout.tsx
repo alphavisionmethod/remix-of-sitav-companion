@@ -14,9 +14,6 @@ import { SitaTopBar } from "./SitaTopBar";
 import { MobileBottomNav } from "./MobileBottomNav";
 import { InteractionTracker } from "./InteractionTracker";
 import { ErrorBoundary } from "./ErrorBoundary";
-import { DemoStateBanner } from "@/components/reality/DemoStateBanner";
-import { DemoGovernanceBanner } from "./DemoGovernanceBanner";
-import { NetworkStatusBar } from "./NetworkStatusBar";
 import { TrustTransitionIndicator } from "./TrustTransitionIndicator";
 import { useRealtimeNotifications } from "@/hooks/use-realtime-notifications";
 import { useProactiveNotifications } from "@/hooks/use-proactive-notifications";
@@ -172,9 +169,6 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
       />
 
       <div className={cn("relative flex flex-col min-h-screen w-full bg-surface-0", isCalm && "calm-mode", isFocus && "focus-mode")}>
-        <DemoGovernanceBanner />
-        <DemoStateBanner />
-        <NetworkStatusBar />
 
         {isDesktopRoute ? (
           <Suspense fallback={null}>

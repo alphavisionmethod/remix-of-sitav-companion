@@ -126,10 +126,6 @@ export default function DesktopPage() {
       <FirstWeekCalibration />
       <DesktopNotifications />
       <DesktopSurface
-        userName={user?.user_metadata?.full_name || user?.email?.split("@")[0] || "User"}
-        trustPosture={state.trustPosture}
-        notifications={state.notifications}
-        continuity={state.continuity}
         onOpenCommand={openCommand}
       />
 
