@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { renderHook } from "@testing-library/react";
+import { renderHook } from "@/test/test-utils";
 import React from "react";
 import { ConnectivityProvider, useConnectivity } from "../ConnectivityContext";
 

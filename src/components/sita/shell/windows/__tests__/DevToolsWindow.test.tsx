@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeAll } from "vitest";
-import { render } from "@testing-library/react";
+import { render } from "@/test/test-utils";
 import { DevToolsWindow } from "../DevToolsWindow";
 
 vi.mock("../NovaCanvasChart", () => ({
