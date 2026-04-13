@@ -1,129 +1,70 @@
 
 
-# SITA OS Part 3 — Full Advanced Integration Plan
+# SITA OS Part 3 — Remaining Gaps After Audit
 
-## Current Reality (Hard Numbers)
+## What's Done (confirmed)
+- App.tsx: 253 lines (down from 1,899), 9 route families created
+- ShellLayout: 224 lines (down from 750), 3 sub-layers extracted
+- 4 domain homes (Business, Money, Concierge, Files) on new card system
+- 12 module pages have PageTruthBanner
+- BoardroomCinematic in BusinessBoardroom + MoneyBoardroom
+- ComparisonCard + ProofCard in boardrooms and 9 pages
+- Empty state backward-compat shims created
+- AppOpenCeremony wired into DomainAppShell
 
-| Metric | Count |
-|--------|-------|
-| Pages using new design system | 9 |
-| Pages still on legacy SitaCard | 193 |
-| ComparisonCard usage | 0 pages |
-| BoardroomCinematic usage | 0 pages |
-| App.tsx lines / routes | 1,899 / 856 |
-| ShellLayout lines | 750 |
-| Admin pages | 381 |
-| Contexts | 23 |
-| Command components | 6+ overlapping |
-| Empty state components | 6 overlapping |
+## What's NOT Done (6 concrete gaps)
 
-## Implementation Plan (5 Phases, Prioritized by Impact)
+### Gap 1: FinanceBoardroom + ConciergeBoardroom Still Legacy
+Both still import `SitaCard`, `SitaSectionHeader`. Neither has `BoardroomCinematic`, `ComparisonCard`, or `ProofCard`. The plan explicitly required all 4 boardrooms to be upgraded.
 
-### Phase 1: Route Decomposition + Shell Split
+**Action:** Rewrite both with BoardroomCinematic entry, ComparisonCard for scenarios, ProofCard for evidence, AdvisorCard for domain advisor, PageTruthBanner.
 
-**App.tsx decomposition** — Split 1,899-line monolith into route family files:
+### Gap 2: DailyPulse — Flagship Surface Not Migrated
+DailyPulse uses raw `motion.div` and custom cards. Zero new design system imports. This is one of the 8 required flagship surfaces.
 
-| File | Content |
-|------|---------|
-| `src/routes/os-routes.tsx` | Desktop, DailyPulse, Settings, Profile, MissionControl |
-| `src/routes/business-routes.tsx` | All `/business/*` routes |
-| `src/routes/money-routes.tsx` | All `/money/*` routes |
-| `src/routes/concierge-routes.tsx` | All `/concierge/*` routes |
-| `src/routes/files-routes.tsx` | All `/files/*` routes |
-| `src/routes/boardroom-routes.tsx` | Boardroom, replays, history |
-| `src/routes/trust-routes.tsx` | Trust, proof routes |
-| `src/routes/advisor-routes.tsx` | All `/advisors/*` routes |
-| `src/routes/experimental-routes.tsx` | Investment office, app platform, speculative |
+**Action:** Rewrite DailyPulse using HeroCard (morning summary), QueueCard (cross-domain priorities), StatusCard (domain pulse KPIs), AdvisorCard (daily advisor insight), PageTruthBanner, ListReveal for stagger.
 
-App.tsx becomes a thin orchestrator (~200 lines) importing these families.
+### Gap 3: 6 High-Impact Module Pages Still Legacy
+These frequently-visited pages still use old `SitaCard`/`SitaPageHeader`:
 
-**ShellLayout decomposition** — Extract from 750-line monolith:
+| Page | Old refs |
+|------|----------|
+| `TaxEstimator.tsx` | 18 |
+| `ReceivablesObligations.tsx` | 24 |
+| `ServiceProviders.tsx` | 3 |
+| `ErrandsLogistics.tsx` | 12 |
+| `HouseholdCommandCenter.tsx` | 15 |
+| `ProofCenter.tsx` | 3 |
 
-| Extract | Purpose |
-|---------|---------|
-| `ShellWindowLayer.tsx` | All 20 window imports + render logic |
-| `ShellAccessoryLayer.tsx` | AdvisorChat, Timeline, Inspector, CompanionBar, ContextualRail |
-| `ShellLiveLayer.tsx` | LiveActivityBar, ClickRipple, CommandLayer |
+**Action:** Migrate all 6 to new card family + PageTruthBanner + ListReveal.
 
-ShellLayout becomes ~250 lines: frame + sidebar + topbar + lazy children.
+### Gap 4: Context Consolidation Not Done
+`DataModeContext`, `DemoModeProvider`, and `DisplayModeContext` still exist as separate contexts. The plan called for unifying into one reality/truth provider with shim re-exports.
 
-### Phase 2: Migrate 12 High-Impact Module Pages
+**Action:** Create unified `RealityModeProvider` exposing `mode`, `isDemo`, `isReal`, `source`, `freshness`. Make `useDataMode()` and `useDemoMode()` become shim re-exports from it.
 
-Replace `SitaCard`/`GlassCard`/`SitaPageHeader` with new card family, badges, `ListReveal`, and `SplitWorkspace` in:
+### Gap 5: Command System Not Consolidated
+6+ command components remain: `CommandPalette`, `UniversalCommand`, `UniversalCommandSurface`, `DomainCommandPalette`, `AdminCommandPalette`, `AutopilotCommandCenter`. No canonical ownership established.
 
-**Business (4 pages):**
-- `FollowThroughCenter.tsx` — `QueueCard` for callback/no-touch/waiting queues, `UrgencyBadge`, `ExecutionBadge`
-- `CommunicationsCenter.tsx` — `TimelineCard` for comms feed, `ActionCard` for drafts
-- `QuotesWorkspace.tsx` (ProposalsContracts) — `SplitWorkspace`, `ActionCard` for proposals, `ExecutionBadge`
-- `BusinessBoardroom.tsx` — `ComparisonCard` for scenario reviews, `BoardroomCinematic` entry, `AdvisorCard`, `ProofCard`
+**Action:** Keep `CommandPalette` (OS-level), `DomainCommandPalette` (app-scoped), `AdminCommandPalette` (admin). Make `UniversalCommand`, `UniversalCommandSurface`, `AutopilotCommandCenter` into deprecation shims that re-export from `CommandPalette`.
 
-**Money (4 pages):**
-- `ReservesSavings.tsx` — `HeroCard` for reserve health, `StatusCard` confidence, `TrustBadge`
-- `SubscriptionsWaste.tsx` — `QueueCard` for waste items, `FreshnessBadge`, `ActionCard` cancel/downgrade
-- `MoneyBoardroom.tsx` — `ComparisonCard`, `BoardroomCinematic`, `ProofCard` for financial evidence
-- `FinancialHealthPulse.tsx` — `HeroCard` peace score, `StatusCard` stress radar
+### Gap 6: PremiumEmptyState Not Wired as Canonical
+`PremiumEmptyState` exists separately from `EmptyState`. The old `EmptyState` has shims pointing to it, but `PremiumEmptyState` is the intended canonical version per the plan. They're two parallel systems.
 
-**Concierge (2 pages):**
-- `TravelPlanning.tsx` — `QueueCard` for prep tasks, `TimelineCard` for itinerary, `FreshnessBadge`
-- `LifeAdminCenter.tsx` — `QueueCard` for admin bundles, `ActionCard` for grouped tasks
-
-**Files + Trust (2 pages):**
-- `FilesOverview.tsx` — `StatusCard` for processing state, `HeroCard` for file intelligence summary, `SplitWorkspace`
-- `TrustCenter.tsx` — `ProofCard` for evidence chain, `TrustBadge`, `StatusCard` for posture, replace `SitaCard`
-
-### Phase 3: Boardroom Ceremonies + ComparisonCard + ProofCard Integration
-
-**Wire `BoardroomCinematic`** into all 4 boardroom pages:
-- `BusinessBoardroom.tsx` — sharp cut entry
-- `MoneyBoardroom.tsx` / `FinanceBoardroom.tsx` — calm dissolve entry
-- `ConciergeBoardroom.tsx` — soft bloom entry
-
-**Integrate `ComparisonCard`** into all boardrooms for scenario A/B review.
-
-**Integrate `ProofCard`** into:
-- `BusinessProof.tsx`
-- `MoneyProof.tsx`
-- `ConciergeProof.tsx`
-- `ProofCenter.tsx`
-- `TrustCenter.tsx`
-
-### Phase 4: Design System Consolidation
-
-**Unify empty states** — Make `PremiumEmptyState` the single canonical empty state. Create a shim so `EmptyState`, `EmptyStateCTA`, `EmptyStateCard`, `ContextualEmptyState`, and `ConciergeEmptyState` all re-export from `PremiumEmptyState` with mapped props.
-
-**Unify command system** — Keep 3 canonical command surfaces:
-1. `CommandPalette.tsx` — global OS-level (Cmd+K from shell)
-2. `DomainCommandPalette.tsx` — domain-scoped (Cmd+K inside app)
-3. `AdminCommandPalette.tsx` — admin-only
-
-Mark `UniversalCommand.tsx`, `UniversalCommandSurface.tsx`, `AutopilotCommandCenter.tsx` as deprecated re-exports.
-
-**Consolidate mode/reality contexts** — Merge `DataModeContext`, `DemoModeProvider`, and `RealityModeProvider` into one `RealityModeProvider` that exposes: `mode`, `isDemo`, `isReal`, `source`, `freshness`. Old hooks become shim re-exports.
-
-### Phase 5: Runtime Truth + Premium States
-
-**Per-page truth declaration** — Add a `<PageTruthBanner>` component that reads reality mode and shows elegant inline indicators: "Demo Data", "Live", "Partial", "Connecting...". Apply to all 21 migrated pages.
-
-**Connect-to-activate states** — For pages requiring connectors (CRM, email, calendar, accounting), show `PremiumEmptyState` variant `connect-to-activate` instead of demo data when in live mode with no connector.
-
-**Degraded mode design** — `PremiumEmptyState` variant `degraded` for stale data, failed AI, or disconnected services. Show last-known-good with freshness badge.
+**Action:** Make `EmptyState` re-export from `PremiumEmptyState` with prop mapping. Ensure all `connect-to-activate` and `degraded` variants work.
 
 ---
 
-## Files Summary
+## Implementation Order
 
-| Action | File(s) | Phase |
-|--------|---------|-------|
-| Create | 9 route family files in `src/routes/` | 1 |
-| Rewrite | `src/App.tsx` → thin orchestrator | 1 |
-| Create | `ShellWindowLayer.tsx`, `ShellAccessoryLayer.tsx`, `ShellLiveLayer.tsx` | 1 |
-| Rewrite | `src/components/sita/ShellLayout.tsx` → ~250 lines | 1 |
-| Rewrite | 12 module pages (listed above) | 2 |
-| Edit | 4 boardroom pages + 5 proof pages | 3 |
-| Edit | 5 empty state files → shim re-exports | 4 |
-| Edit | 3 command files → deprecation shims | 4 |
-| Create | `src/components/sita/PageTruthBanner.tsx` | 5 |
-| Edit | 21 pages to add truth banner | 5 |
+| Phase | Work | Files |
+|-------|------|-------|
+| **A** | FinanceBoardroom + ConciergeBoardroom rewrite | 2 files |
+| **B** | DailyPulse flagship rewrite | 1 file |
+| **C** | Migrate 6 remaining high-impact pages | 6 files |
+| **D** | Context consolidation (unified RealityModeProvider + shims) | 3-4 files |
+| **E** | Command system deprecation shims | 3 files |
+| **F** | PremiumEmptyState as canonical + shim wiring | 2 files |
 
-After this phase: **21 pages** on new design system (vs 9 today), App.tsx drops from 1,899 to ~200 lines, ShellLayout from 750 to ~250, boardrooms have cinematic entries, and runtime truth is visible everywhere.
+**Result:** After this phase, 27+ pages use the new design system, all 4 boardrooms have cinematic entries, DailyPulse is flagship-grade, contexts are unified, and command/empty-state sprawl is resolved.
 
