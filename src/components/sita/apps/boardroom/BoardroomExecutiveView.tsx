@@ -11,50 +11,25 @@ import { BoardroomAdvisorCouncil } from "./BoardroomAdvisorCouncil";
 import { BoardroomIssueFrame } from "./BoardroomIssueFrame";
 import { useCountUp, useCountUpFormatted } from "@/hooks/useCountUp";
 import { SparklineChart } from "@/components/sita/SparklineChart";
+import { TrustStateBadge, type TrustState } from "@/components/sita/TrustStateBadge";
+import { useBoardroomLiveData } from "@/hooks/useBoardroomLiveData";
 
 interface Props {
   scope: "global" | "business" | "finance" | "concierge";
   onNavigate: (module: string) => void;
 }
 
-const AGENDA_ITEMS = [
-  {
-    id: "a1", title: "Collections action review — 3 overdue invoices",
-    domain: "business", urgency: "high" as const, confidence: 72,
-    motion: "Initiate phased recovery outreach",
-    detail: "David Kim ($4,200), Sarah Chen ($1,800), TechCorp ($12,500) — combined $18,500 overdue. CRM advisor recommends segmented approach based on relationship value.",
-    freshness: "Updated 12 min ago",
-    heatPosition: 0.15,
-  },
-  {
-    id: "a2", title: "Reserve shortfall — $2,800 below target",
-    domain: "finance", urgency: "medium" as const, confidence: 65,
-    motion: "Defer non-essential subscriptions for 30 days",
-    detail: "Current reserves at $7,200 vs $10,000 target. Three subscriptions totaling $342/mo identified as deferrable without operational impact.",
-    freshness: "Updated 3 hours ago",
-    heatPosition: 0.5,
-  },
-  {
-    id: "a3", title: "Travel prep decision — Q2 client visit",
-    domain: "concierge", urgency: "low" as const, confidence: 88,
-    motion: "Approve travel package and pre-book logistics",
-    detail: "NYC client visit Apr 22-24. Flights, hotel, and restaurant reservations ready. All documents current. Prep items cleared.",
-    freshness: "Updated 45 min ago",
-    heatPosition: 0.85,
-  },
-];
-
-const HERO_METRICS = [
-  { label: "Total Overdue", value: "$18.5K", rawValue: 18500, sparkData: [12000, 14200, 15800, 16100, 17400, 18000, 18500], positive: false },
-  { label: "Reserves", value: "$7.2K", rawValue: 7200, sparkData: [9800, 9200, 8600, 8100, 7800, 7400, 7200], positive: false },
-  { label: "Pending Actions", value: "3", rawValue: 3, sparkData: [1, 2, 1, 3, 2, 4, 3], positive: false },
-  { label: "Advisor Consensus", value: "72%", rawValue: 72, sparkData: [65, 68, 70, 69, 71, 73, 72], positive: true },
+const HERO_METRICS: { label: string; value: string; rawValue: number; sparkData: number[]; positive: boolean; trustState: TrustState }[] = [
+  { label: "Total Overdue", value: "$18.5K", rawValue: 18500, sparkData: [12000, 14200, 15800, 16100, 17400, 18000, 18500], positive: false, trustState: "verified" },
+  { label: "Reserves", value: "$7.2K", rawValue: 7200, sparkData: [9800, 9200, 8600, 8100, 7800, 7400, 7200], positive: false, trustState: "evidence-backed" },
+  { label: "Pending Actions", value: "3", rawValue: 3, sparkData: [1, 2, 1, 3, 2, 4, 3], positive: false, trustState: "inferred" },
+  { label: "Advisor Consensus", value: "72%", rawValue: 72, sparkData: [65, 68, 70, 69, 71, 73, 72], positive: true, trustState: "advisory-only" },
 ];
 
 const SIGNALS = [
-  { domain: "Business", icon: Briefcase, summary: "Pipeline pressure rising", metric: "3 deals stalled", trend: "down" as const, confidence: 68, freshness: "8 min ago" },
-  { domain: "Finance", icon: DollarSign, summary: "Cash flow stabilizing", metric: "$7,200 reserves", trend: "up" as const, confidence: 74, freshness: "2 min ago" },
-  { domain: "Concierge", icon: Users, summary: "Prep burden moderate", metric: "2 items overdue", trend: "flat" as const, confidence: 82, freshness: "1 hour ago" },
+  { domain: "Business", icon: Briefcase, summary: "Pipeline pressure rising", metric: "3 deals stalled", trend: "down" as const, confidence: 68, freshness: "8 min ago", trustState: "evidence-backed" as TrustState },
+  { domain: "Finance", icon: DollarSign, summary: "Cash flow stabilizing", metric: "$7,200 reserves", trend: "up" as const, confidence: 74, freshness: "2 min ago", trustState: "verified" as TrustState },
+  { domain: "Concierge", icon: Users, summary: "Prep burden moderate", metric: "2 items overdue", trend: "flat" as const, confidence: 82, freshness: "1 hour ago", trustState: "inferred" as TrustState },
 ];
 
 const WHAT_CHANGED = [
@@ -96,7 +71,6 @@ const TrendIcon = ({ trend }: { trend: "up" | "down" | "flat" }) => {
 
 const mockChain = buildDefaultChain("simulation");
 
-// Morning brief narrative
 function MorningBrief({ scope }: { scope: string }) {
   const text = scope === "business"
     ? "Pipeline pressure is rising with 3 stalled deals. Collections are the top priority — $18.5K overdue across 3 accounts. CRM advisors recommend a segmented recovery approach."
@@ -111,22 +85,20 @@ function MorningBrief({ scope }: { scope: string }) {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: "easeOut" }}
-      className="rounded-2xl border border-[hsl(280_50%_50%/0.15)] bg-[hsl(280_40%_50%/0.03)] p-6 relative overflow-hidden"
+      className="rounded-2xl border border-[hsl(280_50%_50%/0.15)] bg-[hsl(280_40%_50%/0.03)] p-4 md:p-6 relative overflow-hidden"
     >
-      {/* Subtle ambient glow */}
       <div className="absolute top-0 right-0 w-48 h-48 rounded-full bg-[hsl(280_50%_50%/0.06)] blur-3xl pointer-events-none" />
       <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-[hsl(280_50%_65%/0.5)] mb-3 flex items-center gap-1.5">
         <Sparkles size={11} /> Morning Brief
       </p>
-      <p className="text-[15px] leading-relaxed text-[hsl(0_0%_100%/0.75)] font-light tracking-wide relative z-10" style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}>
+      <p className="text-[13px] md:text-[15px] leading-relaxed text-[hsl(0_0%_100%/0.75)] font-light tracking-wide relative z-10" style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}>
         {text}
       </p>
     </motion.div>
   );
 }
 
-// Priority heat strip
-function PriorityHeatStrip({ items }: { items: typeof AGENDA_ITEMS }) {
+function PriorityHeatStrip({ items }: { items: { id: string; urgency: string; heatPosition: number; title: string }[] }) {
   return (
     <motion.div
       initial={{ opacity: 0, scaleX: 0.8 }}
@@ -136,11 +108,9 @@ function PriorityHeatStrip({ items }: { items: typeof AGENDA_ITEMS }) {
     >
       <div
         className="absolute inset-0 rounded-full"
-        style={{
-          background: "linear-gradient(90deg, hsl(0 80% 50% / 0.4) 0%, hsl(40 90% 55% / 0.3) 50%, hsl(145 60% 45% / 0.3) 100%)",
-        }}
+        style={{ background: "linear-gradient(90deg, hsl(0 80% 50% / 0.4) 0%, hsl(40 90% 55% / 0.3) 50%, hsl(145 60% 45% / 0.3) 100%)" }}
       />
-      {items.map((item) => (
+      {items.map((item, idx) => (
         <motion.div
           key={item.id}
           className="absolute top-1/2 -translate-y-1/2 w-3 h-3 rounded-full border-2 border-[hsl(220_18%_4%)]"
@@ -153,7 +123,7 @@ function PriorityHeatStrip({ items }: { items: typeof AGENDA_ITEMS }) {
           }}
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
-          transition={{ delay: 0.5 + items.indexOf(item) * 0.1 }}
+          transition={{ delay: 0.5 + idx * 0.1 }}
           title={item.title}
         />
       ))}
@@ -166,37 +136,53 @@ function PriorityHeatStrip({ items }: { items: typeof AGENDA_ITEMS }) {
 }
 
 export function BoardroomExecutiveView({ scope, onNavigate }: Props) {
-  const [activeAgenda, setActiveAgenda] = useState("a1");
+  const { items, isDemoMode } = useBoardroomLiveData();
+  const [activeAgenda, setActiveAgenda] = useState<string | null>(null);
+
+  // Map live items to agenda format
+  const agendaItems = items.map((item, i) => ({
+    id: item.id,
+    title: item.title,
+    domain: item.domain,
+    urgency: (item.severity === "high" ? "high" : item.severity === "medium" ? "medium" : "low") as "high" | "medium" | "low",
+    confidence: (item.confidence_state as any)?.overall || 70,
+    motion: Object.values(item.advisor_summaries || {})[0] as string || "Pending recommendation",
+    detail: item.description,
+    freshness: (item.freshness_state as any)?.last_check || "Recent",
+    heatPosition: i === 0 ? 0.15 : i === 1 ? 0.5 : 0.85,
+    trustState: (item.simulation_state === "complete" ? "simulation-only" : item.confidence_state?.overall >= 80 ? "evidence-backed" : "inferred") as TrustState,
+  }));
 
   const filteredAgenda = scope === "global"
-    ? AGENDA_ITEMS
-    : AGENDA_ITEMS.filter((a) => a.domain === scope);
+    ? agendaItems
+    : agendaItems.filter((a) => a.domain === scope);
 
   const filteredSignals = scope === "global"
     ? SIGNALS
     : SIGNALS.filter((s) => s.domain.toLowerCase() === scope);
 
-  const active = filteredAgenda.find((a) => a.id === activeAgenda) || filteredAgenda[0];
+  const currentActive = activeAgenda || filteredAgenda[0]?.id;
+  const active = filteredAgenda.find((a) => a.id === currentActive) || filteredAgenda[0];
 
   return (
-    <div className="space-y-6 p-6">
-      {/* Issue Frame — The Matter Before The Room */}
+    <div className="space-y-5 p-4 md:p-6">
       <BoardroomIssueFrame onNavigate={onNavigate} />
-
-      {/* Morning Brief */}
       <MorningBrief scope={scope} />
 
-      {/* Hero Metrics Row */}
-      <div className="grid grid-cols-4 gap-3">
+      {/* Hero Metrics — responsive */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3">
         {HERO_METRICS.map((m, i) => (
           <motion.div
             key={m.label}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 + i * 0.08 }}
-            className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] p-4 backdrop-blur-sm"
+            className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] p-3 md:p-4 backdrop-blur-sm hover:bg-[hsl(0_0%_100%/0.04)] hover:border-[hsl(280_50%_50%/0.15)] hover:shadow-[0_4px_20px_hsl(280_50%_50%/0.06)] transition-all duration-300 group"
           >
-            <p className="text-[9px] font-medium text-[hsl(0_0%_100%/0.35)] uppercase tracking-wider mb-1">{m.label}</p>
+            <div className="flex items-center justify-between mb-1">
+              <p className="text-[9px] font-medium text-[hsl(0_0%_100%/0.35)] uppercase tracking-wider">{m.label}</p>
+              <TrustStateBadge state={m.trustState} />
+            </div>
             <div className="flex items-end justify-between gap-2">
               <p className="text-lg font-bold text-[hsl(0_0%_100%/0.9)] tabular-nums">
                 {useCountUpFormatted(m.value, 1000)}
@@ -207,13 +193,13 @@ export function BoardroomExecutiveView({ scope, onNavigate }: Props) {
         ))}
       </div>
 
-      {/* Priority Heat Strip */}
       <PriorityHeatStrip items={filteredAgenda} />
 
-      {/* Section: Agenda Table */}
+      {/* Agenda */}
       <div>
         <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[hsl(280_50%_65%/0.5)] mb-3">
           Current Agenda {scope !== "global" && `— ${scope}`}
+          {isDemoMode && <span className="ml-2 text-[8px] text-[hsl(0_0%_100%/0.2)]">(demo)</span>}
         </p>
         <div className="space-y-2">
           {filteredAgenda.map((item, i) => (
@@ -224,27 +210,28 @@ export function BoardroomExecutiveView({ scope, onNavigate }: Props) {
               transition={{ delay: i * 0.06 }}
               onClick={() => setActiveAgenda(item.id)}
               className={cn(
-                "w-full text-left rounded-xl border p-4 transition-all duration-200 group",
-                activeAgenda === item.id
+                "w-full text-left rounded-xl border p-3 md:p-4 transition-all duration-200 group hover:shadow-[0_4px_20px_hsl(280_50%_50%/0.06)]",
+                currentActive === item.id
                   ? "bg-[hsl(280_40%_50%/0.06)] border-[hsl(280_50%_55%/0.25)] shadow-[0_0_20px_hsl(280_50%_50%/0.08)]"
                   : "bg-[hsl(0_0%_100%/0.02)] border-[hsl(0_0%_100%/0.06)] hover:bg-[hsl(0_0%_100%/0.04)]",
               )}
             >
-              <div className="flex items-start justify-between gap-3">
+              <div className="flex items-start justify-between gap-2 md:gap-3">
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2 mb-1">
+                  <div className="flex items-center gap-2 mb-1 flex-wrap">
                     <span className={cn("text-[10px] font-bold uppercase", domainColors[item.domain])}>
                       {item.domain}
                     </span>
                     <span className={cn("text-[9px] font-semibold px-2 py-0.5 rounded-full border", urgencyColors[item.urgency])}>
                       {item.urgency}
                     </span>
+                    <TrustStateBadge state={item.trustState} />
                     <span className="flex items-center gap-1 text-[9px] text-[hsl(0_0%_100%/0.25)] ml-auto">
                       <Clock size={9} /> {item.freshness}
                     </span>
                   </div>
-                  <p className="text-sm font-semibold text-[hsl(0_0%_100%/0.9)]">{item.title}</p>
-                  {activeAgenda === item.id && (
+                  <p className="text-[13px] md:text-sm font-semibold text-[hsl(0_0%_100%/0.9)]">{item.title}</p>
+                  {currentActive === item.id && (
                     <motion.p
                       initial={{ opacity: 0, height: 0 }}
                       animate={{ opacity: 1, height: "auto" }}
@@ -254,9 +241,8 @@ export function BoardroomExecutiveView({ scope, onNavigate }: Props) {
                     </motion.p>
                   )}
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="hidden md:flex items-center gap-2">
                   <ConfidenceBar value={item.confidence} size="sm" className="w-24 shrink-0" />
-                  {/* Quick-action pill */}
                   <motion.span
                     className="text-[9px] font-semibold px-2.5 py-1 rounded-full bg-[hsl(280_50%_50%/0.1)] text-[hsl(280_50%_70%)] border border-[hsl(280_50%_50%/0.2)] opacity-0 group-hover:opacity-100 transition-opacity shrink-0 cursor-pointer hover:bg-[hsl(280_50%_50%/0.2)]"
                     whileHover={{ scale: 1.05, boxShadow: "0 0 12px hsl(280 50% 50% / 0.3)" }}
@@ -267,7 +253,7 @@ export function BoardroomExecutiveView({ scope, onNavigate }: Props) {
               </div>
               <div className="mt-2 flex items-center gap-1.5 text-[11px] text-[hsl(280_40%_70%/0.7)]">
                 <Sparkles size={12} />
-                <span className="italic">Motion: {item.motion}</span>
+                <span className="italic truncate">Motion: {item.motion}</span>
               </div>
             </motion.button>
           ))}
@@ -277,7 +263,7 @@ export function BoardroomExecutiveView({ scope, onNavigate }: Props) {
         </div>
       </div>
 
-      {/* Section: What Changed */}
+      {/* What Changed */}
       <div>
         <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[hsl(280_50%_65%/0.5)] mb-3 flex items-center gap-1.5">
           <Zap size={11} /> What Changed Since Last Session
@@ -289,12 +275,12 @@ export function BoardroomExecutiveView({ scope, onNavigate }: Props) {
               initial={{ opacity: 0, x: -6 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: i * 0.04 }}
-              className={cn("rounded-lg border p-3 flex items-center gap-3", changeTypeStyles[change.type])}
+              className={cn("rounded-lg border p-3 flex items-start md:items-center gap-2 md:gap-3", changeTypeStyles[change.type])}
             >
               <span className={cn("text-[10px] font-bold uppercase shrink-0 w-16", domainColors[change.domain])}>
                 {change.domain}
               </span>
-              <p className="text-[12px] text-[hsl(0_0%_100%/0.6)] flex-1">{change.label}</p>
+              <p className="text-[11px] md:text-[12px] text-[hsl(0_0%_100%/0.6)] flex-1">{change.label}</p>
               <span className="text-[9px] text-[hsl(0_0%_100%/0.25)] shrink-0 flex items-center gap-1">
                 <Clock size={9} /> {change.time}
               </span>
@@ -303,26 +289,29 @@ export function BoardroomExecutiveView({ scope, onNavigate }: Props) {
         </div>
       </div>
 
-      {/* Section: Cross-Domain Signals */}
+      {/* Cross-Domain Signals — responsive */}
       <div>
         <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[hsl(280_50%_65%/0.5)] mb-3">
           Cross-Domain Signals
         </p>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           {filteredSignals.map((sig, i) => (
             <motion.div
               key={sig.domain}
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 + i * 0.06 }}
-              className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] p-4 backdrop-blur-sm"
+              className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] p-4 backdrop-blur-sm hover:bg-[hsl(0_0%_100%/0.04)] hover:border-[hsl(0_0%_100%/0.1)] hover:shadow-[0_4px_20px_hsl(280_50%_50%/0.06)] transition-all duration-300"
             >
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
                   <sig.icon size={14} className="text-[hsl(0_0%_100%/0.4)]" />
                   <span className="text-[11px] font-semibold text-[hsl(0_0%_100%/0.7)]">{sig.domain}</span>
                 </div>
-                <TrendIcon trend={sig.trend} />
+                <div className="flex items-center gap-1.5">
+                  <TrustStateBadge state={sig.trustState} />
+                  <TrendIcon trend={sig.trend} />
+                </div>
               </div>
               <p className="text-[12px] text-[hsl(0_0%_100%/0.5)] mb-1">{sig.summary}</p>
               <p className="text-sm font-bold text-[hsl(0_0%_100%/0.85)] tabular-nums">{sig.metric}</p>
@@ -335,7 +324,7 @@ export function BoardroomExecutiveView({ scope, onNavigate }: Props) {
         </div>
       </div>
 
-      {/* Section: Recommended Motion */}
+      {/* Recommended Motion */}
       {active && (
         <div>
           <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[hsl(280_50%_65%/0.5)] mb-3">
@@ -345,16 +334,16 @@ export function BoardroomExecutiveView({ scope, onNavigate }: Props) {
             initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.35 }}
-            className="rounded-2xl border border-[hsl(280_50%_50%/0.2)] bg-[hsl(280_40%_50%/0.04)] p-6 shadow-[0_0_40px_hsl(280_50%_40%/0.06)]"
+            className="rounded-2xl border border-[hsl(280_50%_50%/0.2)] bg-[hsl(280_40%_50%/0.04)] p-4 md:p-6 shadow-[0_0_40px_hsl(280_50%_40%/0.06)]"
           >
-            <div className="flex items-start justify-between gap-4 mb-4">
+            <div className="flex items-start justify-between gap-3 md:gap-4 mb-4">
               <div className="flex-1">
                 <h3 className="text-base font-bold text-[hsl(0_0%_100%/0.95)] mb-1">{active.motion}</h3>
                 <p className="text-[12px] text-[hsl(0_0%_100%/0.45)] leading-relaxed">
                   Based on {active.domain} advisor synthesis. {active.detail?.split(".")[0]}.
                 </p>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
                 <span className={cn("text-[9px] font-semibold px-2 py-0.5 rounded-full border", urgencyColors[active.urgency])}>
                   {active.urgency} priority
                 </span>
@@ -367,18 +356,18 @@ export function BoardroomExecutiveView({ scope, onNavigate }: Props) {
             <ConfidenceBar value={active.confidence} label="System Confidence" className="mb-5" />
             <ExecutionChainTimeline steps={mockChain} compact className="mb-5" />
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 md:gap-3 flex-wrap">
               <button
                 onClick={() => onNavigate("simulation")}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[hsl(280_50%_50%/0.15)] border border-[hsl(280_50%_50%/0.3)] text-[hsl(280_50%_75%)] text-[12px] font-semibold hover:bg-[hsl(280_50%_50%/0.25)] transition-all"
+                className="flex items-center gap-2 px-4 md:px-5 py-2.5 rounded-xl bg-[hsl(280_50%_50%/0.15)] border border-[hsl(280_50%_50%/0.3)] text-[hsl(280_50%_75%)] text-[12px] font-semibold hover:bg-[hsl(280_50%_50%/0.25)] transition-all"
               >
-                <Play size={14} /> Simulate First
+                <Play size={14} /> Simulate
               </button>
               <button
                 onClick={() => onNavigate("approvals")}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[hsl(var(--trust-safe))]/10 border border-[hsl(var(--trust-safe))]/30 text-[hsl(var(--trust-safe))] text-[12px] font-semibold hover:bg-[hsl(var(--trust-safe))]/20 transition-all"
+                className="flex items-center gap-2 px-4 md:px-5 py-2.5 rounded-xl bg-[hsl(var(--trust-safe))]/10 border border-[hsl(var(--trust-safe))]/30 text-[hsl(var(--trust-safe))] text-[12px] font-semibold hover:bg-[hsl(var(--trust-safe))]/20 transition-all"
               >
-                <FileCheck size={14} /> Approve Motion
+                <FileCheck size={14} /> Approve
               </button>
             </div>
           </motion.div>
