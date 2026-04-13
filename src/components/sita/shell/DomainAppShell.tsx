@@ -8,10 +8,11 @@ import { APP_MATERIALS, APP_SHADOWS, APP_CHROME, APP_TYPE } from "@/lib/design-s
 import { ChevronDown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { AppToolbar } from "./AppToolbar";
 import { AppSidebarNav, type NavTabGroup } from "./AppSidebarNav";
+import { DomainCommandPalette, type CommandItem } from "@/components/sita/domain-shared/DomainCommandPalette";
 import type { LucideIcon } from "lucide-react";
 
 export type DomainId = "business" | "finance" | "concierge";
@@ -33,6 +34,7 @@ interface DomainAppShellProps {
   onNavigate: (key: string) => void;
   tabGroups: NavTabGroup[];
   toolbarActions?: React.ReactNode;
+  commands?: CommandItem[];
 }
 
 /* ── Traffic Light Dots ── */
@@ -93,9 +95,35 @@ const MobileNav = ({ domain, tabGroups, activePage, onNavigate }: {
 };
 
 /* ── Main Shell ── */
-export function DomainAppShell({ domain, children, activePage, onNavigate, tabGroups, toolbarActions }: DomainAppShellProps) {
+export function DomainAppShell({ domain, children, activePage, onNavigate, tabGroups, toolbarActions, commands = [] }: DomainAppShellProps) {
   const isMobile = useIsMobile();
   const Icon = domain.icon;
+  const [cmdOpen, setCmdOpen] = useState(false);
+
+  // Domain-scoped Cmd+K
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        setCmdOpen(o => !o);
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, []);
+
+  // Auto-generate nav commands from tab groups
+  const allCommands: CommandItem[] = [
+    ...tabGroups.flatMap(g => g.tabs.map(t => ({
+      id: `nav-${t.key}`,
+      label: `Go to ${t.label}`,
+      section: g.label,
+      icon: t.icon,
+      onSelect: () => onNavigate(t.key),
+      keywords: [t.label, t.key],
+    }))),
+    ...commands,
+  ];
 
   return (
     <div className={cn(
@@ -103,6 +131,9 @@ export function DomainAppShell({ domain, children, activePage, onNavigate, tabGr
       "rounded-[16px] border",
       APP_MATERIALS.windowBg.dark, APP_MATERIALS.windowBorder.dark, APP_SHADOWS.focused
     )}>
+      {/* Command Palette */}
+      <DomainCommandPalette domain={domain.id} commands={allCommands} isOpen={cmdOpen} onClose={() => setCmdOpen(false)} />
+
       {/* Accent Strip */}
       <div className="w-full" style={{
         height: APP_CHROME.accentStripHeight,
