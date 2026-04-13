@@ -1,5 +1,5 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
-import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
+import { KPITile, SitaTabs } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { CalendarEventCard, ConflictCard, PrepCard, MemberAvatar } from "@/components/sita/HouseholdComponents";
 import { ConciergeAdvisorInsightCard, ConciergePageWrapper } from "@/components/concierge";
