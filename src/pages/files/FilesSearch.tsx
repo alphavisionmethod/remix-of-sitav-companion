@@ -206,7 +206,7 @@ const FilesSearch = () => {
               </div>
             ))
           ) : (
-            <PremiumEmptyState variant="no-data" icon={FileText} title="No results found" description="Try adjusting your search terms or filters"} />
+            <PremiumEmptyState variant="no-results" icon={FileText} title="No results found" description="Try adjusting your search terms or filters" />
           )}
         </div>
       ) : (
