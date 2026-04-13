@@ -1,59 +1,54 @@
 
 
-# Transparent Glass Widgets Redesign
+# Deepin-Style App Launcher Menu
 
-## Design Direction
+## What We're Building
 
-Based on the reference image (Windows 11-style desktop with transparent widgets), the widgets need to shift from their current opaque card look to a **fully transparent, borderless glassmorphic** style — widgets that feel like they float directly on the wallpaper with no visible "card" container, just content with a very subtle frosted glass backing.
+A beautiful two-panel app launcher that opens from a dock icon (replacing the current "+" button with a grid/launchpad icon), styled like Deepin's launcher in the reference image:
 
-## Key Changes
+```text
+┌──────────────────────────────────────────────┐
+│  ↕  │ Browser        │  Frequently Used      │
+│     │ File Manager   │  [icon] [icon] [icon]  │
+│     │ App Store      │  [icon] [icon] [icon]  │
+│     │ Music          │  [icon] [icon] [icon]  │
+│     │ Movie          │  [icon] [icon] [icon]  │
+│     │ Screen Capture │                        │
+│     │ Image Viewer   │                        │
+│     │ ...            │                        │
+│  ⏻  │────────────────│  🔍 Search             │
+└──────────────────────────────────────────────┘
+```
 
-### 1. Redesign `DesktopWidgetCard` — True Glass Material
-- Remove visible border (`border-white/[0.12]` → none or `border-white/[0.04]`)
-- Drop background opacity from `bg-white/[0.08]` to `bg-white/[0.03]`
-- Increase backdrop blur to `backdrop-blur-3xl` for frosted effect
-- Remove the gradient accent overlay and radial highlight (too opaque)
-- Soften the shadow to nearly invisible: `shadow-[0_8px_32px_rgba(0,0,0,0.12)]`
-- Round corners more: `rounded-3xl`
+**Key design elements from the reference:**
+- Frosted glass panel (`bg-white/[0.08] backdrop-blur-[60px]`) anchored to bottom-left, above the dock
+- Left column: scrollable app list with icons + labels, category filter buttons at top, power button at bottom
+- Right column: "Frequently Used" grid (4x4) with larger icons and labels
+- Search bar at the bottom of the right panel
+- Smooth spring animation opening upward from the dock icon
+- Rounded corners (`rounded-2xl`), no harsh borders
 
-### 2. Redesign `DesktopClockWidget` — Floating Calendar
-- Remove visible card borders, use ultra-transparent `bg-white/[0.03]`
-- Calendar header: softer red (`bg-red-500/60` instead of `/80`)
-- Schedule items: even more minimal — no background, just text on glass
-- Mini stat cards (To-Do, Pending): `bg-white/[0.02]` with no border
+## Changes
 
-### 3. Redesign `DesktopQuickActionsWidget` — Clean App Grid
-- Container: nearly invisible `bg-white/[0.02]` with `backdrop-blur-3xl`
-- App icons: keep gradient backgrounds but reduce shadow
-- Remove the section header label or make it ultra-subtle
+### 1. Rewrite `AppLauncherPanel.tsx` — Deepin-style two-panel layout
+- **Position**: Fixed, anchored bottom-left (`bottom-20 left-4`), rises from dock
+- **Left panel** (~200px): Scrollable list of all installed apps with 24px icons + name, grouped by category with subtle headers. Category sidebar icons on far left for filtering. Power/logout icon at bottom.
+- **Right panel** (~400px): "Frequently Used" header + 4-column grid of top/recent apps with 48px icons. Search input at bottom with glass styling.
+- **Glass material**: `bg-[hsl(0_0%_0%/0.55)] backdrop-blur-[60px]` with `border border-white/[0.12]`
+- **Animation**: `initial={{ opacity: 0, y: 40, scale: 0.95 }}` springing upward
+- Keep all existing functionality: fuzzy search, keyboard nav, system commands
 
-### 4. Redesign `DesktopSystemWidget` — Floating Toggles
-- Container: `bg-white/[0.02]` — barely visible
-- Active toggle glow stays but becomes more refined
-- Remove section header
+### 2. Update dock launcher button in `DesktopDock.tsx`
+- Replace the `+` (Plus) icon with a grid icon (`LayoutGrid` from lucide) to match the Deepin aesthetic
+- Keep tooltip "App Launcher"
 
-### 5. Redesign `DesktopNotificationsWidget` (Business Pulse)
-- Nearly invisible container
-- Cleaner dividers: `divide-white/[0.04]`
-- Sparkline bars more transparent
+### 3. Keep existing wiring in `ShellLiveLayer.tsx`
+- No changes needed — the `launcherOpen` state and `onOpenLauncher` callback already work correctly
 
-### 6. Redesign `ContinuityCard` in `DesktopSurface`
-- Same glass treatment: `bg-white/[0.03]`, minimal border
-- Accent line at top thinner and more subtle
-
-### 7. Update `DesktopSurface` Widget Panel
-- Remove explicit background on the panel column itself
-- Widen gap between widgets slightly (gap-4)
-- Add a very subtle frosted-glass backdrop to the entire right column: `bg-white/[0.01] backdrop-blur-xl rounded-3xl`
-
-## Files Changed
+## Files
 
 | File | Change |
 |------|--------|
-| `DesktopWidgetCard.tsx` | Rewrite glass material — ultra-transparent, no accent overlays |
-| `DesktopClockWidget.tsx` | Remove opaque backgrounds, softer colors |
-| `DesktopQuickActionsWidget.tsx` | Transparent container, refined icons |
-| `DesktopSystemWidget.tsx` | Transparent container, cleaner toggles |
-| `DesktopNotificationsWidget.tsx` | Transparent container, subtle dividers |
-| `DesktopSurface.tsx` | Update ContinuityCard + widget panel styling |
+| `src/components/sita/shell/AppLauncherPanel.tsx` | Full rewrite — Deepin two-panel layout with left app list + right frequently used grid |
+| `src/components/sita/DesktopDock.tsx` | Change launcher icon from Plus to LayoutGrid |
 
