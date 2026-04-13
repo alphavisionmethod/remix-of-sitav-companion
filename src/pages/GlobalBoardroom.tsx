@@ -236,7 +236,7 @@ const GlobalBoardroom = () => {
       )}
 
       {/* Cross-domain advisor */}
-      <SitaCard hover={false} className="p-5 border-[hsl(38_85%_58%/0.2)]" style={{ background: "linear-gradient(135deg, hsl(38 85% 58% / 0.04), hsl(265 55% 58% / 0.02))" }}>
+      <SitaCard hover={false} className="p-5 border-[hsl(38_85%_58%/0.2)] bg-gradient-to-br from-[hsl(38_85%_58%/0.04)] to-[hsl(265_55%_58%/0.02)]">
         <div className="flex items-start gap-3">
           <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[hsl(38_85%_58%)] to-[hsl(265_55%_58%)] flex items-center justify-center shrink-0">
             <Sparkles className="h-4 w-4 text-[hsl(0_0%_100%/0.95)]" />
