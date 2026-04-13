@@ -4,6 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { DesktopSurface } from "@/components/sita/shell/DesktopSurface";
+import { useWindowLauncher } from "@/components/sita/shell/ShellWindowLayer";
 import { useShellState } from "@/components/sita/shell/useShellState";
 import { useAuth } from "@/contexts/AuthContext";
 import { EnterpriseFlow } from "@/components/sita/EnterpriseFlow";
@@ -89,6 +90,7 @@ export default function DesktopPage() {
 
   // ── Calm Engine wiring (before early returns) ──────────────
   const wm = useWindowManagerContext();
+  const { handleLaunchApp } = useWindowLauncher(wm as any);
   const visibleWindows = wm?.visibleWindows ?? [];
   const maxZ = visibleWindows.reduce((max, w) => Math.max(max, w.zIndex), 0);
 
@@ -129,6 +131,7 @@ export default function DesktopPage() {
         onOpenCommand={openCommand}
         desktopState={state.desktopState}
         continuity={state.continuity}
+        onLaunchApp={handleLaunchApp}
       />
 
       {/* S30 — Contextual Welcome Tour (first visit only) */}
