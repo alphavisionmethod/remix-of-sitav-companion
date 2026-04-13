@@ -1,6 +1,6 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
-import { ConciergeAdvisorInsightCard, EventPrepCard, ConciergePageWrapper } from "@/components/concierge";
+import { ConciergeAdvisorInsightCard, EventPrepCard, ConciergePageWrapper, ConciergeEmptyState } from "@/components/concierge";
 import type { EventPrep } from "@/components/concierge";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { useState } from "react";
@@ -83,6 +83,9 @@ const EventsGifts = () => {
       />
 
       <div className="space-y-3">
+        {filtered.length === 0 && (
+          <ConciergeEmptyState domain="events" icon={Gift} />
+        )}
         {filtered.map(ev => {
           const Icon = catIcon(ev.category);
           return (

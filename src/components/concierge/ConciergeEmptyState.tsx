@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { LucideIcon, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-export type ConciergeDomain = "travel" | "errands" | "admin" | "appointments" | "services" | "files" | "generic";
+export type ConciergeDomain = "travel" | "errands" | "admin" | "appointments" | "services" | "files" | "school" | "grocery" | "events" | "recurring" | "generic";
 
 const DOMAIN_COPY: Record<ConciergeDomain, { title: string; description: string }> = {
   travel: {
@@ -28,6 +28,22 @@ const DOMAIN_COPY: Record<ConciergeDomain, { title: string; description: string 
   files: {
     title: "No documents uploaded yet",
     description: "Store household essentials here — insurance policies, contracts, medical records, and school forms — all linked to the things that need them.",
+  },
+  school: {
+    title: "No school items right now",
+    description: "When forms, fees, meetings, or activity prep come up, they'll appear here — organized by child, priority, and deadline so nothing slips through.",
+  },
+  grocery: {
+    title: "Your list is empty",
+    description: "Add items as you go — we'll organize by store, track recurring supplies, and flag when staples are running low.",
+  },
+  events: {
+    title: "No upcoming events",
+    description: "Birthdays, milestones, and thank-yous will appear here — with prep timelines, gift tracking, and gentle reminders so you're always thoughtful and on time.",
+  },
+  recurring: {
+    title: "No recurring obligations tracked",
+    description: "Add the things that repeat — filters, renewals, checkups, payments — and we'll keep the rhythm visible so nothing falls behind.",
   },
   generic: {
     title: "Nothing urgent",

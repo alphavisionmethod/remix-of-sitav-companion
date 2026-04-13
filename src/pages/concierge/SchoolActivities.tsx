@@ -1,6 +1,6 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs, EmptyState, RiskCard } from "@/components/sita/SitaComponents";
-import { ConciergePageWrapper } from "@/components/concierge";
+import { ConciergePageWrapper, ConciergeEmptyState } from "@/components/concierge";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { useState } from "react";
 import { GraduationCap, Calendar, FileText, DollarSign, Bus, Users, AlertTriangle, CheckCircle, Clock, ClipboardList } from "lucide-react";
@@ -83,6 +83,9 @@ const SchoolActivities = () => {
       />
 
       <div className="space-y-3">
+        {filtered.length === 0 && (
+          <ConciergeEmptyState domain="school" icon={GraduationCap} />
+        )}
         {filtered.map(item => {
           const Icon = categoryIcon(item.category);
           return (
