@@ -20,6 +20,19 @@ const DEFAULT_WIDGETS: WidgetInstance[] = [
   { id: "notifications", type: "notifications", label: "Notifications", description: "Recent alerts and notification feed", position: { x: 940, y: 600 }, visible: true, size: "md" },
   { id: "continuity", type: "continuity", label: "Continuity", description: "Resume your last workspace session", position: { x: 600, y: 600 }, visible: true, size: "md" },
   { id: "what-matters", type: "what-matters", label: "What Matters", description: "Priority items across business, finance and concierge", position: { x: 400, y: 300 }, visible: false, size: "md" },
+  // New widgets — hidden by default
+  { id: "notifications-feed", type: "notifications-feed", label: "Notifications Feed", description: "Latest alerts with app badges and timestamps", position: { x: 400, y: 300 }, visible: false, size: "md" },
+  { id: "investment-pulse", type: "investment-pulse", label: "Investment Pulse", description: "Portfolio value, daily P&L and top holdings", position: { x: 400, y: 300 }, visible: false, size: "md" },
+  { id: "crm-pipeline", type: "crm-pipeline", label: "CRM Pipeline", description: "Pipeline value, open deals and stage badges", position: { x: 400, y: 300 }, visible: false, size: "md" },
+  { id: "leads-recovered", type: "leads-recovered", label: "Leads Recovered", description: "Recovered lead count, cart recovery and revenue saved", position: { x: 400, y: 300 }, visible: false, size: "md" },
+  { id: "calendar-today", type: "calendar-today", label: "Today's Schedule", description: "Next events color-coded by domain", position: { x: 400, y: 300 }, visible: false, size: "md" },
+  { id: "boardroom-brief", type: "boardroom-brief", label: "Boardroom Brief", description: "Next boardroom session and pending decisions", position: { x: 400, y: 300 }, visible: false, size: "md" },
+  { id: "advisor-council", type: "advisor-council", label: "Advisor Council", description: "Advisor avatars with confidence scores by domain", position: { x: 400, y: 300 }, visible: false, size: "md" },
+  { id: "business-kpi", type: "business-kpi", label: "Business KPIs", description: "Revenue, pipeline and conversion rate at a glance", position: { x: 400, y: 300 }, visible: false, size: "md" },
+  { id: "finance-snapshot", type: "finance-snapshot", label: "Finance Snapshot", description: "Total balance, income and expenses overview", position: { x: 400, y: 300 }, visible: false, size: "md" },
+  { id: "concierge-tasks", type: "concierge-tasks", label: "Concierge Tasks", description: "Pending errands with priority and due times", position: { x: 400, y: 300 }, visible: false, size: "md" },
+  { id: "weather", type: "weather", label: "Weather", description: "Current temperature, conditions and forecast", position: { x: 400, y: 300 }, visible: false, size: "md" },
+  { id: "portfolio-globe", type: "portfolio-globe", label: "Portfolio Map", description: "Asset allocation by sector with visual breakdown", position: { x: 400, y: 300 }, visible: false, size: "md" },
 ];
 
 function loadWidgets(): WidgetInstance[] {
@@ -27,11 +40,14 @@ function loadWidgets(): WidgetInstance[] {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
       const parsed = JSON.parse(saved) as WidgetInstance[];
-      // Migrate old data without description field
-      return parsed.map(w => {
+      // Merge saved with defaults to pick up new widget types
+      const savedTypes = new Set(parsed.map(w => w.type));
+      const newDefaults = DEFAULT_WIDGETS.filter(d => !savedTypes.has(d.type));
+      const migrated = parsed.map(w => {
         const def = DEFAULT_WIDGETS.find(d => d.type === w.type);
         return { ...w, description: w.description || def?.description || "" };
       });
+      return [...migrated, ...newDefaults];
     }
   } catch {}
   return DEFAULT_WIDGETS;

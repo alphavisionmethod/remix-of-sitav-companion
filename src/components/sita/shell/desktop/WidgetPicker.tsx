@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Search, X, Clock, LayoutGrid, Settings, Bell, CalendarDays, ArrowRight, BriefcaseBusiness, Plus, Minus, RotateCcw } from "lucide-react";
+import { Search, X, Clock, LayoutGrid, Settings, Bell, CalendarDays, ArrowRight, BriefcaseBusiness, Plus, Minus, RotateCcw, TrendingUp, Users, UserCheck, Brain, Sparkles, DollarSign, CheckSquare, CloudSun, PieChart } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { WidgetInstance } from "@/hooks/useDesktopWidgets";
 
@@ -12,6 +12,18 @@ const WIDGET_ICONS: Record<string, any> = {
   notifications: Bell,
   continuity: ArrowRight,
   "what-matters": BriefcaseBusiness,
+  "notifications-feed": Bell,
+  "investment-pulse": TrendingUp,
+  "crm-pipeline": Users,
+  "leads-recovered": UserCheck,
+  "calendar-today": CalendarDays,
+  "boardroom-brief": Brain,
+  "advisor-council": Sparkles,
+  "business-kpi": TrendingUp,
+  "finance-snapshot": DollarSign,
+  "concierge-tasks": CheckSquare,
+  weather: CloudSun,
+  "portfolio-globe": PieChart,
 };
 
 interface WidgetPickerProps {
