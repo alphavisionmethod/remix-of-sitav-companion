@@ -72,6 +72,7 @@ const UpcomingNeeds = () => {
       {!isDemoMode ? (
         <ConciergeEmptyState domain="appointments" title="No upcoming obligations" description="Your schedule is open. When appointments, errands, and deadlines come up, they'll appear here — organized by urgency and timeline." />
       ) : (<>
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KPITile label="Today" value={String(todayItems.length)} icon={Zap} sub="Need handling" />
         <KPITile label="This Week" value={String(OBLIGATIONS.length)} icon={Calendar} />
         <KPITile label="Overdue" value={String(OBLIGATIONS.filter((o) => o.dueLabel.includes("Overdue")).length)} icon={AlertCircle} sub="Slipping" />
@@ -143,6 +144,7 @@ const UpcomingNeeds = () => {
           }} />
         </div>
       </div>
+      </>)}
     </ConciergePageWrapper>
   );
 };
