@@ -12,7 +12,8 @@ import { useAction } from "@/lib/hooks/useAction";
 import { toast } from "sonner";
 import {
   Search, Plus, Phone, Mail, Clock, User, Filter, Sparkles, CheckCircle, FileText, Calendar,
-  MessageSquare, Archive, Star, ArrowRight, LayoutList, Columns, Target, AlertTriangle, X, Trash2
+  MessageSquare, Archive, Star, ArrowRight, LayoutList, Columns, Target, AlertTriangle, X, Trash2,
+  Upload, Plug
 } from "lucide-react";
 import { motion } from "framer-motion";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
