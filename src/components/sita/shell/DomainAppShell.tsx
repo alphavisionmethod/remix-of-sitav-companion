@@ -1,0 +1,158 @@
+// ═══════════════════════════════════════════════════════════════
+// SITA OS — Unified Domain App Shell
+// Configurable app shell for Business, Finance, Concierge
+// ═══════════════════════════════════════════════════════════════
+
+import { cn } from "@/lib/utils";
+import { APP_MATERIALS, APP_SHADOWS, APP_CHROME, APP_TYPE } from "@/lib/design-system/app-window-system";
+import { ChevronDown } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { AppToolbar } from "./AppToolbar";
+import { AppSidebarNav, type NavTabGroup } from "./AppSidebarNav";
+import type { LucideIcon } from "lucide-react";
+
+export type DomainId = "business" | "finance" | "concierge";
+
+export interface DomainConfig {
+  id: DomainId;
+  title: string;
+  icon: LucideIcon;
+  accentFrom: string;
+  accentTo: string;
+  statusLabel: string;
+  version: string;
+}
+
+interface DomainAppShellProps {
+  domain: DomainConfig;
+  children: React.ReactNode;
+  activePage: string;
+  onNavigate: (key: string) => void;
+  tabGroups: NavTabGroup[];
+  toolbarActions?: React.ReactNode;
+}
+
+/* ── Traffic Light Dots ── */
+const TrafficLights = () => {
+  const navigate = useNavigate();
+  return (
+    <div className="flex items-center gap-[7px]">
+      <button onClick={() => navigate("/")} className="w-[12px] h-[12px] rounded-full bg-[hsl(0_70%_55%)] hover:bg-[hsl(0_70%_45%)] transition-colors" title="Close" />
+      <button className="w-[12px] h-[12px] rounded-full bg-[hsl(45_85%_55%)] hover:bg-[hsl(45_85%_45%)] transition-colors" title="Minimize" />
+      <button className="w-[12px] h-[12px] rounded-full bg-[hsl(130_55%_48%)] hover:bg-[hsl(130_55%_38%)] transition-colors" title="Maximize" />
+    </div>
+  );
+};
+
+/* ── Mobile Nav ── */
+const MobileNav = ({ domain, tabGroups, activePage, onNavigate }: {
+  domain: DomainConfig; tabGroups: NavTabGroup[]; activePage: string; onNavigate: (key: string) => void;
+}) => {
+  const [showMenu, setShowMenu] = useState(false);
+  const Icon = domain.icon;
+  const activeLabel = tabGroups.flatMap(g => g.tabs).find(t => t.key === activePage)?.label ?? "Overview";
+
+  return (
+    <>
+      <button onClick={() => setShowMenu(!showMenu)} className="flex items-center gap-2 px-3 py-2 text-[12px] font-medium text-foreground/80 bg-[hsl(0_0%_100%/0.05)] rounded-lg border border-[hsl(0_0%_100%/0.08)]">
+        <Icon className={`h-3.5 w-3.5`} style={{ color: domain.accentFrom }} />
+        {activeLabel}
+        <ChevronDown className="h-3 w-3" />
+      </button>
+      <AnimatePresence>
+        {showMenu && (
+          <motion.div initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
+            className="absolute top-full left-0 right-0 mt-1 z-50 bg-[hsl(0_0%_8%/0.95)] backdrop-blur-2xl border border-[hsl(0_0%_100%/0.1)] rounded-xl p-2 max-h-[60vh] overflow-y-auto">
+            {tabGroups.map(group => (
+              <div key={group.label} className="mb-2">
+                <p className="text-[9px] uppercase tracking-[0.1em] text-[hsl(0_0%_50%)] px-2 py-1 font-semibold">{group.label}</p>
+                {group.tabs.map(tab => {
+                  const TabIcon = tab.icon;
+                  return (
+                    <button key={tab.key} onClick={() => { onNavigate(tab.key); setShowMenu(false); }}
+                      className={cn("w-full text-left px-3 py-2 rounded-lg text-[12px] transition-colors flex items-center gap-2",
+                        activePage === tab.key
+                          ? "bg-[hsl(0_0%_100%/0.08)] font-medium text-foreground"
+                          : "text-[hsl(0_0%_65%)] hover:bg-[hsl(0_0%_100%/0.05)]"
+                      )}>
+                      {TabIcon && <TabIcon className="h-3.5 w-3.5" />}
+                      {tab.label}
+                    </button>
+                  );
+                })}
+              </div>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+};
+
+/* ── Main Shell ── */
+export function DomainAppShell({ domain, children, activePage, onNavigate, tabGroups, toolbarActions }: DomainAppShellProps) {
+  const isMobile = useIsMobile();
+  const Icon = domain.icon;
+
+  return (
+    <div className={cn(
+      "relative flex flex-col w-full h-full min-h-[calc(100vh-80px)] overflow-hidden",
+      "rounded-[16px] border",
+      APP_MATERIALS.windowBg.dark, APP_MATERIALS.windowBorder.dark, APP_SHADOWS.focused
+    )}>
+      {/* Accent Strip */}
+      <div className="w-full" style={{
+        height: APP_CHROME.accentStripHeight,
+        background: `linear-gradient(to right, ${domain.accentFrom}, ${domain.accentTo})`,
+      }} />
+
+      {/* Title Bar */}
+      <div className="flex items-center gap-3 px-4 border-b border-[hsl(0_0%_100%/0.06)] shrink-0 relative" style={{ height: APP_CHROME.titleBarHeight }}>
+        {!isMobile && <TrafficLights />}
+        <div className="flex items-center gap-2 ml-2">
+          <div className="w-5 h-5 rounded-md flex items-center justify-center" style={{
+            background: `linear-gradient(135deg, ${domain.accentFrom}, ${domain.accentTo})`,
+          }}>
+            <Icon className="h-3 w-3 text-[hsl(0_0%_100%/0.95)]" />
+          </div>
+          <span className={cn(APP_TYPE.title, "text-[hsl(0_0%_90%)]")}>{domain.title}</span>
+        </div>
+        {isMobile && (
+          <div className="ml-auto relative">
+            <MobileNav domain={domain} tabGroups={tabGroups} activePage={activePage} onNavigate={onNavigate} />
+          </div>
+        )}
+      </div>
+
+      {/* Toolbar */}
+      <AppToolbar domain={domain} toolbarActions={toolbarActions} />
+
+      {/* Body: Sidebar + Content */}
+      <div className="flex flex-1 overflow-hidden">
+        {!isMobile && (
+          <AppSidebarNav
+            domain={domain}
+            tabGroups={tabGroups}
+            activePage={activePage}
+            onNavigate={onNavigate}
+          />
+        )}
+        <div className="flex-1 overflow-y-auto p-4">
+          {children}
+        </div>
+      </div>
+
+      {/* Status Bar */}
+      <div className="flex items-center justify-between px-4 py-1.5 border-t border-[hsl(0_0%_100%/0.06)] shrink-0">
+        <div className="flex items-center gap-2">
+          <div className="w-1.5 h-1.5 rounded-full" style={{ background: domain.accentFrom }} />
+          <span className="text-[10px] text-[hsl(0_0%_50%)]">{domain.statusLabel}</span>
+        </div>
+        <span className="text-[10px] text-[hsl(0_0%_40%)]">{domain.version}</span>
+      </div>
+    </div>
+  );
+}
