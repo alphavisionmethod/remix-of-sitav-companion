@@ -488,6 +488,47 @@ const WP_TABS: { id: WallpaperCategory; label: string }[] = [
   { id: "custom", label: "Custom" },
 ];
 
+// ── Wallpaper thumbnail component ──
+function WallpaperThumb({ id, label, active, onClick, preview, imgSrc, isImage, isCustomPlaceholder }: {
+  id: string; label: string; active: boolean; onClick: () => void;
+  preview?: string; imgSrc?: string; isImage?: boolean; isCustomPlaceholder?: boolean;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      className={cn(
+        "relative rounded-xl overflow-hidden aspect-[16/10] transition-all duration-200 group",
+        "border-2",
+        active
+          ? "border-[hsl(210_80%_55%)] shadow-[0_0_12px_hsl(210_80%_55%/0.3)]"
+          : "border-[hsl(0_0%_100%/0.08)] hover:border-[hsl(0_0%_100%/0.2)]"
+      )}
+    >
+      {imgSrc ? (
+        <img src={imgSrc} alt={label} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" />
+      ) : isCustomPlaceholder ? (
+        <div className="w-full h-full bg-[hsl(0_0%_8%)] flex flex-col items-center justify-center gap-1">
+          <LinkIcon className="w-4 h-4 text-[hsl(0_0%_40%)]" />
+          <span className="text-[8px] text-[hsl(0_0%_40%)]">Paste URL</span>
+        </div>
+      ) : preview?.startsWith("url(") || isImage ? (
+        <div className="w-full h-full group-hover:scale-105 transition-transform duration-300" style={{ background: preview, backgroundSize: "cover", backgroundPosition: "center" }} />
+      ) : (
+        <div className="w-full h-full group-hover:scale-105 transition-transform duration-300" style={{ background: preview || "hsl(0 0% 10%)" }} />
+      )}
+      {active && (
+        <div className="absolute top-1 right-1 w-4 h-4 rounded-full bg-[hsl(210_80%_55%)] flex items-center justify-center">
+          <Check className="w-2.5 h-2.5 text-[hsl(0_0%_100%)]" />
+        </div>
+      )}
+      <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[hsl(0_0%_0%/0.7)] to-transparent px-1.5 py-1">
+        <div className="text-[9px] font-medium text-[hsl(0_0%_90%)]">{label}</div>
+      </div>
+    </button>
+  );
+}
+
 function AppearanceContent() {
   const [accentColor, setAccentColor] = useSettingsValue("appearance.accentColor", "hsl(265, 55%, 58%)");
   const accents = [
