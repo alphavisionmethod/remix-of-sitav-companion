@@ -5,7 +5,8 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { lazy, Suspense, useState, useCallback, useEffect } from "react";
-import type { WindowManager } from "@/hooks/useWindowManager";
+import { useWindowManager } from "@/hooks/useWindowManager";
+type WindowManager = ReturnType<typeof useWindowManager>;
 import { useFocusMode } from "@/hooks/use-focus-mode";
 import { CommandLayer } from "./CommandLayer";
 import { ClickRipple } from "./ClickRipple";
