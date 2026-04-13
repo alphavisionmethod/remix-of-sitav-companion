@@ -125,14 +125,14 @@ function ContinuityCard({ continuity }: { continuity: ContinuityContext }) {
 }
 
 // ── Widget Renderer ──────────────────────────────────────────
-function renderWidget(type: string, onOpenCommand?: () => void, continuity?: ContinuityContext) {
+function renderWidget(type: string, onOpenCommand?: () => void, continuity?: ContinuityContext, onLaunchApp?: (appId: string) => void) {
   switch (type) {
     case "clock":
       return <DesktopBigClock />;
     case "quick-actions":
       return (
         <div className="w-[320px]">
-          <DesktopQuickActionsWidget onOpenCommand={onOpenCommand} />
+          <DesktopQuickActionsWidget onOpenCommand={onOpenCommand} onLaunchApp={onLaunchApp} />
         </div>
       );
     case "system":
@@ -251,7 +251,7 @@ export function DesktopSurface({
             onRemove={removeWidget}
             dragConstraints={desktopRef}
           >
-            {renderWidget(w.type, onOpenCommand, continuity)}
+            {renderWidget(w.type, onOpenCommand, continuity, onLaunchApp)}
           </DraggableWidget>
         ))}
 
