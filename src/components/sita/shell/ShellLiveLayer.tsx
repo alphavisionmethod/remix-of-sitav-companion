@@ -91,10 +91,7 @@ export function ShellLiveLayer({
         />
       </Suspense>
 
-      {/* Edge Panels */}
-      <Suspense fallback={null}>
-        <EdgePanelsLazy />
-      </Suspense>
+      {/* (Edge Panels removed — legacy clutter) */}
 
       {/* Ambient background */}
       <Suspense fallback={null}>
