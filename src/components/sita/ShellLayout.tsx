@@ -169,9 +169,6 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
       />
 
       <div className={cn("relative flex flex-col min-h-screen w-full bg-surface-0", isCalm && "calm-mode", isFocus && "focus-mode")}>
-        <DemoGovernanceBanner />
-        <DemoStateBanner />
-        <NetworkStatusBar />
 
         {isDesktopRoute ? (
           <Suspense fallback={null}>

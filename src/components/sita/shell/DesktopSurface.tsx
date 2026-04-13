@@ -66,10 +66,10 @@ export function DesktopSurface({ onOpenCommand }: { onOpenCommand?: () => void }
             return (
               <FloatingWindow
                 key={w.id}
-                id={w.id}
+                windowId={w.id}
                 title={w.title}
-                defaultPosition={cascadedPosition}
-                defaultWidth={w.width}
+                initialPosition={cascadedPosition}
+                width={w.width}
                 originRect={w.originRect}
                 onClose={() => windowManager?.closeWindow(w.id)}
                 onMinimize={() => windowManager?.minimizeWindow(w.id)}
