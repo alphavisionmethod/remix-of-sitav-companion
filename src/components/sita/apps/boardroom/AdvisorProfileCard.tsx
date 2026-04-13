@@ -17,6 +17,23 @@ interface AdvisorProfileCardProps {
   className?: string;
 }
 
+// Sound wave bars for speaking state
+function SpeakingWaves({ color }: { color: string }) {
+  return (
+    <div className="flex items-end gap-[2px] h-2.5 ml-1">
+      {[0.5, 1, 0.6].map((s, i) => (
+        <motion.div
+          key={i}
+          className="w-[2px] rounded-full"
+          style={{ background: color }}
+          animate={{ height: [3, 10 * s, 3] }}
+          transition={{ repeat: Infinity, duration: 0.7, delay: i * 0.12, ease: "easeInOut" }}
+        />
+      ))}
+    </div>
+  );
+}
+
 export function AdvisorProfileCard({
   advisor,
   recommendation,
@@ -30,8 +47,8 @@ export function AdvisorProfileCard({
 }: AdvisorProfileCardProps) {
   const [imgError, setImgError] = useState(false);
 
-  const avatarSizes = { sm: "w-12 h-12", md: "w-16 h-16", lg: "w-20 h-20" };
-  const ringSizes = { sm: "w-14 h-14", md: "w-[72px] h-[72px]", lg: "w-[88px] h-[88px]" };
+  const avatarSizes = { sm: "w-14 h-14", md: "w-20 h-20", lg: "w-24 h-24" };
+  const ringSizes = { sm: "w-16 h-16", md: "w-[88px] h-[88px]", lg: "w-[104px] h-[104px]" };
 
   const isSpeaking = status === "speaking";
 
@@ -39,21 +56,31 @@ export function AdvisorProfileCard({
     <motion.button
       type="button"
       onClick={onClick}
-      whileHover={{ scale: 1.02, y: -2 }}
-      whileTap={{ scale: 0.98 }}
+      whileHover={{ scale: 1.03, y: -3 }}
+      whileTap={{ scale: 0.97 }}
       className={cn(
-        "rounded-2xl border p-4 text-left transition-all duration-300 relative group backdrop-blur-sm",
+        "rounded-2xl border p-4 text-left transition-all duration-300 relative group backdrop-blur-md overflow-hidden",
         selected
           ? "border-[hsl(280_50%_55%/0.35)] bg-[hsl(280_40%_50%/0.1)] shadow-[0_0_30px_hsl(280_50%_50%/0.1)]"
-          : "border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] hover:bg-[hsl(0_0%_100%/0.04)] hover:border-[hsl(0_0%_100%/0.12)]",
+          : "border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] hover:bg-[hsl(0_0%_100%/0.05)] hover:border-[hsl(0_0%_100%/0.14)]",
         className,
       )}
     >
-      {/* Ambient glow behind card on hover */}
+      {/* Shimmer/reflection effect on hover */}
+      <motion.div
+        className="absolute inset-0 -z-10 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700"
+        style={{
+          background: `linear-gradient(105deg, transparent 40%, ${advisor.accentColor}08 45%, ${advisor.accentColor}15 50%, ${advisor.accentColor}08 55%, transparent 60%)`,
+        }}
+        animate={{ x: ["-100%", "200%"] }}
+        transition={{ repeat: Infinity, duration: 3, ease: "linear" }}
+      />
+
+      {/* Ambient glow */}
       <div
         className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10"
         style={{
-          background: `radial-gradient(ellipse at center, ${advisor.accentColor}10, transparent 70%)`,
+          background: `radial-gradient(ellipse at center, ${advisor.accentColor}12, transparent 70%)`,
         }}
       />
 
@@ -63,15 +90,15 @@ export function AdvisorProfileCard({
           {/* Glowing ring */}
           <div
             className={cn(
-              "rounded-full flex items-center justify-center transition-all duration-300",
+              "rounded-full flex items-center justify-center transition-all duration-500",
               ringSizes[size],
             )}
             style={{
-              background: `linear-gradient(135deg, ${advisor.accentColor}, ${advisor.accentColor}66)`,
+              background: `linear-gradient(135deg, ${advisor.accentColor}, ${advisor.accentColor}55)`,
               padding: "3px",
               boxShadow: isSpeaking || selected
-                ? `0 0 20px ${advisor.accentColor}40, 0 0 40px ${advisor.accentColor}15`
-                : `0 0 8px ${advisor.accentColor}15`,
+                ? `0 0 28px ${advisor.accentColor}45, 0 0 56px ${advisor.accentColor}18`
+                : `0 0 10px ${advisor.accentColor}18`,
             }}
           >
             {/* Avatar image or fallback */}
@@ -88,7 +115,7 @@ export function AdvisorProfileCard({
                   className="w-full h-full flex items-center justify-center text-white font-bold"
                   style={{ background: `linear-gradient(135deg, ${advisor.accentColor}, ${advisor.accentColor}88)` }}
                 >
-                  <span className={size === "lg" ? "text-2xl" : size === "md" ? "text-xl" : "text-lg"}>
+                  <span className={size === "lg" ? "text-3xl" : size === "md" ? "text-2xl" : "text-xl"}>
                     {advisor.emoji}
                   </span>
                 </div>
@@ -121,9 +148,12 @@ export function AdvisorProfileCard({
 
       {/* Name and role */}
       <div className="text-center mb-2">
-        <p className="text-[12px] font-bold text-[hsl(0_0%_100%/0.88)] leading-tight truncate">
-          {advisor.name}
-        </p>
+        <div className="flex items-center justify-center gap-1">
+          <p className="text-[12px] font-bold text-[hsl(0_0%_100%/0.88)] leading-tight truncate">
+            {advisor.name}
+          </p>
+          {isSpeaking && <SpeakingWaves color={advisor.accentColor} />}
+        </div>
         <p className="text-[10px] font-semibold mt-0.5 truncate" style={{ color: advisor.accentColor }}>
           {advisor.role}
         </p>

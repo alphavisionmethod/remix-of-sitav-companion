@@ -170,13 +170,14 @@ export function BoardroomSynthesisView({ scope, onNavigate }: Props) {
         <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[hsl(280_50%_65%/0.5)] mb-3">
           Advisor Positions — Ranked by Confidence
         </p>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="flex gap-3 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-[hsl(0_0%_100%/0.08)]">
           {advisors.map((adv, i) => (
             <motion.div
               key={adv.id}
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.04 }}
+              className="snap-start shrink-0 w-[160px]"
             >
               <AdvisorProfileCard
                 advisor={adv}
@@ -186,7 +187,7 @@ export function BoardroomSynthesisView({ scope, onNavigate }: Props) {
                 status={selectedAdvisor === adv.id ? "speaking" : "active"}
                 selected={selectedAdvisor === adv.id}
                 onClick={() => setSelectedAdvisor(selectedAdvisor === adv.id ? null : adv.id)}
-                size="sm"
+                size="md"
               />
             </motion.div>
           ))}
