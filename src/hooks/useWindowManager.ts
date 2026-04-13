@@ -13,6 +13,8 @@ interface WindowState extends WindowConfig {
   id: string;
   zIndex: number;
   minimized: boolean;
+  maximized: boolean;
+  preMaximize?: { x: number; y: number; width: number };
   originRect?: { x: number; y: number; width: number; height: number };
 }
 
@@ -79,7 +81,7 @@ export function useWindowManager() {
       const saved = memory[id];
       const position = saved ? { x: saved.x, y: saved.y } : config.position;
       const width = saved?.width || config.width;
-      return [...prev, { ...config, position, width, id, zIndex: nextZ, minimized: false }];
+      return [...prev, { ...config, position, width, id, zIndex: nextZ, minimized: false, maximized: false }];
     });
     setNextZ(z => z + 1);
   }, [nextZ]);
@@ -110,6 +112,29 @@ export function useWindowManager() {
     setNextZ(z => z + 1);
   }, [nextZ]);
 
+  const maximizeWindow = useCallback((id: string) => {
+    setWindows(prev => prev.map(w => {
+      if (w.id !== id) return w;
+      if (w.maximized) {
+        // Restore from maximize
+        const pre = w.preMaximize;
+        return {
+          ...w,
+          maximized: false,
+          position: pre ? { x: pre.x, y: pre.y } : w.position,
+          width: pre?.width ?? w.width,
+          preMaximize: undefined,
+        };
+      }
+      // Maximize
+      return {
+        ...w,
+        maximized: true,
+        preMaximize: { x: w.position.x, y: w.position.y, width: w.width ?? 500 },
+      };
+    }));
+  }, []);
+
   // ── Session serialization ──────────────────────────────────
   const getWindowStates = useCallback(() => {
     return windows.map(w => ({
@@ -132,5 +157,5 @@ export function useWindowManager() {
   const visibleWindows = windows.filter(w => !w.minimized);
   const minimizedWindows = windows.filter(w => w.minimized);
 
-  return { windows, visibleWindows, minimizedWindows, openWindow, closeWindow, focusWindow, minimizeWindow, restoreWindow, getWindowStates, updateWindowPosition };
+  return { windows, visibleWindows, minimizedWindows, openWindow, closeWindow, focusWindow, minimizeWindow, restoreWindow, maximizeWindow, getWindowStates, updateWindowPosition };
 }
