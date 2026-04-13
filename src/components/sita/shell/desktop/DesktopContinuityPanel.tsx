@@ -1,4 +1,4 @@
-import { Clock3, ArrowRight } from "lucide-react";
+import { Clock3 } from "lucide-react";
 import { DesktopWidgetCard } from "./DesktopWidgetCard";
 import type { ContinuityContext, DesktopState } from "../useShellState";
 
@@ -20,8 +20,12 @@ export function DesktopContinuityPanel({ continuity, desktopState }: Props) {
       title="Continuity"
       accent="from-violet-500/25 via-white/[0.05] to-cyan-400/10"
       className="min-h-[280px]"
+      delay={0}
     >
-      <div className="flex h-full flex-col justify-between">
+      {/* Ambient breathing glow */}
+      <div className="absolute -inset-4 rounded-[32px] bg-[radial-gradient(ellipse_at_center,rgba(114,92,255,0.2),transparent_60%)] animate-[pulse_4s_ease-in-out_infinite] pointer-events-none" />
+
+      <div className="relative flex h-full flex-col justify-between">
         <div>
           <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.08] px-3 py-1 text-xs text-white/70">
             <Clock3 className="h-3.5 w-3.5" />
