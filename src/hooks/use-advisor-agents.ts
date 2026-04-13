@@ -151,9 +151,11 @@ export function useAdvisorAgents() {
       const inserts = ADVISOR_DEFAULTS.map((a) => ({
         ...a,
         user_id: user.id,
+        personality: a.personality as unknown as Record<string, never>,
+        scope_config: a.scope_config as unknown as Record<string, never>,
       }));
 
-      const { error } = await supabase.from("advisor_agents").upsert(inserts, {
+      const { error } = await supabase.from("advisor_agents").upsert(inserts as any, {
         onConflict: "user_id,advisor_id",
       });
       if (error) throw error;
