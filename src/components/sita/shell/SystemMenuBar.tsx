@@ -66,10 +66,11 @@ export const SystemMenuBar = memo(({ onSearchOpen, onNotifOpen, onControlCenterO
       className="fixed top-0 left-0 right-0 flex h-7 items-center justify-between px-4 select-none"
       style={{
         zIndex: DEPTH_LAYERS.menuBar,
-        background: "hsl(0 0% 0% / 0.25)",
-        backdropFilter: "blur(40px) saturate(1.8)",
-        WebkitBackdropFilter: "blur(40px) saturate(1.8)",
-        boxShadow: "0 1px 0 hsl(0 0% 100% / 0.05)",
+        background: "linear-gradient(180deg, hsl(0 0% 100% / 0.06) 0%, hsl(0 0% 0% / 0.28) 100%)",
+        backdropFilter: "blur(50px) saturate(2)",
+        WebkitBackdropFilter: "blur(50px) saturate(2)",
+        boxShadow: "inset 0 0.5px 0 hsl(0 0% 100% / 0.10), 0 1px 0 hsl(0 0% 0% / 0.15), 0 0 20px hsl(0 0% 0% / 0.08)",
+        borderBottom: "0.5px solid hsl(0 0% 100% / 0.06)",
       }}
     >
       {/* Left: Logo + App name + Menu items */}

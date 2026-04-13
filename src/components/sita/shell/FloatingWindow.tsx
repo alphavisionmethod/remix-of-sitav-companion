@@ -709,17 +709,22 @@ export function FloatingWindow({
         }}
         onPointerDown={() => onFocus?.()}
       >
-        {/* ── Accent strip ── */}
-        <div className={cn("h-[2px] w-full bg-gradient-to-r", accentGradient)} />
+        {/* ── Accent strip — more visible ── */}
+        <div className={cn("h-[2.5px] w-full bg-gradient-to-r", accentGradient)} style={{ boxShadow: "0 1px 6px hsl(265 55% 58% / 0.15)" }} />
 
-        {/* ── Title bar — draggable ── */}
+        {/* ── Title bar — draggable, with subtle gradient ── */}
         <div
           className={cn(
             "flex items-center px-3 gap-2 select-none",
-            "border-b border-[hsl(0_0%_0%/0.06)] dark:border-[hsl(0_0%_100%/0.06)]",
             isDragging ? "cursor-grabbing" : "cursor-grab"
           )}
-          style={{ height: titleBarHeight }}
+          style={{
+            height: titleBarHeight,
+            borderBottom: "0.5px solid hsl(0 0% 50% / 0.08)",
+            background: isFocused
+              ? "linear-gradient(180deg, hsl(0 0% 100% / 0.04) 0%, transparent 100%)"
+              : "transparent",
+          }}
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
           onPointerUp={handlePointerUp}

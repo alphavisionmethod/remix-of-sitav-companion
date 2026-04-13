@@ -119,11 +119,14 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMa
           animate={{ y: 0, opacity: 1 }}
           transition={{ type: "spring", stiffness: 200, damping: 20, delay: 0.3 }}
           className={cn(
-            "flex items-end gap-1 rounded-2xl border border-[hsl(0_0%_100%/0.30)] backdrop-blur-2xl px-3 py-2",
-            "shadow-[0_2px_8px_hsl(0_0%_0%/0.12),0_16px_40px_hsl(0_0%_0%/0.18)]",
+            "flex items-end gap-1 rounded-[20px] border border-[hsl(0_0%_100%/0.25)] backdrop-blur-[40px] px-3 py-2 relative",
             "transition-colors duration-500",
             MOOD_TINTS[mood] || MOOD_TINTS.serene
           )}
+          style={{
+            boxShadow: "0 2px 8px hsl(0 0% 0% / 0.12), 0 20px 50px hsl(0 0% 0% / 0.22), inset 0 1px 0 hsl(0 0% 100% / 0.12), inset 0 -1px 0 hsl(0 0% 0% / 0.1)",
+            background: `linear-gradient(180deg, hsl(0 0% 100% / 0.14) 0%, hsl(0 0% 100% / 0.06) 100%)`,
+          }}
           onMouseLeave={() => { setHoveredIdx(null); setTooltip(null); setCursorX(null); }}
           onMouseMove={(e) => {
             const now = performance.now();
@@ -220,8 +223,11 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMa
             );
           })}
 
-          {/* Separator */}
-          <div className="w-px h-8 bg-[hsl(0_0%_100%/0.15)] mx-1.5" />
+          {/* Separator — glowing gradient line */}
+          <div className="w-px h-8 mx-1.5 rounded-full" style={{
+            background: "linear-gradient(180deg, hsl(0 0% 100% / 0.05), hsl(0 0% 100% / 0.20), hsl(0 0% 100% / 0.05))",
+            boxShadow: "0 0 4px hsl(0 0% 100% / 0.08)",
+          }} />
 
           {/* App Store shortcut */}
           <div className="relative flex flex-col items-center">

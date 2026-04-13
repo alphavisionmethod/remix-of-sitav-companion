@@ -84,7 +84,7 @@ export function DesktopIconGrid({ visible = true, onOpenFolder }: DesktopIconGri
             key={item.id}
             className={cn(
               "flex flex-col items-center gap-1.5 w-[80px] group cursor-default",
-              "transition-all duration-300"
+              "transition-all duration-200"
             )}
             style={{
               animationDelay: `${i * 80}ms`,
@@ -94,15 +94,20 @@ export function DesktopIconGrid({ visible = true, onOpenFolder }: DesktopIconGri
           >
             <div
               className={cn(
-                "w-12 h-12 rounded-xl bg-gradient-to-br flex items-center justify-center shadow-md transition-all duration-200 relative overflow-hidden",
+                "w-13 h-13 rounded-[14px] bg-gradient-to-br flex items-center justify-center transition-all duration-200 relative overflow-hidden",
                 item.gradient,
-                isSelected && "ring-2 ring-[hsl(210_80%_60%/0.6)] shadow-[0_0_12px_hsl(210_80%_60%/0.3)]",
-                "group-hover:shadow-lg group-hover:scale-105"
+                isSelected && "ring-2 ring-[hsl(210_80%_60%/0.7)]",
+                "group-hover:scale-[1.08]"
               )}
+              style={{
+                boxShadow: isSelected
+                  ? "0 0 16px hsl(210 80% 60% / 0.35), 0 4px 16px hsl(0 0% 0% / 0.3)"
+                  : "0 2px 8px hsl(0 0% 0% / 0.2), 0 6px 20px hsl(0 0% 0% / 0.15), inset 0 1px 0 hsl(0 0% 100% / 0.15)",
+              }}
             >
               {/* Inner glow on hover */}
-              <div className="absolute inset-0 rounded-xl bg-[hsl(0_0%_100%/0)] group-hover:bg-[hsl(0_0%_100%/0.08)] transition-colors duration-200" />
-              <Icon className="w-5 h-5 text-[hsl(0_0%_100%/0.9)] relative z-10" />
+              <div className="absolute inset-0 rounded-[14px] bg-[hsl(0_0%_100%/0)] group-hover:bg-[hsl(0_0%_100%/0.10)] transition-colors duration-200" />
+              <Icon className="w-5.5 h-5.5 text-[hsl(0_0%_100%/0.95)] relative z-10 drop-shadow-sm" />
               {/* Smart preview mini-icon */}
               {PreviewIcon && (
                 <PreviewIcon className="absolute bottom-1 right-1 w-2.5 h-2.5 text-[hsl(0_0%_100%/0.4)]" />
@@ -110,9 +115,12 @@ export function DesktopIconGrid({ visible = true, onOpenFolder }: DesktopIconGri
             </div>
             <span
               className={cn(
-                "text-[11px] font-medium text-[hsl(0_0%_100%/0.7)] truncate max-w-[76px] text-center leading-tight",
-                isSelected && "text-[hsl(0_0%_100%/0.95)]"
+                "text-[11px] font-medium truncate max-w-[76px] text-center leading-tight transition-colors duration-200",
+                isSelected ? "text-[hsl(0_0%_100%/0.95)]" : "text-[hsl(0_0%_100%/0.75)]"
               )}
+              style={{
+                textShadow: "0 1px 4px hsl(0 0% 0% / 0.6)",
+              }}
             >
               {item.label}
             </span>

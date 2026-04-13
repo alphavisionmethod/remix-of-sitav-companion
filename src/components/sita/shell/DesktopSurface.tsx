@@ -132,6 +132,9 @@ function DesktopClock({ greeting, userName, bootReady }: { greeting: string; use
   const time = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: true });
   const date = now.toLocaleDateString([], { weekday: "long", month: "long", day: "numeric" });
   const seconds = now.getSeconds();
+  const secAngle = (seconds / 60) * 360;
+  const secProgress = (seconds / 60) * 2 * Math.PI * 18;
+  const secCircumference = 2 * Math.PI * 18;
 
   return (
     <div
@@ -140,27 +143,52 @@ function DesktopClock({ greeting, userName, bootReady }: { greeting: string; use
         bootReady ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-3 scale-95"
       )}
     >
-      <div className="relative inline-block">
-        <p className="text-7xl md:text-8xl font-extralight tracking-tight text-[hsl(0_0%_100%/0.9)] tabular-nums drop-shadow-lg">
-          {time}
-        </p>
-        {/* W3: Analog second-hand sweep */}
-        <div className="absolute -right-6 top-1/2 -translate-y-1/2 w-8 h-8">
-          <svg viewBox="0 0 32 32" className="w-full h-full">
-            <circle cx="16" cy="16" r="14" fill="none" stroke="hsl(0 0% 100% / 0.1)" strokeWidth="1" />
-            <line
-              x1="16" y1="16" x2="16" y2="4"
-              stroke="hsl(0 70% 55%)" strokeWidth="1" strokeLinecap="round"
-              style={{ transform: `rotate(${seconds * 6}deg)`, transformOrigin: "16px 16px", transition: "transform 0.2s linear" }}
+      <div className="relative inline-flex items-center justify-center">
+        {/* Circular seconds progress ring */}
+        <div className="absolute -inset-6 md:-inset-8">
+          <svg viewBox="0 0 44 44" className="w-full h-full" style={{ transform: "rotate(-90deg)" }}>
+            <circle cx="22" cy="22" r="18" fill="none" stroke="hsl(0 0% 100% / 0.04)" strokeWidth="0.5" />
+            <circle
+              cx="22" cy="22" r="18" fill="none"
+              stroke="hsl(265 55% 65% / 0.4)"
+              strokeWidth="1"
+              strokeLinecap="round"
+              strokeDasharray={`${secProgress} ${secCircumference - secProgress}`}
+              style={{ transition: "stroke-dasharray 0.3s ease-out" }}
             />
-            <circle cx="16" cy="16" r="1.5" fill="hsl(0 70% 55%)" />
+            {/* Seconds dot */}
+            <circle
+              cx="22" cy="4" r="1.5"
+              fill="hsl(265 55% 70%)"
+              style={{ 
+                transform: `rotate(${secAngle}deg)`, 
+                transformOrigin: "22px 22px", 
+                transition: "transform 0.3s ease-out",
+                filter: "drop-shadow(0 0 3px hsl(265 55% 65% / 0.6))"
+              }}
+            />
           </svg>
         </div>
+        <p
+          className="text-[80px] md:text-[110px] font-[200] tracking-[-0.04em] tabular-nums leading-none"
+          style={{
+            color: "hsl(0 0% 100% / 0.92)",
+            textShadow: "0 0 80px hsl(265 55% 65% / 0.15), 0 2px 4px hsl(0 0% 0% / 0.3)",
+          }}
+        >
+          {time}
+        </p>
       </div>
-      <p className="text-lg md:text-xl font-light text-[hsl(0_0%_100%/0.6)] mt-1 tracking-wide">
+      <p
+        className="text-lg md:text-xl font-light tracking-wide mt-3"
+        style={{ color: "hsl(0 0% 100% / 0.55)" }}
+      >
         {date}
       </p>
-      <p className="text-sm font-medium text-[hsl(0_0%_100%/0.45)] mt-4 tracking-wider uppercase">
+      <p
+        className="text-[13px] font-medium mt-5 tracking-[0.15em] uppercase"
+        style={{ color: "hsl(0 0% 100% / 0.35)" }}
+      >
         {greeting}{userName ? `, ${userName}` : ""}
       </p>
     </div>
@@ -375,21 +403,38 @@ function GlassWidget({ icon: Icon, label, value, accent, onClick, delay = 0, boo
       onClick={onClick}
       className={cn(
         "group widget-glow-hover flex items-center gap-4 rounded-2xl px-6 py-5 relative overflow-hidden",
-        "bg-[hsl(0_0%_100%/0.08)] backdrop-blur-2xl border border-[hsl(0_0%_100%/0.12)]",
-        "hover:bg-[hsl(0_0%_100%/0.14)] hover:border-[hsl(0_0%_100%/0.22)]",
+        "bg-[hsl(0_0%_100%/0.07)] backdrop-blur-[28px] border border-[hsl(0_0%_100%/0.10)]",
+        "hover:bg-[hsl(0_0%_100%/0.13)] hover:border-[hsl(0_0%_100%/0.20)]",
         "hover:scale-[1.02] active:scale-[0.98]",
         "transition-all duration-[120ms] cursor-pointer",
-        "shadow-[0_2px_8px_hsl(0_0%_0%/0.08),0_12px_28px_hsl(0_0%_0%/0.10)]",
-        "hover:shadow-[0_2px_8px_hsl(0_0%_0%/0.10),0_16px_36px_hsl(0_0%_0%/0.14),inset_0_1px_0_hsl(0_0%_100%/0.12)]",
         "min-w-[200px]",
         bootReady ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4",
-        isDragging && "ring-2 ring-[hsl(265_55%_58%/0.6)] scale-105 shadow-[0_8px_32px_hsl(265_55%_58%/0.25)] z-50"
+        isDragging && "ring-2 ring-[hsl(265_55%_58%/0.6)] scale-105 z-50"
       )}
-      style={{ transitionDelay: bootReady ? `${delay}ms` : "0ms" }}
+      style={{
+        transitionDelay: bootReady ? `${delay}ms` : "0ms",
+        boxShadow: isDragging
+          ? "0 8px 32px hsl(265 55% 58% / 0.25)"
+          : "0 2px 8px hsl(0 0% 0% / 0.08), 0 12px 28px hsl(0 0% 0% / 0.10), inset 0 1px 0 hsl(0 0% 100% / 0.08), inset 0 -1px 0 hsl(0 0% 0% / 0.1)",
+      }}
     >
+      {/* Accent glow overlay on hover */}
+      <div
+        className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+        style={{
+          background: `radial-gradient(ellipse at 30% 50%, ${sparkColor || "hsl(265 55% 65%)"} / 0.06, transparent 70%)`,
+        }}
+      />
+      {/* Inner gradient overlay */}
+      <div
+        className="absolute inset-0 rounded-2xl pointer-events-none"
+        style={{
+          background: "linear-gradient(135deg, hsl(0 0% 100% / 0.03) 0%, transparent 50%, hsl(0 0% 0% / 0.02) 100%)",
+        }}
+      />
       {/* Background sparkline */}
       {sparkData && sparkData.length >= 2 && (
-        <div className="absolute bottom-0 right-0 opacity-40 group-hover:opacity-70 transition-opacity pointer-events-none">
+        <div className="absolute bottom-0 right-0 opacity-30 group-hover:opacity-60 transition-opacity pointer-events-none">
           <Sparkline data={sparkData} color={sparkColor || "hsl(265 55% 65%)"} width={80} height={32} />
         </div>
       )}
@@ -402,16 +447,18 @@ function GlassWidget({ icon: Icon, label, value, accent, onClick, delay = 0, boo
           <GripVertical className="h-3.5 w-3.5 text-[hsl(0_0%_100%/0.5)]" />
         </div>
       )}
-      <div className={cn("rounded-xl p-2.5", accent || "bg-[hsl(265_55%_58%/0.2)]")}>
+      <div className={cn("rounded-xl p-2.5 shadow-inner", accent || "bg-[hsl(265_55%_58%/0.2)]")}
+        style={{ boxShadow: "inset 0 1px 2px hsl(0 0% 100% / 0.1), 0 2px 6px hsl(0 0% 0% / 0.15)" }}
+      >
         <Icon className="h-5 w-5 text-[hsl(0_0%_100%/0.9)]" />
       </div>
       <div className="text-left relative z-10">
         <div className="flex items-center gap-2">
-          <p className="text-lg font-semibold text-[hsl(0_0%_100%/0.9)] leading-tight">{value}</p>
+          <p className="text-lg font-semibold text-[hsl(0_0%_100%/0.92)] leading-tight">{value}</p>
           {trend && (
             <span
               className={cn(
-                "inline-flex items-center gap-0.5 rounded-md px-1.5 py-0.5 text-[10px] font-semibold leading-none",
+                "inline-flex items-center gap-0.5 rounded-md px-1.5 py-0.5 text-[10px] font-semibold leading-none backdrop-blur-sm",
                 trend.up
                   ? "bg-[hsl(142_60%_45%/0.2)] text-[hsl(142_70%_65%)]"
                   : "bg-[hsl(0_60%_45%/0.2)] text-[hsl(0_70%_65%)]"
@@ -421,7 +468,7 @@ function GlassWidget({ icon: Icon, label, value, accent, onClick, delay = 0, boo
             </span>
           )}
         </div>
-        <p className="text-[11px] font-medium text-[hsl(0_0%_100%/0.5)] uppercase tracking-wider">{label}</p>
+        <p className="text-[11px] font-medium text-[hsl(0_0%_100%/0.45)] uppercase tracking-wider">{label}</p>
       </div>
       <ArrowRight className="h-3.5 w-3.5 text-[hsl(0_0%_100%/0.2)] group-hover:text-[hsl(0_0%_100%/0.5)] transition-colors ml-auto relative z-10" />
     </button>
@@ -809,11 +856,12 @@ export function DesktopSurface({
         <ShellAmbientBackground mood={mood} intensity="vivid" className="" />
       </div>
 
-      {/* Decorative orbs */}
+      {/* Decorative orbs — richer, more visible */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ zIndex: DEPTH_LAYERS.orbs }}>
-        <div className="absolute top-[15%] left-[20%] w-[500px] h-[500px] rounded-full bg-[hsl(265_60%_50%/0.06)] blur-[120px]" />
-        <div className="absolute bottom-[20%] right-[15%] w-[400px] h-[400px] rounded-full bg-[hsl(35_80%_50%/0.04)] blur-[100px]" />
-        <div className="absolute top-[60%] left-[60%] w-[300px] h-[300px] rounded-full bg-[hsl(190_60%_50%/0.03)] blur-[80px]" />
+        <div className="absolute top-[10%] left-[15%] w-[600px] h-[600px] rounded-full bg-[hsl(265_60%_50%/0.10)] blur-[140px]" />
+        <div className="absolute bottom-[15%] right-[10%] w-[500px] h-[500px] rounded-full bg-[hsl(35_80%_50%/0.07)] blur-[120px]" />
+        <div className="absolute top-[55%] left-[55%] w-[400px] h-[400px] rounded-full bg-[hsl(190_60%_50%/0.06)] blur-[100px]" />
+        <div className="absolute top-[30%] right-[30%] w-[350px] h-[350px] rounded-full bg-[hsl(330_50%_50%/0.04)] blur-[110px]" />
       </div>
 
       {/* Main desktop content — dims when windows are open (Soft Focus) + idle fade */}
@@ -1029,13 +1077,13 @@ export function DesktopSurface({
         )}
       </AnimatePresence>
 
-      {/* Vignette */}
+      {/* Vignette — deeper, more cinematic */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
           zIndex: DEPTH_LAYERS.vignette,
-          background: "radial-gradient(ellipse at center, transparent 40%, hsl(0 0% 0% / 0.3) 100%)",
-          boxShadow: "inset 0 0 120px hsl(0 0% 0% / 0.15)",
+          background: "radial-gradient(ellipse at center, transparent 35%, hsl(0 0% 0% / 0.35) 85%, hsl(0 0% 0% / 0.5) 100%)",
+          boxShadow: "inset 0 0 150px hsl(0 0% 0% / 0.2)",
         }}
       />
     </div>
