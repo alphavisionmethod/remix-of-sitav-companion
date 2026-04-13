@@ -7,9 +7,8 @@ import { MobileShell } from "@/components/mobile/MobileShell";
 import { Shield, ShieldCheck, ShieldAlert, Smartphone, Fingerprint, RefreshCw, XCircle, CheckCircle, Clock, AlertTriangle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { toast } from "sonner";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 type TrustLevel = "hardware-attested" | "verified" | "basic" | "untrusted";
 
@@ -125,7 +124,6 @@ const DeviceCard = ({ device, onRevoke, onReEnroll }: { device: DeviceInfo; onRe
 };
 
 export default function MobileDeviceTrust() {
-  const { isDemoMode } = useDataMode();
   const [devices] = useState<DeviceInfo[]>(MOCK_DEVICES);
 
   const handleRevoke = (id: string) => {
@@ -140,7 +138,8 @@ export default function MobileDeviceTrust() {
 
   return (
     <MobileShell title="Device Trust">
-      {isDemoMode && <DemoModeBadge />}
+      {isDemoMode &&
+}
 
       {/* Trust Health Summary */}
       <div className="rounded-xl border border-border/40 bg-gradient-to-br from-primary/5 via-card to-card p-4 mb-4">

@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ShieldCheck, AlertTriangle, Check, X, Clock, Search, Brain } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useInvestmentDecisions } from "@/hooks/use-investment-office";
 import { DEMO_PENDING_DECISIONS } from "@/lib/demo-data/investment";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const VERDICT_CONFIG = {
   ready: { label: "Ready", color: "text-[hsl(var(--trust-safe))]", bg: "bg-[hsl(var(--trust-safe))]/10", icon: <Check className="h-5 w-5" /> },
@@ -15,15 +14,13 @@ const VERDICT_CONFIG = {
 };
 
 export default function DecisionReadiness() {
-  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useInvestmentDecisions();
   const [selected, setSelected] = useState(DEMO_PENDING_DECISIONS[0]);
   const vc = VERDICT_CONFIG[selected.verdict];
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><ShieldCheck className="h-6 w-6 text-primary" /> Decision Readiness Center</h1>
         <p className="text-sm text-muted-foreground mt-0.5">Score whether you're truly ready to act — across research, risk, thesis, discipline, and policy</p>
       </div>

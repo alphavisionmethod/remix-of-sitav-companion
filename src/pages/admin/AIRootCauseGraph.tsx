@@ -2,9 +2,9 @@ import { AdminPageHeader } from "@/components/sita/admin/AdminPageHeader";
 import { Badge } from "@/components/ui/badge";
 import { useState } from "react";
 import { Network, ArrowRight, AlertTriangle, Bug, Server, Layout, Database, Shield, Zap } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_GRAPH_EDGES, DEMO_GRAPH_NODES } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const typeStyles: Record<string, { icon: typeof Bug; color: string; bg: string }> = {
   symptom: { icon: AlertTriangle, color: "text-destructive", bg: "bg-destructive/10 border-destructive/20" },
@@ -23,8 +23,7 @@ const AIRootCauseGraph = () => {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <AdminPageHeader icon={Network} title="Root Cause Graph" subtitle="Visual graph linking symptoms → services → releases → configs → likely root causes" accent="destructive" />
+<AdminPageHeader icon={Network} title="Root Cause Graph" subtitle="Visual graph linking symptoms → services → releases → configs → likely root causes" accent="destructive" />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Graph Visualization (structured list view) */}

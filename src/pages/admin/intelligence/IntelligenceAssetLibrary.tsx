@@ -13,8 +13,8 @@ import { Progress } from "@/components/ui/progress";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useIntelligenceAssetLibrary, type IntelligenceAsset } from "@/hooks/use-intelligence-screen-data";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const verificationColors: Record<string, string> = {
   verified: "text-emerald-400",
@@ -232,7 +232,8 @@ const IntelligenceAssetLibrary = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      {isDemo && <DemoModeBadge />}
+      {isDemo &&
+}
       <SitaPageHeader
         icon={<Library className="h-6 w-6" />}
         title="Intelligence Asset Library"

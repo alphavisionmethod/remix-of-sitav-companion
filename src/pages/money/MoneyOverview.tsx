@@ -8,21 +8,19 @@ import { DomainCard } from "@/components/sita/cards/DomainCard";
 import { UrgencyBadge, FreshnessBadge, TrustBadge } from "@/components/sita/badges";
 import { ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransitions";
 import { AppSurface } from "@/components/sita/surfaces/AppSurface";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
 import { useNavigate } from "react-router-dom";
 import { useBills, useSubscriptions, useInvoices } from "@/hooks/use-sita-data";
 import { useFinancialAccounts, useMoneyKPIs } from "@/hooks/use-domain-data";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useMemo } from "react";
 import {
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
   DollarSign, Wallet, PiggyBank, CreditCard, AlertTriangle, Receipt,
   Shield, Activity, ArrowRight, BarChart3, Calendar, CheckCircle
 } from "lucide-react";
 
 const MoneyOverview = () => {
   const navigate = useNavigate();
-  const { isDemoMode } = useDataMode();
   const { data: bills = [] } = useBills();
   const { data: subscriptions = [] } = useSubscriptions();
   const { data: invoices = [] } = useInvoices();
@@ -72,9 +70,7 @@ const MoneyOverview = () => {
 
   return (
     <AppSurface level={0} className="space-y-5 p-0 border-0 rounded-none bg-transparent">
-      <DemoModeBadge />
-
-      <ListReveal className="space-y-5" domain="finance">
+<ListReveal className="space-y-5" domain="finance">
         {/* Confidence state */}
         <ListRevealItem>
           <StatusCard

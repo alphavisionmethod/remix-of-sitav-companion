@@ -13,7 +13,6 @@ import { SitaTabs } from "@/components/sita/SitaComponents";
 import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
 import { cn } from "@/lib/utils";
 import { useCommunications } from "@/hooks/use-sita-data";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useActionFn } from "@/hooks/use-action";
 import { useConfirmation } from "@/hooks/use-confirmation";
@@ -34,7 +33,6 @@ const fallbackComms: Communication[] = [
 ];
 
 const CommunicationsCenter = () => {
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const { data: dbComms = [] } = useCommunications();

@@ -7,12 +7,10 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useFeatureIntakes, useCapabilities, useFeatureSpecs, useComplianceRecords, useRolloutRecords } from "@/hooks/use-fip-data";
 import { READINESS_STAGES } from "@/lib/fip/types";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_ADMIN_BUILDER_STEPS as DEMO_BUILDER_STEPS, DEMO_DOMAIN_PACKS } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const FIPBuilderConsole = () => {
-  const { isDemoMode } = useDataMode();
   const { data: intakes = [] } = useFeatureIntakes();
   const { data: caps = [] } = useCapabilities();
   const { data: specs = [] } = useFeatureSpecs();
@@ -23,8 +21,7 @@ const FIPBuilderConsole = () => {
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
       <FIPSubNav />
-      <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Cpu className="h-6 w-6 text-primary" /> FIP14 — AI Engineer Builder Console</h1>
         <p className="text-muted-foreground mt-1">Structured methodology interface for AI engineering teams</p>
       </motion.div>

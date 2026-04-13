@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ScrollText, Shield, Check, AlertTriangle, Settings, Lock } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useInvestmentStrategyRecords } from "@/hooks/use-investment-office";
 import { DEMO_CONSTITUTION_RULES, DEMO_CURRENT_VIOLATIONS, DEMO_INV_CATEGORIES as DEMO_CATEGORIES } from "@/lib/demo-data/investment";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 interface Rule {
   id: string;
@@ -17,15 +16,13 @@ interface Rule {
 }
 
 export default function InvestmentConstitution() {
-  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useInvestmentStrategyRecords();
   const [filter, setFilter] = useState("all");
   const filtered = DEMO_CONSTITUTION_RULES.filter(r => filter === "all" || r.category === filter);
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><ScrollText className="h-6 w-6 text-primary" /> Personal Investment Constitution</h1>
         <p className="text-sm text-muted-foreground mt-0.5">Your living rulebook for disciplined investing. Advisors enforce these gently.</p>
       </div>

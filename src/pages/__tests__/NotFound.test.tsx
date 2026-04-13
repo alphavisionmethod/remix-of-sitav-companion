@@ -4,7 +4,6 @@ import { MemoryRouter } from "react-router-dom";
 import NotFound from "../NotFound";
 import { DataModeProvider } from "@/contexts/DataModeContext";
 import { DemoModeProvider } from "@/contexts/DemoModeProvider";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 const Wrapper = ({ children }: { children: React.ReactNode }) => (
   <DataModeProvider>

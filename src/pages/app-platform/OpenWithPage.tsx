@@ -8,13 +8,11 @@ import { ArrowLeft, FileText, Star, Check, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { AppIcon, VerificationBadge } from "@/components/sita/app-platform/AppStoreComponents";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_FILES } from "@/lib/demo-data/core-pages";
 import { toast } from "sonner";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const OpenWithPage = () => {
-  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   const { apps, setDefaultApp } = useAppPlatform();
   const [selectedFile, setSelectedFile] = useState(DEMO_FILES[0]);
@@ -38,8 +36,7 @@ const OpenWithPage = () => {
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">
-      <DemoModeBadge />
-      <button onClick={() => navigate("/app-store/associations")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+<button onClick={() => navigate("/app-store/associations")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
         <ArrowLeft className="h-4 w-4" /> Back to Associations
       </button>
 

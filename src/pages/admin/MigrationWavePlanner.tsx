@@ -3,11 +3,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useMockReplacements } from "@/hooks/useMockReplacements";
 import { Layers, Users, Clock, Target, ArrowRight } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function MigrationWavePlanner() {
-  const { isDemoMode } = useDataMode();
   const { data: mockReplacements = [] } = useMockReplacements();
 
   const waves = useMemo(() => {
@@ -37,8 +35,7 @@ export default function MigrationWavePlanner() {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold">Migration Wave Planner</h1>
         <p className="text-sm text-muted-foreground">Plan the sequence of mock → real migrations — RCP10</p>
       </div>

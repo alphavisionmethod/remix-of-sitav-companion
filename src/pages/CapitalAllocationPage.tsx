@@ -6,8 +6,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -15,9 +13,9 @@ import { fromTable } from "@/lib/supabase-helpers";
 
 import { ASSET_COLORS } from "@/lib/constants/ui-config";
 import { DEMO_ALLOCATIONS } from "@/lib/demo-data/core-pages";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function CapitalAllocationPage() {
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
 
   const { data: realAllocations } = useQuery({
@@ -48,8 +46,7 @@ export default function CapitalAllocationPage() {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between">
+<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><PieChart className="h-6 w-6 text-primary" /> Capital Allocation</h1>
           <p className="text-muted-foreground text-sm mt-1">Portfolio optimization, rebalancing, and allocation tracking</p>

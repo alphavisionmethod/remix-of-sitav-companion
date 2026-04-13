@@ -12,7 +12,6 @@ import { JOURNEY_STATUS_CONFIG, LAUNCH_IMPACT_CONFIG } from "@/lib/customer-jour
 import { ClipboardCheck, AlertTriangle, Shield, BarChart3, Loader2, Database, GitCompare, Clock } from "lucide-react";
 import { toast } from "sonner";
 import { useMemo } from "react";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
@@ -25,7 +24,6 @@ const PROOF_LABELS: Record<string, { label: string; color: string }> = {
 };
 
 export default function CJ01ExecutiveReport() {
-  const { isDemoMode } = useDataMode();
   const { data: journeys, isLoading } = useCustomerJourneys();
   const { data: blockers } = useCustomerJourneyBlockers();
   const { data: summaryView } = useJourneySummaryView();

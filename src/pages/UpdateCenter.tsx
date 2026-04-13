@@ -4,11 +4,10 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Download, CheckCircle, Clock, RefreshCw, Shield, ArrowRight, Info } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const UPDATE_HISTORY = [
   { version: "v2.8.1", date: "2026-04-07", type: "Patch", highlights: ["Security fixes", "Connector stability improvements", "Proof chain performance"], status: "installed" },
@@ -24,7 +23,6 @@ const CHANNELS = [
 ];
 
 export default function UpdateCenter() {
-  const { isDemoMode } = useDataMode();
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
@@ -33,7 +31,8 @@ export default function UpdateCenter() {
         title="Update Center"
         subtitle="Manage update channels, view available updates, and review update history"
       />
-      {isDemoMode && <DemoModeBadge />}
+      {isDemoMode &&
+}
 
       {/* Current Status */}
       <Card>

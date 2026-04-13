@@ -1,9 +1,7 @@
 import { useState, useMemo } from "react";
 import { Link2, Plus, RefreshCw, CheckCircle2, AlertTriangle, XCircle, Shield, Clock, Search, Star } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { PLATFORM_CONNECTIONS } from "@/hooks/useInvestmentOfficeData";
 import { SYNC_HISTORY, PLATFORM_PERMISSIONS } from "@/lib/investment-office/mock-data";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
 import { DEMO_AVAILABLE_PLATFORMS } from "@/lib/demo-data/investment";
 import { ConnectPlatformModal } from "@/components/investment/ConnectPlatformModal";
@@ -12,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import type { AvailablePlatform, PlatformType } from "@/lib/investment-office/types";
 import { cn } from "@/lib/utils";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const STATUS_CONFIG = {
   connected: { icon: CheckCircle2, color: "text-[hsl(var(--trust-safe))]", bg: "bg-[hsl(var(--trust-safe))]/10" },
@@ -41,7 +40,6 @@ const CATEGORY_TABS: { value: string; label: string; types: PlatformType[] }[] =
 ];
 
 export default function PlatformConnections() {
-  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useMarketWatchlistItems();
   const [category, setCategory] = useState("all");
   const [search, setSearch] = useState("");
@@ -62,8 +60,7 @@ export default function PlatformConnections() {
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
-      <DemoModeBadge />
-      <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Link2 className="h-6 w-6 text-primary" /> Platform Connections</h1>
           <p className="text-sm text-muted-foreground mt-1">Connect brokerages, exchanges, wallets, DeFi, and forex platforms</p>

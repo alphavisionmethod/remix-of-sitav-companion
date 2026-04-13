@@ -8,8 +8,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Smartphone, Watch, Shield, Heart, Wifi, Activity, Clock, Zap, CheckCircle2, AlertTriangle, ChevronRight, RefreshCw, Loader2, Database, Monitor, Plus, Trash2 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 
 import {
@@ -21,6 +19,7 @@ import {
 } from "@/hooks/useEcosystemDevices";
 import { DEMO_ADMIN_PROVIDER_CAPS as DEMO_PROVIDER_CAPS } from "@/lib/demo-data/admin-platform";
 import ANDSubNav from "@/components/admin/ANDSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const SURFACE_META: Record<string, { title: string; icon: any; desc: string; tech: string[]; capabilities: string[] }> = {
   android_phone: { title: "Android Phone Shell", icon: Smartphone, desc: "Primary Android surface — Material Design shell", tech: ["Kotlin", "Jetpack Compose", "WebView hybrid"], capabilities: ["push_fcm", "biometric", "camera", "nfc"] },
@@ -31,7 +30,6 @@ const SURFACE_META: Record<string, { title: string; icon: any; desc: string; tec
 };
 
 const AND01AndroidEcosystemCenter = () => {
-  const { isDemoMode } = useDataMode();
   const [showDeps, setShowDeps] = useState(false);
   const [showAddDevice, setShowAddDevice] = useState(false);
   const [newDevice, setNewDevice] = useState({ surface: "android_phone", device_model: "", os_version: "" });
@@ -64,8 +62,7 @@ const AND01AndroidEcosystemCenter = () => {
 
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">
-      <DemoModeBadge />
-      <ANDSubNav />
+<ANDSubNav />
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-lg bg-primary/10"><Smartphone className="h-8 w-8 text-primary" /></div>

@@ -3,10 +3,9 @@ import { Monitor, ArrowRight, AlertTriangle, TrendingUp, Smartphone, Eye } from 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_CONVERSION_PATHS, DEMO_PAGE_TREE, DEMO_WEAK_NODES } from "@/lib/demo-data/digital-presence";
 import DPOSubNav from "./DPOSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 function PageNode({ page, depth = 0 }: { page: typeof DEMO_PAGE_TREE[0]; depth?: number }) {
   const healthColor = page.health >= 85 ? "text-green-400" : page.health >= 70 ? "text-amber-400" : "text-red-400";
@@ -31,7 +30,6 @@ function PageNode({ page, depth = 0 }: { page: typeof DEMO_PAGE_TREE[0]; depth?:
 }
 
 export default function WebsiteTwin() {
-  const { isDemoMode } = useDataMode();
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <DPOSubNav />

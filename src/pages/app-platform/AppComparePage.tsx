@@ -9,13 +9,11 @@ import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { AppIcon, VerificationBadge, AppSourceLabel, InstallSheet } from "@/components/sita/app-platform/AppStoreComponents";
 import type { AppDefinition } from "@/lib/app-platform/types";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_COMPARE_PAIRS } from "@/lib/demo-data/core-pages";
 import { toast } from "sonner";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const AppComparePage = () => {
-  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   const { apps, installApp, pinToDock } = useAppPlatform();
   const [searchParams] = useSearchParams();
@@ -27,8 +25,7 @@ const AppComparePage = () => {
   if (compareApps.length < 2) {
     return (
       <div className="mx-auto max-w-5xl">
-      <DemoModeBadge />
-        <button onClick={() => navigate("/app-store")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
+<button onClick={() => navigate("/app-store")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
           <ArrowLeft className="h-4 w-4" /> Back
         </button>
         <p className="text-center py-20 text-muted-foreground">Select at least two apps to compare</p>

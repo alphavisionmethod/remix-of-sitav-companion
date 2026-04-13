@@ -12,9 +12,8 @@ import { Progress } from "@/components/ui/progress";
 import { getWorkforceRoles, getWorkforceStats } from "@/lib/core-services/ai-workforce/workforce-orchestrator";
 import { DEFAULT_THRESHOLDS, ROLE_BUDGET_POLICIES } from "@/lib/core-services/ai-workforce/admin-budget-routing-policy";
 import { ClipboardCheck, Shield, DollarSign, Zap, CheckCircle, AlertTriangle, Eye, Lock, Repeat, FileText, BarChart3, Users } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import AITSubNav from "@/components/admin/AITSubNav";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 interface CheckItem {
   id: string;
@@ -27,7 +26,6 @@ interface CheckItem {
 }
 
 export default function AITSetupChecklist() {
-  const { isDemoMode } = useDataMode();
   const { data: roles = [] } = useQuery({ queryKey: ["setup-roles"], queryFn: getWorkforceRoles });
   const { data: stats } = useQuery({ queryKey: ["setup-stats"], queryFn: getWorkforceStats });
   const [manualChecks, setManualChecks] = useState<Record<string, boolean>>({});
@@ -147,8 +145,7 @@ export default function AITSetupChecklist() {
   return (
     <div className="space-y-6 p-6 max-w-[1200px] mx-auto">
       <AITSubNav />
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <ClipboardCheck className="h-6 w-6 text-primary" /> Affordable AI Team Setup Checklist
         </h1>

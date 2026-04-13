@@ -10,13 +10,11 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { Moon, Shield, Clock, Volume2, VolumeX, Bell, BellOff } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { cn } from "@/lib/utils";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 export default function NOT04CalmPolicyBoard() {
-  const { isDemoMode } = useDataMode();
   const { data: policies = [] } = useQuery({
     queryKey: ["not04-policies"],
     queryFn: async () => {
@@ -41,8 +39,7 @@ export default function NOT04CalmPolicyBoard() {
 
   return (
     <div className="p-6 space-y-6 max-w-6xl" data-testid="not04-calm-board">
-      <DemoModeBadge />
-      <div className="flex items-center gap-3">
+<div className="flex items-center gap-3">
         <div className="p-2 rounded-lg bg-accent/10"><Moon className="h-5 w-5 text-accent" /></div>
         <div>
           <h1 className="text-xl font-bold">NOT04 — Calm Policy Board</h1>

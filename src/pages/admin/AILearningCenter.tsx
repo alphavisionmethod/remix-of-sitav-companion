@@ -4,9 +4,9 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { TrendingUp, Brain, AlertTriangle, CheckCircle2, RotateCcw, Sparkles, Target, Users } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_ADMIN_OUTCOMES as DEMO_OUTCOMES, DEMO_ADMIN_PATTERNS as DEMO_PATTERNS, DEMO_CALIBRATION } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const AILearningCenter = () => {
   const { data: patterns, isDemo } = useAIEngDomain("learningPatterns", DEMO_PATTERNS);
@@ -14,8 +14,7 @@ const AILearningCenter = () => {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <AdminPageHeader icon={TrendingUp} title="Learning & Improvement Center" subtitle="What the AI team learned — patterns, outcomes, calibration, and permanent improvements" accent="primary" />
+<AdminPageHeader icon={TrendingUp} title="Learning & Improvement Center" subtitle="What the AI team learned — patterns, outcomes, calibration, and permanent improvements" accent="primary" />
 
       <div className="grid grid-cols-4 gap-3">
         {[

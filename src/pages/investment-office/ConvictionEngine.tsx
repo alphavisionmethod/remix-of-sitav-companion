@@ -1,17 +1,14 @@
 import { motion } from "framer-motion";
 import { Gauge, AlertTriangle, Check } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { usePortfolioPositions } from "@/hooks/use-investment-office";
 import { DEMO_DIMS, DEMO_POSITIONS } from "@/lib/demo-data/investment";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function ConvictionEngine() {
-  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = usePortfolioPositions();
   return (
     <div className="mx-auto max-w-6xl space-y-6">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Gauge className="h-6 w-6 text-primary" /> Conviction Engine</h1>
         <p className="text-sm text-muted-foreground mt-0.5">Multi-dimensional conviction scoring for every position — conviction, uncertainty, catalyst strength, fragility, and fit</p>
       </div>

@@ -16,11 +16,9 @@ import { motion } from "framer-motion";
 
 import { usePricingItems } from "@/hooks/use-domain-data";
 import type { OwnerPricingItem as PricingItem } from "@/lib/mock-data/owner";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const PricingEditor = () => {
-  const { isDemoMode } = useDataMode();
   const { data: pricingData = [] } = usePricingItems();
 
   const [items, setItems] = useState<PricingItem[]>([]);
@@ -57,8 +55,7 @@ const PricingEditor = () => {
 
   return (
     <motion.div className="mx-auto max-w-4xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
-      <DemoModeBadge />
-      <SitaPageHeader
+<SitaPageHeader
         title="Pricing Editor"
         subtitle="Manage service and product pricing with preview-before-save"
         actions={<Button variant="outline" size="sm" className="text-xs gap-1.5" onClick={addItem}><Plus className="h-3.5 w-3.5" /> Add Service</Button>}

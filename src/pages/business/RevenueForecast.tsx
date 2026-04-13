@@ -23,8 +23,6 @@ import {
   ChevronDown, ChevronUp, Users, DollarSign, AlertTriangle,
   ArrowUpRight, Gauge, Eye
 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
@@ -225,7 +223,6 @@ function runMonteCarlo(iterations: number = 1000): MonteCarloResult {
 }
 
 const RevenueForecast = () => {
-  const { isDemoMode } = useDataMode();
   const [selectedScenario, setSelectedScenario] = useState<string>("base");
   const [showTwins, setShowTwins] = useState(true);
   const [twinSort, setTwinSort] = useState<"health" | "risk" | "revenue">("risk");

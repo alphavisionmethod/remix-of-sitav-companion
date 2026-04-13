@@ -9,13 +9,11 @@ import {
   ArrowLeft, Phone, Mail, Clock, MapPin, Globe, Building, DollarSign, FileText, CheckCircle,
   AlertTriangle, Briefcase, MessageSquare, Calendar, Receipt, BarChart3, Sparkles, Star, TrendingUp, TrendingDown, Shield
 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_ACTIONS, DEMO_CORE_TIMELINE as DEMO_TIMELINE, DEMO_CUSTOMERS_DATA, DEMO_DOCUMENTS } from "@/lib/demo-data/core-pages";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Mock customer data keyed by ID
 const CustomerDetail = () => {
-  const { isDemoMode } = useDataMode();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [tab, setTab] = useState("overview");
@@ -26,8 +24,7 @@ const CustomerDetail = () => {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <DemoModeBadge />
-      {/* Back + Header */}
+{/* Back + Header */}
       <div>
         <button onClick={() => navigate("/business")} className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
           <ArrowLeft className="h-4 w-4" /> Back to Business Center

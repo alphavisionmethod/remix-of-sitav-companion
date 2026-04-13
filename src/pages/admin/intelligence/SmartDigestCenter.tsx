@@ -8,9 +8,8 @@ import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_DIGESTS } from "@/lib/demo-data/admin-intelligence";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const SmartDigestCenter = () => {
   const { isAdmin, loading } = useRequireAdmin();
@@ -24,8 +23,7 @@ const SmartDigestCenter = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      <DemoModeBadge />
-      <SitaPageHeader
+<SitaPageHeader
         icon={<FileText className="h-6 w-6" />}
         title="Smart Digest & Precompute Center"
         subtitle="Manage precomputed intelligence — digests, freshness, hit rates, and avoided spend"

@@ -9,9 +9,8 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { RefreshCw, Globe, CheckCircle, XCircle } from "lucide-react";
 import { toast } from "sonner";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import PFASubNav from "@/components/admin/PFASubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -21,7 +20,6 @@ const stageColors: Record<string, string> = {
 };
 
 export default function PFA01ProviderFamilyRegistry() {
-  const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
 
   const { data: families = [] } = useQuery({
@@ -33,8 +31,7 @@ export default function PFA01ProviderFamilyRegistry() {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <PFASubNav />
+<PFASubNav />
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2"><Globe className="h-6 w-6" /> Provider Family Registry</h1>

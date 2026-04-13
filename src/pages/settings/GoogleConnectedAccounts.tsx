@@ -11,11 +11,10 @@ import {
   ArrowUpCircle, RefreshCw, HardDrive, Mail, Calendar,
 } from "lucide-react";
 import { useGoogleProviderFamily } from "@/hooks/use-google-provider-family";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { PermissionUpgradeDialog } from "@/components/sita/PermissionUpgradeDialog";
 import type { GoogleConnectorState } from "@/lib/services/google-provider-family/types";
 import type { GenericScopeTier } from "@/lib/services/provider-family/types";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const CAPABILITY_ICONS: Record<string, React.ReactNode> = {
   google_drive: <HardDrive className="h-5 w-5" />,
@@ -93,7 +92,6 @@ const NEXT_TIER: Record<string, GenericScopeTier> = {
 };
 
 export default function GoogleConnectedAccounts() {
-  const { isDemoMode } = useDataMode();
   const {
     isLoading, identity, connectors, summary,
     launchHonesty, realityMode, loaded,
@@ -111,9 +109,7 @@ export default function GoogleConnectedAccounts() {
 
   return (
     <div className="space-y-6 p-6 max-w-3xl mx-auto">
-      <DemoModeBadge />
-
-      <div>
+<div>
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <svg className="h-6 w-6" viewBox="0 0 24 24">
             <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4" />

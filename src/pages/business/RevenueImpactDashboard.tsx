@@ -18,8 +18,6 @@ import {
   DollarSign, TrendingUp, Zap, Target, ArrowUpRight,
   ArrowDownRight, Clock, Users, BarChart3, PieChart as PieIcon
 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -117,7 +115,6 @@ const ChartTooltip = ({ active, payload, label }: any) => {
 const RevenueImpactDashboard = () => {
   const [granularity, setGranularity] = useState<Granularity>("daily");
   const [chartType, setChartType] = useState<"area" | "bar">("area");
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
 
   // Real data: aggregate from invoices + payment_transactions

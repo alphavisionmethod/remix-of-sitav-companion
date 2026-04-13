@@ -11,7 +11,6 @@ import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { classifyFile, detectSensitivity, type FileClassification, type SensitivityLevel } from "@/lib/utils/file-classification";
 import { useFilesOverview } from "@/hooks/use-domain-data";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useAIInsight } from "@/hooks/use-backend-actions";
 import { useQuery } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";
@@ -26,7 +25,6 @@ const sensitivityColor: Record<SensitivityLevel, string> = {
 };
 
 const FilesOverview = () => {
-  const { isDemoMode } = useDataMode();
   const { data: filesData = [] } = useFilesOverview();
   const { user } = useAuth();
   const aiInsight = useAIInsight();

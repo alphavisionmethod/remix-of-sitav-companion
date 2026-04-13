@@ -6,7 +6,6 @@
 import { DesktopSurface } from "@/components/sita/shell/DesktopSurface";
 import { useShellState } from "@/components/sita/shell/useShellState";
 import { useAuth } from "@/contexts/AuthContext";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { EnterpriseFlow } from "@/components/sita/EnterpriseFlow";
 import { RestoreFlow } from "@/components/sita/RestoreFlow";
 import { FirstWeekCalibration } from "@/components/sita/FirstWeekCalibration";
@@ -44,7 +43,6 @@ function setUserMemoryFlag(key: string, value: string) {
 }
 
 export default function DesktopPage() {
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const { state, openCommand } = useShellState();
   const [showEnterprise, setShowEnterprise] = useState(false);

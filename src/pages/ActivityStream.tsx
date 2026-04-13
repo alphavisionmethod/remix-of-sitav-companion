@@ -12,7 +12,6 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 const db = supabase as any;
 import { useAuth } from "@/contexts/AuthContext";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useMemo } from "react";
 import { cn } from "@/lib/utils";
@@ -24,7 +23,7 @@ import {
 } from "lucide-react";
 
 import { DEMO_ACTIVITY_TIMELINE } from "@/lib/demo-data";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -109,8 +108,7 @@ const FeedEventCard = ({ event, index, expanded, onToggle }: {
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.2, delay: Math.min(index * 0.02, 0.3) }}
     >
-      <DemoModeBadge />
-      <div
+<div
         onClick={onToggle}
         className={cn(
           "group relative rounded-xl border border-border bg-card/80 backdrop-blur-sm transition-all duration-200 cursor-pointer",
@@ -266,7 +264,6 @@ const CatchUpSummary = ({ events }: { events: any[] }) => {
 // ── Main Component ───────────────────────────────────────────
 const ActivityStream = () => {
   const { user } = useAuth();
-  const { isDemoMode } = useDataMode();
   const [category, setCategory] = useState<FeedCategory>("all");
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState("");

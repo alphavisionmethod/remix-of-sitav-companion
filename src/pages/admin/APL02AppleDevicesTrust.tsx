@@ -5,19 +5,16 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 import { Shield, Smartphone, Watch, Monitor, Fingerprint, Lock, ArrowRight, AlertTriangle, CheckCircle2, XCircle, Eye } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_ADMIN_TRUST_CLASSES_A_P_L02_APPLE_DEVICES_TRUST as DEMO_TRUST_CLASSES, DEMO_ADMIN_VERIFICATION_EVENTS_A_P_L02_APPLE_DEVICES_TRUST as DEMO_VERIFICATION_EVENTS, DEMO_ESCALATION_RULES } from "@/lib/demo-data/admin-platform";
 import APLSubNav from "@/components/admin/APLSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const APL02AppleDevicesTrust = () => {
-  const { isDemoMode } = useDataMode();
   const [selectedClass, setSelectedClass] = useState<string | null>(null);
 
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">
-      <DemoModeBadge />
-      <APLSubNav />
+<APLSubNav />
       <div className="flex items-center gap-3">
         <div className="p-2 rounded-lg bg-primary/10"><Shield className="h-8 w-8 text-primary" /></div>
         <div>

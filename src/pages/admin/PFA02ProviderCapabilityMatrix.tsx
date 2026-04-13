@@ -6,14 +6,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Layers, CheckCircle, XCircle } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import PFASubNav from "@/components/admin/PFASubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
 export default function PFA02ProviderCapabilityMatrix() {
-  const { isDemoMode } = useDataMode();
   const { data: capabilities = [] } = useQuery({
     queryKey: ["provider-capabilities"],
     queryFn: async () => { const { data } = await fromTable("provider_capabilities").select("*, provider_families(name, provider_key)").order("capability_key"); return data || []; },
@@ -28,8 +26,7 @@ export default function PFA02ProviderCapabilityMatrix() {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <PFASubNav />
+<PFASubNav />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Layers className="h-6 w-6" /> Provider Capability Matrix</h1>
         <p className="text-sm text-muted-foreground mt-1">Sub-capabilities under each provider family</p>

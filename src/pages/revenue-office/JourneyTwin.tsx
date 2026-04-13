@@ -3,10 +3,9 @@ import { Route, Eye, MousePointer, Mail, Phone, CreditCard, Star, ArrowRight, Cl
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_JOURNEY_STAGES } from "@/lib/demo-data/revenue-office";
 import { useState } from "react";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const AUTOMATION_OVERLAY = [
   { stage: "Awareness", automations: [{ name: "Lead Magnet Delivery", status: "active", coverage: 94 }, { name: "Welcome Email Sequence", status: "active", coverage: 87 }] },
@@ -40,7 +39,6 @@ const statusColor = (s: string) => s === "active" ? "text-[hsl(var(--trust-safe)
 const statusBg = (s: string) => s === "active" ? "bg-[hsl(var(--trust-safe))]/10" : s === "degraded" ? "bg-orange-400/10" : "bg-muted/20";
 
 export default function JourneyTwin() {
-  const { isDemoMode } = useDataMode();
   const JOURNEY_STAGES = isDemoMode ? DEMO_JOURNEY_STAGES : DEMO_JOURNEY_STAGES;
   const [expanded, setExpanded] = useState<string | null>(null);
 
@@ -52,8 +50,7 @@ export default function JourneyTwin() {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
           <Route className="w-6 h-6 text-primary" /> Customer Journey Twin
         </h1>

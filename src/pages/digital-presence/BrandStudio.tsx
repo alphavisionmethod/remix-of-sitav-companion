@@ -5,22 +5,19 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useBrandAssets } from "@/hooks/use-digital-presence";
 import { DEMO_BRAND_ASSETS, DEMO_BRAND_COLORS, DEMO_REUSABLE_BLOCKS, DEMO_TYPOGRAPHY } from "@/lib/demo-data/digital-presence";
 import DPOSubNav from "./DPOSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function BrandStudio() {
-  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useBrandAssets();
   const [logoPrompt, setLogoPrompt] = useState("");
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <DPOSubNav />
-      <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">Brand Studio</h1>
         <p className="text-sm text-muted-foreground">Logo, colors, typography, visual identity & reusable design system</p>
       </motion.div>

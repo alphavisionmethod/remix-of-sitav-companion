@@ -8,8 +8,6 @@ import { useAdvisorChat, STATE_BADGE_CONFIG, isDegradedState } from "@/lib/ai";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import ReactMarkdown from "react-markdown";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -17,6 +15,7 @@ import {
   ShieldCheck, Clock, AlertTriangle
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const SYSTEM_PROMPT = `You are SITA's Chief of Staff — a calm, precise, and proactive executive assistant.
 You orchestrate across all domains (business, money, family, operations) with quiet confidence.
@@ -30,7 +29,6 @@ const QUICK_PROMPTS = [
 ];
 
 export default function CalmAssistantChat() {
-  const { isDemoMode } = useDataMode();
   const [input, setInput] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -81,7 +79,8 @@ export default function CalmAssistantChat() {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          {isDemoMode && <DemoModeBadge />}
+          {isDemoMode &&
+}
           <Badge variant={badge.variant} className={cn("text-[10px]", badge.className)}>
             {badge.label}
           </Badge>

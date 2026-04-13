@@ -5,9 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ShieldCheck, AlertTriangle, XCircle, Activity, Route, Brain, FileCheck } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import LTSubNav from "@/components/admin/LTSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const LT01BehavioralTruthOverview = () => {
   const { data: routeTruth } = useQuery({
@@ -53,8 +52,7 @@ const LT01BehavioralTruthOverview = () => {
   return (
     <div className="space-y-6 p-6">
       <LTSubNav />
-      <DemoModeBadge />
-      <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">Behavioral Truth Overview</h1>
           <p className="text-sm text-muted-foreground">Executive view of actual product behavior health</p>

@@ -8,7 +8,6 @@ import { useState, useMemo } from "react";
 import { Eye, CheckCircle, AlertTriangle, FileText } from "lucide-react";
 import { motion } from "framer-motion";
 import { useFilesByStatus, useAllFiles } from "@/hooks/use-domain-data";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 function classifyDomainFromFile(f: Record<string, any>): string {
   const text = `${f.filename} ${f.extracted_data?.text || ""} ${f.classification || ""}`.toLowerCase();
@@ -20,7 +19,6 @@ function classifyDomainFromFile(f: Record<string, any>): string {
 }
 
 const FilesReview = () => {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState<"classification" | "extraction">("classification");
   const { data: reviewFiles = [], isLoading: loadingReview } = useFilesByStatus("review");
   const { data: allFiles = [], isLoading: loadingAll } = useAllFiles();

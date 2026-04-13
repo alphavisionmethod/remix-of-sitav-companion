@@ -7,20 +7,17 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_ACTIVE_CLIENTS, DEMO_JOURNEYS } from "@/lib/demo-data/revenue-office";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const stepTypeIcons: Record<string, typeof Mail> = { email: Mail, form: FileText, booking: Calendar, meeting: Calendar, payment: Package, access: Settings, delivery: Package, document: FileText };
 
 export default function ClientOnboarding() {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("journeys");
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-foreground">Client Onboarding Journeys</h1>

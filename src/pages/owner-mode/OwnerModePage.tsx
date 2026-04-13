@@ -25,8 +25,7 @@ import {
   CheckCircle, ChevronRight, Lightbulb, Target, Play, TrendingUp,
   Clock, Users, Undo2, FileSearch,
 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // ── Section: What Matters Now ───────────────────────────────────
 function WhatMattersNow() {
@@ -37,8 +36,7 @@ function WhatMattersNow() {
 
   return (
     <div className="space-y-2">
-      <DemoModeBadge />
-      {items.length === 0 ? (
+{items.length === 0 ? (
         <div className="rounded-2xl border border-trust-verified/20 bg-trust-verified/5 p-8 text-center">
           <CheckCircle className="h-8 w-8 text-trust-safe mx-auto mb-3" />
           <p className="text-sm font-semibold text-foreground">Everything looks good</p>
@@ -528,7 +526,6 @@ function RecentActivity() {
 // Main Owner Mode Page — 8 tabs covering all 16 sections
 // ═══════════════════════════════════════════════════════════════
 export default function OwnerModePage() {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("now");
   const summary = useMissionControlSummary();
 

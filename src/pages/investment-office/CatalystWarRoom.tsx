@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Calendar, Zap, AlertTriangle, Clock, Target, TrendingUp } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useRiskScenarios } from "@/hooks/use-investment-office";
 import { DEMO_CATALYST_EVENTS } from "@/lib/demo-data/investment";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const TYPE_COLORS: Record<string, string> = {
   macro: "bg-primary/10 text-primary",
@@ -14,7 +13,6 @@ const TYPE_COLORS: Record<string, string> = {
 };
 
 export default function CatalystWarRoom() {
-  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useRiskScenarios();
   const [filter, setFilter] = useState<string>("all");
   const sorted = [...DEMO_CATALYST_EVENTS]
@@ -28,8 +26,7 @@ export default function CatalystWarRoom() {
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Calendar className="h-6 w-6 text-primary" /> Catalyst War Room</h1>
         <p className="text-sm text-muted-foreground mt-0.5">Calendar intelligence center — every event that could move your portfolio</p>
       </div>

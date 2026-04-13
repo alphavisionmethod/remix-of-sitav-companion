@@ -6,9 +6,8 @@ import { supabase } from "@/integrations/supabase/client";
 const db = supabase as any;
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Grid3X3, Shield, Lock, AlertTriangle, CheckCircle, XCircle } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { getRelation, parseProviderFamilyRef, parseProviderCapabilityRef } from "@/lib/types/relation-parsers";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -28,7 +27,6 @@ const categoryColors: Record<string, string> = {
 };
 
 export default function ISA05ScopePolicyMatrixBoard() {
-  const { isDemoMode } = useDataMode();
   const { data: scopes = [] } = useQuery({
     queryKey: ["isa05-scope-policy"],
     queryFn: async () => {
@@ -49,8 +47,7 @@ export default function ISA05ScopePolicyMatrixBoard() {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <Grid3X3 className="h-6 w-6 text-primary" /> Scope Policy Matrix
         </h1>

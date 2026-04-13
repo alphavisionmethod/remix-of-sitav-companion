@@ -2,8 +2,8 @@ import { useState, useMemo, useCallback, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { Brain, Search, Filter, ZoomIn, ZoomOut, Maximize2, X, ArrowRight, Sparkles, Eye } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { INSTRUMENTS, INVESTMENT_ADVISORS, SAMPLE_THESES } from "@/hooks/useInvestmentOfficeData";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // ── Graph Data Model ──
 type NodeType = "instrument" | "thesis" | "catalyst" | "sector" | "advisor" | "theme";
@@ -224,9 +224,7 @@ export default function KnowledgeGraph() {
 
   return (
     <div className="mx-auto max-w-[1600px] space-y-4">
-      <DemoModeBadge />
-
-      {/* Header */}
+{/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">

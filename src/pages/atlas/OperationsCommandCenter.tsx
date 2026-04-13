@@ -13,21 +13,18 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_alerts, DEMO_incidents, DEMO_runbooks, DEMO_services, DEMO_slos } from "@/lib/demo-data/atlas";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const now = new Date();
 const h = (hours: number) => new Date(now.getTime() - hours * 3600000).toISOString();
 
 export default function OperationsCommandCenter() {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("health");
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mx-auto max-w-7xl space-y-6 p-6">
-      <DemoModeBadge />
-      <SitaPageHeader title="Operations Command Center" subtitle="Service health, SLO burn rates, alert triage, incident drilldown, and runbook management" />
+<SitaPageHeader title="Operations Command Center" subtitle="Service health, SLO burn rates, alert triage, incident drilldown, and runbook management" />
 
       {DEMO_alerts.filter(a => !a.acknowledged).length > 0 && (
         <DegradedStateBanner severity="warning" reason={`${DEMO_alerts.filter(a => !a.acknowledged).length} unacknowledged alert(s)`} impact="Operator attention required" dismissible />

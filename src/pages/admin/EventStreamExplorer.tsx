@@ -9,8 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Activity, Search, RotateCcw, AlertTriangle, Link2, Filter } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchPersistedEvents, fetchDeadLetters, getEventLineage, markEventReplayed, type PersistedEvent } from "@/lib/persistence";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const fade = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } };
 
@@ -20,7 +19,6 @@ function StatusBadge({ status }: { status: string }) {
 }
 
 export default function EventStreamExplorer() {
-  const { isDemoMode } = useDataMode();
   const [topicFilter, setTopicFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [correlationSearch, setCorrelationSearch] = useState("");
@@ -53,8 +51,7 @@ export default function EventStreamExplorer() {
   return (
     <div className="space-y-6 p-6 max-w-7xl mx-auto">
       <CPSSubNav />
-      <DemoModeBadge />
-      <motion.div initial="hidden" animate="show" variants={{ show: { transition: { staggerChildren: 0.04 } } }} className="space-y-4">
+<motion.div initial="hidden" animate="show" variants={{ show: { transition: { staggerChildren: 0.04 } } }} className="space-y-4">
         <motion.div variants={fade} className="flex items-center gap-3">
           <Activity className="h-6 w-6 text-primary" />
           <h1 className="text-2xl font-bold text-foreground">Event Stream Explorer</h1>

@@ -2,14 +2,13 @@ import { useState } from "react";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { SitaTabs } from "@/components/sita/SitaComponents";
 import { SitaCard } from "@/components/sita/SitaCard";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { Rocket, ArrowUpCircle, ArrowDownCircle, Shield, Clock, CheckCircle2, AlertTriangle, XCircle, ChevronRight, Download, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import type { ReleaseStatus, ReleaseChannel, ReleaseRing } from "@/packages/contracts/domain-types/release-record";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 interface DemoRelease {
   id: string;
@@ -54,13 +53,11 @@ const statusColor = (s: ReleaseStatus) => {
 };
 
 const ReleaseDeploymentWorkspace = () => {
-  const { isDemoMode } = useDataMode();
   const [activeTab, setActiveTab] = useState<"inventory" | "rollout" | "rollback" | "evidence">("inventory");
 
   return (
     <div className="mx-auto max-w-7xl space-y-4">
-      <DemoModeBadge />
-      <SitaPageHeader icon={<Rocket className="h-6 w-6" />} title="Release & Deployment" subtitle="Manage release inventory, rollout channels, rollback, and evidence chains">
+<SitaPageHeader icon={<Rocket className="h-6 w-6" />} title="Release & Deployment" subtitle="Manage release inventory, rollout channels, rollback, and evidence chains">
         <Button variant="outline" size="sm"><Download className="h-4 w-4 mr-1" /> Export</Button>
       </SitaPageHeader>
 

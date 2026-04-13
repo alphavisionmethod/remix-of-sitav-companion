@@ -10,8 +10,7 @@ import { FeaturedPackCard, PackCard, resolveIcon } from "@/components/sita/PackS
 import { PACK_CATALOG, type StoreCategory, type PackManifest } from "@/lib/pack-store";
 import { ArrowRight, Crown, Home, DollarSign, Briefcase, Sparkles, Target, Zap, Shield, TrendingUp, BarChart3, CheckCircle } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // ── Segment Configs ─────────────────────────────────────────────
 
@@ -123,7 +122,6 @@ const SEGMENT_CONFIGS: Record<string, SegmentConfig> = {
 };
 
 const StoreCategoryPage = () => {
-  const { isDemoMode } = useDataMode();
   const { segment } = useParams<{ segment: string }>();
   const navigate = useNavigate();
   const config = SEGMENT_CONFIGS[segment || ""];
@@ -131,8 +129,7 @@ const StoreCategoryPage = () => {
   if (!config) {
     return (
       <div className="mx-auto max-w-4xl text-center py-20">
-      <DemoModeBadge />
-        <p className="text-lg text-muted-foreground">Category not found</p>
+<p className="text-lg text-muted-foreground">Category not found</p>
         <button onClick={() => navigate("/store")} className="mt-4 text-primary underline text-sm">Back to Store</button>
       </div>
     );

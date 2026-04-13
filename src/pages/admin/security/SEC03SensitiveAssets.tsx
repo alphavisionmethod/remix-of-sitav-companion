@@ -2,7 +2,6 @@ import { Database, Lock, AlertTriangle, Server } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { SENSITIVE_ASSETS, SECRET_INVENTORY } from "@/lib/core-services/security/security-posture-engine";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 const levelBadge = (level: string) => {
   switch (level) {
@@ -14,7 +13,6 @@ const levelBadge = (level: string) => {
 };
 
 export default function SEC03SensitiveAssets() {
-  const { isDemoMode } = useDataMode();
   return (
     <div className="space-y-6 p-6" data-testid="sec03-sensitive-assets">
       <div>

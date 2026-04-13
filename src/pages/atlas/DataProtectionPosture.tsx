@@ -12,8 +12,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const now = new Date();
 const h = (hours: number) => new Date(now.getTime() - hours * 3600000).toISOString();
@@ -89,13 +88,11 @@ const classColors = { public: "text-muted-foreground", internal: "text-blue-400"
 const piiColors = { PII: "text-amber-400", financial: "text-red-400", credentials: "text-red-400", metadata: "text-blue-400", health: "text-red-400" };
 
 export default function DataProtectionPosture() {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("overview");
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mx-auto max-w-7xl space-y-6 p-6">
-      <DemoModeBadge />
-      <SitaPageHeader title="Data Protection Posture Board" subtitle="Encryption coverage, at-rest verification, key rotation, sensitive data classification, compliance mapping, and retention policies" />
+<SitaPageHeader title="Data Protection Posture Board" subtitle="Encryption coverage, at-rest verification, key rotation, sensitive data classification, compliance mapping, and retention policies" />
 
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
         {[

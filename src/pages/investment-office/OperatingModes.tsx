@@ -1,20 +1,17 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Settings2, Eye, Search, Zap, Calendar, Activity, Shield } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useInvestmentStrategyRecords } from "@/hooks/use-investment-office";
 import { DEMO_MODES } from "@/lib/demo-data/investment";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function OperatingModes() {
-  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useInvestmentStrategyRecords();
   const [activeMode, setActiveMode] = useState("quiet");
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Settings2 className="h-6 w-6 text-primary" /> Investment Operating Modes</h1>
         <p className="text-sm text-muted-foreground mt-0.5">Shift the office's density, advisor intensity, alerting, and risk framing to match your current intent</p>
       </div>

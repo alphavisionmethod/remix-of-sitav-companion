@@ -9,9 +9,8 @@ import { SitaPageHeader, SitaCard } from "@/components/sita/SitaCard";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Calendar, Zap, Clock, AlertTriangle, Pause, Play, Ban } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import ARSubNav from "@/components/admin/ARSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 const stateColors: Record<string, string> = {
@@ -29,7 +28,6 @@ const stateIcons: Record<string, any> = {
 };
 
 export default function AR02ScheduledJobRegistry() {
-  const { isDemoMode } = useDataMode();
   const { data: jobs = [] } = useQuery({
     queryKey: ["scheduled-jobs"],
     queryFn: async () => {
@@ -40,8 +38,7 @@ export default function AR02ScheduledJobRegistry() {
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
-      <DemoModeBadge />
-      <ARSubNav />
+<ARSubNav />
       <SitaPageHeader
         title="Scheduled Job Registry"
         subtitle="Canonical source of truth for all recurring jobs"

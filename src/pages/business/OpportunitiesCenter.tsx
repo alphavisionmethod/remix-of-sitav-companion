@@ -16,8 +16,6 @@ import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { Target, DollarSign, TrendingUp, Clock, AlertTriangle, Sparkles, ArrowRight, CheckCircle, Plus, X, Trash2, LayoutList, Columns } from "lucide-react";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
@@ -40,7 +38,6 @@ const stageToState = (stage: string): ExecutionState => {
 const initials = (name: string) => name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase();
 
 const OpportunitiesCenter = () => {
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const [tab, setTab] = useState("all");

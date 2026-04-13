@@ -4,9 +4,9 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { Target, Clock, CheckCircle2, AlertTriangle, Pause, RotateCcw, Sparkles, Shield, FileCheck, ArrowRight, Eye, Users, Bug, Wrench } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_ADMIN_MISSIONS_A_I_MISSION_CENTER as DEMO_MISSIONS } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const statusConfig: Record<string, { label: string; color: string; icon: typeof Clock }> = {
   suggested: { label: "Suggested", color: "text-muted-foreground", icon: Sparkles },
@@ -33,8 +33,7 @@ const AIMissionCenter = () => {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <AdminPageHeader icon={Target} title="Mission Center" subtitle="AI team missions — goals, decomposition, evidence, risk, approvals, and outcomes" accent="primary" />
+<AdminPageHeader icon={Target} title="Mission Center" subtitle="AI team missions — goals, decomposition, evidence, risk, approvals, and outcomes" accent="primary" />
 
       <div className="grid grid-cols-5 gap-3">
         {[

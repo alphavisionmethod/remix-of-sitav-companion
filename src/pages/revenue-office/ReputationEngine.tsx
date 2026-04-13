@@ -7,22 +7,19 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import {
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
   DEMO_RATING_DIST, DEMO_REVIEWS, DEMO_REV_CAMPAIGNS_REPUTATION_ENGINE as DEMO_CAMPAIGNS,
   DEMO_REV_PLATFORMS as DEMO_PLATFORMS, DEMO_REV_STATS_REPUTATION_ENGINE as DEMO_STATS,
   DEMO_TESTIMONIALS, DEMO_SENTIMENT_TREND,
 } from "@/lib/demo-data/revenue-office";
 
 export default function ReputationEngine() {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("reviews");
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-foreground">Reputation Engine</h1>

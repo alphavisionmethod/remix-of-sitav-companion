@@ -15,8 +15,6 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import {
   PLANS, UPSELL_ADDONS, getPlanByTier, getApplicableAddons,
 } from "@/lib/compute-governance";
@@ -28,6 +26,7 @@ import {
   useFairUseStatus,
 } from "@/hooks/use-compute-governance";
 import { toast } from "sonner";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const TIER_ICONS: Record<PlanTier, typeof Cpu> = {
   personal: Zap,
@@ -46,7 +45,6 @@ const TIER_COLORS: Record<PlanTier, string> = {
 };
 
 export default function MyPlanUsage() {
-  const { isDemoMode } = useDataMode();
   const [currentTier] = useState<PlanTier>("pro");
   const [deepModeActive, setDeepModeActive] = useState(false);
 
@@ -123,9 +121,7 @@ export default function MyPlanUsage() {
 
   return (
     <div className="p-4 md:p-6 max-w-[1000px] mx-auto space-y-6">
-      <DemoModeBadge />
-
-      {/* Plan Header */}
+{/* Plan Header */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}

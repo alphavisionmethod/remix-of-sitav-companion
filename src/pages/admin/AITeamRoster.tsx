@@ -7,9 +7,9 @@ import {
   Brain, Code, Palette, TestTube, Bug, Shield, Gauge, FileText,
   Rocket, Sparkles, TrendingUp, Users, Eye, AlertTriangle, Activity
 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_ADMIN_AGENTS as DEMO_AGENTS } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const autonomyColors: Record<string, string> = {
   "auto-low-risk": "bg-[hsl(var(--trust-safe))]/10 text-[hsl(var(--trust-safe))]",
@@ -36,8 +36,7 @@ const AITeamRoster = () => {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <AdminPageHeader icon={Users} title="AI Team Roster" subtitle="Your AI engineering specialists — focus, queue, confidence, autonomy, and accuracy" accent="primary" />
+<AdminPageHeader icon={Users} title="AI Team Roster" subtitle="Your AI engineering specialists — focus, queue, confidence, autonomy, and accuracy" accent="primary" />
 
       {/* Summary Stats */}
       <div className="grid grid-cols-5 gap-3">

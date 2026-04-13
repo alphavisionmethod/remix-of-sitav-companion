@@ -9,8 +9,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const surfaces = [
   { id: "ops", label: "Operations Command Center", desc: "Service health, SLO burn, alerts, incidents, runbooks", route: "/atlas/operations", icon: Activity, status: "live", metrics: "6 services • 5 SLOs • 8 runbooks", health: 96 },
@@ -37,13 +36,11 @@ const recentActivity = [
 ];
 
 export default function AtlasHub() {
-  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mx-auto max-w-7xl space-y-6 p-6">
-      <DemoModeBadge />
-      <SitaPageHeader title="ATLAS Closure Program" subtitle="Unified operator truth layer — aggregate health, program progress, cross-program dependencies, and recent activity" />
+<SitaPageHeader title="ATLAS Closure Program" subtitle="Unified operator truth layer — aggregate health, program progress, cross-program dependencies, and recent activity" />
 
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 mb-2">
         {[

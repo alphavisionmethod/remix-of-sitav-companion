@@ -6,8 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Settings2 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -17,7 +16,6 @@ const statusColors: Record<string, string> = {
 };
 
 export default function MSA04SurfaceAdapterRegistry() {
-  const { isDemoMode } = useDataMode();
   const { data: adapters = [] } = useQuery({
     queryKey: ["surface-adapters"],
     queryFn: async () => { const { data } = await fromTable("surface_adapters").select("*"); return data || []; },
@@ -32,8 +30,7 @@ export default function MSA04SurfaceAdapterRegistry() {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Settings2 className="h-6 w-6" /> Surface Adapter Registry</h1>
         <p className="text-sm text-muted-foreground mt-1">All planned and implemented surface adapters with grammars and profiles</p>
       </div>

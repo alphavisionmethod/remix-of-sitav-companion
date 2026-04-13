@@ -6,10 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_DPO_DISAGREEMENTS as DEMO_DISAGREEMENTS } from "@/lib/demo-data/digital-presence";
 import DPOSubNav from "./DPOSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 type Intensity = "quiet" | "balanced" | "proactive";
 type AgentStatus = "active" | "inactive" | "watching";
@@ -251,7 +250,6 @@ function AgentDetailPanel({ agent }: { agent: AgentProfile }) {
 }
 
 export default function AIWebTeam() {
-  const { isDemoMode } = useDataMode();
   const [expandedAgent, setExpandedAgent] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("team");
   const [intensities, setIntensities] = useState<Record<string, Intensity>>(

@@ -10,12 +10,10 @@ import { getBundleById } from "@/lib/app-platform";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { AppIcon, VerificationBadge, AppSourceLabel } from "@/components/sita/app-platform/AppStoreComponents";
 import type { AppDefinition } from "@/lib/app-platform/types";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { toast } from "sonner";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const BundleDetailPage = () => {
-  const { isDemoMode } = useDataMode();
   const { bundleId } = useParams<{ bundleId: string }>();
   const navigate = useNavigate();
   const { apps, installApp } = useAppPlatform();
@@ -73,8 +71,7 @@ const BundleDetailPage = () => {
   if (!bundle) {
     return (
       <div className="mx-auto max-w-4xl">
-        <DemoModeBadge />
-        <button onClick={() => navigate("/app-store")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
+<button onClick={() => navigate("/app-store")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
           <ArrowLeft className="h-4 w-4" /> Back
         </button>
         <p className="text-center py-20 text-lg font-medium text-foreground">Bundle not found</p>

@@ -8,20 +8,18 @@ import { DomainCard } from "@/components/sita/cards/DomainCard";
 import { UrgencyBadge, FreshnessBadge } from "@/components/sita/badges";
 import { ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransitions";
 import { AppSurface } from "@/components/sita/surfaces/AppSurface";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
 import { useNavigate } from "react-router-dom";
 import { useLeads, useCustomers, useInvoices } from "@/hooks/use-sita-data";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useMemo } from "react";
 import {
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
   DollarSign, Users, AlertTriangle, Phone, UserPlus, CheckCircle,
   Target, TrendingUp, Receipt, Briefcase, ArrowRight, Activity
 } from "lucide-react";
 
 const BusinessOverview = () => {
   const navigate = useNavigate();
-  const { isDemoMode } = useDataMode();
   const { data: leads = [] } = useLeads();
   const { data: customers = [] } = useCustomers();
   const { data: invoices = [] } = useInvoices();
@@ -61,9 +59,7 @@ const BusinessOverview = () => {
 
   return (
     <AppSurface level={0} className="space-y-4 p-0 border-0 rounded-none bg-transparent">
-      <DemoModeBadge />
-
-      <ListReveal className="space-y-4" domain="business">
+<ListReveal className="space-y-4" domain="business">
         {/* Hero — Pipeline metrics */}
         <ListRevealItem>
           <HeroCard

@@ -12,8 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 const fadeUp = { hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.25 } } };
@@ -29,7 +28,6 @@ const ROLE_STYLES: Record<PersonRole, string> = {
 };
 
 const PeopleWorkspace = () => {
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const [search, setSearch] = useState("");
   const [roleFilter, setRoleFilter] = useState<string>("all");
@@ -99,8 +97,7 @@ const PeopleWorkspace = () => {
 
   return (
     <div className="min-h-screen pb-12">
-      <DemoModeBadge />
-      <SitaPageHeader title="People" subtitle="Relationships across business, household, and personal life" actions={
+<SitaPageHeader title="People" subtitle="Relationships across business, household, and personal life" actions={
         <Button size="sm" variant="outline" className="gap-1.5 border-border/50"><Plus className="w-3.5 h-3.5" /> Add Person</Button>
       } />
 

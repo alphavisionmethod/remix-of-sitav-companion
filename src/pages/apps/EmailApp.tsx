@@ -5,9 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Mail, Inbox, Send, Star, Trash2, Archive, Search, Plus, Paperclip, ChevronRight, Clock, AlertCircle } from "lucide-react";
 import { useState } from "react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_EMAILS } from "@/lib/demo-data/apps";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 interface Email {
   id: string;
@@ -29,7 +28,6 @@ const categoryColors: Record<string, string> = {
 };
 
 export default function EmailApp() {
-  const { isDemoMode } = useDataMode();
   const [search, setSearch] = useState("");
   const [selectedEmail, setSelectedEmail] = useState<Email | null>(null);
   const unread = DEMO_EMAILS.filter(e => !e.read).length;
@@ -38,8 +36,7 @@ export default function EmailApp() {
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-4">
-      <DemoModeBadge />
-      <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Mail className="h-6 w-6 text-primary" />
           <h1 className="text-xl font-bold text-foreground">Email</h1>

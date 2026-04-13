@@ -8,16 +8,14 @@ import { TrustBadge } from "@/components/sita/TrustBadge";
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
 import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useFinancialAccounts, useMoneyKPIs } from "@/hooks/use-domain-data";
 import { useSavingsGoals } from "@/hooks/use-money-data";
 import { DollarSign, TrendingUp, TrendingDown, Building, PiggyBank, CreditCard, BarChart3, ArrowUpRight, ArrowDownRight, Wallet, Clock, Rewind } from "lucide-react";
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const NetWorthOffice = () => {
-  const { isDemoMode } = useDataMode();
   const { data: accounts = [] } = useFinancialAccounts();
   const { data: kpis } = useMoneyKPIs();
   const { data: goals = [] } = useSavingsGoals();
@@ -53,9 +51,7 @@ const NetWorthOffice = () => {
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
       <DomainHeader domain="money" title="Net Worth & Balance Sheet" subtitle="Total financial position across all accounts" />
-      <DemoModeBadge />
-
-      {/* KPI Row */}
+{/* KPI Row */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4">
         <KPITile label="Net Worth" value={fmt(analysis.netWorth)} icon={DollarSign} />
         <KPITile label="Total Assets" value={fmt(analysis.totalAssets)} icon={TrendingUp} />

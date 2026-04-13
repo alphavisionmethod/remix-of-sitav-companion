@@ -10,13 +10,11 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { Settings, Bell, BellOff, Users, Smartphone } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { cn } from "@/lib/utils";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 export default function NOT05NotificationPreferencesBoard() {
-  const { isDemoMode } = useDataMode();
   const { data: preferences = [] } = useQuery({
     queryKey: ["not05-all-prefs"],
     queryFn: async () => {
@@ -39,8 +37,7 @@ export default function NOT05NotificationPreferencesBoard() {
 
   return (
     <div className="p-6 space-y-6 max-w-6xl" data-testid="not05-prefs-board">
-      <DemoModeBadge />
-      <div className="flex items-center gap-3">
+<div className="flex items-center gap-3">
         <div className="p-2 rounded-lg bg-primary/10"><Settings className="h-5 w-5 text-primary" /></div>
         <div>
           <h1 className="text-xl font-bold">NOT05 — Notification Preferences Board</h1>

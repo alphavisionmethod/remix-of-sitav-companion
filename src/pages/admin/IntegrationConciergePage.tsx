@@ -7,9 +7,8 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Globe, Sparkles, CheckCircle, Search, Zap, Shield, Play, ArrowRight, AlertTriangle, RefreshCw, Workflow, Eye } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_USE_CASES } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -37,15 +36,13 @@ const DEMO_SIMULATIONS = [
 ];
 
 const IntegrationConciergePage = () => {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("discover");
   const [search, setSearch] = useState("");
   const filtered = DEMO_USE_CASES.filter(uc => uc.title.toLowerCase().includes(search.toLowerCase()));
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      <DemoModeBadge />
-      <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground tracking-tight flex items-center gap-2">
             <Sparkles className="h-6 w-6 text-primary" /> Integration Concierge

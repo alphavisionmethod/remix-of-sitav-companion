@@ -9,9 +9,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { Activity, RefreshCw } from "lucide-react";
 import { toast } from "sonner";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import CNSubNav from "@/components/admin/CNSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -24,7 +23,6 @@ const statusColors: Record<string, string> = {
 };
 
 export default function CN05ConnectorHealthBoard() {
-  const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
 
   const { data: healthRecords = [] } = useQuery({
@@ -44,8 +42,7 @@ export default function CN05ConnectorHealthBoard() {
   return (
     <div className="space-y-6 p-6">
       <CNSubNav />
-      <DemoModeBadge />
-      <h1 className="sr-only">Connector Health Board</h1>
+<h1 className="sr-only">Connector Health Board</h1>
       <div className="space-y-6">
         <Button onClick={() => healthCheckMutation.mutate({})} disabled={healthCheckMutation.isPending} size="sm" variant="outline">
           <RefreshCw className={`h-4 w-4 mr-2 ${healthCheckMutation.isPending ? "animate-spin" : ""}`} /> Run Health Check

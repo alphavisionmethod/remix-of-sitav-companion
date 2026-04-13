@@ -7,13 +7,11 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { ArrowLeft, CheckCircle, AlertTriangle, RefreshCw, Trash2, Activity, Clock, Settings, Shield } from "lucide-react";
 import { DEMO_CONNECTIONS } from "@/lib/demo-data/integrations";
 import { getProviderById } from "@/lib/demo-data/integrations";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function ConnectionDetail() {
   const { connectionId } = useParams();
   const navigate = useNavigate();
-  const { isDemoMode } = useDataMode();
 
   const conn = isDemoMode ? DEMO_CONNECTIONS.find(c => c.id === connectionId) : null;
 
@@ -34,8 +32,7 @@ export default function ConnectionDetail() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
-      <DemoModeBadge />
-      <Button variant="ghost" size="sm" className="gap-1.5 text-muted-foreground" onClick={() => navigate("/integrations/connections")}>
+<Button variant="ghost" size="sm" className="gap-1.5 text-muted-foreground" onClick={() => navigate("/integrations/connections")}>
         <ArrowLeft className="w-3.5 h-3.5" /> Back to Connections
       </Button>
 

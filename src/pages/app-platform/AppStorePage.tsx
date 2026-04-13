@@ -16,11 +16,9 @@ import {
   CategoryStrip, InstallSheet,
 } from "@/components/sita/app-platform/AppStoreComponents";
 import type { AppDefinition, AppCategory } from "@/lib/app-platform/types";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const AppStorePage = () => {
-  const { isDemoMode } = useDataMode();
   const { apps, installedApps, installApp, pinToDock } = useAppPlatform();
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
@@ -79,8 +77,7 @@ const AppStorePage = () => {
 
   return (
     <div className="mx-auto max-w-6xl space-y-8">
-      <DemoModeBadge />
-      <h1 className="sr-only">App Store</h1>
+<h1 className="sr-only">App Store</h1>
       <StoreHero installedCount={installedApps.length} appsAvailable={apps.length} />
 
       {/* Quick Nav */}

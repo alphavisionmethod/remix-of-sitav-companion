@@ -9,9 +9,8 @@ import {
   TrendingUp, Package, Plus, ArrowRight, Brain, Users, Mail, Phone,
   Star, Shield, Target, RefreshCw, Zap, BarChart3, XCircle
 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_pricingInsights, DEMO_quoteStats, DEMO_quotes, DEMO_upsellSuggestions } from "@/lib/demo-data/revenue-office";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const statusColors: Record<string, string> = {
   draft: "bg-muted text-muted-foreground",
@@ -22,13 +21,11 @@ const statusColors: Record<string, string> = {
 };
 
 export default function QuoteStudio() {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("pipeline");
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
-      <DemoModeBadge />
-      <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><FileText className="h-6 w-6 text-blue-400" />Quote Studio</h1>
           <p className="text-muted-foreground">Generate, send, track, and automate proposals with AI-powered pricing, upsell suggestions, and follow-up</p>

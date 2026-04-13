@@ -2,7 +2,6 @@ import { Shield, Key, AlertTriangle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { PRIVILEGED_ACTIONS } from "@/lib/core-services/security/security-posture-engine";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 const riskBadge = (level: string) => {
   switch (level) {
@@ -13,7 +12,6 @@ const riskBadge = (level: string) => {
 };
 
 export default function SEC02PrivilegedActions() {
-  const { isDemoMode } = useDataMode();
   return (
     <div className="space-y-6 p-6" data-testid="sec02-privileged-actions">
       <div>

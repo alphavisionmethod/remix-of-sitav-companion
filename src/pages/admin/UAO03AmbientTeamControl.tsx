@@ -10,8 +10,7 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Users, RefreshCw, CheckCircle, XCircle } from "lucide-react";
 import { toast } from "sonner";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -19,7 +18,6 @@ const toneColors: Record<string, string> = { executive: "bg-purple-500/20 text-p
 const intensityColors: Record<string, string> = { high: "bg-red-500/20 text-red-400", normal: "bg-blue-500/20 text-blue-400", low: "bg-muted text-muted-foreground" };
 
 export default function UAO03AmbientTeamControl() {
-  const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
 
   const { data: roles = [] } = useQuery({
@@ -40,8 +38,7 @@ export default function UAO03AmbientTeamControl() {
   return (
     <div className="space-y-6 p-6">
       <UAOSubNav />
-      <DemoModeBadge />
-      <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2"><Users className="h-6 w-6" /> Ambient Team Control</h1>
           <p className="text-sm text-muted-foreground mt-1">Assistant roles, proactive modes, escalation behavior</p>

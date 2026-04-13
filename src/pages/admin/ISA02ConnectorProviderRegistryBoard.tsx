@@ -7,9 +7,8 @@ const db = supabase as any;
 import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Plug, CheckCircle, XCircle, AlertTriangle, RefreshCw, HardDrive, Mail, Calendar } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { getRelation, parseProviderFamilyRef, parseProviderCapabilityRef } from "@/lib/types/relation-parsers";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -27,7 +26,6 @@ const healthColors: Record<string, string> = {
 };
 
 export default function ISA02ConnectorProviderRegistryBoard() {
-  const { isDemoMode } = useDataMode();
   const { data: capabilities = [] } = useQuery({
     queryKey: ["isa02-capabilities"],
     queryFn: async () => {
@@ -62,8 +60,7 @@ export default function ISA02ConnectorProviderRegistryBoard() {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <Plug className="h-6 w-6 text-primary" /> Connector Provider Registry
         </h1>

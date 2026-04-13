@@ -6,7 +6,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Shield, CheckCircle, AlertTriangle, XCircle } from "lucide-react";
 import { computeLaunchReadiness, type CapabilityClassification, type ClaimSafety } from "@/lib/core-services/launch-readiness/launch-readiness-engine";
 import { cn } from "@/lib/utils";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 const SAFETY_CONFIG: Record<ClaimSafety, { label: string; icon: typeof CheckCircle; color: string }> = {
   safe: { label: "Safe to Claim", icon: CheckCircle, color: "text-emerald-400" },
@@ -15,7 +14,6 @@ const SAFETY_CONFIG: Record<ClaimSafety, { label: string; icon: typeof CheckCirc
 };
 
 export default function LAUNCH03ClaimSafetyMatrix() {
-  const { isDemoMode } = useDataMode();
   const [caps, setCaps] = useState<CapabilityClassification[]>([]);
   const [filter, setFilter] = useState<ClaimSafety | "all">("all");
 

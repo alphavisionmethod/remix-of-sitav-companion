@@ -20,11 +20,10 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { DEMO_ADVISOR_SCORECARDS, DEMO_ESCALATION_LOG, DEMO_HANDOFF_LOG } from "@/lib/demo-data/core-pages";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // ── Demo Data ────────────────────────────────────────────────
 
@@ -158,7 +157,6 @@ export default function AdvisorCouncilDashboard() {
   const [searchParams] = useSearchParams();
   const initialTab = searchParams.get("tab") || "scorecards";
   const [tab, setTab] = useState(initialTab);
-  const { isDemoMode } = useDataMode();
 
   // Live data hooks
   const fleetStatus = useAgentIntelligence("fleet-status");
@@ -187,8 +185,7 @@ export default function AdvisorCouncilDashboard() {
 
   return (
     <div className="space-y-6 max-w-6xl">
-      <DemoModeBadge />
-      <SitaPageHeader
+<SitaPageHeader
         title="Advisory Council Dashboard"
         subtitle="Performance scorecards, escalation history, handoff activity, and compute budget"
         actions={

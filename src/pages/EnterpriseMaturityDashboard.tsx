@@ -18,8 +18,7 @@ import {
   BellRing, HeartPulse, Target, Gauge, RefreshCw, Download,
   ArrowRight, Zap, ShieldCheck, Database, Globe, Key, GitBranch,
 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -28,8 +27,7 @@ function SLOCard({ slo }: { slo: { id: string; name: string; target: number; cur
   const statusColor = { met: "text-trust-safe", "at-risk": "text-accent", breached: "text-destructive" };
   return (
     <div className="rounded-xl border border-border/40 bg-card/60 p-4">
-      <DemoModeBadge />
-      <div className="flex items-center justify-between mb-2">
+<div className="flex items-center justify-between mb-2">
         <span className="text-xs font-semibold text-foreground">{slo.name}</span>
         <Badge variant="outline" className={cn("text-[9px]", statusColor[slo.status as keyof typeof statusColor])}>{slo.status}</Badge>
       </div>
@@ -140,7 +138,6 @@ function ReleaseCard({ release }: { release: any }) {
 
 // ── Main Page ──────────────────────────────────────────────────
 export default function EnterpriseMaturityDashboard() {
-  const { isDemoMode } = useDataMode();
   const { engines } = useOSRuntime();
   const [activeTab, setActiveTab] = useState("overview");
 

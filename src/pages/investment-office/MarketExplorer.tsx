@@ -2,18 +2,16 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, TrendingUp, TrendingDown, Filter, BarChart3, Globe, Zap, ChevronRight } from "lucide-react";
 import type { AssetClass } from "@/lib/investment-office/types";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { SparklineChart } from "@/components/sita/SparklineChart";
 import { INSTRUMENTS, INVESTMENT_ADVISORS } from "@/hooks/useInvestmentOfficeData";
 import { SPARKLINE_DATA } from "@/lib/investment-office/mock-data";
 import { useMarketWatchlistItems } from "@/hooks/use-investment-office";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_CLASS_TABS } from "@/lib/demo-data/investment";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const pctFmt = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
 
 export default function MarketExplorer() {
-  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useMarketWatchlistItems();
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
@@ -28,8 +26,7 @@ export default function MarketExplorer() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Globe className="h-6 w-6 text-primary" /> Market Explorer</h1>
         <p className="text-sm text-muted-foreground mt-1">Stocks, crypto, commodities, and event markets</p>
       </div>

@@ -6,9 +6,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Key, CheckCircle, XCircle } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import PFASubNav from "@/components/admin/PFASubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -19,7 +18,6 @@ const purposeColors: Record<string, string> = {
 };
 
 export default function PFA03OAuthClientRegistry() {
-  const { isDemoMode } = useDataMode();
   const { data: clients = [] } = useQuery({
     queryKey: ["oauth-clients"],
     queryFn: async () => { const { data } = await fromTable("oauth_client_registry").select("*, provider_families(name)").order("created_at"); return data || []; },
@@ -27,8 +25,7 @@ export default function PFA03OAuthClientRegistry() {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <PFASubNav />
+<PFASubNav />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Key className="h-6 w-6" /> OAuth Client Registry</h1>
         <p className="text-sm text-muted-foreground mt-1">Auth clients by purpose, environment, and provider family</p>

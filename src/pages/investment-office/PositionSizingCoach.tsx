@@ -1,14 +1,12 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Ruler, AlertTriangle, Check, Info, Shield, Target } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { usePortfolioPositions } from "@/hooks/use-investment-office";
 import { DEMO_SIZING_SCENARIOS } from "@/lib/demo-data/investment";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 export default function PositionSizingCoach() {
-  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = usePortfolioPositions();
   const [selectedIdx, setSelectedIdx] = useState(0);
   const scenario = DEMO_SIZING_SCENARIOS[selectedIdx];
@@ -16,8 +14,7 @@ export default function PositionSizingCoach() {
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Ruler className="h-6 w-6 text-primary" /> Position Sizing Coach</h1>
         <p className="text-sm text-muted-foreground mt-0.5">Turn size into an explicit coaching surface — understand how each position fits your portfolio and policy</p>
       </div>

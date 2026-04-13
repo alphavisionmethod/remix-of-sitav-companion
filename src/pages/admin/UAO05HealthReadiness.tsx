@@ -10,13 +10,11 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Heart, RefreshCw, CheckCircle, XCircle, Shield } from "lucide-react";
 import { toast } from "sonner";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
 export default function UAO05HealthReadiness() {
-  const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
 
   const { data: consents = [] } = useQuery({
@@ -47,8 +45,7 @@ export default function UAO05HealthReadiness() {
   return (
     <div className="space-y-6 p-6">
       <UAOSubNav />
-      <DemoModeBadge />
-      <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2"><Heart className="h-6 w-6" /> Health & Readiness Signals</h1>
           <p className="text-sm text-muted-foreground mt-1">Signal sources, consent, readiness, and privacy controls</p>

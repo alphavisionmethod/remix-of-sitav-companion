@@ -8,12 +8,10 @@ import { cn } from "@/lib/utils";
 import { Heart, Shield, AlertTriangle, CheckCircle, Target, Brain, Activity, Zap } from "lucide-react";
 import { motion } from "framer-motion";
 import { useMemo } from "react";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { computeFinancialHealth } from "@/lib/services/finance-os/financial-health.service";
 import { computeIncomeQuality } from "@/lib/services/finance-os/income-quality.service";
 
 const FinancialHealthPulse = () => {
-  const { isDemoMode } = useDataMode();
 
   const health = useMemo(() => computeFinancialHealth({
     safeToSpendCents: 245000, monthlyIncomeCents: 850000, totalDebtCents: 4813000,

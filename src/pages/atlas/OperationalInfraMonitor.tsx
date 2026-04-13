@@ -13,8 +13,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const now = new Date();
 const h = (hours: number) => new Date(now.getTime() - hours * 3600000).toISOString();
@@ -64,14 +63,12 @@ const resourceMetrics = [
 ];
 
 export default function OperationalInfraMonitor() {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("pools");
   const elevatedChannels = eventBusLag.filter(c => c.status === "elevated").length;
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mx-auto max-w-7xl space-y-6 p-6">
-      <DemoModeBadge />
-      <SitaPageHeader title="Operational Infrastructure Monitor" subtitle="Database pools, replica lag, certificate expiry, storage pressure, event bus latency, and resource utilization" />
+<SitaPageHeader title="Operational Infrastructure Monitor" subtitle="Database pools, replica lag, certificate expiry, storage pressure, event bus latency, and resource utilization" />
 
       {elevatedChannels > 0 && (
         <DegradedStateBanner severity="info" reason={`${elevatedChannels} event channel(s) with elevated latency`} impact="Realtime updates may be delayed" dismissible />

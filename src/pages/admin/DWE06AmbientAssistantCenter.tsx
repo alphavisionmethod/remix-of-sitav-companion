@@ -3,14 +3,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Bot, Brain, Zap, Shield, HeartHandshake } from "lucide-react";
 import { fromTable } from "@/lib/supabase-helpers";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/contexts/AuthContext";
 import type { AssistantRolePresenceRow, ProactiveInterventionRow } from "@/lib/types/dwe-types";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function DWE06AmbientAssistantCenter() {
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
 
   const { data: roles = [] } = useQuery<AssistantRolePresenceRow[]>({
@@ -41,8 +39,7 @@ export default function DWE06AmbientAssistantCenter() {
   return (
     <div className="space-y-6 p-6">
       <DWESubNav />
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold text-foreground">DWE06 — Ambient Assistant Experience Center</h1>
         <p className="text-muted-foreground">Proactive roles, support intensity, calm mode, overload protection.</p>
       </div>

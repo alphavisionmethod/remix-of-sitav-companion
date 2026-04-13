@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { FileCheck, Download, Target, Shield, Brain, RefreshCw, ChevronDown, ChevronUp, MessageSquare, CheckCircle, AlertTriangle } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { DEMO_RECEIPTS } from "@/lib/demo-data/investment";
 import { POST_TRADE_REVIEWS } from "@/lib/investment-office/mock-data";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 interface Receipt {
   id: string;
@@ -26,7 +25,6 @@ const STATUS_COLORS: Record<string, string> = { completed: "text-[hsl(var(--trus
 const VERDICT_COLORS: Record<string, string> = { "well-executed": "bg-[hsl(var(--trust-safe))]/10 text-[hsl(var(--trust-safe))]", acceptable: "bg-primary/10 text-primary", caution: "bg-[hsl(var(--trust-warn))]/10 text-[hsl(var(--trust-warn))]", "needs-action": "bg-destructive/10 text-destructive" };
 
 export default function InvestmentReceipts() {
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [showReview, setShowReview] = useState<string | null>(null);
@@ -54,8 +52,7 @@ export default function InvestmentReceipts() {
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
-      <DemoModeBadge />
-      <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><FileCheck className="h-6 w-6 text-primary" /> Decision History & Receipts</h1>
           <p className="text-sm text-muted-foreground mt-1">Complete professional record of decisions, reasoning, and execution</p>

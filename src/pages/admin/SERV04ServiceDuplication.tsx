@@ -8,9 +8,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { SERVICE_OWNERSHIP_REGISTRY, DUPLICATE_CLUSTER_RESOLUTIONS, type ClusterResolution } from "@/lib/core-services/service-registry/service-ownership-registry";
 import { getDuplicateActionPatterns, getRoutesWithShadowRisk } from "@/lib/core-services/service-registry/route-to-service-inventory";
 import { AlertTriangle, Copy, Ghost, Shield, CheckCircle, ArrowRight } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_SHADOW_PATTERNS } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 interface ShadowPattern {
   pattern: string;
@@ -79,7 +78,6 @@ function ClusterResolutionCard({ cluster }: { cluster: ClusterResolution }) {
 }
 
 export default function SERV04ServiceDuplication() {
-  const { isDemoMode } = useDataMode();
   const duplicateActions = getDuplicateActionPatterns();
   const shadowRoutes = getRoutesWithShadowRisk();
   const highRiskDomains = SERVICE_OWNERSHIP_REGISTRY.filter(
@@ -88,8 +86,7 @@ export default function SERV04ServiceDuplication() {
 
   return (
     <div className="space-y-6 p-6" data-testid="serv04-board">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <Copy className="h-6 w-6 text-amber-400" />
           SERV04 — Service Duplication & Shadow Logic

@@ -2,10 +2,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Shield, ArrowRightLeft, CheckCircle2, AlertTriangle, ArrowRight } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_SECURE_ACTIONS, DEMO_CONTINUITY_FLOWS, DEMO_TRUST_CONTINUITY } from "@/lib/demo-data/native-shell";
 import NSSSubNav from "@/components/admin/NSSSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const NSS03TrustContinuity = () => {
   const secureActions = DEMO_SECURE_ACTIONS;
@@ -14,8 +13,7 @@ const NSS03TrustContinuity = () => {
 
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">
-      <DemoModeBadge />
-      <NSSSubNav />
+<NSSSubNav />
       <div className="flex items-center gap-3">
         <div className="p-2 rounded-lg bg-primary/10"><Shield className="h-8 w-8 text-primary" /></div>
         <div>

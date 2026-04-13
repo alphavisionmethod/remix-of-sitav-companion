@@ -4,7 +4,6 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Rocket, CheckCircle2, XCircle, AlertTriangle, Bell, Smartphone, Monitor, Apple } from "lucide-react";
-import { useDataMode } from "@/contexts/DataModeContext";
 import NRCSubNav from "@/components/admin/NRCSubNav";
 
 
@@ -120,7 +119,6 @@ const statusIcons: Record<string, React.ElementType> = {
 };
 
 export default function NRC06NotificationLaunchHonesty() {
-  const { isDemoMode } = useDataMode();
   const { data, isLoading } = useNotificationLaunchHonesty();
 
   return (

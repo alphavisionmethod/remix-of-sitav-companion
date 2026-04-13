@@ -16,8 +16,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const now = new Date();
 const h = (hours: number) => new Date(now.getTime() - hours * 3600000).toISOString();
@@ -66,7 +65,6 @@ const provenanceDetail = {
 };
 
 export default function AdminDurabilityBoard() {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("mutations");
   const [inspectIdx, setInspectIdx] = useState<number | null>(null);
   const persisted = mutations.filter(m => m.durability === "persisted").length;
@@ -75,8 +73,7 @@ export default function AdminDurabilityBoard() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mx-auto max-w-7xl space-y-6 p-6">
-      <DemoModeBadge />
-      <SitaPageHeader title="Admin Durability Board" subtitle="Write-path durability, mutation provenance, audit lineage, canonical path registry, and persistence evidence" />
+<SitaPageHeader title="Admin Durability Board" subtitle="Write-path durability, mutation provenance, audit lineage, canonical path registry, and persistence evidence" />
 
       {transient > 0 && (
         <DegradedStateBanner severity="info" reason={`${transient} mutation(s) are transient/non-durable`} impact="These UI-level actions are not audit-tracked by design" dismissible />

@@ -10,8 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ROUTE_SERVICE_INVENTORY, type RouteInventoryEntry } from "@/lib/core-services/service-registry/route-to-service-inventory";
 import { Route, ArrowRight, Database, Plug } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 function ConfidenceBadge({ level }: { level: string }) {
   if (level === "high") return <Badge className="bg-emerald-500/20 text-emerald-400">{level}</Badge>;
@@ -58,7 +57,6 @@ function RouteDetail({ route }: { route: RouteInventoryEntry }) {
 }
 
 export default function SERV03RouteServiceTrace() {
-  const { isDemoMode } = useDataMode();
   const [domainFilter, setDomainFilter] = useState<string>("all");
   const [loopFilter, setLoopFilter] = useState<string>("all");
 
@@ -73,8 +71,7 @@ export default function SERV03RouteServiceTrace() {
 
   return (
     <div className="space-y-6 p-6" data-testid="serv03-board">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <Route className="h-6 w-6 text-primary" />
           SERV03 — Route-to-Service Trace

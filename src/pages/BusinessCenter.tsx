@@ -37,9 +37,8 @@ import CustomerSupportCenter from "./business/CustomerSupportCenter";
 import AppointmentsScheduling from "./business/AppointmentsScheduling";
 import BusinessOperations from "./business/BusinessOperations";
 import BusinessDocuments from "./business/BusinessDocuments";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useAppStatePersistence, restoreAppState } from "@/hooks/useAppStatePersistence";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const DOMAIN_CONFIG: DomainConfig = {
   id: "business",
@@ -162,7 +161,6 @@ const pages: Record<SubPage, React.ComponentType> = {
 };
 
 const BusinessCenter = () => {
-  const { isDemoMode } = useDataMode();
   const location = useLocation();
   const navigate = useNavigate();
   const activePage = subpageFromPath(location.pathname);

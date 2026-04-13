@@ -7,15 +7,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ShieldCheck, CheckCircle, XCircle } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
 const trustColors: Record<string, string> = { high: "bg-green-500/20 text-green-400", standard: "bg-blue-500/20 text-blue-400", low: "bg-muted text-muted-foreground", untrusted: "bg-red-500/20 text-red-400" };
 
 export default function UAO06DeviceTrust() {
-  const { isDemoMode } = useDataMode();
   const { data: trust = [] } = useQuery({
     queryKey: ["device-trust"],
     queryFn: async () => { const { data } = await fromTable("device_trust_records").select("*, connected_devices(device_name, platform)").order("created_at"); return data || []; },
@@ -34,8 +32,7 @@ export default function UAO06DeviceTrust() {
   return (
     <div className="space-y-6 p-6">
       <UAOSubNav />
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold flex items-center gap-2"><ShieldCheck className="h-6 w-6" /> Micro-Approval & Device Trust</h1>
         <p className="text-sm text-muted-foreground mt-1">Trusted devices, approval classes, security posture</p>
       </div>

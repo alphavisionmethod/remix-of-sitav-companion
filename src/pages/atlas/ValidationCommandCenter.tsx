@@ -14,8 +14,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const testSuites = [
   { name: "Unit Tests", total: 42, passed: 42, failed: 0, pending: 0, duration: "4.2s" },
@@ -99,14 +98,12 @@ const archGateCompliance = [
 ];
 
 export default function ValidationCommandCenter() {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("coverage");
   const passRate = Math.round((totalPassed / totalTests) * 100);
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mx-auto max-w-7xl space-y-6 p-6">
-      <DemoModeBadge />
-      <SitaPageHeader title="Validation Command Center" subtitle="Test coverage, cross-domain E2E flows, readiness scoring, launch blockers, architecture gates, and test history" />
+<SitaPageHeader title="Validation Command Center" subtitle="Test coverage, cross-domain E2E flows, readiness scoring, launch blockers, architecture gates, and test history" />
 
       {totalFailed > 0 && (
         <DegradedStateBanner severity="warning" reason={`${totalFailed} test(s) failing — launch readiness affected`} impact="Admin mutation E2E and projection freshness tests" dismissible />

@@ -1,19 +1,16 @@
 import { motion } from "framer-motion";
 import { Users, Shield, Landmark, Heart, GraduationCap, Home, Check, AlertTriangle } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useCapitalPurposeBuckets } from "@/hooks/use-investment-office";
 import { DEMO_FAMILY_GOALS, DEMO_FAMILY_MEMBERS, DEMO_FAMILY_RULES } from "@/lib/demo-data/investment";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const fmt = (n: number) => n >= 1e6 ? `$${(n / 1e6).toFixed(2)}M` : `$${(n / 1e3).toFixed(0)}K`;
 
 export default function FamilyOffice() {
-  const { isDemoMode } = useDataMode();
   const { data: liveData, isLoading } = useCapitalPurposeBuckets();
   return (
     <div className="mx-auto max-w-5xl space-y-6">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Users className="h-6 w-6 text-primary" /> Family Office</h1>
         <p className="text-sm text-muted-foreground mt-0.5">Household capital governance, shared goals, family rules, and multi-member permissions</p>
       </div>

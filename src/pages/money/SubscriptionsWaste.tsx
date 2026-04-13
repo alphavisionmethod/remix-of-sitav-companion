@@ -15,7 +15,6 @@ import { useAction } from "@/lib/hooks/useAction";
 import { CreditCard, AlertTriangle, Plus, Trash2, Pencil, Pause, Play, XCircle, Eye, DollarSign } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { motion } from "framer-motion";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useConfirmation } from "@/hooks/use-confirmation";
 import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
 import { useQueryFreshness } from "@/hooks/use-query-freshness";
@@ -31,7 +30,6 @@ const emptyForm: SubForm = { service_name: "", amount: "", billing_cycle: "month
 const SubscriptionsWaste = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
-  const { isDemoMode } = useDataMode();
   const { confirmation, confirm } = useConfirmation();
   const [tab, setTab] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);

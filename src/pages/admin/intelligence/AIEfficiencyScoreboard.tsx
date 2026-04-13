@@ -10,8 +10,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Progress } from "@/components/ui/progress";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useEfficiencyScoreboard } from "@/hooks/use-intelligence-screen-data";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const trendIcons = { improving: TrendingUp, stable: Activity, degrading: TrendingDown };
 const trendColors = { improving: "text-emerald-400", stable: "text-muted-foreground", degrading: "text-rose-400" };
@@ -32,7 +32,8 @@ const AIEfficiencyScoreboard = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      {isDemo && <DemoModeBadge />}
+      {isDemo &&
+}
       <SitaPageHeader
         icon={<Gauge className="h-6 w-6" />}
         title="AI Efficiency Scoreboard"

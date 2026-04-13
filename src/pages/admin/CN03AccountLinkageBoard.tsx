@@ -9,9 +9,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { Unplug } from "lucide-react";
 import { toast } from "sonner";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import CNSubNav from "@/components/admin/CNSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -23,7 +22,6 @@ const statusColors: Record<string, string> = {
 };
 
 export default function CN03AccountLinkageBoard() {
-  const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
 
   const { data: accounts = [] } = useQuery({
@@ -36,8 +34,7 @@ export default function CN03AccountLinkageBoard() {
   return (
     <div className="space-y-6 p-6">
       <CNSubNav />
-      <DemoModeBadge />
-      <h1 className="sr-only">Account Linkage Board</h1>
+<h1 className="sr-only">Account Linkage Board</h1>
       <Card className="bg-card border-border">
         <CardHeader><CardTitle>Linked Accounts</CardTitle></CardHeader>
         <CardContent>

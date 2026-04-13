@@ -9,9 +9,8 @@ import { Brain, Eye, Shield, Clock, Layers, RefreshCw, Trash2 } from "lucide-rea
 import { Progress } from "@/components/ui/progress";
 import { useQuery } from "@tanstack/react-query";
 import { fetchScopedMemory, getScopedMemoryStats, forgetScopedMemory, type PersistedScopedMemory } from "@/lib/persistence";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_ADMIN_SCOPES_MEMORY_CONTINUITY_CENTER as DEMO_SCOPES, DEMO_PRIVACY_TIERS } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const fade = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } };
 
@@ -21,7 +20,6 @@ function PrivacyBadge({ tier }: { tier: string }) {
 }
 
 export default function MemoryContinuityCenter() {
-  const { isDemoMode } = useDataMode();
   const [scopeFilter, setScopeFilter] = useState<string>("all");
   const [privacyFilter, setPrivacyFilter] = useState<string>("all");
   const [selectedEntry, setSelectedEntry] = useState<PersistedScopedMemory | null>(null);
@@ -46,8 +44,7 @@ export default function MemoryContinuityCenter() {
   return (
     <div className="space-y-6 p-6 max-w-7xl mx-auto">
       <CPSSubNav />
-      <DemoModeBadge />
-      <motion.div initial="hidden" animate="show" variants={{ show: { transition: { staggerChildren: 0.04 } } }} className="space-y-4">
+<motion.div initial="hidden" animate="show" variants={{ show: { transition: { staggerChildren: 0.04 } } }} className="space-y-4">
         <motion.div variants={fade} className="flex items-center gap-3">
           <Brain className="h-6 w-6 text-primary" />
           <h1 className="text-2xl font-bold text-foreground">Memory Continuity Center</h1>

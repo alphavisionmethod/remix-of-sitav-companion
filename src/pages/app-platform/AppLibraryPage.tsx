@@ -13,13 +13,11 @@ import type { AppDefinition } from "@/lib/app-platform/types";
 import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { AppIcon, VerificationBadge, AppSourceLabel } from "@/components/sita/app-platform/AppStoreComponents";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 type LibView = "all" | "installed" | "pinned" | "web" | "native" | "wrapped" | "internal" | "updates" | "recent" | "enterprise";
 
 const AppLibraryPage = () => {
-  const { isDemoMode } = useDataMode();
   const { apps, installedApps, updatableApps } = useAppPlatform();
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
@@ -75,8 +73,7 @@ const AppLibraryPage = () => {
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
-      <DemoModeBadge />
-      <div className="flex items-end justify-between">
+<div className="flex items-end justify-between">
         <div>
           <h1 className="font-display text-2xl font-bold text-foreground">App Library</h1>
           <p className="text-sm text-muted-foreground mt-1">

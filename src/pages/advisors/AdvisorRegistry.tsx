@@ -22,12 +22,11 @@ import {
   getBehavioralProfile,
   type AdvisorBehavioralProfile,
 } from "@/packages/advisor-config/behavioral-engine";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { DEMO_AUTONOMY_LEVELS } from "@/lib/demo-data/core-pages";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // ── Maturity color mapping ──────────────────────────────────
 const MATURITY_COLORS: Record<string, string> = {
@@ -64,8 +63,7 @@ function AdvisorDetailPanel({ advisor }: { advisor: ExtendedAdvisorConfig }) {
 
   return (
     <ScrollArea className="h-[calc(100vh-280px)]">
-      <DemoModeBadge />
-      <div className="space-y-4 pr-2">
+<div className="space-y-4 pr-2">
         {/* Header */}
         <SitaCard hover={false} glow className="p-5">
           <SitaCardTitle sub={`${advisor.domain} · ${advisor.council}`}>{advisor.name}</SitaCardTitle>
@@ -242,7 +240,6 @@ function AdvisorDetailPanel({ advisor }: { advisor: ExtendedAdvisorConfig }) {
 
 // ── Main Page ───────────────────────────────────────────────
 const AdvisorRegistry = () => {
-  const { isDemoMode } = useDataMode();
   const [council, setCouncil] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [search, setSearch] = useState("");

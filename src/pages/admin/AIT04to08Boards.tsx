@@ -19,9 +19,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { updateRecommendationStatus, updateApprovalQueueItem } from "@/lib/admin-ai/admin-ai-workforce-client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { toast } from "sonner";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import AITSubNav from "@/components/admin/AITSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -52,8 +51,7 @@ export function AIT04ActivityFeed() {
   return (
     <div className="space-y-6 p-6 max-w-[1600px] mx-auto">
       <AITSubNav />
-      <DemoModeBadge />
-      <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2"><Activity className="h-6 w-6 text-primary" /> AIT04 — Workforce Activity Feed</h1>
           <p className="text-muted-foreground mt-1 text-sm">Operational log of all AI workforce tasks with filtering</p>

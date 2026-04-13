@@ -18,8 +18,7 @@ import {
 import validationSummary from "../../../generated/validation-summary.json";
 import operationalScorecards from "../../../generated/operational-scorecards.json";
 import architectureCompliance from "../../../generated/architecture-compliance-report.json";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // ── Types ───────────────────────────────────────────────────
 interface ValidationCheck { file: string; exists: boolean; validJson: boolean }
@@ -52,8 +51,7 @@ function ValidationTab() {
 
   return (
     <div className="space-y-4">
-      <DemoModeBadge />
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+<div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <Card><CardContent className="p-4 flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10"><FileJson className="h-5 w-5 text-primary" /></div>
           <div><p className="text-2xl font-bold text-foreground">{vs.totalChecks}</p><p className="text-xs text-muted-foreground">Total Artifacts</p></div>

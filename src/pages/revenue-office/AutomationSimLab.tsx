@@ -9,9 +9,8 @@ import {
   ArrowRight, Shield, Brain, MessageSquare, Eye, Phone, DollarSign,
   ArrowDown, Zap, Target, XCircle, RefreshCw
 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import AutomationSubNav from "./AutomationSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const simulation = {
   name: "Stale Lead Recovery (48hr Advanced)",
@@ -83,13 +82,11 @@ const simulation = {
 };
 
 export default function AutomationSimLab() {
-  const { isDemoMode } = useDataMode();
   const [activeTab, setActiveTab] = useState("overview");
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
-      <DemoModeBadge />
-      <AutomationSubNav />
+<AutomationSubNav />
       <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
           <FlaskConical className="h-6 w-6 text-purple-400" />Automation Simulation Lab

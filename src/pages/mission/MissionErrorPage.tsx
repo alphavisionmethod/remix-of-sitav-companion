@@ -6,17 +6,14 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Shield, ArrowLeft, RefreshCw, RotateCcw, MessageCircle } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function MissionErrorPage() {
-  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
 
   return (
     <div className="min-h-[60vh] flex items-center justify-center p-6">
-      <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
+<motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
         className="max-w-md w-full rounded-2xl border border-accent/20 bg-card p-10 text-center"
       >
         <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-accent/10 mx-auto mb-5">

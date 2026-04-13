@@ -15,9 +15,8 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { toast } from "sonner";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const now = new Date();
 const h = (hours: number) => new Date(now.getTime() - hours * 3600000).toISOString();
@@ -60,7 +59,6 @@ const materializationQueue = [
 ];
 
 export default function ProjectionControlCenter() {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("projections");
   const fresh = projections.filter(p => p.status === "fresh").length;
   const stale = projections.filter(p => p.status === "stale").length;
@@ -75,8 +73,7 @@ export default function ProjectionControlCenter() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mx-auto max-w-7xl space-y-6 p-6">
-      <DemoModeBadge />
-      <SitaPageHeader title="Projection Control Center" subtitle="Read-model materialization, freshness, fallback masking audit, rebuild controls, materialization queue, and honest staleness" />
+<SitaPageHeader title="Projection Control Center" subtitle="Read-model materialization, freshness, fallback masking audit, rebuild controls, materialization queue, and honest staleness" />
 
       {degraded > 0 && (
         <DegradedStateBanner severity="warning" reason={`${degraded} projection(s) in degraded state — composite surfaces may show partial truth`} impact="Cross-domain KPIs and connector health affected" affectedCapabilities={projections.filter(p => p.status === "degraded").map(p => p.key)} dismissible />

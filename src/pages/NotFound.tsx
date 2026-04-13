@@ -2,11 +2,9 @@ import { useLocation, Link } from "react-router-dom";
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft, Home, Compass, Shield } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const NotFound = () => {
-  const { isDemoMode } = useDataMode();
   const location = useLocation();
 
   useEffect(() => {
@@ -15,8 +13,7 @@ const NotFound = () => {
 
   return (
     <div className="flex min-h-[70vh] items-center justify-center">
-      <DemoModeBadge />
-      <motion.div
+<motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}

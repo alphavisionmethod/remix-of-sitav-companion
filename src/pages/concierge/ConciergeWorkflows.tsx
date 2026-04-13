@@ -8,7 +8,6 @@ import { useState } from "react";
 import { Workflow, ShoppingCart, Calendar, Wrench, GraduationCap, Plane, Gift, Bell, CheckCircle, Clock, AlertTriangle, Play, Pause, Sparkles, Shield, Eye, Zap } from "lucide-react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 interface HouseholdWorkflow {
   id: string;

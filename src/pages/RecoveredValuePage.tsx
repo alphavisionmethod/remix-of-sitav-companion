@@ -14,8 +14,7 @@ import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
 import { useCountUpFormatted } from "@/hooks/useCountUp";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // ── Seed demo recovered values ─────────────────────────────────
 function useDemoRecoveries() {
@@ -57,15 +56,13 @@ const RecoveredKPI = ({ label, value, color, delay }: { label: string; value: st
     <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay }}
       className="rounded-xl border border-border/30 bg-card/60 p-3 text-center"
     >
-      <DemoModeBadge />
-      <p className={cn("text-xl font-bold font-display tabular-nums", color)}>{animated}</p>
+<p className={cn("text-xl font-bold font-display tabular-nums", color)}>{animated}</p>
       <p className="text-[9px] text-muted-foreground">{label}</p>
     </motion.div>
   );
 };
 
 export default function RecoveredValuePage() {
-  const { isDemoMode } = useDataMode();
   const { stats, rankings, ledger, outcomeSummary } = useDemoRecoveries();
 
   const outcomeIcons: Record<string, typeof DollarSign> = {

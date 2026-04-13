@@ -7,14 +7,13 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { EmptyState } from "@/components/sita/SitaComponents";
 import { DEMO_CORE_AGENTS as DEMO_AGENTS } from "@/lib/demo-data/core-pages";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -22,7 +21,6 @@ const statusColor = { active: "bg-emerald-500", paused: "bg-amber-500", idle: "b
 
 export default function AIWorkforcePage() {
   const [selectedTab, setSelectedTab] = useState("roster");
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
 
   const { data: realAgents = [] } = useQuery({
@@ -41,8 +39,7 @@ export default function AIWorkforcePage() {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between">
+<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Bot className="h-6 w-6 text-primary" /> AI Workforce</h1>
           <p className="text-muted-foreground text-sm mt-1">Agent orchestration, task assignment, and cost governance</p>

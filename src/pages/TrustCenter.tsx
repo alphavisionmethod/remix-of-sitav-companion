@@ -13,7 +13,6 @@ import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { TrustDebtEngine } from "@/lib/engines/trust-debt-engine";
 import { cn } from "@/lib/utils";
 import {
@@ -63,7 +62,6 @@ const TAB_GROUPS: NavTabGroup[] = [
 /* ── Overview ── */
 const TrustOverviewPage = () => {
   const { user } = useAuth();
-  const { isDemoMode } = useDataMode();
   const [automationsPaused, setAutomationsPaused] = useState(false);
   const [trustMode, setTrustMode] = useState<"suggest" | "approve-execute" | "autonomous">("approve-execute");
 

@@ -11,14 +11,12 @@ import { BarChart3, Calendar, CheckCircle, Clock, ChevronRight, Target } from "l
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_SESSIONS } from "@/lib/demo-data/core-pages";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
 export default function BoardroomHistory() {
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -46,8 +44,7 @@ export default function BoardroomHistory() {
 
   return (
     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="space-y-6 p-6 max-w-7xl mx-auto">
-      <DemoModeBadge />
-      <SitaPageHeader
+<SitaPageHeader
         title="Boardroom History"
         subtitle="Past sessions, decisions, and confidence trends"
         actions={<SitaButton variant="primary" onClick={() => navigate("/boardroom/replay")}><BarChart3 className="h-4 w-4" /> New Session</SitaButton>}

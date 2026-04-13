@@ -16,11 +16,9 @@ import {
   ChevronRight, CreditCard, Headphones, Star, Clock,
 } from "lucide-react";
 import { useAdminUsers } from "@/hooks/use-domain-data";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function UsersAdminPage() {
-  const { isDemoMode } = useDataMode();
   const { data: mockUsers = [] } = useAdminUsers();
   const [search, setSearch] = useState("");
   const [selectedUser, setSelectedUser] = useState<UserRowView | null>(null);
@@ -31,8 +29,7 @@ export default function UsersAdminPage() {
 
   return (
     <div className="max-w-[1400px] mx-auto space-y-5">
-      <DemoModeBadge />
-      <AdminPageHeader icon={Users} title="Users & Organizations" subtitle="User roster, trust state, connector health, and support diagnostics">
+<AdminPageHeader icon={Users} title="Users & Organizations" subtitle="User roster, trust state, connector health, and support diagnostics">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 w-full mt-5">
           {[
             { label: "Total Users", value: mockUsers.length, ok: true },

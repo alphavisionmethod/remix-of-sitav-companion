@@ -9,20 +9,17 @@ import {
   TrendingUp, ArrowRight, MessageSquare, Brain, Target, DollarSign,
   Star, Mail, Zap, Eye, Shield, BarChart3, RefreshCw
 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_callAnalytics, DEMO_callQueue, DEMO_callStats, DEMO_recentCalls } from "@/lib/demo-data/revenue-office";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const priorityColors: Record<string, string> = { critical: "bg-red-500/10 text-red-400", high: "bg-amber-500/10 text-amber-400", medium: "bg-blue-500/10 text-blue-400", low: "bg-muted text-muted-foreground" };
 
 export default function CallDesk() {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("queue");
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Phone className="h-6 w-6 text-blue-400" />Call Desk</h1>
         <p className="text-muted-foreground">Prioritized call queue, AI prep briefs, relationship context, outcome logging, and auto-generated follow-ups</p>
       </div>

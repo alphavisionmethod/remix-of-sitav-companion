@@ -7,11 +7,9 @@ import { useParams, useNavigate } from "react-router-dom";
 import { ShieldCheck, AlertTriangle, CheckCircle2, XCircle } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const MobileApprovalDetail = () => {
-  const { isDemoMode } = useDataMode();
   const { id } = useParams();
   const navigate = useNavigate();
   const [status, setStatus] = useState<"pending" | "approved" | "rejected">("pending");
@@ -29,8 +27,7 @@ const MobileApprovalDetail = () => {
   if (status !== "pending") {
     return (
       <MobileShell title="Approval">
-      <DemoModeBadge />
-        <div className="flex flex-col items-center justify-center py-16">
+<div className="flex flex-col items-center justify-center py-16">
           {status === "approved" ? (
             <CheckCircle2 className="h-16 w-16 text-[hsl(var(--trust-safe))] mb-4" />
           ) : (

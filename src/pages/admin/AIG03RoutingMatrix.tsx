@@ -5,13 +5,11 @@ import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Route, CheckCircle, XCircle, AlertTriangle, Filter } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { getRoutingPolicies, getCapabilityRouting } from "@/lib/core-services/ai-gateway";
 import AIGSubNav from "@/components/admin/AIGSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function AIG03RoutingMatrix() {
-  const { isDemoMode } = useDataMode();
   const [familyFilter, setFamilyFilter] = useState<string>("all");
   const [premiumOnly, setPremiumOnly] = useState(false);
 
@@ -47,8 +45,7 @@ export default function AIG03RoutingMatrix() {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <AIGSubNav />
+<AIGSubNav />
       <div>
         <h1 className="text-2xl font-bold flex items-center gap-2">
           <Route className="h-6 w-6" /> AIG03 — AI Routing Matrix

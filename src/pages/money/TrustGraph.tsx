@@ -5,11 +5,11 @@
 import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile } from "@/components/sita/SitaComponents";
 import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { Link2, Wallet, CreditCard, PiggyBank, Receipt, Building, AlertTriangle, DollarSign, Target, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import type { FinancialTrustNode, FinancialTrustEdge, TrustEdgeHealth } from "@/packages/finance-contracts/advanced-intelligence";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const healthColors: Record<TrustEdgeHealth, string> = {
   healthy: "border-trust-verified text-trust-verified bg-trust-verified/10",
@@ -62,9 +62,7 @@ const TrustGraph = () => {
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
       <DomainHeader domain="money" title="Financial Trust Graph" subtitle="Visualize dependencies between your financial obligations" />
-      <DemoModeBadge />
-
-      <div className="grid gap-3 sm:grid-cols-3">
+<div className="grid gap-3 sm:grid-cols-3">
         <KPITile label="Graph Integrity" value={`${integrity}%`} icon={Link2} sub={`${demoNodes.length} nodes`} />
         <KPITile label="Dependencies" value={demoEdges.length} icon={ArrowRight} sub="Financial links" />
         <KPITile label="Stressed Links" value={stressedCount} icon={AlertTriangle} sub="Need attention" />

@@ -9,8 +9,6 @@ import {
 } from "lucide-react";
 import { useLifeSimulator } from "@/contexts/SitaKernelContext";
 import type { ShockType, ShockImpactReport } from "@/lib/services/life-simulation";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 const SHOCK_ICONS: Record<ShockType, typeof AlertTriangle> = {
   'job-loss': Briefcase, 'new-baby': Baby, 'divorce': HeartCrack,
@@ -19,12 +17,12 @@ const SHOCK_ICONS: Record<ShockType, typeof AlertTriangle> = {
 };
 
 import { SEVERITY_COLORS } from "@/lib/constants/ui-config";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const stagger = { hidden: { opacity: 0 }, show: { opacity: 1, transition: { staggerChildren: 0.06 } } };
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 
 const LifeSimulator = () => {
-  const { isDemoMode } = useDataMode();
   const simulator = useLifeSimulator(500);
   const shockTypes = useMemo(() => simulator.getShockTypes(), [simulator]);
 
@@ -45,8 +43,7 @@ const LifeSimulator = () => {
 
   return (
     <motion.div variants={stagger} initial="hidden" animate="show" className="space-y-6 max-w-[1600px] mx-auto">
-      <DemoModeBadge />
-      <motion.div variants={fadeUp}>
+<motion.div variants={fadeUp}>
         <SitaPageHeader
           title="Life Simulator"
           subtitle="What happens to everything if life changes? Simulate cross-domain shocks."

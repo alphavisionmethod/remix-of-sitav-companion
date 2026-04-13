@@ -2,8 +2,8 @@ import { useState, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Activity, TrendingUp, TrendingDown, Zap, BarChart3 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { INSTRUMENTS, PORTFOLIO } from "@/hooks/useInvestmentOfficeData";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Sector groupings for heatmap
 const SECTORS = [
@@ -126,9 +126,7 @@ export default function TradingFloor() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <DemoModeBadge />
-
-      {/* Header with pulse */}
+{/* Header with pulse */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground flex items-center gap-3">

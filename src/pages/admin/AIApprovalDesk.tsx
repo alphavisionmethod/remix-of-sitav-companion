@@ -3,9 +3,9 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
 import { FileCheck, AlertTriangle, Shield, Eye, CheckCircle2, XCircle, Code, Palette, Wrench, RotateCcw } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_APPROVALS } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const typeIcons: Record<string, typeof Code> = { code: Code, design: Palette, ops: Wrench };
 
@@ -16,8 +16,7 @@ const AIApprovalDesk = () => {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <AdminPageHeader icon={FileCheck} title="Approval & Safety Desk" subtitle="High-impact changes requiring review — evidence, blast radius, rollback readiness" accent="trust" />
+<AdminPageHeader icon={FileCheck} title="Approval & Safety Desk" subtitle="High-impact changes requiring review — evidence, blast radius, rollback readiness" accent="trust" />
 
       <div className="grid grid-cols-4 gap-3">
         {[

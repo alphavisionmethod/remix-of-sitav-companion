@@ -6,11 +6,9 @@ import { MobileShell } from "@/components/mobile/MobileShell";
 import { useParams } from "react-router-dom";
 import { CheckCircle2, Copy, ExternalLink } from "lucide-react";
 import { useState } from "react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const MobileReceiptDetail = () => {
-  const { isDemoMode } = useDataMode();
   const { id } = useParams();
   const [copied, setCopied] = useState(false);
   const hash = "a3f8c1d9e2b4567890abcdef1234567890abcdef1234567890abcdef12345678";
@@ -23,8 +21,7 @@ const MobileReceiptDetail = () => {
 
   return (
     <MobileShell title={`Receipt ${id?.slice(0, 8) || ""}`}>
-      <DemoModeBadge />
-      {/* Verification badge */}
+{/* Verification badge */}
       <div className="flex flex-col items-center py-6">
         <div className="h-16 w-16 rounded-full bg-[hsl(var(--trust-safe))]/10 flex items-center justify-center mb-3">
           <CheckCircle2 className="h-8 w-8 text-[hsl(var(--trust-safe))]" />

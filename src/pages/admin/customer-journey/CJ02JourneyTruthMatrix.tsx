@@ -12,7 +12,6 @@ import { Table, Loader2, Filter } from "lucide-react";
 import { useState, useMemo } from "react";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 
 
@@ -25,7 +24,6 @@ const PROOF_CONFIDENCE_CONFIG: Record<string, { label: string; color: string }> 
 };
 
 export default function CJ02JourneyTruthMatrix() {
-  const { isDemoMode } = useDataMode();
   const { data: journeys, isLoading: legacyLoading } = useCustomerJourneys();
   const { data: summaryView, isLoading: viewLoading } = useJourneySummaryView();
   const [search, setSearch] = useState("");

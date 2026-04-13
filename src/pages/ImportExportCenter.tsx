@@ -6,10 +6,9 @@ import { Upload, FileText, Image, Table2, FileSpreadsheet, Download, ArrowUpFrom
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { DEMO_UPLOADS, DEMO_EXPORTS, type DemoUploadItem as UploadItem, type DemoExportItem as ExportItem } from "@/lib/demo-data/import-export";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useImportExportJobs } from "@/hooks/use-live-data";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -19,7 +18,6 @@ const STATUS_ICONS = { uploading: Clock, processing: Clock, complete: CheckCircl
 const ImportExportCenter = () => {
   const [tab, setTab] = useState("upload");
   const [isDragging, setIsDragging] = useState(false);
-  const { isDemoMode } = useDataMode();
   const { data: liveJobs } = useImportExportJobs();
 
   const uploads = useMemo(() => {
@@ -52,8 +50,7 @@ const ImportExportCenter = () => {
 
   return (
     <div className="min-h-screen pb-12">
-      <DemoModeBadge />
-      <SitaPageHeader title="Upload & Export Center" subtitle="Import files, export reports, and manage data transfers" />
+<SitaPageHeader title="Upload & Export Center" subtitle="Import files, export reports, and manage data transfers" />
 
       <SitaTabs tabs={[
         { key: "upload", label: "Upload" },

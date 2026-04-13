@@ -4,16 +4,14 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { Heart, ShieldCheck, Eye, EyeOff, Lock, AlertTriangle, CheckCircle2, Clock, Activity, Trash2 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { Button } from "@/components/ui/button";
 import { DEMO_ADMIN_SIGNALS_A_P_L05_APPLE_HEALTH_CONSENT as DEMO_SIGNALS } from "@/lib/demo-data/admin-platform";
 import APLSubNav from "@/components/admin/APLSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 type ConsentState = Record<string, { read: boolean; routing: boolean; boardroom: boolean; assistant: boolean }>;
 
 const APL05AppleHealthConsent = () => {
-  const { isDemoMode } = useDataMode();
   const [consents, setConsents] = useState<ConsentState>(
     Object.fromEntries(DEMO_SIGNALS.map(s => [s.key, { read: false, routing: false, boardroom: false, assistant: false }]))
   );
@@ -26,8 +24,7 @@ const APL05AppleHealthConsent = () => {
 
   return (
     <div className="p-6 max-w-[1400px] mx-auto space-y-6">
-      <DemoModeBadge />
-      <APLSubNav />
+<APLSubNav />
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="p-2 rounded-lg bg-primary/10"><Heart className="h-8 w-8 text-primary" /></div>

@@ -8,8 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Shield, AlertTriangle, CheckCircle, Link2, RefreshCw, Eye } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchPolicyEvaluations, getPolicyEvaluationStats, type PersistedPolicyEvaluation } from "@/lib/persistence";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const fade = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0 } };
 
@@ -19,7 +18,6 @@ function EffectBadge({ effect }: { effect: string }) {
 }
 
 export default function PolicyDecisionLedger() {
-  const { isDemoMode } = useDataMode();
   const [effectFilter, setEffectFilter] = useState<string>("all");
   const [domainFilter, setDomainFilter] = useState<string>("all");
   const [selectedEval, setSelectedEval] = useState<PersistedPolicyEvaluation | null>(null);
@@ -40,8 +38,7 @@ export default function PolicyDecisionLedger() {
   return (
     <div className="space-y-6 p-6 max-w-7xl mx-auto">
       <CPSSubNav />
-      <DemoModeBadge />
-      <motion.div initial="hidden" animate="show" variants={{ show: { transition: { staggerChildren: 0.04 } } }} className="space-y-4">
+<motion.div initial="hidden" animate="show" variants={{ show: { transition: { staggerChildren: 0.04 } } }} className="space-y-4">
         <motion.div variants={fade} className="flex items-center gap-3">
           <Shield className="h-6 w-6 text-primary" />
           <h1 className="text-2xl font-bold text-foreground">Policy Decision Ledger</h1>

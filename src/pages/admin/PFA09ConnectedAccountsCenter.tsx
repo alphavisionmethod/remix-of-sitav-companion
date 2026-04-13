@@ -5,8 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { User, Shield, Link2, CheckCircle, XCircle, AlertTriangle, ArrowUpCircle } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -14,7 +13,6 @@ const statusColors: Record<string, string> = { connected: "bg-green-500/20 text-
 const healthIcons: Record<string, React.ReactNode> = { healthy: <CheckCircle className="h-4 w-4 text-green-400" />, degraded: <AlertTriangle className="h-4 w-4 text-yellow-400" />, error: <XCircle className="h-4 w-4 text-red-400" />, unknown: <div className="h-4 w-4 rounded-full bg-muted-foreground/30" /> };
 
 export default function PFA09ConnectedAccountsCenter() {
-  const { isDemoMode } = useDataMode();
   const { data: identities = [] } = useQuery({
     queryKey: ["identity-links"],
     queryFn: async () => { const { data } = await fromTable("identity_provider_links").select("*, provider_families(name, provider_key)").order("created_at"); return data || []; },
@@ -37,8 +35,7 @@ export default function PFA09ConnectedAccountsCenter() {
 
   return (
     <div className="space-y-6 p-6 max-w-4xl mx-auto">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold flex items-center gap-2"><User className="h-6 w-6" /> Connected Accounts</h1>
         <p className="text-sm text-muted-foreground mt-1">Manage your identity providers and connected services</p>
       </div>

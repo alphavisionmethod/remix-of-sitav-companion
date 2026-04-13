@@ -8,11 +8,10 @@ import { TrustBadge } from "@/components/sita/TrustBadge";
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
 import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { Receipt, Search, Tag, AlertTriangle, Repeat, ArrowUpDown, Sparkles, Shield, CheckCircle, XCircle, Clock, DollarSign, TrendingDown, Building } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState, useMemo } from "react";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 interface DemoTx {
   id: string; date: string; description: string; merchant: string; amountCents: number; category: string;
@@ -34,7 +33,6 @@ const DEMO_TXS: DemoTx[] = [
 ];
 
 const TransactionIntelligence = () => {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -62,9 +60,7 @@ const TransactionIntelligence = () => {
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
       <DomainHeader domain="money" title="Transaction Intelligence" subtitle="Smart categorization, anomaly detection, business/personal classification" />
-      <DemoModeBadge />
-
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4">
+<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4">
         <KPITile label="Transactions" value={stats.total.toString()} icon={Receipt} />
         <KPITile label="AI Categorized" value={stats.aiCategorized.toString()} icon={Sparkles} />
         <KPITile label="Flagged" value={stats.flagged.toString()} icon={AlertTriangle} />

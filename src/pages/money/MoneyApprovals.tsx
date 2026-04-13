@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { Shield, CheckCircle, XCircle, AlertTriangle, DollarSign, Eye, Clock, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useMoneyApprovals, useApproveMoneyAction, useRejectMoneyAction } from "@/hooks/use-domain-data";
 import { toast } from "sonner";
 
@@ -13,6 +11,7 @@ import { SplitWorkspace } from "@/components/sita/surfaces/SplitWorkspace";
 import { AppSurface } from "@/components/sita/surfaces/AppSurface";
 import { ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransitions";
 import { cn } from "@/lib/utils";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const MoneyApprovals = () => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -42,8 +41,7 @@ const MoneyApprovals = () => {
 
   const listPane = (
     <div className="p-3 space-y-3">
-      <DemoModeBadge />
-      <div className="flex items-center justify-between px-1">
+<div className="flex items-center justify-between px-1">
         <h3 className="text-[13px] font-semibold text-[hsl(0_0%_85%)]">Financial Approvals</h3>
         <span className="text-[11px] text-[hsl(0_0%_50%)]">{pendingCount} pending</span>
       </div>

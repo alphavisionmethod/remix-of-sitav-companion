@@ -5,12 +5,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Settings } from "lucide-react";
 import { CANONICAL_MODES, type RealityModeKey } from "@/lib/dual-reality/reality-mode-registry";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import DRSSubNav from "@/components/admin/DRSSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function DRS02ModeRegistryConsole() {
-  const { isDemoMode } = useDataMode();
   const modes = Object.values(CANONICAL_MODES);
 
   const { data: truthLabels } = useQuery({
@@ -25,8 +23,7 @@ export default function DRS02ModeRegistryConsole() {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <DRSSubNav />
+<DRSSubNav />
       <div>
         <h1 className="text-2xl font-bold text-foreground">DRS02 — Mode Registry Console</h1>
         <p className="text-sm text-muted-foreground mt-1">Manage and inspect runtime modes</p>

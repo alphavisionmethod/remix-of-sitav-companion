@@ -6,7 +6,6 @@
 import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile } from "@/components/sita/SitaComponents";
 import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
 import {
@@ -16,6 +15,7 @@ import {
 import { motion } from "framer-motion";
 import { useState } from "react";
 import type { MoneyRitual, RitualStep } from "@/packages/finance-contracts/advanced-intelligence";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const ritualIcons: Record<string, typeof Calendar> = {
   "weekly-reset": RotateCcw, "month-close": Calendar, "bill-planning": Receipt,
@@ -121,9 +121,7 @@ const MoneyRituals = () => {
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
       <DomainHeader domain="money" title="Money Rituals" subtitle="Guided financial ceremonies for sustained money health" />
-      <DemoModeBadge />
-
-      <div className="grid gap-3 sm:grid-cols-3">
+<div className="grid gap-3 sm:grid-cols-3">
         <KPITile label="Active Rituals" value={defaultRituals.length} icon={Sparkles} sub="Guided ceremonies" />
         <KPITile label="Steps Completed" value={`${completedSteps}/${totalSteps}`} icon={CheckCircle} sub="This session" />
         <KPITile label="Time Investment" value={`${defaultRituals.reduce((s, r) => s + r.estimatedMinutes, 0)} min`} icon={Clock} sub="Total per cycle" />

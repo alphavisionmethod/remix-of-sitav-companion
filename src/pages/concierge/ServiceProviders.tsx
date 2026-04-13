@@ -9,7 +9,6 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useInspector } from "@/contexts/InspectorContext";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useServiceProvidersList } from "@/hooks/use-concierge-data";
 import { DEMO_CONC_categories_SERVICE_PROVIDERS as DEMO_categories } from "@/lib/demo-data/concierge";
 

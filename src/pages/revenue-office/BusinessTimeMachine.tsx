@@ -6,9 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useState } from "react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_DECISIONS, DEMO_PERIODS, DEMO_WHATIF, DEMO_CHIEF_HISTORICAL } from "@/lib/demo-data/revenue-office";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const ti = (t: string) => t === "up" ? <TrendingUp className="h-3.5 w-3.5 text-[hsl(var(--trust-safe))]" /> : t === "down" ? <TrendingDown className="h-3.5 w-3.5 text-destructive" /> : <span className="text-muted-foreground">—</span>;
 
@@ -41,8 +40,7 @@ const BusinessTimeMachine = () => {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <SitaPageHeader icon={<Clock className="h-5 w-5" />} title="Business Time Machine" subtitle="Replay decisions, compare advisor stances then vs now, and capture lessons" />
+<SitaPageHeader icon={<Clock className="h-5 w-5" />} title="Business Time Machine" subtitle="Replay decisions, compare advisor stances then vs now, and capture lessons" />
 
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
         {[

@@ -23,7 +23,6 @@ import {
   type SprawlRisk,
 } from "@/lib/core-services/architecture/god-tier-integration-engine";
 import { Brain, Shield, Layers, Target, AlertTriangle, CheckCircle, XCircle, Clock, ArrowRight, Zap, TrendingDown } from "lucide-react";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 const actionColors: Record<IntegrationAction, string> = {
   integrate_now: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
@@ -49,7 +48,6 @@ const phaseColors: Record<string, string> = {
 };
 
 export default function GodTierIntegrationBoard() {
-  const { isDemoMode } = useDataMode();
   const score = computeIntegrationScore();
 
   return (

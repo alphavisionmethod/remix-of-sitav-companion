@@ -25,9 +25,8 @@ import {
   AlertCircle, ArrowRightLeft, Timer, BarChart3
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_ENGINE_CONNECTORS, DEMO_FALLBACK_APPROVALS } from "@/lib/demo-data/core-pages";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // ── Initialize services with demo data ──────────────────────────
 
@@ -143,7 +142,6 @@ const StateBadgeInline = ({ state }: { state: string }) => {
 // ── Main Component ──────────────────────────────────────────────
 
 const SystemStatus = () => {
-  const { isDemoMode } = useDataMode();
   const { listRegions, getTopology, getDemoTopology } = useCloudControlPlane();
   const location = useLocation();
   const navigate = useNavigate();
@@ -182,8 +180,7 @@ const SystemStatus = () => {
 
   return (
     <motion.div className="mx-auto max-w-5xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-      <DemoModeBadge />
-      <SitaPageHeader
+<SitaPageHeader
         title="System Status"
         subtitle="Trust score, self-healing, fleet health, connector health, and execution history"
         actions={<SitaButton variant="secondary"><RefreshCw className="h-4 w-4" /> Refresh</SitaButton>}

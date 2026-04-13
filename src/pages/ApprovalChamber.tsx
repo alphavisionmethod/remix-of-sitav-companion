@@ -16,15 +16,14 @@ import { AutonomyLadder } from "@/components/sita/primitives/AutonomyLadder";
 import type { AutonomyRung } from "@/components/sita/primitives/AutonomyLadder";
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
 import { motion, AnimatePresence } from "framer-motion";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useApprovals } from "@/hooks/use-sita-data";
 import { useApprovalQueue } from "@/hooks/use-brain-core";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useOSOrchestration } from "@/hooks/useOSOrchestration";
 import { toast } from "sonner";
 
 // ── Types (re-use demo-data interface) ────────────────────────
 import { DEMO_APPROVAL_ITEMS, type DemoApprovalItem as ApprovalItem } from "@/lib/demo-data/approval-chamber";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -293,7 +292,6 @@ const ApprovalCard = ({ item, onAction }: { item: ApprovalItem; onAction: (id: s
 // ── Main Page ────────────────────────────────────────────────
 
 const ApprovalChamber = () => {
-  const { isDemoMode } = useDataMode();
   const { data: dbApprovals = [], isLoading } = useApprovals();
   const { approve, reject } = useApprovalQueue();
   const os = useOSOrchestration();
@@ -347,8 +345,7 @@ const ApprovalChamber = () => {
 
   return (
     <div className="space-y-6 p-6 max-w-5xl mx-auto">
-      <DemoModeBadge />
-      {/* Header */}
+{/* Header */}
       <div className="space-y-1">
         <div className="flex items-center gap-3">
           <div className="rounded-xl bg-primary/10 p-2.5">

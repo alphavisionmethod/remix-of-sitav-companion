@@ -4,13 +4,11 @@ import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { useMobileApprovals } from "@/hooks/use-domain-data";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const filters = ["All", "Critical", "Finance", "Business", "Concierge"];
 
 const MobileApprovals = () => {
-  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   const { data: approvals = [] } = useMobileApprovals();
   const [activeFilter, setActiveFilter] = useState("All");
@@ -23,8 +21,7 @@ const MobileApprovals = () => {
 
   return (
     <MobileShell title="Approvals">
-      <DemoModeBadge />
-      <div className="flex gap-1.5 overflow-x-auto pb-3 -mx-1 px-1 scrollbar-none">
+<div className="flex gap-1.5 overflow-x-auto pb-3 -mx-1 px-1 scrollbar-none">
         {filters.map((f) => (
           <button key={f} onClick={() => setActiveFilter(f)} className={cn("px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-colors border", activeFilter === f ? "bg-primary text-primary-foreground border-primary" : "bg-card border-border/40 text-muted-foreground hover:text-foreground")}>{f}</button>
         ))}

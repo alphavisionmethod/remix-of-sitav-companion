@@ -1,6 +1,6 @@
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { AdvisorCouncilShell, type AdvisorConfig } from "@/components/advisors/AdvisorCouncilShell";
 import { INVESTMENT_ADVISORS } from "@/hooks/useInvestmentOfficeData";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Map investment advisors to AdvisorConfig format for the shared shell
 const mapToAdvisorConfig = (): AdvisorConfig[] =>
@@ -21,8 +21,7 @@ export default function AdvisorBoard() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-5">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
           Investment Advisor Council
         </h1>

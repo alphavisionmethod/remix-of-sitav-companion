@@ -21,8 +21,6 @@ import {
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useConfirmation } from "@/hooks/use-confirmation";
 import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
 import { DataFreshnessBadge } from "@/components/sita/DataFreshnessBadge";
@@ -73,7 +71,6 @@ type Tab = "all" | "urgent" | "new" | "warm" | "stale" | "qualified";
 
 const LeadsInbox = () => {
   const navigate = useNavigate();
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const crmSync = useCRMSync();

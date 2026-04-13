@@ -8,9 +8,8 @@ import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_INTEL_PATTERNS_PATTERN_LEARNING_CENTER as DEMO_PATTERNS } from "@/lib/demo-data/admin-intelligence";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const privacyBadges: Record<string, { icon: typeof Globe; color: string }> = {
   public_safe: { icon: Globe, color: "text-emerald-400" },
@@ -28,8 +27,7 @@ const PatternLearningCenter = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      <DemoModeBadge />
-      <SitaPageHeader
+<SitaPageHeader
         icon={<Radar className="h-6 w-6" />}
         title="Pattern Learning Center"
         subtitle="View recurrent patterns, fingerprints, and generalized learning across the system"

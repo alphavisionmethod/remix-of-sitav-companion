@@ -6,11 +6,9 @@ import { Progress } from "@/components/ui/progress";
 import { useMockReplacements } from "@/hooks/useMockReplacements";
 import { useRealityClassifications } from "@/hooks/useRealityClassifications";
 import { ShieldCheck, Activity, Database, Zap, CheckCircle2, AlertTriangle } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function RuntimeRealityValidation() {
-  const { isDemoMode } = useDataMode();
   const { data: mockReplacements = [] } = useMockReplacements();
   const { data: classifications = [] } = useRealityClassifications();
 
@@ -32,8 +30,7 @@ export default function RuntimeRealityValidation() {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold">Runtime Reality Validation</h1>
         <p className="text-sm text-muted-foreground">Validate migrated features are truly real — RCP12</p>
       </div>

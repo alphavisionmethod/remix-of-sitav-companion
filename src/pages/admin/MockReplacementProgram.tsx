@@ -15,9 +15,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { useMockReplacements, useUpsertMockReplacement, useUpdateMockStatus, useDeleteMockReplacement, useMockReplacementStats } from "@/hooks/useMockReplacements";
 import { Plus, Trash2, Search, ArrowRight, AlertTriangle, CheckCircle2, Clock, Ban, CircleDot, Pencil, BarChart3, Flame, GitBranch, ShieldCheck, Layers } from "lucide-react";
 import type { MockReplacement } from "@/lib/persistence/mock-replacement-persistence";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_ADMIN_STATUSES_MOCK_REPLACEMENT_PROGRAM as DEMO_STATUSES, DEMO_MOCK_TYPES, DEMO_PRIORITIES } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const STATUS_CONFIG: Record<MockReplacement["migration_status"], { label: string; color: string; icon: any }> = {
   identified: { label: "Identified", color: "bg-muted text-muted-foreground", icon: CircleDot },
@@ -262,7 +261,6 @@ function RuntimeValidationCard({ data }: { data: MockReplacement[] }) {
 }
 
 export default function MockReplacementProgram() {
-  const { isDemoMode } = useDataMode();
   const { data, isLoading } = useMockReplacements();
   const upsert = useUpsertMockReplacement();
   const updateStatus = useUpdateMockStatus();
@@ -281,8 +279,7 @@ export default function MockReplacementProgram() {
 
   return (
     <div className="p-6 space-y-6">
-      <DemoModeBadge />
-      <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground">Mock Replacement Program</h1>
           <p className="text-sm text-muted-foreground">Sequenced mock elimination with runtime validation — demo-to-real conversion engine</p>

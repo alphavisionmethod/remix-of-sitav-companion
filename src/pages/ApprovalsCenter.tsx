@@ -4,21 +4,19 @@ import { TrustBadge } from "@/components/sita/TrustBadge";
 import { StateBadge } from "@/components/sita/StateBadge";
 import { useApprovals } from "@/hooks/use-sita-data";
 import { useApprovalQueue } from "@/hooks/use-brain-core";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import {
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
   Shield, CheckCircle, XCircle, Clock, AlertTriangle, Brain, Eye, Zap,
   ThumbsUp, ThumbsDown, MessageSquare, ChevronDown, ChevronUp
 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 
 
 const ApprovalsCenter = () => {
   const { data: approvals = [], isLoading } = useApprovals();
   const { approve, reject } = useApprovalQueue();
-  const { isDemoMode } = useDataMode();
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [rejectionReason, setRejectionReason] = useState("");
 
@@ -39,8 +37,7 @@ const ApprovalsCenter = () => {
 
   return (
     <motion.div className="mx-auto max-w-5xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-      <DemoModeBadge />
-      <SitaPageHeader
+<SitaPageHeader
         title="Approvals Center"
         subtitle="Review and approve SITA-recommended actions before execution"
         actions={

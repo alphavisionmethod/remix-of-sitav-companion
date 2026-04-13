@@ -19,11 +19,9 @@ import {
   RotateCcw, Search, Play, AlertTriangle, CheckCircle, Clock,
   ChevronRight, Shield, Zap, Eye,
 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function WorkflowReplayHub() {
-  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<string>("all");
@@ -44,8 +42,7 @@ export default function WorkflowReplayHub() {
 
   return (
     <div className="max-w-[1200px] mx-auto space-y-5">
-      <DemoModeBadge />
-      <AdminPageHeader icon={RotateCcw} title="Workflow Replay Center" subtitle="Search, inspect, and safely replay failed or stuck workflows">
+<AdminPageHeader icon={RotateCcw} title="Workflow Replay Center" subtitle="Search, inspect, and safely replay failed or stuck workflows">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-3 w-full mt-5">
           {[
             { label: "Failed", value: replayable.filter(w => w.status === "failed").length, ok: false },

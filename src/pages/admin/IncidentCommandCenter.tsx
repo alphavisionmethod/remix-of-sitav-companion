@@ -11,11 +11,10 @@ import { cn } from "@/lib/utils";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useIncidentManagement, useEntityScoped } from "@/contexts/SitaKernelContext";
 import { DEMO_INCIDENTS, type DemoIncident as Incident, type Severity, type IncidentStatus } from "@/lib/demo-data/incidents";
 import { anomalyAlertSystem, type Anomaly } from "@/lib/services/anomaly-alert";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const SEVERITY_CONFIG: Record<Severity, { color: string; bg: string; border: string }> = {
   critical: { color: "text-red-400", bg: "bg-red-500/10", border: "border-red-500/30" },
@@ -43,7 +42,6 @@ function timeAgo(d: string) {
 }
 
 export default function IncidentCommandCenter() {
-  const { isDemoMode } = useDataMode();
   const { getActiveIncidents: getKernelIncidents, getIncidentMetrics, getDemoIncidents } = useIncidentManagement();
   const { entityId, entityType, tenantId } = useEntityScoped();
   const [tab, setTab] = useState("active");
@@ -75,8 +73,7 @@ export default function IncidentCommandCenter() {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-foreground">Incident Command Center</h1>

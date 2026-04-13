@@ -16,8 +16,7 @@ import {
   Shield, Zap, Activity,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // ── Workflow definitions mapped to onboarding firstRecovery choices ──
 
@@ -131,8 +130,7 @@ function ActivationSequence({
 
   return (
     <div className="space-y-3">
-      <DemoModeBadge />
-      {workflow.actions.map((action, i) => {
+{workflow.actions.map((action, i) => {
         const isDone = i < activeStep;
         const isActive = i === activeStep;
         const isPending = i > activeStep;
@@ -239,7 +237,6 @@ function ActivationSequence({
 // ── Main Page ──
 
 export default function FirstWinActivation() {
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const navigate = useNavigate();
   const [workflow, setWorkflow] = useState<FirstWinWorkflow | null>(null);

@@ -18,8 +18,7 @@ import {
   Heart, AlertTriangle, Target, Calendar, Clock, Sparkles,
   CheckCircle, Activity,
 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 interface PulseItem {
   label: string;
@@ -49,8 +48,7 @@ const weeklyPulse: PulseItem[] = [
 function PulseGrid({ items }: { items: PulseItem[] }) {
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-      <DemoModeBadge />
-      {items.map((item, i) => (
+{items.map((item, i) => (
         <motion.div key={item.label} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.03 }}>
           <div className="rounded-xl border border-border/50 bg-card/60 p-4 card-hover-lift">
             <p className="font-display text-xl font-bold text-foreground">{item.value}</p>
@@ -73,7 +71,6 @@ function PulseGrid({ items }: { items: PulseItem[] }) {
 }
 
 export default function OwnerPulsePage() {
-  const { isDemoMode } = useDataMode();
   const summary = useMissionControlSummary();
   const cost = useFounderCostSummary();
   const trust = useTrustSummary();

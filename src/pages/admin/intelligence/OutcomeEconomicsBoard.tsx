@@ -8,8 +8,8 @@ import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useOutcomeEconomics } from "@/hooks/use-intelligence-screen-data";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const recColors: Record<string, string> = {
   expand: "text-emerald-400 bg-emerald-500/10",
@@ -37,7 +37,8 @@ const OutcomeEconomicsBoard = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      {isDemo && <DemoModeBadge />}
+      {isDemo &&
+}
       <SitaPageHeader
         icon={<Target className="h-6 w-6" />}
         title="Outcome Economics Board"

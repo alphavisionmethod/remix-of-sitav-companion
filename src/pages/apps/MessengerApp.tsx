@@ -4,9 +4,8 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { MessageSquare, Send, Search, Plus, Paperclip, Smile, Phone, Video, MoreVertical, CheckCheck } from "lucide-react";
 import { useState } from "react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_CHATS, DEMO_MESSAGES } from "@/lib/demo-data/apps";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 interface Chat {
   id: string;
@@ -28,7 +27,6 @@ interface Message {
 }
 
 export default function MessengerApp() {
-  const { isDemoMode } = useDataMode();
   const [selectedChat, setSelectedChat] = useState<Chat | null>(DEMO_CHATS[0]);
   const [message, setMessage] = useState("");
   const [search, setSearch] = useState("");
@@ -37,8 +35,7 @@ export default function MessengerApp() {
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto">
-      <DemoModeBadge />
-      <div className="flex items-center gap-2 mb-4">
+<div className="flex items-center gap-2 mb-4">
         <MessageSquare className="h-6 w-6 text-primary" />
         <h1 className="text-xl font-bold text-foreground">Messenger</h1>
       </div>

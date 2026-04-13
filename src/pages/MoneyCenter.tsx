@@ -47,10 +47,9 @@ import FinancialBoundaryMonitor from "./money/FinancialBoundaryMonitor";
 import SpendingPulse from "./money/SpendingPulse";
 import ReconciliationReview from "./money/ReconciliationReview";
 import FinanceAutomations from "./money/FinanceAutomations";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useAppStatePersistence, restoreAppState } from "@/hooks/useAppStatePersistence";
 import React from "react";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const DOMAIN_CONFIG: DomainConfig = {
   id: "finance",
@@ -203,7 +202,6 @@ const pages: Record<SubPage, React.ComponentType> = {
 };
 
 const MoneyCenter = () => {
-  const { isDemoMode } = useDataMode();
   const location = useLocation();
   const navigate = useNavigate();
   const activePage = subpageFromPath(location.pathname);

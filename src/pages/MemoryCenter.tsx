@@ -15,8 +15,7 @@ import { toast } from "sonner";
 import {
   Brain, Search, Edit, Trash2, Eye, Lock, Shield, Clock, Sparkles, X, Check, Save
 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -30,7 +29,6 @@ const categoryMap: Record<string, string> = {
 };
 
 const MemoryCenter = () => {
-  const { isDemoMode } = useDataMode();
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -118,8 +116,7 @@ const MemoryCenter = () => {
 
   return (
     <motion.div className="mx-auto max-w-5xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-      <DemoModeBadge />
-      <SitaPageHeader title="Memory Center" subtitle="Everything SITA knows — transparent, editable, and governed" />
+<SitaPageHeader title="Memory Center" subtitle="Everything SITA knows — transparent, editable, and governed" />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KPITile label="Total Memories" value={totalMemories} icon={Brain} />

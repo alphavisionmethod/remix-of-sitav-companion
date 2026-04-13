@@ -16,15 +16,13 @@ import { ExecutionChainTimeline, buildDefaultChain } from "@/components/sita/pri
 import { KPITile, SectionHeader, EmptyState } from "@/components/sita/SitaComponents";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { DEMO_OUTCOMES, DEMO_INTERVENTIONS, DEMO_SPILLOVERS } from "@/lib/demo-data/outcome-engine";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useOutcomes } from "@/hooks/use-live-data";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
 export default function OutcomeEnginePage() {
-  const { isDemoMode } = useDataMode();
   const { data: liveOutcomes } = useOutcomes();
 
   // Map live data to demo shape or use demo data
@@ -52,8 +50,7 @@ export default function OutcomeEnginePage() {
 
   return (
     <div className="space-y-8 p-6 max-w-7xl mx-auto">
-      <DemoModeBadge />
-      {/* Header */}
+{/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -8 }}
         animate={{ opacity: 1, y: 0 }}

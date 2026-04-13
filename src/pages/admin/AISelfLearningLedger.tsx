@@ -4,9 +4,9 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { BookOpen, TrendingUp, CheckCircle2, AlertTriangle, RotateCcw, Brain, Target, Users, ArrowRight } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_BEHAVIOR_CHANGES, DEMO_LEARNED_PATTERNS, DEMO_ROUTING_WEIGHTS } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const AISelfLearningLedger = () => {
   const { data: patterns, isDemo } = useAIEngDomain("learningPatterns", DEMO_LEARNED_PATTERNS);
@@ -14,8 +14,7 @@ const AISelfLearningLedger = () => {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <AdminPageHeader icon={BookOpen} title="Self-Learning Ledger" subtitle="What the system learned, how behavior changed, and how routing adapted" accent="primary" />
+<AdminPageHeader icon={BookOpen} title="Self-Learning Ledger" subtitle="What the system learned, how behavior changed, and how routing adapted" accent="primary" />
 
       <div className="grid grid-cols-4 gap-3">
         {[

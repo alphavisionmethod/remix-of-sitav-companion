@@ -12,11 +12,9 @@ import {
   Shield, Lock, Eye, Users, Key, Plug, AlertTriangle, CheckCircle,
   ToggleLeft, ToggleRight, Zap, Brain, ChevronRight
 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const PermissionsCenter = () => {
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
@@ -82,8 +80,7 @@ const PermissionsCenter = () => {
 
   return (
     <motion.div className="mx-auto max-w-6xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
-      <DemoModeBadge />
-      <SitaPageHeader
+<SitaPageHeader
         title="Permissions & Consent"
         subtitle="Control what SITA can access, who can approve, and how data is shared"
       />

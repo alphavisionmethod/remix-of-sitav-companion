@@ -6,7 +6,7 @@ import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { useEngineEvents } from "@/lib/hooks/useEngineEventsData";
 import { useIntelligenceOverview } from "@/lib/hooks/useIntelligenceAPI";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const IntelligenceInsuranceDashboard = () => {
   const { isAdmin, loading: authLoading } = useRequireAdmin();
@@ -31,8 +31,7 @@ const IntelligenceInsuranceDashboard = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      <DemoModeBadge />
-      <SitaPageHeader icon={<Shield className="h-6 w-6" />} title="Intelligence Insurance Layer" subtitle="Risk hedges against hallucination and false confidence" />
+<SitaPageHeader icon={<Shield className="h-6 w-6" />} title="Intelligence Insurance Layer" subtitle="Risk hedges against hallucination and false confidence" />
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
           { l: "Insurance Events", v: String(hedges.length), icon: Shield },

@@ -13,9 +13,8 @@ import {
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import {
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
   useAISpendSummary,
   useModelRoutingStats,
   useComputeBudgetStatus,
@@ -23,7 +22,6 @@ import {
 
 // ── Main Page ──────────────────────────────────────────────────
 export default function AIEconomicsPage() {
-  const { isDemoMode } = useDataMode();
   const { data: spendSummary, isLoading: spendLoading } = useAISpendSummary();
   const { data: routingStats, isLoading: routingLoading } = useModelRoutingStats();
   const { data: budgetStatus } = useComputeBudgetStatus();
@@ -39,8 +37,7 @@ export default function AIEconomicsPage() {
 
   return (
     <div className="p-4 md:p-6 max-w-[1200px] mx-auto space-y-6">
-      <DemoModeBadge />
-      {/* Hero */}
+{/* Hero */}
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
         className="rounded-2xl border border-primary/10 bg-gradient-to-br from-primary/5 via-card to-card p-6"
       >

@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { SitaCard } from "@/components/sita/SitaCard";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { Clipboard, Pin, Copy, Trash2, Search, Image, FileText, Link, Star, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { motion, AnimatePresence } from "framer-motion";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 type ClipType = "text" | "image" | "link" | "file";
 
@@ -43,7 +42,6 @@ const typeIcon = (t: ClipType) => {
 };
 
 const ClipboardHistory = () => {
-  const { isDemoMode } = useDataMode();
   const [clips, setClips] = useState(demoClips);
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState<"all" | "pinned" | "favorites">("all");
@@ -61,8 +59,7 @@ const ClipboardHistory = () => {
 
   return (
     <div className="mx-auto max-w-3xl space-y-4">
-      <DemoModeBadge />
-      <SitaPageHeader icon={<Clipboard className="h-6 w-6" />} title="Clipboard History" subtitle="Recent copies across all workspaces — search, pin, and reuse">
+<SitaPageHeader icon={<Clipboard className="h-6 w-6" />} title="Clipboard History" subtitle="Recent copies across all workspaces — search, pin, and reuse">
         <Button variant="outline" size="sm" onClick={() => setClips(clips.filter(c => c.pinned))}>
           <Trash2 className="h-4 w-4 mr-1" /> Clear Unpinned
         </Button>

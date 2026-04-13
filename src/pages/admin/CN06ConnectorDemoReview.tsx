@@ -9,14 +9,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { Presentation, Play } from "lucide-react";
 import { toast } from "sonner";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import CNSubNav from "@/components/admin/CNSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
 export default function CN06ConnectorDemoReview() {
-  const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
 
   const { data: demoBindings = [] } = useQuery({
@@ -29,8 +27,7 @@ export default function CN06ConnectorDemoReview() {
   return (
     <div className="space-y-6 p-6">
       <CNSubNav />
-      <DemoModeBadge />
-      <h1 className="sr-only">Connector Demo Review</h1>
+<h1 className="sr-only">Connector Demo Review</h1>
       <div className="space-y-6">
         <div className="flex gap-2">
           <Button size="sm" variant="outline" onClick={() => activateMutation.mutate({ id: "demo_google_drive" })} disabled={activateMutation.isPending}>

@@ -4,10 +4,9 @@ import { Badge } from "@/components/ui/badge";
 import { Crown, TrendingUp, AlertTriangle, Lightbulb, Users, CheckCircle, HelpCircle, ArrowRight, Clock, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useNavigate } from "react-router-dom";
 import { DEMO_CHIEF_HISTORICAL } from "@/lib/demo-data/revenue-office";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const synthesis = {
   confidence: 76,
@@ -31,13 +30,11 @@ const synthesis = {
 };
 
 export default function ChiefRevenueSynthesis() {
-  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><Crown className="h-6 w-6 text-amber-400" /> Chief Revenue Synthesis</h1>
         <p className="text-muted-foreground">Executive summary — where advisors align, disagree, and what matters most</p>
       </div>

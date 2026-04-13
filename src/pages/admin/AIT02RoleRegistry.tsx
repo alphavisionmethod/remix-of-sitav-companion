@@ -16,13 +16,11 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { Progress } from "@/components/ui/progress";
 import { getWorkforceRoles, getRecentInvocations } from "@/lib/core-services/ai-workforce/workforce-orchestrator";
 import { Users, X, ChevronRight, TrendingUp, TrendingDown, Filter } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 type SortKey = "cost" | "invocations" | "name" | "stage";
 
 export default function AIT02RoleRegistry() {
-  const { isDemoMode } = useDataMode();
   const [selectedRole, setSelectedRole] = useState<WorkforceRole | null>(null);
   const [sortBy, setSortBy] = useState<SortKey>("name");
   const [filterStatus, setFilterStatus] = useState<string>("all");
@@ -49,8 +47,7 @@ export default function AIT02RoleRegistry() {
   return (
     <div className="space-y-6 p-6 max-w-[1600px] mx-auto">
       <AITSubNav />
-      <DemoModeBadge />
-      <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold flex items-center gap-2"><Users className="h-6 w-6 text-primary" /> AIT02 — Role Registry</h1>
           <p className="text-muted-foreground mt-1">All AI workforce roles, their governance, cost profile, and usage</p>

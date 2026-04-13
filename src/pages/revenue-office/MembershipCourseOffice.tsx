@@ -5,9 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { GraduationCap, Users, BookOpen, PlayCircle, Star, TrendingUp, AlertTriangle, Clock, Calendar, BarChart3, Zap } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_courses, DEMO_DRIP_SCHEDULE, DEMO_ENGAGEMENT_HEATMAP } from "@/lib/demo-data/revenue-office";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const memberships = [
   { tier: "Premium", members: 156, mrr: 7800, churn: 3.2, retention: 96.8, trend: "up" },
@@ -22,13 +21,11 @@ const dropOffPoints = [
 ];
 
 export default function MembershipCourseOffice() {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("courses");
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold text-foreground">Membership & Course Office</h1>
         <p className="text-muted-foreground">Courses, memberships, engagement, retention, and student journey intelligence</p>
       </div>

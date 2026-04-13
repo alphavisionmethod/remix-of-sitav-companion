@@ -6,16 +6,14 @@ import { Badge } from "@/components/ui/badge";
 import { Switch } from "@/components/ui/switch";
 import { Loader2, Shield, ShieldOff, Zap, FileText } from "lucide-react";
 import { getKillSwitchState, setKillSwitch, loadKillSwitches } from "@/lib/dual-reality/demo-policy-engine";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import DRSSubNav from "@/components/admin/DRSSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
 export default function DRS06DemoPolicySafety() {
-  const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
   const [killState, setKillState] = useState(getKillSwitchState());
 
@@ -58,8 +56,7 @@ export default function DRS06DemoPolicySafety() {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <DRSSubNav />
+<DRSSubNav />
       <div>
         <h1 className="text-2xl font-bold text-foreground">DRS06 — Demo Policy & Safety Board</h1>
         <p className="text-sm text-muted-foreground mt-1">Govern demo mode safety controls and kill switches</p>

@@ -8,10 +8,9 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useReceiptVerification, useSharedMemory } from "@/contexts/SitaKernelContext";
 import { DEMO_PROOFS } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 interface ProofRecord {
   id: string;
@@ -53,7 +52,6 @@ function timeAgo(d: string) {
 }
 
 export default function ProofMatrixExplorer() {
-  const { isDemoMode } = useDataMode();
   const { verifyIntegrity, validateChain, detectTamper } = useReceiptVerification();
   const { entries: sharedMemoryEntries } = useSharedMemory("proof-context");
   const [tab, setTab] = useState("proofs");
@@ -79,8 +77,7 @@ export default function ProofMatrixExplorer() {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-foreground">Proof Matrix Explorer</h1>

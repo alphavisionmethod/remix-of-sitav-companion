@@ -12,11 +12,10 @@ import { supabase } from "@/integrations/supabase/client";
 const db = supabase as any;
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { ConnectorSyncDashboard } from "@/components/sita/ConnectorSyncDashboard";
 import { toast } from "sonner";
 import { DEMO_ADMIN_CONNECTORS as DEMO_CONNECTORS, DEMO_FALLBACK_SYNC_HISTORY, DEMO_POLICIES } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -52,7 +51,6 @@ const CRED_CONFIG: Record<string, { color: string }> = {
 };
 
 export default function ConnectorGovernanceCenter() {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("connectors");
   const { user } = useAuth();
   const queryClient = useQueryClient();
@@ -140,8 +138,7 @@ export default function ConnectorGovernanceCenter() {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-2xl font-bold text-foreground">Connector Governance Center</h1>

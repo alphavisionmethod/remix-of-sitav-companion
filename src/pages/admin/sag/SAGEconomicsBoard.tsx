@@ -5,9 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { usePortfolioAllocations, useTaskRequests, useGatewayStats } from "@/hooks/use-sag-data";
 import { ALLOCATION_CLASSES } from "@/lib/sovereign-ai-gateway/types";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import SAGSubNav from "@/components/admin/SAGSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -27,8 +26,7 @@ const SAGEconomicsBoard = () => {
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
-      <DemoModeBadge />
-      <SAGSubNav />
+<SAGSubNav />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold flex items-center gap-2"><DollarSign className="h-6 w-6 text-primary" /> SAG06 — Inference Economics Board</h1>
         <p className="text-muted-foreground mt-1">Manage cost, value, and AI portfolio allocation</p>

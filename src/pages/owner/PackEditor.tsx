@@ -12,8 +12,7 @@ import { Package, Layers, Zap, Shield, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import { motion } from "framer-motion";
 import { listPacks } from "@/lib/demo-data/packs";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 interface PackState {
   packId: string;
@@ -25,7 +24,6 @@ interface PackState {
 }
 
 const PackEditor = () => {
-  const { isDemoMode } = useDataMode();
   const packs = listPacks();
   const [packStates, setPackStates] = useState<PackState[]>(
     packs.map(p => ({ packId: p.packId, name: p.name, status: "active" as const, capabilities: p.capabilities, connectors: p.connectors, requiredTier: p.requiredTier }))
@@ -41,8 +39,7 @@ const PackEditor = () => {
 
   return (
     <motion.div className="mx-auto max-w-4xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
-      <DemoModeBadge />
-      <SitaPageHeader title="Pack Manager" subtitle="Install, pause, or disable functional packs. Each change is logged." />
+<SitaPageHeader title="Pack Manager" subtitle="Install, pause, or disable functional packs. Each change is logged." />
 
       <div className="space-y-3">
         {packStates.map((pack) => (

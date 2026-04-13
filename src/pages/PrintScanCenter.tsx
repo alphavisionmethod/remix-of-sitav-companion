@@ -2,12 +2,11 @@ import { useState } from "react";
 import { SitaPageHeader } from "@/components/sita/SitaPageHeader";
 import { SitaTabs } from "@/components/sita/SitaComponents";
 import { SitaCard } from "@/components/sita/SitaCard";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { Printer, ScanLine, FileText, Clock, CheckCircle2, AlertTriangle, Trash2, RotateCw, Settings, Camera, Upload, FolderOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 interface PrintJob {
   id: string;
@@ -52,13 +51,11 @@ const statusIcon = (s: string) => {
 };
 
 const PrintScanCenter = () => {
-  const { isDemoMode } = useDataMode();
   const [activeTab, setActiveTab] = useState<"print" | "scan" | "routing">("print");
 
   return (
     <div className="mx-auto max-w-5xl space-y-4">
-      <DemoModeBadge />
-      <SitaPageHeader icon={<Printer className="h-6 w-6" />} title="Print & Scan Center" subtitle="Print queue, scan import, and intelligent document routing">
+<SitaPageHeader icon={<Printer className="h-6 w-6" />} title="Print & Scan Center" subtitle="Print queue, scan import, and intelligent document routing">
         <Button variant="outline" size="sm"><Settings className="h-4 w-4 mr-1" /> Manage Printers</Button>
       </SitaPageHeader>
 

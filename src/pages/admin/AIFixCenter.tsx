@@ -4,9 +4,9 @@ import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { Bug, AlertTriangle, CheckCircle2, Wrench, Shield, RotateCcw, Sparkles, FileCheck, Eye, Code, Server, Layout } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_FIXES } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const severityColors: Record<string, string> = {
   critical: "border-destructive/30 bg-destructive/5",
@@ -45,8 +45,7 @@ const AIFixCenter = () => {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <AdminPageHeader icon={Bug} title="Fix Center" subtitle="Issue clusters, root cause analysis, patches, blast radius, auto-fix eligibility, and rollback readiness" accent="destructive" />
+<AdminPageHeader icon={Bug} title="Fix Center" subtitle="Issue clusters, root cause analysis, patches, blast radius, auto-fix eligibility, and rollback readiness" accent="destructive" />
 
       <div className="grid grid-cols-6 gap-2">
         {[

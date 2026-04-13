@@ -9,13 +9,11 @@ import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaC
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Wrench, CheckCircle, XCircle, Clock } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import ARSubNav from "@/components/admin/ARSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 export default function AR05SystemMaintenanceBoard() {
-  const { isDemoMode } = useDataMode();
   const { data: maintenanceJobs = [] } = useQuery({
     queryKey: ["maintenance-jobs"],
     queryFn: async () => {
@@ -39,8 +37,7 @@ export default function AR05SystemMaintenanceBoard() {
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
-      <DemoModeBadge />
-      <ARSubNav />
+<ARSubNav />
       <SitaPageHeader
         title="System Updates & Maintenance"
         subtitle="Inspect maintenance cadences, cleanup runs, and consistency checks"

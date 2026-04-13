@@ -3,9 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Cloud, Sun, CloudRain, Wind, Droplets, Thermometer, Newspaper, TrendingUp, Clock, ExternalLink, Eye, MapPin, Sunrise, Sunset } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_forecast, DEMO_newsArticles } from "@/lib/demo-data/apps";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.06 } } };
@@ -19,13 +18,11 @@ const categoryColors: Record<string, string> = {
 };
 
 export default function WeatherNewsApp() {
-  const { isDemoMode } = useDataMode();
   const current = DEMO_forecast[0];
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-4">
-      <DemoModeBadge />
-      <h1 className="sr-only">Weather &amp; News</h1>
+<h1 className="sr-only">Weather &amp; News</h1>
       <Tabs defaultValue="weather">
         <TabsList>
           <TabsTrigger value="weather" className="gap-1.5"><Cloud className="h-3.5 w-3.5" /> Weather</TabsTrigger>

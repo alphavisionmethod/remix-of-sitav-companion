@@ -7,9 +7,8 @@ import { MobileShell } from "@/components/mobile/MobileShell";
 import { AlertTriangle, Pause, XOctagon, Smartphone, ShieldOff, Lock, CheckCircle, AlertCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { toast } from "sonner";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 interface EmergencyAction {
   id: string;
@@ -65,7 +64,6 @@ const SEVERITY_STYLES: Record<string, { bg: string; border: string; text: string
 };
 
 export default function MobileEmergencyActions() {
-  const { isDemoMode } = useDataMode();
   const [confirming, setConfirming] = useState<string | null>(null);
   const [completed, setCompleted] = useState<string[]>([]);
 
@@ -83,7 +81,8 @@ export default function MobileEmergencyActions() {
 
   return (
     <MobileShell title="Emergency Actions">
-      {isDemoMode && <DemoModeBadge />}
+      {isDemoMode &&
+}
 
       {/* Warning Banner */}
       <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-4 mb-4">

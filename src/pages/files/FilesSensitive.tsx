@@ -9,7 +9,6 @@ import { Shield, Lock, Eye, AlertTriangle, ShieldCheck } from "lucide-react";
 import { motion } from "framer-motion";
 import { useFilesBySensitivity } from "@/hooks/use-domain-data";
 import { useMemo } from "react";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 function retentionFromClassification(c: string | null): string {
   if (!c) return "7 years";
@@ -21,7 +20,6 @@ function retentionFromClassification(c: string | null): string {
 }
 
 const FilesSensitive = () => {
-  const { isDemoMode } = useDataMode();
   const { data: sensitiveFiles = [], isLoading } = useFilesBySensitivity(["restricted", "confidential", "governed"]);
 
   const governed = useMemo(() =>

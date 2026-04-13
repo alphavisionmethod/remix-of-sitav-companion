@@ -7,9 +7,8 @@ import { MobileShell } from "@/components/mobile/MobileShell";
 import { Camera, FileText, Upload, Send, Image, Mic, StickyNote, CheckCircle, ArrowRight, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState, useRef } from "react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { toast } from "sonner";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 type CaptureMode = "note" | "photo" | "file" | "voice";
 
@@ -37,7 +36,6 @@ const WORKFLOW_TARGETS = [
 ];
 
 export default function MobileQuickCapture() {
-  const { isDemoMode } = useDataMode();
   const [activeMode, setActiveMode] = useState<CaptureMode>("note");
   const [noteText, setNoteText] = useState("");
   const [recentCaptures, setRecentCaptures] = useState<CapturedItem[]>([
@@ -72,7 +70,8 @@ export default function MobileQuickCapture() {
 
   return (
     <MobileShell title="Quick Capture">
-      {isDemoMode && <DemoModeBadge />}
+      {isDemoMode &&
+}
       <input ref={fileInputRef} type="file" className="hidden" onChange={() => toast.success("File queued for upload")} />
 
       {/* Capture Mode Selector */}

@@ -9,8 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { Bell, CheckCircle, XCircle, Ban, Clock, Zap } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -24,7 +23,6 @@ const statusConfig: Record<string, { color: string; icon: React.ReactNode }> = {
 };
 
 export default function NOT03DeliveryReceiptsExplorer() {
-  const { isDemoMode } = useDataMode();
   const { data: receipts = [], isLoading } = useQuery({
     queryKey: ["notification-delivery-receipts"],
     queryFn: async () => {
@@ -46,8 +44,7 @@ export default function NOT03DeliveryReceiptsExplorer() {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <div className="flex items-center gap-3">
+<div className="flex items-center gap-3">
         <Bell className="h-6 w-6 text-primary" />
         <div>
           <h1 className="text-xl font-bold text-foreground">Delivery Receipts Explorer</h1>

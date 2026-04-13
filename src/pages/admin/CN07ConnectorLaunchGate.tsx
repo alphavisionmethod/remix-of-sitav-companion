@@ -8,9 +8,8 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { CheckCircle, XCircle, AlertTriangle, Shield } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import CNSubNav from "@/components/admin/CNSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -22,7 +21,6 @@ const stageColors: Record<string, string> = {
 };
 
 export default function CN07ConnectorLaunchGate() {
-  const { isDemoMode } = useDataMode();
   const { data: readiness = [] } = useQuery({
     queryKey: ["connector-launch-readiness"],
     queryFn: async () => { const { data } = await fromTable("connector_launch_readiness").select("*"); return data || []; },
@@ -44,8 +42,7 @@ export default function CN07ConnectorLaunchGate() {
   return (
     <div className="space-y-6 p-6">
       <CNSubNav />
-      <DemoModeBadge />
-      <h1 className="sr-only">Connector Launch Gate</h1>
+<h1 className="sr-only">Connector Launch Gate</h1>
       <div className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Card className="bg-card border-border"><CardContent className="pt-4">

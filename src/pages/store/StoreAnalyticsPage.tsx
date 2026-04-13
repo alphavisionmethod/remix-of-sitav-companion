@@ -12,9 +12,8 @@ import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, Cart
 import { Package, TrendingUp, DollarSign, Users, Activity, ArrowRight, Target, Zap, BarChart3, RefreshCw } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_CATEGORY_REVENUE, DEMO_RETENTION_DATA, DEMO_REVENUE_TREND } from "@/lib/demo-data/core-pages";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // ── Mock Analytics Data ─────────────────────────────────────────
 
@@ -29,7 +28,6 @@ const PACK_ANALYTICS: PackAnalytics[] = [
 ];
 
 const StoreAnalyticsPage = () => {
-  const { isDemoMode } = useDataMode();
   const [activeTab, setActiveTab] = useState("overview");
 
   const totalRevenue = PACK_ANALYTICS.reduce((s, a) => s + a.revenue_generated, 0);
@@ -45,8 +43,7 @@ const StoreAnalyticsPage = () => {
 
   return (
     <div className="mx-auto max-w-6xl space-y-8">
-      <DemoModeBadge />
-      {/* Header */}
+{/* Header */}
       <SitaPageHeader title="Pack Analytics" subtitle="Attach rates, ARPU uplift, retention differentials, and revenue performance" />
 
       {/* KPI Row */}

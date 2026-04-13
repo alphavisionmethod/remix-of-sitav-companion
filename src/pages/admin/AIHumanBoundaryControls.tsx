@@ -3,9 +3,9 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState } from "react";
 import { Shield, Eye, FileEdit, Sparkles, CheckCircle2, Lock, AlertTriangle, Users, Wrench, Palette, Bug, Gauge, BookOpen, Rocket, ShieldCheck, Brain } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useAIEngDomain } from "@/hooks/use-ai-engineering-data";
 import { DEMO_AGENT_BOUNDARIES, DEMO_CHANGE_TYPE_BOUNDARIES, DEMO_MISSION_BOUNDARIES } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 type AutonomyLevel = "observe_only" | "draft_only" | "safe_auto_heal" | "approval_required" | "never_automate";
 
@@ -46,8 +46,7 @@ const AIHumanBoundaryControls = () => {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <AdminPageHeader icon={Shield} title="Human Boundary Controls" subtitle="Per-agent, per-mission, and per-change-type autonomy configuration — what can run automatically vs. what needs you" accent="trust" />
+<AdminPageHeader icon={Shield} title="Human Boundary Controls" subtitle="Per-agent, per-mission, and per-change-type autonomy configuration — what can run automatically vs. what needs you" accent="trust" />
 
       <div className="grid grid-cols-5 gap-2">
         {(Object.entries(AUTONOMY_LABELS) as [AutonomyLevel, typeof AUTONOMY_LABELS[AutonomyLevel]][]).map(([key, val]) => (

@@ -13,7 +13,6 @@ import { StateBadge, type ExecutionState } from "@/components/sita/StateBadge";
 import { useState } from "react";
 import { Receipt, Shield, CheckCircle, Clock, Eye, Search } from "lucide-react";
 import { motion } from "framer-motion";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { cn } from "@/lib/utils";
 import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
 
@@ -35,7 +34,6 @@ const proofItems: ProofItem[] = [
 ];
 
 const BusinessProof = () => {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("all");
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const selected = proofItems.find(p => p.id === selectedId);

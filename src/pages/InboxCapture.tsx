@@ -9,7 +9,6 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
 import {
@@ -17,7 +16,7 @@ import {
   CheckCircle, ArrowRight, Sparkles, DollarSign, Send
 } from "lucide-react";
 import { DEMO_INBOX_ITEMS } from "@/lib/demo-data";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const typeIcons: Record<string, typeof FileText> = {
   note: StickyNote, receipt: Receipt, screenshot: Camera, voice: Mic,
@@ -35,7 +34,6 @@ const InboxCapture = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { isDemoMode } = useDataMode();
   const qc = useQueryClient();
   const [quickInput, setQuickInput] = useState("");
 
@@ -76,8 +74,7 @@ const InboxCapture = () => {
 
   return (
     <motion.div className="mx-auto max-w-5xl space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-      <DemoModeBadge />
-      <SitaPageHeader title="Universal Inbox" subtitle="Capture anything — SITA classifies and routes it automatically" />
+<SitaPageHeader title="Universal Inbox" subtitle="Capture anything — SITA classifies and routes it automatically" />
 
       <SitaCard hover={false} glow className="p-4">
         <div className="flex gap-2">

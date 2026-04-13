@@ -9,13 +9,12 @@ import { Switch } from "@/components/ui/switch";
 import { Plug, CheckCircle, AlertTriangle, RefreshCw, ArrowRight, Clock, Activity, Shield, Users, Settings, LinkIcon } from "lucide-react";
 import { DEMO_CONNECTIONS, DEMO_AUDIT_LOG } from "@/lib/demo-data/integrations";
 import { getProviderById } from "@/lib/demo-data/integrations";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { EmptyState } from "@/components/sita/SitaComponents";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -23,7 +22,6 @@ export default function ConnectionsList() {
   const [tab, setTab] = useState("connections");
   const [agencyMode, setAgencyMode] = useState(false);
   const navigate = useNavigate();
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
 
   // Real mode: fetch from connector_instances table
@@ -42,8 +40,7 @@ export default function ConnectionsList() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
-      <DemoModeBadge />
-      <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground">My Connections</h1>
           <p className="text-muted-foreground">Manage connected integrations, health, and sync status</p>

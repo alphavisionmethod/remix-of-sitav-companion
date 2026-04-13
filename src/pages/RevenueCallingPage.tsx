@@ -26,9 +26,8 @@ import {
 import { MOCK_CONTACTS, MOCK_CALL_LOGS, MOCK_CALL_SCRIPTS as MOCK_SCRIPTS } from "@/lib/mock-data/revenue-calling";
 import type { CallingContact as Contact, CallingCallLog as CallLog, CallingCallScript as CallScript } from "@/lib/mock-data/revenue-calling";
 import { useCallingContactsData } from "@/hooks/use-business-data";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useCallingContacts, useCallLogs } from "@/hooks/use-live-data";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -112,8 +111,6 @@ function ActiveDialer({ contact, onEnd, onSkip }: { contact: Contact; onEnd: () 
     setTimeout(() => setState("connected"), 3000);
     return () => clearInterval(timer);
   });
-
-  const { isDemoMode } = useDataMode();
   const script = isDemoMode ? (MOCK_SCRIPTS.find(s => s.stage === contact.stage) || MOCK_SCRIPTS[0]) : null;
 
   const handleEndCall = () => {
@@ -250,7 +247,6 @@ function ActiveDialer({ contact, onEnd, onSkip }: { contact: Contact; onEnd: () 
 
 const RevenueCallingPage = () => {
   const { user } = useAuth();
-  const { isDemoMode } = useDataMode();
   const { data: liveContacts } = useCallingContacts();
   const { data: liveLogs } = useCallLogs();
   const [activeView, setActiveView] = useState<"queue" | "dialer" | "logs" | "scripts">("queue");
@@ -346,8 +342,7 @@ const RevenueCallingPage = () => {
 
   return (
     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="mx-auto max-w-5xl space-y-4">
-      <DemoModeBadge />
-      <SitaPageHeader title="Revenue Calling" subtitle="Power dialer, call scripts, and logging — powered by Twilio" />
+<SitaPageHeader title="Revenue Calling" subtitle="Power dialer, call scripts, and logging — powered by Twilio" />
 
       <CallStats contacts={contacts} callLogs={callLogs} />
 

@@ -13,8 +13,7 @@ import {
   Rocket, ChevronLeft, CheckCircle, AlertTriangle, Shield, Wifi,
   RotateCcw, Play, Pause, Server, Clock, Users, Zap, Eye,
 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const releaseData = {
   id: "rel-241",
@@ -39,15 +38,13 @@ const releaseData = {
 };
 
 export default function MissionReleaseDetailPage() {
-  const { isDemoMode } = useDataMode();
   const { releaseId } = useParams();
   const navigate = useNavigate();
   const r = releaseData; // In production: fetch by releaseId
 
   return (
     <div className="p-4 md:p-6 max-w-[1200px] mx-auto space-y-6">
-      <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
+<motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
         className="rounded-2xl border border-primary/15 bg-gradient-to-br from-primary/5 via-card to-card p-6"
       >
         <div className="flex items-center gap-4">

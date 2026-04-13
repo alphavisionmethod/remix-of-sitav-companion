@@ -11,10 +11,9 @@ import { EmptyStateCTA } from "@/components/sita/EmptyStateCTA";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDocs } from "@/hooks/use-domain-data";
 import type { MockDoc } from "@/lib/mock-data/workspace";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import ReactMarkdown from "react-markdown";
 import {
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
   FileText, Plus, Search, Clock, Users, Shield, Workflow,
   Lock, Eye, FileCheck, MoreVertical, ChevronRight,
   Bold, Italic, List, ListOrdered, Heading1, Heading2,
@@ -56,7 +55,6 @@ const TOOLBAR_ACTIONS = [
 ];
 
 const DocsWorkspace = () => {
-  const { isDemoMode } = useDataMode();
   const { data: docsData = [] } = useDocs();
 
   const [activeTab, setActiveTab] = useState("all");
@@ -275,8 +273,7 @@ const DocsWorkspace = () => {
 
   return (
     <div className="mx-auto max-w-6xl space-y-6">
-      <DemoModeBadge />
-      <SitaPageHeader
+<SitaPageHeader
         title="Docs"
         subtitle="Documents, proposals, reports, and boardroom packets — linked to workflows and proof"
         actions={

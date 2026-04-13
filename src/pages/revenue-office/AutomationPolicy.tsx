@@ -12,10 +12,9 @@ import {
   CheckCircle, XCircle, Eye, ArrowRight, BarChart3, RefreshCw,
   BookOpen, ShieldOff, Pause, Undo2, Ban, HandMetal
 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import AutomationSubNav from "./AutomationSubNav";
 import {
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
   DEMO_humanVsAI, DEMO_policies, DEMO_trustLevels,
   DEMO_COMMERCIAL_CONSTITUTION, DEMO_NO_GUESS_RULES,
   DEMO_PAUSE_ROLLBACK, DEMO_HANDOFF_SIGNALS
@@ -71,13 +70,11 @@ const handoffSeverityColors: Record<string, string> = {
 };
 
 export default function AutomationPolicy() {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("trust");
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6 p-6">
-      <DemoModeBadge />
-      <AutomationSubNav />
+<AutomationSubNav />
       <div>
         <h1 className="text-2xl font-bold text-foreground flex items-center gap-2"><ShieldCheck className="h-6 w-6 text-emerald-400" />Automation Policy Center</h1>
         <p className="text-muted-foreground">Trust boundaries, constitution, no-guess mode, pause/rollback, human handoff, safety rules, and audit trail</p>

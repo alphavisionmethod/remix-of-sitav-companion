@@ -14,9 +14,8 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { toast } from "sonner";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const now = new Date();
 const h = (hours: number) => new Date(now.getTime() - hours * 3600000).toISOString();
@@ -74,7 +73,6 @@ const generatedTruthFiles = [
 ];
 
 export default function PlatformTruthRegistry() {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("manifests");
   const drifted = manifests.filter(m => m.sourceHash !== m.runtimeHash).length;
   const claimsVerified = capabilityClaims.filter(c => c.verified).length;
@@ -83,8 +81,7 @@ export default function PlatformTruthRegistry() {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="mx-auto max-w-7xl space-y-6 p-6">
-      <DemoModeBadge />
-      <SitaPageHeader title="Platform Truth Registry" subtitle="Manifest sync, capability verification, docs drift, architecture gates, generated truth freshness, and claim automation" />
+<SitaPageHeader title="Platform Truth Registry" subtitle="Manifest sync, capability verification, docs drift, architecture gates, generated truth freshness, and claim automation" />
 
       {drifted > 0 && (
         <DegradedStateBanner severity="warning" reason={`${drifted} manifest(s) drifted from source — generated artifacts may not match runtime`} impact="Capability claims may be stale" dismissible />

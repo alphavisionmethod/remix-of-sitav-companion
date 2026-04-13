@@ -5,12 +5,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useNavigate } from "react-router-dom";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useDeals } from "@/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DEMO_ADVISOR_PREVIEW, DEMO_QUICK_ACTIONS, DEMO_REV_METRICS as DEMO_METRICS, DEMO_WHAT_CHANGED } from "@/lib/demo-data/revenue-office";
 import { useState } from "react";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const CONNECTION_HEALTH = [
   { service: "CRM / Pipeline", status: "connected", health: 98 },
@@ -25,7 +24,6 @@ const OPERATING_MODES = ["Growth", "Stability", "Recovery", "Launch"] as const;
 
 export default function RevenueGate() {
   const navigate = useNavigate();
-  const { isDemoMode } = useDataMode();
   const { data: liveDeals, isLoading } = useDeals();
   const [operatingMode, setOperatingMode] = useState<typeof OPERATING_MODES[number]>("Growth");
 
@@ -36,8 +34,7 @@ export default function RevenueGate() {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <div className="flex items-center justify-between mb-2">
           <div>
             <h1 className="text-3xl font-bold text-foreground tracking-tight">Revenue Office</h1>

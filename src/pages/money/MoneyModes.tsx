@@ -4,7 +4,6 @@
 
 import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import {
   Shield, TrendingDown, RefreshCw, TrendingUp, Rocket, Zap,
@@ -13,6 +12,7 @@ import {
 import { motion } from "framer-motion";
 import { useState } from "react";
 import type { MoneyModeId, MoneyMode } from "@/packages/finance-contracts/advanced-intelligence";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const MODES: MoneyMode[] = [
   { id: "stable", label: "Stable", description: "Normal operating rhythm. Balanced allocations, standard warnings.", icon: "Shield",
@@ -66,9 +66,7 @@ const MoneyModes = () => {
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}>
       <DomainHeader domain="money" title="Money Operating Modes" subtitle="Change how your money system behaves based on your current season" />
-      <DemoModeBadge />
-
-      {/* Current Mode */}
+{/* Current Mode */}
       <SitaCard hover={false} className="p-6 gradient-sita-subtle">
         <div className="flex items-center gap-4 mb-4">
           <div className="rounded-2xl bg-primary/15 p-3"><CurrentIcon className="h-6 w-6 text-primary" /></div>

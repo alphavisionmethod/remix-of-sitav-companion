@@ -7,10 +7,9 @@ import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaC
 import { Badge } from "@/components/ui/badge";
 import { Activity, Zap, AlertTriangle, Shield, Clock, CheckCircle, XCircle, Pause } from "lucide-react";
 import { motion } from "framer-motion";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useKernelQuery } from "@/hooks/use-kernel-query";
 import ARSubNav from "@/components/admin/ARSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 function useScheduledJobs() {
   return useKernelQuery("automation", "scheduled_jobs", {
@@ -30,7 +29,6 @@ function useKillSwitches() {
 }
 
 export default function AR01AutomationOverview() {
-  const { isDemoMode } = useDataMode();
   const { data: jobs = [] } = useScheduledJobs();
   const { data: executions = [] } = useRecentExecutions();
   const { data: killSwitches = [] } = useKillSwitches();
@@ -64,8 +62,7 @@ export default function AR01AutomationOverview() {
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
-      <DemoModeBadge />
-      <ARSubNav />
+<ARSubNav />
       <SitaPageHeader
         title="Automation Reality Overview"
         subtitle="Executive view of all scheduled automation, execution health, and safety controls"

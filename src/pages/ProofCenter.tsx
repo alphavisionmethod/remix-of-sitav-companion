@@ -14,7 +14,6 @@ import { useProofRecords } from "@/hooks/use-sita-data";
 import { useProofTimeline } from "@/hooks/use-proof-timeline";
 import { useProofChain, useProofBundle } from "@/hooks/use-proof-chain";
 import { useKernelStatus } from "@/contexts/SitaKernelContext";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
@@ -164,7 +163,6 @@ const ProofCenter = () => {
   const { data: proofRecords = [], isLoading } = useProofRecords();
   const { receipts: kernelReceipts, chainValid, chainLength } = useProofTimeline();
   const kernelStatus = useKernelStatus();
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const [filter, setFilter] = useState<FilterType>("all");
   const [domainFilter, setDomainFilter] = useState<DomainFilter>("all");

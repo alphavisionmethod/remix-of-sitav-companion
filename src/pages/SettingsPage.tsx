@@ -28,7 +28,6 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useGovernanceSimulator } from "@/contexts/SitaKernelContext";
 import type { SimulationResult } from "@/lib/services/governance-simulator";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useConfirmation } from "@/hooks/use-confirmation";
 import { useOSOrchestration } from "@/hooks/useOSOrchestration";
 import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
@@ -36,6 +35,7 @@ import GoogleConnectedAccounts from "@/pages/settings/GoogleConnectedAccounts";
 import { AllProviderFamiliesStatus } from "@/components/sita/AllProviderFamiliesStatus";
 import { AdvisorAutonomyPanel } from "@/components/sita/AdvisorAutonomyPanel";
 import { useWallpaper, WALLPAPER_THEMES } from "@/hooks/use-wallpaper";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // ── Consent & Permissions Section (Connected Accounts Center) ──
 function ConsentPermissionsSection() {
@@ -349,8 +349,7 @@ const SettingsPage = () => {
       case "identity":
         return (
           <SitaCard hover={false} className="p-5">
-      <DemoModeBadge />
-      <ConfirmationDialog state={confirmation} />
+<ConfirmationDialog state={confirmation} />
             <SitaCardTitle sub="Your profile and environment identity">
               <div className="flex items-center gap-2"><User className="h-4 w-4 text-primary" /> Identity & Profile</div>
             </SitaCardTitle>

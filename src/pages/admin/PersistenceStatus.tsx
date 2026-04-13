@@ -5,9 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { RefreshCw, CheckCircle2, Database, Layers, Shield, FileCheck, GitBranch, Loader2 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_ADMIN_CORE_SERVICES as DEMO_CORE_SERVICES } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 interface ServiceStatus {
   name: string;
@@ -87,7 +86,6 @@ function useRecentWrites() {
 }
 
 export default function PersistenceStatus() {
-  const { isDemoMode } = useDataMode();
   const { data: stats, isLoading: statsLoading, refetch: refetchStats } = useSubstrateStats();
   const { data: recentWrites, isLoading: writesLoading, refetch: refetchWrites, isFetching } = useRecentWrites();
 
@@ -95,8 +93,7 @@ export default function PersistenceStatus() {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground">Core Persistence Status</h1>
           <p className="text-sm text-muted-foreground mt-1">Substrate wiring health for SITA's durable OS layer</p>

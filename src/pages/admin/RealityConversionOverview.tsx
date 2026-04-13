@@ -11,8 +11,7 @@ import { autoSeedAll } from "@/lib/detection/auto-seed";
 import { useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { Shield, Eye, Cpu, CheckCircle2, AlertTriangle, TrendingUp, Layers, Rocket, Scan, Link2, Zap } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -24,7 +23,6 @@ const STATE_COLORS = {
 };
 
 export default function RealityConversionOverview() {
-  const { isDemoMode } = useDataMode();
   const { data: classifications = [] } = useRealityClassifications();
   const { data: mockReplacements = [] } = useMockReplacements();
   const cStats = useClassificationStats(classifications);
@@ -72,8 +70,7 @@ export default function RealityConversionOverview() {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold">Reality Conversion Overview</h1>
           <p className="text-sm text-muted-foreground">Executive overview of platform reality state — RCP01</p>

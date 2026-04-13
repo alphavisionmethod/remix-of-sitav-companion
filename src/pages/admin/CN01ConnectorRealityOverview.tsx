@@ -10,10 +10,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { Plug, Shield, Activity, TestTube, Presentation, RefreshCw, CheckCircle, XCircle, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import CNSubNav from "@/components/admin/CNSubNav";
 import { DEMO_ADMIN_CAPABILITIES as DEMO_CAPABILITIES, DEMO_VERIFICATION_CHECKS } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -39,7 +38,6 @@ interface VerificationCheck {
 }
 
 export default function CN01ConnectorRealityOverview() {
-  const { isDemoMode } = useDataMode();
   const queryClient = useQueryClient();
 
   const { data: registry = [] } = useQuery({
@@ -119,8 +117,7 @@ export default function CN01ConnectorRealityOverview() {
   return (
     <div className="space-y-6 p-6">
       <CNSubNav />
-      <DemoModeBadge />
-      <h1 className="sr-only">Connector Reality Overview</h1>
+<h1 className="sr-only">Connector Reality Overview</h1>
       <div className="flex items-center gap-3">
         <Button onClick={() => seedMutation.mutate({})} disabled={seedMutation.isPending} size="sm" variant="outline">
           <RefreshCw className={`h-4 w-4 mr-2 ${seedMutation.isPending ? "animate-spin" : ""}`} />

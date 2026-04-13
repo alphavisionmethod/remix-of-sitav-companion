@@ -6,11 +6,10 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useRevenueOfficeMode } from "@/contexts/RevenueOfficeModeContext";
 import { RevenueOfficeModeToggle } from "@/components/revenue-office/RevenueOfficeModeToggle";
 import { DEMO_ADVISORS, DEMO_ADVISOR_DEBATES, DEMO_ADVISOR_WHAT_CHANGED, DEMO_ADVISOR_INVALIDATION, DEMO_ALIGNMENT_CLUSTERS } from "@/lib/demo-data/revenue-office";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 type AdvisorQueryType = "disagree" | "missing" | "break";
 
@@ -78,7 +77,6 @@ const ADVISOR_RESPONSES: Record<string, Record<AdvisorQueryType, AdvisorQueryRes
 };
 
 export default function GrowthAdvisorBoard() {
-  const { isDemoMode } = useDataMode();
   const { isBeginner } = useRevenueOfficeMode();
   const [tab, setTab] = useState("council");
   const [expandedAdvisor, setExpandedAdvisor] = useState<string | null>(null);
@@ -117,8 +115,7 @@ export default function GrowthAdvisorBoard() {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-start justify-between">
+<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="flex items-start justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
             <Sparkles className="w-6 h-6 text-primary" /> Growth Advisor Board

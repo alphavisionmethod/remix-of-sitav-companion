@@ -4,15 +4,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useRoutingPolicies, useProviderHealth, useTaskRequests } from "@/hooks/use-sag-data";
 import { PROVIDERS } from "@/lib/sovereign-ai-gateway/types";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_FALLBACK_STRATEGIES } from "@/lib/demo-data/admin-platform";
 import SAGSubNav from "@/components/admin/SAGSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
 const SAGFallbackCenter = () => {
-  const { isDemoMode } = useDataMode();
   const { data: policies = [] } = useRoutingPolicies();
   const { data: health = [] } = useProviderHealth();
   const { data: tasks = [] } = useTaskRequests();
@@ -20,8 +18,7 @@ const SAGFallbackCenter = () => {
 
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
-      <DemoModeBadge />
-      <SAGSubNav />
+<SAGSubNav />
       <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold flex items-center gap-2"><Shield className="h-6 w-6 text-primary" /> SAG10 — Fallback & Continuity Center</h1>
         <p className="text-muted-foreground mt-1">Inspect continuity strategies and provider resilience</p>

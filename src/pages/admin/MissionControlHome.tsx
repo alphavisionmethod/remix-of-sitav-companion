@@ -14,11 +14,10 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_ADMIN_SERVICES_MISSION_CONTROL_HOME as DEMO_SERVICES, DEMO_URGENT_ACTIONS } from "@/lib/demo-data/admin-platform";
 import { DEMO_MUTATIONS } from "@/lib/demo-data/durability";
 import {
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
   RevenueSummaryPanel,
   RiskSummaryPanel,
   ConnectorSummaryPanel,
@@ -77,8 +76,7 @@ const MissionControlHome = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      <DemoModeBadge />
-      {/* Header */}
+{/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-foreground tracking-tight">Mission Control</h1>

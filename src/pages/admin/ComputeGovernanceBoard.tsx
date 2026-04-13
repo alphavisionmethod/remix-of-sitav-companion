@@ -20,10 +20,9 @@ import { CG04MarginProtectionTab } from "@/components/admin/compute-governance/C
 import { CG06MissionCostTab } from "@/components/admin/compute-governance/CG06MissionCostTab";
 import { CG10PricingSimulatorTab } from "@/components/admin/compute-governance/CG10PricingSimulatorTab";
 import { classColors, tierColors, budgetStatusColors, fmt } from "@/components/admin/compute-governance/shared";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useComputeBudgetStatus, useAISpendSummary, useModelRoutingStats, useMarginSnapshot } from "@/hooks/use-compute-governance";
 import { DEMO_AGENT_SPEND, DEMO_ANOMALIES, DEMO_BUDGETS, DEMO_DEEP_JOBS, DEMO_ROUTING_EVENTS, DEMO_TENANT_SPEND } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // ── Mock Data ───────────────────────────────────────────────
 
@@ -50,7 +49,6 @@ const sevColors: Record<string, string> = { critical: "text-rose-400", warning: 
 
 const ComputeGovernanceBoard = () => {
   const [activeTab, setActiveTab] = useState("overview");
-  const { isDemoMode } = useDataMode();
 
   const { data: tokenUsage } = useQuery({
     queryKey: ["compute-token-usage"],
@@ -77,8 +75,7 @@ const ComputeGovernanceBoard = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      <DemoModeBadge />
-      {/* Header */}
+{/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-foreground flex items-center gap-2">

@@ -5,9 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Bell, AlertTriangle, Clock, CheckCircle, XCircle, Play, Eye, VolumeX, User, RefreshCw, Users, Layers, Search } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_ADMIN_ALERTS_ALERT_TRIAGE_BOARD as DEMO_ALERTS } from "@/lib/demo-data/admin-platform";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -48,7 +47,6 @@ const getClusters = (alerts: Alert[]) => {
 };
 
 const AlertTriageBoard = () => {
-  const { isDemoMode } = useDataMode();
   const [tab, setTab] = useState("severity");
   const [statusFilter, setStatusFilter] = useState<"all" | AlertStatus>("all");
 
@@ -99,8 +97,7 @@ const AlertTriageBoard = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      <DemoModeBadge />
-      <div className="flex items-center justify-between">
+<div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold text-foreground tracking-tight flex items-center gap-2">
             <Bell className="h-6 w-6 text-primary" /> Alert Triage Board

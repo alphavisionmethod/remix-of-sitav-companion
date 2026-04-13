@@ -8,10 +8,10 @@ import { Brain, Send, Lightbulb, GraduationCap, Hammer, Palette, Loader2 } from 
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import ReactMarkdown from "react-markdown";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useOSOrchestration } from "@/hooks/useOSOrchestration";
 import { useExperienceSignature } from "@/hooks/useExperienceSignature";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 
 
@@ -93,8 +93,7 @@ function PersonalBrainInner() {
 
   return (
     <div className="flex flex-col h-[calc(100vh-4rem)] max-w-[900px] mx-auto">
-      <DemoModeBadge />
-      {/* Header */}
+{/* Header */}
       <div className="p-4 border-b border-border">
         <div className="flex items-center gap-3 mb-3">
           <div className="p-2 rounded-xl bg-primary/10">

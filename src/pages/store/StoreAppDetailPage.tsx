@@ -8,11 +8,9 @@ import { resolveIcon, TierBadge, PackCard } from "@/components/sita/PackStoreCom
 import { INTERNAL_APPS, PACK_CATALOG } from "@/lib/pack-store";
 import { ArrowLeft, Check, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const AppDetailPage = () => {
-  const { isDemoMode } = useDataMode();
   const { appId } = useParams<{ appId: string }>();
   const navigate = useNavigate();
 
@@ -20,8 +18,7 @@ const AppDetailPage = () => {
   if (!app) {
     return (
       <div className="mx-auto max-w-4xl">
-      <DemoModeBadge />
-        <button onClick={() => navigate("/store")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
+<button onClick={() => navigate("/store")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground mb-6">
           <ArrowLeft className="h-4 w-4" /> Back to Store
         </button>
         <div className="text-center py-20">

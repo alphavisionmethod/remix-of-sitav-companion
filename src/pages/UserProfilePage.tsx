@@ -12,11 +12,9 @@ import { toast } from "sonner";
 import { User, Shield, Calendar, Activity, Receipt, Link as LinkIcon, Settings, Clock, Globe } from "lucide-react";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useActionFn } from "@/hooks/use-action";
 
 const UserProfilePage = () => {
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);

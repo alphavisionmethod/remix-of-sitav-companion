@@ -11,11 +11,11 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import {
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
   FileText, Bold, Italic, Underline, List, ListOrdered, Link, Image as ImageIcon,
   Code, AlignLeft, AlignCenter, AlignRight, Heading1, Heading2, Heading3,
   Save, Download, Eye, Edit3, MessageSquare, History, Paperclip,
@@ -121,8 +121,7 @@ const DocumentEditor = () => {
 
   return (
     <div className="min-h-screen pb-12 p-6 max-w-6xl mx-auto space-y-4">
-      <DemoModeBadge />
-      <SitaPageHeader
+<SitaPageHeader
         icon={<FileText className="h-6 w-6" />}
         title="Document Editor"
         subtitle="Create, edit, and review documents"

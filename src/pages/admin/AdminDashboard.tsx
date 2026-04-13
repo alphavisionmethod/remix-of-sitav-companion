@@ -17,10 +17,9 @@ const db = supabase as any;
 import type { AuditEntry, ComplianceReport } from "@/packages/audit-contracts";
 import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { PageSkeleton } from "@/components/sita/PageSkeleton";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { NotificationInbox } from "@/components/notifications/NotificationInbox";
 import { ArchitectureHealthBadge } from "@/components/admin/panels/ArchitectureHealthBadge";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const fadeUp = { hidden: { opacity: 0, y: 16 }, show: { opacity: 1, y: 0, transition: { duration: 0.4 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.06 } } };
@@ -72,7 +71,6 @@ const quickLinks = [
 ];
 
 export default function AdminDashboard() {
-  const { isDemoMode } = useDataMode();
   const { isAdmin, loading: adminLoading } = useRequireAdmin();
   const [now, setNow] = useState(new Date());
   useEffect(() => { const t = setInterval(() => setNow(new Date()), 60000); return () => clearInterval(t); }, []);
@@ -165,8 +163,7 @@ export default function AdminDashboard() {
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
-      <DemoModeBadge />
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-foreground">Admin Dashboard</h1>
           <p className="text-sm text-muted-foreground">System overview · {now.toLocaleDateString()} {now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</p>

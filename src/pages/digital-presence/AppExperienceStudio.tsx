@@ -5,20 +5,17 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_EXISTING_EXPERIENCES, DEMO_EXPERIENCE_TYPES, DEMO_PORTAL_FEATURES, DEMO_PWA_SETTINGS } from "@/lib/demo-data/digital-presence";
 import DPOSubNav from "./DPOSubNav";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function AppExperienceStudio() {
-  const { isDemoMode } = useDataMode();
   const [aiPrompt, setAiPrompt] = useState("");
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
       <DPOSubNav />
-      <DemoModeBadge />
-      <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
+<motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}>
         <h1 className="text-2xl font-bold text-foreground">App / Mini-App Experience Studio</h1>
         <p className="text-sm text-muted-foreground">Build app-like web experiences, portals, PWAs & mobile-first variants</p>
       </motion.div>

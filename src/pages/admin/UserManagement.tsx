@@ -11,8 +11,7 @@ import { useRequireAdmin } from "@/hooks/useRequireAdmin";
 import { supabase } from "@/integrations/supabase/client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 interface UserRecord {
   id: string;
@@ -25,7 +24,6 @@ interface UserRecord {
 }
 
 export default function UserManagement() {
-  const { isDemoMode } = useDataMode();
   const { isAdmin, loading: adminLoading } = useRequireAdmin();
   const [search, setSearch] = useState("");
   const queryClient = useQueryClient();
@@ -56,8 +54,7 @@ export default function UserManagement() {
 
   return (
     <div className="p-4 md:p-6 max-w-[1400px] mx-auto space-y-6">
-      <DemoModeBadge />
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+<div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-foreground flex items-center gap-2">
             <Users className="h-6 w-6 text-primary" /> User Management

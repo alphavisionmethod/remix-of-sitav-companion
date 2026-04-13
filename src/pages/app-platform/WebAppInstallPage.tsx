@@ -13,13 +13,11 @@ import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { AppIcon, VerificationBadge } from "@/components/sita/app-platform/AppStoreComponents";
 import type { AppDefinition } from "@/lib/app-platform/types";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_DETECTED_SITES } from "@/lib/demo-data/core-pages";
 import { toast } from "sonner";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const WebAppInstallPage = () => {
-  const { isDemoMode } = useDataMode();
   const navigate = useNavigate();
   const { apps, installApp, pinToDock, setNotificationEnabled, setStartupBehavior } = useAppPlatform();
   const [selectedSite, setSelectedSite] = useState<typeof DEMO_DETECTED_SITES[0] | null>(null);
@@ -49,8 +47,7 @@ const WebAppInstallPage = () => {
 
   return (
     <div className="mx-auto max-w-4xl space-y-6">
-      <DemoModeBadge />
-      <button onClick={() => navigate("/app-store")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
+<button onClick={() => navigate("/app-store")} className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground">
         <ArrowLeft className="h-4 w-4" /> Back to App Store
       </button>
 

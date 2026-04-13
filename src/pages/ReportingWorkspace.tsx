@@ -10,8 +10,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";
@@ -26,6 +24,7 @@ import {
 } from "lucide-react";
 import { ResponsiveContainer, AreaChart, Area, XAxis, YAxis, Tooltip, BarChart, Bar, PieChart as RechartsPie, Pie, Cell, LineChart, Line, CartesianGrid } from "recharts";
 import { DEMO_COMPLETION_TREND, DEMO_DOMAIN_BREAKDOWN, DEMO_PIPELINE_DATA, DEMO_REVENUE_DATA } from "@/lib/demo-data/core-pages";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const fadeUp = { hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.3 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.06 } } };
@@ -50,7 +49,6 @@ const DEMO_TRUST_DATA = [
 ];
 
 const ReportingWorkspace = () => {
-  const { isDemoMode } = useDataMode();
   const { user } = useAuth();
   const [period, setPeriod] = useState("6m");
   const [tab, setTab] = useState("executive");
@@ -88,8 +86,7 @@ const ReportingWorkspace = () => {
 
   return (
     <div className="space-y-6 p-6 max-w-7xl mx-auto">
-      <DemoModeBadge />
-      <SitaPageHeader
+<SitaPageHeader
         icon={<BarChart3 className="h-6 w-6" />}
         title="Reporting & Analytics"
         subtitle="Insights across business, finance, operations, and trust"

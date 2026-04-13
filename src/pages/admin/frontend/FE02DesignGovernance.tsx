@@ -2,7 +2,6 @@ import { Ruler, CheckCircle, XCircle } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { DESIGN_GOVERNANCE_RULES } from "@/lib/core-services/frontend/frontend-quality-engine";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 const categoryColor = (cat: string) => {
   switch (cat) {
@@ -17,7 +16,6 @@ const categoryColor = (cat: string) => {
 };
 
 export default function FE02DesignGovernance() {
-  const { isDemoMode } = useDataMode();
   const enforced = DESIGN_GOVERNANCE_RULES.filter(r => r.enforced).length;
   const total = DESIGN_GOVERNANCE_RULES.length;
   const categories = [...new Set(DESIGN_GOVERNANCE_RULES.map(r => r.category))];

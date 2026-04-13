@@ -6,11 +6,9 @@ import { useRealityClassifications } from "@/hooks/useRealityClassifications";
 import { useMockReplacements } from "@/hooks/useMockReplacements";
 import { PROGRESSION_REQUIREMENTS, EVIDENCE_SIGNALS } from "@/lib/persistence/reality-classification-persistence";
 import { Shield, Eye, Cpu, CheckCircle2, AlertTriangle, ArrowRight, FileCode, Database, Zap } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 export default function FeatureRealityDetail() {
-  const { isDemoMode } = useDataMode();
   const { data: classifications = [] } = useRealityClassifications();
   const { data: mockReplacements = [] } = useMockReplacements();
   const [selectedId, setSelectedId] = useState<string>("");
@@ -36,8 +34,7 @@ export default function FeatureRealityDetail() {
 
   return (
     <div className="space-y-6 p-6">
-      <DemoModeBadge />
-      <div>
+<div>
         <h1 className="text-2xl font-bold">Feature Reality Detail</h1>
         <p className="text-sm text-muted-foreground">Deep dive into feature classification — RCP03</p>
       </div>
