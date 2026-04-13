@@ -77,8 +77,13 @@ export const SystemMenuBar = memo(({ onSearchOpen, onNotifOpen, onControlCenterO
       <div className="flex items-center gap-1">
         <img src={logo} alt="SITA" className="h-3.5 w-3.5 rounded-sm" />
         <span className="text-[11px] font-bold text-[hsl(0_0%_100%/0.95)] tracking-wide ml-1.5">
-          {activeApp || "SITA"}
+          SITA
         </span>
+        {activeApp && (
+          <span className="text-[11px] font-semibold text-[hsl(0_0%_100%/0.70)] tracking-wide ml-1">
+            {activeApp}
+          </span>
+        )}
 
         {/* Contextual menu items */}
         <div className="flex items-center ml-3 gap-0.5">

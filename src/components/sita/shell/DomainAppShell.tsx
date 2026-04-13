@@ -1,6 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Unified Domain App Shell
 // Configurable app shell for Business, Finance, Concierge
+// With surface hierarchy + domain-paced motion
 // ═══════════════════════════════════════════════════════════════
 
 import { cn } from "@/lib/utils";
@@ -13,6 +14,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { AppToolbar } from "./AppToolbar";
 import { AppSidebarNav, type NavTabGroup } from "./AppSidebarNav";
 import { DomainCommandPalette, type CommandItem } from "@/components/sita/domain-shared/DomainCommandPalette";
+import { DomainMotionProvider } from "@/components/sita/motion/AppTransitions";
 import type { LucideIcon } from "lucide-react";
 
 export type DomainId = "business" | "finance" | "concierge" | "files" | "trust";
@@ -126,69 +128,70 @@ export function DomainAppShell({ domain, children, activePage, onNavigate, tabGr
   ];
 
   return (
-    <div className={cn(
-      "relative flex flex-col w-full h-full min-h-[calc(100vh-80px)] overflow-hidden",
-      "rounded-[16px] border",
-      APP_MATERIALS.windowBg.dark, APP_MATERIALS.windowBorder.dark, APP_SHADOWS.focused
-    )}>
-      {/* Command Palette */}
-      <DomainCommandPalette domain={domain.id} commands={allCommands} isOpen={cmdOpen} onClose={() => setCmdOpen(false)} />
+    <DomainMotionProvider domain={domain.id}>
+      <div className={cn(
+        "relative flex flex-col w-full h-full min-h-[calc(100vh-80px)] overflow-hidden",
+        "rounded-[16px] border",
+        APP_MATERIALS.windowBg.dark, APP_MATERIALS.windowBorder.dark, APP_SHADOWS.focused
+      )}>
+        {/* Command Palette */}
+        <DomainCommandPalette domain={domain.id} commands={allCommands} isOpen={cmdOpen} onClose={() => setCmdOpen(false)} />
 
-      {/* Accent Strip */}
-      <div className="w-full" style={{
-        height: APP_CHROME.accentStripHeight,
-        background: `linear-gradient(to right, ${domain.accentFrom}, ${domain.accentTo})`,
-      }} />
+        {/* Accent Strip */}
+        <div className="w-full" style={{
+          height: APP_CHROME.accentStripHeight,
+          background: `linear-gradient(to right, ${domain.accentFrom}, ${domain.accentTo})`,
+        }} />
 
-      {/* Title Bar */}
-      <div className="flex items-center gap-3 px-4 border-b border-[hsl(0_0%_100%/0.06)] shrink-0 relative" style={{ height: APP_CHROME.titleBarHeight }}>
-        {!isMobile && <TrafficLights />}
-        <div className="flex items-center gap-2 ml-2">
-          <div className="w-5 h-5 rounded-md flex items-center justify-center" style={{
-            background: `linear-gradient(135deg, ${domain.accentFrom}, ${domain.accentTo})`,
-          }}>
-            <Icon className="h-3 w-3 text-[hsl(0_0%_100%/0.95)]" />
+        {/* Title Bar */}
+        <div className="flex items-center gap-3 px-4 border-b border-[hsl(0_0%_100%/0.06)] shrink-0 relative" style={{ height: APP_CHROME.titleBarHeight }}>
+          {!isMobile && <TrafficLights />}
+          <div className="flex items-center gap-2 ml-2">
+            <div className="w-5 h-5 rounded-md flex items-center justify-center" style={{
+              background: `linear-gradient(135deg, ${domain.accentFrom}, ${domain.accentTo})`,
+            }}>
+              <Icon className="h-3 w-3 text-[hsl(0_0%_100%/0.95)]" />
+            </div>
+            <span className={cn(APP_TYPE.title, "text-[hsl(0_0%_90%)]")}>{domain.title}</span>
           </div>
-          <span className={cn(APP_TYPE.title, "text-[hsl(0_0%_90%)]")}>{domain.title}</span>
+          {isMobile && (
+            <div className="ml-auto relative">
+              <MobileNav domain={domain} tabGroups={tabGroups} activePage={activePage} onNavigate={onNavigate} />
+            </div>
+          )}
         </div>
-        {isMobile && (
-          <div className="ml-auto relative">
-            <MobileNav domain={domain} tabGroups={tabGroups} activePage={activePage} onNavigate={onNavigate} />
+
+        {/* Toolbar */}
+        <AppToolbar domain={domain} toolbarActions={toolbarActions} />
+
+        {/* Body: Sidebar (Surface 0) + Content (Surface 1) */}
+        <div className="flex flex-1 overflow-hidden">
+          {!isMobile && (
+            <AppSidebarNav
+              domain={domain}
+              tabGroups={tabGroups}
+              activePage={activePage}
+              onNavigate={onNavigate}
+            />
+          )}
+          <div className="flex-1 overflow-y-auto p-4 bg-[hsl(0_0%_9%)]" style={{
+            '--domain-density': domain.id === 'business' ? '0.875rem' : domain.id === 'finance' ? '1rem' : domain.id === 'files' ? '0.875rem' : domain.id === 'trust' ? '0.9375rem' : '1.125rem',
+            '--domain-card-radius': domain.id === 'business' ? '12px' : domain.id === 'finance' ? '16px' : domain.id === 'files' ? '10px' : domain.id === 'trust' ? '12px' : '20px',
+            '--domain-motion-speed': domain.id === 'business' ? '150ms' : domain.id === 'finance' ? '250ms' : domain.id === 'files' ? '180ms' : domain.id === 'trust' ? '200ms' : '300ms',
+          } as React.CSSProperties}>
+            {children}
           </div>
-        )}
-      </div>
+        </div>
 
-      {/* Toolbar */}
-      <AppToolbar domain={domain} toolbarActions={toolbarActions} />
-
-      {/* Body: Sidebar + Content */}
-      <div className="flex flex-1 overflow-hidden">
-        {!isMobile && (
-          <AppSidebarNav
-            domain={domain}
-            tabGroups={tabGroups}
-            activePage={activePage}
-            onNavigate={onNavigate}
-          />
-        )}
-        <div className="flex-1 overflow-y-auto p-4" style={{
-          // Domain atmosphere tokens
-          '--domain-density': domain.id === 'business' ? '0.875rem' : domain.id === 'finance' ? '1rem' : domain.id === 'files' ? '0.875rem' : domain.id === 'trust' ? '0.9375rem' : '1.125rem',
-          '--domain-card-radius': domain.id === 'business' ? '12px' : domain.id === 'finance' ? '16px' : domain.id === 'files' ? '10px' : domain.id === 'trust' ? '12px' : '20px',
-          '--domain-motion-speed': domain.id === 'business' ? '150ms' : domain.id === 'finance' ? '250ms' : domain.id === 'files' ? '180ms' : domain.id === 'trust' ? '200ms' : '300ms',
-        } as React.CSSProperties}>
-          {children}
+        {/* Status Bar */}
+        <div className="flex items-center justify-between px-4 py-1.5 border-t border-[hsl(0_0%_100%/0.06)] shrink-0">
+          <div className="flex items-center gap-2">
+            <div className="w-1.5 h-1.5 rounded-full" style={{ background: domain.accentFrom }} />
+            <span className="text-[10px] text-[hsl(0_0%_50%)]">{domain.statusLabel}</span>
+          </div>
+          <span className="text-[10px] text-[hsl(0_0%_40%)]">{domain.version}</span>
         </div>
       </div>
-
-      {/* Status Bar */}
-      <div className="flex items-center justify-between px-4 py-1.5 border-t border-[hsl(0_0%_100%/0.06)] shrink-0">
-        <div className="flex items-center gap-2">
-          <div className="w-1.5 h-1.5 rounded-full" style={{ background: domain.accentFrom }} />
-          <span className="text-[10px] text-[hsl(0_0%_50%)]">{domain.statusLabel}</span>
-        </div>
-        <span className="text-[10px] text-[hsl(0_0%_40%)]">{domain.version}</span>
-      </div>
-    </div>
+    </DomainMotionProvider>
   );
 }
