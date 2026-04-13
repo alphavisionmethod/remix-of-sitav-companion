@@ -8,7 +8,6 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { useApprovalQueue } from "@/hooks/use-brain-core";
 import ReactMarkdown from "react-markdown";
 import { useNavigate, useParams } from "react-router-dom";
@@ -65,8 +64,7 @@ const TRUST_PIPELINE: ExecutionState[] = [
 // ── Main Guide Identity ─────────────────────────────────────────
 
 const MainGuideHeader = ({ mode, onModeChange }: { mode: CouncilMode; onModeChange: (m: CouncilMode) => void }) => {
-  const { isDemoMode } = useDataMode();
-  const totalApprovals = isDemoMode ? mockAdvisors.reduce((s, a) => s + a.pendingApprovals, 0) : 0;
+const totalApprovals = isDemoMode ? mockAdvisors.reduce((s, a) => s + a.pendingApprovals, 0) : 0;
   const activeAdvisors = isDemoMode ? mockAdvisors.filter(a => a.status === "active").length : 0;
   const highImpact = isDemoMode ? mockRecommendations.filter(r => r.impact === "high").length : 0;
 
@@ -149,8 +147,7 @@ const MetricPill = ({ label, value, accent }: { label: string; value: number; ac
 
 const CouncilGrid = ({ mode }: { mode: CouncilMode }) => {
   const navigate = useNavigate();
-  const { isDemoMode } = useDataMode();
-  const modeConfig = MODES.find(m => m.id === mode)!;
+const modeConfig = MODES.find(m => m.id === mode)!;
   const filtered = isDemoMode
     ? (modeConfig.domains.includes("all") ? mockAdvisors : mockAdvisors.filter(a => modeConfig.domains.includes(a.domain)))
     : [];
@@ -204,8 +201,7 @@ const CouncilGrid = ({ mode }: { mode: CouncilMode }) => {
 // ── What Matters Now — Priority Recommendations ─────────────────
 
 const WhatMattersNow = ({ mode }: { mode: CouncilMode }) => {
-  const { isDemoMode } = useDataMode();
-  if (!isDemoMode) return null;
+if (!isDemoMode) return null;
   
   const modeConfig = MODES.find(m => m.id === mode)!;
   const recs = modeConfig.domains.includes("all")
@@ -238,8 +234,7 @@ const WhatMattersNow = ({ mode }: { mode: CouncilMode }) => {
 // ── Disagreement & Synthesis Cards ──────────────────────────────
 
 const DisagreementPanel = () => {
-  const { isDemoMode } = useDataMode();
-  if (!isDemoMode) return null;
+if (!isDemoMode) return null;
   
   const disagreements = mockSynthesis.filter(s => s.disagreements && s.disagreements.length > 0);
 
@@ -287,8 +282,7 @@ const DisagreementPanel = () => {
 // ── Confidence Ladder Panel ─────────────────────────────────────
 
 const ConfidencePanel = ({ mode }: { mode: CouncilMode }) => {
-  const { isDemoMode } = useDataMode();
-  if (!isDemoMode) return null;
+if (!isDemoMode) return null;
   
   const modeConfig = MODES.find(m => m.id === mode)!;
   const advisors = modeConfig.domains.includes("all")
@@ -308,8 +302,7 @@ const ConfidencePanel = ({ mode }: { mode: CouncilMode }) => {
 // ── Trust State Pipeline Visualization ──────────────────────────
 
 const TrustPipelineStrip = () => {
-  const { isDemoMode } = useDataMode();
-  if (!isDemoMode) return null;
+if (!isDemoMode) return null;
   
   const states: { state: ExecutionState; count: number }[] = [
     { state: "proposed", count: 3 },
@@ -338,8 +331,7 @@ const TrustPipelineStrip = () => {
 // ── What Changed Panel ──────────────────────────────────────────
 
 const WhatChangedPanel = () => {
-  const { isDemoMode } = useDataMode();
-  if (!isDemoMode) return null;
+if (!isDemoMode) return null;
   
   const recentProof = mockProofHistory.slice(0, 4);
 
@@ -397,8 +389,7 @@ const SimulationStudio = () => (
 
 const ApprovalQueue = () => {
   const { user } = useAuth();
-  const { isDemoMode } = useDataMode();
-  const { pendingApprovals, isLoading } = useApprovalQueue();
+const { pendingApprovals, isLoading } = useApprovalQueue();
 
   // Use DB approvals if available, otherwise mock
   const approvals = (!isDemoMode && pendingApprovals.length > 0)
@@ -454,8 +445,7 @@ const ApprovalQueue = () => {
 
 const MemoryTransparency = () => {
   const { user } = useAuth();
-  const { isDemoMode } = useDataMode();
-  const { data: dbMemory = [] } = useQuery({
+const { data: dbMemory = [] } = useQuery({
     queryKey: ["advisor-memory", user?.id],
     enabled: !!user && !isDemoMode,
     queryFn: async () => {
@@ -508,9 +498,7 @@ const MemoryTransparency = () => {
 // ── Proof & History ─────────────────────────────────────────────
 
 const ProofHistory = () => {
-  const { isDemoMode } = useDataMode();
-  
-  return (
+return (
     <div className="space-y-6">
       <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }}
         className="rounded-xl border border-trust-verified/15 bg-trust-verified/5 p-5"
@@ -545,8 +533,7 @@ const ProofHistory = () => {
 
 const SingleAdvisorView = ({ advisorId }: { advisorId: string }) => {
   const navigate = useNavigate();
-  const { isDemoMode } = useDataMode();
-  const [activeSection, setActiveSection] = useState<"overview" | "simulations" | "history">("overview");
+const [activeSection, setActiveSection] = useState<"overview" | "simulations" | "history">("overview");
 
   if (!isDemoMode) {
     return (
@@ -904,8 +891,7 @@ const CouncilChatPanel = ({ mode }: { mode: CouncilMode }) => {
 export default function AdvisorWorkspace() {
   const [mode, setMode] = useState<CouncilMode>("daily-pulse");
   const [activeTab, setActiveTab] = useState("council");
-  const { isDemoMode } = useDataMode();
-  const params = useParams();
+const params = useParams();
   const advisorId = params["*"];
 
   // If we have a specific advisor ID in the route, show single advisor

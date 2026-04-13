@@ -19,8 +19,6 @@ import {
   XCircle, Pause, RefreshCw, Filter, ArrowUpRight
 } from "lucide-react";
 import type { AutoActionType } from "@/lib/domain-engines/autopilot-engine";
-import { useDataMode } from "@/contexts/DataModeContext";
-
 // ── Types ────────────────────────────────────────────────────────
 
 interface BuilderStep {
@@ -492,8 +490,7 @@ const PreviewPanel = ({ draft }: { draft: PlaybookDraft }) => {
 // ── Main Component ───────────────────────────────────────────────
 
 const PlaybookBuilder = () => {
-  const { isDemoMode } = useDataMode();
-  const [draft, setDraft] = useState<PlaybookDraft>(defaultDraft);
+const [draft, setDraft] = useState<PlaybookDraft>(defaultDraft);
   const [saved, setSaved] = useState(false);
   const [mode, setMode] = useState<"build" | "simulate">("build");
 

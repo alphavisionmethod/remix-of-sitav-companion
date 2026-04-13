@@ -14,7 +14,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable, fromDynamicTable } from "@/lib/supabase-helpers";
 import { useActionFn } from "@/hooks/use-action";
 import { useAuth } from "@/contexts/AuthContext";
-import { useDataMode } from "@/contexts/DataModeContext";
 import {
   User, Shield, Bell, Palette, Eye, Lock, Globe, Sliders, Brain, Heart,
   ToggleLeft, ToggleRight, Zap, DollarSign, Workflow, TrendingUp, FileText,
@@ -215,8 +214,7 @@ const ChoiceGroup = ({ label, options, value, onChange }: {
 const SettingsPage = () => {
   const gov = useGovernanceSimulator();
   const { user } = useAuth();
-  const { isDemoMode } = useDataMode();
-  const { isLoading, toggleDemoMode } = useDemoMode();
+const { isLoading, toggleDemoMode } = useDemoMode();
   const { confirmation, confirm: confirmAction } = useConfirmation();
   const os = useOSOrchestration();
   const currentMode = os.getCurrentMode();
