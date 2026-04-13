@@ -77,3 +77,259 @@ connectors:
       sandbox: false
       capabilities: [grocery-ordering, delivery-tracking]
       health_interval: 3600
+
+  crypto-wallet:
+    - id: metamask
+      name: MetaMask
+      status: supported
+      auth: extension
+      sandbox: true
+      capabilities: [token-balances, defi-positions, on-chain-activity, nft-tracking]
+      health_interval: 60
+      chain: ethereum
+
+    - id: phantom
+      name: Phantom
+      status: supported
+      auth: extension
+      sandbox: true
+      capabilities: [token-balances, defi-positions, nft-tracking]
+      health_interval: 60
+      chain: solana
+
+    - id: trust-wallet
+      name: Trust Wallet
+      status: supported
+      auth: wallet-connect
+      sandbox: true
+      capabilities: [token-balances, defi-positions]
+      health_interval: 120
+      chain: multi-chain
+
+    - id: coinbase-wallet
+      name: Coinbase Wallet
+      status: supported
+      auth: extension
+      sandbox: true
+      capabilities: [token-balances, defi-positions, nft-tracking]
+      health_interval: 120
+      chain: multi-chain
+
+    - id: ledger-live
+      name: Ledger Live
+      status: supported
+      auth: extension
+      sandbox: true
+      capabilities: [token-balances, cold-storage]
+      health_interval: 300
+      chain: multi-chain
+
+    - id: trezor-suite
+      name: Trezor Suite
+      status: planned
+      auth: extension
+      sandbox: false
+      capabilities: [token-balances, cold-storage]
+      health_interval: 300
+      chain: multi-chain
+
+    - id: rainbow
+      name: Rainbow
+      status: planned
+      auth: wallet-connect
+      sandbox: false
+      capabilities: [token-balances, defi-positions, nft-tracking]
+      health_interval: 120
+      chain: ethereum
+
+    - id: rabby
+      name: Rabby
+      status: planned
+      auth: extension
+      sandbox: false
+      capabilities: [token-balances, defi-positions]
+      health_interval: 120
+      chain: multi-chain
+
+  crypto-exchange:
+    - id: coinbase
+      name: Coinbase
+      status: supported
+      auth: api-key
+      sandbox: true
+      capabilities: [crypto-positions, order-routing, staking, withdrawal-monitoring]
+      health_interval: 120
+
+    - id: binance
+      name: Binance
+      status: supported
+      auth: api-key
+      sandbox: true
+      capabilities: [crypto-positions, order-routing, staking]
+      health_interval: 120
+
+    - id: kraken
+      name: Kraken
+      status: supported
+      auth: api-key
+      sandbox: true
+      capabilities: [crypto-positions, order-routing]
+      health_interval: 120
+
+    - id: bybit
+      name: Bybit
+      status: planned
+      auth: api-key
+      sandbox: true
+      capabilities: [crypto-positions, derivatives, order-routing]
+      health_interval: 120
+
+    - id: okx
+      name: OKX
+      status: planned
+      auth: api-key
+      sandbox: true
+      capabilities: [crypto-positions, defi, order-routing]
+      health_interval: 120
+
+    - id: kucoin
+      name: KuCoin
+      status: planned
+      auth: api-key
+      sandbox: true
+      capabilities: [crypto-positions, order-routing]
+      health_interval: 120
+
+    - id: gemini
+      name: Gemini
+      status: planned
+      auth: api-key
+      sandbox: true
+      capabilities: [crypto-positions, earn, order-routing]
+      health_interval: 120
+
+    - id: crypto-com
+      name: Crypto.com
+      status: planned
+      auth: api-key
+      sandbox: false
+      capabilities: [crypto-positions, card, staking]
+      health_interval: 300
+
+    - id: bitfinex
+      name: Bitfinex
+      status: planned
+      auth: api-key
+      sandbox: true
+      capabilities: [crypto-positions, margin, order-routing]
+      health_interval: 120
+
+  defi:
+    - id: uniswap
+      name: Uniswap
+      status: planned
+      auth: wallet-connect
+      sandbox: false
+      capabilities: [lp-positions, swap-history, fees-earned]
+      health_interval: 60
+      chain: ethereum
+
+    - id: jupiter
+      name: Jupiter
+      status: planned
+      auth: wallet-connect
+      sandbox: false
+      capabilities: [swap-history, limit-orders, dca]
+      health_interval: 60
+      chain: solana
+
+    - id: 1inch
+      name: 1inch
+      status: planned
+      auth: wallet-connect
+      sandbox: false
+      capabilities: [swap-aggregation, limit-orders]
+      health_interval: 60
+      chain: multi-chain
+
+    - id: aave
+      name: Aave
+      status: planned
+      auth: wallet-connect
+      sandbox: false
+      capabilities: [lending-positions, borrow-rates, yield]
+      health_interval: 120
+      chain: multi-chain
+
+    - id: dydx
+      name: dYdX
+      status: planned
+      auth: wallet-connect
+      sandbox: false
+      capabilities: [perpetuals, margin-positions]
+      health_interval: 60
+      chain: cosmos
+
+  forex:
+    - id: oanda
+      name: OANDA
+      status: planned
+      auth: api-key
+      sandbox: true
+      capabilities: [forex-positions, real-time-rates, trade-execution]
+      health_interval: 60
+      region: global
+
+    - id: forex-com
+      name: Forex.com
+      status: planned
+      auth: api-key
+      sandbox: true
+      capabilities: [forex-positions, trade-execution, research]
+      health_interval: 60
+      region: global
+
+    - id: ig-markets
+      name: IG Markets
+      status: planned
+      auth: api-key
+      sandbox: true
+      capabilities: [cfds, forex, spread-betting]
+      health_interval: 120
+      region: uk-global
+
+    - id: etoro
+      name: eToro
+      status: planned
+      auth: oauth
+      sandbox: false
+      capabilities: [social-trading, copy-trading, crypto-stocks]
+      health_interval: 300
+      region: global
+
+    - id: saxo-bank
+      name: Saxo Bank
+      status: planned
+      auth: oauth
+      sandbox: false
+      capabilities: [multi-asset, forex, bonds]
+      health_interval: 300
+      region: eu-global
+
+    - id: trading-212
+      name: Trading 212
+      status: planned
+      auth: oauth
+      sandbox: false
+      capabilities: [stocks, forex, cfds]
+      health_interval: 300
+      region: uk-eu
+
+    - id: ibkr-globaltrader
+      name: IBKR GlobalTrader
+      status: planned
+      auth: oauth
+      sandbox: false
+      capabilities: [multi-asset, forex, options]
+      health_interval: 300
+      region: global
