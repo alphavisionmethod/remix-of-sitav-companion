@@ -256,7 +256,7 @@ export function BoardroomApprovalView({ scope, onNavigate }: Props) {
   const handleApprove = (title: string) => {
     // Find which domain this approval belongs to
     const approval = MOCK_APPROVALS.find(a => a.title === title);
-    const targetDomain = scope === "global" ? "business" : scope;
+    const targetDomain = (scope as string) === "global" ? "business" : scope;
 
     setShowSignature(true);
     setTimeout(() => {
