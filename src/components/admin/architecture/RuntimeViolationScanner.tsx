@@ -137,8 +137,9 @@ function performScan(): ScanResult {
     })
     .filter((v, i, a) => v && a.indexOf(v) === i) as string[];
 
+  const mappedServiceKeys = Object.keys(SERVICE_LAYER_MAP);
   for (const svc of serviceDirectories) {
-    if (!SERVICE_LAYER_MAP.some(s => s.service === svc || s.service.includes(svc))) {
+    if (!mappedServiceKeys.some(k => k === svc || k.includes(svc))) {
       violations.push({
         id: `v${++violationId}`,
         rule: "UNMAPPED_SERVICE",
