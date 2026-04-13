@@ -3,9 +3,12 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Presentation, Briefcase, TrendingUp, Users,
   Brain, CheckSquare, FlaskConical, History, Crown,
+  Eye, GitBranch, Globe, HelpCircle,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { BoardroomHeader } from "./BoardroomHeader";
+import { BoardroomSessionBar } from "./BoardroomSessionBar";
+import { BoardroomEvidencePanel } from "./BoardroomEvidencePanel";
 import { BoardroomExecutiveView } from "./BoardroomExecutiveView";
 import { BoardroomPulseView } from "./BoardroomPulseView";
 import { BoardroomSynthesisView } from "./BoardroomSynthesisView";
@@ -14,6 +17,10 @@ import { BoardroomApprovalView } from "./BoardroomApprovalView";
 import { BoardroomDecisionMemory } from "./BoardroomDecisionMemory";
 import { BoardroomAdvisorCouncil } from "./BoardroomAdvisorCouncil";
 import { BoardroomDiscussionThread } from "./BoardroomDiscussionThread";
+import { BoardroomLineageView } from "./BoardroomLineageView";
+import { BoardroomCrossAppImpact } from "./BoardroomCrossAppImpact";
+import { BoardroomExplainability } from "./BoardroomExplainability";
+import { useBoardroomSession } from "@/hooks/useBoardroomSession";
 
 const MODULES = [
   { id: "executive", label: "Executive Review", icon: Presentation },
@@ -22,11 +29,13 @@ const MODULES = [
   { id: "council", label: "Advisor Council", icon: Crown },
   { id: "simulation", label: "Simulation", icon: FlaskConical },
   { id: "approvals", label: "Approvals & Seals", icon: CheckSquare },
+  { id: "lineage", label: "Decision Lineage", icon: GitBranch },
+  { id: "impact", label: "Cross-App Impact", icon: Globe },
+  { id: "explainability", label: "Explainability", icon: HelpCircle },
   { id: "memory", label: "Decision Memory", icon: History },
 ];
 
 type SessionScope = "global" | "business" | "finance" | "concierge";
-
 type SessionMode = "review" | "simulation" | "approval";
 
 const MODULE_SESSION_MODE: Record<string, SessionMode> = {
@@ -36,10 +45,12 @@ const MODULE_SESSION_MODE: Record<string, SessionMode> = {
   council: "review",
   simulation: "simulation",
   approvals: "approval",
+  lineage: "review",
+  impact: "review",
+  explainability: "review",
   memory: "review",
 };
 
-// Dynamic ambient colors per module
 const MODULE_AMBIENT: Record<string, string> = {
   executive: "hsl(280 40% 15% / 0.25)",
   pulse: "hsl(280 40% 15% / 0.2)",
@@ -47,12 +58,21 @@ const MODULE_AMBIENT: Record<string, string> = {
   council: "hsl(300 35% 15% / 0.2)",
   simulation: "hsl(40 50% 15% / 0.25)",
   approvals: "hsl(145 40% 12% / 0.25)",
+  lineage: "hsl(200 40% 15% / 0.2)",
+  impact: "hsl(320 40% 15% / 0.2)",
+  explainability: "hsl(240 40% 15% / 0.2)",
   memory: "hsl(220 40% 15% / 0.2)",
 };
 
 export function BoardroomAppShell() {
   const [activeModule, setActiveModule] = useState("executive");
   const [scope, setScope] = useState<SessionScope>("global");
+  const [evidenceOpen, setEvidenceOpen] = useState(false);
+
+  const {
+    session, elapsed, stageIndex, stages,
+    openSession, advanceStage, adjournSession, pauseSession, resumeSession,
+  } = useBoardroomSession(scope);
 
   const sessionMode = MODULE_SESSION_MODE[activeModule] || "review";
   const viewProps = { scope, onNavigate: setActiveModule };
@@ -71,6 +91,9 @@ export function BoardroomAppShell() {
       );
       case "simulation": return <BoardroomSimulationView {...viewProps} />;
       case "approvals": return <BoardroomApprovalView {...viewProps} />;
+      case "lineage": return <BoardroomLineageView />;
+      case "impact": return <BoardroomCrossAppImpact scope={scope} />;
+      case "explainability": return <BoardroomExplainability scope={scope} />;
       case "memory": return <BoardroomDecisionMemory />;
       default: return <BoardroomExecutiveView {...viewProps} />;
     }
@@ -93,7 +116,7 @@ export function BoardroomAppShell() {
       />
 
       {/* Sidebar */}
-      <div className="w-[180px] shrink-0 border-r border-[hsl(0_0%_100%/0.05)] bg-[hsl(220_18%_3%/0.9)] flex flex-col py-4 px-2 gap-1 z-10 backdrop-blur-xl">
+      <div className="w-[180px] shrink-0 border-r border-[hsl(0_0%_100%/0.05)] bg-[hsl(220_18%_3%/0.9)] flex flex-col py-4 px-2 gap-1 z-10 backdrop-blur-xl overflow-y-auto scrollbar-thin scrollbar-thumb-[hsl(0_0%_100%/0.06)]">
         <p className="text-[10px] font-bold uppercase tracking-[0.25em] text-[hsl(280_60%_60%/0.5)] px-3 mb-4">
           Boardroom
         </p>
@@ -120,7 +143,6 @@ export function BoardroomAppShell() {
                     className="absolute inset-0 rounded-xl bg-[hsl(280_40%_50%/0.06)] -z-10"
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
                   />
-                  {/* Sidebar glow */}
                   <motion.div
                     className="absolute -left-1 top-1/2 -translate-y-1/2 w-1 h-6 rounded-full bg-[hsl(280_50%_55%)]"
                     layoutId="sidebar-glow"
@@ -132,11 +154,34 @@ export function BoardroomAppShell() {
             </button>
           );
         })}
+
+        {/* Evidence panel trigger */}
+        <div className="mt-4 pt-4 border-t border-[hsl(0_0%_100%/0.05)]">
+          <button
+            onClick={() => setEvidenceOpen(true)}
+            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-[12px] font-medium text-[hsl(0_0%_100%/0.35)] hover:bg-[hsl(0_0%_100%/0.04)] hover:text-[hsl(0_0%_100%/0.65)] transition-all w-full text-left"
+          >
+            <Eye size={15} /> Show Evidence
+          </button>
+        </div>
       </div>
 
       {/* Main content */}
       <div className="flex-1 flex flex-col min-w-0 z-10">
         <BoardroomHeader scope={scope} onScopeChange={setScope} sessionMode={sessionMode} />
+        <BoardroomSessionBar
+          status={session.status}
+          elapsed={elapsed}
+          stageIndex={stageIndex}
+          stages={stages}
+          advisorCount={session.participatingAdvisors.length}
+          onOpen={openSession}
+          onAdvance={advanceStage}
+          onPause={pauseSession}
+          onResume={resumeSession}
+          onAdjourn={adjournSession}
+          sessionMode={session.sessionMode}
+        />
         <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-[hsl(0_0%_100%/0.06)] scrollbar-track-transparent">
           <AnimatePresence mode="wait">
             <motion.div
@@ -151,6 +196,9 @@ export function BoardroomAppShell() {
           </AnimatePresence>
         </div>
       </div>
+
+      {/* Evidence Panel */}
+      <BoardroomEvidencePanel open={evidenceOpen} onClose={() => setEvidenceOpen(false)} />
     </motion.div>
   );
 }
