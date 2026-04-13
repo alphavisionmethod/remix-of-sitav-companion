@@ -115,6 +115,7 @@ const ConciergeFiles = () => {
           );
         })}
       </div>
+      )}
 
       {/* Essential Documents Preview */}
       <PersonalEssentialsPreviewPanel docs={files.slice(0, 4).map(f => ({

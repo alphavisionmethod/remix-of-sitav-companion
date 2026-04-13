@@ -308,8 +308,8 @@ const ServiceProviders = () => {
           );
         })}
       </div>
+      )}
 
-      {filtered.length === 0 && <EmptyState icon={Wrench} title="No providers found" description="Try a different search or add a new provider" />}
 
       {/* Service Follow-ups */}
       <ServiceFollowUpCard items={[
