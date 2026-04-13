@@ -194,7 +194,7 @@ const App = () => (
                 <Route path="/learn-later" element={<ProtectedRoute><LearnLaterPage /></ProtectedRoute>} />
 
                 {/* Mobile */}
-                <MobileRoutes ProtectedRoute={ProtectedRoute} />
+                {MobileRoutes({ ProtectedRoute })}
 
                 {/* TIER 3: FULL OS SHELL */}
                 <Route path="*" element={
