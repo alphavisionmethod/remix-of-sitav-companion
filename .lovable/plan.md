@@ -1,84 +1,82 @@
 
 
-# Crypto Wallets, Exchanges & Forex — Platform Connections Expansion
+# Beautiful CRM with Easy One-Click Integrations
 
 ## What We're Building
 
-Expand the Investment Office **Platform Connections** page and the **connector registry** to support major crypto wallets, crypto trading platforms, and forex/international trading platforms — giving users a comprehensive, one-click connection experience.
+Transform the CRM (Customers, Leads, Pipeline pages) with a gorgeous **Integration Hub** that lets users connect external platforms with zero API key hassle — just click, authorize, and sync. Plus a drag-and-drop CSV/Excel importer that maps columns automatically.
 
 ## Current State
 
-- `PlatformConnections.tsx` already supports 4 types: `brokerage`, `exchange`, `event-market`, `wallet`
-- Demo connected: Interactive Brokers, Schwab, Coinbase, Polymarket, MetaMask (disconnected)
-- Demo available: Robinhood, Binance, Kraken, Kalshi, Manifold, Fidelity, Ledger Live
-- Missing: Most major crypto wallets, CEXs, DEX aggregators, forex platforms, and international brokers
+- CRM pages (Customers, Leads, Opportunities) exist but have no easy import or external platform connection UI
+- A `useCRMSync` hook exists calling `crm-sync` edge function for syncing leads/customers/opportunities
+- Import/Export Center exists but is generic — not CRM-specific
+- No CSV parsing, column mapping, or one-click platform connections in the CRM
 
 ## Plan
 
-### Step 1: Expand platform types and demo data
+### Step 1: Create CRM Integration Hub page
 
-Add new platform types: `dex`, `forex`, `international-broker`. Update `PLATFORM_CONNECTIONS` and `DEMO_AVAILABLE_PLATFORMS` with:
+Create `src/pages/business/CRMIntegrationHub.tsx` — a beautiful central page for all CRM connections:
 
-**Crypto Wallets**: MetaMask (already exists), Phantom, Trust Wallet, Coinbase Wallet, Ledger Live (exists), Trezor Suite, Rainbow, Rabby
+- **Hero section**: "Connect your world" with animated gradient background
+- **One-click platform cards** grouped by category:
+  - **CRM Platforms**: HubSpot, Salesforce, Zoho CRM, Pipedrive, Monday CRM, Close
+  - **Marketing**: GoHighLevel (GHL), Mailchimp, ActiveCampaign, ConvertKit
+  - **Dev & Project**: GitHub (issues as leads), Linear, Notion, Jira
+  - **Communication**: Gmail, Outlook, Slack, WhatsApp Business
+  - **Spreadsheets**: Google Sheets (live sync), Excel Online
+  - **Social**: Instagram, Facebook Leads, LinkedIn
+- Each card shows: icon, name, "Connect" button, sync status, last synced timestamp
+- Connected platforms show green badge with record counts
 
-**Crypto Exchanges (CEX)**: Coinbase (exists), Binance (exists), Kraken (exists), Bybit, OKX, KuCoin, Gemini, Crypto.com, Bitfinex
+### Step 2: Create smart CSV/Excel importer
 
-**DEX / DeFi**: Uniswap, Jupiter (Solana), 1inch, Aave, dYdX
+Create `src/components/business/CRMImportWizard.tsx` — a 3-step drag-and-drop wizard:
 
-**Forex / International**: Interactive Brokers (exists — supports forex), OANDA, Forex.com, IG Markets, Saxo Bank, eToro, Trading 212, IBKR GlobalTrader
+1. **Drop zone**: Drag CSV/XLSX file, auto-detect delimiter and encoding
+2. **Smart column mapping**: Auto-match columns (Name, Email, Phone, Company, etc.) with confidence indicators. Users just confirm or drag to remap
+3. **Preview & import**: Shows first 5 rows, dedup detection, import button
 
-### Step 2: Upgrade PlatformConnections UI
+Uses `Papa Parse` for CSV and `SheetJS` for Excel — both client-side, no upload needed for preview.
 
-Redesign the "Available to Connect" section:
-- **Category tabs**: Wallets | Exchanges | DeFi | Forex & International | Brokerages | Event Markets
-- **Search/filter** bar to find platforms quickly
-- **Chain badges** for wallets (Ethereum, Solana, Multi-chain)
-- **Region flags** for forex/international platforms
-- **"Popular" tag** on high-demand platforms
-- Each card shows supported capabilities (e.g., "Read-only", "Trade execution", "DeFi positions")
+### Step 3: Create one-click connect modal
 
-### Step 3: Add connection flow modal
+Create `src/components/business/CRMConnectModal.tsx` — unified connection wizard:
 
-Create `ConnectPlatformModal.tsx` — a step-by-step connection wizard:
-1. Select platform → shows required permissions and data access scope
-2. Auth method selection (API key, OAuth, WalletConnect, browser extension)
-3. For wallets: WalletConnect-style QR code placeholder / "Connect Extension" button
-4. For exchanges: API key + secret input with instructions link
-5. For forex: Account credentials with broker-specific guidance
-6. Confirmation screen showing what data will sync
-7. Saves to `connector_configs` table via edge function
+- For OAuth platforms (HubSpot, GHL, Google): Single "Authorize" button that opens OAuth popup
+- For import-based (GitHub issues, spreadsheets): Simple URL/repo input + "Pull Data" button
+- For CSV: Opens the import wizard directly
+- Shows what data will sync: contacts, deals, emails, notes
+- Progress bar during initial sync
+- No API key fields visible — everything behind simple buttons
 
-### Step 4: Update connector registry
+### Step 4: Add import/connect actions to CRM pages
 
-Add all new platforms to `connectors.yaml` under new categories: `crypto-wallet`, `crypto-exchange`, `defi`, `forex`. Add corresponding `VALUE_UNLOCKED` entries per type.
+Update `CustomersPage.tsx`, `LeadsInbox.tsx`, `OpportunitiesCenter.tsx`:
+- Add "Import" dropdown button next to existing "Add" button with options: Import CSV, Import from Platform, Sync from Connected
+- Empty states show "Connect a platform or import a file to get started" with direct action buttons
+- Connected platform badges in the header showing sync status
 
-### Step 5: Add wallet-specific features to the connected view
+### Step 5: Add route and navigation
 
-For connected wallets, show:
-- **Chain breakdown**: ETH, SOL, BNB balances per chain
-- **Token list**: Top holdings with USD values
-- **DeFi positions**: Staked/LP positions summary
-- **NFT count** (optional badge)
-
-For connected forex platforms:
-- **Open positions**: Currency pairs with P&L
-- **Account leverage** and margin status
+Register `/business/integrations` route. Add "Integrations" item to business sidebar/nav.
 
 ## Files
 
-- **Edit**: `src/lib/investment-office/mock-data.ts` (expand PLATFORM_CONNECTIONS, add types)
-- **Edit**: `src/lib/demo-data/investment.tsx` (expand DEMO_AVAILABLE_PLATFORMS with all new platforms)
-- **Edit**: `src/pages/investment-office/PlatformConnections.tsx` (category tabs, search, enhanced cards)
-- **Create**: `src/components/investment/ConnectPlatformModal.tsx` (~200 lines — connection wizard)
-- **Edit**: `src/components/sita/money-onboarding/types.ts` (add `crypto_wallet`, `exchange`, `forex` to ConnectedAccountStub types)
-- **Edit**: `src/components/sita/money-onboarding/ConnectAccountsStep.tsx` (add crypto/forex tiles)
-- **Edit**: `docs/architecture/registry/connectors.yaml` (new categories)
+- **Create**: `src/pages/business/CRMIntegrationHub.tsx` (~300 lines — integration hub page)
+- **Create**: `src/components/business/CRMImportWizard.tsx` (~250 lines — CSV/Excel smart importer)
+- **Create**: `src/components/business/CRMConnectModal.tsx` (~200 lines — one-click connect modal)
+- **Edit**: `src/pages/business/CustomersPage.tsx` (add import dropdown, connected badges)
+- **Edit**: `src/pages/business/LeadsInbox.tsx` (add import dropdown)
+- **Edit**: `src/App.tsx` (add route)
 
 ## Technical Details
 
-- New `PlatformType` union: `"brokerage" | "exchange" | "event-market" | "wallet" | "dex" | "forex" | "international-broker"`
-- Category tabs use a simple state toggle filtering `DEMO_AVAILABLE_PLATFORMS` by type
-- Connection modal stores config via upsert to `connector_configs` (existing table pattern)
-- Wallet connection uses placeholder UI for WalletConnect/extension detection (actual Web3 integration is future work — this builds the UX flow)
-- All new platforms get demo data entries so the UI is rich immediately
+- CSV parsing uses `papaparse` (already available or lightweight install)
+- Excel parsing uses `xlsx`/SheetJS for client-side .xlsx reading
+- Column auto-mapping uses string similarity matching (fuzzy match "First Name" → `name`, "E-mail" → `email`, etc.)
+- Platform connections are stored via the existing `integration_connections` table
+- OAuth flows use placeholder UI (the actual OAuth implementation connects through the connector gateway when real connectors are linked)
+- Import wizard writes directly to leads/customers tables via existing `useAction` pattern
 
