@@ -1,94 +1,66 @@
 
 
-# SITA OS — Full Wiring, Orchestration & Verification System
+# Boardroom Orchestration — Final Wiring Gap Analysis & Fix Plan
 
-## What Already Exists
+## Critical Finding
 
-- **Event Bus**: In-memory pub/sub with envelope factory, dead-letter queue, and persistence adapter
-- **Boardroom Bridge**: `escalateToBoardroom()` and `pushDecisionToApp()` writing to `boardroom_items` / `advisor_action_queue`
-- **Council Orchestrator**: Multi-advisor deliberation with voting policies and conflict detection
-- **Domain App Shells**: Business, Finance, Concierge each have Advisors + Boardroom sidebar modules with `DomainAdvisorBoard` and `BoardroomStatusStrip`
-- **Live Data Hook**: `useBoardroomLiveData` queries all 5 boardroom tables with demo fallback
-- **Service Registry**: Ownership manifest, route inventory, heartbeat system
+The orchestration pipeline infrastructure (8 files) is fully built but **completely disconnected from the running application**:
 
-## What Is Missing
+1. **Pipeline never boots**: `initAdvisorConsumer()` and `initAppBoardSynthesizer()` are only called inside `useOrchestrationHealth`, which is never mounted in any component. Signals are emitted into the void.
 
-The prompt describes a 7-layer runtime (Domain Data → Module Signals → Module Advisors → App Board → Boardroom Intake → Boardroom Orchestration → Follow-Through). Currently only layers E-G partially exist (Boardroom bridge + live data). Layers A-D (structured signal emission, module advisor consumption, app board synthesis, and Boardroom-worthiness scoring) are **not wired** — domain apps have no signal emitters, advisors don't consume structured packets, and the event bus is not connected to the advisor pipeline.
+2. **BoardroomAdvisorCouncil uses hardcoded stances**: The `ADVISOR_STANCES` map is static — never reads from pipeline advisor outputs.
+
+3. **BoardroomExecutiveView partially wired**: It reads `useBoardroomLiveData` items (good), but Morning Brief, SIGNALS, WHAT_CHANGED, and evidence chains are all hardcoded.
+
+4. **BoardroomApprovalView uses MOCK_APPROVALS**: Never reads live recommendations from `boardroom_recommendations` table.
+
+5. **Lifecycle state machine unused**: `transitionState()` is never called from any UI or service code.
+
+6. **No auto-escalation**: `shouldAutoEscalate()` exists in the synthesizer but nothing triggers `escalateToBoardroom()` when the threshold is crossed.
+
+7. **Follow-through is partial**: Approval writes to `advisor_action_queue` but never calls `transitionState("approved")` or creates a `FollowThroughPacket`.
 
 ---
 
-## Implementation Plan — 5 Phases
+## Implementation Plan — 3 Phases
 
-### Phase 1 — Domain Signal Emitter & Packet Types
+### Phase 1 — Boot the Pipeline (2 files)
 
-Create the canonical packet model that all layers share.
+**Modify: `src/contexts/RuntimeProvider.tsx`**
+- Add a `PipelineBootstrap` component that calls `initAdvisorConsumer()` and `initAppBoardSynthesizer()` on mount, stores cleanup refs, and tears down on unmount.
+- This ensures the pipeline is alive whenever the app runs.
 
-**New file: `src/lib/services/orchestration-pipeline/types.ts`**
-- `DomainSignal` — module-level event (signal_id, module, domain, severity, summary, triggering_conditions, linked_objects, freshness, confidence)
-- `AdvisorOutputPacket` — advisor observation/recommendation (advisor_id, scope, target_objects, recommendation, rationale, confidence, assumptions, risks, boardroom_relevance_score)
-- `AppBoardSynthesis` — app-level synthesis (app_id, issue_summary, module_advisor_positions, recommendation, disagreement_areas, scenario_need, boardroom_candidate_motion)
-- `BoardroomIntakePacket` — everything needed for Boardroom intake (wraps AppBoardSynthesis + evidence refs + freshness + urgency + approval requirement)
+**New: `src/hooks/usePipelineBootstrap.ts`**
+- Encapsulates pipeline initialization + auto-escalation watcher.
+- Subscribes to `board.synthesis.*` events; when `boardroom_worthiness_score >= 0.65`, auto-calls `escalateToBoardroom()`.
+- Subscribes to `lifecycle.transition` events for observability logging.
 
-**New file: `src/lib/services/orchestration-pipeline/signal-emitter.ts`**
-- `emitDomainSignal(signal: DomainSignal)` — publishes to event bus with topic `domain.signal.{module}`
-- Immediate signals for critical severity, batched for low/medium (accumulate and flush every 60s)
+### Phase 2 — Wire Boardroom Views to Live Data (3 files modified)
 
-### Phase 2 — Advisor Routing Registry & Module Advisor Consumption
+**Modify: `BoardroomAdvisorCouncil.tsx`**
+- Import `getAdvisorOutputs` from the pipeline.
+- Replace hardcoded `ADVISOR_STANCES` with dynamic stances derived from live advisor output packets (mapping `boardroom_relevance_score > 0.6` → "agree", `confidence < 40` → "needs-data", `risks.length > 0` → "caution", etc.).
+- Fall back to current hardcoded stances when no pipeline outputs exist (demo graceful degradation).
 
-**New file: `src/lib/services/orchestration-pipeline/advisor-routing-registry.ts`**
-- Static registry mapping: module → advisor IDs (e.g., `crm` → `["revenue-advisor", "crm-advisor"]`)
-- `getAdvisorsForSignal(signal)` — returns matching advisor IDs
-- `getBoardroomWorthinessScore(signal)` — scores 0-1 based on urgency, cross-domain impact, value-at-risk, reversibility, uncertainty
+**Modify: `BoardroomApprovalView.tsx`**
+- Query `boardroom_recommendations` via `useBoardroomLiveData` instead of using `MOCK_APPROVALS`.
+- On approval, call `transitionState(itemId, "approved")` from the lifecycle state machine.
+- Include `item_id` and `recommendation_id` in the receipt creation call (currently missing).
 
-**New file: `src/lib/services/orchestration-pipeline/module-advisor-consumer.ts`**
-- Subscribes to `domain.signal.*` events on the event bus
-- For each signal, routes to registered advisors
-- Generates `AdvisorOutputPacket` (in demo mode: deterministic mock output; in live mode: calls AI gateway)
-- If any advisor output has `boardroom_relevance_score > 0.6`, elevates to app board layer
+**Modify: `BoardroomExecutiveView.tsx`**
+- Replace hardcoded `SIGNALS` array with live synthesis data from `getSynthesisForDomain()` for each domain.
+- Replace hardcoded `WHAT_CHANGED` with recent transmission log entries from `getTransmissionLog()`.
+- Wire the `MorningBrief` to generate text from live items instead of static strings.
 
-### Phase 3 — App Board Synthesis & Boardroom Intake
-
-**New file: `src/lib/services/orchestration-pipeline/app-board-synthesizer.ts`**
-- Collects `AdvisorOutputPacket`s per domain
-- Produces `AppBoardSynthesis` — identifies consensus, disagreement, missing data
-- Applies Boardroom-worthiness threshold (score > 0.65 → auto-candidate; 0.4-0.65 → user decides; < 0.4 → stays in domain)
-- Calls `escalateToBoardroom()` from existing bridge for qualifying items
+### Phase 3 — Lifecycle Integration & Follow-Through Closure (2 files modified)
 
 **Modify: `src/hooks/useBoardroomBridge.ts`**
-- Add `synthesisForDomain` query that reads the latest `AppBoardSynthesis` from the synthesizer
-- Surface synthesis status in `BoardroomStatusStrip`
+- After `escalateToBoardroom()` succeeds, call `registerItem(itemId)` and `transitionState(itemId, "advisor_review")` to start tracking the item through the lifecycle.
+- After `pushDecisionToApp()` succeeds, call `transitionState(itemId, "executed")`.
 
-### Phase 4 — State Machine & Lifecycle Tracking
-
-**New file: `src/lib/services/orchestration-pipeline/issue-lifecycle.ts`**
-- State machine: `detected → advisor_review → app_board_review → boardroom_candidate → boardroom_active → simulation_pending → approval_pending → approved | deferred → executed → outcome_tracking → closed`
-- `transitionState(itemId, newState)` — validates allowed transitions, writes to `boardroom_items.status`
-- Emits lifecycle events to event bus for observability
-
-**Modify: `src/components/sita/apps/boardroom/BoardroomExecutiveView.tsx`**
-- Replace hardcoded status badges with lifecycle state from the state machine
-- Show full lifecycle trail on item detail expand
-
-### Phase 5 — Wiring Manifest, Probes & Observability
-
-**New file: `src/lib/services/orchestration-pipeline/wiring-manifest.ts`**
-- Static manifest declaring all connections: modules → advisors → app boards → boardroom categories → output sinks
-- `getWiringManifest()` returns the full graph
-- `validateWiring()` — checks all declared advisors exist, all routes have subscribers, all sinks are reachable
-
-**New file: `src/lib/services/orchestration-pipeline/pipeline-probe.ts`**
-- `runEndToEndProbe(scenario)` — fires a test signal through the full pipeline and verifies it reaches each layer
-- Built-in scenarios: "stalled lead", "reserve breach", "travel prep incomplete"
-- Returns trace log: `[{layer, timestamp, packet_type, status}]`
-- Logs every transmission: source, destination, packet type, confidence, freshness, missing-data flags
-
-**New file: `src/hooks/useOrchestrationHealth.ts`**
-- React hook exposing: pipeline status, last probe result, wiring manifest, dead letters, transmission log tail
-- Used by admin/debug surfaces
-
-**Modify: Domain app shells (Business, Finance, Concierge)**
-- Wire "Escalate to Boardroom" to emit a proper `DomainSignal` through the pipeline instead of calling `escalateToBoardroom()` directly
-- Show pipeline trace on escalation confirmation
+**Modify: `src/hooks/useBoardroomLiveData.ts`**
+- Add a `transitionItem` mutation that updates `boardroom_items.status` in the database AND calls `transitionState()` in-memory, keeping both in sync.
+- Add lifecycle trail query helper that reads from the in-memory `getLifecycleTrail()`.
 
 ---
 
@@ -96,18 +68,13 @@ Create the canonical packet model that all layers share.
 
 | Phase | File | Action |
 |-------|------|--------|
-| 1 | `src/lib/services/orchestration-pipeline/types.ts` | New — all packet types |
-| 1 | `src/lib/services/orchestration-pipeline/signal-emitter.ts` | New — domain signal emission |
-| 2 | `src/lib/services/orchestration-pipeline/advisor-routing-registry.ts` | New — module→advisor mapping + worthiness score |
-| 2 | `src/lib/services/orchestration-pipeline/module-advisor-consumer.ts` | New — event bus subscriber, advisor routing |
-| 3 | `src/lib/services/orchestration-pipeline/app-board-synthesizer.ts` | New — cross-advisor synthesis per domain |
-| 3 | `src/hooks/useBoardroomBridge.ts` | Modify — surface synthesis data |
-| 4 | `src/lib/services/orchestration-pipeline/issue-lifecycle.ts` | New — state machine for item lifecycle |
-| 4 | `BoardroomExecutiveView.tsx` | Modify — lifecycle state display |
-| 5 | `src/lib/services/orchestration-pipeline/wiring-manifest.ts` | New — declarative connection graph |
-| 5 | `src/lib/services/orchestration-pipeline/pipeline-probe.ts` | New — end-to-end verification probes |
-| 5 | `src/hooks/useOrchestrationHealth.ts` | New — React hook for observability |
-| 5 | `BusinessAppShell.tsx`, `FinanceAppShell.tsx`, `ConciergeAppShell.tsx` | Modify — route escalations through pipeline |
+| 1 | `src/hooks/usePipelineBootstrap.ts` | New — pipeline init + auto-escalation |
+| 1 | `src/contexts/RuntimeProvider.tsx` | Modify — mount PipelineBootstrap |
+| 2 | `BoardroomAdvisorCouncil.tsx` | Modify — dynamic stances from pipeline |
+| 2 | `BoardroomApprovalView.tsx` | Modify — live recommendations + lifecycle |
+| 2 | `BoardroomExecutiveView.tsx` | Modify — live signals, changes, brief |
+| 3 | `useBoardroomBridge.ts` | Modify — lifecycle transitions on escalation |
+| 3 | `useBoardroomLiveData.ts` | Modify — transition mutation |
 
-12 files total (8 new, 4 modified). No new database tables. No new dependencies.
+7 files (1 new, 6 modified). No new database tables. No new dependencies.
 
