@@ -83,6 +83,7 @@ const ProposalsContracts = () => {
 
   return (
     <div className="mx-auto max-w-5xl space-y-6">
+      <PageTruthBanner />
       <DomainAdvisorCard domain="business" insights={[
         { id: "prop-1", text: "Alex Kim viewed pricing 6 times — high intent signal. Consider offering 5% early-bird discount", confidence: 88, action: "Offer Discount" },
         { id: "prop-2", text: "Proposals with case studies have 23% higher win rate", confidence: 82 },

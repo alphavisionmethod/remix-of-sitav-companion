@@ -534,43 +534,27 @@ const PlaybookBuilder = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-      <SitaPageHeader
-        title="Playbook Builder"
-        subtitle={mode === "build" ? "Create custom automation sequences with triggers, conditions, and actions" : "Walk through each step with mock data before activating"}
-        actions={
+      <PageTruthBanner />
+      <div className="flex items-center justify-between flex-wrap gap-2">
+        <div className="flex rounded-lg border border-border overflow-hidden">
+          <button onClick={() => setMode("build")} className={`px-3 py-1.5 text-[11px] font-medium transition-all flex items-center gap-1.5 micro-press ${mode === "build" ? "bg-primary/15 text-primary" : "bg-secondary text-muted-foreground hover:text-foreground"}`}>
+            <Settings className="h-3 w-3" /> Build
+          </button>
+          <button onClick={() => setMode("simulate")} className={`px-3 py-1.5 text-[11px] font-medium transition-all flex items-center gap-1.5 micro-press ${mode === "simulate" ? "bg-accent/15 text-accent" : "bg-secondary text-muted-foreground hover:text-foreground"}`}>
+            <Eye className="h-3 w-3" /> Simulate
+          </button>
+        </div>
+        {mode === "build" && (
           <div className="flex items-center gap-2">
-            {/* Mode toggle */}
-            <div className="flex rounded-lg border border-border overflow-hidden">
-              <button
-                onClick={() => setMode("build")}
-                className={`px-3 py-1.5 text-[11px] font-medium transition-all flex items-center gap-1.5 ${
-                  mode === "build" ? "bg-primary/15 text-primary" : "bg-secondary text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                <Settings className="h-3 w-3" /> Build
-              </button>
-              <button
-                onClick={() => setMode("simulate")}
-                className={`px-3 py-1.5 text-[11px] font-medium transition-all flex items-center gap-1.5 ${
-                  mode === "simulate" ? "bg-accent/15 text-accent" : "bg-secondary text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                <Eye className="h-3 w-3" /> Simulate
-              </button>
-            </div>
-            {mode === "build" && (
-              <>
-                <SitaButton variant="secondary" size="sm" onClick={handleSave}>
-                  <Save className="h-3.5 w-3.5" /> {saved ? "Saved ✓" : "Save Draft"}
-                </SitaButton>
-                <SitaButton variant="primary" size="sm" onClick={() => setMode("simulate")}>
-                  <Play className="h-3.5 w-3.5" /> Simulate
-                </SitaButton>
-              </>
-            )}
+            <SitaButton variant="secondary" size="sm" onClick={handleSave}>
+              <Save className="h-3.5 w-3.5" /> {saved ? "Saved ✓" : "Save Draft"}
+            </SitaButton>
+            <SitaButton variant="primary" size="sm" onClick={() => setMode("simulate")}>
+              <Play className="h-3.5 w-3.5" /> Simulate
+            </SitaButton>
           </div>
-        }
-      />
+        )}
+      </div>
 
       {mode === "simulate" ? (
         <PlaybookSimulator
