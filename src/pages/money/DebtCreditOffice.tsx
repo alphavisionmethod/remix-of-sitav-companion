@@ -2,15 +2,10 @@
 // SITA OS — Money Office: Debt, Credit & Liability Office
 // ═══════════════════════════════════════════════════════════════
 
-import { SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
-import { KPITile } from "@/components/sita/SitaComponents";
-import { TrustBadge } from "@/components/sita/TrustBadge";
-import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
-import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
-import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
-import { CreditCard, TrendingDown, AlertTriangle, Shield, DollarSign, Target, BarChart3, ArrowRight, CheckCircle, Clock } from "lucide-react";
+import { HeroCard, StatusCard, SummaryCard } from "@/components/sita/cards";
+import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { CreditCard, TrendingDown, AlertTriangle, Shield, DollarSign, Target, BarChart3, CheckCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState, useMemo } from "react";
 import { computeDebtProfile, simulateDebtPayoff } from "@/lib/services/finance-os/debt-analyzer.service";
@@ -24,159 +19,109 @@ const DEMO_ACCOUNTS: DebtAccount[] = [
 ];
 
 const DebtCreditOffice = () => {
-  const { isDemoMode } = useDataMode();
   const [strategy, setStrategy] = useState<"avalanche" | "snowball">("avalanche");
-  const [extraPayment, setExtraPayment] = useState(20000); // $200/mo extra
+  const [extraPayment] = useState(20000);
 
   const profile = useMemo(() => computeDebtProfile(DEMO_ACCOUNTS, 850000, extraPayment), [extraPayment]);
-  const altPlan = useMemo(() => simulateDebtPayoff(DEMO_ACCOUNTS, strategy === "avalanche" ? "snowball" : "avalanche", extraPayment), [strategy, extraPayment]);
-
   const fmt = (cents: number) => `$${(Math.abs(cents) / 100).toLocaleString()}`;
   const pulse = profile.creditScorePulse;
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
-      <DomainHeader domain="money" title="Debt, Credit & Liability Office" subtitle="Payoff strategies, utilization monitoring, credit pulse" />
-      <DemoModeBadge />
+      <PageTruthBanner />
 
-      {/* KPI Row */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4">
-        <KPITile label="Total Debt" value={fmt(profile.totalDebtCents)} icon={CreditCard} />
-        <KPITile label="Monthly Interest Drag" value={fmt(profile.interestDragMonthlyCents)} icon={TrendingDown} />
-        <KPITile label="Utilization" value={`${profile.utilizationPercent.toFixed(0)}%`} icon={BarChart3} />
-        <KPITile label="DTI Ratio" value={`${profile.debtToIncomeRatio.toFixed(0)}%`} icon={Target} />
-        <KPITile label="Credit Score" value={pulse.estimatedScore.toString()} icon={Shield}
-          trend={pulse.trend === "improving" ? "up" : pulse.trend === "declining" ? "down" : undefined} />
+      <HeroCard
+        title="DEBT, CREDIT & LIABILITY OFFICE"
+        metric={fmt(profile.totalDebtCents)}
+        subtitle={`${profile.accounts.length} accounts · ${fmt(profile.interestDragMonthlyCents)}/mo interest drag`}
+        accentFrom="hsl(38 85% 58%)"
+        accentTo="hsl(0 70% 55%)"
+        icon={<CreditCard className="h-5 w-5 text-[hsl(38_85%_58%)]" />}
+      />
+
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+        <StatusCard label="Total Debt" status="degraded" lastChecked={fmt(profile.totalDebtCents)} icon={<CreditCard className="h-3.5 w-3.5" />} />
+        <StatusCard label="Interest Drag" status="down" lastChecked={`${fmt(profile.interestDragMonthlyCents)}/mo`} icon={<TrendingDown className="h-3.5 w-3.5" />} />
+        <StatusCard label="Utilization" status={profile.utilizationPercent > 30 ? "degraded" : "healthy"} lastChecked={`${profile.utilizationPercent.toFixed(0)}%`} icon={<BarChart3 className="h-3.5 w-3.5" />} />
+        <StatusCard label="DTI Ratio" status={profile.debtToIncomeRatio > 40 ? "degraded" : "healthy"} lastChecked={`${profile.debtToIncomeRatio.toFixed(0)}%`} icon={<Target className="h-3.5 w-3.5" />} />
+        <StatusCard label="Credit Score" status={pulse.trend === "improving" ? "healthy" : pulse.trend === "declining" ? "down" : "degraded"} lastChecked={String(pulse.estimatedScore)} icon={<Shield className="h-3.5 w-3.5" />} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Debt Accounts */}
-        <div className="lg:col-span-2 space-y-4">
-          <SitaSectionHeader title="Debt Accounts" />
+        <div className="lg:col-span-2 space-y-3">
           {profile.accounts.map(a => (
-            <SitaCard key={a.id} hover className="p-4">
+            <div key={a.id} className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift">
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
-                  <CreditCard className="h-4 w-4 text-amber-500" />
+                  <CreditCard className="h-4 w-4 text-[hsl(38_85%_58%)]" />
                   <div>
                     <p className="font-display text-sm font-semibold">{a.name}</p>
                     <p className="text-xs text-muted-foreground">{a.institution} · {a.type.replace("-", " ")}</p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="font-display text-sm font-bold text-amber-500">{fmt(a.balanceCents)}</p>
+                  <p className="font-display text-sm font-bold text-[hsl(38_85%_58%)]">{fmt(a.balanceCents)}</p>
                   <p className="text-xs text-muted-foreground">{a.interestRate}% APR</p>
                 </div>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
-                <div>
-                  <p className="text-muted-foreground">Min Payment</p>
-                  <p className="font-semibold">{fmt(a.minimumPaymentCents)}/mo</p>
-                </div>
-                <div>
-                  <p className="text-muted-foreground">Interest/mo</p>
-                  <p className="font-semibold text-red-500">{fmt(a.monthlyInterestCents)}</p>
-                </div>
-                <div>
-                  <p className="text-muted-foreground">Utilization</p>
-                  <p className="font-semibold">{a.utilizationPercent.toFixed(0)}%</p>
-                </div>
+              <div className="grid grid-cols-3 gap-2 text-xs">
+                <div><p className="text-muted-foreground">Min Payment</p><p className="font-semibold">{fmt(a.minimumPaymentCents)}/mo</p></div>
+                <div><p className="text-muted-foreground">Interest/mo</p><p className="font-semibold text-[hsl(0_70%_55%)]">{fmt(a.monthlyInterestCents)}</p></div>
+                <div><p className="text-muted-foreground">Utilization</p><p className="font-semibold">{a.utilizationPercent.toFixed(0)}%</p></div>
               </div>
-              <div className="mt-2 h-1.5 bg-muted rounded-full overflow-hidden">
-                <div className={`h-full rounded-full ${a.utilizationPercent > 50 ? "bg-red-500" : a.utilizationPercent > 30 ? "bg-amber-500" : "bg-emerald-500"}`}
+              <div className="mt-2 h-1.5 bg-[hsl(0_0%_100%/0.06)] rounded-full overflow-hidden">
+                <div className={`h-full rounded-full ${a.utilizationPercent > 50 ? "bg-[hsl(0_70%_55%)]" : a.utilizationPercent > 30 ? "bg-[hsl(38_85%_58%)]" : "bg-[hsl(152_55%_48%)]"}`}
                   style={{ width: `${Math.min(100, a.utilizationPercent)}%` }} />
               </div>
-              <div className="flex items-center gap-2 mt-2">
-                {a.isAutoPay && <span className="inline-flex items-center gap-1 text-xs text-trust-verified"><CheckCircle className="h-3 w-3" /> AutoPay</span>}
-                <span className="text-xs text-muted-foreground">Due: {new Date(a.dueDate).toLocaleDateString()}</span>
-              </div>
-            </SitaCard>
+              {a.isAutoPay && (
+                <span className="inline-flex items-center gap-1 text-xs text-[hsl(152_55%_48%)] mt-2"><CheckCircle className="h-3 w-3" /> AutoPay</span>
+              )}
+            </div>
           ))}
 
-          {/* Payoff Strategy */}
-          <SitaSectionHeader title="Payoff Strategy" />
-          <SitaCard hover={false} className="p-4 space-y-4">
+          {/* Strategy */}
+          <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 space-y-3">
             <div className="flex gap-2">
               {(["avalanche", "snowball"] as const).map(s => (
-                <SitaButton key={s} variant={strategy === s ? "accent" : "ghost"} size="sm" onClick={() => setStrategy(s)}>
+                <button key={s} onClick={() => setStrategy(s)}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-medium micro-press ${strategy === s ? "bg-primary text-primary-foreground" : "bg-[hsl(0_0%_100%/0.06)] text-[hsl(0_0%_70%)]"}`}>
                   {s === "avalanche" ? "🏔️ Avalanche" : "⛄ Snowball"}
-                </SitaButton>
+                </button>
               ))}
             </div>
-            <div className="text-xs text-muted-foreground">
-              {strategy === "avalanche" ? "Pays highest interest first — saves the most money" : "Pays smallest balance first — fastest psychological wins"}
+            <div className="grid grid-cols-2 gap-4 text-sm">
+              <div><p className="text-muted-foreground text-xs">Projected Payoff</p><p className="font-display font-bold">{profile.payoffPlan.projectedMonths} months</p></div>
+              <div><p className="text-muted-foreground text-xs">Interest Saved</p><p className="font-display font-bold text-[hsl(152_55%_48%)]">{fmt(profile.payoffPlan.totalInterestSavedCents)}</p></div>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-              <div>
-                <p className="text-muted-foreground text-xs">Projected Payoff</p>
-                <p className="font-display font-bold">{profile.payoffPlan.projectedMonths} months</p>
-              </div>
-              <div>
-                <p className="text-muted-foreground text-xs">Interest Saved</p>
-                <p className="font-display font-bold text-trust-verified">{fmt(profile.payoffPlan.totalInterestSavedCents)}</p>
-              </div>
-            </div>
-
-            {/* Payoff milestones */}
-            <div className="space-y-2">
-              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Payoff Timeline</p>
-              {profile.payoffPlan.milestones.slice(0, 4).map((m, i) => (
-                <div key={m.accountId} className="flex items-center gap-2 text-xs">
-                  <div className="w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">{i + 1}</div>
-                  <span className="font-semibold">{m.accountName}</span>
-                  <span className="text-muted-foreground">— {new Date(m.payoffDate).toLocaleDateString(undefined, { month: "short", year: "numeric" })}</span>
-                  <span className="ml-auto text-red-500">-{fmt(m.interestPaidCents)} interest</span>
-                </div>
-              ))}
-            </div>
-            <TrustBadge level="verified" />
-          </SitaCard>
+          </div>
         </div>
 
-        {/* Credit Score + Advisor */}
         <div className="space-y-4">
-          <SitaSectionHeader title="Credit Score Pulse" />
-          <SitaCard hover={false} className="p-4">
-            <div className="text-center mb-4">
-              <p className="font-display text-2xl sm:text-4xl font-bold">{pulse.estimatedScore}</p>
-              <p className={`text-xs font-semibold ${pulse.trend === "improving" ? "text-trust-verified" : pulse.trend === "declining" ? "text-red-500" : "text-muted-foreground"}`}>
-                {pulse.trend === "improving" ? "↑ Improving" : pulse.trend === "declining" ? "↓ Declining" : "→ Stable"}
-              </p>
-            </div>
-            <div className="space-y-3">
-              {pulse.factors.map(f => (
-                <div key={f.name} className="flex items-center justify-between text-xs">
-                  <span>{f.name}</span>
-                  <span className={`font-semibold ${f.impact === "positive" ? "text-trust-verified" : f.impact === "negative" ? "text-red-500" : "text-muted-foreground"}`}>
-                    {f.impact === "positive" ? "✓" : f.impact === "negative" ? "✗" : "—"} {f.description.split("—")[0]}
-                  </span>
-                </div>
-              ))}
-            </div>
-            <ConfidenceBar value={Math.round(0.78 * 100)} label="Score confidence" className="mt-3" />
-          </SitaCard>
+          <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 text-center">
+            <p className="font-display text-3xl font-bold">{pulse.estimatedScore}</p>
+            <p className={`text-xs font-semibold ${pulse.trend === "improving" ? "text-[hsl(152_55%_48%)]" : pulse.trend === "declining" ? "text-[hsl(0_70%_55%)]" : "text-muted-foreground"}`}>
+              {pulse.trend === "improving" ? "↑ Improving" : pulse.trend === "declining" ? "↓ Declining" : "→ Stable"}
+            </p>
+          </div>
 
-          <LiveAdvisorCard
-            advisor="money"
-            intent="debt_strategy"
-            context={{ total_debt: profile.totalDebtCents / 100, utilization: profile.utilizationPercent, dti: profile.debtToIncomeRatio }}
-            demoName="Debt Advisor"
-            demoRole="Debt & Credit Intelligence"
-            demoConfidence="High"
-            demoRecommendation={`Focus on ${profile.payoffPlan.milestones[0]?.accountName || "highest rate"} first. Current interest drag is ${fmt(profile.interestDragMonthlyCents)}/mo.`}
-            demoReasoning="Avalanche strategy saves the most in interest. Utilization under 30% supports credit score growth."
+          <ModuleAdvisorInsight
+            advisorName="Debt Advisor"
+            domain="finance"
+            insight={`Focus on ${profile.payoffPlan.milestones[0]?.accountName || "highest rate"} first. Current interest drag is ${fmt(profile.interestDragMonthlyCents)}/mo.`}
+            confidence={88}
+            actions={[{ label: "View Plan", onClick: () => {} }]}
           />
 
-          <SitaCard hover={false} className="p-4 gradient-sita-subtle">
+          <div className="rounded-xl border border-[hsl(38_85%_58%/0.2)] bg-[hsl(38_85%_58%/0.05)] p-4">
             <div className="flex items-center gap-2 mb-2">
-              <AlertTriangle className="h-4 w-4 text-amber-500" />
-              <SitaCardTitle>Interest Drag Alert</SitaCardTitle>
+              <AlertTriangle className="h-4 w-4 text-[hsl(38_85%_58%)]" />
+              <h3 className="text-sm font-semibold">Interest Drag Alert</h3>
             </div>
             <p className="text-xs text-muted-foreground">
-              You're paying <span className="font-bold text-red-500">{fmt(profile.interestDragMonthlyCents)}/month</span> in interest alone.
+              You're paying <span className="font-bold text-[hsl(0_70%_55%)]">{fmt(profile.interestDragMonthlyCents)}/month</span> in interest alone.
               That's <span className="font-bold">{fmt(profile.interestDragMonthlyCents * 12)}/year</span> going to lenders.
             </p>
-          </SitaCard>
+          </div>
         </div>
       </div>
     </motion.div>
