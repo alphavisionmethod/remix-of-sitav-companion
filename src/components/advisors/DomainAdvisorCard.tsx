@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
 import type { LucideIcon } from "lucide-react";
 
-type DomainId = "business" | "finance" | "concierge";
+type DomainId = "business" | "finance" | "concierge" | "files" | "trust";
 
 interface AdvisorInsight {
   id: string;
@@ -57,6 +57,22 @@ const advisorConfig: Record<DomainId, {
     accentFrom: "hsl(285 55% 55%)",
     accentTo: "hsl(310 50% 48%)",
     tone: "Supportive, relief-oriented help",
+  },
+  files: {
+    name: "Files Advisor",
+    specialty: "Document intelligence & organization",
+    icon: Brain,
+    accentFrom: "hsl(220 15% 55%)",
+    accentTo: "hsl(230 15% 45%)",
+    tone: "Precise, organized guidance",
+  },
+  trust: {
+    name: "Trust Advisor",
+    specialty: "System integrity & governance",
+    icon: Shield,
+    accentFrom: "hsl(35 75% 55%)",
+    accentTo: "hsl(25 70% 48%)",
+    tone: "Serious, inspectable oversight",
   },
 };
 
