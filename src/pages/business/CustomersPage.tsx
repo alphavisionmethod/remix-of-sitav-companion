@@ -29,6 +29,7 @@ import { RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { CrossAppAction } from "@/components/sita/CrossAppAction";
 
 type Customer = MockCustomer;
 type Tab = "all" | "active" | "at-risk" | "new" | "inactive";

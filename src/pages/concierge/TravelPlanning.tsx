@@ -1,6 +1,7 @@
 import { HeroCard, QueueCard, TimelineCard, StatusCard, AdvisorCard } from "@/components/sita/cards";
 import { FreshnessBadge } from "@/components/sita/badges";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { CrossAppAction } from "@/components/sita/CrossAppAction";
 import { SitaTabs, SectionHeader } from "@/components/sita/SitaComponents";
 import { TripCard, PrepCard } from "@/components/sita/HouseholdComponents";
 import { ConciergePageWrapper, ConciergeEmptyState, TravelReadinessCard, ReservationStatusCard, ConciergeAdvisorInsightCard } from "@/components/concierge";

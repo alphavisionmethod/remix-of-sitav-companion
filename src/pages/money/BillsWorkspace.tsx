@@ -23,6 +23,7 @@ import { AppSurface } from "@/components/sita/surfaces/AppSurface";
 import { ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransitions";
 import { cn } from "@/lib/utils";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { CrossAppAction } from "@/components/sita/CrossAppAction";
 
 interface BillForm {
   payee: string;

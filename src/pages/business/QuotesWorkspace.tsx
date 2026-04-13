@@ -12,6 +12,7 @@ import { SplitWorkspace } from "@/components/sita/surfaces/SplitWorkspace";
 import { AppSurface } from "@/components/sita/surfaces/AppSurface";
 import { SitaTabs } from "@/components/sita/SitaComponents";
 import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
+import { CrossAppAction } from "@/components/sita/CrossAppAction";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAction } from "@/hooks/use-action";
