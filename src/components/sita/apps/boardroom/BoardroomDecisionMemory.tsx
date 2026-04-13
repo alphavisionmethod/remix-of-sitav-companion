@@ -146,7 +146,7 @@ export function BoardroomDecisionMemory() {
         <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[hsl(280_50%_65%/0.5)] mb-3 flex items-center gap-1.5">
           <Award size={11} /> Advisor Accuracy Tracker
         </p>
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
           {ADVISOR_ACCURACY.sort((a, b) => b.accuracy - a.accuracy).map((adv, i) => (
             <motion.div
               key={adv.name}
@@ -284,7 +284,7 @@ export function BoardroomDecisionMemory() {
                                 {isReplaying ? "Close Replay" : "Replay Session"}
                               </button>
                             </div>
-                            <div className="grid grid-cols-4 gap-3">
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                               {[
                                 { label: "Scope", value: dec.sessionSnapshot.scope },
                                 { label: "Advisors", value: `${dec.sessionSnapshot.advisorsPresent} present` },

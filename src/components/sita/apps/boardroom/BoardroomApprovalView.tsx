@@ -10,6 +10,7 @@ import {
   ExecutionChainTimeline, buildDefaultChain,
 } from "@/components/sita/primitives";
 import { useBoardroomData } from "@/hooks/use-boardroom-data";
+import { useBoardroomLiveData } from "@/hooks/useBoardroomLiveData";
 
 interface Props {
   scope: "global" | "business" | "finance" | "concierge";
@@ -245,6 +246,7 @@ function PostApprovalClosure({ receipt, onDismiss }: { receipt: { title: string;
 
 export function BoardroomApprovalView({ scope, onNavigate }: Props) {
   const { pendingApprovals } = useBoardroomData();
+  const { createReceipt, createActionItem, isDemoMode } = useBoardroomLiveData();
   const [generatedReceipt, setGeneratedReceipt] = useState<null | { title: string; hash: string; time: string }>(null);
   const [showSignature, setShowSignature] = useState(false);
   const [showSealStamp, setShowSealStamp] = useState(false);
@@ -258,6 +260,21 @@ export function BoardroomApprovalView({ scope, onNavigate }: Props) {
         setShowSealStamp(false);
         const hash = `0x${Math.random().toString(16).slice(2, 6)}…${Math.random().toString(16).slice(2, 6)}`;
         setGeneratedReceipt({ title, hash, time: new Date().toLocaleString() });
+
+        // Persist receipt to database
+        createReceipt.mutate({
+          approved_motion: title,
+          rationale_summary: `Approved via Boardroom session — ${scope} scope`,
+          expected_outcome: "Follow-up review in 7 days",
+        });
+
+        // Create follow-through action item
+        createActionItem.mutate({
+          summary: `Follow-through: ${title}`,
+          domain: scope === "global" ? "general" : scope,
+          advisor_id: "boardroom-system",
+          confidence: 0.85,
+        });
       }, 2000);
     }, 1300);
   };
