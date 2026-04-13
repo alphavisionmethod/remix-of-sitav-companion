@@ -152,7 +152,7 @@ const ConciergeCenter = () => {
       </CenterSection>
       <CenterSection>
         {isMobile ? (
-          <MobileTabSelector active={activePage} onChange={goTo} />
+          <MobileTabSelector active={activePage} onChange={goTo} tabGroups={TAB_GROUPS} />
         ) : (
           <motion.div
             className="overflow-x-auto -mx-2 px-2"
