@@ -152,6 +152,57 @@ export type Database = {
         }
         Relationships: []
       }
+      ai_inference_receipts: {
+        Row: {
+          capability_id: string | null
+          cost_estimate_cents: number | null
+          created_at: string | null
+          id: string
+          input_tokens: number | null
+          latency_ms: number | null
+          model: string
+          output_tokens: number | null
+          prompt_family: string | null
+          provider: string | null
+          route_reason: string | null
+          status: string | null
+          user_id: string
+          verification_outcome: string | null
+        }
+        Insert: {
+          capability_id?: string | null
+          cost_estimate_cents?: number | null
+          created_at?: string | null
+          id?: string
+          input_tokens?: number | null
+          latency_ms?: number | null
+          model: string
+          output_tokens?: number | null
+          prompt_family?: string | null
+          provider?: string | null
+          route_reason?: string | null
+          status?: string | null
+          user_id: string
+          verification_outcome?: string | null
+        }
+        Update: {
+          capability_id?: string | null
+          cost_estimate_cents?: number | null
+          created_at?: string | null
+          id?: string
+          input_tokens?: number | null
+          latency_ms?: number | null
+          model?: string
+          output_tokens?: number | null
+          prompt_family?: string | null
+          provider?: string | null
+          route_reason?: string | null
+          status?: string | null
+          user_id?: string
+          verification_outcome?: string | null
+        }
+        Relationships: []
+      }
       ai_workforce_approval_queue: {
         Row: {
           cost_implications: string | null
@@ -1083,6 +1134,69 @@ export type Database = {
         }
         Relationships: []
       }
+      connector_oauth_flows: {
+        Row: {
+          completed_at: string | null
+          created_at: string | null
+          id: string
+          provider: string
+          scopes: string[] | null
+          status: string | null
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          provider: string
+          scopes?: string[] | null
+          status?: string | null
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string | null
+          id?: string
+          provider?: string
+          scopes?: string[] | null
+          status?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      connector_sync_runs: {
+        Row: {
+          completed_at: string | null
+          connector: string
+          created_at: string | null
+          id: string
+          records_synced: number | null
+          started_at: string | null
+          status: string | null
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          connector: string
+          created_at?: string | null
+          id?: string
+          records_synced?: number | null
+          started_at?: string | null
+          status?: string | null
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          connector?: string
+          created_at?: string | null
+          id?: string
+          records_synced?: number | null
+          started_at?: string | null
+          status?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       flagship_loops: {
         Row: {
           blocker_count: number
@@ -1273,6 +1387,48 @@ export type Database = {
           name?: string
           status?: string | null
           updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      notification_delivery_receipts: {
+        Row: {
+          channel: string | null
+          created_at: string | null
+          delivered_at: string | null
+          failure_reason: string | null
+          id: string
+          latency_ms: number | null
+          notification_id: string | null
+          platform: string | null
+          sent_at: string | null
+          status: string | null
+          user_id: string
+        }
+        Insert: {
+          channel?: string | null
+          created_at?: string | null
+          delivered_at?: string | null
+          failure_reason?: string | null
+          id?: string
+          latency_ms?: number | null
+          notification_id?: string | null
+          platform?: string | null
+          sent_at?: string | null
+          status?: string | null
+          user_id: string
+        }
+        Update: {
+          channel?: string | null
+          created_at?: string | null
+          delivered_at?: string | null
+          failure_reason?: string | null
+          id?: string
+          latency_ms?: number | null
+          notification_id?: string | null
+          platform?: string | null
+          sent_at?: string | null
+          status?: string | null
           user_id?: string
         }
         Relationships: []
