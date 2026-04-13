@@ -142,7 +142,7 @@ const DebateCard = ({
       </div>
     </div>
 
-    <ConfidenceBar value={advisor.confidence} height="sm" />
+    <ConfidenceBar value={advisor.confidence} size="sm" />
 
     <p className="text-xs text-foreground/80 leading-relaxed">{position}</p>
 

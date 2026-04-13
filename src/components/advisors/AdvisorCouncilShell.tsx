@@ -188,7 +188,7 @@ const AdvisorCouncilCard = ({ advisor, onClick }: { advisor: AdvisorConfig; onCl
           <span className="text-[10px] text-muted-foreground">Confidence</span>
           <AnimatedCounter value={advisor.confidence} />
         </div>
-        <ConfidenceBar value={advisor.confidence} height="sm" />
+        <ConfidenceBar value={advisor.confidence} size="sm" />
       </div>
 
       {advisor.specialAbility && (
