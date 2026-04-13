@@ -118,6 +118,23 @@ const NAV_ITEMS = [
   { label: "AIG: Launch Truth Detail", path: "/admin/aig/launch-truth-detail", icon: Eye, group: "Sovereign AI Gateway" },
   { label: "AIG: Degraded Diagnostics", path: "/admin/aig/degraded", icon: AlertTriangle, group: "Sovereign AI Gateway" },
   { label: "AIG: Runtime Verification", path: "/admin/aig/runtime-verification", icon: Shield, group: "Sovereign AI Gateway" },
+  // ── Recommendation Closure ──
+  { label: "REX01: Recommendation Intelligence", path: "/admin/rex/intelligence", icon: Brain, group: "Recommendation Closure" },
+  { label: "REX02: Approval Queue", path: "/admin/rex/approval-queue", icon: Shield, group: "Recommendation Closure" },
+  { label: "REX03: Execution Board", path: "/admin/rex/execution", icon: Zap, group: "Recommendation Closure" },
+  { label: "REX04: Remediation Programs", path: "/admin/rex/programs", icon: Layers, group: "Recommendation Closure" },
+  { label: "REX05: Outcome Verification", path: "/admin/rex/outcomes", icon: Target, group: "Recommendation Closure" },
+  // ── Service Architecture ──
+  { label: "SERV01: Service Ownership", path: "/admin/services/ownership", icon: Crown, group: "Service Architecture" },
+  { label: "SERV02: Domain Ownership", path: "/admin/services/domains", icon: Database, group: "Service Architecture" },
+  { label: "SERV03: Route-Service Trace", path: "/admin/services/route-trace", icon: GitBranch, group: "Service Architecture" },
+  { label: "SERV04: Service Duplication", path: "/admin/services/duplication", icon: Search, group: "Service Architecture" },
+  { label: "SERV05: Canonical Actions", path: "/admin/services/canonical-actions", icon: Target, group: "Service Architecture" },
+  { label: "SERV06: Flagship Traceability", path: "/admin/services/flagship-trace", icon: Layers, group: "Service Architecture" },
+  // ── Flagship Loops ──
+  { label: "FL01: Flagship Executive Board", path: "/admin/flagship/executive", icon: Target, group: "Flagship Loops" },
+  { label: "FL02: Flagship Loop Detail", path: "/admin/flagship/detail", icon: Eye, group: "Flagship Loops" },
+  { label: "FL03: Flagship Prioritization", path: "/admin/flagship/prioritization", icon: BarChart3, group: "Flagship Loops" },
 ];
 
 const ACTION_ITEMS = [

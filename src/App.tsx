@@ -536,6 +536,7 @@ const REX05OutcomeVerification = lazy(() => import("./pages/admin/REX05OutcomeVe
 // ── FL: Flagship Loops ──
 const FL01FlagshipLoopsExecutive = lazy(() => import("./pages/admin/FL01FlagshipLoopsExecutive"));
 const FL02FlagshipLoopDetail = lazy(() => import("./pages/admin/FL02FlagshipLoopDetail"));
+const FL03FlagshipPrioritization = lazy(() => import("./pages/admin/FL03FlagshipPrioritization"));
 
 // ── SERV: Service Ownership & Traceability ──
 const SERV01ServiceOwnership = lazy(() => import("./pages/admin/SERV01ServiceOwnership"));
@@ -1761,6 +1762,7 @@ const App = () => (
                      {/* FL — Flagship Loops */}
                      <Route path="/admin/flagship/executive" element={<FL01FlagshipLoopsExecutive />} />
                      <Route path="/admin/flagship/detail" element={<FL02FlagshipLoopDetail />} />
+                     <Route path="/admin/flagship/prioritization" element={<FL03FlagshipPrioritization />} />
                      {/* SERV — Service Ownership & Traceability */}
                      <Route path="/admin/services/ownership" element={<SERV01ServiceOwnership />} />
                      <Route path="/admin/services/domains" element={<SERV02DomainOwnership />} />
