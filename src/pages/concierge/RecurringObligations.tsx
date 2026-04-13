@@ -176,7 +176,7 @@ const RecurringObligations = () => {
 function RecurringItemCard({ item }: { item: RecurringItem }) {
   const style = statusStyle[item.status];
   return (
-    <SitaCard className={`p-4 border ${style.bg}`}>
+    <div className={`rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift ${style.bg}`}>
       <div className="flex items-start gap-3">
         <div className={`h-2.5 w-2.5 rounded-full mt-1 shrink-0 ${style.dot}`} />
         <div className="flex-1 min-w-0 space-y-1">
