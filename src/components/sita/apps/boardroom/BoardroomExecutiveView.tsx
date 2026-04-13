@@ -3,10 +3,11 @@ import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import {
   AlertTriangle, ArrowUpRight, ArrowDownRight, Minus,
-  Briefcase, DollarSign, Users, Sparkles, FileCheck, Play, Clock, Zap,
+  Briefcase, DollarSign, Users, Sparkles, FileCheck, Play, Clock, Zap, MessageCircle,
 } from "lucide-react";
 import { ConfidenceBar, ExecutionChainTimeline, buildDefaultChain } from "@/components/sita/primitives";
 import { EvidenceChain, type EvidenceNode } from "@/components/sita/primitives/EvidenceChain";
+import { getAdvisorRoster } from "@/lib/advisor-topology";
 
 interface Props {
   scope: "global" | "business" | "finance" | "concierge";
@@ -260,6 +261,58 @@ export function BoardroomExecutiveView({ scope, onNavigate }: Props) {
               </button>
             </div>
           </motion.div>
+
+          {/* Advisor Voices Strip */}
+          <div className="mt-4">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[hsl(280_50%_65%/0.5)] mb-3 flex items-center gap-1.5">
+              <MessageCircle size={11} /> Advisor Voices
+            </p>
+            <div className="flex gap-3 overflow-x-auto pb-1">
+              {(() => {
+                const domain = active?.domain || "business";
+                const roster = getAdvisorRoster(domain);
+                const stances: Record<string, string> = {
+                  "biz-revenue": "Collections are critical — $18.5K at risk",
+                  "biz-relationship": "Protect top-tier relationships first",
+                  "biz-collections": "TechCorp needs personal outreach",
+                  "fin-obligations": "Defer non-essential subscriptions",
+                  "fin-reserve": "Reserves are dangerously low",
+                  "fin-spending": "Investigate AWS billing spike",
+                  "con-travel": "NYC logistics package ready to approve",
+                  "con-lifeadmin": "School enrollment deadline approaching",
+                  "con-prep": "All prep items cleared",
+                };
+                return roster.advisors.slice(0, 3).map((adv, i) => (
+                  <motion.button
+                    key={adv.id}
+                    type="button"
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 + i * 0.06 }}
+                    onClick={() => onNavigate("synthesis")}
+                    className="flex-shrink-0 w-[200px] rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] p-3 hover:bg-[hsl(0_0%_100%/0.04)] hover:border-[hsl(0_0%_100%/0.1)] transition-all text-left group"
+                  >
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-sm">{adv.emoji}</span>
+                      <div className="min-w-0">
+                        <p className="text-[10px] font-bold text-[hsl(0_0%_100%/0.7)] truncate">{adv.name}</p>
+                        <p className="text-[9px]" style={{ color: adv.accentColor }}>{adv.role}</p>
+                      </div>
+                      <div className="ml-auto flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[hsl(var(--trust-safe))] animate-pulse" />
+                      </div>
+                    </div>
+                    <div className="rounded-md bg-[hsl(0_0%_100%/0.02)] border border-[hsl(0_0%_100%/0.04)] p-2">
+                      <p className="text-[10px] text-[hsl(0_0%_100%/0.5)] italic leading-relaxed flex items-start gap-1">
+                        <MessageCircle size={8} className="shrink-0 mt-0.5 text-[hsl(280_50%_55%/0.4)]" />
+                        {stances[adv.id] || adv.specialty}
+                      </p>
+                    </div>
+                  </motion.button>
+                ));
+              })()}
+            </div>
+          </div>
 
           {/* Evidence Chain */}
           <div className="mt-4">

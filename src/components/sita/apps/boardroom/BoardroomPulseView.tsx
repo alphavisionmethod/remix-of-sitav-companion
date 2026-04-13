@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { Briefcase, DollarSign, Users, TrendingUp, TrendingDown, AlertTriangle } from "lucide-react";
+import { Briefcase, DollarSign, Users, TrendingUp, TrendingDown, AlertTriangle, MessageCircle } from "lucide-react";
 import { ConfidenceBar, AdvisorAvatar } from "@/components/sita/primitives";
 import { useBoardroomData } from "@/hooks/use-boardroom-data";
+import { getAdvisorRoster } from "@/lib/advisor-topology";
 
 interface Props {
   scope: "global" | "business" | "finance" | "concierge";
@@ -161,28 +162,49 @@ export function BoardroomPulseView({ scope, onNavigate }: Props) {
         </div>
       </div>
 
-      {/* Advisor stances */}
+      {/* Advisor stances from topology */}
       <div>
         <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[hsl(280_50%_65%/0.5)] mb-3">
           Advisor Stances
         </p>
         <div className="space-y-2">
-          {data.advisors.map((adv, i) => (
-            <motion.div
-              key={adv.name}
-              initial={{ opacity: 0, x: -8 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.3 + i * 0.05 }}
-              className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] p-4 flex items-start gap-3"
-            >
-              <AdvisorAvatar domain={adv.domain} size="sm" />
-              <div className="flex-1 min-w-0">
-                <p className="text-[11px] font-semibold text-[hsl(0_0%_100%/0.7)] mb-0.5">{adv.name}</p>
-                <p className="text-[12px] text-[hsl(0_0%_100%/0.5)] italic">"{adv.stance}"</p>
-              </div>
-              <ConfidenceBar value={adv.confidence} size="sm" showValue className="w-20 shrink-0" />
-            </motion.div>
-          ))}
+          {(() => {
+            const roster = getAdvisorRoster(domain);
+            return roster.advisors.slice(0, 4).map((topAdv, i) => {
+              const stance = data.advisors.find(a => a.name === topAdv.name)?.stance
+                || data.advisors[i % data.advisors.length]?.stance
+                || topAdv.specialty;
+              const conf = data.advisors.find(a => a.name === topAdv.name)?.confidence
+                || data.advisors[i % data.advisors.length]?.confidence
+                || 70;
+              return (
+                <motion.button
+                  key={topAdv.id}
+                  type="button"
+                  initial={{ opacity: 0, x: -8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.3 + i * 0.05 }}
+                  onClick={() => onNavigate("synthesis")}
+                  className="w-full rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] p-4 flex items-start gap-3 text-left hover:bg-[hsl(0_0%_100%/0.04)] hover:border-[hsl(0_0%_100%/0.1)] transition-all"
+                >
+                  <span className="text-lg mt-0.5">{topAdv.emoji}</span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <p className="text-[12px] font-bold text-[hsl(0_0%_100%/0.8)]">{topAdv.name}</p>
+                      <span className="text-[9px] font-medium" style={{ color: topAdv.accentColor }}>{topAdv.role}</span>
+                    </div>
+                    <div className="rounded-md bg-[hsl(0_0%_100%/0.02)] border border-[hsl(0_0%_100%/0.04)] p-2">
+                      <p className="text-[11px] text-[hsl(0_0%_100%/0.5)] italic flex items-start gap-1">
+                        <MessageCircle size={9} className="shrink-0 mt-0.5 text-[hsl(280_50%_55%/0.4)]" />
+                        "{stance}"
+                      </p>
+                    </div>
+                  </div>
+                  <ConfidenceBar value={conf} size="sm" showValue className="w-20 shrink-0" />
+                </motion.button>
+              );
+            });
+          })()}
         </div>
       </div>
 

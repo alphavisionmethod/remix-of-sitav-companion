@@ -20,9 +20,9 @@ const BLOCKERS = [
 ];
 
 const MOCK_APPROVALS = [
-  { id: "ap1", title: "Initiate phased collections outreach", description: "Send segmented recovery messages to 3 overdue accounts. TechCorp gets personal outreach, others get standard follow-up.", riskLevel: "medium" as const },
-  { id: "ap2", title: "Defer Adobe CC subscription — $54/mo", description: "Pause Adobe Creative Cloud for 30 days to support reserve target. No active projects depend on it.", riskLevel: "low" as const },
-  { id: "ap3", title: "Approve NYC travel package — $1,840", description: "Flights, hotel (2 nights), restaurant reservations for Q2 client visit. All documents verified.", riskLevel: "high" as const },
+  { id: "ap1", title: "Initiate phased collections outreach", description: "Send segmented recovery messages to 3 overdue accounts. TechCorp gets personal outreach, others get standard follow-up.", riskLevel: "medium" as const, advisorEmoji: "📈", advisorName: "Revenue Advisor", advisorConfidence: 72 },
+  { id: "ap2", title: "Defer Adobe CC subscription — $54/mo", description: "Pause Adobe Creative Cloud for 30 days to support reserve target. No active projects depend on it.", riskLevel: "low" as const, advisorEmoji: "📋", advisorName: "Obligations Advisor", advisorConfidence: 78 },
+  { id: "ap3", title: "Approve NYC travel package — $1,840", description: "Flights, hotel (2 nights), restaurant reservations for Q2 client visit. All documents verified.", riskLevel: "high" as const, advisorEmoji: "✈️", advisorName: "Travel Advisor", advisorConfidence: 88 },
 ];
 
 const MOCK_SEALED = [
@@ -184,6 +184,14 @@ export function BoardroomApprovalView({ scope, onNavigate }: Props) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.06 }}
             >
+              {/* Advisor Recommendation Badge */}
+              <div className="flex items-center gap-2 mb-1.5 px-1">
+                <span className="text-sm">{ap.advisorEmoji}</span>
+                <span className="text-[10px] font-semibold text-[hsl(0_0%_100%/0.5)]">{ap.advisorName}</span>
+                <span className="text-[9px] text-[hsl(280_50%_65%/0.6)] font-medium">
+                  {ap.advisorConfidence}% confident
+                </span>
+              </div>
               <ApprovalGate
                 title={ap.title}
                 description={ap.description}
