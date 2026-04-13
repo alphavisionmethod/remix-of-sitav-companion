@@ -5,7 +5,7 @@ import { KPITile, SitaTabs, RiskCard } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { GlassCard } from "@/components/sita/PremiumPageComponents";
 import { BoardroomSection, OverloadCard } from "@/components/sita/HouseholdComponents";
-import { ConciergeAdvisorInsightCard } from "@/components/concierge";
+import { ConciergeAdvisorInsightCard, ConciergeEmptyState } from "@/components/concierge";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import {
@@ -13,6 +13,7 @@ import {
   Plane, ShoppingCart, GraduationCap, Wrench, Gift, Sparkles, Target, FileText, TrendingUp
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_carryover, DEMO_nextMoves, DEMO_priorities, DEMO_proofSummary, DEMO_scheduleConflicts } from "@/lib/demo-data/concierge";
 
@@ -31,12 +32,18 @@ type BoardroomView = "daily" | "weekly" | "school" | "shopping" | "travel" | "mo
 
 const FamilyBoardroom = () => {
   const [view, setView] = useState<BoardroomView>("daily");
+  const { isDemoMode } = useDataMode();
 
   return (
     <ConciergePageWrapper className="space-y-6">
       <DemoModeBadge />
       <SitaPageHeader title="Concierge Boardroom" subtitle="Calm periodic review — what changed, what's slipping, and what reduces friction most" />
 
+      {!isDemoMode && (
+        <ConciergeEmptyState domain="generic" title="No review data yet" description="Your boardroom will populate with insights once you start tracking tasks, events, and obligations across concierge surfaces." />
+      )}
+
+      {isDemoMode && (<>
       <SitaTabs
         tabs={[
           { key: "daily", label: "Daily Pulse" },
