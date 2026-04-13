@@ -245,6 +245,7 @@ const AIT08LaunchTruthPage = lazy(() => import("./pages/admin/AIT08LaunchTruthPa
 const AIRootCauseGraph = lazy(() => import("./pages/admin/AIRootCauseGraph"));
 const AIDesignDiffTheater = lazy(() => import("./pages/admin/AIDesignDiffTheater"));
 const AITimeMachine = lazy(() => import("./pages/admin/AITimeMachine"));
+const AdvisorAgentDashboard = lazy(() => import("./pages/admin/AdvisorAgentDashboard"));
 const AIAgentDebate = lazy(() => import("./pages/admin/AIAgentDebate"));
 const AISelfLearningLedger = lazy(() => import("./pages/admin/AISelfLearningLedger"));
 const AIChangePlanViewer = lazy(() => import("./pages/admin/AIChangePlanViewer"));
@@ -1751,6 +1752,7 @@ const App = () => (
                     <Route path="/admin/ai-team/setup" element={<AITSetupChecklist />} />
                     <Route path="/admin/ai-design-diffs" element={<AIDesignDiffTheater />} />
                     <Route path="/admin/ai-time-machine" element={<AITimeMachine />} />
+                    <Route path="/admin/advisor-agents" element={<AdvisorAgentDashboard />} />
                     <Route path="/admin/ai-agent-debate" element={<AIAgentDebate />} />
                     <Route path="/admin/ai-self-learning" element={<AISelfLearningLedger />} />
                      <Route path="/admin/ai-change-plans" element={<AIChangePlanViewer />} />

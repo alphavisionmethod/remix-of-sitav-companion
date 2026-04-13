@@ -14,6 +14,144 @@ export type Database = {
   }
   public: {
     Tables: {
+      advisor_action_queue: {
+        Row: {
+          action_type: string
+          advisor_id: string
+          approved_at: string | null
+          approved_by: string | null
+          confidence: number
+          created_at: string
+          domain: string
+          error_message: string | null
+          executed_at: string | null
+          id: string
+          payload: Json
+          receipt_hash: string | null
+          requires_approval: boolean
+          rollback_payload: Json | null
+          status: string
+          summary: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          action_type?: string
+          advisor_id: string
+          approved_at?: string | null
+          approved_by?: string | null
+          confidence?: number
+          created_at?: string
+          domain?: string
+          error_message?: string | null
+          executed_at?: string | null
+          id?: string
+          payload?: Json
+          receipt_hash?: string | null
+          requires_approval?: boolean
+          rollback_payload?: Json | null
+          status?: string
+          summary?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          action_type?: string
+          advisor_id?: string
+          approved_at?: string | null
+          approved_by?: string | null
+          confidence?: number
+          created_at?: string
+          domain?: string
+          error_message?: string | null
+          executed_at?: string | null
+          id?: string
+          payload?: Json
+          receipt_hash?: string | null
+          requires_approval?: boolean
+          rollback_payload?: Json | null
+          status?: string
+          summary?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      advisor_agents: {
+        Row: {
+          advisor_id: string
+          autonomy_level: number
+          budget_daily_tokens: number
+          confidence_threshold: number
+          created_at: string
+          display_name: string
+          domain: string
+          escalation_target: string
+          id: string
+          invocations_today: number
+          is_active: boolean
+          last_action_at: string | null
+          last_observation_at: string | null
+          maturity: string
+          max_invocations_per_hour: number
+          mission: string | null
+          personality: Json
+          scope_config: Json
+          special_ability: string | null
+          tokens_used_today: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          advisor_id: string
+          autonomy_level?: number
+          budget_daily_tokens?: number
+          confidence_threshold?: number
+          created_at?: string
+          display_name: string
+          domain?: string
+          escalation_target?: string
+          id?: string
+          invocations_today?: number
+          is_active?: boolean
+          last_action_at?: string | null
+          last_observation_at?: string | null
+          maturity?: string
+          max_invocations_per_hour?: number
+          mission?: string | null
+          personality?: Json
+          scope_config?: Json
+          special_ability?: string | null
+          tokens_used_today?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          advisor_id?: string
+          autonomy_level?: number
+          budget_daily_tokens?: number
+          confidence_threshold?: number
+          created_at?: string
+          display_name?: string
+          domain?: string
+          escalation_target?: string
+          id?: string
+          invocations_today?: number
+          is_active?: boolean
+          last_action_at?: string | null
+          last_observation_at?: string | null
+          maturity?: string
+          max_invocations_per_hour?: number
+          mission?: string | null
+          personality?: Json
+          scope_config?: Json
+          special_ability?: string | null
+          tokens_used_today?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       ai_workforce_approval_queue: {
         Row: {
           cost_implications: string | null
