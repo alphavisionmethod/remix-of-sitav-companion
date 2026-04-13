@@ -383,7 +383,7 @@ export const AppSidebar = memo(function AppSidebar() {
             </SidebarGroupLabel>
           )}
           <SidebarGroupContent>
-            <AppNavGroup items={primaryNav} collapsed={collapsed} />
+            <AppNavGroup items={primaryNav} collapsed={collapsed} onSidebarContextMenu={handleSidebarContextMenu} />
           </SidebarGroupContent>
         </SidebarGroup>
 
@@ -395,7 +395,7 @@ export const AppSidebar = memo(function AppSidebar() {
             </SidebarGroupLabel>
           )}
           <SidebarGroupContent>
-            <AppNavGroup items={favoritesNav} collapsed={collapsed} />
+            <AppNavGroup items={favoritesNav} collapsed={collapsed} onSidebarContextMenu={handleSidebarContextMenu} />
           </SidebarGroupContent>
         </SidebarGroup>
 
