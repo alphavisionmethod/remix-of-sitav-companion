@@ -1,53 +1,56 @@
 
 
-# Phase 8: True App Isolation & Native Window Shells
+# Audit & Fix: Business, Finance, Concierge as True OS Apps
 
-## Problem
-Launching apps currently navigates via React Router, destroying the desktop and showing the global sidebar. Apps must instead open as self-contained windows within the OS compositor, with working close/minimize/maximize controls.
+## Issues Found
 
-## Changes
+1. **Maximize button broken**: The green traffic-light button in `FloatingWindow` calls `onMaximize` prop, but `DesktopSurface.tsx` never passes it. The window has internal double-click-to-maximize (snap to full screen), but the button does nothing.
 
-### 1. Create standalone app shell components (3 new files)
+2. **No `maximizeWindow` in `useWindowManager`**: The hook only has `minimizeWindow` and `restoreWindow`. There's no maximize state tracked, so even if we wire the button, there's no state to toggle.
 
-**`src/components/sita/apps/finance/FinanceAppShell.tsx`**
-Self-contained Finance OS with internal `useState`-based navigation. Sidebar with modules: Overview, Spending Pulse, Bills & Subs, Approvals. Each module renders a styled placeholder canvas. Uses emerald accent color scheme. No React Router.
+3. **Minimize works but restore is indirect**: Minimized windows disappear, and the dock shows a running indicator, but clicking the dock icon calls `launchApp` which re-focuses (correct). This works.
 
-**`src/components/sita/apps/business/BusinessAppShell.tsx`**
-Self-contained Business OS with internal navigation. Modules: CRM, Leads Pipeline, Quotes, Operations. Uses blue accent color scheme. Matches the reference screenshot layout (stat cards, money flow chart, recent activity). No React Router.
+4. **Close works**: `closeWindow` removes the window from state. Confirmed working.
 
-**`src/components/sita/apps/concierge/ConciergeAppShell.tsx`**
-Self-contained Concierge with internal navigation. Modules: Overview, Calendar, Tasks, Errands. Uses purple accent color scheme. No React Router.
+5. **App shells have internal sidebars**: The 3 app shells (Business, Finance, Concierge) each have their own internal sidebar for module navigation — this is correct per the user's request ("no side menu" from the OS, only the app's own sidebar).
 
-Each shell follows this structure:
-- Left sidebar (~200px) with module list, active state highlight with accent inset border
-- Top toolbar showing current module name
-- Main content area with placeholder canvas
-- Full height, fills the window body
+6. **Height not stored**: `WindowConfig` has no explicit `height` — windows auto-size. When maximized, we need explicit full-viewport dimensions.
 
-### 2. Register apps in the window launcher (`ShellWindowLayer.tsx`)
+## Plan
 
-Add imports for all 3 shells and register them in `APP_REGISTRY`:
-- `"finance"` / `"money"` → FinanceAppShell, 1200px wide
-- `"business"` → BusinessAppShell, 1200px wide  
-- `"concierge"` → ConciergeAppShell, 1200px wide
+### Step 1: Add maximize state to `useWindowManager.ts`
 
-This ensures clicking dock icons spawns windowed apps instead of navigating.
+- Add `maximized: boolean` to `WindowState`
+- Add `maximizeWindow(id)` function that toggles `maximized`
+- Track pre-maximize position/size for restore
+- Export `maximizeWindow` from the hook
 
-### 3. Prevent dock from routing (`DesktopDock.tsx`)
+### Step 2: Wire maximize in `FloatingWindow.tsx`
 
-Update click handlers for business/finance/concierge dock items to call `onLaunchApp` with `e.preventDefault()` and `e.stopPropagation()` instead of `navigate()`. Ensure buttons use `type="button"`.
+- Add `isMaximized` and `onMaximize` props handling
+- When `isMaximized` is true: position at `(0, 0)`, full viewport width/height, disable drag, hide snap zones
+- The green button toggles maximize on/off
+- Merge the existing double-click maximize logic with the prop-driven maximize
 
-### 4. Dock auto-hide behavior (`DesktopDock.tsx`)
+### Step 3: Wire maximize in `DesktopSurface.tsx`
 
-Add auto-hide mode: dock slides down off-screen after 3s of inactivity, reappears on mouse hover near bottom edge. Store preference in localStorage. Add a small settings toggle in the dock for "Always show" vs "Auto-hide".
+- Pass `onMaximize={() => windowManager?.maximizeWindow(w.id)}` and `isMaximized={w.maximized}` to each `FloatingWindow`
+
+### Step 4: Dock restore behavior
+
+- When clicking a dock icon for a maximized app, it should focus it (already works)
+- When clicking for a minimized app, it restores (already works via `openWindow` re-focus path)
+
+### Step 5: Verify all 3 app shells render correctly
+
+- Confirm `FinanceAppShell`, `BusinessAppShell`, `ConciergeAppShell` are registered in `APP_REGISTRY` with correct IDs (already confirmed — `finance`, `money`, `business`, `concierge`)
+- Confirm dock `OS_WINDOW_APPS` set includes all IDs (already confirmed)
 
 ## Files
 
-| File | Action |
+| File | Change |
 |------|--------|
-| `src/components/sita/apps/finance/FinanceAppShell.tsx` | **New** |
-| `src/components/sita/apps/business/BusinessAppShell.tsx` | **New** |
-| `src/components/sita/apps/concierge/ConciergeAppShell.tsx` | **New** |
-| `src/components/sita/shell/ShellWindowLayer.tsx` | Add 3 app registrations |
-| `src/components/sita/DesktopDock.tsx` | Prevent routing for core apps, add auto-hide |
+| `src/hooks/useWindowManager.ts` | Add `maximized` state, `maximizeWindow` function, pre-maximize memory |
+| `src/components/sita/shell/FloatingWindow.tsx` | Handle `isMaximized` prop — full-screen positioning, disable drag, toggle via green button |
+| `src/components/sita/shell/DesktopSurface.tsx` | Pass `onMaximize` and `isMaximized` to FloatingWindow |
 
