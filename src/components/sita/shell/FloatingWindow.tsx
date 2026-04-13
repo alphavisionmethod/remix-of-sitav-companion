@@ -329,6 +329,7 @@ export function FloatingWindow({
 
   const handlePointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
     if ((e.target as HTMLElement).closest("button")) return;
+    if (isMaximized) return; // Prevent drag when maximized
     onFocus?.();
     cancelAnimationFrame(rafId.current);
 
@@ -465,6 +466,12 @@ export function FloatingWindow({
   }, [snapZone, size.width, size.height, runInertia, windowId]);
 
   const handleDoubleClickTitle = useCallback(() => {
+    // Double-click title toggles maximize via the prop callback
+    if (onMaximize) {
+      onMaximize();
+      return;
+    }
+    // Fallback: internal snap toggle
     if (snappedTo) {
       if (preSnapState) {
         currentPos.current = { x: preSnapState.x, y: preSnapState.y };
@@ -482,7 +489,7 @@ export function FloatingWindow({
       setSnappedTo("top");
       SoundEngine.windowMaximize();
     }
-  }, [snappedTo, preSnapState, pos, size.width]);
+  }, [onMaximize, snappedTo, preSnapState, pos, size.width]);
 
   // Close with sound
   const handleClose = useCallback(() => {
@@ -671,7 +678,8 @@ export function FloatingWindow({
           if (windowId) WindowPerformanceMonitor.markWindowAnimComplete(windowId);
         }}
         className={cn(
-          "absolute overflow-hidden",
+          isMaximized ? "fixed inset-0" : "absolute overflow-hidden",
+          !isMaximized && "overflow-hidden",
           "backdrop-blur-2xl transition-[box-shadow,border-color,filter] duration-[120ms]",
           isFocused
             ? cn(
@@ -687,18 +695,22 @@ export function FloatingWindow({
               ),
           magnetSnapped && "ring-2 ring-[hsl(210_80%_60%/0.4)]",
           isDragging ? "cursor-grabbing" : "",
+          isMaximized && "!rounded-none",
           className
         )}
         style={{
-          // Transform-based positioning for GPU-composited drag (<16ms latency)
-          ...(isDragging
-            ? { left: 0, top: 0, transform: `translate3d(${pos.x}px, ${pos.y}px, 0)` }
-            : { left: pos.x, top: pos.y }),
-          width: size.width,
-          height: size.height || undefined,
-          zIndex: DEPTH_LAYERS.windows,
+          ...(isMaximized
+            ? { left: 0, top: 0, width: "100vw", height: "100vh", zIndex: DEPTH_LAYERS.windows + 10, borderRadius: 0 }
+            : {
+                ...(isDragging
+                  ? { left: 0, top: 0, transform: `translate3d(${pos.x}px, ${pos.y}px, 0)` }
+                  : { left: pos.x, top: pos.y }),
+                width: size.width,
+                height: size.height || undefined,
+                zIndex: DEPTH_LAYERS.windows,
+                borderRadius: APP_CHROME.cornerRadius,
+              }),
           willChange: isDragging ? "transform" : "auto",
-          borderRadius: APP_CHROME.cornerRadius,
           opacity: attentionOpacity,
           filter: isFocused
             ? `saturate(${attentionSaturation})`
@@ -718,7 +730,7 @@ export function FloatingWindow({
         <div
           className={cn(
             "flex items-center px-3 gap-2 select-none",
-            isDragging ? "cursor-grabbing" : "cursor-grab"
+            isDragging ? "cursor-grabbing" : (isMaximized ? "cursor-default" : "cursor-grab")
           )}
           style={{
             height: titleBarHeight,
@@ -815,7 +827,7 @@ export function FloatingWindow({
         )}
 
         {/* ── Content with progressive crossfade + error boundary + occlusion + throttling ── */}
-        <div className="overflow-auto" style={{ maxHeight: size.height ? size.height - totalChromeH - APP_CHROME.accentStripHeight : undefined }}>
+        <div className={cn("overflow-auto", isMaximized && "flex-1")} style={{ maxHeight: isMaximized ? undefined : (size.height ? size.height - totalChromeH - APP_CHROME.accentStripHeight : undefined) }}>
           {isOccluded ? (
             // Fully occluded — render minimal placeholder to save CPU
             <div style={{ minHeight: 100 }} />

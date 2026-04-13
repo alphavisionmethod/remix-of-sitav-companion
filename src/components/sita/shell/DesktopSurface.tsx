@@ -298,8 +298,10 @@ export function DesktopSurface({
                 originRect={w.originRect}
                 onClose={() => windowManager?.closeWindow(w.id)}
                 onMinimize={() => windowManager?.minimizeWindow(w.id)}
+                onMaximize={() => windowManager?.maximizeWindow(w.id)}
                 onFocus={() => windowManager?.focusWindow(w.id)}
                 isFocused={w.zIndex === maxZ}
+                isMaximized={w.maximized}
                 style={{ zIndex: 100 + w.zIndex }}
               >
                 {w.component}
