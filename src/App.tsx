@@ -36,6 +36,21 @@ const AdminCommandPaletteWrapper = forwardRef<HTMLDivElement>((_, ref) => <div r
 AdminCommandPaletteWrapper.displayName = "AdminCommandPaletteWrapper";
 const AdminKeyboardShortcutsWrapper = forwardRef<HTMLDivElement>((_, ref) => <div ref={ref}><AdminKeyboardShortcuts /></div>);
 AdminKeyboardShortcutsWrapper.displayName = "AdminKeyboardShortcutsWrapper";
+
+// Conditional admin tools — only render for admin users
+const ConditionalAdminTools = () => {
+  const { user, isDemo } = useAuth();
+  const [isAdmin, setIsAdmin] = useState(false);
+  useEffect(() => {
+    if (isDemo) { setIsAdmin(true); return; }
+    if (!user) return;
+    (supabase as any).rpc("has_role", { _user_id: user.id, _role: "admin" })
+      .then(({ data }: any) => setIsAdmin(!!data))
+      .catch(() => {});
+  }, [user, isDemo]);
+  if (!isAdmin) return null;
+  return <><AdminCommandPaletteWrapper /><AdminKeyboardShortcutsWrapper /></>;
+};
 const AdminShellLayout = () => <AdminShell><Outlet /></AdminShell>;
 const OwnerShellLayout = () => <OwnerWorkspaceShell><Outlet /></OwnerWorkspaceShell>;
 const RevenueOfficeModeLayout = () => <RevenueOfficeModeProvider><Outlet /></RevenueOfficeModeProvider>;
