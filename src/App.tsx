@@ -1,5 +1,7 @@
 import { QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes, Navigate, Outlet } from "react-router-dom";
+import { AdminRoute } from "@/components/auth/AdminRoute";
+import { getAdminRoutes } from "@/routes/AdminRoutes";
 import { getAdminRoutes } from "@/routes/AdminRoutes";
 
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -1046,9 +1048,9 @@ const App = () => (
                     {/* ═══════════════════════════════════════════════════════════════
                         TIER 4: ADMIN / BUILDER — Platform governance, /admin/* prefix
                         ~280 routes: AI Engineering, DRS, SAG, Automation, Launch, Security, etc.
-                       ═══════════════════════════════════════════════════════════════ */}
-                    {/* Admin — AI Runtime, DRS, Automation (wrapped in AdminShell) */}
-                    <Route element={<AdminShellLayout />}>
+                     ═══════════════════════════════════════════════════════════════ */}
+                    {/* Admin — AI Runtime, DRS, Automation (wrapped in AdminShell + AdminRoute) */}
+                    <Route element={<AdminRoute><AdminShellLayout /></AdminRoute>}>
                    <Route path="/admin" element={<AdminDashboard />} />
                    <Route path="/admin/dashboard" element={<AdminDashboard />} />
                    <Route path="/admin/ai-runtime" element={<AIRuntimeStatus />} />
@@ -1543,8 +1545,8 @@ const App = () => (
                     {/* Global Search */}
                     <Route path="/search" element={<SearchPage />} />
 
-                    {/* Admin — wrapped in AdminShell */}
-                    <Route element={<AdminShellLayout />}>
+                    {/* Admin — wrapped in AdminShell + AdminRoute */}
+                    <Route element={<AdminRoute><AdminShellLayout /></AdminRoute>}>
                     <Route path="/admin/incidents" element={<IncidentCommandCenter />} />
                     <Route path="/admin/deployment" element={<AdminDeploymentTruthCenter />} />
                     <Route path="/admin/proof-matrix" element={<ProofMatrixExplorer />} />
@@ -1831,7 +1833,7 @@ const App = () => (
                     <Route path="/import-export" element={<ImportExportCenter />} />
 
                     {/* ── Supplementary Admin Routes ── */}
-                    <Route element={<AdminShellLayout />}>
+                    <Route element={<AdminRoute><AdminShellLayout /></AdminRoute>}>
                       {getAdminRoutes()}
                     </Route>
 
