@@ -171,7 +171,12 @@ export function DomainAppShell({ domain, children, activePage, onNavigate, tabGr
             onNavigate={onNavigate}
           />
         )}
-        <div className="flex-1 overflow-y-auto p-4">
+        <div className="flex-1 overflow-y-auto p-4" style={{
+          // Domain atmosphere tokens
+          '--domain-density': domain.id === 'business' ? '0.875rem' : domain.id === 'finance' ? '1rem' : '1.125rem',
+          '--domain-card-radius': domain.id === 'business' ? '12px' : domain.id === 'finance' ? '16px' : '20px',
+          '--domain-motion-speed': domain.id === 'business' ? '150ms' : domain.id === 'finance' ? '250ms' : '300ms',
+        } as React.CSSProperties}>
           {children}
         </div>
       </div>
