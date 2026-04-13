@@ -57,7 +57,7 @@ export function PortfolioGlobe({ className }: PortfolioGlobeProps) {
             const angle = (i / cardCount) * 360;
             const radius = 130;
             const isHovered = hoveredIndex === i;
-            const allocPct = (h.value / totalValue) * 100;
+            const allocPct = (h.currentValue / totalValue) * 100;
             const scale = 0.7 + (allocPct / 100) * 0.6;
 
             return (
@@ -78,8 +78,8 @@ export function PortfolioGlobe({ className }: PortfolioGlobeProps) {
                 }`}>
                   <span className="text-xl block">{h.instrument.logoIcon}</span>
                   <p className="text-[10px] font-bold text-foreground mt-1">{h.instrument.symbol}</p>
-                  <p className={`text-[9px] font-semibold ${h.pnlPct >= 0 ? "text-[hsl(var(--trust-safe))]" : "text-destructive"}`}>
-                    {h.pnlPct >= 0 ? "+" : ""}{h.pnlPct.toFixed(1)}%
+                  <p className={`text-[9px] font-semibold ${h.unrealizedPnlPct >= 0 ? "text-[hsl(var(--trust-safe))]" : "text-destructive"}`}>
+                    {h.unrealizedPnlPct >= 0 ? "+" : ""}{h.unrealizedPnlPct.toFixed(1)}%
                   </p>
                   <AnimatePresence>
                     {isHovered && (
@@ -89,7 +89,7 @@ export function PortfolioGlobe({ className }: PortfolioGlobeProps) {
                         exit={{ opacity: 0, height: 0 }}
                         className="space-y-0.5 mt-1.5 pt-1.5 border-t border-border"
                       >
-                        <p className="text-[9px] text-muted-foreground">${h.value.toLocaleString()}</p>
+                        <p className="text-[9px] text-muted-foreground">${h.currentValue.toLocaleString()}</p>
                         <p className="text-[9px] text-muted-foreground">{allocPct.toFixed(1)}% alloc</p>
                         <p className="text-[9px] text-muted-foreground">{h.quantity} shares</p>
                       </motion.div>
