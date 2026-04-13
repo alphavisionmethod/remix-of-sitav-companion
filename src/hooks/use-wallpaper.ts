@@ -24,7 +24,7 @@ export const WALLPAPER_THEMES: WallpaperTheme[] = [
     category: "gradient",
     gradient: "from-[hsl(230_60%_18%)] via-[hsl(260_50%_22%)] to-[hsl(280_45%_16%)]",
     overlay: "radial-gradient(ellipse at 50% 45%, hsl(265 60% 40% / 0.35), transparent 55%)",
-    preview: "linear-gradient(135deg, hsl(230 60% 22%), hsl(260 50% 28%), hsl(280 45% 20%))",
+    preview: "url('/wallpapers/sita-hero.png')",
   },
 
   // ── Auto (time-based) ──
