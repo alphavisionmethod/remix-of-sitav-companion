@@ -8,6 +8,7 @@ import {
 import { ConfidenceBar, ExecutionChainTimeline, buildDefaultChain } from "@/components/sita/primitives";
 import { EvidenceChain, type EvidenceNode } from "@/components/sita/primitives/EvidenceChain";
 import { BoardroomAdvisorCouncil } from "./BoardroomAdvisorCouncil";
+import { BoardroomIssueFrame } from "./BoardroomIssueFrame";
 import { useCountUp, useCountUpFormatted } from "@/hooks/useCountUp";
 import { SparklineChart } from "@/components/sita/SparklineChart";
 
@@ -179,6 +180,9 @@ export function BoardroomExecutiveView({ scope, onNavigate }: Props) {
 
   return (
     <div className="space-y-6 p-6">
+      {/* Issue Frame — The Matter Before The Room */}
+      <BoardroomIssueFrame onNavigate={onNavigate} />
+
       {/* Morning Brief */}
       <MorningBrief scope={scope} />
 
