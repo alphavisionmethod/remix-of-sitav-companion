@@ -92,7 +92,7 @@ const ConciergeWorkflows = () => {
             <div className="space-y-3">
               <h3 className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[hsl(0_0%_50%)]">Suggested Automations</h3>
               {suggestedAutomations.map((sa) => (
-                <GlassCard key={sa.id}="accent" intensity="subtle" className="p-4">
+                <GlassCard key={sa.id} variant="accent" intensity="subtle" className="p-4">
                   <div className="flex items-start gap-3">
                     <Sparkles className="h-4 w-4 text-accent mt-0.5 shrink-0" />
                     <div className="flex-1 space-y-1.5">
@@ -178,7 +178,7 @@ const ConciergeWorkflows = () => {
 
         <div className="space-y-4">
           {/* Safety Boundaries */}
-          <GlassCard="none" className="p-4">
+          <GlassCard variant="none" className="p-4">
             <div className="flex items-center gap-2 mb-3">
               <Shield className="h-4 w-4 text-chart-2" />
               <p className="text-xs font-semibold text-foreground">Safety Boundaries</p>
