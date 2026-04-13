@@ -84,7 +84,7 @@ const ConciergeFiles = () => {
         {filtered.map(file => {
           const Icon = typeIcon(file.type);
           return (
-            <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift" key={file.id} className="p-4">
+            <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift p-4" key={file.id} >
               <div className="flex items-start gap-4">
                 <div className="rounded-xl bg-primary/8 p-2.5 shrink-0">
                   <Icon className="h-4 w-4 text-primary" />

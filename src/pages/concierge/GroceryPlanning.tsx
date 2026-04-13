@@ -101,7 +101,7 @@ const GroceryPlanning = () => {
                     </div>
                     <div className="space-y-1.5">
                       {storeItems.map((item) => (
-                        <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift" key={item.id} className="p-3">
+                        <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift p-3" key={item.id} >
                           <div className="flex items-center gap-3">
                             <button onClick={() => toggleItem(item.id)} className="h-5 w-5 rounded-md border-2 border-muted-foreground/30 hover:border-primary shrink-0 flex items-center justify-center transition-all" />
                             <span className="text-sm font-medium text-foreground flex-1">{item.name}</span>

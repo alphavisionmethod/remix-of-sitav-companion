@@ -189,7 +189,7 @@ const HouseholdTasks = () => {
                 const overdue = isOverdue(t.due_date) && t.status !== "done";
                 return (
                   <motion.div key={t.id} variants={fadeUp} layout>
-                    <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift" lane={overdue ? "action" : undefined} className="p-4">
+                    <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift p-4" lane={overdue ? "action" : undefined} >
                       <div className="flex items-start gap-3">
                         <button
                           onClick={() => updateStatus.mutate({ id: t.id, status: t.status === "done" ? "todo" : "done" })}

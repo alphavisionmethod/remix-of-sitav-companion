@@ -103,7 +103,7 @@ const FamilyCalendar = () => {
             <div className="space-y-3">
               <h3 className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[hsl(0_0%_50%)]">Transport & Carpool Duties</h3>
               {DEMO_transportDuties.map((t, i) => (
-                <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift" key={i} className="p-4">
+                <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift p-4" key={i} >
                   <div className="flex items-start gap-3">
                     <div className="rounded-xl bg-primary/8 p-2 shrink-0"><Car className="h-4 w-4 text-primary" /></div>
                     <div className="flex-1">
@@ -137,7 +137,7 @@ const FamilyCalendar = () => {
           </div>
 
           {/* Schedule Pressure */}
-          <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift" hover={false} className="p-4">
+          <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift p-4" >
             <SitaCardTitle className="mb-3">Schedule Pressure</SitaCardTitle>
             <div className="space-y-2.5">
               {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map((day, i) => {
