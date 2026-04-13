@@ -115,7 +115,7 @@ const QuotesWorkspace = () => {
                 title={q.title}
                 description={`${q.customers?.name || "No customer"} · ${q.total ? `$${Number(q.total).toLocaleString()}` : "—"} · ${q.status}`}
                 accentColor={q.status === "accepted" ? "hsl(152 55% 48%)" : q.status === "draft" ? "hsl(0 0% 50%)" : "hsl(265 55% 58%)"}
-                badge={<ExecutionBadge state={q.status === "accepted" ? "completed" : q.status === "sent" ? "in-progress" : "pending"} />}
+                badge={<ExecutionBadge state={q.status === "accepted" ? "complete" : q.status === "sent" ? "executing" : "drafted"} />}
               />
             </div>
           ))}

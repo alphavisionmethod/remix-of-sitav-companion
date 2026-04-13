@@ -141,7 +141,7 @@ const SubscriptionsWaste = () => {
                   title={sub.name}
                   description={`${sub.category || "Uncategorized"} · $${Number(sub.amount).toFixed(2)}/${sub.frequency === "annually" ? "yr" : "mo"}`}
                   accentColor={enrichSub(sub as Record<string, unknown>).waste_flag ? "hsl(0 70% 55%)" : "hsl(152 55% 48%)"}
-                  badge={enrichSub(sub as Record<string, unknown>).waste_flag ? <UrgencyBadge level="critical" label="Waste" /> : undefined}
+                  badge={enrichSub(sub as Record<string, unknown>).waste_flag ? <UrgencyBadge urgency="critical" /> : undefined}
                 />
               </div>
             ))}
