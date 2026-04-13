@@ -632,6 +632,8 @@ const RiskOffice = lazy(() => import("./pages/investment-office/RiskOffice"));
 const InvestmentAdvisorBoard = lazy(() => import("./pages/investment-office/AdvisorBoard"));
 const PlatformConnections = lazy(() => import("./pages/investment-office/PlatformConnections"));
 const InvestmentGate = lazy(() => import("./pages/investment-office/InvestmentGate"));
+const TradingFloor = lazy(() => import("./pages/investment-office/TradingFloor"));
+const InvestmentWarRoom = lazy(() => import("./pages/investment-office/WarRoom"));
 const EventMarketsWorkspace = lazy(() => import("./pages/investment-office/EventMarketsWorkspace"));
 const WatchlistsSignals = lazy(() => import("./pages/investment-office/WatchlistsSignals"));
 const InvestmentReceipts = lazy(() => import("./pages/investment-office/InvestmentReceipts"));
@@ -994,6 +996,8 @@ const App = () => (
                     <Route path="/investments/advanced" element={<AdvancedMode />} />
                     <Route path="/investments/capital-twin" element={<CapitalTwin />} />
                     <Route path="/investments/decision-theater" element={<DecisionTheater />} />
+                    <Route path="/investments/trading-floor" element={<TradingFloor />} />
+                    <Route path="/investments/war-room" element={<InvestmentWarRoom />} />
                     <Route path="/investments/time-machine" element={<TimeMachineReview />} />
                     <Route path="/investments/catalysts" element={<CatalystWarRoom />} />
                     <Route path="/investments/opportunity-map" element={<OpportunityMap />} />
