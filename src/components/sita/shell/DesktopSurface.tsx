@@ -1,18 +1,22 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Living Desktop Surface
-// Clean macOS-style desktop: wallpaper, clock, window compositor
+// Premium macOS-style desktop: wallpaper, clock, icons, continuity
 // Dual compositor: legacy FloatingWindow + new OS Window Engine
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useEffect } from "react";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useWindowManagerContext } from "@/contexts/WindowManagerContext";
 import { FloatingWindow } from "./FloatingWindow";
 import { ShellAmbientBackground } from "./ShellAmbientBackground";
+import { DesktopIconGrid } from "./DesktopIconGrid";
+import { ContinuitySurface } from "./ContinuitySurface";
 import { WindowCompositor } from "@/components/sita/os/WindowCompositor";
 import { useOSWindowContext } from "@/components/sita/os/WindowContext";
+import type { ContinuityContext, DesktopState } from "./useShellState";
 
+// ── Desktop Clock ────────────────────────────────────────────
 function DesktopClock() {
   const [now, setNow] = useState(new Date());
   useEffect(() => {
@@ -25,17 +29,65 @@ function DesktopClock() {
 
   return (
     <div className="flex flex-col items-center gap-1 select-none">
-      <h1 className="text-7xl font-extralight tracking-tight text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.3)]">
+      <h1 className="text-7xl font-extralight tracking-tight text-[hsl(0_0%_100%)] drop-shadow-[0_2px_12px_rgba(0,0,0,0.3)]">
         {time}
       </h1>
-      <p className="text-lg font-medium text-white/80 drop-shadow-[0_1px_4px_rgba(0,0,0,0.2)]">
+      <p className="text-lg font-medium text-[hsl(0_0%_100%/0.8)] drop-shadow-[0_1px_4px_rgba(0,0,0,0.2)]">
         {date}
       </p>
     </div>
   );
 }
 
-export function DesktopSurface({ onOpenCommand }: { onOpenCommand?: () => void }) {
+// ── State-aware greeting overlay ─────────────────────────────
+function ArrivalGreeting({ desktopState }: { desktopState: DesktopState }) {
+  const [visible, setVisible] = useState(desktopState === "first_arrival");
+
+  useEffect(() => {
+    if (desktopState === "first_arrival") {
+      const t = setTimeout(() => setVisible(false), 4000);
+      return () => clearTimeout(t);
+    }
+  }, [desktopState]);
+
+  if (!visible) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -8 }}
+      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+      className="absolute bottom-32 left-1/2 -translate-x-1/2 z-10"
+    >
+      <p className="text-sm font-medium text-[hsl(0_0%_100%/0.6)] tracking-wide">
+        Welcome to SITA
+      </p>
+    </motion.div>
+  );
+}
+
+// ── Props ────────────────────────────────────────────────────
+interface DesktopSurfaceProps {
+  onOpenCommand?: () => void;
+  desktopState?: DesktopState;
+  continuity?: ContinuityContext;
+}
+
+const DEFAULT_CONTINUITY: ContinuityContext = {
+  lastWorkspace: null,
+  lastActivity: null,
+  pendingDrafts: 0,
+  unfinishedWorkflows: 0,
+  whatChanged: [],
+};
+
+// ── Desktop Surface ──────────────────────────────────────────
+export function DesktopSurface({
+  onOpenCommand,
+  desktopState = "quiet",
+  continuity = DEFAULT_CONTINUITY,
+}: DesktopSurfaceProps) {
   const windowManager = useWindowManagerContext();
   const visibleWindows = windowManager?.visibleWindows ?? [];
   const maxZ = visibleWindows.reduce((max, w) => Math.max(max, w.zIndex), 0);
@@ -44,25 +96,46 @@ export function DesktopSurface({ onOpenCommand }: { onOpenCommand?: () => void }
   const { openWindows } = useOSWindowContext();
   const hasAnyWindows = visibleWindows.length > 0 || openWindows.some(w => !w.isMinimized);
 
+  // Ambient intensity based on desktop state
+  const ambientIntensity = desktopState === "offline" ? "subtle" as const : "subtle" as const;
+
   return (
     <div
       className="fixed inset-0"
       onDoubleClick={() => onOpenCommand?.()}
     >
-      {/* 1. macOS Style Ambient Living Wallpaper */}
+      {/* Layer 1: macOS Style Ambient Living Wallpaper */}
       <div className="absolute inset-0 z-0">
-        <ShellAmbientBackground intensity="subtle" className="fixed" />
+        <ShellAmbientBackground intensity={ambientIntensity} className="fixed" />
       </div>
 
-      {/* 2. Desktop Elements (Fades and blurs when Apps are open) */}
+      {/* Layer 2: Desktop Content — fades when windows open */}
       <div className={cn(
-        "absolute inset-0 z-10 flex items-center justify-center transition-all duration-700",
-        hasAnyWindows && "opacity-30 blur-sm"
+        "absolute inset-0 z-10 transition-all duration-700",
+        hasAnyWindows && "opacity-30 blur-sm pointer-events-none"
       )}>
-        <DesktopClock />
+        {/* Centered clock */}
+        <div className="absolute inset-0 flex items-center justify-center">
+          <DesktopClock />
+        </div>
+
+        {/* Right-aligned desktop icons */}
+        <DesktopIconGrid visible={!hasAnyWindows} />
+
+        {/* Bottom-left continuity widget */}
+        <ContinuitySurface
+          continuity={continuity}
+          desktopState={desktopState}
+          hasWindows={hasAnyWindows}
+        />
+
+        {/* First arrival greeting */}
+        <AnimatePresence>
+          <ArrivalGreeting desktopState={desktopState} />
+        </AnimatePresence>
       </div>
 
-      {/* 3. Legacy Window Compositor Layer (FloatingWindow) */}
+      {/* Layer 3: Legacy Window Compositor (FloatingWindow) */}
       <div className="absolute inset-0 z-20">
         <AnimatePresence>
           {visibleWindows.map((w, index) => {
@@ -90,7 +163,7 @@ export function DesktopSurface({ onOpenCommand }: { onOpenCommand?: () => void }
         </AnimatePresence>
       </div>
 
-      {/* 4. New OS Window Engine Compositor */}
+      {/* Layer 4: New OS Window Engine Compositor */}
       <WindowCompositor />
     </div>
   );
