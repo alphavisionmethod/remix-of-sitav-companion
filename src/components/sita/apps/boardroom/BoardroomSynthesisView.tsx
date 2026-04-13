@@ -268,7 +268,7 @@ export function BoardroomSynthesisView({ scope, onNavigate }: Props) {
                         exit={{ opacity: 0, height: 0 }}
                         className="overflow-hidden mt-3"
                       >
-                        <EvidenceChain nodes={d.evidence} />
+                        <EvidenceChain title={d.title} nodes={d.evidence} />
                       </motion.div>
                     )}
                   </AnimatePresence>
