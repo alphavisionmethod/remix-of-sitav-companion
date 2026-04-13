@@ -22,7 +22,7 @@ interface DesktopIcon {
 }
 
 const DESKTOP_ICONS: DesktopIcon[] = [
-  { id: "business", label: "Business OS", icon: Briefcase, previewIcon: BarChart3, gradient: ICON_GRADIENTS.purple },
+  { id: "business", label: "Business OS", icon: Briefcase, previewIcon: BarChart3, gradient: ICON_GRADIENTS.purple, route: "/business" },
   { id: "documents", label: "Documents", icon: FileText, previewIcon: FileStack, gradient: ICON_GRADIENTS.blue },
   { id: "downloads", label: "Downloads", icon: Download, previewIcon: FileDown, gradient: ICON_GRADIENTS.green },
   { id: "projects", label: "Projects", icon: Folder, previewIcon: Code2, gradient: ICON_GRADIENTS.purple },
@@ -40,6 +40,7 @@ interface DesktopIconGridProps {
 export function DesktopIconGrid({ visible = true, onOpenFolder }: DesktopIconGridProps) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [idle, setIdle] = useState(false);
+  const navigate = useNavigate();
 
   // Zero-clutter: hide after 8s idle
   useEffect(() => {
@@ -66,8 +67,13 @@ export function DesktopIconGrid({ visible = true, onOpenFolder }: DesktopIconGri
   }, []);
 
   const handleDoubleClick = useCallback((id: string) => {
-    onOpenFolder?.(id);
-  }, [onOpenFolder]);
+    const icon = DESKTOP_ICONS.find(i => i.id === id);
+    if (icon?.route) {
+      navigate(icon.route);
+    } else {
+      onOpenFolder?.(id);
+    }
+  }, [onOpenFolder, navigate]);
 
   return (
     <div
