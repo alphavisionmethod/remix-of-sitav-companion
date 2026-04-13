@@ -1,4 +1,5 @@
 import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
+import { SurfaceTrustStrip } from "@/components/sita/SurfaceTrustStrip";
 import { ConciergePageWrapper } from "@/components/concierge";
 import { KPITile, SitaTabs, RiskCard } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
@@ -94,6 +95,27 @@ const FamilyBoardroom = () => {
         <KPITile label="Proof" value={String(weeklyStats.proofRecorded)} icon={Shield} sub="Verified records" />
         <KPITile label="Wellness" value={`${familyWellness.routineAdherence}%`} icon={Heart} sub="Routine adherence" trend="up" />
       </div>
+
+      {/* Trust metadata */}
+      <SurfaceTrustStrip config={{
+        evidenceGrade: "C",
+        gradeLabel: "Observed",
+        dataSources: [
+          "Task tracker",
+          "Calendar events",
+          "Grocery lists",
+          "Wellness logs",
+        ],
+        lastRefreshed: new Date(),
+        assumptions: [
+          { statement: "Completion rates reflect tasks marked done — untracked tasks not included", impact: "high" },
+          { statement: "Wellness metrics based on self-reported routine adherence", impact: "medium" },
+          { statement: "Budget figures are estimates against household targets", impact: "low" },
+        ],
+        caveats: [
+          "Demo data — connect real calendars and task lists for accurate metrics",
+        ],
+      }} />
 
       {/* Overload Assessment */}
       <OverloadCard

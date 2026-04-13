@@ -4,6 +4,7 @@ import { TrustBadge } from "@/components/sita/TrustBadge";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { SurfaceTrustStrip } from "@/components/sita/SurfaceTrustStrip";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useState } from "react";
 import {
@@ -67,6 +68,26 @@ const MoneyBoardroom = () => {
           <div><p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">{mode === "subscriptions" ? "Recurring Burden" : "Bills Due (7d)"}</p><p className="mt-1 font-display text-2xl font-bold text-urgency-high">${mode === "subscriptions" ? k.monthlyBurn.toLocaleString() : k.billsDue7d.toLocaleString()}</p></div>
         </div>
       </SitaCard>
+
+      {/* Trust metadata */}
+      <SurfaceTrustStrip config={{
+        evidenceGrade: k.totalBalance > 0 ? "B" : "C",
+        dataSources: [
+          "Account balances",
+          "Bill schedules",
+          "Subscription tracker",
+          "Reserve goals",
+        ],
+        lastRefreshed: new Date(),
+        assumptions: [
+          { statement: "Safe-to-spend excludes reserved funds and upcoming bills", impact: "high" },
+          { statement: "Reserve health is ratio of current to target across all goals", impact: "medium" },
+          { statement: "Monthly burn includes all recurring subscriptions", impact: "medium" },
+        ],
+        caveats: k.totalBalance === 0
+          ? ["No financial data loaded — figures may be estimates"]
+          : undefined,
+      }} />
 
       {/* ── Daily Pulse ── */}
       {mode === "daily" && (

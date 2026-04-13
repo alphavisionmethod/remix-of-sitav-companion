@@ -3,6 +3,7 @@ import { SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton, SitaPageHeader 
 import { KPITile, OpportunityCard, RiskCard, ProofCard, SitaTabs } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { StateBadge } from "@/components/sita/StateBadge";
+import { SurfaceTrustStrip } from "@/components/sita/SurfaceTrustStrip";
 import { useState, useMemo } from "react";
 import { BarChart3, CheckCircle, AlertTriangle, Sparkles, Clock, DollarSign, Users, TrendingUp, ArrowRight, Calendar, FileText, Target } from "lucide-react";
 import { motion } from "framer-motion";
@@ -121,6 +122,27 @@ const BusinessBoardroom = () => {
           <div><p className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">Active Opportunities</p><p className="mt-1 font-display text-2xl font-bold text-foreground">{opportunities.length}</p></div>
         </div>
       </SitaCard>
+
+      {/* Trust metadata — evidence grading for this surface */}
+      <SurfaceTrustStrip config={{
+        evidenceGrade: isDemoMode ? "C" : leads.length > 0 || invoices.length > 0 ? "B" : "D",
+        gradeLabel: isDemoMode ? "Simulated data" : undefined,
+        dataSources: [
+          "Lead pipeline",
+          "Invoice records",
+          "Opportunity tracker",
+          "Customer database",
+        ],
+        lastRefreshed: new Date(),
+        assumptions: [
+          { statement: "Revenue figures reflect invoices marked as paid this week", impact: "high" },
+          { statement: "At-risk revenue counts overdue invoices only", impact: "medium" },
+          { statement: "Lead counts include all statuses (new, contacted, cold)", impact: "low" },
+        ],
+        caveats: isDemoMode
+          ? ["Using simulated demo data — connect live accounts for real figures"]
+          : undefined,
+      }} />
 
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Priorities */}
