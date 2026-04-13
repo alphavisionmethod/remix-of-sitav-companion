@@ -1,80 +1,39 @@
 
 
-# SITA OS — Remaining Phases: Full Completion Plan
+# Fix ModuleAdvisorInsight Build Errors
 
-## Current State
+## Problem
+5 Money pages import `ModuleAdvisorInsight` from `@/components/sita/domain-shared/ModuleAdvisorInsight`. The component file exists and exports correctly, but the build system cannot resolve the direct file import. The LSP confirms the component definition exists but cannot follow the import path from consumer files.
 
-- **Build**: Clean (0 TypeScript errors)
-- **Phase 1-4** (Domain migrations): Complete for Business, Money, Concierge, Files core pages
-- **Phase 5** (CrossAppAction): Component built but only wired into 1 page (CollectionsCommandCenter)
-- **Phase 6** (Universal State Coverage): Not started
-- **138 pages** still import legacy components (`SitaPageHeader`, `DemoModeBadge`, `LiveAdvisorCard`)
+## Root Cause
+The barrel file `src/components/sita/domain-shared/index.ts` does not re-export `ModuleAdvisorInsight`. While direct file imports *should* work, the build environment is not resolving them. Adding the export to the barrel and switching imports to use the barrel path will fix resolution reliably.
 
-## Plan
+## Fix (2 changes)
 
-### Phase A — Wire CrossAppAction into 7 remaining key pages
-Phase 5 created the infrastructure but only connected 1 of the planned 8 pages.
+### 1. Add export to barrel file
+**File:** `src/components/sita/domain-shared/index.ts`
+Add:
+```ts
+export { ModuleAdvisorInsight } from "./ModuleAdvisorInsight";
+```
 
-| Page | CrossAppAction links to add |
-|------|-----------------------------|
-| `InvoicesCollections.tsx` | → Money/Receivables, → Business/CRM customer |
-| `ReceivablesObligations.tsx` | → Business/Invoices, → Business/Collections |
-| `CustomersPage.tsx` | → Concierge/Appointments, → Business/Quotes |
-| `QuotesWorkspace.tsx` | → Business/Invoices |
-| `TravelPlanning.tsx` | → Files/Search (travel docs) |
-| `BillsWorkspace.tsx` | → Money/Approvals |
-| `BusinessSupport.tsx` | → Business/CRM customer |
+### 2. Update imports in 5 files to use barrel path
+Change the import in each file from:
+```ts
+import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
+```
+to:
+```ts
+import { ModuleAdvisorInsight } from "@/components/sita/domain-shared";
+```
 
-### Phase B — Batch legacy purge (138 pages)
-Automated script to replace legacy imports across all remaining pages:
+**Files:**
+- `src/pages/money/BillsWorkspace.tsx`
+- `src/pages/money/LifeMoneyEngine.tsx`
+- `src/pages/money/NetWorthOffice.tsx`
+- `src/pages/money/OpportunityCost.tsx`
+- `src/pages/money/TransactionIntelligence.tsx`
 
-1. Remove `SitaPageHeader` component usage (shell handles headers)
-2. Remove `DemoModeBadge` → replace with `PageTruthBanner`
-3. Remove `LiveAdvisorCard` → replace with `ModuleAdvisorInsight` where contextually appropriate
-4. Fix any resulting unused import warnings
-
-Organized in sub-batches:
-- **B1**: Core pages (50 files: ActivityStream through WorkflowsCenter)
-- **B2**: Admin pages (45 files: AR01 through strategic/)
-- **B3**: Domain-specific stragglers (25 files: atlas, advisors, boardroom, owner, revenue-office)
-- **B4**: Remaining (18 files: store, workspace, enterprise, mission, investment-office leftovers)
-
-### Phase C — Universal State Coverage audit
-Ensure all 74 primary domain pages handle 6 states:
-
-| State | Component |
-|-------|-----------|
-| First use | `PremiumEmptyState` variant="first-use" |
-| Empty (filtered) | `PremiumEmptyState` variant="no-results" |
-| Loading | `SectionSkeleton` |
-| Degraded | `PageTruthBanner` mode="degraded" |
-| Demo/Preview | `PageTruthBanner` mode="demo" |
-| Live | `PageTruthBanner` mode="live" |
-
-Audit the 29 migrated domain pages + 45 newly migrated pages for missing states and add them.
-
-### Phase D — Build verification & regression fix
-- Run `tsc --noEmit` after each batch
-- Fix any broken imports, prop mismatches, or duplicate attributes
-- Verify no runtime console errors
-
-## Technical Approach
-
-For Phase B, the migration script will:
-1. Remove `SitaPageHeader` from imports and JSX
-2. Replace `DemoModeBadge` import → `PageTruthBanner` import
-3. Replace `<DemoModeBadge ... />` JSX → `<PageTruthBanner />`
-4. Remove `LiveAdvisorCard` imports and JSX blocks
-5. Remove orphaned `useDataMode` if only used for badge
-
-Each file verified individually for edge cases (some pages use `SitaCard` legitimately as a container — those are kept but the header/badge/advisor patterns are standardized).
-
-## Estimated Scope
-
-| Phase | Files | Description |
-|-------|-------|-------------|
-| A | 7 edits | CrossAppAction wiring |
-| B | 138 edits | Legacy purge |
-| C | ~30 edits | State coverage gaps |
-| D | 0 new files | Verification pass |
+### 3. Verify build
+Run `tsc --noEmit` to confirm 0 errors.
 
