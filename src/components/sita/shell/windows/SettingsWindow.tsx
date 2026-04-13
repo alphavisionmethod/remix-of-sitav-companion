@@ -464,15 +464,29 @@ import wallpaperAmber from "@/assets/wallpapers/amber.jpg";
 import wallpaperOcean from "@/assets/wallpapers/ocean.jpg";
 import wallpaperAurora from "@/assets/wallpapers/aurora.jpg";
 import wallpaperRose from "@/assets/wallpapers/rose.jpg";
+import { WALLPAPER_THEMES, getCustomWallpaperUrl, setCustomWallpaperUrl } from "@/hooks/use-wallpaper";
+import { Globe as GlobeIcon2, Link as LinkIcon, ImageIcon } from "lucide-react";
 
-const WALLPAPERS = [
-  { id: "dynamic", label: "Dynamic", src: "", description: "Ambient gradients" },
+type WallpaperCategory = "all" | "photos" | "gradients" | "custom";
+
+const PHOTO_WALLPAPERS = [
   { id: "nebula", label: "Nebula", src: wallpaperNebula, description: "Deep purple & blue" },
   { id: "amber", label: "Amber", src: wallpaperAmber, description: "Warm golden tones" },
   { id: "ocean", label: "Ocean", src: wallpaperOcean, description: "Deep blue waves" },
-  { id: "aurora", label: "Aurora", src: wallpaperAurora, description: "Northern lights" },
+  { id: "aurora-photo", label: "Aurora", src: wallpaperAurora, description: "Northern lights" },
   { id: "rose", label: "Rose", src: wallpaperRose, description: "Pink bokeh glow" },
-] as const;
+];
+
+const GRADIENT_WALLPAPERS = WALLPAPER_THEMES.filter(t =>
+  t.id !== "sita-hero" && t.category !== "custom"
+);
+
+const WP_TABS: { id: WallpaperCategory; label: string }[] = [
+  { id: "all", label: "All" },
+  { id: "photos", label: "Photos" },
+  { id: "gradients", label: "Gradients" },
+  { id: "custom", label: "Custom" },
+];
 
 function AppearanceContent() {
   const [accentColor, setAccentColor] = useSettingsValue("appearance.accentColor", "hsl(265, 55%, 58%)");
@@ -486,6 +500,9 @@ function AppearanceContent() {
   ];
   const [reduceTransparency, setReduceTransparency] = useSettingsValue("appearance.reduceTransparency", false);
   const [wallpaperId, setWallpaperId] = useSettingsValue("appearance.wallpaper", "dynamic");
+  const [wpTab, setWpTab] = useState<WallpaperCategory>("all");
+  const [customUrl, setCustomUrl] = useState(getCustomWallpaperUrl);
+  const [customUrlInput, setCustomUrlInput] = useState(getCustomWallpaperUrl);
 
   // Live-update CSS custom properties when accent changes
   useEffect(() => {
@@ -493,7 +510,6 @@ function AppearanceContent() {
     if (!match) return;
     const root = document.documentElement;
     root.style.setProperty("--primary", match.hsl);
-    // Derive a complementary accent (shift hue +133°)
     const hueMatch = match.hsl.match(/^(\d+)\s/);
     if (hueMatch) {
       const shifted = (parseInt(hueMatch[1]) + 133) % 360;
@@ -503,11 +519,30 @@ function AppearanceContent() {
 
   // Live-update wallpaper when selection changes
   useEffect(() => {
-    const wp = WALLPAPERS.find(w => w.id === wallpaperId);
-    if (!wp) return;
-    // Dispatch a custom event that ShellAmbientBackground listens to
-    window.dispatchEvent(new CustomEvent("nova-wallpaper-change", { detail: { id: wp.id, src: wp.src } }));
-  }, [wallpaperId]);
+    const photo = PHOTO_WALLPAPERS.find(w => w.id === wallpaperId);
+    if (photo) {
+      window.dispatchEvent(new CustomEvent("nova-wallpaper-change", { detail: { id: photo.id, src: photo.src } }));
+      return;
+    }
+    if (wallpaperId === "custom") {
+      window.dispatchEvent(new CustomEvent("nova-wallpaper-change", { detail: { id: "custom", src: customUrl } }));
+      return;
+    }
+    // Gradient or special wallpaper
+    window.dispatchEvent(new CustomEvent("nova-wallpaper-change", { detail: { id: wallpaperId, src: "" } }));
+  }, [wallpaperId, customUrl]);
+
+  const handleSetCustomUrl = useCallback(() => {
+    if (!customUrlInput.trim()) return;
+    setCustomWallpaperUrl(customUrlInput.trim());
+    setCustomUrl(customUrlInput.trim());
+    setWallpaperId("custom");
+  }, [customUrlInput, setWallpaperId]);
+
+  // Build visible wallpapers based on tab
+  const showPhotos = wpTab === "all" || wpTab === "photos";
+  const showGradients = wpTab === "all" || wpTab === "gradients";
+  const showCustom = wpTab === "all" || wpTab === "custom";
 
   return (
     <VStack spacing="tight">
@@ -515,41 +550,99 @@ function AppearanceContent() {
       <NovaCard>
         <VStack spacing="tight">
           <NovaSectionLabel className="!px-0">Wallpaper</NovaSectionLabel>
-          <div className="grid grid-cols-3 gap-2">
-            {WALLPAPERS.map(wp => (
+
+          {/* Category Tabs */}
+          <HStack spacing="micro" className="mb-1">
+            {WP_TABS.map(tab => (
               <button
-                key={wp.id}
-                onClick={() => setWallpaperId(wp.id)}
+                key={tab.id}
+                type="button"
+                onClick={() => setWpTab(tab.id)}
                 className={cn(
-                  "relative rounded-xl overflow-hidden aspect-video transition-all duration-150 group",
-                  "border-2",
-                  wallpaperId === wp.id
-                    ? "border-[hsl(210_80%_55%)] shadow-[0_0_12px_hsl(210_80%_55%/0.3)]"
-                    : "border-[hsl(0_0%_100%/0.08)] hover:border-[hsl(0_0%_100%/0.2)]"
+                  "px-2.5 py-1 rounded-md text-[10px] font-medium transition-all",
+                  wpTab === tab.id
+                    ? "bg-[hsl(265_55%_58%/0.2)] text-[hsl(265_55%_70%)]"
+                    : "text-[hsl(0_0%_55%)] hover:text-[hsl(0_0%_75%)] hover:bg-[hsl(0_0%_100%/0.04)]"
                 )}
               >
-                {wp.src ? (
-                  <img src={wp.src} alt={wp.label} className="w-full h-full object-cover" loading="lazy" />
-                ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-[hsl(265_55%_20%)] via-[hsl(220_40%_15%)] to-[hsl(190_50%_12%)]">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-6 h-6 rounded-full bg-[hsl(265_55%_58%/0.3)] blur-md animate-pulse" />
-                    </div>
-                  </div>
-                )}
-                {/* Selection check */}
-                {wallpaperId === wp.id && (
-                  <div className="absolute top-1 right-1 w-4 h-4 rounded-full bg-[hsl(210_80%_55%)] flex items-center justify-center">
-                    <Check className="w-2.5 h-2.5 text-[hsl(0_0%_100%)]" />
-                  </div>
-                )}
-                {/* Label overlay */}
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[hsl(0_0%_0%/0.7)] to-transparent px-1.5 py-1">
-                  <div className="text-[9px] font-medium text-[hsl(0_0%_90%)]">{wp.label}</div>
-                </div>
+                {tab.label}
               </button>
             ))}
+          </HStack>
+
+          <div className="grid grid-cols-3 gap-2 max-h-[320px] overflow-y-auto pr-1">
+            {/* SITA Hero — always visible in All */}
+            {wpTab === "all" && (
+              <WallpaperThumb
+                id="sita-hero"
+                label="SITA Hero"
+                active={wallpaperId === "sita-hero"}
+                onClick={() => setWallpaperId("sita-hero")}
+                preview="url('/wallpapers/sita-hero.png')"
+                isImage
+              />
+            )}
+
+            {/* Photo wallpapers */}
+            {showPhotos && PHOTO_WALLPAPERS.map(wp => (
+              <WallpaperThumb
+                key={wp.id}
+                id={wp.id}
+                label={wp.label}
+                active={wallpaperId === wp.id}
+                onClick={() => setWallpaperId(wp.id)}
+                imgSrc={wp.src}
+              />
+            ))}
+
+            {/* Gradient wallpapers */}
+            {showGradients && GRADIENT_WALLPAPERS.map(wp => (
+              <WallpaperThumb
+                key={wp.id}
+                id={wp.id}
+                label={wp.name}
+                active={wallpaperId === wp.id}
+                onClick={() => setWallpaperId(wp.id)}
+                preview={wp.preview}
+              />
+            ))}
+
+            {/* Custom URL card */}
+            {showCustom && (
+              <WallpaperThumb
+                id="custom"
+                label="Custom URL"
+                active={wallpaperId === "custom"}
+                onClick={() => { if (customUrl) setWallpaperId("custom"); }}
+                preview={customUrl ? `url('${customUrl}')` : undefined}
+                isCustomPlaceholder={!customUrl}
+              />
+            )}
           </div>
+
+          {/* Custom URL Input */}
+          {showCustom && (
+            <div className="mt-2 flex gap-1.5">
+              <div className="flex-1 relative">
+                <LinkIcon className="absolute left-2 top-1/2 -translate-y-1/2 w-3 h-3 text-[hsl(0_0%_50%)]" />
+                <input
+                  type="url"
+                  value={customUrlInput}
+                  onChange={(e) => setCustomUrlInput(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && handleSetCustomUrl()}
+                  placeholder="Paste image URL from the internet…"
+                  className="w-full pl-7 pr-2 py-1.5 rounded-lg text-[10px] bg-[hsl(0_0%_100%/0.04)] border border-[hsl(0_0%_100%/0.08)] text-[hsl(0_0%_90%)] placeholder:text-[hsl(0_0%_40%)] focus:outline-none focus:border-[hsl(265_55%_58%/0.4)]"
+                />
+              </div>
+              <NovaButton
+                variant="primary"
+                onClick={handleSetCustomUrl}
+                className="!text-[10px] !py-1 !px-3"
+              >
+                Apply
+              </NovaButton>
+            </div>
+          )}
         </VStack>
       </NovaCard>
 
