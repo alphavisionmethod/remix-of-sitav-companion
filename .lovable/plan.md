@@ -1,85 +1,126 @@
 
 
-# Boardroom "Wow" Visual & Information Delivery Upgrade
+# Boardroom Decision Chamber — Full Completion Plan
 
-## Overview
+## Current State
 
-After reviewing all 8 boardroom views, here are the key gaps between the current state and a truly cinematic, information-rich experience. The focus is on **how information lands** — not just how it looks, but how it *communicates*.
+The Boardroom has 8 views (Executive, Pulse, Synthesis, Council, Simulation, Approval, Memory) with cinematic talking avatars, sparklines, seal stamps, and animated counters. But it operates on **hardcoded mock data** with no formal session lifecycle, no structured issue framing, no centralized evidence panel, and no real backend models. The anti-hallucination system exists in `src/lib/no-hallucination/` but is not wired into the Boardroom UI.
 
-## What Changes
+## What This Plan Delivers
 
-### 1. Immersive Boardroom Header — Live Session Feel
+A phased approach across **3 implementation rounds** to transform the Boardroom from a visual prototype into a real decision chamber.
 
-**`BoardroomHeader.tsx`** — Currently a flat 48px bar. Transform into a cinematic status strip:
-- **Animated session timer**: A live-counting session clock ("Session: 4m 32s") that ticks in real-time
-- **Ambient pulse bar**: A thin animated gradient line beneath the header that breathes with the session mode color (purple for review, amber for simulation, green for approval)
-- **Active advisor count badge**: "6 advisors online" with stacked mini-avatars (3 tiny circles overlapping) that pulse when someone is "speaking"
-- **Scope transition animation**: When switching scopes, a brief horizontal wipe effect across the header
+---
 
-### 2. Executive View — Hero Metrics + Narrative Summary
+## PHASE 1 — Session Lifecycle + Issue Frame + Evidence Panel (Priority)
 
-**`BoardroomExecutiveView.tsx`** — Currently a list of agenda items. Add:
-- **"Morning Brief" narrative panel**: A large, premium card at the top with a 2-3 sentence AI-generated summary like: *"3 items need your attention today. Collections pressure is the top priority — $18.5K overdue. Your reserves are recovering. Travel prep is fully cleared."* — styled like a premium news briefing with large serif-style text
-- **Animated number counters**: Key metrics (total overdue, reserve level, pending actions) animate from 0 to their values on load using a counting animation
-- **Priority heat strip**: A horizontal gradient bar at the top that visually encodes urgency — red on the left fading to green on the right, with dots positioned where each agenda item falls
-- **Quick-action floating buttons**: Each agenda item gets a subtle "Act Now" pill that glows when hovered
+### Database: New Tables
 
-### 3. Domain Pulse — Live Data Dashboard Feel
+**`boardroom_sessions`** — Formal session lifecycle
+- `id`, `user_id`, `session_type` (business/finance/concierge/executive/opportunity), `scope`, `status` (assembling/in-progress/paused/awaiting-evidence/ready-for-approval/adjourned), `opened_at`, `closed_at`, `current_issue_id`, `participating_advisors` (jsonb), `session_mode`, `decision_receipt_ids` (jsonb)
 
-**`BoardroomPulseView.tsx`** — Currently static metric cards. Enhance:
-- **Sparkline mini-charts**: Add tiny inline SVG sparklines (7-point trend) inside each metric card showing the last 7 data points
-- **Metric change flash**: When switching domains, metrics briefly flash/highlight to draw attention to the new values
-- **Domain health ring**: A circular progress indicator per domain showing overall health as a percentage arc (like Apple Watch activity rings)
-- **Advisor voice bubbles**: Replace the plain list with speech-bubble styled cards showing advisor portraits + their one-line stance
+**`boardroom_items`** — Issues that enter the room
+- `id`, `user_id`, `session_id`, `title`, `description`, `domain`, `severity` (critical/high/medium/low), `source_signals` (jsonb), `escalation_reason`, `advisor_summaries` (jsonb), `recommendation_state`, `simulation_state`, `confidence_state` (jsonb), `evidence_refs` (jsonb), `freshness_state` (jsonb), `blocking_conditions` (jsonb), `status` (new/under-review/simulated/approved/deferred/carried-over)
 
-### 4. Simulation View — Interactive Scenario Theater
+**`boardroom_evidence`** — Centralized evidence records
+- `id`, `user_id`, `item_id`, `source_type` (verified/inferred/assumption/stale), `source_name`, `content`, `confidence`, `freshness`, `last_updated`, `lineage_chain` (jsonb), `proof_receipt_id`
 
-**`BoardroomSimulationView.tsx`** — Currently shows scenarios as a comparison grid. Add:
-- **"What happens next" timeline**: An animated horizontal timeline showing projected outcomes at Week 1, 2, 3, 4 — with branching paths that visually diverge based on the scenario selected
-- **Risk heat meter**: A vertical thermometer-style gauge that rises/falls as you hover different scenarios
-- **Impact ripple visualization**: When selecting a scenario, show animated ripple circles expanding outward from the selected card to the downstream effects, visually connecting cause to effect
-- **Assumption confidence dots**: Color-coded dots (green/amber/red) arranged in a grid showing data quality at a glance
+**`boardroom_recommendations`** — Structured recommendations
+- `id`, `user_id`, `item_id`, `session_id`, `summary`, `rationale`, `evidence_basis` (jsonb), `confidence_score`, `scenario_basis`, `domain_impacts` (jsonb), `urgency`, `reversibility`, `conditions_for_approval` (jsonb), `next_best_alternative`, `status`
 
-### 5. Approval View — Ceremony & Weight
+**`boardroom_decision_receipts`** — Formal receipts
+- `id`, `user_id`, `session_id`, `item_id`, `recommendation_id`, `approved_motion`, `rationale_summary`, `evidence_snapshot` (jsonb), `simulation_snapshot` (jsonb), `approval_conditions` (jsonb), `status`, `expected_outcome`, `follow_up_review_date`, `linked_execution_items` (jsonb), `proof_trail` (jsonb)
 
-**`BoardroomApprovalView.tsx`** — Add gravitas to the approval moment:
-- **Signature line animation**: When approving, show an animated "signature being written" effect — a glowing line that draws itself across the approval card
-- **Seal stamp animation**: The Decision Seal gets a dramatic stamp-down animation with a brief camera shake and gold particle burst
-- **Before/After preview**: Each approval card shows a mini "before" state and "after" state side-by-side, so the user sees the impact of their decision visually
-- **Countdown urgency**: For time-sensitive approvals, add a subtle countdown timer ("Approval window closes in 2h 14m")
+All tables with RLS: `auth.uid() = user_id`.
 
-### 6. Decision Memory — Premium Timeline
+### UI Components — Phase 1
 
-**`BoardroomDecisionMemory.tsx`** — Currently a simple vertical list. Upgrade:
-- **Outcome score card**: Each decision gets a small visual "report card" — a colored arc showing how well the outcome matched the prediction
-- **Pattern detection callout**: A summary card at the top: "Your decisions have been 80% positive this quarter. Best domain: Concierge (100%). Watch: Finance (60%)."
-- **Advisor accuracy tracker**: Show which advisors' recommendations led to the best outcomes — a mini leaderboard
+**`BoardroomSessionBar.tsx`** (new) — Replaces simple header state with formal session lifecycle strip showing: session state badge (Assembling → In Progress → Ready for Approval → Adjourned), stage progress indicator (5 dots), session timer, "Open Session" / "Adjourn" controls.
 
-### 7. Global Ambient Enhancements
+**`BoardroomIssueFrame.tsx`** (new) — Central issue card at top of Executive view: issue title, originating domain, why it entered the Boardroom, priority/consequence level, current recommendation summary, approval requirement, simulation state, confidence state, freshness indicators, blocking conditions. Styled as the "matter before the room."
 
-**`BoardroomAppShell.tsx`** — Enhance the container itself:
-- **Dynamic ambient color**: The background spotlight color shifts based on the active module — purple for review, amber for simulation, green for approvals, blue for memory
-- **Module transition**: Smooth crossfade between views instead of instant swap
-- **Sidebar active indicator**: The active sidebar item gets a gentle glow/aura instead of just a color change
+**`BoardroomEvidencePanel.tsx`** (new) — Slide-out right panel (400px) accessible from any view via "Show Evidence" button. Contains: evidence cards grouped by type (verified/inferred/assumption/stale), source-of-truth panel, freshness indicators, assumptions list, unresolved unknowns, lineage chain visualization, proof receipts, trust posture summary.
+
+**`BoardroomAppShell.tsx`** (modify) — Add session state management, wire session lifecycle to header, add evidence panel slide-out trigger.
+
+**`BoardroomExecutiveView.tsx`** (modify) — Replace hardcoded AGENDA_ITEMS with data from `boardroom_items` table (demo mode keeps mocks). Add IssueFrame at top.
+
+---
+
+## PHASE 2 — Advisor Stance States + Simulation Integrity + Approval Ceremony
+
+### UI Components — Phase 2
+
+**Advisor stance visualization upgrades** (`BoardroomSynthesisView.tsx`, `BoardroomAdvisorCouncil.tsx`):
+- Add visual stance badges: Agree (green check), Caution (amber shield), Dissent (red x), Unresolved (gray ?), Blocked (lock), Simulation-Only Confidence (dashed border), Verified Confidence (solid border)
+- Glanceable "room tension map" — a horizontal bar showing proportion of agree/caution/dissent across all advisors
+- Each advisor card gets a small colored dot overlay matching their stance
+
+**Simulation integrity layer** (`BoardroomSimulationView.tsx`):
+- Add "Simulation Contract" panel showing: what is computed vs estimated vs assumption-heavy vs blocked-by-missing-data
+- Add confidence intervals as shaded bands on the timeline
+- Add "What Is Not Modeled" disclosure section
+- Wire anti-hallucination `TruthWrappedOutput` from `src/lib/no-hallucination/types.ts` into simulation outputs
+
+**Approval ceremony upgrade** (`BoardroomApprovalView.tsx`):
+- Add pre-approval checklist: final recommendation, confidence, risks-if-approved, risks-if-deferred, conditions, simulation preview, action scope, expected receipt, follow-up timing, rollback path
+- Lock approval to a specific recommendation snapshot (prevent approving a moving target)
+- Post-approval: generate formal `boardroom_decision_receipts` record
+- Enhanced closure moment: decision seal card with what was approved, why, by whom, what happens next, when it returns for review, outcome tracking link
+
+**Entry/exit ceremony** (`BoardroomAppShell.tsx`):
+- Entry: issue comes into focus (scale-up), advisor stances load (staggered fade), room context assembles, recommendation settles in
+- Exit: decision summarized (card rises), receipt created (seal stamp), follow-through registered, session closes with "adjourned" state
+
+---
+
+## PHASE 3 — Decision Lineage + Cross-App Dependencies + Session Replay
+
+### UI Components — Phase 3
+
+**`BoardroomLineageView.tsx`** (new) — Full provenance visualization: signal → advisor → boardroom → simulation → approval → receipt → execution → outcome. Rendered as a horizontal connected node graph.
+
+**`BoardroomCrossAppImpact.tsx`** (new) — Visual dependency map showing how a boardroom decision ripples across domains. Example: "Collections action → Finance receivable timing changes → Concierge burden shifts." Rendered as connected domain cards with animated ripple lines.
+
+**`BoardroomDecisionMemory.tsx`** (modify) — Add session replay: view prior session state, prior recommendation, prior evidence, prior simulations, final motion, and what actually happened after. Add "Pattern Detection" upgrades: advisor accuracy over time, decision quality trends.
+
+**Anti-hallucination visual layer** (across all views):
+- Trust state badges: verified, evidence-backed, inferred, simulation-only, stale, source-missing, needs-human-review, blocked-by-connector, mathematically-constrained, advisory-only
+- Confidence ladder component showing exactly where confidence comes from and what would raise/lower it
+- "What would invalidate this?" disclosure on every recommendation
+
+**`BoardroomExplainability.tsx`** (new) — Answerable questions panel: "Why was this recommended?", "Which data points drove this?", "What assumptions were used?", "What is missing?", "What changed?", "Which advisors agreed/disagreed?", "Why is confidence low/high?", "What would invalidate this?"
+
+---
 
 ## Technical Approach
 
-- All animations use `framer-motion` (already installed)
-- Sparklines rendered as simple SVG `polyline` elements (no charting library needed)
-- Counting animations use `useEffect` with `requestAnimationFrame`
-- No new dependencies required
+- All animations: `framer-motion` (already installed)
+- Database: 5 new tables via migration tool, all with user_id RLS
+- Data hooks: new `useBoardroomSession` hook managing session lifecycle and CRUD
+- Anti-hallucination: wire existing `ConfidenceEnvelope`, `GroundingReport`, `StalenessState` types into boardroom data flow
+- Demo mode: all new hooks fallback to mock data when `isDemoMode === true`
+- No new dependencies
 
-## Files
+## File Summary
 
-| File | Change |
-|------|--------|
-| `BoardroomHeader.tsx` | Session timer, ambient pulse bar, mini-avatar stack, scope transitions |
-| `BoardroomExecutiveView.tsx` | Morning brief narrative, animated counters, priority heat strip, quick-action pills |
-| `BoardroomPulseView.tsx` | Sparkline mini-charts, domain health rings, advisor voice bubbles |
-| `BoardroomSimulationView.tsx` | Timeline branches, risk thermometer, impact ripples, assumption dots |
-| `BoardroomApprovalView.tsx` | Signature animation, seal stamp ceremony, before/after preview, countdown |
-| `BoardroomDecisionMemory.tsx` | Outcome score arcs, pattern detection summary, advisor accuracy tracker |
-| `BoardroomAppShell.tsx` | Dynamic ambient color, module crossfade, sidebar glow |
+| Phase | File | Action |
+|-------|------|--------|
+| 1 | 5 new DB tables | Migration |
+| 1 | `BoardroomSessionBar.tsx` | New |
+| 1 | `BoardroomIssueFrame.tsx` | New |
+| 1 | `BoardroomEvidencePanel.tsx` | New |
+| 1 | `BoardroomAppShell.tsx` | Modify — session state, evidence panel |
+| 1 | `BoardroomExecutiveView.tsx` | Modify — issue frame, data wiring |
+| 1 | `useBoardroomSession.ts` | New hook |
+| 2 | `BoardroomSynthesisView.tsx` | Modify — stance badges, tension map |
+| 2 | `BoardroomAdvisorCouncil.tsx` | Modify — stance dot overlays |
+| 2 | `BoardroomSimulationView.tsx` | Modify — contract panel, anti-hallucination |
+| 2 | `BoardroomApprovalView.tsx` | Modify — ceremony, receipt generation, checklist |
+| 3 | `BoardroomLineageView.tsx` | New |
+| 3 | `BoardroomCrossAppImpact.tsx` | New |
+| 3 | `BoardroomExplainability.tsx` | New |
+| 3 | `BoardroomDecisionMemory.tsx` | Modify — replay, patterns |
 
-7 files modified. No new files. No database changes.
+~15 files across 3 phases. 5 database tables. No new dependencies.
 
