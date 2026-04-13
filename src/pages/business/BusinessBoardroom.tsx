@@ -20,6 +20,7 @@ const businessAdvisors: AdvisorConfig[] = [
 ];
 
 const BusinessBoardroom = () => {
+const isDemoMode = true;
 const [mode, setMode] = useState("weekly");
   const { data: leads = [] } = useLeads();
   const { data: customers = [] } = useCustomers();

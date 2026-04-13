@@ -60,6 +60,10 @@ import {
 } from "@/lib/internal-agents/rights";
 import { validateLaunchReadiness, getCouncilSummary, getAllCouncilSummaries, ACTION_PIPELINE_STATES } from "@/lib/internal-agents/launch-readiness";
 import type { InternalAgentCouncil, InternalAgentDefinition } from "@/lib/internal-agents/types";
+  const isDemoMode = true;
+  const toggleMode = () => {};
+  const refreshConnectors = () => {};
+  const connectors: Array<{ name: string; status: string; lastSync: string; type: string }> = [];
 
 
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
