@@ -57,7 +57,7 @@ const LeadRecovery = () => {
       </div>
 
       {activeTab === "cold-leads" && (
-        <ListReveal staggerMs={30}>
+        <ListReveal>
           {coldLeads.map((l) => (
             <ListRevealItem key={l.name}>
               <button
@@ -122,8 +122,8 @@ const LeadRecovery = () => {
       )}
 
       <AdvisorCard
-        name="Recovery Advisor"
-        message="David Chen (score: 89%) is actively comparing competitors — call within 24h for 81% conversion rate."
+        advisorName="Recovery Advisor"
+        insight="David Chen (score: 89%) is actively comparing competitors — call within 24h for 81% conversion rate."
         confidence={89}
         domain="business"
       />

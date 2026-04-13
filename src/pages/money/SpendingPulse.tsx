@@ -86,7 +86,7 @@ const SpendingPulse = () => {
       </div>
 
       {/* Category List */}
-      <ListReveal staggerMs={40}>
+      <ListReveal>
         {DEMO_CATEGORIES.map((cat) => {
           const pctChange = cat.average > 0 ? ((cat.thisWeek - cat.average) / cat.average * 100) : 0;
           const CatIcon = cat.icon;
