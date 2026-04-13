@@ -139,7 +139,10 @@ const BillsWorkspace = () => {
   const listPane = (
     <div className="p-3 space-y-3">
       <div className="flex items-center justify-between px-1">
-        <h3 className="text-[13px] font-semibold text-[hsl(0_0%_85%)]">Bills & Obligations</h3>
+        <div className="flex items-center gap-2">
+          <h3 className="text-[13px] font-semibold text-[hsl(0_0%_85%)]">Bills & Obligations</h3>
+          <CrossAppAction to="/money/approvals" label="Approvals" variant="chip" context={{ entityType: "bill", entityId: "pending" }} />
+        </div>
         <button
           onClick={() => { setForm(emptyForm); setEditId(null); setShowForm(true); }}
           className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[hsl(152_55%_48%/0.12)] hover:bg-[hsl(152_55%_48%/0.18)] text-[hsl(152_55%_48%)] text-[11px] font-medium transition-colors"
