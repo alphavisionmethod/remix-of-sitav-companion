@@ -122,10 +122,6 @@ export function ShellLiveLayer({
         <LiveActivityBarLazy />
       </Suspense>
 
-      {/* Contextual Cursor */}
-      <Suspense fallback={null}>
-        <ContextualCursorLazy />
-      </Suspense>
 
       {/* Boot Splash */}
       <Suspense fallback={null}>
@@ -159,15 +155,6 @@ export function ShellLiveLayer({
         />
       </Suspense>
 
-      {/* Ambient Suggestions Bar */}
-      <Suspense fallback={null}>
-        <AmbientSuggestionsBarLazy />
-      </Suspense>
-
-      {/* Intent Suggestions Widget */}
-      <Suspense fallback={null}>
-        <IntentSuggestionsWidgetLazy onLaunchApp={(id) => handleLaunchApp(id)} />
-      </Suspense>
     </>
   );
 }
