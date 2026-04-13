@@ -1,8 +1,15 @@
-import { BusinessAppShell } from "@/components/business/BusinessAppShell";
-import { InAppAdvisorStrip } from "@/components/sita/InAppAdvisorStrip";
+import { DomainAppShell } from "@/components/sita/shell/DomainAppShell";
+import type { DomainConfig } from "@/components/sita/shell/DomainAppShell";
+import type { NavTabGroup } from "@/components/sita/shell/AppSidebarNav";
 import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+  Briefcase, LayoutDashboard, Target, Users, Phone, Headphones as SupportIcon,
+  Calendar, Settings, TrendingUp, FileText, Receipt, Banknote, ClipboardList,
+  Zap, Bot, RefreshCw, Share2, ShoppingCart, Globe, BarChart3, BookOpen,
+  LineChart, Mail, FolderOpen, Crown, Shield
+} from "lucide-react";
 
 import BusinessOverview from "./business/BusinessOverview";
 import LeadsInbox from "./business/LeadsInbox";
@@ -31,6 +38,16 @@ import BusinessOperations from "./business/BusinessOperations";
 import BusinessDocuments from "./business/BusinessDocuments";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+
+const DOMAIN_CONFIG: DomainConfig = {
+  id: "business",
+  title: "Business OS",
+  icon: Briefcase,
+  accentFrom: "hsl(265 55% 58%)",
+  accentTo: "hsl(285 50% 48%)",
+  statusLabel: "CRM Synced",
+  version: "Business OS v2.0",
+};
 
 type SubPage = "overview" | "leads" | "customers" | "follow-through" | "support" | "appointments" | "operations" | "documents" | "opportunities" | "quotes" | "invoices" | "communications" | "boardroom" | "proof" | "revenue-autopilot" | "collections" | "autopilot-hub" | "revenue-impact" | "playbook-builder" | "revenue-forecast" | "website-builder" | "proposals" | "lead-recovery" | "social" | "ecommerce";
 
@@ -61,55 +78,55 @@ const subpageFromPath = (path: string): SubPage => {
   return "overview";
 };
 
-const TAB_GROUPS = [
+const TAB_GROUPS: NavTabGroup[] = [
   {
     label: "Core",
     tabs: [
-      { key: "overview", label: "Overview" },
-      { key: "leads", label: "Leads", count: 3 },
-      { key: "customers", label: "Customers" },
-      { key: "follow-through", label: "Follow-Through", count: 8 },
-      { key: "support", label: "Support", count: 2 },
-      { key: "appointments", label: "Appointments" },
-      { key: "operations", label: "Operations", count: 3 },
-      { key: "opportunities", label: "Opportunities" },
+      { key: "overview", label: "Overview", icon: LayoutDashboard },
+      { key: "leads", label: "Leads", icon: Target, count: 3 },
+      { key: "customers", label: "Customers", icon: Users },
+      { key: "follow-through", label: "Follow-Through", icon: Phone, count: 8, countSeverity: "warning" },
+      { key: "support", label: "Support", icon: SupportIcon, count: 2 },
+      { key: "appointments", label: "Appointments", icon: Calendar },
+      { key: "operations", label: "Operations", icon: Settings, count: 3 },
+      { key: "opportunities", label: "Opportunities", icon: TrendingUp },
     ],
   },
   {
     label: "Sales",
     tabs: [
-      { key: "quotes", label: "Quotes" },
-      { key: "invoices", label: "Invoices", count: 1 },
-      { key: "collections", label: "Collections" },
-      { key: "proposals", label: "Proposals", count: 2 },
+      { key: "quotes", label: "Quotes", icon: FileText },
+      { key: "invoices", label: "Invoices", icon: Receipt, count: 1, countSeverity: "critical" },
+      { key: "collections", label: "Collections", icon: Banknote },
+      { key: "proposals", label: "Proposals", icon: ClipboardList, count: 2 },
     ],
   },
   {
     label: "Growth",
     tabs: [
-      { key: "revenue-autopilot", label: "Revenue Autopilot" },
-      { key: "autopilot-hub", label: "Autopilot Hub" },
-      { key: "lead-recovery", label: "Lead Recovery", count: 5 },
-      { key: "social", label: "Social", count: 4 },
-      { key: "ecommerce", label: "E-Commerce", count: 2 },
-      { key: "website-builder", label: "Website" },
+      { key: "revenue-autopilot", label: "Revenue Autopilot", icon: Zap },
+      { key: "autopilot-hub", label: "Autopilot Hub", icon: Bot },
+      { key: "lead-recovery", label: "Lead Recovery", icon: RefreshCw, count: 5, countSeverity: "warning" },
+      { key: "social", label: "Social", icon: Share2, count: 4 },
+      { key: "ecommerce", label: "E-Commerce", icon: ShoppingCart, count: 2 },
+      { key: "website-builder", label: "Website", icon: Globe },
     ],
   },
   {
     label: "Intelligence",
     tabs: [
-      { key: "revenue-impact", label: "Revenue Impact" },
-      { key: "playbook-builder", label: "Builder" },
-      { key: "revenue-forecast", label: "Forecast" },
+      { key: "revenue-impact", label: "Revenue Impact", icon: BarChart3 },
+      { key: "playbook-builder", label: "Builder", icon: BookOpen },
+      { key: "revenue-forecast", label: "Forecast", icon: LineChart },
     ],
   },
   {
     label: "Office",
     tabs: [
-      { key: "communications", label: "Comms" },
-      { key: "documents", label: "Documents", count: 10 },
-      { key: "boardroom", label: "Boardroom" },
-      { key: "proof", label: "Proof" },
+      { key: "communications", label: "Comms", icon: Mail },
+      { key: "documents", label: "Documents", icon: FolderOpen, count: 10 },
+      { key: "boardroom", label: "Boardroom", icon: Crown },
+      { key: "proof", label: "Proof", icon: Shield },
     ],
   },
 ];
@@ -156,15 +173,13 @@ const BusinessCenter = () => {
   const PageComponent = pages[activePage];
 
   return (
-    <BusinessAppShell
+    <DomainAppShell
+      domain={DOMAIN_CONFIG}
       activePage={activePage}
       onNavigate={goTo}
       tabGroups={TAB_GROUPS}
     >
       <h1 className="sr-only">Business Center</h1>
-      <DemoModeBadge />
-      <InAppAdvisorStrip domain="business" />
-
       <AnimatePresence mode="wait">
         <motion.div
           key={activePage}
@@ -172,12 +187,11 @@ const BusinessCenter = () => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -8 }}
           transition={{ duration: 0.2 }}
-          className="mt-3"
         >
           <PageComponent />
         </motion.div>
       </AnimatePresence>
-    </BusinessAppShell>
+    </DomainAppShell>
   );
 };
 

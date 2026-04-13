@@ -1,5 +1,6 @@
-import { ConciergeAppShell } from "@/components/concierge/ConciergeAppShell";
-import { InAppAdvisorStrip } from "@/components/sita/InAppAdvisorStrip";
+import { DomainAppShell } from "@/components/sita/shell/DomainAppShell";
+import type { DomainConfig } from "@/components/sita/shell/DomainAppShell";
+import type { NavTabGroup } from "@/components/sita/shell/AppSidebarNav";
 import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -7,6 +8,11 @@ import { useExperienceSignature } from "@/hooks/useExperienceSignature";
 import { useOSOrchestration } from "@/hooks/useOSOrchestration";
 import { useRelationshipContexts, useHumanObligations } from "@/hooks/useCAIData";
 import { AppOpenTransition } from "@/components/sita/shell/AppOpenTransition";
+import {
+  Headphones, LayoutDashboard, Clock, Calendar, FileText, ShoppingCart,
+  Stethoscope, Plane, Home, CheckSquare, Apple, GraduationCap, Wrench,
+  Gift, RefreshCw, Zap, Shield, FolderOpen, Crown, Settings
+} from "lucide-react";
 
 import ConciergeOverview from "./concierge/ConciergeOverview";
 import HouseholdTasks from "./concierge/HouseholdTasks";
@@ -30,6 +36,16 @@ import RecurringObligations from "./concierge/RecurringObligations";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { ConciergeDataProvider } from "@/contexts/ConciergeDataContext";
+
+const DOMAIN_CONFIG: DomainConfig = {
+  id: "concierge",
+  title: "Concierge",
+  icon: Headphones,
+  accentFrom: "hsl(285 55% 55%)",
+  accentTo: "hsl(310 50% 48%)",
+  statusLabel: "Concierge Active",
+  version: "Concierge v2.0",
+};
 
 type SubPage = "overview" | "calendar" | "tasks" | "life-admin" | "household" | "school" | "grocery" | "appointments" | "travel" | "providers" | "events" | "workflows" | "proof" | "files" | "boardroom" | "settings" | "errands" | "upcoming" | "recurring";
 
@@ -55,44 +71,44 @@ const subpageFromPath = (path: string): SubPage => {
   return "overview";
 };
 
-const TAB_GROUPS = [
+const TAB_GROUPS: NavTabGroup[] = [
   {
     label: "Home",
     tabs: [
-      { key: "overview", label: "Overview" },
-      { key: "upcoming", label: "Upcoming" },
-      { key: "calendar", label: "Calendar" },
+      { key: "overview", label: "Overview", icon: LayoutDashboard },
+      { key: "upcoming", label: "Upcoming", icon: Clock },
+      { key: "calendar", label: "Calendar", icon: Calendar },
     ],
   },
   {
     label: "Life",
     tabs: [
-      { key: "life-admin", label: "Life Admin" },
-      { key: "errands", label: "Errands" },
-      { key: "appointments", label: "Appointments" },
-      { key: "travel", label: "Travel" },
+      { key: "life-admin", label: "Life Admin", icon: FileText },
+      { key: "errands", label: "Errands", icon: ShoppingCart },
+      { key: "appointments", label: "Appointments", icon: Stethoscope },
+      { key: "travel", label: "Travel", icon: Plane },
     ],
   },
   {
     label: "Support",
     tabs: [
-      { key: "household", label: "Household" },
-      { key: "tasks", label: "Tasks" },
-      { key: "grocery", label: "Grocery" },
-      { key: "school", label: "School" },
-      { key: "providers", label: "Providers" },
-      { key: "events", label: "Events" },
-      { key: "recurring", label: "Recurring" },
+      { key: "household", label: "Household", icon: Home },
+      { key: "tasks", label: "Tasks", icon: CheckSquare },
+      { key: "grocery", label: "Grocery", icon: Apple },
+      { key: "school", label: "School", icon: GraduationCap },
+      { key: "providers", label: "Providers", icon: Wrench },
+      { key: "events", label: "Events", icon: Gift },
+      { key: "recurring", label: "Recurring", icon: RefreshCw },
     ],
   },
   {
     label: "Office",
     tabs: [
-      { key: "workflows", label: "Automations" },
-      { key: "proof", label: "Proof" },
-      { key: "files", label: "Files" },
-      { key: "boardroom", label: "Boardroom" },
-      { key: "settings", label: "Settings" },
+      { key: "workflows", label: "Automations", icon: Zap },
+      { key: "proof", label: "Proof", icon: Shield },
+      { key: "files", label: "Files", icon: FolderOpen },
+      { key: "boardroom", label: "Boardroom", icon: Crown },
+      { key: "settings", label: "Settings", icon: Settings },
     ],
   },
 ];
@@ -139,10 +155,13 @@ const ConciergeCenter = () => {
 
   return (
     <AppOpenTransition>
-      <ConciergeAppShell activePage={activePage} onNavigate={goTo} tabGroups={TAB_GROUPS}>
+      <DomainAppShell
+        domain={DOMAIN_CONFIG}
+        activePage={activePage}
+        onNavigate={goTo}
+        tabGroups={TAB_GROUPS}
+      >
         <h1 className="sr-only">Concierge Center</h1>
-        <DemoModeBadge />
-        <InAppAdvisorStrip domain="concierge" />
         <ConciergeDataProvider value={{ relationships: caiRelationships, obligations: caiObligations }}>
           <AnimatePresence mode="wait">
             <motion.div
@@ -151,13 +170,12 @@ const ConciergeCenter = () => {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -4 }}
               transition={{ duration: 0.25, ease: "easeOut" }}
-              className="mt-3"
             >
               <PageComponent />
             </motion.div>
           </AnimatePresence>
         </ConciergeDataProvider>
-      </ConciergeAppShell>
+      </DomainAppShell>
     </AppOpenTransition>
   );
 };
