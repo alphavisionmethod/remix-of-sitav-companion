@@ -111,16 +111,6 @@ export function ShellLiveLayer({
         <AppLauncherPanelLazy open={launcherOpen} onClose={() => setLauncherOpen(false)} onLaunchApp={(id) => { handleLaunchApp(id); setLauncherOpen(false); }} />
       </Suspense>
 
-      {/* Command Layer */}
-      <CommandLayer onAction={(actionId) => {
-        if (actionId === "search") setCommandOpen(true);
-        else if (actionId === "finder") handleLaunchApp("finder");
-        else if (actionId === "settings") handleLaunchApp("settings");
-        else if (actionId === "mission") setMissionControlOpen(true);
-      }} />
-
-      {/* Click Ripple */}
-      <ClickRipple />
 
       {/* Hold-Key Command Overlay */}
       <Suspense fallback={null}>
