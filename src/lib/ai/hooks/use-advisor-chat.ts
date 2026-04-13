@@ -9,7 +9,6 @@ import { invokeAICapability, type TrustEnrichedResponse } from "../ai-capability
 import { fromTable } from "@/lib/supabase-helpers";
 import { supabase } from "@/integrations/supabase/client";
 import type { AIState } from "../ai-state-types";
-import type { AIState } from "../ai-state-types";
 
 interface ChatMessage {
   id: string;
@@ -97,7 +96,7 @@ export function useAdvisorChat(options: UseAdvisorChatOptions = {}) {
           role_key: "advisor",
           task_key: capabilityKey,
           status: "completed",
-          model_used: result.model ?? "unknown",
+          model_used: result.mode ?? "unknown",
           mode: "standard",
           budget_posture: "normal",
           scope_payload: {},
