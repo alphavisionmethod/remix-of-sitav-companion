@@ -37,6 +37,8 @@ import { WindowPerformanceMonitor } from "@/lib/nova-sdk/kernel/window-perf";
 
 // ── Types ────────────────────────────────────────────────────
 
+type DesktopVisualState = "idle" | "active" | "heavy-review" | "degraded";
+
 interface DesktopSurfaceProps {
   userName?: string;
   trustPosture?: TrustPosture;
@@ -45,6 +47,20 @@ interface DesktopSurfaceProps {
   onOpenCommand?: () => void;
   onLaunchApp?: (appId: string) => void;
 }
+
+function deriveDesktopState(notifications: ShellNotificationDigest, trustPosture: TrustPosture): DesktopVisualState {
+  if (trustPosture === "degraded" || trustPosture === "compromised") return "degraded";
+  if (notifications.approvals > 5 || notifications.urgent > 3) return "heavy-review";
+  if (notifications.total > 0 || notifications.approvals > 0) return "active";
+  return "idle";
+}
+
+const STATE_OVERRIDES: Record<DesktopVisualState, { orbOpacity: number; vignetteIntensity: number; clockGlow: string }> = {
+  idle:          { orbOpacity: 0.04, vignetteIntensity: 0.35, clockGlow: "hsl(265 55% 65% / 0.10)" },
+  active:        { orbOpacity: 0.08, vignetteIntensity: 0.30, clockGlow: "hsl(265 55% 65% / 0.15)" },
+  "heavy-review":{ orbOpacity: 0.12, vignetteIntensity: 0.25, clockGlow: "hsl(38 85% 58% / 0.15)" },
+  degraded:      { orbOpacity: 0.03, vignetteIntensity: 0.45, clockGlow: "hsl(0 70% 55% / 0.12)" },
+};
 
 // ── Desktop Notification Toasts (Calm — fade instead of slide) ─
 
