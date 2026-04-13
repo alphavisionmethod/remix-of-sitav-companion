@@ -2,12 +2,11 @@ import { SitaPageHeader, SitaCard, SitaCardTitle, SitaButton } from "@/component
 import { ConciergePageWrapper } from "@/components/concierge";
 import { KPITile, EmptyState } from "@/components/sita/SitaComponents";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useHouseholds, useHouseholdMembers, useCreateHousehold, useAddHouseholdMember, useDeleteHouseholdMember } from "@/hooks/use-household";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Users, Home, Plus, Trash2, Shield, UserPlus } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 const HouseholdCommandCenter = () => {
   const { data: households, isLoading } = useHouseholds();

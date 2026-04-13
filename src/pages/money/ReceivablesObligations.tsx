@@ -3,7 +3,7 @@ import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents"
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useState, useMemo } from "react";
 import {
