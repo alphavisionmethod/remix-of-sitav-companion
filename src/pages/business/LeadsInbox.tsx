@@ -280,7 +280,18 @@ const LeadsInbox = () => {
           </div>
 
           {filtered.length === 0 && (
-            <EmptyState icon={User} title="No leads yet" description="Add your first lead to get started with your pipeline" />
+            <PremiumEmptyState
+              variant={leads.length === 0 ? "first-use" : "no-results"}
+              icon={Target}
+              domain="business"
+              title={leads.length === 0 ? "Build your pipeline" : "No matching leads"}
+              description={leads.length === 0 ? "Add your first lead to start tracking opportunities, follow-ups, and revenue potential." : "Try adjusting your filters or search term."}
+              actions={leads.length === 0 ? [
+                { label: "Add First Lead", icon: Plus, onClick: () => { resetForm(); setShowAdd(true); }, variant: "primary" },
+                { label: "Import from CRM", icon: Plug, onClick: () => navigate("/business/integrations"), variant: "secondary" },
+              ] : undefined}
+              tip={leads.length === 0 ? "Leads sync automatically when you connect your CRM" : undefined}
+            />
           )}
 
           {filtered.map((lead) => {
@@ -394,7 +405,13 @@ const LeadsInbox = () => {
               </div>
             </>
           ) : (
-            <EmptyState icon={User} title="Select a lead" description="Click on a lead to see their profile, opportunity score, and recommended next actions" />
+            <PremiumEmptyState
+              variant="no-data"
+              icon={User}
+              domain="business"
+              title="Select a lead"
+              description="Click on a lead to see their profile, opportunity score, and recommended next actions."
+            />
           )}
         </div>
       </div>
