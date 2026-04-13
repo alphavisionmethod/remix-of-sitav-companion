@@ -1,11 +1,12 @@
 import { SitaPageHeader, SitaCard, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile, SitaTabs } from "@/components/sita/SitaComponents";
 import { GlassCard } from "@/components/sita/PremiumPageComponents";
-import { ConciergeAdvisorInsightCard, ConciergePageWrapper } from "@/components/concierge";
+import { ConciergeAdvisorInsightCard, ConciergePageWrapper, ConciergeEmptyState } from "@/components/concierge";
 import { UpcomingObligationsCard, SupportBurdenCard, ConciergeReviewQueue } from "@/components/concierge";
 import type { UpcomingObligation, ReviewItem } from "@/components/concierge";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useState, useMemo } from "react";
+import { useState } from "react";
+import { useDataMode } from "@/contexts/DataModeContext";
 import { motion } from "framer-motion";
 import {
   Calendar, Clock, AlertCircle, Zap, Sparkles, Eye, CheckCircle, Plane, MapPin, FileText, RotateCcw
@@ -47,6 +48,7 @@ const groupByDay = (items: UpcomingObligation[], days: number) => {
 
 const UpcomingNeeds = () => {
   const [view, setView] = useState<UpcomingView>("today");
+  const { isDemoMode } = useDataMode();
 
   const todayItems = OBLIGATIONS.filter((o) => o.dueLabel.startsWith("Today") || o.dueLabel.startsWith("Overdue"));
   const threeDayItems = OBLIGATIONS.filter((o) => !o.dueLabel.includes("week") && !o.dueLabel.includes("10") && !o.dueLabel.includes("12") && !o.dueLabel.includes("16"));
@@ -67,7 +69,9 @@ const UpcomingNeeds = () => {
       <DemoModeBadge />
       <SitaPageHeader title="Upcoming & Needs Handling" subtitle="One calm surface for everything that needs your attention" />
 
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      {!isDemoMode ? (
+        <ConciergeEmptyState domain="appointments" title="No upcoming obligations" description="Your schedule is open. When appointments, errands, and deadlines come up, they'll appear here — organized by urgency and timeline." />
+      ) : (<>
         <KPITile label="Today" value={String(todayItems.length)} icon={Zap} sub="Need handling" />
         <KPITile label="This Week" value={String(OBLIGATIONS.length)} icon={Calendar} />
         <KPITile label="Overdue" value={String(OBLIGATIONS.filter((o) => o.dueLabel.includes("Overdue")).length)} icon={AlertCircle} sub="Slipping" />
