@@ -1,78 +1,75 @@
 
 
-# Boardroom Audit — Gaps Found & Fix Plan
+# Boardroom Enhancement — Interactive Advisors + Full Spec Compliance
 
-## What's Already Working Well
-- Shell, header, sidebar, cinematic atmosphere — all solid
-- Executive View: agenda table, cross-domain signals, recommended motion with ExecutionChainTimeline
-- Pulse View: domain tabs, metrics, priorities, advisor stances, overdue pressure
-- Synthesis View: consensus meter, advisor stance cards, disagreement cards
-- Simulation View: ScenarioComparison, ConfidenceBand, downstream effects, assumptions disclosure
-- Approval View: ApprovalGate, DecisionSeal, ProofReceipt, ExecutionChainTimeline
-- Decision Memory: timeline, expandable history with outcomes
+## Audit Results
 
-## Gaps Found (7 issues)
+After reviewing all 8 Boardroom files against the detailed product spec, here is what is fully implemented and what gaps remain:
 
-### 1. Scope not wired to views
-The header has Global/Business/Finance/Concierge tabs but `scope` is never passed to any view. Changing scope should filter agenda items, signals, and recommendations to that domain.
+### Already Solid
+- Shell with cinematic atmosphere, sidebar, ambient spotlight
+- Header with scope/trust/freshness/session mode
+- Executive View: agenda table with scope filtering, what-changed, cross-domain signals, recommended motion, evidence chain, freshness timestamps, wired buttons
+- Pulse View: domain tabs synced to scope, metrics, priorities, advisor stances, overdue pressure
+- Synthesis View: consensus meter, advisor stance cards with AdvisorAvatar, disagreement cards with collapsible evidence chains
+- Simulation View: scenario comparison, confidence band, downstream effects, assumptions with freshness and type badges
+- Approval View: execution chain, blockers panel, receipt generation, pending approvals with ApprovalGate, decision seals, proof receipts
+- Decision Memory: expandable timeline with outcomes, advisor positions, receipt hashes
 
-### 2. No EvidenceChain usage anywhere
-The spec heavily emphasizes evidence inspection ("What evidence supports this?"). The `EvidenceChain` primitive exists but is never used in the Boardroom.
+### Gaps Found (5 issues)
 
-### 3. "Simulate First" and "Approve" buttons are dead
-Clicking them does nothing. They should at minimum navigate to the Simulation or Approval views respectively.
+**1. Advisors are static text — no interactivity, no "talking", no role identity**
+The spec says advisors should be interactive — the user should be able to hear what each advisor "thinks" and challenge them. Currently advisors are just name + quote + confidence bar. The `DomainAdvisorBoard` with its 5 interaction modes (Roundtable, Ask One, Debate, Synthesis, Evidence) already exists but is NOT used anywhere in the Boardroom. Each advisor has a defined role, specialty, and emoji but these aren't surfaced in the Boardroom views.
 
-### 4. No freshness indicators on data items
-The spec requires explicit freshness labels (e.g., "Updated 2 min ago", "Stale — 3 weeks old") on individual data points, not just the header.
+**2. Synthesis View advisors don't match the topology**
+The Synthesis View uses hardcoded `ADVISOR_STANCES` with generic names ("Revenue Advisor", "CRM Advisor") instead of pulling from the canonical `ADVISOR_ROSTERS` in `advisor-topology.ts`. Advisors should show their emoji, full role description, and specialty.
 
-### 5. No "What Changed" section
-Spec section 12 requires a delta view showing what changed since the last boardroom session.
+**3. No interactive advisor panel in the Boardroom**
+The spec requires users to be able to: "inspect evidence, challenge assumptions, ask advisors to debate, compare scenarios." The Boardroom has no way to interact with individual advisors or trigger debates between them.
 
-### 6. No blocker/requirement panel before approval
-Before approving, the spec says the system should show prerequisites, blockers, or conditions that must be met.
+**4. Session mode in header doesn't react to active module**
+When user navigates to Simulation view, the header still says "Review Mode." It should auto-update to reflect the current module context.
 
-### 7. No receipt generation flow
-After clicking Approve, nothing happens. Should show a generated receipt with hash, timestamp, and rationale.
+**5. Synthesis View not scope-filtered**
+Changing scope in the header doesn't filter advisors in the Synthesis View to show only the relevant domain's advisors.
 
 ## Fix Plan
 
-### File 1: `BoardroomAppShell.tsx` — Pass scope to all views
-- Pass `scope` and `setActiveModule` as props to `ActiveView`
-- Use a context or prop drilling so views can react to scope
+### File 1: `BoardroomAppShell.tsx`
+- Derive `sessionMode` from `activeModule` (executive/pulse/synthesis → "review", simulation → "simulation", approvals → "approval")
+- Pass `sessionMode` to `BoardroomHeader`
 
-### File 2: `BoardroomExecutiveView.tsx` — Wire scope + interactivity
-- Filter agenda items by scope (show all for "global", domain-specific otherwise)
-- "Simulate First" button calls `onNavigate("simulation")`
-- "Approve" button calls `onNavigate("approvals")`
-- Add `EvidenceChain` below the recommended motion card
-- Add freshness timestamps on agenda items and signals
-- Add a "What Changed" strip below cross-domain signals (3 delta items with timestamps)
+### File 2: `BoardroomHeader.tsx`
+- Accept and display the dynamic `sessionMode` (already supported, just needs to be wired)
 
-### File 3: `BoardroomSimulationView.tsx` — Add scope filtering + freshness
-- Add freshness badges on each assumption (e.g., "3 weeks old" on stale data)
-- Scope-aware: show relevant scenarios per domain
+### File 3: `BoardroomSynthesisView.tsx` — Major Enhancement
+- Replace hardcoded `ADVISOR_STANCES` with data from `getAdvisorRoster()` for each domain
+- Show each advisor's emoji, full role, and specialty from topology
+- Filter advisors by scope (business advisors when scope=business, all when global)
+- Add an **"Open Advisor Board"** button that toggles a `DomainAdvisorBoard` panel inline — this gives access to all 5 interaction modes (Roundtable, Ask One, Debate, Synthesis, Evidence) directly inside the Boardroom
+- Each advisor stance card becomes clickable — clicking opens that advisor's "Ask One" deep-focus view with their full specialty and role description
+- Add advisor "voice" — each advisor card shows a mini speech bubble with their current stance, styled as if they're speaking at the table
 
-### File 4: `BoardroomApprovalView.tsx` — Add blockers panel + receipt generation
-- Add "Requirements & Blockers" section above pending approvals (2-3 mock items like "CRM review complete", "Reserve buffer > 60%")
-- Approve button triggers state change: shows animated receipt generation with hash, timestamp, rationale, and conditions
-- Add freshness on proof receipts
+### File 4: `BoardroomExecutiveView.tsx`
+- Add a compact "Advisor Voices" strip below the recommended motion showing the top 3 advisors' stances with emoji and speaking indicators
+- Each voice is clickable to navigate to Synthesis view
 
-### File 5: `BoardroomPulseView.tsx` — Sync with header scope
-- When header scope changes, auto-select matching domain tab
+### File 5: `BoardroomPulseView.tsx`
+- Enhance advisor stance cards to show emoji and role from topology
+- Make advisor cards clickable to navigate to Synthesis
 
-### File 6: `BoardroomSynthesisView.tsx` — Add EvidenceChain
-- Below each disagreement card, add collapsible `EvidenceChain` showing the proof trail each advisor used
+### File 6: `BoardroomApprovalView.tsx`
+- Add "Advisor Recommendation" to each approval card showing which advisor suggested the action and their confidence
 
 ## Files
 
 | File | Change |
 |------|--------|
-| `BoardroomAppShell.tsx` | Pass `scope` + `onNavigate` to views |
-| `BoardroomExecutiveView.tsx` | Scope filtering, button wiring, EvidenceChain, What Changed, freshness |
-| `BoardroomSimulationView.tsx` | Freshness badges on assumptions |
-| `BoardroomApprovalView.tsx` | Blockers panel, receipt generation flow |
-| `BoardroomPulseView.tsx` | Sync domain tab with scope |
-| `BoardroomSynthesisView.tsx` | Add EvidenceChain to disagreements |
+| `BoardroomAppShell.tsx` | Derive + pass sessionMode from activeModule |
+| `BoardroomSynthesisView.tsx` | Use real advisor topology, scope filter, embed DomainAdvisorBoard, interactive advisor cards with voice bubbles |
+| `BoardroomExecutiveView.tsx` | Add compact advisor voices strip below motion |
+| `BoardroomPulseView.tsx` | Enhance advisor cards with emoji + clickable navigation |
+| `BoardroomApprovalView.tsx` | Add advisor recommendation to approval cards |
 
-6 files modified. No new files. No database changes.
+5 files modified. No new files. No database changes.
 
