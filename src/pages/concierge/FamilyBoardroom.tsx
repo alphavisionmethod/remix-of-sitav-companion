@@ -14,7 +14,6 @@ import {
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-import { useDataMode } from "@/contexts/DataModeContext";
 import { DEMO_carryover, DEMO_nextMoves, DEMO_priorities, DEMO_proofSummary, DEMO_scheduleConflicts } from "@/lib/demo-data/concierge";
 
 const weeklyStats = {
