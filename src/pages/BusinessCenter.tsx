@@ -1,7 +1,6 @@
-import { CenterPageShell, CenterSection } from "@/components/sita/CenterPageShell";
+import { BusinessAppShell } from "@/components/business/BusinessAppShell";
 import { InAppAdvisorStrip } from "@/components/sita/InAppAdvisorStrip";
 import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
-import { SitaTabs } from "@/components/sita/SitaComponents";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -32,11 +31,6 @@ import BusinessOperations from "./business/BusinessOperations";
 import BusinessDocuments from "./business/BusinessDocuments";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-import { useOSOrchestration } from "@/hooks/useOSOrchestration";
-import { useExperienceSignature } from "@/hooks/useExperienceSignature";
-import { useOpportunitySignals } from "@/hooks/useCAIData";
-import { useIsMobile } from "@/hooks/use-mobile";
-import { MobileTabSelector } from "@/components/sita/MobileTabSelector";
 
 type SubPage = "overview" | "leads" | "customers" | "follow-through" | "support" | "appointments" | "operations" | "documents" | "opportunities" | "quotes" | "invoices" | "communications" | "boardroom" | "proof" | "revenue-autopilot" | "collections" | "autopilot-hub" | "revenue-impact" | "playbook-builder" | "revenue-forecast" | "website-builder" | "proposals" | "lead-recovery" | "social" | "ecommerce";
 
@@ -120,9 +114,6 @@ const TAB_GROUPS = [
   },
 ];
 
-const ALL_TABS = TAB_GROUPS.flatMap((g) => g.tabs);
-
-
 const pages: Record<SubPage, React.ComponentType> = {
   overview: BusinessOverview,
   leads: LeadsInbox,
@@ -156,10 +147,6 @@ const BusinessCenter = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const activePage = subpageFromPath(location.pathname);
-  const isMobile = useIsMobile();
-  const os = useOSOrchestration();
-  const signature = useExperienceSignature();
-  const { data: caiOpportunities } = useOpportunitySignals({ limit: 15 });
 
   const goTo = (key: string) => {
     if (key === "overview") navigate("/business");
@@ -169,41 +156,28 @@ const BusinessCenter = () => {
   const PageComponent = pages[activePage];
 
   return (
-    <CenterPageShell domain="business">
+    <BusinessAppShell
+      activePage={activePage}
+      onNavigate={goTo}
+      tabGroups={TAB_GROUPS}
+    >
       <h1 className="sr-only">Business Center</h1>
       <DemoModeBadge />
-      <CenterSection>
-        <InAppAdvisorStrip domain="business" />
-      </CenterSection>
-      <CenterSection>
-        {isMobile ? (
-          <MobileTabSelector active={activePage} onChange={goTo} tabGroups={TAB_GROUPS} />
-        ) : (
-          <motion.div
-            className="overflow-x-auto -mx-2 px-2"
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.25 }}
-          >
-            <SitaTabs tabs={ALL_TABS} active={activePage} onChange={goTo} />
-          </motion.div>
-        )}
-      </CenterSection>
+      <InAppAdvisorStrip domain="business" />
 
-      <CenterSection>
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activePage}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.25 }}
-          >
-            <PageComponent />
-          </motion.div>
-        </AnimatePresence>
-      </CenterSection>
-    </CenterPageShell>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activePage}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.2 }}
+          className="mt-3"
+        >
+          <PageComponent />
+        </motion.div>
+      </AnimatePresence>
+    </BusinessAppShell>
   );
 };
 

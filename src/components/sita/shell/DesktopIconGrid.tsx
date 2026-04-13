@@ -4,22 +4,25 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useEffect, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { ICON_GRADIENTS } from "@/lib/design-system/nova-os";
 import {
   Folder, Download, FileText, StickyNote, Trash2,
-  Code2, FileDown, FileStack,
+  Code2, FileDown, FileStack, Briefcase, BarChart3,
 } from "lucide-react";
 
 interface DesktopIcon {
   id: string;
   label: string;
   icon: React.ElementType;
-  previewIcon?: React.ElementType; // Smart preview alternative
+  previewIcon?: React.ElementType;
   gradient: string;
+  route?: string; // If set, navigate instead of launching app
 }
 
 const DESKTOP_ICONS: DesktopIcon[] = [
+  { id: "business", label: "Business OS", icon: Briefcase, previewIcon: BarChart3, gradient: ICON_GRADIENTS.purple, route: "/business" },
   { id: "documents", label: "Documents", icon: FileText, previewIcon: FileStack, gradient: ICON_GRADIENTS.blue },
   { id: "downloads", label: "Downloads", icon: Download, previewIcon: FileDown, gradient: ICON_GRADIENTS.green },
   { id: "projects", label: "Projects", icon: Folder, previewIcon: Code2, gradient: ICON_GRADIENTS.purple },
@@ -37,6 +40,7 @@ interface DesktopIconGridProps {
 export function DesktopIconGrid({ visible = true, onOpenFolder }: DesktopIconGridProps) {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [idle, setIdle] = useState(false);
+  const navigate = useNavigate();
 
   // Zero-clutter: hide after 8s idle
   useEffect(() => {
@@ -63,8 +67,13 @@ export function DesktopIconGrid({ visible = true, onOpenFolder }: DesktopIconGri
   }, []);
 
   const handleDoubleClick = useCallback((id: string) => {
-    onOpenFolder?.(id);
-  }, [onOpenFolder]);
+    const icon = DESKTOP_ICONS.find(i => i.id === id);
+    if (icon?.route) {
+      navigate(icon.route);
+    } else {
+      onOpenFolder?.(id);
+    }
+  }, [onOpenFolder, navigate]);
 
   return (
     <div
