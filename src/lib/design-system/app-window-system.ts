@@ -107,4 +107,5 @@ export const APP_ACCENTS: Record<string, string> = {
   calendar: "from-[hsl(0_70%_55%)] to-[hsl(15_80%_50%)]",
   mail: "from-[hsl(210_80%_55%)] to-[hsl(200_70%_50%)]",
   default: "from-[hsl(265_55%_58%)] to-[hsl(280_50%_50%)]",
+  "business-os": "from-[hsl(265_55%_58%)] to-[hsl(285_50%_48%)]",
 } as const;

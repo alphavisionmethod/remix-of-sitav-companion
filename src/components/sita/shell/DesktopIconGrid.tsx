@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { ICON_GRADIENTS } from "@/lib/design-system/nova-os";
 import {
   Folder, Download, FileText, StickyNote, Trash2,
-  Code2, FileDown, FileStack,
+  Code2, FileDown, FileStack, Briefcase, BarChart3,
 } from "lucide-react";
 
 interface DesktopIcon {
@@ -20,6 +20,7 @@ interface DesktopIcon {
 }
 
 const DESKTOP_ICONS: DesktopIcon[] = [
+  { id: "business", label: "Business OS", icon: Briefcase, previewIcon: BarChart3, gradient: ICON_GRADIENTS.purple },
   { id: "documents", label: "Documents", icon: FileText, previewIcon: FileStack, gradient: ICON_GRADIENTS.blue },
   { id: "downloads", label: "Downloads", icon: Download, previewIcon: FileDown, gradient: ICON_GRADIENTS.green },
   { id: "projects", label: "Projects", icon: Folder, previewIcon: Code2, gradient: ICON_GRADIENTS.purple },
