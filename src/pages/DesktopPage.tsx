@@ -127,6 +127,8 @@ export default function DesktopPage() {
       <DesktopNotifications />
       <DesktopSurface
         onOpenCommand={openCommand}
+        desktopState={state.desktopState}
+        continuity={state.continuity}
       />
 
       {/* S30 — Contextual Welcome Tour (first visit only) */}
