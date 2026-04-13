@@ -22,6 +22,7 @@ import { SitaTabs } from "@/components/sita/SitaComponents";
 import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
 import { ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransitions";
 import { cn } from "@/lib/utils";
+import { CrossAppAction } from "@/components/sita/CrossAppAction";
 
 // ── Chase Sequence ──────────────────────────────────────────────
 
