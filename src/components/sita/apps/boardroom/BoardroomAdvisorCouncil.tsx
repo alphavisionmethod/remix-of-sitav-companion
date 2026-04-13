@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { Brain, Sparkles, Mic, Play, Pause } from "lucide-react";
+import { Brain, Sparkles, Mic, Play, Pause, CheckCircle, Shield, XCircle, HelpCircle, Lock } from "lucide-react";
 import { getAdvisorRoster, type AdvisorRole } from "@/lib/advisor-topology";
 import { TalkingAvatar } from "./TalkingAvatar";
 
@@ -10,6 +10,39 @@ interface Props {
   onSelectAdvisor?: (advisorId: string) => void;
   compact?: boolean;
 }
+
+type AdvisorStance = "agree" | "caution" | "dissent" | "unresolved" | "blocked" | "simulation-only" | "verified";
+
+const ADVISOR_STANCES: Record<string, AdvisorStance> = {
+  "biz-revenue": "agree",
+  "biz-relationship": "caution",
+  "biz-followthrough": "agree",
+  "biz-support": "unresolved",
+  "biz-collections": "agree",
+  "biz-operations": "caution",
+  "fin-obligations": "agree",
+  "fin-spending": "caution",
+  "fin-planning": "simulation-only",
+  "fin-reserve": "dissent",
+  "fin-approvals": "verified",
+  "fin-receivables": "agree",
+  "con-lifeadmin": "blocked",
+  "con-travel": "verified",
+  "con-logistics": "agree",
+  "con-support": "caution",
+  "con-prep": "verified",
+  "con-household": "agree",
+};
+
+const STANCE_DOT: Record<AdvisorStance, { color: string; Icon: React.ElementType }> = {
+  agree: { color: "hsl(var(--trust-safe))", Icon: CheckCircle },
+  caution: { color: "hsl(var(--sita-gold))", Icon: Shield },
+  dissent: { color: "hsl(var(--destructive))", Icon: XCircle },
+  unresolved: { color: "hsl(0 0% 50%)", Icon: HelpCircle },
+  blocked: { color: "hsl(var(--destructive))", Icon: Lock },
+  "simulation-only": { color: "hsl(280 50% 65%)", Icon: HelpCircle },
+  verified: { color: "hsl(var(--trust-safe))", Icon: CheckCircle },
+};
 
 const SPEAKING_ADVISOR_MAP: Record<string, string> = {
   business: "biz-revenue",
@@ -39,7 +72,6 @@ export function BoardroomAdvisorCouncil({ scope, onSelectAdvisor, compact = fals
   const displayAdvisors = compact ? allAdvisors.slice(0, 4) : allAdvisors;
   const topic = TOPIC_MAP[scope] || TOPIC_MAP.global;
 
-  // Auto-play cycling
   React.useEffect(() => {
     if (!autoPlay || displayAdvisors.length === 0) return;
     const interval = setInterval(() => {
@@ -59,6 +91,8 @@ export function BoardroomAdvisorCouncil({ scope, onSelectAdvisor, compact = fals
     const isSpeaking = adv.id === speakingId;
     const isHovered = hoveredAdvisor === adv.id;
     const isIdle = !isSpeaking && !isHovered;
+    const stance = ADVISOR_STANCES[adv.id] || "unresolved";
+    const stanceDot = STANCE_DOT[stance];
 
     return (
       <motion.button
@@ -88,7 +122,6 @@ export function BoardroomAdvisorCouncil({ scope, onSelectAdvisor, compact = fals
                 background: `radial-gradient(ellipse 100% 120% at 50% 20%, ${adv.accentColor}35, transparent 65%)`,
               }}
             />
-            {/* Sparkle particles */}
             {[...Array(3)].map((_, pi) => (
               <motion.div
                 key={pi}
@@ -108,7 +141,6 @@ export function BoardroomAdvisorCouncil({ scope, onSelectAdvisor, compact = fals
 
         {/* Avatar with dramatic glowing ring */}
         <div className="relative">
-          {/* Ambient shadow/glow beneath */}
           <motion.div
             className="absolute -bottom-3 left-1/2 -translate-x-1/2 rounded-full blur-xl -z-10 pointer-events-none"
             style={{
@@ -120,7 +152,6 @@ export function BoardroomAdvisorCouncil({ scope, onSelectAdvisor, compact = fals
             transition={isSpeaking ? { repeat: Infinity, duration: 2.5, ease: "easeInOut" } : {}}
           />
 
-          {/* Outer glow ring */}
           <div
             className="rounded-full flex items-center justify-center transition-all duration-500"
             style={{
@@ -135,7 +166,6 @@ export function BoardroomAdvisorCouncil({ scope, onSelectAdvisor, compact = fals
                 : `0 0 8px ${adv.accentColor}12`,
             }}
           >
-            {/* Talking Avatar Portrait */}
             <TalkingAvatar
               speaking={isSpeaking}
               avatarUrl={adv.avatarUrl}
@@ -176,9 +206,18 @@ export function BoardroomAdvisorCouncil({ scope, onSelectAdvisor, compact = fals
             </motion.div>
           )}
 
-          {/* Status dot (non-speaking) */}
+          {/* Stance dot overlay (non-speaking) */}
           {!isSpeaking && (
-            <div className="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-[hsl(152_55%_48%)] border-2 border-[hsl(220_18%_6%)]" />
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ delay: 0.5 + i * 0.05, type: "spring" }}
+              className="absolute -bottom-0.5 -right-0.5 w-5 h-5 rounded-full flex items-center justify-center border-2 border-[hsl(220_18%_6%)]"
+              style={{ backgroundColor: `${stanceDot.color}` }}
+              title={stance}
+            >
+              <stanceDot.Icon size={9} className="text-white" />
+            </motion.div>
           )}
         </div>
 
@@ -208,7 +247,6 @@ export function BoardroomAdvisorCouncil({ scope, onSelectAdvisor, compact = fals
             >
               {adv.name.replace(" Advisor", "")}
             </p>
-            {/* LIVE badge */}
             {isSpeaking && (
               <span className="flex items-center gap-1 shrink-0">
                 <motion.span
@@ -229,7 +267,6 @@ export function BoardroomAdvisorCouncil({ scope, onSelectAdvisor, compact = fals
             >
               {adv.role}
             </p>
-            {/* Mini equalizer bars */}
             {isSpeaking && (
               <span className="flex items-end gap-[1px] h-2.5 shrink-0">
                 {[0, 1, 2].map(bi => (
@@ -256,7 +293,6 @@ export function BoardroomAdvisorCouncil({ scope, onSelectAdvisor, compact = fals
 
   return (
     <div className="relative">
-      {/* Theatrical vignette */}
       <div
         className="absolute inset-0 rounded-2xl -z-10 pointer-events-none"
         style={{
@@ -266,7 +302,6 @@ export function BoardroomAdvisorCouncil({ scope, onSelectAdvisor, compact = fals
       />
 
       <div className={cn("rounded-2xl border border-[hsl(280_50%_50%/0.12)]", compact ? "p-3" : "p-8")}>
-        {/* Header */}
         {!compact && (
           <div className="flex items-center gap-2.5 mb-8">
             <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-[hsl(280_50%_55%)] to-[hsl(280_60%_35%)] flex items-center justify-center shadow-lg">
@@ -286,16 +321,13 @@ export function BoardroomAdvisorCouncil({ scope, onSelectAdvisor, compact = fals
           </div>
         )}
 
-        {/* Arc layout */}
         <div className="flex flex-col items-center gap-6">
-          {/* Top arc */}
           <div className="flex items-end justify-center gap-5 flex-wrap">
             {displayAdvisors.slice(0, Math.ceil(displayAdvisors.length / 2)).map((adv, i) =>
               renderSeat(adv, i)
             )}
           </div>
 
-          {/* Center topic spotlight */}
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -326,7 +358,6 @@ export function BoardroomAdvisorCouncil({ scope, onSelectAdvisor, compact = fals
             </p>
           </motion.div>
 
-          {/* Bottom arc */}
           {!compact && displayAdvisors.length > Math.ceil(displayAdvisors.length / 2) && (
             <div className="flex items-start justify-center gap-5 flex-wrap">
               {displayAdvisors.slice(Math.ceil(displayAdvisors.length / 2)).map((adv, i) =>

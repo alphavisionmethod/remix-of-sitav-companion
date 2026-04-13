@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
-import { AlertTriangle, CheckCircle, Scale, ChevronDown, ChevronRight, MessageCircle, Users } from "lucide-react";
+import { AlertTriangle, CheckCircle, Scale, ChevronDown, ChevronRight, MessageCircle, Users, Shield, Lock, HelpCircle, XCircle } from "lucide-react";
 import { ConfidenceBar } from "@/components/sita/primitives";
 import { EvidenceChain, type EvidenceNode } from "@/components/sita/primitives/EvidenceChain";
 import { getAdvisorRoster, ADVISOR_ROSTERS, type AdvisorRole } from "@/lib/advisor-topology";
@@ -15,25 +15,38 @@ interface Props {
   onNavigate: (module: string) => void;
 }
 
-const ADVISOR_STANCE_MAP: Record<string, { recommendation: string; confidence: number; evidenceCount: number }> = {
-  "biz-revenue": { recommendation: "Prioritize collections — $18.5K overdue threatens cash target", confidence: 72, evidenceCount: 6 },
-  "biz-relationship": { recommendation: "Preserve client relationships — segment by value before outreach", confidence: 68, evidenceCount: 4 },
-  "biz-followthrough": { recommendation: "Pipeline velocity needs attention — 3 deals stalled over 14 days", confidence: 74, evidenceCount: 5 },
-  "biz-support": { recommendation: "Support queue manageable but NPS trending down", confidence: 60, evidenceCount: 2 },
-  "biz-collections": { recommendation: "Accelerate TechCorp outreach — largest overdue at $12.5K", confidence: 78, evidenceCount: 5 },
-  "biz-operations": { recommendation: "Reduce support ticket response time to protect NPS", confidence: 60, evidenceCount: 2 },
-  "fin-obligations": { recommendation: "Defer $342/mo subscriptions to restore reserve buffer", confidence: 78, evidenceCount: 5 },
-  "fin-spending": { recommendation: "AWS billing spike detected — investigate before next cycle", confidence: 74, evidenceCount: 4 },
-  "fin-planning": { recommendation: "Q2 forecast needs adjustment based on pipeline slowdown", confidence: 65, evidenceCount: 3 },
-  "fin-reserve": { recommendation: "Accelerate AR collection — reserves critical at 72% of target", confidence: 65, evidenceCount: 3 },
-  "fin-approvals": { recommendation: "2 pending payments need review before end of week", confidence: 82, evidenceCount: 4 },
-  "fin-receivables": { recommendation: "3 receivables aging past 30 days — collections needed", confidence: 76, evidenceCount: 5 },
-  "con-lifeadmin": { recommendation: "School enrollment deadline approaching — needs decision this week", confidence: 55, evidenceCount: 2 },
-  "con-travel": { recommendation: "NYC prep fully cleared — safe to approve logistics package", confidence: 88, evidenceCount: 7 },
-  "con-logistics": { recommendation: "Errand batch optimization available — save 45 min this week", confidence: 82, evidenceCount: 3 },
-  "con-support": { recommendation: "Task delegation opportunities detected — 3 items automatable", confidence: 70, evidenceCount: 3 },
-  "con-prep": { recommendation: "All prep items for upcoming appointments are cleared", confidence: 92, evidenceCount: 6 },
-  "con-household": { recommendation: "Household coordination normal — grocery run due Thursday", confidence: 85, evidenceCount: 4 },
+// Stance types for advisor visualization
+type AdvisorStance = "agree" | "caution" | "dissent" | "unresolved" | "blocked" | "simulation-only" | "verified";
+
+const STANCE_CONFIG: Record<AdvisorStance, { icon: React.ElementType; color: string; bg: string; label: string; borderStyle?: string }> = {
+  agree: { icon: CheckCircle, color: "text-[hsl(var(--trust-safe))]", bg: "bg-[hsl(var(--trust-safe))]/15", label: "Agree" },
+  caution: { icon: Shield, color: "text-[hsl(var(--sita-gold))]", bg: "bg-[hsl(var(--sita-gold))]/15", label: "Caution" },
+  dissent: { icon: XCircle, color: "text-[hsl(var(--destructive))]", bg: "bg-[hsl(var(--destructive))]/15", label: "Dissent" },
+  unresolved: { icon: HelpCircle, color: "text-[hsl(0_0%_100%/0.4)]", bg: "bg-[hsl(0_0%_100%/0.06)]", label: "Unresolved" },
+  blocked: { icon: Lock, color: "text-[hsl(var(--destructive))]", bg: "bg-[hsl(var(--destructive))]/10", label: "Blocked" },
+  "simulation-only": { icon: HelpCircle, color: "text-[hsl(280_50%_65%)]", bg: "bg-[hsl(280_50%_50%/0.1)]", label: "Sim Only", borderStyle: "border-dashed" },
+  verified: { icon: CheckCircle, color: "text-[hsl(var(--trust-safe))]", bg: "bg-[hsl(var(--trust-safe))]/10", label: "Verified" },
+};
+
+const ADVISOR_STANCE_MAP: Record<string, { recommendation: string; confidence: number; evidenceCount: number; stance: AdvisorStance }> = {
+  "biz-revenue": { recommendation: "Prioritize collections — $18.5K overdue threatens cash target", confidence: 72, evidenceCount: 6, stance: "agree" },
+  "biz-relationship": { recommendation: "Preserve client relationships — segment by value before outreach", confidence: 68, evidenceCount: 4, stance: "caution" },
+  "biz-followthrough": { recommendation: "Pipeline velocity needs attention — 3 deals stalled over 14 days", confidence: 74, evidenceCount: 5, stance: "agree" },
+  "biz-support": { recommendation: "Support queue manageable but NPS trending down", confidence: 60, evidenceCount: 2, stance: "unresolved" },
+  "biz-collections": { recommendation: "Accelerate TechCorp outreach — largest overdue at $12.5K", confidence: 78, evidenceCount: 5, stance: "agree" },
+  "biz-operations": { recommendation: "Reduce support ticket response time to protect NPS", confidence: 60, evidenceCount: 2, stance: "caution" },
+  "fin-obligations": { recommendation: "Defer $342/mo subscriptions to restore reserve buffer", confidence: 78, evidenceCount: 5, stance: "agree" },
+  "fin-spending": { recommendation: "AWS billing spike detected — investigate before next cycle", confidence: 74, evidenceCount: 4, stance: "caution" },
+  "fin-planning": { recommendation: "Q2 forecast needs adjustment based on pipeline slowdown", confidence: 65, evidenceCount: 3, stance: "simulation-only" },
+  "fin-reserve": { recommendation: "Accelerate AR collection — reserves critical at 72% of target", confidence: 65, evidenceCount: 3, stance: "dissent" },
+  "fin-approvals": { recommendation: "2 pending payments need review before end of week", confidence: 82, evidenceCount: 4, stance: "verified" },
+  "fin-receivables": { recommendation: "3 receivables aging past 30 days — collections needed", confidence: 76, evidenceCount: 5, stance: "agree" },
+  "con-lifeadmin": { recommendation: "School enrollment deadline approaching — needs decision this week", confidence: 55, evidenceCount: 2, stance: "blocked" },
+  "con-travel": { recommendation: "NYC prep fully cleared — safe to approve logistics package", confidence: 88, evidenceCount: 7, stance: "verified" },
+  "con-logistics": { recommendation: "Errand batch optimization available — save 45 min this week", confidence: 82, evidenceCount: 3, stance: "agree" },
+  "con-support": { recommendation: "Task delegation opportunities detected — 3 items automatable", confidence: 70, evidenceCount: 3, stance: "caution" },
+  "con-prep": { recommendation: "All prep items for upcoming appointments are cleared", confidence: 92, evidenceCount: 6, stance: "verified" },
+  "con-household": { recommendation: "Household coordination normal — grocery run due Thursday", confidence: 85, evidenceCount: 4, stance: "agree" },
 };
 
 const DISAGREEMENTS = [
@@ -77,6 +90,70 @@ function getAdvisorName(id: string): AdvisorRole {
   return { id, name: id, emoji: "🤖", role: "Advisor", specialty: "", accentColor: "hsl(280 50% 55%)", avatarUrl: "" };
 }
 
+// Room Tension Map component
+function RoomTensionMap({ stances }: { stances: AdvisorStance[] }) {
+  const counts = {
+    agree: stances.filter(s => s === "agree" || s === "verified").length,
+    caution: stances.filter(s => s === "caution" || s === "simulation-only").length,
+    dissent: stances.filter(s => s === "dissent" || s === "blocked").length,
+    unresolved: stances.filter(s => s === "unresolved").length,
+  };
+  const total = stances.length || 1;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 6 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] p-4"
+    >
+      <p className="text-[9px] font-semibold uppercase tracking-[0.2em] text-[hsl(0_0%_100%/0.3)] mb-3">
+        Room Tension Map
+      </p>
+      {/* Stacked bar */}
+      <div className="h-3 rounded-full overflow-hidden flex mb-3">
+        <motion.div
+          className="h-full bg-[hsl(var(--trust-safe))]"
+          initial={{ width: 0 }}
+          animate={{ width: `${(counts.agree / total) * 100}%` }}
+          transition={{ duration: 0.6 }}
+        />
+        <motion.div
+          className="h-full bg-[hsl(var(--sita-gold))]"
+          initial={{ width: 0 }}
+          animate={{ width: `${(counts.caution / total) * 100}%` }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+        />
+        <motion.div
+          className="h-full bg-[hsl(var(--destructive))]"
+          initial={{ width: 0 }}
+          animate={{ width: `${(counts.dissent / total) * 100}%` }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        />
+        <motion.div
+          className="h-full bg-[hsl(0_0%_100%/0.15)]"
+          initial={{ width: 0 }}
+          animate={{ width: `${(counts.unresolved / total) * 100}%` }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+        />
+      </div>
+      <div className="flex items-center gap-4 text-[9px]">
+        <span className="flex items-center gap-1.5 text-[hsl(var(--trust-safe))]">
+          <span className="w-2 h-2 rounded-full bg-[hsl(var(--trust-safe))]" /> Agree ({counts.agree})
+        </span>
+        <span className="flex items-center gap-1.5 text-[hsl(var(--sita-gold))]">
+          <span className="w-2 h-2 rounded-full bg-[hsl(var(--sita-gold))]" /> Caution ({counts.caution})
+        </span>
+        <span className="flex items-center gap-1.5 text-[hsl(var(--destructive))]">
+          <span className="w-2 h-2 rounded-full bg-[hsl(var(--destructive))]" /> Dissent ({counts.dissent})
+        </span>
+        <span className="flex items-center gap-1.5 text-[hsl(0_0%_100%/0.4)]">
+          <span className="w-2 h-2 rounded-full bg-[hsl(0_0%_100%/0.15)]" /> Unresolved ({counts.unresolved})
+        </span>
+      </div>
+    </motion.div>
+  );
+}
+
 export function BoardroomSynthesisView({ scope, onNavigate }: Props) {
   const [expandedEvidence, setExpandedEvidence] = useState<string | null>(null);
   const [showAdvisorBoard, setShowAdvisorBoard] = useState<string | null>(null);
@@ -84,11 +161,11 @@ export function BoardroomSynthesisView({ scope, onNavigate }: Props) {
 
   const advisors = useMemo(() => {
     const domains = scope === "global" ? ["business", "finance", "concierge"] : [scope];
-    const result: (AdvisorRole & { recommendation: string; confidence: number; evidenceCount: number })[] = [];
+    const result: (AdvisorRole & { recommendation: string; confidence: number; evidenceCount: number; stance: AdvisorStance })[] = [];
     domains.forEach(d => {
       const roster = getAdvisorRoster(d);
       roster.advisors.forEach(adv => {
-        const stance = ADVISOR_STANCE_MAP[adv.id] || { recommendation: "Awaiting analysis…", confidence: 50, evidenceCount: 0 };
+        const stance = ADVISOR_STANCE_MAP[adv.id] || { recommendation: "Awaiting analysis…", confidence: 50, evidenceCount: 0, stance: "unresolved" as AdvisorStance };
         result.push({ ...adv, ...stance });
       });
     });
@@ -102,6 +179,7 @@ export function BoardroomSynthesisView({ scope, onNavigate }: Props) {
   const avgConfidence = Math.round(advisors.reduce((s, a) => s + a.confidence, 0) / (advisors.length || 1));
   const maxGap = advisors.length > 1 ? Math.max(...advisors.map(a => a.confidence)) - Math.min(...advisors.map(a => a.confidence)) : 0;
   const consensusPercent = Math.round(100 - maxGap);
+  const allStances = advisors.map(a => a.stance);
 
   const domainForBoard = scope === "global" ? "business" : scope;
 
@@ -109,6 +187,9 @@ export function BoardroomSynthesisView({ scope, onNavigate }: Props) {
     <div className="p-6 space-y-6">
       {/* The Council — Cinematic Arc */}
       <BoardroomAdvisorCouncil scope={scope} onSelectAdvisor={(id) => setSelectedAdvisor(id)} />
+
+      {/* Room Tension Map */}
+      <RoomTensionMap stances={allStances} />
 
       {/* Live Discussion Thread */}
       <BoardroomDiscussionThread scope={scope} />
@@ -165,32 +246,50 @@ export function BoardroomSynthesisView({ scope, onNavigate }: Props) {
         )}
       </AnimatePresence>
 
-      {/* Advisor Stance Cards — Premium Profile Cards */}
+      {/* Advisor Stance Cards with stance badges */}
       <div>
         <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[hsl(280_50%_65%/0.5)] mb-3">
           Advisor Positions — Ranked by Confidence
         </p>
         <div className="flex gap-3 overflow-x-auto pb-2 snap-x snap-mandatory scrollbar-thin scrollbar-thumb-[hsl(0_0%_100%/0.08)]">
-          {advisors.map((adv, i) => (
-            <motion.div
-              key={adv.id}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.04 }}
-              className="snap-start shrink-0 w-[160px]"
-            >
-              <AdvisorProfileCard
-                advisor={adv}
-                recommendation={adv.recommendation}
-                confidence={adv.confidence}
-                evidenceCount={adv.evidenceCount}
-                status={selectedAdvisor === adv.id ? "speaking" : "active"}
-                selected={selectedAdvisor === adv.id}
-                onClick={() => setSelectedAdvisor(selectedAdvisor === adv.id ? null : adv.id)}
-                size="md"
-              />
-            </motion.div>
-          ))}
+          {advisors.map((adv, i) => {
+            const stanceCfg = STANCE_CONFIG[adv.stance];
+            const StanceIcon = stanceCfg.icon;
+            return (
+              <motion.div
+                key={adv.id}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.04 }}
+                className="snap-start shrink-0 w-[160px] relative"
+              >
+                {/* Stance badge overlay */}
+                <motion.div
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.3 + i * 0.04, type: "spring", stiffness: 400 }}
+                  className={cn(
+                    "absolute -top-1.5 -right-1.5 z-20 flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[7px] font-bold border",
+                    stanceCfg.bg, stanceCfg.color,
+                    stanceCfg.borderStyle || "border-transparent",
+                  )}
+                >
+                  <StanceIcon size={8} />
+                  {stanceCfg.label}
+                </motion.div>
+                <AdvisorProfileCard
+                  advisor={adv}
+                  recommendation={adv.recommendation}
+                  confidence={adv.confidence}
+                  evidenceCount={adv.evidenceCount}
+                  status={selectedAdvisor === adv.id ? "speaking" : "active"}
+                  selected={selectedAdvisor === adv.id}
+                  onClick={() => setSelectedAdvisor(selectedAdvisor === adv.id ? null : adv.id)}
+                  size="md"
+                />
+              </motion.div>
+            );
+          })}
         </div>
       </div>
 

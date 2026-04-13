@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
-import { AlertTriangle, HelpCircle, CheckCircle, Database, Brain, Clock } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { AlertTriangle, HelpCircle, CheckCircle, Database, Brain, Clock, ShieldAlert, Eye, EyeOff } from "lucide-react";
 import { ScenarioComparison, ConfidenceBand } from "@/components/sita/primitives";
 
 interface Props {
@@ -89,7 +89,6 @@ const DOWNSTREAM = [
   { domain: "Concierge", effect: "No downstream impact on household or travel prep" },
 ];
 
-// Timeline data for "What Happens Next"
 const TIMELINE_WEEKS = [
   { week: "Week 1", events: ["Initial outreach sent", "TechCorp personal call"], recovery: "$2,400", confidence: 85 },
   { week: "Week 2", events: ["Follow-up reminders", "David Kim response expected"], recovery: "$8,200", confidence: 72 },
@@ -97,7 +96,21 @@ const TIMELINE_WEEKS = [
   { week: "Week 4", events: ["Final recovery window", "Reserve buffer target met"], recovery: "$16,800", confidence: 52 },
 ];
 
-// Risk thermometer
+// Simulation Contract data
+const SIMULATION_CONTRACT = {
+  computed: ["Current reserve balance ($7,200)", "Invoice aging days", "Recovery rate from historical data"],
+  estimated: ["Client response timing", "Recovery probability by scenario", "Downstream reserve impact"],
+  assumptionHeavy: ["Client sentiment (stale data)", "Competitive pressure on pricing"],
+  blockedByMissing: ["Real-time CRM sentiment score", "TechCorp internal payment cycle data"],
+};
+
+const NOT_MODELED = [
+  "External market conditions affecting client cash flow",
+  "Potential new invoices arriving during recovery period",
+  "Client internal budget cycle changes",
+  "Impact of concurrent outreach from other vendors",
+];
+
 function RiskThermometer({ selectedScenario }: { selectedScenario: string }) {
   const riskLevel = selectedScenario === "immediate" ? 55 : selectedScenario === "phased" ? 25 : 80;
   const riskColor = riskLevel > 60 ? "hsl(0 80% 55%)" : riskLevel > 40 ? "hsl(40 90% 55%)" : "hsl(145 60% 50%)";
@@ -126,11 +139,89 @@ function RiskThermometer({ selectedScenario }: { selectedScenario: string }) {
   );
 }
 
+// Simulation Contract Panel
+function SimulationContractPanel() {
+  const [expanded, setExpanded] = useState(false);
+
+  const categories = [
+    { key: "computed", label: "Computed", icon: Database, color: "text-[hsl(var(--trust-safe))]", bg: "bg-[hsl(var(--trust-safe))]/10", items: SIMULATION_CONTRACT.computed, desc: "Deterministic — calculated from verified data" },
+    { key: "estimated", label: "Estimated", icon: Brain, color: "text-[hsl(280_50%_65%)]", bg: "bg-[hsl(280_50%_50%/0.1)]", items: SIMULATION_CONTRACT.estimated, desc: "Modeled from patterns and historical trends" },
+    { key: "assumption", label: "Assumption-Heavy", icon: HelpCircle, color: "text-[hsl(var(--sita-gold))]", bg: "bg-[hsl(var(--sita-gold))]/10", items: SIMULATION_CONTRACT.assumptionHeavy, desc: "Based on assumptions that may not hold" },
+    { key: "blocked", label: "Blocked by Missing Data", icon: ShieldAlert, color: "text-[hsl(var(--destructive))]", bg: "bg-[hsl(var(--destructive))]/10", items: SIMULATION_CONTRACT.blockedByMissing, desc: "Cannot compute — data source unavailable" },
+  ];
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="rounded-2xl border border-[hsl(280_50%_50%/0.15)] bg-[hsl(280_40%_50%/0.03)] p-5"
+    >
+      <div className="flex items-center justify-between mb-4">
+        <div className="flex items-center gap-2">
+          <ShieldAlert size={14} className="text-[hsl(280_50%_65%)]" />
+          <span className="text-[11px] font-bold text-[hsl(0_0%_100%/0.85)]">Simulation Contract</span>
+          <span className="text-[8px] text-[hsl(0_0%_100%/0.3)] ml-1">Anti-Hallucination Integrity</span>
+        </div>
+        <button
+          onClick={() => setExpanded(!expanded)}
+          className="text-[9px] font-semibold text-[hsl(280_50%_65%/0.6)] hover:text-[hsl(280_50%_75%)] transition-colors flex items-center gap-1"
+        >
+          {expanded ? <EyeOff size={10} /> : <Eye size={10} />}
+          {expanded ? "Collapse" : "Expand"}
+        </button>
+      </div>
+
+      {/* Summary dots */}
+      <div className="flex items-center gap-3 mb-3">
+        {categories.map(cat => (
+          <div key={cat.key} className="flex items-center gap-1.5">
+            <span className={cn("w-2.5 h-2.5 rounded-full", cat.bg)} />
+            <span className={cn("text-[9px] font-medium", cat.color)}>
+              {cat.items.length} {cat.label.toLowerCase()}
+            </span>
+          </div>
+        ))}
+      </div>
+
+      <AnimatePresence>
+        {expanded && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="space-y-3 overflow-hidden"
+          >
+            {categories.map(cat => {
+              const CatIcon = cat.icon;
+              return (
+                <div key={cat.key} className="rounded-lg border border-[hsl(0_0%_100%/0.05)] bg-[hsl(0_0%_100%/0.02)] p-3">
+                  <div className="flex items-center gap-2 mb-2">
+                    <CatIcon size={12} className={cat.color} />
+                    <span className={cn("text-[10px] font-bold", cat.color)}>{cat.label}</span>
+                    <span className="text-[8px] text-[hsl(0_0%_100%/0.25)]">— {cat.desc}</span>
+                  </div>
+                  {cat.items.map((item, j) => (
+                    <p key={j} className="text-[10px] text-[hsl(0_0%_100%/0.5)] leading-relaxed pl-5">• {item}</p>
+                  ))}
+                </div>
+              );
+            })}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
+  );
+}
+
 export function BoardroomSimulationView({ scope, onNavigate }: Props) {
   const [selectedScenario, setSelectedScenario] = useState("phased");
+  const [showNotModeled, setShowNotModeled] = useState(false);
 
   return (
     <div className="p-6 space-y-6">
+      {/* Simulation Contract */}
+      <SimulationContractPanel />
+
       {/* What Happens Next Timeline */}
       <div>
         <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[hsl(280_50%_65%/0.5)] mb-4">
@@ -145,7 +236,6 @@ export function BoardroomSimulationView({ scope, onNavigate }: Props) {
               transition={{ delay: i * 0.1 }}
               className="flex-1 relative"
             >
-              {/* Connector line */}
               {i < TIMELINE_WEEKS.length - 1 && (
                 <motion.div
                   className="absolute top-4 right-0 w-full h-px bg-[hsl(280_50%_50%/0.2)]"
@@ -156,7 +246,6 @@ export function BoardroomSimulationView({ scope, onNavigate }: Props) {
                 />
               )}
               <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] p-3 relative z-10">
-                {/* Week dot */}
                 <div className="flex items-center gap-2 mb-2">
                   <motion.div
                     className="w-2.5 h-2.5 rounded-full"
@@ -179,7 +268,7 @@ export function BoardroomSimulationView({ scope, onNavigate }: Props) {
         </div>
       </div>
 
-      {/* Scenario Comparison + Risk Thermometer side by side */}
+      {/* Scenario Comparison + Risk Thermometer */}
       <div className="flex gap-4">
         <div className="flex-1">
           <ScenarioComparison
@@ -200,7 +289,51 @@ export function BoardroomSimulationView({ scope, onNavigate }: Props) {
         confidenceLevel={78}
       />
 
-      {/* Downstream Effects with Impact Ripple */}
+      {/* What Is Not Modeled */}
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="rounded-xl border border-[hsl(var(--destructive))]/15 bg-[hsl(var(--destructive))]/3 p-4"
+      >
+        <button
+          onClick={() => setShowNotModeled(!showNotModeled)}
+          className="flex items-center justify-between w-full"
+        >
+          <div className="flex items-center gap-2">
+            <AlertTriangle size={13} className="text-[hsl(var(--destructive))]" />
+            <span className="text-[11px] font-bold text-[hsl(var(--destructive))]">What Is Not Modeled</span>
+            <span className="text-[9px] text-[hsl(0_0%_100%/0.3)]">{NOT_MODELED.length} exclusions</span>
+          </div>
+          <span className="text-[9px] text-[hsl(0_0%_100%/0.3)]">{showNotModeled ? "▲" : "▼"}</span>
+        </button>
+        <AnimatePresence>
+          {showNotModeled && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="mt-3 space-y-1.5 overflow-hidden"
+            >
+              {NOT_MODELED.map((item, i) => (
+                <motion.p
+                  key={i}
+                  initial={{ opacity: 0, x: -6 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                  className="text-[11px] text-[hsl(0_0%_100%/0.5)] pl-5 leading-relaxed"
+                >
+                  • {item}
+                </motion.p>
+              ))}
+              <p className="text-[9px] text-[hsl(var(--destructive))]/60 mt-2 italic pl-5">
+                These factors are outside the simulation boundary and could affect actual outcomes.
+              </p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+
+      {/* Downstream Effects */}
       <div>
         <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[hsl(280_50%_65%/0.5)] mb-3">
           Downstream Effects
@@ -214,7 +347,6 @@ export function BoardroomSimulationView({ scope, onNavigate }: Props) {
               transition={{ delay: i * 0.05 }}
               className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] p-4 flex items-start gap-3 relative overflow-hidden group"
             >
-              {/* Ripple effect on hover */}
               <motion.div
                 className="absolute left-4 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full border border-[hsl(280_50%_50%/0.2)] opacity-0 group-hover:opacity-100 pointer-events-none"
                 animate={{ scale: [1, 2.5], opacity: [0.4, 0] }}
@@ -227,12 +359,11 @@ export function BoardroomSimulationView({ scope, onNavigate }: Props) {
         </div>
       </div>
 
-      {/* Assumptions with Confidence Dots Grid */}
+      {/* Assumptions & Evidence Quality */}
       <div>
         <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[hsl(280_50%_65%/0.5)] mb-3">
           Assumptions & Evidence Quality
         </p>
-        {/* Confidence dots grid summary */}
         <div className="flex items-center gap-1.5 mb-3 px-1">
           {ASSUMPTIONS.map((a, i) => (
             <motion.div
