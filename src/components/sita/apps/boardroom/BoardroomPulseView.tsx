@@ -149,7 +149,7 @@ export function BoardroomPulseView({ scope, onNavigate }: Props) {
       </div>
 
       {/* Metrics with sparklines and flash */}
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         <AnimatePresence mode="wait">
           {data.metrics.map((m, i) => (
             <motion.div

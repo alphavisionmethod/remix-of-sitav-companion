@@ -110,7 +110,7 @@ export function BoardroomEvidencePanel({ open, onClose }: Props) {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="fixed right-0 top-0 bottom-0 w-[420px] bg-[hsl(220_18%_5%)] border-l border-[hsl(0_0%_100%/0.08)] z-50 flex flex-col overflow-hidden"
+            className="fixed right-0 top-0 bottom-0 w-full md:w-[420px] bg-[hsl(220_18%_5%)] border-l border-[hsl(0_0%_100%/0.08)] z-50 flex flex-col overflow-hidden"
           >
             {/* Header */}
             <div className="flex items-center justify-between px-5 py-4 border-b border-[hsl(0_0%_100%/0.06)]">
