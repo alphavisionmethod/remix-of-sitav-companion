@@ -36,6 +36,8 @@ import RecurringObligations from "./concierge/RecurringObligations";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { ConciergeDataProvider } from "@/contexts/ConciergeDataContext";
+import { useAppStatePersistence, restoreAppState } from "@/hooks/useAppStatePersistence";
+import React from "react";
 
 const DOMAIN_CONFIG: DomainConfig = {
   id: "concierge",
@@ -142,6 +144,17 @@ const ConciergeCenter = () => {
   const signature = useExperienceSignature();
   const os = useOSOrchestration();
   const activePage = subpageFromPath(location.pathname);
+  const { restoreScroll } = useAppStatePersistence("concierge", activePage);
+
+  React.useEffect(() => {
+    if (location.pathname === "/concierge") {
+      const saved = restoreAppState("concierge");
+      if (saved && saved.activePage !== "overview") {
+        navigate(`/concierge/${saved.activePage}`, { replace: true });
+      }
+    }
+    restoreScroll();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const { data: caiRelationships } = useRelationshipContexts({ limit: 20 });
   const { data: caiObligations } = useHumanObligations({ limit: 20 });

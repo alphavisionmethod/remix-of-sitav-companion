@@ -4,6 +4,7 @@ import type { NavTabGroup } from "@/components/sita/shell/AppSidebarNav";
 import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
+import React from "react";
 import {
   Briefcase, LayoutDashboard, Target, Users, Phone, Headphones as SupportIcon,
   Calendar, Settings, TrendingUp, FileText, Receipt, Banknote, ClipboardList,
@@ -38,6 +39,7 @@ import BusinessOperations from "./business/BusinessOperations";
 import BusinessDocuments from "./business/BusinessDocuments";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useAppStatePersistence, restoreAppState } from "@/hooks/useAppStatePersistence";
 
 const DOMAIN_CONFIG: DomainConfig = {
   id: "business",
@@ -164,6 +166,18 @@ const BusinessCenter = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const activePage = subpageFromPath(location.pathname);
+  const { restoreScroll } = useAppStatePersistence("business", activePage);
+
+  // Restore last sub-page if landing on overview from app switch
+  React.useEffect(() => {
+    if (location.pathname === "/business") {
+      const saved = restoreAppState("business");
+      if (saved && saved.activePage !== "overview") {
+        navigate(`/business/${saved.activePage}`, { replace: true });
+      }
+    }
+    restoreScroll();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const goTo = (key: string) => {
     if (key === "overview") navigate("/business");
