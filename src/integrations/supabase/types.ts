@@ -275,6 +275,45 @@ export type Database = {
         }
         Relationships: []
       }
+      advisor_profiles: {
+        Row: {
+          advisor_id: string
+          avatar_url: string | null
+          created_at: string
+          display_name: string
+          domain: string
+          id: string
+          personality_traits: Json | null
+          updated_at: string
+          user_id: string
+          visual_style: string | null
+        }
+        Insert: {
+          advisor_id: string
+          avatar_url?: string | null
+          created_at?: string
+          display_name: string
+          domain?: string
+          id?: string
+          personality_traits?: Json | null
+          updated_at?: string
+          user_id: string
+          visual_style?: string | null
+        }
+        Update: {
+          advisor_id?: string
+          avatar_url?: string | null
+          created_at?: string
+          display_name?: string
+          domain?: string
+          id?: string
+          personality_traits?: Json | null
+          updated_at?: string
+          user_id?: string
+          visual_style?: string | null
+        }
+        Relationships: []
+      }
       ai_inference_receipts: {
         Row: {
           capability_id: string | null

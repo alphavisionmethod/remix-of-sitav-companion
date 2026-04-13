@@ -4,11 +4,12 @@ import { cn } from "@/lib/utils";
 import { AdvisorAvatar } from "@/components/sita/primitives/AdvisorAvatar";
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { Users, Swords, MessageCircle, Clock, LayoutGrid } from "lucide-react";
+import { Users, Swords, MessageCircle, Clock, LayoutGrid, Video } from "lucide-react";
 import { AdvisorDebateView } from "./AdvisorDebateView";
 import { AskAdvisorChat } from "./AskAdvisorChat";
 import { AdvisorTimelineView } from "./AdvisorTimelineView";
 import { AdvisorDetailDrawer } from "./AdvisorDetailDrawer";
+import { AdvisorMeetingRoom } from "./AdvisorMeetingRoom";
 
 export interface AdvisorConfig {
   id: string;
@@ -35,6 +36,7 @@ const viewModes = [
   { key: "debate", label: "Debate", icon: Swords },
   { key: "ask", label: "Ask", icon: MessageCircle },
   { key: "timeline", label: "Timeline", icon: Clock },
+  { key: "meeting", label: "Meeting", icon: Video },
 ] as const;
 
 export const AdvisorCouncilShell = ({ advisors, domainLabel, children, className }: AdvisorCouncilShellProps) => {
@@ -127,6 +129,11 @@ export const AdvisorCouncilShell = ({ advisors, domainLabel, children, className
         {/* Timeline */}
         <TabsContent value="timeline">
           <AdvisorTimelineView advisors={advisors} />
+        </TabsContent>
+
+        {/* Meeting */}
+        <TabsContent value="meeting">
+          <AdvisorMeetingRoom advisors={advisors} domainLabel={domainLabel} />
         </TabsContent>
       </Tabs>
 
