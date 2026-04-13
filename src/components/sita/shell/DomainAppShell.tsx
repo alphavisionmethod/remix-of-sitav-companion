@@ -8,10 +8,11 @@ import { APP_MATERIALS, APP_SHADOWS, APP_CHROME, APP_TYPE } from "@/lib/design-s
 import { ChevronDown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { AppToolbar } from "./AppToolbar";
 import { AppSidebarNav, type NavTabGroup } from "./AppSidebarNav";
+import { DomainCommandPalette, type CommandItem } from "@/components/sita/domain-shared/DomainCommandPalette";
 import type { LucideIcon } from "lucide-react";
 
 export type DomainId = "business" | "finance" | "concierge";
