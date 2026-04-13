@@ -1,5 +1,9 @@
 // Barrel export for all reusable business components
 export { AtRiskQueueCard } from "./AtRiskQueueCard";
+export { BusinessMoneyFlow } from "./BusinessMoneyFlow";
+export { BusinessQuickActions } from "./BusinessQuickActions";
+export { BusinessRecentActivity } from "./BusinessRecentActivity";
+export { BusinessStatCard } from "./BusinessStatCard";
 export { CallbackQueueCard } from "./CallbackQueueCard";
 export { CartRecoveryQueue } from "./CartRecoveryQueue";
 export { InvoiceCollectionsQueue } from "./InvoiceCollectionsQueue";
