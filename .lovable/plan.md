@@ -1,158 +1,141 @@
 
 
-# SITA OS — App-in-OS Premium Software Transformation
+# SITA OS — Gap Analysis & Next Implementation Plan
 
-## Current State Assessment
+## What's Already Done (Phase 1 Complete)
 
-The architecture is already **partially there**:
-- Each domain (Business, Finance, Concierge) has its own `AppShell` with traffic lights, accent strip, sidebar nav, and status bar
-- Internal routing via `subpageFromPath` renders ~20-30 sub-pages per domain
-- Shared primitives exist: `WhatMattersNow`, `PreparedActions`, `WhatChangedFeed`, `KPITile`, etc.
+- **DomainAppShell**: Unified shell with traffic lights, accent strip, icon sidebar, status bar, command palette — working for all 3 domains
+- **Overview Home Pages**: Business (Operating Room), Finance (Financial Calm), Concierge (Invisible Support) — redesigned with hero strips, priority queues, advisor cards
+- **DomainAdvisorCard**: Domain-aware advisor with identity, insights, confidence bars
+- **GlobalBoardroom**: OS-level synthesis page with domain cards, priorities, risks
+- **Shared Primitives**: OperatingStateHero, PriorityQueue, ModuleWorkspace, ModuleEmptyState, DomainCommandPalette — all created but mostly unused
+- **AppToolbar + AppSidebarNav**: With icons, badges, groups
 
-**What's missing** (the "dashboard feel" problem):
-- App Overview/Home pages are card-grid dashboards, not opinionated software homes
-- Sidebar nav items are flat text lists — no icons, no status indicators, no grouping hierarchy
-- No app-level toolbar/command bar within each domain
-- No module-level detail views with real depth (list → detail → action)
-- Advisors are generic `InAppAdvisorStrip` — same component pasted everywhere
-- Boardroom exists only as one page per domain, not as a synthesized review layer
-- No app-level atmosphere differentiation (same colors, same density, same tone)
-- No transition animations between modules within an app
-- Empty states are generic
+## What's Still Missing (The Gaps)
 
-## Transformation Strategy
+### GAP 1: Module Pages Still Use Old Patterns
+**4 pages** still import `AppWelcomeHeader` + `InAppAdvisorStrip` (the old generic components): LeadRecovery, WebsiteBuilder, SocialCommand, ProposalsContracts. Most other module pages (InvoicesCollections, CommunicationsCenter, CustomersPage, etc.) use their own mixed patterns — none use `ModuleWorkspace` which was built for exactly this purpose.
 
-This is too large for a single implementation. I propose **3 phases**, starting with the highest-impact structural work.
+**Impact**: Modules feel like standalone dashboard pages pasted inside the shell, not like deep workspaces within a software product.
 
----
+### GAP 2: No Module Uses the List → Detail → Action Flow
+`ModuleWorkspace` provides a 3-column layout (list + detail + advisor) but **zero pages use it**. Every module renders as a single flat page. CRM doesn't have a customer detail pane. Invoices don't have a detail drawer. Communications don't have a message detail view.
 
-### PHASE 1 — App Identity & Shell Upgrade (this implementation)
+**Impact**: This is the single biggest reason apps feel like dashboards instead of software.
 
-**Scope**: Upgrade all 3 app shells + their Home pages to feel like independent software products.
+### GAP 3: No Module-Level Advisors
+`DomainAdvisorCard` only appears on the 3 Overview pages. Individual modules (CRM, Leads, Invoices, Bills, etc.) have no contextual advisor guidance. Some still use the old `LiveAdvisorCard` or `InAppAdvisorStrip`.
 
-#### 1A. Enhanced App Shell (shared foundation)
+### GAP 4: Domain-Specific Boardrooms Are Thin
+`BusinessBoardroom`, `MoneyBoardroom`, `FamilyBoardroom` exist but are standalone pages — they don't synthesize real data or connect to the module state the way the prompt demands.
 
-Create `src/components/sita/shell/DomainAppShell.tsx` — a unified but configurable app shell replacing the 3 near-identical shells:
+### GAP 5: No App-Level Transition/Atmosphere Differentiation
+All 3 domains use the same card density, spacing, and motion. No domain-specific CSS variables or spacing tokens. The emotional tone (Business=sharp, Finance=calm, Concierge=soft) is only expressed in accent colors, not in layout density or rhythm.
 
-- **App Toolbar**: Below title bar, domain-specific quick actions + search + view toggles + density control
-- **Sidebar with icons**: Each nav item gets a domain-relevant icon, active state with accent pill, badge counts with severity colors
-- **Module group headers**: Collapsible groups with item count summaries
-- **App-level command trigger**: `Cmd+K` scoped to current domain when app is focused
-- **Status bar upgrade**: Shows domain-specific live status (e.g., "3 approvals waiting" for Finance, "2 callbacks overdue" for Business)
-- **Accent system**: Business = purple gradient, Finance = emerald gradient, Concierge = fuchsia/rose gradient — applied to accent strip, sidebar active state, toolbar highlights
+### GAP 6: Command Palette Has No Module-Specific Commands
+The `DomainCommandPalette` auto-generates navigation commands but has no contextual commands like "show overdue invoices" or "prepare follow-ups for aging leads."
 
-#### 1B. Business OS Home Redesign
-
-Replace the card-grid `BusinessOverview.tsx` with an **operating room** layout:
-
-```text
-┌─────────────────────────────────────────────────┐
-│  TODAY'S OPERATING STATE (hero strip)           │
-│  Revenue pulse · Callbacks due · Leads aging    │
-├──────────────────────┬──────────────────────────┤
-│  WHAT NEEDS YOU      │  WHAT CHANGED            │
-│  (priority queue)    │  (live feed)             │
-│  - 3 callbacks       │  - Invoice paid $4,200   │
-│  - 2 quotes expiring │  - New lead: Michael     │
-│  - 1 overdue invoice │  - Support ticket opened │
-├──────────────────────┴──────────────────────────┤
-│  PREPARED ACTIONS          │  ADVISOR INSIGHT    │
-│  (ready-to-execute cards)  │  (contextual, not   │
-│                            │   generic chatbot)  │
-└─────────────────────────────────────────────────┘
-```
-
-- Hero strip: 3 key metrics with sparklines, not a wall of KPI tiles
-- Priority queue: Actionable items ranked by urgency, clickable to module
-- No "Welcome back" fluff — straight to operational state
-
-#### 1C. Finance OS Home Redesign
-
-Replace `MoneyOverview.tsx` with a **financial calm** layout:
-
-- **Confidence banner**: "Your finances are stable" / "2 items need attention" — emotional state, not just numbers
-- **Obligations timeline**: Visual strip showing bills/payments due across the next 30 days
-- **Cash position**: Single calm number with trend indicator
-- **Spending pulse**: Mini sparkline of last 7 days vs average
-- **Advisor insight**: Finance-specific ("Your reserves cover 4.2 months of obligations")
-
-#### 1D. Concierge OS Home Redesign
-
-Replace `ConciergeOverview.tsx` with an **invisible support** layout:
-
-- **This week at a glance**: Calendar-strip of upcoming obligations/appointments
-- **What's handled**: Completed/automated items (relief-oriented)
-- **What needs you**: Soft priority queue, fewer items, calmer tone
-- **Life admin status**: "3 renewals this month, 1 appointment to prep"
-
-#### 1E. App-Specific Advisor Cards
-
-Create `src/components/advisors/DomainAdvisorCard.tsx` — replaces generic `InAppAdvisorStrip`:
-
-- Takes `domain` prop: business | finance | concierge
-- Shows domain-specific advisor identity (name, icon, specialty)
-- Contextual insight based on current module
-- Prepared action suggestions relevant to the module
-- Distinct visual tone per domain
+### GAP 7: Empty/Loading States Are Inconsistent
+`ModuleEmptyState` exists but isn't used. Most modules have ad-hoc empty states or none at all.
 
 ---
 
-### PHASE 2 — Module Depth & Detail Views (follow-up)
+## Implementation Plan — Phase 2: Module Depth
 
-- Upgrade CRM to list → detail → timeline → actions flow
-- Upgrade Lead Recovery to queue → segment → draft → execute flow
-- Upgrade Invoices to collections command center with aging waterfall
-- Add module-level transitions and breadcrumbing
-- Add module-specific advisor guidance
-- Add beautiful empty/loading/degraded states per module
+This is the highest-impact work remaining. We focus on upgrading the **6 most important modules** to use ModuleWorkspace with real list→detail flows, then propagate the pattern.
 
-### PHASE 3 — Boardroom Topology & Command Depth (follow-up)
+### Step 1: Upgrade 3 Business Modules to ModuleWorkspace
 
-- Global OS Boardroom synthesizing all 3 domains
-- App-specific boardrooms with domain review rhythm
-- Command palette scoped to active domain
-- Cross-domain intelligence in global boardroom
+**CRM / Customers** → Full workspace with:
+- Left: Customer list with health scores, search, tab filters (keep existing)
+- Right: Customer detail pane with relationship timeline, notes, linked invoices/quotes, communication history, next actions
+- Advisor: Customer relationship advisor ("No contact in 14 days — suggest follow-up")
+- Uses `ModuleWorkspace` layout
+
+**Invoices / Collections** → Collections command center with:
+- Left: Invoice list grouped by status (overdue → due soon → paid)
+- Right: Invoice detail with payment timeline, reminder history, customer sensitivity score
+- Advisor: Collections advisor ("This client pays within 3 days of second reminder")
+
+**Lead Recovery** → Recovery workspace with:
+- Left: Cold lead queue ranked by recovery score
+- Right: Lead detail with recovery timeline, prepared drafts, channel recommendation
+- Advisor: Recovery advisor ("Email open rate drops 60% after 45 days — act now")
+- Remove old `AppWelcomeHeader` / `InAppAdvisorStrip`
+
+### Step 2: Upgrade 2 Finance Modules
+
+**Bills & Obligations** → Obligations workspace with:
+- Left: Bills list with due date timeline markers
+- Right: Bill detail with payment history, autopay status, next action
+- Advisor: Obligations advisor
+
+**Spending Pulse** → Spending workspace with:
+- Left: Category breakdown list
+- Right: Category detail with trend, anomalies, budget comparison
+- Advisor: Spending advisor
+
+### Step 3: Upgrade 1 Concierge Module
+
+**Life Admin Center** → Life admin workspace with:
+- Left: Task/obligation list grouped by category
+- Right: Task detail with prep steps, linked documents, timing
+- Advisor: Life admin advisor
+
+### Step 4: Add Module-Specific Command Items
+
+Add contextual commands to each upgraded module that get passed to DomainCommandPalette:
+- Business: "Show overdue invoices", "Leads aging > 7 days", "Prepare follow-up drafts"
+- Finance: "Bills due this week", "Unusual spending alerts", "Review subscriptions"
+- Concierge: "What's overdue", "Prep for tomorrow's appointments"
+
+### Step 5: Replace All Old Advisor Components
+
+Migrate the 4 pages still using `AppWelcomeHeader`/`InAppAdvisorStrip` to use `DomainAdvisorCard` with module-specific insights.
+
+### Step 6: Domain Atmosphere Tokens
+
+Add CSS custom properties per domain applied at the DomainAppShell level:
+- `--domain-density`: Business=compact, Finance=comfortable, Concierge=spacious
+- `--domain-card-radius`: Business=12px, Finance=16px, Concierge=20px
+- `--domain-motion-speed`: Business=fast(150ms), Finance=calm(250ms), Concierge=gentle(300ms)
+
+These cascade into all child components automatically.
 
 ---
 
-## Phase 1 File Changes
+## Files
 
 ### Create (6 files)
-- `src/components/sita/shell/DomainAppShell.tsx` (~350 lines) — Unified configurable app shell with toolbar, icon sidebar, status bar
-- `src/components/sita/shell/AppToolbar.tsx` (~120 lines) — Domain-specific toolbar with search, quick actions, view modes
-- `src/components/sita/shell/AppSidebarNav.tsx` (~180 lines) — Icon-enhanced sidebar with badges, groups, active states
-- `src/components/advisors/DomainAdvisorCard.tsx` (~150 lines) — Domain-aware advisor with contextual insights
-- `src/components/sita/domain-shared/OperatingStateHero.tsx` (~120 lines) — Reusable hero strip with key metrics
-- `src/components/sita/domain-shared/PriorityQueue.tsx` (~100 lines) — Ranked actionable items component
+- `src/components/business/CustomerDetailPane.tsx` (~200 lines) — Customer detail with timeline, notes, linked data
+- `src/components/business/InvoiceDetailPane.tsx` (~180 lines) — Invoice detail with payment timeline, actions
+- `src/components/business/LeadRecoveryPane.tsx` (~160 lines) — Lead detail with recovery actions, prepared drafts
+- `src/components/money/BillDetailPane.tsx` (~150 lines) — Bill detail with payment history, autopay
+- `src/components/money/SpendingCategoryPane.tsx` (~130 lines) — Category detail with trends
+- `src/components/concierge/LifeAdminDetailPane.tsx` (~140 lines) — Task detail with prep steps
 
-### Rewrite (3 files)
-- `src/pages/business/BusinessOverview.tsx` — Operating room layout
-- `src/pages/money/MoneyOverview.tsx` — Financial calm layout
-- `src/pages/concierge/ConciergeOverview.tsx` — Invisible support layout
+### Rewrite (6 files — adopt ModuleWorkspace pattern)
+- `src/pages/business/CustomersPage.tsx` — ModuleWorkspace with CustomerDetailPane
+- `src/pages/business/InvoicesCollections.tsx` — ModuleWorkspace with InvoiceDetailPane
+- `src/pages/business/LeadRecovery.tsx` — ModuleWorkspace with LeadRecoveryPane
+- `src/pages/money/BillsWorkspace.tsx` — ModuleWorkspace with BillDetailPane
+- `src/pages/money/SpendingPulse.tsx` — ModuleWorkspace with SpendingCategoryPane
+- `src/pages/concierge/LifeAdminCenter.tsx` — ModuleWorkspace with LifeAdminDetailPane
 
-### Edit (6 files)
-- `src/pages/BusinessCenter.tsx` — Switch to DomainAppShell, add icons to tab groups
-- `src/pages/MoneyCenter.tsx` — Switch to DomainAppShell, add icons to tab groups
-- `src/pages/ConciergeCenter.tsx` — Switch to DomainAppShell, add icons to tab groups
-- `src/components/business/BusinessAppShell.tsx` — Deprecate (keep as re-export)
-- `src/components/money/MoneyAppShell.tsx` — Deprecate (keep as re-export)
-- `src/components/concierge/ConciergeAppShell.tsx` — Deprecate (keep as re-export)
+### Edit (5 files)
+- `src/pages/business/ProposalsContracts.tsx` — Replace AppWelcomeHeader/InAppAdvisorStrip with DomainAdvisorCard
+- `src/pages/business/WebsiteBuilder.tsx` — Same migration
+- `src/pages/business/SocialCommand.tsx` — Same migration
+- `src/components/sita/shell/DomainAppShell.tsx` — Add domain atmosphere CSS variables
+- `src/components/sita/domain-shared/ModuleWorkspace.tsx` — Add atmosphere token consumption
 
-## Design Tokens Per Domain
+## What This Achieves
 
-| Property | Business | Finance | Concierge |
-|----------|----------|---------|-----------|
-| Accent gradient | `purple → violet` | `emerald → teal` | `fuchsia → rose` |
-| Density | Standard | Calm | Spacious |
-| Tone | Operational, sharp | Precise, confidence | Supportive, soft |
-| Home hero | Operating state | Confidence banner | Week at a glance |
-| Advisor name | Business Advisor | Finance Advisor | Life Advisor |
-
-## What This Does NOT Change
-
-- OS shell (`ShellLayout`, dock, top bar, command palette) — untouched
-- Existing sub-pages (LeadsInbox, BillsWorkspace, etc.) — untouched in Phase 1
-- Routing structure — same paths, same lazy loading
-- Database schema — no changes
-- Auth flow — no changes
+After this implementation:
+- 6 key modules feel like **real software workspaces** with list→detail→action flows
+- Every upgraded module has a **contextual advisor** (not generic)
+- Old dashboard patterns (`AppWelcomeHeader`, `InAppAdvisorStrip`) are eliminated
+- Domains have **distinct atmospheric density** — Business feels sharper, Finance calmer, Concierge softer
+- Command palette gains **module-aware contextual commands**
+- The `ModuleWorkspace` primitive is validated and ready to propagate to remaining ~40 modules
 
