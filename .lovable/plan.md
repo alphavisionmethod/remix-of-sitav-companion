@@ -1,90 +1,88 @@
 
 
-# Make Every Advisor Board Super Interactive & Wow
+# Advisor Meeting Room with AI-Generated Avatars
 
-## Current State
+## What We're Building
 
-The **Investment Office AdvisorBoard** is the gold standard — it has 5 view modes (Council, Synthesis, Debate, Ask the Board, Compare), clickable advisor detail panels, confidence badges, and recommendation badges. But the **Money Advisor Board** and **Business Boardroom** are much simpler — static cards in a grid with no interactivity beyond mode switching (Money) or tab switching (Business). There is no way to chat with advisors inline, see disagreements visualized, or drill into reasoning chains.
+A **virtual boardroom meeting** experience where you sit at a table with your AI advisors — each with a unique, AI-generated character portrait. You can run live multi-advisor discussions, see advisors react to each other's points, and get synthesized decisions.
 
 ## Plan
 
-### Step 1: Create a shared `AdvisorCouncilShell` component
+### Step 1: Generate and store advisor avatar portraits
 
-Create `src/components/advisors/AdvisorCouncilShell.tsx` — a reusable interactive wrapper that any domain's advisor board can use. It provides:
+Create an edge function `advisor-avatar-generate` that uses the Lovable AI image generation model (`google/gemini-3.1-flash-image-preview`) to generate unique character portraits for each advisor persona. Portraits are stored in the `user-files` storage bucket under `advisor-avatars/`. Each advisor gets a distinct visual identity:
 
-- **View mode switcher**: Council Grid, Synthesis, Debate, Ask the Board, Timeline
-- **Advisor detail drawer**: Click any advisor card to expand a slide-over panel showing full reasoning, knowledge sources, memory, confidence breakdown, and action history
-- **Animated transitions**: Framer Motion layout animations between views
-- **Confidence heatmap bar**: A horizontal strip showing all advisors' confidence at a glance with colored segments
+- **Money advisors**: Sharp-suited financial professionals, emerald/green tones
+- **Business advisors**: Executive/corporate styling, purple tones  
+- **Concierge advisors**: Polished hospitality aesthetic, gold/amber tones
+- **Strategy/Growth**: Futuristic/analytical look, blue/cyan tones
 
-### Step 2: Create `AdvisorDebateView` component
+A database migration adds an `avatar_url` column to `advisor_knowledge` (or a new `advisor_profiles` table) to persist the generated portrait URL per advisor.
 
-Create `src/components/advisors/AdvisorDebateView.tsx`:
-- Shows where advisors **disagree** side-by-side with animated "versus" cards
-- Each position shows confidence score, reasoning chain, and data sources
-- User can vote/decide, and the decision is recorded
-- Visual: two cards facing each other with a glowing "VS" divider and pulse animation
+### Step 2: Create `AdvisorPortrait` component
 
-### Step 3: Create `AskAdvisorChat` inline component
+Create `src/components/advisors/AdvisorPortrait.tsx` — replaces the icon-based `AdvisorAvatar` with a rich portrait component:
+- Circular cropped AI-generated image with domain-colored gradient border ring
+- Animated speaking indicator (pulsing ring + subtle scale) when the advisor is "talking"
+- Fallback to the existing icon-based avatar if no portrait exists
+- Sizes: `sm` (32px), `md` (48px), `lg` (80px), `xl` (120px for meeting view)
 
-Create `src/components/advisors/AskAdvisorChat.tsx`:
-- Inline chat bubble that calls `chat-advisor` edge function with the selected advisor context
-- Renders markdown responses with `react-markdown`
-- Shows typing indicator with advisor's domain accent color
-- Suggested quick-ask questions based on advisor domain
-- Conversation stays in-panel (no page navigation)
+### Step 3: Create `AdvisorMeetingRoom` component
 
-### Step 4: Create `AdvisorTimelineView` component
+Create `src/components/advisors/AdvisorMeetingRoom.tsx` — the hero feature:
 
-Create `src/components/advisors/AdvisorTimelineView.tsx`:
-- Vertical timeline showing recent advisor actions, recommendations, and state changes
-- Each entry has: timestamp, advisor avatar, action summary, confidence at time of action, and outcome status
-- Pulls from `advisor_action_queue` and `ai_workforce_recommendations` tables
-- Animated entry with staggered fade-in
+**Visual layout**: A dark, premium "conference table" view:
+- Advisors arranged in a semicircle around a virtual table (CSS grid + absolute positioning)
+- Each advisor shows their portrait, name plate, and a live status indicator
+- Center area shows the current topic/question and synthesized output
+- Active speaker gets a glowing highlight ring and their card elevates
 
-### Step 5: Create `AdvisorDetailDrawer` component
+**Interaction flow**:
+1. User types a question or selects a topic
+2. Each advisor "responds" in sequence via `chat-advisor` calls (with slight stagger delay for realism)
+3. Responses appear as speech bubbles next to each advisor's portrait
+4. A synthesis panel at the bottom shows the combined recommendation
+5. User can tap any advisor to get them to elaborate
 
-Create `src/components/advisors/AdvisorDetailDrawer.tsx`:
-- Slide-from-right drawer (uses existing Sheet component)
-- Tabs inside: Overview, Knowledge, Memory, Actions, Feedback
-- Overview: mission, confidence gauge (animated SVG ring), personality traits, current mode
-- Knowledge tab: embedded `AdvisorKnowledgePanel`
-- Memory tab: shows `advisor_memories` entries with importance scores
-- Actions tab: recent actions from `advisor_action_queue`
-- Feedback tab: thumbs up/down on past recommendations, writes to `advisor_feedback`
+**Animations**:
+- Advisors fade in with staggered entrance when meeting "starts"
+- Active speaker portrait scales up with a breathing glow
+- Speech bubbles slide in from the advisor's position
+- Thinking state shows animated dots below the advisor's portrait
 
-### Step 6: Upgrade `MoneyAdvisorBoard` to use the new shell
+### Step 4: Create `AdvisorMeetingControls` component
 
-Replace the flat grid layout with `AdvisorCouncilShell`, passing the 8 money advisors as structured data. Keep the mode personality switcher as a toolbar above the council. Wire up the detail drawer, debate view, ask-the-board chat, and timeline.
+Create `src/components/advisors/AdvisorMeetingControls.tsx`:
+- "Start Meeting" button with a premium animation (ripple + glow)
+- Topic input field with suggested topics per domain
+- "Mute/Unmute" individual advisors (exclude from responses)
+- "End Meeting" with a summary export
+- Meeting duration timer
 
-### Step 7: Upgrade `BusinessBoardroom` advisor section
+### Step 5: Add "Meeting" view mode to `AdvisorCouncilShell`
 
-Add an "Advisor Council" tab/view to `BusinessBoardroom` that uses `AdvisorCouncilShell` with business-domain advisors. The existing boardroom content stays as the default "Executive Review" tab.
+Add a fifth tab "Meeting" (with a `Video` icon) to the existing council shell. When selected, renders `AdvisorMeetingRoom` with the domain's advisors. This makes the meeting available in both Money and Business boards.
 
-### Step 8: Add micro-interactions and visual polish
+### Step 6: Create avatar generation admin tool
 
-- Advisor cards: hover reveals a subtle glow ring in the domain's accent color
-- Confidence scores: animated count-up on mount (0 → actual value)
-- Status dots: live pulse animation (green = active, amber = thinking, red = error)
-- Card transitions: spring-based layout animations when switching views
-- "Thinking" state: shimmer gradient sweep across card while advisor is processing
+Add a "Generate Avatars" button in the advisor settings (where `AdvisorKnowledgePanel` lives). Clicking it calls the edge function to generate portraits for all advisors in that domain. Shows a progress indicator during generation. Generated avatars are cached — only regenerate on demand.
 
 ## Files
 
-- **Create**: `src/components/advisors/AdvisorCouncilShell.tsx` (~200 lines)
-- **Create**: `src/components/advisors/AdvisorDebateView.tsx` (~150 lines)
-- **Create**: `src/components/advisors/AskAdvisorChat.tsx` (~180 lines)
-- **Create**: `src/components/advisors/AdvisorTimelineView.tsx` (~120 lines)
-- **Create**: `src/components/advisors/AdvisorDetailDrawer.tsx` (~250 lines)
-- **Edit**: `src/pages/money/MoneyAdvisorBoard.tsx` (use AdvisorCouncilShell)
-- **Edit**: `src/pages/business/BusinessBoardroom.tsx` (add advisor council tab)
+- **Create**: `supabase/functions/advisor-avatar-generate/index.ts` (~120 lines)
+- **Create**: `src/components/advisors/AdvisorPortrait.tsx` (~80 lines)
+- **Create**: `src/components/advisors/AdvisorMeetingRoom.tsx` (~300 lines)
+- **Create**: `src/components/advisors/AdvisorMeetingControls.tsx` (~100 lines)
+- **Edit**: `src/components/advisors/AdvisorCouncilShell.tsx` (add Meeting tab)
+- **Edit**: `src/components/advisors/AdvisorDetailDrawer.tsx` (use AdvisorPortrait)
+- **Migration**: Add `advisor_profiles` table (id, advisor_id, domain, display_name, avatar_url, personality_traits, visual_style)
 
 ## Technical Details
 
-- `AskAdvisorChat` calls `chat-advisor` via `supabase.functions.invoke("chat-advisor", { body: { advisor, message, history } })`
-- `AdvisorDetailDrawer` queries `advisor_memories`, `advisor_action_queue`, and `advisor_feedback` via Supabase client
-- `AdvisorDebateView` generates disagreement pairs by comparing recommendation directions across advisors in the same domain
-- All new components use the existing design tokens: `APP_MATERIALS`, `APP_SHADOWS`, domain accent colors
-- Animated confidence gauge uses SVG `stroke-dashoffset` with Framer Motion `animate`
-- Timeline pulls from `advisor_action_queue` ordered by `created_at DESC`, limit 20
+- Avatar generation uses `google/gemini-3.1-flash-image-preview` via the Lovable AI Gateway with `LOVABLE_API_KEY`
+- Generated images are base64 → uploaded to `user-files` bucket under `advisor-avatars/{advisor_id}.png`
+- Meeting room calls `chat-advisor` for each advisor in parallel with `Promise.allSettled`, then renders responses with staggered animation
+- The semicircle layout uses CSS `transform: rotate()` + `translateX()` for responsive positioning
+- Speech bubble positioning uses `getBoundingClientRect` relative to the advisor's portrait element
+- All animations use Framer Motion with spring physics matching existing OS conventions
 
