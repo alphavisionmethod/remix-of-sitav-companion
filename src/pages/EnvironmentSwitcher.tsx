@@ -47,8 +47,7 @@ export default function EnvironmentSwitcher() {
         title="Environment Manager"
         subtitle="Switch environments, manage backups, and restore from snapshots"
       />
-      {isDemoMode &&
-}
+      
 
       {/* Environments */}
       <div className="space-y-3">

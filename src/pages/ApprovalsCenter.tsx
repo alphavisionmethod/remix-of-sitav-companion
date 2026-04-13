@@ -6,8 +6,8 @@ import { useApprovals } from "@/hooks/use-sita-data";
 import { useApprovalQueue } from "@/hooks/use-brain-core";
 import { motion } from "framer-motion";
 import { useState } from "react";
-import {
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import {
   Shield, CheckCircle, XCircle, Clock, AlertTriangle, Brain, Eye, Zap,
   ThumbsUp, ThumbsDown, MessageSquare, ChevronDown, ChevronUp
 } from "lucide-react";

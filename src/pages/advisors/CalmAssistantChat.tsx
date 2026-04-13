@@ -79,8 +79,7 @@ export default function CalmAssistantChat() {
           </div>
         </div>
         <div className="flex items-center gap-2">
-          {isDemoMode &&
-}
+          
           <Badge variant={badge.variant} className={cn("text-[10px]", badge.className)}>
             {badge.label}
           </Badge>

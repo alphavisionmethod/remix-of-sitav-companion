@@ -31,8 +31,7 @@ export default function UpdateCenter() {
         title="Update Center"
         subtitle="Manage update channels, view available updates, and review update history"
       />
-      {isDemoMode &&
-}
+      
 
       {/* Current Status */}
       <Card>

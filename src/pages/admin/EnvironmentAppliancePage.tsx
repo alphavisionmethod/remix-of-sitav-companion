@@ -48,8 +48,7 @@ export default function EnvironmentAppliancePage() {
         title="Environment & Appliance"
         subtitle="VM status, resource usage, backup state, and appliance lifecycle"
       />
-      {isDemoMode &&
-}
+      
 
       {/* Resource Usage */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">

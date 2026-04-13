@@ -12,8 +12,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useDocs } from "@/hooks/use-domain-data";
 import type { MockDoc } from "@/lib/mock-data/workspace";
 import ReactMarkdown from "react-markdown";
-import {
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import {
   FileText, Plus, Search, Clock, Users, Shield, Workflow,
   Lock, Eye, FileCheck, MoreVertical, ChevronRight,
   Bold, Italic, List, ListOrdered, Heading1, Heading2,

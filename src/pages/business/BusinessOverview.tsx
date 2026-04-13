@@ -12,8 +12,8 @@ import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
 import { useNavigate } from "react-router-dom";
 import { useLeads, useCustomers, useInvoices } from "@/hooks/use-sita-data";
 import { useMemo } from "react";
-import {
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import {
   DollarSign, Users, AlertTriangle, Phone, UserPlus, CheckCircle,
   Target, TrendingUp, Receipt, Briefcase, ArrowRight, Activity
 } from "lucide-react";

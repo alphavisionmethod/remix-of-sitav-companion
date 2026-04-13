@@ -16,8 +16,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { DEMO_ADMIN_SERVICES_MISSION_CONTROL_HOME as DEMO_SERVICES, DEMO_URGENT_ACTIONS } from "@/lib/demo-data/admin-platform";
 import { DEMO_MUTATIONS } from "@/lib/demo-data/durability";
-import {
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import {
   RevenueSummaryPanel,
   RiskSummaryPanel,
   ConnectorSummaryPanel,

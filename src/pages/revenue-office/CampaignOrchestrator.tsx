@@ -9,8 +9,8 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { useCampaigns } from "@/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/sita/EmptyState";
-import {
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import {
   DEMO_REV_CAMPAIGNS as DEMO_CAMPAIGNS,
   DEMO_REV_SEGMENTS as DEMO_SEGMENTS,
   DEMO_CAMPAIGN_ATTRIBUTION,

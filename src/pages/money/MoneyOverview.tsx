@@ -13,8 +13,8 @@ import { useNavigate } from "react-router-dom";
 import { useBills, useSubscriptions, useInvoices } from "@/hooks/use-sita-data";
 import { useFinancialAccounts, useMoneyKPIs } from "@/hooks/use-domain-data";
 import { useMemo } from "react";
-import {
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import {
   DollarSign, Wallet, PiggyBank, CreditCard, AlertTriangle, Receipt,
   Shield, Activity, ArrowRight, BarChart3, Calendar, CheckCircle
 } from "lucide-react";

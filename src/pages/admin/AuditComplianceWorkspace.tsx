@@ -76,8 +76,7 @@ export default function AuditComplianceWorkspace() {
           <Download className="h-4 w-4" /> Export Audit Log
         </button>
       </SitaPageHeader>
-      {isDemoMode &&
-}
+      
 
       {/* Filters */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">

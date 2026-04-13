@@ -138,8 +138,7 @@ export default function MobileDeviceTrust() {
 
   return (
     <MobileShell title="Device Trust">
-      {isDemoMode &&
-}
+      
 
       {/* Trust Health Summary */}
       <div className="rounded-xl border border-border/40 bg-gradient-to-br from-primary/5 via-card to-card p-4 mb-4">

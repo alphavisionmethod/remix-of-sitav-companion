@@ -32,8 +32,7 @@ const AIEfficiencyScoreboard = () => {
 
   return (
     <div className="min-h-screen bg-background p-6 space-y-6">
-      {isDemo &&
-}
+      
       <SitaPageHeader
         icon={<Gauge className="h-6 w-6" />}
         title="AI Efficiency Scoreboard"

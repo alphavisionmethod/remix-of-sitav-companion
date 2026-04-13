@@ -9,8 +9,8 @@ import { Progress } from "@/components/ui/progress";
 import { useBookings } from "@/hooks/use-revenue-office";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EmptyState } from "@/components/sita/EmptyState";
-import {
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import {
   DEMO_REV_SERVICES as DEMO_SERVICES,
   DEMO_REV_STATS as DEMO_STATS,
   DEMO_UPCOMING,
