@@ -1,66 +1,49 @@
 
 
-# Architectural Upgrade Phase 1: OS Window Engine
+# Restore the Beautiful Desktop
 
-## Context
+## What Happened
+The DesktopSurface was stripped down from ~1,100 lines to ~90 lines in a prior cleanup. The ambient background and clock are there, but the **desktop icons**, **continuity surface**, and **desktop state awareness** were all removed. The components still exist in the codebase — they just need to be wired back in.
 
-The project already has a window system (`useWindowManager` hook, `WindowManagerContext`, `FloatingWindow` at 873 lines). The user wants a **new, clean architectural layer** at `src/components/sita/os/` that introduces a proper `WindowContext` provider pattern with `isMaximized` support, a simplified premium `AppWindow` component, and a `WindowCompositor` renderer. This sits alongside the existing system without breaking it.
+## Plan
 
-## Files to Create
+### 1. Re-integrate DesktopIconGrid into DesktopSurface
+The `DesktopIconGrid` component (144 lines) still exists at `src/components/sita/shell/DesktopIconGrid.tsx`. Add it back as a layer on the desktop surface — right-aligned icons that auto-hide on idle, with hover lift and glow effects. It fades/blurs along with the clock when windows are open.
 
-### File 1: `src/components/sita/os/WindowContext.tsx`
+### 2. Add ContinuitySurface widget
+Create `src/components/sita/shell/ContinuitySurface.tsx` (~100 lines) — a small, elegant glassmorphic card in the lower-left of the desktop showing:
+- Time-aware greeting ("Good morning", "Good evening")
+- "Resume where you left off" with last workspace name
+- Count of pending items / what changed
+- Auto-hides after 10s idle, fades with windows
 
-React Context + Provider managing an array of `OSWindow` objects:
+### 3. Add desktop state awareness to DesktopSurface
+Read `desktopState` from `useShellState()` (already available: `first_arrival`, `returning`, `quiet`, `offline`, `focus`). Use it to:
+- Show greeting on first arrival
+- Show continuity on returning
+- Minimal on quiet/resting
+- Muted ambient on offline
 
-```typescript
-interface OSWindow {
-  id: string;
-  title: string;
-  component: ReactNode;
-  isMinimized: boolean;
-  isMaximized: boolean;
-  zIndex: number;
-  position: { x: number; y: number };
-  size: { width: number; height: number };
-}
-```
+### 4. Update DesktopSurface composition
+Expand `DesktopSurface.tsx` from ~90 lines to ~180 lines with these layers:
+- Layer 1: ShellAmbientBackground (existing)
+- Layer 2: Desktop content — Clock (centered), DesktopIconGrid (right-aligned), ContinuitySurface (bottom-left)
+- Layer 3: Legacy FloatingWindow compositor (existing)
+- Layer 4: OS WindowCompositor (existing)
 
-Context functions: `openWindow(id, title, component)`, `closeWindow(id)`, `minimizeWindow(id)`, `maximizeWindow(id)`, `focusWindow(id)` (bumps zIndex). Provider wraps children, manages state with `useState`. Auto-cascades new window positions (offset by 30px each). `focusWindow` sets the target window's zIndex to `max + 1`.
+All desktop content in Layer 2 fades/blurs together when windows open.
 
-### File 2: `src/components/sita/os/AppWindow.tsx`
-
-Premium glassmorphic window component:
-- `motion.div` wrapper with Framer Motion `initial/animate/exit` animations (scale 0.96 -> 1, opacity 0 -> 1, blur-in)
-- Header bar with drag handle (`onPointerDown` manual drag, `dragMomentum={false}` equivalent via custom pointer tracking)
-- Traffic-light buttons: Minimize (yellow), Maximize (green), Close (red) using Lucide icons (`Minus`, `Square`, `X`)
-- Glassmorphism: `bg-background/80 backdrop-blur-xl border border-white/10 shadow-2xl rounded-xl overflow-hidden flex flex-col`
-- `onMouseDown={() => focusWindow(id)}` on wrapper
-- Respects `zIndex` from context, `position: absolute`, `left/top` from window state
-- Maximized state: `inset-0 w-full h-full` override
-- Body: `flex-1 overflow-y-auto` renders the `component`
-- Default size: `w-[800px] h-[600px]`
-
-### File 3: `src/components/sita/os/WindowCompositor.tsx`
-
-- Consumes `useOSWindowContext()`
-- Wrapper: `absolute inset-0 pointer-events-none z-50`
-- Maps over `openWindows`, filters out minimized, renders `<AppWindow>` for each with `pointer-events-auto`
-- Wrapped in `<AnimatePresence>` for enter/exit animations
-
-## Step 4: Output Layout Code
-
-Include the full current code of these two files in the response (no changes):
-- `src/components/sita/ShellLayout.tsx` (220 lines — already read)
-- `src/components/sita/DesktopDock.tsx` (584 lines)
-
-This lets the architect plan where to inject `<WindowCompositor />` and hook dock buttons to `openWindow()`.
+### 5. Wire DesktopPage props
+Pass `desktopState` and `continuity` from `useShellState()` through to `DesktopSurface`.
 
 ## Files Changed
 
 | File | Action |
 |------|--------|
-| `src/components/sita/os/WindowContext.tsx` | Create new |
-| `src/components/sita/os/AppWindow.tsx` | Create new |
-| `src/components/sita/os/WindowCompositor.tsx` | Create new |
-| `ShellLayout.tsx`, `DesktopDock.tsx` | Output only (no changes) |
+| `src/components/sita/shell/DesktopSurface.tsx` | Expand (~180 lines) — add icons, continuity, state |
+| `src/components/sita/shell/ContinuitySurface.tsx` | Create new (~100 lines) |
+| `src/pages/DesktopPage.tsx` | Minor update — pass state props |
+
+## Build Verification
+`tsc --noEmit` after all changes.
 
