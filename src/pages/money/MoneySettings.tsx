@@ -9,6 +9,7 @@ import { useMoneyPolicies, useToggleMoneyPolicy } from "@/hooks/use-domain-data"
 import { useMemo } from "react";
 import { toast } from "sonner";
 import { DEMO_CORE_CONNECTORS as DEMO_CONNECTORS } from "@/lib/demo-data/core-pages";
+import { AdvisorKnowledgePanel } from "@/components/advisors/AdvisorKnowledgePanel";
 
 
 
@@ -118,6 +119,9 @@ const MoneySettings = () => {
               <div className="flex items-center justify-between"><span className="text-sm text-foreground">Data retention</span><span className="rounded-md bg-secondary px-2 py-0.5 text-xs text-foreground">7 years</span></div>
             </div>
           </SitaCard>
+
+          {/* Advisor Knowledge */}
+          <AdvisorKnowledgePanel advisorId="money-advisor" domain="money" title="Money Advisor Knowledge" />
         </div>
       </div>
     </motion.div>

@@ -610,7 +610,30 @@ serve(async (req) => {
         const effectiveModel = budgetDecision.shouldDowngrade && budgetDecision.fallbackModelId
           ? budgetDecision.fallbackModelId : model;
 
-        const systemPrompt = advisorConfig?.system_prompt || defaultPrompts[domain] || defaultPrompts.general;
+        // ── Inject domain knowledge from advisor_knowledge table ──
+        let knowledgeBlock = "";
+        try {
+          const { data: knowledgeEntries } = await supabase
+            .from("advisor_knowledge")
+            .select("title, content, confidence")
+            .or(`user_id.eq.${user.id},user_id.eq.00000000-0000-0000-0000-000000000000`)
+            .in("domain", [domain, "general"])
+            .eq("status", "active")
+            .order("confidence", { ascending: false })
+            .limit(15);
+
+          if (knowledgeEntries && knowledgeEntries.length > 0) {
+            knowledgeBlock = "\n\n## Domain Knowledge\n" +
+              knowledgeEntries.map((k: { title: string; content: string; confidence: number }) =>
+                `- **${k.title}** (confidence: ${k.confidence}): ${k.content.slice(0, 400)}`
+              ).join("\n");
+          }
+        } catch (e) {
+          console.warn(`[${correlationId}] Knowledge query failed:`, e);
+        }
+
+        const basePrompt = advisorConfig?.system_prompt || defaultPrompts[domain] || defaultPrompts.general;
+        const systemPrompt = basePrompt + knowledgeBlock;
         const memoryContext = memory.map(m => `${m.category}/${m.key}: ${JSON.stringify(m.value)}`).join("\n");
         const userPrompt = `Intent: ${body.intent}\n\nContext:\n${JSON.stringify(context, null, 2)}\n\nUser Memory:\n${memoryContext || "No memory stored yet."}`;
 
