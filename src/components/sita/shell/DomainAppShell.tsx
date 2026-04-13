@@ -14,7 +14,8 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { AppToolbar } from "./AppToolbar";
 import { AppSidebarNav, type NavTabGroup } from "./AppSidebarNav";
 import { DomainCommandPalette, type CommandItem } from "@/components/sita/domain-shared/DomainCommandPalette";
-import { DomainMotionProvider } from "@/components/sita/motion/AppTransitions";
+import { DomainMotionProvider, AppOpenCeremony } from "@/components/sita/motion/AppTransitions";
+import { AppSurface } from "@/components/sita/surfaces/AppSurface";
 import type { LucideIcon } from "lucide-react";
 
 export type DomainId = "business" | "finance" | "concierge" | "files" | "trust";
@@ -127,7 +128,15 @@ export function DomainAppShell({ domain, children, activePage, onNavigate, tabGr
     ...commands,
   ];
 
-  return (
+  // AppOpenCeremony: fire once per domain per session
+  const [showCeremony] = useState(() => {
+    const key = `sita-app-opened-${domain.id}`;
+    if (sessionStorage.getItem(key)) return false;
+    sessionStorage.setItem(key, "1");
+    return true;
+  });
+
+  const shell = (
     <DomainMotionProvider domain={domain.id}>
       <div className={cn(
         "relative flex flex-col w-full h-full min-h-[calc(100vh-80px)] overflow-hidden",
@@ -174,13 +183,15 @@ export function DomainAppShell({ domain, children, activePage, onNavigate, tabGr
               onNavigate={onNavigate}
             />
           )}
-          <div className="flex-1 overflow-y-auto p-4 bg-[hsl(0_0%_9%)]" style={{
+          <AppSurface level={0} className="flex-1 overflow-y-auto p-4" style={{
             '--domain-density': domain.id === 'business' ? '0.875rem' : domain.id === 'finance' ? '1rem' : domain.id === 'files' ? '0.875rem' : domain.id === 'trust' ? '0.9375rem' : '1.125rem',
             '--domain-card-radius': domain.id === 'business' ? '12px' : domain.id === 'finance' ? '16px' : domain.id === 'files' ? '10px' : domain.id === 'trust' ? '12px' : '20px',
             '--domain-motion-speed': domain.id === 'business' ? '150ms' : domain.id === 'finance' ? '250ms' : domain.id === 'files' ? '180ms' : domain.id === 'trust' ? '200ms' : '300ms',
+            '--domain-contrast': domain.id === 'business' ? '1.05' : domain.id === 'finance' ? '1' : domain.id === 'concierge' ? '0.95' : '1',
+            '--domain-warmth': domain.id === 'concierge' ? '1.1' : domain.id === 'business' ? '0.95' : '1',
           } as React.CSSProperties}>
             {children}
-          </div>
+          </AppSurface>
         </div>
 
         {/* Status Bar */}
@@ -194,4 +205,9 @@ export function DomainAppShell({ domain, children, activePage, onNavigate, tabGr
       </div>
     </DomainMotionProvider>
   );
+
+  if (showCeremony) {
+    return <AppOpenCeremony domain={domain.id}>{shell}</AppOpenCeremony>;
+  }
+  return shell;
 }
