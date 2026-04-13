@@ -1,7 +1,197 @@
 {
   "version": "2.0.0",
-  "generatedAt": "2026-04-07T00:00:00.000Z",
+  "generatedAt": "2026-04-13T09:01:17.121Z",
   "services": [
+    {
+      "name": "predictive-intent.test",
+      "domain": "__tests__",
+      "path": "src/lib/services/__tests__/predictive-intent.test.ts",
+      "exports": []
+    },
+    {
+      "name": "system-updates.test",
+      "domain": "__tests__",
+      "path": "src/lib/services/__tests__/system-updates.test.ts",
+      "exports": []
+    },
+    {
+      "name": "window-physics.test",
+      "domain": "__tests__",
+      "path": "src/lib/services/__tests__/window-physics.test.ts",
+      "exports": []
+    },
+    {
+      "name": "adaptive-interface",
+      "domain": "adaptive-interface",
+      "path": "src/lib/services/adaptive-interface/adaptive-interface.ts",
+      "exports": [
+        "InterfaceDensity",
+        "AnimationLevel",
+        "InterfaceState",
+        "AdaptiveContext",
+        "AdaptiveInterfaceService",
+        "createAdaptiveInterface"
+      ]
+    },
+    {
+      "name": "agent-control",
+      "domain": "admin-service",
+      "path": "src/lib/services/admin-service/agent-control.ts",
+      "exports": [
+        "AgentControlAction",
+        "AgentControlRecord",
+        "AgentRuntimeState",
+        "FleetControlSummary",
+        "AgentControlService",
+        "createAgentControl"
+      ]
+    },
+    {
+      "name": "summarizer",
+      "domain": "advisor-memory",
+      "path": "src/lib/services/advisor-memory/summarizer.ts",
+      "exports": [
+        "ConversationMessage",
+        "ConversationSummary",
+        "ConversationSummarizer",
+        "conversationSummarizer"
+      ]
+    },
+    {
+      "name": "cost-circuit-breaker",
+      "domain": "ai-economics",
+      "path": "src/lib/services/ai-economics/cost-circuit-breaker.ts",
+      "exports": [
+        "BreakerState",
+        "BreakerBudgetPeriod",
+        "BreakerBudgetConfig",
+        "BudgetState",
+        "CostViolation",
+        "FleetBudgetSummary",
+        "CostCircuitBreakerService",
+        "createCostCircuitBreaker"
+      ]
+    },
+    {
+      "name": "budget",
+      "domain": "ai-gateway",
+      "path": "src/lib/services/ai-gateway/budget.service.ts",
+      "exports": [
+        "UsageLedgerStats"
+      ]
+    },
+    {
+      "name": "callable",
+      "domain": "ai-gateway",
+      "path": "src/lib/services/ai-gateway/callable.ts",
+      "exports": [
+        "BrainCoreResponse",
+        "AIGatewayResponse"
+      ]
+    },
+    {
+      "name": "diagnostics",
+      "domain": "ai-gateway",
+      "path": "src/lib/services/ai-gateway/diagnostics.service.ts",
+      "exports": [
+        "DegradedDiagnostic"
+      ]
+    },
+    {
+      "name": "launch-honesty",
+      "domain": "ai-gateway",
+      "path": "src/lib/services/ai-gateway/launch-honesty.service.ts",
+      "exports": [
+        "AICapabilityLaunchStatus"
+      ]
+    },
+    {
+      "name": "provider-registry",
+      "domain": "ai-gateway",
+      "path": "src/lib/services/ai-gateway/provider-registry.service.ts",
+      "exports": []
+    },
+    {
+      "name": "receipts",
+      "domain": "ai-gateway",
+      "path": "src/lib/services/ai-gateway/receipts.service.ts",
+      "exports": []
+    },
+    {
+      "name": "routing",
+      "domain": "ai-gateway",
+      "path": "src/lib/services/ai-gateway/routing.service.ts",
+      "exports": []
+    },
+    {
+      "name": "types",
+      "domain": "ai-gateway",
+      "path": "src/lib/services/ai-gateway/types.ts",
+      "exports": [
+        "AIModelRegistry",
+        "AIRoutingPolicy",
+        "AIProviderHealth",
+        "AIPortfolioAllocation",
+        "AICostLedger",
+        "AITokenUsage",
+        "AIInferenceReceipt",
+        "AITaskRequest",
+        "AIPromptFamily",
+        "AISelfHealingRule",
+        "AIEfficiencyScore",
+        "AIChangePlan",
+        "AIFixProposal",
+        "AIProviderRegistry",
+        "AICapabilityRouting",
+        "AIBudgetPolicy",
+        "AIUsageLedger",
+        "AIFallbackEvent",
+        "AILaunchHonesty",
+        "AIReceiptRecord",
+        "AIBudgetAlert",
+        "QUALITY_TIERS",
+        "QualityTier",
+        "COST_TIERS",
+        "CostTier",
+        "ROUTING_CLASSES",
+        "RoutingClass",
+        "TASK_CLASSES",
+        "TaskClass",
+        "LAUNCH_HONESTY_LEVELS",
+        "LaunchHonestyLevel",
+        "AI_PROVIDERS",
+        "AIProvider",
+        "BUDGET_SCOPE_TYPES",
+        "BudgetScopeType",
+        "HEALTH_STATES",
+        "HealthState",
+        "AIGatewayRequest",
+        "AIGatewayResponse",
+        "AIBudgetSummary",
+        "AIProviderStatus"
+      ]
+    },
+    {
+      "name": "admin-budget-routing-policy",
+      "domain": "ai-workforce",
+      "path": "src/lib/services/ai-workforce/admin-budget-routing-policy.ts",
+      "exports": [
+        "AdminBudgetClass",
+        "BudgetClassSpec",
+        "BUDGET_CLASS_SPECS",
+        "RoleBudgetPolicy",
+        "ROLE_BUDGET_POLICIES",
+        "BudgetThresholds",
+        "DEFAULT_THRESHOLDS",
+        "BudgetCheckSeverity",
+        "BudgetPreFlightResult",
+        "InvocationHistory",
+        "checkBudgetPreFlight",
+        "getBudgetExecutionParams",
+        "getCostSavingSuggestions",
+        "buildInvocationHistory"
+      ]
+    },
     {
       "name": "agent-governance",
       "domain": "ai-workforce",
@@ -12,8 +202,39 @@
         "GovernanceConfig",
         "AgentGovernanceService",
         "createAgentGovernance"
-      ],
-      "status": "alpha"
+      ]
+    },
+    {
+      "name": "agent-health-monitor",
+      "domain": "ai-workforce",
+      "path": "src/lib/services/ai-workforce/agent-health-monitor.ts",
+      "exports": [
+        "AgentHealthStatus",
+        "AgentHealthSnapshot",
+        "HealthIncident",
+        "AgentHealthMonitorService",
+        "createAgentHealthMonitor"
+      ]
+    },
+    {
+      "name": "workforce-orchestrator",
+      "domain": "ai-workforce",
+      "path": "src/lib/services/ai-workforce/workforce-orchestrator.ts",
+      "exports": [
+        "WorkforceRole",
+        "WorkforceInvocationRequest",
+        "WorkforceInvocation"
+      ]
+    },
+    {
+      "name": "workforce-service",
+      "domain": "ai-workforce",
+      "path": "src/lib/services/ai-workforce/workforce-service.ts",
+      "exports": [
+        "AgentAssignmentResult",
+        "AIWorkforceService",
+        "createAIWorkforce"
+      ]
     },
     {
       "name": "approval-history",
@@ -24,8 +245,7 @@
         "recordApproval",
         "getApprovalHistory",
         "computeMetrics"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "approval-requests",
@@ -37,9 +257,9 @@
         "getRequest",
         "listPending",
         "updateStatus",
-        "expireStale"
-      ],
-      "status": "alpha"
+        "expireStale",
+        "persistState"
+      ]
     },
     {
       "name": "approval-routing",
@@ -51,8 +271,7 @@
         "routeApproval",
         "canDelegate",
         "getNextDelegate"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "escalation-rules",
@@ -65,8 +284,63 @@
         "getNextEscalationTarget",
         "createMultiStepApproval",
         "advanceMultiStep"
-      ],
-      "status": "alpha"
+      ]
+    },
+    {
+      "name": "god-tier-integration-engine",
+      "domain": "architecture",
+      "path": "src/lib/services/architecture/god-tier-integration-engine.ts",
+      "exports": [
+        "IntegrationAction",
+        "TaskMaturity",
+        "SprawlRisk",
+        "SecurityImpact",
+        "ModuleMapping",
+        "MODULE_MAPPING_MATRIX",
+        "IntegrationDecision",
+        "INTEGRATION_DECISIONS",
+        "FlagshipImpact",
+        "FLAGSHIP_LOOP_IMPACT",
+        "SecurityGovernanceImpact",
+        "SECURITY_GOVERNANCE_IMPACT",
+        "ComplexityLeverage",
+        "COMPLEXITY_LEVERAGE",
+        "AntiSprawlAssessment",
+        "ANTI_SPRAWL_MATRIX",
+        "TaskTypeAnalysis",
+        "TASK_TYPE_MAPPING",
+        "ImplementationPhase",
+        "IMPLEMENTATION_PHASES",
+        "ContractAnalysis",
+        "CONTRACT_MAP",
+        "ElevationCandidate",
+        "ELEVATION_CANDIDATES",
+        "MissingToSafe",
+        "MISSING_TO_SAFE_INTEGRATION",
+        "getModulesByAction",
+        "getDecisionsByPhase",
+        "getHighLeverageModules",
+        "getSprawlReducers",
+        "getSprawlDangers",
+        "computeIntegrationScore"
+      ]
+    },
+    {
+      "name": "attention-os",
+      "domain": "attention-os",
+      "path": "src/lib/services/attention-os/attention-os.ts",
+      "exports": [
+        "AttentionPriority",
+        "AttentionAction",
+        "TargetSurface",
+        "AttentionItem",
+        "AttentionStack",
+        "AttentionBundle",
+        "CognitiveLoadState",
+        "SurfaceRoutingDecision",
+        "AttentionOSService",
+        "createAttentionOS"
+      ]
     },
     {
       "name": "advisor-track-composer",
@@ -76,8 +350,7 @@
         "ComposedAdvisorView",
         "composeAdvisorTracks",
         "getAdvisorName"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "carryover",
@@ -89,8 +362,7 @@
         "resolveCarryoverItem",
         "getOpenCarryovers",
         "getAllCarryovers"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "decision-memory",
@@ -102,8 +374,19 @@
         "listSessionDecisions",
         "searchDecisions",
         "getRecentDecisions"
-      ],
-      "status": "alpha"
+      ]
+    },
+    {
+      "name": "boundary-engine",
+      "domain": "boundary-engine",
+      "path": "src/lib/services/boundary-engine/boundary-engine.ts",
+      "exports": [
+        "BoundaryScope",
+        "BoundaryRule",
+        "BoundaryCheck",
+        "BoundaryEngineService",
+        "createBoundaryEngine"
+      ]
     },
     {
       "name": "build-approval-package",
@@ -114,8 +397,7 @@
         "ApprovalEvidence",
         "RiskAssessment",
         "buildApprovalPackage"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "build-boardroom-request",
@@ -125,8 +407,7 @@
         "BoardroomRequest",
         "AgendaItem",
         "buildBoardroomRequest"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "build-explanation",
@@ -136,8 +417,7 @@
         "ExplanationPackage",
         "buildExplanationPackage",
         "formatDuration"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "build-simulation-request",
@@ -148,8 +428,7 @@
         "SimulationParameter",
         "SimulationScenario",
         "buildSimulationRequest"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "choose-advisors",
@@ -160,8 +439,7 @@
         "AdvisorSelectionResult",
         "chooseAdvisors",
         "scoreAdvisor"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "choose-execution-mode",
@@ -171,8 +449,7 @@
         "ExecutionModeDecision",
         "selectExecutionMode",
         "canBypassApproval"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "councils",
@@ -185,8 +462,7 @@
         "runFinanceCouncil",
         "runConciergeCouncil",
         "runMetaCouncil"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "model-router",
@@ -203,8 +479,7 @@
         "getModelBudgetStatus",
         "setModelBudget",
         "resetDailySpend"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "orchestrate-intent",
@@ -221,8 +496,7 @@
         "chooseExecutionMode",
         "buildOrchestrationPlan",
         "buildExplanation"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "accounts",
@@ -230,10 +504,8 @@
       "path": "src/lib/services/business-os/accounts.service.ts",
       "exports": [
         "AccountHealthRollup",
-        "rollupAccountHealth",
         "segmentAccounts"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "business-boardroom-inputs",
@@ -242,8 +514,7 @@
       "exports": [
         "BusinessBoardroomPacket",
         "buildBusinessBoardroomPacket"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "callback-queue",
@@ -253,8 +524,7 @@
         "CallbackEntry",
         "buildCallbackQueue",
         "prioritizeCallbacks"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "collections-command",
@@ -263,8 +533,7 @@
       "exports": [
         "buildEscalationQueue",
         "computeCollectionsKpis"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "collections",
@@ -274,8 +543,7 @@
         "CollectionsStatus",
         "categorizeByAging",
         "buildCollectionsStatuses"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "contacts",
@@ -283,11 +551,9 @@
       "path": "src/lib/services/business-os/contacts.service.ts",
       "exports": [
         "ContactTimelineEntry",
-        "buildContactTimeline",
         "enrichContact",
         "mergeContacts"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "customer-dashboard",
@@ -298,8 +564,7 @@
         "CustomerDashboard",
         "computeCustomerHealth",
         "buildDashboard"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "customer-health",
@@ -310,8 +575,7 @@
         "HealthFactor",
         "computeHealthScore",
         "identifyChurnRisk"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "customer-timeline",
@@ -322,8 +586,7 @@
         "aggregateTimeline",
         "detectEngagementGaps",
         "summarizeEngagement"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "follow-up",
@@ -333,8 +596,7 @@
         "FollowUpAction",
         "generateFollowUpSequence",
         "shouldEscalateFollowUp"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "invoice-linking",
@@ -345,8 +607,7 @@
         "linkInvoiceToQuote",
         "detectUnlinkedInvoices",
         "computeQuoteToInvoiceRate"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "lead-intake",
@@ -357,8 +618,7 @@
         "createLead",
         "deduplicateLeads",
         "trackLeadSource"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "lead-scoring",
@@ -369,8 +629,7 @@
         "scoreLead",
         "detectStaleLead",
         "buildCallbackQueue"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "leakage-engine",
@@ -378,8 +637,7 @@
       "path": "src/lib/services/business-os/leakage-engine.service.ts",
       "exports": [
         "detectLeakageComprehensive"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "no-show-recovery",
@@ -391,8 +649,7 @@
         "detectNoShows",
         "buildNoShowRecoveryActions",
         "computeNoShowRate"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "opportunity-engine",
@@ -403,8 +660,7 @@
         "OpportunityScore",
         "scoreOpportunity",
         "rankOpportunities"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "opportunity-ranking",
@@ -414,8 +670,7 @@
         "RankingConfig",
         "RankedOpportunity",
         "rankOpportunitiesWeighted"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "proposals",
@@ -426,8 +681,7 @@
         "ProposalLineItem",
         "createProposal",
         "computeWinRate"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "quotes",
@@ -438,8 +692,7 @@
         "createQuote",
         "isQuoteExpired",
         "reviseQuote"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "reactivation",
@@ -448,8 +701,7 @@
       "exports": [
         "ReactivationCandidate",
         "identifyReactivationCandidates"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "recovered-value-ledger",
@@ -459,8 +711,7 @@
         "RecoveredValueEntry",
         "RecoveryLedgerSummary",
         "summarizeLedger"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "recovery-engine",
@@ -471,8 +722,7 @@
         "RecoveryStep",
         "createRecoveryPlan",
         "advanceRecoveryStep"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "revenue-autopilot",
@@ -482,8 +732,7 @@
         "detectLeaks",
         "buildCollectionsEscalation",
         "computeKpiSummary"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "stale-lead-detector",
@@ -493,8 +742,7 @@
         "StaleLeadReport",
         "detectStaleLeads",
         "buildStaleLeadReport"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "website-management",
@@ -511,8 +759,21 @@
         "WebsiteStats",
         "WebsiteManager",
         "createWebsiteManager"
-      ],
-      "status": "alpha"
+      ]
+    },
+    {
+      "name": "pipeline-orchestrator",
+      "domain": "canonical-pipeline",
+      "path": "src/lib/services/canonical-pipeline/pipeline-orchestrator.ts",
+      "exports": [
+        "PipelineStatus",
+        "StageRecord",
+        "PipelineContext",
+        "PipelineTrace",
+        "PipelineRequest",
+        "PipelineOrchestrator",
+        "pipelineOrchestrator"
+      ]
     },
     {
       "name": "capability-registry",
@@ -526,9 +787,9 @@
         "listByRiskTier",
         "findCapabilities",
         "getAllCapabilities",
-        "getRegistryHealth"
-      ],
-      "status": "alpha"
+        "getRegistryHealth",
+        "persistState"
+      ]
     },
     {
       "name": "pack-enablement",
@@ -541,8 +802,7 @@
         "listEnabledCapabilities",
         "getPackDefinition",
         "listPacks"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "shell-space-routing",
@@ -555,8 +815,24 @@
         "listRoutesForSection",
         "getDeepLinkableRoutes",
         "registerRoute"
-      ],
-      "status": "alpha"
+      ]
+    },
+    {
+      "name": "chief-of-staff",
+      "domain": "chief-of-staff",
+      "path": "src/lib/services/chief-of-staff/chief-of-staff.ts",
+      "exports": [
+        "StaffRole",
+        "InterventionUrgency",
+        "StaffPersona",
+        "TriggerCondition",
+        "ProactiveBehavior",
+        "EscalationRule",
+        "StaffIntervention",
+        "CoordinationDecision",
+        "ChiefOfStaffService",
+        "createChiefOfStaff"
+      ]
     },
     {
       "name": "activity-prep",
@@ -566,8 +842,7 @@
         "ActivityChecklist",
         "buildActivityChecklist",
         "getMockActivityChecklists"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "conflict-detector",
@@ -577,8 +852,7 @@
         "ConflictResolution",
         "detectConflicts",
         "suggestResolutions"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "event-continuity",
@@ -588,8 +862,7 @@
         "EventPlan",
         "buildEventPlan",
         "getMockEventPlans"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "gift-reminders",
@@ -599,8 +872,7 @@
         "GiftReminder",
         "getUpcomingGiftReminders",
         "filterUrgent"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "grocery-continuity",
@@ -610,8 +882,7 @@
         "detectContinuityAlerts",
         "generateShoppingList",
         "computeMonthlyGroceryBudget"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "home-admin",
@@ -620,8 +891,7 @@
       "exports": [
         "getExpiringItems",
         "computeAdminLoad"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "household-boardroom-inputs",
@@ -630,8 +900,7 @@
       "exports": [
         "HouseholdBoardroomPacket",
         "buildHouseholdBoardroomPacket"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "household-ops",
@@ -640,8 +909,7 @@
       "exports": [
         "computeHouseholdKpis",
         "balanceLoad"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "household-overview",
@@ -650,8 +918,7 @@
       "exports": [
         "HouseholdOverview",
         "buildHouseholdOverview"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "load-balance",
@@ -661,8 +928,7 @@
         "LoadReport",
         "analyzeLoad",
         "suggestRebalance"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "prep-checklist",
@@ -670,8 +936,7 @@
       "path": "src/lib/services/concierge-os/prep-checklist.service.ts",
       "exports": [
         "generateTripChecklist"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "prep-derivation",
@@ -679,8 +944,7 @@
       "path": "src/lib/services/concierge-os/prep-derivation.service.ts",
       "exports": [
         "derivePrepTasks"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "provider-memory",
@@ -690,8 +954,7 @@
         "findProvider",
         "getFavorites",
         "suggestProvider"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "reconciliation",
@@ -702,8 +965,7 @@
         "ReconciliationResult",
         "CalendarConflict",
         "reconcileCalendars"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "recurring-supplies",
@@ -712,8 +974,7 @@
       "exports": [
         "detectResupplyNeeded",
         "estimateMonthlySupplyCost"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "reservation-ingest",
@@ -721,8 +982,7 @@
       "path": "src/lib/services/concierge-os/reservation-ingest.service.ts",
       "exports": [
         "ingestReservationFromEmail"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "responsibilities",
@@ -731,8 +991,7 @@
       "exports": [
         "ResponsibilityAssignment",
         "assignResponsibilities"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "school-items",
@@ -742,8 +1001,7 @@
         "SchoolItem",
         "getUpcomingSchoolItems",
         "groupByChild"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "travel-continuity",
@@ -753,8 +1011,7 @@
         "buildPrepChecklist",
         "ingestReservation",
         "assessTripReadiness"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "trip-overview",
@@ -763,8 +1020,7 @@
       "exports": [
         "TripDashboard",
         "buildTripDashboard"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "connector-auth",
@@ -776,8 +1032,7 @@
         "getAllAuthStates",
         "refreshToken",
         "revokeAuth"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "connector-fake-mode",
@@ -790,8 +1045,7 @@
         "isFakeModeEnabled",
         "getFakeResponse",
         "getFakeModeConfig"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "connector-health",
@@ -803,8 +1057,62 @@
         "checkAllConnectorHealth",
         "recordSync",
         "getFreshnessPolicy"
-      ],
-      "status": "alpha"
+      ]
+    },
+    {
+      "name": "connector-truth-service",
+      "domain": "connector-truth",
+      "path": "src/lib/services/connector-truth/connector-truth-service.ts",
+      "exports": [
+        "OAuthFlowRecord",
+        "SyncJobRecord",
+        "getConnectorTruthIndex"
+      ]
+    },
+    {
+      "name": "conscience-gate",
+      "domain": "conscience-gate",
+      "path": "src/lib/services/conscience-gate/conscience-gate.ts",
+      "exports": [
+        "GateDecision",
+        "EvidenceState",
+        "BudgetState",
+        "RoutingHints",
+        "GateVerdict",
+        "GateRequest",
+        "ConscienceGateService",
+        "conscienceGate"
+      ]
+    },
+    {
+      "name": "critique-loop",
+      "domain": "conscience-gate",
+      "path": "src/lib/services/conscience-gate/critique-loop.ts",
+      "exports": [
+        "CritiqueRecommendation",
+        "CritiqueIssue",
+        "CritiqueResult",
+        "EvidenceSource",
+        "runCritique",
+        "logCritique",
+        "getCritiqueLog",
+        "getCritiqueStats"
+      ]
+    },
+    {
+      "name": "continuity-engine",
+      "domain": "continuity-engine",
+      "path": "src/lib/services/continuity-engine/continuity-engine.ts",
+      "exports": [
+        "HandoffTrigger",
+        "ContinuityThread",
+        "HandoffRequest",
+        "HandoffResult",
+        "SurfacePresence",
+        "ContinuityScore",
+        "ContinuityEngineService",
+        "createContinuityEngine"
+      ]
     },
     {
       "name": "council-automation",
@@ -816,8 +1124,7 @@
         "EscalationResult",
         "CouncilAutomationService",
         "createCouncilAutomation"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "persistence-adapters",
@@ -840,8 +1147,188 @@
         "communicationLogAdapter",
         "SovereignExportRow",
         "sovereignExportsAdapter"
-      ],
-      "status": "alpha"
+      ]
+    },
+    {
+      "name": "demo-governance-service",
+      "domain": "demo-governance",
+      "path": "src/lib/services/demo-governance/demo-governance-service.ts",
+      "exports": [
+        "DemoGovernanceStatus",
+        "getDemoGovernanceIndex"
+      ]
+    },
+    {
+      "name": "desk-executor",
+      "domain": "desk",
+      "path": "src/lib/services/desk/desk-executor.ts",
+      "exports": [
+        "ToolStepType",
+        "ExecutionStatus",
+        "ToolStep",
+        "ToolPlan",
+        "ExecutionReceipt",
+        "DeskExecutor",
+        "deskExecutor"
+      ]
+    },
+    {
+      "name": "digest-engine",
+      "domain": "digest-engine",
+      "path": "src/lib/services/digest-engine/digest-engine.ts",
+      "exports": [
+        "DigestType",
+        "DigestSectionType",
+        "DigestSection",
+        "DigestItem",
+        "Digest",
+        "DigestTemplate",
+        "DigestDataProvider",
+        "DigestEngineService",
+        "createDigestEngine"
+      ]
+    },
+    {
+      "name": "domain-runtime-service",
+      "domain": "domain-runtime",
+      "path": "src/lib/services/domain-runtime/domain-runtime-service.ts",
+      "exports": [
+        "DomainRuntimeRecord",
+        "getRuntimeTruthIndex",
+        "getDomainList"
+      ]
+    },
+    {
+      "name": "assumption-registry",
+      "domain": "epistemic-firewall",
+      "path": "src/lib/services/epistemic-firewall/assumption-registry.ts",
+      "exports": [
+        "AssumptionCategory",
+        "AssumptionStatus",
+        "Assumption",
+        "AssumptionSet",
+        "createAssumption",
+        "invalidateAssumption",
+        "confirmAssumption",
+        "getAssumptionsForCorrelation",
+        "getAssumptionsForUser",
+        "getActiveAssumptions",
+        "getHighImpactAssumptions",
+        "buildAssumptionSet",
+        "assumeIncomeStable",
+        "assumeExpenseStable",
+        "assumeConnectorFresh",
+        "assumeNoNewObligations",
+        "getAssumptionStats"
+      ]
+    },
+    {
+      "name": "cite-checker",
+      "domain": "epistemic-firewall",
+      "path": "src/lib/services/epistemic-firewall/cite-checker.ts",
+      "exports": [
+        "ClaimVerdict",
+        "ExtractedClaim",
+        "ClaimVerification",
+        "CiteCheckResult",
+        "extractClaims",
+        "verifyClaim",
+        "runCiteCheck",
+        "getCiteCheckPolicy"
+      ]
+    },
+    {
+      "name": "cortex-loop",
+      "domain": "epistemic-firewall",
+      "path": "src/lib/services/epistemic-firewall/cortex-loop.ts",
+      "exports": [
+        "CortexStage",
+        "CortexLoopConfig",
+        "CortexState",
+        "CortexStageRecord",
+        "CortexOutcome",
+        "CORTEX_LOOP_CONFIGS",
+        "createCortexState",
+        "advanceStage",
+        "completeCortexLoop",
+        "VerifiedOutcome",
+        "recordVerifiedOutcome",
+        "getVerifiedOutcomes",
+        "getOutcomeLearningStats",
+        "getCortexLoopConfig"
+      ]
+    },
+    {
+      "name": "evidence-grader",
+      "domain": "epistemic-firewall",
+      "path": "src/lib/services/epistemic-firewall/evidence-grader.ts",
+      "exports": [
+        "EvidenceGrade",
+        "EvidenceGradePolicy",
+        "EVIDENCE_GRADE_POLICIES",
+        "EvidenceItem",
+        "GradedEvidence",
+        "DomainEvidencePolicy",
+        "gradeEvidence",
+        "gradeEvidenceSet",
+        "GradedEvidenceSet",
+        "getDomainEvidencePolicy",
+        "isHighTrustDomain"
+      ]
+    },
+    {
+      "name": "negative-receipt",
+      "domain": "epistemic-firewall",
+      "path": "src/lib/services/epistemic-firewall/negative-receipt.ts",
+      "exports": [
+        "RefusalReason",
+        "NegativeReceipt",
+        "SuggestedAction",
+        "createNegativeReceipt",
+        "refuseForWeakEvidence",
+        "refuseForCiteCheckFailure",
+        "refuseForBudgetExceeded",
+        "refuseForMissingApproval",
+        "getNegativeReceipts",
+        "getNegativeReceiptStats"
+      ]
+    },
+    {
+      "name": "sentinel-engine",
+      "domain": "epistemic-firewall",
+      "path": "src/lib/services/epistemic-firewall/sentinel-engine.ts",
+      "exports": [
+        "InvariantSeverity",
+        "InvariantScope",
+        "Invariant",
+        "InvariantContext",
+        "InvariantCheckResult",
+        "SentinelReport",
+        "runSentinelCheck",
+        "logSentinelReport",
+        "getSentinelHistory",
+        "getSentinelStats",
+        "getInvariants",
+        "getInvariantById"
+      ]
+    },
+    {
+      "name": "tool-grounding",
+      "domain": "epistemic-firewall",
+      "path": "src/lib/services/epistemic-firewall/tool-grounding.ts",
+      "exports": [
+        "GroundedFieldType",
+        "GroundingRule",
+        "GroundingViolation",
+        "GroundingCheckResult",
+        "GROUNDING_RULES",
+        "GroundedSource",
+        "checkGrounding",
+        "getGroundingRulesForDomain",
+        "getBlockingRulesForDomain",
+        "logGroundingCheck",
+        "getGroundingStats"
+      ]
     },
     {
       "name": "event-envelope",
@@ -853,8 +1340,7 @@
         "markDelivered",
         "markDeadLettered",
         "incrementRetry"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "publish-event",
@@ -865,8 +1351,7 @@
         "publishBatch",
         "getEventLog",
         "getDeadLetterQueue"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "subscribe-event",
@@ -878,8 +1363,17 @@
         "listSubscriptions",
         "clearSubscriptions",
         "subscribeOnce"
-      ],
-      "status": "alpha"
+      ]
+    },
+    {
+      "name": "unified-event-service",
+      "domain": "event-bus",
+      "path": "src/lib/services/event-bus/unified-event-service.ts",
+      "exports": [
+        "UnifiedEventHandler",
+        "UnifiedEventService",
+        "unifiedEventService"
+      ]
     },
     {
       "name": "execute-action",
@@ -894,8 +1388,7 @@
         "markFailed",
         "markRolledBack",
         "listExecutions"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "execute-connector-action",
@@ -910,8 +1403,7 @@
         "getConnectorHealth",
         "getAllConnectorHealth",
         "setConnectorHealth"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "execute-workflow-step",
@@ -924,8 +1416,21 @@
         "initWorkflowState",
         "executeStep",
         "canRetry"
-      ],
-      "status": "alpha"
+      ]
+    },
+    {
+      "name": "experience-signature",
+      "domain": "experience-signature",
+      "path": "src/lib/services/experience-signature/experience-signature.ts",
+      "exports": [
+        "ToneLevel",
+        "VerbosityLevel",
+        "VisualDensity",
+        "ExperienceSignature",
+        "SignatureContext",
+        "ExperienceSignatureService",
+        "createExperienceSignature"
+      ]
     },
     {
       "name": "account-summary",
@@ -936,8 +1441,7 @@
         "buildAccountSummary",
         "groupAccountsByType",
         "detectStaleAccounts"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "balance-sync",
@@ -948,8 +1452,7 @@
         "SyncHealthReport",
         "reconcileBalance",
         "buildSyncHealthReport"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "bill-calendar",
@@ -960,8 +1463,7 @@
         "BillCalendarMonth",
         "buildBillCalendar",
         "getNextDueBills"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "capital-map",
@@ -971,8 +1473,16 @@
         "buildCapitalMap",
         "getMockCapitalMap",
         "computeEntityConcentration"
-      ],
-      "status": "alpha"
+      ]
+    },
+    {
+      "name": "cash-allocator",
+      "domain": "finance-os",
+      "path": "src/lib/services/finance-os/cash-allocator.service.ts",
+      "exports": [
+        "CashAllocatorInput",
+        "computeCashAllocations"
+      ]
     },
     {
       "name": "committee-boardroom-inputs",
@@ -981,8 +1491,7 @@
       "exports": [
         "CommitteeBriefing",
         "buildCommitteeBriefing"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "crypto-exposure",
@@ -991,8 +1500,16 @@
       "exports": [
         "CryptoRiskAssessment",
         "assessCryptoRisk"
-      ],
-      "status": "alpha"
+      ]
+    },
+    {
+      "name": "debt-analyzer",
+      "domain": "finance-os",
+      "path": "src/lib/services/finance-os/debt-analyzer.service.ts",
+      "exports": [
+        "computeDebtProfile",
+        "simulateDebtPayoff"
+      ]
     },
     {
       "name": "due-soon-alerts",
@@ -1002,8 +1519,7 @@
         "DueSoonAlert",
         "generateDueSoonAlerts",
         "countUpcomingTotal"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "entity-capital",
@@ -1013,8 +1529,18 @@
         "EntityCapitalReport",
         "analyzeEntityCapital",
         "computeInterEntityTransfers"
-      ],
-      "status": "alpha"
+      ]
+    },
+    {
+      "name": "envelope-budget",
+      "domain": "finance-os",
+      "path": "src/lib/services/finance-os/envelope-budget.service.ts",
+      "exports": [
+        "createDefaultEnvelopes",
+        "allocateIncome",
+        "applyRollover",
+        "computePaceStatus"
+      ]
     },
     {
       "name": "execution-review",
@@ -1023,8 +1549,7 @@
       "exports": [
         "ExecutionQualityReport",
         "buildExecutionReview"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "family-office-review",
@@ -1033,8 +1558,7 @@
       "exports": [
         "buildFamilyOfficeReview",
         "computeReviewScore"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "finance-boardroom-inputs",
@@ -1042,8 +1566,15 @@
       "path": "src/lib/services/finance-os/finance-boardroom-inputs.service.ts",
       "exports": [
         "buildFinanceBoardroomPacket"
-      ],
-      "status": "alpha"
+      ]
+    },
+    {
+      "name": "financial-health",
+      "domain": "finance-os",
+      "path": "src/lib/services/finance-os/financial-health.service.ts",
+      "exports": [
+        "computeFinancialHealth"
+      ]
     },
     {
       "name": "fx-watchlist",
@@ -1052,8 +1583,55 @@
       "exports": [
         "FxAlert",
         "monitorFxExposure"
-      ],
-      "status": "alpha"
+      ]
+    },
+    {
+      "name": "income-quality",
+      "domain": "finance-os",
+      "path": "src/lib/services/finance-os/income-quality.service.ts",
+      "exports": [
+        "IncomeQualityInput",
+        "computeIncomeQuality"
+      ]
+    },
+    {
+      "name": "investment-memory",
+      "domain": "finance-os",
+      "path": "src/lib/services/finance-os/investment-memory.service.ts",
+      "exports": [
+        "MemoryChange",
+        "AdvisorMemoryState",
+        "ThesisMemoryState",
+        "PortfolioMemoryState",
+        "EventMemoryState",
+        "StrategyDNAInference",
+        "BehavioralFirewallState",
+        "computeWhatChanged",
+        "buildAdvisorMemory",
+        "buildThesisMemory",
+        "inferStrategyDNA",
+        "assessBehavioralFirewall",
+        "buildPortfolioMemory",
+        "buildEventMemory"
+      ]
+    },
+    {
+      "name": "investment-office-runtime",
+      "domain": "finance-os",
+      "path": "src/lib/services/finance-os/investment-office-runtime.ts",
+      "exports": [
+        "RegimeType",
+        "SyncStatus",
+        "InvestmentAction",
+        "PortfolioSnapshot",
+        "ConnectorSyncState",
+        "InvestmentProofReceipt",
+        "RegimeDetection",
+        "RegimeSignal",
+        "InvestmentOfficeSummary",
+        "InvestmentOfficeRuntimeService",
+        "createInvestmentOfficeRuntime"
+      ]
     },
     {
       "name": "investment-office",
@@ -1092,8 +1670,7 @@
         "getSlippageAdjustedReturn",
         "getInvestmentTrustMode",
         "getAvailableTrustModes"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "liquidity",
@@ -1102,18 +1679,24 @@
       "exports": [
         "computeLiquidity",
         "runLiquidityStressTest"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "overview",
       "domain": "finance-os",
       "path": "src/lib/services/finance-os/overview.service.ts",
       "exports": [
-        "buildInvestmentOverview",
         "computeAllocationDrift"
-      ],
-      "status": "alpha"
+      ]
+    },
+    {
+      "name": "peace-score",
+      "domain": "finance-os",
+      "path": "src/lib/services/finance-os/peace-score.service.ts",
+      "exports": [
+        "PeaceScoreInput",
+        "computePeaceScore"
+      ]
     },
     {
       "name": "portfolio-risk",
@@ -1122,8 +1705,7 @@
       "exports": [
         "PortfolioRiskReport",
         "buildPortfolioRiskReport"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "receivables",
@@ -1133,8 +1715,7 @@
         "ReceivableAgingReport",
         "buildAgingReport",
         "flagOverdueReceivables"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "recurring-obligation",
@@ -1143,8 +1724,7 @@
       "exports": [
         "RecurringObligationSummary",
         "summarizeRecurringObligations"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "regime-engine",
@@ -1154,8 +1734,7 @@
         "RegimeHistory",
         "buildRegimeHistory",
         "shouldAdjustPosture"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "renewal-risk",
@@ -1164,8 +1743,7 @@
       "exports": [
         "RenewalRiskReport",
         "buildRenewalRiskReport"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "reserve-engine",
@@ -1174,8 +1752,23 @@
       "exports": [
         "computeSafeToSpend",
         "assessReserveHealth"
-      ],
-      "status": "alpha"
+      ]
+    },
+    {
+      "name": "revenue-memory",
+      "domain": "finance-os",
+      "path": "src/lib/services/finance-os/revenue-memory.service.ts",
+      "exports": [
+        "AdvisorMemoryEntry",
+        "GrowthDNATrait",
+        "WhatChangedItem",
+        "GrowthFirewallAlert",
+        "TimeMachineSnapshot",
+        "AdvisorDebate",
+        "detectDebates",
+        "AlignmentCluster",
+        "computeAlignmentMap"
+      ]
     },
     {
       "name": "safe-to-spend",
@@ -1184,8 +1777,16 @@
       "exports": [
         "SafeToSpendForecast",
         "computeSafeToSpendForecast"
-      ],
-      "status": "alpha"
+      ]
+    },
+    {
+      "name": "scenario-engine",
+      "domain": "finance-os",
+      "path": "src/lib/services/finance-os/scenario-engine.service.ts",
+      "exports": [
+        "runScenario",
+        "generatePresetScenarios"
+      ]
     },
     {
       "name": "sinking-fund",
@@ -1195,8 +1796,16 @@
         "createSinkingFund",
         "assessFundProgress",
         "recommendContributionAdjustment"
-      ],
-      "status": "alpha"
+      ]
+    },
+    {
+      "name": "stress-radar",
+      "domain": "finance-os",
+      "path": "src/lib/services/finance-os/stress-radar.service.ts",
+      "exports": [
+        "StressRadarInput",
+        "computeStressRadar"
+      ]
     },
     {
       "name": "subscription-detector",
@@ -1205,8 +1814,7 @@
       "exports": [
         "DetectedSubscription",
         "detectSubscriptions"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "subscription-waste",
@@ -1216,8 +1824,7 @@
         "detectWaste",
         "assessRenewalRisks",
         "computeTotalWaste"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "thesis-vault",
@@ -1226,8 +1833,7 @@
       "exports": [
         "getMockTheses",
         "assessThesisHealth"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "transaction-categorizer",
@@ -1237,8 +1843,7 @@
         "CategorizationRule",
         "categorizeTransaction",
         "aggregateSpend"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "waste-detector",
@@ -1247,8 +1852,353 @@
       "exports": [
         "WasteReport",
         "buildWasteReport"
-      ],
-      "status": "alpha"
+      ]
+    },
+    {
+      "name": "flagship-loop-service",
+      "domain": "flagship-loops",
+      "path": "src/lib/services/flagship-loops/flagship-loop-service.ts",
+      "exports": [
+        "FlagshipLoopSeed",
+        "FLAGSHIP_LOOP_SEEDS",
+        "getOverallTruthScore",
+        "getLoopGrade",
+        "getImportanceBadge",
+        "getStatusBadge"
+      ]
+    },
+    {
+      "name": "frontend-quality-engine",
+      "domain": "frontend",
+      "path": "src/lib/services/frontend/frontend-quality-engine.ts",
+      "exports": [
+        "QualityTier",
+        "RouteFamilyQuality",
+        "ROUTE_FAMILY_QUALITY",
+        "FlagshipLoopReadiness",
+        "FLAGSHIP_LOOP_READINESS",
+        "StateMaturityEntry",
+        "STATE_MATURITY",
+        "DesignGovernanceRule",
+        "DESIGN_GOVERNANCE_RULES",
+        "MissingToWorldClassEntry",
+        "MISSING_TO_WORLD_CLASS",
+        "computeFrontendQualityScore"
+      ]
+    },
+    {
+      "name": "google-demo-provider",
+      "domain": "google-provider-family",
+      "path": "src/lib/services/google-provider-family/google-demo-provider.ts",
+      "exports": [
+        "getGoogleDemoState"
+      ]
+    },
+    {
+      "name": "google-provider-family",
+      "domain": "google-provider-family",
+      "path": "src/lib/services/google-provider-family/google-provider-family.service.ts",
+      "exports": [
+        "doesIdentityImplyConnector",
+        "resolveOAuthClient",
+        "isScopeUpgradeSafe"
+      ]
+    },
+    {
+      "name": "types",
+      "domain": "google-provider-family",
+      "path": "src/lib/services/google-provider-family/types.ts",
+      "exports": [
+        "GoogleCapabilityKey",
+        "GoogleOAuthClientPurpose",
+        "ScopeTier",
+        "GoogleConnectionStatus",
+        "GoogleHealthStatus",
+        "GoogleLaunchStage",
+        "GoogleRealityMode",
+        "GoogleIdentityState",
+        "GoogleConnectorState",
+        "GoogleProviderFamilyState",
+        "GoogleOAuthClientInfo",
+        "GoogleScopePolicyEntry",
+        "GoogleLaunchHonestyEntry",
+        "GOOGLE_IDENTITY_SCOPES",
+        "GOOGLE_DRIVE_SCOPES",
+        "GOOGLE_GMAIL_SCOPES",
+        "GOOGLE_CALENDAR_SCOPES",
+        "GOOGLE_API_REQUIREMENTS",
+        "GOOGLE_OAUTH_CLIENT_TEMPLATES"
+      ]
+    },
+    {
+      "name": "account-graph",
+      "domain": "identity-auth",
+      "path": "src/lib/services/identity-auth/account-graph.service.ts",
+      "exports": []
+    },
+    {
+      "name": "connector-access",
+      "domain": "identity-auth",
+      "path": "src/lib/services/identity-auth/connector-access.service.ts",
+      "exports": []
+    },
+    {
+      "name": "consent",
+      "domain": "identity-auth",
+      "path": "src/lib/services/identity-auth/consent.service.ts",
+      "exports": []
+    },
+    {
+      "name": "identity-provider",
+      "domain": "identity-auth",
+      "path": "src/lib/services/identity-auth/identity-provider.service.ts",
+      "exports": []
+    },
+    {
+      "name": "types",
+      "domain": "identity-auth",
+      "path": "src/lib/services/identity-auth/types.ts",
+      "exports": [
+        "IdentityProviderRegistry",
+        "IdentityProviderLink",
+        "ConnectedServiceLink",
+        "ConsentLedgerEntry",
+        "UnifiedAccountNode",
+        "UnifiedAccountEdge",
+        "PermissionUpgradeRequest",
+        "IdentitySessionAudit",
+        "ConnectorDisconnectionEvent",
+        "AuthConnectorSeparationAudit",
+        "IdentityProviderRegistryInsert",
+        "IdentityProviderLinkInsert",
+        "ConnectedServiceLinkInsert",
+        "ConsentLedgerInsert",
+        "PermissionUpgradeRequestInsert",
+        "IdentitySessionAuditInsert",
+        "ConnectorDisconnectionEventInsert",
+        "AUTH_DOMAINS",
+        "AuthDomain",
+        "IDENTITY_AUTH_METHODS",
+        "IdentityAuthMethod",
+        "CONNECTOR_AUTH_METHODS",
+        "ConnectorAuthMethod",
+        "CONNECTION_STATUSES",
+        "ConnectionStatus",
+        "CONSENT_ACTIONS",
+        "ConsentAction",
+        "PERMISSION_LEVELS",
+        "PermissionLevel",
+        "ConnectedAccountView",
+        "IdentityMethodView",
+        "ConsentHistoryView",
+        "AccountGraphSummaryView",
+        "AuthSeparationContract"
+      ]
+    },
+    {
+      "name": "connector-sdk",
+      "domain": "integration-hub",
+      "path": "src/lib/services/integration-hub/connector-sdk.ts",
+      "exports": [
+        "AuthType",
+        "RiskLevel",
+        "ActionStatus",
+        "ConnectionStatus",
+        "SyncType",
+        "ProviderCapability",
+        "ProviderDefinition",
+        "ConnectorInterface",
+        "ExternalAccount",
+        "HealthCheckResult",
+        "ActionResult",
+        "DryRunResult",
+        "DryRunPreviewItem",
+        "createDemoHealthCheck",
+        "createDemoDryRun"
+      ]
+    },
+    {
+      "name": "demo-connections",
+      "domain": "integration-hub",
+      "path": "src/lib/services/integration-hub/demo-connections.ts",
+      "exports": [
+        "DemoConnection",
+        "DemoSyncRun",
+        "DemoActionRequest",
+        "DemoAuditEntry",
+        "DEMO_CONNECTIONS",
+        "DEMO_ACTION_REQUESTS",
+        "DEMO_AUDIT_LOG"
+      ]
+    },
+    {
+      "name": "providers",
+      "domain": "integration-hub",
+      "path": "src/lib/services/integration-hub/providers.ts",
+      "exports": [
+        "INTEGRATION_PROVIDERS",
+        "getProviderById",
+        "getProvidersByCategory",
+        "PROVIDER_CATEGORIES"
+      ]
+    },
+    {
+      "name": "intent-orchestrator",
+      "domain": "intent-orchestrator",
+      "path": "src/lib/services/intent-orchestrator/intent-orchestrator.ts",
+      "exports": [
+        "IntentSource",
+        "IntentClassification",
+        "IntentRequest",
+        "IntentResolution",
+        "PolicyDecision",
+        "ExecutionStep",
+        "SurfaceUpdate",
+        "IntentReceipt",
+        "IntentOrchestratorService",
+        "IntentMiddleware",
+        "createIntentOrchestrator"
+      ]
+    },
+    {
+      "name": "launch-gate-service",
+      "domain": "launch-gate",
+      "path": "src/lib/services/launch-gate/launch-gate-service.ts",
+      "exports": [
+        "LaunchStatus",
+        "HonestyClass",
+        "LaunchGateRecord",
+        "GateCheckRecord",
+        "calculateGateScore",
+        "deriveHonestyClass",
+        "getLaunchHonestyIndex"
+      ]
+    },
+    {
+      "name": "launch-readiness-engine",
+      "domain": "launch-readiness",
+      "path": "src/lib/services/launch-readiness/launch-readiness-engine.ts",
+      "exports": [
+        "LaunchMode",
+        "ClaimSafety",
+        "LaunchHonestyClass",
+        "CapabilityClassification",
+        "LaunchBlockerEntry",
+        "LaunchNarrative",
+        "LaunchReadinessResult",
+        "FlagshipLoopReadiness",
+        "computeLaunchReadiness",
+        "GoNoGoCondition",
+        "getGoNoGoConditions"
+      ]
+    },
+    {
+      "name": "financial-literacy-engine",
+      "domain": "life-growth",
+      "path": "src/lib/services/life-growth/financial-literacy-engine.ts",
+      "exports": [
+        "LiteracyDomain",
+        "AgeGroup",
+        "DifficultyLevel",
+        "LiteracyAssessment",
+        "LearningPath",
+        "LearningModule",
+        "FinancialConcept",
+        "QuizQuestion",
+        "HouseholdLeaderboard",
+        "FinancialLiteracyEngine",
+        "createFinancialLiteracyEngine"
+      ]
+    },
+    {
+      "name": "household-coaching-engine",
+      "domain": "life-growth",
+      "path": "src/lib/services/life-growth/household-coaching-engine.ts",
+      "exports": [
+        "MemberRole",
+        "CoachingDomain",
+        "CoachingProfile",
+        "MicroLesson",
+        "BehavioralNudge",
+        "AccountabilityPair",
+        "MilestoneReward",
+        "HouseholdCoachingEngine",
+        "createHouseholdCoachingEngine"
+      ]
+    },
+    {
+      "name": "life-goal-tracker",
+      "domain": "life-growth",
+      "path": "src/lib/services/life-growth/life-goal-tracker.ts",
+      "exports": [
+        "GoalCategory",
+        "GoalStatus",
+        "LifeGoal",
+        "Milestone",
+        "ResourceRequirement",
+        "GoalConflict",
+        "HouseholdGoalAlignment",
+        "GoalDecomposition",
+        "LifeGoalTracker",
+        "createLifeGoalTracker"
+      ]
+    },
+    {
+      "name": "skill-monetization-advisor",
+      "domain": "life-growth",
+      "path": "src/lib/services/life-growth/skill-monetization-advisor.ts",
+      "exports": [
+        "SkillCategory",
+        "MonetizationModel",
+        "SkillProfile",
+        "MarketDemandScore",
+        "PlatformRecommendation",
+        "IncomeProjection",
+        "LaunchRoadmap",
+        "RoadmapPhase",
+        "SkillMonetizationAdvisor",
+        "createSkillMonetizationAdvisor"
+      ]
+    },
+    {
+      "name": "wealth-building-engine",
+      "domain": "life-growth",
+      "path": "src/lib/services/life-growth/wealth-building-engine.ts",
+      "exports": [
+        "WealthTrajectory",
+        "FIRECalculation",
+        "WealthWaterfall",
+        "DebtPayoffPlan",
+        "DebtItem",
+        "EmergencyFundTarget",
+        "WealthBuildingEngine",
+        "createWealthBuildingEngine"
+      ]
+    },
+    {
+      "name": "life-shock-simulator",
+      "domain": "life-simulation",
+      "path": "src/lib/services/life-simulation/life-shock-simulator.ts",
+      "exports": [
+        "ShockType",
+        "ShockParams",
+        "DomainImpact",
+        "ShockImpactReport",
+        "LifeShockSimulator",
+        "createLifeShockSimulator"
+      ]
+    },
+    {
+      "name": "memory-governance-engine",
+      "domain": "memory-governance",
+      "path": "src/lib/services/memory-governance/memory-governance-engine.ts",
+      "exports": [
+        "GovernedMemory",
+        "MemoryDecayPolicy",
+        "MemoryAuditRecord",
+        "MemoryGovernanceEngine",
+        "createMemoryGovernance"
+      ]
     },
     {
       "name": "boardroom-memory",
@@ -1262,8 +2212,7 @@
         "ageCarryovers",
         "resolveCarryover",
         "listCarryovers"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "correction",
@@ -1275,8 +2224,7 @@
         "recordCorrection",
         "getCorrections",
         "computeCorrectionStats"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "preference-memory",
@@ -1289,8 +2237,7 @@
         "listPreferences",
         "resetToDefaults",
         "exportPreferences"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "profile-memory",
@@ -1302,8 +2249,7 @@
         "listProfileMemories",
         "deleteProfileMemory",
         "clearExpired"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "trust-memory",
@@ -1319,8 +2265,7 @@
         "getTrustState",
         "addTrustFlag",
         "resolveFlag"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "workflow-memory",
@@ -1334,8 +2279,7 @@
         "listWorkflowCheckpoints",
         "deleteWorkflowCheckpoint",
         "pruneOldCheckpoints"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "collector",
@@ -1344,8 +2288,44 @@
       "exports": [
         "MetaGovernanceCollectorService",
         "getMetaGovernanceCollector"
-      ],
-      "status": "alpha"
+      ]
+    },
+    {
+      "name": "context-assembler",
+      "domain": "mnemosyne",
+      "path": "src/lib/services/mnemosyne/context-assembler.ts",
+      "exports": [
+        "ContextSource",
+        "ScopingDecision",
+        "AssembledContext",
+        "ContextAssembler",
+        "contextAssembler"
+      ]
+    },
+    {
+      "name": "health-aggregator",
+      "domain": "observability",
+      "path": "src/lib/services/observability/health-aggregator.ts",
+      "exports": [
+        "HealthTrend",
+        "SystemHealthLevel",
+        "HealthSignal",
+        "SystemHealthReport",
+        "HealthRecommendation",
+        "DegradedModeConfig",
+        "HealthAggregatorService",
+        "createHealthAggregator"
+      ]
+    },
+    {
+      "name": "observability-service",
+      "domain": "observability",
+      "path": "src/lib/services/observability/observability-service.ts",
+      "exports": [
+        "RuntimeProbe",
+        "ProbeRunRecord",
+        "HealthSnapshot"
+      ]
     },
     {
       "name": "persistence",
@@ -1354,8 +2334,65 @@
       "exports": [
         "startPeriodicFlush",
         "stopPeriodicFlush"
-      ],
-      "status": "alpha"
+      ]
+    },
+    {
+      "name": "ambient-intelligence",
+      "domain": "os-awareness",
+      "path": "src/lib/services/os-awareness/ambient-intelligence.ts",
+      "exports": [
+        "AmbientInsight",
+        "DailyBriefingSummary",
+        "ContextualInsight",
+        "AmbientIntelligenceService",
+        "createAmbientIntelligence"
+      ]
+    },
+    {
+      "name": "personal-operating-graph",
+      "domain": "personal-graph",
+      "path": "src/lib/services/personal-graph/personal-operating-graph.ts",
+      "exports": [
+        "GraphNodeType",
+        "PersonalGraphNode",
+        "PersonalGraphEdge",
+        "GraphTraversalFilter",
+        "GraphContext",
+        "MeetingContext",
+        "CrossDomainResolution",
+        "PersonalOperatingGraphService",
+        "createPersonalOperatingGraph"
+      ]
+    },
+    {
+      "name": "auto-rules",
+      "domain": "personalization-engine",
+      "path": "src/lib/services/personalization-engine/auto-rules.service.ts",
+      "exports": [
+        "AutoRuleLevel",
+        "AutoRule",
+        "RuleEvaluation",
+        "AutoRulesEngine",
+        "createAutoRulesEngine"
+      ]
+    },
+    {
+      "name": "behavioral-learning",
+      "domain": "personalization-engine",
+      "path": "src/lib/services/personalization-engine/behavioral-learning.service.ts",
+      "exports": [
+        "BehavioralEventType",
+        "BehavioralEvent",
+        "InferredPattern",
+        "BehavioralLearningEngine",
+        "createBehavioralLearningEngine"
+      ]
+    },
+    {
+      "name": "platform-readiness-seeder",
+      "domain": "platform-readiness",
+      "path": "src/lib/services/platform-readiness/platform-readiness-seeder.ts",
+      "exports": []
     },
     {
       "name": "approval-requirements",
@@ -1365,8 +2402,7 @@
         "ApprovalResolution",
         "resolveApprovalRequirements",
         "getThresholdsForDomain"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "outbound-comm-policy",
@@ -1378,8 +2414,7 @@
         "validateOutboundCommunication",
         "getPolicyForType",
         "getRemainingQuota"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "sensitive-doc-policy",
@@ -1390,8 +2425,7 @@
         "classifyDocument",
         "getRedactionRules",
         "bulkClassify"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "truth-boundaries",
@@ -1405,8 +2439,39 @@
         "getBoundaryRule",
         "listProtectedFields",
         "isFieldProtected"
-      ],
-      "status": "alpha"
+      ]
+    },
+    {
+      "name": "types",
+      "domain": "provider-family",
+      "path": "src/lib/services/provider-family/types.ts",
+      "exports": [
+        "ProviderFamilyKey",
+        "ProviderFamilyCategory",
+        "GenericConnectionStatus",
+        "GenericHealthStatus",
+        "GenericLaunchStage",
+        "GenericRealityMode",
+        "GenericScopeTier",
+        "GenericOAuthClientPurpose",
+        "GenericIdentityState",
+        "GenericConnectorState",
+        "GenericProviderFamilyState",
+        "ProviderFamilyDisplayConfig",
+        "PROVIDER_FAMILY_CONFIGS",
+        "doesIdentityImplyConnectorGeneric"
+      ]
+    },
+    {
+      "name": "push-registration-service",
+      "domain": "push-notification",
+      "path": "src/lib/services/push-notification/push-registration-service.ts",
+      "exports": [
+        "PushPlatform",
+        "PushTokenRecord",
+        "isPushSupported",
+        "getPermissionState"
+      ]
     },
     {
       "name": "approval-receipts",
@@ -1415,8 +2480,7 @@
       "exports": [
         "generateApprovalReceipt",
         "generateSingleApprovalReceipt"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "execution-receipts",
@@ -1425,8 +2489,7 @@
       "exports": [
         "generateExecutionReceipt",
         "generateBatchExecutionReceipts"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "proof-bundles",
@@ -1436,8 +2499,7 @@
         "assembleProofBundle",
         "validateBundle",
         "mergeBundles"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "receipts",
@@ -1449,37 +2511,228 @@
         "getChain",
         "verifyChainIntegrity",
         "createRefusalReceipt",
-        "getReceiptById"
-      ],
-      "status": "alpha"
+        "getReceiptById",
+        "createFirstBootReceipt"
+      ]
     },
     {
-      "name": "boardroom-packets",
-      "domain": "shared",
-      "path": "src/lib/services/shared/boardroom-packets.service.ts",
+      "name": "recommendation-loop-service",
+      "domain": "recommendation-execution",
+      "path": "src/lib/services/recommendation-execution/recommendation-loop-service.ts",
       "exports": [
-        "BoardroomPacketMeta",
-        "generateBusinessPacket",
-        "generateFinancePacket",
-        "generateFamilyPacket",
-        "generateOpportunityPacket",
-        "generateCommitteePacket"
-      ],
-      "status": "alpha"
+        "getValidTransitions"
+      ]
     },
     {
-      "name": "support-diagnostics",
-      "domain": "shared",
-      "path": "src/lib/services/shared/support-diagnostics.service.ts",
+      "name": "business-model-advisor",
+      "domain": "revenue-growth",
+      "path": "src/lib/services/revenue-growth/business-model-advisor.ts",
       "exports": [
-        "DiagnosticBundleResult",
-        "ServiceDiagnostic",
-        "ConnectorDiagnostic",
-        "ErrorEntry",
-        "generateDiagnosticBundle",
-        "classifyIncident"
-      ],
-      "status": "alpha"
+        "ModelDimension",
+        "ModelScore",
+        "ModelAssessment",
+        "TransformationPath",
+        "UnitEconomics",
+        "BusinessScenarioResult",
+        "BusinessModelAdvisor",
+        "createBusinessModelAdvisor"
+      ]
+    },
+    {
+      "name": "income-discovery-engine",
+      "domain": "revenue-growth",
+      "path": "src/lib/services/revenue-growth/income-discovery-engine.ts",
+      "exports": [
+        "RevenueStreamType",
+        "RevenueGap",
+        "PricingRecommendation",
+        "UpsellOpportunity",
+        "SeasonalPlan",
+        "PassiveIncomeStream",
+        "IncomeDiscoveryEngine",
+        "createIncomeDiscoveryEngine"
+      ]
+    },
+    {
+      "name": "market-intelligence",
+      "domain": "revenue-growth",
+      "path": "src/lib/services/revenue-growth/market-intelligence.service.ts",
+      "exports": [
+        "IndustryBenchmark",
+        "CompetitivePosition",
+        "MarketTrend",
+        "LocalMarketAnalysis",
+        "TimingAdvice",
+        "MarketIntelligenceService",
+        "createMarketIntelligence"
+      ]
+    },
+    {
+      "name": "security-posture-engine",
+      "domain": "security",
+      "path": "src/lib/services/security/security-posture-engine.ts",
+      "exports": [
+        "SecurityLevel",
+        "ThreatSeverity",
+        "ThreatEntry",
+        "SensitiveAsset",
+        "EdgeFunctionAudit",
+        "SecretEntry",
+        "SecurityScore",
+        "THREAT_MODEL",
+        "EDGE_FUNCTION_AUDIT",
+        "SECRET_INVENTORY",
+        "SENSITIVE_ASSETS",
+        "RolePermissionEntry",
+        "ROLE_PERMISSION_MATRIX",
+        "DataLeakageEntry",
+        "DATA_LEAKAGE_MATRIX",
+        "FileSafetyEntry",
+        "FILE_SAFETY_MATRIX",
+        "IncidentSeverityEntry",
+        "INCIDENT_SEVERITY_TAXONOMY",
+        "KillSwitchEntry",
+        "KILL_SWITCHES",
+        "BackupRecoveryEntry",
+        "BACKUP_RECOVERY_PLAN",
+        "MissingToSecureLaunchEntry",
+        "MISSING_TO_SECURE_LAUNCH",
+        "PrivilegedAction",
+        "PRIVILEGED_ACTIONS",
+        "SecurityClaimSafety",
+        "SECURITY_CLAIM_SAFETY",
+        "DeployabilityEntry",
+        "DEPLOYABILITY_MATRIX",
+        "computeSecurityScore",
+        "getPublicLaunchBlockers",
+        "getThreatsByStatus",
+        "getHighRiskFunctions"
+      ]
+    },
+    {
+      "name": "security-privacy-service",
+      "domain": "security-privacy",
+      "path": "src/lib/services/security-privacy/security-privacy-service.ts",
+      "exports": [
+        "SecurityCheckResult"
+      ]
+    },
+    {
+      "name": "heartbeat",
+      "domain": "service-registry",
+      "path": "src/lib/services/service-registry/heartbeat.ts",
+      "exports": [
+        "HeartbeatResult",
+        "HeartbeatSummary",
+        "ServiceHeartbeat",
+        "serviceHeartbeat"
+      ]
+    },
+    {
+      "name": "route-to-service-inventory",
+      "domain": "service-registry",
+      "path": "src/lib/services/service-registry/route-to-service-inventory.ts",
+      "exports": [
+        "RouteAction",
+        "RouteInventoryEntry",
+        "ROUTE_SERVICE_INVENTORY",
+        "getRoutesByFlagshipLoop",
+        "getRouteByKey",
+        "getRoutesWithShadowRisk",
+        "getRoutesWithLowConfidence",
+        "getAllActions",
+        "getDuplicateActionPatterns"
+      ]
+    },
+    {
+      "name": "service-ownership-registry",
+      "domain": "service-registry",
+      "path": "src/lib/services/service-registry/service-ownership-registry.ts",
+      "exports": [
+        "DomainServiceEntry",
+        "SERVICE_OWNERSHIP_REGISTRY",
+        "getDomainByKey",
+        "getDomainsByFlagshipLoop",
+        "getHighRiskDomains",
+        "ClusterRole",
+        "ClusterResolution",
+        "DUPLICATE_CLUSTER_RESOLUTIONS",
+        "getClusterByKey",
+        "getHighRiskClusters",
+        "AntiSprawlRule",
+        "ANTI_SPRAWL_RULES",
+        "DirectoryClass",
+        "ServiceDirectoryClassification",
+        "SERVICE_DIRECTORY_CLASSIFICATION",
+        "getDirectoryClassification",
+        "getDirectoriesByClass",
+        "getClassificationSummary"
+      ]
+    },
+    {
+      "name": "advisor-recommendation-engine",
+      "domain": "setup",
+      "path": "src/lib/services/setup/advisor-recommendation-engine.ts",
+      "exports": [
+        "AdvisorRecommendationEngine",
+        "advisorRecommendationEngine"
+      ]
+    },
+    {
+      "name": "connection-recommendation-engine",
+      "domain": "setup",
+      "path": "src/lib/services/setup/connection-recommendation-engine.ts",
+      "exports": [
+        "ConnectionRecommendation",
+        "ConnectionRecommendationEngine",
+        "connectionRecommendationEngine"
+      ]
+    },
+    {
+      "name": "first-win-recommendation-engine",
+      "domain": "setup",
+      "path": "src/lib/services/setup/first-win-recommendation-engine.ts",
+      "exports": [
+        "FirstWinRecommendationEngine",
+        "firstWinRecommendationEngine"
+      ]
+    },
+    {
+      "name": "hardware-capability-service",
+      "domain": "setup",
+      "path": "src/lib/services/setup/hardware-capability-service.ts",
+      "exports": [
+        "HardwareCapabilityService",
+        "hardwareCapabilityService"
+      ]
+    },
+    {
+      "name": "setup-summary-builder",
+      "domain": "setup",
+      "path": "src/lib/services/setup/setup-summary-builder.ts",
+      "exports": [
+        "SetupSummaryContext",
+        "SetupSummaryBuilder",
+        "setupSummaryBuilder"
+      ]
+    },
+    {
+      "name": "trust-calibration-service",
+      "domain": "setup",
+      "path": "src/lib/services/setup/trust-calibration-service.ts",
+      "exports": [
+        "TrustCalibrationService",
+        "trustCalibrationService"
+      ]
+    },
+    {
+      "name": "world-model-service",
+      "domain": "setup",
+      "path": "src/lib/services/setup/world-model-service.ts",
+      "exports": [
+        "WorldModelService",
+        "worldModelService"
+      ]
     },
     {
       "name": "diagnostic-bundle",
@@ -1488,8 +2741,7 @@
       "exports": [
         "generateDiagnosticBundle",
         "generateExtendedDiagnostic"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "incident-classification",
@@ -1498,8 +2750,7 @@
       "exports": [
         "IncidentClassification",
         "classifyIncident"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "replay-metadata",
@@ -1509,8 +2760,7 @@
         "ReplayMetadata",
         "captureReplayMetadata",
         "redactReplayForSupport"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "support-summary",
@@ -1519,8 +2769,71 @@
       "exports": [
         "SupportSummary",
         "generateSupportSummary"
-      ],
-      "status": "alpha"
+      ]
+    },
+    {
+      "name": "surface-adapter-registry",
+      "domain": "surface-portability",
+      "path": "src/lib/services/surface-portability/surface-adapter-registry.ts",
+      "exports": [
+        "FullSurfaceAdapter",
+        "SURFACE_ADAPTER_REGISTRY",
+        "getRegisteredAdapters",
+        "getAdapterByKey",
+        "getActiveAdapters",
+        "getAdapterCountSummary"
+      ]
+    },
+    {
+      "name": "surface-portability-service",
+      "domain": "surface-portability",
+      "path": "src/lib/services/surface-portability/surface-portability-service.ts",
+      "exports": [
+        "SurfacePortabilityRecord",
+        "SurfaceAdapterDefinition",
+        "CANONICAL_SURFACE_ADAPTERS",
+        "getSurfacePortabilityIndex",
+        "getSurfaceAdapterSummary"
+      ]
+    },
+    {
+      "name": "timing-intelligence",
+      "domain": "timing-intelligence",
+      "path": "src/lib/services/timing-intelligence/timing-intelligence.ts",
+      "exports": [
+        "TimingDecision",
+        "UserState",
+        "TimingContext",
+        "TimingEvaluation",
+        "TimingPreference",
+        "TimingPattern",
+        "TimingIntelligenceService",
+        "createTimingIntelligence"
+      ]
+    },
+    {
+      "name": "trust-weighted-actions",
+      "domain": "trust-actions",
+      "path": "src/lib/services/trust-actions/trust-weighted-actions.ts",
+      "exports": [
+        "ActionExecutionMode",
+        "DeviceTrustLevel",
+        "ActionEvaluation",
+        "TrustWeightedAction",
+        "DeviceContext",
+        "UserTrustContext",
+        "ActionPolicyOverride",
+        "TrustWeightedActionService",
+        "createTrustWeightedActions"
+      ]
+    },
+    {
+      "name": "truth-index-aggregator",
+      "domain": "truth-indices",
+      "path": "src/lib/services/truth-indices/truth-index-aggregator.ts",
+      "exports": [
+        "TruthIndexSummary"
+      ]
     },
     {
       "name": "postcondition-checks",
@@ -1532,8 +2845,7 @@
         "createPostconditionCheck",
         "runPostconditionChecks",
         "summarizeChecks"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "receipt-verification",
@@ -1545,8 +2857,7 @@
         "ReceiptIntegrityResult",
         "ReceiptVerificationService",
         "createReceiptVerificationService"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "replay-verification",
@@ -1561,8 +2872,7 @@
         "ReplayExecutor",
         "ReplayVerificationService",
         "createReplayVerificationService"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "rollback-signals",
@@ -1572,8 +2882,7 @@
         "RollbackSignal",
         "detectRollbackCondition",
         "generateRollbackProof"
-      ],
-      "status": "alpha"
+      ]
     },
     {
       "name": "verification",
@@ -1583,8 +2892,7 @@
         "verify",
         "getVerificationHistory",
         "getVerificationStats"
-      ],
-      "status": "alpha"
+      ]
     }
   ]
 }

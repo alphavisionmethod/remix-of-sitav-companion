@@ -1,35 +1,11 @@
 {
   "version": "1.0.0",
-  "generatedAt": "2026-04-07T00:00:00.000Z",
-  "total": 4,
+  "generatedAt": "2026-04-13T09:01:26.061Z",
+  "total": 1,
   "advisors": [
     {
-      "id": "business-advisor",
-      "name": "Business Advisor",
-      "domain": "business-os",
-      "council": "customer-facing",
-      "status": "alpha"
-    },
-    {
-      "id": "money-advisor",
-      "name": "Money Advisor",
-      "domain": "finance-os",
-      "council": "customer-facing",
-      "status": "alpha"
-    },
-    {
-      "id": "concierge-advisor",
-      "name": "Concierge Advisor",
-      "domain": "concierge-os",
-      "council": "customer-facing",
-      "status": "alpha"
-    },
-    {
-      "id": "strategy-advisor",
-      "name": "Strategy Advisor",
-      "domain": "cross-domain",
-      "council": "customer-facing",
-      "status": "alpha"
+      "name": "ADVISOR_CONFIGS",
+      "source": "src/packages/advisor-config"
     }
   ]
 }

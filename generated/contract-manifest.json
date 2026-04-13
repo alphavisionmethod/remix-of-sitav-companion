@@ -1,63 +1,56 @@
 {
   "version": "1.0.0",
-  "generatedAt": "2026-04-07T00:00:00.000Z",
-  "totalContracts": 885,
-  "totalPackages": 12,
+  "generatedAt": "2026-04-13T09:01:49.737Z",
+  "totalContracts": 1761,
+  "totalPackages": 11,
   "packageSummary": [
     {
-      "package": "approval-contracts",
-      "totalExports": 0,
-      "interfaces": 0,
-      "types": 0,
-      "constants": 0
-    },
-    {
       "package": "audit-contracts",
-      "totalExports": 0,
-      "interfaces": 0,
-      "types": 0,
+      "totalExports": 16,
+      "interfaces": 12,
+      "types": 4,
       "constants": 0
     },
     {
       "package": "boardroom-contracts",
-      "totalExports": 0,
-      "interfaces": 0,
-      "types": 0,
-      "constants": 0
-    },
-    {
-      "package": "business-contracts",
-      "totalExports": 71,
-      "interfaces": 41,
-      "types": 16,
-      "constants": 8
-    },
-    {
-      "package": "concierge-contracts",
-      "totalExports": 28,
-      "interfaces": 26,
+      "totalExports": 15,
+      "interfaces": 13,
       "types": 2,
       "constants": 0
     },
     {
+      "package": "business-contracts",
+      "totalExports": 193,
+      "interfaces": 132,
+      "types": 47,
+      "constants": 8
+    },
+    {
+      "package": "concierge-contracts",
+      "totalExports": 64,
+      "interfaces": 60,
+      "types": 4,
+      "constants": 0
+    },
+    {
       "package": "contracts",
-      "totalExports": 625,
-      "interfaces": 432,
-      "types": 136,
-      "constants": 57
+      "totalExports": 1224,
+      "interfaces": 812,
+      "types": 291,
+      "constants": 98
     },
     {
       "package": "enterprise-contracts",
-      "totalExports": 5,
-      "interfaces": 4,
-      "types": 1,
+      "totalExports": 15,
+      "interfaces": 13,
+      "types": 2,
       "constants": 0
     },
     {
       "package": "finance-contracts",
-      "totalExports": 73,
-      "interfaces": 70,
-      "types": 3,
+      "totalExports": 120,
+      "interfaces": 107,
+      "types": 13,
       "constants": 0
     },
     {
@@ -76,20 +69,206 @@
     },
     {
       "package": "proof-model",
-      "totalExports": 18,
-      "interfaces": 17,
-      "types": 1,
+      "totalExports": 20,
+      "interfaces": 18,
+      "types": 2,
       "constants": 0
     },
     {
       "package": "reality-contracts",
-      "totalExports": 45,
-      "interfaces": 35,
-      "types": 10,
+      "totalExports": 57,
+      "interfaces": 39,
+      "types": 11,
       "constants": 0
     }
   ],
   "contracts": [
+    {
+      "name": "AuditEntry",
+      "kind": "interface",
+      "package": "audit-contracts",
+      "file": "src/packages/audit-contracts/index.ts"
+    },
+    {
+      "name": "AuditChainSegment",
+      "kind": "interface",
+      "package": "audit-contracts",
+      "file": "src/packages/audit-contracts/index.ts"
+    },
+    {
+      "name": "AuditChainVerification",
+      "kind": "interface",
+      "package": "audit-contracts",
+      "file": "src/packages/audit-contracts/index.ts"
+    },
+    {
+      "name": "ComplianceCheckResult",
+      "kind": "interface",
+      "package": "audit-contracts",
+      "file": "src/packages/audit-contracts/index.ts"
+    },
+    {
+      "name": "ComplianceReport",
+      "kind": "interface",
+      "package": "audit-contracts",
+      "file": "src/packages/audit-contracts/index.ts"
+    },
+    {
+      "name": "ForensicQuery",
+      "kind": "interface",
+      "package": "audit-contracts",
+      "file": "src/packages/audit-contracts/index.ts"
+    },
+    {
+      "name": "ForensicTimeline",
+      "kind": "interface",
+      "package": "audit-contracts",
+      "file": "src/packages/audit-contracts/index.ts"
+    },
+    {
+      "name": "DataAccessRecord",
+      "kind": "interface",
+      "package": "audit-contracts",
+      "file": "src/packages/audit-contracts/index.ts"
+    },
+    {
+      "name": "DataAccessSummary",
+      "kind": "interface",
+      "package": "audit-contracts",
+      "file": "src/packages/audit-contracts/index.ts"
+    },
+    {
+      "name": "AuditRetentionPolicy",
+      "kind": "interface",
+      "package": "audit-contracts",
+      "file": "src/packages/audit-contracts/index.ts"
+    },
+    {
+      "name": "AuditArchiveManifest",
+      "kind": "interface",
+      "package": "audit-contracts",
+      "file": "src/packages/audit-contracts/index.ts"
+    },
+    {
+      "name": "AuditAnomaly",
+      "kind": "interface",
+      "package": "audit-contracts",
+      "file": "src/packages/audit-contracts/index.ts"
+    },
+    {
+      "name": "AuditSeverity",
+      "kind": "type",
+      "package": "audit-contracts",
+      "file": "src/packages/audit-contracts/index.ts"
+    },
+    {
+      "name": "AuditCategory",
+      "kind": "type",
+      "package": "audit-contracts",
+      "file": "src/packages/audit-contracts/index.ts"
+    },
+    {
+      "name": "ComplianceStandard",
+      "kind": "type",
+      "package": "audit-contracts",
+      "file": "src/packages/audit-contracts/index.ts"
+    },
+    {
+      "name": "AnomalyType",
+      "kind": "type",
+      "package": "audit-contracts",
+      "file": "src/packages/audit-contracts/index.ts"
+    },
+    {
+      "name": "BoardroomSession",
+      "kind": "interface",
+      "package": "boardroom-contracts",
+      "file": "src/packages/boardroom-contracts/index.ts"
+    },
+    {
+      "name": "BoardroomAgendaItem",
+      "kind": "interface",
+      "package": "boardroom-contracts",
+      "file": "src/packages/boardroom-contracts/index.ts"
+    },
+    {
+      "name": "AdvisorCouncilState",
+      "kind": "interface",
+      "package": "boardroom-contracts",
+      "file": "src/packages/boardroom-contracts/index.ts"
+    },
+    {
+      "name": "AdvisorSessionParticipant",
+      "kind": "interface",
+      "package": "boardroom-contracts",
+      "file": "src/packages/boardroom-contracts/index.ts"
+    },
+    {
+      "name": "AdvisorDisagreement",
+      "kind": "interface",
+      "package": "boardroom-contracts",
+      "file": "src/packages/boardroom-contracts/index.ts"
+    },
+    {
+      "name": "StrategicInsight",
+      "kind": "interface",
+      "package": "boardroom-contracts",
+      "file": "src/packages/boardroom-contracts/index.ts"
+    },
+    {
+      "name": "BoardroomBrief",
+      "kind": "interface",
+      "package": "boardroom-contracts",
+      "file": "src/packages/boardroom-contracts/index.ts"
+    },
+    {
+      "name": "BoardroomKPISnapshot",
+      "kind": "interface",
+      "package": "boardroom-contracts",
+      "file": "src/packages/boardroom-contracts/index.ts"
+    },
+    {
+      "name": "BoardroomRiskItem",
+      "kind": "interface",
+      "package": "boardroom-contracts",
+      "file": "src/packages/boardroom-contracts/index.ts"
+    },
+    {
+      "name": "BoardroomActionItem",
+      "kind": "interface",
+      "package": "boardroom-contracts",
+      "file": "src/packages/boardroom-contracts/index.ts"
+    },
+    {
+      "name": "BoardroomDecision",
+      "kind": "interface",
+      "package": "boardroom-contracts",
+      "file": "src/packages/boardroom-contracts/index.ts"
+    },
+    {
+      "name": "DecisionReviewSchedule",
+      "kind": "interface",
+      "package": "boardroom-contracts",
+      "file": "src/packages/boardroom-contracts/index.ts"
+    },
+    {
+      "name": "BoardroomAnalytics",
+      "kind": "interface",
+      "package": "boardroom-contracts",
+      "file": "src/packages/boardroom-contracts/index.ts"
+    },
+    {
+      "name": "BoardroomSessionType",
+      "kind": "type",
+      "package": "boardroom-contracts",
+      "file": "src/packages/boardroom-contracts/index.ts"
+    },
+    {
+      "name": "BoardroomSessionStatus",
+      "kind": "type",
+      "package": "boardroom-contracts",
+      "file": "src/packages/boardroom-contracts/index.ts"
+    },
     {
       "name": "MonetaryAmount",
       "kind": "interface",
@@ -421,6 +600,120 @@
       "file": "src/packages/business-contracts/customer-lifecycle.ts"
     },
     {
+      "name": "CustomerMessage",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/customer-message.ts"
+    },
+    {
+      "name": "MessageThread",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/customer-message.ts"
+    },
+    {
+      "name": "MessageChannel",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/customer-message.ts"
+    },
+    {
+      "name": "MessageDirection",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/customer-message.ts"
+    },
+    {
+      "name": "MessageSentiment",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/customer-message.ts"
+    },
+    {
+      "name": "DealRisk",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/deal-risk.ts"
+    },
+    {
+      "name": "DealRiskAssessment",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/deal-risk.ts"
+    },
+    {
+      "name": "DealRiskCategory",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/deal-risk.ts"
+    },
+    {
+      "name": "DealStakeholder",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/deal.ts"
+    },
+    {
+      "name": "DealTimeline",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/deal.ts"
+    },
+    {
+      "name": "Deal",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/deal.ts"
+    },
+    {
+      "name": "DealForecast",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/deal.ts"
+    },
+    {
+      "name": "DealStage",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/deal.ts"
+    },
+    {
+      "name": "DealCloseReason",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/deal.ts"
+    },
+    {
+      "name": "HandoffRoute",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/handoff-route.ts"
+    },
+    {
+      "name": "HandoffCondition",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/handoff-route.ts"
+    },
+    {
+      "name": "HandoffExecution",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/handoff-route.ts"
+    },
+    {
+      "name": "HandoffMetrics",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/handoff-route.ts"
+    },
+    {
+      "name": "HandoffTrigger",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/handoff-route.ts"
+    },
+    {
       "name": "Lead",
       "kind": "interface",
       "package": "business-contracts",
@@ -451,10 +744,100 @@
       "file": "src/packages/business-contracts/index.ts"
     },
     {
+      "name": "InvoiceFollowUpPlan",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/invoice-followup.ts"
+    },
+    {
+      "name": "FollowUpStep",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/invoice-followup.ts"
+    },
+    {
+      "name": "CollectionsMetrics",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/invoice-followup.ts"
+    },
+    {
+      "name": "PaymentPlanProposal",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/invoice-followup.ts"
+    },
+    {
+      "name": "InvoiceAgingBucket",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/invoice-followup.ts"
+    },
+    {
+      "name": "LeadScoreBreakdown",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/lead-expanded.ts"
+    },
+    {
+      "name": "LeadEnriched",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/lead-expanded.ts"
+    },
+    {
+      "name": "LeadReactivationPlan",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/lead-expanded.ts"
+    },
+    {
+      "name": "LeadStatus",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/lead-expanded.ts"
+    },
+    {
+      "name": "LeadSource",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/lead-expanded.ts"
+    },
+    {
+      "name": "LeadTemperature",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/lead-expanded.ts"
+    },
+    {
       "name": "StaleLeadState",
       "kind": "interface",
       "package": "business-contracts",
       "file": "src/packages/business-contracts/leads/stale-lead-state.ts"
+    },
+    {
+      "name": "NoShowRisk",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/no-show-risk.ts"
+    },
+    {
+      "name": "NoShowRiskFactor",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/no-show-risk.ts"
+    },
+    {
+      "name": "NoShowRecoveryPlan",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/no-show-risk.ts"
+    },
+    {
+      "name": "NoShowAnalytics",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/no-show-risk.ts"
     },
     {
       "name": "OpportunityRankResult",
@@ -467,6 +850,210 @@
       "kind": "interface",
       "package": "business-contracts",
       "file": "src/packages/business-contracts/opportunities/reactivation-candidate.ts"
+    },
+    {
+      "name": "OpportunityRecord",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/opportunity-record.ts"
+    },
+    {
+      "name": "OpportunityActivity",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/opportunity-record.ts"
+    },
+    {
+      "name": "OpportunityStage",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/opportunity-record.ts"
+    },
+    {
+      "name": "OutboundTemplate",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/outbound-communication.ts"
+    },
+    {
+      "name": "OutboundCampaign",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/outbound-communication.ts"
+    },
+    {
+      "name": "CommunicationPreferences",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/outbound-communication.ts"
+    },
+    {
+      "name": "SequenceEnrollment",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/outbound-communication.ts"
+    },
+    {
+      "name": "OutboundChannel",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/outbound-communication.ts"
+    },
+    {
+      "name": "OutboundPurpose",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/outbound-communication.ts"
+    },
+    {
+      "name": "OutreachPlan",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/outreach-plan.ts"
+    },
+    {
+      "name": "OutreachAudienceFilter",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/outreach-plan.ts"
+    },
+    {
+      "name": "OutreachStep",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/outreach-plan.ts"
+    },
+    {
+      "name": "OutreachPerformanceReport",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/outreach-plan.ts"
+    },
+    {
+      "name": "OutreachGoal",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/outreach-plan.ts"
+    },
+    {
+      "name": "PipelineStageConfig",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/pipeline-stage.ts"
+    },
+    {
+      "name": "PipelineAutomation",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/pipeline-stage.ts"
+    },
+    {
+      "name": "PipelineConfig",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/pipeline-stage.ts"
+    },
+    {
+      "name": "PipelineSnapshot",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/pipeline-stage.ts"
+    },
+    {
+      "name": "PricingProposal",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/pricing-proposal.ts"
+    },
+    {
+      "name": "PricingLineItem",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/pricing-proposal.ts"
+    },
+    {
+      "name": "AppliedDiscount",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/pricing-proposal.ts"
+    },
+    {
+      "name": "PricingGuidance",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/pricing-proposal.ts"
+    },
+    {
+      "name": "PricingModel",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/pricing-proposal.ts"
+    },
+    {
+      "name": "DiscountType",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/pricing-proposal.ts"
+    },
+    {
+      "name": "QuoteLineItem",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/quote-expanded.ts"
+    },
+    {
+      "name": "QuoteExpanded",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/quote-expanded.ts"
+    },
+    {
+      "name": "QuoteComparisonResult",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/quote-expanded.ts"
+    },
+    {
+      "name": "QuoteStatus",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/quote-expanded.ts"
+    },
+    {
+      "name": "ReferralPrompt",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/referral-prompt.ts"
+    },
+    {
+      "name": "ReferralRecord",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/referral-prompt.ts"
+    },
+    {
+      "name": "ReferralProgramMetrics",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/referral-prompt.ts"
+    },
+    {
+      "name": "ReferralStatus",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/referral-prompt.ts"
+    },
+    {
+      "name": "RepeatPurchaseTiming",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/repeat-purchase-timing.ts"
+    },
+    {
+      "name": "PurchasePatternAnalysis",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/repeat-purchase-timing.ts"
     },
     {
       "name": "CollectionsEscalationPacket",
@@ -517,6 +1104,354 @@
       "file": "src/packages/business-contracts/revenue-autopilot/revenue-recovery-plan.ts"
     },
     {
+      "name": "RevenueLeakageSignal",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/revenue-leakage-signal.ts"
+    },
+    {
+      "name": "RevenueLeakageDashboard",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/revenue-leakage-signal.ts"
+    },
+    {
+      "name": "RevenueLeakType",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/revenue-leakage-signal.ts"
+    },
+    {
+      "name": "CollectionsAccountState",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/revenue-ops/collections-state.ts"
+    },
+    {
+      "name": "CollectionsStatus",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/revenue-ops/collections-state.ts"
+    },
+    {
+      "name": "EstimateRecord",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/revenue-ops/estimate-record.ts"
+    },
+    {
+      "name": "EstimateStatus",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/revenue-ops/estimate-record.ts"
+    },
+    {
+      "name": "InvoiceRecord",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/revenue-ops/invoice-record.ts"
+    },
+    {
+      "name": "InvoiceStatus",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/revenue-ops/invoice-record.ts"
+    },
+    {
+      "name": "OnboardingRevenueBootstrapPacket",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/revenue-ops/onboarding-revenue-bootstrap-packet.ts"
+    },
+    {
+      "name": "PaymentProofLink",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/revenue-ops/payment-proof-link.ts"
+    },
+    {
+      "name": "ProposalRecord",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/revenue-ops/proposal-record.ts"
+    },
+    {
+      "name": "QuoteRecord",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/revenue-ops/quote-record.ts"
+    },
+    {
+      "name": "ReminderPackage",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/revenue-ops/reminder-package.ts"
+    },
+    {
+      "name": "RevenueApprovalPackage",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/revenue-ops/revenue-approval-package.ts"
+    },
+    {
+      "name": "RevenueMetricsSnapshot",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/revenue-ops/revenue-metrics.ts"
+    },
+    {
+      "name": "RevenueWaterfall",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/revenue-ops/revenue-metrics.ts"
+    },
+    {
+      "name": "CohortAnalysis",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/revenue-ops/revenue-metrics.ts"
+    },
+    {
+      "name": "RevenueSendPackage",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/revenue-ops/revenue-send-package.ts"
+    },
+    {
+      "name": "ReviewRequest",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/review-request.ts"
+    },
+    {
+      "name": "ReviewPolicy",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/review-request.ts"
+    },
+    {
+      "name": "ReviewType",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/review-request.ts"
+    },
+    {
+      "name": "ReviewUrgency",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/review-request.ts"
+    },
+    {
+      "name": "ServiceOrder",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/service-order.ts"
+    },
+    {
+      "name": "ServiceLineItem",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/service-order.ts"
+    },
+    {
+      "name": "ServiceOrderMetrics",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/service-order.ts"
+    },
+    {
+      "name": "ServiceOrderStatus",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/service-order.ts"
+    },
+    {
+      "name": "TaskAssignment",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/task-assignment.ts"
+    },
+    {
+      "name": "TaskWorkload",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/task-assignment.ts"
+    },
+    {
+      "name": "TaskPriority",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/task-assignment.ts"
+    },
+    {
+      "name": "TaskStatus",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/task-assignment.ts"
+    },
+    {
+      "name": "VerticalApprovalDefault",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/vertical-approval-default.ts"
+    },
+    {
+      "name": "ApprovalCondition",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/vertical-approval-default.ts"
+    },
+    {
+      "name": "VerticalCommsTemplate",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/vertical-comms-template.ts"
+    },
+    {
+      "name": "VerticalPackConfig",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/vertical-pack-config.ts"
+    },
+    {
+      "name": "VerticalModule",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/vertical-pack-config.ts"
+    },
+    {
+      "name": "VerticalPlaybook",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/vertical-playbook.ts"
+    },
+    {
+      "name": "PlaybookStep",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/vertical-playbook.ts"
+    },
+    {
+      "name": "VerticalRoleDefault",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/vertical-role-default.ts"
+    },
+    {
+      "name": "BookingRequestSubmission",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/website/booking-request-submission.ts"
+    },
+    {
+      "name": "FormDefinition",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/website/form-definition.ts"
+    },
+    {
+      "name": "FormFieldType",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/website/form-definition.ts"
+    },
+    {
+      "name": "FormSubmission",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/website/form-submission.ts"
+    },
+    {
+      "name": "LeadAttributionRecord",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/website/lead-attribution-record.ts"
+    },
+    {
+      "name": "OnboardingSiteBootstrapPacket",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/website/onboarding-site-bootstrap-packet.ts"
+    },
+    {
+      "name": "PageRecord",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/website/page-record.ts"
+    },
+    {
+      "name": "PageType",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/website/page-record.ts"
+    },
+    {
+      "name": "PageVersion",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/website/page-version.ts"
+    },
+    {
+      "name": "PublishRequest",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/website/publish-request.ts"
+    },
+    {
+      "name": "PublishResult",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/website/publish-result.ts"
+    },
+    {
+      "name": "QuoteRequestSubmission",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/website/quote-request-submission.ts"
+    },
+    {
+      "name": "SiteRecord",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/website/site-record.ts"
+    },
+    {
+      "name": "SiteStatus",
+      "kind": "type",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/website/site-record.ts"
+    },
+    {
+      "name": "WebsiteLeadRoutingPacket",
+      "kind": "interface",
+      "package": "business-contracts",
+      "file": "src/packages/business-contracts/website/website-lead-routing-packet.ts"
+    },
+    {
+      "name": "Appointment",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/appointment.ts"
+    },
+    {
+      "name": "AppointmentType",
+      "kind": "type",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/appointment.ts"
+    },
+    {
+      "name": "AvailabilityWindow",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/availability-window.ts"
+    },
+    {
+      "name": "AvailabilityMatrix",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/availability-window.ts"
+    },
+    {
       "name": "FamilyCalendarItem",
       "kind": "interface",
       "package": "concierge-contracts",
@@ -535,6 +1470,54 @@
       "file": "src/packages/concierge-contracts/calendar/types.ts"
     },
     {
+      "name": "CalendarConflict",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/calendar-conflict.ts"
+    },
+    {
+      "name": "ConciergeBoardroomPacket",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/concierge-boardroom-packet.ts"
+    },
+    {
+      "name": "DailyPulseItem",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/daily-pulse-item.ts"
+    },
+    {
+      "name": "DailyPulse",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/daily-pulse-item.ts"
+    },
+    {
+      "name": "PulseCategory",
+      "kind": "type",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/daily-pulse-item.ts"
+    },
+    {
+      "name": "ErrandBundle",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/errand-bundle.ts"
+    },
+    {
+      "name": "ErrandItem",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/errand-bundle.ts"
+    },
+    {
+      "name": "EventPlan",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/event-plan.ts"
+    },
+    {
       "name": "EventReminder",
       "kind": "interface",
       "package": "concierge-contracts",
@@ -545,6 +1528,36 @@
       "kind": "interface",
       "package": "concierge-contracts",
       "file": "src/packages/concierge-contracts/events/types.ts"
+    },
+    {
+      "name": "FamilyBoardroomPacket",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/family-boardroom-packet.ts"
+    },
+    {
+      "name": "FamilyLoadBalance",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/family-load-balance.ts"
+    },
+    {
+      "name": "MemberLoad",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/family-load-balance.ts"
+    },
+    {
+      "name": "FamilyMemberProfile",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/family-member-profile.ts"
+    },
+    {
+      "name": "GiftPlan",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/gift-plan.ts"
     },
     {
       "name": "GroceryItem",
@@ -581,6 +1594,18 @@
       "kind": "type",
       "package": "concierge-contracts",
       "file": "src/packages/concierge-contracts/household/types.ts"
+    },
+    {
+      "name": "HouseholdMaintenanceItem",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/household-maintenance-item.ts"
+    },
+    {
+      "name": "HouseholdResponsibility",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/household-responsibility.ts"
     },
     {
       "name": "Reminder",
@@ -661,10 +1686,88 @@
       "file": "src/packages/concierge-contracts/index.ts"
     },
     {
+      "name": "InventoryItem",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/inventory-item.ts"
+    },
+    {
+      "name": "Itinerary",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/itinerary.ts"
+    },
+    {
+      "name": "ItineraryDay",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/itinerary.ts"
+    },
+    {
+      "name": "ItineraryActivity",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/itinerary.ts"
+    },
+    {
+      "name": "PackingPlan",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/packing-plan.ts"
+    },
+    {
+      "name": "PackingCategory",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/packing-plan.ts"
+    },
+    {
+      "name": "PantryReplenishment",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/pantry-replenishment.ts"
+    },
+    {
+      "name": "PrepSequence",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/prep-sequence.ts"
+    },
+    {
+      "name": "PrepStep",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/prep-sequence.ts"
+    },
+    {
       "name": "ProviderFollowUp",
       "kind": "interface",
       "package": "concierge-contracts",
       "file": "src/packages/concierge-contracts/providers/provider-follow-up.ts"
+    },
+    {
+      "name": "ReservationMemory",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/reservation-memory.ts"
+    },
+    {
+      "name": "Reservation",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/reservation.ts"
+    },
+    {
+      "name": "RouteGrouping",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/route-grouping.ts"
+    },
+    {
+      "name": "ScheduleItem",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/schedule-item.ts"
     },
     {
       "name": "SchoolActivityItem",
@@ -679,10 +1782,34 @@
       "file": "src/packages/concierge-contracts/school/types.ts"
     },
     {
+      "name": "SchoolActivity",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/school-activity.ts"
+    },
+    {
+      "name": "ServiceProviderMemory",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/service-provider-memory.ts"
+    },
+    {
       "name": "ReservationRecord",
       "kind": "interface",
       "package": "concierge-contracts",
       "file": "src/packages/concierge-contracts/travel/reservation-record.ts"
+    },
+    {
+      "name": "TravelDisruption",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/travel-disruption.ts"
+    },
+    {
+      "name": "TripLeg",
+      "kind": "interface",
+      "package": "concierge-contracts",
+      "file": "src/packages/concierge-contracts/trip-leg.ts"
     },
     {
       "name": "BaseContract",
@@ -895,6 +2022,654 @@
       "file": "src/packages/contracts/advisor/council-orchestration.ts"
     },
     {
+      "name": "ChatMessage",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "PersonalBrainRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "PersonalBrainResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "ChatAdvisorRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "ChatAdvisorResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "BrainCoreRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "BrainCoreResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "AdminApiRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "AdminApiResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "AdminIntelligenceRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "AdminIntelligenceResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "AdminUsersListRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "AdminUsersActionRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "AdminUsersResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "AgentExecutorRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "AgentExecutorResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "AgentHeartbeatRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "AgentHeartbeatResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "AgentIntelligenceRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "AgentIntelligenceResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "AgentSchedulerRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "AgentSchedulerResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "AgentSignalRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "AgentSignalResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "ConnectorOperationsRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "ConnectorOperationsResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "ConnectorHealthRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "ConnectorHealthResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "ConnectorProxyRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "ConnectorProxyResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "OsCommandRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "OsCommandResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "OsStatusRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "OsStatusResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "MsaOperationsRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "MsaOperationsResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "ProviderFamilyRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "ProviderFamilyResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "AmbientOsRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "AmbientOsResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "DeviceTelemetryRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "DeviceTelemetryResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "RevenueCallerRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "RevenueCallerResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "GdprExportRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "GdprExportResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "GdprDeleteRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "GdprDeleteResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "FileIngestionRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "FileIngestionResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "SeedUserDataRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "SeedUserDataResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "EventProcessorRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "EventProcessorResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "CostAlertRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "CostAlertResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "AiHealthRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "AiHealthResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "RuntimeProbesRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "RuntimeProbesResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "SchedulerDispatchRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "SchedulerDispatchResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "SelfHealingRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "SelfHealingResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "SystemUpdatesRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "SystemUpdatesResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "AdminAiWorkforceRunRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "AdminAiWorkforceRunResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "AiGatewayRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "AiGatewayResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "BookingManageResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "CashflowCalculateResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "ConnectorBatchResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "ConnectorDiscoverRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "ConnectorDiscoverResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "ConnectorOAuthResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "ConnectorTransformRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "ConnectorTransformResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "CrmSyncResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "EcosystemOperationsRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "EcosystemOperationsResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "InvoiceGenerateResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "PaymentProcessResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "PushDispatchRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "PushDispatchResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "PushTrackRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "PushTrackResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "TaxEstimateResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "VapidPublicKeyResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "VerificationRecorderRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "VerificationRecorderResponse",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "EdgeFunctionMap",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "AdminUsersRequest",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "ConnectorAction",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "OsCommandType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "MsaAction",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "ProviderFamilyAction",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "AmbientAction",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "BookingManageRequest",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "CashflowCalculateRequest",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "ConnectorBatchRequest",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "ConnectorOAuthRequest",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "CrmSyncRequest",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "InvoiceGenerateRequest",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "PaymentProcessRequest",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "TaxEstimateRequest",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "VapidPublicKeyRequest",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
+      "name": "EdgeFunctionName",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/api-schemas/index.ts"
+    },
+    {
       "name": "ApprovalBinding",
       "kind": "interface",
       "package": "contracts",
@@ -1045,6 +2820,24 @@
       "file": "src/packages/contracts/core/event-envelope.ts"
     },
     {
+      "name": "EventSubjectDefinition",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/core/event-subject-definition.ts"
+    },
+    {
+      "name": "EventSubjectRegistry",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/core/event-subject-definition.ts"
+    },
+    {
+      "name": "EventCategory",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/core/event-subject-definition.ts"
+    },
+    {
       "name": "IntentEnvelope",
       "kind": "interface",
       "package": "contracts",
@@ -1127,6 +2920,42 @@
       "kind": "interface",
       "package": "contracts",
       "file": "src/packages/contracts/core/workflow-state.ts"
+    },
+    {
+      "name": "AdminApiManifestEntry",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/admin-route-truth.ts"
+    },
+    {
+      "name": "AdminRouteTruthResult",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/admin-route-truth.ts"
+    },
+    {
+      "name": "RouteTruthValidation",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/admin-route-truth.ts"
+    },
+    {
+      "name": "RouteTruthSnapshot",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/admin-route-truth.ts"
+    },
+    {
+      "name": "RouteMethod",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/admin-route-truth.ts"
+    },
+    {
+      "name": "RouteTruthState",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/admin-route-truth.ts"
     },
     {
       "name": "OwnerModeView",
@@ -1573,6 +3402,12 @@
       "file": "src/packages/contracts/domain-types/concierge-engine.ts"
     },
     {
+      "name": "BookingOption",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/concierge-engine.ts"
+    },
+    {
       "name": "CalendarEvent",
       "kind": "interface",
       "package": "contracts",
@@ -1580,6 +3415,12 @@
     },
     {
       "name": "ItineraryDay",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/concierge-engine.ts"
+    },
+    {
+      "name": "ItineraryItem",
       "kind": "interface",
       "package": "contracts",
       "file": "src/packages/contracts/domain-types/concierge-engine.ts"
@@ -1880,6 +3721,12 @@
     },
     {
       "name": "EntityType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/entity-graph.ts"
+    },
+    {
+      "name": "HouseholdRole",
       "kind": "type",
       "package": "contracts",
       "file": "src/packages/contracts/domain-types/entity-graph.ts"
@@ -2473,6 +4320,18 @@
       "file": "src/packages/contracts/domain-types/mission-control.ts"
     },
     {
+      "name": "LifecycleDiagnosticsView",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/mission-control.ts"
+    },
+    {
+      "name": "DegradedLifecycleState",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/mission-control.ts"
+    },
+    {
       "name": "SystemHealthStatus",
       "kind": "type",
       "package": "contracts",
@@ -2534,6 +4393,12 @@
     },
     {
       "name": "ProofChain",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/os-unified.ts"
+    },
+    {
+      "name": "TrustState",
       "kind": "interface",
       "package": "contracts",
       "file": "src/packages/contracts/domain-types/os-unified.ts"
@@ -2723,6 +4588,54 @@
       "kind": "type",
       "package": "contracts",
       "file": "src/packages/contracts/domain-types/policy-depth.ts"
+    },
+    {
+      "name": "ReleaseRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/release-record.ts"
+    },
+    {
+      "name": "ReleasePromotionEvent",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/release-record.ts"
+    },
+    {
+      "name": "ReleaseRollbackEvent",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/release-record.ts"
+    },
+    {
+      "name": "ReleaseEvidenceChain",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/release-record.ts"
+    },
+    {
+      "name": "ReleaseChannel",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/release-record.ts"
+    },
+    {
+      "name": "ReleaseRing",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/release-record.ts"
+    },
+    {
+      "name": "ReleaseStatus",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/release-record.ts"
+    },
+    {
+      "name": "RollbackReason",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/release-record.ts"
     },
     {
       "name": "ReplayPacket",
@@ -3031,6 +4944,36 @@
       "file": "src/packages/contracts/domain-types/trust-state.ts"
     },
     {
+      "name": "VmwareImportSmokeManifest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/vmware-evidence.ts"
+    },
+    {
+      "name": "VmwareEvidenceGate",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/vmware-evidence.ts"
+    },
+    {
+      "name": "ApplianceLifecycleRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/vmware-evidence.ts"
+    },
+    {
+      "name": "ApplianceLifecycleStage",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/vmware-evidence.ts"
+    },
+    {
+      "name": "ImportSmokeResult",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/domain-types/vmware-evidence.ts"
+    },
+    {
       "name": "ExceptionRecord",
       "kind": "interface",
       "package": "contracts",
@@ -3217,6 +5160,204 @@
       "file": "src/packages/contracts/graph/session-resume-token.ts"
     },
     {
+      "name": "EntityScope",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/index.ts"
+    },
+    {
+      "name": "ActionRisk",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/kernel/action-envelope.ts"
+    },
+    {
+      "name": "ActionIntent",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/kernel/action-envelope.ts"
+    },
+    {
+      "name": "ActionApproval",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/kernel/action-envelope.ts"
+    },
+    {
+      "name": "ActionExecution",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/kernel/action-envelope.ts"
+    },
+    {
+      "name": "ActionEvidence",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/kernel/action-envelope.ts"
+    },
+    {
+      "name": "ActionEnvelope",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/kernel/action-envelope.ts"
+    },
+    {
+      "name": "KernelExecutionMode",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/kernel/action-envelope.ts"
+    },
+    {
+      "name": "ActionSource",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/kernel/action-envelope.ts"
+    },
+    {
+      "name": "ActorType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/kernel/action-envelope.ts"
+    },
+    {
+      "name": "SideEffectClass",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/kernel/action-envelope.ts"
+    },
+    {
+      "name": "ApprovalTier",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/kernel/action-envelope.ts"
+    },
+    {
+      "name": "createActionEnvelope",
+      "kind": "function",
+      "package": "contracts",
+      "file": "src/packages/contracts/kernel/action-envelope.ts"
+    },
+    {
+      "name": "validateActionEnvelope",
+      "kind": "function",
+      "package": "contracts",
+      "file": "src/packages/contracts/kernel/action-envelope.ts"
+    },
+    {
+      "name": "mapKernelModeToExecutor",
+      "kind": "function",
+      "package": "contracts",
+      "file": "src/packages/contracts/kernel/action-envelope.ts"
+    },
+    {
+      "name": "ActionSpec",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/kernel/action-plan.ts"
+    },
+    {
+      "name": "ActionPlan",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/kernel/action-plan.ts"
+    },
+    {
+      "name": "createSingleStepPlan",
+      "kind": "function",
+      "package": "contracts",
+      "file": "src/packages/contracts/kernel/action-plan.ts"
+    },
+    {
+      "name": "EvidenceReference",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/kernel/evidence-pack.ts"
+    },
+    {
+      "name": "EvidencePack",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/kernel/evidence-pack.ts"
+    },
+    {
+      "name": "KernelEvidenceType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/kernel/evidence-pack.ts"
+    },
+    {
+      "name": "computeAggregateConfidence",
+      "kind": "function",
+      "package": "contracts",
+      "file": "src/packages/contracts/kernel/evidence-pack.ts"
+    },
+    {
+      "name": "computeAggregateTrust",
+      "kind": "function",
+      "package": "contracts",
+      "file": "src/packages/contracts/kernel/evidence-pack.ts"
+    },
+    {
+      "name": "NegativeReceipt",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/kernel/negative-receipt.ts"
+    },
+    {
+      "name": "NegativeReceiptReason",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/kernel/negative-receipt.ts"
+    },
+    {
+      "name": "createNegativeReceipt",
+      "kind": "function",
+      "package": "contracts",
+      "file": "src/packages/contracts/kernel/negative-receipt.ts"
+    },
+    {
+      "name": "ReasoningStep",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/kernel/reasoning-trace.ts"
+    },
+    {
+      "name": "ReasoningTrace",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/kernel/reasoning-trace.ts"
+    },
+    {
+      "name": "ReasoningStepType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/kernel/reasoning-trace.ts"
+    },
+    {
+      "name": "createReasoningTrace",
+      "kind": "function",
+      "package": "contracts",
+      "file": "src/packages/contracts/kernel/reasoning-trace.ts"
+    },
+    {
+      "name": "addReasoningStep",
+      "kind": "function",
+      "package": "contracts",
+      "file": "src/packages/contracts/kernel/reasoning-trace.ts"
+    },
+    {
+      "name": "KernelReplayPacket",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/kernel/replay-packet.ts"
+    },
+    {
+      "name": "detectOutputDrift",
+      "kind": "function",
+      "package": "contracts",
+      "file": "src/packages/contracts/kernel/replay-packet.ts"
+    },
+    {
       "name": "MemoryGovernanceRule",
       "kind": "interface",
       "package": "contracts",
@@ -3224,6 +5365,18 @@
     },
     {
       "name": "MemoryCorrectionRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/memory/memory-governance.ts"
+    },
+    {
+      "name": "MemoryForgetRequest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/memory/memory-governance.ts"
+    },
+    {
+      "name": "MemoryGovernanceConfig",
       "kind": "interface",
       "package": "contracts",
       "file": "src/packages/contracts/memory/memory-governance.ts"
@@ -3343,6 +5496,1404 @@
       "file": "src/packages/contracts/memory/no-hallucination/truth-boundary.ts"
     },
     {
+      "name": "NavigationGrammar",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/adapter-contract.ts"
+    },
+    {
+      "name": "InteractionGrammar",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/adapter-contract.ts"
+    },
+    {
+      "name": "NotificationGrammar",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/adapter-contract.ts"
+    },
+    {
+      "name": "TrustPresentation",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/adapter-contract.ts"
+    },
+    {
+      "name": "ReceiptPresentation",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/adapter-contract.ts"
+    },
+    {
+      "name": "SurfaceAdapterRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/adapter-contract.ts"
+    },
+    {
+      "name": "AndroidProviderFamilyRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/android-ecosystem-contract.ts"
+    },
+    {
+      "name": "AndroidDeviceRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/android-ecosystem-contract.ts"
+    },
+    {
+      "name": "WearOSCapabilityRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/android-ecosystem-contract.ts"
+    },
+    {
+      "name": "WearOSGrammar",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/android-ecosystem-contract.ts"
+    },
+    {
+      "name": "AndroidPushRouteRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/android-ecosystem-contract.ts"
+    },
+    {
+      "name": "AndroidTrustRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/android-ecosystem-contract.ts"
+    },
+    {
+      "name": "AndroidHealthConsentRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/android-ecosystem-contract.ts"
+    },
+    {
+      "name": "AndroidLaunchReadinessRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/android-ecosystem-contract.ts"
+    },
+    {
+      "name": "AndroidMobileShellGrammar",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/android-ecosystem-contract.ts"
+    },
+    {
+      "name": "AndroidEcosystemStrategy",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/android-ecosystem-contract.ts"
+    },
+    {
+      "name": "AndroidSurfaceKey",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/android-ecosystem-contract.ts"
+    },
+    {
+      "name": "AndroidPushChannel",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/android-ecosystem-contract.ts"
+    },
+    {
+      "name": "AndroidTrustClass",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/android-ecosystem-contract.ts"
+    },
+    {
+      "name": "HealthConnectSignalType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/android-ecosystem-contract.ts"
+    },
+    {
+      "name": "AndroidLaunchTarget",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/android-ecosystem-contract.ts"
+    },
+    {
+      "name": "AndroidCapabilityKey",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/android-ecosystem-contract.ts"
+    },
+    {
+      "name": "AppleProviderFamilyRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/apple-ecosystem-contract.ts"
+    },
+    {
+      "name": "AppleIdentityLinkRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/apple-ecosystem-contract.ts"
+    },
+    {
+      "name": "AppleDeviceRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/apple-ecosystem-contract.ts"
+    },
+    {
+      "name": "AppleWatchCapabilityRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/apple-ecosystem-contract.ts"
+    },
+    {
+      "name": "AppleWatchGrammar",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/apple-ecosystem-contract.ts"
+    },
+    {
+      "name": "ApplePushRouteRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/apple-ecosystem-contract.ts"
+    },
+    {
+      "name": "AppleTrustRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/apple-ecosystem-contract.ts"
+    },
+    {
+      "name": "AppleHealthConsentRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/apple-ecosystem-contract.ts"
+    },
+    {
+      "name": "AppleReadinessIntegrationRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/apple-ecosystem-contract.ts"
+    },
+    {
+      "name": "AppleContinuityRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/apple-ecosystem-contract.ts"
+    },
+    {
+      "name": "AppleLaunchReadinessRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/apple-ecosystem-contract.ts"
+    },
+    {
+      "name": "AppleMobileShellGrammar",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/apple-ecosystem-contract.ts"
+    },
+    {
+      "name": "AppleEcosystemStrategy",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/apple-ecosystem-contract.ts"
+    },
+    {
+      "name": "AppleSurfaceKey",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/apple-ecosystem-contract.ts"
+    },
+    {
+      "name": "AppleIdentityProvider",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/apple-ecosystem-contract.ts"
+    },
+    {
+      "name": "ApplePushChannel",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/apple-ecosystem-contract.ts"
+    },
+    {
+      "name": "AppleTrustClass",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/apple-ecosystem-contract.ts"
+    },
+    {
+      "name": "AppleHealthSignalType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/apple-ecosystem-contract.ts"
+    },
+    {
+      "name": "AppleLaunchTarget",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/apple-ecosystem-contract.ts"
+    },
+    {
+      "name": "AppleCapabilityKey",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/apple-ecosystem-contract.ts"
+    },
+    {
+      "name": "CapabilityDefinition",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/capability-contract.ts"
+    },
+    {
+      "name": "CapabilitySurfaceBinding",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/capability-contract.ts"
+    },
+    {
+      "name": "CapabilityPortabilityRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/capability-contract.ts"
+    },
+    {
+      "name": "CapabilityInvocation",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/capability-contract.ts"
+    },
+    {
+      "name": "CapabilityResult",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/capability-contract.ts"
+    },
+    {
+      "name": "ActionType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/capability-contract.ts"
+    },
+    {
+      "name": "RiskTier",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/capability-contract.ts"
+    },
+    {
+      "name": "PortabilityClass",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/capability-contract.ts"
+    },
+    {
+      "name": "ValidationResult",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/capability-validator.ts"
+    },
+    {
+      "name": "validateCapabilityInvocation",
+      "kind": "function",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/capability-validator.ts"
+    },
+    {
+      "name": "validateCapabilityResult",
+      "kind": "function",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/capability-validator.ts"
+    },
+    {
+      "name": "validateCapabilityDefinition",
+      "kind": "function",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/capability-validator.ts"
+    },
+    {
+      "name": "assertValidInvocation",
+      "kind": "function",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/capability-validator.ts"
+    },
+    {
+      "name": "assertValidResult",
+      "kind": "function",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/capability-validator.ts"
+    },
+    {
+      "name": "DeviceFamilyRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/device-family-contract.ts"
+    },
+    {
+      "name": "ConnectedDeviceRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/device-family-contract.ts"
+    },
+    {
+      "name": "DeviceTrustRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/device-family-contract.ts"
+    },
+    {
+      "name": "PresenceStateRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/device-family-contract.ts"
+    },
+    {
+      "name": "HandoffSessionRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/device-family-contract.ts"
+    },
+    {
+      "name": "SurfaceStrategyEntry",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/device-family-contract.ts"
+    },
+    {
+      "name": "DeviceRoadmapPhase",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/device-family-contract.ts"
+    },
+    {
+      "name": "DeviceFamilyKey",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/device-family-contract.ts"
+    },
+    {
+      "name": "InteractionClass",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/device-family-contract.ts"
+    },
+    {
+      "name": "SensorClass",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/device-family-contract.ts"
+    },
+    {
+      "name": "NativeRequirementLevel",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/device-family-contract.ts"
+    },
+    {
+      "name": "DeviceRoleInOS",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/device-family-contract.ts"
+    },
+    {
+      "name": "ConnectionState",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/device-family-contract.ts"
+    },
+    {
+      "name": "TrustClass",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/device-family-contract.ts"
+    },
+    {
+      "name": "WearablePrimaryRole",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/device-family-contract.ts"
+    },
+    {
+      "name": "SurfacePrimacy",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/device-family-contract.ts"
+    },
+    {
+      "name": "RoadmapPhaseKey",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/device-family-contract.ts"
+    },
+    {
+      "name": "SURFACE_STRATEGY_MATRIX",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/device-family-contract.ts"
+    },
+    {
+      "name": "DEVICE_ROADMAP",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/device-family-contract.ts"
+    },
+    {
+      "name": "EcosystemEnum",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/ecosystem-validators.ts"
+    },
+    {
+      "name": "AppleSurfaceSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/ecosystem-validators.ts"
+    },
+    {
+      "name": "AndroidSurfaceSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/ecosystem-validators.ts"
+    },
+    {
+      "name": "SurfaceSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/ecosystem-validators.ts"
+    },
+    {
+      "name": "ApplePushChannelSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/ecosystem-validators.ts"
+    },
+    {
+      "name": "AndroidPushChannelSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/ecosystem-validators.ts"
+    },
+    {
+      "name": "AppleTrustClassSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/ecosystem-validators.ts"
+    },
+    {
+      "name": "AndroidTrustClassSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/ecosystem-validators.ts"
+    },
+    {
+      "name": "AppleHealthSignalSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/ecosystem-validators.ts"
+    },
+    {
+      "name": "AndroidHealthSignalSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/ecosystem-validators.ts"
+    },
+    {
+      "name": "RiskTierCeilingSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/ecosystem-validators.ts"
+    },
+    {
+      "name": "WearableRiskTierSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/ecosystem-validators.ts"
+    },
+    {
+      "name": "UrgencyFilterSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/ecosystem-validators.ts"
+    },
+    {
+      "name": "LaunchStageSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/ecosystem-validators.ts"
+    },
+    {
+      "name": "ContinuityStateSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/ecosystem-validators.ts"
+    },
+    {
+      "name": "EcosystemDeviceSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/ecosystem-validators.ts"
+    },
+    {
+      "name": "EcosystemTrustRecordSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/ecosystem-validators.ts"
+    },
+    {
+      "name": "EcosystemHealthConsentSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/ecosystem-validators.ts"
+    },
+    {
+      "name": "EcosystemPushRouteSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/ecosystem-validators.ts"
+    },
+    {
+      "name": "EcosystemWearableConfigSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/ecosystem-validators.ts"
+    },
+    {
+      "name": "EcosystemLaunchReadinessSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/ecosystem-validators.ts"
+    },
+    {
+      "name": "EcosystemContinuityEventSchema",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/ecosystem-validators.ts"
+    },
+    {
+      "name": "validateAppleDevice",
+      "kind": "function",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/ecosystem-validators.ts"
+    },
+    {
+      "name": "validateAndroidDevice",
+      "kind": "function",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/ecosystem-validators.ts"
+    },
+    {
+      "name": "validateTrustEscalation",
+      "kind": "function",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/ecosystem-validators.ts"
+    },
+    {
+      "name": "ExperienceGrammarRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/experience-grammar.ts"
+    },
+    {
+      "name": "GrammarValue",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/experience-grammar.ts"
+    },
+    {
+      "name": "SurfaceRenderingRule",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/experience-grammar.ts"
+    },
+    {
+      "name": "GrammarType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/experience-grammar.ts"
+    },
+    {
+      "name": "TRUST_STATE_GRAMMAR",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/experience-grammar.ts"
+    },
+    {
+      "name": "WORKFLOW_STATE_GRAMMAR",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/experience-grammar.ts"
+    },
+    {
+      "name": "ACTION_STATE_GRAMMAR",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/experience-grammar.ts"
+    },
+    {
+      "name": "RECEIPT_PROOF_GRAMMAR",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/experience-grammar.ts"
+    },
+    {
+      "name": "COMMAND_GRAMMAR",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/experience-grammar.ts"
+    },
+    {
+      "name": "BOARDROOM_GRAMMAR",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/experience-grammar.ts"
+    },
+    {
+      "name": "NOTIFICATION_URGENCY_GRAMMAR",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/experience-grammar.ts"
+    },
+    {
+      "name": "OPPORTUNITY_SCORING_GRAMMAR",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/experience-grammar.ts"
+    },
+    {
+      "name": "DEGRADED_STATE_GRAMMAR",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/experience-grammar.ts"
+    },
+    {
+      "name": "REFUSAL_GRAMMAR",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/experience-grammar.ts"
+    },
+    {
+      "name": "ALL_GRAMMARS",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/experience-grammar.ts"
+    },
+    {
+      "name": "SignalProviderRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/health-signal-intelligence-contract.ts"
+    },
+    {
+      "name": "SignalHealthConsentRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/health-signal-intelligence-contract.ts"
+    },
+    {
+      "name": "RawSignalRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/health-signal-intelligence-contract.ts"
+    },
+    {
+      "name": "NormalizedSignalRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/health-signal-intelligence-contract.ts"
+    },
+    {
+      "name": "SignalReadinessStateRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/health-signal-intelligence-contract.ts"
+    },
+    {
+      "name": "InterruptionPostureRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/health-signal-intelligence-contract.ts"
+    },
+    {
+      "name": "SignalInfluenceRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/health-signal-intelligence-contract.ts"
+    },
+    {
+      "name": "VisibilityPolicyRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/health-signal-intelligence-contract.ts"
+    },
+    {
+      "name": "SyntheticSignalScenarioRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/health-signal-intelligence-contract.ts"
+    },
+    {
+      "name": "SignalLaunchReadinessRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/health-signal-intelligence-contract.ts"
+    },
+    {
+      "name": "ReadinessDerivationConfig",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/health-signal-intelligence-contract.ts"
+    },
+    {
+      "name": "AssistantTimingConfig",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/health-signal-intelligence-contract.ts"
+    },
+    {
+      "name": "SignalProviderKey",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/health-signal-intelligence-contract.ts"
+    },
+    {
+      "name": "SignalCategory",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/health-signal-intelligence-contract.ts"
+    },
+    {
+      "name": "NormalizedState",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/health-signal-intelligence-contract.ts"
+    },
+    {
+      "name": "SignalReadinessLevel",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/health-signal-intelligence-contract.ts"
+    },
+    {
+      "name": "VisibilityScope",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/health-signal-intelligence-contract.ts"
+    },
+    {
+      "name": "SignalLaunchTarget",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/health-signal-intelligence-contract.ts"
+    },
+    {
+      "name": "NativeShellRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/native-shell-strategy-contract.ts"
+    },
+    {
+      "name": "CapabilitySurfaceFitRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/native-shell-strategy-contract.ts"
+    },
+    {
+      "name": "MobileActionClassRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/native-shell-strategy-contract.ts"
+    },
+    {
+      "name": "DeviceSecureActionRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/native-shell-strategy-contract.ts"
+    },
+    {
+      "name": "NativeContinuityRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/native-shell-strategy-contract.ts"
+    },
+    {
+      "name": "PushRouteBindingRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/native-shell-strategy-contract.ts"
+    },
+    {
+      "name": "MobileLaunchReadinessRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/native-shell-strategy-contract.ts"
+    },
+    {
+      "name": "NativeInteractionGrammar",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/native-shell-strategy-contract.ts"
+    },
+    {
+      "name": "NativeShellStrategy",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/native-shell-strategy-contract.ts"
+    },
+    {
+      "name": "NativeShellPlatform",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/native-shell-strategy-contract.ts"
+    },
+    {
+      "name": "CapabilitySurfaceFit",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/native-shell-strategy-contract.ts"
+    },
+    {
+      "name": "MobileActionClass",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/native-shell-strategy-contract.ts"
+    },
+    {
+      "name": "ShellLaunchStage",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/native-shell-strategy-contract.ts"
+    },
+    {
+      "name": "NativeShellLaunchTarget",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/native-shell-strategy-contract.ts"
+    },
+    {
+      "name": "AttentionRouteRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/notification-calm-assistant-contract.ts"
+    },
+    {
+      "name": "NotificationGrammarRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/notification-calm-assistant-contract.ts"
+    },
+    {
+      "name": "FatigueProfileRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/notification-calm-assistant-contract.ts"
+    },
+    {
+      "name": "ProactiveInterventionRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/notification-calm-assistant-contract.ts"
+    },
+    {
+      "name": "AssistantRoleRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/notification-calm-assistant-contract.ts"
+    },
+    {
+      "name": "DeliveryDecisionRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/notification-calm-assistant-contract.ts"
+    },
+    {
+      "name": "InterruptionHistoryRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/notification-calm-assistant-contract.ts"
+    },
+    {
+      "name": "QueueItemRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/notification-calm-assistant-contract.ts"
+    },
+    {
+      "name": "AssistantLaunchReadinessRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/notification-calm-assistant-contract.ts"
+    },
+    {
+      "name": "AttentionRouterInput",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/notification-calm-assistant-contract.ts"
+    },
+    {
+      "name": "QueueInterruptStrategy",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/notification-calm-assistant-contract.ts"
+    },
+    {
+      "name": "QuickActionDefinition",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/notification-calm-assistant-contract.ts"
+    },
+    {
+      "name": "UrgencyClass",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/notification-calm-assistant-contract.ts"
+    },
+    {
+      "name": "DeliveryDecisionType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/notification-calm-assistant-contract.ts"
+    },
+    {
+      "name": "AssistantRoleKey",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/notification-calm-assistant-contract.ts"
+    },
+    {
+      "name": "ToneMode",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/notification-calm-assistant-contract.ts"
+    },
+    {
+      "name": "NotificationLaunchTarget",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/notification-calm-assistant-contract.ts"
+    },
+    {
+      "name": "ShellCapability",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/shell-contract.ts"
+    },
+    {
+      "name": "ShellManifest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/shell-contract.ts"
+    },
+    {
+      "name": "SovereignLaw",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/shell-contract.ts"
+    },
+    {
+      "name": "SOVEREIGN_LAWS",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/shell-contract.ts"
+    },
+    {
+      "name": "WEB_SHELL_MANIFEST",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/shell-contract.ts"
+    },
+    {
+      "name": "SurfaceTypeRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/surface-types.ts"
+    },
+    {
+      "name": "ShellImplementationRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/surface-types.ts"
+    },
+    {
+      "name": "SurfaceReadinessRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/surface-types.ts"
+    },
+    {
+      "name": "SurfaceConstraintRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/surface-types.ts"
+    },
+    {
+      "name": "SurfaceLaunchProfile",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/surface-types.ts"
+    },
+    {
+      "name": "SurfacePerformanceProfile",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/surface-types.ts"
+    },
+    {
+      "name": "SurfaceKey",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/surface-types.ts"
+    },
+    {
+      "name": "SurfaceClass",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/surface-types.ts"
+    },
+    {
+      "name": "ReadinessStage",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/surface-types.ts"
+    },
+    {
+      "name": "ShellType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/surface-types.ts"
+    },
+    {
+      "name": "InputMode",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/surface-types.ts"
+    },
+    {
+      "name": "OutputMode",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/surface-types.ts"
+    },
+    {
+      "name": "WearableProviderRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/wearable-adapter-contract.ts"
+    },
+    {
+      "name": "WearableSignalRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/wearable-adapter-contract.ts"
+    },
+    {
+      "name": "ReadinessStateRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/wearable-adapter-contract.ts"
+    },
+    {
+      "name": "HealthSignalConsentRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/wearable-adapter-contract.ts"
+    },
+    {
+      "name": "WatchCardGrammar",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/wearable-adapter-contract.ts"
+    },
+    {
+      "name": "WatchNotificationRouter",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/wearable-adapter-contract.ts"
+    },
+    {
+      "name": "WatchActionCapability",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/wearable-adapter-contract.ts"
+    },
+    {
+      "name": "WatchSurfaceAdapter",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/wearable-adapter-contract.ts"
+    },
+    {
+      "name": "RingSignalConnector",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/wearable-adapter-contract.ts"
+    },
+    {
+      "name": "SignalNormalizationLayer",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/wearable-adapter-contract.ts"
+    },
+    {
+      "name": "RoutingInfluenceRule",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/wearable-adapter-contract.ts"
+    },
+    {
+      "name": "MicroApprovalPolicyRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/wearable-adapter-contract.ts"
+    },
+    {
+      "name": "DeviceApprovalReceiptRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/wearable-adapter-contract.ts"
+    },
+    {
+      "name": "AmbientNotificationRouteRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/wearable-adapter-contract.ts"
+    },
+    {
+      "name": "UnifiedUserDeviceGraphRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/wearable-adapter-contract.ts"
+    },
+    {
+      "name": "AmbientLaunchReadinessRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/wearable-adapter-contract.ts"
+    },
+    {
+      "name": "WearableAuthMethod",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/wearable-adapter-contract.ts"
+    },
+    {
+      "name": "ApiAvailabilityClass",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/wearable-adapter-contract.ts"
+    },
+    {
+      "name": "WearableLaunchStage",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/wearable-adapter-contract.ts"
+    },
+    {
+      "name": "WearableSignalType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/wearable-adapter-contract.ts"
+    },
+    {
+      "name": "ReadinessLevel",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/wearable-adapter-contract.ts"
+    },
+    {
+      "name": "InterruptionSensitivity",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/wearable-adapter-contract.ts"
+    },
+    {
+      "name": "GraphNodeType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/wearable-adapter-contract.ts"
+    },
+    {
+      "name": "GraphEdgeType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/wearable-adapter-contract.ts"
+    },
+    {
+      "name": "LaunchHonestyClass",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/msa/wearable-adapter-contract.ts"
+    },
+    {
+      "name": "DesktopHostCapabilities",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/native/desktop-host-runtime.ts"
+    },
+    {
+      "name": "FileSystemCapability",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/native/desktop-host-runtime.ts"
+    },
+    {
+      "name": "BiometricCapability",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/native/desktop-host-runtime.ts"
+    },
+    {
+      "name": "NotificationCapability",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/native/desktop-host-runtime.ts"
+    },
+    {
+      "name": "TrayCapability",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/native/desktop-host-runtime.ts"
+    },
+    {
+      "name": "AutoUpdateCapability",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/native/desktop-host-runtime.ts"
+    },
+    {
+      "name": "DeepLinkCapability",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/native/desktop-host-runtime.ts"
+    },
+    {
+      "name": "HardwareProbeCapability",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/native/desktop-host-runtime.ts"
+    },
+    {
+      "name": "ClipboardCapability",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/native/desktop-host-runtime.ts"
+    },
+    {
+      "name": "DesktopProofRelay",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/native/desktop-host-runtime.ts"
+    },
+    {
+      "name": "DesktopDegradedMode",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/native/desktop-host-runtime.ts"
+    },
+    {
+      "name": "DesktopFallback",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/native/desktop-host-runtime.ts"
+    },
+    {
+      "name": "DesktopHostConfig",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/native/desktop-host-runtime.ts"
+    },
+    {
+      "name": "IPCBoundaryRule",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/native/desktop-host-runtime.ts"
+    },
+    {
+      "name": "ProofRelayMode",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/native/desktop-host-runtime.ts"
+    },
+    {
+      "name": "DesktopDegradedReason",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/native/desktop-host-runtime.ts"
+    },
+    {
+      "name": "HostOwnedDomain",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/native/desktop-host-runtime.ts"
+    },
+    {
+      "name": "RendererOwnedDomain",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/native/desktop-host-runtime.ts"
+    },
+    {
+      "name": "SystemInfo",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/native/electron-ipc.ts"
+    },
+    {
+      "name": "DeepLinkPayload",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/native/electron-ipc.ts"
+    },
+    {
+      "name": "UpdateStatus",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/native/electron-ipc.ts"
+    },
+    {
+      "name": "TrayAction",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/native/electron-ipc.ts"
+    },
+    {
+      "name": "WindowControlAction",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/native/electron-ipc.ts"
+    },
+    {
+      "name": "ElectronBridgeAPI",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/native/electron-ipc.ts"
+    },
+    {
+      "name": "NativeCapabilityBridge",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/native/electron-ipc.ts"
+    },
+    {
+      "name": "DesktopHostConfigIPC",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/native/electron-ipc.ts"
+    },
+    {
+      "name": "ElectronIPCChannel",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/native/electron-ipc.ts"
+    },
+    {
       "name": "EvidenceItem",
       "kind": "interface",
       "package": "contracts",
@@ -3399,6 +6950,12 @@
     {
       "name": "ProofMetadata",
       "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/proof/proof-types.ts"
+    },
+    {
+      "name": "ProofType",
+      "kind": "type",
       "package": "contracts",
       "file": "src/packages/contracts/proof/proof-types.ts"
     },
@@ -3577,6 +7134,396 @@
       "file": "src/packages/contracts/runtime/digital-twin-runtime.ts"
     },
     {
+      "name": "FirstBootEnvelope",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/first-boot-provisioning.ts"
+    },
+    {
+      "name": "DeferredSetupItem",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/first-boot-provisioning.ts"
+    },
+    {
+      "name": "FirstBootNetworkContract",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/first-boot-provisioning.ts"
+    },
+    {
+      "name": "DiscoveredNetwork",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/first-boot-provisioning.ts"
+    },
+    {
+      "name": "ConnectivityProof",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/first-boot-provisioning.ts"
+    },
+    {
+      "name": "FirstBootTrustContract",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/first-boot-provisioning.ts"
+    },
+    {
+      "name": "BootChainAttestation",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/first-boot-provisioning.ts"
+    },
+    {
+      "name": "TrustBaseline",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/first-boot-provisioning.ts"
+    },
+    {
+      "name": "FirstBootSecretsContract",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/first-boot-provisioning.ts"
+    },
+    {
+      "name": "KeyGenerationRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/first-boot-provisioning.ts"
+    },
+    {
+      "name": "DerivedKeyInfo",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/first-boot-provisioning.ts"
+    },
+    {
+      "name": "EntropySource",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/first-boot-provisioning.ts"
+    },
+    {
+      "name": "RecoveryKeyRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/first-boot-provisioning.ts"
+    },
+    {
+      "name": "EncryptionScope",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/first-boot-provisioning.ts"
+    },
+    {
+      "name": "FirstBootRuntimeBootstrap",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/first-boot-provisioning.ts"
+    },
+    {
+      "name": "ServiceStartupEntry",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/first-boot-provisioning.ts"
+    },
+    {
+      "name": "CapabilityFailure",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/first-boot-provisioning.ts"
+    },
+    {
+      "name": "FirstBootPhase",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/first-boot-provisioning.ts"
+    },
+    {
+      "name": "FirstBootOutcome",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/first-boot-provisioning.ts"
+    },
+    {
+      "name": "NetworkDiscoveryMethod",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/first-boot-provisioning.ts"
+    },
+    {
+      "name": "CaptivePortalState",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/first-boot-provisioning.ts"
+    },
+    {
+      "name": "TpmStatus",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/first-boot-provisioning.ts"
+    },
+    {
+      "name": "SecureBootStatus",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/first-boot-provisioning.ts"
+    },
+    {
+      "name": "VaultState",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/first-boot-provisioning.ts"
+    },
+    {
+      "name": "RuntimeBootstrapState",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/first-boot-provisioning.ts"
+    },
+    {
+      "name": "BootTargetProgressionEntry",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/host-supervision.ts"
+    },
+    {
+      "name": "BootProgressionState",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/host-supervision.ts"
+    },
+    {
+      "name": "RestartBackoffState",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/host-supervision.ts"
+    },
+    {
+      "name": "RetryBudgetCheckResult",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/host-supervision.ts"
+    },
+    {
+      "name": "QuarantineEntryDecision",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/host-supervision.ts"
+    },
+    {
+      "name": "QuarantineExitDecision",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/host-supervision.ts"
+    },
+    {
+      "name": "QuarantineState",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/host-supervision.ts"
+    },
+    {
+      "name": "DependencyPressureReading",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/host-supervision.ts"
+    },
+    {
+      "name": "DependencyPressureState",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/host-supervision.ts"
+    },
+    {
+      "name": "CrashEvent",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/host-supervision.ts"
+    },
+    {
+      "name": "CrashLoopDetectionState",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/host-supervision.ts"
+    },
+    {
+      "name": "OperatorInterventionThreshold",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/host-supervision.ts"
+    },
+    {
+      "name": "LifecycleGovernanceEvent",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/host-supervision.ts"
+    },
+    {
+      "name": "HostSupervisionState",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/host-supervision.ts"
+    },
+    {
+      "name": "BootProgressionStatus",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/host-supervision.ts"
+    },
+    {
+      "name": "LifecycleGovernanceEventType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/host-supervision.ts"
+    },
+    {
+      "name": "computeNextDelay",
+      "kind": "function",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/host-supervision.ts"
+    },
+    {
+      "name": "checkRetryBudget",
+      "kind": "function",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/host-supervision.ts"
+    },
+    {
+      "name": "evaluatePressure",
+      "kind": "function",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/host-supervision.ts"
+    },
+    {
+      "name": "detectCrashLoop",
+      "kind": "function",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/host-supervision.ts"
+    },
+    {
+      "name": "InstallerProfileBase",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/install-recovery.ts"
+    },
+    {
+      "name": "ApplianceInstallerProfile",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/install-recovery.ts"
+    },
+    {
+      "name": "ISOInstallerProfile",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/install-recovery.ts"
+    },
+    {
+      "name": "PartitionScheme",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/install-recovery.ts"
+    },
+    {
+      "name": "PreflightGate",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/install-recovery.ts"
+    },
+    {
+      "name": "RollbackInvariant",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/install-recovery.ts"
+    },
+    {
+      "name": "PostInstallCheck",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/install-recovery.ts"
+    },
+    {
+      "name": "PostUpdateOutcome",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/install-recovery.ts"
+    },
+    {
+      "name": "SecureBootAssumption",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/install-recovery.ts"
+    },
+    {
+      "name": "FirstBootHandoffContract",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/install-recovery.ts"
+    },
+    {
+      "name": "RecoveryPrerequisite",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/install-recovery.ts"
+    },
+    {
+      "name": "RecoveryOutcomeManifest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/install-recovery.ts"
+    },
+    {
+      "name": "RecoveryFailure",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/install-recovery.ts"
+    },
+    {
+      "name": "DeterministicRecoveryCheck",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/install-recovery.ts"
+    },
+    {
+      "name": "InstallerLane",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/install-recovery.ts"
+    },
+    {
+      "name": "UpdateChannel",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/install-recovery.ts"
+    },
+    {
+      "name": "RecoveryType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/install-recovery.ts"
+    },
+    {
+      "name": "PreflightGateType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/install-recovery.ts"
+    },
+    {
+      "name": "HardwareSupportTier",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/install-recovery.ts"
+    },
+    {
+      "name": "DETERMINISTIC_RECOVERY_CHECKS",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/install-recovery.ts"
+    },
+    {
       "name": "ConnectorState",
       "kind": "interface",
       "package": "contracts",
@@ -3593,6 +7540,228 @@
       "kind": "type",
       "package": "contracts",
       "file": "src/packages/contracts/runtime/integration-concierge-runtime.ts"
+    },
+    {
+      "name": "BootTargetPolicy",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/lifecycle-authority.ts"
+    },
+    {
+      "name": "RestartStrategy",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/lifecycle-authority.ts"
+    },
+    {
+      "name": "BackoffPolicy",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/lifecycle-authority.ts"
+    },
+    {
+      "name": "RetryBudget",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/lifecycle-authority.ts"
+    },
+    {
+      "name": "CumulativeRetryState",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/lifecycle-authority.ts"
+    },
+    {
+      "name": "QuarantineBehavior",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/lifecycle-authority.ts"
+    },
+    {
+      "name": "CrashLoopTrigger",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/lifecycle-authority.ts"
+    },
+    {
+      "name": "DependencyPressureTrigger",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/lifecycle-authority.ts"
+    },
+    {
+      "name": "ReplayPacketRequirement",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/lifecycle-authority.ts"
+    },
+    {
+      "name": "LifecycleTransitionRecord",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/lifecycle-authority.ts"
+    },
+    {
+      "name": "RestartDecision",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/lifecycle-authority.ts"
+    },
+    {
+      "name": "QuarantineAction",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/lifecycle-authority.ts"
+    },
+    {
+      "name": "LifecycleProofReceipt",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/lifecycle-authority.ts"
+    },
+    {
+      "name": "BootTarget",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/lifecycle-authority.ts"
+    },
+    {
+      "name": "RestartReason",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/lifecycle-authority.ts"
+    },
+    {
+      "name": "RestartMode",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/lifecycle-authority.ts"
+    },
+    {
+      "name": "QuarantineReason",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/lifecycle-authority.ts"
+    },
+    {
+      "name": "QuarantineExitCondition",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/lifecycle-authority.ts"
+    },
+    {
+      "name": "CrashLoopEscalation",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/lifecycle-authority.ts"
+    },
+    {
+      "name": "DependencyPressureSource",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/lifecycle-authority.ts"
+    },
+    {
+      "name": "LifecycleState",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/lifecycle-authority.ts"
+    },
+    {
+      "name": "LifecycleReceiptType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/lifecycle-authority.ts"
+    },
+    {
+      "name": "LIFECYCLE_AUTHORITY",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/lifecycle-authority.ts"
+    },
+    {
+      "name": "BootCompletedPayload",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/lifecycle-receipts.ts"
+    },
+    {
+      "name": "RestartExecutedPayload",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/lifecycle-receipts.ts"
+    },
+    {
+      "name": "QuarantineEnteredPayload",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/lifecycle-receipts.ts"
+    },
+    {
+      "name": "QuarantineExitedPayload",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/lifecycle-receipts.ts"
+    },
+    {
+      "name": "RollbackDecidedPayload",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/lifecycle-receipts.ts"
+    },
+    {
+      "name": "RollbackExecutedPayload",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/lifecycle-receipts.ts"
+    },
+    {
+      "name": "RollbackVerifiedPayload",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/lifecycle-receipts.ts"
+    },
+    {
+      "name": "TypedLifecycleReceipt",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/lifecycle-receipts.ts"
+    },
+    {
+      "name": "LifecycleChainEntry",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/lifecycle-receipts.ts"
+    },
+    {
+      "name": "LifecycleChainState",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/lifecycle-receipts.ts"
+    },
+    {
+      "name": "LifecycleReplayPacket",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/lifecycle-receipts.ts"
+    },
+    {
+      "name": "LifecycleReceiptPayload",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/lifecycle-receipts.ts"
+    },
+    {
+      "name": "createLifecycleReceipt",
+      "kind": "function",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/lifecycle-receipts.ts"
+    },
+    {
+      "name": "OpportunityNode",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/opportunity-graph-runtime.ts"
     },
     {
       "name": "OpportunityEdge",
@@ -3625,6 +7794,36 @@
       "file": "src/packages/contracts/runtime/os-unification-runtime.ts"
     },
     {
+      "name": "ParityTestCase",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/parity-gates.ts"
+    },
+    {
+      "name": "ParityGateResult",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/parity-gates.ts"
+    },
+    {
+      "name": "ParityGateReport",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/parity-gates.ts"
+    },
+    {
+      "name": "ParityGateVerdict",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/parity-gates.ts"
+    },
+    {
+      "name": "PARITY_TEST_CASES",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/parity-gates.ts"
+    },
+    {
       "name": "RecoveredValueEntry",
       "kind": "interface",
       "package": "contracts",
@@ -3635,6 +7834,60 @@
       "kind": "interface",
       "package": "contracts",
       "file": "src/packages/contracts/runtime/recovered-value-runtime.ts"
+    },
+    {
+      "name": "BaselineMetricSnapshot",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/regression-comparison-runtime.ts"
+    },
+    {
+      "name": "RegressionBaseline",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/regression-comparison-runtime.ts"
+    },
+    {
+      "name": "RegressionComparisonResult",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/regression-comparison-runtime.ts"
+    },
+    {
+      "name": "RegressionReport",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/regression-comparison-runtime.ts"
+    },
+    {
+      "name": "RegressionThresholds",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/regression-comparison-runtime.ts"
+    },
+    {
+      "name": "RegressionDimension",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/regression-comparison-runtime.ts"
+    },
+    {
+      "name": "RegressionSeverity",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/regression-comparison-runtime.ts"
+    },
+    {
+      "name": "RegressionVerdict",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/regression-comparison-runtime.ts"
+    },
+    {
+      "name": "DEFAULT_REGRESSION_THRESHOLDS",
+      "kind": "const",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/regression-comparison-runtime.ts"
     },
     {
       "name": "ScenarioVariable",
@@ -3659,6 +7912,66 @@
       "kind": "type",
       "package": "contracts",
       "file": "src/packages/contracts/runtime/scenario-intelligence-runtime.ts"
+    },
+    {
+      "name": "SurfaceCapabilityEntry",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/surface-parity.ts"
+    },
+    {
+      "name": "SurfaceCapabilityMatrix",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/surface-parity.ts"
+    },
+    {
+      "name": "DegradedStateEntry",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/surface-parity.ts"
+    },
+    {
+      "name": "SurfaceDegradedStateMap",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/surface-parity.ts"
+    },
+    {
+      "name": "ProofStateEntry",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/surface-parity.ts"
+    },
+    {
+      "name": "SurfaceProofStateMap",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/surface-parity.ts"
+    },
+    {
+      "name": "ParityViolation",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/surface-parity.ts"
+    },
+    {
+      "name": "SurfaceParityReport",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/surface-parity.ts"
+    },
+    {
+      "name": "CapabilitySupportLevel",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/surface-parity.ts"
+    },
+    {
+      "name": "ParityViolationType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/surface-parity.ts"
     },
     {
       "name": "TrustedBootSequence",
@@ -3689,6 +8002,72 @@
       "kind": "type",
       "package": "contracts",
       "file": "src/packages/contracts/runtime/trusted-boot-runtime.ts"
+    },
+    {
+      "name": "UnifiedCommand",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/unified-surface-runtime.ts"
+    },
+    {
+      "name": "UnifiedProofRequirement",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/unified-surface-runtime.ts"
+    },
+    {
+      "name": "UnifiedApprovalRequirement",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/unified-surface-runtime.ts"
+    },
+    {
+      "name": "UnifiedDegradedSemantics",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/unified-surface-runtime.ts"
+    },
+    {
+      "name": "SurfaceRuntimeConfig",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/unified-surface-runtime.ts"
+    },
+    {
+      "name": "UnifiedCommandResult",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/unified-surface-runtime.ts"
+    },
+    {
+      "name": "SurfaceId",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/unified-surface-runtime.ts"
+    },
+    {
+      "name": "UnifiedApprovalMode",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/unified-surface-runtime.ts"
+    },
+    {
+      "name": "DegradedFallbackStrategy",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/unified-surface-runtime.ts"
+    },
+    {
+      "name": "DegradedReason",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/unified-surface-runtime.ts"
+    },
+    {
+      "name": "CommandResultStatus",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/runtime/unified-surface-runtime.ts"
     },
     {
       "name": "WorkspacePane",
@@ -3761,6 +8140,30 @@
       "kind": "interface",
       "package": "contracts",
       "file": "src/packages/contracts/specialized/diagnostic-bundle.ts"
+    },
+    {
+      "name": "GeneratedManifestEntry",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/generated-manifest-entry.ts"
+    },
+    {
+      "name": "GeneratedManifest",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/generated-manifest-entry.ts"
+    },
+    {
+      "name": "ManifestEntryType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/generated-manifest-entry.ts"
+    },
+    {
+      "name": "ManifestGenerationSource",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/generated-manifest-entry.ts"
     },
     {
       "name": "IntegrationReadinessItem",
@@ -3869,6 +8272,378 @@
       "kind": "interface",
       "package": "contracts",
       "file": "src/packages/contracts/specialized/reservations-and-calling/reservation-request-packet.ts"
+    },
+    {
+      "name": "CapabilityProfileFull",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "HardwareWarning",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "SecurityBaseline",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "OwnershipProfile",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "IdentityProfile",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "EnvironmentCandidate",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "RestoreProfile",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "RestoreItem",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "AccessProfile",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "PrivacyProfile",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "StarterProfile",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "WorldModelDomainState",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "WorldModel",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "UseModeProfile",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "TrustProfile",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "ApprovalRule",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "AdvisorActivation",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "AdvisorProfile",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "ConnectedService",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "ConnectionProfile",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "FirstWinOption",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "FirstWinProfile",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "ArrivalSummary",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "SetupDeferredItem",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "SetupError",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "OwnershipType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "AuthPath",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "RestoreAvailability",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "AccessMethodType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "RecoveryMethodType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "AwarenessLevel",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "SupportStyle",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "InformationDepth",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "UseModeId",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "AutonomyLevel",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "ActionPolicy",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "EscalationStyle",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "ConnectionStatus",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "DeferredItemType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "DeferredItemUrgency",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "GlobalSetupState",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "SetupErrorCategory",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-data-models.ts"
+    },
+    {
+      "name": "SetupEventBase",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-events.ts"
+    },
+    {
+      "name": "StageEvent",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-events.ts"
+    },
+    {
+      "name": "SessionLifecycleEvent",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-events.ts"
+    },
+    {
+      "name": "CapabilityEvent",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-events.ts"
+    },
+    {
+      "name": "NetworkEvent",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-events.ts"
+    },
+    {
+      "name": "SelectionEvent",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-events.ts"
+    },
+    {
+      "name": "CompletionEvent",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-events.ts"
+    },
+    {
+      "name": "WorldModelEvent",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-events.ts"
+    },
+    {
+      "name": "ConnectionEvent",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-events.ts"
+    },
+    {
+      "name": "DeferredEvent",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-events.ts"
+    },
+    {
+      "name": "BranchEvent",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-events.ts"
+    },
+    {
+      "name": "SetupEventType",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-events.ts"
+    },
+    {
+      "name": "SetupEvent",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-events.ts"
+    },
+    {
+      "name": "SetupEventListener",
+      "kind": "type",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-events.ts"
+    },
+    {
+      "name": "DesktopHandoffPayload",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-handoff-contracts.ts"
+    },
+    {
+      "name": "DesktopPersonalizationModel",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-handoff-contracts.ts"
+    },
+    {
+      "name": "BoardroomHandoffPayload",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-handoff-contracts.ts"
+    },
+    {
+      "name": "TrustCenterHandoffPayload",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-handoff-contracts.ts"
+    },
+    {
+      "name": "CompletionCenterHandoffPayload",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-handoff-contracts.ts"
+    },
+    {
+      "name": "UnifiedSetupHandoff",
+      "kind": "interface",
+      "package": "contracts",
+      "file": "src/packages/contracts/specialized/setup-handoff-contracts.ts"
     },
     {
       "name": "PhaseStatusUX",
@@ -4387,6 +9162,12 @@
       "file": "src/packages/enterprise-contracts/types.ts"
     },
     {
+      "name": "FirewallEvaluationResult",
+      "kind": "interface",
+      "package": "enterprise-contracts",
+      "file": "src/packages/enterprise-contracts/types.ts"
+    },
+    {
       "name": "EnterpriseAuditReview",
       "kind": "interface",
       "package": "enterprise-contracts",
@@ -4399,8 +9180,62 @@
       "file": "src/packages/enterprise-contracts/types.ts"
     },
     {
+      "name": "PermissionEvaluation",
+      "kind": "interface",
+      "package": "enterprise-contracts",
+      "file": "src/packages/enterprise-contracts/types.ts"
+    },
+    {
+      "name": "RoleHierarchy",
+      "kind": "interface",
+      "package": "enterprise-contracts",
+      "file": "src/packages/enterprise-contracts/types.ts"
+    },
+    {
+      "name": "ComplianceGate",
+      "kind": "interface",
+      "package": "enterprise-contracts",
+      "file": "src/packages/enterprise-contracts/types.ts"
+    },
+    {
+      "name": "CompliancePosture",
+      "kind": "interface",
+      "package": "enterprise-contracts",
+      "file": "src/packages/enterprise-contracts/types.ts"
+    },
+    {
       "name": "ControlPlaneEvent",
       "kind": "interface",
+      "package": "enterprise-contracts",
+      "file": "src/packages/enterprise-contracts/types.ts"
+    },
+    {
+      "name": "TenantLimits",
+      "kind": "interface",
+      "package": "enterprise-contracts",
+      "file": "src/packages/enterprise-contracts/types.ts"
+    },
+    {
+      "name": "TenantSecurityPolicy",
+      "kind": "interface",
+      "package": "enterprise-contracts",
+      "file": "src/packages/enterprise-contracts/types.ts"
+    },
+    {
+      "name": "SecurityIncident",
+      "kind": "interface",
+      "package": "enterprise-contracts",
+      "file": "src/packages/enterprise-contracts/types.ts"
+    },
+    {
+      "name": "SecretRotationRecord",
+      "kind": "interface",
+      "package": "enterprise-contracts",
+      "file": "src/packages/enterprise-contracts/types.ts"
+    },
+    {
+      "name": "ComplianceGateType",
+      "kind": "type",
       "package": "enterprise-contracts",
       "file": "src/packages/enterprise-contracts/types.ts"
     },
@@ -4409,6 +9244,252 @@
       "kind": "type",
       "package": "enterprise-contracts",
       "file": "src/packages/enterprise-contracts/types.ts"
+    },
+    {
+      "name": "StressSignal",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "name": "StressRadarResult",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "name": "LifeEvent",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "name": "LifeMoneyImpact",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "name": "MoneyMode",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "name": "AllocationEntry",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "name": "CashAllocationPlan",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "name": "IncomeQualityDimension",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "name": "IncomeQualityScore",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "name": "PeaceScoreDimension",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "name": "PeaceScoreResult",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "name": "FinancialTrustNode",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "name": "FinancialTrustEdge",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "name": "FinancialTrustGraph",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "name": "OpportunityCostEntry",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "name": "MoneyRitual",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "name": "RitualStep",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "name": "EmotionalPattern",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "name": "StressSeverity",
+      "kind": "type",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "name": "StressCategory",
+      "kind": "type",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "name": "LifeEventType",
+      "kind": "type",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "name": "MoneyModeId",
+      "kind": "type",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "name": "AllocationBucket",
+      "kind": "type",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "name": "AllocationStrategy",
+      "kind": "type",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "name": "TrustNodeType",
+      "kind": "type",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "name": "TrustEdgeHealth",
+      "kind": "type",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "name": "RitualFrequency",
+      "kind": "type",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "name": "EmotionalPatternType",
+      "kind": "type",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/advanced-intelligence.ts"
+    },
+    {
+      "name": "DebtProfile",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/debt-credit.ts"
+    },
+    {
+      "name": "DebtAccount",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/debt-credit.ts"
+    },
+    {
+      "name": "PayoffPlan",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/debt-credit.ts"
+    },
+    {
+      "name": "PayoffMilestone",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/debt-credit.ts"
+    },
+    {
+      "name": "CreditScorePulse",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/debt-credit.ts"
+    },
+    {
+      "name": "CreditFactor",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/debt-credit.ts"
+    },
+    {
+      "name": "EnvelopeBudget",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/envelope-budget.ts"
+    },
+    {
+      "name": "EnvelopeGroup",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/envelope-budget.ts"
+    },
+    {
+      "name": "Envelope",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/envelope-budget.ts"
+    },
+    {
+      "name": "EnvelopeAllocationRule",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/envelope-budget.ts"
+    },
+    {
+      "name": "HouseholdFinanceSummary",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/envelope-budget.ts"
+    },
+    {
+      "name": "SharedGoal",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/envelope-budget.ts"
+    },
+    {
+      "name": "MemberFinanceSummary",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/envelope-budget.ts"
     },
     {
       "name": "CapitalMap",
@@ -4427,6 +9508,30 @@
       "kind": "interface",
       "package": "finance-contracts",
       "file": "src/packages/finance-contracts/family-office/types.ts"
+    },
+    {
+      "name": "FinancialHealthScore",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/health-score.ts"
+    },
+    {
+      "name": "HealthDimension",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/health-score.ts"
+    },
+    {
+      "name": "HealthActionItem",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/health-score.ts"
+    },
+    {
+      "name": "FounderBoundaryAlert",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/health-score.ts"
     },
     {
       "name": "FinancialAccount",
@@ -4562,6 +9667,12 @@
     },
     {
       "name": "RiskBudgetResult",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/investment-office/types.ts"
+    },
+    {
+      "name": "ScenarioResult",
       "kind": "interface",
       "package": "finance-contracts",
       "file": "src/packages/finance-contracts/investment-office/types.ts"
@@ -4837,6 +9948,18 @@
       "file": "src/packages/finance-contracts/reserves/types.ts"
     },
     {
+      "name": "ScenarioInput",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/scenario.ts"
+    },
+    {
+      "name": "ScenarioOutput",
+      "kind": "interface",
+      "package": "finance-contracts",
+      "file": "src/packages/finance-contracts/scenario.ts"
+    },
+    {
       "name": "RenewalRisk",
       "kind": "interface",
       "package": "finance-contracts",
@@ -4945,7 +10068,25 @@
       "file": "src/packages/policy-contracts/approvals/types.ts"
     },
     {
+      "name": "TruthBoundaryRule",
+      "kind": "interface",
+      "package": "policy-contracts",
+      "file": "src/packages/policy-contracts/index.ts"
+    },
+    {
       "name": "Contradiction",
+      "kind": "interface",
+      "package": "policy-contracts",
+      "file": "src/packages/policy-contracts/index.ts"
+    },
+    {
+      "name": "ContradictionReport",
+      "kind": "interface",
+      "package": "policy-contracts",
+      "file": "src/packages/policy-contracts/index.ts"
+    },
+    {
+      "name": "RefusalState",
       "kind": "interface",
       "package": "policy-contracts",
       "file": "src/packages/policy-contracts/index.ts"
@@ -4977,6 +10118,18 @@
     {
       "name": "RedactionRules",
       "kind": "interface",
+      "package": "policy-contracts",
+      "file": "src/packages/policy-contracts/index.ts"
+    },
+    {
+      "name": "RequiredSourceType",
+      "kind": "type",
+      "package": "policy-contracts",
+      "file": "src/packages/policy-contracts/index.ts"
+    },
+    {
+      "name": "DowngradeLevel",
+      "kind": "type",
       "package": "policy-contracts",
       "file": "src/packages/policy-contracts/index.ts"
     },
@@ -5059,6 +10212,12 @@
       "file": "src/packages/proof-model/agentic-and-investment-proof/types.ts"
     },
     {
+      "name": "ProofPack",
+      "kind": "interface",
+      "package": "proof-model",
+      "file": "src/packages/proof-model/index.ts"
+    },
+    {
       "name": "ActionReceipt",
       "kind": "interface",
       "package": "proof-model",
@@ -5135,6 +10294,18 @@
       "kind": "interface",
       "package": "proof-model",
       "file": "src/packages/proof-model/receipts/file-ingestion-receipt.ts"
+    },
+    {
+      "name": "FirstBootReceipt",
+      "kind": "interface",
+      "package": "proof-model",
+      "file": "src/packages/proof-model/receipts/first-boot-receipt.ts"
+    },
+    {
+      "name": "FirstBootReceiptPhase",
+      "kind": "type",
+      "package": "proof-model",
+      "file": "src/packages/proof-model/receipts/first-boot-receipt.ts"
     },
     {
       "name": "AuditAnchorReference",
@@ -5233,6 +10404,78 @@
       "file": "src/packages/reality-contracts/src/irreversibility-class.ts"
     },
     {
+      "name": "LanePolicy",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/lane-enforcer.ts"
+    },
+    {
+      "name": "LaneEnforcementResult",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/lane-enforcer.ts"
+    },
+    {
+      "name": "LaneViolation",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/lane-enforcer.ts"
+    },
+    {
+      "name": "ActionContext",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/lane-enforcer.ts"
+    },
+    {
+      "name": "SideEffectKind",
+      "kind": "type",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/lane-enforcer.ts"
+    },
+    {
+      "name": "validateRealitySwitch",
+      "kind": "function",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/lane-enforcer.ts"
+    },
+    {
+      "name": "enforceLaneSideEffect",
+      "kind": "function",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/lane-enforcer.ts"
+    },
+    {
+      "name": "enforceFinalityLevel",
+      "kind": "function",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/lane-enforcer.ts"
+    },
+    {
+      "name": "enforceIrreversibility",
+      "kind": "function",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/lane-enforcer.ts"
+    },
+    {
+      "name": "enforceFullContext",
+      "kind": "function",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/lane-enforcer.ts"
+    },
+    {
+      "name": "guardLane",
+      "kind": "function",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/lane-enforcer.ts"
+    },
+    {
+      "name": "getLanePolicy",
+      "kind": "function",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/lane-enforcer.ts"
+    },
+    {
       "name": "NightlyDriftSummary",
       "kind": "interface",
       "package": "reality-contracts",
@@ -5243,6 +10486,12 @@
       "kind": "interface",
       "package": "reality-contracts",
       "file": "src/packages/reality-contracts/src/nightly-reconciliation-summary.ts"
+    },
+    {
+      "name": "Postcondition",
+      "kind": "interface",
+      "package": "reality-contracts",
+      "file": "src/packages/reality-contracts/src/postcondition.ts"
     },
     {
       "name": "RealityContractMeta",

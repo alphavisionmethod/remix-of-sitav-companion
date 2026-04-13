@@ -1,32 +1,9 @@
 {
-  "version": "1.0.0",
-  "generatedAt": "2026-04-07T23:17:20.375Z",
-  "totalFunctions": 51,
-  "averageScore": 88,
-  "checklist": [
-    "rls-policies",
-    "auth-middleware",
-    "input-validation",
-    "rate-limiting",
-    "csrf-protection",
-    "xss-prevention",
-    "sql-injection-prevention",
-    "secrets-management"
-  ],
+  "version": "1.1.0",
+  "generatedAt": "2026-04-13T09:02:13.168Z",
+  "totalFunctions": 54,
+  "averageScore": 89,
   "entries": [
-    {
-      "functionName": "_shared",
-      "totalChecks": 5,
-      "passedChecks": 0,
-      "score": 0,
-      "checks": {
-        "auth-middleware": false,
-        "input-validation": false,
-        "rate-limiting": false,
-        "error-handling": false,
-        "cors-configured": false
-      }
-    },
     {
       "functionName": "admin-ai-workforce-run",
       "totalChecks": 5,
@@ -73,6 +50,19 @@
       "score": 80,
       "checks": {
         "auth-middleware": false,
+        "input-validation": true,
+        "rate-limiting": true,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "advisor-agent-loop",
+      "totalChecks": 5,
+      "passedChecks": 5,
+      "score": 100,
+      "checks": {
+        "auth-middleware": true,
         "input-validation": true,
         "rate-limiting": true,
         "error-handling": true,
@@ -147,11 +137,11 @@
     {
       "functionName": "ai-gateway",
       "totalChecks": 5,
-      "passedChecks": 4,
-      "score": 80,
+      "passedChecks": 5,
+      "score": 100,
       "checks": {
         "auth-middleware": true,
-        "input-validation": false,
+        "input-validation": true,
         "rate-limiting": true,
         "error-handling": true,
         "cors-configured": true
@@ -231,6 +221,19 @@
         "auth-middleware": true,
         "input-validation": true,
         "rate-limiting": true,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "check-ai-budget",
+      "totalChecks": 5,
+      "passedChecks": 3,
+      "score": 60,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": false,
+        "rate-limiting": false,
         "error-handling": true,
         "cors-configured": true
       }
@@ -426,6 +429,32 @@
         "auth-middleware": true,
         "input-validation": true,
         "rate-limiting": true,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "get-weather",
+      "totalChecks": 5,
+      "passedChecks": 3,
+      "score": 60,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": false,
+        "rate-limiting": false,
+        "error-handling": true,
+        "cors-configured": true
+      }
+    },
+    {
+      "functionName": "intelligence-api",
+      "totalChecks": 5,
+      "passedChecks": 4,
+      "score": 80,
+      "checks": {
+        "auth-middleware": true,
+        "input-validation": true,
+        "rate-limiting": false,
         "error-handling": true,
         "cors-configured": true
       }
