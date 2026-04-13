@@ -8,6 +8,8 @@ import {
 import { ConfidenceBar, ExecutionChainTimeline, buildDefaultChain } from "@/components/sita/primitives";
 import { EvidenceChain, type EvidenceNode } from "@/components/sita/primitives/EvidenceChain";
 import { BoardroomAdvisorCouncil } from "./BoardroomAdvisorCouncil";
+import { useCountUp, useCountUpFormatted } from "@/hooks/useCountUp";
+import { SparklineChart } from "@/components/sita/SparklineChart";
 
 interface Props {
   scope: "global" | "business" | "finance" | "concierge";
@@ -21,6 +23,7 @@ const AGENDA_ITEMS = [
     motion: "Initiate phased recovery outreach",
     detail: "David Kim ($4,200), Sarah Chen ($1,800), TechCorp ($12,500) — combined $18,500 overdue. CRM advisor recommends segmented approach based on relationship value.",
     freshness: "Updated 12 min ago",
+    heatPosition: 0.15,
   },
   {
     id: "a2", title: "Reserve shortfall — $2,800 below target",
@@ -28,6 +31,7 @@ const AGENDA_ITEMS = [
     motion: "Defer non-essential subscriptions for 30 days",
     detail: "Current reserves at $7,200 vs $10,000 target. Three subscriptions totaling $342/mo identified as deferrable without operational impact.",
     freshness: "Updated 3 hours ago",
+    heatPosition: 0.5,
   },
   {
     id: "a3", title: "Travel prep decision — Q2 client visit",
@@ -35,7 +39,15 @@ const AGENDA_ITEMS = [
     motion: "Approve travel package and pre-book logistics",
     detail: "NYC client visit Apr 22-24. Flights, hotel, and restaurant reservations ready. All documents current. Prep items cleared.",
     freshness: "Updated 45 min ago",
+    heatPosition: 0.85,
   },
+];
+
+const HERO_METRICS = [
+  { label: "Total Overdue", value: "$18.5K", rawValue: 18500, sparkData: [12000, 14200, 15800, 16100, 17400, 18000, 18500], positive: false },
+  { label: "Reserves", value: "$7.2K", rawValue: 7200, sparkData: [9800, 9200, 8600, 8100, 7800, 7400, 7200], positive: false },
+  { label: "Pending Actions", value: "3", rawValue: 3, sparkData: [1, 2, 1, 3, 2, 4, 3], positive: false },
+  { label: "Advisor Consensus", value: "72%", rawValue: 72, sparkData: [65, 68, 70, 69, 71, 73, 72], positive: true },
 ];
 
 const SIGNALS = [
@@ -83,6 +95,75 @@ const TrendIcon = ({ trend }: { trend: "up" | "down" | "flat" }) => {
 
 const mockChain = buildDefaultChain("simulation");
 
+// Morning brief narrative
+function MorningBrief({ scope }: { scope: string }) {
+  const text = scope === "business"
+    ? "Pipeline pressure is rising with 3 stalled deals. Collections are the top priority — $18.5K overdue across 3 accounts. CRM advisors recommend a segmented recovery approach."
+    : scope === "finance"
+    ? "Reserves are $2,800 below target at $7,200. Three deferrable subscriptions identified worth $342/mo. Receivables collection can restore buffer within 3 weeks."
+    : scope === "concierge"
+    ? "Travel prep for your NYC client visit is fully cleared. School enrollment needs immediate attention — overdue. Automation rate is healthy at 68%."
+    : "3 items need your attention today. Collections pressure is the top priority — $18.5K overdue. Your reserves are recovering. Travel prep is fully cleared.";
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className="rounded-2xl border border-[hsl(280_50%_50%/0.15)] bg-[hsl(280_40%_50%/0.03)] p-6 relative overflow-hidden"
+    >
+      {/* Subtle ambient glow */}
+      <div className="absolute top-0 right-0 w-48 h-48 rounded-full bg-[hsl(280_50%_50%/0.06)] blur-3xl pointer-events-none" />
+      <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-[hsl(280_50%_65%/0.5)] mb-3 flex items-center gap-1.5">
+        <Sparkles size={11} /> Morning Brief
+      </p>
+      <p className="text-[15px] leading-relaxed text-[hsl(0_0%_100%/0.75)] font-light tracking-wide relative z-10" style={{ fontFamily: "Georgia, 'Times New Roman', serif" }}>
+        {text}
+      </p>
+    </motion.div>
+  );
+}
+
+// Priority heat strip
+function PriorityHeatStrip({ items }: { items: typeof AGENDA_ITEMS }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scaleX: 0.8 }}
+      animate={{ opacity: 1, scaleX: 1 }}
+      transition={{ delay: 0.3, duration: 0.5 }}
+      className="relative h-6 rounded-full overflow-hidden"
+    >
+      <div
+        className="absolute inset-0 rounded-full"
+        style={{
+          background: "linear-gradient(90deg, hsl(0 80% 50% / 0.4) 0%, hsl(40 90% 55% / 0.3) 50%, hsl(145 60% 45% / 0.3) 100%)",
+        }}
+      />
+      {items.map((item) => (
+        <motion.div
+          key={item.id}
+          className="absolute top-1/2 -translate-y-1/2 w-3 h-3 rounded-full border-2 border-[hsl(220_18%_4%)]"
+          style={{
+            left: `${item.heatPosition * 100}%`,
+            backgroundColor:
+              item.urgency === "high" ? "hsl(0 80% 55%)"
+              : item.urgency === "medium" ? "hsl(40 90% 55%)"
+              : "hsl(145 60% 50%)",
+          }}
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.5 + items.indexOf(item) * 0.1 }}
+          title={item.title}
+        />
+      ))}
+      <div className="absolute inset-0 flex items-center justify-between px-3 pointer-events-none">
+        <span className="text-[8px] font-bold uppercase text-[hsl(0_0%_100%/0.3)]">Urgent</span>
+        <span className="text-[8px] font-bold uppercase text-[hsl(0_0%_100%/0.3)]">Clear</span>
+      </div>
+    </motion.div>
+  );
+}
+
 export function BoardroomExecutiveView({ scope, onNavigate }: Props) {
   const [activeAgenda, setActiveAgenda] = useState("a1");
 
@@ -98,6 +179,33 @@ export function BoardroomExecutiveView({ scope, onNavigate }: Props) {
 
   return (
     <div className="space-y-6 p-6">
+      {/* Morning Brief */}
+      <MorningBrief scope={scope} />
+
+      {/* Hero Metrics Row */}
+      <div className="grid grid-cols-4 gap-3">
+        {HERO_METRICS.map((m, i) => (
+          <motion.div
+            key={m.label}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 + i * 0.08 }}
+            className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] p-4 backdrop-blur-sm"
+          >
+            <p className="text-[9px] font-medium text-[hsl(0_0%_100%/0.35)] uppercase tracking-wider mb-1">{m.label}</p>
+            <div className="flex items-end justify-between gap-2">
+              <p className="text-lg font-bold text-[hsl(0_0%_100%/0.9)] tabular-nums">
+                {useCountUpFormatted(m.value, 1000)}
+              </p>
+              <SparklineChart data={m.sparkData} width={50} height={18} positive={m.positive} />
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Priority Heat Strip */}
+      <PriorityHeatStrip items={filteredAgenda} />
+
       {/* Section: Agenda Table */}
       <div>
         <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[hsl(280_50%_65%/0.5)] mb-3">
@@ -112,7 +220,7 @@ export function BoardroomExecutiveView({ scope, onNavigate }: Props) {
               transition={{ delay: i * 0.06 }}
               onClick={() => setActiveAgenda(item.id)}
               className={cn(
-                "w-full text-left rounded-xl border p-4 transition-all duration-200",
+                "w-full text-left rounded-xl border p-4 transition-all duration-200 group",
                 activeAgenda === item.id
                   ? "bg-[hsl(280_40%_50%/0.06)] border-[hsl(280_50%_55%/0.25)] shadow-[0_0_20px_hsl(280_50%_50%/0.08)]"
                   : "bg-[hsl(0_0%_100%/0.02)] border-[hsl(0_0%_100%/0.06)] hover:bg-[hsl(0_0%_100%/0.04)]",
@@ -142,7 +250,16 @@ export function BoardroomExecutiveView({ scope, onNavigate }: Props) {
                     </motion.p>
                   )}
                 </div>
-                <ConfidenceBar value={item.confidence} size="sm" className="w-24 shrink-0" />
+                <div className="flex items-center gap-2">
+                  <ConfidenceBar value={item.confidence} size="sm" className="w-24 shrink-0" />
+                  {/* Quick-action pill */}
+                  <motion.span
+                    className="text-[9px] font-semibold px-2.5 py-1 rounded-full bg-[hsl(280_50%_50%/0.1)] text-[hsl(280_50%_70%)] border border-[hsl(280_50%_50%/0.2)] opacity-0 group-hover:opacity-100 transition-opacity shrink-0 cursor-pointer hover:bg-[hsl(280_50%_50%/0.2)]"
+                    whileHover={{ scale: 1.05, boxShadow: "0 0 12px hsl(280 50% 50% / 0.3)" }}
+                  >
+                    Act Now
+                  </motion.span>
+                </div>
               </div>
               <div className="mt-2 flex items-center gap-1.5 text-[11px] text-[hsl(280_40%_70%/0.7)]">
                 <Sparkles size={12} />
@@ -262,7 +379,6 @@ export function BoardroomExecutiveView({ scope, onNavigate }: Props) {
             </div>
           </motion.div>
 
-          {/* Advisor Council — Mini Arc */}
           <div className="mt-4">
             <BoardroomAdvisorCouncil
               scope={active?.domain as any || "business"}
@@ -271,7 +387,6 @@ export function BoardroomExecutiveView({ scope, onNavigate }: Props) {
             />
           </div>
 
-          {/* Evidence Chain */}
           <div className="mt-4">
             <EvidenceChain title="Evidence Trail — How This Conclusion Was Reached" nodes={EVIDENCE_NODES} />
           </div>
