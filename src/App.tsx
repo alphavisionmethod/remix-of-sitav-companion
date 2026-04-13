@@ -753,6 +753,7 @@ const UpdateCenterPage = lazy(() => import("./pages/UpdateCenter"));
 const WealthCommandCenter = lazy(() => import("./pages/WealthCommandCenter"));
 const TimeMachinePage = lazy(() => import("./pages/TimeMachinePage"));
 const AchievementsPage = lazy(() => import("./pages/AchievementsPage"));
+const SimulationEnginePage = lazy(() => import("./pages/SimulationEnginePage"));
 
 const queryClient = createQueryClient();
 
@@ -907,6 +908,7 @@ const App = () => (
                     <Route path="/wealth-command" element={<WealthCommandCenter />} />
                     <Route path="/time-machine" element={<TimeMachinePage />} />
                     <Route path="/achievements" element={<AchievementsPage />} />
+                    <Route path="/simulation-engine" element={<SimulationEnginePage />} />
                     <Route path="/storage" element={<StorageManager />} />
                     <Route path="/network" element={<NetworkUtility />} />
                     <Route path="/planning-canvas" element={<PlanningCanvas />} />
