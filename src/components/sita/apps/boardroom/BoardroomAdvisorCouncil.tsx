@@ -195,18 +195,55 @@ export function BoardroomAdvisorCouncil({ scope, onSelectAdvisor, compact = fals
             boxShadow: isSpeaking ? `0 4px 20px ${adv.accentColor}15` : undefined,
           }}
         >
-          <p className={cn(
-            "font-bold leading-tight truncate text-[hsl(0_0%_100%/0.9)]",
-            compact ? "text-[9px]" : "text-[11px]",
-          )}>
-            {adv.name.replace(" Advisor", "")}
-          </p>
-          <p
-            className={cn("font-semibold truncate", compact ? "text-[7px]" : "text-[9px]")}
-            style={{ color: `${adv.accentColor}cc` }}
-          >
-            {adv.role}
-          </p>
+          <div className="flex items-center justify-center gap-1.5">
+            <p
+              className={cn(
+                "font-bold leading-tight truncate",
+                compact ? "text-[9px]" : "text-[11px]",
+              )}
+              style={{
+                color: isSpeaking ? "hsl(0 0% 100% / 0.95)" : "hsl(0 0% 100% / 0.9)",
+                textShadow: isSpeaking ? `0 0 12px ${adv.accentColor}80, 0 0 24px ${adv.accentColor}40` : undefined,
+              }}
+            >
+              {adv.name.replace(" Advisor", "")}
+            </p>
+            {/* LIVE badge */}
+            {isSpeaking && (
+              <span className="flex items-center gap-1 shrink-0">
+                <motion.span
+                  className="w-1.5 h-1.5 rounded-full bg-[hsl(0_80%_55%)]"
+                  animate={{ opacity: [1, 0.3, 1], scale: [1, 0.8, 1] }}
+                  transition={{ repeat: Infinity, duration: 1.2 }}
+                />
+                <span className="text-[6px] font-black uppercase tracking-[0.1em] text-[hsl(0_80%_65%)]">
+                  LIVE
+                </span>
+              </span>
+            )}
+          </div>
+          <div className="flex items-center justify-center gap-1">
+            <p
+              className={cn("font-semibold truncate", compact ? "text-[7px]" : "text-[9px]")}
+              style={{ color: `${adv.accentColor}cc` }}
+            >
+              {adv.role}
+            </p>
+            {/* Mini equalizer bars */}
+            {isSpeaking && (
+              <span className="flex items-end gap-[1px] h-2.5 shrink-0">
+                {[0, 1, 2].map(bi => (
+                  <motion.span
+                    key={bi}
+                    className="w-[2px] rounded-full"
+                    style={{ background: adv.accentColor }}
+                    animate={{ height: [3, 8 + bi * 2, 4, 10 - bi, 3] }}
+                    transition={{ repeat: Infinity, duration: 0.6 + bi * 0.15, delay: bi * 0.1, ease: "easeInOut" }}
+                  />
+                ))}
+              </span>
+            )}
+          </div>
           {!compact && (
             <p className="text-[7px] text-[hsl(0_0%_100%/0.25)] mt-0.5 truncate">
               {adv.specialty.split(",")[0]}
