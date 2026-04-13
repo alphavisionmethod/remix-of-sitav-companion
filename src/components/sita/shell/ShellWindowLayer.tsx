@@ -28,6 +28,9 @@ import { DevToolsWindow } from "./windows/DevToolsWindow";
 import { ExtensionManagerWindow } from "./windows/ExtensionManagerWindow";
 import { SyscallDashboardWindow } from "./windows/SyscallDashboardWindow";
 import { KernelDashboardWindow } from "./windows/KernelDashboardWindow";
+import { FinanceAppShell } from "../apps/finance/FinanceAppShell";
+import { BusinessAppShell } from "../apps/business/BusinessAppShell";
+import { ConciergeAppShell } from "../apps/concierge/ConciergeAppShell";
 import { lifecycleManager } from "@/lib/nova-sdk/runtime/lifecycle";
 import { ProcessTable } from "@/lib/nova-sdk/kernel/process-manager";
 import { Compositor } from "@/lib/nova-sdk/kernel/compositor";
@@ -83,6 +86,10 @@ const APP_REGISTRY: Record<string, Omit<AppLaunchConfig, "id">> = {
   "com.nova.kernel-dashboard": { name: "Kernel Dashboard", component: <KernelDashboardWindow />, width: 680, position: { x: 100, y: 60 } },
   "extension-manager": { name: "Extension Manager", component: <ExtensionManagerWindow />, width: 520, position: { x: 160, y: 80 } },
   "com.sita.extension-manager": { name: "Extension Manager", component: <ExtensionManagerWindow />, width: 520, position: { x: 160, y: 80 } },
+  finance: { name: "Finance OS", component: <FinanceAppShell />, width: 1200, position: { x: 80, y: 50 } },
+  money: { name: "Finance OS", component: <FinanceAppShell />, width: 1200, position: { x: 80, y: 50 } },
+  business: { name: "Business OS", component: <BusinessAppShell />, width: 1200, position: { x: 120, y: 90 } },
+  concierge: { name: "Concierge", component: <ConciergeAppShell />, width: 1200, position: { x: 160, y: 130 } },
 };
 
 export function useWindowLauncher(wm: WindowManager) {
