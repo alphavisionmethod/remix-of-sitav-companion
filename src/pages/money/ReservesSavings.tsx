@@ -3,6 +3,7 @@ import { KPITile, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { ReserveProgressChart, ReserveOverTimeChart } from "@/components/sita/SitaCharts";
 import { SectionSkeleton, KPISkeleton } from "@/components/sita/SectionSkeleton";
+import { SurfaceTrustStrip } from "@/components/sita/SurfaceTrustStrip";
 import { PiggyBank, Target, Shield, TrendingUp, Plus, Sparkles, Trash2 } from "lucide-react";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { motion } from "framer-motion";

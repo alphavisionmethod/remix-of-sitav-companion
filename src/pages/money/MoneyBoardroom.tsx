@@ -4,6 +4,7 @@ import { TrustBadge } from "@/components/sita/TrustBadge";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { SurfaceTrustStrip } from "@/components/sita/SurfaceTrustStrip";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useState } from "react";
 import {

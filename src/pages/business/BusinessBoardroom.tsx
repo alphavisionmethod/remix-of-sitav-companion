@@ -3,6 +3,7 @@ import { SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton, SitaPageHeader 
 import { KPITile, OpportunityCard, RiskCard, ProofCard, SitaTabs } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { StateBadge } from "@/components/sita/StateBadge";
+import { SurfaceTrustStrip } from "@/components/sita/SurfaceTrustStrip";
 import { useState, useMemo } from "react";
 import { BarChart3, CheckCircle, AlertTriangle, Sparkles, Clock, DollarSign, Users, TrendingUp, ArrowRight, Calendar, FileText, Target } from "lucide-react";
 import { motion } from "framer-motion";
