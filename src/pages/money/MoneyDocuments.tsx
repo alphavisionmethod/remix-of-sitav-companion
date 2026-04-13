@@ -3,23 +3,18 @@ import { TrustBadge } from "@/components/sita/TrustBadge";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
+import { SplitWorkspace } from "@/components/sita/surfaces/SplitWorkspace";
+import { QueueCard } from "@/components/sita/cards";
 import { useState, useMemo } from "react";
-import { FileText, Upload, Search, DollarSign, Calendar, Shield, Clock, AlertCircle, Eye, Paperclip, FolderOpen } from "lucide-react";
+import { FileText, Upload, Search, DollarSign, Calendar, Shield, Clock, AlertCircle, Eye, FolderOpen } from "lucide-react";
 import { motion } from "framer-motion";
 import { useFinancialDocuments } from "@/hooks/use-domain-data";
 import { formatDistanceToNow } from "date-fns";
 
-
-
-const typeIcons: Record<string, string> = {
-  invoice: "text-primary", receipt: "text-trust-verified", bill: "text-urgency-high",
-  statement: "text-foreground", contract: "text-accent", report: "text-primary", screenshot: "text-muted-foreground"
-};
-
-const sensitivityConfig: Record<string, { label: string; color: string }> = {
-  normal: { label: "Normal", color: "bg-secondary text-muted-foreground" },
-  sensitive: { label: "Sensitive", color: "bg-trust-review/10 text-trust-review" },
-  confidential: { label: "Confidential", color: "bg-urgency-high/10 text-urgency-high" },
+const sensitivityConfig: Record<string, { label: string; dot: string }> = {
+  normal: { label: "Normal", dot: "bg-[hsl(0_0%_45%)]" },
+  sensitive: { label: "Sensitive", dot: "bg-[hsl(38_85%_58%)]" },
+  confidential: { label: "Confidential", dot: "bg-[hsl(0_70%_55%)] shadow-[0_0_6px_hsl(0_70%_55%/0.4)]" },
 };
 
 const MoneyDocuments = () => {
@@ -40,129 +35,111 @@ const MoneyDocuments = () => {
 
   if (isLoading) return <SectionSkeleton cards={4} columns={1} />;
 
-  return (
-    <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-      <DemoModeBadge />
-      <SitaPageHeader title="Financial Documents" subtitle="Invoices, receipts, contracts, and statements — organized and intelligence-ready" />
-
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <KPITile label="Total Documents" value={String(documents.length)} icon={FileText} />
-        <KPITile label="Boardroom Relevant" value={String(documents.filter((d: Record<string, any>) => d.boardroom_relevant).length)} icon={Eye} sub="For review" />
-        <KPITile label="Extracting" value={String(documents.filter((d: Record<string, any>) => d.status === "extracting").length)} icon={Clock} sub="In progress" />
-        <KPITile label="Confidential" value={String(documents.filter((d: Record<string, any>) => d.sensitivity === "confidential").length)} icon={Shield} />
+  const listPanel = (
+    <div className="p-3 space-y-3">
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-[hsl(0_0%_40%)]" />
+        <input type="text" placeholder="Search documents..." value={search} onChange={(e) => setSearch(e.target.value)}
+          className="w-full rounded-lg border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_7%)] pl-10 pr-4 py-2 text-sm text-[hsl(0_0%_85%)] placeholder:text-[hsl(0_0%_40%)] focus:outline-none focus:ring-1 focus:ring-[hsl(265_55%_58%/0.4)]" />
       </div>
 
-      <div className="flex items-center gap-3">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <input type="text" placeholder="Search documents..." value={search} onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-xl border border-border/50 bg-secondary/20 pl-10 pr-4 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary/30" />
-        </div>
-        <button className="flex items-center gap-1.5 rounded-xl bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 transition-colors">
-          <Upload className="h-4 w-4" /> Upload
-        </button>
-      </div>
-
-      <SitaTabs
-        tabs={[
-          { key: "all", label: "All", count: documents.length },
-          { key: "boardroom", label: "Boardroom", count: documents.filter((d: Record<string, any>) => d.boardroom_relevant).length },
-          { key: "proof", label: "Proof-linked", count: documents.filter((d: Record<string, any>) => d.proof_relevant).length },
-          { key: "contract", label: "Contracts", count: documents.filter((d: Record<string, any>) => d.doc_type === "contract").length },
-        ]}
-        active={tab}
-        onChange={setTab}
+      <QueueCard
+        title={`Documents (${filtered.length})`}
+        items={filtered.map((doc: Record<string, any>) => ({
+          id: doc.id,
+          label: doc.name,
+          meta: doc.classification || doc.doc_type,
+          urgency: doc.sensitivity === "confidential" ? "critical" : doc.sensitivity === "sensitive" ? "high" : "normal",
+          badge: doc.boardroom_relevant ? <span className="rounded bg-[hsl(265_55%_58%/0.15)] px-1.5 py-px text-[9px] text-[hsl(265_55%_58%)]">Board</span> : undefined,
+        }))}
+        maxVisible={20}
+        onItemClick={(id) => setSelectedId(id)}
       />
+    </div>
+  );
 
-      <div className="grid gap-6 lg:grid-cols-5">
-        <div className="lg:col-span-3 space-y-2">
-          {filtered.map((doc: Record<string, any>) => {
-            const sens = sensitivityConfig[doc.sensitivity] || sensitivityConfig.normal;
-            const ts = doc.created_at ? formatDistanceToNow(new Date(doc.created_at), { addSuffix: true }) : "";
-            return (
-              <SitaCard key={doc.id} onClick={() => setSelectedId(doc.id)} selected={selectedId === doc.id} className="p-4">
-                <div className="flex items-start gap-3">
-                  <div className="rounded-xl bg-primary/8 p-2.5 shrink-0">
-                    <FileText className={`h-4 w-4 ${typeIcons[doc.doc_type] || "text-primary"}`} />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium text-foreground">{doc.name}</p>
-                    <div className="flex items-center gap-2 mt-1 flex-wrap">
-                      <span className="text-xs text-muted-foreground">{doc.classification}</span>
-                      <span className={`rounded px-1.5 py-px text-[10px] font-medium ${sens.color}`}>{sens.label}</span>
-                      {doc.status === "extracting" && <span className="rounded bg-state-queued/10 px-1.5 py-px text-[10px] text-state-queued animate-pulse">Extracting…</span>}
-                    </div>
-                    <p className="text-[10px] text-muted-foreground mt-0.5">{ts}</p>
-                  </div>
-                  <div className="flex gap-1 shrink-0">
-                    {doc.boardroom_relevant && <span className="rounded bg-primary/10 px-1.5 py-px text-[10px] text-primary">Board</span>}
-                    {doc.proof_relevant && <span className="rounded bg-trust-verified/10 px-1.5 py-px text-[10px] text-trust-verified">Proof</span>}
-                  </div>
-                </div>
-              </SitaCard>
-            );
-          })}
-          {filtered.length === 0 && <EmptyState icon={FolderOpen} title="No documents found" description="Upload a document or try a different filter" />}
+  const detailPanel = selected ? (
+    <div className="p-4 space-y-4">
+      <h3 className={SITA_TYPE.cardTitle + " text-[hsl(0_0%_90%)]"}>{selected.name}</h3>
+      <div className="space-y-2.5">
+        <div className="flex justify-between text-sm"><span className="text-[hsl(0_0%_50%)]">Type</span><span className="text-[hsl(0_0%_85%)] capitalize">{selected.doc_type}</span></div>
+        <div className="flex justify-between text-sm"><span className="text-[hsl(0_0%_50%)]">Sensitivity</span>
+          <div className="flex items-center gap-1.5">
+            <div className={`w-2 h-2 rounded-full ${(sensitivityConfig[selected.sensitivity] || sensitivityConfig.normal).dot}`} />
+            <span className="text-[hsl(0_0%_85%)] text-xs">{(sensitivityConfig[selected.sensitivity] || sensitivityConfig.normal).label}</span>
+          </div>
         </div>
+        <div className="flex justify-between text-sm"><span className="text-[hsl(0_0%_50%)]">Status</span><span className="text-[hsl(0_0%_85%)] capitalize">{selected.status}</span></div>
+        {selected.linked_to && <div className="flex justify-between text-sm"><span className="text-[hsl(0_0%_50%)]">Linked To</span><span className="text-[hsl(0_0%_85%)] text-right text-xs">{selected.linked_to}</span></div>}
+      </div>
 
-        <div className="lg:col-span-2 space-y-4">
-          {selected ? (
-            <>
-              <SitaCard hover={false} glow className="p-5">
-                <SitaCardTitle sub={selected.classification}>{selected.name}</SitaCardTitle>
-                <div className="mt-4 space-y-2.5">
-                  <div className="flex justify-between text-sm"><span className="text-muted-foreground">Type</span><span className="text-foreground capitalize">{selected.doc_type}</span></div>
-                  <div className="flex justify-between text-sm"><span className="text-muted-foreground">Sensitivity</span><span className={`rounded px-1.5 py-px text-[10px] font-medium ${(sensitivityConfig[selected.sensitivity] || sensitivityConfig.normal).color}`}>{(sensitivityConfig[selected.sensitivity] || sensitivityConfig.normal).label}</span></div>
-                  <div className="flex justify-between text-sm"><span className="text-muted-foreground">Status</span><span className="text-foreground capitalize">{selected.status}</span></div>
-                  {selected.linked_to && <div className="flex justify-between text-sm"><span className="text-muted-foreground">Linked To</span><span className="text-foreground text-right text-xs">{selected.linked_to}</span></div>}
-                </div>
-              </SitaCard>
+      {selected.extracted_data && Object.keys(selected.extracted_data).length > 0 && (
+        <div>
+          <h4 className={SITA_TYPE.microLabel + " text-[hsl(0_0%_50%)] mb-2"}>EXTRACTED INTELLIGENCE</h4>
+          <div className="space-y-2">
+            {selected.extracted_data.amount && (
+              <div className="flex items-center gap-2 rounded-lg bg-[hsl(0_0%_100%/0.04)] p-2.5">
+                <DollarSign className="h-3.5 w-3.5 text-[hsl(265_55%_58%)]" />
+                <span className="text-xs text-[hsl(0_0%_85%)]">{selected.extracted_data.amount}</span>
+              </div>
+            )}
+            {selected.extracted_data.date && (
+              <div className="flex items-center gap-2 rounded-lg bg-[hsl(0_0%_100%/0.04)] p-2.5">
+                <Calendar className="h-3.5 w-3.5 text-[hsl(265_55%_58%)]" />
+                <span className="text-xs text-[hsl(0_0%_85%)]">{selected.extracted_data.date}</span>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
-              {selected.extracted_data && Object.keys(selected.extracted_data).length > 0 && (
-                <SitaCard hover={false}>
-                  <SitaCardTitle>Extracted Intelligence</SitaCardTitle>
-                  <div className="mt-3 space-y-2">
-                    {selected.extracted_data.amount && (
-                      <div className="flex items-center gap-2 rounded-lg bg-secondary/30 p-2.5">
-                        <DollarSign className="h-3.5 w-3.5 text-primary" />
-                        <span className="text-xs text-foreground">{selected.extracted_data.amount}</span>
-                      </div>
-                    )}
-                    {selected.extracted_data.date && (
-                      <div className="flex items-center gap-2 rounded-lg bg-secondary/30 p-2.5">
-                        <Calendar className="h-3.5 w-3.5 text-primary" />
-                        <span className="text-xs text-foreground">{selected.extracted_data.date}</span>
-                      </div>
-                    )}
-                    {selected.extracted_data.obligations && (
-                      <div className="flex items-center gap-2 rounded-lg bg-secondary/30 p-2.5">
-                        <AlertCircle className="h-3.5 w-3.5 text-primary" />
-                        <span className="text-xs text-foreground">{selected.extracted_data.obligations}</span>
-                      </div>
-                    )}
-                  </div>
-                </SitaCard>
-              )}
-
-              <SitaCard hover={false}>
-                <SitaCardTitle>Relevance</SitaCardTitle>
-                <div className="mt-3 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs text-muted-foreground">Boardroom</span>
-                    <TrustBadge level={selected.boardroom_relevant ? "verified" : "low-confidence"} label={selected.boardroom_relevant ? "Relevant" : "Not relevant"} size="sm" />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs text-muted-foreground">Proof</span>
-                    <TrustBadge level={selected.proof_relevant ? "verified" : "low-confidence"} label={selected.proof_relevant ? "Linked" : "Not linked"} size="sm" />
-                  </div>
-                </div>
-              </SitaCard>
-            </>
-          ) : (
-            <EmptyState icon={FileText} title="Select a document" description="Click on a document to see extracted intelligence, linked items, and relevance details" />
-          )}
+      <div>
+        <h4 className={SITA_TYPE.microLabel + " text-[hsl(0_0%_50%)] mb-2"}>RELEVANCE</h4>
+        <div className="space-y-2">
+          <div className="flex items-center justify-between">
+            <span className="text-xs text-[hsl(0_0%_60%)]">Boardroom</span>
+            <span className={`text-[10px] px-2 py-0.5 rounded-full ${selected.boardroom_relevant ? "bg-[hsl(152_55%_48%/0.12)] text-[hsl(152_55%_48%)]" : "bg-[hsl(0_0%_100%/0.04)] text-[hsl(0_0%_45%)]"}`}>
+              {selected.boardroom_relevant ? "Relevant" : "Not relevant"}
+            </span>
+          </div>
+          <div className="flex items-center justify-between">
+            <span className="text-xs text-[hsl(0_0%_60%)]">Proof</span>
+            <span className={`text-[10px] px-2 py-0.5 rounded-full ${selected.proof_relevant ? "bg-[hsl(152_55%_48%/0.12)] text-[hsl(152_55%_48%)]" : "bg-[hsl(0_0%_100%/0.04)] text-[hsl(0_0%_45%)]"}`}>
+              {selected.proof_relevant ? "Linked" : "Not linked"}
+            </span>
+          </div>
         </div>
       </div>
+    </div>
+  ) : (
+    <div className="flex items-center justify-center h-full p-8">
+      <div className="text-center">
+        <FileText className="h-8 w-8 text-[hsl(0_0%_30%)] mx-auto mb-3" />
+        <p className="text-sm text-[hsl(0_0%_50%)]">Select a document to view details</p>
+      </div>
+    </div>
+  );
+
+  return (
+    <motion.div className="space-y-4" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+      <PageTruthBanner />
+
+      <div className="px-3">
+        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <KPITile label="Total Documents" value={String(documents.length)} icon={FileText} />
+          <KPITile label="Boardroom" value={String(documents.filter((d: Record<string, any>) => d.boardroom_relevant).length)} icon={Eye} sub="For review" />
+          <KPITile label="Extracting" value={String(documents.filter((d: Record<string, any>) => d.status === "extracting").length)} icon={Clock} sub="In progress" />
+          <KPITile label="Confidential" value={String(documents.filter((d: Record<string, any>) => d.sensitivity === "confidential").length)} icon={Shield} />
+        </div>
+      </div>
+
+      <SplitWorkspace
+        list={listPanel}
+        detail={detailPanel}
+        hasSelection={!!selected}
+        defaultSplit={42}
+        className="h-[600px]"
+      />
     </motion.div>
   );
 };

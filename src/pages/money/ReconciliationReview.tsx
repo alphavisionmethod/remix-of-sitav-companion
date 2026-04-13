@@ -3,6 +3,7 @@ import { TrustBadge } from "@/components/sita/TrustBadge";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
 import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
+import { QueueCard } from "@/components/sita/cards";
 import { useState } from "react";
 import {
   Search, AlertTriangle, HelpCircle, RefreshCw, CheckCircle2, ArrowRight,
@@ -39,25 +40,14 @@ const DEMO_ITEMS: ReconciliationItem[] = [
 ];
 
 const ISSUE_ICONS: Record<IssueType, typeof AlertTriangle> = {
-  mismatch: AlertTriangle,
-  uncategorized: Tag,
-  "recurring-change": Repeat,
-  duplicate: RefreshCw,
-  "missing-receipt": FileQuestion,
+  mismatch: AlertTriangle, uncategorized: Tag, "recurring-change": Repeat, duplicate: RefreshCw, "missing-receipt": FileQuestion,
 };
-
 const ISSUE_LABELS: Record<IssueType, string> = {
-  mismatch: "Mismatch",
-  uncategorized: "Uncategorized",
-  "recurring-change": "Recurring Change",
-  duplicate: "Duplicate",
-  "missing-receipt": "Missing Receipt",
+  mismatch: "Mismatch", uncategorized: "Uncategorized", "recurring-change": "Recurring Change", duplicate: "Duplicate", "missing-receipt": "Missing Receipt",
 };
 
-const SEVERITY_COLORS: Record<string, string> = {
-  low: "text-muted-foreground",
-  medium: "text-trust-review",
-  high: "text-urgency-high",
+const SEVERITY_DOT: Record<string, string> = {
+  low: "bg-[hsl(0_0%_45%)]", medium: "bg-[hsl(38_85%_58%)]", high: "bg-[hsl(0_70%_55%)] shadow-[0_0_6px_hsl(0_70%_55%/0.5)]",
 };
 
 const ReconciliationReview = () => {
@@ -76,8 +66,7 @@ const ReconciliationReview = () => {
 
   return (
     <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-      <DemoModeBadge />
-      <SitaPageHeader title="Reconciliation & Review" subtitle="Resolve mismatches, categorize unknowns, and review changes" />
+      <PageTruthBanner />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KPITile label="Open Items" value={openCount} icon={Search} sub="Needing review" />
@@ -99,44 +88,23 @@ const ReconciliationReview = () => {
       />
 
       <div className="grid gap-6 lg:grid-cols-5">
-        {/* Item list */}
         <div className={`space-y-2 ${selected ? "lg:col-span-3" : "lg:col-span-5"}`}>
           {filtered.length === 0 ? (
             <EmptyState icon={CheckCircle2} title="All clear" description="No items need review in this category" />
-          ) : filtered.map((item) => {
-            const Icon = ISSUE_ICONS[item.issueType];
-            return (
-              <SitaCard
-                key={item.id}
-                lane={item.severity === "high" ? "action" : item.status === "investigating" ? "opportunity" : undefined}
-                className={`p-4 cursor-pointer transition-all ${selectedId === item.id ? "ring-2 ring-primary/40" : ""}`}
-                onClick={() => setSelectedId(item.id)}
-              >
-                <div className="flex items-start gap-3">
-                  <div className={`mt-0.5 rounded-lg p-2 bg-secondary/50 ${SEVERITY_COLORS[item.severity]}`}>
-                    <Icon className="h-4 w-4" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <p className="text-sm font-medium text-foreground">{item.title}</p>
-                      {item.status === "resolved" && <CheckCircle2 className="h-3.5 w-3.5 text-trust-verified" />}
-                    </div>
-                    <p className="text-xs text-muted-foreground mt-0.5 line-clamp-1">{item.description}</p>
-                    <div className="flex items-center gap-2 mt-1.5">
-                      <TrustBadge level={item.status === "resolved" ? "verified" : item.severity === "high" ? "blocked" : "review"} label={ISSUE_LABELS[item.issueType]} size="sm" />
-                      <span className="text-[10px] text-muted-foreground">{item.source} · {item.date}</span>
-                    </div>
-                  </div>
-                  <div className="text-right shrink-0">
-                    <p className="font-display text-sm font-bold text-foreground">${item.amount.toLocaleString()}</p>
-                  </div>
-                </div>
-              </SitaCard>
-            );
-          })}
+          ) : (
+            <QueueCard
+              title="Review Queue"
+              items={filtered.map((item, i) => ({
+                id: item.id,
+                label: item.title,
+                meta: `$${item.amount.toLocaleString()} · ${item.source}`,
+                urgency: item.severity === "high" ? "critical" : item.severity === "medium" ? "high" : "normal",
+              }))}
+              onItemClick={(id) => setSelectedId(id)}
+            />
+          )}
         </div>
 
-        {/* Detail sidebar */}
         <AnimatePresence>
           {selected && (
             <motion.div
@@ -145,75 +113,81 @@ const ReconciliationReview = () => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 20 }}
             >
-              <SitaCard hover={false} className="p-5 sticky top-4 space-y-4">
+              <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_12%)] p-5 sticky top-4 space-y-4">
                 <div className="flex items-center justify-between">
-                  <h3 className="font-display text-base font-bold text-foreground">{selected.title}</h3>
-                  <button onClick={() => setSelectedId(null)} className="text-xs text-muted-foreground hover:text-foreground">✕</button>
+                  <h3 className={SITA_TYPE.cardTitle + " text-[hsl(0_0%_90%)]"}>{selected.title}</h3>
+                  <button onClick={() => setSelectedId(null)} className="text-xs text-[hsl(0_0%_50%)] hover:text-[hsl(0_0%_80%)] transition-colors">✕</button>
                 </div>
-                <p className="text-sm text-muted-foreground">{selected.description}</p>
+                <p className="text-sm text-[hsl(0_0%_60%)]">{selected.description}</p>
 
                 <div className="grid grid-cols-2 gap-3 text-sm">
-                  <div><span className="text-muted-foreground text-xs">Amount</span><p className="font-semibold">${selected.amount.toLocaleString()}</p></div>
-                  <div><span className="text-muted-foreground text-xs">Date</span><p className="font-semibold">{selected.date}</p></div>
-                  <div><span className="text-muted-foreground text-xs">Source</span><p className="font-semibold">{selected.source}</p></div>
-                  <div><span className="text-muted-foreground text-xs">Status</span>
-                    <TrustBadge level={selected.status === "resolved" ? "verified" : "review"} label={selected.status} size="sm" />
+                  <div><span className="text-[hsl(0_0%_45%)] text-xs">Amount</span><p className="font-semibold text-[hsl(0_0%_90%)]">${selected.amount.toLocaleString()}</p></div>
+                  <div><span className="text-[hsl(0_0%_45%)] text-xs">Date</span><p className="font-semibold text-[hsl(0_0%_90%)]">{selected.date}</p></div>
+                  <div><span className="text-[hsl(0_0%_45%)] text-xs">Source</span><p className="font-semibold text-[hsl(0_0%_90%)]">{selected.source}</p></div>
+                  <div><span className="text-[hsl(0_0%_45%)] text-xs">Severity</span>
+                    <div className="flex items-center gap-1.5 mt-0.5">
+                      <div className={`w-2 h-2 rounded-full ${SEVERITY_DOT[selected.severity]}`} />
+                      <span className="text-[hsl(0_0%_90%)] text-xs capitalize">{selected.severity}</span>
+                    </div>
                   </div>
                 </div>
 
-                <div className="rounded-xl bg-accent/10 p-3">
+                <div className="rounded-xl bg-[hsl(265_55%_58%/0.08)] p-3">
                   <div className="flex items-start gap-2">
-                    <ShieldCheck className="h-4 w-4 text-accent mt-0.5 shrink-0" />
+                    <ShieldCheck className="h-4 w-4 text-[hsl(265_55%_58%)] mt-0.5 shrink-0" />
                     <div>
-                      <p className="text-xs font-medium text-foreground">Suggested Action</p>
-                      <p className="text-xs text-muted-foreground mt-0.5">{selected.suggestedAction}</p>
+                      <p className="text-xs font-medium text-[hsl(0_0%_90%)]">Suggested Action</p>
+                      <p className="text-xs text-[hsl(0_0%_60%)] mt-0.5">{selected.suggestedAction}</p>
                     </div>
                   </div>
                 </div>
 
                 {selected.status !== "resolved" && (
                   <div className="flex gap-2">
-                    <SitaButton variant="accent" size="sm"><CheckCircle2 className="h-3 w-3" /> Resolve</SitaButton>
-                    <SitaButton variant="secondary" size="sm"><Eye className="h-3 w-3" /> Investigate</SitaButton>
-                    <SitaButton variant="ghost" size="sm"><Clock className="h-3 w-3" /> Defer</SitaButton>
+                    <button className="micro-press flex items-center gap-1.5 rounded-lg bg-[hsl(152_55%_48%/0.12)] px-3 py-1.5 text-xs font-medium text-[hsl(152_55%_48%)] hover:bg-[hsl(152_55%_48%/0.20)] transition-colors">
+                      <CheckCircle2 className="h-3 w-3" /> Resolve
+                    </button>
+                    <button className="micro-press flex items-center gap-1.5 rounded-lg bg-[hsl(0_0%_100%/0.04)] px-3 py-1.5 text-xs font-medium text-[hsl(0_0%_60%)] hover:bg-[hsl(0_0%_100%/0.08)] transition-colors">
+                      <Eye className="h-3 w-3" /> Investigate
+                    </button>
+                    <button className="micro-press flex items-center gap-1.5 rounded-lg bg-[hsl(0_0%_100%/0.04)] px-3 py-1.5 text-xs font-medium text-[hsl(0_0%_60%)] hover:bg-[hsl(0_0%_100%/0.08)] transition-colors">
+                      <Clock className="h-3 w-3" /> Defer
+                    </button>
                   </div>
                 )}
 
-                <div className="border-t border-border pt-3">
-                  <p className="text-[10px] text-muted-foreground uppercase tracking-wider mb-2">Proof Trail</p>
+                <div className="border-t border-[hsl(0_0%_100%/0.06)] pt-3">
+                  <p className={SITA_TYPE.microLabel + " text-[hsl(0_0%_40%)] mb-2"}>PROOF TRAIL</p>
                   <div className="space-y-1.5">
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <div className="h-1.5 w-1.5 rounded-full bg-trust-review" />
+                    <div className="flex items-center gap-2 text-xs text-[hsl(0_0%_50%)]">
+                      <div className="h-1.5 w-1.5 rounded-full bg-[hsl(38_85%_58%)]" />
                       Detected by system — {selected.date}
                     </div>
                     {selected.status === "investigating" && (
-                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                        <div className="h-1.5 w-1.5 rounded-full bg-accent" />
+                      <div className="flex items-center gap-2 text-xs text-[hsl(0_0%_50%)]">
+                        <div className="h-1.5 w-1.5 rounded-full bg-[hsl(265_55%_58%)]" />
                         Investigation started — {selected.date}
                       </div>
                     )}
                     {selected.status === "resolved" && (
-                      <div className="flex items-center gap-2 text-xs text-trust-verified">
-                        <div className="h-1.5 w-1.5 rounded-full bg-trust-verified" />
+                      <div className="flex items-center gap-2 text-xs text-[hsl(152_55%_48%)]">
+                        <div className="h-1.5 w-1.5 rounded-full bg-[hsl(152_55%_48%)]" />
                         Resolved — Timing lag confirmed
                       </div>
                     )}
                   </div>
                 </div>
-              </SitaCard>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
       </div>
 
-      <LiveAdvisorCard
-        advisor="money"
-        intent="reconciliation_review"
-        demoName="Reconciliation Advisor"
-        demoRole="Financial Accuracy"
-        demoConfidence="High"
-        demoRecommendation={`${openCount} items need review. Priority: ${mismatchCount} balance mismatches totaling $${DEMO_ITEMS.filter(i => i.issueType === "mismatch" && i.status !== "resolved").reduce((s, i) => s + i.amount, 0).toLocaleString()}.`}
-        demoReasoning="Cross-referencing statement data, transaction records, and recurring charge patterns to identify discrepancies."
+      <ModuleAdvisorInsight
+        advisorName="Reconciliation Advisor"
+        domain="finance"
+        insight={`${openCount} items need review. Priority: ${mismatchCount} balance mismatches totaling $${DEMO_ITEMS.filter(i => i.issueType === "mismatch" && i.status !== "resolved").reduce((s, i) => s + i.amount, 0).toLocaleString()}.`}
+        confidence={82}
       />
     </motion.div>
   );
