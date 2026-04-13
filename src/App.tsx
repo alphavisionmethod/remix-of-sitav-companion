@@ -750,6 +750,9 @@ const OutcomeEconomicsDashboard = lazy(() => import("./pages/admin/OutcomeEconom
 const CommandHistory = lazy(() => import("./pages/CommandHistory"));
 const EnvironmentSwitcherPage = lazy(() => import("./pages/EnvironmentSwitcher"));
 const UpdateCenterPage = lazy(() => import("./pages/UpdateCenter"));
+const WealthCommandCenter = lazy(() => import("./pages/WealthCommandCenter"));
+const TimeMachinePage = lazy(() => import("./pages/TimeMachinePage"));
+const AchievementsPage = lazy(() => import("./pages/AchievementsPage"));
 
 const queryClient = createQueryClient();
 
