@@ -206,11 +206,11 @@ const FilesSearch = () => {
               </div>
             ))
           ) : (
-            <PremiumEmptyState icon={FileText} title="No results found" description="Try adjusting your search terms or filters" actionLabel="Clear Search" onAction={() => { setQuery(""); setSearchResponse(null); }} />
+            <PremiumEmptyState variant="no-data" icon={FileText} title="No results found" description="Try adjusting your search terms or filters"} />
           )}
         </div>
       ) : (
-        <PremiumEmptyState icon={Search} title="Search your knowledge base" description="Enter a query to find files, extracted facts, linked entities, and intelligence across all domains" />
+        <PremiumEmptyState variant="no-data" icon={Search} title="Search your knowledge base" description="Enter a query to find files, extracted facts, linked entities, and intelligence across all domains" />
       )}
     </motion.div>
   );

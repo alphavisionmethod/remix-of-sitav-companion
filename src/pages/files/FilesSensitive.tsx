@@ -91,7 +91,7 @@ const FilesSensitive = () => {
                 {governed.map((f, i) => <PrivacyScopeCard key={i} {...f} />)}
               </div>
             ) : (
-              <PremiumEmptyState icon={Shield} title="No governed documents" description="Files with medical, legal, or identity content will appear here with maximum protection." />
+              <PremiumEmptyState variant="no-data" icon={Shield} title="No governed documents" description="Files with medical, legal, or identity content will appear here with maximum protection." />
             )}
           </div>
 
@@ -102,7 +102,7 @@ const FilesSensitive = () => {
                 {restricted.map((f, i) => <PrivacyScopeCard key={i} {...f} />)}
               </div>
             ) : (
-              <PremiumEmptyState icon={Lock} title="No restricted documents" description="Files flagged as restricted or confidential will appear here." />
+              <PremiumEmptyState variant="no-data" icon={Lock} title="No restricted documents" description="Files flagged as restricted or confidential will appear here." />
             )}
           </div>
         </>

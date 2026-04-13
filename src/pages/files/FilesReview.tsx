@@ -91,7 +91,7 @@ const FilesReview = () => {
           {classificationItems.length > 0 ? (
             classificationItems.map((item, i) => <ClassificationCard key={i} {...item} />)
           ) : (
-            <PremiumEmptyState icon={CheckCircle} title="All files classified" description="No files need classification review right now." />
+            <PremiumEmptyState variant="no-data" icon={CheckCircle} title="All files classified" description="No files need classification review right now." />
           )}
         </div>
       ) : (
@@ -100,7 +100,7 @@ const FilesReview = () => {
           {extractionItems.length > 0 ? (
             extractionItems.map((item, i) => <ExtractionReviewCard key={i} {...item} />)
           ) : (
-            <PremiumEmptyState icon={FileText} title="No extractions to review" description="Upload files with text content to extract facts." />
+            <PremiumEmptyState variant="no-data" icon={FileText} title="No extractions to review" description="Upload files with text content to extract facts." />
           )}
         </div>
       )}

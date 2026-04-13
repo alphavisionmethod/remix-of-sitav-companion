@@ -100,7 +100,7 @@ const FilesMemoryReview = () => {
             {memoryItems.length > 0 ? (
               memoryItems.map((item, i) => <MemoryReviewCard key={i} {...item} />)
             ) : (
-              <PremiumEmptyState icon={Brain} title="No memory items yet" description="Upload and process files to build system memory. Each extracted fact becomes a reviewable memory item." />
+              <PremiumEmptyState variant="no-data" icon={Brain} title="No memory items yet" description="Upload and process files to build system memory. Each extracted fact becomes a reviewable memory item." />
             )}
           </div>
 
@@ -128,7 +128,7 @@ const FilesMemoryReview = () => {
                 ))}
               </div>
             ) : (
-              <PremiumEmptyState icon={Eye} title="No graph links yet" description="Process more files to build entity connections across domains." />
+              <PremiumEmptyState variant="no-data" icon={Eye} title="No graph links yet" description="Process more files to build entity connections across domains." />
             )}
           </div>
         </>

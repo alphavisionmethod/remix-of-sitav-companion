@@ -117,7 +117,7 @@ const FilesProcessing = () => {
       <div className="space-y-3">
         <h3 className="text-[10px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">In Progress · {processingItems.length}</h3>
         {processingItems.length === 0 ? (
-          <PremiumEmptyState icon={Loader2} title="No files processing" description="Upload new files to see them move through the intelligence pipeline." />
+          <PremiumEmptyState variant="no-data" icon={Loader2} title="No files processing" description="Upload new files to see them move through the intelligence pipeline." />
         ) : (
           processingItems.map((item, i) => (
             <ProcessingCard
