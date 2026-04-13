@@ -25,6 +25,9 @@ import {
 import { DEMO_ACTIVITY_TIMELINE } from "@/lib/demo-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
+const isDemoMode = true; // TODO: wire to reality mode context
+
+
 
 
 // ── Category System ──────────────────────────────────────────

@@ -13,6 +13,9 @@ import { EmptyState } from "@/components/sita/EmptyState";
 import { DEMO_REV_LEAKS_PIPELINE_STUDIO as DEMO_LEAKS, DEMO_STAGES, DEMO_VELOCITY } from "@/lib/demo-data/revenue-office";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
+const isDemoMode = true; // TODO: wire to reality mode context
+
+
 type Deal = { id: string; name: string; value: number; probability: number; age: number; owner: string; contact: string; nextAction?: string; nextActionDate?: string; source: string; tags: string[] };
 
 export default function PipelineStudio() {

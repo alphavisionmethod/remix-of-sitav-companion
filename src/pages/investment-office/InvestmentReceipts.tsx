@@ -8,6 +8,9 @@ import { DEMO_RECEIPTS } from "@/lib/demo-data/investment";
 import { POST_TRADE_REVIEWS } from "@/lib/investment-office/mock-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
+const isDemoMode = true; // TODO: wire to reality mode context
+
+
 interface Receipt {
   id: string;
   type: "trade" | "approval" | "thesis" | "risk-change" | "rebalance" | "advisor-snapshot";

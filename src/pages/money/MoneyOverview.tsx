@@ -19,6 +19,9 @@ import {
   Shield, Activity, ArrowRight, BarChart3, Calendar, CheckCircle
 } from "lucide-react";
 
+const isDemoMode = true; // TODO: wire to reality mode context
+
+
 const MoneyOverview = () => {
   const navigate = useNavigate();
   const { data: bills = [] } = useBills();

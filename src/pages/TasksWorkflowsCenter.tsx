@@ -25,6 +25,9 @@ import {
   GitBranch, Kanban, ListOrdered, Target, Flame, Pause, Play,
 } from "lucide-react";
 
+const isDemoMode = true; // TODO: wire to reality mode context
+
+
 // ── Demo Data ──────────────────────────────────────────────────
 type TaskPriority = "critical" | "high" | "medium" | "low";
 type TaskStatus = "todo" | "in-progress" | "waiting" | "blocked" | "done" | "cancelled";

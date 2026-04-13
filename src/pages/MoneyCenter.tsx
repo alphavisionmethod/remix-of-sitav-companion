@@ -51,6 +51,9 @@ import { useAppStatePersistence, restoreAppState } from "@/hooks/useAppStatePers
 import React from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
+const isDemoMode = true; // TODO: wire to reality mode context
+
+
 const DOMAIN_CONFIG: DomainConfig = {
   id: "finance",
   title: "Finance OS",

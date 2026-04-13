@@ -25,6 +25,9 @@ import {
   MessageSquare, Calendar,
 } from "lucide-react";
 
+const isDemoMode = true; // TODO: wire to reality mode context
+
+
 const TYPE_ICONS: Record<string, React.ElementType> = { note: FileText, meeting: Brain, checklist: CheckSquare, voice: Mic, knowledge: Bookmark };
 const fadeUp = { hidden: { opacity: 0, y: 10 }, show: { opacity: 1, y: 0, transition: { duration: 0.25 } } };
 

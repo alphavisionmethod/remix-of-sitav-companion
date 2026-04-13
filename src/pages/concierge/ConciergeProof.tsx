@@ -7,6 +7,9 @@ import { Shield, CheckCircle, Clock, FileText, ShoppingCart, Calendar, Wrench, G
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
 
+const isDemoMode = true; // TODO: wire to reality mode context
+
+
 interface ProofRecord {
   id: string;
   action: string;

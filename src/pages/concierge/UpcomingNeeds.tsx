@@ -13,6 +13,9 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import { Calendar, Clock, AlertCircle, Zap, Eye } from "lucide-react";
 
+const isDemoMode = true; // TODO: wire to reality mode context
+
+
 const OBLIGATIONS: UpcomingObligation[] = [
   { id: "u1", title: "Dentist appointment — Alex", type: "appointment", dueLabel: "Today 2:30 PM", who: "Alex", prepNeeded: true },
   { id: "u2", title: "Drop off UPS package", type: "errand", dueLabel: "Today", who: "You" },

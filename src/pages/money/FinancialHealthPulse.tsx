@@ -11,6 +11,9 @@ import { useMemo } from "react";
 import { computeFinancialHealth } from "@/lib/services/finance-os/financial-health.service";
 import { computeIncomeQuality } from "@/lib/services/finance-os/income-quality.service";
 
+const isDemoMode = true; // TODO: wire to reality mode context
+
+
 const FinancialHealthPulse = () => {
 
   const health = useMemo(() => computeFinancialHealth({

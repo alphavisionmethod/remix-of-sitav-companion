@@ -18,6 +18,9 @@ import {
   Target, TrendingUp, Receipt, Briefcase, ArrowRight, Activity
 } from "lucide-react";
 
+const isDemoMode = true; // TODO: wire to reality mode context
+
+
 const BusinessOverview = () => {
   const navigate = useNavigate();
   const { data: leads = [] } = useLeads();

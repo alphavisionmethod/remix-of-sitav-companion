@@ -16,6 +16,9 @@ import { useConfirmation } from "@/hooks/use-confirmation";
 import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
 import { useQueryFreshness } from "@/hooks/use-query-freshness";
 
+const isDemoMode = true; // TODO: wire to reality mode context
+
+
 const ReservesSavings = () => {
   const { data: reservesData = [] } = useReservesSavings();
   const { user } = useAuth();

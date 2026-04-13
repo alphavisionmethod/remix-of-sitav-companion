@@ -18,6 +18,9 @@ import {
   DEMO_DELIVERABILITY,
 } from "@/lib/demo-data/revenue-office";
 
+const isDemoMode = true; // TODO: wire to reality mode context
+
+
 export default function CampaignOrchestrator() {
   const { data: liveCampaigns, isLoading } = useCampaigns();
   const [tab, setTab] = useState("campaigns");

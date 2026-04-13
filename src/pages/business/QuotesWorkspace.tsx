@@ -17,6 +17,9 @@ import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAction } from "@/hooks/use-action";
 
+const isDemoMode = true; // TODO: wire to reality mode context
+
+
 const QuotesWorkspace = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();

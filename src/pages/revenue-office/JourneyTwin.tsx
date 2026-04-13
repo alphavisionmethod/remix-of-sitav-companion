@@ -7,6 +7,9 @@ import { DEMO_JOURNEY_STAGES } from "@/lib/demo-data/revenue-office";
 import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
+const isDemoMode = true; // TODO: wire to reality mode context
+
+
 const AUTOMATION_OVERLAY = [
   { stage: "Awareness", automations: [{ name: "Lead Magnet Delivery", status: "active", coverage: 94 }, { name: "Welcome Email Sequence", status: "active", coverage: 87 }] },
   { stage: "Interest", automations: [{ name: "Nurture Drip (5-part)", status: "active", coverage: 72 }, { name: "Retarget Pixel", status: "degraded", coverage: 45 }] },

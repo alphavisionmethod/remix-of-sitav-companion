@@ -23,6 +23,9 @@ import { ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransiti
 import { cn } from "@/lib/utils";
 import { CrossAppAction } from "@/components/sita/CrossAppAction";
 
+const isDemoMode = true; // TODO: wire to reality mode context
+
+
 // ── Chase Sequence ──────────────────────────────────────────────
 
 interface ChaseStep {

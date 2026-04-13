@@ -11,6 +11,9 @@ import { DEMO_ADVISOR_PREVIEW, DEMO_QUICK_ACTIONS, DEMO_REV_METRICS as DEMO_METR
 import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
+const isDemoMode = true; // TODO: wire to reality mode context
+
+
 const CONNECTION_HEALTH = [
   { service: "CRM / Pipeline", status: "connected", health: 98 },
   { service: "Booking Engine", status: "connected", health: 95 },

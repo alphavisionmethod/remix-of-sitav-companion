@@ -12,6 +12,9 @@ import {
   ThumbsUp, ThumbsDown, MessageSquare, ChevronDown, ChevronUp
 } from "lucide-react";
 
+const isDemoMode = true; // TODO: wire to reality mode context
+
+
 
 
 const ApprovalsCenter = () => {

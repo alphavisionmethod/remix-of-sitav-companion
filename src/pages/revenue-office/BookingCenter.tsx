@@ -19,6 +19,9 @@ import {
   DEMO_PREP_CHECKLISTS,
 } from "@/lib/demo-data/revenue-office";
 
+const isDemoMode = true; // TODO: wire to reality mode context
+
+
 export default function BookingCenter() {
   const { data: liveBookings, isLoading } = useBookings();
   const [tab, setTab] = useState("upcoming");

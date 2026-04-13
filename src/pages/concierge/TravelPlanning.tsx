@@ -12,6 +12,9 @@ import { motion } from "framer-motion";
 import { Plane, Calendar, DollarSign, FileText, CheckCircle, AlertCircle, Clock, Home, CreditCard } from "lucide-react";
 import { DEMO_householdSpillover, DEMO_itinerary, DEMO_postTripTasks, DEMO_preTripChecklist } from "@/lib/demo-data/concierge";
 
+const isDemoMode = true; // TODO: wire to reality mode context
+
+
 interface Trip {
   id: string; destination: string; dates: string; status: "planning" | "booked" | "upcoming" | "active" | "completed";
   travelers: string; budget: string; spent: string; tasks: number; completedTasks: number;

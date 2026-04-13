@@ -17,6 +17,9 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 
+const isDemoMode = true; // TODO: wire to reality mode context
+
+
 type ViewVariant = "founder" | "household" | "finance" | "premium";
 
 const sensitivityColor: Record<SensitivityLevel, string> = {
