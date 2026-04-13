@@ -1,78 +1,75 @@
 
 
-# Super Advanced Wow Experiences — Next Level Upgrades
+# Advanced Simulation Engine — "Run a Million Futures"
 
-## What's Already Built
-SITA OS already has: Advisor Meeting Rooms with voice, Trading Floor, War Room, Portfolio Globe, Decision Theater, Life Simulator, Digital Twins, Spatial Desktop, FlowSpace, CRM Integration Hub, 35+ platform connectors. That's impressive — here's what would take it to another level.
+## What Exists Today
 
-## Proposed Additions (Pick Your Favorites)
+- **ScenarioLabPage**: Basic scenario templates with 3 hardcoded outcomes (best/worst/likely)
+- **Monte Carlo in RevenueForecast**: 1,000-iteration revenue simulation with histogram
+- **GovernanceSimulatorService**: Policy-based what-if testing
+- **LifeSimulator**: Life-shock stress testing
 
-### 1. Real-Time Wealth Command Center — "Mission Control for Your Money"
-A cinematic full-screen dashboard combining ALL financial data into one live view:
-- **Animated net worth ticker** counting up/down in real-time with particle effects on milestones
-- **Money flow visualization**: Animated Sankey diagram showing income → accounts → expenses → investments with glowing streams
-- **Global heat map**: World map showing where your money is (accounts, investments, properties) with pulsing dots
-- **Live P&L ribbon** with heartbeat-style line that pulses with each transaction
-- **Danger zones**: Red glow areas for overdue bills, declining investments, or budget breaches
+None of these deliver the cinematic "run millions of scenarios" experience. They're scattered, small-scale, and not visually immersive.
 
-### 2. AI War Room — Cross-Domain Crisis & Opportunity Center
-When something big happens across ANY domain, this activates:
-- **Split-screen threat/opportunity board** pulling from business, money, AND concierge simultaneously
-- **Cascading impact tree**: Animated node graph showing how one event ripples across domains (e.g., "Client churned → Revenue drops → Cash reserve warning → Cancel planned vacation")
-- **All advisors rapid-fire**: Every advisor from every domain weighs in with staggered streaming responses
-- **One-click action plan**: AI synthesizes a prioritized action list with approval gates
+## What We're Building
 
-### 3. Time Machine — "What If You Could See Your Future"
-An immersive timeline visualization:
-- **3D scrollable timeline** showing past decisions and their outcomes (with proof receipts)
-- **Future projection cone**: Fan-out visualization showing best/worst/likely scenarios for the next 6-12 months
-- **Decision replay**: Pick any past decision, see what would have happened if you chose differently (AI-simulated)
-- **Milestone celebrations**: When you pass projected milestones, animated confetti + proof receipt
+A dedicated **Simulation Engine** page (`/simulation-engine`) — a cinematic, full-screen command center where users configure any decision, hit "Simulate", and watch millions of scenarios run in real-time with live-updating probability distributions, convergence animations, and outcome intelligence.
 
-### 4. Voice Command Center — "Hey SITA"
-Natural language voice control across the entire OS:
-- **Always-listening mode** with visual audio waveform in the status bar
-- **Voice-to-action**: "Show me my cash flow", "Schedule a meeting with John", "What's my portfolio doing?"
-- **Voice meeting notes**: Speak during advisor meetings, get auto-transcribed and action-itemized
-- **Ambient sound design**: Subtle UI sounds for transitions, notifications, and confirmations
+### Core Experience
 
-### 5. Living Desktop Wallpaper — Data-Driven Ambient Art
-The desktop background becomes a living visualization of your life:
-- **Calm mode**: Gentle particle system where each particle represents an active task/goal — particles settle as tasks complete
-- **Money mode**: Abstract flowing rivers of color representing cash flow — green streams for income, warm streams for expenses
-- **Business mode**: Constellation of stars representing clients — brightness = health score, size = revenue
-- **Mood-reactive**: Color temperature shifts based on portfolio performance, pending tasks, and time of day
+**1. Decision Input Panel** (left sidebar)
+- Natural language decision input: "Should I hire 3 engineers?" / "What if I raise prices 20%?"
+- OR structured parameter sliders: revenue range, cost factors, time horizon, risk tolerance
+- Domain selector: Business, Finance, Investment, Life
+- Variable injection: drag in real data from Digital Twins, portfolio, cash flow
+- Iteration count selector: 10K / 100K / 1M (with estimated run time)
 
-### 6. Holographic Advisor Presence
-Upgrade advisor avatars from static portraits to animated presences:
-- **Idle animations**: Advisors subtly breathe, blink, shift posture using CSS sprite sheets
-- **Reaction system**: When another advisor speaks, others show micro-reactions (nodding, thinking, concern)
-- **Typing indicators**: Advisors show "thinking" animation with floating thought particles before responding
-- **Entrance/exit animations**: Advisors walk in/out of the meeting room with cinematic transitions
+**2. Live Simulation Viewport** (center — the wow)
+- **Particle Storm**: Thousands of animated dots streaming across the screen, each representing a scenario outcome — they settle into a probability distribution curve in real-time
+- **Convergence Animation**: Watch the mean/median/percentiles stabilize as iterations increase — a live-updating histogram that fills in like a waterfall
+- **Heat Map Grid**: 2D grid showing outcome combinations (e.g., revenue × risk) with cells lighting up as scenarios hit them
+- **Running Counter**: Large cinematic ticker showing iterations completed (e.g., "847,293 of 1,000,000") with scenarios/second speed indicator
 
-### 7. Achievement & Gamification Layer
-Reward system that makes using the OS feel like leveling up:
-- **XP system**: Earn points for completing tasks, making decisions, connecting platforms
-- **Level badges**: Founder Level 1 → 50 with unlockable UI themes and advisor personalities
-- **Streak tracking**: Daily login streaks, weekly review streaks with visual flame indicators
-- **Trophy room**: A dedicated page showing all achievements with 3D rotating trophies
+**3. Results Intelligence Panel** (right sidebar)
+- **Probability Distribution**: Final histogram with P10/P25/P50/P75/P90 markers
+- **Outcome Clusters**: AI-identified clusters of scenarios ("In 34% of futures, you hit $1M+ revenue")
+- **Risk Radar**: Spider chart showing risk dimensions across all scenarios
+- **Sensitivity Analysis**: Which input variables had the most impact on outcomes
+- **Decision Recommendation**: AI-synthesized verdict with confidence score
+- **Tail Risk Alerts**: "In 3% of scenarios, cash reserves hit zero — here's why"
 
-## Recommended Priority (Maximum Wow per Effort)
+**4. Comparison Mode**
+- Run two decisions side-by-side and overlay their distributions
+- "Hire 3 engineers" vs "Hire 1 + outsource" — see which has better risk-adjusted outcomes
+- Animated merge/split of distribution curves
 
-1. **Wealth Command Center** — instant visual impact, ties everything together
-2. **Living Desktop Wallpaper** — makes the OS feel alive every second
-3. **Holographic Advisor Presence** — deepens the advisor relationship
-4. **Time Machine** — unique differentiator no other platform has
-5. **Voice Command Center** — accessibility + futuristic feel
-6. **AI War Room** — cross-domain intelligence showcase
-7. **Achievement Layer** — engagement and retention
+**5. Simulation History**
+- Every run saved with full parameters and results
+- Replay any past simulation with one click
+- Compare historical runs
 
-## Technical Approach
-- All visualizations use Framer Motion + CSS (no WebGL/Three.js needed)
-- Voice uses Web Speech API for recognition + existing ElevenLabs for synthesis
-- Living wallpaper renders on a canvas element behind the desktop grid
-- Achievement data stored in a new `user_achievements` table
-- Each feature is a standalone page/component — no breaking changes
+### Technical Approach
 
-Pick which ones excite you most and I'll build them.
+- **Monte Carlo Engine**: Pure JS, runs in `requestAnimationFrame` batches (1000 iterations per frame) to keep UI responsive while animating
+- **Canvas Renderer**: HTML5 Canvas for the particle storm and convergence animation — no WebGL needed
+- **Web Worker** (optional enhancement): Offload heavy iterations to a worker thread for 1M+ runs
+- **Framer Motion**: For panel transitions, result reveals, and comparison overlays
+- **AI Integration**: Uses existing `chat-advisor` edge function to generate natural-language decision recommendations from simulation results
+
+## Files
+
+- **Create**: `src/pages/SimulationEnginePage.tsx` (~500 lines — full page with all panels)
+- **Create**: `src/components/simulation/SimulationCanvas.tsx` (~200 lines — particle storm + convergence canvas)
+- **Create**: `src/components/simulation/SimulationControls.tsx` (~150 lines — input panel with sliders and NLP input)
+- **Create**: `src/components/simulation/SimulationResults.tsx` (~200 lines — results intelligence panel)
+- **Create**: `src/lib/simulation/monte-carlo-engine.ts` (~150 lines — configurable multi-variable Monte Carlo with batched execution)
+- **Edit**: `src/App.tsx` (add `/simulation-engine` route)
+
+## Visual Design
+
+- Dark cinematic background with subtle grid lines
+- Primary accent: electric blue particles transitioning to purple/gold based on outcome quality
+- Running counter uses monospace font with digit-flip animation
+- Distribution curve glows and pulses as it stabilizes
+- "Simulation Complete" moment: brief flash + particle burst + results slide in
 
