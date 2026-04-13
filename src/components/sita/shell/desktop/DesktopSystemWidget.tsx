@@ -25,8 +25,7 @@ export function DesktopSystemWidget() {
   const toggle = (id: string) => setActive(prev => ({ ...prev, [id]: !prev[id] }));
 
   return (
-    <div className="rounded-2xl border border-white/[0.1] bg-white/[0.06] backdrop-blur-2xl p-4">
-      <div className="text-[10px] font-medium uppercase tracking-[0.2em] text-white/40 mb-3">Controls</div>
+    <div className="rounded-3xl border border-white/[0.04] bg-white/[0.02] backdrop-blur-3xl p-4">
       <div className="flex items-center justify-between">
         {toggles.map((t) => {
           const isOn = active[t.id];
@@ -39,14 +38,14 @@ export function DesktopSystemWidget() {
               <div className={cn(
                 "flex h-10 w-10 items-center justify-center rounded-full transition-all duration-200",
                 isOn
-                  ? "bg-blue-500/90 text-white shadow-[0_0_15px_rgba(59,130,246,0.4)]"
-                  : "bg-white/[0.08] text-white/40 hover:bg-white/[0.14]"
+                  ? "bg-blue-500/80 text-white shadow-[0_0_12px_rgba(59,130,246,0.3)]"
+                  : "bg-white/[0.06] text-white/30 hover:bg-white/[0.1]"
               )}>
                 <t.icon className="h-4 w-4" />
               </div>
               <span className={cn(
                 "text-[9px] transition-colors",
-                isOn ? "text-white/70" : "text-white/30"
+                isOn ? "text-white/50" : "text-white/20"
               )}>
                 {t.label}
               </span>
