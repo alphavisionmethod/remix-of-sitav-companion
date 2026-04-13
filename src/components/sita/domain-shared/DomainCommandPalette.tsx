@@ -31,6 +31,8 @@ const domainAccent: Record<DomainId, string> = {
   business: "hsl(265 55% 58%)",
   finance: "hsl(152 55% 48%)",
   concierge: "hsl(285 55% 55%)",
+  files: "hsl(220 15% 55%)",
+  trust: "hsl(35 75% 55%)",
 };
 
 export function DomainCommandPalette({ domain, commands, isOpen, onClose }: DomainCommandPaletteProps) {
