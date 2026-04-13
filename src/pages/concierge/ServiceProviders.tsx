@@ -193,6 +193,9 @@ const ServiceProviders = () => {
       </div>
 
       {/* Provider Cards */}
+      {filtered.length === 0 ? (
+        <ConciergeEmptyState domain="services" icon={Wrench} />
+      ) : (
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.map((p) => {
           const expanded = expandedId === p.id;

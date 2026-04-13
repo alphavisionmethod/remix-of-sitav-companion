@@ -78,6 +78,9 @@ const ConciergeFiles = () => {
         onChange={setView}
       />
 
+      {filtered.length === 0 ? (
+        <ConciergeEmptyState domain="files" icon={FolderOpen} />
+      ) : (
       <div className="space-y-3">
         {filtered.map(file => {
           const Icon = typeIcon(file.type);
