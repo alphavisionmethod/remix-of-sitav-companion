@@ -2,7 +2,7 @@ import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/co
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { TripCard, PrepCard } from "@/components/sita/HouseholdComponents";
-import { ConciergeAdvisorInsightCard, TravelReadinessCard, ReservationStatusCard, ConciergePageWrapper } from "@/components/concierge";
+import { ConciergeAdvisorInsightCard, TravelReadinessCard, ReservationStatusCard, ConciergePageWrapper, ConciergeEmptyState } from "@/components/concierge";
 import type { TravelReadiness, Reservation } from "@/components/concierge";
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -60,7 +60,10 @@ const TravelPlanning = () => {
 
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="lg:col-span-2 space-y-6">
-          {view === "trips" && (
+          {view === "trips" && trips.length === 0 && (
+            <ConciergeEmptyState domain="travel" icon={Plane} />
+          )}
+          {view === "trips" && trips.length > 0 && (
             <div className="space-y-3">
               <SitaSectionHeader title="Trips" subtitle={`${trips.length} planned`} />
               {trips.map((trip) => {
