@@ -3,7 +3,9 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useMemo } from "react";
-import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
+import { SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
 import { SitaTabs, KPITile } from "@/components/sita/SitaComponents";
 import { motion } from "framer-motion";
 import {

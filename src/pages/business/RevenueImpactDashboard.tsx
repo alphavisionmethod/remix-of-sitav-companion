@@ -6,7 +6,9 @@
 
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
-import { SitaPageHeader, SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
+import { SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
 import { KPITile } from "@/components/sita/SitaComponents";
 import {
   AreaChart, Area, BarChart, Bar, XAxis, YAxis, CartesianGrid,
