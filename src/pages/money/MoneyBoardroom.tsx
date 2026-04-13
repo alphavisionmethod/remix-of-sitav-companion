@@ -69,6 +69,26 @@ const MoneyBoardroom = () => {
         </div>
       </SitaCard>
 
+      {/* Trust metadata */}
+      <SurfaceTrustStrip config={{
+        evidenceGrade: k.totalBalance > 0 ? "B" : "C",
+        dataSources: [
+          "Account balances",
+          "Bill schedules",
+          "Subscription tracker",
+          "Reserve goals",
+        ],
+        lastRefreshed: new Date(),
+        assumptions: [
+          { statement: "Safe-to-spend excludes reserved funds and upcoming bills", impact: "high" },
+          { statement: "Reserve health is ratio of current to target across all goals", impact: "medium" },
+          { statement: "Monthly burn includes all recurring subscriptions", impact: "medium" },
+        ],
+        caveats: k.totalBalance === 0
+          ? ["No financial data loaded — figures may be estimates"]
+          : undefined,
+      }} />
+
       {/* ── Daily Pulse ── */}
       {mode === "daily" && (
         <div className="grid gap-6 lg:grid-cols-2">

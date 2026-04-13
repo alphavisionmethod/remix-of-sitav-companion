@@ -81,6 +81,25 @@ const ReservesSavings = () => {
         <KPITile label="Active Goals" value={reserves.length} icon={Target} />
       </div>
 
+      {/* Trust metadata */}
+      <SurfaceTrustStrip config={{
+        evidenceGrade: isDemoMode ? "C" : reserves.length > 0 ? "A" : "D",
+        gradeLabel: isDemoMode ? "Simulated data" : reserves.length > 0 ? "Live data" : undefined,
+        dataSources: [
+          "Reserve goals database",
+          "Contribution tracking",
+          ...(isDemoMode ? ["Demo seed data"] : []),
+        ],
+        lastRefreshed: freshness.lastFetchedAt,
+        assumptions: [
+          { statement: "Overall health is weighted average across all reserve goals", impact: "high" },
+          { statement: "Monthly contribution assumes consistent auto-contribute schedule", impact: "medium" },
+        ],
+        caveats: isDemoMode
+          ? ["Demo mode — amounts are illustrative, not connected to real accounts"]
+          : undefined,
+      }} />
+
       <div className="grid gap-6 lg:grid-cols-2">
         <ReserveProgressChart />
         <ReserveOverTimeChart />
