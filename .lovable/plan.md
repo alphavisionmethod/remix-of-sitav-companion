@@ -1,65 +1,63 @@
 
 
-# Desktop Shell Audit + Wow Upgrades
+# Stunning Desktop Homepage — Mixed Design Inspiration
 
-## Audit Result: Implementation Status
+## Design Direction
 
-All 10 components are correctly implemented and wired:
-- **DesktopWidgetCard** — glassmorphic container with accent gradients, radial highlight
-- **DesktopContinuityPanel** — hero card with resume, pending items, trust posture
-- **DesktopClockWidget** — live clock + calendar events
-- **DesktopNotificationsWidget** — 3 notifications with priority badges
-- **DesktopWhatMattersWidget** — per-domain summaries
-- **DesktopQuickActionsWidget** — 4 action buttons wired to real navigation
-- **DesktopSystemWidget** — calm mode + open apps (static data)
-- **DesktopLeftRail** — 6-app vertical switcher
-- **DesktopNotificationCenter** — slide-out drawer
-- **DesktopSurface** — 4-layer composition with dual compositor
+Taking the best from all 4 reference images:
 
-**Issues Found:**
-1. `DesktopSystemWidget` uses hardcoded `openApps` array instead of reading from `useOSWindowContext`
-2. `DesktopLeftRail` has local-only `activeApp` state — not connected to navigation or app launcher
-3. No entrance animations on widget cards (they just appear)
-4. No hover micro-interactions on widget cards (only buttons have hover)
-5. `ContinuitySurface.tsx` exists but is NOT used — it was superseded by `DesktopContinuityPanel` but never deleted
-6. Top bar duplicates the existing `SystemMenuBar` — potential double-bar issue
+- **Image 1 (KDE/custom)**: Large centered logo with motivational tagline, big clock bottom-left, widget panel on right side with app shortcuts + system toggles + calendar + music player
+- **Image 2 (deepin/GNOME)**: Minimal clean wallpaper, large elegant clock bottom-right with full date, subtle constellation art overlay
+- **Image 3 (Garuda)**: Rich purple-pink gradient wallpaper, glassmorphic windows, warm dusky atmosphere
+- **Image 4 (deepin settings)**: Clean right-side panel overlay, polished dock, system settings panel aesthetic
 
-## Wow Upgrade Plan
+## The SITA Mix
 
-### 1. Animated Widget Entrances (staggered fade-up)
-Wrap each widget in `motion.div` with stagger delay so the desktop "breathes in" on load — cards cascade up one by one over 600ms total.
-
-### 2. Widget Card Hover Glow Effect
-Add a subtle border-glow and slight lift (`translateY(-2px)`) on hover to every `DesktopWidgetCard`. The glow color matches the card's accent gradient.
-
-### 3. Live System Widget
-Wire `DesktopSystemWidget` to read actual open windows from `useOSWindowContext()` instead of a hardcoded array.
-
-### 4. Left Rail → Real Navigation
-Connect `DesktopLeftRail` clicks to `useNavigate()` so tapping Business goes to `/business`, Finance to `/finance`, etc. Remove the local `activeApp` state.
-
-### 5. Ambient Pulse on Continuity Panel
-Add a slow breathing glow animation behind the Continuity hero card — a radial gradient that pulses opacity between 0.15 and 0.25 every 4 seconds, creating a "living" feel.
-
-### 6. Clock Colon Blink
-Make the colon in the large clock blink (opacity toggle every second) — a classic OS touch that signals the system is alive.
-
-### 7. Notification Priority Dot Animation
-High-priority notifications get a slow pulse animation on their badge, drawing subtle attention without being aggressive.
-
-### 8. Remove Unused ContinuitySurface.tsx
-Delete the superseded file to keep the codebase clean.
+A **wallpaper-dominant** desktop with:
+1. **Center stage**: SITA logo (large, 80px) with a subtle glow halo + tagline underneath ("Your sovereign operating environment")
+2. **Bottom-left**: Large elegant clock (72px font) with full date line — like image 2, clean and bold
+3. **Right widget panel**: Glassmorphic column (340px) with compact widgets — clock/calendar, quick app grid (2x4 icons like image 1), system toggles (brightness/wifi/bluetooth style like image 1), continuity card
+4. **Ambient background**: Enhanced with constellation-like particle connections (inspired by image 2's scorpion constellation) — subtle glowing dots connected by thin lines
+5. **Deep purple-magenta-blue gradient** wallpaper feel from images 1-3
 
 ## Files Changed
 
-| File | Action |
+| File | Change |
 |------|--------|
-| `src/components/sita/shell/desktop/DesktopWidgetCard.tsx` | Add hover glow + lift transition |
-| `src/components/sita/shell/desktop/DesktopClockWidget.tsx` | Add colon blink animation |
-| `src/components/sita/shell/desktop/DesktopSystemWidget.tsx` | Wire to useOSWindowContext |
-| `src/components/sita/shell/desktop/DesktopLeftRail.tsx` | Wire to useNavigate |
-| `src/components/sita/shell/desktop/DesktopNotificationsWidget.tsx` | Add pulse on high-priority badge |
-| `src/components/sita/shell/desktop/DesktopContinuityPanel.tsx` | Add ambient pulse glow |
-| `src/components/sita/shell/DesktopSurface.tsx` | Add staggered entrance animations to widget grid |
-| `src/components/sita/shell/ContinuitySurface.tsx` | Delete (superseded) |
+| `src/components/sita/shell/DesktopSurface.tsx` | Full rewrite — centered logo + tagline, bottom-left large clock, right widget panel, constellation overlay |
+| `src/components/sita/shell/desktop/DesktopClockWidget.tsx` | Rewrite — split into: right-panel compact calendar card AND a new large bottom-left clock component inline in DesktopSurface |
+| `src/components/sita/shell/desktop/DesktopQuickActionsWidget.tsx` | Redesign — 2x4 app icon grid with colored gradient backgrounds (like image 1's app shortcuts) |
+| `src/components/sita/shell/desktop/DesktopSystemWidget.tsx` | Redesign — horizontal toggle row (WiFi, Bluetooth, Shield, Calm mode) with active/inactive states like image 1's control center |
+| `src/components/sita/shell/ShellAmbientBackground.tsx` | Add constellation particle layer — glowing dots with connecting lines that drift slowly |
+
+## Technical Details
+
+### Constellation Overlay (ShellAmbientBackground)
+- 12-15 glowing dots positioned semi-randomly
+- Connected by thin (`0.5px`) white lines at `opacity-[0.06]`
+- Dots pulse gently between `opacity-0.1` and `opacity-0.25`
+- Only rendered when `intensity === "vivid"` and no static wallpaper
+
+### Center Logo Block
+- `img` tag with `h-20 w-20` + `drop-shadow-[0_0_40px_rgba(114,92,255,0.4)]` for halo glow
+- Tagline: `text-lg text-white/50 tracking-[0.15em] uppercase`
+- Positioned `absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2` (true center)
+- Staggered entrance: logo scales from 0.8, tagline fades up 200ms later
+
+### Bottom-Left Clock
+- Time: `text-7xl font-light text-white tracking-tight tabular-nums` with blinking colon
+- Date: `text-lg text-white/60` — "Tuesday, October 25" format
+- Position: `absolute left-12 bottom-28`
+
+### Right Widget Panel (340px)
+Compact column with 4 widgets stacked:
+1. **App Grid** — 2x4 rounded icon buttons with gradient backgrounds (Business=violet, Finance=emerald, Concierge=amber, Files=slate, Boardroom=fuchsia, Trust=cyan, Settings=gray, Search=white)
+2. **System Toggles** — horizontal row of circle toggles for WiFi/Shield/Calm/Battery with active blue highlight
+3. **Calendar** — compact calendar card (red header with day name, large date number, schedule items)
+4. **Continuity** — compact resume card
+
+### Ambient Background Enhancement
+- Existing orbs stay
+- Add dot-grid overlay at `opacity-[0.04]`
+- Add edge gradient: `linear-gradient(to_bottom,rgba(255,255,255,0.03),transparent_15%,transparent_85%,rgba(255,255,255,0.02))`
 
