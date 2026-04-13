@@ -10,6 +10,7 @@ import { motion } from "framer-motion";
 import { useState, useMemo } from "react";
 import type { LifeEventType, LifeMoneyImpact } from "@/packages/finance-contracts/advanced-intelligence";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
 
 interface LifeEventDef {
   type: LifeEventType;

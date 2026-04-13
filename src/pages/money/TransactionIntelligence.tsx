@@ -11,6 +11,7 @@ import { Receipt, Search, Tag, AlertTriangle, Repeat, ArrowUpDown, Sparkles, Shi
 import { motion } from "framer-motion";
 import { useState, useMemo } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
 
 interface DemoTx {
   id: string; date: string; description: string; merchant: string; amountCents: number; category: string;

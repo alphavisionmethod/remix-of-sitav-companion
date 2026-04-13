@@ -13,6 +13,7 @@ import { DollarSign, TrendingUp, TrendingDown, Building, PiggyBank, CreditCard, 
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
 
 const isDemoMode = true; // TODO: wire to reality mode context
 

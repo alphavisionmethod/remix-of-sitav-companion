@@ -24,6 +24,7 @@ import { ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransiti
 import { cn } from "@/lib/utils";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { CrossAppAction } from "@/components/sita/CrossAppAction";
+import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
 
 interface BillForm {
   payee: string;

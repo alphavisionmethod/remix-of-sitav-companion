@@ -10,6 +10,7 @@ import { ArrowRight, DollarSign, TrendingDown, Target, PiggyBank, CreditCard } f
 import { motion } from "framer-motion";
 import type { OpportunityCostEntry } from "@/packages/finance-contracts/advanced-intelligence";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
 
 const demoEntries: OpportunityCostEntry[] = [
   { category: "Dining & Delivery", spentCents: 42000, preventedReserveGrowthCents: 42000, delayedDebtPayoffDays: 8, delayedGoalProgressPct: 2.1, alternativeUse: "Emergency fund +$420" },
