@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import {
   TrendingUp, TrendingDown, DollarSign, PieChart, Shield, Eye, Calendar,
   ArrowRight, BarChart3, Briefcase, AlertTriangle, Clock, Brain, ChevronRight,
-  RefreshCw, Zap, Info, Bell, Network
+  RefreshCw, Zap, Info, Bell, Network, Activity, Siren
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { SparklineChart } from "@/components/sita/SparklineChart";
@@ -12,6 +12,7 @@ import { INSTRUMENTS, INVESTMENT_ADVISORS, PORTFOLIO, SAMPLE_ORDERS, SAMPLE_THES
 import { SPARKLINE_DATA, WHAT_CHANGED, ADVISOR_EVENT_ALERTS } from "@/lib/investment-office/mock-data";
 import { useInvestmentDecisions } from "@/hooks/use-investment-office";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { PortfolioGlobe } from "@/components/investment/PortfolioGlobe";
 
 const fmt = (n: number) => n >= 1e9 ? `$${(n / 1e9).toFixed(1)}B` : n >= 1e6 ? `$${(n / 1e6).toFixed(1)}M` : n >= 1e3 ? `$${(n / 1e3).toFixed(1)}K` : `$${n.toFixed(2)}`;
 const pctFmt = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
@@ -118,7 +119,7 @@ export default function InvestmentBoardroom() {
           </h1>
           <p className="text-sm text-muted-foreground mt-1">Your capital command center</p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex gap-2 flex-wrap">
           {[
             { label: "Markets", path: "/investments/markets" },
             { label: "Portfolio", path: "/investments/portfolio" },
@@ -126,6 +127,8 @@ export default function InvestmentBoardroom() {
             { label: "Execute", path: "/investments/execute" },
             { label: "Research", path: "/investments/research" },
             { label: "Risk", path: "/investments/risk" },
+            { label: "Trading Floor", path: "/investments/trading-floor", icon: Activity },
+            { label: "War Room", path: "/investments/war-room", icon: Siren },
             { label: "Knowledge Graph", path: "/investments/knowledge-graph", icon: Network },
           ].map(l => (
             <button key={l.path} onClick={() => navigate(l.path)}
@@ -136,6 +139,18 @@ export default function InvestmentBoardroom() {
           ))}
         </div>
       </div>
+
+      {/* Portfolio Globe Hero */}
+      <motion.div
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="rounded-2xl border border-primary/15 bg-gradient-to-br from-primary/5 via-card to-card p-6"
+      >
+        <h3 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+          <Briefcase className="h-4 w-4 text-primary" /> Portfolio Globe
+        </h3>
+        <PortfolioGlobe />
+      </motion.div>
 
       {/* Ticker Ribbon */}
       <TickerRibbon />
