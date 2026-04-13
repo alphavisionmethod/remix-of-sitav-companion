@@ -24,10 +24,22 @@ const MODULES = [
 
 type SessionScope = "global" | "business" | "finance" | "concierge";
 
+type SessionMode = "review" | "simulation" | "approval";
+
+const MODULE_SESSION_MODE: Record<string, SessionMode> = {
+  executive: "review",
+  pulse: "review",
+  synthesis: "review",
+  simulation: "simulation",
+  approvals: "approval",
+  memory: "review",
+};
+
 export function BoardroomAppShell() {
   const [activeModule, setActiveModule] = useState("executive");
   const [scope, setScope] = useState<SessionScope>("global");
 
+  const sessionMode = MODULE_SESSION_MODE[activeModule] || "review";
   const viewProps = { scope, onNavigate: setActiveModule };
 
   const renderView = () => {
@@ -89,7 +101,7 @@ export function BoardroomAppShell() {
 
       {/* Main content */}
       <div className="flex-1 flex flex-col min-w-0 z-10">
-        <BoardroomHeader scope={scope} onScopeChange={setScope} />
+        <BoardroomHeader scope={scope} onScopeChange={setScope} sessionMode={sessionMode} />
         <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-[hsl(0_0%_100%/0.06)] scrollbar-track-transparent">
           {renderView()}
         </div>
