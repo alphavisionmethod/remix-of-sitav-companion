@@ -908,6 +908,7 @@ const App = () => (
                     <Route path="/wealth-command" element={<WealthCommandCenter />} />
                     <Route path="/time-machine" element={<TimeMachinePage />} />
                     <Route path="/achievements" element={<AchievementsPage />} />
+                    <Route path="/simulation-engine" element={<SimulationEnginePage />} />
                     <Route path="/storage" element={<StorageManager />} />
                     <Route path="/network" element={<NetworkUtility />} />
                     <Route path="/planning-canvas" element={<PlanningCanvas />} />
