@@ -678,7 +678,7 @@ export function FloatingWindow({
           if (windowId) WindowPerformanceMonitor.markWindowAnimComplete(windowId);
         }}
         className={cn(
-          isMaximized ? "fixed inset-0" : "absolute overflow-hidden",
+          isMaximized ? "fixed inset-0 flex flex-col" : "absolute overflow-hidden",
           !isMaximized && "overflow-hidden",
           "backdrop-blur-2xl transition-[box-shadow,border-color,filter] duration-[120ms]",
           isFocused
