@@ -27,7 +27,7 @@ const domains = [
 
 export function DesktopWhatMattersWidget() {
   return (
-    <DesktopWidgetCard title="What matters now" accent="from-emerald-500/15 via-white/[0.05] to-teal-400/10">
+    <DesktopWidgetCard title="What matters now" accent="from-emerald-500/15 via-white/[0.05] to-teal-400/10" delay={0.25}>
       <div className="space-y-4">
         {domains.map((d) => (
           <div key={d.id} className="rounded-2xl border border-white/10 bg-black/15 p-4">

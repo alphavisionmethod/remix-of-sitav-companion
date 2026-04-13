@@ -44,7 +44,7 @@ const priorityStyle = {
 
 export function DesktopNotificationsWidget() {
   return (
-    <DesktopWidgetCard title="Notifications" accent="from-fuchsia-500/15 via-white/[0.05] to-amber-400/10">
+    <DesktopWidgetCard title="Notifications" accent="from-fuchsia-500/15 via-white/[0.05] to-amber-400/10" delay={0.15}>
       <div className="space-y-3">
         {SEED_NOTIFICATIONS.map((item) => (
           <div
@@ -62,7 +62,7 @@ export function DesktopNotificationsWidget() {
               <span className="rounded-full border border-white/10 bg-white/[0.08] px-2 py-1 text-[10px] uppercase tracking-[0.18em] text-white/55">
                 {item.app}
               </span>
-              <span className={`rounded-full px-2 py-1 text-[10px] uppercase tracking-[0.18em] ${priorityStyle[item.priority]}`}>
+              <span className={`rounded-full px-2 py-1 text-[10px] uppercase tracking-[0.18em] ${priorityStyle[item.priority]} ${item.priority === "high" ? "animate-pulse" : ""}`}>
                 {item.priority}
               </span>
             </div>

@@ -17,13 +17,13 @@ export function DesktopQuickActionsWidget({ onOpenCommand }: Props) {
   ];
 
   return (
-    <DesktopWidgetCard title="Quick actions" accent="from-white/10 via-white/[0.05] to-violet-500/10">
+    <DesktopWidgetCard title="Quick actions" accent="from-white/10 via-white/[0.05] to-violet-500/10" delay={0.3}>
       <div className="grid grid-cols-2 gap-3">
         {actions.map((a) => (
           <button
             key={a.label}
             onClick={a.action}
-            className="flex items-center gap-2 rounded-2xl border border-white/10 bg-black/15 px-4 py-4 text-left text-sm text-white/80 transition hover:-translate-y-0.5 hover:bg-white/10"
+            className="flex items-center gap-2 rounded-2xl border border-white/10 bg-black/15 px-4 py-4 text-left text-sm text-white/80 transition duration-200 hover:-translate-y-1 hover:bg-white/10 hover:shadow-[0_8px_24px_rgba(0,0,0,0.3)]"
           >
             <a.icon className="h-4 w-4" />
             <span>{a.label}</span>
