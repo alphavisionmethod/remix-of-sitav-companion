@@ -1,39 +1,36 @@
 #!/usr/bin/env node
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Launch Tier Index Generator
-// Maps services to launch tiers (MVP/pilot/GA)
+// Maps services to launch tiers (MVP/pilot/GA) using real logic
 // ═══════════════════════════════════════════════════════════════
 
 import * as fs from "fs";
 
 const svcManifest = JSON.parse(fs.readFileSync("generated/service-manifest.json", "utf-8"));
-const services: { id: string; name: string; status: string; owner: string; dependencies: string[] }[] = svcManifest.services || [];
+const services: { id: string; name: string; domain: string; status: string; owner: string; dependencies: string[] }[] = svcManifest.services || [];
 
-// Tier assignment based on service criticality and dependencies
-function assignLaunchTier(svc: { id: string; status: string; dependencies: string[] }): "mvp" | "pilot" | "ga" {
-  const mvpServices = [
-    "api-gateway", "brain-core", "event-bus", "policy-engine", "approval-engine",
-    "executor-service", "receipt-service", "identity", "role-permission-engine",
-  ];
-  const pilotServices = [
-    "business-os", "finance-os", "concierge-os", "capability-router",
-    "verification-engine", "projections", "memory-service", "connector-control-plane",
-    "connector-runners", "boardroom", "entity-graph",
-  ];
+// MVP: core platform spine — auth, brain, events, policy, execution, identity
+const MVP_DOMAINS = new Set(["brain-core", "api-gateway", "event-bus", "identity", "auth", "executor-service", "receipt-service", "policy-engine", "approval-engine", "role-permission-engine", "security", "database"]);
+const MVP_NAMES = new Set(["brain-core", "api-gateway", "event-bus", "identity", "identity-auth", "executor-service", "receipt-service", "policy-engine", "approval-engine", "role-permission-engine", "security", "database", "auth", "keyvault", "setup", "onboarding"]);
 
-  if (mvpServices.includes(svc.id)) return "mvp";
-  if (pilotServices.includes(svc.id)) return "pilot";
+// Pilot: domain OS surfaces — business, finance, concierge
+const PILOT_DOMAINS = new Set(["business-os", "finance-os", "concierge-os", "boardroom-service", "connector-control-plane", "connector-runners", "entity-graph", "verification-engine", "projections", "memory-service", "capability-router", "notifications"]);
+const PILOT_NAMES = new Set(["business-os", "finance-os", "concierge-os", "boardroom-service", "connector-control-plane", "connector-runners", "entity-graph", "verification-engine", "projections", "memory-service", "capability-router", "notifications", "analytics", "booking-scheduling", "profiles"]);
+
+function assignLaunchTier(svc: { name: string; domain: string }): "mvp" | "pilot" | "ga" {
+  if (MVP_DOMAINS.has(svc.domain) || MVP_NAMES.has(svc.name)) return "mvp";
+  if (PILOT_DOMAINS.has(svc.domain) || PILOT_NAMES.has(svc.name)) return "pilot";
   return "ga";
 }
 
 const tierEntries = services.map(svc => ({
-  serviceId: svc.id,
+  serviceId: svc.id || svc.name,
   serviceName: svc.name,
-  owner: svc.owner,
-  currentStatus: svc.status,
+  owner: svc.owner || svc.domain,
+  currentStatus: svc.status || "active",
   launchTier: assignLaunchTier(svc),
   dependencyCount: svc.dependencies?.length || 0,
-  readyForTier: svc.status !== "skeleton",
+  readyForTier: (svc.status || "") !== "skeleton",
 }));
 
 const tierDistribution = {
@@ -43,7 +40,7 @@ const tierDistribution = {
 };
 
 const out = {
-  version: "1.0.0",
+  version: "1.1.0",
   generatedAt: new Date().toISOString(),
   totalServices: tierEntries.length,
   tierDistribution,

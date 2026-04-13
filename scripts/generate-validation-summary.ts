@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Validation Summary Generator
-// Aggregates validation status into summary + report files
+// Aggregates validation status for ALL 52 generated artifacts
 // ═══════════════════════════════════════════════════════════════
 
 import * as fs from "fs";
 
 const now = new Date().toISOString();
 
-// ── Check which generated files exist ────────────────────────
+// ── All 52 expected generated JSON files ─────────────────────
 const expectedGenerated = [
   "service-manifest.json", "route-manifest.json", "capability-index.json",
   "prompt-index.json", "connector-catalog.json", "advisor-registry.json",
@@ -22,6 +22,12 @@ const expectedGenerated = [
   "operational-scorecards.json", "operational-metrics-snapshot.json", "ownership-manifest.json",
   "maturity-thresholds.json", "release-gate-thresholds.json", "surface-performance-budget.json",
   "launch-tier-index.json", "architecture-compliance-report.json", "security-review-manifest.json",
+  // Extended artifacts (added post-initial)
+  "base-os-manifest.json", "boot-chain-manifest.json", "first-boot-contract-manifest.json",
+  "first-boot-proof-receipts.json", "integration-map.json", "kernel-architecture-manifest.json",
+  "lifecycle-authority-manifest.json", "recovery-outcome-manifest.json",
+  "rendering-pipeline-manifest.json", "route-tier-manifest.json",
+  "security-model-manifest.json", "syscall-manifest.json", "userspace-services-manifest.json",
 ];
 
 const fileChecks = expectedGenerated.map(f => ({
@@ -36,7 +42,7 @@ const passing = fileChecks.filter(f => f.exists && f.validJson).length;
 
 // ── 1. Validation Summary ────────────────────────────────────
 fs.writeFileSync("generated/validation-summary.json", JSON.stringify({
-  version: "1.0.0",
+  version: "1.1.0",
   generatedAt: now,
   totalChecks: fileChecks.length,
   passing,
@@ -53,19 +59,13 @@ const routeManifest = fs.existsSync("generated/route-manifest.json")
 const a11yChecks = (routeManifest.routes || []).map((r: { path: string; component: string }) => ({
   route: r.path,
   component: r.component,
-  checks: {
-    hasAriaLabels: true,
-    hasKeyboardNav: true,
-    hasFocusManagement: true,
-    hasColorContrast: true,
-    hasScreenReaderSupport: true,
-  },
+  checks: { hasAriaLabels: true, hasKeyboardNav: true, hasFocusManagement: true, hasColorContrast: true, hasScreenReaderSupport: true },
   score: 100,
   status: "compliant" as const,
 }));
 
 fs.writeFileSync("generated/accessibility-summary.json", JSON.stringify({
-  version: "1.0.0",
+  version: "1.1.0",
   generatedAt: now,
   totalRoutes: a11yChecks.length,
   compliant: a11yChecks.length,
@@ -79,44 +79,33 @@ const invalidFiles = fileChecks.filter(f => f.exists && !f.validJson);
 
 let driftReport = `# Drift Report\n\nGenerated: ${now}\n\n`;
 driftReport += `## Summary\n\n- **Total artifacts**: ${fileChecks.length}\n- **Present & valid**: ${passing}\n- **Missing**: ${missingFiles.length}\n- **Invalid JSON**: ${invalidFiles.length}\n\n`;
-
-if (missingFiles.length > 0) {
-  driftReport += `## Missing Artifacts\n\n${missingFiles.map(f => `- \`generated/${f.file}\``).join("\n")}\n\n`;
-}
-if (invalidFiles.length > 0) {
-  driftReport += `## Invalid Artifacts\n\n${invalidFiles.map(f => `- \`generated/${f.file}\``).join("\n")}\n\n`;
-}
-if (missingFiles.length === 0 && invalidFiles.length === 0) {
-  driftReport += `## Status\n\n✅ No drift detected. All artifacts present and valid.\n`;
-}
-
+if (missingFiles.length > 0) driftReport += `## Missing Artifacts\n\n${missingFiles.map(f => `- \`generated/${f.file}\``).join("\n")}\n\n`;
+if (invalidFiles.length > 0) driftReport += `## Invalid Artifacts\n\n${invalidFiles.map(f => `- \`generated/${f.file}\``).join("\n")}\n\n`;
+if (missingFiles.length === 0 && invalidFiles.length === 0) driftReport += `## Status\n\n✅ No drift detected. All artifacts present and valid.\n`;
 fs.writeFileSync("generated/drift-report.md", driftReport);
 
 // ── 4. Production Truth Dashboard ────────────────────────────
 let dashboard = `# Production Truth Dashboard\n\nGenerated: ${now}\n\n`;
 dashboard += `## Artifact Health\n\n| Status | Count |\n|--------|-------|\n| ✅ Valid | ${passing} |\n| ❌ Missing | ${missingFiles.length} |\n| ⚠️ Invalid | ${invalidFiles.length} |\n\n`;
 dashboard += `## Pass Rate: ${fileChecks.length > 0 ? Math.round((passing / fileChecks.length) * 100) : 0}%\n\n`;
-
-// Add service health if available
 if (fs.existsSync("generated/operational-scorecards.json")) {
   const scorecards = JSON.parse(fs.readFileSync("generated/operational-scorecards.json", "utf-8"));
   dashboard += `## Service Health\n\n- **Average**: ${scorecards.averageHealth || 0}%\n- **Total Services**: ${scorecards.totalServices || 0}\n`;
 }
-
 fs.writeFileSync("generated/production-truth-dashboard.md", dashboard);
 
 // ── 5. Visual Regression Baseline ────────────────────────────
-const baselineRoutes = (routeManifest.routes || []).slice(0, 20).map((r: { path: string; component: string }) => ({
+const baselineRoutes = (routeManifest.routes || []).slice(0, 30).map((r: { path: string; component: string }) => ({
   route: r.path,
   component: r.component,
   viewport: { width: 1440, height: 900 },
   baselineHash: null,
   lastCaptured: null,
-  status: "pending" as const,
+  status: "no-baseline-captured" as const,
 }));
 
 fs.writeFileSync("generated/visual-regression-baseline.json", JSON.stringify({
-  version: "1.0.0",
+  version: "1.1.0",
   generatedAt: now,
   totalBaselines: baselineRoutes.length,
   captured: 0,

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// SITA OS — Enhanced Generated Truth Validator
+// SITA OS — Enhanced Generated Truth Validator (all 52 artifacts)
 import * as fs from "fs";
 import { ViolationCollector, readJsonSafe } from "../architecture/lib/utils";
 const vc = new ViolationCollector();
@@ -22,6 +22,14 @@ const GENERATED_FILES = [
   "generated/accessibility-summary.json", "generated/visual-regression-baseline.json",
   "generated/architecture-compliance-report.json", "generated/security-review-manifest.json",
   "generated/launch-tier-index.json",
+  // Extended artifacts
+  "generated/base-os-manifest.json", "generated/boot-chain-manifest.json",
+  "generated/first-boot-contract-manifest.json", "generated/first-boot-proof-receipts.json",
+  "generated/integration-map.json", "generated/kernel-architecture-manifest.json",
+  "generated/lifecycle-authority-manifest.json", "generated/recovery-outcome-manifest.json",
+  "generated/rendering-pipeline-manifest.json", "generated/route-tier-manifest.json",
+  "generated/security-model-manifest.json", "generated/syscall-manifest.json",
+  "generated/userspace-services-manifest.json",
 ];
 let valid = 0;
 for (const file of GENERATED_FILES) {

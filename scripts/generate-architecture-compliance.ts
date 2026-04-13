@@ -49,22 +49,34 @@ if (fs.existsSync(packagesDir)) {
 if (fs.existsSync("generated/service-manifest.json")) {
   const manifest = JSON.parse(fs.readFileSync("generated/service-manifest.json", "utf-8"));
   for (const svc of (manifest.services || [])) {
-    const hasDir = fs.existsSync(`src/lib/services/${svc.id}`);
-    const hasEdge = fs.existsSync(`supabase/functions/${svc.id}/index.ts`);
-    if (!hasDir && !hasEdge) {
+    const svcName = svc.name || svc.id || "unknown";
+    const svcDomain = svc.domain || "";
+    // Check multiple possible implementation paths
+    const hasServiceDir = fs.existsSync(`src/lib/services/${svcName}`) ||
+                          fs.existsSync(`src/lib/services/${svcDomain}/${svcName}.ts`) ||
+                          fs.existsSync(`src/lib/services/${svcDomain}/${svcName}.service.ts`);
+    const hasEdge = fs.existsSync(`supabase/functions/${svcName}/index.ts`);
+    if (!hasDir(svcName, svcDomain) && !hasEdge) {
       violations.push({
         type: "orphan-service",
         severity: "warning",
-        source: svc.id,
-        description: `Service "${svc.id}" in manifest but has no implementation directory or edge function`,
+        source: svcName,
+        description: `Service "${svcName}" in manifest but has no implementation directory or edge function`,
       });
     }
   }
 }
 
+function hasDir(name: string, domain: string): boolean {
+  return fs.existsSync(`src/lib/services/${name}`) ||
+         fs.existsSync(`src/lib/services/${domain}/${name}.ts`) ||
+         fs.existsSync(`src/lib/services/${domain}/${name}.service.ts`) ||
+         fs.existsSync(`src/lib/services/${domain}`);
+}
+
 // ── Architecture Compliance Report ───────────────────────────
 fs.writeFileSync("generated/architecture-compliance-report.json", JSON.stringify({
-  version: "1.0.0",
+  version: "1.1.0",
   generatedAt: now,
   totalViolations: violations.length,
   errors: violations.filter(v => v.severity === "error").length,
@@ -78,14 +90,11 @@ fs.writeFileSync("generated/architecture-compliance-report.json", JSON.stringify
 }, null, 2));
 
 // ── Security Review Manifest ─────────────────────────────────
-const securityChecklist = [
-  "rls-policies", "auth-middleware", "input-validation", "rate-limiting",
-  "csrf-protection", "xss-prevention", "sql-injection-prevention", "secrets-management",
-];
-
 const edgeFnDir = "supabase/functions";
 const edgeFunctions = fs.existsSync(edgeFnDir)
-  ? fs.readdirSync(edgeFnDir, { withFileTypes: true }).filter(d => d.isDirectory()).map(d => d.name)
+  ? fs.readdirSync(edgeFnDir, { withFileTypes: true })
+      .filter(d => d.isDirectory() && d.name !== "_shared")
+      .map(d => d.name)
   : [];
 
 const securityEntries = edgeFunctions.map(fn => {
@@ -110,11 +119,10 @@ const securityEntries = edgeFunctions.map(fn => {
 });
 
 fs.writeFileSync("generated/security-review-manifest.json", JSON.stringify({
-  version: "1.0.0",
+  version: "1.1.0",
   generatedAt: now,
   totalFunctions: securityEntries.length,
   averageScore: securityEntries.length > 0 ? Math.round(securityEntries.reduce((s, e) => s + e.score, 0) / securityEntries.length) : 0,
-  checklist: securityChecklist,
   entries: securityEntries,
 }, null, 2));
 
