@@ -1,88 +1,78 @@
 
 
-# Advisor Meeting Room with AI-Generated Avatars
+# Investment Office Wow Upgrade — War Room, Live Trading Floor, and Advisor Integration
 
-## What We're Building
+## Current State
 
-A **virtual boardroom meeting** experience where you sit at a table with your AI advisors — each with a unique, AI-generated character portrait. You can run live multi-advisor discussions, see advisors react to each other's points, and get synthesized decisions.
+The Investment Office has 39 pages — the richest domain in SITA OS. However:
+- The **AdvisorBoard** (791 lines) is a standalone implementation with its own view modes, NOT using the new `AdvisorCouncilShell` with Meeting Room, Voice, and Personality features
+- Pages like **Decision Theater**, **Capital Twin**, and **Boardroom** are functional but visually flat — standard cards and grids without the premium animations used elsewhere
+- There is no **live trading floor** visual experience or **War Room** for crisis/opportunity moments
 
 ## Plan
 
-### Step 1: Generate and store advisor avatar portraits
+### Step 1: Upgrade Investment AdvisorBoard to use AdvisorCouncilShell
 
-Create an edge function `advisor-avatar-generate` that uses the Lovable AI image generation model (`google/gemini-3.1-flash-image-preview`) to generate unique character portraits for each advisor persona. Portraits are stored in the `user-files` storage bucket under `advisor-avatars/`. Each advisor gets a distinct visual identity:
+Replace the 791-line custom implementation with the shared `AdvisorCouncilShell`, giving Investment advisors instant access to: Meeting Room (with voice synthesis), Debate View, Ask Chat, Timeline, Detail Drawer with Personality Editor — all the features Money and Business already have.
 
-- **Money advisors**: Sharp-suited financial professionals, emerald/green tones
-- **Business advisors**: Executive/corporate styling, purple tones  
-- **Concierge advisors**: Polished hospitality aesthetic, gold/amber tones
-- **Strategy/Growth**: Futuristic/analytical look, blue/cyan tones
+Map the 5 existing investment advisors (`INVESTMENT_ADVISORS`) into `AdvisorConfig` format. Keep the existing Council and Compare views as custom tabs within the shell.
 
-A database migration adds an `avatar_url` column to `advisor_knowledge` (or a new `advisor_profiles` table) to persist the generated portrait URL per advisor.
+### Step 2: Create a Live Trading Floor visualization
 
-### Step 2: Create `AdvisorPortrait` component
+Create `src/pages/investment-office/TradingFloor.tsx` — an immersive real-time market visualization:
+- **Heatmap grid**: Asset classes as colored blocks (green/red intensity by performance), inspired by finviz treemaps
+- **Live ticker ribbon** (reuse existing `TickerRibbon` component)
+- **Sector rotation radar**: Animated radar chart showing capital flow between sectors
+- **Volume pulse**: Subtle background pulse animation synced to simulated market activity
+- **Quick-action hotspots**: Click any asset block to jump to its instrument detail or initiate a trade review
 
-Create `src/components/advisors/AdvisorPortrait.tsx` — replaces the icon-based `AdvisorAvatar` with a rich portrait component:
-- Circular cropped AI-generated image with domain-colored gradient border ring
-- Animated speaking indicator (pulsing ring + subtle scale) when the advisor is "talking"
-- Fallback to the existing icon-based avatar if no portrait exists
-- Sizes: `sm` (32px), `md` (48px), `lg` (80px), `xl` (120px for meeting view)
+### Step 3: Create an Investment War Room
 
-### Step 3: Create `AdvisorMeetingRoom` component
+Create `src/pages/investment-office/WarRoom.tsx` — activates when high-conviction events occur:
+- **Threat/Opportunity dashboard**: Split-screen with red (risks) and green (opportunities) panels
+- **Advisor rapid-response**: Shows all 5 advisors' instant takes on the event, streaming in real-time via `chat-advisor`
+- **Impact simulation**: Visual showing portfolio impact (before/after bars) of the event
+- **Action panel**: Pre-drafted trades with behavioral firewall status, ready for one-click review
+- **Crisis timeline**: Horizontal timeline of cascading events with severity indicators
+- Premium dark UI with amber/red accent lighting for urgency
 
-Create `src/components/advisors/AdvisorMeetingRoom.tsx` — the hero feature:
+### Step 4: Create a Portfolio Globe / 3D Asset Map
 
-**Visual layout**: A dark, premium "conference table" view:
-- Advisors arranged in a semicircle around a virtual table (CSS grid + absolute positioning)
-- Each advisor shows their portrait, name plate, and a live status indicator
-- Center area shows the current topic/question and synthesized output
-- Active speaker gets a glowing highlight ring and their card elevates
+Create `src/components/investment/PortfolioGlobe.tsx` — a visual "globe" of your portfolio:
+- CSS-based 3D rotating ring of asset cards arranged in a circle
+- Each card shows symbol, allocation %, and a sparkline
+- Size of each card proportional to position size
+- Hover expands the card with full details
+- Center shows total portfolio value with animated count-up
+- Embed this as a hero section in the Investment Boardroom dashboard
 
-**Interaction flow**:
-1. User types a question or selects a topic
-2. Each advisor "responds" in sequence via `chat-advisor` calls (with slight stagger delay for realism)
-3. Responses appear as speech bubbles next to each advisor's portrait
-4. A synthesis panel at the bottom shows the combined recommendation
-5. User can tap any advisor to get them to elaborate
+### Step 5: Upgrade Decision Theater with cinematic mode
 
-**Animations**:
-- Advisors fade in with staggered entrance when meeting "starts"
-- Active speaker portrait scales up with a breathing glow
-- Speech bubbles slide in from the advisor's position
-- Thinking state shows animated dots below the advisor's portrait
+Enhance `DecisionTheater.tsx`:
+- **Spotlight animation**: When reviewing a trade, dim everything except the active decision card (theatrical spotlight effect)
+- **Advisor voting panel**: Each advisor casts a vote (approve/reject/abstain) with animated card flip reveal
+- **Countdown timer**: Optional decision deadline with a dramatic countdown ring
+- **Sound design hooks**: Visual "audio wave" indicators (no actual sound unless voice is enabled)
 
-### Step 4: Create `AdvisorMeetingControls` component
+### Step 6: Add routes and navigation
 
-Create `src/components/advisors/AdvisorMeetingControls.tsx`:
-- "Start Meeting" button with a premium animation (ripple + glow)
-- Topic input field with suggested topics per domain
-- "Mute/Unmute" individual advisors (exclude from responses)
-- "End Meeting" with a summary export
-- Meeting duration timer
-
-### Step 5: Add "Meeting" view mode to `AdvisorCouncilShell`
-
-Add a fifth tab "Meeting" (with a `Video` icon) to the existing council shell. When selected, renders `AdvisorMeetingRoom` with the domain's advisors. This makes the meeting available in both Money and Business boards.
-
-### Step 6: Create avatar generation admin tool
-
-Add a "Generate Avatars" button in the advisor settings (where `AdvisorKnowledgePanel` lives). Clicking it calls the edge function to generate portraits for all advisors in that domain. Shows a progress indicator during generation. Generated avatars are cached — only regenerate on demand.
+Register `TradingFloor` and `WarRoom` in the router. Add navigation entries in the Investment Office sidebar/menu.
 
 ## Files
 
-- **Create**: `supabase/functions/advisor-avatar-generate/index.ts` (~120 lines)
-- **Create**: `src/components/advisors/AdvisorPortrait.tsx` (~80 lines)
-- **Create**: `src/components/advisors/AdvisorMeetingRoom.tsx` (~300 lines)
-- **Create**: `src/components/advisors/AdvisorMeetingControls.tsx` (~100 lines)
-- **Edit**: `src/components/advisors/AdvisorCouncilShell.tsx` (add Meeting tab)
-- **Edit**: `src/components/advisors/AdvisorDetailDrawer.tsx` (use AdvisorPortrait)
-- **Migration**: Add `advisor_profiles` table (id, advisor_id, domain, display_name, avatar_url, personality_traits, visual_style)
+- **Edit**: `src/pages/investment-office/AdvisorBoard.tsx` (replace with AdvisorCouncilShell)
+- **Create**: `src/pages/investment-office/TradingFloor.tsx` (~250 lines)
+- **Create**: `src/pages/investment-office/WarRoom.tsx` (~300 lines)
+- **Create**: `src/components/investment/PortfolioGlobe.tsx` (~150 lines)
+- **Edit**: `src/pages/investment-office/DecisionTheater.tsx` (cinematic upgrades)
+- **Edit**: `src/pages/investment-office/InvestmentBoardroom.tsx` (add PortfolioGlobe hero)
+- **Edit**: Router config (add new routes)
 
 ## Technical Details
 
-- Avatar generation uses `google/gemini-3.1-flash-image-preview` via the Lovable AI Gateway with `LOVABLE_API_KEY`
-- Generated images are base64 → uploaded to `user-files` bucket under `advisor-avatars/{advisor_id}.png`
-- Meeting room calls `chat-advisor` for each advisor in parallel with `Promise.allSettled`, then renders responses with staggered animation
-- The semicircle layout uses CSS `transform: rotate()` + `translateX()` for responsive positioning
-- Speech bubble positioning uses `getBoundingClientRect` relative to the advisor's portrait element
-- All animations use Framer Motion with spring physics matching existing OS conventions
+- Investment advisors mapped to `AdvisorConfig`: Macro Strategist, Risk Sentinel, Thesis Analyst, Behavioral Coach, Execution Specialist
+- Trading Floor heatmap uses CSS Grid with `background-color` interpolated from performance data
+- Portfolio Globe uses CSS `transform: rotateY()` with `perspective` for 3D ring, animated via Framer Motion
+- War Room streams advisor responses via staggered `chat-advisor` calls (same pattern as Meeting Room)
+- Decision Theater spotlight uses `box-shadow` with large spread + dark overlay
 
