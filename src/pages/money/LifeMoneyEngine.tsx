@@ -5,7 +5,6 @@
 import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/SitaCard";
 import { KPITile } from "@/components/sita/SitaComponents";
 import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
-import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { Home, Baby, Briefcase, Users, Building, CreditCard, RefreshCw, Rocket, Sun, Heart, Plane, ArrowRight, AlertTriangle, TrendingDown, TrendingUp, DollarSign } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState, useMemo } from "react";

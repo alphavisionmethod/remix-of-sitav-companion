@@ -7,7 +7,6 @@ import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
 import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
 import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
 import { SlidePanel } from "@/components/sita/surfaces/SlidePanel";
-import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { AppSurface } from "@/components/sita/surfaces/AppSurface";
 import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
 import { cn } from "@/lib/utils";

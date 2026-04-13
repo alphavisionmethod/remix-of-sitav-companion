@@ -21,7 +21,6 @@ import { SplitWorkspace } from "@/components/sita/surfaces/SplitWorkspace";
 import { DetailDrawer } from "@/components/sita/surfaces/DetailDrawer";
 import { AppSurface } from "@/components/sita/surfaces/AppSurface";
 import { ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransitions";
-import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { cn } from "@/lib/utils";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 

@@ -6,7 +6,6 @@ import { SitaCard, SitaCardTitle, SitaSectionHeader } from "@/components/sita/Si
 import { KPITile } from "@/components/sita/SitaComponents";
 import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
-import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { ArrowRight, DollarSign, TrendingDown, Target, PiggyBank, CreditCard } from "lucide-react";
 import { motion } from "framer-motion";
 import type { OpportunityCostEntry } from "@/packages/finance-contracts/advanced-intelligence";

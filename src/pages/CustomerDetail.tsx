@@ -1,6 +1,5 @@
 import { SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton, SitaPageHeader } from "@/components/sita/SitaCard";
 import { KPITile, TimelineItem, ProofCard, OpportunityCard, RiskCard, SitaTabs } from "@/components/sita/SitaComponents";
-import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { StateBadge } from "@/components/sita/StateBadge";
 import { useNavigate, useParams } from "react-router-dom";
@@ -114,17 +113,7 @@ const CustomerDetail = () => {
             {/* Advisor */}
             <div className="space-y-3">
               <SitaSectionHeader title="Advisor Insight" />
-              <LiveAdvisorCard
-                advisor="business"
-                intent="customer_insight"
-                context={{ customer_name: customer.name, lifetime_revenue: customer.totalRevenue }}
-                demoName="Business Advisor"
-                demoRole="Relationship Intelligence"
-                demoConfidence="High"
-                demoRecommendation={`${customer.name} has been consistently paying on time and expanding scope. Consider offering a retainer package to lock in recurring revenue.`}
-                demoReasoning="Payment history shows 4-day avg, 89% on-time rate, and 3 scope expansion conversations in 6 months."
-              />
-            </div>
+</div>
 
             {/* Recent Timeline */}
             <div className="space-y-3">

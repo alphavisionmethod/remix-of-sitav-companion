@@ -15,7 +15,6 @@ import {
   ArrowUpRight, Settings, Search, Zap, CheckCircle2, XCircle, Clock,
   Scale, BookOpen
 } from "lucide-react";
-import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import {
   buildCapitalMap, analyzePortfolioRisk, detectRegime, runStressScenarios,
   evaluateThesis, calculatePositionSize,
@@ -500,17 +499,7 @@ const InvestmentOffice = () => {
       {activeTab === "execution" && <ExecutionReviewView />}
       {activeTab === "proof" && <ProofView />}
       {activeTab === "settings" && <SettingsView />}
-
-      <LiveAdvisorCard
-        advisor="money"
-        intent="portfolio_intelligence"
-        demoName="Portfolio Intelligence"
-        demoRole="Investment Advisor"
-        demoConfidence="Medium"
-        demoRecommendation="Current regime is risk-on with compressed volatility — supportive for measured position-taking. TLT thesis showing regime conflict — monitor for rate pivot signals before adding duration."
-        demoReasoning="Based on regime detection, thesis evaluation, stress scenarios, and risk budget utilization."
-      />
-    </div>
+</div>
   );
 };
 

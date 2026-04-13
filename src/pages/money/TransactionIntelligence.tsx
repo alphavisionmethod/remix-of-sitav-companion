@@ -7,7 +7,6 @@ import { KPITile, SitaTabs } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
 import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
-import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
 import { Receipt, Search, Tag, AlertTriangle, Repeat, ArrowUpDown, Sparkles, Shield, CheckCircle, XCircle, Clock, DollarSign, TrendingDown, Building } from "lucide-react";
 import { motion } from "framer-motion";
 import { useState, useMemo } from "react";
