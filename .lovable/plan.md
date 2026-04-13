@@ -1,39 +1,70 @@
 
 
-# Fix ModuleAdvisorInsight Build Errors
+# Plan: Clean Desktop Surface + Shell Cleanup
 
-## Problem
-5 Money pages import `ModuleAdvisorInsight` from `@/components/sita/domain-shared/ModuleAdvisorInsight`. The component file exists and exports correctly, but the build system cannot resolve the direct file import. The LSP confirms the component definition exists but cannot follow the import path from consumer files.
+## Step 1 — Replace DesktopSurface.tsx with Clean macOS Desktop
 
-## Root Cause
-The barrel file `src/components/sita/domain-shared/index.ts` does not re-export `ModuleAdvisorInsight`. While direct file imports *should* work, the build environment is not resolving them. Adding the export to the barrel and switching imports to use the barrel path will fix resolution reliably.
+The current file is 1,109 lines with dashboard widgets, sparklines, drag-drop widget grids, advisor insights, icon grids, widget pickers, and boot ceremonies. Replace it entirely with a minimal ~90-line component that has:
 
-## Fix (2 changes)
+- **ShellAmbientBackground** as the living wallpaper
+- **DesktopClock** showing time + date (centered, large, elegant)
+- **Blur-fade logic**: desktop elements (clock) fade to `opacity-30` and `blur-sm` when floating windows are open
+- **Window compositor layer** rendering `FloatingWindow` for each visible window with cascading spawn offsets
+- **Double-click to open command palette** on the background
+- No widgets, no sparklines, no drag-drop, no boot ceremony, no toasts, no icon grid, no advisor insight, no widget picker
 
-### 1. Add export to barrel file
-**File:** `src/components/sita/domain-shared/index.ts`
-Add:
-```ts
-export { ModuleAdvisorInsight } from "./ModuleAdvisorInsight";
-```
+Key imports kept: `FloatingWindow`, `ShellAmbientBackground`, `useWindowManagerContext`, `framer-motion`, `cn`.
 
-### 2. Update imports in 5 files to use barrel path
-Change the import in each file from:
-```ts
-import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
-```
-to:
-```ts
-import { ModuleAdvisorInsight } from "@/components/sita/domain-shared";
-```
+The component signature stays `export function DesktopSurface({ onOpenCommand })` — simplified props (removed `userName`, `trustPosture`, `notifications`, `continuity`, `onLaunchApp`).
 
-**Files:**
-- `src/pages/money/BillsWorkspace.tsx`
-- `src/pages/money/LifeMoneyEngine.tsx`
-- `src/pages/money/NetWorthOffice.tsx`
-- `src/pages/money/OpportunityCost.tsx`
-- `src/pages/money/TransactionIntelligence.tsx`
+## Step 2 — Remove Clutter from ShellLiveLayer
 
-### 3. Verify build
-Run `tsc --noEmit` to confirm 0 errors.
+The components the user wants removed live in `ShellLiveLayer.tsx`, not ShellLayout directly. ShellLayout.tsx is already clean. Changes to **ShellLiveLayer.tsx**:
+
+**Remove these rendered components:**
+- `AmbientSuggestionsBarLazy` (floating search/suggestions bar)
+- `IntentSuggestionsWidgetLazy` (bottom intent suggestions)
+- `CommandLayer` (duplicate floating command trigger)
+- `ClickRipple` (visual effect clutter)
+- `ContextualCursorLazy` (custom cursor overlay)
+- `AppRecentsStripLazy` (imported but unused — clean import)
+
+**Keep these (essential shell infrastructure):**
+- `DesktopDock` (the dock — user explicitly wants this)
+- `UniversalCommandSurface` + `UniversalCommandLazy` (Cmd+K palette)
+- `FlowSpaceLazy` (Mission Control / F3)
+- `SpatialDesktopLazy` (spatial view)
+- `AppLauncherPanelLazy` (launcher from dock + button)
+- `BootSplashLazy` (one-time boot)
+- `AppSwitcherLazy` (Alt+Tab)
+- `ControlCenterLazy` (system control center)
+- `NotificationDropdownLazy` (notification dropdown)
+- `PictureInPictureLazy` (PiP windows)
+- `HoldKeyOverlayLazy` (keyboard shortcuts overlay)
+- `LiveActivityBarLazy` (live activity tracking)
+- `EdgePanelsLazy` (edge panel triggers)
+
+Also remove from **ShellLayout.tsx**:
+- `DemoGovernanceBanner` 
+- `DemoStateBanner`
+- `NetworkStatusBar`
+
+These add visual clutter banners on the desktop.
+
+## Step 3 — Output Dock & Sidebar Code
+
+No file changes. Include the full current code of both files in the response for the architect:
+- `src/components/sita/DesktopDock.tsx` (584 lines) — already read in full
+- `src/components/sita/AppSidebar.tsx` (506 lines) — already read in full
+
+## Files Changed
+
+| File | Action |
+|------|--------|
+| `src/components/sita/shell/DesktopSurface.tsx` | Complete rewrite (~90 lines) |
+| `src/components/sita/shell/ShellLiveLayer.tsx` | Remove 5 clutter components |
+| `src/components/sita/ShellLayout.tsx` | Remove 3 banner components |
+
+## Build Verification
+Run `tsc --noEmit` after changes to confirm clean build.
 
