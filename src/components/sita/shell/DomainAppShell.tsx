@@ -34,6 +34,7 @@ interface DomainAppShellProps {
   onNavigate: (key: string) => void;
   tabGroups: NavTabGroup[];
   toolbarActions?: React.ReactNode;
+  commands?: CommandItem[];
 }
 
 /* ── Traffic Light Dots ── */
