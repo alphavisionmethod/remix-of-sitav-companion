@@ -15,7 +15,7 @@ import { AppSidebarNav, type NavTabGroup } from "./AppSidebarNav";
 import { DomainCommandPalette, type CommandItem } from "@/components/sita/domain-shared/DomainCommandPalette";
 import type { LucideIcon } from "lucide-react";
 
-export type DomainId = "business" | "finance" | "concierge";
+export type DomainId = "business" | "finance" | "concierge" | "files" | "trust";
 
 export interface DomainConfig {
   id: DomainId;
@@ -173,9 +173,9 @@ export function DomainAppShell({ domain, children, activePage, onNavigate, tabGr
         )}
         <div className="flex-1 overflow-y-auto p-4" style={{
           // Domain atmosphere tokens
-          '--domain-density': domain.id === 'business' ? '0.875rem' : domain.id === 'finance' ? '1rem' : '1.125rem',
-          '--domain-card-radius': domain.id === 'business' ? '12px' : domain.id === 'finance' ? '16px' : '20px',
-          '--domain-motion-speed': domain.id === 'business' ? '150ms' : domain.id === 'finance' ? '250ms' : '300ms',
+          '--domain-density': domain.id === 'business' ? '0.875rem' : domain.id === 'finance' ? '1rem' : domain.id === 'files' ? '0.875rem' : domain.id === 'trust' ? '0.9375rem' : '1.125rem',
+          '--domain-card-radius': domain.id === 'business' ? '12px' : domain.id === 'finance' ? '16px' : domain.id === 'files' ? '10px' : domain.id === 'trust' ? '12px' : '20px',
+          '--domain-motion-speed': domain.id === 'business' ? '150ms' : domain.id === 'finance' ? '250ms' : domain.id === 'files' ? '180ms' : domain.id === 'trust' ? '200ms' : '300ms',
         } as React.CSSProperties}>
           {children}
         </div>

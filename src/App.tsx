@@ -1856,6 +1856,12 @@ const App = () => (
                     <Route path="/editor" element={<DocumentEditor />} />
                     <Route path="/reporting" element={<ReportingWorkspace />} />
                     <Route path="/trust" element={<TrustCenter />} />
+                    <Route path="/trust/autonomy" element={<TrustCenter />} />
+                    <Route path="/trust/devices" element={<TrustCenter />} />
+                    <Route path="/trust/permissions" element={<TrustCenter />} />
+                    <Route path="/trust/proof" element={<TrustCenter />} />
+                    <Route path="/trust/audit" element={<TrustCenter />} />
+                    <Route path="/trust/settings" element={<TrustCenter />} />
                     <Route path="/media" element={<MediaWorkspace />} />
                     <Route path="/templates" element={<TemplateCenter />} />
                     <Route path="/import-export" element={<ImportExportCenter />} />
