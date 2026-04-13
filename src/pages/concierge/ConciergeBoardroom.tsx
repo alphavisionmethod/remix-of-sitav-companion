@@ -5,13 +5,11 @@
 
 import { HeroCard, SummaryCard, QueueCard, ProofCard, ComparisonCard, AdvisorCard, TimelineCard } from "@/components/sita/cards";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { BoardroomCinematic, ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransitions";
+import { BoardroomCinematic } from "@/components/sita/motion/AppTransitions";
 import { SitaTabs } from "@/components/sita/SitaComponents";
 import { ConciergePageWrapper } from "@/components/concierge";
 import { useState } from "react";
-import {
-  Heart, Calendar, ShoppingCart, Clock, Sparkles, Target, Plane, Home
-} from "lucide-react";
+import { Heart, Home } from "lucide-react";
 
 const weeklyStats = {
   tasksCompleted: 12, tasksTotal: 18, eventsAttended: 6, eventsTotal: 7,
@@ -39,7 +37,6 @@ const ConciergeBoardroom = () => {
             onChange={setMode}
           />
 
-          {/* Hero */}
           <HeroCard
             title={`Life Review — ${new Date().toLocaleDateString("en-US", { month: "long", day: "numeric" })}`}
             metric={`${completionRate}%`}
@@ -49,7 +46,6 @@ const ConciergeBoardroom = () => {
             icon={<Heart className="h-5 w-5 text-[hsl(292_60%_55%)]" />}
           />
 
-          {/* KPI Summary */}
           <SummaryCard
             title="Household Pulse"
             icon={<Home className="h-4 w-4" />}
@@ -62,53 +58,48 @@ const ConciergeBoardroom = () => {
           />
 
           <div className="grid gap-6 lg:grid-cols-2">
-            {/* Upcoming Obligations */}
             <QueueCard
               title="Upcoming Obligations"
               items={[
                 { id: "1", label: "School forms due Friday", urgency: "high" as const },
-                { id: "2", label: "Grocery run — produce + essentials", urgency: "medium" as const },
-                { id: "3", label: "Passport renewal — photos needed", urgency: "medium" as const },
+                { id: "2", label: "Grocery run — produce + essentials", urgency: "normal" as const },
+                { id: "3", label: "Passport renewal — photos needed", urgency: "normal" as const },
                 { id: "4", label: "Vet appointment — Saturday 10am", urgency: "low" as const },
                 { id: "5", label: "Birthday party venue decision", urgency: "low" as const },
               ]}
             />
 
-            {/* Timeline */}
             <TimelineCard
               title="Service Coordination"
               events={[
-                { date: "Pending", label: "Plumber follow-up — kitchen sink", status: "warning" as const },
-                { date: "Action", label: "Travel insurance — coverage pending", status: "error" as const },
-                { date: "Thursday", label: "House cleaning — next visit", status: "success" as const },
-                { date: "This week", label: "Tutoring — 2 sessions confirmed", status: "success" as const },
+                { id: "t1", title: "Plumber follow-up — kitchen sink", timestamp: "Pending", accentColor: "hsl(38 85% 58%)" },
+                { id: "t2", title: "Travel insurance — coverage pending", timestamp: "Action needed", accentColor: "hsl(0 70% 55%)" },
+                { id: "t3", title: "House cleaning — next visit", timestamp: "Thursday", accentColor: "hsl(152 55% 48%)" },
+                { id: "t4", title: "Tutoring — 2 sessions confirmed", timestamp: "This week", accentColor: "hsl(152 55% 48%)" },
               ]}
             />
 
-            {/* Burden Comparison */}
             <ComparisonCard
               title="Burden Reduction Opportunity"
-              before="6 separate errands planned"
-              after="3 batched outings"
+              before={{ label: "Current", value: "6 separate errands" }}
+              after={{ label: "Optimized", value: "3 batched outings" }}
               delta="-45 min"
               deltaPositive
               recommendation="Batch errands: pharmacy + grocery + dry cleaning to save ~45min"
             />
 
-            {/* Proof Chain */}
             <ProofCard
               title="Life Data Provenance"
               chain={[
-                { step: "Task tracker synced", status: "verified" },
-                { step: "Calendar events loaded", status: "verified" },
-                { step: "Grocery lists updated", status: "verified" },
-                { step: "Wellness logs — self-reported", status: "partial" },
+                { label: "Task tracker synced", verified: true },
+                { label: "Calendar events loaded", verified: true },
+                { label: "Grocery lists updated", verified: true },
+                { label: "Wellness logs — self-reported", verified: false },
               ]}
-              status="partial"
+              status="pending"
             />
           </div>
 
-          {/* Advisor */}
           <AdvisorCard
             advisorName="Life Advisor"
             domain="concierge"

@@ -44,7 +44,6 @@ const FinanceBoardroom = () => {
           onChange={setMode}
         />
 
-        {/* Hero */}
         <HeroCard
           title={`Financial Review — ${new Date().toLocaleDateString("en-US", { month: "long", day: "numeric" })}`}
           metric={`$${k.totalBalance.toLocaleString()}`}
@@ -54,7 +53,6 @@ const FinanceBoardroom = () => {
           icon={<BarChart3 className="h-5 w-5 text-[hsl(160_60%_50%)]" />}
         />
 
-        {/* KPI Summary */}
         <SummaryCard
           title="Financial Pulse"
           icon={<Wallet className="h-4 w-4" />}
@@ -67,18 +65,16 @@ const FinanceBoardroom = () => {
         />
 
         <div className="grid gap-6 lg:grid-cols-2">
-          {/* Obligations Queue */}
           <QueueCard
             title="Obligations Pressure"
             items={[
               ...(k.billsDue7d > 0 ? [{ id: "bills", label: `$${k.billsDue7d.toLocaleString()} in bills due within 7 days`, urgency: "high" as const }] : []),
-              ...(wasteCount > 0 ? [{ id: "waste", label: `${wasteCount} subscription${wasteCount > 1 ? "s" : ""} flagged as waste ($${k.estWaste}/mo)`, urgency: "medium" as const }] : []),
+              ...(wasteCount > 0 ? [{ id: "waste", label: `${wasteCount} subscription${wasteCount > 1 ? "s" : ""} flagged as waste ($${k.estWaste}/mo)`, urgency: "normal" as const }] : []),
               ...(k.reserveHealth < 80 ? [{ id: "reserve", label: `Reserve health at ${k.reserveHealth}% — below target`, urgency: "high" as const }] : []),
               { id: "approvals", label: "No overdue approvals", urgency: "low" as const },
             ]}
           />
 
-          {/* Reserve Status */}
           <div className="space-y-3">
             <ListReveal domain="finance">
               {reserves.length > 0 ? reserves.map((r: Record<string, any>) => {
@@ -87,7 +83,7 @@ const FinanceBoardroom = () => {
                   <ListRevealItem key={r.id}>
                     <StatusCard
                       label={r.name}
-                      status={pct >= 80 ? "healthy" : pct >= 50 ? "warning" : "critical"}
+                      status={pct >= 80 ? "healthy" : pct >= 50 ? "degraded" : "down"}
                       confidence={pct}
                       icon={<PiggyBank className="h-4 w-4" />}
                     />
@@ -95,36 +91,33 @@ const FinanceBoardroom = () => {
                 );
               }) : (
                 <ListRevealItem>
-                  <StatusCard label="No reserves configured" status="warning" icon={<PiggyBank className="h-4 w-4" />} />
+                  <StatusCard label="No reserves configured" status="degraded" icon={<PiggyBank className="h-4 w-4" />} />
                 </ListRevealItem>
               )}
             </ListReveal>
           </div>
 
-          {/* Scenario Comparison */}
           <ComparisonCard
             title="Monthly Budget Analysis"
-            before={`$${k.monthlyBurn.toLocaleString()}/mo burn`}
-            after={`$${Math.round(k.monthlyBurn * 0.85).toLocaleString()}/mo target`}
+            before={{ label: "Current", value: `$${k.monthlyBurn.toLocaleString()}/mo` }}
+            after={{ label: "Target", value: `$${Math.round(k.monthlyBurn * 0.85).toLocaleString()}/mo` }}
             delta={`-$${Math.round(k.monthlyBurn * 0.15).toLocaleString()}`}
             deltaPositive
             recommendation={wasteCount > 0 ? `Cancel ${wasteCount} waste subscription(s) to save $${k.estWaste * 12}/yr` : "On track — no waste detected"}
           />
 
-          {/* Proof Chain */}
           <ProofCard
             title="Financial Data Provenance"
             chain={[
-              { step: "Account balances synced", status: "verified" },
-              { step: "Bill schedules loaded", status: "verified" },
-              { step: "Subscription tracker scanned", status: k.totalBalance > 0 ? "verified" : "pending" },
-              { step: "Reserve goals validated", status: reserves.length > 0 ? "verified" : "pending" },
+              { label: "Account balances synced", verified: true },
+              { label: "Bill schedules loaded", verified: true },
+              { label: "Subscription tracker scanned", verified: k.totalBalance > 0 },
+              { label: "Reserve goals validated", verified: reserves.length > 0 },
             ]}
-            status={k.totalBalance > 0 ? "verified" : "partial"}
+            status={k.totalBalance > 0 ? "verified" : "pending"}
           />
         </div>
 
-        {/* Finance Advisor */}
         <AdvisorCard
           advisorName="Finance Advisor"
           domain="finance"
