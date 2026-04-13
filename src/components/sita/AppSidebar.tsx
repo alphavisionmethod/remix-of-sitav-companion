@@ -319,6 +319,11 @@ export const AppSidebar = memo(function AppSidebar() {
   const navigate = useNavigate();
   const location = useLocation();
   const recents = useRecents();
+  const [ctxMenu, setCtxMenu] = useState<{ x: number; y: number; title: string; url: string } | null>(null);
+
+  const handleSidebarContextMenu = useCallback((e: React.MouseEvent, item: { title: string; url: string }) => {
+    setCtxMenu({ x: e.clientX, y: e.clientY, title: item.title, url: item.url });
+  }, []);
 
   // Filter bottom nav: only show Control Room to admins
   const visibleBottomNav = isAdmin
