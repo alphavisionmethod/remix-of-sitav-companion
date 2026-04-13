@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle, AlertOctagon, Shield, Clock, Hash, Sparkles } from "lucide-react";
+import { CheckCircle, AlertOctagon, Shield, Clock, Hash, Sparkles, Timer } from "lucide-react";
 import {
   ApprovalGate, DecisionSeal, ProofReceipt,
   ExecutionChainTimeline, buildDefaultChain,
@@ -20,9 +20,9 @@ const BLOCKERS = [
 ];
 
 const MOCK_APPROVALS = [
-  { id: "ap1", title: "Initiate phased collections outreach", description: "Send segmented recovery messages to 3 overdue accounts. TechCorp gets personal outreach, others get standard follow-up.", riskLevel: "medium" as const, advisorEmoji: "📈", advisorName: "Revenue Advisor", advisorConfidence: 72 },
-  { id: "ap2", title: "Defer Adobe CC subscription — $54/mo", description: "Pause Adobe Creative Cloud for 30 days to support reserve target. No active projects depend on it.", riskLevel: "low" as const, advisorEmoji: "📋", advisorName: "Obligations Advisor", advisorConfidence: 78 },
-  { id: "ap3", title: "Approve NYC travel package — $1,840", description: "Flights, hotel (2 nights), restaurant reservations for Q2 client visit. All documents verified.", riskLevel: "high" as const, advisorEmoji: "✈️", advisorName: "Travel Advisor", advisorConfidence: 88 },
+  { id: "ap1", title: "Initiate phased collections outreach", description: "Send segmented recovery messages to 3 overdue accounts. TechCorp gets personal outreach, others get standard follow-up.", riskLevel: "medium" as const, advisorEmoji: "📈", advisorName: "Revenue Advisor", advisorConfidence: 72, urgencyHours: 4, beforeState: "$18.5K overdue, 3 accounts aging", afterState: "$16.8K recovered, relationships preserved" },
+  { id: "ap2", title: "Defer Adobe CC subscription — $54/mo", description: "Pause Adobe Creative Cloud for 30 days to support reserve target. No active projects depend on it.", riskLevel: "low" as const, advisorEmoji: "📋", advisorName: "Obligations Advisor", advisorConfidence: 78, urgencyHours: 48, beforeState: "Reserves at $7,200 (72% target)", afterState: "Reserves at $7,542 (75% target)" },
+  { id: "ap3", title: "Approve NYC travel package — $1,840", description: "Flights, hotel (2 nights), restaurant reservations for Q2 client visit. All documents verified.", riskLevel: "high" as const, advisorEmoji: "✈️", advisorName: "Travel Advisor", advisorConfidence: 88, urgencyHours: 2, beforeState: "Prices at $1,840, rising $120/day", afterState: "Locked at $1,840, full logistics booked" },
 ];
 
 const MOCK_SEALED = [
@@ -66,17 +66,106 @@ const MOCK_RECEIPTS = [
 
 const executionChain = buildDefaultChain("approval");
 
+// Signature line animation component
+function SignatureAnimation({ show }: { show: boolean }) {
+  if (!show) return null;
+  return (
+    <motion.div className="absolute inset-0 pointer-events-none z-20 flex items-center justify-center">
+      <motion.svg width="200" height="40" viewBox="0 0 200 40" className="opacity-80">
+        <motion.path
+          d="M10 30 Q30 5 50 25 Q70 45 90 20 Q110 -5 130 25 Q150 45 170 15 L190 20"
+          fill="none"
+          stroke="hsl(var(--trust-safe))"
+          strokeWidth="2"
+          strokeLinecap="round"
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: 1.2, ease: "easeInOut" }}
+        />
+      </motion.svg>
+    </motion.div>
+  );
+}
+
+// Gold particle seal stamp
+function SealStampCeremony({ show }: { show: boolean }) {
+  if (!show) return null;
+  const particles = Array.from({ length: 12 }, (_, i) => ({
+    angle: (i / 12) * Math.PI * 2,
+    distance: 30 + Math.random() * 20,
+    size: 2 + Math.random() * 3,
+  }));
+
+  return (
+    <motion.div
+      className="absolute inset-0 pointer-events-none z-20 flex items-center justify-center"
+      initial={{ opacity: 1 }}
+      animate={{ opacity: 0 }}
+      transition={{ delay: 1.5, duration: 0.5 }}
+    >
+      {/* Camera shake */}
+      <motion.div
+        animate={{ x: [0, -3, 3, -2, 0], y: [0, 2, -2, 1, 0] }}
+        transition={{ duration: 0.3 }}
+      >
+        {/* Seal stamp */}
+        <motion.div
+          className="w-16 h-16 rounded-full border-2 border-[hsl(var(--sita-gold))] flex items-center justify-center"
+          style={{ backgroundColor: "hsl(var(--sita-gold) / 0.15)" }}
+          initial={{ scale: 3, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: "spring", stiffness: 400, damping: 15 }}
+        >
+          <CheckCircle size={24} className="text-[hsl(var(--sita-gold))]" />
+        </motion.div>
+      </motion.div>
+      {/* Gold particles */}
+      {particles.map((p, i) => (
+        <motion.div
+          key={i}
+          className="absolute rounded-full"
+          style={{
+            width: p.size,
+            height: p.size,
+            backgroundColor: "hsl(var(--sita-gold))",
+          }}
+          initial={{ x: 0, y: 0, opacity: 1 }}
+          animate={{
+            x: Math.cos(p.angle) * p.distance,
+            y: Math.sin(p.angle) * p.distance,
+            opacity: 0,
+          }}
+          transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+        />
+      ))}
+    </motion.div>
+  );
+}
+
 export function BoardroomApprovalView({ scope, onNavigate }: Props) {
   const { pendingApprovals } = useBoardroomData();
   const [generatedReceipt, setGeneratedReceipt] = useState<null | { title: string; hash: string; time: string }>(null);
+  const [showSignature, setShowSignature] = useState(false);
+  const [showSealStamp, setShowSealStamp] = useState(false);
 
   const handleApprove = (title: string) => {
-    const hash = `0x${Math.random().toString(16).slice(2, 6)}…${Math.random().toString(16).slice(2, 6)}`;
-    setGeneratedReceipt({ title, hash, time: new Date().toLocaleString() });
+    setShowSignature(true);
+    setTimeout(() => {
+      setShowSignature(false);
+      setShowSealStamp(true);
+      setTimeout(() => {
+        setShowSealStamp(false);
+        const hash = `0x${Math.random().toString(16).slice(2, 6)}…${Math.random().toString(16).slice(2, 6)}`;
+        setGeneratedReceipt({ title, hash, time: new Date().toLocaleString() });
+      }, 2000);
+    }, 1300);
   };
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 space-y-6 relative">
+      <SignatureAnimation show={showSignature} />
+      <SealStampCeremony show={showSealStamp} />
+
       {/* Execution Chain */}
       <div>
         <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[hsl(280_50%_65%/0.5)] mb-3">
@@ -171,7 +260,7 @@ export function BoardroomApprovalView({ scope, onNavigate }: Props) {
         )}
       </AnimatePresence>
 
-      {/* Pending Approvals */}
+      {/* Pending Approvals with Before/After + Countdown */}
       <div>
         <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[hsl(280_50%_65%/0.5)] mb-3">
           Pending Approvals
@@ -184,14 +273,34 @@ export function BoardroomApprovalView({ scope, onNavigate }: Props) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.06 }}
             >
-              {/* Advisor Recommendation Badge */}
-              <div className="flex items-center gap-2 mb-1.5 px-1">
-                <span className="text-sm">{ap.advisorEmoji}</span>
-                <span className="text-[10px] font-semibold text-[hsl(0_0%_100%/0.5)]">{ap.advisorName}</span>
-                <span className="text-[9px] text-[hsl(280_50%_65%/0.6)] font-medium">
-                  {ap.advisorConfidence}% confident
-                </span>
+              {/* Advisor + Countdown */}
+              <div className="flex items-center justify-between mb-1.5 px-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm">{ap.advisorEmoji}</span>
+                  <span className="text-[10px] font-semibold text-[hsl(0_0%_100%/0.5)]">{ap.advisorName}</span>
+                  <span className="text-[9px] text-[hsl(280_50%_65%/0.6)] font-medium">
+                    {ap.advisorConfidence}% confident
+                  </span>
+                </div>
+                {/* Countdown urgency */}
+                <div className="flex items-center gap-1 text-[9px] px-2 py-0.5 rounded-full bg-[hsl(var(--sita-gold))]/10 text-[hsl(var(--sita-gold))]">
+                  <Timer size={9} />
+                  <span className="font-semibold">{ap.urgencyHours}h window</span>
+                </div>
               </div>
+
+              {/* Before/After preview */}
+              <div className="grid grid-cols-2 gap-2 mb-2 px-1">
+                <div className="rounded-lg border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] p-2">
+                  <p className="text-[8px] font-bold uppercase text-[hsl(0_0%_100%/0.25)] mb-0.5">Before</p>
+                  <p className="text-[10px] text-[hsl(0_0%_100%/0.45)]">{ap.beforeState}</p>
+                </div>
+                <div className="rounded-lg border border-[hsl(var(--trust-safe))]/15 bg-[hsl(var(--trust-safe))]/5 p-2">
+                  <p className="text-[8px] font-bold uppercase text-[hsl(var(--trust-safe))]/60 mb-0.5">After</p>
+                  <p className="text-[10px] text-[hsl(var(--trust-safe))]/80">{ap.afterState}</p>
+                </div>
+              </div>
+
               <ApprovalGate
                 title={ap.title}
                 description={ap.description}
