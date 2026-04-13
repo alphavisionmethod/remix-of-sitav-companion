@@ -2,7 +2,7 @@ import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/co
 import { KPITile, SitaTabs } from "@/components/sita/SitaComponents";
 import { GlassCard } from "@/components/sita/PremiumPageComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
-import { ConciergeAdvisorInsightCard, RecurringAdminList, ConciergePageWrapper } from "@/components/concierge";
+import { ConciergeAdvisorInsightCard, RecurringAdminList, ConciergePageWrapper, ConciergeEmptyState } from "@/components/concierge";
 import type { RecurringAdminItem } from "@/components/concierge";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useState } from "react";
@@ -110,6 +110,8 @@ const RecurringObligations = () => {
                 </div>
               );
             })
+          ) : filtered().length === 0 ? (
+            <ConciergeEmptyState domain="recurring" icon={RotateCcw} />
           ) : (
             filtered().map((item) => <RecurringItemCard key={item.id} item={item} />)
           )}

@@ -2,7 +2,7 @@ import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader } from "@/co
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { GroceryContinuityCard } from "@/components/sita/HouseholdComponents";
-import { ConciergeAdvisorInsightCard, ConciergePageWrapper } from "@/components/concierge";
+import { ConciergeAdvisorInsightCard, ConciergePageWrapper, ConciergeEmptyState } from "@/components/concierge";
 import { ShoppingCart, Plus, Check, Clock, DollarSign, Leaf, AlertCircle, RotateCcw, Sparkles, Store, CalendarCheck, Plane } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
@@ -152,6 +152,9 @@ const GroceryPlanning = () => {
             </div>
           )}
 
+          {(view === "shopping" || view === "urgency") && items.filter(i => view === "urgency" ? (i.urgent || i.note?.toLowerCase().includes("low") || i.note?.toLowerCase().includes("out")) : true).length === 0 && (
+            <ConciergeEmptyState domain="grocery" icon={ShoppingCart} />
+          )}
           {(view === "shopping" || view === "urgency") && DEMO_categories.map((cat) => {
             let catItems = items.filter(i => i.category === cat);
             if (view === "urgency") catItems = catItems.filter(i => i.urgent || i.note?.toLowerCase().includes("low") || i.note?.toLowerCase().includes("out"));
