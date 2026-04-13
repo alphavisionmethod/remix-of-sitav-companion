@@ -23,6 +23,18 @@ import {
   DesktopQuickActionsWidget,
   DesktopSystemWidget,
   DesktopWhatMattersWidget,
+  DesktopNotificationsFeedWidget,
+  DesktopInvestmentPulseWidget,
+  DesktopCRMPipelineWidget,
+  DesktopLeadsRecoveredWidget,
+  DesktopCalendarTodayWidget,
+  DesktopBoardroomBriefWidget,
+  DesktopAdvisorCouncilWidget,
+  DesktopBusinessKPIWidget,
+  DesktopFinanceSnapshotWidget,
+  DesktopConciergeTasksWidget,
+  DesktopWeatherWidget,
+  DesktopPortfolioMapWidget,
 } from "./desktop";
 import type { ContinuityContext, DesktopState } from "./useShellState";
 
@@ -143,11 +155,31 @@ function renderWidget(type: string, onOpenCommand?: () => void, continuity?: Con
     case "continuity":
       return <ContinuityCard continuity={continuity ?? DEFAULT_CONTINUITY} />;
     case "what-matters":
-      return (
-        <div className="w-[340px]">
-          <DesktopWhatMattersWidget />
-        </div>
-      );
+      return (<div className="w-[340px]"><DesktopWhatMattersWidget /></div>);
+    case "notifications-feed":
+      return (<div className="w-[320px]"><DesktopNotificationsFeedWidget /></div>);
+    case "investment-pulse":
+      return (<div className="w-[320px]"><DesktopInvestmentPulseWidget /></div>);
+    case "crm-pipeline":
+      return (<div className="w-[320px]"><DesktopCRMPipelineWidget /></div>);
+    case "leads-recovered":
+      return (<div className="w-[320px]"><DesktopLeadsRecoveredWidget /></div>);
+    case "calendar-today":
+      return (<div className="w-[320px]"><DesktopCalendarTodayWidget /></div>);
+    case "boardroom-brief":
+      return (<div className="w-[320px]"><DesktopBoardroomBriefWidget /></div>);
+    case "advisor-council":
+      return (<div className="w-[320px]"><DesktopAdvisorCouncilWidget /></div>);
+    case "business-kpi":
+      return (<div className="w-[320px]"><DesktopBusinessKPIWidget /></div>);
+    case "finance-snapshot":
+      return (<div className="w-[320px]"><DesktopFinanceSnapshotWidget /></div>);
+    case "concierge-tasks":
+      return (<div className="w-[320px]"><DesktopConciergeTasksWidget /></div>);
+    case "weather":
+      return (<div className="w-[280px]"><DesktopWeatherWidget /></div>);
+    case "portfolio-globe":
+      return (<div className="w-[320px]"><DesktopPortfolioMapWidget /></div>);
     default:
       return null;
   }
