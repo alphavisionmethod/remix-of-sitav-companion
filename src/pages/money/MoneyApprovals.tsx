@@ -1,8 +1,3 @@
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
-import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
-import { TrustBadge } from "@/components/sita/TrustBadge";
-import { StateBadge, ExecutionState } from "@/components/sita/StateBadge";
-import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
 import { useState } from "react";
 import { Shield, CheckCircle, XCircle, AlertTriangle, DollarSign, Eye, Clock, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
@@ -11,7 +6,13 @@ import { useDataMode } from "@/contexts/DataModeContext";
 import { useMoneyApprovals, useApproveMoneyAction, useRejectMoneyAction } from "@/hooks/use-domain-data";
 import { toast } from "sonner";
 
-
+// New design system
+import { HeroCard, QueueCard, ActionCard, StatusCard } from "@/components/sita/cards";
+import { ExecutionBadge, UrgencyBadge } from "@/components/sita/badges";
+import { SplitWorkspace } from "@/components/sita/surfaces/SplitWorkspace";
+import { AppSurface } from "@/components/sita/surfaces/AppSurface";
+import { ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransitions";
+import { cn } from "@/lib/utils";
 
 const MoneyApprovals = () => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -31,90 +32,136 @@ const MoneyApprovals = () => {
     rejectMut.mutate(selectedId, { onSuccess: () => { toast.success("Action rejected"); setSelectedId(null); } });
   };
 
-  if (isLoading) return <SectionSkeleton cards={4} columns={1} />;
+  const queueItems = approvals.map((a: Record<string, any>) => ({
+    id: a.id,
+    label: a.action_summary || "Unnamed action",
+    meta: `$${Number(a.proposed_action?.amount || 0).toLocaleString()}`,
+    urgency: (a.proposed_action?.risk === "high" ? "critical" : a.proposed_action?.risk === "medium" ? "high" : "normal") as "critical" | "high" | "normal",
+    badge: <ExecutionBadge state={a.status === "pending" ? "drafted" : a.status === "approved" ? "complete" : "failed"} />,
+  }));
+
+  const listPane = (
+    <div className="p-3 space-y-3">
+      <DemoModeBadge />
+      <div className="flex items-center justify-between px-1">
+        <h3 className="text-[13px] font-semibold text-[hsl(0_0%_85%)]">Financial Approvals</h3>
+        <span className="text-[11px] text-[hsl(0_0%_50%)]">{pendingCount} pending</span>
+      </div>
+
+      <div className="grid grid-cols-3 gap-2">
+        <StatusCard label="Pending" status={pendingCount > 3 ? "degraded" : pendingCount > 0 ? "healthy" : "healthy"} lastChecked={`${pendingCount}`} />
+        <StatusCard label="Total" status="healthy" lastChecked={`${approvals.length}`} />
+        <StatusCard label="Impact" status="healthy" lastChecked={`$${approvals.reduce((s: number, a: Record<string, any>) => s + (Number(a.proposed_action?.amount) || 0), 0).toLocaleString()}`} />
+      </div>
+
+      <QueueCard
+        title="APPROVAL QUEUE"
+        items={queueItems}
+        maxVisible={10}
+        onItemClick={(id) => setSelectedId(id)}
+      />
+    </div>
+  );
+
+  const detailPane = selected ? (
+    <div className="p-4 space-y-4">
+      <HeroCard
+        title="Financial Action"
+        metric={`$${Number(selected.proposed_action?.amount || 0).toLocaleString()}`}
+        subtitle={selected.proposed_action?.linkedTo || "Review required"}
+        accentFrom="hsl(152 55% 48%)"
+        accentTo="hsl(210 60% 50%)"
+      >
+        <ExecutionBadge state={selected.status === "pending" ? "drafted" : "complete"} />
+      </HeroCard>
+
+      <AppSurface level={2} className="p-4">
+        <p className="text-[13px] font-medium text-[hsl(0_0%_85%)] mb-2">{selected.action_summary}</p>
+        <div className="space-y-2">
+          <div className="flex justify-between text-[12px]">
+            <span className="text-[hsl(0_0%_50%)]">Risk</span>
+            <UrgencyBadge urgency={selected.proposed_action?.risk === "high" ? "critical" : selected.proposed_action?.risk === "medium" ? "high" : "low"} />
+          </div>
+          <div className="flex justify-between text-[12px]">
+            <span className="text-[hsl(0_0%_50%)]">Status</span>
+            <ExecutionBadge state={selected.status === "pending" ? "drafted" : selected.status === "approved" ? "complete" : "failed"} />
+          </div>
+        </div>
+      </AppSurface>
+
+      {selected.proposed_action?.reason && (
+        <AppSurface level={2} className="p-4">
+          <p className="text-[10px] font-semibold text-[hsl(0_0%_50%)] uppercase tracking-wider mb-1">Why This Action</p>
+          <p className="text-[12px] text-[hsl(0_0%_70%)]">{selected.proposed_action.reason}</p>
+        </AppSurface>
+      )}
+
+      <div className="space-y-2">
+        {selected.proposed_action?.impact && (
+          <AppSurface level={1} className="p-3">
+            <p className="text-[10px] text-[hsl(0_0%_45%)] mb-1">Impact</p>
+            <p className="text-[12px] text-[hsl(0_0%_80%)]">{selected.proposed_action.impact}</p>
+          </AppSurface>
+        )}
+        {selected.proposed_action?.ifApproved && (
+          <AppSurface level={1} className="p-3 border-l-2 border-l-[hsl(152_55%_48%)]">
+            <p className="text-[10px] text-[hsl(0_0%_45%)] mb-1">If Approved</p>
+            <p className="text-[12px] text-[hsl(0_0%_80%)]">{selected.proposed_action.ifApproved}</p>
+          </AppSurface>
+        )}
+        {selected.proposed_action?.ifDelayed && (
+          <AppSurface level={1} className="p-3 border-l-2 border-l-[hsl(38_85%_58%)]">
+            <p className="text-[10px] text-[hsl(0_0%_45%)] mb-1">If Delayed</p>
+            <p className="text-[12px] text-[hsl(0_0%_80%)]">{selected.proposed_action.ifDelayed}</p>
+          </AppSurface>
+        )}
+      </div>
+
+      {selected.status === "pending" && (
+        <div className="flex gap-2">
+          <ActionCard
+            title="Approve"
+            description="Confirm this financial action"
+            accentColor="hsl(152 55% 48%)"
+            onApprove={handleApprove}
+            className="flex-1"
+          />
+          <ActionCard
+            title="Reject"
+            description="Decline this action"
+            accentColor="hsl(0 70% 55%)"
+            onApprove={handleReject}
+            className="flex-1"
+          />
+        </div>
+      )}
+    </div>
+  ) : (
+    <div className="flex items-center justify-center h-full">
+      <div className="text-center space-y-2">
+        <Shield className="h-8 w-8 mx-auto text-[hsl(0_0%_30%)]" />
+        <p className="text-[13px] text-[hsl(0_0%_50%)]">Select an action to review</p>
+      </div>
+    </div>
+  );
+
+  if (isLoading) {
+    return (
+      <div className="space-y-3 p-4">
+        {[1,2,3].map(i => <div key={i} className="h-16 rounded-xl bg-[hsl(0_0%_100%/0.04)] animate-pulse" />)}
+      </div>
+    );
+  }
 
   return (
-    <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-      <DemoModeBadge />
-      <SitaPageHeader title="Financial Actions & Approvals" subtitle="Review, approve, or adjust recommended financial moves" />
-
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        <KPITile label="Pending Approvals" value={pendingCount} icon={Shield} />
-        <KPITile label="Total Actions" value={approvals.length} icon={Sparkles} />
-        <KPITile label="Total Impact" value={`$${approvals.reduce((s: number,  a: Record<string, any>) => s + (Number(a.proposed_action?.amount) || 0), 0).toLocaleString()}`} icon={DollarSign} />
-      </div>
-
-      <div className="grid gap-6 lg:grid-cols-5">
-        <div className="lg:col-span-3 space-y-2">
-          {approvals.length === 0 ? (
-            <EmptyState icon={Shield} title="No pending approvals" description="All financial actions are resolved" />
-          ) : approvals.map((a: Record<string, any>) => {
-            const pa = a.proposed_action || {};
-            const risk = pa.risk || "low";
-            return (
-              <SitaCard key={a.id} onClick={() => setSelectedId(a.id)} selected={selectedId === a.id} lane="action" className="p-4">
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <StateBadge state={a.status === "pending" ? "approval-requested" : a.status === "approved" ? "completed" : "failed"} size="sm" />
-                      <span className={`text-[10px] font-medium px-1.5 py-px rounded ${risk === "high" ? "bg-urgency-critical/10 text-urgency-critical" : risk === "medium" ? "bg-urgency-high/10 text-urgency-high" : "bg-trust-verified/10 text-trust-verified"}`}>
-                        {risk} risk
-                      </span>
-                    </div>
-                    <p className="text-sm font-medium text-foreground">{a.action_summary}</p>
-                    <p className="mt-0.5 text-xs text-muted-foreground">{pa.reason || ""}</p>
-                  </div>
-                  <p className="font-display text-sm font-bold text-foreground shrink-0">${Number(pa.amount || 0).toLocaleString()}</p>
-                </div>
-              </SitaCard>
-            );
-          })}
-        </div>
-
-        <div className="lg:col-span-2 space-y-4">
-          {selected ? (
-            <>
-              <SitaCard hover={false} glow className="p-5">
-                <SitaCardTitle sub={selected.proposed_action?.linkedTo}>Financial Action</SitaCardTitle>
-                <p className="mt-2 text-sm font-medium text-foreground">{selected.action_summary}</p>
-                <p className="mt-1 font-display text-2xl font-bold gradient-sita-text">${Number(selected.proposed_action?.amount || 0).toLocaleString()}</p>
-                <div className="mt-4 space-y-2">
-                  <div className="flex justify-between text-sm"><span className="text-muted-foreground">Status</span><StateBadge state={selected.status === "pending" ? "approval-requested" : "completed"} size="sm" /></div>
-                  <div className="flex justify-between text-sm"><span className="text-muted-foreground">Risk</span><TrustBadge level={selected.proposed_action?.risk === "high" ? "blocked" : selected.proposed_action?.risk === "medium" ? "review" : "safe"} label={selected.proposed_action?.risk || "low"} size="sm" /></div>
-                </div>
-              </SitaCard>
-              <SitaCard hover={false}>
-                <SitaCardTitle>Why This Action</SitaCardTitle>
-                <p className="mt-2 text-sm text-muted-foreground">{selected.proposed_action?.reason}</p>
-              </SitaCard>
-              <SitaCard hover={false}>
-                <SitaCardTitle>Impact & Outcomes</SitaCardTitle>
-                <div className="mt-3 space-y-3">
-                  <div className="rounded-xl bg-secondary/30 p-3"><p className="text-xs text-muted-foreground mb-1">Impact</p><p className="text-sm text-foreground">{selected.proposed_action?.impact}</p></div>
-                  <div className="rounded-xl bg-trust-verified/5 border border-trust-verified/10 p-3"><p className="text-xs text-muted-foreground mb-1">If Approved</p><p className="text-sm text-foreground">{selected.proposed_action?.ifApproved}</p></div>
-                  <div className="rounded-xl bg-urgency-high/5 border border-urgency-high/10 p-3"><p className="text-xs text-muted-foreground mb-1">If Delayed</p><p className="text-sm text-foreground">{selected.proposed_action?.ifDelayed}</p></div>
-                </div>
-              </SitaCard>
-              {selected.proposed_action?.policy && (
-                <SitaCard hover={false}>
-                  <SitaCardTitle>Policy Applied</SitaCardTitle>
-                  <div className="mt-2 rounded-xl bg-secondary/30 p-3"><p className="text-sm text-foreground">{selected.proposed_action.policy}</p></div>
-                </SitaCard>
-              )}
-              {selected.status === "pending" && (
-                <div className="flex gap-2">
-                  <SitaButton variant="primary" size="sm" className="flex-1" onClick={handleApprove}><CheckCircle className="h-3.5 w-3.5" /> Approve</SitaButton>
-                  <SitaButton variant="secondary" size="sm"><Eye className="h-3.5 w-3.5" /> Simulate</SitaButton>
-                  <SitaButton variant="danger" size="sm" onClick={handleReject}><XCircle className="h-3.5 w-3.5" /> Reject</SitaButton>
-                </div>
-              )}
-            </>
-          ) : (
-            <EmptyState icon={Shield} title="Select an action" description="Click on a financial action to see full details, impact analysis, and approval options" />
-          )}
-        </div>
-      </div>
-    </motion.div>
+    <div className="h-[calc(100vh-200px)] -m-4">
+      <SplitWorkspace
+        list={listPane}
+        detail={detailPane}
+        hasSelection={!!selected}
+        defaultSplit={40}
+      />
+    </div>
   );
 };
 

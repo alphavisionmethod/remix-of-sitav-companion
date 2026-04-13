@@ -1,7 +1,3 @@
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
-import { SectionSkeleton, KPISkeleton } from "@/components/sita/SectionSkeleton";
-import { KPITile, SitaTabs, EmptyState, ContextDrawer } from "@/components/sita/SitaComponents";
-import { TrustBadge } from "@/components/sita/TrustBadge";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
@@ -9,19 +5,26 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { useBills as useMoneyBills } from "@/hooks/use-money-data";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAction } from "@/lib/hooks/useAction";
-import { DollarSign, Clock, AlertTriangle, CheckCircle, Calendar, Receipt, Bell, FileText, CreditCard, Plus, Trash2, Zap } from "lucide-react";
-import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
+import { DollarSign, Clock, AlertTriangle, CheckCircle, Calendar, CreditCard, Plus, Trash2, Zap } from "lucide-react";
 import { toast } from "sonner";
 import { format, differenceInDays, parseISO } from "date-fns";
 import { motion } from "framer-motion";
-import { simulatePayment, type PaymentSimulation } from "@/lib/utils/payment-simulation";
-import { initiatePayment } from "@/lib/api/payment-api";
+import { simulatePayment } from "@/lib/utils/payment-simulation";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useConfirmation } from "@/hooks/use-confirmation";
 import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
-import { DataFreshnessBadge } from "@/components/sita/DataFreshnessBadge";
 import { useQueryFreshness } from "@/hooks/use-query-freshness";
+
+// New design system imports
+import { HeroCard, QueueCard, ActionCard, StatusCard } from "@/components/sita/cards";
+import { ExecutionBadge, FreshnessBadge } from "@/components/sita/badges";
+import { SplitWorkspace } from "@/components/sita/surfaces/SplitWorkspace";
+import { DetailDrawer } from "@/components/sita/surfaces/DetailDrawer";
+import { AppSurface } from "@/components/sita/surfaces/AppSurface";
+import { ListReveal, ListRevealItem } from "@/components/sita/motion/AppTransitions";
+import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
+import { cn } from "@/lib/utils";
 
 interface BillForm {
   payee: string;
@@ -45,25 +48,23 @@ const statusFromDue = (due: string, dbStatus: string): string => {
   return "upcoming";
 };
 
-const statusConfig: Record<string, { label: string; color: string }> = {
-  due: { label: "Due", color: "bg-urgency-high/10 text-urgency-high border-urgency-high/20" },
-  upcoming: { label: "Upcoming", color: "bg-state-queued/10 text-state-queued border-state-queued/20" },
-  overdue: { label: "Overdue", color: "bg-urgency-critical/10 text-urgency-critical border-urgency-critical/20" },
-  paid: { label: "Paid", color: "bg-trust-verified/10 text-trust-verified border-trust-verified/20" },
-  scheduled: { label: "Scheduled", color: "bg-state-approved/10 text-state-approved border-state-approved/20" },
+const executionState = (status: string): "drafted" | "approved" | "executing" | "complete" | "failed" => {
+  if (status === "paid") return "complete";
+  if (status === "scheduled") return "approved";
+  if (status === "overdue") return "failed";
+  if (status === "due") return "executing";
+  return "drafted";
 };
 
 const BillsWorkspace = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const { confirmation, confirm } = useConfirmation();
-  const [tab, setTab] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [editId, setEditId] = useState<string | null>(null);
   const [form, setForm] = useState<BillForm>(emptyForm);
 
-  // Use canonical hook for bill reads (wired from use-money-data)
   const moneyBills = useMoneyBills();
   const billsQuery = useQuery({
     queryKey: ["bills"],
@@ -72,12 +73,10 @@ const BillsWorkspace = () => {
       if (error) throw error;
       return data;
     },
-    // Fallback to moneyBills data if this query hasn't loaded yet
     placeholderData: moneyBills.data as never,
   });
   const bills = billsQuery.data ?? [];
   const isLoading = billsQuery.isLoading;
-  const freshness = useQueryFreshness(billsQuery);
 
   const createMutation = useAction<BillForm>("finance", "bill.create", {
     successMessage: "Bill created",
@@ -102,22 +101,18 @@ const BillsWorkspace = () => {
     invalidateKeys: [["bills"]],
   });
 
-  const enriched = bills.map(b => ({
+  const enriched = bills.map((b: any) => ({
     ...b,
     computedStatus: statusFromDue(b.due_date, b.status),
     daysLeft: differenceInDays(parseISO(b.due_date), new Date()),
   }));
 
-  const filtered = tab === "all" ? enriched
-    : tab === "due" ? enriched.filter(b => ["due", "overdue"].includes(b.computedStatus))
-    : tab === "upcoming" ? enriched.filter(b => b.computedStatus === "upcoming")
-    : enriched.filter(b => ["paid", "scheduled"].includes(b.computedStatus));
+  const selected = enriched.find((b: any) => b.id === selectedId);
+  const totalDue7d = enriched.filter((b: any) => b.daysLeft > 0 && b.daysLeft <= 7).reduce((s: number, b: any) => s + Number(b.amount), 0);
+  const overdueCount = enriched.filter((b: any) => b.computedStatus === "overdue").length;
+  const autoPayCount = enriched.filter((b: any) => b.auto_pay).length;
 
-  const selected = enriched.find(b => b.id === selectedId);
-  const totalDue7d = enriched.filter(b => b.daysLeft > 0 && b.daysLeft <= 7).reduce((s, b) => s + Number(b.amount), 0);
-  const monthlyTotal = enriched.filter(b => b.recurring).reduce((s, b) => s + Number(b.amount), 0);
-
-  const openEdit = (b: typeof enriched[0]) => {
+  const openEdit = (b: any) => {
     setForm({ payee: b.payee, amount: String(b.amount), due_date: b.due_date, category: b.category || "", recurring: b.recurring || false, frequency: b.frequency || "monthly", auto_pay: b.auto_pay || false, notes: b.notes || "" });
     setEditId(b.id);
     setShowForm(true);
@@ -129,165 +124,231 @@ const BillsWorkspace = () => {
     else createMutation.mutate(form);
   };
 
-  return (
-    <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-      <DemoModeBadge />
-      <ConfirmationDialog state={confirmation} />
-      <SitaPageHeader
-        title="Bills & Due Soon"
-        subtitle="Track, schedule, and never miss a payment"
-        actions={<div className="flex items-center gap-3"><DataFreshnessBadge {...freshness} /><SitaButton variant="primary" onClick={() => { setForm(emptyForm); setEditId(null); setShowForm(true); }}><Plus className="h-4 w-4" /> Add Bill</SitaButton></div>}
-      />
+  // Queue items for the QueueCard
+  const queueItems = enriched
+    .filter((b: any) => b.computedStatus !== "paid")
+    .slice(0, 8)
+    .map((b: any) => ({
+      id: b.id,
+      label: `${b.payee} — $${Number(b.amount).toLocaleString()}`,
+      meta: b.daysLeft < 0 ? `${Math.abs(b.daysLeft)}d overdue` : `${b.daysLeft}d`,
+      urgency: b.computedStatus === "overdue" ? "critical" as const : b.daysLeft <= 3 ? "high" as const : "normal" as const,
+      badge: <ExecutionBadge state={executionState(b.computedStatus)} />,
+    }));
 
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <KPITile label="Due This Week" value={`$${totalDue7d >= 1000 ? (totalDue7d / 1000).toFixed(1) + "K" : totalDue7d}`} icon={Clock} sub={`${enriched.filter(b => b.daysLeft > 0 && b.daysLeft <= 7).length} bills`} />
-        <KPITile label="Overdue" value={enriched.filter(b => b.computedStatus === "overdue").length} icon={AlertTriangle} sub="Needs attention" />
-        <KPITile label="Auto-Pay Active" value={enriched.filter(b => b.auto_pay).length} icon={CheckCircle} sub="Set and forget" />
-        <KPITile label="Monthly Total" value={`$${monthlyTotal >= 1000 ? (monthlyTotal / 1000).toFixed(1) + "K" : monthlyTotal}`} icon={DollarSign} sub="All recurring" />
+  // Build list pane
+  const listPane = (
+    <div className="p-3 space-y-3">
+      <div className="flex items-center justify-between px-1">
+        <h3 className="text-[13px] font-semibold text-[hsl(0_0%_85%)]">Bills & Obligations</h3>
+        <button
+          onClick={() => { setForm(emptyForm); setEditId(null); setShowForm(true); }}
+          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[hsl(152_55%_48%/0.12)] hover:bg-[hsl(152_55%_48%/0.18)] text-[hsl(152_55%_48%)] text-[11px] font-medium transition-colors"
+        >
+          <Plus className="h-3 w-3" /> Add Bill
+        </button>
       </div>
 
-      {/* Stress Window */}
-      <SitaCard hover={false} className="p-4">
-        <div className="flex items-center gap-3 mb-3">
-          <Calendar className="h-4 w-4 text-primary" />
-          <SitaCardTitle>Payment Timeline — Next 15 Days</SitaCardTitle>
-        </div>
-        <div className="flex gap-1 overflow-x-auto -mx-1 px-1 pb-1 scrollbar-none">
-          {Array.from({ length: 15 }, (_, i) => {
-            const day = i + 1;
-            const dayBills = enriched.filter(b => b.daysLeft === day);
-            const total = dayBills.reduce((s, b) => s + Number(b.amount), 0);
-            const isStress = total > 2000;
-            return (
-              <div key={day} className="flex-1 text-center">
-                <div className={`mx-auto h-10 sm:h-12 min-w-[2rem] rounded-lg flex items-end justify-center pb-1 text-[8px] sm:text-[9px] font-bold transition-all ${isStress ? "bg-urgency-high/20 text-urgency-high" : total > 0 ? "bg-primary/10 text-primary" : "bg-secondary/30 text-muted-foreground"}`}
-                  style={{ paddingTop: `${Math.max(4, 48 - (total / 100))}px` }}>
-                  {total > 0 ? `$${total >= 1000 ? (total / 1000).toFixed(1) + "K" : total}` : ""}
-                </div>
-                <p className="mt-1 text-[9px] text-muted-foreground">{day}</p>
-              </div>
-            );
-          })}
-        </div>
-      </SitaCard>
+      {/* KPI row */}
+      <div className="grid grid-cols-3 gap-2">
+        <StatusCard label="Due 7d" status={totalDue7d > 2000 ? "degraded" : "healthy"} confidence={Math.min(100, Math.max(0, 100 - totalDue7d / 100))} />
+        <StatusCard label="Overdue" status={overdueCount > 0 ? "down" : "healthy"} lastChecked={`${overdueCount} bills`} />
+        <StatusCard label="Auto-Pay" status="healthy" lastChecked={`${autoPayCount} active`} />
+      </div>
 
-      <SitaTabs
-        tabs={[
-          { key: "all", label: "All", count: enriched.length },
-          { key: "due", label: "Due & Overdue", count: enriched.filter(b => ["due", "overdue"].includes(b.computedStatus)).length },
-          { key: "upcoming", label: "Upcoming", count: enriched.filter(b => b.computedStatus === "upcoming").length },
-          { key: "completed", label: "Paid/Scheduled", count: enriched.filter(b => ["paid", "scheduled"].includes(b.computedStatus)).length },
-        ]}
-        active={tab}
-        onChange={setTab}
+      {/* Queue */}
+      <QueueCard
+        title="PAYMENT QUEUE"
+        items={queueItems}
+        maxVisible={10}
+        onItemClick={(id) => setSelectedId(id)}
       />
 
-      {isLoading ? (
-        <><KPISkeleton count={4} /><SectionSkeleton cards={3} columns={1} /></>
-      ) : enriched.length === 0 ? (
-        <EmptyState icon={CreditCard} title="No bills yet" description="Add your first bill to start tracking payments and due dates" action={<SitaButton variant="primary" onClick={() => setShowForm(true)}><Plus className="h-4 w-4" /> Add Bill</SitaButton>} />
-      ) : (
-        <div className="grid gap-6 lg:grid-cols-5">
-          <div className="lg:col-span-3 space-y-2 order-1">
-            {filtered.map((bill) => (
-              <SitaCard key={bill.id} onClick={() => setSelectedId(bill.id)} selected={selectedId === bill.id}
-                lane={bill.computedStatus === "overdue" ? "action" : bill.daysLeft <= 2 && bill.computedStatus !== "scheduled" && bill.computedStatus !== "paid" ? "action" : undefined} className="p-4">
-                <div className="flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-3 flex-1 min-w-0">
-                    <div className="rounded-xl bg-primary/8 p-2.5"><CreditCard className="h-4 w-4 text-primary" /></div>
-                    <div className="min-w-0">
-                      <p className="text-sm font-medium text-foreground">{bill.payee}</p>
-                      <p className="text-xs text-muted-foreground">{bill.category || "Uncategorized"} · {bill.recurring ? bill.frequency || "Recurring" : "One-time"}</p>
-                    </div>
-                  </div>
-                  <div className="text-right shrink-0">
-                    <p className="font-display text-sm font-bold text-foreground">${Number(bill.amount).toLocaleString()}</p>
-                    <div className="flex items-center justify-end gap-1.5 mt-1">
-                      <span className={`inline-flex items-center rounded-md border px-1.5 py-px text-[10px] font-medium ${(statusConfig[bill.computedStatus] || statusConfig.upcoming).color}`}>{(statusConfig[bill.computedStatus] || statusConfig.upcoming).label}</span>
-                      {bill.auto_pay && <span className="text-[10px] text-trust-verified">Auto</span>}
-                    </div>
-                  </div>
-                </div>
-                {bill.computedStatus === "overdue" && (
-                  <div className="mt-2 flex items-center gap-2 text-xs text-urgency-critical">
-                    <AlertTriangle className="h-3 w-3" /> {Math.abs(bill.daysLeft)} days overdue
-                  </div>
-                )}
-              </SitaCard>
-            ))}
-          </div>
-
-          <div className="lg:col-span-2 space-y-4">
-            {selected ? (
-              <>
-                <SitaCard hover={false} glow className="p-5">
-                  <SitaCardTitle sub={selected.category || "Uncategorized"}>{selected.payee}</SitaCardTitle>
-                  <p className="mt-2 font-display text-2xl font-bold gradient-sita-text">${Number(selected.amount).toLocaleString()}</p>
-                  <div className="mt-4 space-y-2">
-                    <div className="flex justify-between text-sm"><span className="text-muted-foreground">Due</span><span className={selected.computedStatus === "overdue" ? "text-urgency-critical font-semibold" : "text-foreground"}>{format(parseISO(selected.due_date), "MMM d, yyyy")}</span></div>
-                    <div className="flex justify-between text-sm"><span className="text-muted-foreground">Status</span><span className={`inline-flex items-center rounded-md border px-1.5 py-px text-[10px] font-medium ${(statusConfig[selected.computedStatus] || statusConfig.upcoming).color}`}>{(statusConfig[selected.computedStatus] || statusConfig.upcoming).label}</span></div>
-                    <div className="flex justify-between text-sm"><span className="text-muted-foreground">Recurring</span><span className="text-foreground">{selected.recurring ? selected.frequency || "Yes" : "No"}</span></div>
-                    <div className="flex justify-between text-sm"><span className="text-muted-foreground">Auto-Pay</span><span className="text-foreground">{selected.auto_pay ? "Active" : "Off"}</span></div>
-                    {selected.notes && <div className="flex justify-between text-sm"><span className="text-muted-foreground">Notes</span><span className="text-foreground text-right max-w-[180px] truncate">{selected.notes}</span></div>}
-                  </div>
-                </SitaCard>
-                <div className="flex gap-2 flex-wrap">
-                  {selected.computedStatus !== "paid" && <SitaButton variant="primary" size="sm" className="flex-1" onClick={() => markPaidMutation.mutate({ id: selected.id })}><CheckCircle className="h-3.5 w-3.5" /> Mark Paid</SitaButton>}
-                  {selected.computedStatus !== "paid" && (
-                    <SitaButton variant="secondary" size="sm" onClick={() => {
-                      const sim = simulatePayment(
-                        { id: selected.id, amount: Number(selected.amount), currency: "USD", fromAccountId: "checking", recipientName: selected.payee, method: "ach", description: selected.payee },
-                        58570,
-                        12000
-                      );
-                      const recLabel = sim.recommendation === "proceed" ? "✅ Safe to pay" : sim.recommendation === "delay" ? "⏳ Consider delaying" : sim.recommendation === "split" ? "✂️ Consider splitting" : "❌ Not recommended";
-                      toast.info(`${recLabel} — Balance after: $${sim.projectedBalance.toLocaleString()}${sim.riskFlags.length > 0 ? ` ⚠️ ${sim.riskFlags[0]}` : ""}`, { duration: 6000 });
-                    }}><Zap className="h-3.5 w-3.5" /> Simulate</SitaButton>
-                  )}
-                  <SitaButton variant="secondary" size="sm" onClick={() => openEdit(selected)}>Edit</SitaButton>
-                  <SitaButton variant="danger" size="sm" onClick={async () => { if (await confirm({ title: "Delete this bill?", description: "This bill will be permanently removed.", variant: "destructive" })) deleteMutation.mutate({ id: selected.id }); }}><Trash2 className="h-3.5 w-3.5" /></SitaButton>
-                </div>
-              </>
-            ) : (
-              <EmptyState icon={CreditCard} title="Select a bill" description="Click on a bill to see details, payment history, and available actions" />
-            )}
-          </div>
+      {/* Bill Shock Prevention */}
+      <AppSurface level={1} className="p-3">
+        <div className="flex items-center gap-2 mb-2">
+          <AlertTriangle className="h-3.5 w-3.5 text-[hsl(38_85%_58%)]" />
+          <span className="text-[11px] font-semibold text-[hsl(0_0%_70%)] uppercase tracking-wider">Shock Prevention</span>
         </div>
-      )}
+        <div className="space-y-1.5">
+          {(() => {
+            const alerts: { label: string; detail: string }[] = [];
+            const avg = enriched.length > 0 ? enriched.reduce((s: number, b: any) => s + Number(b.amount), 0) / enriched.length : 0;
+            enriched.filter((b: any) => Number(b.amount) > avg * 2 && b.computedStatus !== "paid").forEach((b: any) => {
+              alerts.push({ label: `Large: ${b.payee}`, detail: `$${Number(b.amount).toLocaleString()} — ${(Number(b.amount) / avg).toFixed(1)}x avg` });
+            });
+            const byDay: Record<string, any[]> = {};
+            enriched.filter((b: any) => b.daysLeft >= 0 && b.daysLeft <= 15 && b.computedStatus !== "paid").forEach((b: any) => {
+              if (!byDay[b.due_date]) byDay[b.due_date] = [];
+              byDay[b.due_date].push(b);
+            });
+            Object.entries(byDay).filter(([, bs]) => bs.length >= 2).forEach(([date, bs]) => {
+              const total = bs.reduce((s: number, b: any) => s + Number(b.amount), 0);
+              alerts.push({ label: `Collision: ${format(parseISO(date), "MMM d")}`, detail: `${bs.length} bills · $${total.toLocaleString()}` });
+            });
+            if (alerts.length === 0) {
+              return <p className="text-[11px] text-[hsl(152_55%_48%)] flex items-center gap-1.5"><CheckCircle className="h-3 w-3" /> No risks detected</p>;
+            }
+            return alerts.map((a, i) => (
+              <div key={i} className="flex items-start gap-2 px-2 py-1.5 rounded-lg bg-[hsl(0_0%_100%/0.03)]">
+                <AlertTriangle className="h-3 w-3 mt-0.5 text-[hsl(38_85%_58%)] shrink-0" />
+                <div>
+                  <p className="text-[11px] font-medium text-[hsl(0_0%_80%)]">{a.label}</p>
+                  <p className="text-[10px] text-[hsl(0_0%_50%)]">{a.detail}</p>
+                </div>
+              </div>
+            ));
+          })()}
+        </div>
+      </AppSurface>
+    </div>
+  );
+
+  // Build detail pane
+  const detailPane = selected ? (
+    <div className="p-4 space-y-4">
+      <HeroCard
+        title={selected.payee}
+        metric={`$${Number(selected.amount).toLocaleString()}`}
+        subtitle={selected.category || "Uncategorized"}
+        accentFrom="hsl(152 55% 48%)"
+        accentTo="hsl(190 60% 45%)"
+      >
+        <ExecutionBadge state={executionState(selected.computedStatus)} />
+      </HeroCard>
+
+      <AppSurface level={2} className="p-4 space-y-2.5">
+        <div className="flex justify-between text-[12px]">
+          <span className="text-[hsl(0_0%_50%)]">Due</span>
+          <span className={selected.computedStatus === "overdue" ? "text-[hsl(0_70%_55%)] font-semibold" : "text-[hsl(0_0%_85%)]"}>
+            {format(parseISO(selected.due_date), "MMM d, yyyy")}
+          </span>
+        </div>
+        <div className="flex justify-between text-[12px]">
+          <span className="text-[hsl(0_0%_50%)]">Freshness</span>
+          <FreshnessBadge freshness={selected.daysLeft < 0 ? "expired" : selected.daysLeft <= 3 ? "stale" : selected.daysLeft <= 7 ? "aging" : "fresh"} label={selected.daysLeft < 0 ? `${Math.abs(selected.daysLeft)}d overdue` : `${selected.daysLeft}d left`} />
+        </div>
+        <div className="flex justify-between text-[12px]">
+          <span className="text-[hsl(0_0%_50%)]">Recurring</span>
+          <span className="text-[hsl(0_0%_85%)]">{selected.recurring ? selected.frequency || "Yes" : "No"}</span>
+        </div>
+        <div className="flex justify-between text-[12px]">
+          <span className="text-[hsl(0_0%_50%)]">Auto-Pay</span>
+          <span className="text-[hsl(0_0%_85%)]">{selected.auto_pay ? "Active" : "Off"}</span>
+        </div>
+        {selected.notes && (
+          <div className="flex justify-between text-[12px]">
+            <span className="text-[hsl(0_0%_50%)]">Notes</span>
+            <span className="text-[hsl(0_0%_85%)] text-right max-w-[180px] truncate">{selected.notes}</span>
+          </div>
+        )}
+      </AppSurface>
+
+      {/* Actions */}
+      <div className="flex gap-2 flex-wrap">
+        {selected.computedStatus !== "paid" && (
+          <ActionCard
+            title="Mark as Paid"
+            description="Confirm this payment has been completed"
+            accentColor="hsl(152 55% 48%)"
+            onApprove={() => markPaidMutation.mutate({ id: selected.id })}
+            className="flex-1"
+          />
+        )}
+        {selected.computedStatus !== "paid" && (
+          <ActionCard
+            title="Simulate Payment"
+            description="Check cash flow impact before paying"
+            accentColor="hsl(265 55% 58%)"
+            onApprove={() => {
+              const sim = simulatePayment(
+                { id: selected.id, amount: Number(selected.amount), currency: "USD", fromAccountId: "checking", recipientName: selected.payee, method: "ach", description: selected.payee },
+                58570, 12000
+              );
+              const recLabel = sim.recommendation === "proceed" ? "✅ Safe" : sim.recommendation === "delay" ? "⏳ Delay" : sim.recommendation === "split" ? "✂️ Split" : "❌ Not recommended";
+              toast.info(`${recLabel} — Balance after: $${sim.projectedBalance.toLocaleString()}`, { duration: 6000 });
+            }}
+            className="flex-1"
+          />
+        )}
+      </div>
+
+      <div className="flex gap-2">
+        <button onClick={() => openEdit(selected)} className="flex-1 px-3 py-2 rounded-lg bg-[hsl(0_0%_100%/0.06)] hover:bg-[hsl(0_0%_100%/0.10)] text-[hsl(0_0%_80%)] text-[12px] font-medium transition-colors">Edit</button>
+        <button onClick={async () => { if (await confirm({ title: "Delete this bill?", description: "This bill will be permanently removed.", variant: "destructive" })) deleteMutation.mutate({ id: selected.id }); }}
+          className="px-3 py-2 rounded-lg bg-[hsl(0_70%_55%/0.10)] hover:bg-[hsl(0_70%_55%/0.18)] text-[hsl(0_70%_55%)] text-[12px] font-medium transition-colors">
+          <Trash2 className="h-3.5 w-3.5" />
+        </button>
+      </div>
+
+      <LiveAdvisorCard
+        advisor="money"
+        intent="bill_optimization"
+        demoName="Payment Intelligence"
+        demoRole="Bills Advisor"
+        demoConfidence="Medium"
+        demoRecommendation="2 bills could save $180/yr with early-pay discounts."
+        demoReasoning="Based on payment timing analysis and vendor discount opportunities."
+      />
+    </div>
+  ) : (
+    <div className="flex items-center justify-center h-full">
+      <div className="text-center space-y-2">
+        <CreditCard className="h-8 w-8 mx-auto text-[hsl(0_0%_30%)]" />
+        <p className="text-[13px] text-[hsl(0_0%_50%)]">Select a bill to view details</p>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className="h-[calc(100vh-200px)] -m-4">
+      <DemoModeBadge />
+      <ConfirmationDialog state={confirmation} />
+      <SplitWorkspace
+        list={listPane}
+        detail={detailPane}
+        hasSelection={!!selected}
+        defaultSplit={42}
+      />
 
       {/* Form Drawer */}
-      <ContextDrawer open={showForm} onClose={() => { setShowForm(false); setEditId(null); }} title={editId ? "Edit Bill" : "Add Bill"}>
+      <DetailDrawer
+        isOpen={showForm}
+        onClose={() => { setShowForm(false); setEditId(null); }}
+        title={editId ? "Edit Bill" : "Add Bill"}
+        domain="finance"
+      >
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="text-xs font-medium text-muted-foreground">Payee *</label>
-            <input className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2.5 text-sm text-foreground touch-manipulation focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20" value={form.payee} onChange={e => setForm({ ...form, payee: e.target.value })} required />
+            <label className="text-[11px] font-medium text-[hsl(0_0%_50%)]">Payee *</label>
+            <input className="mt-1 w-full rounded-lg border border-[hsl(0_0%_100%/0.08)] bg-[hsl(0_0%_100%/0.04)] px-3 py-2.5 text-sm text-[hsl(0_0%_90%)] focus:border-[hsl(152_55%_48%/0.4)] focus:outline-none focus:ring-2 focus:ring-[hsl(152_55%_48%/0.15)]" value={form.payee} onChange={e => setForm({ ...form, payee: e.target.value })} required />
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="text-xs font-medium text-muted-foreground">Amount *</label>
-              <input type="number" step="0.01" className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2.5 text-sm text-foreground touch-manipulation focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20" value={form.amount} onChange={e => setForm({ ...form, amount: e.target.value })} required />
+              <label className="text-[11px] font-medium text-[hsl(0_0%_50%)]">Amount *</label>
+              <input type="number" step="0.01" className="mt-1 w-full rounded-lg border border-[hsl(0_0%_100%/0.08)] bg-[hsl(0_0%_100%/0.04)] px-3 py-2.5 text-sm text-[hsl(0_0%_90%)] focus:border-[hsl(152_55%_48%/0.4)] focus:outline-none" value={form.amount} onChange={e => setForm({ ...form, amount: e.target.value })} required />
             </div>
             <div>
-              <label className="text-xs font-medium text-muted-foreground">Due Date *</label>
-              <input type="date" className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2.5 text-sm text-foreground touch-manipulation focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20" value={form.due_date} onChange={e => setForm({ ...form, due_date: e.target.value })} required />
+              <label className="text-[11px] font-medium text-[hsl(0_0%_50%)]">Due Date *</label>
+              <input type="date" className="mt-1 w-full rounded-lg border border-[hsl(0_0%_100%/0.08)] bg-[hsl(0_0%_100%/0.04)] px-3 py-2.5 text-sm text-[hsl(0_0%_90%)] focus:border-[hsl(152_55%_48%/0.4)] focus:outline-none" value={form.due_date} onChange={e => setForm({ ...form, due_date: e.target.value })} required />
             </div>
           </div>
           <div>
-            <label className="text-xs font-medium text-muted-foreground">Category</label>
-            <input className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2.5 text-sm text-foreground touch-manipulation focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20" placeholder="e.g. Business · Rent" value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} />
+            <label className="text-[11px] font-medium text-[hsl(0_0%_50%)]">Category</label>
+            <input className="mt-1 w-full rounded-lg border border-[hsl(0_0%_100%/0.08)] bg-[hsl(0_0%_100%/0.04)] px-3 py-2.5 text-sm text-[hsl(0_0%_90%)]" placeholder="e.g. Rent · Utilities" value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} />
           </div>
           <div className="flex items-center gap-4">
-            <label className="flex items-center gap-2 text-sm text-foreground">
+            <label className="flex items-center gap-2 text-[12px] text-[hsl(0_0%_75%)]">
               <input type="checkbox" className="rounded" checked={form.recurring} onChange={e => setForm({ ...form, recurring: e.target.checked })} /> Recurring
             </label>
-            <label className="flex items-center gap-2 text-sm text-foreground">
+            <label className="flex items-center gap-2 text-[12px] text-[hsl(0_0%_75%)]">
               <input type="checkbox" className="rounded" checked={form.auto_pay} onChange={e => setForm({ ...form, auto_pay: e.target.checked })} /> Auto-Pay
             </label>
           </div>
           {form.recurring && (
             <div>
-              <label className="text-xs font-medium text-muted-foreground">Frequency</label>
-              <select className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2.5 text-sm text-foreground touch-manipulation focus:border-primary/40 focus:outline-none" value={form.frequency} onChange={e => setForm({ ...form, frequency: e.target.value })}>
+              <label className="text-[11px] font-medium text-[hsl(0_0%_50%)]">Frequency</label>
+              <select className="mt-1 w-full rounded-lg border border-[hsl(0_0%_100%/0.08)] bg-[hsl(0_0%_100%/0.04)] px-3 py-2.5 text-sm text-[hsl(0_0%_90%)]" value={form.frequency} onChange={e => setForm({ ...form, frequency: e.target.value })}>
                 <option value="weekly">Weekly</option>
                 <option value="monthly">Monthly</option>
                 <option value="quarterly">Quarterly</option>
@@ -296,71 +357,16 @@ const BillsWorkspace = () => {
             </div>
           )}
           <div>
-            <label className="text-xs font-medium text-muted-foreground">Notes</label>
-            <textarea className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2.5 text-sm text-foreground touch-manipulation focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none" rows={3} value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} />
+            <label className="text-[11px] font-medium text-[hsl(0_0%_50%)]">Notes</label>
+            <textarea className="mt-1 w-full rounded-lg border border-[hsl(0_0%_100%/0.08)] bg-[hsl(0_0%_100%/0.04)] px-3 py-2.5 text-sm text-[hsl(0_0%_90%)] resize-none" rows={3} value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} />
           </div>
           <div className="flex gap-2 pt-2">
-            <SitaButton type="submit" variant="primary" className="flex-1">{editId ? "Update Bill" : "Create Bill"}</SitaButton>
-            <SitaButton type="button" variant="ghost" onClick={() => { setShowForm(false); setEditId(null); }}>Cancel</SitaButton>
+            <button type="submit" className="flex-1 px-4 py-2.5 rounded-lg bg-[hsl(152_55%_48%)] hover:bg-[hsl(152_55%_42%)] text-white text-[13px] font-medium transition-colors">{editId ? "Update Bill" : "Create Bill"}</button>
+            <button type="button" onClick={() => { setShowForm(false); setEditId(null); }} className="px-4 py-2.5 rounded-lg bg-[hsl(0_0%_100%/0.06)] hover:bg-[hsl(0_0%_100%/0.10)] text-[hsl(0_0%_70%)] text-[13px] transition-colors">Cancel</button>
           </div>
         </form>
-      </ContextDrawer>
-
-      {/* Bill Shock Prevention */}
-      <SitaCard hover={false} className="p-5 border-l-4 border-l-urgency-high">
-        <div className="flex items-center gap-2 mb-4">
-          <AlertTriangle className="h-4 w-4 text-urgency-high" />
-          <SitaCardTitle sub="Unusual charges, renewal collisions, and cash timing risks">Bill Shock Prevention</SitaCardTitle>
-        </div>
-        <div className="space-y-2">
-          {(() => {
-            const alerts: { label: string; detail: string; severity: "high" | "medium" | "low" }[] = [];
-            // Detect large bills (> 2x average)
-            const avg = enriched.length > 0 ? enriched.reduce((s, b) => s + Number(b.amount), 0) / enriched.length : 0;
-            enriched.filter(b => Number(b.amount) > avg * 2 && b.computedStatus !== "paid").forEach(b => {
-              alerts.push({ label: `Large bill: ${b.payee}`, detail: `$${Number(b.amount).toLocaleString()} — ${(Number(b.amount) / avg).toFixed(1)}x your average bill`, severity: "high" });
-            });
-            // Detect bill collision days (3+ bills same day)
-            const byDay: Record<string, typeof enriched> = {};
-            enriched.filter(b => b.daysLeft >= 0 && b.daysLeft <= 15 && b.computedStatus !== "paid").forEach(b => {
-              const key = b.due_date;
-              if (!byDay[key]) byDay[key] = [];
-              byDay[key].push(b);
-            });
-            Object.entries(byDay).filter(([, bs]) => bs.length >= 2).forEach(([date, bs]) => {
-              const total = bs.reduce((s, b) => s + Number(b.amount), 0);
-              alerts.push({ label: `Bill collision: ${format(parseISO(date), "MMM d")}`, detail: `${bs.length} bills totaling $${total.toLocaleString()} due on the same day`, severity: "medium" });
-            });
-            // Detect annual renewals
-            enriched.filter(b => b.frequency === "annually" && b.daysLeft >= 0 && b.daysLeft <= 30 && b.computedStatus !== "paid").forEach(b => {
-              alerts.push({ label: `Annual renewal: ${b.payee}`, detail: `$${Number(b.amount).toLocaleString()} annual charge due ${format(parseISO(b.due_date), "MMM d")}`, severity: "medium" });
-            });
-            if (alerts.length === 0) {
-              return <p className="text-sm text-trust-verified flex items-center gap-2"><CheckCircle className="h-4 w-4" /> No bill shock risks detected. Your payment schedule looks smooth.</p>;
-            }
-            return alerts.map((a, i) => (
-              <div key={i} className="flex items-start gap-3 rounded-xl bg-secondary/30 px-4 py-3">
-                <AlertTriangle className={`h-4 w-4 mt-0.5 shrink-0 ${a.severity === "high" ? "text-urgency-critical" : "text-urgency-high"}`} />
-                <div>
-                  <p className="text-sm font-medium text-foreground">{a.label}</p>
-                  <p className="text-xs text-muted-foreground">{a.detail}</p>
-                </div>
-              </div>
-            ));
-          })()}
-        </div>
-      </SitaCard>
-
-      <LiveAdvisorCard
-        advisor="money"
-        intent="bill_optimization"
-        demoName="Payment Intelligence"
-        demoRole="Bills Advisor"
-        demoConfidence="Medium"
-        demoRecommendation="2 bills could save $180/yr with early-pay discounts. Consider scheduling the $2,449 rent payment after Apr 5 when the Apex Corp receivable lands."
-        demoReasoning="Based on payment timing analysis, cash flow projections, and vendor discount opportunities."
-      />
-    </motion.div>
+      </DetailDrawer>
+    </div>
   );
 };
 

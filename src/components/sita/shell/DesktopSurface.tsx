@@ -37,6 +37,8 @@ import { WindowPerformanceMonitor } from "@/lib/nova-sdk/kernel/window-perf";
 
 // ── Types ────────────────────────────────────────────────────
 
+type DesktopVisualState = "idle" | "active" | "heavy-review" | "degraded";
+
 interface DesktopSurfaceProps {
   userName?: string;
   trustPosture?: TrustPosture;
@@ -45,6 +47,20 @@ interface DesktopSurfaceProps {
   onOpenCommand?: () => void;
   onLaunchApp?: (appId: string) => void;
 }
+
+function deriveDesktopState(notifications: ShellNotificationDigest, trustPosture: TrustPosture): DesktopVisualState {
+  if (trustPosture === "offline") return "degraded";
+  if (notifications.approvals > 5 || notifications.urgent > 3) return "heavy-review";
+  if (notifications.total > 0 || notifications.approvals > 0) return "active";
+  return "idle";
+}
+
+const STATE_OVERRIDES: Record<DesktopVisualState, { orbOpacity: number; vignetteIntensity: number; clockGlow: string }> = {
+  idle:          { orbOpacity: 0.04, vignetteIntensity: 0.35, clockGlow: "hsl(265 55% 65% / 0.10)" },
+  active:        { orbOpacity: 0.08, vignetteIntensity: 0.30, clockGlow: "hsl(265 55% 65% / 0.15)" },
+  "heavy-review":{ orbOpacity: 0.12, vignetteIntensity: 0.25, clockGlow: "hsl(38 85% 58% / 0.15)" },
+  degraded:      { orbOpacity: 0.03, vignetteIntensity: 0.45, clockGlow: "hsl(0 70% 55% / 0.12)" },
+};
 
 // ── Desktop Notification Toasts (Calm — fade instead of slide) ─
 
@@ -743,6 +759,8 @@ export function DesktopSurface({
   const reduced = useReducedMotion();
   useAccentSync();
   const { greeting, mood, gradient: timeGradient, gradientAlt: timeGradientAlt } = useMemo(getTimeConfig, []);
+  const desktopState = deriveDesktopState(notifications, trustPosture);
+  const stateStyle = STATE_OVERRIDES[desktopState];
   const wallpaper = useMemo(getWallpaperTheme, []);
   const parallax = useWallpaperParallax(3);
   const isAuto = wallpaper.id === "auto";
@@ -857,7 +875,7 @@ export function DesktopSurface({
       </div>
 
       {/* Decorative orbs — richer, more visible */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ zIndex: DEPTH_LAYERS.orbs }}>
+      <div className="absolute inset-0 pointer-events-none overflow-hidden transition-opacity duration-[2000ms]" style={{ zIndex: DEPTH_LAYERS.orbs, opacity: stateStyle.orbOpacity / 0.08 }}>
         <div className="absolute top-[10%] left-[15%] w-[600px] h-[600px] rounded-full bg-[hsl(265_60%_50%/0.10)] blur-[140px]" />
         <div className="absolute bottom-[15%] right-[10%] w-[500px] h-[500px] rounded-full bg-[hsl(35_80%_50%/0.07)] blur-[120px]" />
         <div className="absolute top-[55%] left-[55%] w-[400px] h-[400px] rounded-full bg-[hsl(190_60%_50%/0.06)] blur-[100px]" />
@@ -1077,13 +1095,13 @@ export function DesktopSurface({
         )}
       </AnimatePresence>
 
-      {/* Vignette — deeper, more cinematic */}
+      {/* Vignette — state-aware intensity */}
       <div
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-0 pointer-events-none transition-all duration-[2000ms]"
         style={{
           zIndex: DEPTH_LAYERS.vignette,
-          background: "radial-gradient(ellipse at center, transparent 35%, hsl(0 0% 0% / 0.35) 85%, hsl(0 0% 0% / 0.5) 100%)",
-          boxShadow: "inset 0 0 150px hsl(0 0% 0% / 0.2)",
+          background: `radial-gradient(ellipse at center, transparent 35%, hsl(0 0% 0% / ${stateStyle.vignetteIntensity}) 85%, hsl(0 0% 0% / ${stateStyle.vignetteIntensity + 0.15}) 100%)`,
+          boxShadow: `inset 0 0 150px hsl(0 0% 0% / ${stateStyle.vignetteIntensity * 0.6})`,
         }}
       />
     </div>
