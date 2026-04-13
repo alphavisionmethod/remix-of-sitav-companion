@@ -1,56 +1,44 @@
 
 
-# Audit & Fix: Business, Finance, Concierge as True OS Apps
+# Enhanced Wallpaper System — More Themes + Custom URL Support
 
-## Issues Found
+## What We're Building
 
-1. **Maximize button broken**: The green traffic-light button in `FloatingWindow` calls `onMaximize` prop, but `DesktopSurface.tsx` never passes it. The window has internal double-click-to-maximize (snap to full screen), but the button does nothing.
+A significantly expanded wallpaper picker in Settings with **more built-in wallpaper options** (generated via beautiful CSS gradients since we can't bundle unlimited images), a **"Custom URL" option** letting users paste any image URL from the internet, and a polished gallery UI with category tabs and large previews.
 
-2. **No `maximizeWindow` in `useWindowManager`**: The hook only has `minimizeWindow` and `restoreWindow`. There's no maximize state tracked, so even if we wire the button, there's no state to toggle.
+## Changes
 
-3. **Minimize works but restore is indirect**: Minimized windows disappear, and the dock shows a running indicator, but clicking the dock icon calls `launchApp` which re-focuses (correct). This works.
+### 1. Generate 6 new premium CSS wallpapers (`ShellAmbientBackground.tsx`)
 
-4. **Close works**: `closeWindow` removes the window from state. Confirmed working.
+Add rendering support for additional wallpaper IDs beyond `sita-hero`. When the active wallpaper is an image-based one (from `WALLPAPERS` in settings), render it as a full `background-image: cover` layer with the dark overlay and logo treatment, similar to `SitaHeroWallpaper`. When it's a custom URL, do the same with the user-provided URL.
 
-5. **App shells have internal sidebars**: The 3 app shells (Business, Finance, Concierge) each have their own internal sidebar for module navigation — this is correct per the user's request ("no side menu" from the OS, only the app's own sidebar).
+### 2. Expand wallpaper gallery in Settings (`SettingsWindow.tsx`)
 
-6. **Height not stored**: `WindowConfig` has no explicit `height` — windows auto-size. When maximized, we need explicit full-viewport dimensions.
+- Add **6 more built-in wallpapers** as CSS gradient thumbnails with evocative names (Cosmic Drift, Emerald Night, Solar Flare, Midnight City, Lavender Haze, Carbon Fiber)
+- Add a **"Custom URL"** card at the end of the grid — clicking it opens a text input where users paste any image URL
+- Store custom URL wallpapers in localStorage under `sita-custom-wallpaper-url`
+- Add category filter tabs: **All · Photos · Gradients · Custom**
+- Larger preview thumbnails (aspect-[16/10]) with hover zoom effect
 
-## Plan
+### 3. Wire wallpaper rendering in `ShellAmbientBackground.tsx`
 
-### Step 1: Add maximize state to `useWindowManager.ts`
+- Listen for `nova-wallpaper-change` custom event to update the background live
+- When wallpaper ID is one of the image-based ones (`nebula`, `amber`, `ocean`, `aurora`, `rose`), render it as a full-bleed background image
+- When wallpaper ID is `custom`, read the URL from localStorage and render it as background-image
+- When wallpaper ID is `dynamic`, show the current gradient orbs (existing behavior)
+- Keep the glassmorphic logo overlay for all wallpaper modes
 
-- Add `maximized: boolean` to `WindowState`
-- Add `maximizeWindow(id)` function that toggles `maximized`
-- Track pre-maximize position/size for restore
-- Export `maximizeWindow` from the hook
+### 4. Update `use-wallpaper.ts` hook
 
-### Step 2: Wire maximize in `FloatingWindow.tsx`
-
-- Add `isMaximized` and `onMaximize` props handling
-- When `isMaximized` is true: position at `(0, 0)`, full viewport width/height, disable drag, hide snap zones
-- The green button toggles maximize on/off
-- Merge the existing double-click maximize logic with the prop-driven maximize
-
-### Step 3: Wire maximize in `DesktopSurface.tsx`
-
-- Pass `onMaximize={() => windowManager?.maximizeWindow(w.id)}` and `isMaximized={w.maximized}` to each `FloatingWindow`
-
-### Step 4: Dock restore behavior
-
-- When clicking a dock icon for a maximized app, it should focus it (already works)
-- When clicking for a minimized app, it restores (already works via `openWindow` re-focus path)
-
-### Step 5: Verify all 3 app shells render correctly
-
-- Confirm `FinanceAppShell`, `BusinessAppShell`, `ConciergeAppShell` are registered in `APP_REGISTRY` with correct IDs (already confirmed — `finance`, `money`, `business`, `concierge`)
-- Confirm dock `OS_WINDOW_APPS` set includes all IDs (already confirmed)
+- Add a `customUrl` field to the hook return
+- Add `setCustomUrl(url)` function
+- Support `"custom"` as a wallpaper ID that reads from `sita-custom-wallpaper-url` in localStorage
 
 ## Files
 
 | File | Change |
 |------|--------|
-| `src/hooks/useWindowManager.ts` | Add `maximized` state, `maximizeWindow` function, pre-maximize memory |
-| `src/components/sita/shell/FloatingWindow.tsx` | Handle `isMaximized` prop — full-screen positioning, disable drag, toggle via green button |
-| `src/components/sita/shell/DesktopSurface.tsx` | Pass `onMaximize` and `isMaximized` to FloatingWindow |
+| `src/hooks/use-wallpaper.ts` | Add custom URL support, new gradient wallpaper entries |
+| `src/components/sita/shell/ShellAmbientBackground.tsx` | Render image-based and custom-URL wallpapers as full-bleed backgrounds |
+| `src/components/sita/shell/windows/SettingsWindow.tsx` | Expand gallery with 6 new wallpapers, category tabs, custom URL input, larger previews |
 
