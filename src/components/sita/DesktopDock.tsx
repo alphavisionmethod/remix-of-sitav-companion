@@ -490,7 +490,7 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMa
               className="w-11 h-11 rounded-xl bg-[hsl(0_0%_100%/0.08)] border border-[hsl(0_0%_100%/0.10)] flex items-center justify-center text-[hsl(0_0%_100%/0.5)] hover:text-[hsl(0_0%_100%/0.9)] hover:bg-[hsl(0_0%_100%/0.14)] transition-all duration-150"
               aria-label="Open App Launcher"
             >
-              <Plus className="w-5 h-5" />
+              <LayoutGrid className="w-5 h-5" />
             </motion.button>
             <div className="w-1 h-1 rounded-full mt-0.5 bg-transparent" />
           </div>
