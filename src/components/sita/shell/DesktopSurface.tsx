@@ -1,9 +1,10 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — macOS-Style Desktop Surface
-// Clean wallpaper with right-aligned widget stack
+// SITA OS — Stunning Desktop Surface
+// Centered logo + bottom-left clock + right widget panel
+// Inspired by KDE, Deepin, Garuda aesthetics
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
@@ -13,7 +14,6 @@ import { ShellAmbientBackground } from "./ShellAmbientBackground";
 import { WindowCompositor } from "@/components/sita/os/WindowCompositor";
 import { useOSWindowContext } from "@/components/sita/os/WindowContext";
 import {
-  DesktopContinuityPanel,
   DesktopClockWidget,
   DesktopNotificationsWidget,
   DesktopQuickActionsWidget,
@@ -36,14 +36,75 @@ const DEFAULT_CONTINUITY: ContinuityContext = {
   whatChanged: [],
 };
 
-function useGreeting() {
-  return useMemo(() => {
-    const h = new Date().getHours();
-    if (h < 5) return "Good night";
-    if (h < 12) return "Good morning";
-    if (h < 17) return "Good afternoon";
-    return "Good evening";
+// ── Large Bottom-Left Clock ──────────────────────────────────
+function DesktopBigClock() {
+  const [now, setNow] = useState(new Date());
+  useEffect(() => {
+    const t = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(t);
   }, []);
+
+  const h = now.getHours();
+  const h12 = h % 12 || 12;
+  const mm = now.getMinutes().toString().padStart(2, "0");
+  const ampm = h >= 12 ? "PM" : "AM";
+  const blink = now.getSeconds() % 2 === 0;
+  const dateLine = now.toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+  });
+
+  return (
+    <div className="select-none">
+      <div className="flex items-baseline gap-1">
+        <span className="text-7xl font-extralight tracking-tight text-white tabular-nums drop-shadow-[0_2px_20px_rgba(0,0,0,0.5)]">
+          {h12}
+        </span>
+        <span
+          className={cn(
+            "text-7xl font-extralight text-white/80 transition-opacity duration-500",
+            blink ? "opacity-100" : "opacity-20"
+          )}
+        >
+          :
+        </span>
+        <span className="text-7xl font-extralight tracking-tight text-white tabular-nums drop-shadow-[0_2px_20px_rgba(0,0,0,0.5)]">
+          {mm}
+        </span>
+        <span className="ml-2 text-xl font-light text-white/40">{ampm}</span>
+      </div>
+      <div className="mt-2 text-lg font-light text-white/55 tracking-wide drop-shadow-[0_1px_8px_rgba(0,0,0,0.4)]">
+        {dateLine}
+      </div>
+    </div>
+  );
+}
+
+// ── Compact Continuity Card ──────────────────────────────────
+function ContinuityCard({ continuity, desktopState }: { continuity: ContinuityContext; desktopState: DesktopState }) {
+  const navigate = useNavigate();
+  const pending = continuity.pendingDrafts + continuity.unfinishedWorkflows;
+  const resumeLabel = continuity.lastWorkspace ? `Resume ${continuity.lastWorkspace}` : "Workspace ready";
+
+  return (
+    <div className="rounded-2xl border border-white/[0.1] bg-white/[0.06] backdrop-blur-2xl overflow-hidden">
+      <div className="h-[2px] bg-gradient-to-r from-violet-500/60 via-fuchsia-500/40 to-cyan-400/30" />
+      <div className="p-4">
+        <div className="text-[10px] font-medium uppercase tracking-[0.2em] text-white/40 mb-2">Continuity</div>
+        <h3 className="text-sm font-semibold text-white">{resumeLabel}</h3>
+        <div className="mt-3 flex items-center gap-2">
+          <button
+            onClick={() => navigate(continuity.lastWorkspace ? `/${continuity.lastWorkspace.toLowerCase()}` : "/business")}
+            className="rounded-lg bg-white/90 px-3 py-1.5 text-xs font-medium text-slate-900 shadow-sm transition hover:bg-white hover:scale-[1.02]"
+          >
+            Continue
+          </button>
+          {pending > 0 && <span className="text-[11px] text-white/45">{pending} pending</span>}
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export function DesktopSurface({
@@ -52,7 +113,6 @@ export function DesktopSurface({
   continuity = DEFAULT_CONTINUITY,
 }: DesktopSurfaceProps) {
   const navigate = useNavigate();
-  const greeting = useGreeting();
 
   // Legacy window manager
   const windowManager = useWindowManagerContext();
@@ -65,82 +125,105 @@ export function DesktopSurface({
 
   return (
     <div className="fixed inset-0" onDoubleClick={() => onOpenCommand?.()}>
-      {/* Layer 1: Ambient Wallpaper — full screen, clean */}
-      <div className="absolute inset-0 z-0">
+      {/* Layer 0: Deep gradient base */}
+      <div className="absolute inset-0 z-0 bg-gradient-to-br from-[hsl(265,45%,12%)] via-[hsl(280,35%,8%)] to-[hsl(220,40%,6%)]" />
+
+      {/* Layer 1: Ambient Wallpaper */}
+      <div className="absolute inset-0 z-[1]">
         <ShellAmbientBackground intensity="vivid" className="fixed" />
       </div>
 
-      {/* Layer 2: Desktop Content — widgets on right, greeting center-left */}
+      {/* Layer 2: Desktop Content */}
       <div className={cn(
         "absolute inset-0 z-10 transition-all duration-700",
         hasAnyWindows && "opacity-30 blur-sm pointer-events-none"
       )}>
-        {/* Center-left greeting (like macOS keeps desktop mostly clean) */}
+        {/* ── Center Logo + Tagline ── */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-          className="absolute left-12 bottom-32 z-10 max-w-md pointer-events-none select-none hidden lg:block"
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.2, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center pointer-events-none select-none z-10"
         >
-          <div className="flex items-center gap-3 mb-4">
-            <img src={logo} alt="SITA" className="h-10 w-10 rounded-xl shadow-lg" />
-            <div>
-              <div className="text-[11px] uppercase tracking-[0.25em] text-white/40 font-medium">SITA OS</div>
-            </div>
+          {/* Logo with halo glow */}
+          <div className="relative">
+            <div className="absolute inset-0 rounded-2xl bg-violet-500/20 blur-[40px] scale-150" />
+            <img
+              src={logo}
+              alt="SITA"
+              className="relative h-20 w-20 rounded-2xl shadow-2xl drop-shadow-[0_0_40px_rgba(114,92,255,0.4)]"
+            />
           </div>
-          <h1 className="text-5xl font-semibold tracking-tight text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.4)]">
-            {greeting}.
-          </h1>
-          <p className="mt-3 text-base text-white/60 leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.3)]">
-            Your operating environment is ready.
-          </p>
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="mt-5 text-center"
+          >
+            <div className="text-lg tracking-[0.2em] uppercase font-light text-white/45">
+              SITA OS
+            </div>
+            <div className="mt-1 text-sm tracking-[0.12em] text-white/25">
+              Your sovereign operating environment
+            </div>
+          </motion.div>
         </motion.div>
 
-        {/* Right-side widget column — macOS Big Sur style */}
-        <div className="absolute top-8 right-5 bottom-24 z-10 flex flex-col gap-4 w-[340px] overflow-y-auto scrollbar-none pointer-events-auto">
-          {/* Calendar + Clock widget (compact) */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <DesktopClockWidget />
-          </motion.div>
+        {/* ── Bottom-Left Large Clock ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="absolute left-12 bottom-24 z-10 pointer-events-none hidden lg:block"
+        >
+          <DesktopBigClock />
+        </motion.div>
 
-          {/* Continuity / Resume widget */}
+        {/* ── Right Widget Panel ── */}
+        <div className="absolute top-6 right-5 bottom-20 z-10 flex flex-col gap-3 w-[320px] overflow-y-auto scrollbar-none pointer-events-auto">
+          {/* App Grid */}
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <MacOSContinuityWidget continuity={continuity} desktopState={desktopState} />
-          </motion.div>
-
-          {/* Notifications widget */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <DesktopNotificationsWidget />
-          </motion.div>
-
-          {/* Quick Actions */}
-          <motion.div
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.5, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
           >
             <DesktopQuickActionsWidget onOpenCommand={onOpenCommand} />
           </motion.div>
 
-          {/* System Status */}
+          {/* System Toggles */}
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.5, delay: 0.25, ease: [0.22, 1, 0.36, 1] }}
           >
             <DesktopSystemWidget />
+          </motion.div>
+
+          {/* Calendar */}
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.35, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <DesktopClockWidget />
+          </motion.div>
+
+          {/* Business Pulse */}
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <DesktopNotificationsWidget />
+          </motion.div>
+
+          {/* Continuity */}
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <ContinuityCard continuity={continuity} desktopState={desktopState} />
           </motion.div>
         </div>
       </div>
@@ -174,57 +257,6 @@ export function DesktopSurface({
 
       {/* Layer 4: OS Window Engine */}
       <WindowCompositor />
-    </div>
-  );
-}
-
-// ── Compact Continuity Widget (macOS style) ──────────────────
-function MacOSContinuityWidget({ continuity, desktopState }: { continuity: ContinuityContext; desktopState: DesktopState }) {
-  const navigate = useNavigate();
-  const pending = continuity.pendingDrafts + continuity.unfinishedWorkflows;
-  const resumeLabel = continuity.lastWorkspace ? `Resume ${continuity.lastWorkspace}` : "Your workspace is ready";
-
-  return (
-    <div className="rounded-[20px] border border-white/[0.12] bg-white/[0.08] backdrop-blur-2xl shadow-[0_20px_60px_rgba(0,0,0,0.3)] overflow-hidden">
-      {/* Accent top edge */}
-      <div className="h-[2px] bg-gradient-to-r from-violet-500/60 via-fuchsia-500/40 to-cyan-400/30" />
-      <div className="p-5">
-        <div className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/50 mb-3">
-          Continuity
-        </div>
-        <h3 className="text-lg font-semibold text-white leading-snug">{resumeLabel}</h3>
-        {continuity.whatChanged.length > 0 && (
-          <p className="mt-2 text-sm text-white/55 leading-relaxed">
-            {continuity.whatChanged.slice(0, 2).join(". ")}.
-          </p>
-        )}
-        <div className="mt-4 flex items-center gap-3">
-          <button
-            onClick={() => navigate(continuity.lastWorkspace ? `/${continuity.lastWorkspace.toLowerCase()}` : "/business")}
-            className="rounded-xl bg-white/90 px-4 py-2 text-sm font-medium text-slate-900 shadow-sm transition hover:bg-white hover:scale-[1.02]"
-          >
-            Continue
-          </button>
-          {pending > 0 && (
-            <span className="text-xs text-white/50">{pending} pending</span>
-          )}
-        </div>
-        {/* Stats row */}
-        <div className="mt-4 grid grid-cols-3 gap-2">
-          <div className="rounded-xl bg-black/20 p-3 text-center">
-            <div className="text-[10px] uppercase tracking-wider text-white/40">Active</div>
-            <div className="mt-1 text-sm font-semibold text-white">{continuity.lastWorkspace ?? "Desktop"}</div>
-          </div>
-          <div className="rounded-xl bg-black/20 p-3 text-center">
-            <div className="text-[10px] uppercase tracking-wider text-white/40">Pending</div>
-            <div className="mt-1 text-sm font-semibold text-white">{pending}</div>
-          </div>
-          <div className="rounded-xl bg-black/20 p-3 text-center">
-            <div className="text-[10px] uppercase tracking-wider text-white/40">Trust</div>
-            <div className="mt-1 text-sm font-semibold text-cyan-300">Safe</div>
-          </div>
-        </div>
-      </div>
     </div>
   );
 }
