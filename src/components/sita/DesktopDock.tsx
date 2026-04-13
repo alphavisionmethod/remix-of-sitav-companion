@@ -1,27 +1,37 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Desktop Dock
-// macOS-style floating dock with magnification + live badges + context menu
-// Enhanced: bounce launch animation, glowing running bar, separator
+// SITA OS — Focus Dock (Intelligent Access Layer)
+// Sectioned: [ Core Pinned ] | [ Active ] | [ Smart Suggestions ] | [ + ]
+// Max 12 items, magnetic interaction, context-aware
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useRef, useCallback, useEffect, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { Plus } from "lucide-react";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { useAppBadges } from "@/hooks/useAppBadges";
+import { useAppSurfacing } from "@/hooks/useAppSurfacing";
+import { useDockContext } from "@/hooks/useDockContext";
 import type { AppDefinition } from "@/lib/app-platform/types";
 import type { useWindowManager } from "@/hooks/useWindowManager";
 import { DockWindowPreview } from "./shell/DockWindowPreview";
+import { RecentFlowStrip } from "./shell/RecentFlowStrip";
 import { SoundEngine } from "@/lib/sound-engine";
 
 const OS_WINDOW_APPS = new Set(["finder", "settings", "files-app", "settings-app", "notes", "com.nova.notes", "terminal", "com.nova.terminal", "calendar", "com.nova.calendar", "weather", "com.nova.weather", "nova-terminal", "com.nova.canvas-terminal", "system-monitor", "com.sita.monitor", "music-player", "calculator", "photo-viewer", "code-editor", "mail-client", "maps-app", "security-center", "com.sita.security-center", "app-library", "com.sita.app-library", "update-center", "com.sita.update-center", "cloud-sync", "com.sita.cloud-sync", "dev-tools", "com.sita.dev-tools", "extension-manager", "com.sita.extension-manager", "syscall-dashboard", "com.sita.syscall-dashboard"]);
+
+// Core pinned app IDs — always visible (max 5)
+const CORE_PINNED_IDS = ["finder", "chrome", "notes", "terminal", "calendar"];
+const MAX_DOCK_ITEMS = 12;
+const MAX_CORE = 5;
 
 interface DesktopDockProps {
   onLaunchApp?: (appId: string, originRect?: DOMRect) => void;
   windowManager?: ReturnType<typeof useWindowManager>;
   mood?: "warm" | "serene" | "night" | "focus";
   hasMaximizedWindow?: boolean;
+  onOpenLauncher?: () => void;
 }
 
 const MOOD_TINTS: Record<string, string> = {
@@ -31,28 +41,121 @@ const MOOD_TINTS: Record<string, string> = {
   focus: "bg-[hsl(265_50%_40%/0.10)]",
 };
 
-export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMaximizedWindow = false }: DesktopDockProps) => {
+// ── Separator Component ──────────────────────────────────────
+function DockSeparator() {
+  return (
+    <div className="w-px h-8 mx-1 rounded-full flex-shrink-0" style={{
+      background: "linear-gradient(180deg, hsl(0 0% 100% / 0.03), hsl(0 0% 100% / 0.18), hsl(0 0% 100% / 0.03))",
+      boxShadow: "0 0 6px hsl(0 0% 100% / 0.06)",
+    }} />
+  );
+}
+
+// ── Dock Icon ────────────────────────────────────────────────
+interface DockIconProps {
+  app: AppDefinition;
+  scale: number;
+  isRunning: boolean;
+  isBouncing: boolean;
+  isSuggestion?: boolean;
+  badge?: { count: number; urgency: string } | null;
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
+  onClick: () => void;
+  onContextMenu: (e: React.MouseEvent) => void;
+  tooltipVisible: boolean;
+  iconRef: (el: HTMLButtonElement | null) => void;
+}
+
+function DockIcon({ app, scale, isRunning, isBouncing, isSuggestion, badge, onMouseEnter, onMouseLeave, onClick, onContextMenu, tooltipVisible, iconRef }: DockIconProps) {
+  return (
+    <div className="relative flex flex-col items-center">
+      <AnimatePresence>
+        {tooltipVisible && (
+          <motion.div
+            initial={{ opacity: 0, y: 4, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 2, scale: 0.98 }}
+            transition={{ duration: 0.12, ease: "easeOut" }}
+            className="absolute -top-9 whitespace-nowrap rounded-lg bg-[hsl(0_0%_0%/0.75)] backdrop-blur-md px-2.5 py-1 text-[10px] font-medium text-[hsl(0_0%_100%/0.95)] shadow-lg z-10"
+          >
+            {app.name}
+            {isSuggestion && <span className="ml-1 text-[hsl(265_60%_70%)]">✦</span>}
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <motion.button
+        ref={iconRef}
+        animate={{
+          scale: isBouncing ? [1, 0.8, 1.15, 0.95, 1.05, 1] : scale,
+          y: isBouncing ? [0, 2, -18, -8, -12, 0] : (scale > 1 ? -(scale - 1) * 22 : 0),
+        }}
+        transition={
+          isBouncing
+            ? { duration: 0.5, ease: "easeOut" }
+            : { type: "spring", stiffness: 300, damping: 20 }
+        }
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+        onClick={onClick}
+        onContextMenu={onContextMenu}
+        className="relative w-11 h-11 rounded-xl flex items-center justify-center transition-shadow duration-150 hover:shadow-xl"
+        aria-label={`Open ${app.name}`}
+      >
+        <div className={cn("w-full h-full rounded-xl bg-gradient-to-br flex items-center justify-center text-lg shadow-md", app.iconBg)}>
+          {app.icon}
+        </div>
+        {/* Suggestion indicator — subtle pulsing dot */}
+        {isSuggestion && (
+          <span className="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-[hsl(265_60%_65%)] shadow-[0_0_4px_hsl(265_60%_65%/0.5)] animate-pulse" />
+        )}
+        {/* Badge */}
+        {badge && badge.count > 0 && (
+          <span className={cn(
+            "absolute -top-1 -right-1 min-w-[16px] h-4 rounded-full flex items-center justify-center text-[9px] font-bold px-1",
+            badge.urgency === "critical" ? "bg-destructive text-destructive-foreground animate-pulse" :
+            badge.urgency === "high" ? "bg-destructive text-destructive-foreground" :
+            "bg-primary text-primary-foreground"
+          )}>
+            {badge.count > 99 ? "99+" : badge.count}
+          </span>
+        )}
+      </motion.button>
+      {/* Running / idle indicator */}
+      <div className={cn(
+        "mt-0.5 rounded-full transition-all duration-200",
+        isRunning
+          ? "w-3 h-[3px] bg-[hsl(0_0%_100%/0.9)] shadow-[0_0_6px_hsl(0_0%_100%/0.5)]"
+          : "w-1 h-1 bg-transparent"
+      )} />
+    </div>
+  );
+}
+
+// ── Main Focus Dock ──────────────────────────────────────────
+
+export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMaximizedWindow = false, onOpenLauncher }: DesktopDockProps) => {
   const navigate = useNavigate();
   const { apps } = useAppPlatform();
   const { getBadge } = useAppBadges();
-  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+  const { recordLaunch, getRecentFlow, getContextualSuggestions } = useAppSurfacing();
+  const dockContext = useDockContext();
   const [tooltip, setTooltip] = useState<string | null>(null);
   const [contextMenu, setContextMenu] = useState<{ app: AppDefinition; x: number; y: number } | null>(null);
   const [bouncingApp, setBouncingApp] = useState<string | null>(null);
   const [previewApp, setPreviewApp] = useState<{ id: string; x: number; y: number } | null>(null);
-  const [dragOverApp, setDragOverApp] = useState<string | null>(null);
   const [dockVisible, setDockVisible] = useState(true);
+  const [flowVisible, setFlowVisible] = useState(false);
+  const [cursorX, setCursorX] = useState<number | null>(null);
   const dockRef = useRef<HTMLDivElement>(null);
   const iconRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
   const previewTimer = useRef<ReturnType<typeof setTimeout>>();
-  const [cursorX, setCursorX] = useState<number | null>(null);
+  const flowTimer = useRef<ReturnType<typeof setTimeout>>();
   const velocityRef = useRef(0);
   const lastCursorX = useRef(0);
   const lastCursorTime = useRef(0);
 
-  const pinnedApps = apps.filter(a => a.pinnedToDock && a.installStatus === "installed");
-
-  // G4: Dock auto-hide when windows are maximized
+  // Auto-hide when maximized windows
   useEffect(() => {
     if (!hasMaximizedWindow) { setDockVisible(true); return; }
     setDockVisible(false);
@@ -63,11 +166,60 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMa
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [hasMaximizedWindow]);
 
+  // ── Build dock sections ────────────────────────────────────
+
+  const openWindowIds = useMemo(() =>
+    new Set(windowManager?.windows.map(w => w.id) ?? []),
+    [windowManager?.windows]
+  );
+
+  // 1. Core Pinned (max 5)
+  const corePinned = useMemo(() => {
+    return CORE_PINNED_IDS
+      .map(id => apps.find(a => a.id === id))
+      .filter(Boolean)
+      .slice(0, MAX_CORE) as AppDefinition[];
+  }, [apps]);
+
+  // 2. Active/Running apps not in core
+  const activeApps = useMemo(() => {
+    const coreIds = new Set(corePinned.map(a => a.id));
+    return Array.from(openWindowIds)
+      .filter(id => !coreIds.has(id))
+      .map(id => apps.find(a => a.id === id))
+      .filter(Boolean) as AppDefinition[];
+  }, [openWindowIds, corePinned, apps]);
+
+  // 3. Smart Suggestions — fill remaining slots
+  const smartSuggestions = useMemo(() => {
+    const usedIds = new Set([
+      ...corePinned.map(a => a.id),
+      ...activeApps.map(a => a.id),
+    ]);
+    const remaining = MAX_DOCK_ITEMS - corePinned.length - activeApps.length - 1; // -1 for + button
+    if (remaining <= 0) return [];
+    const suggestionIds = getContextualSuggestions(dockContext, usedIds, Math.min(remaining, 3));
+    return suggestionIds
+      .map(id => apps.find(a => a.id === id))
+      .filter(Boolean) as AppDefinition[];
+  }, [corePinned, activeApps, dockContext, getContextualSuggestions, apps]);
+
+  // All dock items for magnification calculation
+  const allDockApps = useMemo(() =>
+    [...corePinned, ...activeApps, ...smartSuggestions],
+    [corePinned, activeApps, smartSuggestions]
+  );
+
+  // Flow data
+  const recentFlow = getRecentFlow(4);
+
+  // ── Interactions ───────────────────────────────────────────
+
   const launchApp = useCallback((app: AppDefinition) => {
     setBouncingApp(app.id);
     setTimeout(() => setBouncingApp(null), 500);
+    recordLaunch(app.id);
 
-    // G2: Pass originRect + spatial sound at icon position
     const rect = iconRefs.current.get(app.id)?.getBoundingClientRect();
     SoundEngine.click(rect ? rect.x + rect.width / 2 : undefined);
 
@@ -77,41 +229,59 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMa
     }
     if (app.routePath) navigate(app.routePath);
     else if (app.externalUrl) window.open(app.externalUrl, "_blank", "noopener");
-  }, [navigate, onLaunchApp]);
+  }, [navigate, onLaunchApp, recordLaunch]);
 
   const handleContextMenu = useCallback((e: React.MouseEvent, app: AppDefinition) => {
     e.preventDefault();
     setContextMenu({ app, x: e.clientX, y: e.clientY });
   }, []);
 
-  // Velocity-reactive Gaussian magnification
-  const getScale = useCallback((idx: number) => {
+  // Gaussian magnification
+  const getScale = useCallback((globalIdx: number) => {
     if (cursorX === null) return 1;
-    const el = iconRefs.current.get(pinnedApps[idx]?.id ?? "");
-    if (!el) {
-      if (hoveredIdx === null) return 1;
-      const dist = Math.abs(idx - hoveredIdx);
-      if (dist === 0) return 1.45;
-      if (dist === 1) return 1.2;
-      if (dist === 2) return 1.05;
-      return 1;
-    }
+    const app = allDockApps[globalIdx];
+    if (!app) return 1;
+    const el = iconRefs.current.get(app.id);
+    if (!el) return 1;
     const rect = el.getBoundingClientRect();
     const iconCenter = rect.left + rect.width / 2;
     const dist = Math.abs(cursorX - iconCenter);
-    const sigma = 60;
+    const sigma = 55;
     const gaussian = Math.exp(-(dist * dist) / (2 * sigma * sigma));
     const velocityFactor = Math.max(0.3, 1 - Math.min(velocityRef.current / 3000, 0.7));
-    const maxScale = 1.5;
-    return 1 + (maxScale - 1) * gaussian * velocityFactor;
-  }, [cursorX, hoveredIdx, pinnedApps]);
+    return 1 + (0.5 * gaussian * velocityFactor);
+  }, [cursorX, allDockApps]);
 
-  if (pinnedApps.length === 0) return null;
+  // Flow strip visibility — show on dock hover, auto-hide
+  const showFlow = useCallback(() => {
+    setFlowVisible(true);
+    if (flowTimer.current) clearTimeout(flowTimer.current);
+    flowTimer.current = setTimeout(() => setFlowVisible(false), 3000);
+  }, []);
 
-  const openWindowIds = new Set(windowManager?.windows.map(w => w.id) ?? []);
+  const handleFlowAppClick = useCallback((appId: string) => {
+    const app = apps.find(a => a.id === appId);
+    if (app) launchApp(app);
+  }, [apps, launchApp]);
+
+  if (allDockApps.length === 0) return null;
+
+  // Build global index tracker
+  let globalIdx = 0;
 
   return (
     <>
+      {/* Flow Strip — above dock */}
+      <div className="fixed bottom-[76px] left-1/2 -translate-x-1/2 z-[119] hidden md:flex">
+        <RecentFlowStrip
+          flow={recentFlow}
+          apps={apps}
+          visible={flowVisible}
+          onAppClick={handleFlowAppClick}
+        />
+      </div>
+
+      {/* Dock */}
       <div className={cn("fixed bottom-4 left-1/2 -translate-x-1/2 z-[120] hidden md:flex transition-all duration-300", !dockVisible && "translate-y-24 opacity-0")}>
         <motion.div
           ref={dockRef}
@@ -127,137 +297,140 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMa
             boxShadow: "0 2px 8px hsl(0 0% 0% / 0.12), 0 20px 50px hsl(0 0% 0% / 0.22), inset 0 1px 0 hsl(0 0% 100% / 0.12), inset 0 -1px 0 hsl(0 0% 0% / 0.1)",
             background: `linear-gradient(180deg, hsl(0 0% 100% / 0.14) 0%, hsl(0 0% 100% / 0.06) 100%)`,
           }}
-          onMouseLeave={() => { setHoveredIdx(null); setTooltip(null); setCursorX(null); }}
+          onMouseEnter={showFlow}
+          onMouseLeave={() => { setTooltip(null); setCursorX(null); }}
           onMouseMove={(e) => {
             const now = performance.now();
             const dx = Math.abs(e.clientX - lastCursorX.current);
             const dt = now - lastCursorTime.current;
-            if (dt > 0) velocityRef.current = (dx / dt) * 1000; // px/s
+            if (dt > 0) velocityRef.current = (dx / dt) * 1000;
             lastCursorX.current = e.clientX;
             lastCursorTime.current = now;
             setCursorX(e.clientX);
           }}
         >
-          {pinnedApps.map((app, idx) => {
-            const badge = getBadge(app.id);
-            const scale = getScale(idx);
-            const isRunning = openWindowIds.has(app.id);
-            const isBouncing = bouncingApp === app.id;
+          {/* ── Core Pinned Section ── */}
+          {corePinned.map((app) => {
+            const idx = globalIdx++;
             return (
-              <div key={app.id} className="relative flex flex-col items-center">
-                {/* Tooltip */}
-                <AnimatePresence>
-                  {tooltip === app.id && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 4, scale: 0.95 }}
-                      animate={{ opacity: 1, y: 0, scale: 1 }}
-                      exit={{ opacity: 0, y: 2, scale: 0.98 }}
-                      transition={{ duration: 0.12, ease: "easeOut" }}
-                      className="absolute -top-9 whitespace-nowrap rounded-lg bg-[hsl(0_0%_0%/0.75)] dark:bg-[hsl(0_0%_100%/0.12)] backdrop-blur-md px-2.5 py-1 text-[10px] font-medium text-[hsl(0_0%_100%/0.95)] shadow-lg"
-                    >
-                      {app.name}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-                <motion.button
-                  ref={(el) => { if (el) iconRefs.current.set(app.id, el); }}
-                  animate={{
-                    scale: isBouncing ? [1, 0.8, 1.15, 0.95, 1.05, 1] : scale,
-                    y: isBouncing ? [0, 2, -18, -8, -12, 0] : (scale > 1 ? -(scale - 1) * 20 : 0),
-                  }}
-                  transition={
-                    isBouncing
-                      ? { duration: 0.5, ease: "easeOut" }
-                      : { type: "spring", stiffness: 300, damping: 20 }
+              <DockIcon
+                key={app.id}
+                app={app}
+                scale={getScale(idx)}
+                isRunning={openWindowIds.has(app.id)}
+                isBouncing={bouncingApp === app.id}
+                badge={getBadge(app.id)}
+                tooltipVisible={tooltip === app.id}
+                iconRef={(el) => { if (el) iconRefs.current.set(app.id, el); }}
+                onMouseEnter={() => {
+                  setTooltip(app.id);
+                  if (openWindowIds.has(app.id)) {
+                    previewTimer.current = setTimeout(() => {
+                      const rect = iconRefs.current.get(app.id)?.getBoundingClientRect();
+                      if (rect) setPreviewApp({ id: app.id, x: rect.left + rect.width / 2, y: window.innerHeight - rect.top });
+                    }, 400);
                   }
-                  onMouseEnter={() => {
-                    setHoveredIdx(idx);
-                    setTooltip(app.id);
-                    // W1: Live preview after 400ms for running apps
-                    if (isRunning) {
-                      previewTimer.current = setTimeout(() => {
-                        const rect = iconRefs.current.get(app.id)?.getBoundingClientRect();
-                        if (rect) setPreviewApp({ id: app.id, x: rect.left + rect.width / 2, y: window.innerHeight - rect.top });
-                      }, 400);
-                    }
-                  }}
-                  onMouseLeave={() => {
-                    clearTimeout(previewTimer.current);
-                    setPreviewApp(null);
-                  }}
-                  onClick={() => launchApp(app)}
-                  onContextMenu={(e) => handleContextMenu(e, app)}
-                  // G3: File drag/drop
-                  onDragOver={(e) => { e.preventDefault(); setDragOverApp(app.id); }}
-                  onDragLeave={() => setDragOverApp(null)}
-                  onDrop={(e) => { e.preventDefault(); setDragOverApp(null); launchApp(app); }}
-                  className={cn(
-                    "relative w-11 h-11 rounded-xl flex items-center justify-center transition-shadow duration-150 hover:shadow-xl",
-                    dragOverApp === app.id && "ring-2 ring-[hsl(210_80%_60%/0.6)] ring-offset-1"
-                  )}
-                  aria-label={`Open ${app.name}`}
-                >
-                  <div className={cn("w-full h-full rounded-xl bg-gradient-to-br flex items-center justify-center text-lg shadow-md", app.iconBg)}>
-                    {app.icon}
-                  </div>
-                  {/* Badge */}
-                  {badge && badge.count > 0 && (
-                    <span className={cn(
-                      "absolute -top-1 -right-1 min-w-[16px] h-4 rounded-full flex items-center justify-center text-[9px] font-bold px-1",
-                      badge.urgency === "critical" ? "bg-destructive text-destructive-foreground animate-pulse" :
-                      badge.urgency === "high" ? "bg-destructive text-destructive-foreground" :
-                      "bg-primary text-primary-foreground"
-                    )}>
-                      {badge.count > 99 ? "99+" : badge.count}
-                    </span>
-                  )}
-                </motion.button>
-                {/* Running indicator — glowing bar for active, dot for running */}
-                <div className={cn(
-                  "mt-0.5 rounded-full transition-all duration-200",
-                  isRunning
-                    ? "w-3 h-[3px] bg-[hsl(0_0%_100%/0.9)] shadow-[0_0_6px_hsl(0_0%_100%/0.5)]"
-                    : "w-1 h-1 bg-[hsl(0_0%_100%/0.3)]"
-                )} />
-              </div>
+                }}
+                onMouseLeave={() => { clearTimeout(previewTimer.current); setPreviewApp(null); }}
+                onClick={() => launchApp(app)}
+                onContextMenu={(e) => handleContextMenu(e, app)}
+              />
             );
           })}
 
-          {/* Separator — glowing gradient line */}
-          <div className="w-px h-8 mx-1.5 rounded-full" style={{
-            background: "linear-gradient(180deg, hsl(0 0% 100% / 0.05), hsl(0 0% 100% / 0.20), hsl(0 0% 100% / 0.05))",
-            boxShadow: "0 0 4px hsl(0 0% 100% / 0.08)",
-          }} />
+          {/* ── Separator: Core → Active ── */}
+          {activeApps.length > 0 && <DockSeparator />}
 
-          {/* App Store shortcut */}
+          {/* ── Active/Running Section ── */}
+          {activeApps.map((app) => {
+            const idx = globalIdx++;
+            return (
+              <DockIcon
+                key={app.id}
+                app={app}
+                scale={getScale(idx)}
+                isRunning={true}
+                isBouncing={bouncingApp === app.id}
+                badge={getBadge(app.id)}
+                tooltipVisible={tooltip === app.id}
+                iconRef={(el) => { if (el) iconRefs.current.set(app.id, el); }}
+                onMouseEnter={() => {
+                  setTooltip(app.id);
+                  previewTimer.current = setTimeout(() => {
+                    const rect = iconRefs.current.get(app.id)?.getBoundingClientRect();
+                    if (rect) setPreviewApp({ id: app.id, x: rect.left + rect.width / 2, y: window.innerHeight - rect.top });
+                  }, 400);
+                }}
+                onMouseLeave={() => { clearTimeout(previewTimer.current); setPreviewApp(null); }}
+                onClick={() => launchApp(app)}
+                onContextMenu={(e) => handleContextMenu(e, app)}
+              />
+            );
+          })}
+
+          {/* ── Separator: Active → Suggestions ── */}
+          {smartSuggestions.length > 0 && <DockSeparator />}
+
+          {/* ── Smart Suggestions Section ── */}
+          {smartSuggestions.map((app) => {
+            const idx = globalIdx++;
+            return (
+              <DockIcon
+                key={app.id}
+                app={app}
+                scale={getScale(idx)}
+                isRunning={openWindowIds.has(app.id)}
+                isBouncing={bouncingApp === app.id}
+                isSuggestion
+                badge={getBadge(app.id)}
+                tooltipVisible={tooltip === app.id}
+                iconRef={(el) => { if (el) iconRefs.current.set(app.id, el); }}
+                onMouseEnter={() => setTooltip(app.id)}
+                onMouseLeave={() => {}}
+                onClick={() => launchApp(app)}
+                onContextMenu={(e) => handleContextMenu(e, app)}
+              />
+            );
+          })}
+
+          {/* ── Separator → Launcher ── */}
+          <DockSeparator />
+
+          {/* ── + Launcher Button ── */}
           <div className="relative flex flex-col items-center">
             <AnimatePresence>
-              {tooltip === "store" && (
+              {tooltip === "__launcher" && (
                 <motion.div
                   initial={{ opacity: 0, y: 4, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 2, scale: 0.98 }}
-                  transition={{ duration: 0.12, ease: "easeOut" }}
-                  className="absolute -top-9 whitespace-nowrap rounded-lg bg-[hsl(0_0%_0%/0.75)] dark:bg-[hsl(0_0%_100%/0.12)] backdrop-blur-md px-2.5 py-1 text-[10px] font-medium text-[hsl(0_0%_100%/0.95)] shadow-lg"
+                  transition={{ duration: 0.12 }}
+                  className="absolute -top-9 whitespace-nowrap rounded-lg bg-[hsl(0_0%_0%/0.75)] backdrop-blur-md px-2.5 py-1 text-[10px] font-medium text-[hsl(0_0%_100%/0.95)] shadow-lg z-10"
                 >
-                  App Store
+                  App Launcher
                 </motion.div>
               )}
             </AnimatePresence>
             <motion.button
-              animate={{ scale: hoveredIdx === pinnedApps.length ? 1.15 : 1 }}
+              whileHover={{ scale: 1.15 }}
+              whileTap={{ scale: 0.9 }}
               transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              onClick={() => navigate("/app-store")}
-              className="w-11 h-11 rounded-xl bg-[hsl(0_0%_100%/0.08)] border border-[hsl(0_0%_100%/0.10)] flex items-center justify-center text-[hsl(0_0%_100%/0.6)] hover:text-[hsl(0_0%_100%/0.9)] hover:bg-[hsl(0_0%_100%/0.14)] transition-all duration-150"
-              aria-label="App Store"
-              onMouseEnter={() => { setHoveredIdx(pinnedApps.length); setTooltip("store"); }}
+              onClick={() => {
+                SoundEngine.click();
+                onOpenLauncher?.();
+              }}
+              onMouseEnter={() => setTooltip("__launcher")}
+              onMouseLeave={() => setTooltip(null)}
+              className="w-11 h-11 rounded-xl bg-[hsl(0_0%_100%/0.08)] border border-[hsl(0_0%_100%/0.10)] flex items-center justify-center text-[hsl(0_0%_100%/0.5)] hover:text-[hsl(0_0%_100%/0.9)] hover:bg-[hsl(0_0%_100%/0.14)] transition-all duration-150"
+              aria-label="Open App Launcher"
             >
-              <span className="text-lg">🏪</span>
+              <Plus className="w-5 h-5" />
             </motion.button>
             <div className="w-1 h-1 rounded-full mt-0.5 bg-transparent" />
           </div>
         </motion.div>
-        {/* Dock reflection / surface glow */}
+
+        {/* Dock reflection */}
         <div
           className="absolute -bottom-3 left-4 right-4 h-4 rounded-b-2xl pointer-events-none"
           style={{
@@ -306,19 +479,13 @@ export const DesktopDock = ({ onLaunchApp, windowManager, mood = "serene", hasMa
                 >
                   Unpin from Dock
                 </button>
-                <button
-                  onClick={() => setContextMenu(null)}
-                  className="w-full text-left px-3 py-2 rounded-lg text-[12px] text-[hsl(0_0%_45%)] dark:text-[hsl(0_0%_55%)] hover:bg-[hsl(210_80%_60%/0.12)] transition-colors duration-[80ms]"
-                >
-                  Notifications
-                </button>
               </div>
             </motion.div>
           </>
         )}
       </AnimatePresence>
 
-      {/* W1: Live window preview tooltip */}
+      {/* Window preview */}
       <AnimatePresence>
         {previewApp && (() => {
           const win = windowManager?.windows.find(w => w.id === previewApp.id);

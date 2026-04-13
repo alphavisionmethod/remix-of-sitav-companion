@@ -93,6 +93,7 @@ const UpdateBanner = lazy(() => import("./UpdateBanner").then(m => ({ default: m
 const UniversalCommandSurface = lazy(() => import("./shell/UniversalCommandSurface").then(m => ({ default: m.UniversalCommandSurface })));
 const ShellAmbientBackground = lazy(() => import("./shell/ShellAmbientBackground").then(m => ({ default: m.ShellAmbientBackground })));
 const DesktopDock = lazy(() => import("./DesktopDock").then(m => ({ default: m.DesktopDock })));
+const AppLauncherPanelLazy = lazy(() => import("./shell/AppLauncherPanel").then(m => ({ default: m.AppLauncherPanel })));
 const CommandPalette = lazy(() => import("./CommandPalette").then(m => ({ default: m.CommandPalette })));
 const NotificationCenterPanel = lazy(() => import("./NotificationCenter").then(m => ({ default: m.NotificationCenter })));
 const AppRecentsStripLazy = lazy(() => import("./AppRecentsStrip").then(m => ({ default: m.AppRecentsStrip })));
@@ -124,6 +125,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
   const [spatialOpen, setSpatialOpen] = useState(false);
   const [controlCenterOpen, setControlCenterOpen] = useState(false);
   const [notifDropdownOpen, setNotifDropdownOpen] = useState(false);
+  const [launcherOpen, setLauncherOpen] = useState(false);
   const [showBootSplash, setShowBootSplash] = useState(true);
   const [pipWindows, setPipWindows] = useState<Array<{ id: string; title: string; type: "music" | "generic"; data?: any }>>([]);
   const [permGate, setPermGate] = useState<{ appId: string; originRect?: DOMRect } | null>(null);
@@ -445,9 +447,13 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         e.preventDefault();
         setCommandOpen(o => !o);
       }
-      if (e.key === "F3" || (e.key === " " && (e.metaKey || e.ctrlKey))) {
+      if (e.key === "F3") {
         e.preventDefault();
         setMissionControlOpen(o => !o);
+      }
+      if (e.key === " " && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setLauncherOpen(o => !o);
       }
       if (e.key === "F4" || (e.key === "g" && (e.metaKey || e.ctrlKey) && e.shiftKey)) {
         e.preventDefault();
@@ -637,9 +643,14 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         
       </Suspense>
 
-      {/* Desktop Dock — floating app launcher */}
+      {/* Desktop Dock — Focus Dock with intelligent sections */}
       <Suspense fallback={null}>
-        <DesktopDock onLaunchApp={handleLaunchApp} windowManager={wm} hasMaximizedWindow={wm.visibleWindows.some(w => w.position?.x === 0 && w.position?.y === 0)} />
+        <DesktopDock onLaunchApp={handleLaunchApp} windowManager={wm} hasMaximizedWindow={wm.visibleWindows.some(w => w.position?.x === 0 && w.position?.y === 0)} onOpenLauncher={() => setLauncherOpen(true)} />
+      </Suspense>
+
+      {/* App Launcher Panel — Spotlight + Launchpad hybrid */}
+      <Suspense fallback={null}>
+        <AppLauncherPanelLazy open={launcherOpen} onClose={() => setLauncherOpen(false)} onLaunchApp={(id) => { handleLaunchApp(id); setLauncherOpen(false); }} />
       </Suspense>
 
       {/* G1: Permission Gate Modal */}
