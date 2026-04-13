@@ -57,7 +57,7 @@ const FamilyBoardroom = () => {
 
       {/* ═══ DAILY PULSE MODE ═══ */}
       {view === "daily" && (
-        <GlassCard variant="accent" intensity="medium" className="p-5">
+        <GlassCard glow="accent" intensity="medium" className="p-5">
           <div className="flex items-center gap-2 mb-4">
             <Heart className="h-4 w-4 text-accent" />
             <p className="text-sm font-semibold text-foreground">Today's Pulse</p>

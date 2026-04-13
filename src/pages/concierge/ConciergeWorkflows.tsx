@@ -178,7 +178,7 @@ const ConciergeWorkflows = () => {
 
         <div className="space-y-4">
           {/* Safety Boundaries */}
-          <GlassCard variant="none" className="p-4">
+          <GlassCard glow="none" className="p-4">
             <div className="flex items-center gap-2 mb-3">
               <Shield className="h-4 w-4 text-chart-2" />
               <p className="text-xs font-semibold text-foreground">Safety Boundaries</p>

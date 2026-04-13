@@ -187,7 +187,7 @@ const ErrandsLogistics = () => {
         </div>
 
         <div className="space-y-4">
-          <GlassCard variant="accent" intensity="subtle" className="p-4">
+          <GlassCard glow="accent" intensity="subtle" className="p-4">
             <div className="flex items-center gap-2 mb-2">
               <Car className="h-4 w-4 text-accent" />
               <p className="text-xs font-semibold text-foreground">Route Suggestion</p>
