@@ -1,67 +1,37 @@
-import { SitaPageHeader, SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
-import { SectionSkeleton, KPISkeleton } from "@/components/sita/SectionSkeleton";
-import { KPITile, SitaTabs, EmptyState, ContextDrawer, OpportunityCard } from "@/components/sita/SitaComponents";
-import { TrustBadge } from "@/components/sita/TrustBadge";
+import { HeroCard, SummaryCard, QueueCard, ActionCard, AdvisorCard } from "@/components/sita/cards";
+import { FreshnessBadge, UrgencyBadge } from "@/components/sita/badges";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { SubscriptionTrendsChart, SubscriptionCategoryChart } from "@/components/sita/SitaCharts";
+import { SitaTabs } from "@/components/sita/SitaComponents";
+import { SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
+import { ContextDrawer } from "@/components/sita/SitaComponents";
+import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
+import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAction } from "@/lib/hooks/useAction";
-import { CreditCard, AlertTriangle, TrendingDown, CheckCircle, XCircle, Eye, Sparkles, Calendar, DollarSign, Plus, Trash2, Pencil, Pause, Play } from "lucide-react";
-import { LiveAdvisorCard } from "@/components/sita/LiveAdvisorCard";
-import { toast } from "sonner";
-import { format, parseISO, differenceInDays } from "date-fns";
+import { CreditCard, AlertTriangle, Plus, Trash2, Pencil, Pause, Play, XCircle, Eye, DollarSign } from "lucide-react";
+import { format, parseISO } from "date-fns";
 import { motion } from "framer-motion";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useConfirmation } from "@/hooks/use-confirmation";
 import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
-import { DataFreshnessBadge } from "@/components/sita/DataFreshnessBadge";
 import { useQueryFreshness } from "@/hooks/use-query-freshness";
 
-
-// Enriched subscription with computed waste fields
-interface EnrichedSub {
-  waste_flag: boolean;
-  duplicate_of: string;
-  usage_level: string;
-  [key: string]: unknown;
-}
+interface EnrichedSub { waste_flag: boolean; duplicate_of: string; usage_level: string; [key: string]: unknown; }
 function enrichSub(s: Record<string, unknown>): EnrichedSub {
-  return {
-    ...s,
-    waste_flag: typeof s.waste_flag === "boolean" ? s.waste_flag : (typeof s.usage_score === "number" && s.usage_score <= 20 && s.status === "active"),
-    duplicate_of: typeof s.duplicate_of === "string" ? s.duplicate_of : "",
-    usage_level: typeof s.usage_level === "string" ? s.usage_level : String(s.usage_score ?? "unknown"),
-  };
-}
-interface SubForm {
-  service_name: string;
-  amount: string;
-  billing_cycle: string;
-  category: string;
-  renewal_date: string;
-  usage_level: string;
-  waste_flag: boolean;
-  duplicate_of: string;
-  notes: string;
+  return { ...s, waste_flag: typeof s.waste_flag === "boolean" ? s.waste_flag : (typeof s.usage_score === "number" && s.usage_score <= 20 && s.status === "active"), duplicate_of: typeof s.duplicate_of === "string" ? s.duplicate_of : "", usage_level: typeof s.usage_level === "string" ? s.usage_level : String(s.usage_score ?? "unknown") };
 }
 
+interface SubForm { service_name: string; amount: string; billing_cycle: string; category: string; renewal_date: string; usage_level: string; waste_flag: boolean; duplicate_of: string; notes: string; }
 const emptyForm: SubForm = { service_name: "", amount: "", billing_cycle: "monthly", category: "", renewal_date: "", usage_level: "unknown", waste_flag: false, duplicate_of: "", notes: "" };
-
-const usageLabelMap: Record<string, { label: string; color: string }> = {
-  high: { label: "High", color: "text-trust-verified" },
-  medium: { label: "Medium", color: "text-foreground" },
-  low: { label: "Low", color: "text-urgency-high" },
-  none: { label: "Very Low", color: "text-urgency-critical" },
-  unknown: { label: "Unknown", color: "text-muted-foreground" },
-};
 
 const SubscriptionsWaste = () => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
+  const { isDemoMode } = useDataMode();
   const { confirmation, confirm } = useConfirmation();
   const [tab, setTab] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -71,107 +41,76 @@ const SubscriptionsWaste = () => {
 
   const subsQuery = useQuery({
     queryKey: ["subscriptions"],
-    queryFn: async () => {
-      const { data, error } = await fromTable("subscriptions").select("*").order("name", { ascending: true });
-      if (error) throw error;
-      return data;
-    },
+    queryFn: async () => { const { data, error } = await fromTable("subscriptions").select("*").order("name", { ascending: true }); if (error) throw error; return data; },
   });
   const subscriptions = subsQuery.data ?? [];
   const isLoading = subsQuery.isLoading;
   const freshness = useQueryFreshness(subsQuery);
 
-  const createMutation = useAction<SubForm>("finance", "subscription.create", {
-    successMessage: "Subscription added",
-    invalidateKeys: [["subscriptions"]],
-    onSuccess: () => { setShowForm(false); setForm(emptyForm); },
-  });
-
-  const updateMutation = useAction<{ id: string; sub: SubForm }>("finance", "subscription.update", {
-    successMessage: "Subscription updated",
-    invalidateKeys: [["subscriptions"]],
-    onSuccess: () => { setShowForm(false); setEditId(null); setForm(emptyForm); },
-  });
-
-  const deleteMutation = useAction("finance", "subscription.delete", {
-    successMessage: "Subscription deleted",
-    invalidateKeys: [["subscriptions"]],
-    onSuccess: () => { setSelectedId(null); },
-  });
-
-  const statusMutation = useAction("finance", "subscription.status", {
-    successMessage: "Status updated",
-    invalidateKeys: [["subscriptions"]],
-  });
+  const createMutation = useAction<SubForm>("finance", "subscription.create", { successMessage: "Subscription added", invalidateKeys: [["subscriptions"]], onSuccess: () => { setShowForm(false); setForm(emptyForm); } });
+  const deleteMutation = useAction("finance", "subscription.delete", { successMessage: "Subscription deleted", invalidateKeys: [["subscriptions"]], onSuccess: () => { setSelectedId(null); } });
+  const statusMutation = useAction("finance", "subscription.status", { successMessage: "Status updated", invalidateKeys: [["subscriptions"]] });
 
   const active = subscriptions.filter(s => s.status === "active");
   const totalMonthly = active.reduce((s, sub) => s + Number(sub.amount), 0);
   const wasteSubs = subscriptions.filter(s => enrichSub(s as Record<string, unknown>).waste_flag && s.status === "active");
   const wasteMonthly = wasteSubs.reduce((s, sub) => s + Number(sub.amount), 0);
-  const duplicates = subscriptions.filter(s => enrichSub(s as Record<string, unknown>).duplicate_of);
 
-  const filtered = tab === "all" ? subscriptions
-    : tab === "waste" ? wasteSubs
-    : tab === "paused" ? subscriptions.filter(s => s.status === "paused" || s.status === "cancelled")
-    : duplicates;
-
+  const filtered = tab === "all" ? subscriptions : tab === "waste" ? wasteSubs : tab === "paused" ? subscriptions.filter(s => s.status === "paused" || s.status === "cancelled") : subscriptions.filter(s => enrichSub(s as Record<string, unknown>).duplicate_of);
   const selected = subscriptions.find(s => s.id === selectedId);
 
-  const openEdit = (s: typeof subscriptions[0]) => {
-    setForm({
-      service_name: s.name,
-      amount: String(s.amount),
-      billing_cycle: s.frequency || "monthly",
-      category: s.category || "",
-      renewal_date: s.next_billing_date || "",
-      usage_level: String(s.usage_score ?? "unknown"),
-      waste_flag: enrichSub(s as Record<string, unknown>).waste_flag || false,
-      duplicate_of: enrichSub(s as Record<string, unknown>).duplicate_of || "",
-      notes: s.notes || "",
-    });
-    setEditId(s.id);
-    setShowForm(true);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (editId) updateMutation.mutate({ id: editId, sub: form });
-    else createMutation.mutate(form);
-  };
-
   const annualized = (amount: number, cycle: string | null) => {
-    const multiplier = cycle === "weekly" ? 52 : cycle === "quarterly" ? 4 : cycle === "annually" ? 1 : 12;
-    return amount * multiplier;
+    const m = cycle === "weekly" ? 52 : cycle === "quarterly" ? 4 : cycle === "annually" ? 1 : 12;
+    return amount * m;
   };
+
+  const wasteQueueItems = wasteSubs.map(sub => ({
+    id: sub.id,
+    label: sub.name,
+    meta: `$${Number(sub.amount).toFixed(0)}/mo`,
+    urgency: "high" as const,
+  }));
 
   return (
-    <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-      <DemoModeBadge />
+    <motion.div className="space-y-5" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+      <PageTruthBanner truthState={isDemoMode ? "demo" : "live"} freshness={freshness.label} />
       <ConfirmationDialog state={confirmation} />
-      <SitaPageHeader
+
+      <HeroCard
         title="Subscriptions & Waste"
-        subtitle="Track, optimize, and reduce waste"
-        actions={<div className="flex items-center gap-3"><DataFreshnessBadge {...freshness} /><SitaButton variant="primary" onClick={() => { setForm(emptyForm); setEditId(null); setShowForm(true); }}><Plus className="h-4 w-4" /> Add Subscription</SitaButton></div>}
+        metric={`$${totalMonthly.toFixed(0)}/mo`}
+        subtitle={`${active.length} active · $${wasteMonthly.toFixed(0)}/mo waste detected`}
+        accentFrom="hsl(152 55% 48%)"
+        accentTo="hsl(165 50% 42%)"
+        icon={<CreditCard className="h-5 w-5 text-[hsl(152_55%_58%)]" />}
+      >
+        <button onClick={() => { setForm(emptyForm); setEditId(null); setShowForm(true); }} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[hsl(152_55%_48%/0.15)] hover:bg-[hsl(152_55%_48%/0.25)] text-[hsl(152_55%_58%)] text-[11px] font-medium transition-colors">
+          <Plus className="h-3.5 w-3.5" /> Add Subscription
+        </button>
+      </HeroCard>
+
+      <SummaryCard
+        title="Subscription Health"
+        kpis={[
+          { label: "Active", value: String(active.length) },
+          { label: "Monthly Total", value: `$${totalMonthly.toFixed(0)}` },
+          { label: "Estimated Waste", value: `$${wasteMonthly.toFixed(0)}/mo`, trend: "down" },
+          { label: "Flagged", value: String(wasteSubs.length) },
+        ]}
+        icon={<AlertTriangle className="h-4 w-4 text-[hsl(38_85%_58%)]" />}
       />
 
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-        <KPITile label="Active Subscriptions" value={active.length} icon={CreditCard} />
-        <KPITile label="Monthly Total" value={`$${totalMonthly.toFixed(0)}`} icon={DollarSign} sub={`$${(totalMonthly * 12).toFixed(0)}/yr`} />
-        <KPITile label="Estimated Waste" value={`$${wasteMonthly.toFixed(0)}/mo`} icon={AlertTriangle} sub={`$${(wasteMonthly * 12).toFixed(0)} annual savings`} />
-        <KPITile label="Flagged" value={wasteSubs.length} icon={Eye} sub="Review recommended" />
-      </div>
-
-      {/* Charts */}
-      <div className="grid gap-6 lg:grid-cols-2">
+      <div className="grid gap-5 lg:grid-cols-2">
         <SubscriptionTrendsChart />
         <SubscriptionCategoryChart />
       </div>
 
       {wasteSubs.length > 0 && (
-        <OpportunityCard
-          title={`Save up to $${(wasteMonthly * 12).toFixed(0)}/year by canceling ${wasteSubs.length} flagged subscriptions`}
-          description="SITA detected low-usage, duplicate, and potentially unnecessary services"
-          action="Review All Flagged"
+        <ActionCard
+          title={`Save up to $${(wasteMonthly * 12).toFixed(0)}/year`}
+          description={`${wasteSubs.length} subscriptions flagged as waste — review and cancel`}
+          accentColor="hsl(38 85% 58%)"
+          onApprove={() => setTab("waste")}
         />
       )}
 
@@ -180,284 +119,65 @@ const SubscriptionsWaste = () => {
           { key: "all", label: "All", count: subscriptions.length },
           { key: "waste", label: "Likely Waste", count: wasteSubs.length },
           { key: "paused", label: "Paused/Cancelled", count: subscriptions.filter(s => s.status === "paused" || s.status === "cancelled").length },
-          { key: "duplicates", label: "Duplicates", count: duplicates.length },
+          { key: "duplicates", label: "Duplicates", count: subscriptions.filter(s => enrichSub(s as Record<string, unknown>).duplicate_of).length },
         ]}
         active={tab}
         onChange={setTab}
       />
 
       {isLoading ? (
-        <><KPISkeleton count={4} /><SectionSkeleton cards={3} columns={1} /></>
-      ) : subscriptions.length === 0 ? (
-        <EmptyState icon={CreditCard} title="No subscriptions yet" description="Add your subscriptions to track spending, detect waste, and find savings" action={<SitaButton variant="primary" onClick={() => setShowForm(true)}><Plus className="h-4 w-4" /> Add Subscription</SitaButton>} />
+        <div className="space-y-2">{[1,2,3].map(i => <div key={i} className="h-16 rounded-xl bg-[hsl(0_0%_100%/0.03)] animate-pulse" />)}</div>
+      ) : filtered.length === 0 ? (
+        <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-8 text-center">
+          <CreditCard className="h-6 w-6 text-[hsl(0_0%_40%)] mx-auto mb-2" />
+          <p className={cn(SITA_TYPE.cardTitle, "text-[hsl(0_0%_70%)]")}>No subscriptions</p>
+        </div>
       ) : (
-        <div className="grid gap-6 lg:grid-cols-5">
-          <div className="lg:col-span-3 space-y-2 order-1">
-            {filtered.map((sub) => {
-               const usage = usageLabelMap[String(enrichSub(sub as Record<string, unknown>).usage_level || sub.usage_score || "unknown")] || usageLabelMap.unknown;
-               return (
-                <SitaCard key={sub.id} onClick={() => setSelectedId(sub.id)} selected={selectedId === sub.id}
-                  lane={enrichSub(sub as Record<string, unknown>).waste_flag ? "action" : undefined} className="p-4">
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <p className="text-sm font-medium text-foreground">{sub.name}</p>
-                        {sub.status === "paused" && <span className="text-[10px] text-muted-foreground bg-muted rounded px-1.5 py-px">Paused</span>}
-                        {sub.status === "cancelled" && <span className="text-[10px] text-muted-foreground bg-muted rounded px-1.5 py-px line-through">Cancelled</span>}
-                        {enrichSub(sub as Record<string, unknown>).waste_flag && <span className="inline-flex items-center gap-1 rounded-md bg-urgency-high/10 border border-urgency-high/20 px-1.5 py-px text-[10px] font-medium text-urgency-high"><AlertTriangle className="h-2.5 w-2.5" /> Waste</span>}
-                        {enrichSub(sub as Record<string, unknown>).duplicate_of && <span className="text-[10px] text-trust-review bg-trust-review/10 rounded px-1.5 py-px">Duplicate</span>}
-                      </div>
-                      <p className="text-xs text-muted-foreground">{sub.category || "Uncategorized"} · Usage: {usage.label}</p>
-                    </div>
-                    <div className="text-right shrink-0">
-                      <p className="font-display text-sm font-bold text-foreground">${Number(sub.amount).toFixed(2)}/{sub.frequency === "annually" ? "yr" : "mo"}</p>
-                      <p className="text-[10px] text-muted-foreground">${annualized(Number(sub.amount), sub.frequency).toFixed(0)}/yr</p>
-                    </div>
-                  </div>
-                </SitaCard>
-              );
-            })}
-            {filtered.length === 0 && <EmptyState icon={Eye} title="No subscriptions in this view" description="Try switching tabs or adding a subscription" />}
+        <div className="grid gap-5 lg:grid-cols-5">
+          <div className="lg:col-span-3 space-y-2">
+            {filtered.map(sub => (
+              <div key={sub.id} onClick={() => setSelectedId(sub.id)} className="cursor-pointer">
+                <ActionCard
+                  title={sub.name}
+                  description={`${sub.category || "Uncategorized"} · $${Number(sub.amount).toFixed(2)}/${sub.frequency === "annually" ? "yr" : "mo"}`}
+                  accentColor={enrichSub(sub as Record<string, unknown>).waste_flag ? "hsl(0 70% 55%)" : "hsl(152 55% 48%)"}
+                  badge={enrichSub(sub as Record<string, unknown>).waste_flag ? <UrgencyBadge level="critical" label="Waste" /> : undefined}
+                />
+              </div>
+            ))}
           </div>
-
-          <div className="lg:col-span-2 space-y-4">
+          <div className="lg:col-span-2 space-y-3">
             {selected ? (
               <>
-                <SitaCard hover={false} glow className="p-5">
-                  <SitaCardTitle sub={selected.category || "Uncategorized"}>{selected.name}</SitaCardTitle>
-                  <p className="mt-2 font-display text-2xl font-bold gradient-sita-text">${Number(selected.amount).toFixed(2)}/{selected.frequency === "annually" ? "yr" : "mo"}</p>
-                  <p className="text-xs text-muted-foreground">${annualized(Number(selected.amount), selected.frequency).toFixed(0)}/year</p>
-                  <div className="mt-4 space-y-2">
-                    <div className="flex justify-between text-sm"><span className="text-muted-foreground">Usage</span><span className={`font-medium ${(usageLabelMap[String(selected.usage_score ?? "unknown")] || usageLabelMap.unknown).color}`}>{(usageLabelMap[String(selected.usage_score ?? "unknown")] || usageLabelMap.unknown).label}</span></div>
-                    <div className="flex justify-between text-sm"><span className="text-muted-foreground">Billing Cycle</span><span className="text-foreground capitalize">{selected.frequency || "Monthly"}</span></div>
-                    {selected.next_billing_date && <div className="flex justify-between text-sm"><span className="text-muted-foreground">Renewal</span><span className="text-foreground">{format(parseISO(selected.next_billing_date), "MMM d, yyyy")}</span></div>}
-                    {enrichSub(selected as Record<string, unknown>).duplicate_of && <div className="flex justify-between text-sm"><span className="text-muted-foreground">Overlaps With</span><span className="text-trust-review">{enrichSub(selected as Record<string, unknown>).duplicate_of}</span></div>}
-                    <div className="flex justify-between text-sm"><span className="text-muted-foreground">Status</span><span className="text-foreground capitalize">{selected.status}</span></div>
-                    <div className="flex justify-between text-sm"><span className="text-muted-foreground">Waste Risk</span>{enrichSub(selected as Record<string, unknown>).waste_flag ? <TrustBadge level="degraded" label="High" size="sm" /> : <TrustBadge level="verified" label="Low" size="sm" />}</div>
-                    {selected.notes && <div className="pt-2 border-t border-border"><p className="text-xs text-muted-foreground">{selected.notes}</p></div>}
-                  </div>
-                </SitaCard>
-
-                {enrichSub(selected as Record<string, unknown>).waste_flag && (
-                  <SitaCard hover={false}>
-                    <SitaCardTitle>Recommended Action</SitaCardTitle>
-                    <div className="mt-3 rounded-xl bg-accent/5 border border-accent/10 p-4">
-                      <div className="flex items-start gap-2">
-                        <Sparkles className="h-4 w-4 text-accent mt-0.5 shrink-0" />
-                        <div>
-                          <p className="text-sm font-medium text-foreground">Cancel {selected.name}</p>
-                          <p className="mt-1 text-xs text-muted-foreground">
-                            Save ${annualized(Number(selected.amount), selected.frequency).toFixed(0)}/year. {enrichSub(selected as Record<string, unknown>).duplicate_of ? `Use ${enrichSub(selected as Record<string, unknown>).duplicate_of} instead.` : "Usage doesn't justify the cost."}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </SitaCard>
-                )}
-
+                <div className="rounded-xl border border-[hsl(0_0%_100%/0.08)] bg-[hsl(0_0%_9%)] p-5">
+                  <h4 className={cn(SITA_TYPE.cardTitle, "text-[hsl(0_0%_85%)] mb-1")}>{selected.name}</h4>
+                  <p className={cn(SITA_TYPE.metricEmphasis, "text-[hsl(0_0%_95%)]")}>${Number(selected.amount).toFixed(2)}/{selected.frequency === "annually" ? "yr" : "mo"}</p>
+                  <p className={cn(SITA_TYPE.timelineMeta, "mt-1")}>${annualized(Number(selected.amount), selected.frequency).toFixed(0)}/year · {selected.category || "Uncategorized"}</p>
+                </div>
                 <div className="flex gap-2 flex-wrap">
                   {selected.status === "active" && (
-                    <>
-                      <SitaButton variant="danger" size="sm" className="flex-1" onClick={() => statusMutation.mutate({ id: selected.id, status: "cancelled" })}><XCircle className="h-3.5 w-3.5" /> Cancel</SitaButton>
-                      <SitaButton variant="secondary" size="sm" onClick={() => statusMutation.mutate({ id: selected.id, status: "paused" })}><Pause className="h-3.5 w-3.5" /> Pause</SitaButton>
-                    </>
+                    <button onClick={() => statusMutation.mutate({ id: selected.id, status: "cancelled" })} className="flex-1 flex items-center justify-center gap-1.5 rounded-lg bg-[hsl(0_70%_55%/0.15)] px-3 py-2 text-xs font-medium text-[hsl(0_70%_60%)]"><XCircle className="h-3.5 w-3.5" /> Cancel</button>
                   )}
-                  {(selected.status === "paused" || selected.status === "cancelled") && (
-                    <SitaButton variant="primary" size="sm" className="flex-1" onClick={() => statusMutation.mutate({ id: selected.id, status: "active" })}><Play className="h-3.5 w-3.5" /> Reactivate</SitaButton>
-                  )}
-                  <SitaButton variant="secondary" size="sm" onClick={() => openEdit(selected)}><Pencil className="h-3.5 w-3.5" /> Edit</SitaButton>
-                  <SitaButton variant="danger" size="sm" onClick={async () => { if (await confirm({ title: "Delete this subscription?", description: "This subscription record will be permanently removed.", variant: "destructive" })) deleteMutation.mutate({ id: selected.id }); }}><Trash2 className="h-3.5 w-3.5" /></SitaButton>
+                  <button onClick={async () => { if (await confirm({ title: "Delete?", description: "Permanently remove this subscription.", variant: "destructive" })) deleteMutation.mutate({ id: selected.id }); }} className="rounded-lg border border-[hsl(0_0%_100%/0.06)] px-3 py-2 text-xs text-[hsl(0_0%_50%)]"><Trash2 className="h-3.5 w-3.5" /></button>
                 </div>
               </>
             ) : (
-              <EmptyState icon={CreditCard} title="Select a subscription" description="Click on a subscription to see usage analysis, waste risk, and recommended actions" />
+              <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-8 text-center">
+                <Eye className="h-6 w-6 text-[hsl(0_0%_40%)] mx-auto mb-2" />
+                <p className={cn(SITA_TYPE.cardTitle, "text-[hsl(0_0%_70%)]")}>Select a subscription</p>
+              </div>
             )}
+            {wasteSubs.length > 0 && <QueueCard title="Waste Queue" items={wasteQueueItems} maxVisible={5} />}
           </div>
         </div>
       )}
 
-      {/* Form Drawer */}
-      <ContextDrawer open={showForm} onClose={() => { setShowForm(false); setEditId(null); }} title={editId ? "Edit Subscription" : "Add Subscription"}>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="text-xs font-medium text-muted-foreground">Service Name *</label>
-            <input className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2.5 text-sm text-foreground touch-manipulation focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20" value={form.service_name} onChange={e => setForm({ ...form, service_name: e.target.value })} required />
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div>
-              <label className="text-xs font-medium text-muted-foreground">Amount *</label>
-              <input type="number" step="0.01" className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2.5 text-sm text-foreground touch-manipulation focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20" value={form.amount} onChange={e => setForm({ ...form, amount: e.target.value })} required />
-            </div>
-            <div>
-              <label className="text-xs font-medium text-muted-foreground">Billing Cycle</label>
-              <select className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2.5 text-sm text-foreground touch-manipulation focus:border-primary/40 focus:outline-none" value={form.billing_cycle} onChange={e => setForm({ ...form, billing_cycle: e.target.value })}>
-                <option value="weekly">Weekly</option>
-                <option value="monthly">Monthly</option>
-                <option value="quarterly">Quarterly</option>
-                <option value="annually">Annually</option>
-              </select>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div>
-              <label className="text-xs font-medium text-muted-foreground">Category</label>
-              <input className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2.5 text-sm text-foreground touch-manipulation focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20" placeholder="e.g. Communication" value={form.category} onChange={e => setForm({ ...form, category: e.target.value })} />
-            </div>
-            <div>
-              <label className="text-xs font-medium text-muted-foreground">Renewal Date</label>
-              <input type="date" className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2.5 text-sm text-foreground touch-manipulation focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20" value={form.renewal_date} onChange={e => setForm({ ...form, renewal_date: e.target.value })} />
-            </div>
-          </div>
-          <div>
-            <label className="text-xs font-medium text-muted-foreground">Usage Level</label>
-            <select className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2.5 text-sm text-foreground touch-manipulation focus:border-primary/40 focus:outline-none" value={form.usage_level} onChange={e => setForm({ ...form, usage_level: e.target.value })}>
-              <option value="high">High</option>
-              <option value="medium">Medium</option>
-              <option value="low">Low</option>
-              <option value="none">Very Low / None</option>
-              <option value="unknown">Unknown</option>
-            </select>
-          </div>
-          <div>
-            <label className="text-xs font-medium text-muted-foreground">Duplicate Of</label>
-            <input className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2.5 text-sm text-foreground touch-manipulation focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20" placeholder="e.g. Google Meet (free)" value={form.duplicate_of} onChange={e => setForm({ ...form, duplicate_of: e.target.value })} />
-          </div>
-          <label className="flex items-center gap-2 text-sm text-foreground">
-            <input type="checkbox" className="rounded" checked={form.waste_flag} onChange={e => setForm({ ...form, waste_flag: e.target.checked })} /> Flag as likely waste
-          </label>
-          <div>
-            <label className="text-xs font-medium text-muted-foreground">Notes</label>
-            <textarea className="mt-1 w-full rounded-lg border border-border bg-secondary/40 px-3 py-2.5 text-sm text-foreground touch-manipulation focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20 resize-none" rows={3} value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} />
-          </div>
-          <div className="flex gap-2 pt-2">
-            <SitaButton type="submit" variant="primary" className="flex-1">{editId ? "Update Subscription" : "Add Subscription"}</SitaButton>
-            <SitaButton type="button" variant="ghost" onClick={() => { setShowForm(false); setEditId(null); }}>Cancel</SitaButton>
-          </div>
-        </form>
-      </ContextDrawer>
-
-      {/* Subscription Leak Radar */}
-      <SitaCard hover={false} className="p-5 border-l-4 border-l-[hsl(var(--sita-gold))]">
-        <div className="flex items-center gap-2 mb-4">
-          <AlertTriangle className="h-4 w-4 text-[hsl(var(--sita-gold))]" />
-          <SitaCardTitle sub="Rising costs, upcoming renewals, and leakage signals">Subscription Leak Radar</SitaCardTitle>
-        </div>
-        <div className="grid gap-4 sm:grid-cols-3">
-          <div className="rounded-xl bg-secondary/30 p-4">
-            <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium mb-1">Cost Trend (3mo)</p>
-            <p className="font-display text-lg font-bold text-foreground">${totalMonthly.toFixed(0)}/mo</p>
-            <p className="text-xs text-muted-foreground mt-1">{wasteSubs.length > 0 ? `${wasteSubs.length} flagged for waste` : "No leaks detected"}</p>
-          </div>
-          <div className="rounded-xl bg-secondary/30 p-4">
-            <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium mb-1">Renewals (30 days)</p>
-            {(() => {
-              const upcoming = subscriptions.filter(s => {
-                if (!s.next_billing_date || s.status !== "active") return false;
-                const days = differenceInDays(parseISO(s.next_billing_date), new Date());
-                return days >= 0 && days <= 30;
-              });
-              return (
-                <>
-                  <p className="font-display text-lg font-bold text-foreground">{upcoming.length}</p>
-                  <div className="mt-1 space-y-1">
-                    {upcoming.slice(0, 3).map(s => (
-                      <p key={s.id} className="text-xs text-muted-foreground truncate">{s.name} — {format(parseISO(s.next_billing_date!), "MMM d")}</p>
-                    ))}
-                  </div>
-                </>
-              );
-            })()}
-          </div>
-          <div className="rounded-xl bg-secondary/30 p-4">
-            <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-medium mb-1">Annual Leakage</p>
-            <p className="font-display text-lg font-bold text-urgency-high">${(wasteMonthly * 12).toFixed(0)}/yr</p>
-            <p className="text-xs text-muted-foreground mt-1">Recoverable if cancelled</p>
-          </div>
-        </div>
-      </SitaCard>
-
-      {/* ═══ Negotiation / Downgrade Advisor ═══ */}
-      <SitaCard hover={false} className="p-5">
-        <div className="flex items-center gap-2 mb-4">
-          <Sparkles className="h-4 w-4 text-primary" />
-          <SitaCardTitle sub="Actionable savings recommendations for each subscription">Negotiation & Downgrade Advisor</SitaCardTitle>
-        </div>
-        <div className="space-y-3">
-          {[
-            {
-              name: "Zoom Pro",
-              currentCost: "$14.99/mo",
-              downgrade: "Zoom Basic (Free)",
-              savings: "$180/yr",
-              bestCycle: "N/A — free tier",
-              cancelTiming: "Before next renewal (Apr 6)",
-              alternative: "Google Meet (included in Workspace)",
-              burnImpact: "Reduces monthly burn by $14.99",
-              priority: 1,
-            },
-            {
-              name: "Dropbox Plus",
-              currentCost: "$11.99/mo",
-              downgrade: "Dropbox Basic (2GB Free)",
-              savings: "$144/yr",
-              bestCycle: "Switch to annual billing: save $24/yr on Plus",
-              cancelTiming: "After migrating files (allow 1 week)",
-              alternative: "Google Drive (15GB free, or Workspace plan)",
-              burnImpact: "Reduces monthly burn by $11.99",
-              priority: 2,
-            },
-            {
-              name: "Adobe Creative Cloud",
-              currentCost: "$54.99/mo",
-              downgrade: "Photography Plan ($9.99/mo)",
-              savings: "$540/yr",
-              bestCycle: "Annual prepaid saves $120 vs monthly",
-              cancelTiming: "End of current billing period (penalty for early cancel)",
-              alternative: "Figma (design), Canva (quick graphics)",
-              burnImpact: "Reduces monthly burn by $45.00",
-              priority: 3,
-            },
-            {
-              name: "Slack Pro",
-              currentCost: "$8.75/mo per user",
-              downgrade: "Slack Free (90-day message history)",
-              savings: "$105/yr per user",
-              bestCycle: "Annual billing saves 15% on Pro",
-              cancelTiming: "Review at team size change",
-              alternative: "Discord (free), Microsoft Teams (if using M365)",
-              burnImpact: "Saves $8.75/user/mo",
-              priority: 4,
-            },
-          ].map((sub, i) => (
-            <div key={i} className="rounded-xl border border-border/40 bg-secondary/20 p-4">
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2">
-                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary/10 text-[10px] font-bold text-primary">{sub.priority}</span>
-                  <p className="font-display text-sm font-semibold">{sub.name}</p>
-                  <span className="text-xs text-muted-foreground">{sub.currentCost}</span>
-                </div>
-                <span className="text-xs font-bold text-trust-verified">{sub.savings} savings</span>
-              </div>
-              <div className="grid gap-2 sm:grid-cols-2 text-xs">
-                <div><span className="text-muted-foreground">Downgrade to:</span> <span className="text-foreground font-medium">{sub.downgrade}</span></div>
-                <div><span className="text-muted-foreground">Best billing:</span> <span className="text-foreground font-medium">{sub.bestCycle}</span></div>
-                <div><span className="text-muted-foreground">Cancel timing:</span> <span className="text-foreground font-medium">{sub.cancelTiming}</span></div>
-                <div><span className="text-muted-foreground">Alternative:</span> <span className="text-foreground font-medium">{sub.alternative}</span></div>
-              </div>
-              <p className="text-[10px] text-primary mt-2">📉 {sub.burnImpact}</p>
-            </div>
-          ))}
-        </div>
-      </SitaCard>
-
-      <LiveAdvisorCard
-        advisor="money"
-        intent="subscription_audit"
-        demoName="Waste Detection AI"
-        demoRole="Subscription Advisor"
-        demoConfidence="High"
-        demoRecommendation="4 subscriptions analyzed for downgrade/cancellation. Total potential savings: $969/year. Priority: cancel Zoom Pro before Apr 6 renewal, then review Adobe plan at billing cycle end."
-        demoReasoning="Based on usage analytics, cost-to-value ratio, duplicate detection, renewal timing, and alternative availability."
+      <AdvisorCard
+        advisorName="Subscription Intelligence"
+        domain="Finance"
+        insight={`${wasteSubs.length} subscriptions flagged as waste. Cancel to save $${(wasteMonthly * 12).toFixed(0)}/year.`}
+        confidence={85}
+        accentColor="hsl(152 55% 48%)"
       />
     </motion.div>
   );

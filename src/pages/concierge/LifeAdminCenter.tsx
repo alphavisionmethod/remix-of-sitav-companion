@@ -3,25 +3,22 @@ import { motion } from "framer-motion";
 import { ModuleWorkspace } from "@/components/sita/domain-shared/ModuleWorkspace";
 import { DomainAdvisorCard } from "@/components/advisors/DomainAdvisorCard";
 import { LifeAdminDetailPane } from "@/components/concierge/LifeAdminDetailPane";
+import { QueueCard, ActionCard } from "@/components/sita/cards";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { SitaTabs } from "@/components/sita/SitaComponents";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { LifeAdminQueueCard } from "@/components/concierge";
+import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
+import { cn } from "@/lib/utils";
 import {
   FileText, Calendar, Wrench, RefreshCw, Clock, CheckCircle,
-  Shield, Phone, Timer, Zap, Package, ClipboardList
+  Shield, Phone, Timer, Package, ClipboardList
 } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 type AdminTab = "recurring" | "service" | "forms" | "upcoming" | "aging" | "bundles";
 
 interface AdminItem {
-  id: string;
-  title: string;
-  category: string;
-  dueDate?: string;
-  daysOverdue: number;
-  frequency?: string;
-  linkedTo?: string;
+  id: string; title: string; category: string; dueDate?: string;
+  daysOverdue: number; frequency?: string; linkedTo?: string;
   urgency: "high" | "medium" | "low";
 }
 
@@ -33,7 +30,7 @@ const DEMO_RECURRING: AdminItem[] = [
 ];
 
 const DEMO_SERVICE: AdminItem[] = [
-  { id: "la5", title: "Follow up with plumber on kitchen leak estimate", category: "Home Repair", daysOverdue: 4, urgency: "high" },
+  { id: "la5", title: "Follow up with plumber on kitchen leak", category: "Home Repair", daysOverdue: 4, urgency: "high" },
   { id: "la6", title: "Request lawn service spring schedule", category: "Landscaping", daysOverdue: 2, urgency: "medium" },
   { id: "la7", title: "Confirm pet sitter for spring break", category: "Pet Care", daysOverdue: 0, linkedTo: "Spring Break Trip", urgency: "high" },
 ];
@@ -45,36 +42,32 @@ const DEMO_FORMS: AdminItem[] = [
 ];
 
 const DEMO_UPCOMING: AdminItem[] = [
-  { id: "la11", title: "Dentist appointment — bring insurance card", category: "Health", dueDate: "2026-04-16", daysOverdue: 0, linkedTo: "Dentist Visit", urgency: "medium" },
-  { id: "la12", title: "School parent-teacher conference prep", category: "School", dueDate: "2026-04-18", daysOverdue: 0, urgency: "low" },
+  { id: "la11", title: "Dentist — bring insurance card", category: "Health", dueDate: "2026-04-16", daysOverdue: 0, urgency: "medium" },
+  { id: "la12", title: "Parent-teacher conference prep", category: "School", dueDate: "2026-04-18", daysOverdue: 0, urgency: "low" },
 ];
 
 const DEMO_AGING: AdminItem[] = [
-  { id: "la13", title: "Organize tax documents for accountant", category: "Tax", daysOverdue: 12, urgency: "high" },
-  { id: "la14", title: "Clean out garage — postponed 3 times", category: "Home", daysOverdue: 21, urgency: "medium" },
+  { id: "la13", title: "Organize tax documents", category: "Tax", daysOverdue: 12, urgency: "high" },
+  { id: "la14", title: "Clean out garage — postponed 3x", category: "Home", daysOverdue: 21, urgency: "medium" },
   { id: "la15", title: "Update emergency contacts at school", category: "School", daysOverdue: 8, urgency: "low" },
 ];
 
 const DEMO_BUNDLES: AdminItem[] = [
-  { id: "lb1", title: "Phone calls session — plumber, vet, insurance", category: "Calls", daysOverdue: 0, urgency: "medium" },
-  { id: "lb2", title: "School paperwork batch — permission slip, health forms, emergency contacts", category: "School", daysOverdue: 0, urgency: "high" },
-  { id: "lb3", title: "Online admin — insurance claim, vehicle registration, tax docs upload", category: "Digital", daysOverdue: 2, urgency: "medium" },
+  { id: "lb1", title: "Phone calls — plumber, vet, insurance", category: "Calls", daysOverdue: 0, urgency: "medium" },
+  { id: "lb2", title: "School paperwork batch", category: "School", daysOverdue: 0, urgency: "high" },
+  { id: "lb3", title: "Online admin — claim, registration, tax upload", category: "Digital", daysOverdue: 2, urgency: "medium" },
 ];
 
-const TAB_DATA: Record<AdminTab, { items: AdminItem[]; label: string; icon: typeof FileText }> = {
-  recurring: { items: DEMO_RECURRING, label: "Recurring", icon: RefreshCw },
-  service: { items: DEMO_SERVICE, label: "Follow-ups", icon: Phone },
-  forms: { items: DEMO_FORMS, label: "Forms", icon: FileText },
-  upcoming: { items: DEMO_UPCOMING, label: "Upcoming", icon: Calendar },
-  aging: { items: DEMO_AGING, label: "Aging", icon: Timer },
-  bundles: { items: DEMO_BUNDLES, label: "Bundles", icon: Package },
+const TAB_DATA: Record<AdminTab, { items: AdminItem[]; label: string }> = {
+  recurring: { items: DEMO_RECURRING, label: "Recurring" },
+  service: { items: DEMO_SERVICE, label: "Follow-ups" },
+  forms: { items: DEMO_FORMS, label: "Forms" },
+  upcoming: { items: DEMO_UPCOMING, label: "Upcoming" },
+  aging: { items: DEMO_AGING, label: "Aging" },
+  bundles: { items: DEMO_BUNDLES, label: "Bundles" },
 };
 
-const urgencyDot = { high: "bg-destructive", medium: "bg-amber-500", low: "bg-chart-2" };
-const categoryIcon: Record<string, typeof FileText> = {
-  Insurance: Shield, Home: Wrench, Documents: FileText, "Home Repair": Wrench,
-  Landscaping: Wrench, "Pet Care": Wrench, School: FileText, Health: FileText, Tax: FileText,
-};
+const urgencyMap = { high: "critical" as const, medium: "high" as const, low: "normal" as const };
 
 const LifeAdminCenter = () => {
   const [activeTab, setActiveTab] = useState<AdminTab>("aging");
@@ -85,19 +78,28 @@ const LifeAdminCenter = () => {
   const totalAging = useMemo(() => allItems.filter(i => i.daysOverdue > 0).length, [allItems]);
   const selectedItem = allItems.find(i => i.id === selectedId) || null;
 
+  const queueItems = tabData.items.map(item => ({
+    id: item.id,
+    label: item.title,
+    meta: item.daysOverdue > 0 ? `${item.daysOverdue}d overdue` : item.dueDate ? new Date(item.dueDate).toLocaleDateString("en-US", { month: "short", day: "numeric" }) : undefined,
+    urgency: urgencyMap[item.urgency],
+  }));
+
   const listContent = (
-    <div className="space-y-2">
-      {/* Summary Stats */}
+    <div className="space-y-3">
+      <PageTruthBanner truthState="demo" />
+
+      {/* Summary stats */}
       <div className="grid grid-cols-4 gap-2">
         {[
-          { label: "Total", value: allItems.length, color: "text-accent" },
-          { label: "Overdue", value: totalAging, color: "text-destructive" },
-          { label: "This Week", value: 3, color: "text-amber-500" },
-          { label: "Recurring", value: DEMO_RECURRING.length, color: "text-primary" },
+          { label: "Total", value: allItems.length, color: "text-[hsl(285_55%_65%)]" },
+          { label: "Overdue", value: totalAging, color: "text-[hsl(0_70%_55%)]" },
+          { label: "This Week", value: 3, color: "text-[hsl(38_85%_58%)]" },
+          { label: "Recurring", value: DEMO_RECURRING.length, color: "text-[hsl(265_55%_68%)]" },
         ].map(s => (
-          <div key={s.label} className="rounded-lg bg-secondary/20 p-2 text-center">
-            <p className={cn("font-display text-lg font-bold", s.color)}>{s.value}</p>
-            <p className="text-[9px] text-muted-foreground">{s.label}</p>
+          <div key={s.label} className="rounded-lg bg-[hsl(0_0%_100%/0.03)] p-2 text-center">
+            <p className={cn("text-lg font-bold", s.color)}>{s.value}</p>
+            <p className={cn(SITA_TYPE.microLabel, "text-[hsl(0_0%_45%)]")}>{s.label}</p>
           </div>
         ))}
       </div>
@@ -108,49 +110,23 @@ const LifeAdminCenter = () => {
         onChange={(k) => { setActiveTab(k as AdminTab); setSelectedId(null); }}
       />
 
-      {tabData.items.map((item) => {
-        const Icon = categoryIcon[item.category] || FileText;
-        return (
-          <motion.div key={item.id}
-            onClick={() => setSelectedId(item.id)}
-            className={cn("flex items-center gap-3 rounded-xl border px-4 py-3 transition-colors cursor-pointer",
-              selectedId === item.id ? "border-accent/30 bg-accent/5" : "border-border/20 bg-secondary/15 hover:bg-secondary/30"
-            )}
-            initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}>
-            <div className={cn("h-2.5 w-2.5 rounded-full shrink-0", urgencyDot[item.urgency])} />
-            <div className="rounded-xl bg-accent/10 p-2 shrink-0"><Icon className="h-4 w-4 text-accent" /></div>
-            <div className="flex-1 min-w-0">
-              <p className="text-[12px] font-semibold text-foreground truncate">{item.title}</p>
-              <div className="flex items-center gap-2 mt-0.5">
-                <span className="text-[10px] text-muted-foreground">{item.category}</span>
-                {item.frequency && <span className="text-[9px] text-primary font-medium">{item.frequency}</span>}
-                {item.linkedTo && <span className="text-[9px] text-accent font-medium">→ {item.linkedTo}</span>}
-              </div>
-              {item.daysOverdue > 0 && (
-                <span className={cn("text-[9px] font-medium", item.daysOverdue >= 7 ? "text-destructive" : "text-amber-500")}>{item.daysOverdue}d overdue</span>
-              )}
-            </div>
-            <button className="shrink-0 rounded-lg p-2 hover:bg-primary/10 transition-colors" onClick={e => e.stopPropagation()}>
-              <CheckCircle className="h-4 w-4 text-muted-foreground hover:text-chart-2" />
-            </button>
-          </motion.div>
-        );
-      })}
+      <QueueCard
+        title={tabData.label}
+        items={queueItems}
+        maxVisible={10}
+        onItemClick={(id) => setSelectedId(id)}
+      />
 
-      {/* Quick Win Queue */}
-      <div className="mt-2">
-        <LifeAdminQueueCard items={[
-          { id: "qw1", title: "Update school emergency contacts", category: "School", urgency: "low", effort: "quick" },
-          { id: "qw2", title: "Submit insurance claim photo", category: "Insurance", urgency: "medium", effort: "quick" },
-          { id: "qw3", title: "Set up autopay for lawn service", category: "Home", urgency: "low", effort: "quick" },
-        ]} />
-      </div>
+      <LifeAdminQueueCard items={[
+        { id: "qw1", title: "Update school emergency contacts", category: "School", urgency: "low", effort: "quick" },
+        { id: "qw2", title: "Submit insurance claim photo", category: "Insurance", urgency: "medium", effort: "quick" },
+        { id: "qw3", title: "Set up autopay for lawn service", category: "Home", urgency: "low", effort: "quick" },
+      ]} />
     </div>
   );
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-      <DemoModeBadge />
       <ModuleWorkspace
         domain="concierge"
         title="Life Admin Center"
@@ -163,7 +139,7 @@ const LifeAdminCenter = () => {
           <DomainAdvisorCard
             domain="concierge"
             insights={[
-              { id: "la-1", text: "3 items postponed more than a week — phone calls session could clear 3 follow-ups in 15 min", confidence: 85, action: "Start Calls", onAction: () => setSelectedId("lb1") },
+              { id: "la-1", text: "3 items postponed > 1 week — phone calls session could clear 3 in 15 min", confidence: 85, action: "Start Calls", onAction: () => setSelectedId("lb1") },
               { id: "la-2", text: "Tax documents are the highest-impact item to resolve this week", confidence: 90, action: "View", onAction: () => setSelectedId("la13") },
             ]}
           />
