@@ -73,9 +73,9 @@ interface HeartbeatEntry {
 // ── Constants ──────────────────────────────────────────────────
 
 const HEARTBEAT_THRESHOLDS: Record<ComponentClass, number> = {
-  ui: 100,
-  service: 500,
-  background: 2000,
+  ui: 500,
+  service: 1000,
+  background: 5000,
 };
 
 const MAX_CRASH_REPORTS = 500;
