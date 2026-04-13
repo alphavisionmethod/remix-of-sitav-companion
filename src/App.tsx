@@ -750,6 +750,9 @@ const OutcomeEconomicsDashboard = lazy(() => import("./pages/admin/OutcomeEconom
 const CommandHistory = lazy(() => import("./pages/CommandHistory"));
 const EnvironmentSwitcherPage = lazy(() => import("./pages/EnvironmentSwitcher"));
 const UpdateCenterPage = lazy(() => import("./pages/UpdateCenter"));
+const WealthCommandCenter = lazy(() => import("./pages/WealthCommandCenter"));
+const TimeMachinePage = lazy(() => import("./pages/TimeMachinePage"));
+const AchievementsPage = lazy(() => import("./pages/AchievementsPage"));
 
 const queryClient = createQueryClient();
 
@@ -901,6 +904,9 @@ const App = () => (
                     <Route path="/life-simulator" element={<LifeSimulator />} />
                     <Route path="/personal-life" element={<PersonalLifeWorkspace />} />
                     <Route path="/downloads" element={<DownloadsCenter />} />
+                    <Route path="/wealth-command" element={<WealthCommandCenter />} />
+                    <Route path="/time-machine" element={<TimeMachinePage />} />
+                    <Route path="/achievements" element={<AchievementsPage />} />
                     <Route path="/storage" element={<StorageManager />} />
                     <Route path="/network" element={<NetworkUtility />} />
                     <Route path="/planning-canvas" element={<PlanningCanvas />} />
