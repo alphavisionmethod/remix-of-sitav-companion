@@ -15,7 +15,8 @@ import {
 
 export type EmptyStateVariant = 
   | "first-use" | "no-data" | "disconnected" 
-  | "degraded" | "blocked" | "no-results" | "no-permission";
+  | "degraded" | "blocked" | "no-results" | "no-permission"
+  | "demo-preview" | "connect-to-activate";
 
 interface EmptyStateAction {
   label: string;
@@ -36,13 +37,15 @@ interface PremiumEmptyStateProps {
 }
 
 const VARIANT_DEFAULTS: Record<EmptyStateVariant, { icon: LucideIcon; tone: string }> = {
-  "first-use":     { icon: Sparkles,   tone: "Welcome" },
-  "no-data":       { icon: SearchX,    tone: "Nothing here yet" },
-  "disconnected":  { icon: CloudOff,   tone: "Connection lost" },
-  "degraded":      { icon: ShieldAlert,tone: "Limited functionality" },
-  "blocked":       { icon: Ban,        tone: "Access restricted" },
-  "no-results":    { icon: SearchX,    tone: "No matches" },
-  "no-permission": { icon: Lock,       tone: "Permission required" },
+  "first-use":           { icon: Sparkles,   tone: "Welcome" },
+  "no-data":             { icon: SearchX,    tone: "Nothing here yet" },
+  "disconnected":        { icon: CloudOff,   tone: "Connection lost" },
+  "degraded":            { icon: ShieldAlert,tone: "Limited functionality" },
+  "blocked":             { icon: Ban,        tone: "Access restricted" },
+  "no-results":          { icon: SearchX,    tone: "No matches" },
+  "no-permission":       { icon: Lock,       tone: "Permission required" },
+  "demo-preview":        { icon: Sparkles,   tone: "Demo preview" },
+  "connect-to-activate": { icon: CloudOff,   tone: "Connect to activate" },
 };
 
 export function PremiumEmptyState({ variant, icon, title, description, actions, tip, domain = "business", className }: PremiumEmptyStateProps) {
