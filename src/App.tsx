@@ -136,7 +136,7 @@ const HomeRoute = () => {
   const { user, loading } = useAuth();
   if (loading) return <div className="min-h-screen flex items-center justify-center bg-background" role="status" aria-label="Loading"><div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" /></div>;
   if (!user) return <LandingPage />;
-  return <Navigate to="/home" replace />;
+  return <Navigate to="/desktop" replace />;
 };
 
 const AuthenticatedProviders = ({ children }: { children: ReactNode }) => (

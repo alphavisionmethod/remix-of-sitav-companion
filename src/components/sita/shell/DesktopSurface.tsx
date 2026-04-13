@@ -1,10 +1,10 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Living Desktop Surface
-// Premium desktop: ambient wallpaper, widget grid, dual compositor
+// SITA OS — macOS-Style Desktop Surface
+// Clean wallpaper with right-aligned widget stack
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useMemo } from "react";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 import { useWindowManagerContext } from "@/contexts/WindowManagerContext";
@@ -16,16 +16,12 @@ import {
   DesktopContinuityPanel,
   DesktopClockWidget,
   DesktopNotificationsWidget,
-  DesktopWhatMattersWidget,
   DesktopQuickActionsWidget,
   DesktopSystemWidget,
-  DesktopLeftRail,
-  DesktopNotificationCenter,
 } from "./desktop";
-import { Sparkles, Search, ShieldCheck, Wifi, BatteryFull, Bell, Presentation } from "lucide-react";
 import type { ContinuityContext, DesktopState } from "./useShellState";
+import logo from "@/assets/logo.webp";
 
-// ── Props ────────────────────────────────────────────────────
 interface DesktopSurfaceProps {
   onOpenCommand?: () => void;
   desktopState?: DesktopState;
@@ -40,7 +36,6 @@ const DEFAULT_CONTINUITY: ContinuityContext = {
   whatChanged: [],
 };
 
-// ── Greeting helper ──────────────────────────────────────────
 function useGreeting() {
   return useMemo(() => {
     const h = new Date().getHours();
@@ -51,7 +46,6 @@ function useGreeting() {
   }, []);
 }
 
-// ── Desktop Surface ──────────────────────────────────────────
 export function DesktopSurface({
   onOpenCommand,
   desktopState = "quiet",
@@ -59,7 +53,6 @@ export function DesktopSurface({
 }: DesktopSurfaceProps) {
   const navigate = useNavigate();
   const greeting = useGreeting();
-  const [showNotifications, setShowNotifications] = useState(false);
 
   // Legacy window manager
   const windowManager = useWindowManagerContext();
@@ -72,113 +65,83 @@ export function DesktopSurface({
 
   return (
     <div className="fixed inset-0" onDoubleClick={() => onOpenCommand?.()}>
-      {/* Layer 1: Ambient Wallpaper */}
+      {/* Layer 1: Ambient Wallpaper — full screen, clean */}
       <div className="absolute inset-0 z-0">
-        <ShellAmbientBackground intensity="subtle" className="fixed" />
-        {/* Extra dot-grid texture */}
-        <div className="absolute inset-0 opacity-[0.06] [background-image:radial-gradient(white_1px,transparent_1px)] [background-size:22px_22px]" />
-        {/* Edge gradient */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(255,255,255,0.04),transparent_20%,transparent_80%,rgba(255,255,255,0.03))]" />
+        <ShellAmbientBackground intensity="vivid" className="fixed" />
       </div>
 
-      {/* Layer 2: Desktop Content — fades when windows open */}
+      {/* Layer 2: Desktop Content — widgets on right, greeting center-left */}
       <div className={cn(
-        "absolute inset-0 z-10 transition-all duration-700 overflow-y-auto",
+        "absolute inset-0 z-10 transition-all duration-700",
         hasAnyWindows && "opacity-30 blur-sm pointer-events-none"
       )}>
-        {/* Top bar */}
-        <div className="relative z-20 flex h-14 items-center justify-between border-b border-white/[0.08] bg-white/[0.06] px-5 backdrop-blur-2xl">
-          <div className="flex items-center gap-3">
-            <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-fuchsia-500 shadow-[0_8px_24px_rgba(114,92,255,0.35)]">
-              <Sparkles className="h-4 w-4 text-white" />
-            </div>
+        {/* Center-left greeting (like macOS keeps desktop mostly clean) */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          className="absolute left-12 bottom-32 z-10 max-w-md pointer-events-none select-none hidden lg:block"
+        >
+          <div className="flex items-center gap-3 mb-4">
+            <img src={logo} alt="SITA" className="h-10 w-10 rounded-xl shadow-lg" />
             <div>
-              <div className="text-sm font-semibold tracking-wide text-white">SITA OS</div>
-              <div className="text-[11px] text-white/55">Calm operating environment</div>
+              <div className="text-[11px] uppercase tracking-[0.25em] text-white/40 font-medium">SITA OS</div>
             </div>
           </div>
+          <h1 className="text-5xl font-semibold tracking-tight text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.4)]">
+            {greeting}.
+          </h1>
+          <p className="mt-3 text-base text-white/60 leading-relaxed drop-shadow-[0_1px_6px_rgba(0,0,0,0.3)]">
+            Your operating environment is ready.
+          </p>
+        </motion.div>
 
-          <div className="hidden items-center gap-2 md:flex">
-            <button
-              onClick={() => onOpenCommand?.()}
-              className="rounded-2xl border border-white/10 bg-white/[0.08] px-3 py-2 text-sm text-white/80 backdrop-blur-xl transition hover:bg-white/[0.12]"
-            >
-              <div className="flex items-center gap-2">
-                <Search className="h-4 w-4" />
-                <span>Command</span>
-                <span className="rounded-md border border-white/10 bg-white/[0.08] px-1.5 py-0.5 text-[10px] text-white/60">⌘K</span>
-              </div>
-            </button>
-          </div>
+        {/* Right-side widget column — macOS Big Sur style */}
+        <div className="absolute top-8 right-5 bottom-24 z-10 flex flex-col gap-4 w-[340px] overflow-y-auto scrollbar-none pointer-events-auto">
+          {/* Calendar + Clock widget (compact) */}
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <DesktopClockWidget />
+          </motion.div>
 
-          <div className="flex items-center gap-3 text-sm">
-            <div className="hidden items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.08] px-3 py-2 md:flex">
-              <ShieldCheck className="h-4 w-4 text-cyan-300" />
-              <span className="text-white/80">Trusted</span>
-            </div>
-            <div className="hidden items-center gap-2 text-white/70 md:flex">
-              <Wifi className="h-4 w-4" />
-              <BatteryFull className="h-4 w-4" />
-            </div>
-            <button
-              onClick={() => setShowNotifications(v => !v)}
-              className="relative rounded-2xl border border-white/10 bg-white/[0.08] p-2.5 transition hover:bg-white/[0.12]"
-            >
-              <Bell className="h-4 w-4 text-white" />
-              <span className="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-violet-400" />
-            </button>
-          </div>
-        </div>
+          {/* Continuity / Resume widget */}
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <MacOSContinuityWidget continuity={continuity} desktopState={desktopState} />
+          </motion.div>
 
-        {/* Main content area with rail */}
-        <div className="relative z-10 mx-auto flex max-w-[1600px] gap-6 px-6 pb-36 pt-6">
-          {/* Left rail */}
-          <DesktopLeftRail />
+          {/* Notifications widget */}
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <DesktopNotificationsWidget />
+          </motion.div>
 
-          {/* Center content */}
-          <div className="min-w-0 flex-1">
-            {/* Greeting header */}
-            <div className="mb-6 flex items-end justify-between gap-4">
-              <div>
-                <div className="mb-2 text-[12px] uppercase tracking-[0.25em] text-white/45">Desktop</div>
-                <h1 className="text-4xl font-semibold tracking-tight text-white md:text-5xl">
-                  {greeting}.
-                </h1>
-                <p className="mt-2 max-w-2xl text-sm leading-6 text-white/65 md:text-base">
-                  Your operating environment is ready. Business has follow-ups prepared,
-                  Finance has one approval waiting, and Concierge updated your travel prep.
-                </p>
-              </div>
-              <div className="hidden items-center gap-2 md:flex">
-                <button
-                  onClick={() => navigate("/boardroom")}
-                  className="rounded-2xl border border-white/10 bg-white/[0.08] px-4 py-2.5 text-sm text-white/85 backdrop-blur-xl transition hover:bg-white/[0.12]"
-                >
-                  Open Boardroom
-                </button>
-                <button className="rounded-2xl border border-white/10 bg-gradient-to-br from-violet-500 to-fuchsia-500 px-4 py-2.5 text-sm font-medium text-white shadow-[0_12px_28px_rgba(124,92,255,0.35)] transition hover:scale-[1.02]">
-                  What Matters Now
-                </button>
-              </div>
-            </div>
+          {/* Quick Actions */}
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <DesktopQuickActionsWidget onOpenCommand={onOpenCommand} />
+          </motion.div>
 
-            {/* Top widget row */}
-            <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1.25fr_0.95fr_0.95fr]">
-              <DesktopContinuityPanel continuity={continuity} desktopState={desktopState} />
-              <DesktopClockWidget />
-              <DesktopNotificationsWidget />
-            </div>
-
-            {/* Lower widget row */}
-            <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
-              <DesktopWhatMattersWidget />
-              <DesktopQuickActionsWidget onOpenCommand={onOpenCommand} />
-              <DesktopSystemWidget />
-            </div>
-          </div>
-
-          {/* Right notification center */}
-          <DesktopNotificationCenter visible={showNotifications} />
+          {/* System Status */}
+          <motion.div
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <DesktopSystemWidget />
+          </motion.div>
         </div>
       </div>
 
@@ -211,6 +174,57 @@ export function DesktopSurface({
 
       {/* Layer 4: OS Window Engine */}
       <WindowCompositor />
+    </div>
+  );
+}
+
+// ── Compact Continuity Widget (macOS style) ──────────────────
+function MacOSContinuityWidget({ continuity, desktopState }: { continuity: ContinuityContext; desktopState: DesktopState }) {
+  const navigate = useNavigate();
+  const pending = continuity.pendingDrafts + continuity.unfinishedWorkflows;
+  const resumeLabel = continuity.lastWorkspace ? `Resume ${continuity.lastWorkspace}` : "Your workspace is ready";
+
+  return (
+    <div className="rounded-[20px] border border-white/[0.12] bg-white/[0.08] backdrop-blur-2xl shadow-[0_20px_60px_rgba(0,0,0,0.3)] overflow-hidden">
+      {/* Accent top edge */}
+      <div className="h-[2px] bg-gradient-to-r from-violet-500/60 via-fuchsia-500/40 to-cyan-400/30" />
+      <div className="p-5">
+        <div className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/50 mb-3">
+          Continuity
+        </div>
+        <h3 className="text-lg font-semibold text-white leading-snug">{resumeLabel}</h3>
+        {continuity.whatChanged.length > 0 && (
+          <p className="mt-2 text-sm text-white/55 leading-relaxed">
+            {continuity.whatChanged.slice(0, 2).join(". ")}.
+          </p>
+        )}
+        <div className="mt-4 flex items-center gap-3">
+          <button
+            onClick={() => navigate(continuity.lastWorkspace ? `/${continuity.lastWorkspace.toLowerCase()}` : "/business")}
+            className="rounded-xl bg-white/90 px-4 py-2 text-sm font-medium text-slate-900 shadow-sm transition hover:bg-white hover:scale-[1.02]"
+          >
+            Continue
+          </button>
+          {pending > 0 && (
+            <span className="text-xs text-white/50">{pending} pending</span>
+          )}
+        </div>
+        {/* Stats row */}
+        <div className="mt-4 grid grid-cols-3 gap-2">
+          <div className="rounded-xl bg-black/20 p-3 text-center">
+            <div className="text-[10px] uppercase tracking-wider text-white/40">Active</div>
+            <div className="mt-1 text-sm font-semibold text-white">{continuity.lastWorkspace ?? "Desktop"}</div>
+          </div>
+          <div className="rounded-xl bg-black/20 p-3 text-center">
+            <div className="text-[10px] uppercase tracking-wider text-white/40">Pending</div>
+            <div className="mt-1 text-sm font-semibold text-white">{pending}</div>
+          </div>
+          <div className="rounded-xl bg-black/20 p-3 text-center">
+            <div className="text-[10px] uppercase tracking-wider text-white/40">Trust</div>
+            <div className="mt-1 text-sm font-semibold text-cyan-300">Safe</div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

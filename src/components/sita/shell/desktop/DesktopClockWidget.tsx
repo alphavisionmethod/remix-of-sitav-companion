@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { CalendarDays, ChevronRight } from "lucide-react";
-import { DesktopWidgetCard } from "./DesktopWidgetCard";
 
 function useClock() {
   const [now, setNow] = useState(new Date());
@@ -11,56 +10,64 @@ function useClock() {
   return now;
 }
 
-function formatTimeParts(d: Date) {
-  const h = d.getHours();
-  const m = d.getMinutes();
-  const ampm = h >= 12 ? "PM" : "AM";
-  const h12 = h % 12 || 12;
-  const mm = m.toString().padStart(2, "0");
-  return { hours: h12.toString(), minutes: mm, ampm, blink: d.getSeconds() % 2 === 0 };
-}
-
-function formatDate(d: Date) {
-  return d.toLocaleDateString([], { weekday: "short", month: "short", day: "numeric" });
-}
-
 export function DesktopClockWidget() {
   const now = useClock();
-  const { hours, minutes, ampm, blink } = formatTimeParts(now);
+  const h = now.getHours();
+  const h12 = h % 12 || 12;
+  const mm = now.getMinutes().toString().padStart(2, "0");
+  const ampm = h >= 12 ? "PM" : "AM";
+  const blink = now.getSeconds() % 2 === 0;
+  const dayName = now.toLocaleDateString([], { weekday: "long" }).toUpperCase();
+  const day = now.getDate();
+  const monthName = now.toLocaleDateString([], { month: "long" });
 
   return (
-    <DesktopWidgetCard title="Time" accent="from-cyan-400/20 via-white/[0.05] to-violet-500/10" delay={0.1}>
-      <div className="flex h-full flex-col justify-between">
-        <div className="text-6xl font-semibold tracking-tight text-white">
-          {hours}
-          <span className={`transition-opacity duration-300 ${blink ? "opacity-100" : "opacity-30"}`}>:</span>
-          {minutes}
-          <span className="ml-2 text-2xl font-normal text-white/50">{ampm}</span>
+    <div className="flex gap-3">
+      {/* Calendar card */}
+      <div className="flex-1 rounded-[20px] border border-white/[0.12] bg-white/[0.08] backdrop-blur-2xl shadow-[0_20px_60px_rgba(0,0,0,0.3)] overflow-hidden">
+        <div className="bg-red-500/80 px-4 py-1.5 text-center">
+          <div className="text-[10px] font-bold uppercase tracking-wider text-white">{dayName}</div>
         </div>
-        <div className="mt-2 text-base text-white/65">{formatDate(now)}</div>
-        <div className="mt-6 rounded-2xl border border-white/10 bg-black/15 p-4">
-          <div className="mb-2 flex items-center gap-2 text-sm text-white/75">
-            <CalendarDays className="h-4 w-4" />
-            Today
-          </div>
-          <div className="space-y-3">
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <div className="text-sm font-medium text-white">Finance approval review</div>
-                <div className="text-xs text-white/55">10:30 AM · Finance Board</div>
-              </div>
-              <ChevronRight className="mt-0.5 h-4 w-4 text-white/40" />
+        <div className="px-4 py-3 text-center">
+          <div className="text-4xl font-light text-white">{day}</div>
+          <div className="text-xs text-white/50 mt-1">{monthName}</div>
+        </div>
+        {/* Today's schedule */}
+        <div className="border-t border-white/10 px-4 py-3">
+          <div className="flex items-start gap-2">
+            <div className="mt-1 h-2 w-2 rounded-full bg-violet-400 shrink-0" />
+            <div className="min-w-0">
+              <div className="text-xs font-medium text-white truncate">Finance review</div>
+              <div className="text-[10px] text-white/40">10:30 AM</div>
             </div>
-            <div className="flex items-start justify-between gap-3">
-              <div>
-                <div className="text-sm font-medium text-white">Client collections follow-up</div>
-                <div className="text-xs text-white/55">1:00 PM · Business</div>
-              </div>
-              <ChevronRight className="mt-0.5 h-4 w-4 text-white/40" />
+          </div>
+          <div className="flex items-start gap-2 mt-2">
+            <div className="mt-1 h-2 w-2 rounded-full bg-emerald-400 shrink-0" />
+            <div className="min-w-0">
+              <div className="text-xs font-medium text-white truncate">Client follow-up</div>
+              <div className="text-[10px] text-white/40">1:00 PM</div>
             </div>
           </div>
         </div>
       </div>
-    </DesktopWidgetCard>
+
+      {/* Clock + To-Do card */}
+      <div className="flex flex-col gap-3 w-[120px]">
+        {/* Clock */}
+        <div className="rounded-[20px] border border-white/[0.12] bg-white/[0.08] backdrop-blur-2xl shadow-[0_20px_60px_rgba(0,0,0,0.3)] p-4 text-center">
+          <div className="text-3xl font-semibold text-white tabular-nums">
+            {h12}
+            <span className={`transition-opacity duration-300 ${blink ? "opacity-100" : "opacity-30"}`}>:</span>
+            {mm}
+          </div>
+          <div className="text-[10px] text-white/40 mt-1">{ampm}</div>
+        </div>
+        {/* To-Do count */}
+        <div className="rounded-[20px] border border-white/[0.12] bg-white/[0.08] backdrop-blur-2xl shadow-[0_20px_60px_rgba(0,0,0,0.3)] p-4 text-center flex-1 flex flex-col justify-center">
+          <div className="text-[10px] uppercase tracking-wider text-white/40">To-Do</div>
+          <div className="text-3xl font-light text-white mt-1">3</div>
+        </div>
+      </div>
+    </div>
   );
 }

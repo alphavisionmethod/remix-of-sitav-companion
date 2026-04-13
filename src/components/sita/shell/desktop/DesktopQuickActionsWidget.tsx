@@ -10,22 +10,22 @@ export function DesktopQuickActionsWidget({ onOpenCommand }: Props) {
   const navigate = useNavigate();
 
   const actions = [
-    { label: "Open Boardroom", icon: Presentation, action: () => navigate("/boardroom") },
-    { label: "Review approvals", icon: CheckCircle2, action: () => navigate("/approvals") },
-    { label: "Search files", icon: FileText, action: () => onOpenCommand?.() },
-    { label: "System settings", icon: Settings, action: () => navigate("/settings") },
+    { label: "Boardroom", icon: Presentation, action: () => navigate("/boardroom") },
+    { label: "Approvals", icon: CheckCircle2, action: () => navigate("/approvals") },
+    { label: "Search", icon: FileText, action: () => onOpenCommand?.() },
+    { label: "Settings", icon: Settings, action: () => navigate("/settings") },
   ];
 
   return (
-    <DesktopWidgetCard title="Quick actions" accent="from-white/10 via-white/[0.05] to-violet-500/10" delay={0.3}>
-      <div className="grid grid-cols-2 gap-3">
+    <DesktopWidgetCard title="Quick Actions" accent="from-white/10 via-white/[0.05] to-violet-500/10">
+      <div className="grid grid-cols-2 gap-2">
         {actions.map((a) => (
           <button
             key={a.label}
             onClick={a.action}
-            className="flex items-center gap-2 rounded-2xl border border-white/10 bg-black/15 px-4 py-4 text-left text-sm text-white/80 transition duration-200 hover:-translate-y-1 hover:bg-white/10 hover:shadow-[0_8px_24px_rgba(0,0,0,0.3)]"
+            className="flex flex-col items-center gap-1.5 rounded-xl bg-white/[0.06] border border-white/[0.08] px-3 py-3 text-center text-xs text-white/70 transition hover:bg-white/[0.12] hover:text-white hover:-translate-y-0.5"
           >
-            <a.icon className="h-4 w-4" />
+            <a.icon className="h-5 w-5" />
             <span>{a.label}</span>
           </button>
         ))}
