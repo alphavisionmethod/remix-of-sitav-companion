@@ -15,7 +15,7 @@ import { AppSidebarNav, type NavTabGroup } from "./AppSidebarNav";
 import { DomainCommandPalette, type CommandItem } from "@/components/sita/domain-shared/DomainCommandPalette";
 import type { LucideIcon } from "lucide-react";
 
-export type DomainId = "business" | "finance" | "concierge";
+export type DomainId = "business" | "finance" | "concierge" | "files" | "trust";
 
 export interface DomainConfig {
   id: DomainId;
