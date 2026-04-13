@@ -466,11 +466,13 @@ export const ADVISOR_SYNTHESIS: AdvisorSynthesis = {
 
 // ── Platform Connections ──
 export const PLATFORM_CONNECTIONS: PlatformConnection[] = [
-  { id: "pc-ib", name: "Interactive Brokers", type: "brokerage", status: "connected", lastSyncAt: "2026-04-05T12:30:00Z", accountValue: 182500, icon: "🏦" },
-  { id: "pc-schwab", name: "Charles Schwab", type: "brokerage", status: "connected", lastSyncAt: "2026-04-05T11:45:00Z", accountValue: 107600, icon: "🏛️" },
-  { id: "pc-cb", name: "Coinbase", type: "exchange", status: "connected", lastSyncAt: "2026-04-05T13:00:00Z", accountValue: 210250, icon: "🪙" },
-  { id: "pc-poly", name: "Polymarket", type: "event-market", status: "connected", lastSyncAt: "2026-04-05T12:00:00Z", accountValue: 310, icon: "🎯" },
-  { id: "pc-meta", name: "MetaMask", type: "wallet", status: "disconnected", icon: "🦊" },
+  { id: "pc-ib", name: "Interactive Brokers", type: "brokerage", status: "connected", lastSyncAt: "2026-04-05T12:30:00Z", accountValue: 182500, icon: "🏦", capabilities: ["Portfolio sync", "Trade execution", "Forex"], authMethod: "oauth" },
+  { id: "pc-schwab", name: "Charles Schwab", type: "brokerage", status: "connected", lastSyncAt: "2026-04-05T11:45:00Z", accountValue: 107600, icon: "🏛️", capabilities: ["Portfolio sync", "Balance tracking"], authMethod: "oauth" },
+  { id: "pc-cb", name: "Coinbase", type: "exchange", status: "connected", lastSyncAt: "2026-04-05T13:00:00Z", accountValue: 210250, icon: "🪙", capabilities: ["Crypto positions", "Order routing", "Staking"], authMethod: "api-key" },
+  { id: "pc-poly", name: "Polymarket", type: "event-market", status: "connected", lastSyncAt: "2026-04-05T12:00:00Z", accountValue: 310, icon: "🎯", capabilities: ["Event positions", "Probability tracking"], authMethod: "oauth" },
+  { id: "pc-phantom", name: "Phantom", type: "wallet", status: "connected", lastSyncAt: "2026-04-05T14:00:00Z", accountValue: 18400, icon: "👻", chain: "Solana", capabilities: ["Token balances", "DeFi positions", "NFTs"], authMethod: "extension" },
+  { id: "pc-meta", name: "MetaMask", type: "wallet", status: "disconnected", icon: "🦊", chain: "Ethereum", capabilities: ["Token balances", "DeFi positions"], authMethod: "extension" },
+  { id: "pc-oanda", name: "OANDA", type: "forex", status: "connected", lastSyncAt: "2026-04-05T12:15:00Z", accountValue: 24300, icon: "🌐", region: "Global", capabilities: ["Forex positions", "Real-time rates"], authMethod: "api-key" },
 ];
 
 // ── Theses ──

@@ -132,14 +132,32 @@ export interface Scenario {
   probability: number;
 }
 
+export type PlatformType = "brokerage" | "exchange" | "event-market" | "research" | "wallet" | "dex" | "forex" | "international-broker";
+
 export interface PlatformConnection {
   id: string;
   name: string;
-  type: "brokerage" | "exchange" | "event-market" | "research" | "wallet";
+  type: PlatformType;
   status: "connected" | "disconnected" | "syncing" | "error";
   lastSyncAt?: string;
   accountValue?: number;
   icon: string;
+  chain?: string;
+  region?: string;
+  popular?: boolean;
+  capabilities?: string[];
+  authMethod?: "oauth" | "api-key" | "wallet-connect" | "extension";
+}
+
+export interface AvailablePlatform {
+  name: string;
+  type: PlatformType;
+  icon: string;
+  chain?: string;
+  region?: string;
+  popular?: boolean;
+  capabilities?: string[];
+  authMethod?: "oauth" | "api-key" | "wallet-connect" | "extension";
 }
 
 // ── Enhanced Advisor System (Part 3 Spec) ──

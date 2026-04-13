@@ -443,14 +443,51 @@ export const DEMO_THEMES = [
   { id: "broad-market", label: "Broad US Market", icon: "📊", strength: 68, crowding: 45, uncertainty: 35, instruments: ["SPY"], advisorView: "Market breadth improving. Valuation elevated but supported by earnings growth.", color: "hsl(var(--primary))" },
 ];
 
-export const DEMO_AVAILABLE_PLATFORMS = [
-  { name: "Robinhood", type: "brokerage", icon: "🪶" },
-  { name: "Binance", type: "exchange", icon: "🟡" },
-  { name: "Kraken", type: "exchange", icon: "🐙" },
-  { name: "Kalshi", type: "event-market", icon: "📊" },
-  { name: "Manifold", type: "event-market", icon: "🎲" },
-  { name: "Fidelity", type: "brokerage", icon: "🏦" },
-  { name: "Ledger Live", type: "wallet", icon: "🔑" },
+export const DEMO_AVAILABLE_PLATFORMS: import("@/lib/investment-office/types").AvailablePlatform[] = [
+  // Brokerages
+  { name: "Robinhood", type: "brokerage", icon: "🪶", popular: true, capabilities: ["Portfolio sync", "Trade execution"], authMethod: "oauth" },
+  { name: "Fidelity", type: "brokerage", icon: "🏦", popular: true, capabilities: ["Portfolio sync", "Balance tracking"], authMethod: "oauth" },
+  { name: "TD Ameritrade", type: "brokerage", icon: "🟢", capabilities: ["Portfolio sync", "Trade execution"], authMethod: "oauth" },
+  { name: "Webull", type: "brokerage", icon: "🐂", capabilities: ["Portfolio sync", "Trade execution"], authMethod: "oauth" },
+
+  // Crypto Exchanges (CEX)
+  { name: "Binance", type: "exchange", icon: "🟡", popular: true, capabilities: ["Crypto positions", "Order routing", "Staking"], authMethod: "api-key" },
+  { name: "Kraken", type: "exchange", icon: "🐙", popular: true, capabilities: ["Crypto positions", "Order routing"], authMethod: "api-key" },
+  { name: "Bybit", type: "exchange", icon: "⬛", capabilities: ["Crypto positions", "Derivatives", "Order routing"], authMethod: "api-key" },
+  { name: "OKX", type: "exchange", icon: "🔵", popular: true, capabilities: ["Crypto positions", "DeFi", "Order routing"], authMethod: "api-key" },
+  { name: "KuCoin", type: "exchange", icon: "🟢", capabilities: ["Crypto positions", "Order routing"], authMethod: "api-key" },
+  { name: "Gemini", type: "exchange", icon: "♊", capabilities: ["Crypto positions", "Earn", "Order routing"], authMethod: "api-key" },
+  { name: "Crypto.com", type: "exchange", icon: "💎", popular: true, capabilities: ["Crypto positions", "Card", "Staking"], authMethod: "api-key" },
+  { name: "Bitfinex", type: "exchange", icon: "🟩", capabilities: ["Crypto positions", "Margin", "Order routing"], authMethod: "api-key" },
+
+  // Crypto Wallets
+  { name: "Phantom", type: "wallet", icon: "👻", chain: "Solana", popular: true, capabilities: ["Token balances", "DeFi positions", "NFTs"], authMethod: "extension" },
+  { name: "Trust Wallet", type: "wallet", icon: "🛡️", chain: "Multi-chain", popular: true, capabilities: ["Token balances", "DeFi positions"], authMethod: "wallet-connect" },
+  { name: "Coinbase Wallet", type: "wallet", icon: "🔷", chain: "Multi-chain", capabilities: ["Token balances", "DeFi positions", "NFTs"], authMethod: "extension" },
+  { name: "Ledger Live", type: "wallet", icon: "🔑", chain: "Multi-chain", popular: true, capabilities: ["Token balances", "Cold storage"], authMethod: "extension" },
+  { name: "Trezor Suite", type: "wallet", icon: "🔒", chain: "Multi-chain", capabilities: ["Token balances", "Cold storage"], authMethod: "extension" },
+  { name: "Rainbow", type: "wallet", icon: "🌈", chain: "Ethereum", capabilities: ["Token balances", "DeFi positions", "NFTs"], authMethod: "wallet-connect" },
+  { name: "Rabby", type: "wallet", icon: "🐰", chain: "Multi-chain", capabilities: ["Token balances", "DeFi positions"], authMethod: "extension" },
+
+  // DEX / DeFi
+  { name: "Uniswap", type: "dex", icon: "🦄", chain: "Ethereum", popular: true, capabilities: ["LP positions", "Swap history", "Fees earned"], authMethod: "wallet-connect" },
+  { name: "Jupiter", type: "dex", icon: "🪐", chain: "Solana", popular: true, capabilities: ["Swap history", "Limit orders", "DCA"], authMethod: "wallet-connect" },
+  { name: "1inch", type: "dex", icon: "🦊", chain: "Multi-chain", capabilities: ["Swap aggregation", "Limit orders"], authMethod: "wallet-connect" },
+  { name: "Aave", type: "dex", icon: "👻", chain: "Multi-chain", capabilities: ["Lending positions", "Borrow rates", "Yield"], authMethod: "wallet-connect" },
+  { name: "dYdX", type: "dex", icon: "📐", chain: "Cosmos", capabilities: ["Perpetuals", "Margin positions"], authMethod: "wallet-connect" },
+
+  // Event Markets
+  { name: "Kalshi", type: "event-market", icon: "📊", capabilities: ["Event positions", "Probability tracking"], authMethod: "oauth" },
+  { name: "Manifold", type: "event-market", icon: "🎲", capabilities: ["Event positions", "Community markets"], authMethod: "oauth" },
+
+  // Forex / International
+  { name: "OANDA", type: "forex", icon: "🌐", region: "Global", popular: true, capabilities: ["Forex positions", "Real-time rates", "Trade execution"], authMethod: "api-key" },
+  { name: "Forex.com", type: "forex", icon: "💱", region: "Global", capabilities: ["Forex positions", "Trade execution", "Research"], authMethod: "api-key" },
+  { name: "IG Markets", type: "forex", icon: "🔴", region: "UK / Global", popular: true, capabilities: ["CFDs", "Forex", "Spread betting"], authMethod: "api-key" },
+  { name: "eToro", type: "international-broker", icon: "🟢", region: "Global", popular: true, capabilities: ["Social trading", "Copy trading", "Crypto + Stocks"], authMethod: "oauth" },
+  { name: "Saxo Bank", type: "international-broker", icon: "🏦", region: "EU / Global", capabilities: ["Multi-asset", "Forex", "Bonds"], authMethod: "oauth" },
+  { name: "Trading 212", type: "international-broker", icon: "📈", region: "UK / EU", capabilities: ["Stocks", "Forex", "CFDs"], authMethod: "oauth" },
+  { name: "IBKR GlobalTrader", type: "international-broker", icon: "🌍", region: "Global", capabilities: ["Multi-asset", "Forex", "Options"], authMethod: "oauth" },
 ];
 
 export const DEMO_SIZING_SCENARIOS = [
