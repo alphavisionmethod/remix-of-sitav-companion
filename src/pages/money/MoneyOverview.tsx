@@ -140,7 +140,7 @@ const MoneyOverview = () => {
     const now = new Date();
     return bills
       .filter((b: Record<string, any>) => { const d = new Date(b.due_date); return Math.ceil((d.getTime() - now.getTime()) / 86400000) >= 0 && Math.ceil((d.getTime() - now.getTime()) / 86400000) <= 7; })
-      .map((b: Record<string, any>) => { const d = new Date(b.due_date); return { name: b.name || b.payee, amount: Number(b.amount), due: d.toLocaleDateString("en", { month: "short", day: "numeric" }), daysLeft: Math.max(0, Math.ceil((d.getTime() - now.getTime()) / 86400000)) }; })
+      .map((b: Record<string, any>) => { const d = new Date(b.due_date); const rawAmt = b.amount; const amt = (typeof rawAmt === "string" ? Number(rawAmt.replace(/[^0-9.-]/g, "")) : Number(rawAmt)) || 0; return { name: b.name || b.payee, amount: amt, due: d.toLocaleDateString("en", { month: "short", day: "numeric" }), daysLeft: Math.max(0, Math.ceil((d.getTime() - now.getTime()) / 86400000)) }; })
       .slice(0, 5);
   }, [bills]);
 
