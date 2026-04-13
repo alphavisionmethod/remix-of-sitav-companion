@@ -8,8 +8,6 @@ import { lazy, Suspense, useState, useCallback, useEffect } from "react";
 import { useWindowManager } from "@/hooks/useWindowManager";
 type WindowManager = ReturnType<typeof useWindowManager>;
 import { useFocusMode } from "@/hooks/use-focus-mode";
-import { CommandLayer } from "./CommandLayer";
-import { ClickRipple } from "./ClickRipple";
 
 const UniversalCommandSurface = lazy(() => import("./UniversalCommandSurface").then(m => ({ default: m.UniversalCommandSurface })));
 const ShellAmbientBackground = lazy(() => import("./ShellAmbientBackground").then(m => ({ default: m.ShellAmbientBackground })));
