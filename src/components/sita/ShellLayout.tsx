@@ -447,9 +447,13 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         e.preventDefault();
         setCommandOpen(o => !o);
       }
-      if (e.key === "F3" || (e.key === " " && (e.metaKey || e.ctrlKey))) {
+      if (e.key === "F3") {
         e.preventDefault();
         setMissionControlOpen(o => !o);
+      }
+      if (e.key === " " && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setLauncherOpen(o => !o);
       }
       if (e.key === "F4" || (e.key === "g" && (e.metaKey || e.ctrlKey) && e.shiftKey)) {
         e.preventDefault();
