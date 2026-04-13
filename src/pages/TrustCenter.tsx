@@ -204,15 +204,11 @@ const TrustOverviewPage = () => {
       </div>
 
       <DomainAdvisorCard
-        domain="trust" as any
-        advisorName="Trust Advisor"
-        advisorRole="System Integrity & Governance"
+        domain="trust"
         insights={[
-          { label: "Trust health", value: `${Math.round((1 - debtScore) * 100)}%`, trend: debtScore < 0.1 ? "stable" : "down" },
-          { label: "Devices online", value: String(displayDevices.filter((d: Record<string, any>) => d.status === "online").length) },
+          { id: "health", text: `Trust health: ${Math.round((1 - debtScore) * 100)}% — ${debtScore < 0.1 ? "all systems nominal" : "review recommended"}`, confidence: debtScore < 0.1 ? 95 : 72 },
+          { id: "devices", text: `${displayDevices.filter((d: Record<string, any>) => d.status === "online").length} devices online, ${displayDevices.length} total trusted`, confidence: 88 },
         ]}
-        recommendation="All systems nominal. Consider reviewing device trust quarterly and rotating approval thresholds."
-        confidence={debtScore < 0.1 ? 95 : debtScore < 0.3 ? 78 : 55}
       />
     </div>
   );

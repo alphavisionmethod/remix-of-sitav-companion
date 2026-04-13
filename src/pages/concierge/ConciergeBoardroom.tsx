@@ -155,15 +155,11 @@ const ConciergeBoardroom = () => {
       {/* Concierge Advisor */}
       <DomainAdvisorCard
         domain="concierge"
-        advisorName="Life Advisor"
-        advisorRole="Household Operations"
         insights={[
-          { label: "Completion rate", value: `${completionRate}%`, trend: completionRate >= 75 ? "up" : "down" },
-          { label: "Tasks remaining", value: String(weeklyStats.tasksTotal - weeklyStats.tasksCompleted) },
-          { label: "Routine adherence", value: `${weeklyStats.routineAdherence}%` },
+          { id: "completion", text: `Task completion: ${completionRate}% — ${completionRate >= 75 ? "on track" : "slightly behind target"}`, confidence: completionRate >= 75 ? 85 : 65 },
+          { id: "remaining", text: `${weeklyStats.tasksTotal - weeklyStats.tasksCompleted} tasks remaining this week`, confidence: 90 },
+          { id: "routine", text: `Routine adherence at ${weeklyStats.routineAdherence}% — focus on school forms deadline`, confidence: 78, action: "View Tasks" },
         ]}
-        recommendation={`Operating at ${completionRate}% completion — ${completionRate >= 75 ? "on track" : "slightly behind"}. Focus on the school forms deadline and consider batching errands to save coordination time.`}
-        confidence={completionRate >= 75 ? 85 : 68}
       />
     </ConciergePageWrapper>
   );

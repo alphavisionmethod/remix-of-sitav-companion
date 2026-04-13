@@ -153,17 +153,11 @@ const FinanceBoardroom = () => {
       {/* Finance Advisor */}
       <DomainAdvisorCard
         domain="finance"
-        advisorName="Finance Advisor"
-        advisorRole="Obligations & Confidence"
         insights={[
-          { label: "Safe to spend", value: `$${k.safeToSpend.toLocaleString()}`, trend: "stable" },
-          { label: "Reserve health", value: `${k.reserveHealth}%`, trend: k.reserveHealth >= 80 ? "up" : "down" },
-          { label: "Waste detected", value: `$${k.estWaste}/mo` },
+          { id: "spend", text: `Safe to spend: $${k.safeToSpend.toLocaleString()}`, confidence: 88 },
+          { id: "reserve", text: `Reserve health at ${k.reserveHealth}% ${k.reserveHealth < 80 ? "— below target" : ""}`, confidence: k.reserveHealth >= 80 ? 91 : 68, action: k.reserveHealth < 80 ? "Review" : undefined },
+          { id: "waste", text: wasteCount > 0 ? `${wasteCount} waste subscription(s) detected ($${k.estWaste}/mo)` : "No waste detected", confidence: 82, action: wasteCount > 0 ? "Clean Up" : undefined },
         ]}
-        recommendation={k.reserveHealth < 80
-          ? `Reserve health is below target at ${k.reserveHealth}%. Consider increasing contributions by $${Math.round((k.totalBalance * 0.05))}/mo.`
-          : `Financial posture is solid. ${wasteCount > 0 ? `${wasteCount} waste subscription(s) to clean up.` : "No waste detected."}`}
-        confidence={k.reserveHealth >= 80 ? 91 : 68}
       />
     </motion.div>
   );

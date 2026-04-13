@@ -187,17 +187,11 @@ const BusinessBoardroom = () => {
           {/* Advisor */}
           <DomainAdvisorCard
             domain="business"
-            advisorName="Executive Advisor"
-            advisorRole="Strategic Intelligence"
             insights={[
-              { label: "Revenue this week", value: `$${kpis.revenue.toLocaleString()}` },
-              { label: "At-risk revenue", value: `$${kpis.atRisk.toLocaleString()}`, trend: kpis.atRisk > 0 ? "down" : "stable" },
-              { label: "Pipeline strength", value: `${opportunities.length} opps` },
+              { id: "rev", text: `Revenue this week: $${kpis.revenue.toLocaleString()}`, confidence: 85 },
+              { id: "risk", text: kpis.atRisk > 0 ? `$${kpis.atRisk.toLocaleString()} at risk from ${kpis.overdueInvoices.length} overdue invoice(s)` : "No at-risk revenue", confidence: kpis.atRisk > 0 ? 92 : 85, action: kpis.atRisk > 0 ? "Review" : undefined },
+              { id: "pipe", text: `${opportunities.length} active opportunities in pipeline`, confidence: 78 },
             ]}
-            recommendation={kpis.atRisk > 0
-              ? `Priority: address $${kpis.atRisk.toLocaleString()} in at-risk revenue from ${kpis.overdueInvoices.length} overdue invoice(s).`
-              : `Business is healthy. ${kpis.newLeads} new leads, $${kpis.revenue.toLocaleString()} collected.`}
-            confidence={kpis.atRisk > 0 ? 72 : 89}
           />
         </>
       )}
