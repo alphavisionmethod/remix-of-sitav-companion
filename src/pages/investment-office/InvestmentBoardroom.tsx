@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import {
   TrendingUp, TrendingDown, DollarSign, PieChart, Shield, Eye, Calendar,
   ArrowRight, BarChart3, Briefcase, AlertTriangle, Clock, Brain, ChevronRight,
-  RefreshCw, Zap, Info, Bell, Network
+  RefreshCw, Zap, Info, Bell, Network, Activity, Siren
 } from "lucide-react";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { SparklineChart } from "@/components/sita/SparklineChart";
@@ -12,6 +12,7 @@ import { INSTRUMENTS, INVESTMENT_ADVISORS, PORTFOLIO, SAMPLE_ORDERS, SAMPLE_THES
 import { SPARKLINE_DATA, WHAT_CHANGED, ADVISOR_EVENT_ALERTS } from "@/lib/investment-office/mock-data";
 import { useInvestmentDecisions } from "@/hooks/use-investment-office";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { PortfolioGlobe } from "@/components/investment/PortfolioGlobe";
 
 const fmt = (n: number) => n >= 1e9 ? `$${(n / 1e9).toFixed(1)}B` : n >= 1e6 ? `$${(n / 1e6).toFixed(1)}M` : n >= 1e3 ? `$${(n / 1e3).toFixed(1)}K` : `$${n.toFixed(2)}`;
 const pctFmt = (n: number) => `${n >= 0 ? "+" : ""}${n.toFixed(2)}%`;
