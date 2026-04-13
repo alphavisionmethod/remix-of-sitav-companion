@@ -1,44 +1,59 @@
 
-
-# Enhanced Wallpaper System — More Themes + Custom URL Support
+# Desktop Quick Actions Grid — Full Wiring + Investment & Boardroom Apps
 
 ## What We're Building
 
-A significantly expanded wallpaper picker in Settings with **more built-in wallpaper options** (generated via beautiful CSS gradients since we can't bundle unlimited images), a **"Custom URL" option** letting users paste any image URL from the internet, and a polished gallery UI with category tabs and large previews.
+The 8-icon grid widget on the desktop (shown in your screenshot) becomes the permanent "quick launch" surface. Every icon launches the correct OS window — no React Router navigation. We replace "Trust" with "Investment Office" and create two new self-contained app shells.
 
 ## Changes
 
-### 1. Generate 6 new premium CSS wallpapers (`ShellAmbientBackground.tsx`)
+### 1. Create `InvestmentAppShell.tsx` (new file)
 
-Add rendering support for additional wallpaper IDs beyond `sita-hero`. When the active wallpaper is an image-based one (from `WALLPAPERS` in settings), render it as a full `background-image: cover` layer with the dark overlay and logo treatment, similar to `SitaHeroWallpaper`. When it's a custom URL, do the same with the user-provided URL.
+`src/components/sita/apps/investment/InvestmentAppShell.tsx`
 
-### 2. Expand wallpaper gallery in Settings (`SettingsWindow.tsx`)
+Self-contained Investment Office app with internal `useState` navigation. Modules: Portfolio, Risk Office, Thesis Journal, Trading Floor, Market Explorer, Advisor Council. Uses gold/amber accent. Same structural pattern as Finance/Business shells but with more modules matching the existing investment-office pages.
 
-- Add **6 more built-in wallpapers** as CSS gradient thumbnails with evocative names (Cosmic Drift, Emerald Night, Solar Flare, Midnight City, Lavender Haze, Carbon Fiber)
-- Add a **"Custom URL"** card at the end of the grid — clicking it opens a text input where users paste any image URL
-- Store custom URL wallpapers in localStorage under `sita-custom-wallpaper-url`
-- Add category filter tabs: **All · Photos · Gradients · Custom**
-- Larger preview thumbnails (aspect-[16/10]) with hover zoom effect
+### 2. Create `BoardroomAppShell.tsx` (new file)
 
-### 3. Wire wallpaper rendering in `ShellAmbientBackground.tsx`
+`src/components/sita/apps/boardroom/BoardroomAppShell.tsx`
 
-- Listen for `nova-wallpaper-change` custom event to update the background live
-- When wallpaper ID is one of the image-based ones (`nebula`, `amber`, `ocean`, `aurora`, `rose`), render it as a full-bleed background image
-- When wallpaper ID is `custom`, read the URL from localStorage and render it as background-image
-- When wallpaper ID is `dynamic`, show the current gradient orbs (existing behavior)
-- Keep the glassmorphic logo overlay for all wallpaper modes
+The cross-domain "big brain" decision center. Modules: Executive Review, Business Pulse, Finance Pulse, Concierge Pulse, Advisor Synthesis, Action Tracker. Uses fuchsia/purple accent. This is where all domain advisors converge for strategic decisions — distinct from each app's individual advisor board.
 
-### 4. Update `use-wallpaper.ts` hook
+### 3. Update `DesktopQuickActionsWidget.tsx`
 
-- Add a `customUrl` field to the hook return
-- Add `setCustomUrl(url)` function
-- Support `"custom"` as a wallpaper ID that reads from `sita-custom-wallpaper-url` in localStorage
+- Replace "Trust" with "Investment" (icon: `TrendingUp` or `LineChart`, gold gradient)
+- Accept `onLaunchApp` prop instead of using `navigate()`
+- Every icon calls `onLaunchApp(appId)` — mapped as:
+  - Business → `"business"`
+  - Finance → `"finance"`
+  - Concierge → `"concierge"`
+  - Files → `"finder"`
+  - Boardroom → `"boardroom"`
+  - Investment → `"investment"`
+  - Settings → `"settings"`
+  - Search → still calls `onOpenCommand()` for command palette
+
+### 4. Register new apps in `ShellWindowLayer.tsx`
+
+Add to `APP_REGISTRY`:
+- `"investment"` → InvestmentAppShell, 1200×800
+- `"boardroom"` → BoardroomAppShell, 1200×800
+
+### 5. Update `DesktopDock.tsx`
+
+Add `"investment"` and `"boardroom"` to the `OS_WINDOW_APPS` set so dock clicks also spawn windows.
+
+### 6. Wire `onLaunchApp` through to the widget
+
+In `DesktopSurface.tsx`, pass `onLaunchApp` into `renderWidget` for the `quick-actions` case so the grid can launch OS windows.
 
 ## Files
 
-| File | Change |
+| File | Action |
 |------|--------|
-| `src/hooks/use-wallpaper.ts` | Add custom URL support, new gradient wallpaper entries |
-| `src/components/sita/shell/ShellAmbientBackground.tsx` | Render image-based and custom-URL wallpapers as full-bleed backgrounds |
-| `src/components/sita/shell/windows/SettingsWindow.tsx` | Expand gallery with 6 new wallpapers, category tabs, custom URL input, larger previews |
-
+| `src/components/sita/apps/investment/InvestmentAppShell.tsx` | **New** — Self-contained Investment Office |
+| `src/components/sita/apps/boardroom/BoardroomAppShell.tsx` | **New** — Cross-domain Boardroom |
+| `src/components/sita/shell/desktop/DesktopQuickActionsWidget.tsx` | Replace Trust→Investment, use `onLaunchApp` instead of `navigate` |
+| `src/components/sita/shell/ShellWindowLayer.tsx` | Register investment + boardroom |
+| `src/components/sita/DesktopDock.tsx` | Add investment + boardroom to OS_WINDOW_APPS |
+| `src/components/sita/shell/DesktopSurface.tsx` | Pass `onLaunchApp` to quick-actions widget renderer |
