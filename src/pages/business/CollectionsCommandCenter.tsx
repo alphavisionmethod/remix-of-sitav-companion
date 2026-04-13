@@ -243,7 +243,13 @@ const CollectionsCommandCenter = () => {
         )}
       </AppSurface>
 
-      {/* Chase progress bar */}
+      {/* Cross-App Links */}
+      <div className="flex flex-wrap gap-2">
+        <CrossAppAction to="/money/receivables" label="View in Finance" context={{ entityType: "customer", entityId: selected.customerName, entityLabel: selected.customerName }} variant="button" />
+        <CrossAppAction to="/business/invoices" label="View Invoice" context={{ entityType: "invoice", entityId: selected.invoiceNumber, entityLabel: selected.invoiceNumber }} variant="button" />
+        <CrossAppAction to="/files/search" label="Related Files" context={{ entityType: "customer", entityId: selected.customerName, entityLabel: selected.customerName }} variant="chip" />
+      </div>
+
       <AppSurface level={1} className="p-3">
         <p className="text-[10px] font-semibold text-[hsl(0_0%_50%)] uppercase tracking-wider mb-2">Chase Sequence</p>
         <div className="h-1.5 rounded-full bg-[hsl(0_0%_100%/0.06)] overflow-hidden">
