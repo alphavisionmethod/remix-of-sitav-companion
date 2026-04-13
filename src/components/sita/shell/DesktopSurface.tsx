@@ -3,7 +3,7 @@
 // Branded wallpaper + free-form widget canvas
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
@@ -42,6 +42,7 @@ interface DesktopSurfaceProps {
   onOpenCommand?: () => void;
   desktopState?: DesktopState;
   continuity?: ContinuityContext;
+  onLaunchApp?: (appId: string) => void;
 }
 
 const DEFAULT_CONTINUITY: ContinuityContext = {
@@ -104,7 +105,7 @@ function ContinuityCard({ continuity }: { continuity: ContinuityContext }) {
   const resumeLabel = continuity.lastWorkspace ? `Resume ${continuity.lastWorkspace}` : "Workspace ready";
 
   return (
-    <div className="rounded-3xl border border-white/[0.04] bg-white/[0.03] backdrop-blur-3xl overflow-hidden w-[300px]">
+    <div className="rounded-3xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-[40px] overflow-hidden w-[300px] shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
       <div className="h-px bg-gradient-to-r from-violet-500/30 via-fuchsia-500/20 to-transparent" />
       <div className="p-4">
         <div className="text-[10px] font-medium uppercase tracking-[0.2em] text-white/25 mb-2">Continuity</div>
@@ -189,8 +190,10 @@ export function DesktopSurface({
   onOpenCommand,
   desktopState = "quiet",
   continuity = DEFAULT_CONTINUITY,
+  onLaunchApp,
 }: DesktopSurfaceProps) {
   const navigate = useNavigate();
+  const desktopRef = useRef<HTMLDivElement>(null);
   const { activeId: wallpaperId } = useWallpaper();
   const { widgets, hiddenWidgets, allWidgets, moveWidget, removeWidget, addWidget, resizeWidget, resetWidgets, allTypes } = useDesktopWidgets();
   const [pickerOpen, setPickerOpen] = useState(false);
@@ -219,7 +222,7 @@ export function DesktopSurface({
   };
 
   return (
-    <div className="fixed inset-0" onDoubleClick={() => onOpenCommand?.()} onContextMenu={handleContextMenu}>
+    <div ref={desktopRef} className="fixed inset-0" onDoubleClick={() => onOpenCommand?.()} onContextMenu={handleContextMenu}>
       {/* Layer 0: Deep gradient base */}
       <div className={cn("absolute inset-0 z-0 bg-gradient-to-br", baseGradient)} />
 
@@ -246,6 +249,7 @@ export function DesktopSurface({
             position={w.position}
             onMove={moveWidget}
             onRemove={removeWidget}
+            dragConstraints={desktopRef}
           >
             {renderWidget(w.type, onOpenCommand, continuity)}
           </DraggableWidget>

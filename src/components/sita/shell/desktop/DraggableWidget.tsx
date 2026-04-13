@@ -10,9 +10,10 @@ interface DraggableWidgetProps {
   onRemove: (id: string) => void;
   children: React.ReactNode;
   className?: string;
+  dragConstraints?: React.RefObject<HTMLDivElement | null>;
 }
 
-export function DraggableWidget({ id, position, onMove, onRemove, children, className }: DraggableWidgetProps) {
+export function DraggableWidget({ id, position, onMove, onRemove, children, className, dragConstraints }: DraggableWidgetProps) {
   const [hovered, setHovered] = useState(false);
   const [dragging, setDragging] = useState(false);
   const constraintsRef = useRef<HTMLDivElement | null>(null);
@@ -25,6 +26,7 @@ export function DraggableWidget({ id, position, onMove, onRemove, children, clas
   return (
     <motion.div
       drag
+      dragConstraints={dragConstraints}
       dragMomentum={false}
       dragElastic={0}
       onDragStart={() => setDragging(true)}
@@ -33,9 +35,10 @@ export function DraggableWidget({ id, position, onMove, onRemove, children, clas
       onMouseLeave={() => setHovered(false)}
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
+      whileDrag={{ scale: 1.02, zIndex: 50 }}
       style={{ position: "absolute", left: position.x, top: position.y }}
       className={cn(
-        "cursor-grab active:cursor-grabbing transition-shadow duration-200",
+        "cursor-grab active:cursor-grabbing transition-shadow duration-200 group",
         dragging && "z-50 shadow-[0_0_30px_rgba(114,92,255,0.3)]",
         className
       )}
@@ -44,6 +47,8 @@ export function DraggableWidget({ id, position, onMove, onRemove, children, clas
         onRemove(id);
       }}
     >
+      {/* Grab handle — visible on hover */}
+      <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-white/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10" />
       {/* Remove button on hover */}
       {hovered && !dragging && (
         <button

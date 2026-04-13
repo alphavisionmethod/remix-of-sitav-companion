@@ -15,8 +15,8 @@ export function DesktopWidgetCard({
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-3xl border border-white/[0.04] bg-white/[0.03] backdrop-blur-3xl",
-        "shadow-[0_8px_32px_rgba(0,0,0,0.12)]",
+        "relative overflow-hidden rounded-3xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-[40px]",
+        "shadow-[0_8px_32px_rgba(0,0,0,0.3)]",
         "transition-[transform,box-shadow] duration-300 ease-out",
         "hover:-translate-y-0.5 hover:shadow-[0_12px_40px_rgba(0,0,0,0.18)]",
         className

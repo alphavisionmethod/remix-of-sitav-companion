@@ -79,25 +79,17 @@ export function ShellAccessoryLayer({
         {wizardType && <QuickAddWizard type={wizardType} onClose={() => setWizardType(null)} />}
 
         {/* Floating buttons */}
-        <QuickAddFAB onAdd={(type) => setWizardType(type)} />
         <AdvisorFAB isOpen={chatOpen} onToggle={() => setChatOpen(!chatOpen)} />
 
         {/* PWA Install Prompt */}
         <PWAInstallPrompt />
 
-        {/* SITA Companion Bar */}
-        <SitaCompanionBar />
-
-        {/* AI Copilot Bar */}
-        <CopilotBar />
+        {/* (Companion Bar & Copilot Bar removed — legacy clutter) */}
 
         {/* Keyboard Shortcuts Overlay */}
         <KeyboardShortcuts />
 
-        {/* Device Presence Indicator */}
-        <div className="fixed bottom-20 left-4 z-50 hidden sm:block">
-          <DevicePresenceIndicator />
-        </div>
+        {/* (Device Presence Indicator removed — legacy clutter) */}
 
         {/* Mode Resolution Banner */}
         <div className="fixed bottom-0 left-0 right-0 z-40 px-4 pb-1 pointer-events-none">

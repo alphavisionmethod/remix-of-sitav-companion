@@ -92,9 +92,24 @@ export function useWindowLauncher(wm: WindowManager) {
   const doLaunchApp = useCallback((appId: string, originRect?: DOMRect) => {
     const origin = originRect ? { x: originRect.x, y: originRect.y, width: originRect.width, height: originRect.height } : undefined;
 
-    // Find in registry
-    const config = APP_REGISTRY[appId];
-    if (!config) return;
+    // Find in registry — fallback for unregistered apps
+    let config = APP_REGISTRY[appId];
+    if (!config) {
+      const fallbackName = appId.charAt(0).toUpperCase() + appId.slice(1);
+      const cascadeX = Math.random() * 100 + 50;
+      const cascadeY = Math.random() * 100 + 50;
+      wm.openWindow(appId, {
+        title: fallbackName,
+        width: 1100,
+        position: { x: cascadeX, y: cascadeY },
+        component: (
+          <div className="flex h-full w-full items-center justify-center bg-[#05050A]/80 backdrop-blur-3xl text-white/50 uppercase tracking-widest text-2xl border-t border-white/[0.08] rounded-b-xl shadow-inner">
+            {appId} Environment Loading...
+          </div>
+        ),
+      });
+      return;
+    }
 
     const canonicalId = Object.entries(APP_REGISTRY).find(([k, v]) => v.name === config.name)?.[0] ?? appId;
     const windowId = canonicalId.includes(".") ? canonicalId.split(".").pop()! : canonicalId;
