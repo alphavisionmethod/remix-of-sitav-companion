@@ -6,6 +6,7 @@
 import { ReactNode, useState, useEffect, Suspense, useCallback } from "react";
 import { useWindowManager } from "@/hooks/useWindowManager";
 import { WindowManagerContext } from "@/contexts/WindowManagerContext";
+import { OSWindowProvider } from "@/components/sita/os/WindowContext";
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { SkipToContent } from "./SkipToContent";
 import { RouteAnnouncer } from "./RouteAnnouncer";
@@ -150,6 +151,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
   const isDesktopRoute = location.pathname === "/" || location.pathname === "/home" || location.pathname === "/desktop";
 
   return (
+    <OSWindowProvider>
     <WindowManagerContext.Provider value={wm}>
     <SidebarProvider>
       <SkipToContent />
@@ -216,5 +218,6 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
       <MobileBottomNav />
     </SidebarProvider>
     </WindowManagerContext.Provider>
+    </OSWindowProvider>
   );
 };
