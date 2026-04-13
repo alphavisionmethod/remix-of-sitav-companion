@@ -759,6 +759,8 @@ export function DesktopSurface({
   const reduced = useReducedMotion();
   useAccentSync();
   const { greeting, mood, gradient: timeGradient, gradientAlt: timeGradientAlt } = useMemo(getTimeConfig, []);
+  const desktopState = deriveDesktopState(notifications, trustPosture);
+  const stateStyle = STATE_OVERRIDES[desktopState];
   const wallpaper = useMemo(getWallpaperTheme, []);
   const parallax = useWallpaperParallax(3);
   const isAuto = wallpaper.id === "auto";
