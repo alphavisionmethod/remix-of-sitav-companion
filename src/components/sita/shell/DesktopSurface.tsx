@@ -88,10 +88,10 @@ function ContinuityCard({ continuity, desktopState }: { continuity: ContinuityCo
   const resumeLabel = continuity.lastWorkspace ? `Resume ${continuity.lastWorkspace}` : "Workspace ready";
 
   return (
-    <div className="rounded-2xl border border-white/[0.1] bg-white/[0.06] backdrop-blur-2xl overflow-hidden">
-      <div className="h-[2px] bg-gradient-to-r from-violet-500/60 via-fuchsia-500/40 to-cyan-400/30" />
+    <div className="rounded-3xl border border-white/[0.04] bg-white/[0.03] backdrop-blur-3xl overflow-hidden">
+      <div className="h-px bg-gradient-to-r from-violet-500/30 via-fuchsia-500/20 to-transparent" />
       <div className="p-4">
-        <div className="text-[10px] font-medium uppercase tracking-[0.2em] text-white/40 mb-2">Continuity</div>
+        <div className="text-[10px] font-medium uppercase tracking-[0.2em] text-white/25 mb-2">Continuity</div>
         <h3 className="text-sm font-semibold text-white">{resumeLabel}</h3>
         <div className="mt-3 flex items-center gap-2">
           <button
@@ -180,7 +180,7 @@ export function DesktopSurface({
         </motion.div>
 
         {/* ── Right Widget Panel ── */}
-        <div className="absolute top-6 right-5 bottom-20 z-10 flex flex-col gap-3 w-[320px] overflow-y-auto scrollbar-none pointer-events-auto">
+        <div className="absolute top-6 right-5 bottom-20 z-10 flex flex-col gap-4 w-[320px] overflow-y-auto scrollbar-none pointer-events-auto rounded-3xl bg-white/[0.01] backdrop-blur-xl p-2">
           {/* App Grid */}
           <motion.div
             initial={{ opacity: 0, x: 40 }}
