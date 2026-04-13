@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { DomainAdvisorBoard } from "@/components/sita/domain-shared/DomainAdvisorBoard";
 import { useBoardroomBridge } from "@/hooks/useBoardroomBridge";
 import { getAdvisorOutputs } from "@/lib/services/orchestration-pipeline/module-advisor-consumer";
-import { getStateLabel, type IssueLifecycleState } from "@/lib/services/orchestration-pipeline/issue-lifecycle";
 
 const MODULES = [
   { id: "crm", label: "CRM", icon: Users },
