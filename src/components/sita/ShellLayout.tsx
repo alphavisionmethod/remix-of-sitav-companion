@@ -462,8 +462,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
   useRealtimeNotifications();
   useProactiveNotifications();
 
-  const workspaceKey = location.pathname.split("/").filter(Boolean)[0] || "home";
-  const transition = getPageTransition(location.pathname);
+  const isDesktopRoute = location.pathname === "/" || location.pathname === "/home" || location.pathname === "/desktop";
   const isDesktopRoute = location.pathname === "/" || location.pathname === "/home" || location.pathname === "/desktop";
 
   return (
