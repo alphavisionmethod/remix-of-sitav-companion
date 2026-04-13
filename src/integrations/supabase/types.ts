@@ -1110,6 +1110,341 @@ export type Database = {
         }
         Relationships: []
       }
+      boardroom_decision_receipts: {
+        Row: {
+          approval_conditions: Json
+          approved_motion: string
+          created_at: string
+          evidence_snapshot: Json
+          expected_outcome: string | null
+          follow_up_review_date: string | null
+          id: string
+          item_id: string | null
+          linked_execution_items: Json
+          proof_trail: Json
+          rationale_summary: string
+          recommendation_id: string | null
+          session_id: string | null
+          simulation_snapshot: Json
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          approval_conditions?: Json
+          approved_motion?: string
+          created_at?: string
+          evidence_snapshot?: Json
+          expected_outcome?: string | null
+          follow_up_review_date?: string | null
+          id?: string
+          item_id?: string | null
+          linked_execution_items?: Json
+          proof_trail?: Json
+          rationale_summary?: string
+          recommendation_id?: string | null
+          session_id?: string | null
+          simulation_snapshot?: Json
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          approval_conditions?: Json
+          approved_motion?: string
+          created_at?: string
+          evidence_snapshot?: Json
+          expected_outcome?: string | null
+          follow_up_review_date?: string | null
+          id?: string
+          item_id?: string | null
+          linked_execution_items?: Json
+          proof_trail?: Json
+          rationale_summary?: string
+          recommendation_id?: string | null
+          session_id?: string | null
+          simulation_snapshot?: Json
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "boardroom_decision_receipts_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "boardroom_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "boardroom_decision_receipts_recommendation_id_fkey"
+            columns: ["recommendation_id"]
+            isOneToOne: false
+            referencedRelation: "boardroom_recommendations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "boardroom_decision_receipts_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "boardroom_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      boardroom_evidence: {
+        Row: {
+          confidence: number
+          content: string
+          created_at: string
+          freshness: string
+          id: string
+          item_id: string | null
+          last_updated: string
+          lineage_chain: Json
+          proof_receipt_id: string | null
+          source_name: string
+          source_type: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          confidence?: number
+          content?: string
+          created_at?: string
+          freshness?: string
+          id?: string
+          item_id?: string | null
+          last_updated?: string
+          lineage_chain?: Json
+          proof_receipt_id?: string | null
+          source_name?: string
+          source_type?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          confidence?: number
+          content?: string
+          created_at?: string
+          freshness?: string
+          id?: string
+          item_id?: string | null
+          last_updated?: string
+          lineage_chain?: Json
+          proof_receipt_id?: string | null
+          source_name?: string
+          source_type?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "boardroom_evidence_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "boardroom_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      boardroom_items: {
+        Row: {
+          advisor_summaries: Json
+          blocking_conditions: Json
+          confidence_state: Json
+          created_at: string
+          description: string
+          domain: string
+          escalation_reason: string | null
+          evidence_refs: Json
+          freshness_state: Json
+          id: string
+          recommendation_state: string
+          session_id: string | null
+          severity: string
+          simulation_state: string
+          source_signals: Json
+          status: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          advisor_summaries?: Json
+          blocking_conditions?: Json
+          confidence_state?: Json
+          created_at?: string
+          description?: string
+          domain?: string
+          escalation_reason?: string | null
+          evidence_refs?: Json
+          freshness_state?: Json
+          id?: string
+          recommendation_state?: string
+          session_id?: string | null
+          severity?: string
+          simulation_state?: string
+          source_signals?: Json
+          status?: string
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          advisor_summaries?: Json
+          blocking_conditions?: Json
+          confidence_state?: Json
+          created_at?: string
+          description?: string
+          domain?: string
+          escalation_reason?: string | null
+          evidence_refs?: Json
+          freshness_state?: Json
+          id?: string
+          recommendation_state?: string
+          session_id?: string | null
+          severity?: string
+          simulation_state?: string
+          source_signals?: Json
+          status?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "boardroom_items_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "boardroom_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      boardroom_recommendations: {
+        Row: {
+          conditions_for_approval: Json
+          confidence_score: number
+          created_at: string
+          domain_impacts: Json
+          evidence_basis: Json
+          id: string
+          item_id: string | null
+          next_best_alternative: string | null
+          rationale: string
+          reversibility: string
+          scenario_basis: string | null
+          session_id: string | null
+          status: string
+          summary: string
+          updated_at: string
+          urgency: string
+          user_id: string
+        }
+        Insert: {
+          conditions_for_approval?: Json
+          confidence_score?: number
+          created_at?: string
+          domain_impacts?: Json
+          evidence_basis?: Json
+          id?: string
+          item_id?: string | null
+          next_best_alternative?: string | null
+          rationale?: string
+          reversibility?: string
+          scenario_basis?: string | null
+          session_id?: string | null
+          status?: string
+          summary?: string
+          updated_at?: string
+          urgency?: string
+          user_id: string
+        }
+        Update: {
+          conditions_for_approval?: Json
+          confidence_score?: number
+          created_at?: string
+          domain_impacts?: Json
+          evidence_basis?: Json
+          id?: string
+          item_id?: string | null
+          next_best_alternative?: string | null
+          rationale?: string
+          reversibility?: string
+          scenario_basis?: string | null
+          session_id?: string | null
+          status?: string
+          summary?: string
+          updated_at?: string
+          urgency?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "boardroom_recommendations_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "boardroom_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "boardroom_recommendations_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "boardroom_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      boardroom_sessions: {
+        Row: {
+          closed_at: string | null
+          created_at: string
+          current_issue_id: string | null
+          decision_receipt_ids: Json
+          id: string
+          opened_at: string
+          participating_advisors: Json
+          scope: string
+          session_mode: string
+          session_type: string
+          status: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          closed_at?: string | null
+          created_at?: string
+          current_issue_id?: string | null
+          decision_receipt_ids?: Json
+          id?: string
+          opened_at?: string
+          participating_advisors?: Json
+          scope?: string
+          session_mode?: string
+          session_type?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          closed_at?: string | null
+          created_at?: string
+          current_issue_id?: string | null
+          decision_receipt_ids?: Json
+          id?: string
+          opened_at?: string
+          participating_advisors?: Json
+          scope?: string
+          session_mode?: string
+          session_type?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       concierge_automations: {
         Row: {
           conditions: Json | null
