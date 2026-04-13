@@ -206,11 +206,6 @@ const MoneyCenter = () => {
   const { isDemoMode } = useDataMode();
   const location = useLocation();
   const navigate = useNavigate();
-
-  if (!isDemoMode && !isMoneyOnboardingComplete()) {
-    return <Navigate to="/money/onboarding" replace />;
-  }
-
   const activePage = subpageFromPath(location.pathname);
   const { restoreScroll } = useAppStatePersistence("finance", activePage);
 
@@ -223,6 +218,10 @@ const MoneyCenter = () => {
     }
     restoreScroll();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  if (!isDemoMode && !isMoneyOnboardingComplete()) {
+    return <Navigate to="/money/onboarding" replace />;
+  }
 
   const goTo = (key: string) => {
     if (key === "overview") navigate("/money");
