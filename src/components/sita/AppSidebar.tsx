@@ -13,7 +13,6 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useDataMode } from "@/contexts/DataModeContext";
 import { useIsAdmin } from "@/hooks/useIsAdmin";
 import logo from "@/assets/sita-logo.jpeg";
-import logo from "@/assets/sita-logo.jpeg";
 import {
   Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu,
   SidebarMenuButton, SidebarMenuItem, SidebarHeader, SidebarFooter, useSidebar,
