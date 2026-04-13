@@ -1,73 +1,72 @@
 
 
-# Desktop Wallpaper System + Draggable Widget Manager
+# macOS-Style Widget Gallery
 
 ## What We're Building
 
-Three major features inspired by macOS Tahoe:
+Replace the current small popup `WidgetPicker` with a **full-screen macOS-style widget gallery** overlay, matching the reference images:
 
-### 1. Branded Wallpaper with Logo
-- Create a **macOS Tahoe-style default wallpaper** — a rich blue/purple gradient background with the SITA logo rendered large and centered (like the "26" in the reference), using glassmorphic/frosted treatment on the logo
-- The existing `ShellAmbientBackground` orbs layer on top as an overlay
-- Add the SITA brand wallpaper as the new default "first boot" experience — logo prominently displayed with brand purple/blue gradient
-
-### 2. Wallpaper Chooser on Desktop
-- Add a **right-click context menu** or a wallpaper picker accessible from the dock/settings that lets users swap between wallpaper themes
-- Extend `use-wallpaper.ts` to support a new "sita-hero" wallpaper type that renders the branded logo wallpaper (CSS gradient + centered logo)
-- Wire `ShellAmbientBackground` to actually respect the selected wallpaper theme (currently it ignores the wallpaper hook)
-
-### 3. Draggable, Removable, Addable Desktop Widgets
-- Create a **widget manager system** with drag-and-drop positioning
-- Each widget (Clock, Quick Actions, System Toggles, Calendar, Notifications, Continuity) becomes independently draggable on the desktop canvas
-- Widgets can be **removed** (right-click > Remove, or an X on hover)
-- An **"Add Widget"** panel lets users add back removed widgets or add new ones
-- Widget positions and visibility are persisted to `localStorage`
-- The clock widget moves from its fixed bottom-left position to a draggable widget like all others
-
-## Layout Change
+- **Left sidebar**: Searchable list of widget categories with icons (like the macOS widget picker app list)
+- **Center area**: Shows available widgets for the selected category with live previews in different sizes (S/M/L selectors)
+- **Right column**: Shows widgets currently on the desktop with remove buttons
+- **"Done" button** at the bottom to close the gallery
+- **Blur the desktop** behind the overlay (like macOS)
 
 ```text
-BEFORE:                          AFTER:
-┌────────────────────────┐       ┌────────────────────────┐
-│         [Logo]         │       │    [SITA Logo Hero]    │
-│                        │       │   (large, glassmorphic)│
-│                 [Widgets│       │                        │
-│                  Panel] │       │  [Widget]    [Widget]  │
-│                        │       │     (draggable anywhere)│
-│ [Clock]          ...   │       │  [Widget]    [Widget]  │
-│         [Dock]         │       │         [Dock]         │
-└────────────────────────┘       └────────────────────────┘
+┌──────────────────────────────────────────────────────────┐
+│ (blurred desktop background)                             │
+│ ┌──────────┬────────────────────────┬──────────────────┐ │
+│ │ 🔍Search │                        │ On Desktop       │ │
+│ │          │   [Widget Preview]     │                  │ │
+│ │ Clock    │   "Clock"              │ ☑ Clock          │ │
+│ │ Calendar │   Shows current time   │ ☑ Quick Actions  │ │
+│ │ Actions  │                        │ ☑ System         │ │
+│ │ System   │   ○ S  ● M  ○ L       │ ☑ Calendar       │ │
+│ │ Alerts   │                        │ ☐ Notifications  │ │
+│ │ Continue │                        │                  │ │
+│ └──────────┴────────────────────────┴──────────────────┘ │
+│                      [ Done ]                            │
+└──────────────────────────────────────────────────────────┘
 ```
 
-## Files Changed
+## Widget Catalog
+
+All existing widgets become entries:
+- **Clock** — Large time display with date
+- **Calendar** — Date card with schedule
+- **Quick Actions** — Shortcut grid
+- **System Toggles** — WiFi, Bluetooth, etc.
+- **Notifications** — Alert feed
+- **Continuity** — Resume workspace
+- **What Matters** — Priority items (currently unused on desktop — we'll add it)
+
+Each widget shows a description and size selector buttons (S/M/L). Clicking "+" adds it to the desktop; clicking "−" on the right column removes it.
+
+## Technical Changes
+
+### `useDesktopWidgets.ts`
+- Add `resizeWidget(id, size)` method
+- Add "what-matters" to `DEFAULT_WIDGETS` (hidden by default)
+- Add `description` field to `WidgetInstance`
+
+### `WidgetPicker.tsx` — Full rewrite
+- Full-screen overlay with `backdrop-blur-3xl` and dark tint
+- Left sidebar: search input + scrollable app list with icons, highlight on select
+- Center: selected widget's preview (renders actual widget at small scale), name, description, size selector (S/M/L circles)
+- Right column: list of active desktop widgets with toggle/remove
+- "Done" button at bottom center
+- Animated entrance (scale + fade from center)
+
+### `DesktopSurface.tsx`
+- Update the "+" FAB to also be accessible via right-click context menu ("Edit Widgets")
+- Pass `resizeWidget` to the widget system
+- Add "what-matters" widget type to `renderWidget`
+
+## Files
 
 | File | Change |
 |------|--------|
-| `src/hooks/useDesktopWidgets.ts` | **New** — Widget manager hook: positions, visibility, add/remove/move, localStorage persistence |
-| `src/components/sita/shell/desktop/DraggableWidget.tsx` | **New** — Wrapper that makes any widget draggable on the desktop canvas with snap-to-grid |
-| `src/components/sita/shell/desktop/WidgetPicker.tsx` | **New** — "Add Widget" overlay panel showing available widgets to place |
-| `src/components/sita/shell/DesktopSurface.tsx` | Rewrite desktop content layer — replace fixed widget panel with free-form draggable widget canvas; add branded hero wallpaper layer; integrate widget manager |
-| `src/components/sita/shell/ShellAmbientBackground.tsx` | Wire to `useWallpaper` hook so selected theme actually applies; add "sita-hero" branded wallpaper mode with large centered logo |
-| `src/hooks/use-wallpaper.ts` | Add new "sita-hero" theme as default; add logo-based wallpaper category |
-
-## Technical Details
-
-### Widget Manager (`useDesktopWidgets`)
-- Each widget has: `id`, `type`, `position: {x, y}`, `visible: boolean`, `size: "sm" | "md" | "lg"`
-- Default layout: Clock at bottom-left, Quick Actions top-right, System Toggles mid-right, Calendar below that, Notifications below that
-- `moveWidget(id, x, y)` — updates position on drag end
-- `removeWidget(id)` — hides widget
-- `addWidget(type)` — shows widget at a default position
-- All state persisted to `localStorage` key `sita-desktop-widgets`
-
-### Draggable Widget (`DraggableWidget`)
-- Uses framer-motion `drag` with `dragMomentum={false}`
-- Shows subtle border glow on drag
-- Right-click context menu with "Remove Widget" option
-- Optional close button on hover (top-right X)
-
-### Branded Wallpaper
-- New wallpaper type renders SITA logo large (200px) centered on a blue-to-purple gradient matching brand colors
-- Glass circle behind logo (like the macOS Tahoe "26" circle)
-- This is the default wallpaper on first boot
+| `src/hooks/useDesktopWidgets.ts` | Add `resizeWidget`, `description` field, "what-matters" widget type |
+| `src/components/sita/shell/desktop/WidgetPicker.tsx` | Full rewrite — macOS-style full-screen gallery with sidebar, preview, active list |
+| `src/components/sita/shell/DesktopSurface.tsx` | Wire new picker, add what-matters to renderWidget, right-click "Edit Widgets" |
 
