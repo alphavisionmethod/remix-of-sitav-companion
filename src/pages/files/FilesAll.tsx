@@ -203,18 +203,9 @@ const FilesAll = () => {
             </div>
           )}
 
-          <ModuleAdvisorInsight
-            module="files"
-            context="all-files"
-            insight={{
-              role: "File Intelligence Advisor",
-              message: files.length > 0
+          <ModuleAdvisorInsight advisorName="File Intelligence Advisor" domain="business" insight={files.length > 0
                 ? `${files.length} files indexed across ${new Set(files.map(f => f.domain)).size} domains. ${files.filter(f => !f.linked).length} files still need linking.`
-                : "Upload your first files to start building your knowledge base.",
-              linkedItems: ["Classification status", "Extraction pipeline"],
-              confidence: "high",
-            }}
-          />
+                : "Upload your first files to start building your knowledge base."} linkedItems={["Classification status", "Extraction pipeline"]} />
         </div>
       </div>
     </motion.div>

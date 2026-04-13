@@ -105,18 +105,9 @@ const FilesReview = () => {
         </div>
       )}
 
-      <ModuleAdvisorInsight
-        module="files"
-        context="review-center"
-        insight={{
-          role: "Review Center Advisor",
-          message: classificationItems.length + extractionItems.length > 0
+      <ModuleAdvisorInsight advisorName="Review Center Advisor" domain="business" insight={classificationItems.length + extractionItems.length > 0
             ? `${classificationItems.length} classifications and ${extractionItems.length} extractions awaiting your review. Confirming these improves future accuracy.`
-            : "All reviews complete. The system will flag new items as files are processed.",
-          linkedItems: ["Classification accuracy", "Extraction quality"],
-          confidence: "high",
-        }}
-      />
+            : "All reviews complete. The system will flag new items as files are processed."} linkedItems={["Classification accuracy", "Extraction quality"]} />
     </motion.div>
   );
 };

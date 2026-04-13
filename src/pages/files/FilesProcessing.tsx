@@ -151,18 +151,9 @@ const FilesProcessing = () => {
         ))}
       </div>
 
-      <ModuleAdvisorInsight
-        module="files"
-        context="processing-queue"
-        insight={{
-          role: "Processing Pipeline Advisor",
-          message: processingItems.length > 0
+      <ModuleAdvisorInsight advisorName="Processing Pipeline Advisor" domain="business" insight={processingItems.length > 0
             ? `${processingItems.length} files currently in the pipeline. Average processing time is ~45 seconds. ${ingestedFiles.filter(f => f.status === "review").length} items need manual review.`
-            : "Processing pipeline is idle. Upload new documents to start the intelligence extraction process.",
-          linkedItems: ["OCR status", "Classification accuracy"],
-          confidence: "high",
-        }}
-      />
+            : "Processing pipeline is idle. Upload new documents to start the intelligence extraction process."} linkedItems={["OCR status", "Classification accuracy"]} />
     </motion.div>
   );
 };

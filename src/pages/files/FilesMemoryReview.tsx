@@ -134,18 +134,9 @@ const FilesMemoryReview = () => {
         </>
       )}
 
-      <ModuleAdvisorInsight
-        module="files"
-        context="memory-review"
-        insight={{
-          role: "Memory & Knowledge Advisor",
-          message: memoryItems.length > 0
+      <ModuleAdvisorInsight advisorName="Memory & Knowledge Advisor" domain="business" insight={memoryItems.length > 0
             ? `${memoryItems.length} memory items from ${files.filter((f: Record<string, any>) => f.extracted_data?.text).length} source files. ${graphLinks.length} entity graph clusters detected. You can correct or forget any item.`
-            : "No memory items yet. Upload and process files to build your knowledge graph.",
-          linkedItems: ["Entity graph", "Memory corrections", "Source files"],
-          confidence: "high",
-        }}
-      />
+            : "No memory items yet. Upload and process files to build your knowledge graph."} linkedItems={["Entity graph", "Memory corrections", "Source files"]} />
     </motion.div>
   );
 };

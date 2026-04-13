@@ -108,18 +108,9 @@ const FilesSensitive = () => {
         </>
       )}
 
-      <ModuleAdvisorInsight
-        module="files"
-        context="sensitive-documents"
-        insight={{
-          role: "Privacy & Governance Advisor",
-          message: governed.length + restricted.length > 0
+      <ModuleAdvisorInsight advisorName="Privacy & Governance Advisor" domain="business" insight={governed.length + restricted.length > 0
             ? `${governed.length} governed and ${restricted.length} restricted documents under protection. All auto-triggers are blocked. Memory writes require explicit consent.`
-            : "No sensitive documents detected yet. Upload documents containing medical, legal, identity, or financial information for automatic protection.",
-          linkedItems: ["Privacy policy", "Data retention", "Audit trail"],
-          confidence: "high",
-        }}
-      />
+            : "No sensitive documents detected yet. Upload documents containing medical, legal, identity, or financial information for automatic protection."} linkedItems={["Privacy policy", "Data retention", "Audit trail"]} />
     </motion.div>
   );
 };
