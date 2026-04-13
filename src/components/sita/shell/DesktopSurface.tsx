@@ -1095,13 +1095,13 @@ export function DesktopSurface({
         )}
       </AnimatePresence>
 
-      {/* Vignette — deeper, more cinematic */}
+      {/* Vignette — state-aware intensity */}
       <div
-        className="absolute inset-0 pointer-events-none"
+        className="absolute inset-0 pointer-events-none transition-all duration-[2000ms]"
         style={{
           zIndex: DEPTH_LAYERS.vignette,
-          background: "radial-gradient(ellipse at center, transparent 35%, hsl(0 0% 0% / 0.35) 85%, hsl(0 0% 0% / 0.5) 100%)",
-          boxShadow: "inset 0 0 150px hsl(0 0% 0% / 0.2)",
+          background: `radial-gradient(ellipse at center, transparent 35%, hsl(0 0% 0% / ${stateStyle.vignetteIntensity}) 85%, hsl(0 0% 0% / ${stateStyle.vignetteIntensity + 0.15}) 100%)`,
+          boxShadow: `inset 0 0 150px hsl(0 0% 0% / ${stateStyle.vignetteIntensity * 0.6})`,
         }}
       />
     </div>
