@@ -643,9 +643,14 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
         
       </Suspense>
 
-      {/* Desktop Dock — floating app launcher */}
+      {/* Desktop Dock — Focus Dock with intelligent sections */}
       <Suspense fallback={null}>
-        <DesktopDock onLaunchApp={handleLaunchApp} windowManager={wm} hasMaximizedWindow={wm.visibleWindows.some(w => w.position?.x === 0 && w.position?.y === 0)} />
+        <DesktopDock onLaunchApp={handleLaunchApp} windowManager={wm} hasMaximizedWindow={wm.visibleWindows.some(w => w.position?.x === 0 && w.position?.y === 0)} onOpenLauncher={() => setLauncherOpen(true)} />
+      </Suspense>
+
+      {/* App Launcher Panel — Spotlight + Launchpad hybrid */}
+      <Suspense fallback={null}>
+        <AppLauncherPanelLazy open={launcherOpen} onClose={() => setLauncherOpen(false)} onLaunchApp={(id) => { handleLaunchApp(id); setLauncherOpen(false); }} />
       </Suspense>
 
       {/* G1: Permission Gate Modal */}
