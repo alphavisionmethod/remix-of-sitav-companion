@@ -484,6 +484,23 @@ export const AppSidebar = memo(function AppSidebar() {
           </div>
         )}
       </SidebarFooter>
+
+      {/* Context Menu */}
+      <AnimatePresence>
+        {ctxMenu && (
+          <SidebarContextMenu
+            x={ctxMenu.x}
+            y={ctxMenu.y}
+            itemTitle={ctxMenu.title}
+            itemUrl={ctxMenu.url}
+            onClose={() => setCtxMenu(null)}
+            onClearState={() => {
+              try { const store = JSON.parse(sessionStorage.getItem("sita-app-state") || "{}"); const domainMap: Record<string, string> = { "/business": "business", "/money": "finance", "/concierge": "concierge", "/files": "files" }; const key = domainMap[ctxMenu.url]; if (key) { delete store[key]; sessionStorage.setItem("sita-app-state", JSON.stringify(store)); } } catch {}
+            }}
+            onOpenInNew={() => window.open(ctxMenu.url, "_blank")}
+          />
+        )}
+      </AnimatePresence>
     </Sidebar>
   );
 });
