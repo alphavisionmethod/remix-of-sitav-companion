@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { renderHook, act } from "@testing-library/react";
+import { renderHook, act } from "@/test/test-utils";
 import React from "react";
 
 vi.mock("sonner", () => ({ toast: { success: vi.fn(), info: vi.fn() } }));

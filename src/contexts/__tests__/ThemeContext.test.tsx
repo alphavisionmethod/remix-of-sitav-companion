@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { renderHook, act } from "@testing-library/react";
+import { renderHook, act } from "@/test/test-utils";
 import React from "react";
 import { ThemeProvider, useTheme } from "../ThemeContext";
 

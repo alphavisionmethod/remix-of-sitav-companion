@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { renderHook } from "@testing-library/react";
+import { renderHook } from "@/test/test-utils";
 import React from "react";
 
 vi.mock("@/integrations/supabase/client", () => ({

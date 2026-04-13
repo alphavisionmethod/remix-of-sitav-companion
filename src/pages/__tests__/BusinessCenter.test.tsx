@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { render } from "@testing-library/react";
+import { render } from "@/test/test-utils";
 import { MemoryRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
