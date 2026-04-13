@@ -900,6 +900,7 @@ const CouncilChatPanel = ({ mode }: { mode: CouncilMode }) => {
 // ── Main Page ───────────────────────────────────────────────────
 
 export default function AdvisorWorkspace() {
+  const isDemoMode = true;
   const [mode, setMode] = useState<CouncilMode>("daily-pulse");
   const [activeTab, setActiveTab] = useState("council");
 const params = useParams();
