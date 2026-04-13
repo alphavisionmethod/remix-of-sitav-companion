@@ -873,7 +873,7 @@ export function DesktopSurface({
       </div>
 
       {/* Decorative orbs — richer, more visible */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden" style={{ zIndex: DEPTH_LAYERS.orbs }}>
+      <div className="absolute inset-0 pointer-events-none overflow-hidden transition-opacity duration-[2000ms]" style={{ zIndex: DEPTH_LAYERS.orbs, opacity: stateStyle.orbOpacity / 0.08 }}>
         <div className="absolute top-[10%] left-[15%] w-[600px] h-[600px] rounded-full bg-[hsl(265_60%_50%/0.10)] blur-[140px]" />
         <div className="absolute bottom-[15%] right-[10%] w-[500px] h-[500px] rounded-full bg-[hsl(35_80%_50%/0.07)] blur-[120px]" />
         <div className="absolute top-[55%] left-[55%] w-[400px] h-[400px] rounded-full bg-[hsl(190_60%_50%/0.06)] blur-[100px]" />
