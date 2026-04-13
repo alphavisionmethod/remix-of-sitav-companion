@@ -1,48 +1,98 @@
 
 
-# SITA OS — Design System Integration Phase
+# SITA OS — Remaining Implementation Gaps (Full Audit)
 
-## The Problem
+## Summary
 
-The design system primitives are built but **completely unused**. Zero pages import from `@/components/sita/cards`, `@/components/sita/badges`, or `@/components/sita/surfaces`. All ~80 module pages still use the old `SitaCard`, `GlassCard`, `SitaPageHeader`, `ModuleWorkspace`, and `EmptyStateCTA`. Every domain looks structurally identical despite atmosphere tokens existing. The `PremiumEmptyState` component was planned but never created.
+The design system primitives (cards, badges, surfaces, motion) are built and integrated into **4 pages**. But **199 files** still import old primitives (`SitaCard`, `GlassCard`, `ModuleWorkspace`, `EmptyStateCTA`). Beyond the migration debt, several major spec areas remain unimplemented.
 
-## What We Build (High-Impact Integration)
+---
 
-### 1. Rewrite 3 Domain Overview Pages
-Replace old shared primitives with the new card family, badges, and domain-paced motion so each domain **looks and feels different**.
+## Gap 1: BillsWorkspace Rewrite (planned but never done)
 
-**BusinessOverview** — Replace `GlassCard`/`OperatingStateHero` with `HeroCard` (sharp gradient), `QueueCard` (priority queue with `UrgencyBadge`), `ActionCard` (prepared follow-throughs), `TimelineCard` (what-changed), `AdvisorCard`. Use `ListReveal` at 30ms stagger. Wrap in `AppSurface` level hierarchy.
+`src/pages/money/BillsWorkspace.tsx` still uses `SitaCard`, `SitaPageHeader`, `ModuleWorkspace` — the old stack. The plan called for `SplitWorkspace`, `QueueCard`, `ExecutionBadge`, `FreshnessBadge`. This was approved but skipped.
 
-**MoneyOverview** — Same structure but calmer: `HeroCard` with muted green gradient, `StatusCard` for confidence state with `TrustBadge`, `QueueCard` for obligations with `FreshnessBadge`. 50ms stagger. More spacing, softer radii.
+**Action:** Rewrite BillsWorkspace with new design system primitives.
 
-**ConciergeOverview** — Warmest: `HeroCard` with soft purple gradient, `QueueCard` with gentler urgency, `ActionCard` with supportive tone. 60ms stagger. Most breathing room, rounded 20px cards.
+---
 
-### 2. DomainAppShell Surface Integration
-Edit `DomainAppShell.tsx` to wrap content area in `AppSurface level={0}` and inject domain atmosphere CSS variables (border-radius, contrast, warmth) as inherited styles so all child pages automatically inherit domain feel.
+## Gap 2: DesktopSurface State System (skipped)
 
-### 3. Rewrite 2 Key Module Pages (proving depth)
-**CustomersPage** — Replace `ModuleWorkspace` + `SitaCard` with `SplitWorkspace` (resizable list/detail), customer items using `ListReveal`, detail in right pane at Surface 2, `FreshnessBadge` on last contact, `TrustBadge` on health.
+`DesktopSurface.tsx` was planned to get visual state differentiation (idle/active/degraded/heavy-review) and use `StatusCard` for widgets. This was explicitly skipped to "avoid visual regression." The desktop still has no state-aware visual logic.
 
-**BillsWorkspace** — Replace flat list with `SplitWorkspace`, `QueueCard` for grouped dues, `ExecutionBadge` on payment status, `FreshnessBadge` on due dates.
+**Action:** Add desktop state system with ambient intensity shifts per state.
 
-### 4. Premium Empty State System
-Create `src/components/sita/PremiumEmptyState.tsx` with 7 variants: `first-use`, `no-data`, `disconnected`, `degraded`, `blocked`, `no-results`, `no-permission`. Domain-aware accents, `CardEntrance` animation, replaces the basic `EmptyStateCTA` and `ConciergeEmptyState`.
+---
 
-### 5. Desktop Surface Polish
-Update `DesktopSurface.tsx` widgets to use `StatusCard` instead of custom glass cards. Add visual state differentiation (idle reduces orb intensity, active normal, degraded mutes palette).
+## Gap 3: DomainAppShell Atmosphere Injection (incomplete)
 
-## Files
+`DomainAppShell.tsx` has `DomainMotionProvider` but does NOT inject domain atmosphere CSS variables (`--domain-card-radius`, `--domain-contrast`, `--domain-warmth`) and does NOT wrap content in `AppSurface level={0}`. Child pages cannot inherit domain feel automatically.
 
-| Action | File |
-|--------|------|
-| Rewrite | `src/pages/business/BusinessOverview.tsx` |
-| Rewrite | `src/pages/money/MoneyOverview.tsx` |
-| Rewrite | `src/pages/concierge/ConciergeOverview.tsx` |
-| Rewrite | `src/pages/business/CustomersPage.tsx` |
-| Rewrite | `src/pages/money/BillsWorkspace.tsx` |
-| Edit | `src/components/sita/shell/DomainAppShell.tsx` |
-| Create | `src/components/sita/PremiumEmptyState.tsx` |
-| Edit | `src/components/sita/shell/DesktopSurface.tsx` |
+**Action:** Add CSS variable injection and `AppSurface` wrapper to DomainAppShell content area.
 
-This transforms the app from "has a design system" to "uses the design system everywhere users see first." Every subsequent module page follows these patterns.
+---
+
+## Gap 4: High-Impact Module Pages (75+ pages untouched)
+
+Only 4 of ~80 module pages use the new design system. The highest-impact remaining pages that users encounter frequently:
+
+| Domain | Page | Current State |
+|--------|------|--------------|
+| Business | LeadRecovery, InvoicesCollections, QuotesWorkspace | Old SitaCard |
+| Business | FollowThroughCenter, CommunicationsCenter | Old SitaCard |
+| Money | SpendingPulse, MoneyApprovals, ReceivablesObligations | Old SitaCard |
+| Money | ReservesSavings, SubscriptionsWaste, TaxEstimator | Old SitaCard |
+| Concierge | TravelPlanning, LifeAdminCenter, ServiceProviders | Old SitaCard |
+| Concierge | ErrandsLogistics, HouseholdCommandCenter | Old SitaCard |
+| Files | FilesOverview, FilesSensitive | Old SitaCard |
+| Trust | TrustCenter, ProofCenter | Old SitaCard |
+
+**Action:** Migrate the next 10 highest-traffic module pages to use HeroCard/QueueCard/ActionCard/SplitWorkspace/badges/ListReveal with domain-specific atmosphere.
+
+---
+
+## Gap 5: `DetailDrawer` Never Used in Pages
+
+The `DetailDrawer` component exists in `src/components/sita/surfaces/` but zero pages import it. All detail views are either inline or use old `ContextDrawer`.
+
+**Action:** Replace `ContextDrawer` usage in key pages (BillsWorkspace, InvoicesCollections, QuotesWorkspace) with the new `DetailDrawer`.
+
+---
+
+## Gap 6: `AppOpenCeremony` Never Triggered
+
+The cinematic app launch animation exists but is never called when entering a domain app from the desktop or dock. Entering Business/Finance/Concierge feels like a page navigation, not launching software.
+
+**Action:** Wire `AppOpenCeremony` into `DomainAppShell` on first mount (using sessionStorage to fire once per domain session).
+
+---
+
+## Gap 7: Boardroom Pages Don't Use Domain Ceremonies
+
+`BusinessBoardroom`, `FinanceBoardroom`, `MoneyBoardroom`, `ConciergeBoardroom` exist but don't use `BoardroomCinematic` for domain-specific entry. They use the old generic `BoardroomEntryCeremony`.
+
+**Action:** Replace generic ceremony with domain-paced `BoardroomCinematic` in each boardroom page.
+
+---
+
+## Gap 8: No `ComparisonCard` or `ProofCard` Usage
+
+These two card types were built but zero pages use them. `ComparisonCard` is needed for boardroom scenario reviews and `ProofCard` for trust/proof pages.
+
+**Action:** Integrate `ComparisonCard` into boardroom pages and `ProofCard` into TrustCenter/ProofCenter/MoneyProof/BusinessProof.
+
+---
+
+## Recommended Implementation Order
+
+| Phase | Work | Files |
+|-------|------|-------|
+| **A** | DomainAppShell atmosphere + AppSurface + AppOpenCeremony | `DomainAppShell.tsx` |
+| **B** | BillsWorkspace rewrite (planned, never done) | `BillsWorkspace.tsx` |
+| **C** | Desktop state system | `DesktopSurface.tsx` |
+| **D** | Migrate 10 key module pages to new primitives | 10 page files |
+| **E** | DetailDrawer integration in 3 pages | InvoicesCollections, QuotesWorkspace, BillsWorkspace |
+| **F** | Boardroom domain ceremonies + ComparisonCard/ProofCard | 4 boardroom + 4 proof pages |
+
+This covers the most impactful remaining gaps. After Phase A-F, ~18 pages use the new system (vs 4 today), the shell automatically applies domain atmosphere to all children, and the desktop/boardroom feel cinematically distinct.
 
