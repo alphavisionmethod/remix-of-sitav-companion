@@ -1,8 +1,13 @@
 import React from "react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
-import { AlertTriangle, HelpCircle, CheckCircle, Database, Brain } from "lucide-react";
+import { AlertTriangle, HelpCircle, CheckCircle, Database, Brain, Clock } from "lucide-react";
 import { ScenarioComparison, ConfidenceBand } from "@/components/sita/primitives";
+
+interface Props {
+  scope: "global" | "business" | "finance" | "concierge";
+  onNavigate: (module: string) => void;
+}
 
 const SCENARIOS = [
   {
@@ -58,11 +63,11 @@ const CONFIDENCE_POINTS = [
 ];
 
 const ASSUMPTIONS = [
-  { label: "TechCorp responds within 5 business days", type: "assumption" as const, confidence: 70 },
-  { label: "Invoice #1035 — David Kim — last payment was 47 days late", type: "verified" as const, confidence: 95 },
-  { label: "Sarah Chen payment pattern: typically 14-day delay", type: "inferred" as const, confidence: 60 },
-  { label: "Current reserves: $7,200", type: "verified" as const, confidence: 99 },
-  { label: "Client sentiment data — last interaction 3 weeks ago", type: "stale" as const, confidence: 40 },
+  { label: "TechCorp responds within 5 business days", type: "assumption" as const, confidence: 70, freshness: "Current" },
+  { label: "Invoice #1035 — David Kim — last payment was 47 days late", type: "verified" as const, confidence: 95, freshness: "12 min ago" },
+  { label: "Sarah Chen payment pattern: typically 14-day delay", type: "inferred" as const, confidence: 60, freshness: "2 days ago" },
+  { label: "Current reserves: $7,200", type: "verified" as const, confidence: 99, freshness: "2 min ago" },
+  { label: "Client sentiment data — last interaction 3 weeks ago", type: "stale" as const, confidence: 40, freshness: "3 weeks ago" },
 ];
 
 const typeConfig = {
@@ -72,13 +77,19 @@ const typeConfig = {
   stale: { icon: AlertTriangle, color: "text-[hsl(var(--destructive))]", bg: "bg-[hsl(var(--destructive))]/10", label: "Stale Data" },
 };
 
+const freshnessColor = (f: string) => {
+  if (f.includes("min") || f === "Current") return "text-[hsl(var(--trust-safe))]";
+  if (f.includes("hour") || f.includes("day")) return "text-[hsl(var(--sita-gold))]";
+  return "text-[hsl(var(--destructive))]";
+};
+
 const DOWNSTREAM = [
   { domain: "Finance", effect: "Reserve buffer restored to target within 3 weeks (phased scenario)" },
   { domain: "Business", effect: "CRM health maintained — no client downgrades expected" },
   { domain: "Concierge", effect: "No downstream impact on household or travel prep" },
 ];
 
-export function BoardroomSimulationView() {
+export function BoardroomSimulationView({ scope, onNavigate }: Props) {
   return (
     <div className="p-6 space-y-6">
       {/* Scenario Comparison */}
@@ -88,7 +99,7 @@ export function BoardroomSimulationView() {
         selectedId="phased"
       />
 
-      {/* Confidence Band — Projected Cash Recovery */}
+      {/* Confidence Band */}
       <ConfidenceBand
         title="Projected Cash Recovery (Phased)"
         subtitle="4-week forecast with uncertainty bands"
@@ -97,7 +108,7 @@ export function BoardroomSimulationView() {
         confidenceLevel={78}
       />
 
-      {/* What-If: Downstream Effects */}
+      {/* Downstream Effects */}
       <div>
         <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[hsl(280_50%_65%/0.5)] mb-3">
           Downstream Effects
@@ -118,7 +129,7 @@ export function BoardroomSimulationView() {
         </div>
       </div>
 
-      {/* Assumptions Disclosure */}
+      {/* Assumptions with Freshness */}
       <div>
         <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[hsl(280_50%_65%/0.5)] mb-3">
           Assumptions & Evidence Quality
@@ -140,6 +151,9 @@ export function BoardroomSimulationView() {
                   {cfg.label}
                 </div>
                 <p className="text-[12px] text-[hsl(0_0%_100%/0.6)] flex-1">{a.label}</p>
+                <span className={cn("text-[9px] shrink-0 flex items-center gap-1 font-medium", freshnessColor(a.freshness))}>
+                  <Clock size={9} /> {a.freshness}
+                </span>
                 <span className="text-[10px] text-[hsl(0_0%_100%/0.3)] tabular-nums shrink-0">{a.confidence}%</span>
               </motion.div>
             );

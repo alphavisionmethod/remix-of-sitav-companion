@@ -1,8 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
-import { AlertTriangle, CheckCircle, Scale } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { AlertTriangle, CheckCircle, Scale, ChevronDown, ChevronRight } from "lucide-react";
 import { ConfidenceBar, AdvisorAvatar } from "@/components/sita/primitives";
+import { EvidenceChain, type EvidenceNode } from "@/components/sita/primitives/EvidenceChain";
+
+interface Props {
+  scope: "global" | "business" | "finance" | "concierge";
+  onNavigate: (module: string) => void;
+}
 
 const ADVISOR_STANCES = [
   { id: "rev", name: "Revenue Advisor", domain: "business" as const, recommendation: "Prioritize collections — $18.5K overdue threatens cash target", confidence: 72, evidenceCount: 6 },
@@ -21,6 +27,12 @@ const DISAGREEMENTS = [
     advisorB: { name: "CRM Advisor", position: "Phased approach — high-value clients get personal touch first", confidence: 68 },
     gap: 4,
     resolution: "System recommends phased approach — relationship preservation outweighs speed for top accounts",
+    evidence: [
+      { id: "de1", label: "TechCorp revenue contribution: $45K/yr (top 5 client)", type: "source" as const, confidence: 95 },
+      { id: "de2", label: "Prior phased collection recovery rate: 91% vs 76% immediate", type: "verification" as const, confidence: 85 },
+      { id: "de3", label: "Client churn risk higher with aggressive outreach", type: "inference" as const, confidence: 68 },
+      { id: "de4", label: "Phased approach yields higher net recovery", type: "conclusion" as const, confidence: 78 },
+    ] as EvidenceNode[],
   },
   {
     id: "d2",
@@ -29,10 +41,18 @@ const DISAGREEMENTS = [
     advisorB: { name: "Reserve Advisor", position: "Accelerate receivables instead of cutting services", confidence: 65 },
     gap: 13,
     resolution: "System recommends hybrid — defer lowest-value subscriptions AND accelerate top 2 receivables",
+    evidence: [
+      { id: "de5", label: "3 subscriptions identified with zero usage last 30 days", type: "source" as const, confidence: 92 },
+      { id: "de6", label: "Receivables acceleration typically yields 60% within 2 weeks", type: "verification" as const, confidence: 70 },
+      { id: "de7", label: "Hybrid approach restores buffer 40% faster than either alone", type: "inference" as const, confidence: 72 },
+      { id: "de8", label: "Combined strategy minimizes service disruption while restoring reserves", type: "conclusion" as const, confidence: 75 },
+    ] as EvidenceNode[],
   },
 ];
 
-export function BoardroomSynthesisView() {
+export function BoardroomSynthesisView({ scope, onNavigate }: Props) {
+  const [expandedEvidence, setExpandedEvidence] = useState<string | null>(null);
+
   const sorted = [...ADVISOR_STANCES].sort((a, b) => b.confidence - a.confidence);
   const avgConfidence = Math.round(sorted.reduce((s, a) => s + a.confidence, 0) / sorted.length);
   const maxGap = Math.max(...sorted.map(a => a.confidence)) - Math.min(...sorted.map(a => a.confidence));
@@ -94,39 +114,63 @@ export function BoardroomSynthesisView() {
         </div>
       </div>
 
-      {/* Disagreement Cards */}
+      {/* Disagreement Cards with Evidence Chains */}
       <div>
         <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[hsl(var(--sita-gold))]/60 mb-3 flex items-center gap-1.5">
           <AlertTriangle size={12} /> Active Disagreements
         </p>
         <div className="space-y-3">
-          {DISAGREEMENTS.map((d, i) => (
-            <motion.div
-              key={d.id}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 + i * 0.08 }}
-              className="rounded-xl border border-[hsl(var(--sita-gold))]/15 bg-[hsl(var(--sita-gold))]/3 p-5"
-            >
-              <p className="text-sm font-semibold text-[hsl(0_0%_100%/0.85)] mb-3">{d.title}</p>
-              <div className="grid grid-cols-2 gap-4 mb-4">
-                <div className="rounded-lg border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.03)] p-3">
-                  <p className="text-[10px] font-semibold text-[hsl(0_0%_100%/0.5)] mb-1">{d.advisorA.name}</p>
-                  <p className="text-[12px] text-[hsl(0_0%_100%/0.7)]">{d.advisorA.position}</p>
-                  <ConfidenceBar value={d.advisorA.confidence} size="sm" className="mt-2" />
+          {DISAGREEMENTS.map((d, i) => {
+            const isExpanded = expandedEvidence === d.id;
+            return (
+              <motion.div
+                key={d.id}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 + i * 0.08 }}
+                className="rounded-xl border border-[hsl(var(--sita-gold))]/15 bg-[hsl(var(--sita-gold))]/3 p-5"
+              >
+                <p className="text-sm font-semibold text-[hsl(0_0%_100%/0.85)] mb-3">{d.title}</p>
+                <div className="grid grid-cols-2 gap-4 mb-4">
+                  <div className="rounded-lg border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.03)] p-3">
+                    <p className="text-[10px] font-semibold text-[hsl(0_0%_100%/0.5)] mb-1">{d.advisorA.name}</p>
+                    <p className="text-[12px] text-[hsl(0_0%_100%/0.7)]">{d.advisorA.position}</p>
+                    <ConfidenceBar value={d.advisorA.confidence} size="sm" className="mt-2" />
+                  </div>
+                  <div className="rounded-lg border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.03)] p-3">
+                    <p className="text-[10px] font-semibold text-[hsl(0_0%_100%/0.5)] mb-1">{d.advisorB.name}</p>
+                    <p className="text-[12px] text-[hsl(0_0%_100%/0.7)]">{d.advisorB.position}</p>
+                    <ConfidenceBar value={d.advisorB.confidence} size="sm" className="mt-2" />
+                  </div>
                 </div>
-                <div className="rounded-lg border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.03)] p-3">
-                  <p className="text-[10px] font-semibold text-[hsl(0_0%_100%/0.5)] mb-1">{d.advisorB.name}</p>
-                  <p className="text-[12px] text-[hsl(0_0%_100%/0.7)]">{d.advisorB.position}</p>
-                  <ConfidenceBar value={d.advisorB.confidence} size="sm" className="mt-2" />
+                <div className="flex items-start gap-2 rounded-lg bg-[hsl(280_40%_50%/0.06)] border border-[hsl(280_50%_50%/0.15)] p-3 mb-3">
+                  <CheckCircle size={14} className="text-[hsl(280_50%_65%)] shrink-0 mt-0.5" />
+                  <p className="text-[11px] text-[hsl(280_50%_75%/0.8)] leading-relaxed">{d.resolution}</p>
                 </div>
-              </div>
-              <div className="flex items-start gap-2 rounded-lg bg-[hsl(280_40%_50%/0.06)] border border-[hsl(280_50%_50%/0.15)] p-3">
-                <CheckCircle size={14} className="text-[hsl(280_50%_65%)] shrink-0 mt-0.5" />
-                <p className="text-[11px] text-[hsl(280_50%_75%/0.8)] leading-relaxed">{d.resolution}</p>
-              </div>
-            </motion.div>
-          ))}
+
+                {/* Collapsible Evidence Chain */}
+                <button
+                  onClick={() => setExpandedEvidence(isExpanded ? null : d.id)}
+                  className="flex items-center gap-1.5 text-[10px] font-semibold text-[hsl(280_50%_65%/0.6)] hover:text-[hsl(280_50%_75%)] transition-colors"
+                >
+                  {isExpanded ? <ChevronDown size={12} /> : <ChevronRight size={12} />}
+                  {isExpanded ? "Hide Evidence Trail" : "View Evidence Trail"}
+                </button>
+                <AnimatePresence>
+                  {isExpanded && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: "auto" }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="overflow-hidden mt-3"
+                    >
+                      <EvidenceChain title="Evidence Trail" nodes={d.evidence} />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </div>

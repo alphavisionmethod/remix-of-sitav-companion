@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { Briefcase, DollarSign, Users, TrendingUp, TrendingDown, AlertTriangle } from "lucide-react";
-import { ConfidenceBar } from "@/components/sita/primitives";
-import { AdvisorAvatar } from "@/components/sita/primitives";
+import { ConfidenceBar, AdvisorAvatar } from "@/components/sita/primitives";
 import { useBoardroomData } from "@/hooks/use-boardroom-data";
+
+interface Props {
+  scope: "global" | "business" | "finance" | "concierge";
+  onNavigate: (module: string) => void;
+}
 
 type PulseDomain = "business" | "finance" | "concierge";
 
@@ -81,10 +85,17 @@ const urgBadge: Record<string, string> = {
   low: "bg-[hsl(var(--trust-safe))]/10 text-[hsl(var(--trust-safe))]",
 };
 
-export function BoardroomPulseView() {
+export function BoardroomPulseView({ scope, onNavigate }: Props) {
   const [domain, setDomain] = useState<PulseDomain>("business");
   const data = PULSE_DATA[domain];
   const { overdueTasks } = useBoardroomData();
+
+  // Sync domain tab with header scope
+  useEffect(() => {
+    if (scope === "business" || scope === "finance" || scope === "concierge") {
+      setDomain(scope);
+    }
+  }, [scope]);
 
   return (
     <div className="p-6 space-y-6">
