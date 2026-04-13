@@ -407,7 +407,7 @@ export const AppSidebar = memo(function AppSidebar() {
       <SidebarFooter className="px-2 pb-4 border-t border-sidebar-border/30 pt-2">
         <SidebarGroup>
           <SidebarGroupContent>
-            <AppNavGroup items={bottomNav} collapsed={collapsed} />
+            <AppNavGroup items={visibleBottomNav} collapsed={collapsed} />
           </SidebarGroupContent>
         </SidebarGroup>
 
