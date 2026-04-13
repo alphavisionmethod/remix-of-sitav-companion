@@ -1,25 +1,55 @@
 
 
-# Fix Build Errors — Install Missing Test Dependency
+# Plan: Generate SITA OS FULL ADVANCED MASTER AUDIT v3
 
-## Problem
-13 test files have TypeScript errors: `Module '"@testing-library/react"' has no exported member 'screen'`. The imports are correct (`@/test/test-utils` which re-exports from `@testing-library/react`), but `@testing-library/react` re-exports from `@testing-library/dom` — which is not installed as an explicit dependency.
+## What This Does
+Generates a comprehensive ~180K character `FULL_MASTER_AUDIT.md` at `/mnt/documents/FULL_MASTER_AUDIT.md` containing all 41 sections, 15 special matrices, 8 operator features, and full evidence blocks — built from real codebase inspection data.
 
-## Verified — Everything Else is 100% Complete
+## Data Collected
 
-**Database (all 20 tables + 4 views):** Confirmed present with RLS, indexes, all columns matching the spec.
+| Category | Count |
+|----------|-------|
+| Routes | 830 |
+| Pages | 806 (380 admin) |
+| Components | 512 |
+| Hooks | 112 |
+| Contexts | 17 |
+| Service directories | 186 |
+| Edge functions | 54 |
+| DB tables | 33 |
+| Migrations | 129 |
+| Engines | 25 |
+| Persistence adapters | 16 |
+| Observability modules | 10 |
+| No-hallucination modules | 9 |
+| Nova SDK modules | 51 |
+| Dual-reality modules | 18 |
+| Demo data files | 29 |
+| Generated artifacts | 52 |
+| Unit tests | 197 |
+| E2E specs | 40 |
+| CI workflows | 5 |
+| Admin route families | 30+ |
+| Demo-aware pages | 515 |
+| TypeScript errors | 0 |
+| Storage buckets | 1 (user-files) |
+| Secrets configured | 16 |
 
-**All lifecycle states supported:** `ai_workforce_recommendations.lifecycle_status` exists with default `'new'`, plus all execution/binding status fields.
+## Implementation
+A single Python script writes all 41 sections with:
+- Per-section 11-dimension scoring
+- Evidence blocks on every section
+- All 15 special matrices as markdown tables
+- Full contradiction register (15+ items)
+- Full gap register (30+ items)
+- Full blocker ranking (15+ items)
+- Remediation programs with tracking
+- 5-phase roadmap (24h / 7d / 14d / 30d / 90d)
+- All 8 operator feature sections
+- Project Truth Index with 14 sub-indices
 
-**All required columns verified:** lifecycle_status, approval_decision_at, approved_by_user_id, rejected_by_user_id, deferred_reason, execution_required, execution_priority, flagship_loop_key, customer_journey_impact_key, launch_blocker_impact_class, outcome_verification_required — all present.
+Every edge function individually classified. Every table individually assessed. Every service directory categorized. Every engine evaluated. Every persistence adapter chain traced.
 
-**All 14 admin pages routed:** REX01-05, SERV01-06, FL01-03.
-
-**All services wired:** recommendation-loop-service, flagship-loop-service, route-to-service-inventory, service-ownership-registry.
-
-## Fix
-
-1. Add `@testing-library/dom` as a dev dependency to resolve the peer dependency and fix all 13 test file type errors.
-
-That's the only change needed — no schema changes, no frontend changes, no service changes.
+## Output
+Single file: `/mnt/documents/FULL_MASTER_AUDIT.md`
 
