@@ -1,11 +1,11 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Demo Mode Provider
-// Centralized demo governance — tracks which surfaces use demo data,
-// provides mode registry, and enables DemoModeBadge integration
+// SITA OS — Demo Mode Provider (Backward-Compatible Shim)
+// Now delegates demo governance to RealityModeProvider.
+// useDemoMode() continues to work unchanged for all consumers.
 // ═══════════════════════════════════════════════════════════════
 
 import React, { createContext, useContext, useState, useCallback, useMemo, useEffect } from "react";
-import { useDataMode } from "./DataModeContext";
+import { useRealityModeSafe } from "@/lib/dual-reality/reality-mode-context";
 import { loadKillSwitches } from "@/lib/dual-reality/demo-policy-engine";
 import { seedDemoGovernance } from "@/lib/dual-reality/demo-governance-seeder";
 import { seedPlatformReadiness } from "@/lib/services/platform-readiness/platform-readiness-seeder";
@@ -20,17 +20,11 @@ interface SurfaceRegistration {
 }
 
 interface DemoModeContextType {
-  /** Register a surface and its data source */
   registerSurface: (surfaceId: string, surfaceName: string, source: SurfaceDataSource) => void;
-  /** Get all registered surfaces */
   getSurfaces: () => SurfaceRegistration[];
-  /** Get count of demo-backed surfaces */
   demoSurfaceCount: number;
-  /** Get count of real-backed surfaces */
   realSurfaceCount: number;
-  /** Overall data integrity score (0-100) */
   dataIntegrityScore: number;
-  /** Check if a surface is demo-backed */
   isSurfaceDemo: (surfaceId: string) => boolean;
 }
 
@@ -39,7 +33,6 @@ const DemoModeContext = createContext<DemoModeContextType | null>(null);
 export function DemoModeProvider({ children }: { children: React.ReactNode }) {
   const [surfaces, setSurfaces] = useState<Map<string, SurfaceRegistration>>(new Map());
 
-  // Load persisted kill switches and seed governance data on mount
   useEffect(() => {
     loadKillSwitches();
     seedDemoGovernance();
@@ -88,7 +81,6 @@ export function DemoModeProvider({ children }: { children: React.ReactNode }) {
 export function useDemoMode() {
   const ctx = useContext(DemoModeContext);
   if (!ctx) {
-    // Fallback if outside provider
     return {
       registerSurface: () => {},
       getSurfaces: () => [],

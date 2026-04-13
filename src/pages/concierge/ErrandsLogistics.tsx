@@ -6,7 +6,7 @@ import { ConciergeAdvisorInsightCard } from "@/components/concierge";
 import { ErrandBundleCard, LogisticsTimelineCard, ConciergeEmptyState } from "@/components/concierge";
 import type { ErrandBundle, ErrandItem, TimelineStop } from "@/components/concierge";
 import { AddErrandDialog } from "@/components/concierge/AddErrandDialog";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useState, useMemo } from "react";
 import { MapPin, Clock, Zap, Car, CheckCircle, Route, Package, Loader2 } from "lucide-react";
 import { useErrands, useUpdateErrand, useDeleteErrand } from "@/hooks/use-concierge-data";

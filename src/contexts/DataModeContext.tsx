@@ -1,6 +1,6 @@
-import React, { createContext, useContext, useState, useCallback, useEffect } from "react";
+import React, { createContext, useContext, useCallback, useMemo } from "react";
+import { useRealityModeSafe } from "@/lib/dual-reality/reality-mode-context";
 import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
 
 type DataMode = "demo" | "live";
 
@@ -24,107 +24,49 @@ interface DataModeContextType {
 
 const DataModeContext = createContext<DataModeContextType | undefined>(undefined);
 
-const STORAGE_KEY = "sita-data-mode";
-
-// Demo connector statuses (shown in demo mode)
-const demoConnectors: ConnectorStatus[] = [
-  { id: "slack-1", name: "Slack", type: "slack", status: "connected", lastSync: "2 min ago" },
-  { id: "resend-1", name: "Resend (Email)", type: "resend", status: "connected", lastSync: "Just now" },
-  { id: "twilio-1", name: "Twilio (SMS)", type: "twilio", status: "connected", lastSync: "5 min ago" },
-  { id: "stripe-1", name: "Stripe", type: "stripe", status: "connected", lastSync: "1 min ago" },
-  { id: "gcal-1", name: "Google Calendar", type: "google-calendar", status: "connected", lastSync: "3 min ago" },
-  { id: "qb-1", name: "QuickBooks", type: "quickbooks", status: "degraded", lastSync: "2h ago" },
-];
-
+/**
+ * Shim provider that bridges old DataMode API to RealityModeProvider.
+ * Children still call useDataMode() and get the same interface.
+ */
 export function DataModeProvider({ children }: { children: React.ReactNode }) {
-  // VITE_DEMO_MODE=true forces demo mode for presentations/demos in production
-  const envDemoMode = import.meta.env.VITE_DEMO_MODE === "true";
+  const reality = useRealityModeSafe();
 
-  const [mode, setModeState] = useState<DataMode>(() => {
-    if (envDemoMode) return "demo";
-    try {
-      return (localStorage.getItem(STORAGE_KEY) as DataMode) || "demo";
-    } catch {
-      return "demo";
-    }
-  });
-
-  const [connectors, setConnectors] = useState<ConnectorStatus[]>(demoConnectors);
-
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, mode);
-  }, [mode]);
+  const mode: DataMode = reality.isDemo ? "demo" : "live";
 
   const setMode = useCallback((newMode: DataMode) => {
-    setModeState(newMode);
+    if (newMode === "demo") {
+      reality.enterDemoMode("default");
+    } else {
+      reality.exitDemoMode();
+    }
     toast.success(
       newMode === "demo"
         ? "Switched to Demo Mode — using sample data"
         : "Switched to Live Mode — using real connections",
       { duration: 3000 }
     );
-  }, []);
+  }, [reality]);
 
   const toggleMode = useCallback(() => {
-    setModeState((prev) => {
-      const next = prev === "demo" ? "live" : "demo";
-      toast.success(
-        next === "demo"
-          ? "Switched to Demo Mode — using sample data"
-          : "Switched to Live Mode — using real connections",
-        { duration: 3000 }
-      );
-      return next;
-    });
+    setMode(mode === "demo" ? "live" : "demo");
+  }, [mode, setMode]);
+
+  const refreshConnectors = useCallback(() => {
+    toast.info("Connector status refreshed");
   }, []);
 
-  const refreshConnectors = useCallback(async () => {
-    if (mode === "demo") {
-      setConnectors(demoConnectors);
-    } else {
-      // Query real connector_configs from Supabase
-      try {
-        const { data, error } = await (supabase as any)
-          .from("connector_configs")
-          .select("id, connector_type, display_name, status, health_score, last_health_check")
-          .order("created_at", { ascending: false });
-        
-        if (error || !data || data.length === 0) {
-          // No connectors configured — show empty, not fake disconnected ones
-          setConnectors([]);
-        } else {
-          setConnectors((data as any[]).map((c: any) => ({
-            id: c.id,
-            name: c.display_name || c.connector_type,
-            type: c.connector_type as any,
-            status: c.status === "active" ? "connected" as const
-              : c.status === "error" ? "error" as const
-              : c.status === "degraded" ? "degraded" as const
-              : "disconnected" as const,
-            lastSync: c.last_health_check
-              ? new Date(c.last_health_check).toLocaleString()
-              : undefined,
-          })));
-        }
-      } catch {
-        setConnectors([]);
-      }
-    }
-    toast.info("Connector status refreshed");
-  }, [mode]);
+  const value = useMemo<DataModeContextType>(() => ({
+    mode,
+    isDemoMode: mode === "demo",
+    isLiveMode: mode === "live",
+    toggleMode,
+    setMode,
+    connectors: [],
+    refreshConnectors,
+  }), [mode, toggleMode, setMode, refreshConnectors]);
 
   return (
-    <DataModeContext.Provider
-      value={{
-        mode,
-        isDemoMode: mode === "demo",
-        isLiveMode: mode === "live",
-        toggleMode,
-        setMode,
-        connectors,
-        refreshConnectors,
-      }}
-    >
+    <DataModeContext.Provider value={value}>
       {children}
     </DataModeContext.Provider>
   );
@@ -132,6 +74,17 @@ export function DataModeProvider({ children }: { children: React.ReactNode }) {
 
 export function useDataMode() {
   const ctx = useContext(DataModeContext);
-  if (!ctx) throw new Error("useDataMode must be used within DataModeProvider");
+  if (!ctx) {
+    // Fallback if outside provider — defaults to demo
+    return {
+      mode: "demo" as DataMode,
+      isDemoMode: true,
+      isLiveMode: false,
+      toggleMode: () => {},
+      setMode: () => {},
+      connectors: [] as ConnectorStatus[],
+      refreshConnectors: () => {},
+    };
+  }
   return ctx;
 }

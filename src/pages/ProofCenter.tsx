@@ -9,6 +9,7 @@ import { KPITile, EmptyState } from "@/components/sita/SitaComponents";
 import { ProofReceipt } from "@/components/sita/primitives/ProofReceipt";
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
 import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useProofRecords } from "@/hooks/use-sita-data";
 import { useProofTimeline } from "@/hooks/use-proof-timeline";
 import { useProofChain, useProofBundle } from "@/hooks/use-proof-chain";
@@ -26,7 +27,6 @@ import {
   Link2, Search, ChevronDown, ChevronRight, Shield, CheckCircle, XCircle,
   DollarSign, Briefcase, Home, Zap, Hash, Download, Layers
 } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 
 
 
@@ -72,7 +72,7 @@ const ReceiptDetailPanel = ({ item, onClose }: { item: any; onClose: () => void 
       exit={{ opacity: 0, x: 20 }}
       className="rounded-xl border border-primary/15 bg-card p-5 space-y-5"
     >
-      <DemoModeBadge />
+      <PageTruthBanner />
       {/* Header */}
       <div className="flex items-start justify-between">
         <div>

@@ -2,12 +2,11 @@ import { SitaPageHeader, SitaCard, SitaCardTitle, SitaButton } from "@/component
 import { ConciergePageWrapper } from "@/components/concierge";
 import { KPITile, EmptyState } from "@/components/sita/SitaComponents";
 import { SectionSkeleton } from "@/components/sita/SectionSkeleton";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { useHouseholds, useHouseholdMembers, useCreateHousehold, useAddHouseholdMember, useDeleteHouseholdMember } from "@/hooks/use-household";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Users, Home, Plus, Trash2, Shield, UserPlus } from "lucide-react";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
-import { useDataMode } from "@/contexts/DataModeContext";
 
 const HouseholdCommandCenter = () => {
   const { data: households, isLoading } = useHouseholds();
@@ -45,7 +44,7 @@ const HouseholdCommandCenter = () => {
   if (!households?.length && !showCreate) {
     return (
       <ConciergePageWrapper className="mx-auto max-w-3xl space-y-6">
-      <DemoModeBadge />
+      <PageTruthBanner />
         <SitaPageHeader title="Household Support Coordination" subtitle="Manage your household members, roles, and shared responsibilities" />
         <EmptyState icon={Home} title="No households yet" description="Create your first household to start managing family members, roles, and shared tasks." />
         <div className="flex justify-center">

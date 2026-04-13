@@ -116,6 +116,10 @@ export const AdvisorCard = ({ name, role, confidence, recommendation, reasoning,
 );
 
 /* =============== EMPTY STATE =============== */
+/**
+ * EmptyState — backward-compatible shim.
+ * For new code, prefer PremiumEmptyState with variant support.
+ */
 export const EmptyState = ({ icon: Icon, title, description, action, className }: {
   icon: LucideIcon; title: string; description?: string; action?: ReactNode; className?: string;
 }) => (
