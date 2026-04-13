@@ -86,10 +86,10 @@ const CashTiming = () => {
 
         <SummaryCard
           title="Forecast Confidence"
-          items={[
-            { label: "Bills (fixed)", value: "95%", trend: "up" as const },
-            { label: "Receivables", value: "72%", trend: "neutral" as const },
-            { label: "Variable spend", value: "60%", trend: "neutral" as const },
+          kpis={[
+            { label: "Bills (fixed)", value: "95%", trend: "up" },
+            { label: "Receivables", value: "72%", trend: "flat" },
+            { label: "Variable spend", value: "60%", trend: "flat" },
           ]}
         />
       </div>

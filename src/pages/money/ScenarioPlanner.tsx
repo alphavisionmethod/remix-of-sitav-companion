@@ -95,11 +95,11 @@ const ScenarioPlanner = () => {
           <StatusCard label={`Risk: ${result.riskLevel.toUpperCase()}`} status={result.riskLevel === "low" ? "healthy" : result.riskLevel === "moderate" ? "degraded" : "down"} confidence={Math.round(result.confidenceScore * 100)} icon={result.riskLevel === "low" ? <CheckCircle className="h-3.5 w-3.5" /> : <AlertTriangle className="h-3.5 w-3.5" />} />
 
           {result.tradeoffs.length > 0 && (
-            <SummaryCard title="Tradeoffs" items={result.tradeoffs.map(t => ({ label: t, value: "" }))} />
+            <SummaryCard title="Tradeoffs" kpis={result.tradeoffs.map(t => ({ label: t, value: "→" }))} />
           )}
 
           {result.recommendations.length > 0 && (
-            <SummaryCard title="Recommendations" items={result.recommendations.map(r => ({ label: r, value: "" }))} />
+            <SummaryCard title="Recommendations" kpis={result.recommendations.map(r => ({ label: r, value: "⚡" }))} />
           )}
 
           <ModuleAdvisorInsight
