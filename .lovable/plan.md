@@ -1,56 +1,90 @@
 
 
-# Inject Pre-Knowledge into All AI Advisors
+# Make Every Advisor Board Super Interactive & Wow
 
-## Problem
+## Current State
 
-The `chat-advisor` edge function already has code to query `advisor_knowledge`, `advisor_memories`, and `advisor_feedback` tables and inject them into prompts — but **none of these tables exist in the database**. Every query silently fails and returns empty arrays. The `brain-core` edge function uses only static hardcoded prompts with no knowledge injection at all.
+The **Investment Office AdvisorBoard** is the gold standard — it has 5 view modes (Council, Synthesis, Debate, Ask the Board, Compare), clickable advisor detail panels, confidence badges, and recommendation badges. But the **Money Advisor Board** and **Business Boardroom** are much simpler — static cards in a grid with no interactivity beyond mode switching (Money) or tab switching (Business). There is no way to chat with advisors inline, see disagreements visualized, or drill into reasoning chains.
 
 ## Plan
 
-### Step 1: Create the three missing tables via migration
+### Step 1: Create a shared `AdvisorCouncilShell` component
 
-Create `advisor_knowledge`, `advisor_memories`, and `advisor_feedback` tables with RLS policies. The `advisor_knowledge` table will support both system-level entries (sentinel UUID `00000000-0000-0000-0000-000000000000`) and user-specific entries. RLS will allow authenticated users to read system entries AND their own entries, but only write their own.
+Create `src/components/advisors/AdvisorCouncilShell.tsx` — a reusable interactive wrapper that any domain's advisor board can use. It provides:
 
-### Step 2: Seed ~58 deep knowledge entries across 7 advisors
+- **View mode switcher**: Council Grid, Synthesis, Debate, Ask the Board, Timeline
+- **Advisor detail drawer**: Click any advisor card to expand a slide-over panel showing full reasoning, knowledge sources, memory, confidence breakdown, and action history
+- **Animated transitions**: Framer Motion layout animations between views
+- **Confidence heatmap bar**: A horizontal strip showing all advisors' confidence at a glance with colored segments
 
-Insert system-level knowledge using the sentinel UUID so all users benefit from pre-loaded expertise:
+### Step 2: Create `AdvisorDebateView` component
 
-- **Money** (12 entries): Cash flow waterfall, 50/30/20 founder adaptation, subscription audit framework, reserve adequacy formula, bill triage protocol, invoice aging brackets, tax quarterly calendar, debt prioritization, emergency fund sizing, spending anomaly detection, net worth cadence, financial boundaries
-- **Business** (10): BANT lead scoring, pipeline velocity benchmarks, customer health scoring, deal stage exit criteria, follow-up cadence matrix, weighted pipeline forecasting, churn early warnings, proposal-to-close benchmarks, competitive displacement, account expansion triggers
-- **Concierge** (8): Eisenhower matrix, errand batching, booking checklist, obligation calendar, household maintenance, meal planning, travel checklist, vendor evaluation
-- **Family** (8): Family pulse framework, school calendar patterns, responsibility matrix, family meeting template, milestone tracking, medical coordination, extracurricular balance, communication preferences
-- **Growth** (8): Growth loop identification, experiment design template, CAC/LTV benchmarks, pricing frameworks, market sizing, competitive moat, channel prioritization, growth stage indicators
-- **General/SITA** (6): Cross-domain correlation, daily briefing structure, priority scoring, escalation criteria, domain handoff, executive summary format
-- **Strategy** (6): MECE framework, scenario modeling, strategic drift, resource allocation, decision journal, opportunity cost
+Create `src/components/advisors/AdvisorDebateView.tsx`:
+- Shows where advisors **disagree** side-by-side with animated "versus" cards
+- Each position shows confidence score, reasoning chain, and data sources
+- User can vote/decide, and the decision is recorded
+- Visual: two cards facing each other with a glowing "VS" divider and pulse animation
 
-### Step 3: Upgrade `brain-core` to inject knowledge
+### Step 3: Create `AskAdvisorChat` inline component
 
-Update `brain-core/index.ts` to query `advisor_knowledge` (both system-level and user-specific entries) and append domain knowledge to the system prompt before LLM calls — matching what `chat-advisor` already does.
+Create `src/components/advisors/AskAdvisorChat.tsx`:
+- Inline chat bubble that calls `chat-advisor` edge function with the selected advisor context
+- Renders markdown responses with `react-markdown`
+- Shows typing indicator with advisor's domain accent color
+- Suggested quick-ask questions based on advisor domain
+- Conversation stays in-panel (no page navigation)
 
-### Step 4: Create knowledge management edge function
+### Step 4: Create `AdvisorTimelineView` component
 
-Create `supabase/functions/advisor-knowledge-manage/index.ts`:
-- `GET` — list knowledge for an advisor (merges system + user entries)
-- `POST` — add user-specific knowledge
-- `DELETE` — remove user-specific knowledge only (system entries are read-only)
+Create `src/components/advisors/AdvisorTimelineView.tsx`:
+- Vertical timeline showing recent advisor actions, recommendations, and state changes
+- Each entry has: timestamp, advisor avatar, action summary, confidence at time of action, and outcome status
+- Pulls from `advisor_action_queue` and `ai_workforce_recommendations` tables
+- Animated entry with staggered fade-in
 
-### Step 5: Add Knowledge Management UI panel
+### Step 5: Create `AdvisorDetailDrawer` component
 
-Create `src/components/advisors/AdvisorKnowledgePanel.tsx` — a reusable panel showing system knowledge (locked icon, read-only) and user-added knowledge (editable). Wire it into Money, Business, and Concierge settings pages.
+Create `src/components/advisors/AdvisorDetailDrawer.tsx`:
+- Slide-from-right drawer (uses existing Sheet component)
+- Tabs inside: Overview, Knowledge, Memory, Actions, Feedback
+- Overview: mission, confidence gauge (animated SVG ring), personality traits, current mode
+- Knowledge tab: embedded `AdvisorKnowledgePanel`
+- Memory tab: shows `advisor_memories` entries with importance scores
+- Actions tab: recent actions from `advisor_action_queue`
+- Feedback tab: thumbs up/down on past recommendations, writes to `advisor_feedback`
+
+### Step 6: Upgrade `MoneyAdvisorBoard` to use the new shell
+
+Replace the flat grid layout with `AdvisorCouncilShell`, passing the 8 money advisors as structured data. Keep the mode personality switcher as a toolbar above the council. Wire up the detail drawer, debate view, ask-the-board chat, and timeline.
+
+### Step 7: Upgrade `BusinessBoardroom` advisor section
+
+Add an "Advisor Council" tab/view to `BusinessBoardroom` that uses `AdvisorCouncilShell` with business-domain advisors. The existing boardroom content stays as the default "Executive Review" tab.
+
+### Step 8: Add micro-interactions and visual polish
+
+- Advisor cards: hover reveals a subtle glow ring in the domain's accent color
+- Confidence scores: animated count-up on mount (0 → actual value)
+- Status dots: live pulse animation (green = active, amber = thinking, red = error)
+- Card transitions: spring-based layout animations when switching views
+- "Thinking" state: shimmer gradient sweep across card while advisor is processing
 
 ## Files
 
-- **Migration**: Create `advisor_knowledge`, `advisor_memories`, `advisor_feedback` tables + seed ~58 entries
-- **Edit**: `supabase/functions/brain-core/index.ts` (add knowledge query to prompt building)
-- **Create**: `supabase/functions/advisor-knowledge-manage/index.ts`
-- **Create**: `src/components/advisors/AdvisorKnowledgePanel.tsx`
-- **Edit**: Settings pages for Money, Business, Concierge (add knowledge panel tab)
+- **Create**: `src/components/advisors/AdvisorCouncilShell.tsx` (~200 lines)
+- **Create**: `src/components/advisors/AdvisorDebateView.tsx` (~150 lines)
+- **Create**: `src/components/advisors/AskAdvisorChat.tsx` (~180 lines)
+- **Create**: `src/components/advisors/AdvisorTimelineView.tsx` (~120 lines)
+- **Create**: `src/components/advisors/AdvisorDetailDrawer.tsx` (~250 lines)
+- **Edit**: `src/pages/money/MoneyAdvisorBoard.tsx` (use AdvisorCouncilShell)
+- **Edit**: `src/pages/business/BusinessBoardroom.tsx` (add advisor council tab)
 
 ## Technical Details
 
-- System knowledge uses sentinel UUID `00000000-0000-0000-0000-000000000000` — RLS updated to allow reading these entries for all authenticated users
-- Knowledge entries include `tags`, `confidence` (0.85-0.95 for system), `status: 'active'`
-- `brain-core` knowledge injection mirrors the `buildPrompt` pattern from `chat-advisor`
-- Each advisor only sees its own domain entries plus general cross-domain entries
+- `AskAdvisorChat` calls `chat-advisor` via `supabase.functions.invoke("chat-advisor", { body: { advisor, message, history } })`
+- `AdvisorDetailDrawer` queries `advisor_memories`, `advisor_action_queue`, and `advisor_feedback` via Supabase client
+- `AdvisorDebateView` generates disagreement pairs by comparing recommendation directions across advisors in the same domain
+- All new components use the existing design tokens: `APP_MATERIALS`, `APP_SHADOWS`, domain accent colors
+- Animated confidence gauge uses SVG `stroke-dashoffset` with Framer Motion `animate`
+- Timeline pulls from `advisor_action_queue` ordered by `created_at DESC`, limit 20
 
