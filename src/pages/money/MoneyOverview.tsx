@@ -158,7 +158,7 @@ const MoneyOverview = () => {
 
   const financeMatters: MatterItem[] = useMemo(() => [
     { id: "fm1", title: "3 bills due within 48 hours — $1,450", subtitle: "Bill collision detected. Review payment plan.", urgency: "high", action: "Review", onAction: () => navigate("/money/bills") },
-    { id: "fm2", title: "Emergency reserve at 60%", subtitle: "Below 3-month target. Consider allocation.", urgency: "medium", action: "Plan" },
+    { id: "fm2", title: "Emergency reserve at 60%", subtitle: "Below 3-month target. Consider allocation.", urgency: "medium", action: "Plan", onAction: () => navigate("/money/reserves") },
     { id: "fm3", title: "Subscription creep: +8% over 90 days", subtitle: "Monthly total increasing. Review waste.", urgency: "low", action: "Audit", onAction: () => navigate("/money/subscriptions") },
   ], [navigate]);
 
@@ -454,15 +454,22 @@ const MoneyOverview = () => {
               <Banknote className="h-3.5 w-3.5 text-chart-2" />
             </div>
             <div className="space-y-2">
-              {pendingInvoices.map((inv: Record<string, any>) => (
+              {pendingInvoices.map((inv: Record<string, any>) => {
+                const rawAmt = inv.amount;
+                const amt = (typeof rawAmt === "string" ? Number(rawAmt.replace(/[^0-9.-]/g, "")) : Number(rawAmt)) || 0;
+                const label = inv.client_name || inv.client || inv.description || `#${inv.invoice_number || inv.id}`;
+                const dueDateStr = inv.due_date || inv.dueDate;
+                const dueLabel = dueDateStr ? new Date(dueDateStr).toLocaleDateString("en", { month: "short", day: "numeric" }) : "";
+                return (
                 <div key={inv.id} className="flex items-center justify-between">
                   <div className="min-w-0">
-                    <p className="text-[11px] font-medium text-foreground truncate">{inv.client_name || inv.description || `#${inv.invoice_number}`}</p>
-                    <p className="text-[9px] text-muted-foreground">{new Date(inv.due_date).toLocaleDateString("en", { month: "short", day: "numeric" })}</p>
+                    <p className="text-[11px] font-medium text-foreground truncate">{label}</p>
+                    {dueLabel && <p className="text-[9px] text-muted-foreground">{dueLabel}</p>}
                   </div>
-                  <p className="font-display text-sm font-bold text-chart-2 shrink-0">${Number(inv.amount).toLocaleString()}</p>
+                  <p className="font-display text-sm font-bold text-chart-2 shrink-0">${amt.toLocaleString()}</p>
                 </div>
-              ))}
+                );
+              })}
             </div>
           </GlassCard>
         </BentoCell>
