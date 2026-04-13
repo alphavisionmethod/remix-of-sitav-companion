@@ -3,11 +3,11 @@
 // Shared living background with wallpaper theme support
 // ═══════════════════════════════════════════════════════════════
 
-import { useMemo } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { cn } from "@/lib/utils";
-import { getWallpaperTheme } from "@/hooks/use-wallpaper";
+import { getWallpaperTheme, getCustomWallpaperUrl, WALLPAPER_THEMES } from "@/hooks/use-wallpaper";
 import logo from "@/assets/logo.webp";
 
 export type AmbientMood = "serene" | "alert" | "warm" | "focus" | "night";
@@ -68,6 +68,9 @@ function getAutoMood(): AmbientMood {
   if (hour >= 18 && hour < 21) return "warm";
   return "night";
 }
+
+// ── Image wallpaper IDs (rendered as photos) ──
+const IMAGE_WALLPAPER_IDS = new Set(["nebula", "amber", "ocean", "aurora-photo", "rose"]);
 
 // ── Constellation Layer ──────────────────────────────────────
 interface Star { id: number; x: number; y: number; size: number; opacity: number; pulse: number; }
@@ -147,7 +150,6 @@ function ConstellationOverlay() {
 function SitaHeroWallpaper() {
   return (
     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-      {/* Premium abstract background image */}
       <div
         className="absolute inset-0"
         style={{
@@ -157,21 +159,59 @@ function SitaHeroWallpaper() {
           backgroundRepeat: "no-repeat",
         }}
       />
-      
-      {/* Subtle dark overlay for readability */}
       <div className="absolute inset-0 bg-black/20" />
+      <GlassLogo />
+    </div>
+  );
+}
 
-      {/* Glass circle + logo */}
+// ── Image-based wallpaper ──
+function ImageWallpaper({ src }: { src: string }) {
+  return (
+    <div className="absolute inset-0 pointer-events-none">
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: `url('${src}')`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      />
+      <div className="absolute inset-0 bg-black/15" />
+      <div className="absolute inset-0 flex items-center justify-center">
+        <GlassLogo />
+      </div>
+    </div>
+  );
+}
+
+// ── Themed gradient wallpaper (CSS-only) ──
+function GradientWallpaper({ theme }: { theme: { gradient: string; overlay?: string } }) {
+  return (
+    <div className="absolute inset-0 pointer-events-none">
+      <div className={cn("absolute inset-0 bg-gradient-to-br", theme.gradient)} />
+      {theme.overlay && (
+        <div className="absolute inset-0" style={{ background: theme.overlay }} />
+      )}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <GlassLogo />
+      </div>
+    </div>
+  );
+}
+
+// ── Shared glass logo component ──
+function GlassLogo() {
+  return (
+    <>
       <motion.div
         initial={{ opacity: 0, scale: 0.7 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1.5, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
         className="relative flex items-center justify-center"
       >
-        {/* Outer glow ring */}
         <div className="absolute w-[280px] h-[280px] rounded-full bg-[hsl(265,55%,50%,0.08)] blur-[60px]" />
-        
-        {/* Glass circle */}
         <div className="relative w-[200px] h-[200px] rounded-full border border-white/[0.12] bg-white/[0.04] backdrop-blur-xl flex items-center justify-center shadow-[0_0_80px_rgba(114,92,255,0.15),inset_0_1px_0_rgba(255,255,255,0.1)]">
           <img
             src={logo}
@@ -180,8 +220,6 @@ function SitaHeroWallpaper() {
           />
         </div>
       </motion.div>
-
-      {/* Tagline below logo */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -195,7 +233,7 @@ function SitaHeroWallpaper() {
           Your sovereign operating environment
         </div>
       </motion.div>
-    </div>
+    </>
   );
 }
 
@@ -203,16 +241,35 @@ export function ShellAmbientBackground({
   mood,
   intensity = "normal",
   className,
-  wallpaperId,
+  wallpaperId: wallpaperIdProp,
 }: ShellAmbientBackgroundProps) {
   const reduced = useReducedMotion();
   const activeMood = mood ?? getAutoMood();
   const palette = MOOD_PALETTES[activeMood];
   const intensityScale = intensity === "subtle" ? 0.6 : intensity === "vivid" ? 1.4 : 1;
 
-  const currentWallpaper = wallpaperId ?? getWallpaperTheme().id;
-  const isSitaHero = currentWallpaper === "sita-hero";
-  const isThemed = currentWallpaper !== "auto" && currentWallpaper !== "sita-hero";
+  // Listen for live wallpaper change events
+  const [liveWallpaper, setLiveWallpaper] = useState<{ id: string; src?: string } | null>(null);
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent).detail;
+      setLiveWallpaper({ id: detail.id, src: detail.src });
+    };
+    window.addEventListener("nova-wallpaper-change", handler);
+    return () => window.removeEventListener("nova-wallpaper-change", handler);
+  }, []);
+
+  const currentId = liveWallpaper?.id ?? wallpaperIdProp ?? getWallpaperTheme().id;
+  const isSitaHero = currentId === "sita-hero";
+  const isCustom = currentId === "custom";
+  const isImageWp = IMAGE_WALLPAPER_IDS.has(currentId);
+  const matchedTheme = WALLPAPER_THEMES.find(t => t.id === currentId);
+  const isGradientTheme = !isSitaHero && !isCustom && !isImageWp && matchedTheme && currentId !== "auto";
+  const showOrbs = currentId === "auto" || (!isSitaHero && !isCustom && !isImageWp && !isGradientTheme);
+
+  const customUrl = isCustom ? getCustomWallpaperUrl() : "";
+  const imageSrc = isImageWp && liveWallpaper?.src ? liveWallpaper.src : "";
 
   const particles = useMemo(() => {
     if (reduced) return [];
@@ -235,8 +292,17 @@ export function ShellAmbientBackground({
       {/* SITA Hero branded wallpaper */}
       {isSitaHero && <SitaHeroWallpaper />}
 
-      {/* Gradient orbs (for auto mode or layered on themed wallpapers) */}
-      {!isSitaHero && palette.orbs.map((orb, i) => (
+      {/* Image-based wallpaper (from assets) */}
+      {isImageWp && imageSrc && <ImageWallpaper src={imageSrc} />}
+
+      {/* Custom URL wallpaper */}
+      {isCustom && customUrl && <ImageWallpaper src={customUrl} />}
+
+      {/* Gradient-themed wallpaper */}
+      {isGradientTheme && matchedTheme && <GradientWallpaper theme={matchedTheme} />}
+
+      {/* Gradient orbs (for auto mode) */}
+      {showOrbs && palette.orbs.map((orb, i) => (
         <motion.div
           key={`${activeMood}-${i}`}
           className="absolute rounded-full"
@@ -261,7 +327,7 @@ export function ShellAmbientBackground({
       {intensity === "vivid" && !isSitaHero && <ConstellationOverlay />}
 
       {/* Floating particles */}
-      {!isSitaHero && particles.map((p) => (
+      {showOrbs && particles.map((p) => (
         <motion.div
           key={p.id}
           className="absolute rounded-full"
