@@ -6,6 +6,7 @@
 
 import { cn } from "@/lib/utils";
 import { APP_MATERIALS, APP_SHADOWS, APP_CHROME, APP_TYPE } from "@/lib/design-system/app-window-system";
+import { atmosphereToCSSVars } from "@/lib/design-system/domain-atmospheres";
 import { ChevronDown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
@@ -184,11 +185,7 @@ export function DomainAppShell({ domain, children, activePage, onNavigate, tabGr
             />
           )}
           <AppSurface level={0} className="flex-1 overflow-y-auto p-4" style={{
-            '--domain-density': domain.id === 'business' ? '0.875rem' : domain.id === 'finance' ? '1rem' : domain.id === 'files' ? '0.875rem' : domain.id === 'trust' ? '0.9375rem' : '1.125rem',
-            '--domain-card-radius': domain.id === 'business' ? '12px' : domain.id === 'finance' ? '16px' : domain.id === 'files' ? '10px' : domain.id === 'trust' ? '12px' : '20px',
-            '--domain-motion-speed': domain.id === 'business' ? '150ms' : domain.id === 'finance' ? '250ms' : domain.id === 'files' ? '180ms' : domain.id === 'trust' ? '200ms' : '300ms',
-            '--domain-contrast': domain.id === 'business' ? '1.05' : domain.id === 'finance' ? '1' : domain.id === 'concierge' ? '0.95' : '1',
-            '--domain-warmth': domain.id === 'concierge' ? '1.1' : domain.id === 'business' ? '0.95' : '1',
+            ...atmosphereToCSSVars(domain.id),
           } as React.CSSProperties}>
             {children}
           </AppSurface>
