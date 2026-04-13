@@ -57,7 +57,7 @@ const FamilyBoardroom = () => {
 
       {/* ═══ DAILY PULSE MODE ═══ */}
       {view === "daily" && (
-        <GlassCard="accent" intensity="medium" className="p-5">
+        <GlassCard variant="accent" intensity="medium" className="p-5">
           <div className="flex items-center gap-2 mb-4">
             <Heart className="h-4 w-4 text-accent" />
             <p className="text-sm font-semibold text-foreground">Today's Pulse</p>
@@ -134,7 +134,7 @@ const FamilyBoardroom = () => {
           {/* This Week's Priorities */}
           <BoardroomSection title="This Week's Priorities" icon={Target}>
             {DEMO_priorities.map((p, i) => (
-              <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift p-4" key={i} >
+              <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift" key={i} >
                 <div className="flex items-start gap-3">
                   <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary shrink-0">{i + 1}</div>
                   <div className="flex-1 min-w-0">
@@ -154,7 +154,7 @@ const FamilyBoardroom = () => {
           {/* Schedule Conflicts */}
           <BoardroomSection title="Schedule Conflicts" icon={AlertCircle}>
             {DEMO_scheduleConflicts.map((c, i) => (
-              <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift p-4" key={i} >
+              <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift" key={i} >
                 <p className="text-sm font-medium text-foreground">{c.conflict}</p>
                 <div className="mt-2 rounded-lg bg-accent/5 border border-accent/10 px-3 py-2">
                   <p className="text-xs text-accent flex items-center gap-1"><Sparkles className="h-3 w-3" /> {c.resolution}</p>
@@ -166,7 +166,7 @@ const FamilyBoardroom = () => {
           {/* Recommended Next Moves */}
           <BoardroomSection title="Recommended Next Moves" icon={ArrowRight}>
             {DEMO_nextMoves.map((m, i) => (
-              <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift p-4" key={i} >
+              <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift" key={i} >
                 <div className="flex items-start gap-3">
                   <ArrowRight className="h-4 w-4 text-primary mt-0.5 shrink-0" />
                   <div className="flex-1">
@@ -182,7 +182,7 @@ const FamilyBoardroom = () => {
           {/* Carryover */}
           <BoardroomSection title="Carryover Items" icon={Clock}>
             {DEMO_carryover.map((item, i) => (
-              <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift p-3.5 border-amber-500/15" key={i} >
+              <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-3.5 micro-hover-lift border-amber-500/15" key={i} >
                 <div className="flex items-center gap-3">
                   <Clock className="h-3.5 w-3.5 text-amber-500 shrink-0" />
                   <span className="text-sm text-foreground flex-1">{item.item}</span>
@@ -236,7 +236,7 @@ const FamilyBoardroom = () => {
           </div>
 
           {/* Review Status */}
-          <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift p-4" >
+          <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift" >
             <div className="flex items-center gap-2 mb-3">
               <BarChart3 className="h-4 w-4 text-primary" />
               <h4 className="text-[13px] font-semibold text-[hsl(0_0%_85%)]">Review Cadence</h4>
@@ -259,7 +259,7 @@ const FamilyBoardroom = () => {
           }} />
 
           {/* Cross-Domain */}
-          <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift p-4" >
+          <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift" >
             <div className="flex items-center gap-2 mb-2">
               <TrendingUp className="h-4 w-4 text-accent" />
               <h4 className="text-[13px] font-semibold text-[hsl(0_0%_85%)]">Cross-Domain View</h4>

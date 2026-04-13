@@ -144,7 +144,7 @@ const ErrandsLogistics = () => {
                 <p className="text-xs text-muted-foreground px-2">No quick wins right now.</p>
               )}
               {quickWinErrands.map((e) => (
-                <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift p-4" key={e.id} >
+                <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift" key={e.id} >
                   <div className="flex items-center gap-3">
                     <div className={`h-2 w-2 rounded-full shrink-0 ${e.priority === "high" ? "bg-destructive" : e.priority === "medium" ? "bg-amber-500" : "bg-chart-2"}`} />
                     <div className="flex-1">
@@ -167,7 +167,7 @@ const ErrandsLogistics = () => {
             <div className="space-y-2">
               <h3 className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[hsl(0_0%_50%)]">All Errands</h3>
               {allErrands.map((e) => (
-                <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift p-3.5" key={e.id} >
+                <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-3.5 micro-hover-lift" key={e.id} >
                   <div className="flex items-center gap-3">
                     <button onClick={() => handleToggleDone(e.id)} className="shrink-0">
                       <CheckCircle className={`h-4 w-4 ${(e as any).status === "done" ? "text-chart-2" : "text-muted-foreground/30"}`} />
@@ -187,7 +187,7 @@ const ErrandsLogistics = () => {
         </div>
 
         <div className="space-y-4">
-          <GlassCard="accent" intensity="subtle" className="p-4">
+          <GlassCard variant="accent" intensity="subtle" className="p-4">
             <div className="flex items-center gap-2 mb-2">
               <Car className="h-4 w-4 text-accent" />
               <p className="text-xs font-semibold text-foreground">Route Suggestion</p>

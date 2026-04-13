@@ -66,7 +66,7 @@ const ConciergeSettings = () => {
         <h3 className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[hsl(0_0%_50%)]">Household Members</h3>
         <div className="grid gap-3 sm:grid-cols-2">
           {members.map((m, i) => (
-            <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift p-4" key={i} >
+            <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift" key={i} >
               <div className="flex items-start gap-3">
                 <div className="text-2xl">{m.avatar}</div>
                 <div className="flex-1 min-w-0">
@@ -90,7 +90,7 @@ const ConciergeSettings = () => {
       <div className="space-y-3">
         <h3 className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[hsl(0_0%_50%)]">Automation Rules</h3>
         {rules.map(rule => (
-          <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift p-4" key={rule.id} >
+          <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift" key={rule.id} >
             <div className="flex items-center gap-4">
               <div className="rounded-xl bg-primary/8 p-2 shrink-0">
                 <rule.icon className="h-4 w-4 text-primary" />
@@ -115,7 +115,7 @@ const ConciergeSettings = () => {
         <h3 className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[hsl(0_0%_50%)]">Connected Services</h3>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {connectors.map((c, i) => (
-            <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift p-4" key={i} >
+            <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift" key={i} >
               <div className="flex items-center gap-3">
                 <div className={`rounded-xl p-2 shrink-0 ${c.status === "connected" ? "bg-chart-2/10" : "bg-secondary"}`}>
                   <c.icon className={`h-4 w-4 ${c.status === "connected" ? "text-chart-2" : "text-muted-foreground"}`} />

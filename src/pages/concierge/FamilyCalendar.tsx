@@ -47,7 +47,7 @@ const FamilyCalendar = () => {
         <div className="lg:col-span-2 space-y-6">
           {/* Week Strip */}
           <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift">
-            <SitaCardTitle className="mb-3">This Week</SitaCardTitle>
+            <h4 className="text-[13px] font-semibold text-[hsl(0_0%_85%)] mb-3">This Week</h4>
             <div className="grid grid-cols-7 gap-1">
               {weekDays.map((day, i) => {
                 const dayEvents = DEMO_events.filter((_, ei) => ei % 7 === i).length;
@@ -103,7 +103,7 @@ const FamilyCalendar = () => {
             <div className="space-y-3">
               <h3 className="text-[10px] font-semibold uppercase tracking-[0.08em] text-[hsl(0_0%_50%)]">Transport & Carpool Duties</h3>
               {DEMO_transportDuties.map((t, i) => (
-                <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift p-4" key={i} >
+                <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift" key={i} >
                   <div className="flex items-start gap-3">
                     <div className="rounded-xl bg-primary/8 p-2 shrink-0"><Car className="h-4 w-4 text-primary" /></div>
                     <div className="flex-1">
@@ -123,7 +123,7 @@ const FamilyCalendar = () => {
         <div className="space-y-6">
           {/* Family Grid */}
           <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift">
-            <SitaCardTitle className="mb-3">Family Members</SitaCardTitle>
+            <h4 className="text-[13px] font-semibold text-[hsl(0_0%_85%)] mb-3">Family Members</h4>
             {DEMO_familyMembers.map((m) => (
               <div key={m.name} className="flex items-center gap-3 py-2.5 border-b border-border/30 last:border-0">
                 <MemberAvatar name={m.name} size="sm" />
@@ -137,8 +137,8 @@ const FamilyCalendar = () => {
           </div>
 
           {/* Schedule Pressure */}
-          <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift p-4" >
-            <SitaCardTitle className="mb-3">Schedule Pressure</SitaCardTitle>
+          <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift" >
+            <h4 className="text-[13px] font-semibold text-[hsl(0_0%_85%)] mb-3">Schedule Pressure</h4>
             <div className="space-y-2.5">
               {["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"].map((day, i) => {
                 const load = [2, 3, 4, 2, 1, 5, 3][i];

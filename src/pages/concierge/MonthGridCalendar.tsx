@@ -208,12 +208,12 @@ const MonthGridCalendar = () => {
         {/* Selected Day Detail */}
         <div className="space-y-4">
           <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift">
-            <SitaCardTitle className="mb-3">
+            <h4 className="text-[13px] font-semibold text-[hsl(0_0%_85%)] mb-3">
               {selectedDate
                 ? new Date(selectedDate + "T12:00:00").toLocaleDateString("en-US", { weekday: "long", month: "short", day: "numeric" })
                 : "Select a day"
               }
-            </SitaCardTitle>
+            </h4>
 
             {selectedDate && selectedEvents.length === 0 && (
               <p className="text-sm text-muted-foreground py-4 text-center">No events this day</p>
@@ -249,7 +249,7 @@ const MonthGridCalendar = () => {
 
           {/* Quick stats */}
           <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-4 micro-hover-lift">
-            <SitaCardTitle className="mb-3">Month Summary</SitaCardTitle>
+            <h4 className="text-[13px] font-semibold text-[hsl(0_0%_85%)] mb-3">Month Summary</h4>
             <div className="space-y-2">
               {[
                 { label: "Total events", value: events.length },
