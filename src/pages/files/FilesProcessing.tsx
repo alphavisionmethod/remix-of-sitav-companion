@@ -1,7 +1,9 @@
-import { SitaPageHeader, SitaCard, SitaSectionHeader } from "@/components/sita/SitaCard";
-import { KPITile, EmptyState } from "@/components/sita/SitaComponents";
+import { KPITile } from "@/components/sita/SitaComponents";
 import { ProcessingCard, type ProcessingStage } from "@/components/sita/FilesComponents";
-import { Loader2, CheckCircle, AlertTriangle, Clock } from "lucide-react";
+import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
+import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { ModuleAdvisorInsight } from "@/components/sita/ModuleAdvisorInsight";
+import { Loader2, CheckCircle, AlertTriangle, Clock, Cpu } from "lucide-react";
 import { motion } from "framer-motion";
 import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
@@ -9,10 +11,7 @@ import { supabase } from "@/integrations/supabase/client";
 const db = supabase as any;
 import { useAuth } from "@/contexts/AuthContext";
 import { useFilesProcessing } from "@/hooks/use-domain-data";
-import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
-
-
 
 const stageFromStatus = (status: string): ProcessingStage => {
   const map: Record<string, ProcessingStage> = {
@@ -80,8 +79,7 @@ const FilesProcessing = () => {
 
   return (
     <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }} className="space-y-6">
-      <DemoModeBadge />
-      <SitaPageHeader title="Processing Queue" subtitle="Real-time visibility into file intelligence pipeline" />
+      <PageTruthBanner />
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <KPITile label="In Progress" value={processingItems.length} icon={Loader2} sub="Currently processing" />
@@ -90,24 +88,55 @@ const FilesProcessing = () => {
         <KPITile label="Avg Processing" value="~45s" icon={Clock} sub="Per file" />
       </div>
 
-      <SitaSectionHeader title="In Progress" subtitle={`${processingItems.length} files being processed`} />
-      <div className="space-y-2">
-        {processingItems.map((item, i) => (
-          <ProcessingCard
-            key={i}
-            name={item.filename}
-            fileType={item.filename.split(".").pop() || "file"}
-            stage={item.stage}
-            domain={domainFromText(item.textContent || "")}
-            sensitivity={sensitivityFromText(item.textContent || "")}
-            confidence={65 + Math.round(Math.random() * 30)}
-            highlights={item.textContent?.split(",").slice(0, 2).map((s: string) => s.trim())}
-          />
-        ))}
+      {/* Processing Pipeline Visualization */}
+      <div className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_9%)] p-5">
+        <div className="flex items-center gap-2 mb-4">
+          <Cpu className="h-4 w-4 text-primary" />
+          <h3 className="text-xs font-semibold text-foreground">Intelligence Pipeline</h3>
+        </div>
+        <div className="flex items-center gap-1 overflow-x-auto pb-2">
+          {["Upload", "OCR", "Parse", "Classify", "Scan", "Link", "Ready"].map((step, i) => {
+            const activeCount = processingItems.filter(f => {
+              const stages: ProcessingStage[] = ["ocr", "parsing", "classifying", "scanning", "sensitivity-review", "linked", "workflow-ready"];
+              return stages.indexOf(f.stage) === i;
+            }).length;
+            return (
+              <div key={step} className="flex items-center gap-1 flex-1 min-w-0">
+                <div className={`flex-1 rounded-lg p-2.5 text-center transition-colors ${activeCount > 0 ? "bg-primary/10 border border-primary/20" : "bg-secondary/30"}`}>
+                  <p className="text-[10px] font-medium text-foreground truncate">{step}</p>
+                  {activeCount > 0 && <p className="text-[10px] text-primary font-bold">{activeCount}</p>}
+                </div>
+                {i < 6 && <div className="text-muted-foreground/30 shrink-0">→</div>}
+              </div>
+            );
+          })}
+        </div>
       </div>
 
-      <SitaSectionHeader title="Recently Completed" subtitle="Ready for review or already linked" />
-      <div className="space-y-2">
+      {/* In Progress */}
+      <div className="space-y-3">
+        <h3 className="text-[10px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">In Progress · {processingItems.length}</h3>
+        {processingItems.length === 0 ? (
+          <PremiumEmptyState icon={Loader2} title="No files processing" description="Upload new files to see them move through the intelligence pipeline." />
+        ) : (
+          processingItems.map((item, i) => (
+            <ProcessingCard
+              key={i}
+              name={item.filename}
+              fileType={item.filename.split(".").pop() || "file"}
+              stage={item.stage}
+              domain={domainFromText(item.textContent || "")}
+              sensitivity={sensitivityFromText(item.textContent || "")}
+              confidence={65 + Math.round(Math.random() * 30)}
+              highlights={item.textContent?.split(",").slice(0, 2).map((s: string) => s.trim())}
+            />
+          ))
+        )}
+      </div>
+
+      {/* Recently Completed */}
+      <div className="space-y-3">
+        <h3 className="text-[10px] font-semibold uppercase tracking-[0.08em] text-muted-foreground">Recently Completed · {completedItems.length}</h3>
         {completedItems.map((item, i) => (
           <ProcessingCard
             key={i}
@@ -121,6 +150,19 @@ const FilesProcessing = () => {
           />
         ))}
       </div>
+
+      <ModuleAdvisorInsight
+        module="files"
+        context="processing-queue"
+        insight={{
+          role: "Processing Pipeline Advisor",
+          message: processingItems.length > 0
+            ? `${processingItems.length} files currently in the pipeline. Average processing time is ~45 seconds. ${ingestedFiles.filter(f => f.status === "review").length} items need manual review.`
+            : "Processing pipeline is idle. Upload new documents to start the intelligence extraction process.",
+          linkedItems: ["OCR status", "Classification accuracy"],
+          confidence: "high",
+        }}
+      />
     </motion.div>
   );
 };
