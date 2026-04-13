@@ -155,6 +155,7 @@ export type Database = {
       ai_inference_receipts: {
         Row: {
           capability_id: string | null
+          cost_estimate_cents: number | null
           created_at: string | null
           id: string
           input_tokens: number | null
@@ -162,11 +163,15 @@ export type Database = {
           model: string
           output_tokens: number | null
           prompt_family: string | null
+          provider: string | null
+          route_reason: string | null
           status: string | null
           user_id: string
+          verification_outcome: string | null
         }
         Insert: {
           capability_id?: string | null
+          cost_estimate_cents?: number | null
           created_at?: string | null
           id?: string
           input_tokens?: number | null
@@ -174,11 +179,15 @@ export type Database = {
           model: string
           output_tokens?: number | null
           prompt_family?: string | null
+          provider?: string | null
+          route_reason?: string | null
           status?: string | null
           user_id: string
+          verification_outcome?: string | null
         }
         Update: {
           capability_id?: string | null
+          cost_estimate_cents?: number | null
           created_at?: string | null
           id?: string
           input_tokens?: number | null
@@ -186,8 +195,11 @@ export type Database = {
           model?: string
           output_tokens?: number | null
           prompt_family?: string | null
+          provider?: string | null
+          route_reason?: string | null
           status?: string | null
           user_id?: string
+          verification_outcome?: string | null
         }
         Relationships: []
       }
@@ -1384,8 +1396,12 @@ export type Database = {
           channel: string | null
           created_at: string | null
           delivered_at: string | null
+          failure_reason: string | null
           id: string
+          latency_ms: number | null
           notification_id: string | null
+          platform: string | null
+          sent_at: string | null
           status: string | null
           user_id: string
         }
@@ -1393,8 +1409,12 @@ export type Database = {
           channel?: string | null
           created_at?: string | null
           delivered_at?: string | null
+          failure_reason?: string | null
           id?: string
+          latency_ms?: number | null
           notification_id?: string | null
+          platform?: string | null
+          sent_at?: string | null
           status?: string | null
           user_id: string
         }
@@ -1402,8 +1422,12 @@ export type Database = {
           channel?: string | null
           created_at?: string | null
           delivered_at?: string | null
+          failure_reason?: string | null
           id?: string
+          latency_ms?: number | null
           notification_id?: string | null
+          platform?: string | null
+          sent_at?: string | null
           status?: string | null
           user_id?: string
         }
