@@ -5,6 +5,7 @@ import {
   Grid3X3, ChevronRight, Clock, Users, FileText, Receipt, CreditCard, PiggyBank,
   ShoppingCart, GraduationCap, Plane, Wrench, Target, Zap
 } from "lucide-react";
+import { getRunningApps, restoreAppState } from "@/hooks/useAppStatePersistence";
 import { cn } from "@/lib/utils";
 import { NavLink } from "@/components/NavLink";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -115,6 +116,14 @@ function useRecents() {
 }
 
 // ── App Icon Item ────────────────────────────────────────────
+// Domain ID map for running state
+const DOMAIN_MAP: Record<string, string> = {
+  "/business": "business",
+  "/money": "finance",
+  "/concierge": "concierge",
+  "/files": "files",
+};
+
 function AppIconItem({ item, collapsed, active, hasSubNav, expanded, onToggleExpand }: {
   item: { title: string; url: string; icon: React.ElementType };
   collapsed: boolean;
@@ -125,6 +134,10 @@ function AppIconItem({ item, collapsed, active, hasSubNav, expanded, onToggleExp
 }) {
   const colors = getColors(item.url);
   const Icon = item.icon;
+  const domainKey = DOMAIN_MAP[item.url];
+  const isRunning = domainKey ? getRunningApps().has(domainKey) : false;
+  const savedState = domainKey ? restoreAppState(domainKey) : null;
+  const lastPage = savedState?.activePage && savedState.activePage !== "overview" ? savedState.activePage : null;
 
   return (
     <SidebarMenuItem>
@@ -143,6 +156,7 @@ function AppIconItem({ item, collapsed, active, hasSubNav, expanded, onToggleExp
               : "hover:bg-white/[0.04]"
           )}
           activeClassName=""
+          title={domainKey && lastPage ? `${item.title} — Last: ${lastPage}` : item.title}
         >
           {/* Animated active pill indicator */}
           {active && !collapsed && (
@@ -154,16 +168,29 @@ function AppIconItem({ item, collapsed, active, hasSubNav, expanded, onToggleExp
           )}
 
           {/* App Icon Square */}
-          <div
-            className={cn(
-              "relative flex items-center justify-center rounded-xl bg-gradient-to-br shadow-lg transition-all duration-200",
-              colors.bg,
-              collapsed ? "h-9 w-9" : "h-8 w-8",
-              active && `ring-2 ${colors.ring} scale-105`,
-              "group-hover/app:scale-105 group-hover/app:shadow-xl"
+          <div className="relative">
+            <motion.div
+              animate={active ? { scale: [1, 1.08, 1] } : {}}
+              transition={{ duration: 0.18 }}
+              className={cn(
+                "relative flex items-center justify-center rounded-xl bg-gradient-to-br shadow-lg transition-all duration-200",
+                colors.bg,
+                collapsed ? "h-9 w-9" : "h-8 w-8",
+                active && `ring-2 ${colors.ring} scale-105`,
+                "group-hover/app:scale-105 group-hover/app:shadow-xl"
+              )}
+            >
+              <Icon className="h-[18px] w-[18px] text-white drop-shadow-sm" strokeWidth={1.8} />
+            </motion.div>
+            {/* Running indicator dot */}
+            {isRunning && !active && (
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                className="absolute -bottom-1 left-1/2 -translate-x-1/2 w-[5px] h-[5px] rounded-full bg-[hsl(152_55%_48%)]"
+                style={{ boxShadow: "0 0 4px hsl(152 55% 48% / 0.5)" }}
+              />
             )}
-          >
-            <Icon className="h-[18px] w-[18px] text-white drop-shadow-sm" strokeWidth={1.8} />
           </div>
 
           {/* Label */}

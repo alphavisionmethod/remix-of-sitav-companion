@@ -7,6 +7,7 @@ import { HeroCard, SummaryCard, QueueCard, ProofCard, ComparisonCard, AdvisorCar
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { BoardroomCinematic } from "@/components/sita/motion/AppTransitions";
 import { SitaTabs } from "@/components/sita/SitaComponents";
+import { DomainAdvisorBoard } from "@/components/sita/domain-shared/DomainAdvisorBoard";
 import { ConciergePageWrapper } from "@/components/concierge";
 import { useState } from "react";
 import { Heart, Home } from "lucide-react";
@@ -99,6 +100,8 @@ const ConciergeBoardroom = () => {
               status="pending"
             />
           </div>
+
+          <DomainAdvisorBoard domain="concierge" />
 
           <AdvisorCard
             advisorName="Life Advisor"

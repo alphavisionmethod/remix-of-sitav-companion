@@ -1,17 +1,18 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Files Center (App-in-OS Shell)
+// SITA OS — Files Center (Full DomainAppShell App)
 // ═══════════════════════════════════════════════════════════════
 
+import React from "react";
 import { DomainAppShell } from "@/components/sita/shell/DomainAppShell";
 import type { DomainConfig } from "@/components/sita/shell/DomainAppShell";
 import type { NavTabGroup } from "@/components/sita/shell/AppSidebarNav";
 import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
 import { useNavigate, useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { AppOpenTransition } from "@/components/sita/shell/AppOpenTransition";
+import { useAppStatePersistence, restoreAppState } from "@/hooks/useAppStatePersistence";
 import {
   FileText, LayoutDashboard, FolderOpen, Search, Cpu, Brain,
-  CheckSquare, ShieldAlert, Settings, Eye
+  Eye, ShieldAlert, Settings
 } from "lucide-react";
 
 import FilesOverview from "./files/FilesOverview";
@@ -24,7 +25,7 @@ import FilesSensitive from "./files/FilesSensitive";
 import FilesSettings from "./files/FilesSettings";
 
 const DOMAIN_CONFIG: DomainConfig = {
-  id: "files" as any,
+  id: "files",
   title: "Files",
   icon: FileText,
   accentFrom: "hsl(220 15% 55%)",
@@ -87,6 +88,17 @@ const FilesCenter = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const activePage = subpageFromPath(location.pathname);
+  const { restoreScroll } = useAppStatePersistence("files", activePage);
+
+  React.useEffect(() => {
+    if (location.pathname === "/files") {
+      const saved = restoreAppState("files");
+      if (saved && saved.activePage !== "overview") {
+        navigate(`/files/${saved.activePage}`, { replace: true });
+      }
+    }
+    restoreScroll();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const goTo = (key: string) => {
     if (key === "overview") navigate("/files");
@@ -96,27 +108,25 @@ const FilesCenter = () => {
   const PageComponent = pages[activePage];
 
   return (
-    <AppOpenTransition>
-      <DomainAppShell
-        domain={DOMAIN_CONFIG}
-        activePage={activePage}
-        onNavigate={goTo}
-        tabGroups={TAB_GROUPS}
-      >
-        <h1 className="sr-only">Files Center</h1>
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activePage}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.25 }}
-          >
-            <PageComponent />
-          </motion.div>
-        </AnimatePresence>
-      </DomainAppShell>
-    </AppOpenTransition>
+    <DomainAppShell
+      domain={DOMAIN_CONFIG}
+      activePage={activePage}
+      onNavigate={goTo}
+      tabGroups={TAB_GROUPS}
+    >
+      <h1 className="sr-only">Files Center</h1>
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activePage}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -8 }}
+          transition={{ duration: 0.25 }}
+        >
+          <PageComponent />
+        </motion.div>
+      </AnimatePresence>
+    </DomainAppShell>
   );
 };
 

@@ -49,6 +49,8 @@ import ReconciliationReview from "./money/ReconciliationReview";
 import FinanceAutomations from "./money/FinanceAutomations";
 import { DemoModeBadge } from "@/components/sita/DemoModeBadge";
 import { useDataMode } from "@/contexts/DataModeContext";
+import { useAppStatePersistence, restoreAppState } from "@/hooks/useAppStatePersistence";
+import React from "react";
 
 const DOMAIN_CONFIG: DomainConfig = {
   id: "finance",
@@ -204,12 +206,22 @@ const MoneyCenter = () => {
   const { isDemoMode } = useDataMode();
   const location = useLocation();
   const navigate = useNavigate();
+  const activePage = subpageFromPath(location.pathname);
+  const { restoreScroll } = useAppStatePersistence("finance", activePage);
+
+  React.useEffect(() => {
+    if (location.pathname === "/money") {
+      const saved = restoreAppState("finance");
+      if (saved && saved.activePage !== "overview") {
+        navigate(`/money/${saved.activePage}`, { replace: true });
+      }
+    }
+    restoreScroll();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (!isDemoMode && !isMoneyOnboardingComplete()) {
     return <Navigate to="/money/onboarding" replace />;
   }
-
-  const activePage = subpageFromPath(location.pathname);
 
   const goTo = (key: string) => {
     if (key === "overview") navigate("/money");
