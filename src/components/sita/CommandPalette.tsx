@@ -168,14 +168,55 @@ interface CommandPaletteProps {
 export const CommandPalette = ({ open, onClose }: CommandPaletteProps) => {
   const [query, setQuery] = useState("");
   const [selectedIdx, setSelectedIdx] = useState(0);
+  const [aiResult, setAiResult] = useState<{ label: string; app: string; module: string; confidence: number } | null>(null);
+  const [aiLoading, setAiLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { apps } = useAppPlatform();
   const inputRef = useRef<HTMLInputElement>(null);
+  const aiDebounce = useRef<ReturnType<typeof setTimeout>>();
 
   useEffect(() => {
-    if (open) { setQuery(""); setSelectedIdx(0); setTimeout(() => inputRef.current?.focus(), 50); }
+    if (open) { setQuery(""); setSelectedIdx(0); setAiResult(null); setAiLoading(false); setTimeout(() => inputRef.current?.focus(), 50); }
   }, [open]);
+
+  // AI intent parsing — triggers when query is natural language and no good matches
+  useEffect(() => {
+    if (aiDebounce.current) clearTimeout(aiDebounce.current);
+    if (!query || query.length < 10 || query.split(" ").length < 3) {
+      setAiResult(null);
+      setAiLoading(false);
+      return;
+    }
+    aiDebounce.current = setTimeout(async () => {
+      setAiLoading(true);
+      try {
+        const { data, error } = await supabase.functions.invoke("ai-gateway", {
+          body: {
+            capability_id: "command-palette-intent",
+            task_class: "economy_utility",
+            messages: [
+              { role: "system", content: `You parse user intent into a structured navigation command for SITA OS. Return ONLY valid JSON: {"label":"<action>","app":"business|finance|concierge","module":"<module_key>","confidence":0.0-1.0}. Modules: business=[overview,leads,customers,invoices,quotes,follow-through,operations,pipeline,collections,social,forecast,support], finance=[overview,spending-pulse,bills,subscriptions,budgets,cash-timing,receivables,net-worth,tax,health,peace-score,scenarios], concierge=[overview,errands,appointments,travel,tasks,grocery,providers,life-admin,recurring,documents]. If unsure, set confidence < 0.5.` },
+              { role: "user", content: query },
+            ],
+            max_tokens: 100,
+            temperature: 0.1,
+          },
+        });
+        if (!error && data?.choices?.[0]?.message?.content) {
+          const parsed = JSON.parse(data.choices[0].message.content.trim().replace(/```json\n?|```/g, ""));
+          if (parsed.app && parsed.module && parsed.confidence >= 0.4) {
+            setAiResult(parsed);
+          }
+        }
+      } catch {
+        // Silently fail — AI search is a bonus
+      } finally {
+        setAiLoading(false);
+      }
+    }, 600);
+    return () => { if (aiDebounce.current) clearTimeout(aiDebounce.current); };
+  }, [query]);
 
   const items = useMemo<CommandItem[]>(() => {
     const q = query.toLowerCase();
