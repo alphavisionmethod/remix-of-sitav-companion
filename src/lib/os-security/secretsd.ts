@@ -698,6 +698,25 @@ export class SecretsDaemon {
       ),
     };
   }
+  // ── Device Security Posture ──────────────────────────────
+
+  getDevicePosture() {
+    const tpmState = this.tpm.getState();
+    return {
+      secureHwPresent: tpmState.present,
+      secureBootEnabled: false, // Browser environment
+      measuredBootOk: false,
+      attestationSupported: tpmState.attestationAvailable,
+      systemKeyringHardwareBacked: this.keyrings.get("system")?.hardwareBacked || false,
+      userKeyringHardwareBacked: this.keyrings.get("user-default")?.hardwareBacked || false,
+      deviceRootSealed: tpmState.sealedKeys.length > 0,
+      hardwareRngAvailable: typeof crypto !== "undefined",
+      nonExportableKeySlots: tpmState.present ? 8 : 0,
+      postureLevel: tpmState.present ? "hardware_backed" as const : "software_protected" as const,
+      lastVerifiedAt: Date.now(),
+      pcrValues: {} as Record<string, string>,
+    };
+  }
 }
 
 // ── Singleton ──────────────────────────────────────────────

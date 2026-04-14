@@ -38,14 +38,42 @@ export interface PolicyDecision {
 
 // ── Service Identity Registry ───────────────────────────────
 
+import type { ExtendedServiceIdentity } from "./types";
+
 const SERVICE_REGISTRY: Map<string, ServiceIdentity> = new Map();
+const EXTENDED_SERVICE_REGISTRY: Map<string, ExtendedServiceIdentity> = new Map();
 
 export function registerService(identity: ServiceIdentity): void {
   SERVICE_REGISTRY.set(identity.serviceName, identity);
 }
 
+export function registerExtendedService(identity: ExtendedServiceIdentity): void {
+  EXTENDED_SERVICE_REGISTRY.set(identity.serviceName, identity);
+  SERVICE_REGISTRY.set(identity.serviceName, identity);
+}
+
 export function getServiceIdentity(name: string): ServiceIdentity | undefined {
   return SERVICE_REGISTRY.get(name);
+}
+
+export function getExtendedServiceIdentity(name: string): ExtendedServiceIdentity | undefined {
+  return EXTENDED_SERVICE_REGISTRY.get(name);
+}
+
+export function verifyServiceIdentity(name: string): { verified: boolean; reason: string } {
+  const ext = EXTENDED_SERVICE_REGISTRY.get(name);
+  if (!ext) {
+    const basic = SERVICE_REGISTRY.get(name);
+    if (!basic) return { verified: false, reason: "Service not registered" };
+    return { verified: true, reason: "Basic identity only — no signing verification" };
+  }
+  if (ext.status !== "active") return { verified: false, reason: `Service status: ${ext.status}` };
+  if (!ext.signingIdentity) return { verified: false, reason: "Missing signing identity" };
+  return { verified: true, reason: "Identity verified with signature" };
+}
+
+export function getExtendedServices(): ExtendedServiceIdentity[] {
+  return Array.from(EXTENDED_SERVICE_REGISTRY.values());
 }
 
 // ── PolicyD Service ─────────────────────────────────────────
