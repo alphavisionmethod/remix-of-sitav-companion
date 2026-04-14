@@ -25,12 +25,20 @@ const domains = [
   },
 ];
 
-export function DesktopWhatMattersWidget() {
+interface Props {
+  onLaunchApp?: (appId: string) => void;
+}
+
+export function DesktopWhatMattersWidget({ onLaunchApp }: Props) {
   return (
     <DesktopWidgetCard title="What matters now">
       <div className="space-y-4">
         {domains.map((d) => (
-          <div key={d.id} className="rounded-2xl border border-white/10 bg-black/15 p-4">
+          <div
+            key={d.id}
+            onClick={() => onLaunchApp?.(d.id)}
+            className="rounded-2xl border border-white/10 bg-black/15 p-4 cursor-pointer hover:bg-white/[0.06] transition-colors"
+          >
             <div className="flex items-center gap-2 text-sm font-medium text-white">
               <d.icon className={`h-4 w-4 ${d.color}`} />
               {d.label}

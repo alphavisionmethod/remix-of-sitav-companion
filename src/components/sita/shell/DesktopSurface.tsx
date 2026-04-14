@@ -156,7 +156,7 @@ function renderWidget(type: string, onOpenCommand?: () => void, continuity?: Con
     case "continuity":
       return <ContinuityCard continuity={continuity ?? DEFAULT_CONTINUITY} />;
     case "what-matters":
-      return (<div className="w-[340px]"><DesktopWhatMattersWidget /></div>);
+      return (<div className="w-[340px]"><DesktopWhatMattersWidget onLaunchApp={onLaunchApp} /></div>);
     case "notifications-feed":
       return (<div className="w-[320px]"><DesktopNotificationsFeedWidget /></div>);
     case "investment-pulse":
