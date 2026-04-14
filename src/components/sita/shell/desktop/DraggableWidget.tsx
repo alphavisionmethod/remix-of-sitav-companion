@@ -44,28 +44,21 @@ export function DraggableWidget({ id, position, onMove, onRemove, children, clas
         dragging && "z-50 shadow-[0_0_30px_rgba(114,92,255,0.3)]",
         className
       )}
+      onPointerDown={(e) => {
+        // Start drag only when NOT clicking interactive elements
+        const target = e.target as HTMLElement;
+        if (target.closest("button, a, input, select, textarea, [role='button'], [data-interactive]")) {
+          return;
+        }
+        dragControls.start(e);
+      }}
       onContextMenu={(e) => {
         e.preventDefault();
         onRemove(id);
       }}
     >
-      {/* Drag handle — the entire widget is draggable via this overlay area */}
-      <div
-        className="absolute inset-0 z-0 cursor-grab active:cursor-grabbing"
-        onPointerDown={(e) => {
-          // Only start drag if clicking on the handle area itself, not on interactive children
-          const target = e.target as HTMLElement;
-          if (target.closest("button, a, input, select, textarea, [role='button'], [data-interactive]")) {
-            return;
-          }
-          dragControls.start(e);
-        }}
-      />
-      {/* Grab handle indicator — visible on hover */}
-      <div
-        className="absolute -top-3 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-white/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10 cursor-grab active:cursor-grabbing"
-        onPointerDown={(e) => dragControls.start(e)}
-      />
+      {/* Grab handle — visible on hover */}
+      <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-white/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10 cursor-grab active:cursor-grabbing" />
       {/* Remove button on hover */}
       {hovered && !dragging && (
         <button
@@ -75,10 +68,7 @@ export function DraggableWidget({ id, position, onMove, onRemove, children, clas
           <X className="h-3 w-3" />
         </button>
       )}
-      {/* Children rendered above the drag overlay */}
-      <div className="relative z-[1]">
-        {children}
-      </div>
+      {children}
     </motion.div>
   );
 }
