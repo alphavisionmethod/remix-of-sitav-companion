@@ -138,7 +138,7 @@ function renderWidget(type: string, onOpenCommand?: () => void, continuity?: Con
     case "system":
       return (
         <div className="w-[320px]">
-          <DesktopSystemWidget />
+          <DesktopSystemWidget onLaunchApp={onLaunchApp} />
         </div>
       );
     case "calendar":
