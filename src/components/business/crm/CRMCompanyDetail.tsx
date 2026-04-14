@@ -19,6 +19,8 @@ import { InlineAdvisorInsights, generateCompanyInsights } from "./CRMAdvisorInsi
 import { CRMFinanceLinkage } from "./CRMFinanceLinkage";
 import { CRMFilesLinkage } from "./CRMFilesLinkage";
 import { CRMConciergeLinkage } from "./CRMConciergeLinkage";
+import { CRMProofTrail } from "./CRMProofTrail";
+import { CRMOwnership } from "./CRMOwnership";
 
 const healthColor = (s: number) => s >= 80 ? "text-green-400" : s >= 60 ? "text-yellow-400" : s >= 40 ? "text-orange-400" : "text-red-400";
 const healthLabel = (s: number) => s >= 80 ? "Healthy" : s >= 60 ? "Warming" : s >= 40 ? "Drifting" : "At Risk";
@@ -124,6 +126,7 @@ export function CRMCompanyDetail({ company, onClose, onSelectContact }: CRMCompa
           <TabsTrigger value="finance" className="text-xs flex items-center gap-1"><Banknote className="h-3 w-3" />Finance</TabsTrigger>
           <TabsTrigger value="files" className="text-xs flex items-center gap-1"><FolderOpen className="h-3 w-3" />Files</TabsTrigger>
           <TabsTrigger value="concierge" className="text-xs flex items-center gap-1"><CalendarClock className="h-3 w-3" />Concierge</TabsTrigger>
+          <TabsTrigger value="proof" className="text-xs flex items-center gap-1"><Shield className="h-3 w-3" />Proof</TabsTrigger>
         </TabsList>
 
         <ScrollArea className="flex-1">
@@ -288,6 +291,21 @@ export function CRMCompanyDetail({ company, onClose, onSelectContact }: CRMCompa
             {/* Concierge Linkage */}
             <TabsContent value="concierge" className="mt-0">
               <CRMConciergeLinkage
+                entityType="company"
+                entityId={company.id}
+                entityName={company.name}
+              />
+            </TabsContent>
+
+            {/* Proof Trail + Ownership */}
+            <TabsContent value="proof" className="mt-0 space-y-4">
+              <CRMOwnership
+                entityType="company"
+                entityId={company.id}
+                entityName={company.name}
+                currentOwner={company.owner || undefined}
+              />
+              <CRMProofTrail
                 entityType="company"
                 entityId={company.id}
                 entityName={company.name}
