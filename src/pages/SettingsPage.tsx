@@ -3,7 +3,8 @@
 // The governing control center of the operating environment
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback } from "react";
+import { useUpdateDaemon } from "@/hooks/useUpdateDaemon";
 import { SitaCard, SitaCardTitle, SitaSectionHeader, SitaButton } from "@/components/sita/SitaCard";
 import { DomainHeader } from "@/components/sita/primitives/DomainHeader";
 import { KPITile } from "@/components/sita/SitaComponents";
@@ -35,8 +36,86 @@ import { AllProviderFamiliesStatus } from "@/components/sita/AllProviderFamilies
 import { AdvisorAutonomyPanel } from "@/components/sita/AdvisorAutonomyPanel";
 import { useWallpaper, WALLPAPER_THEMES } from "@/hooks/use-wallpaper";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useNavigate } from "react-router-dom";
 
-// ── Consent & Permissions Section (Connected Accounts Center) ──
+// ── Settings Update Section (Wired to UpdateDaemon) ──
+function SettingsUpdateSection() {
+  const ud = useUpdateDaemon();
+  const [autoSecurity, setAutoSecurity] = useState(true);
+  const [requireApproval, setRequireApproval] = useState(true);
+  const [requireCharger, setRequireCharger] = useState(false);
+  const navigate = useNavigate();
+
+  return (
+    <SitaCard hover={false} className="p-5">
+      <SitaCardTitle sub="System update channels, slot health, and update policy">
+        <div className="flex items-center gap-2"><Download className="h-4 w-4 text-primary" /> System Updates</div>
+      </SitaCardTitle>
+      <div className="mt-4 space-y-4">
+        {/* Live status */}
+        <div className={cn(
+          "rounded-xl border p-4",
+          ud.catalog.length > 0
+            ? "border-primary/20 bg-primary/5"
+            : "border-[hsl(var(--trust-safe))]/20 bg-[hsl(var(--trust-safe))]/5"
+        )}>
+          <div className="flex items-center gap-3">
+            {ud.catalog.length > 0
+              ? <Download className="h-5 w-5 text-primary" />
+              : <CheckCircle className="h-5 w-5 text-[hsl(var(--trust-safe))]" />
+            }
+            <div>
+              <p className="text-sm font-medium text-foreground">
+                {ud.catalog.length > 0 ? `${ud.catalog.length} update${ud.catalog.length > 1 ? "s" : ""} available` : "System Up to Date"}
+              </p>
+              <p className="text-[10px] text-muted-foreground">
+                Running {ud.currentVersion} · Active Slot {ud.activeSlot.id} · {ud.channel} channel
+              </p>
+            </div>
+          </div>
+          <div className="grid grid-cols-3 gap-2 mt-3">
+            <div className="rounded-lg bg-secondary/30 p-2.5 text-center">
+              <p className="font-display text-sm font-bold text-foreground">{ud.currentVersion}</p>
+              <p className="text-[9px] text-muted-foreground">Current</p>
+            </div>
+            <div className="rounded-lg bg-secondary/30 p-2.5 text-center">
+              <p className="font-display text-sm font-bold text-foreground">Slot {ud.activeSlot.id}</p>
+              <p className="text-[9px] text-muted-foreground">{ud.activeSlot.healthStatus}</p>
+            </div>
+            <div className="rounded-lg bg-secondary/30 p-2.5 text-center">
+              <p className="font-display text-sm font-bold text-primary capitalize">{ud.channel}</p>
+              <p className="text-[9px] text-muted-foreground">Channel</p>
+            </div>
+          </div>
+        </div>
+        {/* Channel selector wired */}
+        <ChoiceGroup label="Update Channel" value={ud.channel} onChange={(v) => ud.setChannel(v as "stable" | "beta" | "canary")} options={[
+          { key: "stable", label: "Stable", desc: "Production-ready, fully tested" },
+          { key: "beta", label: "Beta", desc: "Preview features" },
+          { key: "canary", label: "Canary", desc: "Bleeding edge" },
+        ]} />
+        <ToggleSetting label="Auto-Install Security Patches" description="Critical security updates are applied automatically overnight" enabled={autoSecurity} onChange={() => setAutoSecurity(!autoSecurity)} />
+        <ToggleSetting label="Feature Update Approval" description="Require manual approval for non-security updates" enabled={requireApproval} onChange={() => setRequireApproval(!requireApproval)} />
+        <ToggleSetting label="Require Charger for Updates" description="Only install updates when connected to power" enabled={requireCharger} onChange={() => setRequireCharger(!requireCharger)} />
+        <div className="py-3 border-t border-border">
+          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Policy</p>
+          <div className="space-y-1 text-xs text-muted-foreground">
+            <div className="flex items-center gap-2"><CheckCircle className="h-3 w-3 text-[hsl(var(--trust-safe))]" /> Minimum 40% battery required</div>
+            <div className="flex items-center gap-2"><CheckCircle className="h-3 w-3 text-[hsl(var(--trust-safe))]" /> A/B slot atomic install with auto-rollback</div>
+            <div className="flex items-center gap-2"><CheckCircle className="h-3 w-3 text-[hsl(var(--trust-safe))]" /> OTA agent runs daily at 03:00</div>
+            {ud.rollbackHistory.length > 0 && (
+              <div className="flex items-center gap-2"><AlertTriangle className="h-3 w-3 text-accent" /> {ud.rollbackHistory.length} rollback{ud.rollbackHistory.length > 1 ? "s" : ""} recorded</div>
+            )}
+          </div>
+        </div>
+        <SitaButton variant="secondary" size="sm" className="w-full" onClick={() => navigate("/update-center")}>
+          <Download className="h-3.5 w-3.5 mr-1" /> Open Full Update Center
+        </SitaButton>
+      </div>
+    </SitaCard>
+  );
+}
+
 function ConsentPermissionsSection() {
   const { user } = useAuth();
   const { data: consentEntries } = useQuery({
@@ -1141,55 +1220,7 @@ const { isLoading, toggleDemoMode } = useDemoMode();
 
       case "updates":
         return (
-          <SitaCard hover={false} className="p-5">
-            <SitaCardTitle sub="System update channels, slot health, and update policy">
-              <div className="flex items-center gap-2"><Download className="h-4 w-4 text-primary" /> System Updates</div>
-            </SitaCardTitle>
-            <div className="mt-4 space-y-4">
-              <div className="rounded-xl border border-[hsl(var(--trust-safe))]/20 bg-[hsl(var(--trust-safe))]/5 p-4">
-                <div className="flex items-center gap-3">
-                  <CheckCircle className="h-5 w-5 text-[hsl(var(--trust-safe))]" />
-                  <div>
-                    <p className="text-sm font-medium text-foreground">System Up to Date</p>
-                    <p className="text-[10px] text-muted-foreground">Running v2.8.1 · Active Slot A · Stable channel</p>
-                  </div>
-                </div>
-                <div className="grid grid-cols-3 gap-2 mt-3">
-                  <div className="rounded-lg bg-secondary/30 p-2.5 text-center">
-                    <p className="font-display text-sm font-bold text-foreground">v2.8.1</p>
-                    <p className="text-[9px] text-muted-foreground">Current</p>
-                  </div>
-                  <div className="rounded-lg bg-secondary/30 p-2.5 text-center">
-                    <p className="font-display text-sm font-bold text-foreground">Slot A</p>
-                    <p className="text-[9px] text-muted-foreground">Active</p>
-                  </div>
-                  <div className="rounded-lg bg-secondary/30 p-2.5 text-center">
-                    <p className="font-display text-sm font-bold text-primary">Stable</p>
-                    <p className="text-[9px] text-muted-foreground">Channel</p>
-                  </div>
-                </div>
-              </div>
-              <ChoiceGroup label="Update Channel" value="stable" onChange={() => {}} options={[
-                { key: "stable", label: "Stable", desc: "Production-ready, fully tested" },
-                { key: "beta", label: "Beta", desc: "Preview features" },
-                { key: "canary", label: "Canary", desc: "Bleeding edge" },
-              ]} />
-              <ToggleSetting label="Auto-Install Security Patches" description="Critical security updates are applied automatically overnight" enabled={true} onChange={() => {}} />
-              <ToggleSetting label="Feature Update Approval" description="Require manual approval for non-security updates" enabled={true} onChange={() => {}} />
-              <ToggleSetting label="Require Charger for Updates" description="Only install updates when connected to power" enabled={false} onChange={() => {}} />
-              <div className="py-3 border-t border-border">
-                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Policy</p>
-                <div className="space-y-1 text-xs text-muted-foreground">
-                  <div className="flex items-center gap-2"><CheckCircle className="h-3 w-3 text-[hsl(var(--trust-safe))]" /> Minimum 40% battery required</div>
-                  <div className="flex items-center gap-2"><CheckCircle className="h-3 w-3 text-[hsl(var(--trust-safe))]" /> A/B slot atomic install with auto-rollback</div>
-                  <div className="flex items-center gap-2"><CheckCircle className="h-3 w-3 text-[hsl(var(--trust-safe))]" /> OTA agent runs daily at 03:00</div>
-                </div>
-              </div>
-              <SitaButton variant="secondary" size="sm" className="w-full" onClick={() => window.location.href = "/update-center"}>
-                <Download className="h-3.5 w-3.5 mr-1" /> Open Full Update Center
-              </SitaButton>
-            </div>
-          </SitaCard>
+          <SettingsUpdateSection />
         );
 
       default:
