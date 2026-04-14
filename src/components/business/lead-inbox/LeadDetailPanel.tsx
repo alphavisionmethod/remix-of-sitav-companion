@@ -37,9 +37,10 @@ interface Props {
   onAccept: (id: string) => void;
   onRoute: (id: string, dest: string) => void;
   onReject: (id: string) => void;
+  onOpenDuplicate?: (id: string) => void;
 }
 
-export const LeadDetailPanel = ({ item, onClose, onAccept, onRoute, onReject }: Props) => {
+export const LeadDetailPanel = ({ item, onClose, onAccept, onRoute, onReject, onOpenDuplicate }: Props) => {
   if (!item) return null;
 
   const trustLevel = item.quality_score >= 75 ? "verified" as const : item.quality_score >= 40 ? "review" as const : "degraded" as const;
@@ -139,7 +140,7 @@ export const LeadDetailPanel = ({ item, onClose, onAccept, onRoute, onReject }: 
                 ? "This contact definitively matches an existing record."
                 : "This contact may match an existing CRM record. Review before accepting."}
             </p>
-            <SitaButton variant="secondary" size="sm" className="mt-2">
+            <SitaButton variant="secondary" size="sm" className="mt-2" onClick={() => onOpenDuplicate?.(item.id)}>
               <Copy className="h-3.5 w-3.5" /> Compare & Merge
             </SitaButton>
           </SitaCard>
