@@ -13,10 +13,16 @@ const MobileSettings = lazy(() => import("@/pages/mobile/MobileSettings"));
 const MobileDeviceTrust = lazy(() => import("@/pages/mobile/MobileDeviceTrust"));
 const MobileEmergencyActions = lazy(() => import("@/pages/mobile/MobileEmergencyActions"));
 const MobileQuickCapture = lazy(() => import("@/pages/mobile/MobileQuickCapture"));
+const MobileBusiness = lazy(() => import("@/pages/mobile/MobileBusiness"));
+const MobileMoney = lazy(() => import("@/pages/mobile/MobileMoney"));
+const MobileConcierge = lazy(() => import("@/pages/mobile/MobileConcierge"));
 
 export const MobileRoutes = ({ ProtectedRoute }: { ProtectedRoute: React.ComponentType<{ children: React.ReactNode }> }) => (
   <>
     <Route path="/mobile" element={<ProtectedRoute><MobileHome /></ProtectedRoute>} />
+    <Route path="/mobile/business" element={<ProtectedRoute><MobileBusiness /></ProtectedRoute>} />
+    <Route path="/mobile/money" element={<ProtectedRoute><MobileMoney /></ProtectedRoute>} />
+    <Route path="/mobile/concierge" element={<ProtectedRoute><MobileConcierge /></ProtectedRoute>} />
     <Route path="/mobile/approvals" element={<ProtectedRoute><MobileApprovals /></ProtectedRoute>} />
     <Route path="/mobile/proof" element={<ProtectedRoute><MobileProof /></ProtectedRoute>} />
     <Route path="/mobile/alerts" element={<ProtectedRoute><MobileAlerts /></ProtectedRoute>} />
