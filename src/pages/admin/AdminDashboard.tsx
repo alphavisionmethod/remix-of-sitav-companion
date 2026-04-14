@@ -323,6 +323,20 @@ export default function AdminDashboard() {
             </Button>
           </CardContent>
         </Card>
+        <Card className="border-emerald-500/20">
+          <CardContent className="p-4 flex items-center gap-3">
+            <div className="p-2 rounded-xl bg-emerald-500/10">
+              <Server className="h-5 w-5 text-emerald-500" />
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-medium text-foreground">OS Platform Command Center</p>
+              <p className="text-[10px] text-muted-foreground">Boot · Kernel · Services · Drivers · Updates</p>
+            </div>
+            <Button variant="outline" size="sm" asChild>
+              <Link to="/admin/os-platform">Open →</Link>
+            </Button>
+          </CardContent>
+        </Card>
         <Card className="border-blue-500/20">
           <CardContent className="p-4 flex items-center gap-3">
             <div className="p-2 rounded-xl bg-blue-500/10">
