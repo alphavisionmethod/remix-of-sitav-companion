@@ -7,8 +7,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Brain, Zap, AlertTriangle, TrendingUp, Shield, ChevronDown, ChevronRight, ArrowUpRight, Activity, Crown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { BoardSynthesisTheme, AdvisorOutput } from "@/lib/engines/business-advisor-engine";
-import { synthesizeBusinessBoard, generateHomeAdvisors, detectAdvisorDisagreements } from "@/lib/engines/business-advisor-engine";
+import { synthesizeBusinessBoard, generateHomeAdvisors, detectAdvisorDisagreements, buildEscalationPacket } from "@/lib/engines/business-advisor-engine";
 import { AdvisorDisagreementCard } from "./AdvisorDisagreementCard";
+import { EscalationPacketPreview } from "./EscalationPacketPreview";
 import { toast } from "sonner";
 
 const SEVERITY_STYLES: Record<string, { bg: string; border: string; text: string; dot: string }> = {
