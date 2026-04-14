@@ -210,6 +210,7 @@ const pages: Record<string, React.ComponentType> = {
   "adaptive-home": AdaptiveBusinessHome,
   "business-profile": BusinessProfileEditor,
   "profile-evolution": ProfileEvolutionPanel,
+  "kpi-dashboard": AdaptiveKPIDashboard,
 };
 
 // ── Helper components ─────────────────────────────────────────
