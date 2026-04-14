@@ -45,6 +45,17 @@ const MODE_OPPS: Record<string, Opportunity[]> = {
     { id: "o2", name: "Government RFP Response", value: 38000, stage: "Submission", momentum: "advancing", daysInStage: 5, progress: 0.7 },
     { id: "o3", name: "Consulting Engagement", value: 18000, stage: "Scoping", momentum: "stalled", daysInStage: 9, progress: 0.35 },
   ],
+  "appointment-based": [
+    { id: "o1", name: "Premium Package Upsell", value: 4800, stage: "Presented", momentum: "advancing", daysInStage: 2, progress: 0.65 },
+    { id: "o2", name: "Corporate Wellness Contract", value: 18000, stage: "Proposal", momentum: "advancing", daysInStage: 5, progress: 0.55 },
+    { id: "o3", name: "Group Booking Recurring", value: 12000, stage: "Negotiation", momentum: "stalled", daysInStage: 12, progress: 0.4 },
+  ],
+  agency: [
+    { id: "o1", name: "TechForge Brand Refresh", value: 65000, stage: "Pitch Prep", momentum: "advancing", daysInStage: 3, progress: 0.3 },
+    { id: "o2", name: "GreenCo Annual Retainer", value: 48000, stage: "Renewal", momentum: "advancing", daysInStage: 7, progress: 0.8 },
+    { id: "o3", name: "StartupX Launch Campaign", value: 32000, stage: "Proposal Review", momentum: "cooling", daysInStage: 15, progress: 0.5 },
+    { id: "o4", name: "CityBank Digital Ads", value: 28000, stage: "Discovery", momentum: "stalled", daysInStage: 18, progress: 0.2 },
+  ],
 };
 
 const MODE_RECOVERY: Record<string, RecoveryCandidate[]> = {
@@ -61,6 +72,15 @@ const MODE_RECOVERY: Record<string, RecoveryCandidate[]> = {
   "employee-based": [
     { id: "r1", name: "Dormant Client — TechForge", estimatedValue: 24000, signal: "New budget cycle started, previous champion promoted", likelihood: 0.55, type: "account" },
     { id: "r2", name: "Lost RFP — City Transit", estimatedValue: 35000, signal: "Winner failed delivery, re-bid likely", likelihood: 0.48, type: "lead" },
+  ],
+  "appointment-based": [
+    { id: "r1", name: "Lapsed Client — Maria D.", estimatedValue: 1200, signal: "Visited website booking page twice this week", likelihood: 0.68, type: "account" },
+    { id: "r2", name: "Cancelled Series — James K.", estimatedValue: 2400, signal: "Original cancellation reason resolved, re-engage opportunity", likelihood: 0.52, type: "account" },
+  ],
+  agency: [
+    { id: "r1", name: "Lost Pitch — FinServ Co", estimatedValue: 42000, signal: "Winning agency dropped, client back in market", likelihood: 0.62, type: "lead" },
+    { id: "r2", name: "Paused Project — RetailMax", estimatedValue: 28000, signal: "Budget freeze lifted, Q2 spending approved", likelihood: 0.55, type: "account" },
+    { id: "r3", name: "Referral Lead — SaaS Startup", estimatedValue: 18000, signal: "Warm intro from existing client, perfect fit", likelihood: 0.72, type: "lead" },
   ],
 };
 

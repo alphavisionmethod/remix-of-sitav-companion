@@ -50,6 +50,22 @@ const MODE_PRESSURES: Record<string, PressureDomain[]> = {
     { id: "sales", label: "Sales", icon: Receipt, value: 0.55, interpretation: "Meeting daily target", trend: [45, 48, 50, 52, 54, 55] },
     { id: "schedule", label: "Schedule", icon: Calendar, value: 0.35, interpretation: "All shifts covered", trend: [38, 37, 36, 35, 35, 35] },
   ],
+  "appointment-based": [
+    { id: "bookings", label: "Bookings", icon: Calendar, value: 0.55, interpretation: "15% above average", trend: [42, 45, 48, 50, 53, 55] },
+    { id: "noshow", label: "No-Shows", icon: ClockIcon, value: 0.62, interpretation: "Trending up — watch", trend: [35, 38, 42, 48, 55, 62] },
+    { id: "prep", label: "Prep", icon: FileText, value: 0.38, interpretation: "1 complex case pending", trend: [45, 42, 40, 39, 38, 38] },
+    { id: "waitlist", label: "Waitlist", icon: Users, value: 0.45, interpretation: "3 waiting for slots", trend: [40, 42, 43, 44, 44, 45] },
+    { id: "support", label: "Support", icon: Headphones, value: 0.28, interpretation: "Low — resolved quickly", trend: [35, 32, 30, 29, 28, 28] },
+    { id: "revenue", label: "Revenue", icon: Receipt, value: 0.42, interpretation: "On track for target", trend: [38, 39, 40, 41, 42, 42] },
+  ],
+  agency: [
+    { id: "utilization", label: "Utilization", icon: Users, value: 0.72, interpretation: "Approaching fragile zone", trend: [60, 64, 68, 70, 71, 72] },
+    { id: "delivery", label: "Delivery", icon: Layers, value: 0.65, interpretation: "1 project at risk", trend: [45, 50, 55, 58, 62, 65] },
+    { id: "pipeline", label: "Pipeline", icon: TrendingUp, value: 0.48, interpretation: "1 new pitch opportunity", trend: [52, 50, 49, 48, 48, 48] },
+    { id: "renewals", label: "Renewals", icon: Receipt, value: 0.58, interpretation: "2 approaching window", trend: [40, 44, 48, 52, 55, 58] },
+    { id: "support", label: "Client Sat", icon: Headphones, value: 0.35, interpretation: "4.2/5 — stable", trend: [38, 37, 36, 35, 35, 35] },
+    { id: "scope", label: "Scope Risk", icon: Settings, value: 0.68, interpretation: "Acme 40% over", trend: [35, 40, 48, 55, 62, 68] },
+  ],
 };
 
 function getSeverityColor(value: number): string {
