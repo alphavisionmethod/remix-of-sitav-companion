@@ -1,8 +1,6 @@
 // ═══════════════════════════════════════════════════════════════
-// Adaptive Empty State
-// Archetype-aware empty state component that shows contextual
-// messaging, relevant CTAs, and identity-matched visuals based
-// on the user's business mode.
+// Enhanced Adaptive Empty State — Premium visuals, animations,
+// recommendation cards, progress indicators, and aspirational SVGs
 // ═══════════════════════════════════════════════════════════════
 
 import React from "react";
@@ -10,7 +8,8 @@ import { motion } from "framer-motion";
 import {
   ShoppingCart, Briefcase, Calendar, Users, Receipt,
   FileText, Phone, Target, Plus, ArrowRight, Sparkles,
-  Package, MapPin, CreditCard, Heart, Globe,
+  Package, MapPin, CreditCard, Heart, Globe, CheckCircle,
+  Zap, BarChart3, Clock,
 } from "lucide-react";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getIdentityLayer } from "@/lib/engines/business-identity-layers";
@@ -22,6 +21,8 @@ interface ContextConfig {
   title: string;
   description: string;
   ctas: { label: string; action: string; primary?: boolean }[];
+  recommendations?: { label: string; time: string; icon: React.ElementType }[];
+  connectionHint?: string;
 }
 
 type PageContext =
@@ -31,43 +32,31 @@ type PageContext =
 
 const EMPTY_CONFIGS: Record<string, Record<string, ContextConfig>> = {
   ecommerce: {
-    contacts: { icon: Users, title: "No customers yet", description: "Start by importing your customer list or connecting your store", ctas: [{ label: "Import Customers", action: "crm-import", primary: true }, { label: "Connect Store", action: "integrations" }] },
-    pipeline: { icon: ShoppingCart, title: "No orders in pipeline", description: "Orders will appear here once your store is connected", ctas: [{ label: "Connect Store", action: "integrations", primary: true }] },
-    invoices: { icon: Receipt, title: "No payments tracked", description: "Payment records sync automatically from your platform", ctas: [{ label: "Connect Payment Provider", action: "integrations", primary: true }] },
-    leads: { icon: Target, title: "No cart leads yet", description: "Abandoned carts and signup leads will appear here", ctas: [{ label: "Set Up Cart Recovery", action: "crm-automations", primary: true }] },
-    forecast: { icon: Globe, title: "Build your revenue model", description: "Connect sales data to generate intelligent forecasts", ctas: [{ label: "Add Revenue Data", action: "integrations", primary: true }] },
+    contacts: { icon: Users, title: "No customers yet", description: "Start by importing your customer list or connecting your store", ctas: [{ label: "Import Customers", action: "crm-import", primary: true }, { label: "Connect Store", action: "integrations" }], recommendations: [{ label: "Connect your store platform", time: "2 min", icon: ShoppingCart }, { label: "Import existing customers", time: "5 min", icon: Users }], connectionHint: "Connecting your store will auto-sync customers, orders, and cart data." },
+    pipeline: { icon: ShoppingCart, title: "No orders in pipeline", description: "Orders will appear here once your store is connected", ctas: [{ label: "Connect Store", action: "integrations", primary: true }], connectionHint: "Your order funnel will populate automatically from your e-commerce platform." },
+    leads: { icon: Target, title: "No cart leads yet", description: "Abandoned carts and signup leads will appear here", ctas: [{ label: "Set Up Cart Recovery", action: "crm-automations", primary: true }], recommendations: [{ label: "Configure cart recovery automation", time: "3 min", icon: Zap }, { label: "Set up email capture", time: "5 min", icon: Target }] },
   },
   service: {
-    contacts: { icon: Users, title: "No clients yet", description: "Add your first client to start building relationships", ctas: [{ label: "Add Client", action: "crm-contacts", primary: true }, { label: "Import CSV", action: "crm-import" }] },
-    pipeline: { icon: Briefcase, title: "No active deals", description: "Create your first opportunity to start tracking revenue", ctas: [{ label: "Create Opportunity", action: "crm-pipeline", primary: true }] },
-    invoices: { icon: Receipt, title: "No invoices created", description: "Bill your clients for completed work", ctas: [{ label: "Create Invoice", action: "invoices", primary: true }] },
-    proposals: { icon: FileText, title: "No proposals yet", description: "Create a proposal to win your next client", ctas: [{ label: "Create Proposal", action: "proposals", primary: true }, { label: "Browse Templates", action: "proposals" }] },
+    contacts: { icon: Users, title: "No clients yet", description: "Add your first client to start building relationships", ctas: [{ label: "Add Client", action: "crm-contacts", primary: true }, { label: "Import CSV", action: "crm-import" }], recommendations: [{ label: "Add your first client", time: "1 min", icon: Users }, { label: "Import from CSV", time: "3 min", icon: FileText }, { label: "Set up your pipeline", time: "2 min", icon: BarChart3 }] },
+    pipeline: { icon: Briefcase, title: "No active deals", description: "Create your first opportunity to start tracking revenue", ctas: [{ label: "Create Opportunity", action: "crm-pipeline", primary: true }], connectionHint: "For service businesses, this is where new inquiries, qualified leads, and proposals are tracked." },
+    proposals: { icon: FileText, title: "No proposals yet", description: "Create a proposal to win your next client", ctas: [{ label: "Create Proposal", action: "proposals", primary: true }, { label: "Browse Templates", action: "proposals" }], recommendations: [{ label: "Use a profile-matched template", time: "2 min", icon: Sparkles }] },
     leads: { icon: Phone, title: "No leads in inbox", description: "Add leads manually or connect a form to capture them", ctas: [{ label: "Add Lead", action: "leads-inbox", primary: true }] },
-    forecast: { icon: Target, title: "Start forecasting", description: "Add pipeline data to project your revenue trajectory", ctas: [{ label: "Review Pipeline", action: "crm-pipeline", primary: true }] },
   },
   "appointment-based": {
-    contacts: { icon: Users, title: "No clients booked", description: "Add your first client or set up online booking", ctas: [{ label: "Add Client", action: "crm-contacts", primary: true }, { label: "Set Up Booking", action: "appointments" }] },
-    appointments: { icon: Calendar, title: "No appointments scheduled", description: "Create your first appointment or enable online booking", ctas: [{ label: "Schedule Appointment", action: "appointments", primary: true }] },
-    invoices: { icon: Receipt, title: "No sessions billed", description: "Bill clients for completed sessions", ctas: [{ label: "Create Bill", action: "invoices", primary: true }] },
-    leads: { icon: Calendar, title: "No booking inquiries", description: "Share your booking link to start receiving requests", ctas: [{ label: "Create Booking Link", action: "appointments", primary: true }] },
+    contacts: { icon: Users, title: "No clients booked", description: "Add your first client or set up online booking", ctas: [{ label: "Add Client", action: "crm-contacts", primary: true }, { label: "Set Up Booking", action: "appointments" }], connectionHint: "Because your business is appointment-heavy, connecting scheduling will make this area much more powerful." },
+    appointments: { icon: Calendar, title: "No appointments scheduled", description: "Create your first appointment or enable online booking", ctas: [{ label: "Schedule Appointment", action: "appointments", primary: true }], recommendations: [{ label: "Create your first appointment", time: "1 min", icon: Calendar }, { label: "Set up reminder automation", time: "3 min", icon: Clock }] },
   },
   agency: {
     contacts: { icon: Users, title: "No clients onboarded", description: "Import your client roster or add your first account", ctas: [{ label: "Add Client", action: "crm-contacts", primary: true }, { label: "Import Roster", action: "crm-import" }] },
-    pipeline: { icon: Target, title: "No active pitches", description: "Start tracking opportunities in your pipeline", ctas: [{ label: "Add Opportunity", action: "crm-pipeline", primary: true }] },
+    pipeline: { icon: Target, title: "No active pitches", description: "Start tracking opportunities in your pipeline", ctas: [{ label: "Add Opportunity", action: "crm-pipeline", primary: true }], recommendations: [{ label: "Use the Agency Pipeline template", time: "1 min", icon: Sparkles }, { label: "Import existing deals", time: "3 min", icon: FileText }] },
     proposals: { icon: FileText, title: "No pitches created", description: "Create a pitch deck to send to prospects", ctas: [{ label: "Create Pitch", action: "proposals", primary: true }] },
-    tasks: { icon: Users, title: "No deliverables tracked", description: "Create tasks for your team's active projects", ctas: [{ label: "Create Task", action: "crm-tasks", primary: true }] },
   },
   "brick-and-mortar": {
-    contacts: { icon: MapPin, title: "No customers tracked", description: "Start building your customer database", ctas: [{ label: "Add Customer", action: "crm-contacts", primary: true }] },
+    contacts: { icon: MapPin, title: "No customers tracked", description: "Start building your customer database", ctas: [{ label: "Add Customer", action: "crm-contacts", primary: true }], connectionHint: "Your Business Home will begin surfacing walk-in traffic, scheduling risk, and repeat visit patterns once connected." },
     leads: { icon: MapPin, title: "No walk-in leads", description: "Track walk-ins and inquiries to grow your customer base", ctas: [{ label: "Add Lead", action: "leads-inbox", primary: true }] },
-  },
-  membership: {
-    contacts: { icon: Heart, title: "No members yet", description: "Start onboarding your first members", ctas: [{ label: "Add Member", action: "crm-contacts", primary: true }] },
-    invoices: { icon: CreditCard, title: "No billing records", description: "Set up recurring membership billing", ctas: [{ label: "Set Up Billing", action: "invoices", primary: true }] },
   },
 };
 
-// Fallback for any archetype not explicitly defined
 const DEFAULT_CONFIGS: Record<string, ContextConfig> = {
   contacts: { icon: Users, title: "No contacts yet", description: "Add your first contact to get started", ctas: [{ label: "Add Contact", action: "crm-contacts", primary: true }, { label: "Import", action: "crm-import" }] },
   pipeline: { icon: Target, title: "No deals in pipeline", description: "Create an opportunity to start tracking", ctas: [{ label: "Create Deal", action: "crm-pipeline", primary: true }] },
@@ -87,6 +76,27 @@ interface Props {
   className?: string;
 }
 
+function AspirationalIllustration({ accentColor }: { accentColor: string }) {
+  return (
+    <svg width="120" height="80" viewBox="0 0 120 80" fill="none" className="mb-4">
+      <motion.rect x="10" y="30" width="25" height="40" rx="4" fill={`hsl(${accentColor} / 0.08)`} stroke={`hsl(${accentColor} / 0.15)`} strokeWidth="1"
+        initial={{ height: 0, y: 70 }} animate={{ height: 40, y: 30 }} transition={{ duration: 0.6, delay: 0.1 }} />
+      <motion.rect x="40" y="15" width="25" height="55" rx="4" fill={`hsl(${accentColor} / 0.12)`} stroke={`hsl(${accentColor} / 0.2)`} strokeWidth="1"
+        initial={{ height: 0, y: 70 }} animate={{ height: 55, y: 15 }} transition={{ duration: 0.6, delay: 0.2 }} />
+      <motion.rect x="70" y="25" width="25" height="45" rx="4" fill={`hsl(${accentColor} / 0.08)`} stroke={`hsl(${accentColor} / 0.15)`} strokeWidth="1"
+        initial={{ height: 0, y: 70 }} animate={{ height: 45, y: 25 }} transition={{ duration: 0.6, delay: 0.3 }} />
+      <motion.circle cx="22" cy="22" r="6" fill={`hsl(${accentColor} / 0.15)`}
+        initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.5, type: "spring" }} />
+      <motion.circle cx="52" cy="8" r="4" fill={`hsl(${accentColor} / 0.2)`}
+        initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.6, type: "spring" }} />
+      <motion.circle cx="82" cy="18" r="5" fill={`hsl(${accentColor} / 0.15)`}
+        initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.7, type: "spring" }} />
+      <motion.path d="M22 28 L52 13 L82 23" stroke={`hsl(${accentColor} / 0.2)`} strokeWidth="1.5" strokeDasharray="4 2" fill="none"
+        initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 0.8, delay: 0.4 }} />
+    </svg>
+  );
+}
+
 export default function AdaptiveEmptyState({ context, className }: Props) {
   const { primaryMode } = useBusinessProfile();
   const identity = getIdentityLayer(primaryMode);
@@ -98,35 +108,46 @@ export default function AdaptiveEmptyState({ context, className }: Props) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
       className={`flex flex-col items-center justify-center py-16 px-8 text-center ${className || ""}`}
     >
+      {/* Aspirational illustration */}
+      <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.05 }}>
+        <AspirationalIllustration accentColor={identity.accentColor} />
+      </motion.div>
+
       {/* Icon */}
       <motion.div
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
-        transition={{ delay: 0.1, type: "spring", damping: 12 }}
-        className="w-16 h-16 rounded-2xl flex items-center justify-center mb-5"
+        transition={{ delay: 0.15, type: "spring", damping: 12 }}
+        className="w-14 h-14 rounded-2xl flex items-center justify-center mb-4"
         style={{
-          background: `linear-gradient(135deg, hsl(${identity.accentColor} / 0.1), hsl(${identity.accentColor} / 0.04))`,
-          border: `1px solid hsl(${identity.accentColor} / 0.1)`,
+          background: `linear-gradient(135deg, hsl(${identity.accentColor} / 0.12), hsl(${identity.accentColor} / 0.04))`,
+          border: `1px solid hsl(${identity.accentColor} / 0.12)`,
         }}
       >
-        <Icon size={24} style={{ color: `hsl(${identity.accentColor} / 0.5)` }} />
+        <Icon size={22} style={{ color: `hsl(${identity.accentColor} / 0.6)` }} />
       </motion.div>
 
       {/* Text */}
-      <h3 className="text-base font-bold text-foreground/70 mb-1.5">{config.title}</h3>
-      <p className="text-xs text-foreground/30 max-w-[280px] mb-6">{config.description}</p>
+      <motion.h3 initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
+        className="text-[14px] font-bold text-foreground/70 mb-1.5">{config.title}</motion.h3>
+      <motion.p initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}
+        className="text-[11px] text-foreground/30 max-w-[300px] mb-4">{config.description}</motion.p>
 
-      {/* Encouragement from identity */}
-      <p className="text-[10px] text-foreground/20 italic mb-6 max-w-[260px]">
-        {identity.emptyStateMessage}
-      </p>
+      {/* Connection hint */}
+      {config.connectionHint && (
+        <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
+          className="text-[10px] text-foreground/20 italic mb-5 max-w-[280px] leading-relaxed">
+          {config.connectionHint}
+        </motion.p>
+      )}
 
       {/* CTAs */}
-      <div className="flex items-center gap-2">
+      <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }}
+        className="flex items-center gap-2 mb-6">
         {config.ctas.map((cta) => (
           <motion.button
             key={cta.label}
@@ -134,20 +155,45 @@ export default function AdaptiveEmptyState({ context, className }: Props) {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => navigateTo(cta.action)}
-            className={`flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-medium transition-colors ${
+            className={`flex items-center gap-1.5 px-4 py-2.5 rounded-xl text-[11px] font-medium transition-colors ${
               cta.primary
-                ? "text-[hsl(220_15%_6%)]"
+                ? "text-white shadow-lg"
                 : "bg-[hsl(0_0%_100%/0.04)] text-foreground/50 hover:bg-[hsl(0_0%_100%/0.08)] border border-[hsl(0_0%_100%/0.06)]"
             }`}
             style={cta.primary ? {
-              backgroundColor: `hsl(${identity.accentColor})`,
+              background: `linear-gradient(135deg, hsl(${identity.gradientPair[0]}), hsl(${identity.gradientPair[1]}))`,
             } : undefined}
           >
             {cta.primary ? <Plus size={12} /> : <ArrowRight size={12} />}
             {cta.label}
           </motion.button>
         ))}
-      </div>
+      </motion.div>
+
+      {/* Recommendation cards */}
+      {config.recommendations && config.recommendations.length > 0 && (
+        <motion.div initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}
+          className="w-full max-w-[340px] space-y-1.5">
+          <p className="text-[9px] font-bold uppercase tracking-[0.15em] text-foreground/20 mb-2">What to do next</p>
+          {config.recommendations.map((rec, i) => {
+            const RecIcon = rec.icon;
+            return (
+              <motion.div
+                key={rec.label}
+                initial={{ opacity: 0, x: -8 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.45 + i * 0.08 }}
+                className="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-[hsl(0_0%_100%/0.02)] border border-[hsl(0_0%_100%/0.05)] hover:border-[hsl(0_0%_100%/0.1)] transition-colors cursor-pointer"
+              >
+                <RecIcon size={12} style={{ color: `hsl(${identity.accentColor} / 0.5)` }} />
+                <span className="text-[10px] text-foreground/45 flex-1 text-left">{rec.label}</span>
+                <span className="text-[8px] text-foreground/20 shrink-0">{rec.time}</span>
+                <CheckCircle size={10} className="text-foreground/10 shrink-0" />
+              </motion.div>
+            );
+          })}
+        </motion.div>
+      )}
     </motion.div>
   );
 }
