@@ -56,6 +56,9 @@ import CRMDuplicates from "@/pages/business/CRMDuplicates";
 import CRMAdvisorPage from "@/pages/business/CRMAdvisorPage";
 import CRMCustomFieldsPage from "@/pages/business/CRMCustomFieldsPage";
 import CRMCommunications from "@/pages/business/CRMCommunications";
+import CRMIntegrationHub from "@/pages/business/CRMIntegrationHub";
+import CustomerHealthPage from "@/pages/CustomerHealthPage";
+import CustomerDetail from "@/pages/CustomerDetail";
 
 // ── Sidebar structure ─────────────────────────────────────────
 
@@ -91,6 +94,7 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
       { id: "crm-duplicates", label: "Duplicates", icon: RefreshCw },
       { id: "crm-advisor", label: "Advisor", icon: BrainCircuit },
       { id: "crm-fields", label: "Fields", icon: Settings },
+      { id: "integrations", label: "Integrations", icon: Share2 },
     ],
   },
   {
@@ -104,6 +108,7 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
       { id: "appointments", label: "Appointments", icon: Calendar },
       { id: "operations", label: "Operations", icon: Settings, count: 3 },
       { id: "opportunities", label: "Opportunities", icon: TrendingUp },
+      { id: "customer-health", label: "Customer Health", icon: Heart },
     ],
   },
   {
@@ -189,6 +194,8 @@ const pages: Record<string, React.ComponentType> = {
   "crm-advisor": CRMAdvisorPage,
   "crm-fields": CRMCustomFieldsPage,
   "crm-communications": CRMCommunications,
+  integrations: CRMIntegrationHub,
+  "customer-health": CustomerHealthPage,
 };
 
 // ── Helper components ─────────────────────────────────────────
@@ -418,6 +425,16 @@ export function BusinessAppShell({ initialModule }: { initialModule?: string }) 
       return (
         <motion.div key="pipeline" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
           <PipelineHealthView domain="business" />
+        </motion.div>
+      );
+    }
+
+    // Handle customer detail view (customer-detail:someId)
+    if (activeModule.startsWith("customer-detail:")) {
+      const custId = activeModule.replace("customer-detail:", "");
+      return (
+        <motion.div key={activeModule} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}>
+          <CustomerDetail customerId={custId} />
         </motion.div>
       );
     }

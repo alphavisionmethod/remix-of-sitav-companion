@@ -3,6 +3,7 @@ import { KPITile, TimelineItem, ProofCard, OpportunityCard, RiskCard, SitaTabs }
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { StateBadge } from "@/components/sita/StateBadge";
 import { useNavigate, useParams } from "react-router-dom";
+import { useBusinessNavigation } from "@/contexts/BusinessNavigationContext";
 import { useState } from "react";
 import {
   ArrowLeft, Phone, Mail, Clock, MapPin, Globe, Building, DollarSign, FileText, CheckCircle,
@@ -12,8 +13,10 @@ import { DEMO_ACTIONS, DEMO_CORE_TIMELINE as DEMO_TIMELINE, DEMO_CUSTOMERS_DATA,
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 // Mock customer data keyed by ID
-const CustomerDetail = () => {
-  const { id } = useParams<{ id: string }>();
+const CustomerDetail = ({ customerId: propId }: { customerId?: string }) => {
+  const params = useParams<{ id: string }>();
+  const id = propId || params.id;
+  const { navigateTo } = useBusinessNavigation();
   const navigate = useNavigate();
   const [tab, setTab] = useState("overview");
   const customer = DEMO_CUSTOMERS_DATA[id || "marcus-johnson"] || DEMO_CUSTOMERS_DATA["marcus-johnson"];
@@ -25,7 +28,7 @@ const CustomerDetail = () => {
     <div className="mx-auto max-w-7xl space-y-6">
 {/* Back + Header */}
       <div>
-        <button onClick={() => navigate("/business")} className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+        <button onClick={() => navigateTo("customers")} className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
           <ArrowLeft className="h-4 w-4" /> Back to Business Center
         </button>
         <div className="flex items-start justify-between">

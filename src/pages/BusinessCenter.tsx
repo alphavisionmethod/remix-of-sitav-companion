@@ -49,6 +49,10 @@ const subpageFromPath = (path: string): string => {
   if (path.includes("/proof")) return "proof";
   if (path.includes("/ecommerce")) return "ecommerce";
   if (path.includes("/integrations")) return "integrations";
+  if (path.includes("/customer-health")) return "customer-health";
+  // Handle /customers/:id pattern
+  const customerMatch = path.match(/\/customers\/([^/]+)/);
+  if (customerMatch) return `customer-detail:${customerMatch[1]}`;
   return "crm-home";
 };
 
