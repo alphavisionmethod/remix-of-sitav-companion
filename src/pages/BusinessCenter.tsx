@@ -1,78 +1,14 @@
-import { DomainAppShell } from "@/components/sita/shell/DomainAppShell";
-import type { DomainConfig } from "@/components/sita/shell/DomainAppShell";
-import type { NavTabGroup } from "@/components/sita/shell/AppSidebarNav";
-import { GlobalErrorBoundary } from "@/components/sita/GlobalErrorBoundary";
-import { useNavigate, useLocation } from "react-router-dom";
-import { motion, AnimatePresence } from "framer-motion";
-import React from "react";
-import {
-  Briefcase, LayoutDashboard, Target, Users, Phone, Headphones as SupportIcon,
-  Calendar, Settings, TrendingUp, FileText, Receipt, Banknote, ClipboardList,
-  Zap, Bot, RefreshCw, Share2, ShoppingCart, Globe, BarChart3, BookOpen,
-  LineChart, Mail, FolderOpen, Crown, Shield, Heart, Building2, Clock,
-  StickyNote, Upload, Link, Filter, Workflow, BrainCircuit, Search
-} from "lucide-react";
+import React, { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { useWindowManagerContext } from "@/contexts/WindowManagerContext";
 
-import BusinessOverview from "./business/BusinessOverview";
-import LeadsInbox from "./business/LeadsInbox";
-import OpportunitiesCenter from "./business/OpportunitiesCenter";
-import QuotesWorkspace from "./business/QuotesWorkspace";
-import InvoicesCollections from "./business/InvoicesCollections";
-import CommunicationsCenter from "./business/CommunicationsCenter";
-import BusinessBoardroom from "./business/BusinessBoardroom";
-import BusinessProof from "./business/BusinessProof";
-import CustomersPage from "./business/CustomersPage";
-import RevenueAutopilot from "./business/RevenueAutopilot";
-import AutopilotHub from "./business/AutopilotHub";
-import CollectionsCommandCenter from "./business/CollectionsCommandCenter";
-import RevenueImpactDashboard from "./business/RevenueImpactDashboard";
-import PlaybookBuilder from "./business/PlaybookBuilder";
-import RevenueForecast from "./business/RevenueForecast";
-import WebsiteBuilder from "./business/WebsiteBuilder";
-import ProposalsContracts from "./business/ProposalsContracts";
-import LeadRecovery from "./business/LeadRecovery";
-import SocialCommand from "./business/SocialCommand";
-import EcommerceManager from "./business/EcommerceManager";
-import FollowThroughCenter from "./business/FollowThroughCenter";
-import CustomerSupportCenter from "./business/CustomerSupportCenter";
-import AppointmentsScheduling from "./business/AppointmentsScheduling";
-import BusinessOperations from "./business/BusinessOperations";
-import BusinessDocuments from "./business/BusinessDocuments";
+/**
+ * BusinessCenter is now a redirect shim.
+ * When any /business/* route is hit, it opens the Business windowed app
+ * at the correct sub-page and redirects back to /desktop.
+ */
 
-// CRM Pages
-import CRMHome from "./business/CRMHome";
-import CRMContacts from "./business/CRMContacts";
-import CRMCompanies from "./business/CRMCompanies";
-import CRMPipeline from "./business/CRMPipeline";
-import CRMHealth from "./business/CRMHealth";
-import CRMTimeline from "./business/CRMTimeline";
-import CRMTasks from "./business/CRMTasks";
-import CRMNotes from "./business/CRMNotes";
-import CRMSegments from "./business/CRMSegments";
-import CRMAutomations from "./business/CRMAutomations";
-import CRMImportCenter from "./business/CRMImportCenter";
-import CRMDuplicates from "./business/CRMDuplicates";
-import CRMAdvisorPage from "./business/CRMAdvisorPage";
-import CRMCustomFieldsPage from "./business/CRMCustomFieldsPage";
-import CRMCommunications from "./business/CRMCommunications";
-
-import { useAppStatePersistence, restoreAppState } from "@/hooks/useAppStatePersistence";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-
-const DOMAIN_CONFIG: DomainConfig = {
-  id: "business",
-  title: "Business OS",
-  icon: Briefcase,
-  accentFrom: "hsl(265 55% 58%)",
-  accentTo: "hsl(285 50% 48%)",
-  statusLabel: "CRM Synced",
-  version: "Business OS v2.0",
-};
-
-type SubPage = "overview" | "leads" | "customers" | "follow-through" | "support" | "appointments" | "operations" | "documents" | "opportunities" | "quotes" | "invoices" | "communications" | "boardroom" | "proof" | "revenue-autopilot" | "collections" | "autopilot-hub" | "revenue-impact" | "playbook-builder" | "revenue-forecast" | "website-builder" | "proposals" | "lead-recovery" | "social" | "ecommerce" | "crm-home" | "crm-contacts" | "crm-companies" | "crm-pipeline" | "crm-health" | "crm-timeline" | "crm-tasks" | "crm-notes" | "crm-segments" | "crm-automations" | "crm-import" | "crm-duplicates" | "crm-advisor" | "crm-fields" | "crm-communications";
-
-const subpageFromPath = (path: string): SubPage => {
-  // CRM routes first (more specific)
+const subpageFromPath = (path: string): string => {
   if (path.includes("/crm-communications")) return "crm-communications";
   if (path.includes("/crm-home")) return "crm-home";
   if (path.includes("/crm-contacts")) return "crm-contacts";
@@ -111,177 +47,29 @@ const subpageFromPath = (path: string): SubPage => {
   if (path.includes("/communications")) return "communications";
   if (path.includes("/boardroom")) return "boardroom";
   if (path.includes("/proof")) return "proof";
-  return "overview";
-};
-
-const TAB_GROUPS: NavTabGroup[] = [
-  {
-    label: "CRM",
-    tabs: [
-      { key: "crm-home", label: "CRM Home", icon: Heart },
-      { key: "crm-contacts", label: "Contacts", icon: Users },
-      { key: "crm-companies", label: "Companies", icon: Building2 },
-      { key: "crm-pipeline", label: "Pipeline", icon: TrendingUp },
-      { key: "crm-health", label: "Health", icon: Heart },
-      { key: "crm-timeline", label: "Timeline", icon: Clock },
-      { key: "crm-communications", label: "Comms Queue", icon: Mail },
-      { key: "crm-tasks", label: "Tasks", icon: Target, count: 3, countSeverity: "warning" },
-      { key: "crm-notes", label: "Notes", icon: StickyNote },
-      { key: "crm-segments", label: "Segments", icon: Filter },
-      { key: "crm-automations", label: "Automations", icon: Zap },
-      { key: "crm-import", label: "Import", icon: Upload },
-      { key: "crm-duplicates", label: "Duplicates", icon: RefreshCw },
-      { key: "crm-advisor", label: "Advisor", icon: BrainCircuit },
-      { key: "crm-fields", label: "Fields", icon: Settings },
-    ],
-  },
-  {
-    label: "Core",
-    tabs: [
-      { key: "overview", label: "Overview", icon: LayoutDashboard },
-      { key: "leads", label: "Leads", icon: Target, count: 3 },
-      { key: "customers", label: "Customers", icon: Users },
-      { key: "follow-through", label: "Follow-Through", icon: Phone, count: 8, countSeverity: "warning" },
-      { key: "support", label: "Support", icon: SupportIcon, count: 2 },
-      { key: "appointments", label: "Appointments", icon: Calendar },
-      { key: "operations", label: "Operations", icon: Settings, count: 3 },
-      { key: "opportunities", label: "Opportunities", icon: TrendingUp },
-    ],
-  },
-  {
-    label: "Sales",
-    tabs: [
-      { key: "quotes", label: "Quotes", icon: FileText },
-      { key: "invoices", label: "Invoices", icon: Receipt, count: 1, countSeverity: "critical" },
-      { key: "collections", label: "Collections", icon: Banknote },
-      { key: "proposals", label: "Proposals", icon: ClipboardList, count: 2 },
-    ],
-  },
-  {
-    label: "Growth",
-    tabs: [
-      { key: "revenue-autopilot", label: "Revenue Autopilot", icon: Zap },
-      { key: "autopilot-hub", label: "Autopilot Hub", icon: Bot },
-      { key: "lead-recovery", label: "Lead Recovery", icon: RefreshCw, count: 5, countSeverity: "warning" },
-      { key: "social", label: "Social", icon: Share2, count: 4 },
-      { key: "ecommerce", label: "E-Commerce", icon: ShoppingCart, count: 2 },
-      { key: "website-builder", label: "Website", icon: Globe },
-    ],
-  },
-  {
-    label: "Intelligence",
-    tabs: [
-      { key: "revenue-impact", label: "Revenue Impact", icon: BarChart3 },
-      { key: "playbook-builder", label: "Builder", icon: BookOpen },
-      { key: "revenue-forecast", label: "Forecast", icon: LineChart },
-    ],
-  },
-  {
-    label: "Office",
-    tabs: [
-      { key: "communications", label: "Comms", icon: Mail },
-      { key: "documents", label: "Documents", icon: FolderOpen, count: 10 },
-      { key: "boardroom", label: "Boardroom", icon: Crown },
-      { key: "proof", label: "Proof", icon: Shield },
-    ],
-  },
-];
-
-const pages: Record<SubPage, React.ComponentType> = {
-  overview: BusinessOverview,
-  leads: LeadsInbox,
-  customers: CustomersPage,
-  "follow-through": FollowThroughCenter,
-  opportunities: OpportunitiesCenter,
-  quotes: QuotesWorkspace,
-  invoices: InvoicesCollections,
-  collections: CollectionsCommandCenter,
-  communications: CommunicationsCenter,
-  "revenue-autopilot": RevenueAutopilot,
-  boardroom: BusinessBoardroom,
-  proof: BusinessProof,
-  "autopilot-hub": AutopilotHub,
-  "revenue-impact": RevenueImpactDashboard,
-  "playbook-builder": PlaybookBuilder,
-  "revenue-forecast": RevenueForecast,
-  "website-builder": WebsiteBuilder,
-  proposals: ProposalsContracts,
-  "lead-recovery": LeadRecovery,
-  social: SocialCommand,
-  ecommerce: EcommerceManager,
-  support: CustomerSupportCenter,
-  appointments: AppointmentsScheduling,
-  operations: BusinessOperations,
-  documents: BusinessDocuments,
-  // CRM pages
-  "crm-home": CRMHome,
-  "crm-contacts": CRMContacts,
-  "crm-companies": CRMCompanies,
-  "crm-pipeline": CRMPipeline,
-  "crm-health": CRMHealth,
-  "crm-timeline": CRMTimeline,
-  "crm-tasks": CRMTasks,
-  "crm-notes": CRMNotes,
-  "crm-segments": CRMSegments,
-  "crm-automations": CRMAutomations,
-  "crm-import": CRMImportCenter,
-  "crm-duplicates": CRMDuplicates,
-  "crm-advisor": CRMAdvisorPage,
-  "crm-fields": CRMCustomFieldsPage,
-  "crm-communications": CRMCommunications,
+  if (path.includes("/ecommerce")) return "ecommerce";
+  if (path.includes("/integrations")) return "integrations";
+  return "crm-home";
 };
 
 const BusinessCenter = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const activePage = subpageFromPath(location.pathname);
-  const { restoreScroll } = useAppStatePersistence("business", activePage);
+  const wm = useWindowManagerContext();
 
-  // Restore last sub-page if landing on overview from app switch
-  React.useEffect(() => {
-    if (location.pathname === "/business") {
-      const saved = restoreAppState("business");
-      if (saved && saved.activePage !== "overview") {
-        navigate(`/business/${saved.activePage}`, { replace: true });
-      }
-    }
-    restoreScroll();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const goTo = (key: string) => {
-    if (key === "overview") navigate("/business");
-    else navigate(`/business/${key}`);
-  };
-
-  const PageComponent = pages[activePage];
+  useEffect(() => {
+    const module = subpageFromPath(location.pathname);
+    // Dispatch event to open Business app with correct module
+    window.dispatchEvent(new CustomEvent("sita-open-business", { detail: { module } }));
+    // Redirect to desktop
+    navigate("/desktop", { replace: true });
+  }, [location.pathname, navigate]);
 
   return (
-    <DomainAppShell
-      domain={DOMAIN_CONFIG}
-      activePage={activePage}
-      onNavigate={goTo}
-      tabGroups={TAB_GROUPS}
-    >
-      <h1 className="sr-only">Business Center</h1>
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={activePage}
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.2 }}
-        >
-          <PageComponent />
-        </motion.div>
-      </AnimatePresence>
-    </DomainAppShell>
+    <div className="min-h-screen flex items-center justify-center bg-background">
+      <p className="text-muted-foreground text-sm animate-pulse">Opening Business OS...</p>
+    </div>
   );
 };
 
-const BusinessCenterWithBoundary = () => (
-  <GlobalErrorBoundary>
-    <BusinessCenter />
-  </GlobalErrorBoundary>
-);
-
-export default BusinessCenterWithBoundary;
+export default BusinessCenter;
