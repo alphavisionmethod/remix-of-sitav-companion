@@ -183,6 +183,7 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
       { id: "proof", label: "Proof", icon: Shield },
       { id: "advisors", label: "Advisors", icon: Brain },
       { id: "pipeline-health", label: "Pipeline Health", icon: Activity },
+      { id: "profile-studio", label: "Profile Studio", icon: Sliders },
       { id: "business-profile", label: "Business Profile", icon: Sliders },
       { id: "profile-evolution", label: "Profile Evolution", icon: Activity },
       { id: "workflow-templates", label: "Workflow Templates", icon: Workflow },
