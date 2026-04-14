@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import type { LeadScoreResult, PriorityTier } from "@/lib/engines/lead-scoring-engine";
@@ -8,6 +9,8 @@ import { LeadConversionFunnel } from "./LeadConversionFunnel";
 import { LeadValuePipeline } from "./LeadValuePipeline";
 import { LeadHeatMap } from "./LeadHeatMap";
 import { LeadInboxOverviewCards } from "./LeadInboxOverviewCards";
+import { ModuleAdvisorPanel } from "@/components/business/advisor-board/ModuleAdvisorPanel";
+import { runScoringAdvisor, runConversionAdvisor, runTimingAdvisor, type AdvisorOutput } from "@/lib/engines/business-advisor-engine";
 import { Flame, TrendingUp, AlertTriangle, RotateCcw, Star, Target } from "lucide-react";
 
 interface Props {
@@ -52,6 +55,20 @@ export const LeadScoringDashboard = ({ scores, items, scoreMap, onSelectLead, se
   const avgScore = active.length > 0
     ? Math.round(active.reduce((s, r) => s + r.priorityScore, 0) / active.length)
     : 0;
+
+  // Generate scoring advisors from top leads
+  const scoringAdvisors = useMemo<AdvisorOutput[]>(() => {
+    const topScores = [...scores].sort((a, b) => b.priorityScore - a.priorityScore).slice(0, 3);
+    return topScores.flatMap(s => {
+      const item = items.find(i => i.id === s.leadId);
+      const name = item?.contact_name || "Unknown";
+      return [
+        runScoringAdvisor({ leadName: name, score: s.priorityScore, previousScore: Math.max(0, s.priorityScore - 8), topFactors: s.topPositiveFactors.slice(0, 2).map(f => f.label), bottomFactors: s.topNegativeFactors.slice(0, 2).map(f => f.label) }),
+        runConversionAdvisor({ leadName: name, likelihood: Math.min(95, s.priorityScore + 5), engagementLevel: s.heatStatus === "hot" ? "High" : "Moderate", fitScore: s.priorityScore }),
+        runTimingAdvisor({ leadName: name, daysSinceLastContact: s.staleRisk > 50 ? 18 : 5, quoteAge: 10, buyingUrgency: s.urgencyBand === "needs-response-today" ? "high" : "medium" }),
+      ];
+    }).slice(0, 6);
+  }, [scores, items]);
 
   const tiers: PriorityTier[] = ["critical-now", "high-priority", "active-watch", "nurture", "recovery-candidate", "low-priority"];
   const distribution = tiers.map(t => ({
@@ -168,6 +185,18 @@ export const LeadScoringDashboard = ({ scores, items, scoreMap, onSelectLead, se
               </button>
             ))}
           </div>
+        </div>
+      )}
+
+      {/* Scoring Advisor Intelligence */}
+      {scoringAdvisors.length > 0 && (
+        <div className="rounded-2xl border border-border/40 bg-card p-4">
+          <ModuleAdvisorPanel
+            advisors={scoringAdvisors}
+            title="Scoring & Conversion Advisors"
+            defaultExpanded={false}
+            compact
+          />
         </div>
       )}
     </div>

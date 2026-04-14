@@ -4,7 +4,7 @@
 
 import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Brain, Zap, AlertTriangle, TrendingUp, Shield, ChevronDown, ChevronRight, ArrowUpRight, Activity } from "lucide-react";
+import { Brain, Zap, AlertTriangle, TrendingUp, Shield, ChevronDown, ChevronRight, ArrowUpRight, Activity, Crown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { BoardSynthesisTheme, AdvisorOutput } from "@/lib/engines/business-advisor-engine";
 import { synthesizeBusinessBoard, generateHomeAdvisors, detectAdvisorDisagreements } from "@/lib/engines/business-advisor-engine";
@@ -203,6 +203,3 @@ export function BusinessAdvisorBoardPanel({ allAdvisors: propAdvisors, themes: p
     </div>
   );
 }
-
-// Needed for import in escalation candidates section
-import { Crown } from "lucide-react";
