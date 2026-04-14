@@ -37,6 +37,7 @@ const SECTIONS = [
   { id: "appearance",  label: "Appearance",  icon: <Palette className="h-3.5 w-3.5" />,  group: "System" },
   { id: "display",     label: "Display",     icon: <Monitor className="h-3.5 w-3.5" />,  group: "System" },
   { id: "sound",       label: "Sound",       icon: <Volume2 className="h-3.5 w-3.5" />,  group: "System" },
+  { id: "devicemode",  label: "Device Mode", icon: <Lock className="h-3.5 w-3.5" />,     group: "System" },
   { id: "network",     label: "Network",     icon: <Wifi className="h-3.5 w-3.5" />,     group: "Connectivity" },
   { id: "bluetooth",   label: "Bluetooth",   icon: <Bluetooth className="h-3.5 w-3.5" />,group: "Connectivity" },
   { id: "notifications", label: "Notifications", icon: <Bell className="h-3.5 w-3.5" />,group: "Preferences" },
@@ -1045,6 +1046,89 @@ function CloudSyncContent() {
   );
 }
 
+// ── Device Mode Section ─────────────────────────────────────
+
+function DeviceModeContent() {
+  const [deviceMode, setDeviceModeLocal] = useState("home");
+
+  useEffect(() => {
+    try {
+      const { getPolicyBundleManager } = require("@/lib/os-security/policyd-bundles");
+      const bm = getPolicyBundleManager();
+      setDeviceModeLocal(bm.getCurrentMode());
+    } catch { /* not ready */ }
+  }, []);
+
+  const modes = [
+    { id: "home", label: "Home", icon: "🏠", desc: "Consumer-friendly, moderate defaults" },
+    { id: "work", label: "Work", icon: "💼", desc: "Stronger security, VPN defaults" },
+    { id: "school", label: "School", icon: "🎓", desc: "Restricted installs, content controls" },
+    { id: "kiosk", label: "Kiosk", icon: "🖥️", desc: "Near-lockdown mode" },
+    { id: "guest_demo", label: "Guest", icon: "👤", desc: "Temporary session" },
+  ];
+
+  const handleSwitch = useCallback((mode: string) => {
+    try {
+      const { getPolicyBundleManager } = require("@/lib/os-security/policyd-bundles");
+      const bm = getPolicyBundleManager();
+      bm.switchMode(mode as any);
+      setDeviceModeLocal(mode);
+      toast.success(`Switched to ${modes.find(m => m.id === mode)?.label} mode`);
+    } catch {
+      toast.error("Policy engine not available");
+    }
+  }, []);
+
+  return (
+    <VStack spacing="normal">
+      <NovaSectionLabel>Device Mode</NovaSectionLabel>
+      <NovaCard>
+        <VStack spacing="tight">
+          <NovaText variant="label" muted className="!text-[10px]">
+            Device mode controls security posture, network rules, Bluetooth pairing, app permissions, and update behavior across the system.
+          </NovaText>
+          <div className="grid grid-cols-2 gap-2 mt-1">
+            {modes.map(m => (
+              <button
+                key={m.id}
+                onClick={() => handleSwitch(m.id)}
+                className={cn(
+                  "flex items-center gap-2 p-2.5 rounded-xl border text-left transition-all",
+                  deviceMode === m.id
+                    ? "border-[hsl(var(--primary))]/50 bg-[hsl(var(--primary))]/8"
+                    : "border-border/30 bg-card/40 hover:border-border/60"
+                )}
+              >
+                <span className="text-lg">{m.icon}</span>
+                <VStack spacing="micro">
+                  <NovaText variant="body" className="!text-[11px] font-medium">{m.label}</NovaText>
+                  <NovaText variant="label" muted className="!text-[8px]">{m.desc}</NovaText>
+                </VStack>
+                {deviceMode === m.id && <Check className="h-3.5 w-3.5 text-[hsl(var(--primary))] ml-auto shrink-0" />}
+              </button>
+            ))}
+          </div>
+        </VStack>
+      </NovaCard>
+
+      <NovaSectionLabel>Policy Center</NovaSectionLabel>
+      <NovaCard>
+        <HStack spacing="tight" align="center" justify="between">
+          <VStack spacing="micro">
+            <NovaText variant="body">View Active Policies</NovaText>
+            <NovaText variant="label" muted className="!text-[10px]">
+              See all enforced rules, decision log, and protection status
+            </NovaText>
+          </VStack>
+          <NovaButton variant="secondary" className="!text-[10px]" icon={<ChevronRight className="h-3 w-3" />}>
+            Open
+          </NovaButton>
+        </HStack>
+      </NovaCard>
+    </VStack>
+  );
+}
+
 // ── Content map ────────────────────────────────────────────
 
 const CONTENT: Record<string, () => JSX.Element> = {
@@ -1054,6 +1138,7 @@ const CONTENT: Record<string, () => JSX.Element> = {
   appearance: AppearanceContent,
   display: DisplayContent,
   sound: SoundContent,
+  devicemode: DeviceModeContent,
   network: NetworkContent,
   bluetooth: BluetoothContent,
   notifications: NotificationsContent,
