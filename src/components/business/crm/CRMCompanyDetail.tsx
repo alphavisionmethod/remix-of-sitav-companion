@@ -29,7 +29,7 @@ export function CRMCompanyDetail({ company, onClose, onSelectContact }: CRMCompa
   const { data: allNotes = [] } = useCRMNotes();
   const [activeTab, setActiveTab] = useState("overview");
 
-  const contacts = useMemo(() => allContacts.filter(c => c.company_id === company.id || c.tags?.includes(company.name)), [allContacts, company]);
+  const contacts = useMemo(() => allContacts.filter(c => c.tags?.includes(company.name)), [allContacts, company]);
   const opps = useMemo(() => allOpps.filter(o => o.company_id === company.id), [allOpps, company.id]);
   const comms = useMemo(() => allComms.filter(c => c.company_id === company.id), [allComms, company.id]);
   const notes = useMemo(() => allNotes.filter(n => n.company_id === company.id), [allNotes, company.id]);
