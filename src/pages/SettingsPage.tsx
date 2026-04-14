@@ -1142,55 +1142,7 @@ const { isLoading, toggleDemoMode } = useDemoMode();
 
       case "updates":
         return (
-          <SitaCard hover={false} className="p-5">
-            <SitaCardTitle sub="System update channels, slot health, and update policy">
-              <div className="flex items-center gap-2"><Download className="h-4 w-4 text-primary" /> System Updates</div>
-            </SitaCardTitle>
-            <div className="mt-4 space-y-4">
-              <div className="rounded-xl border border-[hsl(var(--trust-safe))]/20 bg-[hsl(var(--trust-safe))]/5 p-4">
-                <div className="flex items-center gap-3">
-                  <CheckCircle className="h-5 w-5 text-[hsl(var(--trust-safe))]" />
-                  <div>
-                    <p className="text-sm font-medium text-foreground">System Up to Date</p>
-                    <p className="text-[10px] text-muted-foreground">Running v2.8.1 · Active Slot A · Stable channel</p>
-                  </div>
-                </div>
-                <div className="grid grid-cols-3 gap-2 mt-3">
-                  <div className="rounded-lg bg-secondary/30 p-2.5 text-center">
-                    <p className="font-display text-sm font-bold text-foreground">v2.8.1</p>
-                    <p className="text-[9px] text-muted-foreground">Current</p>
-                  </div>
-                  <div className="rounded-lg bg-secondary/30 p-2.5 text-center">
-                    <p className="font-display text-sm font-bold text-foreground">Slot A</p>
-                    <p className="text-[9px] text-muted-foreground">Active</p>
-                  </div>
-                  <div className="rounded-lg bg-secondary/30 p-2.5 text-center">
-                    <p className="font-display text-sm font-bold text-primary">Stable</p>
-                    <p className="text-[9px] text-muted-foreground">Channel</p>
-                  </div>
-                </div>
-              </div>
-              <ChoiceGroup label="Update Channel" value="stable" onChange={() => {}} options={[
-                { key: "stable", label: "Stable", desc: "Production-ready, fully tested" },
-                { key: "beta", label: "Beta", desc: "Preview features" },
-                { key: "canary", label: "Canary", desc: "Bleeding edge" },
-              ]} />
-              <ToggleSetting label="Auto-Install Security Patches" description="Critical security updates are applied automatically overnight" enabled={true} onChange={() => {}} />
-              <ToggleSetting label="Feature Update Approval" description="Require manual approval for non-security updates" enabled={true} onChange={() => {}} />
-              <ToggleSetting label="Require Charger for Updates" description="Only install updates when connected to power" enabled={false} onChange={() => {}} />
-              <div className="py-3 border-t border-border">
-                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Policy</p>
-                <div className="space-y-1 text-xs text-muted-foreground">
-                  <div className="flex items-center gap-2"><CheckCircle className="h-3 w-3 text-[hsl(var(--trust-safe))]" /> Minimum 40% battery required</div>
-                  <div className="flex items-center gap-2"><CheckCircle className="h-3 w-3 text-[hsl(var(--trust-safe))]" /> A/B slot atomic install with auto-rollback</div>
-                  <div className="flex items-center gap-2"><CheckCircle className="h-3 w-3 text-[hsl(var(--trust-safe))]" /> OTA agent runs daily at 03:00</div>
-                </div>
-              </div>
-              <SitaButton variant="secondary" size="sm" className="w-full" onClick={() => window.location.href = "/update-center"}>
-                <Download className="h-3.5 w-3.5 mr-1" /> Open Full Update Center
-              </SitaButton>
-            </div>
-          </SitaCard>
+          <SettingsUpdateSection />
         );
 
       default:
