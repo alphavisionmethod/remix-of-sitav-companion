@@ -1,171 +1,80 @@
 
 
-# Advanced Network UX, Battery Intelligence, Automation & System Intelligence
+# Fix Widget Clicks, Settings Left Rail, and Smooth Dragging
 
-## Current State
+## Issues Identified
 
-**Existing infrastructure:**
-- Basic WiFi panel (190L): network list, password prompt, connect via `wifiConnectFlow`
-- Basic Bluetooth panel (157L): device list, pair/connect via `controlcenterd`
-- Basic Battery panel (92L): level gauge, 3 power modes
-- `NetworkUtility.tsx` (133L): static connector health + diagnostics page
-- OS security flows (339L): WiFi connect, VPN cert install, firewall disable
-- OS subsystem flows (308L): policy-evaluated flows for school WiFi, public WiFi auto-VPN, etc.
-- Recovery engine (194L): degraded mode management
+1. **To-Do and Pending mini-cards in `DesktopClockWidget`** are plain `<div>` elements — they have no click handler and don't open any app. The To-Do card should open a new Tasks/To-Do app window, and the Pending card should open the Concierge Tasks or Business app to show pending items.
 
-**What's missing (from sections 16-34):**
-- No captive portal detection, wrong password recovery, weak signal suggestions, hidden SSID, enterprise auth, static IP, custom DNS, metered mode, hotspot/tethering, airplane mode
-- No BT battery display, audio route switching, codec selection, BLE privacy, stale cleanup, reconnection policy
-- No battery health estimation, thermal pressure, charger detection, optimized charging, app drain attribution, suspend/resume tracking
-- No `automationd` rules engine
-- No system intelligence/recommendation engine
-- No self-repair/diagnostics engine
-- No full settings/search system
-- No HAL abstraction
+2. **Left Rail (`DesktopLeftRail`)** shown in the screenshot is a fixed list of 6 app icons (Business, Finance, Concierge, Files, Boardroom, Trust). The user wants it to behave like a **settings widget** — meaning it should be a draggable, removable desktop widget (registered in the widget system), not a fixed sidebar element.
 
-## Approach — 4 Batches (Feasible Scope)
+3. **No To-Do app exists** — need to create a `TodoAppWindow` with a fully functional task management interface.
 
-Given codebase constraints (React SPA, not a real OS kernel), we implement these as **realistic simulated daemons + beautiful premium UI dashboards**. This matches the existing pattern (authd, sessiond, secretsd are all TypeScript simulations).
+4. **DraggableWidget smoothness** — the current widget dragging uses framer-motion's `drag` with `dragMomentum={false}` and `dragElastic={0}`, which positions via `left/top` (triggers layout). FloatingWindow uses `transform` + lerp animation loop for smooth 60fps dragging. DraggableWidget should be upgraded to match.
 
 ---
 
-### Batch 1: Core Daemons — wifid, btd, powerd, automationd (~500L)
+## Plan — 3 Batches
 
-**Create `src/lib/os-services/wifid.ts`** (~150L):
-- `WifiDaemon` class with full state model: `WifiConnectivityState` (Offline/Limited/CaptivePortal/Online)
-- Captive portal detection + state tracking
-- Network list with RSSI, security type, frequency band, hidden SSID support
-- Enterprise auth model (WPA2/3-Enterprise, certs, anonymous identity)
-- Per-network settings: static IP, custom DNS, metered mode
-- Hotspot/tethering config model
-- Airplane mode coordination
-- Wrong password error classification + retry state
-- Weak signal detection + roaming suggestions
+### Batch 1: Create To-Do App + Wire Click Handlers (~250 lines)
 
-**Create `src/lib/os-services/btd.ts`** (~120L):
-- `BluetoothDaemon` class
-- Device model with battery level (headset, earbuds L/R/case, keyboard)
-- Audio route management (output/input device, active role, preferred route)
-- Codec selection (AAC, SBC, aptX, LDAC)
-- BLE privacy (rotating addresses)
-- Stale device cleanup (last seen tracking)
-- Per-device reconnection policy (always/on-demand/never)
-- Forgotten device removal (disconnect + unpair + revoke + clear cache)
+**Create `src/components/sita/shell/windows/TodoWindow.tsx`** (~180 lines):
+- Full task management app with glassmorphic OS style
+- Features: add task, mark complete, delete, categories (Personal/Work/Urgent), due dates, priority levels
+- Task list with checkboxes, swipe-to-complete animation
+- "Add Task" input with category selector
+- Filter tabs: All / Active / Completed
+- Task count badge
+- Empty state with friendly illustration
+- Beautiful dark glassmorphic design matching OS aesthetic
 
-**Create `src/lib/os-services/powerd.ts`** (~130L):
-- `PowerDaemon` class
-- Battery health: design capacity vs full charge, cycle count, aging trend, temp stress
-- Thermal pressure states: nominal/warm/hot/throttling/critical
-- Charger detection: wattage, type (USB-C PD, wireless, etc.)
-- Optimized charging: hold at 80%, learned schedule, predicted unplug
-- App drain attribution model (CPU, network, wakeups, background jobs)
-- Suspend/resume stability tracker
-- 4 power profiles: Saver, Balanced, Performance, Quiet
+**Modify `DesktopClockWidget.tsx`** — Make To-Do and Pending clickable:
+- Accept `onLaunchApp` prop
+- To-Do card: `onClick={() => onLaunchApp?.("todo")}` with hover/cursor styles
+- Pending card: `onClick={() => onLaunchApp?.("concierge")}` with hover/cursor styles
+- Add subtle hover glow effect on both cards
 
-**Create `src/lib/os-services/automationd.ts`** (~100L):
-- `AutomationDaemon` class
-- Rule model: condition → action with policy-aware safeguards
-- Built-in rules: public WiFi → VPN, low battery → saver, presentation → mute notifications, headphones → audio panel, threat → isolate
-- Event bus simulation
-- Rule execution audit trail
-- Conflict resolution
+**Register in `ShellWindowLayer.tsx`**:
+- Import `TodoWindow` and add to `APP_REGISTRY` as `todo`
 
-### Batch 2: Enhanced System Panels — WiFi, Bluetooth, Battery (~600L)
+**Update `DesktopSurface.tsx`** `renderWidget` for `"calendar"` case:
+- Pass `onLaunchApp` to `DesktopClockWidget`
 
-**Rewrite `SystemWifiPanel.tsx`** (~200L):
-- Captive portal banner with "Sign in required" + open browser action
-- Wrong password UI: "Password may be incorrect" with Retry/Forget/Show/Troubleshoot
-- Weak signal indicator with "Switch to stronger AP?" suggestion
-- Hidden network "Join Other" option
-- Per-network settings drawer: static IP, DNS, metered toggle
-- Hotspot toggle with SSID/password config
-- Airplane mode indicator
-- Enterprise auth fields when selecting WPA-Enterprise networks
-- Connection state badges (Online/Limited/CaptivePortal/AuthFailed)
-- Visual signal strength bars (not just percentage)
+### Batch 2: Convert Left Rail to Draggable Settings Widget (~100 lines)
 
-**Rewrite `SystemBluetoothPanel.tsx`** (~200L):
-- Battery level display per accessory (earbuds L/R/case, keyboard, mouse)
-- Audio route section: current output/input, switch button
-- Codec indicator (AAC/SBC/aptX)
-- "Clean up old devices" action
-- Per-device menu: Forget, Reconnection policy, Trust level
-- BLE privacy indicator
-- Stale device dimming (not seen in 7+ days)
+**Modify `DesktopLeftRail.tsx`** — Convert to a settings/apps widget style:
+- Remove the fixed `absolute left-4` positioning (that's handled by `DraggableWidget`)
+- Make it a self-contained widget component that renders inside the widget system
+- Keep the same visual style but make each icon button removable isn't needed — just the whole rail is draggable/removable as a widget
 
-**Rewrite `SystemBatteryPanel.tsx`** (~200L):
-- Battery health card: capacity %, cycle count, health rating (Good/Fair/Poor)
-- Thermal status with color-coded indicator
-- Charger info: wattage, type, slow charger warning
-- Optimized charging toggle with schedule visualization
-- Top battery consumers list (per-app with CPU/network/wakeup bars)
-- Time remaining estimate with confidence range
-- Profile selector with visual tuning sliders
-- Suspend/resume stability indicator
+**Register in `useDesktopWidgets.ts`**:
+- Add `apps-rail` widget type to `DEFAULT_WIDGETS` (visible by default)
 
-### Batch 3: System Intelligence Dashboard (~500L)
+**Update `DesktopSurface.tsx`**:
+- Remove the standalone `<DesktopLeftRail>` from the fixed position
+- Add `"apps-rail"` case in `renderWidget()` that renders `<DesktopLeftRail>`
 
-**Create `src/pages/admin/SYS01SystemIntelligence.tsx`** — 6-tab premium dashboard:
+### Batch 3: Smooth Dragging for Widgets (~80 lines)
 
-- **Tab 1 — Network Intelligence**: Full WiFi state visualization, captive portal status, signal heatmap, DNS leak indicator, metered network list, auto-VPN trigger history. Visual network topology diagram.
-
-- **Tab 2 — Bluetooth Intelligence**: Device fleet with battery gauges, audio route graph, codec quality indicator, stale device list, reconnection policy grid. Accessory timeline showing connect/disconnect history.
-
-- **Tab 3 — Power Intelligence**: Battery health curve, thermal timeline, charge cycle graph, app drain leaderboard, optimized charging schedule, profile comparison chart. Visual thermal pressure gauge.
-
-- **Tab 4 — Automation Rules**: Active rules list with condition → action visualization, execution history timeline, conflict detector, rule builder preview. Color-coded by domain (network=blue, power=amber, security=red).
-
-- **Tab 5 — Recommendations**: Active system intelligence suggestions with dismiss/accept/snooze. "You joined café WiFi — Shield secured your traffic", "Battery wear increasing — enable optimized charging?", "Bluetooth unused 7 days — turn off?". Each card shows reasoning and confidence.
-
-- **Tab 6 — Diagnostics & Self-Repair**: One-click fix actions (reset network stack, flush DNS, restart Bluetooth, rebuild firewall, verify VPN). Diagnostic test runner with results. System health summary. HAL capability report.
-
-### Batch 4: Full Network Settings Page + Search + Help (~400L)
-
-**Rewrite `src/pages/NetworkUtility.tsx`** as a comprehensive Network & Connectivity Center (~250L):
-- WiFi section: current connection details, saved networks, advanced settings
-- Bluetooth section: paired devices, audio settings, battery overview
-- Shield section: firewall status, VPN status, DNS privacy
-- Connectivity diagnostics with live test results
-- Network history timeline
-- Per-app network usage
-- Beautiful glassmorphic cards matching OS design language
-
-**Create `src/lib/os-services/search-indexer.ts`** (~80L):
-- Settings registry with deep-link routing
-- Searchable system terms (vpn, battery health, firewall, connect headphones)
-- Intent/action registry mapping search queries to system actions
-
-**Create `src/lib/os-services/help-engine.ts`** (~70L):
-- Help content registry with explainers per system area
-- Guided troubleshooting flows
-- Remediation action registry (reset network, flush DNS, restart BT, rebuild firewall)
-- Safe repair workflow execution
+**Rewrite `DraggableWidget.tsx`** drag mechanics:
+- Replace framer-motion `drag` prop with pointer-event-based dragging (same pattern as FloatingWindow)
+- Use `requestAnimationFrame` + lerp for 60fps smoothness
+- Apply position via `transform: translate3d()` instead of `left/top` to avoid layout thrashing
+- Keep the `GripHorizontal` drag handle and `X` remove button
+- Retain visual effects (scale on drag, shadow glow)
+- Add subtle inertia on release
 
 ---
-
-## Design Language
-- Same glassmorphic style: `bg-black/70 backdrop-blur-3xl`, `border-white/[0.08]`
-- WiFi = blue theme, Bluetooth = indigo, Battery = amber/green, Automation = purple, Intelligence = cyan
-- Visual signal bars, battery gauges, thermal pressure meters — rich visual components
-- Animated state transitions for connection/pairing
-- Accessory battery icons with fill levels
-- Premium micro-interactions: pulse on connect, fade on disconnect
 
 ## File Summary
-| Action | File | ~Lines |
-|--------|------|--------|
-| Create | `src/lib/os-services/wifid.ts` | 150 |
-| Create | `src/lib/os-services/btd.ts` | 120 |
-| Create | `src/lib/os-services/powerd.ts` | 130 |
-| Create | `src/lib/os-services/automationd.ts` | 100 |
-| Rewrite | `SystemWifiPanel.tsx` | 200 |
-| Rewrite | `SystemBluetoothPanel.tsx` | 200 |
-| Rewrite | `SystemBatteryPanel.tsx` | 200 |
-| Create | `SYS01SystemIntelligence.tsx` | 500 |
-| Rewrite | `NetworkUtility.tsx` | 250 |
-| Create | `search-indexer.ts` | 80 |
-| Create | `help-engine.ts` | 70 |
-| Modify | `AdminRoutes.tsx` | +5 |
-| Modify | `AdminDashboard.tsx` | +15 |
-| **Total** | **13 files** | **~2,020** |
+| Action | File | Changes |
+|--------|------|---------|
+| Create | `windows/TodoWindow.tsx` | ~180 lines |
+| Modify | `DesktopClockWidget.tsx` | Add click handlers + props |
+| Modify | `ShellWindowLayer.tsx` | Register todo app |
+| Modify | `DesktopSurface.tsx` | Wire clock props, add apps-rail widget, remove fixed left rail |
+| Modify | `DesktopLeftRail.tsx` | Remove fixed positioning wrapper |
+| Modify | `useDesktopWidgets.ts` | Add apps-rail widget type |
+| Modify | `DraggableWidget.tsx` | Rewrite to transform-based smooth drag |
+| **Total** | **7 files** | **~430 lines** |
 
