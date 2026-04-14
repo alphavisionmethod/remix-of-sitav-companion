@@ -143,6 +143,7 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
     label: "Intelligence",
     items: [
       { id: "revenue-impact", label: "Revenue Impact", icon: BarChart3 },
+      { id: "kpi-dashboard", label: "KPI Dashboard", icon: Target },
       { id: "playbook-builder", label: "Builder", icon: BookOpen },
       { id: "revenue-forecast", label: "Forecast", icon: LineChart },
     ],
