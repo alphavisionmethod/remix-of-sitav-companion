@@ -1,68 +1,62 @@
 
 
-# Complete Business OS Window Integration — Final Gaps
+# Merge Finance OS into Single Windowed App
 
-## What's Already Done
-- All 40+ pages are imported and mapped in the windowed `BusinessAppShell`
-- All `/business/*` routes redirect through `BusinessCenter` → `sita-open-business` event → desktop
-- Sidebar has 6 groups with full navigation
-- `BusinessNavigationContext` exists for internal navigation
+## Current State
+- `FinanceAppShell.tsx` has only 7 sidebar items and shows "DATA CANVAS" placeholders for most modules
+- `MoneyCenter.tsx` (router-based) has all 33 fully-built sub-pages with 6 sidebar groups
+- All `/money/*` routes render `MoneyCenter` as a standalone page, not inside the window
 
-## Remaining Gaps (6 issues)
+## Plan
 
-### 1. Deep-linking module is lost
-**Problem**: `ShellLayout.tsx` catches the `sita-open-business` event but ignores `event.detail.module`. The Business window always opens to `crm-home` regardless of which `/business/*` URL was hit.
+### 1. Create `FinanceNavigationContext.tsx`
+Mirror of `BusinessNavigationContext` — provides `navigateTo(module)` and `activeModule` for internal navigation without React Router.
 
-**Fix**: Pass the module from the event detail through to the `BusinessAppShell`. This requires:
-- `ShellLayout.tsx`: Extract `detail.module` from the event and pass it when opening the window
-- `ShellWindowLayer.tsx`: Support an `initialModule` parameter in `doLaunchApp` and thread it to `BusinessAppShell`
-- The `apps` map in `ShellWindowLayer.tsx` needs to render `BusinessAppShell` dynamically with the module prop
+### 2. Rewrite `FinanceAppShell.tsx` (major)
+- Import all 33 page components from `src/pages/money/`
+- Replicate the 6 sidebar groups from `MoneyCenter.tsx` (Core, Wealth, Flow, Insights, Lifestyle, Office)
+- Build a `pages` map identical to `MoneyCenter`'s
+- Render the active page component based on `activeModule` state
+- Keep the existing Boardroom status strip, advisor board, and pipeline health views
+- Wrap children in `FinanceNavigationContext.Provider`
+- Listen for `sita-finance-navigate` event for deep-linking
+- Preserve the dark glassmorphic sidebar aesthetic with finance-green accent
 
-### 2. Legacy `BusinessAppShell` duplicate
-**Problem**: `src/components/business/BusinessAppShell.tsx` (265 lines) is the old shell used by the router-based `BusinessCenter`. It's no longer needed since the windowed version at `src/components/sita/apps/business/BusinessAppShell.tsx` replaced it.
+### 3. Convert `MoneyCenter.tsx` to redirect shim
+Same pattern as `BusinessCenter.tsx`:
+- On mount, dispatch `sita-open-finance` event with the correct module extracted from path
+- Navigate to `/desktop`
 
-**Fix**: Check if anything still imports the old one. If not, delete it. If the old `BusinessCenter` page component (which now just fires the redirect event) still references it, remove that reference.
+### 4. Create `openFinanceModule()` launcher utility
+Add to `src/lib/finance-launcher.ts` — dispatches `sita-open-finance` event, used by external components.
 
-### 3. CRMCommandSearch uses `navigate()` instead of context
-**Problem**: `CRMCommandSearch.tsx` line 132 calls `navigate("/business/${result.path}")` which triggers a full route redirect → event → window reopen cycle instead of just switching the active module.
+### 5. Add `sita-open-finance` listener in `ShellLayout.tsx`
+Mirror the `sita-open-business` listener — catches the event, calls `doLaunchApp("finance")`, then dispatches `sita-finance-navigate` with the module.
 
-**Fix**: Replace `useNavigate` with `useBusinessNavigation().navigateTo(result.path)`.
+### 6. Update external `navigate("/money/...")` calls
+- `CommandPalette.tsx` — use `openFinanceModule()` for bills, cash, subscriptions
+- `HoldKeyOverlay.tsx` — use `openFinanceModule()` for money shortcuts
+- `GlobalBoardroom.tsx` — use `openFinanceModule("boardroom")`
 
-### 4. CustomerDetailPane uses `navigate()` instead of context
-**Problem**: `CustomerDetailPane.tsx` line 66 calls `navigate("/business/customers/${id}")` for the Detail button.
+### 7. Update internal `navigate()` calls in money pages
+- `MoneyOverview.tsx` — replace `navigate("/money/bills")` etc. with `useFinanceNavigation().navigateTo("bills")`
 
-**Fix**: Replace with `useBusinessNavigation().navigateTo("customer-detail:" + customer.id)`.
+### 8. Update `money-routes.tsx`
+All routes except onboarding redirect through the `MoneyCenter` shim (which now just fires the event).
 
-### 5. External components using `navigate("/business/...")`
-**Problem**: 5 files outside Business use `navigate("/business/...")`:
-- `CommandPalette.tsx` — navigates to `/business/leads`, `/business/invoices`, etc.
-- `HoldKeyOverlay.tsx` — navigates to `/business`, `/business/leads`, `/business/invoices`
-- `DailyPulse.tsx` — navigates to `/business`
-- `GlobalBoardroom.tsx` — navigates to `/business/boardroom`
-- `CustomerAutopilotPanel.tsx` — navigates to `/business/autopilot-hub`
-
-**Fix**: These are **outside** the Business app, so they can't use `useBusinessNavigation`. Instead, they should dispatch the `sita-open-business` custom event with the correct module, matching what `BusinessCenter.tsx` does. Create a small helper: `openBusinessModule(module: string)`.
-
-### 6. Quick Actions in CRMCommandSearch use `navigate()`
-**Problem**: The `QUICK_ACTIONS` in `CRMCommandSearch.tsx` also route via `navigate`.
-
-**Fix**: Same as #3 — use `useBusinessNavigation`.
-
-## Files to Modify
+## Files
 
 | File | Change |
 |------|--------|
-| `src/components/sita/ShellLayout.tsx` | Pass `detail.module` from event to window launcher |
-| `src/components/sita/shell/ShellWindowLayer.tsx` | Support `initialModule` param in `doLaunchApp`, thread to `BusinessAppShell` |
-| `src/components/business/crm/CRMCommandSearch.tsx` | Replace `useNavigate` with `useBusinessNavigation` |
-| `src/components/business/CustomerDetailPane.tsx` | Replace `useNavigate` with `useBusinessNavigation` |
-| `src/components/sita/CommandPalette.tsx` | Use `sita-open-business` event dispatch instead of `navigate` |
-| `src/components/sita/shell/HoldKeyOverlay.tsx` | Use `sita-open-business` event dispatch |
-| `src/pages/DailyPulse.tsx` | Use `sita-open-business` event dispatch |
-| `src/pages/GlobalBoardroom.tsx` | Use `sita-open-business` event dispatch |
-| `src/components/autopilot/CustomerAutopilotPanel.tsx` | Use `sita-open-business` event dispatch |
-| New: `src/lib/business-launcher.ts` | Tiny helper: `openBusinessModule(module)` that dispatches the event |
-| Delete: `src/components/business/BusinessAppShell.tsx` | Remove legacy duplicate (if no remaining imports) |
+| New: `src/contexts/FinanceNavigationContext.tsx` | Navigation context for Finance |
+| New: `src/lib/finance-launcher.ts` | `openFinanceModule()` helper |
+| `src/components/sita/apps/finance/FinanceAppShell.tsx` | Full rewrite — 33 pages, 6 groups |
+| `src/pages/MoneyCenter.tsx` | Convert to redirect shim |
+| `src/components/sita/ShellLayout.tsx` | Add `sita-open-finance` listener |
+| `src/components/sita/CommandPalette.tsx` | Use `openFinanceModule` |
+| `src/components/sita/shell/HoldKeyOverlay.tsx` | Use `openFinanceModule` |
+| `src/pages/GlobalBoardroom.tsx` | Use `openFinanceModule` |
+| `src/pages/money/MoneyOverview.tsx` | Use `useFinanceNavigation` |
 
-## No database changes needed
+No database changes needed.
 
