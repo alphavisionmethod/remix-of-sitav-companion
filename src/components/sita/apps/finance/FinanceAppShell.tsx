@@ -243,6 +243,11 @@ export function FinanceAppShell() {
               </div>
             </div>
           ))}
+
+          {/* Cross-OS Links */}
+          <div className="mt-auto px-3 pt-3 pb-2">
+            <CrossOSLinksPanel sourceApp="finance" primaryMode={primaryMode} compact maxLinks={4} />
+          </div>
         </div>
 
         {/* ── Content ─────────────────────────────────────── */}
