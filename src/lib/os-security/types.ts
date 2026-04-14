@@ -320,7 +320,6 @@ export const DEFAULT_ROLE_CAPABILITIES: Record<OSUserRole, string[]> = {
     "shield.vpn.toggle", "cert.install.user",
   ],
   admin: [
-    // Admin inherits all standard + additional
     "session.lock", "session.unlock", "session.switch", "power.profile.set", "power.shutdown", "power.reboot",
     "wifi.toggle", "wifi.connect.open", "wifi.connect.secure", "wifi.forget",
     "bluetooth.toggle", "bluetooth.pair", "bluetooth.unpair",
@@ -332,7 +331,188 @@ export const DEFAULT_ROLE_CAPABILITIES: Record<OSUserRole, string[]> = {
     "security.baseline.change", "system.settings.modify",
   ],
   system: [
-    // System has all capabilities
     ...CAPABILITY_REGISTRY.map(c => c.id),
   ],
 };
+
+// ═══════════════════════════════════════════════════════════════
+// EXTENDED TYPES — Session Tokens, Secrets Lifecycle, Key Hierarchy
+// ═══════════════════════════════════════════════════════════════
+
+// ── Extended Session State ──────────────────────────────────
+
+export type ExtendedSessionState =
+  | "creating" | "active" | "inactive" | "locked"
+  | "authenticating" | "terminating" | "resuming"
+  | "suspended" | "expired" | "revoked";
+
+export type SessionType = "local" | "guest" | "remote";
+
+// ── Session Token Model ─────────────────────────────────────
+
+export type SessionTokenClass =
+  | "ui_session" | "privileged_action" | "broker"
+  | "service_delegation" | "lockscreen_limited" | "fresh_auth";
+
+export interface SessionToken {
+  tokenId: string;
+  sessionId: string;
+  userId: string;
+  audience: string;
+  scopes: string[];
+  issuedAt: number;
+  expiresAt: number;
+  sensitive: boolean;
+  revoked: boolean;
+  revokedAt?: number;
+  keyId: string;
+  signature: string;
+  tokenClass: SessionTokenClass;
+  nonce: string;
+}
+
+// ── Suspend / Resume / Idle Policy ──────────────────────────
+
+export type SuspendLockMode = "always_lock" | "lock_after_threshold" | "never_lock";
+
+export interface SuspendLockPolicy {
+  mode: SuspendLockMode;
+  thresholdMs: number;
+  forceReauthSensitive: boolean;
+}
+
+export interface IdlePolicy {
+  idleTimeoutMs: number;
+  screensaverDelayMs: number;
+  graceIntervalMs: number;
+  autoLock: boolean;
+}
+
+// ── Lockscreen Action Matrix ────────────────────────────────
+
+export type LockscreenDecision = "allowed" | "denied" | "conditional";
+
+export interface LockscreenActionRule {
+  action: string;
+  displayName: string;
+  decision: LockscreenDecision;
+  policySource: string;
+  authRequired: boolean;
+  auditSeverity: AuditSeverity;
+  condition?: string;
+}
+
+export const LOCKSCREEN_ACTION_MATRIX: LockscreenActionRule[] = [
+  { action: "view.battery", displayName: "View Battery", decision: "allowed", policySource: "system-default", authRequired: false, auditSeverity: "info" },
+  { action: "view.time", displayName: "View Time/Date", decision: "allowed", policySource: "system-default", authRequired: false, auditSeverity: "info" },
+  { action: "view.connectivity", displayName: "View Connectivity", decision: "conditional", policySource: "policyd", authRequired: false, auditSeverity: "info", condition: "Limited info only" },
+  { action: "media.controls", displayName: "Media Controls", decision: "conditional", policySource: "policyd", authRequired: false, auditSeverity: "info", condition: "Play/pause/skip only" },
+  { action: "emergency.call", displayName: "Emergency Controls", decision: "allowed", policySource: "system-mandatory", authRequired: false, auditSeverity: "warning" },
+  { action: "accessibility.tools", displayName: "Accessibility Tools", decision: "allowed", policySource: "system-mandatory", authRequired: false, auditSeverity: "info" },
+  { action: "wifi.toggle", displayName: "Toggle WiFi", decision: "conditional", policySource: "policyd", authRequired: false, auditSeverity: "info", condition: "Policy-driven" },
+  { action: "bluetooth.pair", displayName: "Pair Bluetooth", decision: "denied", policySource: "security-baseline", authRequired: true, auditSeverity: "warning" },
+  { action: "shield.firewall.disable", displayName: "Disable Firewall", decision: "denied", policySource: "security-baseline", authRequired: true, auditSeverity: "critical" },
+  { action: "cert.install", displayName: "Install Certificate", decision: "denied", policySource: "security-baseline", authRequired: true, auditSeverity: "critical" },
+  { action: "secrets.access", displayName: "Access Secrets", decision: "denied", policySource: "security-baseline", authRequired: true, auditSeverity: "critical" },
+  { action: "permission.prompt", displayName: "Approve Permissions", decision: "denied", policySource: "security-baseline", authRequired: true, auditSeverity: "high" },
+  { action: "user.files", displayName: "Access User Files", decision: "denied", policySource: "security-baseline", authRequired: true, auditSeverity: "high" },
+  { action: "notifications.full", displayName: "Full Notifications", decision: "denied", policySource: "privacy-policy", authRequired: true, auditSeverity: "info" },
+  { action: "notifications.preview", displayName: "Notification Previews", decision: "conditional", policySource: "privacy-policy", authRequired: false, auditSeverity: "info", condition: "Sender only, no content" },
+  { action: "camera.access", displayName: "Camera Access", decision: "denied", policySource: "security-baseline", authRequired: true, auditSeverity: "high" },
+  { action: "microphone.access", displayName: "Microphone Access", decision: "denied", policySource: "security-baseline", authRequired: true, auditSeverity: "high" },
+  { action: "location.access", displayName: "Location Access", decision: "denied", policySource: "security-baseline", authRequired: true, auditSeverity: "high" },
+  { action: "usb.mount", displayName: "Mount USB", decision: "denied", policySource: "security-baseline", authRequired: true, auditSeverity: "warning" },
+  { action: "vpn.toggle", displayName: "Toggle VPN", decision: "denied", policySource: "security-baseline", authRequired: true, auditSeverity: "warning" },
+  { action: "power.shutdown", displayName: "Shutdown", decision: "conditional", policySource: "policyd", authRequired: false, auditSeverity: "warning", condition: "Policy-driven" },
+  { action: "power.reboot", displayName: "Reboot", decision: "conditional", policySource: "policyd", authRequired: false, auditSeverity: "warning", condition: "Policy-driven" },
+];
+
+// ── Secret Status Lifecycle ─────────────────────────────────
+
+export type SecretStatus = "active" | "revoked" | "soft_deleted" | "destroyed";
+
+export interface SecretVersion {
+  versionId: string;
+  secretId: string;
+  version: number;
+  ciphertextRef: string;
+  wrappingKeyId: string;
+  createdAt: number;
+  supersededAt?: number;
+}
+
+// ── Secret Access Policy Binding ────────────────────────────
+
+export interface SecretAccessPolicyBinding {
+  bindingId: string;
+  secretType: SecretType;
+  ownerScopePattern: string;
+  allowedServices: string[];
+  exportAllowed: boolean;
+  hardwareRequired: boolean;
+  rotationIntervalSec: number;
+  maxHandleTtlMs: number;
+}
+
+export const DEFAULT_SECRET_POLICY_BINDINGS: SecretAccessPolicyBinding[] = [
+  { bindingId: "pol-wifi", secretType: "wifi-psk", ownerScopePattern: "user:*", allowedServices: ["wifid", "controlcenterd"], exportAllowed: false, hardwareRequired: false, rotationIntervalSec: 0, maxHandleTtlMs: 30000 },
+  { bindingId: "pol-vpn", secretType: "vpn-private-key", ownerScopePattern: "user:*", allowedServices: ["shieldd"], exportAllowed: false, hardwareRequired: true, rotationIntervalSec: 7776000, maxHandleTtlMs: 60000 },
+  { bindingId: "pol-cert", secretType: "certificate-private-key", ownerScopePattern: "*", allowedServices: ["certd", "shieldd"], exportAllowed: false, hardwareRequired: true, rotationIntervalSec: 7776000, maxHandleTtlMs: 60000 },
+  { bindingId: "pol-bt", secretType: "bluetooth-bond-key", ownerScopePattern: "system", allowedServices: ["btd"], exportAllowed: false, hardwareRequired: false, rotationIntervalSec: 0, maxHandleTtlMs: 10000 },
+  { bindingId: "pol-api", secretType: "api-token", ownerScopePattern: "user:*", allowedServices: ["appmgr", "controlcenterd"], exportAllowed: true, hardwareRequired: false, rotationIntervalSec: 2592000, maxHandleTtlMs: 120000 },
+  { bindingId: "pol-app", secretType: "app-credential", ownerScopePattern: "user:*", allowedServices: ["appmgr"], exportAllowed: false, hardwareRequired: false, rotationIntervalSec: 0, maxHandleTtlMs: 60000 },
+  { bindingId: "pol-svc", secretType: "service-token", ownerScopePattern: "service:*", allowedServices: ["*"], exportAllowed: false, hardwareRequired: false, rotationIntervalSec: 86400, maxHandleTtlMs: 30000 },
+  { bindingId: "pol-enc", secretType: "encryption-key", ownerScopePattern: "*", allowedServices: ["secretsd"], exportAllowed: false, hardwareRequired: true, rotationIntervalSec: 7776000, maxHandleTtlMs: 10000 },
+];
+
+// ── Secret Deletion Queue ───────────────────────────────────
+
+export type SecretDeleteMode = "soft" | "secure_erase";
+
+export interface SecretDeletionEntry {
+  deletionId: string;
+  secretId: string;
+  deleteMode: SecretDeleteMode;
+  scheduledAt: number;
+  completedAt?: number;
+  result?: "completed" | "failed";
+}
+
+// ── Enhanced Secret Handle ──────────────────────────────────
+
+export type SecretOperation =
+  | "decrypt" | "sign" | "derive" | "unwrap_temp"
+  | "reveal_once" | "connect_auth" | "import_protected";
+
+export interface EnhancedSecretHandle extends SecretHandle {
+  allowedOperations: SecretOperation[];
+  nonce: string;
+  signature: string;
+}
+
+// ── TPM State ───────────────────────────────────────────────
+
+export type TPMPosture = "hardware_sealed" | "software_fallback" | "degraded";
+
+export interface TPMState {
+  present: boolean;
+  sealedKeys: string[];
+  fallbackMode: boolean;
+  postureFlag: TPMPosture;
+  attestationAvailable: boolean;
+  lastAttestationAt?: number;
+}
+
+// ── Key Hierarchy Visibility ────────────────────────────────
+
+export interface KeyHierarchyNode {
+  id: string;
+  label: string;
+  type: "root_device_key" | "kek" | "keyring_master" | "dek";
+  parentId?: string;
+  algorithm: string;
+  createdAt: number;
+  rotatedAt?: number;
+  hardwareBacked: boolean;
+  children?: KeyHierarchyNode[];
+}
