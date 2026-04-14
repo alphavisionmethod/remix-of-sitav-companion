@@ -275,10 +275,18 @@ function deriveSidebar(primary: ProfileArchetype, flags: OperatingFlags): Sideba
     marketplace:          ["CRM", "Core", "Growth", "Sales", "Intelligence", "System"],
   };
 
+  const badgeMap: Record<string, Record<string, { label: string; severity?: "warning" | "critical" }>> = {
+    ecommerce: { "lead-recovery": { label: "Cart Recovery", severity: "warning" }, ecommerce: { label: "Store" } },
+    service: { proposals: { label: "Proposals" }, invoices: { label: "Invoices", severity: "critical" } },
+    "brick-and-mortar": { appointments: { label: "Bookings" }, operations: { label: "Location Ops" } },
+    "employee-based": { operations: { label: "Assignments", severity: "warning" }, "follow-through": { label: "Handoffs", severity: "warning" } },
+    agency: { proposals: { label: "Proposals" }, "follow-through": { label: "Client Tasks", severity: "warning" } },
+  };
+
   return {
     groupOrder: order[primary] || order.hybrid,
     hiddenGroups: [],
-    badgeOverrides: {},
+    badgeOverrides: badgeMap[primary] || {},
   };
 }
 

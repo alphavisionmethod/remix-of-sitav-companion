@@ -342,7 +342,7 @@ function PipelineHealthView({ domain }: { domain: "business" | "finance" | "conc
 
 // ── Collapsible sidebar group ─────────────────────────────────
 
-function SidebarGroupSection({ group, activeModule, onSelect }: { group: SidebarGroup; activeModule: string; onSelect: (id: string) => void }) {
+function SidebarGroupSection({ group, activeModule, onSelect, badgeOverrides }: { group: SidebarGroup; activeModule: string; onSelect: (id: string) => void; badgeOverrides?: Record<string, { label: string; severity?: "warning" | "critical" }> }) {
   const hasActive = group.items.some(i => i.id === activeModule);
   const [open, setOpen] = useState(hasActive || group.label === "CRM");
 
@@ -358,32 +358,37 @@ function SidebarGroupSection({ group, activeModule, onSelect }: { group: Sidebar
       </button>
       {open && (
         <div className="space-y-0.5 ml-1">
-          {group.items.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              onClick={() => onSelect(item.id)}
-              className={cn(
-                "flex items-center gap-2.5 w-full px-3 py-1.5 rounded-lg text-[11px] font-medium transition-all duration-150 outline-none text-left",
-                activeModule === item.id
-                  ? "bg-[hsl(217_80%_50%/0.12)] text-[hsl(217_80%_65%)] shadow-[inset_2px_0_0_hsl(217_80%_55%)]"
-                  : "text-[hsl(0_0%_100%/0.45)] hover:bg-[hsl(0_0%_100%/0.04)] hover:text-[hsl(0_0%_100%/0.7)]"
-              )}
-            >
-              <item.icon size={13} className="shrink-0" />
-              <span className="truncate">{item.label}</span>
-              {item.count && item.count > 0 && (
-                <span className={cn(
-                  "ml-auto text-[8px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center",
-                  item.countSeverity === "critical" ? "bg-[hsl(var(--destructive))]/20 text-[hsl(var(--destructive))]" :
-                  item.countSeverity === "warning" ? "bg-[hsl(var(--sita-gold))]/15 text-[hsl(var(--sita-gold))]" :
-                  "bg-[hsl(0_0%_100%/0.08)] text-[hsl(0_0%_100%/0.4)]"
-                )}>
-                  {item.count}
-                </span>
-              )}
-            </button>
-          ))}
+          {group.items.map((item) => {
+            const override = badgeOverrides?.[item.id];
+            const displayLabel = override?.label || item.label;
+            const displaySeverity = override?.severity || item.countSeverity;
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => onSelect(item.id)}
+                className={cn(
+                  "flex items-center gap-2.5 w-full px-3 py-1.5 rounded-lg text-[11px] font-medium transition-all duration-150 outline-none text-left",
+                  activeModule === item.id
+                    ? "bg-[hsl(217_80%_50%/0.12)] text-[hsl(217_80%_65%)] shadow-[inset_2px_0_0_hsl(217_80%_55%)]"
+                    : "text-[hsl(0_0%_100%/0.45)] hover:bg-[hsl(0_0%_100%/0.04)] hover:text-[hsl(0_0%_100%/0.7)]"
+                )}
+              >
+                <item.icon size={13} className="shrink-0" />
+                <span className="truncate">{override ? displayLabel : item.label}</span>
+                {item.count && item.count > 0 && (
+                  <span className={cn(
+                    "ml-auto text-[8px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center",
+                    displaySeverity === "critical" ? "bg-[hsl(var(--destructive))]/20 text-[hsl(var(--destructive))]" :
+                    displaySeverity === "warning" ? "bg-[hsl(var(--sita-gold))]/15 text-[hsl(var(--sita-gold))]" :
+                    "bg-[hsl(0_0%_100%/0.08)] text-[hsl(0_0%_100%/0.4)]"
+                  )}>
+                    {item.count}
+                  </span>
+                )}
+              </button>
+            );
+          })}
         </div>
       )}
     </div>
@@ -503,7 +508,7 @@ function BusinessAppShellInner({ initialModule }: { initialModule?: string }) {
             const orderMap = new Map(adaptations.sidebar.groupOrder.map((g, i) => [g, i]));
             const sorted = [...SIDEBAR_GROUPS].sort((a, b) => (orderMap.get(a.label) ?? 99) - (orderMap.get(b.label) ?? 99));
             return sorted.map((group) => (
-              <SidebarGroupSection key={group.label} group={group} activeModule={activeModule} onSelect={setActiveModule} />
+              <SidebarGroupSection key={group.label} group={group} activeModule={activeModule} onSelect={setActiveModule} badgeOverrides={adaptations.sidebar.badgeOverrides} />
             ));
           })()}
         </div>
