@@ -524,8 +524,9 @@ function BusinessAppShellInner({ initialModule }: { initialModule?: string }) {
 
         {/* Main */}
         <div className="flex-1 flex flex-col min-w-0">
-          <div className="h-10 shrink-0 border-b border-[hsl(0_0%_100%/0.06)] flex items-center px-5 bg-[hsl(220_15%_6%/0.8)]">
+          <div className="h-10 shrink-0 border-b border-[hsl(0_0%_100%/0.06)] flex items-center justify-between px-5 bg-[hsl(220_15%_6%/0.8)]">
             <span className="text-[12px] font-semibold text-[hsl(0_0%_100%/0.6)]">{currentLabel}</span>
+            <BusinessModeIndicator onClick={() => setActiveModule("business-profile")} />
           </div>
 
           <BoardroomStatusStrip pendingCount={pendingCount} decisionCount={decisionCount} synthesisScore={synthesis?.boardroom_worthiness_score} />
