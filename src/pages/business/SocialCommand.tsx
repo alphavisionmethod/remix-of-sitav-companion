@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import { Share2, TrendingUp, Calendar, MessageCircle, Heart, Eye, Plus, DollarSign, Zap, Clock, Target, BarChart3, Hash, Users, ArrowUpRight, Bot, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { getModuleAdaptation } from "@/lib/engines/business-module-adaptations";
 
 const platforms = [
   { name: "Instagram", icon: "📸", followers: "2.4K", growth: "+3.2%", posts: 48, engagement: "4.8%", leadsGenerated: 12, revenue: "$8,400", bestTime: "12:00 PM" },
@@ -48,6 +50,8 @@ const competitors = [
 type Tab = "overview" | "calendar" | "comments" | "hashtags" | "competitors" | "attribution";
 
 const SocialCommand = () => {
+  const { primaryMode } = useBusinessProfile();
+  const moduleConfig = getModuleAdaptation("social", primaryMode);
   const [activeTab, setActiveTab] = useState<Tab>("overview");
 
   const tabs: { key: Tab; label: string; icon: typeof Share2 }[] = [

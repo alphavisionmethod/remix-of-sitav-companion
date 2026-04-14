@@ -1,4 +1,6 @@
 import { motion } from "framer-motion";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { getModuleAdaptation } from "@/lib/engines/business-module-adaptations";
 import { RotateCcw, Mail, Clock, TrendingUp, Play, Pause, Zap, DollarSign, Phone, MessageSquare, Linkedin, Target, BarChart3, ChevronRight, Bot, Shield } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
@@ -27,6 +29,8 @@ const coldLeads = [
 ];
 
 const LeadRecovery = () => {
+  const { primaryMode } = useBusinessProfile();
+  const moduleConfig = getModuleAdaptation("lead-recovery", primaryMode);
   const [activeTab, setActiveTab] = useState<"cold-leads" | "campaigns" | "roi">("cold-leads");
   const [selectedLead, setSelectedLead] = useState<string | null>(null);
   const totalRecovered = campaigns.reduce((s, c) => s + c.recovered, 0);

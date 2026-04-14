@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import { Globe, Layout, FileText, BarChart3, Zap, Eye, Plus, ExternalLink, TrendingUp, Search, MousePointer, Users, DollarSign, Copy, FlaskConical, Settings, ArrowUpRight, ChevronRight, Target, Layers } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { getModuleAdaptation } from "@/lib/engines/business-module-adaptations";
 
 /* ── Revenue-attributed sites ── */
 const sites = [
@@ -46,6 +48,8 @@ const templates = [
 type Tab = "sites" | "ab-tests" | "seo" | "heatmaps" | "templates";
 
 const WebsiteBuilder = () => {
+  const { primaryMode } = useBusinessProfile();
+  const moduleConfig = getModuleAdaptation("website", primaryMode);
   const [activeTab, setActiveTab] = useState<Tab>("sites");
 
   const tabs: { key: Tab; label: string; icon: typeof Globe }[] = [

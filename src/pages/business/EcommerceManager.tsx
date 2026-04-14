@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { getModuleAdaptation } from "@/lib/engines/business-module-adaptations";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -165,6 +167,8 @@ const InventoryRow = ({ item }: { item: typeof inventory[0] }) => {
 
 /* ─── Main Component ─── */
 const EcommerceManager = () => {
+  const { primaryMode } = useBusinessProfile();
+  const moduleConfig = getModuleAdaptation("ecommerce", primaryMode);
   const [activeTab, setActiveTab] = useState("dashboard");
   const [expandedOrder, setExpandedOrder] = useState<string | null>(null);
   const [orderSearch, setOrderSearch] = useState("");
