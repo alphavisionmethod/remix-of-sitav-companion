@@ -435,11 +435,12 @@ export function BusinessAppShell({ initialModule }: { initialModule?: string }) 
 
 function BusinessAppShellInner({ initialModule }: { initialModule?: string }) {
   const { adaptations, primaryMode, operatingFlags, isAdapted } = useBusinessProfile();
-  const { savedState: onboardingState } = useBusinessOnboarding();
+  const { isLoading: onboardingLoading, isCompleted: onboardingCompleted, savedState: onboardingState } = useBusinessOnboarding();
   const storedModule = (window as any).__businessInitialModule;
   const [activeModule, setActiveModule] = useState(storedModule || initialModule || "adaptive-home");
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(() => !isAdapted);
+  const [formationDone, setFormationDone] = useState(false);
 
   // Journey-aware visible items
   const journeyVisibleItems = useMemo(
