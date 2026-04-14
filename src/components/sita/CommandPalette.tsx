@@ -205,29 +205,60 @@ export const CommandPalette = ({ open, onClose }: CommandPaletteProps) => {
       });
     }
 
-    // Cross-app actions (always searchable)
+    // Cross-app actions (always searchable) — deep-link into windowed apps
+    const DEEP_LINK_MAP: Record<string, { app: "business" | "finance" | "concierge"; module: string }> = {
+      // Business
+      "Create New Lead": { app: "business", module: "leads" },
+      "Send Invoice": { app: "business", module: "invoices" },
+      "Schedule Follow-Up": { app: "business", module: "follow-through" },
+      "Add Customer": { app: "business", module: "customers" },
+      "Create Quote": { app: "business", module: "quotes" },
+      "View Pipeline": { app: "business", module: "opportunities" },
+      "Customer Support": { app: "business", module: "support" },
+      "Business Operations": { app: "business", module: "operations" },
+      "Revenue Forecast": { app: "business", module: "forecast" },
+      "Collections Center": { app: "business", module: "collections" },
+      // Finance
+      "Review Overdue Bills": { app: "finance", module: "bills" },
+      "Check Cash Position": { app: "finance", module: "overview" },
+      "Review Subscriptions": { app: "finance", module: "subscriptions" },
+      "View Receivables": { app: "finance", module: "receivables" },
+      "Cash Flow Timing": { app: "finance", module: "cash-timing" },
+      "Net Worth": { app: "finance", module: "net-worth" },
+      "Budget Overview": { app: "finance", module: "budgets" },
+      "Stress Radar": { app: "finance", module: "stress-radar" },
+      "Peace Score": { app: "finance", module: "peace-score" },
+      "Financial Health": { app: "finance", module: "health" },
+      "Scenario Planner": { app: "finance", module: "scenarios" },
+      // Concierge
+      "Add Errand": { app: "concierge", module: "errands" },
+      "Prep Appointment": { app: "concierge", module: "appointments" },
+      "Travel Planning": { app: "concierge", module: "travel" },
+      "Household Tasks": { app: "concierge", module: "tasks" },
+      "Grocery Planning": { app: "concierge", module: "grocery" },
+      "Service Providers": { app: "concierge", module: "providers" },
+      "Life Admin": { app: "concierge", module: "life-admin" },
+      "Recurring Obligations": { app: "concierge", module: "recurring" },
+    };
+
     CROSS_APP_ACTIONS.forEach(a => {
       if (!q || a.label.toLowerCase().includes(q) || a.sublabel?.toLowerCase().includes(q)) {
         results.push({
           id: `crossapp-${a.label}`,
           ...a,
           action: () => {
-            // Navigate to the relevant domain module via window events
-            if (a.label.includes("Lead")) { window.dispatchEvent(new CustomEvent("sita-open-business", { detail: { module: "leads" } })); }
-            else if (a.label.includes("Invoice")) { window.dispatchEvent(new CustomEvent("sita-open-business", { detail: { module: "invoices" } })); }
-            else if (a.label.includes("Follow-Up")) { window.dispatchEvent(new CustomEvent("sita-open-business", { detail: { module: "follow-through" } })); }
-            else if (a.label.includes("Customer")) { window.dispatchEvent(new CustomEvent("sita-open-business", { detail: { module: "customers" } })); }
-            else if (a.label.includes("Quote")) { window.dispatchEvent(new CustomEvent("sita-open-business", { detail: { module: "quotes" } })); }
-            else if (a.label.includes("Bills")) { window.dispatchEvent(new CustomEvent("sita-open-finance", { detail: { module: "bills" } })); }
-            else if (a.label.includes("Cash")) { window.dispatchEvent(new CustomEvent("sita-open-finance", { detail: { module: "overview" } })); }
-            else if (a.label.includes("Subscription")) { window.dispatchEvent(new CustomEvent("sita-open-finance", { detail: { module: "subscriptions" } })); }
-            else if (a.label.includes("Errand")) { window.dispatchEvent(new CustomEvent("sita-open-concierge", { detail: { module: "errands" } })); }
-            else if (a.label.includes("Appointment")) { window.dispatchEvent(new CustomEvent("sita-open-concierge", { detail: { module: "appointments" } })); }
-            else if (a.label.includes("Grocery")) { window.dispatchEvent(new CustomEvent("sita-open-concierge", { detail: { module: "grocery" } })); }
-            else if (a.label.includes("Travel")) { window.dispatchEvent(new CustomEvent("sita-open-concierge", { detail: { module: "travel" } })); }
-            else if (a.label.includes("Household")) { window.dispatchEvent(new CustomEvent("sita-open-concierge", { detail: { module: "household" } })); }
-            else if (a.label.includes("Document") || a.label.includes("Upload")) navigate("/files");
-            else if (a.label.includes("Advisor")) navigate("/boardroom");
+            const deepLink = DEEP_LINK_MAP[a.label];
+            if (deepLink) {
+              // Launch the windowed app, then deep-link to the module
+              window.dispatchEvent(new CustomEvent("sita-launch-app", { detail: { appId: deepLink.app } }));
+              setTimeout(() => crossNavigate(deepLink.app, deepLink.module), 200);
+            } else if (a.label.includes("Document") || a.label.includes("Upload")) {
+              navigate("/files");
+            } else if (a.label.includes("Advisor")) {
+              navigate("/boardroom");
+            }
+            onClose();
+          },
             onClose();
           },
         });
