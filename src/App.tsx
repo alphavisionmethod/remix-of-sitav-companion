@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes, Navigate, Outlet } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate, Outlet, useLocation } from "react-router-dom";
 import { AdminRoute } from "@/components/auth/AdminRoute";
 import { getAdminRoutes } from "@/routes/AdminRoutes";
 
@@ -132,11 +132,50 @@ const PublicRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
+const useIsMobileViewport = () => {
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  useEffect(() => {
+    const mql = window.matchMedia("(max-width: 767px)");
+    const handler = () => setIsMobile(mql.matches);
+    mql.addEventListener("change", handler);
+    return () => mql.removeEventListener("change", handler);
+  }, []);
+  return isMobile;
+};
+
 const HomeRoute = () => {
   const { user, loading } = useAuth();
+  const isMobile = useIsMobileViewport();
   if (loading) return <div className="min-h-screen flex items-center justify-center bg-background" role="status" aria-label="Loading"><div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" /></div>;
   if (!user) return <LandingPage />;
+  if (isMobile) return <Navigate to="/mobile" replace />;
   return <Navigate to="/desktop" replace />;
+};
+
+// Redirect mobile users away from desktop OS shell to /mobile
+const MOBILE_ROUTE_MAP: Record<string, string> = {
+  "/desktop": "/mobile",
+  "/business": "/mobile/business",
+  "/money": "/mobile/money",
+  "/concierge": "/mobile/concierge",
+  "/boardroom": "/mobile/boardroom",
+  "/settings": "/mobile/settings",
+};
+
+const MobileGuard = ({ children }: { children: ReactNode }) => {
+  const isMobile = useIsMobileViewport();
+  const location = useLocation();
+  if (isMobile) {
+    // Check for exact route mapping first
+    for (const [desktop, mobile] of Object.entries(MOBILE_ROUTE_MAP)) {
+      if (location.pathname === desktop || location.pathname.startsWith(desktop + "/")) {
+        return <Navigate to={mobile} replace />;
+      }
+    }
+    // Default: send to /mobile home
+    return <Navigate to="/mobile" replace />;
+  }
+  return <>{children}</>;
 };
 
 const AuthenticatedProviders = ({ children }: { children: ReactNode }) => (
@@ -196,9 +235,8 @@ const App = () => (
                 {/* Mobile */}
                 {MobileRoutes({ ProtectedRoute })}
 
-                {/* TIER 3: FULL OS SHELL */}
-                <Route path="*" element={
-                  <ProtectedRoute>
+                {/* TIER 3: FULL OS SHELL — desktop/tablet only */}
+                <Route path="*" element={<MobileGuard><ProtectedRoute>
                     <ShellLayout>
                       <ConditionalAdminTools />
                       <RouteErrorBoundary>
@@ -233,7 +271,7 @@ const App = () => (
                       </RouteErrorBoundary>
                     </ShellLayout>
                   </ProtectedRoute>
-                } />
+                </MobileGuard>} />
               </Routes>
               </Suspense>
               </AuthenticatedProviders>

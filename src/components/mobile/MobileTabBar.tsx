@@ -1,13 +1,13 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import { Home, ShieldCheck, FileCheck, Bell, LayoutDashboard } from "lucide-react";
+import { Home, Briefcase, DollarSign, Headphones, MoreHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const tabs = [
   { icon: Home, label: "Home", path: "/mobile" },
-  { icon: ShieldCheck, label: "Approvals", path: "/mobile/approvals" },
-  { icon: FileCheck, label: "Proof", path: "/mobile/proof" },
-  { icon: Bell, label: "Alerts", path: "/mobile/alerts" },
-  { icon: LayoutDashboard, label: "Board", path: "/mobile/boardroom" },
+  { icon: Briefcase, label: "Business", path: "/mobile/business" },
+  { icon: DollarSign, label: "Money", path: "/mobile/money" },
+  { icon: Headphones, label: "Concierge", path: "/mobile/concierge" },
+  { icon: MoreHorizontal, label: "More", path: "/mobile/settings" },
 ];
 
 export const MobileTabBar = () => {
@@ -18,7 +18,8 @@ export const MobileTabBar = () => {
     path === "/mobile" ? location.pathname === "/mobile" : location.pathname.startsWith(path);
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-border/40 bg-card/95 backdrop-blur-xl">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-border/40 bg-card/95 backdrop-blur-xl"
+      style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}>
       <div className="flex items-center justify-around px-1 py-2 max-w-md mx-auto">
         {tabs.map((tab) => {
           const active = isActive(tab.path);
