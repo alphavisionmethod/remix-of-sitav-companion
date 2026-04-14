@@ -16,8 +16,11 @@ import { CRMDealDetail } from "@/components/business/crm/CRMDealDetail";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { DealAdvisorSignal } from "@/components/business/crm/CRMAdvisorInsight";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 
 const CRMPipeline = () => {
+  const { adaptations } = useBusinessProfile();
+  const crmLang = adaptations.crm.language;
   const { data: opportunities = [] } = useCRMOpportunities();
   const { data: stages = [] } = useCRMPipelineStages();
   const { data: contacts = [] } = useCRMContacts();
@@ -129,10 +132,10 @@ const CRMPipeline = () => {
 
         {/* Header */}
         <div className="flex items-center justify-between gap-4">
-          <div>
-            <h2 className="text-xl font-bold text-foreground">Pipeline</h2>
+           <div>
+            <h2 className="text-xl font-bold text-foreground">{crmLang.pipelineLabel}</h2>
             <p className="text-xs text-muted-foreground">
-              {openOpps.length} active · ${(totalValue / 1000).toFixed(0)}K pipeline · ${(weightedValue / 1000).toFixed(0)}K weighted
+              {openOpps.length} active · ${(totalValue / 1000).toFixed(0)}K {crmLang.pipelineLabel.toLowerCase()} · ${(weightedValue / 1000).toFixed(0)}K weighted
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -149,7 +152,7 @@ const CRMPipeline = () => {
             </div>
             <Dialog open={showAdd} onOpenChange={setShowAdd}>
               <DialogTrigger asChild>
-                <Button size="sm" className="gap-1.5"><Plus className="h-3.5 w-3.5" /> Add Deal</Button>
+                <Button size="sm" className="gap-1.5"><Plus className="h-3.5 w-3.5" /> Add {crmLang.dealLabel.replace(/s$/, "")}</Button>
               </DialogTrigger>
               <DialogContent className="max-w-lg">
                 <DialogHeader><DialogTitle>New Deal</DialogTitle></DialogHeader>

@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Upload, FileSpreadsheet, Link, Plus, History, CheckCircle, AlertTriangle, RefreshCw, BarChart3, Download } from "lucide-react";
+import { Upload, FileSpreadsheet, Link, Plus, History, CheckCircle, AlertTriangle, RefreshCw, BarChart3, Download, Sparkles } from "lucide-react";
 import CRMImportWizard from "@/components/business/CRMImportWizard";
 import CRMConnectModal from "@/components/business/CRMConnectModal";
 import { CRMImportTemplates, CRMImportQuality } from "@/components/business/crm/CRMImportQuality";
 import { useCRMImportJobs } from "@/hooks/use-crm-data";
 import { format } from "date-fns";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 
 const PLATFORMS = [
   { id: "hubspot", name: "HubSpot", icon: "🟠", description: "Import from HubSpot CRM", authType: "oauth" as const, color: "#FF7A59" },
@@ -24,6 +25,16 @@ const CRMImportCenter = () => {
   const [connectPlatform, setConnectPlatform] = useState<typeof PLATFORMS[0] | null>(null);
   const [activeTab, setActiveTab] = useState("import");
   const { data: importJobs = [] } = useCRMImportJobs();
+  const { adaptations, primaryMode } = useBusinessProfile();
+
+  const SMART_FIELDS: Record<string, { label: string; fields: string[] }> = {
+    ecommerce: { label: "E-Commerce", fields: ["order_history", "cart_status", "lifetime_value", "campaign_source", "spend_segment", "return_rate"] },
+    service: { label: "Service", fields: ["proposal_status", "invoice_status", "delivery_timeline", "communication_history", "follow_up_date"] },
+    "brick-and-mortar": { label: "Local", fields: ["visit_count", "loyalty_status", "preferred_location", "staff_notes", "last_visit"] },
+    "employee-based": { label: "Operations", fields: ["account_owner", "handoff_state", "response_time", "accountability_score", "team_assigned"] },
+    agency: { label: "Agency", fields: ["project_status", "retainer_health", "billing_status", "team_assigned", "proposal_status"] },
+  };
+  const smartFieldConfig = SMART_FIELDS[primaryMode] || SMART_FIELDS.service;
 
   return (
     <div className="space-y-6">
@@ -45,6 +56,21 @@ const CRMImportCenter = () => {
         </TabsList>
 
         <TabsContent value="import" className="mt-4 space-y-6">
+          {/* Smart field suggestions */}
+          <div className="rounded-xl border border-[hsl(var(--sita-purple))]/15 bg-[hsl(var(--sita-purple))]/5 p-4">
+            <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[hsl(var(--sita-purple))] mb-2 flex items-center gap-1.5">
+              <Sparkles className="h-3 w-3" /> Smart Field Suggestions — {smartFieldConfig.label} Business
+            </p>
+            <p className="text-[10px] text-foreground/40 mb-3">Based on your business profile, we recommend including these fields in your import:</p>
+            <div className="flex flex-wrap gap-1.5">
+              {smartFieldConfig.fields.map((field) => (
+                <span key={field} className="text-[9px] px-2 py-1 rounded-full bg-[hsl(var(--sita-purple))]/10 text-[hsl(var(--sita-purple))] font-medium">
+                  {field.replace(/_/g, " ")}
+                </span>
+              ))}
+            </div>
+          </div>
+
           {/* Quick actions */}
           <div className="grid sm:grid-cols-2 gap-4">
             <Card className="border-border/50 bg-card/50 backdrop-blur-sm hover:border-primary/30 transition-all cursor-pointer" onClick={() => setShowImportWizard(true)}>

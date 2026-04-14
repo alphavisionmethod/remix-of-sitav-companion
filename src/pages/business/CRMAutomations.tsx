@@ -17,6 +17,8 @@ import { toast } from "sonner";
 import { useCRMAutomations, useCreateAutomation, useUpdateAutomation, useDeleteAutomation } from "@/hooks/use-crm-data";
 import type { CRMAutomation } from "@/lib/data-services/crm-data-service";
 import { format, formatDistanceToNow } from "date-fns";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { getWorkflowSuggestions } from "@/lib/engines/adaptive-workflow-templates";
 
 // ─── Constants ──────────────────────────────────────────────
 const TRIGGER_TYPES = [
@@ -76,6 +78,8 @@ const CRMAutomations = () => {
   const updateAutomation = useUpdateAutomation();
   const deleteAutomation = useDeleteAutomation();
   const createAutomation = useCreateAutomation();
+  const { profile } = useBusinessProfile();
+  const suggestedWorkflows = useMemo(() => getWorkflowSuggestions(profile, 4), [profile]);
   const [category, setCategory] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showBuilder, setShowBuilder] = useState(false);
@@ -149,6 +153,32 @@ const CRMAutomations = () => {
   return (
     <div className="space-y-4">
       <PageTruthBanner truthState="demo" />
+
+      {/* Suggested Workflows from Profile Engine */}
+      {suggestedWorkflows.length > 0 && (
+        <div className="rounded-xl border border-[hsl(var(--sita-purple))]/15 bg-[hsl(var(--sita-purple))]/5 p-4">
+          <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-[hsl(var(--sita-purple))] mb-3 flex items-center gap-1.5">
+            <Sparkles className="h-3 w-3" /> Suggested for Your Business
+          </p>
+          <div className="grid sm:grid-cols-2 gap-2">
+            {suggestedWorkflows.map((wf) => (
+              <div key={wf.id} className="rounded-lg border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] p-3 hover:border-[hsl(var(--sita-purple))]/30 transition-colors cursor-pointer" onClick={() => {
+                setBuilderForm(prev => ({ ...prev, title: wf.name, description: wf.description }));
+                setShowBuilder(true);
+              }}>
+                <div className="flex items-center justify-between mb-1">
+                  <p className="text-[11px] font-semibold text-foreground/80">{wf.name}</p>
+                  <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-[hsl(var(--sita-purple))]/10 text-[hsl(var(--sita-purple))]">
+                    {Math.round(wf.affinityScore * 100)}% match
+                  </span>
+                </div>
+                <p className="text-[10px] text-foreground/40 line-clamp-1">{wf.description}</p>
+                <p className="text-[9px] text-foreground/25 mt-1">Trigger: {wf.trigger} · {wf.steps.length} steps</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Header */}
       <div className="rounded-xl border border-border/30 bg-gradient-to-r from-card/80 to-card/40 p-4">
