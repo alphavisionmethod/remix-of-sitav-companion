@@ -22,9 +22,10 @@ const CRMPipeline = () => {
   const { data: companies = [] } = useCRMCompanies();
   const createOpp = useCreateOpportunity();
   const updateOpp = useUpdateOpportunity();
-  const [view, setView] = useState<"kanban" | "list">("kanban");
+  const [view, setView] = useState<"kanban" | "list" | "focus">("kanban");
   const [showAdd, setShowAdd] = useState(false);
   const [selectedDeal, setSelectedDeal] = useState<string | null>(null);
+  const [focusFilter, setFocusFilter] = useState<"stalled" | "closing" | "at-risk" | "all">("all");
   const [form, setForm] = useState({
     title: "", value: "", stage: "Discovery", probability: "20", source: "",
     contact_id: "", company_id: "", expected_close_date: "", notes: ""
@@ -107,6 +108,18 @@ const CRMPipeline = () => {
 
   const maxFunnelCount = Math.max(1, ...funnel.map(f => f.count));
 
+  // Strategic focus views
+  const stalledDeals = useMemo(() => openOpps.filter(o => differenceInDays(new Date(), new Date(o.updated_at)) > 7), [openOpps]);
+  const closingSoonDeals = useMemo(() => openOpps.filter(o => o.expected_close_date && differenceInDays(new Date(o.expected_close_date), new Date()) <= 14 && differenceInDays(new Date(o.expected_close_date), new Date()) >= 0), [openOpps]);
+  const atRiskDeals = useMemo(() => openOpps.filter(o => (o.probability || 50) < 30 || (o.expected_close_date && isPast(new Date(o.expected_close_date)))), [openOpps]);
+
+  const focusDeals = useMemo(() => {
+    if (focusFilter === "stalled") return stalledDeals;
+    if (focusFilter === "closing") return closingSoonDeals;
+    if (focusFilter === "at-risk") return atRiskDeals;
+    return openOpps;
+  }, [focusFilter, stalledDeals, closingSoonDeals, atRiskDeals, openOpps]);
+
   return (
     <div className="flex gap-0 h-full">
       <div className={`flex-1 space-y-4 transition-all overflow-y-auto ${activeDeal ? "max-w-[55%]" : ""}`}>
@@ -125,8 +138,11 @@ const CRMPipeline = () => {
               <Button variant={view === "kanban" ? "secondary" : "ghost"} size="icon" className="h-9 w-9 rounded-r-none" onClick={() => setView("kanban")}>
                 <Columns3 className="h-3.5 w-3.5" />
               </Button>
-              <Button variant={view === "list" ? "secondary" : "ghost"} size="icon" className="h-9 w-9 rounded-l-none" onClick={() => setView("list")}>
+              <Button variant={view === "list" ? "secondary" : "ghost"} size="icon" className="h-9 w-9 rounded-none" onClick={() => setView("list")}>
                 <List className="h-3.5 w-3.5" />
+              </Button>
+              <Button variant={view === "focus" ? "secondary" : "ghost"} size="icon" className="h-9 w-9 rounded-l-none" onClick={() => setView("focus")}>
+                <Target className="h-3.5 w-3.5" />
               </Button>
             </div>
             <Dialog open={showAdd} onOpenChange={setShowAdd}>
