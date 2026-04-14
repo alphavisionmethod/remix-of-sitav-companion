@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { getAuthDaemon } from "@/lib/os-security/authd";
 import { getSessionDaemon } from "@/lib/os-security/sessiond";
 import { getAuditDaemon } from "@/lib/os-security/auditd";
-import type { OSAuthMethod, OSUserAccount, OSSession } from "@/lib/os-security/types";
+import type { OSAuthMethod, OSSession } from "@/lib/os-security/types";
 
 // ── Section Nav ──────────────────────────────────────────────
 
@@ -369,8 +369,8 @@ export function SecurityAccountsPanel() {
               userId: "demo",
               role: "admin" as const,
               state: "active" as const,
-              loginTime: Date.now() - 3600000,
-              lastActivityTime: Date.now(),
+              createdAt: Date.now() - 3600000,
+              lastActivityAt: Date.now(),
               locked: false,
               capabilities: [],
               enrolledMethods: ["password" as const],
