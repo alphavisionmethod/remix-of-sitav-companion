@@ -71,8 +71,9 @@ function generateDemoTrail(entityName: string): ProofEntry[] {
     { id: "p5", timestamp: "2026-01-20T16:45:00Z", action: "automated", actor: { type: "automation", name: "Follow-Up Workflow" }, field: "next_follow_up_at", newValue: "2026-01-27", source: "crm_automation_1", receipt_hash: "0xc4d3...a891" },
     { id: "p6", timestamp: "2026-02-15T11:00:00Z", action: "updated", actor: { type: "advisor", name: "Relationship Advisor" }, field: "health_score", oldValue: "72", newValue: "85", source: "advisor_assessment", confidence: 88 },
     { id: "p7", timestamp: "2026-03-28T08:30:00Z", action: "imported", actor: { type: "system", name: "CSV Import" }, source: "import_job_42", metadata: { file: "contacts_march.csv", row: 15 }, receipt_hash: "0xd5e4...b912" },
-    { id: "p8", timestamp: "2026-04-10T13:00:00Z", action: "escalated", actor: { type: "user", name: "You" }, source: "boardroom_escalation", metadata: { severity: "high", boardroom_item_id: "bi_123" }, receipt_hash: "0xe6f5...c023" },
-  ].reverse();
+    { id: "p8", timestamp: "2026-04-10T13:00:00Z", action: "escalated" as const, actor: { type: "user" as const, name: "You" }, source: "boardroom_escalation", metadata: { severity: "high", boardroom_item_id: "bi_123" }, receipt_hash: "0xe6f5...c023" },
+  ];
+  return entries.reverse();
 }
 
 function computeProvenanceSummary(entries: ProofEntry[]): ProofSummary {
