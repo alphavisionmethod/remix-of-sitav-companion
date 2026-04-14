@@ -1694,6 +1694,66 @@ export type Database = {
         }
         Relationships: []
       }
+      crm_automations: {
+        Row: {
+          actions: Json
+          conditions: Json
+          created_at: string
+          delay_minutes: number | null
+          description: string | null
+          execution_log: Json
+          id: string
+          last_run_at: string | null
+          runs: number
+          status: string
+          target_entity: string
+          title: string
+          trigger_config: Json
+          trigger_type: string
+          trust_gate: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          actions?: Json
+          conditions?: Json
+          created_at?: string
+          delay_minutes?: number | null
+          description?: string | null
+          execution_log?: Json
+          id?: string
+          last_run_at?: string | null
+          runs?: number
+          status?: string
+          target_entity?: string
+          title: string
+          trigger_config?: Json
+          trigger_type?: string
+          trust_gate?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          actions?: Json
+          conditions?: Json
+          created_at?: string
+          delay_minutes?: number | null
+          description?: string | null
+          execution_log?: Json
+          id?: string
+          last_run_at?: string | null
+          runs?: number
+          status?: string
+          target_entity?: string
+          title?: string
+          trigger_config?: Json
+          trigger_type?: string
+          trust_gate?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       crm_communications: {
         Row: {
           channel: string | null
