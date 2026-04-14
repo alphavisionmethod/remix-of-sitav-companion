@@ -256,8 +256,78 @@ const CRMPipeline = () => {
           </Card>
         )}
 
-        {/* Kanban View */}
-        {view === "kanban" ? (
+        {/* Focus View */}
+        {view === "focus" ? (
+          <div className="space-y-4">
+            <div className="flex items-center gap-2">
+              {[
+                { key: "all", label: "All Active", count: openOpps.length },
+                { key: "stalled", label: "Stalled 7d+", count: stalledDeals.length },
+                { key: "closing", label: "Closing Soon", count: closingSoonDeals.length },
+                { key: "at-risk", label: "At Risk", count: atRiskDeals.length },
+              ].map(f => (
+                <Button
+                  key={f.key}
+                  variant={focusFilter === f.key ? "default" : "outline"}
+                  size="sm"
+                  className="text-xs gap-1"
+                  onClick={() => setFocusFilter(f.key as any)}
+                >
+                  {f.label}
+                  {f.count > 0 && <span className="text-[10px] px-1 rounded-full bg-background/20">{f.count}</span>}
+                </Button>
+              ))}
+            </div>
+            {focusDeals.length === 0 ? (
+              <div className="py-12 text-center">
+                <Target className="h-10 w-10 text-muted-foreground/20 mx-auto mb-3" />
+                <p className="text-sm text-muted-foreground">No deals match this filter</p>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {focusDeals.map(d => {
+                  const stageObj = stages.find(s => s.name === d.stage);
+                  const isOverdue = d.expected_close_date && isPast(new Date(d.expected_close_date));
+                  const isStalled = differenceInDays(new Date(), new Date(d.updated_at)) > 7;
+                  const daysTillClose = d.expected_close_date ? differenceInDays(new Date(d.expected_close_date), new Date()) : null;
+                  return (
+                    <Card
+                      key={d.id}
+                      className={`border-border/50 bg-card/50 hover:border-primary/30 cursor-pointer transition-all ${selectedDeal === d.id ? "border-primary/50 ring-1 ring-primary/20" : ""}`}
+                      onClick={() => setSelectedDeal(d.id)}
+                    >
+                      <CardContent className="p-4">
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="flex-1 min-w-0">
+                            <p className="text-sm font-semibold text-foreground">{d.title}</p>
+                            <div className="flex items-center gap-2 mt-1 text-xs text-muted-foreground flex-wrap">
+                              {d.contact_id && contactMap[d.contact_id] && <span className="flex items-center gap-0.5"><User className="h-2.5 w-2.5" />{contactMap[d.contact_id]}</span>}
+                              {d.company_id && companyMap[d.company_id] && <span className="flex items-center gap-0.5"><Building2 className="h-2.5 w-2.5" />{companyMap[d.company_id]}</span>}
+                            </div>
+                          </div>
+                          <div className="text-right shrink-0">
+                            <p className="text-sm font-bold text-foreground">${d.value?.toLocaleString()}</p>
+                            <p className="text-[10px] text-muted-foreground">{d.probability}% prob</p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 mt-2 flex-wrap">
+                          <span className="text-[10px] px-2 py-0.5 rounded-full" style={{ backgroundColor: `${stageObj?.color}20`, color: stageObj?.color }}>{d.stage}</span>
+                          {isStalled && <span className="text-[10px] px-2 py-0.5 rounded-full bg-yellow-500/10 text-yellow-400 flex items-center gap-0.5"><Clock className="h-2.5 w-2.5" /> Stalled</span>}
+                          {isOverdue && <span className="text-[10px] px-2 py-0.5 rounded-full bg-destructive/10 text-destructive flex items-center gap-0.5"><AlertTriangle className="h-2.5 w-2.5" /> Overdue</span>}
+                          {daysTillClose !== null && daysTillClose >= 0 && daysTillClose <= 14 && !isOverdue && (
+                            <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary">{daysTillClose}d to close</span>
+                          )}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        ) :
+        /* Kanban View */
+        view === "kanban" ? (
           <div className="flex gap-3 overflow-x-auto pb-4">
             {stages.map(stage => {
               const deals = stageGroups[stage.name] || [];
