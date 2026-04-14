@@ -9,6 +9,7 @@ import { isPast, differenceInDays } from "date-fns";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 
 type FilterCondition = {
   field: string;
@@ -74,19 +75,23 @@ function matchesFilter(contact: any, condition: FilterCondition): boolean {
 const CRMSegments = () => {
   const { data: contacts = [] } = useCRMContacts();
   const { data: segments = [] } = useCRMSegments();
+  const { adaptations, primaryMode } = useBusinessProfile();
+  const crmLang = adaptations.crm.language;
   const [showBuilder, setShowBuilder] = useState(false);
   const [conditions, setConditions] = useState<FilterCondition[]>([{ field: "lifecycle_stage", operator: "eq", value: "" }]);
   const [segmentName, setSegmentName] = useState("");
   const [activeSmartView, setActiveSmartView] = useState<string | null>(null);
 
+  // Archetype-aware smart view labels
+  const contactLabel = crmLang.contactLabel || "Contacts";
   const smartViews = useMemo(() => [
-    { id: "all", label: "All Contacts", icon: Users, count: contacts.length, color: "text-primary", filter: () => true },
+    { id: "all", label: `All ${contactLabel}`, icon: Users, count: contacts.length, color: "text-primary", filter: () => true },
     { id: "at_risk", label: "At Risk", icon: AlertTriangle, count: contacts.filter(c => (c.health_score ?? 50) < 40).length, color: "text-destructive", filter: (c: any) => (c.health_score ?? 50) < 40 },
     { id: "follow_up", label: "Needs Follow-Up", icon: Clock, count: contacts.filter(c => c.next_follow_up_at && isPast(new Date(c.next_follow_up_at))).length, color: "text-orange-400", filter: (c: any) => c.next_follow_up_at && isPast(new Date(c.next_follow_up_at)) },
-    { id: "vip", label: "VIP / High Value", icon: Star, count: contacts.filter(c => c.tags?.includes("VIP")).length, color: "text-yellow-400", filter: (c: any) => c.tags?.includes("VIP") },
-    { id: "leads", label: "New Leads", icon: TrendingUp, count: contacts.filter(c => c.lifecycle_stage === "lead").length, color: "text-blue-400", filter: (c: any) => c.lifecycle_stage === "lead" },
-    { id: "customers", label: "Active Customers", icon: Users, count: contacts.filter(c => c.lifecycle_stage === "customer").length, color: "text-[hsl(var(--trust-safe))]", filter: (c: any) => c.lifecycle_stage === "customer" },
-  ], [contacts]);
+    { id: "vip", label: primaryMode === "ecommerce" ? "High LTV" : "VIP", icon: Star, count: contacts.filter(c => c.tags?.includes("VIP")).length, color: "text-yellow-400", filter: (c: any) => c.tags?.includes("VIP") },
+    { id: "leads", label: primaryMode === "ecommerce" ? "New Buyers" : primaryMode === "appointment-based" ? "New Bookings" : "New Leads", icon: TrendingUp, count: contacts.filter(c => c.lifecycle_stage === "lead").length, color: "text-blue-400", filter: (c: any) => c.lifecycle_stage === "lead" },
+    { id: "customers", label: primaryMode === "service" ? "Active Clients" : primaryMode === "membership" ? "Members" : "Active Customers", icon: Users, count: contacts.filter(c => c.lifecycle_stage === "customer").length, color: "text-[hsl(var(--trust-safe))]", filter: (c: any) => c.lifecycle_stage === "customer" },
+  ], [contacts, contactLabel, primaryMode]);
 
   const filteredContacts = useMemo(() => {
     if (activeSmartView) {
@@ -123,8 +128,8 @@ const CRMSegments = () => {
 
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-bold text-foreground">Segments & Smart Views</h2>
-          <p className="text-xs text-muted-foreground">Slice your contacts with filters, or use built-in smart views</p>
+          <h2 className="text-xl font-bold text-foreground">{contactLabel} Segments & Smart Views</h2>
+          <p className="text-xs text-muted-foreground">Slice your {contactLabel.toLowerCase()} with filters, or use built-in smart views</p>
         </div>
         <Button size="sm" className="gap-1.5" onClick={() => setShowBuilder(true)}>
           <Plus className="h-3.5 w-3.5" /> New Segment

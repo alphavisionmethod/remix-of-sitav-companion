@@ -26,6 +26,7 @@ import BusinessPulseStrip from "@/components/business/adaptive/BusinessPulseStri
 import AdaptiveCommandPalette from "@/components/business/adaptive/AdaptiveCommandPalette";
 import ModeTransitionCeremony from "@/components/business/adaptive/ModeTransitionCeremony";
 import { getSidebarOverrides, applySidebarOverrides } from "@/lib/engines/adaptive-sidebar-intelligence";
+import AdaptiveNotificationCenter from "@/components/business/adaptive/AdaptiveNotificationCenter";
 
 // ── Page imports ──────────────────────────────────────────────
 import BusinessOverview from "@/pages/business/BusinessOverview";
@@ -567,6 +568,7 @@ function BusinessAppShellInner({ initialModule }: { initialModule?: string }) {
                 <Search size={10} />
                 <span>⌘K</span>
               </button>
+              <AdaptiveNotificationCenter onNavigate={navigateTo} />
               <BusinessModeIndicator onClick={() => setActiveModule("business-profile")} />
             </div>
           </div>
