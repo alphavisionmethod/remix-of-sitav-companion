@@ -344,8 +344,14 @@ function DecisionLogTab() {
 
   useEffect(() => {
     if (!policyd) return;
-    const log = policyd.getDecisionLog();
-    setDecisions(log.slice(-50).reverse());
+    const raw = policyd.getDecisionLog();
+    setDecisions(raw.slice(-50).reverse().map(d => ({
+      action: d.action,
+      allowed: d.decision.allowed,
+      reason: d.decision.reason,
+      severity: d.decision.severity,
+      timestamp: d.timestamp,
+    })));
   }, [policyd]);
 
   const severityColors: Record<string, string> = {
