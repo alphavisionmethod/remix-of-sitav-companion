@@ -10,6 +10,16 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
 
+interface TabItem { key: string; label: string; count?: number; }
+interface TabGroup { label: string; tabs: TabItem[]; }
+
+interface ConciergeAppShellProps {
+  children: React.ReactNode;
+  activePage: string;
+  onNavigate: (key: string) => void;
+  tabGroups: TabGroup[];
+}
+
 const SidebarGroup = ({ group, activePage, onNavigate, defaultOpen = true }: {
   group: TabGroup; activePage: string; onNavigate: (key: string) => void; defaultOpen?: boolean;
 }) => {
