@@ -107,7 +107,7 @@ export default function AdaptiveOnboardingWizard({ onComplete }: Props) {
       setShowResult(true);
       setTimeout(onComplete, 2500);
     }
-  }, [scores, selections, step, setManualOverride, onComplete]);
+  }, [scores, selections, step, updateOverrides, onComplete]);
 
   const handleBack = () => {
     if (step > 0) setStep(step - 1);
