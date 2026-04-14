@@ -125,9 +125,23 @@ export function useWindowLauncher(wm: WindowManager) {
   const doLaunchApp = useCallback((appId: string, originRect?: DOMRect) => {
     const origin = originRect ? { x: originRect.x, y: originRect.y, width: originRect.width, height: originRect.height } : undefined;
 
+    // Resolve catalog aliases (sita-business-center → business, etc.)
+    const windowId = resolveWindowId(appId);
+
     // Find in registry — fallback for unregistered apps
-    let config = APP_REGISTRY[appId];
+    let config = APP_REGISTRY[appId] ?? APP_REGISTRY[windowId];
     if (!config) {
+      // Check if this app has a routePath in the catalog — navigate instead of showing placeholder
+      const catalogApp = apps.find(a => a.id === appId);
+      if (catalogApp?.routePath) {
+        window.location.hash = "";
+        window.dispatchEvent(new CustomEvent("sita-navigate", { detail: catalogApp.routePath }));
+        return;
+      }
+      if (catalogApp?.externalUrl) {
+        window.open(catalogApp.externalUrl, "_blank", "noopener");
+        return;
+      }
       const fallbackName = appId.charAt(0).toUpperCase() + appId.slice(1);
       const cascadeX = Math.random() * 100 + 50;
       const cascadeY = Math.random() * 100 + 50;
@@ -143,9 +157,6 @@ export function useWindowLauncher(wm: WindowManager) {
       });
       return;
     }
-
-    const canonicalId = Object.entries(APP_REGISTRY).find(([k, v]) => v.name === config.name)?.[0] ?? appId;
-    const windowId = canonicalId.includes(".") ? canonicalId.split(".").pop()! : canonicalId;
 
     // Spawn process in kernel
     const proc = ProcessTable.spawn({
