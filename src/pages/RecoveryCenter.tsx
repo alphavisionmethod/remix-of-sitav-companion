@@ -30,6 +30,7 @@ const RecoveryCenter = () => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
 
   const activeTab = (() => {
+    if (location.pathname.includes("/updates")) return "updates";
     if (location.pathname.includes("/resolved")) return "resolved";
     if (location.pathname.includes("/failed")) return "failed";
     return "active";
