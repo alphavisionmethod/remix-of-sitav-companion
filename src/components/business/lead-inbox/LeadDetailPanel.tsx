@@ -40,7 +40,7 @@ interface Props {
   onOpenDuplicate?: (id: string) => void;
 }
 
-export const LeadDetailPanel = ({ item, onClose, onAccept, onRoute, onReject }: Props) => {
+export const LeadDetailPanel = ({ item, onClose, onAccept, onRoute, onReject, onOpenDuplicate }: Props) => {
   if (!item) return null;
 
   const trustLevel = item.quality_score >= 75 ? "verified" as const : item.quality_score >= 40 ? "review" as const : "degraded" as const;
