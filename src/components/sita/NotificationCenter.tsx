@@ -13,8 +13,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { crossNavigate } from "@/lib/engines/cross-os-integration";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { getFinanceAdaptation, getConciergeAdaptation, getActiveSignals } from "@/lib/engines/cross-os-integration";
+import { useNotifications, type UnifiedNotification } from "@/hooks/useNotifications";
 import type { LucideIcon } from "lucide-react";
 
 interface Notification {
