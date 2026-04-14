@@ -80,7 +80,8 @@ const subpageFromPath = (path: string): SubPage => {
   if (path.includes("/crm-notes")) return "crm-notes";
   if (path.includes("/crm-segments")) return "crm-segments";
   if (path.includes("/crm-automations")) return "crm-automations";
-  // Existing routes
+  if (path.includes("/crm-import")) return "crm-import";
+  if (path.includes("/crm-duplicates")) return "crm-duplicates";
   if (path.includes("/documents")) return "documents";
   if (path.includes("/operations")) return "operations";
   if (path.includes("/follow-through")) return "follow-through";
