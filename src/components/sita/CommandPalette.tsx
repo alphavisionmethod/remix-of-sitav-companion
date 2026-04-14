@@ -1,6 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Spotlight Command Palette (Cmd+K)
 // Cross-app actions, smart suggestions, domain-aware, premium glass
+// Deep-links into windowed Business, Finance, Concierge OS apps
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useMemo, useCallback, useEffect, useRef } from "react";
@@ -10,10 +11,13 @@ import {
   Search, ArrowRight, Sparkles, Clock, Zap, Briefcase, DollarSign,
   Headphones, FolderOpen, Target, Users, Receipt, Phone, FileText,
   Calendar, Settings, Brain, Shield, Mail, BarChart3, ShoppingCart,
-  Globe, Bot, Crown, RefreshCw, MessageSquare, CheckCircle
+  Globe, Bot, Crown, RefreshCw, MessageSquare, CheckCircle,
+  TrendingUp, PieChart, Heart, Activity, AlertTriangle, Sliders,
+  ExternalLink, ArrowDownLeft
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
+import { crossNavigate } from "@/lib/engines/cross-os-integration";
 import type { LucideIcon } from "lucide-react";
 
 interface CommandItem {
