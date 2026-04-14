@@ -497,7 +497,7 @@ const CRMPipeline = () => {
           <ModuleAdvisorPanel
             advisors={generateStagesAdvisors({
               totalInPipeline: openOpps.length || 42,
-              stuckLeads: stalledOpps.slice(0, 5).map((o: any) => ({
+              stuckLeads: stalledDeals.slice(0, 5).map((o: any) => ({
                 id: o.id,
                 name: o.title || "Deal",
                 stage: o.stage || "Unknown",
