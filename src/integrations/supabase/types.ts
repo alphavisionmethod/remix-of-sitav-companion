@@ -2997,6 +2997,429 @@ export type Database = {
         }
         Relationships: []
       }
+      os_audit_events: {
+        Row: {
+          action: string
+          actor_service: string | null
+          actor_session_id: string | null
+          auth_method: string | null
+          correlation_id: string | null
+          created_at: string
+          decision: string
+          event_id: string
+          id: string
+          metadata: Json | null
+          reason: string | null
+          resource: string | null
+          severity: string
+          ts: string
+          user_id: string
+        }
+        Insert: {
+          action: string
+          actor_service?: string | null
+          actor_session_id?: string | null
+          auth_method?: string | null
+          correlation_id?: string | null
+          created_at?: string
+          decision?: string
+          event_id: string
+          id?: string
+          metadata?: Json | null
+          reason?: string | null
+          resource?: string | null
+          severity?: string
+          ts?: string
+          user_id: string
+        }
+        Update: {
+          action?: string
+          actor_service?: string | null
+          actor_session_id?: string | null
+          auth_method?: string | null
+          correlation_id?: string | null
+          created_at?: string
+          decision?: string
+          event_id?: string
+          id?: string
+          metadata?: Json | null
+          reason?: string | null
+          resource?: string | null
+          severity?: string
+          ts?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      os_auth_methods: {
+        Row: {
+          created_at: string
+          enabled: boolean
+          enrolled_at: string
+          id: string
+          last_used_at: string | null
+          method_type: string
+          policy_flags: Json | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          enabled?: boolean
+          enrolled_at?: string
+          id?: string
+          last_used_at?: string | null
+          method_type?: string
+          policy_flags?: Json | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          enabled?: boolean
+          enrolled_at?: string
+          id?: string
+          last_used_at?: string | null
+          method_type?: string
+          policy_flags?: Json | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      os_capabilities: {
+        Row: {
+          capability_id: string
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          sensitivity_level: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          capability_id: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          sensitivity_level?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          capability_id?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          sensitivity_level?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      os_elevation_tokens: {
+        Row: {
+          action: string
+          consumed_at: string | null
+          created_at: string
+          expires_at: string
+          id: string
+          issued_at: string
+          nonce: string | null
+          session_id: string
+          signature: string | null
+          single_use: boolean
+          target_service: string
+          token_id: string
+          user_id: string
+        }
+        Insert: {
+          action: string
+          consumed_at?: string | null
+          created_at?: string
+          expires_at: string
+          id?: string
+          issued_at?: string
+          nonce?: string | null
+          session_id: string
+          signature?: string | null
+          single_use?: boolean
+          target_service: string
+          token_id: string
+          user_id: string
+        }
+        Update: {
+          action?: string
+          consumed_at?: string | null
+          created_at?: string
+          expires_at?: string
+          id?: string
+          issued_at?: string
+          nonce?: string | null
+          session_id?: string
+          signature?: string | null
+          single_use?: boolean
+          target_service?: string
+          token_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      os_keyrings: {
+        Row: {
+          created_at: string
+          hardware_backed: boolean
+          id: string
+          keyring_id: string
+          protection_class: string
+          rotated_at: string
+          scope: string
+          secret_count: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          hardware_backed?: boolean
+          id?: string
+          keyring_id: string
+          protection_class?: string
+          rotated_at?: string
+          scope?: string
+          secret_count?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          hardware_backed?: boolean
+          id?: string
+          keyring_id?: string
+          protection_class?: string
+          rotated_at?: string
+          scope?: string
+          secret_count?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      os_role_capabilities: {
+        Row: {
+          capability_id: string
+          created_at: string
+          default_allowed: boolean
+          id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          capability_id: string
+          created_at?: string
+          default_allowed?: boolean
+          id?: string
+          role: string
+          user_id: string
+        }
+        Update: {
+          capability_id?: string
+          created_at?: string
+          default_allowed?: boolean
+          id?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      os_secrets_metadata: {
+        Row: {
+          access_policy_id: string | null
+          created_at: string
+          exportable: boolean
+          hardware_backed: boolean
+          id: string
+          keyring_id: string
+          label: string | null
+          last_accessed_at: string | null
+          owner_scope: string
+          revoked: boolean
+          secret_id: string
+          secret_type: string
+          updated_at: string
+          user_id: string
+          version: number
+        }
+        Insert: {
+          access_policy_id?: string | null
+          created_at?: string
+          exportable?: boolean
+          hardware_backed?: boolean
+          id?: string
+          keyring_id: string
+          label?: string | null
+          last_accessed_at?: string | null
+          owner_scope?: string
+          revoked?: boolean
+          secret_id: string
+          secret_type: string
+          updated_at?: string
+          user_id: string
+          version?: number
+        }
+        Update: {
+          access_policy_id?: string | null
+          created_at?: string
+          exportable?: boolean
+          hardware_backed?: boolean
+          id?: string
+          keyring_id?: string
+          label?: string | null
+          last_accessed_at?: string | null
+          owner_scope?: string
+          revoked?: boolean
+          secret_id?: string
+          secret_type?: string
+          updated_at?: string
+          user_id?: string
+          version?: number
+        }
+        Relationships: []
+      }
+      os_service_identities: {
+        Row: {
+          allowed_actions: string[] | null
+          created_at: string
+          id: string
+          privileged: boolean
+          registered_at: string
+          secret_scope: string[] | null
+          service_name: string
+          service_uid: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          allowed_actions?: string[] | null
+          created_at?: string
+          id?: string
+          privileged?: boolean
+          registered_at?: string
+          secret_scope?: string[] | null
+          service_name: string
+          service_uid: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          allowed_actions?: string[] | null
+          created_at?: string
+          id?: string
+          privileged?: boolean
+          registered_at?: string
+          secret_scope?: string[] | null
+          service_name?: string
+          service_uid?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      os_sessions: {
+        Row: {
+          auth_fresh_until: string | null
+          created_at: string
+          display_id: string | null
+          id: string
+          last_activity_at: string
+          locked: boolean
+          role: string
+          seat_id: string | null
+          session_id: string
+          state: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          auth_fresh_until?: string | null
+          created_at?: string
+          display_id?: string | null
+          id?: string
+          last_activity_at?: string
+          locked?: boolean
+          role?: string
+          seat_id?: string | null
+          session_id: string
+          state?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          auth_fresh_until?: string | null
+          created_at?: string
+          display_id?: string | null
+          id?: string
+          last_activity_at?: string
+          locked?: boolean
+          role?: string
+          seat_id?: string | null
+          session_id?: string
+          state?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      os_user_accounts: {
+        Row: {
+          created_at: string
+          display_name: string
+          enrolled_methods: string[]
+          failed_attempts: number
+          id: string
+          lockout_until: string | null
+          password_hash_ref: string | null
+          profile_ref: string | null
+          role: string
+          status: string
+          updated_at: string
+          user_id: string
+          username: string
+        }
+        Insert: {
+          created_at?: string
+          display_name?: string
+          enrolled_methods?: string[]
+          failed_attempts?: number
+          id?: string
+          lockout_until?: string | null
+          password_hash_ref?: string | null
+          profile_ref?: string | null
+          role?: string
+          status?: string
+          updated_at?: string
+          user_id: string
+          username: string
+        }
+        Update: {
+          created_at?: string
+          display_name?: string
+          enrolled_methods?: string[]
+          failed_attempts?: number
+          id?: string
+          lockout_until?: string | null
+          password_hash_ref?: string | null
+          profile_ref?: string | null
+          role?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+          username?: string
+        }
+        Relationships: []
+      }
       outcome_verifications: {
         Row: {
           actual_outcome: string | null
