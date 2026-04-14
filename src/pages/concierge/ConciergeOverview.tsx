@@ -69,8 +69,8 @@ const ConciergeOverview = () => {
         title="Welcome to your personal concierge"
         description="Add your first task or event to start."
         actions={[
-          { label: "Add Task", icon: CheckSquare, onClick: () => navigate("/concierge/tasks") },
-          { label: "Schedule Event", icon: Calendar, onClick: () => navigate("/concierge/appointments"), variant: "secondary" as const },
+          { label: "Add Task", icon: CheckSquare, onClick: () => navigateTo("tasks") },
+          { label: "Schedule Event", icon: Calendar, onClick: () => navigateTo("appointments"), variant: "secondary" as const },
         ]}
         tip="The concierge advisor learns your routines over time"
         domain="concierge"
@@ -112,7 +112,7 @@ const ConciergeOverview = () => {
               title="What Needs You"
               items={queueItems}
               onItemClick={(id) => {
-                if (id === "cp1") navigate("/concierge/tasks");
+                if (id === "cp1") navigateTo("tasks");
               }}
             />
             <TimelineCard title="What Changed" events={timelineEvents} />
@@ -148,7 +148,7 @@ const ConciergeOverview = () => {
             confidence={88}
             domain="Concierge"
             accentColor="hsl(285 55% 55%)"
-            action={{ label: "Review Travel Prep", onClick: () => navigate("/concierge/travel") }}
+            action={{ label: "Review Travel Prep", onClick: () => navigateTo("travel") }}
           />
         </ListRevealItem>
 
@@ -161,7 +161,7 @@ const ConciergeOverview = () => {
               { label: "Travel", count: "1 trip", icon: Plane, path: "/concierge/travel" },
               { label: "Appointments", count: "Next Thu", icon: Stethoscope, path: "/concierge/appointments" },
             ].map(tile => (
-              <DomainCard key={tile.label} onClick={() => navigate(tile.path)}
+              <DomainCard key={tile.label} onClick={() => navigateTo(tile.path)}
                 className="group text-left micro-hover-lift micro-focus-glow micro-press"
               >
                 <tile.icon className="h-4 w-4 text-[hsl(285_55%_55%)] mb-2" />
