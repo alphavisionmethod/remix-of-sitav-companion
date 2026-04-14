@@ -1,38 +1,65 @@
 
 
-# Upgrade Desktop Notification Center and Verify Full Cross-OS Wiring
+# Business Onboarding: Persistence, Settings Page, and Journey-Aware Configuration
 
-## Current State
-- The **Unified Notification Center** (slide-out panel) is fully implemented with cross-OS aggregation, filtering, deep-linking
-- The **Cross-Domain Intelligence Bridge** widget is fully implemented
-- The **Command Palette** has 30+ deep-link commands wired via `crossNavigate`
-- **Issue**: `DesktopNotificationCenter.tsx` (the inline desktop widget) still uses 3 hardcoded static notifications with no cross-OS integration, no priority sorting, no deep-linking, and no archetype awareness
+## Problem
+1. **Multi-select works** — IdentityScreen already supports multiple business types via toggle
+2. **Onboarding repeats every time** — State is only saved to `localStorage` on final reveal; no DB persistence; no "completed" flag
+3. **No settings page exists** — Users cannot modify business profile after onboarding (e.g., adding a brick-and-mortar location later)
+4. **Customer journey isn't business-type-aware** — The sidebar, modules, and tools shown are static regardless of what the user selected during onboarding
 
 ## Plan
 
-### 1. Upgrade DesktopNotificationCenter to use Cross-OS engine
-**File**: `src/components/sita/shell/desktop/DesktopNotificationCenter.tsx`
-- Replace hardcoded notifications with `generateNotifications()` from the unified system or a shared notification source
-- Add domain color indicators (Business purple, Finance green, Concierge violet)
-- Add urgency-based styling (critical/high/medium/low)
-- Wire "Review" buttons to `crossNavigate` for deep-linking into windowed apps
-- Add unread count badge and "Mark all read" action
-- Show cross-OS signal notifications (the `cross-os` domain type)
-- Use `useBusinessProfile` for archetype-aware notification generation
+### 1. Create `business_onboarding` DB table + migration
+- Table: `business_onboarding` with columns: `id`, `user_id` (unique), `onboarding_state` (jsonb — stores the full `OnboardingState`), `completed_at`, `created_at`, `updated_at`
+- RLS: users can only read/write their own row
+- This replaces the current `localStorage`-only approach
 
-### 2. Verify Command Palette deep-link wiring
-**File**: `src/components/sita/CommandPalette.tsx`
-- Ensure `sita-launch-app` event correctly maps app IDs ("business" / "finance" / "concierge") to window manager app identifiers
-- Verify the 200ms timeout for `crossNavigate` after launch is sufficient
-- Confirm all 30+ `DEEP_LINK_MAP` entries match actual module IDs in each app shell
+### 2. Create `useBusinessOnboarding` hook
+- **File**: `src/hooks/useBusinessOnboarding.ts`
+- On mount: check if user has a `business_onboarding` row with `completed_at != null`
+- Provides: `isCompleted`, `savedState`, `saveProgress()`, `markComplete()`
+- For demo users: returns completed with default state
 
-### 3. Verify Intelligence Bridge is mounted in all three app shells
-- Confirm `CrossDomainIntelligenceBridge` is rendered in BusinessAppShell, FinanceAppShell, and ConciergeAppShell
-- Confirm `CrossOSLinksPanel` is rendered in all three sidebars
+### 3. Update `FormationShell` to persist and gate
+- **File**: `src/pages/revenue-office/onboarding/FormationShell.tsx`
+- On mount: if `isCompleted`, redirect to `/revenue-office/boardroom` (or Business OS home)
+- Auto-save progress on each step change (debounced upsert)
+- On final reveal: call `markComplete()` instead of `localStorage.setItem`
 
-### Technical Details
-- Shared notification data model: reuse the `Notification` interface from `NotificationCenter.tsx`
-- Extract `generateNotifications()` into a shared hook or utility so both the slide-out panel and desktop widget can use the same data
-- Desktop widget shows max 4 notifications (compact view) with a "View all" button that opens the full slide-out panel
-- No database changes needed -- all demo/mock data
+### 4. Create Business Settings page
+- **File**: `src/pages/business/BusinessSettingsPage.tsx`
+- Sections:
+  - **Business Identity**: Edit business name, business types (multi-select toggles — same as onboarding), team size, stage
+  - **Revenue Model**: Edit revenue sources, growth goals, strongest/weakest streams
+  - **Customer Journey**: Edit journey template, pain points, delivery steps
+  - **Growth Priorities**: Edit bottlenecks, conversion weaknesses
+  - **Automation & Trust**: Edit automation level, human-only tasks, approval actions
+  - **Advisors**: Enable/disable advisors, change intensity
+- Each section saves to the `business_onboarding.onboarding_state` jsonb column
+- Add "Re-run full onboarding" button that clears `completed_at` and navigates to formation
+- Register in `BusinessAppShell` sidebar under System group and in `pages` map
+
+### 5. Make Business OS journey-aware
+- **File**: `src/components/sita/apps/business/BusinessAppShell.tsx`
+- Load the user's `business_onboarding` state on mount
+- Conditionally show/hide sidebar groups based on business types:
+  - `ecommerce` selected → show E-Commerce, Cart Recovery modules
+  - `local` selected → show Appointments, Local Reputation modules  
+  - `service/agency` selected → show Proposals, Quotes, Retainer modules
+  - `coaching/creator` selected → show Memberships, Course, Launch modules
+- Reorder sidebar items by `growthGoals` priority
+- Show relevant KPIs on the overview based on business type
+- Pass business type context to advisor recommendations
+
+### 6. Wire BusinessOnboarding entry to check completion
+- **File**: `src/pages/revenue-office/BusinessOnboarding.tsx`
+- Wrap with auth check — redirect to login if not authenticated
+- If onboarding already completed, show "You've already set up your business. Go to Settings to modify." with navigation buttons
+
+## Technical Details
+- Reuse the existing `OnboardingState` interface from `types.ts` for the jsonb column — no schema duplication
+- Settings page reuses the same `Toggle`, `SingleSelect`, `SectionTitle` primitives from `onboarding/primitives.tsx`
+- The sidebar visibility logic uses a simple mapping: `businessTypes[] → Set<sidebarItemId>` with a base set always visible
+- All changes respect the existing archetype/profile system (`useBusinessProfile`) — settings updates also trigger `updateOverrides` on the `BusinessProfileCtx`
 
