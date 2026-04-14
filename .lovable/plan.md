@@ -1,82 +1,68 @@
 
 
-# Business Profile Engine — Remaining Integration Gaps
+# Concierge OS — Full Windowed App Merge
 
-## What's Already Done (no duplication needed)
-- `business-profile-engine.ts` — 585 lines, full engine with 12 archetypes, weighted computation, manual overrides, localStorage persistence
-- `BusinessProfileContext.tsx` + `useBusinessProfile.ts` — context and hook
-- `AdaptiveBusinessHome.tsx` — full adaptive dashboard with widgets, stat cards, KPIs, quick actions
-- `BusinessProfileEditor.tsx` — weight sliders, flag display, adaptation preview
-- `AdaptiveCRMConfig.ts` — quick actions and stat cards per archetype
-- `BusinessHomeWidgetRegistry.ts` — 25+ widgets with affinity scores
-- `adaptive-advisor-roster.ts` — per-archetype advisor capabilities and personalities
-- `adaptive-boardroom-framing.ts` — per-archetype agenda items
-- `adaptive-workflow-templates.ts` — template suggestions
-- `BusinessAppShell.tsx` — wrapped in provider, sidebar reorders by profile
+## What This Does
+Converts the Concierge domain from a route-based `ConciergeCenter.tsx` page into a fully windowed app (matching Business OS and Finance OS patterns). All 19 sub-pages become internal modules within `ConciergeAppShell`, with event-based deep-linking, collapsible sidebar groups, and the redirect shim pattern.
 
-## What's NOT Yet Wired (the gaps)
+## Current State
+- `ConciergeAppShell.tsx` (windowed) has only 7 modules, most show "DATA CANVAS" placeholders
+- `ConciergeCenter.tsx` (route-based) has all 19 pages properly wired with imports and page components
+- No `sita-open-concierge` event exists — no deep-linking or launcher integration
+- No `concierge-launcher.ts` utility exists
+- Route-based concierge still renders inside the OS shell as a page, not a true windowed app
 
-### 1. CRMContacts — no profile consumption
-Static columns and fields. Should use `useBusinessProfile()` to adapt visible columns, sort priority, and contact label language.
+## Implementation Plan — 3 Batches
 
-### 2. CRMPipeline — no profile consumption  
-Static pipeline stages. Should use `useBusinessProfile()` to show adaptive stage names from `adaptations.crm.pipelineStages` and adapt language.
+### Batch 1: Rewrite ConciergeAppShell with full page registry + sidebar groups
 
-### 3. CRMAutomations — no profile consumption
-No suggested templates from the engine. Should show "Suggested for your business" section using `adaptive-workflow-templates.ts`.
+**File: `src/components/sita/apps/concierge/ConciergeAppShell.tsx`** — Complete rewrite:
+- Import all 19 page components from `src/pages/concierge/`
+- Define 4 collapsible sidebar groups matching existing `TAB_GROUPS` from ConciergeCenter (Home, Life, Support, Office)
+- Create full `pages` record mapping all 19 module IDs to components
+- Add `SidebarGroupSection` component (reuse pattern from BusinessAppShell)
+- Add `ConciergeDataProvider` wrapper with `useRelationshipContexts` and `useHumanObligations` hooks
+- Add `sita-concierge-navigate` event listener for deep-linking
+- Wire Boardroom, Advisors, and Pipeline Health views (already exist as inline components)
+- Add header toolbar with current page label
+- Add `BoardroomStatusStrip` (already exists in file)
+- Concierge accent: purple `hsl(270 60% 55%)`
 
-### 4. BusinessBoardroom — static advisors, no profile consumption
-Hardcoded 4 advisors. Should use `adaptive-boardroom-framing.ts` for focus areas and `adaptive-advisor-roster.ts` for advisor stack.
+**New file: `src/lib/concierge-launcher.ts`**:
+- `openConciergeModule(module)` — dispatches `sita-open-concierge` custom event
+- Matches pattern of `business-launcher.ts` and `finance-launcher.ts`
 
-### 5. CRMImportCenter — no adaptive import hints
-Should show per-archetype field mapping suggestions (Section P from prompt).
+### Batch 2: Wire event system + redirect shim
 
-### 6. Sidebar badge adaptation
-`BusinessAppShell` sorts groups but doesn't adapt badge labels/counts per archetype (e.g., ecommerce shows "Carts: 23", service shows "Proposals: 8").
+**File: `src/components/sita/ShellLayout.tsx`** — Add event listener:
+- Add `sita-open-concierge` listener (matching business/finance pattern)
+- Sets `window.__conciergeInitialModule`, calls `doLaunchApp("concierge")`, dispatches `sita-concierge-navigate`
 
-### 7. Profile confidence display
-Engine has no confidence score. Add `profileConfidence` to `BusinessProfileResult` and display in ProfileEditor.
+**File: `src/pages/ConciergeCenter.tsx`** — Convert to redirect shim:
+- Same pattern as `BusinessCenter.tsx` — extract module from path, dispatch `sita-open-concierge`, redirect to `/desktop`
 
-### 8. Cross-domain signals
-No integration with Finance or Concierge contexts. Add lightweight signal dispatches.
+**File: `src/contexts/ConciergeNavigationContext.tsx`** — New context:
+- `navigateTo(moduleKey)` and `activeModule` — matches `BusinessNavigationContext`
 
----
+### Batch 3: Integration polish
 
-## Implementation Plan — 4 Batches
+**File: `src/components/sita/shell/ShellWindowLayer.tsx`** — Already wired (concierge entry exists)
 
-### Batch 1: Wire CRM pages to profile (3 files)
-- **CRMContacts.tsx** — Import `useBusinessProfile`, use `adaptations.crm.language.contactLabel` for header, reorder columns based on `adaptations.crm.priorityFields`, hide fields from `adaptations.crm.hiddenFields`
-- **CRMPipeline.tsx** — Import `useBusinessProfile`, use `adaptations.crm.pipelineStages` for stage names, use `adaptations.crm.language.dealLabel` and `pipelineLabel` for headers
-- **CRMAutomations.tsx** — Import `useBusinessProfile` + `getWorkflowSuggestions`, add "Suggested Workflows" section at top showing engine-recommended templates with affinity scores
+**File: `src/components/sita/CommandPalette.tsx`** — Add concierge deep-link dispatches for relevant actions
 
-### Batch 2: Wire Boardroom + Import (2 files)
-- **BusinessBoardroom.tsx** — Import `useBusinessProfile`, replace hardcoded `businessAdvisors` with `getTopAdvisors(profile)` mapped to `AdvisorConfig`, use `getBoardroomAgenda(profile)` for agenda items, use `profile.boardroom.reviewMode` for default tab
-- **CRMImportCenter.tsx** — Import `useBusinessProfile`, add "Smart Field Suggestions" banner showing recommended import fields based on archetype (e.g., ecommerce → order_history, cart_status; service → proposal_status, invoice_status)
+**Update cross-references**: Any component that currently navigates to `/concierge/*` routes should instead dispatch `sita-open-concierge` events (scan and update `DailyPulse.tsx`, `GlobalBoardroom.tsx`, etc.)
 
-### Batch 3: Sidebar badges + Profile confidence (3 files)
-- **business-profile-engine.ts** — Add `profileConfidence: number` (0-1) to `BusinessProfileResult`, computed from how many input signals contributed to weights
-- **BusinessAppShell.tsx** — Use `adaptations.sidebar.badgeOverrides` to dynamically set badge labels per archetype on sidebar items (e.g., ecommerce mode → "lead-recovery" badge becomes "Cart Recovery: 5")
-- **BusinessProfileEditor.tsx** — Add confidence meter showing how certain the engine is about the classification, with explanation of contributing signals
+## Files
 
-### Batch 4: Cross-domain + adaptive record layout (3 files)
-- **business-profile-engine.ts** — Add `crossDomainSignals` to result: finance emphasis (invoice/collections for service, AOV for ecommerce), concierge emphasis (calendar prep for appointment-based, staffing for local)
-- New: **`src/components/business/adaptive/AdaptiveContactLayout.tsx`** — Adaptive contact detail sections that reorder based on archetype: ecommerce shows order history first, service shows communication/proposal first, local shows visit history first
-- **CRMContactDetail.tsx** — Consume `AdaptiveContactLayout` to reorder detail sections
-
-## Files Changed
-
-| File | Batch | Change |
-|------|-------|--------|
-| `src/pages/business/CRMContacts.tsx` | 1 | Add profile-driven columns and language |
-| `src/pages/business/CRMPipeline.tsx` | 1 | Add profile-driven stage names and language |
-| `src/pages/business/CRMAutomations.tsx` | 1 | Add suggested workflows section |
-| `src/pages/business/BusinessBoardroom.tsx` | 2 | Replace static advisors with adaptive roster |
-| `src/pages/business/CRMImportCenter.tsx` | 2 | Add smart field suggestions |
-| `src/lib/engines/business-profile-engine.ts` | 3 | Add profileConfidence + crossDomainSignals |
-| `src/components/sita/apps/business/BusinessAppShell.tsx` | 3 | Apply badge overrides from profile |
-| `src/components/business/adaptive/BusinessProfileEditor.tsx` | 3 | Add confidence meter |
-| New: `src/components/business/adaptive/AdaptiveContactLayout.tsx` | 4 | Archetype-aware contact detail sections |
-| `src/components/business/crm/CRMContactDetail.tsx` | 4 | Use adaptive layout |
+| File | Action | Batch |
+|------|--------|-------|
+| `src/components/sita/apps/concierge/ConciergeAppShell.tsx` | Rewrite — full 19-page shell | 1 |
+| `src/lib/concierge-launcher.ts` | Create — event dispatcher | 1 |
+| `src/contexts/ConciergeNavigationContext.tsx` | Create — nav context | 2 |
+| `src/components/sita/ShellLayout.tsx` | Add concierge event listener | 2 |
+| `src/pages/ConciergeCenter.tsx` | Convert to redirect shim | 2 |
+| `src/components/sita/CommandPalette.tsx` | Add concierge deep-links | 3 |
+| Cross-reference files (DailyPulse, GlobalBoardroom, etc.) | Update navigations | 3 |
 
 No database changes needed.
 
