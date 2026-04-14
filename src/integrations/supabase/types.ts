@@ -2678,6 +2678,44 @@ export type Database = {
         }
         Relationships: []
       }
+      health_validation_results: {
+        Row: {
+          checked_at: string
+          component: string
+          details: string | null
+          id: string
+          status: string
+          update_id: string | null
+          user_id: string
+        }
+        Insert: {
+          checked_at?: string
+          component: string
+          details?: string | null
+          id?: string
+          status?: string
+          update_id?: string | null
+          user_id: string
+        }
+        Update: {
+          checked_at?: string
+          component?: string
+          details?: string | null
+          id?: string
+          status?: string
+          update_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "health_validation_results_update_id_fkey"
+            columns: ["update_id"]
+            isOneToOne: false
+            referencedRelation: "update_catalog"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       lead_inbox_items: {
         Row: {
           accepted_at: string | null
@@ -2928,6 +2966,292 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      onboarding_choices: {
+        Row: {
+          applied: boolean
+          applied_at: string | null
+          created_at: string
+          id: string
+          key: string
+          session_id: string
+          source: string
+          value: Json | null
+        }
+        Insert: {
+          applied?: boolean
+          applied_at?: string | null
+          created_at?: string
+          id?: string
+          key: string
+          session_id: string
+          source?: string
+          value?: Json | null
+        }
+        Update: {
+          applied?: boolean
+          applied_at?: string | null
+          created_at?: string
+          id?: string
+          key?: string
+          session_id?: string
+          source?: string
+          value?: Json | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "onboarding_choices_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "onboarding_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      onboarding_completion_markers: {
+        Row: {
+          created_at: string
+          details: string | null
+          id: string
+          marker_name: string
+          satisfied: boolean
+          satisfied_at: string | null
+          session_id: string
+        }
+        Insert: {
+          created_at?: string
+          details?: string | null
+          id?: string
+          marker_name: string
+          satisfied?: boolean
+          satisfied_at?: string | null
+          session_id: string
+        }
+        Update: {
+          created_at?: string
+          details?: string | null
+          id?: string
+          marker_name?: string
+          satisfied?: boolean
+          satisfied_at?: string | null
+          session_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "onboarding_completion_markers_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "onboarding_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      onboarding_hardware_detection: {
+        Row: {
+          battery_present: boolean | null
+          biometric_present: boolean | null
+          bluetooth_present: boolean | null
+          created_at: string
+          display_resolution: string | null
+          ethernet_present: boolean | null
+          hardware_model: string | null
+          id: string
+          memory_bytes: number | null
+          session_id: string
+          storage_bytes: number | null
+          tpm_present: boolean | null
+          wifi_present: boolean | null
+        }
+        Insert: {
+          battery_present?: boolean | null
+          biometric_present?: boolean | null
+          bluetooth_present?: boolean | null
+          created_at?: string
+          display_resolution?: string | null
+          ethernet_present?: boolean | null
+          hardware_model?: string | null
+          id?: string
+          memory_bytes?: number | null
+          session_id: string
+          storage_bytes?: number | null
+          tpm_present?: boolean | null
+          wifi_present?: boolean | null
+        }
+        Update: {
+          battery_present?: boolean | null
+          biometric_present?: boolean | null
+          bluetooth_present?: boolean | null
+          created_at?: string
+          display_resolution?: string | null
+          ethernet_present?: boolean | null
+          hardware_model?: string | null
+          id?: string
+          memory_bytes?: number | null
+          session_id?: string
+          storage_bytes?: number | null
+          tpm_present?: boolean | null
+          wifi_present?: boolean | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "onboarding_hardware_detection_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "onboarding_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      onboarding_restore_sources: {
+        Row: {
+          created_at: string
+          id: string
+          metadata_ref: string | null
+          selected: boolean
+          session_id: string
+          source_type: string
+          status: string
+          validation_status: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          metadata_ref?: string | null
+          selected?: boolean
+          session_id: string
+          source_type?: string
+          status?: string
+          validation_status?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          metadata_ref?: string | null
+          selected?: boolean
+          session_id?: string
+          source_type?: string
+          status?: string
+          validation_status?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "onboarding_restore_sources_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "onboarding_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      onboarding_sessions: {
+        Row: {
+          boot_id: string
+          completed_at: string | null
+          created_at: string
+          current_step: string
+          device_id: string
+          id: string
+          interrupted: boolean
+          managed_enrollment_mode: boolean
+          resume_token: string | null
+          started_at: string
+          state: string
+          updated_at: string
+          user_id: string
+          version: string
+        }
+        Insert: {
+          boot_id: string
+          completed_at?: string | null
+          created_at?: string
+          current_step?: string
+          device_id: string
+          id?: string
+          interrupted?: boolean
+          managed_enrollment_mode?: boolean
+          resume_token?: string | null
+          started_at?: string
+          state?: string
+          updated_at?: string
+          user_id: string
+          version?: string
+        }
+        Update: {
+          boot_id?: string
+          completed_at?: string | null
+          created_at?: string
+          current_step?: string
+          device_id?: string
+          id?: string
+          interrupted?: boolean
+          managed_enrollment_mode?: boolean
+          resume_token?: string | null
+          started_at?: string
+          state?: string
+          updated_at?: string
+          user_id?: string
+          version?: string
+        }
+        Relationships: []
+      }
+      onboarding_steps: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          entered_at: string | null
+          failed_at: string | null
+          id: string
+          order_index: number
+          required: boolean
+          session_id: string
+          skipped_at: string | null
+          status: string
+          step_name: string
+          updated_at: string
+          validation_error_code: string | null
+          validation_error_message: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          entered_at?: string | null
+          failed_at?: string | null
+          id?: string
+          order_index?: number
+          required?: boolean
+          session_id: string
+          skipped_at?: string | null
+          status?: string
+          step_name: string
+          updated_at?: string
+          validation_error_code?: string | null
+          validation_error_message?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          entered_at?: string | null
+          failed_at?: string | null
+          id?: string
+          order_index?: number
+          required?: boolean
+          session_id?: string
+          skipped_at?: string | null
+          status?: string
+          step_name?: string
+          updated_at?: string
+          validation_error_code?: string | null
+          validation_error_message?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "onboarding_steps_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "onboarding_sessions"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       org_members: {
         Row: {
@@ -3907,6 +4231,53 @@ export type Database = {
           },
         ]
       }
+      rollback_events: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          detected_at: string
+          id: string
+          reason_code: string | null
+          rollback_to_slot: string
+          source_slot: string
+          trigger_type: string
+          update_id: string | null
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          detected_at?: string
+          id?: string
+          reason_code?: string | null
+          rollback_to_slot: string
+          source_slot: string
+          trigger_type?: string
+          update_id?: string | null
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          detected_at?: string
+          id?: string
+          reason_code?: string | null
+          rollback_to_slot?: string
+          source_slot?: string
+          trigger_type?: string
+          update_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "rollback_events_update_id_fkey"
+            columns: ["update_id"]
+            isOneToOne: false
+            referencedRelation: "update_catalog"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       school_activities: {
         Row: {
           activity_type: string | null
@@ -4000,6 +4371,54 @@ export type Database = {
         }
         Relationships: []
       }
+      system_slots: {
+        Row: {
+          boot_count: number | null
+          build_id: string
+          created_at: string
+          health_status: string | null
+          id: string
+          installed_at: string
+          integrity_verified: boolean | null
+          last_boot_at: string | null
+          slot_id: string
+          status: string
+          updated_at: string
+          user_id: string
+          version: string
+        }
+        Insert: {
+          boot_count?: number | null
+          build_id: string
+          created_at?: string
+          health_status?: string | null
+          id?: string
+          installed_at?: string
+          integrity_verified?: boolean | null
+          last_boot_at?: string | null
+          slot_id: string
+          status?: string
+          updated_at?: string
+          user_id: string
+          version: string
+        }
+        Update: {
+          boot_count?: number | null
+          build_id?: string
+          created_at?: string
+          health_status?: string | null
+          id?: string
+          installed_at?: string
+          integrity_verified?: boolean | null
+          last_boot_at?: string | null
+          slot_id?: string
+          status?: string
+          updated_at?: string
+          user_id?: string
+          version?: string
+        }
+        Relationships: []
+      }
       travel_plans: {
         Row: {
           budget: number | null
@@ -4047,6 +4466,293 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      update_boot_attempts: {
+        Row: {
+          booted_at: string | null
+          created_at: string
+          health_validation_ok: boolean | null
+          id: string
+          reboot_requested_at: string | null
+          rollback_reason: string | null
+          rollback_triggered: boolean | null
+          startup_validation_ok: boolean | null
+          target_slot: string
+          update_id: string | null
+          user_id: string
+        }
+        Insert: {
+          booted_at?: string | null
+          created_at?: string
+          health_validation_ok?: boolean | null
+          id?: string
+          reboot_requested_at?: string | null
+          rollback_reason?: string | null
+          rollback_triggered?: boolean | null
+          startup_validation_ok?: boolean | null
+          target_slot: string
+          update_id?: string | null
+          user_id: string
+        }
+        Update: {
+          booted_at?: string | null
+          created_at?: string
+          health_validation_ok?: boolean | null
+          id?: string
+          reboot_requested_at?: string | null
+          rollback_reason?: string | null
+          rollback_triggered?: boolean | null
+          startup_validation_ok?: boolean | null
+          target_slot?: string
+          update_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "update_boot_attempts_update_id_fkey"
+            columns: ["update_id"]
+            isOneToOne: false
+            referencedRelation: "update_catalog"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      update_catalog: {
+        Row: {
+          build_id: string
+          channel: string
+          components: Json | null
+          created_at: string
+          critical: boolean
+          delta_from_version: string | null
+          id: string
+          metadata_hash: string | null
+          min_supported_version: string | null
+          package_format: string | null
+          payload_size: number | null
+          published_at: string
+          release_notes: string | null
+          rollout_percentage: number | null
+          signature_ref: string | null
+          update_type: string
+          version: string
+        }
+        Insert: {
+          build_id: string
+          channel?: string
+          components?: Json | null
+          created_at?: string
+          critical?: boolean
+          delta_from_version?: string | null
+          id?: string
+          metadata_hash?: string | null
+          min_supported_version?: string | null
+          package_format?: string | null
+          payload_size?: number | null
+          published_at?: string
+          release_notes?: string | null
+          rollout_percentage?: number | null
+          signature_ref?: string | null
+          update_type?: string
+          version: string
+        }
+        Update: {
+          build_id?: string
+          channel?: string
+          components?: Json | null
+          created_at?: string
+          critical?: boolean
+          delta_from_version?: string | null
+          id?: string
+          metadata_hash?: string | null
+          min_supported_version?: string | null
+          package_format?: string | null
+          payload_size?: number | null
+          published_at?: string
+          release_notes?: string | null
+          rollout_percentage?: number | null
+          signature_ref?: string | null
+          update_type?: string
+          version?: string
+        }
+        Relationships: []
+      }
+      update_channels: {
+        Row: {
+          created_at: string
+          enabled: boolean
+          id: string
+          name: string
+          policy_allowed: boolean
+          user_id: string
+          user_selectable: boolean
+        }
+        Insert: {
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          name?: string
+          policy_allowed?: boolean
+          user_id: string
+          user_selectable?: boolean
+        }
+        Update: {
+          created_at?: string
+          enabled?: boolean
+          id?: string
+          name?: string
+          policy_allowed?: boolean
+          user_id?: string
+          user_selectable?: boolean
+        }
+        Relationships: []
+      }
+      update_history: {
+        Row: {
+          action: string
+          actor: string
+          created_at: string
+          from_version: string | null
+          id: string
+          reason: string | null
+          to_version: string
+          update_id: string | null
+          user_id: string
+        }
+        Insert: {
+          action?: string
+          actor?: string
+          created_at?: string
+          from_version?: string | null
+          id?: string
+          reason?: string | null
+          to_version: string
+          update_id?: string | null
+          user_id: string
+        }
+        Update: {
+          action?: string
+          actor?: string
+          created_at?: string
+          from_version?: string | null
+          id?: string
+          reason?: string | null
+          to_version?: string
+          update_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "update_history_update_id_fkey"
+            columns: ["update_id"]
+            isOneToOne: false
+            referencedRelation: "update_catalog"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      update_preflight_results: {
+        Row: {
+          battery_percent: number | null
+          channel_allowed: boolean | null
+          charger_connected: boolean | null
+          checked_at: string
+          free_storage_bytes: number | null
+          id: string
+          network_type: string | null
+          passed: boolean
+          policy_allowed: boolean | null
+          reason_code: string | null
+          slot_available: boolean | null
+          update_id: string | null
+          user_id: string
+        }
+        Insert: {
+          battery_percent?: number | null
+          channel_allowed?: boolean | null
+          charger_connected?: boolean | null
+          checked_at?: string
+          free_storage_bytes?: number | null
+          id?: string
+          network_type?: string | null
+          passed?: boolean
+          policy_allowed?: boolean | null
+          reason_code?: string | null
+          slot_available?: boolean | null
+          update_id?: string | null
+          user_id: string
+        }
+        Update: {
+          battery_percent?: number | null
+          channel_allowed?: boolean | null
+          charger_connected?: boolean | null
+          checked_at?: string
+          free_storage_bytes?: number | null
+          id?: string
+          network_type?: string | null
+          passed?: boolean
+          policy_allowed?: boolean | null
+          reason_code?: string | null
+          slot_available?: boolean | null
+          update_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "update_preflight_results_update_id_fkey"
+            columns: ["update_id"]
+            isOneToOne: false
+            referencedRelation: "update_catalog"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      update_staging: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          id: string
+          integrity_verified: boolean | null
+          snapshot_id: string | null
+          staged_at: string | null
+          state: string
+          target_slot: string
+          update_id: string | null
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          integrity_verified?: boolean | null
+          snapshot_id?: string | null
+          staged_at?: string | null
+          state?: string
+          target_slot?: string
+          update_id?: string | null
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          integrity_verified?: boolean | null
+          snapshot_id?: string | null
+          staged_at?: string | null
+          state?: string
+          target_slot?: string
+          update_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "update_staging_update_id_fkey"
+            columns: ["update_id"]
+            isOneToOne: false
+            referencedRelation: "update_catalog"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {

@@ -27,6 +27,7 @@ const SimulationEnginePage = lazy(() => import("@/pages/SimulationEnginePage"));
 const SearchPage = lazy(() => import("@/pages/SearchPage"));
 const SystemStatus = lazy(() => import("@/pages/SystemStatus"));
 const AutomationCenter = lazy(() => import("@/pages/AutomationCenter"));
+const FirstBootSetup = lazy(() => import("@/pages/FirstBootSetup"));
 const InboxCapture = lazy(() => import("@/pages/InboxCapture"));
 const ActivityStream = lazy(() => import("@/pages/ActivityStream"));
 const OpportunityEngine = lazy(() => import("@/pages/OpportunityEngine"));
@@ -166,6 +167,7 @@ export function getOSRoutes() {
       <Route path="/command-history" element={<CommandHistory />} />
       <Route path="/environment-switcher" element={<EnvironmentSwitcherPage />} />
       <Route path="/update-center" element={<UpdateCenterPage />} />
+      <Route path="/first-boot" element={<FirstBootSetup />} />
 
       {/* System Utilities */}
       <Route path="/clipboard-history" element={<ClipboardHistory />} />
