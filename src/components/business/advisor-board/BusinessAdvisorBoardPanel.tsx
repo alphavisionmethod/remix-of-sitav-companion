@@ -7,8 +7,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Brain, Zap, AlertTriangle, TrendingUp, Shield, ChevronDown, ChevronRight, ArrowUpRight, Activity, Crown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { BoardSynthesisTheme, AdvisorOutput } from "@/lib/engines/business-advisor-engine";
-import { synthesizeBusinessBoard, generateHomeAdvisors, detectAdvisorDisagreements } from "@/lib/engines/business-advisor-engine";
+import { synthesizeBusinessBoard, generateHomeAdvisors, detectAdvisorDisagreements, buildEscalationPacket } from "@/lib/engines/business-advisor-engine";
 import { AdvisorDisagreementCard } from "./AdvisorDisagreementCard";
+import { EscalationPacketPreview } from "./EscalationPacketPreview";
 import { toast } from "sonner";
 
 const SEVERITY_STYLES: Record<string, { bg: string; border: string; text: string; dot: string }> = {
@@ -31,6 +32,7 @@ interface Props {
 export function BusinessAdvisorBoardPanel({ allAdvisors: propAdvisors, themes: propThemes }: Props) {
   const [activeTab, setActiveTab] = useState<"themes" | "escalation" | "modules" | "disagreements">("themes");
   const [expandedTheme, setExpandedTheme] = useState<string | null>(null);
+  const [activePacketTheme, setActivePacketTheme] = useState<string | null>(null);
 
   // Use provided or generate demo data
   const allAdvisors = useMemo(() => propAdvisors || generateHomeAdvisors(), [propAdvisors]);
@@ -150,18 +152,40 @@ export function BusinessAdvisorBoardPanel({ allAdvisors: propAdvisors, themes: p
           <motion.div key="escalation" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-3">
             {escalationCandidates.length === 0 && <p className="text-[11px] text-[hsl(0_0%_40%)] text-center py-8">No items currently warrant Boardroom escalation</p>}
             {escalationCandidates.map(theme => (
-              <div key={theme.themeId} className="rounded-xl border border-[hsl(38_85%_58%/0.15)] bg-[hsl(38_85%_58%/0.04)] p-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <Crown className="h-3.5 w-3.5 text-[hsl(38_85%_58%)]" />
-                  <span className="text-[11px] font-semibold text-[hsl(0_0%_80%)]">{theme.title}</span>
+              <div key={theme.themeId} className="space-y-3">
+                <div className="rounded-xl border border-[hsl(38_85%_58%/0.15)] bg-[hsl(38_85%_58%/0.04)] p-4">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Crown className="h-3.5 w-3.5 text-[hsl(38_85%_58%)]" />
+                    <span className="text-[11px] font-semibold text-[hsl(0_0%_80%)]">{theme.title}</span>
+                  </div>
+                  <p className="text-[10px] text-[hsl(0_0%_55%)]">{theme.description}</p>
+                  <div className="flex items-center gap-2 mt-3">
+                    <button
+                      onClick={() => setActivePacketTheme(activePacketTheme === theme.themeId ? null : theme.themeId)}
+                      className="text-[9px] px-3 py-1.5 rounded-lg bg-[hsl(38_85%_58%/0.15)] text-[hsl(38_85%_68%)] hover:bg-[hsl(38_85%_58%/0.25)] transition-colors flex items-center gap-1"
+                    >
+                      <ArrowUpRight className="h-3 w-3" />
+                      {activePacketTheme === theme.themeId ? "Hide Packet" : "Build Escalation Packet"}
+                    </button>
+                  </div>
                 </div>
-                <p className="text-[10px] text-[hsl(0_0%_55%)]">{theme.description}</p>
-                <div className="flex items-center gap-2 mt-3">
-                  <button onClick={() => toast.info("Escalation packet builder would open here")}
-                    className="text-[9px] px-3 py-1.5 rounded-lg bg-[hsl(38_85%_58%/0.15)] text-[hsl(38_85%_68%)] hover:bg-[hsl(38_85%_58%/0.25)] transition-colors flex items-center gap-1">
-                    <ArrowUpRight className="h-3 w-3" /> Build Escalation Packet
-                  </button>
-                </div>
+                <AnimatePresence>
+                  {activePacketTheme === theme.themeId && (
+                    <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="overflow-hidden">
+                      <EscalationPacketPreview
+                        packet={buildEscalationPacket(
+                          { name: theme.contributingAdvisors[0] || "Strategic Item", company: "Portfolio", value: 25000, stage: "Review", daysSince: 14, failureMode: "process_bottleneck", owner: "Current Team", sensitivity: "high" },
+                          allAdvisors.filter(a => theme.modules.includes(a.module))
+                        )}
+                        onClose={() => setActivePacketTheme(null)}
+                        onSendToBoardroom={() => {
+                          toast.success("Escalation packet sent to Boardroom");
+                          setActivePacketTheme(null);
+                        }}
+                      />
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             ))}
           </motion.div>

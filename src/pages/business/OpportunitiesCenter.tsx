@@ -3,11 +3,11 @@ import { SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard"
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge, TrustLevel } from "@/components/sita/TrustBadge";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
+import { ModuleAdvisorPanel } from "@/components/business/advisor-board/ModuleAdvisorPanel";
 import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
 import { StateBadge, ExecutionState } from "@/components/sita/StateBadge";
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
@@ -17,6 +17,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Target, DollarSign, TrendingUp, Clock, AlertTriangle, Sparkles, ArrowRight, CheckCircle, Plus, X, Trash2, LayoutList, Columns } from "lucide-react";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getModuleAdaptation } from "@/lib/engines/business-module-adaptations";
+import { generateOpportunityAdvisors } from "@/lib/engines/business-advisor-engine";
 
 
 
@@ -227,12 +228,14 @@ const OpportunitiesCenter = () => {
           </div>
         </div>
       )}
-      <ModuleAdvisorInsight
-        advisorName="Opportunity Advisor"
-        domain="business"
-        insight="Pipeline velocity has slowed — 2 deals stuck in proposal stage for 10+ days. Consider follow-up calls this week to maintain close rate above 35%."
-        confidence={85}
-      />
+      <div className="rounded-2xl border border-border/40 bg-card p-4">
+        <ModuleAdvisorPanel
+          advisors={generateOpportunityAdvisors()}
+          title="Opportunity & Pipeline Advisors"
+          defaultExpanded={false}
+          compact
+        />
+      </div>
     </motion.div>
   );
 };
