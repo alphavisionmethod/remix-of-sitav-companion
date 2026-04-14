@@ -169,7 +169,7 @@ export default function DailyPulse() {
             insight="Grocery delivery scheduled for Monday. 2 household tasks overdue. Dentist rescheduled to Thursday 3 PM."
             confidence={90}
             accentColor={DOMAIN_ACCENTS.concierge.from}
-            action={{ label: "See Schedule", onClick: () => navigate("/concierge") }}
+            action={{ label: "See Schedule", onClick: () => window.dispatchEvent(new CustomEvent("sita-open-concierge", { detail: { module: "overview" } })) }}
           />
         </ListRevealItem>
       </ListReveal>

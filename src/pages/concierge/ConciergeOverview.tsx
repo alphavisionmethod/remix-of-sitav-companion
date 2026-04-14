@@ -11,7 +11,7 @@ import { AppSurface } from "@/components/sita/surfaces/AppSurface";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
 import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
-import { useNavigate } from "react-router-dom";
+import { useConciergeNavigation } from "@/contexts/ConciergeNavigationContext";
 import { useHouseholdTasks, useFamilyEvents } from "@/hooks/use-sita-data";
 import { useMemo } from "react";
 import {
@@ -23,7 +23,7 @@ const isDemoMode = true; // TODO: wire to reality mode context
 
 
 const ConciergeOverview = () => {
-  const navigate = useNavigate();
+  const { navigateTo } = useConciergeNavigation();
   const { data: tasks = [] } = useHouseholdTasks();
   const { data: events = [] } = useFamilyEvents();
 
@@ -69,8 +69,8 @@ const ConciergeOverview = () => {
         title="Welcome to your personal concierge"
         description="Add your first task or event to start."
         actions={[
-          { label: "Add Task", icon: CheckSquare, onClick: () => navigate("/concierge/tasks") },
-          { label: "Schedule Event", icon: Calendar, onClick: () => navigate("/concierge/appointments"), variant: "secondary" as const },
+          { label: "Add Task", icon: CheckSquare, onClick: () => navigateTo("tasks") },
+          { label: "Schedule Event", icon: Calendar, onClick: () => navigateTo("appointments"), variant: "secondary" as const },
         ]}
         tip="The concierge advisor learns your routines over time"
         domain="concierge"
@@ -112,7 +112,7 @@ const ConciergeOverview = () => {
               title="What Needs You"
               items={queueItems}
               onItemClick={(id) => {
-                if (id === "cp1") navigate("/concierge/tasks");
+                if (id === "cp1") navigateTo("tasks");
               }}
             />
             <TimelineCard title="What Changed" events={timelineEvents} />
@@ -148,7 +148,7 @@ const ConciergeOverview = () => {
             confidence={88}
             domain="Concierge"
             accentColor="hsl(285 55% 55%)"
-            action={{ label: "Review Travel Prep", onClick: () => navigate("/concierge/travel") }}
+            action={{ label: "Review Travel Prep", onClick: () => navigateTo("travel") }}
           />
         </ListRevealItem>
 
@@ -156,12 +156,12 @@ const ConciergeOverview = () => {
         <ListRevealItem>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {[
-              { label: "Life Admin", count: "3 items", icon: FileText, path: "/concierge/life-admin" },
-              { label: "Errands", count: "2 pending", icon: ShoppingCart, path: "/concierge/errands" },
-              { label: "Travel", count: "1 trip", icon: Plane, path: "/concierge/travel" },
-              { label: "Appointments", count: "Next Thu", icon: Stethoscope, path: "/concierge/appointments" },
+              { label: "Life Admin", count: "3 items", icon: FileText, path: "life-admin" },
+              { label: "Errands", count: "2 pending", icon: ShoppingCart, path: "errands" },
+              { label: "Travel", count: "1 trip", icon: Plane, path: "travel" },
+              { label: "Appointments", count: "Next Thu", icon: Stethoscope, path: "appointments" },
             ].map(tile => (
-              <DomainCard key={tile.label} onClick={() => navigate(tile.path)}
+              <DomainCard key={tile.label} onClick={() => navigateTo(tile.path)}
                 className="group text-left micro-hover-lift micro-focus-glow micro-press"
               >
                 <tile.icon className="h-4 w-4 text-[hsl(285_55%_55%)] mb-2" />

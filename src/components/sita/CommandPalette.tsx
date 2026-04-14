@@ -194,8 +194,11 @@ export const CommandPalette = ({ open, onClose }: CommandPaletteProps) => {
             else if (a.label.includes("Bills")) { window.dispatchEvent(new CustomEvent("sita-open-finance", { detail: { module: "bills" } })); }
             else if (a.label.includes("Cash")) { window.dispatchEvent(new CustomEvent("sita-open-finance", { detail: { module: "overview" } })); }
             else if (a.label.includes("Subscription")) { window.dispatchEvent(new CustomEvent("sita-open-finance", { detail: { module: "subscriptions" } })); }
-            else if (a.label.includes("Errand")) navigate("/concierge/errands");
-            else if (a.label.includes("Appointment")) navigate("/concierge/appointments");
+            else if (a.label.includes("Errand")) { window.dispatchEvent(new CustomEvent("sita-open-concierge", { detail: { module: "errands" } })); }
+            else if (a.label.includes("Appointment")) { window.dispatchEvent(new CustomEvent("sita-open-concierge", { detail: { module: "appointments" } })); }
+            else if (a.label.includes("Grocery")) { window.dispatchEvent(new CustomEvent("sita-open-concierge", { detail: { module: "grocery" } })); }
+            else if (a.label.includes("Travel")) { window.dispatchEvent(new CustomEvent("sita-open-concierge", { detail: { module: "travel" } })); }
+            else if (a.label.includes("Household")) { window.dispatchEvent(new CustomEvent("sita-open-concierge", { detail: { module: "household" } })); }
             else if (a.label.includes("Document") || a.label.includes("Upload")) navigate("/files");
             else if (a.label.includes("Advisor")) navigate("/boardroom");
             onClose();
