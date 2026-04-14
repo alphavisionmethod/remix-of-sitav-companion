@@ -217,3 +217,22 @@ export function useDeleteContactCompanyLink() {
     onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "contact-company-links"] }),
   });
 }
+
+// ─── CRM Automation Hooks ───────────────────────────────────
+export function useCRMAutomations(mode: RealityModeKey = "demo") { return useCRMQuery("automations", fetchCRMAutomations, mode); }
+
+export function useCreateAutomation() {
+  const qc = useQueryClient();
+  return useMutation({ mutationFn: createCRMAutomation, onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "automations"] }) });
+}
+export function useUpdateAutomation() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, updates }: { id: string; updates: Parameters<typeof updateCRMAutomation>[1] }) => updateCRMAutomation(id, updates),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "automations"] }),
+  });
+}
+export function useDeleteAutomation() {
+  const qc = useQueryClient();
+  return useMutation({ mutationFn: deleteCRMAutomation, onSuccess: () => qc.invalidateQueries({ queryKey: ["crm", "automations"] }) });
+}
