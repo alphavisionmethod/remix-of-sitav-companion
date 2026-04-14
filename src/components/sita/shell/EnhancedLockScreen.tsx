@@ -9,13 +9,15 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Lock, ArrowRight, Shield, Eye, EyeOff, AlertCircle,
   CheckCircle, Bell, Calendar, Clock, Wifi, WifiOff,
-  Users, ChevronUp, Fingerprint,
+  Users, ChevronUp, Fingerprint, Key,
 } from "lucide-react";
 import logo from "@/assets/logo.webp";
 import { cn } from "@/lib/utils";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { ShellAmbientBackground } from "./ShellAmbientBackground";
 import type { TrustPosture, PrivacyMode, ShellNotificationDigest } from "./useShellState";
+import { isOSSecurityBooted } from "@/lib/os-security";
+import { sessionUnlockFlow } from "@/lib/os-security/flows";
 
 // ── Types ────────────────────────────────────────────────────
 
@@ -79,13 +81,18 @@ export function EnhancedLockScreen({
   isOnline = true,
 }: EnhancedLockScreenProps) {
   const [password, setPassword] = useState("");
+  const [pin, setPin] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [unlockState, setUnlockState] = useState<UnlockState>("idle");
+  const [authMode, setAuthMode] = useState<"password" | "pin" | "biometric">("password");
   const [error, setError] = useState("");
   const [shake, setShake] = useState(false);
   const [dismissed, setDismissed] = useState(false);
   const [showAlerts, setShowAlerts] = useState(false);
+  const [failedAttempts, setFailedAttempts] = useState(0);
+  const [lockoutUntil, setLockoutUntil] = useState<number | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const pinRef = useRef<HTMLInputElement>(null);
   const reduced = useReducedMotion();
 
   // Clock
@@ -101,39 +108,86 @@ export function EnhancedLockScreen({
     return () => clearTimeout(t);
   }, []);
 
+  // Lockout timer
+  useEffect(() => {
+    if (!lockoutUntil) return;
+    const timer = setInterval(() => {
+      if (Date.now() >= lockoutUntil) {
+        setLockoutUntil(null);
+        setFailedAttempts(0);
+        setError("");
+      }
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [lockoutUntil]);
+
+  const isLockedOut = lockoutUntil !== null && Date.now() < lockoutUntil;
+
+  const handleFailure = useCallback(() => {
+    const attempts = failedAttempts + 1;
+    setFailedAttempts(attempts);
+    
+    // Rate limiting: lockout after 5 attempts
+    if (attempts >= 5) {
+      const lockoutMs = Math.min(30000 * Math.pow(2, Math.floor(attempts / 5) - 1), 300000);
+      setLockoutUntil(Date.now() + lockoutMs);
+      setError(`Too many attempts. Locked for ${Math.ceil(lockoutMs / 1000)}s`);
+    } else {
+      setError(`Incorrect ${authMode === "pin" ? "PIN" : "password"} (${5 - attempts} attempts remaining)`);
+    }
+    
+    setShake(true);
+    setPassword("");
+    setPin("");
+    setTimeout(() => {
+      setShake(false);
+      setUnlockState(authMode === "pin" ? "pin_entry" : "password_entry");
+    }, 600);
+    if (authMode === "pin") pinRef.current?.focus();
+    else inputRef.current?.focus();
+  }, [failedAttempts, authMode]);
+
   const handleSubmit = useCallback(async (e?: React.FormEvent) => {
     e?.preventDefault();
-    if (!password.trim() || unlockState === "unlocking") return;
+    const credential = authMode === "pin" ? pin : password;
+    if (!credential.trim() || unlockState === "unlocking" || isLockedOut) return;
 
     setUnlockState("unlocking");
     setError("");
 
     try {
-      const success = await onUnlock(password);
+      // Try OS security flow first
+      if (isOSSecurityBooted()) {
+        const { getSessionDaemon } = await import("@/lib/os-security/sessiond");
+        const sessiond = getSessionDaemon();
+        const sessions = sessiond.getAllSessions();
+        const session = sessions[0];
+        if (session) {
+          const result = await sessionUnlockFlow(session.sessionId, credential, authMode === "pin" ? "pin" : "password");
+          if (result.status === "ok") {
+            setUnlockState("success");
+            setFailedAttempts(0);
+            setTimeout(() => setDismissed(true), 500);
+            return;
+          }
+        }
+      }
+
+      // Fallback to provided onUnlock
+      const success = await onUnlock(credential);
       if (success) {
         setUnlockState("success");
+        setFailedAttempts(0);
         setTimeout(() => setDismissed(true), 500);
       } else {
         setUnlockState("failed");
-        setError("Incorrect password");
-        setShake(true);
-        setPassword("");
-        setTimeout(() => {
-          setShake(false);
-          setUnlockState("password_entry");
-        }, 600);
-        inputRef.current?.focus();
+        handleFailure();
       }
     } catch {
       setUnlockState("failed");
-      setError("Authentication failed");
-      setShake(true);
-      setTimeout(() => {
-        setShake(false);
-        setUnlockState("password_entry");
-      }, 600);
+      handleFailure();
     }
-  }, [password, unlockState, onUnlock]);
+  }, [password, pin, unlockState, onUnlock, authMode, isLockedOut, handleFailure]);
 
   const hours = time.getHours().toString().padStart(2, "0");
   const minutes = time.getMinutes().toString().padStart(2, "0");
