@@ -420,10 +420,11 @@ export function BusinessAppShell({ initialModule }: { initialModule?: string }) 
 }
 
 function BusinessAppShellInner({ initialModule }: { initialModule?: string }) {
-  const { adaptations, primaryMode, operatingFlags } = useBusinessProfile();
+  const { adaptations, primaryMode, operatingFlags, isAdapted } = useBusinessProfile();
   const storedModule = (window as any).__businessInitialModule;
   const [activeModule, setActiveModule] = useState(storedModule || initialModule || "adaptive-home");
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(() => !isAdapted);
 
   // Global Cmd+K listener
   useEffect(() => {
