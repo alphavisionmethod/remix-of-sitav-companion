@@ -235,11 +235,15 @@ export function DesktopSurface({
         <ShellAmbientBackground intensity="vivid" className="fixed" wallpaperId={wallpaperId} />
       </div>
 
-      {/* Layer 2: Desktop Content — Draggable Widgets */}
+      {/* Layer 2: Desktop Content — Draggable Widgets + Left Rail */}
       <div className={cn(
         "absolute inset-0 z-10 transition-all duration-700",
         hasAnyWindows && "opacity-30 blur-sm pointer-events-none"
       )}>
+        {/* Persistent Left Rail — app launcher sidebar (large screens only) */}
+        <div className="absolute left-4 top-1/2 -translate-y-1/2 z-20">
+          <DesktopLeftRail onLaunchApp={onLaunchApp} />
+        </div>
         {/* Draggable widgets */}
         {widgets.map((w) => (
           <DraggableWidget
