@@ -176,7 +176,7 @@ export async function suspendResumeFlow(
 
   // Suspend
   const suspendResult = sessiond.suspendSession(sessionId);
-  if (suspendResult.status !== "ok") return suspendResult;
+  if (suspendResult.status !== "ok") return { status: suspendResult.status, error: suspendResult.error, data: { lockRequired: false } };
 
   // Simulate resume (in practice, powerd triggers this)
   const resumeResult = sessiond.resumeSession(sessionId);
