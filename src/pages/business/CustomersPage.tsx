@@ -16,7 +16,7 @@ import { SectionSkeleton, KPISkeleton } from "@/components/sita/SectionSkeleton"
 import { useState, useMemo } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAction } from "@/lib/hooks/useAction";
-import { useNavigate } from "react-router-dom";
+import { useBusinessNavigation } from "@/contexts/BusinessNavigationContext";
 import {
   Users, Search, DollarSign, Heart, AlertTriangle, Plus, X, Plug
 } from "lucide-react";
@@ -71,7 +71,7 @@ const TABS: { key: Tab; label: string }[] = [
 
 const CustomersPage = () => {
   const { user } = useAuth();
-  const navigate = useNavigate();
+  const { navigateTo } = useBusinessNavigation();
   const crmSync = useCRMSync();
   const [tab, setTab] = useState<Tab>("all");
   const [search, setSearch] = useState("");
@@ -129,7 +129,7 @@ const CustomersPage = () => {
         description="Add your first customer to start tracking relationships and revenue."
         actions={[
           { label: "Add Customer", icon: Plus, onClick: () => setShowAdd(true) },
-          { label: "Integrations", icon: Plug, onClick: () => navigate("/business/integrations"), variant: "secondary" as const },
+          { label: "Integrations", icon: Plug, onClick: () => navigateTo("integrations"), variant: "secondary" as const },
         ]}
         domain="business"
       />
@@ -142,7 +142,7 @@ const CustomersPage = () => {
       <div className="flex items-center gap-2 mb-2">
         <div className="flex items-center gap-2">
           <SitaButton variant="primary" size="sm" onClick={() => setShowAdd(true)}><Plus className="h-3.5 w-3.5" /> Add</SitaButton>
-          <SitaButton variant="ghost" size="sm" onClick={() => navigate("/business/integrations")}><Plug className="h-3.5 w-3.5" /></SitaButton>
+          <SitaButton variant="ghost" size="sm" onClick={() => navigateTo("integrations")}><Plug className="h-3.5 w-3.5" /></SitaButton>
           <CrossAppAction to="/concierge/appointments" label="Appointments" variant="chip" context={{ entityType: "customer", entityId: selectedId || "all" }} />
           <CrossAppAction to="/business/quotes" label="Quotes" variant="chip" context={{ entityType: "customer", entityId: selectedId || "all" }} />
         </div>
