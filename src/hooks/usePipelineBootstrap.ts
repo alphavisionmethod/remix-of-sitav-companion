@@ -45,6 +45,8 @@ export function usePipelineBootstrap() {
           domain,
           severity: synthesis.boardroom_worthiness_score > 0.8 ? "high" : "medium",
           description: synthesis.issue_summary,
+          advisorSummaries: Object.fromEntries(synthesis.module_advisor_positions.map(p => [p.advisor_id, p.summary])),
+          escalationReason: `Auto-escalation: worthiness ${synthesis.boardroom_worthiness_score.toFixed(2)} >= 0.65`,
         }).catch(() => {/* bridge handles errors */});
       }
     }, "pipeline-bootstrap-auto-escalation");
