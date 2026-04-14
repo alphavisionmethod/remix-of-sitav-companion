@@ -19,6 +19,8 @@ import { InlineAdvisorInsights, generateCompanyInsights } from "./CRMAdvisorInsi
 import { CRMFinanceLinkage } from "./CRMFinanceLinkage";
 import { CRMFilesLinkage } from "./CRMFilesLinkage";
 import { CRMConciergeLinkage } from "./CRMConciergeLinkage";
+import { CRMProofTrail } from "./CRMProofTrail";
+import { CRMOwnership } from "./CRMOwnership";
 
 const healthColor = (s: number) => s >= 80 ? "text-green-400" : s >= 60 ? "text-yellow-400" : s >= 40 ? "text-orange-400" : "text-red-400";
 const healthLabel = (s: number) => s >= 80 ? "Healthy" : s >= 60 ? "Warming" : s >= 40 ? "Drifting" : "At Risk";
