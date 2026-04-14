@@ -154,6 +154,14 @@ export const ACTION_AUTHORIZATION_TABLE: ActionPolicy[] = [
   { action: "user.promote", displayName: "Promote to Admin", requiredRole: "admin", requiredCapability: "user.promote", elevationRequired: true, freshAuthRequired: true, lockedSessionAllowed: false, auditSeverity: "critical", description: "Promote user to admin" },
   // Security
   { action: "security.baseline.change", displayName: "Change Security Baseline", requiredRole: "admin", requiredCapability: "security.baseline.change", elevationRequired: true, freshAuthRequired: true, lockedSessionAllowed: false, auditSeverity: "critical", description: "Change security baseline" },
+  // Update
+  { action: "update.check", displayName: "Check for Updates", requiredRole: "standard", requiredCapability: "system.settings.modify", elevationRequired: false, freshAuthRequired: false, lockedSessionAllowed: false, auditSeverity: "info", description: "Check for system updates" },
+  { action: "update.install", displayName: "Install Update", requiredRole: "admin", requiredCapability: "system.settings.modify", elevationRequired: true, freshAuthRequired: true, lockedSessionAllowed: false, auditSeverity: "high", description: "Install system update" },
+  { action: "update.rollback", displayName: "Rollback Update", requiredRole: "admin", requiredCapability: "system.settings.modify", elevationRequired: true, freshAuthRequired: true, lockedSessionAllowed: false, auditSeverity: "critical", description: "Rollback to previous version" },
+  { action: "update.channel.switch", displayName: "Switch Update Channel", requiredRole: "admin", requiredCapability: "system.settings.modify", elevationRequired: true, freshAuthRequired: true, lockedSessionAllowed: false, auditSeverity: "high", description: "Switch update release channel" },
+  // Onboarding
+  { action: "onboarding.start", displayName: "Start Onboarding", requiredRole: "guest", requiredCapability: "session.lock", elevationRequired: false, freshAuthRequired: false, lockedSessionAllowed: false, auditSeverity: "info", description: "Start first-boot setup" },
+  { action: "onboarding.complete", displayName: "Complete Onboarding", requiredRole: "standard", requiredCapability: "system.settings.modify", elevationRequired: false, freshAuthRequired: false, lockedSessionAllowed: false, auditSeverity: "info", description: "Complete first-boot setup" },
 ];
 
 // ── Secrets ─────────────────────────────────────────────────

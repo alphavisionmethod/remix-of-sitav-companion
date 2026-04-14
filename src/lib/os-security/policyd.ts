@@ -10,6 +10,8 @@ import {
   ACTION_AUTHORIZATION_TABLE, DEFAULT_ROLE_CAPABILITIES, hasRequiredRole,
 } from "./types";
 import { getAuthDaemon } from "./authd";
+import { getPolicyBundleManager, type DeviceMode, type PolicyBundle, type FullPolicyContent } from "./policyd-bundles";
+import { getContextualDecisionEngine, type EnhancedPolicyContext, type EnhancedPolicyDecision } from "./policyd-decisions";
 
 // ── Environmental Context ───────────────────────────────────
 
@@ -21,6 +23,7 @@ export interface EnvironmentalContext {
   securityLockdown: boolean;
   vpnActive: boolean;
   batteryLevel?: number;
+  deviceMode?: string;
 }
 
 export interface PolicyDecision {
@@ -259,11 +262,57 @@ export class PolicyDaemon {
     return Array.from(SERVICE_REGISTRY.values());
   }
 
+  // ── Enhanced Policy APIs ────────────────────────────────
+
+  switchDeviceMode(mode: DeviceMode): { previousMode: DeviceMode; newMode: DeviceMode } {
+    const bundleManager = getPolicyBundleManager();
+    const result = bundleManager.switchMode(mode);
+    return { previousMode: result.previousMode, newMode: result.newMode };
+  }
+
+  getDeviceMode(): DeviceMode {
+    return getPolicyBundleManager().getCurrentMode();
+  }
+
+  getEffectivePolicy(): FullPolicyContent {
+    return getPolicyBundleManager().getEffective();
+  }
+
+  installBundle(bundle: PolicyBundle): { success: boolean; error?: string } {
+    return getPolicyBundleManager().installBundle(bundle);
+  }
+
+  validateBundle(bundle: PolicyBundle): { valid: boolean; errors: string[] } {
+    return getPolicyBundleManager().validateBundle(bundle);
+  }
+
+  simulateAction(ctx: EnhancedPolicyContext): { decision: EnhancedPolicyDecision | null; matchedRules: string[] } {
+    return getContextualDecisionEngine().simulate(ctx);
+  }
+
+  explainAction(action: string, ctx: EnhancedPolicyContext): ReturnType<typeof getContextualDecisionEngine.prototype.explain> {
+    return getContextualDecisionEngine().explain(action, ctx);
+  }
+
+  getActiveConstraints() {
+    return getPolicyBundleManager().getActiveConstraints();
+  }
+
+  evaluateUpdatePreflight(ctx: EnhancedPolicyContext) {
+    return getContextualDecisionEngine().evaluateUpdatePreflight(ctx);
+  }
+
+  evaluateOnboardingDefaults() {
+    return getContextualDecisionEngine().evaluateOnboardingDefaults();
+  }
+
   getStats() {
+    const bundleStats = getPolicyBundleManager().getStats();
     return {
       totalPolicies: ACTION_AUTHORIZATION_TABLE.length + this.customPolicies.length,
       registeredServices: SERVICE_REGISTRY.size,
       decisionLogSize: this.decisionLog.length,
+      ...bundleStats,
     };
   }
 }

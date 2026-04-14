@@ -17,6 +17,20 @@ export { AuditDaemon, getAuditDaemon } from "./auditd";
 export { ControlCenterDaemon, getControlCenterDaemon } from "./controlcenterd";
 export type { CommandResult } from "./controlcenterd";
 
+// ── Policy Bundles & Decisions ───────────────────────────────
+export { PolicyBundleManager, getPolicyBundleManager, DEVICE_MODES } from "./policyd-bundles";
+export type { DeviceMode, PolicyBundle, FullPolicyContent, PolicyBundleSource, DeviceModeDefinition } from "./policyd-bundles";
+export { ContextualDecisionEngine, getContextualDecisionEngine } from "./policyd-decisions";
+export type { EnhancedPolicyContext, EnhancedPolicyDecision, EnhancedDecisionType } from "./policyd-decisions";
+
+// ── Update Daemon ────────────────────────────────────────────
+export { UpdateDaemon, getUpdateDaemon } from "./updated";
+export type { UpdateState, UpdateChannel, UpdateCatalogEntry, UpdatePreflightResult, UpdateProgress, HealthValidationResult, RollbackEvent, SystemSlot } from "./updated";
+
+// ── Onboarding Daemon ────────────────────────────────────────
+export { OnboardingDaemon, getOnboardingDaemon } from "./onboardingd";
+export type { OnboardingSession, OnboardingStep, ProtectionDefaults } from "./onboardingd";
+
 // ── Elevation Engine ─────────────────────────────────────────
 export { ElevationEngine, getElevationEngine } from "./elevation-engine";
 export type { ElevationResult } from "./elevation-engine";
@@ -34,6 +48,9 @@ import { getSessionDaemon } from "./sessiond";
 import { getAuditDaemon } from "./auditd";
 import { getControlCenterDaemon } from "./controlcenterd";
 import { getNotifyDaemon } from "./notifyd";
+import { getUpdateDaemon } from "./updated";
+import { getOnboardingDaemon } from "./onboardingd";
+import { getPolicyBundleManager } from "./policyd-bundles";
 
 let booted = false;
 
@@ -49,6 +66,8 @@ export async function bootOSSecurity(): Promise<{
   auditd: ReturnType<typeof getAuditDaemon>;
   controlcenterd: ReturnType<typeof getControlCenterDaemon>;
   notifyd: ReturnType<typeof getNotifyDaemon>;
+  updated: ReturnType<typeof getUpdateDaemon>;
+  onboardingd: ReturnType<typeof getOnboardingDaemon>;
 }> {
   if (booted) {
     return {
@@ -59,6 +78,8 @@ export async function bootOSSecurity(): Promise<{
       auditd: getAuditDaemon(),
       controlcenterd: getControlCenterDaemon(),
       notifyd: getNotifyDaemon(),
+      updated: getUpdateDaemon(),
+      onboardingd: getOnboardingDaemon(),
     };
   }
 
@@ -71,6 +92,10 @@ export async function bootOSSecurity(): Promise<{
   const policyd = getPolicyDaemon();
   await policyd.initialize();
   console.log("[os-security] ✓ policyd initialized");
+
+  // Initialize policy bundle manager
+  getPolicyBundleManager();
+  console.log("[os-security] ✓ policyd-bundles initialized");
 
   const secretsd = getSecretsDaemon();
   await secretsd.initialize();
@@ -93,6 +118,14 @@ export async function bootOSSecurity(): Promise<{
   notifyd.seedDemoEvents();
   console.log("[os-security] ✓ notifyd initialized");
 
+  const updated = getUpdateDaemon();
+  await updated.initialize();
+  console.log("[os-security] ✓ updated initialized");
+
+  const onboardingd = getOnboardingDaemon();
+  await onboardingd.initialize();
+  console.log("[os-security] ✓ onboardingd initialized");
+
   // Record boot event
   await auditd.record({
     actorUserId: "system",
@@ -101,13 +134,13 @@ export async function bootOSSecurity(): Promise<{
     action: "system.boot.security-subsystem",
     decision: "allowed",
     severity: "info",
-    reason: "OS security subsystem initialized",
+    reason: "OS security subsystem initialized (policyd + updated + onboardingd)",
   });
 
   booted = true;
   console.log("[os-security] ✓ Security subsystem ready");
 
-  return { authd, policyd, secretsd, sessiond, auditd, controlcenterd, notifyd };
+  return { authd, policyd, secretsd, sessiond, auditd, controlcenterd, notifyd, updated, onboardingd };
 }
 
 export function isOSSecurityBooted(): boolean {

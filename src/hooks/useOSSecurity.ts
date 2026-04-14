@@ -12,10 +12,15 @@ import {
   getControlCenterDaemon,
   getPolicyDaemon,
   getSecretsDaemon,
+  getUpdateDaemon,
+  getOnboardingDaemon,
 } from "@/lib/os-security";
 import type { OSSession, OSAuthMethod, ControlCenterCommand, IPCResult } from "@/lib/os-security/types";
 import type { CommandResult } from "@/lib/os-security/controlcenterd";
 import type { PolicyDecision, EnvironmentalContext } from "@/lib/os-security/policyd";
+import type { DeviceMode } from "@/lib/os-security/policyd-bundles";
+import type { UpdateState, UpdateProgress } from "@/lib/os-security/updated";
+import type { OnboardingSession } from "@/lib/os-security/onboardingd";
 
 interface OSSecurityState {
   booted: boolean;
@@ -25,6 +30,10 @@ interface OSSecurityState {
   securityScore: number;
   enrolledMethods: OSAuthMethod[];
   environment: EnvironmentalContext | null;
+  deviceMode: DeviceMode;
+  updateState: UpdateState;
+  updateProgress: UpdateProgress | null;
+  onboardingSession: OnboardingSession | null;
 }
 
 export function useOSSecurity() {
@@ -36,6 +45,10 @@ export function useOSSecurity() {
     securityScore: 0,
     enrolledMethods: [],
     environment: null,
+    deviceMode: "home",
+    updateState: "idle",
+    updateProgress: null,
+    onboardingSession: null,
   });
 
   // Refresh state from daemons
@@ -49,6 +62,7 @@ export function useOSSecurity() {
       const sessiond = getSessionDaemon();
       const authd = getAuthDaemon();
       const ccd = getControlCenterDaemon();
+      const policyd = getPolicyDaemon();
 
       const sessions = sessiond.getAllSessions();
       const current = sessions[0] || null;
@@ -62,6 +76,27 @@ export function useOSSecurity() {
       if (methods.includes("biometric")) score += 15;
       if (methods.includes("security-key")) score += 10;
 
+      // Get update and onboarding state
+      let updateState: UpdateState = "idle";
+      let updateProgress: UpdateProgress | null = null;
+      let onboardingSession: OnboardingSession | null = null;
+      let deviceMode: DeviceMode = "home";
+
+      try {
+        const updated = getUpdateDaemon();
+        updateState = updated.getState();
+        updateProgress = updated.getProgress();
+      } catch { /* not ready */ }
+
+      try {
+        const onboardingd = getOnboardingDaemon();
+        onboardingSession = onboardingd.getSession();
+      } catch { /* not ready */ }
+
+      try {
+        deviceMode = policyd.getDeviceMode();
+      } catch { /* not ready */ }
+
       setState({
         booted: true,
         currentSession: current,
@@ -70,6 +105,10 @@ export function useOSSecurity() {
         securityScore: Math.min(100, score),
         enrolledMethods: methods,
         environment: ccd.getEnvironment(),
+        deviceMode,
+        updateState,
+        updateProgress,
+        onboardingSession,
       });
     } catch {
       setState(prev => ({ ...prev, booted: false }));
@@ -130,6 +169,25 @@ export function useOSSecurity() {
     return auditd.getEvents({ limit });
   }, [state.booted]);
 
+  // Switch device mode
+  const switchDeviceMode = useCallback((mode: DeviceMode) => {
+    if (!state.booted) return null;
+    const policyd = getPolicyDaemon();
+    const result = policyd.switchDeviceMode(mode);
+    refresh();
+    return result;
+  }, [state.booted, refresh]);
+
+  // Get update daemon
+  const getUpdateState = useCallback(() => {
+    try { return getUpdateDaemon(); } catch { return null; }
+  }, []);
+
+  // Get onboarding daemon
+  const getOnboardingState = useCallback(() => {
+    try { return getOnboardingDaemon(); } catch { return null; }
+  }, []);
+
   return useMemo(() => ({
     ...state,
     refresh,
@@ -137,5 +195,8 @@ export function useOSSecurity() {
     checkPermission,
     lockSession,
     getRecentAuditEvents,
-  }), [state, refresh, executeCommand, checkPermission, lockSession, getRecentAuditEvents]);
+    switchDeviceMode,
+    getUpdateState,
+    getOnboardingState,
+  }), [state, refresh, executeCommand, checkPermission, lockSession, getRecentAuditEvents, switchDeviceMode, getUpdateState, getOnboardingState]);
 }
