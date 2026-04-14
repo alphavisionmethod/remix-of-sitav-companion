@@ -12,11 +12,24 @@ import { toast } from "sonner";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 const LIFECYCLE_COLORS: Record<string, string> = {
+  new: "bg-sky-500/20 text-sky-400",
   lead: "bg-blue-500/20 text-blue-400",
+  contacted: "bg-cyan-500/20 text-cyan-400",
+  engaged: "bg-teal-500/20 text-teal-400",
   qualified: "bg-indigo-500/20 text-indigo-400",
   opportunity: "bg-purple-500/20 text-purple-400",
+  active_opportunity: "bg-violet-500/20 text-violet-400",
+  proposal_sent: "bg-fuchsia-500/20 text-fuchsia-400",
+  negotiation: "bg-pink-500/20 text-pink-400",
+  won: "bg-emerald-500/20 text-emerald-400",
   customer: "bg-green-500/20 text-green-400",
+  dormant: "bg-zinc-500/20 text-zinc-400",
+  at_risk: "bg-orange-500/20 text-orange-400",
+  lost: "bg-red-500/20 text-red-400",
   churned: "bg-red-500/20 text-red-400",
+  reactivation: "bg-amber-500/20 text-amber-400",
+  support_sensitive: "bg-rose-500/20 text-rose-400",
+  collections_sensitive: "bg-red-600/20 text-red-500",
 };
 
 const healthColor = (s: number) => s >= 80 ? "text-green-400" : s >= 60 ? "text-yellow-400" : s >= 40 ? "text-orange-400" : "text-red-400";

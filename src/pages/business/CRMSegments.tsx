@@ -17,7 +17,7 @@ type FilterCondition = {
 };
 
 const FILTER_FIELDS = [
-  { key: "lifecycle_stage", label: "Lifecycle Stage", type: "select", options: ["lead", "qualified", "opportunity", "customer", "churned"] },
+  { key: "lifecycle_stage", label: "Lifecycle Stage", type: "select", options: ["new", "lead", "contacted", "engaged", "qualified", "opportunity", "active_opportunity", "proposal_sent", "negotiation", "won", "customer", "dormant", "at_risk", "lost", "churned", "reactivation", "support_sensitive", "collections_sensitive"] },
   { key: "status", label: "Status", type: "select", options: ["active", "inactive", "archived"] },
   { key: "health_score", label: "Health Score", type: "number" },
   { key: "source", label: "Source", type: "text" },
@@ -25,6 +25,7 @@ const FILTER_FIELDS = [
   { key: "country", label: "Country", type: "text" },
   { key: "last_contacted_days", label: "Days Since Contact", type: "number" },
   { key: "tags", label: "Has Tag", type: "text" },
+  { key: "owner", label: "Owner", type: "text" },
 ];
 
 const OPERATORS: Record<string, { key: string; label: string }[]> = {
