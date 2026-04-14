@@ -384,7 +384,8 @@ export function ConciergeAppShell() {
               ))}
 
               {/* Cross-OS Links */}
-              <div className="px-1.5 pt-3 pb-2">
+              <div className="px-1.5 pt-3 pb-2 space-y-2">
+                <CrossDomainIntelligenceBridge currentApp="concierge" compact />
                 <CrossOSLinksPanel sourceApp="concierge" primaryMode={primaryMode} compact maxLinks={4} />
               </div>
             </div>

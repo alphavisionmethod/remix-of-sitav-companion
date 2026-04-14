@@ -566,7 +566,8 @@ function BusinessAppShellInner({ initialModule }: { initialModule?: string }) {
           {adaptedSidebarGroups.map((group) => (
             <SidebarGroupSection key={group.label} group={group} activeModule={activeModule} onSelect={setActiveModule} badgeOverrides={adaptations.sidebar.badgeOverrides} />
           ))}
-          <div className="mt-auto px-1.5 pt-3 pb-2">
+          <div className="mt-auto px-1.5 pt-3 pb-2 space-y-2">
+            <CrossDomainIntelligenceBridge currentApp="business" compact />
             <CrossOSLinksPanel sourceApp="business" primaryMode={primaryMode} compact maxLinks={4} />
           </div>
         </div>
