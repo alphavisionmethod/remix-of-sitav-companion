@@ -5,7 +5,8 @@
 
 import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Shield, Lock, Eye, HardDrive, CheckCircle, XCircle, AlertTriangle, Activity } from "lucide-react";
+import { Shield, Lock, Eye, HardDrive, CheckCircle, XCircle, AlertTriangle, Activity, Bug, Globe, MapPin, Loader2 } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { AppLoader } from "@/lib/nova-sdk/runtime/loader";
 import { PermissionMonitor } from "@/lib/nova-sdk/services/permission-monitor";
