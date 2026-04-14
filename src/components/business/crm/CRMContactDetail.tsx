@@ -453,6 +453,51 @@ export function CRMContactDetail({ contact, companies = [], onClose, onEdit }: C
                 </div>
               )}
             </TabsContent>
+
+            {/* Proposals/Quotes Linkage */}
+            <TabsContent value="proposals" className="mt-0">
+              <div className="flex flex-col items-center py-8">
+                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-3">
+                  <Handshake className="h-6 w-6 text-primary" />
+                </div>
+                <p className="text-sm font-semibold text-foreground">Proposals & Quotes</p>
+                <p className="text-xs text-muted-foreground text-center mt-1 max-w-xs">
+                  Proposals linked to {contact.first_name} will appear here. Create quotes from the Business OS Proposals section.
+                </p>
+                <Button variant="outline" size="sm" className="mt-4 text-xs gap-1.5">
+                  <ChevronRight className="h-3 w-3" /> Go to Proposals
+                </Button>
+              </div>
+            </TabsContent>
+
+            {/* Invoices/Collections Linkage */}
+            <TabsContent value="invoices" className="mt-0">
+              <div className="flex flex-col items-center py-8">
+                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-3">
+                  <Receipt className="h-6 w-6 text-primary" />
+                </div>
+                <p className="text-sm font-semibold text-foreground">Invoices & Collections</p>
+                <p className="text-xs text-muted-foreground text-center mt-1 max-w-xs">
+                  Invoices linked to {contact.first_name} will appear here. Manage billing from the Finance OS section.
+                </p>
+                <Button variant="outline" size="sm" className="mt-4 text-xs gap-1.5">
+                  <ChevronRight className="h-3 w-3" /> Go to Invoices
+                </Button>
+              </div>
+            </TabsContent>
+
+            {/* Support Linkage */}
+            <TabsContent value="support" className="mt-0">
+              <div className="flex flex-col items-center py-8">
+                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-3">
+                  <HeadphonesIcon className="h-6 w-6 text-primary" />
+                </div>
+                <p className="text-sm font-semibold text-foreground">Support Issues</p>
+                <p className="text-xs text-muted-foreground text-center mt-1 max-w-xs">
+                  No support tickets linked to {contact.first_name}. Support issues will appear here when created.
+                </p>
+              </div>
+            </TabsContent>
           </div>
         </ScrollArea>
       </Tabs>
