@@ -499,9 +499,13 @@ function BusinessAppShellInner({ initialModule }: { initialModule?: string }) {
           <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[hsl(0_0%_100%/0.25)] px-3 mb-3">
             Business OS
           </p>
-          {SIDEBAR_GROUPS.map((group) => (
-            <SidebarGroupSection key={group.label} group={group} activeModule={activeModule} onSelect={setActiveModule} />
-          ))}
+          {(() => {
+            const orderMap = new Map(adaptations.sidebar.groupOrder.map((g, i) => [g, i]));
+            const sorted = [...SIDEBAR_GROUPS].sort((a, b) => (orderMap.get(a.label) ?? 99) - (orderMap.get(b.label) ?? 99));
+            return sorted.map((group) => (
+              <SidebarGroupSection key={group.label} group={group} activeModule={activeModule} onSelect={setActiveModule} />
+            ));
+          })()}
         </div>
 
         {/* Main */}
