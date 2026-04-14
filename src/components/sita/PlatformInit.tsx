@@ -10,6 +10,7 @@ import { useCoreSubstrateHydration } from "@/hooks/useCoreSubstrateHydration";
 import { useRealtimeBridge } from "@/hooks/useRealtimeBridge";
 import { useEffect } from "react";
 import { createCloudSyncManager } from "@/lib/core-services/cloud-sync-manager";
+import { bootOSSecurity, isOSSecurityBooted } from "@/lib/os-security";
 
 /**
  * Invisible component that initializes platform-level hooks.
@@ -25,6 +26,15 @@ export function PlatformInit() {
   useEffect(() => {
     const manager = createCloudSyncManager();
     return () => manager.stop();
+  }, []);
+
+  // Boot OS Security Subsystem
+  useEffect(() => {
+    if (!isOSSecurityBooted()) {
+      bootOSSecurity().catch((err) =>
+        console.error("[PlatformInit] OS security boot failed:", err)
+      );
+    }
   }, []);
 
   return null;
