@@ -112,7 +112,7 @@ export function LeadRecoveryPane({ lead }: Props) {
                     animate={{ scale: 1 }}
                     transition={{ delay: i * 0.08 }}
                     className={cn("w-2.5 h-2.5 rounded-full shrink-0 mt-1.5", isLast && "ring-2 ring-offset-1 ring-offset-[hsl(0_0%_9%)]")}
-                    style={{ background: dotColors[evt.status], ringColor: isLast ? dotColors[evt.status] : undefined }}
+                    style={{ background: dotColors[evt.status], ["--tw-ring-color" as string]: isLast ? dotColors[evt.status] : undefined }}
                   />
                   {!isLast && <div className="w-px flex-1 min-h-[16px] bg-[hsl(0_0%_100%/0.08)]" />}
                 </div>
