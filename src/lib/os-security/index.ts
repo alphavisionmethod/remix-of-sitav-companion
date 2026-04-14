@@ -21,6 +21,10 @@ export type { CommandResult } from "./controlcenterd";
 export { ElevationEngine, getElevationEngine } from "./elevation-engine";
 export type { ElevationResult } from "./elevation-engine";
 
+// ── Notification Daemon ──────────────────────────────────────
+export { NotifyDaemon, getNotifyDaemon } from "./notifyd";
+export type { SecurityNotification, SecurityEventType } from "./notifyd";
+
 // ── Boot Sequence ───────────────────────────────────────────
 
 import { getAuthDaemon } from "./authd";
@@ -29,6 +33,7 @@ import { getSecretsDaemon } from "./secretsd";
 import { getSessionDaemon } from "./sessiond";
 import { getAuditDaemon } from "./auditd";
 import { getControlCenterDaemon } from "./controlcenterd";
+import { getNotifyDaemon } from "./notifyd";
 
 let booted = false;
 
