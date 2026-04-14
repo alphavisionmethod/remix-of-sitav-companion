@@ -12,6 +12,8 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import CRMCommandSearch from "@/components/business/crm/CRMCommandSearch";
+import { CRMLifecycleEngine } from "@/components/business/crm/CRMLifecycleEngine";
+import { CRMRelationshipIntelligence } from "@/components/business/crm/CRMRelationshipIntelligence";
 
 const CRMHome = () => {
   const { data: contacts = [] } = useCRMContacts();
@@ -195,61 +197,48 @@ const CRMHome = () => {
         </CardContent>
       </Card>
 
-      {/* Lifecycle Funnel + Pipeline Stages */}
+      {/* Lifecycle Funnel + Relationship Intelligence */}
       <div className="grid md:grid-cols-2 gap-4">
-        <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm flex items-center gap-2">
-              <Users className="h-4 w-4 text-primary" /> Lifecycle Breakdown
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            {["lead", "qualified", "opportunity", "customer", "churned"].map(stage => {
-              const count = lifecycleCounts[stage] || 0;
-              const pct = totalContacts > 0 ? (count / totalContacts) * 100 : 0;
-              return (
-                <div key={stage} className="flex items-center gap-3">
-                  <span className="text-xs text-muted-foreground w-20 capitalize">{stage}</span>
-                  <div className="flex-1 h-2 rounded-full bg-muted overflow-hidden">
-                    <motion.div initial={{ width: 0 }} animate={{ width: `${pct}%` }} transition={{ duration: 0.6 }}
-                      className="h-full rounded-full bg-primary" />
-                  </div>
-                  <span className="text-xs font-semibold text-foreground w-8 text-right">{count}</span>
-                </div>
-              );
-            })}
-          </CardContent>
-        </Card>
+        <CRMLifecycleEngine contacts={contacts} onNavigate={(stage) => nav("crm-contacts")} compact />
 
-        <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
-          <CardHeader className="pb-2">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-sm flex items-center gap-2">
-                <TrendingUp className="h-4 w-4 text-[hsl(var(--trust-safe))]" /> Pipeline Stages
-              </CardTitle>
-              <Button variant="ghost" size="sm" className="h-6 text-[10px] gap-1" onClick={() => nav("crm-pipeline")}>
-                View Pipeline <ChevronRight className="h-3 w-3" />
-              </Button>
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            {stageCounts.length === 0 ? (
-              <p className="text-xs text-muted-foreground py-4 text-center">No active deals</p>
-            ) : stageCounts.map(([stage, data]) => (
-              <div key={stage} className="flex items-center justify-between rounded-lg bg-muted/20 px-3 py-2">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 rounded-full bg-primary" />
-                  <span className="text-xs font-medium text-foreground capitalize">{stage}</span>
-                </div>
-                <div className="flex items-center gap-3">
-                  <span className="text-[10px] text-muted-foreground">{data.count} deal{data.count !== 1 ? "s" : ""}</span>
-                  <span className="text-xs font-bold text-foreground">${(data.value / 1000).toFixed(0)}K</span>
-                </div>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
+        <CRMRelationshipIntelligence
+          contacts={contacts}
+          communications={comms}
+          opportunities={opportunities}
+          tasks={tasks}
+          compact
+        />
       </div>
+
+      {/* Pipeline Stages */}
+      <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
+        <CardHeader className="pb-2">
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-sm flex items-center gap-2">
+              <TrendingUp className="h-4 w-4 text-[hsl(var(--trust-safe))]" /> Pipeline Stages
+            </CardTitle>
+            <Button variant="ghost" size="sm" className="h-6 text-[10px] gap-1" onClick={() => nav("crm-pipeline")}>
+              View Pipeline <ChevronRight className="h-3 w-3" />
+            </Button>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-2">
+          {stageCounts.length === 0 ? (
+            <p className="text-xs text-muted-foreground py-4 text-center">No active deals</p>
+          ) : stageCounts.map(([stage, data]) => (
+            <div key={stage} className="flex items-center justify-between rounded-lg bg-muted/20 px-3 py-2">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 rounded-full bg-primary" />
+                <span className="text-xs font-medium text-foreground capitalize">{stage}</span>
+              </div>
+              <div className="flex items-center gap-3">
+                <span className="text-[10px] text-muted-foreground">{data.count} deal{data.count !== 1 ? "s" : ""}</span>
+                <span className="text-xs font-bold text-foreground">${(data.value / 1000).toFixed(0)}K</span>
+              </div>
+            </div>
+          ))}
+        </CardContent>
+      </Card>
 
       {/* What Matters Now — 3 column */}
       <Card className="border-border/50 bg-card/50 backdrop-blur-sm">
