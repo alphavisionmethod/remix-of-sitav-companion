@@ -21,6 +21,7 @@ import { ConciergeNavigationContext } from "@/contexts/ConciergeNavigationContex
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getConciergeAdaptation } from "@/lib/engines/cross-os-integration";
 import { CrossOSLinksPanel } from "@/components/sita/cross-os/CrossOSLinksPanel";
+import { CrossDomainIntelligenceBridge } from "@/components/sita/cross-os/CrossDomainIntelligenceBridge";
 
 // Lazy-load all 19 page components
 const ConciergeOverview = lazy(() => import("@/pages/concierge/ConciergeOverview"));
@@ -383,7 +384,8 @@ export function ConciergeAppShell() {
               ))}
 
               {/* Cross-OS Links */}
-              <div className="px-1.5 pt-3 pb-2">
+              <div className="px-1.5 pt-3 pb-2 space-y-2">
+                <CrossDomainIntelligenceBridge currentApp="concierge" compact />
                 <CrossOSLinksPanel sourceApp="concierge" primaryMode={primaryMode} compact maxLinks={4} />
               </div>
             </div>

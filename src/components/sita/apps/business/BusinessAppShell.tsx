@@ -31,6 +31,7 @@ import AdaptiveOnboardingWizard from "@/components/business/adaptive/AdaptiveOnb
 import AdaptiveWorkflowTemplates from "@/components/business/adaptive/AdaptiveWorkflowTemplates";
 import AdaptiveBoardroomAgenda from "@/components/business/adaptive/AdaptiveBoardroomAgenda";
 import { CrossOSLinksPanel } from "@/components/sita/cross-os/CrossOSLinksPanel";
+import { CrossDomainIntelligenceBridge } from "@/components/sita/cross-os/CrossDomainIntelligenceBridge";
 
 // ── Page imports ──────────────────────────────────────────────
 import BusinessOverview from "@/pages/business/BusinessOverview";
@@ -565,7 +566,8 @@ function BusinessAppShellInner({ initialModule }: { initialModule?: string }) {
           {adaptedSidebarGroups.map((group) => (
             <SidebarGroupSection key={group.label} group={group} activeModule={activeModule} onSelect={setActiveModule} badgeOverrides={adaptations.sidebar.badgeOverrides} />
           ))}
-          <div className="mt-auto px-1.5 pt-3 pb-2">
+          <div className="mt-auto px-1.5 pt-3 pb-2 space-y-2">
+            <CrossDomainIntelligenceBridge currentApp="business" compact />
             <CrossOSLinksPanel sourceApp="business" primaryMode={primaryMode} compact maxLinks={4} />
           </div>
         </div>

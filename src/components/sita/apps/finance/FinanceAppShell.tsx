@@ -14,6 +14,7 @@ import { FinanceNavigationContext } from "@/contexts/FinanceNavigationContext";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getFinanceAdaptation } from "@/lib/engines/cross-os-integration";
 import { CrossOSLinksPanel } from "@/components/sita/cross-os/CrossOSLinksPanel";
+import { CrossDomainIntelligenceBridge } from "@/components/sita/cross-os/CrossDomainIntelligenceBridge";
 
 // ── Page imports ────────────────────────────────────────────
 import MoneyOverview from "@/pages/money/MoneyOverview";
@@ -245,7 +246,8 @@ export function FinanceAppShell() {
           ))}
 
           {/* Cross-OS Links */}
-          <div className="mt-auto px-3 pt-3 pb-2">
+          <div className="mt-auto px-3 pt-3 pb-2 space-y-2">
+            <CrossDomainIntelligenceBridge currentApp="finance" compact />
             <CrossOSLinksPanel sourceApp="finance" primaryMode={primaryMode} compact maxLinks={4} />
           </div>
         </div>
