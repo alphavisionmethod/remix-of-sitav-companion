@@ -296,6 +296,21 @@ export function CRMCompanyDetail({ company, onClose, onSelectContact }: CRMCompa
                 entityName={company.name}
               />
             </TabsContent>
+
+            {/* Proof Trail + Ownership */}
+            <TabsContent value="proof" className="mt-0 space-y-4">
+              <CRMOwnership
+                entityType="company"
+                entityId={company.id}
+                entityName={company.name}
+                currentOwner={company.owner || undefined}
+              />
+              <CRMProofTrail
+                entityType="company"
+                entityId={company.id}
+                entityName={company.name}
+              />
+            </TabsContent>
           </div>
         </ScrollArea>
       </Tabs>
