@@ -2698,9 +2698,15 @@ export type Database = {
           action_url: string | null
           body: string | null
           created_at: string
+          dismissed: boolean
           domain: string | null
+          icon_name: string | null
           id: string
+          metadata: Json | null
           read: boolean
+          signal_type: string | null
+          target_app: string | null
+          target_module: string | null
           title: string
           updated_at: string
           urgency: string
@@ -2710,9 +2716,15 @@ export type Database = {
           action_url?: string | null
           body?: string | null
           created_at?: string
+          dismissed?: boolean
           domain?: string | null
+          icon_name?: string | null
           id?: string
+          metadata?: Json | null
           read?: boolean
+          signal_type?: string | null
+          target_app?: string | null
+          target_module?: string | null
           title: string
           updated_at?: string
           urgency?: string
@@ -2722,9 +2734,15 @@ export type Database = {
           action_url?: string | null
           body?: string | null
           created_at?: string
+          dismissed?: boolean
           domain?: string | null
+          icon_name?: string | null
           id?: string
+          metadata?: Json | null
           read?: boolean
+          signal_type?: string | null
+          target_app?: string | null
+          target_module?: string | null
           title?: string
           updated_at?: string
           urgency?: string

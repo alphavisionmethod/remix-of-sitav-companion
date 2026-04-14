@@ -15,6 +15,7 @@ import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getFinanceAdaptation } from "@/lib/engines/cross-os-integration";
 import { CrossOSLinksPanel } from "@/components/sita/cross-os/CrossOSLinksPanel";
 import { CrossDomainIntelligenceBridge } from "@/components/sita/cross-os/CrossDomainIntelligenceBridge";
+import { AppShellBreadcrumb, useNavigationHistory } from "@/components/sita/shell/AppShellBreadcrumb";
 
 // ── Page imports ────────────────────────────────────────────
 import MoneyOverview from "@/pages/money/MoneyOverview";
@@ -191,7 +192,8 @@ export function FinanceAppShell() {
     return () => window.removeEventListener("sita-finance-navigate", handler);
   }, []);
 
-  const navigateTo = useCallback((key: string) => setActiveModule(key), []);
+  const navHistory = useNavigationHistory(initial);
+  const navigateTo = useCallback((key: string) => navHistory.navigate(key, setActiveModule), [navHistory]);
 
   const PageComponent = pages[activeModule];
   const adaptedLabels = useMemo(() => {
@@ -256,7 +258,16 @@ export function FinanceAppShell() {
         <div className="flex-1 flex flex-col min-w-0">
           {/* Header bar */}
           <div className="h-11 shrink-0 border-b border-[hsl(0_0%_100%/0.06)] flex items-center px-5 bg-[hsl(220_15%_6%/0.8)]">
-            <span className="text-sm font-semibold text-[hsl(0_0%_100%/0.7)]">{activeLabel}</span>
+            <AppShellBreadcrumb
+              appName="Finance OS"
+              appColor="hsl(152 55% 48%)"
+              current={{ id: activeModule, label: activeLabel }}
+              history={navHistory.history}
+              historyIndex={navHistory.historyIndex}
+              onNavigate={navigateTo}
+              onBack={() => navHistory.goBack(setActiveModule)}
+              onForward={() => navHistory.goForward(setActiveModule)}
+            />
           </div>
 
           <BoardroomStatusStrip pendingCount={pendingCount} decisionCount={decisionCount} synthesisScore={synthesis?.boardroom_worthiness_score} />

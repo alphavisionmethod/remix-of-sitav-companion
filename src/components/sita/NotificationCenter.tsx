@@ -13,23 +13,8 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { crossNavigate } from "@/lib/engines/cross-os-integration";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { getFinanceAdaptation, getConciergeAdaptation, getActiveSignals } from "@/lib/engines/cross-os-integration";
+import { useNotifications, type UnifiedNotification } from "@/hooks/useNotifications";
 import type { LucideIcon } from "lucide-react";
-
-interface Notification {
-  id: string;
-  domain: "business" | "finance" | "concierge" | "security" | "system" | "cross-os";
-  title: string;
-  body: string;
-  time: string;
-  read: boolean;
-  urgency: "low" | "medium" | "high" | "critical";
-  targetApp?: "business" | "finance" | "concierge";
-  targetModule?: string;
-  icon?: LucideIcon;
-  signalType?: "insight" | "alert" | "action" | "info";
-}
 
 const DOMAIN_ICONS: Record<string, LucideIcon> = {
   business: Briefcase,
@@ -49,42 +34,10 @@ const DOMAIN_COLORS: Record<string, { badge: string; accent: string; glow: strin
   "cross-os": { badge: "bg-[hsl(210_60%_55%/0.15)] text-[hsl(210_60%_65%)]", accent: "hsl(210 60% 55%)", glow: "shadow-[0_0_8px_hsl(210_60%_55%/0.2)]" },
 };
 
-const URGENCY_ORDER: Record<string, number> = { critical: 0, high: 1, medium: 2, low: 3 };
-
-function generateNotifications(primaryMode: string): Notification[] {
-  const signals = getActiveSignals(primaryMode as any);
-
-  const base: Notification[] = [
-    // Business alerts
-    { id: "n-biz-1", domain: "business", title: "New lead scored 91", body: "Emily Park from Park & Associates is ready for a demo", time: "3m ago", read: false, urgency: "high", targetApp: "business", targetModule: "leads", icon: Target, signalType: "alert" },
-    { id: "n-biz-2", domain: "business", title: "Proposal viewed 3×", body: "Sarah Chen opened your proposal — high intent signal", time: "1h ago", read: false, urgency: "medium", targetApp: "business", targetModule: "quotes", icon: TrendingUp, signalType: "insight" },
-    { id: "n-biz-3", domain: "business", title: "Follow-up overdue", body: "2 contacts haven't been reached in 14+ days", time: "2h ago", read: false, urgency: "high", targetApp: "business", targetModule: "follow-through", icon: Clock, signalType: "action" },
-
-    // Finance alerts
-    { id: "n-fin-1", domain: "finance", title: "Invoice 90+ days overdue", body: "DataFlow Systems — $5,400 at risk of bad debt", time: "1h ago", read: false, urgency: "critical", targetApp: "finance", targetModule: "receivables", icon: AlertTriangle, signalType: "alert" },
-    { id: "n-fin-2", domain: "finance", title: "Cash stress ahead", body: "Projected shortfall in 12 days — payroll + rent overlap", time: "4h ago", read: false, urgency: "high", targetApp: "finance", targetModule: "cash-timing", icon: DollarSign, signalType: "alert" },
-    { id: "n-fin-3", domain: "finance", title: "Tax payment reminder", body: "Quarterly estimate due Apr 15 — $4,200", time: "1d ago", read: false, urgency: "medium", targetApp: "finance", targetModule: "tax", icon: Calendar, signalType: "action" },
-
-    // Concierge alerts
-    { id: "n-con-1", domain: "concierge", title: "Appointment prep needed", body: "Dentist checkup Thursday — insurance cards needed", time: "6h ago", read: false, urgency: "medium", targetApp: "concierge", targetModule: "appointments", icon: Calendar, signalType: "action" },
-    { id: "n-con-2", domain: "concierge", title: "Errand completed", body: "Package pickup confirmed at FedEx", time: "2h ago", read: true, urgency: "low", targetApp: "concierge", targetModule: "errands", signalType: "info" },
-
-    // Cross-OS intelligence signals
-    { id: "n-cross-1", domain: "cross-os", title: "Business → Finance insight", body: "Large deal closing ($45K) — update cash timing forecast", time: "30m ago", read: false, urgency: "medium", targetApp: "finance", targetModule: "cash-timing", icon: Zap, signalType: "insight" },
-    { id: "n-cross-2", domain: "cross-os", title: "Finance → Business alert", body: "Overdue invoice affects client health score — review in CRM", time: "2h ago", read: false, urgency: "high", targetApp: "business", targetModule: "crm-health", icon: Zap, signalType: "alert" },
-    { id: "n-cross-3", domain: "cross-os", title: "Concierge → Business sync", body: "Client meeting tomorrow — prep materials in CRM", time: "5h ago", read: false, urgency: "medium", targetApp: "business", targetModule: "crm-contacts", icon: Users, signalType: "action" },
-
-    // System
-    { id: "n-sys-1", domain: "security", title: "Vault item expiring", body: "SSL certificate expires in 7 days", time: "6h ago", read: false, urgency: "high", signalType: "alert" },
-    { id: "n-sys-2", domain: "system", title: "Advisor learning update", body: "Business advisor completed 12 new observations", time: "1d ago", read: true, urgency: "low", signalType: "info" },
-  ];
-
-  return base.sort((a, b) => {
-    // Unread first, then by urgency, then by time
-    if (a.read !== b.read) return a.read ? 1 : -1;
-    return (URGENCY_ORDER[a.urgency] ?? 3) - (URGENCY_ORDER[b.urgency] ?? 3);
-  });
-}
+const ICON_MAP: Record<string, LucideIcon> = {
+  Target, TrendingUp, Clock, AlertTriangle, Calendar, Users,
+  DollarSign, Zap, Briefcase, Headphones, Bell, ExternalLink, Receipt,
+};
 
 const URGENCY_STYLES: Record<string, string> = {
   critical: "border-l-[hsl(0_70%_55%)] bg-[hsl(0_70%_55%/0.04)]",
@@ -99,13 +52,9 @@ interface NotificationCenterProps {
 }
 
 export const NotificationCenter = ({ open, onClose }: NotificationCenterProps) => {
-  const { primaryMode } = useBusinessProfile();
-  const [notifications, setNotifications] = useState(() => generateNotifications(primaryMode));
+  const { notifications, unreadCount, criticalCount, markRead, markAllRead, dismiss } = useNotifications();
   const [filter, setFilter] = useState<string | null>(null);
   const [signalFilter, setSignalFilter] = useState<string | null>(null);
-
-  const unreadCount = useMemo(() => notifications.filter(n => !n.read).length, [notifications]);
-  const criticalCount = useMemo(() => notifications.filter(n => !n.read && n.urgency === "critical").length, [notifications]);
 
   const filtered = useMemo(() => {
     let items = notifications;
@@ -114,11 +63,7 @@ export const NotificationCenter = ({ open, onClose }: NotificationCenterProps) =
     return items;
   }, [notifications, filter, signalFilter]);
 
-  const markRead = (id: string) => setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
-  const markAllRead = () => setNotifications(prev => prev.map(n => ({ ...n, read: true })));
-  const dismiss = (id: string) => setNotifications(prev => prev.filter(n => n.id !== id));
-
-  const handleAction = (n: Notification) => {
+  const handleAction = (n: UnifiedNotification) => {
     markRead(n.id);
     if (n.targetApp && n.targetModule) {
       window.dispatchEvent(new CustomEvent("sita-launch-app", { detail: { appId: n.targetApp } }));
@@ -252,7 +197,7 @@ export const NotificationCenter = ({ open, onClose }: NotificationCenterProps) =
               )}
               <AnimatePresence>
                 {filtered.map(n => {
-                  const DomainIcon = n.icon || DOMAIN_ICONS[n.domain] || Bell;
+                  const DomainIcon = (n.iconName ? ICON_MAP[n.iconName] : null) || DOMAIN_ICONS[n.domain] || Bell;
                   const colors = DOMAIN_COLORS[n.domain] || DOMAIN_COLORS.system;
 
                   return (
@@ -294,7 +239,7 @@ export const NotificationCenter = ({ open, onClose }: NotificationCenterProps) =
                         <p className="text-[12px] font-semibold text-[hsl(0_0%_100%/0.85)]">{n.title}</p>
                         <p className="text-[11px] text-[hsl(0_0%_100%/0.45)] mt-0.5 line-clamp-2">{n.body}</p>
                         <div className="flex items-center gap-2 mt-1.5">
-                          <span className="text-[9px] text-[hsl(0_0%_100%/0.25)]">{n.time}</span>
+                          <span className="text-[9px] text-[hsl(0_0%_100%/0.25)]">{new Date(n.createdAt).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}</span>
                           {n.targetApp && n.targetModule && (
                             <span className="text-[9px] font-medium flex items-center gap-0.5" style={{ color: colors.accent }}>
                               <ExternalLink size={8} />

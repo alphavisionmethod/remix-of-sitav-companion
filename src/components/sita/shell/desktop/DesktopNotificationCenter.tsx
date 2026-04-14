@@ -1,45 +1,44 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Desktop Notification Center (Unified Cross-OS)
-// Aggregates alerts from Business, Finance, Concierge into
-// one prioritized feed with domain colors, urgency, deep-linking
+// Persisted, realtime, priority-sorted, deep-linked
 // ═══════════════════════════════════════════════════════════════
 
-import { useState, useMemo, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Bell, CheckCheck, ChevronRight, Briefcase, DollarSign,
   Headphones, Zap, Target, TrendingUp, Clock, AlertTriangle,
-  Calendar, Users, ExternalLink, Check, X, Receipt
+  Calendar, Users, ExternalLink, Check, X
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { crossNavigate } from "@/lib/engines/cross-os-integration";
-import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { useNotifications, type UnifiedNotification } from "@/hooks/useNotifications";
 import type { LucideIcon } from "lucide-react";
 
-// ── Data model (shared with NotificationCenter) ─────────────
+// ── Icon resolver ───────────────────────────────────────────
 
-interface UnifiedNotification {
-  id: string;
-  domain: "business" | "finance" | "concierge" | "cross-os" | "system";
-  title: string;
-  body: string;
-  time: string;
-  read: boolean;
-  urgency: "low" | "medium" | "high" | "critical";
-  targetApp?: "business" | "finance" | "concierge";
-  targetModule?: string;
-  icon?: LucideIcon;
-  signalType?: "insight" | "alert" | "action" | "info";
+const ICON_MAP: Record<string, LucideIcon> = {
+  Target, TrendingUp, Clock, AlertTriangle, Calendar, Users,
+  DollarSign, Zap, Briefcase, Headphones, Bell, ExternalLink,
+};
+
+function resolveIcon(name?: string, domain?: string): LucideIcon {
+  if (name && ICON_MAP[name]) return ICON_MAP[name];
+  const DOMAIN_ICONS: Record<string, LucideIcon> = {
+    business: Briefcase, finance: DollarSign, concierge: Headphones,
+    "cross-os": Zap, system: Bell,
+  };
+  return DOMAIN_ICONS[domain || "system"] || Bell;
 }
 
-const URGENCY_ORDER: Record<string, number> = { critical: 0, high: 1, medium: 2, low: 3 };
+// ── Domain meta ─────────────────────────────────────────────
 
-const DOMAIN_META: Record<string, { icon: LucideIcon; color: string; label: string }> = {
-  business:  { icon: Briefcase,  color: "hsl(265 55% 58%)", label: "BIZ" },
-  finance:   { icon: DollarSign, color: "hsl(152 55% 48%)", label: "FIN" },
-  concierge: { icon: Headphones, color: "hsl(285 55% 55%)", label: "CON" },
-  "cross-os":{ icon: Zap,        color: "hsl(210 60% 55%)", label: "X-OS" },
-  system:    { icon: Bell,       color: "hsl(0 0% 50%)",    label: "SYS" },
+const DOMAIN_META: Record<string, { color: string; label: string }> = {
+  business:  { color: "hsl(265 55% 58%)", label: "BIZ" },
+  finance:   { color: "hsl(152 55% 48%)", label: "FIN" },
+  concierge: { color: "hsl(285 55% 55%)", label: "CON" },
+  "cross-os":{ color: "hsl(210 60% 55%)", label: "X-OS" },
+  system:    { color: "hsl(0 0% 50%)",    label: "SYS" },
 };
 
 const URGENCY_BORDER: Record<string, string> = {
@@ -48,36 +47,6 @@ const URGENCY_BORDER: Record<string, string> = {
   medium:   "border-l-[hsl(210_60%_55%)]",
   low:      "border-l-transparent",
 };
-
-// ── Notification generator (archetype-aware) ────────────────
-
-function generateNotifications(_primaryMode: string): UnifiedNotification[] {
-  const base: UnifiedNotification[] = [
-    // Business
-    { id: "dn-biz-1", domain: "business", title: "New lead scored 91", body: "Emily Park — ready for demo", time: "3m", read: false, urgency: "high", targetApp: "business", targetModule: "leads", icon: Target, signalType: "alert" },
-    { id: "dn-biz-2", domain: "business", title: "Proposal viewed 3×", body: "Sarah Chen — high intent signal", time: "1h", read: false, urgency: "medium", targetApp: "business", targetModule: "quotes", icon: TrendingUp, signalType: "insight" },
-    { id: "dn-biz-3", domain: "business", title: "Follow-up overdue", body: "2 contacts not reached in 14+ days", time: "2h", read: false, urgency: "high", targetApp: "business", targetModule: "follow-through", icon: Clock, signalType: "action" },
-
-    // Finance
-    { id: "dn-fin-1", domain: "finance", title: "Invoice 90+ days overdue", body: "DataFlow Systems — $5,400 at risk", time: "1h", read: false, urgency: "critical", targetApp: "finance", targetModule: "receivables", icon: AlertTriangle, signalType: "alert" },
-    { id: "dn-fin-2", domain: "finance", title: "Cash stress ahead", body: "Projected shortfall in 12 days", time: "4h", read: false, urgency: "high", targetApp: "finance", targetModule: "cash-timing", icon: DollarSign, signalType: "alert" },
-    { id: "dn-fin-3", domain: "finance", title: "Tax payment reminder", body: "Quarterly estimate due — $4,200", time: "1d", read: false, urgency: "medium", targetApp: "finance", targetModule: "tax", icon: Calendar, signalType: "action" },
-
-    // Concierge
-    { id: "dn-con-1", domain: "concierge", title: "Appointment prep needed", body: "Dentist Thursday — insurance cards", time: "6h", read: false, urgency: "medium", targetApp: "concierge", targetModule: "appointments", icon: Calendar, signalType: "action" },
-    { id: "dn-con-2", domain: "concierge", title: "Errand completed", body: "Package pickup confirmed", time: "2h", read: true, urgency: "low", targetApp: "concierge", targetModule: "errands", signalType: "info" },
-
-    // Cross-OS intelligence
-    { id: "dn-xos-1", domain: "cross-os", title: "Business → Finance", body: "Large deal closing ($45K) — update cash forecast", time: "30m", read: false, urgency: "medium", targetApp: "finance", targetModule: "cash-timing", icon: Zap, signalType: "insight" },
-    { id: "dn-xos-2", domain: "cross-os", title: "Finance → Business", body: "Overdue invoice affects client health score", time: "2h", read: false, urgency: "high", targetApp: "business", targetModule: "crm-health", icon: Zap, signalType: "alert" },
-    { id: "dn-xos-3", domain: "cross-os", title: "Concierge → Business", body: "Client meeting tomorrow — prep CRM", time: "5h", read: false, urgency: "medium", targetApp: "business", targetModule: "crm-contacts", icon: Users, signalType: "action" },
-  ];
-
-  return base.sort((a, b) => {
-    if (a.read !== b.read) return a.read ? 1 : -1;
-    return (URGENCY_ORDER[a.urgency] ?? 3) - (URGENCY_ORDER[b.urgency] ?? 3);
-  });
-}
 
 // ── Component ───────────────────────────────────────────────
 
@@ -89,30 +58,14 @@ interface Props {
 }
 
 export function DesktopNotificationCenter({ visible, onOpenFullPanel }: Props) {
-  const { primaryMode } = useBusinessProfile();
-  const [notifications, setNotifications] = useState(() => generateNotifications(primaryMode));
+  const { notifications, unreadCount, criticalCount, markRead, markAllRead, dismiss } = useNotifications();
   const [filter, setFilter] = useState<string | null>(null);
 
-  const unreadCount = useMemo(() => notifications.filter(n => !n.read).length, [notifications]);
-  const criticalCount = useMemo(() => notifications.filter(n => !n.read && n.urgency === "critical").length, [notifications]);
-
-  const filtered = useMemo(() => {
+  const filtered = (() => {
     let items = notifications;
     if (filter) items = items.filter(n => n.domain === filter);
     return items.slice(0, MAX_VISIBLE);
-  }, [notifications, filter]);
-
-  const markRead = useCallback((id: string) => {
-    setNotifications(prev => prev.map(n => n.id === id ? { ...n, read: true } : n));
-  }, []);
-
-  const markAllRead = useCallback(() => {
-    setNotifications(prev => prev.map(n => ({ ...n, read: true })));
-  }, []);
-
-  const dismiss = useCallback((id: string) => {
-    setNotifications(prev => prev.filter(n => n.id !== id));
-  }, []);
+  })();
 
   const handleAction = useCallback((n: UnifiedNotification) => {
     markRead(n.id);
@@ -130,7 +83,7 @@ export function DesktopNotificationCenter({ visible, onOpenFullPanel }: Props) {
     { key: "finance", label: "Fin", icon: DollarSign },
     { key: "concierge", label: "Con", icon: Headphones },
     { key: "cross-os", label: "X-OS", icon: Zap },
-  ];
+  ] as const;
 
   return (
     <div className="hidden w-[360px] shrink-0 xl:block">
@@ -141,9 +94,13 @@ export function DesktopNotificationCenter({ visible, onOpenFullPanel }: Props) {
             <div className="relative">
               <Bell className="h-4 w-4 text-[hsl(0_0%_100%/0.6)]" />
               {unreadCount > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 min-w-[14px] h-3.5 rounded-full bg-[hsl(0_70%_55%)] text-[hsl(0_0%_100%)] text-[8px] font-bold flex items-center justify-center px-0.5">
+                <motion.span
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  className="absolute -top-1.5 -right-1.5 min-w-[14px] h-3.5 rounded-full bg-[hsl(0_70%_55%)] text-[hsl(0_0%_100%)] text-[8px] font-bold flex items-center justify-center px-0.5"
+                >
                   {unreadCount}
-                </span>
+                </motion.span>
               )}
             </div>
             <div>
@@ -174,7 +131,7 @@ export function DesktopNotificationCenter({ visible, onOpenFullPanel }: Props) {
                   : "text-[hsl(0_0%_100%/0.3)] hover:text-[hsl(0_0%_100%/0.55)]"
               )}
             >
-              {d.icon && <d.icon size={9} />}
+              {"icon" in d && d.icon && <d.icon size={9} />}
               {d.label}
             </button>
           ))}
@@ -183,30 +140,41 @@ export function DesktopNotificationCenter({ visible, onOpenFullPanel }: Props) {
         {/* Notification feed */}
         <div className="space-y-2">
           <AnimatePresence mode="popLayout">
-            {filtered.map((n) => {
+            {filtered.map((n, i) => {
               const meta = DOMAIN_META[n.domain] || DOMAIN_META.system;
-              const Icon = n.icon || meta.icon;
+              const Icon = resolveIcon(n.iconName, n.domain);
 
               return (
                 <motion.div
                   key={n.id}
                   layout
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, x: 40, scale: 0.95 }}
-                  transition={{ type: "spring", mass: 0.6, stiffness: 200, damping: 20 }}
+                  initial={{ opacity: 0, y: 12, scale: 0.96 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, x: 50, scale: 0.92 }}
+                  transition={{ type: "spring", mass: 0.5, stiffness: 260, damping: 22, delay: i * 0.03 }}
                   className={cn(
                     "group relative rounded-2xl border-l-[3px] border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_5%/0.5)] p-3.5 cursor-pointer transition-all duration-200",
                     "hover:bg-[hsl(0_0%_100%/0.04)] hover:border-[hsl(0_0%_100%/0.1)]",
                     URGENCY_BORDER[n.urgency],
-                    n.read && "opacity-45",
-                    n.urgency === "critical" && !n.read && "shadow-[0_0_12px_hsl(0_70%_55%/0.1)]"
+                    n.read && "opacity-40",
+                    n.urgency === "critical" && !n.read && "shadow-[0_0_16px_hsl(0_70%_55%/0.12)]"
                   )}
                   onClick={() => handleAction(n)}
                 >
+                  {/* Critical pulse */}
+                  {n.urgency === "critical" && !n.read && (
+                    <motion.div
+                      className="absolute inset-0 rounded-2xl border border-[hsl(0_70%_55%/0.2)]"
+                      animate={{ opacity: [0.3, 0.6, 0.3] }}
+                      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                    />
+                  )}
+
                   {/* Unread dot */}
                   {!n.read && (
-                    <div
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
                       className="absolute top-3 left-[-7px] w-2 h-2 rounded-full ring-2 ring-[hsl(0_0%_8%)]"
                       style={{ backgroundColor: meta.color }}
                     />
@@ -233,12 +201,10 @@ export function DesktopNotificationCenter({ visible, onOpenFullPanel }: Props) {
                         {n.signalType && n.signalType !== "info" && (
                           <span className="text-[7px] font-medium text-[hsl(0_0%_100%/0.2)] uppercase">{n.signalType}</span>
                         )}
-                        <span className="ml-auto text-[8px] text-[hsl(0_0%_100%/0.2)]">{n.time}</span>
                       </div>
                       <p className="text-[11px] font-semibold text-[hsl(0_0%_100%/0.8)] leading-snug">{n.title}</p>
                       <p className="text-[10px] text-[hsl(0_0%_100%/0.4)] mt-0.5 line-clamp-1">{n.body}</p>
 
-                      {/* Deep-link action */}
                       {n.targetApp && n.targetModule && (
                         <div className="flex items-center gap-1 mt-1.5">
                           <ExternalLink size={8} style={{ color: meta.color }} />

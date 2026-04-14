@@ -13,11 +13,12 @@ import {
   Calendar, Settings, Brain, Shield, Mail, BarChart3, ShoppingCart,
   Globe, Bot, Crown, RefreshCw, MessageSquare, CheckCircle,
   TrendingUp, PieChart, Heart, Activity, AlertTriangle, Sliders,
-  ExternalLink, ArrowDownLeft
+  ExternalLink, ArrowDownLeft, Loader2
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { crossNavigate } from "@/lib/engines/cross-os-integration";
+import { supabase } from "@/integrations/supabase/client";
 import type { LucideIcon } from "lucide-react";
 
 interface CommandItem {
@@ -167,14 +168,55 @@ interface CommandPaletteProps {
 export const CommandPalette = ({ open, onClose }: CommandPaletteProps) => {
   const [query, setQuery] = useState("");
   const [selectedIdx, setSelectedIdx] = useState(0);
+  const [aiResult, setAiResult] = useState<{ label: string; app: string; module: string; confidence: number } | null>(null);
+  const [aiLoading, setAiLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const { apps } = useAppPlatform();
   const inputRef = useRef<HTMLInputElement>(null);
+  const aiDebounce = useRef<ReturnType<typeof setTimeout>>();
 
   useEffect(() => {
-    if (open) { setQuery(""); setSelectedIdx(0); setTimeout(() => inputRef.current?.focus(), 50); }
+    if (open) { setQuery(""); setSelectedIdx(0); setAiResult(null); setAiLoading(false); setTimeout(() => inputRef.current?.focus(), 50); }
   }, [open]);
+
+  // AI intent parsing — triggers when query is natural language and no good matches
+  useEffect(() => {
+    if (aiDebounce.current) clearTimeout(aiDebounce.current);
+    if (!query || query.length < 10 || query.split(" ").length < 3) {
+      setAiResult(null);
+      setAiLoading(false);
+      return;
+    }
+    aiDebounce.current = setTimeout(async () => {
+      setAiLoading(true);
+      try {
+        const { data, error } = await supabase.functions.invoke("ai-gateway", {
+          body: {
+            capability_id: "command-palette-intent",
+            task_class: "economy_utility",
+            messages: [
+              { role: "system", content: `You parse user intent into a structured navigation command for SITA OS. Return ONLY valid JSON: {"label":"<action>","app":"business|finance|concierge","module":"<module_key>","confidence":0.0-1.0}. Modules: business=[overview,leads,customers,invoices,quotes,follow-through,operations,pipeline,collections,social,forecast,support], finance=[overview,spending-pulse,bills,subscriptions,budgets,cash-timing,receivables,net-worth,tax,health,peace-score,scenarios], concierge=[overview,errands,appointments,travel,tasks,grocery,providers,life-admin,recurring,documents]. If unsure, set confidence < 0.5.` },
+              { role: "user", content: query },
+            ],
+            max_tokens: 100,
+            temperature: 0.1,
+          },
+        });
+        if (!error && data?.choices?.[0]?.message?.content) {
+          const parsed = JSON.parse(data.choices[0].message.content.trim().replace(/```json\n?|```/g, ""));
+          if (parsed.app && parsed.module && parsed.confidence >= 0.4) {
+            setAiResult(parsed);
+          }
+        }
+      } catch {
+        // Silently fail — AI search is a bonus
+      } finally {
+        setAiLoading(false);
+      }
+    }, 600);
+    return () => { if (aiDebounce.current) clearTimeout(aiDebounce.current); };
+  }, [query]);
 
   const items = useMemo<CommandItem[]>(() => {
     const q = query.toLowerCase();
@@ -291,6 +333,23 @@ export const CommandPalette = ({ open, onClose }: CommandPaletteProps) => {
       }
     });
 
+    // AI-suggested result
+    if (aiResult && q) {
+      results.unshift({
+        id: "ai-intent",
+        label: aiResult.label,
+        sublabel: `AI suggestion · ${Math.round(aiResult.confidence * 100)}% confident`,
+        icon: Sparkles,
+        category: "suggestion",
+        domain: aiResult.app as any,
+        action: () => {
+          window.dispatchEvent(new CustomEvent("sita-launch-app", { detail: { appId: aiResult.app } }));
+          setTimeout(() => crossNavigate(aiResult.app as any, aiResult.module), 200);
+          onClose();
+        },
+      });
+    }
+
     // Deduplicate
     const seen = new Set<string>();
     return results.filter(r => {
@@ -298,7 +357,7 @@ export const CommandPalette = ({ open, onClose }: CommandPaletteProps) => {
       seen.add(r.label);
       return true;
     }).slice(0, 16);
-  }, [query, apps, navigate, onClose, location.pathname]);
+  }, [query, apps, navigate, onClose, location.pathname, aiResult]);
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key === "ArrowDown") { e.preventDefault(); setSelectedIdx(i => Math.min(i + 1, items.length - 1)); }
@@ -373,9 +432,12 @@ export const CommandPalette = ({ open, onClose }: CommandPaletteProps) => {
               value={query}
               onChange={e => { setQuery(e.target.value); setSelectedIdx(0); }}
               onKeyDown={handleKeyDown}
-              placeholder="Search apps, actions, or navigate…"
+              placeholder="Search apps, actions, or ask in natural language…"
               className="flex-1 bg-transparent text-base text-foreground placeholder:text-muted-foreground/50 outline-none"
             />
+            {aiLoading && (
+              <Loader2 className="h-4 w-4 text-[hsl(265_55%_58%)] animate-spin shrink-0" />
+            )}
             <kbd className="hidden sm:inline-flex text-[10px] text-muted-foreground/40 bg-muted/50 px-2 py-0.5 rounded-md font-mono border border-border/20">
               ESC
             </kbd>
