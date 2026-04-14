@@ -193,7 +193,12 @@ export function FinanceAppShell() {
   const navigateTo = useCallback((key: string) => setActiveModule(key), []);
 
   const PageComponent = pages[activeModule];
-  const activeLabel = SIDEBAR_GROUPS.flatMap(g => g.items).find(i => i.key === activeModule)?.label || activeModule;
+  const adaptedLabels = useMemo(() => {
+    const map: Record<string, string> = {};
+    if (financeAdapt.receivablesLabel) map["receivables"] = financeAdapt.receivablesLabel;
+    return map;
+  }, [financeAdapt]);
+  const activeLabel = adaptedLabels[activeModule] || SIDEBAR_GROUPS.flatMap(g => g.items).find(i => i.key === activeModule)?.label || activeModule;
 
   return (
     <FinanceNavigationContext.Provider value={{ navigateTo, activeModule }}>
@@ -207,7 +212,7 @@ export function FinanceAppShell() {
             </div>
             <div>
               <p className="text-[12px] font-bold text-[hsl(0_0%_90%)] tracking-tight">Finance OS</p>
-              <p className="text-[9px] text-[hsl(0_0%_100%/0.3)]">v2.0</p>
+              <p className="text-[9px] text-[hsl(0_0%_100%/0.3)]">{financeAdapt.budgetStyle === "business" ? "Business Finance" : financeAdapt.budgetStyle === "hybrid" ? "Hybrid Finance" : "Personal Finance"}</p>
             </div>
           </div>
 
