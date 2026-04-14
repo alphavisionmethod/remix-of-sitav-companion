@@ -333,6 +333,23 @@ export const CommandPalette = ({ open, onClose }: CommandPaletteProps) => {
       }
     });
 
+    // AI-suggested result
+    if (aiResult && q) {
+      results.unshift({
+        id: "ai-intent",
+        label: aiResult.label,
+        sublabel: `AI suggestion · ${Math.round(aiResult.confidence * 100)}% confident`,
+        icon: Sparkles,
+        category: "suggestion",
+        domain: aiResult.app as any,
+        action: () => {
+          window.dispatchEvent(new CustomEvent("sita-launch-app", { detail: { appId: aiResult.app } }));
+          setTimeout(() => crossNavigate(aiResult.app as any, aiResult.module), 200);
+          onClose();
+        },
+      });
+    }
+
     // Deduplicate
     const seen = new Set<string>();
     return results.filter(r => {
@@ -340,7 +357,7 @@ export const CommandPalette = ({ open, onClose }: CommandPaletteProps) => {
       seen.add(r.label);
       return true;
     }).slice(0, 16);
-  }, [query, apps, navigate, onClose, location.pathname]);
+  }, [query, apps, navigate, onClose, location.pathname, aiResult]);
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key === "ArrowDown") { e.preventDefault(); setSelectedIdx(i => Math.min(i + 1, items.length - 1)); }
