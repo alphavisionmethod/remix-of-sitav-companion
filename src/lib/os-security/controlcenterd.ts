@@ -42,6 +42,7 @@ export class ControlCenterDaemon {
     publicWifiDetected: false,
     securityLockdown: false,
     vpnActive: false,
+    deviceMode: "home",
   };
   
   private elevationCallback: ElevationCallback | null = null;
@@ -303,7 +304,7 @@ export class ControlCenterDaemon {
       wifi: "wifid", bluetooth: "btd", shield: "shieldd",
       power: "powerd", cert: "certd", audit: "auditd",
       secrets: "secretsd", session: "sessiond", user: "authd",
-      security: "policyd",
+      security: "policyd", update: "updated", onboarding: "onboardingd",
     };
     return serviceMap[prefix] || "controlcenterd";
   }

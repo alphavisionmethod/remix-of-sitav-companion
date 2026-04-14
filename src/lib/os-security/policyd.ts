@@ -23,6 +23,7 @@ export interface EnvironmentalContext {
   securityLockdown: boolean;
   vpnActive: boolean;
   batteryLevel?: number;
+  deviceMode?: string;
 }
 
 export interface PolicyDecision {
