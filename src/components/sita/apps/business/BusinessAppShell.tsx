@@ -27,6 +27,7 @@ import AdaptiveCommandPalette from "@/components/business/adaptive/AdaptiveComma
 import ModeTransitionCeremony from "@/components/business/adaptive/ModeTransitionCeremony";
 import { getSidebarOverrides, applySidebarOverrides } from "@/lib/engines/adaptive-sidebar-intelligence";
 import AdaptiveNotificationCenter from "@/components/business/adaptive/AdaptiveNotificationCenter";
+import AdaptiveOnboardingWizard from "@/components/business/adaptive/AdaptiveOnboardingWizard";
 
 // ── Page imports ──────────────────────────────────────────────
 import BusinessOverview from "@/pages/business/BusinessOverview";
