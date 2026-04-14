@@ -1,132 +1,204 @@
 
 
-# Enhanced Session, Secrets, and Key Hierarchy — Implementation Plan
+# TPM / Secure Hardware, Storage Schema, IPC Contracts, Trusted Elevation, Audit & Security Foundation
 
-## Current State Assessment
+## Current State
 
-The OS security subsystem is already substantial:
-- **sessiond** (250 lines): Login, lock/unlock, idle timeout, guest sessions, event bus — but lacks session tokens, fast user switching, suspend/resume policy, extended states
-- **secretsd** (372 lines): Full AES-256-GCM crypto, master→KEK→DEK hierarchy, keyrings (system/user/service/ephemeral), opaque handles, rotation, revocation — but lacks secret versioning, soft-delete/secure-erase lifecycle, policy bindings, TPM abstraction
-- **authd** (504 lines): PBKDF2 + ECDSA token signing, elevation tokens, rate limiting, account management — fully wired
-- **controlcenterd** (336 lines): IPC routing, policy preflight, elevation orchestration — fully wired
-- **policyd** (326 lines): RBAC + capability evaluation, environmental context — fully wired
-- **auditd** (255 lines): Hash-chained audit log — fully wired
-- **types.ts** (338 lines): Core contracts — needs extension for new models
-- **EnhancedLockScreen** (637 lines): Premium lock screen UI — already integrated
-- **flows/index.ts**: WiFi, VPN, firewall, session unlock flows — already wired
+The OS security subsystem already has substantial infrastructure across 8 files (~3,500 lines):
+- **authd** (504L): PBKDF2+ECDSA, session creation, elevation tokens, rate limiting
+- **sessiond** (590L): 10-state lifecycle, token issuer, fast switch, suspend/resume, idle→screensaver→lock
+- **secretsd** (709L): AES-256-GCM, HKDF, key hierarchy (master→KEK→DEK), TPM abstraction, versioning, policy bindings, deletion queue, secure buffer
+- **controlcenterd** (336L): IPC routing, policy preflight, elevation orchestration
+- **policyd** (326L): RBAC + capabilities, environmental context, decision logging
+- **auditd** (255L): Hash-chained append-only audit log
+- **types.ts** (518L): Full type contracts, 22-rule lockscreen matrix, 8 policy bindings
+- **flows** (339L): 10 end-to-end flows wired
 
 ## What Needs to Be Added
 
-### Missing from sessiond
-1. **Session tokens** — No `SessionToken` model; no issuance, rotation, revocation, scope-based invalidation on lock
-2. **Extended session states** — Missing `creating`, `resuming`, `suspended`, `expired`, `revoked`
-3. **Fast user switching** — No multi-session switching with isolation
-4. **Suspend/resume lock policy** — No powerd integration or elapsed-time policy
-5. **Screen saver → lock transition** — Basic idle→lock exists but no configurable grace/screensaver phase
-6. **Remote session restriction** — No remote session model or policy
-7. **Session type** — No `local`/`guest`/`remote` field distinction
-8. **Lockscreen action matrix** — Partial; needs full matrix with audit severity per action
+### 1. Enhanced TPM / Secure Hardware Integration
+- Current TPM abstraction is minimal (detect, seal/unseal stubs). Need:
+  - Full `DeviceSecurityPosture` model (secure_boot, measured_boot, attestation, degraded reasons)
+  - Boot integrity state reporting
+  - PCR binding simulation
+  - Attestation quote generation
+  - Hardware RNG abstraction
+  - Non-exportable key slot tracking
+  - Posture-aware policy integration (policyd checks device posture)
+  - Fallback rules with degraded-security signaling
 
-### Missing from secretsd
-1. **Secret status lifecycle** — Missing `soft_deleted`, `destroyed` states and deletion queue
-2. **Secret versioning** — No version history; rotation overwrites in-place
-3. **Secret access policy bindings** — No per-type policy registry (allowed services, rotation interval, export rules)
-4. **TPM abstraction** — Referenced but not implemented as a subsystem
-5. **Enhanced handle model** — Missing `allowed_operations` (decrypt, sign, derive, unwrap_temp, reveal_once)
-6. **Memory hygiene** — Best-effort zeroization exists but no structured secure allocator pattern
-7. **Key rotation at keyring level** — KEK rotation not implemented
+### 2. Structured IPC Contract System
+- Current IPC is ad-hoc method calls. Need:
+  - Formal `IPCContract` type with request/response/error schemas
+  - Caller validation rules per method
+  - Idempotency markers
+  - Timeout/retry behavior
+  - Complete contract registry for all ~20 IPC methods
+  - `promptd` service for trusted secure prompts
 
-### Missing from types.ts
-1. `SessionToken` with audience, scopes, key_id, signature, token classes
-2. `SecretStatus` enum (active/revoked/soft_deleted/destroyed)
-3. `SecretAccessPolicyBinding` with allowed_services, rotation_interval, export rules
-4. `SecretVersion` with ciphertext_ref, wrapping_key_id
-5. `SecretDeletionEntry` for secure erase queue
-6. `SuspendLockPolicy` and `IdlePolicy` types
-7. `LockscreenActionRule` for the full matrix
+### 3. Enhanced Audit Layer
+- Current auditd has hash-chaining but lacks:
+  - `device_posture_hash` and `previous_event_hash` fields on events
+  - Log sealing checkpoints
+  - Export/redaction tooling
+  - Retention policy enforcement
+  - Severity-filtered querying
 
-### No DB tables exist for this subsystem — all state is in-memory singletons (appropriate for a simulated OS)
+### 4. Service Identity Registry Enhancement
+- Current service registry is a simple map. Need:
+  - `signing_identity`, `version`, `status`, `policy_profile_ref`, `last_verified_at` fields
+  - Verified service identity with signature validation
+  - Service-to-service auth enforcement
+
+### 5. Trusted Prompt / promptd Service
+- No dedicated prompt daemon exists. Need:
+  - `promptd` that manages secure elevation prompts
+  - Prompt states: `idle → presenting → awaiting_input → processing → resolved → timed_out`
+  - Non-spoofable prompt with risk-aware messaging
+  - "Remember approval for X minutes" policy support
+  - Accessibility labels and remote session restrictions
+
+### 6. Permission/Capability Matrix (Complete)
+- Extend ACTION_AUTHORIZATION_TABLE with:
+  - `trustedPromptRequired` field
+  - `policyOverridable` field
+  - Missing actions (new wifi credential save, service registration, remote session)
+
+### 7. Failure Modes & Recovery Engine
+- No structured failure handling. Need:
+  - `FailureMode` type with user message, audit behavior, retry policy, fallback path
+  - Recovery flows for each failure scenario
+  - Degraded mode definitions
+
+### 8. Beautiful Admin Dashboard — SEC02 Security Foundation
+- New multi-tab dashboard with visual richness (not just text):
+  - **TPM & Device Posture** tab: visual device security shield with posture indicators, hardware status cards with icons
+  - **IPC Contracts** tab: interactive contract explorer with request/response schemas, flow diagrams
+  - **Audit Chain** tab: timeline visualization of audit events, hash chain integrity indicator, severity heatmap
+  - **Service Identities** tab: service registry with verification badges, trust graph
+  - **Trusted Prompts** tab: prompt simulator, prompt state machine visualization
+  - **Threat Model** tab: threat cards with mitigation status, risk radar chart
+  - **Capability Matrix** tab: interactive permission grid with color-coded cells
+
+---
 
 ## Implementation Plan — 4 Batches
 
-### Batch 1: Extended Types + Session Token Engine (~300 lines)
+### Batch 1: Enhanced Types + TPM + IPC Contracts (~400 lines)
 
 **Extend `src/lib/os-security/types.ts`** — Add:
-- `ExtendedSessionState`: `creating | active | inactive | locked | authenticating | terminating | resuming | suspended | expired | revoked`
-- `SessionType`: `local | guest | remote`
-- `SessionToken` model: `token_id`, `session_id`, `user_id`, `audience`, `scopes[]`, `issued_at`, `expires_at`, `sensitive`, `revoked`, `key_id`, `signature`, `token_class` (ui_session | privileged_action | broker | service_delegation | lockscreen_limited | fresh_auth)
-- `SuspendLockPolicy`: `always_lock | lock_after_threshold | never_lock`, threshold_ms, force_reauth_sensitive
-- `IdlePolicy`: idle_timeout_ms, screensaver_delay_ms, grace_interval_ms, auto_lock
-- `LockscreenActionRule`: action, allowed/denied/conditional, policy_source, auth_required, audit_severity
-- `SecretStatus`: `active | revoked | soft_deleted | destroyed`
-- `SecretVersion`: version_id, secret_id, version, ciphertext_ref, wrapping_key_id, created_at, superseded_at
-- `SecretAccessPolicyBinding`: secret_type, owner_scope_pattern, allowed_services[], export_allowed, hardware_required, rotation_interval_sec
-- `SecretDeletionEntry`: deletion_id, secret_id, delete_mode (soft/secure_erase), scheduled_at, completed_at
-- `EnhancedSecretHandle`: extends SecretHandle with `allowed_operations[]` (decrypt, sign, derive, unwrap_temp, reveal_once, connect_auth, import_protected)
-- `TPMState`: present, sealed_keys[], fallback_mode, posture_flag
+- `DeviceSecurityPosture`: secure_hw_present, secure_boot_enabled, measured_boot_ok, attestation_supported, system/user_keyring_hardware_backed, degraded_reason, posture_level, last_verified_at
+- `IPCContract`: method name, request_schema, response_schema, error_codes, allowed_callers, requires_session_token, requires_elevation, idempotent, timeout_ms, retry_policy, audit_events
+- `IPC_CONTRACT_REGISTRY`: Full registry for ~20 methods (session.login, session.lock, auth.verify, auth.begin_elevation, secrets.put, secrets.get_handle, wifi.connect, shield.firewall.disable, cert.install_root, etc.)
+- `PromptState`: idle, presenting, awaiting_input, processing, resolved, timed_out, cancelled
+- `TrustedPromptConfig`: requester, action, risk_level, messaging, supported_auth_methods, timeout_ms, remember_allowed, screen_reader_labels
+- `FailureMode`: failure_id, category, user_message, audit_behavior, retry_policy, fallback_path, degraded_mode, recovery_needed
+- `FAILURE_MODE_REGISTRY`: ~15 failure modes (invalid token, corrupted secret, TPM state change, missing audit backend, etc.)
+- Extended `ServiceIdentity`: signing_identity, version, status, policy_profile_ref, last_verified_at
+- Extended `ActionPolicy`: trusted_prompt_required, policy_overridable fields
+- `ThreatEntry`: threat_id, description, mitigation, residual_risk, monitoring_signal, severity
 
-**Extend `src/lib/os-security/sessiond.ts`** — Add:
-- `SessionTokenIssuer` class: issue tokens with class/scope/audience, sign with ECDSA, rotate, revoke, invalidate sensitive scopes on lock, reissue on unlock
-- Extended `OSSession` fields: `sessionType`, `tokens[]` (by reference), `suspendPolicy`
-- `switchSession(fromId, toId)`: validate isolation, swap foreground, emit events, audit
-- `suspendSession(sessionId)` / `resumeSession(sessionId, elapsedMs)`: evaluate policy, lock if threshold exceeded, invalidate sensitive handles
-- `setIdlePolicy(sessionId, policy)`: configurable screensaver delay, grace interval
-- Idle flow upgrade: `active → screensaver_active → lock_pending → locked` with configurable intervals
-- `SessionEvent` extended: add `switch`, `suspend`, `resume`, `token-issued`, `token-revoked` event types
-- Lockscreen action matrix: full `LockscreenActionRule[]` table with 20+ entries
+**Enhance TPM in `src/lib/os-security/secretsd.ts`**:
+- `DeviceSecurityPostureManager` class: compute and cache posture, expose to policyd
+- PCR binding simulation with value tracking
+- Attestation quote generation (simulated)
+- Hardware RNG wrapper
+- Non-exportable key slot registry
+- `getDevicePosture()` method on SecretsDaemon
 
-### Batch 2: Enhanced Secrets Daemon (~250 lines)
+### Batch 2: promptd + Enhanced Audit + Service Identity (~350 lines)
 
-**Extend `src/lib/os-security/secretsd.ts`** — Add:
-- `SecretStatus` lifecycle: `active → revoked → soft_deleted → destroyed` with transitions
-- `softDeleteSecret(secretId)`: mark soft_deleted, schedule secure erase after retention period
-- `secureErase(secretId)`: overwrite encrypted store, remove DEK, remove metadata, audit
-- `SecretVersionManager`: store version history on rotation (keep N versions), allow rollback to previous version
-- `SecretAccessPolicyRegistry`: register per-type policy bindings (which services can access wifi-psk vs vpn-private-key), enforce on handle issuance and retrieval
-- Enhanced handle model: `allowed_operations[]` enforcement — handle only permits specific crypto operations, not blanket read
-- `deriveKey(secretId, context, callerService)`: HKDF-based key derivation from a stored secret, returns derived material without exposing parent
-- `rotateKeyring(keyringId)`: re-wrap all DEKs under new KEK, version the KEK, audit
-- `TPMAbstractionLayer`: interface for seal/unseal/attest, software fallback with degraded posture flag, integrate with key hierarchy root
-- `DeletionQueue`: process scheduled deletions, configurable retention (24h default), audit on execution
-- Memory hygiene: structured `SecureBuffer` wrapper that zeros on dispose (best-effort in JS via TypedArray fill)
+**Create `src/lib/os-security/promptd.ts`** — Trusted Prompt Daemon:
+- `PromptDaemon` class managing prompt lifecycle
+- Prompt queue with priority
+- State machine (idle → presenting → awaiting → resolved/timed_out)
+- Risk-aware message generation (maps action to human-friendly explanation)
+- "Remember for X minutes" with policy check
+- Rate limiting (prevent prompt flooding)
+- Remote session restrictions
+- Accessibility metadata (screen reader labels, high-contrast mode support)
+- Integration with controlcenterd (replaces raw elevation callback)
+- Prompt history for audit
 
-### Batch 3: Flows + Integration Wiring (~200 lines)
+**Enhance `src/lib/os-security/auditd.ts`**:
+- Add `device_posture_hash`, `elevation_used`, `auth_method_used`, `result` fields to events
+- Log sealing: periodic checkpoints that summarize and seal event batches
+- `exportEvents()` with privacy-aware redaction (strip user PII, keep structure)
+- `getChainIntegrity()`: verify full hash chain, return integrity report
+- Retention policy: configurable max age, auto-archive old events
+- Severity-filtered query methods
 
-**Extend `src/lib/os-security/flows/index.ts`** — Add complete end-to-end flows:
-- **Login → session token issuance → user keyring unlock**: Full flow using new token issuer
-- **Idle → screensaver → lock → sensitive token revocation**: Upgraded idle flow with grace interval
-- **Suspend → resume → policy evaluation → lock/reauth**: New suspend/resume flow integrating with powerd concept
-- **Fast user switch**: Session isolation, token separation, keyring rebinding
-- **WiFi connect with constrained handle**: wifid gets handle with `connect_auth` operation only, single-use, 30s TTL
-- **VPN sign with opaque handle**: shieldd gets handle with `sign` operation only, secretsd performs crypto internally
-- **Guest teardown**: Destroy ephemeral keyring, erase guest secrets, purge tokens, audit
+**Enhance service identity in `src/lib/os-security/policyd.ts`**:
+- Extended `ServiceIdentity` with verification and status tracking
+- `verifyServiceIdentity()` with signature check
+- Service-to-service authorization validation
+- Policy profile references per service
 
-**Extend `src/lib/os-security/controlcenterd.ts`** — Add:
-- `session.switch` and `session.suspend`/`session.resume` action routing
-- Token-aware session validation (check token class matches action sensitivity)
+### Batch 3: Integration Flows + Failure Recovery (~250 lines)
 
-### Batch 4: Admin UI — Session & Secrets Dashboard (~500 lines)
+**Extend `src/lib/os-security/flows/index.ts`** — Add:
+- Full WiFi connect flow with trusted prompt path
+- VPN root cert import flow with validation, non-exportable key, trust store update
+- Firewall disable with single-use token, user-safe denial explanation
+- Session unlock via trusted compositor path
+- VPN private key usage with operation-specific handle and service binding
+- Each flow now includes: posture check, prompt via promptd, structured error handling, recovery path
 
-**Create `src/pages/admin/SEC01SessionSecrets.tsx`** — Admin-only Session & Secrets Command Center
+**Extend `src/lib/os-security/controlcenterd.ts`**:
+- Wire promptd as elevation handler (replace raw callback)
+- Add posture-aware command validation
+- Service identity verification before dispatch
+- Structured failure responses with recovery hints
 
-Glassmorphic multi-tab dashboard:
-- **Tab 1 — Sessions**: Active/locked/suspended sessions table, session tokens list with class/scope/expiry, fast-switch controls, idle policy editor
-- **Tab 2 — Lockscreen Matrix**: Full action rules table (action, allowed/denied, policy, auth required, severity), editable policies
-- **Tab 3 — Secrets Vault**: Keyrings with secret counts, secret metadata browser (no plaintext), handle issuance log, access events timeline
-- **Tab 4 — Key Hierarchy**: Visual tree (Root Device Key → KEK → Per-Keyring Master → DEKs), TPM status, rotation history, posture indicator
-- **Tab 5 — Diagnostics**: Token counts by session, secret backend health, recent denied access, deletion queue status, key migration status
+**Create `src/lib/os-security/recovery.ts`** — Recovery Engine:
+- `RecoveryEngine` class
+- Handle failure modes: expired tokens, corrupted secret metadata, TPM state change, partial boot
+- Degraded mode management with user-visible posture
+- Safe defaults on policy load failure
+- Service startup dependency order definition
 
-**Extend `src/routes/AdminRoutes.tsx`**: Register `/admin/security/sessions` route
-**Extend `src/pages/admin/AdminDashboard.tsx`**: Add Session & Secrets health card
+### Batch 4: SEC02 Security Foundation Dashboard (~600 lines)
+
+**Create `src/pages/admin/SEC02SecurityFoundation.tsx`** — Beautiful multi-tab dashboard:
+
+- **Tab 1 — Device Security Posture**: Large visual shield icon showing overall posture (green/amber/red). Cards for TPM status, secure boot, measured boot, attestation — each with icon, status badge, and last-checked timestamp. Posture history sparkline.
+
+- **Tab 2 — IPC Contract Explorer**: Searchable list of all IPC methods. Click to expand: request schema, response schema, error codes, caller validation rules, timeout behavior. Visual flow diagram connecting UI → controlcenterd → service chain.
+
+- **Tab 3 — Audit Chain**: Timeline visualization with colored severity dots. Hash chain integrity bar (verified/broken). Recent events table with actor, action, decision, severity. Export button. Sealing checkpoint markers on timeline.
+
+- **Tab 4 — Service Identities**: Cards for each registered service with verification badge (green check or warning). Shows allowed actions, secret scopes, last verified timestamp. Trust relationship lines between services.
+
+- **Tab 5 — Trusted Prompts**: Live prompt queue status. Prompt history with outcomes (approved/denied/timed-out). Prompt simulator for testing. State machine diagram showing prompt lifecycle.
+
+- **Tab 6 — Threat Model**: Threat cards arranged in severity grid. Each card shows threat, mitigation, residual risk, monitoring signal. Color-coded by severity. Overall threat coverage percentage.
+
+- **Tab 7 — Capability Matrix**: Interactive grid (actions × requirements). Color-coded cells: green (allowed), red (denied), amber (elevation). Filterable by role, severity, prompt requirement.
+
+**Register route** in `AdminRoutes.tsx`: `/admin/security/foundation`
+**Add dashboard card** in `AdminDashboard.tsx`
 
 ## Design Language
-- Same glassmorphic style: `bg-white/[0.04]`, `backdrop-blur-xl`, `border-white/[0.06]`
-- Color coding: Sessions = blue, Secrets = amber, Keys = emerald, TPM = purple
-- Token lifecycle timeline with state dots
-- Key hierarchy as vertical tree diagram with connection lines
+- Same glassmorphic style as SEC01: `bg-white/[0.04]`, `backdrop-blur-xl`, `border-white/[0.06]`
+- TPM/Hardware = purple theme, IPC = blue, Audit = amber, Services = emerald, Prompts = cyan, Threats = red
+- Visual shields, lock icons, key icons — not just text tables
+- Animated posture indicator (pulsing green shield when healthy)
+- Interactive contract expansion with syntax-highlighted schemas
+- Audit timeline with severity-colored dots and connecting lines
 
 ## File Summary
-- **Modify**: `types.ts`, `sessiond.ts`, `secretsd.ts`, `flows/index.ts`, `controlcenterd.ts`, `AdminRoutes.tsx`, `AdminDashboard.tsx` (7 files)
-- **Create**: `SEC01SessionSecrets.tsx` (1 file)
-- **Total**: ~1,250 lines of new/modified code across 8 files
+| Action | File | Lines |
+|--------|------|-------|
+| Modify | `types.ts` | +180 |
+| Modify | `secretsd.ts` | +80 |
+| Create | `promptd.ts` | ~200 |
+| Modify | `auditd.ts` | +100 |
+| Modify | `policyd.ts` | +50 |
+| Modify | `flows/index.ts` | +100 |
+| Modify | `controlcenterd.ts` | +50 |
+| Create | `recovery.ts` | ~100 |
+| Create | `SEC02SecurityFoundation.tsx` | ~600 |
+| Modify | `AdminRoutes.tsx` | +5 |
+| Modify | `AdminDashboard.tsx` | +20 |
+| **Total** | **11 files** | **~1,485 lines** |
 
