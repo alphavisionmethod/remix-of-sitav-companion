@@ -323,6 +323,20 @@ export default function AdminDashboard() {
             </Button>
           </CardContent>
         </Card>
+        <Card className="border-blue-500/20">
+          <CardContent className="p-4 flex items-center gap-3">
+            <div className="p-2 rounded-xl bg-blue-500/10">
+              <Shield className="h-5 w-5 text-blue-500" />
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-medium text-foreground">Session & Secrets</p>
+              <p className="text-[10px] text-muted-foreground">Token lifecycle · Key hierarchy · Lockscreen matrix</p>
+            </div>
+            <Button variant="outline" size="sm" asChild>
+              <Link to="/admin/security/sessions">Open →</Link>
+            </Button>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Bottom alerts */}
