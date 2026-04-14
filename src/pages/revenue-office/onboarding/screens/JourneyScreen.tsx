@@ -75,6 +75,11 @@ export default function JourneyScreen({ state, setState }: ScreenProps) {
   return (
     <div className="space-y-6">
       <ScreenHeader icon={Target} title="Let's sketch how customers move through your business" subtitle="SITA will build a Customer Journey Twin from this pattern" color="text-blue-400" />
+      <SitaInsightCallout
+        show={!!recommendedTemplate && state.businessTypes.length > 0}
+        message={`Based on your business type, we recommend the "${recommendedLabel}" journey. ${state.journeyTemplate === recommendedTemplate ? "✓ Currently selected." : "You can pick a different one below."}`}
+        type="detected"
+      />
       <div className="space-y-2">
         {templates.map(t => (
           <button key={t.id} onClick={() => setState(p => ({ ...p, journeyTemplate: t.id, journeyStages: t.id !== "custom" ? t.flow : [] }))}
