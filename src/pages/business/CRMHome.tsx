@@ -10,7 +10,7 @@ import {
 import { format, formatDistanceToNow, isPast, differenceInDays, subDays } from "date-fns";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useBusinessNavigation } from "@/contexts/BusinessNavigationContext";
 import CRMCommandSearch from "@/components/business/crm/CRMCommandSearch";
 import { CRMLifecycleEngine } from "@/components/business/crm/CRMLifecycleEngine";
 import { CRMRelationshipIntelligence } from "@/components/business/crm/CRMRelationshipIntelligence";
@@ -22,7 +22,7 @@ const CRMHome = () => {
   const { data: tasks = [] } = useCRMTasks();
   const { data: comms = [] } = useCRMCommunications();
   const { data: notes = [] } = useCRMNotes();
-  const navigate = useNavigate();
+  const { navigateTo } = useBusinessNavigation();
   const [showSearch, setShowSearch] = useState(false);
 
   const totalContacts = contacts.length;
@@ -71,7 +71,7 @@ const CRMHome = () => {
     return Object.entries(counts).sort((a, b) => b[1].value - a[1].value);
   }, [activeOpps]);
 
-  const nav = (path: string) => navigate(`/business/${path}`);
+  const nav = (path: string) => navigateTo(path);
 
   return (
     <div className="space-y-6">
