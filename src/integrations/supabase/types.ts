@@ -1445,6 +1445,33 @@ export type Database = {
         }
         Relationships: []
       }
+      business_onboarding: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          id: string
+          onboarding_state: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          onboarding_state?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          onboarding_state?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       concierge_automations: {
         Row: {
           conditions: Json | null
