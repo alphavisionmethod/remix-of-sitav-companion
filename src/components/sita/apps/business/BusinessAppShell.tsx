@@ -33,7 +33,9 @@ import AdaptiveBoardroomAgenda from "@/components/business/adaptive/AdaptiveBoar
 import { CrossOSLinksPanel } from "@/components/sita/cross-os/CrossOSLinksPanel";
 import { CrossDomainIntelligenceBridge } from "@/components/sita/cross-os/CrossDomainIntelligenceBridge";
 import { AppShellBreadcrumb, useNavigationHistory } from "@/components/sita/shell/AppShellBreadcrumb";
-
+import { useBusinessOnboarding } from "@/hooks/useBusinessOnboarding";
+import { getVisibleSidebarItems } from "@/lib/business-journey-config";
+import BusinessSettingsPage from "@/pages/business/BusinessSettingsPage";
 // ── Page imports ──────────────────────────────────────────────
 import BusinessOverview from "@/pages/business/BusinessOverview";
 import LeadsInbox from "@/pages/business/LeadsInbox";
@@ -172,6 +174,7 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
       { id: "profile-evolution", label: "Profile Evolution", icon: Activity },
       { id: "workflow-templates", label: "Workflow Templates", icon: Workflow },
       { id: "boardroom-agenda", label: "Boardroom Agenda", icon: BookOpen },
+      { id: "business-settings", label: "Settings", icon: Settings },
     ],
   },
 ];
@@ -226,6 +229,7 @@ const pages: Record<string, React.ComponentType> = {
   "kpi-dashboard": AdaptiveKPIDashboard,
   "workflow-templates": AdaptiveWorkflowTemplates,
   "boardroom-agenda": AdaptiveBoardroomAgenda,
+  "business-settings": BusinessSettingsPage,
 };
 
 // ── Helper components ─────────────────────────────────────────
