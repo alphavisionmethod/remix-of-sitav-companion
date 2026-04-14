@@ -8,13 +8,14 @@ import { useCRMOpportunities, useCRMPipelineStages, useCRMContacts, useCRMCompan
 import {
   TrendingUp, Plus, DollarSign, Calendar, List, Columns3, ChevronRight,
   ChevronLeft, Trophy, XCircle, Target, BarChart3, User, Building2, ArrowRight, Clock,
-  AlertTriangle
+  AlertTriangle, Brain
 } from "lucide-react";
 import { format, formatDistanceToNow, isPast, differenceInDays } from "date-fns";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { CRMDealDetail } from "@/components/business/crm/CRMDealDetail";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { toast } from "sonner";
+import { DealAdvisorSignal } from "@/components/business/crm/CRMAdvisorInsight";
 
 const CRMPipeline = () => {
   const { data: opportunities = [] } = useCRMOpportunities();
@@ -318,6 +319,7 @@ const CRMPipeline = () => {
                           {daysTillClose !== null && daysTillClose >= 0 && daysTillClose <= 14 && !isOverdue && (
                             <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary">{daysTillClose}d to close</span>
                           )}
+                          <DealAdvisorSignal opp={d} />
                         </div>
                       </CardContent>
                     </Card>
@@ -360,7 +362,7 @@ const CRMPipeline = () => {
                             {d.company_id && companyMap[d.company_id] && (
                               <p className="text-[10px] text-muted-foreground flex items-center gap-0.5"><Building2 className="h-2.5 w-2.5" />{companyMap[d.company_id]}</p>
                             )}
-                            <div className="flex items-center gap-2 mt-2 text-xs">
+                            <div className="flex items-center gap-2 mt-2 text-xs flex-wrap">
                               <span className="flex items-center gap-0.5 font-semibold text-foreground"><DollarSign className="h-3 w-3 text-green-400" />{d.value?.toLocaleString()}</span>
                               <span className="text-muted-foreground">{d.probability}%</span>
                               {d.expected_close_date && (
@@ -370,6 +372,7 @@ const CRMPipeline = () => {
                                 </span>
                               )}
                             </div>
+                            <DealAdvisorSignal opp={d} />
                             {/* Stage navigation */}
                             {!stage.is_won && !stage.is_lost && (
                               <div className="flex items-center gap-1 mt-2 pt-2 border-t border-border/20">
