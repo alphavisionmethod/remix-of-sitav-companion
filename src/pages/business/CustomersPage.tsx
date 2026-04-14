@@ -15,6 +15,7 @@ import { SitaButton } from "@/components/sita/SitaCard";
 import { SectionSkeleton, KPISkeleton } from "@/components/sita/SectionSkeleton";
 import { useState, useMemo } from "react";
 import { useAuth } from "@/contexts/AuthContext";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { useAction } from "@/lib/hooks/useAction";
 import { useBusinessNavigation } from "@/contexts/BusinessNavigationContext";
 import {
@@ -70,6 +71,8 @@ const TABS: { key: Tab; label: string }[] = [
 ];
 
 const CustomersPage = () => {
+  const { primaryMode, adaptations } = useBusinessProfile();
+  const customerLabel = adaptations.crm?.language?.contactLabel || "Customer";
   const { user } = useAuth();
   const { navigateTo } = useBusinessNavigation();
   const crmSync = useCRMSync();

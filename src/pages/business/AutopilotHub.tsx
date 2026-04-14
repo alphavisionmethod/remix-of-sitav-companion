@@ -10,6 +10,8 @@ import AutopilotWizard from "@/components/autopilot/AutopilotWizard";
 import AutopilotCommandCenter from "@/components/autopilot/AutopilotCommandCenter";
 import { getDefaultConfig, type AutopilotConfig } from "@/lib/domain-engines/autopilot-engine";
 import { SITA_TYPE } from "@/lib/design-system/sita-design-tokens";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { getIdentityLayer } from "@/lib/engines/business-identity-layers";
 
 const STORAGE_KEY = "sita-autopilot-config";
 
@@ -26,6 +28,9 @@ function saveConfig(config: AutopilotConfig) {
 }
 
 const AutopilotHubPage = () => {
+  const { primaryMode } = useBusinessProfile();
+  const identity = getIdentityLayer(primaryMode);
+  const autopilotLabel = primaryMode === "ecommerce" ? "Sales Autopilot" : primaryMode === "agency" ? "Growth Engine" : primaryMode === "employee-based" ? "Workflow Engine" : primaryMode === "appointment-based" ? "Booking Autopilot" : "Revenue Autopilot";
   const [config, setConfig] = useState<AutopilotConfig>(loadConfig);
   const [showWizard, setShowWizard] = useState(!config.isOnboarded);
 

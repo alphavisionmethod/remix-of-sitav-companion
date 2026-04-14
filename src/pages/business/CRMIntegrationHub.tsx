@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import CRMConnectModal from "@/components/business/CRMConnectModal";
 import CRMImportWizard from "@/components/business/CRMImportWizard";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 
 type Category = "all" | "crm" | "marketing" | "dev" | "communication" | "spreadsheets" | "social";
 
@@ -77,6 +78,8 @@ const CATEGORY_LABELS: Record<Category, { label: string; icon: React.ReactNode }
 };
 
 const CRMIntegrationHub = () => {
+  const { primaryMode, adaptations } = useBusinessProfile();
+  const contactLabel = adaptations.crm?.language?.contactLabel || "Contact";
   const [category, setCategory] = useState<Category>("all");
   const [search, setSearch] = useState("");
   const [connectPlatform, setConnectPlatform] = useState<Platform | null>(null);

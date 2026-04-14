@@ -13,6 +13,7 @@ import {
   Target, ArrowUpRight, Clock, CheckCircle, XCircle, BarChart3, Shield,
   Search, Users, FileText, Inbox, Activity
 } from "lucide-react";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import {
   detectLeakage, suggestRecoveryActions, rankOpportunities, computeRecoveredValueSummary,
   computeAutopilotSummary, type LeakageItem, type RecoveredValueEntry, type RankedOpportunity
@@ -180,6 +181,8 @@ const RecoveredValueLedger = () => {
 // ── Main Component ──────────────────────────────────────────────
 
 const RevenueAutopilot = () => {
+  const { primaryMode } = useBusinessProfile();
+  const autopilotLabel = primaryMode === "ecommerce" ? "Sales Autopilot" : primaryMode === "agency" ? "Growth Engine" : primaryMode === "employee-based" ? "Workflow Engine" : "Revenue Autopilot";
   const { data: leaksData } = useRevenueLeaksData();
   const { data: recoveredData } = useRecoveredValuesData();
   const { data: oppsData } = useRawOpportunities();
