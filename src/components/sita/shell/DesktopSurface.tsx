@@ -283,7 +283,7 @@ export function DesktopSurface({
       />
 
       {/* Layer 3: Legacy Window Compositor */}
-      <div className="absolute inset-0 z-20">
+      <div className={cn("absolute inset-0 z-20", visibleWindows.length === 0 && "pointer-events-none")}>
         <AnimatePresence>
           {visibleWindows.map((w, index) => {
             const spawnOffset = index * 30;
