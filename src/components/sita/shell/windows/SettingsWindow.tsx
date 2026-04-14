@@ -37,6 +37,7 @@ const SECTIONS = [
   { id: "appearance",  label: "Appearance",  icon: <Palette className="h-3.5 w-3.5" />,  group: "System" },
   { id: "display",     label: "Display",     icon: <Monitor className="h-3.5 w-3.5" />,  group: "System" },
   { id: "sound",       label: "Sound",       icon: <Volume2 className="h-3.5 w-3.5" />,  group: "System" },
+  { id: "devicemode",  label: "Device Mode", icon: <Lock className="h-3.5 w-3.5" />,     group: "System" },
   { id: "network",     label: "Network",     icon: <Wifi className="h-3.5 w-3.5" />,     group: "Connectivity" },
   { id: "bluetooth",   label: "Bluetooth",   icon: <Bluetooth className="h-3.5 w-3.5" />,group: "Connectivity" },
   { id: "notifications", label: "Notifications", icon: <Bell className="h-3.5 w-3.5" />,group: "Preferences" },
