@@ -15,9 +15,10 @@ import { motion } from "framer-motion";
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   ShieldAlert, RotateCcw, AlertTriangle, CheckCircle, Clock, XCircle,
-  ChevronRight, Eye, Play, Pause, Activity
+  ChevronRight, Eye, Play, Pause, Activity, Download, HardDrive
 } from "lucide-react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { cn } from "@/lib/utils";
 
 
 
