@@ -643,7 +643,7 @@ function BusinessAppShellInner({ initialModule }: { initialModule?: string }) {
                 <span>⌘K</span>
               </button>
               <AdaptiveNotificationCenter onNavigate={navigateTo} />
-              <BusinessModeIndicator onClick={() => setActiveModule("business-profile")} />
+              <BusinessModeIndicator onClick={() => setActiveModule("profile-studio")} />
             </div>
           </div>
 
