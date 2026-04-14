@@ -53,19 +53,15 @@ interface Props {
 }
 
 export const LeadDetailPanel = ({ item, score, onClose, onAccept, onRoute, onReject, onOpenDuplicate, onExplain }: Props) => {
-  if (!item) return null;
-
-  const inboxAdvisors = useMemo(() => generateInboxAdvisors({
-    name: `${item.first_name} ${item.last_name}`,
+  const inboxAdvisors = useMemo(() => item ? generateInboxAdvisors({
+    name: item.contact_name,
     source: item.source || "website",
     score: score?.priorityScore ?? item.quality_score,
     urgency: (score?.urgencyBand === "needs-response-today") || false,
-    missingFields: [
-      ...(!item.email ? ["email"] : []),
-      ...(!item.phone ? ["phone"] : []),
-      ...(!item.company ? ["company"] : []),
-    ],
-  }), [item, score]);
+    missingFields: item.missing_fields || [],
+  }) : [], [item, score]);
+
+  if (!item) return null;
 
   const trustLevel = (score?.priorityScore ?? item.quality_score) >= 75 ? "verified" as const : (score?.priorityScore ?? item.quality_score) >= 40 ? "review" as const : "degraded" as const;
 
