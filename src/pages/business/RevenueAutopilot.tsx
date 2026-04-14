@@ -181,6 +181,8 @@ const RecoveredValueLedger = () => {
 // ── Main Component ──────────────────────────────────────────────
 
 const RevenueAutopilot = () => {
+  const { primaryMode } = useBusinessProfile();
+  const autopilotLabel = primaryMode === "ecommerce" ? "Sales Autopilot" : primaryMode === "agency" ? "Growth Engine" : primaryMode === "employee-based" ? "Workflow Engine" : "Revenue Autopilot";
   const { data: leaksData } = useRevenueLeaksData();
   const { data: recoveredData } = useRecoveredValuesData();
   const { data: oppsData } = useRawOpportunities();

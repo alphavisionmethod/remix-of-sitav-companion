@@ -71,6 +71,8 @@ const TABS: { key: Tab; label: string }[] = [
 ];
 
 const CustomersPage = () => {
+  const { primaryMode, adaptations } = useBusinessProfile();
+  const customerLabel = adaptations.crm?.language?.contactLabel || "Customer";
   const { user } = useAuth();
   const { navigateTo } = useBusinessNavigation();
   const crmSync = useCRMSync();

@@ -117,6 +117,8 @@ const ChartTooltip = ({ active, payload, label }: any) => {
 // ── Main Component ───────────────────────────────────────────────
 
 const RevenueImpactDashboard = () => {
+  const { primaryMode } = useBusinessProfile();
+  const revenueLabel = primaryMode === "ecommerce" ? "Store Revenue" : primaryMode === "appointment-based" ? "Booking Revenue" : primaryMode === "membership" ? "MRR Impact" : "Revenue";
   const [granularity, setGranularity] = useState<Granularity>("daily");
   const [chartType, setChartType] = useState<"area" | "bar">("area");
   const { user } = useAuth();

@@ -39,6 +39,8 @@ const stageToState = (stage: string): ExecutionState => {
 const initials = (name: string) => name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase();
 
 const OpportunitiesCenter = () => {
+  const { primaryMode } = useBusinessProfile();
+  const moduleConfig = getModuleAdaptation("opportunities", primaryMode);
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const [tab, setTab] = useState("all");
