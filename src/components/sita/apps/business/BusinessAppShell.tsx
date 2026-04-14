@@ -1,4 +1,4 @@
-import React, { useState, useCallback, lazy, Suspense } from "react";
+import React, { useState, useCallback, useEffect, lazy, Suspense } from "react";
 import {
   Users, FileText, Briefcase, TrendingUp, Brain, ArrowUpRight, CheckCircle, Clock,
   AlertTriangle, Activity, Zap, LayoutDashboard, Target, Phone, Calendar, Settings,
@@ -386,7 +386,25 @@ function SidebarGroupSection({ group, activeModule, onSelect }: { group: Sidebar
 // ── Main Shell ────────────────────────────────────────────────
 
 export function BusinessAppShell({ initialModule }: { initialModule?: string }) {
-  const [activeModule, setActiveModule] = useState(initialModule || "crm-home");
+  const storedModule = (window as any).__businessInitialModule;
+  const [activeModule, setActiveModule] = useState(storedModule || initialModule || "crm-home");
+
+  // Listen for navigation events from outside (deep-linking, launchers)
+  useEffect(() => {
+    // Clear the stored module after reading
+    delete (window as any).__businessInitialModule;
+
+    const handler = (e: Event) => {
+      const module = (e as CustomEvent).detail?.module;
+      if (module) {
+        const key = module.replace(/^\/business\//, "").replace(/^business\//, "");
+        const resolved = key === "" || key === "business" ? "overview" : key;
+        setActiveModule(resolved);
+      }
+    };
+    window.addEventListener("sita-business-navigate", handler);
+    return () => window.removeEventListener("sita-business-navigate", handler);
+  }, []);
   const { pendingCount, decisionCount, synthesis } = useBoardroomBridge("business");
 
   const navigateTo = useCallback((moduleKey: string) => {
