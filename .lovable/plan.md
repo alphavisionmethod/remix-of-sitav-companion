@@ -1,121 +1,121 @@
 
 
-# OS Subsystem Enhancement Plan: PolicyD + Onboarding + UpdateD
+# Lead Recovery — Full Advanced Implementation Plan
 
-## Current State Assessment
-
-### PolicyD (policyd.ts — 277 lines)
-- Has basic RBAC, capability checks, environmental context, deny-by-default, decision logging
-- **Missing**: Device modes (home/work/school/kiosk/guest), policy bundles, signed policy validation, policy schema/YAML format, effective policy merge, precedence engine, simulate/explain APIs, contextual battery/presentation/network decisions, policy caching
-
-### Onboarding (OSSetupExperience.tsx — 1136 lines + 47 step components)
-- Has 24-phase flow with personalization ceremony, persistence, orchestration engine
-- **Missing**: OS-level policy-driven defaults, device protection "wow" card, hardware detection integration, update preflight during setup, restore/import from backup, secure foundation wiring to policyd/shieldd, resumable state machine with required-completion markers
-
-### UpdateD (system-updates/index.ts — 143 lines + UpdateCenterWindow.tsx — 315 lines)
-- Has basic check/download/log/rollback with DB persistence, channel switching, UI
-- **Missing**: A/B slot model, atomic staging, signature verification, health validation, boot success markers, preflight policy checks (battery/storage/network), delta updates, recovery integration, real rollback state machine
+## Current State
+- `LeadRecovery.tsx`: ~150 lines, 5 hardcoded cold leads, 4 campaigns, basic 3-tab list (Cold Leads/Campaigns/ROI) + simple detail pane
+- `LeadRecoveryPane.tsx`: ~109 lines, shows identity card + single AI message with send buttons
+- No recovery engine, no queue classification, no recovery scoring logic, no rich detail view, no integration with CRM/advisors/Boardroom
 
 ## Implementation Plan
 
-### Batch 1: Enhanced PolicyD Core (3 files)
+### File 1: Recovery Data Engine
+**Create `src/lib/engines/lead-recovery-engine.ts`** (~300 lines)
 
-**`src/lib/os-security/policyd-bundles.ts`** (~350 lines)
-- `DeviceMode` type: home | work | school | kiosk | guest_demo
-- `PolicyBundle` interface: id, source (platform/org/device/user/session), version, signed, content hash, active, raw policy content
-- `PolicyPrecedence` engine: hardcoded invariants > signed platform > org > device > mode > user > session overrides
-- `EffectivePolicy` merge: deep-merge with precedence, invariant protection (e.g., `baseline_firewall_required` cannot be weakened)
-- Default policy bundles for each device mode (YAML-equivalent JS objects covering wifi, shield, bluetooth, power, updates, privacy, apps, kernel domains)
-- Policy validation: schema check, signature stub verification, version compatibility
-- Bundle install/uninstall/activate/deactivate lifecycle
+Recovery object model with full typing:
+- `RecoveryCandidate`: linked lead, failure mode, recovery reason, stage at slip, time since last action, value at risk, relationship sensitivity, time sensitivity, recovery score, likely success band, recommended recovery path, owner accountability, prepared drafts, advisor summary, boardroom candidacy
+- `FailureMode` enum: no_response, missed_followup, quote_abandoned, lost_momentum, owner_dropped, appointment_incomplete, post_consult_drift, handoff_failure, silent_high_value, callback_missed
+- `RecoveryPath` enum: soft_reactivation, direct_rescue, quote_rescue, consult_reactivation, relationship_repair, reassignment, strategic_rescue
+- `RecoveryQueue` type with queue definitions matching all 12+ queues from spec
+- Recovery scoring function: computes recoverability (0-100) from engagement quality, value, recency, failure mode, relationship context
+- Recovery window heat calculator: time-based urgency
+- Failure mode classifier: analyzes lead signals to determine what went wrong
+- Relationship sensitivity scorer
+- Likely success band calculator (strong/moderate/uncertain/low/archive)
+- Recovery path recommender based on failure mode + context
+- Queue assignment logic
+- 25+ rich mock recovery candidates with realistic data spanning all failure modes and queues
 
-**`src/lib/os-security/policyd-decisions.ts`** (~250 lines)
-- Enhanced `PolicyContext` with battery_percent, charging, presentation_active, network_type, managed_device, device_mode, threat_posture, update_state
-- Contextual decision engine: evaluates all environmental factors (not just role/capability)
-- Example rules: block open Wi-Fi on school mode, auto-VPN on public wifi, deny BT pair while locked, block update if battery < 40%, require charger for firmware
-- Decision output: allow/deny/allow-with-prompt/allow-with-elevation/allow-forced + reason_code + policy_source + can_override + audit_severity + UX message
-- `policy.simulate()` API: dry-run without side effects
-- `policy.explain()` API: returns full decision chain with sources
+### File 2: Recovery Overview Dashboard
+**Create `src/components/business/lead-recovery/RecoveryOverview.tsx`** (~250 lines)
 
-**Modify `src/lib/os-security/policyd.ts`** — Integrate bundles + enhanced decisions
-- Add `switchDeviceMode()`, `getEffectivePolicy()`, `installBundle()`, `validateBundle()`, `simulateAction()`, `getActiveConstraints()`, `evaluateUpdatePreflight()`, `evaluateOnboardingDefaults()`
-- Wire enhanced contextual decision engine into `evaluate()`
-- Add policy cache with TTL and invalidation
+Premium strategic overview at top of workspace:
+- Hero metrics row: Total Recoverable Leads, Value at Risk ($), Hottest Recovery Windows, Recovery Win Rate
+- Recovery queue health visualization: horizontal bar chart showing leads per queue with color-coded urgency
+- Top Priority Rescue grid: 3 cards showing highest-value recovery opportunities with score rings, failure mode badges, and time sensitivity indicators
+- Advisor summary card with recovery intelligence insight
+- Recovery momentum indicator: animated ring showing recovery trend (improving/stable/declining)
+- Uses HeroCard, StatusCard, AdvisorCard from design system
 
-### Batch 2: Update Daemon (updated) — 2 files
+### File 3: Recovery Queue Panel
+**Create `src/components/business/lead-recovery/RecoveryQueuePanel.tsx`** (~200 lines)
 
-**`src/lib/os-security/updated.ts`** (~400 lines)
-- `UpdateDaemon` class: full lifecycle state machine (Idle → Checking → Downloading → Staging → AwaitingReboot → Validating → Succeeded/Failed/RolledBack)
-- A/B slot model: SlotA (current), SlotB (target), with boot attempt tracking
-- Signature verification stub (SHA-256 checksum validation)
-- Preflight checks: battery threshold, charger requirement, storage, filesystem health, network suitability, channel eligibility, policy approval
-- Download with resume support (byte tracking)
-- Staging to inactive slot with integrity verification
-- Health validation after "boot": kernel, root FS, policyd, sessiond, UI shell, networking, shieldd, powerd, crash loop detection, boot time threshold
-- Rollback trigger logic: auto-rollback on health failure, boot failure, service failure
-- Boot success marker management
-- Release channel management (stable/beta/dev with policy-driven eligibility)
-- Integration with policyd for all preflight decisions
-- Audit event emission for every state transition
+Left sidebar queue navigator:
+- 12 queue entries: No Response, Missed Follow-up, Quote Abandoned, Lost Momentum, Owner Dropped, Appointment Incomplete, Post-Consult Drift, Handoff Failure, Silent High-Value, Callback Missed, Winback/Reactivation, Strategic Recovery
+- Each queue shows: icon, name, count badge, value-at-risk indicator, urgency dot
+- "All Recovery" option at top
+- Active queue highlighted with accent border
+- Animated count transitions
+- Compact, scrollable, glassmorphic queue list
 
-**Modify `src/lib/os-security/index.ts`** — Add `updated` to boot sequence and barrel exports
+### File 4: Recovery Card
+**Create `src/components/business/lead-recovery/RecoveryCard.tsx`** (~180 lines)
 
-### Batch 3: Onboarding Enhancement — 2 files
+Rich recovery candidate card (inspired by LeadTriageCard quality):
+- Left urgency bar color-coded by time sensitivity
+- Avatar with recovery score ring (color: green/gold/red)
+- Name, company, value at risk
+- Failure mode badge (e.g., "Quote Abandoned", "Owner Dropped")
+- Recovery score with likely success band label
+- Time since slip indicator
+- Recovery path recommendation chip
+- Quick action tray: Re-engage, Rebook, Reopen Quote, Reassign, Escalate, Archive
+- Hover reveals full action set
+- Selected state with accent border
 
-**`src/lib/os-security/onboardingd.ts`** (~300 lines)
-- `OnboardingDaemon` class: persistent state machine for first-boot
-- Step definitions: welcome, region/timezone, accessibility, network, account/security, privacy/security-defaults, restore/import, update-check, device-optimization, finish
-- Required vs optional step tracking with validation per step
-- Resumable flow: save/restore state on interruption
-- Hardware detection: battery, TPM, biometric, network devices
-- Policy-driven defaults: queries policyd for initial settings per device mode
-- Guarded transitions: cannot skip required steps, cannot launch desktop until markers set
-- Integration with policyd (apply protection defaults), shieldd (firewall/VPN), powerd (battery optimization)
-- Completion markers gate desktop launch
+### File 5: Recovery Detail Pane (rebuilt)
+**Rewrite `src/components/business/LeadRecoveryPane.tsx`** (~400 lines)
 
-**`src/components/sita/onboarding/DeviceProtectionWow.tsx`** (~200 lines)
-- Premium "Device Protection Setup" card during onboarding
-- Shows: Firewall baseline (On), VPN on public Wi-Fi (Recommended), Smart threat blocking (On), Quiet mode schedule (Optional)
-- Each item shows policy source, required vs optional, plain-language benefit
-- Accept All / Review Each toggle
-- Animated shield/lock icons with glassmorphic cards
-- Persists choices to policyd + shieldd + powerd
+Premium rescue briefing with 6 sections:
 
-### Batch 4: Enhanced Update Center UI — 1 file
+**A. Recovery Summary** — what happened, why it matters, recoverability score ring with band label
 
-**Modify `src/components/sita/shell/windows/UpdateCenterWindow.tsx`**
-- Add preflight checks panel: battery bar, storage bar, network status, policy approval indicator
-- Add A/B slot visualization: two-slot diagram showing active/inactive/pending states
-- Add health validation results panel after update
-- Add rollback reason display with human-readable messages
-- Add signature verification status badges
-- Add estimated time and size display
-- Replace simulated progress with UpdateDaemon state integration
-- Add recovery mode panel
+**B. What Went Wrong** — timeline visualization showing: when momentum started, when it slipped, when action was missed, why recovery is still viable. Uses a vertical step timeline with status dots (green → amber → red → current)
 
-### Batch 5: Wiring & Integration — 3 files
+**C. Recovery Path** — suggested approach card with: path name, message tone, timing advice, who should own it, confidence indicator
 
-**Modify `src/lib/os-security/controlcenterd.ts`** — Add service routing for `update.*` and `onboarding.*` actions + device mode to environment
+**D. Time & Relationship Sensitivity** — two side-by-side indicator cards: urgency gauge (act today / this week / flexible) and relationship sensitivity gauge (handle carefully / standard / direct approach)
 
-**Modify `src/lib/os-security/types.ts`** — Add update/onboarding action policies to ACTION_AUTHORIZATION_TABLE and capabilities to CAPABILITY_REGISTRY
+**E. Prepared Communication** — AI-generated recovery draft in a premium message card, with channel badge (Email/Phone/LinkedIn/SMS), tone indicator, Edit/Send/Add to Campaign buttons
 
-**Modify `src/hooks/useOSSecurity.ts`** — Expose `deviceMode`, `switchDeviceMode()`, `getUpdateState()`, `getOnboardingState()` from hook
+**F. Suggested Next Actions** — action tray with prioritized recovery actions: send recovery message, schedule callback, reassign owner, reopen quote, invite to consult, escalate to Boardroom, archive with rationale
 
-### Batch 6: Integration Flows — 1 file
+**G. Accountability View** — who owns this, what was missed, whether escalation needed, manager review recommended badge
 
-**`src/lib/os-security/flows/os-subsystem-flows.ts`** (~200 lines)
-- End-to-end flow implementations:
-  - Open Wi-Fi on school device: wifid → policyd (deny) → audit
-  - Public Wi-Fi detected: wifid → policyd → shieldd (auto-VPN) → notifyd
-  - BT pair while locked: lockscreen → policyd (deny) → explanation
-  - First boot: onboardingd → required steps → account → policy defaults → update check → launch
-  - Update with rollback: discover → preflight → stage → validate → success/rollback
+### File 6: Recovery Celebration & States
+**Create `src/components/business/lead-recovery/RecoveryStates.tsx`** (~150 lines)
+
+- Empty state: hopeful "No active rescue opportunities right now" with shield icon, recovery performance tips, prevention suggestions
+- First-use state: explains what Lead Recovery does with 3 benefit cards
+- Recovered celebration: animated "Momentum Restored" card with confetti-style particle burst, shows value recovered and pipeline status
+- High-pressure state: elevated urgency banner when many leads are slipping
+
+### File 7: Main Page Rebuild
+**Rewrite `src/pages/business/LeadRecovery.tsx`** (~250 lines)
+
+Full workspace layout:
+- Top: RecoveryOverview (collapsible)
+- Below: SplitWorkspace with:
+  - Left: Queue panel tabs + filtered RecoveryCard list with search/sort
+  - Right: Full RecoveryDetailPane
+- Tab bar: Overview | Queues | Campaigns | Analytics
+- Campaigns tab retains campaign list with enhanced cards
+- Analytics tab: recovery win rate chart, value recovered over time, top failure modes pie, recovery path effectiveness
+- All wired to recovery engine data
+- Smooth Framer Motion transitions between tabs/selections
 
 ## Design Language
-All UI follows existing SITA OS patterns: dark glassmorphic cards, `hsl(265 55% 58%)` purple, `hsl(38 85% 58%)` gold, Space Grotesk display, Inter body, Framer Motion animations, Nova SDK components.
+All components follow existing SITA OS patterns:
+- Dark glassmorphic: `bg-[hsl(0_0%_9%)]`, `border-[hsl(0_0%_100%/0.06)]`
+- Accent: `hsl(265 55% 58%)` purple, `hsl(38 85% 58%)` gold, `hsl(152 55% 48%)` trust-safe green
+- Typography: Space Grotesk display, Inter body
+- Surface levels 0-3 via AppSurface
+- Premium cards via HeroCard, StatusCard, AdvisorCard, QueueCard
+- Framer Motion enter/exit animations
+- Calm, non-punitive tone throughout
 
 ## File Summary
-- **Create**: policyd-bundles.ts, policyd-decisions.ts, updated.ts, onboardingd.ts, DeviceProtectionWow.tsx, os-subsystem-flows.ts (6 files)
-- **Modify**: policyd.ts, index.ts, controlcenterd.ts, types.ts, useOSSecurity.ts, UpdateCenterWindow.tsx (6 files)
-- **Total**: 12 files, ~2500 lines of new/modified code
+- **Create**: lead-recovery-engine.ts, RecoveryOverview.tsx, RecoveryQueuePanel.tsx, RecoveryCard.tsx, RecoveryStates.tsx (5 files)
+- **Rewrite**: LeadRecoveryPane.tsx, LeadRecovery.tsx (2 files)
+- **Total**: 7 files, ~1,700 lines
 
