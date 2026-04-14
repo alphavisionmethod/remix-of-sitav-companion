@@ -516,3 +516,325 @@ export interface KeyHierarchyNode {
   hardwareBacked: boolean;
   children?: KeyHierarchyNode[];
 }
+
+// ═══════════════════════════════════════════════════════════════
+// EXTENDED TYPES — TPM Posture, IPC Contracts, Prompts, Threats
+// ═══════════════════════════════════════════════════════════════
+
+// ── Device Security Posture ─────────────────────────────────
+
+export type PostureLevel = "hardware_backed" | "software_protected" | "degraded";
+
+export interface DeviceSecurityPosture {
+  secureHwPresent: boolean;
+  secureBootEnabled: boolean;
+  measuredBootOk: boolean;
+  attestationSupported: boolean;
+  systemKeyringHardwareBacked: boolean;
+  userKeyringHardwareBacked: boolean;
+  deviceRootSealed: boolean;
+  hardwareRngAvailable: boolean;
+  nonExportableKeySlots: number;
+  degradedReason?: string;
+  postureLevel: PostureLevel;
+  lastVerifiedAt: number;
+  pcrValues: Record<string, string>;
+}
+
+// ── Extended Service Identity ───────────────────────────────
+
+export interface ExtendedServiceIdentity extends ServiceIdentity {
+  signingIdentity: string;
+  version: string;
+  status: "active" | "suspended" | "revoked";
+  policyProfileRef: string;
+  lastVerifiedAt: number;
+  trustLevel: "system" | "verified" | "unverified";
+}
+
+// ── Extended Action Policy ──────────────────────────────────
+
+export interface ExtendedActionPolicy extends ActionPolicy {
+  trustedPromptRequired: boolean;
+  policyOverridable: boolean;
+}
+
+// ── IPC Contract System ─────────────────────────────────────
+
+export type IPCIdempotency = "idempotent" | "not_idempotent" | "conditional";
+
+export interface IPCContractSchema {
+  fields: Array<{ name: string; type: string; required: boolean; description: string }>;
+}
+
+export interface IPCContract {
+  method: string;
+  displayName: string;
+  description: string;
+  requestSchema: IPCContractSchema;
+  responseSchema: IPCContractSchema;
+  errorCodes: Array<{ code: string; message: string; retryable: boolean }>;
+  allowedCallers: string[];
+  requiresSessionToken: boolean;
+  requiresElevation: boolean;
+  requiresFreshAuth: boolean;
+  idempotency: IPCIdempotency;
+  timeoutMs: number;
+  retryPolicy: { maxRetries: number; backoffMs: number };
+  auditEvents: string[];
+  targetService: string;
+}
+
+export const IPC_CONTRACT_REGISTRY: IPCContract[] = [
+  {
+    method: "session.login", displayName: "Login", description: "Authenticate user and create session",
+    requestSchema: { fields: [{ name: "userId", type: "string", required: true, description: "User ID" }, { name: "method", type: "OSAuthMethod", required: true, description: "Auth method" }, { name: "credential", type: "string", required: true, description: "Password/PIN" }] },
+    responseSchema: { fields: [{ name: "sessionId", type: "string", required: true, description: "New session ID" }, { name: "tokenIds", type: "string[]", required: true, description: "Issued tokens" }] },
+    errorCodes: [{ code: "AUTH_FAILED", message: "Invalid credentials", retryable: true }, { code: "LOCKED_OUT", message: "Account locked", retryable: false }],
+    allowedCallers: ["lockscreen", "login-shell"], requiresSessionToken: false, requiresElevation: false, requiresFreshAuth: false,
+    idempotency: "not_idempotent", timeoutMs: 10000, retryPolicy: { maxRetries: 3, backoffMs: 1000 }, auditEvents: ["auth.login"], targetService: "authd",
+  },
+  {
+    method: "session.lock", displayName: "Lock Session", description: "Lock current session",
+    requestSchema: { fields: [{ name: "sessionId", type: "string", required: true, description: "Session to lock" }] },
+    responseSchema: { fields: [{ name: "locked", type: "boolean", required: true, description: "Lock state" }] },
+    errorCodes: [{ code: "SESSION_NOT_FOUND", message: "Session not found", retryable: false }],
+    allowedCallers: ["controlcenterd", "lockscreen", "powerd"], requiresSessionToken: true, requiresElevation: false, requiresFreshAuth: false,
+    idempotency: "idempotent", timeoutMs: 5000, retryPolicy: { maxRetries: 1, backoffMs: 500 }, auditEvents: ["session.lock"], targetService: "sessiond",
+  },
+  {
+    method: "session.unlock", displayName: "Unlock Session", description: "Unlock locked session with credential",
+    requestSchema: { fields: [{ name: "sessionId", type: "string", required: true, description: "Session to unlock" }, { name: "method", type: "OSAuthMethod", required: true, description: "Auth method" }, { name: "credential", type: "string", required: true, description: "Credential" }] },
+    responseSchema: { fields: [{ name: "unlocked", type: "boolean", required: true, description: "Unlock result" }] },
+    errorCodes: [{ code: "AUTH_FAILED", message: "Invalid credential", retryable: true }, { code: "RATE_LIMITED", message: "Too many attempts", retryable: false }],
+    allowedCallers: ["lockscreen"], requiresSessionToken: false, requiresElevation: false, requiresFreshAuth: true,
+    idempotency: "not_idempotent", timeoutMs: 10000, retryPolicy: { maxRetries: 0, backoffMs: 0 }, auditEvents: ["auth.unlock"], targetService: "authd",
+  },
+  {
+    method: "auth.verify", displayName: "Verify Credential", description: "Verify user credential without creating session",
+    requestSchema: { fields: [{ name: "userId", type: "string", required: true, description: "User ID" }, { name: "credential", type: "string", required: true, description: "Credential" }] },
+    responseSchema: { fields: [{ name: "valid", type: "boolean", required: true, description: "Verification result" }] },
+    errorCodes: [{ code: "USER_NOT_FOUND", message: "User not found", retryable: false }],
+    allowedCallers: ["controlcenterd", "promptd"], requiresSessionToken: true, requiresElevation: false, requiresFreshAuth: false,
+    idempotency: "idempotent", timeoutMs: 5000, retryPolicy: { maxRetries: 2, backoffMs: 500 }, auditEvents: ["auth.verify"], targetService: "authd",
+  },
+  {
+    method: "auth.begin_elevation", displayName: "Begin Elevation", description: "Start privilege elevation flow",
+    requestSchema: { fields: [{ name: "sessionId", type: "string", required: true, description: "Session" }, { name: "action", type: "string", required: true, description: "Target action" }, { name: "credential", type: "string", required: true, description: "Admin credential" }] },
+    responseSchema: { fields: [{ name: "token", type: "ElevationApprovalToken", required: true, description: "Short-lived approval token" }] },
+    errorCodes: [{ code: "AUTH_FAILED", message: "Elevation auth failed", retryable: true }, { code: "NOT_ADMIN", message: "Admin role required", retryable: false }],
+    allowedCallers: ["controlcenterd"], requiresSessionToken: true, requiresElevation: false, requiresFreshAuth: true,
+    idempotency: "not_idempotent", timeoutMs: 30000, retryPolicy: { maxRetries: 0, backoffMs: 0 }, auditEvents: ["elevation.begin"], targetService: "authd",
+  },
+  {
+    method: "policy.check", displayName: "Check Policy", description: "Evaluate action authorization",
+    requestSchema: { fields: [{ name: "action", type: "string", required: true, description: "Action to check" }, { name: "sessionId", type: "string", required: true, description: "Caller session" }] },
+    responseSchema: { fields: [{ name: "allowed", type: "boolean", required: true, description: "Decision" }, { name: "reason", type: "string", required: true, description: "Explanation" }] },
+    errorCodes: [{ code: "NO_POLICY", message: "No policy for action", retryable: false }],
+    allowedCallers: ["controlcenterd", "any-service"], requiresSessionToken: true, requiresElevation: false, requiresFreshAuth: false,
+    idempotency: "idempotent", timeoutMs: 2000, retryPolicy: { maxRetries: 1, backoffMs: 200 }, auditEvents: ["policy.check"], targetService: "policyd",
+  },
+  {
+    method: "secrets.put", displayName: "Store Secret", description: "Encrypt and store a secret",
+    requestSchema: { fields: [{ name: "plaintext", type: "string", required: true, description: "Secret value" }, { name: "type", type: "SecretType", required: true, description: "Secret type" }, { name: "label", type: "string", required: true, description: "Display label" }] },
+    responseSchema: { fields: [{ name: "secretId", type: "string", required: true, description: "New secret ID" }] },
+    errorCodes: [{ code: "KEYRING_NOT_FOUND", message: "Keyring unavailable", retryable: false }],
+    allowedCallers: ["controlcenterd", "wifid", "certd"], requiresSessionToken: true, requiresElevation: false, requiresFreshAuth: false,
+    idempotency: "not_idempotent", timeoutMs: 5000, retryPolicy: { maxRetries: 1, backoffMs: 500 }, auditEvents: ["secrets.store"], targetService: "secretsd",
+  },
+  {
+    method: "secrets.get_handle", displayName: "Get Secret Handle", description: "Issue opaque handle for secret access",
+    requestSchema: { fields: [{ name: "secretId", type: "string", required: true, description: "Secret ID" }, { name: "operations", type: "SecretOperation[]", required: true, description: "Allowed ops" }] },
+    responseSchema: { fields: [{ name: "handle", type: "EnhancedSecretHandle", required: true, description: "Opaque handle" }] },
+    errorCodes: [{ code: "SECRET_NOT_FOUND", message: "Secret not found", retryable: false }, { code: "NOT_AUTHORIZED", message: "Service not authorized", retryable: false }],
+    allowedCallers: ["wifid", "shieldd", "certd", "btd"], requiresSessionToken: true, requiresElevation: false, requiresFreshAuth: false,
+    idempotency: "not_idempotent", timeoutMs: 5000, retryPolicy: { maxRetries: 1, backoffMs: 500 }, auditEvents: ["secrets.handle_issued"], targetService: "secretsd",
+  },
+  {
+    method: "secrets.rotate", displayName: "Rotate Secret", description: "Replace secret with new version",
+    requestSchema: { fields: [{ name: "secretId", type: "string", required: true, description: "Secret ID" }, { name: "newPlaintext", type: "string", required: true, description: "New value" }] },
+    responseSchema: { fields: [{ name: "version", type: "number", required: true, description: "New version" }] },
+    errorCodes: [{ code: "SECRET_NOT_ACTIVE", message: "Secret not active", retryable: false }],
+    allowedCallers: ["controlcenterd"], requiresSessionToken: true, requiresElevation: true, requiresFreshAuth: true,
+    idempotency: "not_idempotent", timeoutMs: 10000, retryPolicy: { maxRetries: 0, backoffMs: 0 }, auditEvents: ["secrets.rotate"], targetService: "secretsd",
+  },
+  {
+    method: "wifi.connect", displayName: "Connect WiFi", description: "Connect to wireless network",
+    requestSchema: { fields: [{ name: "ssid", type: "string", required: true, description: "Network SSID" }, { name: "password", type: "string", required: false, description: "Network password" }] },
+    responseSchema: { fields: [{ name: "connected", type: "boolean", required: true, description: "Connection result" }] },
+    errorCodes: [{ code: "NETWORK_NOT_FOUND", message: "Network not found", retryable: true }, { code: "AUTH_REJECTED", message: "Password rejected", retryable: true }],
+    allowedCallers: ["controlcenterd"], requiresSessionToken: true, requiresElevation: false, requiresFreshAuth: false,
+    idempotency: "idempotent", timeoutMs: 30000, retryPolicy: { maxRetries: 2, backoffMs: 2000 }, auditEvents: ["wifi.connect"], targetService: "wifid",
+  },
+  {
+    method: "shield.firewall.disable", displayName: "Disable Firewall", description: "Fully disable system firewall",
+    requestSchema: { fields: [{ name: "reason", type: "string", required: false, description: "Reason for disable" }] },
+    responseSchema: { fields: [{ name: "disabled", type: "boolean", required: true, description: "Firewall state" }] },
+    errorCodes: [{ code: "POLICY_BLOCKED", message: "Blocked by lockdown policy", retryable: false }, { code: "ELEVATION_REQUIRED", message: "Admin elevation needed", retryable: false }],
+    allowedCallers: ["controlcenterd"], requiresSessionToken: true, requiresElevation: true, requiresFreshAuth: true,
+    idempotency: "idempotent", timeoutMs: 10000, retryPolicy: { maxRetries: 0, backoffMs: 0 }, auditEvents: ["shield.firewall.disable"], targetService: "shieldd",
+  },
+  {
+    method: "cert.install_root", displayName: "Install Root Certificate", description: "Import root/system CA certificate",
+    requestSchema: { fields: [{ name: "certPem", type: "string", required: true, description: "Certificate PEM" }, { name: "privateKeyPem", type: "string", required: false, description: "Private key PEM" }] },
+    responseSchema: { fields: [{ name: "certId", type: "string", required: true, description: "Installed cert ID" }] },
+    errorCodes: [{ code: "INVALID_CERT", message: "Certificate validation failed", retryable: false }, { code: "TRUST_STORE_LOCKED", message: "Trust store modification blocked", retryable: false }],
+    allowedCallers: ["controlcenterd"], requiresSessionToken: true, requiresElevation: true, requiresFreshAuth: true,
+    idempotency: "not_idempotent", timeoutMs: 15000, retryPolicy: { maxRetries: 0, backoffMs: 0 }, auditEvents: ["cert.install.system"], targetService: "certd",
+  },
+  {
+    method: "secrets.unwrap_for_service", displayName: "Unwrap for Service", description: "Perform crypto operation via handle",
+    requestSchema: { fields: [{ name: "handleId", type: "string", required: true, description: "Opaque handle ID" }, { name: "operation", type: "SecretOperation", required: true, description: "Crypto operation" }] },
+    responseSchema: { fields: [{ name: "result", type: "string", required: true, description: "Operation result" }] },
+    errorCodes: [{ code: "HANDLE_EXPIRED", message: "Handle expired", retryable: false }, { code: "HANDLE_CONSUMED", message: "Single-use handle consumed", retryable: false }],
+    allowedCallers: ["wifid", "shieldd", "certd", "btd"], requiresSessionToken: true, requiresElevation: false, requiresFreshAuth: false,
+    idempotency: "conditional", timeoutMs: 5000, retryPolicy: { maxRetries: 0, backoffMs: 0 }, auditEvents: ["secrets.unwrap"], targetService: "secretsd",
+  },
+  {
+    method: "secrets.erase", displayName: "Erase Secret", description: "Securely destroy secret and all versions",
+    requestSchema: { fields: [{ name: "secretId", type: "string", required: true, description: "Secret to erase" }] },
+    responseSchema: { fields: [{ name: "erased", type: "boolean", required: true, description: "Erase result" }] },
+    errorCodes: [{ code: "SECRET_NOT_FOUND", message: "Secret not found", retryable: false }],
+    allowedCallers: ["controlcenterd"], requiresSessionToken: true, requiresElevation: true, requiresFreshAuth: true,
+    idempotency: "idempotent", timeoutMs: 5000, retryPolicy: { maxRetries: 0, backoffMs: 0 }, auditEvents: ["secrets.erase"], targetService: "secretsd",
+  },
+  {
+    method: "policy.explain", displayName: "Explain Policy", description: "Get detailed policy explanation for action",
+    requestSchema: { fields: [{ name: "action", type: "string", required: true, description: "Action to explain" }] },
+    responseSchema: { fields: [{ name: "policy", type: "ActionPolicy", required: false, description: "Matched policy" }, { name: "roles", type: "OSUserRole[]", required: true, description: "Eligible roles" }] },
+    errorCodes: [],
+    allowedCallers: ["controlcenterd", "settings-ui"], requiresSessionToken: true, requiresElevation: false, requiresFreshAuth: false,
+    idempotency: "idempotent", timeoutMs: 2000, retryPolicy: { maxRetries: 1, backoffMs: 200 }, auditEvents: [], targetService: "policyd",
+  },
+];
+
+// ── Trusted Prompt Types ────────────────────────────────────
+
+export type PromptState = "idle" | "presenting" | "awaiting_input" | "processing" | "resolved" | "timed_out" | "cancelled";
+
+export interface TrustedPromptConfig {
+  promptId: string;
+  requester: string;
+  action: string;
+  riskLevel: "low" | "medium" | "high" | "critical";
+  messaging: {
+    title: string;
+    body: string;
+    riskExplanation: string;
+    safeAlternative?: string;
+  };
+  supportedAuthMethods: OSAuthMethod[];
+  timeoutMs: number;
+  rememberAllowed: boolean;
+  rememberMaxMinutes: number;
+  screenReaderLabels: {
+    promptRole: string;
+    actionDescription: string;
+    approveButton: string;
+    denyButton: string;
+  };
+  remoteSessionRestricted: boolean;
+}
+
+export interface TrustedPromptResult {
+  promptId: string;
+  state: PromptState;
+  approved: boolean;
+  method?: OSAuthMethod;
+  rememberedUntil?: number;
+  resolvedAt: number;
+}
+
+// ── Failure Mode & Recovery ─────────────────────────────────
+
+export type FailureCategory = "token" | "secret" | "tpm" | "audit" | "policy" | "prompt" | "session" | "service" | "boot";
+
+export interface FailureMode {
+  failureId: string;
+  category: FailureCategory;
+  name: string;
+  userMessage: string;
+  internalDetail: string;
+  auditBehavior: "log_and_continue" | "log_and_deny" | "log_and_degrade";
+  retryPolicy: { retryable: boolean; maxRetries: number; backoffMs: number };
+  fallbackPath: string;
+  degradedMode: boolean;
+  recoveryNeeded: boolean;
+  severity: AuditSeverity;
+}
+
+export const FAILURE_MODE_REGISTRY: FailureMode[] = [
+  { failureId: "FM-001", category: "token", name: "Expired Elevation Token", userMessage: "Your approval has expired. Please try again.", internalDetail: "ElevationApprovalToken.expiresAt < now", auditBehavior: "log_and_deny", retryPolicy: { retryable: true, maxRetries: 2, backoffMs: 0 }, fallbackPath: "re-prompt elevation", degradedMode: false, recoveryNeeded: false, severity: "warning" },
+  { failureId: "FM-002", category: "token", name: "Replayed Token", userMessage: "This approval has already been used.", internalDetail: "Token nonce already seen in replay cache", auditBehavior: "log_and_deny", retryPolicy: { retryable: false, maxRetries: 0, backoffMs: 0 }, fallbackPath: "re-prompt elevation", degradedMode: false, recoveryNeeded: false, severity: "high" },
+  { failureId: "FM-003", category: "secret", name: "Corrupted Secret Metadata", userMessage: "A stored credential could not be verified. Please re-enter it.", internalDetail: "HMAC verification of secret metadata failed", auditBehavior: "log_and_deny", retryPolicy: { retryable: false, maxRetries: 0, backoffMs: 0 }, fallbackPath: "prompt user to re-store secret", degradedMode: false, recoveryNeeded: true, severity: "critical" },
+  { failureId: "FM-004", category: "tpm", name: "TPM State Changed", userMessage: "Device security configuration has changed. Additional verification required.", internalDetail: "PCR values drifted from sealed baseline", auditBehavior: "log_and_degrade", retryPolicy: { retryable: false, maxRetries: 0, backoffMs: 0 }, fallbackPath: "software fallback with stronger auth", degradedMode: true, recoveryNeeded: true, severity: "critical" },
+  { failureId: "FM-005", category: "tpm", name: "TPM Unavailable", userMessage: "Hardware security module is not responding.", internalDetail: "TPM HAL detect returned not_present", auditBehavior: "log_and_degrade", retryPolicy: { retryable: true, maxRetries: 3, backoffMs: 2000 }, fallbackPath: "software-only secure store", degradedMode: true, recoveryNeeded: false, severity: "high" },
+  { failureId: "FM-006", category: "audit", name: "Audit Backend Unavailable", userMessage: "System logging is temporarily unavailable.", internalDetail: "auditd chain write failed", auditBehavior: "log_and_continue", retryPolicy: { retryable: true, maxRetries: 5, backoffMs: 1000 }, fallbackPath: "buffer events in memory", degradedMode: true, recoveryNeeded: false, severity: "high" },
+  { failureId: "FM-007", category: "policy", name: "Policy Load Failure", userMessage: "Security policy could not be loaded. Default deny is active.", internalDetail: "policyd bundle validation failed", auditBehavior: "log_and_deny", retryPolicy: { retryable: true, maxRetries: 3, backoffMs: 1000 }, fallbackPath: "deny all sensitive actions", degradedMode: true, recoveryNeeded: true, severity: "critical" },
+  { failureId: "FM-008", category: "prompt", name: "Prompt Broker Unavailable", userMessage: "Secure approval dialog is unavailable.", internalDetail: "promptd not responding", auditBehavior: "log_and_deny", retryPolicy: { retryable: true, maxRetries: 2, backoffMs: 500 }, fallbackPath: "deny elevation-required actions", degradedMode: false, recoveryNeeded: false, severity: "high" },
+  { failureId: "FM-009", category: "session", name: "Inconsistent Session State", userMessage: "Your session state is invalid. Please log in again.", internalDetail: "Session state machine transition violation", auditBehavior: "log_and_deny", retryPolicy: { retryable: false, maxRetries: 0, backoffMs: 0 }, fallbackPath: "force logout", degradedMode: false, recoveryNeeded: false, severity: "high" },
+  { failureId: "FM-010", category: "secret", name: "KEK Unavailable", userMessage: "Encryption keys are temporarily unavailable.", internalDetail: "Keyring KEK not found in hierarchy", auditBehavior: "log_and_deny", retryPolicy: { retryable: true, maxRetries: 2, backoffMs: 1000 }, fallbackPath: "block secret operations", degradedMode: true, recoveryNeeded: true, severity: "critical" },
+  { failureId: "FM-011", category: "service", name: "Service Identity Verification Failed", userMessage: "A system service could not be verified.", internalDetail: "Service signing identity mismatch", auditBehavior: "log_and_deny", retryPolicy: { retryable: false, maxRetries: 0, backoffMs: 0 }, fallbackPath: "block service communication", degradedMode: false, recoveryNeeded: true, severity: "critical" },
+  { failureId: "FM-012", category: "boot", name: "Partial System Boot", userMessage: "System started in limited mode.", internalDetail: "Not all security services initialized", auditBehavior: "log_and_degrade", retryPolicy: { retryable: true, maxRetries: 5, backoffMs: 2000 }, fallbackPath: "safe mode with limited services", degradedMode: true, recoveryNeeded: true, severity: "high" },
+  { failureId: "FM-013", category: "secret", name: "Power Loss During Rotation", userMessage: "Key rotation was interrupted. Verifying integrity.", internalDetail: "Rotation transaction not committed", auditBehavior: "log_and_degrade", retryPolicy: { retryable: true, maxRetries: 1, backoffMs: 0 }, fallbackPath: "rollback to previous version", degradedMode: false, recoveryNeeded: true, severity: "critical" },
+  { failureId: "FM-014", category: "session", name: "Lock Screen Unavailable", userMessage: "Screen lock is unavailable. Session will be terminated.", internalDetail: "Lockscreen compositor not responding", auditBehavior: "log_and_deny", retryPolicy: { retryable: true, maxRetries: 2, backoffMs: 500 }, fallbackPath: "force session termination", degradedMode: false, recoveryNeeded: true, severity: "critical" },
+  { failureId: "FM-015", category: "service", name: "Auth Provider Fallback", userMessage: "Primary authentication unavailable. Using backup method.", internalDetail: "Biometric HAL not responding", auditBehavior: "log_and_continue", retryPolicy: { retryable: true, maxRetries: 3, backoffMs: 1000 }, fallbackPath: "password/PIN fallback", degradedMode: true, recoveryNeeded: false, severity: "warning" },
+];
+
+// ── Threat Model ────────────────────────────────────────────
+
+export interface ThreatEntry {
+  threatId: string;
+  name: string;
+  description: string;
+  category: "escalation" | "spoofing" | "impersonation" | "theft" | "rollback" | "tampering" | "scraping" | "bruteforce" | "replay" | "compromise";
+  severity: AuditSeverity;
+  mitigation: string;
+  residualRisk: string;
+  monitoringSignal: string;
+  mitigated: boolean;
+}
+
+export const THREAT_MODEL_REGISTRY: ThreatEntry[] = [
+  { threatId: "T-001", name: "Unprivileged Escalation", description: "Local app attempts to gain admin privileges", category: "escalation", severity: "critical", mitigation: "RBAC + capability checks + elevation tokens with TTL", residualRisk: "Zero-day in policyd", monitoringSignal: "Repeated elevation denials from same PID", mitigated: true },
+  { threatId: "T-002", name: "Spoofed UI Prompt", description: "Malicious app imitates elevation prompt to steal credentials", category: "spoofing", severity: "critical", mitigation: "Trusted compositor path — only promptd can render elevation UI", residualRisk: "Compositor vulnerability", monitoringSignal: "Prompt render from non-promptd source", mitigated: true },
+  { threatId: "T-003", name: "Service Impersonation", description: "Malicious process claims to be a system service", category: "impersonation", severity: "high", mitigation: "Service identity registry with signing verification", residualRisk: "Compromised signing key", monitoringSignal: "Service identity verification failures", mitigated: true },
+  { threatId: "T-004", name: "Stolen Device (No Creds)", description: "Physical device theft without user credentials", category: "theft", severity: "high", mitigation: "FDE + TPM-sealed keys + lockscreen + auto-lock", residualRisk: "Cold boot attack on DRAM", monitoringSignal: "Failed unlock attempts from new location", mitigated: true },
+  { threatId: "T-005", name: "Stolen Device (No TPM)", description: "Device theft where no TPM is present", category: "theft", severity: "high", mitigation: "Software FDE + strong passphrase + degraded-security flag", residualRisk: "Offline brute-force of passphrase", monitoringSignal: "Device posture: no TPM", mitigated: true },
+  { threatId: "T-006", name: "Config Rollback Attack", description: "Attacker rolls back signed config to weaker version", category: "rollback", severity: "high", mitigation: "Monotonic version counter + signed policy bundles", residualRisk: "Version counter reset via flash", monitoringSignal: "Policy version decrease detected", mitigated: true },
+  { threatId: "T-007", name: "Audit Tampering", description: "Attacker modifies audit log to hide activity", category: "tampering", severity: "critical", mitigation: "Hash-chained append-only log + log sealing checkpoints", residualRisk: "Full system compromise before first seal", monitoringSignal: "Chain integrity verification failure", mitigated: true },
+  { threatId: "T-008", name: "Memory Scraping", description: "Extracting plaintext secrets from process memory", category: "scraping", severity: "high", mitigation: "SecureBuffer zeroization + handle pattern + minimal exposure time", residualRisk: "Kernel-level memory dump", monitoringSignal: "Unexpected ptrace attach to secretsd", mitigated: true },
+  { threatId: "T-009", name: "Brute Force Unlock", description: "Automated attempts to guess lock screen credential", category: "bruteforce", severity: "high", mitigation: "Rate limiting + exponential backoff + account lockout", residualRisk: "Side-channel timing attack", monitoringSignal: "Rapid auth failure rate", mitigated: true },
+  { threatId: "T-010", name: "Session Token Replay", description: "Attacker replays captured session/elevation token", category: "replay", severity: "critical", mitigation: "Nonce uniqueness + single-use tokens + short TTL", residualRisk: "Token capture within TTL window", monitoringSignal: "Duplicate nonce detection", mitigated: true },
+  { threatId: "T-011", name: "Compromised Update", description: "Malicious or tampered system update package", category: "compromise", severity: "critical", mitigation: "Code signing verification + measured boot + rollback protection", residualRisk: "Compromised signing infrastructure", monitoringSignal: "Signature verification failure on update", mitigated: true },
+];
+
+// ── Audit Sealing Checkpoint ────────────────────────────────
+
+export interface AuditSealingCheckpoint {
+  checkpointId: string;
+  sealedAt: number;
+  startIndex: number;
+  endIndex: number;
+  entriesCount: number;
+  chainHash: string;
+  previousCheckpointHash?: string;
+}
+
+// ── Service Startup Dependencies ────────────────────────────
+
+export const SERVICE_BOOT_ORDER: Array<{ service: string; phase: number; canDegraded: boolean; hardFail: boolean }> = [
+  { service: "auditd", phase: 0, canDegraded: true, hardFail: false },
+  { service: "secretsd", phase: 0, canDegraded: false, hardFail: true },
+  { service: "authd", phase: 1, canDegraded: false, hardFail: true },
+  { service: "policyd", phase: 1, canDegraded: true, hardFail: false },
+  { service: "sessiond", phase: 2, canDegraded: false, hardFail: true },
+  { service: "promptd", phase: 2, canDegraded: true, hardFail: false },
+  { service: "controlcenterd", phase: 3, canDegraded: false, hardFail: true },
+  { service: "wifid", phase: 4, canDegraded: true, hardFail: false },
+  { service: "btd", phase: 4, canDegraded: true, hardFail: false },
+  { service: "shieldd", phase: 4, canDegraded: true, hardFail: false },
+  { service: "certd", phase: 4, canDegraded: true, hardFail: false },
+  { service: "powerd", phase: 4, canDegraded: true, hardFail: false },
+  { service: "notifyd", phase: 5, canDegraded: true, hardFail: false },
+];

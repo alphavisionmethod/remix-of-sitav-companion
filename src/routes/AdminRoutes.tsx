@@ -4,6 +4,7 @@ import { lazy } from "react";
 // ── ECO: Ecosystem Orchestrator ──
 const ECO01EcosystemCommand = lazy(() => import("@/pages/admin/ECO01EcosystemCommand"));
 const SEC01SessionSecrets = lazy(() => import("@/pages/admin/SEC01SessionSecrets"));
+const SEC02SecurityFoundation = lazy(() => import("@/pages/admin/SEC02SecurityFoundation"));
 
 const AdminDashboard = lazy(() => import("@/pages/admin/AdminDashboard"));
 const TeamManagement = lazy(() => import("@/pages/admin/TeamManagement"));
@@ -151,5 +152,6 @@ export function getAdminRoutes() {
     <Route key="eco01" path="/admin/ecosystem/command" element={<ECO01EcosystemCommand />} />,
     // ── SEC: Session & Secrets ──
     <Route key="sec01" path="/admin/security/sessions" element={<SEC01SessionSecrets />} />,
+    <Route key="sec02" path="/admin/security/foundation" element={<SEC02SecurityFoundation />} />,
   ];
 }
