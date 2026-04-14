@@ -24,6 +24,7 @@ import { cn } from "@/lib/utils";
 
 const RecoveryCenter = () => {
   const { user } = useAuth();
+  const ud = useUpdateDaemon();
   const location = useLocation();
   const navigate = useNavigate();
   const [selectedId, setSelectedId] = useState<string | null>(null);
