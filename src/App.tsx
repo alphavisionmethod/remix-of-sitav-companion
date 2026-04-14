@@ -209,9 +209,8 @@ const App = () => (
                 {/* Mobile */}
                 {MobileRoutes({ ProtectedRoute })}
 
-                {/* TIER 3: FULL OS SHELL */}
-                <Route path="*" element={
-                  <ProtectedRoute>
+                {/* TIER 3: FULL OS SHELL — desktop/tablet only */}
+                <Route path="*" element={<MobileGuard><ProtectedRoute>
                     <ShellLayout>
                       <ConditionalAdminTools />
                       <RouteErrorBoundary>
