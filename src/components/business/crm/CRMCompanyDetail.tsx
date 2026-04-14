@@ -126,6 +126,7 @@ export function CRMCompanyDetail({ company, onClose, onSelectContact }: CRMCompa
           <TabsTrigger value="finance" className="text-xs flex items-center gap-1"><Banknote className="h-3 w-3" />Finance</TabsTrigger>
           <TabsTrigger value="files" className="text-xs flex items-center gap-1"><FolderOpen className="h-3 w-3" />Files</TabsTrigger>
           <TabsTrigger value="concierge" className="text-xs flex items-center gap-1"><CalendarClock className="h-3 w-3" />Concierge</TabsTrigger>
+          <TabsTrigger value="proof" className="text-xs flex items-center gap-1"><Shield className="h-3 w-3" />Proof</TabsTrigger>
         </TabsList>
 
         <ScrollArea className="flex-1">
