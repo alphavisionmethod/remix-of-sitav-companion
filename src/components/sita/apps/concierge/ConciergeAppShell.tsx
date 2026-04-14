@@ -367,7 +367,7 @@ export function ConciergeAppShell() {
               </div>
               <div>
                 <p className="text-[12px] font-semibold text-[hsl(0_0%_100%/0.85)]">Concierge</p>
-                <p className="text-[9px] text-[hsl(0_0%_100%/0.3)]">Life Support OS</p>
+                <p className="text-[9px] text-[hsl(0_0%_100%/0.3)]">{conciergeAdapt.advisorTone.length > 40 ? "Life Support OS" : conciergeAdapt.advisorTone}</p>
               </div>
             </div>
 
@@ -381,6 +381,11 @@ export function ConciergeAppShell() {
                   onSelect={navigateTo}
                 />
               ))}
+
+              {/* Cross-OS Links */}
+              <div className="px-1.5 pt-3 pb-2">
+                <CrossOSLinksPanel sourceApp="concierge" primaryMode={primaryMode} compact maxLinks={4} />
+              </div>
             </div>
           </div>
 
