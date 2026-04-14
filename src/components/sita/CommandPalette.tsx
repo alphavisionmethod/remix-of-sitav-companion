@@ -34,16 +34,39 @@ interface CommandItem {
 
 // ── Cross-App Actions ───────────────────────────────────────
 const CROSS_APP_ACTIONS: Omit<CommandItem, "action" | "id">[] = [
+  // Business OS deep-links
   { label: "Create New Lead", sublabel: "Add to pipeline", icon: Target, category: "cross-app", domain: "business" },
   { label: "Send Invoice", sublabel: "Bill a client", icon: Receipt, category: "cross-app", domain: "business" },
   { label: "Schedule Follow-Up", sublabel: "Business follow-through", icon: Phone, category: "cross-app", domain: "business" },
   { label: "Add Customer", sublabel: "CRM entry", icon: Users, category: "cross-app", domain: "business" },
   { label: "Create Quote", sublabel: "Sales proposal", icon: FileText, category: "cross-app", domain: "business" },
+  { label: "View Pipeline", sublabel: "Open opportunities", icon: TrendingUp, category: "cross-app", domain: "business" },
+  { label: "Customer Support", sublabel: "Support tickets", icon: Headphones, category: "cross-app", domain: "business" },
+  { label: "Business Operations", sublabel: "Operational queues", icon: Activity, category: "cross-app", domain: "business" },
+  { label: "Revenue Forecast", sublabel: "Projected revenue", icon: BarChart3, category: "cross-app", domain: "business" },
+  { label: "Collections Center", sublabel: "Overdue accounts", icon: AlertTriangle, category: "cross-app", domain: "business" },
+  // Finance OS deep-links
   { label: "Review Overdue Bills", sublabel: "Finance obligations", icon: DollarSign, category: "cross-app", domain: "finance" },
   { label: "Check Cash Position", sublabel: "Current balances", icon: DollarSign, category: "cross-app", domain: "finance" },
   { label: "Review Subscriptions", sublabel: "Spending waste audit", icon: RefreshCw, category: "cross-app", domain: "finance" },
-  { label: "Add Errand", sublabel: "Concierge task", icon: Headphones, category: "cross-app", domain: "concierge" },
+  { label: "View Receivables", sublabel: "Outstanding invoices", icon: ArrowDownLeft, category: "cross-app", domain: "finance" },
+  { label: "Cash Flow Timing", sublabel: "When money arrives", icon: Clock, category: "cross-app", domain: "finance" },
+  { label: "Net Worth", sublabel: "Wealth snapshot", icon: TrendingUp, category: "cross-app", domain: "finance" },
+  { label: "Budget Overview", sublabel: "Spending vs budget", icon: PieChart, category: "cross-app", domain: "finance" },
+  { label: "Stress Radar", sublabel: "Financial stress signals", icon: AlertTriangle, category: "cross-app", domain: "finance" },
+  { label: "Peace Score", sublabel: "Financial peace index", icon: Heart, category: "cross-app", domain: "finance" },
+  { label: "Financial Health", sublabel: "Health pulse", icon: Activity, category: "cross-app", domain: "finance" },
+  { label: "Scenario Planner", sublabel: "Model decisions", icon: Sliders, category: "cross-app", domain: "finance" },
+  // Concierge OS deep-links
+  { label: "Add Errand", sublabel: "Concierge task", icon: ShoppingCart, category: "cross-app", domain: "concierge" },
   { label: "Prep Appointment", sublabel: "Get ready", icon: Calendar, category: "cross-app", domain: "concierge" },
+  { label: "Travel Planning", sublabel: "Trip management", icon: Globe, category: "cross-app", domain: "concierge" },
+  { label: "Household Tasks", sublabel: "Home to-dos", icon: CheckCircle, category: "cross-app", domain: "concierge" },
+  { label: "Grocery Planning", sublabel: "Meal prep & lists", icon: ShoppingCart, category: "cross-app", domain: "concierge" },
+  { label: "Service Providers", sublabel: "Vendor directory", icon: Users, category: "cross-app", domain: "concierge" },
+  { label: "Life Admin", sublabel: "Admin tasks", icon: FileText, category: "cross-app", domain: "concierge" },
+  { label: "Recurring Obligations", sublabel: "Repeating tasks", icon: RefreshCw, category: "cross-app", domain: "concierge" },
+  // System
   { label: "Upload Document", sublabel: "Add to files", icon: FolderOpen, category: "cross-app", domain: "files" },
   { label: "Ask Advisor Board", sublabel: "Get AI recommendations", icon: Brain, category: "cross-app", domain: "system" },
 ];
