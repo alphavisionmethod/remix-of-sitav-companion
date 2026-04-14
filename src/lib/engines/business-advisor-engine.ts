@@ -709,3 +709,64 @@ export function generateHomeAdvisors(): AdvisorOutput[] {
     runPriorityAdvisor({ topLeads: [{ id: "l1", name: "David Chen", score: 89, value: 17000 }, { id: "l2", name: "Rachel Adams", score: 72, value: 28000 }], recoveryPriorities: [{ id: "r1", name: "James Morton", valueAtRisk: 6000 }], quotesUrgent: 2 }),
   ];
 }
+
+// ── Generate Stages advisors ─────────────────────────────────
+
+export function generateStagesAdvisors(data?: {
+  totalInPipeline?: number; advancedThisWeek?: number; avgDaysInStage?: number;
+  stuckLeads?: { id: string; name: string; stage: string; daysStuck: number }[];
+  avgCycleTime?: number; conversionRate?: number; dropoffStage?: string; recoveryRateFromDropoff?: number;
+}): AdvisorOutput[] {
+  const d = data || {};
+  return [
+    runProgressionAdvisor({
+      totalInPipeline: d.totalInPipeline ?? 42,
+      advancedThisWeek: d.advancedThisWeek ?? 4,
+      avgDaysInStage: d.avgDaysInStage ?? 11,
+    }),
+    runStuckStageAdvisor({
+      stuckLeads: d.stuckLeads ?? [
+        { id: "s1", name: "James Morton", stage: "Proposal", daysStuck: 45 },
+        { id: "s2", name: "Taylor Kim", stage: "Demo", daysStuck: 30 },
+        { id: "s3", name: "Alex Rivera", stage: "Negotiation", daysStuck: 22 },
+      ],
+    }),
+    runLifecycleAdvisor({
+      avgCycleTime: d.avgCycleTime ?? 28,
+      conversionRate: d.conversionRate ?? 32,
+      dropoffStage: d.dropoffStage ?? "Proposal",
+      recoveryRateFromDropoff: d.recoveryRateFromDropoff ?? 35,
+    }),
+  ];
+}
+
+// ── Generate Opportunity advisors ────────────────────────────
+
+export function generateOpportunityAdvisors(data?: {
+  leads?: { id: string; name: string; score: number; value: number; lastActivity: number; fit: string }[];
+  activeDeals?: number; totalPipelineValue?: number; stuckDeals?: number; convertingThisWeek?: number;
+  totalLeads?: number; strongFit?: number; weakFit?: number; missingInfo?: number;
+}): AdvisorOutput[] {
+  const d = data || {};
+  return [
+    runLeadPrioritizationAdvisor({
+      leads: d.leads ?? [
+        { id: "l1", name: "David Chen", score: 89, value: 17000, lastActivity: 3, fit: "strong" },
+        { id: "l2", name: "Rachel Adams", score: 72, value: 28000, lastActivity: 8, fit: "strong" },
+        { id: "l3", name: "Lisa Park", score: 64, value: 6400, lastActivity: 38, fit: "moderate" },
+      ],
+    }),
+    runOpportunityAdvisor({
+      activeDeals: d.activeDeals ?? 12,
+      totalPipelineValue: d.totalPipelineValue ?? 185000,
+      stuckDeals: d.stuckDeals ?? 3,
+      convertingThisWeek: d.convertingThisWeek ?? 2,
+    }),
+    runQualificationAdvisor({
+      totalLeads: d.totalLeads ?? 42,
+      strongFit: d.strongFit ?? 18,
+      weakFit: d.weakFit ?? 8,
+      missingInfo: d.missingInfo ?? 5,
+    }),
+  ];
+}
