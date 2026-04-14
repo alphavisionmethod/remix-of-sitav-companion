@@ -37,7 +37,7 @@ const ARCHETYPE_LABELS: Record<string, string> = {
 
 export default function AdaptiveBusinessHome() {
   const { weights, primaryMode, operatingFlags, adaptations } = useBusinessProfile();
-  const topWidgets = getTopWidgets(weights, 8);
+  const topWidgets = getTopWidgets(weights as unknown as Record<string, number>, 8);
   const quickActions = getQuickActionsForProfile(primaryMode, 4);
   const statCards = getStatCardsForProfile(primaryMode);
 
