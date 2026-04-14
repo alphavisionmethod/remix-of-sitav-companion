@@ -418,15 +418,43 @@ export function BusinessAppShell({ initialModule }: { initialModule?: string }) 
 }
 
 function BusinessAppShellInner({ initialModule }: { initialModule?: string }) {
-  const { adaptations } = useBusinessProfile();
+  const { adaptations, primaryMode, operatingFlags } = useBusinessProfile();
   const storedModule = (window as any).__businessInitialModule;
   const [activeModule, setActiveModule] = useState(storedModule || initialModule || "adaptive-home");
+  const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
+
+  // Global Cmd+K listener
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        setCommandPaletteOpen(prev => !prev);
+      }
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, []);
+
+  // Sidebar intelligence — adaptive labels, visibility, ordering
+  const sidebarOverrides = useMemo(
+    () => getSidebarOverrides(primaryMode, operatingFlags),
+    [primaryMode, operatingFlags]
+  );
+
+  const adaptedSidebarGroups = useMemo(() => {
+    const orderMap = new Map(adaptations.sidebar.groupOrder.map((g: string, i: number) => [g, i]));
+    return [...SIDEBAR_GROUPS]
+      .sort((a, b) => (orderMap.get(a.label) ?? 99) - (orderMap.get(b.label) ?? 99))
+      .map(group => ({
+        ...group,
+        items: applySidebarOverrides(group.items, sidebarOverrides),
+      }))
+      .filter(group => group.items.length > 0);
+  }, [adaptations.sidebar.groupOrder, sidebarOverrides]);
 
   // Listen for navigation events from outside (deep-linking, launchers)
   useEffect(() => {
-    // Clear the stored module after reading
     delete (window as any).__businessInitialModule;
-
     const handler = (e: Event) => {
       const module = (e as CustomEvent).detail?.module;
       if (module) {
@@ -441,15 +469,14 @@ function BusinessAppShellInner({ initialModule }: { initialModule?: string }) {
   const { pendingCount, decisionCount, synthesis } = useBoardroomBridge("business");
 
   const navigateTo = useCallback((moduleKey: string) => {
-    // Strip "/business/" prefix if passed
     const key = moduleKey.replace(/^\/business\//, "").replace(/^business\//, "");
     const resolved = key === "" || key === "business" ? "overview" : key;
     setActiveModule(resolved);
   }, []);
 
-  // Find current label
+  // Find current label (using adapted groups)
   const currentLabel = (() => {
-    for (const g of SIDEBAR_GROUPS) {
+    for (const g of adaptedSidebarGroups) {
       const item = g.items.find(i => i.id === activeModule);
       if (item) return item.label;
     }
@@ -480,7 +507,6 @@ function BusinessAppShellInner({ initialModule }: { initialModule?: string }) {
       );
     }
 
-    // Handle customer detail view (customer-detail:someId)
     if (activeModule.startsWith("customer-detail:")) {
       const custId = activeModule.replace("customer-detail:", "");
       return (
@@ -511,28 +537,41 @@ function BusinessAppShellInner({ initialModule }: { initialModule?: string }) {
   return (
     <BusinessNavigationContext.Provider value={{ navigateTo, activeModule }}>
       <CrossDomainSignalBridge />
+      <ModeTransitionCeremony />
+      <AdaptiveCommandPalette
+        open={commandPaletteOpen}
+        onClose={() => setCommandPaletteOpen(false)}
+        onNavigate={navigateTo}
+      />
       <div className="flex h-full w-full bg-[hsl(220_15%_6%)]">
         {/* Sidebar */}
         <div className="w-[190px] shrink-0 border-r border-[hsl(0_0%_100%/0.06)] bg-[hsl(220_15%_5%)] flex flex-col py-3 px-1.5 overflow-y-auto scrollbar-thin">
           <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[hsl(0_0%_100%/0.25)] px-3 mb-3">
             Business OS
           </p>
-          {(() => {
-            const orderMap = new Map(adaptations.sidebar.groupOrder.map((g, i) => [g, i]));
-            const sorted = [...SIDEBAR_GROUPS].sort((a, b) => (orderMap.get(a.label) ?? 99) - (orderMap.get(b.label) ?? 99));
-            return sorted.map((group) => (
-              <SidebarGroupSection key={group.label} group={group} activeModule={activeModule} onSelect={setActiveModule} badgeOverrides={adaptations.sidebar.badgeOverrides} />
-            ));
-          })()}
+          {adaptedSidebarGroups.map((group) => (
+            <SidebarGroupSection key={group.label} group={group} activeModule={activeModule} onSelect={setActiveModule} badgeOverrides={adaptations.sidebar.badgeOverrides} />
+          ))}
         </div>
 
         {/* Main */}
         <div className="flex-1 flex flex-col min-w-0">
           <div className="h-10 shrink-0 border-b border-[hsl(0_0%_100%/0.06)] flex items-center justify-between px-5 bg-[hsl(220_15%_6%/0.8)]">
             <span className="text-[12px] font-semibold text-[hsl(0_0%_100%/0.6)]">{currentLabel}</span>
-            <BusinessModeIndicator onClick={() => setActiveModule("business-profile")} />
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => setCommandPaletteOpen(true)}
+                className="flex items-center gap-1.5 px-2 py-1 rounded-md bg-[hsl(0_0%_100%/0.03)] border border-[hsl(0_0%_100%/0.06)] text-[9px] text-foreground/30 hover:bg-[hsl(0_0%_100%/0.06)] hover:text-foreground/50 transition-colors"
+              >
+                <Search size={10} />
+                <span>⌘K</span>
+              </button>
+              <BusinessModeIndicator onClick={() => setActiveModule("business-profile")} />
+            </div>
           </div>
 
+          <BusinessPulseStrip />
           <BoardroomStatusStrip pendingCount={pendingCount} decisionCount={decisionCount} synthesisScore={synthesis?.boardroom_worthiness_score} />
 
           <div className="flex-1 overflow-y-auto">
