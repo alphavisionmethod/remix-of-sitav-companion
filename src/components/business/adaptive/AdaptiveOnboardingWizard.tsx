@@ -36,7 +36,7 @@ const STEPS: WizardStep[] = [
     subtitle: "This helps us shape your revenue and billing experience",
     options: [
       { id: "products", label: "They buy products online", description: "E-commerce, digital goods, subscriptions", icon: ShoppingCart, archetypeSignals: { ecommerce: 3, marketplace: 1 } },
-      { id: "projects", label: "They pay per project/retainer", description: "Consulting, design, development", icon: Briefcase, archetypeSignals: { service: 2, agency: 2, freelance: 1 } },
+      { id: "projects", label: "They pay per project/retainer", description: "Consulting, design, development", icon: Briefcase, archetypeSignals: { service: 2, agency: 2 } },
       { id: "appointments", label: "They book and pay per session", description: "Therapy, coaching, medical, salon", icon: Calendar, archetypeSignals: { "appointment-based": 3, "professional-practice": 1 } },
       { id: "in-person", label: "They pay in person / at location", description: "Retail, restaurant, local service", icon: Building2, archetypeSignals: { "brick-and-mortar": 3, "appointment-based": 1 } },
     ],
@@ -45,20 +45,20 @@ const STEPS: WizardStep[] = [
     question: "How large is your team?",
     subtitle: "We'll adjust operations and task views accordingly",
     options: [
-      { id: "solo", label: "Just me", description: "Solo founder or freelancer", icon: Rocket, archetypeSignals: { freelance: 2, "professional-practice": 1 } },
+      { id: "solo", label: "Just me", description: "Solo founder or freelancer", icon: Rocket, archetypeSignals: { service: 2, "professional-practice": 1 } },
       { id: "small", label: "2–5 people", description: "Small team, everyone wears many hats", icon: Users, archetypeSignals: { service: 1, "brick-and-mortar": 1, "appointment-based": 1 } },
       { id: "growing", label: "6–20 people", description: "Growing team with some specialization", icon: Award, archetypeSignals: { agency: 2, "employee-based": 2 } },
-      { id: "larger", label: "20+ people", description: "Structured departments and roles", icon: Building2, archetypeSignals: { "employee-based": 3, enterprise: 2 } },
+      { id: "larger", label: "20+ people", description: "Structured departments and roles", icon: Building2, archetypeSignals: { "employee-based": 3, "multi-location": 1 } },
     ],
   },
   {
     question: "What's your biggest daily challenge?",
     subtitle: "We'll prioritize the tools that solve this first",
     options: [
-      { id: "leads", label: "Getting new customers", description: "Lead generation, marketing, conversion", icon: Globe, archetypeSignals: { ecommerce: 1, "brick-and-mortar": 1, freelance: 1 } },
+      { id: "leads", label: "Getting new customers", description: "Lead generation, marketing, conversion", icon: Globe, archetypeSignals: { ecommerce: 1, "brick-and-mortar": 1, service: 1 } },
       { id: "retention", label: "Keeping customers coming back", description: "Retention, loyalty, churn prevention", icon: Heart, archetypeSignals: { membership: 2, "appointment-based": 1, ecommerce: 1 } },
       { id: "operations", label: "Managing day-to-day work", description: "Tasks, scheduling, team coordination", icon: Package, archetypeSignals: { "employee-based": 2, agency: 1, service: 1 } },
-      { id: "revenue", label: "Getting paid on time", description: "Invoicing, collections, cash flow", icon: CreditCard, archetypeSignals: { service: 2, agency: 1, freelance: 1 } },
+      { id: "revenue", label: "Getting paid on time", description: "Invoicing, collections, cash flow", icon: CreditCard, archetypeSignals: { service: 2, agency: 1 } },
     ],
   },
   {
@@ -66,9 +66,9 @@ const STEPS: WizardStep[] = [
     subtitle: "Final touch — we'll lock in your experience now",
     options: [
       { id: "product-based", label: "Product-based", description: "Physical or digital products sold online or in-store", icon: ShoppingCart, archetypeSignals: { ecommerce: 3, "brick-and-mortar": 1 } },
-      { id: "service-based", label: "Service-based", description: "Custom work for clients — projects, consulting, creative", icon: Briefcase, archetypeSignals: { service: 3, agency: 1, freelance: 1 } },
+      { id: "service-based", label: "Service-based", description: "Custom work for clients — projects, consulting, creative", icon: Briefcase, archetypeSignals: { service: 3, agency: 1 } },
       { id: "appointment-based", label: "Appointment-based", description: "Scheduled sessions — health, wellness, coaching", icon: Stethoscope, archetypeSignals: { "appointment-based": 3, "professional-practice": 2 } },
-      { id: "subscription", label: "Recurring / membership", description: "Monthly subscriptions, memberships, SaaS", icon: CreditCard, archetypeSignals: { membership: 3, saas: 2 } },
+      { id: "subscription", label: "Recurring / membership", description: "Monthly subscriptions, memberships, SaaS", icon: CreditCard, archetypeSignals: { membership: 3, "product-service": 1 } },
     ],
   },
 ];
@@ -78,7 +78,7 @@ interface Props {
 }
 
 export default function AdaptiveOnboardingWizard({ onComplete }: Props) {
-  const { setManualOverride } = useBusinessProfile();
+  const { updateOverrides } = useBusinessProfile();
   const [step, setStep] = useState(0);
   const [selections, setSelections] = useState<string[]>([]);
   const [scores, setScores] = useState<Partial<Record<ProfileArchetype, number>>>({});
@@ -98,10 +98,12 @@ export default function AdaptiveOnboardingWizard({ onComplete }: Props) {
     if (step < STEPS.length - 1) {
       setStep(step + 1);
     } else {
-      // Determine winner
+      // Determine winner and set as override
       const sorted = Object.entries(newScores).sort((a, b) => b[1] - a[1]);
       const winner = (sorted[0]?.[0] || "service") as ProfileArchetype;
-      setManualOverride(winner);
+      const overrideWeights: Partial<Record<ProfileArchetype, number>> = {};
+      overrideWeights[winner] = 100;
+      updateOverrides(overrideWeights as any);
       setShowResult(true);
       setTimeout(onComplete, 2500);
     }
