@@ -17,8 +17,9 @@ export { AuditDaemon, getAuditDaemon } from "./auditd";
 export { ControlCenterDaemon, getControlCenterDaemon } from "./controlcenterd";
 export type { CommandResult } from "./controlcenterd";
 
-// ── Elevation Engine (Batch 3) ──────────────────────────────
-// export * from "./elevation-engine";
+// ── Elevation Engine ─────────────────────────────────────────
+export { ElevationEngine, getElevationEngine } from "./elevation-engine";
+export type { ElevationResult } from "./elevation-engine";
 
 // ── Boot Sequence ───────────────────────────────────────────
 
