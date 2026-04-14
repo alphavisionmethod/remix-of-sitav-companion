@@ -56,6 +56,20 @@ export const LeadScoringDashboard = ({ scores, items, scoreMap, onSelectLead, se
     ? Math.round(active.reduce((s, r) => s + r.priorityScore, 0) / active.length)
     : 0;
 
+  // Generate scoring advisors from top leads
+  const scoringAdvisors = useMemo<AdvisorOutput[]>(() => {
+    const topScores = [...scores].sort((a, b) => b.priorityScore - a.priorityScore).slice(0, 3);
+    return topScores.flatMap(s => {
+      const item = items.find(i => i.id === s.leadId);
+      const name = item?.contact_name || "Unknown";
+      return [
+        runScoringAdvisor({ leadName: name, score: s.priorityScore, previousScore: Math.max(0, s.priorityScore - 8), topFactors: s.topPositiveFactors.slice(0, 2).map(f => f.label), bottomFactors: s.topNegativeFactors.slice(0, 2).map(f => f.label) }),
+        runConversionAdvisor({ leadName: name, likelihood: Math.min(95, s.priorityScore + 5), engagementLevel: s.heatStatus === "hot" ? "High" : "Moderate", fitScore: s.priorityScore }),
+        runTimingAdvisor({ leadName: name, daysSinceLastContact: s.staleRisk > 50 ? 18 : 5, quoteAge: 10, buyingUrgency: s.urgencyBand === "needs-response-today" ? "high" : "medium" }),
+      ];
+    }).slice(0, 6);
+  }, [scores, items]);
+
   const tiers: PriorityTier[] = ["critical-now", "high-priority", "active-watch", "nurture", "recovery-candidate", "low-priority"];
   const distribution = tiers.map(t => ({
     tier: t,
