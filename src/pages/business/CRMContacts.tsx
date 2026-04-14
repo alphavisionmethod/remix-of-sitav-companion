@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCRMContacts, useCRMCompanies, useDeleteContact } from "@/hooks/use-crm-data";
 import { Users, Plus, Search, Grid3X3, List, ChevronRight, Phone, Mail, Heart, MoreHorizontal, Download, Trash2, Tag } from "lucide-react";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { formatDistanceToNow, isPast } from "date-fns";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { CRMContactDetail } from "@/components/business/crm/CRMContactDetail";
@@ -38,6 +39,8 @@ const CRMContacts = () => {
   const { data: contacts = [], isLoading } = useCRMContacts();
   const { data: companies = [] } = useCRMCompanies();
   const deleteContact = useDeleteContact();
+  const { adaptations } = useBusinessProfile();
+  const crmLang = adaptations.crm.language;
   const [search, setSearch] = useState("");
   const [view, setView] = useState<"table" | "card">("table");
   const [stageFilter, setStageFilter] = useState<string | null>(null);
@@ -82,8 +85,8 @@ const CRMContacts = () => {
 
         <div className="flex items-center justify-between gap-4">
           <div>
-            <h2 className="text-xl font-bold text-foreground">Contacts</h2>
-            <p className="text-xs text-muted-foreground">{filtered.length} contact{filtered.length !== 1 ? "s" : ""}</p>
+            <h2 className="text-xl font-bold text-foreground">{crmLang.contactLabel}</h2>
+            <p className="text-xs text-muted-foreground">{filtered.length} {crmLang.contactLabel.toLowerCase()}{filtered.length !== 1 ? "" : ""}</p>
           </div>
           <div className="flex items-center gap-2">
             <div className="relative">
@@ -99,7 +102,7 @@ const CRMContacts = () => {
               </Button>
             </div>
             <Button size="sm" className="gap-1.5" onClick={() => setShowAdd(true)}>
-              <Plus className="h-3.5 w-3.5" /> Add Contact
+              <Plus className="h-3.5 w-3.5" /> Add {crmLang.contactLabel.replace(/s$/, "")}
             </Button>
           </div>
         </div>

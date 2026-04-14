@@ -11,17 +11,23 @@ import { useState, useMemo } from "react";
 import { BarChart3, AlertTriangle, Target, Sparkles, Clock, ArrowRight, CheckCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import { useLeads, useCustomers, useInvoices, useOpportunities } from "@/hooks/use-sita-data";
-
-const businessAdvisors: AdvisorConfig[] = [
-  { id: "pipeline", name: "Pipeline Advisor", role: "Deal Flow & Velocity", domain: "business", confidence: 84, status: "active", advisorId: "pipeline", mission: "Optimize deal pipeline velocity", specialAbility: "Weighted pipeline forecasting" },
-  { id: "customer-health", name: "Customer Health Advisor", role: "Retention & Expansion", domain: "business", confidence: 87, status: "active", advisorId: "customer-health", mission: "Monitor customer satisfaction", specialAbility: "Churn early warning" },
-  { id: "revenue", name: "Revenue Advisor", role: "Collections & Growth", domain: "business", confidence: 82, status: "active", advisorId: "revenue", mission: "Maximize revenue collection", specialAbility: "Invoice aging analysis" },
-  { id: "strategy", name: "Strategy Advisor", role: "Long-term Planning", domain: "boardroom", confidence: 76, status: "active", advisorId: "strategy", mission: "Strategic resource allocation", specialAbility: "MECE framework analysis" },
-];
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { getTopAdvisors } from "@/lib/engines/adaptive-advisor-roster";
+import { getBoardroomAgenda } from "@/lib/engines/adaptive-boardroom-framing";
 
 const BusinessBoardroom = () => {
 const isDemoMode = true;
 const [mode, setMode] = useState("weekly");
+  const { profile } = useBusinessProfile();
+  const adaptiveAdvisors = useMemo(() => {
+    const top = getTopAdvisors(profile, 6);
+    return top.map((a): AdvisorConfig => ({
+      id: a.id, name: a.name, role: a.specialty, domain: "business",
+      confidence: Math.round(a.affinityScore * 100), status: "active",
+      advisorId: a.id, mission: a.specialty, specialAbility: a.capabilities[0] || "general_advisory",
+    }));
+  }, [profile]);
+  const boardroomAgenda = useMemo(() => getBoardroomAgenda(profile), [profile]);
   const { data: leads = [] } = useLeads();
   const { data: customers = [] } = useCustomers();
   const { data: invoices = [] } = useInvoices();
@@ -78,7 +84,7 @@ const [mode, setMode] = useState("weekly");
 
         {mode === "council" ? (
           <div className="space-y-6">
-            <AdvisorCouncilShell advisors={businessAdvisors} domainLabel="Business" />
+            <AdvisorCouncilShell advisors={adaptiveAdvisors} domainLabel="Business" />
             <DomainAdvisorBoard domain="business" />
           </div>
         ) : (
