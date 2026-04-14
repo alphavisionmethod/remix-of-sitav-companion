@@ -240,6 +240,7 @@ const pages: Record<string, React.ComponentType> = {
   "customer-health": CustomerHealthPage,
   "adaptive-home": AdaptiveBusinessHome,
   "business-profile": BusinessProfileEditor,
+  "profile-studio": ProfileStudio,
   "profile-evolution": ProfileEvolutionPanel,
   "kpi-dashboard": AdaptiveKPIDashboard,
   "workflow-templates": AdaptiveWorkflowTemplates,
