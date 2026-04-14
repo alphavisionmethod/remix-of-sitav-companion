@@ -21,6 +21,7 @@ const CRMHome = () => {
   const { data: comms = [] } = useCRMCommunications();
   const { data: notes = [] } = useCRMNotes();
   const navigate = useNavigate();
+  const [showSearch, setShowSearch] = useState(false);
 
   const totalContacts = contacts.length;
   const activeOpps = opportunities.filter(o => o.status === "open");
