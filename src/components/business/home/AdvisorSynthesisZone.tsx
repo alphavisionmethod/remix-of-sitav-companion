@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   Sparkles, Shield, AlertTriangle, ChevronRight,
@@ -7,6 +7,8 @@ import {
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getIdentityLayer } from "@/lib/engines/business-identity-layers";
 import { getModuleAdaptation } from "@/lib/engines/business-module-adaptations";
+import { generateHomeAdvisors, detectAdvisorDisagreements } from "@/lib/engines/business-advisor-engine";
+import { ModuleAdvisorPanel } from "@/components/business/advisor-board/ModuleAdvisorPanel";
 
 type Stance = "confident" | "cautious" | "divided";
 
@@ -100,6 +102,8 @@ export function AdvisorSynthesisZone() {
   const synthesis = MODE_SYNTHESIS[primaryMode] || MODE_SYNTHESIS.service;
   const stanceStyle = STANCE_STYLES[synthesis.stance];
   const StanceIcon = stanceStyle.icon;
+  const homeAdvisors = useMemo(() => generateHomeAdvisors(), []);
+  const disagreements = useMemo(() => detectAdvisorDisagreements(homeAdvisors), [homeAdvisors]);
 
   return (
     <motion.div
@@ -176,6 +180,15 @@ export function AdvisorSynthesisZone() {
             </p>
           </div>
         )}
+        {/* Multi-Advisor Intelligence Panel */}
+        <div className="border-t border-border/10 pt-4">
+          <ModuleAdvisorPanel
+            advisors={homeAdvisors}
+            title="Business Home Advisors"
+            defaultExpanded={false}
+            compact
+          />
+        </div>
       </div>
     </motion.div>
   );
