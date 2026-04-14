@@ -33,7 +33,9 @@ import AdaptiveBoardroomAgenda from "@/components/business/adaptive/AdaptiveBoar
 import { CrossOSLinksPanel } from "@/components/sita/cross-os/CrossOSLinksPanel";
 import { CrossDomainIntelligenceBridge } from "@/components/sita/cross-os/CrossDomainIntelligenceBridge";
 import { AppShellBreadcrumb, useNavigationHistory } from "@/components/sita/shell/AppShellBreadcrumb";
-
+import { useBusinessOnboarding } from "@/hooks/useBusinessOnboarding";
+import { getVisibleSidebarItems } from "@/lib/business-journey-config";
+import BusinessSettingsPage from "@/pages/business/BusinessSettingsPage";
 // ── Page imports ──────────────────────────────────────────────
 import BusinessOverview from "@/pages/business/BusinessOverview";
 import LeadsInbox from "@/pages/business/LeadsInbox";
@@ -172,6 +174,7 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
       { id: "profile-evolution", label: "Profile Evolution", icon: Activity },
       { id: "workflow-templates", label: "Workflow Templates", icon: Workflow },
       { id: "boardroom-agenda", label: "Boardroom Agenda", icon: BookOpen },
+      { id: "business-settings", label: "Settings", icon: Settings },
     ],
   },
 ];
@@ -226,6 +229,7 @@ const pages: Record<string, React.ComponentType> = {
   "kpi-dashboard": AdaptiveKPIDashboard,
   "workflow-templates": AdaptiveWorkflowTemplates,
   "boardroom-agenda": AdaptiveBoardroomAgenda,
+  "business-settings": BusinessSettingsPage,
 };
 
 // ── Helper components ─────────────────────────────────────────
@@ -430,10 +434,17 @@ export function BusinessAppShell({ initialModule }: { initialModule?: string }) 
 
 function BusinessAppShellInner({ initialModule }: { initialModule?: string }) {
   const { adaptations, primaryMode, operatingFlags, isAdapted } = useBusinessProfile();
+  const { savedState: onboardingState } = useBusinessOnboarding();
   const storedModule = (window as any).__businessInitialModule;
   const [activeModule, setActiveModule] = useState(storedModule || initialModule || "adaptive-home");
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(() => !isAdapted);
+
+  // Journey-aware visible items
+  const journeyVisibleItems = useMemo(
+    () => getVisibleSidebarItems(onboardingState.businessTypes),
+    [onboardingState.businessTypes]
+  );
 
   // Global Cmd+K listener
   useEffect(() => {
@@ -459,10 +470,11 @@ function BusinessAppShellInner({ initialModule }: { initialModule?: string }) {
       .sort((a, b) => (orderMap.get(a.label) ?? 99) - (orderMap.get(b.label) ?? 99))
       .map(group => ({
         ...group,
-        items: applySidebarOverrides(group.items, sidebarOverrides),
+        items: applySidebarOverrides(group.items, sidebarOverrides)
+          .filter(item => !journeyVisibleItems || journeyVisibleItems.has(item.id)),
       }))
       .filter(group => group.items.length > 0);
-  }, [adaptations.sidebar.groupOrder, sidebarOverrides]);
+  }, [adaptations.sidebar.groupOrder, sidebarOverrides, journeyVisibleItems]);
 
   // Listen for navigation events from outside (deep-linking, launchers)
   useEffect(() => {

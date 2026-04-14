@@ -1,10 +1,12 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { ArrowLeft, ArrowRight, Check, Waves } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { STAGES, CHAPTERS, defaultOnboardingState, type OnboardingState, type StageId } from "./types";
 import LiveOfficeSidebar from "./LiveOfficeSidebar";
+import { useBusinessOnboarding } from "@/hooks/useBusinessOnboarding";
 
 import CeremonyScreen from "./screens/CeremonyScreen";
 import IdentityScreen from "./screens/IdentityScreen";
@@ -26,7 +28,6 @@ import AutomationScreen from "./screens/AutomationScreen";
 import AdvisorActivationScreen from "./screens/AdvisorActivationScreen";
 import FirstWinScreen from "./screens/FirstWinScreen";
 import RevealScreen from "./screens/RevealScreen";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const screenMap: Record<StageId, React.ComponentType<any>> = {
   ceremony: CeremonyScreen,
@@ -52,14 +53,45 @@ const screenMap: Record<StageId, React.ComponentType<any>> = {
 };
 
 export default function FormationShell() {
+  const navigate = useNavigate();
+  const { isLoading, isCompleted, savedState, saveProgress, markComplete } = useBusinessOnboarding();
   const [stage, setStage] = useState(0);
   const [state, setState] = useState<OnboardingState>(defaultOnboardingState);
   const [showChapterTransition, setShowChapterTransition] = useState(false);
+  const initializedRef = useRef(false);
+
+  // Redirect if already completed
+  useEffect(() => {
+    if (!isLoading && isCompleted) {
+      navigate("/revenue-office/boardroom", { replace: true });
+    }
+  }, [isLoading, isCompleted, navigate]);
+
+  // Load saved progress
+  useEffect(() => {
+    if (!isLoading && !isCompleted && !initializedRef.current) {
+      initializedRef.current = true;
+      if (savedState.businessName || savedState.businessTypes.length > 0) {
+        setState(savedState);
+      }
+    }
+  }, [isLoading, isCompleted, savedState]);
+
+  // Auto-save progress on stage change (debounced)
+  const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => {
+    if (stage > 0 && initializedRef.current) {
+      if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+      saveTimerRef.current = setTimeout(() => {
+        saveProgress(state);
+      }, 1000);
+    }
+    return () => { if (saveTimerRef.current) clearTimeout(saveTimerRef.current); };
+  }, [stage, state, saveProgress]);
 
   const currentChapter = STAGES[stage]?.chapter;
   const pct = (stage / (STAGES.length - 1)) * 100;
 
-  // Skip import screens user didn't select
   const shouldSkip = useCallback((idx: number): boolean => {
     const id = STAGES[idx]?.id;
     if (!id) return false;
@@ -68,7 +100,6 @@ export default function FormationShell() {
     if (id === "artifacts" && !state.intakePaths.includes("artifacts")) return true;
     if (id === "url_intake" && !state.intakePaths.includes("urls")) return true;
     if (id === "reconciliation" && state.importedFiles.length === 0 && state.connectedSystems.length === 0) return true;
-    // In balanced mode, skip team and some deep screens
     if (state.setupDepth === "quick") {
       if (["team", "shape_summary"].includes(id)) return true;
     }
@@ -100,12 +131,21 @@ export default function FormationShell() {
 
   const back = useCallback(() => setStage(prevStage(stage)), [stage, prevStage]);
 
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-pulse text-muted-foreground text-sm">Loading…</div>
+      </div>
+    );
+  }
+
+  if (isCompleted) return null; // Will redirect
+
   const Screen = screenMap[STAGES[stage].id];
 
   return (
     <div className="min-h-screen bg-background relative">
       <h1 className="sr-only">Business Formation</h1>
-{/* Ambient background */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
         <div className="absolute top-1/4 left-1/4 h-96 w-96 rounded-full blur-[160px] transition-opacity duration-1000"
           style={{ background: "hsl(var(--primary) / 0.03)", opacity: stage > 0 ? 1 : 0.5 }} />
@@ -113,7 +153,6 @@ export default function FormationShell() {
           style={{ background: "hsl(var(--sita-gold) / 0.02)", opacity: stage > 5 ? 1 : 0 }} />
       </div>
 
-      {/* Chapter transition overlay */}
       <AnimatePresence>
         {showChapterTransition && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
@@ -126,7 +165,6 @@ export default function FormationShell() {
         )}
       </AnimatePresence>
 
-      {/* Progress rail */}
       {stage > 0 && (
         <div className="sticky top-0 z-10 bg-background/95 backdrop-blur-md border-b border-border/30 px-6 py-3">
           <div className="max-w-6xl mx-auto">
@@ -163,12 +201,11 @@ export default function FormationShell() {
         </div>
       )}
 
-      {/* Content + Sidebar */}
       <div className="relative z-[1] max-w-6xl mx-auto px-6 py-8 flex gap-8">
         <div className="flex-1 min-w-0">
           <AnimatePresence mode="wait">
             <motion.div key={STAGES[stage].id} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.25 }}>
-              <Screen state={state} setState={setState} onNext={next} onBack={back} />
+              <Screen state={state} setState={setState} onNext={next} onBack={back} markComplete={markComplete} />
             </motion.div>
           </AnimatePresence>
 
