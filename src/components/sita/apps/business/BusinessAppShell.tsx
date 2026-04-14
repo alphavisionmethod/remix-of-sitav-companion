@@ -87,6 +87,7 @@ import DealRoom from "@/pages/business/DealRoom";
 import StrategicAccountRoom from "@/pages/business/StrategicAccountRoom";
 import RelationshipDossier from "@/pages/business/RelationshipDossier";
 import BackgroundTaskCenter from "@/pages/business/BackgroundTaskCenter";
+import BusinessAdvisorBoardPage from "@/pages/business/BusinessAdvisorBoardPage";
 import CustomerDetail from "@/pages/CustomerDetail";
 
 // ── Sidebar structure ─────────────────────────────────────────
@@ -168,6 +169,7 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
   {
     label: "Intelligence",
     items: [
+      { id: "advisor-board", label: "Advisor Board", icon: BrainCircuit },
       { id: "revenue-impact", label: "Revenue Impact", icon: BarChart3 },
       { id: "kpi-dashboard", label: "KPI Dashboard", icon: Target },
       { id: "playbook-builder", label: "Builder", icon: BookOpen },
@@ -252,6 +254,7 @@ const pages: Record<string, React.ComponentType> = {
   "strategic-accounts": StrategicAccountRoom,
   "relationship-dossier": RelationshipDossier,
   "background-tasks": BackgroundTaskCenter,
+  "advisor-board": BusinessAdvisorBoardPage,
 };
 
 // ── Helper components ─────────────────────────────────────────

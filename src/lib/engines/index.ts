@@ -53,3 +53,16 @@ export { MOCK_RECOVERY_CANDIDATES, RECOVERY_QUEUES, FAILURE_MODE_META, SUCCESS_B
 export type { RecoveryCandidate, FailureMode, RecoveryPath, SuccessBand, UrgencyLevel,
   RelationshipSensitivity, RecoveryQueueDef, RecoveryTimelineEvent } from "./lead-recovery-engine";
 
+// ── Business Advisor Intelligence Engine ────────────────────────
+export { generateHomeAdvisors, generateRecoveryAdvisors, generateInboxAdvisors,
+  synthesizeBusinessBoard, buildEscalationPacket, detectAdvisorDisagreements,
+  runSummaryAdvisor, runPressureAdvisor, runPriorityAdvisor,
+  runLeadPrioritizationAdvisor, runOpportunityAdvisor, runQualificationAdvisor,
+  runTriageAdvisor, runDuplicateReviewAdvisor, runOwnerSuggestionAdvisor,
+  runScoringAdvisor, runConversionAdvisor, runTimingAdvisor,
+  runProgressionAdvisor, runStuckStageAdvisor, runLifecycleAdvisor,
+  runRecoveryAdvisor, runCommunicationRecoveryAdvisor, runRevenueRescueAdvisor,
+} from "./business-advisor-engine";
+export type { AdvisorOutput, EscalationPacket, BoardSynthesisTheme,
+  AdvisorDisagreement, AdvisorAction, EscalationRec } from "./business-advisor-engine";
+
