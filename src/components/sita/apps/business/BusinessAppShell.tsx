@@ -18,6 +18,7 @@ import { BusinessProfileProvider } from "@/contexts/BusinessProfileContext";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import AdaptiveBusinessHome from "@/components/business/adaptive/AdaptiveBusinessHome";
 import BusinessProfileEditor from "@/components/business/adaptive/BusinessProfileEditor";
+import ProfileStudio from "@/components/business/adaptive/ProfileStudio";
 import ProfileEvolutionPanel from "@/components/business/adaptive/ProfileEvolutionPanel";
 import { CrossDomainSignalBridge } from "@/components/business/adaptive/CrossDomainSignalBridge";
 import AdaptiveKPIDashboard from "@/components/business/adaptive/AdaptiveKPIDashboard";
@@ -182,6 +183,7 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
       { id: "proof", label: "Proof", icon: Shield },
       { id: "advisors", label: "Advisors", icon: Brain },
       { id: "pipeline-health", label: "Pipeline Health", icon: Activity },
+      { id: "profile-studio", label: "Profile Studio", icon: Sliders },
       { id: "business-profile", label: "Business Profile", icon: Sliders },
       { id: "profile-evolution", label: "Profile Evolution", icon: Activity },
       { id: "workflow-templates", label: "Workflow Templates", icon: Workflow },
@@ -238,6 +240,7 @@ const pages: Record<string, React.ComponentType> = {
   "customer-health": CustomerHealthPage,
   "adaptive-home": AdaptiveBusinessHome,
   "business-profile": BusinessProfileEditor,
+  "profile-studio": ProfileStudio,
   "profile-evolution": ProfileEvolutionPanel,
   "kpi-dashboard": AdaptiveKPIDashboard,
   "workflow-templates": AdaptiveWorkflowTemplates,
@@ -640,7 +643,7 @@ function BusinessAppShellInner({ initialModule }: { initialModule?: string }) {
                 <span>⌘K</span>
               </button>
               <AdaptiveNotificationCenter onNavigate={navigateTo} />
-              <BusinessModeIndicator onClick={() => setActiveModule("business-profile")} />
+              <BusinessModeIndicator onClick={() => setActiveModule("profile-studio")} />
             </div>
           </div>
 
