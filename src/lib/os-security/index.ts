@@ -51,6 +51,7 @@ import { getNotifyDaemon } from "./notifyd";
 import { getUpdateDaemon } from "./updated";
 import { getOnboardingDaemon } from "./onboardingd";
 import { getPolicyBundleManager } from "./policyd-bundles";
+import { getEcosystemOrchestrator } from "@/lib/services/ecosystem-orchestrator";
 
 let booted = false;
 
@@ -126,6 +127,11 @@ export async function bootOSSecurity(): Promise<{
   await onboardingd.initialize();
   console.log("[os-security] ✓ onboardingd initialized");
 
+  // Ecosystem Orchestrator (admin-only, after controlcenterd)
+  const ecosystemOrch = getEcosystemOrchestrator();
+  await ecosystemOrch.initialize();
+  console.log("[os-security] ✓ ecosystem-orchestrator initialized");
+
   // Record boot event
   await auditd.record({
     actorUserId: "system",
@@ -134,7 +140,7 @@ export async function bootOSSecurity(): Promise<{
     action: "system.boot.security-subsystem",
     decision: "allowed",
     severity: "info",
-    reason: "OS security subsystem initialized (policyd + updated + onboardingd)",
+    reason: "OS security subsystem initialized (policyd + updated + onboardingd + ecosystem-orchestrator)",
   });
 
   booted = true;

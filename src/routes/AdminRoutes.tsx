@@ -1,6 +1,9 @@
 import { Route, Navigate } from "react-router-dom";
 import { lazy } from "react";
 
+// ── ECO: Ecosystem Orchestrator ──
+const ECO01EcosystemCommand = lazy(() => import("@/pages/admin/ECO01EcosystemCommand"));
+
 const AdminDashboard = lazy(() => import("@/pages/admin/AdminDashboard"));
 const TeamManagement = lazy(() => import("@/pages/admin/TeamManagement"));
 const SystemManagement = lazy(() => import("@/pages/admin/SystemManagement"));
@@ -143,5 +146,7 @@ export function getAdminRoutes() {
     <Route key="cai13" path="/admin/cai/memory" element={<CAI13MemoryGovernance />} />,
     <Route key="cai14" path="/admin/cai/boundaries" element={<CAI14BoundaryControl />} />,
     <Route key="cai15" path="/admin/cai/signature" element={<CAI15SignatureStudio />} />,
+    // ── ECO: Ecosystem Orchestrator ──
+    <Route key="eco01" path="/admin/ecosystem/command" element={<ECO01EcosystemCommand />} />,
   ];
 }
