@@ -585,7 +585,7 @@ function RollbackTab() {
       setRollbackHistory(updated.getRollbackHistory());
       setUpdateHistory(updated.getUpdateHistory());
     } else {
-      toast.error(result.error || "Rollback failed");
+      toast.error(result.reason || "Rollback failed");
     }
   }, [updated]);
 
