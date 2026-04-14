@@ -160,27 +160,27 @@ function renderWidget(type: string, onOpenCommand?: () => void, continuity?: Con
     case "notifications-feed":
       return (<div className="w-[320px]"><DesktopNotificationsFeedWidget /></div>);
     case "investment-pulse":
-      return (<div className="w-[320px]"><DesktopInvestmentPulseWidget /></div>);
+      return (<div className="w-[320px]"><DesktopInvestmentPulseWidget onLaunchApp={onLaunchApp} /></div>);
     case "crm-pipeline":
-      return (<div className="w-[320px]"><DesktopCRMPipelineWidget /></div>);
+      return (<div className="w-[320px]"><DesktopCRMPipelineWidget onLaunchApp={onLaunchApp} /></div>);
     case "leads-recovered":
-      return (<div className="w-[320px]"><DesktopLeadsRecoveredWidget /></div>);
+      return (<div className="w-[320px]"><DesktopLeadsRecoveredWidget onLaunchApp={onLaunchApp} /></div>);
     case "calendar-today":
-      return (<div className="w-[320px]"><DesktopCalendarTodayWidget /></div>);
+      return (<div className="w-[320px]"><DesktopCalendarTodayWidget onLaunchApp={onLaunchApp} /></div>);
     case "boardroom-brief":
-      return (<div className="w-[320px]"><DesktopBoardroomBriefWidget /></div>);
+      return (<div className="w-[320px]"><DesktopBoardroomBriefWidget onLaunchApp={onLaunchApp} /></div>);
     case "advisor-council":
-      return (<div className="w-[320px]"><DesktopAdvisorCouncilWidget /></div>);
+      return (<div className="w-[320px]"><DesktopAdvisorCouncilWidget onLaunchApp={onLaunchApp} /></div>);
     case "business-kpi":
-      return (<div className="w-[320px]"><DesktopBusinessKPIWidget /></div>);
+      return (<div className="w-[320px]"><DesktopBusinessKPIWidget onLaunchApp={onLaunchApp} /></div>);
     case "finance-snapshot":
-      return (<div className="w-[320px]"><DesktopFinanceSnapshotWidget /></div>);
+      return (<div className="w-[320px]"><DesktopFinanceSnapshotWidget onLaunchApp={onLaunchApp} /></div>);
     case "concierge-tasks":
-      return (<div className="w-[320px]"><DesktopConciergeTasksWidget /></div>);
+      return (<div className="w-[320px]"><DesktopConciergeTasksWidget onLaunchApp={onLaunchApp} /></div>);
     case "weather":
       return (<div className="w-[280px]"><DesktopWeatherWidget /></div>);
     case "portfolio-globe":
-      return (<div className="w-[320px]"><DesktopPortfolioMapWidget /></div>);
+      return (<div className="w-[320px]"><DesktopPortfolioMapWidget onLaunchApp={onLaunchApp} /></div>);
     default:
       return null;
   }
