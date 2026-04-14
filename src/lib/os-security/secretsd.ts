@@ -27,7 +27,7 @@ class SecureBuffer {
     const enc = new TextEncoder();
     const data = enc.encode(str);
     const buf = new SecureBuffer(data.length);
-    buf.buf.set(data);
+    buf.buffer.set(data);
     return buf;
   }
 
@@ -38,7 +38,7 @@ class SecureBuffer {
 
   dispose(): void {
     if (!this.disposed) {
-      crypto.getRandomValues(this.buffer);
+      crypto.getRandomValues(this.buffer as Uint8Array<ArrayBuffer>);
       this.buffer.fill(0);
       this.disposed = true;
     }
