@@ -10,6 +10,8 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import { useState } from "react";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { getModuleAdaptation } from "@/lib/engines/business-module-adaptations";
 import { motion } from "framer-motion";
 import {
   FileText, Image, File, Upload, Search, FolderOpen, Paperclip, Eye,
@@ -53,6 +55,8 @@ const statusStyle = (status: BusinessDocument["status"]) => {
 };
 
 const BusinessDocuments = () => {
+  const { primaryMode } = useBusinessProfile();
+  const moduleConfig = getModuleAdaptation("documents", primaryMode);
   const [tab, setTab] = useState<Tab>("all");
   const [viewMode, setViewMode] = useState<ViewMode>("list");
   const [search, setSearch] = useState("");
