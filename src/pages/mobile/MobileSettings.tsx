@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { usePushNotifications } from "@/hooks/use-push-notifications";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useAuth } from "@/contexts/AuthContext";
 
 const ToggleRow = ({ icon: Icon, label, description, defaultOn = false, controlled, onToggle }: {
   icon: any; label: string; description: string; defaultOn?: boolean;
@@ -54,6 +55,7 @@ const NavRow = ({ icon: Icon, label, onClick }: { icon: any; label: string; onCl
 );
 
 const MobileSettings = () => {
+  const { signOut } = useAuth();
   const { isSupported, isRegistered, requestPermission, unregister, devices } = usePushNotifications();
 
   const handlePushToggle = async (on: boolean) => {
@@ -99,7 +101,7 @@ const MobileSettings = () => {
       <h2 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Device</h2>
       <div className="space-y-1.5 mb-6">
         <NavRow icon={Smartphone} label="Device Info" />
-        <NavRow icon={LogOut} label="Sign Out" />
+        <NavRow icon={LogOut} label="Sign Out" onClick={() => signOut()} />
       </div>
 
       <p className="text-center text-[10px] text-muted-foreground mt-8">SITA OS — Trusted Device v1.0</p>

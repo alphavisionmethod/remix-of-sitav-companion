@@ -160,6 +160,9 @@ const MOBILE_ROUTE_MAP: Record<string, string> = {
   "/concierge": "/mobile/concierge",
   "/boardroom": "/mobile/boardroom",
   "/settings": "/mobile/settings",
+  "/files": "/mobile/files",
+  "/investment": "/mobile/investment",
+  "/approvals": "/mobile/approvals",
 };
 
 const MobileGuard = ({ children }: { children: ReactNode }) => {

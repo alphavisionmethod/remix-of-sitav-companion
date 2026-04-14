@@ -16,6 +16,9 @@ const MobileQuickCapture = lazy(() => import("@/pages/mobile/MobileQuickCapture"
 const MobileBusiness = lazy(() => import("@/pages/mobile/MobileBusiness"));
 const MobileMoney = lazy(() => import("@/pages/mobile/MobileMoney"));
 const MobileConcierge = lazy(() => import("@/pages/mobile/MobileConcierge"));
+const MobileMore = lazy(() => import("@/pages/mobile/MobileMore"));
+const MobileInvestment = lazy(() => import("@/pages/mobile/MobileInvestment"));
+const MobileFiles = lazy(() => import("@/pages/mobile/MobileFiles"));
 
 export const MobileRoutes = ({ ProtectedRoute }: { ProtectedRoute: React.ComponentType<{ children: React.ReactNode }> }) => (
   <>
@@ -34,5 +37,8 @@ export const MobileRoutes = ({ ProtectedRoute }: { ProtectedRoute: React.Compone
     <Route path="/mobile/device-trust" element={<ProtectedRoute><MobileDeviceTrust /></ProtectedRoute>} />
     <Route path="/mobile/emergency" element={<ProtectedRoute><MobileEmergencyActions /></ProtectedRoute>} />
     <Route path="/mobile/capture" element={<ProtectedRoute><MobileQuickCapture /></ProtectedRoute>} />
+    <Route path="/mobile/more" element={<ProtectedRoute><MobileMore /></ProtectedRoute>} />
+    <Route path="/mobile/investment" element={<ProtectedRoute><MobileInvestment /></ProtectedRoute>} />
+    <Route path="/mobile/files" element={<ProtectedRoute><MobileFiles /></ProtectedRoute>} />
   </>
 );

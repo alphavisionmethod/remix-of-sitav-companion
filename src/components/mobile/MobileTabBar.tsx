@@ -7,7 +7,7 @@ const tabs = [
   { icon: Briefcase, label: "Business", path: "/mobile/business" },
   { icon: DollarSign, label: "Money", path: "/mobile/money" },
   { icon: Headphones, label: "Concierge", path: "/mobile/concierge" },
-  { icon: MoreHorizontal, label: "More", path: "/mobile/settings" },
+  { icon: MoreHorizontal, label: "More", path: "/mobile/more" },
 ];
 
 export const MobileTabBar = () => {
