@@ -1472,6 +1472,101 @@ export type Database = {
         }
         Relationships: []
       }
+      command_memory: {
+        Row: {
+          command_id: string | null
+          context_json: Json | null
+          created_at: string
+          duration_ms: number | null
+          id: string
+          intent: string
+          learned_at: string
+          outcome: string | null
+          pattern_tags: string[] | null
+          risk: string | null
+          updated_at: string
+          user_id: string
+          user_preferences_json: Json | null
+        }
+        Insert: {
+          command_id?: string | null
+          context_json?: Json | null
+          created_at?: string
+          duration_ms?: number | null
+          id?: string
+          intent: string
+          learned_at?: string
+          outcome?: string | null
+          pattern_tags?: string[] | null
+          risk?: string | null
+          updated_at?: string
+          user_id: string
+          user_preferences_json?: Json | null
+        }
+        Update: {
+          command_id?: string | null
+          context_json?: Json | null
+          created_at?: string
+          duration_ms?: number | null
+          id?: string
+          intent?: string
+          learned_at?: string
+          outcome?: string | null
+          pattern_tags?: string[] | null
+          risk?: string | null
+          updated_at?: string
+          user_id?: string
+          user_preferences_json?: Json | null
+        }
+        Relationships: []
+      }
+      command_routing_decisions: {
+        Row: {
+          approval_flow: string | null
+          command_id: string | null
+          created_at: string
+          decided_at: string
+          guarantee_checks_json: Json | null
+          id: string
+          rationale: string | null
+          route_layers: string[] | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          approval_flow?: string | null
+          command_id?: string | null
+          created_at?: string
+          decided_at?: string
+          guarantee_checks_json?: Json | null
+          id?: string
+          rationale?: string | null
+          route_layers?: string[] | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          approval_flow?: string | null
+          command_id?: string | null
+          created_at?: string
+          decided_at?: string
+          guarantee_checks_json?: Json | null
+          id?: string
+          rationale?: string | null
+          route_layers?: string[] | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "command_routing_decisions_command_id_fkey"
+            columns: ["command_id"]
+            isOneToOne: false
+            referencedRelation: "ecosystem_commands"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       concierge_automations: {
         Row: {
           conditions: Json | null
@@ -2484,6 +2579,197 @@ export type Database = {
           },
         ]
       }
+      dual_authority_challenges: {
+        Row: {
+          action: string
+          challenge_token: string | null
+          command_id: string | null
+          consequences: Json | null
+          created_at: string
+          expires_at: string
+          explanation: string | null
+          id: string
+          responded_at: string | null
+          response: string | null
+          risk_level: string | null
+          status: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          action: string
+          challenge_token?: string | null
+          command_id?: string | null
+          consequences?: Json | null
+          created_at?: string
+          expires_at: string
+          explanation?: string | null
+          id?: string
+          responded_at?: string | null
+          response?: string | null
+          risk_level?: string | null
+          status?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          action?: string
+          challenge_token?: string | null
+          command_id?: string | null
+          consequences?: Json | null
+          created_at?: string
+          expires_at?: string
+          explanation?: string | null
+          id?: string
+          responded_at?: string | null
+          response?: string | null
+          risk_level?: string | null
+          status?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dual_authority_challenges_command_id_fkey"
+            columns: ["command_id"]
+            isOneToOne: false
+            referencedRelation: "ecosystem_commands"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      ecosystem_commands: {
+        Row: {
+          approval_required: boolean | null
+          completed_at: string | null
+          correlation_id: string | null
+          created_at: string
+          id: string
+          input: string
+          intent: string | null
+          result_summary: string | null
+          risk_class: string | null
+          scope: string | null
+          status: string | null
+          target_layers: string[] | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          approval_required?: boolean | null
+          completed_at?: string | null
+          correlation_id?: string | null
+          created_at?: string
+          id?: string
+          input: string
+          intent?: string | null
+          result_summary?: string | null
+          risk_class?: string | null
+          scope?: string | null
+          status?: string | null
+          target_layers?: string[] | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          approval_required?: boolean | null
+          completed_at?: string | null
+          correlation_id?: string | null
+          created_at?: string
+          id?: string
+          input?: string
+          intent?: string | null
+          result_summary?: string | null
+          risk_class?: string | null
+          scope?: string | null
+          status?: string | null
+          target_layers?: string[] | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ecosystem_contracts: {
+        Row: {
+          app_ownership: string | null
+          approval_required: boolean | null
+          cloud_ownership: string | null
+          created_at: string
+          events: string[] | null
+          failure_behavior: string | null
+          feature_name: string
+          id: string
+          os_ownership: string | null
+          rollback_exists: boolean | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          app_ownership?: string | null
+          approval_required?: boolean | null
+          cloud_ownership?: string | null
+          created_at?: string
+          events?: string[] | null
+          failure_behavior?: string | null
+          feature_name: string
+          id?: string
+          os_ownership?: string | null
+          rollback_exists?: boolean | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          app_ownership?: string | null
+          approval_required?: boolean | null
+          cloud_ownership?: string | null
+          created_at?: string
+          events?: string[] | null
+          failure_behavior?: string | null
+          feature_name?: string
+          id?: string
+          os_ownership?: string | null
+          rollback_exists?: boolean | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ecosystem_events: {
+        Row: {
+          correlation_id: string | null
+          created_at: string
+          emitted_at: string
+          event_type: string
+          id: string
+          payload_json: Json | null
+          source_layer: string
+          user_id: string
+          version: number | null
+        }
+        Insert: {
+          correlation_id?: string | null
+          created_at?: string
+          emitted_at?: string
+          event_type: string
+          id?: string
+          payload_json?: Json | null
+          source_layer: string
+          user_id: string
+          version?: number | null
+        }
+        Update: {
+          correlation_id?: string | null
+          created_at?: string
+          emitted_at?: string
+          event_type?: string
+          id?: string
+          payload_json?: Json | null
+          source_layer?: string
+          user_id?: string
+          version?: number | null
+        }
+        Relationships: []
+      }
       flagship_loops: {
         Row: {
           blocker_count: number
@@ -2715,6 +3001,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      layer_health_snapshots: {
+        Row: {
+          captured_at: string
+          created_at: string
+          health_score: number | null
+          id: string
+          layer: string
+          services_degraded: number | null
+          services_healthy: number | null
+          services_total: number | null
+          user_id: string
+        }
+        Insert: {
+          captured_at?: string
+          created_at?: string
+          health_score?: number | null
+          id?: string
+          layer: string
+          services_degraded?: number | null
+          services_healthy?: number | null
+          services_total?: number | null
+          user_id: string
+        }
+        Update: {
+          captured_at?: string
+          created_at?: string
+          health_score?: number | null
+          id?: string
+          layer?: string
+          services_degraded?: number | null
+          services_healthy?: number | null
+          services_total?: number | null
+          user_id?: string
+        }
+        Relationships: []
       }
       lead_inbox_items: {
         Row: {
@@ -4370,6 +4692,50 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      system_guarantees: {
+        Row: {
+          checked_at: string
+          command_id: string | null
+          created_at: string
+          explanation: string | null
+          guarantee_type: string
+          id: string
+          status: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          checked_at?: string
+          command_id?: string | null
+          created_at?: string
+          explanation?: string | null
+          guarantee_type: string
+          id?: string
+          status?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          checked_at?: string
+          command_id?: string | null
+          created_at?: string
+          explanation?: string | null
+          guarantee_type?: string
+          id?: string
+          status?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "system_guarantees_command_id_fkey"
+            columns: ["command_id"]
+            isOneToOne: false
+            referencedRelation: "ecosystem_commands"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       system_slots: {
         Row: {
