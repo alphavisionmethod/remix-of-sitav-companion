@@ -80,6 +80,12 @@ import CRMCustomFieldsPage from "@/pages/business/CRMCustomFieldsPage";
 import CRMCommunications from "@/pages/business/CRMCommunications";
 import CRMIntegrationHub from "@/pages/business/CRMIntegrationHub";
 import CustomerHealthPage from "@/pages/CustomerHealthPage";
+import MorningBriefing from "@/pages/business/MorningBriefing";
+import EndOfDayClosure from "@/pages/business/EndOfDayClosure";
+import DealRoom from "@/pages/business/DealRoom";
+import StrategicAccountRoom from "@/pages/business/StrategicAccountRoom";
+import RelationshipDossier from "@/pages/business/RelationshipDossier";
+import BackgroundTaskCenter from "@/pages/business/BackgroundTaskCenter";
 import CustomerDetail from "@/pages/CustomerDetail";
 
 // ── Sidebar structure ─────────────────────────────────────────
