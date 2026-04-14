@@ -7,9 +7,11 @@ const HOLDINGS = [
   { name: "TSLA", value: "$5,100", change: "-0.8%", up: false },
 ];
 
-export function DesktopInvestmentPulseWidget() {
+interface Props { onLaunchApp?: (appId: string) => void; }
+
+export function DesktopInvestmentPulseWidget({ onLaunchApp }: Props) {
   return (
-    <DesktopWidgetCard title="Investment Pulse">
+    <DesktopWidgetCard title="Investment Pulse" onClick={() => onLaunchApp?.("investment")}>
       <div className="mb-3">
         <p className="text-2xl font-bold text-white/90">$142,800</p>
         <div className="flex items-center gap-1 mt-0.5">

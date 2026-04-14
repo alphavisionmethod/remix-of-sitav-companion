@@ -6,9 +6,11 @@ const TASKS = [
   { title: "Renew parking permit", due: "Apr 18", priority: "bg-white/30" },
 ];
 
-export function DesktopConciergeTasksWidget() {
+interface Props { onLaunchApp?: (appId: string) => void; }
+
+export function DesktopConciergeTasksWidget({ onLaunchApp }: Props) {
   return (
-    <DesktopWidgetCard title="Concierge Tasks">
+    <DesktopWidgetCard title="Concierge Tasks" onClick={() => onLaunchApp?.("concierge")}>
       <div className="space-y-2.5">
         {TASKS.map((t, i) => (
           <div key={i} className="flex items-center gap-2.5">

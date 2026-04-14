@@ -7,10 +7,11 @@ const SECTORS = [
   { name: "Other", pct: 16, color: "bg-white/20" },
 ];
 
-export function DesktopPortfolioMapWidget() {
+interface Props { onLaunchApp?: (appId: string) => void; }
+
+export function DesktopPortfolioMapWidget({ onLaunchApp }: Props) {
   return (
-    <DesktopWidgetCard title="Portfolio Map">
-      {/* Mini bar chart */}
+    <DesktopWidgetCard title="Portfolio Map" onClick={() => onLaunchApp?.("investment")}>
       <div className="flex h-3 rounded-full overflow-hidden mb-3">
         {SECTORS.map(s => (
           <div key={s.name} className={`${s.color}`} style={{ width: `${s.pct}%` }} />

@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback } from "react";
 import { motion, useDragControls } from "framer-motion";
 import { X, GripHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -49,22 +49,25 @@ export function DraggableWidget({ id, position, onMove, onRemove, children, clas
         onRemove(id);
       }}
     >
-      {/* Drag handle — visible on hover, this is the ONLY drag trigger */}
+      {/* Drag handle — always partially visible, fully visible on hover */}
       <div
         onPointerDown={(e) => dragControls.start(e)}
-        className="absolute -top-3 left-1/2 -translate-x-1/2 w-14 h-4 flex items-center justify-center rounded-full bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity z-20 cursor-grab active:cursor-grabbing touch-none"
+        className="absolute -top-3.5 left-1/2 -translate-x-1/2 w-16 h-5 flex items-center justify-center rounded-full bg-white/[0.06] border border-white/[0.08] opacity-40 group-hover:opacity-100 transition-opacity z-20 cursor-grab active:cursor-grabbing touch-none"
+        title="Drag to move"
       >
-        <GripHorizontal className="h-3 w-3 text-white/40" />
+        <GripHorizontal className="h-3.5 w-3.5 text-white/50" />
       </div>
-      {/* Remove button on hover */}
-      {hovered && !dragging && (
-        <button
-          onClick={(e) => { e.stopPropagation(); onRemove(id); }}
-          className="absolute -top-2 -right-2 z-50 flex h-5 w-5 items-center justify-center rounded-full bg-black/60 border border-white/10 text-white/60 hover:text-white hover:bg-red-500/80 transition-all"
-        >
-          <X className="h-3 w-3" />
-        </button>
-      )}
+      {/* Remove button — always visible on hover with clear styling */}
+      <button
+        onClick={(e) => { e.stopPropagation(); onRemove(id); }}
+        className={cn(
+          "absolute -top-2.5 -right-2.5 z-50 flex h-6 w-6 items-center justify-center rounded-full bg-black/70 border border-white/[0.15] text-white/50 hover:text-white hover:bg-red-500/90 hover:border-red-400/50 transition-all shadow-lg",
+          hovered && !dragging ? "opacity-100 scale-100" : "opacity-0 scale-75 pointer-events-none"
+        )}
+        title="Remove widget"
+      >
+        <X className="h-3.5 w-3.5" />
+      </button>
       {/* Interactive children — receive all clicks normally */}
       {children}
     </motion.div>

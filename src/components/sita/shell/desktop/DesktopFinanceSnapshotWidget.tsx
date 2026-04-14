@@ -1,9 +1,11 @@
 import { DesktopWidgetCard } from "./DesktopWidgetCard";
-import { TrendingUp, TrendingDown } from "lucide-react";
+import { TrendingUp } from "lucide-react";
 
-export function DesktopFinanceSnapshotWidget() {
+interface Props { onLaunchApp?: (appId: string) => void; }
+
+export function DesktopFinanceSnapshotWidget({ onLaunchApp }: Props) {
   return (
-    <DesktopWidgetCard title="Finance Snapshot">
+    <DesktopWidgetCard title="Finance Snapshot" onClick={() => onLaunchApp?.("finance")}>
       <div className="space-y-3">
         <div>
           <p className="text-[10px] text-white/35">Total Balance</p>

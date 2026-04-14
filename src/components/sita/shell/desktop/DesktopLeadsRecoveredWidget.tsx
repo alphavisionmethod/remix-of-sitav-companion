@@ -7,9 +7,11 @@ const STATS = [
   { icon: DollarSign, label: "Revenue Saved", value: "$18.4K", color: "text-sky-400" },
 ];
 
-export function DesktopLeadsRecoveredWidget() {
+interface Props { onLaunchApp?: (appId: string) => void; }
+
+export function DesktopLeadsRecoveredWidget({ onLaunchApp }: Props) {
   return (
-    <DesktopWidgetCard title="Leads Recovered">
+    <DesktopWidgetCard title="Leads Recovered" onClick={() => onLaunchApp?.("business")}>
       <div className="space-y-3">
         {STATS.map(s => (
           <div key={s.label} className="flex items-center gap-2.5">
