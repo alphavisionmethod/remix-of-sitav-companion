@@ -10,7 +10,7 @@ import {
   Calendar, Settings, TrendingUp, FileText, Receipt, Banknote, ClipboardList,
   Zap, Bot, RefreshCw, Share2, ShoppingCart, Globe, BarChart3, BookOpen,
   LineChart, Mail, FolderOpen, Crown, Shield, Heart, Building2, Clock,
-  StickyNote, Upload, Link, Filter, Workflow
+  StickyNote, Upload, Link, Filter, Workflow, BrainCircuit, Search
 } from "lucide-react";
 
 import BusinessOverview from "./business/BusinessOverview";
@@ -52,6 +52,8 @@ import CRMSegments from "./business/CRMSegments";
 import CRMAutomations from "./business/CRMAutomations";
 import CRMImportCenter from "./business/CRMImportCenter";
 import CRMDuplicates from "./business/CRMDuplicates";
+import CRMAdvisorPage from "./business/CRMAdvisorPage";
+import CRMCustomFieldsPage from "./business/CRMCustomFieldsPage";
 
 import { useAppStatePersistence, restoreAppState } from "@/hooks/useAppStatePersistence";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
@@ -66,7 +68,7 @@ const DOMAIN_CONFIG: DomainConfig = {
   version: "Business OS v2.0",
 };
 
-type SubPage = "overview" | "leads" | "customers" | "follow-through" | "support" | "appointments" | "operations" | "documents" | "opportunities" | "quotes" | "invoices" | "communications" | "boardroom" | "proof" | "revenue-autopilot" | "collections" | "autopilot-hub" | "revenue-impact" | "playbook-builder" | "revenue-forecast" | "website-builder" | "proposals" | "lead-recovery" | "social" | "ecommerce" | "crm-home" | "crm-contacts" | "crm-companies" | "crm-pipeline" | "crm-health" | "crm-timeline" | "crm-tasks" | "crm-notes" | "crm-segments" | "crm-automations" | "crm-import" | "crm-duplicates";
+type SubPage = "overview" | "leads" | "customers" | "follow-through" | "support" | "appointments" | "operations" | "documents" | "opportunities" | "quotes" | "invoices" | "communications" | "boardroom" | "proof" | "revenue-autopilot" | "collections" | "autopilot-hub" | "revenue-impact" | "playbook-builder" | "revenue-forecast" | "website-builder" | "proposals" | "lead-recovery" | "social" | "ecommerce" | "crm-home" | "crm-contacts" | "crm-companies" | "crm-pipeline" | "crm-health" | "crm-timeline" | "crm-tasks" | "crm-notes" | "crm-segments" | "crm-automations" | "crm-import" | "crm-duplicates" | "crm-advisor" | "crm-fields";
 
 const subpageFromPath = (path: string): SubPage => {
   // CRM routes first (more specific)
@@ -82,6 +84,8 @@ const subpageFromPath = (path: string): SubPage => {
   if (path.includes("/crm-automations")) return "crm-automations";
   if (path.includes("/crm-import")) return "crm-import";
   if (path.includes("/crm-duplicates")) return "crm-duplicates";
+  if (path.includes("/crm-advisor")) return "crm-advisor";
+  if (path.includes("/crm-fields")) return "crm-fields";
   if (path.includes("/documents")) return "documents";
   if (path.includes("/operations")) return "operations";
   if (path.includes("/follow-through")) return "follow-through";
@@ -124,6 +128,8 @@ const TAB_GROUPS: NavTabGroup[] = [
       { key: "crm-automations", label: "Automations", icon: Zap },
       { key: "crm-import", label: "Import", icon: Upload },
       { key: "crm-duplicates", label: "Duplicates", icon: RefreshCw },
+      { key: "crm-advisor", label: "Advisor", icon: BrainCircuit },
+      { key: "crm-fields", label: "Fields", icon: Settings },
     ],
   },
   {
@@ -217,6 +223,8 @@ const pages: Record<SubPage, React.ComponentType> = {
   "crm-automations": CRMAutomations,
   "crm-import": CRMImportCenter,
   "crm-duplicates": CRMDuplicates,
+  "crm-advisor": CRMAdvisorPage,
+  "crm-fields": CRMCustomFieldsPage,
 };
 
 const BusinessCenter = () => {
