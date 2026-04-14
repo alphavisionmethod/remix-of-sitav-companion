@@ -1,65 +1,46 @@
 
 
-# Business Onboarding: Persistence, Settings Page, and Journey-Aware Configuration
+# Business Onboarding & Settings: Polish to 100%
 
-## Problem
-1. **Multi-select works** — IdentityScreen already supports multiple business types via toggle
-2. **Onboarding repeats every time** — State is only saved to `localStorage` on final reveal; no DB persistence; no "completed" flag
-3. **No settings page exists** — Users cannot modify business profile after onboarding (e.g., adding a brick-and-mortar location later)
-4. **Customer journey isn't business-type-aware** — The sidebar, modules, and tools shown are static regardless of what the user selected during onboarding
+## Issues Found
+
+1. **Business type mismatch**: IdentityScreen offers 9 types (`service`, `agency`, `coaching`, `creator`, `ecommerce`, `local`, `membership`, `hybrid`, `evolving`) but the journey config (`business-journey-config.ts`) and Settings page only handle 8 — missing `membership`, `hybrid`, `evolving`. Settings page has `marketplace` which isn't in Identity.
+2. **Journey auto-recommendation not wired**: `getRecommendedJourney()` exists in `business-journey-config.ts` but is never called — JourneyScreen doesn't auto-select a template based on business types chosen in IdentityScreen.
+3. **Settings page missing sections**: No conversion weakness editor, no post-sale steps, no lead sources — users can't modify several things they set during onboarding.
+4. **No success feedback on settings save**: Toast exists but no visual confirmation animation.
+5. **Settings doesn't sync journey config**: Changing business types in settings doesn't auto-suggest updating the journey template.
 
 ## Plan
 
-### 1. Create `business_onboarding` DB table + migration
-- Table: `business_onboarding` with columns: `id`, `user_id` (unique), `onboarding_state` (jsonb — stores the full `OnboardingState`), `completed_at`, `created_at`, `updated_at`
-- RLS: users can only read/write their own row
-- This replaces the current `localStorage`-only approach
+### 1. Sync business type options across Identity & Settings
+- **Files**: `BusinessSettingsPage.tsx`, `business-journey-config.ts`
+- Add `membership`, `hybrid`, `evolving` to `TYPE_ITEMS` in journey config with appropriate module mappings
+- Replace Settings page `BUSINESS_TYPES` array with the exact same list from IdentityScreen (9 types)
 
-### 2. Create `useBusinessOnboarding` hook
-- **File**: `src/hooks/useBusinessOnboarding.ts`
-- On mount: check if user has a `business_onboarding` row with `completed_at != null`
-- Provides: `isCompleted`, `savedState`, `saveProgress()`, `markComplete()`
-- For demo users: returns completed with default state
+### 2. Wire journey auto-recommendation
+- **File**: `JourneyScreen.tsx`
+- On mount, if `journeyTemplate` is empty, auto-select using `getRecommendedJourney(state.businessTypes)`
+- Show a SITA callout: "Based on your business type, we recommend the [X] journey"
 
-### 3. Update `FormationShell` to persist and gate
-- **File**: `src/pages/revenue-office/onboarding/FormationShell.tsx`
-- On mount: if `isCompleted`, redirect to `/revenue-office/boardroom` (or Business OS home)
-- Auto-save progress on each step change (debounced upsert)
-- On final reveal: call `markComplete()` instead of `localStorage.setItem`
+### 3. Expand Settings page with missing sections
+- **File**: `BusinessSettingsPage.tsx`
+- Add **Lead Sources** section (referrals, ads, organic, etc.)
+- Add **Conversion & Sales** section (pre-buy behavior, what closes deals)
+- Add **Post-Sale & Delivery** section (delivery steps, common slips)
+- Add **Journey Sync** prompt: when business types change, show "Your journey template may need updating" with a one-click re-match button
 
-### 4. Create Business Settings page
-- **File**: `src/pages/business/BusinessSettingsPage.tsx`
-- Sections:
-  - **Business Identity**: Edit business name, business types (multi-select toggles — same as onboarding), team size, stage
-  - **Revenue Model**: Edit revenue sources, growth goals, strongest/weakest streams
-  - **Customer Journey**: Edit journey template, pain points, delivery steps
-  - **Growth Priorities**: Edit bottlenecks, conversion weaknesses
-  - **Automation & Trust**: Edit automation level, human-only tasks, approval actions
-  - **Advisors**: Enable/disable advisors, change intensity
-- Each section saves to the `business_onboarding.onboarding_state` jsonb column
-- Add "Re-run full onboarding" button that clears `completed_at` and navigates to formation
-- Register in `BusinessAppShell` sidebar under System group and in `pages` map
+### 4. Add save confirmation animation
+- **File**: `BusinessSettingsPage.tsx`
+- After save: brief green checkmark pulse animation on the Save button
+- Sticky save bar at bottom when `hasChanges` is true (instead of only top-right)
 
-### 5. Make Business OS journey-aware
-- **File**: `src/components/sita/apps/business/BusinessAppShell.tsx`
-- Load the user's `business_onboarding` state on mount
-- Conditionally show/hide sidebar groups based on business types:
-  - `ecommerce` selected → show E-Commerce, Cart Recovery modules
-  - `local` selected → show Appointments, Local Reputation modules  
-  - `service/agency` selected → show Proposals, Quotes, Retainer modules
-  - `coaching/creator` selected → show Memberships, Course, Launch modules
-- Reorder sidebar items by `growthGoals` priority
-- Show relevant KPIs on the overview based on business type
-- Pass business type context to advisor recommendations
-
-### 6. Wire BusinessOnboarding entry to check completion
-- **File**: `src/pages/revenue-office/BusinessOnboarding.tsx`
-- Wrap with auth check — redirect to login if not authenticated
-- If onboarding already completed, show "You've already set up your business. Go to Settings to modify." with navigation buttons
+### 5. Ensure journey template updates cascade to sidebar
+- **File**: `BusinessAppShell.tsx`
+- Already reads `onboardingState.businessTypes` — verify it also re-reads after settings save (it does via the hook, but confirm the hook re-fetches after `markComplete`)
 
 ## Technical Details
-- Reuse the existing `OnboardingState` interface from `types.ts` for the jsonb column — no schema duplication
-- Settings page reuses the same `Toggle`, `SingleSelect`, `SectionTitle` primitives from `onboarding/primitives.tsx`
-- The sidebar visibility logic uses a simple mapping: `businessTypes[] → Set<sidebarItemId>` with a base set always visible
-- All changes respect the existing archetype/profile system (`useBusinessProfile`) — settings updates also trigger `updateOverrides` on the `BusinessProfileCtx`
+- No DB changes needed — the jsonb column already stores all fields
+- All new Settings sections reuse existing `Toggle`, `SingleSelect`, `SectionTitle` primitives
+- The `getRecommendedJourney` function already exists and maps types to templates — just needs to be imported and called
+- Total: ~5 files modified, 0 new files
 
