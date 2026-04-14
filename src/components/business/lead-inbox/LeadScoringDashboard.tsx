@@ -187,6 +187,18 @@ export const LeadScoringDashboard = ({ scores, items, scoreMap, onSelectLead, se
           </div>
         </div>
       )}
+
+      {/* Scoring Advisor Intelligence */}
+      {scoringAdvisors.length > 0 && (
+        <div className="rounded-2xl border border-border/40 bg-card p-4">
+          <ModuleAdvisorPanel
+            advisors={scoringAdvisors}
+            title="Scoring & Conversion Advisors"
+            defaultExpanded={false}
+            compact
+          />
+        </div>
+      )}
     </div>
   );
 };
