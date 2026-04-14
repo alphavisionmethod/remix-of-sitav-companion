@@ -221,7 +221,7 @@ export class UpdateDaemon {
       managedDevice: false,
       networkType: "wifi_secure",
       threatPosture: "normal",
-      updateState: this.state,
+      updateState: (["idle", "downloading", "staging", "validating"].includes(this.state) ? this.state : "idle") as "idle" | "downloading" | "staging" | "validating",
       vpnActive: false,
       guestSession: false,
       ...context,
