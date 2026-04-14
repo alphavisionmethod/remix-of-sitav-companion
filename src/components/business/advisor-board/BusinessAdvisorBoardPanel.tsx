@@ -32,6 +32,7 @@ interface Props {
 export function BusinessAdvisorBoardPanel({ allAdvisors: propAdvisors, themes: propThemes }: Props) {
   const [activeTab, setActiveTab] = useState<"themes" | "escalation" | "modules" | "disagreements">("themes");
   const [expandedTheme, setExpandedTheme] = useState<string | null>(null);
+  const [activePacketTheme, setActivePacketTheme] = useState<string | null>(null);
 
   // Use provided or generate demo data
   const allAdvisors = useMemo(() => propAdvisors || generateHomeAdvisors(), [propAdvisors]);
