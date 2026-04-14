@@ -879,6 +879,265 @@ const { isLoading, toggleDemoMode } = useDemoMode();
           </div>
         );
 
+      case "household":
+        return (
+          <SitaCard hover={false} className="p-5">
+            <SitaCardTitle sub="Family members, shared access, and household roles">
+              <div className="flex items-center gap-2"><Home className="h-4 w-4 text-primary" /> Household</div>
+            </SitaCardTitle>
+            <div className="mt-4 space-y-4">
+              <ChoiceGroup label="Household Size" value="family" onChange={() => {}} options={[
+                { key: "solo", label: "Just Me", desc: "Individual operating mode" },
+                { key: "couple", label: "2 People", desc: "Shared calendar & tasks" },
+                { key: "family", label: "Family (3-5)", desc: "Full household operations" },
+              ]} />
+              <div className="py-3 border-b border-border">
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Family Members</p>
+                <div className="space-y-2">
+                  {[
+                    { name: "You (Owner)", role: "Admin", status: "Active" },
+                    { name: "Partner", role: "Co-Manager", status: "Invited" },
+                    { name: "Teen Account", role: "Limited", status: "Pending" },
+                  ].map(m => (
+                    <div key={m.name} className="flex items-center justify-between rounded-xl bg-secondary/30 p-3">
+                      <div className="flex items-center gap-3">
+                        <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
+                          <Users className="h-3.5 w-3.5 text-primary" />
+                        </div>
+                        <div>
+                          <p className="text-xs font-medium text-foreground">{m.name}</p>
+                          <p className="text-[10px] text-muted-foreground">{m.role}</p>
+                        </div>
+                      </div>
+                      <TrustBadge level={m.status === "Active" ? "verified" : "pending"} label={m.status} size="sm" />
+                    </div>
+                  ))}
+                </div>
+                <SitaButton variant="secondary" size="sm" className="mt-3 w-full">
+                  <Users className="h-3.5 w-3.5 mr-1" /> Invite Family Member
+                </SitaButton>
+              </div>
+              <ToggleSetting label="Shared Calendar" description="Sync calendars across household members" enabled={true} onChange={() => {}} />
+              <ToggleSetting label="Shared Grocery Lists" description="Let family members add items to shared lists" enabled={true} onChange={() => {}} />
+              <ToggleSetting label="Expense Sharing" description="Split household expenses automatically" enabled={false} onChange={() => {}} />
+            </div>
+          </SitaCard>
+        );
+
+      case "business":
+        return (
+          <SitaCard hover={false} className="p-5">
+            <SitaCardTitle sub="Pipeline rules, follow-up policies, and business automation boundaries">
+              <div className="flex items-center gap-2"><TrendingUp className="h-4 w-4 text-primary" /> Business Rules</div>
+            </SitaCardTitle>
+            <div className="mt-4 space-y-4">
+              <ChoiceGroup label="Follow-Up Policy" value="smart" onChange={() => {}} options={[
+                { key: "aggressive", label: "Aggressive", desc: "Follow up within 24h, 3 attempts" },
+                { key: "smart", label: "Smart (Default)", desc: "AI-timed based on engagement signals" },
+                { key: "gentle", label: "Gentle", desc: "Max 1 follow-up per week" },
+              ]} />
+              <ChoiceGroup label="Lead Scoring Model" value="engagement" onChange={() => {}} options={[
+                { key: "recency", label: "Recency-Based", desc: "Prioritize recent activity" },
+                { key: "engagement", label: "Engagement-Based", desc: "Multi-signal scoring" },
+                { key: "value", label: "Value-Weighted", desc: "Estimated deal value first" },
+              ]} />
+              <div className="py-3 border-b border-border">
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Pipeline Stages</p>
+                <div className="space-y-1.5">
+                  {["Lead", "Qualified", "Proposal", "Negotiation", "Closed Won", "Closed Lost"].map((stage, i) => (
+                    <div key={stage} className="flex items-center gap-2 rounded-lg bg-secondary/20 px-3 py-2">
+                      <div className="h-2 w-2 rounded-full" style={{ background: `hsl(${200 + i * 25} 60% 55%)` }} />
+                      <span className="text-xs text-foreground flex-1">{stage}</span>
+                      <span className="text-[10px] text-muted-foreground">Stage {i + 1}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <ToggleSetting label="Auto-Archive Stale Leads" description="Archive leads with no activity for 60+ days" enabled={true} onChange={() => {}} />
+              <ToggleSetting label="Revenue Forecast" description="Generate weekly revenue projections from pipeline" enabled={true} onChange={() => {}} />
+              <ToggleSetting label="Advisor Pipeline Alerts" description="Business advisor alerts when deals stall or risk" enabled={true} onChange={() => {}} />
+            </div>
+          </SitaCard>
+        );
+
+      case "workflows":
+        return (
+          <SitaCard hover={false} className="p-5">
+            <SitaCardTitle sub="Automations, routines, and recurring task configuration">
+              <div className="flex items-center gap-2"><Workflow className="h-4 w-4 text-primary" /> Workflows & Automations</div>
+            </SitaCardTitle>
+            <div className="mt-4 space-y-4">
+              <div className="py-3 border-b border-border">
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Active Automations</p>
+                <div className="space-y-2">
+                  {[
+                    { name: "Follow-up after no response (3 days)", trigger: "Lead silence", status: "active", runs: 42 },
+                    { name: "Weekly revenue digest", trigger: "Every Monday 8am", status: "active", runs: 12 },
+                    { name: "Invoice reminder (7 days overdue)", trigger: "Invoice aging", status: "active", runs: 8 },
+                    { name: "Birthday greeting auto-send", trigger: "Contact birthday", status: "paused", runs: 3 },
+                    { name: "Onboarding welcome sequence", trigger: "New contact", status: "active", runs: 27 },
+                  ].map(a => (
+                    <div key={a.name} className="flex items-center justify-between rounded-xl bg-secondary/30 p-3">
+                      <div className="flex items-center gap-3">
+                        <div className={cn("h-2 w-2 rounded-full shrink-0", a.status === "active" ? "bg-trust-safe" : "bg-muted")} />
+                        <div>
+                          <p className="text-xs font-medium text-foreground">{a.name}</p>
+                          <p className="text-[10px] text-muted-foreground">{a.trigger} · {a.runs} runs</p>
+                        </div>
+                      </div>
+                      <TrustBadge level={a.status === "active" ? "verified" : "degraded"} label={a.status} size="sm" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <ChoiceGroup label="Automation Trust Gate" value="simulate" onChange={() => {}} options={[
+                { key: "auto", label: "Auto-Execute", desc: "Run without approval" },
+                { key: "simulate", label: "Simulate First", desc: "Preview before running" },
+                { key: "approve", label: "Require Approval", desc: "Manual approval each time" },
+              ]} />
+              <ToggleSetting label="Morning Routine" description="Auto-prepare daily briefing, tasks, and priorities at 7am" enabled={true} onChange={() => {}} />
+              <ToggleSetting label="End-of-Day Closure" description="Summarize completed items and carry-forward list at 6pm" enabled={false} onChange={() => {}} />
+              <ToggleSetting label="Smart Batching" description="Combine similar tasks into efficient batches" enabled={true} onChange={() => {}} />
+            </div>
+          </SitaCard>
+        );
+
+      case "backup":
+        return (
+          <SitaCard hover={false} className="p-5">
+            <SitaCardTitle sub="Data backup, restore points, and disaster recovery">
+              <div className="flex items-center gap-2"><Database className="h-4 w-4 text-primary" /> Backup & Recovery</div>
+            </SitaCardTitle>
+            <div className="mt-4 space-y-4">
+              <div className="rounded-xl border border-trust-safe/20 bg-trust-safe/5 p-4">
+                <div className="flex items-center gap-3 mb-2">
+                  <Shield className="h-5 w-5 text-trust-safe" />
+                  <div>
+                    <p className="text-sm font-medium text-foreground">Data Protection Active</p>
+                    <p className="text-[10px] text-muted-foreground">Your data is continuously backed up and encrypted</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-3 gap-2 mt-3">
+                  <div className="rounded-lg bg-secondary/30 p-2.5 text-center">
+                    <p className="font-display text-sm font-bold text-foreground">Today</p>
+                    <p className="text-[9px] text-muted-foreground">Last backup</p>
+                  </div>
+                  <div className="rounded-lg bg-secondary/30 p-2.5 text-center">
+                    <p className="font-display text-sm font-bold text-foreground">256-bit</p>
+                    <p className="text-[9px] text-muted-foreground">Encryption</p>
+                  </div>
+                  <div className="rounded-lg bg-secondary/30 p-2.5 text-center">
+                    <p className="font-display text-sm font-bold text-trust-safe">Healthy</p>
+                    <p className="text-[9px] text-muted-foreground">Status</p>
+                  </div>
+                </div>
+              </div>
+              <div className="py-3 border-b border-border">
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Restore Points</p>
+                <div className="space-y-1.5">
+                  {[
+                    { date: "Today, 6:00 AM", size: "2.4 MB", type: "Automatic" },
+                    { date: "Yesterday, 6:00 AM", size: "2.3 MB", type: "Automatic" },
+                    { date: "3 days ago", size: "2.1 MB", type: "Automatic" },
+                    { date: "1 week ago", size: "1.9 MB", type: "Manual" },
+                  ].map(r => (
+                    <div key={r.date} className="flex items-center justify-between rounded-lg bg-secondary/20 px-3 py-2">
+                      <div className="flex items-center gap-2">
+                        <Clock className="h-3 w-3 text-muted-foreground" />
+                        <span className="text-xs text-foreground">{r.date}</span>
+                        <span className="text-[9px] text-muted-foreground">({r.size})</span>
+                      </div>
+                      <span className="text-[9px] text-muted-foreground">{r.type}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <ChoiceGroup label="Backup Frequency" value="daily" onChange={() => {}} options={[
+                { key: "hourly", label: "Hourly" },
+                { key: "daily", label: "Daily (Default)" },
+                { key: "weekly", label: "Weekly" },
+              ]} />
+              <div className="flex gap-2">
+                <SitaButton variant="secondary" size="sm" className="flex-1">
+                  <Download className="h-3.5 w-3.5 mr-1" /> Export Backup
+                </SitaButton>
+                <SitaButton variant="secondary" size="sm" className="flex-1">
+                  <RefreshCw className="h-3.5 w-3.5 mr-1" /> Create Restore Point
+                </SitaButton>
+              </div>
+            </div>
+          </SitaCard>
+        );
+
+      case "support":
+        return (
+          <SitaCard hover={false} className="p-5">
+            <SitaCardTitle sub="Help resources, system diagnostics, and issue reporting">
+              <div className="flex items-center gap-2"><HelpCircle className="h-4 w-4 text-primary" /> Support & Diagnostics</div>
+            </SitaCardTitle>
+            <div className="mt-4 space-y-4">
+              {/* System Health */}
+              <div className="rounded-xl border border-border bg-secondary/20 p-4">
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3">System Health</p>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                  {[
+                    { label: "API", status: "healthy", icon: Wifi },
+                    { label: "Database", status: "healthy", icon: Database },
+                    { label: "AI Gateway", status: "healthy", icon: Cpu },
+                    { label: "Storage", status: "healthy", icon: Download },
+                  ].map(s => (
+                    <div key={s.label} className="rounded-lg bg-card p-2.5 text-center">
+                      <s.icon className="h-4 w-4 mx-auto text-trust-safe mb-1" />
+                      <p className="text-[10px] font-medium text-foreground">{s.label}</p>
+                      <p className="text-[9px] text-trust-safe capitalize">{s.status}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              {/* Diagnostics */}
+              <div className="py-3 border-b border-border">
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Diagnostics</p>
+                <div className="space-y-1.5">
+                  {[
+                    { label: "TypeScript Errors", value: "0", status: "good" },
+                    { label: "Failed Edge Functions", value: "0", status: "good" },
+                    { label: "RLS Coverage", value: "100%", status: "good" },
+                    { label: "Avg Response Time", value: "142ms", status: "good" },
+                    { label: "Uptime (30 days)", value: "99.97%", status: "good" },
+                  ].map(d => (
+                    <div key={d.label} className="flex items-center justify-between rounded-lg bg-secondary/20 px-3 py-2">
+                      <span className="text-xs text-muted-foreground">{d.label}</span>
+                      <span className={cn("text-xs font-medium", d.status === "good" ? "text-trust-safe" : "text-destructive")}>{d.value}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              {/* Quick Help */}
+              <div className="py-3">
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">Quick Help</p>
+                <div className="grid grid-cols-2 gap-2">
+                  {[
+                    { label: "Getting Started Guide", icon: FileText },
+                    { label: "Keyboard Shortcuts", icon: Wrench },
+                    { label: "Report an Issue", icon: AlertTriangle },
+                    { label: "Contact Support", icon: HelpCircle },
+                  ].map(h => (
+                    <button key={h.label} className="flex items-center gap-2 rounded-xl border border-border bg-card p-3 text-left hover:border-primary/20 transition-all">
+                      <h.icon className="h-4 w-4 text-muted-foreground shrink-0" />
+                      <span className="text-xs text-foreground">{h.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+              {/* Version */}
+              <div className="pt-3 border-t border-border text-center">
+                <p className="text-[10px] text-muted-foreground">SITA OS v1.0.0 · Build 2026.04.14</p>
+                <p className="text-[9px] text-muted-foreground mt-0.5">© 2026 SITA OS. All rights reserved.</p>
+              </div>
+            </div>
+          </SitaCard>
+        );
+
       default:
         return (
           <SitaCard hover={false} className="p-8 text-center">
