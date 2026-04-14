@@ -1,10 +1,11 @@
-import { useMemo, useCallback, useState } from "react";
+import { useMemo, useCallback, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Target, Briefcase, GraduationCap, ShoppingCart, MapPin, Users, PenTool, Heart, Layers, Brain, Check, ArrowRight, MessageSquare, Phone, FileText, RefreshCw, Plus, X, AlertTriangle, Star } from "lucide-react";
+import { Target, Briefcase, GraduationCap, ShoppingCart, MapPin, Users, PenTool, Heart, Layers, Brain, Check, ArrowRight, MessageSquare, Phone, FileText, RefreshCw, Plus, X, AlertTriangle, Star, Sparkles } from "lucide-react";
 import { Toggle, SectionTitle, ScreenHeader } from "../primitives";
 import SitaInsightCallout from "./SitaInsightCallout";
+import { getRecommendedJourney } from "@/lib/business-journey-config";
 import type { ScreenProps } from "../types";
 
 const templates = [
@@ -35,6 +36,19 @@ export default function JourneyScreen({ state, setState }: ScreenProps) {
   const [stageMarkers, setStageMarkers] = useState<Record<string, "critical" | "weak" | null>>({});
   const [journeyFit, setJourneyFit] = useState<"" | "close" | "missing" | "different">("");
 
+  // Auto-recommend journey template based on business types
+  const recommendedTemplate = useMemo(() => getRecommendedJourney(state.businessTypes), [state.businessTypes]);
+  const recommendedLabel = useMemo(() => templates.find(t => t.id === recommendedTemplate)?.label || recommendedTemplate, [recommendedTemplate]);
+
+  useEffect(() => {
+    if (!state.journeyTemplate && recommendedTemplate) {
+      const tmpl = templates.find(t => t.id === recommendedTemplate);
+      if (tmpl) {
+        setState(p => ({ ...p, journeyTemplate: tmpl.id, journeyStages: tmpl.flow }));
+      }
+    }
+  }, [recommendedTemplate, state.journeyTemplate, setState]);
+
   const togglePain = useCallback((v: string) => {
     setState(p => ({ ...p, journeyPainPoints: p.journeyPainPoints.includes(v) ? p.journeyPainPoints.filter(x => x !== v) : [...p.journeyPainPoints, v] }));
   }, [setState]);
@@ -61,6 +75,11 @@ export default function JourneyScreen({ state, setState }: ScreenProps) {
   return (
     <div className="space-y-6">
       <ScreenHeader icon={Target} title="Let's sketch how customers move through your business" subtitle="SITA will build a Customer Journey Twin from this pattern" color="text-blue-400" />
+      <SitaInsightCallout
+        show={!!recommendedTemplate && state.businessTypes.length > 0}
+        message={`Based on your business type, we recommend the "${recommendedLabel}" journey. ${state.journeyTemplate === recommendedTemplate ? "✓ Currently selected." : "You can pick a different one below."}`}
+        type="detected"
+      />
       <div className="space-y-2">
         {templates.map(t => (
           <button key={t.id} onClick={() => setState(p => ({ ...p, journeyTemplate: t.id, journeyStages: t.id !== "custom" ? t.flow : [] }))}
