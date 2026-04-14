@@ -14,6 +14,8 @@ import { formatDistanceToNow, differenceInDays } from "date-fns";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { CRMRelationshipIntelligence } from "@/components/business/crm/CRMRelationshipIntelligence";
 import { CRMNextBestAction } from "@/components/business/crm/CRMNextBestAction";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { getIdentityLayer, getStatusWord } from "@/lib/engines/business-identity-layers";
 
 type HealthBucket = { label: string; icon: React.ElementType; color: string; bg: string; border: string; min: number; max: number; description: string };
 
@@ -33,6 +35,10 @@ const CRMHealth = () => {
   const { data: comms = [] } = useCRMCommunications();
   const { data: opps = [] } = useCRMOpportunities();
   const { data: crmTasks = [] } = useCRMTasks();
+  const { primaryMode, adaptations } = useBusinessProfile();
+  const identity = getIdentityLayer(primaryMode);
+  const crmLang = adaptations.crm.language;
+  const contactLabel = crmLang.contactLabel || "Contacts";
   const [expandedBucket, setExpandedBucket] = useState<string | null>(null);
   const [selectedContact, setSelectedContact] = useState<string | null>(null);
 
@@ -125,8 +131,8 @@ const CRMHealth = () => {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-bold text-foreground">Relationship Health</h2>
-          <p className="text-xs text-muted-foreground">{contacts.length} contacts · Real-time health analysis</p>
+          <h2 className="text-xl font-bold text-foreground">{contactLabel} Health</h2>
+          <p className="text-xs text-muted-foreground">{contacts.length} {contactLabel.toLowerCase()} · {getStatusWord(primaryMode, avgHealth >= 70 ? "good" : avgHealth >= 40 ? "warning" : "critical")} overall</p>
         </div>
         <div className="flex items-center gap-4">
           <div className="text-right">
