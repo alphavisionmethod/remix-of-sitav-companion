@@ -13,6 +13,9 @@ import { useCountUp, useCountUpFormatted } from "@/hooks/useCountUp";
 import { SparklineChart } from "@/components/sita/SparklineChart";
 import { TrustStateBadge, type TrustState } from "@/components/sita/TrustStateBadge";
 import { useBoardroomLiveData } from "@/hooks/useBoardroomLiveData";
+import { getSynthesisForDomain } from "@/lib/services/orchestration-pipeline/app-board-synthesizer";
+import { getTransmissionLog } from "@/lib/services/orchestration-pipeline/signal-emitter";
+import type { Domain } from "@/lib/services/orchestration-pipeline/types";
 
 interface Props {
   scope: "global" | "business" | "finance" | "concierge";
@@ -26,17 +29,63 @@ const HERO_METRICS: { label: string; value: string; rawValue: number; sparkData:
   { label: "Advisor Consensus", value: "72%", rawValue: 72, sparkData: [65, 68, 70, 69, 71, 73, 72], positive: true, trustState: "advisory-only" },
 ];
 
-const SIGNALS = [
+const FALLBACK_SIGNALS = [
   { domain: "Business", icon: Briefcase, summary: "Pipeline pressure rising", metric: "3 deals stalled", trend: "down" as const, confidence: 68, freshness: "8 min ago", trustState: "evidence-backed" as TrustState },
   { domain: "Finance", icon: DollarSign, summary: "Cash flow stabilizing", metric: "$7,200 reserves", trend: "up" as const, confidence: 74, freshness: "2 min ago", trustState: "verified" as TrustState },
   { domain: "Concierge", icon: Users, summary: "Prep burden moderate", metric: "2 items overdue", trend: "flat" as const, confidence: 82, freshness: "1 hour ago", trustState: "inferred" as TrustState },
 ];
 
-const WHAT_CHANGED = [
+const FALLBACK_WHAT_CHANGED = [
   { label: "TechCorp invoice aged to 45+ days — now flagged critical", domain: "business", time: "3 hours ago", type: "escalation" as const },
   { label: "Reserve buffer dropped below 75% threshold", domain: "finance", time: "6 hours ago", type: "warning" as const },
   { label: "NYC flight prices increased $120 — approval window closing", domain: "concierge", time: "1 hour ago", type: "info" as const },
 ];
+
+const DOMAIN_ICONS: Record<string, React.ElementType> = { Business: Briefcase, Finance: DollarSign, Concierge: Users };
+
+/** Build signals from live pipeline synthesis data, with fallback */
+function buildLiveSignals(scope: string) {
+  const domains: Domain[] = scope === "global" ? ["business", "finance", "concierge"] : [scope as Domain];
+  const signals: typeof FALLBACK_SIGNALS = [];
+
+  for (const domain of domains) {
+    const synthesis = getSynthesisForDomain(domain);
+    if (synthesis) {
+      const label = domain.charAt(0).toUpperCase() + domain.slice(1);
+      signals.push({
+        domain: label,
+        icon: DOMAIN_ICONS[label] || Briefcase,
+        summary: synthesis.issue_summary.slice(0, 60),
+        metric: `${synthesis.module_advisor_positions.length} advisors`,
+        trend: synthesis.boardroom_worthiness_score > 0.6 ? "down" as const : synthesis.boardroom_worthiness_score > 0.3 ? "flat" as const : "up" as const,
+        confidence: Math.round(synthesis.module_advisor_positions.reduce((s, p) => s + p.confidence, 0) / Math.max(1, synthesis.module_advisor_positions.length)),
+        freshness: "Live",
+        trustState: synthesis.trust_state as TrustState,
+      });
+    }
+  }
+
+  return signals.length > 0 ? signals : FALLBACK_SIGNALS;
+}
+
+/** Build "What Changed" from transmission log, with fallback */
+function buildLiveWhatChanged() {
+  const log = getTransmissionLog();
+  if (log.length === 0) return FALLBACK_WHAT_CHANGED;
+
+  return log.slice(-5).reverse().map((entry) => {
+    const timeDiff = Date.now() - entry.timestamp;
+    const minutes = Math.floor(timeDiff / 60000);
+    const timeLabel = minutes < 1 ? "Just now" : minutes < 60 ? `${minutes} min ago` : `${Math.floor(minutes / 60)}h ago`;
+
+    return {
+      label: `${entry.packet_type} transmitted from ${entry.source_layer} → ${entry.destination_layer}`,
+      domain: entry.packet_id.includes("business") ? "business" : entry.packet_id.includes("finance") ? "finance" : "concierge",
+      time: timeLabel,
+      type: (entry.status === "failed" ? "escalation" : entry.source_layer.includes("A:") ? "info" : "warning") as "escalation" | "warning" | "info",
+    };
+  });
+}
 
 const EVIDENCE_NODES: EvidenceNode[] = [
   { id: "e1", label: "Invoice aging report — 3 accounts overdue", type: "source", confidence: 95, detail: "Pulled from financial records 12 min ago" },
@@ -72,7 +121,19 @@ const TrendIcon = ({ trend }: { trend: "up" | "down" | "flat" }) => {
 const mockChain = buildDefaultChain("simulation");
 
 function MorningBrief({ scope }: { scope: string }) {
-  const text = scope === "business"
+  // Generate brief from live synthesis when available
+  const domains: Domain[] = scope === "global" ? ["business", "finance", "concierge"] : [scope as Domain];
+  const synthParts: string[] = [];
+  for (const d of domains) {
+    const synth = getSynthesisForDomain(d);
+    if (synth) {
+      synthParts.push(synth.recommendation.slice(0, 100));
+    }
+  }
+
+  const text = synthParts.length > 0
+    ? synthParts.join(". ") + "."
+    : scope === "business"
     ? "Pipeline pressure is rising with 3 stalled deals. Collections are the top priority — $18.5K overdue across 3 accounts. CRM advisors recommend a segmented recovery approach."
     : scope === "finance"
     ? "Reserves are $2,800 below target at $7,200. Three deferrable subscriptions identified worth $342/mo. Receivables collection can restore buffer within 3 weeks."
@@ -156,6 +217,9 @@ export function BoardroomExecutiveView({ scope, onNavigate }: Props) {
   const filteredAgenda = scope === "global"
     ? agendaItems
     : agendaItems.filter((a) => a.domain === scope);
+
+  const SIGNALS = buildLiveSignals(scope);
+  const WHAT_CHANGED = buildLiveWhatChanged();
 
   const filteredSignals = scope === "global"
     ? SIGNALS

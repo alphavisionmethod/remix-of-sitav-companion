@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { Brain, Sparkles, Mic, Play, Pause, CheckCircle, Shield, XCircle, HelpCircle, Lock } from "lucide-react";
 import { getAdvisorRoster, type AdvisorRole } from "@/lib/advisor-topology";
 import { TalkingAvatar } from "./TalkingAvatar";
+import { getAdvisorOutputs } from "@/lib/services/orchestration-pipeline/module-advisor-consumer";
 
 interface Props {
   scope: "global" | "business" | "finance" | "concierge";
@@ -13,7 +14,8 @@ interface Props {
 
 type AdvisorStance = "agree" | "caution" | "dissent" | "unresolved" | "blocked" | "simulation-only" | "verified";
 
-const ADVISOR_STANCES: Record<string, AdvisorStance> = {
+// Fallback stances used when no pipeline data exists
+const FALLBACK_STANCES: Record<string, AdvisorStance> = {
   "biz-revenue": "agree",
   "biz-relationship": "caution",
   "biz-followthrough": "agree",
@@ -33,6 +35,46 @@ const ADVISOR_STANCES: Record<string, AdvisorStance> = {
   "con-prep": "verified",
   "con-household": "agree",
 };
+
+/** Derive stances from live pipeline advisor outputs, falling back to static map */
+function deriveDynamicStances(domains: string[]): Record<string, AdvisorStance> {
+  const outputs = getAdvisorOutputs();
+  if (outputs.length === 0) return FALLBACK_STANCES;
+
+  const dynamicStances: Record<string, AdvisorStance> = { ...FALLBACK_STANCES };
+
+  // Map pipeline advisor IDs to topology advisor IDs
+  const advisorIdMap: Record<string, string[]> = {
+    "revenue-advisor": ["biz-revenue"],
+    "crm-advisor": ["biz-relationship"],
+    "lead-recovery-advisor": ["biz-followthrough"],
+    "operations-advisor": ["biz-operations", "biz-support"],
+    "spending-advisor": ["fin-spending"],
+    "reserve-advisor": ["fin-reserve"],
+    "obligations-advisor": ["fin-obligations", "fin-approvals"],
+    "travel-advisor": ["con-travel"],
+    "calendar-advisor": ["con-prep", "con-lifeadmin"],
+    "lifestyle-advisor": ["con-logistics", "con-household"],
+  };
+
+  for (const output of outputs) {
+    const mappedIds = advisorIdMap[output.advisor_id] || [];
+    const stance: AdvisorStance =
+      output.boardroom_relevance_score > 0.6 && output.confidence >= 70 ? "agree"
+      : output.confidence < 40 ? "unresolved"
+      : output.risks.length > 0 && output.confidence < 60 ? "dissent"
+      : output.risks.length > 0 ? "caution"
+      : output.missing_data.length > 0 ? "unresolved"
+      : output.boardroom_relevance_score > 0.5 ? "simulation-only"
+      : "agree";
+
+    for (const id of mappedIds) {
+      dynamicStances[id] = stance;
+    }
+  }
+
+  return dynamicStances;
+}
 
 const STANCE_DOT: Record<AdvisorStance, { color: string; Icon: React.ElementType }> = {
   agree: { color: "hsl(var(--trust-safe))", Icon: CheckCircle },
@@ -68,6 +110,9 @@ export function BoardroomAdvisorCouncil({ scope, onSelectAdvisor, compact = fals
     const roster = getAdvisorRoster(d);
     allAdvisors.push(...roster.advisors);
   });
+
+  // Derive stances from pipeline data (live) with fallback to static
+  const ADVISOR_STANCES = useMemo(() => deriveDynamicStances(domains), [domains.join(",")]);
 
   const displayAdvisors = compact ? allAdvisors.slice(0, 4) : allAdvisors;
   const topic = TOPIC_MAP[scope] || TOPIC_MAP.global;
