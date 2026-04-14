@@ -17,6 +17,20 @@ export { AuditDaemon, getAuditDaemon } from "./auditd";
 export { ControlCenterDaemon, getControlCenterDaemon } from "./controlcenterd";
 export type { CommandResult } from "./controlcenterd";
 
+// ── Policy Bundles & Decisions ───────────────────────────────
+export { PolicyBundleManager, getPolicyBundleManager, DEVICE_MODES } from "./policyd-bundles";
+export type { DeviceMode, PolicyBundle, FullPolicyContent, PolicyBundleSource, DeviceModeDefinition } from "./policyd-bundles";
+export { ContextualDecisionEngine, getContextualDecisionEngine } from "./policyd-decisions";
+export type { EnhancedPolicyContext, EnhancedPolicyDecision, EnhancedDecisionType } from "./policyd-decisions";
+
+// ── Update Daemon ────────────────────────────────────────────
+export { UpdateDaemon, getUpdateDaemon } from "./updated";
+export type { UpdateState, UpdateChannel, UpdateCatalogEntry, UpdatePreflightResult, UpdateProgress, HealthValidationResult, RollbackEvent, SystemSlot } from "./updated";
+
+// ── Onboarding Daemon ────────────────────────────────────────
+export { OnboardingDaemon, getOnboardingDaemon } from "./onboardingd";
+export type { OnboardingSession, OnboardingStep, ProtectionDefaults } from "./onboardingd";
+
 // ── Elevation Engine ─────────────────────────────────────────
 export { ElevationEngine, getElevationEngine } from "./elevation-engine";
 export type { ElevationResult } from "./elevation-engine";
@@ -34,6 +48,9 @@ import { getSessionDaemon } from "./sessiond";
 import { getAuditDaemon } from "./auditd";
 import { getControlCenterDaemon } from "./controlcenterd";
 import { getNotifyDaemon } from "./notifyd";
+import { getUpdateDaemon } from "./updated";
+import { getOnboardingDaemon } from "./onboardingd";
+import { getPolicyBundleManager } from "./policyd-bundles";
 
 let booted = false;
 
