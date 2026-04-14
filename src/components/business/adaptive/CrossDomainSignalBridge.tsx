@@ -4,7 +4,7 @@
 // domains so they can adapt their emphasis accordingly.
 // ═══════════════════════════════════════════════════════════════
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 
 /** Custom event carrying cross-domain signals from Business Profile */
@@ -29,8 +29,7 @@ export interface BusinessProfileSignalEvent extends CustomEvent {
  * business profile changes. Mount once inside BusinessAppShell.
  */
 export function CrossDomainSignalBridge() {
-  const { primaryMode, operatingFlags, adaptations } = useBusinessProfile();
-  const profile = useBusinessProfile().profile;
+  const { primaryMode, operatingFlags, profile } = useBusinessProfile();
   const lastEmitted = useRef<string>("");
 
   useEffect(() => {
@@ -62,16 +61,13 @@ export function CrossDomainSignalBridge() {
 
 /**
  * Hook for Finance or Concierge to listen for business profile signals.
- * Returns the latest signal or null if none received.
  */
 export function useBusinessProfileSignal() {
-  const ref = useRef<BusinessProfileSignalEvent["detail"] | null>(null);
   const [signal, setSignal] = useState<BusinessProfileSignalEvent["detail"] | null>(null);
 
   useEffect(() => {
     const handler = (e: Event) => {
       const detail = (e as BusinessProfileSignalEvent).detail;
-      ref.current = detail;
       setSignal(detail);
     };
     window.addEventListener("sita-business-profile-signal", handler);
@@ -80,6 +76,3 @@ export function useBusinessProfileSignal() {
 
   return signal;
 }
-
-// Fix: need to import useState
-import { useState } from "react";
