@@ -237,6 +237,12 @@ const pages: Record<string, React.ComponentType> = {
   "workflow-templates": AdaptiveWorkflowTemplates,
   "boardroom-agenda": AdaptiveBoardroomAgenda,
   "business-settings": BusinessSettingsPage,
+  "morning-briefing": MorningBriefing,
+  "end-of-day": EndOfDayClosure,
+  "deal-room": DealRoom,
+  "strategic-accounts": StrategicAccountRoom,
+  "relationship-dossier": RelationshipDossier,
+  "background-tasks": BackgroundTaskCenter,
 };
 
 // ── Helper components ─────────────────────────────────────────
