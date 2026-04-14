@@ -192,7 +192,6 @@ export function DesktopSurface({
   continuity = DEFAULT_CONTINUITY,
   onLaunchApp,
 }: DesktopSurfaceProps) {
-  const navigate = useNavigate();
   const desktopRef = useRef<HTMLDivElement>(null);
   const { activeId: wallpaperId } = useWallpaper();
   const { widgets, hiddenWidgets, allWidgets, moveWidget, removeWidget, addWidget, resizeWidget, resetWidgets, allTypes } = useDesktopWidgets();
