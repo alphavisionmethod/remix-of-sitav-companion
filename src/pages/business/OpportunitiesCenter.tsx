@@ -15,6 +15,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
 import { Target, DollarSign, TrendingUp, Clock, AlertTriangle, Sparkles, ArrowRight, CheckCircle, Plus, X, Trash2, LayoutList, Columns } from "lucide-react";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { getModuleAdaptation } from "@/lib/engines/business-module-adaptations";
 
 
 

@@ -7,6 +7,7 @@
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { SitaCard, SitaCardTitle } from "@/components/sita/SitaCard";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
 import { KPITile } from "@/components/sita/SitaComponents";

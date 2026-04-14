@@ -6,6 +6,7 @@
 
 import { useState, useCallback } from "react";
 import PlaybookSimulator from "@/components/business/PlaybookSimulator";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { motion, AnimatePresence, Reorder } from "framer-motion";
 import { SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
