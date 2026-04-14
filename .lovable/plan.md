@@ -1,121 +1,132 @@
 
 
-# Lead Recovery — Full Advanced Implementation Plan
+# Business OS — Advisor & Boardroom Integration Layer
 
-## Current State
-- `LeadRecovery.tsx`: ~150 lines, 5 hardcoded cold leads, 4 campaigns, basic 3-tab list (Cold Leads/Campaigns/ROI) + simple detail pane
-- `LeadRecoveryPane.tsx`: ~109 lines, shows identity card + single AI message with send buttons
-- No recovery engine, no queue classification, no recovery scoring logic, no rich detail view, no integration with CRM/advisors/Boardroom
+## What Exists Today
+- **Business Home**: Has `AdvisorSynthesisZone` (hardcoded per business mode) and `BoardroomEntryZone` (hardcoded candidates) — good UX but static, no real engine
+- **Lead Inbox**: Has `LeadAdvisorWhisper` (11 lines, just a text blurb), `ModuleAdvisorInsight` used on the page, `LeadScoringDashboard` with `boardroomWorthy` flag — partial wiring
+- **Lead Recovery**: Has `advisorInsight` string field on each candidate, `boardroomCandidate` flag — data exists but no advisor panel or escalation UI
+- **Business Boardroom**: Has `DomainAdvisorBoard` + `AdvisorCouncilShell` + KPIs — works as strategic review but doesn't receive structured escalation packets from modules
+- **CRM**: Has a full `CRMAdvisorBoard` (408 lines) with insight generation — good pattern to follow
+- **Shared components**: `ModuleAdvisorInsight` (compact advisor card), `DomainAdvisorBoard` (full council with 5 modes)
+- **No advisor engine**: No structured advisor output model, no cross-module synthesis engine, no escalation packet builder
 
 ## Implementation Plan
 
-### File 1: Recovery Data Engine
-**Create `src/lib/engines/lead-recovery-engine.ts`** (~300 lines)
+### File 1: Business Advisor Intelligence Engine
+**Create `src/lib/engines/business-advisor-engine.ts`** (~400 lines)
 
-Recovery object model with full typing:
-- `RecoveryCandidate`: linked lead, failure mode, recovery reason, stage at slip, time since last action, value at risk, relationship sensitivity, time sensitivity, recovery score, likely success band, recommended recovery path, owner accountability, prepared drafts, advisor summary, boardroom candidacy
-- `FailureMode` enum: no_response, missed_followup, quote_abandoned, lost_momentum, owner_dropped, appointment_incomplete, post_consult_drift, handoff_failure, silent_high_value, callback_missed
-- `RecoveryPath` enum: soft_reactivation, direct_rescue, quote_rescue, consult_reactivation, relationship_repair, reassignment, strategic_rescue
-- `RecoveryQueue` type with queue definitions matching all 12+ queues from spec
-- Recovery scoring function: computes recoverability (0-100) from engagement quality, value, recency, failure mode, relationship context
-- Recovery window heat calculator: time-based urgency
-- Failure mode classifier: analyzes lead signals to determine what went wrong
-- Relationship sensitivity scorer
-- Likely success band calculator (strong/moderate/uncertain/low/archive)
-- Recovery path recommender based on failure mode + context
-- Queue assignment logic
-- 25+ rich mock recovery candidates with realistic data spanning all failure modes and queues
+Core structured advisor output model and all 18 advisor functions:
+- `AdvisorOutput` type: advisorName, module, summary, rationale, positiveSignals, negativeSignals, confidence, assumptions, suggestedActions, escalationRecommendation, urgency, relatedObjects, timestamp
+- `EscalationPacket` type: title, objectContext, leadContext, stageContext, communicationHistory, advisorRationale, confidence, assumptions, recoveryOptions, recommendedMotion, disagreements
+- `BoardSynthesisTheme` type: themeId, title, description, severity, modules, advisorAgreement, escalationCandidate, metrics
 
-### File 2: Recovery Overview Dashboard
-**Create `src/components/business/lead-recovery/RecoveryOverview.tsx`** (~250 lines)
+**Module advisor functions** (each returns `AdvisorOutput`):
+- Business Home: `runSummaryAdvisor`, `runPressureAdvisor`, `runPriorityAdvisor`
+- Leads: `runLeadPrioritizationAdvisor`, `runOpportunityAdvisor`, `runQualificationAdvisor`
+- Lead Inbox: `runTriageAdvisor`, `runDuplicateReviewAdvisor`, `runOwnerSuggestionAdvisor`
+- Scoring: `runScoringAdvisor`, `runConversionAdvisor`, `runTimingAdvisor`
+- Stages: `runProgressionAdvisor`, `runStuckStageAdvisor`, `runLifecycleAdvisor`
+- Recovery: `runRecoveryAdvisor`, `runCommunicationRecoveryAdvisor`, `runRevenueRescueAdvisor`
 
-Premium strategic overview at top of workspace:
-- Hero metrics row: Total Recoverable Leads, Value at Risk ($), Hottest Recovery Windows, Recovery Win Rate
-- Recovery queue health visualization: horizontal bar chart showing leads per queue with color-coded urgency
-- Top Priority Rescue grid: 3 cards showing highest-value recovery opportunities with score rings, failure mode badges, and time sensitivity indicators
-- Advisor summary card with recovery intelligence insight
-- Recovery momentum indicator: animated ring showing recovery trend (improving/stable/declining)
-- Uses HeroCard, StatusCard, AdvisorCard from design system
+**Board synthesis**: `synthesizeBusinessBoard` — groups module outputs into cross-cutting themes
+**Escalation builder**: `buildEscalationPacket` — creates Boardroom-ready packets
+**Disagreement detector**: `detectAdvisorDisagreements` — finds conflicting advisor positions
 
-### File 3: Recovery Queue Panel
-**Create `src/components/business/lead-recovery/RecoveryQueuePanel.tsx`** (~200 lines)
+All functions are pure/stateless, consuming module data and returning structured outputs.
 
-Left sidebar queue navigator:
-- 12 queue entries: No Response, Missed Follow-up, Quote Abandoned, Lost Momentum, Owner Dropped, Appointment Incomplete, Post-Consult Drift, Handoff Failure, Silent High-Value, Callback Missed, Winback/Reactivation, Strategic Recovery
-- Each queue shows: icon, name, count badge, value-at-risk indicator, urgency dot
-- "All Recovery" option at top
-- Active queue highlighted with accent border
-- Animated count transitions
-- Compact, scrollable, glassmorphic queue list
+### File 2: Business Advisor Board Panel
+**Create `src/components/business/advisor-board/BusinessAdvisorBoardPanel.tsx`** (~350 lines)
 
-### File 4: Recovery Card
-**Create `src/components/business/lead-recovery/RecoveryCard.tsx`** (~180 lines)
+Premium synthesis dashboard showing cross-module intelligence:
+- **Theme cards**: Grouped strategic themes (Revenue Risk, Operational Weakness, Opportunity Concentration, etc.) with severity badges and contributing module tags
+- **Advisor agreement/disagreement visualization**: Side-by-side rationale chips, confidence split bars, "why advisors differ" expandable drawer
+- **Escalation queue**: Cards for Boardroom-worthy items with preview, packet builder button, and severity indicators
+- **Module contribution grid**: Shows which modules are feeding insights, with health dots and last-updated timestamps
+- **"What changed since last review"** section: Delta summary of new themes and resolved items
+- Animated entry with Framer Motion, glassmorphic dark surface treatment
 
-Rich recovery candidate card (inspired by LeadTriageCard quality):
-- Left urgency bar color-coded by time sensitivity
-- Avatar with recovery score ring (color: green/gold/red)
-- Name, company, value at risk
-- Failure mode badge (e.g., "Quote Abandoned", "Owner Dropped")
-- Recovery score with likely success band label
-- Time since slip indicator
-- Recovery path recommendation chip
-- Quick action tray: Re-engage, Rebook, Reopen Quote, Reassign, Escalate, Archive
-- Hover reveals full action set
-- Selected state with accent border
+### File 3: Module Advisor Panels (per-module inline advisor UI)
+**Create `src/components/business/advisor-board/ModuleAdvisorPanel.tsx`** (~250 lines)
 
-### File 5: Recovery Detail Pane (rebuilt)
-**Rewrite `src/components/business/LeadRecoveryPane.tsx`** (~400 lines)
+Reusable multi-advisor panel for embedding in any module page:
+- Takes an array of `AdvisorOutput` objects
+- Renders them as stacked advisor cards with: name, role icon, summary, confidence ring, positive/negative signal chips, suggested actions tray, escalation badge
+- Supports collapsed (show top advisor only) and expanded (all advisors) modes
+- Disagreement indicator when advisors conflict
+- "Send to Board" action on individual insights
+- Beautiful tabbed view when 3+ advisors (e.g., Recovery tab shows Recovery Advisor, Communication Recovery Advisor, Revenue Rescue Advisor)
 
-Premium rescue briefing with 6 sections:
+### File 4: Escalation Packet Preview
+**Create `src/components/business/advisor-board/EscalationPacketPreview.tsx`** (~200 lines)
 
-**A. Recovery Summary** — what happened, why it matters, recoverability score ring with band label
+Premium briefing-style preview of a Boardroom escalation packet:
+- Sections A-J matching the spec: Title, Object Context, Lead/Account Context, Stage Context, Communication History (timeline), Advisor Rationale (multi-advisor cards with agreement/dissent markers), Confidence gauge, Assumptions list, Recovery/Action Options (radio-selectable), Recommended Motion
+- "Send to Boardroom" CTA button with confirmation
+- Print-ready layout feel — high-end briefing document design
+- Glassmorphic card with gold/purple accent borders for strategic gravitas
 
-**B. What Went Wrong** — timeline visualization showing: when momentum started, when it slipped, when action was missed, why recovery is still viable. Uses a vertical step timeline with status dots (green → amber → red → current)
+### File 5: Advisor Disagreement View
+**Create `src/components/business/advisor-board/AdvisorDisagreementCard.tsx`** (~120 lines)
 
-**C. Recovery Path** — suggested approach card with: path name, message tone, timing advice, who should own it, confidence indicator
+Side-by-side advisor comparison when positions conflict:
+- Two advisor cards placed side by side with a "vs" divider
+- Each shows: advisor name, position summary, confidence level, key factors
+- Confidence split bar showing relative strength
+- "Why they differ" expandable explanation
+- Optional "Escalate disagreement" action
+- Calm, non-alarming visual treatment — purple/amber tones
 
-**D. Time & Relationship Sensitivity** — two side-by-side indicator cards: urgency gauge (act today / this week / flexible) and relationship sensitivity gauge (handle carefully / standard / direct approach)
+### File 6: Wire Advisors into Lead Recovery
+**Modify `src/pages/business/LeadRecovery.tsx`** and **`src/components/business/LeadRecoveryPane.tsx`**
 
-**E. Prepared Communication** — AI-generated recovery draft in a premium message card, with channel badge (Email/Phone/LinkedIn/SMS), tone indicator, Edit/Send/Add to Campaign buttons
+- Add `ModuleAdvisorPanel` to the Recovery overview tab showing outputs from Recovery Advisor, Communication Recovery Advisor, Revenue Rescue Advisor
+- In detail pane: replace static `advisorInsight` string with structured multi-advisor section showing all 3 advisor outputs with confidence, actions, and escalation recommendations
+- Add "Escalate to Boardroom" button that opens `EscalationPacketPreview` for boardroom candidates
+- Wire recovery candidates through `runRecoveryAdvisor()` etc. to generate live structured outputs
 
-**F. Suggested Next Actions** — action tray with prioritized recovery actions: send recovery message, schedule callback, reassign owner, reopen quote, invite to consult, escalate to Boardroom, archive with rationale
+### File 7: Wire Advisors into Lead Inbox
+**Modify `src/pages/business/LeadsInbox.tsx`** and **`src/components/business/lead-inbox/LeadDetailPanel.tsx`**
 
-**G. Accountability View** — who owns this, what was missed, whether escalation needed, manager review recommended badge
+- Add collapsible `ModuleAdvisorPanel` to the inbox sidebar showing Triage Advisor, Duplicate/Quality Advisor, Owner Suggestion Advisor outputs
+- In detail panel: add advisor section below lead info with triage recommendation, quality assessment, and suggested owner
+- Wire through `runTriageAdvisor()` etc. with inbox item data
 
-### File 6: Recovery Celebration & States
-**Create `src/components/business/lead-recovery/RecoveryStates.tsx`** (~150 lines)
+### File 8: Wire Advisors into Business Home
+**Modify `src/components/business/home/AdvisorSynthesisZone.tsx`**
 
-- Empty state: hopeful "No active rescue opportunities right now" with shield icon, recovery performance tips, prevention suggestions
-- First-use state: explains what Lead Recovery does with 3 benefit cards
-- Recovered celebration: animated "Momentum Restored" card with confetti-style particle burst, shows value recovered and pipeline status
-- High-pressure state: elevated urgency banner when many leads are slipping
+- Replace hardcoded `MODE_SYNTHESIS` with calls to `runSummaryAdvisor`, `runPressureAdvisor`, `runPriorityAdvisor`
+- Show multi-advisor view instead of single synthesis: three advisor cards for Summary, Pressure, and Priority with individual confidence levels
+- Add disagreement indicator when advisors conflict
+- Add "View Full Board" link that navigates to the Business Advisor Board page
 
-### File 7: Main Page Rebuild
-**Rewrite `src/pages/business/LeadRecovery.tsx`** (~250 lines)
+### File 9: Business Advisor Board Page
+**Create `src/pages/business/BusinessAdvisorBoardPage.tsx`** (~150 lines)
 
-Full workspace layout:
-- Top: RecoveryOverview (collapsible)
-- Below: SplitWorkspace with:
-  - Left: Queue panel tabs + filtered RecoveryCard list with search/sort
-  - Right: Full RecoveryDetailPane
-- Tab bar: Overview | Queues | Campaigns | Analytics
-- Campaigns tab retains campaign list with enhanced cards
-- Analytics tab: recovery win rate chart, value recovered over time, top failure modes pie, recovery path effectiveness
-- All wired to recovery engine data
-- Smooth Framer Motion transitions between tabs/selections
+Full-page workspace for the Business Advisor Board synthesis layer:
+- Uses `BusinessAdvisorBoardPanel` as the main content
+- Top: strategic summary hero with total themes, escalation candidates count, board health score
+- Tabs: Themes | Escalation Queue | Module Health | History
+- Wired into BusinessAppShell navigation
+
+### File 10: Register in BusinessAppShell
+**Modify `src/components/sita/apps/business/BusinessAppShell.tsx`**
+
+- Add "Advisor Board" navigation entry under Intelligence section
+- Route to `BusinessAdvisorBoardPage`
+- Ensure the existing "Advisors" entry (DomainAdvisorBoard) and new "Advisor Board" (synthesis layer) are both accessible
 
 ## Design Language
-All components follow existing SITA OS patterns:
-- Dark glassmorphic: `bg-[hsl(0_0%_9%)]`, `border-[hsl(0_0%_100%/0.06)]`
-- Accent: `hsl(265 55% 58%)` purple, `hsl(38 85% 58%)` gold, `hsl(152 55% 48%)` trust-safe green
-- Typography: Space Grotesk display, Inter body
-- Surface levels 0-3 via AppSurface
-- Premium cards via HeroCard, StatusCard, AdvisorCard, QueueCard
-- Framer Motion enter/exit animations
-- Calm, non-punitive tone throughout
+- Dark glassmorphic: `bg-[hsl(0_0%_9%)]`, borders `hsl(0_0%_100%/0.06)`
+- Accent purple `hsl(265 55% 58%)` for advisor elements, gold `hsl(38 85% 58%)` for escalation/urgency, green `hsl(152 55% 48%)` for confidence/agreement
+- Advisor cards use subtle radial accent glows matching `ModuleAdvisorInsight` pattern
+- Disagreement uses amber/violet split treatment
+- Escalation packets use gold borders with formal briefing aesthetic
+- Framer Motion enter/exit on all panels
+- Follows existing `CRMAdvisorBoard` quality bar
 
 ## File Summary
-- **Create**: lead-recovery-engine.ts, RecoveryOverview.tsx, RecoveryQueuePanel.tsx, RecoveryCard.tsx, RecoveryStates.tsx (5 files)
-- **Rewrite**: LeadRecoveryPane.tsx, LeadRecovery.tsx (2 files)
-- **Total**: 7 files, ~1,700 lines
+- **Create**: business-advisor-engine.ts, BusinessAdvisorBoardPanel.tsx, ModuleAdvisorPanel.tsx, EscalationPacketPreview.tsx, AdvisorDisagreementCard.tsx, BusinessAdvisorBoardPage.tsx (6 files)
+- **Modify**: LeadRecovery.tsx, LeadRecoveryPane.tsx, LeadsInbox.tsx, LeadDetailPanel.tsx, AdvisorSynthesisZone.tsx, BusinessAppShell.tsx (6 files)
+- **Total**: 12 files, ~2,200 lines
 
