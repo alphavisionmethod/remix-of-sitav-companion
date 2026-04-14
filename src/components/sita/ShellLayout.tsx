@@ -62,9 +62,8 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
   const { doLaunchApp, handleLaunchApp, PermissionGateRenderer } = useWindowLauncher(wm);
 
   // Listen for sita-open-business events (from BusinessCenter redirect shim)
-  React.useEffect(() => {
+  useEffect(() => {
     const handler = (e: Event) => {
-      const detail = (e as CustomEvent).detail;
       doLaunchApp("business");
     };
     window.addEventListener("sita-open-business", handler);
