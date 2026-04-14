@@ -67,6 +67,8 @@ export function CRMContactDetail({ contact, companies = [], onClose, onEdit }: C
   const createTask = useCreateTask();
   const createNote = useCreateNote();
   const updateContact = useUpdateContact();
+  const { primaryMode } = useBusinessProfile();
+  const tabOrder = getContactDetailTabs(primaryMode);
 
   const [activeTab, setActiveTab] = useState("overview");
   const [showQuickNote, setShowQuickNote] = useState(false);
