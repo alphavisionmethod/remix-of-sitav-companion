@@ -31,7 +31,7 @@ export function DraggableWidget({ id, position, onMove, onRemove, children, clas
       onMouseLeave={() => setHovered(false)}
       className={cn("transition-shadow duration-200 group", className)}
     >
-      {/* Drag surface - only the background/border area triggers drag */}
+      {/* Drag surface - background layer for dragging only */}
       <motion.div
         drag
         dragConstraints={dragConstraints}
@@ -43,16 +43,26 @@ export function DraggableWidget({ id, position, onMove, onRemove, children, clas
         animate={{ opacity: 1, scale: 1, x: 0, y: 0 }}
         whileDrag={{ scale: 1.02, zIndex: 50 }}
         className={cn(
-          "absolute inset-0 cursor-grab active:cursor-grabbing",
+          "absolute inset-0 z-0 cursor-grab active:cursor-grabbing",
           dragging && "z-50 shadow-[0_0_30px_rgba(114,92,255,0.3)]",
         )}
+        style={{ pointerEvents: dragging ? "auto" : "none" }}
         onContextMenu={(e) => {
           e.preventDefault();
           onRemove(id);
         }}
       />
-      {/* Grab handle — visible on hover */}
-      <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-white/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10" />
+      {/* Grab handle — visible on hover, draggable */}
+      <motion.div
+        drag
+        dragConstraints={dragConstraints}
+        dragMomentum={false}
+        dragElastic={0}
+        onDragStart={() => { setDragging(true); isDragIntent.current = true; }}
+        onDragEnd={handleDragEnd}
+        animate={{ x: 0, y: 0 }}
+        className="absolute -top-3 left-1/2 -translate-x-1/2 w-12 h-1.5 bg-white/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-20 cursor-grab active:cursor-grabbing"
+      />
       {/* Remove button on hover */}
       {hovered && !dragging && (
         <button
