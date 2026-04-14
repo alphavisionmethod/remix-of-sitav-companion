@@ -3,11 +3,11 @@ import { SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard"
 import { KPITile, SitaTabs, EmptyState } from "@/components/sita/SitaComponents";
 import { TrustBadge, TrustLevel } from "@/components/sita/TrustBadge";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
-import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
+import { ModuleAdvisorPanel } from "@/components/business/advisor-board/ModuleAdvisorPanel";
 import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
 import { StateBadge, ExecutionState } from "@/components/sita/StateBadge";
 import { ConfidenceBar } from "@/components/sita/primitives/ConfidenceBar";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
