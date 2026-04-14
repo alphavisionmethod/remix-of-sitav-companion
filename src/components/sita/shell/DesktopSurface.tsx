@@ -6,7 +6,6 @@
 import { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { useNavigate } from "react-router-dom";
 import { Plus } from "lucide-react";
 import { useWindowManagerContext } from "@/contexts/WindowManagerContext";
 import { FloatingWindow } from "./FloatingWindow";
@@ -36,6 +35,7 @@ import {
   DesktopWeatherWidget,
   DesktopPortfolioMapWidget,
 } from "./desktop";
+import { DesktopLeftRail } from "./desktop/DesktopLeftRail";
 import type { ContinuityContext, DesktopState } from "./useShellState";
 
 interface DesktopSurfaceProps {
@@ -99,10 +99,10 @@ function DesktopBigClock() {
 }
 
 // ── Compact Continuity Card ──────────────────────────────────
-function ContinuityCard({ continuity }: { continuity: ContinuityContext }) {
-  const navigate = useNavigate();
+function ContinuityCard({ continuity, onLaunchApp }: { continuity: ContinuityContext; onLaunchApp?: (appId: string) => void }) {
   const pending = continuity.pendingDrafts + continuity.unfinishedWorkflows;
   const resumeLabel = continuity.lastWorkspace ? `Resume ${continuity.lastWorkspace}` : "Workspace ready";
+  const targetApp = continuity.lastWorkspace?.toLowerCase() ?? "business";
 
   return (
     <div className="rounded-3xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-[40px] overflow-hidden w-[300px] shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
@@ -112,7 +112,7 @@ function ContinuityCard({ continuity }: { continuity: ContinuityContext }) {
         <h3 className="text-sm font-semibold text-white">{resumeLabel}</h3>
         <div className="mt-3 flex items-center gap-2">
           <button
-            onClick={() => navigate(continuity.lastWorkspace ? `/${continuity.lastWorkspace.toLowerCase()}` : "/business")}
+            onClick={() => onLaunchApp?.(targetApp)}
             className="rounded-lg bg-white/90 px-3 py-1.5 text-xs font-medium text-slate-900 shadow-sm transition hover:bg-white hover:scale-[1.02]"
           >
             Continue
@@ -154,7 +154,7 @@ function renderWidget(type: string, onOpenCommand?: () => void, continuity?: Con
         </div>
       );
     case "continuity":
-      return <ContinuityCard continuity={continuity ?? DEFAULT_CONTINUITY} />;
+      return <ContinuityCard continuity={continuity ?? DEFAULT_CONTINUITY} onLaunchApp={onLaunchApp} />;
     case "what-matters":
       return (<div className="w-[340px]"><DesktopWhatMattersWidget onLaunchApp={onLaunchApp} /></div>);
     case "notifications-feed":
@@ -192,7 +192,6 @@ export function DesktopSurface({
   continuity = DEFAULT_CONTINUITY,
   onLaunchApp,
 }: DesktopSurfaceProps) {
-  const navigate = useNavigate();
   const desktopRef = useRef<HTMLDivElement>(null);
   const { activeId: wallpaperId } = useWallpaper();
   const { widgets, hiddenWidgets, allWidgets, moveWidget, removeWidget, addWidget, resizeWidget, resetWidgets, allTypes } = useDesktopWidgets();
@@ -236,11 +235,15 @@ export function DesktopSurface({
         <ShellAmbientBackground intensity="vivid" className="fixed" wallpaperId={wallpaperId} />
       </div>
 
-      {/* Layer 2: Desktop Content — Draggable Widgets */}
+      {/* Layer 2: Desktop Content — Draggable Widgets + Left Rail */}
       <div className={cn(
         "absolute inset-0 z-10 transition-all duration-700",
         hasAnyWindows && "opacity-30 blur-sm pointer-events-none"
       )}>
+        {/* Persistent Left Rail — app launcher sidebar (large screens only) */}
+        <div className="absolute left-4 top-1/2 -translate-y-1/2 z-20">
+          <DesktopLeftRail onLaunchApp={onLaunchApp} />
+        </div>
         {/* Draggable widgets */}
         {widgets.map((w) => (
           <DraggableWidget
