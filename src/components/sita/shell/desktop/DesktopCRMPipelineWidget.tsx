@@ -6,9 +6,11 @@ const DEALS = [
   { name: "Initech LLC", value: "$18K", stage: "Discovery", color: "bg-violet-500/20 text-violet-300" },
 ];
 
-export function DesktopCRMPipelineWidget() {
+interface Props { onLaunchApp?: (appId: string) => void; }
+
+export function DesktopCRMPipelineWidget({ onLaunchApp }: Props) {
   return (
-    <DesktopWidgetCard title="CRM Pipeline">
+    <DesktopWidgetCard title="CRM Pipeline" onClick={() => onLaunchApp?.("business")}>
       <div className="mb-3">
         <p className="text-2xl font-bold text-white/90">$312K</p>
         <p className="text-[11px] text-white/40">14 open opportunities</p>

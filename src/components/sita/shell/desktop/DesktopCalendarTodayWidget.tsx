@@ -7,9 +7,11 @@ const EVENTS = [
   { time: "5:00 PM", title: "Dentist (Maya)", domain: "concierge", color: "bg-amber-500" },
 ];
 
-export function DesktopCalendarTodayWidget() {
+interface Props { onLaunchApp?: (appId: string) => void; }
+
+export function DesktopCalendarTodayWidget({ onLaunchApp }: Props) {
   return (
-    <DesktopWidgetCard title="Today's Schedule">
+    <DesktopWidgetCard title="Today's Schedule" onClick={() => onLaunchApp?.("calendar")}>
       <div className="space-y-2.5">
         {EVENTS.map((e, i) => (
           <div key={i} className="flex items-center gap-2.5">

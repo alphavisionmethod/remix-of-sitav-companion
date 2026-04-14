@@ -1,9 +1,11 @@
 import { DesktopWidgetCard } from "./DesktopWidgetCard";
 import { Brain, AlertTriangle } from "lucide-react";
 
-export function DesktopBoardroomBriefWidget() {
+interface Props { onLaunchApp?: (appId: string) => void; }
+
+export function DesktopBoardroomBriefWidget({ onLaunchApp }: Props) {
   return (
-    <DesktopWidgetCard title="Boardroom Brief">
+    <DesktopWidgetCard title="Boardroom Brief" onClick={() => onLaunchApp?.("boardroom")}>
       <div className="flex items-center gap-2 mb-3">
         <Brain className="h-4 w-4 text-violet-400" />
         <div>

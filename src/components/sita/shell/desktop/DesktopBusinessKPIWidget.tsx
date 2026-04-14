@@ -7,9 +7,11 @@ const KPIS = [
   { label: "Conversion", value: "3.2%", change: "-0.4%", up: false },
 ];
 
-export function DesktopBusinessKPIWidget() {
+interface Props { onLaunchApp?: (appId: string) => void; }
+
+export function DesktopBusinessKPIWidget({ onLaunchApp }: Props) {
   return (
-    <DesktopWidgetCard title="Business KPIs">
+    <DesktopWidgetCard title="Business KPIs" onClick={() => onLaunchApp?.("business")}>
       <div className="space-y-3">
         {KPIS.map(k => (
           <div key={k.label} className="flex items-center justify-between">

@@ -8,9 +8,11 @@ const ADVISORS = [
   { domain: "growth" as const, name: "Growth", confidence: 78 },
 ];
 
-export function DesktopAdvisorCouncilWidget() {
+interface Props { onLaunchApp?: (appId: string) => void; }
+
+export function DesktopAdvisorCouncilWidget({ onLaunchApp }: Props) {
   return (
-    <DesktopWidgetCard title="Advisor Council">
+    <DesktopWidgetCard title="Advisor Council" onClick={() => onLaunchApp?.("boardroom")}>
       <div className="space-y-2.5">
         {ADVISORS.map(a => (
           <div key={a.domain} className="flex items-center justify-between">
