@@ -61,6 +61,16 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
   const { isCalm, isFocus } = useDisplayMode();
   const { doLaunchApp, handleLaunchApp, PermissionGateRenderer } = useWindowLauncher(wm);
 
+  // Listen for sita-open-business events (from BusinessCenter redirect shim)
+  React.useEffect(() => {
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent).detail;
+      doLaunchApp("business");
+    };
+    window.addEventListener("sita-open-business", handler);
+    return () => window.removeEventListener("sita-open-business", handler);
+  }, [doLaunchApp]);
+
   // Hooks
   useAdaptiveInterface();
   useZeroLatency();
