@@ -13,11 +13,12 @@ import {
   Calendar, Settings, Brain, Shield, Mail, BarChart3, ShoppingCart,
   Globe, Bot, Crown, RefreshCw, MessageSquare, CheckCircle,
   TrendingUp, PieChart, Heart, Activity, AlertTriangle, Sliders,
-  ExternalLink, ArrowDownLeft
+  ExternalLink, ArrowDownLeft, Loader2
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
 import { crossNavigate } from "@/lib/engines/cross-os-integration";
+import { supabase } from "@/integrations/supabase/client";
 import type { LucideIcon } from "lucide-react";
 
 interface CommandItem {
