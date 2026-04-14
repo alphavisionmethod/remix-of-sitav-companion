@@ -337,6 +337,20 @@ export default function AdminDashboard() {
             </Button>
           </CardContent>
         </Card>
+        <Card className="border-purple-500/20">
+          <CardContent className="p-4 flex items-center gap-3">
+            <div className="p-2 rounded-xl bg-purple-500/10">
+              <Shield className="h-5 w-5 text-purple-500" />
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-medium text-foreground">Security Foundation</p>
+              <p className="text-[10px] text-muted-foreground">TPM · IPC Contracts · Audit · Threats</p>
+            </div>
+            <Button variant="outline" size="sm" asChild>
+              <Link to="/admin/security/foundation">Open →</Link>
+            </Button>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Bottom alerts */}
