@@ -9,13 +9,15 @@ import { motion, AnimatePresence } from "framer-motion";
 import {
   Lock, ArrowRight, Shield, Eye, EyeOff, AlertCircle,
   CheckCircle, Bell, Calendar, Clock, Wifi, WifiOff,
-  Users, ChevronUp, Fingerprint,
+  Users, ChevronUp, Fingerprint, Key,
 } from "lucide-react";
 import logo from "@/assets/logo.webp";
 import { cn } from "@/lib/utils";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { ShellAmbientBackground } from "./ShellAmbientBackground";
 import type { TrustPosture, PrivacyMode, ShellNotificationDigest } from "./useShellState";
+import { isOSSecurityBooted } from "@/lib/os-security";
+import { sessionUnlockFlow } from "@/lib/os-security/flows";
 
 // ── Types ────────────────────────────────────────────────────
 
@@ -79,13 +81,18 @@ export function EnhancedLockScreen({
   isOnline = true,
 }: EnhancedLockScreenProps) {
   const [password, setPassword] = useState("");
+  const [pin, setPin] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [unlockState, setUnlockState] = useState<UnlockState>("idle");
+  const [authMode, setAuthMode] = useState<"password" | "pin" | "biometric">("password");
   const [error, setError] = useState("");
   const [shake, setShake] = useState(false);
   const [dismissed, setDismissed] = useState(false);
   const [showAlerts, setShowAlerts] = useState(false);
+  const [failedAttempts, setFailedAttempts] = useState(0);
+  const [lockoutUntil, setLockoutUntil] = useState<number | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const pinRef = useRef<HTMLInputElement>(null);
   const reduced = useReducedMotion();
 
   // Clock
@@ -101,39 +108,86 @@ export function EnhancedLockScreen({
     return () => clearTimeout(t);
   }, []);
 
+  // Lockout timer
+  useEffect(() => {
+    if (!lockoutUntil) return;
+    const timer = setInterval(() => {
+      if (Date.now() >= lockoutUntil) {
+        setLockoutUntil(null);
+        setFailedAttempts(0);
+        setError("");
+      }
+    }, 1000);
+    return () => clearInterval(timer);
+  }, [lockoutUntil]);
+
+  const isLockedOut = lockoutUntil !== null && Date.now() < lockoutUntil;
+
+  const handleFailure = useCallback(() => {
+    const attempts = failedAttempts + 1;
+    setFailedAttempts(attempts);
+    
+    // Rate limiting: lockout after 5 attempts
+    if (attempts >= 5) {
+      const lockoutMs = Math.min(30000 * Math.pow(2, Math.floor(attempts / 5) - 1), 300000);
+      setLockoutUntil(Date.now() + lockoutMs);
+      setError(`Too many attempts. Locked for ${Math.ceil(lockoutMs / 1000)}s`);
+    } else {
+      setError(`Incorrect ${authMode === "pin" ? "PIN" : "password"} (${5 - attempts} attempts remaining)`);
+    }
+    
+    setShake(true);
+    setPassword("");
+    setPin("");
+    setTimeout(() => {
+      setShake(false);
+      setUnlockState(authMode === "pin" ? "pin_entry" : "password_entry");
+    }, 600);
+    if (authMode === "pin") pinRef.current?.focus();
+    else inputRef.current?.focus();
+  }, [failedAttempts, authMode]);
+
   const handleSubmit = useCallback(async (e?: React.FormEvent) => {
     e?.preventDefault();
-    if (!password.trim() || unlockState === "unlocking") return;
+    const credential = authMode === "pin" ? pin : password;
+    if (!credential.trim() || unlockState === "unlocking" || isLockedOut) return;
 
     setUnlockState("unlocking");
     setError("");
 
     try {
-      const success = await onUnlock(password);
+      // Try OS security flow first
+      if (isOSSecurityBooted()) {
+        const { getSessionDaemon } = await import("@/lib/os-security/sessiond");
+        const sessiond = getSessionDaemon();
+        const sessions = sessiond.getAllSessions();
+        const session = sessions[0];
+        if (session) {
+          const result = await sessionUnlockFlow(session.sessionId, credential, authMode === "pin" ? "pin" : "password");
+          if (result.status === "ok") {
+            setUnlockState("success");
+            setFailedAttempts(0);
+            setTimeout(() => setDismissed(true), 500);
+            return;
+          }
+        }
+      }
+
+      // Fallback to provided onUnlock
+      const success = await onUnlock(credential);
       if (success) {
         setUnlockState("success");
+        setFailedAttempts(0);
         setTimeout(() => setDismissed(true), 500);
       } else {
         setUnlockState("failed");
-        setError("Incorrect password");
-        setShake(true);
-        setPassword("");
-        setTimeout(() => {
-          setShake(false);
-          setUnlockState("password_entry");
-        }, 600);
-        inputRef.current?.focus();
+        handleFailure();
       }
     } catch {
       setUnlockState("failed");
-      setError("Authentication failed");
-      setShake(true);
-      setTimeout(() => {
-        setShake(false);
-        setUnlockState("password_entry");
-      }, 600);
+      handleFailure();
     }
-  }, [password, unlockState, onUnlock]);
+  }, [password, pin, unlockState, onUnlock, authMode, isLockedOut, handleFailure]);
 
   const hours = time.getHours().toString().padStart(2, "0");
   const minutes = time.getMinutes().toString().padStart(2, "0");
@@ -299,6 +353,28 @@ export function EnhancedLockScreen({
               {userName}
             </p>
 
+            {/* Auth mode switcher */}
+            <div className="flex items-center gap-1 mb-1">
+              {(["password", "pin", "biometric"] as const).map((mode) => (
+                <button
+                  key={mode}
+                  type="button"
+                  onClick={() => { setAuthMode(mode); setError(""); setPassword(""); setPin(""); }}
+                  className={cn(
+                    "px-2.5 py-1 rounded-lg text-[10px] font-medium transition-all",
+                    authMode === mode
+                      ? "bg-[hsl(265,55%,58%,0.2)] text-[hsl(265,55%,70%)]"
+                      : "text-[rgba(255,255,255,0.25)] hover:text-[rgba(255,255,255,0.45)]"
+                  )}
+                >
+                  {mode === "password" && <Lock className="h-2.5 w-2.5 inline mr-1" />}
+                  {mode === "pin" && <Key className="h-2.5 w-2.5 inline mr-1" />}
+                  {mode === "biometric" && <Fingerprint className="h-2.5 w-2.5 inline mr-1" />}
+                  {mode.charAt(0).toUpperCase() + mode.slice(1)}
+                </button>
+              ))}
+            </div>
+
             {/* Unlock form */}
             <form onSubmit={handleSubmit} className="flex flex-col items-center gap-3">
               <motion.div
@@ -306,62 +382,139 @@ export function EnhancedLockScreen({
                 transition={{ duration: 0.5 }}
                 className="relative"
               >
-                <div
-                  className={cn(
-                    "flex items-center rounded-2xl border transition-all duration-300",
-                    error
-                      ? "border-destructive/40 bg-destructive/5"
-                      : "border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.03)]",
-                    "focus-within:border-[hsl(265,55%,58%,0.35)] focus-within:bg-[rgba(255,255,255,0.05)]",
-                    "hover:border-[rgba(255,255,255,0.1)]"
-                  )}
-                  style={{ backdropFilter: "blur(20px)" }}
-                >
-                  <Lock className="h-3.5 w-3.5 ml-4 text-[rgba(255,255,255,0.25)]" />
-                  <input
-                    ref={inputRef}
-                    type={showPassword ? "text" : "password"}
-                    value={password}
-                    onChange={(e) => {
-                      setPassword(e.target.value);
-                      setError("");
-                      if (unlockState !== "unlocking") setUnlockState("password_entry");
-                    }}
-                    placeholder="Enter password"
-                    className="w-56 bg-transparent px-3 py-3 text-sm text-[rgba(255,255,255,0.9)] placeholder:text-[rgba(255,255,255,0.2)] focus:outline-none"
-                    style={{ fontFamily: "var(--font-body)" }}
-                    autoComplete="current-password"
-                    disabled={unlockState === "unlocking" || unlockState === "success"}
-                  />
+                {authMode === "biometric" ? (
                   <button
                     type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="px-2 text-[rgba(255,255,255,0.2)] hover:text-[rgba(255,255,255,0.45)] transition-colors"
-                    tabIndex={-1}
+                    onClick={() => {
+                      setUnlockState("unlocking");
+                      // Simulate biometric
+                      setTimeout(async () => {
+                        const success = await onUnlock("biometric-token");
+                        if (success) {
+                          setUnlockState("success");
+                          setTimeout(() => setDismissed(true), 500);
+                        } else {
+                          setUnlockState("failed");
+                          handleFailure();
+                        }
+                      }, 1200);
+                    }}
+                    disabled={unlockState === "unlocking" || isLockedOut}
+                    className="flex flex-col items-center gap-3 px-10 py-6 rounded-2xl border border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.03)] hover:bg-[rgba(255,255,255,0.05)] transition-all"
+                    style={{ backdropFilter: "blur(20px)" }}
                   >
-                    {showPassword ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+                    <Fingerprint className={cn(
+                      "h-10 w-10 transition-colors",
+                      unlockState === "unlocking" ? "text-[hsl(265,55%,58%)] animate-pulse" :
+                      unlockState === "success" ? "text-[hsl(152,55%,48%)]" :
+                      "text-[rgba(255,255,255,0.3)]"
+                    )} />
+                    <span className="text-[11px] text-[rgba(255,255,255,0.3)]">
+                      {unlockState === "unlocking" ? "Scanning…" : "Touch to unlock"}
+                    </span>
                   </button>
-                  <button
-                    type="submit"
-                    disabled={!password.trim() || unlockState === "unlocking" || unlockState === "success"}
+                ) : authMode === "pin" ? (
+                  <div
                     className={cn(
-                      "flex items-center justify-center rounded-xl h-8 w-8 mr-1.5 transition-all duration-200",
-                      unlockState === "success"
-                        ? "bg-[hsl(152,55%,48%)] text-white"
-                        : password.trim()
-                        ? "bg-[hsl(265,55%,58%)] text-white hover:bg-[hsl(265,55%,62%)]"
-                        : "bg-transparent text-[rgba(255,255,255,0.1)]"
+                      "flex items-center rounded-2xl border transition-all duration-300",
+                      error ? "border-destructive/40 bg-destructive/5" : "border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.03)]",
+                      "focus-within:border-[hsl(265,55%,58%,0.35)] focus-within:bg-[rgba(255,255,255,0.05)]",
                     )}
+                    style={{ backdropFilter: "blur(20px)" }}
                   >
-                    {unlockState === "unlocking" ? (
-                      <div className="h-3.5 w-3.5 rounded-full border-2 border-white/30 border-t-white animate-spin" />
-                    ) : unlockState === "success" ? (
-                      <CheckCircle className="h-3.5 w-3.5" />
-                    ) : (
-                      <ArrowRight className="h-3.5 w-3.5" />
+                    <Key className="h-3.5 w-3.5 ml-4 text-[rgba(255,255,255,0.25)]" />
+                    <input
+                      ref={pinRef}
+                      type="password"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      maxLength={6}
+                      value={pin}
+                      onChange={(e) => {
+                        const v = e.target.value.replace(/[^0-9]/g, "");
+                        setPin(v);
+                        setError("");
+                        if (unlockState !== "unlocking") setUnlockState("pin_entry");
+                      }}
+                      placeholder="Enter PIN"
+                      className="w-56 bg-transparent px-3 py-3 text-sm text-[rgba(255,255,255,0.9)] placeholder:text-[rgba(255,255,255,0.2)] focus:outline-none tracking-[0.5em] text-center"
+                      style={{ fontFamily: "var(--font-body)" }}
+                      autoComplete="off"
+                      disabled={unlockState === "unlocking" || unlockState === "success" || isLockedOut}
+                    />
+                    <button
+                      type="submit"
+                      disabled={!pin.trim() || unlockState === "unlocking" || unlockState === "success" || isLockedOut}
+                      className={cn(
+                        "flex items-center justify-center rounded-xl h-8 w-8 mr-1.5 transition-all duration-200",
+                        unlockState === "success" ? "bg-[hsl(152,55%,48%)] text-white" :
+                        pin.trim() ? "bg-[hsl(265,55%,58%)] text-white hover:bg-[hsl(265,55%,62%)]" :
+                        "bg-transparent text-[rgba(255,255,255,0.1)]"
+                      )}
+                    >
+                      {unlockState === "unlocking" ? (
+                        <div className="h-3.5 w-3.5 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                      ) : unlockState === "success" ? (
+                        <CheckCircle className="h-3.5 w-3.5" />
+                      ) : (
+                        <ArrowRight className="h-3.5 w-3.5" />
+                      )}
+                    </button>
+                  </div>
+                ) : (
+                  <div
+                    className={cn(
+                      "flex items-center rounded-2xl border transition-all duration-300",
+                      error ? "border-destructive/40 bg-destructive/5" : "border-[rgba(255,255,255,0.07)] bg-[rgba(255,255,255,0.03)]",
+                      "focus-within:border-[hsl(265,55%,58%,0.35)] focus-within:bg-[rgba(255,255,255,0.05)]",
+                      "hover:border-[rgba(255,255,255,0.1)]"
                     )}
-                  </button>
-                </div>
+                    style={{ backdropFilter: "blur(20px)" }}
+                  >
+                    <Lock className="h-3.5 w-3.5 ml-4 text-[rgba(255,255,255,0.25)]" />
+                    <input
+                      ref={inputRef}
+                      type={showPassword ? "text" : "password"}
+                      value={password}
+                      onChange={(e) => {
+                        setPassword(e.target.value);
+                        setError("");
+                        if (unlockState !== "unlocking") setUnlockState("password_entry");
+                      }}
+                      placeholder="Enter password"
+                      className="w-56 bg-transparent px-3 py-3 text-sm text-[rgba(255,255,255,0.9)] placeholder:text-[rgba(255,255,255,0.2)] focus:outline-none"
+                      style={{ fontFamily: "var(--font-body)" }}
+                      autoComplete="current-password"
+                      disabled={unlockState === "unlocking" || unlockState === "success" || isLockedOut}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="px-2 text-[rgba(255,255,255,0.2)] hover:text-[rgba(255,255,255,0.45)] transition-colors"
+                      tabIndex={-1}
+                    >
+                      {showPassword ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+                    </button>
+                    <button
+                      type="submit"
+                      disabled={!password.trim() || unlockState === "unlocking" || unlockState === "success" || isLockedOut}
+                      className={cn(
+                        "flex items-center justify-center rounded-xl h-8 w-8 mr-1.5 transition-all duration-200",
+                        unlockState === "success" ? "bg-[hsl(152,55%,48%)] text-white" :
+                        password.trim() ? "bg-[hsl(265,55%,58%)] text-white hover:bg-[hsl(265,55%,62%)]" :
+                        "bg-transparent text-[rgba(255,255,255,0.1)]"
+                      )}
+                    >
+                      {unlockState === "unlocking" ? (
+                        <div className="h-3.5 w-3.5 rounded-full border-2 border-white/30 border-t-white animate-spin" />
+                      ) : unlockState === "success" ? (
+                        <CheckCircle className="h-3.5 w-3.5" />
+                      ) : (
+                        <ArrowRight className="h-3.5 w-3.5" />
+                      )}
+                    </button>
+                  </div>
+                )}
               </motion.div>
 
               {/* Error */}
