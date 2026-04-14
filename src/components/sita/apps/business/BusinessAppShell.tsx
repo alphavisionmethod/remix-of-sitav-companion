@@ -28,6 +28,7 @@ import ModeTransitionCeremony from "@/components/business/adaptive/ModeTransitio
 import { getSidebarOverrides, applySidebarOverrides } from "@/lib/engines/adaptive-sidebar-intelligence";
 import AdaptiveNotificationCenter from "@/components/business/adaptive/AdaptiveNotificationCenter";
 import AdaptiveOnboardingWizard from "@/components/business/adaptive/AdaptiveOnboardingWizard";
+import FormationShell from "@/pages/revenue-office/onboarding/FormationShell";
 import AdaptiveWorkflowTemplates from "@/components/business/adaptive/AdaptiveWorkflowTemplates";
 import AdaptiveBoardroomAgenda from "@/components/business/adaptive/AdaptiveBoardroomAgenda";
 import { CrossOSLinksPanel } from "@/components/sita/cross-os/CrossOSLinksPanel";
