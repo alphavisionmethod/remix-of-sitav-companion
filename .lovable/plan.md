@@ -1,58 +1,72 @@
 
 
-# Make Desktop Widgets Fully Interactive
+# What's Still Missing — Full Gap Analysis
 
-## Problem
-1. **Domain widgets are not clickable** — Business KPIs, Finance Snapshot, Boardroom Brief, Concierge Tasks, Investment Pulse, CRM Pipeline, Leads Recovered, Advisor Council, and Portfolio Map are static cards. Clicking them does nothing. They should open their corresponding app.
-2. **Remove/move is not discoverable** — The drag handle only appears on hover (tiny grip icon above widget), and remove requires either right-click or hovering to find a tiny X. Users need clearer affordances.
-3. **Some widgets (Clock, System, Calendar, Notifications, Weather) are pure info** — these don't need click-to-launch, but the domain widgets do.
+After reviewing the entire codebase across desktop and mobile, here are the remaining gaps:
+
+## 1. "What Matters Now" Widget Is Not Clickable
+`DesktopWhatMattersWidget` never received an `onLaunchApp` prop. Each domain card (Business, Finance, Concierge) inside it should click-to-launch its respective app, but currently does nothing.
+
+## 2. Mobile "More" Menu Is Just Settings — No Way to Reach Other Pages
+The "More" tab in `MobileTabBar` goes directly to `/mobile/settings`. There is no "More" hub page that links to Boardroom, Approvals, Alerts, Proof Log, Device Trust, Emergency Actions, Quick Capture, or Investment. Users on mobile have no way to reach these pages except by typing the URL.
+
+**Fix**: Create a `MobileMore.tsx` page with a grid/list of all secondary features, and route the "More" tab to it. Keep Settings as one item inside that page.
+
+## 3. Missing Mobile Pages for Key Domains
+- **Investment** — no `/mobile/investment` page or route exists. Desktop has a full Investment Office app, but mobile users cannot access it.
+- **Files** — no `/mobile/files` page. Desktop has Finder but mobile has no equivalent.
+
+## 4. Sign Out Button Does Nothing on Mobile
+`MobileSettings.tsx` renders a "Sign Out" `NavRow` but it has no `onClick` handler — clicking it does nothing.
+
+## 5. "What Matters Now" Widget Items Not Clickable on Desktop  
+Each domain summary card inside the widget should launch its corresponding app when clicked.
+
+## 6. Mobile Route Map Incomplete
+`MOBILE_ROUTE_MAP` in `App.tsx` only covers `/desktop`, `/business`, `/money`, `/concierge`, `/boardroom`, `/settings`. Missing:
+- `/files` → `/mobile/files`
+- `/investment` → `/mobile/investment`
+- `/approvals` → `/mobile/approvals`
+
+---
 
 ## Plan
 
-### Step 1: Add `onClick` to `DesktopWidgetCard`
-- Add optional `onClick` prop to `DesktopWidgetCard.tsx`
-- When provided, render the card as a clickable surface with a subtle hover indicator (cursor-pointer, slight glow)
+### Step 1: Create Mobile "More" Hub Page
+- New file: `src/pages/mobile/MobileMore.tsx`
+- Grid of links to: Boardroom, Approvals, Alerts, Proof Log, Investment, Files, Device Trust, Emergency, Settings, Quick Capture
+- Update `MobileTabBar` "More" path from `/mobile/settings` to `/mobile/more`
+- Add route in `MobileRoutes.tsx`
 
-### Step 2: Wire domain widgets to launch their apps
-Each domain widget gets an `onLaunchApp` prop and wraps its `DesktopWidgetCard` with an onClick:
+### Step 2: Create Missing Mobile Pages
+- `src/pages/mobile/MobileInvestment.tsx` — portfolio summary, holdings, performance
+- `src/pages/mobile/MobileFiles.tsx` — recent files list, folders
+- Add routes for both in `MobileRoutes.tsx`
 
-| Widget | Launches App |
-|--------|-------------|
-| `DesktopBusinessKPIWidget` | `business` |
-| `DesktopFinanceSnapshotWidget` | `finance` |
-| `DesktopConciergeTasksWidget` | `concierge` |
-| `DesktopBoardroomBriefWidget` | `boardroom` |
-| `DesktopInvestmentPulseWidget` | `investment` |
-| `DesktopCRMPipelineWidget` | `business` |
-| `DesktopLeadsRecoveredWidget` | `business` |
-| `DesktopAdvisorCouncilWidget` | `boardroom` |
-| `DesktopPortfolioMapWidget` | `investment` |
-| `DesktopCalendarTodayWidget` | `calendar` |
-| `DesktopWhatMattersWidget` | (no single app) |
+### Step 3: Wire Sign Out on Mobile
+- Import `useAuth` in `MobileSettings.tsx`
+- Add `signOut()` call to the Sign Out `NavRow`
 
-### Step 3: Pass `onLaunchApp` through `renderWidget` in `DesktopSurface.tsx`
-- The `renderWidget` function already receives `onLaunchApp` — pass it down to each domain widget
+### Step 4: Make "What Matters Now" Widget Clickable
+- Add `onLaunchApp` prop to `DesktopWhatMattersWidget`
+- Each domain card clicks to launch its app (business, finance, concierge)
+- Pass `onLaunchApp` from `renderWidget` in `DesktopSurface.tsx`
 
-### Step 4: Improve drag/remove discoverability in `DraggableWidget.tsx`
-- Make the drag handle larger and always slightly visible (not just on hover)
-- Make the remove X button always visible on hover with a clearer design
-- Add a subtle "hold to drag" tooltip or visual cue
-- Keep right-click-to-remove as secondary method
+### Step 5: Expand Mobile Route Map
+- Add `/files`, `/investment`, `/approvals` entries to `MOBILE_ROUTE_MAP` in `App.tsx`
 
-### Files to modify
-- `src/components/sita/shell/desktop/DesktopWidgetCard.tsx` — add onClick
-- `src/components/sita/shell/desktop/DraggableWidget.tsx` — improve drag/remove UX
-- `src/components/sita/shell/desktop/DesktopBusinessKPIWidget.tsx` — add onLaunchApp
-- `src/components/sita/shell/desktop/DesktopFinanceSnapshotWidget.tsx` — add onLaunchApp
-- `src/components/sita/shell/desktop/DesktopConciergeTasksWidget.tsx` — add onLaunchApp
-- `src/components/sita/shell/desktop/DesktopBoardroomBriefWidget.tsx` — add onLaunchApp
-- `src/components/sita/shell/desktop/DesktopInvestmentPulseWidget.tsx` — add onLaunchApp
-- `src/components/sita/shell/desktop/DesktopCRMPipelineWidget.tsx` — add onLaunchApp
-- `src/components/sita/shell/desktop/DesktopLeadsRecoveredWidget.tsx` — add onLaunchApp
-- `src/components/sita/shell/desktop/DesktopAdvisorCouncilWidget.tsx` — add onLaunchApp
-- `src/components/sita/shell/desktop/DesktopPortfolioMapWidget.tsx` — add onLaunchApp
-- `src/components/sita/shell/desktop/DesktopCalendarTodayWidget.tsx` — add onLaunchApp
-- `src/components/sita/shell/DesktopSurface.tsx` — pass onLaunchApp to all domain widgets in renderWidget
+### Files to Create
+- `src/pages/mobile/MobileMore.tsx`
+- `src/pages/mobile/MobileInvestment.tsx`
+- `src/pages/mobile/MobileFiles.tsx`
 
-No new files. No database changes.
+### Files to Modify
+- `src/components/mobile/MobileTabBar.tsx` — point More to `/mobile/more`
+- `src/routes/MobileRoutes.tsx` — add 3 new routes
+- `src/pages/mobile/MobileSettings.tsx` — wire sign out
+- `src/components/sita/shell/desktop/DesktopWhatMattersWidget.tsx` — add onLaunchApp
+- `src/components/sita/shell/DesktopSurface.tsx` — pass onLaunchApp to WhatMatters
+- `src/App.tsx` — expand MOBILE_ROUTE_MAP
+
+No database changes.
 
