@@ -100,6 +100,7 @@ const APP_REGISTRY: Record<string, Omit<AppLaunchConfig, "id">> = {
   "sita-concierge": { name: "Concierge", component: <ConciergeAppShell />, width: 1200, position: { x: 160, y: 130 } },
   "sita-boardroom": { name: "Boardroom", component: <BoardroomAppShell />, width: 1200, position: { x: 140, y: 110 } },
   "sita-investment-office": { name: "Investment Office", component: <InvestmentAppShell />, width: 1200, position: { x: 100, y: 70 } },
+  trust: { name: "Security Center", component: <SecurityCenterWindow />, width: 540, position: { x: 180, y: 80 } },
 };
 
 // Canonical mapping: collapse catalog aliases to a single window ID

@@ -68,8 +68,10 @@ export function DraggableWidget({ id, position, onMove, onRemove, children, clas
       >
         <X className="h-3.5 w-3.5" />
       </button>
-      {/* Interactive children — receive all clicks normally */}
-      {children}
+      {/* Interactive children — stopPropagation so clicks don't trigger drag */}
+      <div onPointerDown={(e) => e.stopPropagation()}>
+        {children}
+      </div>
     </motion.div>
   );
 }

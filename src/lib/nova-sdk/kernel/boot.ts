@@ -126,7 +126,9 @@ class NovaKernelClass {
       CrashResilience.start();
     });
 
-    // Register kernel services with watchdog and start heartbeat pumps
+    // Register kernel services with watchdog — no auto-check timer
+    // These are decorative kernel components; the watchdog check loop
+    // would false-trigger restarts since they have no real process to restart.
     this.initSubsystem("WatchdogHeartbeats", () => {
       const watchedComponents: Array<{ id: string; cls: "ui" | "service" | "background" }> = [
         { id: "scheduler", cls: "service" },
@@ -137,15 +139,14 @@ class NovaKernelClass {
       ];
       for (const c of watchedComponents) {
         CrashResilience.watchdog.registerComponent(c.id, c.cls);
-        // Immediately send first heartbeat so watchdog doesn't false-trigger
         CrashResilience.watchdog.heartbeat(c.id);
       }
-      // Pump heartbeats every 200ms for all kernel components
+      // Pump heartbeats at a relaxed 2s interval — purely cosmetic
       this.heartbeatInterval = setInterval(() => {
         for (const c of watchedComponents) {
           CrashResilience.watchdog.heartbeat(c.id);
         }
-      }, 200);
+      }, 2000);
     });
 
     const kernelMs = (performance.now() - this.bootStartTime).toFixed(1);

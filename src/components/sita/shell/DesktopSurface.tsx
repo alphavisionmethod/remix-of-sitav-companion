@@ -99,10 +99,10 @@ function DesktopBigClock() {
 }
 
 // ── Compact Continuity Card ──────────────────────────────────
-function ContinuityCard({ continuity }: { continuity: ContinuityContext }) {
-  const navigate = useNavigate();
+function ContinuityCard({ continuity, onLaunchApp }: { continuity: ContinuityContext; onLaunchApp?: (appId: string) => void }) {
   const pending = continuity.pendingDrafts + continuity.unfinishedWorkflows;
   const resumeLabel = continuity.lastWorkspace ? `Resume ${continuity.lastWorkspace}` : "Workspace ready";
+  const targetApp = continuity.lastWorkspace?.toLowerCase() ?? "business";
 
   return (
     <div className="rounded-3xl border border-white/[0.08] bg-white/[0.03] backdrop-blur-[40px] overflow-hidden w-[300px] shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
@@ -112,7 +112,7 @@ function ContinuityCard({ continuity }: { continuity: ContinuityContext }) {
         <h3 className="text-sm font-semibold text-white">{resumeLabel}</h3>
         <div className="mt-3 flex items-center gap-2">
           <button
-            onClick={() => navigate(continuity.lastWorkspace ? `/${continuity.lastWorkspace.toLowerCase()}` : "/business")}
+            onClick={() => onLaunchApp?.(targetApp)}
             className="rounded-lg bg-white/90 px-3 py-1.5 text-xs font-medium text-slate-900 shadow-sm transition hover:bg-white hover:scale-[1.02]"
           >
             Continue
@@ -154,7 +154,7 @@ function renderWidget(type: string, onOpenCommand?: () => void, continuity?: Con
         </div>
       );
     case "continuity":
-      return <ContinuityCard continuity={continuity ?? DEFAULT_CONTINUITY} />;
+      return <ContinuityCard continuity={continuity ?? DEFAULT_CONTINUITY} onLaunchApp={onLaunchApp} />;
     case "what-matters":
       return (<div className="w-[340px]"><DesktopWhatMattersWidget onLaunchApp={onLaunchApp} /></div>);
     case "notifications-feed":
