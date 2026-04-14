@@ -152,6 +152,7 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
       { id: "proof", label: "Proof", icon: Shield },
       { id: "advisors", label: "Advisors", icon: Brain },
       { id: "pipeline-health", label: "Pipeline Health", icon: Activity },
+      { id: "business-profile", label: "Business Profile", icon: Sliders },
     ],
   },
 ];
@@ -200,6 +201,8 @@ const pages: Record<string, React.ComponentType> = {
   "crm-communications": CRMCommunications,
   integrations: CRMIntegrationHub,
   "customer-health": CustomerHealthPage,
+  "adaptive-home": AdaptiveBusinessHome,
+  "business-profile": BusinessProfileEditor,
 };
 
 // ── Helper components ─────────────────────────────────────────
