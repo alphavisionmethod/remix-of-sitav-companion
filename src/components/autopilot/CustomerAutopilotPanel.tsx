@@ -105,7 +105,7 @@ const CustomerAutopilotPanel = ({ customers }: CustomerAutopilotPanelProps) => {
                     <p className="text-sm font-semibold text-foreground">Win Back Cold Customers Playbook</p>
                     <p className="text-[11px] text-muted-foreground">Auto-detect → email → SMS → call → discount. Runs for all {coldCustomers.length} cold customers.</p>
                   </div>
-                  <button onClick={() => navigate("/business/autopilot-hub")}
+                  <button onClick={() => { window.dispatchEvent(new CustomEvent("sita-open-business", { detail: { module: "autopilot-hub" } })); }}
                     className="flex items-center gap-1 rounded-xl gradient-sita px-4 py-2 text-[11px] font-semibold text-primary-foreground hover:opacity-90 transition-all">
                     <Play className="h-3 w-3" /> Activate
                   </button>

@@ -185,12 +185,12 @@ export const CommandPalette = ({ open, onClose }: CommandPaletteProps) => {
           id: `crossapp-${a.label}`,
           ...a,
           action: () => {
-            // Navigate to the relevant domain module
-            if (a.label.includes("Lead")) navigate("/business/leads");
-            else if (a.label.includes("Invoice")) navigate("/business/invoices");
-            else if (a.label.includes("Follow-Up")) navigate("/business/follow-through");
-            else if (a.label.includes("Customer")) navigate("/business/customers");
-            else if (a.label.includes("Quote")) navigate("/business/quotes");
+            // Navigate to the relevant domain module via window events
+            if (a.label.includes("Lead")) { window.dispatchEvent(new CustomEvent("sita-open-business", { detail: { module: "leads" } })); }
+            else if (a.label.includes("Invoice")) { window.dispatchEvent(new CustomEvent("sita-open-business", { detail: { module: "invoices" } })); }
+            else if (a.label.includes("Follow-Up")) { window.dispatchEvent(new CustomEvent("sita-open-business", { detail: { module: "follow-through" } })); }
+            else if (a.label.includes("Customer")) { window.dispatchEvent(new CustomEvent("sita-open-business", { detail: { module: "customers" } })); }
+            else if (a.label.includes("Quote")) { window.dispatchEvent(new CustomEvent("sita-open-business", { detail: { module: "quotes" } })); }
             else if (a.label.includes("Bills")) navigate("/money/bills");
             else if (a.label.includes("Cash")) navigate("/money");
             else if (a.label.includes("Subscription")) navigate("/money/subscriptions");

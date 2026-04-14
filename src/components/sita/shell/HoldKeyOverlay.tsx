@@ -6,6 +6,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { openBusinessModule } from "@/lib/business-launcher";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import {
@@ -37,7 +38,7 @@ export function HoldKeyOverlay() {
     const globalNav: ActionItem[] = [
       { id: "home", label: "Desktop", shortcut: "⌘H", icon: Home, action: () => navigate("/"), category: "navigate" },
       { id: "pulse", label: "Daily Pulse", shortcut: "⌘1", icon: Zap, action: () => navigate("/pulse"), category: "navigate" },
-      { id: "business", label: "Business", shortcut: "⌘2", icon: BriefcaseBusiness, action: () => navigate("/business"), category: "navigate" },
+      { id: "business", label: "Business", shortcut: "⌘2", icon: BriefcaseBusiness, action: () => openBusinessModule("crm-home"), category: "navigate" },
       { id: "money", label: "Money", shortcut: "⌘3", icon: DollarSign, action: () => navigate("/money"), category: "navigate" },
       { id: "calendar", label: "Calendar", shortcut: "⌘4", icon: Calendar, action: () => navigate("/calendar"), category: "navigate" },
       { id: "files", label: "Files", shortcut: "⌘5", icon: FolderOpen, action: () => navigate("/files"), category: "navigate" },
@@ -66,8 +67,8 @@ export function HoldKeyOverlay() {
       );
     } else if (segment === "business") {
       pageActions.push(
-        { id: "leads", label: "Leads", icon: Users, action: () => navigate("/business/leads"), category: "navigate" },
-        { id: "invoices", label: "Invoices", icon: FileText, action: () => navigate("/business/invoices"), category: "navigate" },
+        { id: "leads", label: "Leads", icon: Users, action: () => openBusinessModule("leads"), category: "navigate" },
+        { id: "invoices", label: "Invoices", icon: FileText, action: () => openBusinessModule("invoices"), category: "navigate" },
       );
     }
 
