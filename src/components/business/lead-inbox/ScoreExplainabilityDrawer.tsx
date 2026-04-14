@@ -5,6 +5,7 @@ import { LeadPriorityBadge } from "./LeadPriorityBadge";
 import { LeadHeatIndicator } from "./LeadHeatIndicator";
 import { LeadConfidenceDisplay } from "./LeadConfidenceDisplay";
 import { PriorityEvolutionTimeline } from "./PriorityEvolutionTimeline";
+import { LeadScoreRadar } from "./LeadScoreRadar";
 import type { LeadScoreResult, ScoreFactor } from "@/lib/engines/lead-scoring-engine";
 import { X, TrendingUp, TrendingDown, Zap, Target, Clock, Brain } from "lucide-react";
 
