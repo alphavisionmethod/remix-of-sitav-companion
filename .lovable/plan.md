@@ -1,46 +1,51 @@
 
 
-# Business Onboarding & Settings: Polish to 100%
+# Fix: Business Onboarding Inside Window System
 
-## Issues Found
+## Problem
+The Business Onboarding (`FormationShell`) uses full-screen CSS (`min-h-screen`, `fixed inset-0`, `sticky top-0`). When accessed via the `/revenue-office/onboarding` route, it renders as a full-page experience **outside** the window system, so users cannot drag, close, or minimize the window. The desktop disappears entirely.
 
-1. **Business type mismatch**: IdentityScreen offers 9 types (`service`, `agency`, `coaching`, `creator`, `ecommerce`, `local`, `membership`, `hybrid`, `evolving`) but the journey config (`business-journey-config.ts`) and Settings page only handle 8 — missing `membership`, `hybrid`, `evolving`. Settings page has `marketplace` which isn't in Identity.
-2. **Journey auto-recommendation not wired**: `getRecommendedJourney()` exists in `business-journey-config.ts` but is never called — JourneyScreen doesn't auto-select a template based on business types chosen in IdentityScreen.
-3. **Settings page missing sections**: No conversion weakness editor, no post-sale steps, no lead sources — users can't modify several things they set during onboarding.
-4. **No success feedback on settings save**: Toast exists but no visual confirmation animation.
-5. **Settings doesn't sync journey config**: Changing business types in settings doesn't auto-suggest updating the journey template.
+There are actually **two** onboarding paths that need to be reconciled:
+1. **Route-based**: `/revenue-office/onboarding` → `BusinessOnboarding.tsx` → `FormationShell` (full 20-screen wizard, renders full-page)
+2. **In-window**: `BusinessAppShell` shows `AdaptiveOnboardingWizard` (a lighter wizard) when `!isAdapted`
 
-## Plan
+## Solution
+Embed the full `FormationShell` onboarding **inside** the Business OS window instead of rendering it as a separate full-page route. This way the window chrome (title bar, drag handle, close/minimize/maximize) stays functional.
 
-### 1. Sync business type options across Identity & Settings
-- **Files**: `BusinessSettingsPage.tsx`, `business-journey-config.ts`
-- Add `membership`, `hybrid`, `evolving` to `TYPE_ITEMS` in journey config with appropriate module mappings
-- Replace Settings page `BUSINESS_TYPES` array with the exact same list from IdentityScreen (9 types)
+### Changes
 
-### 2. Wire journey auto-recommendation
-- **File**: `JourneyScreen.tsx`
-- On mount, if `journeyTemplate` is empty, auto-select using `getRecommendedJourney(state.businessTypes)`
-- Show a SITA callout: "Based on your business type, we recommend the [X] journey"
+**1. Make FormationShell window-friendly** (`FormationShell.tsx`)
+- Replace `min-h-screen` with `h-full min-h-0`
+- Replace `fixed inset-0` background effects with `absolute inset-0` inside the container
+- Replace `sticky top-0` progress bar with a normal flow element
+- Remove `useNavigate` redirect — completion is handled by the parent
+- Accept an `onComplete` prop instead of navigating away
+- Remove the `max-w-6xl mx-auto` constraint that wastes space in a window
 
-### 3. Expand Settings page with missing sections
-- **File**: `BusinessSettingsPage.tsx`
-- Add **Lead Sources** section (referrals, ads, organic, etc.)
-- Add **Conversion & Sales** section (pre-buy behavior, what closes deals)
-- Add **Post-Sale & Delivery** section (delivery steps, common slips)
-- Add **Journey Sync** prompt: when business types change, show "Your journey template may need updating" with a one-click re-match button
+**2. Wire FormationShell into BusinessAppShell** (`BusinessAppShell.tsx`)
+- Replace `AdaptiveOnboardingWizard` with the full `FormationShell` when onboarding is incomplete
+- When `!isCompleted` from `useBusinessOnboarding`, render `FormationShell` as the entire window content (replacing the sidebar + main layout)
+- On completion, call `markComplete()` and switch to the normal shell view
+- The window remains fully draggable/closeable throughout
 
-### 4. Add save confirmation animation
-- **File**: `BusinessSettingsPage.tsx`
-- After save: brief green checkmark pulse animation on the Save button
-- Sticky save bar at bottom when `hasChanges` is true (instead of only top-right)
+**3. Update the route entry point** (`BusinessOnboarding.tsx`)
+- Instead of rendering `FormationShell` directly, dispatch `sita-open-business` event with module `"onboarding"` and redirect to `/desktop` — same pattern as `BusinessCenter.tsx`
+- This ensures even direct URL access opens Business OS as a window
 
-### 5. Ensure journey template updates cascade to sidebar
-- **File**: `BusinessAppShell.tsx`
-- Already reads `onboardingState.businessTypes` — verify it also re-reads after settings save (it does via the hook, but confirm the hook re-fetches after `markComplete`)
+**4. Add "onboarding" module to BusinessAppShell pages map**
+- Register `"onboarding"` as a valid module that renders `FormationShell`
+- This enables deep-linking: `sita-open-business` with `module: "onboarding"` works
 
-## Technical Details
-- No DB changes needed — the jsonb column already stores all fields
-- All new Settings sections reuse existing `Toggle`, `SingleSelect`, `SectionTitle` primitives
-- The `getRecommendedJourney` function already exists and maps types to templates — just needs to be imported and called
-- Total: ~5 files modified, 0 new files
+### What stays the same
+- All 20 onboarding screens, their logic, and auto-save behavior
+- The `LiveOfficeSidebar` preview panel
+- Database persistence via `useBusinessOnboarding` hook
+- The Settings page for post-onboarding modifications
+
+### Technical Details
+- `FormationShell` background blobs: change from `fixed inset-0` to `absolute inset-0` within a `relative overflow-hidden` container
+- Progress bar: change from `sticky top-0` to regular flow with `overflow-y-auto` on the parent
+- The chapter transition overlay: change from `fixed inset-0 z-50` to `absolute inset-0 z-50` within the container
+- `FormationShell` signature changes: `onComplete?: () => void` prop added, `useNavigate` removed
+- `BusinessOnboarding.tsx` becomes a thin redirect shim (like `BusinessCenter.tsx`)
 
