@@ -19,7 +19,8 @@ const REVENUE_ESTIMATES: Record<string, number> = {
   onboarding: 3800,
 };
 
-export default function RevealScreen({ state, onBack }: ScreenProps) {
+export default function RevealScreen({ state, onBack, ...props }: ScreenProps & { markComplete?: (state: any) => Promise<void> }) {
+  const markComplete = (props as any).markComplete;
   const navigate = useNavigate();
   const [phase, setPhase] = useState<"building" | "revealing" | "ready">("building");
   const [revealedCount, setRevealedCount] = useState(0);
@@ -165,7 +166,8 @@ export default function RevealScreen({ state, onBack }: ScreenProps) {
           )}
 
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: phase === "ready" ? 1 : 0.3 }} transition={{ delay: 0.3 }} className="space-y-2">
-            <button onClick={() => {
+            <button onClick={async () => {
+              if (markComplete) await markComplete(state);
               try { localStorage.setItem("sita_onboarding_state", JSON.stringify(state)); } catch {}
               navigate("/revenue-office/boardroom");
             }} disabled={phase !== "ready"}
@@ -177,7 +179,8 @@ export default function RevealScreen({ state, onBack }: ScreenProps) {
                 className="flex-1 p-3 rounded-xl bg-card/50 border border-border/50 text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-card/80 transition-colors disabled:opacity-50">
                 Review setup
               </button>
-              <button onClick={() => {
+              <button onClick={async () => {
+                if (markComplete) await markComplete(state);
                 try { localStorage.setItem("sita_onboarding_state", JSON.stringify(state)); } catch {}
                 navigate("/revenue-office/boardroom");
               }} disabled={phase !== "ready"}
