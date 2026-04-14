@@ -60,15 +60,17 @@ async function getSigningKeyPair(): Promise<CryptoKeyPair> {
 async function signToken(payload: string): Promise<string> {
   const kp = await getSigningKeyPair();
   const enc = new TextEncoder();
-  const sig = await crypto.subtle.sign({ name: "ECDSA", hash: "SHA-256" }, kp.privateKey, enc.encode(payload));
+  const data = enc.encode(payload);
+  const sig = await crypto.subtle.sign({ name: "ECDSA", hash: "SHA-256" }, kp.privateKey, data.buffer as ArrayBuffer);
   return Array.from(new Uint8Array(sig)).map(b => b.toString(16).padStart(2, "0")).join("");
 }
 
 async function verifySignature(payload: string, signatureHex: string): Promise<boolean> {
   const kp = await getSigningKeyPair();
   const enc = new TextEncoder();
+  const data = enc.encode(payload);
   const sigBytes = new Uint8Array(signatureHex.match(/.{2}/g)!.map(h => parseInt(h, 16)));
-  return crypto.subtle.verify({ name: "ECDSA", hash: "SHA-256" }, kp.publicKey, sigBytes, enc.encode(payload));
+  return crypto.subtle.verify({ name: "ECDSA", hash: "SHA-256" }, kp.publicKey, sigBytes.buffer as ArrayBuffer, data.buffer as ArrayBuffer);
 }
 
 // ── AuthD Service ───────────────────────────────────────────
