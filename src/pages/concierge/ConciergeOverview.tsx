@@ -23,7 +23,7 @@ const isDemoMode = true; // TODO: wire to reality mode context
 
 
 const ConciergeOverview = () => {
-  const navigate = useNavigate();
+  const { navigateTo } = useConciergeNavigation();
   const { data: tasks = [] } = useHouseholdTasks();
   const { data: events = [] } = useFamilyEvents();
 
