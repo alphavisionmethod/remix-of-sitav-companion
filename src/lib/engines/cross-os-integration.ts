@@ -232,15 +232,15 @@ const FINANCE_ADAPTATIONS: Record<ProfileArchetype, FinanceArchetypeAdaptation> 
     advisorPersonality: "Practice management advisor",
     keyInsightFocus: "Insurance reimbursement and collections",
   },
-  franchise: {
-    receivablesLabel: "Royalty & Location Revenue",
+  "multi-location": {
+    receivablesLabel: "Location Revenue & Royalties",
     cashTimingEmphasis: "high",
     investmentEmphasis: "medium",
     taxComplexity: "complex",
     budgetStyle: "business",
-    heroMetricLabel: "Net Franchise Revenue",
+    heroMetricLabel: "Net Multi-Location Revenue",
     advisorPersonality: "Multi-unit financial strategist",
-    keyInsightFocus: "Per-location profitability and royalty obligations",
+    keyInsightFocus: "Per-location profitability and cross-site costs",
   },
   membership: {
     receivablesLabel: "Membership Dues & Renewals",
@@ -252,15 +252,15 @@ const FINANCE_ADAPTATIONS: Record<ProfileArchetype, FinanceArchetypeAdaptation> 
     advisorPersonality: "Subscription revenue advisor",
     keyInsightFocus: "Churn rate and renewal forecasting",
   },
-  nonprofit: {
-    receivablesLabel: "Grants & Donations",
+  "product-service": {
+    receivablesLabel: "Product Sales & Service Billing",
     cashTimingEmphasis: "high",
-    investmentEmphasis: "low",
-    taxComplexity: "complex",
+    investmentEmphasis: "medium",
+    taxComplexity: "moderate",
     budgetStyle: "business",
-    heroMetricLabel: "Funds Available vs Restricted",
-    advisorPersonality: "Nonprofit financial steward",
-    keyInsightFocus: "Grant compliance and restricted fund tracking",
+    heroMetricLabel: "Blended Product + Service Revenue",
+    advisorPersonality: "Dual-revenue financial advisor",
+    keyInsightFocus: "Product margins vs service profitability",
   },
   hybrid: {
     receivablesLabel: "Mixed Revenue Streams",
