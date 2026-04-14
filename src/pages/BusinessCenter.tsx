@@ -122,6 +122,8 @@ const TAB_GROUPS: NavTabGroup[] = [
       { key: "crm-notes", label: "Notes", icon: StickyNote },
       { key: "crm-segments", label: "Segments", icon: Filter },
       { key: "crm-automations", label: "Automations", icon: Zap },
+      { key: "crm-import", label: "Import", icon: Upload },
+      { key: "crm-duplicates", label: "Duplicates", icon: RefreshCw },
     ],
   },
   {
