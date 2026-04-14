@@ -13,11 +13,13 @@ import {
   X, Mail, Phone, Globe, MapPin, Building2, Heart, Star,
   Calendar, Clock, Send, MessageSquare, FileText, CheckSquare,
   TrendingUp, DollarSign, Edit2, Tag, ChevronRight, Plus,
-  AlertTriangle, ArrowUpRight, Sparkles, MoreHorizontal, User
+  AlertTriangle, ArrowUpRight, Sparkles, MoreHorizontal, User,
+  Shield, Receipt, Handshake, HeadphonesIcon
 } from "lucide-react";
 import { formatDistanceToNow, format, isPast } from "date-fns";
 import { useCRMCommunications, useCRMTasks, useCRMNotes, useCRMOpportunities, useCreateCommunication, useCreateTask, useCreateNote, useUpdateContact } from "@/hooks/use-crm-data";
 import type { CRMContact, CRMCompany } from "@/lib/data-services/crm-data-service";
+import { CRMEscalateToBoardroom } from "./CRMEscalateToBoardroom";
 
 const LIFECYCLE_COLORS: Record<string, string> = {
   lead: "bg-blue-500/20 text-blue-400 border-blue-500/30",
@@ -62,6 +64,7 @@ export function CRMContactDetail({ contact, companies = [], onClose, onEdit }: C
   const [quickTaskTitle, setQuickTaskTitle] = useState("");
   const [showLogComm, setShowLogComm] = useState(false);
   const [commForm, setCommForm] = useState({ comm_type: "email", subject: "", content: "", outcome: "" });
+  const [showEscalation, setShowEscalation] = useState(false);
 
   // Filter data for this contact
   const comms = useMemo(() => allComms.filter(c => c.contact_id === contact.id), [allComms, contact.id]);
@@ -157,17 +160,23 @@ export function CRMContactDetail({ contact, companies = [], onClose, onEdit }: C
           <Button variant="outline" size="sm" className="h-7 text-xs gap-1.5" onClick={() => setShowLogComm(true)}>
             <Send className="h-3 w-3" /> Log Activity
           </Button>
+          <Button variant="outline" size="sm" className="h-7 text-xs gap-1.5" onClick={() => setShowEscalation(true)}>
+            <Shield className="h-3 w-3" /> Escalate
+          </Button>
         </div>
       </div>
 
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col min-h-0">
-        <TabsList className="flex-shrink-0 mx-4 mt-3 bg-muted/30">
+        <TabsList className="flex-shrink-0 mx-4 mt-3 bg-muted/30 flex-wrap h-auto gap-0.5 py-1">
           <TabsTrigger value="overview" className="text-xs">Overview</TabsTrigger>
           <TabsTrigger value="timeline" className="text-xs">Timeline ({comms.length})</TabsTrigger>
           <TabsTrigger value="tasks" className="text-xs">Tasks ({pendingTasks.length})</TabsTrigger>
           <TabsTrigger value="notes" className="text-xs">Notes ({notes.length})</TabsTrigger>
           <TabsTrigger value="deals" className="text-xs">Deals ({opps.length})</TabsTrigger>
+          <TabsTrigger value="proposals" className="text-xs">Proposals</TabsTrigger>
+          <TabsTrigger value="invoices" className="text-xs">Invoices</TabsTrigger>
+          <TabsTrigger value="support" className="text-xs">Support</TabsTrigger>
         </TabsList>
 
         <ScrollArea className="flex-1">
