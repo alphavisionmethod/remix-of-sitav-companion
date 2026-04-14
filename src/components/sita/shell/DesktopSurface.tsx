@@ -144,9 +144,11 @@ function renderWidget(type: string, onOpenCommand?: () => void, continuity?: Con
     case "calendar":
       return (
         <div className="w-[320px]">
-          <DesktopClockWidget />
+          <DesktopClockWidget onLaunchApp={onLaunchApp} />
         </div>
       );
+    case "apps-rail":
+      return <DesktopLeftRail onLaunchApp={onLaunchApp} />;
     case "notifications":
       return (
         <div className="w-[320px]">
@@ -240,10 +242,7 @@ export function DesktopSurface({
         "absolute inset-0 z-10 transition-all duration-700",
         hasAnyWindows && "opacity-30 blur-sm pointer-events-none"
       )}>
-        {/* Persistent Left Rail — app launcher sidebar (large screens only) */}
-        <div className="absolute left-4 top-1/2 -translate-y-1/2 z-20">
-          <DesktopLeftRail onLaunchApp={onLaunchApp} />
-        </div>
+        {/* Left rail is now a draggable widget — registered as "apps-rail" */}
         {/* Draggable widgets */}
         {widgets.map((w) => (
           <DraggableWidget

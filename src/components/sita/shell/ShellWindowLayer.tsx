@@ -29,6 +29,7 @@ import { ExtensionManagerWindow } from "./windows/ExtensionManagerWindow";
 import { SyscallDashboardWindow } from "./windows/SyscallDashboardWindow";
 import { KernelDashboardWindow } from "./windows/KernelDashboardWindow";
 import { PolicyDashboardWindow } from "./windows/PolicyDashboardWindow";
+import { TodoWindow } from "./windows/TodoWindow";
 import { FinanceAppShell } from "../apps/finance/FinanceAppShell";
 import { BusinessAppShell } from "../apps/business/BusinessAppShell";
 import { ConciergeAppShell } from "../apps/concierge/ConciergeAppShell";
@@ -95,6 +96,7 @@ const APP_REGISTRY: Record<string, Omit<AppLaunchConfig, "id">> = {
   concierge: { name: "Concierge", component: <ConciergeAppShell />, width: 1200, position: { x: 160, y: 130 } },
   investment: { name: "Investment Office", component: <InvestmentAppShell />, width: 1200, position: { x: 100, y: 70 } },
   boardroom: { name: "Boardroom", component: <BoardroomAppShell />, width: 1200, position: { x: 140, y: 110 } },
+  todo: { name: "Tasks", component: <TodoWindow />, width: 420, position: { x: 280, y: 100 } },
   // ── Catalog ID aliases → same window components ──
   "sita-business-center": { name: "Business OS", component: <BusinessAppShell />, width: 1200, position: { x: 120, y: 90 } },
   "sita-money-center": { name: "Finance OS", component: <FinanceAppShell />, width: 1200, position: { x: 80, y: 50 } },

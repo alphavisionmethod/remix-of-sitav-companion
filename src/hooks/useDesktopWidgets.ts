@@ -13,6 +13,7 @@ export interface WidgetInstance {
 const STORAGE_KEY = "sita-desktop-widgets-v2";
 
 const DEFAULT_WIDGETS: WidgetInstance[] = [
+  { id: "apps-rail", type: "apps-rail", label: "Apps", description: "Quick-launch app sidebar with Business, Finance, Concierge and more", position: { x: 16, y: 200 }, visible: true, size: "md" },
   { id: "clock", type: "clock", label: "Clock", description: "Large time display with date", position: { x: 48, y: 560 }, visible: true, size: "lg" },
   { id: "quick-actions", type: "quick-actions", label: "Quick Actions", description: "Shortcut grid to open apps and tools", position: { x: 940, y: 40 }, visible: true, size: "md" },
   { id: "system", type: "system", label: "System Toggles", description: "WiFi, Bluetooth, Shield VPN and power controls", position: { x: 940, y: 320 }, visible: true, size: "md" },
