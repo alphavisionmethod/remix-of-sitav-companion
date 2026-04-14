@@ -2,7 +2,7 @@ import React, { useState, useMemo, useRef, useEffect, useCallback } from "react"
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { useCRMContacts, useCRMCompanies, useCRMOpportunities } from "@/hooks/use-crm-data";
 import { Search, User, Building2, TrendingUp, ArrowRight, Plus, Upload, Zap, Shield, MessageSquare, Sparkles, FileText } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useBusinessNavigation } from "@/contexts/BusinessNavigationContext";
 
 interface SearchResult {
   id: string;
@@ -35,7 +35,7 @@ const CRMCommandSearch = ({ open, onClose }: Props) => {
   const [query, setQuery] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
-  const navigate = useNavigate();
+  const { navigateTo } = useBusinessNavigation();
 
   const { data: contacts = [] } = useCRMContacts();
   const { data: companies = [] } = useCRMCompanies();
@@ -129,9 +129,9 @@ const CRMCommandSearch = ({ open, onClose }: Props) => {
   }, [query, contacts, companies, opportunities]);
 
   const handleSelect = useCallback((result: SearchResult) => {
-    navigate(`/business/${result.path}`);
+    navigateTo(result.path);
     onClose();
-  }, [navigate, onClose]);
+  }, [navigateTo, onClose]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "ArrowDown") {

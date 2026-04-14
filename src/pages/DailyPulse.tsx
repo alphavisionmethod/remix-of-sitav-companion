@@ -149,7 +149,7 @@ export default function DailyPulse() {
             insight="3 leads haven't been contacted in 5+ days. Re-engaging now could recover ~$12K in potential revenue."
             confidence={82}
             accentColor={DOMAIN_ACCENTS.business.from}
-            action={{ label: "Review Leads", onClick: () => navigate("/business") }}
+            action={{ label: "Review Leads", onClick: () => { window.dispatchEvent(new CustomEvent("sita-open-business", { detail: { module: "leads" } })); } }}
           />
         </ListRevealItem>
         <ListRevealItem>

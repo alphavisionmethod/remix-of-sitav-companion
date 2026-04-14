@@ -9,7 +9,7 @@ import { TrustBadge, TrustLevel } from "@/components/sita/TrustBadge";
 import { TimelineItem } from "@/components/sita/SitaComponents";
 import { RelationshipGraphPanel } from "@/components/business/RelationshipGraphPanel";
 import type { MockCustomer } from "@/lib/data-services/business-data-service";
-import { useNavigate } from "react-router-dom";
+import { useBusinessNavigation } from "@/contexts/BusinessNavigationContext";
 
 interface CustomerDetailPaneProps {
   customer: MockCustomer;
@@ -37,7 +37,7 @@ const trustFromHealth = (score: number | null): TrustLevel => {
 };
 
 export function CustomerDetailPane({ customer, onDelete }: CustomerDetailPaneProps) {
-  const navigate = useNavigate();
+  const { navigateTo } = useBusinessNavigation();
   const health = customer.health_score ?? 80;
 
   return (
@@ -63,7 +63,7 @@ export function CustomerDetailPane({ customer, onDelete }: CustomerDetailPanePro
         <div className="mt-4 flex gap-2">
           <SitaButton variant="accent" size="sm" className="flex-1"><Phone className="h-3.5 w-3.5" /> Call</SitaButton>
           <SitaButton variant="accent" size="sm" className="flex-1"><Mail className="h-3.5 w-3.5" /> Email</SitaButton>
-          <SitaButton variant="primary" size="sm" className="flex-1" onClick={() => navigate(`/business/customers/${customer.id}`)}>
+          <SitaButton variant="primary" size="sm" className="flex-1" onClick={() => navigateTo(`customer-detail:${customer.id}`)}>
             <ArrowRight className="h-3.5 w-3.5" /> Detail
           </SitaButton>
           {onDelete && (
