@@ -909,7 +909,7 @@ const { isLoading, toggleDemoMode } = useDemoMode();
                           <p className="text-[10px] text-muted-foreground">{m.role}</p>
                         </div>
                       </div>
-                      <TrustBadge level={m.status === "Active" ? "verified" : "pending"} label={m.status} size="sm" />
+                      <TrustBadge level={m.status === "Active" ? "verified" : "review"} label={m.status} size="sm" />
                     </div>
                   ))}
                 </div>
