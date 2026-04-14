@@ -25,6 +25,8 @@ const CRMHome = () => {
   const { data: notes = [] } = useCRMNotes();
   const { navigateTo } = useBusinessNavigation();
   const [showSearch, setShowSearch] = useState(false);
+  const { adaptations } = useBusinessProfile();
+  const crmLang = adaptations.crm.language;
 
   const totalContacts = contacts.length;
   const activeOpps = opportunities.filter(o => o.status === "open");
