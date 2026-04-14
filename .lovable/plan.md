@@ -1,82 +1,57 @@
 
 
-# Lead Inbox — Premium Triage Surface
+# Fix Window Drag, Traffic Lights, and Desktop Widget Wiring
 
-## Overview
-Replace the current basic `LeadsInbox.tsx` (434 lines of simple list/detail) with a fully featured, beautiful lead intake and triage system. Since there's no `leads` table in the database, we'll create one along with a `lead_inbox_items` table for the intake queue.
+## Problems Identified
 
-## Database Changes
+1. **Drag not fluid on Business OS window**: The `DomainAppShell` renders its own title bar with traffic lights INSIDE the FloatingWindow. The FloatingWindow already has a draggable title bar with traffic lights. The internal app title bar creates a competing non-draggable surface, making drag feel broken — you grab the app's internal title bar instead of the FloatingWindow's draggable one.
 
-**Migration: Create lead intake tables**
+2. **Traffic light buttons broken in app shells**: `DomainAppShell.tsx` (line 45-53) has TrafficLights that:
+   - Close button calls `navigate("/")` — navigates away instead of closing the window
+   - Minimize button does nothing
+   - Maximize button does nothing
+   - Same issue in `MoneyAppShell.tsx`, `ConciergeAppShell.tsx`
 
-1. `leads` table — full lead records (accepted leads)
-2. `lead_inbox_items` table — incoming triage queue with fields for:
-   - raw contact info (name, email, phone, company)
-   - source (website, referral, import, crm-sync, manual, partner, campaign, social, message)
-   - inquiry_text, urgency (low/medium/high/critical)
-   - quality_score (0-100), quality_hints (jsonb)
-   - completeness_score, missing_fields (text[])
-   - duplicate_status (none/possible/definite), duplicate_match_id
-   - suggested_owner, suggested_route (lead/consult/quote/automation/boardroom/archive/spam)
-   - advisor_suggestion (text), triage_status (new/reviewing/accepted/rejected/routed/snoozed)
-   - routed_to, accepted_at, business_profile_mode
-   - RLS policies for authenticated users
+3. **Desktop widgets**: Already wired correctly via `onLaunchApp` prop chain. But the `DesktopWhatMattersWidget` inner items need `stopPropagation` on `onPointerDown` to prevent widget drag from swallowing clicks.
 
-3. Enable realtime on `lead_inbox_items`
+## Solution
 
-## Component Architecture
+### A. Remove duplicate traffic lights from DomainAppShell
 
-```text
-src/pages/business/LeadsInbox.tsx          ← Full rewrite (orchestrator)
-src/components/business/lead-inbox/
-  ├── LeadInboxHeader.tsx                  ← KPI dashboard strip with visual cards
-  ├── LeadInboxOverviewCards.tsx            ← Source mix donut, quality gauge, urgency heatmap
-  ├── LeadTriageQueue.tsx                   ← Main queue with premium triage cards
-  ├── LeadTriageCard.tsx                    ← Individual card: source icon, quality bar, advisor whisper
-  ├── LeadDetailPanel.tsx                   ← Right-side detail with inquiry, scoring, advisor, actions
-  ├── LeadQuickActions.tsx                  ← Hover/inline action bar (accept, route, reject, snooze)
-  ├── LeadDuplicateDrawer.tsx              ← Side-by-side duplicate comparison
-  ├── LeadBulkTriageBar.tsx                ← Floating bar for multi-select bulk operations
-  ├── LeadAdvisorWhisper.tsx               ← Subtle inline advisor recommendation layer
-  ├── LeadSourceBadge.tsx                  ← Source-aware styled badges with icons
-  ├── LeadEmptyStates.tsx                  ← First-use, caught-up, no-results states
-  └── useLeadInbox.ts                      ← Data hook: fetch, filter, triage actions, realtime
-```
+Since apps are rendered INSIDE `FloatingWindow` which already provides:
+- Draggable title bar
+- Traffic light buttons (close/minimize/maximize)
+- Accent strip
+- Window chrome
 
-## Visual Design
+The `DomainAppShell` should NOT render its own competing title bar with traffic lights. Remove the internal traffic lights and title bar drag zone. Keep only the app icon, title label, and mobile nav as a non-draggable info bar.
 
-- **Header**: 6 visual KPI cards in a horizontal strip — New Arrivals (with pulse dot), Unassigned, Urgent, High Quality, Duplicates, Source Mix — each with gradient backgrounds and icons, not plain text
-- **Overview Row**: 3 mini-dashboard cards — Source mix donut chart (using SitaCharts), Quality distribution gauge, Arrival timeline sparkline
-- **Triage Queue**: Premium cards with left color-coded urgency bar, source icon, quality confidence ring, avatar initials, inquiry preview, advisor whisper text, and quick action buttons on hover
-- **Detail Panel**: Glassmorphic right panel with lead profile hero, inquiry content, quality radar, duplicate analysis section, advisor recommendation card, and action button grid
-- **Animations**: Framer Motion for card accept/route/reject — card slides out gracefully toward its destination with a subtle success toast
-- **Empty States**: Cinematic first-use with illustration, "You're caught up" celebration state, degraded state banner
+**Files to modify:**
+- `src/components/sita/shell/DomainAppShell.tsx` — Remove `TrafficLights` component. Convert title bar from a drag surface to a simple info strip. Remove the accent strip (FloatingWindow already has one via `appAccent`).
 
-## Key Features
+### B. Fix standalone app shells (Money, Concierge)
 
-1. **Smart Triage Queue** — Filterable by: All, New, Urgent, High Quality, Missing Info, Duplicates, Snoozed, Accepted, Rejected, Exceptional
-2. **Source-Aware Styling** — Each source type gets a distinct icon + color accent (referral=gold, website=blue, import=slate, CRM=purple, manual=green)
-3. **Advisor Whisper Layer** — Each card shows a one-line AI triage suggestion below the inquiry preview
-4. **Quick Actions** — Inline hover actions: Accept → Leads, Route → Consult/Quote, Reject, Snooze, Flag Exceptional
-5. **Duplicate Detection UI** — Warning badge + expandable drawer showing matched record side-by-side with merge button
-6. **Bulk Triage** — Checkbox multi-select with floating action bar for batch accept/reject/route
-7. **Detail Panel** — Full triage workspace with quality scoring breakdown, completeness checklist, advisor recommendation, communication preview, and routing controls
-8. **Business Profile Adaptation** — Service mode prioritizes consult routing, ecommerce prioritizes cart leads, high-ticket highlights Boardroom escalation
-9. **Mock Data** — Rich set of 15+ diverse inbox items across all sources, urgency levels, and quality bands for demo mode
-10. **Realtime** — Subscribe to `lead_inbox_items` for live arrival pulse
+Same issue in:
+- `src/components/money/MoneyAppShell.tsx` — Remove internal TrafficLights
+- `src/components/concierge/ConciergeAppShell.tsx` — Remove internal TrafficLights
 
-## Integration Points
+### C. Improve widget click reliability
 
-- Wired into `BusinessAppShell` pages map (replaces current `leads` entry)
-- `useBusinessProfile` for archetype-aware labels and prioritization
-- `ModuleAdvisorInsight` for page-level advisor strip
-- `navigateTo` for routing to consult, quotes, opportunities, boardroom
-- Notifications integration via toast on urgent arrivals
-- Business Home contribution via item counts
+- `src/components/sita/shell/desktop/DesktopWhatMattersWidget.tsx` — Add `onPointerDown` stopPropagation on clickable items so they don't get swallowed by the `DraggableWidget` drag handler.
+- Apply same fix to any widget with inner interactive items (calendar, CRM pipeline, etc.)
+
+### D. Verify FloatingWindow drag path
+
+The `FloatingWindow` drag already works well with lerp smoothing, inertia, and magnetic snapping. The fix is removing the competing internal title bar, which will let the FloatingWindow's title bar handle all drag interactions cleanly.
+
+## Technical Details
+
+- `DomainAppShell` title bar height (38px) currently sits below FloatingWindow's title bar, creating a double-header. Removing it will give the app ~38px more content space.
+- The FloatingWindow already passes `appAccent` to render the correct gradient accent strip per app.
+- The `windowId` prop on FloatingWindow is set to the app ID (e.g., "business"), which maps to `APP_ACCENTS[windowId]` for correct branding.
 
 ## Scope
-- ~12 new files
-- 1 full rewrite (LeadsInbox.tsx)
-- 1 database migration
-- 0 new dependencies (uses existing framer-motion, lucide, tanstack-query, SitaCard system)
+- 3-4 files modified
+- ~50 lines removed, ~10 lines added
+- No new files or dependencies
 
