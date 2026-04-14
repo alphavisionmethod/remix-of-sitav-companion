@@ -393,8 +393,17 @@ function SidebarGroupSection({ group, activeModule, onSelect }: { group: Sidebar
 // ── Main Shell ────────────────────────────────────────────────
 
 export function BusinessAppShell({ initialModule }: { initialModule?: string }) {
+  return (
+    <BusinessProfileProvider>
+      <BusinessAppShellInner initialModule={initialModule} />
+    </BusinessProfileProvider>
+  );
+}
+
+function BusinessAppShellInner({ initialModule }: { initialModule?: string }) {
+  const { adaptations } = useBusinessProfile();
   const storedModule = (window as any).__businessInitialModule;
-  const [activeModule, setActiveModule] = useState(storedModule || initialModule || "crm-home");
+  const [activeModule, setActiveModule] = useState(storedModule || initialModule || "adaptive-home");
 
   // Listen for navigation events from outside (deep-linking, launchers)
   useEffect(() => {
