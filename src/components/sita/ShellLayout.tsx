@@ -87,6 +87,19 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
     return () => window.removeEventListener("sita-open-finance", handler);
   }, [doLaunchApp]);
 
+  // Listen for sita-open-concierge events (from ConciergeCenter redirect shim)
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent).detail;
+      const module = detail?.module || "overview";
+      (window as any).__conciergeInitialModule = module;
+      doLaunchApp("concierge");
+      window.dispatchEvent(new CustomEvent("sita-concierge-navigate", { detail: { module } }));
+    };
+    window.addEventListener("sita-open-concierge", handler);
+    return () => window.removeEventListener("sita-open-concierge", handler);
+  }, [doLaunchApp]);
+
   // Hooks
   useAdaptiveInterface();
   useZeroLatency();
