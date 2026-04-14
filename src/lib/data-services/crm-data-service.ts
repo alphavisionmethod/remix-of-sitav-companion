@@ -388,3 +388,127 @@ export async function deleteCRMNote(id: string) {
   const { error } = await fromTable("crm_notes").delete().eq("id", id);
   if (error) throw error;
 }
+
+// ─── Missing Entity Mutations ────────────────────────────────
+export async function deleteCRMOpportunity(id: string) {
+  const { error } = await fromTable("crm_opportunities").delete().eq("id", id);
+  if (error) throw error;
+}
+
+export async function deleteCRMTask(id: string) {
+  const { error } = await fromTable("crm_tasks").delete().eq("id", id);
+  if (error) throw error;
+}
+
+export async function deleteCRMCommunication(id: string) {
+  const { error } = await fromTable("crm_communications").delete().eq("id", id);
+  if (error) throw error;
+}
+
+// Pipeline Stages
+export async function createCRMPipelineStage(stage: Partial<CRMPipelineStage>) {
+  const uid = await getUserId();
+  if (!uid) throw new Error("Not authenticated");
+  const { data, error } = await fromTable("crm_pipeline_stages").insert({ ...stage, user_id: uid }).select().single();
+  if (error) throw error;
+  return data;
+}
+
+export async function updateCRMPipelineStage(id: string, updates: Partial<CRMPipelineStage>) {
+  const { data, error } = await fromTable("crm_pipeline_stages").update(updates).eq("id", id).select().single();
+  if (error) throw error;
+  return data;
+}
+
+export async function deleteCRMPipelineStage(id: string) {
+  const { error } = await fromTable("crm_pipeline_stages").delete().eq("id", id);
+  if (error) throw error;
+}
+
+// Segments
+export async function createCRMSegment(segment: Partial<CRMSegment>) {
+  const uid = await getUserId();
+  if (!uid) throw new Error("Not authenticated");
+  const { data, error } = await fromTable("crm_segments").insert({ ...segment, user_id: uid }).select().single();
+  if (error) throw error;
+  return data;
+}
+
+export async function updateCRMSegment(id: string, updates: Partial<CRMSegment>) {
+  const { data, error } = await fromTable("crm_segments").update(updates).eq("id", id).select().single();
+  if (error) throw error;
+  return data;
+}
+
+export async function deleteCRMSegment(id: string) {
+  const { error } = await fromTable("crm_segments").delete().eq("id", id);
+  if (error) throw error;
+}
+
+// Tags
+export async function fetchCRMTags(mode: RealityModeKey = "real"): Promise<ModeAwareResult<CRMTag[]>> {
+  if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: [], emptyDefault: [] });
+  const uid = await getUserId();
+  if (!uid) return resolveByMode({ mode, realData: null, demoData: [], emptyDefault: [] });
+  const { data, error } = await fromTable("crm_tags").select("*").eq("user_id", uid).order("name");
+  return resolveByMode({ mode, realData: !error && data?.length ? data : null, demoData: [], emptyDefault: [] });
+}
+
+export async function createCRMTag(tag: Partial<CRMTag>) {
+  const uid = await getUserId();
+  if (!uid) throw new Error("Not authenticated");
+  const { data, error } = await fromTable("crm_tags").insert({ ...tag, user_id: uid }).select().single();
+  if (error) throw error;
+  return data;
+}
+
+export async function deleteCRMTag(id: string) {
+  const { error } = await fromTable("crm_tags").delete().eq("id", id);
+  if (error) throw error;
+}
+
+// Import Jobs
+export async function createCRMImportJob(job: Partial<CRMImportJob>) {
+  const uid = await getUserId();
+  if (!uid) throw new Error("Not authenticated");
+  const { data, error } = await fromTable("crm_import_jobs").insert({ ...job, user_id: uid }).select().single();
+  if (error) throw error;
+  return data;
+}
+
+export async function updateCRMImportJob(id: string, updates: Partial<CRMImportJob>) {
+  const { data, error } = await fromTable("crm_import_jobs").update(updates).eq("id", id).select().single();
+  if (error) throw error;
+  return data;
+}
+
+// Merge Log
+export async function createCRMMergeLog(entry: { winner_id: string; loser_id: string; entity_type: string; merge_reason?: string; merged_fields?: Record<string, unknown> }) {
+  const uid = await getUserId();
+  if (!uid) throw new Error("Not authenticated");
+  const { data, error } = await fromTable("crm_merge_log").insert({ ...entry, user_id: uid }).select().single();
+  if (error) throw error;
+  return data;
+}
+
+// Contact-Company linking
+export async function createCRMContactCompanyLink(link: { contact_id: string; company_id: string; role?: string; is_primary?: boolean }) {
+  const uid = await getUserId();
+  if (!uid) throw new Error("Not authenticated");
+  const { data, error } = await fromTable("crm_contact_company").insert({ ...link, user_id: uid }).select().single();
+  if (error) throw error;
+  return data;
+}
+
+export async function deleteCRMContactCompanyLink(id: string) {
+  const { error } = await fromTable("crm_contact_company").delete().eq("id", id);
+  if (error) throw error;
+}
+
+export async function fetchCRMContactCompanyLinks(mode: RealityModeKey = "real"): Promise<ModeAwareResult<Array<{ id: string; contact_id: string; company_id: string; role: string | null; is_primary: boolean | null }>>> {
+  if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: [], emptyDefault: [] });
+  const uid = await getUserId();
+  if (!uid) return resolveByMode({ mode, realData: null, demoData: [], emptyDefault: [] });
+  const { data, error } = await fromTable("crm_contact_company").select("*").eq("user_id", uid);
+  return resolveByMode({ mode, realData: !error && data?.length ? data : null, demoData: [], emptyDefault: [] });
+}
