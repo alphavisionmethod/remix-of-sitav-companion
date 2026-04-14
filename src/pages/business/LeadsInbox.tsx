@@ -10,14 +10,15 @@ import { useBusinessNavigation } from "@/contexts/BusinessNavigationContext";
 
 import { LeadInboxHeader } from "@/components/business/lead-inbox/LeadInboxHeader";
 import { LeadInboxOverviewCards } from "@/components/business/lead-inbox/LeadInboxOverviewCards";
-import { LeadTriageCard } from "@/components/business/lead-inbox/LeadTriageCard";
+import { LeadTriageQueue } from "@/components/business/lead-inbox/LeadTriageQueue";
 import { LeadDetailPanel } from "@/components/business/lead-inbox/LeadDetailPanel";
 import { LeadBulkTriageBar } from "@/components/business/lead-inbox/LeadBulkTriageBar";
-import { LeadEmptyState } from "@/components/business/lead-inbox/LeadEmptyStates";
+import { LeadDuplicateDrawer } from "@/components/business/lead-inbox/LeadDuplicateDrawer";
 import { useLeadInbox, type InboxFilter } from "@/components/business/lead-inbox/useLeadInbox";
 import { getInboxStats } from "@/components/business/lead-inbox/mock-inbox-data";
 
-import { Search, Plus, Plug } from "lucide-react";
+import { Search, Plus, Plug, ChevronDown, ChevronUp, LayoutGrid } from "lucide-react";
+import { toast } from "sonner";
 
 const FILTER_TABS: { key: InboxFilter; label: string }[] = [
   { key: "all", label: "All Pending" },
@@ -26,7 +27,7 @@ const FILTER_TABS: { key: InboxFilter; label: string }[] = [
   { key: "high-quality", label: "High Quality" },
   { key: "missing-info", label: "Missing Info" },
   { key: "duplicates", label: "Duplicates" },
-  { key: "exceptional", label: "Exceptional" },
+  { key: "exceptional", label: "★ Exceptional" },
   { key: "snoozed", label: "Snoozed" },
   { key: "accepted", label: "Accepted" },
   { key: "rejected", label: "Rejected" },
@@ -36,6 +37,7 @@ const LeadsInbox = () => {
   const { navigateTo } = useBusinessNavigation();
   const { primaryMode } = useBusinessProfile();
   const [showOverview, setShowOverview] = useState(true);
+  const [duplicateDrawerItem, setDuplicateDrawerItem] = useState<string | null>(null);
 
   const {
     items, filtered, selected, selectedId,
@@ -84,6 +86,8 @@ const LeadsInbox = () => {
     ? summaryParts.join(", ") + "."
     : "All caught up — no pending items.";
 
+  const duplicateItem = duplicateDrawerItem ? items.find(i => i.id === duplicateDrawerItem) : null;
+
   return (
     <motion.div className="space-y-5" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
       <PageTruthBanner />
@@ -95,7 +99,8 @@ const LeadsInbox = () => {
         </div>
         <div className="flex gap-2 shrink-0">
           <SitaButton variant="ghost" size="sm" onClick={() => setShowOverview(v => !v)}>
-            {showOverview ? "Hide" : "Show"} Overview
+            {showOverview ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
+            <LayoutGrid className="h-3.5 w-3.5" />
           </SitaButton>
           <SitaButton variant="secondary" size="sm" onClick={() => navigateTo("integrations")}>
             <Plug className="h-3.5 w-3.5" /> Sources
@@ -142,39 +147,23 @@ const LeadsInbox = () => {
       <div className="grid gap-5 lg:grid-cols-5">
         {/* Triage Queue */}
         <div className="lg:col-span-3 space-y-2">
-          {filtered.length === 0 ? (
-            <LeadEmptyState
-              variant={items.length === 0 ? "first-use" : stats.newCount === 0 && filter === "all" ? "caught-up" : "no-results"}
-              onAddLead={() => navigateTo("contacts")}
-              onImport={() => navigateTo("integrations")}
-            />
-          ) : (
-            <AnimatePresence mode="popLayout">
-              {filtered.map((item, i) => (
-                <motion.div
-                  key={item.id}
-                  layout
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, x: -100 }}
-                  transition={{ delay: i * 0.03 }}
-                >
-                  <LeadTriageCard
-                    item={item}
-                    selected={selectedId === item.id}
-                    checked={checkedIds.has(item.id)}
-                    onSelect={() => setSelectedId(item.id)}
-                    onCheck={(c) => toggleCheck(item.id, c)}
-                    onAccept={() => triageAction(item.id, "accept")}
-                    onRoute={(dest) => triageAction(item.id, "route", dest)}
-                    onReject={() => triageAction(item.id, "reject")}
-                    onSnooze={() => triageAction(item.id, "snooze")}
-                    onFlag={() => triageAction(item.id, "route", "boardroom")}
-                  />
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          )}
+          <LeadTriageQueue
+            items={filtered}
+            allItems={items}
+            filter={filter}
+            selectedId={selectedId}
+            checkedIds={checkedIds}
+            onSelect={setSelectedId}
+            onCheck={toggleCheck}
+            onAccept={id => triageAction(id, "accept")}
+            onRoute={(id, dest) => triageAction(id, "route", dest)}
+            onReject={id => triageAction(id, "reject")}
+            onSnooze={id => triageAction(id, "snooze")}
+            onFlag={id => triageAction(id, "route", "boardroom")}
+            onAddLead={() => navigateTo("contacts")}
+            onImport={() => navigateTo("integrations")}
+            newCount={stats.newCount}
+          />
         </div>
 
         {/* Detail Panel */}
@@ -186,15 +175,20 @@ const LeadsInbox = () => {
               onAccept={(id) => triageAction(id, "accept")}
               onRoute={(id, dest) => triageAction(id, "route", dest)}
               onReject={(id) => triageAction(id, "reject")}
+              onOpenDuplicate={(id) => setDuplicateDrawerItem(id)}
             />
           ) : (
-            <div className="hidden lg:flex flex-col items-center justify-center py-20 text-center">
-              <div className="h-16 w-16 rounded-2xl bg-muted/20 flex items-center justify-center mb-4">
-                <Search className="h-8 w-8 text-muted-foreground/40" />
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="hidden lg:flex flex-col items-center justify-center py-20 text-center rounded-2xl border border-dashed border-border/30 bg-card/30"
+            >
+              <div className="h-16 w-16 rounded-2xl bg-primary/5 flex items-center justify-center mb-4">
+                <Search className="h-8 w-8 text-primary/20" />
               </div>
-              <p className="text-sm text-muted-foreground">Select a lead to review details</p>
-              <p className="text-xs text-muted-foreground/60 mt-1">Click any card to open the triage workspace</p>
-            </div>
+              <p className="text-sm font-medium text-muted-foreground">Select a lead to review</p>
+              <p className="text-xs text-muted-foreground/60 mt-1 max-w-[200px]">Click any card to open the triage workspace with full details and actions</p>
+            </motion.div>
           )}
         </div>
       </div>
@@ -207,6 +201,23 @@ const LeadsInbox = () => {
         onRouteAll={(dest) => bulkAction("route", dest)}
         onClear={clearChecked}
       />
+
+      {/* Duplicate Drawer */}
+      {duplicateItem && (
+        <LeadDuplicateDrawer
+          item={duplicateItem}
+          open={!!duplicateDrawerItem}
+          onClose={() => setDuplicateDrawerItem(null)}
+          onMerge={() => {
+            toast.success("Records merged successfully");
+            setDuplicateDrawerItem(null);
+          }}
+          onKeepBoth={() => {
+            toast.success("Both records kept — duplicate flag cleared");
+            setDuplicateDrawerItem(null);
+          }}
+        />
+      )}
 
       {/* Advisor Strip */}
       <ModuleAdvisorInsight
