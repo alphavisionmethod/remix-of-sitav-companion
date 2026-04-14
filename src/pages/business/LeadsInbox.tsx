@@ -26,6 +26,8 @@ import { DataFreshnessBadge } from "@/components/sita/DataFreshnessBadge";
 import { useQueryFreshness } from "@/hooks/use-query-freshness";
 import { useCRMSync } from "@/hooks/use-backend-actions";
 import { RefreshCw } from "lucide-react";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { getIdentityLayer } from "@/lib/engines/business-identity-layers";
 
 interface Lead {
   id: string; name: string; company?: string | null; source: string | null; status: string;
@@ -71,6 +73,10 @@ type Tab = "all" | "urgent" | "new" | "warm" | "stale" | "qualified";
 const LeadsInbox = () => {
   const { navigateTo } = useBusinessNavigation();
   const { user } = useAuth();
+  const { primaryMode, adaptations } = useBusinessProfile();
+  const identity = getIdentityLayer(primaryMode);
+  const crmLang = adaptations.crm.language;
+  const leadLabel = primaryMode === "ecommerce" ? "Cart Leads" : primaryMode === "appointment-based" ? "Booking Inquiries" : primaryMode === "brick-and-mortar" ? "Walk-in Leads" : crmLang.leadLabel || "Leads";
   const queryClient = useQueryClient();
   const crmSync = useCRMSync();
   const { confirmation, confirm } = useConfirmation();

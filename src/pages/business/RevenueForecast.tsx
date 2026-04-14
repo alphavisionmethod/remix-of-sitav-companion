@@ -23,6 +23,8 @@ import {
   ChevronDown, ChevronUp, Users, DollarSign, AlertTriangle,
   ArrowUpRight, Gauge, Eye
 } from "lucide-react";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { getIdentityLayer } from "@/lib/engines/business-identity-layers";
 
 
 

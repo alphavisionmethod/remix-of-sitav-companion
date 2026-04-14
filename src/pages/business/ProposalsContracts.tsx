@@ -5,6 +5,8 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { getIdentityLayer } from "@/lib/engines/business-identity-layers";
 
 const proposals = [
   {
@@ -71,6 +73,9 @@ const winLossData = [
 type Tab = "proposals" | "templates" | "clauses" | "analytics";
 
 const ProposalsContracts = () => {
+  const { primaryMode } = useBusinessProfile();
+  const identity = getIdentityLayer(primaryMode);
+  const pageLabel = primaryMode === "agency" ? "Pitches & Contracts" : primaryMode === "service" ? "Proposals & Agreements" : primaryMode === "professional-practice" ? "Service Agreements" : "Proposals & Contracts";
   const [activeTab, setActiveTab] = useState<Tab>("proposals");
   const [expandedId, setExpandedId] = useState<string | null>(null);
 
