@@ -17,7 +17,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import {
   User, Shield, Bell, Palette, Eye, Lock, Globe, Sliders, Brain, Heart,
   ToggleLeft, ToggleRight, Zap, DollarSign, Workflow, TrendingUp, FileText,
-  ChevronRight, Check, AlertTriangle, Clock, Wifi, Download, Trash2, ShieldAlert,
+  ChevronRight, Check, CheckCircle, AlertTriangle, Clock, Wifi, Download, Trash2, ShieldAlert,
   Settings, Home, Users, Monitor, Smartphone, Key, Volume2, VolumeX,
   HelpCircle, Wrench, Database, RefreshCw, Cpu, Search, Activity
 } from "lucide-react";
