@@ -1,11 +1,11 @@
-import React, { useState, useCallback, useEffect, lazy, Suspense } from "react";
+import React, { useState, useCallback, useEffect, useMemo, lazy, Suspense } from "react";
 import {
   Users, FileText, Briefcase, TrendingUp, Brain, ArrowUpRight, CheckCircle, Clock,
   AlertTriangle, Activity, Zap, LayoutDashboard, Target, Phone, Calendar, Settings,
   Receipt, Banknote, ClipboardList, Bot, RefreshCw, Share2, ShoppingCart, Globe,
   BarChart3, BookOpen, LineChart, Mail, FolderOpen, Crown, Shield, Heart,
   Building2, StickyNote, Upload, Filter, Workflow, BrainCircuit, Search,
-  ChevronDown, ChevronRight
+  ChevronDown, ChevronRight, Sliders
 } from "lucide-react";
 import { Headphones as SupportIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -14,6 +14,10 @@ import { DomainAdvisorBoard } from "@/components/sita/domain-shared/DomainAdviso
 import { useBoardroomBridge } from "@/hooks/useBoardroomBridge";
 import { getAdvisorOutputs } from "@/lib/services/orchestration-pipeline/module-advisor-consumer";
 import { BusinessNavigationContext } from "@/contexts/BusinessNavigationContext";
+import { BusinessProfileProvider } from "@/contexts/BusinessProfileContext";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import AdaptiveBusinessHome from "@/components/business/adaptive/AdaptiveBusinessHome";
+import BusinessProfileEditor from "@/components/business/adaptive/BusinessProfileEditor";
 
 // ── Page imports ──────────────────────────────────────────────
 import BusinessOverview from "@/pages/business/BusinessOverview";
