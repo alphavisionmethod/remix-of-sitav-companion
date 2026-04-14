@@ -41,8 +41,6 @@ const FALLBACK_WHAT_CHANGED = [
   { label: "NYC flight prices increased $120 — approval window closing", domain: "concierge", time: "1 hour ago", type: "info" as const },
 ];
 
-const DOMAIN_ICONS: Record<string, React.ElementType> = { Business: Briefcase, Finance: DollarSign, Concierge: Users };
-
 /** Build signals from live pipeline synthesis data, with fallback */
 function buildLiveSignals(scope: string) {
   const domains: Domain[] = scope === "global" ? ["business", "finance", "concierge"] : [scope as Domain];
@@ -52,9 +50,10 @@ function buildLiveSignals(scope: string) {
     const synthesis = getSynthesisForDomain(domain);
     if (synthesis) {
       const label = domain.charAt(0).toUpperCase() + domain.slice(1);
+      const IconComp = label === "Business" ? Briefcase : label === "Finance" ? DollarSign : Users;
       signals.push({
         domain: label,
-        icon: DOMAIN_ICONS[label] || Briefcase,
+        icon: IconComp,
         summary: synthesis.issue_summary.slice(0, 60),
         metric: `${synthesis.module_advisor_positions.length} advisors`,
         trend: synthesis.boardroom_worthiness_score > 0.6 ? "down" as const : synthesis.boardroom_worthiness_score > 0.3 ? "flat" as const : "up" as const,

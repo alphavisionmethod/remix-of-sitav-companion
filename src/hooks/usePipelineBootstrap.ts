@@ -45,7 +45,6 @@ export function usePipelineBootstrap() {
           domain,
           severity: synthesis.boardroom_worthiness_score > 0.8 ? "high" : "medium",
           description: synthesis.issue_summary,
-          source_signals: [],
         }).catch(() => {/* bridge handles errors */});
       }
     }, "pipeline-bootstrap-auto-escalation");
