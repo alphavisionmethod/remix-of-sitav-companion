@@ -5,7 +5,8 @@
 
 import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Shield, Lock, Eye, HardDrive, CheckCircle, XCircle, AlertTriangle, Activity } from "lucide-react";
+import { Shield, Lock, Eye, HardDrive, CheckCircle, XCircle, AlertTriangle, Activity, Bug, Globe, MapPin, Loader2 } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { AppLoader } from "@/lib/nova-sdk/runtime/loader";
 import { PermissionMonitor } from "@/lib/nova-sdk/services/permission-monitor";
@@ -389,6 +390,266 @@ function FileSystemTab() {
   );
 }
 
+// ── Tab 5: Threat Protection ──
+
+function ThreatProtectionTab() {
+  const [realTimeOn, setRealTimeOn] = useState(true);
+  const [scanning, setScanning] = useState(false);
+  const [progress, setProgress] = useState(0);
+
+  const handleScan = () => {
+    setScanning(true);
+    setProgress(0);
+    const interval = setInterval(() => {
+      setProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(interval);
+          setScanning(false);
+          return 100;
+        }
+        return prev + Math.random() * 8 + 2;
+      });
+    }, 200);
+  };
+
+  const threats = [
+    { name: "Tracking script blocked", source: "analytics-cdn.io", time: "2h ago", severity: "low" },
+    { name: "Suspicious API call intercepted", source: "unknown-endpoint.xyz", time: "5h ago", severity: "medium" },
+  ];
+
+  return (
+    <div className="space-y-4">
+      {/* Real-time protection toggle */}
+      <div className="rounded-xl border bg-card p-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className={cn(
+              "w-10 h-10 rounded-full flex items-center justify-center transition-colors",
+              realTimeOn ? "bg-[hsl(152_55%_48%/0.15)]" : "bg-muted"
+            )}>
+              <Shield className={cn("w-5 h-5", realTimeOn ? "text-[hsl(152_55%_48%)]" : "text-muted-foreground")} />
+            </div>
+            <div>
+              <div className="text-sm font-semibold text-foreground">Real-time Protection</div>
+              <div className="text-[10px] text-muted-foreground">
+                {realTimeOn ? "All systems monitored" : "Protection disabled"}
+              </div>
+            </div>
+          </div>
+          <button
+            onClick={() => setRealTimeOn(!realTimeOn)}
+            className={cn(
+              "w-11 h-6 rounded-full transition-all relative",
+              realTimeOn ? "bg-[hsl(152_55%_48%)]" : "bg-muted"
+            )}
+          >
+            <div className={cn(
+              "absolute top-0.5 w-5 h-5 rounded-full bg-white shadow-sm transition-transform",
+              realTimeOn ? "translate-x-[22px]" : "translate-x-0.5"
+            )} />
+          </button>
+        </div>
+      </div>
+
+      {/* Scan button */}
+      <div className="rounded-xl border bg-card p-4 space-y-3">
+        <div className="flex items-center justify-between">
+          <h4 className="text-xs font-semibold text-foreground">System Scan</h4>
+          <span className="text-[10px] text-muted-foreground">Last scan: 3h ago</span>
+        </div>
+        {scanning ? (
+          <div className="space-y-2">
+            <Progress value={Math.min(progress, 100)} className="h-2" />
+            <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
+              <Loader2 className="w-3 h-3 animate-spin" />
+              Scanning… {Math.min(Math.round(progress), 100)}%
+            </div>
+          </div>
+        ) : (
+          <button
+            onClick={handleScan}
+            className="w-full py-2 rounded-lg bg-primary text-primary-foreground text-xs font-medium hover:bg-primary/90 transition-colors"
+          >
+            {progress >= 100 ? "✓ Scan Complete — No Threats" : "Run Full Scan"}
+          </button>
+        )}
+      </div>
+
+      {/* Threat log */}
+      <div className="rounded-xl border bg-card p-3">
+        <h4 className="text-xs font-semibold text-foreground mb-2">Recent Activity</h4>
+        <div className="space-y-2">
+          {threats.map((t, i) => (
+            <div key={i} className="flex items-start gap-2.5 text-[11px]">
+              <Bug className={cn("w-3.5 h-3.5 mt-0.5 shrink-0",
+                t.severity === "medium" ? "text-[hsl(38_85%_58%)]" : "text-muted-foreground"
+              )} />
+              <div className="flex-1">
+                <div className="font-medium text-foreground">{t.name}</div>
+                <div className="text-[9px] text-muted-foreground">{t.source} · {t.time}</div>
+              </div>
+              <span className={cn("px-1.5 py-0.5 rounded text-[9px] font-medium",
+                t.severity === "medium"
+                  ? "bg-[hsl(38_85%_58%/0.15)] text-[hsl(38_85%_45%)]"
+                  : "bg-muted text-muted-foreground"
+              )}>
+                {t.severity}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Stats */}
+      <div className="flex gap-3 text-xs">
+        <div className="px-3 py-1.5 rounded-lg bg-[hsl(152_55%_48%/0.1)]">
+          <span className="text-[hsl(152_55%_40%)] font-semibold">0</span>
+          <span className="text-muted-foreground ml-1">threats active</span>
+        </div>
+        <div className="px-3 py-1.5 rounded-lg bg-muted/50">
+          <span className="font-semibold text-foreground">247</span>
+          <span className="text-muted-foreground ml-1">blocked this week</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Tab 6: VPN ──
+
+const VPN_SERVERS = [
+  { city: "New York", country: "US", latency: 12, flag: "🇺🇸" },
+  { city: "London", country: "UK", latency: 45, flag: "🇬🇧" },
+  { city: "Tokyo", country: "JP", latency: 89, flag: "🇯🇵" },
+  { city: "Frankfurt", country: "DE", latency: 38, flag: "🇩🇪" },
+  { city: "Singapore", country: "SG", latency: 72, flag: "🇸🇬" },
+  { city: "São Paulo", country: "BR", latency: 95, flag: "🇧🇷" },
+];
+
+function VPNTab() {
+  const [connected, setConnected] = useState(false);
+  const [connecting, setConnecting] = useState(false);
+  const [selectedServer, setSelectedServer] = useState(VPN_SERVERS[0]);
+
+  const handleToggle = () => {
+    if (connected) {
+      setConnected(false);
+    } else {
+      setConnecting(true);
+      setTimeout(() => {
+        setConnecting(false);
+        setConnected(true);
+      }, 1500);
+    }
+  };
+
+  return (
+    <div className="space-y-4">
+      {/* Connection status */}
+      <div className="rounded-xl border bg-card p-4 text-center space-y-3">
+        <div className={cn(
+          "mx-auto w-16 h-16 rounded-full flex items-center justify-center transition-all duration-500",
+          connected
+            ? "bg-[hsl(152_55%_48%/0.15)] shadow-[0_0_24px_hsl(152_55%_48%/0.2)]"
+            : connecting
+              ? "bg-primary/10 animate-pulse"
+              : "bg-muted"
+        )}>
+          <Globe className={cn("w-7 h-7 transition-colors",
+            connected ? "text-[hsl(152_55%_48%)]" : connecting ? "text-primary animate-spin" : "text-muted-foreground"
+          )} />
+        </div>
+        <div>
+          <div className="text-sm font-semibold text-foreground">
+            {connected ? "Connected" : connecting ? "Connecting…" : "Disconnected"}
+          </div>
+          {connected && (
+            <div className="text-[10px] text-muted-foreground mt-0.5">
+              {selectedServer.flag} {selectedServer.city} · {selectedServer.latency}ms
+            </div>
+          )}
+        </div>
+        <button
+          onClick={handleToggle}
+          disabled={connecting}
+          className={cn(
+            "px-6 py-2 rounded-lg text-xs font-medium transition-all",
+            connected
+              ? "bg-destructive/10 text-destructive hover:bg-destructive/20"
+              : "bg-primary text-primary-foreground hover:bg-primary/90",
+            connecting && "opacity-50 cursor-wait"
+          )}
+        >
+          {connected ? "Disconnect" : connecting ? "Connecting…" : "Connect"}
+        </button>
+      </div>
+
+      {/* Encryption badge */}
+      <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-muted/50">
+        <Lock className="w-3.5 h-3.5 text-primary" />
+        <span className="text-[11px] text-foreground font-medium">AES-256-GCM</span>
+        <span className="text-[10px] text-muted-foreground">· WireGuard Protocol</span>
+      </div>
+
+      {/* Server list */}
+      <div className="rounded-xl border bg-card p-3">
+        <h4 className="text-xs font-semibold text-foreground mb-2">Server Locations</h4>
+        <div className="space-y-1">
+          {VPN_SERVERS.map(server => (
+            <button
+              key={server.city}
+              onClick={() => setSelectedServer(server)}
+              className={cn(
+                "w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-left transition-all",
+                selectedServer.city === server.city
+                  ? "bg-primary/10"
+                  : "hover:bg-muted/50"
+              )}
+            >
+              <span className="text-sm">{server.flag}</span>
+              <div className="flex-1">
+                <div className={cn("text-[11px]",
+                  selectedServer.city === server.city ? "text-foreground font-medium" : "text-muted-foreground"
+                )}>
+                  {server.city}
+                </div>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <MapPin className="w-2.5 h-2.5 text-muted-foreground" />
+                <span className={cn("text-[10px]",
+                  server.latency < 50
+                    ? "text-[hsl(152_55%_48%)]"
+                    : server.latency < 80
+                      ? "text-[hsl(38_85%_58%)]"
+                      : "text-muted-foreground"
+                )}>{server.latency}ms</span>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Transfer stats */}
+      {connected && (
+        <div className="flex gap-3 text-xs">
+          <div className="px-3 py-1.5 rounded-lg bg-muted/50">
+            <span className="text-muted-foreground">↑</span>{" "}
+            <span className="font-semibold text-foreground">1.2 GB</span>
+          </div>
+          <div className="px-3 py-1.5 rounded-lg bg-muted/50">
+            <span className="text-muted-foreground">↓</span>{" "}
+            <span className="font-semibold text-foreground">3.8 GB</span>
+          </div>
+          <div className="px-3 py-1.5 rounded-lg bg-muted/50">
+            <span className="text-muted-foreground">IP:</span>{" "}
+            <span className="font-semibold text-foreground font-mono">185.xx.xx.42</span>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ── Main Security Center Window ──
 
 export function SecurityCenterWindow() {
@@ -401,13 +662,19 @@ export function SecurityCenterWindow() {
         </div>
         <div>
           <h2 className="text-sm font-semibold text-foreground">Security Center</h2>
-          <p className="text-[10px] text-muted-foreground">System security & privacy dashboard</p>
+          <p className="text-[10px] text-muted-foreground">System security, privacy & VPN</p>
         </div>
       </div>
 
       {/* Tabs */}
-      <Tabs defaultValue="sandbox" className="flex-1 flex flex-col overflow-hidden">
-        <TabsList className="mx-4 mt-2 bg-muted/50">
+      <Tabs defaultValue="threats" className="flex-1 flex flex-col overflow-hidden">
+        <TabsList className="mx-4 mt-2 bg-muted/50 flex-wrap h-auto gap-0.5 p-1">
+          <TabsTrigger value="threats" className="text-[11px] gap-1">
+            <Bug className="w-3 h-3" /> Threats
+          </TabsTrigger>
+          <TabsTrigger value="vpn" className="text-[11px] gap-1">
+            <Globe className="w-3 h-3" /> VPN
+          </TabsTrigger>
           <TabsTrigger value="sandbox" className="text-[11px] gap-1">
             <Shield className="w-3 h-3" /> Sandbox
           </TabsTrigger>
@@ -415,14 +682,16 @@ export function SecurityCenterWindow() {
             <Lock className="w-3 h-3" /> Signing
           </TabsTrigger>
           <TabsTrigger value="permissions" className="text-[11px] gap-1">
-            <Eye className="w-3 h-3" /> Permissions
+            <Eye className="w-3 h-3" /> Perms
           </TabsTrigger>
           <TabsTrigger value="filesystem" className="text-[11px] gap-1">
-            <HardDrive className="w-3 h-3" /> File System
+            <HardDrive className="w-3 h-3" /> FS
           </TabsTrigger>
         </TabsList>
 
         <div className="flex-1 overflow-y-auto px-4 py-3">
+          <TabsContent value="threats" className="mt-0"><ThreatProtectionTab /></TabsContent>
+          <TabsContent value="vpn" className="mt-0"><VPNTab /></TabsContent>
           <TabsContent value="sandbox" className="mt-0"><SandboxTab /></TabsContent>
           <TabsContent value="signing" className="mt-0"><CodeSigningTab /></TabsContent>
           <TabsContent value="permissions" className="mt-0"><PermissionsTab /></TabsContent>

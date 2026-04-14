@@ -15,7 +15,7 @@ const STORAGE_KEY = "sita-desktop-widgets";
 const DEFAULT_WIDGETS: WidgetInstance[] = [
   { id: "clock", type: "clock", label: "Clock", description: "Large time display with date", position: { x: 48, y: 560 }, visible: true, size: "lg" },
   { id: "quick-actions", type: "quick-actions", label: "Quick Actions", description: "Shortcut grid to open apps and tools", position: { x: 940, y: 40 }, visible: true, size: "md" },
-  { id: "system", type: "system", label: "System Toggles", description: "WiFi, Bluetooth, display and sound controls", position: { x: 940, y: 220 }, visible: true, size: "md" },
+  { id: "system", type: "system", label: "System Toggles", description: "WiFi, Bluetooth, Shield VPN and power controls", position: { x: 940, y: 280 }, visible: true, size: "md" },
   { id: "calendar", type: "calendar", label: "Calendar", description: "Date card with upcoming schedule", position: { x: 940, y: 380 }, visible: true, size: "md" },
   { id: "notifications", type: "notifications", label: "Notifications", description: "Recent alerts and notification feed", position: { x: 940, y: 600 }, visible: true, size: "md" },
   { id: "continuity", type: "continuity", label: "Continuity", description: "Resume your last workspace session", position: { x: 600, y: 600 }, visible: true, size: "md" },
