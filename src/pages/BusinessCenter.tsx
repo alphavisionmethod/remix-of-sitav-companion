@@ -54,6 +54,7 @@ import CRMImportCenter from "./business/CRMImportCenter";
 import CRMDuplicates from "./business/CRMDuplicates";
 import CRMAdvisorPage from "./business/CRMAdvisorPage";
 import CRMCustomFieldsPage from "./business/CRMCustomFieldsPage";
+import CRMCommunications from "./business/CRMCommunications";
 
 import { useAppStatePersistence, restoreAppState } from "@/hooks/useAppStatePersistence";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
@@ -68,10 +69,11 @@ const DOMAIN_CONFIG: DomainConfig = {
   version: "Business OS v2.0",
 };
 
-type SubPage = "overview" | "leads" | "customers" | "follow-through" | "support" | "appointments" | "operations" | "documents" | "opportunities" | "quotes" | "invoices" | "communications" | "boardroom" | "proof" | "revenue-autopilot" | "collections" | "autopilot-hub" | "revenue-impact" | "playbook-builder" | "revenue-forecast" | "website-builder" | "proposals" | "lead-recovery" | "social" | "ecommerce" | "crm-home" | "crm-contacts" | "crm-companies" | "crm-pipeline" | "crm-health" | "crm-timeline" | "crm-tasks" | "crm-notes" | "crm-segments" | "crm-automations" | "crm-import" | "crm-duplicates" | "crm-advisor" | "crm-fields";
+type SubPage = "overview" | "leads" | "customers" | "follow-through" | "support" | "appointments" | "operations" | "documents" | "opportunities" | "quotes" | "invoices" | "communications" | "boardroom" | "proof" | "revenue-autopilot" | "collections" | "autopilot-hub" | "revenue-impact" | "playbook-builder" | "revenue-forecast" | "website-builder" | "proposals" | "lead-recovery" | "social" | "ecommerce" | "crm-home" | "crm-contacts" | "crm-companies" | "crm-pipeline" | "crm-health" | "crm-timeline" | "crm-tasks" | "crm-notes" | "crm-segments" | "crm-automations" | "crm-import" | "crm-duplicates" | "crm-advisor" | "crm-fields" | "crm-communications";
 
 const subpageFromPath = (path: string): SubPage => {
   // CRM routes first (more specific)
+  if (path.includes("/crm-communications")) return "crm-communications";
   if (path.includes("/crm-home")) return "crm-home";
   if (path.includes("/crm-contacts")) return "crm-contacts";
   if (path.includes("/crm-companies")) return "crm-companies";
@@ -122,6 +124,7 @@ const TAB_GROUPS: NavTabGroup[] = [
       { key: "crm-pipeline", label: "Pipeline", icon: TrendingUp },
       { key: "crm-health", label: "Health", icon: Heart },
       { key: "crm-timeline", label: "Timeline", icon: Clock },
+      { key: "crm-communications", label: "Comms Queue", icon: Mail },
       { key: "crm-tasks", label: "Tasks", icon: Target, count: 3, countSeverity: "warning" },
       { key: "crm-notes", label: "Notes", icon: StickyNote },
       { key: "crm-segments", label: "Segments", icon: Filter },
@@ -225,6 +228,7 @@ const pages: Record<SubPage, React.ComponentType> = {
   "crm-duplicates": CRMDuplicates,
   "crm-advisor": CRMAdvisorPage,
   "crm-fields": CRMCustomFieldsPage,
+  "crm-communications": CRMCommunications,
 };
 
 const BusinessCenter = () => {
