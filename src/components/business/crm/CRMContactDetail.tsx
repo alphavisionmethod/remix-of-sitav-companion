@@ -14,7 +14,8 @@ import {
   Calendar, Clock, Send, MessageSquare, FileText, CheckSquare,
   TrendingUp, DollarSign, Edit2, Tag, ChevronRight, Plus,
   AlertTriangle, ArrowUpRight, Sparkles, MoreHorizontal, User,
-  Shield, Receipt, Handshake, HeadphonesIcon, Video
+  Shield, Receipt, Handshake, HeadphonesIcon, Video,
+  Banknote, FolderOpen, CalendarClock
 } from "lucide-react";
 import { formatDistanceToNow, format, isPast } from "date-fns";
 import { useCRMCommunications, useCRMTasks, useCRMNotes, useCRMOpportunities, useCreateCommunication, useCreateTask, useCreateNote, useUpdateContact } from "@/hooks/use-crm-data";
@@ -23,6 +24,9 @@ import { CRMEscalateToBoardroom } from "./CRMEscalateToBoardroom";
 import { CRMMeetingPrep } from "./CRMMeetingPrep";
 import { CRMNextBestAction } from "./CRMNextBestAction";
 import { InlineAdvisorInsights, generateContactInsights } from "./CRMAdvisorInsight";
+import { CRMFinanceLinkage } from "./CRMFinanceLinkage";
+import { CRMFilesLinkage } from "./CRMFilesLinkage";
+import { CRMConciergeLinkage } from "./CRMConciergeLinkage";
 
 const LIFECYCLE_COLORS: Record<string, string> = {
   lead: "bg-blue-500/20 text-blue-400 border-blue-500/30",
@@ -178,9 +182,9 @@ export function CRMContactDetail({ contact, companies = [], onClose, onEdit }: C
           <TabsTrigger value="notes" className="text-xs">Notes ({notes.length})</TabsTrigger>
           <TabsTrigger value="deals" className="text-xs">Deals ({opps.length})</TabsTrigger>
           <TabsTrigger value="prep" className="text-xs">Prep</TabsTrigger>
-          <TabsTrigger value="proposals" className="text-xs">Proposals</TabsTrigger>
-          <TabsTrigger value="invoices" className="text-xs">Invoices</TabsTrigger>
-          <TabsTrigger value="support" className="text-xs">Support</TabsTrigger>
+          <TabsTrigger value="finance" className="text-xs flex items-center gap-1"><Banknote className="h-3 w-3" />Finance</TabsTrigger>
+          <TabsTrigger value="files" className="text-xs flex items-center gap-1"><FolderOpen className="h-3 w-3" />Files</TabsTrigger>
+          <TabsTrigger value="concierge" className="text-xs flex items-center gap-1"><CalendarClock className="h-3 w-3" />Concierge</TabsTrigger>
         </TabsList>
 
         <ScrollArea className="flex-1">
@@ -475,49 +479,32 @@ export function CRMContactDetail({ contact, companies = [], onClose, onEdit }: C
               </div>
             </TabsContent>
 
-            {/* Proposals/Quotes Linkage */}
-            <TabsContent value="proposals" className="mt-0">
-              <div className="flex flex-col items-center py-8">
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-3">
-                  <Handshake className="h-6 w-6 text-primary" />
-                </div>
-                <p className="text-sm font-semibold text-foreground">Proposals & Quotes</p>
-                <p className="text-xs text-muted-foreground text-center mt-1 max-w-xs">
-                  Proposals linked to {contact.first_name} will appear here. Create quotes from the Business OS Proposals section.
-                </p>
-                <Button variant="outline" size="sm" className="mt-4 text-xs gap-1.5">
-                  <ChevronRight className="h-3 w-3" /> Go to Proposals
-                </Button>
-              </div>
+            {/* Finance Linkage */}
+            <TabsContent value="finance" className="mt-0">
+              <CRMFinanceLinkage
+                entityType="contact"
+                entityId={contact.id}
+                entityName={`${contact.first_name} ${contact.last_name}`}
+                healthScore={health}
+              />
             </TabsContent>
 
-            {/* Invoices/Collections Linkage */}
-            <TabsContent value="invoices" className="mt-0">
-              <div className="flex flex-col items-center py-8">
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-3">
-                  <Receipt className="h-6 w-6 text-primary" />
-                </div>
-                <p className="text-sm font-semibold text-foreground">Invoices & Collections</p>
-                <p className="text-xs text-muted-foreground text-center mt-1 max-w-xs">
-                  Invoices linked to {contact.first_name} will appear here. Manage billing from the Finance OS section.
-                </p>
-                <Button variant="outline" size="sm" className="mt-4 text-xs gap-1.5">
-                  <ChevronRight className="h-3 w-3" /> Go to Invoices
-                </Button>
-              </div>
+            {/* Files Linkage */}
+            <TabsContent value="files" className="mt-0">
+              <CRMFilesLinkage
+                entityType="contact"
+                entityId={contact.id}
+                entityName={`${contact.first_name} ${contact.last_name}`}
+              />
             </TabsContent>
 
-            {/* Support Linkage */}
-            <TabsContent value="support" className="mt-0">
-              <div className="flex flex-col items-center py-8">
-                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-3">
-                  <HeadphonesIcon className="h-6 w-6 text-primary" />
-                </div>
-                <p className="text-sm font-semibold text-foreground">Support Issues</p>
-                <p className="text-xs text-muted-foreground text-center mt-1 max-w-xs">
-                  No support tickets linked to {contact.first_name}. Support issues will appear here when created.
-                </p>
-              </div>
+            {/* Concierge Linkage */}
+            <TabsContent value="concierge" className="mt-0">
+              <CRMConciergeLinkage
+                entityType="contact"
+                entityId={contact.id}
+                entityName={`${contact.first_name} ${contact.last_name}`}
+              />
             </TabsContent>
           </div>
         </ScrollArea>
