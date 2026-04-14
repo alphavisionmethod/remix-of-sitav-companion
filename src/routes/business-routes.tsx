@@ -56,6 +56,8 @@ export function getBusinessRoutes() {
       <Route path="/business/crm-notes" element={<BusinessCenter />} />
       <Route path="/business/crm-segments" element={<BusinessCenter />} />
       <Route path="/business/crm-automations" element={<BusinessCenter />} />
+      <Route path="/business/crm-import" element={<BusinessCenter />} />
+      <Route path="/business/crm-duplicates" element={<BusinessCenter />} />
     </>
   );
 }
