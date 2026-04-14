@@ -233,7 +233,7 @@ const SOURCE_PRECEDENCE: Record<PolicyBundleSource, number> = {
   platform: 4,
 };
 
-function deepMerge<T extends Record<string, unknown>>(base: T, override: Partial<T>): T {
+function deepMerge<T>(base: T, override: Partial<T>): T {
   const result = { ...base };
   for (const key of Object.keys(override) as (keyof T)[]) {
     const val = override[key];
