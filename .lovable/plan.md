@@ -1,57 +1,75 @@
 
 
-# Fix Window Drag, Traffic Lights, and Desktop Widget Wiring
+# Fix Desktop Widgets: Separate Quick Actions & System, Wire System Toggles
 
-## Problems Identified
+## Problems
 
-1. **Drag not fluid on Business OS window**: The `DomainAppShell` renders its own title bar with traffic lights INSIDE the FloatingWindow. The FloatingWindow already has a draggable title bar with traffic lights. The internal app title bar creates a competing non-draggable surface, making drag feel broken — you grab the app's internal title bar instead of the FloatingWindow's draggable one.
+1. **Quick Actions (8 app icons) and System Toggles (WiFi, Bluetooth, etc.) appear visually merged** — they're technically two separate `DraggableWidget` instances but positioned adjacent, making them look like one block. Both already support drag and remove via `DraggableWidget`. If users can't drag/close them, it's likely stale localStorage positions overlapping. We'll ensure default positions separate them clearly and verify drag/remove works.
 
-2. **Traffic light buttons broken in app shells**: `DomainAppShell.tsx` (line 45-53) has TrafficLights that:
-   - Close button calls `navigate("/")` — navigates away instead of closing the window
-   - Minimize button does nothing
-   - Maximize button does nothing
-   - Same issue in `MoneyAppShell.tsx`, `ConciergeAppShell.tsx`
+2. **System toggle buttons (WiFi, Bluetooth, Shield, Calm, Battery) only toggle on/off** — clicking them does nothing beyond a visual state change. They need to open relevant OS windows or surfaces:
+   - **WiFi** → Open a WiFi settings panel (network list)
+   - **Bluetooth** → Open Bluetooth device pairing panel
+   - **Shield** → Open the existing `SecurityCenterWindow` (personal VPN/antivirus)
+   - **Calm** → Toggle Do Not Disturb / Focus mode
+   - **Battery** → Open battery/power status panel
 
-3. **Desktop widgets**: Already wired correctly via `onLaunchApp` prop chain. But the `DesktopWhatMattersWidget` inner items need `stopPropagation` on `onPointerDown` to prevent widget drag from swallowing clicks.
+3. **Shield needs enhancement** — The existing `SecurityCenterWindow` has 4 tabs (Sandbox, Code Signing, Permissions, FS) but no "personal VPN" or "antivirus" feel. We'll add two new tabs: **Threat Protection** (antivirus-style scan with real-time status) and **VPN** (secure connection toggle with server selection).
 
 ## Solution
 
-### A. Remove duplicate traffic lights from DomainAppShell
+### A. Upgrade `DesktopSystemWidget.tsx` — Add click-to-open behavior
 
-Since apps are rendered INSIDE `FloatingWindow` which already provides:
-- Draggable title bar
-- Traffic light buttons (close/minimize/maximize)
-- Accent strip
-- Window chrome
+Each toggle gets two interactions:
+- **Click** = toggle on/off (existing)
+- **Long-press or icon tap when ON** = open the relevant panel/window
 
-The `DomainAppShell` should NOT render its own competing title bar with traffic lights. Remove the internal traffic lights and title bar drag zone. Keep only the app icon, title label, and mobile nav as a non-draggable info bar.
+Wire each toggle to launch the appropriate OS window:
+- `wifi` → opens a **WiFi Networks** floating panel (new small component showing available networks)
+- `bluetooth` → opens a **Bluetooth Devices** floating panel (device list with pair/unpair)
+- `shield` → calls `onLaunchApp("security-center")` to open the SecurityCenterWindow
+- `calm` → toggles Focus/DND mode (persisted via `useSettingsValue`) + shows toast confirmation
+- `battery` → opens a **Battery Status** floating panel (charge level, power mode, screen time)
 
-**Files to modify:**
-- `src/components/sita/shell/DomainAppShell.tsx` — Remove `TrafficLights` component. Convert title bar from a drag surface to a simple info strip. Remove the accent strip (FloatingWindow already has one via `appAccent`).
+The widget needs to accept `onLaunchApp` prop (currently it doesn't).
 
-### B. Fix standalone app shells (Money, Concierge)
+### B. Create 3 small popup panels (inline to the system widget)
 
-Same issue in:
-- `src/components/money/MoneyAppShell.tsx` — Remove internal TrafficLights
-- `src/components/concierge/ConciergeAppShell.tsx` — Remove internal TrafficLights
+Instead of full windows, WiFi/Bluetooth/Battery open as small glassmorphic dropdown panels anchored to the system widget — similar to macOS Control Center sub-panels:
 
-### C. Improve widget click reliability
+1. **`SystemWifiPanel.tsx`** — List of mock networks, connected indicator, toggle
+2. **`SystemBluetoothPanel.tsx`** — Paired devices list, scanning indicator, connect/disconnect
+3. **`SystemBatteryPanel.tsx`** — Battery percentage ring, power mode selector, estimated time, screen-on time
 
-- `src/components/sita/shell/desktop/DesktopWhatMattersWidget.tsx` — Add `onPointerDown` stopPropagation on clickable items so they don't get swallowed by the `DraggableWidget` drag handler.
-- Apply same fix to any widget with inner interactive items (calendar, CRM pipeline, etc.)
+Each panel is a small overlay (~280px wide) that appears above the toggle icon with a spring animation.
 
-### D. Verify FloatingWindow drag path
+### C. Enhance `SecurityCenterWindow.tsx` — Add Shield/VPN tabs
 
-The `FloatingWindow` drag already works well with lerp smoothing, inertia, and magnetic snapping. The fix is removing the competing internal title bar, which will let the FloatingWindow's title bar handle all drag interactions cleanly.
+Add two new tabs to the existing 4-tab security center:
 
-## Technical Details
+5. **Threat Protection tab** — Real-time protection toggle, last scan timestamp, threat count (0), scan progress bar, quarantined items list, "Run Full Scan" button with animated progress
+6. **VPN tab** — Connection status (Connected/Disconnected), server location selector (6 cities), IP masking indicator, encryption badge, connect/disconnect button with animation, data transferred stats
 
-- `DomainAppShell` title bar height (38px) currently sits below FloatingWindow's title bar, creating a double-header. Removing it will give the app ~38px more content space.
-- The FloatingWindow already passes `appAccent` to render the correct gradient accent strip per app.
-- The `windowId` prop on FloatingWindow is set to the app ID (e.g., "business"), which maps to `APP_ACCENTS[windowId]` for correct branding.
+### D. Fix widget separation defaults
+
+Update `useDesktopWidgets.ts` default positions to ensure Quick Actions and System Toggles have clear vertical gap. Reset localStorage so users see the separated layout.
+
+### E. Pass `onLaunchApp` through widget render chain
+
+Update `DesktopSurface.tsx` → `renderWidget("system", ...)` to pass `onLaunchApp` to `DesktopSystemWidget`.
+
+## Files to modify
+- `src/components/sita/shell/desktop/DesktopSystemWidget.tsx` — Full rewrite with sub-panels and `onLaunchApp` prop
+- `src/components/sita/shell/windows/SecurityCenterWindow.tsx` — Add Threat Protection and VPN tabs
+- `src/components/sita/shell/DesktopSurface.tsx` — Pass `onLaunchApp` to system widget render
+- `src/hooks/useDesktopWidgets.ts` — Adjust default positions for clear separation
+
+## New files
+- `src/components/sita/shell/desktop/SystemWifiPanel.tsx`
+- `src/components/sita/shell/desktop/SystemBluetoothPanel.tsx`
+- `src/components/sita/shell/desktop/SystemBatteryPanel.tsx`
 
 ## Scope
-- 3-4 files modified
-- ~50 lines removed, ~10 lines added
-- No new files or dependencies
+- 4 files modified, 3 new files
+- ~400 lines new code
+- 0 new dependencies
 
