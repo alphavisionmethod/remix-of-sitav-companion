@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
 import { LeadSourceBadge } from "./LeadSourceBadge";
 import { LeadPriorityBadge } from "./LeadPriorityBadge";
@@ -7,6 +8,8 @@ import { PriorityEvolutionTimeline } from "./PriorityEvolutionTimeline";
 import { LeadScoreRadar } from "./LeadScoreRadar";
 import { LeadActivityTimeline } from "./LeadActivityTimeline";
 import { TrustBadge } from "@/components/sita/TrustBadge";
+import { ModuleAdvisorPanel } from "@/components/business/advisor-board/ModuleAdvisorPanel";
+import { generateInboxAdvisors } from "@/lib/engines/business-advisor-engine";
 import type { InboxItem } from "./mock-inbox-data";
 import type { LeadSource } from "./LeadSourceBadge";
 import type { LeadScoreResult } from "@/lib/engines/lead-scoring-engine";
@@ -215,7 +218,15 @@ export const LeadDetailPanel = ({ item, score, onClose, onAccept, onRoute, onRej
           </SitaCard>
         )}
 
-        {/* Advisor Recommendation */}
+        {/* Structured Advisor Intelligence */}
+        <ModuleAdvisorPanel
+          advisors={inboxAdvisors}
+          title="Inbox Advisor Intelligence"
+          defaultExpanded={false}
+          compact
+        />
+
+        {/* Legacy Advisor Recommendation */}
         {item.advisor_suggestion && (
           <SitaCard hover={false} glass className="p-4">
             <div className="flex items-center gap-2 mb-2">

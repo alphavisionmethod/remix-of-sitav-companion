@@ -2,6 +2,7 @@
 // Lead Recovery Detail Pane — Premium Rescue Briefing
 // ═══════════════════════════════════════════════════════════════
 
+import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   Bot, Phone, Mail, Linkedin, MessageSquare, Send, Clock, Target,
@@ -11,6 +12,9 @@ import {
 import { cn } from "@/lib/utils";
 import type { RecoveryCandidate } from "@/lib/engines/lead-recovery-engine";
 import { FAILURE_MODE_META, SUCCESS_BAND_META, RECOVERY_PATH_META } from "@/lib/engines/lead-recovery-engine";
+import { ModuleAdvisorPanel } from "@/components/business/advisor-board/ModuleAdvisorPanel";
+import { EscalationPacketPreview } from "@/components/business/advisor-board/EscalationPacketPreview";
+import { generateRecoveryAdvisors, buildEscalationPacket } from "@/lib/engines/business-advisor-engine";
 
 const CHANNEL_ICONS: Record<string, typeof Mail> = { email: Mail, phone: Phone, linkedin: Linkedin, sms: MessageSquare };
 const CHANNEL_LABELS: Record<string, string> = { email: "Email", phone: "Phone", linkedin: "LinkedIn", sms: "SMS" };
@@ -29,6 +33,9 @@ function SectionHeader({ icon: Icon, title, accent }: { icon: typeof Target; tit
 }
 
 export function LeadRecoveryPane({ lead }: Props) {
+  const [showEscalation, setShowEscalation] = useState(false);
+  const recoveryAdvisors = useMemo(() => lead ? generateRecoveryAdvisors(lead) : [], [lead]);
+
   if (!lead) {
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center">
@@ -248,14 +255,24 @@ export function LeadRecoveryPane({ lead }: Props) {
         </div>
       </div>
 
-      {/* ── Advisor Insight ────────────────────────────── */}
-      <div className="rounded-xl border border-[hsl(265_55%_58%/0.12)] bg-[hsl(265_55%_58%/0.03)] p-4">
-        <div className="flex items-center gap-1.5 mb-2">
-          <Bot className="h-3.5 w-3.5 text-[hsl(265_55%_58%)]" />
-          <span className="text-[10px] font-semibold text-[hsl(265_55%_70%)] uppercase tracking-wider">Advisor Recovery Analysis</span>
-        </div>
-        <p className="text-[11px] text-[hsl(0_0%_60%)] leading-relaxed">{lead.advisorInsight}</p>
-      </div>
+      {/* ── Structured Advisor Intelligence ─────────── */}
+      <ModuleAdvisorPanel
+        advisors={recoveryAdvisors}
+        title="Recovery Advisor Intelligence"
+        collapsible={false}
+        onEscalate={() => setShowEscalation(true)}
+      />
+
+      {/* ── Escalation Packet Preview ─────────────────── */}
+      {showEscalation && lead.boardroomCandidate && (
+        <EscalationPacketPreview
+          packet={buildEscalationPacket(
+            { name: lead.name, company: lead.company, value: lead.valueAtRisk, stage: lead.stageAtSlip, daysSince: lead.daysSinceLastAction, failureMode: lead.failureMode, owner: lead.currentOwner, sensitivity: lead.relationshipSensitivity },
+            recoveryAdvisors
+          )}
+          onClose={() => setShowEscalation(false)}
+        />
+      )}
     </motion.div>
   );
 }
