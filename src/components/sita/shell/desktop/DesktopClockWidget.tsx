@@ -9,7 +9,11 @@ function useClock() {
   return now;
 }
 
-export function DesktopClockWidget() {
+interface DesktopClockWidgetProps {
+  onLaunchApp?: (appId: string) => void;
+}
+
+export function DesktopClockWidget({ onLaunchApp }: DesktopClockWidgetProps) {
   const now = useClock();
   const dayName = now.toLocaleDateString("en-US", { weekday: "short" }).toUpperCase();
   const day = now.getDate();
@@ -55,14 +59,20 @@ export function DesktopClockWidget() {
 
       {/* Right mini cards */}
       <div className="flex flex-col gap-3 w-[100px]">
-        <div className="flex-1 rounded-3xl border border-white/[0.04] bg-white/[0.02] backdrop-blur-3xl p-3 text-center flex flex-col justify-center">
+        <button
+          onClick={() => onLaunchApp?.("todo")}
+          className="flex-1 rounded-3xl border border-white/[0.04] bg-white/[0.02] backdrop-blur-3xl p-3 text-center flex flex-col justify-center cursor-pointer transition hover:bg-white/[0.06] hover:border-white/[0.08] hover:shadow-[0_0_20px_rgba(139,92,246,0.15)] active:scale-[0.97]"
+        >
           <div className="text-[9px] uppercase tracking-widest text-white/25">To-Do</div>
           <div className="text-3xl font-light text-white/80 mt-1">3</div>
-        </div>
-        <div className="flex-1 rounded-3xl border border-white/[0.04] bg-white/[0.02] backdrop-blur-3xl p-3 text-center flex flex-col justify-center">
+        </button>
+        <button
+          onClick={() => onLaunchApp?.("concierge")}
+          className="flex-1 rounded-3xl border border-white/[0.04] bg-white/[0.02] backdrop-blur-3xl p-3 text-center flex flex-col justify-center cursor-pointer transition hover:bg-white/[0.06] hover:border-white/[0.08] hover:shadow-[0_0_20px_rgba(251,191,36,0.15)] active:scale-[0.97]"
+        >
           <div className="text-[9px] uppercase tracking-widest text-white/25">Pending</div>
           <div className="text-3xl font-light text-amber-300/70 mt-1">2</div>
-        </div>
+        </button>
       </div>
     </div>
   );

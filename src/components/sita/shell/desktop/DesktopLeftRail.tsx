@@ -19,7 +19,7 @@ interface DesktopLeftRailProps {
 
 export function DesktopLeftRail({ onLaunchApp }: DesktopLeftRailProps) {
   return (
-    <div className="hidden w-[88px] flex-col gap-4 lg:flex">
+    <div className="w-[88px] flex flex-col gap-4">
       <div className="rounded-[28px] border border-white/10 bg-white/[0.08] p-3 backdrop-blur-2xl shadow-[0_18px_50px_rgba(0,0,0,0.22)]">
         <div className="mb-3 text-[10px] uppercase tracking-[0.2em] text-white/45">Apps</div>
         <div className="flex flex-col gap-3">
