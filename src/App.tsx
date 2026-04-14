@@ -152,6 +152,32 @@ const HomeRoute = () => {
   return <Navigate to="/desktop" replace />;
 };
 
+// Redirect mobile users away from desktop OS shell to /mobile
+const MOBILE_ROUTE_MAP: Record<string, string> = {
+  "/desktop": "/mobile",
+  "/business": "/mobile/business",
+  "/money": "/mobile/money",
+  "/concierge": "/mobile/concierge",
+  "/boardroom": "/mobile/boardroom",
+  "/settings": "/mobile/settings",
+};
+
+const MobileGuard = ({ children }: { children: ReactNode }) => {
+  const isMobile = useIsMobileViewport();
+  const location = useLocation();
+  if (isMobile) {
+    // Check for exact route mapping first
+    for (const [desktop, mobile] of Object.entries(MOBILE_ROUTE_MAP)) {
+      if (location.pathname === desktop || location.pathname.startsWith(desktop + "/")) {
+        return <Navigate to={mobile} replace />;
+      }
+    }
+    // Default: send to /mobile home
+    return <Navigate to="/mobile" replace />;
+  }
+  return <>{children}</>;
+};
+
 const AuthenticatedProviders = ({ children }: { children: ReactNode }) => (
   <DataModeProvider>
   <AppearanceProvider>
@@ -245,7 +271,7 @@ const App = () => (
                       </RouteErrorBoundary>
                     </ShellLayout>
                   </ProtectedRoute>
-                } />
+                </MobileGuard>} />
               </Routes>
               </Suspense>
               </AuthenticatedProviders>
