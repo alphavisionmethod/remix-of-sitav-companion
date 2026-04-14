@@ -94,7 +94,29 @@ const APP_REGISTRY: Record<string, Omit<AppLaunchConfig, "id">> = {
   concierge: { name: "Concierge", component: <ConciergeAppShell />, width: 1200, position: { x: 160, y: 130 } },
   investment: { name: "Investment Office", component: <InvestmentAppShell />, width: 1200, position: { x: 100, y: 70 } },
   boardroom: { name: "Boardroom", component: <BoardroomAppShell />, width: 1200, position: { x: 140, y: 110 } },
+  // ── Catalog ID aliases → same window components ──
+  "sita-business-center": { name: "Business OS", component: <BusinessAppShell />, width: 1200, position: { x: 120, y: 90 } },
+  "sita-money-center": { name: "Finance OS", component: <FinanceAppShell />, width: 1200, position: { x: 80, y: 50 } },
+  "sita-concierge": { name: "Concierge", component: <ConciergeAppShell />, width: 1200, position: { x: 160, y: 130 } },
+  "sita-boardroom": { name: "Boardroom", component: <BoardroomAppShell />, width: 1200, position: { x: 140, y: 110 } },
+  "sita-investment-office": { name: "Investment Office", component: <InvestmentAppShell />, width: 1200, position: { x: 100, y: 70 } },
 };
+
+// Canonical mapping: collapse catalog aliases to a single window ID
+const CANONICAL_WINDOW_ID: Record<string, string> = {
+  "sita-business-center": "business",
+  "sita-money-center": "finance",
+  "sita-concierge": "concierge",
+  "sita-boardroom": "boardroom",
+  "sita-investment-office": "investment",
+  "money": "finance",
+  "files-app": "finder",
+  "settings-app": "settings",
+};
+
+function resolveWindowId(appId: string): string {
+  return CANONICAL_WINDOW_ID[appId] ?? appId;
+}
 
 export function useWindowLauncher(wm: WindowManager) {
   const { apps } = useAppPlatform();
@@ -103,9 +125,23 @@ export function useWindowLauncher(wm: WindowManager) {
   const doLaunchApp = useCallback((appId: string, originRect?: DOMRect) => {
     const origin = originRect ? { x: originRect.x, y: originRect.y, width: originRect.width, height: originRect.height } : undefined;
 
+    // Resolve catalog aliases (sita-business-center → business, etc.)
+    const windowId = resolveWindowId(appId);
+
     // Find in registry — fallback for unregistered apps
-    let config = APP_REGISTRY[appId];
+    let config = APP_REGISTRY[appId] ?? APP_REGISTRY[windowId];
     if (!config) {
+      // Check if this app has a routePath in the catalog — navigate instead of showing placeholder
+      const catalogApp = apps.find(a => a.id === appId);
+      if (catalogApp?.routePath) {
+        window.location.hash = "";
+        window.dispatchEvent(new CustomEvent("sita-navigate", { detail: catalogApp.routePath }));
+        return;
+      }
+      if (catalogApp?.externalUrl) {
+        window.open(catalogApp.externalUrl, "_blank", "noopener");
+        return;
+      }
       const fallbackName = appId.charAt(0).toUpperCase() + appId.slice(1);
       const cascadeX = Math.random() * 100 + 50;
       const cascadeY = Math.random() * 100 + 50;
@@ -121,9 +157,6 @@ export function useWindowLauncher(wm: WindowManager) {
       });
       return;
     }
-
-    const canonicalId = Object.entries(APP_REGISTRY).find(([k, v]) => v.name === config.name)?.[0] ?? appId;
-    const windowId = canonicalId.includes(".") ? canonicalId.split(".").pop()! : canonicalId;
 
     // Spawn process in kernel
     const proc = ProcessTable.spawn({
