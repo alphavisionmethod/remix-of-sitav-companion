@@ -509,6 +509,21 @@ export function CRMContactDetail({ contact, companies = [], onClose, onEdit }: C
                 entityName={`${contact.first_name} ${contact.last_name}`}
               />
             </TabsContent>
+
+            {/* Proof Trail + Ownership */}
+            <TabsContent value="proof" className="mt-0 space-y-4">
+              <CRMOwnership
+                entityType="contact"
+                entityId={contact.id}
+                entityName={`${contact.first_name} ${contact.last_name}`}
+                currentOwner={contact.owner || undefined}
+              />
+              <CRMProofTrail
+                entityType="contact"
+                entityId={contact.id}
+                entityName={`${contact.first_name} ${contact.last_name}`}
+              />
+            </TabsContent>
           </div>
         </ScrollArea>
       </Tabs>
