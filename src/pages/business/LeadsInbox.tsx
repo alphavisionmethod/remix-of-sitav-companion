@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
@@ -16,10 +16,11 @@ import { LeadDetailPanel } from "@/components/business/lead-inbox/LeadDetailPane
 import { LeadBulkTriageBar } from "@/components/business/lead-inbox/LeadBulkTriageBar";
 import { LeadDuplicateDrawer } from "@/components/business/lead-inbox/LeadDuplicateDrawer";
 import { ScoreExplainabilityDrawer } from "@/components/business/lead-inbox/ScoreExplainabilityDrawer";
+import { LeadScoreComparison } from "@/components/business/lead-inbox/LeadScoreComparison";
 import { useLeadInbox, type InboxFilter } from "@/components/business/lead-inbox/useLeadInbox";
 import { getInboxStats } from "@/components/business/lead-inbox/mock-inbox-data";
 
-import { Search, Plus, Plug, ChevronDown, ChevronUp, LayoutGrid, BarChart3, List } from "lucide-react";
+import { Search, Plus, Plug, ChevronDown, ChevronUp, LayoutGrid, BarChart3, List, ArrowLeftRight } from "lucide-react";
 import { toast } from "sonner";
 
 const FILTER_TABS: { key: InboxFilter; label: string }[] = [
@@ -45,6 +46,7 @@ const LeadsInbox = () => {
   const [showOverview, setShowOverview] = useState(true);
   const [viewMode, setViewMode] = useState<ViewMode>("queue");
   const [duplicateDrawerItem, setDuplicateDrawerItem] = useState<string | null>(null);
+  const [compareMode, setCompareMode] = useState(false);
 
   const {
     items, filtered, selected, selectedId, selectedScore,
@@ -56,6 +58,18 @@ const LeadsInbox = () => {
   } = useLeadInbox();
 
   const stats = getInboxStats(items);
+
+  // Compare mode: when exactly 2 items are checked
+  const compareLeads = useMemo(() => {
+    if (checkedIds.size !== 2) return null;
+    const ids = Array.from(checkedIds);
+    const a = items.find(i => i.id === ids[0]);
+    const b = items.find(i => i.id === ids[1]);
+    const sa = scoreMap.get(ids[0]);
+    const sb = scoreMap.get(ids[1]);
+    if (a && b && sa && sb) return { a, b, sa, sb };
+    return null;
+  }, [checkedIds, items, scoreMap]);
 
   const tabsWithCounts = FILTER_TABS.map(t => {
     let count = 0;
@@ -86,7 +100,6 @@ const LeadsInbox = () => {
     );
   }
 
-  // Contextual summary
   const criticalCount = scoreResults.filter(s => s.priorityTier === "critical-now").length;
   const summaryParts: string[] = [];
   if (criticalCount > 0) summaryParts.push(`${criticalCount} critical lead${criticalCount > 1 ? "s" : ""} need immediate action`);
@@ -100,6 +113,51 @@ const LeadsInbox = () => {
 
   const duplicateItem = duplicateDrawerItem ? items.find(i => i.id === duplicateDrawerItem) : null;
 
+  // Detail panel or compare panel
+  const renderSidePanel = () => {
+    if (compareMode && compareLeads) {
+      return (
+        <LeadScoreComparison
+          leadA={compareLeads.a}
+          leadB={compareLeads.b}
+          scoreA={compareLeads.sa}
+          scoreB={compareLeads.sb}
+          onClose={() => { setCompareMode(false); clearChecked(); }}
+          onAccept={(id) => { triageAction(id, "accept"); setCompareMode(false); clearChecked(); }}
+        />
+      );
+    }
+
+    if (selected) {
+      return (
+        <LeadDetailPanel
+          item={selected}
+          score={selectedScore}
+          onClose={() => setSelectedId(null)}
+          onAccept={(id) => triageAction(id, "accept")}
+          onRoute={(id, dest) => triageAction(id, "route", dest)}
+          onReject={(id) => triageAction(id, "reject")}
+          onOpenDuplicate={(id) => setDuplicateDrawerItem(id)}
+          onExplain={(id) => setExplainId(id)}
+        />
+      );
+    }
+
+    return (
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="hidden lg:flex flex-col items-center justify-center py-20 text-center rounded-2xl border border-dashed border-border/30 bg-card/30"
+      >
+        <div className="h-16 w-16 rounded-2xl bg-primary/5 flex items-center justify-center mb-4">
+          <Search className="h-8 w-8 text-primary/20" />
+        </div>
+        <p className="text-sm font-medium text-muted-foreground">Select a lead to review</p>
+        <p className="text-xs text-muted-foreground/60 mt-1 max-w-[200px]">Click any card to see full details and scoring breakdown</p>
+      </motion.div>
+    );
+  };
+
   return (
     <motion.div className="space-y-5" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
       <PageTruthBanner />
@@ -110,6 +168,12 @@ const LeadsInbox = () => {
           <p className="text-sm text-muted-foreground leading-relaxed">{summary}</p>
         </div>
         <div className="flex gap-2 shrink-0">
+          {/* Compare button */}
+          {checkedIds.size === 2 && (
+            <SitaButton variant="accent" size="sm" onClick={() => setCompareMode(true)}>
+              <ArrowLeftRight className="h-3.5 w-3.5" /> Compare
+            </SitaButton>
+          )}
           {/* View mode toggles */}
           <div className="flex rounded-lg border border-border/40 overflow-hidden">
             <button
@@ -158,7 +222,13 @@ const LeadsInbox = () => {
       {/* Dashboard View */}
       {viewMode === "dashboard" && (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-          <LeadScoringDashboard scores={scoreResults} />
+          <LeadScoringDashboard
+            scores={scoreResults}
+            items={items}
+            scoreMap={scoreMap}
+            onSelectLead={setSelectedId}
+            selectedId={selectedId}
+          />
         </motion.div>
       )}
 
@@ -195,30 +265,7 @@ const LeadsInbox = () => {
             />
           </div>
           <div className="lg:col-span-2">
-            {selected ? (
-              <LeadDetailPanel
-                item={selected}
-                score={selectedScore}
-                onClose={() => setSelectedId(null)}
-                onAccept={(id) => triageAction(id, "accept")}
-                onRoute={(id, dest) => triageAction(id, "route", dest)}
-                onReject={(id) => triageAction(id, "reject")}
-                onOpenDuplicate={(id) => setDuplicateDrawerItem(id)}
-                onExplain={(id) => setExplainId(id)}
-              />
-            ) : (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="hidden lg:flex flex-col items-center justify-center py-20 text-center rounded-2xl border border-dashed border-border/30 bg-card/30"
-              >
-                <div className="h-16 w-16 rounded-2xl bg-primary/5 flex items-center justify-center mb-4">
-                  <Search className="h-8 w-8 text-primary/20" />
-                </div>
-                <p className="text-sm font-medium text-muted-foreground">Select a lead to review</p>
-                <p className="text-xs text-muted-foreground/60 mt-1 max-w-[200px]">Click any card to see full details and scoring breakdown</p>
-              </motion.div>
-            )}
+            {renderSidePanel()}
           </div>
         </div>
       ) : viewMode === "queue" ? (
@@ -245,30 +292,7 @@ const LeadsInbox = () => {
             />
           </div>
           <div className="lg:col-span-2">
-            {selected ? (
-              <LeadDetailPanel
-                item={selected}
-                score={selectedScore}
-                onClose={() => setSelectedId(null)}
-                onAccept={(id) => triageAction(id, "accept")}
-                onRoute={(id, dest) => triageAction(id, "route", dest)}
-                onReject={(id) => triageAction(id, "reject")}
-                onOpenDuplicate={(id) => setDuplicateDrawerItem(id)}
-                onExplain={(id) => setExplainId(id)}
-              />
-            ) : (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="hidden lg:flex flex-col items-center justify-center py-20 text-center rounded-2xl border border-dashed border-border/30 bg-card/30"
-              >
-                <div className="h-16 w-16 rounded-2xl bg-primary/5 flex items-center justify-center mb-4">
-                  <Search className="h-8 w-8 text-primary/20" />
-                </div>
-                <p className="text-sm font-medium text-muted-foreground">Select a lead to review</p>
-                <p className="text-xs text-muted-foreground/60 mt-1 max-w-[200px]">Click any card to open the triage workspace with full details and scoring</p>
-              </motion.div>
-            )}
+            {renderSidePanel()}
           </div>
         </div>
       ) : null}

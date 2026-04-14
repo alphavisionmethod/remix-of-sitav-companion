@@ -4,6 +4,8 @@ import { LeadPriorityBadge } from "./LeadPriorityBadge";
 import { LeadHeatIndicator } from "./LeadHeatIndicator";
 import { LeadConfidenceDisplay } from "./LeadConfidenceDisplay";
 import { PriorityEvolutionTimeline } from "./PriorityEvolutionTimeline";
+import { LeadScoreRadar } from "./LeadScoreRadar";
+import { LeadActivityTimeline } from "./LeadActivityTimeline";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import type { InboxItem } from "./mock-inbox-data";
 import type { LeadSource } from "./LeadSourceBadge";
@@ -86,7 +88,7 @@ export const LeadDetailPanel = ({ item, score, onClose, onAccept, onRoute, onRej
           </p>
         </SitaCard>
 
-        {/* Priority Score Card */}
+        {/* Priority Score Card with Radar */}
         {score && (
           <SitaCard hover={false} glass className="p-4">
             <div className="flex items-center justify-between mb-3">
@@ -121,6 +123,10 @@ export const LeadDetailPanel = ({ item, score, onClose, onAccept, onRoute, onRej
             <div className="mt-3">
               <LeadConfidenceDisplay level={score.confidenceLevel} score={score.confidenceScore} compact />
             </div>
+            {/* Mini Radar */}
+            <div className="flex justify-center mt-3 pt-3 border-t border-border/20">
+              <LeadScoreRadar factors={score.allFactors} size={160} showLabels={false} />
+            </div>
           </SitaCard>
         )}
 
@@ -137,6 +143,9 @@ export const LeadDetailPanel = ({ item, score, onClose, onAccept, onRoute, onRej
             </span>
           </SitaCard>
         )}
+
+        {/* Activity Timeline */}
+        <LeadActivityTimeline item={item} />
 
         {/* Contact Info */}
         <SitaCard hover={false} className="p-4 space-y-2.5">
