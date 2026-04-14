@@ -37,6 +37,7 @@ interface Props {
   onAccept: (id: string) => void;
   onRoute: (id: string, dest: string) => void;
   onReject: (id: string) => void;
+  onOpenDuplicate?: (id: string) => void;
 }
 
 export const LeadDetailPanel = ({ item, onClose, onAccept, onRoute, onReject }: Props) => {
