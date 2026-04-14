@@ -2678,6 +2678,158 @@ export type Database = {
         }
         Relationships: []
       }
+      lead_inbox_items: {
+        Row: {
+          accepted_at: string | null
+          advisor_suggestion: string | null
+          business_profile_mode: string | null
+          company: string | null
+          completeness_score: number | null
+          contact_email: string | null
+          contact_name: string
+          contact_phone: string | null
+          created_at: string
+          duplicate_match_id: string | null
+          duplicate_status: string
+          id: string
+          inquiry_text: string | null
+          missing_fields: string[] | null
+          quality_hints: Json | null
+          quality_score: number | null
+          routed_to: string | null
+          source: string
+          suggested_owner: string | null
+          suggested_route: string
+          triage_status: string
+          updated_at: string
+          urgency: string
+          user_id: string
+        }
+        Insert: {
+          accepted_at?: string | null
+          advisor_suggestion?: string | null
+          business_profile_mode?: string | null
+          company?: string | null
+          completeness_score?: number | null
+          contact_email?: string | null
+          contact_name?: string
+          contact_phone?: string | null
+          created_at?: string
+          duplicate_match_id?: string | null
+          duplicate_status?: string
+          id?: string
+          inquiry_text?: string | null
+          missing_fields?: string[] | null
+          quality_hints?: Json | null
+          quality_score?: number | null
+          routed_to?: string | null
+          source?: string
+          suggested_owner?: string | null
+          suggested_route?: string
+          triage_status?: string
+          updated_at?: string
+          urgency?: string
+          user_id: string
+        }
+        Update: {
+          accepted_at?: string | null
+          advisor_suggestion?: string | null
+          business_profile_mode?: string | null
+          company?: string | null
+          completeness_score?: number | null
+          contact_email?: string | null
+          contact_name?: string
+          contact_phone?: string | null
+          created_at?: string
+          duplicate_match_id?: string | null
+          duplicate_status?: string
+          id?: string
+          inquiry_text?: string | null
+          missing_fields?: string[] | null
+          quality_hints?: Json | null
+          quality_score?: number | null
+          routed_to?: string | null
+          source?: string
+          suggested_owner?: string | null
+          suggested_route?: string
+          triage_status?: string
+          updated_at?: string
+          urgency?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      leads: {
+        Row: {
+          company: string | null
+          created_at: string
+          email: string | null
+          id: string
+          inbox_item_id: string | null
+          last_contact_at: string | null
+          likely_value: number | null
+          name: string
+          next_action: string | null
+          notes: string | null
+          opportunity_score: number | null
+          phone: string | null
+          source: string | null
+          stale_risk: boolean | null
+          status: string
+          updated_at: string
+          urgency: string | null
+          user_id: string
+        }
+        Insert: {
+          company?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          inbox_item_id?: string | null
+          last_contact_at?: string | null
+          likely_value?: number | null
+          name?: string
+          next_action?: string | null
+          notes?: string | null
+          opportunity_score?: number | null
+          phone?: string | null
+          source?: string | null
+          stale_risk?: boolean | null
+          status?: string
+          updated_at?: string
+          urgency?: string | null
+          user_id: string
+        }
+        Update: {
+          company?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          inbox_item_id?: string | null
+          last_contact_at?: string | null
+          likely_value?: number | null
+          name?: string
+          next_action?: string | null
+          notes?: string | null
+          opportunity_score?: number | null
+          phone?: string | null
+          source?: string | null
+          stale_risk?: boolean | null
+          status?: string
+          updated_at?: string
+          urgency?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "leads_inbox_item_id_fkey"
+            columns: ["inbox_item_id"]
+            isOneToOne: false
+            referencedRelation: "lead_inbox_items"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notification_delivery_receipts: {
         Row: {
           channel: string | null

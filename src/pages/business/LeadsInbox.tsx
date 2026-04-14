@@ -1,431 +1,225 @@
-import { SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
-import { SectionSkeleton, KPISkeleton } from "@/components/sita/SectionSkeleton";
-import { KPITile, CustomerRow, SitaTabs, AdvisorCard, TimelineItem, OpportunityCard } from "@/components/sita/SitaComponents";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
-import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
-import { TrustBadge, TrustLevel } from "@/components/sita/TrustBadge";
-import { StateBadge, ExecutionState } from "@/components/sita/StateBadge";
-import { useState } from "react";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
-import { fromTable } from "@/lib/supabase-helpers";
-import { useAuth } from "@/contexts/AuthContext";
-import { useAction } from "@/lib/hooks/useAction";
-import { toast } from "sonner";
-import {
-  Search, Plus, Phone, Mail, Clock, User, Filter, Sparkles, CheckCircle, FileText, Calendar,
-  MessageSquare, Archive, Star, ArrowRight, LayoutList, Columns, Target, AlertTriangle, X, Trash2,
-  Upload, Plug
-} from "lucide-react";
-import { motion } from "framer-motion";
-import { useBusinessNavigation } from "@/contexts/BusinessNavigationContext";
-import { useConfirmation } from "@/hooks/use-confirmation";
-import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
-import { DataFreshnessBadge } from "@/components/sita/DataFreshnessBadge";
-import { useQueryFreshness } from "@/hooks/use-query-freshness";
-import { useCRMSync } from "@/hooks/use-backend-actions";
-import { RefreshCw } from "lucide-react";
+import { SitaButton } from "@/components/sita/SitaCard";
+import { SitaTabs } from "@/components/sita/SitaComponents";
+import { SectionSkeleton, KPISkeleton } from "@/components/sita/SectionSkeleton";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
-import { getIdentityLayer } from "@/lib/engines/business-identity-layers";
+import { useBusinessNavigation } from "@/contexts/BusinessNavigationContext";
 
-interface Lead {
-  id: string; name: string; company?: string | null; source: string | null; status: string;
-  email?: string | null; phone?: string | null;
-  likely_value: number | null; opportunity_score: number | null; next_action: string | null;
-  last_contact_at: string | null; stale_risk: boolean | null; notes: string | null;
-  urgency: string | null; created_at: string;
-}
+import { LeadInboxHeader } from "@/components/business/lead-inbox/LeadInboxHeader";
+import { LeadInboxOverviewCards } from "@/components/business/lead-inbox/LeadInboxOverviewCards";
+import { LeadTriageCard } from "@/components/business/lead-inbox/LeadTriageCard";
+import { LeadDetailPanel } from "@/components/business/lead-inbox/LeadDetailPanel";
+import { LeadBulkTriageBar } from "@/components/business/lead-inbox/LeadBulkTriageBar";
+import { LeadEmptyState } from "@/components/business/lead-inbox/LeadEmptyStates";
+import { useLeadInbox, type InboxFilter } from "@/components/business/lead-inbox/useLeadInbox";
+import { getInboxStats } from "@/components/business/lead-inbox/mock-inbox-data";
 
-const statusLabel: Record<string, string> = {
-  new: "New", contacted: "Contacted", warm: "Warm", "waiting-response": "Waiting on Them",
-  "waiting-you": "Waiting on You", "callback-due": "Callback Due", stale: "Stale", qualified: "Qualified",
-};
+import { Search, Plus, Plug } from "lucide-react";
 
-const statusColor: Record<string, string> = {
-  new: "bg-primary/10 text-primary border-primary/20", contacted: "bg-state-drafted/10 text-state-drafted border-state-drafted/20",
-  warm: "bg-accent/10 text-accent border-accent/20", "waiting-response": "bg-state-queued/10 text-state-queued border-state-queued/20",
-  "waiting-you": "bg-urgency-high/10 text-urgency-high border-urgency-high/20", "callback-due": "bg-urgency-critical/10 text-urgency-critical border-urgency-critical/20",
-  stale: "bg-trust-degraded/10 text-trust-degraded border-trust-degraded/20", qualified: "bg-trust-verified/10 text-trust-verified border-trust-verified/20",
-};
-
-const trustFromScore = (score: number | null): TrustLevel => {
-  if (!score) return "low-confidence";
-  if (score >= 80) return "verified";
-  if (score >= 50) return "review";
-  return "degraded";
-};
-
-const initials = (name: string) => name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase();
-
-const timeAgo = (dt: string | null) => {
-  if (!dt) return "No contact";
-  const d = Date.now() - new Date(dt).getTime();
-  const hrs = Math.floor(d / 3600000);
-  if (hrs < 1) return "Just now";
-  if (hrs < 24) return `${hrs}h ago`;
-  const days = Math.floor(hrs / 24);
-  return `${days}d ago`;
-};
-
-type Tab = "all" | "urgent" | "new" | "warm" | "stale" | "qualified";
+const FILTER_TABS: { key: InboxFilter; label: string }[] = [
+  { key: "all", label: "All Pending" },
+  { key: "new", label: "New" },
+  { key: "urgent", label: "Urgent" },
+  { key: "high-quality", label: "High Quality" },
+  { key: "missing-info", label: "Missing Info" },
+  { key: "duplicates", label: "Duplicates" },
+  { key: "exceptional", label: "Exceptional" },
+  { key: "snoozed", label: "Snoozed" },
+  { key: "accepted", label: "Accepted" },
+  { key: "rejected", label: "Rejected" },
+];
 
 const LeadsInbox = () => {
   const { navigateTo } = useBusinessNavigation();
-  const { user } = useAuth();
-  const { primaryMode, adaptations } = useBusinessProfile();
-  const identity = getIdentityLayer(primaryMode);
-  const crmLang = adaptations.crm.language;
-  const leadLabel = primaryMode === "ecommerce" ? "Cart Leads" : primaryMode === "appointment-based" ? "Booking Inquiries" : primaryMode === "brick-and-mortar" ? "Walk-in Leads" : "Leads";
-  const queryClient = useQueryClient();
-  const crmSync = useCRMSync();
-  const { confirmation, confirm } = useConfirmation();
-  const [tab, setTab] = useState<Tab>("all");
-  const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [view, setView] = useState<"list" | "board">("list");
-  const [search, setSearch] = useState("");
-  const [showAdd, setShowAdd] = useState(false);
+  const { primaryMode } = useBusinessProfile();
+  const [showOverview, setShowOverview] = useState(true);
 
-  // Form state for add/edit
-  const [formName, setFormName] = useState("");
-  const [formEmail, setFormEmail] = useState("");
-  const [formPhone, setFormPhone] = useState("");
-  const [formCompany, setFormCompany] = useState("");
-  const [formSource, setFormSource] = useState("Website");
-  const [formValue, setFormValue] = useState("");
-  const [editingId, setEditingId] = useState<string | null>(null);
+  const {
+    items, filtered, selected, selectedId,
+    filter, setFilter, search, setSearch,
+    setSelectedId, checkedIds, toggleCheck, clearChecked,
+    triageAction, bulkAction, isLoading, isDemo,
+  } = useLeadInbox();
 
-  const leadsQuery = useQuery({
-    queryKey: ["leads"],
-    queryFn: async () => {
-      const { data, error } = await fromTable("leads").select("*").order("created_at", { ascending: false });
-      if (error) throw error;
-      return data as Lead[];
-    },
-  });
-  const leads = leadsQuery.data ?? [];
-  const isLoading = leadsQuery.isLoading;
-  const freshness = useQueryFreshness(leadsQuery);
+  const stats = getInboxStats(items);
 
-  const addMutation = useAction("business", "lead.create", {
-    successMessage: "Lead added",
-    invalidateKeys: [["leads"]],
-    onSuccess: () => { resetForm(); },
-  });
-
-  const updateMutation = useAction("business", "lead.update", {
-    successMessage: "Lead updated",
-    invalidateKeys: [["leads"]],
-    onSuccess: () => { resetForm(); },
-  });
-
-  const deleteMutation = useAction("business", "lead.delete", {
-    successMessage: "Lead deleted",
-    invalidateKeys: [["leads"]],
-    onSuccess: () => { setSelectedId(null); },
-  });
-
-  const resetForm = () => {
-    setShowAdd(false); setEditingId(null);
-    setFormName(""); setFormEmail(""); setFormPhone(""); setFormCompany(""); setFormSource("Website"); setFormValue("");
-  };
-
-  const openEdit = (lead: Lead) => {
-    setEditingId(lead.id);
-    setFormName(lead.name);
-    setFormEmail(lead.email || "");
-    setFormPhone(lead.phone || "");
-    setFormCompany(lead.company || "");
-    setFormSource(lead.source || "Website");
-    setFormValue(lead.likely_value ? String(lead.likely_value) : "");
-    setShowAdd(true);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const payload = {
-      name: formName,
-      email: formEmail || undefined,
-      phone: formPhone || undefined,
-      company: formCompany || undefined,
-      source: formSource || undefined,
-      likely_value: formValue ? Number(formValue) : undefined,
-    };
-    if (editingId) {
-      updateMutation.mutate({ id: editingId, ...payload });
-    } else {
-      addMutation.mutate(payload);
+  const tabsWithCounts = FILTER_TABS.map(t => {
+    let count = 0;
+    switch (t.key) {
+      case "all": count = items.filter(i => i.triage_status !== "accepted" && i.triage_status !== "rejected").length; break;
+      case "new": count = stats.newCount; break;
+      case "urgent": count = stats.urgent; break;
+      case "high-quality": count = stats.highQuality; break;
+      case "missing-info": count = stats.incomplete; break;
+      case "duplicates": count = stats.duplicates; break;
+      case "exceptional": count = stats.exceptional; break;
+      case "snoozed": count = items.filter(i => i.triage_status === "snoozed").length; break;
+      case "accepted": count = items.filter(i => i.triage_status === "accepted").length; break;
+      case "rejected": count = items.filter(i => i.triage_status === "rejected").length; break;
     }
-  };
-
-  const selected = leads.find(l => l.id === selectedId);
-
-  const filtered = leads
-    .filter(l => !search || l.name.toLowerCase().includes(search.toLowerCase()) || l.company?.toLowerCase().includes(search.toLowerCase()))
-    .filter(l => {
-      if (tab === "all") return true;
-      if (tab === "urgent") return l.status === "callback-due" || l.status === "waiting-you" || l.stale_risk;
-      if (tab === "new") return l.status === "new";
-      if (tab === "warm") return l.status === "warm" || l.status === "qualified";
-      if (tab === "stale") return l.stale_risk;
-      if (tab === "qualified") return l.status === "qualified";
-      return true;
-    });
-
-  const pipelineValue = leads.reduce((s, l) => s + (l.likely_value || 0), 0);
-  const avgScore = leads.length ? Math.round(leads.reduce((s, l) => s + (l.opportunity_score || 0), 0) / leads.length) : 0;
+    return { ...t, count };
+  });
 
   if (isLoading) {
     return (
-      <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
-      <PageTruthBanner />
-      <ConfirmationDialog state={confirmation} />
-        <KPISkeleton count={4} />
-        <SectionSkeleton cards={4} columns={2} />
+      <motion.div className="space-y-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+        <PageTruthBanner />
+        <KPISkeleton count={6} />
+        <SectionSkeleton cards={4} columns={1} />
       </motion.div>
     );
   }
 
+  // Contextual summary
+  const summaryParts: string[] = [];
+  if (stats.newCount > 0) summaryParts.push(`${stats.newCount} new arrival${stats.newCount > 1 ? "s" : ""} need triage`);
+  if (stats.urgent > 0) summaryParts.push(`${stats.urgent} urgent`);
+  if (stats.highQuality > 0) summaryParts.push(`${stats.highQuality} high-quality`);
+  if (stats.duplicates > 0) summaryParts.push(`${stats.duplicates} possible duplicate${stats.duplicates > 1 ? "s" : ""}`);
+  if (stats.exceptional > 0) summaryParts.push(`${stats.exceptional} exceptional`);
+  const summary = summaryParts.length > 0
+    ? summaryParts.join(", ") + "."
+    : "All caught up — no pending items.";
+
   return (
-    <motion.div className="space-y-6" initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
+    <motion.div className="space-y-5" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }}>
       <PageTruthBanner />
-      <div className="flex items-center gap-3 flex-wrap">
-        <DataFreshnessBadge {...freshness} />
-        <SitaButton variant="ghost" size="sm" onClick={() => navigateTo("integrations")}><Plug className="h-3.5 w-3.5" /> Import</SitaButton>
-        <SitaButton variant="secondary" size="sm" onClick={() => { if (leads.length > 0) crmSync.syncLeads.mutate(leads.map(l => ({ name: l.name, email: l.email || undefined, phone: l.phone || undefined, source: l.source || undefined, status: l.status }))); }} disabled={crmSync.syncLeads.isPending || leads.length === 0}><RefreshCw className={`h-3.5 w-3.5 ${crmSync.syncLeads.isPending ? "animate-spin" : ""}`} /> Sync</SitaButton>
-        <SitaButton variant="primary" onClick={() => { resetForm(); setShowAdd(true); }}><Plus className="h-4 w-4" /> Add Lead</SitaButton>
+
+      {/* Top bar */}
+      <div className="flex items-center justify-between gap-3 flex-wrap">
+        <div className="flex-1 min-w-0">
+          <p className="text-sm text-muted-foreground leading-relaxed">{summary}</p>
+        </div>
+        <div className="flex gap-2 shrink-0">
+          <SitaButton variant="ghost" size="sm" onClick={() => setShowOverview(v => !v)}>
+            {showOverview ? "Hide" : "Show"} Overview
+          </SitaButton>
+          <SitaButton variant="secondary" size="sm" onClick={() => navigateTo("integrations")}>
+            <Plug className="h-3.5 w-3.5" /> Sources
+          </SitaButton>
+          <SitaButton variant="primary" size="sm" onClick={() => navigateTo("contacts")}>
+            <Plus className="h-3.5 w-3.5" /> Add Lead
+          </SitaButton>
+        </div>
       </div>
 
-      {/* Add/Edit Modal */}
-      {showAdd && (
-        <SitaCard hover={false} className="p-5 border-primary/20">
-          <div className="flex items-center justify-between mb-4">
-            <SitaCardTitle>{editingId ? "Edit Lead" : "Add New Lead"}</SitaCardTitle>
-            <button onClick={resetForm} className="text-muted-foreground hover:text-foreground"><X className="h-4 w-4" /></button>
-          </div>
-          <form onSubmit={handleSubmit} className="grid gap-3 sm:grid-cols-2">
-            <input required value={formName} onChange={e => setFormName(e.target.value)} placeholder="Name *" className="rounded-xl border border-border bg-secondary/40 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary/40 focus:outline-none" />
-            <input value={formEmail} onChange={e => setFormEmail(e.target.value)} placeholder="Email" type="email" className="rounded-xl border border-border bg-secondary/40 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary/40 focus:outline-none" />
-            <input value={formPhone} onChange={e => setFormPhone(e.target.value)} placeholder="Phone" className="rounded-xl border border-border bg-secondary/40 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary/40 focus:outline-none" />
-            <input value={formCompany} onChange={e => setFormCompany(e.target.value)} placeholder="Company" className="rounded-xl border border-border bg-secondary/40 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary/40 focus:outline-none" />
-            <select value={formSource} onChange={e => setFormSource(e.target.value)} className="rounded-xl border border-border bg-secondary/40 px-3 py-2 text-sm text-foreground focus:border-primary/40 focus:outline-none">
-              <option>Website</option><option>Referral</option><option>Google Ads</option><option>LinkedIn</option><option>Cold Email</option><option>Other</option>
-            </select>
-            <input value={formValue} onChange={e => setFormValue(e.target.value)} placeholder="Estimated value ($)" type="number" className="rounded-xl border border-border bg-secondary/40 px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary/40 focus:outline-none" />
-            <div className="sm:col-span-2 flex gap-2 justify-end">
-              <SitaButton variant="ghost" size="sm" onClick={resetForm}>Cancel</SitaButton>
-              <SitaButton variant="primary" size="sm" type="submit">{editingId ? "Update" : "Add Lead"}</SitaButton>
-            </div>
-          </form>
-        </SitaCard>
-      )}
+      {/* KPI Header */}
+      <LeadInboxHeader items={items} />
 
-      {/* Lead Aging Detection */}
-      {leads.filter(l => l.stale_risk).length > 0 && (
-        <SitaCard hover={false} className="p-4 border-l-4 border-l-[hsl(var(--sita-gold))]">
-          <div className="flex items-center gap-3 mb-3">
-            <Clock className="h-4 w-4 text-[hsl(var(--sita-gold))]" />
-            <span className="text-sm font-semibold text-foreground">Lead Aging Alert</span>
-            <span className="text-[10px] bg-[hsl(var(--sita-gold))]/10 text-[hsl(var(--sita-gold))] rounded-full px-2 py-0.5 font-medium">{leads.filter(l => l.stale_risk).length} going stale</span>
-          </div>
-          <div className="space-y-1.5">
-            {leads.filter(l => l.stale_risk).slice(0, 3).map((lead) => {
-              const daysSince = lead.last_contact_at ? Math.floor((Date.now() - new Date(lead.last_contact_at).getTime()) / 86400000) : 0;
-              return (
-                <div key={lead.id} onClick={() => setSelectedId(lead.id)} className="flex items-center gap-3 rounded-lg bg-secondary/30 px-3 py-2 cursor-pointer hover:bg-secondary/50 transition-colors">
-                  <div className={`flex h-8 w-8 items-center justify-center rounded-full text-[10px] font-bold ${daysSince > 7 ? "bg-[hsl(var(--destructive))]/10 text-[hsl(var(--destructive))]" : "bg-[hsl(var(--sita-gold))]/10 text-[hsl(var(--sita-gold))]"}`}>
-                    {daysSince}d
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-[12px] font-medium text-foreground truncate">{lead.name}{lead.company ? ` · ${lead.company}` : ""}</p>
-                    <p className="text-[10px] text-muted-foreground">{lead.likely_value ? `$${lead.likely_value.toLocaleString()} at risk` : "No contact in " + daysSince + " days"}</p>
-                  </div>
-                  <span className="text-[10px] text-muted-foreground">{lead.next_action || "Follow up"}</span>
-                </div>
-              );
-            })}
-          </div>
-        </SitaCard>
-      )}
+      {/* Overview Cards */}
+      <AnimatePresence>
+        {showOverview && (
+          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
+            <LeadInboxOverviewCards items={items} />
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-        <KPITile label="Total Leads" value={leads.length} icon={User} />
-        <KPITile label="Callbacks Due" value={leads.filter(l => l.status === "callback-due").length} icon={Phone} sub="Today" />
-        <KPITile label="Stale Risk" value={leads.filter(l => l.stale_risk).length} icon={AlertTriangle} sub="Needs attention" />
-        <KPITile label="Pipeline Value" value={`$${pipelineValue.toLocaleString()}`} trend="up" icon={Target} />
-        <KPITile label="Avg Score" value={String(avgScore)} sub="Opportunity confidence" icon={Star} />
-      </div>
-
-      <div className="flex items-center justify-between gap-3">
+      {/* Tabs */}
+      <div className="overflow-x-auto pb-1">
         <SitaTabs
-          tabs={[
-            { key: "all", label: "All", count: leads.length },
-            { key: "urgent", label: "Urgent", count: leads.filter(l => l.status === "callback-due" || l.status === "waiting-you" || l.stale_risk).length },
-            { key: "new", label: "New", count: leads.filter(l => l.status === "new").length },
-            { key: "warm", label: "Warm", count: leads.filter(l => l.status === "warm" || l.status === "qualified").length },
-            { key: "stale", label: "Stale", count: leads.filter(l => l.stale_risk).length },
-          ]}
-          active={tab}
-          onChange={k => setTab(k as Tab)}
+          tabs={tabsWithCounts.filter(t => t.count > 0 || ["all", "new", "accepted"].includes(t.key))}
+          active={filter}
+          onChange={k => setFilter(k as InboxFilter)}
         />
-        <div className="flex gap-1">
-          <SitaButton variant={view === "list" ? "secondary" : "ghost"} size="sm" onClick={() => setView("list")}><LayoutList className="h-3.5 w-3.5" /></SitaButton>
-          <SitaButton variant={view === "board" ? "secondary" : "ghost"} size="sm" onClick={() => setView("board")}><Columns className="h-3.5 w-3.5" /></SitaButton>
-        </div>
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-5">
+      {/* Search */}
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        <input
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          className="w-full rounded-xl border border-border bg-secondary/40 py-2.5 pl-10 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
+          placeholder="Search by name, company, email, or inquiry..."
+        />
+      </div>
+
+      {/* Main content: queue + detail */}
+      <div className="grid gap-5 lg:grid-cols-5">
+        {/* Triage Queue */}
         <div className="lg:col-span-3 space-y-2">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-            <input
-              value={search} onChange={e => setSearch(e.target.value)}
-              className="w-full rounded-xl border border-border bg-secondary/40 py-2.5 pl-10 pr-4 text-sm text-foreground placeholder:text-muted-foreground focus:border-primary/40 focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all"
-              placeholder="Search leads..."
+          {filtered.length === 0 ? (
+            <LeadEmptyState
+              variant={items.length === 0 ? "first-use" : stats.newCount === 0 && filter === "all" ? "caught-up" : "no-results"}
+              onAddLead={() => navigateTo("contacts")}
+              onImport={() => navigateTo("integrations")}
             />
-          </div>
-
-          {filtered.length === 0 && (
-            <PremiumEmptyState
-              variant={leads.length === 0 ? "first-use" : "no-results"}
-              icon={Target}
-              domain="business"
-              title={leads.length === 0 ? "Build your pipeline" : "No matching leads"}
-              description={leads.length === 0 ? "Add your first lead to start tracking opportunities, follow-ups, and revenue potential." : "Try adjusting your filters or search term."}
-              actions={leads.length === 0 ? [
-                { label: "Add First Lead", icon: Plus, onClick: () => { resetForm(); setShowAdd(true); }, variant: "primary" },
-                { label: "Import from CRM", icon: Plug, onClick: () => navigateTo("integrations"), variant: "secondary" },
-              ] : undefined}
-              tip={leads.length === 0 ? "Leads sync automatically when you connect your CRM" : undefined}
-            />
+          ) : (
+            <AnimatePresence mode="popLayout">
+              {filtered.map((item, i) => (
+                <motion.div
+                  key={item.id}
+                  layout
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, x: -100 }}
+                  transition={{ delay: i * 0.03 }}
+                >
+                  <LeadTriageCard
+                    item={item}
+                    selected={selectedId === item.id}
+                    checked={checkedIds.has(item.id)}
+                    onSelect={() => setSelectedId(item.id)}
+                    onCheck={(c) => toggleCheck(item.id, c)}
+                    onAccept={() => triageAction(item.id, "accept")}
+                    onRoute={(dest) => triageAction(item.id, "route", dest)}
+                    onReject={() => triageAction(item.id, "reject")}
+                    onSnooze={() => triageAction(item.id, "snooze")}
+                    onFlag={() => triageAction(item.id, "route", "boardroom")}
+                  />
+                </motion.div>
+              ))}
+            </AnimatePresence>
           )}
-
-          {filtered.map((lead) => {
-            const score = lead.opportunity_score || 0;
-            return (
-              <SitaCard
-                key={lead.id}
-                onClick={() => setSelectedId(lead.id)}
-                selected={selectedId === lead.id}
-                lane={lead.stale_risk ? "action" : score >= 80 ? "opportunity" : undefined}
-                className="p-4"
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-3 flex-1 min-w-0">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/8 font-display text-sm font-semibold text-primary shrink-0">{initials(lead.name)}</div>
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <p className="text-sm font-medium text-foreground truncate">{lead.name}</p>
-                        <span className={`inline-flex items-center rounded-md border px-1.5 py-px text-[10px] font-medium ${statusColor[lead.status] || statusColor.new}`}>
-                          {statusLabel[lead.status] || lead.status}
-                        </span>
-                      </div>
-                      <p className="text-xs text-muted-foreground truncate">
-                        {lead.company ? `${lead.company} · ` : ""}{lead.source || "Direct"} · {timeAgo(lead.last_contact_at || lead.created_at)}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="text-right shrink-0 space-y-1">
-                    <p className="font-display text-sm font-semibold text-foreground">${(lead.likely_value || 0).toLocaleString()}</p>
-                    <div className="flex items-center justify-end gap-1">
-                      <span className="text-[10px] text-muted-foreground">Score</span>
-                      <span className={`text-xs font-bold ${score >= 70 ? "text-trust-verified" : score >= 40 ? "text-trust-review" : "text-trust-degraded"}`}>{score}</span>
-                    </div>
-                  </div>
-                </div>
-                {lead.next_action && (
-                  <div className="mt-2 flex items-center gap-2 text-xs text-muted-foreground">
-                    <Sparkles className="h-3 w-3 text-accent" />
-                    <span>{lead.next_action}</span>
-                  </div>
-                )}
-              </SitaCard>
-            );
-          })}
         </div>
 
-        <div className="lg:col-span-2 space-y-4">
+        {/* Detail Panel */}
+        <div className="lg:col-span-2">
           {selected ? (
-            <>
-              <SitaCard hover={false} glow className="text-center p-6">
-                <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl gradient-sita font-display text-xl font-bold text-primary-foreground">{initials(selected.name)}</div>
-                <h3 className="mt-4 font-display text-lg font-bold text-foreground">{selected.name}</h3>
-                {selected.company && <p className="text-xs text-muted-foreground">{selected.company}</p>}
-                {selected.email && <p className="text-xs text-muted-foreground">{selected.email}</p>}
-                <p className="mt-1 text-xs text-muted-foreground">{selected.source || "Direct"} · {timeAgo(selected.created_at)}</p>
-                <div className="mt-3 flex items-center justify-center gap-2">
-                  <span className={`inline-flex items-center rounded-md border px-2 py-0.5 text-[11px] font-medium ${statusColor[selected.status] || statusColor.new}`}>
-                    {statusLabel[selected.status] || selected.status}
-                  </span>
-                  <TrustBadge level={trustFromScore(selected.opportunity_score)} size="sm" />
-                </div>
-                <div className="mt-4 flex gap-2">
-                  <SitaButton variant="accent" size="sm" className="flex-1" onClick={() => openEdit(selected)}><FileText className="h-3.5 w-3.5" /> Edit</SitaButton>
-                  <SitaButton variant="accent" size="sm" className="flex-1"><Mail className="h-3.5 w-3.5" /> Email</SitaButton>
-                  <SitaButton variant="accent" size="sm" className="flex-1"><Clock className="h-3.5 w-3.5" /> Schedule</SitaButton>
-                </div>
-              </SitaCard>
-
-              <SitaCard hover={false}>
-                <SitaCardTitle>Opportunity Score</SitaCardTitle>
-                <div className="mt-3 flex items-center gap-4">
-                  <div className={`font-display text-3xl font-bold ${(selected.opportunity_score || 0) >= 70 ? "text-trust-verified" : (selected.opportunity_score || 0) >= 40 ? "text-trust-review" : "text-trust-degraded"}`}>
-                    {selected.opportunity_score || 0}
-                  </div>
-                  <div className="flex-1">
-                    <div className="h-2 w-full rounded-full bg-secondary overflow-hidden">
-                      <div className={`h-full rounded-full transition-all ${(selected.opportunity_score || 0) >= 70 ? "bg-trust-verified" : (selected.opportunity_score || 0) >= 40 ? "bg-trust-review" : "bg-trust-degraded"}`} style={{ width: `${selected.opportunity_score || 0}%` }} />
-                    </div>
-                    <p className="mt-1 text-xs text-muted-foreground">Estimated value: ${(selected.likely_value || 0).toLocaleString()}</p>
-                  </div>
-                </div>
-              </SitaCard>
-
-              {selected.next_action && (
-                <SitaCard hover={false}>
-                  <SitaCardTitle>Next Best Action</SitaCardTitle>
-                  <div className="mt-3 rounded-xl bg-accent/5 border border-accent/10 p-4">
-                    <div className="flex items-start gap-2">
-                      <Sparkles className="h-4 w-4 text-accent mt-0.5 shrink-0" />
-                      <div>
-                        <p className="text-sm font-medium text-foreground">{selected.next_action}</p>
-                        <p className="mt-1 text-xs text-muted-foreground">Based on lead stage, source quality, and engagement patterns</p>
-                      </div>
-                    </div>
-                  </div>
-                </SitaCard>
-              )}
-
-              {selected.notes && (
-                <SitaCard hover={false}>
-                  <SitaCardTitle>Notes</SitaCardTitle>
-                  <p className="mt-2 text-sm text-muted-foreground">{selected.notes}</p>
-                </SitaCard>
-              )}
-
-              <div className="flex gap-2 flex-wrap">
-                <SitaButton variant="secondary" size="sm" onClick={() => openEdit(selected)}><FileText className="h-3.5 w-3.5" /> Edit Lead</SitaButton>
-                <SitaButton variant="ghost" size="sm" onClick={async () => { if (await confirm({ title: "Delete this lead?", description: "This lead will be permanently removed.", variant: "destructive" })) deleteMutation.mutate({ id: selected.id }); }}>
-                  <Trash2 className="h-3.5 w-3.5" /> Delete
-                </SitaButton>
-              </div>
-            </>
-          ) : (
-            <PremiumEmptyState
-              variant="no-data"
-              icon={User}
-              domain="business"
-              title="Select a lead"
-              description="Click on a lead to see their profile, opportunity score, and recommended next actions."
+            <LeadDetailPanel
+              item={selected}
+              onClose={() => setSelectedId(null)}
+              onAccept={(id) => triageAction(id, "accept")}
+              onRoute={(id, dest) => triageAction(id, "route", dest)}
+              onReject={(id) => triageAction(id, "reject")}
             />
+          ) : (
+            <div className="hidden lg:flex flex-col items-center justify-center py-20 text-center">
+              <div className="h-16 w-16 rounded-2xl bg-muted/20 flex items-center justify-center mb-4">
+                <Search className="h-8 w-8 text-muted-foreground/40" />
+              </div>
+              <p className="text-sm text-muted-foreground">Select a lead to review details</p>
+              <p className="text-xs text-muted-foreground/60 mt-1">Click any card to open the triage workspace</p>
+            </div>
           )}
         </div>
       </div>
+
+      {/* Bulk Triage Bar */}
+      <LeadBulkTriageBar
+        count={checkedIds.size}
+        onAcceptAll={() => bulkAction("accept")}
+        onRejectAll={() => bulkAction("reject")}
+        onRouteAll={(dest) => bulkAction("route", dest)}
+        onClear={clearChecked}
+      />
+
+      {/* Advisor Strip */}
       <ModuleAdvisorInsight
-        advisorName="Pipeline Advisor"
+        advisorName={primaryMode === "service" ? "Intake Advisor" : primaryMode === "ecommerce" ? "Growth Advisor" : "Pipeline Advisor"}
         domain="business"
-        insight="3 leads are going stale — prioritize callbacks for Sarah Chen and David Torres. Cold leads over 14 days lose 60% conversion probability."
-        confidence={88}
+        insight={
+          stats.exceptional > 0
+            ? `${stats.exceptional} exceptional lead${stats.exceptional > 1 ? "s" : ""} detected — route to Boardroom for strategic review. ${stats.urgent} items need urgent triage.`
+            : stats.urgent > 0
+              ? `${stats.urgent} urgent lead${stats.urgent > 1 ? "s" : ""} waiting — prioritize high-quality arrivals first. Source quality is ${stats.highQuality > stats.incomplete ? "strong" : "mixed"} today.`
+              : "Inbox is healthy. Continue processing new arrivals for optimal response times."
+        }
+        confidence={stats.exceptional > 0 ? 95 : stats.urgent > 0 ? 82 : 70}
       />
     </motion.div>
   );
