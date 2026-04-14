@@ -27,7 +27,9 @@ export function DesktopQuickActionsWidget({ onOpenCommand, onLaunchApp }: Props)
         {apps.map((a) => (
           <button
             key={a.label}
-            onClick={() => {
+            onPointerDown={(e) => e.stopPropagation()}
+            onClick={(e) => {
+              e.stopPropagation();
               if (a.isSearch) {
                 onOpenCommand?.();
               } else {
