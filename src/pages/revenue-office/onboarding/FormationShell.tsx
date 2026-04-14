@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { ArrowLeft, ArrowRight, Check, Waves } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+
 import { STAGES, CHAPTERS, defaultOnboardingState, type OnboardingState, type StageId } from "./types";
 import LiveOfficeSidebar from "./LiveOfficeSidebar";
 import { useBusinessOnboarding } from "@/hooks/useBusinessOnboarding";
@@ -60,12 +60,12 @@ export default function FormationShell() {
   const [showChapterTransition, setShowChapterTransition] = useState(false);
   const initializedRef = useRef(false);
 
-  // Redirect if already completed
+  // If already completed, call onComplete
   useEffect(() => {
-    if (!isLoading && isCompleted) {
-      navigate("/revenue-office/boardroom", { replace: true });
+    if (!isLoading && isCompleted && onComplete) {
+      onComplete();
     }
-  }, [isLoading, isCompleted, navigate]);
+  }, [isLoading, isCompleted, onComplete]);
 
   // Load saved progress
   useEffect(() => {
@@ -133,13 +133,13 @@ export default function FormationShell() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="h-full flex items-center justify-center">
         <div className="animate-pulse text-muted-foreground text-sm">Loading…</div>
       </div>
     );
   }
 
-  if (isCompleted) return null; // Will redirect
+  if (isCompleted) return null;
 
   const Screen = screenMap[STAGES[stage].id];
 
@@ -201,7 +201,7 @@ export default function FormationShell() {
         </div>
       )}
 
-      <div className="relative z-[1] max-w-6xl mx-auto px-6 py-8 flex gap-8">
+      <div className="relative z-[1] flex-1 overflow-y-auto px-6 py-8 flex gap-8">
         <div className="flex-1 min-w-0">
           <AnimatePresence mode="wait">
             <motion.div key={STAGES[stage].id} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.25 }}>
