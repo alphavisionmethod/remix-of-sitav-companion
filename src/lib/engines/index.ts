@@ -45,3 +45,11 @@ export { SetupOrchestrationEngine, createSetupOrchestrationEngine } from "./setu
 export { computeLeadScore, computeBatchScores } from "./lead-scoring-engine";
 export type { LeadScoreResult, ScoreableLead, PriorityTier, HeatStatus, UrgencyBand, ConfidenceLevel } from "./lead-scoring-engine";
 
+// ── Lead Recovery Engine ────────────────────────────────────────
+export { MOCK_RECOVERY_CANDIDATES, RECOVERY_QUEUES, FAILURE_MODE_META, SUCCESS_BAND_META, RECOVERY_PATH_META,
+  computeRecoveryScore, computeSuccessBand, computeUrgency, recommendPath, assignQueue,
+  getQueueCounts, getQueueValueAtRisk, getTotalValueAtRisk, getTopPriorityRescues,
+  filterByQueue, getRecoveryStats } from "./lead-recovery-engine";
+export type { RecoveryCandidate, FailureMode, RecoveryPath, SuccessBand, UrgencyLevel,
+  RelationshipSensitivity, RecoveryQueueDef, RecoveryTimelineEvent } from "./lead-recovery-engine";
+
