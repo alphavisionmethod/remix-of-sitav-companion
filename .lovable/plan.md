@@ -1,73 +1,82 @@
 
 
-# Business Home: Premium Operating Room — Implementation Plan
+# Lead Inbox — Premium Triage Surface
 
-## What We're Building
-A complete replacement of the current `BusinessOverview.tsx` (113 lines of basic stat cards + chart) with a founder-grade command surface composed of 7 distinct zones, profile-aware, with premium dark glassmorphic design and real visual hierarchy.
+## Overview
+Replace the current basic `LeadsInbox.tsx` (434 lines of simple list/detail) with a fully featured, beautiful lead intake and triage system. Since there's no `leads` table in the database, we'll create one along with a `lead_inbox_items` table for the intake queue.
 
-## Architecture
-The new Business Home will be a single orchestrating page (`BusinessOverview.tsx`) that imports purpose-built zone components. Each zone is a standalone file for maintainability.
+## Database Changes
+
+**Migration: Create lead intake tables**
+
+1. `leads` table — full lead records (accepted leads)
+2. `lead_inbox_items` table — incoming triage queue with fields for:
+   - raw contact info (name, email, phone, company)
+   - source (website, referral, import, crm-sync, manual, partner, campaign, social, message)
+   - inquiry_text, urgency (low/medium/high/critical)
+   - quality_score (0-100), quality_hints (jsonb)
+   - completeness_score, missing_fields (text[])
+   - duplicate_status (none/possible/definite), duplicate_match_id
+   - suggested_owner, suggested_route (lead/consult/quote/automation/boardroom/archive/spam)
+   - advisor_suggestion (text), triage_status (new/reviewing/accepted/rejected/routed/snoozed)
+   - routed_to, accepted_at, business_profile_mode
+   - RLS policies for authenticated users
+
+3. Enable realtime on `lead_inbox_items`
+
+## Component Architecture
 
 ```text
-BusinessOverview.tsx (orchestrator)
-├── HomeIdentityHeader.tsx        — Zone A: Business mode, trust posture, contextual summary
-├── WhatMattersNowHero.tsx        — Zone B: Signature hero, ranked priorities, prepared actions
-├── PressurePulseLayer.tsx        — Zone C: 6-domain pressure gauges with interconnection logic
-├── OpportunityRecoveryLayer.tsx  — Zone D: Active opportunities, recovery candidates, momentum
-├── ContinuityTimeline.tsx        — Zone E: What changed since last review, stage shifts
-├── AdvisorSynthesisZone.tsx      — Zone F: Advisor stance, rationale, caution, escalation
-└── BoardroomEntryZone.tsx        — Zone G: Strategic candidates with cinematic reveal
+src/pages/business/LeadsInbox.tsx          ← Full rewrite (orchestrator)
+src/components/business/lead-inbox/
+  ├── LeadInboxHeader.tsx                  ← KPI dashboard strip with visual cards
+  ├── LeadInboxOverviewCards.tsx            ← Source mix donut, quality gauge, urgency heatmap
+  ├── LeadTriageQueue.tsx                   ← Main queue with premium triage cards
+  ├── LeadTriageCard.tsx                    ← Individual card: source icon, quality bar, advisor whisper
+  ├── LeadDetailPanel.tsx                   ← Right-side detail with inquiry, scoring, advisor, actions
+  ├── LeadQuickActions.tsx                  ← Hover/inline action bar (accept, route, reject, snooze)
+  ├── LeadDuplicateDrawer.tsx              ← Side-by-side duplicate comparison
+  ├── LeadBulkTriageBar.tsx                ← Floating bar for multi-select bulk operations
+  ├── LeadAdvisorWhisper.tsx               ← Subtle inline advisor recommendation layer
+  ├── LeadSourceBadge.tsx                  ← Source-aware styled badges with icons
+  ├── LeadEmptyStates.tsx                  ← First-use, caught-up, no-results states
+  └── useLeadInbox.ts                      ← Data hook: fetch, filter, triage actions, realtime
 ```
 
-## Implementation — 3 Batches
+## Visual Design
 
-### Batch 1: Foundation + Hero (Zones A, B, C)
-**Files created**: 3 new components in `src/components/business/home/`
-**File modified**: `BusinessOverview.tsx` — complete rewrite
+- **Header**: 6 visual KPI cards in a horizontal strip — New Arrivals (with pulse dot), Unassigned, Urgent, High Quality, Duplicates, Source Mix — each with gradient backgrounds and icons, not plain text
+- **Overview Row**: 3 mini-dashboard cards — Source mix donut chart (using SitaCharts), Quality distribution gauge, Arrival timeline sparkline
+- **Triage Queue**: Premium cards with left color-coded urgency bar, source icon, quality confidence ring, avatar initials, inquiry preview, advisor whisper text, and quick action buttons on hover
+- **Detail Panel**: Glassmorphic right panel with lead profile hero, inquiry content, quality radar, duplicate analysis section, advisor recommendation card, and action button grid
+- **Animations**: Framer Motion for card accept/route/reject — card slides out gracefully toward its destination with a subtle success toast
+- **Empty States**: Cinematic first-use with illustration, "You're caught up" celebration state, degraded state banner
 
-- **Zone A — Identity Header**: Asymmetric header with business mode chip, trust posture badge, contextual summary sentence (adapts per archetype), ambient gradient glow matching domain accent color. Profile confidence indicator.
-- **Zone B — What Matters Now Hero**: The signature area. Large asymmetric card with ranked priority items (at-risk revenue, overdue follow-ups, stalled deals). Each item: severity color bar, entity name, risk amount, days overdue, confidence badge, prepared action button. Max 5 items. Visual weight dominates the page. Glassmorphic card with subtle ambient glow.
-- **Zone C — Pressure & Pulse**: 6 mini pressure gauges (Lead, Pipeline, Support, Collections, Operations, Schedule) rendered as animated radial progress arcs with severity coloring. Below each: one-line interpretation ("Growing — connected to pipeline stall"). Interconnection lines between related pressures.
+## Key Features
 
-### Batch 2: Opportunity + Continuity + Advisor (Zones D, E, F)
-**Files created**: 3 new components
+1. **Smart Triage Queue** — Filterable by: All, New, Urgent, High Quality, Missing Info, Duplicates, Snoozed, Accepted, Rejected, Exceptional
+2. **Source-Aware Styling** — Each source type gets a distinct icon + color accent (referral=gold, website=blue, import=slate, CRM=purple, manual=green)
+3. **Advisor Whisper Layer** — Each card shows a one-line AI triage suggestion below the inquiry preview
+4. **Quick Actions** — Inline hover actions: Accept → Leads, Route → Consult/Quote, Reject, Snooze, Flag Exceptional
+5. **Duplicate Detection UI** — Warning badge + expandable drawer showing matched record side-by-side with merge button
+6. **Bulk Triage** — Checkbox multi-select with floating action bar for batch accept/reject/route
+7. **Detail Panel** — Full triage workspace with quality scoring breakdown, completeness checklist, advisor recommendation, communication preview, and routing controls
+8. **Business Profile Adaptation** — Service mode prioritizes consult routing, ecommerce prioritizes cart leads, high-ticket highlights Boardroom escalation
+9. **Mock Data** — Rich set of 15+ diverse inbox items across all sources, urgency levels, and quality bands for demo mode
+10. **Realtime** — Subscribe to `lead_inbox_items` for live arrival pulse
 
-- **Zone D — Opportunity & Recovery**: Split layout — left side shows advancing opportunities (deal name, value, stage, momentum indicator), right side shows recovery candidates (stalled leads, reactivation signals, estimated recovery value). Warm accent colors, forward-looking tone.
-- **Zone E — Continuity Timeline**: Vertical timeline with elegant transitions showing meaningful state changes since last review. Each entry: timestamp, description, severity chip, before/after state. Curated — not raw feed. Max 8 entries.
-- **Zone F — Advisor Synthesis**: Premium glassmorphic panel with advisor avatar, stance indicator (confident/cautious/divided), summary paragraph, top 3 recommended actions, caution flags, escalation recommendation. Feels like a real advisor speaking.
+## Integration Points
 
-### Batch 3: Boardroom + State Handling + Profile Adaptation
-**Files created**: 1 new component, modifications to orchestrator
+- Wired into `BusinessAppShell` pages map (replaces current `leads` entry)
+- `useBusinessProfile` for archetype-aware labels and prioritization
+- `ModuleAdvisorInsight` for page-level advisor strip
+- `navigateTo` for routing to consult, quotes, opportunities, boardroom
+- Notifications integration via toast on urgent arrivals
+- Business Home contribution via item counts
 
-- **Zone G — Boardroom Entry**: Cinematic reveal interaction — collapsed shows count + top candidate title. On click, expands with strategic framing, risk factors, options, next steps. Premium border animation on hover.
-- **State handling**: First-use (aspirational guide), loading (structured skeleton preserving hierarchy), low-data (lighter observation mode), calm day (opportunity-focused), review-heavy (review-centric layout shift), degraded (caution badges, reduced confidence).
-- **Profile adaptation**: The orchestrator reads `primaryMode` and adjusts zone emphasis weights — e.g., ecommerce emphasizes Zone D (lifecycle/retention), service emphasizes Zone B (proposals/follow-up), team-based emphasizes Zone C (workload pressure).
-
-## Design Language
-- Background: `bg-[#0a0a12]` (existing Business OS dark)
-- Cards: `bg-[#12121e]` with `border-[#1a1a2e]`, glassmorphic overlays
-- Hero zone: Larger card with radial gradient glow matching domain accent
-- Pressure arcs: SVG radial gauges with animated fill
-- Typography: Space Grotesk for headers, Inter for body, monospace for values
-- Animations: Framer Motion staggered reveals, subtle scale on hover
-- Layout: CSS Grid asymmetric — Hero spans 2/3 width, pressure gauges 1/3
-
-## Data Sources (all existing, no new DB tables)
-- `useBusinessProfile()` — archetype, weights, operating flags
-- `getIdentityLayer()` — accent colors, tagline, tone
-- `getModuleAdaptation()` — advisor name, quick actions
-- `useBoardroomBridge("business")` — escalations, decisions, synthesis
-- `getAdvisorOutputs("business")` — advisor recommendations
-- Mock data for demo mode (same pattern as existing components)
-
-## What Stays
-- All existing sub-components (`BusinessStatCard`, `BusinessMoneyFlow`, etc.) remain available but are not used by the new Home — they can be reused elsewhere
-- `AdaptiveBusinessHome` remains as a separate module (`adaptive-home` in the pages map)
-- The pages map entry `overview: BusinessOverview` stays unchanged
-
-## Total Scope
-- ~7 new component files in `src/components/business/home/`
-- 1 rewritten file: `BusinessOverview.tsx`
-- 0 database changes
-- 0 new dependencies
+## Scope
+- ~12 new files
+- 1 full rewrite (LeadsInbox.tsx)
+- 1 database migration
+- 0 new dependencies (uses existing framer-motion, lucide, tanstack-query, SitaCard system)
 
