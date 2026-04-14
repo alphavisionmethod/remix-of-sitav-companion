@@ -109,6 +109,7 @@ export function DesktopSystemWidget({ onLaunchApp }: DesktopSystemWidgetProps) {
             <div key={t.id} className="relative">
               <button
                 onClick={() => handleClick(t)}
+                onContextMenu={(e) => handleContextMenu(e, t)}
                 onPointerDown={e => e.stopPropagation()}
                 className="flex flex-col items-center gap-1.5 group"
               >
