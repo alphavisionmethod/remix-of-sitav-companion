@@ -66,6 +66,8 @@ export async function bootOSSecurity(): Promise<{
   auditd: ReturnType<typeof getAuditDaemon>;
   controlcenterd: ReturnType<typeof getControlCenterDaemon>;
   notifyd: ReturnType<typeof getNotifyDaemon>;
+  updated: ReturnType<typeof getUpdateDaemon>;
+  onboardingd: ReturnType<typeof getOnboardingDaemon>;
 }> {
   if (booted) {
     return {
@@ -76,6 +78,8 @@ export async function bootOSSecurity(): Promise<{
       auditd: getAuditDaemon(),
       controlcenterd: getControlCenterDaemon(),
       notifyd: getNotifyDaemon(),
+      updated: getUpdateDaemon(),
+      onboardingd: getOnboardingDaemon(),
     };
   }
 
@@ -88,6 +92,10 @@ export async function bootOSSecurity(): Promise<{
   const policyd = getPolicyDaemon();
   await policyd.initialize();
   console.log("[os-security] ✓ policyd initialized");
+
+  // Initialize policy bundle manager
+  getPolicyBundleManager();
+  console.log("[os-security] ✓ policyd-bundles initialized");
 
   const secretsd = getSecretsDaemon();
   await secretsd.initialize();
@@ -110,6 +118,14 @@ export async function bootOSSecurity(): Promise<{
   notifyd.seedDemoEvents();
   console.log("[os-security] ✓ notifyd initialized");
 
+  const updated = getUpdateDaemon();
+  await updated.initialize();
+  console.log("[os-security] ✓ updated initialized");
+
+  const onboardingd = getOnboardingDaemon();
+  await onboardingd.initialize();
+  console.log("[os-security] ✓ onboardingd initialized");
+
   // Record boot event
   await auditd.record({
     actorUserId: "system",
@@ -118,13 +134,13 @@ export async function bootOSSecurity(): Promise<{
     action: "system.boot.security-subsystem",
     decision: "allowed",
     severity: "info",
-    reason: "OS security subsystem initialized",
+    reason: "OS security subsystem initialized (policyd + updated + onboardingd)",
   });
 
   booted = true;
   console.log("[os-security] ✓ Security subsystem ready");
 
-  return { authd, policyd, secretsd, sessiond, auditd, controlcenterd, notifyd };
+  return { authd, policyd, secretsd, sessiond, auditd, controlcenterd, notifyd, updated, onboardingd };
 }
 
 export function isOSSecurityBooted(): boolean {
