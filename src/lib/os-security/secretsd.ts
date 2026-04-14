@@ -27,7 +27,7 @@ class SecureBuffer {
     const enc = new TextEncoder();
     const data = enc.encode(str);
     const buf = new SecureBuffer(data.length);
-    buf.buffer.set(data);
+    buf.buf.set(data);
     return buf;
   }
 

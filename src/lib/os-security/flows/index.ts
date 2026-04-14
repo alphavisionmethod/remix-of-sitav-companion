@@ -195,7 +195,7 @@ export async function suspendResumeFlow(
     });
   }
 
-  return resumeResult as IPCResult<{ lockRequired: boolean }>;
+  return { status: resumeResult.status, data: resumeResult.data as { lockRequired: boolean }, error: resumeResult.error };
 }
 
 // ── Fast User Switch Flow ───────────────────────────────────
