@@ -41,3 +41,7 @@ export { DelegationEngine } from "./delegation-engine";
 export { WorkspaceViewEngine } from "./workspace-view-engine";
 export { SetupOrchestrationEngine, createSetupOrchestrationEngine } from "./setup-orchestration-engine";
 
+// ── Lead Scoring & Prioritization ───────────────────────────────
+export { computeLeadScore, computeBatchScores } from "./lead-scoring-engine";
+export type { LeadScoreResult, ScoreableLead, PriorityTier, HeatStatus, UrgencyBand, ConfidenceLevel } from "./lead-scoring-engine";
+

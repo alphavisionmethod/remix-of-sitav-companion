@@ -9,15 +9,17 @@ import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { useBusinessNavigation } from "@/contexts/BusinessNavigationContext";
 
 import { LeadInboxHeader } from "@/components/business/lead-inbox/LeadInboxHeader";
-import { LeadInboxOverviewCards } from "@/components/business/lead-inbox/LeadInboxOverviewCards";
+import { LeadScoringDashboard } from "@/components/business/lead-inbox/LeadScoringDashboard";
+import { LeadPriorityStack } from "@/components/business/lead-inbox/LeadPriorityStack";
 import { LeadTriageQueue } from "@/components/business/lead-inbox/LeadTriageQueue";
 import { LeadDetailPanel } from "@/components/business/lead-inbox/LeadDetailPanel";
 import { LeadBulkTriageBar } from "@/components/business/lead-inbox/LeadBulkTriageBar";
 import { LeadDuplicateDrawer } from "@/components/business/lead-inbox/LeadDuplicateDrawer";
+import { ScoreExplainabilityDrawer } from "@/components/business/lead-inbox/ScoreExplainabilityDrawer";
 import { useLeadInbox, type InboxFilter } from "@/components/business/lead-inbox/useLeadInbox";
 import { getInboxStats } from "@/components/business/lead-inbox/mock-inbox-data";
 
-import { Search, Plus, Plug, ChevronDown, ChevronUp, LayoutGrid } from "lucide-react";
+import { Search, Plus, Plug, ChevronDown, ChevronUp, LayoutGrid, BarChart3, List } from "lucide-react";
 import { toast } from "sonner";
 
 const FILTER_TABS: { key: InboxFilter; label: string }[] = [
@@ -25,6 +27,8 @@ const FILTER_TABS: { key: InboxFilter; label: string }[] = [
   { key: "new", label: "New" },
   { key: "urgent", label: "Urgent" },
   { key: "high-quality", label: "High Quality" },
+  { key: "at-risk", label: "At Risk" },
+  { key: "recovery", label: "Recovery" },
   { key: "missing-info", label: "Missing Info" },
   { key: "duplicates", label: "Duplicates" },
   { key: "exceptional", label: "★ Exceptional" },
@@ -33,17 +37,22 @@ const FILTER_TABS: { key: InboxFilter; label: string }[] = [
   { key: "rejected", label: "Rejected" },
 ];
 
+type ViewMode = "queue" | "priority-stack" | "dashboard";
+
 const LeadsInbox = () => {
   const { navigateTo } = useBusinessNavigation();
   const { primaryMode } = useBusinessProfile();
   const [showOverview, setShowOverview] = useState(true);
+  const [viewMode, setViewMode] = useState<ViewMode>("queue");
   const [duplicateDrawerItem, setDuplicateDrawerItem] = useState<string | null>(null);
 
   const {
-    items, filtered, selected, selectedId,
+    items, filtered, selected, selectedId, selectedScore,
     filter, setFilter, search, setSearch,
     setSelectedId, checkedIds, toggleCheck, clearChecked,
     triageAction, bulkAction, isLoading, isDemo,
+    scoreMap, scoreResults,
+    explainId, setExplainId, explainScore,
   } = useLeadInbox();
 
   const stats = getInboxStats(items);
@@ -53,11 +62,13 @@ const LeadsInbox = () => {
     switch (t.key) {
       case "all": count = items.filter(i => i.triage_status !== "accepted" && i.triage_status !== "rejected").length; break;
       case "new": count = stats.newCount; break;
-      case "urgent": count = stats.urgent; break;
-      case "high-quality": count = stats.highQuality; break;
+      case "urgent": count = scoreResults.filter(s => s.urgencyBand === "heating-up" || s.urgencyBand === "needs-response-today").length; break;
+      case "high-quality": count = scoreResults.filter(s => s.priorityScore >= 70).length; break;
+      case "at-risk": count = scoreResults.filter(s => s.staleRisk > 50).length; break;
+      case "recovery": count = scoreResults.filter(s => s.recoveryPotential > 50).length; break;
       case "missing-info": count = stats.incomplete; break;
       case "duplicates": count = stats.duplicates; break;
-      case "exceptional": count = stats.exceptional; break;
+      case "exceptional": count = scoreResults.filter(s => s.boardroomWorthy).length; break;
       case "snoozed": count = items.filter(i => i.triage_status === "snoozed").length; break;
       case "accepted": count = items.filter(i => i.triage_status === "accepted").length; break;
       case "rejected": count = items.filter(i => i.triage_status === "rejected").length; break;
@@ -69,19 +80,20 @@ const LeadsInbox = () => {
     return (
       <motion.div className="space-y-6" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
         <PageTruthBanner />
-        <KPISkeleton count={6} />
+        <KPISkeleton count={8} />
         <SectionSkeleton cards={4} columns={1} />
       </motion.div>
     );
   }
 
   // Contextual summary
+  const criticalCount = scoreResults.filter(s => s.priorityTier === "critical-now").length;
   const summaryParts: string[] = [];
-  if (stats.newCount > 0) summaryParts.push(`${stats.newCount} new arrival${stats.newCount > 1 ? "s" : ""} need triage`);
+  if (criticalCount > 0) summaryParts.push(`${criticalCount} critical lead${criticalCount > 1 ? "s" : ""} need immediate action`);
+  if (stats.newCount > 0) summaryParts.push(`${stats.newCount} new arrival${stats.newCount > 1 ? "s" : ""}`);
   if (stats.urgent > 0) summaryParts.push(`${stats.urgent} urgent`);
-  if (stats.highQuality > 0) summaryParts.push(`${stats.highQuality} high-quality`);
-  if (stats.duplicates > 0) summaryParts.push(`${stats.duplicates} possible duplicate${stats.duplicates > 1 ? "s" : ""}`);
-  if (stats.exceptional > 0) summaryParts.push(`${stats.exceptional} exceptional`);
+  const atRiskCount = scoreResults.filter(s => s.staleRisk > 50).length;
+  if (atRiskCount > 0) summaryParts.push(`${atRiskCount} at risk`);
   const summary = summaryParts.length > 0
     ? summaryParts.join(", ") + "."
     : "All caught up — no pending items.";
@@ -98,9 +110,32 @@ const LeadsInbox = () => {
           <p className="text-sm text-muted-foreground leading-relaxed">{summary}</p>
         </div>
         <div className="flex gap-2 shrink-0">
+          {/* View mode toggles */}
+          <div className="flex rounded-lg border border-border/40 overflow-hidden">
+            <button
+              onClick={() => setViewMode("queue")}
+              className={`p-2 text-xs ${viewMode === "queue" ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground"} transition-colors`}
+              title="Queue View"
+            >
+              <List className="h-3.5 w-3.5" />
+            </button>
+            <button
+              onClick={() => setViewMode("priority-stack")}
+              className={`p-2 text-xs ${viewMode === "priority-stack" ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground"} transition-colors`}
+              title="Priority Stack"
+            >
+              <BarChart3 className="h-3.5 w-3.5" />
+            </button>
+            <button
+              onClick={() => setViewMode("dashboard")}
+              className={`p-2 text-xs ${viewMode === "dashboard" ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground"} transition-colors`}
+              title="Scoring Dashboard"
+            >
+              <LayoutGrid className="h-3.5 w-3.5" />
+            </button>
+          </div>
           <SitaButton variant="ghost" size="sm" onClick={() => setShowOverview(v => !v)}>
             {showOverview ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
-            <LayoutGrid className="h-3.5 w-3.5" />
           </SitaButton>
           <SitaButton variant="secondary" size="sm" onClick={() => navigateTo("integrations")}>
             <Plug className="h-3.5 w-3.5" /> Sources
@@ -112,16 +147,20 @@ const LeadsInbox = () => {
       </div>
 
       {/* KPI Header */}
-      <LeadInboxHeader items={items} />
-
-      {/* Overview Cards */}
       <AnimatePresence>
         {showOverview && (
           <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
-            <LeadInboxOverviewCards items={items} />
+            <LeadInboxHeader items={items} scores={scoreResults} />
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Dashboard View */}
+      {viewMode === "dashboard" && (
+        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+          <LeadScoringDashboard scores={scoreResults} />
+        </motion.div>
+      )}
 
       {/* Tabs */}
       <div className="overflow-x-auto pb-1">
@@ -143,55 +182,96 @@ const LeadsInbox = () => {
         />
       </div>
 
-      {/* Main content: queue + detail */}
-      <div className="grid gap-5 lg:grid-cols-5">
-        {/* Triage Queue */}
-        <div className="lg:col-span-3 space-y-2">
-          <LeadTriageQueue
-            items={filtered}
-            allItems={items}
-            filter={filter}
-            selectedId={selectedId}
-            checkedIds={checkedIds}
-            onSelect={setSelectedId}
-            onCheck={toggleCheck}
-            onAccept={id => triageAction(id, "accept")}
-            onRoute={(id, dest) => triageAction(id, "route", dest)}
-            onReject={id => triageAction(id, "reject")}
-            onSnooze={id => triageAction(id, "snooze")}
-            onFlag={id => triageAction(id, "route", "boardroom")}
-            onAddLead={() => navigateTo("contacts")}
-            onImport={() => navigateTo("integrations")}
-            newCount={stats.newCount}
-          />
-        </div>
-
-        {/* Detail Panel */}
-        <div className="lg:col-span-2">
-          {selected ? (
-            <LeadDetailPanel
-              item={selected}
-              onClose={() => setSelectedId(null)}
-              onAccept={(id) => triageAction(id, "accept")}
-              onRoute={(id, dest) => triageAction(id, "route", dest)}
-              onReject={(id) => triageAction(id, "reject")}
-              onOpenDuplicate={(id) => setDuplicateDrawerItem(id)}
+      {/* Main content */}
+      {viewMode === "priority-stack" ? (
+        <div className="grid gap-5 lg:grid-cols-5">
+          <div className="lg:col-span-3">
+            <LeadPriorityStack
+              items={items}
+              scores={scoreMap}
+              selectedId={selectedId}
+              onSelect={setSelectedId}
+              onExplain={setExplainId}
             />
-          ) : (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="hidden lg:flex flex-col items-center justify-center py-20 text-center rounded-2xl border border-dashed border-border/30 bg-card/30"
-            >
-              <div className="h-16 w-16 rounded-2xl bg-primary/5 flex items-center justify-center mb-4">
-                <Search className="h-8 w-8 text-primary/20" />
-              </div>
-              <p className="text-sm font-medium text-muted-foreground">Select a lead to review</p>
-              <p className="text-xs text-muted-foreground/60 mt-1 max-w-[200px]">Click any card to open the triage workspace with full details and actions</p>
-            </motion.div>
-          )}
+          </div>
+          <div className="lg:col-span-2">
+            {selected ? (
+              <LeadDetailPanel
+                item={selected}
+                score={selectedScore}
+                onClose={() => setSelectedId(null)}
+                onAccept={(id) => triageAction(id, "accept")}
+                onRoute={(id, dest) => triageAction(id, "route", dest)}
+                onReject={(id) => triageAction(id, "reject")}
+                onOpenDuplicate={(id) => setDuplicateDrawerItem(id)}
+                onExplain={(id) => setExplainId(id)}
+              />
+            ) : (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="hidden lg:flex flex-col items-center justify-center py-20 text-center rounded-2xl border border-dashed border-border/30 bg-card/30"
+              >
+                <div className="h-16 w-16 rounded-2xl bg-primary/5 flex items-center justify-center mb-4">
+                  <Search className="h-8 w-8 text-primary/20" />
+                </div>
+                <p className="text-sm font-medium text-muted-foreground">Select a lead to review</p>
+                <p className="text-xs text-muted-foreground/60 mt-1 max-w-[200px]">Click any card to see full details and scoring breakdown</p>
+              </motion.div>
+            )}
+          </div>
         </div>
-      </div>
+      ) : viewMode === "queue" ? (
+        <div className="grid gap-5 lg:grid-cols-5">
+          <div className="lg:col-span-3 space-y-2">
+            <LeadTriageQueue
+              items={filtered}
+              allItems={items}
+              filter={filter}
+              selectedId={selectedId}
+              checkedIds={checkedIds}
+              scoreMap={scoreMap}
+              onSelect={setSelectedId}
+              onCheck={toggleCheck}
+              onAccept={id => triageAction(id, "accept")}
+              onRoute={(id, dest) => triageAction(id, "route", dest)}
+              onReject={id => triageAction(id, "reject")}
+              onSnooze={id => triageAction(id, "snooze")}
+              onFlag={id => triageAction(id, "route", "boardroom")}
+              onExplain={setExplainId}
+              onAddLead={() => navigateTo("contacts")}
+              onImport={() => navigateTo("integrations")}
+              newCount={stats.newCount}
+            />
+          </div>
+          <div className="lg:col-span-2">
+            {selected ? (
+              <LeadDetailPanel
+                item={selected}
+                score={selectedScore}
+                onClose={() => setSelectedId(null)}
+                onAccept={(id) => triageAction(id, "accept")}
+                onRoute={(id, dest) => triageAction(id, "route", dest)}
+                onReject={(id) => triageAction(id, "reject")}
+                onOpenDuplicate={(id) => setDuplicateDrawerItem(id)}
+                onExplain={(id) => setExplainId(id)}
+              />
+            ) : (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="hidden lg:flex flex-col items-center justify-center py-20 text-center rounded-2xl border border-dashed border-border/30 bg-card/30"
+              >
+                <div className="h-16 w-16 rounded-2xl bg-primary/5 flex items-center justify-center mb-4">
+                  <Search className="h-8 w-8 text-primary/20" />
+                </div>
+                <p className="text-sm font-medium text-muted-foreground">Select a lead to review</p>
+                <p className="text-xs text-muted-foreground/60 mt-1 max-w-[200px]">Click any card to open the triage workspace with full details and scoring</p>
+              </motion.div>
+            )}
+          </div>
+        </div>
+      ) : null}
 
       {/* Bulk Triage Bar */}
       <LeadBulkTriageBar
@@ -219,18 +299,25 @@ const LeadsInbox = () => {
         />
       )}
 
+      {/* Score Explainability Drawer */}
+      <ScoreExplainabilityDrawer
+        score={explainScore}
+        open={!!explainId}
+        onClose={() => setExplainId(null)}
+      />
+
       {/* Advisor Strip */}
       <ModuleAdvisorInsight
         advisorName={primaryMode === "service" ? "Intake Advisor" : primaryMode === "ecommerce" ? "Growth Advisor" : "Pipeline Advisor"}
         domain="business"
         insight={
-          stats.exceptional > 0
-            ? `${stats.exceptional} exceptional lead${stats.exceptional > 1 ? "s" : ""} detected — route to Boardroom for strategic review. ${stats.urgent} items need urgent triage.`
-            : stats.urgent > 0
-              ? `${stats.urgent} urgent lead${stats.urgent > 1 ? "s" : ""} waiting — prioritize high-quality arrivals first. Source quality is ${stats.highQuality > stats.incomplete ? "strong" : "mixed"} today.`
-              : "Inbox is healthy. Continue processing new arrivals for optimal response times."
+          scoreResults.some(s => s.priorityTier === "critical-now")
+            ? `${scoreResults.filter(s => s.priorityTier === "critical-now").length} critical lead${scoreResults.filter(s => s.priorityTier === "critical-now").length > 1 ? "s" : ""} need immediate action. Scoring engine identifies ${scoreResults.filter(s => s.staleRisk > 50).length} at-risk leads slipping.`
+            : scoreResults.some(s => s.boardroomWorthy)
+              ? `${scoreResults.filter(s => s.boardroomWorthy).length} lead${scoreResults.filter(s => s.boardroomWorthy).length > 1 ? "s" : ""} flagged for Boardroom review. Priority distribution looks ${scoreResults.filter(s => s.priorityScore >= 60).length > 3 ? "strong" : "mixed"}.`
+              : "Scoring engine active. Lead pool health is stable — continue triaging for optimal conversion."
         }
-        confidence={stats.exceptional > 0 ? 95 : stats.urgent > 0 ? 82 : 70}
+        confidence={scoreResults.some(s => s.priorityTier === "critical-now") ? 95 : scoreResults.some(s => s.boardroomWorthy) ? 88 : 72}
       />
     </motion.div>
   );

@@ -3,6 +3,7 @@ import { LeadTriageCard } from "./LeadTriageCard";
 import { LeadEmptyState } from "./LeadEmptyStates";
 import type { InboxItem } from "./mock-inbox-data";
 import type { InboxFilter } from "./useLeadInbox";
+import type { LeadScoreResult } from "@/lib/engines/lead-scoring-engine";
 
 interface Props {
   items: InboxItem[];
@@ -10,6 +11,7 @@ interface Props {
   filter: InboxFilter;
   selectedId: string | null;
   checkedIds: Set<string>;
+  scoreMap: Map<string, LeadScoreResult>;
   onSelect: (id: string) => void;
   onCheck: (id: string, checked: boolean) => void;
   onAccept: (id: string) => void;
@@ -17,14 +19,15 @@ interface Props {
   onReject: (id: string) => void;
   onSnooze: (id: string) => void;
   onFlag: (id: string) => void;
+  onExplain?: (id: string) => void;
   onAddLead?: () => void;
   onImport?: () => void;
   newCount: number;
 }
 
 export const LeadTriageQueue = ({
-  items, allItems, filter, selectedId, checkedIds,
-  onSelect, onCheck, onAccept, onRoute, onReject, onSnooze, onFlag,
+  items, allItems, filter, selectedId, checkedIds, scoreMap,
+  onSelect, onCheck, onAccept, onRoute, onReject, onSnooze, onFlag, onExplain,
   onAddLead, onImport, newCount,
 }: Props) => {
   if (items.length === 0) {
@@ -50,6 +53,7 @@ export const LeadTriageQueue = ({
         >
           <LeadTriageCard
             item={item}
+            score={scoreMap.get(item.id)}
             selected={selectedId === item.id}
             checked={checkedIds.has(item.id)}
             onSelect={() => onSelect(item.id)}
@@ -59,6 +63,7 @@ export const LeadTriageQueue = ({
             onReject={() => onReject(item.id)}
             onSnooze={() => onSnooze(item.id)}
             onFlag={() => onFlag(item.id)}
+            onExplain={() => onExplain?.(item.id)}
           />
         </motion.div>
       ))}

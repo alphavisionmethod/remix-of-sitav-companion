@@ -1,12 +1,17 @@
 import { SitaCard, SitaCardTitle, SitaButton } from "@/components/sita/SitaCard";
 import { LeadSourceBadge } from "./LeadSourceBadge";
+import { LeadPriorityBadge } from "./LeadPriorityBadge";
+import { LeadHeatIndicator } from "./LeadHeatIndicator";
+import { LeadConfidenceDisplay } from "./LeadConfidenceDisplay";
+import { PriorityEvolutionTimeline } from "./PriorityEvolutionTimeline";
 import { TrustBadge } from "@/components/sita/TrustBadge";
 import type { InboxItem } from "./mock-inbox-data";
 import type { LeadSource } from "./LeadSourceBadge";
+import type { LeadScoreResult } from "@/lib/engines/lead-scoring-engine";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  Mail, Phone, Building2, Globe, Clock, Sparkles, AlertTriangle,
-  Check, ArrowRight, Ban, Star, Calendar, FileText, Copy, ShieldAlert, X
+  Mail, Phone, Building2, Clock, Sparkles, AlertTriangle,
+  Check, ArrowRight, Ban, Star, Calendar, FileText, Copy, X, Zap, Brain
 } from "lucide-react";
 
 const timeAgo = (dt: string) => {
@@ -33,17 +38,19 @@ const InfoRow = ({ icon: Icon, label, value }: { icon: typeof Mail; label: strin
 
 interface Props {
   item: InboxItem | null;
+  score?: LeadScoreResult | null;
   onClose: () => void;
   onAccept: (id: string) => void;
   onRoute: (id: string, dest: string) => void;
   onReject: (id: string) => void;
   onOpenDuplicate?: (id: string) => void;
+  onExplain?: (id: string) => void;
 }
 
-export const LeadDetailPanel = ({ item, onClose, onAccept, onRoute, onReject, onOpenDuplicate }: Props) => {
+export const LeadDetailPanel = ({ item, score, onClose, onAccept, onRoute, onReject, onOpenDuplicate, onExplain }: Props) => {
   if (!item) return null;
 
-  const trustLevel = item.quality_score >= 75 ? "verified" as const : item.quality_score >= 40 ? "review" as const : "degraded" as const;
+  const trustLevel = (score?.priorityScore ?? item.quality_score) >= 75 ? "verified" as const : (score?.priorityScore ?? item.quality_score) >= 40 ? "review" as const : "degraded" as const;
 
   return (
     <AnimatePresence mode="wait">
@@ -55,7 +62,7 @@ export const LeadDetailPanel = ({ item, onClose, onAccept, onRoute, onReject, on
         className="space-y-4"
       >
         {/* Hero */}
-        <SitaCard hover={false} glow={item.quality_score >= 80} className="text-center p-6 relative">
+        <SitaCard hover={false} glow={score ? score.priorityScore >= 70 : item.quality_score >= 80} className="text-center p-6 relative">
           <button onClick={onClose} className="absolute top-3 right-3 text-muted-foreground hover:text-foreground">
             <X className="h-4 w-4" />
           </button>
@@ -68,10 +75,68 @@ export const LeadDetailPanel = ({ item, onClose, onAccept, onRoute, onReject, on
             <LeadSourceBadge source={item.source as LeadSource} />
             <TrustBadge level={trustLevel} size="sm" />
           </div>
+          {score && (
+            <div className="mt-3 flex items-center justify-center gap-2 flex-wrap">
+              <LeadPriorityBadge tier={score.priorityTier} size="sm" />
+              <LeadHeatIndicator heat={score.heatStatus} size="sm" />
+            </div>
+          )}
           <p className="mt-2 text-[10px] text-muted-foreground flex items-center justify-center gap-1">
             <Clock className="h-3 w-3" /> Arrived {timeAgo(item.created_at)}
           </p>
         </SitaCard>
+
+        {/* Priority Score Card */}
+        {score && (
+          <SitaCard hover={false} glass className="p-4">
+            <div className="flex items-center justify-between mb-3">
+              <SitaCardTitle>Priority Score</SitaCardTitle>
+              {onExplain && (
+                <button
+                  onClick={() => onExplain(item.id)}
+                  className="text-[10px] text-accent hover:text-accent/80 flex items-center gap-1 transition-colors"
+                >
+                  <Brain className="h-3 w-3" /> View Breakdown
+                </button>
+              )}
+            </div>
+            <div className="flex items-center gap-4">
+              <div className={`font-display text-4xl font-bold ${score.priorityScore >= 75 ? "text-[hsl(var(--trust-safe))]" : score.priorityScore >= 50 ? "text-[hsl(var(--sita-gold))]" : "text-[hsl(var(--trust-degraded))]"}`}>
+                {score.priorityScore}
+              </div>
+              <div className="flex-1 space-y-2">
+                <div className="h-2.5 w-full rounded-full bg-muted/30 overflow-hidden">
+                  <div
+                    className={`h-full rounded-full transition-all ${score.priorityScore >= 75 ? "bg-[hsl(var(--trust-safe))]" : score.priorityScore >= 50 ? "bg-[hsl(var(--sita-gold))]" : "bg-[hsl(var(--trust-degraded))]"}`}
+                    style={{ width: `${score.priorityScore}%` }}
+                  />
+                </div>
+                <PriorityEvolutionTimeline
+                  heat={score.heatStatus}
+                  staleRisk={score.staleRisk}
+                  priorityScore={score.priorityScore}
+                />
+              </div>
+            </div>
+            <div className="mt-3">
+              <LeadConfidenceDisplay level={score.confidenceLevel} score={score.confidenceScore} compact />
+            </div>
+          </SitaCard>
+        )}
+
+        {/* Next Best Action */}
+        {score?.nextBestAction && (
+          <SitaCard hover={false} className="p-4 border-l-4 border-l-accent/40">
+            <div className="flex items-center gap-2 mb-2">
+              <Zap className="h-4 w-4 text-accent" />
+              <SitaCardTitle>Recommended Action</SitaCardTitle>
+            </div>
+            <p className="text-sm text-foreground">{score.nextBestAction}</p>
+            <span className="mt-1.5 inline-block text-[10px] bg-accent/10 text-accent rounded-full px-2 py-0.5 capitalize">
+              {score.nextBestActionType.replace("-", " ")}
+            </span>
+          </SitaCard>
+        )}
 
         {/* Contact Info */}
         <SitaCard hover={false} className="p-4 space-y-2.5">
@@ -89,29 +154,24 @@ export const LeadDetailPanel = ({ item, onClose, onAccept, onRoute, onReject, on
           </SitaCard>
         )}
 
-        {/* Quality Assessment */}
-        <SitaCard hover={false} className="p-4">
-          <SitaCardTitle>Quality Assessment</SitaCardTitle>
-          <div className="mt-3 flex items-center gap-4">
-            <div className={`font-display text-3xl font-bold ${item.quality_score >= 75 ? "text-[hsl(var(--trust-safe))]" : item.quality_score >= 40 ? "text-[hsl(var(--sita-gold))]" : "text-[hsl(var(--trust-degraded))]"}`}>
-              {item.quality_score}
+        {/* Scoring Factors Preview */}
+        {score && score.topPositiveFactors.length > 0 && (
+          <SitaCard hover={false} className="p-4">
+            <SitaCardTitle>What Drives Priority</SitaCardTitle>
+            <div className="mt-2 flex flex-wrap gap-1.5">
+              {score.topPositiveFactors.map((f) => (
+                <span key={f.key} className="text-[10px] bg-[hsl(var(--trust-safe))]/10 text-[hsl(var(--trust-safe))] border border-[hsl(var(--trust-safe))]/15 rounded-md px-2 py-0.5">
+                  ↑ {f.label}: {f.normalizedScore}
+                </span>
+              ))}
+              {score.topNegativeFactors.map((f) => (
+                <span key={f.key} className="text-[10px] bg-[hsl(var(--trust-degraded))]/10 text-[hsl(var(--trust-degraded))] border border-[hsl(var(--trust-degraded))]/15 rounded-md px-2 py-0.5">
+                  ↓ {f.label}: {f.normalizedScore}
+                </span>
+              ))}
             </div>
-            <div className="flex-1">
-              <div className="h-2.5 w-full rounded-full bg-muted/30 overflow-hidden">
-                <div
-                  className={`h-full rounded-full transition-all ${item.quality_score >= 75 ? "bg-[hsl(var(--trust-safe))]" : item.quality_score >= 40 ? "bg-[hsl(var(--sita-gold))]" : "bg-[hsl(var(--trust-degraded))]"}`}
-                  style={{ width: `${item.quality_score}%` }}
-                />
-              </div>
-              <p className="mt-1 text-[10px] text-muted-foreground">Completeness: {item.completeness_score}%</p>
-            </div>
-          </div>
-          <div className="mt-3 flex flex-wrap gap-1.5">
-            {item.quality_hints.map((h, i) => (
-              <span key={i} className="text-[10px] bg-primary/5 text-primary border border-primary/10 rounded-md px-2 py-0.5">{h}</span>
-            ))}
-          </div>
-        </SitaCard>
+          </SitaCard>
+        )}
 
         {/* Missing Fields */}
         {item.missing_fields.length > 0 && (
@@ -178,7 +238,7 @@ export const LeadDetailPanel = ({ item, onClose, onAccept, onRoute, onReject, on
           <SitaButton variant="accent" onClick={() => onRoute(item.id, "quote")}>
             <FileText className="h-3.5 w-3.5" /> Route to Quote
           </SitaButton>
-          {item.suggested_route === "boardroom" && (
+          {(score?.boardroomWorthy || item.suggested_route === "boardroom") && (
             <SitaButton variant="secondary" onClick={() => onRoute(item.id, "boardroom")} className="col-span-2 border-[hsl(var(--sita-gold))]/20">
               <Star className="h-3.5 w-3.5 text-[hsl(var(--sita-gold))]" /> Escalate to Boardroom
             </SitaButton>

@@ -3,10 +3,14 @@ import { SitaCard } from "@/components/sita/SitaCard";
 import { LeadSourceBadge } from "./LeadSourceBadge";
 import { LeadAdvisorWhisper } from "./LeadAdvisorWhisper";
 import { LeadQuickActions } from "./LeadQuickActions";
-import { AlertTriangle, Copy, Clock } from "lucide-react";
+import { LeadPriorityBadge } from "./LeadPriorityBadge";
+import { LeadHeatIndicator } from "./LeadHeatIndicator";
+import { PriorityEvolutionTimeline } from "./PriorityEvolutionTimeline";
+import { AlertTriangle, Copy, ChevronRight, Zap } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import type { InboxItem } from "./mock-inbox-data";
 import type { LeadSource } from "./LeadSourceBadge";
+import type { LeadScoreResult } from "@/lib/engines/lead-scoring-engine";
 
 const urgencyBar: Record<string, string> = {
   critical: "bg-[hsl(var(--urgency-critical))]",
@@ -15,25 +19,11 @@ const urgencyBar: Record<string, string> = {
   low: "bg-muted-foreground/30",
 };
 
-const qualityRing = (score: number) => {
-  if (score >= 75) return "border-[hsl(var(--trust-safe))] text-[hsl(var(--trust-safe))]";
-  if (score >= 40) return "border-[hsl(var(--sita-gold))] text-[hsl(var(--sita-gold))]";
-  return "border-[hsl(var(--trust-degraded))] text-[hsl(var(--trust-degraded))]";
-};
-
-const timeAgo = (dt: string) => {
-  const d = Date.now() - new Date(dt).getTime();
-  const mins = Math.floor(d / 60000);
-  if (mins < 60) return `${mins}m ago`;
-  const hrs = Math.floor(mins / 60);
-  if (hrs < 24) return `${hrs}h ago`;
-  return `${Math.floor(hrs / 24)}d ago`;
-};
-
 const initials = (name: string) => name.split(" ").map(w => w[0]).join("").slice(0, 2).toUpperCase();
 
 interface CardProps {
   item: InboxItem;
+  score?: LeadScoreResult;
   selected?: boolean;
   checked?: boolean;
   onSelect: () => void;
@@ -43,19 +33,21 @@ interface CardProps {
   onReject: () => void;
   onSnooze: () => void;
   onFlag: () => void;
+  onExplain?: () => void;
 }
 
 export const LeadTriageCard = ({
-  item, selected, checked, onSelect, onCheck, onAccept, onRoute, onReject, onSnooze, onFlag
+  item, score, selected, checked, onSelect, onCheck, onAccept, onRoute, onReject, onSnooze, onFlag, onExplain
 }: CardProps) => {
   const isSpam = item.suggested_route === "spam";
-  const isExceptional = item.suggested_route === "boardroom";
+  const isExceptional = score?.boardroomWorthy ?? item.suggested_route === "boardroom";
+  const tier = score?.priorityTier;
 
   return (
     <SitaCard
       onClick={onSelect}
       selected={selected}
-      lane={isExceptional ? "opportunity" : item.urgency === "critical" ? "action" : undefined}
+      lane={isExceptional ? "opportunity" : tier === "critical-now" ? "action" : undefined}
       className={cn("p-0 group relative overflow-hidden", isSpam && "opacity-60")}
     >
       {/* Urgency bar */}
@@ -68,8 +60,15 @@ export const LeadTriageCard = ({
             <Checkbox checked={checked} onCheckedChange={v => onCheck(!!v)} className="h-3.5 w-3.5" />
           </div>
 
-          {/* Avatar with quality ring */}
-          <div className={cn("h-10 w-10 rounded-full border-2 flex items-center justify-center shrink-0 text-xs font-bold", qualityRing(item.quality_score))}>
+          {/* Avatar with priority ring */}
+          <div className={cn(
+            "h-10 w-10 rounded-full border-2 flex items-center justify-center shrink-0 text-xs font-bold",
+            tier === "critical-now" ? "border-[hsl(var(--urgency-critical))] text-[hsl(var(--urgency-critical))]" :
+            tier === "high-priority" ? "border-[hsl(var(--urgency-high))] text-[hsl(var(--urgency-high))]" :
+            score && score.priorityScore >= 60 ? "border-[hsl(var(--trust-safe))] text-[hsl(var(--trust-safe))]" :
+            score && score.priorityScore >= 40 ? "border-[hsl(var(--sita-gold))] text-[hsl(var(--sita-gold))]" :
+            "border-[hsl(var(--trust-degraded))] text-[hsl(var(--trust-degraded))]"
+          )}>
             {initials(item.contact_name)}
           </div>
 
@@ -89,30 +88,64 @@ export const LeadTriageCard = ({
                   <AlertTriangle className="h-2.5 w-2.5" /> Incomplete
                 </span>
               )}
-              {isExceptional && (
-                <span className="inline-flex items-center text-[9px] font-bold text-[hsl(var(--sita-gold))] bg-[hsl(var(--sita-gold))]/15 rounded-full px-2 py-px border border-[hsl(var(--sita-gold))]/20">
-                  ★ Exceptional
-                </span>
-              )}
             </div>
+
+            {/* Priority + Heat badges */}
+            {score && (
+              <div className="flex items-center gap-2 mt-1 flex-wrap">
+                <LeadPriorityBadge tier={score.priorityTier} size="xs" />
+                <LeadHeatIndicator heat={score.heatStatus} size="xs" />
+                {isExceptional && (
+                  <span className="inline-flex items-center text-[9px] font-bold text-[hsl(var(--sita-gold))] bg-[hsl(var(--sita-gold))]/15 rounded-full px-2 py-px border border-[hsl(var(--sita-gold))]/20">
+                    ★ Boardroom
+                  </span>
+                )}
+              </div>
+            )}
 
             {item.inquiry_text && (
               <p className="text-[12px] text-muted-foreground mt-1 line-clamp-1">{item.inquiry_text}</p>
             )}
 
-            <LeadAdvisorWhisper suggestion={item.advisor_suggestion} />
+            {/* Next action whisper */}
+            {score?.nextBestAction && (
+              <div className="flex items-start gap-1.5 mt-1">
+                <Zap className="h-3 w-3 text-accent shrink-0 mt-0.5" />
+                <p className="text-[10px] text-accent/70 leading-tight line-clamp-1">{score.nextBestAction}</p>
+              </div>
+            )}
           </div>
 
-          {/* Right side: score + time */}
+          {/* Right side: score + trend */}
           <div className="text-right shrink-0 space-y-1">
-            <div className={cn("font-display text-lg font-bold tabular-nums", qualityRing(item.quality_score).split(" ")[1])}>
-              {item.quality_score}
+            <div className={cn(
+              "font-display text-lg font-bold tabular-nums",
+              score && score.priorityScore >= 75 ? "text-[hsl(var(--trust-safe))]" :
+              score && score.priorityScore >= 50 ? "text-[hsl(var(--sita-gold))]" :
+              "text-[hsl(var(--trust-degraded))]"
+            )}>
+              {score?.priorityScore ?? item.quality_score}
             </div>
-            <div className="flex items-center gap-1 text-[10px] text-muted-foreground justify-end">
-              <Clock className="h-2.5 w-2.5" />
-              {timeAgo(item.created_at)}
-            </div>
+            {score && (
+              <PriorityEvolutionTimeline
+                heat={score.heatStatus}
+                staleRisk={score.staleRisk}
+                priorityScore={score.priorityScore}
+                compact
+              />
+            )}
           </div>
+
+          {/* Explain button */}
+          {onExplain && (
+            <button
+              onClick={e => { e.stopPropagation(); onExplain(); }}
+              className="opacity-0 group-hover:opacity-100 p-1 rounded-lg hover:bg-muted/30 text-muted-foreground hover:text-foreground transition-all self-center"
+              title="View score breakdown"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          )}
         </div>
 
         {/* Quick actions row */}
