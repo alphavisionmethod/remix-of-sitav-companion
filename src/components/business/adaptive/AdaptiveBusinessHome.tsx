@@ -12,8 +12,6 @@ import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getTopWidgets, type HomeWidget } from "./BusinessHomeWidgetRegistry";
 import { getQuickActionsForProfile, getStatCardsForProfile } from "./AdaptiveCRMConfig";
 import { getIdentityLayer, getTimeAwareGreeting } from "@/lib/engines/business-identity-layers";
-import { getTopWidgets, type HomeWidget } from "./BusinessHomeWidgetRegistry";
-import { getQuickActionsForProfile, getStatCardsForProfile } from "./AdaptiveCRMConfig";
 
 const ICON_MAP: Record<string, React.ElementType> = {
   TrendingUp, ShoppingCart, LineChart, Banknote, Target, Receipt,
