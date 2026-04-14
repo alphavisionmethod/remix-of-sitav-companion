@@ -14,6 +14,7 @@ import { formatDistanceToNow, format } from "date-fns";
 import { useCRMContacts, useCRMOpportunities, useCRMCommunications, useCRMNotes, useCRMContactCompanyLinks, useCreateContactCompanyLink, useDeleteContactCompanyLink } from "@/hooks/use-crm-data";
 import type { CRMCompany } from "@/lib/data-services/crm-data-service";
 import { CRMEscalateToBoardroom } from "./CRMEscalateToBoardroom";
+import { InlineAdvisorInsights, generateCompanyInsights } from "./CRMAdvisorInsight";
 
 const healthColor = (s: number) => s >= 80 ? "text-green-400" : s >= 60 ? "text-yellow-400" : s >= 40 ? "text-orange-400" : "text-red-400";
 const healthLabel = (s: number) => s >= 80 ? "Healthy" : s >= 60 ? "Warming" : s >= 40 ? "Drifting" : "At Risk";
@@ -158,20 +159,10 @@ export function CRMCompanyDetail({ company, onClose, onSelectContact }: CRMCompa
                 </div>
               </div>
 
-              <Card className="border-primary/20 bg-primary/5">
-                <CardContent className="p-4 flex items-start gap-3">
-                  <Sparkles className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                  <div>
-                    <p className="text-sm font-semibold text-foreground">Account Intelligence</p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {health < 50 ? `${company.name} health is declining. Review recent interactions and address open issues.`
-                        : totalPipelineValue > 0 ? `$${(totalPipelineValue / 1000).toFixed(0)}K in active pipeline — monitor close dates and advance deals.`
-                        : contacts.length === 0 ? `No contacts linked. Add team members to build a full account picture.`
-                        : `Account is in good standing. Consider cross-sell or upsell opportunities.`}
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
+              <InlineAdvisorInsights
+                insights={generateCompanyInsights(company, contacts.length, totalPipelineValue, comms.length)}
+                maxInsights={3}
+              />
             </TabsContent>
 
             <TabsContent value="contacts" className="mt-0 space-y-2">

@@ -22,6 +22,7 @@ import type { CRMContact, CRMCompany } from "@/lib/data-services/crm-data-servic
 import { CRMEscalateToBoardroom } from "./CRMEscalateToBoardroom";
 import { CRMMeetingPrep } from "./CRMMeetingPrep";
 import { CRMNextBestAction } from "./CRMNextBestAction";
+import { InlineAdvisorInsights, generateContactInsights } from "./CRMAdvisorInsight";
 
 const LIFECYCLE_COLORS: Record<string, string> = {
   lead: "bg-blue-500/20 text-blue-400 border-blue-500/30",
@@ -284,6 +285,12 @@ export function CRMContactDetail({ contact, companies = [], onClose, onEdit }: C
                 communications={comms}
                 opportunities={opps}
                 tasks={tasks}
+              />
+
+              {/* Advisor Insight Zone */}
+              <InlineAdvisorInsights
+                insights={generateContactInsights(contact, comms, tasks, opps)}
+                maxInsights={3}
               />
 
               {/* Recent timeline preview */}
