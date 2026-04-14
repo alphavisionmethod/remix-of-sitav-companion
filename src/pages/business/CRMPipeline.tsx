@@ -7,7 +7,8 @@ import { Progress } from "@/components/ui/progress";
 import { useCRMOpportunities, useCRMPipelineStages, useCRMContacts, useCRMCompanies, useCreateOpportunity, useUpdateOpportunity } from "@/hooks/use-crm-data";
 import {
   TrendingUp, Plus, DollarSign, Calendar, List, Columns3, ChevronRight,
-  ChevronLeft, Trophy, XCircle, Target, BarChart3, User, Building2, ArrowRight, Clock
+  ChevronLeft, Trophy, XCircle, Target, BarChart3, User, Building2, ArrowRight, Clock,
+  AlertTriangle
 } from "lucide-react";
 import { format, formatDistanceToNow, isPast, differenceInDays } from "date-fns";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
