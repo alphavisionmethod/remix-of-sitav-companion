@@ -28,6 +28,7 @@ import { DevToolsWindow } from "./windows/DevToolsWindow";
 import { ExtensionManagerWindow } from "./windows/ExtensionManagerWindow";
 import { SyscallDashboardWindow } from "./windows/SyscallDashboardWindow";
 import { KernelDashboardWindow } from "./windows/KernelDashboardWindow";
+import { PolicyDashboardWindow } from "./windows/PolicyDashboardWindow";
 import { FinanceAppShell } from "../apps/finance/FinanceAppShell";
 import { BusinessAppShell } from "../apps/business/BusinessAppShell";
 import { ConciergeAppShell } from "../apps/concierge/ConciergeAppShell";
@@ -101,6 +102,8 @@ const APP_REGISTRY: Record<string, Omit<AppLaunchConfig, "id">> = {
   "sita-boardroom": { name: "Boardroom", component: <BoardroomAppShell />, width: 1200, position: { x: 140, y: 110 } },
   "sita-investment-office": { name: "Investment Office", component: <InvestmentAppShell />, width: 1200, position: { x: 100, y: 70 } },
   trust: { name: "Security Center", component: <SecurityCenterWindow />, width: 540, position: { x: 180, y: 80 } },
+  "policy-center": { name: "Policy Center", component: <PolicyDashboardWindow />, width: 500, position: { x: 200, y: 90 } },
+  "com.sita.policy-center": { name: "Policy Center", component: <PolicyDashboardWindow />, width: 500, position: { x: 200, y: 90 } },
 };
 
 // Canonical mapping: collapse catalog aliases to a single window ID
