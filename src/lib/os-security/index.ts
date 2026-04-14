@@ -21,6 +21,10 @@ export type { CommandResult } from "./controlcenterd";
 export { ElevationEngine, getElevationEngine } from "./elevation-engine";
 export type { ElevationResult } from "./elevation-engine";
 
+// ── Notification Daemon ──────────────────────────────────────
+export { NotifyDaemon, getNotifyDaemon } from "./notifyd";
+export type { SecurityNotification, SecurityEventType } from "./notifyd";
+
 // ── Boot Sequence ───────────────────────────────────────────
 
 import { getAuthDaemon } from "./authd";
@@ -29,6 +33,7 @@ import { getSecretsDaemon } from "./secretsd";
 import { getSessionDaemon } from "./sessiond";
 import { getAuditDaemon } from "./auditd";
 import { getControlCenterDaemon } from "./controlcenterd";
+import { getNotifyDaemon } from "./notifyd";
 
 let booted = false;
 
@@ -43,6 +48,7 @@ export async function bootOSSecurity(): Promise<{
   sessiond: ReturnType<typeof getSessionDaemon>;
   auditd: ReturnType<typeof getAuditDaemon>;
   controlcenterd: ReturnType<typeof getControlCenterDaemon>;
+  notifyd: ReturnType<typeof getNotifyDaemon>;
 }> {
   if (booted) {
     return {
@@ -52,6 +58,7 @@ export async function bootOSSecurity(): Promise<{
       sessiond: getSessionDaemon(),
       auditd: getAuditDaemon(),
       controlcenterd: getControlCenterDaemon(),
+      notifyd: getNotifyDaemon(),
     };
   }
 
@@ -81,6 +88,11 @@ export async function bootOSSecurity(): Promise<{
   await controlcenterd.initialize();
   console.log("[os-security] ✓ controlcenterd initialized");
 
+  const notifyd = getNotifyDaemon();
+  await notifyd.initialize();
+  notifyd.seedDemoEvents();
+  console.log("[os-security] ✓ notifyd initialized");
+
   // Record boot event
   await auditd.record({
     actorUserId: "system",
@@ -95,7 +107,7 @@ export async function bootOSSecurity(): Promise<{
   booted = true;
   console.log("[os-security] ✓ Security subsystem ready");
 
-  return { authd, policyd, secretsd, sessiond, auditd, controlcenterd };
+  return { authd, policyd, secretsd, sessiond, auditd, controlcenterd, notifyd };
 }
 
 export function isOSSecurityBooted(): boolean {

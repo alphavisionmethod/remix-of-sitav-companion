@@ -5,13 +5,15 @@
 
 import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Shield, Lock, Eye, HardDrive, CheckCircle, XCircle, AlertTriangle, Activity, Bug, Globe, MapPin, Loader2, User } from "lucide-react";
+import { Shield, Lock, Eye, HardDrive, CheckCircle, XCircle, AlertTriangle, Activity, Bug, Globe, MapPin, Loader2, User, Bell, Cpu } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { AppLoader } from "@/lib/nova-sdk/runtime/loader";
 import { PermissionMonitor } from "@/lib/nova-sdk/services/permission-monitor";
 import { FileSystemService } from "@/lib/nova-sdk/services/filesystem-service";
 import { SecurityAccountsPanel } from "./SecurityAccountsPanel";
+import { DeviceIdentityPanel } from "./DeviceIdentityPanel";
+import { SecurityNotificationsPanel } from "./SecurityNotificationsPanel";
 
 // ── Tab 1: Sandbox Monitor ──
 
@@ -691,6 +693,12 @@ export function SecurityCenterWindow() {
           <TabsTrigger value="accounts" className="text-[11px] gap-1">
             <User className="w-3 h-3" /> Accounts
           </TabsTrigger>
+          <TabsTrigger value="device-id" className="text-[11px] gap-1">
+            <Cpu className="w-3 h-3" /> Device
+          </TabsTrigger>
+          <TabsTrigger value="notifications" className="text-[11px] gap-1">
+            <Bell className="w-3 h-3" /> Alerts
+          </TabsTrigger>
         </TabsList>
 
         <div className="flex-1 overflow-y-auto px-4 py-3">
@@ -701,6 +709,8 @@ export function SecurityCenterWindow() {
           <TabsContent value="permissions" className="mt-0"><PermissionsTab /></TabsContent>
           <TabsContent value="filesystem" className="mt-0"><FileSystemTab /></TabsContent>
           <TabsContent value="accounts" className="mt-0"><SecurityAccountsPanel /></TabsContent>
+          <TabsContent value="device-id" className="mt-0"><DeviceIdentityPanel /></TabsContent>
+          <TabsContent value="notifications" className="mt-0"><SecurityNotificationsPanel /></TabsContent>
         </div>
       </Tabs>
     </div>
