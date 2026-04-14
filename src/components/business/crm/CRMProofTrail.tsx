@@ -64,13 +64,13 @@ const ACTOR_ICONS: Record<string, React.ReactNode> = {
 
 function generateDemoTrail(entityName: string): ProofEntry[] {
   const entries: ProofEntry[] = [
-    { id: "p1", timestamp: "2025-06-15T10:30:00Z", action: "created", actor: { type: "user", name: "You" }, source: "manual_entry", receipt_hash: "0xa3f2...d819" },
-    { id: "p2", timestamp: "2025-06-15T10:31:00Z", action: "verified", actor: { type: "system", name: "Import Validator" }, field: "email", source: "email_verification", confidence: 98, receipt_hash: "0xb7e1...4f22" },
-    { id: "p3", timestamp: "2025-09-01T14:00:00Z", action: "updated", actor: { type: "user", name: "You" }, field: "lifecycle_stage", oldValue: "lead", newValue: "qualified", source: "manual_update" },
-    { id: "p4", timestamp: "2025-11-10T09:15:00Z", action: "linked", actor: { type: "system", name: "CRM Engine" }, field: "company", newValue: "Meridian Ventures", source: "auto_link", confidence: 92 },
-    { id: "p5", timestamp: "2026-01-20T16:45:00Z", action: "automated", actor: { type: "automation", name: "Follow-Up Workflow" }, field: "next_follow_up_at", newValue: "2026-01-27", source: "crm_automation_1", receipt_hash: "0xc4d3...a891" },
-    { id: "p6", timestamp: "2026-02-15T11:00:00Z", action: "updated", actor: { type: "advisor", name: "Relationship Advisor" }, field: "health_score", oldValue: "72", newValue: "85", source: "advisor_assessment", confidence: 88 },
-    { id: "p7", timestamp: "2026-03-28T08:30:00Z", action: "imported", actor: { type: "system", name: "CSV Import" }, source: "import_job_42", metadata: { file: "contacts_march.csv", row: 15 }, receipt_hash: "0xd5e4...b912" },
+    { id: "p1", timestamp: "2025-06-15T10:30:00Z", action: "created" as const, actor: { type: "user" as const, name: "You" }, source: "manual_entry", receipt_hash: "0xa3f2...d819" },
+    { id: "p2", timestamp: "2025-06-15T10:31:00Z", action: "verified" as const, actor: { type: "system" as const, name: "Import Validator" }, field: "email", source: "email_verification", confidence: 98, receipt_hash: "0xb7e1...4f22" },
+    { id: "p3", timestamp: "2025-09-01T14:00:00Z", action: "updated" as const, actor: { type: "user" as const, name: "You" }, field: "lifecycle_stage", oldValue: "lead", newValue: "qualified", source: "manual_update" },
+    { id: "p4", timestamp: "2025-11-10T09:15:00Z", action: "linked" as const, actor: { type: "system" as const, name: "CRM Engine" }, field: "company", newValue: "Meridian Ventures", source: "auto_link", confidence: 92 },
+    { id: "p5", timestamp: "2026-01-20T16:45:00Z", action: "automated" as const, actor: { type: "automation" as const, name: "Follow-Up Workflow" }, field: "next_follow_up_at", newValue: "2026-01-27", source: "crm_automation_1", receipt_hash: "0xc4d3...a891" },
+    { id: "p6", timestamp: "2026-02-15T11:00:00Z", action: "updated" as const, actor: { type: "advisor" as const, name: "Relationship Advisor" }, field: "health_score", oldValue: "72", newValue: "85", source: "advisor_assessment", confidence: 88 },
+    { id: "p7", timestamp: "2026-03-28T08:30:00Z", action: "imported" as const, actor: { type: "system" as const, name: "CSV Import" }, source: "import_job_42", metadata: { file: "contacts_march.csv", row: 15 }, receipt_hash: "0xd5e4...b912" },
     { id: "p8", timestamp: "2026-04-10T13:00:00Z", action: "escalated" as const, actor: { type: "user" as const, name: "You" }, source: "boardroom_escalation", metadata: { severity: "high", boardroom_item_id: "bi_123" }, receipt_hash: "0xe6f5...c023" },
   ];
   return entries.reverse();
