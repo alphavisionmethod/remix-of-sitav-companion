@@ -36,6 +36,7 @@ import { AllProviderFamiliesStatus } from "@/components/sita/AllProviderFamilies
 import { AdvisorAutonomyPanel } from "@/components/sita/AdvisorAutonomyPanel";
 import { useWallpaper, WALLPAPER_THEMES } from "@/hooks/use-wallpaper";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { useNavigate } from "react-router-dom";
 
 // ── Settings Update Section (Wired to UpdateDaemon) ──
 function SettingsUpdateSection() {
