@@ -8,13 +8,14 @@ import { useCRMOpportunities, useCRMPipelineStages, useCRMContacts, useCRMCompan
 import {
   TrendingUp, Plus, DollarSign, Calendar, List, Columns3, ChevronRight,
   ChevronLeft, Trophy, XCircle, Target, BarChart3, User, Building2, ArrowRight, Clock,
-  AlertTriangle
+  AlertTriangle, Brain
 } from "lucide-react";
 import { format, formatDistanceToNow, isPast, differenceInDays } from "date-fns";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { CRMDealDetail } from "@/components/business/crm/CRMDealDetail";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { toast } from "sonner";
+import { DealAdvisorSignal } from "@/components/business/crm/CRMAdvisorInsight";
 
 const CRMPipeline = () => {
   const { data: opportunities = [] } = useCRMOpportunities();
@@ -318,6 +319,7 @@ const CRMPipeline = () => {
                           {daysTillClose !== null && daysTillClose >= 0 && daysTillClose <= 14 && !isOverdue && (
                             <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary/10 text-primary">{daysTillClose}d to close</span>
                           )}
+                          <DealAdvisorSignal opp={d} />
                         </div>
                       </CardContent>
                     </Card>
