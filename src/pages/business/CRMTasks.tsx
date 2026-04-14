@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -34,6 +35,7 @@ const TASK_TYPE_META: Record<string, { color: string; label: string }> = {
 type FilterType = "all" | "pending" | "overdue" | "today" | "upcoming" | "completed";
 
 const CRMTasks = () => {
+  const { primaryMode } = useBusinessProfile();
   const { data: tasks = [] } = useCRMTasks();
   const { data: contacts = [] } = useCRMContacts();
   const { data: companies = [] } = useCRMCompanies();

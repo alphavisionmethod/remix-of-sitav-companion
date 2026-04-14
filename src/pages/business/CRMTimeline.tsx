@@ -37,6 +37,7 @@ const OUTCOME_COLORS: Record<string, { bg: string; text: string; icon: React.Ele
 };
 
 const CRMTimeline = () => {
+  const { primaryMode } = useBusinessProfile();
   const { data: comms = [] } = useCRMCommunications();
   const { data: contacts = [] } = useCRMContacts();
   const { data: companies = [] } = useCRMCompanies();

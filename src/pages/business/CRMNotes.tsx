@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -26,6 +27,7 @@ const NOTE_TYPE_META: Record<string, { icon: React.ElementType; color: string; l
 type ViewMode = "grid" | "list";
 
 const CRMNotes = () => {
+  const { primaryMode } = useBusinessProfile();
   const { data: notes = [] } = useCRMNotes();
   const { data: contacts = [] } = useCRMContacts();
   const { data: companies = [] } = useCRMCompanies();
