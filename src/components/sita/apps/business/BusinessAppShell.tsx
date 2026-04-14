@@ -32,6 +32,7 @@ import AdaptiveWorkflowTemplates from "@/components/business/adaptive/AdaptiveWo
 import AdaptiveBoardroomAgenda from "@/components/business/adaptive/AdaptiveBoardroomAgenda";
 import { CrossOSLinksPanel } from "@/components/sita/cross-os/CrossOSLinksPanel";
 import { CrossDomainIntelligenceBridge } from "@/components/sita/cross-os/CrossDomainIntelligenceBridge";
+import { AppShellBreadcrumb, useNavigationHistory } from "@/components/sita/shell/AppShellBreadcrumb";
 
 // ── Page imports ──────────────────────────────────────────────
 import BusinessOverview from "@/pages/business/BusinessOverview";
@@ -478,12 +479,13 @@ function BusinessAppShellInner({ initialModule }: { initialModule?: string }) {
     return () => window.removeEventListener("sita-business-navigate", handler);
   }, []);
   const { pendingCount, decisionCount, synthesis } = useBoardroomBridge("business");
+  const navHistory = useNavigationHistory(activeModule);
 
   const navigateTo = useCallback((moduleKey: string) => {
     const key = moduleKey.replace(/^\/business\//, "").replace(/^business\//, "");
     const resolved = key === "" || key === "business" ? "overview" : key;
-    setActiveModule(resolved);
-  }, []);
+    navHistory.navigate(resolved, setActiveModule);
+  }, [navHistory]);
 
   // Find current label (using adapted groups)
   const currentLabel = (() => {
@@ -575,7 +577,16 @@ function BusinessAppShellInner({ initialModule }: { initialModule?: string }) {
         {/* Main */}
         <div className="flex-1 flex flex-col min-w-0">
           <div className="h-10 shrink-0 border-b border-[hsl(0_0%_100%/0.06)] flex items-center justify-between px-5 bg-[hsl(220_15%_6%/0.8)]">
-            <span className="text-[12px] font-semibold text-[hsl(0_0%_100%/0.6)]">{currentLabel}</span>
+            <AppShellBreadcrumb
+              appName="Business OS"
+              appColor="hsl(265 55% 58%)"
+              current={{ id: activeModule, label: currentLabel }}
+              history={navHistory.history}
+              historyIndex={navHistory.historyIndex}
+              onNavigate={navigateTo}
+              onBack={() => navHistory.goBack(setActiveModule)}
+              onForward={() => navHistory.goForward(setActiveModule)}
+            />
             <div className="flex items-center gap-2">
               <button
                 type="button"
