@@ -186,6 +186,15 @@ export const ScoreExplainabilityDrawer = ({ score, open, onClose }: Props) => {
                 </SitaCard>
               )}
 
+              {/* Radar Chart */}
+              <SitaCard hover={false} className="p-4 flex flex-col items-center">
+                <div className="flex items-center gap-2 mb-3 self-start">
+                  <Target className="h-4 w-4 text-primary" />
+                  <SitaCardTitle>Factor Radar</SitaCardTitle>
+                </div>
+                <LeadScoreRadar factors={score.allFactors} size={260} />
+              </SitaCard>
+
               {/* All Factors */}
               <SitaCard hover={false} className="p-4">
                 <div className="flex items-center gap-2 mb-3">
