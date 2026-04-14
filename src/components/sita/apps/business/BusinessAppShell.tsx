@@ -561,6 +561,17 @@ function BusinessAppShellInner({ initialModule }: { initialModule?: string }) {
     );
   };
 
+  // Show full FormationShell when onboarding is not yet completed
+  const showFormation = !onboardingLoading && !onboardingCompleted && !formationDone;
+
+  if (showFormation) {
+    return (
+      <BusinessNavigationContext.Provider value={{ navigateTo, activeModule }}>
+        <FormationShell onComplete={() => setFormationDone(true)} />
+      </BusinessNavigationContext.Provider>
+    );
+  }
+
   return (
     <BusinessNavigationContext.Provider value={{ navigateTo, activeModule }}>
       <CrossDomainSignalBridge />
