@@ -29,6 +29,8 @@ import { CRMFilesLinkage } from "./CRMFilesLinkage";
 import { CRMConciergeLinkage } from "./CRMConciergeLinkage";
 import { CRMProofTrail } from "./CRMProofTrail";
 import { CRMOwnership } from "./CRMOwnership";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { getContactDetailTabs } from "@/components/business/adaptive/AdaptiveContactLayout";
 
 const LIFECYCLE_COLORS: Record<string, string> = {
   lead: "bg-blue-500/20 text-blue-400 border-blue-500/30",
@@ -65,6 +67,8 @@ export function CRMContactDetail({ contact, companies = [], onClose, onEdit }: C
   const createTask = useCreateTask();
   const createNote = useCreateNote();
   const updateContact = useUpdateContact();
+  const { primaryMode } = useBusinessProfile();
+  const tabOrder = getContactDetailTabs(primaryMode);
 
   const [activeTab, setActiveTab] = useState("overview");
   const [showQuickNote, setShowQuickNote] = useState(false);
@@ -178,16 +182,25 @@ export function CRMContactDetail({ contact, companies = [], onClose, onEdit }: C
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="flex-1 flex flex-col min-h-0">
         <TabsList className="flex-shrink-0 mx-4 mt-3 bg-muted/30 flex-wrap h-auto gap-0.5 py-1">
-          <TabsTrigger value="overview" className="text-xs">Overview</TabsTrigger>
-          <TabsTrigger value="timeline" className="text-xs">Timeline ({comms.length})</TabsTrigger>
-          <TabsTrigger value="tasks" className="text-xs">Tasks ({pendingTasks.length})</TabsTrigger>
-          <TabsTrigger value="notes" className="text-xs">Notes ({notes.length})</TabsTrigger>
-          <TabsTrigger value="deals" className="text-xs">Deals ({opps.length})</TabsTrigger>
-          <TabsTrigger value="prep" className="text-xs">Prep</TabsTrigger>
-          <TabsTrigger value="finance" className="text-xs flex items-center gap-1"><Banknote className="h-3 w-3" />Finance</TabsTrigger>
-          <TabsTrigger value="files" className="text-xs flex items-center gap-1"><FolderOpen className="h-3 w-3" />Files</TabsTrigger>
-          <TabsTrigger value="concierge" className="text-xs flex items-center gap-1"><CalendarClock className="h-3 w-3" />Concierge</TabsTrigger>
-          <TabsTrigger value="proof" className="text-xs flex items-center gap-1"><Shield className="h-3 w-3" />Proof</TabsTrigger>
+          {tabOrder.map((tab) => {
+            const tabLabels: Record<string, React.ReactNode> = {
+              overview: "Overview",
+              timeline: <>Timeline ({comms.length})</>,
+              tasks: <>Tasks ({pendingTasks.length})</>,
+              notes: <>Notes ({notes.length})</>,
+              deals: <>Deals ({opps.length})</>,
+              prep: "Prep",
+              finance: <span className="flex items-center gap-1"><Banknote className="h-3 w-3" />Finance</span>,
+              files: <span className="flex items-center gap-1"><FolderOpen className="h-3 w-3" />Files</span>,
+              concierge: <span className="flex items-center gap-1"><CalendarClock className="h-3 w-3" />Concierge</span>,
+              proof: <span className="flex items-center gap-1"><Shield className="h-3 w-3" />Proof</span>,
+            };
+            return (
+              <TabsTrigger key={tab} value={tab} className="text-xs">
+                {tabLabels[tab] || tab}
+              </TabsTrigger>
+            );
+          })}
         </TabsList>
 
         <ScrollArea className="flex-1">

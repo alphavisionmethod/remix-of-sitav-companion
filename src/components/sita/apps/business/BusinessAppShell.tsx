@@ -20,6 +20,8 @@ import AdaptiveBusinessHome from "@/components/business/adaptive/AdaptiveBusines
 import BusinessProfileEditor from "@/components/business/adaptive/BusinessProfileEditor";
 import ProfileEvolutionPanel from "@/components/business/adaptive/ProfileEvolutionPanel";
 import { CrossDomainSignalBridge } from "@/components/business/adaptive/CrossDomainSignalBridge";
+import AdaptiveKPIDashboard from "@/components/business/adaptive/AdaptiveKPIDashboard";
+import { BusinessModeIndicator } from "@/components/business/adaptive/BusinessModeIndicator";
 
 // ── Page imports ──────────────────────────────────────────────
 import BusinessOverview from "@/pages/business/BusinessOverview";
@@ -141,6 +143,7 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
     label: "Intelligence",
     items: [
       { id: "revenue-impact", label: "Revenue Impact", icon: BarChart3 },
+      { id: "kpi-dashboard", label: "KPI Dashboard", icon: Target },
       { id: "playbook-builder", label: "Builder", icon: BookOpen },
       { id: "revenue-forecast", label: "Forecast", icon: LineChart },
     ],
@@ -207,6 +210,7 @@ const pages: Record<string, React.ComponentType> = {
   "adaptive-home": AdaptiveBusinessHome,
   "business-profile": BusinessProfileEditor,
   "profile-evolution": ProfileEvolutionPanel,
+  "kpi-dashboard": AdaptiveKPIDashboard,
 };
 
 // ── Helper components ─────────────────────────────────────────
@@ -520,8 +524,9 @@ function BusinessAppShellInner({ initialModule }: { initialModule?: string }) {
 
         {/* Main */}
         <div className="flex-1 flex flex-col min-w-0">
-          <div className="h-10 shrink-0 border-b border-[hsl(0_0%_100%/0.06)] flex items-center px-5 bg-[hsl(220_15%_6%/0.8)]">
+          <div className="h-10 shrink-0 border-b border-[hsl(0_0%_100%/0.06)] flex items-center justify-between px-5 bg-[hsl(220_15%_6%/0.8)]">
             <span className="text-[12px] font-semibold text-[hsl(0_0%_100%/0.6)]">{currentLabel}</span>
+            <BusinessModeIndicator onClick={() => setActiveModule("business-profile")} />
           </div>
 
           <BoardroomStatusStrip pendingCount={pendingCount} decisionCount={decisionCount} synthesisScore={synthesis?.boardroom_worthiness_score} />
