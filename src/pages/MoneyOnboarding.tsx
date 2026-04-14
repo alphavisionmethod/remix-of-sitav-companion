@@ -1,11 +1,9 @@
-import { useNavigate } from "react-router-dom";
 import { MoneyOnboardingFlow } from "@/components/sita/money-onboarding";
+import { openFinanceModule } from "@/lib/finance-launcher";
 
 const MoneyOnboarding = () => {
-  const navigate = useNavigate();
-
   return (
-    <MoneyOnboardingFlow onComplete={() => navigate("/money", { replace: true })} />
+    <MoneyOnboardingFlow onComplete={() => openFinanceModule("overview")} />
   );
 };
 
