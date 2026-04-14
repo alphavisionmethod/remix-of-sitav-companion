@@ -5,7 +5,8 @@
 // entire Business OS surface around the detected mode.
 // ═══════════════════════════════════════════════════════════════
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useMemo } from "react";
+import { getModuleAdaptation } from "@/lib/engines/business-module-adaptations";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ShoppingCart, Briefcase, Building2, Users, Calendar,
@@ -83,6 +84,8 @@ export default function AdaptiveOnboardingWizard({ onComplete }: Props) {
   const [selections, setSelections] = useState<string[]>([]);
   const [scores, setScores] = useState<Partial<Record<ProfileArchetype, number>>>({});
   const [showResult, setShowResult] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
+  const [previewMode, setPreviewMode] = useState<ProfileArchetype | null>(null);
 
   const currentStep = STEPS[step];
 
@@ -98,16 +101,23 @@ export default function AdaptiveOnboardingWizard({ onComplete }: Props) {
     if (step < STEPS.length - 1) {
       setStep(step + 1);
     } else {
-      // Determine winner and set as override
+      // Determine winner — show preview before committing
       const sorted = Object.entries(newScores).sort((a, b) => b[1] - a[1]);
       const winner = (sorted[0]?.[0] || "service") as ProfileArchetype;
-      const overrideWeights: Partial<Record<ProfileArchetype, number>> = {};
-      overrideWeights[winner] = 100;
-      updateOverrides(overrideWeights as any);
-      setShowResult(true);
-      setTimeout(onComplete, 2500);
+      setPreviewMode(winner);
+      setShowPreview(true);
     }
-  }, [scores, selections, step, updateOverrides, onComplete]);
+  }, [scores, selections, step]);
+
+  const handleConfirmProfile = useCallback(() => {
+    if (!previewMode) return;
+    const overrideWeights: Partial<Record<ProfileArchetype, number>> = {};
+    overrideWeights[previewMode] = 100;
+    updateOverrides(overrideWeights as any);
+    setShowPreview(false);
+    setShowResult(true);
+    setTimeout(onComplete, 2500);
+  }, [previewMode, updateOverrides, onComplete]);
 
   const handleBack = () => {
     if (step > 0) setStep(step - 1);
