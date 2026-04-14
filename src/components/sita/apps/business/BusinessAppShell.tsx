@@ -541,6 +541,9 @@ function BusinessAppShellInner({ initialModule }: { initialModule?: string }) {
     <BusinessNavigationContext.Provider value={{ navigateTo, activeModule }}>
       <CrossDomainSignalBridge />
       <ModeTransitionCeremony />
+      {showOnboarding && (
+        <AdaptiveOnboardingWizard onComplete={() => setShowOnboarding(false)} />
+      )}
       <AdaptiveCommandPalette
         open={commandPaletteOpen}
         onClose={() => setCommandPaletteOpen(false)}
