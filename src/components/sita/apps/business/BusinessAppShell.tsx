@@ -1,11 +1,11 @@
-import React, { useState, useCallback, useEffect, lazy, Suspense } from "react";
+import React, { useState, useCallback, useEffect, useMemo, lazy, Suspense } from "react";
 import {
   Users, FileText, Briefcase, TrendingUp, Brain, ArrowUpRight, CheckCircle, Clock,
   AlertTriangle, Activity, Zap, LayoutDashboard, Target, Phone, Calendar, Settings,
   Receipt, Banknote, ClipboardList, Bot, RefreshCw, Share2, ShoppingCart, Globe,
   BarChart3, BookOpen, LineChart, Mail, FolderOpen, Crown, Shield, Heart,
   Building2, StickyNote, Upload, Filter, Workflow, BrainCircuit, Search,
-  ChevronDown, ChevronRight
+  ChevronDown, ChevronRight, Sliders
 } from "lucide-react";
 import { Headphones as SupportIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -14,6 +14,10 @@ import { DomainAdvisorBoard } from "@/components/sita/domain-shared/DomainAdviso
 import { useBoardroomBridge } from "@/hooks/useBoardroomBridge";
 import { getAdvisorOutputs } from "@/lib/services/orchestration-pipeline/module-advisor-consumer";
 import { BusinessNavigationContext } from "@/contexts/BusinessNavigationContext";
+import { BusinessProfileProvider } from "@/contexts/BusinessProfileContext";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import AdaptiveBusinessHome from "@/components/business/adaptive/AdaptiveBusinessHome";
+import BusinessProfileEditor from "@/components/business/adaptive/BusinessProfileEditor";
 
 // ── Page imports ──────────────────────────────────────────────
 import BusinessOverview from "@/pages/business/BusinessOverview";
@@ -148,6 +152,7 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
       { id: "proof", label: "Proof", icon: Shield },
       { id: "advisors", label: "Advisors", icon: Brain },
       { id: "pipeline-health", label: "Pipeline Health", icon: Activity },
+      { id: "business-profile", label: "Business Profile", icon: Sliders },
     ],
   },
 ];
@@ -196,6 +201,8 @@ const pages: Record<string, React.ComponentType> = {
   "crm-communications": CRMCommunications,
   integrations: CRMIntegrationHub,
   "customer-health": CustomerHealthPage,
+  "adaptive-home": AdaptiveBusinessHome,
+  "business-profile": BusinessProfileEditor,
 };
 
 // ── Helper components ─────────────────────────────────────────
@@ -386,8 +393,17 @@ function SidebarGroupSection({ group, activeModule, onSelect }: { group: Sidebar
 // ── Main Shell ────────────────────────────────────────────────
 
 export function BusinessAppShell({ initialModule }: { initialModule?: string }) {
+  return (
+    <BusinessProfileProvider>
+      <BusinessAppShellInner initialModule={initialModule} />
+    </BusinessProfileProvider>
+  );
+}
+
+function BusinessAppShellInner({ initialModule }: { initialModule?: string }) {
+  const { adaptations } = useBusinessProfile();
   const storedModule = (window as any).__businessInitialModule;
-  const [activeModule, setActiveModule] = useState(storedModule || initialModule || "crm-home");
+  const [activeModule, setActiveModule] = useState(storedModule || initialModule || "adaptive-home");
 
   // Listen for navigation events from outside (deep-linking, launchers)
   useEffect(() => {
@@ -483,9 +499,13 @@ export function BusinessAppShell({ initialModule }: { initialModule?: string }) 
           <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[hsl(0_0%_100%/0.25)] px-3 mb-3">
             Business OS
           </p>
-          {SIDEBAR_GROUPS.map((group) => (
-            <SidebarGroupSection key={group.label} group={group} activeModule={activeModule} onSelect={setActiveModule} />
-          ))}
+          {(() => {
+            const orderMap = new Map(adaptations.sidebar.groupOrder.map((g, i) => [g, i]));
+            const sorted = [...SIDEBAR_GROUPS].sort((a, b) => (orderMap.get(a.label) ?? 99) - (orderMap.get(b.label) ?? 99));
+            return sorted.map((group) => (
+              <SidebarGroupSection key={group.label} group={group} activeModule={activeModule} onSelect={setActiveModule} />
+            ));
+          })()}
         </div>
 
         {/* Main */}
