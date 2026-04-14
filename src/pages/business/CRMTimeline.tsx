@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -36,6 +37,7 @@ const OUTCOME_COLORS: Record<string, { bg: string; text: string; icon: React.Ele
 };
 
 const CRMTimeline = () => {
+  const { primaryMode } = useBusinessProfile();
   const { data: comms = [] } = useCRMCommunications();
   const { data: contacts = [] } = useCRMContacts();
   const { data: companies = [] } = useCRMCompanies();

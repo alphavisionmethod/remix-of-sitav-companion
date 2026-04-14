@@ -12,6 +12,8 @@ import { AppSurface } from "@/components/sita/surfaces/AppSurface";
 import { SitaTabs } from "@/components/sita/SitaComponents";
 import { ModuleAdvisorInsight } from "@/components/sita/domain-shared/ModuleAdvisorInsight";
 import { cn } from "@/lib/utils";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { getModuleAdaptation } from "@/lib/engines/business-module-adaptations";
 import { useCommunications } from "@/hooks/use-sita-data";
 import { useAuth } from "@/contexts/AuthContext";
 import { useActionFn } from "@/hooks/use-action";
@@ -36,6 +38,8 @@ const fallbackComms: Communication[] = [
 ];
 
 const CommunicationsCenter = () => {
+  const { primaryMode } = useBusinessProfile();
+  const moduleConfig = getModuleAdaptation("communications", primaryMode);
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const { data: dbComms = [] } = useCommunications();

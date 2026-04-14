@@ -1,4 +1,6 @@
 import { useState, useMemo } from "react";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { getModuleAdaptation } from "@/lib/engines/business-module-adaptations";
 import { motion } from "framer-motion";
 import { QueueCard } from "@/components/sita/cards";
 import { UrgencyBadge, ExecutionBadge } from "@/components/sita/badges";
@@ -60,6 +62,8 @@ const TAB_DATA: Record<QueueTab, { items: QueueItem[]; label: string }> = {
 };
 
 const FollowThroughCenter = () => {
+  const { primaryMode } = useBusinessProfile();
+  const moduleConfig = getModuleAdaptation("follow-through", primaryMode);
   const [activeTab, setActiveTab] = useState<QueueTab>("callbacks");
   const tabData = TAB_DATA[activeTab];
 
@@ -83,9 +87,9 @@ const FollowThroughCenter = () => {
       <PageTruthBanner truthState="demo" />
 
       <HeroCard
-        title="Follow-Through Center"
-        metric={`${totalItems} open threads`}
-        subtitle={`$${totalValue.toLocaleString()} at-risk value — never drop a ball`}
+        title={moduleConfig.title}
+        metric={`${totalItems} open ${moduleConfig.terminology.thread?.toLowerCase() || "thread"}s`}
+        subtitle={moduleConfig.subtitle}
         accentFrom="hsl(265 55% 58%)"
         accentTo="hsl(285 50% 48%)"
         icon={<Phone className="h-5 w-5 text-[hsl(265_55%_68%)]" />}

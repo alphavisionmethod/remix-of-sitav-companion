@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { getModuleAdaptation } from "@/lib/engines/business-module-adaptations";
 import { motion } from "framer-motion";
 import { HeroCard, QueueCard, StatusCard, AdvisorCard } from "@/components/sita/cards";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
@@ -36,6 +38,8 @@ const DEMO_ISSUES: SupportIssue[] = [
 const urgencyMap: Record<Severity, "critical" | "high" | "normal" | "low"> = { critical: "critical", high: "high", medium: "normal", low: "low" };
 
 const CustomerSupportCenter = () => {
+  const { primaryMode } = useBusinessProfile();
+  const moduleConfig = getModuleAdaptation("support", primaryMode);
   const [activeTab, setActiveTab] = useState("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [panelOpen, setPanelOpen] = useState(false);
@@ -68,9 +72,9 @@ const CustomerSupportCenter = () => {
       <PageTruthBanner truthState="demo" />
 
       <HeroCard
-        title="Customer Support"
-        metric={`${DEMO_ISSUES.filter(i => i.status !== "resolved").length} open issues`}
-        subtitle="Resolve issues, protect relationships, maintain trust"
+        title={moduleConfig.title}
+        metric={`${DEMO_ISSUES.filter(i => i.status !== "resolved").length} open ${moduleConfig.terminology.issue?.toLowerCase() || "issue"}s`}
+        subtitle={moduleConfig.subtitle}
         icon={<HeadphonesIcon className="h-5 w-5 text-[hsl(265_55%_68%)]" />}
         accentFrom="hsl(265 55% 58%)"
         accentTo="hsl(280 50% 48%)"
@@ -98,14 +102,14 @@ const CustomerSupportCenter = () => {
       {filtered.length === 0 ? (
         <PremiumEmptyState icon={CheckCircle2} title="No issues here" description="All clear in this category" variant="no-results" domain="business" />
       ) : (
-        <QueueCard title="SUPPORT QUEUE" items={queueItems} maxVisible={10} onItemClick={handleSelect} />
+        <QueueCard title={moduleConfig.terminology.queue?.toUpperCase() || "SUPPORT QUEUE"} items={queueItems} maxVisible={10} onItemClick={handleSelect} />
       )}
 
       <ModuleAdvisorInsight
-        advisorName="Support Advisor"
+        advisorName={moduleConfig.advisorName}
         domain="business"
         confidence={92}
-        insight="2 issues need immediate response: SUP-001 (damaged order) and SUP-007 (wrong address). SUP-004 has been escalated for 3 days without manager action — consider direct follow-up."
+        insight={`2 ${moduleConfig.terminology.issue?.toLowerCase() || "issue"}s need immediate response. ${moduleConfig.advisorSpecialty}.`}
         actions={[{ label: "View Drafts", onClick: () => {} }, { label: "Call Queue", onClick: () => {} }]}
       />
 

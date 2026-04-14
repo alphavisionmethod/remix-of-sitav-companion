@@ -4,6 +4,8 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useMemo } from "react";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { getModuleAdaptation } from "@/lib/engines/business-module-adaptations";
 import { motion } from "framer-motion";
 import {
   DollarSign, AlertTriangle, Clock, CheckCircle, ArrowRight, Zap,
@@ -64,6 +66,8 @@ const riskUrgency = (score: number): "critical" | "high" | "normal" | "low" =>
 // ── Main Component ──────────────────────────────────────────────
 
 const CollectionsCommandCenter = () => {
+  const { primaryMode } = useBusinessProfile();
+  const moduleConfig = getModuleAdaptation("collections", primaryMode);
   const { data: accounts = [] } = useCollectionsAccounts();
   const [tab, setTab] = useState("overview");
   const [selectedId, setSelectedId] = useState<string | null>(null);

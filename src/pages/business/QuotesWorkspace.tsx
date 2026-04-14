@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { getModuleAdaptation } from "@/lib/engines/business-module-adaptations";
 import { motion, AnimatePresence } from "framer-motion";
 import { FileText, Plus, DollarSign, CheckCircle, Send, X, Trash2 } from "lucide-react";
 import { toast } from "sonner";
@@ -21,6 +23,8 @@ const isDemoMode = true; // TODO: wire to reality mode context
 
 
 const QuotesWorkspace = () => {
+  const { primaryMode } = useBusinessProfile();
+  const moduleConfig = getModuleAdaptation("quotes", primaryMode);
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const [tab, setTab] = useState("all");
@@ -66,7 +70,7 @@ const QuotesWorkspace = () => {
       <CrossAppAction to="/business/invoices" label="Convert to Invoice" variant="chip" context={{ entityType: "quote", entityId: selectedId || "all" }} />
 
       <div className="flex items-center justify-between px-1">
-        <h3 className="text-[13px] font-semibold text-[hsl(0_0%_85%)]">Quotes & Proposals</h3>
+        <h3 className="text-[13px] font-semibold text-[hsl(0_0%_85%)]">{moduleConfig.title}</h3>
         <button onClick={() => setShowAdd(true)} className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[hsl(265_55%_58%/0.12)] hover:bg-[hsl(265_55%_58%/0.18)] text-[hsl(265_55%_68%)] text-[11px] font-medium transition-colors micro-press">
           <Plus className="h-3 w-3" /> New Quote
         </button>

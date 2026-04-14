@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,6 +14,8 @@ import { toast } from "sonner";
 const healthColor = (s: number) => s >= 80 ? "text-green-400" : s >= 60 ? "text-yellow-400" : s >= 40 ? "text-orange-400" : "text-red-400";
 
 const CRMCompanies = () => {
+  const { primaryMode, adaptations } = useBusinessProfile();
+  const companyLabel = adaptations.crm?.language?.contactLabel === "Buyers" ? "Stores" : adaptations.crm?.language?.contactLabel === "Clients" ? "Practices" : "Companies";
   const { data: companies = [] } = useCRMCompanies();
   const createCompany = useCreateCompany();
   const deleteCompany = useDeleteCompany();

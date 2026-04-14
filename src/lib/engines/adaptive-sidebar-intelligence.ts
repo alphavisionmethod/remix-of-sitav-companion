@@ -6,6 +6,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import type { ProfileArchetype, OperatingFlags } from "./business-profile-engine";
+import { getModuleEmphasis } from "./business-module-adaptations";
 
 export interface SidebarOverride {
   label?: string;
@@ -184,8 +185,32 @@ export function getSidebarOverrides(
     merged.ecommerce = { ...merged.ecommerce, hidden: true };
   }
   if (!flags.hasEmployees) {
-    // De-emphasize team ops for solo operators
     merged.operations = { ...merged.operations, tooltipHint: "Solo operations" };
+  }
+
+  // Module-emphasis-based auto-hide: if a module's emphasis is "hidden", hide it
+  const moduleIdMap: Record<string, string> = {
+    appointments: "appointments",
+    ecommerce: "ecommerce",
+    proposals: "quotes",
+    quotes: "quotes",
+    "lead-recovery": "lead-recovery",
+    social: "social",
+    "website-builder": "website",
+    operations: "operations",
+    support: "support",
+    collections: "collections",
+    documents: "documents",
+    communications: "communications",
+  };
+
+  for (const [sidebarId, moduleId] of Object.entries(moduleIdMap)) {
+    if (!merged[sidebarId]?.hidden) {
+      const emphasis = getModuleEmphasis(moduleId, primaryMode);
+      if (emphasis === "hidden") {
+        merged[sidebarId] = { ...merged[sidebarId], hidden: true };
+      }
+    }
   }
 
   return merged;
