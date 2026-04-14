@@ -63,7 +63,7 @@ const ACTOR_ICONS: Record<string, React.ReactNode> = {
 // ── Demo data generator ──
 
 function generateDemoTrail(entityName: string): ProofEntry[] {
-  return [
+  const entries: ProofEntry[] = [
     { id: "p1", timestamp: "2025-06-15T10:30:00Z", action: "created", actor: { type: "user", name: "You" }, source: "manual_entry", receipt_hash: "0xa3f2...d819" },
     { id: "p2", timestamp: "2025-06-15T10:31:00Z", action: "verified", actor: { type: "system", name: "Import Validator" }, field: "email", source: "email_verification", confidence: 98, receipt_hash: "0xb7e1...4f22" },
     { id: "p3", timestamp: "2025-09-01T14:00:00Z", action: "updated", actor: { type: "user", name: "You" }, field: "lifecycle_stage", oldValue: "lead", newValue: "qualified", source: "manual_update" },
