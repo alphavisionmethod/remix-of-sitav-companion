@@ -1,72 +1,61 @@
 
 
-# What's Still Missing — Full Gap Analysis
+# Full Desktop Interactivity Audit & Fix Plan
 
-After reviewing the entire codebase across desktop and mobile, here are the remaining gaps:
+## Issues Found
 
-## 1. "What Matters Now" Widget Is Not Clickable
-`DesktopWhatMattersWidget` never received an `onLaunchApp` prop. Each domain card (Business, Finance, Concierge) inside it should click-to-launch its respective app, but currently does nothing.
+### Critical: Watchdog Crash Loop Spamming Console
+The kernel boot registers "compositor" and "wayland-server" as watchdog components, but their heartbeat interval (`setInterval` every 200ms) is getting cleared or not running. This creates an infinite crash-restart loop flooding the console with error logs every second. This noise makes debugging harder and may degrade performance.
 
-## 2. Mobile "More" Menu Is Just Settings — No Way to Reach Other Pages
-The "More" tab in `MobileTabBar` goes directly to `/mobile/settings`. There is no "More" hub page that links to Boardroom, Approvals, Alerts, Proof Log, Device Trust, Emergency Actions, Quick Capture, or Investment. Users on mobile have no way to reach these pages except by typing the URL.
+**Fix**: In `src/lib/nova-sdk/kernel/boot.ts`, increase the heartbeat thresholds for these virtual components (they don't correspond to real processes), or simply stop the watchdog from auto-starting for decorative kernel components that have no real restart logic.
 
-**Fix**: Create a `MobileMore.tsx` page with a grid/list of all secondary features, and route the "More" tab to it. Keep Settings as one item inside that page.
+### Issue 2: Widget Click Events Swallowed by DraggableWidget Drag
+`DraggableWidget` wraps every widget in a `motion.div` with `drag` enabled. When a user clicks a widget card (e.g., Business KPI to launch the Business app), the drag system can intercept the pointer event, especially on touch devices. The `dragListener={false}` setting helps, but the `onContextMenu` on the wrapper also removes widgets on right-click — easy to accidentally trigger.
 
-## 3. Missing Mobile Pages for Key Domains
-- **Investment** — no `/mobile/investment` page or route exists. Desktop has a full Investment Office app, but mobile users cannot access it.
-- **Files** — no `/mobile/files` page. Desktop has Finder but mobile has no equivalent.
+**Fix**: Add `onPointerDown={(e) => e.stopPropagation()}` to the children wrapper inside `DraggableWidget` so widget internal clicks don't trigger drag. Ensure only the grip handle initiates drag.
 
-## 4. Sign Out Button Does Nothing on Mobile
-`MobileSettings.tsx` renders a "Sign Out" `NavRow` but it has no `onClick` handler — clicking it does nothing.
+### Issue 3: DesktopLeftRail Not Rendered Anywhere
+`DesktopLeftRail` has a full app grid (Business, Finance, Concierge, Files, Boardroom, Trust) wired to `onLaunchApp`, but it's never mounted in `DesktopSurface` or `DesktopPage`. This is a wasted clickable surface.
 
-## 5. "What Matters Now" Widget Items Not Clickable on Desktop  
-Each domain summary card inside the widget should launch its corresponding app when clicked.
+**Fix**: Either render it in `DesktopSurface` as a persistent left sidebar (only on large screens), or remove the dead code. Rendering it adds another always-visible launch point.
 
-## 6. Mobile Route Map Incomplete
-`MOBILE_ROUTE_MAP` in `App.tsx` only covers `/desktop`, `/business`, `/money`, `/concierge`, `/boardroom`, `/settings`. Missing:
-- `/files` → `/mobile/files`
-- `/investment` → `/mobile/investment`
-- `/approvals` → `/mobile/approvals`
+### Issue 4: "Trust" App in LeftRail Has No Window Registration
+`DesktopLeftRail` includes `{ id: "trust" }` but `APP_REGISTRY` in `ShellWindowLayer` has no entry for "trust". Clicking it would show a placeholder "trust Environment Loading..." window that never loads.
+
+**Fix**: Map "trust" to the existing `SecurityCenterWindow` in the registry.
+
+### Issue 5: Quick Actions Widget Click Propagation
+The Quick Actions widget has `onPointerDown={(e) => e.stopPropagation()}` on each button, which is good. But the `DesktopWidgetCard` wrapper itself doesn't have an `onClick`, so the card-level click doesn't compete. This is fine — no fix needed.
+
+### Issue 6: ContinuityCard "Continue" Button Uses `navigate()` Not `onLaunchApp`
+The ContinuityCard in `DesktopSurface` navigates via React Router (`navigate("/business")`) instead of opening a windowed app via `onLaunchApp`. On desktop, this navigates away from the desktop OS entirely.
+
+**Fix**: Pass `onLaunchApp` to `ContinuityCard` and use it instead of `navigate`.
 
 ---
 
 ## Plan
 
-### Step 1: Create Mobile "More" Hub Page
-- New file: `src/pages/mobile/MobileMore.tsx`
-- Grid of links to: Boardroom, Approvals, Alerts, Proof Log, Investment, Files, Device Trust, Emergency, Settings, Quick Capture
-- Update `MobileTabBar` "More" path from `/mobile/settings` to `/mobile/more`
-- Add route in `MobileRoutes.tsx`
+### Step 1: Silence Watchdog Crash Loop
+In `src/lib/nova-sdk/kernel/boot.ts`, increase the heartbeat pump interval or make the watchdog `maxRestarts` higher with graceful silence after max. Better: just don't start the watchdog `check()` timer — it serves no functional purpose in this decorative kernel.
 
-### Step 2: Create Missing Mobile Pages
-- `src/pages/mobile/MobileInvestment.tsx` — portfolio summary, holdings, performance
-- `src/pages/mobile/MobileFiles.tsx` — recent files list, folders
-- Add routes for both in `MobileRoutes.tsx`
+### Step 2: Fix Widget Click vs Drag Conflict
+In `src/components/sita/shell/desktop/DraggableWidget.tsx`, wrap `{children}` in a `<div onPointerDown={e => e.stopPropagation()}>` so clicks within widgets don't get captured by the drag system.
 
-### Step 3: Wire Sign Out on Mobile
-- Import `useAuth` in `MobileSettings.tsx`
-- Add `signOut()` call to the Sign Out `NavRow`
+### Step 3: Render DesktopLeftRail on Desktop
+In `src/components/sita/shell/DesktopSurface.tsx`, add `<DesktopLeftRail onLaunchApp={onLaunchApp} />` as a persistent left sidebar on large screens, positioned so it doesn't overlap widgets.
 
-### Step 4: Make "What Matters Now" Widget Clickable
-- Add `onLaunchApp` prop to `DesktopWhatMattersWidget`
-- Each domain card clicks to launch its app (business, finance, concierge)
-- Pass `onLaunchApp` from `renderWidget` in `DesktopSurface.tsx`
+### Step 4: Register "trust" App
+In `src/components/sita/shell/ShellWindowLayer.tsx`, add `trust: { name: "Security Center", component: <SecurityCenterWindow />, ... }` to `APP_REGISTRY`.
 
-### Step 5: Expand Mobile Route Map
-- Add `/files`, `/investment`, `/approvals` entries to `MOBILE_ROUTE_MAP` in `App.tsx`
-
-### Files to Create
-- `src/pages/mobile/MobileMore.tsx`
-- `src/pages/mobile/MobileInvestment.tsx`
-- `src/pages/mobile/MobileFiles.tsx`
+### Step 5: Fix ContinuityCard to Use onLaunchApp
+In `src/components/sita/shell/DesktopSurface.tsx`, pass `onLaunchApp` to `ContinuityCard` and use it for the "Continue" button instead of `navigate()`.
 
 ### Files to Modify
-- `src/components/mobile/MobileTabBar.tsx` — point More to `/mobile/more`
-- `src/routes/MobileRoutes.tsx` — add 3 new routes
-- `src/pages/mobile/MobileSettings.tsx` — wire sign out
-- `src/components/sita/shell/desktop/DesktopWhatMattersWidget.tsx` — add onLaunchApp
-- `src/components/sita/shell/DesktopSurface.tsx` — pass onLaunchApp to WhatMatters
-- `src/App.tsx` — expand MOBILE_ROUTE_MAP
+- `src/lib/nova-sdk/kernel/boot.ts` — silence watchdog
+- `src/components/sita/shell/desktop/DraggableWidget.tsx` — fix click vs drag
+- `src/components/sita/shell/DesktopSurface.tsx` — add LeftRail, fix ContinuityCard
+- `src/components/sita/shell/ShellWindowLayer.tsx` — add "trust" alias
 
-No database changes.
+No database changes. No new dependencies.
 
