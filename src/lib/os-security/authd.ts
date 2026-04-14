@@ -17,9 +17,10 @@ import {
 
 async function deriveKey(password: string, salt: Uint8Array): Promise<ArrayBuffer> {
   const enc = new TextEncoder();
-  const keyMaterial = await crypto.subtle.importKey("raw", enc.encode(password), "PBKDF2", false, ["deriveBits"]);
+  const rawKey = enc.encode(password);
+  const keyMaterial = await crypto.subtle.importKey("raw", rawKey.buffer as ArrayBuffer, "PBKDF2", false, ["deriveBits"]);
   return crypto.subtle.deriveBits(
-    { name: "PBKDF2", salt, iterations: 100000, hash: "SHA-256" },
+    { name: "PBKDF2", salt: salt.buffer as ArrayBuffer, iterations: 100000, hash: "SHA-256" },
     keyMaterial,
     256
   );
