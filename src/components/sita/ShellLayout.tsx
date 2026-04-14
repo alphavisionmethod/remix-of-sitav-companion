@@ -214,8 +214,8 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
       {/* Interaction Tracker */}
       <InteractionTracker />
 
-      {/* Mobile Bottom Nav */}
-      <MobileBottomNav />
+      {/* Mobile Bottom Nav — only on non-mobile-route pages */}
+      {!location.pathname.startsWith("/mobile") && <MobileBottomNav />}
     </SidebarProvider>
     </WindowManagerContext.Provider>
     </OSWindowProvider>

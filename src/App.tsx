@@ -132,10 +132,23 @@ const PublicRoute = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
 };
 
+const useIsMobileViewport = () => {
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  useEffect(() => {
+    const mql = window.matchMedia("(max-width: 767px)");
+    const handler = () => setIsMobile(mql.matches);
+    mql.addEventListener("change", handler);
+    return () => mql.removeEventListener("change", handler);
+  }, []);
+  return isMobile;
+};
+
 const HomeRoute = () => {
   const { user, loading } = useAuth();
+  const isMobile = useIsMobileViewport();
   if (loading) return <div className="min-h-screen flex items-center justify-center bg-background" role="status" aria-label="Loading"><div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" /></div>;
   if (!user) return <LandingPage />;
+  if (isMobile) return <Navigate to="/mobile" replace />;
   return <Navigate to="/desktop" replace />;
 };
 
