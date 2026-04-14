@@ -87,6 +87,7 @@ import DealRoom from "@/pages/business/DealRoom";
 import StrategicAccountRoom from "@/pages/business/StrategicAccountRoom";
 import RelationshipDossier from "@/pages/business/RelationshipDossier";
 import BackgroundTaskCenter from "@/pages/business/BackgroundTaskCenter";
+import BusinessAdvisorBoardPage from "@/pages/business/BusinessAdvisorBoardPage";
 import CustomerDetail from "@/pages/CustomerDetail";
 
 // ── Sidebar structure ─────────────────────────────────────────
@@ -253,6 +254,7 @@ const pages: Record<string, React.ComponentType> = {
   "strategic-accounts": StrategicAccountRoom,
   "relationship-dossier": RelationshipDossier,
   "background-tasks": BackgroundTaskCenter,
+  "advisor-board": BusinessAdvisorBoardPage,
 };
 
 // ── Helper components ─────────────────────────────────────────
