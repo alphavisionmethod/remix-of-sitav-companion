@@ -215,6 +215,8 @@ const pages: Record<SubPage, React.ComponentType> = {
   "crm-notes": CRMNotes,
   "crm-segments": CRMSegments,
   "crm-automations": CRMAutomations,
+  "crm-import": CRMImportCenter,
+  "crm-duplicates": CRMDuplicates,
 };
 
 const BusinessCenter = () => {
