@@ -1,4 +1,3 @@
-import { useNavigate, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import {
   BriefcaseBusiness, Wallet, HeartHandshake,
@@ -6,50 +5,46 @@ import {
 } from "lucide-react";
 
 const apps = [
-  { id: "business", path: "/business", name: "Business", accent: "from-violet-500 to-indigo-500", icon: BriefcaseBusiness },
-  { id: "finance", path: "/finance", name: "Finance", accent: "from-emerald-500 to-teal-500", icon: Wallet },
-  { id: "concierge", path: "/concierge", name: "Concierge", accent: "from-amber-400 to-rose-400", icon: HeartHandshake },
-  { id: "files", path: "/files", name: "Files", accent: "from-slate-400 to-slate-600", icon: FolderOpen },
-  { id: "boardroom", path: "/boardroom", name: "Boardroom", accent: "from-fuchsia-500 to-violet-500", icon: Presentation },
-  { id: "trust", path: "/trust", name: "Trust", accent: "from-sky-400 to-cyan-500", icon: ShieldCheck },
+  { id: "business", name: "Business", accent: "from-violet-500 to-indigo-500", icon: BriefcaseBusiness },
+  { id: "finance", name: "Finance", accent: "from-emerald-500 to-teal-500", icon: Wallet },
+  { id: "concierge", name: "Concierge", accent: "from-amber-400 to-rose-400", icon: HeartHandshake },
+  { id: "finder", name: "Files", accent: "from-slate-400 to-slate-600", icon: FolderOpen },
+  { id: "boardroom", name: "Boardroom", accent: "from-fuchsia-500 to-violet-500", icon: Presentation },
+  { id: "trust", name: "Trust", accent: "from-sky-400 to-cyan-500", icon: ShieldCheck },
 ];
 
-export function DesktopLeftRail() {
-  const navigate = useNavigate();
-  const location = useLocation();
+interface DesktopLeftRailProps {
+  onLaunchApp?: (appId: string) => void;
+}
 
+export function DesktopLeftRail({ onLaunchApp }: DesktopLeftRailProps) {
   return (
     <div className="hidden w-[88px] flex-col gap-4 lg:flex">
       <div className="rounded-[28px] border border-white/10 bg-white/[0.08] p-3 backdrop-blur-2xl shadow-[0_18px_50px_rgba(0,0,0,0.22)]">
         <div className="mb-3 text-[10px] uppercase tracking-[0.2em] text-white/45">Apps</div>
         <div className="flex flex-col gap-3">
-          {apps.map((app) => {
-            const isActive = location.pathname.startsWith(app.path);
-            return (
-              <button
-                key={app.id}
-                onClick={() => navigate(app.path)}
-                title={app.name}
+          {apps.map((app) => (
+            <button
+              key={app.id}
+              onClick={() => onLaunchApp?.(app.id)}
+              title={app.name}
+              className={cn(
+                "group relative flex h-14 w-14 items-center justify-center rounded-[18px] border transition",
+                "border-white/[0.08] bg-white/[0.06] hover:bg-white/10"
+              )}
+            >
+              <div
                 className={cn(
-                  "group relative flex h-14 w-14 items-center justify-center rounded-[18px] border transition",
-                  isActive
-                    ? "border-white/20 bg-white/[0.16]"
-                    : "border-white/[0.08] bg-white/[0.06] hover:bg-white/10"
+                  "absolute inset-0 rounded-[18px] bg-gradient-to-br transition",
+                  app.accent,
+                  "opacity-0 group-hover:opacity-20"
                 )}
-              >
-                <div
-                  className={cn(
-                    "absolute inset-0 rounded-[18px] bg-gradient-to-br transition",
-                    app.accent,
-                    isActive ? "opacity-30" : "opacity-0 group-hover:opacity-20"
-                  )}
-                />
-                <div className="relative text-white/90">
-                  <app.icon className="h-5 w-5" />
-                </div>
-              </button>
-            );
-          })}
+              />
+              <div className="relative text-white/90">
+                <app.icon className="h-5 w-5" />
+              </div>
+            </button>
+          ))}
         </div>
       </div>
     </div>

@@ -94,7 +94,29 @@ const APP_REGISTRY: Record<string, Omit<AppLaunchConfig, "id">> = {
   concierge: { name: "Concierge", component: <ConciergeAppShell />, width: 1200, position: { x: 160, y: 130 } },
   investment: { name: "Investment Office", component: <InvestmentAppShell />, width: 1200, position: { x: 100, y: 70 } },
   boardroom: { name: "Boardroom", component: <BoardroomAppShell />, width: 1200, position: { x: 140, y: 110 } },
+  // ── Catalog ID aliases → same window components ──
+  "sita-business-center": { name: "Business OS", component: <BusinessAppShell />, width: 1200, position: { x: 120, y: 90 } },
+  "sita-money-center": { name: "Finance OS", component: <FinanceAppShell />, width: 1200, position: { x: 80, y: 50 } },
+  "sita-concierge": { name: "Concierge", component: <ConciergeAppShell />, width: 1200, position: { x: 160, y: 130 } },
+  "sita-boardroom": { name: "Boardroom", component: <BoardroomAppShell />, width: 1200, position: { x: 140, y: 110 } },
+  "sita-investment-office": { name: "Investment Office", component: <InvestmentAppShell />, width: 1200, position: { x: 100, y: 70 } },
 };
+
+// Canonical mapping: collapse catalog aliases to a single window ID
+const CANONICAL_WINDOW_ID: Record<string, string> = {
+  "sita-business-center": "business",
+  "sita-money-center": "finance",
+  "sita-concierge": "concierge",
+  "sita-boardroom": "boardroom",
+  "sita-investment-office": "investment",
+  "money": "finance",
+  "files-app": "finder",
+  "settings-app": "settings",
+};
+
+function resolveWindowId(appId: string): string {
+  return CANONICAL_WINDOW_ID[appId] ?? appId;
+}
 
 export function useWindowLauncher(wm: WindowManager) {
   const { apps } = useAppPlatform();
