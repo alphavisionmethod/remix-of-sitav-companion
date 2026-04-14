@@ -1,10 +1,13 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { Wifi, ShieldCheck, MoonStar, Battery, Bluetooth } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/hooks/use-toast";
 import { SystemWifiPanel } from "./SystemWifiPanel";
 import { SystemBluetoothPanel } from "./SystemBluetoothPanel";
 import { SystemBatteryPanel } from "./SystemBatteryPanel";
+import { getControlCenterDaemon } from "@/lib/os-security/controlcenterd";
+import { getSessionDaemon } from "@/lib/os-security/sessiond";
+import { isOSSecurityBooted } from "@/lib/os-security";
 
 interface DesktopSystemWidgetProps {
   onLaunchApp?: (appId: string) => void;
@@ -47,31 +50,66 @@ export function DesktopSystemWidget({ onLaunchApp }: DesktopSystemWidgetProps) {
     return () => document.removeEventListener("pointerdown", handler);
   }, [openPanel]);
 
+  // Route toggle through controlcenterd when booted
+  const executeSecureToggle = useCallback(async (action: string, newState: boolean): Promise<boolean> => {
+    if (!isOSSecurityBooted()) return true; // fallback: allow
+    try {
+      const controlcenterd = getControlCenterDaemon();
+      const sessiond = getSessionDaemon();
+      const session = sessiond.getAllSessions()[0];
+      if (!session) return true;
+
+      const result = await controlcenterd.executeCommand({
+        commandId: crypto.randomUUID(),
+        callerUserId: session.userId,
+        callerSessionId: session.sessionId,
+        callerService: "desktop-system-widget",
+        action,
+        payload: { enabled: newState },
+        timestamp: Date.now(),
+      });
+
+      if (result.status === "denied") {
+        toast({ title: "Access Denied", description: result.error || "Insufficient privileges", variant: "destructive" });
+        return false;
+      }
+      if (result.status === "elevation-required") {
+        toast({ title: "Admin Required", description: "This action requires administrator approval" });
+        return false;
+      }
+      return true;
+    } catch {
+      return true; // fallback: allow
+    }
+  }, [toast]);
+
   const handleClick = (t: Toggle) => {
     const isCurrentlyOn = active[t.id];
 
     // If OFF → turn ON only (don't open panel yet)
     if (!isCurrentlyOn) {
-      setActive(prev => ({ ...prev, [t.id]: true }));
+      const actionMap: Record<string, string> = { wifi: "wifi.toggle", bluetooth: "bluetooth.toggle", shield: "shield.toggle", battery: "power.profile.set" };
+      const action = actionMap[t.id];
+      if (action) {
+        executeSecureToggle(action, true).then(allowed => {
+          if (allowed) setActive(prev => ({ ...prev, [t.id]: true }));
+        });
+      } else {
+        setActive(prev => ({ ...prev, [t.id]: true }));
+      }
 
       if (t.id === "calm") {
-        toast({
-          title: "🌙 Focus Mode On",
-          description: "Notifications silenced",
-        });
+        setActive(prev => ({ ...prev, [t.id]: true }));
+        toast({ title: "🌙 Focus Mode On", description: "Notifications silenced" });
       }
       setOpenPanel(null);
       return;
     }
 
     // Already ON → second click behavior
-    // Calm: toggle OFF
     if (t.id === "calm") {
       setActive(prev => ({ ...prev, [t.id]: false }));
-      toast({
-        title: "☀️ Focus Mode Off",
-        description: "Notifications restored",
-      });
+      toast({ title: "☀️ Focus Mode Off", description: "Notifications restored" });
       setOpenPanel(null);
       return;
     }

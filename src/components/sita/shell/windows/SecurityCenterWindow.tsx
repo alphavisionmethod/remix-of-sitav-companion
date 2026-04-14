@@ -5,12 +5,13 @@
 
 import { useState, useEffect } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Shield, Lock, Eye, HardDrive, CheckCircle, XCircle, AlertTriangle, Activity, Bug, Globe, MapPin, Loader2 } from "lucide-react";
+import { Shield, Lock, Eye, HardDrive, CheckCircle, XCircle, AlertTriangle, Activity, Bug, Globe, MapPin, Loader2, User } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import { AppLoader } from "@/lib/nova-sdk/runtime/loader";
 import { PermissionMonitor } from "@/lib/nova-sdk/services/permission-monitor";
 import { FileSystemService } from "@/lib/nova-sdk/services/filesystem-service";
+import { SecurityAccountsPanel } from "./SecurityAccountsPanel";
 
 // ── Tab 1: Sandbox Monitor ──
 
@@ -687,6 +688,9 @@ export function SecurityCenterWindow() {
           <TabsTrigger value="filesystem" className="text-[11px] gap-1">
             <HardDrive className="w-3 h-3" /> FS
           </TabsTrigger>
+          <TabsTrigger value="accounts" className="text-[11px] gap-1">
+            <User className="w-3 h-3" /> Accounts
+          </TabsTrigger>
         </TabsList>
 
         <div className="flex-1 overflow-y-auto px-4 py-3">
@@ -696,6 +700,7 @@ export function SecurityCenterWindow() {
           <TabsContent value="signing" className="mt-0"><CodeSigningTab /></TabsContent>
           <TabsContent value="permissions" className="mt-0"><PermissionsTab /></TabsContent>
           <TabsContent value="filesystem" className="mt-0"><FileSystemTab /></TabsContent>
+          <TabsContent value="accounts" className="mt-0"><SecurityAccountsPanel /></TabsContent>
         </div>
       </Tabs>
     </div>

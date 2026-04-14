@@ -41,6 +41,8 @@ import { lazy } from "react";
 import { useWindowLauncher } from "./shell/ShellWindowLayer";
 import { ShellAccessoryLayer } from "./shell/ShellAccessoryLayer";
 import { ShellLiveLayer } from "./shell/ShellLiveLayer";
+import { SecurePromptProvider } from "./shell/SecurePromptProvider";
+import { SecurePrompt } from "./shell/SecurePrompt";
 
 const SystemMenuBarLazy = lazy(() => import("./shell/SystemMenuBar").then(m => ({ default: m.SystemMenuBar })));
 
@@ -192,6 +194,7 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
   return (
     <OSWindowProvider>
     <WindowManagerContext.Provider value={wm}>
+    <SecurePromptProvider>
     <SidebarProvider>
       <SkipToContent />
       <RouteAnnouncer />
@@ -255,7 +258,11 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
 
       {/* Mobile Bottom Nav — only on non-mobile-route pages */}
       {!location.pathname.startsWith("/mobile") && <MobileBottomNav />}
+
+      {/* Secure Elevation Prompt (trusted path) */}
+      <SecurePrompt />
     </SidebarProvider>
+    </SecurePromptProvider>
     </WindowManagerContext.Provider>
     </OSWindowProvider>
   );
