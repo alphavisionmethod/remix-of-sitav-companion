@@ -14,6 +14,7 @@ import { FinanceNavigationContext } from "@/contexts/FinanceNavigationContext";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getFinanceAdaptation } from "@/lib/engines/cross-os-integration";
 import { CrossOSLinksPanel } from "@/components/sita/cross-os/CrossOSLinksPanel";
+import { CrossDomainIntelligenceBridge } from "@/components/sita/cross-os/CrossDomainIntelligenceBridge";
 
 // ── Page imports ────────────────────────────────────────────
 import MoneyOverview from "@/pages/money/MoneyOverview";

@@ -31,6 +31,7 @@ import AdaptiveOnboardingWizard from "@/components/business/adaptive/AdaptiveOnb
 import AdaptiveWorkflowTemplates from "@/components/business/adaptive/AdaptiveWorkflowTemplates";
 import AdaptiveBoardroomAgenda from "@/components/business/adaptive/AdaptiveBoardroomAgenda";
 import { CrossOSLinksPanel } from "@/components/sita/cross-os/CrossOSLinksPanel";
+import { CrossDomainIntelligenceBridge } from "@/components/sita/cross-os/CrossDomainIntelligenceBridge";
 
 // ── Page imports ──────────────────────────────────────────────
 import BusinessOverview from "@/pages/business/BusinessOverview";

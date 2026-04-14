@@ -21,6 +21,7 @@ import { ConciergeNavigationContext } from "@/contexts/ConciergeNavigationContex
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getConciergeAdaptation } from "@/lib/engines/cross-os-integration";
 import { CrossOSLinksPanel } from "@/components/sita/cross-os/CrossOSLinksPanel";
+import { CrossDomainIntelligenceBridge } from "@/components/sita/cross-os/CrossDomainIntelligenceBridge";
 
 // Lazy-load all 19 page components
 const ConciergeOverview = lazy(() => import("@/pages/concierge/ConciergeOverview"));
