@@ -1,204 +1,171 @@
 
 
-# TPM / Secure Hardware, Storage Schema, IPC Contracts, Trusted Elevation, Audit & Security Foundation
+# Advanced Network UX, Battery Intelligence, Automation & System Intelligence
 
 ## Current State
 
-The OS security subsystem already has substantial infrastructure across 8 files (~3,500 lines):
-- **authd** (504L): PBKDF2+ECDSA, session creation, elevation tokens, rate limiting
-- **sessiond** (590L): 10-state lifecycle, token issuer, fast switch, suspend/resume, idle→screensaver→lock
-- **secretsd** (709L): AES-256-GCM, HKDF, key hierarchy (master→KEK→DEK), TPM abstraction, versioning, policy bindings, deletion queue, secure buffer
-- **controlcenterd** (336L): IPC routing, policy preflight, elevation orchestration
-- **policyd** (326L): RBAC + capabilities, environmental context, decision logging
-- **auditd** (255L): Hash-chained append-only audit log
-- **types.ts** (518L): Full type contracts, 22-rule lockscreen matrix, 8 policy bindings
-- **flows** (339L): 10 end-to-end flows wired
+**Existing infrastructure:**
+- Basic WiFi panel (190L): network list, password prompt, connect via `wifiConnectFlow`
+- Basic Bluetooth panel (157L): device list, pair/connect via `controlcenterd`
+- Basic Battery panel (92L): level gauge, 3 power modes
+- `NetworkUtility.tsx` (133L): static connector health + diagnostics page
+- OS security flows (339L): WiFi connect, VPN cert install, firewall disable
+- OS subsystem flows (308L): policy-evaluated flows for school WiFi, public WiFi auto-VPN, etc.
+- Recovery engine (194L): degraded mode management
 
-## What Needs to Be Added
+**What's missing (from sections 16-34):**
+- No captive portal detection, wrong password recovery, weak signal suggestions, hidden SSID, enterprise auth, static IP, custom DNS, metered mode, hotspot/tethering, airplane mode
+- No BT battery display, audio route switching, codec selection, BLE privacy, stale cleanup, reconnection policy
+- No battery health estimation, thermal pressure, charger detection, optimized charging, app drain attribution, suspend/resume tracking
+- No `automationd` rules engine
+- No system intelligence/recommendation engine
+- No self-repair/diagnostics engine
+- No full settings/search system
+- No HAL abstraction
 
-### 1. Enhanced TPM / Secure Hardware Integration
-- Current TPM abstraction is minimal (detect, seal/unseal stubs). Need:
-  - Full `DeviceSecurityPosture` model (secure_boot, measured_boot, attestation, degraded reasons)
-  - Boot integrity state reporting
-  - PCR binding simulation
-  - Attestation quote generation
-  - Hardware RNG abstraction
-  - Non-exportable key slot tracking
-  - Posture-aware policy integration (policyd checks device posture)
-  - Fallback rules with degraded-security signaling
+## Approach — 4 Batches (Feasible Scope)
 
-### 2. Structured IPC Contract System
-- Current IPC is ad-hoc method calls. Need:
-  - Formal `IPCContract` type with request/response/error schemas
-  - Caller validation rules per method
-  - Idempotency markers
-  - Timeout/retry behavior
-  - Complete contract registry for all ~20 IPC methods
-  - `promptd` service for trusted secure prompts
-
-### 3. Enhanced Audit Layer
-- Current auditd has hash-chaining but lacks:
-  - `device_posture_hash` and `previous_event_hash` fields on events
-  - Log sealing checkpoints
-  - Export/redaction tooling
-  - Retention policy enforcement
-  - Severity-filtered querying
-
-### 4. Service Identity Registry Enhancement
-- Current service registry is a simple map. Need:
-  - `signing_identity`, `version`, `status`, `policy_profile_ref`, `last_verified_at` fields
-  - Verified service identity with signature validation
-  - Service-to-service auth enforcement
-
-### 5. Trusted Prompt / promptd Service
-- No dedicated prompt daemon exists. Need:
-  - `promptd` that manages secure elevation prompts
-  - Prompt states: `idle → presenting → awaiting_input → processing → resolved → timed_out`
-  - Non-spoofable prompt with risk-aware messaging
-  - "Remember approval for X minutes" policy support
-  - Accessibility labels and remote session restrictions
-
-### 6. Permission/Capability Matrix (Complete)
-- Extend ACTION_AUTHORIZATION_TABLE with:
-  - `trustedPromptRequired` field
-  - `policyOverridable` field
-  - Missing actions (new wifi credential save, service registration, remote session)
-
-### 7. Failure Modes & Recovery Engine
-- No structured failure handling. Need:
-  - `FailureMode` type with user message, audit behavior, retry policy, fallback path
-  - Recovery flows for each failure scenario
-  - Degraded mode definitions
-
-### 8. Beautiful Admin Dashboard — SEC02 Security Foundation
-- New multi-tab dashboard with visual richness (not just text):
-  - **TPM & Device Posture** tab: visual device security shield with posture indicators, hardware status cards with icons
-  - **IPC Contracts** tab: interactive contract explorer with request/response schemas, flow diagrams
-  - **Audit Chain** tab: timeline visualization of audit events, hash chain integrity indicator, severity heatmap
-  - **Service Identities** tab: service registry with verification badges, trust graph
-  - **Trusted Prompts** tab: prompt simulator, prompt state machine visualization
-  - **Threat Model** tab: threat cards with mitigation status, risk radar chart
-  - **Capability Matrix** tab: interactive permission grid with color-coded cells
+Given codebase constraints (React SPA, not a real OS kernel), we implement these as **realistic simulated daemons + beautiful premium UI dashboards**. This matches the existing pattern (authd, sessiond, secretsd are all TypeScript simulations).
 
 ---
 
-## Implementation Plan — 4 Batches
+### Batch 1: Core Daemons — wifid, btd, powerd, automationd (~500L)
 
-### Batch 1: Enhanced Types + TPM + IPC Contracts (~400 lines)
+**Create `src/lib/os-services/wifid.ts`** (~150L):
+- `WifiDaemon` class with full state model: `WifiConnectivityState` (Offline/Limited/CaptivePortal/Online)
+- Captive portal detection + state tracking
+- Network list with RSSI, security type, frequency band, hidden SSID support
+- Enterprise auth model (WPA2/3-Enterprise, certs, anonymous identity)
+- Per-network settings: static IP, custom DNS, metered mode
+- Hotspot/tethering config model
+- Airplane mode coordination
+- Wrong password error classification + retry state
+- Weak signal detection + roaming suggestions
 
-**Extend `src/lib/os-security/types.ts`** — Add:
-- `DeviceSecurityPosture`: secure_hw_present, secure_boot_enabled, measured_boot_ok, attestation_supported, system/user_keyring_hardware_backed, degraded_reason, posture_level, last_verified_at
-- `IPCContract`: method name, request_schema, response_schema, error_codes, allowed_callers, requires_session_token, requires_elevation, idempotent, timeout_ms, retry_policy, audit_events
-- `IPC_CONTRACT_REGISTRY`: Full registry for ~20 methods (session.login, session.lock, auth.verify, auth.begin_elevation, secrets.put, secrets.get_handle, wifi.connect, shield.firewall.disable, cert.install_root, etc.)
-- `PromptState`: idle, presenting, awaiting_input, processing, resolved, timed_out, cancelled
-- `TrustedPromptConfig`: requester, action, risk_level, messaging, supported_auth_methods, timeout_ms, remember_allowed, screen_reader_labels
-- `FailureMode`: failure_id, category, user_message, audit_behavior, retry_policy, fallback_path, degraded_mode, recovery_needed
-- `FAILURE_MODE_REGISTRY`: ~15 failure modes (invalid token, corrupted secret, TPM state change, missing audit backend, etc.)
-- Extended `ServiceIdentity`: signing_identity, version, status, policy_profile_ref, last_verified_at
-- Extended `ActionPolicy`: trusted_prompt_required, policy_overridable fields
-- `ThreatEntry`: threat_id, description, mitigation, residual_risk, monitoring_signal, severity
+**Create `src/lib/os-services/btd.ts`** (~120L):
+- `BluetoothDaemon` class
+- Device model with battery level (headset, earbuds L/R/case, keyboard)
+- Audio route management (output/input device, active role, preferred route)
+- Codec selection (AAC, SBC, aptX, LDAC)
+- BLE privacy (rotating addresses)
+- Stale device cleanup (last seen tracking)
+- Per-device reconnection policy (always/on-demand/never)
+- Forgotten device removal (disconnect + unpair + revoke + clear cache)
 
-**Enhance TPM in `src/lib/os-security/secretsd.ts`**:
-- `DeviceSecurityPostureManager` class: compute and cache posture, expose to policyd
-- PCR binding simulation with value tracking
-- Attestation quote generation (simulated)
-- Hardware RNG wrapper
-- Non-exportable key slot registry
-- `getDevicePosture()` method on SecretsDaemon
+**Create `src/lib/os-services/powerd.ts`** (~130L):
+- `PowerDaemon` class
+- Battery health: design capacity vs full charge, cycle count, aging trend, temp stress
+- Thermal pressure states: nominal/warm/hot/throttling/critical
+- Charger detection: wattage, type (USB-C PD, wireless, etc.)
+- Optimized charging: hold at 80%, learned schedule, predicted unplug
+- App drain attribution model (CPU, network, wakeups, background jobs)
+- Suspend/resume stability tracker
+- 4 power profiles: Saver, Balanced, Performance, Quiet
 
-### Batch 2: promptd + Enhanced Audit + Service Identity (~350 lines)
+**Create `src/lib/os-services/automationd.ts`** (~100L):
+- `AutomationDaemon` class
+- Rule model: condition → action with policy-aware safeguards
+- Built-in rules: public WiFi → VPN, low battery → saver, presentation → mute notifications, headphones → audio panel, threat → isolate
+- Event bus simulation
+- Rule execution audit trail
+- Conflict resolution
 
-**Create `src/lib/os-security/promptd.ts`** — Trusted Prompt Daemon:
-- `PromptDaemon` class managing prompt lifecycle
-- Prompt queue with priority
-- State machine (idle → presenting → awaiting → resolved/timed_out)
-- Risk-aware message generation (maps action to human-friendly explanation)
-- "Remember for X minutes" with policy check
-- Rate limiting (prevent prompt flooding)
-- Remote session restrictions
-- Accessibility metadata (screen reader labels, high-contrast mode support)
-- Integration with controlcenterd (replaces raw elevation callback)
-- Prompt history for audit
+### Batch 2: Enhanced System Panels — WiFi, Bluetooth, Battery (~600L)
 
-**Enhance `src/lib/os-security/auditd.ts`**:
-- Add `device_posture_hash`, `elevation_used`, `auth_method_used`, `result` fields to events
-- Log sealing: periodic checkpoints that summarize and seal event batches
-- `exportEvents()` with privacy-aware redaction (strip user PII, keep structure)
-- `getChainIntegrity()`: verify full hash chain, return integrity report
-- Retention policy: configurable max age, auto-archive old events
-- Severity-filtered query methods
+**Rewrite `SystemWifiPanel.tsx`** (~200L):
+- Captive portal banner with "Sign in required" + open browser action
+- Wrong password UI: "Password may be incorrect" with Retry/Forget/Show/Troubleshoot
+- Weak signal indicator with "Switch to stronger AP?" suggestion
+- Hidden network "Join Other" option
+- Per-network settings drawer: static IP, DNS, metered toggle
+- Hotspot toggle with SSID/password config
+- Airplane mode indicator
+- Enterprise auth fields when selecting WPA-Enterprise networks
+- Connection state badges (Online/Limited/CaptivePortal/AuthFailed)
+- Visual signal strength bars (not just percentage)
 
-**Enhance service identity in `src/lib/os-security/policyd.ts`**:
-- Extended `ServiceIdentity` with verification and status tracking
-- `verifyServiceIdentity()` with signature check
-- Service-to-service authorization validation
-- Policy profile references per service
+**Rewrite `SystemBluetoothPanel.tsx`** (~200L):
+- Battery level display per accessory (earbuds L/R/case, keyboard, mouse)
+- Audio route section: current output/input, switch button
+- Codec indicator (AAC/SBC/aptX)
+- "Clean up old devices" action
+- Per-device menu: Forget, Reconnection policy, Trust level
+- BLE privacy indicator
+- Stale device dimming (not seen in 7+ days)
 
-### Batch 3: Integration Flows + Failure Recovery (~250 lines)
+**Rewrite `SystemBatteryPanel.tsx`** (~200L):
+- Battery health card: capacity %, cycle count, health rating (Good/Fair/Poor)
+- Thermal status with color-coded indicator
+- Charger info: wattage, type, slow charger warning
+- Optimized charging toggle with schedule visualization
+- Top battery consumers list (per-app with CPU/network/wakeup bars)
+- Time remaining estimate with confidence range
+- Profile selector with visual tuning sliders
+- Suspend/resume stability indicator
 
-**Extend `src/lib/os-security/flows/index.ts`** — Add:
-- Full WiFi connect flow with trusted prompt path
-- VPN root cert import flow with validation, non-exportable key, trust store update
-- Firewall disable with single-use token, user-safe denial explanation
-- Session unlock via trusted compositor path
-- VPN private key usage with operation-specific handle and service binding
-- Each flow now includes: posture check, prompt via promptd, structured error handling, recovery path
+### Batch 3: System Intelligence Dashboard (~500L)
 
-**Extend `src/lib/os-security/controlcenterd.ts`**:
-- Wire promptd as elevation handler (replace raw callback)
-- Add posture-aware command validation
-- Service identity verification before dispatch
-- Structured failure responses with recovery hints
+**Create `src/pages/admin/SYS01SystemIntelligence.tsx`** — 6-tab premium dashboard:
 
-**Create `src/lib/os-security/recovery.ts`** — Recovery Engine:
-- `RecoveryEngine` class
-- Handle failure modes: expired tokens, corrupted secret metadata, TPM state change, partial boot
-- Degraded mode management with user-visible posture
-- Safe defaults on policy load failure
-- Service startup dependency order definition
+- **Tab 1 — Network Intelligence**: Full WiFi state visualization, captive portal status, signal heatmap, DNS leak indicator, metered network list, auto-VPN trigger history. Visual network topology diagram.
 
-### Batch 4: SEC02 Security Foundation Dashboard (~600 lines)
+- **Tab 2 — Bluetooth Intelligence**: Device fleet with battery gauges, audio route graph, codec quality indicator, stale device list, reconnection policy grid. Accessory timeline showing connect/disconnect history.
 
-**Create `src/pages/admin/SEC02SecurityFoundation.tsx`** — Beautiful multi-tab dashboard:
+- **Tab 3 — Power Intelligence**: Battery health curve, thermal timeline, charge cycle graph, app drain leaderboard, optimized charging schedule, profile comparison chart. Visual thermal pressure gauge.
 
-- **Tab 1 — Device Security Posture**: Large visual shield icon showing overall posture (green/amber/red). Cards for TPM status, secure boot, measured boot, attestation — each with icon, status badge, and last-checked timestamp. Posture history sparkline.
+- **Tab 4 — Automation Rules**: Active rules list with condition → action visualization, execution history timeline, conflict detector, rule builder preview. Color-coded by domain (network=blue, power=amber, security=red).
 
-- **Tab 2 — IPC Contract Explorer**: Searchable list of all IPC methods. Click to expand: request schema, response schema, error codes, caller validation rules, timeout behavior. Visual flow diagram connecting UI → controlcenterd → service chain.
+- **Tab 5 — Recommendations**: Active system intelligence suggestions with dismiss/accept/snooze. "You joined café WiFi — Shield secured your traffic", "Battery wear increasing — enable optimized charging?", "Bluetooth unused 7 days — turn off?". Each card shows reasoning and confidence.
 
-- **Tab 3 — Audit Chain**: Timeline visualization with colored severity dots. Hash chain integrity bar (verified/broken). Recent events table with actor, action, decision, severity. Export button. Sealing checkpoint markers on timeline.
+- **Tab 6 — Diagnostics & Self-Repair**: One-click fix actions (reset network stack, flush DNS, restart Bluetooth, rebuild firewall, verify VPN). Diagnostic test runner with results. System health summary. HAL capability report.
 
-- **Tab 4 — Service Identities**: Cards for each registered service with verification badge (green check or warning). Shows allowed actions, secret scopes, last verified timestamp. Trust relationship lines between services.
+### Batch 4: Full Network Settings Page + Search + Help (~400L)
 
-- **Tab 5 — Trusted Prompts**: Live prompt queue status. Prompt history with outcomes (approved/denied/timed-out). Prompt simulator for testing. State machine diagram showing prompt lifecycle.
+**Rewrite `src/pages/NetworkUtility.tsx`** as a comprehensive Network & Connectivity Center (~250L):
+- WiFi section: current connection details, saved networks, advanced settings
+- Bluetooth section: paired devices, audio settings, battery overview
+- Shield section: firewall status, VPN status, DNS privacy
+- Connectivity diagnostics with live test results
+- Network history timeline
+- Per-app network usage
+- Beautiful glassmorphic cards matching OS design language
 
-- **Tab 6 — Threat Model**: Threat cards arranged in severity grid. Each card shows threat, mitigation, residual risk, monitoring signal. Color-coded by severity. Overall threat coverage percentage.
+**Create `src/lib/os-services/search-indexer.ts`** (~80L):
+- Settings registry with deep-link routing
+- Searchable system terms (vpn, battery health, firewall, connect headphones)
+- Intent/action registry mapping search queries to system actions
 
-- **Tab 7 — Capability Matrix**: Interactive grid (actions × requirements). Color-coded cells: green (allowed), red (denied), amber (elevation). Filterable by role, severity, prompt requirement.
+**Create `src/lib/os-services/help-engine.ts`** (~70L):
+- Help content registry with explainers per system area
+- Guided troubleshooting flows
+- Remediation action registry (reset network, flush DNS, restart BT, rebuild firewall)
+- Safe repair workflow execution
 
-**Register route** in `AdminRoutes.tsx`: `/admin/security/foundation`
-**Add dashboard card** in `AdminDashboard.tsx`
+---
 
 ## Design Language
-- Same glassmorphic style as SEC01: `bg-white/[0.04]`, `backdrop-blur-xl`, `border-white/[0.06]`
-- TPM/Hardware = purple theme, IPC = blue, Audit = amber, Services = emerald, Prompts = cyan, Threats = red
-- Visual shields, lock icons, key icons — not just text tables
-- Animated posture indicator (pulsing green shield when healthy)
-- Interactive contract expansion with syntax-highlighted schemas
-- Audit timeline with severity-colored dots and connecting lines
+- Same glassmorphic style: `bg-black/70 backdrop-blur-3xl`, `border-white/[0.08]`
+- WiFi = blue theme, Bluetooth = indigo, Battery = amber/green, Automation = purple, Intelligence = cyan
+- Visual signal bars, battery gauges, thermal pressure meters — rich visual components
+- Animated state transitions for connection/pairing
+- Accessory battery icons with fill levels
+- Premium micro-interactions: pulse on connect, fade on disconnect
 
 ## File Summary
-| Action | File | Lines |
-|--------|------|-------|
-| Modify | `types.ts` | +180 |
-| Modify | `secretsd.ts` | +80 |
-| Create | `promptd.ts` | ~200 |
-| Modify | `auditd.ts` | +100 |
-| Modify | `policyd.ts` | +50 |
-| Modify | `flows/index.ts` | +100 |
-| Modify | `controlcenterd.ts` | +50 |
-| Create | `recovery.ts` | ~100 |
-| Create | `SEC02SecurityFoundation.tsx` | ~600 |
+| Action | File | ~Lines |
+|--------|------|--------|
+| Create | `src/lib/os-services/wifid.ts` | 150 |
+| Create | `src/lib/os-services/btd.ts` | 120 |
+| Create | `src/lib/os-services/powerd.ts` | 130 |
+| Create | `src/lib/os-services/automationd.ts` | 100 |
+| Rewrite | `SystemWifiPanel.tsx` | 200 |
+| Rewrite | `SystemBluetoothPanel.tsx` | 200 |
+| Rewrite | `SystemBatteryPanel.tsx` | 200 |
+| Create | `SYS01SystemIntelligence.tsx` | 500 |
+| Rewrite | `NetworkUtility.tsx` | 250 |
+| Create | `search-indexer.ts` | 80 |
+| Create | `help-engine.ts` | 70 |
 | Modify | `AdminRoutes.tsx` | +5 |
-| Modify | `AdminDashboard.tsx` | +20 |
-| **Total** | **11 files** | **~1,485 lines** |
+| Modify | `AdminDashboard.tsx` | +15 |
+| **Total** | **13 files** | **~2,020** |
 
