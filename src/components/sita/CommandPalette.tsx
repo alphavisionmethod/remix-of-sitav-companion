@@ -1,6 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Spotlight Command Palette (Cmd+K)
 // Cross-app actions, smart suggestions, domain-aware, premium glass
+// Deep-links into windowed Business, Finance, Concierge OS apps
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useMemo, useCallback, useEffect, useRef } from "react";
@@ -10,10 +11,13 @@ import {
   Search, ArrowRight, Sparkles, Clock, Zap, Briefcase, DollarSign,
   Headphones, FolderOpen, Target, Users, Receipt, Phone, FileText,
   Calendar, Settings, Brain, Shield, Mail, BarChart3, ShoppingCart,
-  Globe, Bot, Crown, RefreshCw, MessageSquare, CheckCircle
+  Globe, Bot, Crown, RefreshCw, MessageSquare, CheckCircle,
+  TrendingUp, PieChart, Heart, Activity, AlertTriangle, Sliders,
+  ExternalLink, ArrowDownLeft
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAppPlatform } from "@/contexts/AppPlatformContext";
+import { crossNavigate } from "@/lib/engines/cross-os-integration";
 import type { LucideIcon } from "lucide-react";
 
 interface CommandItem {
@@ -30,16 +34,39 @@ interface CommandItem {
 
 // ── Cross-App Actions ───────────────────────────────────────
 const CROSS_APP_ACTIONS: Omit<CommandItem, "action" | "id">[] = [
+  // Business OS deep-links
   { label: "Create New Lead", sublabel: "Add to pipeline", icon: Target, category: "cross-app", domain: "business" },
   { label: "Send Invoice", sublabel: "Bill a client", icon: Receipt, category: "cross-app", domain: "business" },
   { label: "Schedule Follow-Up", sublabel: "Business follow-through", icon: Phone, category: "cross-app", domain: "business" },
   { label: "Add Customer", sublabel: "CRM entry", icon: Users, category: "cross-app", domain: "business" },
   { label: "Create Quote", sublabel: "Sales proposal", icon: FileText, category: "cross-app", domain: "business" },
+  { label: "View Pipeline", sublabel: "Open opportunities", icon: TrendingUp, category: "cross-app", domain: "business" },
+  { label: "Customer Support", sublabel: "Support tickets", icon: Headphones, category: "cross-app", domain: "business" },
+  { label: "Business Operations", sublabel: "Operational queues", icon: Activity, category: "cross-app", domain: "business" },
+  { label: "Revenue Forecast", sublabel: "Projected revenue", icon: BarChart3, category: "cross-app", domain: "business" },
+  { label: "Collections Center", sublabel: "Overdue accounts", icon: AlertTriangle, category: "cross-app", domain: "business" },
+  // Finance OS deep-links
   { label: "Review Overdue Bills", sublabel: "Finance obligations", icon: DollarSign, category: "cross-app", domain: "finance" },
   { label: "Check Cash Position", sublabel: "Current balances", icon: DollarSign, category: "cross-app", domain: "finance" },
   { label: "Review Subscriptions", sublabel: "Spending waste audit", icon: RefreshCw, category: "cross-app", domain: "finance" },
-  { label: "Add Errand", sublabel: "Concierge task", icon: Headphones, category: "cross-app", domain: "concierge" },
+  { label: "View Receivables", sublabel: "Outstanding invoices", icon: ArrowDownLeft, category: "cross-app", domain: "finance" },
+  { label: "Cash Flow Timing", sublabel: "When money arrives", icon: Clock, category: "cross-app", domain: "finance" },
+  { label: "Net Worth", sublabel: "Wealth snapshot", icon: TrendingUp, category: "cross-app", domain: "finance" },
+  { label: "Budget Overview", sublabel: "Spending vs budget", icon: PieChart, category: "cross-app", domain: "finance" },
+  { label: "Stress Radar", sublabel: "Financial stress signals", icon: AlertTriangle, category: "cross-app", domain: "finance" },
+  { label: "Peace Score", sublabel: "Financial peace index", icon: Heart, category: "cross-app", domain: "finance" },
+  { label: "Financial Health", sublabel: "Health pulse", icon: Activity, category: "cross-app", domain: "finance" },
+  { label: "Scenario Planner", sublabel: "Model decisions", icon: Sliders, category: "cross-app", domain: "finance" },
+  // Concierge OS deep-links
+  { label: "Add Errand", sublabel: "Concierge task", icon: ShoppingCart, category: "cross-app", domain: "concierge" },
   { label: "Prep Appointment", sublabel: "Get ready", icon: Calendar, category: "cross-app", domain: "concierge" },
+  { label: "Travel Planning", sublabel: "Trip management", icon: Globe, category: "cross-app", domain: "concierge" },
+  { label: "Household Tasks", sublabel: "Home to-dos", icon: CheckCircle, category: "cross-app", domain: "concierge" },
+  { label: "Grocery Planning", sublabel: "Meal prep & lists", icon: ShoppingCart, category: "cross-app", domain: "concierge" },
+  { label: "Service Providers", sublabel: "Vendor directory", icon: Users, category: "cross-app", domain: "concierge" },
+  { label: "Life Admin", sublabel: "Admin tasks", icon: FileText, category: "cross-app", domain: "concierge" },
+  { label: "Recurring Obligations", sublabel: "Repeating tasks", icon: RefreshCw, category: "cross-app", domain: "concierge" },
+  // System
   { label: "Upload Document", sublabel: "Add to files", icon: FolderOpen, category: "cross-app", domain: "files" },
   { label: "Ask Advisor Board", sublabel: "Get AI recommendations", icon: Brain, category: "cross-app", domain: "system" },
 ];
@@ -178,30 +205,58 @@ export const CommandPalette = ({ open, onClose }: CommandPaletteProps) => {
       });
     }
 
-    // Cross-app actions (always searchable)
+    // Cross-app actions (always searchable) — deep-link into windowed apps
+    const DEEP_LINK_MAP: Record<string, { app: "business" | "finance" | "concierge"; module: string }> = {
+      // Business
+      "Create New Lead": { app: "business", module: "leads" },
+      "Send Invoice": { app: "business", module: "invoices" },
+      "Schedule Follow-Up": { app: "business", module: "follow-through" },
+      "Add Customer": { app: "business", module: "customers" },
+      "Create Quote": { app: "business", module: "quotes" },
+      "View Pipeline": { app: "business", module: "opportunities" },
+      "Customer Support": { app: "business", module: "support" },
+      "Business Operations": { app: "business", module: "operations" },
+      "Revenue Forecast": { app: "business", module: "forecast" },
+      "Collections Center": { app: "business", module: "collections" },
+      // Finance
+      "Review Overdue Bills": { app: "finance", module: "bills" },
+      "Check Cash Position": { app: "finance", module: "overview" },
+      "Review Subscriptions": { app: "finance", module: "subscriptions" },
+      "View Receivables": { app: "finance", module: "receivables" },
+      "Cash Flow Timing": { app: "finance", module: "cash-timing" },
+      "Net Worth": { app: "finance", module: "net-worth" },
+      "Budget Overview": { app: "finance", module: "budgets" },
+      "Stress Radar": { app: "finance", module: "stress-radar" },
+      "Peace Score": { app: "finance", module: "peace-score" },
+      "Financial Health": { app: "finance", module: "health" },
+      "Scenario Planner": { app: "finance", module: "scenarios" },
+      // Concierge
+      "Add Errand": { app: "concierge", module: "errands" },
+      "Prep Appointment": { app: "concierge", module: "appointments" },
+      "Travel Planning": { app: "concierge", module: "travel" },
+      "Household Tasks": { app: "concierge", module: "tasks" },
+      "Grocery Planning": { app: "concierge", module: "grocery" },
+      "Service Providers": { app: "concierge", module: "providers" },
+      "Life Admin": { app: "concierge", module: "life-admin" },
+      "Recurring Obligations": { app: "concierge", module: "recurring" },
+    };
+
     CROSS_APP_ACTIONS.forEach(a => {
       if (!q || a.label.toLowerCase().includes(q) || a.sublabel?.toLowerCase().includes(q)) {
         results.push({
           id: `crossapp-${a.label}`,
           ...a,
           action: () => {
-            // Navigate to the relevant domain module via window events
-            if (a.label.includes("Lead")) { window.dispatchEvent(new CustomEvent("sita-open-business", { detail: { module: "leads" } })); }
-            else if (a.label.includes("Invoice")) { window.dispatchEvent(new CustomEvent("sita-open-business", { detail: { module: "invoices" } })); }
-            else if (a.label.includes("Follow-Up")) { window.dispatchEvent(new CustomEvent("sita-open-business", { detail: { module: "follow-through" } })); }
-            else if (a.label.includes("Customer")) { window.dispatchEvent(new CustomEvent("sita-open-business", { detail: { module: "customers" } })); }
-            else if (a.label.includes("Quote")) { window.dispatchEvent(new CustomEvent("sita-open-business", { detail: { module: "quotes" } })); }
-            else if (a.label.includes("Bills")) { window.dispatchEvent(new CustomEvent("sita-open-finance", { detail: { module: "bills" } })); }
-            else if (a.label.includes("Cash")) { window.dispatchEvent(new CustomEvent("sita-open-finance", { detail: { module: "overview" } })); }
-            else if (a.label.includes("Subscription")) { window.dispatchEvent(new CustomEvent("sita-open-finance", { detail: { module: "subscriptions" } })); }
-            else if (a.label.includes("Errand")) { window.dispatchEvent(new CustomEvent("sita-open-concierge", { detail: { module: "errands" } })); }
-            else if (a.label.includes("Appointment")) { window.dispatchEvent(new CustomEvent("sita-open-concierge", { detail: { module: "appointments" } })); }
-            else if (a.label.includes("Grocery")) { window.dispatchEvent(new CustomEvent("sita-open-concierge", { detail: { module: "grocery" } })); }
-            else if (a.label.includes("Travel")) { window.dispatchEvent(new CustomEvent("sita-open-concierge", { detail: { module: "travel" } })); }
-            else if (a.label.includes("Household")) { window.dispatchEvent(new CustomEvent("sita-open-concierge", { detail: { module: "household" } })); }
-            else if (a.label.includes("Document") || a.label.includes("Upload")) navigate("/files");
-            else if (a.label.includes("Advisor")) navigate("/boardroom");
-            onClose();
+            const deepLink = DEEP_LINK_MAP[a.label];
+            if (deepLink) {
+              // Launch the windowed app, then deep-link to the module
+              window.dispatchEvent(new CustomEvent("sita-launch-app", { detail: { appId: deepLink.app } }));
+              setTimeout(() => crossNavigate(deepLink.app, deepLink.module), 200);
+            } else if (a.label.includes("Document") || a.label.includes("Upload")) {
+              navigate("/files");
+            } else if (a.label.includes("Advisor")) {
+              navigate("/boardroom");
+            }
           },
         });
       }
