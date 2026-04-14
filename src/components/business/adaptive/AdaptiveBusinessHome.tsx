@@ -110,6 +110,9 @@ export default function AdaptiveBusinessHome() {
         ))}
       </motion.div>
 
+      {/* Smart Suggestions */}
+      <AdaptiveSmartSuggestions />
+
       {/* KPIs bar */}
       <motion.div
         initial={{ opacity: 0 }}
