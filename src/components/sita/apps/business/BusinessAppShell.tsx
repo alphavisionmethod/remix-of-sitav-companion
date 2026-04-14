@@ -129,6 +129,8 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
     label: "Core",
     items: [
       { id: "overview", label: "Overview", icon: LayoutDashboard },
+      { id: "morning-briefing", label: "Morning Brief", icon: Sun },
+      { id: "end-of-day", label: "End of Day", icon: Moon },
       { id: "leads", label: "Leads", icon: Target, count: 3 },
       { id: "customers", label: "Customers", icon: Users },
       { id: "follow-through", label: "Follow-Through", icon: Phone, count: 8, countSeverity: "warning" },
@@ -136,6 +138,9 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
       { id: "appointments", label: "Appointments", icon: Calendar },
       { id: "operations", label: "Operations", icon: Settings, count: 3 },
       { id: "opportunities", label: "Opportunities", icon: TrendingUp },
+      { id: "deal-room", label: "Deal Room", icon: Briefcase },
+      { id: "strategic-accounts", label: "Strategic Accounts", icon: Crown },
+      { id: "relationship-dossier", label: "Dossier", icon: Heart },
       { id: "customer-health", label: "Customer Health", icon: Heart },
     ],
   },
