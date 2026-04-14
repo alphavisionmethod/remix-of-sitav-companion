@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from "react";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
