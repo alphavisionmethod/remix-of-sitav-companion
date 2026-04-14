@@ -28,6 +28,8 @@ import ModeTransitionCeremony from "@/components/business/adaptive/ModeTransitio
 import { getSidebarOverrides, applySidebarOverrides } from "@/lib/engines/adaptive-sidebar-intelligence";
 import AdaptiveNotificationCenter from "@/components/business/adaptive/AdaptiveNotificationCenter";
 import AdaptiveOnboardingWizard from "@/components/business/adaptive/AdaptiveOnboardingWizard";
+import AdaptiveWorkflowTemplates from "@/components/business/adaptive/AdaptiveWorkflowTemplates";
+import AdaptiveBoardroomAgenda from "@/components/business/adaptive/AdaptiveBoardroomAgenda";
 
 // ── Page imports ──────────────────────────────────────────────
 import BusinessOverview from "@/pages/business/BusinessOverview";
@@ -165,6 +167,8 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
       { id: "pipeline-health", label: "Pipeline Health", icon: Activity },
       { id: "business-profile", label: "Business Profile", icon: Sliders },
       { id: "profile-evolution", label: "Profile Evolution", icon: Activity },
+      { id: "workflow-templates", label: "Workflow Templates", icon: Workflow },
+      { id: "boardroom-agenda", label: "Boardroom Agenda", icon: BookOpen },
     ],
   },
 ];
@@ -217,6 +221,8 @@ const pages: Record<string, React.ComponentType> = {
   "business-profile": BusinessProfileEditor,
   "profile-evolution": ProfileEvolutionPanel,
   "kpi-dashboard": AdaptiveKPIDashboard,
+  "workflow-templates": AdaptiveWorkflowTemplates,
+  "boardroom-agenda": AdaptiveBoardroomAgenda,
 };
 
 // ── Helper components ─────────────────────────────────────────
