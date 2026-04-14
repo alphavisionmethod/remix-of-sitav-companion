@@ -257,11 +257,10 @@ export const CommandPalette = ({ open, onClose }: CommandPaletteProps) => {
             } else if (a.label.includes("Advisor")) {
               navigate("/boardroom");
             }
-            onClose();
-          },
-            onClose();
           },
         });
+      }
+    });
       }
     });
 
