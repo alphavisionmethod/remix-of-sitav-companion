@@ -10,6 +10,7 @@ import {
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import Papa from "papaparse";
+import * as XLSX from "xlsx";
 import { useCreateContact } from "@/hooks/use-crm-data";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -112,25 +113,36 @@ const CRMImportWizard = ({ onClose }: Props) => {
   const processFile = useCallback((file: File) => {
     setFileName(file.name);
     const isExcel = file.name.endsWith(".xlsx") || file.name.endsWith(".xls");
+
+    const handleParsedData = (data: string[][]) => {
+      if (data.length < 2) { toast.error("File appears empty"); return; }
+      const fileHeaders = data[0];
+      const fileRows = data.slice(1).filter(r => r.some(c => c?.trim()));
+      setHeaders(fileHeaders);
+      setRows(fileRows);
+      const autoMap: Record<number, string> = {};
+      fileHeaders.forEach((h, i) => { autoMap[i] = autoMapColumn(h); });
+      setMapping(autoMap);
+      setStep("structure");
+    };
+
     if (isExcel) {
-      toast.error("Excel files (.xlsx) coming soon. Please export as CSV.");
-      return;
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const workbook = XLSX.read(e.target?.result, { type: "array" });
+          const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+          const data = XLSX.utils.sheet_to_json<string[]>(firstSheet, { header: 1, defval: "" });
+          handleParsedData(data as string[][]);
+        } catch { toast.error("Failed to parse Excel file"); }
+      };
+      reader.readAsArrayBuffer(file);
+    } else {
+      Papa.parse(file, {
+        complete: (results) => handleParsedData(results.data as string[][]),
+        error: () => toast.error("Failed to parse file"),
+      });
     }
-    Papa.parse(file, {
-      complete: (results) => {
-        const data = results.data as string[][];
-        if (data.length < 2) { toast.error("File appears empty"); return; }
-        const fileHeaders = data[0];
-        const fileRows = data.slice(1).filter(r => r.some(c => c?.trim()));
-        setHeaders(fileHeaders);
-        setRows(fileRows);
-        const autoMap: Record<number, string> = {};
-        fileHeaders.forEach((h, i) => { autoMap[i] = autoMapColumn(h); });
-        setMapping(autoMap);
-        setStep("structure");
-      },
-      error: () => toast.error("Failed to parse file"),
-    });
   }, []);
 
   const handleDrop = useCallback((e: React.DragEvent) => {
@@ -317,10 +329,10 @@ const CRMImportWizard = ({ onClose }: Props) => {
                     dragOver ? "border-primary bg-primary/5" : "border-border hover:border-primary/40 hover:bg-secondary/30"
                   }`}
                 >
-                  <input ref={fileRef} type="file" accept=".csv,.tsv,.txt" className="hidden" onChange={handleFileSelect} />
+                  <input ref={fileRef} type="file" accept=".csv,.tsv,.txt,.xlsx,.xls" className="hidden" onChange={handleFileSelect} />
                   <Upload className="h-10 w-10 text-muted-foreground mb-3" />
                   <p className="text-sm font-medium text-foreground">Drop your file here</p>
-                  <p className="text-xs text-muted-foreground mt-1">CSV, TSV — up to 10,000 rows</p>
+                  <p className="text-xs text-muted-foreground mt-1">CSV, Excel (.xlsx) — up to 10,000 rows</p>
                   <SitaButton variant="secondary" size="sm" className="mt-4">Browse Files</SitaButton>
                 </div>
                 <div className="flex items-center gap-2 rounded-lg bg-muted/30 px-3 py-2">
