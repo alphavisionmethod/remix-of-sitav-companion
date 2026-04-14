@@ -568,6 +568,7 @@ function BusinessAppShellInner({ initialModule }: { initialModule?: string }) {
                 <Search size={10} />
                 <span>⌘K</span>
               </button>
+              <AdaptiveNotificationCenter onNavigate={navigateTo} />
               <BusinessModeIndicator onClick={() => setActiveModule("business-profile")} />
             </div>
           </div>
