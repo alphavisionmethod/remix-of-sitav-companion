@@ -48,30 +48,54 @@ export function DesktopSystemWidget({ onLaunchApp }: DesktopSystemWidgetProps) {
   }, [openPanel]);
 
   const handleClick = (t: Toggle) => {
-    // Toggle on/off
-    setActive(prev => ({ ...prev, [t.id]: !prev[t.id] }));
+    const isCurrentlyOn = active[t.id];
 
-    // Special: Calm shows toast
+    // If OFF → turn ON only (don't open panel yet)
+    if (!isCurrentlyOn) {
+      setActive(prev => ({ ...prev, [t.id]: true }));
+
+      if (t.id === "calm") {
+        toast({
+          title: "🌙 Focus Mode On",
+          description: "Notifications silenced",
+        });
+      }
+      setOpenPanel(null);
+      return;
+    }
+
+    // Already ON → second click behavior
+    // Calm: toggle OFF
     if (t.id === "calm") {
-      const newState = !active[t.id];
+      setActive(prev => ({ ...prev, [t.id]: false }));
       toast({
-        title: newState ? "🌙 Focus Mode On" : "☀️ Focus Mode Off",
-        description: newState ? "Notifications silenced" : "Notifications restored",
+        title: "☀️ Focus Mode Off",
+        description: "Notifications restored",
       });
       setOpenPanel(null);
       return;
     }
 
-    // Special: Shield launches security center
+    // Shield: launch security center app
     if (t.appId) {
       onLaunchApp?.(t.appId);
       setOpenPanel(null);
       return;
     }
 
-    // Toggle panel open/close
+    // WiFi/Bluetooth/Battery: toggle panel open/close
     if (t.panel) {
       setOpenPanel(prev => prev === t.panel ? null : t.panel!);
+    }
+  };
+
+  // Long press to turn OFF when already ON (for WiFi/BT/Battery/Shield)
+  const handleContextMenu = (e: React.MouseEvent, t: Toggle) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (active[t.id] && t.id !== "calm") {
+      setActive(prev => ({ ...prev, [t.id]: false }));
+      setOpenPanel(null);
     }
   };
 
@@ -85,6 +109,7 @@ export function DesktopSystemWidget({ onLaunchApp }: DesktopSystemWidgetProps) {
             <div key={t.id} className="relative">
               <button
                 onClick={() => handleClick(t)}
+                onContextMenu={(e) => handleContextMenu(e, t)}
                 onPointerDown={e => e.stopPropagation()}
                 className="flex flex-col items-center gap-1.5 group"
               >
