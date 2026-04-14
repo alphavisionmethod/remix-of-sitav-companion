@@ -409,6 +409,8 @@ const CRMHome = () => {
           ))}
         </div>
       </div>
+
+      <CRMCommandSearch open={showSearch} onClose={() => setShowSearch(false)} />
     </div>
   );
 };
