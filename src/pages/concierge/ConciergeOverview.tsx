@@ -156,10 +156,10 @@ const ConciergeOverview = () => {
         <ListRevealItem>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {[
-              { label: "Life Admin", count: "3 items", icon: FileText, path: "/concierge/life-admin" },
-              { label: "Errands", count: "2 pending", icon: ShoppingCart, path: "/concierge/errands" },
-              { label: "Travel", count: "1 trip", icon: Plane, path: "/concierge/travel" },
-              { label: "Appointments", count: "Next Thu", icon: Stethoscope, path: "/concierge/appointments" },
+              { label: "Life Admin", count: "3 items", icon: FileText, path: "life-admin" },
+              { label: "Errands", count: "2 pending", icon: ShoppingCart, path: "errands" },
+              { label: "Travel", count: "1 trip", icon: Plane, path: "travel" },
+              { label: "Appointments", count: "Next Thu", icon: Stethoscope, path: "appointments" },
             ].map(tile => (
               <DomainCard key={tile.label} onClick={() => navigateTo(tile.path)}
                 className="group text-left micro-hover-lift micro-focus-glow micro-press"
