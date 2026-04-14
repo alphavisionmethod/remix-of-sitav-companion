@@ -1,65 +1,76 @@
 
 
-# CRM Completeness Audit & Gap Fix Plan
+# Migration Plan: Unify Business into the Windowed App
 
-## Audit Result: Implementation is 95%+ Complete
+## Problem
 
-After reviewing all 22 CRM components, 16 CRM pages, 15 nav routes, 12 DB tables, and full routing — the CRM Part 2 plan (all 8 batches) has been **fully implemented**. Here's the evidence:
+Two separate Business experiences exist:
+- **BusinessAppShell** (the windowed OS app you see when clicking the Business icon) — has 7 sidebar items, most show placeholder "DATA CANVAS" text
+- **BusinessCenter** (React Router `/business/*` pages) — has 40+ fully built sub-pages including the entire CRM system, sales tools, growth tools, intelligence, and office functions
 
-### What's Fully Built and Wired
+The windowed app should be the **only** Business experience, containing everything.
 
-| Spec Section | Status | Evidence |
-|---|---|---|
-| A. Visual hierarchy / KPI zones | Done | CRMHome.tsx — 407 lines, 6+4 KPI cards, advisor zone, pipeline funnel |
-| B. Contact/Company dossiers | Done | CRMContactDetail (602L) + CRMCompanyDetail (333L) — hero header, health, tabs, cross-domain |
-| C. Pipeline views (kanban/list/focus) | Done | CRMPipeline (499L) — 3 views, funnel, stalled/closing/at-risk filters |
-| D. Timeline + memory | Done | CRMTimeline — gradient spine, day headers, advisor annotations |
-| E. Import center | Done | CRMImportCenter (154L) — 4 tabs (Import/Templates/Quality/History), CRMImportQuality, CRMImportTemplates |
-| F. Empty states | Done | CRMEmptyState — 14 premium sections (contacts, companies, pipeline, health, timeline, tasks, notes, import, integrations, segments, automations, custom-fields, duplicates, advisor) |
-| G. Action surfaces | Done | CRM Home header actions, contact/company/pipeline action buttons, CRMCommandSearch |
-| H. Lifecycle engine (14 stages) | Done | CRMLifecycleEngine — 14 stages from "new" to "reactivation" with stage-specific next actions |
-| I. Relationship intelligence | Done | CRMRelationshipIntelligence (280L) — multi-factor scoring, explainable, signal-linked |
-| J. Next best action engine | Done | CRMNextBestAction (184L) — urgency-ranked suggestions, context-aware |
-| K. Communication queue | Done | CRMCommunicationQueue — 5 views (waiting, no-response, follow-up, sensitive, all) |
-| L. Meeting/call prep | Done | CRMMeetingPrep (166L) — talking points, risk flags, context cards |
-| M. Quote/invoice/support deep linking | Done | Tabs in ContactDetail + CompanyDetail (Finance, Files, Concierge) |
-| N. Ownership/accountability | Done | CRMOwnership component integrated in Proof tab |
-| O. Automation workflow builder | Done | CRMAutomations (632L) — 9 triggers, 12 actions, trust gates, execution log |
-| P. Automation trust | Done | 5 trust gates (suggested → simulation → approval → active → paused) |
-| Q. Automation CRM object integration | Done | Triggers cover contacts, stages, health, deals, invoices, quotes |
-| R. 8 CRM advisor roles | Done | CRMAdvisorInsight — 8 specialized roles with confidence, assumptions, boardroom relevance |
-| S. Advisor surfaces across CRM | Done | InlineAdvisorInsights in Contact/Company, DealAdvisorSignal in Pipeline |
-| T. Boardroom escalation | Done | CRMEscalateToBoardroom (371L) — auto-assessment, evidence packaging, decision receipt |
-| U-W. Finance/Files/Concierge | Done | CRMFinanceLinkage, CRMFilesLinkage, CRMConciergeLinkage — all integrated in detail tabs |
-| X. Boardroom integration | Done | Escalation dialog writes to boardroom_items |
-| Y. Follow-Through | Done | CRM tasks, next-best-action engine |
-| Z. Trust/Proof | Done | CRMProofTrail + CRMOwnership in Proof tab |
-| AA-AD. Import advanced | Done | Templates, quality scoring, history, connection health cards |
+## Architecture
 
-### Gaps Found (Minor Polish Only)
+The windowed `BusinessAppShell` at `src/components/sita/apps/business/BusinessAppShell.tsx` will be rebuilt to:
+1. Import all 40+ page components currently used by `BusinessCenter`
+2. Replicate the same sidebar navigation groups (CRM, Core, Sales, Growth, Intelligence, Office)
+3. Render the correct page component based on `activeModule` state
+4. Keep the existing Boardroom bridge, advisor board, and pipeline health views
 
-After exhaustive review, the only gaps are **minor polish items**, not missing features:
+## What Changes
 
-1. **CRMHealth page** — Exists but not inspected; may lack the CRMRelationshipIntelligence component integration at full-page level
-2. **CRMSegments page** — Exists but may be basic; spec calls for "smart views and filtered lists"
-3. **CRMCommandSearch** — Exists but should verify it covers all action types from Section G (escalate, ask advisor, start workflow)
-4. **Some lifecycle stage keys** don't match between CRMLifecycleEngine and the `lifecycle_stage` column defaults — e.g., engine has `at_risk` but DB default is `lead` and LIFECYCLE_COLORS only maps 5 stages
+### 1. Rebuild `BusinessAppShell` (major rewrite)
+**File:** `src/components/sita/apps/business/BusinessAppShell.tsx`
 
-## Proposed Work: Verification Pass + 4 Polish Items
+- Expand `MODULES` from 7 items to the full sidebar structure (6 groups, 40+ items) matching the `TAB_GROUPS` from `BusinessCenter.tsx`
+- Import all page components (CRMHome, CRMContacts, CRMCompanies, CRMPipeline, BusinessOverview, LeadsInbox, QuotesWorkspace, etc.)
+- Replace the "DATA CANVAS" placeholder with a `pages` map that renders the correct component for each `activeModule` value
+- Add collapsible sidebar groups matching the current design (CRM, Core, Sales, Growth, Intelligence, Office)
+- Keep the existing Boardroom status strip, advisor board, and pipeline health views as they are
+- Preserve the glassmorphic dark sidebar aesthetic already in place
 
-### Batch 9 (Final): Verification & Polish
+### 2. Update `BusinessCenter` to redirect into the windowed app
+**File:** `src/pages/BusinessCenter.tsx`
 
-**Files to inspect and potentially enhance:**
+- Instead of rendering its own `DomainAppShell`, it will open the Business window via the Window Manager and close/redirect
+- This ensures any legacy `/business/*` route links still work by triggering the windowed app with the correct sub-page
 
-1. **CRMHealth.tsx** — Verify it uses `CRMRelationshipIntelligence` at full width and includes the explainable scoring breakdown. If not, wire it in.
+### 3. Wire route-to-module mapping
+**File:** `src/components/sita/shell/ShellWindowLayer.tsx`
 
-2. **CRMSegments.tsx** — Verify smart filter builder with lifecycle, health, value, tags, recency criteria. If basic, enhance with proper filter UI.
+- Update the business window entry to accept an optional `initialModule` prop so links/routes can deep-link into a specific CRM page inside the windowed app
 
-3. **CRMCommandSearch.tsx** — Verify action palette includes: add contact, add company, create deal, create quote, import, escalate to boardroom, ask advisor, start workflow. Add any missing entries.
+### 4. Update CRM pages to remove `useNavigate` router dependencies
+**Files:** ~10 CRM page files that use `useNavigate` for internal CRM navigation
 
-4. **Contact lifecycle stage color map** — Expand `LIFECYCLE_COLORS` in `CRMContacts.tsx` to cover all 14 stages from `CRMLifecycleEngine` (currently only maps 5).
+- Replace `navigate("/business/crm-contacts")` calls with a callback prop or context-based navigation that sets `activeModule` inside the shell
+- Create a `BusinessNavigationContext` that the shell provides, so any child page can call `navigateTo("crm-contacts")` without depending on React Router
 
-### No database changes needed
-### No new files needed
-### Estimated: 4 file modifications
+### 5. Fix cross-references from other domains
+**Files:** Any component outside Business that links to `/business/*`
+
+- These will trigger the Window Manager to open Business with the correct initial module, rather than navigating via router
+
+## Files Modified Summary
+
+| File | Change |
+|------|--------|
+| `src/components/sita/apps/business/BusinessAppShell.tsx` | Major rewrite — full sidebar, all pages, navigation context |
+| `src/pages/BusinessCenter.tsx` | Convert to window-opener redirect |
+| `src/components/sita/shell/ShellWindowLayer.tsx` | Add initialModule support for business window |
+| New: `src/contexts/BusinessNavigationContext.tsx` | Internal navigation context replacing useNavigate |
+| ~10 CRM/business page files | Replace `useNavigate` with context-based navigation |
+| `src/routes/business-routes.tsx` | Simplify — most routes become window-open triggers |
+
+## What Stays the Same
+
+- All 22 CRM components in `src/components/business/crm/` — untouched
+- All page component logic and UI — untouched (they just render inside the window instead of the router)
+- Database tables, hooks, data layer — untouched
+- The windowed app's visual style (dark glassmorphic sidebar) — preserved and extended
+
+## Estimated Scope
+
+~6 file modifications, 1 new file, no database changes.
 
