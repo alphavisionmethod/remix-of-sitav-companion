@@ -5,7 +5,7 @@ import {
   Receipt, Banknote, ClipboardList, Bot, RefreshCw, Share2, ShoppingCart, Globe,
   BarChart3, BookOpen, LineChart, Mail, FolderOpen, Crown, Shield, Heart,
   Building2, StickyNote, Upload, Filter, Workflow, BrainCircuit, Search,
-  ChevronDown, ChevronRight, Sliders
+  ChevronDown, ChevronRight, Sliders, Sun, Moon
 } from "lucide-react";
 import { Headphones as SupportIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
