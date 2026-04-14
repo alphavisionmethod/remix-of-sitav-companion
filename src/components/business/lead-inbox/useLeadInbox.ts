@@ -3,18 +3,22 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { toast } from "sonner";
 import { MOCK_INBOX_ITEMS, type InboxItem } from "./mock-inbox-data";
+import { computeLeadScore, computeBatchScores, type LeadScoreResult } from "@/lib/engines/lead-scoring-engine";
 
-export type InboxFilter = "all" | "new" | "urgent" | "high-quality" | "missing-info" | "duplicates" | "snoozed" | "accepted" | "rejected" | "exceptional";
+export type InboxFilter = "all" | "new" | "urgent" | "high-quality" | "missing-info" | "duplicates" | "snoozed" | "accepted" | "rejected" | "exceptional" | "recovery" | "at-risk";
 
 export function useLeadInbox() {
   const { user } = useAuth();
+  const { primaryMode } = useBusinessProfile();
   const queryClient = useQueryClient();
   const [filter, setFilter] = useState<InboxFilter>("all");
   const [search, setSearch] = useState("");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [checkedIds, setCheckedIds] = useState<Set<string>>(new Set());
+  const [explainId, setExplainId] = useState<string | null>(null);
 
   // Fetch from DB, fallback to mock data for demo
   const inboxQuery = useQuery({
@@ -32,6 +36,19 @@ export function useLeadInbox() {
 
   const items = inboxQuery.data ?? MOCK_INBOX_ITEMS;
 
+  // Compute scores for all items
+  const scoreResults = useMemo(() => {
+    return computeBatchScores(items, primaryMode);
+  }, [items, primaryMode]);
+
+  const scoreMap = useMemo(() => {
+    const map = new Map<string, LeadScoreResult>();
+    for (const result of scoreResults) {
+      map.set(result.leadId, result);
+    }
+    return map;
+  }, [scoreResults]);
+
   const filtered = useMemo(() => {
     let result = items;
     // Search
@@ -47,21 +64,49 @@ export function useLeadInbox() {
     // Filter
     switch (filter) {
       case "new": return result.filter(i => i.triage_status === "new");
-      case "urgent": return result.filter(i => (i.urgency === "high" || i.urgency === "critical") && i.triage_status !== "accepted" && i.triage_status !== "rejected");
-      case "high-quality": return result.filter(i => i.quality_score >= 75 && i.triage_status !== "accepted" && i.triage_status !== "rejected");
+      case "urgent": return result.filter(i => {
+        const s = scoreMap.get(i.id);
+        return s && (s.urgencyBand === "heating-up" || s.urgencyBand === "needs-response-today") && i.triage_status !== "accepted" && i.triage_status !== "rejected";
+      });
+      case "high-quality": return result.filter(i => {
+        const s = scoreMap.get(i.id);
+        return s && s.priorityScore >= 70 && i.triage_status !== "accepted" && i.triage_status !== "rejected";
+      });
       case "missing-info": return result.filter(i => i.completeness_score < 70 && i.triage_status !== "accepted" && i.triage_status !== "rejected");
       case "duplicates": return result.filter(i => i.duplicate_status !== "none" && i.triage_status !== "accepted" && i.triage_status !== "rejected");
       case "snoozed": return result.filter(i => i.triage_status === "snoozed");
       case "accepted": return result.filter(i => i.triage_status === "accepted");
       case "rejected": return result.filter(i => i.triage_status === "rejected");
-      case "exceptional": return result.filter(i => i.suggested_route === "boardroom" && i.triage_status !== "accepted" && i.triage_status !== "rejected");
+      case "exceptional": return result.filter(i => {
+        const s = scoreMap.get(i.id);
+        return s?.boardroomWorthy && i.triage_status !== "accepted" && i.triage_status !== "rejected";
+      });
+      case "recovery": return result.filter(i => {
+        const s = scoreMap.get(i.id);
+        return s && s.recoveryPotential > 50 && i.triage_status !== "accepted" && i.triage_status !== "rejected";
+      });
+      case "at-risk": return result.filter(i => {
+        const s = scoreMap.get(i.id);
+        return s && s.staleRisk > 50 && i.triage_status !== "accepted" && i.triage_status !== "rejected";
+      });
       default: return result.filter(i => i.triage_status !== "accepted" && i.triage_status !== "rejected");
     }
-  }, [items, filter, search]);
+  }, [items, filter, search, scoreMap]);
+
+  // Sort filtered by priority score
+  const sortedFiltered = useMemo(() => {
+    return [...filtered].sort((a, b) => {
+      const sa = scoreMap.get(a.id)?.priorityScore ?? 0;
+      const sb = scoreMap.get(b.id)?.priorityScore ?? 0;
+      return sb - sa;
+    });
+  }, [filtered, scoreMap]);
 
   const selected = useMemo(() => items.find(i => i.id === selectedId) ?? null, [items, selectedId]);
+  const selectedScore = useMemo(() => selectedId ? scoreMap.get(selectedId) ?? null : null, [selectedId, scoreMap]);
+  const explainScore = useMemo(() => explainId ? scoreMap.get(explainId) ?? null : null, [explainId, scoreMap]);
 
-  // Triage actions (mock for demo, real DB for authenticated)
+  // Triage actions
   const triageAction = useCallback(async (id: string, action: "accept" | "reject" | "snooze" | "route", dest?: string) => {
     const statusMap = { accept: "accepted", reject: "rejected", snooze: "snoozed", route: "routed" } as const;
     const newStatus = statusMap[action];
@@ -70,7 +115,6 @@ export function useLeadInbox() {
       const update: Record<string, unknown> = { triage_status: newStatus };
       if (action === "accept") update.accepted_at = new Date().toISOString();
       if (action === "route" && dest) update.routed_to = dest;
-
       await fromTable("lead_inbox_items").update(update).eq("id", id);
     }
 
@@ -103,11 +147,13 @@ export function useLeadInbox() {
   }, [checkedIds, triageAction, clearChecked]);
 
   return {
-    items, filtered, selected, selectedId,
+    items, filtered: sortedFiltered, selected, selectedId, selectedScore,
     filter, setFilter, search, setSearch,
     setSelectedId, checkedIds, toggleCheck, clearChecked,
     triageAction, bulkAction,
     isLoading: inboxQuery.isLoading,
     isDemo: !user?.id || (items === MOCK_INBOX_ITEMS),
+    scoreMap, scoreResults,
+    explainId, setExplainId, explainScore,
   };
 }
