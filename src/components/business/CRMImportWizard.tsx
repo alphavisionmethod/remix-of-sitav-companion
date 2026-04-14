@@ -192,10 +192,10 @@ const CRMImportWizard = ({ onClose }: Props) => {
       const emails = rows.map((r, i) => ({ idx: i, email: r[emailIdx]?.trim().toLowerCase() })).filter(e => e.email);
       // Check against existing DB contacts
       const { data: existingContacts } = await (supabase as any).from("crm_contacts").select("id, first_name, last_name, email").in("email", emails.map(e => e.email));
-      const existingMap = new Map((existingContacts || []).map((c: any) => [c.email?.toLowerCase(), c]));
+      const existingMap = new Map((existingContacts || []).map((c: any) => [(c.email as string)?.toLowerCase(), c]));
 
       emails.forEach(({ idx, email }) => {
-        const existing = existingMap.get(email);
+        const existing = existingMap.get(email) as any;
         if (existing) {
           candidates.push({
             importRow: idx,
