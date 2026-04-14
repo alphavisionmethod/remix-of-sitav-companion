@@ -4,7 +4,7 @@ import {
   fetchCRMContacts, fetchCRMCompanies, fetchCRMOpportunities,
   fetchCRMTasks, fetchCRMCommunications, fetchCRMNotes,
   fetchCRMPipelineStages, fetchCRMSegments, fetchCRMImportJobs,
-  fetchCRMTags, fetchCRMContactCompanyLinks,
+  fetchCRMTags, fetchCRMContactCompanyLinks, fetchCRMAutomations,
   createCRMContact, updateCRMContact, deleteCRMContact,
   createCRMCompany, updateCRMCompany, deleteCRMCompany,
   createCRMOpportunity, updateCRMOpportunity, deleteCRMOpportunity,
@@ -17,6 +17,7 @@ import {
   createCRMImportJob, updateCRMImportJob,
   createCRMMergeLog,
   createCRMContactCompanyLink, deleteCRMContactCompanyLink,
+  createCRMAutomation, updateCRMAutomation, deleteCRMAutomation,
 } from "@/lib/data-services/crm-data-service";
 import type { RealityModeKey } from "@/lib/dual-reality/reality-mode-registry";
 

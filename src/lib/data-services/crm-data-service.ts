@@ -512,3 +512,62 @@ export async function fetchCRMContactCompanyLinks(mode: RealityModeKey = "real")
   const { data, error } = await fromTable("crm_contact_company").select("*").eq("user_id", uid);
   return resolveByMode({ mode, realData: !error && data?.length ? data : null, demoData: [], emptyDefault: [] });
 }
+
+// ─── CRM Automations ────────────────────────────────────────
+export interface CRMAutomation {
+  id: string;
+  user_id: string;
+  title: string;
+  description: string | null;
+  trigger_type: string;
+  trigger_config: Record<string, unknown>;
+  conditions: unknown[];
+  actions: unknown[];
+  delay_minutes: number | null;
+  trust_gate: string;
+  status: string;
+  target_entity: string;
+  runs: number;
+  last_run_at: string | null;
+  execution_log: unknown[];
+  created_at: string;
+  updated_at: string;
+}
+
+const DEMO_AUTOMATIONS: CRMAutomation[] = [
+  { id: "da1", user_id: "", title: "New Lead → Assign + Follow-Up", description: "Auto-assign owner and create follow-up task when a new lead is imported or created", trigger_type: "contact_created", trigger_config: { stage: "lead" }, conditions: [], actions: [{ type: "assign_owner", config: { method: "round-robin" } }, { type: "create_task", config: { title: "Follow up with new lead", due_days: 3 } }], delay_minutes: 0, trust_gate: "active", status: "active", target_entity: "contact", runs: 24, last_run_at: new Date(Date.now() - 7200000).toISOString(), execution_log: [], created_at: new Date(Date.now() - 864e5 * 30).toISOString(), updated_at: new Date().toISOString() },
+  { id: "da2", user_id: "", title: "14-Day Silence → Follow-Up Reminder", description: "Create a reminder when any contact hasn't been reached in 14 days", trigger_type: "no_contact_days", trigger_config: { days: 14 }, conditions: [], actions: [{ type: "create_task", config: { title: "Follow up — no contact in 14 days", priority: "high" } }, { type: "notify_advisor" }], delay_minutes: 0, trust_gate: "active", status: "active", target_entity: "contact", runs: 18, last_run_at: new Date(Date.now() - 18000000).toISOString(), execution_log: [], created_at: new Date(Date.now() - 864e5 * 60).toISOString(), updated_at: new Date().toISOString() },
+  { id: "da3", user_id: "", title: "Quote No Response → Auto Follow-Up", description: "Suggest follow-up when a sent quote goes unanswered for 5 days", trigger_type: "quote_no_reply", trigger_config: { days: 5 }, conditions: [], actions: [{ type: "draft_email", config: { template: "quote_follow_up" } }, { type: "queue_for_review" }], delay_minutes: 0, trust_gate: "approval_required", status: "paused", target_entity: "opportunity", runs: 7, last_run_at: new Date(Date.now() - 864e5 * 2).toISOString(), execution_log: [], created_at: new Date(Date.now() - 864e5 * 45).toISOString(), updated_at: new Date().toISOString() },
+  { id: "da4", user_id: "", title: "Invoice Overdue → Collections", description: "Surface collections action when invoice passes due date", trigger_type: "invoice_overdue", trigger_config: { escalate_after_days: 30 }, conditions: [], actions: [{ type: "create_task", config: { title: "Collections follow-up", priority: "critical" } }, { type: "notify_owner" }, { type: "escalate_boardroom", config: { if_days: 30 } }], delay_minutes: 0, trust_gate: "approval_required", status: "active", target_entity: "contact", runs: 3, last_run_at: new Date(Date.now() - 864e5).toISOString(), execution_log: [], created_at: new Date(Date.now() - 864e5 * 20).toISOString(), updated_at: new Date().toISOString() },
+  { id: "da5", user_id: "", title: "Health < 30 → Advisor Alert", description: "Alert advisor board when contact health drops to critical level", trigger_type: "health_threshold", trigger_config: { threshold: 30, direction: "below" }, conditions: [], actions: [{ type: "create_advisor_insight" }, { type: "suggest_recovery" }], delay_minutes: 0, trust_gate: "active", status: "active", target_entity: "contact", runs: 1, last_run_at: new Date(Date.now() - 864e5 * 3).toISOString(), execution_log: [], created_at: new Date(Date.now() - 864e5 * 15).toISOString(), updated_at: new Date().toISOString() },
+  { id: "da6", user_id: "", title: "Big Deal Stalled → Boardroom", description: "Escalate to Boardroom when high-value deal stalls 14+ days", trigger_type: "opportunity_stalled", trigger_config: { min_value: 50000, stall_days: 14 }, conditions: [], actions: [{ type: "compile_evidence" }, { type: "create_boardroom_item" }], delay_minutes: 0, trust_gate: "approval_required", status: "draft", target_entity: "opportunity", runs: 0, last_run_at: null, execution_log: [], created_at: new Date(Date.now() - 864e5 * 7).toISOString(), updated_at: new Date().toISOString() },
+  { id: "da7", user_id: "", title: "Welcome Sequence → New Customer", description: "Trigger onboarding sequence when lead converts to customer", trigger_type: "stage_changed", trigger_config: { to_stage: "customer" }, conditions: [], actions: [{ type: "send_notification", config: { template: "welcome" } }, { type: "create_task", config: { title: "Onboarding check-in", due_days: 7 } }], delay_minutes: 0, trust_gate: "active", status: "active", target_entity: "contact", runs: 12, last_run_at: new Date(Date.now() - 43200000).toISOString(), execution_log: [], created_at: new Date(Date.now() - 864e5 * 90).toISOString(), updated_at: new Date().toISOString() },
+  { id: "da8", user_id: "", title: "Churn Risk → Recovery Campaign", description: "Initiate recovery workflow when customer shows churn signals", trigger_type: "health_declining", trigger_config: { drop_percent: 20, period_days: 30 }, conditions: [], actions: [{ type: "calculate_churn_probability" }, { type: "draft_recovery_plan" }, { type: "assign_relationship_owner" }], delay_minutes: 0, trust_gate: "simulation", status: "paused", target_entity: "contact", runs: 5, last_run_at: new Date(Date.now() - 864e5 * 7).toISOString(), execution_log: [], created_at: new Date(Date.now() - 864e5 * 40).toISOString(), updated_at: new Date().toISOString() },
+];
+
+export async function fetchCRMAutomations(mode: RealityModeKey = "real"): Promise<ModeAwareResult<CRMAutomation[]>> {
+  if (mode !== "real") return resolveByMode({ mode, realData: null, demoData: DEMO_AUTOMATIONS, emptyDefault: [] });
+  const uid = await getUserId();
+  if (!uid) return resolveByMode({ mode, realData: null, demoData: DEMO_AUTOMATIONS, emptyDefault: [] });
+  const { data, error } = await fromTable("crm_automations").select("*").eq("user_id", uid).order("created_at", { ascending: false });
+  return resolveByMode({ mode, realData: !error && data?.length ? (data as unknown as CRMAutomation[]) : null, demoData: DEMO_AUTOMATIONS, emptyDefault: [] });
+}
+
+export async function createCRMAutomation(automation: Omit<CRMAutomation, "id" | "user_id" | "created_at" | "updated_at" | "runs" | "last_run_at" | "execution_log">) {
+  const uid = await getUserId();
+  if (!uid) throw new Error("Not authenticated");
+  const { data, error } = await fromTable("crm_automations").insert({ ...automation, user_id: uid } as any).select().single();
+  if (error) throw error;
+  return data;
+}
+
+export async function updateCRMAutomation(id: string, updates: Partial<CRMAutomation>) {
+  const { data, error } = await fromTable("crm_automations").update(updates as any).eq("id", id).select().single();
+  if (error) throw error;
+  return data;
+}
+
+export async function deleteCRMAutomation(id: string) {
+  const { error } = await fromTable("crm_automations").delete().eq("id", id);
+  if (error) throw error;
+}
