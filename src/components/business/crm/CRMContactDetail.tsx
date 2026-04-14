@@ -14,12 +14,14 @@ import {
   Calendar, Clock, Send, MessageSquare, FileText, CheckSquare,
   TrendingUp, DollarSign, Edit2, Tag, ChevronRight, Plus,
   AlertTriangle, ArrowUpRight, Sparkles, MoreHorizontal, User,
-  Shield, Receipt, Handshake, HeadphonesIcon
+  Shield, Receipt, Handshake, HeadphonesIcon, Video
 } from "lucide-react";
 import { formatDistanceToNow, format, isPast } from "date-fns";
 import { useCRMCommunications, useCRMTasks, useCRMNotes, useCRMOpportunities, useCreateCommunication, useCreateTask, useCreateNote, useUpdateContact } from "@/hooks/use-crm-data";
 import type { CRMContact, CRMCompany } from "@/lib/data-services/crm-data-service";
 import { CRMEscalateToBoardroom } from "./CRMEscalateToBoardroom";
+import { CRMMeetingPrep } from "./CRMMeetingPrep";
+import { CRMNextBestAction } from "./CRMNextBestAction";
 
 const LIFECYCLE_COLORS: Record<string, string> = {
   lead: "bg-blue-500/20 text-blue-400 border-blue-500/30",
@@ -174,6 +176,7 @@ export function CRMContactDetail({ contact, companies = [], onClose, onEdit }: C
           <TabsTrigger value="tasks" className="text-xs">Tasks ({pendingTasks.length})</TabsTrigger>
           <TabsTrigger value="notes" className="text-xs">Notes ({notes.length})</TabsTrigger>
           <TabsTrigger value="deals" className="text-xs">Deals ({opps.length})</TabsTrigger>
+          <TabsTrigger value="prep" className="text-xs">Prep</TabsTrigger>
           <TabsTrigger value="proposals" className="text-xs">Proposals</TabsTrigger>
           <TabsTrigger value="invoices" className="text-xs">Invoices</TabsTrigger>
           <TabsTrigger value="support" className="text-xs">Support</TabsTrigger>
@@ -275,22 +278,13 @@ export function CRMContactDetail({ contact, companies = [], onClose, onEdit }: C
                 </CardContent>
               </Card>
 
-              {/* Advisor Next Best Action */}
-              <Card className="border-primary/20 bg-primary/5">
-                <CardContent className="p-4 flex items-start gap-3">
-                  <Sparkles className="h-5 w-5 text-primary shrink-0 mt-0.5" />
-                  <div>
-                    <p className="text-sm font-semibold text-foreground">Next Best Action</p>
-                    <p className="text-xs text-muted-foreground mt-1">
-                      {health < 40 ? `Relationship at risk — re-engage ${contact.first_name} with a personal check-in.`
-                        : overdueTasks.length > 0 ? `Complete ${overdueTasks.length} overdue task${overdueTasks.length > 1 ? "s" : ""} to maintain trust.`
-                        : contact.next_follow_up_at && isPast(new Date(contact.next_follow_up_at)) ? `Overdue follow-up — reach out to ${contact.first_name} today.`
-                        : opps.length > 0 ? `Active deal${opps.length > 1 ? "s" : ""} in pipeline — review and advance.`
-                        : `Relationship is healthy. Consider deepening with a strategic touchpoint.`}
-                    </p>
-                  </div>
-                </CardContent>
-              </Card>
+              {/* AI Next Best Actions */}
+              <CRMNextBestAction
+                contact={contact}
+                communications={comms}
+                opportunities={opps}
+                tasks={tasks}
+              />
 
               {/* Recent timeline preview */}
               {comms.length > 0 && (
@@ -452,6 +446,26 @@ export function CRMContactDetail({ contact, companies = [], onClose, onEdit }: C
                   ))}
                 </div>
               )}
+            </TabsContent>
+
+            {/* Meeting/Call Prep */}
+            <TabsContent value="prep" className="mt-0 space-y-4">
+              <CRMMeetingPrep
+                contact={contact}
+                communications={comms}
+                opportunities={opps}
+                tasks={tasks}
+                notes={notes}
+                prepType="meeting"
+              />
+              <div className="grid grid-cols-2 gap-2">
+                <Button variant="outline" size="sm" className="text-xs gap-1.5" onClick={() => {}}>
+                  <Phone className="h-3 w-3" /> Call Prep
+                </Button>
+                <Button variant="outline" size="sm" className="text-xs gap-1.5" onClick={() => {}}>
+                  <Video className="h-3 w-3" /> Meeting Prep
+                </Button>
+              </div>
             </TabsContent>
 
             {/* Proposals/Quotes Linkage */}
