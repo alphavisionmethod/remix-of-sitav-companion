@@ -29,13 +29,13 @@ async function exportKey(key: CryptoKey): Promise<string> {
 
 async function importKey(hex: string): Promise<CryptoKey> {
   const bytes = new Uint8Array(hex.match(/.{2}/g)!.map(h => parseInt(h, 16)));
-  return crypto.subtle.importKey("raw", bytes, "AES-GCM", true, ["encrypt", "decrypt"]);
+  return crypto.subtle.importKey("raw", bytes.buffer as ArrayBuffer, "AES-GCM", true, ["encrypt", "decrypt"]);
 }
 
 async function encrypt(plaintext: string, key: CryptoKey): Promise<EncryptedBlob> {
   const iv = crypto.getRandomValues(new Uint8Array(12));
   const enc = new TextEncoder();
-  const ciphertext = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, enc.encode(plaintext));
+  const ciphertext = await crypto.subtle.encrypt({ name: "AES-GCM", iv: iv.buffer as ArrayBuffer }, key, enc.encode(plaintext));
   const ctHex = Array.from(new Uint8Array(ciphertext)).map(b => b.toString(16).padStart(2, "0")).join("");
   const ivHex = Array.from(iv).map(b => b.toString(16).padStart(2, "0")).join("");
   return { ciphertext: ctHex, iv: ivHex, tag: "", version: 1 };
@@ -44,7 +44,7 @@ async function encrypt(plaintext: string, key: CryptoKey): Promise<EncryptedBlob
 async function decrypt(blob: EncryptedBlob, key: CryptoKey): Promise<string> {
   const ct = new Uint8Array(blob.ciphertext.match(/.{2}/g)!.map(h => parseInt(h, 16)));
   const iv = new Uint8Array(blob.iv.match(/.{2}/g)!.map(h => parseInt(h, 16)));
-  const plaintext = await crypto.subtle.decrypt({ name: "AES-GCM", iv }, key, ct);
+  const plaintext = await crypto.subtle.decrypt({ name: "AES-GCM", iv: iv.buffer as ArrayBuffer }, key, ct.buffer as ArrayBuffer);
   return new TextDecoder().decode(plaintext);
 }
 
