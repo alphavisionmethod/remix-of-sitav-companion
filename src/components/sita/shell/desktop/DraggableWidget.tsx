@@ -49,20 +49,20 @@ export function DraggableWidget({ id, position, onMove, onRemove, children, clas
         onRemove(id);
       }}
     >
-      {/* Drag handle — always partially visible, fully visible on hover */}
+      {/* Drag handle — always visible */}
       <div
         onPointerDown={(e) => dragControls.start(e)}
-        className="absolute -top-3.5 left-1/2 -translate-x-1/2 w-16 h-5 flex items-center justify-center rounded-full bg-white/[0.06] border border-white/[0.08] opacity-40 group-hover:opacity-100 transition-opacity z-20 cursor-grab active:cursor-grabbing touch-none"
+        className="absolute -top-4 left-1/2 -translate-x-1/2 w-16 h-5 flex items-center justify-center rounded-full bg-white/[0.08] border border-white/[0.1] opacity-60 group-hover:opacity-100 transition-opacity z-20 cursor-grab active:cursor-grabbing touch-none"
         title="Drag to move"
       >
-        <GripHorizontal className="h-3.5 w-3.5 text-white/50" />
+        <GripHorizontal className="h-3.5 w-3.5 text-white/60 group-hover:text-white/80" />
       </div>
-      {/* Remove button — always visible on hover with clear styling */}
+      {/* Remove button — always subtly visible */}
       <button
         onClick={(e) => { e.stopPropagation(); onRemove(id); }}
         className={cn(
-          "absolute -top-2.5 -right-2.5 z-50 flex h-6 w-6 items-center justify-center rounded-full bg-black/70 border border-white/[0.15] text-white/50 hover:text-white hover:bg-red-500/90 hover:border-red-400/50 transition-all shadow-lg",
-          hovered && !dragging ? "opacity-100 scale-100" : "opacity-0 scale-75 pointer-events-none"
+          "absolute -top-2.5 -right-2.5 z-50 flex h-6 w-6 items-center justify-center rounded-full bg-black/70 border border-white/[0.15] text-white/40 hover:text-white hover:bg-red-500/90 hover:border-red-400/50 transition-all shadow-lg",
+          dragging ? "opacity-0 pointer-events-none" : "opacity-60 group-hover:opacity-100 scale-100"
         )}
         title="Remove widget"
       >
