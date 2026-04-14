@@ -5,7 +5,7 @@ import {
   Receipt, Banknote, ClipboardList, Bot, RefreshCw, Share2, ShoppingCart, Globe,
   BarChart3, BookOpen, LineChart, Mail, FolderOpen, Crown, Shield, Heart,
   Building2, StickyNote, Upload, Filter, Workflow, BrainCircuit, Search,
-  ChevronDown, ChevronRight, Sliders
+  ChevronDown, ChevronRight, Sliders, Sun, Moon
 } from "lucide-react";
 import { Headphones as SupportIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -80,6 +80,12 @@ import CRMCustomFieldsPage from "@/pages/business/CRMCustomFieldsPage";
 import CRMCommunications from "@/pages/business/CRMCommunications";
 import CRMIntegrationHub from "@/pages/business/CRMIntegrationHub";
 import CustomerHealthPage from "@/pages/CustomerHealthPage";
+import MorningBriefing from "@/pages/business/MorningBriefing";
+import EndOfDayClosure from "@/pages/business/EndOfDayClosure";
+import DealRoom from "@/pages/business/DealRoom";
+import StrategicAccountRoom from "@/pages/business/StrategicAccountRoom";
+import RelationshipDossier from "@/pages/business/RelationshipDossier";
+import BackgroundTaskCenter from "@/pages/business/BackgroundTaskCenter";
 import CustomerDetail from "@/pages/CustomerDetail";
 
 // ── Sidebar structure ─────────────────────────────────────────
@@ -123,6 +129,8 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
     label: "Core",
     items: [
       { id: "overview", label: "Overview", icon: LayoutDashboard },
+      { id: "morning-briefing", label: "Morning Brief", icon: Sun },
+      { id: "end-of-day", label: "End of Day", icon: Moon },
       { id: "leads", label: "Leads", icon: Target, count: 3 },
       { id: "customers", label: "Customers", icon: Users },
       { id: "follow-through", label: "Follow-Through", icon: Phone, count: 8, countSeverity: "warning" },
@@ -130,6 +138,9 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
       { id: "appointments", label: "Appointments", icon: Calendar },
       { id: "operations", label: "Operations", icon: Settings, count: 3 },
       { id: "opportunities", label: "Opportunities", icon: TrendingUp },
+      { id: "deal-room", label: "Deal Room", icon: Briefcase },
+      { id: "strategic-accounts", label: "Strategic Accounts", icon: Crown },
+      { id: "relationship-dossier", label: "Dossier", icon: Heart },
       { id: "customer-health", label: "Customer Health", icon: Heart },
     ],
   },
@@ -176,6 +187,7 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
       { id: "workflow-templates", label: "Workflow Templates", icon: Workflow },
       { id: "boardroom-agenda", label: "Boardroom Agenda", icon: BookOpen },
       { id: "business-settings", label: "Settings", icon: Settings },
+      { id: "background-tasks", label: "Tasks & Syncs", icon: Activity },
     ],
   },
 ];
@@ -231,6 +243,12 @@ const pages: Record<string, React.ComponentType> = {
   "workflow-templates": AdaptiveWorkflowTemplates,
   "boardroom-agenda": AdaptiveBoardroomAgenda,
   "business-settings": BusinessSettingsPage,
+  "morning-briefing": MorningBriefing,
+  "end-of-day": EndOfDayClosure,
+  "deal-room": DealRoom,
+  "strategic-accounts": StrategicAccountRoom,
+  "relationship-dossier": RelationshipDossier,
+  "background-tasks": BackgroundTaskCenter,
 };
 
 // ── Helper components ─────────────────────────────────────────
