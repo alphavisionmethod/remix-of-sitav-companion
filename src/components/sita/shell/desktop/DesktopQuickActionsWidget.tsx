@@ -30,6 +30,7 @@ export function DesktopQuickActionsWidget({ onOpenCommand, onLaunchApp }: Props)
             onPointerDown={(e) => e.stopPropagation()}
             onClick={(e) => {
               e.stopPropagation();
+              console.log("[QuickActions] clicked:", a.label, "appId:", a.appId, "onLaunchApp exists:", !!onLaunchApp);
               if (a.isSearch) {
                 onOpenCommand?.();
               } else {
