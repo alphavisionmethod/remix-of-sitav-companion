@@ -159,7 +159,7 @@ export default function DailyPulse() {
             insight="Insurance renewal due in 12 days — found $340/yr savings across 3 options. Q2 tax estimate 75% reserved."
             confidence={88}
             accentColor={DOMAIN_ACCENTS.money.from}
-            action={{ label: "View Options", onClick: () => navigate("/money") }}
+            action={{ label: "View Options", onClick: () => { window.dispatchEvent(new CustomEvent("sita-open-finance", { detail: { module: "overview" } })); } }}
           />
         </ListRevealItem>
         <ListRevealItem>

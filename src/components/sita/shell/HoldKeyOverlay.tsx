@@ -7,6 +7,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { openBusinessModule } from "@/lib/business-launcher";
+import { openFinanceModule } from "@/lib/finance-launcher";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import {
@@ -39,7 +40,7 @@ export function HoldKeyOverlay() {
       { id: "home", label: "Desktop", shortcut: "⌘H", icon: Home, action: () => navigate("/"), category: "navigate" },
       { id: "pulse", label: "Daily Pulse", shortcut: "⌘1", icon: Zap, action: () => navigate("/pulse"), category: "navigate" },
       { id: "business", label: "Business", shortcut: "⌘2", icon: BriefcaseBusiness, action: () => openBusinessModule("crm-home"), category: "navigate" },
-      { id: "money", label: "Money", shortcut: "⌘3", icon: DollarSign, action: () => navigate("/money"), category: "navigate" },
+      { id: "money", label: "Money", shortcut: "⌘3", icon: DollarSign, action: () => openFinanceModule("overview"), category: "navigate" },
       { id: "calendar", label: "Calendar", shortcut: "⌘4", icon: Calendar, action: () => navigate("/calendar"), category: "navigate" },
       { id: "files", label: "Files", shortcut: "⌘5", icon: FolderOpen, action: () => navigate("/files"), category: "navigate" },
     ];
@@ -62,8 +63,8 @@ export function HoldKeyOverlay() {
     const pageActions: ActionItem[] = [];
     if (segment === "money") {
       pageActions.push(
-        { id: "accounts", label: "Accounts", icon: Globe, action: () => navigate("/money/accounts"), category: "navigate" },
-        { id: "budget", label: "Budget", icon: BarChart3, action: () => navigate("/money/budget"), category: "navigate" },
+        { id: "accounts", label: "Accounts", icon: Globe, action: () => openFinanceModule("overview"), category: "navigate" },
+        { id: "budget", label: "Budget", icon: BarChart3, action: () => openFinanceModule("budgets"), category: "navigate" },
       );
     } else if (segment === "business") {
       pageActions.push(
