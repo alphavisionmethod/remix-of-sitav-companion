@@ -22,6 +22,7 @@ import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getConciergeAdaptation } from "@/lib/engines/cross-os-integration";
 import { CrossOSLinksPanel } from "@/components/sita/cross-os/CrossOSLinksPanel";
 import { CrossDomainIntelligenceBridge } from "@/components/sita/cross-os/CrossDomainIntelligenceBridge";
+import { AppShellBreadcrumb, useNavigationHistory } from "@/components/sita/shell/AppShellBreadcrumb";
 
 // Lazy-load all 19 page components
 const ConciergeOverview = lazy(() => import("@/pages/concierge/ConciergeOverview"));
@@ -325,7 +326,8 @@ export function ConciergeAppShell() {
     delete (window as any).__conciergeInitialModule;
   }, []);
 
-  const navigateTo = useCallback((key: string) => setActiveModule(key), []);
+  const navHistory = useNavigationHistory(activeModule);
+  const navigateTo = useCallback((key: string) => navHistory.navigate(key, setActiveModule), [navHistory]);
 
   // Render content
   const renderContent = () => {
@@ -395,9 +397,16 @@ export function ConciergeAppShell() {
           <div className="flex-1 flex flex-col min-w-0">
             {/* Header */}
             <div className="h-11 shrink-0 border-b border-[hsl(0_0%_100%/0.06)] flex items-center justify-between px-5 bg-[hsl(220_15%_6%/0.8)] backdrop-blur-sm">
-              <span className="text-sm font-semibold text-[hsl(0_0%_100%/0.7)]">
-                {MODULE_LABELS[activeModule] || activeModule}
-              </span>
+              <AppShellBreadcrumb
+                appName="Concierge OS"
+                appColor="hsl(285 55% 55%)"
+                current={{ id: activeModule, label: MODULE_LABELS[activeModule] || activeModule }}
+                history={navHistory.history}
+                historyIndex={navHistory.historyIndex}
+                onNavigate={navigateTo}
+                onBack={() => navHistory.goBack(setActiveModule)}
+                onForward={() => navHistory.goForward(setActiveModule)}
+              />
               <div className="flex items-center gap-2">
                 {pendingCount > 0 && (
                   <button
