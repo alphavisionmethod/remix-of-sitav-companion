@@ -18,6 +18,7 @@ import { BusinessProfileProvider } from "@/contexts/BusinessProfileContext";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import AdaptiveBusinessHome from "@/components/business/adaptive/AdaptiveBusinessHome";
 import BusinessProfileEditor from "@/components/business/adaptive/BusinessProfileEditor";
+import ProfileStudio from "@/components/business/adaptive/ProfileStudio";
 import ProfileEvolutionPanel from "@/components/business/adaptive/ProfileEvolutionPanel";
 import { CrossDomainSignalBridge } from "@/components/business/adaptive/CrossDomainSignalBridge";
 import AdaptiveKPIDashboard from "@/components/business/adaptive/AdaptiveKPIDashboard";
