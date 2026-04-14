@@ -5,12 +5,13 @@ import { useCRMContacts, useCRMCompanies, useCRMOpportunities, useCRMTasks, useC
 import {
   Users, Building2, TrendingUp, Clock, Plus, Upload, AlertTriangle, CheckCircle2,
   Phone, Mail, Calendar, ArrowRight, Heart, Zap, DollarSign, BarChart3, Target,
-  UserPlus, Activity, Star, MessageSquare, BrainCircuit, Shield, Eye, ChevronRight, Sparkles
+  UserPlus, Activity, Star, MessageSquare, BrainCircuit, Shield, Eye, ChevronRight, Sparkles, Search
 } from "lucide-react";
 import { format, formatDistanceToNow, isPast, differenceInDays, subDays } from "date-fns";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import CRMCommandSearch from "@/components/business/crm/CRMCommandSearch";
 
 const CRMHome = () => {
   const { data: contacts = [] } = useCRMContacts();
