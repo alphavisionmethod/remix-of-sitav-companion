@@ -9,11 +9,12 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import {
   X, DollarSign, Calendar, TrendingUp, User, FileText, CheckSquare,
-  MessageSquare, Sparkles, Plus, Mail, Phone, Heart
+  MessageSquare, Sparkles, Plus, Mail, Phone, Heart, Shield
 } from "lucide-react";
 import { format, formatDistanceToNow, isPast } from "date-fns";
 import { useCRMCommunications, useCRMTasks, useCRMNotes, useCRMContacts, useCRMCompanies, useCRMPipelineStages, useUpdateOpportunity, useCreateTask, useCreateNote } from "@/hooks/use-crm-data";
 import type { CRMOpportunity } from "@/lib/data-services/crm-data-service";
+import { CRMEscalateToBoardroom } from "./CRMEscalateToBoardroom";
 
 const healthColor = (p: number) => p >= 70 ? "text-green-400" : p >= 40 ? "text-yellow-400" : "text-red-400";
 

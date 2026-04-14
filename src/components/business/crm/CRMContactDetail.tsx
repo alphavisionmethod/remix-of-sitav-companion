@@ -558,6 +558,19 @@ export function CRMContactDetail({ contact, companies = [], onClose, onEdit }: C
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Boardroom Escalation */}
+      <CRMEscalateToBoardroom
+        open={showEscalation}
+        onOpenChange={setShowEscalation}
+        context={{
+          entityType: "contact",
+          entityId: contact.id,
+          entityName: `${contact.first_name} ${contact.last_name}`,
+          healthScore: health,
+          advisorSummary: health < 40 ? `Relationship at risk — re-engage ${contact.first_name}.` : undefined,
+        }}
+      />
     </div>
   );
 }
