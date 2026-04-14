@@ -76,7 +76,7 @@ const LeadsInbox = () => {
   const { primaryMode, adaptations } = useBusinessProfile();
   const identity = getIdentityLayer(primaryMode);
   const crmLang = adaptations.crm.language;
-  const leadLabel = primaryMode === "ecommerce" ? "Cart Leads" : primaryMode === "appointment-based" ? "Booking Inquiries" : primaryMode === "brick-and-mortar" ? "Walk-in Leads" : crmLang.leadLabel || "Leads";
+  const leadLabel = primaryMode === "ecommerce" ? "Cart Leads" : primaryMode === "appointment-based" ? "Booking Inquiries" : primaryMode === "brick-and-mortar" ? "Walk-in Leads" : "Leads";
   const queryClient = useQueryClient();
   const crmSync = useCRMSync();
   const { confirmation, confirm } = useConfirmation();
