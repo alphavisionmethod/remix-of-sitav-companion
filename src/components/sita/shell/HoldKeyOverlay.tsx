@@ -40,7 +40,7 @@ export function HoldKeyOverlay() {
       { id: "home", label: "Desktop", shortcut: "⌘H", icon: Home, action: () => navigate("/"), category: "navigate" },
       { id: "pulse", label: "Daily Pulse", shortcut: "⌘1", icon: Zap, action: () => navigate("/pulse"), category: "navigate" },
       { id: "business", label: "Business", shortcut: "⌘2", icon: BriefcaseBusiness, action: () => openBusinessModule("crm-home"), category: "navigate" },
-      { id: "money", label: "Money", shortcut: "⌘3", icon: DollarSign, action: () => openFinanceModule("overview"), category: "navigate" },
+      { id: "money", label: "Finance", shortcut: "⌘3", icon: DollarSign, action: () => openFinanceModule("overview"), category: "navigate" },
       { id: "calendar", label: "Calendar", shortcut: "⌘4", icon: Calendar, action: () => navigate("/calendar"), category: "navigate" },
       { id: "files", label: "Files", shortcut: "⌘5", icon: FolderOpen, action: () => navigate("/files"), category: "navigate" },
     ];

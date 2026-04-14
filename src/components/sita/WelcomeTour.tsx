@@ -30,8 +30,8 @@ const TOUR_STEPS: TourStep[] = [
     highlight: "/business",
   },
   {
-    title: "Money Center",
-    description: "Track bills, subscriptions, reserves, and cash timing. The money advisor detects waste and protects your runway.",
+    title: "Finance Center",
+    description: "Track bills, subscriptions, reserves, and cash timing. The finance advisor detects waste and protects your runway.",
     icon: DollarSign,
     highlight: "/money",
   },

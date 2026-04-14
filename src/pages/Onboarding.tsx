@@ -455,7 +455,7 @@ const Onboarding = () => {
                   <p className="text-sm font-semibold text-foreground">What happens next:</p>
                   <div className="space-y-2 text-sm text-muted-foreground">
                     <p className="flex items-start gap-2"><Sparkles className="h-4 w-4 text-accent shrink-0 mt-0.5" /> Your Daily Pulse is personalized to your role</p>
-                    <p className="flex items-start gap-2"><Briefcase className="h-4 w-4 text-primary shrink-0 mt-0.5" /> Business, Money, and Concierge centers are configured</p>
+                    <p className="flex items-start gap-2"><Briefcase className="h-4 w-4 text-primary shrink-0 mt-0.5" /> Business, Finance, and Concierge centers are configured</p>
                     <p className="flex items-start gap-2"><Shield className="h-4 w-4 text-primary shrink-0 mt-0.5" /> Trust controls are set to "{state.trustLevel}" mode</p>
                     <p className="flex items-start gap-2"><BarChart3 className="h-4 w-4 text-primary shrink-0 mt-0.5" /> Your first Boardroom review will be ready next week</p>
                   </div>
