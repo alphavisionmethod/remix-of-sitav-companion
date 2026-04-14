@@ -18,6 +18,8 @@ import { BusinessProfileProvider } from "@/contexts/BusinessProfileContext";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import AdaptiveBusinessHome from "@/components/business/adaptive/AdaptiveBusinessHome";
 import BusinessProfileEditor from "@/components/business/adaptive/BusinessProfileEditor";
+import ProfileEvolutionPanel from "@/components/business/adaptive/ProfileEvolutionPanel";
+import { CrossDomainSignalBridge } from "@/components/business/adaptive/CrossDomainSignalBridge";
 
 // ── Page imports ──────────────────────────────────────────────
 import BusinessOverview from "@/pages/business/BusinessOverview";
@@ -153,6 +155,7 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
       { id: "advisors", label: "Advisors", icon: Brain },
       { id: "pipeline-health", label: "Pipeline Health", icon: Activity },
       { id: "business-profile", label: "Business Profile", icon: Sliders },
+      { id: "profile-evolution", label: "Profile Evolution", icon: Activity },
     ],
   },
 ];
@@ -203,6 +206,7 @@ const pages: Record<string, React.ComponentType> = {
   "customer-health": CustomerHealthPage,
   "adaptive-home": AdaptiveBusinessHome,
   "business-profile": BusinessProfileEditor,
+  "profile-evolution": ProfileEvolutionPanel,
 };
 
 // ── Helper components ─────────────────────────────────────────
@@ -498,6 +502,7 @@ function BusinessAppShellInner({ initialModule }: { initialModule?: string }) {
 
   return (
     <BusinessNavigationContext.Provider value={{ navigateTo, activeModule }}>
+      <CrossDomainSignalBridge />
       <div className="flex h-full w-full bg-[hsl(220_15%_6%)]">
         {/* Sidebar */}
         <div className="w-[190px] shrink-0 border-r border-[hsl(0_0%_100%/0.06)] bg-[hsl(220_15%_5%)] flex flex-col py-3 px-1.5 overflow-y-auto scrollbar-thin">

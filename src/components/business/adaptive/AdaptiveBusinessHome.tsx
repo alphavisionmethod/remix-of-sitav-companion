@@ -11,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 import { getTopWidgets, type HomeWidget } from "./BusinessHomeWidgetRegistry";
 import { getQuickActionsForProfile, getStatCardsForProfile } from "./AdaptiveCRMConfig";
+import { getIdentityLayer, getTimeAwareGreeting } from "@/lib/engines/business-identity-layers";
 
 const ICON_MAP: Record<string, React.ElementType> = {
   TrendingUp, ShoppingCart, LineChart, Banknote, Target, Receipt,
@@ -40,6 +41,8 @@ export default function AdaptiveBusinessHome() {
   const topWidgets = getTopWidgets(weights as unknown as Record<string, number>, 8);
   const quickActions = getQuickActionsForProfile(primaryMode, 4);
   const statCards = getStatCardsForProfile(primaryMode);
+  const identity = getIdentityLayer(primaryMode);
+  const greeting = getTimeAwareGreeting(primaryMode);
 
   return (
     <div className="p-5 space-y-5">
@@ -51,10 +54,11 @@ export default function AdaptiveBusinessHome() {
       >
         <div>
           <h1 className="text-[16px] font-bold text-foreground/90">
-            Business Home
+            {greeting}
           </h1>
           <p className="text-[11px] text-foreground/40 mt-0.5">
-            Adapted for <span className="text-[hsl(var(--sita-purple))] font-semibold">{ARCHETYPE_LABELS[primaryMode] || primaryMode}</span>
+            <span style={{ color: `hsl(${identity.accentColor})` }} className="font-semibold">{identity.tagline}</span>
+            {" · "}{identity.tone.encouragement}
           </p>
         </div>
         <div className="flex items-center gap-2">
