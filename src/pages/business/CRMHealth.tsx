@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useCRMContacts, useCRMCommunications, useCRMOpportunities } from "@/hooks/use-crm-data";
+import { useCRMContacts, useCRMCommunications, useCRMOpportunities, useCRMTasks } from "@/hooks/use-crm-data";
 import {
   Heart, TrendingUp, TrendingDown, AlertTriangle, Users, ShieldAlert, Eye,
   ArrowUpRight, Clock, Phone, Mail, Calendar, ChevronRight, Sparkles,
@@ -12,6 +12,8 @@ import {
 } from "lucide-react";
 import { formatDistanceToNow, differenceInDays } from "date-fns";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
+import { CRMRelationshipIntelligence } from "@/components/business/crm/CRMRelationshipIntelligence";
+import { CRMNextBestAction } from "@/components/business/crm/CRMNextBestAction";
 
 type HealthBucket = { label: string; icon: React.ElementType; color: string; bg: string; border: string; min: number; max: number; description: string };
 
@@ -30,6 +32,7 @@ const CRMHealth = () => {
   const { data: contacts = [] } = useCRMContacts();
   const { data: comms = [] } = useCRMCommunications();
   const { data: opps = [] } = useCRMOpportunities();
+  const { data: crmTasks = [] } = useCRMTasks();
   const [expandedBucket, setExpandedBucket] = useState<string | null>(null);
   const [selectedContact, setSelectedContact] = useState<string | null>(null);
 
@@ -450,6 +453,17 @@ const CRMHealth = () => {
             </div>
           </CardContent>
         </Card>
+      )}
+
+      {/* Relationship Intelligence Deep Dive */}
+      {contacts.length > 0 && (
+        <CRMRelationshipIntelligence
+          contacts={contacts}
+          communications={comms}
+          opportunities={opps}
+          tasks={crmTasks}
+          onSelectContact={setSelectedContact}
+        />
       )}
 
       {contacts.length === 0 && (
