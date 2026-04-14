@@ -66,14 +66,25 @@ export const ShellLayout = ({ children }: { children: ReactNode }) => {
     const handler = (e: Event) => {
       const detail = (e as CustomEvent).detail;
       const module = detail?.module || "crm-home";
-      // Store desired module so BusinessAppShell can pick it up
       (window as any).__businessInitialModule = module;
       doLaunchApp("business");
-      // Also dispatch a module-change event for already-open windows
       window.dispatchEvent(new CustomEvent("sita-business-navigate", { detail: { module } }));
     };
     window.addEventListener("sita-open-business", handler);
     return () => window.removeEventListener("sita-open-business", handler);
+  }, [doLaunchApp]);
+
+  // Listen for sita-open-finance events (from MoneyCenter redirect shim)
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent).detail;
+      const module = detail?.module || "overview";
+      (window as any).__financeInitialModule = module;
+      doLaunchApp("finance");
+      window.dispatchEvent(new CustomEvent("sita-finance-navigate", { detail: { module } }));
+    };
+    window.addEventListener("sita-open-finance", handler);
+    return () => window.removeEventListener("sita-open-finance", handler);
   }, [doLaunchApp]);
 
   // Hooks

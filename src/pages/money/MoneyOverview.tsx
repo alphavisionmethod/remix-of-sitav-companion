@@ -3,16 +3,16 @@ import { FinanceMoneyFlow } from "@/components/finance/FinanceMoneyFlow";
 import { FinanceQuickTransfer } from "@/components/finance/FinanceQuickTransfer";
 import { FinanceRecentTransactions } from "@/components/finance/FinanceRecentTransactions";
 import { FinanceStatCards } from "@/components/finance/FinanceStatCards";
-import { useNavigate } from "react-router-dom";
 import { useBills, useSubscriptions, useInvoices } from "@/hooks/use-sita-data";
 import { useFinancialAccounts, useMoneyKPIs } from "@/hooks/use-domain-data";
 import { DollarSign, Receipt, CreditCard } from "lucide-react";
 import { PremiumEmptyState } from "@/components/sita/PremiumEmptyState";
+import { useFinanceNavigation } from "@/contexts/FinanceNavigationContext";
 
 const isDemoMode = true;
 
 const MoneyOverview = () => {
-  const navigate = useNavigate();
+  const { navigateTo } = useFinanceNavigation();
   const { data: bills = [] } = useBills();
   const { data: subscriptions = [] } = useSubscriptions();
   const { data: invoices = [] } = useInvoices();
@@ -29,8 +29,8 @@ const MoneyOverview = () => {
         title="Set up your financial command center"
         description="Add your first bill or subscription to unlock cash flow intelligence."
         actions={[
-          { label: "Add a Bill", icon: Receipt, onClick: () => navigate("/money/bills") },
-          { label: "Track Subscription", icon: CreditCard, onClick: () => navigate("/money/subscriptions"), variant: "secondary" as const },
+          { label: "Add a Bill", icon: Receipt, onClick: () => navigateTo("bills") },
+          { label: "Track Subscription", icon: CreditCard, onClick: () => navigateTo("subscriptions"), variant: "secondary" as const },
         ]}
         tip="The money advisor detects waste and protects your runway automatically"
         domain="finance"

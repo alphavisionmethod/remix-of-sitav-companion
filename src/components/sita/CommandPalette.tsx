@@ -191,9 +191,9 @@ export const CommandPalette = ({ open, onClose }: CommandPaletteProps) => {
             else if (a.label.includes("Follow-Up")) { window.dispatchEvent(new CustomEvent("sita-open-business", { detail: { module: "follow-through" } })); }
             else if (a.label.includes("Customer")) { window.dispatchEvent(new CustomEvent("sita-open-business", { detail: { module: "customers" } })); }
             else if (a.label.includes("Quote")) { window.dispatchEvent(new CustomEvent("sita-open-business", { detail: { module: "quotes" } })); }
-            else if (a.label.includes("Bills")) navigate("/money/bills");
-            else if (a.label.includes("Cash")) navigate("/money");
-            else if (a.label.includes("Subscription")) navigate("/money/subscriptions");
+            else if (a.label.includes("Bills")) { window.dispatchEvent(new CustomEvent("sita-open-finance", { detail: { module: "bills" } })); }
+            else if (a.label.includes("Cash")) { window.dispatchEvent(new CustomEvent("sita-open-finance", { detail: { module: "overview" } })); }
+            else if (a.label.includes("Subscription")) { window.dispatchEvent(new CustomEvent("sita-open-finance", { detail: { module: "subscriptions" } })); }
             else if (a.label.includes("Errand")) navigate("/concierge/errands");
             else if (a.label.includes("Appointment")) navigate("/concierge/appointments");
             else if (a.label.includes("Document") || a.label.includes("Upload")) navigate("/files");

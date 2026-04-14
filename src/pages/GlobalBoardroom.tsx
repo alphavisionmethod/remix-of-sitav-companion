@@ -104,7 +104,7 @@ const GlobalBoardroom = () => {
               <motion.div
                 initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.05 }}
                 className="p-5 rounded-2xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] cursor-pointer hover:bg-[hsl(0_0%_100%/0.04)] transition-colors"
-                onClick={() => navigate("/money/boardroom")}
+                onClick={() => { window.dispatchEvent(new CustomEvent("sita-open-finance", { detail: { module: "boardroom" } })); }}
               >
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[hsl(152_55%_48%)] to-[hsl(165_50%_42%)] flex items-center justify-center">
