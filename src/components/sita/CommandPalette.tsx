@@ -261,8 +261,6 @@ export const CommandPalette = ({ open, onClose }: CommandPaletteProps) => {
         });
       }
     });
-      }
-    });
 
     // Installed apps
     apps.filter(a => a.installStatus === "installed").forEach(app => {
