@@ -334,7 +334,8 @@ export class ContextualDecisionEngine {
 
     const { decision } = this.simulate({ ...ctx, action });
     const domain = action.split(".")[0];
-    const domainPolicy = (policy as Record<string, unknown>)[domain === "shield" ? "shield" : domain] as Record<string, unknown> | undefined;
+    const policyRecord = policy as unknown as Record<string, unknown>;
+    const domainPolicy = policyRecord[domain === "shield" ? "shield" : domain] as Record<string, unknown> | undefined;
 
     return {
       applicableRules,

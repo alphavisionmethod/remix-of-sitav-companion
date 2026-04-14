@@ -419,8 +419,8 @@ export class PolicyBundleManager {
     const effective = this.getEffective();
     const constraints: Array<{ domain: string; key: string; value: unknown; source: string; invariant: boolean }> = [];
 
-    for (const [domain, values] of Object.entries(effective)) {
-      if (domain === "device_mode" || typeof values !== "object") continue;
+    for (const [domain, values] of Object.entries(effective as unknown as Record<string, unknown>)) {
+      if (domain === "device_mode" || typeof values !== "object" || values === null) continue;
       for (const [key, value] of Object.entries(values as Record<string, unknown>)) {
         const fullKey = `${domain}.${key}`;
         constraints.push({
