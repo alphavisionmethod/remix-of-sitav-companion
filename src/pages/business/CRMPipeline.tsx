@@ -362,7 +362,7 @@ const CRMPipeline = () => {
                             {d.company_id && companyMap[d.company_id] && (
                               <p className="text-[10px] text-muted-foreground flex items-center gap-0.5"><Building2 className="h-2.5 w-2.5" />{companyMap[d.company_id]}</p>
                             )}
-                            <div className="flex items-center gap-2 mt-2 text-xs">
+                            <div className="flex items-center gap-2 mt-2 text-xs flex-wrap">
                               <span className="flex items-center gap-0.5 font-semibold text-foreground"><DollarSign className="h-3 w-3 text-green-400" />{d.value?.toLocaleString()}</span>
                               <span className="text-muted-foreground">{d.probability}%</span>
                               {d.expected_close_date && (
@@ -372,6 +372,7 @@ const CRMPipeline = () => {
                                 </span>
                               )}
                             </div>
+                            <DealAdvisorSignal opp={d} />
                             {/* Stage navigation */}
                             {!stage.is_won && !stage.is_lost && (
                               <div className="flex items-center gap-1 mt-2 pt-2 border-t border-border/20">
