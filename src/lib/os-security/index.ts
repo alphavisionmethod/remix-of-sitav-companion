@@ -48,6 +48,7 @@ export async function bootOSSecurity(): Promise<{
   sessiond: ReturnType<typeof getSessionDaemon>;
   auditd: ReturnType<typeof getAuditDaemon>;
   controlcenterd: ReturnType<typeof getControlCenterDaemon>;
+  notifyd: ReturnType<typeof getNotifyDaemon>;
 }> {
   if (booted) {
     return {
@@ -57,6 +58,7 @@ export async function bootOSSecurity(): Promise<{
       sessiond: getSessionDaemon(),
       auditd: getAuditDaemon(),
       controlcenterd: getControlCenterDaemon(),
+      notifyd: getNotifyDaemon(),
     };
   }
 
@@ -86,6 +88,11 @@ export async function bootOSSecurity(): Promise<{
   await controlcenterd.initialize();
   console.log("[os-security] ✓ controlcenterd initialized");
 
+  const notifyd = getNotifyDaemon();
+  await notifyd.initialize();
+  notifyd.seedDemoEvents();
+  console.log("[os-security] ✓ notifyd initialized");
+
   // Record boot event
   await auditd.record({
     actorUserId: "system",
@@ -100,7 +107,7 @@ export async function bootOSSecurity(): Promise<{
   booted = true;
   console.log("[os-security] ✓ Security subsystem ready");
 
-  return { authd, policyd, secretsd, sessiond, auditd, controlcenterd };
+  return { authd, policyd, secretsd, sessiond, auditd, controlcenterd, notifyd };
 }
 
 export function isOSSecurityBooted(): boolean {
