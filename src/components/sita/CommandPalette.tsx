@@ -432,9 +432,12 @@ export const CommandPalette = ({ open, onClose }: CommandPaletteProps) => {
               value={query}
               onChange={e => { setQuery(e.target.value); setSelectedIdx(0); }}
               onKeyDown={handleKeyDown}
-              placeholder="Search apps, actions, or navigate…"
+              placeholder="Search apps, actions, or ask in natural language…"
               className="flex-1 bg-transparent text-base text-foreground placeholder:text-muted-foreground/50 outline-none"
             />
+            {aiLoading && (
+              <Loader2 className="h-4 w-4 text-[hsl(265_55%_58%)] animate-spin shrink-0" />
+            )}
             <kbd className="hidden sm:inline-flex text-[10px] text-muted-foreground/40 bg-muted/50 px-2 py-0.5 rounded-md font-mono border border-border/20">
               ESC
             </kbd>
