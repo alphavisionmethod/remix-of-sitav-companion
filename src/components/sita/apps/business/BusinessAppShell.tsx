@@ -26,6 +26,7 @@ import BusinessPulseStrip from "@/components/business/adaptive/BusinessPulseStri
 import AdaptiveCommandPalette from "@/components/business/adaptive/AdaptiveCommandPalette";
 import ModeTransitionCeremony from "@/components/business/adaptive/ModeTransitionCeremony";
 import { getSidebarOverrides, applySidebarOverrides } from "@/lib/engines/adaptive-sidebar-intelligence";
+import AdaptiveNotificationCenter from "@/components/business/adaptive/AdaptiveNotificationCenter";
 
 // ── Page imports ──────────────────────────────────────────────
 import BusinessOverview from "@/pages/business/BusinessOverview";
