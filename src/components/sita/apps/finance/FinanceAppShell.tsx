@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import {
   Activity, CreditCard, PieChart, ShieldCheck, Brain, ArrowUpRight, CheckCircle, Clock, AlertTriangle, Zap,
   LayoutDashboard, Receipt, ArrowLeftRight, TrendingUp, Scale, PiggyBank, Building, Calculator,
   ArrowDownLeft, Shuffle, Heart, Shield, Sparkles, Network, Sliders, Calendar, Lock, Home, FlaskConical,
-  CheckSquare, FolderOpen, Crown, Settings, DollarSign
+  CheckSquare, FolderOpen, Crown, Settings, DollarSign, ExternalLink
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
@@ -11,6 +11,9 @@ import { DomainAdvisorBoard } from "@/components/sita/domain-shared/DomainAdviso
 import { useBoardroomBridge } from "@/hooks/useBoardroomBridge";
 import { getAdvisorOutputs } from "@/lib/services/orchestration-pipeline/module-advisor-consumer";
 import { FinanceNavigationContext } from "@/contexts/FinanceNavigationContext";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { getFinanceAdaptation } from "@/lib/engines/cross-os-integration";
+import { CrossOSLinksPanel } from "@/components/sita/cross-os/CrossOSLinksPanel";
 
 // ── Page imports ────────────────────────────────────────────
 import MoneyOverview from "@/pages/money/MoneyOverview";
@@ -174,6 +177,8 @@ export function FinanceAppShell() {
   const initial = (window as any).__financeInitialModule || "overview";
   const [activeModule, setActiveModule] = useState<string>(initial);
   const { pendingCount, decisionCount, synthesis } = useBoardroomBridge("finance");
+  const { primaryMode } = useBusinessProfile();
+  const financeAdapt = useMemo(() => getFinanceAdaptation(primaryMode), [primaryMode]);
 
   // Deep-link listener
   useEffect(() => {
@@ -188,7 +193,12 @@ export function FinanceAppShell() {
   const navigateTo = useCallback((key: string) => setActiveModule(key), []);
 
   const PageComponent = pages[activeModule];
-  const activeLabel = SIDEBAR_GROUPS.flatMap(g => g.items).find(i => i.key === activeModule)?.label || activeModule;
+  const adaptedLabels = useMemo(() => {
+    const map: Record<string, string> = {};
+    if (financeAdapt.receivablesLabel) map["receivables"] = financeAdapt.receivablesLabel;
+    return map;
+  }, [financeAdapt]);
+  const activeLabel = adaptedLabels[activeModule] || SIDEBAR_GROUPS.flatMap(g => g.items).find(i => i.key === activeModule)?.label || activeModule;
 
   return (
     <FinanceNavigationContext.Provider value={{ navigateTo, activeModule }}>
@@ -202,7 +212,7 @@ export function FinanceAppShell() {
             </div>
             <div>
               <p className="text-[12px] font-bold text-[hsl(0_0%_90%)] tracking-tight">Finance OS</p>
-              <p className="text-[9px] text-[hsl(0_0%_100%/0.3)]">v2.0</p>
+              <p className="text-[9px] text-[hsl(0_0%_100%/0.3)]">{financeAdapt.budgetStyle === "business" ? "Business Finance" : financeAdapt.budgetStyle === "hybrid" ? "Hybrid Finance" : "Personal Finance"}</p>
             </div>
           </div>
 
@@ -233,6 +243,11 @@ export function FinanceAppShell() {
               </div>
             </div>
           ))}
+
+          {/* Cross-OS Links */}
+          <div className="mt-auto px-3 pt-3 pb-2">
+            <CrossOSLinksPanel sourceApp="finance" primaryMode={primaryMode} compact maxLinks={4} />
+          </div>
         </div>
 
         {/* ── Content ─────────────────────────────────────── */}

@@ -2,7 +2,7 @@
 // SITA OS — Concierge App Shell (Full 19-page windowed app)
 // ═══════════════════════════════════════════════════════════════
 
-import React, { useState, useEffect, useCallback, lazy, Suspense } from "react";
+import React, { useState, useEffect, useCallback, useMemo, lazy, Suspense } from "react";
 import {
   CalendarHeart, CheckSquare, MapPin, LayoutDashboard, Brain,
   ArrowUpRight, CheckCircle, Clock, AlertTriangle, Activity, Zap,
@@ -18,6 +18,9 @@ import { getAdvisorOutputs } from "@/lib/services/orchestration-pipeline/module-
 import { useRelationshipContexts, useHumanObligations } from "@/hooks/useCAIData";
 import { ConciergeDataProvider } from "@/contexts/ConciergeDataContext";
 import { ConciergeNavigationContext } from "@/contexts/ConciergeNavigationContext";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { getConciergeAdaptation } from "@/lib/engines/cross-os-integration";
+import { CrossOSLinksPanel } from "@/components/sita/cross-os/CrossOSLinksPanel";
 
 // Lazy-load all 19 page components
 const ConciergeOverview = lazy(() => import("@/pages/concierge/ConciergeOverview"));
@@ -303,6 +306,8 @@ export function ConciergeAppShell() {
   const { pendingCount, decisionCount, synthesis } = useBoardroomBridge("concierge");
   const { data: caiRelationships } = useRelationshipContexts({ limit: 20 });
   const { data: caiObligations } = useHumanObligations({ limit: 20 });
+  const { primaryMode } = useBusinessProfile();
+  const conciergeAdapt = useMemo(() => getConciergeAdaptation(primaryMode), [primaryMode]);
 
   // Deep-link navigation listener
   useEffect(() => {
@@ -362,7 +367,7 @@ export function ConciergeAppShell() {
               </div>
               <div>
                 <p className="text-[12px] font-semibold text-[hsl(0_0%_100%/0.85)]">Concierge</p>
-                <p className="text-[9px] text-[hsl(0_0%_100%/0.3)]">Life Support OS</p>
+                <p className="text-[9px] text-[hsl(0_0%_100%/0.3)]">{conciergeAdapt.advisorTone.length > 40 ? "Life Support OS" : conciergeAdapt.advisorTone}</p>
               </div>
             </div>
 
@@ -376,6 +381,11 @@ export function ConciergeAppShell() {
                   onSelect={navigateTo}
                 />
               ))}
+
+              {/* Cross-OS Links */}
+              <div className="px-1.5 pt-3 pb-2">
+                <CrossOSLinksPanel sourceApp="concierge" primaryMode={primaryMode} compact maxLinks={4} />
+              </div>
             </div>
           </div>
 
