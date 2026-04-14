@@ -9,11 +9,12 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import {
   X, DollarSign, Calendar, TrendingUp, User, FileText, CheckSquare,
-  MessageSquare, Sparkles, Plus, Mail, Phone, Heart
+  MessageSquare, Sparkles, Plus, Mail, Phone, Heart, Shield
 } from "lucide-react";
 import { format, formatDistanceToNow, isPast } from "date-fns";
 import { useCRMCommunications, useCRMTasks, useCRMNotes, useCRMContacts, useCRMCompanies, useCRMPipelineStages, useUpdateOpportunity, useCreateTask, useCreateNote } from "@/hooks/use-crm-data";
 import type { CRMOpportunity } from "@/lib/data-services/crm-data-service";
+import { CRMEscalateToBoardroom } from "./CRMEscalateToBoardroom";
 
 const healthColor = (p: number) => p >= 70 ? "text-green-400" : p >= 40 ? "text-yellow-400" : "text-red-400";
 
@@ -36,6 +37,7 @@ export function CRMDealDetail({ deal, onClose }: CRMDealDetailProps) {
   const [activeTab, setActiveTab] = useState("overview");
   const [showAddTask, setShowAddTask] = useState(false);
   const [taskTitle, setTaskTitle] = useState("");
+  const [showEscalation, setShowEscalation] = useState(false);
 
   const contact = allContacts.find(c => c.id === deal.contact_id);
   const company = allCompanies.find(c => c.id === deal.company_id);
@@ -85,7 +87,10 @@ export function CRMDealDetail({ deal, onClose }: CRMDealDetailProps) {
               <span className={`text-sm font-semibold ${healthColor(deal.probability)}`}>{deal.probability}% likely</span>
             </div>
           </div>
-          <Button variant="ghost" size="icon" className="h-7 w-7" onClick={onClose}><X className="h-4 w-4" /></Button>
+          <div className="flex items-center gap-1">
+            <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => setShowEscalation(true)}><Shield className="h-4 w-4" /></Button>
+            <Button variant="ghost" size="icon" className="h-7 w-7" onClick={onClose}><X className="h-4 w-4" /></Button>
+          </div>
         </div>
 
         {/* Stage progress */}
@@ -248,6 +253,18 @@ export function CRMDealDetail({ deal, onClose }: CRMDealDetailProps) {
           </Button>
         </DialogContent>
       </Dialog>
+
+      <CRMEscalateToBoardroom
+        open={showEscalation}
+        onOpenChange={setShowEscalation}
+        context={{
+          entityType: "deal",
+          entityId: deal.id,
+          entityName: deal.title,
+          pipelineValue: deal.value,
+          advisorSummary: deal.probability < 40 ? `Low probability deal — may need strategic intervention.` : undefined,
+        }}
+      />
     </div>
   );
 }
