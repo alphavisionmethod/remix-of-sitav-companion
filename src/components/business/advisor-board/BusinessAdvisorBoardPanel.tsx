@@ -203,6 +203,3 @@ export function BusinessAdvisorBoardPanel({ allAdvisors: propAdvisors, themes: p
     </div>
   );
 }
-
-// Needed for import in escalation candidates section
-import { Crown } from "lucide-react";
