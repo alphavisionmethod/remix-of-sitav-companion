@@ -27,6 +27,7 @@ import AdaptiveCommandPalette from "@/components/business/adaptive/AdaptiveComma
 import ModeTransitionCeremony from "@/components/business/adaptive/ModeTransitionCeremony";
 import { getSidebarOverrides, applySidebarOverrides } from "@/lib/engines/adaptive-sidebar-intelligence";
 import AdaptiveNotificationCenter from "@/components/business/adaptive/AdaptiveNotificationCenter";
+import AdaptiveOnboardingWizard from "@/components/business/adaptive/AdaptiveOnboardingWizard";
 
 // ── Page imports ──────────────────────────────────────────────
 import BusinessOverview from "@/pages/business/BusinessOverview";
@@ -419,10 +420,11 @@ export function BusinessAppShell({ initialModule }: { initialModule?: string }) 
 }
 
 function BusinessAppShellInner({ initialModule }: { initialModule?: string }) {
-  const { adaptations, primaryMode, operatingFlags } = useBusinessProfile();
+  const { adaptations, primaryMode, operatingFlags, isAdapted } = useBusinessProfile();
   const storedModule = (window as any).__businessInitialModule;
   const [activeModule, setActiveModule] = useState(storedModule || initialModule || "adaptive-home");
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(() => !isAdapted);
 
   // Global Cmd+K listener
   useEffect(() => {
@@ -539,6 +541,9 @@ function BusinessAppShellInner({ initialModule }: { initialModule?: string }) {
     <BusinessNavigationContext.Provider value={{ navigateTo, activeModule }}>
       <CrossDomainSignalBridge />
       <ModeTransitionCeremony />
+      {showOnboarding && (
+        <AdaptiveOnboardingWizard onComplete={() => setShowOnboarding(false)} />
+      )}
       <AdaptiveCommandPalette
         open={commandPaletteOpen}
         onClose={() => setCommandPaletteOpen(false)}

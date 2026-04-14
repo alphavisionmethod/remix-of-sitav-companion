@@ -10,6 +10,8 @@ import { useInvoiceGenerate, useInvoiceSend } from "@/hooks/use-backend-actions"
 import { InvoiceDetailPane } from "@/components/business/InvoiceDetailPane";
 import { cn } from "@/lib/utils";
 import { CrossAppAction } from "@/components/sita/CrossAppAction";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { getIdentityLayer } from "@/lib/engines/business-identity-layers";
 
 // New design system
 import { HeroCard, QueueCard, StatusCard } from "@/components/sita/cards";
@@ -30,6 +32,9 @@ const executionState = (status: string): "drafted" | "approved" | "executing" | 
 
 const InvoicesCollections = () => {
   const { user } = useAuth();
+  const { primaryMode, adaptations } = useBusinessProfile();
+  const identity = getIdentityLayer(primaryMode);
+  const invoiceLabel = primaryMode === "ecommerce" ? "Orders & Payments" : primaryMode === "appointment-based" ? "Session Billing" : primaryMode === "membership" ? "Membership Billing" : "Invoices & Collections";
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showAdd, setShowAdd] = useState(false);
   const [form, setForm] = useState({ invoice_number: "", amount: "", due_date: "", notes: "" });
