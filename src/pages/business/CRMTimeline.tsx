@@ -15,7 +15,7 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { motion, AnimatePresence } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useBusinessNavigation } from "@/contexts/BusinessNavigationContext";
 
 const TYPE_META: Record<string, { icon: React.ElementType; color: string; bg: string; label: string }> = {
   email: { icon: Mail, color: "text-blue-400", bg: "bg-blue-500/10", label: "Email" },
@@ -40,7 +40,7 @@ const CRMTimeline = () => {
   const { data: contacts = [] } = useCRMContacts();
   const { data: companies = [] } = useCRMCompanies();
   const createComm = useCreateCommunication();
-  const navigate = useNavigate();
+  const { navigateTo } = useBusinessNavigation();
   const [typeFilter, setTypeFilter] = useState<string | null>(null);
   const [directionFilter, setDirectionFilter] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -197,7 +197,7 @@ const CRMTimeline = () => {
             <p className="text-xs text-muted-foreground mt-0.5">The memory stream of every relationship — with proof, context, and intelligence</p>
           </div>
           <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" className="gap-1.5" onClick={() => navigate("/business/crm-communications")}>
+            <Button variant="outline" size="sm" className="gap-1.5" onClick={() => navigateTo("crm-communications")}>
               <Inbox className="h-3.5 w-3.5" /> Queue
             </Button>
             <Dialog open={showAdd} onOpenChange={setShowAdd}>

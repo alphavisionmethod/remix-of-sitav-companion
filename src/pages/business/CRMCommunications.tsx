@@ -1,11 +1,11 @@
 import React from "react";
 import { CRMCommunicationQueue } from "@/components/business/crm/CRMCommunicationQueue";
-import { useNavigate } from "react-router-dom";
+import { useBusinessNavigation } from "@/contexts/BusinessNavigationContext";
 
 const CRMCommunications = () => {
-  const navigate = useNavigate();
+  const { navigateTo } = useBusinessNavigation();
   return (
-    <CRMCommunicationQueue onViewTimeline={() => navigate("/business/crm-timeline")} />
+    <CRMCommunicationQueue onViewTimeline={() => navigateTo("crm-timeline")} />
   );
 };
 

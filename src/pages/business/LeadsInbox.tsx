@@ -19,7 +19,7 @@ import {
   Upload, Plug
 } from "lucide-react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useBusinessNavigation } from "@/contexts/BusinessNavigationContext";
 import { useConfirmation } from "@/hooks/use-confirmation";
 import { ConfirmationDialog } from "@/components/sita/ConfirmationDialog";
 import { DataFreshnessBadge } from "@/components/sita/DataFreshnessBadge";
@@ -69,7 +69,7 @@ const timeAgo = (dt: string | null) => {
 type Tab = "all" | "urgent" | "new" | "warm" | "stale" | "qualified";
 
 const LeadsInbox = () => {
-  const navigate = useNavigate();
+  const { navigateTo } = useBusinessNavigation();
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const crmSync = useCRMSync();
@@ -185,7 +185,7 @@ const LeadsInbox = () => {
       <PageTruthBanner />
       <div className="flex items-center gap-3 flex-wrap">
         <DataFreshnessBadge {...freshness} />
-        <SitaButton variant="ghost" size="sm" onClick={() => navigate("/business/integrations")}><Plug className="h-3.5 w-3.5" /> Import</SitaButton>
+        <SitaButton variant="ghost" size="sm" onClick={() => navigateTo("integrations")}><Plug className="h-3.5 w-3.5" /> Import</SitaButton>
         <SitaButton variant="secondary" size="sm" onClick={() => { if (leads.length > 0) crmSync.syncLeads.mutate(leads.map(l => ({ name: l.name, email: l.email || undefined, phone: l.phone || undefined, source: l.source || undefined, status: l.status }))); }} disabled={crmSync.syncLeads.isPending || leads.length === 0}><RefreshCw className={`h-3.5 w-3.5 ${crmSync.syncLeads.isPending ? "animate-spin" : ""}`} /> Sync</SitaButton>
         <SitaButton variant="primary" onClick={() => { resetForm(); setShowAdd(true); }}><Plus className="h-4 w-4" /> Add Lead</SitaButton>
       </div>
@@ -288,7 +288,7 @@ const LeadsInbox = () => {
               description={leads.length === 0 ? "Add your first lead to start tracking opportunities, follow-ups, and revenue potential." : "Try adjusting your filters or search term."}
               actions={leads.length === 0 ? [
                 { label: "Add First Lead", icon: Plus, onClick: () => { resetForm(); setShowAdd(true); }, variant: "primary" },
-                { label: "Import from CRM", icon: Plug, onClick: () => navigate("/business/integrations"), variant: "secondary" },
+                { label: "Import from CRM", icon: Plug, onClick: () => navigateTo("integrations"), variant: "secondary" },
               ] : undefined}
               tip={leads.length === 0 ? "Leads sync automatically when you connect your CRM" : undefined}
             />

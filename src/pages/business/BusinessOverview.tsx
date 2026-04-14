@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useBusinessNavigation } from "@/contexts/BusinessNavigationContext";
 import { DollarSign, Users, TrendingUp, Target, Briefcase, Sparkles } from "lucide-react";
 import { BusinessStatCard } from "@/components/business/BusinessStatCard";
 import { BusinessMoneyFlow } from "@/components/business/BusinessMoneyFlow";
@@ -6,7 +6,7 @@ import { BusinessRecentActivity } from "@/components/business/BusinessRecentActi
 import { BusinessQuickActions } from "@/components/business/BusinessQuickActions";
 
 const BusinessOverview = () => {
-  const navigate = useNavigate();
+  const { navigateTo } = useBusinessNavigation();
 
   return (
     <div className="min-h-full bg-[#0a0a12] p-6 space-y-5">
@@ -74,7 +74,7 @@ const BusinessOverview = () => {
             3 leads aging past 5 days — conversion drops 40% after day 7. Revenue autopilot recovered <span className="text-emerald-400 font-medium">$4,200</span> this week. Consider prioritizing Emily Watson's follow-up today.
           </p>
           <button
-            onClick={() => navigate("/business/leads")}
+            onClick={() => navigateTo("leads")}
             className="mt-4 self-start px-4 py-2 rounded-xl bg-violet-500/15 text-violet-400 text-[11px] font-medium hover:bg-violet-500/25 transition-colors"
           >
             Review Leads →
