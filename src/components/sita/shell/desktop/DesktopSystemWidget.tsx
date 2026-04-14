@@ -56,7 +56,7 @@ export function DesktopSystemWidget({ onLaunchApp }: DesktopSystemWidgetProps) {
     try {
       const controlcenterd = getControlCenterDaemon();
       const sessiond = getSessionDaemon();
-      const session = sessiond.listSessions()[0];
+      const session = sessiond.getAllSessions()[0];
       if (!session) return true;
 
       const result = await controlcenterd.executeCommand({

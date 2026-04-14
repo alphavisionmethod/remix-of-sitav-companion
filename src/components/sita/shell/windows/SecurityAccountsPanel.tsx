@@ -125,7 +125,7 @@ function SessionCard({
           </span>
         </div>
         <p className="text-xs text-muted-foreground mt-0.5">
-          Role: {session.role} · Since {new Date(session.loginTime).toLocaleString()}
+          Role: {session.role} · Since {new Date(session.createdAt).toLocaleString()}
         </p>
       </div>
       {!isCurrent && (
@@ -188,15 +188,15 @@ export function SecurityAccountsPanel() {
       const sessiond = getSessionDaemon();
       const auditd = getAuditDaemon();
 
-      const allSessions = sessiond.listSessions();
+      const allSessions = sessiond.getAllSessions();
       setSessions(allSessions);
 
-      const chain = auditd.getAuditChain(50);
-      setAuditEvents(chain.map(e => ({
-        action: e.event.action,
-        decision: e.event.decision,
-        severity: e.event.severity,
-        timestamp: e.event.timestamp,
+      const events = auditd.getEvents({ limit: 50 });
+      setAuditEvents(events.map(e => ({
+        action: e.action,
+        decision: e.decision,
+        severity: e.severity,
+        timestamp: e.timestamp,
       })));
 
       // Calculate score
