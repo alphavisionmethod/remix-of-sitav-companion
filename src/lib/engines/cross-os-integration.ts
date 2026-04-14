@@ -372,9 +372,9 @@ const CONCIERGE_ADAPTATIONS: Record<ProfileArchetype, ConciergeArchetypeAdaptati
     primaryConcern: "Practice demands and continuing education",
     workLifeBlend: "blended",
   },
-  franchise: {
+  "multi-location": {
     appointmentEmphasis: "secondary",
-    errandTypes: ["Location visit", "Franchise meeting", "Training event"],
+    errandTypes: ["Location visit", "Regional meeting", "Training event"],
     travelEmphasis: "high",
     householdIntegration: "light",
     advisorTone: "Multiple locations, one personal life to protect",
@@ -392,14 +392,14 @@ const CONCIERGE_ADAPTATIONS: Record<ProfileArchetype, ConciergeArchetypeAdaptati
     primaryConcern: "Community obligations vs personal boundaries",
     workLifeBlend: "blended",
   },
-  nonprofit: {
+  "product-service": {
     appointmentEmphasis: "secondary",
-    errandTypes: ["Donor meeting", "Grant deadline prep", "Event logistics"],
+    errandTypes: ["Product sourcing", "Service delivery", "Hybrid scheduling"],
     travelEmphasis: "medium",
     householdIntegration: "full",
-    advisorTone: "You serve the mission — I'll serve you",
-    schedulingLabel: "Mission & Personal Calendar",
-    primaryConcern: "Mission passion causing burnout",
+    advisorTone: "Products and services — I'll handle the personal side",
+    schedulingLabel: "Work & Personal Calendar",
+    primaryConcern: "Dual-focus business model complexity",
     workLifeBlend: "blended",
   },
   hybrid: {
