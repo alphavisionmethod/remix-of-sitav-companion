@@ -66,7 +66,7 @@ const DOMAIN_CONFIG: DomainConfig = {
   version: "Business OS v2.0",
 };
 
-type SubPage = "overview" | "leads" | "customers" | "follow-through" | "support" | "appointments" | "operations" | "documents" | "opportunities" | "quotes" | "invoices" | "communications" | "boardroom" | "proof" | "revenue-autopilot" | "collections" | "autopilot-hub" | "revenue-impact" | "playbook-builder" | "revenue-forecast" | "website-builder" | "proposals" | "lead-recovery" | "social" | "ecommerce" | "crm-home" | "crm-contacts" | "crm-companies" | "crm-pipeline" | "crm-health" | "crm-timeline" | "crm-tasks" | "crm-notes" | "crm-segments" | "crm-automations";
+type SubPage = "overview" | "leads" | "customers" | "follow-through" | "support" | "appointments" | "operations" | "documents" | "opportunities" | "quotes" | "invoices" | "communications" | "boardroom" | "proof" | "revenue-autopilot" | "collections" | "autopilot-hub" | "revenue-impact" | "playbook-builder" | "revenue-forecast" | "website-builder" | "proposals" | "lead-recovery" | "social" | "ecommerce" | "crm-home" | "crm-contacts" | "crm-companies" | "crm-pipeline" | "crm-health" | "crm-timeline" | "crm-tasks" | "crm-notes" | "crm-segments" | "crm-automations" | "crm-import" | "crm-duplicates";
 
 const subpageFromPath = (path: string): SubPage => {
   // CRM routes first (more specific)
