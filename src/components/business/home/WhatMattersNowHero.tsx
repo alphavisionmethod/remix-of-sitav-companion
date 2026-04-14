@@ -53,6 +53,17 @@ const MODE_PRIORITIES: Record<string, PriorityItem[]> = {
     { id: "p2", severity: "warning", title: "3 inventory items approaching stockout", description: "High-demand SKUs need reorder within 48h to avoid lost sales.", confidence: 0.88, source: "Inventory Monitor", action: { label: "Reorder", icon: Package } },
     { id: "p3", severity: "info", title: "Walk-in conversion up 12% this week", description: "Staff training initiative showing results. Consider expanding to other locations.", confidence: 0.75, source: "Performance Tracker", action: { label: "View Details", icon: Eye } },
   ],
+  "appointment-based": [
+    { id: "p1", severity: "warning", title: "2 high-risk no-show slots tomorrow", description: "Clients with prior no-show history booked for premium time slots. Confirmation pending.", confidence: 0.78, source: "Schedule Intelligence", action: { label: "Send Reminder", icon: Send }, sparkline: [5, 6, 8, 10, 11, 12] },
+    { id: "p2", severity: "warning", title: "Complex appointment needs advance prep", description: "Multi-service booking tomorrow requires 30min setup. Prep materials not yet reviewed.", daysOverdue: 1, confidence: 0.85, source: "Prep Monitor", action: { label: "Review Prep", icon: FileText } },
+    { id: "p3", severity: "info", title: "Booking momentum 15% above weekly average", description: "Strong demand trend — consider opening additional availability windows.", confidence: 0.72, source: "Booking Analytics", action: { label: "View Trends", icon: Eye } },
+  ],
+  agency: [
+    { id: "p1", severity: "critical", title: "Acme project 40% over scope — profitability at risk", description: "Scope creep has pushed the project beyond profitable range. Client conversation needed urgently.", amount: 28000, confidence: 0.88, source: "Project Analytics", action: { label: "Review Scope", icon: FileText }, sparkline: [100, 110, 118, 125, 132, 140] },
+    { id: "p2", severity: "warning", title: "2 client renewals approaching — no outreach started", description: "Combined revenue exposure: $85K. Both clients have received competitive pitches.", amount: 85000, confidence: 0.82, source: "Account Intelligence", action: { label: "Start Outreach", icon: Send } },
+    { id: "p3", severity: "warning", title: "Creative team utilization approaching fragile zone", description: "At 88% with pending new pitch. Adding work without resolving Acme will overshoot.", confidence: 0.79, source: "Capacity Monitor", action: { label: "Review Load", icon: Users }, sparkline: [72, 76, 80, 83, 86, 88] },
+    { id: "p4", severity: "info", title: "New pitch opportunity from networking event", description: "Warm lead from industry event — fits agency sweet spot. Early discovery call recommended.", confidence: 0.65, source: "Business Development", action: { label: "Schedule Call", icon: PhoneCall } },
+  ],
 };
 
 function MiniDecayLine({ values, color }: { values: number[]; color: string }) {
