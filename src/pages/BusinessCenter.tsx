@@ -50,6 +50,8 @@ import CRMTasks from "./business/CRMTasks";
 import CRMNotes from "./business/CRMNotes";
 import CRMSegments from "./business/CRMSegments";
 import CRMAutomations from "./business/CRMAutomations";
+import CRMImportCenter from "./business/CRMImportCenter";
+import CRMDuplicates from "./business/CRMDuplicates";
 
 import { useAppStatePersistence, restoreAppState } from "@/hooks/useAppStatePersistence";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
