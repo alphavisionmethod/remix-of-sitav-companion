@@ -5,10 +5,9 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { cn } from "@/lib/utils";
-import { APP_MATERIALS, APP_SHADOWS, APP_CHROME, APP_TYPE } from "@/lib/design-system/app-window-system";
+import { APP_MATERIALS, APP_SHADOWS, APP_TYPE } from "@/lib/design-system/app-window-system";
 import { atmosphereToCSSVars } from "@/lib/design-system/domain-atmospheres";
 import { ChevronDown } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useCallback } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -41,17 +40,6 @@ interface DomainAppShellProps {
   commands?: CommandItem[];
 }
 
-/* ── Traffic Light Dots ── */
-const TrafficLights = () => {
-  const navigate = useNavigate();
-  return (
-    <div className="flex items-center gap-[7px]">
-      <button onClick={() => navigate("/")} className="w-[12px] h-[12px] rounded-full bg-[hsl(0_70%_55%)] hover:bg-[hsl(0_70%_45%)] transition-colors" title="Close" />
-      <button className="w-[12px] h-[12px] rounded-full bg-[hsl(45_85%_55%)] hover:bg-[hsl(45_85%_45%)] transition-colors" title="Minimize" />
-      <button className="w-[12px] h-[12px] rounded-full bg-[hsl(130_55%_48%)] hover:bg-[hsl(130_55%_38%)] transition-colors" title="Maximize" />
-    </div>
-  );
-};
 
 /* ── Mobile Nav ── */
 const MobileNav = ({ domain, tabGroups, activePage, onNavigate }: {
@@ -147,29 +135,22 @@ export function DomainAppShell({ domain, children, activePage, onNavigate, tabGr
         {/* Command Palette */}
         <DomainCommandPalette domain={domain.id} commands={allCommands} isOpen={cmdOpen} onClose={() => setCmdOpen(false)} />
 
-        {/* Accent Strip */}
-        <div className="w-full" style={{
-          height: APP_CHROME.accentStripHeight,
-          background: `linear-gradient(to right, ${domain.accentFrom}, ${domain.accentTo})`,
-        }} />
-
-        {/* Title Bar */}
-        <div className="flex items-center gap-3 px-4 border-b border-[hsl(0_0%_100%/0.06)] shrink-0 relative" style={{ height: APP_CHROME.titleBarHeight }}>
-          {!isMobile && <TrafficLights />}
-          <div className="flex items-center gap-2 ml-2">
-            <div className="w-5 h-5 rounded-md flex items-center justify-center" style={{
-              background: `linear-gradient(135deg, ${domain.accentFrom}, ${domain.accentTo})`,
-            }}>
-              <Icon className="h-3 w-3 text-[hsl(0_0%_100%/0.95)]" />
+        {/* Mobile Nav (desktop title bar handled by FloatingWindow) */}
+        {isMobile && (
+          <div className="flex items-center gap-3 px-4 py-2 border-b border-[hsl(0_0%_100%/0.06)] shrink-0 relative">
+            <div className="flex items-center gap-2">
+              <div className="w-5 h-5 rounded-md flex items-center justify-center" style={{
+                background: `linear-gradient(135deg, ${domain.accentFrom}, ${domain.accentTo})`,
+              }}>
+                <Icon className="h-3 w-3 text-[hsl(0_0%_100%/0.95)]" />
+              </div>
+              <span className={cn(APP_TYPE.title, "text-[hsl(0_0%_90%)]")}>{domain.title}</span>
             </div>
-            <span className={cn(APP_TYPE.title, "text-[hsl(0_0%_90%)]")}>{domain.title}</span>
-          </div>
-          {isMobile && (
             <div className="ml-auto relative">
               <MobileNav domain={domain} tabGroups={tabGroups} activePage={activePage} onNavigate={onNavigate} />
             </div>
-          )}
-        </div>
+          </div>
+        )}
 
         {/* Toolbar */}
         <AppToolbar domain={domain} toolbarActions={toolbarActions} />

@@ -37,6 +37,7 @@ export function DesktopWhatMattersWidget({ onLaunchApp }: Props) {
           <div
             key={d.id}
             onClick={() => onLaunchApp?.(d.id)}
+            onPointerDown={(e) => e.stopPropagation()}
             className="rounded-2xl border border-white/10 bg-black/15 p-4 cursor-pointer hover:bg-white/[0.06] transition-colors"
           >
             <div className="flex items-center gap-2 text-sm font-medium text-white">
