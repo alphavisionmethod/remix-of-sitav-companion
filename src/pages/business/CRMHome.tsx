@@ -84,6 +84,9 @@ const CRMHome = () => {
           </p>
         </div>
         <div className="flex gap-2">
+          <Button size="sm" variant="outline" className="gap-1.5" onClick={() => setShowSearch(true)}>
+            <Search className="h-3.5 w-3.5" /> Search
+          </Button>
           <Button size="sm" variant="outline" className="gap-1.5" onClick={() => nav("crm-import")}>
             <Upload className="h-3.5 w-3.5" /> Import
           </Button>
