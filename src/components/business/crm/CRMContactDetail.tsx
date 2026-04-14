@@ -29,6 +29,8 @@ import { CRMFilesLinkage } from "./CRMFilesLinkage";
 import { CRMConciergeLinkage } from "./CRMConciergeLinkage";
 import { CRMProofTrail } from "./CRMProofTrail";
 import { CRMOwnership } from "./CRMOwnership";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { getContactDetailTabs } from "@/components/business/adaptive/AdaptiveContactLayout";
 
 const LIFECYCLE_COLORS: Record<string, string> = {
   lead: "bg-blue-500/20 text-blue-400 border-blue-500/30",
