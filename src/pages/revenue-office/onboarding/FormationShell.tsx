@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { ArrowLeft, ArrowRight, Check, Waves } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+
 import { STAGES, CHAPTERS, defaultOnboardingState, type OnboardingState, type StageId } from "./types";
 import LiveOfficeSidebar from "./LiveOfficeSidebar";
 import { useBusinessOnboarding } from "@/hooks/useBusinessOnboarding";
@@ -52,20 +52,23 @@ const screenMap: Record<StageId, React.ComponentType<any>> = {
   reveal: RevealScreen,
 };
 
-export default function FormationShell() {
-  const navigate = useNavigate();
+interface FormationShellProps {
+  onComplete?: () => void;
+}
+
+export default function FormationShell({ onComplete }: FormationShellProps) {
   const { isLoading, isCompleted, savedState, saveProgress, markComplete } = useBusinessOnboarding();
   const [stage, setStage] = useState(0);
   const [state, setState] = useState<OnboardingState>(defaultOnboardingState);
   const [showChapterTransition, setShowChapterTransition] = useState(false);
   const initializedRef = useRef(false);
 
-  // Redirect if already completed
+  // If already completed, call onComplete
   useEffect(() => {
-    if (!isLoading && isCompleted) {
-      navigate("/revenue-office/boardroom", { replace: true });
+    if (!isLoading && isCompleted && onComplete) {
+      onComplete();
     }
-  }, [isLoading, isCompleted, navigate]);
+  }, [isLoading, isCompleted, onComplete]);
 
   // Load saved progress
   useEffect(() => {
@@ -133,30 +136,32 @@ export default function FormationShell() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
+      <div className="h-full flex items-center justify-center">
         <div className="animate-pulse text-muted-foreground text-sm">Loading…</div>
       </div>
     );
   }
 
-  if (isCompleted) return null; // Will redirect
+  if (isCompleted) return null;
 
   const Screen = screenMap[STAGES[stage].id];
 
   return (
-    <div className="min-h-screen bg-background relative">
+    <div className="h-full bg-background relative overflow-hidden flex flex-col">
       <h1 className="sr-only">Business Formation</h1>
-      <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+      {/* Background blobs — contained within the window */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
         <div className="absolute top-1/4 left-1/4 h-96 w-96 rounded-full blur-[160px] transition-opacity duration-1000"
           style={{ background: "hsl(var(--primary) / 0.03)", opacity: stage > 0 ? 1 : 0.5 }} />
         <div className="absolute bottom-1/3 right-1/4 h-64 w-64 rounded-full blur-[120px] transition-opacity duration-1000"
           style={{ background: "hsl(var(--sita-gold) / 0.02)", opacity: stage > 5 ? 1 : 0 }} />
       </div>
 
+      {/* Chapter transition overlay — contained within window */}
       <AnimatePresence>
         {showChapterTransition && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-background flex items-center justify-center">
+            className="absolute inset-0 z-50 bg-background flex items-center justify-center">
             <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 1.1, opacity: 0 }}>
               <p className="text-2xl font-bold text-foreground text-center">{STAGES[nextStage(stage)]?.chapter}</p>
               <div className="flex justify-center mt-3"><Waves className="h-5 w-5 text-primary animate-pulse" /></div>
@@ -165,9 +170,10 @@ export default function FormationShell() {
         )}
       </AnimatePresence>
 
+      {/* Progress bar — normal flow, not sticky */}
       {stage > 0 && (
-        <div className="sticky top-0 z-10 bg-background/95 backdrop-blur-md border-b border-border/30 px-6 py-3">
-          <div className="max-w-6xl mx-auto">
+        <div className="z-10 bg-background/95 backdrop-blur-md border-b border-border/30 px-6 py-3 shrink-0">
+          <div className="w-full">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
                 <Badge className="bg-primary/10 text-primary text-[9px]">{currentChapter}</Badge>
@@ -201,7 +207,8 @@ export default function FormationShell() {
         </div>
       )}
 
-      <div className="relative z-[1] max-w-6xl mx-auto px-6 py-8 flex gap-8">
+      {/* Main content — scrollable within window */}
+      <div className="relative z-[1] flex-1 overflow-y-auto px-6 py-8 flex gap-8">
         <div className="flex-1 min-w-0">
           <AnimatePresence mode="wait">
             <motion.div key={STAGES[stage].id} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.25 }}>

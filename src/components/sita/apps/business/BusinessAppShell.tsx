@@ -28,6 +28,7 @@ import ModeTransitionCeremony from "@/components/business/adaptive/ModeTransitio
 import { getSidebarOverrides, applySidebarOverrides } from "@/lib/engines/adaptive-sidebar-intelligence";
 import AdaptiveNotificationCenter from "@/components/business/adaptive/AdaptiveNotificationCenter";
 import AdaptiveOnboardingWizard from "@/components/business/adaptive/AdaptiveOnboardingWizard";
+import FormationShell from "@/pages/revenue-office/onboarding/FormationShell";
 import AdaptiveWorkflowTemplates from "@/components/business/adaptive/AdaptiveWorkflowTemplates";
 import AdaptiveBoardroomAgenda from "@/components/business/adaptive/AdaptiveBoardroomAgenda";
 import { CrossOSLinksPanel } from "@/components/sita/cross-os/CrossOSLinksPanel";
@@ -434,11 +435,12 @@ export function BusinessAppShell({ initialModule }: { initialModule?: string }) 
 
 function BusinessAppShellInner({ initialModule }: { initialModule?: string }) {
   const { adaptations, primaryMode, operatingFlags, isAdapted } = useBusinessProfile();
-  const { savedState: onboardingState } = useBusinessOnboarding();
+  const { isLoading: onboardingLoading, isCompleted: onboardingCompleted, savedState: onboardingState } = useBusinessOnboarding();
   const storedModule = (window as any).__businessInitialModule;
   const [activeModule, setActiveModule] = useState(storedModule || initialModule || "adaptive-home");
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(() => !isAdapted);
+  const [formationDone, setFormationDone] = useState(false);
 
   // Journey-aware visible items
   const journeyVisibleItems = useMemo(
@@ -558,6 +560,17 @@ function BusinessAppShellInner({ initialModule }: { initialModule?: string }) {
       </motion.div>
     );
   };
+
+  // Show full FormationShell when onboarding is not yet completed
+  const showFormation = !onboardingLoading && !onboardingCompleted && !formationDone;
+
+  if (showFormation) {
+    return (
+      <BusinessNavigationContext.Provider value={{ navigateTo, activeModule }}>
+        <FormationShell onComplete={() => setFormationDone(true)} />
+      </BusinessNavigationContext.Provider>
+    );
+  }
 
   return (
     <BusinessNavigationContext.Provider value={{ navigateTo, activeModule }}>
