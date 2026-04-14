@@ -29,7 +29,7 @@ const CRMHealth = () => {
 
   return (
     <div className="space-y-6">
-      <PageTruthBanner domain="business" subLabel="Relationship Health" />
+      <PageTruthBanner truthState="demo" />
 
       <div className="flex items-center justify-between">
         <div>

@@ -21,7 +21,7 @@ const CRMSegments = () => {
 
   return (
     <div className="space-y-6">
-      <PageTruthBanner domain="business" subLabel="CRM Segments" />
+      <PageTruthBanner truthState="demo" />
 
       <div className="flex items-center justify-between">
         <div>

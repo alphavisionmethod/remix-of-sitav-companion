@@ -54,7 +54,7 @@ const CRMNotes = () => {
 
   return (
     <div className="space-y-4">
-      <PageTruthBanner domain="business" subLabel="CRM Notes" />
+      <PageTruthBanner truthState="demo" />
 
       <div className="flex items-center justify-between gap-4">
         <div>

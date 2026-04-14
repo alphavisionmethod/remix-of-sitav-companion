@@ -16,7 +16,7 @@ const WORKFLOW_TEMPLATES = [
 const CRMAutomations = () => {
   return (
     <div className="space-y-6">
-      <PageTruthBanner domain="business" subLabel="CRM Automations" />
+      <PageTruthBanner truthState="demo" />
 
       <div className="flex items-center justify-between">
         <div>
