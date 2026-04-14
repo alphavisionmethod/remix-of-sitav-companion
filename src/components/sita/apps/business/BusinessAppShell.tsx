@@ -187,6 +187,7 @@ const SIDEBAR_GROUPS: SidebarGroup[] = [
       { id: "workflow-templates", label: "Workflow Templates", icon: Workflow },
       { id: "boardroom-agenda", label: "Boardroom Agenda", icon: BookOpen },
       { id: "business-settings", label: "Settings", icon: Settings },
+      { id: "background-tasks", label: "Tasks & Syncs", icon: Activity },
     ],
   },
 ];
