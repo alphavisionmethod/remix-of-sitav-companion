@@ -5,10 +5,9 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { cn } from "@/lib/utils";
-import { APP_MATERIALS, APP_SHADOWS, APP_CHROME, APP_TYPE } from "@/lib/design-system/app-window-system";
+import { APP_MATERIALS, APP_SHADOWS, APP_TYPE } from "@/lib/design-system/app-window-system";
 import { atmosphereToCSSVars } from "@/lib/design-system/domain-atmospheres";
 import { ChevronDown } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useCallback } from "react";
 import { useIsMobile } from "@/hooks/use-mobile";
