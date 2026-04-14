@@ -20,6 +20,8 @@ import AdaptiveBusinessHome from "@/components/business/adaptive/AdaptiveBusines
 import BusinessProfileEditor from "@/components/business/adaptive/BusinessProfileEditor";
 import ProfileEvolutionPanel from "@/components/business/adaptive/ProfileEvolutionPanel";
 import { CrossDomainSignalBridge } from "@/components/business/adaptive/CrossDomainSignalBridge";
+import AdaptiveKPIDashboard from "@/components/business/adaptive/AdaptiveKPIDashboard";
+import { BusinessModeIndicator } from "@/components/business/adaptive/BusinessModeIndicator";
 
 // ── Page imports ──────────────────────────────────────────────
 import BusinessOverview from "@/pages/business/BusinessOverview";
