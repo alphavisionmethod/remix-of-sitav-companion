@@ -429,6 +429,16 @@ export function BusinessAppShell({ initialModule }: { initialModule?: string }) 
       );
     }
 
+    // Handle customer detail view (customer-detail:someId)
+    if (activeModule.startsWith("customer-detail:")) {
+      const custId = activeModule.replace("customer-detail:", "");
+      return (
+        <motion.div key={activeModule} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.15 }}>
+          <CustomerDetail customerId={custId} />
+        </motion.div>
+      );
+    }
+
     const PageComponent = pages[activeModule];
     if (PageComponent) {
       return (
