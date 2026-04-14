@@ -6,7 +6,6 @@
 import { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { useNavigate } from "react-router-dom";
 import { Plus } from "lucide-react";
 import { useWindowManagerContext } from "@/contexts/WindowManagerContext";
 import { FloatingWindow } from "./FloatingWindow";
@@ -36,6 +35,7 @@ import {
   DesktopWeatherWidget,
   DesktopPortfolioMapWidget,
 } from "./desktop";
+import { DesktopLeftRail } from "./desktop/DesktopLeftRail";
 import type { ContinuityContext, DesktopState } from "./useShellState";
 
 interface DesktopSurfaceProps {
