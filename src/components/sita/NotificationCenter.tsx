@@ -197,7 +197,7 @@ export const NotificationCenter = ({ open, onClose }: NotificationCenterProps) =
               )}
               <AnimatePresence>
                 {filtered.map(n => {
-                  const DomainIcon = n.icon || DOMAIN_ICONS[n.domain] || Bell;
+                  const DomainIcon = (n.iconName ? ICON_MAP[n.iconName] : null) || DOMAIN_ICONS[n.domain] || Bell;
                   const colors = DOMAIN_COLORS[n.domain] || DOMAIN_COLORS.system;
 
                   return (
@@ -239,7 +239,7 @@ export const NotificationCenter = ({ open, onClose }: NotificationCenterProps) =
                         <p className="text-[12px] font-semibold text-[hsl(0_0%_100%/0.85)]">{n.title}</p>
                         <p className="text-[11px] text-[hsl(0_0%_100%/0.45)] mt-0.5 line-clamp-2">{n.body}</p>
                         <div className="flex items-center gap-2 mt-1.5">
-                          <span className="text-[9px] text-[hsl(0_0%_100%/0.25)]">{n.time}</span>
+                          <span className="text-[9px] text-[hsl(0_0%_100%/0.25)]">{new Date(n.createdAt).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}</span>
                           {n.targetApp && n.targetModule && (
                             <span className="text-[9px] font-medium flex items-center gap-0.5" style={{ color: colors.accent }}>
                               <ExternalLink size={8} />
