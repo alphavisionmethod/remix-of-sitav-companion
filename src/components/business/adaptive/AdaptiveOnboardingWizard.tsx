@@ -5,7 +5,8 @@
 // entire Business OS surface around the detected mode.
 // ═══════════════════════════════════════════════════════════════
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useMemo } from "react";
+import { getModuleAdaptation } from "@/lib/engines/business-module-adaptations";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ShoppingCart, Briefcase, Building2, Users, Calendar,

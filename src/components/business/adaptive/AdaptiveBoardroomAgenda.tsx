@@ -48,6 +48,30 @@ const ARCHETYPE_AGENDA: Record<string, AgendaItem[]> = {
     { id: "ag-3", title: "Revenue & Pipeline Status", description: "Active deals, pipeline value, forecast accuracy", domain: "Revenue", urgency: "review", icon: DollarSign, kpiValue: "$28.1K", kpiLabel: "Revenue" },
     { id: "ag-4", title: "Accountability & Handoff Quality", description: "Handoff completion, SLA adherence, escalation rate", domain: "Quality", urgency: "normal", icon: CheckCircle, kpiValue: "92%", kpiLabel: "SLA Met" },
   ],
+  "brick-and-mortar": [
+    { id: "ag-1", title: "Location Performance Review", description: "Foot traffic, conversion, revenue per location", domain: "Location", urgency: "review", icon: TrendingUp, kpiValue: "234", kpiLabel: "Visitors" },
+    { id: "ag-2", title: "Appointment & Walk-In Flow", description: "Booking density, walk-in rate, no-shows", domain: "Schedule", urgency: "high", icon: CalendarDays, kpiValue: "18", kpiLabel: "Today" },
+    { id: "ag-3", title: "Staff Coverage & Scheduling", description: "Shift coverage, overtime, capacity gaps", domain: "Team", urgency: "normal", icon: Users, kpiValue: "92%", kpiLabel: "Coverage" },
+    { id: "ag-4", title: "Repeat Customer & Loyalty", description: "Repeat visit rate, loyalty program health, local retention", domain: "Retention", urgency: "normal", icon: Target, kpiValue: "45%", kpiLabel: "Repeat Rate" },
+  ],
+  agency: [
+    { id: "ag-1", title: "Pipeline & Pitch Review", description: "Active proposals, pitch win rate, revenue forecast", domain: "Sales", urgency: "high", icon: Target, kpiValue: "$185K", kpiLabel: "Pipeline" },
+    { id: "ag-2", title: "Team Utilization & Capacity", description: "Billable hours, team allocation, bench time", domain: "Team", urgency: "high", icon: Users, kpiValue: "82%", kpiLabel: "Utilization" },
+    { id: "ag-3", title: "Client Health & At-Risk", description: "Client satisfaction, at-risk accounts, NPS trends", domain: "CRM", urgency: "normal", icon: AlertTriangle, kpiValue: "2", kpiLabel: "At Risk" },
+    { id: "ag-4", title: "Delivery & Project Status", description: "Active projects, milestones due, scope changes", domain: "Delivery", urgency: "review", icon: Layers, kpiValue: "8", kpiLabel: "Active" },
+  ],
+  "professional-practice": [
+    { id: "ag-1", title: "Schedule & Patient Volume", description: "Appointment density, gap analysis, waitlist", domain: "Schedule", urgency: "review", icon: CalendarDays, kpiValue: "24", kpiLabel: "This Week" },
+    { id: "ag-2", title: "No-Show & Cancellation Review", description: "No-show rate, cancellation patterns, recovery actions", domain: "Risk", urgency: "high", icon: AlertTriangle, kpiValue: "6%", kpiLabel: "No-Show" },
+    { id: "ag-3", title: "Billing & Collections Health", description: "Outstanding balances, insurance claims, aging", domain: "Finance", urgency: "normal", icon: DollarSign, kpiValue: "$4.1K", kpiLabel: "Outstanding" },
+    { id: "ag-4", title: "Patient Engagement & Retention", description: "Rebooking rate, follow-up compliance, satisfaction", domain: "Retention", urgency: "normal", icon: Users, kpiValue: "88%", kpiLabel: "Rebook Rate" },
+  ],
+  membership: [
+    { id: "ag-1", title: "Member Retention & Churn", description: "Active members, churn rate, at-risk members", domain: "Retention", urgency: "critical", icon: Users, kpiValue: "2.1%", kpiLabel: "Churn" },
+    { id: "ag-2", title: "Revenue & MRR Review", description: "Monthly recurring revenue, expansion, contraction", domain: "Revenue", urgency: "review", icon: DollarSign, kpiValue: "$18.4K", kpiLabel: "MRR" },
+    { id: "ag-3", title: "Engagement & Usage Patterns", description: "Active usage, feature adoption, dormant members", domain: "Engagement", urgency: "normal", icon: TrendingUp, kpiValue: "72%", kpiLabel: "Active" },
+    { id: "ag-4", title: "Win-Back & Reactivation", description: "Lapsed members, win-back campaigns, reactivation rate", domain: "Recovery", urgency: "high", icon: Target, kpiValue: "12", kpiLabel: "Lapsed" },
+  ],
 };
 
 const DEFAULT_AGENDA: AgendaItem[] = [
