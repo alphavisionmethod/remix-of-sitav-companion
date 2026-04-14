@@ -128,8 +128,8 @@ const CRMSegments = () => {
 
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-bold text-foreground">Segments & Smart Views</h2>
-          <p className="text-xs text-muted-foreground">Slice your contacts with filters, or use built-in smart views</p>
+          <h2 className="text-xl font-bold text-foreground">{contactLabel} Segments & Smart Views</h2>
+          <p className="text-xs text-muted-foreground">Slice your {contactLabel.toLowerCase()} with filters, or use built-in smart views</p>
         </div>
         <Button size="sm" className="gap-1.5" onClick={() => setShowBuilder(true)}>
           <Plus className="h-3.5 w-3.5" /> New Segment
