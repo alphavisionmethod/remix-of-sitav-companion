@@ -93,6 +93,42 @@ export default function BusinessProfileEditor() {
         </div>
       </motion.div>
 
+      {/* Confidence meter */}
+      <motion.div
+        initial={{ opacity: 0, y: 8 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.07 }}
+        className="rounded-xl border border-[hsl(0_0%_100%/0.06)] bg-[hsl(0_0%_100%/0.02)] p-4"
+      >
+        <div className="flex items-center justify-between mb-2">
+          <p className="text-[10px] font-bold uppercase tracking-[0.15em] text-foreground/30">Profile Confidence</p>
+          <span className="text-[11px] font-bold text-foreground/60">{Math.round(profile.profileConfidence * 100)}%</span>
+        </div>
+        <div className="h-2 rounded-full bg-[hsl(0_0%_100%/0.06)] overflow-hidden">
+          <motion.div
+            className="h-full rounded-full"
+            style={{
+              backgroundColor: profile.profileConfidence >= 0.7
+                ? "hsl(var(--trust-safe))"
+                : profile.profileConfidence >= 0.4
+                  ? "hsl(var(--sita-gold))"
+                  : "hsl(var(--destructive))",
+              width: `${profile.profileConfidence * 100}%`,
+            }}
+            initial={{ width: 0 }}
+            animate={{ width: `${profile.profileConfidence * 100}%` }}
+            transition={{ duration: 0.6 }}
+          />
+        </div>
+        <p className="text-[9px] text-foreground/30 mt-2">
+          {profile.profileConfidence >= 0.7
+            ? "High confidence — strong signal coverage from onboarding and manual tuning"
+            : profile.profileConfidence >= 0.4
+              ? "Moderate confidence — more signals would improve accuracy"
+              : "Low confidence — complete onboarding or adjust weights manually for better adaptation"}
+        </p>
+      </motion.div>
+
       {/* Weight sliders */}
       <motion.div
         initial={{ opacity: 0, y: 8 }}

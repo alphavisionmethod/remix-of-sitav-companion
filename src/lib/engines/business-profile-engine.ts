@@ -100,6 +100,11 @@ export interface WorkflowSuggestion {
   archetype: ProfileArchetype;
 }
 
+export interface CrossDomainSignals {
+  finance: { emphasis: string; kpis: string[] };
+  concierge: { emphasis: string; triggers: string[] };
+}
+
 export interface BusinessProfileResult {
   weights: ArchetypeWeights;
   primaryMode: ProfileArchetype;
@@ -113,6 +118,8 @@ export interface BusinessProfileResult {
   workflows: WorkflowSuggestion[];
   kpis: string[];
   manualOverrides: Partial<ArchetypeWeights>;
+  profileConfidence: number;
+  crossDomainSignals: CrossDomainSignals;
 }
 
 // ── Weight defaults ───────────────────────────────────────────
@@ -522,6 +529,23 @@ export function computeBusinessProfile(
       ? computeWeightsFromOnboarding(input.onboarding)
       : { ...EMPTY_WEIGHTS, service: 1 };
 
+  // Compute confidence based on signal count
+  let signalCount = 0;
+  if (input.twin) {
+    signalCount += 3; // base twin data
+    if (input.twin.revenueModel.checkoutDriven || input.twin.revenueModel.bookingDriven) signalCount += 1;
+    if (input.twin.revenueModel.primaryRevenueModes.length > 0) signalCount += 1;
+    if (input.twin.profile.organizationStructure) signalCount += 1;
+    if (input.twin.profile.teamSizeCategory !== "solo") signalCount += 1;
+    if (input.twin.profile.multiLocation) signalCount += 1;
+  } else if (input.onboarding) {
+    signalCount += input.onboarding.businessTypes.length > 0 ? 2 : 0;
+    signalCount += input.onboarding.revenueSources.length > 0 ? 1 : 0;
+    signalCount += input.onboarding.teamSize !== "solo" ? 1 : 0;
+  }
+  if (manualOverrides && Object.keys(manualOverrides).length > 0) signalCount += 2;
+  const profileConfidence = Math.min(1, signalCount / 8);
+
   // 2. Apply manual overrides (blend 70% computed, 30% override)
   if (manualOverrides) {
     for (const [k, v] of Object.entries(manualOverrides) as [ProfileArchetype, number][]) {
@@ -547,6 +571,9 @@ export function computeBusinessProfile(
   // 4. Derive all adaptation configs
   const flags = deriveFlags(weights, input.twin);
 
+  // 5. Cross-domain signals
+  const crossDomainSignals: CrossDomainSignals = deriveCrossDomain(primaryMode, flags);
+
   return {
     weights,
     primaryMode,
@@ -560,6 +587,30 @@ export function computeBusinessProfile(
     workflows: deriveWorkflows(primaryMode, flags),
     kpis: deriveKPIs(primaryMode),
     manualOverrides: manualOverrides || {},
+    profileConfidence,
+    crossDomainSignals,
+  };
+}
+
+function deriveCrossDomain(primary: ProfileArchetype, flags: OperatingFlags): CrossDomainSignals {
+  const financeMap: Record<string, { emphasis: string; kpis: string[] }> = {
+    ecommerce: { emphasis: "Revenue optimization & AOV tracking", kpis: ["AOV", "Customer LTV", "Refund Rate", "Campaign ROAS"] },
+    service: { emphasis: "Invoice aging & collections timing", kpis: ["Invoice Aging", "Collections Rate", "Cash Flow Gap", "Revenue Per Client"] },
+    "brick-and-mortar": { emphasis: "Recurring operational costs & daily revenue", kpis: ["Daily Revenue", "Rent/Overhead Ratio", "Staff Cost %", "Location ROI"] },
+    "employee-based": { emphasis: "Payroll efficiency & utilization", kpis: ["Revenue Per Employee", "Utilization Rate", "Overtime Cost", "Margin Per Team"] },
+    agency: { emphasis: "Project margins & retainer health", kpis: ["Project Margin", "Billable Rate", "Revenue Concentration", "Retainer MRR"] },
+  };
+  const conciergeMap: Record<string, { emphasis: string; triggers: string[] }> = {
+    ecommerce: { emphasis: "Campaign prep & fulfillment coordination", triggers: ["campaign_launch", "inventory_alert", "seasonal_prep"] },
+    service: { emphasis: "Client meeting prep & scheduling", triggers: ["consultation_prep", "proposal_deadline", "delivery_milestone"] },
+    "brick-and-mortar": { emphasis: "Staffing prep & location readiness", triggers: ["shift_coverage", "location_opening", "supply_order"] },
+    "appointment-based": { emphasis: "Calendar optimization & prep reminders", triggers: ["appointment_prep", "no_show_followup", "schedule_gap"] },
+    agency: { emphasis: "Project kickoff & client meeting prep", triggers: ["kickoff_prep", "quarterly_review", "contract_renewal"] },
+  };
+
+  return {
+    finance: financeMap[primary] || financeMap.service,
+    concierge: conciergeMap[primary] || conciergeMap.service,
   };
 }
 
