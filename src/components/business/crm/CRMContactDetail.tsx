@@ -27,6 +27,8 @@ import { InlineAdvisorInsights, generateContactInsights } from "./CRMAdvisorInsi
 import { CRMFinanceLinkage } from "./CRMFinanceLinkage";
 import { CRMFilesLinkage } from "./CRMFilesLinkage";
 import { CRMConciergeLinkage } from "./CRMConciergeLinkage";
+import { CRMProofTrail } from "./CRMProofTrail";
+import { CRMOwnership } from "./CRMOwnership";
 
 const LIFECYCLE_COLORS: Record<string, string> = {
   lead: "bg-blue-500/20 text-blue-400 border-blue-500/30",
@@ -185,6 +187,7 @@ export function CRMContactDetail({ contact, companies = [], onClose, onEdit }: C
           <TabsTrigger value="finance" className="text-xs flex items-center gap-1"><Banknote className="h-3 w-3" />Finance</TabsTrigger>
           <TabsTrigger value="files" className="text-xs flex items-center gap-1"><FolderOpen className="h-3 w-3" />Files</TabsTrigger>
           <TabsTrigger value="concierge" className="text-xs flex items-center gap-1"><CalendarClock className="h-3 w-3" />Concierge</TabsTrigger>
+          <TabsTrigger value="proof" className="text-xs flex items-center gap-1"><Shield className="h-3 w-3" />Proof</TabsTrigger>
         </TabsList>
 
         <ScrollArea className="flex-1">
