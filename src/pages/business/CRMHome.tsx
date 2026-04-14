@@ -14,6 +14,7 @@ import { useBusinessNavigation } from "@/contexts/BusinessNavigationContext";
 import CRMCommandSearch from "@/components/business/crm/CRMCommandSearch";
 import { CRMLifecycleEngine } from "@/components/business/crm/CRMLifecycleEngine";
 import { CRMRelationshipIntelligence } from "@/components/business/crm/CRMRelationshipIntelligence";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
 
 const CRMHome = () => {
   const { data: contacts = [] } = useCRMContacts();
