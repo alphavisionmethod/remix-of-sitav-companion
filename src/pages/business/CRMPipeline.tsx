@@ -17,6 +17,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { toast } from "sonner";
 import { DealAdvisorSignal } from "@/components/business/crm/CRMAdvisorInsight";
 import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { ModuleAdvisorPanel } from "@/components/business/advisor-board/ModuleAdvisorPanel";
+import { generateStagesAdvisors } from "@/lib/engines/business-advisor-engine";
 
 const CRMPipeline = () => {
   const { adaptations } = useBusinessProfile();
@@ -488,6 +490,26 @@ const CRMPipeline = () => {
           </Card>
         )}
       </div>
+
+      {/* Pipeline Advisor Intelligence */}
+      {!activeDeal && (
+        <div className="rounded-2xl border border-border/40 bg-card p-4 mt-4">
+          <ModuleAdvisorPanel
+            advisors={generateStagesAdvisors({
+              totalInPipeline: openOpps.length || 42,
+              stuckLeads: stalledOpps.slice(0, 5).map((o: any) => ({
+                id: o.id,
+                name: o.title || "Deal",
+                stage: o.stage || "Unknown",
+                daysStuck: o.expected_close_date ? differenceInDays(new Date(), new Date(o.expected_close_date)) : 30,
+              })),
+            })}
+            title="Pipeline Stage Advisors"
+            defaultExpanded={false}
+            compact
+          />
+        </div>
+      )}
 
       {/* Deal detail panel */}
       {activeDeal && (
