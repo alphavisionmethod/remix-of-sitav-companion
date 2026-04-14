@@ -24,6 +24,9 @@ const TYPE_ITEMS: Record<string, string[]> = {
   saas: ["revenue-autopilot", "autopilot-hub", "leads", "opportunities", "playbook-builder", "website-builder"],
   creator: ["social", "website-builder", "revenue-autopilot", "autopilot-hub", "ecommerce"],
   marketplace: ["ecommerce", "leads", "opportunities", "revenue-autopilot", "website-builder"],
+  membership: ["revenue-autopilot", "autopilot-hub", "leads", "opportunities", "lead-recovery"],
+  hybrid: ["quotes", "invoices", "ecommerce", "leads", "opportunities", "appointments", "revenue-autopilot", "autopilot-hub", "social", "website-builder"],
+  evolving: ["leads", "opportunities", "revenue-autopilot", "autopilot-hub", "website-builder"],
 };
 
 /**
@@ -44,10 +47,13 @@ export function getVisibleSidebarItems(businessTypes: string[]): Set<string> | n
  * Returns the recommended journey template based on primary business type.
  */
 export function getRecommendedJourney(businessTypes: string[]): string {
-  if (businessTypes.includes("ecommerce") || businessTypes.includes("marketplace")) return "marketplace";
-  if (businessTypes.includes("service") || businessTypes.includes("agency")) return "consultation";
+  if (businessTypes.includes("ecommerce") || businessTypes.includes("marketplace")) return "ecommerce";
+  if (businessTypes.includes("service") || businessTypes.includes("agency")) return "service";
   if (businessTypes.includes("saas")) return "subscription";
-  if (businessTypes.includes("coaching") || businessTypes.includes("creator")) return "simple";
-  if (businessTypes.includes("local")) return "simple";
-  return "simple";
+  if (businessTypes.includes("membership")) return "membership";
+  if (businessTypes.includes("coaching") || businessTypes.includes("creator")) return "coaching";
+  if (businessTypes.includes("local")) return "local";
+  if (businessTypes.includes("hybrid")) return "service";
+  if (businessTypes.includes("evolving")) return "creator";
+  return "service";
 }
