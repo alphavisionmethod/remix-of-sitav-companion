@@ -22,6 +22,10 @@ import ProfileEvolutionPanel from "@/components/business/adaptive/ProfileEvoluti
 import { CrossDomainSignalBridge } from "@/components/business/adaptive/CrossDomainSignalBridge";
 import AdaptiveKPIDashboard from "@/components/business/adaptive/AdaptiveKPIDashboard";
 import { BusinessModeIndicator } from "@/components/business/adaptive/BusinessModeIndicator";
+import BusinessPulseStrip from "@/components/business/adaptive/BusinessPulseStrip";
+import AdaptiveCommandPalette from "@/components/business/adaptive/AdaptiveCommandPalette";
+import ModeTransitionCeremony from "@/components/business/adaptive/ModeTransitionCeremony";
+import { getSidebarOverrides, applySidebarOverrides } from "@/lib/engines/adaptive-sidebar-intelligence";
 
 // ── Page imports ──────────────────────────────────────────────
 import BusinessOverview from "@/pages/business/BusinessOverview";
