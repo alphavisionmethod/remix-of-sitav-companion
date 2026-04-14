@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { getModuleAdaptation } from "@/lib/engines/business-module-adaptations";
 import { motion } from "framer-motion";
 import { HeroCard, QueueCard, ActionCard, StatusCard } from "@/components/sita/cards";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
@@ -49,6 +51,8 @@ const TEAM_MEMBERS = [
 const urgencyMap = { critical: "critical" as const, high: "high" as const, medium: "normal" as const, low: "low" as const };
 
 const BusinessOperations = () => {
+  const { primaryMode } = useBusinessProfile();
+  const moduleConfig = getModuleAdaptation("operations", primaryMode);
   const [tab, setTab] = useState<Tab>("all");
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [panelOpen, setPanelOpen] = useState(false);
@@ -84,9 +88,9 @@ const BusinessOperations = () => {
       <PageTruthBanner truthState="demo" />
 
       <HeroCard
-        title="Operations Center"
-        metric={`${DEMO_ITEMS.length} active items`}
-        subtitle="Living state of business execution — queues, bottlenecks, team load"
+        title={moduleConfig.title}
+        metric={`${DEMO_ITEMS.length} active ${moduleConfig.terminology.item?.toLowerCase() || "item"}s`}
+        subtitle={moduleConfig.subtitle}
         icon={<Layers className="h-5 w-5 text-[hsl(265_55%_68%)]" />}
         accentFrom="hsl(265 55% 58%)"
         accentTo="hsl(240 50% 48%)"
@@ -166,16 +170,16 @@ const BusinessOperations = () => {
           {filtered.length === 0 ? (
             <PremiumEmptyState icon={Layers} title="No operational items" description="All queues are clear — nothing needs attention right now" variant="first-use" domain="business" />
           ) : (
-            <QueueCard title="OPERATIONAL QUEUE" items={queueItems} maxVisible={10} onItemClick={handleSelectItem} />
+            <QueueCard title={moduleConfig.terminology.queue?.toUpperCase() || "OPERATIONAL QUEUE"} items={queueItems} maxVisible={10} onItemClick={handleSelectItem} />
           )}
         </>
       )}
 
       <ModuleAdvisorInsight
-        advisorName="Operations Advisor"
+        advisorName={moduleConfig.advisorName}
         domain="business"
         confidence={88}
-        insight={`${criticalCount} critical items need immediate attention. ${totalCustomerImpact} customers impacted. Focus on API integration stall and SLA breach first — highest blast radius.`}
+        insight={`${criticalCount} critical ${moduleConfig.terminology.item?.toLowerCase() || "item"}s need immediate attention. ${totalCustomerImpact} customers impacted. ${moduleConfig.advisorSpecialty}.`}
         linkedItems={["API Webhook", "SLA Breach", "Queue Backup"]}
       />
 

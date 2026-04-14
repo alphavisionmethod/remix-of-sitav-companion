@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useBusinessProfile } from "@/hooks/useBusinessProfile";
+import { getModuleAdaptation } from "@/lib/engines/business-module-adaptations";
 import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -141,6 +143,8 @@ const AppointmentCard = ({ apt }: { apt: Appointment }) => {
 };
 
 const AppointmentsScheduling = () => {
+  const { primaryMode } = useBusinessProfile();
+  const moduleConfig = getModuleAdaptation("appointments", primaryMode);
   const [activeTab, setActiveTab] = useState("upcoming");
 
   const filterApts = (tab: string) => {
@@ -160,8 +164,8 @@ const AppointmentsScheduling = () => {
           <CalendarDays className="h-5 w-5" />
         </div>
         <div>
-          <h2 className="text-lg font-bold text-foreground">Appointments & Scheduling</h2>
-          <p className="text-xs text-muted-foreground">Confirm, protect, and recover bookings</p>
+          <h2 className="text-lg font-bold text-foreground">{moduleConfig.title}</h2>
+          <p className="text-xs text-muted-foreground">{moduleConfig.subtitle}</p>
         </div>
       </div>
 
