@@ -28,6 +28,9 @@ function saveConfig(config: AutopilotConfig) {
 }
 
 const AutopilotHubPage = () => {
+  const { primaryMode } = useBusinessProfile();
+  const identity = getIdentityLayer(primaryMode);
+  const autopilotLabel = primaryMode === "ecommerce" ? "Sales Autopilot" : primaryMode === "agency" ? "Growth Engine" : primaryMode === "employee-based" ? "Workflow Engine" : primaryMode === "appointment-based" ? "Booking Autopilot" : "Revenue Autopilot";
   const [config, setConfig] = useState<AutopilotConfig>(loadConfig);
   const [showWizard, setShowWizard] = useState(!config.isOnboarded);
 
