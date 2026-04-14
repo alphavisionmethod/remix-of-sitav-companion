@@ -49,7 +49,7 @@ const WORKSPACES: WorkspaceConfig[] = [
   },
   {
     id: "money",
-    label: "Money",
+    label: "Finance",
     icon: DollarSign,
     color: "hsl(150 70% 50%)",
     gradient: "from-emerald-500/20 to-green-500/20",

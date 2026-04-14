@@ -18,7 +18,7 @@ function deriveTourSteps(prefs: {
 
   // Domain-based
   const domainNames = prefs.enabledDomains.map(d =>
-    d === "business" ? "Business" : d === "money" ? "Money" : d === "concierge" ? "Concierge" : d
+    d === "business" ? "Business" : d === "money" ? "Finance" : d === "concierge" ? "Concierge" : d
   );
   if (domainNames.length > 0) {
     steps.push({

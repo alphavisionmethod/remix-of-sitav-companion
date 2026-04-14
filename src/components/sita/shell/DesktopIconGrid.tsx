@@ -24,7 +24,7 @@ interface DesktopIcon {
 
 const DESKTOP_ICONS: DesktopIcon[] = [
   { id: "business", label: "Business OS", icon: Briefcase, previewIcon: BarChart3, gradient: ICON_GRADIENTS.purple, route: "/business" },
-  { id: "money", label: "Money OS", icon: DollarSign, previewIcon: TrendingUp, gradient: ICON_GRADIENTS.green, route: "/money" },
+  { id: "money", label: "Finance OS", icon: DollarSign, previewIcon: TrendingUp, gradient: ICON_GRADIENTS.green, route: "/money" },
   { id: "concierge", label: "Concierge", icon: Headphones, previewIcon: Calendar, gradient: "from-[hsl(285_55%_55%)] to-[hsl(310_50%_48%)]", route: "/concierge" },
   { id: "documents", label: "Documents", icon: FileText, previewIcon: FileStack, gradient: ICON_GRADIENTS.blue },
   { id: "downloads", label: "Downloads", icon: Download, previewIcon: FileDown, gradient: ICON_GRADIENTS.green },

@@ -14,7 +14,7 @@ interface TourStep {
 const TOUR_STEPS: TourStep[] = [
   {
     title: "Welcome to SITA OS",
-    description: "Your sovereign AI operating system. One brain, three domains — Business, Money, and Concierge — all working together for you.",
+    description: "Your sovereign AI operating system. One brain, three domains — Business, Finance, and Concierge — all working together for you.",
     icon: Brain,
   },
   {
@@ -30,8 +30,8 @@ const TOUR_STEPS: TourStep[] = [
     highlight: "/business",
   },
   {
-    title: "Money Center",
-    description: "Track bills, subscriptions, reserves, and cash timing. The money advisor detects waste and protects your runway.",
+    title: "Finance Center",
+    description: "Track bills, subscriptions, reserves, and cash timing. The finance advisor detects waste and protects your runway.",
     icon: DollarSign,
     highlight: "/money",
   },

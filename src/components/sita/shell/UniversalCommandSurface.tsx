@@ -64,7 +64,7 @@ const COMMAND_INDEX: CommandItem[] = [
   { id: "nav-desktop", label: "Desktop", sublabel: "OS home screen", icon: Layout, path: "/desktop", category: "navigate", keywords: ["desktop", "home", "shell", "surface"] },
   { id: "nav-home", label: "Daily Pulse", sublabel: "Morning review", icon: Home, path: "/home", category: "navigate", keywords: ["home", "pulse", "daily"] },
   { id: "nav-business", label: "Business Center", sublabel: "Leads, customers, pipeline", icon: Briefcase, path: "/business", category: "navigate", domain: "business", keywords: ["business", "crm", "leads", "sales"] },
-  { id: "nav-money", label: "Money Center", sublabel: "Bills, accounts, reserves", icon: DollarSign, path: "/money", category: "navigate", domain: "finance", keywords: ["money", "finance", "bills", "budget"] },
+  { id: "nav-money", label: "Finance Center", sublabel: "Bills, accounts, reserves", icon: DollarSign, path: "/money", category: "navigate", domain: "finance", keywords: ["money", "finance", "bills", "budget"] },
   { id: "nav-concierge", label: "Concierge", sublabel: "Household, calendar, tasks", icon: Headphones, path: "/concierge", category: "navigate", domain: "concierge", keywords: ["concierge", "household", "calendar"] },
   { id: "nav-files", label: "Files", sublabel: "Documents & knowledge", icon: FolderOpen, path: "/files", category: "navigate", keywords: ["files", "documents"] },
   { id: "nav-workflows", label: "Workflows", sublabel: "Automations", icon: Workflow, path: "/workflows", category: "navigate", keywords: ["workflows", "automation"] },
@@ -81,7 +81,7 @@ const COMMAND_INDEX: CommandItem[] = [
   { id: "nav-twins", label: "Digital Twins", sublabel: "Predictive models", icon: Users, path: "/digital-twins", category: "navigate", keywords: ["twins", "predictive"] },
   // Advisors
   { id: "adv-business", label: "Business Advisor", sublabel: "Pipeline & revenue", icon: Briefcase, path: "/advisors/business-advisor", category: "advisor", domain: "business", keywords: ["business", "advisor"] },
-  { id: "adv-money", label: "Money Advisor", sublabel: "Cashflow guidance", icon: DollarSign, path: "/advisors/money-advisor", category: "advisor", domain: "finance", keywords: ["money", "advisor"] },
+  { id: "adv-money", label: "Finance Advisor", sublabel: "Cashflow guidance", icon: DollarSign, path: "/advisors/money-advisor", category: "advisor", domain: "finance", keywords: ["money", "finance", "advisor"] },
   { id: "adv-concierge", label: "Concierge Advisor", sublabel: "Task help", icon: Headphones, path: "/advisors/concierge-advisor", category: "advisor", domain: "concierge", keywords: ["concierge", "advisor"] },
   { id: "adv-strategy", label: "Strategy Advisor", sublabel: "Cross-domain synthesis", icon: Brain, path: "/advisors/strategy-advisor", category: "advisor", keywords: ["strategy", "advisor"] },
   // System

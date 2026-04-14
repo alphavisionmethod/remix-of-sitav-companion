@@ -25,7 +25,7 @@ interface Props {
 
 const DOMAIN_META: Record<string, { icon: typeof Briefcase; label: string }> = {
   business: { icon: Briefcase, label: "Business" },
-  money: { icon: DollarSign, label: "Money" },
+  money: { icon: DollarSign, label: "Finance" },
   concierge: { icon: Headphones, label: "Concierge" },
   personal: { icon: Eye, label: "Personal" },
 };
