@@ -37,6 +37,7 @@ export function CRMDealDetail({ deal, onClose }: CRMDealDetailProps) {
   const [activeTab, setActiveTab] = useState("overview");
   const [showAddTask, setShowAddTask] = useState(false);
   const [taskTitle, setTaskTitle] = useState("");
+  const [showEscalation, setShowEscalation] = useState(false);
 
   const contact = allContacts.find(c => c.id === deal.contact_id);
   const company = allCompanies.find(c => c.id === deal.company_id);
@@ -86,7 +87,10 @@ export function CRMDealDetail({ deal, onClose }: CRMDealDetailProps) {
               <span className={`text-sm font-semibold ${healthColor(deal.probability)}`}>{deal.probability}% likely</span>
             </div>
           </div>
-          <Button variant="ghost" size="icon" className="h-7 w-7" onClick={onClose}><X className="h-4 w-4" /></Button>
+          <div className="flex items-center gap-1">
+            <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => setShowEscalation(true)}><Shield className="h-4 w-4" /></Button>
+            <Button variant="ghost" size="icon" className="h-7 w-7" onClick={onClose}><X className="h-4 w-4" /></Button>
+          </div>
         </div>
 
         {/* Stage progress */}
@@ -249,6 +253,18 @@ export function CRMDealDetail({ deal, onClose }: CRMDealDetailProps) {
           </Button>
         </DialogContent>
       </Dialog>
+
+      <CRMEscalateToBoardroom
+        open={showEscalation}
+        onOpenChange={setShowEscalation}
+        context={{
+          entityType: "deal",
+          entityId: deal.id,
+          entityName: deal.title,
+          pipelineValue: deal.value,
+          advisorSummary: deal.probability < 40 ? `Low probability deal — may need strategic intervention.` : undefined,
+        }}
+      />
     </div>
   );
 }
