@@ -17,6 +17,7 @@ import {
 } from "@/lib/services/boardroom-bridge";
 import { createDomainSignal, emitDomainSignal } from "@/lib/services/orchestration-pipeline/signal-emitter";
 import { getSynthesisForDomain } from "@/lib/services/orchestration-pipeline/app-board-synthesizer";
+import { registerItem, transitionState } from "@/lib/services/orchestration-pipeline/issue-lifecycle";
 import type { AppBoardSynthesis, Domain } from "@/lib/services/orchestration-pipeline/types";
 import { useCallback, useMemo } from "react";
 
@@ -78,12 +79,17 @@ export function useBoardroomBridge(domain: Domain) {
 
       if (isDemoMode) {
         toast.success(`Escalated to Boardroom: ${payload.title}`);
-        return { success: true };
+        return { success: true, id: `demo-${Date.now()}` };
       }
       return escalateToBoardroom(payload);
     },
     onSuccess: (result) => {
       if (result.success) {
+        // Register item in lifecycle state machine
+        const itemId = (result as any).id || `esc-${Date.now()}`;
+        registerItem(itemId);
+        transitionState(itemId, "advisor_review", "Escalated from domain app");
+
         qc.invalidateQueries({ queryKey: ["boardroom-escalations", domain] });
         qc.invalidateQueries({ queryKey: ["boardroom-items"] });
         if (!isDemoMode) toast.success("Issue escalated to Boardroom");
@@ -103,6 +109,10 @@ export function useBoardroomBridge(domain: Domain) {
     },
     onSuccess: (result) => {
       if (result.success) {
+        // Transition item to executed in lifecycle
+        const itemId = (result as any).id || `dec-${Date.now()}`;
+        transitionState(itemId, "executed", "Decision pushed to domain app");
+
         qc.invalidateQueries({ queryKey: ["boardroom-decisions", domain] });
         qc.invalidateQueries({ queryKey: ["approval-queue"] });
         if (!isDemoMode) toast.success(`Decision pushed to ${domain}`);

@@ -312,6 +312,31 @@ export function useBoardroomLiveData() {
     },
   });
 
+  // ── Lifecycle transition mutation ───────────────────────────
+  const transitionItem = useMutation({
+    mutationFn: async ({ itemId, newStatus }: { itemId: string; newStatus: string }) => {
+      // Sync in-memory lifecycle
+      const { transitionState } = await import("@/lib/services/orchestration-pipeline/issue-lifecycle");
+      const result = transitionState(itemId, newStatus as any, "User action from Boardroom");
+      if (!result.success) throw new Error(result.error);
+
+      // Sync to database
+      if (!isDemoMode) {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+          await fromTable("boardroom_items")
+            .update({ status: newStatus })
+            .eq("id", itemId)
+            .eq("user_id", user.id);
+        }
+      }
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ["boardroom-items"] });
+    },
+    onError: (e) => toast.error("Transition failed: " + e.message),
+  });
+
   return {
     sessions: sessionsQuery.data || [],
     items: itemsQuery.data || DEMO_ITEMS,
@@ -322,6 +347,7 @@ export function useBoardroomLiveData() {
     createReceipt,
     createActionItem,
     submitEvidence,
+    transitionItem,
     isDemoMode,
   };
 }
