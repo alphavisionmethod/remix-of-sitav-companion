@@ -7,7 +7,7 @@ import {
   Activity, Users, Server, Cpu, DollarSign, Shield, Zap, BarChart3,
   ArrowUpRight, ArrowDownRight, Clock, CheckCircle, AlertTriangle,
   Settings, Eye, RefreshCw, Globe, Database, HardDrive,
-  Wifi, Lock, Bell, FileText
+  Wifi, Lock, Bell, FileText, Network
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -309,6 +309,20 @@ export default function AdminDashboard() {
       {/* Architecture Health */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <ArchitectureHealthBadge />
+        <Card className="border-primary/20">
+          <CardContent className="p-4 flex items-center gap-3">
+            <div className="p-2 rounded-xl bg-primary/10">
+              <Network className="h-5 w-5 text-primary" />
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-medium text-foreground">Ecosystem Command Center</p>
+              <p className="text-[10px] text-muted-foreground">OS · Cloud · App layer coordination</p>
+            </div>
+            <Button variant="outline" size="sm" asChild>
+              <Link to="/admin/ecosystem/command">Open →</Link>
+            </Button>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Bottom alerts */}
