@@ -151,6 +151,14 @@ const SRE06AutoRollbackCenter = lazy(() => import("@/pages/admin/SRE06AutoRollba
 const SRE07VersionIntelligence = lazy(() => import("@/pages/admin/SRE07VersionIntelligence"));
 const SRE08SelfOptimizationBudgets = lazy(() => import("@/pages/admin/SRE08SelfOptimizationBudgets"));
 
+// ── BOA: Board of Advisors Admin ──
+const AdvisorBoardCatalog = lazy(() => import("@/pages/admin/AdvisorBoardCatalog"));
+const AdvisorRecommendationMonitor = lazy(() => import("@/pages/admin/AdvisorRecommendationMonitor"));
+const AdvisorActionApprovalAdmin = lazy(() => import("@/pages/admin/AdvisorActionApprovalAdmin"));
+const AdvisorMemoryInspectorAdmin = lazy(() => import("@/pages/admin/AdvisorMemoryInspector"));
+const AdvisorAutonomyPolicyEditor = lazy(() => import("@/pages/admin/AdvisorAutonomyPolicyEditor"));
+const AdvisorProfitabilityDashboard = lazy(() => import("@/pages/admin/AdvisorProfitabilityDashboard"));
+
 export function getAdminRoutes() {
   return [
     <Route key="a1" path="/admin/generated-truth" element={gated("audit.view", <GeneratedTruthDashboard />)} />,
@@ -289,5 +297,12 @@ export function getAdminRoutes() {
     <Route key="mc25" path="/admin/mc/failure-recovery" element={gated("audit.view", <MCFailureRecovery />)} />,
     <Route key="mc26" path="/admin/mc/event-routing" element={gated("audit.view", <MCEventRouting />)} />,
     <Route key="mc27" path="/admin/mc/architecture-tests" element={gated("audit.view", <MCArchitectureTests />)} />,
+    // ── Board of Advisors Admin ──
+    <Route key="boa01" path="/admin/advisor-board/catalog" element={gated("flags.view", <AdvisorBoardCatalog />)} />,
+    <Route key="boa02" path="/admin/advisor-board/recommendations" element={gated("audit.view", <AdvisorRecommendationMonitor />)} />,
+    <Route key="boa03" path="/admin/advisor-board/actions" element={gated("audit.view", <AdvisorActionApprovalAdmin />)} />,
+    <Route key="boa04" path="/admin/advisor-board/memory" element={gated("audit.view", <AdvisorMemoryInspectorAdmin />)} />,
+    <Route key="boa05" path="/admin/advisor-board/autonomy" element={gated("policy.view", <AdvisorAutonomyPolicyEditor />)} />,
+    <Route key="boa06" path="/admin/advisor-board/profitability" element={gated("audit.view", <AdvisorProfitabilityDashboard />)} />,
   ];
 }
