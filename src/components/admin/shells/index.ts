@@ -18,4 +18,4 @@ export { FullSystemAudit } from "./FullSystemAudit";
 export { ContinuousVerificationPanel } from "./ContinuousVerificationPanel";
 export { LearningYouPanel } from "./LearningYouPanel";
 export { NoSilentFailureAlerts } from "./NoSilentFailureAlerts";
-export { UndoToastSystem, pushUndoAction, useUndoActions } from "./UndoToastSystem";
+export { pushUndoAction, useUndoActions } from "./UndoToastSystem";
