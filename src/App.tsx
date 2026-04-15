@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes, Navigate, Outlet, useLocation } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate, useLocation } from "react-router-dom";
 import { AdminRoute } from "@/components/auth/AdminRoute";
 
 
