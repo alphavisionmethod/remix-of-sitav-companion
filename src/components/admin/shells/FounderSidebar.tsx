@@ -6,9 +6,11 @@ import {
   LayoutDashboard, Terminal, Activity, Cloud, HardDrive, Users, Smartphone,
   Shield, Layers, Rocket, Brain, AlertTriangle, ScrollText, Flag, DollarSign,
   Wrench, HeadphonesIcon, BookOpen, ChevronDown, ChevronRight, PanelLeftClose,
-  PanelLeft, Settings, Sparkles
+  PanelLeft, Settings, Sparkles, SlidersHorizontal
 } from "lucide-react";
 import { GlossaryDrawer } from "./GlossaryDrawer";
+import { useState as useReactState } from "react";
+import { LearningYouPanel } from "./LearningYouPanel";
 
 interface NavItem {
   label: string;
@@ -78,6 +80,7 @@ const NAV_GROUPS: NavGroup[] = [
 ];
 
 export function FounderSidebar({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => void }) {
+  const [prefsOpen, setPrefsOpen] = useReactState(false);
   const location = useLocation();
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(() => {
     const init: Record<string, boolean> = {};
@@ -193,7 +196,15 @@ export function FounderSidebar({ collapsed, onToggle }: { collapsed: boolean; on
           <Settings className="h-3.5 w-3.5" />
           <span>Platform Settings</span>
         </Link>
+        <button
+          onClick={() => setPrefsOpen(true)}
+          className="w-full flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs text-muted-foreground hover:bg-muted/30 hover:text-foreground transition-colors"
+        >
+          <SlidersHorizontal className="h-3.5 w-3.5" />
+          <span>Preferences</span>
+        </button>
         <GlossaryDrawer />
+        <LearningYouPanel open={prefsOpen} onOpenChange={setPrefsOpen} />
       </div>
     </div>
   );

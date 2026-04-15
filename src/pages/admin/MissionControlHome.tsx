@@ -8,7 +8,7 @@ import {
   Activity, Shield, Server, AlertTriangle, CheckCircle, Clock,
   ArrowUpRight, Bell, Database, Cpu, Globe, Lock, RefreshCw,
   Layers, GitBranch, Radio, Target, TrendingUp, BarChart3, Brain, Crown,
-  Link2, Rocket, Play, Eye, Zap, DollarSign, Wifi
+  Link2, Rocket, Play, Eye, Zap, DollarSign, Wifi, Wrench
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { fromTable } from "@/lib/supabase-helpers";
@@ -27,6 +27,11 @@ import { OneClickActions } from "@/components/admin/shells/OneClickActions";
 import { CommandTemplateCards } from "@/components/admin/shells/CommandTemplateCards";
 import { ExecutionTimeline } from "@/components/admin/shells/ExecutionTimeline";
 import { WhyTooltip } from "@/components/admin/shells/WhyTooltip";
+import { FullSystemAudit } from "@/components/admin/shells/FullSystemAudit";
+import { LiveSystemMap } from "@/components/admin/shells/LiveSystemMap";
+import { SelfHealingStatusPanel } from "@/components/admin/shells/SelfHealingStatusPanel";
+import { NoSilentFailureAlerts } from "@/components/admin/shells/NoSilentFailureAlerts";
+import { ContinuousVerificationPanel } from "@/components/admin/shells/ContinuousVerificationPanel";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -102,6 +107,9 @@ const MissionControlHome = () => {
       </div>
 
       <motion.div variants={stagger} initial="hidden" animate="show" className="space-y-6">
+        {/* No Silent Failure Alerts */}
+        <NoSilentFailureAlerts />
+
         {/* Warning banners */}
         {(pendingMutations > 0 || failedMutations > 0) && (
           <motion.div variants={fadeUp}>
@@ -219,6 +227,11 @@ const MissionControlHome = () => {
           </motion.div>
         </div>
 
+        {/* Full System Audit */}
+        <motion.div variants={fadeUp}>
+          <FullSystemAudit />
+        </motion.div>
+
         {/* AI Suggestions */}
         <motion.div variants={fadeUp}>
           <AISuggestionsPanel />
@@ -234,9 +247,51 @@ const MissionControlHome = () => {
           <CommandTemplateCards compact />
         </motion.div>
 
+        {/* Self-Healing Status */}
+        <motion.div variants={fadeUp}>
+          <Card className="border-white/[0.06] bg-white/[0.03]">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                <Wrench className="h-4 w-4 text-blue-400" /> Self-Healing Activity
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <SelfHealingStatusPanel />
+            </CardContent>
+          </Card>
+        </motion.div>
+
+        {/* Live System Map */}
+        <motion.div variants={fadeUp}>
+          <Card className="border-white/[0.06] bg-white/[0.03]">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                <Activity className="h-4 w-4 text-primary" /> Live System Map
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <LiveSystemMap compact />
+            </CardContent>
+          </Card>
+        </motion.div>
+
         {/* Recent Activity Timeline */}
         <motion.div variants={fadeUp}>
           <ExecutionTimeline compact maxVisible={5} />
+        </motion.div>
+
+        {/* Continuous Verification */}
+        <motion.div variants={fadeUp}>
+          <Card className="border-white/[0.06] bg-white/[0.03]">
+            <CardHeader className="pb-2">
+              <CardTitle className="text-sm font-semibold flex items-center gap-2">
+                <CheckCircle className="h-4 w-4 text-emerald-400" /> Continuous Verification
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <ContinuousVerificationPanel />
+            </CardContent>
+          </Card>
         </motion.div>
 
         {/* Platform Pulse — Summary Panels */}
