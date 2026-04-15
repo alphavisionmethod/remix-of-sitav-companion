@@ -27,6 +27,7 @@ import { OneClickActions } from "@/components/admin/shells/OneClickActions";
 import { CommandTemplateCards } from "@/components/admin/shells/CommandTemplateCards";
 import { ExecutionTimeline } from "@/components/admin/shells/ExecutionTimeline";
 import { WhyTooltip } from "@/components/admin/shells/WhyTooltip";
+import { FullSystemAudit } from "@/components/admin/shells/FullSystemAudit";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };

@@ -5,8 +5,8 @@ import { GlobalCommandBar } from "./GlobalCommandBar";
 import { FounderSidebar } from "./FounderSidebar";
 import { AITransparencyPanel } from "./AITransparencyPanel";
 import { FounderMobileNav } from "./FounderMobileNav";
-import { TrustRibbon } from "@/components/sita/admin/TrustRibbon";
-import { RolloutStatusBanner } from "./RolloutStatusBanner";
+import { StatusStrip } from "./StatusStrip";
+import { SafeModeProvider } from "./SafeModeProvider";
 import { Badge } from "@/components/ui/badge";
 import { AlertTriangle } from "lucide-react";
 
@@ -23,52 +23,49 @@ export function FounderControlShell({
   const [aiPanelCollapsed, setAiPanelCollapsed] = useState(false);
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      {/* Degraded banner */}
-      {showDegradedBanner && (
-        <div className="bg-destructive/5 border-b border-destructive/20 px-4 py-1.5 flex items-center gap-2 text-[11px] text-destructive">
-          <AlertTriangle className="h-3.5 w-3.5 shrink-0" />
-          <span className="font-medium">{degradedMessage || "Some platform services are operating in degraded mode."}</span>
-        </div>
-      )}
+    <SafeModeProvider>
+      <div className="min-h-screen bg-background flex flex-col">
+        {/* Degraded banner */}
+        {showDegradedBanner && (
+          <div className="bg-destructive/5 border-b border-destructive/20 px-4 py-1.5 flex items-center gap-2 text-[11px] text-destructive">
+            <AlertTriangle className="h-3.5 w-3.5 shrink-0" />
+            <span className="font-medium">{degradedMessage || "Some platform services are operating in degraded mode."}</span>
+          </div>
+        )}
 
-      {/* Top Global Command Bar */}
-      <GlobalCommandBar />
+        {/* Top Global Command Bar */}
+        <GlobalCommandBar />
 
-      {/* Trust ribbon (compact) — hidden on mobile */}
-      <div className="hidden md:block px-4 py-1.5 border-b border-border/20 bg-card/20">
-        <div className="flex items-center justify-between">
-          <TrustRibbon />
-          <RolloutStatusBanner />
+        {/* Status Strip — replaces old trust ribbon */}
+        <StatusStrip />
+
+        {/* Three-panel layout */}
+        <div className="flex flex-1 overflow-hidden">
+          {/* Left Sidebar — hidden on mobile */}
+          <div className="hidden md:block">
+            <FounderSidebar
+              collapsed={sidebarCollapsed}
+              onToggle={() => setSidebarCollapsed(c => !c)}
+            />
+          </div>
+
+          {/* Main Content */}
+          <main className="flex-1 overflow-y-auto pb-16 md:pb-0">
+            <Outlet />
+          </main>
+
+          {/* Right AI Transparency Panel — hidden on mobile */}
+          <div className="hidden lg:block">
+            <AITransparencyPanel
+              collapsed={aiPanelCollapsed}
+              onToggle={() => setAiPanelCollapsed(c => !c)}
+            />
+          </div>
         </div>
+
+        {/* Mobile bottom nav */}
+        <FounderMobileNav />
       </div>
-
-      {/* Three-panel layout */}
-      <div className="flex flex-1 overflow-hidden">
-        {/* Left Sidebar — hidden on mobile */}
-        <div className="hidden md:block">
-          <FounderSidebar
-            collapsed={sidebarCollapsed}
-            onToggle={() => setSidebarCollapsed(c => !c)}
-          />
-        </div>
-
-        {/* Main Content */}
-        <main className="flex-1 overflow-y-auto pb-16 md:pb-0">
-          <Outlet />
-        </main>
-
-        {/* Right AI Transparency Panel — hidden on mobile */}
-        <div className="hidden lg:block">
-          <AITransparencyPanel
-            collapsed={aiPanelCollapsed}
-            onToggle={() => setAiPanelCollapsed(c => !c)}
-          />
-        </div>
-      </div>
-
-      {/* Mobile bottom nav */}
-      <FounderMobileNav />
-    </div>
+    </SafeModeProvider>
   );
 }
