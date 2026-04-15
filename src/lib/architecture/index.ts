@@ -194,3 +194,19 @@ export {
   getPhaseItems, getP0Items, checkDependenciesMet, getReadinessScore,
 } from "./phased-rollout-plan";
 export type { RolloutPhase, RolloutPriority, RolloutItem } from "./phased-rollout-plan";
+
+// ── 24. Directory Organization ──────────────────────────────
+export {
+  DIRECTORY_ORGANIZATION_MAP,
+  getCanonicalPath,
+} from "./directory-organization-map";
+export type { DirectoryMapping, MigrationStatus } from "./directory-organization-map";
+
+// ── 25. IA Governance ───────────────────────────────────────
+export {
+  MAX_USER_TOP_LEVEL,
+  MAX_ADMIN_TOP_LEVEL,
+  validateDirectoryOrganization,
+  getOrganizationAudit,
+} from "./ia-governance";
+export type { PageClassification } from "./ia-governance";
