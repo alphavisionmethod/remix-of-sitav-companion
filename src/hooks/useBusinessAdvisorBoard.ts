@@ -4,7 +4,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useCallback, useMemo } from "react";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { BUSINESS_ADVISORS, type AdvisorPersona } from "@/lib/engines/business-advisor-personas";
@@ -19,6 +19,14 @@ import {
   getActionStats, getPendingApprovals,
   type BusinessAction,
 } from "@/lib/engines/business-action-pipeline";
+// Part 2 imports
+import { getAdvisorMemoryEngine } from "@/lib/engines/advisor-memory-engine";
+import { getBusinessContextGraph } from "@/lib/engines/business-context-graph";
+import { getBusinessArchetypeEngine, type BusinessArchetype } from "@/lib/engines/business-archetype-engine";
+import { getCrossAdvisorCoordinator } from "@/lib/engines/cross-advisor-coordinator";
+import { getConfidenceRiskScorer } from "@/lib/engines/confidence-risk-scorer";
+import { getContinuousProfitEngine } from "@/lib/engines/continuous-profit-engine";
+import { getAdvisorReflectionEngine } from "@/lib/engines/advisor-reflection-engine";
 
 export interface AIRecommendation {
   advisorId: string;
@@ -83,6 +91,17 @@ export function useBusinessAdvisorBoard() {
   const [trustState, setTrustState] = useState<TrustModeState>(createDefaultTrustState);
   const [actionQueue, setActionQueue] = useState<BusinessAction[]>([]);
   const [selectedAdvisor, setSelectedAdvisor] = useState<AdvisorPersona | null>(null);
+  const [focusModeActive, setFocusModeActive] = useState(false);
+  const [briefMode, setBriefMode] = useState<"brief" | "board">("board");
+
+  // ── Part 2 Engine singletons ─────────────────────────────────
+  const memoryEngine = useMemo(() => getAdvisorMemoryEngine(), []);
+  const contextGraph = useMemo(() => getBusinessContextGraph(), []);
+  const archetypeEngine = useMemo(() => getBusinessArchetypeEngine(), []);
+  const coordinator = useMemo(() => getCrossAdvisorCoordinator(), []);
+  const confidenceScorer = useMemo(() => getConfidenceRiskScorer(), []);
+  const profitEngine = useMemo(() => getContinuousProfitEngine(), []);
+  const reflectionEngine = useMemo(() => getAdvisorReflectionEngine(), []);
 
   // ── Profitability Brief ──────────────────────────────────────
   const profitabilityBrief = useMemo<ProfitabilityBrief>(
@@ -90,14 +109,26 @@ export function useBusinessAdvisorBoard() {
     []
   );
 
-  // ── AI Recommendations ───────────────────────────────────────
+  // ── Part 2 computed state ────────────────────────────────────
+  const memorySnapshot = useMemo(() => memoryEngine.getMemorySnapshot(), [memoryEngine]);
+  const businessContext = useMemo(() => contextGraph.getBusinessSnapshot(), [contextGraph]);
+  const profitSummary = useMemo(() => profitEngine.getSummary(), [profitEngine]);
+  const selectedArchetype = archetypeEngine.getSelectedArchetype();
+
+  // ── AI Recommendations (upgraded to deep intelligence) ───────
   const aiRecommendations = useQuery({
-    queryKey: ["business-advisor-intelligence"],
+    queryKey: ["business-advisor-deep-intelligence"],
     queryFn: async (): Promise<AIRecommendation[]> => {
-      const { data, error } = await supabase.functions.invoke("business-advisor-intelligence", {
+      const { data, error } = await supabase.functions.invoke("advisor-deep-intelligence", {
         body: {
           advisorIds: BUSINESS_ADVISORS.map(a => a.id),
-          businessContext: `Business health: ${profitabilityBrief.healthScore.overall}/100. ${profitabilityBrief.executiveSummary}. Top leaks: ${profitabilityBrief.topLeaks.map(l => l.title).join(", ")}. Cash runway: ${profitabilityBrief.cashPressure.cashRunwayDays} days. At-risk clients: ${profitabilityBrief.retentionRisk.atRiskClients.map(c => c.name).join(", ")}.`,
+          businessContext: contextGraph.toPromptContext(),
+          memorySnapshot: {
+            totalItems: memorySnapshot.totalItems,
+            longTerm: memorySnapshot.longTerm.map(m => m.content).slice(0, 5),
+            preferences: memorySnapshot.preference.map(m => m.content).slice(0, 3),
+          },
+          archetype: selectedArchetype,
         },
       });
       if (error) throw error;
@@ -106,6 +137,25 @@ export function useBusinessAdvisorBoard() {
     staleTime: 5 * 60 * 1000,
     retry: 1,
   });
+
+  // ── Coordinated recommendations ──────────────────────────────
+  const coordinatedRecommendations = useMemo(
+    () => coordinator.coordinate(aiRecommendations.data ?? []),
+    [coordinator, aiRecommendations.data]
+  );
+
+  const escalationBundle = useMemo(
+    () => coordinator.buildEscalationBundle(coordinatedRecommendations),
+    [coordinator, coordinatedRecommendations]
+  );
+
+  // ── Overload detection ───────────────────────────────────────
+  const overloadScore = useMemo(() => {
+    const recs = aiRecommendations.data ?? [];
+    const critical = recs.filter(r => r.urgency === "critical" || r.urgency === "high").length;
+    const pending = getPendingApprovals(actionQueue).length;
+    return Math.min(100, critical * 15 + pending * 10 + (profitSummary.unresolvedSignals > 5 ? 20 : 0));
+  }, [aiRecommendations.data, actionQueue, profitSummary]);
 
   // ── Trust/Autonomy controls ──────────────────────────────────
   const updateDomainLevel = useCallback((domain: AutonomyDomain, level: AutonomyLevel) => {
@@ -167,6 +217,12 @@ export function useBusinessAdvisorBoard() {
   // ── Convert AI recommendation to action ──────────────────────
   const convertToAction = useCallback((rec: AIRecommendation) => {
     const advisor = BUSINESS_ADVISORS.find(a => a.id === rec.advisorId);
+    reflectionEngine.recordAction({
+      advisorId: rec.advisorId,
+      recommendationTitle: rec.title,
+      ownerAction: "approved",
+      confidenceAtTime: rec.confidence,
+    });
     return proposeAction({
       advisorId: rec.advisorId,
       advisorName: advisor?.displayName ?? rec.advisorId,
@@ -178,7 +234,32 @@ export function useBusinessAdvisorBoard() {
       estimatedValue: 0,
       confidence: rec.confidence,
     });
-  }, [proposeAction]);
+  }, [proposeAction, reflectionEngine]);
+
+  // ── Archetype selection ──────────────────────────────────────
+  const setArchetype = useCallback((archetype: BusinessArchetype) => {
+    archetypeEngine.setArchetype(archetype);
+    memoryEngine.store({
+      layer: "long-term",
+      advisorId: null,
+      category: "business-type",
+      content: `Business archetype set to: ${archetype}`,
+      source: "owner-input",
+      tags: ["archetype"],
+    });
+    toast.success(`Business type set to ${archetype}`);
+  }, [archetypeEngine, memoryEngine]);
+
+  // ── Memory operations ────────────────────────────────────────
+  const correctMemory = useCallback((id: string, field: "content" | "confidence", newValue: unknown, reason: string) => {
+    memoryEngine.correctMemory(id, field, newValue, reason);
+    toast.success("Memory corrected");
+  }, [memoryEngine]);
+
+  const archiveMemory = useCallback((id: string) => {
+    memoryEngine.archiveMemory(id);
+    toast.info("Memory archived");
+  }, [memoryEngine]);
 
   return {
     // Advisors
@@ -215,5 +296,22 @@ export function useBusinessAdvisorBoard() {
     handleReject,
     handleExecute,
     handleRollback,
+
+    // Part 2: Deep Intelligence
+    memorySnapshot,
+    businessContext,
+    profitSummary,
+    coordinatedRecommendations,
+    escalationBundle,
+    overloadScore,
+    selectedArchetype,
+    setArchetype,
+    correctMemory,
+    archiveMemory,
+    focusModeActive,
+    setFocusModeActive,
+    briefMode,
+    setBriefMode,
+    reflectionEngine,
   };
 }
