@@ -84,9 +84,7 @@ const ConditionalAdminTools = () => {
   return <><AdminCommandPaletteWrapper /><AdminKeyboardShortcutsWrapper /></>;
 };
 
-const AdminShellLayout = () => <FounderControlShell />;
-const LegacyAdminShellLayout = () => <AdminShell><Outlet /></AdminShell>;
-const OwnerShellLayout = () => <OwnerWorkspaceShell><Outlet /></OwnerWorkspaceShell>;
+const AdminCenter = lazy(() => import("@/pages/AdminCenter"));
 
 // ═══════════════════════════════════════════════════════════════
 // Loading & auth guards
@@ -258,14 +256,10 @@ const App = () => (
                         {getExperimentalRoutes()}
 
                         {/* Owner workspace */}
-                        <Route element={<OwnerShellLayout />}>
-                          {getOwnerRoutes()}
-                        </Route>
+                        {getOwnerRoutes()}
 
-                        {/* Admin */}
-                        <Route element={<AdminRoute><AdminShellLayout /></AdminRoute>}>
-                          {getAdminRoutes()}
-                        </Route>
+                        {/* Admin — redirect shim to windowed Mission Control app */}
+                        <Route path="/admin/*" element={<AdminRoute><AdminCenter /></AdminRoute>} />
 
                         <Route path="*" element={<NotFound />} />
                       </Routes>
