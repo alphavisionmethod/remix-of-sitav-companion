@@ -163,6 +163,9 @@ const BusinessAdvisorBoardPage = () => {
           <TabsTrigger value="tools" className="text-[10px]">Tools</TabsTrigger>
           <TabsTrigger value="radar" className="text-[10px]">Radar</TabsTrigger>
           <TabsTrigger value="planning" className="text-[10px]">Planning</TabsTrigger>
+          <TabsTrigger value="clients" className="text-[10px]">Clients</TabsTrigger>
+          <TabsTrigger value="performance" className="text-[10px]">Performance</TabsTrigger>
+          <TabsTrigger value="journal" className="text-[10px]">Journal</TabsTrigger>
           <TabsTrigger value="memory" className="text-[10px]">Memory</TabsTrigger>
           <TabsTrigger value="report" className="text-[10px]">Report</TabsTrigger>
           <TabsTrigger value="autonomy" className="text-[10px]">Autonomy</TabsTrigger>
