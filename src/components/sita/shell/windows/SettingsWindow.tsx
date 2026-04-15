@@ -8,7 +8,7 @@ import {
   User, Shield, Key, Settings, Palette, Monitor, Eye, Lock, Bell, Volume2,
   Wifi, Bluetooth, Cloud, Globe, Keyboard, Brain, DollarSign, BellOff,
   Home, TrendingUp, Workflow, Database, Download, HelpCircle, Info,
-  Activity, Accessibility, Smartphone,
+  Activity, Accessibility, Smartphone, LayoutGrid,
 } from "lucide-react";
 import { AppLayout, VStack } from "@/lib/nova-sdk/ui/layout";
 import { NovaList, NovaSectionLabel, NovaToolbar } from "@/lib/nova-sdk/ui/components";
@@ -17,7 +17,7 @@ import { SettingsSearch } from "./settings/shared";
 
 // Sub-section imports
 import { ProfileContent, SecurityContent, ConnectedAccountsContent } from "./settings/AccountSections";
-import { GeneralContent, AppearanceContent, DisplayContent, AccessibilityContent, OperatingModesContent, DeviceModeContent } from "./settings/SystemSections";
+import { GeneralContent, AppearanceContent, DisplayContent, AccessibilityContent, OperatingModesContent, DeviceModeContent, WidgetsContent } from "./settings/SystemSections";
 import { NetworkContent, BluetoothContent, CloudSyncContent, IntegrationsContent } from "./settings/ConnectivitySections";
 import { SoundContent, KeyboardContent } from "./settings/SoundInputSections";
 import { AdvisorsAIContent, PlanUsageContent } from "./settings/AISections";
@@ -39,6 +39,7 @@ const SECTIONS = [
   { id: "accessibility", label: "Accessibility", icon: <Accessibility className="h-3.5 w-3.5" />, group: "System" },
   { id: "opmodes", label: "Operating Modes", icon: <Activity className="h-3.5 w-3.5" />, group: "System" },
   { id: "devicemode", label: "Device Mode", icon: <Lock className="h-3.5 w-3.5" />, group: "System" },
+  { id: "widgets", label: "Desktop Widgets", icon: <LayoutGrid className="h-3.5 w-3.5" />, group: "System" },
   // Connectivity
   { id: "network", label: "Network", icon: <Wifi className="h-3.5 w-3.5" />, group: "Connectivity" },
   { id: "bluetooth", label: "Bluetooth", icon: <Bluetooth className="h-3.5 w-3.5" />, group: "Connectivity" },
@@ -80,6 +81,7 @@ const CONTENT: Record<string, () => JSX.Element> = {
   accessibility: AccessibilityContent,
   opmodes: OperatingModesContent,
   devicemode: DeviceModeContent,
+  widgets: WidgetsContent,
   network: NetworkContent,
   bluetooth: BluetoothContent,
   cloudsync: CloudSyncContent,
