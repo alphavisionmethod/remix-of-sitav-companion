@@ -1,0 +1,152 @@
+# ═══════════════════════════════════════════════════════════════
+# SITA OS — CI Pipeline Definitions
+# Per-plane build, test, and boundary enforcement
+# ═══════════════════════════════════════════════════════════════
+name: sita-os-ci
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+env:
+  NODE_VERSION: '20'
+  PNPM_VERSION: '9'
+
+jobs:
+  # ── Phase 1: Shared contracts typecheck ──
+  shared-typecheck:
+    name: Shared Contracts Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: '${{ env.PNPM_VERSION }}' }
+      - uses: actions/setup-node@v4
+        with: { node-version: '${{ env.NODE_VERSION }}', cache: 'pnpm' }
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter '@sita/shared-*' typecheck
+
+  # ── Phase 2: Backend typecheck & edge function tests ──
+  backend-check:
+    name: Backend Typecheck & Tests
+    runs-on: ubuntu-latest
+    needs: shared-typecheck
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: '${{ env.PNPM_VERSION }}' }
+      - uses: actions/setup-node@v4
+        with: { node-version: '${{ env.NODE_VERSION }}', cache: 'pnpm' }
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter '@sita/backend' typecheck
+      - name: Edge Function Health
+        run: npx tsx scripts/check-edge-function-health.ts
+
+  # ── Phase 3: OS typecheck ──
+  os-check:
+    name: OS Typecheck
+    runs-on: ubuntu-latest
+    needs: shared-typecheck
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: '${{ env.PNPM_VERSION }}' }
+      - uses: actions/setup-node@v4
+        with: { node-version: '${{ env.NODE_VERSION }}', cache: 'pnpm' }
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter '@sita/os' typecheck
+
+  # ── Phase 4: Product shell build ──
+  product-build:
+    name: Product Shell Build
+    runs-on: ubuntu-latest
+    needs: [backend-check, os-check]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: '${{ env.PNPM_VERSION }}' }
+      - uses: actions/setup-node@v4
+        with: { node-version: '${{ env.NODE_VERSION }}', cache: 'pnpm' }
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter '@sita/product-shell' build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: product-shell-dist
+          path: apps/product-shell/dist/
+
+  # ── Phase 5: Admin console build ──
+  admin-build:
+    name: Admin Console Build
+    runs-on: ubuntu-latest
+    needs: [backend-check]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: '${{ env.PNPM_VERSION }}' }
+      - uses: actions/setup-node@v4
+        with: { node-version: '${{ env.NODE_VERSION }}', cache: 'pnpm' }
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter '@sita/admin-console' build
+
+  # ── Phase 6: Founder center build ──
+  founder-build:
+    name: Founder Center Build
+    runs-on: ubuntu-latest
+    needs: [backend-check]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: '${{ env.PNPM_VERSION }}' }
+      - uses: actions/setup-node@v4
+        with: { node-version: '${{ env.NODE_VERSION }}', cache: 'pnpm' }
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter '@sita/founder-center' build
+
+  # ── Phase 7: Architecture boundary enforcement ──
+  boundary-check:
+    name: Plane Boundary Enforcement
+    runs-on: ubuntu-latest
+    needs: shared-typecheck
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: '${{ env.PNPM_VERSION }}' }
+      - uses: actions/setup-node@v4
+        with: { node-version: '${{ env.NODE_VERSION }}', cache: 'pnpm' }
+      - run: pnpm install --frozen-lockfile
+      - name: Check plane boundaries
+        run: npx tsx scripts/architecture/check-plane-boundaries.ts
+      - name: Check route drift
+        run: npx tsx scripts/check-route-drift.ts
+      - name: Validate deployment
+        run: bash scripts/validate-deployment.sh || true
+
+  # ── Phase 8: Security scan ──
+  security-scan:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: '${{ env.PNPM_VERSION }}' }
+      - uses: actions/setup-node@v4
+        with: { node-version: '${{ env.NODE_VERSION }}', cache: 'pnpm' }
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm audit --audit-level=high || true
+
+  # ── Phase 9: Migration verification (post-export only) ──
+  migration-verify:
+    name: Migration Verification
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    needs: [product-build, admin-build, founder-build, boundary-check]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with: { version: '${{ env.PNPM_VERSION }}' }
+      - uses: actions/setup-node@v4
+        with: { node-version: '${{ env.NODE_VERSION }}', cache: 'pnpm' }
+      - run: pnpm install --frozen-lockfile
+      - run: npx tsx scripts/migrate/verify-migration.ts
