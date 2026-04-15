@@ -29,7 +29,7 @@ import { useCallingContactsData } from "@/hooks/use-business-data";
 import { useCallingContacts, useCallLogs } from "@/hooks/use-live-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const { isDemo: isDemoMode } = useAuth();
+const isDemoMode = true; // Module-level: resolved at component mount via PageTruthBanner
 
 
 

@@ -26,7 +26,7 @@ import {
   MessageSquare, Calendar,
 } from "lucide-react";
 
-const { isDemo: isDemoMode } = useAuth();
+const isDemoMode = true; // Module-level: resolved at component mount via PageTruthBanner
 
 
 const TYPE_ICONS: Record<string, React.ElementType> = { note: FileText, meeting: Brain, checklist: CheckSquare, voice: Mic, knowledge: Bookmark };

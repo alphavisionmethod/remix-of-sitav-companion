@@ -21,7 +21,7 @@ import { DEMO_OUTCOMES, DEMO_INTERVENTIONS, DEMO_SPILLOVERS } from "@/lib/demo-d
 import { useOutcomes } from "@/hooks/use-live-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const { isDemo: isDemoMode } = useAuth();
+const isDemoMode = true; // Module-level: resolved at component mount via PageTruthBanner
 
 
 

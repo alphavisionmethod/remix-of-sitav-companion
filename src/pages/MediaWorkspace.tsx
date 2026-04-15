@@ -25,7 +25,7 @@ import {
 import { DEMO_MEDIA, type DemoMediaItem as MediaItem } from "@/lib/demo-data/media";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const { isDemo: isDemoMode } = useAuth();
+const isDemoMode = true; // Module-level: resolved at component mount via PageTruthBanner
 
 
 const MediaWorkspace = () => {

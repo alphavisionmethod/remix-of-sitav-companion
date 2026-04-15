@@ -30,7 +30,7 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { DomainAdvisorCard } from "@/components/advisors/DomainAdvisorCard";
 
-const { isDemo: isDemoMode } = useAuth();
+const isDemoMode = true; // Module-level: resolved at component mount via PageTruthBanner
 
 
 const DOMAIN_CONFIG: DomainConfig = {

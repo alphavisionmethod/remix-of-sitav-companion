@@ -24,7 +24,7 @@ import {
   MessageSquare, Calendar, Settings, Activity
 } from "lucide-react";
 
-const { isDemo: isDemoMode } = useAuth();
+const isDemoMode = true; // Module-level: resolved at component mount via PageTruthBanner
 
 
 

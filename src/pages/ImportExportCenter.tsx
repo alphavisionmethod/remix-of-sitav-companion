@@ -12,7 +12,7 @@ import { DEMO_UPLOADS, DEMO_EXPORTS, type DemoUploadItem as UploadItem, type Dem
 import { useImportExportJobs } from "@/hooks/use-live-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const { isDemo: isDemoMode } = useAuth();
+const isDemoMode = true; // Module-level: resolved at component mount via PageTruthBanner
 
 
 

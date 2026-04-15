@@ -25,7 +25,7 @@ import {
 import { DEMO_ACTIVITY_TIMELINE } from "@/lib/demo-data";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
-const { isDemo: isDemoMode } = useAuth();
+const isDemoMode = true; // Module-level: resolved at component mount via PageTruthBanner
 
 
 

@@ -20,7 +20,7 @@ import { DomainAdvisorBoard } from "@/components/sita/domain-shared/DomainAdviso
 import { useLeads, useCustomers, useInvoices } from "@/hooks/use-sita-data";
 import { useMoneyKPIs } from "@/hooks/use-domain-data";
 
-const { isDemo: isDemoMode } = useAuth();
+const isDemoMode = true; // Module-level: resolved at component mount via PageTruthBanner
 
 
 type BoardroomView = "synthesis" | "priorities" | "risks" | "advisors";
