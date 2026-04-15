@@ -1,153 +1,99 @@
 
 
-# SITA OS — Control Domain Architecture: Protocols, Release, Graph, AI, Simulations
+# Control Domain Hardening — Final Wiring & Integration
 
-## What This Plan Does
+## Audit Summary
 
-Adds 5 **control domain** packages to the shared layer and wires them into the existing architecture. These are not new planes — they are structured contract/engine packages that consolidate scattered logic into disciplined, importable domains with strict dependency rules.
+All 5 control domains exist with full contract packages and engines:
 
-Since this is a Lovable SPA (not a monorepo with separate `/os`, `/backend` folders on disk), all new domains live under `src/packages/` (shared contracts) and `src/lib/` (implementations), following the existing pattern.
+| Domain | Contracts | Engine | Consumed By |
+|--------|-----------|--------|-------------|
+| Protocols (12 files) | Complete | Protocol Bridge (5/12 wired) | useProtocolBridge hook |
+| Release (6 files) | Complete | release-engine.ts | **NOT consumed anywhere** |
+| Graph (6 files) | Complete | graph-engine.ts | **NOT consumed anywhere** |
+| AI (8 files) | Complete | ai-governance-engine.ts | **NOT consumed anywhere** |
+| Simulations (6 files) | Complete | simulation-engine.ts | **NOT consumed anywhere** |
 
----
-
-## Current State
-
-- **Protocols**: `src/packages/protocols/` exists with 5 files (commands, approvals, trust, agent, rollout). Missing: websocket, receipts, notifications, sync, updates, timeline, compatibility.
-- **Release**: `src/lib/services/release-intelligence/` has 124 lines. No structured release domain.
-- **Graph**: `src/packages/contracts/graph/` has node/edge types. `src/lib/services/entity-graph/` has a basic in-memory service. No lineage, retrieval, privacy, or reconciliation.
-- **AI**: Scattered across `src/lib/ai/`, `src/lib/sovereign-ai-gateway/`, `src/lib/compute-governance/`, `src/lib/no-hallucination/`, `src/lib/ai-gateway/`. No unified domain.
-- **Simulations**: `src/lib/simulation/` has 3 files (Monte Carlo). `src/lib/services/digital-twins/` exists. No scenario packs, chaos, dry-runs, or verification.
+**Critical gaps:**
+1. **Protocol Bridge only bridges 5 of 12 protocols** — missing: receipt, websocket, notification, sync, update, timeline, compatibility
+2. **4 engines (Release, Graph, AI-Gov, Simulation) are never imported** by any hook, page, or service — they are dead code
+3. **Dependency matrix doc** does not include the 5 control domains as rows
+4. **No admin pages** expose Release, Graph, AI Governance, or Simulation engine capabilities
+5. **OSRuntimeProvider** does not register the 4 new engines
+6. **CI boundary checks** do not validate control domain import rules
 
 ---
 
 ## Implementation Plan
 
-### Phase 1: Expand Protocol Contracts (src/packages/protocols/)
+### Task 1: Wire Protocol Bridge for remaining 7 protocols
 
-Add 7 new protocol definition files. These are **pure types/schemas only** — zero runtime dependencies.
+Expand `src/lib/services/protocol-bridge/index.ts` with bridge functions for:
+- **Receipt protocol** → receipt-service (create/query/verify receipt envelopes)
+- **WebSocket protocol** → UnifiedWsClient (typed subscription, reconnect, backpressure)
+- **Notification protocol** → notification-router (route by category/urgency)
+- **Sync protocol** → sync state helpers (checkpoint, conflict resolution)
+- **Update protocol** → update-service bridge (manifest, install state, rollback)
+- **Timeline protocol** → timeline-service bridge (emit events, query feed)
+- **Compatibility protocol** → release-intelligence (version check, degradation)
 
-**New files:**
-- `src/packages/protocols/receipt-protocol.ts` — execution/approval/verification/rollback/trust receipt schemas
-- `src/packages/protocols/websocket-protocol.ts` — event envelope, reconnect/resume, subscription model, backpressure rules, delivery assurance
-- `src/packages/protocols/notification-protocol.ts` — categories, urgency semantics, action payloads, push wake format, delivery acknowledgement
-- `src/packages/protocols/sync-protocol.ts` — sync state, conflict payload, repair request, checkpoint, device capability
-- `src/packages/protocols/update-protocol.ts` — update manifest, install state, rollback, post-update verification, compatibility negotiation
-- `src/packages/protocols/timeline-protocol.ts` — timeline event schema, narrative events, system journal, digest feed
-- `src/packages/protocols/compatibility-protocol.ts` — version compatibility, capability fallback, graceful degradation, rollout compatibility gates
+Update `src/lib/services/index.ts` and `src/hooks/useProtocolBridge.ts` to export new bridge functions.
 
-**Updated:** `src/packages/protocols/index.ts` — re-export all 12 protocol modules.
+### Task 2: Wire engines into OSRuntimeProvider and create hooks
 
-### Phase 2: Release Engineering Domain
+Create 4 new hooks:
+- `src/hooks/useReleaseEngine.ts` — exposes rollout planner, health scorer, compatibility checker
+- `src/hooks/useGraphEngine.ts` — exposes node/edge CRUD, lineage queries, evidence packs
+- `src/hooks/useAIGovernance.ts` — exposes prompt safety eval, budget check, tool policy, action gating, audit log
+- `src/hooks/useSimulationEngine.ts` — exposes scenario runner, dry-run executor, what-if analyzer, chaos orchestrator
 
-**Contracts (src/packages/release-contracts/):**
-- `index.ts` barrel
-- `rollout-types.ts` — rollout state machine, cohort targeting, canary promotion, blast-radius estimation
-- `rollback-types.ts` — rollback orchestration, eligibility, preconditions, receipts
-- `compatibility-types.ts` — app/backend/OS compatibility matrix, migration compatibility, release gates
-- `regression-types.ts` — regression fingerprints, suspected regression detectors, known-bad patterns
-- `artifact-types.ts` — version metadata, bundle metadata, SBOM references, signing policy
-- `health-types.ts` — post-release health comparisons, hold/expand/rollback thresholds
+Register all 4 engines in `src/lib/engines/index.ts` (already done) and ensure the OSRuntimeProvider initializes them.
 
-**Engine (src/lib/engines/release-engine.ts):**
-Consolidates `release-intelligence` into a structured engine with: rollout planner, rollback orchestrator, compatibility checker, regression detector, release health scorer, release narrative generator.
+### Task 3: Create admin pages for control domains
 
-### Phase 3: Graph Domain
+Create 4 admin dashboard pages consuming the new hooks:
+- `/admin/release-engineering` — rollout planner, health dashboard, compatibility matrix, regression tracker
+- `/admin/graph-intelligence` — node/edge explorer, lineage viewer, drift report, privacy audit
+- `/admin/ai-governance` — prompt safety dashboard, budget tracker, tool policy viewer, audit log, governance reports
+- `/admin/simulation-center` — scenario runner, dry-run executor, chaos orchestrator, twin manager, verification dashboard
 
-**Contracts (src/packages/graph-contracts/):**
-- `index.ts` barrel
-- `node-types.ts` — 12 canonical node types (user, device, workspace, file, command, approval, app, incident, policy, release, timeline, automation)
-- `edge-types.ts` — 12 canonical edge types (owns, affects, depends_on, approved_by, executed_on, caused_by, belongs_to, generated_from, blocked_by, escalated_to, triggered, resolved_by)
-- `lineage-types.ts` — data/decision/AI/command/release lineage
-- `retrieval-types.ts` — evidence pack builder contract, trust-scoped retrieval filters, semantic retrieval orchestration
-- `privacy-types.ts` — visibility scopes, workspace isolation, sensitive relationship masking
-- `reconciliation-types.ts` — graph drift detection, eventual consistency rules, canonical correction paths
+Register routes in `AdminRoutes.tsx` with appropriate permission gates.
 
-**Engine (src/lib/engines/graph-engine.ts):**
-Wraps and extends the existing `EntityGraphService` with lineage tracking, privacy filtering, and reconciliation hooks.
+### Task 4: Update dependency matrix and docs
 
-### Phase 4: AI Governance Domain
+Update `docs/refactor/dependency-matrix.md`:
+- Add rows for protocols, release, graph, ai, simulations
+- Document that they are part of `shared` layer (zero dependencies on implementations)
 
-**Contracts (src/packages/ai-contracts/):**
-- `index.ts` barrel
-- `prompt-types.ts` — prompt definitions, versioning, ownership, rollout/rollback, quality metadata
-- `routing-types.ts` — model routing policies, inference tier mapping, local vs cloud, fallback rules
-- `safety-types.ts` — trust boundaries, action gating, grounding enforcement, contradiction checks
-- `economics-types.ts` — budget policies, cost tracking, cache strategy, spend ceilings, feature cost allocation
-- `tool-policy-types.ts` — which AI roles may call which tools, data exposure rules, high-risk restrictions
-- `memory-types.ts` — AI-specific memory governance, preference/workflow/procedural memory contracts, expiry rules
-- `eval-types.ts` — prompt evaluations, regression evals, hallucination evals, task success benchmarks
-- `agent-governance-types.ts` — agent role definitions, rights, planner/reviewer separation, escalation rules
+Update `docs/refactor/protocol-ownership.md`:
+- Add entries for the 7 newly bridged protocols
 
-**Engine (src/lib/engines/ai-governance-engine.ts):**
-Unified AI governance facade that coordinates existing modules: `compute-governance/model-routing-engine`, `no-hallucination/*`, `sovereign-ai-gateway`, and `ai/ai-capability-client`. Provides: `evaluatePromptSafety()`, `routeModel()`, `checkBudget()`, `enforceToolPolicy()`, `auditAIAction()`.
+### Task 5: Strengthen CI boundary validation
 
-### Phase 5: Simulation Domain
+Update `scripts/validation/check-no-runtime-in-shared.ts`:
+- Add `src/packages/ai-contracts`, `src/packages/release-contracts`, `src/packages/graph-contracts`, `src/packages/simulation-contracts` to the scanned directories (currently only scans 5 hardcoded dirs)
 
-**Contracts (src/packages/simulation-contracts/):**
-- `index.ts` barrel
-- `digital-twin-types.ts` — user/device/system/release/trust/sync twin models
-- `scenario-types.ts` — scenario pack definitions, rollout/sync-failure/trust-attack/budget-reduction/network-degradation scenarios
-- `dry-run-types.ts` — command/policy/rollout/approval simulation contracts
-- `what-if-types.ts` — forecasting, tradeoff comparisons
-- `chaos-types.ts` — chaos scripts, outage scenarios, resilience drills
-- `verification-types.ts` — simulation result validation, predicted-vs-actual comparison, simulation confidence
+Update `scripts/validation/check-protocol-purity.ts`:
+- Extend to also scan all 4 new contract packages for purity
 
-**Engine (src/lib/engines/simulation-engine.ts):**
-Wraps existing `monte-carlo-engine`, `digital-twins`, and `governance-simulator`. Adds: scenario runner, dry-run executor, chaos orchestrator, verification pipeline.
+Add new check: `scripts/validation/check-engine-no-io.ts`:
+- Verify engines in `src/lib/engines/` don't import from `@/integrations/supabase` or make network calls
 
-### Phase 6: Dependency Enforcement & Validation Scripts
+### Task 6: TypeScript build verification
 
-**New CI validation scripts:**
-- `scripts/validation/check-protocol-purity.ts` — Ensures `src/packages/protocols/` imports nothing from `src/lib/` or plane implementations
-- `scripts/validation/check-no-runtime-in-shared.ts` — Ensures all `src/packages/` files are pure types/schemas with no runtime side effects
-- `scripts/validation/check-no-ui-in-backend.ts` — Ensures backend services don't import React/UI components
-- `scripts/validation/check-no-backend-in-ui.ts` — Ensures UI pages don't import backend internals directly (must go through services layer)
-- `scripts/validation/check-deployable-plane-isolation.ts` — Validates each plane's manifest dependencies
-
-**Updated docs:**
-- `docs/refactor/dependency-matrix.md` — Add protocols, release, graph, ai, simulations rows
-- `docs/refactor/protocol-ownership.md` — New file mapping each protocol to its owning service
-- `docs/refactor/deployment-map.md` — New file documenting deployment targets per plane
-
-### Phase 7: Barrel Exports & Wiring
-
-**Wire into existing architecture:**
-- Update `src/packages/index.ts` to export new contract packages
-- Update `src/planes/shared.ts` to re-export key types from new domains
-- Update `src/lib/services/protocol-bridge/index.ts` to integrate new protocol types (receipt, websocket, notification, sync)
-- Update `scripts/check-import-boundaries.ts` to include new domain boundary rules
-- Add per-plane `PLANE_MANIFEST.md` updates for new dependency declarations
-
-### Phase 8: TypeScript Build Verification
-
-Full `tsc --noEmit` to confirm 0 errors across all new and modified files.
+Full `tsc --noEmit` to confirm 0 errors.
 
 ---
 
-## File Count Summary
+## File Summary
 
 | Category | New Files | Modified Files |
 |----------|-----------|----------------|
-| Protocol contracts | 7 | 1 (index.ts) |
-| Release contracts | 7 | 0 |
-| Graph contracts | 7 | 0 |
-| AI contracts | 9 | 0 |
-| Simulation contracts | 7 | 0 |
-| Engines | 5 | 0 |
-| Validation scripts | 5 | 1 (check-import-boundaries.ts) |
-| Docs | 2 | 1 (dependency-matrix.md) |
-| Wiring/barrels | 0 | 4 (index.ts, shared.ts, protocol-bridge, packages/index) |
-| **Total** | **49** | **7** |
-
-## Dependency Rules Enforced
-
-```text
-src/packages/*     → NOTHING (pure types, zero imports from src/lib/)
-src/lib/engines/*  → src/packages/* + src/lib/services/* (implementation layer)
-src/lib/services/* → src/packages/* (contracts only)
-src/pages/*        → src/hooks/* + src/lib/services/* (never direct engine/packages)
-src/hooks/*        → src/lib/services/* (bridge layer)
-```
-
-All new contract packages are leaf nodes — they import nothing.
+| Hooks | 4 | 1 (useProtocolBridge.ts) |
+| Protocol Bridge | 0 | 1 (protocol-bridge/index.ts) |
+| Admin Pages | 4 | 1 (AdminRoutes.tsx) |
+| CI Scripts | 1 | 2 (check-no-runtime, check-protocol-purity) |
+| Docs | 0 | 2 (dependency-matrix, protocol-ownership) |
+| Service barrel | 0 | 1 (services/index.ts) |
+| **Total** | **9** | **8** |
 
