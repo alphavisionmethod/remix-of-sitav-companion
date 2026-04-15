@@ -267,6 +267,7 @@ const CatchUpSummary = ({ events }: { events: any[] }) => {
 // ── Main Component ───────────────────────────────────────────
 const ActivityStream = () => {
   const { user } = useAuth();
+  const { isDemoMode } = useDataMode();
   const [category, setCategory] = useState<FeedCategory>("all");
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState("");

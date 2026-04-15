@@ -19,6 +19,7 @@ import {
 
 
 const ApprovalsCenter = () => {
+  const { isDemoMode } = useDataMode();
   const { data: approvals = [], isLoading } = useApprovals();
   const { approve, reject } = useApprovalQueue();
   const [expandedId, setExpandedId] = useState<string | null>(null);

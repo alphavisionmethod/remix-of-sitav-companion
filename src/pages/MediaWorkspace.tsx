@@ -30,6 +30,7 @@ import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
 const MediaWorkspace = () => {
   const { user } = useAuth();
+  const { isDemoMode } = useDataMode();
   const [search, setSearch] = useState("");
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [typeFilter, setTypeFilter] = useState("all");
