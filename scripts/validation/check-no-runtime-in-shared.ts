@@ -29,6 +29,12 @@ for (const dir of PACKAGE_DIRS) {
     if (/from\s+["']@\/integrations\//.test(content)) {
       vc.add(file, "shared-imports-integration", "Shared packages must not import integrations", "error");
     }
+    if (/from\s+["']@\/components\//.test(content)) {
+      vc.add(file, "shared-imports-ui", "Shared packages must not import UI components", "error");
+    }
+    if (/from\s+["']@\/pages\//.test(content)) {
+      vc.add(file, "shared-imports-pages", "Shared packages must not import pages", "error");
+    }
   }
 }
 

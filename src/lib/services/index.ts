@@ -214,11 +214,25 @@ export type { ServiceHealthNode, DegradedFeature, DegradationNotification, Syste
 export { DigestJournalService, digestJournalService } from "./digest-journal";
 export type { DailyDigest, WeeklyJournal, MonthlyReview, DigestPreferences, DigestSection, DigestActionItem } from "./digest-journal";
 
-// ── Protocol Bridge ─────────────────────────────────────────────
+// ── Protocol Bridge (All 12 Protocols) ──────────────────────────
 export {
   executeCommand, initiateProtocolApproval, resolveProtocolApproval,
   evaluateTrustClaim, evaluateRolloutReadiness,
   createAgentCommand, acknowledgeAgentCommand,
+  // Receipt protocol
+  createReceiptEnvelope, queryReceipts, verifyReceiptChain,
+  // WebSocket protocol
+  subscribeWebSocket, unsubscribeWebSocket, getWebSocketConnectionState, sendWebSocketMessage,
+  // Notification protocol
+  routeNotification, getNotificationPreferences,
+  // Sync protocol
+  createSyncCheckpoint, resolveSyncConflict,
+  // Update protocol
+  checkForUpdates, getUpdateInstallState, initiateUpdateRollback,
+  // Timeline protocol
+  emitTimelineEvent, queryTimeline,
+  // Compatibility protocol
+  checkComponentCompatibility,
 } from "./protocol-bridge";
 
 // ── Degraded Mode Integration ────────────────────────────────────

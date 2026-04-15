@@ -159,6 +159,12 @@ const AdvisorMemoryInspectorAdmin = lazy(() => import("@/pages/admin/AdvisorMemo
 const AdvisorAutonomyPolicyEditor = lazy(() => import("@/pages/admin/AdvisorAutonomyPolicyEditor"));
 const AdvisorProfitabilityDashboard = lazy(() => import("@/pages/admin/AdvisorProfitabilityDashboard"));
 
+// ── Control Domain Admin Pages ──
+const ReleaseEngineeringPage = lazy(() => import("@/pages/admin/ReleaseEngineeringPage"));
+const GraphIntelligencePage = lazy(() => import("@/pages/admin/GraphIntelligencePage"));
+const AIGovernancePage = lazy(() => import("@/pages/admin/AIGovernancePage"));
+const SimulationCenterPage = lazy(() => import("@/pages/admin/SimulationCenterPage"));
+
 export function getAdminRoutes() {
   return [
     <Route key="a1" path="/admin/generated-truth" element={gated("audit.view", <GeneratedTruthDashboard />)} />,
@@ -304,5 +310,10 @@ export function getAdminRoutes() {
     <Route key="boa04" path="/admin/advisor-board/memory" element={gated("audit.view", <AdvisorMemoryInspectorAdmin />)} />,
     <Route key="boa05" path="/admin/advisor-board/autonomy" element={gated("policy.view", <AdvisorAutonomyPolicyEditor />)} />,
     <Route key="boa06" path="/admin/advisor-board/profitability" element={gated("audit.view", <AdvisorProfitabilityDashboard />)} />,
+    // ── Control Domain Pages ──
+    <Route key="cd01" path="/admin/release-engineering" element={gated("maintenance.view", <ReleaseEngineeringPage />)} />,
+    <Route key="cd02" path="/admin/graph-intelligence" element={gated("audit.view", <GraphIntelligencePage />)} />,
+    <Route key="cd03" path="/admin/ai-governance" element={gated("policy.view", <AIGovernancePage />)} />,
+    <Route key="cd04" path="/admin/simulation-center" element={gated("maintenance.view", <SimulationCenterPage />)} />,
   ];
 }
