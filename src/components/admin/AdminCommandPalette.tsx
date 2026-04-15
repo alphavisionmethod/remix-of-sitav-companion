@@ -7,7 +7,7 @@ import {
   Activity, AlertTriangle, Brain, Crown, Database, Eye, GitBranch, Globe,
   Layers, Link2, Lock, Rocket, Server, Shield, Target, TrendingUp, Zap,
   BarChart3, Cpu, FileText, Play, RefreshCw, Settings, Search, Scale,
-  DollarSign, Receipt, RotateCcw
+  DollarSign, Receipt, RotateCcw, Terminal
 } from "lucide-react";
 
 const NAV_ITEMS = [
@@ -31,6 +31,11 @@ const NAV_ITEMS = [
   { label: "Founder Council", path: "/admin/founder-council", icon: Crown, group: "Navigation" },
   { label: "Concierge Runtime", path: "/admin/concierge-runtime", icon: Server, group: "Navigation" },
   { label: "Policy Simulator", path: "/admin/policy-simulator", icon: Shield, group: "Navigation" },
+  // Founder Control
+  { label: "Founder Command Console", path: "/admin/founder/command", icon: Terminal, group: "Founder Control" },
+  { label: "Task Decomposition Graph", path: "/admin/founder/tasks", icon: GitBranch, group: "Founder Control" },
+  { label: "CI/CD Pipeline Board", path: "/admin/founder/cicd", icon: Rocket, group: "Founder Control" },
+  { label: "Runbook Center", path: "/admin/founder/runbooks", icon: FileText, group: "Founder Control" },
   { label: "Workflow Replay", path: "/admin/workflow-replay", icon: Play, group: "Navigation" },
   { label: "Implementation Truth Center", path: "/admin/implementation-truth", icon: Eye, group: "Navigation" },
   { label: "ITC: Spec Registry", path: "/admin/implementation-truth/specs", icon: FileText, group: "Navigation" },

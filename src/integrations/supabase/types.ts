@@ -5578,6 +5578,69 @@ export type Database = {
         }
         Relationships: []
       }
+      founder_directives: {
+        Row: {
+          agent_assignments: Json
+          approvals_received: Json
+          approvals_required: boolean
+          completed_at: string | null
+          created_at: string
+          decomposed_plan: Json
+          domain_classification: string
+          execution_state: Json
+          id: string
+          intent_text: string
+          outcome_summary: string | null
+          priority: string
+          risk_assessment: Json
+          started_at: string | null
+          status: string
+          task_graph: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          agent_assignments?: Json
+          approvals_received?: Json
+          approvals_required?: boolean
+          completed_at?: string | null
+          created_at?: string
+          decomposed_plan?: Json
+          domain_classification?: string
+          execution_state?: Json
+          id?: string
+          intent_text: string
+          outcome_summary?: string | null
+          priority?: string
+          risk_assessment?: Json
+          started_at?: string | null
+          status?: string
+          task_graph?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          agent_assignments?: Json
+          approvals_received?: Json
+          approvals_required?: boolean
+          completed_at?: string | null
+          created_at?: string
+          decomposed_plan?: Json
+          domain_classification?: string
+          execution_state?: Json
+          id?: string
+          intent_text?: string
+          outcome_summary?: string | null
+          priority?: string
+          risk_assessment?: Json
+          started_at?: string | null
+          status?: string
+          task_graph?: Json
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       gift_tracker: {
         Row: {
           budget: number | null
@@ -6999,6 +7062,72 @@ export type Database = {
           service_count?: number
           status?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      platform_runbooks: {
+        Row: {
+          agent_assignments: Json
+          auto_heal_config: Json
+          auto_heal_enabled: boolean
+          created_at: string
+          description: string
+          domain: string
+          execution_count: number
+          id: string
+          incident_patterns: Json
+          last_executed_at: string | null
+          last_execution_result: Json | null
+          severity: string
+          status: string
+          steps: Json
+          tags: string[]
+          title: string
+          trigger_conditions: Json
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          agent_assignments?: Json
+          auto_heal_config?: Json
+          auto_heal_enabled?: boolean
+          created_at?: string
+          description?: string
+          domain?: string
+          execution_count?: number
+          id?: string
+          incident_patterns?: Json
+          last_executed_at?: string | null
+          last_execution_result?: Json | null
+          severity?: string
+          status?: string
+          steps?: Json
+          tags?: string[]
+          title: string
+          trigger_conditions?: Json
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          agent_assignments?: Json
+          auto_heal_config?: Json
+          auto_heal_enabled?: boolean
+          created_at?: string
+          description?: string
+          domain?: string
+          execution_count?: number
+          id?: string
+          incident_patterns?: Json
+          last_executed_at?: string | null
+          last_execution_result?: Json | null
+          severity?: string
+          status?: string
+          steps?: Json
+          tags?: string[]
+          title?: string
+          trigger_conditions?: Json
+          updated_at?: string
+          user_id?: string
         }
         Relationships: []
       }
