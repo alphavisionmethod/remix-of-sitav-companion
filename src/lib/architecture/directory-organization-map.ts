@@ -61,7 +61,27 @@ export const DIRECTORY_ORGANIZATION_MAP: DirectoryMapping[] = [
   { canonicalPath: "src/admin/shell", legacyPaths: ["src/components/admin/shells"], status: "barrel-only", description: "Admin shell components" },
   { canonicalPath: "src/admin/navigation", legacyPaths: ["src/components/admin/*SubNav*"], status: "barrel-only", description: "Admin sub-navigation" },
   { canonicalPath: "src/admin/components", legacyPaths: ["src/components/admin/panels", "src/components/admin/Admin*"], status: "barrel-only", description: "Admin shared components" },
+  { canonicalPath: "src/admin/hooks", legacyPaths: [], status: "barrel-only", description: "Admin hooks" },
+  { canonicalPath: "src/admin/routes", legacyPaths: ["src/routes/AdminRoutes*"], status: "barrel-only", description: "Admin route configuration" },
+  { canonicalPath: "src/admin/state", legacyPaths: [], status: "barrel-only", description: "Admin state management" },
+
+  // ── Admin page domains ──
   { canonicalPath: "src/admin/pages", legacyPaths: ["src/pages/admin"], status: "barrel-only", description: "Admin page entry points" },
+  { canonicalPath: "src/admin/pages/home", legacyPaths: ["src/pages/admin/AdminDashboard*", "src/pages/admin/MissionControlHome*"], status: "barrel-only", description: "Admin home dashboards" },
+  { canonicalPath: "src/admin/pages/ai", legacyPaths: ["src/pages/admin/AI*", "src/pages/admin/AIG*", "src/pages/admin/AIT*", "src/pages/admin/Advisor*", "src/pages/admin/BrainCore*", "src/pages/admin/sag/"], status: "barrel-only", description: "AI control plane pages" },
+  { canonicalPath: "src/admin/pages/runtime", legacyPaths: ["src/pages/admin/AND*", "src/pages/admin/APL*", "src/pages/admin/DWE*", "src/pages/admin/UAO*", "src/pages/admin/MSA*", "src/pages/admin/DRS*", "src/pages/admin/NRC*", "src/pages/admin/NSS*", "src/pages/admin/HRS*", "src/pages/admin/NOT*"], status: "barrel-only", description: "Runtime/device/surface pages" },
+  { canonicalPath: "src/admin/pages/operations", legacyPaths: ["src/pages/admin/AR*", "src/pages/admin/ActionLineage*", "src/pages/admin/AlertTriage*", "src/pages/admin/Delivery*", "src/pages/admin/Fleet*", "src/pages/admin/System*", "src/pages/admin/Release*"], status: "barrel-only", description: "Operations/automation pages" },
+  { canonicalPath: "src/admin/pages/intelligence", legacyPaths: ["src/pages/admin/CAI*", "src/pages/admin/intelligence/"], status: "barrel-only", description: "Customer intelligence pages" },
+  { canonicalPath: "src/admin/pages/integrations", legacyPaths: ["src/pages/admin/CN*", "src/pages/admin/ISA*", "src/pages/admin/PFA*", "src/pages/admin/Connector*", "src/pages/admin/Integration*"], status: "barrel-only", description: "Integration governance pages" },
+  { canonicalPath: "src/admin/pages/launch", legacyPaths: ["src/pages/admin/LT*", "src/pages/admin/LaunchHonesty*", "src/pages/admin/launch/"], status: "barrel-only", description: "Launch honesty/readiness pages" },
+  { canonicalPath: "src/admin/pages/governance", legacyPaths: ["src/pages/admin/fip/", "src/pages/admin/platform-law/", "src/pages/admin/implementation-truth/", "src/pages/admin/Policy*", "src/pages/admin/Proof*", "src/pages/admin/Truth*"], status: "barrel-only", description: "Governance/policy/compliance pages" },
+  { canonicalPath: "src/admin/pages/strategic", legacyPaths: ["src/pages/admin/strategic/", "src/pages/admin/Outcome*"], status: "barrel-only", description: "Strategic/economics pages" },
+  { canonicalPath: "src/admin/pages/security", legacyPaths: ["src/pages/admin/Security*", "src/pages/admin/security/"], status: "barrel-only", description: "Security admin pages" },
+  { canonicalPath: "src/admin/pages/architecture", legacyPaths: ["src/pages/admin/architecture/", "src/pages/admin/SERV*", "src/pages/admin/Canonical*", "src/pages/admin/Change*", "src/pages/admin/CoreService*", "src/pages/admin/Dependency*", "src/pages/admin/Domain*", "src/pages/admin/Feature*"], status: "barrel-only", description: "Architecture/service mapping pages" },
+  { canonicalPath: "src/admin/pages/support", legacyPaths: ["src/pages/admin/Incident*", "src/pages/admin/Communication*", "src/pages/admin/Builder*", "src/pages/admin/Founder*", "src/pages/admin/HQ*", "src/pages/admin/Team*", "src/pages/admin/User*"], status: "barrel-only", description: "Support/team operations pages" },
+  { canonicalPath: "src/admin/pages/verification", legacyPaths: ["src/pages/admin/SRE*", "src/pages/admin/verification/", "src/pages/admin/customer-journey/", "src/pages/admin/frontend/", "src/pages/admin/Compositor*", "src/pages/admin/Contract*"], status: "barrel-only", description: "Verification/quality pages" },
+  { canonicalPath: "src/admin/pages/reality-audit", legacyPaths: ["src/pages/admin/reality-audit/", "src/pages/admin/Reality*", "src/pages/admin/Mock*", "src/pages/admin/Simulated*"], status: "barrel-only", description: "Reality audit/demo/mock pages" },
+  { canonicalPath: "src/admin/pages/fleet", legacyPaths: ["src/pages/admin/FL*", "src/pages/admin/FCC*", "src/pages/admin/ECO*", "src/pages/admin/OS01*", "src/pages/admin/SYS01*", "src/pages/admin/Kernel*", "src/pages/admin/cloud/"], status: "barrel-only", description: "Fleet/flagship/platform command pages" },
 
   // ── Platform ──
   { canonicalPath: "src/platform/auth", legacyPaths: ["src/contexts/AuthContext.tsx"], status: "barrel-only", description: "Auth platform layer" },

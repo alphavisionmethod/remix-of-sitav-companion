@@ -1,12 +1,21 @@
 // ═══════════════════════════════════════════════════════════════
-// SITA OS — Admin Pages Barrel
+// SITA OS — Admin Pages Master Barrel
 // Canonical import: @/admin/pages
-// Entry point registry for admin page modules
+// Re-exports all 15 domain-grouped admin page barrels
 // ═══════════════════════════════════════════════════════════════
 
-// Admin pages are lazy-loaded via React Router.
-// This barrel documents the canonical admin page entry points.
-// Individual page imports remain in the route registration files.
-
-// Module pages live under src/pages/admin/<module>/
-// See route registration in src/routes/ for the full mapping.
+export * from "./home";
+export * from "./ai";
+export * from "./runtime";
+export * from "./operations";
+export * from "./intelligence";
+export * from "./integrations";
+export * from "./launch";
+export * from "./governance";
+export * from "./strategic";
+export * from "./security";
+export * from "./architecture";
+export * from "./support";
+export * from "./verification";
+export * from "./reality-audit";
+export * from "./fleet";
