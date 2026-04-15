@@ -1,82 +1,120 @@
 
 
-# Orchestration Authority Consolidation — Remaining Gaps
+# SITA OS — Complete Directory Reorganization: All Missing Barrels & Governance
 
-## Audit Results
+## Current State
+- **29 barrels exist** (created in prior phases)
+- **~45 barrels missing** per the approved move map
+- **Governance files exist** but need expansion (only 3 deprecated paths, only 25 directory mappings)
 
-The 4-layer canonical spine is **100% complete** (40 files across intent/planning/execution/proof/shared/migration). The facade, hooks (4), CI scripts (3), and docs (2) are all in place.
+## What Must Be Created
 
-**What is NOT done:**
+### Phase 1: Missing Feature Barrels (16 files)
 
-| Gap | Impact |
-|-----|--------|
-| Legacy consumers still import old orchestrators directly | Facade is bypassed — violates "one entry point" rule |
-| No compatibility wrappers on legacy files | Migration safety missing |
-| `planes/backend.ts` exports `CanonicalChainOrchestrator` directly | Backend plane exposes legacy path |
-| `sita-kernel.ts` imports `AgentOrchestrator` + `CanonicalChainOrchestrator` directly | Kernel bypasses facade |
-| `use-admin-data.ts` dynamically imports `agent-orchestrator` | Hook directly calls execution adapter |
-| `use-companion.ts` imports `FleetStatus` type from `agent-orchestrator` | Type coupling to legacy file |
-| Missing `orchestration-ids.ts` from spec | ID generation not centralized |
+| File | Re-exports From |
+|------|----------------|
+| `src/features/ai/index.ts` | `@/components/ai/AIDegradedState`, `AIEmbeddedRecommendation`, `AIWorkforceInvocationPanel` |
+| `src/features/cloud/index.ts` | `@/components/cloud/CloudActivityTimeline`, `CloudDeviceOwnership`, `CloudFileBrowser`, etc. |
+| `src/features/simulation/index.ts` | `@/components/simulation/*` (7 components) |
+| `src/features/home/index.ts` | `@/components/user-app/PulseSummaryStrip` |
+| `src/features/app-platform/index.ts` | `@/components/sita/apps/*` app shells |
+| `src/features/apps/index.ts` | `@/pages/apps/*` page references |
+| `src/features/atlas/index.ts` | `@/pages/atlas/*` |
+| `src/features/digital-presence/index.ts` | `@/pages/digital-presence/*` |
+| `src/features/enterprise/index.ts` | `@/pages/enterprise/*` |
+| `src/features/integrations/index.ts` | `@/pages/integrations/*` |
+| `src/features/mission/index.ts` | `@/pages/mission/*` |
+| `src/features/mission-control/index.ts` | `@/components/sita/apps/mission-control/*`, `@/pages/mission-control/*` |
+| `src/features/owner/index.ts` | `@/pages/owner/*` |
+| `src/features/owner-mode/index.ts` | `@/pages/owner-mode/*` |
+| `src/features/store/index.ts` | `@/pages/store/*` |
+| `src/features/workspace/index.ts` | `@/pages/workspace/*` |
 
-## Implementation Plan
+### Phase 2: Missing Sub-feature Barrels (4 files)
 
-### Task 1: Add `orchestration-ids.ts`
+| File | Re-exports From |
+|------|----------------|
+| `src/features/business/autopilot/index.ts` | `@/components/autopilot/*` |
+| `src/features/business/crm/index.ts` | `@/components/business/CRMConnectModal`, `CRMImportWizard`, `@/components/business/crm/*` |
+| `src/features/business/leads/index.ts` | `@/components/business/lead-inbox/*`, `@/hooks/useLeadInbox` (if exists) |
+| `src/features/money/finance/index.ts` | `@/components/finance/*` |
 
-Create `src/lib/orchestration/shared/orchestration-ids.ts` with centralized ID generation for envelope, correlation, execution, receipt, and proof chain IDs. Update envelope and proof builders to import from here.
+### Phase 3: Missing Admin Barrels (6 files)
 
-### Task 2: Add compatibility wrappers to 6 legacy orchestrator files
+| File | Re-exports From |
+|------|----------------|
+| `src/admin/modules/runtime/index.ts` | `@/components/admin-os/DiagnosticsContextBar`, `LaunchTruthIndicator`, `RealityModeIndicator`, `SystemStatusBar` |
+| `src/admin/modules/operations/index.ts` | `@/components/admin/FleetHealthWidget`, safety components from shells |
+| `src/admin/modules/intelligence/index.ts` | Learning/simulation/inspection components from shells |
+| `src/admin/navigation/index.ts` | All 22 `*SubNav` components from `@/components/admin/` |
+| `src/admin/components/index.ts` | `@/components/admin/panels/*`, `AdminCommandPalette`, `AdminKeyboardShortcuts`, shell UX helpers |
+| `src/admin/pages/index.ts` | Placeholder barrel documenting admin page entry points |
 
-Add deprecation headers and re-export wrappers to each legacy file so existing consumers don't break:
+### Phase 4: Missing Platform Barrels (6 files)
 
-- `src/lib/core-services/canonical-chain-orchestrator.ts` — add `@deprecated` + re-export `orchestrationFacade.processIntent` as compatibility shim
-- `src/lib/core-services/agent-orchestrator.ts` — add `@deprecated` header noting it's now an execution adapter
-- `src/lib/services/ai-workforce/workforce-orchestrator.ts` — add `@deprecated` header
-- `src/lib/services/council-orchestrator/index.ts` — add `@deprecated` header (intent support only)
-- `src/lib/services/founder-orchestrator/index.ts` — add `@deprecated` header (planning adapter only)
-- `src/lib/services/ecosystem-orchestrator/index.ts` — add `@deprecated` header (cross-device adapter only)
+| File | Re-exports From |
+|------|----------------|
+| `src/platform/notifications/index.ts` | `@/hooks/use-notification-calm-data`, `use-proactive-notifications`, `use-push-notifications`, `use-realtime-notifications`, `useNotifications` |
+| `src/platform/security/index.ts` | `@/hooks/use-security-fabric`, `useOSSecurity` |
+| `src/platform/observability/index.ts` | `@/hooks/useOrchestrationHealth` |
+| `src/platform/search/index.ts` | `@/hooks/use-global-search` |
+| `src/platform/setup/index.ts` | `@/hooks/use-session-restore`, `useSetupOrchestration`, `useOnboardingDaemon`, `useUpdateDaemon` |
+| `src/platform/runtime/index.ts` | `@/hooks/use-backend-actions`, `use-kernel-events`, `use-kernel-mutation`, `use-kernel-query`, `use-os-api`, `useOSOrchestration`, `use-shell-indicators` |
 
-Each wrapper preserves existing exports but adds a top-of-file deprecation notice with the canonical replacement path.
+### Phase 5: Missing Runtime Barrels (3 files)
 
-### Task 3: Rewire `planes/backend.ts`
+| File | Re-exports From |
+|------|----------------|
+| `src/runtimes/reality/index.ts` | `@/components/reality/*`, `@/hooks/useRealityClassifications`, `useRealityDetection`, `useRealtimeBridge` |
+| `src/runtimes/surfaces/index.ts` | `@/components/sita/surfaces/*` |
+| `src/runtimes/appliance/index.ts` | `@/components/sita/boot/*` |
 
-Replace line 19:
-```typescript
-// Before:
-export { CanonicalChainOrchestrator, createCanonicalChain } from "@/lib/core-services/canonical-chain-orchestrator";
-// After:
-export { OrchestrationFacade, orchestrationFacade } from "@/lib/orchestration";
-export type { ProcessIntentRequest } from "@/lib/orchestration";
-// Legacy compat re-export:
-export { CanonicalChainOrchestrator, createCanonicalChain } from "@/lib/core-services/canonical-chain-orchestrator";
-```
+### Phase 6: Missing Shared Component Barrels (5 files)
 
-### Task 4: Rewire `sita-kernel.ts`
+| File | Re-exports From |
+|------|----------------|
+| `src/components/shared/ai/index.ts` | `@/components/ai/AIReceiptLink`, `AIStateBadge`, `AIResponsePanel` |
+| `src/components/shared/sita/index.ts` | `@/components/sita/SitaCard`, `SitaCharts`, `SitaCompanionBar`, `SitaComponents`, `SitaPageHeader`, `SitaTopBar`, `PageSkeleton`, `SectionSkeleton`, `EmptyState`, `EmptyStateCTA`, `EmptyStateCard`, `DataLoadingWrapper`, `StateBadge`, `TrustBadge`, `TrustStateBadge` |
+| `src/components/shared/status/index.ts` | `@/components/cloud/PlatformDegradedBanner` |
+| `src/components/navigation/index.ts` | `@/components/NavLink` |
+| `src/components/cards/index.ts` | `@/components/sita/cards/*` |
 
-Add import of `orchestrationFacade` from `@/lib/orchestration`. Keep `AgentOrchestrator` import (it's used as an execution adapter internally, which is correct), but add a comment marking it as "execution adapter — subordinate to orchestration facade."
+### Phase 7: Update Governance (2 modified files)
 
-### Task 5: Rewire `use-admin-data.ts`
+**`directory-organization-map.ts`** — Add all ~40 new canonical paths to `DIRECTORY_ORGANIZATION_MAP`.
 
-Replace the dynamic `import("@/lib/core-services/agent-orchestrator")` with a comment noting it reads agent runtime state (read-only, acceptable as execution status inspection). No orchestration logic in the hook.
+**`ia-governance.ts`** — Expand `DEPRECATED_NEW_FILE_PATHS` to include:
+- `src/components/admin/` → `src/admin/`
+- `src/components/cloud/` → `src/features/cloud/`
+- `src/components/autopilot/` → `src/features/business/autopilot/`
+- `src/components/simulation/` → `src/features/simulation/`
+- `src/components/reality/` → `src/runtimes/reality/`
+- `src/components/platform/` → `src/platform/`
+- `src/components/user-app/` → `src/features/home/`
+- `src/components/finance/` → `src/features/money/`
+- `src/components/investment/` → `src/features/investment-office/`
+- `src/components/mobile/` → `src/runtimes/mobile/`
+- `src/components/notifications/` → `src/features/notifications/`
+- `src/components/revenue-office/` → `src/features/revenue-office/`
 
-### Task 6: Update `src/lib/orchestration/index.ts` barrel
+### Phase 8: Build Verification
 
-Add export of `orchestration-ids.ts` types. Ensure all proof builders, shared types, and migration utilities are exported.
-
-### Task 7: Build verification
-
-Full `tsc --noEmit` to confirm 0 errors.
-
----
+Run `tsc --noEmit` to confirm zero breakage.
 
 ## File Summary
 
 | Category | New Files | Modified Files |
 |----------|-----------|----------------|
-| Shared types | 1 (`orchestration-ids.ts`) | 0 |
-| Legacy wrappers | 0 | 6 (deprecation headers) |
-| Plane rewiring | 0 | 1 (`planes/backend.ts`) |
-| Kernel rewiring | 0 | 1 (`sita-kernel.ts`) |
-| Hook rewiring | 0 | 1 (`use-admin-data.ts`) |
-| Barrel update | 0 | 1 (`orchestration/index.ts`) |
-| **Total** | **1** | **10** |
+| Feature barrels | 20 | 0 |
+| Admin barrels | 6 | 0 |
+| Platform barrels | 6 | 0 |
+| Runtime barrels | 3 | 0 |
+| Shared component barrels | 5 | 0 |
+| Architecture governance | 0 | 2 |
+| **Total** | **~40** | **2** |
+
+## What This Does NOT Do
+- Does not physically move files (barrel re-export strategy)
+- Does not rewrite existing imports
+- Does not risk build breakage — purely additive
 
