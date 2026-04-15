@@ -92,9 +92,19 @@ export function SurfaceAuthorityMatrix({ compact = false }: { compact?: boolean 
     { label: "Cloud Decides", icon: Cloud, tooltip: "Cloud evaluates and decides" },
     { label: "App Approves", icon: Lock, tooltip: "Requires App approval" },
     { label: "OS Executes", icon: Monitor, tooltip: "OS performs the execution" },
+    { label: "Decides", icon: Cloud, tooltip: "Decision surface owner" },
+    { label: "Recovery", icon: RotateCcw, tooltip: "Recovery surface owner" },
     { label: "Offline", icon: Wifi, tooltip: "Works without cloud connectivity" },
     { label: "Rollback", icon: RotateCcw, tooltip: "Action can be reversed" },
   ];
+
+  const SURFACE_LABELS: Record<string, { label: string; color: string }> = {
+    os: { label: "OS", color: "text-blue-400" },
+    cloud: { label: "Cloud", color: "text-cyan-400" },
+    app: { label: "App", color: "text-purple-400" },
+    os_cloud: { label: "OS+Cloud", color: "text-teal-400" },
+    app_cloud: { label: "App+Cloud", color: "text-indigo-400" },
+  };
 
   return (
     <Card className="border-white/[0.06] bg-white/[0.03] backdrop-blur-xl">
