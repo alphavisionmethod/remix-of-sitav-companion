@@ -1,7 +1,7 @@
 // ═══════════════════════════════════════════════════════════════
 // SITA OS — Platform Infrastructure Initialization
 // Wires Electron bridge + offline sync + core substrate hydration
-// + Realtime event bridge
+// + Realtime event bridge + Sync Engine
 // ═══════════════════════════════════════════════════════════════
 
 import { useElectronBridge } from "@/hooks/useElectronBridge";
@@ -11,6 +11,7 @@ import { useRealtimeBridge } from "@/hooks/useRealtimeBridge";
 import { useEffect } from "react";
 import { createCloudSyncManager } from "@/lib/core-services/cloud-sync-manager";
 import { bootOSSecurity, isOSSecurityBooted } from "@/lib/os-security";
+import { syncd } from "@/lib/sync-engine";
 
 /**
  * Invisible component that initializes platform-level hooks.
@@ -35,6 +36,18 @@ export function PlatformInit() {
         console.error("[PlatformInit] OS security boot failed:", err)
       );
     }
+  }, []);
+
+  // Start Sync Daemon (syncd)
+  useEffect(() => {
+    const userId = "platform-user";
+    const deviceId = "primary-device";
+    syncd.start(userId, deviceId);
+    console.log("[PlatformInit] syncd started");
+    return () => {
+      syncd.stop();
+      console.log("[PlatformInit] syncd stopped");
+    };
   }, []);
 
   return null;

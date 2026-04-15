@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 import {
   LayoutDashboard, Users, Smartphone, HardDrive, RefreshCw,
   Shield, Wrench, Settings2, Cloud, HeartPulse, Activity,
-  Share2, RotateCcw
+  Share2, RotateCcw, Database, Fingerprint, Lock, Layers
 } from "lucide-react";
 
 const tabs = [
@@ -12,6 +12,10 @@ const tabs = [
   { key: "devices", label: "Devices", icon: Smartphone },
   { key: "storage", label: "Storage", icon: HardDrive },
   { key: "sync", label: "Sync Ops", icon: RefreshCw },
+  { key: "sync-objects", label: "Sync Objects", icon: Database },
+  { key: "device-identity", label: "Device Identity", icon: Fingerprint },
+  { key: "encryption", label: "Encryption", icon: Lock },
+  { key: "namespaces", label: "Namespaces", icon: Layers },
   { key: "audit", label: "Audit & Security", icon: Shield },
   { key: "jobs", label: "Jobs & Repair", icon: Wrench },
   { key: "recovery", label: "Recovery", icon: RotateCcw },
