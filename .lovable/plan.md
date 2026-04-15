@@ -1,126 +1,115 @@
 
 
-# Unified Real-Time Communication Layer — Implementation Plan
+# Unified Settings App — Consolidation Plan
 
-## What Already Exists
+## Problem
+Settings is fragmented across three places:
+1. **SettingsWindow** (windowed OS app) — has WiFi, Bluetooth, Sound, Display, Keyboard, Device Mode, but missing integrations, AI controls, operating modes, etc.
+2. **SettingsPage** (route `/settings`) — has Integrations, Advisors/AI, Operating Modes, Connected Accounts, etc., but missing WiFi, Bluetooth, Sound, Display
+3. **7 separate sub-page files** in `src/pages/settings/` — Accessibility, Device, Google Accounts, Plan/Usage, Notifications, Trusted Devices, Cloud Settings
 
-| Component | Status |
-|---|---|
-| `api-gateway` edge function (14 domains) | Complete |
-| `os-api-client.ts` typed SDK (16 domains) | Complete |
-| `use-os-api.ts` React Query hooks (38 hooks) | Complete |
-| `resilient-channel.ts` (reconnect, backoff, queue) | Complete |
-| `RealtimeGatewayService` (channel mgmt, presence) | In-memory only |
-| `UnifiedEventService` + Realtime bridge | Bridges 3 tables only |
-| `EventBus` (wildcard, DLQ, replay, persist) | Complete |
-| `CommunicationHub.tsx` admin UI | Complete |
-| `os-command` edge function (agent_signals) | Complete |
-| Existing event envelope contract | Missing prompt fields |
+The user wants ONE unified Settings app (the windowed Nova SDK app), containing everything.
 
-## What's Missing (Sections 17-35)
+## Design
 
-1. **Unified WebSocket multiplexer** — A single Supabase Realtime channel that multiplexes all 11 event scopes (system, command, security, sync, device, update, AI, healing, notification, timeline, audit) with typed envelope and selective subscription filtering (Section 17, 19, 21)
-2. **Full event envelope standard** — Current `EventEnvelope` lacks `event_id`, `actor_type`, `actor_id`, `source`, `scope`, `risk_level` fields the prompt requires (Section 20)
-3. **OS Agent communication protocol** — Structured command/response model with progress streaming, telemetry, and local policy enforcement. Current `os-command` is fire-and-forget via `agent_signals` (Section 22-23)
-4. **Internal event bus backend events** — Backend doesn't emit canonical lifecycle events (CommandCreated, ApprovalGranted, DeviceRevoked, etc.) through the event bus for fan-out to WebSocket and push (Section 24)
-5. **Communication observability** — No metrics tracking for WebSocket connect rate, event fanout latency, reconnect success, command e2e duration, stale-state corrections (Section 32)
-6. **Notification preferences table** — No `notification_preferences` table; gateway returns empty object (Section 12)
-7. **Realtime publication** — `os_commands` and `os_command_events` are not added to Supabase Realtime publication, so no live push on status changes (Section 17)
-8. **Frontend real-time event stream UI** — CommunicationHub polls via React Query but doesn't show live WebSocket event stream with multiplexed events (Sections 19, 26)
+Merge all settings into the **SettingsWindow** as the single source of truth. Add the missing sections from SettingsPage and sub-pages. The `/settings` route will open the windowed Settings app instead of rendering its own page.
 
-## Implementation Plan — 4 Batches
+### SettingsWindow — Final Section List (26 sections, 8 groups)
 
-### Batch 1: Event Envelope Standard + Realtime Publication + Notification Preferences Table
+```text
+Group: Account
+  - Profile (exists)
+  - Security (exists)
+  - Connected Accounts (from SettingsPage — Google, OAuth, providers)
 
-**Migration:**
-- `ALTER PUBLICATION supabase_realtime ADD TABLE os_commands, os_command_events;`
-- Create `notification_preferences` table (user_id, channel, scope, enabled, quiet_hours, urgency_filter)
-- RLS: `auth.uid() = user_id`
+Group: System
+  - General (exists)
+  - Appearance (exists)
+  - Display (exists)
+  - Accessibility (from AccessibilitySettings.tsx)
+  - Operating Modes (from SettingsPage — Focus, Travel, etc.)
+  - Device Mode (exists)
 
-**Contract update** — `src/packages/contracts/core/event-envelope.ts`:
-- Add `event_id`, `actor_type`, `actor_id`, `source`, `scope`, `risk_level` to the `WsEventEnvelope` type (keep existing `EventEnvelope` untouched for backward compat)
+Group: Connectivity
+  - Network / Wi-Fi (exists)
+  - Bluetooth (exists)
+  - Cloud & Sync (exists)
+  - Integrations & APIs (from SettingsPage — connector status, sync)
 
-### Batch 2: Unified WebSocket Multiplexer
+Group: Sound & Input
+  - Sound (exists)
+  - Keyboard (exists)
 
-**New file: `src/lib/services/realtime-gateway/unified-ws-client.ts`**
-- Single `UnifiedWsClient` class using one Supabase Realtime channel
-- Multiplexes all 11 event scopes via broadcast events
-- Selective subscription: `subscribe(scope, handler)` / `unsubscribe(scope)`
-- Typed `WsEventEnvelope` on every event
-- Bridges DB changes from `os_commands`, `os_command_events`, `agent_signals`, `notifications_queue`, `incidents` into typed broadcast events
-- Token refresh awareness (listens to `onAuthStateChange`)
-- Forced disconnect on session revoke
-- Stream resume from last event ID on reconnect
-- Integrates with existing `ResilientChannel` for backoff/heartbeat
+Group: AI & Intelligence
+  - Advisors & AI (from SettingsPage — autonomy, budget, confidence)
+  - Plan & Usage (from MyPlanUsage.tsx)
 
-**New hook: `src/hooks/use-unified-ws.ts`**
-- `useWsSubscription(scope, handler)` — subscribe to specific scope with auto-cleanup
-- `useWsEventStream(scopes, maxEvents)` — collect live events matching scopes
-- `useWsConnectionStatus()` — returns connection state, latency, last event time
-- Auto-starts on auth, auto-stops on logout
-- Wires into PlatformInit
+Group: Notifications
+  - Notifications (exists, enhanced with NotificationPreferences.tsx push controls)
 
-### Batch 3: OS Agent Protocol + Backend Event Fan-out
+Group: Privacy & Trust
+  - Privacy (exists, enhanced with SettingsPage GDPR export/delete)
+  - Trust & Security (from SettingsPage — trust mode, compliance audit)
+  - Devices & Sessions (from SettingsPage + TrustedDeviceManager)
 
-**New edge function: `supabase/functions/os-agent-channel/index.ts`**
-- Agent registration endpoint (POST `/register`)
-- Agent heartbeat (POST `/heartbeat`)
-- Command poll (GET `/commands`) — returns pending structured commands
-- Command ack (POST `/commands/:id/ack`) — agent accepts command
-- Progress report (POST `/commands/:id/progress`) — streams progress updates into `os_command_events`
-- Result report (POST `/commands/:id/result`) — completes or fails command
-- Telemetry ingest (POST `/telemetry`)
-- All responses update `os_commands` state machine, emit events to `os_command_events`
-- Inserts audit_logs for every state transition
+Group: Advanced
+  - Household (from SettingsPage)
+  - Business Rules (from SettingsPage)
+  - Workflows (from SettingsPage)
+  - Backup & Recovery (from SettingsPage)
+  - System Updates (from SettingsPage — update daemon)
+  - Support & Diagnostics (from SettingsPage)
+  - About (exists)
+```
 
-**Backend event fan-out** — Add a PostgreSQL trigger on `os_command_events` INSERT that calls `pg_notify` so the Supabase Realtime bridge automatically pushes to subscribed clients. Already handled by adding `os_command_events` to the realtime publication.
+## Implementation Steps
 
-**Communication observability table** — Add `communication_metrics` table:
-- `metric_type` (ws_connect, ws_disconnect, event_fanout, command_e2e, reconnect, stale_correction)
-- `value`, `metadata`, `user_id`, `device_id`, `timestamp`
+### 1. Expand SettingsWindow with all missing sections
+Add 15 new content components to `SettingsWindow.tsx`, porting the logic from SettingsPage and sub-pages:
+- **ConnectedAccountsContent** — Google provider family, OAuth identity, all provider status
+- **AccessibilityContent** — high contrast, text size, reduce motion, screen reader
+- **OperatingModesContent** — 12 operating modes with mode switching
+- **IntegrationsContent** — connector registry status, sync status
+- **AdvisorsAIContent** — autonomy level, confidence threshold, budget, per-advisor controls
+- **PlanUsageContent** — compute budget, AI spend, fair use
+- **TrustSecurityContent** — trust mode, simulation preference, compliance audit
+- **DevicesSessionsContent** — trusted devices list, session management
+- **HouseholdContent** — family members, shared access
+- **BusinessRulesContent** — follow-up policy, lead scoring, pipeline
+- **WorkflowsContent** — active automations, trust gate
+- **BackupRecoveryContent** — backup status, restore points, export
+- **SystemUpdatesContent** — update daemon, channel selector, policy
+- **SupportDiagnosticsContent** — system health, diagnostics, quick help
+- **NotificationPrefsContent** — enhance existing with push permission controls
 
-### Batch 4: Frontend Real-Time Event Stream + Observability Dashboard
+### 2. Update SECTIONS and GROUPS arrays
+Add entries for all 26 sections organized into 8 groups.
 
-**Update `CommunicationHub.tsx`** — Add new "Live Stream" tab:
-- Real-time event feed using `useWsEventStream(["*"])`
-- Scope filter chips (system, command, security, sync, device, update, AI, healing, notification)
-- Event envelope detail panel showing all fields (correlation_id, actor, scope, risk_level)
-- Connection health indicator (connected/reconnecting/degraded)
-- Event rate sparkline
+### 3. Redirect `/settings` route to the windowed app
+Modify the SettingsPage to simply launch the Settings window app (or render a minimal redirect/launcher that opens the window). The route still exists for deep-linking but opens the app.
 
-**Update `CommunicationHub.tsx`** — Add "Observability" tab:
-- WebSocket connect/disconnect rate
-- Event fanout latency chart
-- Command end-to-end duration metrics
-- Reconnect success rate
-- Active subscriptions by scope
-- Stale-state correction counter
+### 4. Wire sidebar navigation entry
+Ensure clicking "Settings" in the sidebar opens the Settings window app, not the route page.
 
-**Wire unified WS into existing hooks:**
-- `useCommands()` — add real-time invalidation when `command.*` WS events arrive (replace 5s polling)
-- `useNotifications()` — invalidate on `notification` scope events
-- `useSystemStatus()` — invalidate on `system.status` scope events
+### Technical Details
+- All new sections use the Nova SDK UI components (`NovaCard`, `NovaToggle`, `NovaSlider`, `NovaSectionLabel`, etc.) matching the existing SettingsWindow style
+- Hooks like `useSettingsValue`, `useAuth`, `useGovernanceSimulator`, `useOSOrchestration`, `useUpdateDaemon` are imported as needed
+- Connector/integration data uses existing `useQuery` patterns from SettingsPage
+- The file will be split into multiple sub-files under `src/components/sita/shell/windows/settings/` for maintainability
+- No stubs or placeholders — all logic ported from existing working code
 
-## Technical Details
-
-- All new tables get RLS policies: `TO authenticated USING (auth.uid() = user_id)`
-- `os-agent-channel` uses service role key for state machine updates
-- `WsEventEnvelope` is a superset of existing `EventEnvelope` — no breaking changes
-- The unified WS client creates ONE Supabase Realtime channel per authenticated session
-- Scoped subscriptions are client-side filters on the single broadcast channel
-- Communication metrics are write-only from client; admin reads via gateway
-- The OS agent channel is a REST-based pull/push model (agents poll commands, push progress) — not a persistent server-side WebSocket, since edge functions are stateless
-
-## Files Created/Modified
-
+### Files Modified/Created
 | File | Action |
 |---|---|
-| `src/packages/contracts/core/ws-event-envelope.ts` | Create — WsEventEnvelope type |
-| `src/lib/services/realtime-gateway/unified-ws-client.ts` | Create — multiplexed WS client |
-| `src/hooks/use-unified-ws.ts` | Create — React hooks for WS |
-| `supabase/functions/os-agent-channel/index.ts` | Create — agent protocol |
-| `src/pages/admin/CommunicationHub.tsx` | Modify — add Live Stream + Observability tabs |
-| `src/components/sita/PlatformInit.tsx` | Modify — wire unified WS |
-| `src/hooks/use-os-api.ts` | Modify — WS-driven cache invalidation |
-| Migration for `notification_preferences`, `communication_metrics`, realtime publication | Create |
+| `src/components/sita/shell/windows/settings/AccountSections.tsx` | Create — Profile, Security, Connected Accounts |
+| `src/components/sita/shell/windows/settings/SystemSections.tsx` | Create — General, Appearance, Display, Accessibility, Operating Modes, Device Mode |
+| `src/components/sita/shell/windows/settings/ConnectivitySections.tsx` | Create — Network, Bluetooth, Cloud & Sync, Integrations |
+| `src/components/sita/shell/windows/settings/SoundInputSections.tsx` | Create — Sound, Keyboard |
+| `src/components/sita/shell/windows/settings/AISections.tsx` | Create — Advisors & AI, Plan & Usage |
+| `src/components/sita/shell/windows/settings/NotificationSections.tsx` | Create — Notifications with push controls |
+| `src/components/sita/shell/windows/settings/PrivacyTrustSections.tsx` | Create — Privacy, Trust & Security, Devices & Sessions |
+| `src/components/sita/shell/windows/settings/AdvancedSections.tsx` | Create — Household, Business Rules, Workflows, Backup, Updates, Support, About |
+| `src/components/sita/shell/windows/SettingsWindow.tsx` | Rewrite — import from sub-files, expand SECTIONS/GROUPS/CONTENT maps |
+| `src/pages/SettingsPage.tsx` | Simplify — redirect/launcher that opens Settings window |
+| `src/routes/os-routes.tsx` | Update — simplify settings sub-routes |
 
