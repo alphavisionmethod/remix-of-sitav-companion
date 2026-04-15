@@ -138,5 +138,11 @@ export { appLifecycle } from "@/lib/os-services/app-lifecycle";
 export { abiVersionManager } from "@/lib/os-services/abi-versioning";
 export { getHelpEngine } from "@/lib/os-services/help-engine";
 
+// ── Platform IPC Bus ──
+export { ipcBus } from "@/lib/os-services/platform-ipc-bus";
+export type {
+  IPCMessage, IPCResponse, IPCEvent, IPCMethodRegistration, IPCStreamHandle,
+} from "@/lib/os-services/platform-ipc-bus";
+
 // ── Sync Engine ──
 export * from "@/lib/sync-engine";
