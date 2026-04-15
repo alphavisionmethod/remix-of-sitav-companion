@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Search, Database, Eye, Trash2, Clock, FileText, Settings, Layout, Smartphone, Bell, Folder, GitBranch } from "lucide-react";
+import { Search, Database, Eye, Clock, FileText, Settings, Layout, Smartphone, Bell, Folder, GitBranch } from "lucide-react";
 import { syncd } from "@/lib/sync-engine/syncd";
 import { namespaceRegistry } from "@/lib/sync-engine/sync-namespaces";
 import { conflictResolver } from "@/lib/sync-engine/conflict-resolver";
@@ -32,7 +32,7 @@ export function CloudSyncObjectsAdmin() {
 
   const allObjects = syncd.queryObjects({});
   const conflicts = conflictResolver.getPendingConflicts();
-  const namespaces = namespaceRegistry.getAllNamespaces();
+  const namespaces = namespaceRegistry.getAll();
 
   const filtered = useMemo(() => allObjects.filter(o => {
     const matchSearch = o.id.includes(search) || o.namespace.includes(search.toLowerCase());
@@ -68,17 +68,11 @@ export function CloudSyncObjectsAdmin() {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input placeholder="Search by ID or namespace..." value={search} onChange={e => setSearch(e.target.value)} className="pl-9" />
         </div>
-        <select
-          className="px-3 py-2 rounded-md bg-background border border-border text-sm text-foreground"
-          value={nsFilter} onChange={e => setNsFilter(e.target.value)}
-        >
+        <select className="px-3 py-2 rounded-md bg-background border border-border text-sm text-foreground" value={nsFilter} onChange={e => setNsFilter(e.target.value)}>
           <option value="all">All Namespaces</option>
           {namespaces.map(ns => <option key={ns.id} value={ns.id}>{ns.id}</option>)}
         </select>
-        <select
-          className="px-3 py-2 rounded-md bg-background border border-border text-sm text-foreground"
-          value={typeFilter} onChange={e => setTypeFilter(e.target.value)}
-        >
+        <select className="px-3 py-2 rounded-md bg-background border border-border text-sm text-foreground" value={typeFilter} onChange={e => setTypeFilter(e.target.value)}>
           <option value="all">All Types</option>
           {types.map(t => <option key={t} value={t}>{t}</option>)}
         </select>
@@ -88,8 +82,7 @@ export function CloudSyncObjectsAdmin() {
       <Card>
         <CardHeader className="pb-3">
           <CardTitle className="text-sm flex items-center gap-2">
-            <Database className="h-4 w-4 text-primary" />
-            Sync Objects ({filtered.length})
+            <Database className="h-4 w-4 text-primary" /> Sync Objects ({filtered.length})
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -125,7 +118,7 @@ export function CloudSyncObjectsAdmin() {
                       <TableCell><span className="text-xs font-mono text-muted-foreground">{obj.namespace}</span></TableCell>
                       <TableCell><Badge variant="outline" className="text-xs">v{obj.version}</Badge></TableCell>
                       <TableCell>
-                        <Badge variant={obj.deleted ? "destructive" : obj.state === "synced" ? "default" : "secondary"} className="text-xs">
+                        <Badge variant={obj.deleted ? "destructive" : "default"} className="text-xs">
                           {obj.deleted ? "Deleted" : obj.state}
                         </Badge>
                       </TableCell>
@@ -165,13 +158,13 @@ export function CloudSyncObjectsAdmin() {
               <div><p className="text-xs text-muted-foreground">Origin Device</p><p className="font-mono text-xs">{selectedObject.originDeviceId}</p></div>
               <div><p className="text-xs text-muted-foreground">Created</p><p>{new Date(selectedObject.createdAt).toLocaleString()}</p></div>
               <div><p className="text-xs text-muted-foreground">Updated</p><p>{new Date(selectedObject.updatedAt).toLocaleString()}</p></div>
-              <div><p className="text-xs text-muted-foreground">Content Hash</p><p className="font-mono text-xs">{selectedObject.contentHash || "—"}</p></div>
+              <div><p className="text-xs text-muted-foreground">Object Hash</p><p className="font-mono text-xs">{selectedObject.objectHash || "—"}</p></div>
               <div><p className="text-xs text-muted-foreground">Tombstone</p><p>{selectedObject.deleted ? "Yes" : "No"}</p></div>
               <div>
                 <p className="text-xs text-muted-foreground">Version Vector</p>
                 <div className="flex gap-1 flex-wrap mt-1">
                   {selectedObject.versionVector.map(v => (
-                    <Badge key={v.deviceId} variant="outline" className="text-[10px]">{v.deviceId.slice(0, 8)}:v{v.version}</Badge>
+                    <Badge key={v.deviceId} variant="outline" className="text-[10px]">{v.deviceId.slice(0, 8)}:c{v.counter}</Badge>
                   ))}
                 </div>
               </div>

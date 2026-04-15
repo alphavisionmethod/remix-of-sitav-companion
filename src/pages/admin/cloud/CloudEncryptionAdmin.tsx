@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Shield, Key, RotateCcw, Lock, Unlock, Eye, AlertTriangle, CheckCircle } from "lucide-react";
+import { Shield, Key, RotateCcw, Lock, Eye, AlertTriangle, CheckCircle } from "lucide-react";
 import { syncEncryption, type EncryptionKeyMeta } from "@/lib/sync-engine/security/sync-encryption";
 import { namespaceRegistry } from "@/lib/sync-engine/sync-namespaces";
 import { toast } from "sonner";
@@ -34,7 +34,7 @@ export function CloudEncryptionAdmin() {
   const allKeys = syncEncryption.getAllKeys();
   const activeKeys = syncEncryption.getActiveKeys();
   const rotationHistory = syncEncryption.getRotationHistory();
-  const namespaces = namespaceRegistry.getAllNamespaces();
+  const namespaces = namespaceRegistry.getAll();
   const recoveryInfo = syncEncryption.getRecoveryKeyInfo();
   const nsEncryption = syncEncryption.getNamespaceEncryptionStatus();
 
@@ -143,7 +143,7 @@ export function CloudEncryptionAdmin() {
               return (
                 <div key={ns.id} className="flex items-center justify-between p-3 rounded-lg bg-muted/20 border border-border/30">
                   <div className="flex items-center gap-2">
-                    {hasKey ? <CheckCircle className="h-4 w-4 text-emerald-400" /> : <AlertTriangle className="h-4 w-4 text-amber-400" />}
+                    {hasKey ? <CheckCircle className="h-4 w-4 text-primary" /> : <AlertTriangle className="h-4 w-4 text-muted-foreground" />}
                     <div>
                       <p className="text-sm font-medium">{ns.id}</p>
                       <p className="text-xs text-muted-foreground">{ns.defaultEncryptionClass}</p>

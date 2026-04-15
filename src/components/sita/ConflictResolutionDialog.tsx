@@ -17,25 +17,23 @@ export function ConflictResolutionDialog({ open, onClose }: ConflictResolutionDi
   const [selectedConflict, setSelectedConflict] = useState<SyncConflict | null>(null);
 
   const conflicts = conflictResolver.getPendingConflicts();
-  const history = conflictResolver.getConflictHistory();
+  const history = conflictResolver.getConflicts().filter(c => c.status === "resolved" || c.status === "auto-resolved");
 
   const handleResolve = (conflictId: string, choice: "keep-local" | "keep-remote" | "merge") => {
     const conflict = conflicts.find(c => c.id === conflictId);
     if (!conflict) return;
-
-    let resolution;
-    if (choice === "keep-local") {
-      resolution = conflictResolver.resolveConflict(conflict.id, "last-write-wins");
-    } else if (choice === "keep-remote") {
-      resolution = conflictResolver.resolveConflict(conflict.id, "last-write-wins");
-    } else {
-      resolution = conflictResolver.resolveConflict(conflict.id, "merge-by-key");
-    }
-
-    if (resolution) {
-      toast.success(`Conflict resolved: ${choice}`);
-      setSelectedConflict(null);
-    }
+    // Mark as resolved by updating status
+    conflict.status = "resolved";
+    conflict.resolution = {
+      winner: choice === "keep-local" ? "local" : choice === "keep-remote" ? "remote" : "merged",
+      resolvedObject: choice === "keep-local" ? conflict.localVersion : conflict.remoteVersion,
+      resolvedAt: new Date().toISOString(),
+      resolvedBy: "user",
+      strategyUsed: conflict.strategy,
+      mergeDetails: `User chose: ${choice}`,
+    };
+    toast.success(`Conflict resolved: ${choice}`);
+    setSelectedConflict(null);
   };
 
   if (!open) return null;
@@ -75,7 +73,7 @@ export function ConflictResolutionDialog({ open, onClose }: ConflictResolutionDi
           <div className="p-5 space-y-4">
             {conflicts.length === 0 ? (
               <div className="text-center py-12">
-                <Check className="h-12 w-12 mx-auto text-emerald-400 mb-3" />
+                <Check className="h-12 w-12 mx-auto text-primary mb-3" />
                 <p className="text-lg font-medium text-foreground">All clear!</p>
                 <p className="text-sm text-muted-foreground">No conflicts to resolve.</p>
               </div>
@@ -101,36 +99,35 @@ export function ConflictResolutionDialog({ open, onClose }: ConflictResolutionDi
                         <p className="text-xs font-medium">Why did this happen?</p>
                       </div>
                       <p className="text-xs text-muted-foreground">
-                        This object was modified on both <strong>{selectedConflict.deviceA}</strong> and{" "}
-                        <strong>{selectedConflict.deviceB}</strong> before either change could sync. The base version was v{selectedConflict.baseVersion}.
+                        {selectedConflict.explanation}
                       </p>
                     </div>
 
                     {/* Side by side */}
                     <div className="grid grid-cols-2 gap-3">
-                      <div className="p-3 rounded-lg bg-blue-500/5 border border-blue-500/20">
+                      <div className="p-3 rounded-lg bg-primary/5 border border-primary/20">
                         <div className="flex items-center gap-2 mb-2">
-                          <Monitor className="h-4 w-4 text-blue-400" />
-                          <p className="text-xs font-medium text-blue-400">Local (This Device)</p>
+                          <Monitor className="h-4 w-4 text-primary" />
+                          <p className="text-xs font-medium text-primary">Local Version</p>
                         </div>
                         <div className="text-xs text-muted-foreground space-y-1">
-                          <p>Device: {selectedConflict.deviceA}</p>
-                          <p>Changed: {new Date(selectedConflict.detectedAt).toLocaleString()}</p>
+                          <p>Device: {selectedConflict.localVersion.originDeviceId.slice(0, 12)}…</p>
+                          <p>Version: v{selectedConflict.localVersion.version}</p>
                           <pre className="mt-2 p-2 rounded bg-muted/30 text-[10px] font-mono overflow-auto max-h-32">
-                            {JSON.stringify(selectedConflict.localData, null, 2).slice(0, 300)}
+                            {JSON.stringify(selectedConflict.localVersion.payload ?? selectedConflict.localVersion.metadata, null, 2).slice(0, 300)}
                           </pre>
                         </div>
                       </div>
-                      <div className="p-3 rounded-lg bg-purple-500/5 border border-purple-500/20">
+                      <div className="p-3 rounded-lg bg-secondary/30 border border-secondary/50">
                         <div className="flex items-center gap-2 mb-2">
-                          <Smartphone className="h-4 w-4 text-purple-400" />
-                          <p className="text-xs font-medium text-purple-400">Remote</p>
+                          <Smartphone className="h-4 w-4 text-secondary-foreground" />
+                          <p className="text-xs font-medium text-secondary-foreground">Remote Version</p>
                         </div>
                         <div className="text-xs text-muted-foreground space-y-1">
-                          <p>Device: {selectedConflict.deviceB}</p>
-                          <p>Changed: {new Date(selectedConflict.detectedAt).toLocaleString()}</p>
+                          <p>Device: {selectedConflict.remoteVersion.originDeviceId.slice(0, 12)}…</p>
+                          <p>Version: v{selectedConflict.remoteVersion.version}</p>
                           <pre className="mt-2 p-2 rounded bg-muted/30 text-[10px] font-mono overflow-auto max-h-32">
-                            {JSON.stringify(selectedConflict.remoteData, null, 2).slice(0, 300)}
+                            {JSON.stringify(selectedConflict.remoteVersion.payload ?? selectedConflict.remoteVersion.metadata, null, 2).slice(0, 300)}
                           </pre>
                         </div>
                       </div>
@@ -164,12 +161,14 @@ export function ConflictResolutionDialog({ open, onClose }: ConflictResolutionDi
                       <AlertTriangle className="h-4 w-4 text-destructive" />
                       <div>
                         <p className="text-sm font-medium">{conflict.objectId.slice(0, 20)}…</p>
-                        <p className="text-xs text-muted-foreground">{conflict.namespace} · v{conflict.baseVersion}</p>
+                        <p className="text-xs text-muted-foreground">{conflict.namespace} · v{conflict.localVersion.version} ↔ v{conflict.remoteVersion.version}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
                       <div className="text-right">
-                        <p className="text-xs text-muted-foreground">{conflict.deviceA} ↔ {conflict.deviceB}</p>
+                        <p className="text-xs text-muted-foreground">
+                          {conflict.localVersion.originDeviceId.slice(0, 8)} ↔ {conflict.remoteVersion.originDeviceId.slice(0, 8)}
+                        </p>
                         <p className="text-[10px] text-muted-foreground flex items-center justify-end gap-1">
                           <Clock className="h-3 w-3" />
                           {new Date(conflict.detectedAt).toLocaleTimeString()}
@@ -195,7 +194,7 @@ export function ConflictResolutionDialog({ open, onClose }: ConflictResolutionDi
                     {history.slice(0, 5).map(h => (
                       <div key={h.id} className="flex items-center justify-between py-1.5 text-xs">
                         <span className="text-muted-foreground font-mono">{h.objectId.slice(0, 16)}…</span>
-                        <Badge variant="outline" className="text-[10px]">{h.resolution}</Badge>
+                        <Badge variant="outline" className="text-[10px]">{h.resolution?.winner ?? h.status}</Badge>
                         <span className="text-muted-foreground">{new Date(h.detectedAt).toLocaleDateString()}</span>
                       </div>
                     ))}

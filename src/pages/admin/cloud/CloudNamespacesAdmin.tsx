@@ -7,12 +7,11 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Layers, Shield, GitMerge, Eye, Settings, FileText, Layout, Bell, Smartphone } from "lucide-react";
 import { namespaceRegistry, type SyncNamespace } from "@/lib/sync-engine/sync-namespaces";
 import { syncPolicy } from "@/lib/sync-engine/security/sync-policy";
-import { toast } from "sonner";
 
 const priorityColors: Record<string, string> = {
-  critical: "bg-red-500/20 text-red-400",
+  critical: "bg-destructive/20 text-destructive",
   high: "bg-amber-500/20 text-amber-400",
-  medium: "bg-blue-500/20 text-blue-400",
+  medium: "bg-primary/20 text-primary",
   low: "bg-muted text-muted-foreground",
   background: "bg-muted/50 text-muted-foreground/60",
 };
@@ -25,7 +24,7 @@ const categoryIcons: Record<string, React.ElementType> = {
 export function CloudNamespacesAdmin() {
   const [selectedNs, setSelectedNs] = useState<SyncNamespace | null>(null);
 
-  const namespaces = namespaceRegistry.getAllNamespaces();
+  const namespaces = namespaceRegistry.getAll();
   const policies = syncPolicy.getRules();
 
   const nsByCategory = namespaces.reduce((acc, ns) => {
@@ -84,7 +83,7 @@ export function CloudNamespacesAdmin() {
                         </div>
                       </TableCell>
                       <TableCell>
-                        <Badge className={`text-xs ${priorityColors[ns.defaultPriority]}`}>{ns.defaultPriority}</Badge>
+                        <Badge className={`text-xs ${priorityColors[ns.priority] ?? ""}`}>{ns.priority}</Badge>
                       </TableCell>
                       <TableCell>
                         <div className="flex items-center gap-1.5">
@@ -99,7 +98,7 @@ export function CloudNamespacesAdmin() {
                         </div>
                       </TableCell>
                       <TableCell>
-                        {ns.policyFlags.allowSelectiveSync
+                        {ns.selectiveSyncAllowed
                           ? <Badge variant="default" className="text-[10px]">Yes</Badge>
                           : <Badge variant="outline" className="text-[10px]">No</Badge>}
                       </TableCell>
@@ -129,11 +128,12 @@ export function CloudNamespacesAdmin() {
           <CardContent className="space-y-4">
             <p className="text-sm text-muted-foreground">{selectedNs.description}</p>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4 text-sm">
-              <div><p className="text-xs text-muted-foreground">Priority</p><p>{selectedNs.defaultPriority}</p></div>
+              <div><p className="text-xs text-muted-foreground">Priority</p><p>{selectedNs.priority}</p></div>
               <div><p className="text-xs text-muted-foreground">Conflict Strategy</p><p>{selectedNs.conflictStrategy}</p></div>
               <div><p className="text-xs text-muted-foreground">Encryption</p><p>{selectedNs.defaultEncryptionClass}</p></div>
               <div><p className="text-xs text-muted-foreground">Max Object Size</p><p>{selectedNs.maxObjectSizeBytes ? `${Math.round(selectedNs.maxObjectSizeBytes / 1024 / 1024)}MB` : "Unlimited"}</p></div>
-              <div><p className="text-xs text-muted-foreground">TTL</p><p>{selectedNs.ttlSeconds ? `${selectedNs.ttlSeconds}s` : "None"}</p></div>
+              <div><p className="text-xs text-muted-foreground">Tombstone Retention</p><p>{Math.round(selectedNs.tombstoneRetentionMs / 86400000)}d</p></div>
+              <div><p className="text-xs text-muted-foreground">Realtime</p><p>{selectedNs.realtimeEnabled ? "Yes" : "No"}</p></div>
             </div>
             <div>
               <p className="text-xs text-muted-foreground mb-2">Policy Flags</p>
