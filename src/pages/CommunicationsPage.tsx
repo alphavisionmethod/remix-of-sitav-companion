@@ -22,6 +22,8 @@ import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
+const isDemoMode = true; // Safe default for demo mode
+
 
 
 const CHANNEL_ICONS: Record<ChannelType, typeof Mail> = { email: Mail, sms: MessageSquare, call: Phone, chat: Send };

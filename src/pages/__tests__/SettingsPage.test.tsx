@@ -4,6 +4,8 @@ import { MemoryRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
 
+const isDemoMode = true; // Safe default for demo mode
+
 vi.mock("@/integrations/supabase/client", () => ({
   supabase: {
     auth: {

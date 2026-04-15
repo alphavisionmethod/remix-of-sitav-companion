@@ -17,6 +17,8 @@ import { useOSRuntime } from "@/lib/hooks/useOSRuntime";
 import { useMemo } from "react";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
+const isDemoMode = true; // Safe default for demo mode
+
 
 
 const DEFAULT_SCOPE = { ownerId: "current-user", visibility: "private" as const };

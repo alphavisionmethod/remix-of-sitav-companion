@@ -26,6 +26,8 @@ import { toast } from "sonner";
 import { DEMO_APPROVAL_ITEMS, type DemoApprovalItem as ApprovalItem } from "@/lib/demo-data/approval-chamber";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
+const isDemoMode = true; // Safe default for demo mode
+
 
 
 

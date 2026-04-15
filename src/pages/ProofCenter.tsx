@@ -28,6 +28,8 @@ import {
   DollarSign, Briefcase, Home, Zap, Hash, Download, Layers
 } from "lucide-react";
 
+const isDemoMode = true; // Safe default for demo mode
+
 
 
 

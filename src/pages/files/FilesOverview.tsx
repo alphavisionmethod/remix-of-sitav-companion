@@ -17,6 +17,8 @@ import { fromTable } from "@/lib/supabase-helpers";
 import { useAuth } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 
+const isDemoMode = true; // Safe default for demo mode
+
 
 type ViewVariant = "founder" | "household" | "finance" | "premium";
 

@@ -16,6 +16,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { EmptyState } from "@/components/sita/SitaComponents";
 import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 
+const isDemoMode = true; // Safe default for demo mode
+
 
 
 
