@@ -137,7 +137,8 @@ const BusinessAdvisorBoardPage = () => {
           <div>
             <h1 className="text-lg font-display font-bold text-foreground">Board of Advisors</h1>
             <p className="text-[10px] text-muted-foreground">
-              {board.advisors.length} advisors · {board.coordinatedRecommendations.length} insights · {board.actionStats.total} actions
+              {board.advisors.length} advisors · {mergedRecommendations.length} insights · {board.actionStats.total} actions
+            </p>
             </p>
           </div>
         </div>
