@@ -2,9 +2,6 @@
 // SITA OS — Security Module Barrel Export
 // ═══════════════════════════════════════════════════════════════
 
-// Re-export existing
-export * from "./security-posture-engine";
-
 // Batch 1 — Detection & Monitoring
 export * from "./intrusion-detection-engine";
 export * from "./audit-trail-engine";
@@ -23,3 +20,6 @@ export * from "./chaos-testing-framework";
 
 // Batch 4 — Integration Fabric
 export * from "./security-fabric";
+
+// Legacy re-export (selective to avoid conflicts)
+export { SecurityPostureEngine, createSecurityPostureEngine } from "./security-posture-engine";
