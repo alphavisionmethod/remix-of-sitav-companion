@@ -23,7 +23,7 @@ let listeners: (() => void)[] = [];
 
 function notifyListeners() { listeners.forEach(fn => fn()); }
 
-export function pushUndoAction(action: Omit<UndoAction, "id" | "executedAt" | "expiresAt"> & { origin?: CommandOrigin }) {
+export function pushUndoAction(action: Omit<UndoAction, "id" | "executedAt" | "expiresAt" | "origin"> & { origin?: CommandOrigin }) {
   const entry: UndoAction = {
     ...action,
     origin: action.origin ?? "admin_control_plane",
