@@ -92,6 +92,7 @@ const NAV_GROUPS: NavGroup[] = [
   {
     title: "Architecture Governance",
     items: [
+      { label: "Dashboard", icon: Network, path: "/admin/mc/architecture" },
       { label: "Feature Ownership", icon: Layers, path: "/admin/mc/feature-ownership" },
       { label: "Command Routing", icon: Radio, path: "/admin/mc/command-routing" },
       { label: "Approval Flow", icon: ShieldAlert, path: "/admin/mc/approval-flow" },
