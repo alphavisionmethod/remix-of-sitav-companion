@@ -13,6 +13,7 @@ import {
 const NAV_ITEMS = [
   { label: "Mission Control", path: "/admin/mission-control", icon: Activity, group: "Navigation" },
   { label: "Intelligence Dashboard", path: "/admin/intelligence", icon: Brain, group: "Navigation" },
+  { label: "Intelligence Layer Admin", path: "/admin/intelligence/layer", icon: Brain, group: "Navigation" },
   { label: "Incidents", path: "/admin/incidents", icon: AlertTriangle, group: "Navigation" },
   { label: "Operations Hub", path: "/admin/operations", icon: Zap, group: "Navigation" },
   { label: "Alert Triage", path: "/admin/alert-triage", icon: AlertTriangle, group: "Navigation" },
