@@ -8,6 +8,7 @@ import {
   Wrench, HeadphonesIcon, BookOpen, ChevronDown, ChevronRight, PanelLeftClose,
   PanelLeft, Settings, Sparkles
 } from "lucide-react";
+import { GlossaryDrawer } from "./GlossaryDrawer";
 
 interface NavItem {
   label: string;
@@ -184,7 +185,7 @@ export function FounderSidebar({ collapsed, onToggle }: { collapsed: boolean; on
       </div>
 
       {/* Footer */}
-      <div className="px-3 py-2 border-t border-border/20">
+      <div className="px-3 py-2 border-t border-border/20 space-y-0.5">
         <Link
           to="/admin/system"
           className="flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs text-muted-foreground hover:bg-muted/30 hover:text-foreground transition-colors"
@@ -192,6 +193,7 @@ export function FounderSidebar({ collapsed, onToggle }: { collapsed: boolean; on
           <Settings className="h-3.5 w-3.5" />
           <span>Platform Settings</span>
         </Link>
+        <GlossaryDrawer />
       </div>
     </div>
   );

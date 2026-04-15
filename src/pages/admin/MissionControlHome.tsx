@@ -3,20 +3,17 @@ import { motion } from "framer-motion";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
 import { Link } from "react-router-dom";
 import {
-  Activity, Shield, Server, Zap, AlertTriangle, CheckCircle, Clock, Eye,
-  ArrowUpRight, ArrowDownRight, Bell, Database, Cpu, Globe, Lock, RefreshCw,
+  Activity, Shield, Server, AlertTriangle, CheckCircle, Clock,
+  ArrowUpRight, Bell, Database, Cpu, Globe, Lock, RefreshCw,
   Layers, GitBranch, Radio, Target, TrendingUp, BarChart3, Brain, Crown,
-  Link2, Rocket, Play
+  Link2, Rocket, Play, Eye, Zap, DollarSign, Wifi
 } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
 import { fromTable } from "@/lib/supabase-helpers";
 import { DEMO_ADMIN_SERVICES_MISSION_CONTROL_HOME as DEMO_SERVICES, DEMO_URGENT_ACTIONS } from "@/lib/demo-data/admin-platform";
 import { DEMO_MUTATIONS } from "@/lib/demo-data/durability";
-import { PageTruthBanner } from "@/components/sita/PageTruthBanner";
 import {
   RevenueSummaryPanel,
   RiskSummaryPanel,
@@ -24,6 +21,12 @@ import {
   IncidentSummaryPanel,
   ReplaySummaryPanel,
 } from "@/components/admin/panels";
+import { HealthScoreGauge } from "@/components/admin/shells/HealthScoreGauge";
+import { AISuggestionsPanel } from "@/components/admin/shells/AISuggestionsPanel";
+import { OneClickActions } from "@/components/admin/shells/OneClickActions";
+import { CommandTemplateCards } from "@/components/admin/shells/CommandTemplateCards";
+import { ExecutionTimeline } from "@/components/admin/shells/ExecutionTimeline";
+import { WhyTooltip } from "@/components/admin/shells/WhyTooltip";
 
 const fadeUp = { hidden: { opacity: 0, y: 12 }, show: { opacity: 1, y: 0, transition: { duration: 0.35 } } };
 const stagger = { hidden: {}, show: { transition: { staggerChildren: 0.05 } } };
@@ -43,11 +46,6 @@ const RECENT_CHANGES = [
   { id: "rc-3", text: "Ring 0 promoted for v2.14.0-rc3", time: "1h ago", type: "deployment" },
   { id: "rc-4", text: "Brain-core memory scaled to 4GB", time: "2h ago", type: "infra" },
   { id: "rc-5", text: "AI budget cap enforced per-domain", time: "3h ago", type: "policy" },
-];
-
-const PROJECTION_WARNINGS = [
-  { model: "boardroom-summary", lag: "45s", severity: "warning" as const },
-  { model: "calendar-projection", lag: "1.2s", severity: "ok" as const },
 ];
 
 const MissionControlHome = () => {
@@ -71,19 +69,29 @@ const MissionControlHome = () => {
 
   const healthyCount = DEMO_SERVICES.filter(s => s.status === "healthy").length;
   const overallHealth: HealthStatus = DEMO_SERVICES.some(s => s.status === "critical") ? "critical" : DEMO_SERVICES.some(s => s.status === "degraded") ? "degraded" : DEMO_SERVICES.some(s => s.status === "warning") ? "warning" : "healthy";
+  const healthScore = overallHealth === "healthy" ? 98 : overallHealth === "warning" ? 85 : overallHealth === "degraded" ? 68 : 42;
   const pendingMutations = DEMO_MUTATIONS.filter(m => m.durabilityStatus === "pending").length;
   const failedMutations = DEMO_MUTATIONS.filter(m => m.durabilityStatus === "failed").length;
 
+  const KPI_STRIP = [
+    { label: "Health", value: `${healthScore}%`, icon: Activity, color: healthScore >= 90 ? "text-emerald-500" : "text-amber-500", why: "Weighted average of all subsystem health scores: auth, sync, storage, trust, AI, releases, devices." },
+    { label: "Sync Reliability", value: "99.4%", icon: Wifi, color: "text-emerald-500", why: "Percentage of sync operations that completed successfully in the last 24 hours." },
+    { label: "Security Risk", value: "Low", icon: Shield, color: "text-emerald-500", why: "Composite security risk level based on active threats, policy compliance, and trust score distribution." },
+    { label: "Active Incidents", value: String(incidentCount ?? 0), icon: AlertTriangle, color: (incidentCount ?? 0) > 0 ? "text-amber-500" : "text-emerald-500", why: "Count of open or investigating incidents across all platform services." },
+    { label: "Release Readiness", value: "Good", icon: Rocket, color: "text-emerald-500", why: "Whether the platform meets all quality gates to ship the next release (tests, crash rate, performance)." },
+    { label: "AI Cost Efficiency", value: "91%", icon: DollarSign, color: "text-emerald-500", why: "Ratio of useful AI outputs to total AI spend. Higher is better — includes cache hits and model routing optimization." },
+  ];
+
   return (
-    <div className="min-h-screen bg-background p-6 space-y-6">
-{/* Header */}
-      <div className="flex items-center justify-between">
+    <div className="min-h-screen bg-background p-4 md:p-6 space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h1 className="text-3xl font-bold text-foreground tracking-tight">Mission Control</h1>
-          <p className="text-sm text-muted-foreground mt-1">Platform truth at a glance · Last refreshed {lastRefresh.toLocaleTimeString()}</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-foreground tracking-tight">Mission Control</h1>
+          <p className="text-xs text-muted-foreground mt-1">Platform truth at a glance · Last refreshed {lastRefresh.toLocaleTimeString()}</p>
         </div>
-        <div className="flex items-center gap-3">
-          <Badge variant="outline" className="text-[9px] text-muted-foreground">⌘K for commands</Badge>
+        <div className="flex items-center gap-2">
+          <Badge variant="outline" className="text-[9px] text-muted-foreground hidden md:inline-flex">⌘K for commands</Badge>
           <Badge variant="outline" className={statusColor[overallHealth]}>
             <Radio className="h-3 w-3 mr-1" /> Platform {overallHealth}
           </Badge>
@@ -109,42 +117,40 @@ const MissionControlHome = () => {
           </motion.div>
         )}
 
-        {PROJECTION_WARNINGS.some(p => p.severity === "warning") && (
-          <motion.div variants={fadeUp}>
-            <Card className="border-amber-500/30 bg-amber-500/5">
-              <CardContent className="p-3 flex items-center gap-3">
-                <BarChart3 className="h-4 w-4 text-amber-500" />
-                <span className="text-xs text-foreground">
-                  Projection freshness: {PROJECTION_WARNINGS.filter(p => p.severity === "warning").map(p => `${p.model} (${p.lag})`).join(", ")}
-                </span>
-                <Link to="/admin/projections" className="text-[10px] text-primary hover:underline ml-auto">View →</Link>
-              </CardContent>
-            </Card>
-          </motion.div>
-        )}
-
-        {/* Top Metrics */}
-        <motion.div variants={fadeUp} className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-3">
-          {[
-            { label: "Services", value: `${healthyCount}/${DEMO_SERVICES.length}`, icon: Server, color: "text-emerald-500" },
-            { label: "Incidents", value: String(incidentCount ?? 0), icon: AlertTriangle, color: "text-amber-500" },
-            { label: "Approvals", value: String(approvalCount ?? 0), icon: Shield, color: "text-blue-500" },
-            { label: "SLO Burn", value: "2.1%", icon: Target, color: "text-emerald-500" },
-            { label: "Proof Coverage", value: "87%", icon: CheckCircle, color: "text-primary" },
-            { label: "Projection Lag", value: "<1s", icon: Clock, color: "text-emerald-500" },
-            { label: "Deploy Ready", value: "Ring 1", icon: Rocket, color: "text-blue-500" },
-            { label: "Council Open", value: "2", icon: Crown, color: "text-amber-500" },
-          ].map((m) => (
-            <Card key={m.label} className="hover:-translate-y-0.5 transition-transform">
-              <CardContent className="p-3">
-                <div className="flex items-center gap-1.5 mb-1">
-                  <m.icon className={`h-3.5 w-3.5 ${m.color}`} />
-                  <span className="text-[9px] font-medium text-muted-foreground uppercase tracking-wider">{m.label}</span>
+        {/* Health Score Gauge + KPI Strip */}
+        <motion.div variants={fadeUp}>
+          <Card className="border-white/[0.06] bg-white/[0.03] backdrop-blur-xl">
+            <CardContent className="p-4 md:p-6">
+              <div className="flex flex-col md:flex-row items-center gap-6">
+                <HealthScoreGauge score={healthScore} />
+                <div className="flex-1 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3 w-full">
+                  {KPI_STRIP.map(kpi => (
+                    <div key={kpi.label} className="p-3 rounded-lg border border-white/[0.06] bg-white/[0.02]">
+                      <div className="flex items-center gap-1.5 mb-1">
+                        <kpi.icon className={`h-3.5 w-3.5 ${kpi.color}`} />
+                        <span className="text-[9px] font-medium text-muted-foreground uppercase tracking-wider">{kpi.label}</span>
+                        <WhyTooltip explanation={kpi.why} className="ml-auto" />
+                      </div>
+                      <p className="text-lg font-bold text-foreground">{kpi.value}</p>
+                    </div>
+                  ))}
                 </div>
-                <p className="text-lg font-bold text-foreground">{m.value}</p>
-              </CardContent>
-            </Card>
-          ))}
+              </div>
+              {/* "What should I do next?" */}
+              <div className="mt-4 p-3 rounded-lg bg-primary/5 border border-primary/10 flex items-center gap-3">
+                <Brain className="h-4 w-4 text-primary shrink-0" />
+                <p className="text-xs text-foreground">
+                  <span className="font-medium">What should you do next?</span>{" "}
+                  {(incidentCount ?? 0) > 0
+                    ? "Review active incidents — there are open issues requiring attention."
+                    : approvalCount && approvalCount > 0
+                      ? `Review ${approvalCount} pending approval(s) in the queue.`
+                      : "Everything looks good. Consider running a security sweep or preparing the next release."
+                  }
+                </p>
+              </div>
+            </CardContent>
+          </Card>
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
@@ -212,6 +218,26 @@ const MissionControlHome = () => {
             </Card>
           </motion.div>
         </div>
+
+        {/* AI Suggestions */}
+        <motion.div variants={fadeUp}>
+          <AISuggestionsPanel />
+        </motion.div>
+
+        {/* Quick Actions */}
+        <motion.div variants={fadeUp}>
+          <OneClickActions compact />
+        </motion.div>
+
+        {/* Command Templates */}
+        <motion.div variants={fadeUp}>
+          <CommandTemplateCards compact />
+        </motion.div>
+
+        {/* Recent Activity Timeline */}
+        <motion.div variants={fadeUp}>
+          <ExecutionTimeline compact maxVisible={5} />
+        </motion.div>
 
         {/* Platform Pulse — Summary Panels */}
         <motion.div variants={fadeUp}>
