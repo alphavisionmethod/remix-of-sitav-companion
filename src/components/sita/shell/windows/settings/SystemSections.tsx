@@ -5,7 +5,7 @@
 import { useState, useCallback, useEffect } from "react";
 import {
   Moon, Sun, Bell, Palette, Monitor, Eye, Globe, Check, ChevronRight, Lock,
-  Type, Accessibility, Activity,
+  Type, Accessibility, Activity, Clock, Home as HomeIcon, Layout,
 } from "lucide-react";
 import { VStack, HStack, Divider } from "@/lib/nova-sdk/ui/layout";
 import {
@@ -74,11 +74,36 @@ function WallpaperThumb({ id, label, active, onClick, preview, imgSrc, isImage, 
   );
 }
 
+function ChoiceRow({ label, options, value, onChange }: {
+  label: string; options: { key: string; label: string; desc?: string }[]; value: string; onChange: (v: string) => void;
+}) {
+  return (
+    <VStack spacing="tight">
+      <NovaSectionLabel className="!px-0">{label}</NovaSectionLabel>
+      <div className={cn("grid gap-1.5", options.length <= 3 ? "grid-cols-3" : "grid-cols-2")}>
+        {options.map(opt => (
+          <button key={opt.key} onClick={() => onChange(opt.key)} className={cn(
+            "rounded-lg border p-2 text-left transition-all text-[10px]",
+            value === opt.key ? "border-[hsl(var(--primary))]/40 bg-[hsl(var(--primary))]/8" : "border-border/30 hover:border-border/60"
+          )}>
+            <span className={cn("font-medium", value === opt.key && "text-[hsl(var(--primary))]")}>{opt.label}</span>
+            {opt.desc && <p className="text-[8px] text-[hsl(0_0%_55%)] mt-0.5">{opt.desc}</p>}
+          </button>
+        ))}
+      </div>
+    </VStack>
+  );
+}
+
 export function GeneralContent() {
   const [theme, setTheme] = useSettingsValue("appearance.theme", "dark");
   const darkMode = theme === "dark";
   const [uiSounds, setUiSounds] = useSettingsValue("sound.uiSounds", true);
   const [reducedMotion, setReducedMotion] = useSettingsValue("appearance.reduceMotion", false);
+  const [dateFormat, setDateFormat] = useSettingsValue("general.dateFormat", "mdy");
+  const [timeFormat, setTimeFormat] = useSettingsValue("general.timeFormat", "12h");
+  const [timezone, setTimezone] = useSettingsValue("general.timezone", Intl.DateTimeFormat().resolvedOptions().timeZone);
+  const [startup, setStartup] = useSettingsValue("general.startupBehavior", "lastState");
 
   const toggleDark = useCallback((v: boolean) => {
     const newTheme = v ? "dark" : "light";
@@ -103,6 +128,47 @@ export function GeneralContent() {
           </SettingRow>
         </VStack>
       </NovaCard>
+
+      <NovaCard>
+        <VStack spacing="tight">
+          <NovaSectionLabel className="!px-0">Date & Time</NovaSectionLabel>
+          <SettingRow label="Date Format" icon={<Clock className="h-3.5 w-3.5" />}>
+            <select
+              value={dateFormat}
+              onChange={(e) => setDateFormat(e.target.value as any)}
+              className="text-[10px] bg-[hsl(0_0%_100%/0.06)] border border-border/30 rounded-md px-2 py-1 text-foreground"
+            >
+              <option value="mdy">MM/DD/YYYY</option>
+              <option value="dmy">DD/MM/YYYY</option>
+              <option value="ymd">YYYY-MM-DD</option>
+            </select>
+          </SettingRow>
+          <Divider />
+          <SettingRow label="Time Format" icon={<Clock className="h-3.5 w-3.5" />}>
+            <select
+              value={timeFormat}
+              onChange={(e) => setTimeFormat(e.target.value as any)}
+              className="text-[10px] bg-[hsl(0_0%_100%/0.06)] border border-border/30 rounded-md px-2 py-1 text-foreground"
+            >
+              <option value="12h">12-hour</option>
+              <option value="24h">24-hour</option>
+            </select>
+          </SettingRow>
+          <Divider />
+          <SettingRow label="Timezone" icon={<Globe className="h-3.5 w-3.5" />}>
+            <NovaText variant="label" muted className="!text-[10px]">{timezone}</NovaText>
+          </SettingRow>
+        </VStack>
+      </NovaCard>
+
+      <NovaCard>
+        <ChoiceRow label="Startup Behavior" value={startup} onChange={(v) => setStartup(v as any)} options={[
+          { key: "lastState", label: "Last State", desc: "Resume where you left off" },
+          { key: "home", label: "Home", desc: "Start at home screen" },
+          { key: "dashboard", label: "Dashboard", desc: "Open main dashboard" },
+        ]} />
+      </NovaCard>
+
       <NovaCard>
         <SettingRow label="Language" icon={<Globe className="h-3.5 w-3.5" />}>
           <HStack spacing="tight" align="center">
@@ -233,6 +299,11 @@ export function DisplayContent() {
   const [brightness, setBrightness] = useSettingsValue("display.brightness", 0.8);
   const brightnessPercent = Math.round(brightness * 100);
   const [nightShift, setNightShift] = useSettingsValue("display.nightShift", false);
+  const [nightShiftIntensity, setNightShiftIntensity] = useSettingsValue("display.nightShiftIntensity", 0.5);
+  const [scaling, setScaling] = useSettingsValue("display.scaling", 1);
+  const [autoBrightness, setAutoBrightness] = useSettingsValue("display.autoBrightness", true);
+  const [trueTone, setTrueTone] = useSettingsValue("display.trueTone", true);
+  const [refreshRate, setRefreshRate] = useSettingsValue("display.refreshRate", "auto");
 
   return (
     <VStack spacing="tight">
@@ -240,11 +311,58 @@ export function DisplayContent() {
         <VStack spacing="tight">
           <NovaSlider value={brightnessPercent} onChange={(v) => setBrightness(v / 100 as any)} label="Brightness" />
           <Divider />
-          <SettingRow label="Night Shift" description="Warm colors after sunset" icon={<Sun className="h-3.5 w-3.5" />}>
-            <NovaToggle checked={nightShift} onChange={setNightShift} />
+          <SettingRow label="Auto-Brightness" description="Adjust based on ambient light" icon={<Sun className="h-3.5 w-3.5" />}>
+            <NovaToggle checked={autoBrightness} onChange={setAutoBrightness} />
+          </SettingRow>
+          <Divider />
+          <SettingRow label="True Tone" description="Adapt display to ambient lighting" icon={<Monitor className="h-3.5 w-3.5" />}>
+            <NovaToggle checked={trueTone} onChange={setTrueTone} />
           </SettingRow>
         </VStack>
       </NovaCard>
+
+      <NovaCard>
+        <VStack spacing="tight">
+          <SettingRow label="Night Shift" description="Warm colors after sunset" icon={<Sun className="h-3.5 w-3.5" />}>
+            <NovaToggle checked={nightShift} onChange={setNightShift} />
+          </SettingRow>
+          {nightShift && (
+            <>
+              <Divider />
+              <NovaSlider
+                value={Math.round(nightShiftIntensity * 100)}
+                onChange={(v) => setNightShiftIntensity(v / 100 as any)}
+                label="Warmth Intensity"
+              />
+            </>
+          )}
+        </VStack>
+      </NovaCard>
+
+      <NovaCard>
+        <VStack spacing="tight">
+          <NovaSlider
+            value={Math.round(scaling * 100)}
+            onChange={(v) => setScaling(v / 100 as any)}
+            label={`Display Scaling — ${Math.round(scaling * 100)}%`}
+          />
+        </VStack>
+      </NovaCard>
+
+      <NovaCard>
+        <SettingRow label="Refresh Rate" icon={<Monitor className="h-3.5 w-3.5" />}>
+          <select
+            value={refreshRate}
+            onChange={(e) => setRefreshRate(e.target.value as any)}
+            className="text-[10px] bg-[hsl(0_0%_100%/0.06)] border border-border/30 rounded-md px-2 py-1 text-foreground"
+          >
+            <option value="auto">Auto (ProMotion)</option>
+            <option value="60">60 Hz</option>
+            <option value="120">120 Hz</option>
+          </select>
+        </SettingRow>
+      </NovaCard>
+
       <NovaCard>
         <SettingRow label="Resolution" icon={<Monitor className="h-3.5 w-3.5" />}>
           <HStack spacing="tight" align="center">
@@ -259,37 +377,127 @@ export function DisplayContent() {
 }
 
 export function AccessibilityContent() {
-  const [highContrast, setHighContrast] = useState(false);
-  const [largeText, setLargeText] = useState(false);
+  const [highContrast, setHighContrast] = useSettingsValue("accessibility.highContrast", false);
+  const [boldText, setBoldText] = useSettingsValue("accessibility.boldText", false);
+  const [textSize, setTextSize] = useSettingsValue("accessibility.textSize", 100);
   const [reduceMotion, setReduceMotion] = useSettingsValue("appearance.reduceMotion", false);
-  const [screenReader, setScreenReader] = useState(false);
+  const [reduceAutoPlay, setReduceAutoPlay] = useSettingsValue("accessibility.reduceAutoPlayEffects", false);
+  const [voiceOver, setVoiceOver] = useSettingsValue("accessibility.voiceOver", false);
+  const [zoom, setZoom] = useSettingsValue("accessibility.zoom", false);
+  const [zoomLevel, setZoomLevel] = useSettingsValue("accessibility.zoomLevel", 1);
+  const [stickyKeys, setStickyKeys] = useSettingsValue("accessibility.stickyKeys", false);
+  const [fullKeyboardNav, setFullKeyboardNav] = useSettingsValue("accessibility.fullKeyboardNav", true);
+  const [focusIndicators, setFocusIndicators] = useSettingsValue("accessibility.focusIndicators", true);
+  const [cursorSize, setCursorSize] = useSettingsValue("accessibility.cursorSize", "normal");
+  const [screenReader, setScreenReader] = useSettingsValue("accessibility.screenReaderOptimized", false);
+  const [verbosity, setVerbosity] = useSettingsValue("accessibility.announcementVerbosity", "standard");
 
   useEffect(() => {
     document.documentElement.classList.toggle("high-contrast", highContrast);
   }, [highContrast]);
 
   useEffect(() => {
-    document.documentElement.style.fontSize = largeText ? "18px" : "";
-  }, [largeText]);
+    document.documentElement.style.fontSize = textSize !== 100 ? `${textSize}%` : "";
+  }, [textSize]);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("bold-text", boldText);
+  }, [boldText]);
 
   return (
     <VStack spacing="tight">
+      {/* Vision */}
       <NovaCard>
         <VStack spacing="tight">
-          <SettingRow label="High Contrast" description="Increase contrast for better visibility" icon={<Eye className="h-3.5 w-3.5" />}>
+          <NovaSectionLabel className="!px-0">Vision</NovaSectionLabel>
+          <SettingRow label="VoiceOver" description="Screen reader for spoken feedback" icon={<Accessibility className="h-3.5 w-3.5" />}>
+            <NovaToggle checked={voiceOver} onChange={(v) => { setVoiceOver(v); if (v) toast.success("VoiceOver enabled"); }} />
+          </SettingRow>
+          <Divider />
+          <SettingRow label="Zoom" description="Magnify screen content" icon={<Eye className="h-3.5 w-3.5" />}>
+            <NovaToggle checked={zoom} onChange={setZoom} />
+          </SettingRow>
+          {zoom && (
+            <>
+              <Divider />
+              <NovaSlider value={zoomLevel * 10} onChange={(v) => setZoomLevel(v / 10 as any)} label={`Zoom Level — ${zoomLevel.toFixed(1)}×`} />
+            </>
+          )}
+          <Divider />
+          <SettingRow label="High Contrast" description="Increase contrast for visibility" icon={<Eye className="h-3.5 w-3.5" />}>
             <NovaToggle checked={highContrast} onChange={setHighContrast} />
           </SettingRow>
           <Divider />
-          <SettingRow label="Large Text" description="Increase base text size to 18px" icon={<Type className="h-3.5 w-3.5" />}>
-            <NovaToggle checked={largeText} onChange={setLargeText} />
+          <SettingRow label="Bold Text" description="Make all text bolder" icon={<Type className="h-3.5 w-3.5" />}>
+            <NovaToggle checked={boldText} onChange={setBoldText} />
           </SettingRow>
           <Divider />
+          <NovaSlider value={textSize} onChange={(v) => setTextSize(v as any)} label={`Text Size — ${textSize}%`} />
+          <Divider />
+          <SettingRow label="Cursor Size" icon={<Monitor className="h-3.5 w-3.5" />}>
+            <select
+              value={cursorSize}
+              onChange={(e) => setCursorSize(e.target.value as any)}
+              className="text-[10px] bg-[hsl(0_0%_100%/0.06)] border border-border/30 rounded-md px-2 py-1 text-foreground"
+            >
+              <option value="normal">Normal</option>
+              <option value="large">Large</option>
+              <option value="xlarge">Extra Large</option>
+            </select>
+          </SettingRow>
+        </VStack>
+      </NovaCard>
+
+      {/* Motion */}
+      <NovaCard>
+        <VStack spacing="tight">
+          <NovaSectionLabel className="!px-0">Motion</NovaSectionLabel>
           <SettingRow label="Reduce Motion" description="Minimize all animations" icon={<Activity className="h-3.5 w-3.5" />}>
             <NovaToggle checked={reduceMotion} onChange={setReduceMotion} />
           </SettingRow>
           <Divider />
-          <SettingRow label="Screen Reader Mode" description="Optimize for assistive technologies" icon={<Accessibility className="h-3.5 w-3.5" />}>
+          <SettingRow label="Reduce Auto-Play" description="Stop auto-playing media" icon={<Activity className="h-3.5 w-3.5" />}>
+            <NovaToggle checked={reduceAutoPlay} onChange={setReduceAutoPlay} />
+          </SettingRow>
+        </VStack>
+      </NovaCard>
+
+      {/* Interaction */}
+      <NovaCard>
+        <VStack spacing="tight">
+          <NovaSectionLabel className="!px-0">Interaction</NovaSectionLabel>
+          <SettingRow label="Sticky Keys" description="Press modifier keys sequentially" icon={<Accessibility className="h-3.5 w-3.5" />}>
+            <NovaToggle checked={stickyKeys} onChange={setStickyKeys} />
+          </SettingRow>
+          <Divider />
+          <SettingRow label="Full Keyboard Navigation" description="Tab through all controls" icon={<Accessibility className="h-3.5 w-3.5" />}>
+            <NovaToggle checked={fullKeyboardNav} onChange={setFullKeyboardNav} />
+          </SettingRow>
+          <Divider />
+          <SettingRow label="Focus Indicators" description="Visible focus outlines" icon={<Accessibility className="h-3.5 w-3.5" />}>
+            <NovaToggle checked={focusIndicators} onChange={setFocusIndicators} />
+          </SettingRow>
+        </VStack>
+      </NovaCard>
+
+      {/* Screen Reader */}
+      <NovaCard>
+        <VStack spacing="tight">
+          <NovaSectionLabel className="!px-0">Screen Reader</NovaSectionLabel>
+          <SettingRow label="Screen Reader Optimized" description="Optimize layout for assistive tech" icon={<Accessibility className="h-3.5 w-3.5" />}>
             <NovaToggle checked={screenReader} onChange={(v) => { setScreenReader(v); if (v) toast.success("Screen reader optimizations enabled"); }} />
+          </SettingRow>
+          <Divider />
+          <SettingRow label="Announcement Verbosity" icon={<Accessibility className="h-3.5 w-3.5" />}>
+            <select
+              value={verbosity}
+              onChange={(e) => setVerbosity(e.target.value as any)}
+              className="text-[10px] bg-[hsl(0_0%_100%/0.06)] border border-border/30 rounded-md px-2 py-1 text-foreground"
+            >
+              <option value="minimal">Minimal</option>
+              <option value="standard">Standard</option>
+              <option value="verbose">Verbose</option>
+            </select>
           </SettingRow>
         </VStack>
       </NovaCard>

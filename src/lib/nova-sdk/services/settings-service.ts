@@ -59,9 +59,58 @@ export interface SettingsSchema {
   // Cloud
   "cloud.syncEnabled": boolean;
   "cloud.lastSyncAt": string;
+  "cloud.syncSettings": boolean;
+  "cloud.syncFiles": boolean;
+  "cloud.syncContacts": boolean;
+  "cloud.encryption": "standard" | "enhanced" | "zero-knowledge";
 
   // Input (extra)
   "input.autocorrect": boolean;
+
+  // AI & Intelligence
+  "ai.autonomyLevel": "always-ask" | "simulate-first" | "trusted";
+  "ai.confidenceThreshold": number;
+  "ai.budgetMode": "frugal" | "standard" | "premium";
+  "ai.contradictionDisplay": "always" | "high-only" | "never";
+  "ai.promptHistory": boolean;
+
+  // Trust & Security
+  "trust.mode": "cautious" | "balanced" | "confident";
+  "trust.simulationPref": "always" | "smart" | "never";
+  "trust.sessionTimeout": number;
+
+  // Business & Workflows
+  "business.followUpPolicy": "aggressive" | "smart" | "gentle";
+  "business.leadScoring": "recency" | "engagement" | "value";
+  "business.autoArchiveStale": boolean;
+  "business.revenueForecast": boolean;
+  "business.pipelineAlerts": boolean;
+  "workflows.trustGate": "auto" | "simulate" | "approve";
+  "workflows.morningRoutine": boolean;
+  "workflows.endOfDay": boolean;
+  "workflows.smartBatching": boolean;
+
+  // Household
+  "household.sharedCalendar": boolean;
+  "household.sharedGrocery": boolean;
+  "household.expenseSharing": boolean;
+
+  // Privacy extended
+  "privacy.piiRedaction": boolean;
+  "privacy.docRetention": "1year" | "7years" | "forever";
+  "privacy.trackingPrevention": "standard" | "strict" | "off";
+  "privacy.adPersonalization": boolean;
+
+  // Display extended
+  "display.autoBrightness": boolean;
+  "display.trueTone": boolean;
+  "display.refreshRate": "auto" | "60" | "120";
+
+  // General extended
+  "general.dateFormat": "mdy" | "dmy" | "ymd";
+  "general.timeFormat": "12h" | "24h";
+  "general.timezone": string;
+  "general.startupBehavior": "lastState" | "home" | "dashboard";
 
   // Accessibility
   "accessibility.voiceOver": boolean;
@@ -292,8 +341,53 @@ class SettingsServiceClass implements SystemService {
     d.set("notifications.badges", true);
     // Bluetooth
     d.set("bluetooth.enabled", true);
+    // Cloud
+    d.set("cloud.syncEnabled", false);
+    d.set("cloud.lastSyncAt", "");
+    d.set("cloud.syncSettings", true);
+    d.set("cloud.syncFiles", true);
+    d.set("cloud.syncContacts", true);
+    d.set("cloud.encryption", "standard");
     // Input (extra)
     d.set("input.autocorrect", true);
+    // AI
+    d.set("ai.autonomyLevel", "simulate-first");
+    d.set("ai.confidenceThreshold", 70);
+    d.set("ai.budgetMode", "standard");
+    d.set("ai.contradictionDisplay", "always");
+    d.set("ai.promptHistory", true);
+    // Trust
+    d.set("trust.mode", "balanced");
+    d.set("trust.simulationPref", "smart");
+    d.set("trust.sessionTimeout", 30);
+    // Business
+    d.set("business.followUpPolicy", "smart");
+    d.set("business.leadScoring", "engagement");
+    d.set("business.autoArchiveStale", true);
+    d.set("business.revenueForecast", true);
+    d.set("business.pipelineAlerts", true);
+    d.set("workflows.trustGate", "simulate");
+    d.set("workflows.morningRoutine", true);
+    d.set("workflows.endOfDay", false);
+    d.set("workflows.smartBatching", true);
+    // Household
+    d.set("household.sharedCalendar", true);
+    d.set("household.sharedGrocery", true);
+    d.set("household.expenseSharing", false);
+    // Privacy extended
+    d.set("privacy.piiRedaction", false);
+    d.set("privacy.docRetention", "7years");
+    d.set("privacy.trackingPrevention", "standard");
+    d.set("privacy.adPersonalization", false);
+    // Display extended
+    d.set("display.autoBrightness", true);
+    d.set("display.trueTone", true);
+    d.set("display.refreshRate", "auto");
+    // General extended
+    d.set("general.dateFormat", "mdy");
+    d.set("general.timeFormat", "12h");
+    d.set("general.timezone", Intl.DateTimeFormat().resolvedOptions().timeZone);
+    d.set("general.startupBehavior", "lastState");
     // Accessibility
     d.set("accessibility.voiceOver", false);
     d.set("accessibility.zoom", false);
@@ -325,6 +419,23 @@ class SettingsServiceClass implements SystemService {
     this.constraints.set("accessibility.cursorSize", { enum: ["normal", "large", "xlarge"] });
     this.constraints.set("accessibility.textSize", { min: 75, max: 200 });
     this.constraints.set("accessibility.announcementVerbosity", { enum: ["minimal", "standard", "verbose"] });
+    this.constraints.set("ai.confidenceThreshold", { min: 0, max: 100 });
+    this.constraints.set("trust.sessionTimeout", { min: 5, max: 120 });
+    this.constraints.set("ai.autonomyLevel", { enum: ["always-ask", "simulate-first", "trusted"] });
+    this.constraints.set("ai.budgetMode", { enum: ["frugal", "standard", "premium"] });
+    this.constraints.set("ai.contradictionDisplay", { enum: ["always", "high-only", "never"] });
+    this.constraints.set("trust.mode", { enum: ["cautious", "balanced", "confident"] });
+    this.constraints.set("trust.simulationPref", { enum: ["always", "smart", "never"] });
+    this.constraints.set("cloud.encryption", { enum: ["standard", "enhanced", "zero-knowledge"] });
+    this.constraints.set("display.refreshRate", { enum: ["auto", "60", "120"] });
+    this.constraints.set("general.dateFormat", { enum: ["mdy", "dmy", "ymd"] });
+    this.constraints.set("general.timeFormat", { enum: ["12h", "24h"] });
+    this.constraints.set("general.startupBehavior", { enum: ["lastState", "home", "dashboard"] });
+    this.constraints.set("privacy.docRetention", { enum: ["1year", "7years", "forever"] });
+    this.constraints.set("privacy.trackingPrevention", { enum: ["standard", "strict", "off"] });
+    this.constraints.set("business.followUpPolicy", { enum: ["aggressive", "smart", "gentle"] });
+    this.constraints.set("business.leadScoring", { enum: ["recency", "engagement", "value"] });
+    this.constraints.set("workflows.trustGate", { enum: ["auto", "simulate", "approve"] });
     // Dependency: reduce motion → disable spring animations
     this.constraints.set("appearance.reduceMotion", {
       dependsOn: { key: "appearance.reduceMotion", value: true, effect: {} },

@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 import { useUpdateDaemon } from "@/hooks/useUpdateDaemon";
 import { toast } from "sonner";
 import { SettingRow } from "./shared";
+import { useSettingsValue } from "@/hooks/use-settings-value";
 
 function ChoiceRow({ label, options, value, onChange }: {
   label: string; options: { key: string; label: string; desc?: string }[]; value: string; onChange: (v: string) => void;
@@ -40,6 +41,10 @@ function ChoiceRow({ label, options, value, onChange }: {
 }
 
 export function HouseholdContent() {
+  const [sharedCalendar, setSharedCalendar] = useSettingsValue("household.sharedCalendar", true);
+  const [sharedGrocery, setSharedGrocery] = useSettingsValue("household.sharedGrocery", true);
+  const [expenseSharing, setExpenseSharing] = useSettingsValue("household.expenseSharing", false);
+
   return (
     <VStack spacing="tight">
       <NovaCard>
@@ -70,15 +75,15 @@ export function HouseholdContent() {
       <NovaCard>
         <VStack spacing="tight">
           <SettingRow label="Shared Calendar" description="Sync across household">
-            <NovaToggle checked={true} onChange={() => {}} />
+            <NovaToggle checked={sharedCalendar} onChange={setSharedCalendar} />
           </SettingRow>
           <Divider />
           <SettingRow label="Shared Grocery Lists" description="Family members add items">
-            <NovaToggle checked={true} onChange={() => {}} />
+            <NovaToggle checked={sharedGrocery} onChange={setSharedGrocery} />
           </SettingRow>
           <Divider />
           <SettingRow label="Expense Sharing" description="Split costs automatically">
-            <NovaToggle checked={false} onChange={() => {}} />
+            <NovaToggle checked={expenseSharing} onChange={setExpenseSharing} />
           </SettingRow>
         </VStack>
       </NovaCard>
@@ -87,10 +92,16 @@ export function HouseholdContent() {
 }
 
 export function BusinessRulesContent() {
+  const [followUp, setFollowUp] = useSettingsValue("business.followUpPolicy", "smart");
+  const [leadScoring, setLeadScoring] = useSettingsValue("business.leadScoring", "engagement");
+  const [autoArchive, setAutoArchive] = useSettingsValue("business.autoArchiveStale", true);
+  const [forecast, setForecast] = useSettingsValue("business.revenueForecast", true);
+  const [pipelineAlerts, setPipelineAlerts] = useSettingsValue("business.pipelineAlerts", true);
+
   return (
     <VStack spacing="tight">
       <NovaCard>
-        <ChoiceRow label="Follow-Up Policy" value="smart" onChange={() => {}} options={[
+        <ChoiceRow label="Follow-Up Policy" value={followUp} onChange={(v) => setFollowUp(v as any)} options={[
           { key: "aggressive", label: "Aggressive", desc: "24h, 3 attempts" },
           { key: "smart", label: "Smart", desc: "AI-timed" },
           { key: "gentle", label: "Gentle", desc: "Max 1/week" },
@@ -98,7 +109,7 @@ export function BusinessRulesContent() {
       </NovaCard>
 
       <NovaCard>
-        <ChoiceRow label="Lead Scoring" value="engagement" onChange={() => {}} options={[
+        <ChoiceRow label="Lead Scoring" value={leadScoring} onChange={(v) => setLeadScoring(v as any)} options={[
           { key: "recency", label: "Recency", desc: "Recent activity first" },
           { key: "engagement", label: "Engagement", desc: "Multi-signal" },
           { key: "value", label: "Value", desc: "Deal value first" },
@@ -121,15 +132,15 @@ export function BusinessRulesContent() {
       <NovaCard>
         <VStack spacing="tight">
           <SettingRow label="Auto-Archive Stale Leads" description="60+ days no activity">
-            <NovaToggle checked={true} onChange={() => {}} />
+            <NovaToggle checked={autoArchive} onChange={setAutoArchive} />
           </SettingRow>
           <Divider />
           <SettingRow label="Revenue Forecast" description="Weekly projections">
-            <NovaToggle checked={true} onChange={() => {}} />
+            <NovaToggle checked={forecast} onChange={setForecast} />
           </SettingRow>
           <Divider />
           <SettingRow label="Advisor Pipeline Alerts" description="Deal risk alerts">
-            <NovaToggle checked={true} onChange={() => {}} />
+            <NovaToggle checked={pipelineAlerts} onChange={setPipelineAlerts} />
           </SettingRow>
         </VStack>
       </NovaCard>
@@ -138,6 +149,11 @@ export function BusinessRulesContent() {
 }
 
 export function WorkflowsContent() {
+  const [trustGate, setTrustGate] = useSettingsValue("workflows.trustGate", "simulate");
+  const [morningRoutine, setMorningRoutine] = useSettingsValue("workflows.morningRoutine", true);
+  const [endOfDay, setEndOfDay] = useSettingsValue("workflows.endOfDay", false);
+  const [smartBatching, setSmartBatching] = useSettingsValue("workflows.smartBatching", true);
+
   return (
     <VStack spacing="tight">
       <NovaCard>
@@ -163,7 +179,7 @@ export function WorkflowsContent() {
       </NovaCard>
 
       <NovaCard>
-        <ChoiceRow label="Automation Trust Gate" value="simulate" onChange={() => {}} options={[
+        <ChoiceRow label="Automation Trust Gate" value={trustGate} onChange={(v) => setTrustGate(v as any)} options={[
           { key: "auto", label: "Auto", desc: "No approval" },
           { key: "simulate", label: "Simulate", desc: "Preview first" },
           { key: "approve", label: "Approve", desc: "Manual each time" },
@@ -173,15 +189,15 @@ export function WorkflowsContent() {
       <NovaCard>
         <VStack spacing="tight">
           <SettingRow label="Morning Routine" description="Daily briefing at 7am">
-            <NovaToggle checked={true} onChange={() => {}} />
+            <NovaToggle checked={morningRoutine} onChange={setMorningRoutine} />
           </SettingRow>
           <Divider />
           <SettingRow label="End-of-Day Closure" description="Summary at 6pm">
-            <NovaToggle checked={false} onChange={() => {}} />
+            <NovaToggle checked={endOfDay} onChange={setEndOfDay} />
           </SettingRow>
           <Divider />
           <SettingRow label="Smart Batching" description="Combine similar tasks">
-            <NovaToggle checked={true} onChange={() => {}} />
+            <NovaToggle checked={smartBatching} onChange={setSmartBatching} />
           </SettingRow>
         </VStack>
       </NovaCard>
@@ -190,6 +206,9 @@ export function WorkflowsContent() {
 }
 
 export function BackupRecoveryContent() {
+  const handleBackup = useCallback(() => { toast.success("Manual backup initiated"); }, []);
+  const handleRestore = useCallback(() => { toast.success("Restore point created"); }, []);
+
   return (
     <VStack spacing="tight">
       <NovaCard>
@@ -240,8 +259,8 @@ export function BackupRecoveryContent() {
 
       <NovaCard>
         <HStack spacing="tight">
-          <NovaButton variant="secondary" icon={<Download className="h-3.5 w-3.5" />} className="flex-1 !text-[10px]">Export Backup</NovaButton>
-          <NovaButton variant="secondary" icon={<RefreshCw className="h-3.5 w-3.5" />} className="flex-1 !text-[10px]">Create Restore Point</NovaButton>
+          <NovaButton variant="secondary" onClick={handleBackup} icon={<Download className="h-3.5 w-3.5" />} className="flex-1 !text-[10px]">Export Backup</NovaButton>
+          <NovaButton variant="secondary" onClick={handleRestore} icon={<RefreshCw className="h-3.5 w-3.5" />} className="flex-1 !text-[10px]">Create Restore Point</NovaButton>
         </HStack>
       </NovaCard>
     </VStack>

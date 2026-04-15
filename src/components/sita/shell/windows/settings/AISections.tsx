@@ -2,15 +2,14 @@
 // Settings — AI & Intelligence Group (Advisors & AI, Plan & Usage)
 // ═══════════════════════════════════════════════════════════════
 
-import { useState } from "react";
-import { Brain, DollarSign, Zap, TrendingUp, BarChart3, Shield } from "lucide-react";
+import { Brain, DollarSign, Zap, BarChart3, Shield, Eye } from "lucide-react";
 import { VStack, HStack, Divider } from "@/lib/nova-sdk/ui/layout";
 import {
   NovaText, NovaCard, NovaSectionLabel, NovaToggle, NovaSlider, NovaBadge,
 } from "@/lib/nova-sdk/ui/components";
 import { cn } from "@/lib/utils";
 import { SettingRow } from "./shared";
-import { toast } from "sonner";
+import { useSettingsValue } from "@/hooks/use-settings-value";
 
 function ChoiceRow({ label, options, value, onChange }: {
   label: string; options: { key: string; label: string; desc?: string }[]; value: string; onChange: (v: string) => void;
@@ -34,16 +33,17 @@ function ChoiceRow({ label, options, value, onChange }: {
 }
 
 export function AdvisorsAIContent() {
-  const [autonomy, setAutonomy] = useState("simulate-first");
-  const [confidence, setConfidence] = useState(70);
-  const [budgetMode, setBudgetMode] = useState("standard");
-  const [contradictions, setContradictions] = useState("always");
+  const [autonomy, setAutonomy] = useSettingsValue("ai.autonomyLevel", "simulate-first");
+  const [confidence, setConfidence] = useSettingsValue("ai.confidenceThreshold", 70);
+  const [budgetMode, setBudgetMode] = useSettingsValue("ai.budgetMode", "standard");
+  const [contradictions, setContradictions] = useSettingsValue("ai.contradictionDisplay", "always");
+  const [promptHistory, setPromptHistory] = useSettingsValue("ai.promptHistory", true);
 
   return (
     <VStack spacing="tight">
       <NovaCard>
         <VStack spacing="tight">
-          <ChoiceRow label="Autonomy Level" value={autonomy} onChange={setAutonomy} options={[
+          <ChoiceRow label="Autonomy Level" value={autonomy} onChange={(v) => setAutonomy(v as any)} options={[
             { key: "always-ask", label: "Always Ask", desc: "Every action needs approval" },
             { key: "simulate-first", label: "Simulate First", desc: "AI simulates, you approve" },
             { key: "trusted", label: "Trusted", desc: "Routine tasks auto-execute" },
@@ -54,7 +54,7 @@ export function AdvisorsAIContent() {
       <NovaCard>
         <VStack spacing="tight">
           <NovaSectionLabel className="!px-0">Confidence Threshold</NovaSectionLabel>
-          <NovaSlider value={confidence} onChange={setConfidence} label={`${confidence}% minimum confidence`} />
+          <NovaSlider value={confidence} onChange={(v) => setConfidence(v as any)} label={`${confidence}% minimum confidence`} />
           <NovaText variant="label" muted className="!text-[9px]">
             Actions below this confidence require manual approval
           </NovaText>
@@ -62,7 +62,7 @@ export function AdvisorsAIContent() {
       </NovaCard>
 
       <NovaCard>
-        <ChoiceRow label="Contradiction Display" value={contradictions} onChange={setContradictions} options={[
+        <ChoiceRow label="Contradiction Display" value={contradictions} onChange={(v) => setContradictions(v as any)} options={[
           { key: "always", label: "Always Show", desc: "Surface all conflicts" },
           { key: "high-only", label: "High Impact", desc: "Only significant" },
           { key: "never", label: "Suppress", desc: "AI resolves silently" },
@@ -70,11 +70,20 @@ export function AdvisorsAIContent() {
       </NovaCard>
 
       <NovaCard>
-        <ChoiceRow label="Budget Mode" value={budgetMode} onChange={setBudgetMode} options={[
+        <ChoiceRow label="Budget Mode" value={budgetMode} onChange={(v) => setBudgetMode(v as any)} options={[
           { key: "frugal", label: "Frugal", desc: "Minimize AI costs" },
           { key: "standard", label: "Standard", desc: "Balanced cost/quality" },
           { key: "premium", label: "Premium", desc: "Best models always" },
         ]} />
+      </NovaCard>
+
+      <NovaCard>
+        <VStack spacing="tight">
+          <NovaSectionLabel className="!px-0">Advanced</NovaSectionLabel>
+          <SettingRow label="Prompt History" description="Log all AI interactions for review" icon={<Eye className="h-3.5 w-3.5" />}>
+            <NovaToggle checked={promptHistory} onChange={setPromptHistory} />
+          </SettingRow>
+        </VStack>
       </NovaCard>
     </VStack>
   );

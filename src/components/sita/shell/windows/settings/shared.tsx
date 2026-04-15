@@ -3,7 +3,7 @@
 // ═══════════════════════════════════════════════════════════════
 
 import { useState, useCallback } from "react";
-import { RotateCcw } from "lucide-react";
+import { RotateCcw, Search } from "lucide-react";
 import { VStack, HStack } from "@/lib/nova-sdk/ui/layout";
 import { NovaText, NovaButton, NovaCard } from "@/lib/nova-sdk/ui/components";
 import { cn } from "@/lib/utils";
@@ -28,17 +28,44 @@ export function SettingRow({ label, description, icon, children }: {
   );
 }
 
+export function SettingsSearch({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+  return (
+    <div className="relative mb-2">
+      <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-3 h-3 text-[hsl(0_0%_50%)]" />
+      <input
+        type="text"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        placeholder="Search settings…"
+        className="w-full pl-7 pr-2 py-1.5 rounded-lg text-[10px] bg-[hsl(0_0%_100%/0.04)] border border-[hsl(0_0%_100%/0.08)] text-[hsl(0_0%_90%)] placeholder:text-[hsl(0_0%_40%)] focus:outline-none focus:border-[hsl(265_55%_58%/0.4)] transition-colors"
+      />
+    </div>
+  );
+}
+
 const SECTION_KEYS: Record<string, (keyof SettingsSchema)[]> = {
-  general: ["appearance.theme", "sound.uiSounds", "appearance.reduceMotion"],
+  general: ["appearance.theme", "sound.uiSounds", "appearance.reduceMotion", "general.dateFormat", "general.timeFormat", "general.timezone", "general.startupBehavior"],
   appearance: ["appearance.accentColor", "appearance.reduceTransparency", "appearance.wallpaper"],
-  display: ["display.brightness", "display.nightShift", "display.resolution", "display.scaling", "display.nightShiftIntensity"],
+  display: ["display.brightness", "display.nightShift", "display.resolution", "display.scaling", "display.nightShiftIntensity", "display.autoBrightness", "display.trueTone", "display.refreshRate"],
   sound: ["sound.volume", "sound.mute", "sound.alertVolume", "sound.alertSound", "sound.uiSounds"],
   network: ["network.wifi.autoJoin", "network.dns", "network.proxy"],
   bluetooth: ["bluetooth.enabled"],
   notifications: ["notifications.doNotDisturb", "notifications.showPreviews", "notifications.badges"],
-  privacy: ["privacy.analytics", "privacy.crashReports", "privacy.locationServices"],
-  keyboard: ["input.keyRepeatRate", "input.keyRepeatDelay", "input.autocorrect"],
-  cloudsync: ["cloud.syncEnabled", "cloud.lastSyncAt"],
+  privacy: ["privacy.analytics", "privacy.crashReports", "privacy.locationServices", "privacy.piiRedaction", "privacy.docRetention", "privacy.trackingPrevention", "privacy.adPersonalization"],
+  keyboard: ["input.keyRepeatRate", "input.keyRepeatDelay", "input.autocorrect", "input.trackpadSpeed", "input.naturalScrolling", "input.tapToClick"],
+  cloudsync: ["cloud.syncEnabled", "cloud.lastSyncAt", "cloud.syncSettings", "cloud.syncFiles", "cloud.syncContacts", "cloud.encryption"],
+  advisors: ["ai.autonomyLevel", "ai.confidenceThreshold", "ai.budgetMode", "ai.contradictionDisplay", "ai.promptHistory"],
+  trustsec: ["trust.mode", "trust.simulationPref", "trust.sessionTimeout"],
+  household: ["household.sharedCalendar", "household.sharedGrocery", "household.expenseSharing"],
+  business: ["business.followUpPolicy", "business.leadScoring", "business.autoArchiveStale", "business.revenueForecast", "business.pipelineAlerts"],
+  workflows: ["workflows.trustGate", "workflows.morningRoutine", "workflows.endOfDay", "workflows.smartBatching"],
+  accessibility: [
+    "accessibility.highContrast", "accessibility.boldText", "accessibility.textSize",
+    "accessibility.voiceOver", "accessibility.zoom", "accessibility.zoomLevel",
+    "accessibility.stickyKeys", "accessibility.fullKeyboardNav", "accessibility.focusIndicators",
+    "accessibility.cursorSize", "accessibility.screenReaderOptimized", "accessibility.announcementVerbosity",
+    "accessibility.reduceAutoPlayEffects",
+  ],
 };
 
 export function ResetSectionButton({ sectionId }: { sectionId: string }) {

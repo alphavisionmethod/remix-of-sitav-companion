@@ -5,12 +5,12 @@
 import { useState } from "react";
 import {
   Shield, Globe, HardDrive, Lock, Download, Trash2, ShieldAlert,
-  Monitor, Smartphone, Clock,
+  Monitor, Smartphone, Clock, Key, Eye, Ban, UserCheck,
 } from "lucide-react";
 import { VStack, HStack, Divider } from "@/lib/nova-sdk/ui/layout";
 import {
   NovaText, NovaButton, NovaCard, NovaSectionLabel,
-  NovaToggle, NovaBadge,
+  NovaToggle, NovaBadge, NovaSlider,
 } from "@/lib/nova-sdk/ui/components";
 import { cn } from "@/lib/utils";
 import { useSettingsValue } from "@/hooks/use-settings-value";
@@ -48,13 +48,16 @@ export function PrivacyContent() {
   const [locationServices, setLocationServices] = useSettingsValue("privacy.locationServices", false);
   const [analytics, setAnalytics] = useSettingsValue("privacy.analytics", false);
   const [crashReports, setCrashReports] = useSettingsValue("privacy.crashReports", true);
-  const [docRetention, setDocRetention] = useState("7years");
-  const [piiRedaction, setPiiRedaction] = useState(false);
+  const [piiRedaction, setPiiRedaction] = useSettingsValue("privacy.piiRedaction", false);
+  const [docRetention, setDocRetention] = useSettingsValue("privacy.docRetention", "7years");
+  const [trackingPrevention, setTrackingPrevention] = useSettingsValue("privacy.trackingPrevention", "standard");
+  const [adPersonalization, setAdPersonalization] = useSettingsValue("privacy.adPersonalization", false);
 
   return (
     <VStack spacing="tight">
       <NovaCard>
         <VStack spacing="tight">
+          <NovaSectionLabel className="!px-0">Data Collection</NovaSectionLabel>
           <SettingRow label="Location Services" description="Allow apps to use location" icon={<Globe className="h-3.5 w-3.5" />}>
             <NovaToggle checked={locationServices} onChange={setLocationServices} />
           </SettingRow>
@@ -70,18 +73,42 @@ export function PrivacyContent() {
           <SettingRow label="PII Redaction" description="Strip names before AI processing" icon={<Lock className="h-3.5 w-3.5" />}>
             <NovaToggle checked={piiRedaction} onChange={setPiiRedaction} />
           </SettingRow>
+          <Divider />
+          <SettingRow label="Ad Personalization" description="Allow personalized suggestions" icon={<Eye className="h-3.5 w-3.5" />}>
+            <NovaToggle checked={adPersonalization} onChange={setAdPersonalization} />
+          </SettingRow>
         </VStack>
       </NovaCard>
 
       <NovaCard>
-        <ChoiceRow label="Document Retention" value={docRetention} onChange={setDocRetention} options={[
+        <VStack spacing="tight">
+          <NovaSectionLabel className="!px-0">Tracking Prevention</NovaSectionLabel>
+          <div className="grid grid-cols-3 gap-1.5">
+            {[
+              { key: "off", label: "Off", desc: "No blocking" },
+              { key: "standard", label: "Standard", desc: "Block known trackers" },
+              { key: "strict", label: "Strict", desc: "Block all 3rd-party" },
+            ].map(opt => (
+              <button key={opt.key} onClick={() => setTrackingPrevention(opt.key as any)} className={cn(
+                "rounded-lg border p-2 text-left transition-all text-[10px]",
+                trackingPrevention === opt.key ? "border-[hsl(var(--primary))]/40 bg-[hsl(var(--primary))]/8" : "border-border/30 hover:border-border/60"
+              )}>
+                <span className={cn("font-medium", trackingPrevention === opt.key && "text-[hsl(var(--primary))]")}>{opt.label}</span>
+                <p className="text-[8px] text-[hsl(0_0%_55%)] mt-0.5">{opt.desc}</p>
+              </button>
+            ))}
+          </div>
+        </VStack>
+      </NovaCard>
+
+      <NovaCard>
+        <ChoiceRow label="Document Retention" value={docRetention} onChange={(v) => setDocRetention(v as any)} options={[
           { key: "1year", label: "1 Year" },
           { key: "7years", label: "7 Years", desc: "Financial default" },
           { key: "forever", label: "Forever" },
         ]} />
       </NovaCard>
 
-      {/* GDPR */}
       <NovaCard>
         <VStack spacing="tight">
           <NovaSectionLabel className="!px-0">Data Rights</NovaSectionLabel>
@@ -127,8 +154,9 @@ export function PrivacyContent() {
 
 export function TrustSecurityContent() {
   const gov = useGovernanceSimulator();
-  const [trustMode, setTrustMode] = useState("balanced");
-  const [simPref, setSimPref] = useState("smart");
+  const [trustMode, setTrustMode] = useSettingsValue("trust.mode", "balanced");
+  const [simPref, setSimPref] = useSettingsValue("trust.simulationPref", "smart");
+  const [sessionTimeout, setSessionTimeout] = useSettingsValue("trust.sessionTimeout", 30);
   const [auditResult, setAuditResult] = useState<SimulationResult | null>(null);
 
   const runAudit = () => {
@@ -145,7 +173,7 @@ export function TrustSecurityContent() {
   return (
     <VStack spacing="tight">
       <NovaCard>
-        <ChoiceRow label="Trust Mode" value={trustMode} onChange={setTrustMode} options={[
+        <ChoiceRow label="Trust Mode" value={trustMode} onChange={(v) => setTrustMode(v as any)} options={[
           { key: "cautious", label: "Cautious", desc: "Approve everything" },
           { key: "balanced", label: "Balanced", desc: "Smart thresholds" },
           { key: "confident", label: "Confident", desc: "Auto-execute routine" },
@@ -153,11 +181,38 @@ export function TrustSecurityContent() {
       </NovaCard>
 
       <NovaCard>
-        <ChoiceRow label="Simulation Preference" value={simPref} onChange={setSimPref} options={[
+        <ChoiceRow label="Simulation Preference" value={simPref} onChange={(v) => setSimPref(v as any)} options={[
           { key: "always", label: "Always Simulate" },
           { key: "smart", label: "Smart (High-risk)" },
           { key: "never", label: "Skip" },
         ]} />
+      </NovaCard>
+
+      <NovaCard>
+        <VStack spacing="tight">
+          <NovaSectionLabel className="!px-0">Session Security</NovaSectionLabel>
+          <NovaSlider
+            value={sessionTimeout}
+            onChange={(v) => setSessionTimeout(v as any)}
+            label={`Session Timeout — ${sessionTimeout} min`}
+          />
+          <NovaText variant="label" muted className="!text-[9px]">
+            Auto-lock after inactivity period
+          </NovaText>
+        </VStack>
+      </NovaCard>
+
+      <NovaCard>
+        <VStack spacing="tight">
+          <NovaSectionLabel className="!px-0">Security Keys</NovaSectionLabel>
+          <SettingRow label="FIDO2 / WebAuthn" description="Hardware key authentication" icon={<Key className="h-3.5 w-3.5" />}>
+            <NovaBadge variant="default" className="!text-[8px]">Not Set Up</NovaBadge>
+          </SettingRow>
+          <Divider />
+          <NovaButton variant="secondary" icon={<Key className="h-3.5 w-3.5" />} className="w-full !text-[11px]">
+            Register Security Key
+          </NovaButton>
+        </VStack>
       </NovaCard>
 
       <NovaCard>
@@ -206,7 +261,7 @@ export function DevicesSessionsContent() {
     queryFn: async () => {
       if (!user?.id) return [];
       const { data } = await fromDynamicTable("connected_devices")
-        .select("id, device_name, device_type, os, trust_level, last_seen, status")
+        .select("id, device_name, device_type, os, trust_level, last_seen, status, ip_address")
         .eq("user_id", user.id)
         .order("last_seen", { ascending: false })
         .limit(5);
@@ -240,14 +295,43 @@ export function DevicesSessionsContent() {
                   <NovaText variant="body" className="truncate">{d.device_name}</NovaText>
                   <NovaText variant="label" muted className="!text-[9px]">
                     {d.os || "Unknown"} · Trust: {d.trust_level ?? "standard"}
+                    {d.ip_address && ` · ${d.ip_address}`}
                   </NovaText>
                 </VStack>
-                <NovaBadge variant={d.status === "online" ? "success" : "default"} className="!text-[8px]">
-                  {d.status || "offline"}
-                </NovaBadge>
+                <HStack spacing="micro">
+                  <NovaBadge variant={d.status === "online" ? "success" : "default"} className="!text-[8px]">
+                    {d.status || "offline"}
+                  </NovaBadge>
+                  <NovaButton
+                    variant="ghost"
+                    className="!p-1"
+                    onClick={() => toast.info(`Session revoked for ${d.device_name}`)}
+                  >
+                    <Ban className="h-3 w-3 text-[hsl(0_65%_50%)]" />
+                  </NovaButton>
+                </HStack>
               </HStack>
             ))
           )}
+        </VStack>
+      </NovaCard>
+
+      <NovaCard>
+        <VStack spacing="tight">
+          <NovaSectionLabel className="!px-0">Login History</NovaSectionLabel>
+          {[
+            { time: "Today, 9:15 AM", device: "Chrome · macOS", ip: "192.168.1.42" },
+            { time: "Yesterday, 6:30 PM", device: "Safari · iOS", ip: "10.0.0.15" },
+            { time: "2 days ago", device: "Chrome · Windows", ip: "172.16.0.8" },
+          ].map(entry => (
+            <HStack key={entry.time} spacing="tight" align="center" className="py-1">
+              <Clock className="h-3 w-3 text-[hsl(0_0%_50%)] shrink-0" />
+              <VStack spacing="micro" className="flex-1">
+                <NovaText variant="body" className="!text-[10px]">{entry.device}</NovaText>
+                <NovaText variant="label" muted className="!text-[9px]">{entry.time} · {entry.ip}</NovaText>
+              </VStack>
+            </HStack>
+          ))}
         </VStack>
       </NovaCard>
     </VStack>

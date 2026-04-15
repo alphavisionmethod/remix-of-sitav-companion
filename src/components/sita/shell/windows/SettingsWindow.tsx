@@ -3,7 +3,7 @@
 // Single source of truth for ALL settings — 26 sections, 8 groups
 // ═══════════════════════════════════════════════════════════════
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   User, Shield, Key, Settings, Palette, Monitor, Eye, Lock, Bell, Volume2,
   Wifi, Bluetooth, Cloud, Globe, Keyboard, Brain, DollarSign, BellOff,
@@ -13,6 +13,7 @@ import {
 import { AppLayout, VStack } from "@/lib/nova-sdk/ui/layout";
 import { NovaList, NovaSectionLabel, NovaToolbar } from "@/lib/nova-sdk/ui/components";
 import { AppStateWrapper } from "@/components/sita/shell/AppStateWrapper";
+import { SettingsSearch } from "./settings/shared";
 
 // Sub-section imports
 import { ProfileContent, SecurityContent, ConnectedAccountsContent } from "./settings/AccountSections";
@@ -104,24 +105,47 @@ const CONTENT: Record<string, () => JSX.Element> = {
 
 export function SettingsWindow() {
   const [active, setActive] = useState("profile");
+  const [search, setSearch] = useState("");
   const Content = CONTENT[active] || ProfileContent;
   const activeSection = SECTIONS.find(s => s.id === active);
 
+  const filteredSections = useMemo(() => {
+    if (!search.trim()) return null;
+    const q = search.toLowerCase();
+    return SECTIONS.filter(s =>
+      s.label.toLowerCase().includes(q) || s.group.toLowerCase().includes(q)
+    );
+  }, [search]);
+
   const sidebar = (
     <VStack spacing="tight" className="h-full">
-      {GROUPS.map(group => {
-        const items = SECTIONS.filter(s => s.group === group);
-        return (
-          <div key={group}>
-            <NovaSectionLabel className="!text-[8px]">{group}</NovaSectionLabel>
-            <NovaList
-              items={items.map(s => ({ id: s.id, label: s.label, icon: s.icon }))}
-              activeId={active}
-              onSelect={setActive}
-            />
-          </div>
-        );
-      })}
+      <SettingsSearch value={search} onChange={setSearch} />
+      {filteredSections ? (
+        // Search results mode
+        <div>
+          <NovaSectionLabel className="!text-[8px]">Results ({filteredSections.length})</NovaSectionLabel>
+          <NovaList
+            items={filteredSections.map(s => ({ id: s.id, label: s.label, icon: s.icon }))}
+            activeId={active}
+            onSelect={(id) => { setActive(id); setSearch(""); }}
+          />
+        </div>
+      ) : (
+        // Normal grouped mode
+        GROUPS.map(group => {
+          const items = SECTIONS.filter(s => s.group === group);
+          return (
+            <div key={group}>
+              <NovaSectionLabel className="!text-[8px]">{group}</NovaSectionLabel>
+              <NovaList
+                items={items.map(s => ({ id: s.id, label: s.label, icon: s.icon }))}
+                activeId={active}
+                onSelect={setActive}
+              />
+            </div>
+          );
+        })
+      )}
     </VStack>
   );
 
