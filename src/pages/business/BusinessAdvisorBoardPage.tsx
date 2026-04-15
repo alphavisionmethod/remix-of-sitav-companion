@@ -209,7 +209,7 @@ const BusinessAdvisorBoardPage = () => {
 
           <BoardroomModuleGrid
             brief={board.profitabilityBrief}
-            recommendations={board.aiRecommendations}
+            recommendations={mergedRecommendations}
             actionQueue={board.actionQueue}
           />
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -256,7 +256,7 @@ const BusinessAdvisorBoardPage = () => {
 
         {/* ── Debates Tab ─────────────────────────────────── */}
         <TabsContent value="debates" className="mt-4">
-          <AdvisorDebateView recommendations={board.aiRecommendations} />
+          <AdvisorDebateView recommendations={mergedRecommendations} />
         </TabsContent>
 
         {/* ── Actions Tab ────────────────────────────────── */}
