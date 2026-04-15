@@ -364,6 +364,17 @@ export const SitaOSProvider = ({ children }: { children: ReactNode }) => {
       });
       k.attentionOS.setActiveSurface(isMobile ? "mobile" : "desktop");
 
+      // Seed context graph with initial signals
+      k.contextGraph.batchUpdateSignals([
+        { source: "device", key: "userId", value: user.id },
+        { source: "device", key: "deviceId", value: navigator.userAgent.slice(0, 32) },
+        { source: "device", key: "type", value: isMobile ? "mobile" : "desktop" },
+        { source: "mode", key: "current", value: k.sitaModes.getMode() },
+        { source: "cognitive_load", key: "score", value: k.attentionOS.getCognitiveLoad().score },
+        { source: "network", key: "online", value: navigator.onLine },
+        { source: "time", key: "hour", value: new Date().getHours() },
+      ]);
+
       // Start device heartbeat + persist device to connected_devices table
       import("@/lib/services/device-presence-service").then(({ startHeartbeat, registerCurrentDevice }) => {
         startHeartbeat(60_000);
