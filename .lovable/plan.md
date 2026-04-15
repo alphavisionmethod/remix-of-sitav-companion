@@ -1,120 +1,58 @@
 
 
-# SITA OS — Complete Directory Reorganization: All Missing Barrels & Governance
+# SITA OS — Admin Pages Domain Barrel Organization
 
-## Current State
-- **29 barrels exist** (created in prior phases)
-- **~45 barrels missing** per the approved move map
-- **Governance files exist** but need expansion (only 3 deprecated paths, only 25 directory mappings)
+## What Exists
+- 287 flat admin pages in `src/pages/admin/*.tsx`
+- 15 subdirectories in `src/pages/admin/` (architecture, cloud, modules, etc.)
+- `src/admin/pages/index.ts` is an empty placeholder
+- Routes import directly from `@/pages/admin/*` — these stay untouched
 
-## What Must Be Created
+## What Gets Created
 
-### Phase 1: Missing Feature Barrels (16 files)
+Using the established barrel re-export pattern (no file moves, no import rewrites), create **domain-grouped barrel files** under `src/admin/pages/` that map the 287+ flat pages into their canonical groupings.
 
-| File | Re-exports From |
-|------|----------------|
-| `src/features/ai/index.ts` | `@/components/ai/AIDegradedState`, `AIEmbeddedRecommendation`, `AIWorkforceInvocationPanel` |
-| `src/features/cloud/index.ts` | `@/components/cloud/CloudActivityTimeline`, `CloudDeviceOwnership`, `CloudFileBrowser`, etc. |
-| `src/features/simulation/index.ts` | `@/components/simulation/*` (7 components) |
-| `src/features/home/index.ts` | `@/components/user-app/PulseSummaryStrip` |
-| `src/features/app-platform/index.ts` | `@/components/sita/apps/*` app shells |
-| `src/features/apps/index.ts` | `@/pages/apps/*` page references |
-| `src/features/atlas/index.ts` | `@/pages/atlas/*` |
-| `src/features/digital-presence/index.ts` | `@/pages/digital-presence/*` |
-| `src/features/enterprise/index.ts` | `@/pages/enterprise/*` |
-| `src/features/integrations/index.ts` | `@/pages/integrations/*` |
-| `src/features/mission/index.ts` | `@/pages/mission/*` |
-| `src/features/mission-control/index.ts` | `@/components/sita/apps/mission-control/*`, `@/pages/mission-control/*` |
-| `src/features/owner/index.ts` | `@/pages/owner/*` |
-| `src/features/owner-mode/index.ts` | `@/pages/owner-mode/*` |
-| `src/features/store/index.ts` | `@/pages/store/*` |
-| `src/features/workspace/index.ts` | `@/pages/workspace/*` |
+### New Admin Page Barrels (15 files)
 
-### Phase 2: Missing Sub-feature Barrels (4 files)
+| File | Contents (lazy-exportable references) |
+|------|---------------------------------------|
+| `src/admin/pages/home/index.ts` | AdminDashboard, AdminOperationsHub, MissionControlHome |
+| `src/admin/pages/ai/index.ts` | All AI*, AIG*, AIT*, Advisor*, BrainCore*, GoogleProviderFamily* (~45 pages) |
+| `src/admin/pages/runtime/index.ts` | AND*, APL*, DWE*, UAO*, MSA*, MC authority/control pages, DRS*, NSS* (~45 pages) |
+| `src/admin/pages/operations/index.ts` | AR*, ActionLineage*, AlertTriage*, Delivery*, Fleet*, Launch*, Release*, Replay*, Runtime*, System*, Workflow*, RevenueAutopilot* (~25 pages) |
+| `src/admin/pages/intelligence/index.ts` | CAI01-CAI15 (~15 pages) |
+| `src/admin/pages/integrations/index.ts` | CN*, Connector*, Integration*, ISA*, PFA* (~25 pages) |
+| `src/admin/pages/launch/index.ts` | LaunchHonesty*, LT01-LT07, RuntimeRealityValidation, GeneratedTruth* (~10 pages) |
+| `src/admin/pages/governance/index.ts` | ComputeGovernance*, Conscience*, Audit*, Policy*, Proof*, Truth*, PlatformMaturity*, Persistence* (~12 pages) |
+| `src/admin/pages/strategic/index.ts` | Outcome*, Benchmark*, CostToConfidence*, Decay*, Intelligence*, Operator*, Portfolio*, Quality*, Reasoning*, TimeToTruth*, ValueRisk*, SRE03* (~15 pages) |
+| `src/admin/pages/security/index.ts` | Security*, SEC01, SEC02 (~4 pages) |
+| `src/admin/pages/architecture/index.ts` | CanonicalChain*, ChangeImpact*, CorePersistence*, CoreServiceMigration*, Dependency*, Domain*, Feature*, SERV* (~12 pages) |
+| `src/admin/pages/support/index.ts` | Incident*, Communication*, Builder*, Founder*, HQ*, Team*, User* (~7 pages) |
+| `src/admin/pages/verification/index.ts` | SRE01-SRE08 (except SRE03), Compositor*, Contract* (~9 pages) |
+| `src/admin/pages/reality-audit/index.ts` | Reality*, Mock*, Simulated* (~7 pages) |
+| `src/admin/pages/fleet/index.ts` | FL01-FL03, FCC01-FCC12, ECO*, OS01, SYS01, KernelDashboard (~20 pages) |
 
-| File | Re-exports From |
-|------|----------------|
-| `src/features/business/autopilot/index.ts` | `@/components/autopilot/*` |
-| `src/features/business/crm/index.ts` | `@/components/business/CRMConnectModal`, `CRMImportWizard`, `@/components/business/crm/*` |
-| `src/features/business/leads/index.ts` | `@/components/business/lead-inbox/*`, `@/hooks/useLeadInbox` (if exists) |
-| `src/features/money/finance/index.ts` | `@/components/finance/*` |
+### Additional Admin Infrastructure (3 files)
 
-### Phase 3: Missing Admin Barrels (6 files)
+| File | Purpose |
+|------|---------|
+| `src/admin/hooks/index.ts` | Placeholder barrel for admin-specific hooks |
+| `src/admin/routes/index.ts` | Re-export of `@/routes/AdminRoutes` |
+| `src/admin/state/index.ts` | Placeholder barrel for admin state management |
 
-| File | Re-exports From |
-|------|----------------|
-| `src/admin/modules/runtime/index.ts` | `@/components/admin-os/DiagnosticsContextBar`, `LaunchTruthIndicator`, `RealityModeIndicator`, `SystemStatusBar` |
-| `src/admin/modules/operations/index.ts` | `@/components/admin/FleetHealthWidget`, safety components from shells |
-| `src/admin/modules/intelligence/index.ts` | Learning/simulation/inspection components from shells |
-| `src/admin/navigation/index.ts` | All 22 `*SubNav` components from `@/components/admin/` |
-| `src/admin/components/index.ts` | `@/components/admin/panels/*`, `AdminCommandPalette`, `AdminKeyboardShortcuts`, shell UX helpers |
-| `src/admin/pages/index.ts` | Placeholder barrel documenting admin page entry points |
+### Updated Files (3 files)
 
-### Phase 4: Missing Platform Barrels (6 files)
+| File | Change |
+|------|--------|
+| `src/admin/pages/index.ts` | Replace placeholder with barrel that re-exports all 15 domain barrels |
+| `src/lib/architecture/directory-organization-map.ts` | Add 15 new admin page domain mappings |
+| `src/lib/architecture/ia-governance.ts` | Add `src/pages/admin/` to deprecated paths list |
 
-| File | Re-exports From |
-|------|----------------|
-| `src/platform/notifications/index.ts` | `@/hooks/use-notification-calm-data`, `use-proactive-notifications`, `use-push-notifications`, `use-realtime-notifications`, `useNotifications` |
-| `src/platform/security/index.ts` | `@/hooks/use-security-fabric`, `useOSSecurity` |
-| `src/platform/observability/index.ts` | `@/hooks/useOrchestrationHealth` |
-| `src/platform/search/index.ts` | `@/hooks/use-global-search` |
-| `src/platform/setup/index.ts` | `@/hooks/use-session-restore`, `useSetupOrchestration`, `useOnboardingDaemon`, `useUpdateDaemon` |
-| `src/platform/runtime/index.ts` | `@/hooks/use-backend-actions`, `use-kernel-events`, `use-kernel-mutation`, `use-kernel-query`, `use-os-api`, `useOSOrchestration`, `use-shell-indicators` |
-
-### Phase 5: Missing Runtime Barrels (3 files)
-
-| File | Re-exports From |
-|------|----------------|
-| `src/runtimes/reality/index.ts` | `@/components/reality/*`, `@/hooks/useRealityClassifications`, `useRealityDetection`, `useRealtimeBridge` |
-| `src/runtimes/surfaces/index.ts` | `@/components/sita/surfaces/*` |
-| `src/runtimes/appliance/index.ts` | `@/components/sita/boot/*` |
-
-### Phase 6: Missing Shared Component Barrels (5 files)
-
-| File | Re-exports From |
-|------|----------------|
-| `src/components/shared/ai/index.ts` | `@/components/ai/AIReceiptLink`, `AIStateBadge`, `AIResponsePanel` |
-| `src/components/shared/sita/index.ts` | `@/components/sita/SitaCard`, `SitaCharts`, `SitaCompanionBar`, `SitaComponents`, `SitaPageHeader`, `SitaTopBar`, `PageSkeleton`, `SectionSkeleton`, `EmptyState`, `EmptyStateCTA`, `EmptyStateCard`, `DataLoadingWrapper`, `StateBadge`, `TrustBadge`, `TrustStateBadge` |
-| `src/components/shared/status/index.ts` | `@/components/cloud/PlatformDegradedBanner` |
-| `src/components/navigation/index.ts` | `@/components/NavLink` |
-| `src/components/cards/index.ts` | `@/components/sita/cards/*` |
-
-### Phase 7: Update Governance (2 modified files)
-
-**`directory-organization-map.ts`** — Add all ~40 new canonical paths to `DIRECTORY_ORGANIZATION_MAP`.
-
-**`ia-governance.ts`** — Expand `DEPRECATED_NEW_FILE_PATHS` to include:
-- `src/components/admin/` → `src/admin/`
-- `src/components/cloud/` → `src/features/cloud/`
-- `src/components/autopilot/` → `src/features/business/autopilot/`
-- `src/components/simulation/` → `src/features/simulation/`
-- `src/components/reality/` → `src/runtimes/reality/`
-- `src/components/platform/` → `src/platform/`
-- `src/components/user-app/` → `src/features/home/`
-- `src/components/finance/` → `src/features/money/`
-- `src/components/investment/` → `src/features/investment-office/`
-- `src/components/mobile/` → `src/runtimes/mobile/`
-- `src/components/notifications/` → `src/features/notifications/`
-- `src/components/revenue-office/` → `src/features/revenue-office/`
-
-### Phase 8: Build Verification
-
-Run `tsc --noEmit` to confirm zero breakage.
-
-## File Summary
-
-| Category | New Files | Modified Files |
-|----------|-----------|----------------|
-| Feature barrels | 20 | 0 |
-| Admin barrels | 6 | 0 |
-| Platform barrels | 6 | 0 |
-| Runtime barrels | 3 | 0 |
-| Shared component barrels | 5 | 0 |
-| Architecture governance | 0 | 2 |
-| **Total** | **~40** | **2** |
+## Total: ~21 new files, 3 modified files
 
 ## What This Does NOT Do
-- Does not physically move files (barrel re-export strategy)
-- Does not rewrite existing imports
-- Does not risk build breakage — purely additive
+- Does not move any files
+- Does not change AdminRoutes.tsx imports
+- Does not break the build
+- Purely additive barrel layer
 
