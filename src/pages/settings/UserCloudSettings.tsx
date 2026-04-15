@@ -10,7 +10,7 @@ import {
   Trash2, History, CheckCircle, Lock, Wifi, Laptop, TabletSmartphone,
   Folder, FolderOpen, Eye, EyeOff, Zap, Radio, AlertTriangle,
   FileText, Image, Music, Video, Database, Globe, Sparkles,
-  Download, Users, Activity, Wrench, Search, Files
+  Download, Users, Activity, Wrench, Search, Files, Bell, LifeBuoy
 } from "lucide-react";
 import { cloudStorageService } from "@/lib/cloud-backbone/cloud-storage-service";
 import { cloudDeviceService } from "@/lib/cloud-backbone/cloud-device-service";
@@ -128,8 +128,12 @@ export default function UserCloudSettings() {
       )}
 
       {/* Tab Navigation */}
+      {/* Degraded Mode Banner */}
+      <PlatformDegradedBanner />
+
+      {/* Tab Navigation */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-4 md:grid-cols-8">
+        <TabsList className="grid w-full grid-cols-5 md:grid-cols-10">
           <TabsTrigger value="files" className="flex items-center gap-1.5 text-xs">
             <Files className="h-3.5 w-3.5" /> Files
           </TabsTrigger>
@@ -150,6 +154,12 @@ export default function UserCloudSettings() {
           </TabsTrigger>
           <TabsTrigger value="transfer" className="flex items-center gap-1.5 text-xs">
             <Download className="h-3.5 w-3.5" /> Transfer
+          </TabsTrigger>
+          <TabsTrigger value="support" className="flex items-center gap-1.5 text-xs">
+            <LifeBuoy className="h-3.5 w-3.5" /> Support
+          </TabsTrigger>
+          <TabsTrigger value="notifications" className="flex items-center gap-1.5 text-xs">
+            <Bell className="h-3.5 w-3.5" /> Alerts
           </TabsTrigger>
           <TabsTrigger value="settings" className="flex items-center gap-1.5 text-xs">
             <Lock className="h-3.5 w-3.5" /> Settings
@@ -415,6 +425,16 @@ export default function UserCloudSettings() {
               ))}
             </CardContent>
           </Card>
+        </TabsContent>
+
+        {/* SUPPORT TAB */}
+        <TabsContent value="support" className="mt-4">
+          <UserSupportEscalation />
+        </TabsContent>
+
+        {/* NOTIFICATIONS TAB */}
+        <TabsContent value="notifications" className="mt-4">
+          <UserNotificationCenter />
         </TabsContent>
       </Tabs>
     </div>

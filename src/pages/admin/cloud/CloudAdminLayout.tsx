@@ -6,7 +6,8 @@ import {
   Share2, RotateCcw, Database, Fingerprint, Lock, Layers, Scale,
   Building2, Server, Cog, DollarSign, LifeBuoy, FileCheck,
   Timer, ShieldCheck, Flag, PauseCircle, BarChart3, Rocket,
-  Key, Globe, Search, Network, ShieldAlert, History, MessageSquare
+  Key, Globe, Search, Network, ShieldAlert, History, MessageSquare,
+  Monitor, GitBranch, Map
 } from "lucide-react";
 
 const tabs = [
@@ -54,6 +55,10 @@ const tabs = [
   { key: "safety-rails", label: "Safety Rails", icon: ShieldAlert },
   { key: "support-cases", label: "Cases", icon: MessageSquare },
   { key: "config-history", label: "Config History", icon: History },
+  { key: "client-capability", label: "Client Matrix", icon: Monitor },
+  { key: "release-governance", label: "Releases", icon: GitBranch },
+  { key: "read-models", label: "Read Models", icon: Database },
+  { key: "data-flows", label: "Data Flows", icon: Map },
 ] as const;
 
 export type CloudTab = (typeof tabs)[number]["key"];
@@ -72,7 +77,7 @@ const TAB_GROUPS: { label: string; keys: string[] }[] = [
   { label: "Governance", keys: ["policy", "governance", "feature-flags", "maintenance"] },
   { label: "Collaboration", keys: ["activity", "collaboration", "sharing", "support", "observability", "bootstrap"] },
   { label: "Platform", keys: ["planes", "rbac", "admin-audit", "environments", "support-safe", "tokens", "gateway-routes"] },
-  { label: "Platform Glue", keys: ["domain-ownership", "service-identity", "safety-rails", "support-cases", "config-history"] },
+  { label: "Platform Glue", keys: ["domain-ownership", "service-identity", "safety-rails", "support-cases", "config-history", "client-capability", "release-governance", "read-models", "data-flows"] },
 ];
 
 function getEnvironmentBadge(): { label: string; colorClass: string } {
