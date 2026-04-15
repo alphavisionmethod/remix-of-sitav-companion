@@ -1,110 +1,90 @@
 
 
-# Security Architecture Gap Fill — 6 Missing Modules
+# Mission Control — Single Windowed App Conversion
 
-## What's Already Done (24 of 34 sections covered)
-The existing 13 security files + kernel modules cover sections 1, 4-17, 20, 22-27. The SecurityFabric orchestrator, Security Command Center UI, and all core engines are fully wired.
+## Problem
+All ~140 admin/founder pages currently render as traditional page layouts inside `FounderControlShell` (sidebar + content + AI panel). This breaks the OS paradigm where everything is an independent windowed app. The admin plane should work identically to Business OS, Finance OS, and Concierge — a single app window with internal navigation.
 
-## What's Missing — 6 New Files
+## Architecture
 
-### File 1: `src/lib/core-services/security/trust-boundary-model.ts` (~350 lines)
-**Covers: Sections 2, 3, 32**
+```text
+Current:
+  /admin/* routes → FounderControlShell layout → page components
+  (full-page, breaks OS feel)
 
-Formal trust zone definitions (A-G) with:
-- Zone enum: UserApp, Extension, SystemService, Kernel, Cloud, MobileApp, AdminFounder
-- Per-zone privilege manifest: what each zone CAN and CANNOT do
-- Trust relationship matrix: explicit rules for what trusts what (e.g., "UserApps may trust only mediated runtime APIs")
-- Boundary crossing validator: validates any cross-zone communication against the matrix
-- Integration wiring map: which subsystems integrate with which zones
-- Cross-zone audit emission on every boundary crossing
+Target:
+  Desktop → doLaunchApp("mission-control") → MissionControlAppShell window
+  /admin/* routes → redirect shim → dispatch "sita-open-mission-control" → desktop
+  (windowed app, internal sidebar nav, matches Business OS pattern)
+```
 
-### File 2: `src/lib/core-services/security/defensive-programming-engine.ts` (~300 lines)
-**Covers: Section 18**
+## Implementation — 4 Steps
 
-Structural defensive programming enforcement:
-- Schema validator (Zod-style validation registry for all inter-module inputs)
-- Invariant enforcer: register and check runtime invariants (pre/post conditions)
-- State machine validator: declare valid transitions, reject illegal ones
-- Bounds checker: numeric range enforcement with overflow detection
-- Stale-state detector: TTL-based freshness checks on cached/shared state
-- Timeout manager: per-operation timeout enforcement with cleanup
-- Retry orchestrator: idempotent retry with exponential backoff and jitter
-- All violations emit audit events
+### Step 1: Create `MissionControlAppShell.tsx`
+**New file**: `src/components/sita/apps/mission-control/MissionControlAppShell.tsx`
 
-### File 3: `src/lib/core-services/security/formal-verification-framework.ts` (~280 lines)
-**Covers: Section 19**
+A windowed app shell following the exact pattern of `BusinessAppShell`:
+- Internal `activeModule` state (string-based, not React Router)
+- Glassmorphic sidebar with the same nav groups from `FounderSidebar` (Overview, Infrastructure, People & Trust, Intelligence, Operations, Support, Authority, Architecture, Security, Engineering, Founder, AI Team, AI Gateway, Intelligence Layer, Strategic, CAI)
+- Lazy-loads each admin page component based on `activeModule`
+- Internal command palette (Cmd+K)
+- Status strip and AI transparency panel embedded inside the window
+- Module mapping: `"dashboard" → AdminDashboard`, `"mc-devices" → MCDevicesCenter`, etc.
+- Listens for `sita-mission-control-navigate` events for cross-app deep linking
 
-Verification strategy for critical components:
-- Property-based test harness: define properties, run randomized checks
-- State machine verifier: exhaustive transition coverage checker
-- Invariant proof runner: validate invariants hold across simulated sequences
-- Verification targets registry: scheduler, capability validation, approval state machine, rollback FSM, event ordering
-- Coverage report: which critical paths are verified, which are pending
-- Integration with chaos testing for combined resilience + correctness checks
+### Step 2: Create Admin Redirect Shim
+**New file**: `src/pages/AdminCenter.tsx`
 
-### File 4: `src/lib/core-services/security/redundancy-failover-engine.ts` (~280 lines)
-**Covers: Section 21**
+Follows the exact pattern of `BusinessCenter.tsx` / `ConciergeCenter.tsx`:
+- Maps `/admin/*` path segments to module IDs
+- Dispatches `sita-open-mission-control` custom event
+- Redirects to `/desktop`
 
-Service redundancy and failover:
-- Service replica registry: track replica count, health, active/standby state
-- Health-based failover: automatic promotion of standby on primary failure
-- Queue redundancy manager: dual-queue strategy with overflow routing
-- Approval path redundancy: ensure approval service has hot standby
-- Notification delivery redundancy: multi-channel fallback (push -> SMS -> email)
-- Degraded mode coordinator: what capabilities remain in partial failure
-- Regional awareness: primary/secondary region tracking
-- Recovery orchestrator: coordinate multi-service recovery sequences
+### Step 3: Wire into Window Manager
+**Modified**: `src/components/sita/shell/ShellWindowLayer.tsx`
 
-### File 5: `src/lib/core-services/security/mobile-agent-hardening.ts` (~300 lines)
-**Covers: Sections 28, 29**
+- Import `MissionControlAppShell`
+- Add to `APP_REGISTRY`: `"mission-control"` and `"sita-mission-control"` entries (width: 1300, matching other large apps)
+- Add to `CANONICAL_WINDOW_ID`: `"sita-mission-control" → "mission-control"`
 
-Mobile app + OS agent hardening:
-- Mobile: biometric gate requirements, secure storage abstraction, root/jailbreak detection heuristics, session expiration for sensitive mode, trusted device enrollment/revocation, push action verification, app attestation checks
-- OS Agent: mutual auth handshake, command signature verification, replay protection (nonce + timestamp window), local policy enforcement, execution scope validation, telemetry integrity hashing, capability report authenticity, command storm/flood resilience
+**Modified**: `src/components/sita/ShellLayout.tsx`
 
-### File 6: `src/lib/core-services/security/admin-founder-hardening.ts` (~250 lines)
-**Covers: Section 30**
+- Add `sita-open-mission-control` event listener (same pattern as business/finance/concierge)
 
-Admin/founder plane hardening:
-- Session TTL enforcement (short-lived for admin, ultra-short for founder)
-- Two-person approval for highest-risk actions (policy changes, key rotation, data deletion)
-- Environment restrictions (IP allowlist, device trust required)
-- Blast-radius preview engine: simulate impact before execution
-- Change preview system: show before/after state diff
-- No hidden super-admin bypass enforcement
-- Scope controls: every admin action scoped to explicit permission set
-- MFA step-up requirements per action risk tier
+**New file**: `src/lib/mission-control-launcher.ts`
 
-## Updates to Existing Files
+- `openMissionControlModule(module)` helper function
 
-### `src/lib/core-services/security/security-fabric.ts`
-- Wire new modules: trust boundary model, defensive programming, formal verification, redundancy, mobile/agent hardening, admin hardening
-- Add `validateBoundaryCrossing()` method
-- Add `getRedundancyStatus()` to posture
-- Add `verifyInvariant()` convenience method
+### Step 4: Convert Routing
+**Modified**: `src/App.tsx`
 
-### `src/lib/core-services/security/index.ts`
-- Add exports for all 6 new modules
+- Remove `AdminShellLayout` / `FounderControlShell` wrapper from admin routes
+- Replace with redirect shim: all `/admin/*` routes → `AdminCenter` component
+- Keep `AdminRoute` permission gate wrapping the redirect
 
-### `src/hooks/use-security-fabric.ts`
-- Expose new methods: boundary crossing, redundancy status
+**Modified**: `src/routes/AdminRoutes.tsx`
 
-### `src/pages/admin/SecurityCommandCenter.tsx`
-- Add 3 new tabs: Trust Boundaries (zone visualization + crossing log), Formal Verification (coverage dashboard), Redundancy (replica health + failover status)
-- Total tabs: 11
+- Simplify to a single catch-all route: `<Route path="/admin/*" element={<AdminCenter />} />`
+- Move all lazy imports into the `MissionControlAppShell` module map (loaded on demand internally)
 
-## Implementation Order
-1. Trust Boundary Model (foundation — other modules reference zones)
-2. Defensive Programming Engine (used by all modules for validation)
-3. Formal Verification Framework
-4. Redundancy/Failover Engine
-5. Mobile/Agent Hardening
-6. Admin/Founder Hardening
-7. SecurityFabric wiring + index + hook updates
-8. SecurityCommandCenter 3 new tabs
+### Files Summary
 
-## Total Scope
-- **6 new files** (~1,760 lines)
-- **4 existing files** updated
-- Completes all 34 sections of the master prompt
+| File | Action |
+|---|---|
+| `src/components/sita/apps/mission-control/MissionControlAppShell.tsx` | Create — windowed app shell with sidebar + lazy module loading |
+| `src/pages/AdminCenter.tsx` | Create — redirect shim (dispatches event, navigates to /desktop) |
+| `src/lib/mission-control-launcher.ts` | Create — launcher helper |
+| `src/components/sita/shell/ShellWindowLayer.tsx` | Modify — register in APP_REGISTRY |
+| `src/components/sita/ShellLayout.tsx` | Modify — add event listener |
+| `src/App.tsx` | Modify — replace admin layout wrapper with redirect shim route |
+| `src/routes/AdminRoutes.tsx` | Modify — simplify to single catch-all |
+
+### Design Details
+- Dark glassmorphic sidebar matching Business OS aesthetic
+- Collapsible sidebar with icon-only mode
+- Module groups with expand/collapse
+- Active module highlighting
+- Status indicators (incident count, system health) in sidebar badges
+- Smooth transitions between modules
+- All ~140 admin pages preserved — zero functionality loss
 
