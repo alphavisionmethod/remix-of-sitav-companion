@@ -6,7 +6,7 @@ import { SafeModeDrawer } from "./SafeModeDrawer";
 import { RolloutStatusBanner } from "./RolloutStatusBanner";
 import {
   Activity, AlertTriangle, Rocket, Clock, DollarSign, Beaker,
-  Server, CheckCircle
+  Server, CheckCircle, Monitor, Smartphone, Shield
 } from "lucide-react";
 
 interface StatusItem {
@@ -50,6 +50,22 @@ export function StatusStrip() {
             {item.pulse && <span className="h-1.5 w-1.5 rounded-full bg-amber-400 animate-pulse" />}
           </div>
         ))}
+
+        <div className="h-3 w-px bg-border/30 shrink-0" />
+
+        {/* Trust Authority */}
+        <div className="flex items-center gap-2 shrink-0">
+          <Shield className="h-3 w-3 text-primary" />
+          <span className="text-[10px] text-muted-foreground">Trust:</span>
+          <div className="flex items-center gap-1">
+            <Badge variant="outline" className="text-[8px] px-1.5 py-0 text-blue-400 border-blue-500/20 bg-blue-500/5">
+              <Monitor className="h-2.5 w-2.5 mr-0.5" /> OS contextual
+            </Badge>
+            <Badge variant="outline" className="text-[8px] px-1.5 py-0 text-purple-400 border-purple-500/20 bg-purple-500/5">
+              <Smartphone className="h-2.5 w-2.5 mr-0.5" /> App authoritative
+            </Badge>
+          </div>
+        </div>
 
         <div className="h-3 w-px bg-border/30 shrink-0" />
 
