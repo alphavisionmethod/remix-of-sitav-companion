@@ -1,83 +1,110 @@
 
 
-# Security Architecture — Full Implementation Plan
+# Security Architecture Gap Fill — 6 Missing Modules
 
-## Current State Assessment
+## What's Already Done (24 of 34 sections covered)
+The existing 13 security files + kernel modules cover sections 1, 4-17, 20, 22-27. The SecurityFabric orchestrator, Security Command Center UI, and all core engines are fully wired.
 
-The codebase already has **substantial security infrastructure** (~3,100 lines across kernel modules):
-- 5-ring sandbox engine, privilege enforcement, syscall dispatcher
-- 3-layer capability-permission system (POSIX DAC + Linux Caps + SITA Tokens)
-- Cryptographic subsystem (LUKS2, TPM, key hierarchy)
-- Code signing and boot chain verification
-- Stateful packet firewall with connection tracking
-- Crash resilience with process watchdog
-- Trust governor with score-based posture
-- Security posture engine with threat model
-- Self-healing immune controller
+## What's Missing — 6 New Files
 
-**What's missing** are the cross-cutting enforcement engines, the runtime security fabric, and the unified admin UI that ties it all together.
+### File 1: `src/lib/core-services/security/trust-boundary-model.ts` (~350 lines)
+**Covers: Sections 2, 3, 32**
 
-## Implementation — 5 Batches
+Formal trust zone definitions (A-G) with:
+- Zone enum: UserApp, Extension, SystemService, Kernel, Cloud, MobileApp, AdminFounder
+- Per-zone privilege manifest: what each zone CAN and CANNOT do
+- Trust relationship matrix: explicit rules for what trusts what (e.g., "UserApps may trust only mediated runtime APIs")
+- Boundary crossing validator: validates any cross-zone communication against the matrix
+- Integration wiring map: which subsystems integrate with which zones
+- Cross-zone audit emission on every boundary crossing
 
-### Batch 1: Detection and Monitoring Layer
-**3 new files — the "eyes and ears" of the security system**
+### File 2: `src/lib/core-services/security/defensive-programming-engine.ts` (~300 lines)
+**Covers: Section 18**
 
-| File | What | Lines |
-|---|---|---|
-| `src/lib/core-services/security/intrusion-detection-engine.ts` | IDS: syscall anomaly detection, impossible-state detection, rate-spike detection, trust-downgrade triggers, quarantine actions, alert emission | ~300 |
-| `src/lib/core-services/security/audit-trail-engine.ts` | Immutable append-only structured audit log with tamper-detection (hash chain), correlation IDs, before/after state, queryable history, export | ~250 |
-| `src/lib/core-services/security/device-attestation-service.ts` | Device trust enrollment, boot integrity verification, remote attestation, device revocation, trust-state binding | ~200 |
+Structural defensive programming enforcement:
+- Schema validator (Zod-style validation registry for all inter-module inputs)
+- Invariant enforcer: register and check runtime invariants (pre/post conditions)
+- State machine validator: declare valid transitions, reject illegal ones
+- Bounds checker: numeric range enforcement with overflow detection
+- Stale-state detector: TTL-based freshness checks on cached/shared state
+- Timeout manager: per-operation timeout enforcement with cleanup
+- Retry orchestrator: idempotent retry with exponential backoff and jitter
+- All violations emit audit events
 
-### Batch 2: Enforcement and Governance Layer
-**4 new files — the "immune system" that enforces boundaries**
+### File 3: `src/lib/core-services/security/formal-verification-framework.ts` (~280 lines)
+**Covers: Section 19**
 
-| File | What | Lines |
-|---|---|---|
-| `src/lib/core-services/security/resource-governor.ts` | Per-app CPU/memory/FD/network budgets, enforcement actions (throttle/kill/alert), budget policies per trust ring, real-time metering | ~250 |
-| `src/lib/core-services/security/zero-trust-validator.ts` | Request-level authn/authz enforcement, mTLS verification, scope validation, input schema validation, rate limiting per identity/device/session, policy evaluation | ~280 |
-| `src/lib/core-services/security/ai-trust-enforcer.ts` | AI tool-call boundary enforcement, prompt input sanitization, capability scoping for AI actions, budget gate integration, model output validation, AI audit receipts | ~250 |
-| `src/lib/core-services/security/human-factor-guard.ts` | Step-up auth triggers, blast-radius calculation, confirmation ceremony requirements, anti-fatigue rules, safe-default enforcement, emergency mode definitions | ~200 |
+Verification strategy for critical components:
+- Property-based test harness: define properties, run randomized checks
+- State machine verifier: exhaustive transition coverage checker
+- Invariant proof runner: validate invariants hold across simulated sequences
+- Verification targets registry: scheduler, capability validation, approval state machine, rollback FSM, event ordering
+- Coverage report: which critical paths are verified, which are pending
+- Integration with chaos testing for combined resilience + correctness checks
 
-### Batch 3: Reliability and Resilience Layer
-**3 new files — ensuring the system survives failures**
+### File 4: `src/lib/core-services/security/redundancy-failover-engine.ts` (~280 lines)
+**Covers: Section 21**
 
-| File | What | Lines |
-|---|---|---|
-| `src/lib/core-services/security/event-consistency-engine.ts` | At-least-once delivery, idempotency keys, ordering guarantees, deduplication, dead-letter queue, replay support, consumer lag detection, correlation propagation | ~280 |
-| `src/lib/core-services/security/update-safety-system.ts` | Pre-update validation (signatures, compatibility, space, battery), transactional apply with checkpoints, health gates, auto-rollback on threshold failure, A/B slot management | ~300 |
-| `src/lib/core-services/security/chaos-testing-framework.ts` | Failure injection scenarios (service crash, network drop, storage latency, auth degradation, event duplication), execution harness, result verification, graceful-degradation assertions | ~250 |
+Service redundancy and failover:
+- Service replica registry: track replica count, health, active/standby state
+- Health-based failover: automatic promotion of standby on primary failure
+- Queue redundancy manager: dual-queue strategy with overflow routing
+- Approval path redundancy: ensure approval service has hot standby
+- Notification delivery redundancy: multi-channel fallback (push -> SMS -> email)
+- Degraded mode coordinator: what capabilities remain in partial failure
+- Regional awareness: primary/secondary region tracking
+- Recovery orchestrator: coordinate multi-service recovery sequences
 
-### Batch 4: Integration Wiring
-**2 files — connecting all subsystems into a unified security fabric**
+### File 5: `src/lib/core-services/security/mobile-agent-hardening.ts` (~300 lines)
+**Covers: Sections 28, 29**
 
-| File | What | Lines |
-|---|---|---|
-| `src/lib/core-services/security/security-fabric.ts` | Master orchestrator that wires all 10+ security subsystems together: trust governor + IDS + audit + resource governor + zero-trust + AI enforcer + sandbox + capability system. Provides `SecurityFabric` class with unified `evaluateAction()`, `reportAnomaly()`, `getPosture()` | ~300 |
-| `src/lib/core-services/security/index.ts` | Clean barrel export for all security modules | ~40 |
-| `src/hooks/use-security-fabric.ts` | React hook exposing SecurityFabric to UI components | ~80 |
+Mobile app + OS agent hardening:
+- Mobile: biometric gate requirements, secure storage abstraction, root/jailbreak detection heuristics, session expiration for sensitive mode, trusted device enrollment/revocation, push action verification, app attestation checks
+- OS Agent: mutual auth handshake, command signature verification, replay protection (nonce + timestamp window), local policy enforcement, execution scope validation, telemetry integrity hashing, capability report authenticity, command storm/flood resilience
 
-### Batch 5: Security Command Center UI
-**1 major file — admin visualization surface**
+### File 6: `src/lib/core-services/security/admin-founder-hardening.ts` (~250 lines)
+**Covers: Section 30**
 
-| File | What | Lines |
-|---|---|---|
-| `src/pages/admin/SecurityCommandCenter.tsx` | 8-tab admin dashboard: Trust Boundaries (ring visualization), Capability Audit (active tokens, revocations), Intrusion Detection (live alerts, quarantine), Audit Trail (searchable log viewer), Resource Governor (per-app budget meters), Zero-Trust Monitor (request validation stats), AI Safety Dashboard (tool-call logs, budget usage), Update Safety (rollout health, rollback history) | ~500 |
+Admin/founder plane hardening:
+- Session TTL enforcement (short-lived for admin, ultra-short for founder)
+- Two-person approval for highest-risk actions (policy changes, key rotation, data deletion)
+- Environment restrictions (IP allowlist, device trust required)
+- Blast-radius preview engine: simulate impact before execution
+- Change preview system: show before/after state diff
+- No hidden super-admin bypass enforcement
+- Scope controls: every admin action scoped to explicit permission set
+- MFA step-up requirements per action risk tier
 
-**Also modify:**
-- `src/pages/admin/index.tsx` — register SecurityCommandCenter route
-- Route registry — add `/admin/security-command`
+## Updates to Existing Files
 
-## Architecture Principles Enforced
-- Every module is a standalone class with no circular dependencies
-- All modules emit structured audit events to the AuditTrailEngine
-- SecurityFabric is the single integration point — no module talks directly to another
-- Trust rings from the existing SandboxEngine are reused, not duplicated
-- Capability tokens from the existing CapabilityPermissionSystem are reused
-- All AI enforcement delegates to the existing AI gateway constraint
+### `src/lib/core-services/security/security-fabric.ts`
+- Wire new modules: trust boundary model, defensive programming, formal verification, redundancy, mobile/agent hardening, admin hardening
+- Add `validateBoundaryCrossing()` method
+- Add `getRedundancyStatus()` to posture
+- Add `verifyInvariant()` convenience method
+
+### `src/lib/core-services/security/index.ts`
+- Add exports for all 6 new modules
+
+### `src/hooks/use-security-fabric.ts`
+- Expose new methods: boundary crossing, redundancy status
+
+### `src/pages/admin/SecurityCommandCenter.tsx`
+- Add 3 new tabs: Trust Boundaries (zone visualization + crossing log), Formal Verification (coverage dashboard), Redundancy (replica health + failover status)
+- Total tabs: 11
+
+## Implementation Order
+1. Trust Boundary Model (foundation — other modules reference zones)
+2. Defensive Programming Engine (used by all modules for validation)
+3. Formal Verification Framework
+4. Redundancy/Failover Engine
+5. Mobile/Agent Hardening
+6. Admin/Founder Hardening
+7. SecurityFabric wiring + index + hook updates
+8. SecurityCommandCenter 3 new tabs
 
 ## Total Scope
-- **13 new files** created
-- **2 existing files** modified
-- **~3,280 lines** of new code
-- **0 database migrations** needed (all runtime/simulated architecture)
+- **6 new files** (~1,760 lines)
+- **4 existing files** updated
+- Completes all 34 sections of the master prompt
 
