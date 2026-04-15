@@ -1,12 +1,12 @@
 import { useState, useMemo } from "react";
 import { useSecurityFabric } from "@/hooks/use-security-fabric";
-import { Shield, Activity, Eye, Lock, Cpu, Zap, Brain, RefreshCw, AlertTriangle, CheckCircle2, XCircle, Clock, Server, Gauge, Radio, Bug, ChevronRight, ArrowUpRight, Wifi } from "lucide-react";
+import { Shield, Activity, Eye, Lock, Cpu, Zap, Brain, RefreshCw, AlertTriangle, CheckCircle2, XCircle, Clock, Server, Gauge, Radio, Bug, ChevronRight, ArrowUpRight, Wifi, Layers, FlaskConical, Database } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 // ── Tab Definition ─────────────────────────────────────────────
 
-type TabId = "posture" | "ids" | "audit" | "resources" | "zero-trust" | "ai-safety" | "updates" | "chaos";
+type TabId = "posture" | "ids" | "audit" | "resources" | "zero-trust" | "ai-safety" | "updates" | "chaos" | "boundaries" | "verification" | "redundancy";
 
 interface TabDef {
   id: TabId;
@@ -17,6 +17,7 @@ interface TabDef {
 
 const TABS: TabDef[] = [
   { id: "posture", label: "Trust Posture", icon: <Shield className="w-4 h-4" />, description: "Overall security posture & trust rings" },
+  { id: "boundaries", label: "Trust Boundaries", icon: <Layers className="w-4 h-4" />, description: "Zone crossings & privilege matrix" },
   { id: "ids", label: "Intrusion Detection", icon: <Eye className="w-4 h-4" />, description: "Threat signals & quarantine" },
   { id: "audit", label: "Audit Trail", icon: <Activity className="w-4 h-4" />, description: "Immutable event log" },
   { id: "resources", label: "Resource Governor", icon: <Cpu className="w-4 h-4" />, description: "Per-app resource budgets" },
@@ -24,6 +25,8 @@ const TABS: TabDef[] = [
   { id: "ai-safety", label: "AI Safety", icon: <Brain className="w-4 h-4" />, description: "AI trust enforcement" },
   { id: "updates", label: "Update Safety", icon: <RefreshCw className="w-4 h-4" />, description: "Rollout health & rollback" },
   { id: "chaos", label: "Chaos Testing", icon: <Bug className="w-4 h-4" />, description: "Resilience scenarios" },
+  { id: "verification", label: "Formal Verification", icon: <FlaskConical className="w-4 h-4" />, description: "Property proofs & coverage" },
+  { id: "redundancy", label: "Redundancy", icon: <Database className="w-4 h-4" />, description: "Replicas & failover health" },
 ];
 
 // ── Posture Color Helpers ──────────────────────────────────────
@@ -131,7 +134,6 @@ function PostureTab() {
 
   return (
     <div className="space-y-6">
-      {/* Hero posture display */}
       <GlassCard className={cn("relative overflow-hidden", postureGlow(posture.overall))}>
         <div className="flex items-center justify-between">
           <div>
@@ -152,11 +154,8 @@ function PostureTab() {
           </div>
         </div>
         {emergency.active && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: "auto", opacity: 1 }}
-            className="mt-4 p-3 rounded-xl bg-[hsl(var(--destructive)/0.15)] border border-[hsl(var(--destructive)/0.3)]"
-          >
+          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }}
+            className="mt-4 p-3 rounded-xl bg-[hsl(var(--destructive)/0.15)] border border-[hsl(var(--destructive)/0.3)]">
             <div className="flex items-center gap-2 text-[hsl(var(--destructive))] font-semibold text-sm">
               <AlertTriangle className="w-4 h-4" /> Emergency Mode Active
             </div>
@@ -165,7 +164,6 @@ function PostureTab() {
         )}
       </GlassCard>
 
-      {/* Recommendations */}
       {posture.recommendations.length > 0 && (
         <GlassCard>
           <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
@@ -181,7 +179,6 @@ function PostureTab() {
         </GlassCard>
       )}
 
-      {/* Trust Rings */}
       <div className="grid grid-cols-5 gap-3">
         {[
           { ring: 0, name: "Kernel", color: "hsl(var(--trust-safe))" },
@@ -194,25 +191,351 @@ function PostureTab() {
             <div className="text-xs text-muted-foreground mb-1">Ring {ring}</div>
             <div className="text-lg font-bold" style={{ color }}>{name}</div>
             <div className="mt-2 h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
-              <motion.div
-                className="h-full rounded-full"
-                style={{ backgroundColor: color }}
-                initial={{ width: 0 }}
-                animate={{ width: `${100 - ring * 20}%` }}
-                transition={{ duration: 0.8, delay: ring * 0.1 }}
-              />
+              <motion.div className="h-full rounded-full" style={{ backgroundColor: color }}
+                initial={{ width: 0 }} animate={{ width: `${100 - ring * 20}%` }} transition={{ duration: 0.8, delay: ring * 0.1 }} />
             </div>
           </GlassCard>
         ))}
       </div>
 
-      {/* Device trust overview */}
       <div className="grid grid-cols-4 gap-3">
         <StatCard label="Total Devices" value={deviceMetrics.totalDevices} icon={<Server className="w-4 h-4 text-[hsl(var(--primary))]" />} />
         <StatCard label="Active Devices" value={deviceMetrics.activeDevices} icon={<Wifi className="w-4 h-4 text-[hsl(var(--trust-safe))]" />} />
         <StatCard label="Attestations Passed" value={deviceMetrics.attestationsPassed} icon={<CheckCircle2 className="w-4 h-4 text-[hsl(var(--trust-safe))]" />} />
         <StatCard label="Revoked" value={deviceMetrics.revokedDevices} icon={<XCircle className="w-4 h-4 text-[hsl(var(--destructive))]" />} />
       </div>
+    </div>
+  );
+}
+
+// ── Tab: Trust Boundaries ──────────────────────────────────────
+
+function BoundariesTab() {
+  const { fabric } = useSecurityFabric();
+  const metrics = fabric.boundaries.getMetrics();
+  const manifests = fabric.boundaries.getAllManifests();
+  const crossingLog = fabric.boundaries.getCrossingLog(30);
+  const integrations = fabric.boundaries.getAllIntegrations();
+
+  const zoneColors: Record<string, string> = {
+    "user-app": "hsl(var(--destructive))",
+    "extension": "hsl(var(--destructive))",
+    "system-service": "hsl(var(--sita-gold))",
+    "kernel": "hsl(var(--trust-safe))",
+    "cloud": "hsl(var(--primary))",
+    "mobile-app": "hsl(265 55% 58%)",
+    "admin-founder": "hsl(38 85% 58%)",
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="grid grid-cols-4 gap-3">
+        <StatCard label="Total Crossings" value={metrics.total} icon={<Layers className="w-4 h-4 text-[hsl(var(--primary))]" />} />
+        <StatCard label="Allowed" value={metrics.allowed} icon={<CheckCircle2 className="w-4 h-4 text-[hsl(var(--trust-safe))]" />} />
+        <StatCard label="Blocked" value={metrics.blocked} icon={<XCircle className="w-4 h-4 text-[hsl(var(--destructive))]" />} />
+        <StatCard label="Zones Active" value={manifests.length} icon={<Shield className="w-4 h-4 text-[hsl(var(--sita-gold))]" />} />
+      </div>
+
+      {/* Zone privilege grid */}
+      <GlassCard>
+        <h3 className="text-sm font-semibold text-foreground mb-4">Trust Zone Manifests</h3>
+        <div className="grid grid-cols-2 gap-3">
+          {manifests.map((m) => (
+            <div key={m.zone} className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.04]">
+              <div className="flex items-center gap-2 mb-2">
+                <span className="w-3 h-3 rounded-full" style={{ backgroundColor: zoneColors[m.zone] ?? "hsl(var(--muted))" }} />
+                <span className="text-sm font-semibold text-foreground capitalize">{m.zone.replace(/-/g, " ")}</span>
+                <span className="ml-auto text-[10px] px-1.5 py-0.5 rounded bg-white/[0.05] text-muted-foreground capitalize">{m.trustLevel}</span>
+              </div>
+              <div className="text-[10px] text-muted-foreground mb-1">
+                <span className="text-[hsl(var(--trust-safe))]">✓</span> {m.allowed.slice(0, 3).join(", ")}{m.allowed.length > 3 && ` +${m.allowed.length - 3}`}
+              </div>
+              <div className="text-[10px] text-muted-foreground">
+                <span className="text-[hsl(var(--destructive))]">✕</span> {m.denied.slice(0, 3).join(", ")}{m.denied.length > 3 && ` +${m.denied.length - 3}`}
+              </div>
+            </div>
+          ))}
+        </div>
+      </GlassCard>
+
+      {/* Integration wiring */}
+      <GlassCard>
+        <h3 className="text-sm font-semibold text-foreground mb-3">Integration Wiring Map</h3>
+        <div className="space-y-2">
+          {integrations.map((z) => (
+            <div key={z.zone} className="flex items-start gap-3 text-xs p-2 rounded-lg hover:bg-white/[0.03]">
+              <span className="w-3 h-3 rounded-full mt-0.5 shrink-0" style={{ backgroundColor: zoneColors[z.zone] ?? "hsl(var(--muted))" }} />
+              <span className="text-foreground font-medium capitalize w-28 shrink-0">{z.zone.replace(/-/g, " ")}</span>
+              <div className="flex flex-wrap gap-1">
+                {z.integratesWith.map((s) => (
+                  <span key={s} className="px-1.5 py-0.5 rounded bg-white/[0.05] text-muted-foreground">{s}</span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </GlassCard>
+
+      {/* Crossing log */}
+      <GlassCard>
+        <h3 className="text-sm font-semibold text-foreground mb-3">Boundary Crossing Log</h3>
+        <div className="space-y-1 max-h-48 overflow-y-auto">
+          {crossingLog.length === 0 ? (
+            <div className="text-sm text-muted-foreground text-center py-6">No boundary crossings recorded</div>
+          ) : (
+            crossingLog.slice().reverse().map((e) => (
+              <div key={e.id} className="flex items-center gap-3 text-xs p-2 rounded-lg hover:bg-white/[0.03]">
+                <span className={cn("w-2 h-2 rounded-full shrink-0", e.blocked ? "bg-[hsl(var(--destructive))]" : "bg-[hsl(var(--trust-safe))]")} />
+                <span className="text-foreground font-mono">{e.sourceZone}→{e.targetZone}</span>
+                <span className="text-muted-foreground flex-1 truncate">{e.action}</span>
+                <span className={cn("px-1.5 py-0.5 rounded",
+                  e.blocked ? "bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))]" : "bg-[hsl(var(--trust-safe)/0.15)] text-[hsl(var(--trust-safe))]"
+                )}>{e.verdict}</span>
+              </div>
+            ))
+          )}
+        </div>
+      </GlassCard>
+    </div>
+  );
+}
+
+// ── Tab: Formal Verification ───────────────────────────────────
+
+function VerificationTab() {
+  const { fabric } = useSecurityFabric();
+  const report = fabric.verification.getCoverageReport();
+  const metrics = fabric.verification.getMetrics();
+  const stateMachines = fabric.verification.getStateMachineVerifications();
+  const runHistory = fabric.verification.getRunHistory(10);
+
+  return (
+    <div className="space-y-6">
+      <div className="grid grid-cols-4 gap-3">
+        <StatCard label="Overall Coverage" value={`${report.overallCoverage}%`} icon={<FlaskConical className="w-4 h-4 text-[hsl(var(--primary))]" />} />
+        <StatCard label="Verified Targets" value={report.verified} icon={<CheckCircle2 className="w-4 h-4 text-[hsl(var(--trust-safe))]" />} />
+        <StatCard label="Pending" value={report.pending} icon={<Clock className="w-4 h-4 text-[hsl(var(--sita-gold))]" />} />
+        <StatCard label="Failed" value={report.failed} icon={<XCircle className="w-4 h-4 text-[hsl(var(--destructive))]" />} />
+      </div>
+
+      {/* Critical targets */}
+      <GlassCard>
+        <h3 className="text-sm font-semibold text-foreground mb-4">Verification Targets</h3>
+        <div className="space-y-2">
+          {report.targets.map((t) => (
+            <div key={t.id} className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.04]">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2">
+                  <span className={cn("w-2 h-2 rounded-full",
+                    t.status === "passed" ? "bg-[hsl(var(--trust-safe))]" :
+                    t.status === "failed" ? "bg-[hsl(var(--destructive))]" :
+                    "bg-[hsl(var(--sita-gold))]"
+                  )} />
+                  <span className="text-sm font-medium text-foreground">{t.component}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className={cn("text-[10px] px-1.5 py-0.5 rounded uppercase tracking-wider",
+                    t.criticality === "critical" ? "bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))]" :
+                    t.criticality === "high" ? "bg-orange-400/15 text-orange-400" :
+                    "bg-[hsl(var(--sita-gold)/0.15)] text-[hsl(var(--sita-gold))]"
+                  )}>{t.criticality}</span>
+                  <span className={cn("text-sm font-bold", scoreColor(t.coverage))}>{t.coverage}%</span>
+                </div>
+              </div>
+              <div className="text-xs text-muted-foreground mb-2">{t.description}</div>
+              <div className="h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+                <motion.div className={cn("h-full rounded-full", scoreBarColor(t.coverage))}
+                  initial={{ width: 0 }} animate={{ width: `${t.coverage}%` }} transition={{ duration: 0.8 }} />
+              </div>
+              <div className="flex gap-1 mt-2">
+                {t.verificationMethods.map((m) => (
+                  <span key={m} className="text-[10px] px-1.5 py-0.5 rounded bg-white/[0.05] text-muted-foreground">{m}</span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      </GlassCard>
+
+      {/* State machine verifications */}
+      {stateMachines.length > 0 && (
+        <GlassCard>
+          <h3 className="text-sm font-semibold text-foreground mb-3">State Machine Verifications</h3>
+          <div className="grid grid-cols-2 gap-3">
+            {stateMachines.map((sm) => (
+              <div key={sm.id} className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.04]">
+                <div className="text-sm font-medium text-foreground mb-1">{sm.name}</div>
+                <div className="text-xs text-muted-foreground mb-2">{sm.states.length} states · {sm.coveragePercent}% coverage</div>
+                <div className="grid grid-cols-2 gap-1 text-[10px]">
+                  {Object.entries(sm.properties).map(([key, val]) => (
+                    <div key={key} className="flex items-center gap-1">
+                      <span className={val ? "text-[hsl(var(--trust-safe))]" : "text-[hsl(var(--destructive))]"}>{val ? "✓" : "✕"}</span>
+                      <span className="text-muted-foreground capitalize">{key}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </GlassCard>
+      )}
+
+      {/* Run history */}
+      {runHistory.length > 0 && (
+        <GlassCard>
+          <h3 className="text-sm font-semibold text-foreground mb-3">Recent Verification Runs</h3>
+          <div className="space-y-1 max-h-48 overflow-y-auto">
+            {runHistory.slice().reverse().map((r) => (
+              <div key={r.id} className="flex items-center gap-3 text-xs p-2 rounded-lg hover:bg-white/[0.03]">
+                <span className={cn("px-1.5 py-0.5 rounded font-mono",
+                  r.status === "passed" ? "bg-[hsl(var(--trust-safe)/0.15)] text-[hsl(var(--trust-safe))]" :
+                  r.status === "failed" ? "bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))]" :
+                  "bg-[hsl(var(--sita-gold)/0.15)] text-[hsl(var(--sita-gold))]"
+                )}>{r.status}</span>
+                <span className="text-foreground flex-1">{r.propertyId}</span>
+                <span className="text-muted-foreground">{r.iterations} iter · {r.durationMs}ms</span>
+              </div>
+            ))}
+          </div>
+        </GlassCard>
+      )}
+    </div>
+  );
+}
+
+// ── Tab: Redundancy ────────────────────────────────────────────
+
+function RedundancyTab() {
+  const { fabric } = useSecurityFabric();
+  const metrics = fabric.redundancy.getMetrics();
+  const services = fabric.redundancy.getAllServices();
+  const regions = fabric.redundancy.getRegions();
+  const degraded = fabric.redundancy.getDegradedCapabilities();
+  const failovers = fabric.redundancy.getFailoverHistory(10);
+  const queues = fabric.redundancy.getAllQueues();
+  const notification = fabric.redundancy.getNotificationStatus();
+
+  return (
+    <div className="space-y-6">
+      <div className="grid grid-cols-4 gap-3">
+        <StatCard label="Total Replicas" value={metrics.totalReplicas} icon={<Database className="w-4 h-4 text-[hsl(var(--primary))]" />} />
+        <StatCard label="Active" value={metrics.activeReplicas} icon={<CheckCircle2 className="w-4 h-4 text-[hsl(var(--trust-safe))]" />} />
+        <StatCard label="Failed" value={metrics.failedReplicas} icon={<XCircle className="w-4 h-4 text-[hsl(var(--destructive))]" />} />
+        <StatCard label="Avg Health" value={`${metrics.avgHealth}%`} icon={<Gauge className="w-4 h-4 text-[hsl(var(--trust-safe))]" />} />
+      </div>
+
+      {/* Regions */}
+      <div className="grid grid-cols-2 gap-3">
+        {regions.map((r) => (
+          <GlassCard key={r.regionId}>
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-semibold text-foreground">{r.regionName}</span>
+              <span className={cn("text-[10px] px-1.5 py-0.5 rounded uppercase tracking-wider",
+                r.status === "primary" ? "bg-[hsl(var(--trust-safe)/0.15)] text-[hsl(var(--trust-safe))]" :
+                r.status === "secondary" ? "bg-[hsl(var(--primary)/0.15)] text-[hsl(var(--primary))]" :
+                "bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))]"
+              )}>{r.status}</span>
+            </div>
+            <div className="text-xs text-muted-foreground space-y-1">
+              <div>Latency: <span className="text-foreground font-mono">{r.latencyMs}ms</span></div>
+              <div>Replicas: <span className="text-foreground">{r.replicaCount}</span></div>
+            </div>
+          </GlassCard>
+        ))}
+      </div>
+
+      {/* Service replica health */}
+      <GlassCard>
+        <h3 className="text-sm font-semibold text-foreground mb-4">Service Replicas</h3>
+        <div className="space-y-3">
+          {services.map((svc) => {
+            const replicas = fabric.redundancy.getServiceReplicas(svc.serviceId);
+            return (
+              <div key={svc.serviceId} className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.04]">
+                <div className="flex items-center justify-between mb-2">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-medium text-foreground">{svc.serviceName}</span>
+                    {svc.criticalService && <span className="text-[10px] px-1 py-0.5 rounded bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))]">Critical</span>}
+                  </div>
+                  <span className="text-[10px] text-muted-foreground">{svc.failoverMode}</span>
+                </div>
+                <div className="flex gap-2">
+                  {replicas.map((r) => (
+                    <div key={r.id} className={cn("flex-1 p-2 rounded-lg text-center text-xs",
+                      r.status === "active" ? "bg-[hsl(var(--trust-safe)/0.1)] border border-[hsl(var(--trust-safe)/0.3)]" :
+                      r.status === "failed" ? "bg-[hsl(var(--destructive)/0.1)] border border-[hsl(var(--destructive)/0.3)]" :
+                      "bg-white/[0.02] border border-white/[0.06]"
+                    )}>
+                      <div className="font-mono text-foreground">{r.id}</div>
+                      <div className={cn("font-semibold capitalize mt-0.5",
+                        r.status === "active" ? "text-[hsl(var(--trust-safe))]" :
+                        r.status === "failed" ? "text-[hsl(var(--destructive))]" :
+                        "text-muted-foreground"
+                      )}>{r.status}</div>
+                      <div className="text-muted-foreground mt-0.5">{r.healthScore}% · {r.region}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </GlassCard>
+
+      {/* Queue redundancy */}
+      <GlassCard>
+        <h3 className="text-sm font-semibold text-foreground mb-3">Queue Health</h3>
+        <div className="grid grid-cols-2 gap-3">
+          {queues.map((q) => (
+            <div key={q.queueId} className="p-2 rounded-lg bg-white/[0.02] text-xs">
+              <div className="font-medium text-foreground capitalize mb-1">{q.queueName}</div>
+              <div className="text-muted-foreground">Primary: {q.primaryDepth} · Overflow: {q.overflowDepth} · Processed: {q.totalProcessed}</div>
+            </div>
+          ))}
+        </div>
+      </GlassCard>
+
+      {/* Degraded capabilities */}
+      <GlassCard>
+        <h3 className="text-sm font-semibold text-foreground mb-3">Capability Degradation Status</h3>
+        <div className="space-y-2">
+          {degraded.map((c) => (
+            <div key={c.capability} className="flex items-center gap-3 text-xs p-2 rounded-lg bg-white/[0.02]">
+              <span className={cn("w-2 h-2 rounded-full",
+                c.status === "available" ? "bg-[hsl(var(--trust-safe))]" :
+                c.status === "degraded" ? "bg-[hsl(var(--sita-gold))]" :
+                "bg-[hsl(var(--destructive))]"
+              )} />
+              <span className="text-foreground font-medium w-36">{c.capability}</span>
+              <span className="text-muted-foreground flex-1">{c.fallbackMode}</span>
+              <span className={cn("capitalize",
+                c.status === "available" ? "text-[hsl(var(--trust-safe))]" :
+                c.status === "degraded" ? "text-[hsl(var(--sita-gold))]" :
+                "text-[hsl(var(--destructive))]"
+              )}>{c.status}</span>
+            </div>
+          ))}
+        </div>
+      </GlassCard>
+
+      {/* Failover history */}
+      {failovers.length > 0 && (
+        <GlassCard>
+          <h3 className="text-sm font-semibold text-foreground mb-3">Failover History</h3>
+          <div className="space-y-1 max-h-48 overflow-y-auto">
+            {failovers.slice().reverse().map((f) => (
+              <div key={f.id} className="flex items-center gap-3 text-xs p-2 rounded-lg hover:bg-white/[0.03]">
+                <span className={cn("px-1.5 py-0.5 rounded font-mono",
+                  f.successful ? "bg-[hsl(var(--trust-safe)/0.15)] text-[hsl(var(--trust-safe))]" : "bg-[hsl(var(--destructive)/0.15)] text-[hsl(var(--destructive))]"
+                )}>{f.successful ? "OK" : "FAIL"}</span>
+                <span className="text-foreground">{f.serviceId}</span>
+                <span className="text-muted-foreground flex-1">{f.fromReplicaId} → {f.toReplicaId}</span>
+                <span className="text-muted-foreground">{f.durationMs}ms</span>
+              </div>
+            ))}
+          </div>
+        </GlassCard>
+      )}
     </div>
   );
 }
@@ -234,7 +557,6 @@ function IDSTab() {
         <StatCard label="Rules Active" value={`${metrics.rulesEnabled}/${metrics.rulesTotal}`} icon={<Shield className="w-4 h-4 text-[hsl(var(--trust-safe))]" />} />
       </div>
 
-      {/* Severity distribution */}
       <GlassCard>
         <h3 className="text-sm font-semibold text-foreground mb-4">Threat Distribution</h3>
         <div className="flex items-end gap-2 h-24">
@@ -242,19 +564,10 @@ function IDSTab() {
             const count = metrics.signalsBySeverity[sev] ?? 0;
             const maxCount = Math.max(1, ...Object.values(metrics.signalsBySeverity));
             const height = (count / maxCount) * 100;
-            const colors: Record<string, string> = {
-              info: "bg-blue-400/60", low: "bg-[hsl(var(--trust-safe)/0.6)]",
-              medium: "bg-[hsl(var(--sita-gold)/0.6)]", high: "bg-orange-400/60",
-              critical: "bg-[hsl(var(--destructive)/0.7)]",
-            };
+            const colors: Record<string, string> = { info: "bg-blue-400/60", low: "bg-[hsl(var(--trust-safe)/0.6)]", medium: "bg-[hsl(var(--sita-gold)/0.6)]", high: "bg-orange-400/60", critical: "bg-[hsl(var(--destructive)/0.7)]" };
             return (
               <div key={sev} className="flex-1 flex flex-col items-center gap-1">
-                <motion.div
-                  className={cn("w-full rounded-t-lg", colors[sev])}
-                  initial={{ height: 0 }}
-                  animate={{ height: `${Math.max(height, 4)}%` }}
-                  transition={{ duration: 0.6 }}
-                />
+                <motion.div className={cn("w-full rounded-t-lg", colors[sev])} initial={{ height: 0 }} animate={{ height: `${Math.max(height, 4)}%` }} transition={{ duration: 0.6 }} />
                 <span className="text-[10px] text-muted-foreground capitalize">{sev}</span>
                 <span className="text-xs font-mono text-foreground">{count}</span>
               </div>
@@ -263,19 +576,13 @@ function IDSTab() {
         </div>
       </GlassCard>
 
-      {/* Active quarantines */}
       {quarantines.length > 0 && (
         <GlassCard>
-          <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
-            <Lock className="w-4 h-4 text-[hsl(var(--sita-gold))]" /> Active Quarantines
-          </h3>
+          <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2"><Lock className="w-4 h-4 text-[hsl(var(--sita-gold))]" /> Active Quarantines</h3>
           <div className="space-y-2">
             {quarantines.slice(0, 10).map((q) => (
               <div key={q.id} className="flex items-center justify-between text-sm p-2 rounded-lg bg-white/[0.02]">
-                <div>
-                  <span className="text-foreground font-medium">{q.action}</span>
-                  <span className="text-muted-foreground ml-2">→ {q.targetId}</span>
-                </div>
+                <div><span className="text-foreground font-medium">{q.action}</span><span className="text-muted-foreground ml-2">→ {q.targetId}</span></div>
                 <span className="text-xs text-muted-foreground">{new Date(q.appliedAt).toLocaleTimeString()}</span>
               </div>
             ))}
@@ -283,7 +590,6 @@ function IDSTab() {
         </GlassCard>
       )}
 
-      {/* Recent signals */}
       <GlassCard>
         <h3 className="text-sm font-semibold text-foreground mb-3">Recent Signals</h3>
         <div className="space-y-1 max-h-60 overflow-y-auto">
@@ -321,7 +627,6 @@ function AuditTab() {
         <StatCard label="Security Events" value={stats.entriesByDomain.security ?? 0} icon={<Eye className="w-4 h-4 text-[hsl(var(--primary))]" />} />
       </div>
 
-      {/* Domain distribution */}
       <GlassCard>
         <h3 className="text-sm font-semibold text-foreground mb-4">Events by Domain</h3>
         <div className="grid grid-cols-4 gap-2">
@@ -334,7 +639,6 @@ function AuditTab() {
         </div>
       </GlassCard>
 
-      {/* Recent entries */}
       <GlassCard>
         <h3 className="text-sm font-semibold text-foreground mb-3">Recent Audit Log</h3>
         <div className="space-y-1 max-h-72 overflow-y-auto">
@@ -344,9 +648,7 @@ function AuditTab() {
             recentEntries.slice(-20).reverse().map((e) => (
               <div key={e.id} className="flex items-center gap-3 text-xs p-2 rounded-lg hover:bg-white/[0.03] transition-colors">
                 <span className={cn("w-2 h-2 rounded-full shrink-0",
-                  e.outcome === "success" ? "bg-[hsl(var(--trust-safe))]" :
-                  e.outcome === "denied" ? "bg-[hsl(var(--destructive))]" :
-                  "bg-[hsl(var(--sita-gold))]"
+                  e.outcome === "success" ? "bg-[hsl(var(--trust-safe))]" : e.outcome === "denied" ? "bg-[hsl(var(--destructive))]" : "bg-[hsl(var(--sita-gold))]"
                 )} />
                 <span className="text-muted-foreground font-mono w-16 shrink-0">{e.domain}</span>
                 <span className="text-foreground truncate flex-1">{e.action}</span>
@@ -382,7 +684,6 @@ function ResourcesTab() {
         <StatCard label="Killed" value={metrics.killedProcesses} icon={<XCircle className="w-4 h-4 text-[hsl(var(--destructive))]" />} />
       </div>
 
-      {/* Resource utilization */}
       <GlassCard>
         <h3 className="text-sm font-semibold text-foreground mb-4">System Resource Utilization</h3>
         <div className="space-y-3">
@@ -393,12 +694,7 @@ function ResourcesTab() {
                 <span className={cn("font-mono", scoreColor(100 - percent))}>{percent.toFixed(1)}%</span>
               </div>
               <div className="h-2 rounded-full bg-white/[0.06] overflow-hidden">
-                <motion.div
-                  className={cn("h-full rounded-full", scoreBarColor(100 - percent))}
-                  initial={{ width: 0 }}
-                  animate={{ width: `${Math.min(percent, 100)}%` }}
-                  transition={{ duration: 0.8 }}
-                />
+                <motion.div className={cn("h-full rounded-full", scoreBarColor(100 - percent))} initial={{ width: 0 }} animate={{ width: `${Math.min(percent, 100)}%` }} transition={{ duration: 0.8 }} />
               </div>
               <div className="text-[10px] text-muted-foreground">{used.toFixed(0)} / {total.toFixed(0)} allocated</div>
             </div>
@@ -406,7 +702,6 @@ function ResourcesTab() {
         </div>
       </GlassCard>
 
-      {/* Recent enforcement */}
       {enforcementLog.length > 0 && (
         <GlassCard>
           <h3 className="text-sm font-semibold text-foreground mb-3">Recent Enforcement</h3>
@@ -436,7 +731,6 @@ function ZeroTrustTab() {
   const { fabric } = useSecurityFabric();
   const metrics = fabric.zeroTrust.getMetrics();
   const recentDenied = fabric.zeroTrust.getRecentDecisions(20, "denied");
-
   const approvalRate = metrics.totalRequests > 0 ? ((metrics.allowedRequests / metrics.totalRequests) * 100).toFixed(1) : "100";
 
   return (
@@ -448,7 +742,6 @@ function ZeroTrustTab() {
         <StatCard label="Rate Limited" value={metrics.rateLimitedRequests} icon={<Clock className="w-4 h-4 text-[hsl(var(--sita-gold))]" />} />
       </div>
 
-      {/* By surface */}
       <GlassCard>
         <h3 className="text-sm font-semibold text-foreground mb-4">Requests by Surface</h3>
         <div className="grid grid-cols-4 gap-2">
@@ -461,11 +754,8 @@ function ZeroTrustTab() {
         </div>
       </GlassCard>
 
-      {/* Recently denied */}
       <GlassCard>
-        <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
-          <XCircle className="w-4 h-4 text-[hsl(var(--destructive))]" /> Recently Denied
-        </h3>
+        <h3 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2"><XCircle className="w-4 h-4 text-[hsl(var(--destructive))]" /> Recently Denied</h3>
         <div className="space-y-1 max-h-48 overflow-y-auto">
           {recentDenied.length === 0 ? (
             <div className="text-sm text-muted-foreground text-center py-6">No denied requests — all clear</div>
@@ -500,7 +790,6 @@ function AISafetyTab() {
         <StatCard label="Total Cost" value={`${(metrics.totalCostCents / 100).toFixed(2)}$`} icon={<Zap className="w-4 h-4 text-[hsl(var(--sita-gold))]" />} />
       </div>
 
-      {/* By model */}
       {Object.keys(metrics.byModel).length > 0 && (
         <GlassCard>
           <h3 className="text-sm font-semibold text-foreground mb-4">Usage by Model</h3>
@@ -514,12 +803,7 @@ function AISafetyTab() {
                     <span className="text-muted-foreground">{count} calls</span>
                   </div>
                   <div className="h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
-                    <motion.div
-                      className="h-full rounded-full bg-[hsl(var(--primary)/0.6)]"
-                      initial={{ width: 0 }}
-                      animate={{ width: `${(count / maxCount) * 100}%` }}
-                      transition={{ duration: 0.6 }}
-                    />
+                    <motion.div className="h-full rounded-full bg-[hsl(var(--primary)/0.6)]" initial={{ width: 0 }} animate={{ width: `${(count / maxCount) * 100}%` }} transition={{ duration: 0.6 }} />
                   </div>
                 </div>
               );
@@ -528,7 +812,6 @@ function AISafetyTab() {
         </GlassCard>
       )}
 
-      {/* Recent receipts */}
       <GlassCard>
         <h3 className="text-sm font-semibold text-foreground mb-3">AI Audit Receipts</h3>
         <div className="space-y-1 max-h-60 overflow-y-auto">
@@ -571,24 +854,16 @@ function UpdatesTab() {
         <StatCard label="Health Gate Pass" value={`${(metrics.healthGatePassRate * 100).toFixed(0)}%`} icon={<Gauge className="w-4 h-4 text-[hsl(var(--trust-safe))]" />} />
       </div>
 
-      {/* A/B Slots */}
       <GlassCard>
         <h3 className="text-sm font-semibold text-foreground mb-4">A/B Slot Management</h3>
         <div className="grid grid-cols-2 gap-4">
           {slots.map((slot) => (
-            <div key={slot.slot} className={cn(
-              "p-4 rounded-xl border transition-all",
-              slot.active
-                ? "border-[hsl(var(--trust-safe)/0.4)] bg-[hsl(var(--trust-safe)/0.05)]"
-                : "border-white/[0.06] bg-white/[0.02]",
+            <div key={slot.slot} className={cn("p-4 rounded-xl border transition-all",
+              slot.active ? "border-[hsl(var(--trust-safe)/0.4)] bg-[hsl(var(--trust-safe)/0.05)]" : "border-white/[0.06] bg-white/[0.02]"
             )}>
               <div className="flex items-center justify-between mb-2">
                 <span className="text-lg font-bold text-foreground">Slot {slot.slot}</span>
-                {slot.active && (
-                  <span className="text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full bg-[hsl(var(--trust-safe)/0.2)] text-[hsl(var(--trust-safe))] font-semibold">
-                    Active
-                  </span>
-                )}
+                {slot.active && <span className="text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full bg-[hsl(var(--trust-safe)/0.2)] text-[hsl(var(--trust-safe))] font-semibold">Active</span>}
               </div>
               <div className="space-y-1 text-xs text-muted-foreground">
                 <div>Version: <span className="text-foreground font-mono">{slot.version}</span></div>
@@ -601,7 +876,6 @@ function UpdatesTab() {
         </div>
       </GlassCard>
 
-      {/* Update history */}
       {history.length > 0 && (
         <GlassCard>
           <h3 className="text-sm font-semibold text-foreground mb-3">Update History</h3>
@@ -641,7 +915,6 @@ function ChaosTab() {
         <StatCard label="Failed Scenarios" value={chaosMetrics.failedScenarios.length} icon={<XCircle className="w-4 h-4 text-[hsl(var(--destructive))]" />} />
       </div>
 
-      {/* Scenario catalog */}
       <GlassCard>
         <h3 className="text-sm font-semibold text-foreground mb-4">Scenario Catalog</h3>
         <div className="grid grid-cols-2 gap-3">
@@ -660,12 +933,8 @@ function ChaosTab() {
                 <div className="text-xs text-muted-foreground">{s.description}</div>
                 <div className="flex items-center gap-2 mt-2 text-[10px]">
                   <span className="px-1.5 py-0.5 rounded bg-white/[0.05] text-muted-foreground">{s.category}</span>
-                  {catStats && (
-                    <span className="text-muted-foreground">{catStats.passed}/{catStats.total} passed</span>
-                  )}
-                  <span className={cn("ml-auto", s.enabled ? "text-[hsl(var(--trust-safe))]" : "text-muted-foreground")}>
-                    {s.enabled ? "Enabled" : "Disabled"}
-                  </span>
+                  {catStats && <span className="text-muted-foreground">{catStats.passed}/{catStats.total} passed</span>}
+                  <span className={cn("ml-auto", s.enabled ? "text-[hsl(var(--trust-safe))]" : "text-muted-foreground")}>{s.enabled ? "Enabled" : "Disabled"}</span>
                 </div>
               </div>
             );
@@ -673,7 +942,6 @@ function ChaosTab() {
         </div>
       </GlassCard>
 
-      {/* Recent runs */}
       {runs.length > 0 && (
         <GlassCard>
           <h3 className="text-sm font-semibold text-foreground mb-3">Recent Test Runs</h3>
@@ -702,6 +970,7 @@ function ChaosTab() {
 
 const TAB_COMPONENTS: Record<TabId, React.FC> = {
   posture: PostureTab,
+  boundaries: BoundariesTab,
   ids: IDSTab,
   audit: AuditTab,
   resources: ResourcesTab,
@@ -709,6 +978,8 @@ const TAB_COMPONENTS: Record<TabId, React.FC> = {
   "ai-safety": AISafetyTab,
   updates: UpdatesTab,
   chaos: ChaosTab,
+  verification: VerificationTab,
+  redundancy: RedundancyTab,
 };
 
 export default function SecurityCommandCenter() {
@@ -718,7 +989,6 @@ export default function SecurityCommandCenter() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      {/* Header */}
       <div className="sticky top-0 z-10 backdrop-blur-2xl bg-background/80 border-b border-white/[0.06]">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between mb-4">
@@ -744,16 +1014,12 @@ export default function SecurityCommandCenter() {
                 )} />
                 {posture.overall}
               </div>
-              <button
-                onClick={refreshPosture}
-                className="p-2 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] transition-colors"
-              >
+              <button onClick={refreshPosture} className="p-2 rounded-lg bg-white/[0.05] hover:bg-white/[0.1] transition-colors">
                 <RefreshCw className="w-4 h-4 text-muted-foreground" />
               </button>
             </div>
           </div>
 
-          {/* Tab bar */}
           <div className="flex gap-1 overflow-x-auto scrollbar-hide">
             {TABS.map((tab) => (
               <button
@@ -774,16 +1040,9 @@ export default function SecurityCommandCenter() {
         </div>
       </div>
 
-      {/* Content */}
       <div className="max-w-7xl mx-auto px-6 py-6">
         <AnimatePresence mode="wait">
-          <motion.div
-            key={activeTab}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.2 }}
-          >
+          <motion.div key={activeTab} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.2 }}>
             <ActiveComponent />
           </motion.div>
         </AnimatePresence>
