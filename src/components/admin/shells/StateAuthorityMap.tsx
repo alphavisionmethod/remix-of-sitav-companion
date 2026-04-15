@@ -49,6 +49,8 @@ const AUTHORITY_CLASSES: AuthorityClass[] = [
       { label: "Active rendering state", status: "local", lastUpdated: "Real-time" },
       { label: "Device-local runtime config", status: "synced", lastUpdated: "2m ago" },
       { label: "Queued offline changes", status: "local", lastUpdated: "N/A" },
+      { label: "Local hardware state (sensors, battery, peripherals)", status: "local", lastUpdated: "Real-time" },
+      { label: "Local pending writes (uncommitted mutations)", status: "local", lastUpdated: "Real-time" },
     ],
   },
   {
@@ -69,6 +71,10 @@ const AUTHORITY_CLASSES: AuthorityClass[] = [
       { label: "Rollout state & ring config", status: "synced", lastUpdated: "15m ago" },
       { label: "Command history", status: "synced", lastUpdated: "Real-time" },
       { label: "Approval history", status: "synced", lastUpdated: "Real-time" },
+      { label: "Trust level (per-user & per-device)", status: "synced", lastUpdated: "5m ago" },
+      { label: "AI decisioning state (model routing, budget)", status: "synced", lastUpdated: "1m ago" },
+      { label: "Security event truth (alerts, incidents, posture)", status: "synced", lastUpdated: "Real-time" },
+      { label: "Global notification truth (delivery, read state)", status: "synced", lastUpdated: "30s ago" },
     ],
   },
   {
@@ -86,6 +92,7 @@ const AUTHORITY_CLASSES: AuthorityClass[] = [
       { label: "Command drafts", status: "local", lastUpdated: "Real-time" },
       { label: "Mobile session state", status: "local", lastUpdated: "Real-time" },
       { label: "Control preferences", status: "synced", lastUpdated: "1h ago" },
+      { label: "Cached summaries (quick mobile viewing)", status: "local", lastUpdated: "30s ago" },
     ],
   },
 ];
